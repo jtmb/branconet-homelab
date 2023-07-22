@@ -1,4 +1,4 @@
-# Post-provisioning VM
+# PRE-provisioning VM
 - name: "Provision Enviorment"
   strategy: linear
   hosts: all
@@ -10,7 +10,7 @@
       msg: "{{ ansible_ssh_host }}"
   - name: Install Required Packages
     when: deploy_packages == true
-    include: tasks/post_provisioning.yml
+    include: tasks/pre_provisioning.yml
     tags: packages
   - name: Setup SSH
     include: tasks/ssh_setup.yml
@@ -42,6 +42,7 @@
     include: tasks/swarm_worker_join.yml
     tags: swarm
 
+# Containers
 - name: "Launch Swarm Containers"
   hosts: master_node
   become_user: "root"
@@ -64,7 +65,15 @@
     include: tasks/jenkins_master_setup.yml
     tags: jenkins
 
-  - name: Complete Provisioning
+# POST-provisioning VM
+- name: "Complete Provisioning"
+  hosts: all
+  become_user: "root"
+  become: true
+  vars_files:
+    - vars/vars.yml
+  tasks:
+  - name: Post Provisioning Tasks
     when: deploy_containers == true
-    include: tasks/post_actions.yml
+    include: tasks/post_provisioning.yml
     tags: post

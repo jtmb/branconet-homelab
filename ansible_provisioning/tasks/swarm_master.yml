@@ -29,13 +29,22 @@
     owner: nobody
     group: nogroup 
 
+# - name: Export Key for NTFS
+#   become: true
+#   become_user: root
+#   shell: |
+#     echo "/home/ubuntu/container-program-files/ *(no_root_squash,rw,sync,no_subtree_check)" >> /etc/exports
+#     exportfs -a && sudo systemctl restart nfs-kernel-server
+#   ignore_errors: true
+
 - name: Export Key for NTFS
   become: true
   become_user: root
-  shell: |
-    echo "/home/ubuntu/container-program-files/ *(no_root_squash,rw,sync,no_subtree_check)" >> /etc/exports
-    exportfs -a && sudo systemctl restart nfs-kernel-server
-  ignore_errors: true
+  lineinfile: 
+    dest: "/etc/exports"
+    line: '{{ item }}'
+  with_items:
+    - '/home/ubuntu/container-program-files/ *(no_root_squash,rw,sync,no_subtree_check)'
 
 - name: Create an external container-swarm-network
   become: true

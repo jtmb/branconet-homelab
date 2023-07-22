@@ -7,14 +7,19 @@ services:
       - 7878:7878
     volumes:
       - /home/ubuntu/container-program-files/radarr:/config
-      - /home/ubuntu/container-program-files/plex/movies:/movies
+      - /home/ubuntu/container-program-files/plex_smb_share/movies:/movies
       - /home/ubuntu/container-program-files/deluge/downloads:/downloads
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
     image: linuxserver/radarr
-
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+        - node.hostname==master-node
   overseerr:
     image: lscr.io/linuxserver/overseerr:latest
     container_name: overseerr
@@ -26,6 +31,12 @@ services:
     ports:
       - 5055:5055
     restart: unless-stopped
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+        - node.hostname==master-node
 
   sonarr:
     image: linuxserver/sonarr
@@ -35,12 +46,18 @@ services:
       - 8989:8989
     volumes:
       - /home/ubuntu/container-program-files/sonarr/config:/config
-      - /home/ubuntu/container-program-files/plex/tvseries:/tv
+      - /home/ubuntu/container-program-files/plex_smb_share/tv:/tv
       - /home/ubuntu/container-program-files/deluge/downloads:/downloads
     environment:
     - PUID=1000
     - PGID=1000
     - TZ=America/New_York
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+        - node.hostname==master-node
  
   jackett:
     container_name: jackett
@@ -54,7 +71,13 @@ services:
       - PGID=1000
       - TZ=America/New_York
     image: linuxserver/jackett
-  
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+        - node.hostname==master-node
+
   deluge:
     container_name: deluge
     restart: unless-stopped
@@ -72,6 +95,12 @@ services:
       - /home/ubuntu/container-program-files/deluge/config:/config
       - /home/ubuntu/container-program-files/deluge/downloads:/downloads
     image: linuxserver/deluge
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+        - node.hostname==master-node
 
   plex:
     image: lscr.io/linuxserver/plex:latest
@@ -86,7 +115,13 @@ services:
       - ADVERTISE_IP=http://192.168.0.24:32400/
     volumes:
       - /home/ubuntu/container-program-files/plex/config:/config
-      - /home/ubuntu/container-program-files/plex/tvseries:/tv
-      - /home/ubuntu/container-program-files/plex/movies:/movies
+      - /home/ubuntu/container-program-files/plex_smb_share/tv:/tv
+      - /home/ubuntu/container-program-files/plex_smb_share/movies:/movies
     restart: unless-stopped
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+        - node.hostname==master-node
     

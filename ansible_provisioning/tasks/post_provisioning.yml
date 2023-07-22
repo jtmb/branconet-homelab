@@ -1,61 +1,21 @@
-- name: Remove Stale Docker Images
-  tags:
-    - wordpress
-  shell: |
-    yes | docker image prune -a
-    yes | apt --fix-broken install
-
-- name: Remove useless packages from the cache
-  apt:
-    autoclean: yes
-
-- name: Remove dependencies that are no longer required
-  apt:
-    autoremove: yes 
-
-- name: Update repositories cache and install packages
-  apt:
-    name: 
-      - net-tools
-      - lshw
-      - openssh-server
-      - fail2ban
-      - ufw
-      - git
-      - linux-modules-extra-raspi
-    update_cache: yes
-    
-# Docker Install (proper way)
-- name: Install required system packages for Docker
-  apt: name={{ item }} state=latest update_cache=yes
-  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
-
-- name: Add Docker GPG apt Key
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
-
-- name: Add Docker Repository
-  apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu bionic stable
-    state: present
-
-- name: Update apt and install docker-ce
-  apt: update_cache=yes name=docker-ce state=latest
-
-- name: Install Docker Module for Python
-  pip:
-    name: docker
-
-- name: Ensure group "docker" exists
-  ansible.builtin.group:
-    name: docker
-    state: present
-
-- name: adding "{{ssh_user}}" to docker group
-  user:
-    name: "{{ssh_user}}" 
-    groups: 
-      - docker
-      - www-data
-    append: yes
+#ADD DNS ENTRIES FOR PIHOLE
+- name: Clean DNS custom.list
+  shell: rm -f /home/ubuntu/container-program-files/pihole/custom.list && touch /home/ubuntu/container-program-files/pihole/custom.list
+- name: Add && enforce PiHole DNS Entries
+  lineinfile: 
+    dest: "/home/ubuntu/container-program-files/pihole/custom.list"
+    line: '{{ item }}'
+  with_items:
+    - '192.168.0.24 proxy.branconet.lan'
+    - '192.168.0.24 pi.branconet.lan'
+    - '192.168.0.24 vault.branconet.lan'
+    - '192.168.0.24 budscraper.branconet.lan' 
+    - '192.168.0.24 lucinda.branconet.lan' 
+    - '192.168.0.24 santos.branconet.lan' 
+    - '192.168.0.24 aplb.branconet.lan'
+    - '192.168.0.24 converter.branconet.lan'
+    - '192.168.0.25 true.nas.lan'
+    - '192.168.0.19 worker.node1'
+    - '192.168.0.24 swarm.master'
+- name: Restart DNS service
+  shell: docker service update pi_pihole

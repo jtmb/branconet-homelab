@@ -52,12 +52,12 @@
 
 - name: Scale media for 2 nodes
   shell:  |
-    docker service scale media_plex=2
-    docker service scale media_radarr=2
-    docker service scale media_overseerr=2
-    docker service scale media_jackett=2
-    docker service scale media_deluge=2
-    docker service scale media_sonarr=2
+    docker service scale media_plex=1
+    docker service scale media_radarr=1
+    docker service scale media_overseerr=1
+    docker service scale media_jackett=1
+    docker service scale media_deluge=1
+    docker service scale media_sonarr=1
 
 - name: Scale Web APPS Servers for 2 nodes
   shell:  |
@@ -81,7 +81,7 @@
     volumes:
       - '/home/ubuntu/container-program-files/vault_warden:/data/'
     env: 
-        SIGNUPS_ALLOWED: "true"
+        SIGNUPS_ALLOWED: "false"
   tags: vault
 
      

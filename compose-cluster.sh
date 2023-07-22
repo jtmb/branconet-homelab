@@ -10,7 +10,7 @@ worker_node_1=192.168.0.19
 # --------------------------------------------------------------------
 
 cd ansible_provisioning && ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inventory.ini main.yml \
-    --ask-become-pass --ask-pass --limit 'all' --skip-tags "none" --tags "all" \
+    --ask-become-pass --ask-pass --limit 'all' --skip-tags "jenkins" --tags "containers" \
     --extra-vars "ssh_port=2002 user_id=$userid \
     master_node=$master_node  \
     worker_node_1=$worker_node_1 \
