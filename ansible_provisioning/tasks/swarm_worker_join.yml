@@ -1,0 +1,27 @@
+- name: Docker Swarm Join
+  shell:  docker swarm join --token {{ hostvars['master_node'].CLUSTER_JOIN_KEY.stdout }} {{master_node}}:2377
+  ignore_errors: true
+  
+- name: Create share directory if it does not exist and set right permissios
+  ansible.builtin.file:
+    path: "/home/ubuntu/container-program-files/"
+    state: directory
+    mode: 0777
+    owner: nobody
+    group: nogroup 
+
+- name: Update repositories cache and install packages
+  become: true
+  become_user: root
+  apt:
+    name: 
+      - nfs-common
+    update_cache: yes
+  tags: 
+   - packages
+
+- name: Mount NTFS on clients
+  become: true
+  become_user: root
+  shell: |
+   mount {{master_node}}:/home/ubuntu/container-program-files /home/ubuntu/container-program-files

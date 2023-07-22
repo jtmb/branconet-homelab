@@ -1,0 +1,12 @@
+version: "1"
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: dockerfile
+    restart: always
+    ports: 
+      - "1337:8080"
+      - "50000:50000"
+    volumes:
+      - '/home/ubuntu/container-program-files/jenkins_home:/var/jenkins_home'

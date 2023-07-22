@@ -1,0 +1,46 @@
+- name: Docker Swarm Master
+  become: true
+  become_user: root
+  shell: docker swarm init
+  ignore_errors: true
+
+- name: Swarm Get Join Key
+  become: true
+  become_user: root
+  shell: docker swarm join-token manager --quiet
+  register: CLUSTER_JOIN_KEY
+
+- name: Update repositories cache and install packages
+  become: yes
+  become_user: root
+  apt:
+    name: 
+      - nfs-kernel-server
+      - nfs-common
+    update_cache: yes
+  tags: 
+   - packages
+
+- name: Create share directory if it does not exist and set right permissios
+  ansible.builtin.file:
+    path: "/home/ubuntu/container-program-files"
+    state: directory
+    mode: 0777
+    owner: nobody
+    group: nogroup 
+
+- name: Export Key for NTFS
+  become: true
+  become_user: root
+  shell: |
+    echo "/home/ubuntu/container-program-files/ *(no_root_squash,rw,sync,no_subtree_check)" >> /etc/exports
+    exportfs -a && sudo systemctl restart nfs-kernel-server
+  ignore_errors: true
+
+- name: Create an external container-swarm-network
+  become: true
+  become_user: root
+  docker_network:
+    name: container-swarm-network
+    scope: swarm
+    state: present

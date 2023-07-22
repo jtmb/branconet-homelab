@@ -1,0 +1,19 @@
+version: '3.1'
+services:
+  pihole:
+    image: pihole/pihole:latest
+    # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp" # Only required if you are using Pi-hole as your DHCP server
+      - "8079:80/tcp"
+    environment:
+      TZ: 'America/Chicago'
+      WEBPASSWORD: "${ADMIN_PASS}"
+      PGID: 1000
+      PUID: 1000
+    volumes:
+      - /home/ubuntu/container-program-files/pihole:/etc/pihole
+      - /home/ubuntu/container-program-files/dnsmasq.d:/etc/dnsmasq.d
+    restart: unless-stopped

@@ -1,0 +1,17 @@
+
+# ###########################################################################################################################################################
+# #                                                              !!!SET VARS HERE!!!                                                                      # #
+# #   Vars must be set in order for ansible deploy to work. If you are unsure about what these VARS do, search for them in the project and get familiar.  # #
+#############################################################################################################################################################
+
+
+# Linux Vars (mandatory)
+repo_name: "media-stack" 
+homedir: "/home/{{ssh_user}}"   # Sets home dir to your SSH user, don;t change this unless you know what you are doing.
+ssh_user: "james"   # SSH user name
+
+# Debug Vars
+deploy_containers: true   # leave true to deploy container workload, flase to skip container workload.
+deploy_packages: true
+deploy_ssh_key: true
+update_reboot: false

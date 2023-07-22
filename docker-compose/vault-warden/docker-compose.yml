@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  vaultwarden:
+    container_name: vaultwarden
+    image: vaultwarden/server:latest
+    restart: unless-stopped
+    environment:
+      SIGNUPS_ALLOWED: "true"
+      PUID: 1000 
+      PGID: 1000
+    volumes:
+      - /home/ubuntu/container-program-files/vault_warden/data:/data'
+    ports:
+      - 8096:80

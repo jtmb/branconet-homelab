@@ -1,0 +1,41 @@
+- name: Clone lucinda.branconet.com
+  tags:
+    - lucinda.branconet.com
+  ansible.builtin.git:
+    repo: https://github.com/jtmb/lucinda-art-gallery.git
+    dest: '/home/ubuntu/container-program-files/ws-lucinda'
+    version: master
+
+- name: Clone santos.branconet.com
+  tags:
+    - santos.branconet.com
+  ansible.builtin.git:
+    repo: https://github.com/jtmb/santosweb.git
+    dest: '/home/ubuntu/container-program-files/ws-santos'
+    version: master
+
+- name: Clone aplb.branconet.com
+  tags:
+    - aplb.branconet.com
+  ansible.builtin.git:
+    repo: https://github.com/chucky747/aplb.branconet.com.git
+    dest: '/home/ubuntu/container-program-files/ws-aplb'
+    version: master
+
+- name: Clone converter.branconet.com
+  tags:
+    - converter.branconet.com
+  ansible.builtin.git:
+    repo: https://github.com/jtmb/msg-converter.git
+    dest: '/tmp/msg-converter'
+    version: main
+    force: yes
+
+- name: Clone budscraper.io
+  tags:
+    - converter.branconet.com
+  ansible.builtin.git:
+    repo: https://github.com/jtmb/budscraper.io.git
+    dest: '/tmp/budscraper.io'
+    version: main
+    force: yes

@@ -1,0 +1,70 @@
+# Post-provisioning VM
+- name: "Provision Enviorment"
+  strategy: linear
+  hosts: all
+  become: true
+  vars_files: vars/vars.yml
+  tasks:
+  - name: Collect Server IP
+    debug:
+      msg: "{{ ansible_ssh_host }}"
+  - name: Install Required Packages
+    when: deploy_packages == true
+    include: tasks/post_provisioning.yml
+    tags: packages
+  - name: Setup SSH
+    include: tasks/ssh_setup.yml
+
+# Swarm setup
+- name: "Configure Swarm"
+  hosts: master_node
+  become_user: "root"
+  become: true
+  vars_files:
+    - vars/vars.yml
+  tasks:
+  - name: Install swarm
+    when: deploy_containers == true
+    include: tasks/swarm_master.yml
+    tags: swarm
+
+- name: "Join Swarm"
+  hosts: 
+    - worker_node_1
+    - worker_node_2
+  become_user: "root"
+  become: true
+  vars_files:
+    - vars/vars.yml
+  tasks:
+  - name: Install swarm
+    when: deploy_containers == true
+    include: tasks/swarm_worker_join.yml
+    tags: swarm
+
+- name: "Launch Swarm Containers"
+  hosts: master_node
+  become_user: "root"
+  become: true
+  vars_files:
+    - vars/vars.yml
+  tasks:
+  - name: Git Clone App Repos
+    when: deploy_containers == true
+    include: tasks/clone_app_repos.yml
+    tags: containers
+
+  - name: Install Containers
+    when: deploy_containers == true
+    include: tasks/containers.yml
+    tags: containers
+
+  - name: Jenkins Setup
+    when: deploy_containers == true
+    include: tasks/jenkins_master_setup.yml
+    tags: jenkins
+
+  - name: Complete Provisioning
+    when: deploy_containers == true
+    include: tasks/post_actions.yml
+    tags: post
