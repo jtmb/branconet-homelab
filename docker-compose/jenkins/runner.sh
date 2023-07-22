@@ -1,2 +1,0 @@
-sudo docker compose -p "jenkins-server" -f "docker-compose.yml" up -d --build
-docker compose --env-file "/home/james/repos/PRD-INFRA-thecroniccoop.ca/post-provisioning/docker-compose/jenkins/.env" -p "jenkins-server" -f "/home/james/repos/PRD-INFRA-thecroniccoop.ca/post-provisioning/docker-compose/jenkins/docker-compose.yml" up -d --build
