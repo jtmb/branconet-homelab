@@ -67,7 +67,7 @@
 
 # POST-provisioning VM
 - name: "Complete Provisioning"
-  hosts: all
+  hosts: master_node
   become_user: "root"
   become: true
   vars_files:
@@ -75,5 +75,5 @@
   tasks:
   - name: Post Provisioning Tasks
     when: deploy_containers == true
-    include: tasks/post_provisioning.yml
+    include: tasks/dns.yml
     tags: post

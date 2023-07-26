@@ -19,13 +19,19 @@
     - /home/ubuntu/container-program-files/overseerr/config
     - /home/ubuntu/container-program-files/PROXY-MANAGER/data
     - /home/ubuntu/container-program-files/PROXY-MANAGER/letsencrypt
-    - /home/ubuntu/container-program-files/budscraper.io/temp/o
-        
+    - /home/ubuntu/container-program-files/prometheus/prom_data
+    - /home/ubuntu/container-program-files/grafana/datasources
+    - /home/ubuntu/container-program-files/prometheus
  
 - name: Copy a compose" files from repo to the remote machine to authenticate git repos on host machine
   copy:
     src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose"
     dest: "/tmp"
+
+- name: Copy Grafana Configs
+  copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/grafana/datasource.yml dest=/home/ubuntu/container-program-files/grafana/datasources
+- name: Copy Prometheus Configs
+  copy: remote_src=False src=remote_src=True src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/prometheus/prometheus.yml dest=/home/ubuntu/container-program-files/prometheus
 
 - name: Docker compose UP Nginx ws Stack
   shell: |
@@ -42,6 +48,23 @@
 - name: Docker compose UP NGINX-PROXY-MANAGER
   shell: |
     docker stack deploy -c /tmp/docker-compose/proxy-manager/docker-compose.yml proxy
+
+- name: Docker compose UP Portainer Stack
+  shell: |
+    env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/portainer-stack/docker-compose.yml portainer
+
+- name: Docker compose UP Monitoring Stack
+  shell: |
+    env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/monitoring-stack/docker-compose.yml monitoring
+
+- name: Scale monitoring for 1 nodes
+  shell:  |
+    docker service scale monitoring_grafana=1
+    docker service scale monitoring_prometheus=1
+
+- name: Scale Portainer for 2 nodes
+  shell:  |
+    docker service scale portainer_portainer=1
 
 - name: Scale NGINX-MANAGER for 2 nodes
   shell:  |

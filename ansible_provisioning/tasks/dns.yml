@@ -1,7 +1,10 @@
 #ADD DNS ENTRIES FOR PIHOLE
 - name: Clean DNS custom.list
+  tags: dns
+  delegate_to: master_node
   shell: rm -f /home/ubuntu/container-program-files/pihole/custom.list && touch /home/ubuntu/container-program-files/pihole/custom.list
 - name: Add && enforce PiHole DNS Entries
+  tags: dns
   lineinfile: 
     dest: "/home/ubuntu/container-program-files/pihole/custom.list"
     line: '{{ item }}'
@@ -17,5 +20,21 @@
     - '192.168.0.25 true.nas.lan'
     - '192.168.0.19 worker.node1'
     - '192.168.0.24 swarm.master'
+    - '192.168.0.24 grafana.branconet.lan'
+    - '192.168.0.24 portainer.branconet.lan'
+    - '192.168.0.24 plex.tv.lan'
 - name: Restart DNS service
+  tags: dns
   shell: docker service update pi_pihole
+
+- name: Ensure Host Controllers are not using pihole DNS #(DNS CONTROLLERS SHOULD NEVER POINT DNS TO ITSELF LOL)
+  tags: dns
+  lineinfile: 
+    dest: "/etc/resolvconf/resolv.conf.d/head"
+    line: '{{ item }}'
+  with_items:
+    - 'nameserver 8.8.8.8'
+    - 'nameserver 1.1.1.1'
+- name: Apply DNS service
+  tags: dns
+  shell: systemctl enable --now resolvconf.service
