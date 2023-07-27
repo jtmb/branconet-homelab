@@ -22,6 +22,8 @@
     - /home/ubuntu/container-program-files/prometheus/prom_data
     - /home/ubuntu/container-program-files/grafana/datasources
     - /home/ubuntu/container-program-files/prometheus
+    - /home/ubuntu/container-program-files/vault_warden/swarm
+    - /home/ubuntu/container-program-files/vault_warden/mariadb
  
 - name: Copy a compose" files from repo to the remote machine to authenticate git repos on host machine
   copy:
@@ -33,47 +35,56 @@
 - name: Copy Prometheus Configs
   copy: remote_src=False src=remote_src=True src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/prometheus/prometheus.yml dest=/home/ubuntu/container-program-files/prometheus
 
-- name: Docker compose UP Nginx ws Stack
+- name: DEPLOY STACK Nginx ws Stack
   shell: |
     env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws
 
-- name: Docker compose UP pihole
+- name: DEPLOY STACK pihole
   shell: |
     env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/pi/docker-compose.yml pi
 
-- name: Docker compose UP media-stack
+- name: DEPLOY STACK media-stack
   shell: |
     docker stack deploy -c /tmp/docker-compose/media-stack/docker-compose.yml media
 
-- name: Docker compose UP NGINX-PROXY-MANAGER
+- name: DEPLOY STACK NGINX-PROXY-MANAGER
   shell: |
     docker stack deploy -c /tmp/docker-compose/proxy-manager/docker-compose.yml proxy
 
-- name: Docker compose UP Portainer Stack
+- name: DEPLOY STACK Portainer Stack
   shell: |
     env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/portainer-stack/docker-compose.yml portainer
 
-- name: Docker compose UP Monitoring Stack
+- name: DEPLOY STACK Monitoring Stack
   shell: |
     env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/monitoring-stack/docker-compose.yml monitoring
 
-- name: Scale monitoring for 1 nodes
+- name: DEPLOY STACK Vault Warden Stack
+  shell: |
+    env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault
+
+- name: Scale vault warden
+  shell:  |
+    docker service scale vault_mariadb=1
+    docker service scale vault_vaultwarden=2
+
+- name: Scale monitoring
   shell:  |
     docker service scale monitoring_grafana=1
     docker service scale monitoring_prometheus=1
 
-- name: Scale Portainer for 2 nodes
+- name: Scale Portainer
   shell:  |
     docker service scale portainer_portainer=1
 
-- name: Scale NGINX-MANAGER for 2 nodes
+- name: Scale NGINX-MANAGER
   shell:  |
     docker service scale proxy_nginx-proxy-manager=2
 
-- name: Scale pihole for 2 nodes
+- name: Scale pihole
   shell:  docker service scale pi_pihole=2
 
-- name: Scale media for 2 nodes
+- name: Scale media
   shell:  |
     docker service scale media_plex=1
     docker service scale media_radarr=1
@@ -82,29 +93,8 @@
     docker service scale media_deluge=1
     docker service scale media_sonarr=1
 
-- name: Scale Web APPS Servers for 2 nodes
+- name: Scale Web APPS Servers
   shell:  |
     docker service scale ws_lucinda=2
     docker service scale ws_santos=2
     docker service scale ws_aplb=2
-
-# Non Swarm Services
-
-- name: Vault Warden Server
-  delegate_to: worker_node_1
-  docker_container:
-    name: "vaultwarden"
-    image: "vaultwarden/server:latest"
-    pull: yes
-    state: started
-    restart: yes
-    restart_policy: unless-stopped
-    ports: 
-      - "8096:80"
-    volumes:
-      - '/home/ubuntu/container-program-files/vault_warden:/data/'
-    env: 
-        SIGNUPS_ALLOWED: "false"
-  tags: vault
-
-     

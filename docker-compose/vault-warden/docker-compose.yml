@@ -2,14 +2,37 @@ version: '3'
 
 services:
   vaultwarden:
-    container_name: vaultwarden
     image: vaultwarden/server:latest
-    restart: unless-stopped
+    restart: always
     environment:
       SIGNUPS_ALLOWED: "true"
       PUID: 1000 
-      PGID: 1000
+      PGID: 1000docker 
+      DATABASE_URL: mysql://bitwarden:${ADMIN_PASS}@mariadb:/bitwarden
     volumes:
-      - /home/ubuntu/container-program-files/vault_warden/data:/data'
+      - /home/ubuntu/container-program-files/vault_warden/swarm:/data
     ports:
       - 8096:80
+    deploy:
+      replicas: 2
+      placement:
+        max_replicas_per_node: 2
+        # constraints:
+        # - node.role==worker
+  mariadb:
+    image: yobasystems/alpine-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: "${ADMIN_PASS}"
+      MYSQL_DATABASE: bitwarden
+      MYSQL_USER: bitwarden
+      MYSQL_PASSWORD: "${ADMIN_PASS}"
+    expose:
+      - "3306"
+    volumes: 
+      - /home/ubuntu/container-program-files/vault_warden/mariadb:/var/lib/mysql
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+        - node.role==worker

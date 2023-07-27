@@ -53,7 +53,7 @@
   - name: Git Clone App Repos
     when: deploy_containers == true
     include: tasks/clone_app_repos.yml
-    tags: containers
+    tags: clone_repos
 
   - name: Install Containers
     when: deploy_containers == true
