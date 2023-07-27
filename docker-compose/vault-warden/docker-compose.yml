@@ -7,7 +7,7 @@ services:
     environment:
       SIGNUPS_ALLOWED: "true"
       PUID: 1000 
-      PGID: 1000docker 
+      PGID: 1000
       DATABASE_URL: mysql://bitwarden:${ADMIN_PASS}@mariadb:/bitwarden
     volumes:
       - /home/ubuntu/container-program-files/vault_warden/swarm:/data
