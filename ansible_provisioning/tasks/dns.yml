@@ -18,11 +18,17 @@
     - '192.168.0.24 aplb.branconet.lan'
     - '192.168.0.24 converter.branconet.lan'
     - '192.168.0.25 true.nas.lan'
-    - '192.168.0.19 worker.node1'
+    - '192.168.0.19 worker.node2'
+    - '192.168.0.16 worker.node1'
     - '192.168.0.24 swarm.master'
     - '192.168.0.24 grafana.branconet.lan'
     - '192.168.0.24 portainer.branconet.lan'
     - '192.168.0.24 plex.tv.lan'
+    - '192.168.0.24 monitoring.branconet.lan'
+    - '192.168.0.24 portainer.branconet.lan'
+    - '192.168.0.24 deluge.branconet.lan'/
+    - '192.168.0.24 jenkins.branconet.lan'
+    - '192.168.0.24 vpn.branconet.lan'
 - name: Restart DNS service
   tags: dns
   shell: docker service update pi_pihole
