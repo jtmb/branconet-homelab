@@ -14,6 +14,6 @@ services:
       - /home/ubuntu/container-program-files/PROXY-MANAGER/letsencrypt:/etc/letsencrypt
     deploy:
       mode: replicated
-      replicas: 2
-      # placement:
-      #   constraints: [node.hostname == master-node]
+      replicas: 1
+      placement:
+        constraints: [node.hostname == master-node]

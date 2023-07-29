@@ -24,7 +24,7 @@
     - /home/ubuntu/container-program-files/prometheus
     - /home/ubuntu/container-program-files/vault_warden/swarm
     - /home/ubuntu/container-program-files/vault_warden/mariadb
- 
+    - /home/ubuntu/container-program-files/wireguard/
 - name: Copy a compose" files from repo to the remote machine to authenticate git repos on host machine
   copy:
     src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose"
@@ -63,6 +63,14 @@
   shell: |
     env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault
 
+- name: DEPLOY STACK VPN Wireguard
+  shell: |
+    env PUB_IP={{PUB_IP}} docker stack deploy -c /tmp/docker-compose/wire-guard/docker-compose.yml vpn
+
+- name: Scale wireguard
+  shell:  |
+    docker service scale vpn_wg-easy=3
+
 - name: Scale vault warden
   shell:  |
     docker service scale vault_mariadb=1
@@ -79,10 +87,10 @@
 
 - name: Scale NGINX-MANAGER
   shell:  |
-    docker service scale proxy_nginx-proxy-manager=2
+    docker service scale proxy_nginx-proxy-manager=1
 
 - name: Scale pihole
-  shell:  docker service scale pi_pihole=2
+  shell:  docker service scale pi_pihole=3
 
 - name: Scale media
   shell:  |
