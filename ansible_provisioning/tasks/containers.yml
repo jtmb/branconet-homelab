@@ -63,14 +63,6 @@
   shell: |
     env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault
 
-- name: DEPLOY STACK VPN Wireguard
-  shell: |
-    env PUB_IP={{PUB_IP}} docker stack deploy -c /tmp/docker-compose/wire-guard/docker-compose.yml vpn
-
-- name: Scale wireguard
-  shell:  |
-    docker service scale vpn_wg-easy=3
-
 - name: Scale vault warden
   shell:  |
     docker service scale vault_mariadb=1
