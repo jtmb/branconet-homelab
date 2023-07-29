@@ -1,0 +1,47 @@
+- name: Enable UFW and deny all by default
+  ufw:
+    state: enabled
+    policy: allow
+
+- name: Set logging
+  ufw:
+    logging: 'on'
+
+- ufw:
+    rule: allow
+    name: OpenSSH
+
+# swarm ports
+
+- name: Open NGINX ports
+  ufw:
+    rule: allow
+    port: '{{ item }}'
+    proto: tcp
+  with_items:
+    - '80' 
+    - '443'
+    
+- name: Allow port range 8079-8090 (App Range)
+  ufw:
+    rule: allow
+    port: 8079:8090
+    proto: tcp
+
+- name: Open Swarm Ports TCP
+  ufw:
+    rule: allow
+    port: '{{ item }}'
+    proto: tcp
+  with_items:
+    - '2377'
+    - '7946'
+
+- name: Open Swarm Ports UDP
+  ufw:
+    rule: allow
+    port: '{{ item }}'
+    proto: tcp
+  with_items:
+    - '4789' 
+    - '7946'

@@ -24,6 +24,12 @@
     path: "/etc/ssh/sshd_config"
     regexp: '#PasswordAuthentication yes'
     replace: "PasswordAuthentication no"
+    
+- name: Regex replace ChallengeResponseAuthentication
+  replace:
+    path: "/etc/ssh/sshd_config"
+    regexp: 'ChallengeResponseAuthentication yes'
+    replace: "ChallengeResponseAuthentication no"
 
 - name: "Restart SSH Service"
   shell: "systemctl restart sshd"

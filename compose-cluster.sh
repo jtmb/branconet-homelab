@@ -6,11 +6,12 @@ admin_pub_ip=$(echo ['"'$public_ip/32'"'])
 echo "userid=$userid" > docker-compose/jenkins/.env
 # ----------Instance IP's
 master_node=192.168.0.24
-worker_node_1=192.168.0.19
+worker_node_1=192.168.0.16
+worker_node_2=192.168.0.19
 # --------------------------------------------------------------------
 
 cd ansible_provisioning && ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inventory.ini main.yml \
-    --ask-become-pass --ask-pass --limit 'all' --skip-tags "jenkins" --tags "containers" \
+    --ask-become-pass --ask-pass --limit 'all' --skip-tags "jenkins" --tags "all" \
     --extra-vars "ssh_port=2002 user_id=$userid \
     master_node=$master_node  \
     worker_node_1=$worker_node_1 \

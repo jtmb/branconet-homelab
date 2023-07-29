@@ -15,5 +15,5 @@ services:
     deploy:
       mode: replicated
       replicas: 2
-      placement:
-        constraints: [node.hostname == master-node]
+      # placement:
+      #   constraints: [node.hostname == master-node]

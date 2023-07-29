@@ -124,3 +124,15 @@
     name: "Swarm job for reboot (rejoin cluster)"
     special_time: reboot
     job: "bash /home/ubuntu/cron/startup_job.sh"
+
+- name: Ensure Host Controllers are not using pihole DNS #(DNS CONTROLLERS SHOULD NEVER POINT DNS TO ITSELF LOL)
+  tags: dns
+  lineinfile: 
+    dest: "/etc/resolvconf/resolv.conf.d/head"
+    line: '{{ item }}'
+  with_items:
+    - 'nameserver 8.8.8.8'
+    - 'nameserver 1.1.1.1'
+- name: Apply DNS service
+  tags: dns
+  shell: systemctl enable --now resolvconf.service
