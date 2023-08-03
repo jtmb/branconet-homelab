@@ -75,55 +75,54 @@
     path: "/home/ubuntu/container-program-files/plex_smb_share"
     state: directory
     mode: '0755'
-    owner: root
-    group: root
-- name: Mount network share 
-  delegate_to: master_node
-  tags: smb
+    owner: nobody
+    group: nogroup
+- name: Mount network share with 33 UID and GID permissions (www-data) 
+  tags: smbdd
   ansible.posix.mount:
     src: "//192.168.0.25/plex_smb_share"
     path: "/home/ubuntu/container-program-files/plex_smb_share"
     fstype: cifs
-    opts: 'username={{ user_id }},password={{ ansible_ssh_pass }}'
+    opts: 'username={{ user_id }},password={{ ansible_ssh_pass }},uid=33,gid=33,forceuid,forcegid'
     state: mounted
 
 
 # Rejoin Cluser cron on restart
-- name: Create startup folder
-  ansible.builtin.file:
-    path: "/home/ubuntu/cron"
-    state: directory
-- name: Create startup file
-  ansible.builtin.file:
-    path: "/home/ubuntu/cron/startup_job.sh"
-    state: touch
-    mode: u+rw,g-wx,o-rwx
-- name: Make Script Executable
-  file: dest=/home/ubuntu/cron/startup_job.sh mode=a+x
+# - name: Create startup folder
+#   ansible.builtin.file:
+#     path: "/home/ubuntu/cron"
+#     state: directory
+# - name: Create startup file
+#   ansible.builtin.file:
+#     path: "/home/ubuntu/cron/startup_job.sh"
+#     state: touch
+#     mode: u+rw,g-wx,o-rwx
+# - name: Make Script Executable
+#   file: dest=/home/ubuntu/cron/startup_job.sh mode=a+x
 
-- name: Write Cron Job for master nodes
-  delegate_to: master_node
-  lineinfile: 
-    dest: "/home/ubuntu/cron/startup_job.sh"
-    line: '{{ item }}'
-  with_items:
-    - 'docker swarm init --force-new-cluster'
+# - name: Write Cron Job for master nodes
+#   delegate_to: master_node
+#   lineinfile: 
+#     dest: "/home/ubuntu/cron/startup_job.sh"
+#     line: '{{ item }}'
+#   with_items:
+#     - 'docker swarm init --force-new-cluster'
 
-- name: Write Cron Job for worker nodes
-  delegate_to: worker_node_1
-  lineinfile: 
-    dest: "/home/ubuntu/cron/startup_job.sh"
-    line: '{{ item }}'
-  with_items:
-    - 'sudo systemctl restart docker'
-    - 'sudo mount {{master_node}}:/home/ubuntu/container-program-files /home/ubuntu/container-program-files'
-    - 'docker ps'
+# - name: Write Cron Job for worker nodes
+#   delegate_to: worker_node_1
+#   lineinfile: 
+#     dest: "/home/ubuntu/cron/startup_job.sh"
+#     line: '{{ item }}'
+#   with_items:
+#     - 'sudo systemctl restart docker'
+#     - 'sudo mount {{master_node}}:/home/ubuntu/container-program-files /home/ubuntu/container-program-files'
+#     - 'docker ps'
 
-- name: Create Swarm Crontab entry
-  ansible.builtin.cron:
-    name: "Swarm job for reboot (rejoin cluster)"
-    special_time: reboot
-    job: "bash /home/ubuntu/cron/startup_job.sh"
+# - name: Create Swarm Crontab entry
+#   ansible.builtin.cron:
+#     name: "Swarm job for reboot (rejoin cluster)"
+#     special_time: reboot
+#     job: "bash /home/ubuntu/cron/startup_job.sh"
 
 - name: Ensure Host Controllers are not using pihole DNS #(DNS CONTROLLERS SHOULD NEVER POINT DNS TO ITSELF LOL)
   tags: dns
@@ -131,6 +130,7 @@
     dest: "/etc/resolvconf/resolv.conf.d/head"
     line: '{{ item }}'
   with_items:
+    - 'nameserver 192.168.0.1'
     - 'nameserver 8.8.8.8'
     - 'nameserver 1.1.1.1'
 - name: Apply DNS service
