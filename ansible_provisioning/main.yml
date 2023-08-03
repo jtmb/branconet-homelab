@@ -6,9 +6,13 @@
   vars_files: 
    - vars/vars.yml
   tasks:
+
   - name: Collect Server IP
     debug:
       msg: "{{ ansible_ssh_host }}"
+  - name: Collect Server ARCH
+    debug: 
+       msg: '{{ansible_architecture}}'
   - name: Install Required Packages
     when: deploy_packages == true
     include: tasks/pre_provisioning.yml

@@ -1,0 +1,36 @@
+# Rejoin Cluser cron on restart
+# - name: Create startup folder
+#   ansible.builtin.file:
+#     path: "/home/ubuntu/cron"
+#     state: directory
+# - name: Create startup file
+#   ansible.builtin.file:
+#     path: "/home/ubuntu/cron/startup_job.sh"
+#     state: touch
+#     mode: u+rw,g-wx,o-rwx
+# - name: Make Script Executable
+#   file: dest=/home/ubuntu/cron/startup_job.sh mode=a+x
+
+# - name: Write Cron Job for master nodes
+#   delegate_to: master_node
+#   lineinfile: 
+#     dest: "/home/ubuntu/cron/startup_job.sh"
+#     line: '{{ item }}'
+#   with_items:
+#     - 'docker swarm init --force-new-cluster'
+
+# - name: Write Cron Job for worker nodes
+#   delegate_to: worker_node_1
+#   lineinfile: 
+#     dest: "/home/ubuntu/cron/startup_job.sh"
+#     line: '{{ item }}'
+#   with_items:
+#     - 'sudo systemctl restart docker'
+#     - 'sudo mount {{master_node}}:/home/ubuntu/container-program-files /home/ubuntu/container-program-files'
+#     - 'docker ps'
+
+# - name: Create Swarm Crontab entry
+#   ansible.builtin.cron:
+#     name: "Swarm job for reboot (rejoin cluster)"
+#     special_time: reboot
+#     job: "bash /home/ubuntu/cron/startup_job.sh"

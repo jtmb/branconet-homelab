@@ -21,17 +21,14 @@
     msg: "{{ansible_ssh_pass}}"
   register: ADMIN_PASS
   no_log: true
-  tags: this
 
 - name: DEPLOY CONTAINERS STACK 
-  tags: this
   vars:
     env_file: env ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}}
   shell: "{{ item }}"
   with_items: "{{ stack_deploy }}"
   loop_control:
-    label: "{{ item | regex_replace('^.*docker stack deploy', 'docker stack deploy') }}" #replaces env secrets from being shown in ouput
-  no_log: false
+    label: "{{ item | regex_replace('^.*docker stack deploy', 'docker stack deploy') }}" #replaces env secrets from being shown in console output
 
 - name: SCALE SWARM CONTAINERS
   tags: 
