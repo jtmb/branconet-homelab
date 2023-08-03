@@ -2,18 +2,23 @@ version: '3.1'
 services:
   pihole:
     image: pihole/pihole:latest
-    # For DHCP it is recommended to remove these ports and instead add: network_mode: "host"
     ports:
       - "53:53/tcp"
       - "53:53/udp"
-      - "67:67/udp" # Only required if you are using Pi-hole as your DHCP server
       - "8079:80/tcp"
     environment:
       TZ: 'America/Chicago'
       WEBPASSWORD: "${ADMIN_PASS}"
+      PIHOLE_DNS_: "9.9.9.9;1.1.1.1"
+      DNSMASQ_LISTENING: "all" #if using swarm this env variable will allow DNS to work over overlay and bridge networks.
       PGID: 1000
       PUID: 1000
+    networks:
+      - container-swarm-network
     volumes:
       - /home/ubuntu/container-program-files/pihole:/etc/pihole
       - /home/ubuntu/container-program-files/dnsmasq.d:/etc/dnsmasq.d
     restart: unless-stopped
+networks:
+ container-swarm-network:
+    external: true

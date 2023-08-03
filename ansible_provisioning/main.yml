@@ -3,7 +3,8 @@
   strategy: linear
   hosts: all
   become: true
-  vars_files: vars/vars.yml
+  vars_files: 
+   - vars/vars.yml
   tasks:
   - name: Collect Server IP
     debug:
@@ -53,6 +54,7 @@
   become: true
   vars_files:
     - vars/vars.yml
+    - vars/lists.yml
   tasks:
   - name: Git Clone App Repos
     when: deploy_containers == true

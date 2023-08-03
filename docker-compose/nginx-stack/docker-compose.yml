@@ -2,6 +2,8 @@ version: '3.8'
 services:
   lucinda:
     image: 'nginx'
+    networks:
+      - container-swarm-network
     restart: unless-stopped
     ports:
       - '8080:80'
@@ -12,6 +14,8 @@ services:
 
   santos:
     image: 'nginx'
+    networks:
+      - container-swarm-network
     restart: unless-stopped
     ports:
       - '8081:80'
@@ -22,6 +26,8 @@ services:
 
   aplb:
     image: 'nginx'
+    networks:
+      - container-swarm-network
     restart: unless-stopped
     ports:
       - '8082:80'
@@ -29,3 +35,6 @@ services:
       DISABLE_IPV6: 'true'
     volumes:
       - /home/ubuntu/container-program-files/ws-aplb:/usr/share/nginx/html
+networks:
+ container-swarm-network:
+    external: true

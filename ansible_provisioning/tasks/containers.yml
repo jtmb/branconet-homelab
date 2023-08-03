@@ -5,96 +5,36 @@
     owner: nobody
     group: nogroup
     mode: 0755
-  loop:
-    - /home/ubuntu/container-program-files/plex/config
-    - /home/ubuntu/container-program-files/plex/tvseries
-    - /home/ubuntu/container-program-files/plex/movies
-    - /home/ubuntu/container-program-files/deluge/config
-    - /home/ubuntu/container-program-files/deluge/downloads
-    - /home/ubuntu/container-program-files/jackett
-    - /home/ubuntu/container-program-files/sonarr/config
-    - /home/ubuntu/container-program-files/radarr
-    - /home/ubuntu/container-program-files/pihole
-    - /home/ubuntu/container-program-files/dnsmasq.d
-    - /home/ubuntu/container-program-files/overseerr/config
-    - /home/ubuntu/container-program-files/PROXY-MANAGER/data
-    - /home/ubuntu/container-program-files/PROXY-MANAGER/letsencrypt
-    - /home/ubuntu/container-program-files/prometheus/prom_data
-    - /home/ubuntu/container-program-files/grafana/datasources
-    - /home/ubuntu/container-program-files/prometheus
-    - /home/ubuntu/container-program-files/vault_warden/swarm
-    - /home/ubuntu/container-program-files/vault_warden/mariadb
-    - /home/ubuntu/container-program-files/wireguard/
+  with_items: "{{ container_paths }}"
+
 - name: Copy a compose" files from repo to the remote machine to authenticate git repos on host machine
   copy:
     src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose"
     dest: "/tmp"
-
 - name: Copy Grafana Configs
   copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/grafana/datasource.yml dest=/home/ubuntu/container-program-files/grafana/datasources
 - name: Copy Prometheus Configs
   copy: remote_src=False src=remote_src=True src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/prometheus/prometheus.yml dest=/home/ubuntu/container-program-files/prometheus
 
-- name: DEPLOY STACK Nginx ws Stack
-  shell: |
-    env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws
+- name: SET ADMIN PASS
+  ansible.builtin.debug:
+    msg: "{{ansible_ssh_pass}}"
+  register: ADMIN_PASS
+  no_log: true
+  tags: this
 
-- name: DEPLOY STACK pihole
-  shell: |
-    env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/pi/docker-compose.yml pi
+- name: DEPLOY CONTAINERS STACK 
+  tags: this
+  vars:
+    env_file: env ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}}
+  shell: "{{ item }}"
+  with_items: "{{ stack_deploy }}"
+  loop_control:
+    label: "{{ item | regex_replace('^.*docker stack deploy', 'docker stack deploy') }}" #replaces env secrets from being shown in ouput
+  no_log: false
 
-- name: DEPLOY STACK media-stack
-  shell: |
-    docker stack deploy -c /tmp/docker-compose/media-stack/docker-compose.yml media
-
-- name: DEPLOY STACK NGINX-PROXY-MANAGER
-  shell: |
-    docker stack deploy -c /tmp/docker-compose/proxy-manager/docker-compose.yml proxy
-
-- name: DEPLOY STACK Portainer Stack
-  shell: |
-    env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/portainer-stack/docker-compose.yml portainer
-
-- name: DEPLOY STACK Monitoring Stack
-  shell: |
-    env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/monitoring-stack/docker-compose.yml monitoring
-
-- name: DEPLOY STACK Vault Warden Stack
-  shell: |
-    env ADMIN_PASS={{ansible_ssh_pass}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault
-
-- name: Scale vault warden
-  shell:  |
-    docker service scale vault_mariadb=1
-    docker service scale vault_vaultwarden=2
-
-- name: Scale monitoring
-  shell:  |
-    docker service scale monitoring_grafana=1
-    docker service scale monitoring_prometheus=1
-
-- name: Scale Portainer
-  shell:  |
-    docker service scale portainer_portainer=1
-
-- name: Scale NGINX-MANAGER
-  shell:  |
-    docker service scale proxy_nginx-proxy-manager=1
-
-- name: Scale pihole
-  shell:  docker service scale pi_pihole=3
-
-- name: Scale media
-  shell:  |
-    docker service scale media_plex=1
-    docker service scale media_radarr=1
-    docker service scale media_overseerr=1
-    docker service scale media_jackett=1
-    docker service scale media_deluge=1
-    docker service scale media_sonarr=1
-
-- name: Scale Web APPS Servers
-  shell:  |
-    docker service scale ws_lucinda=2
-    docker service scale ws_santos=2
-    docker service scale ws_aplb=2
+- name: SCALE SWARM CONTAINERS
+  tags: 
+    - smb
+  shell: "{{ item }}"
+  with_items: "{{ swarm_scale }}"

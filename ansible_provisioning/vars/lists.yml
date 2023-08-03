@@ -1,0 +1,56 @@
+# Swarm Container paths
+
+container_paths:
+    - /home/ubuntu/container-program-files/plex/config
+    - /home/ubuntu/container-program-files/plex/tvseries
+    - /home/ubuntu/container-program-files/plex/movies
+    - /home/ubuntu/container-program-files/deluge/config
+    - /home/ubuntu/container-program-files/deluge/downloads
+    - /home/ubuntu/container-program-files/jackett
+    - /home/ubuntu/container-program-files/sonarr/config
+    - /home/ubuntu/container-program-files/radarr
+    - /home/ubuntu/container-program-files/pihole
+    - /home/ubuntu/container-program-files/dnsmasq.d
+    - /home/ubuntu/container-program-files/overseerr/config
+    - /home/ubuntu/container-program-files/PROXY-MANAGER/data
+    - /home/ubuntu/container-program-files/PROXY-MANAGER/letsencrypt
+    - /home/ubuntu/container-program-files/prometheus/prom_data
+    - /home/ubuntu/container-program-files/grafana/datasources
+    - /home/ubuntu/container-program-files/prometheus
+    - /home/ubuntu/container-program-files/vault_warden/swarm
+    - /home/ubuntu/container-program-files/vault_warden/mariadb
+    - /home/ubuntu/container-program-files/wireguard/
+    - /home/ubuntu/container-program-files/next_cloud/data
+    - /home/ubuntu/container-program-files/next_cloud/mariadb
+    - /home/ubuntu/container-program-files/portainer
+
+stack_deploy:
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/pi/docker-compose.yml pi"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/media-stack/docker-compose.yml media"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/proxy-manager/docker-compose.yml proxy"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/portainer-stack/docker-compose.yml portainer"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/monitoring-stack/docker-compose.yml monitoring"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
+
+swarm_scale:
+    - docker service scale nextcloud_db=1
+    - docker service scale nextcloud_nextapp=1
+    - docker service scale vault_mariadb=1
+    - docker service scale vault_vaultwarden=2
+    - docker service scale monitoring_grafana=1
+    - docker service scale monitoring_prometheus=1
+    - docker service scale portainer_portainer=1
+    - docker service scale proxy_nginx-proxy-manager=1
+    - docker service scale media_plex=1
+    - docker service scale media_radarr=1
+    - docker service scale media_overseerr=1
+    - docker service scale media_jackett=1
+    - docker service scale media_deluge=1
+    - docker service scale media_sonarr=1
+    - docker service scale ws_lucinda=2
+    - docker service scale ws_santos=2
+    - docker service scale ws_aplb=2
+    - docker service scale pi_pihole=2
+

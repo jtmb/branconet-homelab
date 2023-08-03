@@ -6,6 +6,8 @@ services:
       - '--config.file=/etc/prometheus/prometheus.yml'
     ports:
       - 9090:9090
+    networks:
+      - container-swarm-network
     restart: unless-stopped
     volumes:
       - /home/ubuntu/container-program-files/prometheus:/etc/prometheus
@@ -16,6 +18,8 @@ services:
     ports:
       - 3000:3000
     restart: unless-stopped
+    networks:
+      - container-swarm-network
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: ${ADMIN_PASS}
@@ -29,3 +33,6 @@ services:
     #     - node.hostname==raspberrypi
 volumes:
   prom_data:
+networks:
+ container-swarm-network:
+    external: true
