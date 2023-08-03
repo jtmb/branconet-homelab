@@ -7,6 +7,11 @@
       path: "{{homedir}}/.ssh"
       state: directory
 
+- name: Add authorized_keys
+  lineinfile: 
+    dest: ".ssh/authorized_keys"
+    line: '{{pub_key}}'
+
 - name: Regex replace ssh port
   replace:
     path: "/etc/ssh/sshd_config"
@@ -24,18 +29,17 @@
     path: "/etc/ssh/sshd_config"
     regexp: '#PasswordAuthentication yes'
     replace: "PasswordAuthentication no"
+
+- name: Add ChallengeResponseAuthentication to config
+  lineinfile: 
+    dest: "/etc/ssh/sshd_config"
+    line: 'ChallengeResponseAuthentication no'
     
-- name: Regex replace ChallengeResponseAuthentication
+- name: Regex replace dissable SSH default and only use sshd (Ubuntu 22.04 +)
   replace:
     path: "/etc/ssh/sshd_config"
-    regexp: 'ChallengeResponseAuthentication yes'
-    replace: "ChallengeResponseAuthentication no"
+    regexp: 'Include /etc/ssh/sshd_config.d/*.conf'
+    replace: "#Include /etc/ssh/sshd_config.d/*.conf"
 
 - name: "Restart SSH Service"
   shell: "systemctl restart sshd"
-
-- name: "Remove and dissable GUI in Ubuntu"
-  shell: "apt-get purge ubuntu-desktop -y && \
-            systemctl set-default multi-user"
-  ignore_errors: true
-  no_log: true
