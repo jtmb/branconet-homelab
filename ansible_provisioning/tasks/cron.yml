@@ -1,36 +1,49 @@
-# Rejoin Cluser cron on restart
-# - name: Create startup folder
-#   ansible.builtin.file:
-#     path: "/home/ubuntu/cron"
-#     state: directory
-# - name: Create startup file
-#   ansible.builtin.file:
-#     path: "/home/ubuntu/cron/startup_job.sh"
-#     state: touch
-#     mode: u+rw,g-wx,o-rwx
-# - name: Make Script Executable
-#   file: dest=/home/ubuntu/cron/startup_job.sh mode=a+x
+- name: Create startup folder
+  ansible.builtin.file:
+    path: "{{container_volumes_location}}/cron"
+    state: directory
+- name: Create startup file
+  ansible.builtin.file:
+    path: "{{container_volumes_location}}/cron/startup_job.sh"
+    state: touch
+    mode: u+rw,g-wx,o-rwx
+- name: Make Script Executable
+  file: dest={{container_volumes_location}}/cron/startup_job.sh mode=a+x
 
-# - name: Write Cron Job for master nodes
-#   delegate_to: master_node
-#   lineinfile: 
-#     dest: "/home/ubuntu/cron/startup_job.sh"
-#     line: '{{ item }}'
-#   with_items:
-#     - 'docker swarm init --force-new-cluster'
+- name: Write Cron Job docker cleanup
+  lineinfile: 
+    dest: "{{container_volumes_location}}/cron/startup_job.sh"
+    line: '{{ item }}'
+  with_items:
+    - 'docker system prune --all'
 
-# - name: Write Cron Job for worker nodes
-#   delegate_to: worker_node_1
-#   lineinfile: 
-#     dest: "/home/ubuntu/cron/startup_job.sh"
-#     line: '{{ item }}'
-#   with_items:
-#     - 'sudo systemctl restart docker'
-#     - 'sudo mount {{master_node}}:/home/ubuntu/container-program-files /home/ubuntu/container-program-files'
-#     - 'docker ps'
+- name: Write Cron Job for PI to re-join cluster after reboot
+  when: ansible_architecture == "armv7l"
+  lineinfile: 
+    dest: "{{container_volumes_location}}/cron/startup_job.sh"
+    line: '{{ item }}'
+  with_items:
+    - 'sudo systemctl restart docker'
+    - 'sudo mount {{master_node}}:{{container_volumes_location}} {{container_volumes_location}}'
+    - 'docker ps'
 
-# - name: Create Swarm Crontab entry
-#   ansible.builtin.cron:
-#     name: "Swarm job for reboot (rejoin cluster)"
-#     special_time: reboot
-#     job: "bash /home/ubuntu/cron/startup_job.sh"
+- name: Write Cron Job for Weekly docker cleanup
+  when: ansible_architecture == "armv7l"
+  lineinfile: 
+    dest: "{{container_volumes_location}}/cron/startup_job.sh"
+    line: '{{ item }}'
+  with_items:
+    - 'sudo system prume --all'
+
+- name: Create Swarm Crontab entry for PI startup
+  when: ansible_architecture == "armv7l"
+  ansible.builtin.cron:
+    name: "Swarm job for reboot (rejoin cluster)"
+    special_time: reboot
+    job: "bash {{container_volumes_location}}/cron/startup_job.sh"
+
+- name: Create Swarm Crontab entry for Weekly jobs
+  ansible.builtin.cron:
+    name: "Swarm job for docker image/volume cleanup"
+    special_time: weekly
+    job: "bash {{container_volumes_location}}/cron/weekly_job.sh"

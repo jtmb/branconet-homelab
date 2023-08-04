@@ -1,29 +1,30 @@
-# Swarm Container paths
-
+# Swarm NFS Container paths
 container_paths:
-    - /home/ubuntu/container-program-files/plex/config
-    - /home/ubuntu/container-program-files/plex/tvseries
-    - /home/ubuntu/container-program-files/plex/movies
-    - /home/ubuntu/container-program-files/deluge/config
-    - /home/ubuntu/container-program-files/deluge/downloads
-    - /home/ubuntu/container-program-files/jackett
-    - /home/ubuntu/container-program-files/sonarr/config
-    - /home/ubuntu/container-program-files/radarr
-    - /home/ubuntu/container-program-files/pihole
-    - /home/ubuntu/container-program-files/dnsmasq.d
-    - /home/ubuntu/container-program-files/overseerr/config
-    - /home/ubuntu/container-program-files/PROXY-MANAGER/data
-    - /home/ubuntu/container-program-files/PROXY-MANAGER/letsencrypt
-    - /home/ubuntu/container-program-files/prometheus/prom_data
-    - /home/ubuntu/container-program-files/grafana/datasources
-    - /home/ubuntu/container-program-files/prometheus
-    - /home/ubuntu/container-program-files/vault_warden/swarm
-    - /home/ubuntu/container-program-files/vault_warden/mariadb
-    - /home/ubuntu/container-program-files/wireguard/
-    - /home/ubuntu/container-program-files/next_cloud/data
-    - /home/ubuntu/container-program-files/next_cloud/mariadb
-    - /home/ubuntu/container-program-files/portainer
+    - '{{container_volumes_location}}/plex/config'
+    - '{{container_volumes_location}}/plex/tvseries'
+    - '{{container_volumes_location}}/plex/movies'
+    - '{{container_volumes_location}}/deluge/config'
+    - '{{container_volumes_location}}/deluge/downloads'
+    - '{{container_volumes_location}}/jackett'
+    - '{{container_volumes_location}}/sonarr/config'
+    - '{{container_volumes_location}}/radarr'
+    - '{{container_volumes_location}}/pihole'
+    - '{{container_volumes_location}}/dnsmasq.d'
+    - '{{container_volumes_location}}/overseerr/config'
+    - '{{container_volumes_location}}/PROXY-MANAGER/data'
+    - '{{container_volumes_location}}/PROXY-MANAGER/letsencrypt'
+    - '{{container_volumes_location}}/prometheus/prom_data'
+    - '{{container_volumes_location}}/grafana/datasources'
+    - '{{container_volumes_location}}/prometheus'
+    - '{{container_volumes_location}}/vault_warden/swarm'
+    - '{{container_volumes_location}}/vault_warden/mariadb'
+    - '{{container_volumes_location}}/wireguard/'
+    - '{{container_volumes_location}}/next_cloud/data'
+    - '{{container_volumes_location}}/next_cloud/mariadb'
+    - '{{container_volumes_location}}/portainer'
+    - '{{container_volumes_location}}/jenkins_home'
 
+# Docker Stack Deploy
 stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/pi/docker-compose.yml pi"
@@ -33,8 +34,12 @@ stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/monitoring-stack/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/jenkins-cicd/docker-compose.yml cicd"
 
+# Docker Swarm Scale Services
 swarm_scale:
+    - docker service scale cicd_jenkins=1
     - docker service scale nextcloud_db=1
     - docker service scale nextcloud_nextapp=1
     - docker service scale vault_mariadb=1
@@ -53,4 +58,8 @@ swarm_scale:
     - docker service scale ws_santos=2
     - docker service scale ws_aplb=2
     - docker service scale pi_pihole=1
+    - docker service scale cicd_server-bootstrap=1
+    - docker service scale cicd_vault=1
+    - docker service scale cicd_consul-server=2
+    - docker service scale cicd_consul-client=2
 

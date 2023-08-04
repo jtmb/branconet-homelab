@@ -2,9 +2,9 @@
   file:
     path: "{{ item }}"
     state: directory
-    owner: nobody
-    group: nogroup
-    mode: 0755
+    owner: '{{ssh_user}}' #nobody
+    group: '{{ssh_user}}' #nogroup
+    mode: 1000 #0755
   with_items: "{{ container_paths }}"
 
 - name: Copy a compose" files from repo to the remote machine to authenticate git repos on host machine
@@ -24,7 +24,7 @@
 
 - name: DEPLOY CONTAINERS STACK 
   vars:
-    env_file: env ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}}
+    env_file: env ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} container_volumes_location={{container_volumes_location}}
   shell: "{{ item }}"
   with_items: "{{ stack_deploy }}"
   loop_control:

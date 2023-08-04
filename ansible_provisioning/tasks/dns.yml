@@ -2,11 +2,12 @@
 - name: Clean DNS custom.list
   tags: dns
   delegate_to: master_node
-  shell: rm -f /home/ubuntu/container-program-files/pihole/custom.list && touch /home/ubuntu/container-program-files/pihole/custom.list
+  shell: 'rm -f {{container_volumes_location}}/pihole/custom.list \ 
+          && touch {{container_volumes_location}}/pihole/custom.list'
 - name: Add && enforce PiHole DNS Entries
   tags: dns
   lineinfile: 
-    dest: "/home/ubuntu/container-program-files/pihole/custom.list"
+    dest: "{{container_volumes_location}}/pihole/custom.list"
     line: '{{ item }}'
   with_items:
     - '{{master_node}} proxy.branconet.lan'

@@ -14,7 +14,6 @@
     debug: 
        msg: '{{ansible_architecture}}'
   - name: Install Required Packages
-    when: deploy_packages == true
     include: tasks/pre_provisioning.yml
     tags: packages
   - name: Setup SSH
@@ -33,7 +32,6 @@
     - vars/vars.yml
   tasks:
   - name: Install swarm
-    when: deploy_containers == true
     include: tasks/swarm_master.yml
     tags: swarm
 
@@ -47,7 +45,6 @@
     - vars/vars.yml
   tasks:
   - name: Install swarm
-    when: deploy_containers == true
     include: tasks/swarm_worker_join.yml
     tags: swarm
 
@@ -61,29 +58,35 @@
     - vars/lists.yml
   tasks:
   - name: Git Clone App Repos
-    when: deploy_containers == true
     include: tasks/clone_app_repos.yml
     tags: clone_repos
-
   - name: Install Containers
-    when: deploy_containers == true
     include: tasks/containers.yml
     tags: containers
-
-  - name: Jenkins Setup
-    when: deploy_containers == true
-    include: tasks/jenkins_master_setup.yml
-    tags: jenkins
-
-# POST-provisioning VM
-- name: "Complete Provisioning"
+  # - name: Jenkins Setup
+  #   include: tasks/jenkins_master_setup.yml
+  #   tags: jenkins
+- name: "DNS"
   hosts: master_node
   become_user: "root"
   become: true
   vars_files:
     - vars/vars.yml
   tasks:
-  - name: Post Provisioning Tasks
-    when: deploy_containers == true
+  - name: Post Provisioning DNS Tasks
     include: tasks/dns.yml
     tags: post
+
+- name: "POST PROVISIONING"
+  hosts: all
+  become_user: "root"
+  become: true
+  vars_files:
+    - vars/vars.yml
+  tasks:
+  - name: Post Provisioning CRON Tasks
+    include: tasks/cron.yml
+    tags: 
+     - post
+     - cron
+

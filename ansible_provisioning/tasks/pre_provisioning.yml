@@ -1,6 +1,4 @@
 - name: Remove Stale Docker Images
-  tags:
-    - wordpress
   shell: |
     yes | docker image prune -a
     yes | apt --fix-broken install

@@ -1,9 +1,8 @@
-- name: Docker Swarm Join
-  shell:  docker swarm join --token {{ hostvars['master_node'].CLUSTER_JOIN_KEY.stdout }} {{master_node}}:2377
-  register: swarm_join_result
-  failed_when: >
-    ("Error response from daemon: This node is already part of a swarm." not in swarm_join_result.stderr)
-  ignore_errors: true
+- name: Join Nodes to Cluster # docker swarm join --token {{ hostvars['master_node'].CLUSTER_JOIN_KEY.stdout }} {{master_node}}:2377
+  docker_swarm:
+    state: join
+    join_token: "{{ hostvars['master_node'].CLUSTER_JOIN_KEY.stdout }}"
+    remote_addrs: [ '{{master_node}}:2377' ]
   
 - name: Create share directory if it does not exist and set right permissios
   ansible.builtin.file:
@@ -16,6 +15,5 @@
 - name: Mount NTFS on clients
   become: true
   become_user: root
-  shell: |
-   mount {{master_node}}:/home/ubuntu/container-program-files /home/ubuntu/container-program-files
+  shell: mount {{master_node}}:/home/ubuntu/container-program-files /home/ubuntu/container-program-files
 
