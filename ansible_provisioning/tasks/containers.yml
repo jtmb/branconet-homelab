@@ -31,7 +31,5 @@
     label: "{{ item | regex_replace('^.*docker stack deploy', 'docker stack deploy') }}" #replaces env secrets from being shown in console output
 
 - name: SCALE SWARM CONTAINERS
-  tags: 
-    - smb
   shell: "{{ item }}"
   with_items: "{{ swarm_scale }}"
