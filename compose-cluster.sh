@@ -1,5 +1,4 @@
 # ----------VARS
-key_pair=$(cat ~/.ssh/id_rsa.pub)
 userid=$(whoami)
 public_ip=$(curl icanhazip.com)
 admin_pub_ip=$(echo ['"'$public_ip/32'"'])
