@@ -2,9 +2,9 @@
   file:
     path: "{{ item }}"
     state: directory
-    owner: '{{ssh_user}}' #nobody
-    group: '{{ssh_user}}' #nogroup
-    mode: 1000 #0755
+    owner: '{{ssh_user}}' 
+    group: 'nogroup'
+    mode: 1000 
   with_items: "{{ container_paths }}"
 
 - name: Copy a compose" files from repo to the remote machine to authenticate git repos on host machine
@@ -12,16 +12,24 @@
     src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose"
     dest: "/tmp"
 - name: Copy Grafana Configs
-  copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/grafana/datasource.yml dest=/home/ubuntu/container-program-files/grafana/datasources
+  copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/grafana/datasource.yml dest={{container_volumes_location}}/grafana/datasources
 - name: Copy Prometheus Configs
-  copy: remote_src=False src=remote_src=True src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/prometheus/prometheus.yml dest=/home/ubuntu/container-program-files/prometheus
+  copy: remote_src=False src=remote_src=True src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/prometheus/prometheus.yml dest={{container_volumes_location}}/prometheus
+- name: Change file ownership, group and permissions for configs
+  ansible.builtin.file:
+    path: "{{item}}"
+    owner: 'nobody'
+    group: 'nogroup'
+    mode: 0755
+    recurse: yes
+  with_items: "{{ alt_container_permission_paths }}"
+
 
 - name: SET ADMIN PASS
   ansible.builtin.debug:
     msg: "{{ansible_ssh_pass}}"
   register: ADMIN_PASS
   no_log: true
-
 - name: DEPLOY CONTAINERS STACK 
   vars:
     env_file: env ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} container_volumes_location={{container_volumes_location}}
@@ -29,7 +37,6 @@
   with_items: "{{ stack_deploy }}"
   loop_control:
     label: "{{ item | regex_replace('^.*docker stack deploy', 'docker stack deploy') }}" #replaces env secrets from being shown in console output
-
 - name: SCALE SWARM CONTAINERS
   shell: "{{ item }}"
   with_items: "{{ swarm_scale }}"

@@ -1,0 +1,26 @@
+- name: Copy Jenkins dockerfile to mnachines
+  tags: jenkins
+  copy:
+    src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose/jenkins-cicd"
+    dest: "/tmp/dockerfiles"
+
+- name: Log into DockerHub
+  docker_login:
+    username: james.branco@gmail.com
+    password: "{{ansible_ssh_pass}}"
+
+- name: Build Jenkins Custom Image
+  when: ansible_architecture != "armv7l"
+  community.docker.docker_image:
+    build:
+      path: /tmp/dockerfiles/jenkins-cicd
+    repository: jtmb92/jenkins
+    name: jenkins:brajam
+    source: build
+    push: true
+
+# - name: Build Jenkins Docker image for use in swarm
+#   tags: jenkins
+#   shell: |
+#     cd /tmp/dockerfiles/jenkins-cicd && \
+#     docker build -t jenkins:brajam .

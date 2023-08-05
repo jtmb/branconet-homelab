@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   jenkins:
-    image: jenkins/jenkins:lts-jdk11
+    image: jtmb92/jenkins:brajam #jenkins/jenkins:lts-jdk11
     environment:
       externalTrafficPolicy: Local
       JAVA_OPTS: -Djenkins.install.runSetupWizard=false -Dhudson.footerURL=https://jenkins.branconet.lan
@@ -15,7 +15,6 @@ services:
     deploy:
       replicas: 1
       placement:
-
         max_replicas_per_node: 1
         constraints:
         - node.role==manager

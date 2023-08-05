@@ -60,12 +60,13 @@
   - name: Git Clone App Repos
     include: tasks/clone_app_repos.yml
     tags: clone_repos
+  - name: Build Docker Images
+    include: tasks/image_build.yml
+    tags: containers
   - name: Install Containers
     include: tasks/containers.yml
     tags: containers
-  # - name: Jenkins Setup
-  #   include: tasks/jenkins_master_setup.yml
-  #   tags: jenkins
+
 - name: "DNS"
   hosts: master_node
   become_user: "root"
@@ -89,4 +90,7 @@
     tags: 
      - post
      - cron
+  - name: Reboot Actions
+    include: tasks/reboot.yml
+    tags: reboot
 

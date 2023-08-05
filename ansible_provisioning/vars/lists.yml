@@ -23,7 +23,12 @@ container_paths:
     - '{{container_volumes_location}}/next_cloud/mariadb'
     - '{{container_volumes_location}}/portainer'
     - '{{container_volumes_location}}/jenkins_home'
-
+alt_container_permission_paths:
+    - '{{container_volumes_location}}/grafana/'
+    - '{{container_volumes_location}}/prometheus/'
+    - '{{container_volumes_location}}/pihole'
+    - '{{container_volumes_location}}/dnsmasq.d'
+    
 # Docker Stack Deploy
 stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws"
@@ -39,6 +44,7 @@ stack_deploy:
 
 # Docker Swarm Scale Services
 swarm_scale:
+    - docker service scale pi_pihole=1
     - docker service scale cicd_jenkins=1
     - docker service scale nextcloud_db=1
     - docker service scale nextcloud_nextapp=1
@@ -57,9 +63,7 @@ swarm_scale:
     - docker service scale ws_lucinda=2
     - docker service scale ws_santos=2
     - docker service scale ws_aplb=2
-    - docker service scale pi_pihole=1
     - docker service scale cicd_server-bootstrap=1
     - docker service scale cicd_vault=1
     - docker service scale cicd_consul-server=2
     - docker service scale cicd_consul-client=2
-

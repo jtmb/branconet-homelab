@@ -4,7 +4,7 @@
 
 - name: Creates SSH hidden directory
   file:
-      path: "{{homedir}}/.ssh"
+      path: "/home/{{ssh_user}}/.ssh"
       state: directory
 
 - name: Add authorized_keys
