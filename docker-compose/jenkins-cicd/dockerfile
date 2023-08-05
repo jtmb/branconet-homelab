@@ -5,5 +5,14 @@ RUN apt update && \
     apt install ansible -y && \
     apt install git -y
 
+ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+RUN jenkins-plugin-cli --plugins \
+ "git:5.2.0"\
+ "github:1.37.2" \
+ "mailer:463.vedf8358e006b_" \
+ "ssh-credentials:308.ve4497b_ccd8f4" \
+ "credentials:1271.v54b_1c2c6388a_" \
+ "workflow-aggregator:596.v8c21c963d92d" \
+ "workflow-scm-step:415.v434365564324"
 
 # RUN ssh-keyscan github.com >> /root/.ssh/known_hosts

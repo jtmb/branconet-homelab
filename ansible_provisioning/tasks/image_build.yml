@@ -9,8 +9,11 @@
     username: james.branco@gmail.com
     password: "{{ansible_ssh_pass}}"
 
+- name: Remove image
+  community.docker.docker_image:
+    state: absent
+    name: jenkins:brajam
 - name: Build Jenkins Custom Image
-  when: ansible_architecture != "armv7l"
   community.docker.docker_image:
     build:
       path: /tmp/dockerfiles/jenkins-cicd
@@ -18,9 +21,4 @@
     name: jenkins:brajam
     source: build
     push: true
-
-# - name: Build Jenkins Docker image for use in swarm
-#   tags: jenkins
-#   shell: |
-#     cd /tmp/dockerfiles/jenkins-cicd && \
-#     docker build -t jenkins:brajam .
+    force_tag: true
