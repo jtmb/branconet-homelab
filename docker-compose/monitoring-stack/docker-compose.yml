@@ -12,6 +12,16 @@ services:
     volumes:
       - /home/ubuntu/container-program-files/prometheus:/etc/prometheus
       - /home/ubuntu/container-program-files/prometheus/prom_data:/prometheus
+  uptime-kuma:
+    image: louislam/uptime-kuma:debian
+    container_name: uptime-kuma
+    ports:
+      - 3001:3001
+    restart: unless-stopped
+    networks:
+      - container-swarm-network
+    volumes:
+      - '${container_volumes_location}/uptime-kuma:/app/data'
   grafana:
     image: grafana/grafana
     container_name: grafana
@@ -25,12 +35,6 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: ${ADMIN_PASS}
     volumes:
       - /home/ubuntu/container-program-files/grafana/datasources:/etc/grafana/provisioning/datasources
-    # deploy:
-    #   mode: replicated
-    #   replicas: 1
-    #   placement:
-    #     constraints:
-    #     - node.hostname==raspberrypi
 volumes:
   prom_data:
 networks:

@@ -23,6 +23,7 @@ container_paths:
     - '{{container_volumes_location}}/next_cloud/mariadb'
     - '{{container_volumes_location}}/portainer'
     - '{{container_volumes_location}}/jenkins_home'
+    - '{{container_volumes_location}}/uptime-kuma'
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/'
     - '{{container_volumes_location}}/prometheus/'
@@ -52,6 +53,7 @@ swarm_scale:
     - docker service scale vault_vaultwarden=2
     - docker service scale monitoring_grafana=1
     - docker service scale monitoring_prometheus=1
+    - docker service scale monitoring_uptime-kuma=1
     - docker service scale portainer_portainer=1
     - docker service scale proxy_nginx-proxy-manager=1
     - docker service scale media_plex=1
