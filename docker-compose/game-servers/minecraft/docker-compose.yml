@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  minecraft-paper:
+    image: "itzg/minecraft-server"
+    restart: always
+    hostname: "mc.branconet.lan"
+    environment:
+        TZ: "America/Toronto"
+        PORT: "25565"
+        TYPE: "PAPER" 
+        MEMORY: "2G" 
+        MAX_MEMORY: "4G" 
+        INIT_MEMORY: "2G" 
+        MOTD: "Defeating a sandwich only makes it tastier." 
+        ENABLE_RCON: "TRUE" 
+        RCON_PASSWORD: "${ADMIN_PASS}" 
+        EXEC_DIRECTLY: "TRUE" 
+        CPUS: "2" 
+        EULA: "TRUE"
+        TUNE_VIRTUALIZED: "TRUE"
+        TUNE_NURSERY_SIZES: "TRUE"
+    volumes:
+      - '${container_volumes_location}/mc-server:/data'
+    ports:
+      - 25565:25565/tcp
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+        - node.hostname==master-node
+networks:
+ container-swarm-network:
+    external: true

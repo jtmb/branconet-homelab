@@ -15,15 +15,16 @@
   copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/grafana/datasource.yml dest={{container_volumes_location}}/grafana/datasources
 - name: Copy Prometheus Configs
   copy: remote_src=False src=remote_src=True src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/prometheus/prometheus.yml dest={{container_volumes_location}}/prometheus
+- name: Copy MC Configs
+  copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/ops.json dest={{container_volumes_location}}/mc-server
 - name: Change file ownership, group and permissions for configs
   ansible.builtin.file:
     path: "{{item}}"
     owner: 'nobody'
-    group: 'nogroup'
+    group: 'nogroup'  
     mode: 0755
     recurse: yes
   with_items: "{{ alt_container_permission_paths }}"
-
 
 - name: SET ADMIN PASS
   ansible.builtin.debug:

@@ -24,6 +24,7 @@ container_paths:
     - '{{container_volumes_location}}/portainer'
     - '{{container_volumes_location}}/jenkins_home'
     - '{{container_volumes_location}}/uptime-kuma'
+    - '{{container_volumes_location}}/mc-server'
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/'
     - '{{container_volumes_location}}/prometheus/'
@@ -32,6 +33,7 @@ alt_container_permission_paths:
     
 # Docker Stack Deploy
 stack_deploy:
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/game-servers/minecraft/docker-compose.yml gamesrv"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/pi/docker-compose.yml pi"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/media-stack/docker-compose.yml media"
@@ -42,9 +44,11 @@ stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/jenkins-cicd/docker-compose.yml cicd"
+    
 
 # Docker Swarm Scale Services
 swarm_scale:
+    - docker service scale gamesrv_minecraft-paper=1
     - docker service scale pi_pihole=1
     - docker service scale cicd_jenkins=1
     - docker service scale nextcloud_db=1
