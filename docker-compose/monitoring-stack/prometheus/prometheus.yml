@@ -10,6 +10,7 @@ alerting:
     timeout: 10s
     api_version: v1
 scrape_configs:
+
 - job_name: prometheus
   honor_timestamps: true
   scrape_interval: 15s
@@ -38,10 +39,19 @@ scrape_configs:
       labels:
         alias: "exporter"
 
-
 - job_name: cadvisor
   scrape_interval: 5s
   static_configs:
   - targets: ['cadvisor:8080'] #jfc this is so dumb but cadvisor hooks into docker.sock so you gotta use the internal port binding so prometheus can see it.
     labels:
       alias: "cadvisor"
+
+- job_name: node-exporter
+  scrape_interval: 5s
+  static_configs:
+  - targets: ['node-exporter:9100'] #jfc this is so dumb but cadvisor hooks into docker.sock so you gotta use the internal port binding so prometheus can see it.
+    labels:
+      alias: "node-exporter"
+
+
+      

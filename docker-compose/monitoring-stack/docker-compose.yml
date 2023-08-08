@@ -1,4 +1,5 @@
 services:
+
   prometheus:
     image: prom/prometheus
     container_name: prometheus
@@ -12,6 +13,7 @@ services:
     volumes:
       - '${container_volumes_location}/prometheus:/etc/prometheus'
       - '${container_volumes_location}/prometheus/prom_data:/prometheus'
+
   uptime-kuma:
     image: louislam/uptime-kuma:debian
     container_name: uptime-kuma
@@ -22,6 +24,7 @@ services:
       - container-swarm-network
     volumes:
       - '${container_volumes_location}/uptime-kuma:/app/data'
+
   influx:   
     image: influxdb
     environment:
@@ -42,6 +45,28 @@ services:
       placement:
          constraints:
            - node.role == manager
+
+  node-exporter:
+    image: flaviostutz/docker-swarm-node-exporter
+    environment:
+      - NODE_ID={{.Node.ID}}
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /etc/hostname:/etc/nodename
+    networks:
+      - container-swarm-network
+    ports:
+     - 9100:9100         
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
@@ -55,11 +80,14 @@ services:
     - /var/run:/var/run:rw
     - /sys:/sys:ro
     - /var/lib/docker/:/var/lib/docker:ro
-    deploy: 
-      replicas: 1      
-      placement:
-         constraints:
-           - node.role == manager
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 128M
+        reservations:
+          memory: 64M
+
   grafana:
     image: grafana/grafana
     container_name: grafana
