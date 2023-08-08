@@ -19,3 +19,29 @@ scrape_configs:
   static_configs:
   - targets:
     - localhost:9090
+
+- job_name: 'uptime'
+  scrape_interval: 30s
+  scheme: http
+  metrics_path: '/metrics'
+  static_configs:
+    - targets: ['uptime-kuma:3001']
+  # basic_auth: # Only needed if authentication is enabled (default) 
+  #   username: admin
+  #   password: admin
+      labels:
+        alias: "uptime-kuma"
+
+- job_name: 'pihole'
+  static_configs:
+    - targets: ['exporter:9617']
+      labels:
+        alias: "exporter"
+
+
+- job_name: cadvisor
+  scrape_interval: 5s
+  static_configs:
+  - targets: ['cadvisor:8080'] #jfc this is so dumb but cadvisor hooks into docker.sock so you gotta use the internal port binding so prometheus can see it.
+    labels:
+      alias: "cadvisor"

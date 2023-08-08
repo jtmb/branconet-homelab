@@ -10,8 +10,8 @@ services:
       - container-swarm-network
     restart: unless-stopped
     volumes:
-      - /home/ubuntu/container-program-files/prometheus:/etc/prometheus
-      - /home/ubuntu/container-program-files/prometheus/prom_data:/prometheus
+      - '${container_volumes_location}/prometheus:/etc/prometheus'
+      - '${container_volumes_location}/prometheus/prom_data:/prometheus'
   uptime-kuma:
     image: louislam/uptime-kuma:debian
     container_name: uptime-kuma
@@ -22,6 +22,44 @@ services:
       - container-swarm-network
     volumes:
       - '${container_volumes_location}/uptime-kuma:/app/data'
+  influx:   
+    image: influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: root
+      DOCKER_INFLUXDB_INIT_PASSWORD: '${ADMIN_PASS}'
+      DOCKER_INFLUXDB_INIT_BUCKET: cadvisor
+      DOCKER_INFLUXDB_INIT_ORG: monitoring_stack
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: 1234!12345!66781!
+    networks:
+      - container-swarm-network
+    ports:
+     - 8086:8086   
+    volumes:     
+      - '${container_volumes_location}/influx:/var/lib/influxdb'
+    deploy: 
+      replicas: 1      
+      placement:
+         constraints:
+           - node.role == manager
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    networks:
+      - container-swarm-network
+    privileged: true
+    ports:
+    - 8088:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    deploy: 
+      replicas: 1      
+      placement:
+         constraints:
+           - node.role == manager
   grafana:
     image: grafana/grafana
     container_name: grafana
@@ -33,10 +71,11 @@ services:
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: ${ADMIN_PASS}
+      GF_INSTALL_PLUGINS: grafana-piechart-panel
+    user: "1000"
     volumes:
-      - /home/ubuntu/container-program-files/grafana/datasources:/etc/grafana/provisioning/datasources
-volumes:
-  prom_data:
+      - '${container_volumes_location}/grafana/datasources:/etc/grafana/provisioning/datasources'
+      - '${container_volumes_location}/grafana/data:/var/lib/grafana'
 networks:
  container-swarm-network:
     external: true

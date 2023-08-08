@@ -15,6 +15,7 @@ container_paths:
     - '{{container_volumes_location}}/PROXY-MANAGER/letsencrypt'
     - '{{container_volumes_location}}/prometheus/prom_data'
     - '{{container_volumes_location}}/grafana/datasources'
+    - '{{container_volumes_location}}/grafana/data'
     - '{{container_volumes_location}}/prometheus'
     - '{{container_volumes_location}}/vault_warden/swarm'
     - '{{container_volumes_location}}/vault_warden/mariadb'
@@ -25,8 +26,11 @@ container_paths:
     - '{{container_volumes_location}}/jenkins_home'
     - '{{container_volumes_location}}/uptime-kuma'
     - '{{container_volumes_location}}/mc-server'
+    - '{{container_volumes_location}}/influx'
+    - '{{container_volumes_location}}/grafana/data'
+    - '{{container_volumes_location}}/homepage/app'
 alt_container_permission_paths:
-    - '{{container_volumes_location}}/grafana/'
+    - '{{container_volumes_location}}/grafana/datasources'
     - '{{container_volumes_location}}/prometheus/'
     - '{{container_volumes_location}}/pihole'
     - '{{container_volumes_location}}/dnsmasq.d'
@@ -44,17 +48,20 @@ stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/jenkins-cicd/docker-compose.yml cicd"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws"
     
 
 # Docker Swarm Scale Services
 swarm_scale:
     - docker service scale gamesrv_minecraft-paper=1
     - docker service scale pi_pihole=1
+    - docker service scale pi_exporter=1
     - docker service scale cicd_jenkins=1
     - docker service scale nextcloud_db=1
     - docker service scale nextcloud_nextapp=1
     - docker service scale vault_mariadb=1
     - docker service scale vault_vaultwarden=2
+    - docker service scale monitoring_influx=1
     - docker service scale monitoring_grafana=1
     - docker service scale monitoring_prometheus=1
     - docker service scale monitoring_uptime-kuma=1
@@ -66,6 +73,7 @@ swarm_scale:
     - docker service scale media_jackett=1
     - docker service scale media_deluge=1
     - docker service scale media_sonarr=1
+    - docker service scale ws_homepage=1
     - docker service scale ws_lucinda=2
     - docker service scale ws_santos=2
     - docker service scale ws_aplb=2

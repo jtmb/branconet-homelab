@@ -1,0 +1,15 @@
+version: "3.3"
+services:
+  homepage:
+    image: ghcr.io/benphelps/homepage:latest
+    container_name: homepage
+    ports:
+      - 3002:3000
+    volumes:
+    - '${container_volumes_location}/homepage/app:/app/config' # Make sure your local config directory exists
+    - /var/run/docker.sock:/var/run/docker.sock:ro # (optional) For docker integrations
+    deploy: 
+      replicas: 1      
+networks:
+ container-swarm-network:
+    external: true

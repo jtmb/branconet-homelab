@@ -16,8 +16,20 @@ services:
     networks:
       - container-swarm-network
     volumes:
-      - /home/ubuntu/container-program-files/pihole:/etc/pihole
-      - /home/ubuntu/container-program-files/dnsmasq.d:/etc/dnsmasq.d
+      - '${container_volumes_location}/pihole:/etc/pihole'
+      - '${container_volumes_location}/dnsmasq.d:/etc/dnsmasq.d'
+    restart: unless-stopped
+  exporter:
+    image: ekofr/pihole-exporter:latest
+    ports:
+      - "9617:9617"
+    environment:
+      PIHOLE_HOSTNAME: "${master_node}"
+      PIHOLE_PORT: 8079
+      PIHOLE_PASSWORD: "${ADMIN_PASS}"
+      PORT: "9617"
+    networks:
+      - container-swarm-network
     restart: unless-stopped
 networks:
  container-swarm-network:
