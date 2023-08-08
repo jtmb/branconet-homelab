@@ -5,6 +5,8 @@ services:
     image: "itzg/minecraft-server"
     restart: always
     hostname: "mc.branconet.lan"
+    networks:
+     - container-swarm-network
     environment:
         TZ: "America/Toronto"
         PORT: "25565"
@@ -30,6 +32,22 @@ services:
         max_replicas_per_node: 1
         constraints:
         - node.hostname==master-node
+
+  mc-exporter:
+    image: "ghcr.io/dirien/minecraft-exporter"
+    depends_on:
+      - minecraft-paper
+    restart: always
+    volumes:
+      - '${container_volumes_location}/mc-server/world:/minecraft/world'
+    ports:
+      - 9150:9150 
+    networks:
+     - container-swarm-network
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
 networks:
  container-swarm-network:
     external: true

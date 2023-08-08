@@ -29,11 +29,16 @@ container_paths:
     - '{{container_volumes_location}}/influx'
     - '{{container_volumes_location}}/grafana/data'
     - '{{container_volumes_location}}/homepage/app'
+    - '{{container_volumes_location}}/loki/data'
+    - '{{container_volumes_location}}/loki/config'    
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
     - '{{container_volumes_location}}/prometheus/'
+    - '{{container_volumes_location}}/loki/config/'     
     - '{{container_volumes_location}}/pihole'
     - '{{container_volumes_location}}/dnsmasq.d'
+    - '{{container_volumes_location}}/mc-server/'   
+
     
 # Docker Stack Deploy
 stack_deploy:
@@ -54,6 +59,7 @@ stack_deploy:
 # Docker Swarm Scale Services
 swarm_scale:
     - docker service scale gamesrv_minecraft-paper=1
+    - docker service scale gamesrv_mc-exporter=1
     - docker service scale pi_pihole=1
     - docker service scale pi_exporter=1
     - docker service scale cicd_jenkins=1
@@ -61,6 +67,7 @@ swarm_scale:
     - docker service scale nextcloud_nextapp=1
     - docker service scale vault_mariadb=1
     - docker service scale vault_vaultwarden=2
+    - docker service scale monitoring_loki=1
     - docker service scale monitoring_influx=1
     - docker service scale monitoring_grafana=1
     - docker service scale monitoring_prometheus=1

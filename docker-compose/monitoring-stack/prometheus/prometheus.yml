@@ -21,6 +21,13 @@ scrape_configs:
   - targets:
     - localhost:9090
 
+- job_name: loki
+  scrape_interval: 5s
+  static_configs:
+  - targets: ['loki:3100'] 
+    labels:
+      alias: "loki"
+
 - job_name: 'uptime'
   scrape_interval: 30s
   scheme: http
@@ -49,9 +56,16 @@ scrape_configs:
 - job_name: node-exporter
   scrape_interval: 5s
   static_configs:
-  - targets: ['node-exporter:9100'] #jfc this is so dumb but cadvisor hooks into docker.sock so you gotta use the internal port binding so prometheus can see it.
+  - targets: ['node-exporter:9100'] 
     labels:
       alias: "node-exporter"
 
+
+- job_name: mc-exporter
+  scrape_interval: 5s
+  static_configs:
+  - targets: ['mc-exporter:9150'] 
+    labels:
+      alias: "mc-exporter"
 
       

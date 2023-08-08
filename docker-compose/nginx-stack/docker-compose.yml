@@ -11,6 +11,12 @@ services:
       DISABLE_IPV6: 'true'
     volumes:
       - /home/ubuntu/container-program-files/ws-lucinda:/usr/share/nginx/html
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
 
   santos:
     image: 'nginx'
@@ -23,6 +29,12 @@ services:
       DISABLE_IPV6: 'true'
     volumes:
       - /home/ubuntu/container-program-files/ws-santos:/usr/share/nginx/html
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
 
   aplb:
     image: 'nginx'
@@ -35,6 +47,13 @@ services:
       DISABLE_IPV6: 'true'
     volumes:
       - /home/ubuntu/container-program-files/ws-aplb:/usr/share/nginx/html
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://loki:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+
 networks:
  container-swarm-network:
     external: true

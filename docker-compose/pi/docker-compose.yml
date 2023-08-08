@@ -19,8 +19,11 @@ services:
       - '${container_volumes_location}/pihole:/etc/pihole'
       - '${container_volumes_location}/dnsmasq.d:/etc/dnsmasq.d'
     restart: unless-stopped
+    
   exporter:
     image: ekofr/pihole-exporter:latest
+    depends_on:
+      - pihole
     ports:
       - "9617:9617"
     environment:
