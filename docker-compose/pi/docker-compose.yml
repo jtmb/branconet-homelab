@@ -11,8 +11,6 @@ services:
       WEBPASSWORD: "${ADMIN_PASS}"
       PIHOLE_DNS_: "9.9.9.9;1.1.1.1"
       DNSMASQ_LISTENING: "all" #if using swarm this env variable will allow DNS to work over overlay and bridge networks.
-      PGID: 1000
-      PUID: 1000
     networks:
       - container-swarm-network
     volumes:

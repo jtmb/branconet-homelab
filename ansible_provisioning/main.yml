@@ -60,12 +60,18 @@
   - name: Git Clone App Repos
     include: tasks/clone_app_repos.yml
     tags: clone_repos
+
   - name: Build Docker Images
     include: tasks/image_build.yml
     tags: images
+
+  - name: Containers Pre-Provision
+    include: tasks/container-preprovisioning.yml
+    tags: [ containers, pre-prov ]
+
   - name: Install Containers
     include: tasks/containers.yml
-    tags: containers
+    tags:  containers 
 
 - name: "DNS"
   hosts: master_node

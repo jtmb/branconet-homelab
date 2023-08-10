@@ -1,0 +1,44 @@
+##### This task set essentially makes required folders withs permissions and copys over necessary container configs
+
+- name: create container dirs if they don't exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: '{{ssh_user}}' 
+    group: 'nogroup'
+    mode: 1000 
+  with_items: "{{ container_paths }}"
+
+- name: Copy a compose" files from repo to the remote machine to authenticate git repos on host machine
+  copy:
+    src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose"
+    dest: "/tmp"
+
+- name: Copy Grafana Configs
+  copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/grafana/datasource.yml dest={{container_volumes_location}}/grafana/datasources
+- name: Copy Prometheus Configs
+  copy: remote_src=False src=remote_src=True src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/prometheus/prometheus.yml dest={{container_volumes_location}}/prometheus
+- name: Copy loki Configs
+  copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/loki/loki-config.yml dest={{container_volumes_location}}/loki/config
+  
+- name: Copy MC plugins + OPs
+  tags:  mc
+  copy:
+    src: '{{item}}'
+    dest: "{{container_volumes_location}}/mc-server/"
+  with_items: 
+    - "/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/plugins"
+    - "/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/ops.json"
+- name: Copy EssentialsX config
+  tags:  mc
+  copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/plugins/configs/essentials-x/config.yml dest={{container_volumes_location}}/mc-server/plugins/Essentials/config.yml
+
+- name: Change file ownership, group and permissions for configs that need it
+  ansible.builtin.file:
+    path: "{{item}}"
+    state: directory
+    owner: '{{ssh_user}}' 
+    group: 'nogroup' 
+    mode: 0755
+    recurse: yes
+  with_items: "{{ alt_container_permission_paths }}"
