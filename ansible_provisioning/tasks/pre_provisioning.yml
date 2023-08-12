@@ -96,7 +96,7 @@
     src: "//192.168.0.25/plex_smb_share"
     path: "/home/ubuntu/container-program-files/plex_smb_share"
     fstype: cifs
-    opts: 'username={{ user_id }},password={{ ansible_ssh_pass }},uid=33,gid=33,forceuid,forcegid'
+    opts: 'username={{ ssh_user }},password={{ ansible_ssh_pass }},uid=33,gid=33,forceuid,forcegid'
     state: mounted
 
 - name: Ensure Host Controllers are not using pihole DNS #(DNS CONTROLLERS SHOULD NEVER POINT DNS TO ITSELF LOL)

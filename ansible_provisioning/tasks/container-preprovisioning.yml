@@ -33,6 +33,12 @@
   tags:  mc
   copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/plugins/configs/essentials-x/config.yml dest={{container_volumes_location}}/mc-server/plugins/Essentials/config.yml
 
+- name: Copy a Dynamp files from repo to the remote machine (Minecraft)
+  tags: mc
+  copy:
+    src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/plugins/configs/dynmap"
+    dest: "{{container_volumes_location}}/mc-server/plugins"
+
 - name: Change file ownership, group and permissions for configs that need it
   ansible.builtin.file:
     path: "{{item}}"
@@ -42,3 +48,15 @@
     mode: 0755
     recurse: yes
   with_items: "{{ alt_container_permission_paths }}"
+
+
+- name: Change file ownership, group and permissions for containers that need www-data
+  ansible.builtin.file:
+    path: "{{item}}"
+    state: directory
+    owner: 'www-data' 
+    group: 'www-data' 
+    mode: 0755
+    recurse: yes
+  with_items: "{{ www_container_permission_paths }}"
+
