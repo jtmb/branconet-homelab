@@ -26,7 +26,7 @@ services:
       - '${container_volumes_location}/mc-server:/data'
     ports:
       - 25565:25565/tcp
-      - 8123:8123 # if using dynmap plugin
+      - 8123:8100 # if using dynmap plugin
     deploy:
       replicas: 1
       placement:
