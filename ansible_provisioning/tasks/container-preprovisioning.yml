@@ -33,10 +33,10 @@
   tags:  mc
   copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/plugins/configs/essentials-x/config.yml dest={{container_volumes_location}}/mc-server/plugins/Essentials/config.yml
 
-- name: Copy a Dynamp files from repo to the remote machine (Minecraft)
+- name: Copy a BlueMap files from repo to the remote machine (Minecraft)
   tags: mc
   copy:
-    src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/plugins/configs/dynmap"
+    src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/plugins/configs/BlueMap"
     dest: "{{container_volumes_location}}/mc-server/plugins"
 
 - name: Change file ownership, group and permissions for configs that need it
