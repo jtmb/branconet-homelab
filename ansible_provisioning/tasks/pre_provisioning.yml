@@ -1,3 +1,6 @@
+- name: Set Timezone
+  shell: timedatectl set-timezone America/Toronto
+
 - name: Remove Stale Docker Images
   shell: |
     yes | docker image prune -a
@@ -74,7 +77,7 @@
 - name: Install Docker loki driver plugin
   when: ansible_architecture != "armv7l"
   shell: docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
-  
+  ignore_errors: true
 # Mount SMB Drives
 
 - name: utility present
@@ -85,18 +88,29 @@
 - name: check mountpoint exist
   tags: smb
   ansible.builtin.file:
-    path: "/home/ubuntu/container-program-files/plex_smb_share"
+    path: "{{item}}"
     state: directory
     mode: '0755'
     owner: nobody
     group: nogroup
-- name: Mount network share with 33 UID and GID permissions (www-data) 
+  with_items: 
+    - "/home/ubuntu/container-program-files/plex_smb_share"
+    - "/mnt/backups"
+- name: Mount plex network share with 33 UID and GID permissions (www-data) 
   tags: smb
   ansible.posix.mount:
     src: "//192.168.0.25/plex_smb_share"
     path: "/home/ubuntu/container-program-files/plex_smb_share"
     fstype: cifs
     opts: 'username={{ ssh_user }},password={{ ansible_ssh_pass }},uid=33,gid=33,forceuid,forcegid'
+    state: mounted
+- name: Mount Backups network share with 33 UID and GID permissions (www-data) 
+  tags: smb
+  ansible.posix.mount:
+    src: "//192.168.0.25/backups"
+    path: "/mnt/backups"
+    fstype: cifs
+    opts: 'username={{ ssh_user }},password={{ ansible_ssh_pass }},uid=1000,gid=1000,forceuid,forcegid'
     state: mounted
 
 - name: Ensure Host Controllers are not using pihole DNS #(DNS CONTROLLERS SHOULD NEVER POINT DNS TO ITSELF LOL)

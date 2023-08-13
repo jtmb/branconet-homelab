@@ -100,3 +100,13 @@
     include: tasks/reboot.yml
     tags: reboot
 
+- name: "Backups"
+  hosts: master_node
+  become_user: "root"
+  become: true
+  vars_files:
+    - vars/vars.yml
+  tasks:
+  - name: Post Provisioning DNS Tasks
+    include: tasks/backups.yml
+    tags: backups

@@ -33,7 +33,8 @@ container_paths:
     - '{{container_volumes_location}}/loki/config'
     - '{{container_volumes_location}}/home-assistant/config'  
     - '{{container_volumes_location}}/mc-server/plugins/Essentials'
-    - '{{container_volumes_location}}/mc-server/plugins/dynmap'     
+    - '{{container_volumes_location}}/mc-server/plugins/BlueMap'
+
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
     - '{{container_volumes_location}}/prometheus/'
@@ -87,6 +88,7 @@ swarm_scale:
     - docker service scale media_jackett=1
     - docker service scale media_deluge=1
     - docker service scale media_sonarr=1
+    - docker service scale ws_mcwebsite=1
     - docker service scale ws_homepage=1
     - docker service scale ws_lucinda=2
     - docker service scale ws_santos=2

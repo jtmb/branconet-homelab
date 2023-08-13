@@ -21,3 +21,13 @@
     repo: https://github.com/chucky747/aplb.branconet.com.git
     dest: '{{container_volumes_location}}/ws-aplb'
     version: master
+
+- name: Clone mc.branconet.lan
+  tags:
+    - mc.branconet.lan
+    - mc
+  ansible.builtin.git:
+    repo: https://github.com/jtmb/minecraft-html.git
+    dest: '{{container_volumes_location}}/mc-branconet-lan'
+    version: main
+    
