@@ -11,12 +11,12 @@
 - name: Compress and backup containers
   community.general.archive:
     path: /home/ubuntu/container-program-files/
-    dest: /mnt/backups/server-backups/container-backups-{{ ansible_date_time.iso8601 }}
+    dest: /mnt/backups/server-backups/container-backups-{{ ansible_date_time.iso8601 }}.tgz
 
 - name: Compress and backup mc-server
   community.general.archive:
     path: /home/ubuntu/container-program-files/mc-server
-    dest: /mnt/backups/server-backups/mc-server-{{ ansible_date_time.iso8601 }}
+    dest: /mnt/backups/server-backups/mc-server-{{ ansible_date_time.iso8601 }}.tgz
 
 
 # - name: Transfer files to backup drive
