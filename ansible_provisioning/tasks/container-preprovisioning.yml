@@ -11,15 +11,15 @@
 
 - name: Copy a compose" files from repo to the remote machine to authenticate git repos on host machine
   copy:
-    src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose"
+    src: "{{homedir}}{{repo_name}}/docker-compose"
     dest: "/tmp"
 
 - name: Copy Grafana Configs
-  copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/grafana/datasource.yml dest={{container_volumes_location}}/grafana/datasources
+  copy: remote_src=False src={{homedir}}{{repo_name}}/docker-compose/monitoring-stack/grafana/datasource.yml dest={{container_volumes_location}}/grafana/datasources
 - name: Copy Prometheus Configs
-  copy: remote_src=False src=remote_src=True src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/prometheus/prometheus.yml dest={{container_volumes_location}}/prometheus
+  copy: remote_src=False src=remote_src=True src={{homedir}}{{repo_name}}/docker-compose/monitoring-stack/prometheus/prometheus.yml dest={{container_volumes_location}}/prometheus
 - name: Copy loki Configs
-  copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/monitoring-stack/loki/loki-config.yml dest={{container_volumes_location}}/loki/config
+  copy: remote_src=False src={{homedir}}{{repo_name}}/docker-compose/monitoring-stack/loki/loki-config.yml dest={{container_volumes_location}}/loki/config
   
 - name: Copy MC plugins + OPs
   tags:  mc
@@ -27,16 +27,16 @@
     src: '{{item}}'
     dest: "{{container_volumes_location}}/mc-server/"
   with_items: 
-    - "/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/plugins"
-    - "/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/ops.json"
+    - "{{homedir}}{{repo_name}}/docker-compose/game-servers/minecraft/plugins"
+    - "{{homedir}}{{repo_name}}/docker-compose/game-servers/minecraft/ops.json"
 - name: Copy EssentialsX config
   tags:  mc
-  copy: remote_src=False src=/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/plugins/configs/essentials-x/config.yml dest={{container_volumes_location}}/mc-server/plugins/Essentials/config.yml
+  copy: remote_src=False src={{homedir}}{{repo_name}}/docker-compose/game-servers/minecraft/plugins/configs/essentials-x/config.yml dest={{container_volumes_location}}/mc-server/plugins/Essentials/config.yml
 
 - name: Copy a BlueMap files from repo to the remote machine (Minecraft)
   tags: mc
   copy:
-    src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose/game-servers/minecraft/plugins/configs/BlueMap"
+    src: "{{homedir}}{{repo_name}}/docker-compose/game-servers/minecraft/plugins/configs/BlueMap"
     dest: "{{container_volumes_location}}/mc-server/plugins"
 
 - name: Change file ownership, group and permissions for configs that need it
