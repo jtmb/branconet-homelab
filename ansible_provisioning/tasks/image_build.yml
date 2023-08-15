@@ -1,13 +1,13 @@
 - name: Copy Jenkins dockerfile to mnachines
   tags: jenkins
   copy:
-    src: "/home/{{user_id}}/repos/{{repo_name}}/docker-compose/jenkins-cicd"
+    src: "{{homedir}}/docker-compose/jenkins-cicd"
     dest: "/tmp/dockerfiles"
 
 - name: Log into DockerHub
   docker_login:
     username: james.branco@gmail.com
-    password: "{{ansible_ssh_pass}}"
+    password: "{{ansible_sudo_pass}}"
 
 - name: Remove image
   community.docker.docker_image:
