@@ -7,7 +7,7 @@ services:
       - 7878:7878
     volumes:
       - /home/ubuntu/container-program-files/radarr:/config
-      - /home/ubuntu/container-program-files/plex_smb_share/movies:/movies
+      - /mnt/plex_smb_share/movies:/movies
       - /home/ubuntu/container-program-files/deluge/downloads:/downloads
     environment:
       - PUID=1000
@@ -46,7 +46,7 @@ services:
       - 8989:8989
     volumes:
       - /home/ubuntu/container-program-files/sonarr/config:/config
-      - /home/ubuntu/container-program-files/plex_smb_share/tv:/tv
+      - /mnt/plex_smb_share/tv:/tv
       - /home/ubuntu/container-program-files/deluge/downloads:/downloads
     environment:
     - PUID=1000
@@ -115,8 +115,8 @@ services:
       - ADVERTISE_IP=http://192.168.0.24:32400/
     volumes:
       - /home/ubuntu/container-program-files/plex/config:/config
-      - /home/ubuntu/container-program-files/plex_smb_share/tv:/tv
-      - /home/ubuntu/container-program-files/plex_smb_share/movies:/movies
+      - /mnt/plex_smb_share/tv:/tv
+      - /mnt/plex_smb_share/movies:/movies
     restart: unless-stopped
     deploy:
       replicas: 1

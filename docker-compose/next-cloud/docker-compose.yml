@@ -8,7 +8,7 @@ services:
       - 8098:80
     volumes:
       - /home/ubuntu/container-program-files/next_cloud/data:/var/www/html
-      - /home/ubuntu/container-program-files/plex_smb_share:/mnt/plex_smb_share:rw
+      - /mnt/plex_smb_share:/mnt/plex_smb_share:rw
     environment:
       PHP_UPLOAD_LIMIT: 16384
       NEXTCLOUD_TRUSTED_DOMAINS: ${master_node} ${worker_node_1} ${worker_node_2} nextcloud.branconet.lan
