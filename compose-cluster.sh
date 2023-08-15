@@ -2,7 +2,7 @@
 userid=$(whoami)
 public_ip=$(curl icanhazip.com)
 admin_pub_ip=$(echo ['"'$public_ip/32'"'])
-homedir=/home/{{user_id}}/repos/
+homedir=/home/$user_id/repos/media-stack
 # ----------Instance IP's
 master_node=192.168.0.24
 worker_node_1=192.168.0.16
