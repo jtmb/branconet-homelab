@@ -9,6 +9,8 @@
 
 - name: Transfer files to backup drive
   become: true
+  become_method: su
+  become_user: root
   tags: backup_all
   copy:
     src: /home/ubuntu/container-program-files/
