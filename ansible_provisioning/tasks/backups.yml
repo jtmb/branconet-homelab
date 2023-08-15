@@ -1,17 +1,23 @@
-- name: Create backup directory on local if it does not exist
-  tags: backup_all
-  ansible.builtin.file:
-    path: '{{item}}'    
-    state: directory
-    mode: '0755'
-  with_items:
-   - /mnt/backups/server-backups/container-backups-{{ ansible_date_time.iso8601 }}
+# - name: Create backup directory on local if it does not exist
+#   tags: backup_all
+#   ansible.builtin.file:
+#     path: '{{item}}'    
+#     state: directory
+#     mode: '0755'
+#   with_items:
+#    - /mnt/backups/server-backups/container-backups-{{ ansible_date_time.iso8601 }}
 
 
-- name: Compress directory /home/ubuntu/container-program-files/ into /mnt/backups/server-backups/container-backups-{{ ansible_date_time.iso8601 }}
+- name: Compress and backup containers
   community.general.archive:
     path: /home/ubuntu/container-program-files/
     dest: /mnt/backups/server-backups/container-backups-{{ ansible_date_time.iso8601 }}
+
+- name: Compress and backup mc-server
+  community.general.archive:
+    path: /home/ubuntu/container-program-files/mc-server
+    dest: /mnt/backups/server-backups/mc-server-{{ ansible_date_time.iso8601 }}
+
 
 # - name: Transfer files to backup drive
 #   become: true
@@ -35,6 +41,6 @@
 # - name: Transfer MC files to backup drive
 #   tags: mc_backup
 #   copy:
-#     src: /home/ubuntu/container-program-files/
+#     src: /home/ubuntu/container-program-files/mc-server
 #     dest: /mnt/backups/server-backups/mc-server-{{ ansible_date_time.iso8601 }}
 #     remote_src: yes
