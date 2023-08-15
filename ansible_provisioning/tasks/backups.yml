@@ -9,6 +9,7 @@
   delegate_to: localhost
 
 - name: Transfer files to backup drive
+  become: true
   tags: backup_all
   copy:
     src: /home/ubuntu/container-program-files
