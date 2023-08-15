@@ -1,6 +1,6 @@
 - name: SET ADMIN PASS
   ansible.builtin.debug:
-    msg: "{{ansible_ssh_pass}}"
+    msg: "{{ansible_sudo_pass}}"
   register: ADMIN_PASS
   no_log: true
   
