@@ -35,7 +35,9 @@ container_paths:
     - '{{container_volumes_location}}/mc-server/plugins/Essentials'
     - '{{container_volumes_location}}/mc-server/plugins/dynmap'
     - '{{container_volumes_location}}/vault-cicd/config'
-    - '{{container_volumes_location}}/vault-cicd/file'     
+    - '{{container_volumes_location}}/vault-cicd/data'    
+    - '{{container_volumes_location}}/vault-cicd/policies'     
+    - '{{container_volumes_location}}/vault-cicd/logs'      
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
     - '{{container_volumes_location}}/prometheus/'
