@@ -8,10 +8,11 @@ source $homedir/ansible_provisioning/wrapper-scripts/vault-auth.sh
 # --------------------------Vault VARS
 ANSIBLE_SUDO_PASS=$(vault kv get -field=admin_pwd kv/admin_pass)
 # ---------Instance IP's
-master_node=192.168.0.24
-worker_node_1=192.168.0.16
-worker_node_2=192.168.0.19
+master_node=$(vault kv get -field=ip kv/master_node)
+worker_node_1=$(vault kv get -field=ip kv/worker_node_1)
+worker_node_2=$(vault kv get -field=ip kv/worker_node_2)
 # --------------------------------------------------------------------
+
 cd ansible_provisioning && ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inventory.ini main.yml \
     --limit 'all' --skip-tags "reboot" --tags "containers" \
     --extra-vars "ssh_port=2002 pub_key=$pub_key \
