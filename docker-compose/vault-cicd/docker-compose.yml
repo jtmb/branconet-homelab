@@ -8,6 +8,9 @@ services:
       replicas: 1
     ports:
       - 8200:8200
+    volumes:
+      - '${container_volumes_location}/vault-cicd/file:/vault/file:rw'
+      - '${container_volumes_location}/vault-cicd/config:/vault/config:rw'
     environment:
       - VAULT_ADDR=http://127.0.0.1:8200
       - VAULT_LOCAL_CONFIG={"backend":{"consul":{"address":"http://server-bootstrap:8500","path":"vault/"}},"listener":{"tcp":{"address":"0.0.0.0:8200","tls_disable":1}},"ui":true, "disable_mlock":true}
