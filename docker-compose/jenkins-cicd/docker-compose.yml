@@ -7,6 +7,8 @@ services:
       JAVA_OPTS: -Djenkins.install.runSetupWizard=false -Dhudson.footerURL=https://jenkins.branconet.lan
       JENKINS_OPTS: --argumentsRealm.roles.user=admin --argumentsRealm.passwd.admin=${ADMIN_PASS}--argumentsRealm.roles.admin=admin
     restart: always
+    networks:
+     - container-swarm-network
     ports: 
       - "1337:8080"
       - "50000:50000"
