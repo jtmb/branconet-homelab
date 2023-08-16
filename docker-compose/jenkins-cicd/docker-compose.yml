@@ -3,6 +3,7 @@ services:
   jenkins:
     image: jtmb92/jenkins:brajam #jenkins/jenkins:lts-jdk11
     environment:
+      TZ: 'America/Toronto'
       JAVA_OPTS: -Djenkins.install.runSetupWizard=false -Dhudson.footerURL=https://jenkins.branconet.lan
       JENKINS_OPTS: --argumentsRealm.roles.user=admin --argumentsRealm.passwd.admin=${ADMIN_PASS}--argumentsRealm.roles.admin=admin
     restart: always
