@@ -60,12 +60,9 @@ scrape_configs:
     labels:
       alias: "node-exporter"
 
-
 - job_name: mc-exporter
   scrape_interval: 5s
   static_configs:
   - targets: ['mc-exporter:9150'] 
     labels:
       alias: "mc-exporter"
-
-      

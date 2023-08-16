@@ -10,7 +10,7 @@ worker_node_2=192.168.0.19
 # --------------------------------------------------------------------
 
 cd ansible_provisioning && ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inventory.ini main.yml \
-    --limit 'all' --skip-tags "reboot" --tags "containers" \
+    --limit 'master_node' --skip-tags "reboot" --tags "containers" \
     --extra-vars "ssh_port=2002 pub_key=$pub_key \
     master_node=$master_node  \
     worker_node_1=$worker_node_1 \
