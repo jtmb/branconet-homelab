@@ -14,7 +14,7 @@ worker_node_2=$(vault kv get -field=ip kv/worker_node_2)
 # --------------------------------------------------------------------
 
 cd ansible_provisioning && ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inventory.ini main.yml \
-    --limit 'all' --skip-tags "reboot" --tags "containers" \
+    --limit 'all' --skip-tags "reboot,ssh" --tags "all" \
     --extra-vars "ssh_port=2002 pub_key=$pub_key \
     master_node=$master_node  \
     worker_node_1=$worker_node_1 \

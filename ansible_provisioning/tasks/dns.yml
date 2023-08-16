@@ -34,6 +34,8 @@
     - '{{master_node}} uptime.branconet.lan'
     - '{{master_node}} mc.branconet.lan'
     - '{{master_node}} mc.branconet.lan'
+    - '{{master_node}} vault.cicd.branconet.lan'
+    - '{{master_node}} prom.branconet.lan'
 - name: Restart DNS service
   tags: dns
   shell: docker service update pi_pihole --force
