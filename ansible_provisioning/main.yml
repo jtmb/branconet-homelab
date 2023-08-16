@@ -96,6 +96,9 @@
     tags: 
      - post
      - cron
+  - name: Update Actions
+    include: tasks/update_ubuntu.yml
+    tags: update_ubuntu
   - name: Reboot Actions
     include: tasks/reboot.yml
     tags: reboot
