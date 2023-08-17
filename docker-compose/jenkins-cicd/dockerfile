@@ -3,7 +3,8 @@ FROM jenkins/jenkins:lts-jdk11
 USER root
 RUN apt update && \
     apt install ansible -y && \
-    apt install git -y
+    apt install git -y && \
+    apt install vault -y
 
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 RUN jenkins-plugin-cli --plugins \
