@@ -1,11 +1,22 @@
 FROM jenkins/jenkins:lts-jdk11
 
 USER root
+# Install Package Dependencies
+RUN apt update && \
+    apt install wget -y && apt install gpg -y && \
+    apt install software-properties-common -y
+
+# Add Hashicorp Repos for vault install
+COPY install-vault.sh /tmp/install-vault.sh
+RUN  bash /tmp/install-vault.sh
+
+# Add Packages
 RUN apt update && \
     apt install ansible -y && \
     apt install git -y && \
     apt install vault -y
 
+# Add Jenkins plugins
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 RUN jenkins-plugin-cli --plugins \
  "git:5.2.0"\
@@ -18,4 +29,7 @@ RUN jenkins-plugin-cli --plugins \
  "publish-over-ssh:1.25" \
  "workflow-scm-step:415.v434365564324"
 
-# RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
+# Remove Package Install Dependencies
+RUN apt update && \
+    apt remove wget -y && apt remove software-properties-common -y && \
+    apt remove gpg -y
