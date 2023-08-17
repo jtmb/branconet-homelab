@@ -3,4 +3,4 @@ VAULT_SERVER=$(cat /$HOME/.secrets/vault_server)
 export VAULT_ADDR=$VAULT_SERVER
 export VAULT_TOKEN=$AUTH_TOKEN
 vault login $VAULT_TOKEN
-vault token renew -increment=4h $VAULT_TOKEN
+vault token renew -increment=24h $VAULT_TOKEN

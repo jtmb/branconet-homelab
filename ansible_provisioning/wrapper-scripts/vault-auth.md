@@ -21,3 +21,6 @@
 
 # <h3> get value of admin_pwd (if using example would be redacted)
     vault kv get -field=admin_pwd kv/admin_pass
+
+ # Create Token
+vault token create -policy=default -period=24h -renewable  -ttl=72h
