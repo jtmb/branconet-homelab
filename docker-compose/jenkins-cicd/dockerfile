@@ -27,7 +27,8 @@ RUN jenkins-plugin-cli --plugins \
  "workflow-aggregator:596.v8c21c963d92d" \
  "discord-notifier:241.v448b_ccd0c0d6" \
  "publish-over-ssh:1.25" \
- "workflow-scm-step:415.v434365564324"
+ "workflow-scm-step:415.v434365564324" \
+ "ansicolor:1.0.3" 
 
 # Remove Package Install Dependencies
 RUN apt update && \
