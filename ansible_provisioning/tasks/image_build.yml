@@ -9,10 +9,9 @@
     username: james.branco@gmail.com
     password: "{{ansible_sudo_pass}}"
 
-# - name: Remove image
-#   community.docker.docker_image:
-#     state: absent
-#     name: jenkins:brajam
+- name: Remove image
+  shell: docker image rm jtmb92/jenkins:brajam --force
+
 - name: Build Jenkins Custom Image
   community.docker.docker_image:
     build:
