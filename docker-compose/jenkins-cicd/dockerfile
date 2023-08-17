@@ -14,8 +14,8 @@ RUN  bash /tmp/install-vault.sh
 RUN apt update && \
     apt install ansible -y && \
     apt install git -y && \
-    apt install vault -y
-
+    apt-get install --reinstall -y vault 
+    
 # Add Jenkins plugins
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 RUN jenkins-plugin-cli --plugins \
