@@ -1,9 +1,13 @@
-  - name: Add new proxied A record
-    uri:
-      url: "https://api.cloudflare.com/client/v4/zones/{{ cf_zone_id }}/dns_records"
-      method: POST
-      body: '{"type":"A","name":"test.{{domain_name}}","content":"{{  PUB_IP }}","ttl":1,"proxied":true}'
-      body_format: json
-      headers:
-        Authorization: "bearer {{ cf_key }}"
-        Content-Type: "application/json"
+- name: Add new proxied A record
+  uri:
+    url: "https://api.cloudflare.com/client/v4/zones/{{ cf_zone_id }}/dns_records"
+    method: POST
+    body: '{"type":"A","name":"{{item}}.{{domain_name}}","content":"{{  PUB_IP }}","ttl":1,"proxied":true}'
+    body_format: json
+    headers:
+      Authorization: "bearer {{ cf_key }}"
+      Content-Type: "application/json"
+  with_items: '{{cf_service_name}}'
+  register: record_output
+  failed_when: #does not fail job when Record already exists or when record was succesfully added. Fails otherwise (custom error handling)
+    record_output.json.errors | map(attribute='message') | list | join("") != "Record already exists." or 'success' in record_output.json and record_output.json.success
