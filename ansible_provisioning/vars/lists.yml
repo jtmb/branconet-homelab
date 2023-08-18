@@ -36,8 +36,7 @@ container_paths:
     - '{{container_volumes_location}}/mc-server/plugins/dynmap'
     - '{{container_volumes_location}}/server-bootstrap'
     - '{{container_volumes_location}}/consul-server'
-    - '{{container_volumes_location}}/consul-client'    
-          
+    - '{{container_volumes_location}}/consul-client'             
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
     - '{{container_volumes_location}}/prometheus/'
@@ -51,7 +50,6 @@ root_container_permission_paths:
     - '{{container_volumes_location}}/server-bootstrap'
     - '{{container_volumes_location}}/consul-server'
     - '{{container_volumes_location}}/consul-client'    
-
     
 # Docker Stack Deploy
 stack_deploy:
@@ -67,15 +65,12 @@ stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/jenkins-cicd/docker-compose.yml cicd"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/home-assistant/docker-compose.yml cicd"    
-    
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/home-assistant/docker-compose.yml cicd"     
 
 # Docker Swarm Scale Services
 swarm_scale:
     - docker service scale cicd_server-bootstrap=1
     - docker service scale cicd_vault=1
-    # - docker service scale cicd_consul-server=2
-    # - docker service scale cicd_consul-client=2
     - docker service scale cicd_home-assistant=1
     - docker service scale gamesrv_minecraft-paper=1
     - docker service scale gamesrv_mc-exporter=1
@@ -104,4 +99,12 @@ swarm_scale:
     - docker service scale ws_lucinda=2
     - docker service scale ws_santos=2
     - docker service scale ws_aplb=2
+
+# Cloudflare Subdomains
+cf_service_name:
+    - mcweb
+    - aplb
+    - santos
+    - lucinda
+
 
