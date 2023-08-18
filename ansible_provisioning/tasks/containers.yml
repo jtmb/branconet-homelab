@@ -11,6 +11,7 @@
   with_items: "{{ stack_deploy }}"
   loop_control:
     label: "{{ item | regex_replace('^.*docker stack deploy', 'docker stack deploy') }}" #replaces env secrets from being shown in console output
+    
 - name: SCALE SWARM CONTAINERS
   shell: "{{ item }}"
   with_items: "{{ swarm_scale }}"
