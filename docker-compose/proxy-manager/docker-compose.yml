@@ -10,8 +10,8 @@ services:
     environment:
       DISABLE_IPV6: 'true'
     volumes:
-      - /home/ubuntu/container-program-files/PROXY-MANAGER/data:/data
-      - /home/ubuntu/container-program-files/PROXY-MANAGER/letsencrypt:/etc/letsencrypt
+      - ${container_volumes_location}/PROXY-MANAGER/data:/data
+      - ${container_volumes_location}/PROXY-MANAGER/letsencrypt:/etc/letsencrypt
     networks:
       - container-swarm-network
     deploy:

@@ -21,7 +21,7 @@ services:
       - "9000:9000"
       - "8000:8000"
     volumes:
-    - /home/ubuntu/container-program-files/portainer:/data
+    - ${container_volumes_location}/portainer:/data
     networks:
       - agent_network
     deploy:
