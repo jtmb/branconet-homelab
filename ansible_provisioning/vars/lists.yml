@@ -101,12 +101,14 @@ swarm_scale:
     - docker service scale ws_aplb=2
 
 # Cloudflare Subdomains
-cf_service_name:
+cf_service_name_proxied:
     - mcweb
     - aplb
     - santos
     - lucinda
     - www
+cf_service_name:
+    - mc
 
 
 
