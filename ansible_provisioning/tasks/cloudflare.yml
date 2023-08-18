@@ -9,6 +9,6 @@
       Content-Type: "application/json"
   with_items: '{{cf_service_name}}'
   register: record_output
-  failed_when: # does not fail job when Record already exists or when record was successfully added. Fails otherwise (custom error handling)
-    - ("Record already exists." not in record_output.json.errors | map(attribute='message') | list | join("")) and
-      (record_output.status != 200)  # Add this condition to catch other errors
+  failed_when: 
+    - ("Record already exists." not in record_output.json.errors | map(attribute='message') | list | join("")) and # does not fail job when Record already exists
+      (record_output.status != 200)  # fails if status does not equal 200 (success)
