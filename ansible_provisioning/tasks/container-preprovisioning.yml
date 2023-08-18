@@ -60,3 +60,13 @@
     recurse: yes
   with_items: "{{ www_container_permission_paths }}"
 
+
+- name: Change file ownership, group and permissions for containers that need root
+  ansible.builtin.file:
+    path: "{{item}}"
+    state: directory
+    owner: '100' 
+    group: '1000' 
+    recurse: yes
+  with_items: "{{ root_container_permission_paths }}"
+

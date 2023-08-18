@@ -34,10 +34,10 @@ container_paths:
     - '{{container_volumes_location}}/home-assistant/config'  
     - '{{container_volumes_location}}/mc-server/plugins/Essentials'
     - '{{container_volumes_location}}/mc-server/plugins/dynmap'
-    - '{{container_volumes_location}}/vault-cicd/config'
-    - '{{container_volumes_location}}/vault-cicd/data'    
-    - '{{container_volumes_location}}/vault-cicd/policies'     
-    - '{{container_volumes_location}}/vault-cicd/logs'      
+    - '{{container_volumes_location}}/server-bootstrap'
+    - '{{container_volumes_location}}/consul-server'
+    - '{{container_volumes_location}}/consul-client'    
+          
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
     - '{{container_volumes_location}}/prometheus/'
@@ -47,6 +47,10 @@ alt_container_permission_paths:
     - '{{container_volumes_location}}/mc-server/'
 www_container_permission_paths:
     - '{{container_volumes_location}}/next_cloud/data'   
+root_container_permission_paths: 
+    - '{{container_volumes_location}}/server-bootstrap'
+    - '{{container_volumes_location}}/consul-server'
+    - '{{container_volumes_location}}/consul-client'    
 
     
 # Docker Stack Deploy
@@ -68,6 +72,10 @@ stack_deploy:
 
 # Docker Swarm Scale Services
 swarm_scale:
+    - docker service scale cicd_server-bootstrap=1
+    - docker service scale cicd_vault=1
+    # - docker service scale cicd_consul-server=2
+    # - docker service scale cicd_consul-client=2
     - docker service scale cicd_home-assistant=1
     - docker service scale gamesrv_minecraft-paper=1
     - docker service scale gamesrv_mc-exporter=1
@@ -96,7 +104,4 @@ swarm_scale:
     - docker service scale ws_lucinda=2
     - docker service scale ws_santos=2
     - docker service scale ws_aplb=2
-    - docker service scale cicd_server-bootstrap=1
-    - docker service scale cicd_vault=1
-    - docker service scale cicd_consul-server=2
-    - docker service scale cicd_consul-client=2
+
