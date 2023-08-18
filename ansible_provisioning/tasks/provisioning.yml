@@ -75,9 +75,9 @@
     append: yes
 
 - name: Install Docker loki driver plugin
-  when: ansible_architecture != "armv7l"
   shell: docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
   ignore_errors: true
+
 # Mount SMB Drives
 
 - name: Check if cifs-utils is present

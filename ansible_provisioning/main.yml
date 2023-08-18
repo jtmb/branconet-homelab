@@ -2,11 +2,9 @@
 - name: "Provision Enviorment"
   strategy: linear
   hosts: all
-  become: true
-  vars_files: 
-   - vars/vars.yml
+  become: true 
   tasks:
-
+  
   - name: Collect Server IP
     debug:
       msg: "{{ ansible_ssh_host }}"
@@ -14,7 +12,7 @@
     debug: 
        msg: '{{ansible_architecture}}'
   - name: Install Required Packages
-    include: tasks/pre_provisioning.yml
+    include: tasks/provisioning.yml
     tags: packages
   - name: Setup SSH
     include: tasks/ssh_setup.yml
@@ -28,8 +26,6 @@
   hosts: master_node
   become_user: "root"
   become: true
-  vars_files:
-    - vars/vars.yml
   tasks:
   - name: Install swarm
     include: tasks/swarm_master.yml
@@ -41,8 +37,6 @@
     - worker_node_2
   become_user: "root"
   become: true
-  vars_files:
-    - vars/vars.yml
   tasks:
   - name: Install swarm
     include: tasks/swarm_worker_join.yml
@@ -54,7 +48,6 @@
   become_user: "root"
   become: true
   vars_files:
-    - vars/vars.yml
     - vars/lists.yml
   tasks:
   - name: Git Clone App Repos
@@ -75,21 +68,23 @@
 
 - name: "DNS"
   hosts: master_node
+  vars_files:
+    - vars/lists.yml
   become_user: "root"
   become: true
-  vars_files:
-    - vars/vars.yml
   tasks:
   - name: Post Provisioning DNS Tasks
     include: tasks/dns.yml
     tags: post
+    
+  - name: Cloudflare DNS 
+    include: tasks/cloudflare.yml
+    tags: cloudflare
 
 - name: "POST PROVISIONING"
   hosts: all
   become_user: "root"
   become: true
-  vars_files:
-    - vars/vars.yml
   tasks:
   - name: Post Provisioning CRON Tasks
     include: tasks/cron.yml
@@ -107,8 +102,6 @@
   hosts: master_node
   become_user: "root"
   become: true
-  vars_files:
-    - vars/vars.yml
   tasks:
   - name: Backup Tasks
     include: tasks/backups.yml

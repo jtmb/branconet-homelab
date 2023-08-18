@@ -1,29 +1,19 @@
-# ----------VARS
-userid=$(whoami)
-homedir=/home/$userid/repos/media-stack
-public_ip=$(curl icanhazip.com)
-admin_pub_ip=$(echo ['"'$public_ip/32'"'])
-# -----------------Vault Auth
-source $homedir/ansible_provisioning/wrapper-scripts/vault-auth.sh
-# --------------------------Vault VARS
-ANSIBLE_SUDO_PASS=$(vault kv get -field=admin_pwd kv/admin_pass)
-# ---------Instance IP's
-master_node=$(vault kv get -field=ip kv/master_node)
-worker_node_1=$(vault kv get -field=ip kv/worker_node_1)
-worker_node_2=$(vault kv get -field=ip kv/worker_node_2)
-# --------------------------------------------------------------------
+# VARS
+source ansible_provisioning/vars/vars.sh
 
-cd ansible_provisioning && ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inventory.ini main.yml \
-    --limit 'all' --skip-tags "reboot,ssh" --tags "images,containers" \
-    --extra-vars "ssh_port=2002 pub_key=$pub_key \
+# Ansible Playbook Consumes VARS
+cd ansible_provisioning && \
+     ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inventory.ini main.yml \
+    --limit 'master_node' --skip-tags "reboot,ssh" --tags "cloudflare" \
+    --extra-vars "ssh_port=$SSH_PORT pub_key=$pub_key \
     master_node=$master_node  \
     worker_node_1=$worker_node_1 \
     worker_node_2=$worker_node_2  \  
     ssh_cert=$HOME/.ssh/id_rsa homedir=$homedir \
+    container_volumes_location=$container_volumes_location \
     user_id=$userid  \
-    PUB_IP=$public_ip \
-    ansible_sudo_pass=$ANSIBLE_SUDO_PASS"
-
+    PUB_IP=$public_ip cf_key=$cf_key cf_zone_id=$cf_zone_id domain_name=$domain_name \
+    ssh_user=$ANSIBLE_SSH_USER ansible_sudo_pass=$ANSIBLE_SUDO_PASS"
 
 # TAGS 
     # containers
@@ -37,3 +27,4 @@ cd ansible_provisioning && ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inve
     # dns 
     # mc 
     # ssh 
+    # cloudflare
