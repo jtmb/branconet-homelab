@@ -10,7 +10,7 @@ services:
     environment:
       DISABLE_IPV6: 'true'
     volumes:
-      - /home/ubuntu/container-program-files/ws-lucinda:/usr/share/nginx/html
+      - ${container_volumes_location}/ws-lucinda:/usr/share/nginx/html
     logging:
       driver: loki
       options:
@@ -28,7 +28,7 @@ services:
     environment:
       DISABLE_IPV6: 'true'
     volumes:
-      - /home/ubuntu/container-program-files/ws-santos:/usr/share/nginx/html
+      - ${container_volumes_location}/ws-santos:/usr/share/nginx/html
     logging:
       driver: loki
       options:
@@ -46,7 +46,7 @@ services:
     environment:
       DISABLE_IPV6: 'true'
     volumes:
-      - /home/ubuntu/container-program-files/ws-aplb:/usr/share/nginx/html
+      - ${container_volumes_location}/ws-aplb:/usr/share/nginx/html
     logging:
       driver: loki
       options:
@@ -64,7 +64,7 @@ services:
     environment:
       DISABLE_IPV6: 'true'
     volumes:
-      - /home/ubuntu/container-program-files/mc-branconet-lan:/usr/share/nginx/html
+      - ${container_volumes_location}/mc-branconet-lan:/usr/share/nginx/html
     logging:
       driver: loki
       options:
