@@ -1,8 +1,39 @@
-- name: Add new proxied A record
+# - name: Add A records (Proxied)
+#   uri:
+#     url: "https://api.cloudflare.com/client/v4/zones/{{ cf_zone_id }}/dns_records"
+#     method: POST
+#     body: '{"type":"A","name":"{{item}}.{{domain_name}}","content":"{{  PUB_IP }}","ttl":1,"proxied":true}'
+#     body_format: json
+#     headers:
+#       Authorization: "bearer {{ cf_key }}"
+#       Content-Type: "application/json"
+#   with_items: '{{cf_service_name_proxied}}'
+#   register: record_output
+#   failed_when: 
+#     - ("Record already exists." not in record_output.json.errors | map(attribute='message') | list | join("")) and 
+#       (record_output.status != 200) 
+
+
+# - name: Add A records (DNS Only)
+#   uri:
+#     url: "https://api.cloudflare.com/client/v4/zones/{{ cf_zone_id }}/dns_records"
+#     method: POST
+#     body: '{"type":"A","name":"{{item}}.{{domain_name}}","content":"{{  PUB_IP }}","ttl":1,"proxied":false}'
+#     body_format: json
+#     headers:
+#       Authorization: "bearer {{ cf_key }}"
+#       Content-Type: "application/json"
+#   with_items: '{{cf_service_name}}'
+#   register: record_output
+#   failed_when: 
+#     - ("Record already exists." not in record_output.json.errors | map(attribute='message') | list | join("")) and 
+
+
+- name: Add new SRV record (DNS Only)
   uri:
     url: "https://api.cloudflare.com/client/v4/zones/{{ cf_zone_id }}/dns_records"
     method: POST
-    body: '{"type":"A","name":"{{item}}.{{domain_name}}","content":"{{  PUB_IP }}","ttl":1,"proxied":true}'
+    body: '{"type": "SRV", "data": {"service": "_{{item}}", "proto": "_tcp", "name": "{{item}}", "priority": 1, "weight": 1, "port": 25565, "target": "{{item}}.{{domain_name}}"}}'
     body_format: json
     headers:
       Authorization: "bearer {{ cf_key }}"
@@ -10,5 +41,5 @@
   with_items: '{{cf_service_name}}'
   register: record_output
   failed_when: 
-    - ("Record already exists." not in record_output.json.errors | map(attribute='message') | list | join("")) and # does not fail job when A Record already exists
-      (record_output.status != 200)  # fails if status does not equal 200 (success)
+    - ("Record already exists." not in record_output.json.errors | map(attribute='message') | list | join("")) and 
+      (record_output.status != 200) 
