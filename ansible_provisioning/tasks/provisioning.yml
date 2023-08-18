@@ -75,8 +75,11 @@
     append: yes
 
 - name: Install Docker loki driver plugin
+  tags: loki_driver
   shell: docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
-  ignore_errors: true
+  register: driver_status
+  changed_when: driver_status.rc == 0 and "plugin loki:latest already exists" not in driver_status.stderr
+  failed_when: false
 
 # Mount SMB Drives
 
