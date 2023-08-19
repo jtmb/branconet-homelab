@@ -10,7 +10,7 @@ cd ansible_provisioning && ansible all -m ansible.builtin.shell -a 'rm -rfv /hom
     ssh_cert=$HOME/.ssh/id_rsa homedir=$homedir \
     container_volumes_location=$container_volumes_location \
     user_id=$userid  \
-    PUB_IP=$public_ip cf_key=$cf_key cf_zone_id=$cf_zone_id domain_name=$domain_name \
+    PUB_IP=$public_ip cf_key=$cf_key cf_zone_id=$cf_zone_id domain_name=$domain_name discord_webook=$discord_webook \
     ssh_user=$ANSIBLE_SSH_USER ansible_sudo_pass=$ANSIBLE_SUDO_PASS"
 
 # TAGS 

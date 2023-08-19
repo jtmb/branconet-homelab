@@ -1,22 +1,31 @@
 - name: Copy Jenkins dockerfile to mnachines
   tags: jenkins
   copy:
-    src: "{{homedir}}/docker-compose/jenkins-cicd"
+    src: "{{homedir}}/docker-compose/{{item}}"
     dest: "/tmp/dockerfiles"
+  with_items:
+   - cloudflare-ip-checker
+   - jenkins-cicd
 
 - name: Log into DockerHub
   docker_login:
     username: james.branco@gmail.com
     password: "{{ansible_sudo_pass}}"
 
-- name: Remove image
-  shell: docker image rm jtmb92/jenkins:brajam --force
-
 - name: Build Jenkins Custom Image
   community.docker.docker_image:
     build:
-      path: /tmp/dockerfiles/jenkins-cicd
+      path: /tmp/dockerfiles/jenkins-cicd/dockerfile_
     repository: jtmb92/jenkins
     name: jenkins:brajam
+    source: build
+    push: true
+
+- name: Build cloudflare_ip_checker Image
+  community.docker.docker_image:
+    build:
+      path: /tmp/dockerfiles/cloudflare-ip-checker/dockerfile_
+    repository: jtmb92/cloudflare_ip_checker
+    name: cloudflare_ip_checker:latest
     source: build
     push: true

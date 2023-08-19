@@ -1,0 +1,11 @@
+# for testing only
+version: '3'
+
+services:
+  ip-checker:
+    build: .
+    environment:
+      CF_KEY:  key here
+      CF_ZONE_ID: zone id here
+      DISCORD_WEBHOOK: hook here
+      A_NAME_RECORD: record here
