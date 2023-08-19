@@ -2,12 +2,15 @@
 
 # Define the wrapper script to run
 WRAPPER_SCRIPT="/data/ip_check/runner.sh"
+ANSIBLE_VARS_LOCATION="/data/ip_check/vars.yml"
 
 # Set vars for ansible
-echo a_name_record: $A_NAME_RECORD >> /data/ip_check/vars.yml
-echo cf_key: $CF_KEY >> /data/ip_check/vars.yml
-echo cf_zone_id: $CF_ZONE_ID >> /data/ip_check/vars.yml
-echo discord_webhook: $DISCORD_WEBHOOK >> /data/ip_check/vars.yml
+rm -f $ANSIBLE_VARS_LOCATION
+touch $ANSIBLE_VARS_LOCATION
+echo a_name_record: $A_NAME_RECORD >> $ANSIBLE_VARS_LOCATION
+echo cf_key: $CF_KEY >> $ANSIBLE_VARS_LOCATION
+echo cf_zone_id: $CF_ZONE_ID >> $ANSIBLE_VARS_LOCATION
+echo discord_webhook: $DISCORD_WEBHOOK >> $ANSIBLE_VARS_LOCATION
 
 # Function to run the wrapper script
 cd /data/ip_check

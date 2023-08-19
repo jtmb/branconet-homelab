@@ -29,4 +29,4 @@ worker_node_2=$(vault kv get -field=ip kv/worker_node_2)
 cf_key=$(vault kv get -field=key kv/cf_key)
 cf_zone_id=$(vault kv get -field=id kv/cf_zone_id)
 domain_name=$(vault kv get -field=value kv/domain_name)
-discord_webhook=$(vault kv get -field=value kv/discord_webhook
+discord_webhook=$(vault kv get -field=value kv/discord_webhook)

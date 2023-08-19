@@ -52,6 +52,9 @@ root_container_permission_paths:
     - '{{container_volumes_location}}/consul-client'    
     
 # Docker Stack Deploy
+stack_deploy_cicd:
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/jenkins-cicd/docker-compose.yml cicd"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"
 stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/game-servers/minecraft/docker-compose.yml gamesrv"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws"
@@ -63,8 +66,6 @@ stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/monitoring-stack/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/jenkins-cicd/docker-compose.yml cicd"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/home-assistant/docker-compose.yml cicd"     
 
