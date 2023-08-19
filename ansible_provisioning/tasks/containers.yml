@@ -6,7 +6,7 @@
   
 - name: DEPLOY CONTAINERS STACK 
   vars:
-    env_file: env ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} container_volumes_location={{container_volumes_location}}
+    env_file: env cf_key={{cf_key}} cf_zone_id={{cf_zone_id}} discord_webook={{discord_webook}} a_name_record={{a_name_record}}  ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} container_volumes_location={{container_volumes_location}}
   shell: "{{ item }}"
   with_items: "{{ stack_deploy }}"
   loop_control:

@@ -1,0 +1,40 @@
+FROM ubuntu:22.04
+
+USER root
+
+# Install Package Dependencies
+RUN apt update && \
+    apt install wget -y && apt install gpg -y && apt install curl -y && \
+    apt install software-properties-common -y && add-apt-repository universe -y
+
+# Set TimeZone so ansible does not cry
+RUN echo "Etc/UTC" > /etc/timezone 
+
+# Add Packages
+RUN apt update && \
+    apt install ansible -y && apt install git -y 
+RUN apt-get install python3-pip -y && python3 -m pip install jmespath
+
+# provision app
+RUN mkdir data
+RUN git clone https://github.com/jtmb/ip_check.git
+RUN mv ip_check /data/ip_check
+RUN chmod -R 0644 /data/ip_check/runner.sh 
+RUN chmod +x /data/ip_check/runner.sh
+
+# Create the log file to be able to run tail
+RUN touch /var/log/cron.log
+
+# Remove Package Install Dependencies
+RUN apt update && \
+    apt remove wget -y && apt remove software-properties-common -y && \
+    apt remove gpg -y && apt remove git -y
+
+# Copy Entrypoint *also sets cron*
+COPY entrypoint.sh /data/entrypoint.sh
+RUN chmod +x /data/entrypoint.sh
+
+# Run Entrypoint, Set workdir
+SHELL ["/bin/bash", "-c"]
+CMD bash /data/entrypoint.sh
+WORKDIR /data
