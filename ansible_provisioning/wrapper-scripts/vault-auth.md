@@ -23,4 +23,4 @@
     vault kv get -field=admin_pwd kv/admin_pass
 
  # Create Token
-vault token create -policy=default -period=24h -renewable  -ttl=72h
+vault token create -policy=default -period=26h -renewable  -ttl=72h

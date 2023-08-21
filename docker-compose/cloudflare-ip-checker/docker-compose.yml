@@ -1,25 +1,27 @@
 version: "3.8"
 services:
-  cloudflare-ip-checker:
-    image: "jtmb92/cloudflare_ip_checker:latest"
-    restart: always
-    networks:
-     - container-swarm-network
-    environment:
-      CF_KEY:  ${cf_key}
-      CF_ZONE_ID: ${cf_zone_id}
-      DISCORD_WEBHOOK: ${discord_webook}
-      A_NAME_RECORD: ${a_name_record}
-    deploy:
-      replicas: 1
-      placement:
-        max_replicas_per_node: 1
-    logging:
-      driver: loki
-      options:
-        loki-url: "http://localhost:3100/loki/api/v1/push"
-        loki-retries: "5"
-        loki-batch-size: "400"
+    cloudflare-ip-checker:
+        image: "jtmb92/cloudflare_ip_checker"
+        restart: always
+        networks:
+            - container-swarm-network
+        environment:
+            API_KEY:  ${cf_key}
+            ZONE_ID: ${cf_zone_id}
+            WEBHOOK_URL: ${discord_webook}
+            DNS_RECORDS: 'mcweb.jtmb.cc/A map.jtmb.cc/A aplb.jtmb.cc/A lucinda.jtmb.cc/A santos.jtmb.cc/A'
+            REQUEST_TIME: "2m"
+            EMAIL: ${email}
+        deploy:
+            replicas: 1
+            placement:
+                max_replicas_per_node: 1
+        logging:
+            driver: loki
+            options:
+                loki-url: "http://localhost:3100/loki/api/v1/push"
+                loki-retries: "5"
+                loki-batch-size: "400"
 networks:
- container-swarm-network:
-    external: true
+    container-swarm-network:
+     external: true
