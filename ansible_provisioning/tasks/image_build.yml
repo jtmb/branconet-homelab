@@ -4,7 +4,6 @@
     src: "{{homedir}}/docker-compose/{{item}}"
     dest: "/tmp/dockerfiles"
   with_items:
-   - cloudflare-ip-checker
    - jenkins-cicd
 
 - name: Log into DockerHub
@@ -16,16 +15,26 @@
   community.docker.docker_image:
     build:
       path: /tmp/dockerfiles/jenkins-cicd/dockerfile_
+      nocache: true
     repository: jtmb92/jenkins
     name: jenkins:brajam
     source: build
     push: true
+    force_tag: true
+
+- name: Download Dockerfiles from repos
+  ansible.builtin.git:
+    repo: https://github.com/jtmb/cloudflare-ip-checker.git
+    dest: '/tmp/dockerfiles/cloudflare-ip-checker'
+    version: master
 
 - name: Build cloudflare_ip_checker Image
   community.docker.docker_image:
     build:
-      path: /tmp/dockerfiles/cloudflare-ip-checker/dockerfile_
+      path: /tmp/dockerfiles/cloudflare-ip-checker/
+      nocache: true
     repository: jtmb92/cloudflare_ip_checker
     name: cloudflare_ip_checker:latest
     source: build
     push: true
+    force_tag: true
