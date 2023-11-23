@@ -22,7 +22,7 @@ container_volumes_location=$(vault kv get -field=path kv/container_volumes_locat
 
 # INSTANCE IP's
 master_node=$(vault kv get -field=ip kv/master_node)
-worker_node_1=$(vault kv get -field=ip kv/worker_node_1)
+# worker_node_1=$(vault kv get -field=ip kv/worker_node_1)
 worker_node_2=$(vault kv get -field=ip kv/worker_node_2)
 
 # CLOUDFLARE
@@ -31,3 +31,7 @@ cf_zone_id=$(vault kv get -field=id kv/cf_zone_id)
 domain_name=$(vault kv get -field=value kv/domain_name)
 discord_webhook=$(vault kv get -field=value kv/discord_webhook)
 email=$(vault kv get -field=value kv/email)
+
+# VPN
+nord_user=$(vault kv get -field=value kv/nord_user)
+nord_pass=$(vault kv get -field=value kv/nord_password)

@@ -27,7 +27,10 @@
     - '{{master_node}} plex.tv.lan'
     - '{{master_node}} monitoring.branconet.lan'
     - '{{master_node}} portainer.branconet.lan'
-    - '{{master_node}} deluge.branconet.lan'
+    - '{{master_node}} qbittorrent.branconet.lan'
+    - '{{master_node}} sonarr.branconet.lan'
+    - '{{master_node}} radarr.branconet.lan'
+    - '{{master_node}} overseerr.branconet.lan'
     - '{{master_node}} jenkins.branconet.lan'
     - '{{master_node}} vpn.branconet.lan'
     - '{{master_node}} nextcloud.branconet.lan'
@@ -36,6 +39,7 @@
     - '{{master_node}} mc.branconet.lan'
     - '{{master_node}} vault.cicd.branconet.lan'
     - '{{master_node}} prom.branconet.lan'
+    - '{{master_node}} tor.branconet.lan'
 - name: Restart DNS service
   tags: dns
   shell: docker service update pi_pihole --force
