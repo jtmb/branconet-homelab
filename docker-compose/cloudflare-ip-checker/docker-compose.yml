@@ -1,17 +1,21 @@
 version: "3.8"
 services:
     cloudflare-ip-checker:
-        image: "jtmb92/cloudflare_ip_checker"
+        image: "jtmb92/cloudflare_ip_checker:UI"
         restart: always
         networks:
             - container-swarm-network
+        ports:
+            - '8091:8080'
         environment:
             API_KEY:  ${cf_key}
             ZONE_ID: ${cf_zone_id}
-            WEBHOOK_URL: ${discord_webook}
-            DNS_RECORDS: 'mcweb.jtmb.cc/A map.jtmb.cc/A aplb.jtmb.cc/A lucinda.jtmb.cc/A santos.jtmb.cc/A'
+            WEBHOOK_URL: "${discord_webhook}"
+            DNS_RECORDS: 'mcweb.jtmb.cc/A map.jtmb.cc/A aplb.jtmb.cc/A lucinda.jtmb.cc/A santos.jtmb.cc/A mcweb.jtmb.cc/A map.jtmb.cc/A media.jtmb.cc/A mc.jtmb.cc/A/0'
             REQUEST_TIME: "2m"
             EMAIL: ${email}
+            DASHBOARD_USER: brajam #the default dashboard login username
+            DASHBOARD_PASSWORD: "${ADMIN_PASS}" #the default dashboard login password
         deploy:
             replicas: 1
             placement:

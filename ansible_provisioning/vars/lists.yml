@@ -31,7 +31,6 @@ container_paths:
     - '{{container_volumes_location}}/homepage/app'
     - '{{container_volumes_location}}/loki/data'
     - '{{container_volumes_location}}/loki/config'
-    - '{{container_volumes_location}}/home-assistant/config'  
     - '{{container_volumes_location}}/mc-server/plugins/Essentials'
     - '{{container_volumes_location}}/mc-server/plugins/dynmap'
     - '{{container_volumes_location}}/server-bootstrap'
@@ -56,25 +55,24 @@ stack_deploy_cicd:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/jenkins-cicd/docker-compose.yml cicd"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"
 stack_deploy:
+    - "{{env_file}} docker compose -f /tmp/docker-compose/torrent-stack/docker-compose.yml up -d" 
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/game-servers/minecraft/docker-compose.yml gamesrv"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/pi/docker-compose.yml pi"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/media-stack/docker-compose.yml media"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/proxy-manager/docker-compose.yml proxy"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/portainer-stack/docker-compose.yml portainer"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/cloudflare-ip-checker/docker-compose.yml monitoring"
+    # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/cloudflare-ip-checker/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/monitoring-stack/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/home-assistant/docker-compose.yml cicd"     
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws" 
 
 # Docker Swarm Scale Services
 swarm_scale:
-    - docker service scale monitoring_cloudflare-ip-checker=1   
+    # - docker service scale monitoring_cloudflare-ip-checker=1   
     - docker service scale cicd_server-bootstrap=1
     - docker service scale cicd_vault=1
-    - docker service scale cicd_home-assistant=1
     - docker service scale gamesrv_minecraft-paper=1
     - docker service scale gamesrv_mc-exporter=1
     - docker service scale pi_pihole=1
@@ -91,11 +89,10 @@ swarm_scale:
     - docker service scale monitoring_uptime-kuma=1
     - docker service scale portainer_portainer=1
     - docker service scale proxy_nginx-proxy-manager=1
-    - docker service scale media_plex=1
+    # - docker service scale media_plex=1
     - docker service scale media_radarr=1
     - docker service scale media_overseerr=1
     - docker service scale media_jackett=1
-    - docker service scale media_deluge=1
     - docker service scale media_sonarr=1
     - docker service scale ws_mcwebsite=1
     - docker service scale ws_homepage=1
@@ -113,6 +110,7 @@ cf_service_name_proxied:
     - www
 cf_service_name:
     - mc
+
 
 
 

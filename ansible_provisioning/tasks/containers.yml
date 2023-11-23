@@ -6,18 +6,9 @@
   
 - name: DEPLOY CONTAINERS STACK 
   vars:
-    env_file: env cf_key={{cf_key}} email={{email}} cf_zone_id={{cf_zone_id}} discord_webook={{discord_webook}} domain_name={{domain_name}} ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} container_volumes_location={{container_volumes_location}}
+    env_file: env nord_user={{nord_user}} nord_pass={{nord_pass}} cf_key={{cf_key}} email={{email}} cf_zone_id={{cf_zone_id}} discord_webhook={{discord_webhook}} domain_name={{domain_name}} ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} container_volumes_location={{container_volumes_location}}
   shell: "{{ item }}"
   with_items: "{{ stack_deploy }}"
-  loop_control:
-    label: "{{ item | regex_replace('^.*docker stack deploy', 'docker stack deploy') }}" #replaces env secrets from being shown in console output
-
-- name: DEPLOY CICD CONTAINERS STACK
-  tags: jenkins,vault
-  vars:
-    env_file: env cf_key={{cf_key}} email={{email}} cf_zone_id={{cf_zone_id}} discord_webook={{discord_webook}} domain_name={{domain_name}} ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} container_volumes_location={{container_volumes_location}}
-  shell: "{{ item }}"  
-  with_items: "{{ stack_deploy_cicd }}"
   loop_control:
     label: "{{ item | regex_replace('^.*docker stack deploy', 'docker stack deploy') }}" #replaces env secrets from being shown in console output
     

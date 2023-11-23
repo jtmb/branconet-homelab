@@ -104,16 +104,16 @@
 - name: Mount plex network share with 33 UID and GID permissions (www-data) 
   tags: smb
   ansible.posix.mount:
-    src: "//192.168.0.25/plex_smb_share"
+    src: "//192.168.0.8/plex_smb_share"
     path: "/mnt/plex_smb_share"
     fstype: cifs
-    opts: 'username={{ ssh_user }},password={{ ansible_sudo_pass }},uid=33,gid=33,forceuid,forcegid'
+    opts: 'username={{ ssh_user }},password={{ ansible_sudo_pass }},uid=1000,gid=1000,forceuid,forcegid,file_mode=0755'
     state: mounted
 
 - name: Mount Backups network share with default sudo user permissions
   tags: smb
   ansible.posix.mount:
-    src: "//192.168.0.25/backups"
+    src: "//192.168.0.8/backups"
     path: "/mnt/backups"
     fstype: cifs
     opts: 'username={{ ssh_user }},password={{ ansible_sudo_pass }},uid=1000,gid=1000,forceuid,forcegid'
