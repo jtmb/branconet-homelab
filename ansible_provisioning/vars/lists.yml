@@ -11,6 +11,7 @@ container_paths:
     - '{{container_volumes_location}}/pihole'
     - '{{container_volumes_location}}/dnsmasq.d'
     - '{{container_volumes_location}}/overseerr/config'
+    - '{{container_volumes_location}}/bazarr/config'
     - '{{container_volumes_location}}/PROXY-MANAGER/data'
     - '{{container_volumes_location}}/PROXY-MANAGER/letsencrypt'
     - '{{container_volumes_location}}/prometheus/prom_data'
@@ -20,7 +21,8 @@ container_paths:
     - '{{container_volumes_location}}/vault_warden/swarm'
     - '{{container_volumes_location}}/vault_warden/mariadb'
     - '{{container_volumes_location}}/wireguard/'
-    - '{{container_volumes_location}}/next_cloud/data'
+    # - '{{container_volumes_location}}/next_cloud/data'
+    - '/mnt/plex_smb_share/container-program-files/next_cloud/data'     
     - '{{container_volumes_location}}/next_cloud/mariadb'
     - '{{container_volumes_location}}/portainer'
     - '{{container_volumes_location}}/jenkins_home'
@@ -35,7 +37,12 @@ container_paths:
     - '{{container_volumes_location}}/mc-server/plugins/dynmap'
     - '{{container_volumes_location}}/server-bootstrap'
     - '{{container_volumes_location}}/consul-server'
-    - '{{container_volumes_location}}/consul-client'             
+    - '{{container_volumes_location}}/consul-client'
+    - '{{container_volumes_location}}/mealie/mealie-data'
+    - '{{container_volumes_location}}/mealie/mealie-pgdata'
+    - '{{container_volumes_location}}/bookstack/bookstack_app_data'
+    - '{{container_volumes_location}}/bookstack/bookstack_db_data'
+        
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
     - '{{container_volumes_location}}/prometheus/'
@@ -43,8 +50,9 @@ alt_container_permission_paths:
     - '{{container_volumes_location}}/pihole'
     - '{{container_volumes_location}}/dnsmasq.d'
     - '{{container_volumes_location}}/mc-server/'
+
 www_container_permission_paths:
-    - '{{container_volumes_location}}/next_cloud/data'   
+    - '{{container_volumes_location}}/next_cloud/data'  
 root_container_permission_paths: 
     - '{{container_volumes_location}}/server-bootstrap'
     - '{{container_volumes_location}}/consul-server'
@@ -55,14 +63,19 @@ stack_deploy_cicd:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/jenkins-cicd/docker-compose.yml cicd"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"
 stack_deploy:
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/bookstack/docker-compose.yml bookstack"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/mealie/docker-compose.yml mealie"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/ez-backups/docker-compose.yml monitoring"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws"
     - "{{env_file}} docker compose -f /tmp/docker-compose/torrent-stack/docker-compose.yml up -d" 
+    - "{{env_file}} docker compose -f /tmp/docker-compose/plex/docker-compose.yml up -d"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/game-servers/minecraft/docker-compose.yml gamesrv"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/pi/docker-compose.yml pi"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/media-stack/docker-compose.yml media"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/proxy-manager/docker-compose.yml proxy"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/portainer-stack/docker-compose.yml portainer"
-    # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/cloudflare-ip-checker/docker-compose.yml monitoring"
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/cloudflare-ip-checker/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/monitoring-stack/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
@@ -70,7 +83,11 @@ stack_deploy:
 
 # Docker Swarm Scale Services
 swarm_scale:
-    # - docker service scale monitoring_cloudflare-ip-checker=1   
+    - docker service scale bookstack_bookstack-app=1
+    - docker service scale bookstack_bookstack-db=1
+    - docker service scale monitoring_ez-backups=1
+    - docker service scale monitoring_cloudflare-ip-checker=1
+    - docker service scale mealie_mealie=1
     - docker service scale cicd_server-bootstrap=1
     - docker service scale cicd_vault=1
     - docker service scale gamesrv_minecraft-paper=1
@@ -89,8 +106,8 @@ swarm_scale:
     - docker service scale monitoring_uptime-kuma=1
     - docker service scale portainer_portainer=1
     - docker service scale proxy_nginx-proxy-manager=1
-    # - docker service scale media_plex=1
     - docker service scale media_radarr=1
+    - docker service scale media_bazarr=1
     - docker service scale media_overseerr=1
     - docker service scale media_jackett=1
     - docker service scale media_sonarr=1

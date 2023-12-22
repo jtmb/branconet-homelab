@@ -36,13 +36,36 @@ services:
     ports:
       - 5055:5055
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
     deploy:
       replicas: 1
       placement:
         max_replicas_per_node: 1
         constraints:
         - node.hostname==master-node
-
+  bazarr:
+    image: hotio/bazarr:latest
+    networks: 
+     - container-swarm-network
+    restart: unless-stopped
+    ports:
+      - 6767:6767
+    volumes:
+      - ${container_volumes_location}/bazarr/config:/config
+      - /mnt/plex_smb_share/tv:/tv
+      - /mnt/plex_smb_share/movies:/movies
+      - /mnt/plex_smb_share/extras:/extras 
+    environment:
+    - PUID=1000
+    - PGID=1000
+    - TZ=America/New_York
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        constraints:
+        - node.hostname==master-node
   sonarr:
     image: linuxserver/sonarr
     networks: 

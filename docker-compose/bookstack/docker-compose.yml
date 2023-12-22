@@ -1,0 +1,43 @@
+---
+version: "3.8"
+services:
+  bookstack-app:
+    image: lscr.io/linuxserver/bookstack
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - APP_URL=http://${master_node}:6875
+      - DB_HOST=bookstack_db
+      - DB_PORT=3306
+      - DB_USER=bookstack
+      - DB_PASS=${ADMIN_PASS}
+      - DB_DATABASE=bookstackapp
+    volumes:
+      - ${container_volumes_location}/bookstack/bookstack_app_data:/config
+    ports:
+      - 6875:80
+    restart: unless-stopped
+    depends_on:
+      - bookstack-db
+  bookstack-db:
+    image: lscr.io/linuxserver/mariadb
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=${ADMIN_PASS}
+      - TZ=Europe/London
+      - MYSQL_DATABASE=bookstackapp
+      - MYSQL_USER=bookstack
+      - MYSQL_PASSWORD=${ADMIN_PASS}
+    volumes:
+      - ${container_volumes_location}/bookstack/bookstack_db_data:/config
+    restart: unless-stopped
+    networks:
+     - container-swarm-network
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+networks:
+    container-swarm-network:
+     external: true
