@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  mealie:
+    networks:
+    - container-swarm-network
+    image: ghcr.io/mealie-recipes/mealie:v1.0.0-RC1.1
+    container_name: mealie
+    ports:
+        - "8089:9000" # 
+    deploy:
+      resources:
+        limits:
+          memory: 1000M # 
+    volumes:
+      - ${container_volumes_location}/mealie/mealie-data:/app/data/
+    environment:
+    # Set Backend ENV Variables Here
+      - ALLOW_SIGNUP=false
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Toronto
+      - MAX_WORKERS=1
+      - WEB_CONCURRENCY=1
+      - BASE_URL=https://mealie.jtmb.cc
+      - DEFAULT_EMAIL=james.branco@gmail.com
+      - DEFAULT_PASSWORD=${ADMIN_PASS}
+    restart: always
+networks:
+ container-swarm-network:
+    external: true

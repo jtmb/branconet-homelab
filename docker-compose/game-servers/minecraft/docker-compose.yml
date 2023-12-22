@@ -39,7 +39,7 @@ services:
         loki-url: "http://localhost:3100/loki/api/v1/push"
         loki-retries: "5"
         loki-batch-size: "400"
-
+        
   mc-exporter:
     image: "ghcr.io/dirien/minecraft-exporter"
     depends_on:

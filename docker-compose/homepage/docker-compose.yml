@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   homepage:
-    image: ghcr.io/benphelps/homepage:latest
+    image: ghcr.io/gethomepage/homepage:latest
     networks:
      - container-swarm-network
     container_name: homepage
@@ -11,7 +11,7 @@ services:
     - '${container_volumes_location}/homepage/app:/app/config' # Make sure your local config directory exists
     - /var/run/docker.sock:/var/run/docker.sock:ro # (optional) For docker integrations
     deploy: 
-      replicas: 1      
+      replicas: 1  
 networks:
  container-swarm-network:
     external: true
