@@ -42,6 +42,7 @@ container_paths:
     - '{{container_volumes_location}}/mealie/mealie-pgdata'
     - '{{container_volumes_location}}/bookstack/bookstack_app_data'
     - '{{container_volumes_location}}/bookstack/bookstack_db_data'
+    - '{{container_volumes_location}}/tautulli/config'
         
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
@@ -83,7 +84,9 @@ stack_deploy:
 
 # Docker Swarm Scale Services
 swarm_scale:
-    - docker service scale bookstack_bookstack-app=1
+    - docker service scale media_tautulli=1
+    - docker service scale bookstack_bookstack-app-wan=1
+    - docker service scale bookstack_bookstack-app-lan=1
     - docker service scale bookstack_bookstack-db=1
     - docker service scale monitoring_ez-backups=1
     - docker service scale monitoring_cloudflare-ip-checker=1

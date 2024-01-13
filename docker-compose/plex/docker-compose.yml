@@ -12,6 +12,7 @@ services:
       - PGID=1000
       - VERSION=docker
       - TZ=America/Toronto
+      # - PLEX_CLAIM=claim-your-token-here #claim token at https://www.plex.tv/claim/ (used for when a password change is needed or server needs to be reclaimed)
       - ADVERTISE_IP=http://${master_node}:32400/,https://plex.tv.lan
     volumes:
       - ${container_volumes_location}/plex/config:/config
@@ -19,8 +20,6 @@ services:
       - /mnt/plex_smb_share/movies:/movies
       - /mnt/plex_smb_share/extras:/extras      
       - /dev/shm:/transcode
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 networks:
  container-swarm-network:
     external: true

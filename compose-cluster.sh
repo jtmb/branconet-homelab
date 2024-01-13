@@ -4,7 +4,7 @@ source ansible_provisioning/vars/vars.sh
 # Ansible Playbook Consumes VARS
 cd ansible_provisioning && \
      ANSIBLE_CONFIG=./ansible.cfg ansible-playbook -i inventory.ini main.yml \
-    --limit 'all' --skip-tags "reboot,cicd_containers" --tags "containers,dns" \
+    --limit 'all' --skip-tags "reboot,cicd_containers" --tags "dns" \
     --extra-vars "ssh_port=$SSH_PORT pub_key=$pub_key \
     master_node=$master_node  \
     # worker_node_1=$worker_node_1 \

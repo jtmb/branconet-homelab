@@ -46,8 +46,6 @@ services:
       - /mnt/plex_smb_share/movies:/movies
       - /mnt/plex_smb_share/extras:/extras      
       - /dev/shm:/transcode
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 networks:
  container-swarm-network:
     external: true
