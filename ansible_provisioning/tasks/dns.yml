@@ -42,6 +42,8 @@
     - '{{master_node}} prom.branconet.lan'
     - '{{master_node}} tor.branconet.lan'
     - '{{master_node}} bookstack.branconet.lan'
+    - '{{master_node}} tautulli.branconet.lan'
+    
 - name: Restart DNS service
   tags: dns
   shell: docker service update pi_pihole --force

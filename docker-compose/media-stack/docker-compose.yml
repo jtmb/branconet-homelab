@@ -36,8 +36,6 @@ services:
     ports:
       - 5055:5055
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     deploy:
       replicas: 1
       placement:
@@ -109,6 +107,17 @@ services:
         max_replicas_per_node: 1
         constraints:
         - node.hostname==master-node
+  tautulli:
+    image: ghcr.io/tautulli/tautulli
+    restart: unless-stopped
+    volumes:
+      - ${container_volumes_location}/tautulli/config:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Toronto
+    ports:
+      - 9119:8181
 
     # restart: unless-stopped
     # deploy:
