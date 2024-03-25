@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       SIGNUPS_ALLOWED: "true"
-      PUID: 1000 
+      PUID: 1000
       PGID: 1000
       DATABASE_URL: mysql://bitwarden:${ADMIN_PASS}@mariadb:/bitwarden
     volumes:
@@ -14,9 +14,9 @@ services:
     ports:
       - 8096:80
     deploy:
-      replicas: 2
+      replicas: 1
       placement:
-        max_replicas_per_node: 2
+        max_replicas_per_node: 1
         # constraints:
         # - node.role==worker
   mariadb:
@@ -28,7 +28,7 @@ services:
       MYSQL_PASSWORD: "${ADMIN_PASS}"
     expose:
       - "3306"
-    volumes: 
+    volumes:
       - ${container_volumes_location}/vault_warden/mariadb:/var/lib/mysql
     deploy:
       replicas: 1
