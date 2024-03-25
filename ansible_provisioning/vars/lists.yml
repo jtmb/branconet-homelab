@@ -43,6 +43,8 @@ container_paths:
     - '{{container_volumes_location}}/bookstack/bookstack_app_data'
     - '{{container_volumes_location}}/bookstack/bookstack_db_data'
     - '{{container_volumes_location}}/tautulli/config'
+    - '{{container_volumes_location}}/kaboard/kanboard_data'
+    - '{{container_volumes_location}}/kaboard/kanboard_plugins'
         
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
@@ -54,6 +56,10 @@ alt_container_permission_paths:
 
 www_container_permission_paths:
     - '{{container_volumes_location}}/next_cloud/data'  
+    - '{{container_volumes_location}}/kaboard/kanboard_data'
+    - '{{container_volumes_location}}/kaboard/kanboard_plugins'
+
+
 root_container_permission_paths: 
     - '{{container_volumes_location}}/server-bootstrap'
     - '{{container_volumes_location}}/consul-server'
@@ -81,6 +87,7 @@ stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws" 
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/kanboard/docker-compose.yml tooling" 
 
 # Docker Swarm Scale Services
 swarm_scale:
@@ -101,7 +108,7 @@ swarm_scale:
     - docker service scale nextcloud_db=1
     - docker service scale nextcloud_nextapp=1
     - docker service scale vault_mariadb=1
-    - docker service scale vault_vaultwarden=2
+    - docker service scale vault_vaultwarden=1
     - docker service scale monitoring_loki=1
     - docker service scale monitoring_influx=1
     - docker service scale monitoring_grafana=1
@@ -119,6 +126,7 @@ swarm_scale:
     - docker service scale ws_lucinda=2
     - docker service scale ws_santos=2
     - docker service scale ws_aplb=2
+    - docker service scale tooling_kanboard=1 && docker service update tooling_kanboard --force
 
 # Cloudflare Subdomains
 cf_service_name_proxied:
