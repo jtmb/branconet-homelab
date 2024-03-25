@@ -21,20 +21,6 @@ services:
       - /mnt/plex_smb_share/extras:/extras
       - /dev/shm:/transcode
 
-  maintainerr:
-    image: ghcr.io/jorenn92/maintainerr:latest # or jorenn92/maintainerr:latest
-    container_name: maintainerr
-    user: 1000:1000
-    volumes:
-      - ${container_volumes_location}/maintainerr:/opt/data
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Toronto
-    #      - DEBUG=true # uncomment to enable debug logs
-    ports:
-      - 6246:6246
-    restart: unless-stopped
 networks:
   container-swarm-network:
     external: true
