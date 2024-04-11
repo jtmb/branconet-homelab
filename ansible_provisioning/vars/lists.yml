@@ -8,7 +8,7 @@ container_paths:
     - '{{container_volumes_location}}/jackett'
     - '{{container_volumes_location}}/sonarr/config'
     - '{{container_volumes_location}}/radarr'
-    - '{{container_volumes_location}}/pihole'
+    # - '{{container_volumes_location}}/pihole'
     - '{{container_volumes_location}}/dnsmasq.d'
     - '{{container_volumes_location}}/overseerr/config'
     - '{{container_volumes_location}}/bazarr/config'
@@ -58,6 +58,7 @@ www_container_permission_paths:
     - '{{container_volumes_location}}/next_cloud/data'  
     - '{{container_volumes_location}}/kaboard/kanboard_data'
     - '{{container_volumes_location}}/kaboard/kanboard_plugins'
+    - '{{container_volumes_location}}/pihole'
 
 
 root_container_permission_paths: 
