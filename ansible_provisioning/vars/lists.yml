@@ -86,7 +86,7 @@ stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/cloudflare-ip-checker/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/monitoring-stack/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
+    # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws" 
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/kanboard/docker-compose.yml tooling" 
 
@@ -106,8 +106,8 @@ swarm_scale:
     - docker service scale pi_pihole=1
     - docker service scale pi_exporter=1
     - docker service scale cicd_jenkins=1
-    - docker service scale nextcloud_db=1
-    - docker service scale nextcloud_nextapp=1
+    # - docker service scale nextcloud_db=1
+    # - docker service scale nextcloud_nextapp=1
     - docker service scale vault_mariadb=1
     - docker service scale vault_vaultwarden=1
     - docker service scale monitoring_loki=1
