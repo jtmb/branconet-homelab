@@ -2,17 +2,17 @@
 source ansible_provisioning/vars/vars.sh
 
 # Ansible Playbook Consumes VARS
-cd ansible_provisioning && ansible all -m ansible.builtin.shell -a 'umount -a -t cifs -l' \
+cd ansible_provisioning && sudo ansible all -m ansible.builtin.shell -a 'sudo umount -a -t cifs -l' \
     --extra-vars "ssh_port=$SSH_PORT pub_key=$pub_key \
     master_node=$master_node  \
-    worker_node_1=$worker_node_1 \
+    # worker_node_1=$worker_node_1 \
     worker_node_2=$worker_node_2  \  
     ssh_cert=$HOME/.ssh/id_rsa homedir=$homedir \
     container_volumes_location=$container_volumes_location \
     user_id=$userid  \
-    PUB_IP=$public_ip cf_key=$cf_key cf_zone_id=$cf_zone_id domain_name=$domain_name discord_webhook=$discord_webhook \
-    ssh_user=$ANSIBLE_SSH_USER ansible_sudo_pass=$ANSIBLE_SUDO_PASS"
-
+    discord_webhook=$discord_webhook PUB_IP=$public_ip cf_key=$cf_key cf_zone_id=$cf_zone_id domain_name=$domain_name email=$email \
+    nord_user=$nord_user nord_pass=$nord_pass \
+    ssh_user=$ANSIBLE_SSH_USER ansible_sudo_pass=$ANSIBLE_SUDO_PASS "
 # TAGS 
     # containers
     # swarm 
