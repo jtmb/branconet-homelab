@@ -21,7 +21,7 @@ services:
       placement:
         max_replicas_per_node: 1
         constraints:
-          - node.hostname==master-node
+          - node.hostname==masternode
   overseerr:
     image: lscr.io/linuxserver/overseerr:latest
     container_name: overseerr
@@ -41,7 +41,7 @@ services:
       placement:
         max_replicas_per_node: 1
         constraints:
-          - node.hostname==master-node
+          - node.hostname==masternode
   bazarr:
     image: hotio/bazarr:latest
     networks:
@@ -63,7 +63,7 @@ services:
       placement:
         max_replicas_per_node: 1
         constraints:
-          - node.hostname==master-node
+          - node.hostname==masternode
   sonarr:
     image: linuxserver/sonarr
     networks:
@@ -85,7 +85,7 @@ services:
       placement:
         max_replicas_per_node: 1
         constraints:
-          - node.hostname==master-node
+          - node.hostname==masternode
 
   jackett:
     container_name: jackett
@@ -106,7 +106,7 @@ services:
       placement:
         max_replicas_per_node: 1
         constraints:
-          - node.hostname==master-node
+          - node.hostname==masternode
   tautulli:
     image: ghcr.io/tautulli/tautulli
     restart: unless-stopped

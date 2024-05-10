@@ -1,49 +1,53 @@
 - name: Create startup folder
   ansible.builtin.file:
-    path: "{{container_volumes_location}}/cron"
+    path: "/cron"
     state: directory
-- name: Create startup file
+
+- name: Remove cron file scripts
+  file:
+    path: '{{item}}'
+    state: absent
+  with_items:
+    - /cron/startup_job.sh
+    - /cron/weekly_job.sh
+
+- name: Create cron file sripts
   ansible.builtin.file:
-    path: "{{container_volumes_location}}/cron/startup_job.sh"
+    path: '{{item}}'
     state: touch
     mode: u+rw,g-wx,o-rwx
-- name: Make Script Executable
-  file: dest={{container_volumes_location}}/cron/startup_job.sh mode=a+x
+  with_items:
+    - /cron/startup_job.sh
+    - /cron/weekly_job.sh
+
+- name: Make Scripts Executable
+  file: dest={{item}} mode=a+x
+  with_items:
+    - /cron/startup_job.sh
+    - /cron/weekly_job.sh
 
 - name: Write Cron Job docker cleanup
   lineinfile: 
-    dest: "{{container_volumes_location}}/cron/startup_job.sh"
+    dest: "/cron/weekly_job.sh"
     line: '{{ item }}'
   with_items:
     - 'docker system prune --all'
 
-- name: Write Cron Job for PI to re-join cluster after reboot
-  when: ansible_architecture == "armv7l"
+- name: Write Cron Job re-join NFS cluster after reboot
   lineinfile: 
-    dest: "{{container_volumes_location}}/cron/startup_job.sh"
+    dest: "/cron/startup_job.sh"
     line: '{{ item }}'
   with_items:
-    - 'sudo systemctl restart docker'
     - 'sudo mount {{master_node}}:{{container_volumes_location}} {{container_volumes_location}}'
-    - 'docker ps'
-
-- name: Write Cron Job for Weekly docker cleanup
-  when: ansible_architecture == "armv7l"
-  lineinfile: 
-    dest: "{{container_volumes_location}}/cron/startup_job.sh"
-    line: '{{ item }}'
-  with_items:
-    - 'sudo system prume --all'
-
-- name: Create Swarm Crontab entry for PI startup
-  when: ansible_architecture == "armv7l"
-  ansible.builtin.cron:
-    name: "Swarm job for reboot (rejoin cluster)"
-    special_time: reboot
-    job: "bash {{container_volumes_location}}/cron/startup_job.sh"
 
 - name: Create Swarm Crontab entry for Weekly jobs
   ansible.builtin.cron:
     name: "Swarm job for docker image/volume cleanup"
     special_time: weekly
-    job: "bash {{container_volumes_location}}/cron/weekly_job.sh"
+    job: "bash /cron/weekly_job.sh /cron/weekly_job.log 2>&1"
+
+- name: Create Swarm Crontab entry for startup jobs
+  ansible.builtin.cron:
+    name: "Swarm job to rejoin nfs cluster on startup"
+    special_time: "reboot"
+    job: "bash /cron/startup_job.sh > /cron/startup_job.log 2>&1"
