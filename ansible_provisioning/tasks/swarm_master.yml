@@ -37,7 +37,22 @@
   become: true
   become_user: root
   docker_network:
-    name: container-swarm-network
+    name: 'container-swarm-network'  
     scope: swarm
     state: present
     driver: overlay
+
+- name: Create an external db-network
+  become: true
+  become_user: root
+  docker_network:
+    name: 'db-network'    
+    scope: swarm
+    state: present
+    driver: overlay
+
+- name: Restart NFS server
+  become: true
+  become_user: root
+  shell: systemctl restart nfs-server
+    

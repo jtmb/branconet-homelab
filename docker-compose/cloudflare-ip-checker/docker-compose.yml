@@ -8,10 +8,10 @@ services:
         ports:
             - '8091:8080'
         environment:
-            API_KEY:  ${cf_key}
+            API_KEY: ${cf_key}
             ZONE_ID: ${cf_zone_id}
             WEBHOOK_URL: "${discord_webhook}"
-            DNS_RECORDS: 'bookstack.jtmb.cc/A mcweb.jtmb.cc/A map.jtmb.cc/A aplb.jtmb.cc/A lucinda.jtmb.cc/A santos.jtmb.cc/A mcweb.jtmb.cc/A map.jtmb.cc/A media.jtmb.cc/A mc.jtmb.cc/A/0 mealie.jtmb.cc/A'
+            DNS_RECORDS: 'jtmb.cc/A'
             REQUEST_TIME: "2m"
             EMAIL: ${email}
             DASHBOARD_USER: brajam #the default dashboard login username
@@ -21,11 +21,11 @@ services:
             placement:
                 max_replicas_per_node: 1
         logging:
-            driver: loki
+            driver: lokisud
             options:
                 loki-url: "http://localhost:3100/loki/api/v1/push"
                 loki-retries: "5"
                 loki-batch-size: "400"
 networks:
     container-swarm-network:
-     external: true
+        external: true

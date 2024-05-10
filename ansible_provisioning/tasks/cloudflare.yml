@@ -2,12 +2,11 @@
   uri:
     url: "https://api.cloudflare.com/client/v4/zones/{{ cf_zone_id }}/dns_records"
     method: POST
-    body: '{"type":"A","name":"{{item}}.{{domain_name}}","content":"{{  PUB_IP }}","ttl":1,"proxied":true}'
+    body: '{"type":"A","name":"{{domain_name}}","content":"{{  PUB_IP }}","ttl":1,"proxied":true}'
     body_format: json
     headers:
       Authorization: "bearer {{ cf_key }}"
       Content-Type: "application/json"
-  with_items: '{{cf_service_name_proxied}}'
   register: record_output
   failed_when: 
     - ("Record already exists." not in record_output.json.errors | map(attribute='message') | list | join("")) and 

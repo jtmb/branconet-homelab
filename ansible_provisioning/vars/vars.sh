@@ -18,12 +18,12 @@ source $homedir/ansible_provisioning/wrapper-scripts/vault-auth.sh
 ANSIBLE_SUDO_PASS=$(vault kv get -field=admin_pwd kv/admin_pass)
 ANSIBLE_SSH_USER=$(vault kv get -field=admin_usr kv/admin_user)
 SSH_PORT=$(vault kv get -field=port kv/ssh_port)
-container_volumes_location=$(vault kv get -field=path kv/container_volumes_location)
+container_volumes_location=$(vault kv get -field=value kv/container_volumes_location)
 
 # INSTANCE IP's
-master_node=$(vault kv get -field=ip kv/master_node)
-# worker_node_1=$(vault kv get -field=ip kv/worker_node_1)
-worker_node_2=$(vault kv get -field=ip kv/worker_node_2)
+master_node=192.168.0.5
+worker_node_1=192.168.0.17
+worker_node_2=192.168.0.7
 
 # CLOUDFLARE
 cf_key=$(vault kv get -field=key kv/cf_key)

@@ -2,18 +2,17 @@
   docker_swarm:
     state: join
     join_token: "{{ hostvars['master_node'].CLUSTER_JOIN_KEY.stdout }}"
-    remote_addrs: [ '{{master_node}}:2377' ]
-  
+    remote_addrs: ["{{master_node}}:2377"]
+
 - name: Create share directory if it does not exist and set right permissios
   ansible.builtin.file:
     path: "{{container_volumes_location}}/"
     state: directory
     mode: 0777
     owner: nobody
-    group: nogroup 
+    group: nogroup
 
 - name: Mount NTFS on clients
   become: true
   become_user: root
   shell: mount {{master_node}}:{{container_volumes_location}} {{container_volumes_location}}
-

@@ -3,11 +3,8 @@ version: '3'
 services:
   plex:
     image: lscr.io/linuxserver/plex:latest
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - capabilities: [ gpu ]
+    devices:
+      - /dev/dri:/dev/dri
     ports:
       - 32400:32400
     environment:
@@ -15,15 +12,15 @@ services:
       - PGID=1000
       - VERSION=docker
       - TZ=America/Toronto
-      - PLEX_CLAIM=claim-x9BMCzyDiQtUcmyJy2be #claim token at https://www.plex.tv/claim/ (used for when a password change is needed or server needs to be reclaimed)
+      # - PLEX_CLAIM=claim-your-token-here #claim token at https://www.plex.tv/claim/ (used for when a password change is needed or server needs to be reclaimed)
       - ADVERTISE_IP=http://${master_node}:32400/,https://plex.tv.lan
-      - NVIDIA_VISIBLE_DEVICES=all
-      - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
     volumes:
       - ${container_volumes_location}/plex/config:/config
       - /mnt/plex_smb_share/tv:/tv
       - /mnt/plex_smb_share/movies:/movies
       - /mnt/plex_smb_share/extras:/extras
+      - /dev/shm:/transcode
+
 networks:
   container-swarm-network:
     external: true
