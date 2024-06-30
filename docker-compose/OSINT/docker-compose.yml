@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  spiderfoot:
+    image: josaorg/spiderfoot
+    container_name: spiderfoot
+    ports:
+      - "5001:5001"
+    volumes:
+      - '${container_volumes_location}/spiderfoot_data:/root/.spiderfoot'
+    restart: unless-stopped
+    networks:
+      - container-swarm-network
+networks:
+  container-swarm-network:
+    external: true

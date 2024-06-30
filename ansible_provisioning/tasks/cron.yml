@@ -31,7 +31,7 @@
     dest: "/cron/weekly_job.sh"
     line: '{{ item }}'
   with_items:
-    - 'docker system prune --all'
+    - 'docker system prune -af'
 
 - name: Write Cron Job re-join NFS cluster after reboot
   lineinfile: 
@@ -43,7 +43,7 @@
 - name: Create Swarm Crontab entry for Weekly jobs
   ansible.builtin.cron:
     name: "Swarm job for docker image/volume cleanup"
-    special_time: weekly
+    special_time: daily
     job: "bash /cron/weekly_job.sh /cron/weekly_job.log 2>&1"
 
 - name: Create Swarm Crontab entry for startup jobs

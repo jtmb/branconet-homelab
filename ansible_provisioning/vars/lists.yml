@@ -43,6 +43,7 @@ container_paths:
     - '{{container_volumes_location}}/tautulli/config'
     - '{{container_volumes_location}}/kaboard/kanboard_data'
     - '{{container_volumes_location}}/kaboard/kanboard_plugins'
+    - '{{container_volumes_location}}/spiderfoot_data'
         
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
@@ -89,9 +90,11 @@ stack_deploy:
     # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws" 
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/kanboard/docker-compose.yml tooling" 
+    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/OSINT/docker-compose.yml osint"
 
 # Docker Swarm Scale Services
 swarm_scale:
+    - docker service scale osint_spiderfoot=1
     - docker service scale media_tautulli=1
     # - docker service scale bookstack_bookstack-app-wan=1
     # - docker service scale bookstack_bookstack-app-lan=1
