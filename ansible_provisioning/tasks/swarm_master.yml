@@ -22,7 +22,15 @@
     state: directory
     mode: 0777
     owner: nobody
-    group: nogroup 
+    group: nogroup
+
+- name: Ensure no NFS binds present
+  become: true
+  become_user: root
+  shell: |
+    systemctl stop nfs-server
+    umount -f -l {{container_volumes_location}}
+    systemctl start nfs-server 
 
 - name: Export Key for NTFS
   become: true

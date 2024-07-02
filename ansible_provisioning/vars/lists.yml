@@ -106,7 +106,7 @@ swarm_scale:
     - docker service scale cicd_vault=1
     # - docker service scale gamesrv_minecraft-paper=1
     # - docker service scale gamesrv_mc-exporter=1
-    - docker service scale pi_pihole=1
+    - docker service scale pi_pihole=1 && docker service update pi_pihole --force
     - docker service scale pi_exporter=1
     - docker service scale cicd_jenkins=1
     # - docker service scale nextcloud_db=1
