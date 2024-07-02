@@ -81,6 +81,11 @@
   changed_when: driver_status.rc == 0 and "plugin loki:latest already exists" not in driver_status.stderr
   failed_when: false
 
+- name: Install required system packages for Cockpit
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: [ 'cockpit']
+  tags: cockpit
+
 # Mount SMB Drives
 
 - name: Check if cifs-utils is present
@@ -120,7 +125,6 @@
     state: mounted
 
 - name: Ensure Host Controllers are not using pihole DNS #(DNS CONTROLLERS SHOULD NEVER POINT DNS TO ITSELF LOL)
-  tags: dns
   lineinfile: 
     dest: "/etc/resolvconf/resolv.conf.d/head"
     line: '{{ item }}'
