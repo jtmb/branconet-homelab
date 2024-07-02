@@ -43,7 +43,6 @@ container_paths:
     - '{{container_volumes_location}}/tautulli/config'
     - '{{container_volumes_location}}/kaboard/kanboard_data'
     - '{{container_volumes_location}}/kaboard/kanboard_plugins'
-    - '{{container_volumes_location}}/spiderfoot_data'
         
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
@@ -54,6 +53,7 @@ alt_container_permission_paths:
     - '{{container_volumes_location}}/mc-server/'
     - '{{container_volumes_location}}/bazarr/config'
     - '{{container_volumes_location}}/overseerr/config'
+    - '{{container_volumes_location}}/spiderfoot_data'
 
 www_container_permission_paths:
     - '{{container_volumes_location}}/next_cloud/data'  
