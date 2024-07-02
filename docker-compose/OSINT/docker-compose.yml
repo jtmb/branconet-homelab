@@ -2,15 +2,20 @@ version: '3.8'
 
 services:
   spiderfoot:
-    image: josaorg/spiderfoot
+    image: josaorg/spiderfoot:stable
     container_name: spiderfoot
     ports:
       - "5001:5001"
     volumes:
-      - '${container_volumes_location}/spiderfoot_data:/root/.spiderfoot'
+      - ${container_volumes_location}/spiderfoot_data:/var/lib/spiderfoot
     restart: unless-stopped
     networks:
       - container-swarm-network
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [ node.hostname == masternode ]
 networks:
   container-swarm-network:
     external: true

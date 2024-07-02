@@ -13,8 +13,8 @@ services:
     volumes:
       - '${container_volumes_location}/prometheus:/etc/prometheus'
       - '${container_volumes_location}/prometheus/prom_data:/prometheus'
-    deploy: 
-      replicas: 1      
+    deploy:
+      replicas: 1
 
   loki:
     user: "0"
@@ -28,8 +28,8 @@ services:
     volumes:
       - '${container_volumes_location}/loki/config:/etc/loki'
       - '${container_volumes_location}/loki/data:/data/loki'
-    deploy: 
-      replicas: 1      
+    deploy:
+      replicas: 1
 
   uptime-kuma:
     image: louislam/uptime-kuma:debian
@@ -41,28 +41,28 @@ services:
     volumes:
       - '${container_volumes_location}/uptime-kuma:/app/data'
 
-  influx:   
-    image: influxdb
-    environment:
-      DOCKER_INFLUXDB_INIT_MODE: setup
-      DOCKER_INFLUXDB_INIT_USERNAME: root
-      DOCKER_INFLUXDB_INIT_PASSWORD: '${ADMIN_PASS}'
-      DOCKER_INFLUXDB_INIT_BUCKET: cadvisor
-      DOCKER_INFLUXDB_INIT_ORG: monitoring_stack
-      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: 1234!12345!66781!
-      INFLUXDB_USER: root
-      INFLUXDB_PASS: '${ADMIN_PASS}'
-    networks:
-      - container-swarm-network
-    ports:
-     - 8086:8086   
-    volumes:     
-      - '${container_volumes_location}/influx:/var/lib/influxdb'
-    deploy: 
-      replicas: 1      
-      placement:
-         constraints:
-           - node.role == manager
+  # influx:   
+  #   image: influxdb
+  #   environment:
+  #     DOCKER_INFLUXDB_INIT_MODE: setup
+  #     DOCKER_INFLUXDB_INIT_USERNAME: root
+  #     DOCKER_INFLUXDB_INIT_PASSWORD: '${ADMIN_PASS}'
+  #     DOCKER_INFLUXDB_INIT_BUCKET: cadvisor
+  #     DOCKER_INFLUXDB_INIT_ORG: monitoring_stack
+  #     DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: 1234!12345!66781!
+  #     INFLUXDB_USER: root
+  #     INFLUXDB_PASS: '${ADMIN_PASS}'
+  #   networks:
+  #     - container-swarm-network
+  #   ports:
+  #    - 8086:8086   
+  #   volumes:     
+  #     - '${container_volumes_location}/influx:/var/lib/influxdb'
+  #   deploy: 
+  #     replicas: 1      
+  #     placement:
+  #        constraints:
+  #          - node.role == manager
 
   node-exporter:
     image: flaviostutz/docker-swarm-node-exporter
@@ -76,7 +76,7 @@ services:
     networks:
       - container-swarm-network
     ports:
-     - 9100:9100         
+      - 9100:9100
     deploy:
       mode: global
       resources:
@@ -101,5 +101,5 @@ services:
       - '${container_volumes_location}/grafana/datasources:/etc/grafana/provisioning/datasources'
       - '${container_volumes_location}/grafana/data:/var/lib/grafana'
 networks:
- container-swarm-network:
+  container-swarm-network:
     external: true
