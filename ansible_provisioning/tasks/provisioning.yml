@@ -52,6 +52,13 @@
   apt_repository:
     repo: deb https://download.docker.com/linux/ubuntu bionic stable
     state: present
+  when: ubuntu_version_number | float < 24.04
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu jammy stable
+    state: present
+  when: ubuntu_version_number | float > 22.04
 
 - name: Update apt and install docker-ce
   apt: update_cache=yes name=docker-ce state=latest
@@ -135,3 +142,9 @@
 - name: Apply DNS service
   tags: dns
   shell: systemctl enable --now resolvconf.service
+  when: ubuntu_version_number | float < 24.04
+
+- name: Apply DNS service
+  tags: dns
+  shell: resolvconf -u
+  when: ubuntu_version_number | float > 22.04

@@ -12,7 +12,7 @@ public_ip=$(curl icanhazip.com)
 admin_pub_ip=$(echo ['"'$public_ip/32'"'])
 
 # VAULT AUTH
-source $homedir/ansible_provisioning/wrapper-scripts/vault-auth.sh
+source $homedir/ansible_provisioning/wrapper-scripts/vault-auth.sh 
 
 # ANSIBLE VARS
 ANSIBLE_SUDO_PASS=$(vault kv get -field=admin_pwd kv/admin_pass)
@@ -22,7 +22,7 @@ container_volumes_location=$(vault kv get -field=value kv/container_volumes_loca
 
 # INSTANCE IP's
 master_node=192.168.0.5
-worker_node_1=192.168.0.17
+worker_node_1=192.168.0.4
 worker_node_2=192.168.0.7
 
 # CLOUDFLARE

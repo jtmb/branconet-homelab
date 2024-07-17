@@ -43,3 +43,8 @@
 
 - name: "Restart SSH Service"
   shell: "systemctl restart sshd"
+  when: ubuntu_version_number | float < 24.04
+
+- name: "Restart SSH Service 24.04 LTS"
+  shell: "systemctl restart ssh"
+  when: ubuntu_version_number | float > 22.04

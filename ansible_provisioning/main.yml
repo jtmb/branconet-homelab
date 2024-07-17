@@ -5,20 +5,30 @@
   become: true 
   tasks:
   
-  - name: Collect Server IP
-    debug:
-      msg: "{{ ansible_ssh_host }}"
-  - name: Collect Server ARCH
-    debug: 
-       msg: '{{ansible_architecture}}'
+  - name: Debiug VARS
+    include_tasks: 
+      file: tasks/debug.yml
+      apply:
+        tags: always
+    tags: always
+  
   - name: Install Required Packages
-    include: tasks/provisioning.yml
+    include_tasks: 
+      file: tasks/provisioning.yml
+      apply:
+        tags: packages
     tags: packages
   - name: Setup SSH
-    include: tasks/ssh_setup.yml
+    include_tasks: 
+      file: tasks/ssh_setup.yml
+      apply:
+        tags: ssh
     tags: ssh
   - name: Setup firewall
-    include: tasks/ufw.yml
+    include_tasks: 
+      file: tasks/ufw.yml
+      apply:
+        tags: ufw
     tags: ufw
 
 # Swarm setup
@@ -28,7 +38,10 @@
   become: true
   tasks:
   - name: Install swarm
-    include: tasks/swarm_master.yml
+    include_tasks: 
+      file: tasks/swarm_master.yml
+      apply:
+        tags: swarm
     tags: swarm
 
 - name: "Join Swarm"
@@ -39,7 +52,10 @@
   become: true
   tasks:
   - name: Install swarm
-    include: tasks/swarm_worker_join.yml
+    include_tasks: 
+      file: tasks/swarm_worker_join.yml
+      apply:
+        tags: swarm
     tags: swarm
 
 # Containers
@@ -51,19 +67,31 @@
     - vars/lists.yml
   tasks:
   - name: Git Clone App Repos
-    include: tasks/clone_app_repos.yml
+    include_tasks: 
+      file: tasks/clone_app_repos.yml
+      apply:
+        tags: clone_repos 
     tags: clone_repos
 
   - name: Build Docker Images
-    include: tasks/image_build.yml
+    include_tasks: 
+      file: tasks/image_build.yml
+      apply:
+       tags: images
     tags: images
 
   - name: Containers Pre-Provision
-    include: tasks/container-preprovisioning.yml
-    tags: [ containers, pre-prov ]
+    include_tasks: 
+      file: tasks/container-preprovisioning.yml
+      apply:
+        tags: [containers, pre-prov]
+    tags: [containers, pre-prov]
 
   - name: Install Containers
-    include: tasks/containers.yml
+    include_tasks: 
+      file: tasks/containers.yml
+      apply:
+       tags: containers
     tags:  containers 
 
 - name: "DNS"
@@ -74,11 +102,17 @@
   become: true
   tasks:
   - name: Post Provisioning DNS Tasks
-    include: tasks/dns.yml
+    include_tasks: 
+      file: tasks/dns.yml
+      apply:
+        tags: post
     tags: post
     
   - name: Cloudflare DNS 
-    include: tasks/cloudflare.yml
+    include_tasks: 
+      file: tasks/cloudflare.yml
+      apply:
+        tags: cloudflare
     tags: cloudflare
 
 - name: "POST PROVISIONING"
@@ -87,15 +121,23 @@
   become: true
   tasks:
   - name: Post Provisioning CRON Tasks
-    include: tasks/cron.yml
-    tags: 
-     - post
-     - cron
+    include_tasks: 
+      file: tasks/cron.yml
+      apply:
+        tags: [post, cron]
+    tags: [post, cron]
+
   - name: Update Actions
-    include: tasks/update_ubuntu.yml
+    include_tasks: 
+      file: tasks/update_ubuntu.yml
+      apply:
+        tags: update_ubuntu
     tags: update_ubuntu
   - name: Reboot Actions
-    include: tasks/reboot.yml
+    include_tasks: 
+      file: tasks/reboot.yml
+      apply:
+        tags: reboot
     tags: reboot
 
 - name: "Backups"
@@ -104,5 +146,8 @@
   become: true
   tasks:
   - name: Backup Tasks
-    include: tasks/backups.yml
+    include_tasks:
+      file: tasks/backups.yml
+      apply:
+        tags: backups
     tags: backups
