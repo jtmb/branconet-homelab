@@ -16,8 +16,8 @@
     include_tasks: 
       file: tasks/provisioning.yml
       apply:
-        tags: packages
-    tags: packages
+        tags: [packages, smb]
+    tags: [packages, smb]
   - name: Setup SSH
     include_tasks: 
       file: tasks/ssh_setup.yml
