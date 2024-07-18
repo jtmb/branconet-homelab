@@ -9,6 +9,16 @@
     mode: 1000 
   with_items: "{{ container_paths }}"
 
+- name: Change file ownership, group and permissions for configs that need it
+  ansible.builtin.file:
+    path: "{{item}}"
+    state: directory
+    owner: '{{ssh_user}}' 
+    group: 'nogroup' 
+    mode: 0755
+    recurse: yes
+  with_items: "{{ alt_container_permission_paths }}"
+
 - name: Copy a compose" files from repo to the remote machine to authenticate git repos on host machine
   copy:
     src: "{{homedir}}/docker-compose"
@@ -38,16 +48,6 @@
   copy:
     src: "{{homedir}}/docker-compose/game-servers/minecraft/plugins/configs/BlueMap"
     dest: "{{container_volumes_location}}/mc-server/plugins"
-
-- name: Change file ownership, group and permissions for configs that need it
-  ansible.builtin.file:
-    path: "{{item}}"
-    state: directory
-    owner: '{{ssh_user}}' 
-    group: 'nogroup' 
-    mode: 0755
-    recurse: yes
-  with_items: "{{ alt_container_permission_paths }}"
 
 
 - name: Change file ownership, group and permissions for containers that need www-data
