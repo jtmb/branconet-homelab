@@ -19,14 +19,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.radarr.rule=Host(`radarr.${domain_name}`)"
+        - "traefik.http.routers.radarr.rule=Host(`radarr.${lan_domain_name}`)"
         - "traefik.http.services.radarr.loadbalancer.server.port=7878" #uses internal docker port
         - "traefik.http.routers.radarr.entrypoints=websecure"
         - "traefik.http.routers.radarr.tls=true"
         - "traefik.http.routers.radarr.tls.certresolver=myresolver"
-        - "traefik.http.routers.radarr.tls.domains[0].main=radarr.${domain_name}"
+        - "traefik.http.routers.radarr.tls.domains[0].main=radarr.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.radarr.tls.domains[0].sans=radarr.${domain_name}"
+        # - "traefik.http.routers.radarr.tls.domains[0].sans=radarr.${lan_domain_name}"
       replicas: 1
       placement:
         max_replicas_per_node: 1
@@ -49,14 +49,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.overseerr.rule=Host(`overseerr.${domain_name}`)"
+        - "traefik.http.routers.overseerr.rule=Host(`media.${domain_name}`)"
         - "traefik.http.services.overseerr.loadbalancer.server.port=5055" #uses internal docker port
         - "traefik.http.routers.overseerr.entrypoints=websecure"
         - "traefik.http.routers.overseerr.tls=true"
         - "traefik.http.routers.overseerr.tls.certresolver=myresolver"
-        - "traefik.http.routers.overseerr.tls.domains[0].main=overseerr.${domain_name}"
+        - "traefik.http.routers.overseerr.tls.domains[0].main=overseerr.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.overseerr.tls.domains[0].sans=overseerr.${domain_name}"
+        # - "traefik.http.routers.overseerr.tls.domains[0].sans=overseerr.${lan_domain_name}"
       replicas: 1
       placement:
         max_replicas_per_node: 1
@@ -81,14 +81,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.bazarr.rule=Host(`bazarr.${domain_name}`)"
+        - "traefik.http.routers.bazarr.rule=Host(`bazarr.${lan_domain_name}`)"
         - "traefik.http.services.bazarr.loadbalancer.server.port=6767" #uses internal docker port
         - "traefik.http.routers.bazarr.entrypoints=websecure"
         - "traefik.http.routers.bazarr.tls=true"
         - "traefik.http.routers.bazarr.tls.certresolver=myresolver"
-        - "traefik.http.routers.bazarr.tls.domains[0].main=bazarr.${domain_name}"
+        - "traefik.http.routers.bazarr.tls.domains[0].main=bazarr.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.bazarr.tls.domains[0].sans=bazarr.${domain_name}"
+        # - "traefik.http.routers.bazarr.tls.domains[0].sans=bazarr.${lan_domain_name}"
       replicas: 1
       placement:
         max_replicas_per_node: 1
@@ -113,14 +113,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.sonarr.rule=Host(`sonarr.${domain_name}`)"
+        - "traefik.http.routers.sonarr.rule=Host(`sonarr.${lan_domain_name}`)"
         - "traefik.http.services.sonarr.loadbalancer.server.port=8989" #uses internal docker port
         - "traefik.http.routers.sonarr.entrypoints=websecure"
         - "traefik.http.routers.sonarr.tls=true"
         - "traefik.http.routers.sonarr.tls.certresolver=myresolver"
-        - "traefik.http.routers.sonarr.tls.domains[0].main=sonarr.${domain_name}"
+        - "traefik.http.routers.sonarr.tls.domains[0].main=sonarr.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.sonarr.tls.domains[0].sans=sonarr.${domain_name}"
+        # - "traefik.http.routers.sonarr.tls.domains[0].sans=sonarr.${lan_domain_name}"
       replicas: 1
       placement:
         max_replicas_per_node: 1
@@ -144,14 +144,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.jackett.rule=Host(`jackett.${domain_name}`)"
+        - "traefik.http.routers.jackett.rule=Host(`jackett.${lan_domain_name}`)"
         - "traefik.http.services.jackett.loadbalancer.server.port=9117" #uses internal docker port
         - "traefik.http.routers.jackett.entrypoints=websecure"
         - "traefik.http.routers.jackett.tls=true"
         - "traefik.http.routers.jackett.tls.certresolver=myresolver"
-        - "traefik.http.routers.jackett.tls.domains[0].main=jackett.${domain_name}"
+        - "traefik.http.routers.jackett.tls.domains[0].main=jackett.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.jackett.tls.domains[0].sans=jackett.${domain_name}"
+        # - "traefik.http.routers.jackett.tls.domains[0].sans=jackett.${lan_domain_name}"
       replicas: 1
       placement:
         max_replicas_per_node: 1
@@ -171,14 +171,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.tautulli.rule=Host(`tautulli.${domain_name}`)"
+        - "traefik.http.routers.tautulli.rule=Host(`tautulli.${lan_domain_name}`)"
         - "traefik.http.services.tautulli.loadbalancer.server.port=8181" #uses internal docker port
         - "traefik.http.routers.tautulli.entrypoints=websecure"
         - "traefik.http.routers.tautulli.tls=true"
         - "traefik.http.routers.tautulli.tls.certresolver=myresolver"
-        - "traefik.http.routers.tautulli.tls.domains[0].main=tautulli.${domain_name}"
+        - "traefik.http.routers.tautulli.tls.domains[0].main=tautulli.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.tautulli.tls.domains[0].sans=tautulli.${domain_name}"
+        # - "traefik.http.routers.tautulli.tls.domains[0].sans=tautulli.${lan_domain_name}"
     ports:
       - 9119:8181
 networks:

@@ -10,14 +10,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.mealie.rule=Host(`mealie.${domain_name}`)"
+        - "traefik.http.routers.mealie.rule=Host(`mealie.${lan_domain_name}`)"
         - "traefik.http.services.mealie.loadbalancer.server.port=9000" #uses internal docker port
         - "traefik.http.routers.mealie.entrypoints=websecure"
         - "traefik.http.routers.mealie.tls=true"
         - "traefik.http.routers.mealie.tls.certresolver=myresolver"
-        - "traefik.http.routers.mealie.tls.domains[0].main=mealie.${domain_name}"
+        - "traefik.http.routers.mealie.tls.domains[0].main=mealie.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.mealie.tls.domains[0].sans=mealie.${domain_name}"
+        # - "traefik.http.routers.mealie.tls.domains[0].sans=mealie.${lan_domain_name}"
       resources:
         limits:
           memory: 1000M #

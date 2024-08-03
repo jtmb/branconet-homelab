@@ -16,14 +16,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.prometheus.rule=Host(`prometheus.${domain_name}`)"
+        - "traefik.http.routers.prometheus.rule=Host(`prometheus.${lan_domain_name}`)"
         - "traefik.http.services.prometheus.loadbalancer.server.port=9090" #uses internal docker port
         - "traefik.http.routers.prometheus.entrypoints=websecure"
         - "traefik.http.routers.prometheus.tls=true"
         - "traefik.http.routers.prometheus.tls.certresolver=myresolver"
-        - "traefik.http.routers.prometheus.tls.domains[0].main=prometheus.${domain_name}"
+        - "traefik.http.routers.prometheus.tls.domains[0].main=prometheus.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.prometheus.tls.domains[0].sans=prometheus.${domain_name}"
+        # - "traefik.http.routers.prometheus.tls.domains[0].sans=prometheus.${lan_domain_name}"
       replicas: 1
 
   loki:
@@ -41,14 +41,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.loki.rule=Host(`loki.${domain_name}`)"
+        - "traefik.http.routers.loki.rule=Host(`loki.${lan_domain_name}`)"
         - "traefik.http.services.loki.loadbalancer.server.port=3100" #uses internal docker port
         - "traefik.http.routers.loki.entrypoints=websecure"
         - "traefik.http.routers.loki.tls=true"
         - "traefik.http.routers.loki.tls.certresolver=myresolver"
-        - "traefik.http.routers.loki.tls.domains[0].main=loki.${domain_name}"
+        - "traefik.http.routers.loki.tls.domains[0].main=loki.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.loki.tls.domains[0].sans=loki.${domain_name}"
+        # - "traefik.http.routers.loki.tls.domains[0].sans=loki.${lan_domain_name}"
       replicas: 1
 
   uptime-kuma:
@@ -56,14 +56,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.uptime.rule=Host(`uptime.${domain_name}`)"
+        - "traefik.http.routers.uptime.rule=Host(`uptime.${lan_domain_name}`)"
         - "traefik.http.services.uptime.loadbalancer.server.port=3001" #uses internal docker port
         - "traefik.http.routers.uptime.entrypoints=websecure"
         - "traefik.http.routers.uptime.tls=true"
         - "traefik.http.routers.uptime.tls.certresolver=myresolver"
-        - "traefik.http.routers.uptime.tls.domains[0].main=uptime.${domain_name}"
+        - "traefik.http.routers.uptime.tls.domains[0].main=uptime.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.uptime.tls.domains[0].sans=uptime.${domain_name}"
+        # - "traefik.http.routers.uptime.tls.domains[0].sans=uptime.${lan_domain_name}"
     ports:
       - 3001:3001
     restart: unless-stopped
@@ -111,14 +111,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.node.rule=Host(`node.${domain_name}`)"
+        - "traefik.http.routers.node.rule=Host(`node.${lan_domain_name}`)"
         - "traefik.http.services.node.loadbalancer.server.port=9100" #uses internal docker port
         - "traefik.http.routers.node.entrypoints=websecure"
         - "traefik.http.routers.node.tls=true"
         - "traefik.http.routers.node.tls.certresolver=myresolver"
-        - "traefik.http.routers.node.tls.domains[0].main=node.${domain_name}"
+        - "traefik.http.routers.node.tls.domains[0].main=node.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.node.tls.domains[0].sans=node.${domain_name}"
+        # - "traefik.http.routers.node.tls.domains[0].sans=node.${lan_domain_name}"
       mode: global
       resources:
         limits:
@@ -131,14 +131,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.grafana.rule=Host(`grafana.${domain_name}`)"
+        - "traefik.http.routers.grafana.rule=Host(`grafana.${lan_domain_name}`)"
         - "traefik.http.services.grafana.loadbalancer.server.port=3000" #uses internal docker port
         - "traefik.http.routers.grafana.entrypoints=websecure"
         - "traefik.http.routers.grafana.tls=true"
         - "traefik.http.routers.grafana.tls.certresolver=myresolver"
-        - "traefik.http.routers.grafana.tls.domains[0].main=grafana.${domain_name}"
+        - "traefik.http.routers.grafana.tls.domains[0].main=grafana.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.grafana.tls.domains[0].sans=grafana.${domain_name}"
+        # - "traefik.http.routers.grafana.tls.domains[0].sans=grafana.${lan_domain_name}"
     ports:
       - 3000:3000
     restart: unless-stopped

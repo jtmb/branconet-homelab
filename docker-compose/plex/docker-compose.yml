@@ -5,14 +5,14 @@ services:
     image: lscr.io/linuxserver/plex:latest
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.plex.rule=Host(`plex.${domain_name}`)"
+      - "traefik.http.routers.plex.rule=Host(`plex.${lan_domain_name}`)"
       - "traefik.http.services.plex.loadbalancer.server.port=32400" #uses internal docker port
       - "traefik.http.routers.plex.entrypoints=websecure"
       - "traefik.http.routers.plex.tls=true"
       - "traefik.http.routers.plex.tls.certresolver=myresolver"
-      - "traefik.http.routers.plex.tls.domains[0].main=plex.${domain_name}"
+      - "traefik.http.routers.plex.tls.domains[0].main=plex.${lan_domain_name}"
       # to add additional DNS names
-      # - "traefik.http.routers.plex.tls.domains[0].sans=plex.${domain_name}"   
+      # - "traefik.http.routers.plex.tls.domains[0].sans=plex.${lan_domain_name}"   
     deploy:
       resources:
         reservations:

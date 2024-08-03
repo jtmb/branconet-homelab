@@ -39,7 +39,7 @@ services:
         - "traefik.enable=true"
         - "traefik.http.routers.dashboard.entrypoints=websecure"
         - "traefik.http.routers.dashboard.tls=true"
-        - "traefik.http.routers.dashboard.rule=Host(`proxy.${domain_name}`)"
+        - "traefik.http.routers.dashboard.rule=Host(`proxy.${lan_domain_name}`)"
         - "traefik.http.routers.dashboard.service=api@internal"
         - "traefik.http.services.dashboard.loadbalancer.server.port=80" #uses internal docker port
         # Add basic auth middleware
@@ -52,12 +52,12 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.whoami.rule=Host(`whoami.${domain_name}`)"
+        - "traefik.http.routers.whoami.rule=Host(`whoami.${lan_domain_name}`)"
         - "traefik.http.services.whoami.loadbalancer.server.port=2001" #uses internal docker port
         - "traefik.http.routers.whoami.entrypoints=websecure"
         - "traefik.http.routers.whoami.tls=true"
         - "traefik.http.routers.whoami.tls.certresolver=myresolver"
-        - "traefik.http.routers.whoami.tls.domains[0].main=whoami.${domain_name}"
+        - "traefik.http.routers.whoami.tls.domains[0].main=whoami.${lan_domain_name}"
         # Add basic auth middleware
         - traefik.http.routers.whoami.middlewares=whoami-auth
         - traefik.http.middlewares.whoami-auth.basicauth.users=brajam:$$apr1$$0z21agij$$ue5mQ35aU.zi.X7J6dRWq.,shakiata:$$apr1$$ncze1lbu$$kDgBmbBEZK/BWely9tSh0/

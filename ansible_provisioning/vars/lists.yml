@@ -75,7 +75,7 @@ stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/ez-backups/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws"
     # - "{{env_file}} docker compose -f /tmp/docker-compose/torrent-stack/docker-compose.yml up -d" 
-    # - "{{env_file}} docker compose -f /tmp/docker-compose/plex/docker-compose.yml up -d"
+    - "{{env_file}} docker compose -f /tmp/docker-compose/plex/docker-compose.yml up -d"
     # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/game-servers/minecraft/docker-compose.yml gamesrv"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/media-stack/docker-compose.yml media"

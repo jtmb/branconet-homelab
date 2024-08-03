@@ -13,14 +13,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.homepage.rule=Host(`homepage.${domain_name}`)"
+        - "traefik.http.routers.homepage.rule=Host(`homepage.${lan_domain_name}`)"
         - "traefik.http.services.homepage.loadbalancer.server.port=3000" #uses internal docker port
         - "traefik.http.routers.homepage.entrypoints=websecure"
         - "traefik.http.routers.homepage.tls=true"
         - "traefik.http.routers.homepage.tls.certresolver=myresolver"
-        - "traefik.http.routers.homepage.tls.domains[0].main=homepage.${domain_name}"
+        - "traefik.http.routers.homepage.tls.domains[0].main=homepage.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.homepage.tls.domains[0].sans=homepage.${domain_name}"
+        # - "traefik.http.routers.homepage.tls.domains[0].sans=homepage.${lan_domain_name}"
       replicas: 1
 networks:
   container-swarm-network:

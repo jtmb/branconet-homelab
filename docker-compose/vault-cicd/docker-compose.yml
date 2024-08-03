@@ -7,14 +7,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.vault-cicd.rule=Host(`vault-cicd.${domain_name}`)"
+        - "traefik.http.routers.vault-cicd.rule=Host(`vault-cicd.${lan_domain_name}`)"
         - "traefik.http.services.vault-cicd.loadbalancer.server.port=8200" #uses internal docker port
         - "traefik.http.routers.vault-cicd.entrypoints=websecure"
         - "traefik.http.routers.vault-cicd.tls=true"
         - "traefik.http.routers.vault-cicd.tls.certresolver=myresolver"
-        - "traefik.http.routers.vault-cicd.tls.domains[0].main=vault-cicd.${domain_name}"
+        - "traefik.http.routers.vault-cicd.tls.domains[0].main=vault-cicd.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.vault-cicd.tls.domains[0].sans=vault-cicd.${domain_name}"
+        # - "traefik.http.routers.vault-cicd.tls.domains[0].sans=vault-cicd.${lan_domain_name}"
       replicas: 1
     ports:
       - 8200:8200

@@ -19,14 +19,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.vault.rule=Host(`vault.${domain_name}`)"
+        - "traefik.http.routers.vault.rule=Host(`vault.${lan_domain_name}`)"
         - "traefik.http.services.vault.loadbalancer.server.port=80" #uses internal docker port
         - "traefik.http.routers.vault.entrypoints=websecure"
         - "traefik.http.routers.vault.tls=true"
         - "traefik.http.routers.vault.tls.certresolver=myresolver"
-        - "traefik.http.routers.vault.tls.domains[0].main=vault.${domain_name}"
+        - "traefik.http.routers.vault.tls.domains[0].main=vault.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.vault.tls.domains[0].sans=vault.${domain_name}"
+        # - "traefik.http.routers.vault.tls.domains[0].sans=vault.${lan_domain_name}"
       replicas: 1
       placement:
         max_replicas_per_node: 1
@@ -35,6 +35,7 @@ services:
   mariadb:
     image: yobasystems/alpine-mariadb
     networks:
+      - container-swarm-network
       - db-network
     environment:
       MYSQL_ROOT_PASSWORD: "${ADMIN_PASS}"

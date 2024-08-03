@@ -12,14 +12,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.ha.rule=Host(`ha.${domain_name}`)"
+        - "traefik.http.routers.ha.rule=Host(`ha.${lan_domain_name}`)"
         - "traefik.http.services.ha.loadbalancer.server.port=8123" #uses internal docker port
         - "traefik.http.routers.ha.entrypoints=websecure"
         - "traefik.http.routers.ha.tls=true"
         - "traefik.http.routers.ha.tls.certresolver=myresolver"
-        - "traefik.http.routers.ha.tls.domains[0].main=ha.${domain_name}"
+        - "traefik.http.routers.ha.tls.domains[0].main=ha.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.ha.tls.domains[0].sans=ha.${domain_name}"
+        # - "traefik.http.routers.ha.tls.domains[0].sans=ha.${lan_domain_name}"
       mode: replicated
       replicas: 1
     logging:

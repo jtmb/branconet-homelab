@@ -5,14 +5,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.pi.rule=Host(`pi.${domain_name}`)"
+        - "traefik.http.routers.pi.rule=Host(`pi.${lan_domain_name}`)"
         - "traefik.http.services.pi.loadbalancer.server.port=80" #uses internal docker port
         - "traefik.http.routers.pi.entrypoints=websecure"
         - "traefik.http.routers.pi.tls=true"
         - "traefik.http.routers.pi.tls.certresolver=myresolver"
-        - "traefik.http.routers.pi.tls.domains[0].main=pi.${domain_name}"
+        - "traefik.http.routers.pi.tls.domains[0].main=pi.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.pi.tls.domains[0].sans=pi.${domain_name}"
+        # - "traefik.http.routers.pi.tls.domains[0].sans=pi.${lan_domain_name}"
     ports:
       - "53:53/tcp"
       - "53:53/udp"

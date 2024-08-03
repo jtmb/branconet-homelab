@@ -5,14 +5,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.lucinda.rule=Host(`lucinda.${domain_name}`)"
+        - "traefik.http.routers.lucinda.rule=Host(`lucinda.${lan_domain_name}`)"
         - "traefik.http.services.lucinda.loadbalancer.server.port=80" #uses internal docker port
         - "traefik.http.routers.lucinda.entrypoints=websecure"
         - "traefik.http.routers.lucinda.tls=true"
         - "traefik.http.routers.lucinda.tls.certresolver=myresolver"
-        - "traefik.http.routers.lucinda.tls.domains[0].main=lucinda.${domain_name}"
+        - "traefik.http.routers.lucinda.tls.domains[0].main=lucinda.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.lucinda.tls.domains[0].sans=lucinda.${domain_name}"
+        # - "traefik.http.routers.lucinda.tls.domains[0].sans=lucinda.${lan_domain_name}"
     networks:
       - container-swarm-network
     restart: unless-stopped
@@ -34,14 +34,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.santos.rule=Host(`santos.${domain_name}`)"
+        - "traefik.http.routers.santos.rule=Host(`santos.${lan_domain_name}`)"
         - "traefik.http.services.santos.loadbalancer.server.port=80" #uses internal docker port
         - "traefik.http.routers.santos.entrypoints=websecure"
         - "traefik.http.routers.santos.tls=true"
         - "traefik.http.routers.santos.tls.certresolver=myresolver"
-        - "traefik.http.routers.santos.tls.domains[0].main=santos.${domain_name}"
+        - "traefik.http.routers.santos.tls.domains[0].main=santos.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.santos.tls.domains[0].sans=santos.${domain_name}"
+        # - "traefik.http.routers.santos.tls.domains[0].sans=santos.${lan_domain_name}"
     networks:
       - container-swarm-network
     restart: unless-stopped
@@ -63,14 +63,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.aplb.rule=Host(`aplb.${domain_name}`)"
+        - "traefik.http.routers.aplb.rule=Host(`aplb.${lan_domain_name}`)"
         - "traefik.http.services.aplb.loadbalancer.server.port=80" #uses internal docker port
         - "traefik.http.routers.aplb.entrypoints=websecure"
         - "traefik.http.routers.aplb.tls=true"
         - "traefik.http.routers.aplb.tls.certresolver=myresolver"
-        - "traefik.http.routers.aplb.tls.domains[0].main=aplb.${domain_name}"
+        - "traefik.http.routers.aplb.tls.domains[0].main=aplb.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.aplb.tls.domains[0].sans=aplb.${domain_name}"
+        # - "traefik.http.routers.aplb.tls.domains[0].sans=aplb.${lan_domain_name}"
     networks:
       - container-swarm-network
     restart: unless-stopped
@@ -92,14 +92,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.mc.rule=Host(`mc.${domain_name}`)"
+        - "traefik.http.routers.mc.rule=Host(`mc.${lan_domain_name}`)"
         - "traefik.http.services.mc.loadbalancer.server.port=80" #uses internal docker port
         - "traefik.http.routers.mc.entrypoints=websecure"
         - "traefik.http.routers.mc.tls=true"
         - "traefik.http.routers.mc.tls.certresolver=myresolver"
-        - "traefik.http.routers.mc.tls.domains[0].main=mc.${domain_name}"
+        - "traefik.http.routers.mc.tls.domains[0].main=mc.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.mc.tls.domains[0].sans=mc.${domain_name}"
+        # - "traefik.http.routers.mc.tls.domains[0].sans=mc.${lan_domain_name}"
     networks:
       - container-swarm-network
     restart: unless-stopped

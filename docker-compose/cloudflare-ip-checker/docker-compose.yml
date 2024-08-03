@@ -19,14 +19,14 @@ services:
         deploy:
             labels:
                 - "traefik.enable=true"
-                - "traefik.http.routers.cic.rule=Host(`cic.${domain_name}`)"
+                - "traefik.http.routers.cic.rule=Host(`cic.${lan_domain_name}`)"
                 - "traefik.http.services.cic.loadbalancer.server.port=8080" #uses internal docker port
                 - "traefik.http.routers.cic.entrypoints=websecure"
                 - "traefik.http.routers.cic.tls=true"
                 - "traefik.http.routers.cic.tls.certresolver=myresolver"
-                - "traefik.http.routers.cic.tls.domains[0].main=cic.${domain_name}"
+                - "traefik.http.routers.cic.tls.domains[0].main=cic.${lan_domain_name}"
                 # to add additional DNS names
-                # - "traefik.http.routers.cic.tls.domains[0].sans=cic.${domain_name}"
+                # - "traefik.http.routers.cic.tls.domains[0].sans=cic.${lan_domain_name}"
             replicas: 1
             placement:
                 max_replicas_per_node: 1

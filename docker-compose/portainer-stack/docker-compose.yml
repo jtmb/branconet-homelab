@@ -28,14 +28,14 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.portainer.rule=Host(`portainer.${domain_name}`)"
+        - "traefik.http.routers.portainer.rule=Host(`portainer.${lan_domain_name}`)"
         - "traefik.http.services.portainer.loadbalancer.server.port=9000" #uses internal docker port
         - "traefik.http.routers.portainer.entrypoints=websecure"
         - "traefik.http.routers.portainer.tls=true"
         - "traefik.http.routers.portainer.tls.certresolver=myresolver"
-        - "traefik.http.routers.portainer.tls.domains[0].main=portainer.${domain_name}"
+        - "traefik.http.routers.portainer.tls.domains[0].main=portainer.${lan_domain_name}"
         # to add additional DNS names
-        # - "traefik.http.routers.portainer.tls.domains[0].sans=portainer.${domain_name}"
+        # - "traefik.http.routers.portainer.tls.domains[0].sans=portainer.${lan_domain_name}"
       mode: replicated
       replicas: 1
       placement:
