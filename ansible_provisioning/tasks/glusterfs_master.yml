@@ -1,0 +1,95 @@
+- name: Add entries to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ item.ip }}  {{ item.hostname }}"
+    state: present
+    create: yes
+    validate: 'cat %s'
+  loop:
+    - { ip: "{{master_node}}", hostname: "masternode" }
+    - { ip: "{{worker_node_1}}", hostname: "workernode1" }
+    - { ip: "{{worker_node_2}}", hostname: "workernode2" }
+  tags: glusterfs
+
+- name: Add the GlusterFS repository
+  apt_repository:
+    repo: ppa:gluster/glusterfs-10
+  tags: glusterfs
+
+- name: Update the repositories
+  apt:
+    update_cache: yes
+  tags: glusterfs
+
+- name: Install GlusterFS
+  apt:
+    name: glusterfs-server
+    state: present
+  tags: glusterfs
+
+- name: Start the GlusterFS service
+  service:
+    name: glusterd
+    state: started
+  tags: glusterfs
+
+- name: Enable the GlusterFS service
+  service:
+    name: glusterd
+    enabled: yes
+  tags: glusterfs
+
+- name: Add GlusterFS peers
+  shell: "gluster peer probe {{ item }}"
+  loop:
+    - "workernode1"
+    - "workernode2"
+  tags: glusterfs
+
+- name: Create /gluster/volumes directory
+  file:
+    path: /gluster/volumes
+    state: directory
+    mode: '0755'
+  tags: glusterfs
+
+- name: Create GlusterFS volume staging-gfs
+  shell: |
+    gluster volume create staging-gfs replica 3 \
+    masternode:/gluster/volumes \
+    workernode1:/gluster/volumes \
+    workernode2:/gluster/volumes force
+  ignore_errors: true
+  tags: glusterfs
+
+- name: Start GlusterFS volume staging-gfs
+  shell: gluster volume start staging-gfs
+  ignore_errors: true
+  tags: glusterfs
+
+- name: Append line to /etc/fstab
+  lineinfile:
+    path: /etc/fstab
+    line: 'localhost:/staging-gfs /mnt glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0'
+    create: yes
+  tags: glusterfs
+
+- name: Check if staging-gfs volume exists
+  command: gluster volume info staging-gfs
+  register: gluster_volume_info
+  ignore_errors: true
+  tags: glusterfs
+
+- name: Mount GlusterFS volume
+  ignore_errors: true
+  command: mount.glusterfs localhost:/staging-gfs /mnt
+  tags: glusterfs
+
+- name: Set ownership of /mnt to root:docker
+  file:
+    path: /mnt
+    state: directory
+    owner: root
+    group: docker
+    recurse: yes
+  tags: glusterfs

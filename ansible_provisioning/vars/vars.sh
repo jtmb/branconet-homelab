@@ -15,15 +15,18 @@ admin_pub_ip=$(echo ['"'$public_ip/32'"'])
 source $homedir/ansible_provisioning/wrapper-scripts/vault-auth.sh 
 
 # ANSIBLE VARS
-ANSIBLE_SUDO_PASS=$(vault kv get -field=admin_pwd kv/admin_pass)
-ANSIBLE_SSH_USER=$(vault kv get -field=admin_usr kv/admin_user)
-SSH_PORT=$(vault kv get -field=port kv/ssh_port)
-container_volumes_location=$(vault kv get -field=value kv/container_volumes_location)
+# ANSIBLE_SUDO_PASS=$(vault kv get -field=admin_pwd kv/admin_pass)
+ANSIBLE_SUDO_PASS=rancherprd1234!
+# ANSIBLE_SSH_USER=$(vault kv get -field=admin_usr kv/admin_user)
+ANSIBLE_SSH_USER=rancher
+SSH_PORT=22 #$(vault kv get -field=port kv/ssh_port)
+# container_volumes_location=$(vault kv get -field=value kv/container_volumes_location)
+container_volumes_location=/mnt/container-program-files
 
 # INSTANCE IP's
-master_node=192.168.0.5
-worker_node_1=192.168.0.4
-worker_node_2=192.168.0.7
+master_node=192.168.0.17
+worker_node_1=192.168.0.18
+worker_node_2=192.168.0.19
 
 # CLOUDFLARE
 cf_key=$(vault kv get -field=key kv/cf_key)

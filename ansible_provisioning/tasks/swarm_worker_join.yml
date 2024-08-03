@@ -12,7 +12,7 @@
     owner: nobody
     group: nogroup
 
-- name: Mount NTFS on clients
-  become: true
-  become_user: root
-  shell: mount {{master_node}}:{{container_volumes_location}} {{container_volumes_location}}
+# - name: Mount NTFS on clients
+#   become: true
+#   become_user: root
+#   shell: mount {{master_node}}:{{container_volumes_location}} {{container_volumes_location}}

@@ -31,6 +31,27 @@
         tags: ufw
     tags: ufw
 
+# glusterfs setup
+- name: "Configure glusterfs masters"
+  hosts: master_node
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs
+    include_tasks: tasks/glusterfs_master.yml
+    tags: glusterfs
+
+- name: "Configure glusterfs workers"
+  hosts: 
+    - worker_node_1
+    - worker_node_2
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs
+    include_tasks: tasks/glusterfs_worker.yml
+    tags: glusterfs
+
 # Swarm setup
 - name: "Configure Swarm"
   hosts: master_node
