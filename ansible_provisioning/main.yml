@@ -32,13 +32,16 @@
     tags: ufw
 
 # glusterfs setup
-- name: "Configure glusterfs masters"
-  hosts: master_node
+- name: "Configure glusterfs prep"
+  hosts: 
+    - master_node
+    - worker_node_1
+    - worker_node_2
   become_user: "root"
   become: true
   tasks:
-  - name: Install Glusterfs
-    include_tasks: tasks/glusterfs_master.yml
+  - name: Install Glusterfs finishing touches
+    include_tasks: tasks/glusterfs_prep.yml
     tags: glusterfs
 
 - name: "Configure glusterfs workers"
@@ -50,6 +53,27 @@
   tasks:
   - name: Install Glusterfs
     include_tasks: tasks/glusterfs_worker.yml
+    tags: glusterfs
+
+- name: "Configure glusterfs masters"
+  hosts: master_node
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs
+    include_tasks: tasks/glusterfs_master.yml
+    tags: glusterfs
+
+- name: "Configure glusterfs post"
+  hosts: 
+    - master_node
+    - worker_node_1
+    - worker_node_2
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs finishing touches
+    include_tasks: tasks/glusterfs_post.yml
     tags: glusterfs
 
 # Swarm setup
@@ -115,20 +139,43 @@
        tags: containers
     tags:  containers 
 
-- name: "DNS"
+# DNS
+- name: "Clean DNS"
   hosts: master_node
   vars_files:
     - vars/lists.yml
   become_user: "root"
   become: true
   tasks:
-  - name: Post Provisioning DNS Tasks
+  - name: Clear the custom.list file
+    tags: dns
+    shell: "rm -rfv {{ container_volumes_location }}/pihole/custom.list"
+  - name: Ensure the custom.list file exists
+    tags: dns
+    file:
+      path: "{{ container_volumes_location }}/pihole/custom.list"
+      state: touch
+- name: "Loop DNS"
+  hosts: all
+  vars_files:
+    - vars/lists.yml
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Round robbin DNS Tasks
     include_tasks: 
-      file: tasks/dns.yml
+      file: tasks/dns_roundrobbin.yml
       apply:
-        tags: post
-    tags: post
-    
+        tags: dns
+    tags: dns
+
+- name: "Cloudflare DNS"
+  hosts: master_node
+  vars_files:
+    - vars/lists.yml
+  become_user: "root"
+  become: true
+  tasks:
   - name: Cloudflare DNS 
     include_tasks: 
       file: tasks/cloudflare.yml
@@ -136,6 +183,7 @@
         tags: cloudflare
     tags: cloudflare
 
+# POST PROVISIONING
 - name: "POST PROVISIONING"
   hosts: all
   become_user: "root"

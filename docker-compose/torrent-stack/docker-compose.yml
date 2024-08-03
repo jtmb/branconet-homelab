@@ -2,6 +2,8 @@ version: '3.8'
 services:
   nordvpn:
     container_name: GlueTun-Nord
+    networks:
+      - container-swarm-network
     image: qmcgaw/gluetun
     cap_add:
       - NET_ADMIN
@@ -31,21 +33,6 @@ services:
       - ${container_volumes_location}/deluge/config:/config
       - /mnt/plex_smb_share:/downloads:/downloads
     image: lscr.io/linuxserver/qbittorrent:latest
-  tor:
-    container_name: tor-browser
-    network_mode: service:nordvpn
-    depends_on:
-      - nordvpn
-    restart: unless-stopped
-    environment:
-      - TZ=Etc/UTC
-    image: domistyle/tor-browser
-    volumes:
-      - ${container_volumes_location}/plex/config:/config
-      - /mnt/plex_smb_share/tv:/tv
-      - /mnt/plex_smb_share/movies:/movies
-      - /mnt/plex_smb_share/extras:/extras
-      - /dev/shm:/transcode
 networks:
   container-swarm-network:
     external: true

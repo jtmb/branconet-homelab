@@ -1,6 +1,7 @@
 - name: Init a new swarm with default parameters #docker swarm init
   community.docker.docker_swarm:
     state: present
+    docker_host: unix:///var/run/docker.sock
 
 - name: Swarm Get Join Key
   become: true
@@ -8,7 +9,7 @@
   shell: docker swarm join-token manager --quiet
   register: CLUSTER_JOIN_KEY
 
-- name: Create share directory if it does not exist and set right permissios
+- name: Create share directory if it does not exist and set right permissions
   ansible.builtin.file:
     path: "{{container_volumes_location}}"
     state: directory

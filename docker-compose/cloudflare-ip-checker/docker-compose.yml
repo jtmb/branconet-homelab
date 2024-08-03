@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-    cloudflare-ip-checker:
+    cic:
         image: "jtmb92/cloudflare_ip_checker:UI"
         restart: always
         networks:
@@ -17,6 +17,16 @@ services:
             DASHBOARD_USER: brajam #the default dashboard login username
             DASHBOARD_PASSWORD: "${ADMIN_PASS}" #the default dashboard login password
         deploy:
+            labels:
+                - "traefik.enable=true"
+                - "traefik.http.routers.cic.rule=Host(`cic.${domain_name}`)"
+                - "traefik.http.services.cic.loadbalancer.server.port=8080" #uses internal docker port
+                - "traefik.http.routers.cic.entrypoints=websecure"
+                - "traefik.http.routers.cic.tls=true"
+                - "traefik.http.routers.cic.tls.certresolver=myresolver"
+                - "traefik.http.routers.cic.tls.domains[0].main=cic.${domain_name}"
+                # to add additional DNS names
+                # - "traefik.http.routers.cic.tls.domains[0].sans=cic.${domain_name}"
             replicas: 1
             placement:
                 max_replicas_per_node: 1

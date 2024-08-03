@@ -7,11 +7,6 @@
       path: "/home/{{ssh_user}}/.ssh"
       state: directory
 
-- name: Copy authozied keys files from host to machine
-  copy:
-    src: "/home/{{user_id}}/.ssh/authorized_keys"
-    dest: "/home/{{ssh_user}}/.ssh/authorized_keys"
-
 - name: Regex replace ssh port
   replace:
     path: "/etc/ssh/sshd_config"

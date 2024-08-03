@@ -26,7 +26,7 @@
     name: glusterfs-server
     state: present
   tags: glusterfs
-
+  
 - name: Start the GlusterFS service
   service:
     name: glusterd
@@ -38,18 +38,3 @@
     name: glusterd
     enabled: yes
   tags: glusterfs
-
-- name: Create /gluster/volumes directory
-  file:
-    path: /gluster/volumes
-    state: directory
-    mode: '0755'
-  tags: glusterfs
-
-- name: Create /{{container_volumes_location}} directory
-  file:
-    path: "{{container_volumes_location}}"
-    state: directory
-    mode: '0755'
-  tags: glusterfs
-

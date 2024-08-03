@@ -24,14 +24,14 @@ SSH_PORT=22 #$(vault kv get -field=port kv/ssh_port)
 container_volumes_location=/mnt/container-program-files
 
 # INSTANCE IP's
-master_node=192.168.0.17
-worker_node_1=192.168.0.18
-worker_node_2=192.168.0.19
+master_node=192.168.0.25
+worker_node_1=192.168.0.26
+worker_node_2=192.168.0.27
 
 # CLOUDFLARE
 cf_key=$(vault kv get -field=key kv/cf_key)
 cf_zone_id=$(vault kv get -field=id kv/cf_zone_id)
-domain_name=$(vault kv get -field=value kv/domain_name)
+domain_name=test.lan #$(vault kv get -field=value kv/domain_name)
 discord_webhook=$(vault kv get -field=value kv/discord_webhook)
 email=$(vault kv get -field=value kv/email)
 

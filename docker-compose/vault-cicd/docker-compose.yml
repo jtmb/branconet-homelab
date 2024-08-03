@@ -5,6 +5,16 @@ services:
   vault:
     image: vault:1.8.3
     deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.vault-cicd.rule=Host(`vault-cicd.${domain_name}`)"
+        - "traefik.http.services.vault-cicd.loadbalancer.server.port=8200" #uses internal docker port
+        - "traefik.http.routers.vault-cicd.entrypoints=websecure"
+        - "traefik.http.routers.vault-cicd.tls=true"
+        - "traefik.http.routers.vault-cicd.tls.certresolver=myresolver"
+        - "traefik.http.routers.vault-cicd.tls.domains[0].main=vault-cicd.${domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.vault-cicd.tls.domains[0].sans=vault-cicd.${domain_name}"
       replicas: 1
     ports:
       - 8200:8200
@@ -16,7 +26,7 @@ services:
       - VAULT_LOCAL_CONFIG={"backend":{"consul":{"address":"http://server-bootstrap:8500","path":"vault/"}},"listener":{"tcp":{"address":"0.0.0.0:8200","tls_disable":1}},"ui":true, "disable_mlock":true}
     command: server
     networks:
-     - container-swarm-network
+      - container-swarm-network
     depends_on:
       - consul
     logging:
@@ -34,14 +44,13 @@ services:
       - 8500:8500
     command: "agent -server -bootstrap-expect=1 -ui -client 0.0.0.0 -bind '{{ GetInterfaceIP \"eth0\" }}'"
     networks:
-     - container-swarm-network
+      - container-swarm-network
     logging:
       driver: loki
       options:
         loki-url: "http://localhost:3100/loki/api/v1/push"
         loki-retries: "5"
         loki-batch-size: "400"
-
   # consul-server:
   #   image: consul:1.10.3
   #   command: "agent -server -retry-join server-bootstrap -client 0.0.0.0 -bind '{{ GetInterfaceIP \"eth0\" }}'"
@@ -59,5 +68,5 @@ services:
   #     - server-bootstrap
 
 networks:
- container-swarm-network:
+  container-swarm-network:
     external: true

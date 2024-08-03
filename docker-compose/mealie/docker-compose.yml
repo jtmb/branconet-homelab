@@ -2,19 +2,29 @@ version: "3.7"
 services:
   mealie:
     networks:
-    - container-swarm-network
+      - container-swarm-network
     image: ghcr.io/mealie-recipes/mealie:v1.0.0-RC1.1
     container_name: mealie
     ports:
-        - "8089:9000" # 
+      - "8089:9000" #
     deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.mealie.rule=Host(`mealie.${domain_name}`)"
+        - "traefik.http.services.mealie.loadbalancer.server.port=9000" #uses internal docker port
+        - "traefik.http.routers.mealie.entrypoints=websecure"
+        - "traefik.http.routers.mealie.tls=true"
+        - "traefik.http.routers.mealie.tls.certresolver=myresolver"
+        - "traefik.http.routers.mealie.tls.domains[0].main=mealie.${domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.mealie.tls.domains[0].sans=mealie.${domain_name}"
       resources:
         limits:
-          memory: 1000M # 
+          memory: 1000M #
     volumes:
       - ${container_volumes_location}/mealie/mealie-data:/app/data/
     environment:
-    # Set Backend ENV Variables Here
+      # Set Backend ENV Variables Here
       - ALLOW_SIGNUP=false
       - PUID=1000
       - PGID=1000
@@ -26,5 +36,5 @@ services:
       - DEFAULT_PASSWORD=${ADMIN_PASS}
     restart: always
 networks:
- container-swarm-network:
+  container-swarm-network:
     external: true
