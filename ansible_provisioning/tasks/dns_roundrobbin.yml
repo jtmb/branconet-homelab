@@ -4,6 +4,7 @@
     dest: "{{container_volumes_location}}/pihole/custom.list"
     line: "{{ item.ip }} {{ item.domain }}"
   with_items:
+    - { ip: "192.168.0.28", domain: "retropie.lan" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "proxy.{{ domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "whoami.{{ domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "pi.{{ domain_name }}" }

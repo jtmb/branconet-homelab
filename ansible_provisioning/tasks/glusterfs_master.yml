@@ -21,8 +21,8 @@
 
 - name: Create GlusterFS volume staging-gfs
   shell: |
-    gluster volume create staging-gfs replica 1 \
-    masternode:/gluster/volumes force
+     masternode:/gluster/volumes \
+     workernode1:/gluster/volumes force
   ignore_errors: true
   tags: glusterfs
 
@@ -30,7 +30,8 @@
 #   shell: |
 #     gluster volume create staging-gfs replica 2 \
 #     masternode:/gluster/volumes \
-#     workernode1:/gluster/volumes force
+#     workernode1:/gluster/volumes \
+#     workernode2:/gluster/volumes force force
 #   ignore_errors: true
 #   tags: glusterfs
 

@@ -31,56 +31,14 @@
         tags: ufw
     tags: ufw
 
-# glusterfs setup
-- name: "Configure glusterfs prep"
-  hosts: 
-    - master_node
-    - worker_node_1
-    # - worker_node_2
-  become_user: "root"
-  become: true
-  tasks:
-  - name: Install Glusterfs finishing touches
-    include_tasks: tasks/glusterfs_prep.yml
-    tags: glusterfs
-
-- name: "Configure glusterfs workers"
-  hosts: 
-    - worker_node_1
-    - worker_node_2
-  become_user: "root"
-  become: true
-  tasks:
-  - name: Install Glusterfs
-    include_tasks: tasks/glusterfs_worker.yml
-    tags: glusterfs
-
-- name: "Configure glusterfs masters"
-  hosts: master_node
-  become_user: "root"
-  become: true
-  tasks:
-  - name: Install Glusterfs
-    include_tasks: tasks/glusterfs_master.yml
-    tags: glusterfs
-
-- name: "Configure glusterfs post"
-  hosts: 
-    - master_node
-    - worker_node_1
-    - worker_node_2
-  become_user: "root"
-  become: true
-  tasks:
-  - name: Install Glusterfs finishing touches
-    include_tasks: tasks/glusterfs_post.yml
-    tags: glusterfs
-
 # Swarm setup
 - name: "Configure Swarm"
   hosts: master_node
   become_user: "root"
   become: true
+  vars_files:
+    - vars/lists.yml
+    
   tasks:
   - name: Install swarm
     include_tasks: 
@@ -88,6 +46,13 @@
       apply:
         tags: swarm
     tags: swarm
+
+  - name: Containers Pre-Provision
+    include_tasks: 
+      file: tasks/container-preprovisioning.yml
+      apply:
+        tags: [containers, pre-prov]
+    tags: [containers, pre-prov]
 
 - name: "Join Swarm"
   hosts: 
@@ -102,6 +67,52 @@
       apply:
         tags: swarm
     tags: swarm
+
+# glusterfs setup
+- name: "Configure glusterfs prep"
+  hosts: 
+    - master_node
+    - worker_node_1
+    # - worker_node_2
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs finishing touches
+    include_tasks: tasks/glusterfs_prep.yml
+    tags: [glusterfs, containers]
+
+- name: "Configure glusterfs workers"
+  hosts: 
+    - worker_node_1
+    - worker_node_2
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs
+    include_tasks: tasks/glusterfs_worker.yml
+    tags: [glusterfs, containers]
+
+- name: "Configure glusterfs masters"
+  hosts: master_node
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs
+    include_tasks: tasks/glusterfs_master.yml
+    tags: [glusterfs, containers]
+
+- name: "Configure glusterfs post"
+  hosts: 
+    - master_node
+    - worker_node_1
+    - worker_node_2
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs finishing touches
+    include_tasks: tasks/glusterfs_post.yml
+    tags: [glusterfs, containers]
+
 
 # Containers
 - name: "Launch Swarm Containers"
@@ -124,13 +135,6 @@
       apply:
        tags: images
     tags: images
-
-  - name: Containers Pre-Provision
-    include_tasks: 
-      file: tasks/container-preprovisioning.yml
-      apply:
-        tags: [containers, pre-prov]
-    tags: [containers, pre-prov]
 
   - name: Install Containers
     include_tasks: 

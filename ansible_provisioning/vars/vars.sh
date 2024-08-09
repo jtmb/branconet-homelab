@@ -21,7 +21,7 @@ container_volumes_location=$(vault kv get -field=value kv/container_volumes_loca
 
 # INSTANCE IP's
 master_node=192.168.0.5
-# worker_node_1=192.168.0.4
+worker_node_1=192.168.0.4
 # worker_node_2=192.168.0.7
 
 # DNS
