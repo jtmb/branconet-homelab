@@ -32,23 +32,19 @@
 
 - name: Mount GlusterFS volume
   command: mount.glusterfs localhost:/staging-gfs {{container_volumes_location}}
+
+
+
+  
   ignore_errors: true
   tags: glusterfs
 
-- name: Set ownership of {{container_volumes_location}} to root:docker
-  file:
-    path: "{{container_volumes_location}}"
-    state: directory
-    owner: root
-    group: docker
-    recurse: yes
-  tags: glusterfs
+# - name: Set ownership of {{container_volumes_location}} to root:docker
+#   file:
+#     path: "{{container_volumes_location}}"
+#     state: directory
+#     owner: root
+#     group: docker
+#     recurse: yes
+#   tags: glusterfs
 
-- name: Set ownership of "{{container_volumes_location}}" to root:docker
-  file:
-    path: "{{container_volumes_location}}"
-    state: directory
-    owner: root
-    group: docker
-    recurse: yes
-  tags: glusterfs

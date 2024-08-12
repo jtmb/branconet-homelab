@@ -8,6 +8,7 @@
   loop:
     - { ip: "{{master_node}}", hostname: "masternode" }
     - { ip: "{{worker_node_1}}", hostname: "workernode1" }
+    - { ip: "{{worker_node_2}}", hostname: "workernode2" }
   tags: glusterfs
 
 - name: Add the GlusterFS repository

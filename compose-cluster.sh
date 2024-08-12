@@ -4,7 +4,7 @@ source ansible_provisioning/vars/vars.sh
 # Ansible Playbook Consumes VARS
 cd ansible_provisioning && \
      ANSIBLE_CONFIG=./ansible_provisioning/ansible.cfg ansible-playbook -i inventory.ini main.yml \
-    --limit 'all' --skip-tags "reboot,images,cloudflare" --tags "containers" \
+    --limit 'all' --skip-tags "reboot,images,cloudflare" --tags "swarm" \
     --extra-vars "ssh_port=$SSH_PORT pub_key=$pub_key \
     master_node=$master_node  \
     worker_node_1=$worker_node_1 \
@@ -29,3 +29,4 @@ cd ansible_provisioning && \
     # mc 
     # ssh 
     # cloudflare
+    # docker-only

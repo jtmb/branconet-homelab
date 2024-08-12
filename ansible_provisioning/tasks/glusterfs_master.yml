@@ -2,7 +2,7 @@
   shell: "gluster peer probe {{ item }}"
   loop:
     - "workernode1"
-    # - "workernode2"
+    - "workernode2"
   tags: glusterfs
 
 - name: Create /gluster/volumes directory
@@ -21,19 +21,12 @@
 
 - name: Create GlusterFS volume staging-gfs
   shell: |
-     masternode:/gluster/volumes \
-     workernode1:/gluster/volumes force
+    gluster volume create staging-gfs replica 3 \
+    masternode:/gluster/volumes \
+    workernode1:/gluster/volumes \
+    workernode2:/gluster/volumes force
   ignore_errors: true
   tags: glusterfs
-
-# - name: Create GlusterFS volume staging-gfs
-#   shell: |
-#     gluster volume create staging-gfs replica 2 \
-#     masternode:/gluster/volumes \
-#     workernode1:/gluster/volumes \
-#     workernode2:/gluster/volumes force force
-#   ignore_errors: true
-#   tags: glusterfs
 
 - name: Start GlusterFS volume staging-gfs
   shell: gluster volume start staging-gfs

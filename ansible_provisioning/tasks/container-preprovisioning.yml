@@ -9,12 +9,6 @@
     mode: 1000 
   with_items: "{{ container_paths }}"
 
-- name: Stop the GlusterFS service
-  service:
-    name: glusterd
-    state: stopped
-  tags: glusterfs
-
 - name: Change file ownership, group and permissions for configs that need it
   ansible.builtin.file:
     path: "{{item}}"

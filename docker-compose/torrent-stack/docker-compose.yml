@@ -2,8 +2,8 @@ version: '3.8'
 services:
   nordvpn:
     container_name: GlueTun-Nord
-    networks:
-      - container-swarm-network
+    # networks:
+    #   - container-swarm-network
     image: qmcgaw/gluetun
     cap_add:
       - NET_ADMIN
@@ -33,6 +33,6 @@ services:
       - ${container_volumes_location}/deluge/config:/config
       - /mnt/plex_smb_share:/downloads:/downloads
     image: lscr.io/linuxserver/qbittorrent:latest
-networks:
-  container-swarm-network:
-    external: true
+# networks:
+#   container-swarm-network:
+#     external: true

@@ -31,6 +31,21 @@
         tags: ufw
     tags: ufw
 
+
+# Swarm setup
+- name: "Glusterfs Stop"
+  hosts: all
+  become_user: "root"
+  become: true
+  vars_files:
+    - vars/lists.yml
+  tasks:
+  - name: Stop the GlusterFS service
+    service:
+      name: glusterd
+      state: stopped
+    tags: [glusterfs, containers]
+
 # Swarm setup
 - name: "Configure Swarm"
   hosts: master_node
@@ -73,7 +88,7 @@
   hosts: 
     - master_node
     - worker_node_1
-    # - worker_node_2
+    - worker_node_2
   become_user: "root"
   become: true
   tasks:
@@ -113,6 +128,18 @@
     include_tasks: tasks/glusterfs_post.yml
     tags: [glusterfs, containers]
 
+- name: "Glusterfs Start"
+  hosts: all
+  become_user: "root"
+  become: true
+  vars_files:
+    - vars/lists.yml
+  tasks:
+  - name: Start the GlusterFS service
+    service:
+      name: glusterd
+      state: started
+    tags: [glusterfs, containers]
 
 # Containers
 - name: "Launch Swarm Containers"
@@ -139,9 +166,7 @@
   - name: Install Containers
     include_tasks: 
       file: tasks/containers.yml
-      apply:
-       tags: containers
-    tags:  containers 
+    tags:  [containers,docker-only] 
 
 # DNS
 - name: "Clean DNS"

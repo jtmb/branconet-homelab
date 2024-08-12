@@ -3,6 +3,7 @@
     msg: "{{ansible_sudo_pass}}"
   register: ADMIN_PASS
   no_log: true
+  tags: [docker-only,containers]
   
 - name: DEPLOY CONTAINERS STACK 
   vars:
@@ -11,7 +12,9 @@
   with_items: "{{ stack_deploy }}"
   loop_control:
     label: "{{ item | regex_replace('^.*docker stack deploy', 'docker stack deploy') }}" #replaces env secrets from being shown in console output
+  tags: [docker-only,containers]
 
 - name: SCALE SWARM CONTAINERS
   shell: "{{ item }}"
   with_items: "{{ swarm_scale }}"
+  tags: [docker-only,containers]

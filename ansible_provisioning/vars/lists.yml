@@ -68,14 +68,14 @@ root_container_permission_paths:
     - '{{container_volumes_location}}/consul-client'    
 
 stack_deploy:
+    - "{{env_file}} docker compose -f /tmp/docker-compose/plex/docker-compose.yml up -d"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/pi/docker-compose.yml pi"
     # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/bookstack/docker-compose.yml bookstack"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/mealie/docker-compose.yml mealie"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/ez-backups/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws"
-    # - "{{env_file}} docker compose -f /tmp/docker-compose/torrent-stack/docker-compose.yml up -d" 
-    - "{{env_file}} docker compose -f /tmp/docker-compose/plex/docker-compose.yml up -d"
+    - "{{env_file}} docker compose -f /tmp/docker-compose/torrent-stack/docker-compose.yml up -d" 
     # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/game-servers/minecraft/docker-compose.yml gamesrv"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/media-stack/docker-compose.yml media"
@@ -86,7 +86,7 @@ stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault"
     # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws" 
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/kanboard/docker-compose.yml tooling" 
+    # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/kanboard/docker-compose.yml tooling" 
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/OSINT/docker-compose.yml osint"
 
 # Docker Swarm Scale Services
@@ -109,7 +109,7 @@ swarm_scale:
     - docker service scale pi_exporter=1
     # - docker service scale nextcloud_db=1
     # - docker service scale nextcloud_nextapp=1
-    - docker service scale vault_mariadb=1
+    # - docker service scale vault_mariadb=1
     - docker service scale vault_vaultwarden=1
     - docker service scale monitoring_loki=1
     # - docker service scale monitoring_influx=1
@@ -127,8 +127,7 @@ swarm_scale:
     - docker service scale ws_lucinda=2
     - docker service scale ws_santos=2
     - docker service scale ws_aplb=2
-    - docker service scale tooling_kanboard=1 && docker service update tooling_kanboard --force
-
+    
 # Cloudflare Subdomains
 cf_service_name:
     - mc
