@@ -1,0 +1,20 @@
+    - name: Install Fail2Ban
+      apt:
+        name: fail2ban
+        state: present
+      notify: restart fail2ban
+
+    - name: Ensure Fail2Ban service is running
+      service:
+        name: "{{ fail2ban_service }}"
+        state: started
+        enabled: yes
+
+    - name: Create fail2ban jail.local configuration file
+      template:
+        src: jail.local.j2
+        dest: "{{ fail2ban_config_file }}"
+        owner: root
+        group: root
+        mode: '0644'
+      notify: restart fail2ban

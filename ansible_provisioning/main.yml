@@ -253,6 +253,39 @@
         tags: reboot
     tags: reboot
 
+#FAIL2BAN
+- name: Apply Fail2Ban role
+  hosts: all
+  become: yes
+  vars:
+    fail2ban_jail_local:
+      sshd:
+        enabled: true
+        port: ssh
+        filter: sshd
+        logpath: /var/log/auth.log
+        maxretry: 5
+        bantime: 3600
+      apache:
+        enabled: true
+        port: http,https
+        filter: apache-auth
+        logpath: /var/log/apache2/*access.log
+        maxretry: 5
+        bantime: 3600
+    fail2ban_config_file: "/etc/fail2ban/jail.local"
+    fail2ban_service: "fail2ban"
+    fail2ban_default_bantime: 3600 
+    fail2ban_default_maxretry: 5 
+  roles:
+    - fail2ban
+  tags: fail2ban
+  handlers:
+    - name: restart fail2ban
+      service:
+        name: fail2ban
+        state: restarted
+
 - name: "Backups"
   hosts: master_node
   become_user: "root"

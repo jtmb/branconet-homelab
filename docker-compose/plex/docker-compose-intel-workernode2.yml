@@ -20,7 +20,7 @@ services:
       - /mnt/plex_smb_share/movies:/movies
       - /mnt/plex_smb_share/extras:/extras
       - /dev/shm:/transcode
-  ez-backups-plex2:
+  ez-backups-plex:
     image: jtmb92/ez-backups:latest
     depends_on:
       - plex

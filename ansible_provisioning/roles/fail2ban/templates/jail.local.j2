@@ -1,0 +1,19 @@
+[DEFAULT]
+# Ban hosts for who many failures of auth during this time
+bantime  = {{ fail2ban_default_bantime }}
+# Number of failures to ban
+maxretry = {{ fail2ban_default_maxretry }}
+# Email address to send notifications
+destemail = root@localhost
+# Action to take on banning
+action = %(action_mwl)s
+
+{% for jail, config in fail2ban_jail_local.items() %}
+[{{ jail }}]
+enabled = {{ config.enabled | bool | ternary('true', 'false') }}
+port    = {{ config.port }}
+filter  = {{ config.filter }}
+logpath = {{ config.logpath }}
+maxretry = {{ config.maxretry }}
+bantime = {{ config.bantime }}
+{% endfor %}
