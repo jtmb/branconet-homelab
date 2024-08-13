@@ -114,7 +114,7 @@
   tasks:
   - name: Install Glusterfs
     include_tasks: tasks/glusterfs_master.yml
-    tags: [glusterfs, containers]
+    tags: [glusterfs, containers, gluster-performance]
 
 - name: "Configure glusterfs post"
   hosts: 
@@ -140,6 +140,21 @@
       name: glusterd
       state: started
     tags: [glusterfs, containers]
+
+
+# Containers
+- name: "Launch Standalone docker compose Containers"
+  hosts: all
+  become_user: "root"
+  become: true
+  vars_files:
+    - vars/lists.yml
+  tasks:
+  - name: Install Plex Containers
+    include_tasks: 
+      file: tasks/plex_cluster.yml
+    tags:  [containers,docker-only,plex] 
+
 
 # Containers
 - name: "Launch Swarm Containers"

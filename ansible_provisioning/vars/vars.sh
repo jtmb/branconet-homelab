@@ -18,6 +18,7 @@ ANSIBLE_SUDO_PASS=$(vault kv get -field=admin_pwd kv/admin_pass)
 ANSIBLE_SSH_USER=$(vault kv get -field=admin_usr kv/admin_user)
 SSH_PORT=$(vault kv get -field=port kv/ssh_port)
 container_volumes_location=$(vault kv get -field=value kv/container_volumes_location)
+nfs_volumes_location=/mnt/nfs-container-volumes
 
 # INSTANCE IP's
 master_node=192.168.0.5

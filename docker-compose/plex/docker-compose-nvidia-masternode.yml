@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [ gpu ]
+    ports:
+      - 32400:32400
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - TZ=America/Toronto
+      #     - PLEX_CLAIM=claim-cbTKss9cc4hGCC4bdtfd #claim token at https://www.plex.tv/claim/ (used for when a password change is needed or server needs to be reclaimed)
+      - ADVERTISE_IP=http://${master_node}:32400/
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+    volumes:
+      - /var/plex-stack/plex/config:/config
+      - /mnt/plex_smb_share/tv:/tv
+      - /mnt/plex_smb_share/movies:/movies
+      - /mnt/plex_smb_share/extras:/extras
+  ez-backups-plex:
+    image: jtmb92/ez-backups:latest
+    depends_on:
+      - plex
+    environment:
+      scheduled_hour: '24'
+      scheduled_minute: '16'
+      WEBHOOK_URL: "${discord_webhook}"
+      local_backup_method: tar
+      source_dir: '/var/plex-stack/plex'
+      backup_destination: /mnt/backups/server-backups/plex-stack/plex
+      TZ: America/New_York
+    volumes:
+      - /var/plex-stack/plex:/var/plex-stack/plex
+      - /mnt/backups/server-backups/plex-stack:/mnt/backups/server-backups/plex-stack
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"

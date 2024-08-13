@@ -39,8 +39,8 @@ container_paths:
     - '{{container_volumes_location}}/bookstack/bookstack_app_data'
     - '{{container_volumes_location}}/bookstack/bookstack_db_data'
     - '{{container_volumes_location}}/tautulli/config'
-    - '{{container_volumes_location}}/kaboard/kanboard_data'
-    - '{{container_volumes_location}}/kaboard/kanboard_plugins'
+    # - '{{container_volumes_location}}/kaboard/kanboard_data'
+    # - '{{container_volumes_location}}/kaboard/kanboard_plugins'
         
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
@@ -57,8 +57,8 @@ alt_container_permission_paths:
     - '{{container_volumes_location}}/radarr'
 www_container_permission_paths:
     - '{{container_volumes_location}}/next_cloud/data'  
-    - '{{container_volumes_location}}/kaboard/kanboard_data'
-    - '{{container_volumes_location}}/kaboard/kanboard_plugins'
+    # - '{{container_volumes_location}}/kaboard/kanboard_data'
+    # - '{{container_volumes_location}}/kaboard/kanboard_plugins'
     - '{{container_volumes_location}}/pihole'
 
 
@@ -68,7 +68,6 @@ root_container_permission_paths:
     - '{{container_volumes_location}}/consul-client'    
 
 stack_deploy:
-    - "{{env_file}} docker compose -f /tmp/docker-compose/plex/docker-compose.yml up -d"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/pi/docker-compose.yml pi"
     # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/bookstack/docker-compose.yml bookstack"

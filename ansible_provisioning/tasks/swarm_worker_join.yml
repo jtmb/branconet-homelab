@@ -6,13 +6,13 @@
 
 - name: Create share directory if it does not exist and set right permissios
   ansible.builtin.file:
-    path: "{{container_volumes_location}}/"
+    path: "{{nfs_volumes_location}}/"
     state: directory
     mode: 0777
     owner: nobody
     group: nogroup
 
-# - name: Mount NTFS on clients
-#   become: true
-#   become_user: root
-#   shell: mount {{master_node}}:{{container_volumes_location}} {{container_volumes_location}}
+- name: Mount NTFS on clients
+  become: true
+  become_user: root
+  shell: mount {{master_node}}:{{nfs_volumes_location}} {{nfs_volumes_location}}

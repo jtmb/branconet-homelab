@@ -32,3 +32,16 @@
   shell: gluster volume start staging-gfs
   ignore_errors: true
   tags: glusterfs
+
+- name: Set GlusterFS volume staging-gfs params
+  shell: |
+    set staging-gfs performance.parallel-readdir on
+    gluster volume set staging-gfs performance.io-cache on
+    gluster volume set staging-gfs performance.cache-size 10GB
+    gluster volume set staging-gfs performance.quick-read on
+    gluster volume set staging-gfs performance.write-behind on
+    gluster volume set staging-gfs performance.read-ahead on
+    gluster volume set staging-gfs performance.max-read-ahead 1MB
+    gluster volume set staging-gfs performance.write-behind-window-size 256MB
+  ignore_errors: true
+  tags: glusterfs

@@ -1,0 +1,26 @@
+- name: Copy plex compose files from repo to the remote machine
+  copy:
+    src: "{{homedir}}/docker-compose/plex"
+    dest: "/tmp/plex-cluster"
+  tags: [docker-only,containers,plex]
+
+- name: DEPLOY {{inventory_hostname}} PLEX NODE 
+  vars:
+    env_file: env master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} nfs_volumes_location={{nfs_volumes_location}}
+  shell: "{{env_file}} docker compose -f /tmp/plex-cluster/plex/docker-compose-nvidia-masternode.yml up -d"
+  tags: [docker-only,containers,plex]
+  when: inventory_hostname == 'master_node'
+
+- name: DEPLOY {{inventory_hostname}} PLEX NODE 
+  vars:
+    env_file: env master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} nfs_volumes_location={{nfs_volumes_location}}
+  shell: "{{env_file}} docker compose -f /tmp/plex-cluster/plex/docker-compose-intel-workernode1.yml up -d"
+  tags: [docker-only,containers,plex]
+  when: inventory_hostname == 'worker_node_1'
+
+- name: DEPLOY {{inventory_hostname}} PLEX NODE 
+  vars:
+    env_file: env master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} nfs_volumes_location={{nfs_volumes_location}}
+  shell: "{{env_file}} docker compose -f /tmp/plex-cluster/plex/docker-compose-intel-workernode2.yml up -d"
+  tags: [docker-only,containers,plex]
+  when: inventory_hostname == 'worker_node_2'

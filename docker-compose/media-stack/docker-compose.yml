@@ -30,8 +30,8 @@ services:
       replicas: 1
       placement:
         max_replicas_per_node: 1
-        constraints:
-          - node.hostname==masternode
+        # constraints:
+        #   - node.hostname==masternode
   overseerr:
     image: lscr.io/linuxserver/overseerr:latest
     container_name: overseerr
@@ -49,19 +49,20 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.overseerr.rule=Host(`media.${domain_name}`)"
+        - "traefik.http.routers.overseerr.rule=Host(`media.${domain_name}`, `overseerr.${lan_domain_name}`)"
         - "traefik.http.services.overseerr.loadbalancer.server.port=5055" #uses internal docker port
         - "traefik.http.routers.overseerr.entrypoints=websecure"
         - "traefik.http.routers.overseerr.tls=true"
         - "traefik.http.routers.overseerr.tls.certresolver=myresolver"
-        - "traefik.http.routers.overseerr.tls.domains[0].main=overseerr.${lan_domain_name}"
+        - "traefik.http.routers.overseerr.tls.domains[0].main=media.${domain_name}"
+        - "traefik.http.routers.overseerr.tls.domains[1].main=overseerr.${lan_domain_name}"
         # to add additional DNS names
         # - "traefik.http.routers.overseerr.tls.domains[0].sans=overseerr.${lan_domain_name}"
       replicas: 1
       placement:
         max_replicas_per_node: 1
-        constraints:
-          - node.hostname==masternode
+        # constraints:
+        #   - node.hostname==masternode
   bazarr:
     image: hotio/bazarr:latest
     networks:
@@ -92,8 +93,8 @@ services:
       replicas: 1
       placement:
         max_replicas_per_node: 1
-        constraints:
-          - node.hostname==masternode
+        # constraints:
+        #   - node.hostname==masternode
   sonarr:
     image: linuxserver/sonarr
     networks:
@@ -124,8 +125,8 @@ services:
       replicas: 1
       placement:
         max_replicas_per_node: 1
-        constraints:
-          - node.hostname==masternode
+        # constraints:
+        #   - node.hostname==masternode
 
   jackett:
     container_name: jackett
@@ -155,8 +156,8 @@ services:
       replicas: 1
       placement:
         max_replicas_per_node: 1
-        constraints:
-          - node.hostname==masternode
+        # constraints:
+        #   - node.hostname==masternode
   tautulli:
     image: ghcr.io/tautulli/tautulli
     restart: unless-stopped

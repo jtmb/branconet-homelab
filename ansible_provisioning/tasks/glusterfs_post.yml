@@ -32,10 +32,6 @@
 
 - name: Mount GlusterFS volume
   command: mount.glusterfs localhost:/staging-gfs {{container_volumes_location}}
-
-
-
-  
   ignore_errors: true
   tags: glusterfs
 
