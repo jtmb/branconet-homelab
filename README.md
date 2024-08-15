@@ -4,6 +4,7 @@ My personal highly avilable, customizable homelab as code deployment & pipeline 
 
 - Ansible
 - Docker swarm
+- Traefik
 - Rancher
 - GlusterFS
 - DNS roundrobbin setup
@@ -13,6 +14,7 @@ My personal highly avilable, customizable homelab as code deployment & pipeline 
 - Backups as service
 - Highly available monitoring stack
 - Highly available media stack
+- Highly available webhosting
 - Custom image build pipeline
 
 
