@@ -5,7 +5,7 @@
   become: true 
   tasks:
   
-  - name: Debiug VARS
+  - name: Debug VARS
     include_tasks: 
       file: tasks/debug.yml
       apply:
@@ -142,7 +142,7 @@
     tags: [glusterfs, containers]
 
 
-# Containers
+# Standalone Containers
 - name: "Launch Standalone docker compose Containers"
   hosts: all
   become_user: "root"
@@ -154,9 +154,27 @@
     include_tasks: 
       file: tasks/plex_cluster.yml
     tags:  [containers,docker-only,plex] 
+  - name: Install Torrent Containers
+    include_tasks: 
+      file: tasks/torrent_stack.yml
+    tags: [docker-only,containers,torrent-stack]
 
 
-# Containers
+# Swarm Containers
+- name: Apply Traefik role
+  hosts: all
+  become: yes
+  roles:
+    - traefik
+  tags: [traefik,containers]
+  
+- name: Apply homepage role
+  hosts: all
+  become: yes
+  roles:
+    - homepage
+  tags: [homepage,containers]
+
 - name: "Launch Swarm Containers"
   hosts: master_node
   become_user: "root"

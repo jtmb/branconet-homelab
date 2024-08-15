@@ -1,11 +1,7 @@
 [DEFAULT]
-# Ban hosts for who many failures of auth during this time
 bantime  = {{ fail2ban_default_bantime }}
-# Number of failures to ban
 maxretry = {{ fail2ban_default_maxretry }}
-# Email address to send notifications
 destemail = root@localhost
-# Action to take on banning
 action = %(action_mwl)s
 
 {% for jail, config in fail2ban_jail_local.items() %}
@@ -17,3 +13,11 @@ logpath = {{ config.logpath }}
 maxretry = {{ config.maxretry }}
 bantime = {{ config.bantime }}
 {% endfor %}
+
+[traefik]
+enabled = true
+port    = http,https
+filter  = traefik
+logpath = /var/log/traefik/traefik.log
+maxretry = 5
+bantime = 3600

@@ -65,7 +65,7 @@ www_container_permission_paths:
 root_container_permission_paths: 
     - '{{container_volumes_location}}/server-bootstrap'
     - '{{container_volumes_location}}/consul-server'
-    - '{{container_volumes_location}}/consul-client'    
+    - '{{container_volumes_location}}/consul-client'   
 
 stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"

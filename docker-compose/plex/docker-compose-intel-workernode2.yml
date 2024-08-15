@@ -12,7 +12,7 @@ services:
       - PGID=1000
       - VERSION=docker
       - TZ=America/Toronto
-      # - PLEX_CLAIM=claim-cbTKss9cc4hGCC4bdtfd #claim token at https://www.plex.tv/claim/ (used for when a password change is needed or server needs to be reclaimed)
+      - PLEX_CLAIM=claim-Tx_KpdAfeHSQoeRvLduc #claim token at https://www.plex.tv/claim/ (used for when a password change is needed or server needs to be reclaimed)
       - ADVERTISE_IP=http://${worker_node_2}:32402/
     volumes:
       - /var/plex-stack/plex2/config:/config

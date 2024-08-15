@@ -15,6 +15,13 @@ services:
       - '${container_volumes_location}/prometheus/prom_data:/prometheus'
     deploy:
       labels:
+        #homepage
+        - homepage.group=Monitoring
+        - homepage.name=prometheus
+        - homepage.icon=https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Prometheus_software_logo.svg/2066px-Prometheus_software_logo.svg.png
+        - 'homepage.href=http://prometheus.${lan_domain_name}/'
+        - homepage.description=prometheus logs
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.prometheus.rule=Host(`prometheus.${lan_domain_name}`)"
         - "traefik.http.services.prometheus.loadbalancer.server.port=9090" #uses internal docker port
@@ -22,8 +29,6 @@ services:
         - "traefik.http.routers.prometheus.tls=true"
         - "traefik.http.routers.prometheus.tls.certresolver=myresolver"
         - "traefik.http.routers.prometheus.tls.domains[0].main=prometheus.${lan_domain_name}"
-        # to add additional DNS names
-        # - "traefik.http.routers.prometheus.tls.domains[0].sans=prometheus.${lan_domain_name}"
       replicas: 1
 
   loki:
@@ -40,6 +45,13 @@ services:
       - '${container_volumes_location}/loki/data:/data/loki'
     deploy:
       labels:
+        #homepage
+        - homepage.group=Monitoring
+        - homepage.name=loki
+        - homepage.icon=https://upload.wikimedia.org/wikipedia/commons/0/07/Grafana_loki_logo.png
+        - 'homepage.href=http://loki.${lan_domain_name}/'
+        - homepage.description=loki logs
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.loki.rule=Host(`loki.${lan_domain_name}`)"
         - "traefik.http.services.loki.loadbalancer.server.port=3100" #uses internal docker port
@@ -55,6 +67,13 @@ services:
     image: louislam/uptime-kuma:debian
     deploy:
       labels:
+        #homepage
+        - homepage.group=Monitoring
+        - homepage.name=uptime-kuma
+        - homepage.icon=https://static-00.iconduck.com/assets.00/uptime-kuma-icon-2048x1892-iigw6pmz.png
+        - 'homepage.href=http://uptime.${lan_domain_name}/'
+        - homepage.description=uptime monitoring
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.uptime.rule=Host(`uptime.${lan_domain_name}`)"
         - "traefik.http.services.uptime.loadbalancer.server.port=3001" #uses internal docker port
@@ -72,29 +91,6 @@ services:
     volumes:
       - '${container_volumes_location}/uptime-kuma:/app/data'
 
-  # influx:   
-  #   image: influxdb
-  #   environment:
-  #     DOCKER_INFLUXDB_INIT_MODE: setup
-  #     DOCKER_INFLUXDB_INIT_USERNAME: root
-  #     DOCKER_INFLUXDB_INIT_PASSWORD: '${ADMIN_PASS}'
-  #     DOCKER_INFLUXDB_INIT_BUCKET: cadvisor
-  #     DOCKER_INFLUXDB_INIT_ORG: monitoring_stack
-  #     DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: 1234!12345!66781!
-  #     INFLUXDB_USER: root
-  #     INFLUXDB_PASS: '${ADMIN_PASS}'
-  #   networks:
-  #     - container-swarm-network
-  #   ports:
-  #    - 8086:8086   
-  #   volumes:     
-  #     - '${container_volumes_location}/influx:/var/lib/influxdb'
-  #   deploy: 
-  #     replicas: 1      
-  #     placement:
-  #        constraints:
-  #          - node.role == manager
-
   node-exporter:
     image: flaviostutz/docker-swarm-node-exporter
     environment:
@@ -110,6 +106,13 @@ services:
       - 9100:9100
     deploy:
       labels:
+        #homepage
+        - homepage.group=Monitoring
+        - homepage.name=node-exporter
+        - homepage.icon=https://www.stackhero.io/assets/src/images/servicesLogos/openGraphVersions/prometheus.png?552669da
+        - 'homepage.href=http://node.${lan_domain_name}/'
+        - homepage.description=node exporter
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.node.rule=Host(`node.${lan_domain_name}`)"
         - "traefik.http.services.node.loadbalancer.server.port=9100" #uses internal docker port
@@ -130,6 +133,13 @@ services:
     image: grafana/grafana
     deploy:
       labels:
+        #homepage
+        - homepage.group=Monitoring
+        - homepage.name=grafana
+        - homepage.icon=https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Grafana_logo.svg/1200px-Grafana_logo.svg.png
+        - 'homepage.href=http://grafana.${lan_domain_name}/'
+        - homepage.description=Grafana timeseries dashboards
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.grafana.rule=Host(`grafana.${lan_domain_name}`)"
         - "traefik.http.services.grafana.loadbalancer.server.port=3000" #uses internal docker port

@@ -12,6 +12,13 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro # (optional) For docker integrations
     deploy:
       labels:
+        #homepage
+        - homepage.group=Apps
+        - homepage.name=Homepage
+        - homepage.icon=https://github.com/gethomepage/homepage/blob/main/images/banner_light@2x.png?raw=true
+        - 'homepage.href=http://homepage.${lan_domain_name}/'
+        - homepage.description=This page
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.homepage.rule=Host(`homepage.${lan_domain_name}`)"
         - "traefik.http.services.homepage.loadbalancer.server.port=3000" #uses internal docker port

@@ -1,0 +1,13 @@
+
+- name: Copy plex compose files from repo to the remote machine
+  copy:
+    src: "{{homedir}}/docker-compose/torrent-stack"
+    dest: "/tmp/"
+  tags: [docker-only,containers,torrent-stack]
+
+- name: DEPLOY {{inventory_hostname}} PLEX NODE 
+  vars:
+    env_file: env master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} nfs_volumes_location={{nfs_volumes_location}}
+  shell: "{{env_file}} docker compose -f /tmp/torrent-stack/docker-compose.yml up -d" 
+  tags: [docker-only,containers,torrent-stack]
+  when: inventory_hostname == 'master_node'

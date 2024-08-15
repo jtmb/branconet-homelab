@@ -4,6 +4,8 @@ services:
   traefik:
     image: traefik:v2.11
     command:
+      - --log.level=DEBUG # Update log level to DEBUG for more detailed logs
+      - --log.filepath=/var/log/traefik/traefik.log # Define log file path
       - --log.level=INFO
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
@@ -33,6 +35,7 @@ services:
       - container-swarm-network
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
+      - "/var/log/traefik:/var/log/traefik" # Volume for log files
       - ${container_volumes_location}/traefik/letsencrypt:/letsencrypt
     deploy:
       labels:

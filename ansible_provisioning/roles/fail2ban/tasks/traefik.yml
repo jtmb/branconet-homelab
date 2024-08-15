@@ -1,0 +1,12 @@
+- name: Create Traefik Fail2Ban filter
+  become: yes
+  copy:
+    content: |
+      [Definition]
+      failregex = ^<HOST> - - \[.*\] "GET .*" 403
+      ignoreregex =
+    dest: /etc/fail2ban/filter.d/traefik.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart fail2ban

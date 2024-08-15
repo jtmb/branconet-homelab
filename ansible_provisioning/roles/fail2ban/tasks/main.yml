@@ -1,26 +1,5 @@
 ---
-- name: Install Fail2Ban
-  become: yes
-  apt:
-    name: fail2ban
-    state: present
-  notify: restart fail2ban
 
-- name: Ensure Fail2Ban service is running
-  become: yes
-  service:
-    name: fail2ban
-    state: started
-    enabled: yes
-
-- name: Create fail2ban jail.local configuration file
-  become: yes
-  template:
-    src: jail.local.j2
-    dest: /etc/fail2ban/jail.local
-    owner: root
-    group: root
-    mode: '0644'
-  notify: restart fail2ban
-
-
+- import_tasks: fail2ban.yml
+- import_tasks: geoip.yml
+- import_tasks: traefik.yml

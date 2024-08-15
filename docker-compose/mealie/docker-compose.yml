@@ -9,6 +9,13 @@ services:
       - "8089:9000" #
     deploy:
       labels:
+        #homepage
+        - homepage.group=Apps
+        - homepage.name=Mealie
+        - homepage.icon=https://static-00.iconduck.com/assets.00/mealie-icon-1024x976-h7li6p8q.png
+        - 'homepage.href=http://mealie.${lan_domain_name}/'
+        - homepage.description=Mealie recipes
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.mealie.rule=Host(`mealie.${lan_domain_name}`, `mealie.${domain_name}`)"
         - "traefik.http.services.mealie.loadbalancer.server.port=9000" #uses internal docker port

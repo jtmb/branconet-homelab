@@ -18,6 +18,13 @@ services:
     image: linuxserver/radarr
     deploy:
       labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=radarr
+        - homepage.icon=https://i0.wp.com/devildogtech.com/wp-content/uploads/2022/10/radarr.png?resize=280%2C280&ssl=1
+        - 'homepage.href=http://radarr.${lan_domain_name}/'
+        - homepage.description=Radarr movie fetching and monitoring
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.radarr.rule=Host(`radarr.${lan_domain_name}`)"
         - "traefik.http.services.radarr.loadbalancer.server.port=7878" #uses internal docker port
@@ -48,6 +55,13 @@ services:
     restart: unless-stopped
     deploy:
       labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Overseerr
+        - homepage.icon=https://static-00.iconduck.com/assets.00/overseerr-icon-2048x2048-5ncr26li.png
+        - 'homepage.href=http://overseerr.${lan_domain_name}/'
+        - homepage.description=Overseerr
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.overseerr.rule=Host(`media.${domain_name}`, `overseerr.${lan_domain_name}`)"
         - "traefik.http.services.overseerr.loadbalancer.server.port=5055" #uses internal docker port
@@ -81,6 +95,13 @@ services:
       - TZ=America/New_York
     deploy:
       labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Bazarr
+        - homepage.icon=https://user-images.githubusercontent.com/787317/183671204-e4e6e67b-c1cd-4e90-a9d1-6c759859f117.png
+        - 'homepage.href=http://bazarr.${lan_domain_name}/'
+        - homepage.description=bazarr subtittles for media
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.bazarr.rule=Host(`bazarr.${lan_domain_name}`)"
         - "traefik.http.services.bazarr.loadbalancer.server.port=6767" #uses internal docker port
@@ -113,6 +134,13 @@ services:
       - TZ=America/New_York
     deploy:
       labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Sonarr
+        - homepage.icon=https://res.cloudinary.com/razordarkamg/image/upload/v1621212884/SonarrV3_pufacd.png
+        - 'homepage.href=http://sonarr.${lan_domain_name}/'
+        - homepage.description=Sonarr tv series fetching and monitoring
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.sonarr.rule=Host(`sonarr.${lan_domain_name}`)"
         - "traefik.http.services.sonarr.loadbalancer.server.port=8989" #uses internal docker port
@@ -144,6 +172,13 @@ services:
     image: linuxserver/jackett
     deploy:
       labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Jackett
+        - homepage.icon=https://user-images.githubusercontent.com/27040483/28728094-99f3e3f6-73c7-11e7-8f8d-28912dc6ac0d.png
+        - 'homepage.href=http://jackett.${lan_domain_name}/'
+        - homepage.description=Jackett torrent indexers
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.jackett.rule=Host(`jackett.${lan_domain_name}`)"
         - "traefik.http.services.jackett.loadbalancer.server.port=9117" #uses internal docker port
@@ -171,6 +206,13 @@ services:
       - TZ=America/Toronto
     deploy:
       labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Tautulli
+        - homepage.icon=https://tautulli.com/images/logo-circle.png
+        - 'homepage.href=http://tautulli.${lan_domain_name}/'
+        - homepage.description=tautulli plex monitoring
+        #traefik
         - "traefik.enable=true"
         - "traefik.http.routers.tautulli.rule=Host(`tautulli.${lan_domain_name}`)"
         - "traefik.http.services.tautulli.loadbalancer.server.port=8181" #uses internal docker port
