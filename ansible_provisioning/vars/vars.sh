@@ -6,7 +6,7 @@
 
 # GENERAL VARS
 userid=$(whoami)
-homedir=/home/$userid/repos/media-stack
+homedir=/home/$userid/repos/branconet-homelab
 public_ip=$(curl icanhazip.com)
 admin_pub_ip=$(echo ['"'$public_ip/32'"'])
 
