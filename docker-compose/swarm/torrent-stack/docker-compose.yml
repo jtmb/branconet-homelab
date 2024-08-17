@@ -2,15 +2,13 @@ version: '3.8'
 services:
   nordvpn:
     container_name: GlueTun-Nord
-    # networks:
-    #   - container-swarm-network
     image: qmcgaw/gluetun
     cap_add:
       - NET_ADMIN
     ports:
-      - 8112:8112 ##qbit
-      - 6881:6881 ##qbit
-      - 6881:6881/udp #qbit
+      - 8112:8112 ##qbittorrent
+      - 6881:6881 ##qbittorrent
+      - 6881:6881/udp #qbittorrent
       - 5800:5800 #tor
     environment:
       - VPN_SERVICE_PROVIDER=nordvpn
@@ -33,6 +31,7 @@ services:
       - ${container_volumes_location}/deluge/config:/config
       - /mnt/plex_smb_share:/downloads:/downloads
     image: lscr.io/linuxserver/qbittorrent:latest
+
 # networks:
 #   container-swarm-network:
 #     external: true

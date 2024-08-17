@@ -24,6 +24,8 @@ nfs_volumes_location=/mnt/nfs-container-volumes
 master_node=192.168.0.5
 worker_node_1=192.168.0.9
 worker_node_2=192.168.0.8
+mini_linux=192.168.0.4
+truenas=192.168.0.3
 
 # DNS
 cf_key=$(vault kv get -field=key kv/cf_key)

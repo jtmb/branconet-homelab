@@ -1,6 +1,6 @@
 - name: Copy plex compose files from repo to the remote machine
   copy:
-    src: "{{homedir}}/docker-compose/plex"
+    src: "{{homedir}}/docker-compose/swarm/plex"
     dest: "/tmp/plex-cluster"
   tags: [docker-only,containers,plex]
 

@@ -10,15 +10,8 @@ services:
     environment:
       DISABLE_IPV6: 'true'
     volumes:
-      - ${container_volumes_location}/PROXY-MANAGER/data:/data
-      - ${container_volumes_location}/PROXY-MANAGER/letsencrypt:/etc/letsencrypt
-    networks:
-      - container-swarm-network
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [ node.hostname == masternode ]
+      - ${nfs_volumes_location}/PROXY-MANAGER/data:/data
+      - ${nfs_volumes_location}/PROXY-MANAGER/letsencrypt:/etc/letsencrypt
     logging:
       driver: loki
       options:

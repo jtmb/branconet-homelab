@@ -1,13 +1,19 @@
-
-- name: Copy plex compose files from repo to the remote machine
+- name: SET ADMIN PASS
+  ansible.builtin.debug:
+    msg: "{{ansible_sudo_pass}}"
+  register: ADMIN_PASS
+  no_log: true
+  tags: [docker-only,containers,torrent-stack]
+  
+- name: Copy torrent compose files from repo to the remote machine
   copy:
-    src: "{{homedir}}/docker-compose/torrent-stack"
+    src: "{{homedir}}/docker-compose/swarm/torrent-stack"
     dest: "/tmp/"
   tags: [docker-only,containers,torrent-stack]
 
-- name: DEPLOY {{inventory_hostname}} PLEX NODE 
+- name: DEPLOY Torrent stack 
   vars:
-    env_file: env master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} nfs_volumes_location={{nfs_volumes_location}}
+    env_file: env nord_user={{nord_user}} nord_pass={{nord_pass}} cf_key={{cf_key}} email={{email}} cf_zone_id={{cf_zone_id}} discord_webhook={{discord_webhook}} lan_domain_name={{lan_domain_name}} domain_name={{domain_name}} ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} nfs_volumes_location={{nfs_volumes_location}} container_volumes_location={{container_volumes_location}}
   shell: "{{env_file}} docker compose -f /tmp/torrent-stack/docker-compose.yml up -d" 
   tags: [docker-only,containers,torrent-stack]
   when: inventory_hostname == 'master_node'

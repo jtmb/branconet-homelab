@@ -1,46 +1,16 @@
-- name: Add && enforce PiHole DNS Entries
+- name: Add && enforce PiHole DNS Entries for primary swarm dns resolver
   tags: dns
   lineinfile: 
     dest: "{{container_volumes_location}}/pihole/custom.list"
     line: "{{ item.ip }} {{ item.domain }}"
-  with_items:
-    - { ip: "192.168.0.28", domain: "retropie.lan" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "proxy.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "whoami.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "pi.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "vault.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "budscraper.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "lucinda.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "santos.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "aplb.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "converter.{{ lan_domain_name }}" }
-    - { ip: "192.168.0.3", domain: "true.nas" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "worker.node2" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "worker.node1" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "swarm.master" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "grafana.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "portainer.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "monitoring.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "qbittorrent.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "sonarr.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "radarr.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "bazarr.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "overseerr.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "jenkins.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "ha.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "cic.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "uptime.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "mc.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "homepage.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "vault.cicd.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "prom.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "tor.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "mealie.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "tautulli.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "kanboard.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "api.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "maintainerr.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "spiderfoot.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "node.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "tor.{{ lan_domain_name }}" }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "plex.{{ lan_domain_name }}" }
+  with_items: "{{dns_list}}"
+  when: inventory_hostname == 'master_node'
+
+
+- name: Add && enforce PiHole DNS Entries for secondary dbs resolver
+  tags: dns
+  lineinfile: 
+    dest: "{{nfs_volumes_location}}/pihole/custom.list"
+    line: "{{ item.ip }} {{ item.domain }}"
+  with_items: "{{dns_list}}"
+  when: inventory_hostname == 'mini_linux'

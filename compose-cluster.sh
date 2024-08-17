@@ -4,11 +4,13 @@ source ansible_provisioning/vars/vars.sh
 # Ansible Playbook Consumes VARS
 cd ansible_provisioning && \
      ANSIBLE_CONFIG=./ansible_provisioning/ansible.cfg ansible-playbook -i inventory.ini main.yml \
-    --limit 'all' --skip-tags "reboot,images,cloudflare" --tags "plex" \
+    --limit 'all' --skip-tags "reboot,images,cloudflare" --tags "containers" \
     --extra-vars "ssh_port=$SSH_PORT pub_key=$pub_key \
     master_node=$master_node  \
     worker_node_1=$worker_node_1 \
-    worker_node_2=$worker_node_2  \  
+    worker_node_2=$worker_node_2  \
+    mini_linux=$mini_linux  \
+    truenas=$truenas  \  
     ssh_cert=$HOME/.ssh/id_ed25519 homedir=$homedir \
     container_volumes_location=$container_volumes_location nfs_volumes_location=$nfs_volumes_location \
     user_id=$userid  \
