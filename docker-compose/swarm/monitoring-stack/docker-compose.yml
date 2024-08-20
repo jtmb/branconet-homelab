@@ -94,7 +94,8 @@ services:
   node-exporter:
     image: flaviostutz/docker-swarm-node-exporter
     environment:
-      - NODE_ID={{.Node.ID}}
+      - NODE_ID={{.Node.Hostname}}
+      - HOSTNAME={{.Node.Hostname}}
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro

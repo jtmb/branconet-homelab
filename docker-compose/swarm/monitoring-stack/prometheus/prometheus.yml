@@ -53,12 +53,17 @@ scrape_configs:
     labels:
       alias: "cadvisor"
 
-- job_name: node-exporter
-  scrape_interval: 5s
-  static_configs:
-  - targets: ['node-exporter:9100'] 
-    labels:
-      alias: "node-exporter"
+- job_name: 'node-exporter'
+  dns_sd_configs:
+    - names:
+        - 'tasks.node-exporter'
+      type: 'A'
+      port: 9100
+  relabel_configs:
+    - source_labels: [__meta_docker_swarm_task_name]
+      regex: 'node-exporter\.([^\.]+)'
+      target_label: instance
+      replacement: '$1'
 
 - job_name: mc-exporter
   scrape_interval: 5s

@@ -30,8 +30,10 @@
 
 - name: Copy Grafana Configs
   copy: remote_src=False src={{homedir}}/docker-compose/swarm/monitoring-stack/grafana/datasource.yml dest={{container_volumes_location}}/grafana/datasources
+  tags: containers
 - name: Copy Prometheus Configs
   copy: remote_src=False src=remote_src=True src={{homedir}}/docker-compose/swarm/monitoring-stack/prometheus/prometheus.yml dest={{container_volumes_location}}/prometheus
+  tags: containers
 - name: Copy loki Configs
   copy: remote_src=False src={{homedir}}/docker-compose/swarm/monitoring-stack/loki/loki-config.yml dest={{container_volumes_location}}/loki/config
   tags: containers
