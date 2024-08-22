@@ -43,5 +43,6 @@
     gluster volume set staging-gfs performance.read-ahead on
     gluster volume set staging-gfs performance.max-read-ahead 1MB
     gluster volume set staging-gfs performance.write-behind-window-size 256MB
+    gluster volume set staging-gfs locks.mandatory-locking optimal
   ignore_errors: true
   tags: glusterfs
