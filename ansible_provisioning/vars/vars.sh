@@ -38,3 +38,6 @@ email=$(vault kv get -field=value kv/email)
 # VPN
 nord_user=$(vault kv get -field=value kv/nord_user)
 nord_pass=$(vault kv get -field=value kv/nord_password)
+
+# BOTS
+RUCKUS_BOT_TOKEN=$(vault kv get -field=value kv/ruckus_bot_token)

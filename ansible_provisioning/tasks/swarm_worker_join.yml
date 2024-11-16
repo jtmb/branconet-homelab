@@ -3,7 +3,7 @@
     state: join
     join_token: "{{ hostvars['master_node'].CLUSTER_JOIN_KEY.stdout }}"
     remote_addrs: ["{{master_node}}:2377"]
-
+  tags: swarm
 - name: Create share directory if it does not exist and set right permissios
   ansible.builtin.file:
     path: "{{nfs_volumes_location}}/"
@@ -11,8 +11,10 @@
     mode: 0777
     owner: nobody
     group: nogroup
-
-- name: Mount NTFS on clients
-  become: true
-  become_user: root
-  shell: mount {{master_node}}:{{nfs_volumes_location}} {{nfs_volumes_location}}
+  tags: swarm
+  
+# - name: Mount NTFS on clients
+#   become: true
+#   become_user: root
+#   shell: mount {{master_node}}:{{nfs_volumes_location}} {{nfs_volumes_location}}
+#   tags: swarm

@@ -1,13 +1,13 @@
 - name: Init a new swarm with default parameters #docker swarm init
   community.docker.docker_swarm:
     state: present
-
+  tags: swarm
 - name: Swarm Get Join Key
   become: true
   become_user: root
   shell: docker swarm join-token manager --quiet
   register: CLUSTER_JOIN_KEY
-
+  tags: swarm
 # - name: ADD nfs-kernel-server
 #   become: yes
 #   become_user: root
@@ -49,6 +49,7 @@
     scope: swarm
     state: present
     driver: overlay
+  tags: swarm
 
 - name: Create an external db-network
   become: true
@@ -58,6 +59,7 @@
     scope: swarm
     state: present
     driver: overlay
+  tags: swarm
 
 # - name: Restart NFS server
 #   become: true

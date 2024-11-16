@@ -156,6 +156,37 @@ services:
         # constraints:
         #   - node.hostname==masternode
 
+  ytdl:
+    image: ghcr.io/alexta69/metube
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Youtube Downloader
+        - homepage.icon=https://res.cloudinary.com/razordarkamg/image/upload/v1621212884/SonarrV3_pufacd.png
+        - 'homepage.href=http://ytdl.${lan_domain_name}/'
+        - homepage.description=Sonarr tv series fetching and monitoring
+        #traefik
+        - "traefik.enable=true"
+        - "traefik.http.routers.ytdl.rule=Host(`ytdl.${lan_domain_name}`)"
+        - "traefik.http.services.ytdl.loadbalancer.server.port=8081" #uses internal docker port
+        - "traefik.http.routers.ytdl.entrypoints=websecure"
+        - "traefik.http.routers.ytdl.tls=true"
+        - "traefik.http.routers.ytdl.tls.certresolver=myresolver"
+        - "traefik.http.routers.ytdl.tls.domains[0].main=ytdl.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.sonarr.tls.domains[0].sans=sonarr.${lan_domain_name}"
+    networks:
+      - container-swarm-network
+    environment:
+      - TEMP_DIR=/tmp_dir
+      - DELETE_FILE_ON_TRASHCAN=true
+    volumes:
+      - /mnt/plex_smb_share/downloads:/downloads
+      - ${nfs_volumes_location}/ytdl/tmp_dir:/tmp_dir
+    ports:
+      - "11742:8081"
+
   jackett:
     container_name: jackett
     networks:

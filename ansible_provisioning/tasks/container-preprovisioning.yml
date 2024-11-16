@@ -26,8 +26,7 @@
     recurse: yes
   with_items: "{{ alt_container_permission_paths }}"
   tags: containers
-
-
+  
 - name: Copy Grafana Configs
   copy: remote_src=False src={{homedir}}/docker-compose/swarm/monitoring-stack/grafana/datasource.yml dest={{container_volumes_location}}/grafana/datasources
   tags: containers

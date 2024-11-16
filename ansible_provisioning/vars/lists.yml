@@ -5,7 +5,6 @@ container_paths:
     - '{{container_volumes_location}}/plex/movies'
     - '{{container_volumes_location}}/deluge/config'
     - '{{container_volumes_location}}/deluge/downloads'
-    # - '{{container_volumes_location}}/pihole'
     - '{{container_volumes_location}}/dnsmasq.d'
     - '{{container_volumes_location}}/PROXY-MANAGER/data'
     - '{{container_volumes_location}}/PROXY-MANAGER/letsencrypt'
@@ -16,8 +15,7 @@ container_paths:
     - '{{container_volumes_location}}/prometheus'
     - '{{container_volumes_location}}/vault_warden/swarm'
     - '{{container_volumes_location}}/vault_warden/mariadb'
-    - '{{container_volumes_location}}/wireguard/'
-    # - '{{container_volumes_location}}/next_cloud/data'    
+    - '{{container_volumes_location}}/wireguard/'    
     - '{{container_volumes_location}}/next_cloud/mariadb'
     - '{{container_volumes_location}}/portainer'
     - '{{container_volumes_location}}/jenkins_home'
@@ -38,8 +36,10 @@ container_paths:
     - '{{container_volumes_location}}/bookstack/bookstack_app_data'
     - '{{container_volumes_location}}/bookstack/bookstack_db_data'
     - '{{container_volumes_location}}/tautulli/config'
-    # - '{{container_volumes_location}}/kaboard/kanboard_data'
-    # - '{{container_volumes_location}}/kaboard/kanboard_plugins'
+    - '{{nfs_volumes_location}}/bot_ruckus/mysql_data'
+    - '{{container_volumes_location}}/wordpress/wp-app'
+    - '{{container_volumes_location}}/wordpress/wp-db'
+    # - '{{container_volumes_location}}/next_cloud/data'
         
 alt_container_permission_paths:
     - '{{container_volumes_location}}/grafana/datasources'
@@ -54,11 +54,15 @@ alt_container_permission_paths:
     - '{{container_volumes_location}}/jackett'
     - '{{container_volumes_location}}/sonarr/config'
     - '{{container_volumes_location}}/radarr'
+    - '{{nfs_volumes_location}}/ytdl/tmp_dir'
+
+
 www_container_permission_paths:
-    - '{{container_volumes_location}}/next_cloud/data'  
+    - '{{container_volumes_location}}/pihole'
+    # - '{{container_volumes_location}}/next_cloud/data'  
     # - '{{container_volumes_location}}/kaboard/kanboard_data'
     # - '{{container_volumes_location}}/kaboard/kanboard_plugins'
-    - '{{container_volumes_location}}/pihole'
+
 
 
 root_container_permission_paths: 
@@ -67,9 +71,9 @@ root_container_permission_paths:
     - '{{container_volumes_location}}/consul-client'   
 
 stack_deploy:
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/discord-bots/ruckus/docker-compose.yml bot"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/vault-cicd/docker-compose.yml cicd"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/pi/docker-compose.yml pi"
-    # - "{{env_file}} docker stack deploy -c /tmp/swarm/bookstack/docker-compose.yml bookstack"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/mealie/docker-compose.yml mealie"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/ez-backups/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/homepage/docker-compose.yml ws"
@@ -78,56 +82,66 @@ stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/swarm/media-stack/docker-compose.yml media"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/traefik/docker-compose.yml proxy"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/portainer-stack/docker-compose.yml portainer"
-    # - "{{env_file}} docker stack deploy -c /tmp/swarm/cloudflare-ip-checker/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/monitoring-stack/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/vault-warden/docker-compose.yml vault"
-    # - "{{env_file}} docker stack deploy -c /tmp/swarm/next-cloud/docker-compose.yml nextcloud"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/homepage/docker-compose.yml ws" 
-    # - "{{env_file}} docker stack deploy -c /tmp/swarm/kanboard/docker-compose.yml tooling" 
     - "{{env_file}} docker stack deploy -c /tmp/swarm/OSINT/docker-compose.yml osint"
+    # - "{{env_file}} docker stack deploy -c /tmp/swarm/bookstack/docker-compose.yml bookstack"
+    # - "{{env_file}} docker stack deploy -c /tmp/swarm/kanboard/docker-compose.yml tooling" 
+    # - "{{env_file}} docker stack deploy -c /tmp/swarm/next-cloud/docker-compose.yml nextcloud"
+    # - "{{env_file}} docker stack deploy -c /tmp/swarm/cloudflare-ip-checker/docker-compose.yml monitoring"
 
 # Docker Swarm Scale Services
 swarm_scale:
     - docker service scale pi_pihole=1
+    - docker service scale wordpress_wp-app=3
+    - docker service scale wordpress_mysql-db=1
+    - docker service scale wordpress_redis-db=1
+    - docker service scale wordpress_phpmyadmin=1
+    - docker service scale media_ytdl=1
+    - docker service scale bot_ruckus-db=1
     - docker service scale proxy_traefik=1
     - docker service scale proxy_whoami=1
+    - docker service scale bot_ruckus=1
     - docker service scale osint_spiderfoot=1
     - docker service scale media_tautulli=1
-    # - docker service scale bookstack_bookstack-app-wan=1
-    # - docker service scale bookstack_bookstack-app-lan=1
-    # - docker service scale bookstack_bookstack-db=1
     - docker service scale monitoring_ez-backups=1
-    # - docker service scale monitoring_cloudflare-ip-checker=1
     - docker service scale mealie_mealie=1
     - docker service scale cicd_server-bootstrap=1
     - docker service scale cicd_vault=1
     - docker service scale gamesrv_minecraft-paper=1
     - docker service scale gamesrv_mc-exporter=1
     - docker service scale pi_exporter=1
-    # - docker service scale nextcloud_db=1
-    # - docker service scale nextcloud_nextapp=1
-    # - docker service scale vault_mariadb=1
     - docker service scale vault_vaultwarden=1
     - docker service scale monitoring_loki=1
-    # - docker service scale monitoring_influx=1
     - docker service scale monitoring_grafana=1
     - docker service scale monitoring_prometheus=1
     - docker service scale monitoring_uptime-kuma=1
     - docker service scale portainer_portainer=1
     - docker service scale media_radarr=1
     - docker service scale media_bazarr=1
-    - docker service scale media_overseerr=1
+    - docker service scale media_overseerr=3
     - docker service scale media_jackett=1
     - docker service scale media_sonarr=1
-    # - docker service scale ws_mcwebsite=1
     - docker service scale ws_homepage=1
-    - docker service scale ws_lucinda=2
-    - docker service scale ws_santos=2
-    - docker service scale ws_aplb=2
+    - docker service scale ws_lucinda=3
+    - docker service scale ws_santos=3
+    - docker service scale ws_aplb=3
+    # - docker service scale ws_mcwebsite=1
+    # - docker service scale bookstack_bookstack-app-wan=1
+    # - docker service scale bookstack_bookstack-app-lan=1
+    # - docker service scale bookstack_bookstack-db=1
+    # - docker service scale nextcloud_db=1
+    # - docker service scale nextcloud_nextapp=1
+    # - docker service scale vault_mariadb=1
+    # - docker service scale monitoring_cloudflare-ip-checker=1
 
 dns_list:
     - { ip: "{{master_node}}", domain: "qbittorrent.{{ lan_domain_name }}" }
     - { ip: "192.168.0.28", domain: "retropie.lan" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "ytdl.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "api.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "ruckus.{{ lan_domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "proxy.{{ lan_domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "whoami.{{ lan_domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "pi.{{ lan_domain_name }}" }
