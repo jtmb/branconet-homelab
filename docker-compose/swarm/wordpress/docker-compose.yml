@@ -24,8 +24,8 @@ services:
       - 8085:80
     environment:
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wp_db_user
-      WORDPRESS_DB_PASSWORD: "{{ADMIN_PASS}}"
+      WORDPRESS_DB_USER: db_user
+      WORDPRESS_DB_PASSWORD: ${database_password}
       WORDPRESS_DB_NAME: wp_db
       PUID: 1000
       PGID: 1000
@@ -41,7 +41,7 @@ services:
         loki-retries: "5"
         loki-batch-size: "400"
 
-  mysql-db:
+  db:
     image: mysql:5.7
     restart: always
     deploy:
@@ -52,8 +52,8 @@ services:
         - homepage.description=MYSQL DB
     environment:
       MYSQL_DATABASE: wp_db
-      MYSQL_USER: wp_db_user
-      MYSQL_PASSWORD: "{{ADMIN_PASS}}"
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: ${database_password}
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
     volumes:
       - ${container_volumes_location}/wordpress/mysql-db:/var/lib/mysql
@@ -89,7 +89,7 @@ services:
     links:
       - db
     environment:
-      PMA_HOST: db
+      PMA_HOST: mysql-db
       PMA_PORT: 3306
       PMA_ARBITRARY: 1
     restart: always

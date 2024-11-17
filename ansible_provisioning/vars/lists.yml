@@ -37,11 +37,10 @@ container_paths:
     - '{{container_volumes_location}}/bookstack/bookstack_db_data'
     - '{{container_volumes_location}}/tautulli/config'
     - '{{nfs_volumes_location}}/bot_ruckus/mysql_data'
-    - '{{container_volumes_location}}/wordpress/wp-app'
-    - '{{container_volumes_location}}/wordpress/wp-db'
     # - '{{container_volumes_location}}/next_cloud/data'
         
 alt_container_permission_paths:
+    - '{{container_volumes_location}}/wordpress/mysql-db'
     - '{{container_volumes_location}}/grafana/datasources'
     - '{{container_volumes_location}}/prometheus/'
     - '{{container_volumes_location}}/loki/config/'     
@@ -58,6 +57,7 @@ alt_container_permission_paths:
 
 
 www_container_permission_paths:
+    - '{{container_volumes_location}}/wordpress/wp-app'
     - '{{container_volumes_location}}/pihole'
     # - '{{container_volumes_location}}/next_cloud/data'  
     # - '{{container_volumes_location}}/kaboard/kanboard_data'
@@ -71,6 +71,7 @@ root_container_permission_paths:
     - '{{container_volumes_location}}/consul-client'   
 
 stack_deploy:
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/wordpress/docker-compose.yml wordpress"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/discord-bots/ruckus/docker-compose.yml bot"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/vault-cicd/docker-compose.yml cicd"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/pi/docker-compose.yml pi"
@@ -94,8 +95,8 @@ stack_deploy:
 # Docker Swarm Scale Services
 swarm_scale:
     - docker service scale pi_pihole=1
-    - docker service scale wordpress_wp-app=3
-    - docker service scale wordpress_mysql-db=1
+    - docker service scale wordpress_wp-app=1
+    - docker service scale wordpress_db=1
     - docker service scale wordpress_redis-db=1
     - docker service scale wordpress_phpmyadmin=1
     - docker service scale media_ytdl=1
@@ -139,6 +140,7 @@ swarm_scale:
 dns_list:
     - { ip: "{{master_node}}", domain: "qbittorrent.{{ lan_domain_name }}" }
     - { ip: "192.168.0.28", domain: "retropie.lan" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "wordpress.{{ lan_domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "ytdl.{{ lan_domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "api.{{ lan_domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "ruckus.{{ lan_domain_name }}" }
@@ -158,7 +160,6 @@ dns_list:
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "grafana.{{ lan_domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "portainer.{{ lan_domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "monitoring.{{ lan_domain_name }}" }
-
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "sonarr.{{ lan_domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "radarr.{{ lan_domain_name }}" }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "bazarr.{{ lan_domain_name }}" }
