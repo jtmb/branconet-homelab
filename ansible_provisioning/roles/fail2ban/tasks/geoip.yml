@@ -1,0 +1,44 @@
+- name: Install Unzip
+  apt:
+    name: unzip
+    state: present
+
+- name: Download GeoIP database from GitHub
+  become: yes
+  get_url:
+    url: https://github.com/wp-statistics/GeoLite2-Country/archive/refs/heads/master.zip
+    dest: /tmp/GeoLite2-Country.zip
+
+- name: Ensure GeoIP database directory exists
+  become: yes
+  file:
+    path: /usr/share/GeoIP
+    state: directory
+    mode: '0755'
+
+- name: Unzip GeoIP database
+  become: yes
+  unarchive:
+    src: /tmp/GeoLite2-Country.zip
+    dest: /tmp/
+    remote_src: yes
+    extra_opts:
+      - '-q'  # Quiet mode, optional
+
+- name: Decompress GeoIP database
+  become: yes
+  command: gunzip /tmp/GeoLite2-Country-master/GeoLite2-Country.mmdb.gz
+  args:
+    creates: /tmp/GeoLite2-Country-master/GeoLite2-Country.mmdb
+
+- name: Move GeoIP database to the appropriate directory
+  become: yes
+  command: mv /tmp/GeoLite2-Country-master/GeoLite2-Country.mmdb /usr/share/GeoIP/GeoLite2-Country.mmdb
+  args:
+    creates: /usr/share/GeoIP/GeoLite2-Country.mmdb
+
+- name: Clean up
+  become: yes
+  file:
+    path: /tmp/GeoLite2-Country.zip
+    state: absent

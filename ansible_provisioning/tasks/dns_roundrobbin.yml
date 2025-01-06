@@ -1,0 +1,16 @@
+- name: Add && enforce PiHole DNS Entries for primary swarm dns resolver
+  tags: dns
+  lineinfile: 
+    dest: "{{container_volumes_location}}/pihole/custom.list"
+    line: "{{ item.ip }} {{ item.domain }}"
+  with_items: "{{dns_list}}"
+  when: inventory_hostname == 'master_node'
+
+
+- name: Add && enforce PiHole DNS Entries for secondary dbs resolver
+  tags: dns
+  lineinfile: 
+    dest: "{{nfs_volumes_location}}/pihole/custom.list"
+    line: "{{ item.ip }} {{ item.domain }}"
+  with_items: "{{dns_list}}"
+  when: inventory_hostname == 'mini_linux'

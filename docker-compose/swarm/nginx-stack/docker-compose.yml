@@ -1,0 +1,141 @@
+---
+services:
+  lucinda:
+    image: 'nginx'
+    deploy:
+      labels:
+        - homepage.group=Websites
+        - homepage.name=lucinda.${domain_name}
+        - homepage.icon=https://ahmadalli.gallerycdn.vsassets.io/extensions/ahmadalli/vscode-nginx-conf/0.3.5/1711059993560/Microsoft.VisualStudio.Services.Icons.Default
+        - 'homepage.href=http://lucinda.${domain_name}/'
+        - homepage.description=Lucinda's art gallery
+        - "traefik.enable=true"
+        - "traefik.http.routers.lucinda.rule=Host(`lucinda.${domain_name}`, `lucinda.${lan_domain_name}`)"
+        - "traefik.http.services.lucinda.loadbalancer.server.port=80" #uses internal docker port
+        - "traefik.http.routers.lucinda.entrypoints=websecure"
+        - "traefik.http.routers.lucinda.tls=true"
+        - "traefik.http.routers.lucinda.tls.certresolver=myresolver"
+        - "traefik.http.routers.lucinda.tls.domains[0].main=lucinda.${domain_name}"
+        - "traefik.http.routers.lucinda.tls.domains[1].main=lucinda.${lan_domain_name}"
+    networks:
+      - container-swarm-network
+    restart: unless-stopped
+    ports:
+      - '8080:80'
+    environment:
+      DISABLE_IPV6: 'true'
+    volumes:
+      - ${container_volumes_location}/ws-lucinda:/usr/share/nginx/html
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+
+  santos:
+    image: 'nginx'
+    deploy:
+      labels:
+        - homepage.group=Websites
+        - homepage.name=santos.${domain_name}
+        - homepage.icon=https://ahmadalli.gallerycdn.vsassets.io/extensions/ahmadalli/vscode-nginx-conf/0.3.5/1711059993560/Microsoft.VisualStudio.Services.Icons.Default
+        - 'homepage.href=http://santos.${domain_name}/'
+        - homepage.description=Santos biography
+        - "traefik.enable=true"
+        - "traefik.http.routers.santos.rule=Host(`santos.${lan_domain_name}`, `santos.${domain_name}`)"
+        - "traefik.http.services.santos.loadbalancer.server.port=80" #uses internal docker port
+        - "traefik.http.routers.santos.entrypoints=websecure"
+        - "traefik.http.routers.santos.tls=true"
+        - "traefik.http.routers.santos.tls.certresolver=myresolver"
+        - "traefik.http.routers.santos.tls.domains[0].main=santos.${lan_domain_name}"
+        - "traefik.http.routers.santos.tls.domains[1].main=santos.${domain_name}"
+    networks:
+      - container-swarm-network
+    restart: unless-stopped
+    ports:
+      - '8081:80'
+    environment:
+      DISABLE_IPV6: 'true'
+    volumes:
+      - ${container_volumes_location}/ws-santos:/usr/share/nginx/html
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+
+  aplb:
+    image: 'nginx'
+    deploy:
+      labels:
+        - homepage.group=Websites
+        - homepage.name=aplb.${domain_name}
+        - homepage.icon=https://ahmadalli.gallerycdn.vsassets.io/extensions/ahmadalli/vscode-nginx-conf/0.3.5/1711059993560/Microsoft.VisualStudio.Services.Icons.Default
+        - 'homepage.href=http://aplb.${domain_name}/'
+        - homepage.description=Aplb biography
+        - "traefik.enable=true"
+        - "traefik.http.routers.aplb.rule=Host(`aplb.${lan_domain_name}`, `aplb.${domain_name}`)"
+        - "traefik.http.services.aplb.loadbalancer.server.port=80" #uses internal docker port
+        - "traefik.http.routers.aplb.entrypoints=websecure"
+        - "traefik.http.routers.aplb.tls=true"
+        - "traefik.http.routers.aplb.tls.certresolver=myresolver"
+        - "traefik.http.routers.aplb.tls.domains[0].main=aplb.${lan_domain_name}"
+        - "traefik.http.routers.aplb.tls.domains[1].main=aplb.${domain_name}"
+    networks:
+      - container-swarm-network
+    restart: unless-stopped
+    ports:
+      - '8082:80'
+    environment:
+      DISABLE_IPV6: 'true'
+    volumes:
+      - ${container_volumes_location}/ws-aplb:/usr/share/nginx/html
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+
+  mcwebsite:
+    image: 'nginx'
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Websites
+        - homepage.name=mc.${domain_name}
+        - homepage.icon=https://cdn.icon-icons.com/icons2/2699/PNG/512/minecraft_logo_icon_168974.png
+        - 'homepage.href=http://mc.${domain_name}/'
+        - homepage.description=mc connect site
+        #traefik
+        - "traefik.enable=true"
+        - "traefik.http.routers.mc.rule=Host(`mc.${lan_domain_name}`, `mc.${domain_name}`)"
+        - "traefik.http.services.mc.loadbalancer.server.port=80" #uses internal docker port
+        - "traefik.http.routers.mc.entrypoints=websecure"
+        - "traefik.http.routers.mc.tls=true"
+        - "traefik.http.routers.mc.tls.certresolver=myresolver"
+        - "traefik.http.routers.mc.tls.domains[0].main=mc.${lan_domain_name}"
+        - "traefik.http.routers.mc.tls.domains[1].main=mc.${domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.mc.tls.domains[0].sans=mc.${lan_domain_name}"
+    networks:
+      - container-swarm-network
+    restart: unless-stopped
+    ports:
+      - '8083:80'
+    environment:
+      DISABLE_IPV6: 'true'
+    volumes:
+      - ${container_volumes_location}/mc-branconet-lan:/usr/share/nginx/html
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+
+networks:
+  container-swarm-network:
+    external: true

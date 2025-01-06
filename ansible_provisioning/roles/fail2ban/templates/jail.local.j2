@@ -1,0 +1,23 @@
+[DEFAULT]
+bantime  = {{ fail2ban_default_bantime }}
+maxretry = {{ fail2ban_default_maxretry }}
+destemail = root@localhost
+action = %(action_mwl)s
+
+{% for jail, config in fail2ban_jail_local.items() %}
+[{{ jail }}]
+enabled = {{ config.enabled | bool | ternary('true', 'false') }}
+port    = {{ config.port }}
+filter  = {{ config.filter }}
+logpath = {{ config.logpath }}
+maxretry = {{ config.maxretry }}
+bantime = {{ config.bantime }}
+{% endfor %}
+
+[traefik]
+enabled = true
+port    = http,https
+filter  = traefik
+logpath = /var/log/traefik/traefik.log
+maxretry = 5
+bantime = 3600

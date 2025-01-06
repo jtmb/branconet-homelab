@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  home-assistant:
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - '${container_volumes_location}/home-assistant/config:/config'
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    ports:
+      - 8124:8123
+    privileged: true
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Apps
+        - homepage.name=Home Assistant
+        - homepage.icon=https://community-assets.home-assistant.io/original/4X/1/3/8/13882a481a57f91f670def0fc33cf99d09dec293.png
+        - 'homepage.href=http://ha.${lan_domain_name}/'
+        - homepage.description=This page
+        #traefik
+        - "traefik.enable=true"
+        - "traefik.http.routers.ha.rule=Host(`ha.${lan_domain_name}`)"
+        - "traefik.http.services.ha.loadbalancer.server.port=8123" #uses internal docker port
+        - "traefik.http.routers.ha.entrypoints=websecure"
+        - "traefik.http.routers.ha.tls=true"
+        - "traefik.http.routers.ha.tls.certresolver=myresolver"
+        - "traefik.http.routers.ha.tls.domains[0].main=ha.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.ha.tls.domains[0].sans=ha.${lan_domain_name}"
+      mode: replicated
+      replicas: 1
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+networks:
+  container-swarm-network:
+    external: true

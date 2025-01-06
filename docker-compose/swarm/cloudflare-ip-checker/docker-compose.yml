@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+    cic:
+        image: "jtmb92/cloudflare_ip_checker:UI"
+        restart: always
+        networks:
+            - container-swarm-network
+        ports:
+            - '8091:8080'
+        environment:
+            API_KEY: ${cf_key}
+            ZONE_ID: ${cf_zone_id}
+            WEBHOOK_URL: "${discord_webhook}"
+            DNS_RECORDS: 'jtmb.cc/A'
+            REQUEST_TIME: "2m"
+            EMAIL: ${email}
+            DASHBOARD_USER: brajam #the default dashboard login username
+            DASHBOARD_PASSWORD: "${ADMIN_PASS}" #the default dashboard login password
+        deploy:
+            labels:
+                - "traefik.enable=true"
+                - "traefik.http.routers.cic.rule=Host(`cic.${lan_domain_name}`)"
+                - "traefik.http.services.cic.loadbalancer.server.port=8080" #uses internal docker port
+                - "traefik.http.routers.cic.entrypoints=websecure"
+                - "traefik.http.routers.cic.tls=true"
+                - "traefik.http.routers.cic.tls.certresolver=myresolver"
+                - "traefik.http.routers.cic.tls.domains[0].main=cic.${lan_domain_name}"
+                # to add additional DNS names
+                # - "traefik.http.routers.cic.tls.domains[0].sans=cic.${lan_domain_name}"
+            replicas: 1
+            placement:
+                max_replicas_per_node: 1
+        logging:
+            driver: lokisud
+            options:
+                loki-url: "http://localhost:3100/loki/api/v1/push"
+                loki-retries: "5"
+                loki-batch-size: "400"
+networks:
+    container-swarm-network:
+        external: true

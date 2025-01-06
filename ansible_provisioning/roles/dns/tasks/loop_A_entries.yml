@@ -1,0 +1,35 @@
+- name: Ensure the custom.list file does not exist
+  tags: dns
+  file:
+    path: "{{item}}"
+    state: absent
+  with_items: 
+    - "{{ container_volumes_location }}/pihole/custom.list"
+    - "{{ nfs_volumes_location }}/pihole/custom.list"
+  when: inventory_hostname == 'master_node' or inventory_hostname == 'mini_linux'
+
+- name: Ensure the custom.list file is created
+  tags: dns
+  file:
+    path: "{{item}}"
+    state: touch
+  with_items: 
+    - "{{ container_volumes_location }}/pihole/custom.list"
+    - "{{ nfs_volumes_location }}/pihole/custom.list"
+  when: inventory_hostname == 'master_node'  
+
+- name: Add && enforce PiHole DNS Entries for primary swarm dns resolver
+  tags: dns
+  lineinfile: 
+    dest: "{{container_volumes_location}}/pihole/custom.list"
+    line: "{{ item.ip }} {{ item.domain }}"
+  with_items: "{{dns_list}}"
+  when: "'master_nodes' in group_names or 'worker_nodes' in group_names"
+
+- name: Add && enforce PiHole DNS Entries for primary secondary dns resolver
+  tags: dns
+  lineinfile: 
+    dest: "{{nfs_volumes_location}}/pihole/custom.list"
+    line: "{{ item.ip }} {{ item.domain }}"
+  with_items: "{{dns_list}}"
+  when: "'master_nodes' in group_names or 'worker_nodes' in group_names"

@@ -1,0 +1,59 @@
+- name: Add GlusterFS peers
+  shell: "gluster peer probe {{ item }}"
+  loop:
+    - "workernode1"
+    - "workernode2"
+  tags: glusterfs
+
+- name: Create /gluster/volumes directory
+  file:
+    path: /gluster/volumes
+    state: directory
+    mode: '0755'
+  tags: glusterfs
+
+- name: Create {{container_volumes_location}} directory
+  file:
+    path: "{{container_volumes_location}}"
+    state: directory
+    mode: '0755'
+  tags: glusterfs
+  ignore_errors: true
+
+- name: Create GlusterFS volume staging-gfs
+  shell: |
+    gluster volume create staging-gfs replica 3 \
+    masternode:/gluster/volumes \
+    workernode1:/gluster/volumes \
+    workernode2:/gluster/volumes force
+  ignore_errors: true
+  tags: glusterfs
+
+- name: Start GlusterFS volume staging-gfs
+  shell: gluster volume start staging-gfs
+  ignore_errors: true
+  tags: glusterfs
+
+- name: Set GlusterFS volume staging-gfs params
+  shell: |
+    set staging-gfs performance.parallel-readdir on
+    gluster volume set staging-gfs performance.io-cache on
+    gluster volume set staging-gfs performance.cache-size 10GB
+    gluster volume set staging-gfs performance.quick-read on
+    gluster volume set staging-gfs performance.write-behind on
+    gluster volume set staging-gfs performance.read-ahead on
+    gluster volume set staging-gfs performance.max-read-ahead 1MB
+    gluster volume set staging-gfs performance.write-behind-window-size 256MB
+    gluster volume set staging-gfs cluster.lookup-optimize on
+    gluster volume set staging-gfs locks.mandatory-locking optimal
+    gluster volume set staging-gfs locks.mandatory-locking off
+    gluster volume set staging-gfs storage.health-check-interval 10
+    gluster volume set staging-gfs performance.io-cache off
+    gluster volume set staging-gfs performance.cache-size 0
+    gluster volume set staging-gfs performance.read-ahead off
+    gluster volume set staging-gfs performance.parallel-readdir off
+    gluster volume set staging-gfs cluster.lookup-optimize on
+    gluster volume set staging-gfs performance.write-behind off
+    gluster volume set staging-gfs performance.quick-read off
+  ignore_errors: true
+  tags: glusterfs

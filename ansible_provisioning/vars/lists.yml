@@ -5,24 +5,22 @@ container_paths:
     - '{{container_volumes_location}}/plex/movies'
     - '{{container_volumes_location}}/deluge/config'
     - '{{container_volumes_location}}/deluge/downloads'
-    # - '{{container_volumes_location}}/pihole'
     - '{{container_volumes_location}}/dnsmasq.d'
     - '{{container_volumes_location}}/PROXY-MANAGER/data'
     - '{{container_volumes_location}}/PROXY-MANAGER/letsencrypt'
+    - '{{container_volumes_location}}/traefik/letsencrypt'
     - '{{container_volumes_location}}/prometheus/prom_data'
     - '{{container_volumes_location}}/grafana/datasources'
     - '{{container_volumes_location}}/grafana/data'
     - '{{container_volumes_location}}/prometheus'
     - '{{container_volumes_location}}/vault_warden/swarm'
     - '{{container_volumes_location}}/vault_warden/mariadb'
-    - '{{container_volumes_location}}/wireguard/'
-    # - '{{container_volumes_location}}/next_cloud/data'
-    - '/mnt/plex_smb_share/container-program-files/next_cloud/data'     
+    - '{{container_volumes_location}}/wireguard/'    
     - '{{container_volumes_location}}/next_cloud/mariadb'
     - '{{container_volumes_location}}/portainer'
     - '{{container_volumes_location}}/jenkins_home'
     - '{{container_volumes_location}}/uptime-kuma'
-    - '{{container_volumes_location}}/mc-server'
+    - '{{nfs_volumes_location}}/mc-server'
     - '{{container_volumes_location}}/influx'
     - '{{container_volumes_location}}/grafana/data'
     - '{{container_volumes_location}}/homepage/app'
@@ -37,11 +35,12 @@ container_paths:
     - '{{container_volumes_location}}/mealie/mealie-pgdata'
     - '{{container_volumes_location}}/bookstack/bookstack_app_data'
     - '{{container_volumes_location}}/bookstack/bookstack_db_data'
-    - '{{container_volumes_location}}/tautulli/config'
-    - '{{container_volumes_location}}/kaboard/kanboard_data'
-    - '{{container_volumes_location}}/kaboard/kanboard_plugins'
+    - '{{nfs_volumes_location}}/tautulli/config'
+    - '{{nfs_volumes_location}}/bot_ruckus/mysql_data'
+    # - '{{container_volumes_location}}/next_cloud/data'
         
 alt_container_permission_paths:
+    - '{{container_volumes_location}}/wordpress/mysql-db'
     - '{{container_volumes_location}}/grafana/datasources'
     - '{{container_volumes_location}}/prometheus/'
     - '{{container_volumes_location}}/loki/config/'     
@@ -52,84 +51,141 @@ alt_container_permission_paths:
     - '{{container_volumes_location}}/overseerr/config'
     - '{{container_volumes_location}}/spiderfoot_data'
     - '{{container_volumes_location}}/jackett'
-    - '{{container_volumes_location}}/sonarr/config'
-    - '{{container_volumes_location}}/radarr'
+    - '{{nfs_volumes_location}}/sonarr/config'
+    - '{{nfs_volumes_location}}/radarr'
+    - '{{nfs_volumes_location}}/ytdl/tmp_dir'
+
+
 www_container_permission_paths:
-    - '{{container_volumes_location}}/next_cloud/data'  
-    - '{{container_volumes_location}}/kaboard/kanboard_data'
-    - '{{container_volumes_location}}/kaboard/kanboard_plugins'
+    - '{{container_volumes_location}}/wordpress/wp-app'
     - '{{container_volumes_location}}/pihole'
+    # - '{{container_volumes_location}}/next_cloud/data'  
+    # - '{{container_volumes_location}}/kaboard/kanboard_data'
+    # - '{{container_volumes_location}}/kaboard/kanboard_plugins'
+
 
 
 root_container_permission_paths: 
     - '{{container_volumes_location}}/server-bootstrap'
     - '{{container_volumes_location}}/consul-server'
-    - '{{container_volumes_location}}/consul-client'    
-    
-# Docker Stack Deploy
-stack_deploy_cicd:
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/jenkins-cicd/docker-compose.yml cicd"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-cicd/docker-compose.yml cicd"
+    - '{{container_volumes_location}}/consul-client'   
+
 stack_deploy:
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/pi/docker-compose.yml pi"
-    # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/bookstack/docker-compose.yml bookstack"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/mealie/docker-compose.yml mealie"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/ez-backups/docker-compose.yml monitoring"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws"
-    - "{{env_file}} docker compose -f /tmp/docker-compose/torrent-stack/docker-compose.yml up -d" 
-    - "{{env_file}} docker compose -f /tmp/docker-compose/plex/docker-compose.yml up -d"
-    # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/game-servers/minecraft/docker-compose.yml gamesrv"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/nginx-stack/docker-compose.yml ws"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/media-stack/docker-compose.yml media"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/proxy-manager/docker-compose.yml proxy"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/portainer-stack/docker-compose.yml portainer"
-    # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/cloudflare-ip-checker/docker-compose.yml monitoring"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/monitoring-stack/docker-compose.yml monitoring"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/vault-warden/docker-compose.yml vault"
-    # - "{{env_file}} docker stack deploy -c /tmp/docker-compose/next-cloud/docker-compose.yml nextcloud"
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/homepage/docker-compose.yml ws" 
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/kanboard/docker-compose.yml tooling" 
-    - "{{env_file}} docker stack deploy -c /tmp/docker-compose/OSINT/docker-compose.yml osint"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/wordpress/docker-compose.yml wordpress"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/discord-bots/ruckus/docker-compose.yml bot"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/vault-cicd/docker-compose.yml cicd"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/pi/docker-compose.yml pi"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/mealie/docker-compose.yml mealie"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/ez-backups/docker-compose.yml monitoring"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/homepage/docker-compose.yml ws"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/game-servers/minecraft/docker-compose.yml gamesrv"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/nginx-stack/docker-compose.yml ws"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/media-stack/docker-compose.yml media"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/traefik/docker-compose.yml proxy"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/portainer-stack/docker-compose.yml portainer"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/monitoring-stack/docker-compose.yml monitoring"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/vault-warden/docker-compose.yml vault"
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/homepage/docker-compose.yml ws" 
+    - "{{env_file}} docker stack deploy -c /tmp/swarm/OSINT/docker-compose.yml osint"
+    # - "{{env_file}} docker stack deploy -c /tmp/swarm/bookstack/docker-compose.yml bookstack"
+    # - "{{env_file}} docker stack deploy -c /tmp/swarm/kanboard/docker-compose.yml tooling" 
+    # - "{{env_file}} docker stack deploy -c /tmp/swarm/next-cloud/docker-compose.yml nextcloud"
+    # - "{{env_file}} docker stack deploy -c /tmp/swarm/cloudflare-ip-checker/docker-compose.yml monitoring"
 
 # Docker Swarm Scale Services
 swarm_scale:
+    - docker service scale pi_pihole=1
+    - docker service scale wordpress_wp-app=1
+    - docker service scale wordpress_db=1
+    - docker service scale wordpress_redis-db=1
+    - docker service scale wordpress_phpmyadmin=1
+    - docker service scale media_ytdl=1
+    - docker service scale bot_ruckus-db=1
+    - docker service scale proxy_traefik=1
+    - docker service scale proxy_whoami=1
+    - docker service scale bot_ruckus=1
     - docker service scale osint_spiderfoot=1
     - docker service scale media_tautulli=1
-    # - docker service scale bookstack_bookstack-app-wan=1
-    # - docker service scale bookstack_bookstack-app-lan=1
-    # - docker service scale bookstack_bookstack-db=1
-    - docker service scale monitoring_ez-backups=1
-    # - docker service scale monitoring_cloudflare-ip-checker=1
+    - docker service scale monitoring_ez-backups-glusterfs=1
+    - docker service scale monitoring_ez-backups-nfs=1
+    - docker service scale monitoring_ez-backups-plex=1
     - docker service scale mealie_mealie=1
     - docker service scale cicd_server-bootstrap=1
     - docker service scale cicd_vault=1
-    # - docker service scale gamesrv_minecraft-paper=1
-    # - docker service scale gamesrv_mc-exporter=1
-    - docker service scale pi_pihole=1 && docker service update pi_pihole --force
+    - docker service scale gamesrv_minecraft-paper=1
+    - docker service scale gamesrv_mc-exporter=1
     - docker service scale pi_exporter=1
-    - docker service scale cicd_jenkins=1
-    # - docker service scale nextcloud_db=1
-    # - docker service scale nextcloud_nextapp=1
-    - docker service scale vault_mariadb=1
     - docker service scale vault_vaultwarden=1
     - docker service scale monitoring_loki=1
-    # - docker service scale monitoring_influx=1
     - docker service scale monitoring_grafana=1
     - docker service scale monitoring_prometheus=1
     - docker service scale monitoring_uptime-kuma=1
     - docker service scale portainer_portainer=1
-    - docker service scale proxy_nginx-proxy-manager=1
     - docker service scale media_radarr=1
     - docker service scale media_bazarr=1
     - docker service scale media_overseerr=1
     - docker service scale media_jackett=1
     - docker service scale media_sonarr=1
-    # - docker service scale ws_mcwebsite=1
     - docker service scale ws_homepage=1
-    - docker service scale ws_lucinda=2
-    - docker service scale ws_santos=2
-    - docker service scale ws_aplb=2
-    - docker service scale tooling_kanboard=1 && docker service update tooling_kanboard --force
+    - docker service scale ws_lucinda=3
+    - docker service scale ws_santos=3
+    - docker service scale ws_aplb=3
+    # - docker service scale ws_mcwebsite=1
+    # - docker service scale bookstack_bookstack-app-wan=1
+    # - docker service scale bookstack_bookstack-app-lan=1
+    # - docker service scale bookstack_bookstack-db=1
+    # - docker service scale nextcloud_db=1
+    # - docker service scale nextcloud_nextapp=1
+    # - docker service scale vault_mariadb=1
+    # - docker service scale monitoring_cloudflare-ip-checker=1
+
+dns_list:
+    - { ip: "{{master_node}}", domain: "qbittorrent.{{ lan_domain_name }}" }
+    - { ip: "192.168.0.28", domain: "retropie.lan" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "wordpress.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "ytdl.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "api.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "ruckus.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "proxy.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "whoami.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "pi.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "vault.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "budscraper.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "lucinda.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "santos.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "aplb.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "converter.{{ lan_domain_name }}" }
+    - { ip: "192.168.0.3", domain: "true.nas" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "worker.node2" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "worker.node1" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "swarm.master" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "grafana.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "portainer.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "monitoring.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "sonarr.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "radarr.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "bazarr.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "overseerr.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "jenkins.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "ha.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "cic.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "uptime.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "mc.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "homepage.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "vault.cicd.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "prom.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "tor.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "mealie.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "tautulli.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "kanboard.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "api.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "maintainerr.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "spiderfoot.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "node.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "tor.{{ lan_domain_name }}" }
+    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}", domain: "plex.{{ lan_domain_name }}" }
+
+
 
 # Cloudflare Subdomains
 cf_service_name:

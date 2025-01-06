@@ -1,0 +1,24 @@
+- name: Install nfs-common on Debian/Ubuntu
+  become: true
+  apt:
+    name: nfs-common
+    state: present
+  tags: nfs
+
+- name: Mount NFS shares
+  become: true
+  mount:
+    path: "{{ nfs_volumes_location }}"
+    src: "{{ truenas }}:/mnt/ssd_data/nfs_share/container-program-files" 
+    fstype: nfs
+    state: mounted
+  tags: nfs
+
+
+- name: Ensure NFS mount is in /etc/fstab
+  become: true
+  lineinfile:
+    path: /etc/fstab
+    line: "{{ truenas }}:{{ nfs_volumes_location }} {{ nfs_volumes_location }} nfs defaults 0 0"
+    state: present
+  tags: nfs

@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  protonvpn:
+    container_name: GlueTun-proton
+    image: qmcgaw/gluetun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 8112:8112 ##qbittorrent UI
+      - 5800:5800 #tor
+    environment:
+      - VPN_SERVICE_PROVIDER=protonvpn
+      - OPENVPN_USER=${protonvpn_user}
+      - OPENVPN_PASSWORD=${protonvpn_pass}
+      - VPN_TYPE=openvpn
+      - PORT_FORWARD_ONLY=on
+      - VPN_PORT_FORWARDING=on
+      - VPN_PORT_FORWARDING_PROVIDER=protonvpn
+    volumes:
+      - ${container_volumes_location}/gluetun:/tmp/gluetun
+      - /mnt/plex_smb_share:/downloads:/downloads
+
+  qbittorrent:
+    container_name: qbittorrent
+    network_mode: service:protonvpn
+    depends_on:
+      - protonvpn
+      # - qbit-port-settings
+    restart: unless-stopped
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Etc/UTC
+      - WEBUI_PORT=8112
+    env_file:
+      - ${container_volumes_location}/gluetun/.env
+    volumes:
+      - ${container_volumes_location}/deluge/config:/config
+      - /mnt/plex_smb_share:/downloads:/downloads
+    image: lscr.io/linuxserver/qbittorrent:latest
+
+# networks:
+#   container-swarm-network:
+#     external: true

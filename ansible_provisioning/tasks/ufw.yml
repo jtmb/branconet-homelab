@@ -2,14 +2,17 @@
   ufw:
     state: enabled
     policy: allow
+  tags: ufw
 
 - name: Set logging
   ufw:
     logging: 'on'
+  tags: ufw
 
 - ufw:
     rule: allow
     name: OpenSSH
+  tags: ufw
 
 # swarm ports
 
@@ -21,12 +24,14 @@
   with_items:
     - '80' 
     - '443'
-    
+  tags: ufw
+   
 - name: Allow port range 8079-8090 (App Range)
   ufw:
     rule: allow
     port: 8079:8098
     proto: tcp
+  tags: ufw
 
 - name: Open Swarm Ports TCP
   ufw:
@@ -40,6 +45,7 @@
     - '4097' #container-swarm-network
     - "4099" #portainer-agent-network
     - '2377'
+  tags: ufw
 
 - name: Open Swarm Ports UDP
   ufw:
@@ -53,3 +59,4 @@
     - '4097' #container-swarm-network
     - "4099" #portainer-agent-network
     - '2377'
+  tags: ufw
