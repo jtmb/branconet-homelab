@@ -1,0 +1,20 @@
+- name: SET ADMIN PASS
+  ansible.builtin.debug:
+    msg: "{{ansible_sudo_pass}}"
+  register: ADMIN_PASS
+  no_log: true
+  tags: [docker-only,containers]
+  
+- name: DEPLOY CONTAINERS STACK 
+  vars:
+    env_file: env database_password={{database_password}} RUCKUS_BOT_TOKEN={{RUCKUS_BOT_TOKEN}} cf_key={{cf_key}} email={{email}} cf_zone_id={{cf_zone_id}} discord_webhook={{discord_webhook}} lan_domain_name={{lan_domain_name}} domain_name={{domain_name}} ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} nfs_volumes_location={{nfs_volumes_location}} container_volumes_location={{container_volumes_location}}
+  shell: "{{ item }}"
+  with_items: "{{ stack_deploy }}"
+  loop_control:
+    label: "{{ item | regex_replace('^.*docker stack deploy', 'docker stack deploy') }}" #replaces env secrets from being shown in console output
+  tags: [docker-only,containers]
+
+- name: SCALE SWARM CONTAINERS
+  shell: "{{ item }}"
+  with_items: "{{ swarm_scale }}"
+  tags: [docker-only,containers]

@@ -1,0 +1,262 @@
+version: '3'
+services:
+  radarr:
+    container_name: radarr
+    restart: unless-stopped
+    networks:
+      - container-swarm-network
+    ports:
+      - 7878:7878
+    volumes:
+      - ${nfs_volumes_location}/radarr:/config
+      - /mnt/plex_smb_share:/media
+      - /mnt/plex_smb_share:/downloads:/downloads
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    image: linuxserver/radarr
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=radarr
+        - homepage.icon=https://i0.wp.com/devildogtech.com/wp-content/uploads/2022/10/radarr.png?resize=280%2C280&ssl=1
+        - 'homepage.href=http://radarr.${lan_domain_name}/'
+        - homepage.description=Radarr movie fetching and monitoring
+        #traefik
+        - "traefik.enable=true"
+        - "traefik.http.routers.radarr.rule=Host(`radarr.${lan_domain_name}`)"
+        - "traefik.http.services.radarr.loadbalancer.server.port=7878" #uses internal docker port
+        - "traefik.http.routers.radarr.entrypoints=websecure"
+        - "traefik.http.routers.radarr.tls=true"
+        - "traefik.http.routers.radarr.tls.certresolver=myresolver"
+        - "traefik.http.routers.radarr.tls.domains[0].main=radarr.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.radarr.tls.domains[0].sans=radarr.${lan_domain_name}"
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        # constraints:
+        #   - node.hostname==masternode
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    networks:
+      - container-swarm-network
+      - bridge
+    environment:
+      - LOG_LEVEL=info
+      - TZ=America/LosAngeles
+    volumes:
+      - ${container_volumes_location}/overseerr/config:/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Overseerr
+        - homepage.icon=https://static-00.iconduck.com/assets.00/overseerr-icon-2048x2048-5ncr26li.png
+        - 'homepage.href=http://overseerr.${lan_domain_name}/'
+        - homepage.description=Overseerr
+        #traefik
+        - "traefik.enable=true"
+        - "traefik.http.routers.overseerr.rule=Host(`media.${domain_name}`, `overseerr.${lan_domain_name}`)"
+        - "traefik.http.services.overseerr.loadbalancer.server.port=5055" #uses internal docker port
+        - "traefik.http.routers.overseerr.entrypoints=websecure"
+        - "traefik.http.routers.overseerr.tls=true"
+        - "traefik.http.routers.overseerr.tls.certresolver=myresolver"
+        - "traefik.http.routers.overseerr.tls.domains[0].main=media.${domain_name}"
+        - "traefik.http.routers.overseerr.tls.domains[1].main=overseerr.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.overseerr.tls.domains[0].sans=overseerr.${lan_domain_name}"
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        # constraints:
+        #   - node.hostname==masternode
+  bazarr:
+    image: hotio/bazarr:latest
+    networks:
+      - container-swarm-network
+    restart: unless-stopped
+    ports:
+      - 6767:6767
+    volumes:
+      - ${container_volumes_location}/bazarr/config:/config
+      - /mnt/plex_smb_share/tv:/tv
+      - /mnt/plex_smb_share/movies:/movies
+      - /mnt/plex_smb_share/extras:/extras
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Bazarr
+        - homepage.icon=https://user-images.githubusercontent.com/787317/183671204-e4e6e67b-c1cd-4e90-a9d1-6c759859f117.png
+        - 'homepage.href=http://bazarr.${lan_domain_name}/'
+        - homepage.description=bazarr subtittles for media
+        #traefik
+        - "traefik.enable=true"
+        - "traefik.http.routers.bazarr.rule=Host(`bazarr.${lan_domain_name}`)"
+        - "traefik.http.services.bazarr.loadbalancer.server.port=6767" #uses internal docker port
+        - "traefik.http.routers.bazarr.entrypoints=websecure"
+        - "traefik.http.routers.bazarr.tls=true"
+        - "traefik.http.routers.bazarr.tls.certresolver=myresolver"
+        - "traefik.http.routers.bazarr.tls.domains[0].main=bazarr.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.bazarr.tls.domains[0].sans=bazarr.${lan_domain_name}"
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        # constraints:
+        #   - node.hostname==masternode
+  sonarr:
+    image: linuxserver/sonarr
+    networks:
+      - container-swarm-network
+    container_name: sonarr
+    restart: unless-stopped
+    ports:
+      - 8989:8989
+    volumes:
+      - ${nfs_volumes_location}/sonarr/config:/config
+      - /mnt/plex_smb_share:/media
+      - /mnt/plex_smb_share:/downloads:/data
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Sonarr
+        - homepage.icon=https://res.cloudinary.com/razordarkamg/image/upload/v1621212884/SonarrV3_pufacd.png
+        - 'homepage.href=http://sonarr.${lan_domain_name}/'
+        - homepage.description=Sonarr tv series fetching and monitoring
+        #traefik
+        - "traefik.enable=true"
+        - "traefik.http.routers.sonarr.rule=Host(`sonarr.${lan_domain_name}`)"
+        - "traefik.http.services.sonarr.loadbalancer.server.port=8989" #uses internal docker port
+        - "traefik.http.routers.sonarr.entrypoints=websecure"
+        - "traefik.http.routers.sonarr.tls=true"
+        - "traefik.http.routers.sonarr.tls.certresolver=myresolver"
+        - "traefik.http.routers.sonarr.tls.domains[0].main=sonarr.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.sonarr.tls.domains[0].sans=sonarr.${lan_domain_name}"
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        # constraints:
+        #   - node.hostname==masternode
+
+  ytdl:
+    image: ghcr.io/alexta69/metube
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Youtube Downloader
+        - homepage.icon=https://res.cloudinary.com/razordarkamg/image/upload/v1621212884/SonarrV3_pufacd.png
+        - 'homepage.href=http://ytdl.${lan_domain_name}/'
+        - homepage.description=Sonarr tv series fetching and monitoring
+        #traefik
+        - "traefik.enable=true"
+        - "traefik.http.routers.ytdl.rule=Host(`ytdl.${lan_domain_name}`)"
+        - "traefik.http.services.ytdl.loadbalancer.server.port=8081" #uses internal docker port
+        - "traefik.http.routers.ytdl.entrypoints=websecure"
+        - "traefik.http.routers.ytdl.tls=true"
+        - "traefik.http.routers.ytdl.tls.certresolver=myresolver"
+        - "traefik.http.routers.ytdl.tls.domains[0].main=ytdl.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.sonarr.tls.domains[0].sans=sonarr.${lan_domain_name}"
+    networks:
+      - container-swarm-network
+    environment:
+      - TEMP_DIR=/tmp_dir
+      - DELETE_FILE_ON_TRASHCAN=true
+    volumes:
+      - /mnt/plex_smb_share/downloads:/downloads
+      - ${nfs_volumes_location}/ytdl/tmp_dir:/tmp_dir
+    ports:
+      - "11742:8081"
+
+  jackett:
+    container_name: jackett
+    networks:
+      - container-swarm-network
+    restart: unless-stopped
+    ports:
+      - 9117:9117
+    volumes:
+      - ${container_volumes_location}/jackett:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    image: linuxserver/jackett
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Jackett
+        - homepage.icon=https://user-images.githubusercontent.com/27040483/28728094-99f3e3f6-73c7-11e7-8f8d-28912dc6ac0d.png
+        - 'homepage.href=http://jackett.${lan_domain_name}/'
+        - homepage.description=Jackett torrent indexers
+        #traefik
+        - "traefik.enable=true"
+        - "traefik.http.routers.jackett.rule=Host(`jackett.${lan_domain_name}`)"
+        - "traefik.http.services.jackett.loadbalancer.server.port=9117" #uses internal docker port
+        - "traefik.http.routers.jackett.entrypoints=websecure"
+        - "traefik.http.routers.jackett.tls=true"
+        - "traefik.http.routers.jackett.tls.certresolver=myresolver"
+        - "traefik.http.routers.jackett.tls.domains[0].main=jackett.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.jackett.tls.domains[0].sans=jackett.${lan_domain_name}"
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        # constraints:
+        #   - node.hostname==masternode
+  tautulli:
+    image: ghcr.io/tautulli/tautulli
+    restart: unless-stopped
+    volumes:
+      - ${nfs_volumes_location}/tautulli/config:/config
+    networks:
+      - container-swarm-network
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Toronto
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Media
+        - homepage.name=Tautulli
+        - homepage.icon=https://tautulli.com/images/logo-circle.png
+        - 'homepage.href=http://tautulli.${lan_domain_name}/'
+        - homepage.description=tautulli plex monitoring
+        #traefik
+        - "traefik.enable=true"
+        - "traefik.http.routers.tautulli.rule=Host(`tautulli.${lan_domain_name}`)"
+        - "traefik.http.services.tautulli.loadbalancer.server.port=8181" #uses internal docker port
+        - "traefik.http.routers.tautulli.entrypoints=websecure"
+        - "traefik.http.routers.tautulli.tls=true"
+        - "traefik.http.routers.tautulli.tls.certresolver=myresolver"
+        - "traefik.http.routers.tautulli.tls.domains[0].main=tautulli.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.tautulli.tls.domains[0].sans=tautulli.${lan_domain_name}"
+    ports:
+      - 9119:8181
+networks:
+  container-swarm-network:
+    external: true
+  bridge:
+    external: true

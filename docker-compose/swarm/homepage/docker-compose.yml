@@ -1,0 +1,34 @@
+version: "3.3"
+services:
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    networks:
+      - container-swarm-network
+    container_name: homepage
+    ports:
+      - 3002:3000
+    volumes:
+      - '${container_volumes_location}/homepage/app:/app/config' # Make sure your local config directory exists
+      - /var/run/docker.sock:/var/run/docker.sock:ro # (optional) For docker integrations
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Apps
+        - homepage.name=Homepage
+        - homepage.icon=https://github.com/gethomepage/homepage/blob/main/images/banner_light@2x.png?raw=true
+        - 'homepage.href=http://homepage.${lan_domain_name}/'
+        - homepage.description=This page
+        #traefik
+        - "traefik.enable=true"
+        - "traefik.http.routers.homepage.rule=Host(`homepage.${lan_domain_name}`)"
+        - "traefik.http.services.homepage.loadbalancer.server.port=3000" #uses internal docker port
+        - "traefik.http.routers.homepage.entrypoints=websecure"
+        - "traefik.http.routers.homepage.tls=true"
+        - "traefik.http.routers.homepage.tls.certresolver=myresolver"
+        - "traefik.http.routers.homepage.tls.domains[0].main=homepage.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.homepage.tls.domains[0].sans=homepage.${lan_domain_name}"
+      replicas: 1
+networks:
+  container-swarm-network:
+    external: true

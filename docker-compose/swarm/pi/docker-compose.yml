@@ -1,0 +1,48 @@
+version: '3.1'
+services:
+  pihole:
+    image: pihole/pihole:latest
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.pi.rule=Host(`pi.${lan_domain_name}`)"
+        - "traefik.http.services.pi.loadbalancer.server.port=80" #uses internal docker port
+        - "traefik.http.routers.pi.entrypoints=websecure"
+        - "traefik.http.routers.pi.tls=true"
+        - "traefik.http.routers.pi.tls.certresolver=myresolver"
+        - "traefik.http.routers.pi.tls.domains[0].main=pi.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.pi.tls.domains[0].sans=pi.${lan_domain_name}"
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8079:80/tcp"
+    environment:
+      TZ: 'America/Chicago'
+      WEBPASSWORD: "${ADMIN_PASS}"
+      PIHOLE_DNS_: "9.9.9.9;1.1.1.1"
+      DNSMASQ_LISTENING: "all" #if using swarm this env variable will allow DNS to work over overlay and bridge networks.
+    networks:
+      - container-swarm-network
+    volumes:
+      - '${container_volumes_location}/pihole:/etc/pihole'
+      - '${container_volumes_location}/dnsmasq.d:/etc/dnsmasq.d'
+    restart: unless-stopped
+
+  exporter:
+    image: ekofr/pihole-exporter:latest
+    depends_on:
+      - pihole
+    ports:
+      - "9617:9617"
+    environment:
+      PIHOLE_HOSTNAME: "${master_node}"
+      PIHOLE_PORT: 8079
+      PIHOLE_PASSWORD: "${ADMIN_PASS}"
+      PORT: "9617"
+    networks:
+      - container-swarm-network
+    restart: unless-stopped
+networks:
+  container-swarm-network:
+    external: true

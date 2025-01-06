@@ -1,16 +1,19 @@
-- name: Reboot Hosts
+- name: Reboot the host
   reboot:
-    msg: "Reboot initiated by Ansible"
-    connect_timeout: 30
-    reboot_timeout: 3600
-    pre_reboot_delay: 0
-    post_reboot_delay: 30
-    test_command: uptime
+    reboot_timeout: 600  # Timeout for the reboot to complete
+  tags: reboot 
 
-- name: Execute PI Cluster rejoin fix
-  when: ansible_architecture == "armv7l"
-  shell: "{{item}}"
-  with_items:
-    - 'sudo systemctl restart docker'
-    - 'sudo mount {{master_node}}:{{container_volumes_location}} {{container_volumes_location}}'
-    - 'docker ps'
+- name: Wait for the host to come back online
+  wait_for_connection:
+    timeout: 300  # Timeout for the host to become available again
+  tags: reboot 
+
+- name: Verify the host is online and running
+  command: uptime
+  register: result
+  tags: reboot 
+
+- name: Show uptime
+  debug:
+    var: result.stdout
+  tags: reboot 

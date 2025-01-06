@@ -1,7 +1,7 @@
 - name: Copy Jenkins dockerfile to mnachines
   tags: jenkins
   copy:
-    src: "{{homedir}}/docker-compose/{{item}}"
+    src: "{{homedir}}/swarm/docker-compose/{{item}}"
     dest: "/tmp/dockerfiles"
   with_items:
    - jenkins-cicd

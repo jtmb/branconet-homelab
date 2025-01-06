@@ -1,0 +1,6 @@
+---
+- name: Stop the GlusterFS service
+  service:
+    name: glusterd
+    state: stopped
+  tags: containers

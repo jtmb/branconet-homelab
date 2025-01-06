@@ -5,37 +5,32 @@
   become: true 
   tasks:
   
-  - name: Debiug VARS
+  - name: Debug VARS
     include_tasks: 
       file: tasks/debug.yml
-      apply:
-        tags: always
     tags: always
   
   - name: Install Required Packages
     include_tasks: 
       file: tasks/provisioning.yml
-      apply:
-        tags: [packages, smb]
     tags: [packages, smb]
   - name: Setup SSH
     include_tasks: 
       file: tasks/ssh_setup.yml
-      apply:
-        tags: ssh
     tags: ssh
   - name: Setup firewall
     include_tasks: 
       file: tasks/ufw.yml
-      apply:
-        tags: ufw
     tags: ufw
 
 # Swarm setup
 - name: "Configure Swarm"
-  hosts: master_node
+  hosts: master_nodes
   become_user: "root"
   become: true
+  vars_files:
+    - vars/lists.yml
+    
   tasks:
   - name: Install swarm
     include_tasks: 
@@ -44,21 +39,121 @@
         tags: swarm
     tags: swarm
 
+  - name: Containers Pre-Provision
+    include_tasks: 
+      file: tasks/container-preprovisioning.yml
+    tags: [containers,pre-prov]
+
 - name: "Join Swarm"
-  hosts: 
-    - worker_node_1
-    - worker_node_2
+  hosts: worker_nodes
   become_user: "root"
   become: true
   tasks:
   - name: Install swarm
     include_tasks: 
       file: tasks/swarm_worker_join.yml
-      apply:
-        tags: swarm
     tags: swarm
 
-# Containers
+# NFS Setup
+- name: Mount NFS on nodes
+  hosts: all
+  become: yes
+  roles:
+    - nfs
+  tags: [nfs, containers, swarm-only]
+
+# glusterfs setup
+
+# - name: "Glusterfs Stop"
+#   hosts: [master_nodes, worker_nodes]
+#   become_user: "root"
+#   become: true
+#   vars_files:
+#     - vars/lists.yml
+#   tasks:
+#   - name: Install Glusterfs finishing touches
+#     include_tasks: tasks/glusterfs_stop.yml
+#     tags: [containers]
+
+- name: "Configure glusterfs prep"
+  hosts: [master_nodes, worker_nodes]
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs finishing touches
+    include_tasks: tasks/glusterfs_prep.yml
+    tags: [glusterfs, containers]
+
+- name: "Configure glusterfs workers"
+  hosts: worker_nodes
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs
+    include_tasks: tasks/glusterfs_worker.yml
+    tags: [glusterfs, containers]
+
+- name: "Configure glusterfs masters"
+  hosts: master_nodes
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs
+    include_tasks: tasks/glusterfs_master.yml
+    tags: [glusterfs, containers, gluster-performance]
+
+- name: "Configure glusterfs post"
+  hosts: [master_nodes, worker_nodes]
+  become_user: "root"
+  become: true
+  tasks:
+  - name: Install Glusterfs finishing touches
+    include_tasks: tasks/glusterfs_post.yml
+    tags: [glusterfs, containers]
+
+# - name: "Glusterfs Start"
+#   hosts: [master_nodes, worker_nodes]
+#   become_user: "root"
+#   become: true
+#   vars_files:
+#     - vars/lists.yml
+#   tasks:
+#   - name: Start GlusterFs
+#     include_tasks: tasks/glusterfs_start.yml
+#     tags: [glusterfs, containers]
+
+# Standalone Containers
+
+- name: "Launch Standalone docker compose Containers"
+  hosts: all
+  become_user: "root"
+  become: true
+  vars_files:
+    - vars/lists.yml
+  tasks:
+  - name: Install Plex Containers
+    include_tasks: 
+      file: tasks/containers/plex-cluster.yml
+    tags:  [containers,docker-only,plex] 
+  - name: Install Torrent Containers
+    include_tasks: 
+      file: tasks/containers/torrent-stack.yml
+    tags: [docker-only,containers,torrent-stack]
+# Swarm Containers
+- name: Apply Traefik role
+  hosts: all
+  become: yes
+  roles:
+    - traefik
+  tags: [traefik, containers]
+  
+- name: Apply homepage role
+  hosts: all
+  become: yes
+  roles:
+    - homepage
+  tags: [homepage,containers]
+
 - name: "Launch Swarm Containers"
   hosts: master_node
   become_user: "root"
@@ -69,8 +164,6 @@
   - name: Git Clone App Repos
     include_tasks: 
       file: tasks/clone_app_repos.yml
-      apply:
-        tags: clone_repos 
     tags: clone_repos
 
   - name: Build Docker Images
@@ -80,41 +173,32 @@
        tags: images
     tags: images
 
-  - name: Containers Pre-Provision
-    include_tasks: 
-      file: tasks/container-preprovisioning.yml
-      apply:
-        tags: [containers, pre-prov]
-    tags: [containers, pre-prov]
-
   - name: Install Containers
     include_tasks: 
-      file: tasks/containers.yml
-      apply:
-       tags: containers
-    tags:  containers 
+      file: tasks/containers/swarm-containers.yml
+    tags:  [containers,docker-only,swarm-only] 
 
-- name: "DNS"
-  hosts: master_node
+
+# DNS
+- name: Apply DNS role
   vars_files:
     - vars/lists.yml
-  become_user: "root"
-  become: true
-  tasks:
-  - name: Post Provisioning DNS Tasks
-    include_tasks: 
-      file: tasks/dns.yml
-      apply:
-        tags: post
-    tags: post
-    
-  - name: Cloudflare DNS 
-    include_tasks: 
-      file: tasks/cloudflare.yml
-      apply:
-        tags: cloudflare
-    tags: cloudflare
+  hosts: all
+  become: yes
+  roles:
+    - dns
+  tags: [dns]
 
+- name: Apply Cloudfare role
+  vars_files:
+    - vars/lists.yml
+  hosts: master_nodes
+  become: yes
+  roles:
+    - cloudflare
+  tags: [cloudflare]
+
+# POST PROVISIONING
 - name: "POST PROVISIONING"
   hosts: all
   become_user: "root"
@@ -136,12 +220,43 @@
   - name: Reboot Actions
     include_tasks: 
       file: tasks/reboot.yml
-      apply:
-        tags: reboot
     tags: reboot
 
+#FAIL2BAN
+- name: Apply Fail2Ban role
+  hosts: all
+  become: yes
+  vars:
+    fail2ban_jail_local:
+      sshd:
+        enabled: true
+        port: ssh
+        filter: sshd
+        logpath: /var/log/auth.log
+        maxretry: 5
+        bantime: 3600
+      apache:
+        enabled: true
+        port: http,https
+        filter: apache-auth
+        logpath: /var/log/apache2/*access.log
+        maxretry: 5
+        bantime: 3600
+    fail2ban_config_file: "/etc/fail2ban/jail.local"
+    fail2ban_service: "fail2ban"
+    fail2ban_default_bantime: 3600 
+    fail2ban_default_maxretry: 5 
+  roles:
+    - fail2ban
+  tags: fail2ban
+  handlers:
+    - name: restart fail2ban
+      service:
+        name: fail2ban
+        state: restarted
+
 - name: "Backups"
-  hosts: master_node
+  hosts: master_nodes
   become_user: "root"
   become: true
   tasks:

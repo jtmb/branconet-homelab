@@ -1,4 +1,10 @@
 ##### This task set essentially makes required folders withs permissions and copys over necessary container configs
+- name: Copy a compose" files from repo to the remote machine to authenticate git repos on host machine
+  copy:
+    src: "{{homedir}}/docker-compose/swarm"
+    dest: "/tmp"
+    remote_src: False
+  tags: containers
 
 - name: create container dirs if they don't exist
   file:
@@ -8,6 +14,7 @@
     group: 'nogroup'
     mode: 1000 
   with_items: "{{ container_paths }}"
+  tags: containers
 
 - name: Change file ownership, group and permissions for configs that need it
   ansible.builtin.file:
@@ -18,36 +25,39 @@
     mode: 0755
     recurse: yes
   with_items: "{{ alt_container_permission_paths }}"
-
-- name: Copy a compose" files from repo to the remote machine to authenticate git repos on host machine
-  copy:
-    src: "{{homedir}}/docker-compose"
-    dest: "/tmp"
-
+  tags: containers
+  
 - name: Copy Grafana Configs
-  copy: remote_src=False src={{homedir}}/docker-compose/monitoring-stack/grafana/datasource.yml dest={{container_volumes_location}}/grafana/datasources
+  copy: remote_src=False src={{homedir}}/docker-compose/swarm/monitoring-stack/grafana/datasource.yml dest={{container_volumes_location}}/grafana/datasources
+  tags: containers
 - name: Copy Prometheus Configs
-  copy: remote_src=False src=remote_src=True src={{homedir}}/docker-compose/monitoring-stack/prometheus/prometheus.yml dest={{container_volumes_location}}/prometheus
+  copy: remote_src=False src=remote_src=True src={{homedir}}/docker-compose/swarm/monitoring-stack/prometheus/prometheus.yml dest={{container_volumes_location}}/prometheus
+  tags: containers
 - name: Copy loki Configs
-  copy: remote_src=False src={{homedir}}/docker-compose/monitoring-stack/loki/loki-config.yml dest={{container_volumes_location}}/loki/config
+  copy: remote_src=False src={{homedir}}/docker-compose/swarm/monitoring-stack/loki/loki-config.yml dest={{container_volumes_location}}/loki/config
+  tags: containers
   
 - name: Copy MC plugins + OPs
   tags:  mc
   copy:
     src: '{{item}}'
-    dest: "{{container_volumes_location}}/mc-server/"
+    dest: "{{nfs_volumes_location}}/mc-server/"
   with_items: 
-    - "{{homedir}}/docker-compose/game-servers/minecraft/plugins"
-    - "{{homedir}}/docker-compose/game-servers/minecraft/ops.json"
+    - "{{homedir}}/docker-compose/swarm/game-servers/minecraft/plugins"
+    - "{{homedir}}/docker-compose/swarm/game-servers/minecraft/ops.json"
+  tags: containers
+
 - name: Copy EssentialsX config
   tags:  mc
-  copy: remote_src=False src={{homedir}}/docker-compose/game-servers/minecraft/plugins/configs/essentials-x/config.yml dest={{container_volumes_location}}/mc-server/plugins/Essentials/config.yml
+  copy: remote_src=False src={{homedir}}/docker-compose/swarm/game-servers/minecraft/plugins/configs/essentials-x/config.yml dest={{nfs_volumes_location}}/mc-server/plugins/Essentials/config.yml
+  tags: containers
 
 - name: Copy a BlueMap files from repo to the remote machine (Minecraft)
   tags: mc
   copy:
-    src: "{{homedir}}/docker-compose/game-servers/minecraft/plugins/configs/BlueMap"
-    dest: "{{container_volumes_location}}/mc-server/plugins"
+    src: "{{homedir}}/docker-compose/swarm/game-servers/minecraft/plugins/configs/BlueMap"
+    dest: "{{nfs_volumes_location}}/mc-server/plugins"
+  tags: containers
 
 
 - name: Change file ownership, group and permissions for containers that need www-data
@@ -59,6 +69,7 @@
     mode: 0755
     recurse: yes
   with_items: "{{ www_container_permission_paths }}"
+  tags: containers
 
 
 - name: Change file ownership, group and permissions for containers that need root
@@ -69,4 +80,5 @@
     group: '1000' 
     recurse: yes
   with_items: "{{ root_container_permission_paths }}"
+  tags: containers
 

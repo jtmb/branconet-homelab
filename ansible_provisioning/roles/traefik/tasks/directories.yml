@@ -1,0 +1,9 @@
+- name: Change file ownership, group and permissions for logs file
+  ansible.builtin.file:
+    path: "{{item}}"
+    state: directory
+    owner: '100' 
+    group: '1000' 
+    recurse: yes
+  with_items: 
+   - '/var/log/traefik' 

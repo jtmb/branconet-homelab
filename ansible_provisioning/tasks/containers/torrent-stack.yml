@@ -1,0 +1,52 @@
+- name: SET ADMIN PASS
+  ansible.builtin.debug:
+    msg: "{{ansible_sudo_pass}}"
+  register: ADMIN_PASS
+  no_log: true
+  tags: [docker-only,containers,torrent-stack]
+  
+- name: Copy torrent compose files from repo to the remote machine
+  copy:
+    src: "{{homedir}}/docker-compose/swarm/torrent-stack"
+    dest: "/tmp/"
+  tags: [docker-only,containers,torrent-stack]
+
+- name: Create setPortForeward.sh script to set qbittorent listen_port to gluetun forewarded port
+  copy:
+    dest: "{{container_volumes_location}}/gluetun/setPortForeward.sh"
+    mode: '0755'
+    content: |
+      #!/bin/sh
+      echo "Contents of {{container_volumes_location}}/gluetun/forwarded_port:"
+      cat {{container_volumes_location}}/gluetun/forwarded_port
+      tcpport=$(cat {{container_volumes_location}}/gluetun/forwarded_port)
+      echo "tcpport is set to $tcpport"
+      echo "Setting listen_port to $tcpport"
+      curl --cookie-jar /tmp/cookie.txt -i --header 'Referer: http://{{master_node}}:8112' --data 'username=brajam&password={{ADMIN_PASS.msg}}' http://{{master_node}}:8112/api/v2/auth/login
+      curl -s -b /tmp/cookie.txt "http://{{master_node}}:8112/api/v2/app/setPreferences" -d 'json={"listen_port": "'"$tcpport"'"}'
+  tags: [docker-only,containers,torrent-stack]
+  when: inventory_hostname == 'master_node'
+
+- name: Set executable permissions for the script
+  file:
+    path: "{{ container_volumes_location }}/gluetun/setPortForeward.sh"
+    mode: '0755'
+  tags: [docker-only,containers,torrent-stack]
+
+- name: DEPLOY Torrent stack 
+  vars:
+    env_file: env nord_user={{nord_user}} nord_pass={{nord_pass}} protonvpn_pass={{protonvpn_pass}} protonvpn_user={{protonvpn_user}} cf_key={{cf_key}} email={{email}} cf_zone_id={{cf_zone_id}} discord_webhook={{discord_webhook}} lan_domain_name={{lan_domain_name}} domain_name={{domain_name}} ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} nfs_volumes_location={{nfs_volumes_location}} container_volumes_location={{container_volumes_location}}
+  shell: "{{env_file}} docker compose -f /tmp/torrent-stack/docker-compose.yml up -d" 
+  tags: [docker-only,containers,torrent-stack]
+  when: inventory_hostname == 'master_node'
+
+- name: Pause for 15 seconds
+  ansible.builtin.pause:
+    seconds: 15
+  tags: [docker-only,containers,torrent-stack]
+
+- name: Run setPortForeward.sh script on the host
+  command: "/bin/sh {{ container_volumes_location }}/gluetun/setPortForeward.sh"
+  become: yes  # Use become if needed (for example, for root privileges)
+  tags: [docker-only, containers, torrent-stack]
+  when: inventory_hostname == 'master_node'

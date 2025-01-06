@@ -1,0 +1,59 @@
+version: '3'
+
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    restart: always
+    networks:
+      - container-swarm-network
+      # - db-network
+    environment:
+      SIGNUPS_ALLOWED: "true"
+      PUID: 1000
+      PGID: 1000
+      # DATABASE_URL: mysql://bitwarden:${ADMIN_PASS}@mariadb:/bitwarden
+    volumes:
+      - ${container_volumes_location}/vault_warden/swarm:/data
+    ports:
+      - 8096:80
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traefik.http.routers.vault.rule=Host(`vault.${lan_domain_name}`)"
+        - "traefik.http.services.vault.loadbalancer.server.port=80" #uses internal docker port
+        - "traefik.http.routers.vault.entrypoints=websecure"
+        - "traefik.http.routers.vault.tls=true"
+        - "traefik.http.routers.vault.tls.certresolver=myresolver"
+        - "traefik.http.routers.vault.tls.domains[0].main=vault.${lan_domain_name}"
+        # to add additional DNS names
+        # - "traefik.http.routers.vault.tls.domains[0].sans=vault.${lan_domain_name}"
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+        # constraints:
+        # - node.role==worker
+        # mariadb:
+        #   image: yobasystems/alpine-mariadb
+        #   networks:
+        #     - container-swarm-network
+        #     - db-network
+        #   # environment:
+        #   #   MYSQL_ROOT_PASSWORD: "${ADMIN_PASS}"
+        #   #   MYSQL_DATABASE: bitwarden
+        #   #   MYSQL_USER: bitwarden
+        #   #   MYSQL_PASSWORD: "${ADMIN_PASS}"
+        #   expose:
+        #     - "3306"
+        #   volumes:
+        #     - ${container_volumes_location}/vault_warden/mariadb:/var/lib/mysql
+        #   deploy:
+        #     replicas: 1
+        #     placement:
+        #       max_replicas_per_node: 1
+        #       # constraints:
+        #       # - node.role==worker
+networks:
+  container-swarm-network:
+    external: true
+  db-network:
+    external: true

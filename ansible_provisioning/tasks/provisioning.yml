@@ -43,29 +43,38 @@
   apt: name={{ item }} state=latest update_cache=yes
   loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
 
-- name: Add Docker GPG apt Key
+- name: Add Docker’s official GPG key
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
-- name: Add Docker Repository
+- name: Set up the Docker repository
   apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
     state: present
-  when: ubuntu_version_number | float < 24.04
 
-- name: Add Docker Repository
-  apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu jammy stable
+- name: Install Docker Engine
+  apt:
+    name: docker-ce
     state: present
-  when: ubuntu_version_number | float > 22.04
 
-- name: Update apt and install docker-ce
-  apt: update_cache=yes name=docker-ce state=latest
-
-- name: Install Docker Module for Python
+- name: Install Docker SDK for Python using pip for 24.04
   pip:
     name: docker
+    extra_args: "--break-system-packages"
+  when: ubuntu_version_number | float > 22.04
+
+
+- name: Install Docker SDK for Python using pip for 22.04
+  pip:
+    name: docker
+  when: ubuntu_version_number | float < 24.04
+
+- name: Ensure Docker service is running
+  service:
+    name: docker
+    state: started
+    enabled: yes
 
 - name: Ensure group "docker" exists
   ansible.builtin.group:
@@ -139,10 +148,25 @@
     - 'nameserver 192.168.0.1'
     - 'nameserver 8.8.8.8'
     - 'nameserver 1.1.1.1'
+  when: ubuntu_version_number | float < 22.04
 - name: Apply DNS service
   tags: dns
   shell: systemctl enable --now resolvconf.service
-  when: ubuntu_version_number | float < 24.04
+  when: ubuntu_version_number | float < 22.04
+
+- name: Ensure Host Controllers are not using pihole DNS #(DNS CONTROLLERS SHOULD NEVER POINT DNS TO ITSELF LOL)
+  lineinfile: 
+    dest: "/etc/resolv.conf"
+    line: '{{ item }}'
+  with_items:
+    - 'nameserver 192.168.0.1'
+    - 'nameserver 8.8.8.8'
+    - 'nameserver 1.1.1.1'
+  when: ubuntu_version_number | float > 22.04
+- name: Apply DNS service
+  tags: dns
+  shell: resolvconf -u
+  when: ubuntu_version_number | float > 22.04
 
 - name: Apply DNS service
   tags: dns
