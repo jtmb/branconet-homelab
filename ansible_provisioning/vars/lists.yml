@@ -35,7 +35,7 @@ container_paths:
     - '{{container_volumes_location}}/mealie/mealie-pgdata'
     - '{{container_volumes_location}}/bookstack/bookstack_app_data'
     - '{{container_volumes_location}}/bookstack/bookstack_db_data'
-    - '{{container_volumes_location}}/tautulli/config'
+    - '{{nfs_volumes_location}}/tautulli/config'
     - '{{nfs_volumes_location}}/bot_ruckus/mysql_data'
     # - '{{container_volumes_location}}/next_cloud/data'
         
@@ -51,8 +51,8 @@ alt_container_permission_paths:
     - '{{container_volumes_location}}/overseerr/config'
     - '{{container_volumes_location}}/spiderfoot_data'
     - '{{container_volumes_location}}/jackett'
-    - '{{container_volumes_location}}/sonarr/config'
-    - '{{container_volumes_location}}/radarr'
+    - '{{nfs_volumes_location}}/sonarr/config'
+    - '{{nfs_volumes_location}}/radarr'
     - '{{nfs_volumes_location}}/ytdl/tmp_dir'
 
 
@@ -106,7 +106,9 @@ swarm_scale:
     - docker service scale bot_ruckus=1
     - docker service scale osint_spiderfoot=1
     - docker service scale media_tautulli=1
-    - docker service scale monitoring_ez-backups=1
+    - docker service scale monitoring_ez-backups-glusterfs=1
+    - docker service scale monitoring_ez-backups-nfs=1
+    - docker service scale monitoring_ez-backups-plex=1
     - docker service scale mealie_mealie=1
     - docker service scale cicd_server-bootstrap=1
     - docker service scale cicd_vault=1

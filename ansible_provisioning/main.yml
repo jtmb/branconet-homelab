@@ -133,11 +133,11 @@
   tasks:
   - name: Install Plex Containers
     include_tasks: 
-      file: tasks/plex_cluster.yml
+      file: tasks/containers/plex-cluster.yml
     tags:  [containers,docker-only,plex] 
   - name: Install Torrent Containers
     include_tasks: 
-      file: tasks/torrent_stack.yml
+      file: tasks/containers/torrent-stack.yml
     tags: [docker-only,containers,torrent-stack]
 # Swarm Containers
 - name: Apply Traefik role
@@ -175,7 +175,7 @@
 
   - name: Install Containers
     include_tasks: 
-      file: tasks/containers.yml
+      file: tasks/containers/swarm-containers.yml
     tags:  [containers,docker-only,swarm-only] 
 
 

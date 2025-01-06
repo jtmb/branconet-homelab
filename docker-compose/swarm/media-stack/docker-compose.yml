@@ -8,7 +8,7 @@ services:
     ports:
       - 7878:7878
     volumes:
-      - ${container_volumes_location}/radarr:/config
+      - ${nfs_volumes_location}/radarr:/config
       - /mnt/plex_smb_share:/media
       - /mnt/plex_smb_share:/downloads:/downloads
     environment:
@@ -125,7 +125,7 @@ services:
     ports:
       - 8989:8989
     volumes:
-      - ${container_volumes_location}/sonarr/config:/config
+      - ${nfs_volumes_location}/sonarr/config:/config
       - /mnt/plex_smb_share:/media
       - /mnt/plex_smb_share:/downloads:/data
     environment:
@@ -228,7 +228,7 @@ services:
     image: ghcr.io/tautulli/tautulli
     restart: unless-stopped
     volumes:
-      - ${container_volumes_location}/tautulli/config:/config
+      - ${nfs_volumes_location}/tautulli/config:/config
     networks:
       - container-swarm-network
     environment:
