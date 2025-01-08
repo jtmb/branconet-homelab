@@ -40,13 +40,13 @@
   tags: [docker-only,containers,torrent-stack]
   when: inventory_hostname == 'master_node'
 
-- name: Pause for 15 seconds
-  ansible.builtin.pause:
-    seconds: 15
-  tags: [docker-only,containers,torrent-stack]
+# - name: Pause for 15 seconds
+#   ansible.builtin.pause:
+#     seconds: 15
+#   tags: [docker-only,containers,torrent-stack]
 
-- name: Run setPortForeward.sh script on the host
-  command: "/bin/sh {{ container_volumes_location }}/gluetun/setPortForeward.sh"
-  become: yes  # Use become if needed (for example, for root privileges)
-  tags: [docker-only, containers, torrent-stack]
-  when: inventory_hostname == 'master_node'
+# - name: Run setPortForeward.sh script on the host
+#   command: "/bin/sh {{ container_volumes_location }}/gluetun/setPortForeward.sh"
+#   become: yes  # Use become if needed (for example, for root privileges)
+#   tags: [docker-only, containers, torrent-stack]
+#   when: inventory_hostname == 'master_node'
