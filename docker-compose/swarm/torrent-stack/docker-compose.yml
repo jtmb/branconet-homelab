@@ -39,6 +39,17 @@ services:
       - /mnt/plex_smb_share:/downloads:/downloads
     image: lscr.io/linuxserver/qbittorrent:latest
 
+  qbit-port-forwarder:
+    image: docker.io/jtmb92/qbit-port-forwarder
+    environment:
+      container_volumes_location: "/mnt"
+      node: "192.168.0.5"
+      ADMIN_USER: "brajam"
+      ADMIN_PASS: "${ADMIN_PASS}"
+      WAIT_TIME: "1h"
+    volumes:
+      -  ${container_volumes_location}/gluetun:/mnt/gluetun
+
 # networks:
 #   container-swarm-network:
 #     external: true
