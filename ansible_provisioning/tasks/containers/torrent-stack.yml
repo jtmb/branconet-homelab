@@ -11,27 +11,27 @@
     dest: "/tmp/"
   tags: [docker-only,containers,torrent-stack]
 
-- name: Create setPortForeward.sh script to set qbittorent listen_port to gluetun forewarded port
-  copy:
-    dest: "{{container_volumes_location}}/gluetun/setPortForeward.sh"
-    mode: '0755'
-    content: |
-      #!/bin/sh
-      echo "Contents of {{container_volumes_location}}/gluetun/forwarded_port:"
-      cat {{container_volumes_location}}/gluetun/forwarded_port
-      tcpport=$(cat {{container_volumes_location}}/gluetun/forwarded_port)
-      echo "tcpport is set to $tcpport"
-      echo "Setting listen_port to $tcpport"
-      curl --cookie-jar /tmp/cookie.txt -i --header 'Referer: http://{{master_node}}:8112' --data 'username=brajam&password={{ADMIN_PASS.msg}}' http://{{master_node}}:8112/api/v2/auth/login
-      curl -s -b /tmp/cookie.txt "http://{{master_node}}:8112/api/v2/app/setPreferences" -d 'json={"listen_port": "'"$tcpport"'"}'
-  tags: [docker-only,containers,torrent-stack]
-  when: inventory_hostname == 'master_node'
+# - name: Create setPortForeward.sh script to set qbittorent listen_port to gluetun forewarded port
+#   copy:
+#     dest: "{{container_volumes_location}}/gluetun/setPortForeward.sh"
+#     mode: '0755'
+#     content: |
+#       #!/bin/sh
+#       echo "Contents of {{container_volumes_location}}/gluetun/forwarded_port:"
+#       cat {{container_volumes_location}}/gluetun/forwarded_port
+#       tcpport=$(cat {{container_volumes_location}}/gluetun/forwarded_port)
+#       echo "tcpport is set to $tcpport"
+#       echo "Setting listen_port to $tcpport"
+#       curl --cookie-jar /tmp/cookie.txt -i --header 'Referer: http://{{master_node}}:8112' --data 'username=brajam&password={{ADMIN_PASS.msg}}' http://{{master_node}}:8112/api/v2/auth/login
+#       curl -s -b /tmp/cookie.txt "http://{{master_node}}:8112/api/v2/app/setPreferences" -d 'json={"listen_port": "'"$tcpport"'"}'
+#   tags: [docker-only,containers,torrent-stack]
+#   when: inventory_hostname == 'master_node'
 
-- name: Set executable permissions for the script
-  file:
-    path: "{{ container_volumes_location }}/gluetun/setPortForeward.sh"
-    mode: '0755'
-  tags: [docker-only,containers,torrent-stack]
+# - name: Set executable permissions for the script
+#   file:
+#     path: "{{ container_volumes_location }}/gluetun/setPortForeward.sh"
+#     mode: '0755'
+#   tags: [docker-only,containers,torrent-stack]
 
 - name: DEPLOY Torrent stack 
   vars:
