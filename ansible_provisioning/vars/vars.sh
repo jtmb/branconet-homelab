@@ -42,6 +42,7 @@ nord_user=$(vault kv get -field=value kv/nord_user)
 nord_pass=$(vault kv get -field=value kv/nord_password)
 protonvpn_user=$(vault kv get -field=value kv/protonvpn_user)
 protonvpn_pass=$(vault kv get -field=value kv/protonvpn_pass)
+discord_webhook_media=$(vault kv get -field=value kv/discord_webhook_media)
 
 
 # BOTS
