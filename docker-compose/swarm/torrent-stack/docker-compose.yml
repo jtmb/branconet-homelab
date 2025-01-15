@@ -41,6 +41,8 @@ services:
 
   qbit-monitor:
     container_name: qbit-monitor
+    depends_on:
+      - qbittorrent
     image: docker.io/jtmb92/qbit-monitor
     environment:
       QBITTORRENT_HOST: "http://protonvpn:8112"
@@ -50,8 +52,8 @@ services:
       CHECK_INTERVAL_FORWARDED_PORT: 1h
       PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port
       DISCORD_WEBHOOK_URL: "${discord_webhook_media}" 
-      PUID: "0"
-      PGID: "0"
+      PUID: "1000"
+      PGID: "1000"
     volumes:
       -  ${container_volumes_location}/gluetun:/mnt/gluetun
       -  ${container_volumes_location}/qbit-monitor:/app/state
