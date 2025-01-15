@@ -7,7 +7,6 @@ services:
       - NET_ADMIN
     ports:
       - 8112:8112 ##qbittorrent UI
-      - 5800:5800 #tor
     environment:
       - VPN_SERVICE_PROVIDER=protonvpn
       - OPENVPN_USER=${protonvpn_user}
