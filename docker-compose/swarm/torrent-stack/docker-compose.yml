@@ -39,16 +39,22 @@ services:
       - /mnt/plex_smb_share:/downloads:/downloads
     image: lscr.io/linuxserver/qbittorrent:latest
 
-  qbit-port-forwarder:
-    image: docker.io/jtmb92/qbit-port-forwarder
+  qbit-monitor:
+    container_name: qbit-monitor
+    image: docker.io/jtmb92/qbit-monitor
     environment:
-      container_volumes_location: "/mnt"
-      node: "192.168.0.5"
-      ADMIN_USER: "brajam"
-      ADMIN_PASS: "${ADMIN_PASS}"
-      WAIT_TIME: "1h"
+      QBITTORRENT_HOST: "http://protonvpn:8112"
+      QBITTORRENT_USERNAME: "brajam"
+      QBITTORRENT_PASSWORD: "${ADMIN_PASS}"
+      CHECK_INTERVAL_TORRENT_MONITORING: 10s
+      CHECK_INTERVAL_FORWARDED_PORT: 1h
+      PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port
+      DISCORD_WEBHOOK_URL: "${discord_webhook_media}" 
+      PUID: "0"
+      PGID: "0"
     volumes:
       -  ${container_volumes_location}/gluetun:/mnt/gluetun
+      -  ${container_volumes_location}/qbit-monitor:/app/state
 
 # networks:
 #   container-swarm-network:

@@ -14,7 +14,7 @@ cd ansible_provisioning && \
     ssh_cert=$HOME/.ssh/id_ed25519 homedir=$homedir \
     container_volumes_location=$container_volumes_location nfs_volumes_location=$nfs_volumes_location \
     user_id=$userid  \
-    discord_webhook=$discord_webhook PUB_IP=$public_ip cf_key=$cf_key cf_zone_id=$cf_zone_id domain_name=$domain_name lan_domain_name=$lan_domain_name email=$email \
+    discord_webhook=$discord_webhook discord_webhook_media=$discord_webhook_media PUB_IP=$public_ip cf_key=$cf_key cf_zone_id=$cf_zone_id domain_name=$domain_name lan_domain_name=$lan_domain_name email=$email \
     nord_user=$nord_user nord_pass=$nord_pass protonvpn_user=$protonvpn_user protonvpn_pass=$protonvpn_pass \
     ssh_user=$ANSIBLE_SSH_USER ansible_sudo_pass=$ANSIBLE_SUDO_PASS database_password=$database_password \
     RUCKUS_BOT_TOKEN=$RUCKUS_BOT_TOKEN "
