@@ -8,13 +8,13 @@ services:
     ports:
       - 8112:8112 ##qbittorrent UI
     environment:
-      - VPN_SERVICE_PROVIDER=protonvpn
-      - OPENVPN_USER=${protonvpn_user}
-      - OPENVPN_PASSWORD=${protonvpn_pass}
-      - VPN_TYPE=openvpn
-      - PORT_FORWARD_ONLY=on
-      - VPN_PORT_FORWARDING=on
-      - VPN_PORT_FORWARDING_PROVIDER=protonvpn
+      VPN_SERVICE_PROVIDER: protonvpn
+      OPENVPN_USER: ${protonvpn_user}
+      OPENVPN_PASSWORD: ${protonvpn_pass}
+      VPN_TYPE: openvpn
+      PORT_FORWARD_ONLY: on
+      VPN_PORT_FORWARDING: on
+      VPN_PORT_FORWARDING_PROVIDER: protonvpn
     volumes:
       - ${container_volumes_location}/gluetun:/tmp/gluetun
       - /mnt/plex_smb_share:/downloads:/downloads
@@ -26,10 +26,12 @@ services:
       - protonvpn
     restart: unless-stopped
     environment:
-      - PUID=0
-      - PGID=0
-      - TZ=Etc/UTC
-      - WEBUI_PORT=8112
+      PUID: 0
+      PGID: 0
+      TZ: Etc/UTC
+      WEBUI_PORT: 8112
+      QBITTORRENT_USERNAME: brajam
+      QBITTORRENT_PASSWORD: "${ADMIN_PASS}"
     env_file:
       - ${container_volumes_location}/gluetun/.env
     volumes:
@@ -58,6 +60,7 @@ services:
       DISCORD_WEBHOOK_URL: "${discord_webhook_media}"
       PUID: "1000"
       PGID: "1000"
+      TZ: Etc/UTC
     volumes:
       - ${container_volumes_location}/gluetun:/mnt/gluetun
       - ${container_volumes_location}/qbit-monitor:/app/state
