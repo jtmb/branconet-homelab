@@ -43,6 +43,7 @@ services:
       - qbittorrent
     image: docker.io/jtmb92/qbit-monitor
     environment:
+      QBITTORRENT_STATUS_NOTIFICATION: "on"
       QBITTORRENT_HOST: "http://protonvpn:8112"
       QBITTORRENT_USERNAME: "brajam"
       QBITTORRENT_PASSWORD: "${ADMIN_PASS}"
@@ -53,10 +54,10 @@ services:
       CHECK_INTERVAL_TORRENT_MONITORING: 10s
       NEW_DOWNLOAD_NOTIFICATION: "on"
       METADATA_STUCK_NOTIFICATION: "on"
-      DOWNLOAD_COMPLETE_NOTIFICATION: "on"
-      DISCORD_WEBHOOK_URL: "${discord_webhook_media}" 
+      DOWNLOAD_COMPLETE_NOTIFICATION: "off"
+      DISCORD_WEBHOOK_URL: "${discord_webhook_media}"
       PUID: "1000"
       PGID: "1000"
     volumes:
-      -  ${container_volumes_location}/gluetun:/mnt/gluetun
-      -  ${container_volumes_location}/qbit-monitor:/app/state
+      - ${container_volumes_location}/gluetun:/mnt/gluetun
+      - ${container_volumes_location}/qbit-monitor:/app/state
