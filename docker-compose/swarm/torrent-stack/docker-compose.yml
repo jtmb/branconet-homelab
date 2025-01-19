@@ -32,8 +32,6 @@ services:
       WEBUI_PORT: 8112
       QBITTORRENT_USERNAME: brajam
       QBITTORRENT_PASSWORD: "${ADMIN_PASS}"
-    env_file:
-      - ${container_volumes_location}/gluetun/.env
     volumes:
       - ${container_volumes_location}/deluge/config:/config
       - /mnt/plex_smb_share:/downloads:/downloads
