@@ -51,10 +51,12 @@ alt_container_permission_paths:
     - '{{container_volumes_location}}/overseerr/config'
     - '{{container_volumes_location}}/spiderfoot_data'
     - '{{container_volumes_location}}/jackett'
+    - '{{container_volumes_location}}/nzbget'
     - '{{nfs_volumes_location}}/sonarr/config'
     - '{{nfs_volumes_location}}/radarr'
     - '{{nfs_volumes_location}}/ytdl/tmp_dir'
-
+    - '{{nfs_volumes_location}}/xteve/config'
+    - '{{nfs_volumes_location}}/xteve/root/.xteve'
 
 www_container_permission_paths:
     - '{{container_volumes_location}}/wordpress/wp-app'
@@ -106,6 +108,8 @@ swarm_scale:
     - docker service scale bot_ruckus=1
     - docker service scale osint_spiderfoot=1
     - docker service scale media_tautulli=1
+    - docker service scale media_nzbget=1
+    - docker service scale media_xteve=1
     - docker service scale monitoring_ez-backups-glusterfs=1
     - docker service scale monitoring_ez-backups-nfs=1
     - docker service scale monitoring_ez-backups-plex=1

@@ -9,8 +9,8 @@ services:
       - 7878:7878
     volumes:
       - ${nfs_volumes_location}/radarr:/config
-      - /mnt/plex_smb_share:/media
-      - /mnt/plex_smb_share:/downloads:/downloads
+      - /mnt/plex_smb_share/movies:/media/movies
+      - /mnt/plex_smb_share/downloads:/downloads
     environment:
       - PUID=1000
       - PGID=1000
@@ -126,8 +126,8 @@ services:
       - 8989:8989
     volumes:
       - ${nfs_volumes_location}/sonarr/config:/config
-      - /mnt/plex_smb_share:/media
-      - /mnt/plex_smb_share:/downloads:/data
+      - /mnt/plex_smb_share/tv:/media/tv
+      - /mnt/plex_smb_share/downloads:/downloads
     environment:
       - PUID=1000
       - PGID=1000
@@ -255,6 +255,23 @@ services:
         # - "traefik.http.routers.tautulli.tls.domains[0].sans=tautulli.${lan_domain_name}"
     ports:
       - 9119:8181
+  xteve:
+    image: alturismo/xteve
+    container_name: xteve
+    hostname: xteve
+    restart: unless-stopped
+    networks:
+      - container-swarm-network
+    ports:
+      - "34400:34400"
+      - "1901:1900" #1900 used by Plex
+    environment:
+      TZ: ${TZ}
+    volumes:
+      - ${nfs_volumes_location}/xteve:/root/.xteve:rw
+      - ${nfs_volumes_location}/xteve/config:/config:rw
+      - /dev/shm:/tmp/xteve
+      - /mnt/plex_smb_share/iptv:/iptv
 networks:
   container-swarm-network:
     external: true

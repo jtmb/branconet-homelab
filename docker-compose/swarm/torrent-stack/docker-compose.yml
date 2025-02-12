@@ -34,7 +34,7 @@ services:
       QBITTORRENT_PASSWORD: "${ADMIN_PASS}"
     volumes:
       - ${container_volumes_location}/deluge/config:/config
-      - /mnt/plex_smb_share:/downloads:/downloads
+      - /mnt/plex_smb_share/downloads:/downloads
     image: lscr.io/linuxserver/qbittorrent:latest
 
   qbit-monitor:
