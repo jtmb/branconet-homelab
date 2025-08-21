@@ -1,35 +1,23 @@
-- name: Ensure the custom.list file does not exist
-  tags: dns
-  file:
-    path: "{{item}}"
-    state: absent
-  with_items: 
-    - "{{ container_volumes_location }}/pihole/custom.list"
-    - "{{ nfs_volumes_location }}/pihole/custom.list"
-  when: inventory_hostname == 'master_node' or inventory_hostname == 'mini_linux'
+- name: Build valid node list
+  set_fact:
+    all_nodes: "{{ (groups['master_nodes'] + groups['worker_nodes']) | select('match', '^[a-zA-Z0-9_.-]+$') | list }}"
 
-- name: Ensure the custom.list file is created
-  tags: dns
-  file:
-    path: "{{item}}"
-    state: touch
-  with_items: 
-    - "{{ container_volumes_location }}/pihole/custom.list"
-    - "{{ nfs_volumes_location }}/pihole/custom.list"
-  when: inventory_hostname == 'master_node'  
+- name: Build all IP/hostname combinations for round-robin DNS
+  set_fact:
+    rr_dns_list: "{{ all_nodes | product(dns_list) | list }}"
 
-- name: Add && enforce PiHole DNS Entries for primary swarm dns resolver
-  tags: dns
-  lineinfile: 
-    dest: "{{container_volumes_location}}/pihole/custom.list"
-    line: "{{ item.ip }} {{ item.domain }}"
-  with_items: "{{dns_list}}"
-  when: "'master_nodes' in group_names or 'worker_nodes' in group_names"
+- name: Render rr_dns_list to hosts array format (multi-line, all entries)
+  set_fact:
+    dns_hosts_array: |
+      [
+      {% for pair in rr_dns_list %}
+        "{{ hostvars[pair[0]].ansible_default_ipv4.address }} {{ pair[1].domain | regex_replace(',','') }}"{% if not loop.last %},{% endif %}
+      {% endfor %}
+      ]
 
-- name: Add && enforce PiHole DNS Entries for primary secondary dns resolver
-  tags: dns
-  lineinfile: 
-    dest: "{{nfs_volumes_location}}/pihole/custom.list"
-    line: "{{ item.ip }} {{ item.domain }}"
-  with_items: "{{dns_list}}"
-  when: "'master_nodes' in group_names or 'worker_nodes' in group_names"
+- name: Replace hosts array in config file (multi-line block)
+  replace:
+    path: "{{ container_volumes_location }}/pihole/pihole.toml"
+    regexp: 'hosts\s*=\s*\[[^\]]*\]'
+    replace: 'hosts = {{ dns_hosts_array }}'
+    backup: yes
