@@ -78,7 +78,7 @@ services:
         # constraints:
         #   - node.hostname==masternode
   bazarr:
-    image: hotio/bazarr:latest
+    image: ghcr.io/hotio/bazarr
     networks:
       - container-swarm-network
     restart: unless-stopped
@@ -88,7 +88,6 @@ services:
       - ${container_volumes_location}/bazarr/config:/config
       - /mnt/plex_smb_share/tv:/tv
       - /mnt/plex_smb_share/movies:/movies
-      - /mnt/plex_smb_share/extras:/extras
     environment:
       - PUID=1000
       - PGID=1000

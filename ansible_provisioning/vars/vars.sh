@@ -23,11 +23,11 @@ database_password=$(vault kv get -field=value kv/database_password)
 
 
 # INSTANCE IP's
-master_node=192.168.0.5
-worker_node_1=192.168.0.9
-worker_node_2=192.168.0.8
+master_node=192.168.0.4
+worker_node_1=192.168.0.6
+worker_node_2=192.168.0.5
 mini_linux=192.168.0.4
-truenas=192.168.0.3
+truenas=192.168.0.7
 
 # DNS
 cf_key=$(vault kv get -field=key kv/cf_key)
