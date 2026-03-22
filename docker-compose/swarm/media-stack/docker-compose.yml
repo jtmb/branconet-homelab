@@ -223,6 +223,18 @@ services:
         max_replicas_per_node: 1
         # constraints:
         #   - node.hostname==masternode
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    restart: unless-stopped
+    networks:
+      - container-swarm-network
+    ports:
+      - 8191:8191
+    environment:
+      - LOG_LEVEL=info
+      - TZ=America/New_York
+      
   tautulli:
     image: ghcr.io/tautulli/tautulli
     restart: unless-stopped
@@ -234,6 +246,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Toronto
+
     deploy:
       labels:
         #homepage

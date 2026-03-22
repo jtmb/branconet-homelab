@@ -23,7 +23,7 @@
 
 - name: DEPLOY Torrent stack 
   vars:
-    env_file: env discord_webhook_media={{discord_webhook_media}} nord_user={{nord_user}} nord_pass={{nord_pass}} protonvpn_pass={{protonvpn_pass}} protonvpn_user={{protonvpn_user}} cf_key={{cf_key}} email={{email}} cf_zone_id={{cf_zone_id}} discord_webhook={{discord_webhook}} lan_domain_name={{lan_domain_name}} domain_name={{domain_name}} ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} nfs_volumes_location={{nfs_volumes_location}} container_volumes_location={{container_volumes_location}}
+    env_file: env discord_webhook_media={{discord_webhook_media}} proton_wg_private_key={{proton_wg_private_key}} cf_key={{cf_key}} email={{email}} cf_zone_id={{cf_zone_id}} discord_webhook={{discord_webhook}} lan_domain_name={{lan_domain_name}} domain_name={{domain_name}} ADMIN_PASS={{ADMIN_PASS.msg}} master_node={{master_node}} worker_node_1={{worker_node_1}} worker_node_2={{worker_node_2}} nfs_volumes_location={{nfs_volumes_location}} container_volumes_location={{container_volumes_location}}
   shell: "{{env_file}} docker compose -f /tmp/torrent-stack/docker-compose.yml up -d" 
   tags: [docker-only,containers,torrent-stack]
   when: inventory_hostname == 'master_node'

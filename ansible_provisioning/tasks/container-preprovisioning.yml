@@ -37,27 +37,27 @@
   copy: remote_src=False src={{homedir}}/docker-compose/swarm/monitoring-stack/loki/loki-config.yml dest={{container_volumes_location}}/loki/config
   tags: containers
   
-- name: Copy MC plugins + OPs
-  tags:  mc
-  copy:
-    src: '{{item}}'
-    dest: "{{nfs_volumes_location}}/mc-server/"
-  with_items: 
-    - "{{homedir}}/docker-compose/swarm/game-servers/minecraft/plugins"
-    - "{{homedir}}/docker-compose/swarm/game-servers/minecraft/ops.json"
-  tags: containers
+# - name: Copy MC plugins + OPs
+#   tags:  mc
+#   copy:
+#     src: '{{item}}'
+#     dest: "{{nfs_volumes_location}}/mc-server/"
+#   with_items: 
+#     - "{{homedir}}/docker-compose/swarm/game-servers/minecraft/plugins"
+#     - "{{homedir}}/docker-compose/swarm/game-servers/minecraft/ops.json"
+#   tags: containers
 
-- name: Copy EssentialsX config
-  tags:  mc
-  copy: remote_src=False src={{homedir}}/docker-compose/swarm/game-servers/minecraft/plugins/configs/essentials-x/config.yml dest={{nfs_volumes_location}}/mc-server/plugins/Essentials/config.yml
-  tags: containers
+# - name: Copy EssentialsX config
+#   tags:  mc
+#   copy: remote_src=False src={{homedir}}/docker-compose/swarm/game-servers/minecraft/plugins/configs/essentials-x/config.yml dest={{nfs_volumes_location}}/mc-server/plugins/Essentials/config.yml
+#   tags: containers
 
-- name: Copy a BlueMap files from repo to the remote machine (Minecraft)
-  tags: mc
-  copy:
-    src: "{{homedir}}/docker-compose/swarm/game-servers/minecraft/plugins/configs/BlueMap"
-    dest: "{{nfs_volumes_location}}/mc-server/plugins"
-  tags: containers
+# - name: Copy a BlueMap files from repo to the remote machine (Minecraft)
+#   tags: mc
+#   copy:
+#     src: "{{homedir}}/docker-compose/swarm/game-servers/minecraft/plugins/configs/BlueMap"
+#     dest: "{{nfs_volumes_location}}/mc-server/plugins"
+#   tags: containers
 
 
 - name: Change file ownership, group and permissions for containers that need www-data
