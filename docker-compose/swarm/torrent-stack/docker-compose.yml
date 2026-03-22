@@ -2,16 +2,16 @@ version: '3.8'
 services:
   protonvpn:
     container_name: GlueTun-proton
-    image: qmcgaw/gluetun
+    image: qmcgaw/gluetun:latest
     cap_add:
       - NET_ADMIN
     ports:
       - 8112:8112 ##qbittorrent UI
     environment:
       VPN_SERVICE_PROVIDER: protonvpn
-      OPENVPN_USER: ${protonvpn_user}
-      OPENVPN_PASSWORD: ${protonvpn_pass}
-      VPN_TYPE: openvpn
+      VPN_TYPE: wireguard
+      WIREGUARD_PRIVATE_KEY: "${proton_wg_private_key}"
+      SERVER_COUNTRIES: Canada
       PORT_FORWARD_ONLY: on
       VPN_PORT_FORWARDING: on
       VPN_PORT_FORWARDING_PROVIDER: protonvpn
@@ -46,7 +46,7 @@ services:
       QBITTORRENT_STATUS_NOTIFICATION: "on"
       QBITTORRENT_HOST: "http://protonvpn:8112"
       QBITTORRENT_USERNAME: "brajam"
-      QBITTORRENT_PASSWORD: "${ADMIN_PASS}"
+      QBITTORRENT_PASSWORD: "RunStr8@1!"
       PORT_FORWARDING: "on"
       CHECK_INTERVAL_FORWARDED_PORT: 1h
       PORT_FORWARD_FILE: /mnt/gluetun/forwarded_port

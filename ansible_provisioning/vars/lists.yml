@@ -49,7 +49,7 @@ alt_container_permission_paths:
     - '{{container_volumes_location}}/mc-server/'
     - '{{container_volumes_location}}/bazarr/config'
     - '{{container_volumes_location}}/overseerr/config'
-    - '{{container_volumes_location}}/spiderfoot_data'
+    # - '{{container_volumes_location}}/spiderfoot_data'
     - '{{container_volumes_location}}/jackett'
     # - '{{container_volumes_location}}/nzbget'
     - '{{nfs_volumes_location}}/sonarr/config'
@@ -88,7 +88,7 @@ stack_deploy:
     - "{{env_file}} docker stack deploy -c /tmp/swarm/monitoring-stack/docker-compose.yml monitoring"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/vault-warden/docker-compose.yml vault"
     - "{{env_file}} docker stack deploy -c /tmp/swarm/homepage/docker-compose.yml ws" 
-    - "{{env_file}} docker stack deploy -c /tmp/swarm/OSINT/docker-compose.yml osint"
+    # - "{{env_file}} docker stack deploy -c /tmp/swarm/OSINT/docker-compose.yml osint"
     # - "{{env_file}} docker stack deploy -c /tmp/swarm/bookstack/docker-compose.yml bookstack"
     # - "{{env_file}} docker stack deploy -c /tmp/swarm/kanboard/docker-compose.yml tooling" 
     # - "{{env_file}} docker stack deploy -c /tmp/swarm/next-cloud/docker-compose.yml nextcloud"
@@ -102,6 +102,7 @@ swarm_scale:
     - docker service scale media_overseerr=1
     - docker service scale media_jackett=1
     - docker service scale media_sonarr=1
+    - docker service scale media_flaresolverr=1
     - docker service scale wordpress_wp-app=1
     - docker service scale wordpress_db=1
     - docker service scale wordpress_redis-db=1
@@ -111,7 +112,7 @@ swarm_scale:
     - docker service scale proxy_traefik=1
     - docker service scale proxy_whoami=1
     - docker service scale bot_ruckus=1
-    - docker service scale osint_spiderfoot=1
+    # - docker service scale osint_spiderfoot=1
     - docker service scale media_tautulli=1
     # - docker service scale media_nzbget=1
     - docker service scale media_xteve=1
@@ -183,7 +184,7 @@ dns_list:
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }},", domain: "kanboard.{{ lan_domain_name }}," }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }},", domain: "api.{{ lan_domain_name }}," }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }},", domain: "maintainerr.{{ lan_domain_name }}," }
-    - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }},", domain: "spiderfoot.{{ lan_domain_name }}," }
+    # - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }},", domain: "spiderfoot.{{ lan_domain_name }}," }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }},", domain: "node.{{ lan_domain_name }}," }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }},", domain: "tor.{{ lan_domain_name }}," }
     - { ip: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }},", domain: "plex.{{ lan_domain_name }}," }
