@@ -223,6 +223,23 @@ services:
         max_replicas_per_node: 1
         # constraints:
         #   - node.hostname==masternode
+
+  unpackerr:
+    image: golift/unpackerr
+    container_name: unpackerr
+    restart: unless-stopped
+    networks:
+      - container-swarm-network
+    volumes:
+      - /mnt/plex_smb_share/downloads:/downloads
+      - ${container_volumes_location}/unpackerr/config:/config
+    environment:
+      - UN_SONARR_0_URL=http://sonarr:8989
+      - UN_SONARR_0_API_KEY=${sonarr_api_key}
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
@@ -267,23 +284,7 @@ services:
         # - "traefik.http.routers.tautulli.tls.domains[0].sans=tautulli.${lan_domain_name}"
     ports:
       - 9119:8181
-  xteve:
-    image: alturismo/xteve
-    container_name: xteve
-    hostname: xteve
-    restart: unless-stopped
-    networks:
-      - container-swarm-network
-    ports:
-      - "34400:34400"
-      - "1901:1900" #1900 used by Plex
-    environment:
-      TZ: ${TZ}
-    volumes:
-      - ${nfs_volumes_location}/xteve:/root/.xteve:rw
-      - ${nfs_volumes_location}/xteve/config:/config:rw
-      - /dev/shm:/tmp/xteve
-      - /mnt/plex_smb_share/iptv:/iptv
+
 networks:
   container-swarm-network:
     external: true
