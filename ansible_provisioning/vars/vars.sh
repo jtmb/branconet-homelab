@@ -21,13 +21,12 @@ container_volumes_location=$(vault kv get -field=value kv/container_volumes_loca
 nfs_volumes_location=/mnt/nfs-container-volumes
 database_password=$(vault kv get -field=value kv/database_password)
 
-
 # INSTANCE IP's
 master_node=192.168.0.4
 worker_node_1=192.168.0.6
 worker_node_2=192.168.0.5
 mini_linux=192.168.0.4
-truenas=192.168.0.7
+truenas=192.168.0.8
 
 # DNS
 cf_key=$(vault kv get -field=key kv/cf_key)
@@ -37,14 +36,10 @@ lan_domain_name=$(vault kv get -field=value kv/lan_domain_name)
 discord_webhook=$(vault kv get -field=value kv/discord_webhook)
 email=$(vault kv get -field=value kv/email)
 
-# VPN
-# nord_user=$(vault kv get -field=value kv/nord_user)
-# nord_pass=$(vault kv get -field=value kv/nord_password)
-# protonvpn_user=$(vault kv get -field=value kv/protonvpn_user)
-# protonvpn_pass=$(vault kv get -field=value kv/protonvpn_pass)
+# MEDIA
 proton_wg_private_key=$(vault kv get -field=value kv/proton_wg_private_key)
 discord_webhook_media=$(vault kv get -field=value kv/discord_webhook_media)
-
+sonarr_api_key=$(vault kv get -field=value kv/sonarr_api_key)
 
 # BOTS
 RUCKUS_BOT_TOKEN=$(vault kv get -field=value kv/ruckus_bot_token)

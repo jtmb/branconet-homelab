@@ -37,6 +37,8 @@ container_paths:
     - '{{container_volumes_location}}/bookstack/bookstack_db_data'
     - '{{nfs_volumes_location}}/tautulli/config'
     - '{{nfs_volumes_location}}/bot_ruckus/mysql_data'
+    - '{{container_volumes_location}}/unpackerr'
+    - '{{container_volumes_location}}/unpackerr/config'
     # - '{{container_volumes_location}}/next_cloud/data'
         
 alt_container_permission_paths:
@@ -103,6 +105,7 @@ swarm_scale:
     - docker service scale media_jackett=1
     - docker service scale media_sonarr=1
     - docker service scale media_flaresolverr=1
+    - docker service scale media_unpackerr=1
     - docker service scale wordpress_wp-app=1
     - docker service scale wordpress_db=1
     - docker service scale wordpress_redis-db=1
@@ -114,8 +117,6 @@ swarm_scale:
     - docker service scale bot_ruckus=1
     # - docker service scale osint_spiderfoot=1
     - docker service scale media_tautulli=1
-    # - docker service scale media_nzbget=1
-    - docker service scale media_xteve=1
     - docker service scale monitoring_ez-backups-glusterfs=1
     - docker service scale monitoring_ez-backups-nfs=1
     - docker service scale monitoring_ez-backups-plex=1
