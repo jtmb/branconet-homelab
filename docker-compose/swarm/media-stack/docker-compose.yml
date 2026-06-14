@@ -236,6 +236,8 @@ services:
     environment:
       - UN_SONARR_0_URL=http://sonarr:8989
       - UN_SONARR_0_API_KEY=${sonarr_api_key}
+      - UN_RADARR_0_URL=http://radarr:7878
+      - UN_RADARR_0_API_KEY=${radarr_api_key}
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York

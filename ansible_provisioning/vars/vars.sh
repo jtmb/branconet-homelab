@@ -40,6 +40,7 @@ email=$(vault kv get -field=value kv/email)
 proton_wg_private_key=$(vault kv get -field=value kv/proton_wg_private_key)
 discord_webhook_media=$(vault kv get -field=value kv/discord_webhook_media)
 sonarr_api_key=$(vault kv get -field=value kv/sonarr_api_key)
+radarr_api_key=$(vault kv get -field=value kv/radarr_api_key)
 
 # BOTS
 RUCKUS_BOT_TOKEN=$(vault kv get -field=value kv/ruckus_bot_token)
