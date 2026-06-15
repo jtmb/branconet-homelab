@@ -1,22 +1,71 @@
-# Plex Media Samba PV + PVC (CSI SMB driver)
-# Mounts TrueNAS plex_smb_share directly via smb.csi.k8s.io
-# Subdirectories (tv/, movies/, pvr/) accessed via subPath in deployment
+# Plex Media Samba PVs + PVCs (CSI SMB driver)
+# 3 separate PVs for tv, movies, pvr — each mounts a subdirectory directly
+# This avoids the CSI SMB subPath bug (separate mounts = no subPath needed)
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: plex-samba-pv-v2
+  name: plex-tv-pv
 spec:
   capacity:
     storage: 5Gi
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - noserverino
+    - cache=none
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: plex-samba-share-v2
+    volumeHandle: plex-tv
     volumeAttributes:
-      source: "//192.168.0.8/plex_smb_share"
+      source: "//192.168.0.8/plex_smb_share/tv"
+      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: plex
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-movies-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - noserverino
+    - cache=none
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: plex-movies
+    volumeAttributes:
+      source: "//192.168.0.8/plex_smb_share/movies"
+      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: plex
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-pvr-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - noserverino
+    - cache=none
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: plex-pvr
+    volumeAttributes:
+      source: "//192.168.0.8/plex_smb_share/pvr"
       options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
     nodeStageSecretRef:
       name: smb-creds
@@ -25,7 +74,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: plex-samba-pvc
+  name: plex-tv-pvc
   namespace: plex
 spec:
   accessModes:
@@ -33,5 +82,33 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  volumeName: plex-samba-pv-v2
+  volumeName: plex-tv-pv
+  storageClassName: ""
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-movies-pvc
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: plex-movies-pv
+  storageClassName: ""
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-pvr-pvc
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: plex-pvr-pv
   storageClassName: ""
