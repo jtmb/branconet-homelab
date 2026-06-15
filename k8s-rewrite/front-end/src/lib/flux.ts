@@ -1,6 +1,14 @@
 import { kubectlJSON } from "./k8s";
 import { encryptWithKey, decrypt } from "../../lib/encryption";
 import prisma from "./db";
+import { execFile } from "child_process";
+import { promisify } from "util";
+import { existsSync } from "fs";
+import { homedir } from "os";
+
+const execFileAsync = promisify(execFile);
+const KUBECONFIG_PATH = `${homedir()}/.kube/config`;
+const HAS_LOCAL_KUBECTL = existsSync(KUBECONFIG_PATH);
 
 const FLUX_NAMESPACE = "flux-system";
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "branconet-k8s-manager-key-2026";
@@ -173,17 +181,16 @@ export async function getFluxStatus(): Promise<FluxRepoStatus[]> {
 export async function deleteGitRepo(
   name: string,
 ): Promise<{ success: boolean; error?: string }> {
-  // Delete Kustomization first
-  await kubectlJSON("u1", buildKubectlCmd(`delete kustomization ${name} --ignore-not-found`));
-
-  // Delete GitRepository
-  const result = await kubectlJSON("u1", buildKubectlCmd(`delete gitrepository ${name} --ignore-not-found`));
-  if (!result) {
-    return { success: false, error: "Failed to delete GitRepository" };
-  }
-
-  // Delete auth secret if it exists
-  await kubectlJSON("u1", buildKubectlCmd(`delete secret ${name}-auth --ignore-not-found`));
+  // Delete resources with --ignore-not-found (non-zero exit/non-JSON output is expected when they don't exist)
+  try {
+    await kubectlJSON("u1", buildKubectlCmd(`delete kustomization ${name} --ignore-not-found`));
+  } catch { /* not-found is expected */ }
+  try {
+    await kubectlJSON("u1", buildKubectlCmd(`delete gitrepository ${name} --ignore-not-found`));
+  } catch { /* not-found is expected */ }
+  try {
+    await kubectlJSON("u1", buildKubectlCmd(`delete secret ${name}-auth --ignore-not-found`));
+  } catch { /* not-found is expected */ }
 
   return { success: true };
 }
@@ -391,16 +398,28 @@ function toYaml(obj: any, indent = 0): string {
 }
 
 async function kubectlApplyYaml(yaml: string): Promise<boolean> {
-  // Use kubectl apply with stdin via a temporary approach: echo the YAML and pipe to kubectl
-  // Since kubectlJSON uses execFile, we go through SSH for piping
-  // Alternative: write to temp file and apply it
-  const escaped = yaml
-    .replace(/\\/g, "\\\\")
-    .replace(/"/g, '\\"')
-    .replace(/\$/g, "\\$")
-    .replace(/`/g, "\\`");
+  const fileName = `/tmp/flux-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.yaml`;
 
-  const cmd = `echo "${escaped}" | kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f -`;
+  // Prefer local kubectl if kubeconfig is available
+  if (HAS_LOCAL_KUBECTL) {
+    const { writeFile, unlink } = await import("fs/promises");
+    try {
+      await writeFile(fileName, yaml);
+      const { stdout } = await execFileAsync(
+        "kubectl",
+        ["--kubeconfig", KUBECONFIG_PATH, "apply", "-f", fileName],
+        { timeout: 15000 }
+      );
+      try { await unlink(fileName); } catch {}
+      return stdout.includes("created") || stdout.includes("configured") || stdout.includes("unchanged");
+    } catch {
+      try { await unlink(fileName); } catch {}
+      return false;
+    }
+  }
+
+  // Fallback: SSH-based apply (writes YAML via heredoc, applies, cleans up)
+  const cmd = `cat > ${fileName} << 'FLUXEOF'\n${yaml}\nFLUXEOF\nkubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f ${fileName} 2>&1\nrm -f ${fileName}`;
   const { sshExec } = await import("./k8s");
   const result = await sshExec("u1", cmd, 15000);
 

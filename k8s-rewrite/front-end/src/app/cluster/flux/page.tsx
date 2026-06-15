@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { GitBranch, Loader2, Plus, RefreshCw, Trash2, XCircle } from "lucide-react";
+import { GitBranch, Loader2, Plus, RefreshCw, Trash2, XCircle, Globe, Key, Lock, X, ChevronDown } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 
 interface RepoData {
@@ -172,7 +172,7 @@ export default function FluxPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Add Repo Form */}
+        {/* Add Repo Button */}
         {!adding ? (
           <button
             onClick={() => setAdding(true)}
@@ -181,100 +181,172 @@ export default function FluxPage() {
             <Plus className="w-4 h-4" />
             Add Repository
           </button>
-        ) : (
-          <div className="glass-card p-4 rounded-xl mb-6 space-y-3">
-            {addError && (
-              <div className="bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2 text-sm text-red-400">
-                {addError}
-              </div>
-            )}
+        ) : null}
 
-            <div className="flex items-end gap-3 flex-wrap">
-              <div>
-                <label className="text-xs text-zinc-500 mb-1 block">Name</label>
-                <input
-                  value={form.name}
-                  onChange={e => setForm({ ...form, name: e.target.value })}
-                  placeholder="my-app"
-                  className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-36"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-zinc-500 mb-1 block">Git URL</label>
-                <input
-                  value={form.url}
-                  onChange={e => setForm({ ...form, url: e.target.value })}
-                  placeholder="https://github.com/user/repo.git"
-                  className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-72"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-zinc-500 mb-1 block">Branch</label>
-                <input
-                  value={form.branch}
-                  onChange={e => setForm({ ...form, branch: e.target.value })}
-                  className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-28"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-zinc-500 mb-1 block">Path</label>
-                <input
-                  value={form.path}
-                  onChange={e => setForm({ ...form, path: e.target.value })}
-                  className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-28"
-                />
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div>
-                <label className="text-xs text-zinc-500 mb-1 block">Auth</label>
-                <div className="flex gap-0 rounded-lg overflow-hidden border border-zinc-700">
-                  {(["none", "ssh", "https"] as const).map((method) => (
-                    <button
-                      key={method}
-                      onClick={() => setForm({ ...form, authMethod: method, authData: "" })}
-                      className={`px-3 py-2 text-xs font-medium transition-colors ${
-                        form.authMethod === method
-                          ? "bg-indigo-600 text-white"
-                          : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
-                      }`}
-                    >
-                      {method === "none" ? "Public" : method === "ssh" ? "SSH" : "HTTPS"}
-                    </button>
-                  ))}
+        {/* Add Repo Modal */}
+        {adding && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="bg-zinc-900 border border-zinc-700/60 rounded-2xl w-full max-w-lg mx-4 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+              {/* Modal header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                    <GitBranch className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-base font-semibold text-zinc-100">Add Git Repository</h2>
+                    <p className="text-xs text-zinc-500">FluxCD will auto-deploy resources at the given path</p>
+                  </div>
                 </div>
+                <button
+                  onClick={() => { setAdding(false); setAddError(null); }}
+                  className="p-1.5 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
 
-              {form.authMethod !== "none" && (
-                <div className="flex-1">
-                  <label className="text-xs text-zinc-500 mb-1 block">
-                    {form.authMethod === "ssh" ? "SSH Deploy Key" : "Token"}
+              {/* Modal body */}
+              <div className="px-6 py-5 space-y-5">
+                {addError && (
+                  <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                    <XCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-red-400">{addError}</p>
+                  </div>
+                )}
+
+                {/* Name + URL row */}
+                <div className="grid grid-cols-5 gap-3">
+                  <div className="col-span-2">
+                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                      Name
+                    </label>
+                    <input
+                      value={form.name}
+                      onChange={e => setForm({ ...form, name: e.target.value })}
+                      placeholder="my-app"
+                      autoFocus
+                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
+                    />
+                  </div>
+                  <div className="col-span-3">
+                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                      Git URL
+                    </label>
+                    <input
+                      value={form.url}
+                      onChange={e => setForm({ ...form, url: e.target.value })}
+                      placeholder="https://github.com/user/repo.git"
+                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Branch + Path row */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                      Branch
+                    </label>
+                    <div className="relative">
+                      <input
+                        value={form.branch}
+                        onChange={e => setForm({ ...form, branch: e.target.value })}
+                        className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg pl-3 pr-8 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
+                      />
+                      <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-600 pointer-events-none" />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                      Kustomize Path
+                    </label>
+                    <input
+                      value={form.path}
+                      onChange={e => setForm({ ...form, path: e.target.value })}
+                      placeholder="./"
+                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
+                    />
+                  </div>
+                </div>
+
+                {/* Auth section */}
+                <div>
+                  <label className="block text-xs font-medium text-zinc-400 mb-2">
+                    Authentication
                   </label>
-                  <input
-                    value={form.authData}
-                    onChange={e => setForm({ ...form, authData: e.target.value })}
-                    placeholder={form.authMethod === "ssh" ? "Paste private key..." : "ghp_xxxxxxxxxxxx"}
-                    className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-full"
-                  />
+                  <div className="grid grid-cols-3 gap-2">
+                    {([
+                      { key: "none" as const, icon: Globe, label: "Public", desc: "No auth" },
+                      { key: "ssh" as const, icon: Key, label: "SSH Key", desc: "Deploy key" },
+                      { key: "https" as const, icon: Lock, label: "HTTPS", desc: "Token" },
+                    ]).map(({ key, icon: Icon, label, desc }) => (
+                      <button
+                        key={key}
+                        onClick={() => setForm({ ...form, authMethod: key, authData: "" })}
+                        className={`flex items-center gap-2.5 p-3 rounded-lg border text-left transition-all ${
+                          form.authMethod === key
+                            ? "border-indigo-500/50 bg-indigo-500/10 text-indigo-300"
+                            : "border-zinc-700/50 bg-zinc-800/30 text-zinc-500 hover:border-zinc-600/50 hover:text-zinc-400"
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                          form.authMethod === key ? "bg-indigo-500/20" : "bg-zinc-700/30"
+                        }`}>
+                          <Icon className={`w-4 h-4`} />
+                        </div>
+                        <div>
+                          <div className="text-sm font-medium">{label}</div>
+                          <div className="text-[10px] opacity-70">{desc}</div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              )}
-            </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={addRepo}
-                disabled={!form.name || !form.url}
-                className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors disabled:opacity-50"
-              >
-                Add
-              </button>
-              <button
-                onClick={() => { setAdding(false); setAddError(null); }}
-                className="px-4 py-2 rounded-lg border border-zinc-700 text-zinc-400 hover:text-zinc-200 text-sm transition-colors"
-              >
-                Cancel
-              </button>
+                {/* Auth credential input */}
+                {form.authMethod !== "none" && (
+                  <div>
+                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                      {form.authMethod === "ssh" ? "SSH Deploy Key" : "Personal Access Token"}
+                    </label>
+                    <textarea
+                      value={form.authData}
+                      onChange={e => setForm({ ...form, authData: e.target.value })}
+                      placeholder={
+                        form.authMethod === "ssh"
+                          ? "-----BEGIN OPENSSH PRIVATE KEY-----\n...\n-----END OPENSSH PRIVATE KEY-----"
+                          : "ghp_xxxxxxxxxxxxxxxxxxxx"
+                      }
+                      rows={form.authMethod === "ssh" ? 4 : 1}
+                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors resize-none"
+                    />
+                    <p className="text-[10px] text-zinc-600 mt-1.5">
+                      {form.authMethod === "ssh"
+                        ? "Paste the entire private key. Stored encrypted at rest."
+                        : "Create a fine-grained token with read-only repo access."}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Modal footer */}
+              <div className="flex items-center justify-end gap-2.5 px-6 py-4 border-t border-zinc-800 bg-zinc-900/50 rounded-b-2xl">
+                <button
+                  onClick={() => { setAdding(false); setAddError(null); }}
+                  className="px-4 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={addRepo}
+                  disabled={!form.name || !form.url}
+                  className="flex items-center gap-2 px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <GitBranch className="w-4 h-4" />
+                  Add Repository
+                </button>
+              </div>
             </div>
           </div>
         )}
