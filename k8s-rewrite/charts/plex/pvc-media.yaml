@@ -17,7 +17,7 @@ spec:
     volumeHandle: plex-samba-share
     volumeAttributes:
       source: "//192.168.0.8/plex_smb_share"
-      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755"
+      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
     nodeStageSecretRef:
       name: smb-creds
       namespace: plex
