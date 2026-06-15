@@ -1,0 +1,106 @@
+# Longhorn Role Tasks
+# Installs Longhorn distributed block storage (CSI-based, replicated across nodes)
+#
+# Prerequisites: open-iscsi on ALL nodes (handled by site.yml's prereq play)
+# After this role:
+#   - Longhorn manager, engine, CSI driver, and UI are running
+#   - longhorn StorageClass available for PVCs
+#   - Pods get branconet.io/type: system label
+
+---
+# =============================================================================
+# TASK 1: Install iscsi packages on master (redundant safety, prereq play handles workers)
+# =============================================================================
+- name: Install open-iscsi and support packages on master
+  ansible.builtin.apt:
+    name:
+      - open-iscsi
+      - jq
+      - nfs-common
+    state: present
+    update_cache: true
+
+- name: Enable and start iscsid on master
+  ansible.builtin.service:
+    name: iscsid
+    state: started
+    enabled: true
+
+# =============================================================================
+# TASK 2: Deploy Longhorn via official manifest (master only)
+# =============================================================================
+- name: Deploy Longhorn manifest
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf apply \
+      -f https://raw.githubusercontent.com/longhorn/longhorn/{{ longhorn_version }}/deploy/longhorn.yaml 2>&1
+  register: lh_apply
+  changed_when: "'created' in lh_apply.stdout or 'configured' in lh_apply.stdout or 'unchanged' in lh_apply.stdout"
+  failed_when: "lh_apply.rc != 0"
+
+- name: Display Longhorn apply output
+  ansible.builtin.debug:
+    msg: "Longhorn apply: {{ lh_apply.stdout_lines[:20] | default(lh_apply.stdout) }}"
+
+- name: Wait for longhorn-system namespace
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf get ns longhorn-system -o name 2>/dev/null
+  register: lh_ns
+  until: lh_ns.stdout == "namespace/longhorn-system"
+  retries: 20
+  delay: 5
+  changed_when: false
+
+# =============================================================================
+# TASK 3: Wait for manager deployment AND pods to be ready (master only)
+# =============================================================================
+- name: Wait for Longhorn manager daemonset
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf \
+      get daemonset longhorn-manager -n longhorn-system \
+      -o jsonpath='{.status.numberAvailable}' 2>/dev/null || echo "0"
+  register: lh_manager_ready
+  until: lh_manager_ready.stdout | int > 0
+  retries: 60
+  delay: 10
+  changed_when: false
+
+- name: Label Longhorn system pods
+  ansible.builtin.shell: |
+    KUBECONFIG=/etc/kubernetes/admin.conf
+    # Label all deployments and daemonsets in longhorn-system
+    for deploy in $(kubectl get deploy -n longhorn-system -o name 2>/dev/null); do
+      kubectl patch "$deploy" -n longhorn-system --type=merge \
+        -p '{"spec":{"template":{"metadata":{"labels":{"branconet.io/type":"system"}}}}}' 2>/dev/null || true
+    done
+    for ds in $(kubectl get daemonset -n longhorn-system -o name 2>/dev/null); do
+      kubectl patch "$ds" -n longhorn-system --type=merge \
+        -p '{"spec":{"template":{"metadata":{"labels":{"branconet.io/type":"system"}}}}}' 2>/dev/null || true
+    done
+    echo "done"
+  register: lh_labels
+  changed_when: true
+
+# =============================================================================
+# TASK 4: Verify Longhorn pods are running (master only)
+# =============================================================================
+- name: Verify Longhorn core pods
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf get pods -n longhorn-system --no-headers 2>/dev/null | grep -v Running | grep -v Completed | wc -l
+  register: lh_not_running
+  until: lh_not_running.stdout == "0"
+  retries: 30
+  delay: 10
+  changed_when: false
+
+- name: Display Longhorn pod status
+  ansible.builtin.command: kubectl get pods -n longhorn-system
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: lh_status
+  changed_when: false
+
+- name: Print Longhorn pod summary
+  ansible.builtin.debug:
+    msg: |
+      Longhorn installed — pod status:
+      {{ lh_status.stdout }}

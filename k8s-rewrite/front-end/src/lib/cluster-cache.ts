@@ -13,6 +13,7 @@ interface VolumeInfo {
   status: string;
   capacity: string;
   node: string;
+  storageClass: string;
 }
 
 interface ClusterInfo {
@@ -30,6 +31,7 @@ interface CachedData {
   nodes: any[];
   pods: any[];
   volumes: VolumeInfo[];
+  storageClasses: { name: string; provisioner: string; isDefault: boolean }[];
   lastFetch: number;
 }
 
@@ -54,13 +56,14 @@ async function getMasterHost(): Promise<string | null> {
  * Runs 4 kubectl queries in parallel, then builds derived info.
  */
 async function fetchAllClusterData(host: string): Promise<CachedData | null> {
-  const [nodesResult, podsResult, pvResult, pvcResult, longhornResult] =
+  const [nodesResult, podsResult, pvResult, pvcResult, longhornResult, scResult] =
     await Promise.all([
       kubectlJSON(host, "get nodes"),
       kubectlJSON(host, "get pods -A"),
       kubectlJSON(host, "get pv"),
       kubectlJSON(host, "get pvc -A"),
       kubectlJSON(host, "get volumes.longhorn.io -A", 8000).catch(() => null),
+      kubectlJSON(host, "get sc", 5000).catch(() => null),
     ]);
 
   // If even nodes query fails, cluster is unreachable
@@ -104,6 +107,7 @@ async function fetchAllClusterData(host: string): Promise<CachedData | null> {
         status: pv.status?.phase || "Unknown",
         capacity: pv.spec?.capacity?.storage || "unknown",
         node: pv.metadata?.labels?.["kubernetes.io/hostname"] || "-",
+        storageClass: pv.spec?.storageClassName || "none",
       });
     }
   }
@@ -116,9 +120,20 @@ async function fetchAllClusterData(host: string): Promise<CachedData | null> {
         status: lv.status?.state || lv.status?.robustness || "Unknown",
         capacity: lv.spec?.size || "unknown",
         node: lv.status?.currentNodeID || "-",
+        storageClass: "longhorn",
       });
     }
   }
+
+  // ── StorageClass list ──
+  const storageClasses = (scResult?.items || []).map((sc: any) => ({
+    name: sc.metadata?.name || "unknown",
+    provisioner: sc.provisioner || "unknown",
+    isDefault:
+      sc.metadata?.annotations?.[
+        "storageclass.kubernetes.io/is-default-class"
+      ] === "true",
+  }));
 
   return {
     info: {
@@ -133,6 +148,7 @@ async function fetchAllClusterData(host: string): Promise<CachedData | null> {
     nodes: allNodes,
     pods: allPods,
     volumes,
+    storageClasses,
     lastFetch: Date.now(),
   };
 }

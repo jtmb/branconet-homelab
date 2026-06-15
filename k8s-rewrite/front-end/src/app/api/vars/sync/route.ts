@@ -1,19 +1,21 @@
 import { NextResponse } from "next/server";
-import { syncVarsToYAML, syncInventoryToFile } from "@/lib/sync-vars";
+import { syncVarsToYAML, syncInventoryToFile, syncNodesFromVars } from "@/lib/sync-vars";
 
 /**
  * POST /api/vars/sync
  * Sync all variables from the database to the Ansible group_vars/all.yml file.
- * Optionally also sync the inventory from the Node table.
+ * Also syncs node variables to the Node table and rebuilds the inventory.
  */
 export async function POST() {
   try {
     const varsResult = await syncVarsToYAML();
+    const nodesResult = await syncNodesFromVars();
     const invResult = await syncInventoryToFile();
 
     return NextResponse.json({
       success: true,
       vars: { synced: varsResult.synced, file: varsResult.file },
+      nodes: { synced: nodesResult.synced },
       inventory: { synced: invResult.synced, file: invResult.file },
     });
   } catch (err) {

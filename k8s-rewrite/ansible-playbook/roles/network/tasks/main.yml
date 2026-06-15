@@ -16,11 +16,13 @@
 # =============================================================================
 # TASK 2: Verify Calico installation (master only)
 # =============================================================================
-- name: Wait for node to become Ready (master only)
+- name: Wait for ALL nodes to become Ready (master only)
   ansible.builtin.shell: |
-    kubectl --kubeconfig=/etc/kubernetes/admin.conf get nodes --no-headers 2>/dev/null | grep -c ' Ready'
+    TOTAL=$(kubectl --kubeconfig=/etc/kubernetes/admin.conf get nodes --no-headers 2>/dev/null | wc -l)
+    READY=$(kubectl --kubeconfig=/etc/kubernetes/admin.conf get nodes --no-headers 2>/dev/null | grep -c ' Ready')
+    echo "${READY}/${TOTAL}"
   register: node_ready
-  until: node_ready.stdout | int >= 1
+  until: node_ready.stdout.split('/')[0] | int == node_ready.stdout.split('/')[1] | int
   retries: 30
   delay: 10
   when: inventory_hostname in groups['master']

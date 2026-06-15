@@ -16,6 +16,7 @@ export async function GET() {
     const fallback = dbNodes.length
       ? dbNodes.map((n) => ({
           id: n.id,
+          name: n.name || n.hostname,
           hostname: n.hostname,
           ipAddress: n.ipAddress,
           role: n.role,
@@ -42,7 +43,7 @@ export async function GET() {
 
     return {
       id: kn.metadata?.name || dbNode?.id || `node-${Math.random()}`,
-      name: kn.metadata?.name || "unknown",
+      name: dbNode?.name || kn.metadata?.name || "unknown",
       hostname: kn.metadata?.name || "unknown",
       ipAddress:
         dbNode?.ipAddress ||
@@ -74,7 +75,7 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { hostname, ipAddress, role, status, cpu, memory } = body;
+    const { name, hostname, ipAddress, role, status, cpu, memory } = body;
 
     if (!hostname || !ipAddress) {
       return NextResponse.json({ error: "hostname and ipAddress required" }, { status: 400 });
@@ -83,8 +84,9 @@ export async function POST(request: NextRequest) {
     // Upsert: update if exists, create if not
     const node = await prisma.node.upsert({
       where: { hostname },
-      update: { ipAddress, role: role || "master", status: status || "pending", cpu, memory },
+      update: { name: name || hostname, ipAddress, role: role || "master", status: status || "pending", cpu, memory },
       create: {
+        name: name || hostname,
         hostname,
         ipAddress,
         role: role || "master",

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { runAnsiblePlaybook } from "@/lib/ansible";
 import { activeJobs } from "@/lib/active-jobs";
-import { syncVarsToYAML, syncInventoryToFile } from "@/lib/sync-vars";
+import { syncVarsToYAML, syncInventoryToFile, syncNodesFromVars } from "@/lib/sync-vars";
 import { invalidateCache } from "@/lib/cluster-cache";
 import { sshExec } from "@/lib/k8s";
 
@@ -20,6 +20,13 @@ export async function POST(request: NextRequest) {
     } catch (syncErr) {
       console.error("[deploy] Failed to sync vars:", syncErr);
       // Continue — use whatever is on disk
+    }
+
+    try {
+      const nodesResult = await syncNodesFromVars();
+      console.log(`[deploy] Synced ${nodesResult.synced} nodes from vars`);
+    } catch (syncErr) {
+      console.error("[deploy] Failed to sync nodes from vars:", syncErr);
     }
 
     try {

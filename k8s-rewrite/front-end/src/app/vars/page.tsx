@@ -19,6 +19,10 @@ const CATEGORIES = [
   "runtime",
   "longhorn",
   "traefik",
+  "nfs",
+  "samba",
+  "helm",
+  "ansible",
   "general",
 ];
 
@@ -30,6 +34,11 @@ export default function VarsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editValue, setEditValue] = useState("");
   const [filter, setFilter] = useState("all");
+  const [adding, setAdding] = useState(false);
+  const [newKey, setNewKey] = useState("");
+  const [newValue, setNewValue] = useState("");
+  const [newCategory, setNewCategory] = useState("general");
+  const [newEncrypted, setNewEncrypted] = useState(false);
 
   useEffect(() => {
     fetchVars();
@@ -69,6 +78,27 @@ export default function VarsPage() {
       if (res.ok) fetchVars();
     } catch (err) {
       console.error("Failed to delete var:", err);
+    }
+  }
+
+  async function addVar() {
+    if (!newKey.trim()) return;
+    try {
+      const res = await fetch("/api/vars", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: newKey.trim(), value: newValue, category: newCategory, encrypted: newEncrypted }),
+      });
+      if (res.ok) {
+        setNewKey("");
+        setNewValue("");
+        setNewCategory("general");
+        setNewEncrypted(false);
+        setAdding(false);
+        fetchVars();
+      }
+    } catch (err) {
+      console.error("Failed to add var:", err);
     }
   }
 
@@ -226,11 +256,73 @@ export default function VarsPage() {
           </table>
         </div>
 
-        {/* Add button */}
-        <button className="mt-6 flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors">
-          <Plus className="w-4 h-4" />
-          Add Variable
-        </button>
+        {/* Add button / form */}
+        {!adding ? (
+          <button
+            onClick={() => setAdding(true)}
+            className="mt-6 flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors"
+          >
+            <Plus className="w-4 h-4" />
+            Add Variable
+          </button>
+        ) : (
+          <div className="mt-6 glass-card p-4 rounded-xl flex items-end gap-3 flex-wrap">
+            <div>
+              <label className="text-xs text-zinc-500 mb-1 block">Key</label>
+              <input
+                value={newKey}
+                onChange={e => setNewKey(e.target.value)}
+                placeholder="my_variable"
+                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-40"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 mb-1 block">Value</label>
+              <input
+                value={newValue}
+                onChange={e => setNewValue(e.target.value)}
+                placeholder="value"
+                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-40"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 mb-1 block">Category</label>
+              <select
+                value={newCategory}
+                onChange={e => setNewCategory(e.target.value)}
+                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200"
+              >
+                {CATEGORIES.map(c => (
+                  <option key={c} value={c}>{c.charAt(0).toUpperCase() + c.slice(1)}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs text-zinc-500 mb-1 block">Encrypted</label>
+              <select
+                value={newEncrypted ? "true" : "false"}
+                onChange={e => setNewEncrypted(e.target.value === "true")}
+                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200"
+              >
+                <option value="false">No</option>
+                <option value="true">Yes</option>
+              </select>
+            </div>
+            <button
+              onClick={addVar}
+              disabled={!newKey.trim()}
+              className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors disabled:opacity-50"
+            >
+              <Save className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setAdding(false)}
+              className="px-4 py-2 rounded-lg border border-zinc-700 text-zinc-400 hover:text-zinc-200 text-sm transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
       </main>
     </div>
   );

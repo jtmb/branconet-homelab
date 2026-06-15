@@ -1,0 +1,141 @@
+# Samba Role Tasks
+# Installs samba server + csi-driver-smb for SMB-based dynamic PV provisioning
+#
+# After this role:
+#   - Samba server runs on master with a Kubernetes share
+#   - smb StorageClass available for PVCs
+#   - CSI SMB driver provisions SMB shares dynamically
+
+---
+# =============================================================================
+# TASK 1: Install samba server packages (master only)
+# =============================================================================
+- name: Install samba server and smbclient (master only)
+  ansible.builtin.apt:
+    name:
+      - samba
+      - samba-common-bin
+      - smbclient
+    state: present
+    update_cache: true
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 2: Create samba share directory (master only)
+# =============================================================================
+- name: Create samba share directory (master only)
+  ansible.builtin.file:
+    path: "{{ samba_share_path }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0777'
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 3: Configure /etc/samba/smb.conf (master only)
+# =============================================================================
+- name: Configure samba share (master only)
+  ansible.builtin.template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart smbd
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 4: Create samba user (master only)
+# =============================================================================
+- name: Check if samba user exists (master only)
+  ansible.builtin.command: pdbedit -L
+  register: samba_users
+  changed_when: false
+  when: inventory_hostname in groups['master']
+
+- name: Create samba user account (master only)
+  ansible.builtin.user:
+    name: "{{ samba_username }}"
+    state: present
+    shell: /usr/sbin/nologin
+    create_home: false
+  when: inventory_hostname in groups['master']
+
+- name: Set samba user password (master only)
+  ansible.builtin.shell: |
+    printf '{{ samba_password }}\n{{ samba_password }}\n' | smbpasswd -s -a {{ samba_username }}
+  register: smbpasswd_result
+  changed_when: "'Added user' in smbpasswd_result.stdout"
+  failed_when: false
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 5: Deploy csi-driver-smb (master only)
+# =============================================================================
+- name: Apply csi-driver-smb manifests (master only)
+  ansible.builtin.shell: |
+    # Download and apply the latest stable SMB CSI driver
+    SMB_DRIVER_VERSION="v1.16.0"
+    BASE="https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/${SMB_DRIVER_VERSION}/deploy/latest"
+    KUBECONFIG=/etc/kubernetes/admin.conf
+
+    kubectl apply -f "${BASE}/rbac-csi-smb-controller.yaml"
+    kubectl apply -f "${BASE}/rbac-csi-smb-node.yaml"
+    kubectl apply -f "${BASE}/csi-smb-controller.yaml"
+    kubectl apply -f "${BASE}/csi-smb-driver.yaml"
+    kubectl apply -f "${BASE}/csi-smb-node.yaml"
+
+    # Add system label to CSI pods
+    kubectl patch deployment csi-smb-controller -n kube-system --type=merge \
+      -p '{"spec":{"template":{"metadata":{"labels":{"branconet.io/type":"system"}}}}}' 2>/dev/null || true
+    kubectl patch daemonset csi-smb-node -n kube-system --type=merge \
+      -p '{"spec":{"template":{"metadata":{"labels":{"branconet.io/type":"system"}}}}}' 2>/dev/null || true
+  register: csi_smb_apply
+  changed_when: true
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 6: Create smb StorageClass (master only)
+# =============================================================================
+- name: Create smb StorageClass (master only)
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f - <<'YAML'
+    apiVersion: storage.k8s.io/v1
+    kind: StorageClass
+    metadata:
+      name: smb
+      annotations:
+        storageclass.kubernetes.io/is-default-class: "false"
+    provisioner: smb.csi.k8s.io
+    parameters:
+      source: "//{{ ansible_default_ipv4.address }}/{{ samba_share_name }}"
+      csi.storage.k8s.io/provisioner-secret-name: smb-creds
+      csi.storage.k8s.io/provisioner-secret-namespace: default
+      csi.storage.k8s.io/node-stage-secret-name: smb-creds
+      csi.storage.k8s.io/node-stage-secret-namespace: default
+    reclaimPolicy: Delete
+    volumeBindingMode: Immediate
+    mountOptions:
+      - dir_mode=0777
+      - file_mode=0777
+      - uid=1000
+      - gid=1000
+      - noperm
+    YAML
+  register: sc_smb
+  changed_when: true
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 7: Create SMB credentials secret (master only)
+# =============================================================================
+- name: Create SMB credentials secret (master only)
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf create secret generic smb-creds \
+      --from-literal=username="{{ samba_username }}" \
+      --from-literal=password="{{ samba_password }}" \
+      --namespace=default --dry-run=client -o yaml | kubectl apply -f -
+  register: smb_secret
+  changed_when: true
+  when: inventory_hostname in groups['master']

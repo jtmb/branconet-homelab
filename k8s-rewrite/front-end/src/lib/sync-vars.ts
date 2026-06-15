@@ -77,6 +77,57 @@ function maybeQuote(value: string): string {
 }
 
 /**
+ * Parse node variables (category: kubernetes) and upsert into the Node table.
+ * Pattern: node_<key>_<field> where field ∈ {name, hostname, ip, role}
+ *   name     = user-chosen display name (e.g. "Living Room Server")
+ *   hostname = actual machine hostname (e.g. "u1", "node-01")
+ *   ip       = IP address for Ansible inventory
+ *   role     = master | worker
+ */
+export async function syncNodesFromVars(): Promise<{ synced: number }> {
+  const nodeVars = await prisma.variable.findMany({
+    where: { category: "kubernetes", key: { startsWith: "node_" } },
+    orderBy: { key: "asc" },
+  });
+
+  // Group by key: node_1_name, node_1_hostname, node_1_ip, node_1_role → group "1"
+  const groups = new Map<string, { name?: string; hostname?: string; ip?: string; role?: string }>();
+  const re = /^node_(.+)_(name|hostname|ip|role)$/;
+
+  for (const v of nodeVars) {
+    const m = v.key.match(re);
+    if (!m) continue;
+    const [, key, field] = m;
+    if (!groups.has(key)) groups.set(key, {});
+    const g = groups.get(key)!;
+    if (field === "name") g.name = v.value;
+    else if (field === "hostname") g.hostname = v.value;
+    else if (field === "ip") g.ip = v.value;
+    else if (field === "role") g.role = v.value;
+  }
+
+  let count = 0;
+  for (const [, data] of groups) {
+    if (!data.hostname || !data.ip) continue; // need at least hostname + IP
+    await prisma.node.upsert({
+      where: { hostname: data.hostname },
+      update: { name: data.name || data.hostname, ipAddress: data.ip, role: data.role || "worker" },
+      create: {
+        name: data.name || data.hostname,
+        hostname: data.hostname,
+        ipAddress: data.ip,
+        role: data.role || "worker",
+        status: "pending",
+      },
+    });
+    count++;
+  }
+
+  console.log(`[sync-nodes] Synced ${count} nodes from vars`);
+  return { synced: count };
+}
+
+/**
  * Sync inventory from Node table to production.ini
  */
 export async function syncInventoryToFile(): Promise<{ synced: number; file: string }> {

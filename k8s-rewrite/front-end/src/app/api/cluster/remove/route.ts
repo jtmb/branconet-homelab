@@ -6,8 +6,7 @@ export async function DELETE() {
   try {
     // Clean all cluster-related tables in a transaction
     await prisma.$transaction([
-      prisma.volume.deleteMany(),
-      prisma.persistentVolumeClaim.deleteMany(),
+      prisma.gitRepo.deleteMany(),
       prisma.service.deleteMany(),
       prisma.pod.deleteMany(),
       prisma.deployment.deleteMany(),

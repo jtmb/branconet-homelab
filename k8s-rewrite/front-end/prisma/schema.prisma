@@ -24,6 +24,7 @@ model Variable {
 
 model Node {
   id        String   @id @default(cuid())
+  name      String   @default("")
   hostname  String   @unique
   ipAddress String
   role      String   @default("master") // master, worker

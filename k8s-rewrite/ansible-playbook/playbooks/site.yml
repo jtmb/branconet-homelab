@@ -9,9 +9,13 @@
 #   2. kubernetes   - kubeadm/kubelet/kubectl + cluster init/join
 #   3. network      - Calico CNI (master only)
 #   4. dns          - CoreDNS (master only)
-#   5. storage      - Longhorn distributed storage (master only)
-#   6. ingress      - Traefik ingress controller (master only)
-#   7. gitops       - Fleet/FluxCD GitOps operator (master only)
+#   5. storage      - local-path-provisioner (master only)
+#   6. longhorn     - Longhorn distributed block storage (master only)
+#   7. nfs          - NFS server + nfs-subdir-external-provisioner (master only)
+#   8. samba        - Samba server + csi-driver-smb (master only)
+#   9. ingress      - Traefik ingress controller (master only)
+#  10. gitops       - FluxCD GitOps operator (master only)
+#  11. helm         - Helm CLI binary (master only)
 
 ---
 - name: Bootstrap Kubernetes Cluster Nodes
@@ -50,7 +54,7 @@
       tags:
         - dns
 
-- name: Install Longhorn Distributed Storage
+- name: Install local-path-provisioner Storage
   hosts: master
   become: true
   any_errors_fatal: false
@@ -58,6 +62,63 @@
     - role: storage
       tags:
         - storage
+
+- name: Install Longhorn Prerequisites (all nodes)
+  hosts: all
+  become: true
+  any_errors_fatal: false
+  tasks:
+    - name: Install iscsi and NFS packages on all nodes
+      ansible.builtin.apt:
+        name:
+          - open-iscsi
+          - nfs-common
+          - jq
+        state: present
+        update_cache: true
+      tags:
+        - longhorn
+
+    - name: Enable and start iscsid on all nodes
+      ansible.builtin.service:
+        name: iscsid
+        state: started
+        enabled: true
+      tags:
+        - longhorn
+
+- name: Deploy Longhorn Distributed Storage
+  hosts: master
+  become: true
+  any_errors_fatal: false
+  roles:
+    - role: longhorn
+      tags:
+        - longhorn
+
+- name: Install NFS Server and Provisioner
+  hosts: master
+  become: true
+  any_errors_fatal: false
+  tasks:
+    - name: Include NFS role (only when enabled)
+      ansible.builtin.include_role:
+        name: nfs
+      when: nfs_enabled | default("false") == "true"
+      tags:
+        - nfs
+
+- name: Install Samba Server and SMB CSI Driver
+  hosts: master
+  become: true
+  any_errors_fatal: false
+  tasks:
+    - name: Include Samba role (only when enabled)
+      ansible.builtin.include_role:
+        name: samba
+      when: samba_enabled | default("false") == "true"
+      tags:
+        - samba
 
 - name: Install Traefik Ingress Controller
   hosts: master
@@ -76,6 +137,15 @@
     - role: gitops
       tags:
         - gitops
+
+- name: Install Helm CLI
+  hosts: master
+  become: true
+  any_errors_fatal: false
+  roles:
+    - role: helm
+      tags:
+        - helm
 
 # Verification task - run on master to display cluster status
 - name: Verify Cluster Status

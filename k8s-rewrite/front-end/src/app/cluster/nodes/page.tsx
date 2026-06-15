@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from "react";
 
 interface NodeData {
   id: string;
+  name?: string;
   hostname: string;
   ipAddress: string;
   role: string;
@@ -20,8 +21,9 @@ export default function NodesPage() {
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState(false);
   const [adding, setAdding] = useState(false);
-  const [form, setForm] = useState({ hostname: "", ipAddress: "", role: "worker" });
+  const [form, setForm] = useState({ name: "", hostname: "", ipAddress: "", role: "worker" });
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
   const [editHost, setEditHost] = useState("");
   const [editIp, setEditIp] = useState("");
   const [editRole, setEditRole] = useState("");
@@ -60,7 +62,7 @@ export default function NodesPage() {
       body: JSON.stringify(form),
     });
     if (res.ok) {
-      setForm({ hostname: "", ipAddress: "", role: "worker" });
+      setForm({ name: "", hostname: "", ipAddress: "", role: "worker" });
       setAdding(false);
       fetchDbNodes();
     }
@@ -68,6 +70,7 @@ export default function NodesPage() {
 
   function startEdit(n: NodeData) {
     setEditingId(n.id);
+    setEditName(n.name || n.hostname);
     setEditHost(n.hostname);
     setEditIp(n.ipAddress);
     setEditRole(n.role);
@@ -77,7 +80,7 @@ export default function NodesPage() {
     await fetch("/api/nodes", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ hostname: editHost, ipAddress: editIp, role: editRole }),
+      body: JSON.stringify({ name: editName, hostname: editHost, ipAddress: editIp, role: editRole }),
     });
     setEditingId(null);
     fetchDbNodes();
@@ -133,6 +136,15 @@ export default function NodesPage() {
           </button>
         ) : (
           <div className="glass-card p-4 rounded-xl mb-6 flex items-end gap-3 flex-wrap">
+            <div>
+              <label className="text-xs text-zinc-500 mb-1 block">Name</label>
+              <input
+                value={form.name}
+                onChange={e => setForm({ ...form, name: e.target.value })}
+                placeholder="Living Room"
+                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-32"
+              />
+            </div>
             <div>
               <label className="text-xs text-zinc-500 mb-1 block">Hostname</label>
               <input
@@ -202,6 +214,12 @@ export default function NodesPage() {
                   {editingId === node.id ? (
                     <div className="flex items-center gap-3 flex-wrap">
                       <input
+                        value={editName}
+                        onChange={e => setEditName(e.target.value)}
+                        className="bg-zinc-800 border border-zinc-600 rounded px-2 py-1 text-sm text-zinc-200 w-32"
+                        placeholder="Name"
+                      />
+                      <input
                         value={editHost}
                         onChange={e => setEditHost(e.target.value)}
                         className="bg-zinc-800 border border-zinc-600 rounded px-2 py-1 text-sm text-zinc-200 w-28"
@@ -240,8 +258,12 @@ export default function NodesPage() {
                           liveInfo ? "bg-amber-400" : "bg-zinc-600"
                         }`} />
                         <div>
-                          <h3 className="text-lg font-semibold text-zinc-100">{node.hostname}</h3>
-                          <p className="text-sm text-zinc-500">{node.ipAddress}</p>
+                          <h3 className="text-lg font-semibold text-zinc-100">{node.name || node.hostname}</h3>
+                          <p className="text-sm text-zinc-500">
+                            {node.name && node.name !== node.hostname
+                              ? `${node.hostname} · ${node.ipAddress}`
+                              : node.ipAddress}
+                          </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-3">

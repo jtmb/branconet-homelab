@@ -242,7 +242,7 @@ export default function ClusterPage() {
         )}
 
         {/* Sub-pages */}
-        {!info || info.nodes === 0 ? (
+        {loading ? null : (!info || info.nodes === 0) ? (
           <div className="mt-6 glass-card p-8 rounded-xl text-center">
             <Server className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-zinc-300 mb-2">No Cluster Detected</h3>
