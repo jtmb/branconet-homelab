@@ -1,5 +1,5 @@
-# Plex Media PersistentVolumeClaims (Longhorn block storage)
-# Note: Change storageClassName to smb/nfs when those provisioners are available
+# Plex Media PersistentVolumeClaims (Samba/SMB storage)
+# Requires csi-driver-smb and smb StorageClass (deployed by Ansible samba role)
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -8,11 +8,11 @@ metadata:
   namespace: plex
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
-  storageClassName: longhorn
+  storageClassName: smb
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -21,11 +21,11 @@ metadata:
   namespace: plex
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
-  storageClassName: longhorn
+  storageClassName: smb
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -34,8 +34,8 @@ metadata:
   namespace: plex
 spec:
   accessModes:
-  - ReadWriteOnce
+  - ReadWriteMany
   resources:
     requests:
       storage: 10Gi
-  storageClassName: longhorn
+  storageClassName: smb
