@@ -3,8 +3,9 @@ import prisma from "@/lib/db";
 
 export async function DELETE(
   _request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  await prisma.node.delete({ where: { id: params.id } });
+  const { id } = await params;
+  await prisma.node.delete({ where: { id } });
   return NextResponse.json({ success: true });
 }

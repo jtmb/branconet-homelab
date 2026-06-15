@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
-import { Server, Activity, HardDrive, Box, Loader2, Trash2, XCircle } from "lucide-react";
+import { Server, Activity, HardDrive, Box, Loader2, Trash2, XCircle, GitBranch } from "lucide-react";
 
 interface ClusterInfo {
   nodes: number;
@@ -13,6 +13,7 @@ interface ClusterInfo {
   longhornVolumes: number;
   healthyVolumes: number;
   hasDbCluster: boolean;
+  fluxRepos: number;
 }
 
 export default function ClusterPage() {
@@ -150,7 +151,7 @@ export default function ClusterPage() {
             )}
 
             {/* Summary Cards */}
-            <div className="grid md:grid-cols-4 gap-4 mb-6">
+            <div className="grid md:grid-cols-5 gap-4 mb-6">
               <div className="glass-card p-4 rounded-xl">
                 <div className="flex items-center gap-2 mb-2">
                   <Server className="w-5 h-5 text-blue-400" />
@@ -198,10 +199,21 @@ export default function ClusterPage() {
                   {info?.nodes && info.nodes > 0 ? "Operational" : "Not Deployed"}
                 </p>
               </div>
+
+              <div className="glass-card p-4 rounded-xl">
+                <div className="flex items-center gap-2 mb-2">
+                  <GitBranch className="w-5 h-5 text-emerald-400" />
+                  <span className="text-sm text-zinc-400">Flux Repos</span>
+                </div>
+                <p className="text-2xl font-bold text-zinc-100">
+                  {info?.fluxRepos || 0}
+                </p>
+                <p className="text-xs text-zinc-500 mt-1">GitOps repos</p>
+              </div>
             </div>
 
             {/* Quick Links */}
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-4 gap-4">
               <a href="/cluster/nodes" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
                 <Server className="w-8 h-8 text-blue-400 mb-3" />
                 <h3 className="text-lg font-semibold text-zinc-100 mb-1">Nodes</h3>
@@ -218,6 +230,12 @@ export default function ClusterPage() {
                 <HardDrive className="w-8 h-8 text-purple-400 mb-3" />
                 <h3 className="text-lg font-semibold text-zinc-100 mb-1">Storage</h3>
                 <p className="text-sm text-zinc-400">Manage Longhorn volumes and PVCs</p>
+              </a>
+
+              <a href="/cluster/flux" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
+                <GitBranch className="w-8 h-8 text-emerald-400 mb-3" />
+                <h3 className="text-lg font-semibold text-zinc-100 mb-1">Flux</h3>
+                <p className="text-sm text-zinc-400">GitOps deployments via FluxCD</p>
               </a>
             </div>
           </>

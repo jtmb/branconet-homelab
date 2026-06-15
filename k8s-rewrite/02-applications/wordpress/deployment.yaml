@@ -25,6 +25,7 @@ spec:
     metadata:
       labels:
         app: wp-app
+        branconet.io/type: system
         homepage.group: WP
         homepage.name: WordPress
         homepage.icon: "https://upload.wikimedia.org/wikipedia/commons/9/93/Wordpress_Blue_logo.png"
@@ -102,6 +103,7 @@ spec:
     metadata:
       labels:
         app: db
+        branconet.io/type: system
         homepage.group: WP
         homepage.name: MySQL DB
         homepage.icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1448px-Database-mysql.svg.png"
@@ -185,6 +187,7 @@ spec:
     metadata:
       labels:
         app: redis-db
+        branconet.io/type: system
     spec:
       containers:
       - name: redis
@@ -232,6 +235,7 @@ spec:
     metadata:
       labels:
         app: phpmyadmin
+        branconet.io/type: system
         homepage.group: WP
         homepage.name: phpMyAdmin
         homepage.icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/PhpMyAdmin_logo.svg/2560px-PhpMyAdmin_logo.svg.png"

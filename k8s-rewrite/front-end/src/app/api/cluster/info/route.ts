@@ -14,15 +14,16 @@ const ZERO_INFO = {
 
 export async function GET() {
   // Check DB for stale cluster records (even if live cluster is dead)
-  const [state, nodeCount] = await Promise.all([
+  const [state, nodeCount, fluxRepos] = await Promise.all([
     prisma.clusterState.findFirst({ where: { deployed: true } }),
     prisma.node.count(),
+    prisma.gitRepo.count(),
   ]);
   const hasDbCluster = !!state || nodeCount > 0;
 
   const data = await getCachedClusterData();
   if (!data) {
-    return NextResponse.json({ ...ZERO_INFO, hasDbCluster });
+    return NextResponse.json({ ...ZERO_INFO, hasDbCluster, fluxRepos });
   }
-  return NextResponse.json({ ...data.info, hasDbCluster });
+  return NextResponse.json({ ...data.info, hasDbCluster, fluxRepos });
 }

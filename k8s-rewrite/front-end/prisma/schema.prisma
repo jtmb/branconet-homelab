@@ -122,3 +122,21 @@ model Volume {
 
   @@map("longhorn_volumes")
 }
+
+model GitRepo {
+  id           String   @id @default(cuid())
+  name         String   @unique
+  url          String
+  branch       String   @default("main")
+  path         String   @default("./")
+  authMethod   String   @default("none")   // none, ssh, https
+  authData     String   @default("")       // Encrypted JSON (deploy key or token)
+  syncInterval String   @default("5m")     // Flux sync interval
+  status       String   @default("syncing") // active, syncing, error
+  lastSync     DateTime?
+  lastError    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("git_repos")
+}
