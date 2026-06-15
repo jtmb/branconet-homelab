@@ -1,41 +1,37 @@
-# Plex Media PersistentVolumeClaims (Samba/SMB storage)
-# Requires csi-driver-smb and smb StorageClass (deployed by Ansible samba role)
+# Plex Media Samba PV + PVC (CSI SMB driver)
+# Mounts TrueNAS plex_smb_share directly via smb.csi.k8s.io
+# Subdirectories (tv/, movies/, pvr/) accessed via subPath in deployment
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-samba-pv
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: plex-samba-share
+    volumeAttributes:
+      source: "//192.168.0.8/plex_smb_share"
+      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755"
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: plex
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: plex-tv-pvc
+  name: plex-samba-pvc
   namespace: plex
 spec:
   accessModes:
-  - ReadWriteMany
+    - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi
-  storageClassName: smb
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: plex-movies-pvc
-  namespace: plex
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: smb
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: plex-pvr-pvc
-  namespace: plex
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 10Gi
-  storageClassName: smb
+      storage: 1Gi
+  volumeName: plex-samba-pv
+  storageClassName: ""

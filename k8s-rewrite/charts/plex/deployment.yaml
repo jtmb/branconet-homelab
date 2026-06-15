@@ -54,10 +54,13 @@ spec:
           mountPath: /config
         - name: tv
           mountPath: /tv
+          subPath: tv
         - name: movies
           mountPath: /movies
+          subPath: movies
         - name: pvr
           mountPath: /pvr
+          subPath: pvr
         resources:
           requests:
             cpu: 200m
@@ -71,13 +74,13 @@ spec:
             claimName: plex-config-pvc
         - name: tv
           persistentVolumeClaim:
-            claimName: plex-tv-pvc
+            claimName: plex-samba-pvc
         - name: movies
           persistentVolumeClaim:
-            claimName: plex-movies-pvc
+            claimName: plex-samba-pvc
         - name: pvr
           persistentVolumeClaim:
-            claimName: plex-pvr-pvc
+            claimName: plex-samba-pvc
       # GPU device request for hardware transcoding
       # tolerations:
       # - key: nvidia.com/gpu
