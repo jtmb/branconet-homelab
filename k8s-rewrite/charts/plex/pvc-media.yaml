@@ -5,7 +5,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: plex-samba-pv
+  name: plex-samba-pv-v2
 spec:
   capacity:
     storage: 5Gi
@@ -14,7 +14,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   csi:
     driver: smb.csi.k8s.io
-    volumeHandle: plex-samba-share
+    volumeHandle: plex-samba-share-v2
     volumeAttributes:
       source: "//192.168.0.8/plex_smb_share"
       options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
@@ -33,5 +33,5 @@ spec:
   resources:
     requests:
       storage: 1Gi
-  volumeName: plex-samba-pv
+  volumeName: plex-samba-pv-v2
   storageClassName: ""
