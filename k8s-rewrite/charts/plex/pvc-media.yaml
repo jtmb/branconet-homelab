@@ -1,4 +1,5 @@
-# Plex Media PersistentVolumeClaims (Samba shares)
+# Plex Media PersistentVolumeClaims (Longhorn block storage)
+# Note: Change storageClassName to smb/nfs when those provisioners are available
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -7,11 +8,11 @@ metadata:
   namespace: plex
 spec:
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
-      storage: 200Gi
-  storageClassName: smb
+      storage: 50Gi
+  storageClassName: longhorn
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -20,11 +21,11 @@ metadata:
   namespace: plex
 spec:
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
-      storage: 500Gi
-  storageClassName: smb
+      storage: 50Gi
+  storageClassName: longhorn
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -33,8 +34,8 @@ metadata:
   namespace: plex
 spec:
   accessModes:
-  - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi
-  storageClassName: smb
+      storage: 10Gi
+  storageClassName: longhorn

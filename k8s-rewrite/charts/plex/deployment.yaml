@@ -37,13 +37,13 @@ spec:
           value: "America/Toronto"
         - name: VERSION
           value: "latest"
-        - name: PLEX_CLAIM
-          valueFrom:
-            secretKeyRef:
-              name: plex-claim-token
-              key: claim-token
-        - name: ADVERTISE_IP
-          value: "http://${master_node}:32400/"
+        # - name: PLEX_CLAIM
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: plex-claim-token
+        #       key: claim-token
+        # - name: ADVERTISE_IP
+        #   value: "http://${master_node}:32400/"
         # - name: NVIDIA_VISIBLE_DEVICES
         #   value: "all"
         # - name: NVIDIA_DRIVER_CAPABILITIES
