@@ -58,7 +58,45 @@
     update_cache: true
 
 # =============================================================================
-# TASK 4: Install containerd runtime
+# TASK 4: Configure DNS (MUST run before containerd — containerd inherits /etc/resolv.conf)
+#   - systemd-resolved stub at 127.0.0.53 is unreliable for container image pulls
+#   - Disable the stub (DNSStubListener=no) so /etc/resolv.conf lists REAL DNS servers
+#   - Symlink to the non-stub variant: /run/systemd/resolve/resolv.conf
+#   - Route .local domains to DNS (not mDNS) via resolved.conf Domains=~local
+# =============================================================================
+- name: Write systemd-resolved config with real DNS servers and stub disabled
+  ansible.builtin.copy:
+    content: |
+      [Resolve]
+      DNS={{ dns_servers }}
+      Domains=~local
+      DNSStubListener=no
+      Cache=yes
+    dest: /etc/systemd/resolved.conf
+    mode: '0644'
+
+- name: Symlink resolv.conf to non-stub variant (real DNS, no 127.0.0.53 middleman)
+  ansible.builtin.file:
+    src: /run/systemd/resolve/resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+    force: true
+
+- name: Restart systemd-resolved to pick up non-stub config
+  ansible.builtin.service:
+    name: systemd-resolved
+    state: restarted
+
+- name: Verify DNS resolution works before proceeding
+  ansible.builtin.command: nslookup registry-1.docker.io
+  register: dns_check
+  changed_when: false
+  retries: 5
+  delay: 3
+  until: dns_check.rc == 0
+
+# =============================================================================
+# TASK 5: Install containerd runtime
 # =============================================================================
 - name: Install containerd runtime
   ansible.builtin.apt:
@@ -66,7 +104,7 @@
     state: present
 
 # =============================================================================
-# TASK 5: Configure containerd for cgroup v2 support
+# TASK 6: Configure containerd for cgroup v2 support
 # =============================================================================
 - name: Create containerd config directory
   ansible.builtin.file:

@@ -71,7 +71,9 @@
   when: inventory_hostname in groups['master']
 
 # =============================================================================
-# TASK 4: Deploy Traefik ServiceAccount, Deployment, and Service (master only)
+# TASK 4: Deploy Traefik ServiceAccount, DaemonSet, and Service (master only)
+#   - DaemonSet with hostPort ensures every node binds port 80/443 directly
+#   - No NodePort needed — just use http://app.branconet.local directly
 # =============================================================================
 - name: Deploy Traefik controller (master only)
   ansible.builtin.shell: |
@@ -84,14 +86,13 @@
       namespace: traefik
     ---
     apiVersion: apps/v1
-    kind: Deployment
+    kind: DaemonSet
     metadata:
       name: traefik
       namespace: traefik
       labels:
         app.kubernetes.io/name: traefik
     spec:
-      replicas: 1
       selector:
         matchLabels:
           app.kubernetes.io/name: traefik
@@ -111,12 +112,15 @@
               - --providers.kubernetescrd
               - --entrypoints.web.address=:80
               - --entrypoints.websecure.address=:443
+              - --entrypoints.traefik.address=:8080
               - --log.level=INFO
             ports:
               - name: web
                 containerPort: 80
+                hostPort: 80
               - name: websecure
                 containerPort: 443
+                hostPort: 443
               - name: admin
                 containerPort: 8080
     ---
@@ -126,18 +130,16 @@
       name: traefik
       namespace: traefik
     spec:
-      type: NodePort
+      type: ClusterIP
       selector:
         app.kubernetes.io/name: traefik
       ports:
         - name: web
           port: 80
           targetPort: 80
-          nodePort: 30080
         - name: websecure
           port: 443
           targetPort: 443
-          nodePort: 30443
         - name: admin
           port: 8080
           targetPort: 8080

@@ -191,3 +191,58 @@ export async function syncInventoryToFile(): Promise<{ synced: number; file: str
 
   return { synced: nodes.length, file: inventoryFile };
 }
+
+/**
+ * Sync secret variables to Kubernetes cluster as Secret objects.
+ * Reads vars with category="secret" and groups them by namespace/secret-name.
+ *
+ * Convention: secret_<namespace>_<name>_<key>
+ *   Example: secret_plex_smb_username → Secret "smb" in namespace "plex"
+ *            secret_plex_smb_password → adds key "password" to same Secret
+ *
+ * Returns kubectl commands for the deploy pipeline to execute on the master node.
+ */
+export async function syncSecretsToCluster(): Promise<{ synced: number; commands: string[] }> {
+  const secretVars = await prisma.variable.findMany({
+    where: { category: "secret" },
+    orderBy: { key: "asc" },
+  });
+
+  if (secretVars.length === 0) {
+    console.log("[sync-secrets] No secret variables found.");
+    return { synced: 0, commands: [] };
+  }
+
+  // Group by namespace and secret name
+  const groups = new Map<string, { ns: string; name: string; data: Record<string, string> }>();
+
+  for (const v of secretVars) {
+    // Parse: secret_<namespace>_<name>_<key>
+    const match = v.key.match(/^secret_(.+?)_(.+?)_(.+)$/);
+    if (!match) {
+      console.warn(`[sync-secrets] Skipping malformed key: ${v.key}`);
+      continue;
+    }
+    const [, ns, name, field] = match;
+    const gkey = `${ns}/${name}`;
+    if (!groups.has(gkey)) {
+      groups.set(gkey, { ns, name, data: {} });
+    }
+    groups.get(gkey)!.data[field] = v.value;
+  }
+
+  // Build kubectl commands (one per secret group)
+  const commands: string[] = [];
+  for (const [, g] of groups) {
+    const literals = Object.entries(g.data)
+      .map(([k, v]) => `--from-literal=${k}='${v.replace(/'/g, "'\\''")}'`)
+      .join(" ");
+    commands.push(
+      `kubectl create namespace ${g.ns} --dry-run=client -o yaml | kubectl apply -f - && ` +
+      `kubectl create secret generic ${g.name} -n ${g.ns} ${literals} --dry-run=client -o yaml | kubectl apply -f -`
+    );
+  }
+
+  console.log(`[sync-secrets] Generated ${commands.length} secret commands from ${secretVars.length} vars`);
+  return { synced: secretVars.length, commands };
+}

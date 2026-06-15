@@ -15,7 +15,9 @@
 #   8. samba        - Samba server + csi-driver-smb (master only)
 #   9. ingress      - Traefik ingress controller (master only)
 #  10. gitops       - FluxCD GitOps operator (master only)
-#  11. helm         - Helm CLI binary (master only)
+#  11. secrets      - K8s Secrets from secret_* variables (runs AFTER gitops;
+#                     Secrets get prune=disabled annotation so FluxCD won't delete them)
+#  12. helm         - Helm CLI binary (master only)
 
 ---
 - name: Bootstrap Kubernetes Cluster Nodes
@@ -137,6 +139,15 @@
     - role: gitops
       tags:
         - gitops
+
+- name: Deploy Kubernetes Secrets from DB Variables
+  hosts: master
+  become: true
+  any_errors_fatal: false
+  roles:
+    - role: secrets
+      tags:
+        - secrets
 
 - name: Install Helm CLI
   hosts: master

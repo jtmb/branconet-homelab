@@ -109,7 +109,7 @@
         storageclass.kubernetes.io/is-default-class: "false"
     provisioner: smb.csi.k8s.io
     parameters:
-      source: "//{{ ansible_default_ipv4.address }}/{{ samba_share_name }}"
+      source: "//{{ samba_server }}/{{ samba_share_name }}"
       csi.storage.k8s.io/provisioner-secret-name: smb-creds
       csi.storage.k8s.io/provisioner-secret-namespace: default
       csi.storage.k8s.io/node-stage-secret-name: smb-creds

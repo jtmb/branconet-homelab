@@ -18,6 +18,9 @@ curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"pod_netwo
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"service_cidr","value":"10.96.0.0/12","category":"networking","encrypted":false}' > /dev/null
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"cluster_domain","value":"cluster.local","category":"networking","encrypted":false}' > /dev/null
 
+# DNS servers for systemd-resolved (category: dns)
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"dns_servers","value":"192.168.0.4 192.168.0.5 8.8.8.8","category":"dns","encrypted":false}' > /dev/null
+
 # Storage settings (category: storage)
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"storage_class","value":"local-path","category":"storage","encrypted":false}' > /dev/null
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"default_storage_size","value":"1Gi","category":"storage","encrypted":false}' > /dev/null
@@ -67,6 +70,12 @@ curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"smb_stora
 
 # Helm (category: helm)
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"helm_version","value":"v3.16.0","category":"helm","encrypted":false}' > /dev/null
+
+# Kubernetes Secrets (category: secret)
+# Convention: secret_<namespace>_<name>_<key>
+# These are deployed as K8s Secret objects by the secrets Ansible role
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"secret_plex_smb-creds_username","value":"james","category":"secret","encrypted":true}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"secret_plex_smb-creds_password","value":"Jbranco2002!","category":"secret","encrypted":true}' > /dev/null
 
 echo ""
 echo "=== Seeding node into DB ==="
