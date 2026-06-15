@@ -24,6 +24,8 @@ export async function GET(request: NextRequest) {
     "metallb-system",
     "ingress-nginx",
     "flux-system",
+    "traefik",
+    "local-path-storage",
   ]);
 
   let pods = data.pods.map((p: any) => {
