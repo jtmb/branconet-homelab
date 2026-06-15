@@ -18,6 +18,8 @@ interface RepoData {
   fluxReady?: boolean;
   fluxStatus?: string;
   fluxRevision?: string;
+  sourceReady?: boolean;
+  ksReady?: boolean | null;
   createdAt: string;
 }
 
@@ -116,23 +118,31 @@ export default function FluxPage() {
   }
 
   function statusBadge(repo: RepoData) {
-    const ready = repo.fluxReady;
-    const status = repo.fluxStatus || repo.status;
-
-    if (ready === true) {
+    // Kustomization failed even though source is fine — show error
+    if (repo.ksReady === false) {
+      return (
+        <span className="text-xs px-2 py-0.5 rounded-full badge-error" title={repo.fluxStatus}>
+          Build Error
+        </span>
+      );
+    }
+    // Full success
+    if (repo.fluxReady === true) {
       return (
         <span className="text-xs px-2 py-0.5 rounded-full badge-success">
           Active
         </span>
       );
     }
-    if (ready === false) {
+    // Source fetch failure
+    if (repo.fluxReady === false) {
       return (
-        <span className="text-xs px-2 py-0.5 rounded-full badge-error" title={status}>
-          Error
+        <span className="text-xs px-2 py-0.5 rounded-full badge-error" title={repo.fluxStatus}>
+          Source Error
         </span>
       );
     }
+    // Still syncing / unknown
     return (
       <span className="text-xs px-2 py-0.5 rounded-full badge-warning">
         Syncing
@@ -388,13 +398,21 @@ export default function FluxPage() {
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <span className="text-xs text-zinc-600">{authLabel(repo.authMethod)}</span>
                     {statusBadge(repo)}
-                    {repo.fluxStatus && repo.fluxReady === false && (
-                      <span className="text-xs text-red-400 max-w-[200px] truncate" title={repo.fluxStatus}>
-                        {repo.fluxStatus}
-                      </span>
-                    )}
                   </div>
                 </div>
+
+                {/* Show Kustomization error banner if build/deploy failed */}
+                {repo.ksReady === false && repo.fluxStatus && (
+                  <div className="mt-3 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                    <div className="flex items-start gap-2">
+                      <XCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium text-red-300">Kustomization build failed</p>
+                        <p className="text-xs text-red-400 mt-1 break-all font-mono">{repo.fluxStatus}</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="flex items-center justify-between mt-3 pt-3 border-t border-zinc-800/60">
                   <div className="flex items-center gap-4 text-xs text-zinc-500">

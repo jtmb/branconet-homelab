@@ -147,27 +147,50 @@ export interface FluxRepoStatus {
   branch: string;
   path: string;
   ready: boolean;
-  status: string; // e.g. "Stalled: reconciliation failed"
+  status: string; // e.g. "kustomize build failed: ..."
+  sourceReady: boolean; // GitRepository artifact fetched OK?
+  ksReady: boolean | null; // Kustomization applied OK? (null if no KS exists)
   lastSync?: string;
   revision?: string;
 }
 
 export async function getFluxStatus(): Promise<FluxRepoStatus[]> {
-  const raw = await kubectlJSON("u1", buildKubectlCmd("get gitrepositories -o json"));
-  if (!raw?.items) return [];
+  // Fetch both GitRepositories and Kustomizations
+  const [gitReposRaw, kustomizationsRaw] = await Promise.all([
+    kubectlJSON("u1", buildKubectlCmd("get gitrepositories -o json")),
+    kubectlJSON("u1", buildKubectlCmd("get kustomizations -o json")),
+  ]);
 
-  return raw.items.map((item: any) => {
+  const kustomizations = (kustomizationsRaw?.items || []) as any[];
+
+  if (!gitReposRaw?.items) return [];
+
+  return gitReposRaw.items.map((item: any) => {
     const conditions = item.status?.conditions || [];
     const readyCond = conditions.find((c: any) => c.type === "Ready");
+    const name = item.metadata?.name || "unknown";
+
+    // Find matching Kustomization
+    const ks = kustomizations.find((k: any) => k.metadata?.name === name);
+    const ksConditions = ks?.status?.conditions || [];
+    const ksReadyCond = ksConditions.find((c: any) => c.type === "Ready");
+
+    // Merge error info: prefer Kustomization error > GitRepository error
+    const sourceReady = readyCond?.status === "True";
+    const ksReady = ksReadyCond?.status === "True";
+    const combinedReady = sourceReady && (ks ? ksReady : true); // if no KS exists, only care about source
+    const combinedMessage = ksReadyCond?.message || readyCond?.message || (combinedReady ? "Ready" : "Not Ready");
 
     return {
-      name: item.metadata?.name || "unknown",
+      name,
       namespace: item.metadata?.namespace || FLUX_NAMESPACE,
       url: item.spec?.url || "",
       branch: item.spec?.ref?.branch || "main",
-      path: "./", // Kustomization path is separate; we derive from Kustomization
-      ready: readyCond?.status === "True",
-      status: readyCond?.message || (readyCond?.status === "True" ? "Ready" : "Not Ready"),
+      path: ks?.spec?.path || "./",
+      ready: combinedReady,
+      status: combinedMessage,
+      sourceReady,
+      ksReady: ks ? ksReady : null,
       lastSync: item.status?.lastHandledReconcileAt || null,
       revision: item.status?.artifact?.revision || null,
     };
@@ -229,6 +252,8 @@ export interface GitRepoRecord {
   fluxReady?: boolean;
   fluxStatus?: string;
   fluxRevision?: string;
+  sourceReady?: boolean;
+  ksReady?: boolean | null;
 }
 
 export async function listRepos(): Promise<GitRepoRecord[]> {
@@ -249,6 +274,8 @@ export async function listRepos(): Promise<GitRepoRecord[]> {
       fluxReady: flux?.ready,
       fluxStatus: flux?.status,
       fluxRevision: flux?.revision,
+      sourceReady: flux?.sourceReady,
+      ksReady: flux?.ksReady,
     } as GitRepoRecord;
   });
 }
