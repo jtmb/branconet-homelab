@@ -1,0 +1,692 @@
+# Media Stack Deployment
+# Converts from Docker Swarm docker-compose.yml to Kubernetes Deployments
+# Services: Radarr, Sonarr, Bazarr, Overseerr, Tautulli, Jackett, Unpackerr, Flaresolverr, YouTube Downloader
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: media-stack
+---
+# Radarr Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  namespace: media-stack
+  labels:
+    app: radarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+        homepage.group: Media
+        homepage.name: Radarr
+        homepage.icon: "https://i0.wp.com/devildogtech.com/wp-content/uploads/2022/10/radarr.png?resize=280%2C280&ssl=1"
+        homepage.href: "http://radarr.branconet.local/"
+        homepage.description: Radarr movie fetching and monitoring
+    spec:
+      containers:
+      - name: radarr
+        image: linuxserver/radarr:latest
+        ports:
+        - containerPort: 7878
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: movies
+          mountPath: /media/movies
+        - name: downloads
+          mountPath: /downloads
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+---
+# Radarr Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: radarr
+  namespace: media-stack
+spec:
+  type: ClusterIP
+  ports:
+  - port: 7878
+    targetPort: 7878
+    name: http
+  selector:
+    app: radarr
+---
+# Sonarr Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  namespace: media-stack
+  labels:
+    app: sonarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+        homepage.group: Media
+        homepage.name: Sonarr
+        homepage.icon: "https://res.cloudinary.com/razordarkamg/image/upload/v1621212884/SonarrV3_pufacd.png"
+        homepage.href: "http://sonarr.branconet.local/"
+        homepage.description: Sonarr TV series fetching and monitoring
+    spec:
+      containers:
+      - name: sonarr
+        image: linuxserver/sonarr:latest
+        ports:
+        - containerPort: 8989
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: tv
+          mountPath: /media/tv
+        - name: downloads
+          mountPath: /downloads
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+---
+# Sonarr Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr
+  namespace: media-stack
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8989
+    targetPort: 8989
+    name: http
+  selector:
+    app: sonarr
+---
+# Bazarr Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bazarr
+  namespace: media-stack
+  labels:
+    app: bazarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bazarr
+  template:
+    metadata:
+      labels:
+        app: bazarr
+        homepage.group: Media
+        homepage.name: Bazarr
+        homepage.icon: "https://user-images.githubusercontent.com/787317/183671204-e4e6e67b-c1cd-4e90-a9d1-6c759859f117.png"
+        homepage.href: "http://bazarr.branconet.local/"
+        homepage.description: Bazarr subtitles for media
+    spec:
+      containers:
+      - name: bazarr
+        image: ghcr.io/hotio/bazarr:latest
+        ports:
+        - containerPort: 6767
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: tv
+          mountPath: /tv
+        - name: movies
+          mountPath: /movies
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+---
+# Bazarr Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: bazarr
+  namespace: media-stack
+spec:
+  type: ClusterIP
+  ports:
+  - port: 6767
+    targetPort: 6767
+    name: http
+  selector:
+    app: bazarr
+---
+# Overseerr Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: overseerr
+  namespace: media-stack
+  labels:
+    app: overseerr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: overseerr
+  template:
+    metadata:
+      labels:
+        app: overseerr
+        homepage.group: Media
+        homepage.name: Overseerr
+        homepage.icon: "https://static-00.iconduck.com/assets.00/overseerr-icon-2048x2048-5ncr26li.png"
+        homepage.href: "http://overseerr.branconet.local/"
+        homepage.description: Overseerr
+    spec:
+      containers:
+      - name: overseerr
+        image: lscr.io/linuxserver/overseerr:latest
+        ports:
+        - containerPort: 5055
+          name: http
+        env:
+        - name: LOG_LEVEL
+          value: "info"
+        - name: TZ
+          value: "America/LosAngeles"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+---
+# Overseerr Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: overseerr
+  namespace: media-stack
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5055
+    targetPort: 5055
+    name: http
+  selector:
+    app: overseerr
+---
+# Tautulli Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tautulli
+  namespace: media-stack
+  labels:
+    app: tautulli
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tautulli
+  template:
+    metadata:
+      labels:
+        app: tautulli
+        homepage.group: Media
+        homepage.name: Tautulli
+        homepage.icon: "https://tautulli.com/images/logo-circle.png"
+        homepage.href: "http://tautulli.branconet.local/"
+        homepage.description: Tautulli Plex monitoring
+    spec:
+      containers:
+      - name: tautulli
+        image: ghcr.io/tautulli/tautulli:latest
+        ports:
+        - containerPort: 8181
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/Toronto"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+---
+# Tautulli Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: tautulli
+  namespace: media-stack
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8181
+    targetPort: 8181
+    name: http
+  selector:
+    app: tautulli
+---
+# Jackett Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jackett
+  namespace: media-stack
+  labels:
+    app: jackett
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jackett
+  template:
+    metadata:
+      labels:
+        app: jackett
+        homepage.group: Media
+        homepage.name: Jackett
+        homepage.icon: "https://user-images.githubusercontent.com/27040483/28728094-99f3e3f6-73c7-11e7-8f8d-28912dc6ac0d.png"
+        homepage.href: "http://jackett.branconet.local/"
+        homepage.description: Jackett torrent indexers
+    spec:
+      containers:
+      - name: jackett
+        image: linuxserver/jackett:latest
+        ports:
+        - containerPort: 9117
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+---
+# Jackett Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: jackett
+  namespace: media-stack
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9117
+    targetPort: 9117
+    name: http
+  selector:
+    app: jackett
+---
+# Unpackerr Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unpackerr
+  namespace: media-stack
+  labels:
+    app: unpackerr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unpackerr
+  template:
+    metadata:
+      labels:
+        app: unpackerr
+    spec:
+      containers:
+      - name: unpackerr
+        image: golift/unpackerr:latest
+        env:
+        - name: UN_SONARR_0_URL
+          value: "http://sonarr:8989"
+        - name: UN_SONARR_0_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: unpackerr-api-key
+              key: api-key
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: downloads
+          mountPath: /downloads
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+---
+# Unpackerr Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: unpackerr
+  namespace: media-stack
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: http
+  selector:
+    app: unpackerr
+---
+# Flaresolverr Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaresolverr
+  namespace: media-stack
+  labels:
+    app: flaresolverr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flaresolverr
+  template:
+    metadata:
+      labels:
+        app: flaresolverr
+    spec:
+      containers:
+      - name: flaresolverr
+        image: ghcr.io/flaresolverr/flaresolverr:latest
+        ports:
+        - containerPort: 8191
+          name: http
+        env:
+        - name: LOG_LEVEL
+          value: "info"
+        - name: TZ
+          value: "America/New_York"
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+---
+# Flaresolverr Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: flaresolverr
+  namespace: media-stack
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8191
+    targetPort: 8191
+    name: http
+  selector:
+    app: flaresolverr
+---
+# YouTube Downloader (Metube) Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ytdl
+  namespace: media-stack
+  labels:
+    app: ytdl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ytdl
+  template:
+    metadata:
+      labels:
+        app: ytdl
+        homepage.group: Media
+        homepage.name: Youtube Downloader
+        homepage.icon: "https://res.cloudinary.com/razordarkamg/image/upload/v1621212884/SonarrV3_pufacd.png"
+        homepage.href: "http://ytdl.branconet.local/"
+        homepage.description: YouTube video downloader
+    spec:
+      containers:
+      - name: ytdl
+        image: ghcr.io/alexta69/metube:latest
+        ports:
+        - containerPort: 8081
+          name: http
+        env:
+        - name: TEMP_DIR
+          value: "/tmp_dir"
+        - name: DELETE_FILE_ON_TRASHCAN
+          value: "true"
+        volumeMounts:
+        - name: downloads
+          mountPath: /downloads
+        - name: tmp_dir
+          mountPath: /tmp_dir
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+---
+# YouTube Downloader Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ytdl
+  namespace: media-stack
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8081
+    targetPort: 8081
+    name: http
+  selector:
+    app: ytdl
+---
+# Persistent Volume Claim for Config (Longhorn)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-config-pvc
+  namespace: media-stack
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: longhorn
+---
+# Persistent Volume Claim for Movies (NFS or Longhorn)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-movies-pvc
+  namespace: media-stack
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  # Use NFS for shared media storage, or Longhorn if preferred
+  # storageClassName: longhorn
+---
+# Persistent Volume Claim for TV Shows (NFS or Longhorn)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: media-tv-pvc
+  namespace: media-stack
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  # Use NFS for shared media storage, or Longhorn if preferred
+  # storageClassName: longhorn
+---
+# Persistent Volume Claim for Downloads (NFS or Longhorn)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: downloads-pvc
+  namespace: media-stack
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  # Use NFS for shared downloads storage, or Longhorn if preferred
+  # storageClassName: longhorn
+---
+# Persistent Volume Claim for Temp Directory
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ytdl-tmp-pvc
+  namespace: media-stack
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: longhorn
+---
+# Traefik Ingress Routes for Media Stack Services
+apiVersion: traefik.containo.dev/v1alpha1
+kind: IngressRoute
+metadata:
+  name: media-stack-ingress
+  namespace: media-stack
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`radarr.branconet.local`)
+    kind: Service
+    services:
+    - name: radarr
+      port: 7878
+  - match: Host(`sonarr.branconet.local`)
+    kind: Service
+    services:
+    - name: sonarr
+      port: 8989
+  - match: Host(`bazarr.branconet.local`)
+    kind: Service
+    services:
+    - name: bazarr
+      port: 6767
+  - match: Host(`overseerr.branconet.local`)
+    kind: Service
+    services:
+    - name: overseerr
+      port: 5055
+  - match: Host(`tautulli.branconet.local`)
+    kind: Service
+    services:
+    - name: tautulli
+      port: 8181
+  - match: Host(`jackett.branconet.local`)
+    kind: Service
+    services:
+    - name: jackett
+      port: 9117
+  - match: Host(`ytdl.branconet.local`)
+    kind: Service
+    services:
+    - name: ytdl
+      port: 8081
+  middlewares:
+  - name: tls-redirect
+    passHostHeader: true
+    stripPrefix:
+      prefixMatch: ""

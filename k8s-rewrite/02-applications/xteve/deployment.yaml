@@ -1,0 +1,102 @@
+# XTeVe Deployment
+# Converts from Docker Swarm docker-compose.yml to Kubernetes Deployment
+# IPTV Manager for Plex
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: xteve
+---
+# XTeVe Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xteve
+  namespace: xteve
+  labels:
+    app: xteve
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xteve
+  template:
+    metadata:
+      labels:
+        app: xteve
+        homepage.group: Media
+        homepage.name: XTeVe
+        homepage.icon: "https://raw.githubusercontent.com/xbmc/inputstream.adaptive/master/resources/misc/icon.png"
+        homepage.href: "http://xteve.branconet.local/"
+        homepage.description: IPTV Manager for Plex
+    spec:
+      containers:
+      - name: xteve
+        image: ghcr.io/xteve-project/XTeVe:latest
+        ports:
+        - containerPort: 8081
+          name: http
+        env:
+        - name: TZ
+          value: "America/Toronto"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+---
+# XTeVe Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: xteve
+  namespace: xteve
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8081
+    targetPort: 8081
+    name: http
+  selector:
+    app: xteve
+---
+# XTeVe Persistent Volume Claim (Longhorn)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: xteve-config-pvc
+  namespace: xteve
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: longhorn
+---
+# Traefik Ingress Route for XTeVe
+apiVersion: traefik.containo.dev/v1alpha1
+kind: IngressRoute
+metadata:
+  name: xteve-ingress
+  namespace: xteve
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`xteve.branconet.local`)
+    kind: Service
+    services:
+    - name: xteve
+      port: 8081
+  middlewares:
+  - name: tls-redirect
+    passHostHeader: true
+    stripPrefix:
+      prefixMatch: ""

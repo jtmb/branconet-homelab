@@ -1,0 +1,48 @@
+# DNS Role Tasks
+# CoreDNS is already installed by kubeadm init - this role just verifies it
+
+---
+# =============================================================================
+# TASK 1: Wait for CoreDNS pods to be ready (master only)
+# =============================================================================
+- name: Wait for CoreDNS pods to be ready (master only)
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf get pods -n kube-system -l k8s-app=kube-dns --no-headers 2>/dev/null | grep -c Running || echo 0
+  register: coredns_ready
+  changed_when: false
+  until: coredns_ready.stdout | int >= 1
+  retries: 30
+  delay: 10
+  when: inventory_hostname in groups['master']
+
+- name: Scale CoreDNS to 1 replica and reduce CPU requests (master only)
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf scale deployment coredns -n kube-system --replicas=1 2>/dev/null || true
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf patch deployment coredns -n kube-system --type=strategic -p '
+    {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "coredns",
+                "resources": {
+                  "requests": {"cpu": "10m", "memory": "32Mi"}
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+    ' 2>/dev/null || true
+  changed_when: false
+  when: inventory_hostname in groups['master']
+
+- name: Verify CoreDNS is running (master only)
+  ansible.builtin.command: kubectl get pods -n kube-system -l k8s-app=kube-dns
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: coredns_status
+  changed_when: false
+  when: inventory_hostname in groups['master']

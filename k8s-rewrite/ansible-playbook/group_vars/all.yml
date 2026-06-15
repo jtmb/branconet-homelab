@@ -1,0 +1,55 @@
+# Kubernetes Cluster Configuration Variables
+# Auto-generated from Branconet K8s Manager DB
+# Last synced: 2026-06-15T03:54:50.153Z
+# WARNING: Manual edits to this file will be overwritten on next deploy/sync.
+
+---
+
+# =============================================================================
+# GENERAL
+# =============================================================================
+ansible_become_password: "Jbranco2002!"
+ansible_ssh_private_key_file: /home/brajam/.ssh/id_ed25519
+coredns_replicas: "2"
+github_branch: k8s-rewrite
+github_repo: branconet-homelab
+github_token: ""
+github_user: jtmb
+gitops_path: k8s-rewrite/02-applications
+kubeconfig_path: /root/.kube
+
+# =============================================================================
+# KUBERNETES
+# =============================================================================
+calico_version: v3.28.0
+cluster_name: branconet-k8s
+crictl_version: v1.30.0
+k8s_version: v1.30.0
+traefik_version: v2.11.0
+
+# =============================================================================
+# NETWORKING
+# =============================================================================
+cluster_cidr: 10.244.0.0/16
+cluster_domain: cluster.local
+pod_network_cidr: 10.244.0.0/16
+service_cidr: 10.96.0.0/12
+
+# =============================================================================
+# RUNTIME
+# =============================================================================
+containerd_cgroup_driver: "true"
+containerd_log_level: info
+
+# =============================================================================
+# STORAGE
+# =============================================================================
+default_storage_size: 1Gi
+storage_class: local-path
+
+# =============================================================================
+# TRAEFIK
+# =============================================================================
+traefik_accesslog: "true"
+traefik_log_level: INFO
+

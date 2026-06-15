@@ -1,0 +1,172 @@
+# Plex Media Server Deployment
+# Converts from Docker Swarm docker-compose.yml to Kubernetes Deployment
+# Note: This deployment requires a node with NVIDIA GPU support for hardware transcoding
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: plex
+---
+# Plex Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex
+  namespace: plex
+  labels:
+    app: plex
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+        homepage.group: Media
+        homepage.name: Plex
+        homepage.icon: "https://plex.tv/sites/static/img/logo.png"
+        homepage.href: "http://plex.branconet.local/"
+        homepage.description: Plex Media Server
+    spec:
+      containers:
+      - name: plex
+        image: lscr.io/linuxserver/plex:latest
+        ports:
+        - containerPort: 32400
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/Toronto"
+        - name: VERSION
+          value: "latest"
+        - name: PLEX_CLAIM
+          valueFrom:
+            secretKeyRef:
+              name: plex-claim-token
+              key: claim-token
+        - name: ADVERTISE_IP
+          value: "http://${master_node}:32400/"
+        - name: NVIDIA_VISIBLE_DEVICES
+          value: "all"
+        - name: NVIDIA_DRIVER_CAPABILITIES
+          value: "compute,video,utility"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: tv
+          mountPath: /tv
+        - name: movies
+          mountPath: /movies
+        - name: pvr
+          mountPath: /pvr
+        resources:
+          requests:
+            cpu: 200m
+            memory: 512Mi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+      # GPU device request for hardware transcoding
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+---
+# Plex Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex
+  namespace: plex
+spec:
+  type: ClusterIP
+  ports:
+  - port: 32400
+    targetPort: 32400
+    name: http
+  selector:
+    app: plex
+---
+# Plex Persistent Volume Claims (Longhorn)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-config-pvc
+  namespace: plex
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: longhorn
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-tv-pvc
+  namespace: plex
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  # Use NFS for shared media storage, or Longhorn if preferred
+  # storageClassName: longhorn
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-movies-pvc
+  namespace: plex
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  # Use NFS for shared media storage, or Longhorn if preferred
+  # storageClassName: longhorn
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-pvr-pvc
+  namespace: plex
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  # Use NFS for shared media storage, or Longhorn if preferred
+  # storageClassName: longhorn
+---
+# Traefik Ingress Route for Plex
+apiVersion: traefik.containo.dev/v1alpha1
+kind: IngressRoute
+metadata:
+  name: plex-ingress
+  namespace: plex
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: Host(`plex.branconet.local`)
+    kind: Service
+    services:
+    - name: plex
+      port: 32400
+  middlewares:
+  - name: tls-redirect
+    passHostHeader: true
+    stripPrefix:
+      prefixMatch: ""

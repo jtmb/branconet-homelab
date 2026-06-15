@@ -1,0 +1,103 @@
+# Kubernetes Cluster Setup Playbook
+# Main entry point - orchestrates cluster provisioning with human-friendly role names
+#
+# Usage:
+#   ansible-playbook playbooks/site.yml -i inventory/production.ini
+#
+# Roles are executed in this order:
+#   1. bootstrap    - OS packages, containerd, sysctl
+#   2. kubernetes   - kubeadm/kubelet/kubectl + cluster init/join
+#   3. network      - Calico CNI (master only)
+#   4. dns          - CoreDNS (master only)
+#   5. storage      - Longhorn distributed storage (master only)
+#   6. ingress      - Traefik ingress controller (master only)
+#   7. gitops       - Fleet/FluxCD GitOps operator (master only)
+
+---
+- name: Bootstrap Kubernetes Cluster Nodes
+  hosts: all
+  become: true
+  any_errors_fatal: false
+  roles:
+    - role: bootstrap
+      tags:
+        - bootstrap
+
+- name: Install Kubernetes Components and Initialize Cluster
+  hosts: all
+  become: true
+  any_errors_fatal: false
+  roles:
+    - role: kubernetes
+      tags:
+        - kubernetes
+
+- name: Configure Network (Calico CNI)
+  hosts: master
+  become: true
+  any_errors_fatal: false
+  roles:
+    - role: network
+      tags:
+        - network
+
+- name: Configure DNS (CoreDNS)
+  hosts: master
+  become: true
+  any_errors_fatal: false
+  roles:
+    - role: dns
+      tags:
+        - dns
+
+- name: Install Longhorn Distributed Storage
+  hosts: master
+  become: true
+  any_errors_fatal: false
+  roles:
+    - role: storage
+      tags:
+        - storage
+
+- name: Install Traefik Ingress Controller
+  hosts: master
+  become: true
+  any_errors_fatal: false
+  roles:
+    - role: ingress
+      tags:
+        - ingress
+
+- name: Install GitOps Controller (FluxCD)
+  hosts: master
+  become: true
+  any_errors_fatal: false
+  roles:
+    - role: gitops
+      tags:
+        - gitops
+
+# Verification task - run on master to display cluster status
+- name: Verify Cluster Status
+  hosts: master
+  become: true
+  any_errors_fatal: false
+  tasks:
+    - name: Display cluster summary
+      debug:
+        msg: |
+          ========================================
+          Kubernetes Cluster Installation Complete!
+          ========================================
+
+          Cluster Name: {{ cluster_name }}
+          Cluster Version: {{ k8s_version }}
+          Storage Class: {{ storage_class }}
+
+          Nodes:
+          {% if ansible_playbook_python is defined %}Run 'kubectl get nodes -o wide' to see node status{% else %}kubectl not yet configured{% endif %}
+
+          Next Steps:
+          1. Verify cluster: kubectl get all -A
+          2. Deploy applications via Fleet (separate GitOps repo)
+          3. Configure Traefik routes for external access

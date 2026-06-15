@@ -1,0 +1,178 @@
+# Kubernetes Role Tasks
+# Installs kubeadm, kubelet, kubectl binaries and initializes/joins the cluster
+
+---
+# =============================================================================
+# TASK 1: Create Kubernetes download directory
+# =============================================================================
+- name: Create Kubernetes components download directory
+  ansible.builtin.file:
+    path: /tmp/k8s
+    state: directory
+    mode: '0755'
+
+# =============================================================================
+# TASK 2: Download kubeadm binary
+# =============================================================================
+- name: Download kubeadm binary
+  ansible.builtin.get_url:
+    url: "https://dl.k8s.io/release/{{ k8s_version }}/bin/linux/amd64/kubeadm"
+    dest: "/tmp/k8s/kubeadm"
+    mode: '0755'
+
+# =============================================================================
+# TASK 3: Download kubelet binary
+# =============================================================================
+- name: Download kubelet binary
+  ansible.builtin.get_url:
+    url: "https://dl.k8s.io/release/{{ k8s_version }}/bin/linux/amd64/kubelet"
+    dest: "/tmp/k8s/kubelet"
+    mode: '0755'
+
+# =============================================================================
+# TASK 4: Download kubectl binary
+# =============================================================================
+- name: Download kubectl binary
+  ansible.builtin.get_url:
+    url: "https://dl.k8s.io/release/{{ k8s_version }}/bin/linux/amd64/kubectl"
+    dest: "/tmp/k8s/kubectl"
+    mode: '0755'
+
+# =============================================================================
+# TASK 5: Install binaries to /usr/local/bin
+# =============================================================================
+- name: Install kubeadm to /usr/local/bin
+  ansible.builtin.copy:
+    src: /tmp/k8s/kubeadm
+    dest: /usr/local/bin/kubeadm
+    owner: root
+    group: root
+    mode: '0755'
+    remote_src: true
+
+- name: Install kubelet to /usr/local/bin
+  ansible.builtin.copy:
+    src: /tmp/k8s/kubelet
+    dest: /usr/local/bin/kubelet
+    owner: root
+    group: root
+    mode: '0755'
+    remote_src: true
+
+- name: Install kubectl to /usr/local/bin
+  ansible.builtin.copy:
+    src: /tmp/k8s/kubectl
+    dest: /usr/local/bin/kubectl
+    owner: root
+    group: root
+    mode: '0755'
+    remote_src: true
+
+# =============================================================================
+# TASK 6: Configure kubelet service (all nodes)
+# Workers need the service file too — kubeadm join writes config and starts it.
+# Master needs it stopped before kubeadm init, then started after.
+# =============================================================================
+- name: Write kubelet systemd service file (all nodes)
+  ansible.builtin.copy:
+    content: |
+      [Unit]
+      Description=Kubelet
+      After=containerd.service
+
+      [Install]
+      WantedBy=multi-user.target
+
+      [Service]
+      ExecStart=/usr/local/bin/kubelet --config=/var/lib/kubelet/config.yaml --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --container-runtime-endpoint=unix:///run/containerd/containerd.sock --fail-swap-on=false
+      Restart=on-failure
+      RestartSec=5
+    dest: /etc/systemd/system/kubelet.service
+    mode: '0644'
+
+- name: Reload systemd daemon (all nodes)
+  ansible.builtin.command: systemctl daemon-reload
+  changed_when: true
+
+- name: Stop kubelet and disable auto-start before init (master only)
+  ansible.builtin.service:
+    name: kubelet
+    state: stopped
+    enabled: false
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 7: Initialize cluster (master only) - kubeadm init
+# =============================================================================
+- name: Get master IP address (master only)
+  ansible.builtin.shell: ip -4 addr show eth0 | grep inet | awk '{print $2}' | cut -d/ -f1
+  register: master_ip_result
+  failed_when: false
+  changed_when: true
+  when: inventory_hostname in groups['master']
+
+- name: Initialize Kubernetes cluster (master only)
+  ansible.builtin.command: kubeadm init --pod-network-cidr={{ pod_network_cidr }} --cri-socket=unix:///run/containerd/containerd.sock --kubernetes-version={{ k8s_version }} --ignore-preflight-errors=all
+  register: kubeadm_init_output
+  changed_when: true
+  when: inventory_hostname in groups['master']
+
+- name: Save kubeadm init output to file (master only)
+  ansible.builtin.copy:
+    content: "{{ kubeadm_init_output.stdout }}"
+    dest: /root/kubeadm-init-output.txt
+    mode: '0644'
+  when: inventory_hostname in groups['master']
+
+# Start kubelet NOW after kubeadm init created /etc/kubernetes/kubelet.conf
+- name: Enable and start kubelet service (master only)
+  ansible.builtin.service:
+    name: kubelet
+    state: started
+    enabled: true
+  when: inventory_hostname in groups['master']
+
+# Wait for kubelet to be ready and static pods to come up
+- name: Wait for Kubernetes API server to be reachable (master only)
+  ansible.builtin.shell: kubectl --kubeconfig=/etc/kubernetes/admin.conf get nodes --no-headers 2>/dev/null | wc -l
+  register: api_ready
+  until: api_ready.stdout | int > 0
+  retries: 30
+  delay: 10
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 8: Join worker nodes (worker only) - kubeadm join
+# Uses delegate_to to read the join command from master, even when
+# running workers-only (avoids fragile hostvars cross-reference issues)
+# =============================================================================
+- name: Read kubeadm join command from master init output
+  ansible.builtin.shell: grep 'kubeadm join' /root/kubeadm-init-output.txt 2>/dev/null || kubeadm --kubeconfig=/etc/kubernetes/admin.conf token create --print-join-command
+  register: kubeadm_join_command
+  changed_when: false
+  delegate_to: "{{ groups['master'][0] }}"
+  run_once: true
+
+- name: Join worker to cluster (worker only)
+  ansible.builtin.command: "{{ kubeadm_join_command.stdout }}"
+  register: join_output
+  changed_when: true
+  when: inventory_hostname in groups['k8s_nodes'] and inventory_hostname not in groups['master']
+
+# =============================================================================
+# TASK 9: Create admin kubeconfig (master only)
+# =============================================================================
+- name: Ensure kubeconfig directory exists (master only)
+  ansible.builtin.file:
+    path: "{{ kubeconfig_path }}"
+    state: directory
+    mode: '0755'
+  when: inventory_hostname in groups['master']
+
+- name: Copy admin kubeconfig to user location (master only)
+  ansible.builtin.copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "{{ kubeconfig_path }}/config"
+    remote_src: true
+    mode: '0600'
+  when: inventory_hostname in groups['master']

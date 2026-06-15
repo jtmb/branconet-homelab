@@ -1,0 +1,100 @@
+# GitOps Role Tasks
+# Installs FluxCD (master only)
+# Requires: github_user, github_token, github_repo, github_branch variables
+
+---
+# =============================================================================
+# TASK 1: Create flux-system namespace (master only)
+# =============================================================================
+- name: Create flux-system namespace (master only)
+  ansible.builtin.shell: |
+    kubectl create namespace flux-system --dry-run=client -o yaml | kubectl apply -f -
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: ns_output
+  changed_when: false
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 2: Install FluxCD with reduced resources for single-node (master only)
+# =============================================================================
+- name: Install FluxCD from official manifest (master only)
+  ansible.builtin.shell: |
+    kubectl apply -f https://github.com/fluxcd/flux2/releases/latest/download/install.yaml
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: flux_install
+  changed_when: true
+  when: inventory_hostname in groups['master']
+
+- name: Write Flux trim script (master only)
+  ansible.builtin.copy:
+    dest: /tmp/flux-trim.sh
+    mode: "0755"
+    content: |
+      #!/bin/bash
+      set -e
+      KUBECTL="kubectl --kubeconfig=/etc/kubernetes/admin.conf"
+
+      ESSENTIAL="source-controller kustomize-controller"
+      NONESSENTIAL="helm-controller image-automation-controller image-reflector-controller notification-controller source-watcher"
+      ALL_DEPLOYMENTS="$ESSENTIAL $NONESSENTIAL"
+
+      # Step 1: Scale ALL to 0 immediately
+      for dep in $ALL_DEPLOYMENTS; do
+        $KUBECTL scale deployment "$dep" -n flux-system --replicas=0 2>/dev/null || true
+      done
+
+      # Step 2: Wait for pods to terminate
+      sleep 10
+
+      # Step 3: DELETE non-essential deployments
+      for dep in $NONESSENTIAL; do
+        $KUBECTL delete deployment "$dep" -n flux-system --force --grace-period=0 2>/dev/null || true
+      done
+
+      # Step 4: Patch essential controllers with tiny resource allocations
+      for dep in $ESSENTIAL; do
+        $KUBECTL patch deployment "$dep" -n flux-system --type=strategic -p '{"spec":{"template":{"spec":{"containers":[{"name":"manager","resources":{"requests":{"cpu":"5m","memory":"32Mi"},"limits":{"cpu":"200m","memory":"192Mi"}}}]}}}}' 2>/dev/null || true
+        $KUBECTL patch deployment "$dep" -n flux-system --type=strategic -p '{"spec":{"template":{"spec":{"priorityClassName":""}}}}' 2>/dev/null || true
+      done
+
+      # Step 5: Force-delete orphan pods from deleted deployments
+      for dep in $NONESSENTIAL; do
+        $KUBECTL delete pods -n flux-system -l "app=$dep" --force --grace-period=0 2>/dev/null || true
+      done
+
+      # Step 6: Scale essential controllers to 1
+      for dep in $ESSENTIAL; do
+        $KUBECTL scale deployment "$dep" -n flux-system --replicas=1 2>/dev/null || true
+      done
+  when: inventory_hostname in groups['master']
+
+- name: Trim Flux to 2 essential controllers (master only)
+  ansible.builtin.shell: |
+    bash /tmp/flux-trim.sh
+    rm -f /tmp/flux-trim.sh
+  changed_when: true
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 3: Let Flux stabilize (no hard wait — readiness probes timeout on 1 vCPU)
+# =============================================================================
+- name: Give Flux controllers time to initialize (master only)
+  ansible.builtin.shell: |
+    sleep 30
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf get deploy,pods -n flux-system 2>/dev/null
+  changed_when: false
+  failed_when: false
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 4: Verify FluxCD installation (master only)
+# =============================================================================
+- name: Verify Flux controllers are running (master only)
+  ansible.builtin.command: kubectl get pods -n flux-system -o wide
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: flux_pods
+  changed_when: false
+  when: inventory_hostname in groups['master']

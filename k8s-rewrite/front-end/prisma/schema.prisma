@@ -1,0 +1,124 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Variable {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  category  String   @default("kubernetes")
+  encrypted Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("variables")
+}
+
+model Node {
+  id        String   @id @default(cuid())
+  hostname  String   @unique
+  ipAddress String
+  role      String   @default("master") // master, worker
+  status    String   @default("pending") // pending, ready, error
+  cpu       Int?                          // CPU cores
+  memory    Int?                          // Memory in GB
+  createdAt DateTime @default(now())
+
+  @@map("nodes")
+}
+
+model Job {
+  id         String   @id @default(cuid())
+  playbook   String
+  status     String   @default("running") // running, success, failed
+  output     String   @default("")        // Full terminal output
+  startedAt  DateTime @default(now())
+  finishedAt DateTime?
+
+  @@map("jobs")
+}
+
+model ClusterState {
+  id          String   @id @default(cuid())
+  kubeconfig  String   @default("")      // Encrypted kubeconfig for cluster access
+  deployed    Boolean  @default(false)
+  deployedAt  DateTime?
+  updatedAt   DateTime @updatedAt
+
+  @@map("cluster_state")
+}
+
+model Deployment {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  namespace String   @default("default")
+  replicas  Int      @default(1)
+  image     String
+  ports     Json?    // Array of port mappings
+  env       Json?    // Environment variables (encrypted)
+  volumes   Json?    // Volume mounts
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("deployments")
+}
+
+model Pod {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  namespace String
+  status    String   @default("Pending") // Pending, Running, Succeeded, Failed
+  phase     String?  // ContainerStatus (Running, Terminated)
+  reason    String?
+  message   String?
+  node      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("pods")
+}
+
+model Service {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  namespace String
+  type      String   // ClusterIP, NodePort, LoadBalancer
+  port      Int
+  targetPort Int?
+  protocol  String   @default("TCP")
+  createdAt DateTime @default(now())
+
+  @@map("services")
+}
+
+model PersistentVolumeClaim {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  namespace String
+  status    String   // Pending, Bound, Terminated
+  capacity  String?  // e.g., "50Gi"
+  accessModes Json?  // ["ReadWriteOnce", etc.]
+  createdAt DateTime @default(now())
+
+  @@map("pvc")
+}
+
+model Volume {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  namespace String
+  status    String   // attached, detached, degraded
+  capacity  String?
+  size      String?
+  createdAt DateTime @default(now())
+
+  @@map("longhorn_volumes")
+}

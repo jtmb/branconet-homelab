@@ -1,0 +1,57 @@
+# Network Role Tasks
+# Installs Calico CNI for pod networking (master only)
+
+---
+# =============================================================================
+# TASK 1: Apply Calico CNI manifest (master only)
+# =============================================================================
+- name: Apply Calico CNI manifest (master only)
+  ansible.builtin.command: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/{{ calico_version }}/manifests/calico.yaml
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: calico_apply_output
+  changed_when: true
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 2: Verify Calico installation (master only)
+# =============================================================================
+- name: Wait for node to become Ready (master only)
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf get nodes --no-headers 2>/dev/null | grep -c ' Ready'
+  register: node_ready
+  until: node_ready.stdout | int >= 1
+  retries: 30
+  delay: 10
+  when: inventory_hostname in groups['master']
+
+- name: Reduce Calico node CPU requests for tiny nodes (master only)
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf patch ds calico-node -n kube-system --type=strategic -p '
+    {
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "name": "calico-node",
+                "resources": {
+                  "requests": {"cpu": "50m", "memory": "64Mi"}
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+    ' 2>/dev/null || true
+  changed_when: false
+  when: inventory_hostname in groups['master']
+
+- name: Verify Calico pods are running (master only)
+  ansible.builtin.command: kubectl get pods -n kube-system -l k8s-app=calico-node
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: calico_pods_status
+  changed_when: false
+  when: inventory_hostname in groups['master']

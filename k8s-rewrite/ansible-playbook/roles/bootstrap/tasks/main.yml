@@ -1,0 +1,145 @@
+# Bootstrap Role Tasks
+# Installs system packages and configures containerd runtime for Kubernetes
+
+---
+# =============================================================================
+# TASK 1: Clean up any malformed docker.list from previous failed runs
+# =============================================================================
+- name: Remove malformed docker.list from previous failed runs
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/docker.list
+    state: absent
+
+- name: Remove stale Docker GPG keyring from previous runs
+  ansible.builtin.file:
+    path: /usr/share/keyrings/docker-archive-keyring.gpg
+    state: absent
+
+# =============================================================================
+# TASK 2: Update apt package cache
+# =============================================================================
+- name: Update apt package cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+# =============================================================================
+# TASK 2: Install required system packages
+# =============================================================================
+- name: Install prerequisite packages
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+      - software-properties-common
+      - wget
+      - git
+      - conntrack
+      - socat
+    state: present
+
+# =============================================================================
+# TASK 3: Add Docker GPG key and repository
+# =============================================================================
+- name: Add Docker GPG key (download and dearmor)
+  ansible.builtin.shell:
+    cmd: |
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor --batch --yes -o /usr/share/keyrings/docker-archive-keyring.gpg
+    creates: /usr/share/keyrings/docker-archive-keyring.gpg
+
+- name: Add Docker stable repository
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+    filename: docker
+    update_cache: true
+
+# =============================================================================
+# TASK 4: Install containerd runtime
+# =============================================================================
+- name: Install containerd runtime
+  ansible.builtin.apt:
+    name: containerd.io
+    state: present
+
+# =============================================================================
+# TASK 5: Configure containerd for cgroup v2 support
+# =============================================================================
+- name: Create containerd config directory
+  ansible.builtin.file:
+    path: /etc/containerd
+    state: directory
+    mode: '0755'
+
+- name: Generate containerd configuration with cgroup driver support
+  ansible.builtin.shell:
+    cmd: "containerd config default | sed 's/SystemdCgroup = false/SystemdCgroup = {{ containerd_cgroup_driver }}/'"
+  register: containerd_config_output
+  changed_when: true
+
+- name: Write containerd configuration
+  ansible.builtin.copy:
+    content: "{{ containerd_config_output.stdout }}"
+    dest: /etc/containerd/config.toml
+    mode: '0644'
+
+# =============================================================================
+# TASK 6: Restart containerd service
+# =============================================================================
+- name: Restart containerd service
+  ansible.builtin.service:
+    name: containerd
+    state: restarted
+
+# =============================================================================
+# TASK 6b: Install crictl (required by kubeadm for container runtime interface)
+# =============================================================================
+- name: Download crictl binary
+  ansible.builtin.get_url:
+    url: "https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-linux-amd64.tar.gz"
+    dest: /tmp/crictl.tar.gz
+    mode: '0644'
+
+- name: Install crictl to /usr/local/bin
+  ansible.builtin.unarchive:
+    src: /tmp/crictl.tar.gz
+    dest: /usr/local/bin
+    remote_src: true
+    mode: '0755'
+
+- name: Clean up crictl tarball
+  ansible.builtin.file:
+    path: /tmp/crictl.tar.gz
+    state: absent
+
+# =============================================================================
+# TASK 7: Configure sysctl for Kubernetes networking
+# =============================================================================
+- name: Load br_netfilter kernel module
+  ansible.builtin.shell: modprobe br_netfilter
+  changed_when: false
+
+- name: Create sysctl configuration for Kubernetes networking
+  ansible.builtin.copy:
+    content: |
+      net.bridge.bridge-nf-call-iptables = 1
+      net.ipv4.ip_forward = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+    dest: /etc/sysctl.d/k8s.conf
+    mode: '0644'
+
+- name: Apply sysctl settings for Kubernetes networking
+  ansible.builtin.sysctl:
+    name: "{{ item }}"
+    value: "1"
+    state: present
+    sysctl_file: /etc/sysctl.d/k8s.conf
+    reload: true
+  loop:
+    - net.ipv4.ip_forward
+    - net.bridge.bridge-nf-call-iptables
+    - net.bridge.bridge-nf-call-ip6tables
+  ignore_errors: true
