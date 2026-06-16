@@ -252,7 +252,7 @@ export async function triggerSync(name: string): Promise<{ success: boolean; err
 // Hierarchy Tree — Fleet-style expandable repo view
 // =============================================================================
 
-export type FluxNodeKind = "GitRepository" | "Kustomization" | "HelmRelease";
+export type FluxNodeKind = "GitRepository" | "Kustomization" | "HelmRelease" | "Namespace";
 
 export interface FluxTreeNode {
   id: string;
@@ -333,6 +333,27 @@ export async function getFluxHierarchy(): Promise<FluxTreeNode[]> {
         ...subHR.map((h: any) => buildHelmReleaseNode(h)),
       ];
 
+      // Parse inventory entries to surface managed namespaces as children
+      const inventoryEntries: { id: string; v: string }[] = ks.status?.inventory?.entries || [];
+      const namespacesSeen = new Set<string>();
+      for (const entry of inventoryEntries) {
+        const parsed = parseFluxInventoryId(entry.id);
+        if (parsed.namespace && !namespacesSeen.has(parsed.namespace)) {
+          namespacesSeen.add(parsed.namespace);
+          subChildren.push({
+            id: `ns-${ks.metadata?.uid || ksName}-${parsed.namespace}`,
+            name: parsed.namespace,
+            kind: "Namespace",
+            namespace: parsed.namespace,
+            ready: ksReady,
+            status: ksReady ? "Managed" : "Pending",
+            lastSync: null,
+            revision: null,
+            children: [],
+          });
+        }
+      }
+
       children.push({
         id: `ks-${ks.metadata?.uid || ksName}`,
         name: ksName,
@@ -373,8 +394,50 @@ export async function getFluxHierarchy(): Promise<FluxTreeNode[]> {
     };
   });
 
-  // Filter out suspended GitRepositories — they're in the cluster but inert
-  return trees.filter((t) => !t.suspended);
+  // Filter 1: remove suspended GitRepositories — they're in the cluster but inert
+  // Filter 2: remove self-referencing orphan GitRepositories.
+  //   A GitRepository whose NAME matches the repo in its URL (e.g. "branconet-homelab" pointing to
+  //   github.com/…/branconet-homelab.git) with zero downstream Kustomizations/HelmReleases is a
+  //   bootstrap artifact — the "real" repo with a different name (like branconet-charts or plex)
+  //   that points to the same URL already handles any configs under it.
+  const urlRepoCount = new Map<string, number>(); // how many repos share each URL
+  for (const t of trees) {
+    if (t.url) urlRepoCount.set(t.url, (urlRepoCount.get(t.url) || 0) + 1);
+  }
+
+  return trees.filter((t) => {
+    if (t.suspended) return false;
+    // Always keep repos that have their own downstream resources
+    if (t.children.length > 0) return true;
+    if ((ksBySource.get(t.name)?.length ?? 0) > 0) return true;
+    if ((hrBySource.get(t.name)?.length ?? 0) > 0) return true;
+    // If this repo shares a URL with at least one other repo, AND its name matches
+    // the repo part of that URL (self-referencing bootstrap cruft), hide it.
+    if (t.url && (urlRepoCount.get(t.url) || 0) > 1) {
+      const repoFromUrl = t.url.split("/").pop()?.replace(/\.git$/, "") || "";
+      if (t.name === repoFromUrl) return false;
+    }
+    return true;
+  });
+}
+
+/** Parse a Flux inventory entry ID into its components.
+ *  Format: namespace_name_apiGroup_Kind (double-underscore __ means empty segment) */
+function parseFluxInventoryId(id: string): { namespace: string; name: string; apiGroup: string; kind: string } {
+  const parts = id.split("_");
+  const kind = parts[parts.length - 1] || "";
+  const apiGroup = parts.length >= 2 ? parts[parts.length - 2] : "";
+  const remaining = parts.slice(0, parts.length - 2);
+  let namespace = "";
+  let name = "";
+  if (remaining.length > 0 && remaining[0] === "") {
+    namespace = "";
+    name = remaining.slice(1).join("_");
+  } else if (remaining.length > 0) {
+    namespace = remaining[0];
+    name = remaining.slice(1).join("_");
+  }
+  return { namespace, name, apiGroup, kind };
 }
 
 function buildKustomizationNode(ks: any): FluxTreeNode {

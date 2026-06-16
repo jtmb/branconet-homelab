@@ -6,6 +6,7 @@ import {
   GitBranch,
   Layers,
   Ship,
+  Box,
   RefreshCw,
   Trash2,
   CheckCircle2,
@@ -47,6 +48,8 @@ export default function FluxTreeRow({
         return <Layers className="w-4 h-4 text-indigo-400" />;
       case "HelmRelease":
         return <Ship className="w-4 h-4 text-amber-400" />;
+      case "Namespace":
+        return <Box className="w-4 h-4 text-cyan-400" />;
       default:
         return <GitBranch className="w-4 h-4 text-zinc-400" />;
     }
@@ -57,6 +60,7 @@ export default function FluxTreeRow({
       GitRepository: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
       Kustomization: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
       HelmRelease: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+      Namespace: "bg-cyan-500/10 text-cyan-400 border-cyan-500/20",
     };
     return (
       <span

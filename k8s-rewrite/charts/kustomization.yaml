@@ -1,11 +1,10 @@
 ---
-# Root Kustomization — synced by Flux Kustomization "branconet-charts"
-# which watches ./k8s-rewrite/charts/
-# To add a new app, add its path below.
+# Root Kustomization — synced by Flux Kustomizations test-stack & media-stack
+# Each stack watches its own subdirectory under ./k8s-rewrite/charts/
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - ./http-echo
-  - ./plex
-  - ./nginx-hello
-  - ./whoami
+  - ./test-stack
+  - ./media-stack
+
+
