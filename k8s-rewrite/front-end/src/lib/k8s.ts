@@ -1,4 +1,4 @@
-import { execFile } from "child_process";
+import { execFile, spawn, ChildProcess } from "child_process";
 import { promisify } from "util";
 import { existsSync } from "fs";
 import { homedir } from "os";
@@ -14,6 +14,75 @@ const SSH_OPTS = [
   "-o", "ConnectTimeout=5",
   "-o", "BatchMode=yes",
 ];
+
+/**
+ * Run a command via SSH with sudo, piping the become password securely
+ * through stdin (never in argv / process list).
+ *
+ * Reads ansible_become_password from the Botrus DB and feeds it to
+ * sudo -S on the remote host.
+ */
+async function sshWithSudo(
+  host: string,
+  kubectlCmd: string,
+  timeoutMs: number
+): Promise<string | null> {
+  let prisma;
+  try {
+    prisma = (await import("./db")).default;
+  } catch {
+    return null;
+  }
+
+  const pwVar = await prisma.variable.findUnique({
+    where: { key: "ansible_become_password" },
+  });
+  const sudoPass = pwVar?.value;
+
+  const remoteCmd = sudoPass
+    ? `sudo -S kubectl --kubeconfig=/etc/kubernetes/admin.conf ${kubectlCmd} 2>/dev/null`
+    : `sudo kubectl --kubeconfig=/etc/kubernetes/admin.conf ${kubectlCmd} 2>/dev/null`;
+
+  const sshArgs = [...SSH_OPTS, "-i", SSH_KEY, `brajam@${host}`, remoteCmd];
+
+  return new Promise((resolve) => {
+    const child: ChildProcess = spawn("ssh", sshArgs, {
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+
+    const chunks: Buffer[] = [];
+    let timedOut = false;
+    const timer = setTimeout(() => {
+      timedOut = true;
+      child.kill();
+    }, timeoutMs);
+
+    child.stdout?.on("data", (d: Buffer) => chunks.push(d));
+
+    child.on("close", (code) => {
+      clearTimeout(timer);
+      if (timedOut) { resolve(null); return; }
+      const stdout = Buffer.concat(chunks).toString("utf8").trim();
+      if (!stdout || code !== 0) { resolve(null); return; }
+      const cleaned = stdout
+        .split("\n")
+        .filter((l) => !l.startsWith("[sudo]"))
+        .join("\n");
+      resolve(cleaned || null);
+    });
+
+    child.on("error", () => {
+      clearTimeout(timer);
+      resolve(null);
+    });
+
+    // Pipe the password through stdin — never touches argv
+    if (sudoPass) {
+      child.stdin?.write(sudoPass + "\n");
+      child.stdin?.end();
+    }
+  });
+}
 
 /**
  * Execute a kubectl command locally (preferred) or via SSH on a remote node.
@@ -39,28 +108,11 @@ export async function kubectlJSON(
     }
   }
 
-  // Fallback: SSH-based kubectl with sudo password pipe
+  // Fallback: SSH-based kubectl with sudo password on stdin (never in argv)
   // (only used when no local kubeconfig is available)
-  try {
-    const prisma = (await import("./db")).default;
-    const pwVar = await prisma.variable.findUnique({
-      where: { key: "ansible_become_password" },
-    });
-    const sudoPass = pwVar?.value || "";
-    const sudoPrefix = sudoPass ? `echo '${sudoPass}' | sudo -S ` : "sudo ";
-    const fullCmd = `${sudoPrefix}kubectl --kubeconfig=/etc/kubernetes/admin.conf ${cmd} -o json 2>/dev/null`;
-    const args = [...SSH_OPTS, "-i", SSH_KEY, `brajam@${host}`, fullCmd];
-
-    const { stdout } = await execFileAsync("ssh", args, {
-      timeout: timeoutMs,
-      maxBuffer: 2 * 1024 * 1024,
-    });
-    if (!stdout.trim()) return null;
-    const cleaned = stdout.split("\n").filter(l => !l.startsWith("[sudo]")).join("\n");
-    return JSON.parse(cleaned);
-  } catch {
-    return null;
-  }
+  const stdout = await sshWithSudo(host, `${cmd} -o json`, timeoutMs);
+  if (!stdout) return null;
+  try { return JSON.parse(stdout); } catch { return null; }
 }
 
 /**
@@ -105,23 +157,7 @@ export async function kubectlExec(
     }
   }
 
-  // Fallback: SSH
-  try {
-    const prisma = (await import("./db")).default;
-    const pwVar = await prisma.variable.findUnique({
-      where: { key: "ansible_become_password" },
-    });
-    const sudoPass = pwVar?.value || "";
-    const sudoPrefix = sudoPass ? `echo '${sudoPass}' | sudo -S ` : "sudo ";
-    const fullCmd = `${sudoPrefix}kubectl --kubeconfig=/etc/kubernetes/admin.conf ${cmd} 2>/dev/null`;
-    const args = [...SSH_OPTS, "-i", SSH_KEY, "brajam@u1", fullCmd];
-    const { stdout } = await execFileAsync("ssh", args, {
-      timeout: timeoutMs,
-      maxBuffer: 2 * 1024 * 1024,
-    });
-    if (!stdout.trim()) return null;
-    return stdout.split("\n").filter((l: string) => !l.startsWith("[sudo]")).join("\n");
-  } catch {
-    return null;
-  }
+  // Fallback: SSH with sudo password on stdin (never in argv)
+  const stdout = await sshWithSudo("u1", cmd, timeoutMs);
+  return stdout || null;
 }

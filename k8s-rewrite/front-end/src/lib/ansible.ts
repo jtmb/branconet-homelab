@@ -70,10 +70,6 @@ export async function runAnsiblePlaybook(
     "--become",
   ];
 
-  if (becomePassword) {
-    args.push("-e", `ansible_become_password=${becomePassword}`);
-  }
-
   if (roles.length > 0) {
     args.push("--tags", ...roles);
   }
@@ -86,6 +82,9 @@ export async function runAnsiblePlaybook(
       ...process.env,
       ANSIBLE_FORCE_COLOR: "1",
       PYTHONUNBUFFERED: "1",
+      BOTRUS_SECRETS_KEY: process.env.BOTRUS_SECRETS_KEY || "",
+      BOTRUS_API_URL: process.env.BOTRUS_API_URL || "http://localhost:4000",
+      ANSIBLE_BECOME_PASSWORD: becomePassword,
     },
   });
 

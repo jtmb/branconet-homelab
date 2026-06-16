@@ -10,11 +10,6 @@ const YAML_HEADER = `# Kubernetes Cluster Configuration Variables
 # Auto-generated from Botrus K8s DB
 # Last synced: ${new Date().toISOString()}
 # WARNING: Manual edits to this file will be overwritten on next deploy/sync.
-#
-# Secrets are NOT stored here. Values marked encrypted=true in the DB
-# are rendered as {{ vault_<key> }} references. Provide these in:
-#   ansible-playbook/group_vars/vault.yml  (create with ansible-vault)
-# See vault.yml.example for the required keys.
 
 ---
 `;
@@ -44,32 +39,10 @@ export async function syncVarsToYAML(): Promise<{ synced: number; file: string }
     lines.push(`# ${category.toUpperCase()}`);
     lines.push(`# =============================================================================`);
     for (const item of items) {
-      // Encrypted values → vault reference instead of raw value
-      if (item.encrypted) {
-        lines.push(`${item.key}: "{{ vault_${item.key} }}"`);
-        continue;
-      }
-      // Quote values that YAML would misinterpret (booleans, numbers, empty, IPs with slashes)
-      const val = maybeQuote(item.value);
-      lines.push(`${item.key}: ${val}`);
+      // ALL variables are pulled from Botrus at Ansible runtime via lookup plugin.
+      // Zero values ever touch the filesystem — all.yml is just a manifest of keys.
+      lines.push(`${item.key}: "{{ lookup('botrus_secret', '${item.key}') }}"`);
     }
-
-/**
- * Add YAML quotes if value could be misinterpreted as a non-string type.
- */
-function maybeQuote(value: string): string {
-  if (value === "") return '""';
-  // Already quoted
-  if ((value.startsWith('"') && value.endsWith('"')) ||
-      (value.startsWith("'") && value.endsWith("'"))) return value;
-  // Booleans
-  if (value === "true" || value === "false" || value === "yes" || value === "no") return `"${value}"`;
-  // Numbers
-  if (/^\d+(\.\d+)?$/.test(value)) return `"${value}"`;
-  // Has special YAML chars that need quoting
-  if (/[:{}\[\],&*?|>!%@`]/.test(value)) return `"${value}"`;
-  return value;
-}
     lines.push("");
   }
 
