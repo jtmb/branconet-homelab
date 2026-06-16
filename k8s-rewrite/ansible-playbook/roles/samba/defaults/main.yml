@@ -3,6 +3,4 @@
 samba_server: "192.168.0.8"
 samba_share_path: "/srv/samba-share"
 samba_share_name: "plex_smb_share"
-samba_username: "{{ ssh_user | default('james') }}"
-samba_password: "{{ ansible_sudo_pass | default('Jbranco2002!') }}"
 smb_storage_class: "smb"

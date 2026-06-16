@@ -32,6 +32,14 @@ interface CachedData {
   pods: any[];
   volumes: VolumeInfo[];
   storageClasses: { name: string; provisioner: string; isDefault: boolean }[];
+  namespaces: any[];
+  services: any[];
+  deployments: any[];
+  ingresses: any[];
+  rawNamespaces: any[];
+  rawServices: any[];
+  rawDeployments: any[];
+  rawIngresses: any[];
   lastFetch: number;
 }
 
@@ -40,6 +48,22 @@ const TTL_MS = 10_000; // 10 seconds
 
 // Fetch in-progress guard — prevents concurrent SSH storms
 let fetchPromise: Promise<CachedData | null> | null = null;
+
+/**
+ * Format a duration in milliseconds to a human-readable age string.
+ */
+function formatAge(ms: number): string {
+  const seconds = Math.floor(ms / 1000);
+  if (seconds < 60) return `${seconds}s`;
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  const days = Math.floor(hours / 24);
+  if (days < 365) return `${days}d`;
+  const years = Math.floor(days / 365);
+  return `${years}y`;
+}
 
 /**
  * Resolve the master node's IP from the database.
@@ -56,7 +80,7 @@ async function getMasterHost(): Promise<string | null> {
  * Runs 4 kubectl queries in parallel, then builds derived info.
  */
 async function fetchAllClusterData(host: string): Promise<CachedData | null> {
-  const [nodesResult, podsResult, pvResult, pvcResult, longhornResult, scResult] =
+  const [nodesResult, podsResult, pvResult, pvcResult, longhornResult, scResult, nsResult, svcResult, deployResult, ingressResult] =
     await Promise.all([
       kubectlJSON(host, "get nodes"),
       kubectlJSON(host, "get pods -A"),
@@ -64,6 +88,10 @@ async function fetchAllClusterData(host: string): Promise<CachedData | null> {
       kubectlJSON(host, "get pvc -A"),
       kubectlJSON(host, "get volumes.longhorn.io -A", 8000).catch(() => null),
       kubectlJSON(host, "get sc", 5000).catch(() => null),
+      kubectlJSON(host, "get namespaces", 5000).catch(() => null),
+      kubectlJSON(host, "get services -A", 5000).catch(() => null),
+      kubectlJSON(host, "get deployments -A", 5000).catch(() => null),
+      kubectlJSON(host, "get ingress -A", 5000).catch(() => null),
     ]);
 
   // If even nodes query fails, cluster is unreachable
@@ -135,6 +163,137 @@ async function fetchAllClusterData(host: string): Promise<CachedData | null> {
       ] === "true",
   }));
 
+  // ── Namespace list ──
+  const now = Date.now();
+  const namespaces = (nsResult?.items || []).map((ns: any) => {
+    const created = ns.metadata?.creationTimestamp;
+    const age = created ? formatAge(now - new Date(created).getTime()) : "-";
+    return {
+      name: ns.metadata?.name || "unknown",
+      status: ns.status?.phase || "Active",
+      age,
+    };
+  });
+
+  // ── Service list ──
+  const services = (svcResult?.items || []).map((svc: any) => {
+    const ports = (svc.spec?.ports || []).map((p: any) => {
+      const nodePort = p.nodePort ? `:${p.nodePort}` : "";
+      return `${p.port}${nodePort}/${p.protocol || "TCP"}`;
+    }).join(", ");
+    const lbIngress = svc.status?.loadBalancer?.ingress;
+    const externalIP =
+      (lbIngress && lbIngress.length > 0)
+        ? lbIngress.map((i: any) => i.ip || i.hostname).join(", ")
+        : (svc.spec?.externalIPs || []).join(", ") || "-";
+    return {
+      name: svc.metadata?.name || "unknown",
+      namespace: svc.metadata?.namespace || "default",
+      type: svc.spec?.type || "ClusterIP",
+      clusterIP: svc.spec?.clusterIP || "-",
+      externalIP,
+      ports,
+      selector: svc.spec?.selector
+        ? Object.entries(svc.spec.selector).map(([k, v]) => `${k}=${v}`).join(", ")
+        : "-",
+    };
+  });
+
+  // ── Deployment list ──
+  // Pre-compute pod restarts per deployment via pod name prefix matching.
+  // Kubernetes names pods as <deployment>-<rs-hash>-<pod-hash>.
+  const podRestartsByDeploy = new Map<string, number>();
+  for (const pod of allPods) {
+    const podName: string = pod.metadata?.name || "";
+    const podNs: string = pod.metadata?.namespace || "";
+    // Find the deployment whose name is a prefix of the pod name
+    const deployItems = deployResult?.items || [];
+    for (const dep of deployItems) {
+      const depName: string = dep.metadata?.name || "";
+      const depNs: string = dep.metadata?.namespace || "default";
+      if (podNs === depNs && podName.startsWith(depName + "-")) {
+        const restarts = (pod.status?.containerStatuses || []).reduce(
+          (sum: number, c: any) => sum + (c.restartCount || 0), 0
+        );
+        const key = `${depNs}/${depName}`;
+        podRestartsByDeploy.set(key, (podRestartsByDeploy.get(key) || 0) + restarts);
+        break;
+      }
+    }
+  }
+
+  const deployments = (deployResult?.items || []).map((dep: any) => {
+    const created = dep.metadata?.creationTimestamp;
+    const age = created ? formatAge(now - new Date(created).getTime()) : "-";
+    const ready = dep.status?.readyReplicas ?? 0;
+    const desired = dep.status?.replicas ?? 0;
+    const available = dep.status?.availableReplicas ?? 0;
+    const updated = dep.status?.updatedReplicas ?? 0;
+    const depName = dep.metadata?.name || "unknown";
+    const depNs = dep.metadata?.namespace || "default";
+
+    // Determine state
+    let state = "Progressing";
+    if (ready === desired && updated === desired && desired > 0) {
+      state = "Ready";
+    } else if (updated < desired) {
+      state = "Updating";
+    }
+
+    // Determine health from conditions
+    const conditions = dep.status?.conditions || [];
+    const availableCond = conditions.find((c: any) => c.type === "Available");
+    let health = "Unknown";
+    if (availableCond?.status === "True") {
+      health = "Healthy";
+    } else if (conditions.some((c: any) => c.type === "ReplicaFailure" && c.status === "True")) {
+      health = "Degraded";
+    } else if (availableCond?.status === "False") {
+      health = "Unhealthy";
+    }
+
+    // Primary container image
+    const firstContainer = dep.spec?.template?.spec?.containers?.[0];
+    const image = firstContainer?.image || "-";
+
+    // Sum pod restarts
+    const restarts = podRestartsByDeploy.get(`${depNs}/${depName}`) ?? 0;
+
+    return {
+      name: depName,
+      namespace: depNs,
+      state,
+      image,
+      ready: `${ready}/${desired}`,
+      upToDate: updated,
+      available,
+      restarts,
+      age,
+      health,
+    };
+  });
+
+  // ── Ingress list ──
+  const ingresses = (ingressResult?.items || []).map((ing: any) => {
+    const created = ing.metadata?.creationTimestamp;
+    const age = created ? formatAge(now - new Date(created).getTime()) : "-";
+    const lbIngress = ing.status?.loadBalancer?.ingress;
+    const state = lbIngress && lbIngress.length > 0 ? "Ready" : "Pending";
+    // First rule's first backend
+    const firstRule = ing.spec?.rules?.[0];
+    const firstPath = firstRule?.http?.paths?.[0];
+    const target = firstPath?.backend?.service?.name
+      ? `${firstPath.backend.service.name}:${firstPath.backend.service.port?.number || firstPath.backend.service.port?.name || ""}`
+      : firstRule?.host || "-";
+    return {
+      name: ing.metadata?.name || "unknown",
+      namespace: ing.metadata?.namespace || "default",
+      state,
+      target,
+      age,
+    };
+  });
+
   return {
     info: {
       nodes: allNodes.length,
@@ -149,6 +308,14 @@ async function fetchAllClusterData(host: string): Promise<CachedData | null> {
     pods: allPods,
     volumes,
     storageClasses,
+    namespaces,
+    services,
+    deployments,
+    ingresses,
+    rawNamespaces: nsResult?.items || [],
+    rawServices: svcResult?.items || [],
+    rawDeployments: deployResult?.items || [],
+    rawIngresses: ingressResult?.items || [],
     lastFetch: Date.now(),
   };
 }

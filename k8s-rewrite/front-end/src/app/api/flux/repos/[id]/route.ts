@@ -13,7 +13,7 @@ export async function DELETE(
       return NextResponse.json({ error: result.error }, { status: 400 });
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, deleteId: result.deleteId });
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }

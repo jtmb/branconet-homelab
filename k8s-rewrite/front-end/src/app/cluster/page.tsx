@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
-import { Server, Activity, HardDrive, Box, Loader2, Trash2, XCircle, GitBranch } from "lucide-react";
+import { LayoutDashboard, Server, Activity, HardDrive, Box, Loader2, Trash2, GitBranch, Settings, Key, Shield, Terminal, ShieldAlert } from "lucide-react";
+import ViewportWrapper from "./viewport-wrapper";
 
 interface ClusterInfo {
   nodes: number;
@@ -21,6 +21,8 @@ export default function ClusterPage() {
   const [loading, setLoading] = useState(true);
   const [removing, setRemoving] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [secretCount, setSecretCount] = useState(0);
+  const [configCount, setConfigCount] = useState(0);
 
   const fetchInfo = useCallback(async () => {
     try {
@@ -40,6 +42,21 @@ export default function ClusterPage() {
     return () => clearInterval(interval);
   }, [fetchInfo]);
 
+  const fetchVarCounts = useCallback(async () => {
+    try {
+      const res = await fetch("/api/vars");
+      const data = await res.json();
+      if (Array.isArray(data)) {
+        setSecretCount(data.filter((v: { category: string }) => v.category === "secret").length);
+        setConfigCount(data.filter((v: { category: string }) => v.category !== "secret").length);
+      }
+    } catch { /* ignore */ }
+  }, []);
+
+  useEffect(() => {
+    fetchVarCounts();
+  }, [fetchVarCounts]);
+
   async function removeCluster() {
     setRemoving(true);
     setShowConfirm(false);
@@ -57,15 +74,76 @@ export default function ClusterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950">
-      <header className="border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-3">
-          <Link href="/" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors mr-2">
-            Home
-          </Link>
-          <span className="text-zinc-700">|</span>
-          <Server className="w-6 h-6 text-blue-400" />
-          <h1 className="text-xl font-bold text-zinc-100">Cluster</h1>
+    <div className="flex flex-col min-h-0">
+
+      {/* Confirmation Modal */}
+      {showConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => setShowConfirm(false)}
+          />
+
+          {/* Modal */}
+          <div className="relative z-10 w-full max-w-lg mx-4 rounded-2xl bg-zinc-900 border border-red-500/20 shadow-2xl shadow-red-500/10 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="px-6 pt-6 pb-4 flex items-start gap-4">
+              <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center">
+                <Trash2 className="w-5 h-5 text-red-400" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="text-base font-semibold text-red-400">Remove Cluster</h3>
+                <p className="text-sm text-zinc-400 mt-1">
+                  This will clear the cluster configuration from the local database.
+                </p>
+              </div>
+            </div>
+
+            {/* Warning */}
+            <div className="mx-6 mb-5 px-4 py-3 rounded-xl bg-amber-500/5 border border-amber-500/15 flex items-start gap-3">
+              <ShieldAlert className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-medium text-amber-300">Are you sure?</p>
+                <p className="text-[13px] text-amber-400/70 mt-1 leading-relaxed">
+                  This will remove all cluster data — nodes, pods, volumes, and configuration
+                  — from the app database. It does <strong className="text-amber-300">not</strong> affect
+                  any running servers, only the local database.
+                </p>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="px-6 pb-6 flex items-center gap-3 justify-end border-t border-zinc-800/60 pt-4">
+              <button
+                onClick={() => setShowConfirm(false)}
+                disabled={removing}
+                className="px-5 py-2.5 rounded-xl bg-zinc-800/80 border border-zinc-700/40 text-zinc-300 hover:bg-zinc-700 hover:text-white text-sm font-medium transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={removeCluster}
+                disabled={removing}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 text-white text-sm font-semibold transition-colors shadow-lg shadow-red-600/20 disabled:opacity-50"
+              >
+                {removing ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Trash2 className="w-4 h-4" />
+                )}
+                {removing ? "Removing…" : "Yes, Remove Cluster"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ViewportWrapper>
+      <main className="px-3 sm:px-4 lg:px-6 py-6">
+        <div className="flex items-center gap-3 mb-6">
+          <LayoutDashboard className="page-header-icon text-indigo-400" />
+          <h1 className="page-header-title">Overview</h1>
           <span className="text-xs text-zinc-500 ml-auto">
             {info ? `K8s ${info.version || "N/A"}` : "Loading…"}
           </span>
@@ -84,48 +162,6 @@ export default function ClusterPage() {
             </button>
           )}
         </div>
-      </header>
-
-      {/* Confirmation Modal */}
-      {showConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-          <div className="bg-zinc-900 border border-zinc-700 rounded-xl p-6 max-w-sm w-full mx-4 shadow-2xl">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-red-500/10 flex items-center justify-center">
-                <XCircle className="w-5 h-5 text-red-400" />
-              </div>
-              <div>
-                <h2 className="text-lg font-semibold text-zinc-100">Remove Cluster</h2>
-                <p className="text-xs text-zinc-400">This cleans the database only</p>
-              </div>
-            </div>
-            <p className="text-sm text-zinc-300 mb-6">
-              This will remove the cluster configuration and all associated data
-              (nodes, pods, volumes) from the app database. It does <strong>not</strong> affect
-              any running servers — it only clears the local database.
-            </p>
-            <div className="flex gap-3 justify-end">
-              <button
-                onClick={() => setShowConfirm(false)}
-                disabled={removing}
-                className="px-4 py-2 rounded-lg border border-zinc-700 text-zinc-300 hover:bg-zinc-800 text-sm transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={removeCluster}
-                disabled={removing}
-                className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition-colors disabled:opacity-50 flex items-center gap-2"
-              >
-                {removing && <Loader2 className="w-4 h-4 animate-spin" />}
-                {removing ? "Removing…" : "Remove"}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {loading && !info ? (
           <div className="flex items-center justify-center min-h-[calc(100vh-4rem)]">
             <Loader2 className="w-8 h-8 animate-spin text-indigo-400" />
@@ -151,7 +187,7 @@ export default function ClusterPage() {
             )}
 
             {/* Summary Cards */}
-            <div className="grid md:grid-cols-5 gap-4 mb-6">
+            <div className="grid md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
               <div className="glass-card p-4 rounded-xl">
                 <div className="flex items-center gap-2 mb-2">
                   <Server className="w-5 h-5 text-blue-400" />
@@ -210,32 +246,56 @@ export default function ClusterPage() {
                 </p>
                 <p className="text-xs text-zinc-500 mt-1">GitOps repos</p>
               </div>
+
+              <div className="glass-card p-4 rounded-xl">
+                <div className="flex items-center gap-2 mb-2">
+                  <Key className="w-5 h-5 text-cyan-400" />
+                  <span className="text-sm text-zinc-400">Secrets</span>
+                </div>
+                <p className="text-2xl font-bold text-zinc-100">
+                  {secretCount}
+                  <span className="text-sm text-zinc-500 ml-1">+ {configCount}</span>
+                </p>
+                <p className="text-xs text-zinc-500 mt-1">Secrets / Config Vars</p>
+              </div>
             </div>
 
             {/* Quick Links */}
-            <div className="grid md:grid-cols-4 gap-4">
-              <a href="/cluster/nodes" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
+            <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-4 mb-6">
+              <a href="/nodes" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
                 <Server className="w-8 h-8 text-blue-400 mb-3" />
                 <h3 className="text-lg font-semibold text-zinc-100 mb-1">Nodes</h3>
                 <p className="text-sm text-zinc-400">View and manage cluster nodes</p>
               </a>
 
-              <a href="/cluster/workloads" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
+              <a href="/workloads" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
                 <Box className="w-8 h-8 text-emerald-400 mb-3" />
                 <h3 className="text-lg font-semibold text-zinc-100 mb-1">Workloads</h3>
                 <p className="text-sm text-zinc-400">View pods, deployments, and services</p>
               </a>
 
-              <a href="/cluster/storage" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
+              <a href="/storage" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
                 <HardDrive className="w-8 h-8 text-purple-400 mb-3" />
                 <h3 className="text-lg font-semibold text-zinc-100 mb-1">Storage</h3>
                 <p className="text-sm text-zinc-400">Manage Longhorn volumes and PVCs</p>
               </a>
 
-              <a href="/cluster/flux" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
+              <a href="/flux" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
                 <GitBranch className="w-8 h-8 text-emerald-400 mb-3" />
                 <h3 className="text-lg font-semibold text-zinc-100 mb-1">Flux</h3>
                 <p className="text-sm text-zinc-400">GitOps deployments via FluxCD</p>
+              </a>
+
+              <a href="/deploy" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
+                <Terminal className="w-8 h-8 text-emerald-400 mb-3" />
+                <h3 className="text-lg font-semibold text-zinc-100 mb-1">Deploy</h3>
+                <p className="text-sm text-zinc-400">Run Ansible playbooks with live terminal output</p>
+              </a>
+
+              <a href="/secrets" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
+                <Key className="w-8 h-8 text-cyan-400 mb-3" />
+                <h3 className="text-lg font-semibold text-zinc-100 mb-1">Secrets</h3>
+                <p className="text-sm text-zinc-400">Manage variables and encrypted secrets</p>
               </a>
             </div>
           </>
@@ -248,13 +308,13 @@ export default function ClusterPage() {
             <h3 className="text-lg font-semibold text-zinc-300 mb-2">No Cluster Detected</h3>
             <p className="text-sm text-zinc-500 max-w-md mx-auto">
               Deploy a cluster first using the Deploy tab, or configure the kubeconfig 
-              in the Variables tab if you already have a cluster running.
+              in the Secrets Engine if you already have a cluster running.
             </p>
           </div>
         ) : (
           <div className="mt-6">
             <a
-              href="/cluster/nodes"
+              href="/nodes"
               className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors flex items-center justify-between"
             >
               <div>
@@ -266,6 +326,7 @@ export default function ClusterPage() {
           </div>
         )}
       </main>
+      </ViewportWrapper>
     </div>
   );
 }

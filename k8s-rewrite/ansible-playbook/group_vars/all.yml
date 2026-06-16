@@ -1,15 +1,25 @@
 # Kubernetes Cluster Configuration Variables
-# Auto-generated from Branconet K8s Manager DB
-# Last synced: 2026-06-15T13:03:49.112Z
+# Auto-generated from Botrus K8s DB
+# Last synced: 2026-06-16T00:29:42.338Z
 # WARNING: Manual edits to this file will be overwritten on next deploy/sync.
+#
+# Secrets are NOT stored here. Values marked encrypted=true in the DB
+# are rendered as {{ vault_<key> }} references. Provide these in:
+#   ansible-playbook/group_vars/vault.yml  (create with ansible-vault)
+# See vault.yml.example for the required keys.
 
 ---
 
 # =============================================================================
 # ANSIBLE
 # =============================================================================
-ansible_become_password: "Jbranco2002!"
+ansible_become_password: "{{ vault_become_password }}"
 ansible_ssh_private_key_file: /home/brajam/.ssh/id_ed25519
+
+# =============================================================================
+# DNS
+# =============================================================================
+dns_servers: 192.168.0.4 192.168.0.5 8.8.8.8
 
 # =============================================================================
 # GENERAL
@@ -31,18 +41,17 @@ crictl_version: v1.30.0
 k8s_version: v1.30.0
 kubeconfig_path: /root/.kube
 node_u1_hostname: u1
-node_u1_ip: 192.168.0.25
-node_u1_name: Master Node
+node_u1_ip: 192.168.1.10
+node_u1_name: U1 Tower
 node_u1_role: master
 node_u2_hostname: u2
-node_u2_ip: 192.168.0.27
-node_u2_name: Worker Node 1
+node_u2_ip: 192.168.1.11
+node_u2_name: U2 Mini
 node_u2_role: worker
 node_u3_hostname: u3
-node_u3_ip: 192.168.0.26
-node_u3_name: Worker Node 2
+node_u3_ip: 192.168.1.12
+node_u3_name: U3 Pi
 node_u3_role: worker
-traefik_version: v2.11.0
 
 # =============================================================================
 # LONGHORN
@@ -50,11 +59,6 @@ traefik_version: v2.11.0
 longhorn_default_storage_class: longhorn
 longhorn_replicas: "2"
 longhorn_version: v1.7.2
-
-# =============================================================================
-# DNS (systemd-resolved)
-# =============================================================================
-dns_servers: "192.168.0.4 192.168.0.5 8.8.8.8"
 
 # =============================================================================
 # NETWORKING
@@ -67,7 +71,7 @@ service_cidr: 10.96.0.0/12
 # =============================================================================
 # NFS
 # =============================================================================
-nfs_enabled: "false"
+nfs_enabled: "true"
 nfs_provisioner_version: v4.0.2
 nfs_server_path: /srv/nfs-share
 nfs_storage_class: nfs-client
@@ -82,12 +86,15 @@ containerd_log_level: info
 # SAMBA
 # =============================================================================
 samba_enabled: "true"
-samba_password: "Jbranco2002!"
-samba_server: 192.168.0.8
-samba_share_name: plex_smb_share
+samba_share_name: k8s-share
 samba_share_path: /srv/samba-share
-samba_username: james
 smb_storage_class: smb
+
+# =============================================================================
+# SECRET
+# =============================================================================
+secret_plex_smb-creds_password: "{{ vault_smb_password }}"
+secret_plex_smb-creds_username: james
 
 # =============================================================================
 # STORAGE
@@ -100,4 +107,5 @@ storage_class: local-path
 # =============================================================================
 traefik_accesslog: "true"
 traefik_log_level: INFO
+traefik_version: v2.11.0
 

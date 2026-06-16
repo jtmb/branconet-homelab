@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Box, Loader2 } from "lucide-react";
+import ViewportWrapper from "../viewport-wrapper";
 import { useState, useEffect, useCallback } from "react";
 
 type FilterType = "all" | "system" | "app";
@@ -44,20 +45,15 @@ export default function WorkloadsPage() {
   }, [filter, fetchPods]);
 
   return (
-    <div className="min-h-screen bg-zinc-950">
-      <header className="border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-3">
-          <Link href="/cluster" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors mr-2">
-            Cluster
-          </Link>
-          <span className="text-zinc-700">|</span>
-          <Box className="w-6 h-6 text-emerald-400" />
-          <h1 className="text-xl font-bold text-zinc-100">Workloads</h1>
+    <div className="flex flex-col min-h-0">
+
+      <ViewportWrapper>
+      <main className="px-3 sm:px-4 lg:px-6 py-6">
+        <div className="flex items-center gap-3 mb-6">
+          <Box className="page-header-icon text-emerald-400" />
+          <h1 className="page-header-title">Workloads</h1>
           <span className="text-sm text-zinc-500 ml-auto">{loading ? "…" : `${pods.length} pods`}</span>
         </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Filter Pills */}
         <div className="flex items-center gap-2 mb-4">
           {(["all", "system", "app"] as FilterType[]).map((f) => (
@@ -127,6 +123,7 @@ export default function WorkloadsPage() {
           </div>
         )}
       </main>
+      </ViewportWrapper>
     </div>
   );
 }

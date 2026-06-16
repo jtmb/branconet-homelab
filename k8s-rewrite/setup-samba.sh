@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-echo "Jbranco2002!" | sudo -S bash -c '
+echo "${BECOME_PASSWORD:?err}" | sudo -S bash -c '
 mkdir -p /srv/samba-share
 chown nobody:nogroup /srv/samba-share
 chmod 0777 /srv/samba-share
@@ -28,7 +28,7 @@ SMBEOF
 
 id james 2>/dev/null || useradd -s /usr/sbin/nologin james
 
-echo -e "Jbranco2002!\nJbranco2002!" | smbpasswd -s -a james
+echo -e "${SMB_PASSWORD:?err}\n${SMB_PASSWORD:?err}" | smbpasswd -s -a james
 
 systemctl enable smbd --now
 systemctl restart smbd

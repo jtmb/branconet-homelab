@@ -42,13 +42,13 @@ curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"traefik_a
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"coredns_replicas","value":"2","category":"kubernetes","encrypted":false}' > /dev/null
 
 # Cluster name
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"cluster_name","value":"branconet-k8s","category":"kubernetes","encrypted":false}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"cluster_name","value":"botrus-k8s","category":"kubernetes","encrypted":false}' > /dev/null
 
 # Kubeconfig path (category: kubernetes)
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"kubeconfig_path","value":"/root/.kube","category":"kubernetes","encrypted":false}' > /dev/null
 
 # Ansible connection settings (category: ansible)
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"ansible_become_password","value":"Jbranco2002!","category":"ansible","encrypted":true}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"ansible_become_password","value":"'"${BECOME_PASSWORD:?err}"'","category":"ansible","encrypted":true}' > /dev/null
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"ansible_ssh_private_key_file","value":"/home/brajam/.ssh/id_ed25519","category":"ansible","encrypted":false}' > /dev/null
 
 # GitOps / FluxCD settings
@@ -64,8 +64,6 @@ curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"nfs_stora
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"samba_enabled","value":"true","category":"samba","encrypted":false}' > /dev/null
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"samba_share_path","value":"/srv/samba-share","category":"samba","encrypted":false}' > /dev/null
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"samba_share_name","value":"k8s-share","category":"samba","encrypted":false}' > /dev/null
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"samba_username","value":"k8s-user","category":"samba","encrypted":false}' > /dev/null
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"samba_password","value":"k8s-pass","category":"samba","encrypted":true}' > /dev/null
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"smb_storage_class","value":"smb","category":"samba","encrypted":false}' > /dev/null
 
 # Helm (category: helm)
@@ -75,7 +73,7 @@ curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"helm_vers
 # Convention: secret_<namespace>_<name>_<key>
 # These are deployed as K8s Secret objects by the secrets Ansible role
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"secret_plex_smb-creds_username","value":"james","category":"secret","encrypted":true}' > /dev/null
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"secret_plex_smb-creds_password","value":"Jbranco2002!","category":"secret","encrypted":true}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"secret_plex_smb-creds_password","value":"'"${SMB_PASSWORD:?err}"'","category":"secret","encrypted":true}' > /dev/null
 
 echo ""
 echo "=== Seeding node into DB ==="

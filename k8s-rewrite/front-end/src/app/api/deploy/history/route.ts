@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/lib/db";
 
 export async function GET() {
@@ -8,4 +8,16 @@ export async function GET() {
   });
 
   return NextResponse.json(jobs);
+}
+
+export async function DELETE(req: NextRequest) {
+  const jobId = req.nextUrl.searchParams.get("jobId");
+
+  if (!jobId) {
+    return NextResponse.json({ error: "jobId is required" }, { status: 400 });
+  }
+
+  await prisma.job.delete({ where: { id: jobId } });
+
+  return NextResponse.json({ success: true });
 }

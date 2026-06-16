@@ -29,37 +29,28 @@ export async function GET(request: NextRequest) {
   ]);
 
   let pods = data.pods.map((p: any) => {
-    const labels = p.metadata?.labels || {};
     const namespace = p.metadata?.namespace || "default";
-
-    // Label takes priority; fallback to namespace-based detection
-    let appType = labels["branconet.io/type"] || null;
-    if (!appType) {
-      appType = SYSTEM_NAMESPACES.has(namespace) ? "system" : "app";
-    }
+    const name = p.metadata?.name || "unknown";
+    const containerStatuses = p.status?.containerStatuses || [];
+    const readyCount = containerStatuses.filter((c: any) => c.ready).length;
+    const totalContainers = containerStatuses.length || (p.spec?.containers?.length) || 1;
+    const restartCount = containerStatuses.reduce((sum: number, c: any) => sum + (c.restartCount || 0), 0);
+    const images = p.spec?.containers?.map((c: any) => c.image).join(", ") || "-";
+    const podIP = p.status?.podIP || "-";
 
     return {
-      id: p.metadata?.uid || `${namespace}-${p.metadata?.name}`,
-      name: p.metadata?.name || "unknown",
+      id: p.metadata?.uid || `${namespace}-${name}`,
+      name,
       namespace,
       status: p.status?.phase || "Unknown",
-      phase: p.status?.containerStatuses?.[0]?.state
-        ? Object.keys(p.status.containerStatuses[0].state)[0]
-        : undefined,
-      reason: p.status?.reason,
-      message: p.status?.message,
+      ready: `${readyCount}/${totalContainers}`,
+      restarts: restartCount,
+      image: images,
+      ip: podIP,
       node: p.spec?.nodeName || "-",
-      appType,
+      created: p.metadata?.creationTimestamp || null,
     };
   });
-
-  // Filter by type if requested
-  if (typeFilter === "system") {
-    pods = pods.filter((p) => p.appType === "system");
-  } else if (typeFilter === "app") {
-    pods = pods.filter((p) => p.appType === "app");
-  }
-  // "all" or no filter returns everything
 
   return NextResponse.json({ pods });
 }

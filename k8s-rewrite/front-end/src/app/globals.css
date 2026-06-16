@@ -52,11 +52,52 @@
     border-color: var(--border);
   }
 
+  /* Search bars: focus shown via border-color transition.
+     Kill Chrome's focus-visible outline on both the input and its parent container. */
+  input[type="text"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus-visible,
+  input[type="search"]:focus-visible {
+    outline: 0;
+  }
+  /* Parent container gets :focus-within when search input is focused */
+  div:has(> input[type="text"]:focus),
+  div:has(> input[type="search"]:focus) {
+    outline: 0;
+  }
+
   body {
     background: var(--background);
     color: var(--foreground);
     font-family: var(--font-geist-sans), geist-sans, 'Inter', system-ui, sans-serif;
   }
+
+  /* Dark scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(240, 10%, 8%);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(240, 5%, 26%);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(240, 5%, 35%);
+  }
+  /* Firefox */
+  * {
+    scrollbar-color: hsl(240, 5%, 26%) hsl(240, 10%, 8%);
+    scrollbar-width: thin;
+  }
+}
+
+/* ── Kill Chrome's default focus-visible outline on every element ── */
+/* Below @layer so it beats @layer base specificity. */
+* {
+  outline: 0 !important;
 }
 
 @layer utilities {
@@ -75,7 +116,7 @@
 /* Glassmorphism cards */
 .glass-card {
   background: rgba(24, 24, 27, 0.6);
-  border: 1px solid rgba(56, 56, 61, 0.4);
+  border: 1px solid rgba(56, 56, 61, 0.15);
   backdrop-filter: blur(8px);
 }
 
@@ -128,3 +169,51 @@
 .dot-pending {
   background-color: #6b7280;
 }
+
+/* ── Shared component classes ── */
+
+/* Top navigation bar */
+.topnav-bar {
+  @apply sticky top-0 z-10 bg-zinc-900/50 backdrop-blur-sm;
+  border-bottom: 1px solid hsl(var(--border) / 0.4);
+}
+
+/* Dropdown / popover menu */
+.dropdown {
+  @apply absolute rounded-xl py-1.5 z-30;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 20px 50px -12px rgb(0 0 0 / 0.6);
+}
+
+.dropdown-item {
+  @apply w-full text-left px-4 py-2 text-sm transition-colors;
+  color: hsl(var(--muted-foreground));
+}
+.dropdown-item:hover {
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
+}
+
+/* Card panel */
+.card-panel {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  @apply rounded-2xl;
+}
+
+/* Page header icon */
+.page-header-icon {
+  @apply w-6 h-6 flex-shrink-0;
+}
+
+/* Page header title */
+.page-header-title {
+  @apply text-2xl font-bold text-zinc-100;
+}
+
+/* Section separator */
+.section-border {
+  border-color: hsl(var(--border) / 0.4);
+}
+

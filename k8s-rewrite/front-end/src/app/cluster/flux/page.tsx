@@ -1,8 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { GitBranch, Loader2, Plus, RefreshCw, Trash2, XCircle, Globe, Key, Lock, X, ChevronDown } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { GitBranch, Loader2, Plus, RefreshCw, Trash2, XCircle, Globe, Key, Lock, X, ChevronDown, CheckCircle2, AlertTriangle, Search } from "lucide-react";
+import ViewportWrapper from "../viewport-wrapper";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+
+interface DeleteStep {
+  step: string;
+  status: "pending" | "running" | "done" | "error";
+  detail: string;
+}
+
+interface DeleteProgress {
+  deleteId: string;
+  repoName: string;
+  namespace: string;
+  steps: DeleteStep[];
+  done: boolean;
+  error?: string;
+}
 
 interface RepoData {
   id: string;
@@ -10,6 +26,7 @@ interface RepoData {
   url: string;
   branch: string;
   path: string;
+  namespace: string;
   authMethod: string;
   syncInterval: string;
   status: string;
@@ -28,9 +45,12 @@ export default function FluxPage() {
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [showConfirm, setShowConfirm] = useState<string | null>(null);
+  const [deleteProgress, setDeleteProgress] = useState<DeleteProgress | null>(null);
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [form, setForm] = useState({
     name: "",
     url: "",
@@ -52,6 +72,14 @@ export default function FluxPage() {
       setLoading(false);
     }
   }, []);
+
+  const [search, setSearch] = useState("");
+
+  const filteredRepos = useMemo(() => {
+    if (!search.trim()) return repos;
+    const q = search.toLowerCase();
+    return repos.filter((r) => r.name.toLowerCase().includes(q));
+  }, [repos, search]);
 
   useEffect(() => {
     fetchRepos();
@@ -92,17 +120,63 @@ export default function FluxPage() {
     }
   }
 
-  async function deleteRepo(id: string, name: string) {
-    setDeleting(id);
+  // Cleanup poll interval on unmount
+  useEffect(() => {
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, []);
+
+  async function deleteRepo(repo: RepoData) {
     setShowConfirm(null);
+    setDeleteError(null);
+    setDeleting(repo.id);
+
     try {
-      await fetch(`/api/flux/repos/${id}`, { method: "DELETE" });
-      fetchRepos();
+      // 1. Kick off cascade delete
+      const res = await fetch(`/api/flux/repos/${repo.id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (!res.ok || !data.deleteId) {
+        setDeleteError(data.error || "Failed to start deletion");
+        setDeleting(null);
+        return;
+      }
+
+      // 2. Start polling progress
+      const deleteId = data.deleteId;
+      const poll = async () => {
+        try {
+          const pr = await fetch(`/api/flux/repos/${deleteId}/delete-progress`);
+          if (!pr.ok) return;
+          const progress: DeleteProgress = await pr.json();
+          setDeleteProgress(progress);
+
+          if (progress.done) {
+            if (pollRef.current) clearInterval(pollRef.current);
+            pollRef.current = null;
+            setDeleting(null);
+            fetchRepos();
+            // Auto-dismiss after 2s
+            setTimeout(() => setDeleteProgress(null), 2000);
+          }
+        } catch {
+          // Keep polling
+        }
+      };
+
+      pollRef.current = setInterval(poll, 1500);
+      poll(); // Immediate first poll
     } catch {
-      // ignore
-    } finally {
       setDeleting(null);
     }
+  }
+
+  function cancelDelete() {
+    if (pollRef.current) clearInterval(pollRef.current);
+    pollRef.current = null;
+    setDeleteProgress(null);
+    setDeleteError(null);
+    setDeleting(null);
   }
 
   async function triggerSync(id: string) {
@@ -166,32 +240,52 @@ export default function FluxPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950">
-      <header className="border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-3">
-          <Link href="/cluster" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors mr-2">
-            Cluster
-          </Link>
-          <span className="text-zinc-700">|</span>
-          <GitBranch className="w-6 h-6 text-emerald-400" />
-          <h1 className="text-xl font-bold text-zinc-100">Flux</h1>
-          <span className="text-sm text-zinc-500 ml-auto">
-            {loading ? "…" : `${repos.length} repos`}
-          </span>
-        </div>
-      </header>
+    <div className="flex flex-col min-h-0">
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Add Repo Button */}
-        {!adding ? (
-          <button
-            onClick={() => setAdding(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors mb-6"
-          >
-            <Plus className="w-4 h-4" />
-            Add Repository
-          </button>
-        ) : null}
+      <ViewportWrapper>
+      <main className="px-3 sm:px-4 lg:px-6 py-6">
+        <div className="flex items-center gap-3 mb-6">
+          <GitBranch className="page-header-icon text-emerald-400" />
+          <h1 className="page-header-title">Flux</h1>
+          <span className="text-sm text-zinc-500 ml-auto">{repos.length} repos</span>
+        </div>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="relative flex-1 max-w-xs">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <input
+              type="text"
+              placeholder="Search…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                width: '100%',
+                background: 'rgb(39,39,42)',
+                border: 'none',
+                outline: 'none',
+                boxShadow: 'none',
+                padding: '0.5rem 0.75rem 0.5rem 2.25rem',
+                fontSize: '0.875rem',
+                lineHeight: '1.25rem',
+                color: '#e4e4e7',
+                borderRadius: '0.5rem',
+                WebkitAppearance: 'none',
+                MozAppearance: 'none',
+                appearance: 'none',
+              }}
+            />
+          </div>
+          <div className="ml-auto">
+            {!adding ? (
+              <button
+                onClick={() => setAdding(true)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors whitespace-nowrap"
+              >
+                <Plus className="w-4 h-4" />
+                Add Repository
+              </button>
+            ) : null}
+          </div>
+        </div>
 
         {/* Add Repo Modal */}
         {adding && (
@@ -236,7 +330,7 @@ export default function FluxPage() {
                       onChange={e => setForm({ ...form, name: e.target.value })}
                       placeholder="my-app"
                       autoFocus
-                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
+                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
                     />
                   </div>
                   <div className="col-span-3">
@@ -247,7 +341,7 @@ export default function FluxPage() {
                       value={form.url}
                       onChange={e => setForm({ ...form, url: e.target.value })}
                       placeholder="https://github.com/user/repo.git"
-                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
+                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
                     />
                   </div>
                 </div>
@@ -262,7 +356,7 @@ export default function FluxPage() {
                       <input
                         value={form.branch}
                         onChange={e => setForm({ ...form, branch: e.target.value })}
-                        className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg pl-3 pr-8 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
+                        className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg pl-3 pr-8 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
                       />
                       <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-600 pointer-events-none" />
                     </div>
@@ -275,7 +369,7 @@ export default function FluxPage() {
                       value={form.path}
                       onChange={e => setForm({ ...form, path: e.target.value })}
                       placeholder="./"
-                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
+                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
                     />
                   </div>
                 </div>
@@ -329,7 +423,7 @@ export default function FluxPage() {
                           : "ghp_xxxxxxxxxxxxxxxxxxxx"
                       }
                       rows={form.authMethod === "ssh" ? 4 : 1}
-                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors resize-none"
+                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors resize-none"
                     />
                     <p className="text-[10px] text-zinc-600 mt-1.5">
                       {form.authMethod === "ssh"
@@ -376,7 +470,7 @@ export default function FluxPage() {
           </div>
         ) : (
           <div className="space-y-3">
-            {repos.map((repo) => (
+            {filteredRepos.map((repo) => (
               <div key={repo.id} className="glass-card p-4 rounded-xl">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3 min-w-0">
@@ -447,13 +541,29 @@ export default function FluxPage() {
                   </div>
                 </div>
 
+                {/* Delete Error */}
+                {deleteError && (
+                  <div className="mt-3 p-3 rounded-lg bg-red-500/5 border border-red-500/10 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                      <span className="text-sm text-red-300">{deleteError}</span>
+                    </div>
+                    <button
+                      onClick={() => setDeleteError(null)}
+                      className="text-zinc-500 hover:text-zinc-300 ml-4 flex-shrink-0"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+
                 {/* Delete Confirmation */}
                 {showConfirm === repo.id && (
                   <div className="mt-3 p-3 rounded-lg bg-red-500/5 border border-red-500/10 flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <XCircle className="w-4 h-4 text-red-400" />
                       <span className="text-sm text-zinc-300">
-                        Remove &quot;{repo.name}&quot; and all its Flux resources?
+                        Delete &quot;{repo.name}&quot; and ALL resources in the <code className="text-xs bg-zinc-800 px-1 py-0.5 rounded">{repo.namespace}</code> namespace?
                       </span>
                     </div>
                     <div className="flex gap-2">
@@ -464,7 +574,7 @@ export default function FluxPage() {
                         Cancel
                       </button>
                       <button
-                        onClick={() => deleteRepo(repo.id, repo.name)}
+                        onClick={() => deleteRepo(repo)}
                         className="px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium transition-colors"
                       >
                         Remove
@@ -476,7 +586,91 @@ export default function FluxPage() {
             ))}
           </div>
         )}
+
+        {/* Delete Progress Modal */}
+        {deleteProgress && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="bg-zinc-900 border border-zinc-700/60 rounded-2xl w-full max-w-md mx-4 shadow-2xl overflow-hidden">
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-red-500/10 flex items-center justify-center">
+                    <Trash2 className="w-5 h-5 text-red-400" />
+                  </div>
+                  <div>
+                    <h2 className="text-base font-semibold text-zinc-100">Deleting {deleteProgress.repoName}</h2>
+                    <p className="text-xs text-zinc-500">Namespace: {deleteProgress.namespace}</p>
+                  </div>
+                </div>
+                {deleteProgress.done && (
+                  <button
+                    onClick={() => setDeleteProgress(null)}
+                    className="p-1.5 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+
+              {/* Steps */}
+              <div className="px-6 py-5 space-y-4">
+                {deleteProgress.steps.map((step, i) => (
+                  <div key={step.step} className="flex items-start gap-3">
+                    {/* Status icon */}
+                    <div className="flex-shrink-0 mt-0.5">
+                      {step.status === "pending" && (
+                        <div className="w-5 h-5 rounded-full border-2 border-zinc-600" />
+                      )}
+                      {step.status === "running" && (
+                        <Loader2 className="w-5 h-5 text-indigo-400 animate-spin" />
+                      )}
+                      {step.status === "done" && (
+                        <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                      )}
+                      {step.status === "error" && (
+                        <AlertTriangle className="w-5 h-5 text-amber-400" />
+                      )}
+                    </div>
+                    {/* Step detail */}
+                    <div className="min-w-0">
+                      <p className={`text-sm ${
+                        step.status === "done" ? "text-zinc-500" :
+                        step.status === "error" ? "text-amber-300" :
+                        "text-zinc-200"
+                      }`}>
+                        {step.detail}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Footer */}
+              <div className="flex items-center justify-end gap-2.5 px-6 py-4 border-t border-zinc-800 bg-zinc-900/50 rounded-b-2xl">
+                {deleteProgress.error && (
+                  <p className="text-xs text-red-400 mr-auto">{deleteProgress.error}</p>
+                )}
+                {!deleteProgress.done ? (
+                  <button
+                    onClick={cancelDelete}
+                    className="px-4 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
+                  >
+                    Dismiss
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setDeleteProgress(null)}
+                    className="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-sm font-medium transition-colors"
+                  >
+                    Close
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </main>
+      </ViewportWrapper>
     </div>
   );
 }

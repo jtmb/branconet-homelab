@@ -83,3 +83,45 @@ export async function sshExec(
     return null;
   }
 }
+
+/**
+ * Execute a raw kubectl command (no -o json). Returns stdout string or null.
+ * Prefers local kubectl, falls back to SSH.
+ */
+export async function kubectlExec(
+  cmd: string,
+  timeoutMs = 10000
+): Promise<string | null> {
+  if (HAS_LOCAL_KUBECTL) {
+    try {
+      const { stdout } = await execFileAsync(
+        "kubectl",
+        ["--kubeconfig", KUBECONFIG_PATH, ...cmd.split(" ")],
+        { timeout: timeoutMs, maxBuffer: 2 * 1024 * 1024 }
+      );
+      return stdout;
+    } catch {
+      return null;
+    }
+  }
+
+  // Fallback: SSH
+  try {
+    const prisma = (await import("./db")).default;
+    const pwVar = await prisma.variable.findUnique({
+      where: { key: "ansible_become_password" },
+    });
+    const sudoPass = pwVar?.value || "";
+    const sudoPrefix = sudoPass ? `echo '${sudoPass}' | sudo -S ` : "sudo ";
+    const fullCmd = `${sudoPrefix}kubectl --kubeconfig=/etc/kubernetes/admin.conf ${cmd} 2>/dev/null`;
+    const args = [...SSH_OPTS, "-i", SSH_KEY, "brajam@u1", fullCmd];
+    const { stdout } = await execFileAsync("ssh", args, {
+      timeout: timeoutMs,
+      maxBuffer: 2 * 1024 * 1024,
+    });
+    if (!stdout.trim()) return null;
+    return stdout.split("\n").filter((l: string) => !l.startsWith("[sudo]")).join("\n");
+  } catch {
+    return null;
+  }
+}

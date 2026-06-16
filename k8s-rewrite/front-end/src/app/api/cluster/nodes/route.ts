@@ -11,6 +11,31 @@ export async function GET() {
     orderBy: { createdAt: "asc" },
   });
 
+  // Helper: compute human-readable age from ISO timestamp
+  function nodeAge(createdAt: string): string {
+    const created = new Date(createdAt).getTime();
+    const diff = Date.now() - created;
+    const seconds = Math.floor(diff / 1000);
+    if (seconds < 60) return `${seconds}s`;
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h`;
+    const days = Math.floor(hours / 24);
+    if (days < 365) return `${days}d`;
+    const years = Math.floor(days / 365);
+    return `${years}y`;
+  }
+
+  // Index pods by node name for per-node pod counts
+  const podsByNode = new Map<string, number>();
+  if (clusterData?.pods) {
+    for (const p of clusterData.pods) {
+      const node = p.spec?.nodeName;
+      if (node) podsByNode.set(node, (podsByNode.get(node) || 0) + 1);
+    }
+  }
+
   // If no live data, fall back to DB-only (shows provisioned nodes without status)
   if (!clusterData || !clusterData.nodes.length) {
     const fallback = dbNodes.length
@@ -25,6 +50,9 @@ export async function GET() {
           memory: n.memory,
           k8sVersion: null,
           osImage: null,
+          externalIp: null,
+          pods: null,
+          age: null,
         }))
       : [];
     return NextResponse.json({ nodes: fallback });
@@ -41,31 +69,35 @@ export async function GET() {
       (c: any) => c.type === "Ready" && c.status === "True"
     );
 
+    const addresses = kn.status?.addresses || [];
+    const internalIp = addresses.find((a: any) => a.type === "InternalIP")?.address || dbNode?.ipAddress || "unknown";
+    const externalIp = addresses.find((a: any) => a.type === "ExternalIP")?.address || null;
+
     return {
       id: kn.metadata?.name || dbNode?.id || `node-${Math.random()}`,
       name: dbNode?.name || kn.metadata?.name || "unknown",
       hostname: kn.metadata?.name || "unknown",
-      ipAddress:
-        dbNode?.ipAddress ||
-        kn.status?.addresses?.find((a: any) => a.type === "InternalIP")
-          ?.address ||
-        "unknown",
-      role:
-        dbNode?.role ||
-        ("node-role.kubernetes.io/control-plane" in (kn.metadata?.labels || {})
-          ? "master"
-          : "worker"),
+      ipAddress: internalIp,
+      externalIp,
+      role: (() => {
+        const roles: string[] = [];
+        const labels = kn.metadata?.labels || {};
+        if ("node-role.kubernetes.io/control-plane" in labels) roles.push("control-plane");
+        if ("node-role.kubernetes.io/master" in labels) roles.push("master");
+        if (!roles.length && dbNode?.role) roles.push(dbNode.role);
+        if (!roles.length) roles.push("worker");
+        return roles.join(",");
+      })(),
       status: ready ? "ready" : "not-ready",
-      cpu: dbNode?.cpu || parseInt(kn.status?.capacity?.cpu) || null,
+      cpu: parseInt(kn.status?.capacity?.cpu) || dbNode?.cpu || null,
       memory:
-        dbNode?.memory ||
         (kn.status?.capacity?.memory
-          ? Math.round(
-              parseInt(kn.status.capacity.memory) / (1024 * 1024)
-            )
-          : null),
+          ? Math.round(parseInt(kn.status.capacity.memory) / 1024 / 1024)
+          : null) || dbNode?.memory || null,
       k8sVersion: kn.status?.nodeInfo?.kubeletVersion || null,
       osImage: kn.status?.nodeInfo?.osImage || null,
+      pods: podsByNode.get(kn.metadata?.name) ?? 0,
+      age: kn.metadata?.creationTimestamp ? nodeAge(kn.metadata.creationTimestamp) : null,
     };
   });
 

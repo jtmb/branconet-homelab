@@ -132,6 +132,7 @@ model GitRepo {
   path         String   @default("./")
   authMethod   String   @default("none")   // none, ssh, https
   authData     String   @default("")       // Encrypted JSON (deploy key or token)
+  namespace    String   @default("")       // Target namespace for the Kustomization
   syncInterval String   @default("5m")     // Flux sync interval
   status       String   @default("syncing") // active, syncing, error
   lastSync     DateTime?

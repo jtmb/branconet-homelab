@@ -5,13 +5,7 @@
    max log size = 1000
    logging = file
    server role = standalone server
-   obey pam restrictions = yes
-   unix password sync = yes
-   passwd program = /usr/bin/passwd %u
-   passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
-   pam password change = yes
    map to guest = bad user
-   usershare allow guests = no
 
 [{{ samba_share_name }}]
    comment = Kubernetes SMB Share
@@ -20,4 +14,6 @@
    read only = no
    create mask = 0777
    directory mask = 0777
-   valid users = {{ samba_username }}
+   guest ok = yes
+   force user = nobody
+   force group = nogroup

@@ -1,4 +1,4 @@
-import { kubectlJSON } from "./k8s";
+import { kubectlJSON, kubectlExec } from "./k8s";
 import { encryptWithKey, decrypt } from "../../lib/encryption";
 import prisma from "./db";
 import { execFile } from "child_process";
@@ -11,7 +11,7 @@ const KUBECONFIG_PATH = `${homedir()}/.kube/config`;
 const HAS_LOCAL_KUBECTL = existsSync(KUBECONFIG_PATH);
 
 const FLUX_NAMESPACE = "flux-system";
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "branconet-k8s-manager-key-2026";
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "botrus-k8s-manager-key-2026";
 
 // =============================================================================
 // Helpers
@@ -19,6 +19,44 @@ const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "branconet-k8s-manager-key-
 
 function buildKubectlCmd(cmd: string): string {
   return `--namespace ${FLUX_NAMESPACE} ${cmd}`;
+}
+
+// =============================================================================
+// Delete progress tracking (globalThis survives Next.js module isolation)
+// =============================================================================
+
+export interface DeleteStep {
+  step: string;
+  status: "pending" | "running" | "done" | "error";
+  detail: string;
+}
+
+export interface DeleteProgress {
+  deleteId: string;
+  repoName: string;
+  namespace: string;
+  steps: DeleteStep[];
+  done: boolean;
+  error?: string;
+}
+
+const _global = globalThis as typeof globalThis & {
+  __deleteProgress?: Map<string, DeleteProgress>;
+};
+
+if (!_global.__deleteProgress) {
+  _global.__deleteProgress = new Map<string, DeleteProgress>();
+}
+
+const deleteProgressMap = _global.__deleteProgress;
+
+export function getDeleteProgress(id: string): DeleteProgress | undefined {
+  return deleteProgressMap.get(id);
+}
+
+// Clean up stale progress entries after 5 minutes
+function scheduleProgressCleanup(id: string) {
+  setTimeout(() => { deleteProgressMap.delete(id); }, 5 * 60 * 1000);
 }
 
 // =============================================================================
@@ -198,27 +236,6 @@ export async function getFluxStatus(): Promise<FluxRepoStatus[]> {
 }
 
 // =============================================================================
-// Delete
-// =============================================================================
-
-export async function deleteGitRepo(
-  name: string,
-): Promise<{ success: boolean; error?: string }> {
-  // Delete resources with --ignore-not-found (non-zero exit/non-JSON output is expected when they don't exist)
-  try {
-    await kubectlJSON("u1", buildKubectlCmd(`delete kustomization ${name} --ignore-not-found`));
-  } catch { /* not-found is expected */ }
-  try {
-    await kubectlJSON("u1", buildKubectlCmd(`delete gitrepository ${name} --ignore-not-found`));
-  } catch { /* not-found is expected */ }
-  try {
-    await kubectlJSON("u1", buildKubectlCmd(`delete secret ${name}-auth --ignore-not-found`));
-  } catch { /* not-found is expected */ }
-
-  return { success: true };
-}
-
-// =============================================================================
 // Sync trigger
 // =============================================================================
 
@@ -241,6 +258,7 @@ export interface GitRepoRecord {
   url: string;
   branch: string;
   path: string;
+  namespace: string;
   authMethod: string;
   syncInterval: string;
   status: string;
@@ -271,6 +289,7 @@ export async function listRepos(): Promise<GitRepoRecord[]> {
       createdAt: repo.createdAt.toISOString(),
       updatedAt: repo.updatedAt.toISOString(),
       lastSync: repo.lastSync?.toISOString() || null,
+      namespace: repo.namespace || repo.name, // Default to repo name
       fluxReady: flux?.ready,
       fluxStatus: flux?.status,
       fluxRevision: flux?.revision,
@@ -291,6 +310,7 @@ export async function addRepo(data: {
   const branch = data.branch || "main";
   const path = data.path || "./";
   const authMethod = data.authMethod || "none";
+  const ns = data.name; // Namespace = repo name convention
 
   // 1. Encrypt auth data if provided
   let encryptedAuth = "";
@@ -308,6 +328,7 @@ export async function addRepo(data: {
         url: data.url,
         branch,
         path,
+        namespace: ns,
         authMethod,
         authData: encryptedAuth,
       },
@@ -336,8 +357,8 @@ export async function addRepo(data: {
     return { success: false, error: `Failed to create GitRepository: ${grResult.error}` };
   }
 
-  // 5. Create Kustomization CRD (Flux needs both to actually deploy)
-  const ksResult = await createKustomization(data.name, data.name, path);
+  // 5. Create Kustomization CRD with targetNamespace so Flux auto-creates the namespace
+  const ksResult = await createKustomization(data.name, data.name, path, ns);
   if (!ksResult.success) {
     return { success: false, error: `Failed to create Kustomization: ${ksResult.error}` };
   }
@@ -349,6 +370,7 @@ export async function addRepo(data: {
       authData: undefined,
       createdAt: repo.createdAt.toISOString(),
       updatedAt: repo.updatedAt.toISOString(),
+      namespace: ns,
       lastSync: null,
     } as GitRepoRecord,
   };
@@ -356,22 +378,146 @@ export async function addRepo(data: {
 
 export async function removeRepo(
   id: string,
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; deleteId?: string; error?: string }> {
   const repo = await prisma.gitRepo.findUnique({ where: { id } });
   if (!repo) {
     return { success: false, error: "Repository not found" };
   }
 
-  // Delete K8s resources
-  const delResult = await deleteGitRepo(repo.name);
-  if (!delResult.success) {
-    return { success: false, error: delResult.error };
+  const ns = repo.namespace || repo.name;
+  const deleteId = id;
+
+  const progress: DeleteProgress = {
+    deleteId,
+    repoName: repo.name,
+    namespace: ns,
+    steps: [
+      { step: "flux_crds", status: "pending", detail: "Deleting Flux resources…" },
+      { step: "namespace", status: "pending", detail: `Deleting namespace "${ns}"…` },
+      { step: "volumes", status: "pending", detail: "Cleaning up persistent volumes…" },
+      { step: "db", status: "pending", detail: "Removing from database…" },
+    ],
+    done: false,
+  };
+
+  deleteProgressMap.set(deleteId, progress);
+  scheduleProgressCleanup(deleteId);
+
+  // Run async — don't await, let it complete in the background
+  performCascadeDelete(deleteId, repo.name, ns, id).catch((err) => {
+    const p = deleteProgressMap.get(deleteId);
+    if (p) {
+      p.done = true;
+      p.error = String(err);
+    }
+  });
+
+  return { success: true, deleteId };
+}
+
+// =============================================================================
+// Cascade delete: Flux CRDs → namespace (polled) → DB
+// =============================================================================
+
+async function performCascadeDelete(
+  deleteId: string,
+  name: string,
+  namespace: string,
+  dbId: string,
+) {
+  const progress = deleteProgressMap.get(deleteId);
+  if (!progress) return;
+
+  // --- Step 1: Delete Flux CRDs ---
+  progress.steps[0].status = "running";
+  try { await kubectlJSON("u1", `--namespace flux-system delete kustomization ${name} --ignore-not-found`); } catch {}
+  try { await kubectlJSON("u1", `--namespace flux-system delete gitrepository ${name} --ignore-not-found`); } catch {}
+  try { await kubectlJSON("u1", `--namespace flux-system delete secret ${name}-auth --ignore-not-found`); } catch {}
+  progress.steps[0].status = "done";
+
+  // --- Step 2: Delete namespace with polling ---
+  progress.steps[1].status = "running";
+
+  // Capture PV names bound to PVCs in this namespace BEFORE deletion
+  const pvOutput = await kubectlExec(
+    `get pvc -n ${namespace} -o custom-columns=PV:.spec.volumeName --no-headers`,
+  );
+  const boundPVs = pvOutput
+    ? pvOutput
+        .trim()
+        .split("\n")
+        .map((l) => l.trim())
+        .filter(Boolean)
+    : [];
+
+  const deleteResult = await kubectlExec(`delete namespace ${namespace} --wait=false --ignore-not-found`);
+
+  // If the delete command itself failed, namespace might not exist
+  if (deleteResult === null) {
+    // Namespace might already be gone or never existed — check
+    const stillThere = await kubectlExec(`get namespace ${namespace} --no-headers`);
+    if (stillThere && stillThere.trim()) {
+      progress.steps[1].status = "error";
+      progress.steps[1].detail = `Failed to issue delete for namespace "${namespace}"`;
+    } else {
+      progress.steps[1].status = "done";
+      progress.steps[1].detail = `Namespace "${namespace}" already gone`;
+    }
+  } else {
+    for (let i = 0; i < 30; i++) {
+    await new Promise((r) => setTimeout(r, 2000));
+
+    const nsCheck = await kubectlExec(`get namespace ${namespace} --no-headers`);
+    if (!nsCheck || !nsCheck.trim()) {
+      progress.steps[1].status = "done";
+      progress.steps[1].detail = `Namespace "${namespace}" deleted`;
+      break;
+    }
+
+    // Count remaining pods while namespace is terminating
+    const pods = await kubectlExec(`get pods -n ${namespace} --no-headers`);
+    const podCount = pods ? pods.trim().split("\n").filter(Boolean).length : 0;
+    if (podCount > 0) {
+      progress.steps[1].detail = `Terminating: ${podCount} pod${podCount !== 1 ? "s" : ""} remaining…`;
+    } else {
+      progress.steps[1].detail = "Waiting for namespace cleanup…";
+    }
+    }
   }
 
-  // Delete from DB
-  await prisma.gitRepo.delete({ where: { id } });
+  if (progress.steps[1].status !== "done") {
+    progress.steps[1].status = "error";
+    progress.steps[1].detail = `Namespace deletion timed out — "${namespace}" may still be terminating`;
+  }
 
-  return { success: true };
+  // --- Step 3: Clean up orphaned PersistentVolumes ---
+  progress.steps[2].status = "running";
+  if (boundPVs.length > 0) {
+    const pvList = boundPVs.join(" ");
+    try {
+      await kubectlExec(`delete pv ${pvList} --force --grace-period=0 --ignore-not-found`);
+      progress.steps[2].status = "done";
+      progress.steps[2].detail = `Deleted ${boundPVs.length} volume${boundPVs.length !== 1 ? "s" : ""}: ${boundPVs.join(", ")}`;
+    } catch (err) {
+      progress.steps[2].status = "error";
+      progress.steps[2].detail = `Failed to delete volumes: ${String(err)}`;
+    }
+  } else {
+    progress.steps[2].status = "done";
+    progress.steps[2].detail = "No bound volumes to clean up";
+  }
+
+  // --- Step 4: Delete from DB ---
+  progress.steps[3].status = "running";
+  try {
+    await prisma.gitRepo.delete({ where: { id: dbId } });
+    progress.steps[3].status = "done";
+  } catch (err) {
+    progress.steps[3].status = "error";
+    progress.steps[3].detail = String(err);
+  }
+
+  progress.done = true;
 }
 
 export async function syncRepo(

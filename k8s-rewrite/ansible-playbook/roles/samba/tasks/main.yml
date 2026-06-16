@@ -46,32 +46,7 @@
   when: inventory_hostname in groups['master']
 
 # =============================================================================
-# TASK 4: Create samba user (master only)
-# =============================================================================
-- name: Check if samba user exists (master only)
-  ansible.builtin.command: pdbedit -L
-  register: samba_users
-  changed_when: false
-  when: inventory_hostname in groups['master']
-
-- name: Create samba user account (master only)
-  ansible.builtin.user:
-    name: "{{ samba_username }}"
-    state: present
-    shell: /usr/sbin/nologin
-    create_home: false
-  when: inventory_hostname in groups['master']
-
-- name: Set samba user password (master only)
-  ansible.builtin.shell: |
-    printf '{{ samba_password }}\n{{ samba_password }}\n' | smbpasswd -s -a {{ samba_username }}
-  register: smbpasswd_result
-  changed_when: "'Added user' in smbpasswd_result.stdout"
-  failed_when: false
-  when: inventory_hostname in groups['master']
-
-# =============================================================================
-# TASK 5: Deploy csi-driver-smb (master only)
+# TASK 4: Deploy csi-driver-smb (master only)
 # =============================================================================
 - name: Apply csi-driver-smb manifests (master only)
   ansible.builtin.shell: |
@@ -96,7 +71,7 @@
   when: inventory_hostname in groups['master']
 
 # =============================================================================
-# TASK 6: Create smb StorageClass (master only)
+# TASK 5: Create smb StorageClass (master only)
 # =============================================================================
 - name: Create smb StorageClass (master only)
   ansible.builtin.shell: |
@@ -110,10 +85,7 @@
     provisioner: smb.csi.k8s.io
     parameters:
       source: "//{{ samba_server }}/{{ samba_share_name }}"
-      csi.storage.k8s.io/provisioner-secret-name: smb-creds
-      csi.storage.k8s.io/provisioner-secret-namespace: default
-      csi.storage.k8s.io/node-stage-secret-name: smb-creds
-      csi.storage.k8s.io/node-stage-secret-namespace: default
+      # Credentials are supplied per-PVC via nodeStageSecretRef in each chart
     reclaimPolicy: Delete
     volumeBindingMode: Immediate
     mountOptions:
@@ -124,18 +96,5 @@
       - noperm
     YAML
   register: sc_smb
-  changed_when: true
-  when: inventory_hostname in groups['master']
-
-# =============================================================================
-# TASK 7: Create SMB credentials secret (master only)
-# =============================================================================
-- name: Create SMB credentials secret (master only)
-  ansible.builtin.shell: |
-    kubectl --kubeconfig=/etc/kubernetes/admin.conf create secret generic smb-creds \
-      --from-literal=username="{{ samba_username }}" \
-      --from-literal=password="{{ samba_password }}" \
-      --namespace=default --dry-run=client -o yaml | kubectl apply -f -
-  register: smb_secret
   changed_when: true
   when: inventory_hostname in groups['master']

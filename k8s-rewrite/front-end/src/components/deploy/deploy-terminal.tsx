@@ -32,16 +32,8 @@ export default function DeployTerminal({ className = "", onReady }: DeployTermin
     };
   }, []);
 
-  const fitTerminal = useCallback(() => {
-    if (!mountedRef.current || !terminalRef.current || !fitAddonRef.current) return;
-    try {
-      fitAddonRef.current.fit();
-    } catch {
-      // Ignore fit errors (terminal may not be mounted yet)
-    }
-  }, []);
-
-  // Defer terminal creation to next microtask to ensure container is laid out
+  // Create the terminal instance and open it in the container.
+  // Called from setContainerRef after React commits the DOM node.
   const createTerminal = useCallback(() => {
     if (terminalRef.current || !containerRef.current) return;
 
@@ -53,8 +45,8 @@ export default function DeployTerminal({ className = "", onReady }: DeployTermin
         "'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace",
       theme: {
         background: "#09090b",
-        foreground: "#4ade80",
-        cursor: "#4ade80",
+        foreground: "#e4e4e7",
+        cursor: "#e4e4e7",
         selectionBackground: "#6366f155",
         black: "#09090b",
         red: "#ef4444",
@@ -75,47 +67,64 @@ export default function DeployTerminal({ className = "", onReady }: DeployTermin
       },
       allowTransparency: false,
       convertEol: true,
-      rows: 24,
-      cols: 80,
     });
 
     const fitAddon = new FitAddon();
     term.loadAddon(fitAddon);
 
-    term.open(containerRef.current);
-
     terminalRef.current = term;
     fitAddonRef.current = fitAddon;
 
-    // Fit on next animation frame
-    requestAnimationFrame(() => {
-      if (!mountedRef.current) return;
-      try {
-        fitAddon.fit();
-      } catch {
-        // Renderer may not be ready
-      }
-    });
-
-    if (onReady) {
-      onReady(term);
+    // Open xterm into the DOM. By now the container ref is attached and
+    // the browser has laid out the element, so dimensions are available.
+    try {
+      term.open(containerRef.current);
+    } catch {
+      // Container may have been removed between the guard and open
+      return;
     }
 
-    // Handle resize
-    const resizeObserver = new ResizeObserver(() => {
-      fitTerminal();
+    // Use onRender for the initial fit — xterm 5.x renderer initializes
+    // asynchronously and calling fit() before the first render can crash
+    // with "Cannot read properties of undefined (reading 'dimensions')".
+    let fitted = false;
+    const renderDispose = term.onRender(() => {
+      if (!mountedRef.current || fitted) return;
+      fitted = true;
+      try { fitAddon.fit(); } catch { /* swallow */ }
     });
-    resizeObserver.observe(containerRef.current);
 
-    // Store cleanup
+    if (onReady) onReady(term);
+
+    // ResizeObserver keeps the terminal fitted when the parent layout changes.
+    // Only start observing after the renderer has computed initial dimensions.
+    let resizeObserver: ResizeObserver | null = null;
+    const startResizeObserver = () => {
+      if (resizeObserver || !containerRef.current) return;
+      resizeObserver = new ResizeObserver(() => {
+        if (!mountedRef.current) return;
+        try { fitAddon.fit(); } catch { /* swallow */ }
+      });
+      resizeObserver.observe(containerRef.current);
+    };
+    // Hook resize observer to the first render as well, but with a short
+    // delay to ensure dimensions exist before ResizeObserver's initial flush.
+    const roRenderDispose = term.onRender(() => {
+      startResizeObserver();
+      roRenderDispose.dispose();
+    });
+
+    // Cleanup
     const dispose = () => {
-      resizeObserver.disconnect();
+      renderDispose.dispose();
+      try { roRenderDispose.dispose(); } catch { /* may already be disposed */ }
+      if (resizeObserver) resizeObserver.disconnect();
       term.dispose();
       terminalRef.current = null;
       fitAddonRef.current = null;
     };
     return dispose;
-  }, [fitTerminal, onReady]);
+  }, [onReady]);
 
   // Ref to hold cleanup function
   const disposeRef = useRef<(() => void) | null>(null);
@@ -142,7 +151,7 @@ export default function DeployTerminal({ className = "", onReady }: DeployTermin
   return (
     <div
       ref={setContainerRef}
-      className={`bg-zinc-950 border border-zinc-800 rounded-xl overflow-hidden ${className}`}
+      className={`bg-zinc-950 overflow-hidden ${className}`}
       style={{ minHeight: "300px" }}
     />
   );

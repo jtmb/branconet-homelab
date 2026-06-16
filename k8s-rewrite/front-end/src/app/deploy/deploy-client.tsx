@@ -104,8 +104,26 @@ export default function DeployClient() {
       const term = terminalRef.current;
       if (term) {
         try { term.clear(); } catch { /* terminal may not be fully initialized */ }
-        term.writeln("Starting deployment...\r\n");
+        term.writeln("\x1b[36mSyncing config vars to Ansible...\x1b[0m\r\n");
       }
+
+      // Sync vars before kicking off the playbook
+      try {
+        const syncRes = await fetch("/api/vars/sync", { method: "POST" });
+        if (syncRes.ok && term) {
+          term.writeln("\x1b[32m✓ Config vars synced\x1b[0m\r\n");
+        } else if (term) {
+          const syncErr = await syncRes.json().catch(() => ({}));
+          term.writeln(`\x1b[33m⚠ Var sync skipped: ${syncErr.error || syncRes.status}\x1b[0m\r\n`);
+        }
+      } catch (syncErr) {
+        if (term) {
+          term.writeln(`\x1b[33m⚠ Var sync failed (non-fatal): ${syncErr}\x1b[0m\r\n`);
+        }
+        // Non-fatal — continue with deploy even if sync fails
+      }
+
+      if (term) term.writeln("\r\nStarting deployment...\r\n");
 
       const res = await fetch("/api/deploy/start", {
         method: "POST",

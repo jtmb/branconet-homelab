@@ -1,26 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { Server, Loader2, Plus, Trash2, Save, RefreshCw } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { Server, Loader2, Plus, Trash2, Save, Pencil, Search } from "lucide-react";
+import ViewportWrapper from "../viewport-wrapper";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { SortHeader, useSort } from "@/components/ui/sortable-header";
 
 interface NodeData {
   id: string;
   name?: string;
   hostname: string;
   ipAddress: string;
+  externalIp?: string | null;
   role: string;
   status: string;
-  cpu?: number;
-  memory?: number;
+  cpu?: number | null;
+  memory?: number | null;
+  k8sVersion?: string | null;
+  osImage?: string | null;
+  pods?: number | null;
+  age?: string | null;
 }
 
 export default function NodesPage() {
   const [dbNodes, setDbNodes] = useState<NodeData[]>([]);
   const [liveNodes, setLiveNodes] = useState<NodeData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [syncing, setSyncing] = useState(false);
   const [adding, setAdding] = useState(false);
+  const [search, setSearch] = useState("");
   const [form, setForm] = useState({ name: "", hostname: "", ipAddress: "", role: "worker" });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
@@ -84,57 +91,90 @@ export default function NodesPage() {
     });
     setEditingId(null);
     fetchDbNodes();
+    fetchLive();  // force-live refresh so display updates immediately
   }
 
   async function deleteNode(id: string) {
     await fetch(`/api/nodes/${id}`, { method: "DELETE" });
     fetchDbNodes();
+    fetchLive();
   }
 
-  async function syncInventory() {
-    setSyncing(true);
-    await fetch("/api/vars/sync", { method: "POST" });
-    setSyncing(false);
-  }
+  const totalNodes = liveNodes.length || dbNodes.length;
+  const unfilteredNodes = liveNodes.length > 0 ? liveNodes : dbNodes;
 
-  const totalNodes = dbNodes.length || liveNodes.length;
-  const displayNodes = dbNodes.length > 0 || liveNodes.length === 0 ? dbNodes : liveNodes;
+  const { sortKey, sortDir, toggle: toggleSort } = useSort("hostname");
+
+  const displayNodes = useMemo(() => {
+    let result = search.trim()
+      ? unfilteredNodes.filter((n) => {
+          const q = search.toLowerCase();
+          return (
+            (n.name || "").toLowerCase().includes(q) ||
+            n.hostname.toLowerCase().includes(q) ||
+            n.ipAddress.toLowerCase().includes(q) ||
+            n.role.toLowerCase().includes(q) ||
+            (n.osImage || "").toLowerCase().includes(q) ||
+            (n.k8sVersion || "").toLowerCase().includes(q)
+          );
+        })
+      : unfilteredNodes;
+    return [...result].sort((a, b) => {
+      const va = String((a as any)[sortKey] ?? "").toLowerCase();
+      const vb = String((b as any)[sortKey] ?? "").toLowerCase();
+      return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+  }, [unfilteredNodes, search, sortKey, sortDir]);
 
   return (
-    <div className="min-h-screen bg-zinc-950">
-      <header className="border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-3">
-          <Link href="/cluster" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors mr-2">
-            Cluster
-          </Link>
-          <span className="text-zinc-700">|</span>
-          <Server className="w-6 h-6 text-blue-400" />
-          <h1 className="text-xl font-bold text-zinc-100">Nodes</h1>
+    <div className="flex flex-col min-h-0">
+
+      <ViewportWrapper>
+      <main className="px-3 sm:px-4 lg:px-6 py-6">
+        <div className="flex items-center gap-3 mb-4">
+          <Server className="page-header-icon text-blue-400" />
+          <h1 className="page-header-title">Nodes</h1>
           <span className="text-sm text-zinc-500 ml-auto">
             {loading ? "…" : `${totalNodes} nodes`}
           </span>
-          <button
-            onClick={syncInventory}
-            disabled={syncing || dbNodes.length === 0}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600/20 border border-indigo-500/20 text-indigo-400 hover:bg-indigo-600/30 text-xs font-medium transition-colors disabled:opacity-50 ml-2"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${syncing ? "animate-spin" : ""}`} />
-            Sync
-          </button>
         </div>
-      </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Add Node Form */}
-        {!adding ? (
-          <button
-            onClick={() => setAdding(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors mb-6"
-          >
-            <Plus className="w-4 h-4" />
-            Add Node
-          </button>
-        ) : (
+        {/* Filter Bar */}
+        <div className="flex items-center gap-3 mb-6">
+          <div className="relative flex-1 max-w-xs">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <input
+              type="text"
+              placeholder="Search…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                width: '100%',
+                background: 'rgb(39,39,42)',
+                border: 'none',
+                outline: 'none',
+                boxShadow: 'none',
+                padding: '0.5rem 0.75rem 0.5rem 2.25rem',
+                fontSize: '0.875rem',
+                lineHeight: '1.25rem',
+                color: '#e4e4e7',
+                borderRadius: '0.5rem',
+                WebkitAppearance: 'none',
+                MozAppearance: 'none',
+                appearance: 'none',
+              }}
+            />
+          </div>
+          {/* Add Node Form */}
+          {!adding ? (
+            <button
+              onClick={() => setAdding(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors ml-auto"
+            >
+              <Plus className="w-4 h-4" />
+              Add Node
+            </button>
+          ) : (
           <div className="glass-card p-4 rounded-xl mb-6 flex items-end gap-3 flex-wrap">
             <div>
               <label className="text-xs text-zinc-500 mb-1 block">Name</label>
@@ -189,9 +229,10 @@ export default function NodesPage() {
             </button>
           </div>
         )}
+        </div>
 
         {/* Node List */}
-        {loading && dbNodes.length === 0 ? (
+        {loading ? (
           <div className="flex items-center justify-center min-h-[calc(100vh-16rem)]">
             <Loader2 className="w-8 h-8 animate-spin text-indigo-400" />
           </div>
@@ -204,98 +245,172 @@ export default function NodesPage() {
             </p>
           </div>
         ) : (
-          <div className="grid gap-3">
-            {displayNodes.map((node) => {
-              const liveInfo = liveNodes.find(
-                (ln) => ln.hostname === node.hostname || ln.ipAddress === node.ipAddress
-              );
-              return (
-                <div key={node.id} className="glass-card p-4 rounded-xl">
-                  {editingId === node.id ? (
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <input
-                        value={editName}
-                        onChange={e => setEditName(e.target.value)}
-                        className="bg-zinc-800 border border-zinc-600 rounded px-2 py-1 text-sm text-zinc-200 w-32"
-                        placeholder="Name"
-                      />
-                      <input
-                        value={editHost}
-                        onChange={e => setEditHost(e.target.value)}
-                        className="bg-zinc-800 border border-zinc-600 rounded px-2 py-1 text-sm text-zinc-200 w-28"
-                      />
-                      <input
-                        value={editIp}
-                        onChange={e => setEditIp(e.target.value)}
-                        className="bg-zinc-800 border border-zinc-600 rounded px-2 py-1 text-sm text-zinc-200 w-36"
-                      />
-                      <select
-                        value={editRole}
-                        onChange={e => setEditRole(e.target.value)}
-                        className="bg-zinc-800 border border-zinc-600 rounded px-2 py-1 text-sm text-zinc-200"
-                      >
-                        <option value="worker">Worker</option>
-                        <option value="master">Master</option>
-                      </select>
-                      <button
-                        onClick={() => saveEdit(node.id)}
-                        className="px-3 py-1 rounded bg-emerald-600 text-white text-xs font-medium hover:bg-emerald-500"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => setEditingId(null)}
-                        className="px-3 py-1 rounded border border-zinc-700 text-zinc-400 text-xs hover:text-zinc-200"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className={`w-2.5 h-2.5 rounded-full ${
-                          liveInfo?.status === "ready" ? "bg-emerald-400" :
-                          liveInfo ? "bg-amber-400" : "bg-zinc-600"
-                        }`} />
-                        <div>
-                          <h3 className="text-lg font-semibold text-zinc-100">{node.name || node.hostname}</h3>
-                          <p className="text-sm text-zinc-500">
-                            {node.name && node.name !== node.hostname
-                              ? `${node.hostname} · ${node.ipAddress}`
-                              : node.ipAddress}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        {liveInfo && (
-                          <span className="text-xs text-zinc-500">
-                            {liveInfo.cpu ? `${liveInfo.cpu} CPU / ${liveInfo.memory}GB` : liveInfo.status}
-                          </span>
-                        )}
+          <div className="glass-card rounded-xl overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-zinc-700/40">
+                  <th className="text-left px-2 py-2.5"><SortHeader label="State" active={sortKey==="status"} dir={sortDir} onClick={()=>toggleSort("status")} /></th>
+                  <th className="text-left px-2 py-2.5"><SortHeader label="Name" active={sortKey==="hostname"} dir={sortDir} onClick={()=>toggleSort("hostname")} /></th>
+                  <th className="text-left px-2 py-2.5"><SortHeader label="Roles" active={sortKey==="role"} dir={sortDir} onClick={()=>toggleSort("role")} /></th>
+                  <th className="text-left px-2 py-2.5"><SortHeader label="Version" active={sortKey==="k8sVersion"} dir={sortDir} onClick={()=>toggleSort("k8sVersion")} /></th>
+                  <th className="text-left px-2 py-2.5"><SortHeader label="Internal IP" active={sortKey==="ipAddress"} dir={sortDir} onClick={()=>toggleSort("ipAddress")} /></th>
+                  <th className="text-left px-2 py-2.5"><SortHeader label="External IP" active={sortKey==="externalIp"} dir={sortDir} onClick={()=>toggleSort("externalIp")} /></th>
+                  <th className="text-left px-2 py-2.5"><SortHeader label="OS" active={sortKey==="osImage"} dir={sortDir} onClick={()=>toggleSort("osImage")} /></th>
+                  <th className="text-left px-2 py-2.5"><SortHeader label="CPU" active={sortKey==="cpu"} dir={sortDir} onClick={()=>toggleSort("cpu")} /></th>
+                  <th className="text-left px-2 py-2.5"><SortHeader label="RAM" active={sortKey==="mem"} dir={sortDir} onClick={()=>toggleSort("mem")} /></th>
+                  <th className="text-left px-2 py-2.5"><SortHeader label="Pods" active={sortKey==="pods"} dir={sortDir} onClick={()=>toggleSort("pods")} /></th>
+                  <th className="text-left px-2 py-2.5"><SortHeader label="Age" active={sortKey==="age"} dir={sortDir} onClick={()=>toggleSort("age")} /></th>
+                  <th className="text-right px-2 py-2.5 text-xs font-medium text-zinc-400">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {displayNodes.map((node) => {
+                  const liveInfo = liveNodes.find(
+                    (ln) => ln.hostname === node.hostname || ln.ipAddress === node.ipAddress
+                  );
+                  const isReady = (liveInfo?.status || node.status) === "ready";
+                  const isLive = !!liveInfo;
+                  const roles = (liveInfo?.role || node.role || "worker").split(",");
+                  return (
+                    <tr key={node.id} className="border-b border-zinc-800/40 hover:bg-zinc-800/30">
+                      <td className="px-2 py-2.5">
                         <span className={`text-xs px-2 py-0.5 rounded-full ${
-                          node.role === "master" ? "bg-amber-500/20 text-amber-400" : "bg-blue-500/20 text-blue-400"
-                        }`}>{node.role}</span>
-                        <button
-                          onClick={() => startEdit(node)}
-                          className="text-xs text-zinc-500 hover:text-zinc-300"
+                          isReady ? "badge-success" : isLive ? "badge-warning" : "badge-error"
+                        }`}>
+                          {isReady ? "Active" : isLive ? "Not Ready" : "Offline"}
+                        </span>
+                      </td>
+                      <td className="px-2 py-2.5 text-sm font-medium whitespace-nowrap">
+                        <Link
+                          href={`/nodes/${encodeURIComponent(liveInfo?.hostname || node.hostname)}`}
+                          className="text-zinc-200 hover:text-indigo-400 transition-colors"
                         >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => deleteNode(node.id)}
-                          className="text-xs text-red-500 hover:text-red-400"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                          {node.name || node.hostname}
+                        </Link>
+                      </td>
+                      <td className="px-2 py-2.5">
+                        <div className="flex flex-wrap gap-1">
+                          {roles.map((r) => (
+                            <span key={r} className={`text-[10px] uppercase tracking-wider font-medium px-1.5 py-0.5 rounded whitespace-nowrap ${
+                              r === "control-plane" || r === "master" ? "bg-amber-500/10 text-amber-400" : "bg-blue-500/10 text-blue-400"
+                            }`}>{r}</span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-2 py-2.5 text-sm text-zinc-400 font-mono whitespace-nowrap">
+                        {liveInfo?.k8sVersion ? `v${liveInfo.k8sVersion}` : node.k8sVersion ? `v${node.k8sVersion}` : "—"}
+                      </td>
+                      <td className="px-2 py-2.5 text-sm text-zinc-300 font-mono whitespace-nowrap">
+                        {liveInfo?.ipAddress || node.ipAddress || "—"}
+                      </td>
+                      <td className="px-2 py-2.5 text-sm text-zinc-500 font-mono whitespace-nowrap">
+                        {liveInfo?.externalIp || node.externalIp || "—"}
+                      </td>
+                      <td className="px-2 py-2.5 text-sm text-zinc-400 max-w-[140px] truncate" title={liveInfo?.osImage || node.osImage || undefined}>
+                        {liveInfo?.osImage || node.osImage || "—"}
+                      </td>
+                      <td className="px-2 py-2.5 text-sm text-zinc-400 font-mono tabular-nums whitespace-nowrap">
+                        {liveInfo?.cpu != null ? liveInfo.cpu : node.cpu != null ? node.cpu : "—"}
+                      </td>
+                      <td className="px-2 py-2.5 text-sm text-zinc-400 font-mono tabular-nums whitespace-nowrap">
+                        {liveInfo?.memory != null ? `${liveInfo.memory}G` : node.memory != null ? `${node.memory}G` : "—"}
+                      </td>
+                      <td className="px-2 py-2.5 text-sm text-zinc-400 font-mono tabular-nums whitespace-nowrap">
+                        {liveInfo?.pods != null ? liveInfo.pods : node.pods != null ? node.pods : "—"}
+                      </td>
+                      <td className="px-2 py-2.5 text-sm text-zinc-500 whitespace-nowrap">
+                        {liveInfo?.age || node.age || "—"}
+                      </td>
+                      <td className="px-2 py-2.5 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <button
+                            onClick={() => startEdit(node)}
+                            className="p-1.5 rounded-lg hover:bg-zinc-700/50 text-zinc-500 hover:text-zinc-300 transition-colors"
+                            title="Edit"
+                          >
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => deleteNode(node.id)}
+                            className="p-1.5 rounded-lg hover:bg-red-500/10 text-zinc-500 hover:text-red-400 transition-colors"
+                            title="Delete"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {/* Edit Modal */}
+        {editingId && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="bg-zinc-900 border border-zinc-700/60 rounded-2xl w-full max-w-sm mx-4 shadow-2xl overflow-hidden">
+              <div className="px-5 py-4 border-b border-zinc-700/40">
+                <h3 className="text-sm font-semibold text-zinc-200">Edit Node</h3>
+              </div>
+              <div className="p-5 flex flex-col gap-3">
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">Name</label>
+                  <input
+                    value={editName}
+                    onChange={e => setEditName(e.target.value)}
+                    placeholder="Name"
+                    className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500 outline-none focus:ring-0 transition-colors"
+                  />
                 </div>
-              );
-            })}
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">Hostname</label>
+                  <input
+                    value={editHost}
+                    onChange={e => setEditHost(e.target.value)}
+                    className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500 outline-none focus:ring-0 transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">IP Address</label>
+                  <input
+                    value={editIp}
+                    onChange={e => setEditIp(e.target.value)}
+                    className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500 outline-none focus:ring-0 transition-colors"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">Role</label>
+                  <select
+                    value={editRole}
+                    onChange={e => setEditRole(e.target.value)}
+                    className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500 outline-none focus:ring-0 transition-colors"
+                  >
+                    <option value="worker">Worker</option>
+                    <option value="master">Master</option>
+                  </select>
+                </div>
+              </div>
+              <div className="px-5 py-3 border-t border-zinc-700/40 flex items-center justify-end gap-2">
+                <button
+                  onClick={() => setEditingId(null)}
+                  className="px-4 py-2 rounded-lg border border-zinc-700 text-zinc-400 hover:text-zinc-200 text-sm transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => saveEdit(editingId)}
+                  className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </main>
+      </ViewportWrapper>
     </div>
   );
 }

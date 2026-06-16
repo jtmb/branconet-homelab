@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { HardDrive, Loader2 } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { HardDrive, Loader2, Search } from "lucide-react";
+import ViewportWrapper from "../viewport-wrapper";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { SortHeader, useSort } from "@/components/ui/sortable-header";
 
 type StorageType = "all" | "local" | "nfs" | "samba" | "longhorn";
 
@@ -54,6 +56,34 @@ export default function StoragePage() {
     }
   }, []);
 
+  const [search, setSearch] = useState("");
+
+  const { sortKey, sortDir, toggle: toggleSort } = useSort("name");
+  const { sortKey: scSortKey, sortDir: scSortDir, toggle: toggleScSort } = useSort("name");
+
+  const filteredVolumes = useMemo(() => {
+    let result = volumes;
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = volumes.filter(
+        (v) => v.name.toLowerCase().includes(q) || v.namespace.toLowerCase().includes(q)
+      );
+    }
+    return [...result].sort((a, b) => {
+      const va = String((a as any)[sortKey] ?? "").toLowerCase();
+      const vb = String((b as any)[sortKey] ?? "").toLowerCase();
+      return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+  }, [volumes, search, sortKey, sortDir]);
+
+  const sortedStorageClasses = useMemo(() => {
+    return [...storageClasses].sort((a, b) => {
+      const va = String((a as any)[scSortKey] ?? "").toLowerCase();
+      const vb = String((b as any)[scSortKey] ?? "").toLowerCase();
+      return scSortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+  }, [storageClasses, scSortKey, scSortDir]);
+
   useEffect(() => {
     setLoading(true);
     fetchVolumes(filter);
@@ -65,35 +95,66 @@ export default function StoragePage() {
   }, [filter, fetchVolumes]);
 
   return (
-    <div className="min-h-screen bg-zinc-950">
-      <header className="border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-3">
-          <Link href="/cluster" className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors mr-2">
-            Cluster
-          </Link>
-          <span className="text-zinc-700">|</span>
-          <HardDrive className="w-6 h-6 text-purple-400" />
-          <h1 className="text-xl font-bold text-zinc-100">Storage</h1>
-          <span className="text-sm text-zinc-500 ml-auto">{loading ? "…" : `${volumes.length} volumes`}</span>
-        </div>
-      </header>
+    <div className="flex flex-col min-h-0">
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Filter Pills */}
-        <div className="flex items-center gap-2 mb-4">
-          {STORAGE_TYPES.map(({ key, label }) => (
-            <button
-              key={key}
-              onClick={() => setFilter(key)}
-              className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-                filter === key
-                  ? "bg-indigo-600 text-white"
-                  : "bg-zinc-800/60 text-zinc-400 hover:bg-zinc-700/60 hover:text-zinc-200 border border-zinc-700/40"
-              }`}
-            >
-              {label}
-            </button>
-          ))}
+      <ViewportWrapper>
+      <main className="px-3 sm:px-4 lg:px-6 py-6">
+        <div className="flex items-center gap-3 mb-6">
+          <HardDrive className="page-header-icon text-purple-400" />
+          <h1 className="page-header-title">Storage</h1>
+          <span className="text-sm text-zinc-500 ml-auto">{volumes.length} volumes</span>
+        </div>
+        <div className="flex items-center gap-3 mb-6">
+          <div className="relative flex-1 max-w-xs">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+            <input
+              type="text"
+              placeholder="Search…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              style={{
+                width: '100%',
+                background: 'rgb(39,39,42)',
+                border: 'none',
+                outline: 'none',
+                boxShadow: 'none',
+                padding: '0.5rem 0.75rem 0.5rem 2.25rem',
+                fontSize: '0.875rem',
+                lineHeight: '1.25rem',
+                color: '#e4e4e7',
+                borderRadius: '0.5rem',
+                WebkitAppearance: 'none',
+                MozAppearance: 'none',
+                appearance: 'none',
+              }}
+            />
+          </div>
+          {/* Segmented Filter Control */}
+          <div className="flex p-0.5">
+            {STORAGE_TYPES.map(({ key, label }) => {
+              const count = key === "all"
+                ? volumes.length
+                : volumes.filter((v) => v.storageClass?.toLowerCase().includes(key)).length;
+              return (
+                <button
+                  key={key}
+                  onClick={() => setFilter(key)}
+                  className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
+                    filter === key
+                      ? "bg-indigo-600 text-white shadow-sm"
+                      : "text-zinc-400 hover:text-zinc-200"
+                  }`}
+                >
+                  {label}
+                  <span className={`ml-1.5 text-xs ${
+                    filter === key ? "text-indigo-200" : "text-zinc-600"
+                  }`}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {loading && volumes.length === 0 ? (
@@ -111,13 +172,13 @@ export default function StoragePage() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-zinc-700/40">
-                      <th className="text-left px-4 py-2 text-xs font-medium text-zinc-500">Name</th>
-                      <th className="text-left px-4 py-2 text-xs font-medium text-zinc-500">Provisioner</th>
-                      <th className="text-left px-4 py-2 text-xs font-medium text-zinc-500">Default</th>
+                      <th className="text-left px-4 py-2"><SortHeader label="Name" active={scSortKey==="name"} dir={scSortDir} onClick={()=>toggleScSort("name")} /></th>
+                      <th className="text-left px-4 py-2"><SortHeader label="Provisioner" active={scSortKey==="provisioner"} dir={scSortDir} onClick={()=>toggleScSort("provisioner")} /></th>
+                      <th className="text-left px-4 py-2"><SortHeader label="Default" active={scSortKey==="isDefault"} dir={scSortDir} onClick={()=>toggleScSort("isDefault")} /></th>
                     </tr>
                   </thead>
                   <tbody>
-                    {storageClasses.map((sc) => (
+                    {sortedStorageClasses.map((sc) => (
                       <tr key={sc.name} className="border-b border-zinc-800/40">
                         <td className="px-4 py-2 text-sm text-zinc-200 font-mono">{sc.name}</td>
                         <td className="px-4 py-2 text-sm text-zinc-400">{sc.provisioner}</td>
@@ -151,16 +212,16 @@ export default function StoragePage() {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-zinc-700/40">
-                  <th className="text-left px-4 py-3 text-sm font-medium text-zinc-400">Name</th>
-                  <th className="text-left px-4 py-3 text-sm font-medium text-zinc-400">Namespace</th>
-                  <th className="text-left px-4 py-3 text-sm font-medium text-zinc-400">Type</th>
-                  <th className="text-left px-4 py-3 text-sm font-medium text-zinc-400">Status</th>
-                  <th className="text-left px-4 py-3 text-sm font-medium text-zinc-400">Capacity</th>
-                  <th className="text-left px-4 py-3 text-sm font-medium text-zinc-400">Node</th>
+                  <th className="text-left px-4 py-3"><SortHeader label="Name" active={sortKey==="name"} dir={sortDir} onClick={()=>toggleSort("name")} /></th>
+                  <th className="text-left px-4 py-3"><SortHeader label="Namespace" active={sortKey==="namespace"} dir={sortDir} onClick={()=>toggleSort("namespace")} /></th>
+                  <th className="text-left px-4 py-3"><SortHeader label="Type" active={sortKey==="storageClass"} dir={sortDir} onClick={()=>toggleSort("storageClass")} /></th>
+                  <th className="text-left px-4 py-3"><SortHeader label="Status" active={sortKey==="status"} dir={sortDir} onClick={()=>toggleSort("status")} /></th>
+                  <th className="text-left px-4 py-3"><SortHeader label="Capacity" active={sortKey==="capacity"} dir={sortDir} onClick={()=>toggleSort("capacity")} /></th>
+                  <th className="text-left px-4 py-3"><SortHeader label="Node" active={sortKey==="node"} dir={sortDir} onClick={()=>toggleSort("node")} /></th>
                 </tr>
               </thead>
               <tbody>
-                {volumes.map((vol) => (
+                {filteredVolumes.map((vol) => (
                   <tr key={vol.id || vol.name} className="border-b border-zinc-800/40 hover:bg-zinc-800/30">
                     <td className="px-4 py-3 text-sm text-zinc-200 font-mono">{vol.name}</td>
                     <td className="px-4 py-3 text-sm text-zinc-400">{vol.namespace}</td>
@@ -185,6 +246,7 @@ export default function StoragePage() {
           </div>
         )}
       </main>
+      </ViewportWrapper>
     </div>
   );
 }
