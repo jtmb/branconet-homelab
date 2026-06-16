@@ -1,0 +1,13 @@
+# nginx-hello data PersistentVolumeClaim (Longhorn)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nginx-hello-data-pvc
+  namespace: nginx-hello
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn

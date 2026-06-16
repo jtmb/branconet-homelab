@@ -1,0 +1,45 @@
+# whoami Deployment — lightweight HTTP echo server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whoami
+  namespace: whoami
+  labels:
+    app: whoami
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whoami
+  template:
+    metadata:
+      labels:
+        app: whoami
+        branconet.io/type: app
+      annotations:
+        homepage.group: Test
+        homepage.name: whoami
+        homepage.icon: "https://raw.githubusercontent.com/traefik/traefik/master/docs/content/assets/img/traefik.icon.png"
+        homepage.href: "http://whoami.branconet.local/"
+        homepage.description: "Lightweight HTTP request echo — shows hostname, IP, and headers"
+    spec:
+      containers:
+      - name: whoami
+        image: traefik/whoami:latest
+        ports:
+        - containerPort: 80
+          name: http
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        resources:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: whoami-data-pvc

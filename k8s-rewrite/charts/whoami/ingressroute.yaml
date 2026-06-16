@@ -1,0 +1,15 @@
+# Traefik IngressRoute for whoami
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: whoami-ingress
+  namespace: whoami
+spec:
+  entryPoints:
+  - web
+  routes:
+  - match: Host(`whoami.branconet.local`)
+    kind: Rule
+    services:
+    - name: whoami
+      port: 80

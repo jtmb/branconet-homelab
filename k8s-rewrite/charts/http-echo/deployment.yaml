@@ -1,0 +1,48 @@
+# http-echo Deployment — simple TCP/HTTP echo server for connectivity tests
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-echo
+  namespace: http-echo
+  labels:
+    app: http-echo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: http-echo
+  template:
+    metadata:
+      labels:
+        app: http-echo
+        branconet.io/type: app
+      annotations:
+        homepage.group: Test
+        homepage.name: http-echo
+        homepage.icon: "https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/hashicorp.svg"
+        homepage.href: "http://echo.branconet.local/"
+        homepage.description: "Echo server — returns whatever you POST for curl/connectivity testing"
+    spec:
+      containers:
+      - name: http-echo
+        image: hashicorp/http-echo:latest
+        args:
+        - -text="Hello from Branconet http-echo on Kubernetes + Longhorn!"
+        - -listen=:8080
+        ports:
+        - containerPort: 8080
+          name: http
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        resources:
+          requests:
+            cpu: 50m
+            memory: 16Mi
+          limits:
+            cpu: 100m
+            memory: 64Mi
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: http-echo-data-pvc

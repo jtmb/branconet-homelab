@@ -1,0 +1,18 @@
+# http-echo Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: http-echo-ingress
+  namespace: http-echo
+spec:
+  rules:
+  - host: echo.branconet.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: http-echo
+            port:
+              number: 80
