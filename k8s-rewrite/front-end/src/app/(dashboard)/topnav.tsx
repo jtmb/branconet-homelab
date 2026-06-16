@@ -10,12 +10,16 @@ export default function TopNav() {
   const router = useRouter();
   const [syncing, setSyncing] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
+  const [role, setRole] = useState<"readonly" | "write" | null>(null);
 
   useEffect(() => {
     fetch("/api/auth/session")
       .then((r) => r.json())
       .then((data) => {
-        if (data.authenticated) setUsername(data.username);
+        if (data.authenticated) {
+          setUsername(data.username);
+          setRole(data.role || "readonly");
+        }
       })
       .catch(() => {});
   }, []);
@@ -40,14 +44,16 @@ export default function TopNav() {
     <header className="sticky top-0 z-10">
       <ViewportWrapper>
         <div className="h-12 flex items-center justify-end px-3 sm:px-4 lg:px-6 gap-1">
-          <button
-            onClick={refreshCache}
-            disabled={syncing}
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30 transition-colors outline-none disabled:opacity-50"
-            title="Refresh cluster data"
-          >
-            <RefreshCw className={`w-5 h-5 ${syncing ? "animate-spin" : ""}`} />
-          </button>
+          {role === "write" && (
+            <button
+              onClick={refreshCache}
+              disabled={syncing}
+              className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30 transition-colors outline-none disabled:opacity-50"
+              title="Refresh cluster data"
+            >
+              <RefreshCw className={`w-5 h-5 ${syncing ? "animate-spin" : ""}`} />
+            </button>
+          )}
           <button
             onClick={() => router.push("/settings")}
             className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30 transition-colors outline-none"

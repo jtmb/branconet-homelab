@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listRepos, addRepo } from "@/lib/flux";
+import { requireWrite } from "@/lib/permissions";
 
 export async function GET() {
   try {
@@ -11,6 +12,9 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = await requireWrite();
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const body = await request.json();
     const { name, url, branch, path, authMethod, authData } = body;

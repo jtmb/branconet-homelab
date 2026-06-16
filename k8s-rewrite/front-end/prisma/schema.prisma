@@ -26,6 +26,7 @@ model User {
   id           String   @id @default(cuid())
   username     String   @unique
   passwordHash String
+  role         String   @default("readonly") // "readonly" | "write"
   createdAt    DateTime @default(now())
 
   @@map("users")
@@ -131,6 +132,14 @@ model Volume {
   createdAt DateTime @default(now())
 
   @@map("longhorn_volumes")
+}
+
+model AppSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+
+  @@map("app_settings")
 }
 
 model GitRepo {

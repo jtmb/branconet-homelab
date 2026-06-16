@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { kubectlExec } from "@/lib/k8s";
 import { invalidateCache } from "@/lib/cluster-cache";
+import { requireWrite } from "@/lib/permissions";
 
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ namespace: string; name: string }> }
 ) {
+  const auth = await requireWrite();
+  if (auth instanceof NextResponse) return auth;
+
   const { namespace, name } = await params;
   try {
     const { replicas } = await request.json();

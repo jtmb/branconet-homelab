@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { kubectlExec } from "@/lib/k8s";
+import { requireWrite } from "@/lib/permissions";
 
 interface PVInfo {
   name: string;
@@ -55,6 +56,9 @@ export async function GET() {
  * Body: { volumes: [{ name: string, policy: "Retain" | "Delete" | "Recycle" }] }
  */
 export async function PATCH(request: NextRequest) {
+  const auth = await requireWrite();
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const body = await request.json();
     const volumes: { name: string; policy: string }[] = body.volumes;

@@ -1,4 +1,42 @@
-# GitOps Role Tasks
+---
+# GitOps Role — Install Flux CD and bootstrap the cluster
+- name: Install Flux CLI
+  shell: |
+    curl -s https://fluxcd.io/install.sh | bash
+  args:
+    creates: /usr/local/bin/flux
+
+- name: Check if Flux is already bootstrapped
+  shell: flux get kustomizations -n {{ flx_namespace }} 2>/dev/null
+  register: flx_check
+  changed_when: false
+  failed_when: false
+
+- name: Run flux bootstrap
+  shell: |
+    flux bootstrap github \
+      --owner={{ flx_git_url | regex_replace('.*github.com/([^/]+).*', '\\1') }} \
+      --repository={{ flx_git_url | regex_replace('.*/([^/]+)\\.git$', '\\1') }} \
+      --branch={{ flx_git_branch }} \
+      --path={{ flx_git_path }} \
+      --personal \
+      --components-extra=image-reflector-controller,image-automation-controller
+  when: flx_check.rc != 0
+  register: flx_bootstrap
+
+- name: Wait for Flux to sync
+  shell: flux reconcile kustomization flux-system -n {{ flx_namespace }}
+  when: flx_bootstrap.changed
+  changed_when: false
+
+- name: Verify Flux health
+  shell: flux get kustomizations -n {{ flx_namespace }}
+  register: flx_status
+  changed_when: false
+
+- name: Show Flux status
+  debug:
+    msg: "{{ flx_status.stdout_lines }}"
 # Installs FluxCD (master only)
 # Requires: github_user, github_token, github_repo, github_branch variables
 

@@ -19,8 +19,20 @@ export async function POST(req: Request) {
     await ensureJwtSecret();
 
     // First-user-only gate unless ALLOW_REGISTRATION is explicitly "true"
+    // or the DB setting allow_registration is "true"
     const userCount = await prisma.user.count();
-    if (userCount > 0 && process.env.ALLOW_REGISTRATION !== "true") {
+    let allowRegistration = userCount === 0 || process.env.ALLOW_REGISTRATION === "true";
+
+    if (!allowRegistration) {
+      const dbSetting = await prisma.appSetting.findUnique({
+        where: { key: "allow_registration" },
+      });
+      if (dbSetting?.value === "true") {
+        allowRegistration = true;
+      }
+    }
+
+    if (!allowRegistration) {
       return NextResponse.json(
         { error: "Registration is locked. Set ALLOW_REGISTRATION=true to enable." },
         { status: 403 }
@@ -47,10 +59,13 @@ export async function POST(req: Request) {
       );
     }
 
+    // First user gets write access; subsequent users are readonly by default
+    const role = userCount === 0 ? "write" : "readonly";
+
     const passwordHash = await bcrypt.hash(password, 12);
 
     const user = await prisma.user.create({
-      data: { username, passwordHash },
+      data: { username, passwordHash, role },
     });
 
     const token = await signJWT({ sub: user.id, username: user.username });

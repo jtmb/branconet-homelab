@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { syncVarsToYAML, syncInventoryToFile, syncNodesFromVars } from "@/lib/sync-vars";
+import { requireWrite } from "@/lib/permissions";
 
 /**
  * POST /api/vars/sync
@@ -7,6 +8,9 @@ import { syncVarsToYAML, syncInventoryToFile, syncNodesFromVars } from "@/lib/sy
  * Also syncs node variables to the Node table and rebuilds the inventory.
  */
 export async function POST() {
+  const auth = await requireWrite();
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const varsResult = await syncVarsToYAML();
     const nodesResult = await syncNodesFromVars();

@@ -1,0 +1,11 @@
+# GitOps — Flux CD defaults
+flx_git_url: https://github.com/jtmb/branconet-homelab.git
+flx_git_branch: k8s-rewrite
+flx_git_path: ./k8s-rewrite/charts
+flx_namespace: flux-system
+flx_version: "2.4.0"
+flx_components:
+  - source-controller
+  - kustomize-controller
+  - helm-controller
+  - notification-controller

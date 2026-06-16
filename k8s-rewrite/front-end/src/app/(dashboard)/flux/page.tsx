@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { GitBranch, Loader2, Plus, RefreshCw, Trash2, XCircle, Globe, Key, Lock, X, ChevronDown, CheckCircle2, AlertTriangle, Search } from "lucide-react";
 import ViewportWrapper from "../viewport-wrapper";
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import FluxTreeRow from "./tree-row";
+import type { FluxTreeNode } from "@/lib/flux";
 
 interface DeleteStep {
   step: string;
@@ -20,33 +21,33 @@ interface DeleteProgress {
   error?: string;
 }
 
-interface RepoData {
-  id: string;
-  name: string;
-  url: string;
-  branch: string;
-  path: string;
-  namespace: string;
-  authMethod: string;
-  syncInterval: string;
-  status: string;
-  lastSync: string | null;
-  lastError: string | null;
-  fluxReady?: boolean;
-  fluxStatus?: string;
-  fluxRevision?: string;
-  sourceReady?: boolean;
-  ksReady?: boolean | null;
-  createdAt: string;
+/** Recursively filter tree nodes: keep a node if its name matches OR any descendant matches */
+function filterTree(nodes: FluxTreeNode[], q: string): FluxTreeNode[] {
+  const lower = q.toLowerCase();
+  return nodes
+    .map((n) => {
+      const nameMatch = n.name.toLowerCase().includes(lower);
+      const filteredChildren = filterTree(n.children, q);
+      if (nameMatch || filteredChildren.length > 0) {
+        return { ...n, children: filteredChildren.length ? filteredChildren : n.children };
+      }
+      return null;
+    })
+    .filter(Boolean) as FluxTreeNode[];
+}
+
+/** Count all root GitRepositories (depth-0 nodes of kind GitRepository) */
+function countRoots(trees: FluxTreeNode[]): number {
+  return trees.filter((n) => n.kind === "GitRepository").length;
 }
 
 export default function FluxPage() {
-  const [repos, setRepos] = useState<RepoData[]>([]);
+  const [trees, setTrees] = useState<FluxTreeNode[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState<string | null>(null);
   const [deleting, setDeleting] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [showConfirm, setShowConfirm] = useState<string | null>(null);
+  const [showConfirm, setShowConfirm] = useState<{ id: string; name: string; namespace: string } | null>(null);
   const [deleteProgress, setDeleteProgress] = useState<DeleteProgress | null>(null);
   const [adding, setAdding] = useState(false);
   const [addError, setAddError] = useState<string | null>(null);
@@ -60,12 +61,12 @@ export default function FluxPage() {
     authData: "",
   });
 
-  const fetchRepos = useCallback(async () => {
+  const fetchHierarchy = useCallback(async () => {
     try {
-      const res = await fetch("/api/flux/repos");
+      const res = await fetch("/api/flux/hierarchy");
       if (!res.ok) return;
       const data = await res.json();
-      setRepos(data.repos || []);
+      setTrees(data.trees || []);
     } catch {
       // ignore
     } finally {
@@ -75,17 +76,16 @@ export default function FluxPage() {
 
   const [search, setSearch] = useState("");
 
-  const filteredRepos = useMemo(() => {
-    if (!search.trim()) return repos;
-    const q = search.toLowerCase();
-    return repos.filter((r) => r.name.toLowerCase().includes(q));
-  }, [repos, search]);
+  const filteredTrees = useMemo(() => {
+    if (!search.trim()) return trees;
+    return filterTree(trees, search);
+  }, [trees, search]);
 
   useEffect(() => {
-    fetchRepos();
-    const interval = setInterval(fetchRepos, 10000);
+    fetchHierarchy();
+    const interval = setInterval(fetchHierarchy, 10000);
     return () => clearInterval(interval);
-  }, [fetchRepos]);
+  }, [fetchHierarchy]);
 
   async function addRepo() {
     if (!form.name || !form.url) return;
@@ -114,7 +114,7 @@ export default function FluxPage() {
       setForm({ name: "", url: "", branch: "main", path: "./", authMethod: "none", authData: "" });
       setAdding(false);
       setAddError(null);
-      fetchRepos();
+      fetchHierarchy();
     } catch (err) {
       setAddError(String(err));
     }
@@ -127,14 +127,15 @@ export default function FluxPage() {
     };
   }, []);
 
-  async function deleteRepo(repo: RepoData) {
+  async function deleteRepo(id: string, name: string, namespace: string) {
     setShowConfirm(null);
     setDeleteError(null);
-    setDeleting(repo.id);
+    setDeleting(id);
 
     try {
       // 1. Kick off cascade delete
-      const res = await fetch(`/api/flux/repos/${repo.id}`, { method: "DELETE" });
+      const params = new URLSearchParams({ name, namespace });
+      const res = await fetch(`/api/flux/repos/${encodeURIComponent(id)}?${params}`, { method: "DELETE" });
       const data = await res.json();
       if (!res.ok || !data.deleteId) {
         setDeleteError(data.error || "Failed to start deletion");
@@ -155,7 +156,7 @@ export default function FluxPage() {
             if (pollRef.current) clearInterval(pollRef.current);
             pollRef.current = null;
             setDeleting(null);
-            fetchRepos();
+            fetchHierarchy();
             // Auto-dismiss after 2s
             setTimeout(() => setDeleteProgress(null), 2000);
           }
@@ -183,60 +184,12 @@ export default function FluxPage() {
     setSyncing(id);
     try {
       await fetch(`/api/flux/repos/${id}/sync`, { method: "POST" });
-      setTimeout(fetchRepos, 2000);
+      setTimeout(fetchHierarchy, 2000);
     } catch {
       // ignore
     } finally {
       setSyncing(null);
     }
-  }
-
-  function statusBadge(repo: RepoData) {
-    // Kustomization failed even though source is fine — show error
-    if (repo.ksReady === false) {
-      return (
-        <span className="text-xs px-2 py-0.5 rounded-full badge-error" title={repo.fluxStatus}>
-          Build Error
-        </span>
-      );
-    }
-    // Full success
-    if (repo.fluxReady === true) {
-      return (
-        <span className="text-xs px-2 py-0.5 rounded-full badge-success">
-          Active
-        </span>
-      );
-    }
-    // Source fetch failure
-    if (repo.fluxReady === false) {
-      return (
-        <span className="text-xs px-2 py-0.5 rounded-full badge-error" title={repo.fluxStatus}>
-          Source Error
-        </span>
-      );
-    }
-    // Still syncing / unknown
-    return (
-      <span className="text-xs px-2 py-0.5 rounded-full badge-warning">
-        Syncing
-      </span>
-    );
-  }
-
-  function formatTime(ts: string | null) {
-    if (!ts) return "—";
-    try {
-      return new Date(ts).toLocaleString();
-    } catch {
-      return ts;
-    }
-  }
-
-  function authLabel(method: string) {
-    if (method === "none") return "Public";
-    if (method === "ssh") return "SSH Key";
-    return "HTTPS";
   }
 
   return (
@@ -247,7 +200,7 @@ export default function FluxPage() {
         <div className="flex items-center gap-3 mb-6">
           <GitBranch className="page-header-icon text-emerald-400" />
           <h1 className="page-header-title">Flux</h1>
-          <span className="text-sm text-zinc-500 ml-auto">{repos.length} repos</span>
+          <span className="text-sm text-zinc-500 ml-auto">{countRoots(trees)} repos</span>
         </div>
         <div className="flex items-center gap-3 mb-6">
           <div className="relative flex-1 max-w-xs">
@@ -455,12 +408,12 @@ export default function FluxPage() {
           </div>
         )}
 
-        {/* Repo List */}
-        {loading && repos.length === 0 ? (
+        {/* Tree View */}
+        {loading && trees.length === 0 ? (
           <div className="flex items-center justify-center min-h-[calc(100vh-16rem)]">
             <Loader2 className="w-8 h-8 animate-spin text-indigo-400" />
           </div>
-        ) : repos.length === 0 ? (
+        ) : trees.length === 0 ? (
           <div className="glass-card p-8 rounded-xl text-center">
             <GitBranch className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-zinc-300 mb-2">No Git Repositories</h3>
@@ -469,121 +422,72 @@ export default function FluxPage() {
             </p>
           </div>
         ) : (
-          <div className="space-y-3">
-            {filteredRepos.map((repo) => (
-              <div key={repo.id} className="glass-card p-4 rounded-xl">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
-                      repo.fluxReady === true ? "bg-emerald-400" :
-                      repo.fluxReady === false ? "bg-red-400" : "bg-amber-400"
-                    }`} />
-                    <div className="min-w-0">
-                      <h3 className="text-lg font-semibold text-zinc-100 truncate">{repo.name}</h3>
-                      <div className="flex items-center gap-2 text-xs text-zinc-500 mt-0.5">
-                        <span className="truncate max-w-[300px]">{repo.url}</span>
-                        <span>·</span>
-                        <span className="font-mono">{repo.branch}</span>
-                        <span>·</span>
-                        <span className="font-mono">{repo.path}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className="text-xs text-zinc-600">{authLabel(repo.authMethod)}</span>
-                    {statusBadge(repo)}
-                  </div>
-                </div>
-
-                {/* Show Kustomization error banner if build/deploy failed */}
-                {repo.ksReady === false && repo.fluxStatus && (
-                  <div className="mt-3 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                    <div className="flex items-start gap-2">
-                      <XCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium text-red-300">Kustomization build failed</p>
-                        <p className="text-xs text-red-400 mt-1 break-all font-mono">{repo.fluxStatus}</p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between mt-3 pt-3 border-t border-zinc-800/60">
-                  <div className="flex items-center gap-4 text-xs text-zinc-500">
-                    <span>Last sync: {formatTime(repo.lastSync)}</span>
-                    {repo.fluxRevision && (
-                      <span className="font-mono text-zinc-600 truncate max-w-[200px]">
-                        {repo.fluxRevision.slice(0, 12)}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => triggerSync(repo.id)}
-                      disabled={syncing === repo.id}
-                      className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-indigo-600/20 border border-indigo-500/20 text-indigo-400 hover:bg-indigo-600/30 text-xs font-medium transition-colors disabled:opacity-50"
-                    >
-                      <RefreshCw className={`w-3 h-3 ${syncing === repo.id ? "animate-spin" : ""}`} />
-                      Sync
-                    </button>
-                    <button
-                      onClick={() => setShowConfirm(repo.id)}
-                      disabled={deleting === repo.id}
-                      className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 text-xs font-medium transition-colors disabled:opacity-50"
-                    >
-                      {deleting === repo.id ? (
-                        <Loader2 className="w-3 h-3 animate-spin" />
-                      ) : (
-                        <Trash2 className="w-3 h-3" />
-                      )}
-                      Delete
-                    </button>
-                  </div>
-                </div>
-
-                {/* Delete Error */}
-                {deleteError && (
-                  <div className="mt-3 p-3 rounded-lg bg-red-500/5 border border-red-500/10 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
-                      <span className="text-sm text-red-300">{deleteError}</span>
-                    </div>
-                    <button
-                      onClick={() => setDeleteError(null)}
-                      className="text-zinc-500 hover:text-zinc-300 ml-4 flex-shrink-0"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                  </div>
-                )}
-
-                {/* Delete Confirmation */}
-                {showConfirm === repo.id && (
-                  <div className="mt-3 p-3 rounded-lg bg-red-500/5 border border-red-500/10 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <XCircle className="w-4 h-4 text-red-400" />
-                      <span className="text-sm text-zinc-300">
-                        Delete &quot;{repo.name}&quot; and ALL resources in the <code className="text-xs bg-zinc-800 px-1 py-0.5 rounded">{repo.namespace}</code> namespace?
-                      </span>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => setShowConfirm(null)}
-                        className="px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:text-zinc-200 text-xs transition-colors"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={() => deleteRepo(repo)}
-                        className="px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium transition-colors"
-                      >
-                        Remove
-                      </button>
-                    </div>
-                  </div>
-                )}
+          <div className="glass-card rounded-xl overflow-hidden">
+            {/* Column headers */}
+            <div className="flex items-center gap-2 py-2.5 px-3 border-b border-zinc-800/60 text-[10px] text-zinc-500 uppercase tracking-wider">
+              <div className="w-8 flex-shrink-0" /> {/* expand chevron */}
+              <div className="min-w-0 flex-1 pl-5">Name</div>
+              <div className="flex items-center gap-2 w-32 flex-shrink-0 justify-end">
+                <span className="w-12 text-right">Rev</span>
+                <span className="w-20 text-right hidden md:inline">Last Sync</span>
+                <span className="w-16" /> {/* actions */}
               </div>
+            </div>
+            {filteredTrees.map((node, i) => (
+              <FluxTreeRow
+                key={node.id}
+                node={node}
+                depth={0}
+                isLast={i === filteredTrees.length - 1}
+                parentIsLast={[]}
+                onSync={(id) => triggerSync(id)}
+                onDelete={(id, name) => setShowConfirm({ id, name, namespace: node.namespace })}
+                syncingId={syncing}
+                deletingId={deleting}
+              />
             ))}
+          </div>
+        )}
+
+        {/* Delete Error */}
+        {deleteError && (
+          <div className="mt-3 p-3 rounded-lg bg-red-500/5 border border-red-500/10 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+              <span className="text-sm text-red-300">{deleteError}</span>
+            </div>
+            <button
+              onClick={() => setDeleteError(null)}
+              className="text-zinc-500 hover:text-zinc-300 ml-4 flex-shrink-0"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        )}
+
+        {/* Delete Confirmation */}
+        {showConfirm && (
+          <div className="mt-3 p-3 rounded-lg bg-red-500/5 border border-red-500/10 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <XCircle className="w-4 h-4 text-red-400" />
+              <span className="text-sm text-zinc-300">
+                Delete &quot;{showConfirm.name}&quot; and ALL resources in the <code className="text-xs bg-zinc-800 px-1 py-0.5 rounded">{showConfirm.namespace}</code> namespace?
+              </span>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowConfirm(null)}
+                className="px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:text-zinc-200 text-xs transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => deleteRepo(showConfirm.id, showConfirm.name, showConfirm.namespace)}
+                className="px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium transition-colors"
+              >
+                Remove
+              </button>
+            </div>
           </div>
         )}
 

@@ -25,7 +25,7 @@ import YamlModal from "./yaml-modal";
 import ConfirmDialog from "./confirm-dialog";
 import LogModal from "./log-modal";
 
-export type ResourceType = "pod" | "deployment" | "namespace" | "node";
+export type ResourceType = "pod" | "deployment" | "namespace" | "node" | "ingress";
 
 interface ActionItem {
   label: string;
@@ -532,5 +532,38 @@ function getActions(
         },
       ];
     }
+
+    // ── Ingress Actions ────────────────────────────────────────
+    case "ingress": {
+      const yamlPath = `/api/cluster/ingresses/${ns}/${name}/yaml`;
+      const deletePath = `/api/cluster/ingresses/${ns}/${name}/delete`;
+
+      return [
+        {
+          label: "View YAML",
+          icon: <FileCode className="w-4 h-4" />,
+          onClick: () => h.openViewYaml(yamlPath, `Ingress YAML: ${ns}/${name}`),
+        },
+        {
+          label: "Edit YAML",
+          icon: <Pencil className="w-4 h-4" />,
+          onClick: () => h.openEditYaml(yamlPath, `Edit Ingress YAML: ${ns}/${name}`),
+        },
+        {
+          label: "Download YAML",
+          icon: <Download className="w-4 h-4" />,
+          onClick: () => h.downloadYaml(yamlPath, `ingress-${ns}-${name}.yaml`),
+        },
+        {
+          label: "Delete",
+          icon: <Trash2 className="w-4 h-4" />,
+          onClick: () => h.promptDelete(deletePath, "Ingress", "/ingresses"),
+          danger: true,
+        },
+      ];
+    }
+
+    default:
+      return [];
   }
 }

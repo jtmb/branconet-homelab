@@ -5,8 +5,12 @@ import { activeJobs } from "@/lib/active-jobs";
 import { syncVarsToYAML, syncInventoryToFile, syncNodesFromVars } from "@/lib/sync-vars";
 import { invalidateCache } from "@/lib/cluster-cache";
 import { sshExec } from "@/lib/k8s";
+import { requireWrite } from "@/lib/permissions";
 
 export async function POST(request: NextRequest) {
+  const auth = await requireWrite();
+  if (auth instanceof NextResponse) return auth;
+
   try {
     const body = await request.json();
     const { playbook, roles } = body;

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { kubectlExec } from "@/lib/k8s";
 import { invalidateCache } from "@/lib/cluster-cache";
+import { requireWrite } from "@/lib/permissions";
 
 const ACTIONS: Record<string, string> = {
   restart: "rollout restart",
@@ -13,6 +14,9 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ namespace: string; name: string }> }
 ) {
+  const auth = await requireWrite();
+  if (auth instanceof NextResponse) return auth;
+
   const { namespace, name } = await params;
   try {
     const { action } = await request.json();

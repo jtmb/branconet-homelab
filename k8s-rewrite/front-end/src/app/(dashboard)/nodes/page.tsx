@@ -28,6 +28,7 @@ export default function NodesPage() {
   const [loading, setLoading] = useState(true);
   const [adding, setAdding] = useState(false);
   const [search, setSearch] = useState("");
+  const [role, setRole] = useState<"readonly" | "write" | null>(null);
   const [form, setForm] = useState({ name: "", hostname: "", ipAddress: "", role: "worker" });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editName, setEditName] = useState("");
@@ -60,6 +61,13 @@ export default function NodesPage() {
     const interval = setInterval(fetchLive, 10000);
     return () => clearInterval(interval);
   }, [fetchDbNodes, fetchLive]);
+
+  useEffect(() => {
+    fetch("/api/auth/session")
+      .then((r) => r.json())
+      .then((d) => { if (d.role) setRole(d.role); })
+      .catch(() => {});
+  }, []);
 
   async function addNode() {
     if (!form.hostname || !form.ipAddress) return;
@@ -166,69 +174,71 @@ export default function NodesPage() {
             />
           </div>
           {/* Add Node Form */}
-          {!adding ? (
-            <button
-              onClick={() => setAdding(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors ml-auto"
-            >
-              <Plus className="w-4 h-4" />
-              Add Node
-            </button>
-          ) : (
-          <div className="glass-card p-4 rounded-xl mb-6 flex items-end gap-3 flex-wrap">
-            <div>
-              <label className="text-xs text-zinc-500 mb-1 block">Name</label>
-              <input
-                value={form.name}
-                onChange={e => setForm({ ...form, name: e.target.value })}
-                placeholder="Living Room"
-                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-32"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-zinc-500 mb-1 block">Hostname</label>
-              <input
-                value={form.hostname}
-                onChange={e => setForm({ ...form, hostname: e.target.value })}
-                placeholder="u4"
-                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-28"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-zinc-500 mb-1 block">IP Address</label>
-              <input
-                value={form.ipAddress}
-                onChange={e => setForm({ ...form, ipAddress: e.target.value })}
-                placeholder="192.168.0.28"
-                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-40"
-              />
-            </div>
-            <div>
-              <label className="text-xs text-zinc-500 mb-1 block">Role</label>
-              <select
-                value={form.role}
-                onChange={e => setForm({ ...form, role: e.target.value })}
-                className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200"
+          {role === "write" && (
+            !adding ? (
+              <button
+                onClick={() => setAdding(true)}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors ml-auto"
               >
-                <option value="worker">Worker</option>
-                <option value="master">Master</option>
-              </select>
-            </div>
-            <button
-              onClick={addNode}
-              disabled={!form.hostname || !form.ipAddress}
-              className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors disabled:opacity-50"
-            >
-              <Save className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setAdding(false)}
-              className="px-4 py-2 rounded-lg border border-zinc-700 text-zinc-400 hover:text-zinc-200 text-sm transition-colors"
-            >
-              Cancel
-            </button>
-          </div>
-        )}
+                <Plus className="w-4 h-4" />
+                Add Node
+              </button>
+            ) : (
+              <div className="glass-card p-4 rounded-xl mb-6 flex items-end gap-3 flex-wrap">
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">Name</label>
+                  <input
+                    value={form.name}
+                    onChange={e => setForm({ ...form, name: e.target.value })}
+                    placeholder="Living Room"
+                    className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-32"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">Hostname</label>
+                  <input
+                    value={form.hostname}
+                    onChange={e => setForm({ ...form, hostname: e.target.value })}
+                    placeholder="u4"
+                    className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-28"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">IP Address</label>
+                  <input
+                    value={form.ipAddress}
+                    onChange={e => setForm({ ...form, ipAddress: e.target.value })}
+                    placeholder="192.168.0.28"
+                    className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-40"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">Role</label>
+                  <select
+                    value={form.role}
+                    onChange={e => setForm({ ...form, role: e.target.value })}
+                    className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200"
+                  >
+                    <option value="worker">Worker</option>
+                    <option value="master">Master</option>
+                  </select>
+                </div>
+                <button
+                  onClick={addNode}
+                  disabled={!form.hostname || !form.ipAddress}
+                  className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors disabled:opacity-50"
+                >
+                  <Save className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setAdding(false)}
+                  className="px-4 py-2 rounded-lg border border-zinc-700 text-zinc-400 hover:text-zinc-200 text-sm transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            )
+          )}
         </div>
 
         {/* Node List */}
@@ -260,7 +270,7 @@ export default function NodesPage() {
                   <th className="text-left px-2 py-2.5"><SortHeader label="RAM" active={sortKey==="mem"} dir={sortDir} onClick={()=>toggleSort("mem")} /></th>
                   <th className="text-left px-2 py-2.5"><SortHeader label="Pods" active={sortKey==="pods"} dir={sortDir} onClick={()=>toggleSort("pods")} /></th>
                   <th className="text-left px-2 py-2.5"><SortHeader label="Age" active={sortKey==="age"} dir={sortDir} onClick={()=>toggleSort("age")} /></th>
-                  <th className="text-right px-2 py-2.5 text-xs font-medium text-zinc-400">Actions</th>
+                  {role === "write" && <th className="text-right px-2 py-2.5 text-xs font-medium text-zinc-400">Actions</th>}
                 </tr>
               </thead>
               <tbody>
@@ -321,6 +331,7 @@ export default function NodesPage() {
                       <td className="px-2 py-2.5 text-sm text-zinc-500 whitespace-nowrap">
                         {liveInfo?.age || node.age || "—"}
                       </td>
+                      {role === "write" && (
                       <td className="px-2 py-2.5 text-right">
                         <div className="flex items-center justify-end gap-1">
                           <button
@@ -339,6 +350,7 @@ export default function NodesPage() {
                           </button>
                         </div>
                       </td>
+                      )}
                     </tr>
                   );
                 })}

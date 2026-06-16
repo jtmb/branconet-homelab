@@ -16,6 +16,8 @@ import {
   Monitor,
   Maximize2,
   Columns,
+  UserPlus,
+  Shield,
 } from "lucide-react";
 
 interface PVInfo {
@@ -43,6 +45,11 @@ export default function SettingsPage() {
   const [defaultPolicy, setDefaultPolicy] = useState("Retain");
   const [defaultPolicySaving, setDefaultPolicySaving] = useState(false);
   const [viewMode, setViewModeLocal] = useState<ViewMode>("comfortable");
+  const [allowRegistration, setAllowRegistration] = useState(false);
+  const [registrationLoading, setRegistrationLoading] = useState(true);
+  const [registrationSaving, setRegistrationSaving] = useState(false);
+  const [userCount, setUserCount] = useState(0);
+  const [role, setRole] = useState<"readonly" | "write" | null>(null);
 
   useEffect(() => {
     const stored = localStorage.getItem("k8s-view-mode");
@@ -50,6 +57,53 @@ export default function SettingsPage() {
       setViewModeLocal(stored);
     }
   }, []);
+
+  const fetchRegistrationStatus = useCallback(async () => {
+    try {
+      const [settingsRes, sessionRes] = await Promise.all([
+        fetch("/api/settings"),
+        fetch("/api/auth/session"),
+      ]);
+      const settings = await settingsRes.json();
+      const session = await sessionRes.json();
+
+      setAllowRegistration(
+        session.registrationOpen ||
+        settings.allow_registration === "true"
+      );
+    } catch {
+      // ignore
+    } finally {
+      setRegistrationLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchRegistrationStatus();
+    fetch("/api/auth/session")
+      .then((r) => r.json())
+      .then((d) => { if (d.role) setRole(d.role); })
+      .catch(() => {});
+  }, [fetchRegistrationStatus]);
+
+  async function toggleRegistration() {
+    setRegistrationSaving(true);
+    try {
+      const newValue = !allowRegistration;
+      const res = await fetch("/api/settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ key: "allow_registration", value: String(newValue) }),
+      });
+      if (res.ok) {
+        setAllowRegistration(newValue);
+      }
+    } catch (err) {
+      console.error("Failed to toggle registration:", err);
+    } finally {
+      setRegistrationSaving(false);
+    }
+  }
 
   const fetchVolumes = useCallback(async () => {
     try {
@@ -197,6 +251,7 @@ export default function SettingsPage() {
                 <option value="Delete">Delete</option>
                 <option value="Recycle">Recycle</option>
               </select>
+              {role === "write" && (
               <button
                 onClick={async () => {
                   setDefaultPolicySaving(true);
@@ -213,6 +268,7 @@ export default function SettingsPage() {
                   "Save"
                 )}
               </button>
+              )}
             </div>
           </div>
         </section>
@@ -251,6 +307,76 @@ export default function SettingsPage() {
           </div>
         </section>
 
+        {/* Registration toggle section */}
+        <section className="rounded-2xl bg-zinc-900/70 border border-zinc-800 p-6">
+          <h2 className="text-base font-semibold text-zinc-100 mb-4 flex items-center gap-2">
+            <UserPlus className="w-4 h-4 text-emerald-400" />
+            User Registration
+          </h2>
+          <p className="text-sm text-zinc-400 mb-4">
+            When enabled, new users can create accounts from the login page.
+            When disabled, only existing users can sign in. This can also be
+            controlled via the{" "}
+            <code className="text-xs bg-zinc-800 px-1.5 py-0.5 rounded text-zinc-300">
+              ALLOW_REGISTRATION
+            </code>{" "}
+            environment variable.
+          </p>
+
+          {registrationLoading ? (
+            <div className="flex items-center gap-2 text-sm text-zinc-500">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Loading...
+            </div>
+          ) : (
+            <div className="flex items-center gap-4">
+              {role === "write" ? (
+              <button
+                onClick={toggleRegistration}
+                disabled={registrationSaving}
+                className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 ${
+                  allowRegistration
+                    ? "bg-emerald-600"
+                    : "bg-zinc-700"
+                } ${registrationSaving ? "opacity-50" : ""}`}
+                role="switch"
+                aria-checked={allowRegistration}
+              >
+                <span
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    allowRegistration ? "translate-x-6" : "translate-x-1"
+                  }`}
+                />
+              </button>
+              ) : (
+                <span
+                  className={`inline-flex h-6 w-11 items-center rounded-full ${
+                    allowRegistration ? "bg-emerald-600" : "bg-zinc-700"
+                  } opacity-60`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                      allowRegistration ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </span>
+              )}
+              <div>
+                <span
+                  className={`text-sm font-medium ${
+                    allowRegistration ? "text-emerald-400" : "text-zinc-500"
+                  }`}
+                >
+                  {allowRegistration ? "Registration open" : "Registration locked"}
+                </span>
+                {registrationSaving && (
+                  <Loader2 className="w-3 h-3 animate-spin text-zinc-500 inline ml-2" />
+                )}
+              </div>
+            </div>
+          )}
+        </section>
+
         {/* Volume reclaim policy section */}
         <section className="rounded-2xl bg-zinc-900/70 border border-zinc-800 p-6">
           <div className="flex items-center justify-between mb-4">
@@ -258,6 +384,7 @@ export default function SettingsPage() {
               <HardDrive className="w-4 h-4 text-blue-400" />
               Persistent Volume Reclaim Policies
             </h2>
+            {role === "write" && (
             <div className="flex items-center gap-2">
               {releasedCount > 0 && (
                 <button
@@ -280,6 +407,7 @@ export default function SettingsPage() {
                 Save Changes{hasEdits ? ` (${edits.size})` : ""}
               </button>
             </div>
+            )}
           </div>
 
           {loading ? (
@@ -334,6 +462,7 @@ export default function SettingsPage() {
                           </div>
                         </td>
                         <td className="py-3 pr-4">
+                          {role === "write" ? (
                           <select
                             value={effective}
                             onChange={(e) =>
@@ -353,6 +482,15 @@ export default function SettingsPage() {
                             <option value="Delete">Delete</option>
                             <option value="Recycle">Recycle</option>
                           </select>
+                          ) : (
+                            <span className={`text-xs px-2 py-1.5 rounded-lg border ${
+                              effective === "Delete"
+                                ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-300"
+                                : effective === "Retain"
+                                  ? "bg-zinc-800 border-zinc-700 text-zinc-300"
+                                  : "bg-zinc-800 border-zinc-700 text-zinc-300"
+                            }`}>{effective}</span>
+                          )}
                         </td>
                         <td className="py-3 pr-4">
                           <span

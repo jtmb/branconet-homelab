@@ -6,13 +6,12 @@ import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 export type SortDir = "asc" | "desc";
 
 export function useSort<K extends string>(defaultKey: K) {
-  const [sortKey, setSortKeyRaw] = useState<K>(defaultKey);
+  const [sortKey, setSortKeyRaw] = useState<string>(defaultKey);
   const [sortDir, setSortDirRaw] = useState<SortDir>("asc");
-  // Use module-level workaround; we need import in the component
   return {
     sortKey,
     sortDir,
-    toggle(key: K) {
+    toggle(key: string) {
       setSortKeyRaw((prev) => {
         if (prev === key) {
           setSortDirRaw((d) => (d === "asc" ? "desc" : "asc"));

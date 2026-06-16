@@ -152,7 +152,13 @@ export async function kubectlExec(
         { timeout: timeoutMs, maxBuffer: 2 * 1024 * 1024 }
       );
       return stdout;
-    } catch {
+    } catch (err: any) {
+      // kubectl may exit non-zero even on success (e.g. delete prints to stdout then exits 1)
+      // Check stderr/stdout from the error object for actual output
+      const out = err?.stdout?.trim() || err?.stderr?.trim();
+      if (out && !out.startsWith("Error") && !out.startsWith("error:")) {
+        return out;
+      }
       return null;
     }
   }

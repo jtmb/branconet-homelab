@@ -4,6 +4,7 @@ import { writeFile, unlink } from "fs/promises";
 import { randomUUID } from "crypto";
 import { tmpdir } from "os";
 import { join } from "path";
+import { requireWrite } from "@/lib/permissions";
 
 export async function GET(
   _request: NextRequest,
@@ -21,6 +22,9 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ name: string }> }
 ) {
+  const auth = await requireWrite();
+  if (auth instanceof NextResponse) return auth;
+
   const { name } = await params;
   try {
     const { yaml } = await request.json();

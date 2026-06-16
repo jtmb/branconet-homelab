@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { activeJobs } from "@/lib/active-jobs";
+import { requireWrite } from "@/lib/permissions";
 
 export async function POST(request: NextRequest) {
+  const auth = await requireWrite();
+  if (auth instanceof NextResponse) return auth;
+
   try {
     // Support both query param (?jobId=xxx) and JSON body ({jobId: "xxx"})
     let jobId = request.nextUrl.searchParams.get("jobId");

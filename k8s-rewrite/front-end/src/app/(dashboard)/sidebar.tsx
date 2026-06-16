@@ -6,7 +6,7 @@ import { useState } from "react";
 import {
   Server, HardDrive, GitBranch, Terminal,
   PanelLeftClose, PanelLeft, LayoutDashboard, Key,
-  Container, FolderTree, Rocket, Network, Globe,
+  Container, FolderTree, Rocket, Network, Globe, UsersRound,
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { href: "/flux", label: "Flux", icon: GitBranch, color: "text-emerald-400" },
   { href: "/deploy", label: "Provisioning", icon: Terminal, color: "text-emerald-400" },
   { href: "/secrets", label: "Secrets", icon: Key, color: "text-cyan-400" },
+  { href: "/users", label: "Users", icon: UsersRound, color: "text-emerald-400" },
 ];
 
 export default function ClusterSidebar() {

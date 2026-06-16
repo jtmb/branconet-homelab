@@ -249,6 +249,175 @@ export async function triggerSync(name: string): Promise<{ success: boolean; err
 }
 
 // =============================================================================
+// Hierarchy Tree — Fleet-style expandable repo view
+// =============================================================================
+
+export type FluxNodeKind = "GitRepository" | "Kustomization" | "HelmRelease";
+
+export interface FluxTreeNode {
+  id: string;
+  name: string;
+  kind: FluxNodeKind;
+  url?: string;
+  branch?: string;
+  path?: string;
+  namespace: string;
+  ready: boolean;
+  status: string;
+  lastSync: string | null;
+  revision: string | null;
+  authMethod?: string;
+  suspended?: boolean;
+  children: FluxTreeNode[];
+}
+
+export async function getFluxHierarchy(): Promise<FluxTreeNode[]> {
+  // Fetch all Flux resources + DB records in parallel
+  const [gitReposRaw, kustomizationsRaw, helmReleasesRaw, dbRepos] = await Promise.all([
+    kubectlJSON("u1", buildKubectlCmd("get gitrepositories -o json")),
+    kubectlJSON("u1", buildKubectlCmd("get kustomizations -o json")),
+    kubectlJSON("u1", `--all-namespaces get helmreleases -o json`).catch(() => null),
+    prisma.gitRepo.findMany({ orderBy: { createdAt: "desc" } }),
+  ]);
+
+  const gitRepos = (gitReposRaw?.items || []) as any[];
+  const kustomizations = (kustomizationsRaw?.items || []) as any[];
+  const helmReleases = (helmReleasesRaw?.items || []) as any[];
+
+  // Index Kustomizations by sourceRef name (for parent → child linking)
+  const ksBySource = new Map<string, any[]>();
+  for (const ks of kustomizations) {
+    const sourceName = ks.spec?.sourceRef?.name || ks.metadata?.name;
+    if (!ksBySource.has(sourceName)) ksBySource.set(sourceName, []);
+    ksBySource.get(sourceName)!.push(ks);
+  }
+
+  // Index HelmReleases by sourceRef name
+  const hrBySource = new Map<string, any[]>();
+  for (const hr of helmReleases) {
+    const sourceName = hr.spec?.chart?.spec?.sourceRef?.name;
+    if (sourceName) {
+      if (!hrBySource.has(sourceName)) hrBySource.set(sourceName, []);
+      hrBySource.get(sourceName)!.push(hr);
+    }
+  }
+
+  // DB lookup by name for auth/id metadata
+  const dbByName = new Map(dbRepos.map((r) => [r.name, r]));
+
+  // Build tree: each GitRepository is a root node with its Kustomizations + HelmReleases as children
+  const trees: FluxTreeNode[] = gitRepos.map((gr: any) => {
+    const name = gr.metadata?.name || "unknown";
+    const conditions = gr.status?.conditions || [];
+    const readyCond = conditions.find((c: any) => c.type === "Ready");
+    const sourceReady = readyCond?.status === "True";
+    const dbRepo = dbByName.get(name);
+
+    const children: FluxTreeNode[] = [];
+
+    // Kustomization children (linked by sourceRef.name === GitRepository name)
+    const repoKS = ksBySource.get(name) || [];
+    for (const ks of repoKS) {
+      const ksName = ks.metadata?.name || "unknown";
+      const ksConditions = ks.status?.conditions || [];
+      const ksReadyCond = ksConditions.find((c: any) => c.type === "Ready");
+      const ksReady = ksReadyCond?.status === "True";
+
+      // This Kustomization might itself be a source for sub-kustomizations or helmreleases
+      const subKS = (ksBySource.get(ksName) || [])
+        .filter((s) => s.metadata?.uid !== ks.metadata?.uid);
+      const subHR = hrBySource.get(ksName) || [];
+
+      const subChildren: FluxTreeNode[] = [
+        ...subKS.map((s: any) => buildKustomizationNode(s)),
+        ...subHR.map((h: any) => buildHelmReleaseNode(h)),
+      ];
+
+      children.push({
+        id: `ks-${ks.metadata?.uid || ksName}`,
+        name: ksName,
+        kind: "Kustomization",
+        path: ks.spec?.path || "./",
+        namespace: ks.metadata?.namespace || FLUX_NAMESPACE,
+        ready: ksReady,
+        status: ksReadyCond?.message || (ksReady ? "Ready" : "Not Ready"),
+        lastSync: ks.status?.lastHandledReconcileAt || null,
+        revision: ks.status?.lastAppliedRevision || null,
+        children: subChildren,
+      });
+    }
+
+    // HelmRelease children (linked by chart.spec.sourceRef.name === GitRepository name)
+    const repoHR = hrBySource.get(name) || [];
+    for (const hr of repoHR) {
+      children.push(buildHelmReleaseNode(hr));
+    }
+
+    const suspended = gr.spec?.suspend === true;
+
+    return {
+      id: dbRepo?.id || `gr-${gr.metadata?.uid || name}`,
+      name,
+      kind: "GitRepository",
+      url: gr.spec?.url || "",
+      branch: gr.spec?.ref?.branch || "main",
+      path: repoKS[0]?.spec?.path || "./",
+      namespace: gr.metadata?.namespace || FLUX_NAMESPACE,
+      ready: sourceReady,
+      status: readyCond?.message || (sourceReady ? "Ready" : "Not Ready"),
+      lastSync: gr.status?.lastHandledReconcileAt || null,
+      revision: gr.status?.artifact?.revision || null,
+      authMethod: dbRepo?.authMethod || "none",
+      suspended,
+      children,
+    };
+  });
+
+  // Filter out suspended GitRepositories — they're in the cluster but inert
+  return trees.filter((t) => !t.suspended);
+}
+
+function buildKustomizationNode(ks: any): FluxTreeNode {
+  const name = ks.metadata?.name || "unknown";
+  const conditions = ks.status?.conditions || [];
+  const readyCond = conditions.find((c: any) => c.type === "Ready");
+  const ready = readyCond?.status === "True";
+
+  return {
+    id: `ks-${ks.metadata?.uid || name}`,
+    name,
+    kind: "Kustomization",
+    path: ks.spec?.path || "./",
+    namespace: ks.metadata?.namespace || FLUX_NAMESPACE,
+    ready,
+    status: readyCond?.message || (ready ? "Ready" : "Not Ready"),
+    lastSync: ks.status?.lastHandledReconcileAt || null,
+    revision: ks.status?.lastAppliedRevision || null,
+    children: [],
+  };
+}
+
+function buildHelmReleaseNode(hr: any): FluxTreeNode {
+  const name = hr.metadata?.name || "unknown";
+  const conditions = hr.status?.conditions || [];
+  const readyCond = conditions.find((c: any) => c.type === "Ready");
+  const ready = readyCond?.status === "True";
+
+  return {
+    id: `hr-${hr.metadata?.uid || name}`,
+    name,
+    kind: "HelmRelease",
+    path: hr.spec?.chart?.spec?.chart || "",
+    namespace: hr.metadata?.namespace || "default",
+    ready,
+    status: readyCond?.message || (ready ? "Ready" : "Not Ready"),
+    lastSync: hr.status?.lastHandledReconcileAt || null,
+    revision: hr.status?.lastAppliedRevision || null,
+    children: [],
+  };
+}
+
+// =============================================================================
 // DB-backed repo management (combines DB + K8s CRDs)
 // =============================================================================
 
@@ -310,7 +479,6 @@ export async function addRepo(data: {
   const branch = data.branch || "main";
   const path = data.path || "./";
   const authMethod = data.authMethod || "none";
-  const ns = data.name; // Namespace = repo name convention
 
   // 1. Encrypt auth data if provided
   let encryptedAuth = "";
@@ -328,7 +496,7 @@ export async function addRepo(data: {
         url: data.url,
         branch,
         path,
-        namespace: ns,
+        namespace: "",
         authMethod,
         authData: encryptedAuth,
       },
@@ -357,8 +525,8 @@ export async function addRepo(data: {
     return { success: false, error: `Failed to create GitRepository: ${grResult.error}` };
   }
 
-  // 5. Create Kustomization CRD with targetNamespace so Flux auto-creates the namespace
-  const ksResult = await createKustomization(data.name, data.name, path, ns);
+  // 5. Create Kustomization CRD (no targetNamespace — charts bring their own namespaces)
+  const ksResult = await createKustomization(data.name, data.name, path);
   if (!ksResult.success) {
     return { success: false, error: `Failed to create Kustomization: ${ksResult.error}` };
   }
@@ -370,7 +538,7 @@ export async function addRepo(data: {
       authData: undefined,
       createdAt: repo.createdAt.toISOString(),
       updatedAt: repo.updatedAt.toISOString(),
-      namespace: ns,
+      namespace: "",
       lastSync: null,
     } as GitRepoRecord,
   };
@@ -378,25 +546,51 @@ export async function addRepo(data: {
 
 export async function removeRepo(
   id: string,
+  repoName?: string,
+  repoNamespace?: string,
 ): Promise<{ success: boolean; deleteId?: string; error?: string }> {
+  let name: string;
+  let ns: string;
+  let dbId: string | null = null;
+
+  // Try Prisma first — repos added via dashboard have a DB record
   const repo = await prisma.gitRepo.findUnique({ where: { id } });
-  if (!repo) {
+  if (repo) {
+    name = repo.name;
+    ns = repo.namespace || repo.name;
+    dbId = id;
+  } else if (repoName) {
+    // CRD-only repo (exists in cluster but not in our DB) — delete by name/namespace
+    name = repoName;
+    ns = repoNamespace || name;
+  } else {
     return { success: false, error: "Repository not found" };
   }
 
-  const ns = repo.namespace || repo.name;
-  const deleteId = id;
+  const deleteId = dbId || `gr-${name}`;
+
+  const steps = dbId
+    ? [
+        { step: "discover", status: "pending" as const, detail: "Discovering child resources…" },
+        { step: "children", status: "pending" as const, detail: "Deleting child Kustomizations & HelmReleases…" },
+        { step: "flux_crds", status: "pending" as const, detail: "Suspending GitRepository & deleting Kustomization…" },
+        { step: "namespace", status: "pending" as const, detail: `Deleting namespace "${ns}"…` },
+        { step: "volumes", status: "pending" as const, detail: "Cleaning up persistent volumes…" },
+        { step: "db", status: "pending" as const, detail: "Removing from database…" },
+      ]
+    : [
+        { step: "discover", status: "pending" as const, detail: "Discovering child resources…" },
+        { step: "children", status: "pending" as const, detail: "Deleting child Kustomizations & HelmReleases…" },
+        { step: "flux_crds", status: "pending" as const, detail: "Suspending GitRepository & deleting Kustomization…" },
+        { step: "namespace", status: "pending" as const, detail: `Deleting namespace "${ns}"…` },
+        { step: "volumes", status: "pending" as const, detail: "Cleaning up persistent volumes…" },
+      ];
 
   const progress: DeleteProgress = {
     deleteId,
-    repoName: repo.name,
+    repoName: name,
     namespace: ns,
-    steps: [
-      { step: "flux_crds", status: "pending", detail: "Deleting Flux resources…" },
-      { step: "namespace", status: "pending", detail: `Deleting namespace "${ns}"…` },
-      { step: "volumes", status: "pending", detail: "Cleaning up persistent volumes…" },
-      { step: "db", status: "pending", detail: "Removing from database…" },
-    ],
+    steps,
     done: false,
   };
 
@@ -404,7 +598,7 @@ export async function removeRepo(
   scheduleProgressCleanup(deleteId);
 
   // Run async — don't await, let it complete in the background
-  performCascadeDelete(deleteId, repo.name, ns, id).catch((err) => {
+  performCascadeDelete(deleteId, name, ns, dbId).catch((err) => {
     const p = deleteProgressMap.get(deleteId);
     if (p) {
       p.done = true;
@@ -423,98 +617,236 @@ async function performCascadeDelete(
   deleteId: string,
   name: string,
   namespace: string,
-  dbId: string,
+  dbId: string | null,
 ) {
   const progress = deleteProgressMap.get(deleteId);
   if (!progress) return;
 
-  // --- Step 1: Delete Flux CRDs ---
+  // --- Step 0: Discover all child resources linked to this repo ---
   progress.steps[0].status = "running";
-  try { await kubectlJSON("u1", `--namespace flux-system delete kustomization ${name} --ignore-not-found`); } catch {}
-  try { await kubectlJSON("u1", `--namespace flux-system delete gitrepository ${name} --ignore-not-found`); } catch {}
-  try { await kubectlJSON("u1", `--namespace flux-system delete secret ${name}-auth --ignore-not-found`); } catch {}
+  const childKustomizations: { name: string; ns: string }[] = [];
+  const childHelmReleases: { name: string; ns: string }[] = [];
+
+  try {
+    const kustRaw = await kubectlJSON("u1", `--all-namespaces get kustomizations`);
+    const kustItems = (kustRaw?.items || []) as any[];
+    for (const ks of kustItems) {
+      const sourceName = ks.spec?.sourceRef?.name;
+      // Child if sourceRef.name matches our repo AND the Kustomization itself isn't named the same
+      // (the same-name one is the bootstrap kustomization we already handle)
+      if (sourceName === name && ks.metadata?.name !== name) {
+        childKustomizations.push({ name: ks.metadata.name, ns: ks.metadata.namespace || "flux-system" });
+      }
+    }
+  } catch { /* proceed with what we have */ }
+
+  try {
+    const hrRaw = await kubectlJSON("u1", `--all-namespaces get helmreleases`);
+    const hrItems = (hrRaw?.items || []) as any[];
+    for (const hr of hrItems) {
+      const sourceName = hr.spec?.chart?.spec?.sourceRef?.name;
+      if (sourceName === name) {
+        childHelmReleases.push({ name: hr.metadata.name, ns: hr.metadata.namespace || "default" });
+      }
+    }
+  } catch { /* proceed */ }
+
+  const totalChildren = childKustomizations.length + childHelmReleases.length;
   progress.steps[0].status = "done";
+  progress.steps[0].detail = totalChildren > 0
+    ? `Found ${childKustomizations.length} Kustomization(s), ${childHelmReleases.length} HelmRelease(s)`
+    : "No child resources found";
 
-  // --- Step 2: Delete namespace with polling ---
+  // --- Step 1: Delete child resources ---
   progress.steps[1].status = "running";
+  let deletedChildren = 0;
 
-  // Capture PV names bound to PVCs in this namespace BEFORE deletion
-  const pvOutput = await kubectlExec(
-    `get pvc -n ${namespace} -o custom-columns=PV:.spec.volumeName --no-headers`,
-  );
-  const boundPVs = pvOutput
-    ? pvOutput
-        .trim()
-        .split("\n")
-        .map((l) => l.trim())
-        .filter(Boolean)
-    : [];
-
-  const deleteResult = await kubectlExec(`delete namespace ${namespace} --wait=false --ignore-not-found`);
-
-  // If the delete command itself failed, namespace might not exist
-  if (deleteResult === null) {
-    // Namespace might already be gone or never existed — check
-    const stillThere = await kubectlExec(`get namespace ${namespace} --no-headers`);
-    if (stillThere && stillThere.trim()) {
-      progress.steps[1].status = "error";
-      progress.steps[1].detail = `Failed to issue delete for namespace "${namespace}"`;
-    } else {
-      progress.steps[1].status = "done";
-      progress.steps[1].detail = `Namespace "${namespace}" already gone`;
+  // Delete child Kustomizations first (so their managed resources start terminating)
+  for (const child of childKustomizations) {
+    try {
+      await kubectlExec(`--namespace ${child.ns} delete kustomization ${child.name} --wait=false --ignore-not-found`);
+      deletedChildren++;
+      progress.steps[1].detail = `Deleted Kustomization "${child.name}" (${deletedChildren}/${totalChildren})…`;
+    } catch (err) {
+      progress.steps[1].detail = `Warning: failed to delete Kustomization "${child.name}": ${String(err)}`;
     }
-  } else {
-    for (let i = 0; i < 30; i++) {
+  }
+
+  // Delete child HelmReleases
+  for (const child of childHelmReleases) {
+    try {
+      await kubectlExec(`--namespace ${child.ns} delete helmrelease ${child.name} --wait=false --ignore-not-found`);
+      deletedChildren++;
+      progress.steps[1].detail = `Deleted HelmRelease "${child.name}" (${deletedChildren}/${totalChildren})…`;
+    } catch (err) {
+      progress.steps[1].detail = `Warning: failed to delete HelmRelease "${child.name}": ${String(err)}`;
+    }
+  }
+
+  progress.steps[1].status = "done";
+  progress.steps[1].detail = totalChildren > 0
+    ? `Deleted ${deletedChildren}/${totalChildren} child resources`
+    : "No child resources to delete";
+
+  // Give child resources a moment to start terminating before we delete the parent
+  if (totalChildren > 0) {
     await new Promise((r) => setTimeout(r, 2000));
-
-    const nsCheck = await kubectlExec(`get namespace ${namespace} --no-headers`);
-    if (!nsCheck || !nsCheck.trim()) {
-      progress.steps[1].status = "done";
-      progress.steps[1].detail = `Namespace "${namespace}" deleted`;
-      break;
-    }
-
-    // Count remaining pods while namespace is terminating
-    const pods = await kubectlExec(`get pods -n ${namespace} --no-headers`);
-    const podCount = pods ? pods.trim().split("\n").filter(Boolean).length : 0;
-    if (podCount > 0) {
-      progress.steps[1].detail = `Terminating: ${podCount} pod${podCount !== 1 ? "s" : ""} remaining…`;
-    } else {
-      progress.steps[1].detail = "Waiting for namespace cleanup…";
-    }
-    }
   }
 
-  if (progress.steps[1].status !== "done") {
-    progress.steps[1].status = "error";
-    progress.steps[1].detail = `Namespace deletion timed out — "${namespace}" may still be terminating`;
-  }
-
-  // --- Step 3: Clean up orphaned PersistentVolumes ---
+  // --- Step 2: Suspend GitRepository, delete Kustomization ---
+  // The GitRepository YAML lives in the parent Kustomization's git source (e.g. branconet-charts).
+  // If we delete the GitRepository, the parent Kustomization immediately recreates it unsuspended.
+  // Instead, we permanently suspend the GitRepository (stops fetching) and only delete the Kustomization.
   progress.steps[2].status = "running";
+
+  // 2a. Suspend GitRepository FIRST — keep it suspended permanently.
+  //     The parent Kustomization will NOT unsuspend a suspended resource on reconcile.
+  let gitrepoSuspended = false;
+  try {
+    await kubectlExec(
+      `--namespace ${FLUX_NAMESPACE} patch gitrepository ${name} --type merge -p {\"spec\":{\"suspend\":true}}`,
+    );
+    gitrepoSuspended = true;
+    progress.steps[2].detail = `Suspended GitRepository "${name}" (kept in cluster to prevent recreation)…`;
+  } catch { /* may not exist */ }
+
+  // 2b. Suspend Kustomization so it stops reconciling before deletion
+  try {
+    await kubectlExec(
+      `--namespace ${FLUX_NAMESPACE} patch kustomization ${name} --type merge -p {\"spec\":{\"suspend\":true}}`,
+    );
+    progress.steps[2].detail = `Suspended Kustomization "${name}"…`;
+  } catch { /* may not exist */ }
+
+  // Brief pause to let controllers register the suspension
+  await new Promise((r) => setTimeout(r, 1000));
+
+  // 2c. Delete the Kustomization — it won't be recreated (its YAML is NOT in the parent's git path)
+  try { await kubectlExec(`--namespace ${FLUX_NAMESPACE} delete kustomization ${name} --wait=false --ignore-not-found`); } catch {}
+
+  // 2d. Do NOT delete the GitRepository — parent Kustomization would recreate it unsuspended.
+  //     The suspended GitRepository stays in the cluster, inert, and won't show in the dashboard.
+  if (gitrepoSuspended) {
+    progress.steps[2].detail = `GitRepository "${name}" suspended (inert), Kustomization deleted`;
+  } else {
+    progress.steps[2].detail = `Delete attempted — GitRepository may not exist`;
+  }
+
+  // 2e. Clean up associated secret if present
+  try { await kubectlExec(`--namespace ${FLUX_NAMESPACE} delete secret ${name}-auth --wait=false --ignore-not-found`); } catch {}
+  progress.steps[2].status = "done";
+
+  // --- Step 3: Delete namespace with polling ---
+  // Never delete system/critical namespaces — repos that live there share the space
+  const PROTECTED_NAMESPACES = new Set([
+    "flux-system", "kube-system", "kube-public", "kube-node-lease",
+    "default", "cert-manager", "ingress-nginx", "metallb-system",
+  ]);
+
+  const boundPVs: string[] = [];
+
+  if (PROTECTED_NAMESPACES.has(namespace)) {
+    progress.steps[3].status = "done";
+    progress.steps[3].detail = `Skipped — "${namespace}" is a protected namespace`;
+  } else {
+    progress.steps[3].status = "running";
+
+    // Capture PV names bound to PVCs in this namespace BEFORE deletion
+    const pvOutput = await kubectlExec(
+      `get pvc -n ${namespace} -o custom-columns=PV:.spec.volumeName --no-headers`,
+    );
+    if (pvOutput) {
+      boundPVs.push(
+        ...pvOutput.trim().split("\n").map((l) => l.trim()).filter(Boolean),
+      );
+    }
+
+    const deleteResult = await kubectlExec(`delete namespace ${namespace} --wait=false --ignore-not-found`);
+
+    if (deleteResult === null) {
+      const stillThere = await kubectlExec(`get namespace ${namespace} --no-headers`);
+      if (stillThere && stillThere.trim()) {
+        progress.steps[3].status = "error";
+        progress.steps[3].detail = `Failed to issue delete for namespace "${namespace}"`;
+      } else {
+        progress.steps[3].status = "done";
+        progress.steps[3].detail = `Namespace "${namespace}" already gone`;
+      }
+    } else {
+      let deleted = false;
+      for (let i = 0; i < 24; i++) {
+        await new Promise((r) => setTimeout(r, 2500));
+
+        const nsCheck = await kubectlExec(`get namespace ${namespace} --no-headers`);
+        if (!nsCheck || !nsCheck.trim()) {
+          progress.steps[3].status = "done";
+          progress.steps[3].detail = `Namespace "${namespace}" deleted`;
+          deleted = true;
+          break;
+        }
+
+        const pods = await kubectlExec(`get pods -n ${namespace} --no-headers`);
+        const podCount = pods ? pods.trim().split("\n").filter(Boolean).length : 0;
+        if (podCount > 0) {
+          progress.steps[3].detail = `Terminating: ${podCount} pod${podCount !== 1 ? "s" : ""} remaining…`;
+        } else {
+          progress.steps[3].detail = "Waiting for namespace cleanup…";
+        }
+      }
+
+      if (!deleted) {
+        // Force cleanup: remove finalizers, force-delete all pods, then retry
+        try {
+          progress.steps[3].detail = "Force-clearing finalizers…";
+          await kubectlExec(
+            `get namespace ${namespace} -o json | ` +
+            `python3 -c "import sys,json; d=json.load(sys.stdin); d['spec']['finalizers']=[]; json.dump(d,sys.stdout)" | ` +
+            `kubectl replace --raw "/api/v1/namespaces/${namespace}/finalize" -f -`,
+          );
+          // Force-delete any remaining pods
+          await kubectlExec(`delete pods --all -n ${namespace} --force --grace-period=0 --ignore-not-found`);
+        } catch { /* best effort */ }
+
+        // Quick final check
+        const nsCheck = await kubectlExec(`get namespace ${namespace} --no-headers`);
+        if (!nsCheck || !nsCheck.trim()) {
+          progress.steps[3].status = "done";
+          progress.steps[3].detail = `Namespace "${namespace}" deleted (forced)`;
+        } else {
+          progress.steps[3].status = "error";
+          progress.steps[3].detail = `Could not delete namespace "${namespace}" — may need manual cleanup`;
+        }
+      }
+    }
+  }
+
+  // --- Step 4: Clean up orphaned PersistentVolumes ---
+  progress.steps[4].status = "running";
   if (boundPVs.length > 0) {
     const pvList = boundPVs.join(" ");
     try {
       await kubectlExec(`delete pv ${pvList} --force --grace-period=0 --ignore-not-found`);
-      progress.steps[2].status = "done";
-      progress.steps[2].detail = `Deleted ${boundPVs.length} volume${boundPVs.length !== 1 ? "s" : ""}: ${boundPVs.join(", ")}`;
+      progress.steps[4].status = "done";
+      progress.steps[4].detail = `Deleted ${boundPVs.length} volume${boundPVs.length !== 1 ? "s" : ""}: ${boundPVs.join(", ")}`;
     } catch (err) {
-      progress.steps[2].status = "error";
-      progress.steps[2].detail = `Failed to delete volumes: ${String(err)}`;
+      progress.steps[4].status = "error";
+      progress.steps[4].detail = `Failed to delete volumes: ${String(err)}`;
     }
   } else {
-    progress.steps[2].status = "done";
-    progress.steps[2].detail = "No bound volumes to clean up";
+    progress.steps[4].status = "done";
+    progress.steps[4].detail = "No bound volumes to clean up";
   }
 
-  // --- Step 4: Delete from DB ---
-  progress.steps[3].status = "running";
-  try {
-    await prisma.gitRepo.delete({ where: { id: dbId } });
-    progress.steps[3].status = "done";
-  } catch (err) {
-    progress.steps[3].status = "error";
-    progress.steps[3].detail = String(err);
+  // --- Step 5 (only if DB record exists): Delete from Prisma ---
+  if (dbId && progress.steps[5]) {
+    progress.steps[5].status = "running";
+    try {
+      await prisma.gitRepo.delete({ where: { id: dbId } });
+      progress.steps[5].status = "done";
+    } catch (err) {
+      progress.steps[5].status = "error";
+      progress.steps[5].detail = String(err);
+    }
   }
 
   progress.done = true;

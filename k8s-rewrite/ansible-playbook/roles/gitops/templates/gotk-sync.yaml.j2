@@ -1,0 +1,26 @@
+---
+# Flux GitRepository + Kustomization template
+# Rendered by Ansible for cluster-specific config
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: flux-system
+  namespace: {{ flx_namespace }}
+spec:
+  interval: 5m
+  url: {{ flx_git_url }}
+  ref:
+    branch: {{ flx_git_branch }}
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: flux-system
+  namespace: {{ flx_namespace }}
+spec:
+  interval: 5m
+  path: {{ flx_git_path }}
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
