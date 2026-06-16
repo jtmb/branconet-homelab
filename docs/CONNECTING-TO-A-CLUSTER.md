@@ -26,23 +26,28 @@ export BOTRUS_SECRETS_KEY="your-secure-random-token"
 
 ### What the Dashboard Does
 
-The dashboard communicates with the cluster through two paths:
+The dashboard uses local kubectl exclusively — `~/.kube/config` is required.
+There is no SSH fallback on kubectl hot paths.
 
-**Path A — Local kubectl (preferred):**
-If `~/.kube/config` exists on the machine running the dashboard, it uses `kubectl` directly:
+**One-time kubeconfig bootstrap:**
+At module load, the dashboard tries to ensure a kubeconfig exists via
+`ensureKubeconfig()` (see `src/lib/kubeconfig.ts`):
+
+1. If `~/.kube/config` already exists → done.
+2. If `clusterState.kubeconfig` is stored in the DB (from a deploy) → write to disk.
+3. Otherwise, SSH to the master node, `sudo cat /etc/kubernetes/admin.conf`,
+   write to `~/.kube/config`.
+
+Once the kubeconfig is in place, every kubectl call runs locally:
 ```typescript
 // k8s.ts → kubectlJSON()
 kubectl --kubeconfig ~/.kube/config get nodes -o json
 ```
 
-**Path B — SSH fallback (no local kubeconfig):**
-If no local kubeconfig is found, the dashboard SSHs into the master node and runs kubectl there:
-```typescript
-// k8s.ts → sshWithSudo()
-ssh brajam@u1 "sudo -S kubectl --kubeconfig=/etc/kubernetes/admin.conf get nodes -o json"
-```
-
-The sudo password is piped through stdin — never visible in process lists or logs.
+**Deploy auto-writes kubeconfig:** When a deployment playbook succeeds, the
+dashboard captures the kubeconfig from the master node via SSH and writes it to
+both the database AND `~/.kube/config` — so subsequent page loads get local
+kubectl automatically.
 
 ## Option 2: kubectl with kubeconfig
 

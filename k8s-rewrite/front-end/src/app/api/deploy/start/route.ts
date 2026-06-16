@@ -6,6 +6,8 @@ import { syncVarsToYAML, syncInventoryToFile, syncNodesFromVars } from "@/lib/sy
 import { invalidateCache } from "@/lib/cluster-cache";
 import { sshExec } from "@/lib/k8s";
 import { requireWrite } from "@/lib/permissions";
+import { mkdir, writeFile } from "fs/promises";
+import { homedir } from "os";
 
 export async function POST(request: NextRequest) {
   const auth = await requireWrite();
@@ -156,7 +158,16 @@ async function runAnsible(
                   deployedAt: new Date(),
                 },
               });
-              console.log("[deploy] Kubeconfig captured and stored");
+              console.log("[deploy] Kubeconfig captured and stored in DB");
+
+              // Also write to ~/.kube/config so kubectl commands run locally
+              try {
+                await mkdir(`${homedir()}/.kube`, { recursive: true });
+                await writeFile(`${homedir()}/.kube/config`, kubeconfig, { mode: 0o600 });
+                console.log("[deploy] Kubeconfig written to disk");
+              } catch (writeErr) {
+                console.error("[deploy] Failed to write kubeconfig to disk:", writeErr);
+              }
             }
           }
         } catch (kubeErr) {

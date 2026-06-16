@@ -1,14 +1,10 @@
-import { kubectlJSON, kubectlExec } from "./k8s";
+import { kubectlJSON, kubectlExec, hasLocalKubectl, KUBECONFIG_PATH } from "./k8s";
 import { encryptWithKey, decrypt } from "../../lib/encryption";
 import prisma from "./db";
 import { execFile } from "child_process";
 import { promisify } from "util";
-import { existsSync } from "fs";
-import { homedir } from "os";
 
 const execFileAsync = promisify(execFile);
-const KUBECONFIG_PATH = `${homedir()}/.kube/config`;
-const HAS_LOCAL_KUBECTL = existsSync(KUBECONFIG_PATH);
 
 const FLUX_NAMESPACE = "flux-system";
 const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "botrus-k8s-manager-key-2026";
@@ -151,7 +147,7 @@ export async function createFluxSecret(
     const cmd = `create secret generic ${secretName} ` +
       `--from-literal=identity="${credentials}" ` +
       `--from-literal=known_hosts="${knownHosts}"`;
-    const result = await kubectlJSON("u1", buildKubectlCmd(cmd));
+    const result = await kubectlJSON( buildKubectlCmd(cmd));
     if (!result) {
       return { success: false, error: "Failed to create SSH secret" };
     }
@@ -160,7 +156,7 @@ export async function createFluxSecret(
     const cmd = `create secret generic ${secretName} ` +
       `--from-literal=username=git ` +
       `--from-literal=password="${credentials}"`;
-    const result = await kubectlJSON("u1", buildKubectlCmd(cmd));
+    const result = await kubectlJSON( buildKubectlCmd(cmd));
     if (!result) {
       return { success: false, error: "Failed to create HTTPS secret" };
     }
@@ -195,8 +191,8 @@ export interface FluxRepoStatus {
 export async function getFluxStatus(): Promise<FluxRepoStatus[]> {
   // Fetch both GitRepositories and Kustomizations
   const [gitReposRaw, kustomizationsRaw] = await Promise.all([
-    kubectlJSON("u1", buildKubectlCmd("get gitrepositories -o json")),
-    kubectlJSON("u1", buildKubectlCmd("get kustomizations -o json")),
+    kubectlJSON( buildKubectlCmd("get gitrepositories -o json")),
+    kubectlJSON( buildKubectlCmd("get kustomizations -o json")),
   ]);
 
   const kustomizations = (kustomizationsRaw?.items || []) as any[];
@@ -241,7 +237,7 @@ export async function getFluxStatus(): Promise<FluxRepoStatus[]> {
 
 export async function triggerSync(name: string): Promise<{ success: boolean; error?: string }> {
   const cmd = `annotate gitrepository ${name} reconcile.fluxcd.io/requestedAt="${new Date().toISOString()}" --overwrite`;
-  const result = await kubectlJSON("u1", buildKubectlCmd(cmd));
+  const result = await kubectlJSON( buildKubectlCmd(cmd));
   if (!result) {
     return { success: false, error: "Failed to trigger sync" };
   }
@@ -274,9 +270,9 @@ export interface FluxTreeNode {
 export async function getFluxHierarchy(): Promise<FluxTreeNode[]> {
   // Fetch all Flux resources + DB records in parallel
   const [gitReposRaw, kustomizationsRaw, helmReleasesRaw, dbRepos] = await Promise.all([
-    kubectlJSON("u1", buildKubectlCmd("get gitrepositories -o json")),
-    kubectlJSON("u1", buildKubectlCmd("get kustomizations -o json")),
-    kubectlJSON("u1", `--all-namespaces get helmreleases -o json`).catch(() => null),
+    kubectlJSON( buildKubectlCmd("get gitrepositories -o json")),
+    kubectlJSON( buildKubectlCmd("get kustomizations -o json")),
+    kubectlJSON( `--all-namespaces get helmreleases -o json`).catch(() => null),
     prisma.gitRepo.findMany({ orderBy: { createdAt: "desc" } }),
   ]);
 
@@ -691,7 +687,7 @@ async function performCascadeDelete(
   const childHelmReleases: { name: string; ns: string }[] = [];
 
   try {
-    const kustRaw = await kubectlJSON("u1", `--all-namespaces get kustomizations`);
+    const kustRaw = await kubectlJSON( `--all-namespaces get kustomizations`);
     const kustItems = (kustRaw?.items || []) as any[];
     for (const ks of kustItems) {
       const sourceName = ks.spec?.sourceRef?.name;
@@ -704,7 +700,7 @@ async function performCascadeDelete(
   } catch { /* proceed with what we have */ }
 
   try {
-    const hrRaw = await kubectlJSON("u1", `--all-namespaces get helmreleases`);
+    const hrRaw = await kubectlJSON( `--all-namespaces get helmreleases`);
     const hrItems = (hrRaw?.items || []) as any[];
     for (const hr of hrItems) {
       const sourceName = hr.spec?.chart?.spec?.sourceRef?.name;
@@ -968,29 +964,20 @@ function toYaml(obj: any, indent = 0): string {
 async function kubectlApplyYaml(yaml: string): Promise<boolean> {
   const fileName = `/tmp/flux-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.yaml`;
 
-  // Prefer local kubectl if kubeconfig is available
-  if (HAS_LOCAL_KUBECTL) {
-    const { writeFile, unlink } = await import("fs/promises");
-    try {
-      await writeFile(fileName, yaml);
-      const { stdout } = await execFileAsync(
-        "kubectl",
-        ["--kubeconfig", KUBECONFIG_PATH, "apply", "-f", fileName],
-        { timeout: 15000 }
-      );
-      try { await unlink(fileName); } catch {}
-      return stdout.includes("created") || stdout.includes("configured") || stdout.includes("unchanged");
-    } catch {
-      try { await unlink(fileName); } catch {}
-      return false;
-    }
+  if (!hasLocalKubectl()) return false;
+
+  const { writeFile, unlink } = await import("fs/promises");
+  try {
+    await writeFile(fileName, yaml);
+    const { stdout } = await execFileAsync(
+      "kubectl",
+      ["--kubeconfig", KUBECONFIG_PATH, "apply", "-f", fileName],
+      { timeout: 15000 }
+    );
+    try { await unlink(fileName); } catch {}
+    return stdout.includes("created") || stdout.includes("configured") || stdout.includes("unchanged");
+  } catch {
+    try { await unlink(fileName); } catch {}
+    return false;
   }
-
-  // Fallback: SSH-based apply (writes YAML via heredoc, applies, cleans up)
-  const cmd = `cat > ${fileName} << 'FLUXEOF'\n${yaml}\nFLUXEOF\nkubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f ${fileName} 2>&1\nrm -f ${fileName}`;
-  const { sshExec } = await import("./k8s");
-  const result = await sshExec("u1", cmd, 15000);
-
-  if (result === null) return false;
-  return result.includes("created") || result.includes("configured") || result.includes("unchanged");
 }

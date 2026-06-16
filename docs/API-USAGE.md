@@ -121,6 +121,27 @@ Invalidates the cluster cache (30s TTL) and forces a fresh kubectl query on next
 curl -X POST -b /tmp/botrus-cookies http://localhost:4000/api/cluster/refresh
 ```
 
+### `POST /api/cluster/kubectl`
+
+**Auth:** Cookie, `write` role
+
+Execute any kubectl command. The `kubectl` prefix may be included or omitted — it is stripped automatically. No command filtering is applied; the shell has the same capabilities as local `kubectl` (which can only interact with the Kubernetes API server — no filesystem access outside its kubeconfig).
+
+```bash
+curl -X POST http://localhost:4000/api/cluster/kubectl \
+  -H "Content-Type: application/json" \
+  -b /tmp/botrus-cookies \
+  -d '{"command": "get nodes"}'
+```
+
+```bash
+# Also works with kubectl prefix
+curl -X POST http://localhost:4000/api/cluster/kubectl \
+  -H "Content-Type: application/json" \
+  -b /tmp/botrus-cookies \
+  -d '{"command": "kubectl get pods -A"}'
+```
+
 ### `GET /api/cluster/nodes`
 
 List all Kubernetes nodes (from kubectl).

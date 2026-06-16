@@ -3,8 +3,8 @@ import { kubectlJSON } from "./k8s";
 
 // =============================================================================
 // In-memory cluster data cache with 10s TTL.
-// All 4 cluster API routes read from this cache so the front-end's
-// 10s polling interval doesn't hammer the VM with SSH connections.
+// All cluster API routes read from this cache so the front-end's
+// 10s polling interval doesn't hammer kubectl with repeated calls.
 // =============================================================================
 
 interface VolumeInfo {
@@ -46,7 +46,7 @@ interface CachedData {
 let cache: CachedData | null = null;
 const TTL_MS = 10_000; // 10 seconds
 
-// Fetch in-progress guard — prevents concurrent SSH storms
+// Fetch in-progress guard — prevents concurrent fetch storms
 let fetchPromise: Promise<CachedData | null> | null = null;
 
 /**
@@ -66,32 +66,23 @@ function formatAge(ms: number): string {
 }
 
 /**
- * Resolve the master node's IP from the database.
- */
-async function getMasterHost(): Promise<string | null> {
-  const master = await prisma.node.findFirst({
-    where: { role: "master" },
-  });
-  return master?.ipAddress || null;
-}
 
-/**
- * Fetch all cluster data from the remote node via SSH+kubectl.
- * Runs 4 kubectl queries in parallel, then builds derived info.
+ * Fetch all cluster data via local kubectl.
+ * Runs 10 kubectl queries in parallel, then builds derived info.
  */
-async function fetchAllClusterData(host: string): Promise<CachedData | null> {
+async function fetchAllClusterData(): Promise<CachedData | null> {
   const [nodesResult, podsResult, pvResult, pvcResult, longhornResult, scResult, nsResult, svcResult, deployResult, ingressResult] =
     await Promise.all([
-      kubectlJSON(host, "get nodes"),
-      kubectlJSON(host, "get pods -A"),
-      kubectlJSON(host, "get pv"),
-      kubectlJSON(host, "get pvc -A"),
-      kubectlJSON(host, "get volumes.longhorn.io -A", 8000).catch(() => null),
-      kubectlJSON(host, "get sc", 5000).catch(() => null),
-      kubectlJSON(host, "get namespaces", 5000).catch(() => null),
-      kubectlJSON(host, "get services -A", 5000).catch(() => null),
-      kubectlJSON(host, "get deployments -A", 5000).catch(() => null),
-      kubectlJSON(host, "get ingress -A", 5000).catch(() => null),
+      kubectlJSON("get nodes"),
+      kubectlJSON("get pods -A"),
+      kubectlJSON("get pv"),
+      kubectlJSON("get pvc -A"),
+      kubectlJSON("get volumes.longhorn.io -A", 8000).catch(() => null),
+      kubectlJSON("get sc", 5000).catch(() => null),
+      kubectlJSON("get namespaces", 5000).catch(() => null),
+      kubectlJSON("get services -A", 5000).catch(() => null),
+      kubectlJSON("get deployments -A", 5000).catch(() => null),
+      kubectlJSON("get ingress -A", 5000).catch(() => null),
     ]);
 
   // If even nodes query fails, cluster is unreachable
@@ -337,14 +328,8 @@ export async function getCachedClusterData(): Promise<CachedData | null> {
     return fetchPromise;
   }
 
-  const host = await getMasterHost();
-  if (!host) {
-    cache = null;
-    return null;
-  }
-
   // Start a new fetch; other callers will wait on this promise
-  fetchPromise = fetchAllClusterData(host).finally(() => {
+  fetchPromise = fetchAllClusterData().finally(() => {
     fetchPromise = null;
   });
 

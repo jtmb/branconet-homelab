@@ -84,7 +84,8 @@ front-end/
 │       ├── auth.ts             # JWT sign/verify with jose, cookie helpers, getSession(), getSessionFromHeaders()
 │       ├── auth-server.ts      # ensureJwtSecret() — auto-generates BOTRUS_JWT_SECRET if missing
 │       ├── permissions.ts      # requireWrite() → 401/403 gate; getCurrentRole() → "readonly"|"write"|null
-│       ├── k8s.ts              # kubectl wrapper (local or SSH), kubectlJSON(), kubectlExec()
+│       ├── k8s.ts              # kubectl wrapper (local-only), kubectlJSON(), kubectlExec(), sshExec() (bootstrap-only)
+│       ├── kubeconfig.ts       # One-time kubeconfig bootstrap: DB → disk → SSH (before first kubectl call)
 │       ├── flux.ts             # Flux repo CRUD, bootstrap, delete with progress tracking
 │       ├── ansible.ts          # runAnsiblePlaybook() — spawns ansible-playbook with SSE events
 │       ├── cluster-cache.ts    # In-memory TTL cache for cluster data (kubectl → JSON)
@@ -216,17 +217,26 @@ const role = await getCurrentRole(); // "write" | "readonly" | null
 ### Kubernetes (server-side)
 
 ```typescript
-// Run kubectl and parse JSON output
-import { kubectlJSON } from "@/lib/k8s";
-const pods = await kubectlJSON<PodList>("get pods -A -o json");
+// Run kubectl and parse JSON output (-o json is appended automatically)
+import { kubectlJSON, kubectlExec, hasLocalKubectl, sshExec } from "@/lib/k8s";
+
+const pods = await kubectlJSON("get pods -A");   // returns parsed JSON or null
 
 // Run kubectl and return raw text
-import { kubectlExec } from "@/lib/k8s";
 const logs = await kubectlExec("logs my-pod -n default --tail=100");
+
+// Check if local kubeconfig is available
+if (!hasLocalKubectl()) {
+  // No ~/.kube/config — kubectl hot paths return null
+  // kubeconfig.ts ensures one-time bootstrap at module load
+}
+
+// sshExec is BOOTSTRAP-ONLY — only for one-time kubeconfig fetch
+const kubeconfig = await sshExec("192.168.0.25", "sudo cat /etc/kubernetes/admin.conf");
 
 // Get cached cluster data
 import { getCachedClusterData, invalidateCache } from "@/lib/cluster-cache";
-const data = await getCachedClusterData(); // cached for 30s TTL
+const data = await getCachedClusterData(); // cached for 10s TTL
 ```
 
 ### Database (server-side)
@@ -388,7 +398,7 @@ npm run db:studio     # prisma studio
 - **JWT secret**: Auto-generated on first startup via `ensureJwtSecret()`. Stored in `.env.local`. If it changes, all cookies invalidate → re-login required.
 - **Params are Promises**: In Next.js 15 App Router, `params` in route handlers is `Promise<{ id: string }>` — must `await` before use.
 - **Prisma singleton**: Uses `globalThis` pattern to avoid multiple instances in dev HMR.
-- **Kubernetes access**: Falls back from local `kubectl` (if `~/.kube/config` exists) to SSH+sudo on master node. Reads `ansible_become_password` from DB for sudo.
+- **Kubernetes access**: Uses local `kubectl` exclusively with `~/.kube/config`. No SSH fallback on hot paths. If kubeconfig is missing, `ensureKubeconfig()` bootstraps it once at module load (from DB or SSH to master). All kubectl hot paths return null when kubeconfig is unavailable.
 - **Sortable headers**: `useSort<K>` uses `string` internally to avoid TypeScript literal type narrowing — call `toggle(key: string)` with any string, not a literal.
 - **Delete progress**: Flux repo deletes track progress in `globalThis.__deleteProgress` Map — survives HMR but not server restarts.
 - **Cache TTL**: Cluster data cached 30s in `globalThis.__clusterCache`. Stale reads are fine — cache busts on write.

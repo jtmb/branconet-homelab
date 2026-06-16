@@ -11,12 +11,9 @@
 
 import { execFile } from "child_process";
 import { promisify } from "util";
-import { homedir } from "os";
-import { existsSync } from "fs";
+import { hasLocalKubectl, KUBECONFIG_PATH } from "./k8s";
 
 const execFileAsync = promisify(execFile);
-const KUBECONFIG_PATH = `${homedir()}/.kube/config`;
-const HAS_KUBECTL = existsSync(KUBECONFIG_PATH);
 
 // =============================================================================
 // Parsing
@@ -117,7 +114,7 @@ export async function syncSecretToCluster(
 ): Promise<{ synced: boolean; keys: string[]; error?: string }> {
   console.log(`[cluster-secrets] syncSecretToCluster called: ns=${ns} name=${name}`);
 
-  if (!HAS_KUBECTL) {
+  if (!hasLocalKubectl()) {
     console.log("[cluster-secrets] No kubeconfig, skipping sync");
     return { synced: false, keys: [], error: "No local kubeconfig found" };
   }
@@ -203,7 +200,7 @@ export async function removeSecretKeyFromCluster(
   name: string,
   keyToRemove: string
 ): Promise<{ synced: boolean; remainingKeys: string[]; error?: string }> {
-  if (!HAS_KUBECTL) {
+  if (!hasLocalKubectl()) {
     return { synced: false, remainingKeys: [], error: "No local kubeconfig found" };
   }
 
@@ -267,7 +264,7 @@ export async function syncAllSecretsToCluster(): Promise<{
 }> {
   const errors: string[] = [];
 
-  if (!HAS_KUBECTL) {
+  if (!hasLocalKubectl()) {
     return { synced: 0, errors: ["No local kubeconfig found"] };
   }
 
@@ -322,7 +319,7 @@ const _global = globalThis as typeof globalThis & {
   __clusterSecretsBootstrapped?: boolean;
 };
 
-if (!_global.__clusterSecretsBootstrapped && HAS_KUBECTL) {
+if (!_global.__clusterSecretsBootstrapped && hasLocalKubectl()) {
   _global.__clusterSecretsBootstrapped = true;
   // Fire bootstrap sync in the background — don't block module loading
   syncAllSecretsToCluster().catch((err) => {

@@ -187,6 +187,10 @@ Dashboard pages mirror kubectl output:
 - **Storage** → `kubectl get pvc -A`
 - **Flux** → `kubectl get gitrepositories,kustomizations -n flux-system`
 
+The **kubectl shell** (terminal icon in the top bar, write-only) provides a live
+kubectl prompt right in the dashboard. Type any kubectl command (with or without
+the `kubectl` prefix) and see output inline — no SSH needed.
+
 ## Environment Variables Reference
 
 | Variable | Required | Purpose |

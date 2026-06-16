@@ -24,6 +24,7 @@ import {
 import YamlModal from "./yaml-modal";
 import ConfirmDialog from "./confirm-dialog";
 import LogModal from "./log-modal";
+import { openShell } from "@/lib/shell-manager";
 
 export type ResourceType = "pod" | "deployment" | "namespace" | "node";
 
@@ -312,7 +313,7 @@ function getActions(
         {
           label: "Execute Shell",
           icon: <Terminal className="w-4 h-4" />,
-          onClick: () => h.router.push(`/pods/${ns}/${name}/shell`),
+          onClick: () => openShell("exec", ns, name),
         },
         {
           label: "View YAML",

@@ -33,6 +33,16 @@ const config: Config = {
         md: "calc(0.5rem - 2px)",
         sm: "calc(0.5rem - 4px)",
       },
+      keyframes: {
+        "tab-pop": {
+          "0%":   { transform: "scale(1)",   filter: "brightness(1)" },
+          "50%":  { transform: "scale(1.12)", filter: "brightness(1.4)" },
+          "100%": { transform: "scale(1.08)", filter: "brightness(1.25)" },
+        },
+      },
+      animation: {
+        "tab-pop": "tab-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards",
+      },
     },
   },
   plugins: [],

@@ -1,16 +1,28 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Settings, User, RefreshCw, LogOut } from "lucide-react";
+import { Settings, User, RefreshCw, LogOut, Terminal } from "lucide-react";
 import { useState, useCallback, useEffect } from "react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import ViewportWrapper from "./viewport-wrapper";
+import { openShell, closeShell, getMaximized, getShells, subscribe } from "@/lib/shell-manager";
 
 export default function TopNav() {
   const router = useRouter();
   const [syncing, setSyncing] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const [role, setRole] = useState<"readonly" | "write" | null>(null);
+  const [terminalActive, setTerminalActive] = useState(false);
+
+  // Track shell open/close for terminal button highlight
+  useEffect(() => {
+    const update = () => {
+      const shells = getShells();
+      setTerminalActive(shells.some((s) => s.state !== "closed"));
+    };
+    update();
+    return subscribe(update);
+  }, []);
 
   useEffect(() => {
     fetch("/api/auth/session")
@@ -54,6 +66,35 @@ export default function TopNav() {
               <RefreshCw className={`w-5 h-5 ${syncing ? "animate-spin" : ""}`} />
             </button>
           )}
+          <button
+            onClick={() => {
+              const shells = getShells();
+              const active = shells.filter((s) => s.state !== "closed");
+              if (active.length > 0) {
+                active.forEach((s) => closeShell(s.id));
+              } else {
+                const max = getMaximized();
+                if (max && max.type === "exec") {
+                  openShell("exec", max.namespace, max.podName);
+                } else {
+                  const anyExec = shells.find((s) => s.type === "exec");
+                  if (anyExec) {
+                    openShell("exec", anyExec.namespace, anyExec.podName);
+                  } else {
+                    openShell("kubectl");
+                  }
+                }
+              }
+            }}
+            className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors outline-none ${
+              terminalActive
+                ? "text-emerald-400 bg-emerald-400/10"
+                : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30"
+            }`}
+            title={terminalActive ? "Close terminal" : "Open terminal"}
+          >
+            <Terminal className="w-5 h-5" />
+          </button>
           <button
             onClick={() => router.push("/settings")}
             className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30 transition-colors outline-none"
