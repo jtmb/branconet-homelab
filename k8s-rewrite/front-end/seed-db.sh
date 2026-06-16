@@ -72,7 +72,7 @@ curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"helm_vers
 # Kubernetes Secrets (category: secret)
 # Convention: secret_<namespace>_<name>_<key>
 # These are deployed as K8s Secret objects by the secrets Ansible role
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"secret_plex_smb-creds_username","value":"james","category":"secret","encrypted":true}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"secret_plex_smb-creds_username","value":"user","category":"secret","encrypted":true}' > /dev/null
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"secret_plex_smb-creds_password","value":"'"${SMB_PASSWORD:?err}"'","category":"secret","encrypted":true}' > /dev/null
 
 echo ""
@@ -85,17 +85,17 @@ curl -s -X POST "http://localhost:4000/api/cluster/nodes" -H "Content-Type: appl
 #   hostname = actual machine hostname
 #   ip       = Ansible connection IP
 #   role     = master | worker
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u1_name","value":"U1 Tower","category":"kubernetes","encrypted":false}' > /dev/null
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u1_hostname","value":"u1","category":"kubernetes","encrypted":false}' > /dev/null
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u1_ip","value":"192.168.1.10","category":"kubernetes","encrypted":false}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u1_name","value":"Node01","category":"kubernetes","encrypted":false}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u1_hostname","value":"Node01","category":"kubernetes","encrypted":false}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u1_ip","value":"192.168.0.25","category":"kubernetes","encrypted":false}' > /dev/null
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u1_role","value":"master","category":"kubernetes","encrypted":false}' > /dev/null
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u2_name","value":"U2 Mini","category":"kubernetes","encrypted":false}' > /dev/null
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u2_hostname","value":"u2","category":"kubernetes","encrypted":false}' > /dev/null
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u2_ip","value":"192.168.1.11","category":"kubernetes","encrypted":false}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u2_name","value":"Node02","category":"kubernetes","encrypted":false}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u2_hostname","value":"Node02","category":"kubernetes","encrypted":false}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u2_ip","value":"192.168.0.27","category":"kubernetes","encrypted":false}' > /dev/null
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u2_role","value":"worker","category":"kubernetes","encrypted":false}' > /dev/null
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u3_name","value":"U3 Pi","category":"kubernetes","encrypted":false}' > /dev/null
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u3_hostname","value":"u3","category":"kubernetes","encrypted":false}' > /dev/null
-curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u3_ip","value":"192.168.1.12","category":"kubernetes","encrypted":false}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u3_name","value":"Node03","category":"kubernetes","encrypted":false}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u3_hostname","value":"Node03","category":"kubernetes","encrypted":false}' > /dev/null
+curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u3_ip","value":"192.168.0.26","category":"kubernetes","encrypted":false}' > /dev/null
 curl -s -X POST "$API" -H "Content-Type: application/json" -d '{"key":"node_u3_role","value":"worker","category":"kubernetes","encrypted":false}' > /dev/null
 
 echo ""
