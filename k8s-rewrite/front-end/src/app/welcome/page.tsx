@@ -9,34 +9,8 @@ export default function WelcomePage() {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    async function checkState() {
-      try {
-        const [infoRes, sessionRes] = await Promise.all([
-          fetch("/api/cluster/info"),
-          fetch("/api/auth/session"),
-        ]);
-
-        const info = await infoRes.json();
-        const session = await sessionRes.json();
-
-        // If cluster is already deployed, don't show welcome — route to auth
-        if (info?.hasDbCluster) {
-          if (session.hasUsers) {
-            router.replace("/auth/login");
-          } else {
-            router.replace("/auth/register");
-          }
-          return;
-        }
-
-        setChecking(false);
-      } catch {
-        setChecking(false);
-      }
-    }
-
-    checkState();
-  }, [router]);
+    setChecking(false);
+  }, []);
 
   async function handleGetStarted() {
     try {

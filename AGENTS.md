@@ -7,7 +7,17 @@ This version has breaking changes — APIs, conventions, and file structure may 
 # Botrus K8s — AGENTS.md
 
 > LLM-readable project overview for the Botrus Kubernetes management dashboard.
-> Read this before writing any code in this repo.
+
+## ⚠️ CRITICAL: Update docs alongside code
+
+**When you edit, create, or delete any source file, you MUST check every doc
+in `docs/` and update anything that is now wrong.** Treat docs as part of the
+feature — not an afterthought. If docs and code disagree, fix the docs. Code is
+ground truth.
+
+This means: after EVERY `replace_string_in_file`, `create_file`, or
+`run_in_terminal` that changes behavior — re-read the affected doc(s) and apply
+updates before marking the task complete. Never defer docs.
 
 ---
 

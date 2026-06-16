@@ -79,22 +79,26 @@ ansible-playbook playbooks/site.yml --tags kubernetes
 
 ## Deploying Applications (GitOps)
 
-Applications are managed via FluxCD. Each app lives in a Git repository under `charts/<name>/`.
+Applications are managed via FluxCD. Apps are organized into two stacks under `charts/`:
+
+| Stack | Path | Kustomization CRD |
+|-------|------|-------------------|
+| **test-stack** | `charts/test-stack/` | `test-stack` (test/dev apps) |
+| **media-stack** | `charts/media-stack/` | `media-stack` (media apps) |
+
+Both stacks pull from the same `branconet-charts` GitRepository.
 
 ### Adding a New App
 
-1. Create a directory: `charts/my-app/`
+1. Create a directory under the appropriate stack: `charts/<stack>/my-app/`
 2. Add Kubernetes manifests (`deployment.yaml`, `service.yaml`, `ingress.yaml`, etc.)
-3. Commit and push to the Git repository
-4. Add the repo to Flux:
+3. Add a `kustomization.yaml` in the app directory
+4. Register the app in the stack's `kustomization.yaml` (e.g., `charts/test-stack/kustomization.yaml`)
+5. Commit and push to the Git repository
+6. Flux polls every 5 minutes; trigger an immediate sync if needed:
    ```bash
-   curl -X POST http://localhost:4000/api/flux/repos \
-     -H "Content-Type: application/json" \
-     -d '{"name":"my-app","url":"https://github.com/user/charts","branch":"main","path":"./charts/my-app"}'
-   ```
-5. Flux polls every 5 minutes; trigger an immediate sync if needed:
-   ```bash
-   curl -X POST http://localhost:4000/api/flux/repos/<id>/sync
+   kubectl annotate kustomization test-stack -n flux-system \
+     reconcile.fluxcd.io/requestedAt="$(date -Iseconds)" --overwrite
    ```
 
 ### Checking App Status
@@ -228,9 +232,14 @@ k8s-rewrite/
 │   │   └── db.ts                   # Prisma client
 │   ├── prisma/schema.prisma        # Variable, Node, Job models
 │   └── seed-db.sh                  # Initial DB population
-└── charts/                          # FluxCD-managed apps
-    ├── plex/
-    ├── home-assistant/
-    ├── discord-bots/
-    └── ...
+└── charts/                          # FluxCD-managed apps (dual stack)
+    ├── kustomization.yaml           # Root: references ./test-stack, ./media-stack
+    ├── test-stack/
+    │   ├── kustomization.yaml
+    │   ├── http-echo/
+    │   ├── nginx-hello/
+    │   └── whoami/
+    └── media-stack/
+        ├── kustomization.yaml
+        └── plex/
 ```

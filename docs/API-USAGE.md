@@ -410,7 +410,7 @@ curl -b /tmp/botrus-cookies http://localhost:4000/api/flux/repos | jq .
 
 ### `GET /api/flux/hierarchy`
 
-Get Fleet-style hierarchical tree of all Flux resources. Each GitRepository is a root node with associated Kustomizations and HelmReleases as children. Sub-kustomizations (where a Kustomization is itself a sourceRef for other resources) are nested recursively.
+Get Fleet-style hierarchical tree of all Flux resources. Each GitRepository is a root node with associated Kustomizations and HelmReleases as children. Namespace nodes appear as leaf children of Kustomizations — parsed from the Kustomization's `status.inventory.entries` to show which namespaces are managed by that Kustomization.
 
 **Auth:** Cookie (any role)
 
@@ -425,7 +425,7 @@ curl -b /tmp/botrus-cookies http://localhost:4000/api/flux/hierarchy | jq .
   "trees": [
     {
       "id": "cm...",
-      "name": "flux-system",
+      "name": "branconet-charts",
       "kind": "GitRepository",
       "url": "https://github.com/jtmb/branconet-homelab.git",
       "branch": "k8s-rewrite",
@@ -433,27 +433,66 @@ curl -b /tmp/botrus-cookies http://localhost:4000/api/flux/hierarchy | jq .
       "namespace": "flux-system",
       "ready": true,
       "status": "Ready",
-      "lastSync": "2025-01-15T12:00:00Z",
-      "revision": "main@sha1:abc123def...",
+      "lastSync": "2026-06-16T17:34:07Z",
+      "revision": "fb02389c",
       "authMethod": "none",
       "children": [
         {
           "id": "ks-...",
-          "name": "flux-system",
+          "name": "media-stack",
           "kind": "Kustomization",
-          "path": "./k8s-rewrite/charts",
+          "path": "./k8s-rewrite/charts/media-stack/",
           "namespace": "flux-system",
           "ready": true,
           "status": "Ready",
-          "lastSync": "2025-01-15T12:00:00Z",
-          "revision": "abc123def...",
+          "lastSync": null,
+          "revision": "fb02389c",
           "children": [
             {
-              "id": "ks-...",
+              "id": "ns-...",
               "name": "plex",
-              "kind": "Kustomization",
-              "path": "./plex",
-              "namespace": "flux-system",
+              "kind": "Namespace",
+              "namespace": "plex",
+              "ready": true,
+              "status": "Ready",
+              "children": []
+            }
+          ]
+        },
+        {
+          "id": "ks-...",
+          "name": "test-stack",
+          "kind": "Kustomization",
+          "path": "./k8s-rewrite/charts/test-stack/",
+          "namespace": "flux-system",
+          "ready": true,
+          "status": "Ready",
+          "lastSync": null,
+          "revision": "fb02389c",
+          "children": [
+            {
+              "id": "ns-...",
+              "name": "http-echo",
+              "kind": "Namespace",
+              "namespace": "http-echo",
+              "ready": true,
+              "status": "Ready",
+              "children": []
+            },
+            {
+              "id": "ns-...",
+              "name": "nginx-hello",
+              "kind": "Namespace",
+              "namespace": "nginx-hello",
+              "ready": true,
+              "status": "Ready",
+              "children": []
+            },
+            {
+              "id": "ns-...",
+              "name": "whoami",
+              "kind": "Namespace",
+              "namespace": "whoami",
               "ready": true,
               "status": "Ready",
               "children": []
@@ -466,7 +505,9 @@ curl -b /tmp/botrus-cookies http://localhost:4000/api/flux/hierarchy | jq .
 }
 ```
 
-**Node kinds:** `GitRepository`, `Kustomization`, `HelmRelease`
+**Node kinds:** `GitRepository`, `Kustomization`, `HelmRelease`, `Namespace`
+
+**Orphan filter:** GitRepositories with no linked Kustomizations are excluded from the tree. Suspended GitRepositories are also filtered out.
 **Tree depth:** Arbitrary (Kustomizations whose sourceRef matches another Kustomization or GitRepository are nested as children)
 
 ### `POST /api/flux/repos`
