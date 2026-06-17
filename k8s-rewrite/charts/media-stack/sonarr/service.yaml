@@ -1,0 +1,14 @@
+# Sonarr Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr
+  namespace: plex
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8989
+    targetPort: 8989
+    name: http
+  selector:
+    app: sonarr

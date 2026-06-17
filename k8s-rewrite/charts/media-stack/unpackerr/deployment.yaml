@@ -1,0 +1,67 @@
+# Unpackerr — Archive extraction worker
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unpackerr
+  namespace: plex
+  labels:
+    app: unpackerr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unpackerr
+  template:
+    metadata:
+      labels:
+        app: unpackerr
+        branconet.io/type: app
+    spec:
+      containers:
+      - name: unpackerr
+        image: golift/unpackerr
+        ports:
+        - containerPort: 5656
+          name: http
+        env:
+        - name: UN_SONARR_0_URL
+          value: "http://sonarr.plex.svc.cluster.local:8989"
+        - name: UN_SONARR_0_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: media-api-keys
+              key: sonarr-api-key
+              optional: true
+        - name: UN_RADARR_0_URL
+          value: "http://radarr.plex.svc.cluster.local:7878"
+        - name: UN_RADARR_0_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: media-api-keys
+              key: radarr-api-key
+              optional: true
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: downloads
+          mountPath: /downloads
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+      volumes:
+      - name: downloads
+        persistentVolumeClaim:
+          claimName: unpackerr-downloads-pvc
+      - name: config
+        persistentVolumeClaim:
+          claimName: unpackerr-config-pvc

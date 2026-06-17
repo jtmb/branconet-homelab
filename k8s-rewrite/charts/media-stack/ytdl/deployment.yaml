@@ -1,0 +1,55 @@
+# ytdl — YouTube downloader (metube)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ytdl
+  namespace: plex
+  labels:
+    app: ytdl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ytdl
+  template:
+    metadata:
+      labels:
+        app: ytdl
+        branconet.io/type: app
+      annotations:
+        homepage.group: Media
+        homepage.name: YouTube Downloader
+        homepage.icon: "https://res.cloudinary.com/razordarkamg/image/upload/v1621212884/SonarrV3_pufacd.png"
+        homepage.href: "http://ytdl.branconet.local/"
+        homepage.description: YouTube video downloader
+    spec:
+      containers:
+      - name: ytdl
+        image: ghcr.io/alexta69/metube
+        ports:
+        - containerPort: 8081
+          name: http
+        env:
+        - name: TEMP_DIR
+          value: "/tmp_dir"
+        - name: DELETE_FILE_ON_TRASHCAN
+          value: "true"
+        volumeMounts:
+        - name: downloads
+          mountPath: /downloads
+        - name: tmp
+          mountPath: /tmp_dir
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: downloads
+        persistentVolumeClaim:
+          claimName: ytdl-downloads-pvc
+      - name: tmp
+        persistentVolumeClaim:
+          claimName: ytdl-tmp-pvc

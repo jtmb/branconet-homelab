@@ -1,0 +1,62 @@
+# Radarr — Movie collection manager
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: radarr
+  namespace: plex
+  labels:
+    app: radarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+        branconet.io/type: app
+      annotations:
+        homepage.group: Media
+        homepage.name: Radarr
+        homepage.icon: "https://i0.wp.com/devildogtech.com/wp-content/uploads/2022/10/radarr.png?resize=280%2C280&ssl=1"
+        homepage.href: "http://radarr.branconet.local/"
+        homepage.description: Radarr movie fetching and monitoring
+    spec:
+      containers:
+      - name: radarr
+        image: linuxserver/radarr
+        ports:
+        - containerPort: 7878
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: movies
+          mountPath: /media/movies
+        - name: downloads
+          mountPath: /downloads
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: radarr-config-pvc
+      - name: movies
+        persistentVolumeClaim:
+          claimName: radarr-movies-pvc
+      - name: downloads
+        persistentVolumeClaim:
+          claimName: radarr-downloads-pvc

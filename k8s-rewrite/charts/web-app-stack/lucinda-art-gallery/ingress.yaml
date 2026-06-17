@@ -1,0 +1,33 @@
+# Lucinda Art Gallery Ingress (with TLS)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lucinda-art-gallery-ingress
+  namespace: website-stack
+spec:
+  rules:
+    - host: lucinda.jtmb.cc
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lucinda-art-gallery
+                port:
+                  number: 80
+    - host: lucinda.branconet.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lucinda-art-gallery
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - lucinda.jtmb.cc
+        - lucinda.branconet.local
+      secretName: lucinda-art-gallery-tls

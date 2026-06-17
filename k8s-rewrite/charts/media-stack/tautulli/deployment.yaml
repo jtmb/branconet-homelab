@@ -1,0 +1,52 @@
+# Tautulli — Plex monitoring and analytics
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tautulli
+  namespace: plex
+  labels:
+    app: tautulli
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tautulli
+  template:
+    metadata:
+      labels:
+        app: tautulli
+        branconet.io/type: app
+      annotations:
+        homepage.group: Media
+        homepage.name: Tautulli
+        homepage.icon: "https://tautulli.com/images/logo-circle.png"
+        homepage.href: "http://tautulli.branconet.local/"
+        homepage.description: Tautulli Plex monitoring
+    spec:
+      containers:
+      - name: tautulli
+        image: ghcr.io/tautulli/tautulli
+        ports:
+        - containerPort: 8181
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: tautulli-config-pvc

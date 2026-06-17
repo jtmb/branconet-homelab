@@ -1,0 +1,81 @@
+# qBit-Monitor — qBittorrent monitoring + Discord notifications + Gluetun port tracking
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qbit-monitor
+  namespace: plex
+  labels:
+    app: qbit-monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qbit-monitor
+  template:
+    metadata:
+      labels:
+        app: qbit-monitor
+        branconet.io/type: app
+    spec:
+      containers:
+        - name: qbit-monitor
+          image: jtmb92/qbit-monitor:latest
+          env:
+            - name: QBITTORRENT_STATUS_NOTIFICATION
+              value: "on"
+            - name: QBITTORRENT_HOST
+              value: "http://qbittorrent-webui.plex.svc.cluster.local:8112"
+            - name: QBITTORRENT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: qbitmonitor-creds-secret
+                  key: username
+                  optional: true
+            - name: QBITTORRENT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: qbitmonitor-creds-secret
+                  key: password
+                  optional: true
+            - name: PORT_FORWARDING
+              value: "on"
+            - name: CHECK_INTERVAL_FORWARDED_PORT
+              value: "1h"
+            - name: PORT_FORWARD_FILE
+              value: "/tmp/gluetun/forwarded_port"
+            - name: PORT_UPDATED_NOTIFICATION
+              value: "on"
+            - name: CHECK_INTERVAL_TORRENT_MONITORING
+              value: "10s"
+            - name: NEW_DOWNLOAD_NOTIFICATION
+              value: "on"
+            - name: METADATA_STUCK_NOTIFICATION
+              value: "on"
+            - name: DOWNLOAD_COMPLETE_NOTIFICATION
+              value: "off"
+            - name: DISCORD_WEBHOOK_URL
+              valueFrom:
+                secretKeyRef:
+                  name: qbitmonitor-creds-secret
+                  key: discord-webhook-url
+                  optional: true
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/New_York"
+          volumeMounts:
+            - name: gluetun-port
+              mountPath: /tmp/gluetun
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+      volumes:
+        - name: gluetun-port
+          persistentVolumeClaim:
+            claimName: qbit-monitor-samba-pvc

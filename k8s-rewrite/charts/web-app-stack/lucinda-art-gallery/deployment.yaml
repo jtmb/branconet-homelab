@@ -1,0 +1,31 @@
+# Lucinda Art Gallery — Art portfolio site
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lucinda-art-gallery
+  namespace: website-stack
+  labels:
+    app: lucinda-art-gallery
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: lucinda-art-gallery
+  template:
+    metadata:
+      labels:
+        app: lucinda-art-gallery
+        branconet.io/type: app
+    spec:
+      containers:
+        - name: lucinda-art-gallery
+          image: jtmb92/lucinda-art-gallery:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi

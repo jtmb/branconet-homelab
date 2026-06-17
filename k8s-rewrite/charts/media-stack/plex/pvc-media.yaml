@@ -8,7 +8,7 @@ metadata:
   name: plex-tv-pv
 spec:
   capacity:
-    storage: 5Gi
+    storage: 1Gi
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
@@ -31,7 +31,7 @@ metadata:
   name: plex-movies-pv
 spec:
   capacity:
-    storage: 5Gi
+    storage: 1Gi
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
@@ -54,7 +54,7 @@ metadata:
   name: plex-pvr-pv
 spec:
   capacity:
-    storage: 5Gi
+    storage: 1Gi
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
@@ -111,4 +111,41 @@ spec:
     requests:
       storage: 1Gi
   volumeName: plex-pvr-pv
+  storageClassName: ""
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plex-downloads-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - noserverino
+    - cache=none
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: plex-downloads
+    volumeAttributes:
+      source: "//192.168.0.8/plex_smb_share/downloads"
+      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: plex
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-downloads-pvc
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: plex-downloads-pv
   storageClassName: ""

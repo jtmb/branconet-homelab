@@ -1,0 +1,52 @@
+# Jackett — Torrent indexer proxy
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jackett
+  namespace: plex
+  labels:
+    app: jackett
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jackett
+  template:
+    metadata:
+      labels:
+        app: jackett
+        branconet.io/type: app
+      annotations:
+        homepage.group: Media
+        homepage.name: Jackett
+        homepage.icon: "https://user-images.githubusercontent.com/27040483/28728094-99f3e3f6-73c7-11e7-8f8d-28912dc6ac0d.png"
+        homepage.href: "http://jackett.branconet.local/"
+        homepage.description: Jackett torrent indexers
+    spec:
+      containers:
+      - name: jackett
+        image: linuxserver/jackett
+        ports:
+        - containerPort: 9117
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: jackett-config-pvc

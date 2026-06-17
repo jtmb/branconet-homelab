@@ -1,0 +1,31 @@
+# jtmb.dev — Personal developer portfolio site
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jtmb-dev
+  namespace: website-stack
+  labels:
+    app: jtmb-dev
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: jtmb-dev
+  template:
+    metadata:
+      labels:
+        app: jtmb-dev
+        branconet.io/type: app
+    spec:
+      containers:
+        - name: jtmb-dev
+          image: jtmb92/jtmb-dev:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi

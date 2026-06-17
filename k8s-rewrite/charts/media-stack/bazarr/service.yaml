@@ -1,0 +1,14 @@
+# Bazarr Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: bazarr
+  namespace: plex
+spec:
+  type: ClusterIP
+  ports:
+  - port: 6767
+    targetPort: 6767
+    name: http
+  selector:
+    app: bazarr

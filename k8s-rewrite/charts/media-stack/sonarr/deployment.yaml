@@ -1,0 +1,62 @@
+# Sonarr — TV series collection manager
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  namespace: plex
+  labels:
+    app: sonarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+        branconet.io/type: app
+      annotations:
+        homepage.group: Media
+        homepage.name: Sonarr
+        homepage.icon: "https://res.cloudinary.com/razordarkamg/image/upload/v1621212884/SonarrV3_pufacd.png"
+        homepage.href: "http://sonarr.branconet.local/"
+        homepage.description: Sonarr TV series fetching and monitoring
+    spec:
+      containers:
+      - name: sonarr
+        image: linuxserver/sonarr
+        ports:
+        - containerPort: 8989
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: tv
+          mountPath: /media/tv
+        - name: downloads
+          mountPath: /downloads
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: sonarr-config-pvc
+      - name: tv
+        persistentVolumeClaim:
+          claimName: sonarr-tv-pvc
+      - name: downloads
+        persistentVolumeClaim:
+          claimName: sonarr-downloads-pvc

@@ -1,0 +1,75 @@
+# Bazarr Samba PVs + PVCs (CSI SMB driver)
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bazarr-tv-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - noserverino
+    - cache=none
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: bazarr-tv
+    volumeAttributes:
+      source: "//192.168.0.8/plex_smb_share/tv"
+      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: plex
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: bazarr-movies-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - noserverino
+    - cache=none
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: bazarr-movies
+    volumeAttributes:
+      source: "//192.168.0.8/plex_smb_share/movies"
+      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: plex
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bazarr-tv-pvc
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: bazarr-tv-pv
+  storageClassName: ""
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bazarr-movies-pvc
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: bazarr-movies-pv
+  storageClassName: ""

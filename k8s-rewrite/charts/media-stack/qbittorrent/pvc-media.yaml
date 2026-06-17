@@ -1,0 +1,77 @@
+# qBittorrent + Gluetun Samba PVs + PVCs (CSI SMB driver)
+---
+# Downloads share for completed torrents
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: qbittorrent-downloads-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - noserverino
+    - cache=none
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: qbittorrent-downloads
+    volumeAttributes:
+      source: "//192.168.0.8/plex_smb_share/downloads"
+      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: plex
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qbittorrent-downloads-pvc
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: qbittorrent-downloads-pv
+  storageClassName: ""
+---
+# Gluetun port-forwarding state share
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gluetun-port-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - noserverino
+    - cache=none
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: gluetun-port
+    volumeAttributes:
+      source: "//192.168.0.8/plex_smb_share/shared-container-folder/gluetun"
+      options: "uid=0,gid=0,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: plex
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gluetun-port-pvc
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: gluetun-port-pv
+  storageClassName: ""

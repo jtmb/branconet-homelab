@@ -1,0 +1,62 @@
+# Bazarr — Subtitle manager
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bazarr
+  namespace: plex
+  labels:
+    app: bazarr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bazarr
+  template:
+    metadata:
+      labels:
+        app: bazarr
+        branconet.io/type: app
+      annotations:
+        homepage.group: Media
+        homepage.name: Bazarr
+        homepage.icon: "https://user-images.githubusercontent.com/787317/183671204-e4e6e67b-c1cd-4e90-a9d1-6c759859f117.png"
+        homepage.href: "http://bazarr.branconet.local/"
+        homepage.description: Bazarr subtitles for media
+    spec:
+      containers:
+      - name: bazarr
+        image: ghcr.io/hotio/bazarr
+        ports:
+        - containerPort: 6767
+          name: http
+        env:
+        - name: PUID
+          value: "1000"
+        - name: PGID
+          value: "1000"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        - name: tv
+          mountPath: /tv
+        - name: movies
+          mountPath: /movies
+        resources:
+          requests:
+            cpu: 50m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: bazarr-config-pvc
+      - name: tv
+        persistentVolumeClaim:
+          claimName: bazarr-tv-pvc
+      - name: movies
+        persistentVolumeClaim:
+          claimName: bazarr-movies-pvc

@@ -1,0 +1,14 @@
+# ytdl Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: ytdl
+  namespace: plex
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8081
+    targetPort: 8081
+    name: http
+  selector:
+    app: ytdl

@@ -1,12 +1,12 @@
-# Plex Config PersistentVolumeClaim (Longhorn block storage)
+# qBittorrent Config PersistentVolumeClaim (Longhorn block storage)
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: plex-config-pvc
+  name: qbittorrent-config-pvc
   namespace: plex
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi
