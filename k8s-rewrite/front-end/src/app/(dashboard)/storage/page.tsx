@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { HardDrive, Loader2, Search } from "lucide-react";
+import { HardDrive, Loader2, Search, ChevronRight } from "lucide-react";
 import ViewportWrapper from "../viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
@@ -99,6 +99,10 @@ export default function StoragePage() {
 
       <ViewportWrapper>
       <main className="px-3 sm:px-4 lg:px-6 py-6">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
+          <span className="text-zinc-300">Storage</span>
+        </div>
         <div className="flex items-center gap-3 mb-6">
           <HardDrive className="page-header-icon text-purple-400" />
           <h1 className="page-header-title">Storage</h1>
@@ -222,7 +226,7 @@ export default function StoragePage() {
               </thead>
               <tbody>
                 {filteredVolumes.map((vol) => (
-                  <tr key={vol.id || vol.name} className="border-b border-zinc-800/40 hover:bg-zinc-800/30">
+                  <tr key={vol.id} className="border-b border-zinc-800/40 hover:bg-zinc-800/30">
                     <td className="px-4 py-3 text-sm text-zinc-200 font-mono">{vol.name}</td>
                     <td className="px-4 py-3 text-sm text-zinc-400">{vol.namespace}</td>
                     <td className="px-4 py-3">

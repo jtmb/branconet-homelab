@@ -8,6 +8,7 @@ import { kubectlJSON } from "./k8s";
 // =============================================================================
 
 interface VolumeInfo {
+  id: string;
   name: string;
   namespace: string;
   status: string;
@@ -40,6 +41,7 @@ interface CachedData {
   rawServices: any[];
   rawDeployments: any[];
   rawIngresses: any[];
+  rawPvcs: any[];
   lastFetch: number;
 }
 
@@ -120,9 +122,12 @@ async function fetchAllClusterData(): Promise<CachedData | null> {
 
   if (pvResult?.items) {
     for (const pv of pvResult.items) {
+      const ns = pv.spec?.claimRef?.namespace || "-";
+      const name = pv.metadata?.name || "unknown";
       volumes.push({
-        name: pv.metadata?.name || "unknown",
-        namespace: pv.spec?.claimRef?.namespace || "-",
+        id: `pv:${ns}/${name}`,
+        name,
+        namespace: ns,
         status: pv.status?.phase || "Unknown",
         capacity: pv.spec?.capacity?.storage || "unknown",
         node: pv.metadata?.labels?.["kubernetes.io/hostname"] || "-",
@@ -133,9 +138,12 @@ async function fetchAllClusterData(): Promise<CachedData | null> {
 
   if (longhornResult?.items) {
     for (const lv of longhornResult.items) {
+      const ns = lv.metadata?.namespace || "-";
+      const name = lv.metadata?.name || "unknown";
       volumes.push({
-        name: lv.metadata?.name || "unknown",
-        namespace: lv.metadata?.namespace || "-",
+        id: `longhorn:${ns}/${name}`,
+        name,
+        namespace: ns,
         status: lv.status?.state || lv.status?.robustness || "Unknown",
         capacity: lv.spec?.size || "unknown",
         node: lv.status?.currentNodeID || "-",
@@ -280,6 +288,7 @@ async function fetchAllClusterData(): Promise<CachedData | null> {
       name: ing.metadata?.name || "unknown",
       namespace: ing.metadata?.namespace || "default",
       state,
+      host: firstRule?.host || "-",
       target,
       age,
     };
@@ -307,6 +316,7 @@ async function fetchAllClusterData(): Promise<CachedData | null> {
     rawServices: svcResult?.items || [],
     rawDeployments: deployResult?.items || [],
     rawIngresses: ingressResult?.items || [],
+    rawPvcs: pvcResult?.items || [],
     lastFetch: Date.now(),
   };
 }

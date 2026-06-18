@@ -1,6 +1,7 @@
 "use client";
 
-import { Container, Loader2, Search } from "lucide-react";
+import { Container, Loader2, Search, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ViewportWrapper from "../viewport-wrapper";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
@@ -79,6 +80,10 @@ export default function PodsPage() {
 
       <ViewportWrapper>
       <main className="px-3 sm:px-4 lg:px-6 py-6">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
+          <span className="text-zinc-300">Pods</span>
+        </div>
         <div className="flex items-center gap-3 mb-6">
           <Container className="page-header-icon text-cyan-400" />
           <h1 className="page-header-title">Pods</h1>

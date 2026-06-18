@@ -44,6 +44,33 @@ export function SortHeader({
   active,
   dir,
   onClick,
+  className = "",
+  iconFirst = false,
+}: {
+  label: string;
+  active: boolean;
+  dir: SortDir;
+  onClick: () => void;
+  className?: string;
+  iconFirst?: boolean;
+}) {
+  const icon = <SortIcon active={active} dir={dir} />;
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center gap-1 text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors group ${className}`}
+    >
+      {iconFirst ? icon : label}
+      {iconFirst ? label : icon}
+    </button>
+  );
+}
+
+export function SortHeaderRight({
+  label,
+  active,
+  dir,
+  onClick,
 }: {
   label: string;
   active: boolean;
@@ -53,10 +80,12 @@ export function SortHeader({
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-1 text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors group"
+      className="text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors group text-right w-full pl-4 relative"
     >
       {label}
-      <SortIcon active={active} dir={dir} />
+      <span className="absolute left-0 top-1/2 -translate-y-1/2">
+        <SortIcon active={active} dir={dir} />
+      </span>
     </button>
   );
 }

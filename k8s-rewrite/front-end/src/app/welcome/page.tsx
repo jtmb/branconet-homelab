@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import {
   Activity,
   ArrowRight,
@@ -140,51 +141,9 @@ export default function WelcomePage() {
               </div>
             </div>
 
-            {/* Right — terminal mockup */}
+            {/* Right — screenshot */}
             <div className="hidden lg:block">
-              <div className="rounded-xl border border-zinc-800 bg-zinc-900/80 overflow-hidden shadow-2xl shadow-indigo-500/5">
-                {/* Title bar */}
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-zinc-800 bg-zinc-900">
-                  <div className="w-3 h-3 rounded-full bg-red-500/70" />
-                  <div className="w-3 h-3 rounded-full bg-amber-500/70" />
-                  <div className="w-3 h-3 rounded-full bg-emerald-500/70" />
-                  <span className="ml-3 text-xs text-zinc-500 font-mono">botrus — ansible-playbook</span>
-                </div>
-                {/* Terminal body */}
-                <div className="p-5 font-mono text-sm leading-relaxed">
-                  <div className="text-zinc-500 mb-1">
-                    $ ansible-playbook site.yml -i production.ini
-                  </div>
-                  <div className="text-emerald-400 mb-1">
-                    PLAY [Bootstrap cluster nodes] **********************
-                  </div>
-                  <div className="text-zinc-500 mb-1">
-                    TASK [Install Kubernetes packages] ******************
-                  </div>
-                  <div className="text-amber-400 mb-1">
-                    changed: [u1] &#x2502; kubeadm v1.30.0 installed
-                  </div>
-                  <div className="text-amber-400 mb-1">
-                    changed: [u2] &#x2502; kubeadm v1.30.0 installed
-                  </div>
-                  <div className="text-amber-400 mb-1">
-                    changed: [u3] &#x2502; kubeadm v1.30.0 installed
-                  </div>
-                  <div className="text-emerald-400 mb-1">
-                    PLAY RECAP ******************************************
-                  </div>
-                  <div className="text-zinc-500 mb-1">
-                    u1: ok=12 changed=5 failed=0
-                  </div>
-                  <div className="text-zinc-500">
-                    u2: ok=12 changed=5 failed=0
-                  </div>
-                  <div className="flex items-center gap-1 mt-3 text-zinc-400">
-                    <span>$</span>
-                    <span className="w-2 h-4 bg-zinc-400 animate-pulse" />
-                  </div>
-                </div>
-              </div>
+              <Screenshot src="/images/screenshots/deploy.webp" alt="Ansible playbook provisioning in the Botrus dashboard" priority />
             </div>
           </div>
         </div>
@@ -260,31 +219,14 @@ export default function WelcomePage() {
               </ul>
             </div>
             <div className="order-2 lg:order-2 flex justify-center">
-              <TerminalMockup lines={[
-                "$ ansible-playbook site.yml",
-                "PLAY [Bootstrap cluster nodes]",
-                "TASK [Install containerd]",
-                "changed: [u1]",
-                "changed: [u2]",
-                "changed: [u3]",
-                "PLAY RECAP *** u1: ok=12 changed=5",
-              ]} />
+              <Screenshot src="/images/screenshots/deploy.webp" alt="Ansible-powered provisioning dashboard" />
             </div>
           </div>
 
           {/* Feature B — GitOps with FluxCD */}
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div className="order-2 lg:order-1 flex justify-center">
-              <TerminalMockup lines={[
-                "$ kubectl get kustomizations -A",
-                "NAMESPACE    NAME          READY",
-                "flux-system  test-stack    True",
-                "flux-system  media-stack   True",
-                "",
-                "$ git push origin k8s-rewrite",
-                "Flux detects change… applying…",
-                "Kustomization reconciled ✓",
-              ]} />
+              <Screenshot src="/images/screenshots/flux.webp" alt="FluxCD GitOps dashboard showing repository status" />
             </div>
             <div className="order-1 lg:order-2">
               <div className="w-14 h-14 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-5">
@@ -345,33 +287,14 @@ export default function WelcomePage() {
               </ul>
             </div>
             <div className="order-2 lg:order-2 flex justify-center">
-              <TerminalMockup lines={[
-                "$ kubectl get nodes",
-                "NAME  STATUS   ROLES           AGE",
-                "u1    Ready    control-plane   14d",
-                "u2    Ready    worker          14d",
-                "u3    Ready    worker          14d",
-                "",
-                "$ kubectl get pods -A --no-headers | wc -l",
-                "42",
-              ]} />
+              <Screenshot src="/images/screenshots/dashboard.webp" alt="Cluster management dashboard overview" />
             </div>
           </div>
 
           {/* Feature D — Secrets Engine */}
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div className="order-2 lg:order-1 flex justify-center">
-              <TerminalMockup lines={[
-                "curl -H 'Authorization: Bearer ***'",
-                "  /api/vars/lookup?key=k8s_version",
-                "{",
-                '  "key": "k8s_version",',
-                '  "value": "v1.30.0"',
-                "}",
-                "",
-                "# Values never touch the filesystem",
-                "# AES-256-GCM encryption at rest",
-              ]} />
+              <Screenshot src="/images/screenshots/secrets.webp" alt="Encrypted secrets engine interface" />
             </div>
             <div className="order-1 lg:order-2">
               <div className="w-14 h-14 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-5">
@@ -561,48 +484,18 @@ export default function WelcomePage() {
   );
 }
 
-/* ── Terminal mockup sub-component ── */
-function TerminalMockup({ lines }: { lines: string[] }) {
+/* ── Screenshot sub-component ── */
+function Screenshot({ src, alt, priority }: { src: string; alt: string; priority?: boolean }) {
   return (
     <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-900/80 overflow-hidden shadow-lg">
-      {/* Title bar */}
-      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-zinc-800 bg-zinc-900">
-        <div className="w-2.5 h-2.5 rounded-full bg-red-500/60" />
-        <div className="w-2.5 h-2.5 rounded-full bg-amber-500/60" />
-        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/60" />
-        <span className="ml-2 text-xs text-zinc-600 font-mono">terminal</span>
-      </div>
-      {/* Body */}
-      <div className="p-4 font-mono text-xs leading-relaxed">
-        {lines.map((line, i) => {
-          const isCommand = line.startsWith("$");
-          const isAccent = line.includes("PLAY") || line.includes("RECAP") || line.includes("✓");
-          const isJson = line.trim().startsWith('"') || line.trim().startsWith("{") || line.trim().startsWith("}");
-          const isComment = line.startsWith("#");
-          return (
-            <div
-              key={i}
-              className={`mb-0.5 ${
-                isCommand
-                  ? "text-zinc-500"
-                  : isAccent
-                  ? "text-emerald-400"
-                  : isJson
-                  ? "text-amber-300"
-                  : isComment
-                  ? "text-zinc-700"
-                  : "text-zinc-600"
-              }`}
-            >
-              {line || "\u00A0"}
-            </div>
-          );
-        })}
-        <div className="flex items-center gap-1 mt-2 text-zinc-500">
-          <span>$</span>
-          <span className="w-1.5 h-4 bg-zinc-500 animate-pulse" />
-        </div>
-      </div>
+      <Image
+        src={src}
+        alt={alt}
+        width={1280}
+        height={720}
+        className="w-full h-auto rounded-xl"
+        priority={priority}
+      />
     </div>
   );
 }

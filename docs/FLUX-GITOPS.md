@@ -89,16 +89,41 @@ resources:
 
 The `/flux` page in the dashboard shows a Rancher Fleet-style expandable tree view:
 
-- **GitRepositories** are root nodes, grouped by their `sourceRef`
+- **GitRepositories** are root nodes, each showing URL, branch, readiness, last sync, and short revision hash
 - **Kustomizations** appear as children of the GitRepository they pull from
-- **Namespaces** appear as leaf children of Kustomizations — parsed from the Kustomization's `status.inventory.entries` to show which namespaces are managed by that Kustomization
-- **HelmReleases** appear as children of the GitRepository or Kustomization they reference
-- Sub-kustomizations (e.g., `flux-system` Kustomization spawning per-app Kustomizations) nest recursively
-- Each node shows live readiness status (green/amber/red), last sync time, and short revision hash
+- **Names are clickable links** — clicking a GitRepository goes to `/flux/<name>` detail page; clicking a Kustomization goes to `/flux/<repoName>/<ksName>` bundle detail page
+- **Auto-collapse**: a parent node starts collapsed when all its children are `Ready`; it expands automatically if any child is not Ready, making failures immediately visible
+- Each node shows live readiness status (green/amber), last sync time, and short revision hash
 - Expand/collapse with tree-line indentation
 - Sync and Delete buttons are available on root GitRepository rows
 
-**Orphan filter:** The tree filters out GitRepositories that have no linked Kustomizations and aren't connected to any managed namespace. Suspended GitRepositories are also hidden.
+**Orphan filter:** The tree filters out GitRepositories that have no linked Kustomizations and aren't tracked in the database. Suspended GitRepositories are also hidden.
+
+### GitRepository Detail Page (`/flux/<repoName>`)
+
+Clicking a GitRepository name opens a full detail page showing:
+
+- **Header**: GitBranch icon, repository name, Active/Not Ready badge, Suspended indicator
+- **Meta line**: namespace, age, clickable Git URL, branch, path
+- **Labels & Annotations** (collapsible)
+- **Summary cards**: Bundles (ready/total) and Resources (ready/total) across all bundles
+- **Bundles table**: each bundle (Kustomization) with State dot, clickable name (links to bundle detail), path, resource count breakdown by kind, last updated date
+- **Conditions table**: type, status, reason, message
+- **Recent Events table**: type (Normal/Warning), reason, message, age
+
+API: `GET /api/flux/repos/<name>/detail` — calls `getGitRepoDetail()` which queries the GitRepository, all linked Kustomizations, parses inventory entries, and fetches relevant events.
+
+### Bundle Detail Page (`/flux/<repoName>/<bundleName>`)
+
+Clicking a Kustomization name (from the tree or the repo detail bundles table) opens the bundle detail page:
+
+- **Breadcrumb**: Flux → repoName → bundleName
+- **Header**: Layers icon, bundle name, Ready/Not Ready badge, Suspended indicator
+- **Meta line**: source ref, path, age, last sync timestamp
+- **Resources grouped by kind**: each kind gets its own card with a table of name, namespace, and API group. Deployments, Services, Ingresses, and PVCs are clickable links to their existing dashboard routes
+- **Conditions table**: type, status, reason, message
+
+API: `GET /api/flux/kustomizations/<name>` — calls `getKustomizationDetail()` which queries the Kustomization CRD, parses `status.inventory.entries`, and fetches events.
 
 The tree is powered by `GET /api/flux/hierarchy` which queries GitRepositories, Kustomizations, and HelmReleases from the cluster, links them by `sourceRef.name`, and merges DB metadata (auth method, ID) for tracked repos.
 

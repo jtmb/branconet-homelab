@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Server, Loader2, Plus, Trash2, Save, Pencil, Search } from "lucide-react";
+import { Server, Loader2, Plus, Trash2, Save, Pencil, Search, ChevronRight } from "lucide-react";
 import ViewportWrapper from "../viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
@@ -139,6 +139,10 @@ export default function NodesPage() {
 
       <ViewportWrapper>
       <main className="px-3 sm:px-4 lg:px-6 py-6">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
+          <span className="text-zinc-300">Nodes</span>
+        </div>
         <div className="flex items-center gap-3 mb-4">
           <Server className="page-header-icon text-blue-400" />
           <h1 className="page-header-title">Nodes</h1>

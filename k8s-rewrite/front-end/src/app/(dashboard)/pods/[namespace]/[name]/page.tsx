@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import { Container, Loader2, Server, Network, Gauge, Layers } from "lucide-react";
+import { Container, Loader2, Server, Network, Gauge, Layers, ChevronRight } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import ViewportWrapper from "../../../viewport-wrapper";
 import ResourceActionsMenu from "../../../resource-actions-menu";
@@ -106,6 +106,12 @@ export default function PodDetailPage() {
 
       <ViewportWrapper>
       <main className="px-3 sm:px-4 lg:px-6 py-6">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
+          <Link href="/pods" className="hover:text-zinc-300 transition-colors">Pods</Link>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-zinc-300">{pod.metadata?.name}</span>
+        </div>
         <div className="flex items-center gap-3 mb-6">
           <Container className="page-header-icon text-cyan-400" />
           <h1 className="page-header-title">{pod.metadata?.name}</h1>

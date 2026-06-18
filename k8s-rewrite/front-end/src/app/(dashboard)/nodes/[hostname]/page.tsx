@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Server, Loader2, Cpu, MemoryStick, HardDrive, Monitor, Network, Container, Hash } from "lucide-react";
+import { Server, Loader2, Cpu, MemoryStick, HardDrive, Monitor, Network, Container, Hash, ChevronRight } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import ViewportWrapper from "../../viewport-wrapper";
 import ResourceActionsMenu from "../../resource-actions-menu";
@@ -104,6 +104,12 @@ export default function NodeDetailPage() {
 
       <ViewportWrapper>
       <main className="px-3 sm:px-4 lg:px-6 py-6">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
+          <Link href="/nodes" className="hover:text-zinc-300 transition-colors">Nodes</Link>
+          <ChevronRight className="w-3 h-3" />
+          <span className="text-zinc-300">{node.metadata?.name}</span>
+        </div>
         {/* Header */}
         <div className="flex items-center gap-3 mb-6">
           <Server className="page-header-icon text-blue-400" />

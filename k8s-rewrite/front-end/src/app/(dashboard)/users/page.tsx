@@ -3,8 +3,9 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   UsersRound, Search, Plus, Pencil, Trash2, Save, Loader2,
-  Shield, ShieldCheck, AlertTriangle, CheckCircle2, X,
+  Shield, ShieldCheck, AlertTriangle, CheckCircle2, X, ChevronRight,
 } from "lucide-react";
+import Link from "next/link";
 import ViewportWrapper from "../viewport-wrapper";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
 
@@ -196,6 +197,10 @@ export default function UsersPage() {
     <div className="flex flex-col min-h-0">
       <ViewportWrapper>
         <main className="px-3 sm:px-4 lg:px-6 py-6">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
+            <span className="text-zinc-300">Users</span>
+          </div>
           {/* Header */}
           <div className="flex items-center gap-3 mb-6">
             <UsersRound className="page-header-icon text-emerald-400" />

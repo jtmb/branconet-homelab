@@ -195,6 +195,10 @@ Deployment detail.
 
 List services. Optional `?namespace=` filter.
 
+### `GET /api/cluster/services/[namespace]/[name]`
+
+Service detail — full Kubernetes Service object (type, ports, selector, cluster IP, external IPs, session affinity).
+
 ### `GET /api/cluster/ingresses`
 
 List ingresses. Optional `?namespace=` filter.
@@ -229,6 +233,10 @@ curl -X DELETE -b /tmp/botrus-cookies \
 ### `GET /api/cluster/volumes`
 
 Storage overview — PVCs, PVs, storage classes.
+
+### `GET /api/cluster/volumes/[namespace]/[name]`
+
+PVC detail — full Kubernetes PersistentVolumeClaim object (status, capacity, storage class, access modes, volume name, volume mode).
 
 ### `DELETE /api/cluster/remove`
 

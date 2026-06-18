@@ -1,6 +1,7 @@
 "use client";
 
-import { Network, Loader2, Search } from "lucide-react";
+import { Network, Loader2, Search, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import ViewportWrapper from "../viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
@@ -65,6 +66,10 @@ export default function ServicesPage() {
 
       <ViewportWrapper>
       <main className="px-3 sm:px-4 lg:px-6 py-6">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
+          <span className="text-zinc-300">Services</span>
+        </div>
         <div className="flex items-center gap-3 mb-6">
           <Network className="page-header-icon text-rose-400" />
           <h1 className="page-header-title">Services</h1>
@@ -118,7 +123,7 @@ export default function ServicesPage() {
                   <th className="text-left px-4 py-3"><SortHeader label="Namespace" active={sortKey==="namespace"} dir={sortDir} onClick={()=>toggleSort("namespace")} /></th>
                   <th className="text-left px-4 py-3"><SortHeader label="Type" active={sortKey==="type"} dir={sortDir} onClick={()=>toggleSort("type")} /></th>
                   <th className="text-left px-4 py-3"><SortHeader label="Cluster IP" active={sortKey==="clusterIP"} dir={sortDir} onClick={()=>toggleSort("clusterIP")} /></th>
-                  <th className="text-left px-4 py-3"><SortHeader label="External IP" active={sortKey==="externalIP"} dir={sortDir} onClick={()=>toggleSort("externalIP")} /></th>
+                  <th className="text-left px-4 py-3 whitespace-nowrap"><SortHeader label="External IP" active={sortKey==="externalIP"} dir={sortDir} onClick={()=>toggleSort("externalIP")} /></th>
                   <th className="text-left px-4 py-3"><SortHeader label="Ports" active={sortKey==="ports"} dir={sortDir} onClick={()=>toggleSort("ports")} /></th>
                   <th className="text-left px-4 py-3"><SortHeader label="Selector" active={sortKey==="selector"} dir={sortDir} onClick={()=>toggleSort("selector")} /></th>
                 </tr>

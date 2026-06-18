@@ -329,27 +329,6 @@ export async function getFluxHierarchy(): Promise<FluxTreeNode[]> {
         ...subHR.map((h: any) => buildHelmReleaseNode(h)),
       ];
 
-      // Parse inventory entries to surface managed namespaces as children
-      const inventoryEntries: { id: string; v: string }[] = ks.status?.inventory?.entries || [];
-      const namespacesSeen = new Set<string>();
-      for (const entry of inventoryEntries) {
-        const parsed = parseFluxInventoryId(entry.id);
-        if (parsed.namespace && !namespacesSeen.has(parsed.namespace)) {
-          namespacesSeen.add(parsed.namespace);
-          subChildren.push({
-            id: `ns-${ks.metadata?.uid || ksName}-${parsed.namespace}`,
-            name: parsed.namespace,
-            kind: "Namespace",
-            namespace: parsed.namespace,
-            ready: ksReady,
-            status: ksReady ? "Managed" : "Pending",
-            lastSync: null,
-            revision: null,
-            children: [],
-          });
-        }
-      }
-
       children.push({
         id: `ks-${ks.metadata?.uid || ksName}`,
         name: ksName,
@@ -919,6 +898,253 @@ export async function syncRepo(
     return { success: false, error: "Repository not found" };
   }
   return triggerSync(repo.name);
+}
+
+// =============================================================================
+// Detail queries — single repo / single kustomization drill-down
+// =============================================================================
+
+export interface GitRepoDetail {
+  name: string;
+  namespace: string;
+  url: string;
+  branch: string;
+  path: string;
+  ready: boolean;
+  status: string;
+  lastSync: string | null;
+  revision: string | null;
+  suspended: boolean;
+  labels: { key: string; value: string }[];
+  annotations: { key: string; value: string }[];
+  age: string | null;
+  conditions: { type: string; status: string; reason: string; message: string }[];
+  bundles: BundleSummary[];
+  totalResources: number;
+  readyResources: number;
+  events: { type: string; reason: string; message: string; lastTimestamp: string; age: string }[];
+}
+
+export interface BundleSummary {
+  name: string;
+  path: string;
+  ready: boolean;
+  status: string;
+  lastSync: string | null;
+  resourceCounts: { kind: string; count: number }[];
+  totalResources: number;
+}
+
+export async function getGitRepoDetail(name: string): Promise<GitRepoDetail | null> {
+  const repoRaw = await kubectlJSON(`get gitrepository ${name} -n ${FLUX_NAMESPACE} -o json`);
+  if (!repoRaw) return null;
+
+  const conditions = (repoRaw.status?.conditions || []).map((c: any) => ({
+    type: c.type || "",
+    status: c.status || "Unknown",
+    reason: c.reason || "-",
+    message: c.message || "-",
+  }));
+  const readyCond = conditions.find((c) => c.type === "Ready");
+  const ready = readyCond?.status === "True";
+
+  const labels = Object.entries(repoRaw.metadata?.labels || {}).map(
+    ([k, v]) => ({ key: k, value: String(v) })
+  );
+  const annotations = Object.entries(repoRaw.metadata?.annotations || {}).map(
+    ([k, v]) => ({ key: k, value: String(v) })
+  );
+
+  const creationTs = repoRaw.metadata?.creationTimestamp;
+  const age = creationTs ? formatAge(Date.now() - new Date(creationTs).getTime()) : null;
+
+  // Fetch Kustomizations that reference this repo
+  const kustomizationsRaw = await kubectlJSON(`get kustomizations -n ${FLUX_NAMESPACE} -o json`);
+  const kustomizations = (kustomizationsRaw?.items || []) as any[];
+  const bundles: BundleSummary[] = [];
+  let totalResources = 0;
+  let readyResources = 0;
+
+  for (const ks of kustomizations) {
+    if (ks.spec?.sourceRef?.name !== name) continue;
+
+    const ksName = ks.metadata?.name || "unknown";
+    const ksConditions = (ks.status?.conditions || []).map((c: any) => ({
+      type: c.type || "",
+      status: c.status || "Unknown",
+      reason: c.reason || "-",
+      message: c.message || "-",
+    }));
+    const ksReadyCond = ksConditions.find((c) => c.type === "Ready");
+    const ksReady = ksReadyCond?.status === "True";
+
+    // Parse inventory into kind counts
+    const inventoryEntries: { id: string; v: string }[] = ks.status?.inventory?.entries || [];
+    const kindCounts = new Map<string, number>();
+    for (const entry of inventoryEntries) {
+      const parsed = parseFluxInventoryId(entry.id);
+      const kind = parsed.kind || "Unknown";
+      kindCounts.set(kind, (kindCounts.get(kind) || 0) + 1);
+    }
+    const resourceCounts = Array.from(kindCounts.entries())
+      .map(([kind, count]) => ({ kind, count }))
+      .sort((a, b) => b.count - a.count);
+    const bundleTotal = inventoryEntries.length;
+
+    totalResources += bundleTotal;
+    if (ksReady) readyResources += bundleTotal;
+
+    bundles.push({
+      name: ksName,
+      path: ks.spec?.path || "./",
+      ready: ksReady,
+      status: ksReadyCond?.message || (ksReady ? "Ready" : "Not Ready"),
+      lastSync: ks.status?.lastHandledReconcileAt || null,
+      resourceCounts,
+      totalResources: bundleTotal,
+    });
+  }
+
+  // Events
+  const events = await fetchFluxEvents(name, FLUX_NAMESPACE);
+
+  return {
+    name,
+    namespace: repoRaw.metadata?.namespace || FLUX_NAMESPACE,
+    url: repoRaw.spec?.url || "",
+    branch: repoRaw.spec?.ref?.branch || "main",
+    path: bundles[0]?.path || "./",
+    ready,
+    status: readyCond?.message || (ready ? "Ready" : "Not Ready"),
+    lastSync: repoRaw.status?.lastHandledReconcileAt || null,
+    revision: repoRaw.status?.artifact?.revision || null,
+    suspended: repoRaw.spec?.suspend === true,
+    labels,
+    annotations,
+    age,
+    conditions,
+    bundles,
+    totalResources,
+    readyResources,
+    events,
+  };
+}
+
+export interface KustomizationDetail {
+  name: string;
+  namespace: string;
+  path: string;
+  sourceRef: { kind: string; name: string };
+  ready: boolean;
+  status: string;
+  lastSync: string | null;
+  revision: string | null;
+  suspended: boolean;
+  age: string | null;
+  conditions: { type: string; status: string; reason: string; message: string }[];
+  resources: { kind: string; name: string; namespace: string; apiGroup: string }[];
+  events: { type: string; reason: string; message: string; lastTimestamp: string; age: string }[];
+}
+
+export async function getKustomizationDetail(name: string): Promise<KustomizationDetail | null> {
+  const ksRaw = await kubectlJSON(`get kustomization ${name} -n ${FLUX_NAMESPACE} -o json`);
+  if (!ksRaw) return null;
+
+  const conditions = (ksRaw.status?.conditions || []).map((c: any) => ({
+    type: c.type || "",
+    status: c.status || "Unknown",
+    reason: c.reason || "-",
+    message: c.message || "-",
+  }));
+  const readyCond = conditions.find((c) => c.type === "Ready");
+  const ready = readyCond?.status === "True";
+
+  const creationTs = ksRaw.metadata?.creationTimestamp;
+  const age = creationTs ? formatAge(Date.now() - new Date(creationTs).getTime()) : null;
+
+  // Parse inventory entries
+  const inventoryEntries: { id: string; v: string }[] = ksRaw.status?.inventory?.entries || [];
+  const resources = inventoryEntries
+    .map((entry) => {
+      const parsed = parseFluxInventoryId(entry.id);
+      return {
+        kind: parsed.kind || "Unknown",
+        name: parsed.name || "unknown",
+        namespace: parsed.namespace || "default",
+        apiGroup: parsed.apiGroup || "",
+      };
+    })
+    .sort((a, b) => a.kind.localeCompare(b.kind) || a.name.localeCompare(b.name));
+
+  // Events
+  const events = await fetchFluxEvents(name, FLUX_NAMESPACE);
+
+  return {
+    name,
+    namespace: ksRaw.metadata?.namespace || FLUX_NAMESPACE,
+    path: ksRaw.spec?.path || "./",
+    sourceRef: {
+      kind: ksRaw.spec?.sourceRef?.kind || "GitRepository",
+      name: ksRaw.spec?.sourceRef?.name || "unknown",
+    },
+    ready,
+    status: readyCond?.message || (ready ? "Ready" : "Not Ready"),
+    lastSync: ksRaw.status?.lastHandledReconcileAt || null,
+    revision: ksRaw.status?.lastAppliedRevision || null,
+    suspended: ksRaw.spec?.suspend === true,
+    age,
+    conditions,
+    resources,
+    events,
+  };
+}
+
+async function fetchFluxEvents(
+  resourceName: string,
+  namespace: string,
+): Promise<{ type: string; reason: string; message: string; lastTimestamp: string; age: string }[]> {
+  const raw = await kubectlExec(
+    `get events -n ${namespace} --field-selector involvedObject.name=${resourceName} --sort-by=.lastTimestamp`,
+  );
+  if (!raw) return [];
+
+  // Parse kubectl table output into structured events
+  const lines = raw.trim().split("\n").slice(1); // skip header
+  const events: { type: string; reason: string; message: string; lastTimestamp: string; age: string }[] = [];
+
+  for (const line of lines) {
+    const parts = line.trim().split(/\s{2,}/);
+    if (parts.length >= 5) {
+      const type = parts[1] || "Normal";
+      const reason = parts[2] || "-";
+      const now = new Date();
+      const lastTimestamp = parts[0] || "";
+      let age = "";
+      try {
+        const ts = new Date(lastTimestamp);
+        if (!isNaN(ts.getTime())) {
+          age = formatAge(now.getTime() - ts.getTime());
+        }
+      } catch { age = lastTimestamp; }
+      const message = parts.slice(4).join(" ") || parts[3] || "";
+      events.push({ type, reason, message, lastTimestamp, age });
+    }
+  }
+
+  return events;
+}
+
+function formatAge(ms: number): string {
+  if (ms < 0) return "—";
+  const s = Math.floor(ms / 1000);
+  if (s < 60) return `${s}s`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}h`;
+  const d = Math.floor(h / 24);
+  if (d < 365) return `${d}d`;
+  return `${Math.floor(d / 365)}y`;
 }
 
 // =============================================================================

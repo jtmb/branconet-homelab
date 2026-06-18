@@ -4,6 +4,7 @@ import { GitBranch, Loader2, Plus, RefreshCw, Trash2, XCircle, Globe, Key, Lock,
 import ViewportWrapper from "../viewport-wrapper";
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import FluxTreeRow from "./tree-row";
+import { SortHeader, SortHeaderRight, useSort } from "@/components/ui/sortable-header";
 import type { FluxTreeNode } from "@/lib/flux";
 
 interface DeleteStep {
@@ -75,11 +76,34 @@ export default function FluxPage() {
   }, []);
 
   const [search, setSearch] = useState("");
+  const { sortKey, sortDir, toggle: toggleSort } = useSort<"name" | "revision" | "lastSync">("name");
 
   const filteredTrees = useMemo(() => {
-    if (!search.trim()) return trees;
-    return filterTree(trees, search);
-  }, [trees, search]);
+    let result = search.trim() ? filterTree(trees, search) : trees;
+    // Sort root repos (only depth-0 GitRepositories)
+    const mul = sortDir === "asc" ? 1 : -1;
+    return [...result].sort((a, b) => {
+      let va = "";
+      let vb = "";
+      switch (sortKey) {
+        case "name":
+          va = a.name.toLowerCase();
+          vb = b.name.toLowerCase();
+          break;
+        case "revision":
+          va = a.revision || "";
+          vb = b.revision || "";
+          break;
+        case "lastSync":
+          va = a.lastSync || "";
+          vb = b.lastSync || "";
+          break;
+      }
+      if (va < vb) return -1 * mul;
+      if (va > vb) return 1 * mul;
+      return 0;
+    });
+  }, [trees, search, sortKey, sortDir]);
 
   useEffect(() => {
     fetchHierarchy();
@@ -424,22 +448,26 @@ export default function FluxPage() {
         ) : (
           <div className="glass-card rounded-xl overflow-hidden">
             {/* Column headers */}
-            <div className="flex items-center gap-2 py-2.5 px-3 border-b border-zinc-800/60 text-[10px] text-zinc-500 uppercase tracking-wider">
-              <div className="w-8 flex-shrink-0" /> {/* expand chevron */}
-              <div className="min-w-0 flex-1 pl-5">Name</div>
-              <div className="flex items-center gap-2 w-32 flex-shrink-0 justify-end">
-                <span className="w-12 text-right">Rev</span>
-                <span className="w-20 text-right hidden md:inline">Last Sync</span>
+            <div className="flex items-center gap-2 py-2.5 px-3 border-b border-zinc-800/60 whitespace-nowrap">
+              <div className="w-4 flex-shrink-0" /> {/* kind icon */}
+              <div className="min-w-0 flex-1">
+                <SortHeader label="Name" active={sortKey === "name"} dir={sortDir} onClick={() => toggleSort("name")} />
+              </div>
+              <div className="flex items-center gap-4 flex-shrink-0">
+                <span className="w-4" /> {/* status dot */}
+                <span className="w-12 hidden sm:inline">
+                  <SortHeaderRight label="Rev" active={sortKey === "revision"} dir={sortDir} onClick={() => toggleSort("revision")} />
+                </span>
+                <span className="w-28 hidden md:inline">
+                  <SortHeaderRight label="Last Sync" active={sortKey === "lastSync"} dir={sortDir} onClick={() => toggleSort("lastSync")} />
+                </span>
                 <span className="w-16" /> {/* actions */}
               </div>
             </div>
-            {filteredTrees.map((node, i) => (
+            {filteredTrees.map((node) => (
               <FluxTreeRow
                 key={node.id}
                 node={node}
-                depth={0}
-                isLast={i === filteredTrees.length - 1}
-                parentIsLast={[]}
                 onSync={(id) => triggerSync(id)}
                 onDelete={(id, name) => setShowConfirm({ id, name, namespace: node.namespace })}
                 syncingId={syncing}

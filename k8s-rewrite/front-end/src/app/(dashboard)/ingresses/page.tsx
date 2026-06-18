@@ -1,6 +1,7 @@
 "use client";
 
-import { Network, Loader2, Search } from "lucide-react";
+import { Network, Loader2, Search, ChevronRight } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ViewportWrapper from "../viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
@@ -10,6 +11,7 @@ interface IngressData {
   name: string;
   namespace: string;
   state: string;
+  host: string;
   target: string;
   age: string;
 }
@@ -65,6 +67,10 @@ export default function IngressesPage() {
 
       <ViewportWrapper>
       <main className="px-3 sm:px-4 lg:px-6 py-6">
+        {/* Breadcrumb */}
+        <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
+          <span className="text-zinc-300">Ingresses</span>
+        </div>
         <div className="flex items-center gap-3 mb-6">
           <Network className="page-header-icon text-sky-400" />
           <h1 className="page-header-title">Ingresses</h1>
@@ -116,6 +122,7 @@ export default function IngressesPage() {
                 <tr className="border-b border-zinc-700/40">
                   <th className="text-left px-4 py-3"><SortHeader label="State" active={sortKey==="state"} dir={sortDir} onClick={()=>toggleSort("state")} /></th>
                   <th className="text-left px-4 py-3"><SortHeader label="Name" active={sortKey==="name"} dir={sortDir} onClick={()=>toggleSort("name")} /></th>
+                  <th className="text-left px-4 py-3"><SortHeader label="Host" active={sortKey==="host"} dir={sortDir} onClick={()=>toggleSort("host")} /></th>
                   <th className="text-left px-4 py-3"><SortHeader label="Target" active={sortKey==="target"} dir={sortDir} onClick={()=>toggleSort("target")} /></th>
                   <th className="text-left px-4 py-3"><SortHeader label="Age" active={sortKey==="age"} dir={sortDir} onClick={()=>toggleSort("age")} /></th>
                 </tr>
@@ -131,6 +138,7 @@ export default function IngressesPage() {
                       <span className={`text-xs px-2 py-0.5 rounded-full ${ing.state === "Ready" ? "badge-success" : "badge-warning"}`}>{ing.state}</span>
                     </td>
                     <td className="px-4 py-3 text-sm text-zinc-200 font-mono max-w-[260px] truncate" title={ing.name}>{ing.name}</td>
+                    <td className="px-4 py-3 text-sm text-zinc-400 font-mono max-w-[220px] truncate" title={ing.host}>{ing.host}</td>
                     <td className="px-4 py-3 text-sm text-zinc-400 font-mono max-w-[300px] truncate" title={ing.target}>{ing.target}</td>
                     <td className="px-4 py-3 text-sm text-zinc-500">{ing.age}</td>
                   </tr>
