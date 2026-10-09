@@ -50,6 +50,13 @@ resources:
               memory: 64Mi
           env: []
           imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - name: data
+            mountPath: /data
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: wordpress-redis-data
 - apiVersion: v1
   kind: Service
   metadata:
@@ -64,3 +71,30 @@ resources:
       targetPort: 6379
       protocol: TCP
     type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: redis-db
+    namespace: wordpress
+  spec:
+    type: ClusterIP
+    selector:
+      app: wordpress-redis
+    ports:
+    - name: tcp
+      port: 6379
+      targetPort: 6379
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: wordpress-redis-data
+    namespace: wordpress
+    annotations:
+      helm.sh/resource-policy: keep
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi

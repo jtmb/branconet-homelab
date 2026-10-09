@@ -23,6 +23,8 @@ jobs:
           python scripts/migration/install-tools.py
       - name: Validate every individual chart
         run: python scripts/migration/validate-charts.py
+      - name: Validate complete Flux manifest composition
+        run: ~/.local/share/branconet-migration/bin/kubectl kustomize k8s-rewrite/flux/migration-releases > /dev/null
   publish-validated-source:
     if: github.event_name == 'push'
     needs: charts

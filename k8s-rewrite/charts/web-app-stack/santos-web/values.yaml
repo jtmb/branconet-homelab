@@ -101,3 +101,35 @@ resources:
       targetPort: 80
       protocol: TCP
     type: ClusterIP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: santos-web
+    namespace: web-apps
+  spec:
+    ingressClassName: traefik
+    tls:
+    - hosts:
+      - santos.jtmb.cc
+      secretName: source-acme-1
+    rules:
+    - host: santos.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: santos-web
+              port:
+                number: 80
+    - host: santos.jtmb.cc
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: santos-web
+              port:
+                number: 80

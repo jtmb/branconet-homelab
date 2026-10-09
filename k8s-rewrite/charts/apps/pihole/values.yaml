@@ -20,16 +20,16 @@ migration:
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.5
-    sourcePath: /mnt/container-program-files/dnsmasq.d
-    destinationPVC: pihole-data-0
+    sourcePath: /mnt/migration-gluster-read/dnsmasq.d
+    destinationPVC: pihole-data-0-retry1
     mountPath: /etc/dnsmasq.d
     measuredBytes: 4144
     allocatedGiB: 1
     uid: 1000
     gid: 65534
   - sourceHost: 192.168.0.5
-    sourcePath: /mnt/container-program-files/pihole
-    destinationPVC: pihole-data-1
+    sourcePath: /mnt/migration-gluster-read/pihole
+    destinationPVC: pihole-data-1-retry1
     mountPath: /etc/pihole
     measuredBytes: 1082836076
     allocatedGiB: 3
@@ -37,6 +37,9 @@ migration:
     gid: 1000
   sourceCommandArgumentsRequireReview: false
   launchSecretKeys: []
+  retainedPartialClaims:
+  - pihole-data-0
+  - pihole-data-1
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -88,14 +91,14 @@ resources:
         volumes:
         - name: data-0
           persistentVolumeClaim:
-            claimName: pihole-data-0
+            claimName: pihole-data-0-retry1
         - name: data-1
           persistentVolumeClaim:
-            claimName: pihole-data-1
+            claimName: pihole-data-1-retry1
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: pihole-data-0
+    name: pihole-data-0-retry1
     namespace: pihole
     annotations:
       helm.sh/resource-policy: keep
@@ -109,7 +112,7 @@ resources:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: pihole-data-1
+    name: pihole-data-1-retry1
     namespace: pihole
     annotations:
       helm.sh/resource-policy: keep

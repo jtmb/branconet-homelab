@@ -101,3 +101,35 @@ resources:
       targetPort: 80
       protocol: TCP
     type: ClusterIP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: lucinda-art-gallery
+    namespace: web-apps
+  spec:
+    ingressClassName: traefik
+    tls:
+    - hosts:
+      - lucinda.jtmb.cc
+      secretName: source-acme-3
+    rules:
+    - host: lucinda.jtmb.cc
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: lucinda-art-gallery
+              port:
+                number: 80
+    - host: lucinda.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: lucinda-art-gallery
+              port:
+                number: 80

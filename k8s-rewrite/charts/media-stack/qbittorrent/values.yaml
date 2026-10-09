@@ -30,8 +30,8 @@ migration:
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.5
-    sourcePath: /mnt/container-program-files/deluge/config
-    destinationPVC: qbittorrent-data-0
+    sourcePath: /mnt/migration-gluster-read/deluge/config
+    destinationPVC: qbittorrent-data-0-retry1
     mountPath: /config
     measuredBytes: 16266780
     allocatedGiB: 1
@@ -42,6 +42,8 @@ migration:
   vpnEgressAndFailureIsolationVerified: false
   launchSecretKeys:
   - command-0
+  retainedPartialClaims:
+  - qbittorrent-data-0
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -74,8 +76,8 @@ resources:
           - name: p6881-udp
             containerPort: 6881
             protocol: UDP
-          - name: p8080-tcp
-            containerPort: 8080
+          - name: p8112-tcp
+            containerPort: 8112
             protocol: TCP
           volumeMounts:
           - name: data-0
@@ -100,7 +102,7 @@ resources:
         volumes:
         - name: data-0
           persistentVolumeClaim:
-            claimName: qbittorrent-data-0
+            claimName: qbittorrent-data-0-retry1
         - name: data-1
           persistentVolumeClaim:
             claimName: qbittorrent-data-1
@@ -109,7 +111,7 @@ resources:
             claimName: gluetun-data-0
         - name: vpn-data-1
           persistentVolumeClaim:
-            claimName: gluetun-data-1
+            claimName: gluetun-data-1-retry1
         initContainers:
         - name: gluetun
           image: qmcgaw/gluetun@sha256:46407f10497e6b09770e63006439053ab88db9b94f009e88bcaef168233d5973
@@ -166,7 +168,7 @@ resources:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: qbittorrent-data-0
+    name: qbittorrent-data-0-retry1
     namespace: plex
     annotations:
       helm.sh/resource-policy: keep
@@ -233,3 +235,16 @@ resources:
       targetPort: 8112
       protocol: TCP
     type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: qbittorrent-webui
+    namespace: plex
+  spec:
+    type: ClusterIP
+    selector:
+      app: qbittorrent
+    ports:
+    - name: web
+      port: 8112
+      targetPort: 8112

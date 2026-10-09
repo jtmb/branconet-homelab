@@ -22,7 +22,7 @@ migration:
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.5
-    sourcePath: /mnt/container-program-files/wordpress/mysql-db
+    sourcePath: /mnt/migration-gluster-read/wordpress/mysql-db
     destinationPVC: wordpress-db-data-0
     mountPath: /var/lib/mysql
     measuredBytes: 218542752
@@ -109,3 +109,29 @@ resources:
       targetPort: 33060
       protocol: TCP
     type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: mysql-db
+    namespace: wordpress
+  spec:
+    type: ClusterIP
+    selector:
+      app: wordpress-db
+    ports:
+    - name: tcp
+      port: 3306
+      targetPort: 3306
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: db
+    namespace: wordpress
+  spec:
+    type: ClusterIP
+    selector:
+      app: wordpress-db
+    ports:
+    - name: tcp
+      port: 3306
+      targetPort: 3306

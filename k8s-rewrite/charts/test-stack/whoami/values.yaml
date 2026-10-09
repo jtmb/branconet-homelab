@@ -50,7 +50,7 @@ resources:
               name: '{{ .Values.environmentSecret }}'
           ports:
           - name: p80-tcp
-            containerPort: 80
+            containerPort: 2001
             protocol: TCP
           args:
           - $(MIGRATION_ARGS_0)
@@ -82,7 +82,7 @@ resources:
     ports:
     - name: p80-tcp
       port: 80
-      targetPort: 80
+      targetPort: 2001
       protocol: TCP
     type: ClusterIP
 - apiVersion: networking.k8s.io/v1

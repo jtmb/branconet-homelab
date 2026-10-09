@@ -54,12 +54,19 @@ Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; execution 
 - Remote GitHub CI run 37967715642 passed and published validated revision 1e6b09b. Current dashboard RBAC/private promotions are being validated for the next revision before Flux adoption. Untested releases are explicitly suspended.
 - Temporary per-link node DNS uses public resolvers while Pi-hole is migrated, with prior resolver metadata recorded. CoreDNS retains conditional LAN forwarding. No persistent host network files or NAS exports changed.
 
+- 18:30 UTC: Pi-hole and WordPress MySQL cold copies passed using an independent read-only Gluster client; stale FUSE entries were not skipped. Both MySQL application accounts pass SQL schema/table checks after restart. Current Redis snapshot restored with readback equality and PING, on a retained claim; original historical removed-state exception remains unresolved.
+- Plex master configuration copy and private identity/restart checks passed. Both old worker Plex instances are stopped with their configurations retained; detailed library/playback/relocation acceptance remains.
+- qBittorrent retry and refreshed Gluetun copy passed full manifests into new claims; initial partial/earlier claims and original data remain retained. Native web UI setting is 8112, and Service wiring is being corrected to that verified listener.
+- 18:15 UTC: Flux GitRepository and Kustomization are Ready at b43394d. Eight tested releases were successfully adopted and 27 untested releases suspended. Subsequent private proofs will be promoted through the same validation pipeline.
+- Six retained public ACME certificates imported directly into native TLS Secrets, valid until January 2027. cert-manager 1.21.2 installed from official OCI chart digest; controller readiness passed. Its published compatibility matrix stops at Kubernetes 1.36, so live 1.37 issuance is still a required check.
+- Homepage configuration/data preserved, Docker socket removed and native configuration/cluster-read service account wired. Private HTTP/restart checks passed.
+
 ## Acceptance ledger
 
 | Criterion | Status | Evidence / remaining work |
 |---|---|---|
 | AC1 Three-node Kubernetes | Passed | Three Ready nodes, pod DNS and cross-worker ping passed; independent runtime preserves source Docker |
-| AC2 One CI/CD pipeline | Prepared | Validation workflow covers all 35 implemented packages; remote CI and staged Flux activation pending |
+| AC2 One CI/CD pipeline | Passed initial adoption | CI 37971731033 passed; validated b43394d fetched, Kustomization Ready, eight tested releases adopted; later promotions ongoing |
 | AC3 Complete service coverage | Prepared | SERVICE_REGISTER.md and sanitized detailed register account for 42 source/repository entries |
 | AC4 Individual charts/values | In progress | All 35 packages implemented and packaging checks passed; live configuration/application checks remain |
 | AC5 Longhorn persistence/recovery | In progress | Encrypted two-replica device, cross-worker persistence and snapshot restoration passed; per-app recovery remains |

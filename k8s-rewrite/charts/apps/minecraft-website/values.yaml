@@ -101,3 +101,35 @@ resources:
       targetPort: 80
       protocol: TCP
     type: ClusterIP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: minecraft-website
+    namespace: web-apps
+  spec:
+    ingressClassName: traefik
+    tls:
+    - hosts:
+      - mc.jtmb.cc
+      secretName: source-acme-4
+    rules:
+    - host: mc.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: minecraft-website
+              port:
+                number: 80
+    - host: mc.jtmb.cc
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: minecraft-website
+              port:
+                number: 80

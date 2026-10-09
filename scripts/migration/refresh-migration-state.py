@@ -33,7 +33,8 @@ for path in sorted((ROOT/'k8s-rewrite/flux/migration-releases').glob('*.yaml')):
     if name == 'bortus':
         accepted = (ROOT/'evidence/bortus-live-proof.json').exists() and (ROOT/'evidence/bortus-dashboard-proof.json').exists()
     release['spec']['suspend'] = not accepted
-    if accepted: release['spec']['values'] = {'enabled': True, 'replicaCount': 1, 'migration': {'staging': True}}
+    if accepted and not release.get('spec',{}).get('values',{}).get('migration',{}).get('verified'):
+        release['spec']['values'] = {'enabled': True, 'replicaCount': 1, 'migration': {'staging': True}}
     path.write_text(yaml.safe_dump(release, sort_keys=False))
     status = 'Private checks passed; production routing pending' if accepted else ('Copied; application checks pending' if copy.exists() else 'Pending')
     for entry in register['entries']:

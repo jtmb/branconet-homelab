@@ -1,0 +1,32 @@
+{
+  "completed_at": "2026-10-09T18:23:48.626870+00:00",
+  "source": "192.168.0.4/plex-plex-1",
+  "chart": "media-stack/plex",
+  "namespace": "plex",
+  "release": "plex",
+  "source_writers_stopped": true,
+  "originals_retained": true,
+  "target_started": false,
+  "application_accepted": false,
+  "copies": [
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 68272,
+      "manifest_sha256": "51f446f6f57dafdacd9327fd38be52c7e6f04abea3910a142d8e57e5144997c8",
+      "file_bytes": 6395251740,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.4",
+      "sourcePath": "/var/plex-stack/plex/config",
+      "destinationPVC": "plex-data-0",
+      "mountPath": "/config",
+      "measuredBytes": 6526765055,
+      "allocatedGiB": 13,
+      "uid": 1000,
+      "gid": 1000,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    }
+  ],
+  "source_desired_before": null,
+  "source_restart_on_success": false
+}

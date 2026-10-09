@@ -1,0 +1,58 @@
+[
+  {
+    "chart": "media-stack/jackett",
+    "accepted": true,
+    "exit": 0
+  },
+  {
+    "chart": "media-stack/bazarr",
+    "accepted": true,
+    "exit": 0
+  },
+  {
+    "chart": "media-stack/tautulli",
+    "accepted": true,
+    "exit": 0
+  },
+  {
+    "chart": "media-stack/radarr",
+    "accepted": true,
+    "exit": 0
+  },
+  {
+    "chart": "media-stack/sonarr",
+    "accepted": true,
+    "exit": 0
+  },
+  {
+    "chart": "media-stack/ytdl",
+    "accepted": true,
+    "exit": 0
+  },
+  {
+    "chart": "apps/xteve",
+    "accepted": true,
+    "exit": 0
+  },
+  {
+    "chart": "media-stack/plex",
+    "accepted": true,
+    "exit": 0
+  },
+  {
+    "chart": "media-stack/unpackerr",
+    "accepted": true,
+    "exit": 0
+  },
+  {
+    "chart": "apps/pihole",
+    "accepted": false,
+    "exit": 1,
+    "diagnostic": "Traceback (most recent call last):\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/copy-application-data.py\", line 130, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/copy-application-data.py\", line 115, in main\n    result=json.loads(run(['exec','-i','-n',ns,podname,'--','python3','-'],COPY,timeout=1800))\n                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/copy-application-data.py\", line 74, in run\n    if result.returncode:raise RuntimeError('Application copy Kubernetes operation failed: '+arguments[0])\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Application copy Kubernetes operation failed: exec\n"
+  },
+  {
+    "chart": "apps/minecraft-exporter",
+    "accepted": true,
+    "exit": 0
+  }
+]

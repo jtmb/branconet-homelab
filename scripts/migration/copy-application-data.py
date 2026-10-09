@@ -111,6 +111,7 @@ def main():
                 podname='copy-'+name+'-'+str(index)
                 pod={'apiVersion':'v1','kind':'Pod','metadata':{'name':podname,'namespace':ns,'labels':{'branconet.io/migration-copy':name}},'spec':{'nodeName':NODES[copy['sourceHost']],'automountServiceAccountToken':False,'restartPolicy':'Never','securityContext':{'runAsUser':0,'runAsGroup':0},'containers':[{'name':'copy','image':'python:3.12-slim','command':['python3','-c','import time;time.sleep(3600)'],'volumeMounts':[{'name':'source','mountPath':'/source','readOnly':True},{'name':'target','mountPath':'/target'}],'resources':{'requests':{'cpu':'100m','memory':'128Mi'},'limits':{'memory':'512Mi'}}}],'volumes':[{'name':'source','hostPath':{'path':copy['sourcePath'],'type':'Directory'}},{'name':'target','persistentVolumeClaim':{'claimName':copy['destinationPVC']}}]}}
                 pod['spec']['terminationGracePeriodSeconds']=10
+                if name=='plex':pod['spec']['containers'][0]['resources']['limits']['memory']='2Gi'
                 pod['spec']['containers'][0]['image']='python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1'
                 run(['create','-f','-'],json.dumps(pod));pods.append(podname)
                 run(['wait','pod/'+podname,'-n',ns,'--for=condition=Ready','--timeout=300s'])

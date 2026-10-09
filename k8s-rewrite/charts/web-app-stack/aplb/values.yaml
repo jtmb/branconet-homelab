@@ -101,3 +101,35 @@ resources:
       targetPort: 80
       protocol: TCP
     type: ClusterIP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: aplb
+    namespace: web-apps
+  spec:
+    ingressClassName: traefik
+    tls:
+    - hosts:
+      - aplb.jtmb.cc
+      secretName: source-acme-2
+    rules:
+    - host: aplb.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: aplb
+              port:
+                number: 80
+    - host: aplb.jtmb.cc
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: aplb
+              port:
+                number: 80

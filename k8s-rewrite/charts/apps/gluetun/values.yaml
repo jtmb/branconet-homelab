@@ -171,8 +171,8 @@ migration:
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.5
-    sourcePath: /mnt/container-program-files/gluetun
-    destinationPVC: gluetun-data-1
+    sourcePath: /mnt/migration-gluster-read/gluetun
+    destinationPVC: gluetun-data-1-retry1
     mountPath: /tmp/gluetun
     measuredBytes: 4714
     allocatedGiB: 1
@@ -182,6 +182,8 @@ migration:
   processOwner: plex/qbittorrent
   launchSecretKeys:
   - command-0
+  retainedPreviousClaims:
+  - gluetun-data-1
 resources:
 - apiVersion: v1
   kind: PersistentVolume
@@ -228,7 +230,7 @@ resources:
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
-    name: gluetun-data-1
+    name: gluetun-data-1-retry1
     namespace: plex
     annotations:
       helm.sh/resource-policy: keep

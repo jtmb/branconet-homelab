@@ -1,0 +1,33 @@
+{
+  "completed_at": "2026-10-09T18:12:08.641103+00:00",
+  "source": "192.168.0.4/GlueTun-proton",
+  "chart": "apps/gluetun",
+  "namespace": "plex",
+  "release": "gluetun",
+  "source_writers_stopped": false,
+  "originals_retained": true,
+  "target_started": false,
+  "application_accepted": false,
+  "copies": [
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 6,
+      "manifest_sha256": "f1827c8f4f5fad710be82876aed4b0886982e6dec43fdf061c9d81f93144ca18",
+      "file_bytes": 618,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.5",
+      "sourcePath": "/mnt/container-program-files/gluetun",
+      "destinationPVC": "gluetun-data-1",
+      "mountPath": "/tmp/gluetun",
+      "measuredBytes": 4714,
+      "allocatedGiB": 1,
+      "uid": 0,
+      "gid": 0,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    }
+  ],
+  "source_desired_before": null,
+  "source_restart_on_success": false,
+  "source_restart_for_qbittorrent_rollback": true
+}

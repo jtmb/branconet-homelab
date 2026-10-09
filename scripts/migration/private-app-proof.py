@@ -3,6 +3,7 @@
 import argparse
 import datetime
 import hashlib
+from http.cookiejar import CookieJar
 import json
 import pathlib
 import shutil
@@ -18,7 +19,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[2]
 RUNTIME=pathlib.Path.home()/'.local/share/branconet-migration'
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--chart',required=True);parser.add_argument('--port',type=int,required=True);parser.add_argument('--path',default='/');parser.add_argument('--stable-body',action='store_true');parser.add_argument('--relocate',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--chart',required=True);parser.add_argument('--port',type=int,required=True);parser.add_argument('--path',default='/');parser.add_argument('--host');parser.add_argument('--stable-body',action='store_true');parser.add_argument('--relocate',action='store_true');args=parser.parse_args()
     directory=ROOT/'k8s-rewrite/charts'/args.chart
     if ROOT/'k8s-rewrite/charts' not in directory.resolve().parents:raise SystemExit('Invalid chart path')
     values=yaml.safe_load((directory/'values.yaml').read_text());name=yaml.safe_load((directory/'Chart.yaml').read_text())['name']
@@ -42,6 +43,7 @@ def main():
     def http():
         holder=socket.socket();holder.bind(('127.0.0.1',0));port=holder.getsockname()[1];holder.close()
         forward=subprocess.Popen([*kube,'port-forward','-n',ns,'service/'+name,str(port)+':'+str(args.port),'--address','127.0.0.1'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+        opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(CookieJar()))
         try:
             for _ in range(180):
                 # kubectl exits if an early connection reaches a container whose
@@ -50,7 +52,9 @@ def main():
                 if forward.poll() is not None:
                     forward=subprocess.Popen([*kube,'port-forward','-n',ns,'service/'+name,str(port)+':'+str(args.port),'--address','127.0.0.1'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
                 try:
-                    with urllib.request.urlopen('http://127.0.0.1:'+str(port)+args.path,timeout=20) as response:
+                    headers={'Host':args.host,'X-Forwarded-Proto':'https'} if args.host else {}
+                    request=urllib.request.Request('http://127.0.0.1:'+str(port)+args.path,headers=headers)
+                    with opener.open(request,timeout=20) as response:
                         body=response.read();return {'status':response.status,'bytes':len(body),'body_sha256':hashlib.sha256(body).hexdigest()}
                 except (urllib.error.URLError,TimeoutError,ConnectionError):time.sleep(1)
             raise RuntimeError('Private HTTP endpoint did not pass')
