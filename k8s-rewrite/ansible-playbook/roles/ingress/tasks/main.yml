@@ -88,6 +88,11 @@
                 args:
                   - --providers.kubernetesingress
                   - --providers.kubernetesingress.ingressclass=traefik
+      {% if migration_dashboard_enabled | default(false) | bool %}
+                  - --api.dashboard=true
+                  - --providers.file.directory=/etc/traefik/dynamic
+                  - --providers.file.watch=true
+      {% endif %}
                   - --entrypoints.web.address=:8000
                   - --entrypoints.websecure.address=:8443
                   - --ping=true
@@ -104,6 +109,14 @@
                 resources:
                   requests: {cpu: 100m, memory: 128Mi}
                   limits: {memory: 512Mi}
+      {% if migration_dashboard_enabled | default(false) | bool %}
+                volumeMounts:
+                  - {name: dashboard-config, mountPath: /etc/traefik/dynamic, readOnly: true}
+            volumes:
+              - name: dashboard-config
+                secret:
+                  secretName: traefik-dashboard-config
+      {% endif %}
       ---
       apiVersion: v1
       kind: Service

@@ -20,7 +20,7 @@ def main():
     env={**os.environ,'ANSIBLE_CONFIG':str(ansible/'ansible.cfg'),'ANSIBLE_NOCOLOR':'1'}
     command=[str(runtime/'venv/bin/ansible-playbook'),'playbooks/site.yml','--tags',args.tags]
     if args.recovery_bootstrap:
-        command+=['--extra-vars',json.dumps({'migration_network_cutover_complete':False,'migration_native_dns_enabled':False,'flux_activation_enabled':False})]
+        command+=['--extra-vars',json.dumps({'migration_network_cutover_complete':False,'migration_dashboard_enabled':False,'migration_native_dns_enabled':False,'flux_activation_enabled':False})]
     if args.syntax_check:
         raise SystemExit(subprocess.run([*command,'--syntax-check'],cwd=ansible,env=env).returncode)
     request=json.load(sys.stdin)
