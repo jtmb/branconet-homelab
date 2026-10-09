@@ -1,0 +1,143 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: source-vault
+  namespace: traefik
+spec:
+  ports:
+  - name: http
+    port: 8200
+    targetPort: 8200
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: source-vault
+  namespace: traefik
+  labels:
+    kubernetes.io/service-name: source-vault
+addressType: IPv4
+ports:
+- name: http
+  protocol: TCP
+  port: 8200
+endpoints:
+- addresses:
+  - 192.168.0.4
+  conditions:
+    ready: true
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: source-vault-http
+  namespace: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: vault-cicd.branconet.lan
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: source-vault
+            port:
+              number: 8200
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: source-vault-https
+  namespace: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: 'true'
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: vault-cicd.branconet.lan
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: source-vault
+            port:
+              number: 8200
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: source-portainer
+  namespace: traefik
+spec:
+  ports:
+  - name: http
+    port: 9000
+    targetPort: 9000
+---
+apiVersion: discovery.k8s.io/v1
+kind: EndpointSlice
+metadata:
+  name: source-portainer
+  namespace: traefik
+  labels:
+    kubernetes.io/service-name: source-portainer
+addressType: IPv4
+ports:
+- name: http
+  protocol: TCP
+  port: 9000
+endpoints:
+- addresses:
+  - 192.168.0.4
+  conditions:
+    ready: true
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: source-portainer-http
+  namespace: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: portainer.branconet.lan
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: source-portainer
+            port:
+              number: 9000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: source-portainer-https
+  namespace: traefik
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: 'true'
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: portainer.branconet.lan
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: source-portainer
+            port:
+              number: 9000

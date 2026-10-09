@@ -148,8 +148,10 @@ resources:
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
-    name: pihole
+    name: pihole-http
     namespace: pihole
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
   spec:
     ingressClassName: traefik
     rules:
@@ -162,4 +164,25 @@ resources:
             service:
               name: pihole
               port:
-                number: 53
+                number: 80
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: pihole-https
+    namespace: pihole
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: pi.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: pihole
+              port:
+                number: 80

@@ -82,8 +82,10 @@ resources:
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
-    name: ruckus-bot
+    name: ruckus-bot-http
     namespace: ruckus
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
   spec:
     ingressClassName: traefik
     rules:
@@ -96,4 +98,25 @@ resources:
             service:
               name: ruckus-bot
               port:
-                number: 3003
+                number: 8080
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: ruckus-bot-https
+    namespace: ruckus
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: ruckus.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: ruckus-bot
+              port:
+                number: 8080

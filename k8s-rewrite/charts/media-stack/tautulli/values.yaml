@@ -110,8 +110,31 @@ resources:
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
-    name: tautulli
+    name: tautulli-http
     namespace: plex
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: tautulli.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: tautulli
+              port:
+                number: 8181
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: tautulli-https
+    namespace: plex
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
   spec:
     ingressClassName: traefik
     rules:

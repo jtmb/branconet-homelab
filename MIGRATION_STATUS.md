@@ -2,7 +2,11 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; execution target before 20:30 UTC. Cluster migration is owned by this chat. BORTUS application development is owned by chat 01a12114-28d9-7623-8aed-9947e08d7065, which delivered app commit 1438b278cdf21e98429b4836c018636b01b982a3 in its isolated worktree. Live deployment/acceptance belongs here.
 
-## Current progress
+## Current state at 19:07 UTC
+
+Three nodes are Ready. CI validated revision 40ef692 and Flux adopted 29 private-tested releases; six application acceptances remain. All four websites passed trusted HTTPS on temporary port 30443 through all three nodes. Plex retains the master identity and library counts (154 movies, 97 shows, six movies in the second movie library); a real 1 MiB media range read and a worker relocation passed on the same claim. Client playback remains a separate check. Native Pi-hole now answers public and LAN DNS over UDP/TCP, including through CoreDNS. All three original Traefik log directories have encrypted, authenticated operator/NAS backups. Application routes are prepared; standard 80/443 and DNS 53 transfer remains pending. Gluster, source Vault/Consul and originals remain retained. Original Redis-state acceptance remains unresolved.
+
+## Execution journal (historical observations)
 
 - Approved plan saved with architecture graphs, acceptance contract, migration sequence and report template.
 - Migration goal active; source checked out from the inspected k8s-rewrite baseline on codex/kubernetes-migration.
@@ -66,14 +70,14 @@ Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; execution 
 | Criterion | Status | Evidence / remaining work |
 |---|---|---|
 | AC1 Three-node Kubernetes | Passed | Three Ready nodes, pod DNS and cross-worker ping passed; independent runtime preserves source Docker |
-| AC2 One CI/CD pipeline | Passed initial adoption | CI 37971731033 passed; validated b43394d fetched, Kustomization Ready, eight tested releases adopted; later promotions ongoing |
+| AC2 One CI/CD pipeline | Passed adoption | CI validated 40ef692, Flux source and Kustomization Ready; 29 private-tested application releases adopted |
 | AC3 Complete service coverage | Prepared | SERVICE_REGISTER.md and sanitized detailed register account for 42 source/repository entries |
 | AC4 Individual charts/values | In progress | All 35 packages implemented and packaging checks passed; live configuration/application checks remain |
 | AC5 Longhorn persistence/recovery | In progress | Encrypted two-replica device, cross-worker persistence and snapshot restoration passed; per-app recovery remains |
-| AC6 SMB preservation/integration | Pending | Existing share/mounts verified; demonstrate target wiring |
+| AC6 SMB preservation/integration | Passed Plex integration | Existing share paths preserved; real Plex media range reads match before and after worker relocation |
 | AC7 Native Secrets/BORTUS | Private checks passed | Native readback/encryption, all aliases, auth/CRUD/conflicts/restart, dashboard and live API outage/recovery passed; public HTTPS pending |
 | AC8 Data preservation | In progress | Seven required archives authenticated; actual restore/copy checks and original Redis-state acceptance pending |
-| AC9 One Plex service | Prepared | All three configs/libraries inspected; consolidate after backup |
+| AC9 One Plex service | In progress | One active native Plex; all old instances stopped and configs retained; master identity/library counts, real media read and relocation passed; client playback pending |
 | AC10 Reproducibility/docs | In progress | Plan and report saved; update implementation alongside changes |
 | AC11 Retirement approval | Pending | Requires completed evidence and user confirmation |
 

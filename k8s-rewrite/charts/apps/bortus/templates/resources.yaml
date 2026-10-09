@@ -3,13 +3,15 @@
 {{- fail "Migration storage, secrets and cutover checks must be verified before activation" }}
 {{- end }}
 {{- range .Values.resources }}
-{{- if and $.Values.migration.staging (or (eq .kind "Ingress") (eq .kind "IngressRoute") (and (eq .kind "Service") (hasKey .spec "type") (ne .spec.type "ClusterIP"))) }}
+{{- if and $.Values.migration.staging (eq .kind "Service") (hasKey .spec "type") (ne .spec.type "ClusterIP") }}
 {{- fail "Unaccepted BORTUS staging must remain private to the cluster" }}
 {{- end }}
+{{- if not (and $.Values.migration.staging (not $.Values.migration.routingReviewed) (or (eq .kind "Ingress") (eq .kind "IngressRoute"))) }}
 {{- if or (eq .kind "Deployment") (eq .kind "StatefulSet") }}
 {{- $_ := set .spec "replicas" (int $.Values.replicaCount) }}
 {{- end }}
 ---
 {{ tpl (toYaml .) $ }}
+{{- end }}
 {{- end }}
 {{- end }}

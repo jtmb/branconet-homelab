@@ -116,8 +116,31 @@ resources:
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
-    name: jackett
+    name: jackett-http
     namespace: plex
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: jackett.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: jackett
+              port:
+                number: 9117
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: jackett-https
+    namespace: plex
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
   spec:
     ingressClassName: traefik
     rules:

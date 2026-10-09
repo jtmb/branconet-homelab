@@ -2256,3 +2256,44 @@ resources:
     kind: ClusterRole
     name: bortus-dashboard-view
   subjects: *id002
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: bortus-http
+    namespace: bortus
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: bortus.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: bortus
+              port:
+                number: 4000
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: bortus-https
+    namespace: bortus
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: bortus.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: bortus
+              port:
+                number: 4000

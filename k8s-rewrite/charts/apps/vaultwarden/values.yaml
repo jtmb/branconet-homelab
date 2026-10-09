@@ -104,8 +104,31 @@ resources:
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
-    name: vaultwarden
+    name: vaultwarden-http
     namespace: vaultwarden
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: vault.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: vaultwarden
+              port:
+                number: 80
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: vaultwarden-https
+    namespace: vaultwarden
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
   spec:
     ingressClassName: traefik
     rules:

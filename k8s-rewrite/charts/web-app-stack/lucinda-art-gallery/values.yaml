@@ -104,17 +104,12 @@ resources:
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
-    name: lucinda-art-gallery
+    name: lucinda-art-gallery-http
     namespace: web-apps
     annotations:
-      traefik.ingress.kubernetes.io/router.tls: 'true'
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
   spec:
     ingressClassName: traefik
-    tls:
-    - hosts:
-      - lucinda.jtmb.cc
-      secretName: source-acme-3
     rules:
     - host: lucinda.jtmb.cc
       http:
@@ -136,3 +131,38 @@ resources:
               name: lucinda-art-gallery
               port:
                 number: 80
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: lucinda-art-gallery-https
+    namespace: web-apps
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: lucinda.jtmb.cc
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: lucinda-art-gallery
+              port:
+                number: 80
+    - host: lucinda.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: lucinda-art-gallery
+              port:
+                number: 80
+    tls:
+    - hosts:
+      - lucinda.jtmb.cc
+      secretName: source-acme-3

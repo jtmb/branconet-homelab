@@ -128,3 +128,68 @@ resources:
       targetPort: 9000
       protocol: TCP
     type: ClusterIP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: mealie-http
+    namespace: mealie
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: mealie.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: mealie
+              port:
+                number: 9000
+    - host: mealie.jtmb.cc
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: mealie
+              port:
+                number: 9000
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: mealie-https
+    namespace: mealie
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: mealie.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: mealie
+              port:
+                number: 9000
+    - host: mealie.jtmb.cc
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: mealie
+              port:
+                number: 9000
+    tls:
+    - hosts:
+      - mealie.jtmb.cc
+      secretName: source-acme-0

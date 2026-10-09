@@ -189,8 +189,31 @@ resources:
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
-    name: ytdl
+    name: ytdl-http
     namespace: plex
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: ytdl.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: ytdl
+              port:
+                number: 8081
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: ytdl-https
+    namespace: plex
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
   spec:
     ingressClassName: traefik
     rules:

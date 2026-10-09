@@ -214,8 +214,31 @@ resources:
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
-    name: sonarr
+    name: sonarr-http
     namespace: plex
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: sonarr.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: sonarr
+              port:
+                number: 8989
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: sonarr-https
+    namespace: plex
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
   spec:
     ingressClassName: traefik
     rules:

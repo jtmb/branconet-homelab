@@ -104,17 +104,12 @@ resources:
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
-    name: santos-web
+    name: santos-web-http
     namespace: web-apps
     annotations:
-      traefik.ingress.kubernetes.io/router.tls: 'true'
-      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.entrypoints: web
   spec:
     ingressClassName: traefik
-    tls:
-    - hosts:
-      - santos.jtmb.cc
-      secretName: source-acme-1
     rules:
     - host: santos.branconet.lan
       http:
@@ -136,3 +131,38 @@ resources:
               name: santos-web
               port:
                 number: 80
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: santos-web-https
+    namespace: web-apps
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: santos.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: santos-web
+              port:
+                number: 80
+    - host: santos.jtmb.cc
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: santos-web
+              port:
+                number: 80
+    tls:
+    - hosts:
+      - santos.jtmb.cc
+      secretName: source-acme-1
