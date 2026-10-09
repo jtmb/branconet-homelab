@@ -2042,6 +2042,8 @@
       "functional_checks": {
         "evidence": [
           "evidence/private-sonarr.json",
+          "evidence/sonarr-archive-import-proof.json",
+          "evidence/sonarr-single-archive-stage.json",
           "evidence/media-download-client-proof.json",
           "evidence/media-import-prerequisites.json",
           "evidence/media-indexer-proof.json",
@@ -2055,7 +2057,7 @@
           "source_originals_retained": true
         },
         "limitations": [
-          "API/download-client checks passed; completed real download/import untested."
+          "Automatic Sonarr episode import passed with exact torrent history, publisher/download/library/original-SMB SHA and size equality, and cleanup restoring 153 series, 5298 episode-file metadata records and 203 original torrent IDs. Private loopback seed only; eight scoped seed retries; indexer/external-peer transfers not tested."
         ]
       },
       "restart_relocation": {
@@ -2431,7 +2433,9 @@
       "functional_checks": {
         "evidence": [
           "evidence/private-unpackerr.json",
-          "evidence/unpackerr-extraction-proof.json"
+          "evidence/unpackerr-extraction-proof.json",
+          "evidence/sonarr-archive-import-proof.json",
+          "evidence/sonarr-single-archive-stage.json"
         ],
         "recorded_boolean_checks": {
           "configured_api_credentials_and_queues_accessible": true,
@@ -2440,7 +2444,7 @@
           "actual_download_extraction_tested": false
         },
         "limitations": [
-          "Owned SMB ZIP fixture extracted successfully; archive-download/extraction/Arr-import chain untested."
+          "Production archive extraction and automatic Sonarr import passed. Initial single-ZIP fixture layout blocked import; retained separately. A duplicate owned attribution file was protected from overwrite; episode bytes match. Production configuration unchanged."
         ]
       },
       "restart_relocation": {
@@ -5654,7 +5658,8 @@
           "evidence/media-download-client-proof.json",
           "evidence/final-vpn-egress.json",
           "evidence/media-download-import-proof.json",
-          "evidence/media-fixture-webseed-proof.json"
+          "evidence/media-fixture-webseed-proof.json",
+          "evidence/sonarr-archive-import-proof.json"
         ],
         "recorded_boolean_checks": {
           "restart_http_passed": true,
@@ -7254,7 +7259,7 @@
     }
   ],
   "updated_at": "2026-10-09T20:14:10.968676+00:00",
-  "acceptance_refreshed_at": "2026-10-09T23:10:12.918588+00:00",
+  "acceptance_refreshed_at": "2026-10-09T23:49:19.514163+00:00",
   "full_data_preservation_accepted": false,
   "source_retirement_confirmed": false
 }

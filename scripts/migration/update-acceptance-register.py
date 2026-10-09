@@ -24,11 +24,11 @@ routes={o['host']:o for o in read('final-routing-proof.json')['checks']}
 ports=read('application-port-cutover.json')
 extra={
  'plex':['plex-library-proof.json','plex-relocation-proof.json','plex-playback-proof.json'],
- 'qbittorrent':['qbittorrent-api-proof.json','qbittorrent-credential-review.json','media-download-client-proof.json','final-vpn-egress.json','media-download-import-proof.json','media-fixture-webseed-proof.json'],
+ 'qbittorrent':['qbittorrent-api-proof.json','qbittorrent-credential-review.json','media-download-client-proof.json','final-vpn-egress.json','media-download-import-proof.json','media-fixture-webseed-proof.json','sonarr-archive-import-proof.json'],
  'gluetun':['vpn-proof.json','final-vpn-egress.json'],
  'qbit-monitor':['private-qbit-monitor.json','monitor-state-backup.json'],
- 'unpackerr':['unpackerr-extraction-proof.json'],
- 'sonarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json'], 'radarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json','media-download-import-proof.json','media-fixture-webseed-proof.json'],
+ 'unpackerr':['unpackerr-extraction-proof.json','sonarr-archive-import-proof.json','sonarr-single-archive-stage.json'],
+ 'sonarr':['sonarr-archive-import-proof.json','sonarr-single-archive-stage.json','media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json'], 'radarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json','media-download-import-proof.json','media-fixture-webseed-proof.json'],
  'ets2':['ets2-query-proof.json'], 'xteve':['xteve-tuner-proof.json','xteve-ssdp-proof.json','xteve-gateway-readiness-recovery.json'],
  'pihole':['native-dns-proof.json','native-lan-forwarding.json'],
  'pihole-exporter':['pihole-exporter-integration.json'],
@@ -51,6 +51,13 @@ if media_path.exists():
     media=read('media-download-import-proof.json')
     if media.get('download_import_data_passed') and media.get('cleanup',{}).get('passed'):
         limitations['radarr'][0]='Real publisher-webseed download and automatic Radarr import passed, with three-way SHA/size equality and owned fixture cleanup. The webseed required eight scoped re-add retries; indexer search and external BitTorrent peer transfers were not tested.'
+
+archive_path=ROOT/'evidence/sonarr-archive-import-proof.json'
+if archive_path.exists():
+    archive=read('sonarr-archive-import-proof.json')
+    if archive.get('chain_passed') and archive.get('cleanup',{}).get('passed') and archive.get('seed_cleanup',{}).get('owned_seed_process_stopped'):
+        limitations['sonarr']=['Automatic Sonarr episode import passed with exact torrent history, publisher/download/library/original-SMB SHA and size equality, and cleanup restoring 153 series, 5298 episode-file metadata records and 203 original torrent IDs. Private loopback seed only; eight scoped seed retries; indexer/external-peer transfers not tested.']
+        limitations['unpackerr']=['Production archive extraction and automatic Sonarr import passed. Initial single-ZIP fixture layout blocked import; retained separately. A duplicate owned attribution file was protected from overwrite; episode bytes match. Production configuration unchanged.']
 
 def secret_refs(value,result):
     if isinstance(value,dict):
