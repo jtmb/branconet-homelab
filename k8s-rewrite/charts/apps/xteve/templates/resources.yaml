@@ -11,7 +11,7 @@
 {{- fail "Unaccepted staging must use ClusterIP Services" }}
 {{- end }}
 {{- if or (eq .kind "Deployment") (eq .kind "StatefulSet") }}
-{{- if and $.Values.migration.staging (gt (int $.Values.replicaCount) 0) .spec.template.spec.hostNetwork }}
+{{- if and (gt (int $.Values.replicaCount) 0) .spec.template.spec.hostNetwork (or (not $.Values.migration.routingReviewed) (not $.Values.migration.hostNetworkingReviewed)) }}
 {{- fail "Host networking requires source-port exclusivity and a separate cutover review" }}
 {{- end }}
 {{- $_ := set .spec "replicas" (int $.Values.replicaCount) }}

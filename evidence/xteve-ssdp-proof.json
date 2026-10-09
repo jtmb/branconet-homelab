@@ -94,5 +94,28 @@
     }
   },
   "after": null,
-  "lan_discovery_passed": false
+  "lan_discovery_passed": false,
+  "host_network_review_guard_checks": [
+    {
+      "case": "lint",
+      "passed": true
+    },
+    {
+      "case": "unreviewed_blocked",
+      "passed": true
+    },
+    {
+      "case": "routing_unreviewed_blocked",
+      "passed": true
+    },
+    {
+      "case": "reviewed_rendered",
+      "passed": true
+    }
+  ],
+  "host_ports_checked_free_on": [
+    "192.168.0.4",
+    "192.168.0.5",
+    "192.168.0.6"
+  ]
 }
