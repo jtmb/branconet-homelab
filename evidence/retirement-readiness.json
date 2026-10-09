@@ -1,0 +1,104 @@
+{
+  "captured_at": "2026-10-09T21:06:51.572472+00:00",
+  "nodes": {
+    "192.168.0.4": {
+      "gluster_mounts": [
+        {
+          "target": "/mnt/container-program-files",
+          "source": "localhost:/staging-gfs",
+          "fstype": "fuse.glusterfs"
+        }
+      ],
+      "brick_directory_retained": true,
+      "running_source_containers": [
+        {
+          "name": "portainer_portainer.1.z89d0oso5d7w65o3o2mtj0uy3",
+          "service": "portainer_portainer",
+          "mounted_sources": [
+            "/mnt/container-program-files/portainer"
+          ]
+        },
+        {
+          "name": "portainer_agent.x1zbiutf9lb60jg8ndtdgfdym.mqqaqoxl1ucwkxc8faqn4kmnr",
+          "service": "portainer_agent",
+          "mounted_sources": [
+            "/var/run/docker.sock",
+            "/var/lib/docker/volumes"
+          ]
+        }
+      ]
+    },
+    "192.168.0.5": {
+      "gluster_mounts": [
+        {
+          "target": "/mnt/container-program-files",
+          "source": "localhost:/staging-gfs",
+          "fstype": "fuse.glusterfs"
+        },
+        {
+          "target": "/mnt/migration-gluster-read",
+          "source": "192.168.0.5:/staging-gfs",
+          "fstype": "fuse.glusterfs"
+        }
+      ],
+      "brick_directory_retained": true,
+      "running_source_containers": [
+        {
+          "name": "portainer_agent.0r8rrzy69qoy4roarqo8166at.pc6d7wyrh8lkkuronmzq78gu3",
+          "service": "portainer_agent",
+          "mounted_sources": [
+            "/var/run/docker.sock",
+            "/var/lib/docker/volumes"
+          ]
+        }
+      ]
+    },
+    "192.168.0.6": {
+      "gluster_mounts": [
+        {
+          "target": "/mnt/container-program-files",
+          "source": "localhost:/staging-gfs",
+          "fstype": "fuse.glusterfs"
+        }
+      ],
+      "brick_directory_retained": true,
+      "running_source_containers": [
+        {
+          "name": "cicd_server-bootstrap.1.psn4yncrzayfcrwhefviyz54g",
+          "service": "cicd_server-bootstrap",
+          "mounted_sources": [
+            "/mnt/container-program-files/server-bootstrap"
+          ]
+        },
+        {
+          "name": "cicd_vault.1.swvcokgt72bs55u6gi8kt4m4a",
+          "service": "cicd_vault",
+          "mounted_sources": [
+            "/var/lib/docker/volumes/f1af38c159bcf7ec1662d95beb8c99c7a1af225304375fd2511adb676bb16808/_data",
+            "/var/lib/docker/volumes/8a1d56618e21905d6b721df0f25a5e21acf2a18ebb759b77d2ea71bb537206a8/_data"
+          ]
+        },
+        {
+          "name": "portainer_agent.n1p8vxpydii4t62dv2boasj38.ffxjmxrhdoomhmg5w0nhyrc2c",
+          "service": "portainer_agent",
+          "mounted_sources": [
+            "/var/run/docker.sock",
+            "/var/lib/docker/volumes"
+          ]
+        }
+      ]
+    }
+  },
+  "discovered_gluster_host_path_prefixes": [
+    "/gluster/volumes",
+    "/mnt/container-program-files",
+    "/mnt/migration-gluster-read"
+  ],
+  "native_gluster_persistent_volumes": [],
+  "active_native_pod_gluster_host_paths": [],
+  "user_retirement_confirmation_received": false,
+  "historical_redis_exception_resolved": false,
+  "authenticated_dashboard_proof_passed": false,
+  "retirement_ready": false,
+  "source_actions_performed": false
+}

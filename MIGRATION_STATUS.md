@@ -14,6 +14,8 @@ Thirty-one migrated application volumes have completed cold NAS backups. A separ
 
 The dashboard rollout exposed the master's exhausted 128-instance inotify quota; its process file-descriptor limit was already 1,048,576. A scoped Ansible watcher-limits stage persisted 1,024 inotify instances on all three servers, and both Traefik replicas restarted successfully with the file provider watching native configuration. CI 37989648868 and Flux applied image-pinned revision 0d6c956; the subsequent 30-host HTTPS sweep still responded. Sonarr /media/tv and Radarr /media/movies report accessible root folders with free space and enabled qBittorrent clients. Recorded health warnings are UpdateCheck (both apps) and IndexerLongTermStatusCheck (Radarr); no configuration/library changes were made, and no full download/import claim is made.
 
+The 21:06 source-consumer audit records six remaining Docker containers belonging only to Vault/Consul and Portainer/agents. It checks actual Gluster mount targets: /mnt/container-program-files on all three nodes and the separate /mnt/migration-gluster-read client on worker2. No active native Pod hostPath or native PV directly uses those Gluster data paths/drivers; all original brick directories remain present. Source services still consume retained data and retirement_ready=false. The operations guide records the confirmation-gated stop/consumer-recheck/unmount sequence; no source shutdown was performed.
+
 qBittorrent authenticates with recovered, hash-matched credentials and retains 203 torrents. Sonarr and Radarr download-client tests pass. The monitor polls the real queue, applies the negotiated VPN port and retains its Longhorn state across restart. Discord delivery, an ETS2 game-client join and xTeve SSDP discovery remain untested. Unpackerr extracted an owned ZIP through the existing SMB CSI claim with byte-hash equality using the exact deployed image; real Arr APIs were separately verified, while a completed real download/import remains untested. Legacy xTeve TCP 1901 has no observed listener; the other 69 legacy TCP checks passed after routing settled. xTeve tuner discovery/29-channel lineup/guide XML/M3U checks passed. Source retirement and the migration goal remain open.
 
 ## Execution journal (historical observations)
@@ -105,7 +107,7 @@ qBittorrent authenticates with recovered, hash-matched credentials and retains 2
 | AC8 Data preservation | Historical exception unresolved | Source archives/cold copies, actual etcd and NAS BORTUS restores passed; original removed Redis writable state remains unrecovered/unaccepted |
 | AC9 One Plex service | Passed | One active native Plex; all old instances stopped and configs retained; master identity/library counts, real media read, relocation and actual FFmpeg client playback passed |
 | AC10 Reproducibility/docs | Updated to verified runtime | Plan, operations guide and 42-entry evidence register maintained; 8cd2cfd CI/Flux convergence verified; recovery keys/images/procedures recorded; complete three-host disaster rebuild not exercised |
-| AC11 Retirement approval | Pending | Requires completed evidence and user confirmation |
+| AC11 Retirement approval | Pending | Actual remaining consumers inventoried in evidence/retirement-readiness.json; six retained Docker containers; requires completed evidence, a fresh no-consumer check and user confirmation |
 
 ## Service evidence template
 

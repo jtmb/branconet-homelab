@@ -20,6 +20,24 @@ qBittorrent retains its original password hash and 203-entry queue. The correct 
 
 For rollback after a destination receives writes, first stop that destination writer and take a recoverable checkpoint. Compare/synchronize the destination changes into a reviewed recovery copy before restarting a retained source. Restoring old Docker port specifications alone does not restore new application writes. Keep source Gluster bricks, cold archives and partial migration claims until the acceptance ledger is complete and final retirement is confirmed by the user.
 
+## Gated source retirement
+
+The read-only evidence/retirement-readiness.json audit inventories the actual Gluster mount targets and remaining source containers. Six Docker containers remain across four services: cicd_vault, cicd_server-bootstrap, portainer_portainer and the three portainer_agent tasks. Portainer and Consul still mount original Gluster data. No active native Pod directly mounts the discovered Gluster paths and no native PV uses those Gluster paths/drivers. All three /gluster/volumes directories remain present. This is a consumer inventory, not approval or proof that every application scenario has passed.
+
+```mermaid
+flowchart TD
+    Evidence["Finish data/application acceptance<br/>Resolve historical Redis exception and dashboard login proof"]
+    Approval["User confirms final source retirement"]
+    Checkpoint["Verify current native recovery checkpoints<br/>Keep original encrypted archives and keys"]
+    Sources["Stop retained Vault, Consul, Portainer and agents<br/>Preserve their specifications and data"]
+    Consumers["Recheck actual clients, Pods, PVs and open files<br/>Require no remaining source data consumers"]
+    Unmount["Unmount Gluster clients normally<br/>Stop if busy; keep SMB/NFS media mounts"]
+    Stop["Stop Gluster volume/services<br/>Retain all brick directories and archives"]
+    Evidence --> Approval --> Checkpoint --> Sources --> Consumers --> Unmount --> Stop
+```
+
+Re-run the privileged consumer/open-file audit after stopping the approved source services; a prior inventory cannot authorize shutdown of a newly discovered consumer. Do not force or lazily unmount busy clients, delete bricks/claims/backups, or disable NAS media exports. The separate read-only /mnt/migration-gluster-read client on worker2 and /mnt/container-program-files clients on all three nodes must be considered alongside source containers. Root/container filesystem visibility alone does not establish active data consumption; inspect actual holders before shutdown. Restore the original Vault data with its original user-held unseal material if rollback requires that encrypted source store. The authoritative replacement secrets recover from the tested native etcd snapshot using the retained Kubernetes encryption keys.
+
 ## Operator tools and metadata
 
 Run migration tooling from WSL with the existing SSH identity. `scripts/migration/install-tools.py` installs checksum-verified age, Flux, Helm and kubectl into `~/.local/share/branconet-migration/bin`, leaving other installations intact. It records upstream URLs/checksums in an operator-local download manifest.
