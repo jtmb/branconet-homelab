@@ -28,7 +28,7 @@ extra={
  'gluetun':['vpn-proof.json','final-vpn-egress.json'],
  'qbit-monitor':['private-qbit-monitor.json','monitor-state-backup.json'],
  'unpackerr':['unpackerr-extraction-proof.json'],
- 'sonarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json'], 'radarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json'],
+ 'sonarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json'], 'radarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json'],
  'ets2':['ets2-query-proof.json'], 'xteve':['xteve-tuner-proof.json'],
  'pihole':['native-dns-proof.json','native-lan-forwarding.json'],
  'pihole-exporter':['pihole-exporter-integration.json'],
