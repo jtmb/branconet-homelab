@@ -52,8 +52,6 @@ resources:
           app: xteve
         annotations: {}
       spec:
-        hostNetwork: true
-        dnsPolicy: ClusterFirstWithHostNet
         containers:
         - name: xteve
           image: '{{ .Values.image }}'
@@ -61,9 +59,6 @@ resources:
           - secretRef:
               name: '{{ .Values.environmentSecret }}'
           ports:
-          - name: p1900-udp
-            containerPort: 1900
-            protocol: UDP
           - name: p1900-tcp
             containerPort: 1900
             protocol: TCP
@@ -217,3 +212,81 @@ resources:
       port: 34400
       targetPort: 34400
       protocol: TCP
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: xteve-ssdp-gateway
+    namespace: plex
+  binaryData:
+    ssdp.py: '{{ .Files.Get "files/ssdp.py" | b64enc }}'
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: xteve-ssdp
+    namespace: plex
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: xteve-ssdp
+    template:
+      metadata:
+        labels:
+          app: xteve-ssdp
+      spec:
+        hostNetwork: true
+        dnsPolicy: ClusterFirstWithHostNet
+        containers:
+        - name: ssdp
+          image: '{{ .Values.ssdpGatewayImage }}'
+          command:
+          - python3
+          - /gateway/ssdp.py
+          env:
+          - name: HOST_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: TUNER_LOCATION
+            value: http://192.168.0.4:34400/device.xml
+          - name: LAN_CIDR
+            value: 192.168.0.0/24
+          ports:
+          - name: ssdp
+            containerPort: 1900
+            hostPort: 1900
+            protocol: UDP
+          readinessProbe:
+            exec:
+              command:
+              - python3
+              - /gateway/ssdp.py
+              - --check
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            timeoutSeconds: 6
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 64Mi
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+              - ALL
+          volumeMounts:
+          - name: gateway
+            mountPath: /gateway
+            readOnly: true
+        volumes:
+        - name: gateway
+          configMap:
+            name: xteve-ssdp-gateway
+ssdpGatewayImage: docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
