@@ -1,0 +1,70 @@
+enabled: false
+replicaCount: 0
+image: ghcr.io/flaresolverr/flaresolverr:latest@sha256:7962759d99d7e125e108e0f5e7f3cdbcd36161776d058d1d9b7153b92ef1af9e
+environmentSecret: flaresolverr-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - media_flaresolverr
+  requiredEnvironmentKeys:
+  - GPG_KEY
+  - LOG_LEVEL
+  - PATH
+  - PYTHON_SHA256
+  - PYTHON_VERSION
+  - TZ
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies: []
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: flaresolverr
+    namespace: plex
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: flaresolverr
+    template:
+      metadata:
+        labels:
+          app: flaresolverr
+        annotations: {}
+      spec:
+        containers:
+        - name: flaresolverr
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p8191-tcp
+            containerPort: 8191
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /config
+            readOnly: false
+        volumes:
+        - name: data-0
+          emptyDir: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: flaresolverr
+    namespace: plex
+  spec:
+    selector:
+      app: flaresolverr
+    ports:
+    - name: p8191-tcp
+      port: 8191
+      targetPort: 8191
+      protocol: TCP

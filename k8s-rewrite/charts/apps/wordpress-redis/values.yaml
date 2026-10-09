@@ -1,0 +1,58 @@
+enabled: false
+replicaCount: 0
+image: redis:alpine@sha256:2afba59292f25f5d1af200496db41bea2c6c816b059f57ae74703a50a03a27d0
+environmentSecret: wordpress-redis-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - wordpress_redis-db
+  requiredEnvironmentKeys:
+  - PATH
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies: []
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: wordpress-redis
+    namespace: wordpress
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: wordpress-redis
+    template:
+      metadata:
+        labels:
+          app: wordpress-redis
+        annotations: {}
+      spec:
+        containers:
+        - name: wordpress-redis
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p6379-tcp
+            containerPort: 6379
+            protocol: TCP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: wordpress-redis
+    namespace: wordpress
+  spec:
+    selector:
+      app: wordpress-redis
+    ports:
+    - name: p6379-tcp
+      port: 6379
+      targetPort: 6379
+      protocol: TCP

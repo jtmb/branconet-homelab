@@ -1,183 +1,152 @@
-# Bootstrap Role Tasks
-# Installs system packages and configures containerd runtime for Kubernetes
-
 ---
-# =============================================================================
-# TASK 1: Clean up any malformed docker.list from previous failed runs
-# =============================================================================
-- name: Remove malformed docker.list from previous failed runs
-  ansible.builtin.file:
-    path: /etc/apt/sources.list.d/docker.list
-    state: absent
+- name: Check the existing Gluster data directory is retained
+  ansible.builtin.stat:
+    path: /gluster/volumes
+  register: gluster_brick
 
-- name: Remove stale Docker GPG keyring from previous runs
-  ansible.builtin.file:
-    path: /usr/share/keyrings/docker-archive-keyring.gpg
-    state: absent
+- name: Require the discovered platform and retained data
+  ansible.builtin.assert:
+    that:
+      - ansible_facts['architecture'] == 'x86_64'
+      - ansible_facts['distribution'] == 'Ubuntu'
+      - gluster_brick.stat.isdir | default(false)
+    fail_msg: Platform or Gluster source changed; stop and reinventory.
 
-# =============================================================================
-# TASK 2: Update apt package cache
-# =============================================================================
-- name: Update apt package cache
+- name: Install Kubernetes and Longhorn prerequisites without replacing Docker
   ansible.builtin.apt:
+    name: [ca-certificates, curl, conntrack, socat, iptables, ipset, open-iscsi, nfs-common, cryptsetup, jq, cifs-utils]
+    state: present
     update_cache: true
     cache_valid_time: 3600
 
-# =============================================================================
-# TASK 2: Install required system packages
-# =============================================================================
-- name: Install prerequisite packages
-  ansible.builtin.apt:
-    name:
-      - apt-transport-https
-      - ca-certificates
-      - curl
-      - gnupg
-      - lsb-release
-      - software-properties-common
-      - wget
-      - git
-      - conntrack
-      - socat
-    state: present
-
-# =============================================================================
-# TASK 3: Add Docker GPG key and repository
-# =============================================================================
-- name: Add Docker GPG key (download and dearmor)
-  ansible.builtin.shell:
-    cmd: |
-      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor --batch --yes -o /usr/share/keyrings/docker-archive-keyring.gpg
-    creates: /usr/share/keyrings/docker-archive-keyring.gpg
-
-- name: Add Docker stable repository
-  ansible.builtin.apt_repository:
-    repo: "deb [arch={{ 'arm64' if ansible_architecture == 'aarch64' else 'amd64' }} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
-    state: present
-    filename: docker
-    update_cache: true
-
-# =============================================================================
-# TASK 4: Configure DNS (MUST run before containerd — containerd inherits /etc/resolv.conf)
-#   - systemd-resolved stub at 127.0.0.53 is unreliable for container image pulls
-#   - Disable the stub (DNSStubListener=no) so /etc/resolv.conf lists REAL DNS servers
-#   - Symlink to the non-stub variant: /run/systemd/resolve/resolv.conf
-#   - Route .local domains to DNS (not mDNS) via resolved.conf Domains=~local
-# =============================================================================
-- name: Write systemd-resolved config with real DNS servers and stub disabled
-  ansible.builtin.copy:
-    content: |
-      [Resolve]
-      DNS={{ dns_servers }}
-      Domains=~local
-      DNSStubListener=no
-      Cache=yes
-    dest: /etc/systemd/resolved.conf
-    mode: '0644'
-
-- name: Symlink resolv.conf to non-stub variant (real DNS, no 127.0.0.53 middleman)
+- name: Create independent runtime and CNI directories
   ansible.builtin.file:
-    src: /run/systemd/resolve/resolv.conf
-    dest: /etc/resolv.conf
-    state: link
-    force: true
-
-- name: Restart systemd-resolved to pick up non-stub config
-  ansible.builtin.service:
-    name: systemd-resolved
-    state: restarted
-
-- name: Verify DNS resolution works before proceeding
-  ansible.builtin.command: nslookup registry-1.docker.io
-  register: dns_check
-  changed_when: false
-  retries: 5
-  delay: 3
-  until: dns_check.rc == 0
-
-# =============================================================================
-# TASK 5: Install containerd runtime
-# =============================================================================
-- name: Install containerd runtime
-  ansible.builtin.apt:
-    name: containerd.io
-    state: present
-
-# =============================================================================
-# TASK 6: Configure containerd for cgroup v2 support
-# =============================================================================
-- name: Create containerd config directory
-  ansible.builtin.file:
-    path: /etc/containerd
+    path: "{{ item }}"
     state: directory
     mode: '0755'
+  loop: [/opt/containerd-k8s, /opt/containerd-k8s/bin, /opt/cni/bin, /etc/containerd-k8s, /etc/cni/net.d, /var/lib/containerd-k8s, /var/cache/branconet-migration]
 
-- name: Generate containerd configuration with cgroup driver support
-  ansible.builtin.shell:
-    cmd: "containerd config default | sed 's/SystemdCgroup = false/SystemdCgroup = {{ containerd_cgroup_driver }}/'"
-  register: containerd_config_output
-  changed_when: true
-
-- name: Write containerd configuration
-  ansible.builtin.copy:
-    content: "{{ containerd_config_output.stdout }}"
-    dest: /etc/containerd/config.toml
-    mode: '0644'
-
-# =============================================================================
-# TASK 6: Restart containerd service
-# =============================================================================
-- name: Restart containerd service
-  ansible.builtin.service:
-    name: containerd
-    state: restarted
-
-# =============================================================================
-# TASK 6b: Install crictl (required by kubeadm for container runtime interface)
-# =============================================================================
-- name: Download crictl binary
+- name: Download checksum-verified independent runtime archives
   ansible.builtin.get_url:
-    url: "https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-linux-amd64.tar.gz"
-    dest: /tmp/crictl.tar.gz
+    url: "{{ item.url }}"
+    checksum: "sha256:{{ item.sha256 }}"
+    dest: "/var/cache/branconet-migration/{{ item.name }}"
     mode: '0644'
+  loop:
+    - name: containerd.tar.gz
+      url: "https://github.com/containerd/containerd/releases/download/{{ containerd_version }}/containerd-static-{{ containerd_version | regex_replace('^v', '') }}-linux-amd64.tar.gz"
+      sha256: "{{ containerd_sha256 }}"
+    - name: cni.tar.gz
+      url: "https://github.com/containernetworking/plugins/releases/download/{{ cni_version }}/cni-plugins-linux-amd64-{{ cni_version }}.tgz"
+      sha256: "{{ cni_sha256 }}"
+    - name: crictl.tar.gz
+      url: "https://github.com/kubernetes-sigs/cri-tools/releases/download/{{ crictl_version }}/crictl-{{ crictl_version }}-linux-amd64.tar.gz"
+      sha256: "{{ crictl_sha256 }}"
 
-- name: Install crictl to /usr/local/bin
+- name: Extract the independent runtime
   ansible.builtin.unarchive:
-    src: /tmp/crictl.tar.gz
-    dest: /usr/local/bin
+    src: /var/cache/branconet-migration/containerd.tar.gz
+    dest: /opt/containerd-k8s
     remote_src: true
+    creates: /opt/containerd-k8s/bin/containerd
+
+- name: Extract CNI plugins
+  ansible.builtin.unarchive:
+    src: /var/cache/branconet-migration/cni.tar.gz
+    dest: /opt/cni/bin
+    remote_src: true
+    creates: /opt/cni/bin/bridge
+
+- name: Extract isolated CRI diagnostic client
+  ansible.builtin.unarchive:
+    src: /var/cache/branconet-migration/crictl.tar.gz
+    dest: /opt/containerd-k8s/bin
+    remote_src: true
+    creates: /opt/containerd-k8s/bin/crictl
+
+- name: Download checksum-verified independent runc
+  ansible.builtin.get_url:
+    url: "https://github.com/opencontainers/runc/releases/download/{{ runc_version }}/runc.amd64"
+    checksum: "sha256:{{ runc_sha256 }}"
+    dest: /opt/containerd-k8s/bin/runc
     mode: '0755'
 
-- name: Clean up crictl tarball
-  ansible.builtin.file:
-    path: /tmp/crictl.tar.gz
-    state: absent
+- name: Generate the independent runtime configuration once
+  ansible.builtin.shell: |
+    set -eu
+    /opt/containerd-k8s/bin/containerd config default > /etc/containerd-k8s/default.toml
+    python3 - <<'PY'
+    import pathlib,re
+    p=pathlib.Path('/etc/containerd-k8s/default.toml')
+    s=p.read_text().replace('/var/lib/containerd','/var/lib/containerd-k8s').replace('/run/containerd','/run/containerd-k8s').replace('SystemdCgroup = false','SystemdCgroup = true')
+    s=re.sub(r"BinaryName = ['\"]['\"]",'BinaryName = "/opt/containerd-k8s/bin/runc"',s)
+    s=re.sub(r'^imports = .*$', 'imports = []', s, flags=re.M)
+    if 'SystemdCgroup = true' not in s or '/run/containerd-k8s/containerd.sock' not in s: raise SystemExit('Runtime config shape changed')
+    pathlib.Path('/etc/containerd-k8s/config.toml').write_text(s)
+    PY
+  args:
+    creates: /etc/containerd-k8s/config.toml
 
-# =============================================================================
-# TASK 7: Configure sysctl for Kubernetes networking
-# =============================================================================
-- name: Load br_netfilter kernel module
-  ansible.builtin.shell: modprobe br_netfilter
-  changed_when: false
-
-- name: Create sysctl configuration for Kubernetes networking
+- name: Configure independent containerd service
   ansible.builtin.copy:
+    dest: /etc/systemd/system/containerd-k8s.service
+    mode: '0644'
     content: |
-      net.bridge.bridge-nf-call-iptables = 1
-      net.ipv4.ip_forward = 1
-      net.bridge.bridge-nf-call-ip6tables = 1
-    dest: /etc/sysctl.d/k8s.conf
+      [Unit]
+      Description=Independent Kubernetes containerd runtime
+      After=network.target
+      [Service]
+      Environment=PATH=/opt/containerd-k8s/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+      ExecStart=/opt/containerd-k8s/bin/containerd --config /etc/containerd-k8s/config.toml
+      Delegate=yes
+      KillMode=process
+      Restart=always
+      RestartSec=5
+      LimitNOFILE=1048576
+      LimitNPROC=infinity
+      LimitCORE=infinity
+      TasksMax=infinity
+      OOMScoreAdjust=-999
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Load Kubernetes networking modules
+  ansible.builtin.command: "modprobe {{ item }}"
+  changed_when: false
+  loop: [overlay, br_netfilter, ipip, dm_crypt]
+
+- name: Persist networking modules
+  ansible.builtin.copy:
+    dest: /etc/modules-load.d/branconet-k8s.conf
+    content: "overlay\nbr_netfilter\nipip\ndm_crypt\n"
     mode: '0644'
 
-- name: Apply sysctl settings for Kubernetes networking
-  ansible.builtin.sysctl:
+- name: Persist forwarding prerequisites
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/99-branconet-k8s.conf
+    mode: '0644'
+    content: |
+      net.bridge.bridge-nf-call-iptables = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+      net.ipv4.ip_forward = 1
+
+- name: Apply the controlled forwarding settings
+  ansible.builtin.command: sysctl -p /etc/sysctl.d/99-branconet-k8s.conf
+  changed_when: false
+
+- name: Enable independent runtime and iSCSI daemon
+  ansible.builtin.systemd_service:
     name: "{{ item }}"
-    value: "1"
-    state: present
-    sysctl_file: /etc/sysctl.d/k8s.conf
-    reload: true
-  loop:
-    - net.ipv4.ip_forward
-    - net.bridge.bridge-nf-call-iptables
-    - net.bridge.bridge-nf-call-ip6tables
-  ignore_errors: true
+    enabled: true
+    state: started
+    daemon_reload: true
+  loop: [containerd-k8s, iscsid]
+
+- name: Verify the independent CRI endpoint
+  ansible.builtin.command:
+    argv: [/opt/containerd-k8s/bin/crictl, --runtime-endpoint, "{{ containerd_socket }}", info]
+  changed_when: false
+
+- name: Verify Docker remains active
+  ansible.builtin.command: systemctl is-active docker
+  changed_when: false

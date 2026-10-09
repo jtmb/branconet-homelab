@@ -1,0 +1,120 @@
+enabled: false
+replicaCount: 0
+image: golift/unpackerr:latest@sha256:4ec141eeb0cb2f971d7c92f21cc40b0d2d50d7920eb7a0557443cca52270c0b0
+environmentSecret: unpackerr-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - media_unpackerr
+  requiredEnvironmentKeys:
+  - PATH
+  - PGID
+  - PUID
+  - TZ
+  - UN_RADARR_0_API_KEY
+  - UN_RADARR_0_URL
+  - UN_SONARR_0_API_KEY
+  - UN_SONARR_0_URL
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/container-program-files/unpackerr/config
+    destinationPVC: unpackerr-data-1
+    mountPath: /config
+    measuredBytes: 21244
+    allocatedGiB: 1
+    uid: 1000
+    gid: 65534
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: unpackerr
+    namespace: plex
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: unpackerr
+    template:
+      metadata:
+        labels:
+          app: unpackerr
+        annotations: {}
+      spec:
+        containers:
+        - name: unpackerr
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          volumeMounts:
+          - name: data-0
+            mountPath: /downloads
+            readOnly: false
+          - name: data-1
+            mountPath: /config
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: unpackerr-data-0
+        - name: data-1
+          persistentVolumeClaim:
+            claimName: unpackerr-data-1
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: plex-unpackerr-data-0
+  spec:
+    capacity:
+      storage: 1Gi
+    accessModes:
+    - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+    mountOptions:
+    - noserverino
+    - cache=none
+    - uid=1000
+    - gid=1000
+    - file_mode=0755
+    - dir_mode=0755
+    csi:
+      driver: smb.csi.k8s.io
+      volumeHandle: plex-unpackerr-data-0
+      volumeAttributes:
+        source: //192.168.0.8/plex_smb_share/downloads
+      nodeStageSecretRef:
+        name: smb-creds
+        namespace: plex
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: unpackerr-data-0
+    namespace: plex
+  spec:
+    storageClassName: ''
+    volumeName: plex-unpackerr-data-0
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: unpackerr-data-1
+    namespace: plex
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi

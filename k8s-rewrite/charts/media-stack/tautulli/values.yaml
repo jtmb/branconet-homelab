@@ -1,0 +1,117 @@
+enabled: false
+replicaCount: 0
+image: ghcr.io/tautulli/tautulli:latest@sha256:746b2accd580c8551bff3570eab9c6606bbefe9b33567feace2a3c3c9863a1d1
+environmentSecret: tautulli-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - media_tautulli
+  requiredEnvironmentKeys:
+  - GPG_KEY
+  - LANG
+  - PATH
+  - PGID
+  - PUID
+  - PYTHON_SHA256
+  - PYTHON_VERSION
+  - TAUTULLI_DOCKER
+  - TZ
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.4
+    sourcePath: /mnt/nfs-container-volumes/tautulli/config
+    destinationPVC: tautulli-data-0
+    mountPath: /config
+    measuredBytes: 155242916
+    allocatedGiB: 1
+    uid: 1000
+    gid: 1000
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: tautulli
+    namespace: plex
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: tautulli
+    template:
+      metadata:
+        labels:
+          app: tautulli
+        annotations:
+          homepage.group: Media
+          homepage.name: Tautulli
+          homepage.icon: https://tautulli.com/images/logo-circle.png
+          homepage.href: http://tautulli.branconet.local/
+          homepage.description: Tautulli Plex monitoring
+      spec:
+        containers:
+        - name: tautulli
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p8181-tcp
+            containerPort: 8181
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /config
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: tautulli-data-0
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: tautulli-data-0
+    namespace: plex
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: tautulli
+    namespace: plex
+  spec:
+    selector:
+      app: tautulli
+    ports:
+    - name: p8181-tcp
+      port: 8181
+      targetPort: 8181
+      protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: tautulli
+    namespace: plex
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: tautulli.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: tautulli
+              port:
+                number: 8181

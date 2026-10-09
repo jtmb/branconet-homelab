@@ -1,0 +1,75 @@
+enabled: false
+replicaCount: 0
+image: ''
+environmentSecret: jtmb-dev-runtime
+migration:
+  verified: false
+  state: manifest-review-pending
+  sources:
+  - repository/web-app-stack/jtmb-dev
+  requiredEnvironmentKeys: []
+  storageSizingVerified: false
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: jtmb-dev
+    namespace: website-stack
+    labels:
+      app: jtmb-dev
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: jtmb-dev
+    template:
+      metadata:
+        labels:
+          app: jtmb-dev
+          branconet.io/type: app
+      spec:
+        containers:
+        - name: jtmb-dev
+          image: jtmb92/jtmb-dev:latest
+          ports:
+          - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: jtmb-dev-ingress
+    namespace: website-stack
+  spec:
+    rules:
+    - host: jtmb-dev.branconet.local
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: jtmb-dev
+              port:
+                number: 80
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: jtmb-dev
+    namespace: website-stack
+  spec:
+    type: ClusterIP
+    ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: http
+    selector:
+      app: jtmb-dev

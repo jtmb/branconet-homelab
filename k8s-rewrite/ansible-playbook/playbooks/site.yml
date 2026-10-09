@@ -1,184 +1,46 @@
-# Kubernetes Cluster Setup Playbook
-# Main entry point - orchestrates cluster provisioning with human-friendly role names
-#
-# Usage:
-#   ansible-playbook playbooks/site.yml -i inventory/production.ini
-#
-# Roles are executed in this order:
-#   1. bootstrap    - OS packages, containerd, sysctl
-#   2. kubernetes   - kubeadm/kubelet/kubectl + cluster init/join
-#   3. network      - Calico CNI (master only)
-#   4. dns          - CoreDNS (master only)
-#   5. storage      - local-path-provisioner (master only)
-#   6. longhorn     - Longhorn distributed block storage (master only)
-#   7. nfs          - NFS server + nfs-subdir-external-provisioner (master only)
-#   8. samba        - Samba server + csi-driver-smb (master only)
-#   9. ingress      - Traefik ingress controller (master only)
-#  10. gitops       - FluxCD GitOps operator (master only)
-#  11. secrets      - K8s Secrets from secret_* variables (runs AFTER gitops;
-#                     Secrets get prune=disabled annotation so FluxCD won't delete them)
-#  12. helm         - Helm CLI binary (master only)
-
 ---
-- name: Bootstrap Kubernetes Cluster Nodes
-  hosts: all
+# Migration-safe entry point. No reset, disk formatting, share creation or Docker
+# runtime replacement. Application imports and cutovers have separate data gates.
+- name: Prepare independent Kubernetes runtime alongside Docker
+  vars_files: [../group_vars/all.yml]
+  hosts: k8s_nodes
   become: true
-  any_errors_fatal: false
+  any_errors_fatal: true
   roles:
-    - role: bootstrap
-      tags:
-        - bootstrap
+    - {role: bootstrap, tags: [bootstrap]}
 
-- name: Install Kubernetes Components and Initialize Cluster
-  hosts: all
+- name: Initialize control plane and join existing worker hosts
+  vars_files: [../group_vars/all.yml]
+  hosts: k8s_nodes
   become: true
-  any_errors_fatal: false
+  any_errors_fatal: true
   roles:
-    - role: kubernetes
-      tags:
-        - kubernetes
+    - {role: kubernetes, tags: [kubernetes]}
 
-- name: Configure Network (Calico CNI)
+- name: Configure cluster networking and DNS
+  vars_files: [../group_vars/all.yml]
   hosts: master
   become: true
-  any_errors_fatal: false
+  any_errors_fatal: true
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
   roles:
-    - role: network
-      tags:
-        - network
+    - {role: network, tags: [network]}
+    - {role: dns, tags: [dns]}
+    - {role: helm, tags: [helm]}
+    - {role: longhorn, tags: [longhorn, storage]}
+    - {role: samba, tags: [samba, storage]}
+    - {role: ingress, tags: [ingress]}
+    - {role: gitops, tags: [gitops]}
 
-- name: Configure DNS (CoreDNS)
+- name: Verify the expected three Kubernetes nodes
+  vars_files: [../group_vars/all.yml]
   hosts: master
   become: true
-  any_errors_fatal: false
-  roles:
-    - role: dns
-      tags:
-        - dns
-
-- name: Install local-path-provisioner Storage
-  hosts: master
-  become: true
-  any_errors_fatal: false
-  roles:
-    - role: storage
-      tags:
-        - storage
-
-- name: Install Longhorn Prerequisites (all nodes)
-  hosts: all
-  become: true
-  any_errors_fatal: false
+  any_errors_fatal: true
   tasks:
-    - name: Install iscsi and NFS packages on all nodes
-      ansible.builtin.apt:
-        name:
-          - open-iscsi
-          - nfs-common
-          - jq
-        state: present
-        update_cache: true
-      tags:
-        - longhorn
-
-    - name: Enable and start iscsid on all nodes
-      ansible.builtin.service:
-        name: iscsid
-        state: started
-        enabled: true
-      tags:
-        - longhorn
-
-- name: Deploy Longhorn Distributed Storage
-  hosts: master
-  become: true
-  any_errors_fatal: false
-  roles:
-    - role: longhorn
-      tags:
-        - longhorn
-
-- name: Install NFS Server and Provisioner
-  hosts: master
-  become: true
-  any_errors_fatal: false
-  tasks:
-    - name: Include NFS role (only when enabled)
-      ansible.builtin.include_role:
-        name: nfs
-      when: nfs_enabled | default("false") == "true"
-      tags:
-        - nfs
-
-- name: Install Samba Server and SMB CSI Driver
-  hosts: master
-  become: true
-  any_errors_fatal: false
-  tasks:
-    - name: Include Samba role (only when enabled)
-      ansible.builtin.include_role:
-        name: samba
-      when: samba_enabled | default("false") == "true"
-      tags:
-        - samba
-
-- name: Install Traefik Ingress Controller
-  hosts: master
-  become: true
-  any_errors_fatal: false
-  roles:
-    - role: ingress
-      tags:
-        - ingress
-
-- name: Install GitOps Controller (FluxCD)
-  hosts: master
-  become: true
-  any_errors_fatal: false
-  roles:
-    - role: gitops
-      tags:
-        - gitops
-
-- name: Deploy Kubernetes Secrets from DB Variables
-  hosts: master
-  become: true
-  any_errors_fatal: false
-  roles:
-    - role: secrets
-      tags:
-        - secrets
-
-- name: Install Helm CLI
-  hosts: master
-  become: true
-  any_errors_fatal: false
-  roles:
-    - role: helm
-      tags:
-        - helm
-
-# Verification task - run on master to display cluster status
-- name: Verify Cluster Status
-  hosts: master
-  become: true
-  any_errors_fatal: false
-  tasks:
-    - name: Display cluster summary
-      debug:
-        msg: |
-          ========================================
-          Kubernetes Cluster Installation Complete!
-          ========================================
-
-          Cluster Name: {{ cluster_name }}
-          Cluster Version: {{ k8s_version }}
-          Storage Class: {{ storage_class }}
-
-          Nodes:
-          {% if ansible_playbook_python is defined %}Run 'kubectl get nodes -o wide' to see node status{% else %}kubectl not yet configured{% endif %}
-
-          Next Steps:
-          1. Verify cluster: kubectl get all -A
-          2. Deploy applications via Fleet (separate GitOps repo)
-          3. Configure Traefik routes for external access
+    - name: Verify every expected node is Ready
+      ansible.builtin.command:
+        argv: [kubectl, --kubeconfig=/etc/kubernetes/admin.conf, wait, node/masternode, node/workernode1, node/workernode2, --for=condition=Ready, --timeout=300s]
+      changed_when: false
+      tags: [verify]

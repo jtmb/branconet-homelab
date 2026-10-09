@@ -1,0 +1,67 @@
+{
+  "started_at": "2026-10-09T15:38:15.058404+00:00",
+  "complete_backup_set": false,
+  "reason": "Master clean backup and all-brick coverage remain incomplete; original anonymous paths are missing. These checks authenticate individual retained archives only.",
+  "archives": [
+    {
+      "ok": true,
+      "host": "192.168.0.5",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/cold-192.168.0.5-20261009T145609Z.tar.gz.age",
+      "source_paths": [
+        "/var/plex-stack"
+      ],
+      "encrypted_bytes": 12739987692,
+      "ciphertext_sha256": "ac635560eec19bbdd46255bed76e3f8f6df73818218361ead4e4f8bb4a76c3a0",
+      "elapsed_seconds": 835,
+      "authenticated_decryption_verified": true,
+      "tar_entries": 137413,
+      "uncompressed_file_bytes": 13797804114
+    },
+    {
+      "ok": true,
+      "host": "192.168.0.5",
+      "kind": "gluster-brick",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/gluster-brick-192.168.0.5-20261009T151756Z.tar.gz.age",
+      "ciphertext_sha256": "19ee5ad7e5177763c04bccfddb2aa72351a812265787a71c940ea1e9d6d53978",
+      "source_paths": [
+        "/gluster/volumes"
+      ],
+      "excluded_paths": [],
+      "authenticated_decryption_verified": true,
+      "tar_entries": 81530,
+      "uncompressed_file_bytes": 2116658031
+    },
+    {
+      "ok": true,
+      "host": "192.168.0.5",
+      "kind": "gluster-logical",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/gluster-logical-192.168.0.5-20261009T151756Z.tar.gz.age",
+      "ciphertext_sha256": "d6c1681987aa2f27629c65cb77ff1037a7fd8b9ca3f21f9dd382832ac1f901b4",
+      "source_paths": [
+        "/mnt/container-program-files"
+      ],
+      "excluded_paths": [
+        "/mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs"
+      ],
+      "authenticated_decryption_verified": true,
+      "tar_entries": 7824,
+      "uncompressed_file_bytes": 2091332434
+    },
+    {
+      "ok": true,
+      "host": "192.168.0.6",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/cold-192.168.0.6-20261009T145609Z.tar.gz.age",
+      "source_paths": [
+        "/mnt/plex_smb_share/shared-container-folder/ets2",
+        "/var/plex-stack"
+      ],
+      "encrypted_bytes": 12743380617,
+      "ciphertext_sha256": "456ebd1af43f9f857f720929f19e858320c07defa1e2937423d334a6efaf7249",
+      "elapsed_seconds": 878,
+      "authenticated_decryption_verified": true,
+      "tar_entries": 139345,
+      "uncompressed_file_bytes": 13995369528
+    }
+  ],
+  "completed_at": "2026-10-09T15:45:02.869690+00:00"
+}

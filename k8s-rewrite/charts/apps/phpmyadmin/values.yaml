@@ -1,0 +1,84 @@
+enabled: false
+replicaCount: 0
+image: phpmyadmin/phpmyadmin:latest@sha256:42a200db07b4e70fbf32c594ad4521cf16399b8e54bbb5adceae98e7566dfbeb
+environmentSecret: phpmyadmin-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - wordpress_phpmyadmin
+  requiredEnvironmentKeys:
+  - APACHE_CONFDIR
+  - APACHE_ENVVARS
+  - GPG_KEYS
+  - MAX_EXECUTION_TIME
+  - MEMORY_LIMIT
+  - PATH
+  - PHPIZE_DEPS
+  - PHP_ASC_URL
+  - PHP_CFLAGS
+  - PHP_CPPFLAGS
+  - PHP_INI_DIR
+  - PHP_LDFLAGS
+  - PHP_SHA256
+  - PHP_URL
+  - PHP_VERSION
+  - PMA_ARBITRARY
+  - PMA_HOST
+  - PMA_PORT
+  - PMA_SSL_DIR
+  - SESSION_SAVE_PATH
+  - SHA256
+  - TZ
+  - UPLOAD_LIMIT
+  - UPLOAD_PROGRESS_EXT_URL
+  - UPLOAD_PROGRESS_SHA256
+  - URL
+  - VERSION
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies: []
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: phpmyadmin
+    namespace: wordpress
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: phpmyadmin
+    template:
+      metadata:
+        labels:
+          app: phpmyadmin
+        annotations: {}
+      spec:
+        containers:
+        - name: phpmyadmin
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p80-tcp
+            containerPort: 80
+            protocol: TCP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: phpmyadmin
+    namespace: wordpress
+  spec:
+    selector:
+      app: phpmyadmin
+    ports:
+    - name: p80-tcp
+      port: 80
+      targetPort: 80
+      protocol: TCP

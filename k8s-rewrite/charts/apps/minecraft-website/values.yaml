@@ -1,0 +1,93 @@
+enabled: false
+replicaCount: 0
+image: nginx:latest@sha256:dec7a90bd0973b076832dc56933fe876bc014929e14b4ec49923951405370112
+environmentSecret: minecraft-website-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - ws_mcwebsite
+  requiredEnvironmentKeys:
+  - ACME_VERSION
+  - DISABLE_IPV6
+  - DYNPKG_RELEASE
+  - NGINX_VERSION
+  - NJS_RELEASE
+  - NJS_VERSION
+  - PATH
+  - PKG_RELEASE
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/container-program-files/mc-branconet-lan
+    destinationPVC: minecraft-website-data-0
+    mountPath: /usr/share/nginx/html
+    measuredBytes: 31108076
+    allocatedGiB: 1
+    uid: 0
+    gid: 0
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: minecraft-website
+    namespace: web-apps
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: minecraft-website
+    template:
+      metadata:
+        labels:
+          app: minecraft-website
+        annotations: {}
+      spec:
+        containers:
+        - name: minecraft-website
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p80-tcp
+            containerPort: 80
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /usr/share/nginx/html
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: minecraft-website-data-0
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: minecraft-website-data-0
+    namespace: web-apps
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: minecraft-website
+    namespace: web-apps
+  spec:
+    selector:
+      app: minecraft-website
+    ports:
+    - name: p80-tcp
+      port: 80
+      targetPort: 80
+      protocol: TCP

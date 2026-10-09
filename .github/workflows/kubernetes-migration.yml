@@ -1,0 +1,22 @@
+name: Kubernetes migration validation
+on:
+  push:
+    branches: [codex/kubernetes-migration]
+  pull_request:
+    paths: ['k8s-rewrite/charts/**', 'scripts/migration/**', '.github/workflows/kubernetes-migration.yml']
+permissions:
+  contents: read
+jobs:
+  charts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install validation tools
+        run: |
+          python -m pip install PyYAML==6.0.3
+          python scripts/migration/install-tools.py
+      - name: Validate every individual chart
+        run: python scripts/migration/validate-charts.py

@@ -1,0 +1,123 @@
+enabled: false
+replicaCount: 0
+image: linuxserver/jackett:latest@sha256:cdea5d3209a6ab1fb8eb954ec0b8169b7d54274617f42bf5c74f22a92075755f
+environmentSecret: jackett-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - media_jackett
+  requiredEnvironmentKeys:
+  - HOME
+  - LSIO_FIRST_PARTY
+  - PATH
+  - PGID
+  - PS1
+  - PUID
+  - S6_CMD_WAIT_FOR_SERVICES_MAXTIME
+  - S6_STAGE2_HOOK
+  - S6_VERBOSITY
+  - TERM
+  - TMPDIR
+  - TZ
+  - VIRTUAL_ENV
+  - XDG_CONFIG_HOME
+  - XDG_DATA_HOME
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/container-program-files/jackett
+    destinationPVC: jackett-data-0
+    mountPath: /config
+    measuredBytes: 22953739
+    allocatedGiB: 1
+    uid: 1000
+    gid: 1000
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: jackett
+    namespace: plex
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: jackett
+    template:
+      metadata:
+        labels:
+          app: jackett
+        annotations:
+          homepage.group: Media
+          homepage.name: Jackett
+          homepage.icon: https://user-images.githubusercontent.com/27040483/28728094-99f3e3f6-73c7-11e7-8f8d-28912dc6ac0d.png
+          homepage.href: http://jackett.branconet.local/
+          homepage.description: Jackett torrent indexers
+      spec:
+        containers:
+        - name: jackett
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p9117-tcp
+            containerPort: 9117
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /config
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: jackett-data-0
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: jackett-data-0
+    namespace: plex
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: jackett
+    namespace: plex
+  spec:
+    selector:
+      app: jackett
+    ports:
+    - name: p9117-tcp
+      port: 9117
+      targetPort: 9117
+      protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: jackett
+    namespace: plex
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: jackett.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: jackett
+              port:
+                number: 9117

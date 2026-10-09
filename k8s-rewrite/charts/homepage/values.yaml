@@ -1,0 +1,122 @@
+enabled: false
+replicaCount: 0
+image: ghcr.io/gethomepage/homepage:latest@sha256:b129cb0f674bd6d204e215bde2c2fc3f11d6ad0e82f6d20007cf80f74e1acbb1
+environmentSecret: homepage-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - ws_homepage
+  requiredEnvironmentKeys:
+  - HOMEPAGE_ALLOWED_HOSTS
+  - HOSTNAME
+  - NODE_ENV
+  - NODE_VERSION
+  - PATH
+  - PORT
+  - YARN_VERSION
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  hostDockerDependencies:
+  - /var/run/docker.sock
+  - /var/run/docker.sock
+  - /var/run/docker.sock
+  dataCopies:
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/container-program-files/homepage/app
+    destinationPVC: homepage-data-1
+    mountPath: /app/config
+    measuredBytes: 5447199
+    allocatedGiB: 1
+    uid: 1000
+    gid: 65534
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: homepage
+    namespace: homepage
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: homepage
+    template:
+      metadata:
+        labels:
+          app: homepage
+        annotations: {}
+      spec:
+        containers:
+        - name: homepage
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p3000-tcp
+            containerPort: 3000
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /var/run/docker.sock
+            readOnly: true
+          - name: data-1
+            mountPath: /app/config
+            readOnly: false
+        volumes:
+        - name: data-0
+          hostPath:
+            path: /var/run/docker.sock
+        - name: data-1
+          persistentVolumeClaim:
+            claimName: homepage-data-1
+        nodeSelector:
+          kubernetes.io/hostname: workernode1
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: homepage-data-1
+    namespace: homepage
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: homepage
+    namespace: homepage
+  spec:
+    selector:
+      app: homepage
+    ports:
+    - name: p3000-tcp
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: homepage
+    namespace: homepage
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: homepage.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: homepage
+              port:
+                number: 3000

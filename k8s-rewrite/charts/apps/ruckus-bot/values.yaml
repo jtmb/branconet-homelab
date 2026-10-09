@@ -1,0 +1,91 @@
+enabled: false
+replicaCount: 0
+image: jtmb92/ruckus-bot:latest@sha256:824816055190308f9a38a5d0c974e9be3d287272e5f75423d188d81bf9d79330
+environmentSecret: ruckus-bot-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - bot_ruckus
+  requiredEnvironmentKeys:
+  - BOT_TOKEN
+  - MYSQL_DATABASE
+  - MYSQL_HOST
+  - MYSQL_PASSWORD
+  - MYSQL_PORT
+  - MYSQL_USER
+  - NODE_VERSION
+  - PATH
+  - YARN_VERSION
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies: []
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: ruckus-bot
+    namespace: ruckus
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: ruckus-bot
+    template:
+      metadata:
+        labels:
+          app: ruckus-bot
+        annotations: {}
+      spec:
+        containers:
+        - name: ruckus-bot
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p3003-tcp
+            containerPort: 3003
+            protocol: TCP
+          - name: p8080-tcp
+            containerPort: 8080
+            protocol: TCP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ruckus-bot
+    namespace: ruckus
+  spec:
+    selector:
+      app: ruckus-bot
+    ports:
+    - name: p3003-tcp
+      port: 3003
+      targetPort: 3003
+      protocol: TCP
+    - name: p8080-tcp
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: ruckus-bot
+    namespace: ruckus
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: ruckus.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: ruckus-bot
+              port:
+                number: 3003

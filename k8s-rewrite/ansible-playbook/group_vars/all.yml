@@ -1,106 +1,40 @@
-# Kubernetes Cluster Configuration Variables
-# Auto-generated from Botrus K8s DB
-# Last synced: 2026-06-16T04:18:46.604Z
-# WARNING: Manual edits to this file will be overwritten on next deploy/sync.
-
 ---
-
-# =============================================================================
-# ANSIBLE
-# =============================================================================
-ansible_become_password: "{{ lookup('botrus_secret', 'ansible_become_password') }}"
-ansible_ssh_private_key_file: "{{ lookup('botrus_secret', 'ansible_ssh_private_key_file') }}"
-
-# =============================================================================
-# DNS
-# =============================================================================
-dns_servers: "{{ lookup('botrus_secret', 'dns_servers') }}"
-
-# =============================================================================
-# GENERAL
-# =============================================================================
-github_token: "{{ lookup('botrus_secret', 'github_token') }}"
-
-# =============================================================================
-# HELM
-# =============================================================================
-helm_version: "{{ lookup('botrus_secret', 'helm_version') }}"
-
-# =============================================================================
-# KUBERNETES
-# =============================================================================
-calico_version: "{{ lookup('botrus_secret', 'calico_version') }}"
-cluster_name: "{{ lookup('botrus_secret', 'cluster_name') }}"
-coredns_replicas: "{{ lookup('botrus_secret', 'coredns_replicas') }}"
-crictl_version: "{{ lookup('botrus_secret', 'crictl_version') }}"
-k8s_version: "{{ lookup('botrus_secret', 'k8s_version') }}"
-kubeconfig_path: "{{ lookup('botrus_secret', 'kubeconfig_path') }}"
-node_u1_hostname: "{{ lookup('botrus_secret', 'node_u1_hostname') }}"
-node_u1_ip: "{{ lookup('botrus_secret', 'node_u1_ip') }}"
-node_u1_name: "{{ lookup('botrus_secret', 'node_u1_name') }}"
-node_u1_role: "{{ lookup('botrus_secret', 'node_u1_role') }}"
-node_u2_hostname: "{{ lookup('botrus_secret', 'node_u2_hostname') }}"
-node_u2_ip: "{{ lookup('botrus_secret', 'node_u2_ip') }}"
-node_u2_name: "{{ lookup('botrus_secret', 'node_u2_name') }}"
-node_u2_role: "{{ lookup('botrus_secret', 'node_u2_role') }}"
-node_u3_hostname: "{{ lookup('botrus_secret', 'node_u3_hostname') }}"
-node_u3_ip: "{{ lookup('botrus_secret', 'node_u3_ip') }}"
-node_u3_name: "{{ lookup('botrus_secret', 'node_u3_name') }}"
-node_u3_role: "{{ lookup('botrus_secret', 'node_u3_role') }}"
-
-# =============================================================================
-# LONGHORN
-# =============================================================================
-longhorn_default_storage_class: "{{ lookup('botrus_secret', 'longhorn_default_storage_class') }}"
-longhorn_replicas: "{{ lookup('botrus_secret', 'longhorn_replicas') }}"
-longhorn_version: "{{ lookup('botrus_secret', 'longhorn_version') }}"
-
-# =============================================================================
-# NETWORKING
-# =============================================================================
-cluster_cidr: "{{ lookup('botrus_secret', 'cluster_cidr') }}"
-cluster_domain: "{{ lookup('botrus_secret', 'cluster_domain') }}"
-pod_network_cidr: "{{ lookup('botrus_secret', 'pod_network_cidr') }}"
-service_cidr: "{{ lookup('botrus_secret', 'service_cidr') }}"
-
-# =============================================================================
-# NFS
-# =============================================================================
-nfs_enabled: "{{ lookup('botrus_secret', 'nfs_enabled') }}"
-nfs_provisioner_version: "{{ lookup('botrus_secret', 'nfs_provisioner_version') }}"
-nfs_server_path: "{{ lookup('botrus_secret', 'nfs_server_path') }}"
-nfs_storage_class: "{{ lookup('botrus_secret', 'nfs_storage_class') }}"
-
-# =============================================================================
-# RUNTIME
-# =============================================================================
-containerd_cgroup_driver: "{{ lookup('botrus_secret', 'containerd_cgroup_driver') }}"
-containerd_log_level: "{{ lookup('botrus_secret', 'containerd_log_level') }}"
-
-# =============================================================================
-# SAMBA
-# =============================================================================
-samba_enabled: "{{ lookup('botrus_secret', 'samba_enabled') }}"
-samba_share_name: "{{ lookup('botrus_secret', 'samba_share_name') }}"
-samba_share_path: "{{ lookup('botrus_secret', 'samba_share_path') }}"
-smb_storage_class: "{{ lookup('botrus_secret', 'smb_storage_class') }}"
-
-# =============================================================================
-# SECRET
-# =============================================================================
-secret_plex_smb-creds_password: "{{ lookup('botrus_secret', 'secret_plex_smb-creds_password') }}"
-secret_plex_smb-creds_username: "{{ lookup('botrus_secret', 'secret_plex_smb-creds_username') }}"
-
-# =============================================================================
-# STORAGE
-# =============================================================================
-default_storage_size: "{{ lookup('botrus_secret', 'default_storage_size') }}"
-storage_class: "{{ lookup('botrus_secret', 'storage_class') }}"
-
-# =============================================================================
-# TRAEFIK
-# =============================================================================
-traefik_accesslog: "{{ lookup('botrus_secret', 'traefik_accesslog') }}"
-traefik_log_level: "{{ lookup('botrus_secret', 'traefik_log_level') }}"
-traefik_version: "{{ lookup('botrus_secret', 'traefik_version') }}"
-
+# Non-secret bootstrap configuration. Never regenerate this from application data.
+# Sudo is supplied in memory through the migration runner's stdin.
+cluster_name: branconet-k8s
+ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+k8s_version: v1.37.1
+calico_version: v3.33.0
+containerd_version: v2.4.1
+containerd_sha256: 02ad3a7e80d7d2c018c7134d5eca7e301283db6895f100b957fb52ad8e5a30fd
+runc_version: v1.5.2
+runc_sha256: 599f6f94ff8c5057241eff0d54c3c74f95c34935b6457b33fe545defc61e9488
+crictl_version: v1.37.0
+crictl_sha256: 67c983ee8a6bbce73d39a186e633c5fe4f8a70e62171ac3bd92a9c1b2c601670
+cni_version: v1.9.1
+cni_sha256: b98f74a0f8522f0a83867178729c1aa70f2158f90c45a2ca8fa791db1c76b303
+containerd_socket: unix:///run/containerd-k8s/containerd.sock
+pod_network_cidr: 10.244.0.0/16
+service_cidr: 10.96.0.0/12
+cluster_domain: cluster.local
+coredns_replicas: 2
+storage_class: longhorn
+longhorn_version: v1.12.1
+longhorn_replicas: 2
+snapshot_controller_version: v8.6.0
+longhorn_default_storage_class: longhorn
+longhorn_data_path: /var/lib/longhorn
+flux_version: v2.9.6
+flux_git_url: https://github.com/jtmb/branconet-homelab.git
+flux_git_branch: codex/kubernetes-migration
+flux_git_path: ./k8s-rewrite/clusters/prd
+helm_version: v4.3.0
+helm_sha256: 86584a54def73570558f66f5111cc53dfed56689637ae32c1201205d494f54fb
+smb_csi_version: v1.20.3
+smb_media_source: //192.168.0.8/plex_smb_share
+traefik_version: v2.11
+ingress_http_nodeport: 30080
+ingress_https_nodeport: 30443
+nfs_enabled: false
+local_path_enabled: false
+kubeconfig_path: /home/james/.kube

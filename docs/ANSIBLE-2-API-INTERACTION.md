@@ -2,6 +2,10 @@
 
 How Ansible resolves configuration and secrets from the Botrus dashboard at runtime — without any values on disk.
 
+## Migration exception: independent bootstrap
+
+The migration foundation now uses versioned nonsecret `group_vars/all.yml` and actual james@192.168.0.4/.5/.6 inventory with SSH port 2002. `scripts/migration/run-ansible.py` receives sudo through stdin and supplies it to the Ansible child through an in-memory environment lookup, never an argv value or plaintext file. Explicit vars_files load bootstrap settings from the parent directory. This avoids requiring BORTUS or its Secrets API before Kubernetes exists. The API lookup plugin remains available for subsequent application-managed operations; its native provider is delivered by the separate BORTUS development chat. Do not overwrite the bootstrap file with the legacy database-to-YAML synchronization described below. Current cluster operations are documented in [MIGRATION-OPERATIONS.md](MIGRATION-OPERATIONS.md).
+
 ## The Two Paths
 
 ### Path 1: Ansible Playbooks (full cluster provisioning)

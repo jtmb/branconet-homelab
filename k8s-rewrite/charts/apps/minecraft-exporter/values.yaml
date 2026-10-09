@@ -1,0 +1,87 @@
+enabled: false
+replicaCount: 0
+image: ghcr.io/dirien/minecraft-exporter:latest@sha256:d11cea9f5a14316d0df00b97a36e904ba41ff17d293fcf427b68bca2403e4400
+environmentSecret: minecraft-exporter-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - gamesrv_mc-exporter
+  requiredEnvironmentKeys:
+  - PATH
+  - SSL_CERT_FILE
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.6
+    sourcePath: /mnt/nfs-container-volumes/mc-server/world
+    destinationPVC: minecraft-exporter-data-0
+    mountPath: /minecraft/world
+    measuredBytes: 4171
+    allocatedGiB: 1
+    uid: 0
+    gid: 65534
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: minecraft-exporter
+    namespace: games
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: minecraft-exporter
+    template:
+      metadata:
+        labels:
+          app: minecraft-exporter
+        annotations: {}
+      spec:
+        containers:
+        - name: minecraft-exporter
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p9150-tcp
+            containerPort: 9150
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /minecraft/world
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: minecraft-exporter-data-0
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: minecraft-exporter-data-0
+    namespace: games
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: minecraft-exporter
+    namespace: games
+  spec:
+    selector:
+      app: minecraft-exporter
+    ports:
+    - name: p9150-tcp
+      port: 9150
+      targetPort: 9150
+      protocol: TCP

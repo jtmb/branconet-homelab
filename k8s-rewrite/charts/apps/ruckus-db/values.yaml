@@ -1,0 +1,94 @@
+enabled: false
+replicaCount: 0
+image: mysql:5.7.41@sha256:bf18020f32cc5d8f5e2add516d52fbf3afc3de431457076340e938596c528171
+environmentSecret: ruckus-db-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - bot_ruckus-db
+  requiredEnvironmentKeys:
+  - GOSU_VERSION
+  - MYSQL_DATABASE
+  - MYSQL_MAJOR
+  - MYSQL_PASSWORD
+  - MYSQL_RANDOM_ROOT_PASSWORD
+  - MYSQL_SHELL_VERSION
+  - MYSQL_USER
+  - MYSQL_VERSION
+  - PATH
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.4
+    sourcePath: /mnt/nfs-container-volumes/bot_ruckus/mysql_data
+    destinationPVC: ruckus-db-data-0
+    mountPath: /var/lib/mysql
+    measuredBytes: 216491895
+    allocatedGiB: 1
+    uid: 999
+    gid: 65534
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: ruckus-db
+    namespace: ruckus
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: ruckus-db
+    template:
+      metadata:
+        labels:
+          app: ruckus-db
+        annotations: {}
+      spec:
+        containers:
+        - name: ruckus-db
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p3306-tcp
+            containerPort: 3306
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /var/lib/mysql
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: ruckus-db-data-0
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: ruckus-db-data-0
+    namespace: ruckus
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ruckus-db
+    namespace: ruckus
+  spec:
+    selector:
+      app: ruckus-db
+    ports:
+    - name: p3306-tcp
+      port: 3306
+      targetPort: 3306
+      protocol: TCP

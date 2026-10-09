@@ -1,0 +1,120 @@
+enabled: false
+replicaCount: 0
+image: ghcr.io/mealie-recipes/mealie:v1.0.0-RC1.1@sha256:6df1e795f17af43f082146e471113315487b5f0882f2ee7553d469034d929af1
+environmentSecret: mealie-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - mealie_mealie
+  requiredEnvironmentKeys:
+  - ALLOW_SIGNUP
+  - APP_PORT
+  - BASE_URL
+  - DEFAULT_EMAIL
+  - DEFAULT_PASSWORD
+  - GIT_COMMIT_HASH
+  - GPG_KEY
+  - HOST
+  - LANG
+  - LD_LIBRARY_PATH
+  - MAX_WORKERS
+  - MEALIE_HOME
+  - PATH
+  - PGID
+  - PIP_DEFAULT_TIMEOUT
+  - PIP_DISABLE_PIP_VERSION_CHECK
+  - PIP_NO_CACHE_DIR
+  - POETRY_HOME
+  - POETRY_NO_INTERACTION
+  - POETRY_VIRTUALENVS_IN_PROJECT
+  - PRODUCTION
+  - PUID
+  - PYSETUP_PATH
+  - PYTHONDONTWRITEBYTECODE
+  - PYTHONUNBUFFERED
+  - PYTHON_GET_PIP_SHA256
+  - PYTHON_GET_PIP_URL
+  - PYTHON_PIP_VERSION
+  - PYTHON_SETUPTOOLS_VERSION
+  - PYTHON_VERSION
+  - STATIC_FILES
+  - TESTING
+  - TZ
+  - VENV_PATH
+  - WEB_CONCURRENCY
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/container-program-files/mealie/mealie-data
+    destinationPVC: mealie-data-0
+    mountPath: /app/data
+    measuredBytes: 8240527
+    allocatedGiB: 1
+    uid: 1000
+    gid: 65534
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: mealie
+    namespace: mealie
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: mealie
+    template:
+      metadata:
+        labels:
+          app: mealie
+        annotations: {}
+      spec:
+        containers:
+        - name: mealie
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p9000-tcp
+            containerPort: 9000
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /app/data
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: mealie-data-0
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: mealie-data-0
+    namespace: mealie
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: mealie
+    namespace: mealie
+  spec:
+    selector:
+      app: mealie
+    ports:
+    - name: p9000-tcp
+      port: 9000
+      targetPort: 9000
+      protocol: TCP

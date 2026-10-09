@@ -2,6 +2,12 @@
 
 End-to-end workflows for managing a Kubernetes cluster with the Botrus dashboard.
 
+## Current migration bootstrap
+
+The approved migration uses `ansible-playbook/playbooks/site.yml` on james@192.168.0.4/.5/.6, SSH port 2002. Nonsecret initial settings live in `group_vars/all.yml`; sudo reaches Ansible through the migration runner's stdin. Initial provisioning is independent of BORTUS, and must not regenerate that bootstrap configuration from the application database. The sections below describe the existing dashboard workflow; its native Secrets development is owned by a separate chat and remains an acceptance dependency. Follow [MIGRATION-OPERATIONS.md](MIGRATION-OPERATIONS.md) and [MIGRATION_STATUS.md](../MIGRATION_STATUS.md) for live migration progress and cutover gates.
+
+The revised foundation preserves Docker's runtime, resolver, Gluster and NAS data, installs `containerd-k8s`, enables Secrets encryption at rest and retained LUKS Longhorn volumes, and uses temporary ingress NodePorts 30080/30443. Flux retains source, Kustomize, Helm and notification controllers. Chart source activation waits for individual chart/value validation; runtime configuration generation in the legacy UI is not a prerequisite for this migration.
+
 ## Initial Setup
 
 ### 1. Start the Dashboard

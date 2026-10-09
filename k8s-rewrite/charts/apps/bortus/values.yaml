@@ -1,0 +1,562 @@
+enabled: false
+replicaCount: 0
+image: bortus:migration-1438b27
+environmentSecret: bortus-runtime
+migration:
+  verified: false
+  state: delivered-image-live-acceptance-pending
+  sources:
+  - repository/BORTUS
+  requiredEnvironmentKeys: []
+  storageSizingVerified: false
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  sourceCommit: 1438b278cdf21e98429b4836c018636b01b982a3
+  secretNamespaces:
+  - bortus
+  - bortus-secrets
+  - default
+  - flux-system
+  - games
+  - homepage
+  - longhorn-system
+  - mealie
+  - pihole
+  - plex
+  - ruckus
+  - vaultwarden
+  - web-apps
+  - whoami
+  - wordpress
+  dashboardRBACReviewPending: true
+  newPersistentNonsecretDatabase: Existing operator/development databases remain retained;
+    this first cluster deployment uses a new PVC. Never reset an existing production
+    database.
+resources:
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: bortus
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: bortus
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: bortus-secrets
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: bortus-secrets
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: default
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: default
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: flux-system
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: flux-system
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: games
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: games
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: homepage
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: homepage
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: longhorn-system
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: longhorn-system
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: mealie
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: mealie
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: pihole
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: pihole
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: plex
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: plex
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: ruckus
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: ruckus
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: vaultwarden
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: vaultwarden
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: web-apps
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: web-apps
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: whoami
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: whoami
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: wordpress
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: wordpress
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects:
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: bortus-data
+    namespace: bortus
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: bortus
+    namespace: bortus
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels: &id001
+        app: bortus
+    template:
+      metadata:
+        labels: *id001
+      spec:
+        serviceAccountName: bortus
+        securityContext:
+          fsGroup: 1000
+        containers:
+        - name: bortus
+          image: '{{ .Values.image }}'
+          imagePullPolicy: Never
+          ports:
+          - name: http
+            containerPort: 4000
+          env:
+          - name: DATABASE_URL
+            value: file:/data/bortus.db
+          - name: BOTRUS_JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: bortus-runtime
+                key: jwt-secret
+          - name: BOTRUS_SECRETS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: bortus-runtime
+                key: lookup-token
+          - name: BORTUS_SECRET_NAMESPACES
+            value: bortus,bortus-secrets,default,flux-system,games,homepage,longhorn-system,mealie,pihole,plex,ruckus,vaultwarden,web-apps,whoami,wordpress
+          - name: BORTUS_SECRET_ALIASES_FILE
+            value: /etc/bortus/aliases.json
+          startupProbe:
+            httpGet:
+              path: /api/health/live
+              port: 4000
+            periodSeconds: 5
+            failureThreshold: 60
+          livenessProbe:
+            httpGet:
+              path: /api/health/live
+              port: 4000
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health/ready
+              port: 4000
+            periodSeconds: 30
+            timeoutSeconds: 15
+          volumeMounts:
+          - name: data
+            mountPath: /data
+          - name: aliases
+            mountPath: /etc/bortus
+            readOnly: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: bortus-data
+        - name: aliases
+          configMap:
+            name: bortus-secret-aliases
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: bortus
+    namespace: bortus
+  spec:
+    selector: *id001
+    ports:
+    - name: http
+      port: 4000
+      targetPort: 4000

@@ -1,0 +1,308 @@
+enabled: false
+replicaCount: 0
+image: lscr.io/linuxserver/plex@sha256:a3a3a850a64fb747c59f85dbc19b157781c3b9c921a83799127894b0ebdf3a68
+environmentSecret: plex-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - 192.168.0.4/plex-plex-1
+  - 192.168.0.5/plex-plex-1
+  - 192.168.0.6/plex-plex-1
+  requiredEnvironmentKeys:
+  - ADVERTISE_IP
+  - DEBIAN_FRONTEND
+  - HOME
+  - LANG
+  - LANGUAGE
+  - LSIO_FIRST_PARTY
+  - NVIDIA_DRIVER_CAPABILITIES
+  - NVIDIA_VISIBLE_DEVICES
+  - PATH
+  - PGID
+  - PLEX_ARCH
+  - PLEX_CLAIM
+  - PLEX_DOWNLOAD
+  - PLEX_MEDIA_SERVER_APPLICATION_SUPPORT_DIR
+  - PLEX_MEDIA_SERVER_HOME
+  - PLEX_MEDIA_SERVER_INFO_DEVICE
+  - PLEX_MEDIA_SERVER_INFO_VENDOR
+  - PLEX_MEDIA_SERVER_MAX_PLUGIN_PROCS
+  - PLEX_MEDIA_SERVER_USER
+  - PUID
+  - S6_CMD_WAIT_FOR_SERVICES_MAXTIME
+  - S6_STAGE2_HOOK
+  - S6_VERBOSITY
+  - TERM
+  - TMPDIR
+  - TZ
+  - VERSION
+  - VIRTUAL_ENV
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.4
+    sourcePath: /var/plex-stack/plex/config
+    destinationPVC: plex-data-0
+    mountPath: /config
+    measuredBytes: 6526765055
+    allocatedGiB: 13
+    uid: 1000
+    gid: 1000
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: plex
+    namespace: plex
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: plex
+    template:
+      metadata:
+        labels:
+          app: plex
+        annotations:
+          homepage.group: Media
+          homepage.name: Plex
+          homepage.icon: https://plex.tv/sites/static/img/logo.png
+          homepage.href: http://plex.branconet.local/
+          homepage.description: Plex Media Server
+      spec:
+        containers:
+        - name: plex
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p1900-udp
+            containerPort: 1900
+            protocol: UDP
+          - name: p5353-udp
+            containerPort: 5353
+            protocol: UDP
+          - name: p8324-tcp
+            containerPort: 8324
+            protocol: TCP
+          - name: p32400-tcp
+            containerPort: 32400
+            protocol: TCP
+          - name: p32410-udp
+            containerPort: 32410
+            protocol: UDP
+          - name: p32412-udp
+            containerPort: 32412
+            protocol: UDP
+          - name: p32413-udp
+            containerPort: 32413
+            protocol: UDP
+          - name: p32414-udp
+            containerPort: 32414
+            protocol: UDP
+          - name: p32469-tcp
+            containerPort: 32469
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /config
+            readOnly: false
+          - name: data-1
+            mountPath: /movies
+            readOnly: false
+          - name: data-2
+            mountPath: /pvr
+            readOnly: false
+          - name: data-3
+            mountPath: /tv
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: plex-data-0
+        - name: data-1
+          persistentVolumeClaim:
+            claimName: plex-data-1
+        - name: data-2
+          persistentVolumeClaim:
+            claimName: plex-data-2
+        - name: data-3
+          persistentVolumeClaim:
+            claimName: plex-data-3
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: plex-data-0
+    namespace: plex
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 13Gi
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: plex-plex-data-1
+  spec:
+    capacity:
+      storage: 1Gi
+    accessModes:
+    - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+    mountOptions:
+    - noserverino
+    - cache=none
+    - uid=1000
+    - gid=1000
+    - file_mode=0755
+    - dir_mode=0755
+    csi:
+      driver: smb.csi.k8s.io
+      volumeHandle: plex-plex-data-1
+      volumeAttributes:
+        source: //192.168.0.8/plex_smb_share/movies
+      nodeStageSecretRef:
+        name: smb-creds
+        namespace: plex
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: plex-data-1
+    namespace: plex
+  spec:
+    storageClassName: ''
+    volumeName: plex-plex-data-1
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: plex-plex-data-2
+  spec:
+    capacity:
+      storage: 1Gi
+    accessModes:
+    - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+    mountOptions:
+    - noserverino
+    - cache=none
+    - uid=1000
+    - gid=1000
+    - file_mode=0755
+    - dir_mode=0755
+    csi:
+      driver: smb.csi.k8s.io
+      volumeHandle: plex-plex-data-2
+      volumeAttributes:
+        source: //192.168.0.8/plex_smb_share/pvr
+      nodeStageSecretRef:
+        name: smb-creds
+        namespace: plex
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: plex-data-2
+    namespace: plex
+  spec:
+    storageClassName: ''
+    volumeName: plex-plex-data-2
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: plex-plex-data-3
+  spec:
+    capacity:
+      storage: 1Gi
+    accessModes:
+    - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+    mountOptions:
+    - noserverino
+    - cache=none
+    - uid=1000
+    - gid=1000
+    - file_mode=0755
+    - dir_mode=0755
+    csi:
+      driver: smb.csi.k8s.io
+      volumeHandle: plex-plex-data-3
+      volumeAttributes:
+        source: //192.168.0.8/plex_smb_share/tv
+      nodeStageSecretRef:
+        name: smb-creds
+        namespace: plex
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: plex-data-3
+    namespace: plex
+  spec:
+    storageClassName: ''
+    volumeName: plex-plex-data-3
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: plex
+    namespace: plex
+  spec:
+    selector:
+      app: plex
+    ports:
+    - name: p1900-udp
+      port: 1900
+      targetPort: 1900
+      protocol: UDP
+    - name: p5353-udp
+      port: 5353
+      targetPort: 5353
+      protocol: UDP
+    - name: p8324-tcp
+      port: 8324
+      targetPort: 8324
+      protocol: TCP
+    - name: p32400-tcp
+      port: 32400
+      targetPort: 32400
+      protocol: TCP
+    - name: p32410-udp
+      port: 32410
+      targetPort: 32410
+      protocol: UDP
+    - name: p32412-udp
+      port: 32412
+      targetPort: 32412
+      protocol: UDP
+    - name: p32413-udp
+      port: 32413
+      targetPort: 32413
+      protocol: UDP
+    - name: p32414-udp
+      port: 32414
+      targetPort: 32414
+      protocol: UDP
+    - name: p32469-tcp
+      port: 32469
+      targetPort: 32469
+      protocol: TCP

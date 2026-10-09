@@ -1,0 +1,104 @@
+enabled: false
+replicaCount: 0
+image: wordpress:latest@sha256:ee74dc0ebbe7ec43b7f473c0fb4f1dfb6b211d7785f0a95bcdfa10e628c2e67f
+environmentSecret: wordpress-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - wordpress_wp-app
+  requiredEnvironmentKeys:
+  - APACHE_CONFDIR
+  - APACHE_ENVVARS
+  - GPG_KEYS
+  - PATH
+  - PGID
+  - PHPIZE_DEPS
+  - PHP_ASC_URL
+  - PHP_CFLAGS
+  - PHP_CPPFLAGS
+  - PHP_INI_DIR
+  - PHP_LDFLAGS
+  - PHP_SHA256
+  - PHP_URL
+  - PHP_VERSION
+  - PUID
+  - WORDPRESS_DB_HOST
+  - WORDPRESS_DB_NAME
+  - WORDPRESS_DB_PASSWORD
+  - WORDPRESS_DB_USER
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/container-program-files/wordpress/wp-app
+    destinationPVC: wordpress-data-0
+    mountPath: /var/www/html
+    measuredBytes: 148929375
+    allocatedGiB: 1
+    uid: 33
+    gid: 33
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: wordpress
+    namespace: wordpress
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: wordpress
+    template:
+      metadata:
+        labels:
+          app: wordpress
+        annotations: {}
+      spec:
+        containers:
+        - name: wordpress
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p80-tcp
+            containerPort: 80
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /var/www/html
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: wordpress-data-0
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: wordpress-data-0
+    namespace: wordpress
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: wordpress
+    namespace: wordpress
+  spec:
+    selector:
+      app: wordpress
+    ports:
+    - name: p80-tcp
+      port: 80
+      targetPort: 80
+      protocol: TCP

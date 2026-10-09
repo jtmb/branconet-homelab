@@ -1,51 +1,20 @@
-# Helm Role Tasks
-# Installs the Helm CLI binary on the master node
-
 ---
-# =============================================================================
-# TASK 1: Download and install Helm binary (master only)
-# =============================================================================
-- name: Download Helm tarball (master only)
+- name: Download checksum-verified Helm CLI
   ansible.builtin.get_url:
     url: "https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz"
-    dest: "/tmp/helm-{{ helm_version }}-linux-amd64.tar.gz"
+    checksum: "sha256:{{ helm_sha256 }}"
+    dest: /var/cache/branconet-migration/helm.tar.gz
     mode: '0644'
-  when: inventory_hostname in groups['master']
 
-- name: Extract Helm binary (master only)
+- name: Extract Helm CLI
   ansible.builtin.unarchive:
-    src: "/tmp/helm-{{ helm_version }}-linux-amd64.tar.gz"
-    dest: "/tmp"
+    src: /var/cache/branconet-migration/helm.tar.gz
+    dest: /var/cache/branconet-migration
     remote_src: true
-    creates: "/tmp/linux-amd64/helm"
-  when: inventory_hostname in groups['master']
 
-- name: Install Helm to /usr/local/bin (master only)
+- name: Install Helm CLI
   ansible.builtin.copy:
-    src: /tmp/linux-amd64/helm
+    src: /var/cache/branconet-migration/linux-amd64/helm
     dest: /usr/local/bin/helm
-    owner: root
-    group: root
-    mode: '0755'
     remote_src: true
-  when: inventory_hostname in groups['master']
-
-- name: Verify Helm installation (master only)
-  ansible.builtin.command: /usr/local/bin/helm version
-  register: helm_version_check
-  changed_when: false
-  when: inventory_hostname in groups['master']
-
-- name: Display Helm version (master only)
-  ansible.builtin.debug:
-    msg: "Helm installed: {{ helm_version_check.stdout }}"
-  when: inventory_hostname in groups['master']
-
-- name: Clean up Helm temp files (master only)
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop:
-    - "/tmp/helm-{{ helm_version }}-linux-amd64.tar.gz"
-    - "/tmp/linux-amd64"
-  when: inventory_hostname in groups['master']
+    mode: '0755'

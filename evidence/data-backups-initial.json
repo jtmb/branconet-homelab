@@ -1,0 +1,95 @@
+{
+  "started_at": "20261009T145609Z",
+  "source_replicas": {
+    "bot_ruckus": 1,
+    "bot_ruckus-db": 1,
+    "cicd_server-bootstrap": 1,
+    "cicd_vault": 1,
+    "gamesrv_mc-exporter": 1,
+    "mealie_mealie": 1,
+    "media_bazarr": 1,
+    "media_flaresolverr": 1,
+    "media_jackett": 1,
+    "media_overseerr": 1,
+    "media_radarr": 1,
+    "media_sonarr": 1,
+    "media_tautulli": 1,
+    "media_unpackerr": 1,
+    "media_xteve": 1,
+    "media_ytdl": 1,
+    "pi_exporter": 1,
+    "pi_pihole": 1,
+    "portainer_portainer": 1,
+    "proxy_traefik": 1,
+    "proxy_whoami": 1,
+    "vault_vaultwarden": 1,
+    "wordpress_db": 1,
+    "wordpress_phpmyadmin": 1,
+    "wordpress_redis-db": 1,
+    "wordpress_wp-app": 1,
+    "ws_aplb": 1,
+    "ws_homepage": 1,
+    "ws_lucinda": 1,
+    "ws_mcwebsite": 1,
+    "ws_santos": 1
+  },
+  "source_standalone": {
+    "192.168.0.4": [
+      "qbittorrent",
+      "GlueTun-proton",
+      "plex-plex-1"
+    ],
+    "192.168.0.5": [
+      "plex-plex-1"
+    ],
+    "192.168.0.6": [
+      "ets2-server",
+      "plex-plex-1"
+    ]
+  },
+  "archives": [
+    {
+      "ok": false,
+      "host": "192.168.0.4",
+      "tar_exit": 2,
+      "encryption_exit": 0,
+      "error_paths": "tar: mnt/container-program-files/jackett/Jackett/Indexers/eztv.json: File removed before we read it\ntar: mnt/container-program-files/jackett/Jackett/Indexers/1337x.json.bak: File removed before we read it\ntar: mnt/container-program-files/jackett/Jackett/Indexers/eztv.json.bak: File removed before we read it\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Matcher.1.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Analysis.2.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Crash Uploader.4.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Analysis.3.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Transcoder Statistics.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Matcher.3.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Server.1.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Matcher.4.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Analysis.1.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Server.2.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Transcoder Statistics.5.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Transcoder Statistics.2.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Server.5.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Server.3.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Analysis.5.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Crash Uploader.5.log: Cannot stat: Input/output error\ntar: mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Matcher.2.log: Cannot stat: Inpu",
+      "partial": "/mnt/container-backups/k8s-migration-20261009/cold-192.168.0.4-20261009T145609Z.tar.gz.age.partial"
+    },
+    {
+      "ok": true,
+      "host": "192.168.0.5",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/cold-192.168.0.5-20261009T145609Z.tar.gz.age",
+      "source_paths": [
+        "/var/plex-stack"
+      ],
+      "encrypted_bytes": 12739987692,
+      "ciphertext_sha256": "ac635560eec19bbdd46255bed76e3f8f6df73818218361ead4e4f8bb4a76c3a0",
+      "elapsed_seconds": 835
+    },
+    {
+      "ok": true,
+      "host": "192.168.0.6",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/cold-192.168.0.6-20261009T145609Z.tar.gz.age",
+      "source_paths": [
+        "/mnt/plex_smb_share/shared-container-folder/ets2",
+        "/var/plex-stack"
+      ],
+      "encrypted_bytes": 12743380617,
+      "ciphertext_sha256": "456ebd1af43f9f857f720929f19e858320c07defa1e2937423d334a6efaf7249",
+      "elapsed_seconds": 878
+    }
+  ],
+  "restoration": {
+    "standalone": {
+      "192.168.0.4": 0,
+      "192.168.0.5": 0,
+      "192.168.0.6": 0
+    },
+    "swarm": "TimeoutExpired"
+  },
+  "error": {
+    "type": "RuntimeError",
+    "message": "Cold archive failed; sources preserved"
+  }
+}

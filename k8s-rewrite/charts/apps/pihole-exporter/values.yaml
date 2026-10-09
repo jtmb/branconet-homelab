@@ -1,0 +1,62 @@
+enabled: false
+replicaCount: 0
+image: ekofr/pihole-exporter:latest@sha256:36dab68a7e4b2750802e2326d9340201dc498ac429cbd89cdfb45cbab3fef081
+environmentSecret: pihole-exporter-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - pi_exporter
+  requiredEnvironmentKeys:
+  - PATH
+  - PIHOLE_HOSTNAME
+  - PIHOLE_PASSWORD
+  - PIHOLE_PORT
+  - PORT
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies: []
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: pihole-exporter
+    namespace: pihole
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: pihole-exporter
+    template:
+      metadata:
+        labels:
+          app: pihole-exporter
+        annotations: {}
+      spec:
+        containers:
+        - name: pihole-exporter
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p9617-tcp
+            containerPort: 9617
+            protocol: TCP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: pihole-exporter
+    namespace: pihole
+  spec:
+    selector:
+      app: pihole-exporter
+    ports:
+    - name: p9617-tcp
+      port: 9617
+      targetPort: 9617
+      protocol: TCP

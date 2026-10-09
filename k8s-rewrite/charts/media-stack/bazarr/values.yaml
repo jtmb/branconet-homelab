@@ -1,0 +1,234 @@
+enabled: false
+replicaCount: 0
+image: ghcr.io/hotio/bazarr:latest@sha256:004b1072983d1af766fc11d048121ded9d296fdd64ea304762afa9dfcaf51edb
+environmentSecret: bazarr-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - media_bazarr
+  requiredEnvironmentKeys:
+  - APP_DIR
+  - CONFIG_DIR
+  - IMAGE_STATS
+  - LANG
+  - LANGUAGE
+  - LC_ALL
+  - PATH
+  - PGID
+  - PRIVOXY_ENABLED
+  - PUID
+  - S6_BEHAVIOUR_IF_STAGE2_FAILS
+  - S6_CMD_WAIT_FOR_SERVICES_MAXTIME
+  - S6_SERVICES_GRACETIME
+  - S6_STAGE2_HOOK
+  - TZ
+  - UMASK
+  - UNBOUND_ENABLED
+  - UNBOUND_NAMESERVERS
+  - VPN_AUTO_PORT_FORWARD
+  - VPN_CONF
+  - VPN_ENABLED
+  - VPN_EXPOSE_PORTS_ON_LAN
+  - VPN_HEALTHCHECK_ENABLED
+  - VPN_INTERFACE_PREFIXES
+  - VPN_LAN_LEAK_ENABLED
+  - VPN_LAN_NETWORK
+  - VPN_NAMESERVERS
+  - VPN_PIA_DIP_TOKEN
+  - VPN_PIA_PASS
+  - VPN_PIA_PORT_FORWARD_PERSIST
+  - VPN_PIA_PREFERRED_REGION
+  - VPN_PIA_USER
+  - VPN_PORT_REDIRECTS
+  - VPN_PROVIDER
+  - WEBUI_PORTS
+  - XDG_CACHE_HOME
+  - XDG_CONFIG_HOME
+  - XDG_DATA_HOME
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/container-program-files/bazarr/config
+    destinationPVC: bazarr-data-0
+    mountPath: /config
+    measuredBytes: 64227728
+    allocatedGiB: 1
+    uid: 1000
+    gid: 1000
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: bazarr
+    namespace: plex
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: bazarr
+    template:
+      metadata:
+        labels:
+          app: bazarr
+        annotations:
+          homepage.group: Media
+          homepage.name: Bazarr
+          homepage.icon: https://user-images.githubusercontent.com/787317/183671204-e4e6e67b-c1cd-4e90-a9d1-6c759859f117.png
+          homepage.href: http://bazarr.branconet.local/
+          homepage.description: Bazarr subtitles for media
+      spec:
+        containers:
+        - name: bazarr
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p6767-tcp
+            containerPort: 6767
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /config
+            readOnly: false
+          - name: data-1
+            mountPath: /tv
+            readOnly: false
+          - name: data-2
+            mountPath: /movies
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: bazarr-data-0
+        - name: data-1
+          persistentVolumeClaim:
+            claimName: bazarr-data-1
+        - name: data-2
+          persistentVolumeClaim:
+            claimName: bazarr-data-2
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: bazarr-data-0
+    namespace: plex
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: plex-bazarr-data-1
+  spec:
+    capacity:
+      storage: 1Gi
+    accessModes:
+    - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+    mountOptions:
+    - noserverino
+    - cache=none
+    - uid=1000
+    - gid=1000
+    - file_mode=0755
+    - dir_mode=0755
+    csi:
+      driver: smb.csi.k8s.io
+      volumeHandle: plex-bazarr-data-1
+      volumeAttributes:
+        source: //192.168.0.8/plex_smb_share/tv
+      nodeStageSecretRef:
+        name: smb-creds
+        namespace: plex
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: bazarr-data-1
+    namespace: plex
+  spec:
+    storageClassName: ''
+    volumeName: plex-bazarr-data-1
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: plex-bazarr-data-2
+  spec:
+    capacity:
+      storage: 1Gi
+    accessModes:
+    - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+    mountOptions:
+    - noserverino
+    - cache=none
+    - uid=1000
+    - gid=1000
+    - file_mode=0755
+    - dir_mode=0755
+    csi:
+      driver: smb.csi.k8s.io
+      volumeHandle: plex-bazarr-data-2
+      volumeAttributes:
+        source: //192.168.0.8/plex_smb_share/movies
+      nodeStageSecretRef:
+        name: smb-creds
+        namespace: plex
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: bazarr-data-2
+    namespace: plex
+  spec:
+    storageClassName: ''
+    volumeName: plex-bazarr-data-2
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: bazarr
+    namespace: plex
+  spec:
+    selector:
+      app: bazarr
+    ports:
+    - name: p6767-tcp
+      port: 6767
+      targetPort: 6767
+      protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: bazarr
+    namespace: plex
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: bazarr.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: bazarr
+              port:
+                number: 6767

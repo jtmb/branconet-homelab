@@ -1,0 +1,101 @@
+enabled: false
+replicaCount: 0
+image: mysql:5.7@sha256:4bc6bc963e6d8443453676cae56536f4b8156d78bae03c0145cbe47c2aad73bb
+environmentSecret: wordpress-db-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - wordpress_db
+  requiredEnvironmentKeys:
+  - GOSU_VERSION
+  - MYSQL_DATABASE
+  - MYSQL_MAJOR
+  - MYSQL_PASSWORD
+  - MYSQL_RANDOM_ROOT_PASSWORD
+  - MYSQL_SHELL_VERSION
+  - MYSQL_USER
+  - MYSQL_VERSION
+  - PATH
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/container-program-files/wordpress/mysql-db
+    destinationPVC: wordpress-db-data-0
+    mountPath: /var/lib/mysql
+    measuredBytes: 218542752
+    allocatedGiB: 1
+    uid: 999
+    gid: 65534
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: wordpress-db
+    namespace: wordpress
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: wordpress-db
+    template:
+      metadata:
+        labels:
+          app: wordpress-db
+        annotations: {}
+      spec:
+        containers:
+        - name: wordpress-db
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p3306-tcp
+            containerPort: 3306
+            protocol: TCP
+          - name: p33060-tcp
+            containerPort: 33060
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /var/lib/mysql
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: wordpress-db-data-0
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: wordpress-db-data-0
+    namespace: wordpress
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: wordpress-db
+    namespace: wordpress
+  spec:
+    selector:
+      app: wordpress-db
+    ports:
+    - name: p3306-tcp
+      port: 3306
+      targetPort: 3306
+      protocol: TCP
+    - name: p33060-tcp
+      port: 33060
+      targetPort: 33060
+      protocol: TCP

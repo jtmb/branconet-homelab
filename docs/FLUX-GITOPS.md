@@ -2,6 +2,8 @@
 
 ## Overview
 
+The approved migration foundation pins Flux v2.9.6 and installs source-controller, kustomize-controller, helm-controller and notification-controller. It no longer deletes Helm support or bootstraps through a second competing path. Installing controllers does not activate old repository workloads: chart/source activation follows validation and explicit migration data gates. Individual Helm packages now live beside the retained legacy manifests, each with its own Chart.yaml, values.yaml and templates. They are disabled until reviewed and migrated. Repository validation in `.github/workflows/kubernetes-migration.yml` blocks incomplete implementations; live schema/application tests remain required. See [MIGRATION_STATUS.md](../MIGRATION_STATUS.md) for effective reconciliation evidence. The workflow below describes the legacy raw-manifest layout, not activated migration releases; do not reconcile both paths against the same resources.
+
 Flux CD watches `charts/` in this repo and applies any changes to the cluster automatically. Every app lives in its own `charts/<name>/` subdirectory, giving Fleet-style per-app visibility.
 
 ## How Deployments Work

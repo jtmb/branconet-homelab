@@ -1,0 +1,190 @@
+enabled: false
+replicaCount: 0
+image: ghcr.io/alexta69/metube:latest@sha256:afd3fa2b229e3e6d4c8750618fe148af33a1f70b32af4441ecbd2d08f29d8221
+environmentSecret: ytdl-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - media_ytdl
+  requiredEnvironmentKeys:
+  - DELETE_FILE_ON_TRASHCAN
+  - DOWNLOAD_DIR
+  - GPG_KEY
+  - METUBE_VERSION
+  - PATH
+  - PGID
+  - PUID
+  - PYTHON_SHA256
+  - PYTHON_VERSION
+  - STATE_DIR
+  - TEMP_DIR
+  - UMASK
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/nfs-container-volumes/ytdl/state
+    destinationPVC: ytdl-data-0
+    mountPath: /state
+    measuredBytes: 73736
+    allocatedGiB: 1
+    uid: 1000
+    gid: 1000
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/nfs-container-volumes/ytdl/tmp_dir
+    destinationPVC: ytdl-data-1
+    mountPath: /tmp_dir
+    measuredBytes: 617480129
+    allocatedGiB: 2
+    uid: 1000
+    gid: 1000
+  sourceCommandArgumentsRequireReview: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: ytdl
+    namespace: plex
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: ytdl
+    template:
+      metadata:
+        labels:
+          app: ytdl
+        annotations:
+          homepage.group: Media
+          homepage.name: YouTube Downloader
+          homepage.icon: https://res.cloudinary.com/razordarkamg/image/upload/v1621212884/SonarrV3_pufacd.png
+          homepage.href: http://ytdl.branconet.local/
+          homepage.description: YouTube video downloader
+      spec:
+        containers:
+        - name: ytdl
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p8081-tcp
+            containerPort: 8081
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /state
+            readOnly: false
+          - name: data-1
+            mountPath: /tmp_dir
+            readOnly: false
+          - name: data-2
+            mountPath: /downloads
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: ytdl-data-0
+        - name: data-1
+          persistentVolumeClaim:
+            claimName: ytdl-data-1
+        - name: data-2
+          persistentVolumeClaim:
+            claimName: ytdl-data-2
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: ytdl-data-0
+    namespace: plex
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: ytdl-data-1
+    namespace: plex
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 2Gi
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: plex-ytdl-data-2
+  spec:
+    capacity:
+      storage: 1Gi
+    accessModes:
+    - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+    mountOptions:
+    - noserverino
+    - cache=none
+    - uid=1000
+    - gid=1000
+    - file_mode=0755
+    - dir_mode=0755
+    csi:
+      driver: smb.csi.k8s.io
+      volumeHandle: plex-ytdl-data-2
+      volumeAttributes:
+        source: //192.168.0.8/plex_smb_share/downloads
+      nodeStageSecretRef:
+        name: smb-creds
+        namespace: plex
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: ytdl-data-2
+    namespace: plex
+  spec:
+    storageClassName: ''
+    volumeName: plex-ytdl-data-2
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ytdl
+    namespace: plex
+  spec:
+    selector:
+      app: ytdl
+    ports:
+    - name: p8081-tcp
+      port: 8081
+      targetPort: 8081
+      protocol: TCP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: ytdl
+    namespace: plex
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: ytdl.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: ytdl
+              port:
+                number: 8081

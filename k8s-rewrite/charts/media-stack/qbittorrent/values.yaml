@@ -1,0 +1,204 @@
+enabled: false
+replicaCount: 0
+image: lscr.io/linuxserver/qbittorrent@sha256:570aeb63bdedcb5f9dd2500bd8f0a75581ba07c518c05cabbef0cfeb15451b3f
+environmentSecret: qbittorrent-runtime
+migration:
+  verified: false
+  state: live-integration-review-pending
+  sources:
+  - 192.168.0.4/qbittorrent
+  requiredEnvironmentKeys:
+  - HOME
+  - LSIO_FIRST_PARTY
+  - PATH
+  - PGID
+  - PS1
+  - PUID
+  - QBITTORRENT_PASSWORD
+  - QBITTORRENT_USERNAME
+  - S6_CMD_WAIT_FOR_SERVICES_MAXTIME
+  - S6_STAGE2_HOOK
+  - S6_VERBOSITY
+  - TERM
+  - TZ
+  - VIRTUAL_ENV
+  - WEBUI_PORT
+  - XDG_CONFIG_HOME
+  - XDG_DATA_HOME
+  storageSizingVerified: true
+  nativeSecretsImported: false
+  applicationChecksPassed: false
+  dataCopies:
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/container-program-files/deluge/config
+    destinationPVC: qbittorrent-data-0
+    mountPath: /config
+    measuredBytes: 16266780
+    allocatedGiB: 1
+    uid: 0
+    gid: 0
+  sourceCommandArgumentsRequireReview: false
+  vpnChartDependency: apps/gluetun
+  vpnEgressAndFailureIsolationVerified: false
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: qbittorrent
+    namespace: plex
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: qbittorrent
+    template:
+      metadata:
+        labels:
+          app: qbittorrent
+        annotations: {}
+      spec:
+        containers:
+        - name: qbittorrent
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p6881-tcp
+            containerPort: 6881
+            protocol: TCP
+          - name: p6881-udp
+            containerPort: 6881
+            protocol: UDP
+          - name: p8080-tcp
+            containerPort: 8080
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /config
+            readOnly: false
+          - name: data-1
+            mountPath: /downloads
+            readOnly: false
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: qbittorrent-data-0
+        - name: data-1
+          persistentVolumeClaim:
+            claimName: qbittorrent-data-1
+        - name: vpn-data-0
+          persistentVolumeClaim:
+            claimName: gluetun-data-0
+        - name: vpn-data-1
+          persistentVolumeClaim:
+            claimName: gluetun-data-1
+        initContainers:
+        - name: gluetun
+          image: qmcgaw/gluetun@sha256:46407f10497e6b09770e63006439053ab88db9b94f009e88bcaef168233d5973
+          envFrom:
+          - secretRef:
+              name: gluetun-runtime
+          ports:
+          - name: p8000-tcp
+            containerPort: 8000
+            protocol: TCP
+          - name: p8388-tcp
+            containerPort: 8388
+            protocol: TCP
+          - name: p8388-udp
+            containerPort: 8388
+            protocol: UDP
+          - name: p8888-tcp
+            containerPort: 8888
+            protocol: TCP
+          securityContext:
+            capabilities:
+              add:
+              - NET_ADMIN
+          volumeMounts:
+          - name: vpn-data-0
+            mountPath: /downloads
+            readOnly: false
+          - name: vpn-data-1
+            mountPath: /tmp/gluetun
+            readOnly: false
+          restartPolicy: Always
+          startupProbe:
+            exec:
+              command:
+              - /gluetun-entrypoint
+              - healthcheck
+            periodSeconds: 5
+            failureThreshold: 60
+          readinessProbe:
+            exec:
+              command:
+              - /gluetun-entrypoint
+              - healthcheck
+            periodSeconds: 10
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: qbittorrent-data-0
+    namespace: plex
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: plex-qbittorrent-data-1
+  spec:
+    capacity:
+      storage: 1Gi
+    accessModes:
+    - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+    mountOptions:
+    - noserverino
+    - cache=none
+    - uid=1000
+    - gid=1000
+    - file_mode=0755
+    - dir_mode=0755
+    csi:
+      driver: smb.csi.k8s.io
+      volumeHandle: plex-qbittorrent-data-1
+      volumeAttributes:
+        source: //192.168.0.8/plex_smb_share/downloads
+      nodeStageSecretRef:
+        name: smb-creds
+        namespace: plex
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: qbittorrent-data-1
+    namespace: plex
+  spec:
+    storageClassName: ''
+    volumeName: plex-qbittorrent-data-1
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: qbittorrent
+    namespace: plex
+  spec:
+    selector:
+      app: qbittorrent
+    ports:
+    - name: p8112-tcp
+      port: 8112
+      targetPort: 8112
+      protocol: TCP
