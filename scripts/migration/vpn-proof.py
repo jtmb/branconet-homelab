@@ -4,9 +4,14 @@ import datetime,hashlib,json,pathlib,subprocess,time
 ROOT=pathlib.Path(__file__).resolve().parents[2];RUNTIME=pathlib.Path.home()/'.local/share/branconet-migration'
 k=[str(RUNTIME/'bin/kubectl'),'--kubeconfig',str(RUNTIME/'admin.conf')]
 def exec_(container,args,check=True):return subprocess.run(k+['exec','-n','plex','deployment/qbittorrent','-c',container,'--']+args,capture_output=True,check=check)
-def qb_ip():return exec_('qbittorrent',['curl','-fsS','--max-time','12','https://api.ipify.org']).stdout.strip()
+def qb_ip():
+ for attempt in range(6):
+  result=exec_('qbittorrent',['curl','-fsS','--max-time','12','https://api.ipify.org'],check=False)
+  if result.returncode==0 and result.stdout.strip():return result.stdout.strip()
+  time.sleep(2)
+ raise RuntimeError('VPN public egress did not respond')
 before=qb_ip();vpn=exec_('gluetun',['wget','-qO-','--timeout=12','https://api.ipify.org']).stdout.strip()
-hostcode="import urllib.request,sys;sys.stdout.buffer.write(urllib.request.urlopen('https://api.ipify.org',timeout=15).read())"
+hostcode="import urllib.request,sys;body=urllib.request.urlopen('https://1.1.1.1/cdn-cgi/trace',timeout=15).read().decode();sys.stdout.write(next(line[3:] for line in body.splitlines() if line.startswith('ip=')))"
 isp=subprocess.check_output(['ssh','-p','2002','james@192.168.0.4','python3','-'],input=hostcode.encode()).strip()
 if not before or before!=vpn or before==isp:raise RuntimeError('Shared VPN egress differs or bypasses VPN')
 down=False

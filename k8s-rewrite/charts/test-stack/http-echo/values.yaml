@@ -1,6 +1,6 @@
 enabled: false
 replicaCount: 0
-image: ''
+image: hashicorp/http-echo@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186
 environmentSecret: http-echo-runtime
 migration:
   verified: false
@@ -8,8 +8,8 @@ migration:
   sources:
   - repository/test-stack/http-echo
   requiredEnvironmentKeys: []
-  storageSizingVerified: false
-  nativeSecretsImported: false
+  storageSizingVerified: true
+  nativeSecretsImported: true
   applicationChecksPassed: false
 resources:
 - apiVersion: apps/v1
@@ -39,9 +39,9 @@ resources:
       spec:
         containers:
         - name: http-echo
-          image: hashicorp/http-echo:latest
+          image: '{{ .Values.image }}'
           args:
-          - -text="Hello from Branconet http-echo on Kubernetes + Longhorn!"
+          - -text=Hello from Branconet http-echo on Kubernetes + Longhorn!
           - -listen=:8080
           ports:
           - containerPort: 8080
@@ -56,10 +56,13 @@ resources:
             limits:
               cpu: 100m
               memory: 64Mi
+          imagePullPolicy: IfNotPresent
         volumes:
         - name: data
           persistentVolumeClaim:
             claimName: http-echo-data-pvc
+    strategy:
+      type: Recreate
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
@@ -77,20 +80,7 @@ resources:
               name: http-echo
               port:
                 number: 80
-- apiVersion: traefik.containo.us/v1alpha1
-  kind: IngressRoute
-  metadata:
-    name: http-echo-ingress
-    namespace: http-echo
-  spec:
-    entryPoints:
-    - web
-    routes:
-    - match: Host(`echo.branconet.local`)
-      kind: Rule
-      services:
-      - name: http-echo
-        port: 80
+    ingressClassName: traefik
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:

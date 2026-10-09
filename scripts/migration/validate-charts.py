@@ -47,7 +47,7 @@ def main():
         active_empty=not values['resources']
         private=subprocess.run([args.helm,'template',name,str(directory),'--set','enabled=true,migration.verified=false,migration.staging=true,replicaCount=0'],capture_output=True,text=True)
         private_objects=[o for o in yaml.safe_load_all(private.stdout) if o] if not private.returncode else []
-        private_valid=private.returncode==0 and all(o['kind'] not in {'Ingress','IngressRoute'} and (o['kind']!='Service' or o['spec'].get('type','ClusterIP')=='ClusterIP') for o in private_objects)
+        private_valid=private.returncode==0 and all(o['kind'] not in {'Ingress','IngressRoute'} and (o['kind']!='Service' or (o['spec'].get('type','ClusterIP')=='ClusterIP' and not o['spec'].get('externalIPs'))) for o in private_objects)
         result={'chart':str(source.relative_to(ROOT)), 'input_sha256':fingerprint.hexdigest(), 'lint_passed':lint.returncode==0,
                 'activation_gate_enforced':blocked.returncode!=0, 'staged_render_passed':rendered.returncode==0,
                 'replica_types_valid':replicas_valid, 'unique_resource_identities':unique_resources,

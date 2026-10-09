@@ -1,6 +1,6 @@
 enabled: false
 replicaCount: 0
-image: ''
+image: jtmb92/qbit-monitor@sha256:b1ba462564843f9f328b287a34e8a7dc4cd1f218e085862a77f42aaa1703ffec
 environmentSecret: qbit-monitor-runtime
 migration:
   verified: false
@@ -8,8 +8,8 @@ migration:
   sources:
   - repository/media-stack/qbit-monitor
   requiredEnvironmentKeys: []
-  storageSizingVerified: false
-  nativeSecretsImported: false
+  storageSizingVerified: true
+  nativeSecretsImported: true
   applicationChecksPassed: false
 resources:
 - apiVersion: apps/v1
@@ -32,7 +32,7 @@ resources:
       spec:
         containers:
         - name: qbit-monitor
-          image: jtmb92/qbit-monitor:latest
+          image: '{{ .Values.image }}'
           env:
           - name: QBITTORRENT_STATUS_NOTIFICATION
             value: 'on'
@@ -41,15 +41,15 @@ resources:
           - name: QBITTORRENT_USERNAME
             valueFrom:
               secretKeyRef:
-                name: qbitmonitor-creds-secret
-                key: username
-                optional: true
+                name: qbittorrent-runtime
+                key: QBITTORRENT_USERNAME
+                optional: false
           - name: QBITTORRENT_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: qbitmonitor-creds-secret
-                key: password
-                optional: true
+                name: qbittorrent-runtime
+                key: QBITTORRENT_PASSWORD
+                optional: false
           - name: PORT_FORWARDING
             value: 'on'
           - name: CHECK_INTERVAL_FORWARDED_PORT
@@ -81,6 +81,7 @@ resources:
           volumeMounts:
           - name: gluetun-port
             mountPath: /tmp/gluetun
+            readOnly: true
           resources:
             requests:
               cpu: 50m
@@ -88,66 +89,22 @@ resources:
             limits:
               cpu: 200m
               memory: 128Mi
+          imagePullPolicy: IfNotPresent
         volumes:
         - name: gluetun-port
           persistentVolumeClaim:
-            claimName: qbit-monitor-samba-pvc
-- apiVersion: networking.k8s.io/v1
-  kind: Ingress
-  metadata:
-    name: qbit-monitor-ingress
-    namespace: plex
-  spec:
-    rules:
-    - host: qbit-monitor.branconet.local
-      http:
-        paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: qbit-monitor
-              port:
-                number: 80
-- apiVersion: v1
-  kind: PersistentVolume
-  metadata:
-    name: qbit-monitor-samba-pv
-    annotations:
-      helm.sh/resource-policy: keep
-  spec:
-    capacity:
-      storage: 1Gi
-    accessModes:
-    - ReadWriteMany
-    persistentVolumeReclaimPolicy: Retain
-    mountOptions:
-    - noserverino
-    - cache=none
-    csi:
-      driver: smb.csi.k8s.io
-      volumeHandle: qbit-monitor-samba
-      volumeAttributes:
-        source: //192.168.0.8/plex_smb_share/shared-container-folder/gluetun
-        options: uid=0,gid=0,forceuid,forcegid,file_mode=0755,noserverino,cache=none
-      nodeStageSecretRef:
-        name: smb-creds
-        namespace: plex
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    name: qbit-monitor-samba-pvc
-    namespace: plex
-    annotations:
-      helm.sh/resource-policy: keep
-  spec:
-    accessModes:
-    - ReadWriteMany
-    resources:
-      requests:
-        storage: 1Gi
-    volumeName: qbit-monitor-samba-pv
-    storageClassName: ''
+            claimName: gluetun-data-1-retry1
+        affinity:
+          podAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: qbittorrent
+              topologyKey: kubernetes.io/hostname
+              namespaces:
+              - plex
+    strategy:
+      type: Recreate
 - apiVersion: v1
   kind: Service
   metadata:

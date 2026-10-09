@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: jtmb-cc
+  namespace: wordpress
+spec:
+  secretName: jtmb-cc-tls
+  dnsNames:
+  - jtmb.cc
+  issuerRef:
+    name: letsencrypt-production-http01
+    kind: ClusterIssuer

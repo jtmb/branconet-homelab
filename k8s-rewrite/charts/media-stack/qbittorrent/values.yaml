@@ -165,6 +165,13 @@ resources:
           command:
           - $(MIGRATION_COMMAND_0)
           imagePullPolicy: IfNotPresent
+        dnsPolicy: None
+        dnsConfig:
+          nameservers:
+          - 127.0.0.1
+          options:
+          - name: ndots
+            value: '1'
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:

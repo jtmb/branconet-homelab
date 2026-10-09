@@ -13,3 +13,40 @@
 - name: Record controllers for migration acceptance
   ansible.builtin.command: kubectl -n flux-system get deployments -o json
   changed_when: false
+
+- name: Activate the validated migration source after native state recovery
+  ansible.builtin.copy:
+    dest: /etc/kubernetes/flux-migration-bootstrap.yaml
+    mode: '0644'
+    content: |
+      apiVersion: source.toolkit.fluxcd.io/v1
+      kind: GitRepository
+      metadata:
+        name: migration-validated
+        namespace: flux-system
+      spec:
+        interval: 1m
+        url: {{ flux_git_url }}
+        ref:
+          branch: {{ flux_git_branch }}
+      ---
+      apiVersion: kustomize.toolkit.fluxcd.io/v1
+      kind: Kustomization
+      metadata:
+        name: migration-releases
+        namespace: flux-system
+      spec:
+        interval: 1m
+        timeout: 10m
+        path: {{ flux_git_path }}
+        prune: false
+        wait: true
+        sourceRef:
+          kind: GitRepository
+          name: migration-validated
+  when: flux_activation_enabled | bool
+
+- name: Apply validated-source activation
+  ansible.builtin.command: kubectl apply -f /etc/kubernetes/flux-migration-bootstrap.yaml
+  changed_when: true
+  when: flux_activation_enabled | bool

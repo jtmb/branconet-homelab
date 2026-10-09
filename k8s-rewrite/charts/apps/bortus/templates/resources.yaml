@@ -3,6 +3,9 @@
 {{- fail "Migration storage, secrets and cutover checks must be verified before activation" }}
 {{- end }}
 {{- range .Values.resources }}
+{{- if and (eq .kind "Service") $.Values.migration.staging (not $.Values.migration.routingReviewed) }}
+{{- $_ := unset .spec "externalIPs" }}
+{{- end }}
 {{- if and $.Values.migration.staging (eq .kind "Service") (hasKey .spec "type") (ne .spec.type "ClusterIP") }}
 {{- fail "Unaccepted BORTUS staging must remain private to the cluster" }}
 {{- end }}

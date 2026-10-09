@@ -3,6 +3,9 @@
 {{- fail "Migration preflight is required for private staging; full acceptance is required for routing" }}
 {{- end }}
 {{- range .Values.resources }}
+{{- if and (eq .kind "Service") $.Values.migration.staging (not $.Values.migration.routingReviewed) }}
+{{- $_ := unset .spec "externalIPs" }}
+{{- end }}
 {{- if not (and $.Values.migration.staging (not $.Values.migration.routingReviewed) (or (eq .kind "Ingress") (eq .kind "IngressRoute"))) }}
 {{- if and $.Values.migration.staging (eq .kind "Service") (hasKey .spec "type") (ne .spec.type "ClusterIP") }}
 {{- fail "Unaccepted staging must use ClusterIP Services" }}

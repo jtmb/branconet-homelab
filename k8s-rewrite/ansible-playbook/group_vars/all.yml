@@ -26,8 +26,8 @@ longhorn_default_storage_class: longhorn
 longhorn_data_path: /var/lib/longhorn
 flux_version: v2.9.6
 flux_git_url: https://github.com/jtmb/branconet-homelab.git
-flux_git_branch: codex/kubernetes-migration
-flux_git_path: ./k8s-rewrite/clusters/prd
+flux_git_branch: codex/kubernetes-validated
+flux_git_path: ./k8s-rewrite/flux/migration-releases
 helm_version: v4.3.0
 helm_sha256: 86584a54def73570558f66f5111cc53dfed56689637ae32c1201205d494f54fb
 smb_csi_version: v1.20.3
@@ -35,6 +35,13 @@ smb_media_source: //192.168.0.8/plex_smb_share
 traefik_version: v2.11
 ingress_http_nodeport: 30080
 ingress_https_nodeport: 30443
+migration_network_cutover_complete: true
+ingress_external_ips: [192.168.0.4, 192.168.0.5, 192.168.0.6]
+migration_native_dns_enabled: true
+cluster_upstream_dns: [1.1.1.1, 8.8.8.8]
+flux_activation_enabled: true
+longhorn_backup_target: cifs://192.168.0.8/container_backups/k8s-migration-20261009/longhorn?cifsOptions=vers=3.1.1,soft
+longhorn_backup_credential_secret: longhorn-backup-cifs
 nfs_enabled: false
 local_path_enabled: false
 kubeconfig_path: /home/james/.kube

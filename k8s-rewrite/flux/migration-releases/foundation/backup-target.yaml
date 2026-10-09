@@ -1,0 +1,9 @@
+apiVersion: longhorn.io/v1beta2
+kind: BackupTarget
+metadata:
+  name: default
+  namespace: longhorn-system
+spec:
+  backupTargetURL: cifs://192.168.0.8/container_backups/k8s-migration-20261009/longhorn?cifsOptions=vers=3.1.1,soft
+  credentialSecret: longhorn-backup-cifs
+  pollInterval: 1m0s

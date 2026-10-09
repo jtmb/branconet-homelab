@@ -8,6 +8,12 @@ Three nodes are Ready. CI validated revision 40ef692 and Flux adopted 29 private
 
 ## Execution journal (historical observations)
 
+- 19:13 UTC: standard 80/443 routing transferred from Swarm to native Traefik with encrypted rollback specifications. Twelve trusted HTTPS/content checks passed on 443; all three node addresses passed UDP/TCP DNS on 53. DNS exposure is a separate pihole-public Service, preserving ingress ownership of port 80 and the old admin port 8079.
+- 19:19 UTC: an installed FFmpeg client decoded ten seconds / 239 frames of real Plex media through 192.168.0.4:32400. Its token stayed in a loopback proxy's memory. All old Plex instances remain stopped with their configurations retained.
+- Repository http-echo and jtmb-dev now use inspected immutable image digests; both passed HTTP content, restart and worker relocation checks. Native DNS gained their names and bortus.branconet.lan while preserving all existing records.
+- VPN shared egress and actual tunnel-failure blocking/recovery passed. Startup DNS was adapted to Gluetun's own loopback resolver from Pod creation; no WireGuard credentials or provider selection changed. Forwarding negotiation has occurred, but stable forwarding/API integration is still pending. Copied qBittorrent authentication rejects its old environment/helper credentials, and imported credentials do not match the retained password hash; working credentials were requested without resetting application auth.
+- 19:35 UTC: 31 active native Longhorn volumes received cold snapshots while application writers were stopped, then workloads resumed. Native backups are being copied to the existing NAS backup share through an available CIFS BackupTarget. Backups and restore acceptance remain pending; source archives/data remain retained.
+
 - Approved plan saved with architecture graphs, acceptance contract, migration sequence and report template.
 - Migration goal active; source checked out from the inspected k8s-rewrite baseline on codex/kubernetes-migration.
 - BORTUS application-development chat requested with an isolated worktree and scoped integration contract.
@@ -77,7 +83,7 @@ Three nodes are Ready. CI validated revision 40ef692 and Flux adopted 29 private
 | AC6 SMB preservation/integration | Passed Plex integration | Existing share paths preserved; real Plex media range reads match before and after worker relocation |
 | AC7 Native Secrets/BORTUS | Private checks passed | Native readback/encryption, all aliases, auth/CRUD/conflicts/restart, dashboard and live API outage/recovery passed; public HTTPS pending |
 | AC8 Data preservation | In progress | Seven required archives authenticated; actual restore/copy checks and original Redis-state acceptance pending |
-| AC9 One Plex service | In progress | One active native Plex; all old instances stopped and configs retained; master identity/library counts, real media read and relocation passed; client playback pending |
+| AC9 One Plex service | Passed | One active native Plex; all old instances stopped and configs retained; master identity/library counts, real media read, relocation and actual FFmpeg client playback passed |
 | AC10 Reproducibility/docs | In progress | Plan and report saved; update implementation alongside changes |
 | AC11 Retirement approval | Pending | Requires completed evidence and user confirmation |
 

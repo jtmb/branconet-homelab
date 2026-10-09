@@ -1,4 +1,19 @@
 ---
+- name: Verify source ingress ports have been released before reapplying the final service
+  ansible.builtin.command:
+    argv: [docker, service, inspect, proxy_traefik]
+  register: old_ingress
+  changed_when: false
+  failed_when: false
+  when: migration_network_cutover_complete | bool
+
+- name: Require released Swarm ingress ports
+  ansible.builtin.assert:
+    that:
+      - old_ingress.rc != 0 or ((old_ingress.stdout | from_json)[0].Spec.EndpointSpec.Ports | default([]) | length == 0)
+    fail_msg: Source ingress ports remain reserved; restore or complete the recorded port cutover first.
+  when: migration_network_cutover_complete | bool
+
 - name: Render temporary Traefik ingress without occupying Swarm host ports
   ansible.builtin.copy:
     dest: /etc/kubernetes/traefik-migration.yaml
@@ -97,6 +112,7 @@
         namespace: traefik
       spec:
         type: NodePort
+        externalIPs: {{ (ingress_external_ips if migration_network_cutover_complete else []) | to_json }}
         selector: {app: traefik}
         ports:
           - {name: web, port: 80, targetPort: web, nodePort: {{ ingress_http_nodeport }}}
