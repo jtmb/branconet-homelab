@@ -1,208 +1,27 @@
-# Botrus Secrets Engine
+# BORTUS Secrets Engine
 
-The Botrus Secrets Engine is a **zero-disk, API-backed secret management system** built into the Botrus K8s dashboard. No secret value ever touches the filesystem — all values are resolved at runtime over an authenticated HTTP channel.
+Kubernetes native Secrets are the authoritative value store. BORTUS uses a TLS-verified Kubernetes client; SQLite stores identities, nonsecret configuration and explicit `SecretReference` metadata. Legacy sensitive DB rows are ignored, never pushed at startup/CRUD and never used as outage fallback.
 
-## Architecture
+## Mapping and API
 
-```mermaid
-flowchart LR
-    subgraph Ansible["Ansible Runtime"]
-        LOOKUP["botrus_secret<br/>lookup plugin"]
-        CACHE["In-memory<br/>cache"]
-    end
-    subgraph NextJS["Next.js API"]
-        ENDPOINT["GET /api/vars/lookup<br/>?key=foo"]
-        AUTH["Bearer token<br/>check"]
-    end
-    subgraph DB["SQLite"]
-        VARS["Variable table<br/>(encrypted flag)"]
-    end
-    subgraph Disk["Filesystem"]
-        ALLYML["group_vars/all.yml<br/>lookup refs only<br/>(gitignored)"]
-    end
+References have `alias`, `namespace`, `name`, `key`. Register via `/api/secret-references` or a metadata-only JSON array mounted as `BORTUS_SECRET_ALIASES_FILE`. See [deployment contract](BORTUS-DEPLOYMENT.md). No underscore parsing occurs: `openvpn_user` remains an exact data key. Preserve legacy aliases explicitly, including `secret_plex_smb-creds_password`; unmapped sensitive lookups error instead of reading old DB values.
 
-    LOOKUP -->|"HTTP GET + Bearer"| ENDPOINT
-    LOOKUP -.->|"cache hit"| CACHE
-    ENDPOINT --> AUTH
-    AUTH -->|"valid token"| VARS
-    VARS -->|"{ key, value }"| LOOKUP
-    SYNC["POST /api/vars/sync"] -->|"regenerates"| ALLYML
-```
+`GET /api/vars/lookup?key=<alias>` retains Bearer `BOTRUS_SECRETS_KEY` authentication and `{key,value}`. Aliases resolve from Kubernetes; nonsecret configuration resolves from SQLite. Encrypted-flag, secret/system-category, secret-prefixed and known credential names cannot return DB values. Invalid Bearer: 401; missing alias/key: 404; Kubernetes/config/RBAC outage: 503; collisions: 409. Responses are private/no-store. Only this exact lookup path bypasses cookie middleware.
 
-## Components
+`/api/secrets` lists object metadata and keys without values for authenticated users. Value reads and all mutations require fresh DB role `write`. `/secrets` supplies explicit editing/reveal and resourceVersion protection. Readonly users see metadata only. Nonsecret `/api/vars` stays separate.
 
-### 1. Database (`Variable` table)
+Create refuses existing keys. Update/delete require `resourceVersion`; concurrent changes return 409 without retry. Preserve unrelated data, type, labels, annotations and owner references. Immutable Secrets refuse changes. Last-key deletion keeps an empty object. Namespaces must already exist and be allowed by `BORTUS_SECRET_NAMESPACES`. The text API rejects non-UTF-8 binary keys on read.
 
-Prisma model with an `encrypted` boolean flag:
+## Provisioning
 
-| Column     | Type    | Notes                         |
-| ---------- | ------- | ----------------------------- |
-| `key`      | String  | Unique variable name          |
-| `value`    | String  | The actual secret/value       |
-| `category` | String  | Grouping (ansible, kubernetes, secret, etc.) |
-| `encrypted`| Boolean | Marks sensitivity             |
+For typed Secrets that require specific keys, the Kubernetes API may reject deletion of a required last key; BORTUS returns a fixed error and leaves the object intact. Opaque last-key deletion retains an empty object.
 
-### 2. API Endpoint
+`POST /api/vars/sync` writes lookup references for nonsecret config and explicit aliases plus inventory. No Secret manifests/value-bearing arguments are generated. Old sensitive rows do not enter files. Alias/config collisions and unsafe config identifiers fail before writing. Path-style aliases remain directly queryable but are omitted from generated Ansible identifiers. No delayed push queue exists.
 
-- **`GET /api/vars/lookup?key=<variable_key>`**
-- **Auth:** `Authorization: Bearer <BOTRUS_SECRETS_KEY>`
-- **Returns:** `{ "key": "...", "value": "..." }`
-- **Errors:** 401 (bad token), 404 (key not found), 500 (DB error)
+Bootstrap credentials must come independently from the operator environment. Container provisioning is disabled. Existing `botrus_secret` plugin and `BOTRUS_*` env names remain compatible. Migration must remove old database secret tasks, import explicit mappings and supply independent bootstrap vars/no_log handling; application development does not edit Ansible roles here.
 
-Used by the Ansible lookup plugin at playbook runtime. The API lives in `front-end/src/app/api/vars/lookup/route.ts`.
+## Security and recovery
 
-### 3. Ansible Lookup Plugin
+Values use authenticated API bodies and process memory; Secret payloads never enter argv, generated Git files, API errors or app logs. Fixed errors suppress Kubernetes exception bodies. Scope Roles per namespace; service-account list access itself reads values. Browser/Bearer traffic requires TLS. Follow [Kubernetes Secret guidance](https://kubernetes.io/docs/concepts/configuration/secret/) for RBAC and storage protection; base64 is not encryption.
 
-`ansible-playbook/lookup_plugins/botrus_secret.py`
-
-Standard Ansible lookup plugin. Usage:
-
-```yaml
-# In a playbook or template:
-ansible_become_password: "{{ lookup('botrus_secret', 'ansible_become_password') }}"
-```
-
-Configuration via environment variables:
-
-| Env var               | Default                  | Purpose              |
-| --------------------- | ------------------------ | -------------------- |
-| `BOTRUS_SECRETS_KEY`  | *(required)*             | Bearer auth token    |
-| `BOTRUS_API_URL`      | `http://localhost:4000`  | Next.js API base URL |
-
-Features:
-- In-memory cache per playbook run — no duplicate HTTP calls for the same key
-- 10-second HTTP timeout
-- Raises `AnsibleLookupError` on any failure
-- Never writes to disk
-
-### 4. Variable Sync
-
-`POST /api/vars/sync` → regenerates `group_vars/all.yml` and rebuilds the Ansible inventory. Requires write access.
-
-**`front-end/src/lib/sync-vars.ts`** → `syncVarsToYAML()` reads all variables from the DB and writes `group_vars/all.yml` with **lookup refs only** — no values:
-
-```yaml
-# all.yml (auto-generated, gitignored)
-cluster_cidr: "{{ lookup('botrus_secret', 'cluster_cidr') }}"
-k8s_version: "{{ lookup('botrus_secret', 'k8s_version') }}"
-ansible_become_password: "{{ lookup('botrus_secret', 'ansible_become_password') }}"
-```
-
-Variables are grouped by category with comment headers. This file is regenerated on every deploy/sync and is **gitignored**.
-
-The sync endpoint also:
-- Parses `node_*` variables to populate the Node table (`syncNodesFromVars()`)
-- Rebuilds the Ansible inventory file from node data (`syncInventoryToFile()`)
-
-### 5. Runtime Wiring
-
-**`ansible.cfg`:**
-```ini
-lookup_plugins = ./lookup_plugins
-```
-
-**`ansible.ts`** spawns Ansible with env vars:
-```typescript
-env: {
-  BOTRUS_SECRETS_KEY: process.env.BOTRUS_SECRETS_KEY || "",
-  BOTRUS_API_URL: "http://localhost:4000",
-  ANSIBLE_BECOME_PASSWORD: becomePassword,  // sudo, never in argv
-}
-```
-
-## Security Properties
-
-| Threat                | Mitigation                                      |
-| --------------------- | ----------------------------------------------- |
-| Secrets on disk       | **Zero** — `all.yml` contains only lookup refs  |
-| Secrets in argv       | **Zero** — password flows through stdin/environ |
-| Secrets in logs       | Lookup plugin does not log values               |
-| Unauthenticated read  | Bearer token required on `/api/vars/lookup`     |
-| Replay attacks        | Token is per-session; rotate `BOTRUS_SECRETS_KEY` |
-
-## Seeding the Database
-
-```bash
-cd front-end
-BECOME_PASSWORD='...' SMB_PASSWORD='...' ./seed-db.sh
-```
-
-Seeds all 47 variables (including passwords) into the Prisma SQLite database. The full variable list is below.
-
-## Full Variable List
-
-Variables are grouped by category. All 47 are stored in the `Variable` table with `encrypted: true` for sensitive values.
-
-| Category | Examples |
-|----------|----------|
-| `ansible` | `ansible_become_password`, `ansible_user`, `ansible_port` |
-| `kubernetes` | `k8s_version`, `cluster_cidr`, `service_cidr`, `node_*_ip`, `node_*_hostname`, `node_*_role` |
-| `network` | `calico_version`, `metallb_version`, `metallb_ip_range` |
-| `storage` | `longhorn_version`, `smb_csi_version`, `nfs_server`, `nfs_path` |
-| `ingress` | `traefik_version`, `cert_email` |
-| `gitops` | `flux_version`, `flux_git_url`, `flux_git_branch`, `flux_git_path` |
-| `secret` | `smb_username`, `smb_password`, `cloudflare_api_token`, `github_token` |
-
-Use the Botrus UI at `/variables` to view, add, or edit variables. Changes take effect on next sync.
-
-## Full Runtime Flow
-
-```mermaid
-sequenceDiagram
-    participant U as Botrus UI
-    participant API as Next.js API
-    participant DB as SQLite
-    participant FS as Filesystem
-    participant AN as Ansible
-    participant PL as botrus_secret.py
-
-    U->>API: POST /api/vars (add/edit variable)
-    API->>DB: INSERT/UPDATE Variable
-    API-->>U: 200 OK
-
-    U->>API: POST /api/vars/sync
-    API->>DB: SELECT all variables
-    API->>API: syncVarsToYAML()
-    API->>FS: write group_vars/all.yml (lookup refs only)
-    API->>FS: rebuild inventory
-    API-->>U: { synced: 47 }
-
-    U->>API: POST /api/deploy/start
-    API->>AN: spawn ansible-playbook
-    AN->>PL: lookup('botrus_secret', 'k8s_version')
-    PL->>API: GET /api/vars/lookup?key=k8s_version
-    API->>DB: SELECT value WHERE key=...
-    DB-->>API: { key, value }
-    API-->>PL: { key, value }
-    PL-->>AN: "v1.30.0"
-```
-
-## Using in Playbooks
-
-Any variable stored in the DB can be referenced in Ansible:
-
-```yaml
-- name: Install Kubernetes
-  hosts: all
-  vars:
-    k8s_ver: "{{ lookup('botrus_secret', 'k8s_version') }}"
-  tasks:
-    - name: Install kubelet
-      apt:
-        name: "kubelet={{ k8s_ver }}"
-        state: present
-```
-
-## Troubleshooting
-
-**`BOTRUS_SECRETS_KEY environment variable is not set`**
-→ Export the token before running Ansible, or ensure `ansible.ts` is spawning the process.
-
-**`Botrus API returned 401`**
-→ Token mismatch. Verify `BOTRUS_SECRETS_KEY` matches what the API expects.
-
-**`Cannot reach Botrus API at http://localhost:4000`**
-→ Next.js dev server isn't running. Start with `cd front-end && npm run dev`.
-
-**`Variable not found: X`**
-→ Variable `X` isn't in the DB. Run `seed-db.sh` or add it via the `/api/vars` endpoint.
+JWT signing material is external and stable, never auto-persisted. Existing sensitive SQLite rows/historical backups require operator cleanup after import verification. Native values survive app restart independently of DB. SQLite loss requires user/config/alias recovery; Kubernetes loss requires protected etcd/Secret recovery. No Vault/SOPS/Git value backend is introduced.

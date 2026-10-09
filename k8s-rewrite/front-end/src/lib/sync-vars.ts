@@ -1,6 +1,9 @@
 import prisma from "./db";
 import fs from "fs/promises";
 import path from "path";
+import { listAliases } from "./secret-references";
+import { isSensitiveVariable } from "./variable-policy";
+import { SecretError } from "./cluster-secrets";
 
 const ANSIBLE_DIR = path.resolve(process.cwd(), "../ansible-playbook");
 const VARS_FILE = path.join(ANSIBLE_DIR, "group_vars/all.yml");
@@ -18,14 +21,39 @@ const YAML_HEADER = `# Kubernetes Cluster Configuration Variables
  * Read all variables from the database and write them to group_vars/all.yml.
  * Variables are grouped by category, with category headers as comments.
  */
-export async function syncVarsToYAML(): Promise<{ synced: number; file: string }> {
+export async function syncVarsToYAML(): Promise<{
+  synced: number;
+  file: string;
+}> {
   const vars = await prisma.variable.findMany({
     orderBy: [{ category: "asc" }, { key: "asc" }],
   });
 
+  const aliases = await listAliases();
+  const safeVars = vars.filter((v) => !isSensitiveVariable(v));
+  for (const ref of aliases) {
+    if (safeVars.some((v) => v.key === ref.alias))
+      throw new SecretError(409, "Alias collides with nonsecret configuration");
+  }
+  // Only valid Ansible identifiers are emitted; path-style aliases remain available to direct lookup.
+  const refs = aliases.filter((ref) =>
+    /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(ref.alias),
+  );
+  const emitted = [
+    ...safeVars,
+    ...refs.map((ref) => ({ key: ref.alias, category: "secret" })),
+  ];
+  if (
+    emitted.some(
+      (v) =>
+        !/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(v.key) ||
+        !/^[a-zA-Z0-9_-]+$/.test(v.category),
+    )
+  )
+    throw new SecretError(400, "Unsafe Ansible identifier or category");
   // Group by category
-  const groups = new Map<string, typeof vars>();
-  for (const v of vars) {
+  const groups = new Map<string, typeof emitted>();
+  for (const v of emitted) {
     const cat = v.category || "general";
     if (!groups.has(cat)) groups.set(cat, []);
     groups.get(cat)!.push(v);
@@ -35,9 +63,13 @@ export async function syncVarsToYAML(): Promise<{ synced: number; file: string }
   const lines: string[] = [YAML_HEADER];
 
   for (const [category, items] of groups) {
-    lines.push(`# =============================================================================`);
+    lines.push(
+      `# =============================================================================`,
+    );
     lines.push(`# ${category.toUpperCase()}`);
-    lines.push(`# =============================================================================`);
+    lines.push(
+      `# =============================================================================`,
+    );
     for (const item of items) {
       // ALL variables are pulled from Botrus at Ansible runtime via lookup plugin.
       // Zero values ever touch the filesystem — all.yml is just a manifest of keys.
@@ -54,9 +86,11 @@ export async function syncVarsToYAML(): Promise<{ synced: number; file: string }
   // Write file
   await fs.writeFile(VARS_FILE, yamlContent, "utf8");
 
-  console.log(`[sync-vars] Synced ${vars.length} variables to ${VARS_FILE}`);
+  console.log(
+    `[sync-vars] Synced ${emitted.length} references to ${VARS_FILE}`,
+  );
 
-  return { synced: vars.length, file: VARS_FILE };
+  return { synced: emitted.length, file: VARS_FILE };
 }
 
 /**
@@ -74,7 +108,10 @@ export async function syncNodesFromVars(): Promise<{ synced: number }> {
   });
 
   // Group by key: node_1_name, node_1_hostname, node_1_ip, node_1_role → group "1"
-  const groups = new Map<string, { name?: string; hostname?: string; ip?: string; role?: string }>();
+  const groups = new Map<
+    string,
+    { name?: string; hostname?: string; ip?: string; role?: string }
+  >();
   const re = /^node_(.+)_(name|hostname|ip|role)$/;
 
   for (const v of nodeVars) {
@@ -94,7 +131,11 @@ export async function syncNodesFromVars(): Promise<{ synced: number }> {
     if (!data.hostname || !data.ip) continue; // need at least hostname + IP
     await prisma.node.upsert({
       where: { hostname: data.hostname },
-      update: { name: data.name || data.hostname, ipAddress: data.ip, role: data.role || "worker" },
+      update: {
+        name: data.name || data.hostname,
+        ipAddress: data.ip,
+        role: data.role || "worker",
+      },
       create: {
         name: data.name || data.hostname,
         hostname: data.hostname,
@@ -113,7 +154,10 @@ export async function syncNodesFromVars(): Promise<{ synced: number }> {
 /**
  * Sync inventory from Node table to production.ini
  */
-export async function syncInventoryToFile(): Promise<{ synced: number; file: string }> {
+export async function syncInventoryToFile(): Promise<{
+  synced: number;
+  file: string;
+}> {
   const nodes = await prisma.node.findMany({
     where: { status: { not: "error" } },
   });
@@ -131,7 +175,7 @@ export async function syncInventoryToFile(): Promise<{ synced: number; file: str
 
   for (const node of nodes) {
     lines.push(
-      `${node.hostname} ansible_host=${node.ipAddress} ansible_user=brajam ansible_python_interpreter=/usr/bin/python3`
+      `${node.hostname} ansible_host=${node.ipAddress} ansible_user=brajam ansible_python_interpreter=/usr/bin/python3`,
     );
   }
 
@@ -158,7 +202,9 @@ export async function syncInventoryToFile(): Promise<{ synced: number; file: str
       where: { key: "ansible_ssh_private_key_file" },
     });
     if (keyVar?.value) sshKey = keyVar.value;
-  } catch { /* use default */ }
+  } catch {
+    /* use default */
+  }
 
   lines.push("");
   lines.push("[all:vars]");
@@ -170,62 +216,9 @@ export async function syncInventoryToFile(): Promise<{ synced: number; file: str
   await fs.mkdir(path.dirname(inventoryFile), { recursive: true });
   await fs.writeFile(inventoryFile, lines.join("\n") + "\n", "utf8");
 
-  console.log(`[sync-inventory] Synced ${nodes.length} nodes to ${inventoryFile}`);
+  console.log(
+    `[sync-inventory] Synced ${nodes.length} nodes to ${inventoryFile}`,
+  );
 
   return { synced: nodes.length, file: inventoryFile };
-}
-
-/**
- * Sync secret variables to Kubernetes cluster as Secret objects.
- * Reads vars with category="secret" and groups them by namespace/secret-name.
- *
- * Convention: secret_<namespace>_<name>_<key>
- *   Example: secret_plex_smb_username → Secret "smb" in namespace "plex"
- *            secret_plex_smb_password → adds key "password" to same Secret
- *
- * Returns kubectl commands for the deploy pipeline to execute on the master node.
- */
-export async function syncSecretsToCluster(): Promise<{ synced: number; commands: string[] }> {
-  const secretVars = await prisma.variable.findMany({
-    where: { category: "secret" },
-    orderBy: { key: "asc" },
-  });
-
-  if (secretVars.length === 0) {
-    console.log("[sync-secrets] No secret variables found.");
-    return { synced: 0, commands: [] };
-  }
-
-  // Group by namespace and secret name
-  const groups = new Map<string, { ns: string; name: string; data: Record<string, string> }>();
-
-  for (const v of secretVars) {
-    // Parse: secret_<namespace>_<name>_<key>
-    const match = v.key.match(/^secret_(.+?)_(.+?)_(.+)$/);
-    if (!match) {
-      console.warn(`[sync-secrets] Skipping malformed key: ${v.key}`);
-      continue;
-    }
-    const [, ns, name, field] = match;
-    const gkey = `${ns}/${name}`;
-    if (!groups.has(gkey)) {
-      groups.set(gkey, { ns, name, data: {} });
-    }
-    groups.get(gkey)!.data[field] = v.value;
-  }
-
-  // Build kubectl commands (one per secret group)
-  const commands: string[] = [];
-  for (const [, g] of groups) {
-    const literals = Object.entries(g.data)
-      .map(([k, v]) => `--from-literal=${k}='${v.replace(/'/g, "'\\''")}'`)
-      .join(" ");
-    commands.push(
-      `kubectl create namespace ${g.ns} --dry-run=client -o yaml | kubectl apply -f - && ` +
-      `kubectl create secret generic ${g.name} -n ${g.ns} ${literals} --dry-run=client -o yaml | kubectl apply -f -`
-    );
-  }
-
-  console.log(`[sync-secrets] Generated ${commands.length} secret commands from ${secretVars.length} vars`);
-  return { synced: secretVars.length, commands };
 }

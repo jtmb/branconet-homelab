@@ -2,7 +2,7 @@
 
 import { Network, Loader2, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import ViewportWrapper from "../viewport-wrapper";
+import ViewportWrapper from "@/app/(dashboard)/viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
 

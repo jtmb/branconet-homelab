@@ -50,5 +50,5 @@ export async function getCurrentRole(): Promise<"readonly" | "write" | null> {
     select: { role: true },
   });
 
-  return (user?.role as "readonly" | "write") || null;
+  return user?.role === "readonly" || user?.role === "write" ? user.role : null;
 }

@@ -193,8 +193,8 @@ export default function GitRepoDetailPage() {
                   >
                     <td className="px-4 py-3">
                       {bundle.ready
-                        ? <CheckCircle2 className="w-4 h-4 text-emerald-400" title="Ready" />
-                        : <AlertTriangle className="w-4 h-4 text-red-400" title={bundle.status} />
+                        ? <CheckCircle2 className="w-4 h-4 text-emerald-400" aria-label="Ready" />
+                        : <AlertTriangle className="w-4 h-4 text-red-400" aria-label={bundle.status} />
                       }
                     </td>
                     <td className="px-4 py-3">

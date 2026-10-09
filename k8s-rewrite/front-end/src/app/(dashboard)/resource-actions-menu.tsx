@@ -26,7 +26,7 @@ import ConfirmDialog from "./confirm-dialog";
 import LogModal from "./log-modal";
 import { openShell } from "@/lib/shell-manager";
 
-export type ResourceType = "pod" | "deployment" | "namespace" | "node" | "ingress";
+export type ResourceType = "pod" | "deployment" | "namespace" | "node" | "ingress" | "service" | "pvc";
 
 interface ActionItem {
   label: string;
@@ -102,7 +102,8 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction }
     const res = await fetch(apiPath);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
-    return data.yaml;
+    // JSON is valid YAML; Service/PVC detail APIs return their native object as JSON.
+    return data.yaml ?? JSON.stringify(data.service ?? data.pvc, null, 2);
   };
 
   const openViewYaml = async (apiPath: string, title: string) => {
@@ -286,6 +287,11 @@ function getActions(
   h: ActionHelpers
 ): ActionItem[] {
   switch (type) {
+    case "service":
+    case "pvc":
+      // These detail APIs expose YAML read-only; no unimplemented mutations are offered.
+      return [{ label: "View YAML", icon: <FileCode className="w-4 h-4" />,
+        onClick: () => h.openViewYaml(`/api/cluster/${type === "service" ? "services" : "volumes"}/${ns}/${name}`, `${type} YAML: ${ns}/${name}`) }];
     // ── Pod Actions ────────────────────────────────────────────
     case "pod": {
       const yamlPath = `/api/cluster/pods/${ns}/${name}/yaml`;

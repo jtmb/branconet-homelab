@@ -1,167 +1,17 @@
-# Ansible ↔ Botrus API Interaction
+# Ansible to BORTUS API interaction
 
-How Ansible resolves configuration and secrets from the Botrus dashboard at runtime — without any values on disk.
+## Migration bootstrap
 
-## Migration exception: independent bootstrap
+The cluster foundation uses versioned nonsecret group_vars/all.yml and the actual james@192.168.0.4/.5/.6 inventory on SSH 2002. scripts/migration/run-ansible.py receives sudo through stdin and supplies it to the Ansible child through an in-memory environment lookup, never argv or a plaintext file. Explicit vars_files load the parent bootstrap settings. This permits recovery/provisioning before BORTUS or Kubernetes Secrets is available. Do not replace bootstrap variables with dashboard-generated YAML; subsequent application-managed operations can use the native lookup provider below. See [MIGRATION-OPERATIONS.md](MIGRATION-OPERATIONS.md).
 
-The migration foundation now uses versioned nonsecret `group_vars/all.yml` and actual james@192.168.0.4/.5/.6 inventory with SSH port 2002. `scripts/migration/run-ansible.py` receives sudo through stdin and supplies it to the Ansible child through an in-memory environment lookup, never an argv value or plaintext file. Explicit vars_files load bootstrap settings from the parent directory. This avoids requiring BORTUS or its Secrets API before Kubernetes exists. The API lookup plugin remains available for subsequent application-managed operations; its native provider is delivered by the separate BORTUS development chat. Do not overwrite the bootstrap file with the legacy database-to-YAML synchronization described below. Current cluster operations are documented in [MIGRATION-OPERATIONS.md](MIGRATION-OPERATIONS.md).
+## Application lookup
 
-## The Two Paths
+The existing `botrus_secret` plugin resolves `GET /api/vars/lookup?key=<alias>` with `Authorization: Bearer <BOTRUS_SECRETS_KEY>` and consumes `{key,value}`. Its runtime-only cache, 10-second timeout and fatal failure behavior remain. Legacy environment/plugin names are compatibility identifiers.
 
-### Path 1: Ansible Playbooks (full cluster provisioning)
+Explicit aliases map namespace/Secret/key via SQLite metadata or `BORTUS_SECRET_ALIASES_FILE`; no underscore parsing occurs. Mapped credentials read Kubernetes directly. Nonsecret configuration reads SQLite. Sensitive legacy DB rows never return values or push them to the cluster. Native/API outages fail clearly (503), without fallback. Invalid Bearer is 401; missing alias/key is 404; conflicting mappings are 409.
 
-When you run a playbook from the dashboard (or CLI), Ansible resolves **all** variables from the Botrus API via the `botrus_secret` lookup plugin.
+`syncVarsToYAML()` emits lookup expressions only for nonsecret configuration and aliases with valid Ansible identifiers. Path-style aliases remain available to direct lookup but are omitted from generated group_vars. Name collisions/unsafe config identifiers fail before writing. Node inventory behavior is retained. No database-to-Kubernetes Secret sync remains.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│  ansible-playbook site.yml                                   │
-│    │                                                         │
-│    ├─ group_vars/all.yml                                     │
-│    │   cluster_cidr: "{{ lookup('botrus_secret','cluster_cidr') }}"  │
-│    │   k8s_version: "{{ lookup('botrus_secret','k8s_version') }}"    │
-│    │   ... (47 lookup refs, zero values)                     │
-│    │                                                         │
-│    ├─ lookup_plugins/botrus_secret.py                        │
-│    │   → GET http://localhost:4000/api/vars/lookup?key=X     │
-│    │   → Authorization: Bearer <BOTRUS_SECRETS_KEY>          │
-│    │   → In-memory cache per run                             │
-│    │                                                         │
-│    └─ env:                                                   │
-│         ANSIBLE_BECOME_PASSWORD  (sudo, never in argv)       │
-│         BOTRUS_SECRETS_KEY       (for lookup plugin)         │
-│         BOTRUS_API_URL=http://localhost:4000                 │
-└─────────────────────────────────────────────────────────────┘
-```
+The local dashboard runner uses independent `ANSIBLE_BECOME_PASSWORD`, `ANSIBLE_PRIVATE_KEY_FILE`, and `ANSIBLE_REMOTE_USER` environment inputs, never old DB credentials. It forwards `BOTRUS_SECRETS_KEY` and `BOTRUS_API_URL`. Container provisioning is disabled; migration uses external Ansible. No changes to lookup plugins/roles are included here.
 
-### Path 2: kubectl via SSH (dashboard pages)
-
-When the dashboard UI queries cluster state (pods, nodes, etc.), it uses a **direct SSH + kubectl** path:
-
-```
-┌─────────────────────────────────────────────┐
-│  Dashboard page (e.g. /nodes)                │
-│    │                                         │
-│    └─ k8s.ts → kubectlJSON("u1", "get nodes")│
-│         │                                    │
-│         ├─ Local kubeconfig? → kubectl directly
-│         │                                    │
-│         └─ No kubeconfig? → sshWithSudo()    │
-│              │                               │
-│              ├─ Reads ansible_become_password from DB
-│              ├─ spawn("ssh", ["brajam@u1", "sudo -S kubectl ..."])
-│              └─ Pipes password via stdin (fd, never argv)
-└─────────────────────────────────────────────┘
-```
-
-## The Lookup Plugin in Detail
-
-**File:** `ansible-playbook/lookup_plugins/botrus_secret.py`
-
-### Execution flow per variable lookup:
-
-1. Ansible encounters `{{ lookup('botrus_secret', 'some_key') }}`
-2. Plugin checks in-memory cache → returns cached value if found
-3. Cache miss → HTTP GET to `http://localhost:4000/api/vars/lookup?key=some_key`
-4. Request includes `Authorization: Bearer <token>` header
-5. API validates token, queries Prisma DB, returns `{ key, value }`
-6. Plugin caches value for this playbook run
-7. Returns value to Ansible
-
-### Caching
-
-Cache is a module-level `dict` — lives for the duration of `ansible-playbook` process. Cleared when the process exits. No stale values across playbook runs.
-
-### Error handling
-
-| Scenario | Behavior |
-|----------|----------|
-| `BOTRUS_SECRETS_KEY` not set | `AnsibleLookupError` — playbook fails immediately |
-| API returns 401 | `AnsibleLookupError` with HTTP body |
-| API returns 404 | `AnsibleLookupError` — variable not found |
-| API unreachable | `AnsibleLookupError` — connection error |
-| API returns invalid JSON | `AnsibleLookupError` |
-| Network timeout (10s) | `AnsibleLookupError` |
-
-Failures are **fatal** — the playbook stops. This is intentional: Ansible should not proceed with missing configuration.
-
-## How the Dashboard Spawns Ansible
-
-**File:** `front-end/src/lib/ansible.ts` → `runAnsiblePlaybook()`
-
-```typescript
-const proc = spawn("ansible-playbook", args, {
-  cwd: ANSIBLE_DIR,
-  env: {
-    ...process.env,
-    ANSIBLE_FORCE_COLOR: "1",
-    ANSIBLE_BECOME_PASSWORD: becomePassword,   // from DB, via env
-    BOTRUS_SECRETS_KEY: process.env.BOTRUS_SECRETS_KEY || "",
-    BOTRUS_API_URL: "http://localhost:4000",
-  },
-});
-```
-
-Key points:
-- **`ANSIBLE_BECOME_PASSWORD`** — Ansible's native env var for sudo. Never passes through `-e` flag (no argv leak).
-- **`BOTRUS_SECRETS_KEY`** — Forwarded from the dashboard's own environment so the lookup plugin can authenticate.
-- **`BOTRUS_API_URL`** — Always `localhost:4000` since both Ansible and the dashboard run on the same machine.
-
-## Ansible Configuration
-
-**File:** `ansible-playbook/ansible.cfg`
-
-```ini
-[defaults]
-inventory = inventory/production.ini
-roles_path = ./roles
-lookup_plugins = ./lookup_plugins    # ← enables botrus_secret
-host_key_checking = False
-```
-
-Ansible finds `botrus_secret.py` because `lookup_plugins` points to `./lookup_plugins/` relative to the playbook directory.
-
-## Variable Sync (DB → YAML)
-
-**File:** `front-end/src/lib/sync-vars.ts` → `syncVarsToYAML()`
-
-Triggered on deploy or manually via the API. Reads all 47 variables from the Prisma DB and writes:
-
-```yaml
-# group_vars/all.yml — auto-generated, gitignored
-cluster_cidr: "{{ lookup('botrus_secret', 'cluster_cidr') }}"
-k8s_version: "{{ lookup('botrus_secret', 'k8s_version') }}"
-# ... 45 more lookup refs
-```
-
-This file contains **zero values** — only `{{ lookup(...) }}` references. At playbook runtime, each reference triggers the lookup plugin → API → DB chain.
-
-### Manually regenerating
-
-```bash
-cd front-end
-npx tsx -e "
-import { syncVarsToYAML } from './src/lib/sync-vars';
-syncVarsToYAML().then(console.log);
-"
-```
-
-## Data Flow Summary
-
-```
-User clicks "Deploy" in dashboard
-  │
-  ├─ 1. syncVarsToYAML() — writes all.yml (lookup refs only)
-  │
-  ├─ 2. runAnsiblePlaybook("site.yml")
-  │     └─ spawn ansible-playbook with env vars
-  │
-  └─ 3. Ansible reads all.yml
-        └─ For each {{ lookup('botrus_secret', 'X') }}:
-             ├─ Check in-memory cache
-             ├─ Cache miss → GET /api/vars/lookup?key=X
-             ├─ API validates Bearer token
-             ├─ API queries Prisma Variable table
-             └─ Returns { key, value } → cached → used in playbook
-
-At no point does any secret or config value touch the filesystem.
-```
+Bootstrap/recovery must not depend on Secrets in the cluster being created. Keep credentials and operator kubeconfig independently available; migration must adapt bootstrap lookup overrides and sensitive `no_log` tasks. Do not use the old password seed workflow. See [Secrets Engine](SECRETS-ENGINE.md) and [deployment contract](BORTUS-DEPLOYMENT.md).

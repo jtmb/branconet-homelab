@@ -1,41 +1,27 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import { parseSecretKey, syncSecretToCluster } from "@/lib/cluster-secrets";
 import { requireWrite } from "@/lib/permissions";
-
+import { isSensitiveVariable } from "@/lib/variable-policy";
+import { SecretError } from "@/lib/cluster-secrets";
+import { secretResponse, secretErrorResponse } from "@/lib/secret-http";
 export async function DELETE(
-  _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const auth = await requireWrite();
   if (auth instanceof NextResponse) return auth;
-
-  const { id } = await params;
-
-  const variable = await prisma.variable.findUnique({ where: { id } });
-  if (!variable) {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  try {
+    const { id } = await params;
+    const variable = await prisma.variable.findUnique({ where: { id } });
+    if (!variable) throw new SecretError(404, "Variable not found");
+    if (isSensitiveVariable(variable))
+      throw new SecretError(
+        409,
+        "Legacy sensitive rows are quarantined; delete native keys through /api/secrets",
+      );
+    await prisma.variable.delete({ where: { id } });
+    return secretResponse({ success: true });
+  } catch (error) {
+    return secretErrorResponse(error);
   }
-
-  // Parse secret info BEFORE deleting the DB record
-  let secretNs: string | null = null;
-  let secretName: string | null = null;
-
-  const parsed = parseSecretKey(variable.key);
-  if (parsed && variable.category === "secret") {
-    secretNs = parsed.namespace;
-    secretName = parsed.name;
-  }
-
-  // Delete from DB
-  await prisma.variable.delete({ where: { id } });
-
-  // Re-sync: cluster-secrets will rebuild or delete the K8s Secret
-  if (secretNs && secretName) {
-    syncSecretToCluster(secretNs, secretName).catch((err) =>
-      console.error("[vars] DELETE K8s sync error:", err)
-    );
-  }
-
-  return NextResponse.json({ success: true });
 }

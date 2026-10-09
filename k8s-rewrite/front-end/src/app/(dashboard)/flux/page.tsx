@@ -404,7 +404,7 @@ export default function FluxPage() {
                     />
                     <p className="text-[10px] text-zinc-600 mt-1.5">
                       {form.authMethod === "ssh"
-                        ? "Paste the entire private key. Stored encrypted at rest."
+                        ? "Paste the deploy key. Stored in a native Kubernetes Secret."
                         : "Create a fine-grained token with read-only repo access."}
                     </p>
                   </div>

@@ -1,7 +1,6 @@
 import { spawn, ChildProcess } from "child_process";
 import { EventEmitter } from "events";
 import path from "path";
-import prisma from "./db";
 
 export interface AnsibleEvent {
   type: "data" | "role-progress" | "close" | "error";
@@ -48,24 +47,14 @@ export async function runAnsiblePlaybook(
   const emitter = new EventEmitter();
   const playbookPath = path.join(PLAYBOOK_DIR, playbookFile);
 
-  // Read sudo password and SSH key from DB if stored
-  let becomePassword = "";
-  let sshKey = "/home/brajam/.ssh/id_ed25519"; // fallback default
-  try {
-    const [pwVar, keyVar] = await Promise.all([
-      prisma.variable.findUnique({ where: { key: "ansible_become_password" } }),
-      prisma.variable.findUnique({ where: { key: "ansible_ssh_private_key_file" } }),
-    ]);
-    if (pwVar?.value) becomePassword = pwVar.value;
-    if (keyVar?.value) sshKey = keyVar.value;
-  } catch {
-    // DB not available — proceed with defaults
-  }
+  // Bootstrap inputs are independent of the cluster being created. Never read old DB credentials.
+  const becomePassword = process.env.ANSIBLE_BECOME_PASSWORD || "";
+  const sshKey = process.env.ANSIBLE_PRIVATE_KEY_FILE || "/home/brajam/.ssh/id_ed25519";
 
   const args = [
     playbookPath,
     "-i", INVENTORY_PATH,
-    "-u", "brajam",
+    "-u", process.env.ANSIBLE_REMOTE_USER || "brajam",
     "--private-key", sshKey,
     "--become",
   ];

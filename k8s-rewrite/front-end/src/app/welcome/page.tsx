@@ -304,7 +304,7 @@ export default function WelcomePage() {
                 Encrypted Secrets Engine
               </h3>
               <p className="text-zinc-400 leading-relaxed mb-4">
-                All configuration variables and credentials are stored encrypted at rest. An
+                Credentials are managed in native Kubernetes Secrets; nonsecret configuration stays in SQLite. An
                 Ansible lookup plugin resolves secrets at playbook runtime — values never
                 touch the filesystem.
               </p>

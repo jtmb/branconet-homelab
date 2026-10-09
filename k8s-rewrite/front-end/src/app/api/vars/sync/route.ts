@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { syncVarsToYAML, syncInventoryToFile, syncNodesFromVars } from "@/lib/sync-vars";
+import { secretErrorResponse } from "@/lib/secret-http";
 import { requireWrite } from "@/lib/permissions";
 
 /**
@@ -23,10 +24,7 @@ export async function POST() {
       inventory: { synced: invResult.synced, file: invResult.file },
     });
   } catch (err) {
-    return NextResponse.json(
-      { error: "Failed to sync vars", details: String(err) },
-      { status: 500 }
-    );
+    return secretErrorResponse(err);
   }
 }
 
@@ -36,6 +34,6 @@ export async function POST() {
  */
 export async function GET() {
   return NextResponse.json({
-    message: "Use POST to trigger a sync from DB to group_vars/all.yml",
+    message: "Use POST to trigger a sync of nonsecret configuration and explicit aliases to group_vars/all.yml",
   });
 }

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Botrus K8s",
-  description: "Kubernetes cluster provisioning and management for Botrus homelab",
+  title: "BORTUS K8s",
+  description: "Kubernetes cluster provisioning and management for BORTUS homelab",
 };
 
 export default function RootLayout({

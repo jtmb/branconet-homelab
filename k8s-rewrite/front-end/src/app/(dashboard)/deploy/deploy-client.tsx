@@ -60,7 +60,7 @@ const ROLE_INFO: Record<string, { desc: string; order: number }> = {
   samba:       { desc: "Samba/SMB server + csi-driver-smb for Windows-friendly shares — when samba_enabled.", order: 8 },
   ingress:     { desc: "Traefik ingress controller for HTTP/S routing to services — master only.", order: 9 },
   gitops:      { desc: "FluxCD GitOps operator — syncs cluster state from Git repositories — master only.", order: 10 },
-  secrets:     { desc: "K8s Secrets from secret_* DB variables — runs after gitops with prune-disabled.", order: 11 },
+  secrets:     { desc: "Native Secrets are imported independently; no database-driven push.", order: 11 },
 };
 
 export default function DeployClient() {

@@ -1,6 +1,6 @@
-# Botrus User Permissions
+# BORTUS User Permissions
 
-The Botrus K8s dashboard uses a **two-role permission system** with cookie-based JWT authentication. Roles are enforced at three layers: middleware (auth gate), API routes (write gating), and client UI (conditional rendering).
+The BORTUS K8s dashboard uses a **two-role permission system** with cookie-based JWT authentication. Roles are enforced at three layers: middleware (auth gate), API routes (write gating), and client UI (conditional rendering).
 
 ---
 
@@ -87,6 +87,7 @@ The JWT does **not** carry the role. Roles are always looked up from the databas
 **Public paths** (no auth required):
 - `/welcome`, `/auth/login`, `/auth/register`
 - `/api/auth/*`, `/api/cluster/info`, `/_next/*`, `/favicon.ico`
+- Exact `/api/vars/lookup` (Bearer inside handler), `/api/health/live`, `/api/health/ready`
 
 **Protected paths** (everything else):
 - **Page requests** → redirect to `/welcome` if no valid cookie
@@ -235,10 +236,10 @@ const isWrite = currentRole === "write";
 | Setting | Development | Production |
 |---------|-------------|------------|
 | Cookie Secure flag | `false` | `true` |
-| JWT secret source | `.env.local` (auto-generated) | `.env.local` / env var |
+| JWT secret source | operator env | native Secret env reference |
 | HTTPS required | No | Yes (for cookie) |
 
-The JWT secret is auto-generated on first app start (`ensureJwtSecret()` in `auth-server.ts`) if not already set in `BOTRUS_JWT_SECRET`.
+Supply stable BOTRUS_JWT_SECRET independently (native Secret env reference in Kubernetes). ensureJwtSecret fails if absent, never writes SQLite/.env.local.
 
 ---
 
@@ -261,3 +262,7 @@ The JWT secret is auto-generated on first app start (`ensureJwtSecret()` in `aut
 
 **Can't log in after restart**
 → If the JWT secret changed, all existing cookies become invalid. Re-login.
+
+## Native value permissions
+
+Readonly authenticated users list Secret metadata/keys. Value reveal and all mutations require fresh DB write role. Bearer lookup is a privileged automation credential scoped to registered aliases/nonsecret config. Sensitive legacy variable values are never exposed. SQLite retains password hashes/roles rather than authoritative Secret values.

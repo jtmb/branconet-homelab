@@ -261,3 +261,7 @@ flux bootstrap github \
 | Sync interval | Per bundle | Per Kustomization |
 | Drift detection | Built-in | Built-in + alerts |
 | Dependencies | None (built into Rancher) | Standalone controllers |
+
+## BORTUS private credentials
+
+New private-repo credentials write native Secrets in flux-system through verified API access. GitRepo.authData is empty; old DB authData is never replayed. Existing native collisions fail instead of overwrite. No credential argv. Native value-bearing resources must stay outside Git/Flux; charts reference existing Secrets. See BORTUS-DEPLOYMENT.md.

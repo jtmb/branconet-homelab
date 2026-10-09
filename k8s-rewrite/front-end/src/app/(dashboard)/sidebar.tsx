@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { href: "/flux", label: "Flux", icon: GitBranch, color: "text-emerald-400" },
   { href: "/deploy", label: "Provisioning", icon: Terminal, color: "text-emerald-400" },
   { href: "/secrets", label: "Secrets", icon: Key, color: "text-cyan-400" },
+  { href: "/configuration", label: "Configuration", icon: FolderTree, color: "text-indigo-400" },
   { href: "/users", label: "Users", icon: UsersRound, color: "text-emerald-400" },
 ];
 
@@ -77,7 +78,7 @@ export default function ClusterSidebar() {
       {!collapsed && (
         <div className="px-3 py-3 border-t section-border flex-shrink-0">
           <p className="text-[10px] text-zinc-600 tracking-wide uppercase">
-            Botrus Homelab
+            BORTUS Homelab
           </p>
         </div>
       )}

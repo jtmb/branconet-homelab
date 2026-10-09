@@ -1,5 +1,6 @@
 import { kubectlJSON, kubectlExec, hasLocalKubectl, KUBECONFIG_PATH } from "./k8s";
-import { encryptWithKey, decrypt } from "../../lib/encryption";
+import { createSecretTransport, secretNamespaces } from "./secret-client";
+import { SecretError, secretFailure, validateTarget } from "./cluster-secrets";
 import prisma from "./db";
 import { execFile } from "child_process";
 import { promisify } from "util";
@@ -7,7 +8,6 @@ import { promisify } from "util";
 const execFileAsync = promisify(execFile);
 
 const FLUX_NAMESPACE = "flux-system";
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "botrus-k8s-manager-key-2026";
 
 // =============================================================================
 // Helpers
@@ -138,31 +138,17 @@ export async function createFluxSecret(
   type: "ssh" | "https",
   credentials: string,
 ): Promise<{ success: boolean; error?: string }> {
-  // Secret name used by GitRepository
-  const secretName = `${name}-auth`;
-
-  if (type === "ssh") {
-    // SSH deploy key: create secret with known_hosts and identity
-    const knownHosts = await getGithubKnownHosts();
-    const cmd = `create secret generic ${secretName} ` +
-      `--from-literal=identity="${credentials}" ` +
-      `--from-literal=known_hosts="${knownHosts}"`;
-    const result = await kubectlJSON( buildKubectlCmd(cmd));
-    if (!result) {
-      return { success: false, error: "Failed to create SSH secret" };
-    }
-  } else {
-    // HTTPS token: create secret with username and password
-    const cmd = `create secret generic ${secretName} ` +
-      `--from-literal=username=git ` +
-      `--from-literal=password="${credentials}"`;
-    const result = await kubectlJSON( buildKubectlCmd(cmd));
-    if (!result) {
-      return { success: false, error: "Failed to create HTTPS secret" };
-    }
-  }
-
-  return { success: true };
+  try {
+    const secretName = `${name}-auth`;
+    validateTarget({ namespace: FLUX_NAMESPACE, name: secretName, key: "identity" });
+    if (!secretNamespaces().includes(FLUX_NAMESPACE)) throw new SecretError(403, "flux-system is outside the Secret scope");
+    const values = type === "ssh" ? { identity: credentials, known_hosts: await getGithubKnownHosts() } : { username: "git", password: credentials };
+    await createSecretTransport().create(FLUX_NAMESPACE, {
+      apiVersion: "v1", kind: "Secret", type: "Opaque", metadata: { namespace: FLUX_NAMESPACE, name: secretName },
+      data: Object.fromEntries(Object.entries(values).map(([key, value]) => [key, Buffer.from(value!).toString("base64")])),
+    });
+    return { success: true };
+  } catch (error) { return { success: false, error: secretFailure(error).message }; }
 }
 
 async function getGithubKnownHosts(): Promise<string> {
@@ -512,18 +498,15 @@ export async function addRepo(data: {
   branch?: string;
   path?: string;
   authMethod?: string;
-  authData?: string; // raw deploy key or token (will be encrypted)
+  authData?: string; // raw credential written only to native Secret
 }): Promise<{ success: boolean; repo?: GitRepoRecord; error?: string }> {
   const branch = data.branch || "main";
   const path = data.path || "./";
   const authMethod = data.authMethod || "none";
 
-  // 1. Encrypt auth data if provided
-  let encryptedAuth = "";
-  if (data.authData && authMethod !== "none") {
-    const enc = encryptWithKey(data.authData, ENCRYPTION_KEY);
-    encryptedAuth = JSON.stringify(enc);
-  }
+  // Native values only: SQLite records references and public repository metadata.
+  if (!["none", "ssh", "https"].includes(authMethod)) return { success: false, error: "Invalid repository authentication method" };
+  if (authMethod !== "none" && !data.authData) return { success: false, error: "Repository credential is required" };
 
   // 2. Save to DB
   let repo;
@@ -536,14 +519,14 @@ export async function addRepo(data: {
         path,
         namespace: "",
         authMethod,
-        authData: encryptedAuth,
+        authData: "",
       },
     });
   } catch (err: any) {
     if (err?.code === "P2002") {
       return { success: false, error: `Repository "${data.name}" already exists` };
     }
-    return { success: false, error: String(err) };
+    return { success: false, error: "Failed to save repository metadata" };
   }
 
   // 3. Create K8s Secret if auth needed
@@ -553,6 +536,7 @@ export async function addRepo(data: {
     if (secretResult.success) {
       secretRef = `${data.name}-auth`;
     } else {
+      await prisma.gitRepo.delete({ where: { id: repo.id } });
       return { success: false, error: `Failed to create auth secret: ${secretResult.error}` };
     }
   }
@@ -945,7 +929,7 @@ export async function getGitRepoDetail(name: string): Promise<GitRepoDetail | nu
     reason: c.reason || "-",
     message: c.message || "-",
   }));
-  const readyCond = conditions.find((c) => c.type === "Ready");
+  const readyCond = conditions.find((c: any) => c.type === "Ready");
   const ready = readyCond?.status === "True";
 
   const labels = Object.entries(repoRaw.metadata?.labels || {}).map(
@@ -975,7 +959,7 @@ export async function getGitRepoDetail(name: string): Promise<GitRepoDetail | nu
       reason: c.reason || "-",
       message: c.message || "-",
     }));
-    const ksReadyCond = ksConditions.find((c) => c.type === "Ready");
+    const ksReadyCond = ksConditions.find((c: any) => c.type === "Ready");
     const ksReady = ksReadyCond?.status === "True";
 
     // Parse inventory into kind counts
@@ -1056,7 +1040,7 @@ export async function getKustomizationDetail(name: string): Promise<Kustomizatio
     reason: c.reason || "-",
     message: c.message || "-",
   }));
-  const readyCond = conditions.find((c) => c.type === "Ready");
+  const readyCond = conditions.find((c: any) => c.type === "Ready");
   const ready = readyCond?.status === "True";
 
   const creationTs = ksRaw.metadata?.creationTimestamp;
@@ -1197,7 +1181,7 @@ async function kubectlApplyYaml(yaml: string): Promise<boolean> {
     await writeFile(fileName, yaml);
     const { stdout } = await execFileAsync(
       "kubectl",
-      ["--kubeconfig", KUBECONFIG_PATH, "apply", "-f", fileName],
+      [...(process.env.KUBERNETES_SERVICE_HOST && !process.env.KUBECONFIG ? [] : ["--kubeconfig", KUBECONFIG_PATH]), "apply", "-f", fileName],
       { timeout: 15000 }
     );
     try { await unlink(fileName); } catch {}

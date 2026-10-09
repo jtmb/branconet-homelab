@@ -1,10 +1,10 @@
-# Botrus K8s — API Usage
+# BORTUS K8s — API Usage
 
 All API endpoints are served by the Next.js dev server at `http://localhost:4000`.
 
 ## Authentication
 
-Botrus uses **two auth mechanisms** depending on the endpoint:
+BORTUS uses **two auth mechanisms** depending on the endpoint:
 
 ### Cookie-based (dashboard users)
 
@@ -248,7 +248,7 @@ Remove a resource from the cluster.
 
 ## Node API (DB-level)
 
-These endpoints manage the `Node` table in the Botrus database — NOT the live Kubernetes nodes. Used for Ansible inventory tracking.
+These endpoints manage the `Node` table in the BORTUS database — NOT the live Kubernetes nodes. Used for Ansible inventory tracking.
 
 ### `GET /api/nodes`
 
@@ -288,114 +288,33 @@ Delete a node from DB.
 
 ---
 
-## Variables API (Secrets Engine)
+## Variables and native Secrets
 
-### `GET /api/vars`
+Cookie auth is required except exact Bearer lookup. `GET /api/vars` returns nonsecret configuration only. `POST /api/vars` writes nonsecret key/value/category (encrypted=false), gated by fresh write role. Sensitive writes require an explicit alias and execute against Kubernetes with mode/resourceVersion; unmapped sensitive writes fail. `DELETE /api/vars/:id` deletes nonsecret DB rows only. No GET/PUT handler exists at that path. Legacy sensitive rows are quarantined.
 
-List all variables in the database. Values are included in the response.
+`POST /api/vars/sync` (write role) generates lookup refs and inventory; no Secret values are written or pushed. GET explains without triggering sync.
 
-```bash
-curl -b /tmp/botrus-cookies http://localhost:4000/api/vars | jq .
-```
+| Method/path | Auth | Behavior |
+|---|---|---|
+| GET `/api/secrets?namespace=plex` | cookie | Metadata, type, immutable, keys, resourceVersion; values omitted; omit namespace to list allowlist |
+| GET `/api/secrets?namespace=plex&name=smb-creds&key=password` | write cookie | UTF-8 value plus metadata/version |
+| POST `/api/secrets` | write cookie | JSON `{namespace,name,key,value,mode,resourceVersion?,type?}`; create refuses existing key; update requires version; metadata-only response |
+| DELETE `/api/secrets` | write cookie | JSON `{namespace,name,key,resourceVersion}`; deletes key, retains object |
+| GET `/api/secret-references` | cookie | Explicit mappings only |
+| POST `/api/secret-references` | write cookie | JSON `{alias,namespace,name,key}`; immutable alias registration, conflict 409 |
+| DELETE `/api/secret-references?alias=...` | write cookie | Removes DB reference only; native key/file mapping retained |
 
-**Response:**
-```json
-[
-  {
-    "id": "cm...",
-    "key": "k8s_version",
-    "value": "v1.30.0",
-    "category": "kubernetes",
-    "encrypted": true,
-    "createdAt": "2026-06-15T...",
-    "updatedAt": "2026-06-15T..."
-  }
-]
-```
+Namespace must be allowed by BORTUS_SECRET_NAMESPACES. Missing version: 428; stale/create collisions or immutable: 409; missing key: 404; invalid input: 400; Kubernetes/config/RBAC outage: 503. No retries/fallback. Responses are private/no-store. Send credentials in HTTPS bodies, never value-bearing terminal arguments/logging/committed payloads.
 
-### `POST /api/vars`
+### `GET /api/vars/lookup?key=<alias>`
 
-**Auth:** Cookie, `write` role
+Requires only Bearer BOTRUS_SECRETS_KEY, independent of cookie sessions. Returns `{key,value}`. Explicit aliases resolve Kubernetes namespace/name/key; nonsecret config resolves SQLite. No sensitive DB fallback. Invalid token 401, absent alias/key 404, collision 409, native unavailable 503. See [mapping contract](BORTUS-DEPLOYMENT.md).
 
-Create or update a variable.
+### Health
 
-```bash
-curl -X POST -b /tmp/botrus-cookies http://localhost:4000/api/vars \
-  -H "Content-Type: application/json" \
-  -d '{"key":"my_var","value":"some value","category":"general","encrypted":true}'
-```
+Legacy `/api/vars` sensitive writes accept the same explicit alias alphabet as lookup/reference registration, including hyphens or path separators. Nonsecret keys must be valid Ansible identifiers. This preserves legacy Secret alias names without deriving destinations from their spelling.
 
-To update an existing variable, include the `id` field:
-```json
-{ "id": "cm...", "value": "new value" }
-```
-
-### `GET /api/vars/[id]`
-
-Get a single variable.
-
-### `PATCH /api/vars/[id]`
-
-**Auth:** Cookie, `write` role
-
-Update a variable's value or category.
-
-### `DELETE /api/vars/[id]`
-
-**Auth:** Cookie, `write` role
-
-Delete a variable.
-
----
-
-## Secrets Lookup API
-
-### `GET /api/vars/lookup?key=<variable_key>`
-
-**Auth:** `Authorization: Bearer <BOTRUS_SECRETS_KEY>` (NOT cookie)
-
-Resolves a single variable at runtime. Used by the Ansible `botrus_secret` lookup plugin. Values never touch the filesystem.
-
-```bash
-curl -H "Authorization: Bearer $BOTRUS_SECRETS_KEY" \
-  "http://localhost:4000/api/vars/lookup?key=k8s_version"
-```
-
-**Response:**
-```json
-{ "key": "k8s_version", "value": "v1.30.0" }
-```
-
-**Error responses:**
-| Status | Body | Meaning |
-|--------|------|---------|
-| 400 | `{"error":"Missing ?key= parameter"}` | No key param |
-| 401 | `{"error":"Missing or invalid Authorization header"}` | Bad/missing token |
-| 401 | `{"error":"Invalid token"}` | Token mismatch |
-| 404 | `{"error":"Variable not found: X"}` | Key doesn't exist |
-| 500 | `{"error":"Server not configured — BOTRUS_SECRETS_KEY not set"}` | Env var missing |
-
-### `POST /api/vars/sync`
-
-**Auth:** Cookie, `write` role
-
-Regenerates `group_vars/all.yml` (lookup refs only) and rebuilds the Ansible inventory file from node data.
-
-```bash
-curl -X POST -b /tmp/botrus-cookies http://localhost:4000/api/vars/sync
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "vars": { "synced": 47, "file": "../ansible-playbook/group_vars/all.yml" },
-  "nodes": { "synced": 3 },
-  "inventory": { "synced": 3, "file": "../ansible-playbook/inventory/production.ini" }
-}
-```
-
----
+Exact public GET `/api/health/live` reports process liveness. `/api/health/ready` checks configured signing/lookup keys, SQLite schema and list access across Secret namespaces; returns 503 on dependency failure. Neither returns credentials.
 
 ## Deploy API (Ansible)
 
@@ -658,7 +577,7 @@ List job history.
 
 Get job status and output.
 
-## Variable Reference (all 47 keys)
+## Legacy variable/reference names (explicit native mappings required for credentials)
 
 | Key | Category | Purpose |
 |-----|----------|---------|
@@ -709,3 +628,7 @@ Get job status and output.
 | `traefik_accesslog` | traefik | Enable access logs |
 | `traefik_log_level` | traefik | Traefik log level |
 | `traefik_version` | traefik | Traefik version |
+
+The retained /cluster compatibility pages reuse current viewport/dialog components. Service/PVC menus offer read-only YAML through their existing APIs; no unimplemented mutation actions are offered.
+
+Legacy credential names in the reference table are lookup aliases requiring explicit native namespace/name/key mappings; they are no longer SQLite values or seeded by the retired helper. Bootstrap ansible_become_password comes from an independent operator environment when the target cluster does not exist.

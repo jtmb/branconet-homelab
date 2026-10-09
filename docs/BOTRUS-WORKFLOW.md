@@ -1,6 +1,6 @@
-# Botrus K8s — Workflow Guide
+# BORTUS K8s — Workflow Guide
 
-End-to-end workflows for managing a Kubernetes cluster with the Botrus dashboard.
+End-to-end workflows for managing a Kubernetes cluster with the BORTUS dashboard.
 
 ## Current migration bootstrap
 
@@ -19,29 +19,13 @@ npm run dev
 # Dashboard at http://localhost:4000
 ```
 
-### 2. Seed the Database
+### 2. Initialize metadata/authentication
 
-```bash
-cd k8s-rewrite/front-end
-BECOME_PASSWORD='your-sudo-password' \
-SMB_PASSWORD='your-smb-password' \
-./seed-db.sh
-```
+Run npm run db:deploy; supply DATABASE_URL, stable BOTRUS_JWT_SECRET and BOTRUS_SECRETS_KEY independently. First registered user receives write role. Seed only nonsecret configuration through authenticated APIs; never SQLite passwords.
 
-This populates all 47 variables and node entries into the Prisma SQLite database. Variables include:
-- Kubernetes versions (`k8s_version`, `calico_version`, etc.)
-- Cluster networking (`cluster_cidr`, `pod_network_cidr`, etc.)
-- Node inventory (`node_u1_ip`, `node_u1_hostname`, etc.)
-- Storage config (`storage_class`, `nfs_server_path`, etc.)
-- Secrets (`ansible_become_password`, `secret_plex_smb-creds_password`, etc.)
+### 3. Connect native Secrets
 
-### 3. Configure the Secrets Token
-
-```bash
-export BOTRUS_SECRETS_KEY="your-secure-random-token"
-```
-
-This token protects the `/api/vars/lookup` endpoint. Both the dashboard server and any Ansible processes need it set.
+Supply operator kubeconfig or service account, namespace allowlist and explicit aliases. Import values externally before consumers. Use /secrets for native CRUD and /configuration for nonsecret config. See [deployment](BORTUS-DEPLOYMENT.md).
 
 ### 4. Verify Connectivity
 
@@ -51,7 +35,7 @@ Open the dashboard at `http://localhost:4000` and check the **Nodes** page. If n
 
 ### Option A: Full Provision (from scratch)
 
-1. Go to **Settings** → verify variables are correct
+1. In local operator mode, use **Configuration** for nonsecret variables. Container provisioning is disabled; bootstrap credentials are independent.
 2. Go to **Deploy** → select playbook `site.yml`
 3. Choose roles to run (or run all):
    - `bootstrap` — SSH key distribution, base packages
@@ -119,18 +103,18 @@ Both stacks pull from the same `branconet-charts` GitRepository.
 
 ## Managing Variables
 
-All configuration is stored in the Botrus database, not on disk.
+Nonsecret configuration lives in SQLite; native Secrets are authoritative for values.
 
 ### View Variables
 
-Dashboard → **Settings** tab, or:
+Dashboard → **Configuration** tab, or:
 ```bash
 curl http://localhost:4000/api/vars | jq .
 ```
 
 ### Update a Variable
 
-Dashboard → **Settings** → edit any field, or:
+Dashboard → **Configuration** → edit a nonsecret field, or:
 ```bash
 curl -X POST http://localhost:4000/api/vars \
   -H "Content-Type: application/json" \
@@ -147,25 +131,11 @@ npx tsx -e "import { syncVarsToYAML } from './src/lib/sync-vars'; syncVarsToYAML
 
 This writes `ansible-playbook/group_vars/all.yml` with lookup refs — ready for the next playbook run.
 
-## Managing Secrets (e.g., SMB credentials)
+## Managing native Secrets
 
-Secrets follow the convention `secret_<namespace>_<name>_<key>`.
+Open /secrets, select namespace/name/key, reveal explicitly as a write user, and edit with current resourceVersion. Create refuses collisions; delete removes one key while preserving unrelated data/type/metadata. Readonly users see keys/metadata without values or mutations. Changes are immediate; no Ansible secrets role/sync is needed.
 
-Example: Plex SMB credentials:
-- `secret_plex_smb-creds_username` = `james`
-- `secret_plex_smb-creds_password` = (stored in DB)
-
-These are deployed as Kubernetes Secret objects by the `secrets` Ansible role. FluxCD is configured to **not prune** secrets (annotation `prune: disabled`).
-
-### Creating a New Secret
-
-```bash
-curl -X POST http://localhost:4000/api/vars \
-  -H "Content-Type: application/json" \
-  -d '{"key":"secret_myapp_my-creds_password","value":"...","category":"secret","encrypted":true}'
-```
-
-Then re-run the `secrets` Ansible role to deploy it to the cluster.
+Register legacy lookup aliases via /api/secret-references or ConfigMap JSON. Never split underscores to derive destinations. Native outage errors without DB fallback. Keep values out of Git, command arguments and reports.
 
 ## Cluster Operations
 
@@ -204,8 +174,10 @@ the `kubectl` prefix) and see output inline — no SSH needed.
 | `BOTRUS_SECRETS_KEY` | Yes | Bearer token for `/api/vars/lookup` |
 | `BOTRUS_API_URL` | No | API base URL (default: `http://localhost:4000`) |
 | `DATABASE_URL` | Yes | Prisma SQLite path (auto-set by `.env`) |
-| `BECOME_PASSWORD` | Seed only | Sudo password for `seed-db.sh` |
-| `SMB_PASSWORD` | Seed only | SMB share password for `seed-db.sh` |
+| `ANSIBLE_BECOME_PASSWORD` | Local provisioning | Independent operator environment |
+| `BORTUS_SECRET_NAMESPACES` | Production | Native Secret namespace allowlist |
+| `BOTRUS_JWT_SECRET` | Yes | Stable external signing material |
+| `BORTUS_SECRET_ALIASES_FILE` | Optional | Metadata-only JSON mapping file |
 
 ## Directory Map
 
@@ -241,7 +213,7 @@ k8s-rewrite/
 │   │   ├── encryption.ts           # AES-256-GCM (lib/)
 │   │   └── db.ts                   # Prisma client
 │   ├── prisma/schema.prisma        # Variable, Node, Job models
-│   └── seed-db.sh                  # Initial DB population
+│   └── seed-db.sh                  # Retired helper; use authenticated configuration/Secrets UI
 └── charts/                          # FluxCD-managed apps (dual stack)
     ├── kustomization.yaml           # Root: references ./test-stack, ./media-stack
     ├── test-stack/

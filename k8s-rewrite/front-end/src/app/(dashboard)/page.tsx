@@ -295,7 +295,7 @@ export default function ClusterPage() {
               <a href="/secrets" className="glass-card p-6 rounded-xl hover:bg-zinc-800/80 transition-colors">
                 <Key className="w-8 h-8 text-cyan-400 mb-3" />
                 <h3 className="text-lg font-semibold text-zinc-100 mb-1">Secrets</h3>
-                <p className="text-sm text-zinc-400">Manage variables and encrypted secrets</p>
+                <p className="text-sm text-zinc-400">Manage native Kubernetes Secrets</p>
               </a>
             </div>
           </>

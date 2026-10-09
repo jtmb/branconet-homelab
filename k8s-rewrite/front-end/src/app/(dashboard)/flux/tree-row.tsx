@@ -29,13 +29,13 @@ export default function FluxTreeRow({
 
   function statusDot() {
     if (node.ready) {
-      return <CheckCircle2 className="w-4 h-4 text-emerald-400" title="Ready" />;
+      return <CheckCircle2 className="w-4 h-4 text-emerald-400" aria-label="Ready" />;
     }
     const lower = node.status.toLowerCase();
     if (lower.includes("error") || lower.includes("fail") || lower.includes("invalid")) {
-      return <AlertTriangle className="w-4 h-4 text-red-400" title={node.status} />;
+      return <AlertTriangle className="w-4 h-4 text-red-400" aria-label={node.status} />;
     }
-    return <Loader2 className="w-4 h-4 text-amber-400 animate-spin" title={node.status || "Reconciling"} />;
+    return <Loader2 className="w-4 h-4 text-amber-400 animate-spin" aria-label={node.status || "Reconciling"} />;
   }
 
   function formatTime(ts: string | null) {

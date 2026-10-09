@@ -4,9 +4,9 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
-# Botrus K8s — AGENTS.md
+# BORTUS K8s — AGENTS.md
 
-> LLM-readable project overview for the Botrus Kubernetes management dashboard.
+> LLM-readable project overview for the BORTUS Kubernetes management dashboard.
 
 ## ⚠️ CRITICAL: Update docs alongside code
 
@@ -25,7 +25,7 @@ updates before marking the task complete. Never defer docs.
 
 | Key | Value |
 |-----|-------|
-| **App name** | Botrus K8s Manager |
+| **App name** | BORTUS K8s Manager |
 | **Purpose** | Bare-metal homelab Kubernetes cluster provisioning & management dashboard |
 | **Stack** | Next.js 15 (App Router), TypeScript, Prisma, SQLite, Tailwind CSS |
 | **Runtime** | Node.js (Next.js dev server on port 4000) |
@@ -39,7 +39,7 @@ updates before marking the task complete. Never defer docs.
 ```
 front-end/
 ├── prisma/
-│   └── schema.prisma          # DB schema — Variable, User, Node, Job, ClusterState, Deployment, GitRepo, AppSetting
+│   └── schema.prisma          # DB schema — Variable, User, Node, Job, ClusterState, Deployment, GitRepo, AppSetting, SecretReference
 ├── src/
 │   ├── app/
 │   │   ├── layout.tsx          # Root layout: <html class="dark">, bg-zinc-950, font-sans
@@ -59,7 +59,8 @@ front-end/
 │   │   │   ├── storage/        # /storage — PVC list, detail
 │   │   │   ├── flux/           # /flux — GitRepositories & Kustomizations
 │   │   │   ├── deploy/         # /deploy — Ansible provisioning runner
-│   │   │   ├── secrets/        # /secrets — variable CRUD, sync, encryption
+│   │   │   ├── secrets/        # /secrets — native Secret metadata, value reveal and key CRUD
+│   │   │   ├── configuration/  # /configuration — nonsecret SQLite settings
 │   │   │   ├── settings/       # /settings — app settings, registration toggle, AppSetting CRUD
 │   │   │   └── users/          # /users — user CRUD (write-only for mutations)
 │   │   ├── api/
@@ -82,14 +83,14 @@ front-end/
 │   └── lib/
 │       ├── db.ts               # Prisma singleton (globalThis caching)
 │       ├── auth.ts             # JWT sign/verify with jose, cookie helpers, getSession(), getSessionFromHeaders()
-│       ├── auth-server.ts      # ensureJwtSecret() — auto-generates BOTRUS_JWT_SECRET if missing
+│       ├── auth-server.ts      # ensureJwtSecret() — requires stable operator-supplied signing material
 │       ├── permissions.ts      # requireWrite() → 401/403 gate; getCurrentRole() → "readonly"|"write"|null
-│       ├── k8s.ts              # kubectl wrapper (local-only), kubectlJSON(), kubectlExec(), sshExec() (bootstrap-only)
-│       ├── kubeconfig.ts       # One-time kubeconfig bootstrap: DB → disk → SSH (before first kubectl call)
+│       ├── k8s.ts              # kubectl wrapper (operator kubeconfig or in-cluster credentials)
+│       ├── kubeconfig.ts       # Checks externally supplied credentials; no automatic DB/SSH bootstrap
 │       ├── flux.ts             # Flux repo CRUD, bootstrap, delete with progress tracking
 │       ├── ansible.ts          # runAnsiblePlaybook() — spawns ansible-playbook with SSE events
 │       ├── cluster-cache.ts    # In-memory TTL cache for cluster data (kubectl → JSON)
-│       ├── cluster-secrets.ts  # Encryption helpers for cluster secrets
+│       ├── cluster-secrets.ts  # Native Secret key CRUD with resourceVersion, no DB pushes
 │       ├── sync-vars.ts        # syncVarsToYAML(), syncNodesFromVars(), syncInventoryToFile()
 │       └── active-jobs.ts      # Track running Ansible jobs in globalThis
 ├── lib/
@@ -125,6 +126,7 @@ All documentation lives at **`docs/`** in the repo root (`/home/brajam/repos/bra
 | `CONNECTING-TO-A-CLUSTER.md` | How to connect: kubectl, SSH, dashboard; firewall ports, DNS, architecture diagram | Changing node IPs, network config, CNI, DNS, cluster topology |
 | `kubectl-cheatsheet.md` | kubectl commands for common operations, namespaces, debugging | Adding/removing namespaces, changing common patterns, new kubectl tricks |
 | `ANSIBLE-2-API-INTERACTION.md` | Ansible lookup plugin details, variable resolution at playbook runtime | Changing lookup plugin behavior, API contract, or variable resolution |
+| `BORTUS-DEPLOYMENT.md` | Native Secret API integration, container build, probes, PVC, env references, RBAC and validation evidence | Changing app deployment or native Secret contracts |
 
 ### Documentation Rules
 
@@ -140,7 +142,7 @@ All documentation lives at **`docs/`** in the repo root (`/home/brajam/repos/bra
 
 | Package | Version | Purpose |
 |---------|---------|---------|
-| `next` | 15.0.0 | App Router framework |
+| `next` | 15.5.27 | App Router framework |
 | `react` / `react-dom` | ^18.3.0 | UI library |
 | `typescript` | (via next) | Type checking |
 | `prisma` / `@prisma/client` | ^6.0.0 | ORM + SQLite |
@@ -228,7 +230,7 @@ const logs = await kubectlExec("logs my-pod -n default --tail=100");
 // Check if local kubeconfig is available
 if (!hasLocalKubectl()) {
   // No ~/.kube/config — kubectl hot paths return null
-  // kubeconfig.ts ensures one-time bootstrap at module load
+  // Operator kubeconfig/service account must be supplied externally
 }
 
 // sshExec is BOOTSTRAP-ONLY — only for one-time kubeconfig fetch
@@ -244,7 +246,7 @@ const data = await getCachedClusterData(); // cached for 10s TTL
 ```typescript
 import prisma from "@/lib/db";
 
-// Variables (secrets engine)
+// Nonsecret configuration (credentials use nativeSecrets and explicit aliases)
 await prisma.variable.findMany({ where: { category: "kubernetes" } });
 await prisma.variable.findUnique({ where: { key: "k8s_version" } });
 
@@ -333,8 +335,8 @@ return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
 ## Auth Flow Summary
 
-1. **Login**: `POST /api/auth/login` → bcrypt verify → sign JWT (HS256, 7d) → set HttpOnly cookie `botrus_auth_token`
-2. **Middleware** (`middleware.ts`): Every request passes through. Public paths: `/welcome`, `/auth/*`, `/api/auth/*`, `/api/cluster/info`, `/_next/*`. Everything else requires the cookie.
+1. **Login**: stable operator-supplied `BOTRUS_JWT_SECRET`; `POST /api/auth/login` → bcrypt verify → sign JWT (HS256, 7d) → set HttpOnly cookie `botrus_auth_token`
+2. **Middleware** (`middleware.ts`): Every request passes through. Public paths: `/welcome`, `/auth/*`, `/api/auth/*`, `/api/cluster/info`, `/_next/*`, exact `/api/vars/lookup` (Bearer inside handler), `/api/health/live`, `/api/health/ready`. Everything else requires the cookie.
 3. **API authorization**: `requireWrite()` looks up `User.role` from DB on every call (role is NOT in the JWT — always fresh from DB)
 4. **Client session**: `GET /api/auth/session` returns `{ authenticated, username, role, hasUsers, registrationOpen }`
 
@@ -357,7 +359,8 @@ return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 ## Database Schema (Prisma)
 
 ```
-Variable   (id, key@unique, value, category, encrypted, createdAt, updatedAt)
+Variable   (nonsecret config only; legacy sensitive rows quarantined)
+SecretReference (alias@id, namespace, name, key; metadata only)
 User       (id, username@unique, passwordHash, role="readonly", createdAt)
 Node       (id, name, hostname@unique, ipAddress, role="master", status="pending", cpu?, memory?, createdAt)
 Job        (id, playbook, status="running", output="", startedAt, finishedAt?)
@@ -395,10 +398,14 @@ npm run db:studio     # prisma studio
 
 ## Edge Cases & Gotchas
 
-- **JWT secret**: Auto-generated on first startup via `ensureJwtSecret()`. Stored in `.env.local`. If it changes, all cookies invalidate → re-login required.
+- **JWT secret**: Must be externally supplied in BOTRUS_JWT_SECRET. Never generated/persisted to SQLite. Keep stable across restarts; rotation invalidates cookies.
 - **Params are Promises**: In Next.js 15 App Router, `params` in route handlers is `Promise<{ id: string }>` — must `await` before use.
 - **Prisma singleton**: Uses `globalThis` pattern to avoid multiple instances in dev HMR.
-- **Kubernetes access**: Uses local `kubectl` exclusively with `~/.kube/config`. No SSH fallback on hot paths. If kubeconfig is missing, `ensureKubeconfig()` bootstraps it once at module load (from DB or SSH to master). All kubectl hot paths return null when kubeconfig is unavailable.
+- **Kubernetes access**: Dashboard kubectl uses operator KUBECONFIG or in-cluster credentials. Native Secrets use the TLS-verified API client independently. No DB/SSH startup bootstrap. Native outages fail without fallback/push queues.
 - **Sortable headers**: `useSort<K>` uses `string` internally to avoid TypeScript literal type narrowing — call `toggle(key: string)` with any string, not a literal.
 - **Delete progress**: Flux repo deletes track progress in `globalThis.__deleteProgress` Map — survives HMR but not server restarts.
 - **Cache TTL**: Cluster data cached 30s in `globalThis.__clusterCache`. Stale reads are fine — cache busts on write.
+
+## Native Secrets integration
+
+Read docs/BORTUS-DEPLOYMENT.md and docs/SECRETS-ENGINE.md before changing Secret behavior. Explicit alias/namespace/name/key only; never split underscores. Values never persist in SQLite/argv/generated Git files/errors/logs. Updates/deletes require resourceVersion, preserve unrelated keys/type/metadata, and keep empty objects. Readonly lists metadata only; value access and CRUD require fresh write role. Bootstrap runs externally and cannot depend on the cluster being created. Runtime ports/probes/PVC/RBAC are documented in BORTUS-DEPLOYMENT.md. The installed Next 15 package lacks bundled dist/docs, so use official versioned Next docs when absent.

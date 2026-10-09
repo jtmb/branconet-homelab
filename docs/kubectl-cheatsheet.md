@@ -117,14 +117,14 @@ kubectl describe pvc <pvc-name> -n plex
 
 # SMB credentials — managed by Secrets Engine, per-namespace
 kubectl get secret smb-creds -n plex -o yaml
-# (username/password come from DB secret_plex_smb-creds_*)
+# Native Secret values are authoritative; BORTUS reads them directly.
 
 # Check CSI driver health
 kubectl get pods -n kube-system | grep smb
 kubectl logs -n kube-system daemonset/csi-smb-node -c smb
 ```
 
-## Secrets (Secrets Engine → K8s)
+## Native Secrets
 
 ```bash
 # All secrets in a namespace
@@ -134,7 +134,7 @@ kubectl get secrets -n plex
 kubectl get secret smb-creds -n plex -o jsonpath='{.data.username}' | base64 -d
 kubectl get secret smb-creds -n plex -o jsonpath='{.data.password}' | base64 -d
 
-# Secrets are annotated prune=disabled — they survive FluxCD reconciliation
+# Keep value-bearing Secret manifests outside Git/Flux.
 kubectl get secret <name> -n <ns> -o jsonpath='{.metadata.annotations}'
 ```
 

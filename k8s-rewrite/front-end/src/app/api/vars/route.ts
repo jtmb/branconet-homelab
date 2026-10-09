@@ -1,81 +1,88 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import { parseSecretKey, syncSecretToCluster } from "@/lib/cluster-secrets";
-import { requireWrite } from "@/lib/permissions";
-
+import { requireWrite, getCurrentRole } from "@/lib/permissions";
+import { isSensitiveVariable } from "@/lib/variable-policy";
+import { resolveAlias } from "@/lib/secret-references";
+import { nativeSecrets } from "@/lib/secret-client";
+import { SecretError } from "@/lib/cluster-secrets";
+import { secretResponse, secretErrorResponse } from "@/lib/secret-http";
+export const dynamic = "force-dynamic";
 export async function GET() {
-  const vars = await prisma.variable.findMany({
-    orderBy: { category: "asc" },
-  });
-  return NextResponse.json(vars);
+  try {
+    if (!(await getCurrentRole()))
+      throw new SecretError(401, "Authentication required");
+    const vars = await prisma.variable.findMany({
+      orderBy: { category: "asc" },
+    });
+    return secretResponse(
+      vars.filter((variable) => !isSensitiveVariable(variable)),
+    );
+  } catch (error) {
+    return secretErrorResponse(error);
+  }
 }
-
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   const auth = await requireWrite();
   if (auth instanceof NextResponse) return auth;
-
   try {
-    const body = await request.json();
-    const { id, key, value, category, encrypted } = body;
-
-    let variable;
-
-    if (id) {
-      const existing = await prisma.variable.findUnique({ where: { id } });
-      if (existing) {
-        variable = await prisma.variable.update({
-          where: { id },
-          data: {
-            key: key || existing.key,
-            value: value ?? existing.value,
-            category: category || existing.category,
-            encrypted: encrypted ?? existing.encrypted,
-          },
-        });
-      }
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      throw new SecretError(400, "Invalid JSON request");
     }
-
-    if (!variable && key) {
-      variable = await prisma.variable.upsert({
-        where: { key },
-        update: {
-          value: value ?? "",
-          category: category || "general",
-          encrypted: encrypted ?? false,
-        },
-        create: {
-          key,
-          value: value || "",
-          category: category || "general",
-          encrypted: encrypted ?? false,
-        },
+    if (!body || typeof body !== "object")
+      throw new SecretError(400, "Invalid variable request");
+    const existing = body.id
+      ? await prisma.variable.findUnique({ where: { id: body.id } })
+      : typeof body.key === "string"
+        ? await prisma.variable.findUnique({ where: { key: body.key } })
+        : null;
+    if (body.id && !existing) throw new SecretError(404, "Variable not found");
+    const key = body.key ?? existing?.key;
+    const category = body.category ?? existing?.category ?? "general";
+    const encrypted = body.encrypted ?? existing?.encrypted ?? false;
+    if (
+      typeof key !== "string" ||
+      !/^[a-zA-Z0-9_.:/-]{1,253}$/.test(key) ||
+      typeof category !== "string" ||
+      typeof encrypted !== "boolean" ||
+      typeof body.value !== "string"
+    )
+      throw new SecretError(
+        400,
+        "Valid key, category and text value are required",
+      );
+    const target = await resolveAlias(key);
+    if (
+      target ||
+      isSensitiveVariable({ key, category, encrypted }) ||
+      (existing && isSensitiveVariable(existing))
+    ) {
+      if (!target)
+        throw new SecretError(
+          400,
+          "Sensitive values require an explicit Secret mapping; use /api/secrets and /api/secret-references",
+        );
+      return secretResponse({
+        success: true,
+        secret: await nativeSecrets().write(
+          target,
+          body.value,
+          body.mode || "update",
+          body.resourceVersion,
+        ),
       });
     }
-
-    if (!variable) {
-      return NextResponse.json(
-        { error: "Either id (update) or key (create/upsert) is required" },
-        { status: 400 }
-      );
-    }
-
-    // Sync to K8s if this is a secret_* variable
-    const parsed = parseSecretKey(variable.key);
-    if (parsed && variable.category === "secret") {
-      syncSecretToCluster(parsed.namespace, parsed.name).catch((err) =>
-        console.error("[vars] K8s sync error:", err)
-      );
-    }
-
-    const isNew = !id && body.key &&
-      (await prisma.variable.count({ where: { key: variable.key } })) <= 1;
-
-    return NextResponse.json(
-      { success: true, variable },
-      { status: isNew ? 201 : 200 }
-    );
-  } catch (err) {
-    console.error("[vars] POST error:", err);
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    if (!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(key))
+      throw new SecretError(400, "Nonsecret keys must be valid Ansible identifiers");
+    const variable = await prisma.variable.upsert({
+      where: { key },
+      create: { key, value: body.value, category, encrypted: false },
+      update: { value: body.value, category, encrypted: false },
+    });
+    return secretResponse({ success: true, variable }, existing ? 200 : 201);
+  } catch (error) {
+    return secretErrorResponse(error);
   }
 }

@@ -4,50 +4,30 @@ import { runAnsiblePlaybook } from "@/lib/ansible";
 import { activeJobs } from "@/lib/active-jobs";
 import { syncVarsToYAML, syncInventoryToFile, syncNodesFromVars } from "@/lib/sync-vars";
 import { invalidateCache } from "@/lib/cluster-cache";
-import { sshExec } from "@/lib/k8s";
 import { requireWrite } from "@/lib/permissions";
-import { mkdir, writeFile } from "fs/promises";
-import { homedir } from "os";
 
 export async function POST(request: NextRequest) {
   const auth = await requireWrite();
   if (auth instanceof NextResponse) return auth;
+
+  if (process.env.BORTUS_DISABLE_PROVISIONING === "true" || process.env.KUBERNETES_SERVICE_HOST) return NextResponse.json({ error: "Run bootstrap/provisioning from the independent operator environment" }, { status: 501 });
 
   try {
     const body = await request.json();
     const { playbook, roles } = body;
     const playbookFile = playbook || "site.yml";
 
-    // ── Sync vars from DB to YAML files before deploying ──
-    // This ensures the latest DB values are used by Ansible.
-    try {
-      const varResult = await syncVarsToYAML();
-      console.log(`[deploy] Synced ${varResult.synced} vars to ${varResult.file}`);
-    } catch (syncErr) {
-      console.error("[deploy] Failed to sync vars:", syncErr);
-      // Continue — use whatever is on disk
-    }
-
-    try {
-      const nodesResult = await syncNodesFromVars();
-      console.log(`[deploy] Synced ${nodesResult.synced} nodes from vars`);
-    } catch (syncErr) {
-      console.error("[deploy] Failed to sync nodes from vars:", syncErr);
-    }
-
-    try {
-      const invResult = await syncInventoryToFile();
-      console.log(`[deploy] Synced ${invResult.synced} nodes to ${invResult.file}`);
-    } catch (syncErr) {
-      console.error("[deploy] Failed to sync inventory:", syncErr);
-    }
+    // Fail before launching on invalid lookup references; never use old generated files.
+    await syncVarsToYAML();
+    await syncNodesFromVars();
+    await syncInventoryToFile();
 
     // Create job record in SQLite via Prisma
     const job = await prisma.job.create({
       data: {
         playbook: playbookFile,
         status: "running",
-        output: `[Synced vars from DB to group_vars/all.yml]\n`,
+        output: `[Generated lookup references and inventory]\n`,
         startedAt: new Date(),
       },
     });
@@ -61,7 +41,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true, jobId: job.id });
   } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+    return NextResponse.json({ error: "Provisioning preparation failed" }, { status: 500 });
   }
 }
 
@@ -133,47 +113,13 @@ async function runAnsible(
       if (isSuccess) {
         invalidateCache();
 
-        // Fetch kubeconfig from the deployed master node
-        try {
-          const masterNode = await prisma.node.findFirst({
-            where: { role: "master" },
-          });
-          if (masterNode) {
-            const kubeconfig = await sshExec(
-              masterNode.ipAddress,
-              "sudo cat /etc/kubernetes/admin.conf"
-            );
-            if (kubeconfig) {
-              await prisma.clusterState.upsert({
-                where: { id: "singleton" },
-                update: {
-                  kubeconfig,
-                  deployed: true,
-                  deployedAt: new Date(),
-                },
-                create: {
-                  id: "singleton",
-                  kubeconfig,
-                  deployed: true,
-                  deployedAt: new Date(),
-                },
-              });
-              console.log("[deploy] Kubeconfig captured and stored in DB");
+        await prisma.clusterState.upsert({
+          where: { id: "singleton" },
+          update: { deployed: true, deployedAt: new Date(), kubeconfig: "" },
+          create: { id: "singleton", deployed: true, deployedAt: new Date() },
+        });
+        // Operator stores kubeconfig independently; never persist credentials in SQLite.
 
-              // Also write to ~/.kube/config so kubectl commands run locally
-              try {
-                await mkdir(`${homedir()}/.kube`, { recursive: true });
-                await writeFile(`${homedir()}/.kube/config`, kubeconfig, { mode: 0o600 });
-                console.log("[deploy] Kubeconfig written to disk");
-              } catch (writeErr) {
-                console.error("[deploy] Failed to write kubeconfig to disk:", writeErr);
-              }
-            }
-          }
-        } catch (kubeErr) {
-          console.error("[deploy] Failed to capture kubeconfig:", kubeErr);
-          // Non-fatal — cluster is still deployed
-        }
       }
     } catch (err) {
       console.error("Failed to save final job state:", err);

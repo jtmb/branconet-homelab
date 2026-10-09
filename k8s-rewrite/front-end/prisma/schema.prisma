@@ -22,6 +22,16 @@ model Variable {
   @@map("variables")
 }
 
+// Metadata only: values live exclusively in Kubernetes.
+model SecretReference {
+  alias     String @id
+  namespace String
+  name      String
+  key       String
+
+  @@map("secret_references")
+}
+
 model User {
   id           String   @id @default(cuid())
   username     String   @unique

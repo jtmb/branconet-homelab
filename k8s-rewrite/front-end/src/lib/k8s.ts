@@ -5,11 +5,12 @@ import { homedir } from "os";
 
 const execFileAsync = promisify(execFile);
 
-export const KUBECONFIG_PATH = `${homedir()}/.kube/config`;
+export const KUBECONFIG_PATH = process.env.KUBECONFIG || `${homedir()}/.kube/config`;
+const kubectlConfigArgs = () => process.env.KUBERNETES_SERVICE_HOST && !process.env.KUBECONFIG ? [] : ["--kubeconfig", KUBECONFIG_PATH];
 
 /** Check at call time whether a local kubeconfig is available. */
 export function hasLocalKubectl(): boolean {
-  return existsSync(KUBECONFIG_PATH);
+  return Boolean(process.env.KUBERNETES_SERVICE_HOST) || existsSync(KUBECONFIG_PATH);
 }
 
 const SSH_KEY = "/home/brajam/.ssh/id_ed25519";
@@ -33,7 +34,7 @@ export async function kubectlJSON(
   try {
     const { stdout } = await execFileAsync(
       "kubectl",
-      ["--kubeconfig", KUBECONFIG_PATH, ...cmd.split(" "), "-o", "json"],
+      [...kubectlConfigArgs(), ...cmd.split(" "), "-o", "json"],
       { timeout: timeoutMs, maxBuffer: 2 * 1024 * 1024 }
     );
     if (!stdout.trim()) return null;
@@ -80,7 +81,7 @@ export async function kubectlExec(
   try {
     const { stdout } = await execFileAsync(
       "kubectl",
-      ["--kubeconfig", KUBECONFIG_PATH, ...cmd.split(" ")],
+      [...kubectlConfigArgs(), ...cmd.split(" ")],
       { timeout: timeoutMs, maxBuffer: 2 * 1024 * 1024 }
     );
     return stdout;
@@ -91,15 +92,6 @@ export async function kubectlExec(
     return out;
   }
 }
-
-// ── Bootstrap: try to ensure kubeconfig at module load ──
-// Fire-and-forget — won't block module load. First real kubectl call
-// will still do its own hasLocalKubectl() check.
-import("./kubeconfig").then(({ ensureKubeconfig }) =>
-  ensureKubeconfig().then((ok) =>
-    console.log(ok ? "[k8s] kubeconfig ready" : "[k8s] no kubeconfig — import needed")
-  )
-).catch(() => {});
 
 // ── Restricted shell sandbox ──
 const SHELL_HOME = "/home/shell";

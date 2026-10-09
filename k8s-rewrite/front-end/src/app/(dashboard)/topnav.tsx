@@ -18,7 +18,7 @@ export default function TopNav() {
   useEffect(() => {
     const update = () => {
       const shells = getShells();
-      setTerminalActive(shells.some((s) => s.state !== "closed"));
+      setTerminalActive(shells.length > 0);
     };
     update();
     return subscribe(update);
@@ -69,7 +69,7 @@ export default function TopNav() {
           <button
             onClick={() => {
               const shells = getShells();
-              const active = shells.filter((s) => s.state !== "closed");
+              const active = shells;
               if (active.length > 0) {
                 active.forEach((s) => closeShell(s.id));
               } else {

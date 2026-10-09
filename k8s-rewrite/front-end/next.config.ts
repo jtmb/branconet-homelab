@@ -1,9 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
+  serverExternalPackages: ["@kubernetes/client-node"],
   // Output environment variables to console for debugging
   env: {
-    NEXT_PUBLIC_APP_NAME: "Botrus K8s",
+    NEXT_PUBLIC_APP_NAME: "BORTUS K8s",
   },
   // Redirect old /vars route to /secrets
   async redirects() {

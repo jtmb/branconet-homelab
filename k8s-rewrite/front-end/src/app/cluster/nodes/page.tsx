@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Server, Loader2, Plus, Trash2, Save, Pencil, Search } from "lucide-react";
-import ViewportWrapper from "../viewport-wrapper";
+import ViewportWrapper from "@/app/(dashboard)/viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
 

@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import { getSessionFromHeaders } from "@/lib/auth";
 
 // Routes that don't require authentication
-const PUBLIC_PATHS = ["/welcome", "/auth/login", "/auth/register"];
+const PUBLIC_PATHS = ["/welcome", "/auth/login", "/auth/register", "/api/vars/lookup", "/api/health/live", "/api/health/ready"];
 const PUBLIC_PREFIXES = ["/api/auth/", "/_next/", "/favicon.ico", "/api/cluster/info"];
 
 function isPublic(pathname: string): boolean {

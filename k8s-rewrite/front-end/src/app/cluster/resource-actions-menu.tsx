@@ -21,9 +21,9 @@ import {
   ShieldOff,
   Shield,
 } from "lucide-react";
-import YamlModal from "./yaml-modal";
-import ConfirmDialog from "./confirm-dialog";
-import LogModal from "./log-modal";
+import YamlModal from "@/app/(dashboard)/yaml-modal";
+import ConfirmDialog from "@/app/(dashboard)/confirm-dialog";
+import LogModal from "@/app/(dashboard)/log-modal";
 import { openShell } from "@/lib/shell-manager";
 
 export type ResourceType = "pod" | "deployment" | "namespace" | "node";
