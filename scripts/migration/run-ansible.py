@@ -12,12 +12,15 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--tags',default='bootstrap,kubernetes,network,dns')
     parser.add_argument('--syntax-check',action='store_true')
+    parser.add_argument('--recovery-bootstrap',action='store_true',help='Keep public ports, native DNS dependency and Flux activation gated during recovery')
     args=parser.parse_args()
     repo=pathlib.Path(__file__).resolve().parents[2]
     ansible=repo/'k8s-rewrite/ansible-playbook'
     runtime=pathlib.Path.home()/'.local/share/branconet-migration'
     env={**os.environ,'ANSIBLE_CONFIG':str(ansible/'ansible.cfg'),'ANSIBLE_NOCOLOR':'1'}
     command=[str(runtime/'venv/bin/ansible-playbook'),'playbooks/site.yml','--tags',args.tags]
+    if args.recovery_bootstrap:
+        command+=['--extra-vars',json.dumps({'migration_network_cutover_complete':False,'migration_native_dns_enabled':False,'flux_activation_enabled':False})]
     if args.syntax_check:
         raise SystemExit(subprocess.run([*command,'--syntax-check'],cwd=ansible,env=env).returncode)
     request=json.load(sys.stdin)

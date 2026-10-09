@@ -27,8 +27,14 @@ candidates += [(current['username'],password) for password in passwords]
 for app in ['sonarr','radarr']:
  code="import sqlite3,json;db=sqlite3.connect('file:/config/"+app+".db?mode=ro',uri=True);print(json.dumps([json.loads(row[0]) for row in db.execute('SELECT Settings FROM DownloadClients')]))"
  result=subprocess.run(k+['exec','-i','-n','plex','deployment/'+app,'--','python3','-'],input=code.encode(),capture_output=True)
+ if result.returncode:
+  import yaml
+  values=yaml.safe_load((ROOT/'k8s-rewrite/charts/media-stack'/app/'values.yaml').read_text());path=values['migration']['dataCopies'][0]['sourcePath'].replace('/mnt/container-program-files/','/mnt/migration-gluster-read/')+'/'+app+'.db'
+  code="import sqlite3,json;db=sqlite3.connect("+repr('file:'+path+'?mode=ro&immutable=1')+",uri=True);print(json.dumps([json.loads(row[0]) for row in db.execute('SELECT Settings FROM DownloadClients')]))"
+  result=subprocess.run(['ssh','-p','2002','james@192.168.0.5','python3','-'],input=code.encode(),capture_output=True)
  if not result.returncode:
   for client in json.loads(result.stdout):
+   client={key.lower():value for key,value in client.items()}
    user=client.get('username');password=client.get('password')
    if user and password:candidates.append((user,password))
 matched=next(((user,password) for user,password in candidates if user==current['username'] and hashlib.pbkdf2_hmac('sha512',password.encode(),salt,100000)==digest),None)

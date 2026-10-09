@@ -273,3 +273,26 @@ resources:
               name: bazarr
               port:
                 number: 6767
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: bazarr-published
+    namespace: plex
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: bazarr
+      meta.helm.sh/release-namespace: plex
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: bazarr
+    ports:
+    - name: p6767-tcp
+      port: 6767
+      targetPort: 6767
+      protocol: TCP

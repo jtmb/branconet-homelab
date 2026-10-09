@@ -90,3 +90,26 @@ resources:
       targetPort: 80
       protocol: TCP
     type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: phpmyadmin-published
+    namespace: wordpress
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: phpmyadmin
+      meta.helm.sh/release-namespace: wordpress
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: phpmyadmin
+    ports:
+    - name: p8086-tcp
+      port: 8086
+      targetPort: 80
+      protocol: TCP

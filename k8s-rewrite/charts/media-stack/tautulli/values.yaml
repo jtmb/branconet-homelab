@@ -148,3 +148,26 @@ resources:
               name: tautulli
               port:
                 number: 8181
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: tautulli-published
+    namespace: plex
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: tautulli
+      meta.helm.sh/release-namespace: plex
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: tautulli
+    ports:
+    - name: p9119-tcp
+      port: 9119
+      targetPort: 8181
+      protocol: TCP

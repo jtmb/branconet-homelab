@@ -30,12 +30,14 @@ resources:
           app: qbit-monitor
           branconet.io/type: app
       spec:
+        securityContext:
+          fsGroup: 1000
         containers:
         - name: qbit-monitor
           image: '{{ .Values.image }}'
           env:
           - name: QBITTORRENT_STATUS_NOTIFICATION
-            value: 'on'
+            value: 'off'
           - name: QBITTORRENT_HOST
             value: http://qbittorrent-webui.plex.svc.cluster.local:8112
           - name: QBITTORRENT_USERNAME
@@ -57,13 +59,13 @@ resources:
           - name: PORT_FORWARD_FILE
             value: /tmp/gluetun/forwarded_port
           - name: PORT_UPDATED_NOTIFICATION
-            value: 'on'
+            value: 'off'
           - name: CHECK_INTERVAL_TORRENT_MONITORING
             value: 10s
           - name: NEW_DOWNLOAD_NOTIFICATION
-            value: 'on'
+            value: 'off'
           - name: METADATA_STUCK_NOTIFICATION
-            value: 'on'
+            value: 'off'
           - name: DOWNLOAD_COMPLETE_NOTIFICATION
             value: 'off'
           - name: DISCORD_WEBHOOK_URL
@@ -71,7 +73,7 @@ resources:
               secretKeyRef:
                 name: qbitmonitor-creds-secret
                 key: discord-webhook-url
-                optional: true
+                optional: false
           - name: PUID
             value: '1000'
           - name: PGID
@@ -82,6 +84,8 @@ resources:
           - name: gluetun-port
             mountPath: /tmp/gluetun
             readOnly: true
+          - name: monitor-state
+            mountPath: /app/state
           resources:
             requests:
               cpu: 50m
@@ -94,6 +98,9 @@ resources:
         - name: gluetun-port
           persistentVolumeClaim:
             claimName: gluetun-data-1-retry1
+        - name: monitor-state
+          persistentVolumeClaim:
+            claimName: qbit-monitor-state
         affinity:
           podAffinity:
             requiredDuringSchedulingIgnoredDuringExecution:
@@ -105,6 +112,20 @@ resources:
               - plex
     strategy:
       type: Recreate
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: qbit-monitor-state
+    namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
 - apiVersion: v1
   kind: Service
   metadata:

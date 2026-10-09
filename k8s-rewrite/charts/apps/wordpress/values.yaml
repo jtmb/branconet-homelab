@@ -157,3 +157,26 @@ resources:
     - hosts:
       - jtmb.cc
       secretName: jtmb-cc-tls
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: wordpress-published
+    namespace: wordpress
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: wordpress
+      meta.helm.sh/release-namespace: wordpress
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: wordpress
+    ports:
+    - name: p8085-tcp
+      port: 8085
+      targetPort: 80
+      protocol: TCP

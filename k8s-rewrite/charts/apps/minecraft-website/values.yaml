@@ -166,3 +166,26 @@ resources:
     - hosts:
       - mc.jtmb.cc
       secretName: source-acme-4
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: minecraft-website-published
+    namespace: web-apps
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: minecraft-website
+      meta.helm.sh/release-namespace: web-apps
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: minecraft-website
+    ports:
+    - name: p8083-tcp
+      port: 8083
+      targetPort: 80
+      protocol: TCP

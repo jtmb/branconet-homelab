@@ -166,3 +166,26 @@ resources:
     - hosts:
       - santos.jtmb.cc
       secretName: source-acme-1
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: santos-web-published
+    namespace: web-apps
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: santos-web
+      meta.helm.sh/release-namespace: web-apps
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: santos-web
+    ports:
+    - name: p8081-tcp
+      port: 8081
+      targetPort: 80
+      protocol: TCP

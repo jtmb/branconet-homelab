@@ -162,6 +162,8 @@ resources:
               secretKeyRef:
                 name: gluetun-launch
                 key: command-0
+          - name: FIREWALL_INPUT_PORTS
+            value: '8112'
           command:
           - $(MIGRATION_COMMAND_0)
           imagePullPolicy: IfNotPresent
@@ -172,6 +174,8 @@ resources:
           options:
           - name: ndots
             value: '1'
+        nodeSelector:
+          kubernetes.io/hostname: masternode
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
@@ -242,6 +246,10 @@ resources:
       targetPort: 8112
       protocol: TCP
     type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
 - apiVersion: v1
   kind: Service
   metadata:
@@ -255,3 +263,55 @@ resources:
     - name: web
       port: 8112
       targetPort: 8112
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: qbittorrent-http
+    namespace: plex
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+      meta.helm.sh/release-name: qbittorrent
+      meta.helm.sh/release-namespace: plex
+    labels:
+      app.kubernetes.io/managed-by: Helm
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: qbittorrent.branconet.local
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: qbittorrent-webui
+              port:
+                number: 8112
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: qbittorrent-https
+    namespace: plex
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+      meta.helm.sh/release-name: qbittorrent
+      meta.helm.sh/release-namespace: plex
+    labels:
+      app.kubernetes.io/managed-by: Helm
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: qbittorrent.branconet.local
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: qbittorrent-webui
+              port:
+                number: 8112
+    tls:
+    - hosts:
+      - qbittorrent.branconet.local

@@ -2,11 +2,17 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; execution target before 20:30 UTC. Cluster migration is owned by this chat. BORTUS application development is owned by chat 01a12114-28d9-7623-8aed-9947e08d7065, which delivered app commit 1438b278cdf21e98429b4836c018636b01b982a3 in its isolated worktree. Live deployment/acceptance belongs here.
 
-## Current state at 19:07 UTC
+## Current state at 20:14 UTC
 
-Three nodes are Ready. CI validated revision 40ef692 and Flux adopted 29 private-tested releases; six application acceptances remain. All four websites passed trusted HTTPS on temporary port 30443 through all three nodes. Plex retains the master identity and library counts (154 movies, 97 shows, six movies in the second movie library); a real 1 MiB media range read and a worker relocation passed on the same claim. Client playback remains a separate check. Native Pi-hole now answers public and LAN DNS over UDP/TCP, including through CoreDNS. All three original Traefik log directories have encrypted, authenticated operator/NAS backups. Application routes are prepared; standard 80/443 and DNS 53 transfer remains pending. Gluster, source Vault/Consul and originals remain retained. Original Redis-state acceptance remains unresolved.
+Three Kubernetes nodes and every active Deployment are Ready. All 35 individual application charts now have private evidence; the final monitor promotion and published-port values are being validated through CI before Flux adoption. One active Plex retains the master identity/library, passes real media playback and relocation. All 29 deployed HTTPS hostnames responded in the latest route sweep, with trusted public-domain chains and explicitly unverified default LAN certificates; BORTUS authenticated HTTPS shows native Secrets and three Ready nodes. Fresh native ACME issuance and trusted WordPress HTTPS passed.
+
+Thirty-one migrated application volumes have completed cold NAS backups. A separate BORTUS restore passed decryption, byte equality, table counts and SQLite integrity. A fresh etcd snapshot restored independently and matched 334 Secret ciphertext records. The new monitor claim/checkpoint and latest Secret changes still need the final backup update. Original Gluster and source data remain retained. Only Vault/Consul and Portainer/agents are still running on Docker. Original removed Redis-state acceptance remains unresolved; no preservation exception is assumed for that historical state.
+
+qBittorrent authenticates with recovered, hash-matched credentials and retains 203 torrents. Sonarr and Radarr download-client tests pass. The monitor polls the real queue, applies the negotiated VPN port and retains its Longhorn state across restart. Discord delivery, actual Unpackerr extraction, an ETS2 game-client join and xTeve SSDP discovery remain untested. Legacy xTeve TCP 1901 has no observed listener; other transferred application ports are being rechecked after routing settles. Source retirement and the migration goal remain open.
 
 ## Execution journal (historical observations)
+
+- 20:14 UTC: all active Deployments Ready after scoped Docker memory recovery on worker2; available memory rose from 1.3 to 12 GB. No Gluster/Vault stop. Native qBittorrent credentials recovered without password reset; 203 torrents and both Arr client tests pass. Monitor state/restart/forwarded-port proof passed. Remaining published ports transferred with encrypted rollback specs. Final CI promotion and backup refresh underway.
 
 - 19:13 UTC: standard 80/443 routing transferred from Swarm to native Traefik with encrypted rollback specifications. Twelve trusted HTTPS/content checks passed on 443; all three node addresses passed UDP/TCP DNS on 53. DNS exposure is a separate pihole-public Service, preserving ingress ownership of port 80 and the old admin port 8079.
 - 19:19 UTC: an installed FFmpeg client decoded ten seconds / 239 frames of real Plex media through 192.168.0.4:32400. Its token stayed in a loopback proxy's memory. All old Plex instances remain stopped with their configurations retained.
@@ -76,13 +82,13 @@ Three nodes are Ready. CI validated revision 40ef692 and Flux adopted 29 private
 | Criterion | Status | Evidence / remaining work |
 |---|---|---|
 | AC1 Three-node Kubernetes | Passed | Three Ready nodes, pod DNS and cross-worker ping passed; independent runtime preserves source Docker |
-| AC2 One CI/CD pipeline | Passed adoption | CI validated 40ef692, Flux source and Kustomization Ready; 29 private-tested application releases adopted |
-| AC3 Complete service coverage | Prepared | SERVICE_REGISTER.md and sanitized detailed register account for 42 source/repository entries |
-| AC4 Individual charts/values | In progress | All 35 packages implemented and packaging checks passed; live configuration/application checks remain |
-| AC5 Longhorn persistence/recovery | In progress | Encrypted two-replica device, cross-worker persistence and snapshot restoration passed; per-app recovery remains |
+| AC2 One CI/CD pipeline | Final revision pending | Prior CI/Flux adoption passed; final 35-chart promotion/published-port revision must pass remote CI and reconcile |
+| AC3 Complete service coverage | Accounted | 42 source/repository entries, 35 native app charts; retained management/secrets sources have explicit replacement contracts |
+| AC4 Individual charts/values | Private checks passed | 35 implemented packages and private proofs; final pipeline and remaining end-to-end scenarios stay explicit |
+| AC5 Longhorn persistence/recovery | Storage proofs passed | Encrypted two-replica storage, relocation and snapshot restore; 31 cold NAS backups and independent BORTUS NAS restore passed; not all volumes restore-tested |
 | AC6 SMB preservation/integration | Passed Plex integration | Existing share paths preserved; real Plex media range reads match before and after worker relocation |
-| AC7 Native Secrets/BORTUS | Private checks passed | Native readback/encryption, all aliases, auth/CRUD/conflicts/restart, dashboard and live API outage/recovery passed; public HTTPS pending |
-| AC8 Data preservation | In progress | Seven required archives authenticated; actual restore/copy checks and original Redis-state acceptance pending |
+| AC7 Native Secrets/BORTUS | Passed tested contract | Native aliases/auth/CRUD/conflicts/restart/dashboard/API outage; authenticated LAN HTTPS passed using the default untrusted LAN certificate |
+| AC8 Data preservation | Historical exception unresolved | Source archives/cold copies, actual etcd and NAS BORTUS restores passed; original removed Redis writable state remains unrecovered/unaccepted |
 | AC9 One Plex service | Passed | One active native Plex; all old instances stopped and configs retained; master identity/library counts, real media read, relocation and actual FFmpeg client playback passed |
 | AC10 Reproducibility/docs | In progress | Plan and report saved; update implementation alongside changes |
 | AC11 Retirement approval | Pending | Requires completed evidence and user confirmation |

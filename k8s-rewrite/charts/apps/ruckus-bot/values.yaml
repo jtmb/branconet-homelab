@@ -120,3 +120,30 @@ resources:
               name: ruckus-bot
               port:
                 number: 8080
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ruckus-bot-published
+    namespace: ruckus
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: ruckus-bot
+      meta.helm.sh/release-namespace: ruckus
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: ruckus-bot
+    ports:
+    - name: p3003-tcp
+      port: 3003
+      targetPort: 3003
+      protocol: TCP
+    - name: p8088-tcp
+      port: 8088
+      targetPort: 8080
+      protocol: TCP

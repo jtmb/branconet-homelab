@@ -95,3 +95,26 @@ resources:
       targetPort: 9150
       protocol: TCP
     type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: minecraft-exporter-published
+    namespace: games
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: minecraft-exporter
+      meta.helm.sh/release-namespace: games
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: minecraft-exporter
+    ports:
+    - name: p9150-tcp
+      port: 9150
+      targetPort: 9150
+      protocol: TCP

@@ -252,3 +252,26 @@ resources:
               name: sonarr
               port:
                 number: 8989
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: sonarr-published
+    namespace: plex
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: sonarr
+      meta.helm.sh/release-namespace: plex
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: sonarr
+    ports:
+    - name: p8989-tcp
+      port: 8989
+      targetPort: 8989
+      protocol: TCP

@@ -175,3 +175,26 @@ resources:
     - hosts:
       - media.jtmb.cc
       secretName: source-acme-5
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: overseerr-published
+    namespace: plex
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: overseerr
+      meta.helm.sh/release-namespace: plex
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: overseerr
+    ports:
+    - name: p5055-tcp
+      port: 5055
+      targetPort: 5055
+      protocol: TCP

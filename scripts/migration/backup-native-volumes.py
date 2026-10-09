@@ -68,4 +68,7 @@ for attempt in range(900):
  time.sleep(2)
 report['completed_at']=datetime.datetime.now(datetime.timezone.utc).isoformat();save()
 if not report['nas_backups_complete']:raise RuntimeError('Native backups not complete')
+for holder in holders:
+ run(['delete','pod',holder['name'],'-n',holder['namespace'],'--wait=true','--timeout=120s'])
+report['temporary_readonly_holders_removed']=True;save()
 print(json.dumps({'complete_backups':len(volumes),'nas_backups_complete':True,'restore_proof_pending':True}))

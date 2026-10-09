@@ -1,0 +1,616 @@
+{
+  "started_at": "2026-10-09T20:08:34.340172+00:00",
+  "rollback_operator_copy": "/home/brajam/.local/share/branconet-migration/recovery/application-port-rollback-20261009T200833Z.json.age",
+  "rollback_nas_copy": "/mnt/container-backups/k8s-migration-20261009/application-port-rollback-20261009T200833Z.json.age",
+  "source_data_retained": true,
+  "services": [
+    {
+      "source": "bot_ruckus",
+      "release": "ruckus-bot",
+      "namespace": "ruckus",
+      "source_original_replicas": 0,
+      "published_ports": [
+        3003,
+        8088
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "bot_ruckus-db",
+      "release": "ruckus-db",
+      "namespace": "ruckus",
+      "source_original_replicas": 0,
+      "published_ports": [
+        3306
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "gamesrv_mc-exporter",
+      "release": "minecraft-exporter",
+      "namespace": "games",
+      "source_original_replicas": 0,
+      "published_ports": [
+        9150
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "mealie_mealie",
+      "release": "mealie",
+      "namespace": "mealie",
+      "source_original_replicas": 0,
+      "published_ports": [
+        8089
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "media_bazarr",
+      "release": "bazarr",
+      "namespace": "plex",
+      "source_original_replicas": 0,
+      "published_ports": [
+        6767
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "media_flaresolverr",
+      "release": "flaresolverr",
+      "namespace": "plex",
+      "source_original_replicas": 1,
+      "published_ports": [
+        8191
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "media_jackett",
+      "release": "jackett",
+      "namespace": "plex",
+      "source_original_replicas": 0,
+      "published_ports": [
+        9117
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "media_overseerr",
+      "release": "overseerr",
+      "namespace": "plex",
+      "source_original_replicas": 0,
+      "published_ports": [
+        5055
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "media_radarr",
+      "release": "radarr",
+      "namespace": "plex",
+      "source_original_replicas": 0,
+      "published_ports": [
+        7878
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "media_sonarr",
+      "release": "sonarr",
+      "namespace": "plex",
+      "source_original_replicas": 0,
+      "published_ports": [
+        8989
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "media_tautulli",
+      "release": "tautulli",
+      "namespace": "plex",
+      "source_original_replicas": 0,
+      "published_ports": [
+        9119
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "media_xteve",
+      "release": "xteve",
+      "namespace": "plex",
+      "source_original_replicas": 0,
+      "published_ports": [
+        1901,
+        34400
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "media_ytdl",
+      "release": "ytdl",
+      "namespace": "plex",
+      "source_original_replicas": 0,
+      "published_ports": [
+        11742
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "pi_exporter",
+      "release": "pihole-exporter",
+      "namespace": "pihole",
+      "source_original_replicas": 1,
+      "published_ports": [
+        9617
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "vault_vaultwarden",
+      "release": "vaultwarden",
+      "namespace": "vaultwarden",
+      "source_original_replicas": 0,
+      "published_ports": [
+        8096
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "wordpress_phpmyadmin",
+      "release": "phpmyadmin",
+      "namespace": "wordpress",
+      "source_original_replicas": 1,
+      "published_ports": [
+        8086
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "wordpress_redis-db",
+      "release": "wordpress-redis",
+      "namespace": "wordpress",
+      "source_original_replicas": 0,
+      "published_ports": [
+        6379
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "wordpress_wp-app",
+      "release": "wordpress",
+      "namespace": "wordpress",
+      "source_original_replicas": 0,
+      "published_ports": [
+        8085
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "ws_aplb",
+      "release": "aplb",
+      "namespace": "web-apps",
+      "source_original_replicas": 0,
+      "published_ports": [
+        8082
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "ws_lucinda",
+      "release": "lucinda-art-gallery",
+      "namespace": "web-apps",
+      "source_original_replicas": 0,
+      "published_ports": [
+        8080
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "ws_mcwebsite",
+      "release": "minecraft-website",
+      "namespace": "web-apps",
+      "source_original_replicas": 0,
+      "published_ports": [
+        8083
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    },
+    {
+      "source": "ws_santos",
+      "release": "santos-web",
+      "namespace": "web-apps",
+      "source_original_replicas": 0,
+      "published_ports": [
+        8081
+      ],
+      "source_ports_removed": true,
+      "source_spec_and_data_retained": true
+    }
+  ],
+  "tcp_checks": [
+    {
+      "node": "192.168.0.4",
+      "port": 3003,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 3003,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 3003,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 8088,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 8088,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 8088,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 3306,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 3306,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 3306,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 9150,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 9150,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 9150,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 8089,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 8089,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 8089,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 6767,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 6767,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 6767,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 8191,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 8191,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 8191,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 9117,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 9117,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 9117,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 5055,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 5055,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 5055,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 7878,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 7878,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 7878,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 8989,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 8989,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 8989,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 9119,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 9119,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 9119,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 1901,
+      "tcp_open": false
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 1901,
+      "tcp_open": false
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 1901,
+      "tcp_open": false
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 34400,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 34400,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 34400,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 11742,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 11742,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 11742,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 9617,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 9617,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 9617,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 8096,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 8096,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 8096,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 8086,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 8086,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 8086,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 6379,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 6379,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 6379,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 8085,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 8085,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 8085,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 8082,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 8082,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 8082,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 8080,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 8080,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 8080,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 8083,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 8083,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 8083,
+      "tcp_open": true
+    },
+    {
+      "node": "192.168.0.4",
+      "port": 8081,
+      "tcp_open": false
+    },
+    {
+      "node": "192.168.0.5",
+      "port": 8081,
+      "tcp_open": false
+    },
+    {
+      "node": "192.168.0.6",
+      "port": 8081,
+      "tcp_open": false
+    }
+  ],
+  "completed_at": "2026-10-09T20:08:47.244635+00:00",
+  "application_content_not_established_by_tcp_probe": true
+}

@@ -102,3 +102,26 @@ resources:
       targetPort: 3306
       protocol: TCP
     type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: ruckus-db-published
+    namespace: ruckus
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: ruckus-db
+      meta.helm.sh/release-namespace: ruckus
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: ruckus-db
+    ports:
+    - name: p3306-tcp
+      port: 3306
+      targetPort: 3306
+      protocol: TCP

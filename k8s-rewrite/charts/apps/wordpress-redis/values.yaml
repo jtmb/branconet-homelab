@@ -34,6 +34,8 @@ resources:
           app: wordpress-redis
         annotations: {}
       spec:
+        securityContext:
+          fsGroup: 999
         containers:
         - name: wordpress-redis
           image: '{{ .Values.image }}'
@@ -98,3 +100,26 @@ resources:
     resources:
       requests:
         storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: wordpress-redis-published
+    namespace: wordpress
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: wordpress-redis
+      meta.helm.sh/release-namespace: wordpress
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: wordpress-redis
+    ports:
+    - name: p6379-tcp
+      port: 6379
+      targetPort: 6379
+      protocol: TCP

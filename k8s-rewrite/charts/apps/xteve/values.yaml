@@ -184,3 +184,30 @@ resources:
       targetPort: 34400
       protocol: TCP
     type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: xteve-published
+    namespace: plex
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: xteve
+      meta.helm.sh/release-namespace: plex
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: xteve
+    ports:
+    - name: p1901-tcp
+      port: 1901
+      targetPort: 1900
+      protocol: TCP
+    - name: p34400-tcp
+      port: 34400
+      targetPort: 34400
+      protocol: TCP

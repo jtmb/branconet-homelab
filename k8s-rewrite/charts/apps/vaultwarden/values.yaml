@@ -142,3 +142,26 @@ resources:
               name: vaultwarden
               port:
                 number: 80
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: vaultwarden-published
+    namespace: vaultwarden
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: vaultwarden
+      meta.helm.sh/release-namespace: vaultwarden
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: vaultwarden
+    ports:
+    - name: p8096-tcp
+      port: 8096
+      targetPort: 80
+      protocol: TCP

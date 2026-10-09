@@ -68,6 +68,8 @@ resources:
   metadata:
     name: http-echo-ingress
     namespace: http-echo
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
   spec:
     rules:
     - host: http-echo.branconet.local
@@ -108,3 +110,31 @@ resources:
       name: http
     selector:
       app: http-echo
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: http-echo-https
+    namespace: http-echo
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+      meta.helm.sh/release-name: http-echo
+      meta.helm.sh/release-namespace: http-echo
+    labels:
+      app.kubernetes.io/managed-by: Helm
+  spec:
+    rules:
+    - host: http-echo.branconet.local
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: http-echo
+              port:
+                number: 80
+    ingressClassName: traefik
+    tls:
+    - hosts:
+      - http-echo.branconet.local
