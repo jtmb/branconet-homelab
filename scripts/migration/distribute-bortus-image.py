@@ -51,6 +51,14 @@ def main():
     digest=hashlib.sha256()
     with archive.open('rb') as source:
         for chunk in iter(lambda:source.read(1024*1024),b''):digest.update(chunk)
+    evidence=ROOT/'evidence/bortus-image-distribution.json'
+    previous=json.loads(evidence.read_text()) if evidence.exists() else None
+    expected_manifest=None
+    if previous:
+        if digest.hexdigest()!=previous['archive_sha256']:raise SystemExit('Image archive differs from the verified deployed export')
+        manifests={n['runtime_manifest_digest'] for n in previous['nodes']}
+        if len(manifests)!=1:raise SystemExit('Previously recorded runtime images do not agree')
+        expected_manifest=next(iter(manifests))
     def load(host):
         remote_command='python3 -c '+shlex.quote(REMOTE)
         process=subprocess.Popen(['ssh','-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-p','2002','james@'+host,remote_command],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
@@ -67,6 +75,7 @@ def main():
         if process.returncode:raise RuntimeError('Image loading failed on '+host)
         result=json.loads(output)
         if result['image_import_exit_code'] or not result['tag_present_in_runtime']:raise RuntimeError('Runtime image import failed on '+host+': '+json.dumps(result))
+        if expected_manifest and result['runtime_manifest_digest']!=expected_manifest:raise RuntimeError('Runtime image differs from the verified deployed manifest on '+host)
         return {'host':host,**result}
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
         results=list(pool.map(load,['192.168.0.4','192.168.0.5','192.168.0.6']))
