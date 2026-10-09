@@ -237,6 +237,7 @@ resources:
           app: xteve-ssdp
       spec:
         hostNetwork: true
+        automountServiceAccountToken: false
         dnsPolicy: ClusterFirstWithHostNet
         containers:
         - name: ssdp

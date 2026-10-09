@@ -30,10 +30,15 @@ def check():
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as probe:
         probe.bind((HOST, 0))
         probe.settimeout(2)
-        probe.sendto(QUERY, (HOST, 1900))
-        response, _ = probe.recvfrom(4096)
-        if LOCATION.encode() not in response or identity.encode() not in response:
-            raise RuntimeError('Discovery response does not match native descriptor')
+        probe.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_IF, socket.inet_aton(HOST))
+        query = QUERY.replace(b'ST: upnp:rootdevice', b'ST: ' + identity.encode())
+        probe.sendto(query, GROUP)
+        deadline = time.monotonic() + 2
+        while time.monotonic() < deadline:
+            response, _ = probe.recvfrom(4096)
+            if LOCATION.encode() in response and identity.encode() in response:
+                return
+        raise RuntimeError('Discovery response does not match native descriptor')
 
 
 def serve():
