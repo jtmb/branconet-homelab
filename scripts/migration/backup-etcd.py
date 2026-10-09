@@ -77,7 +77,14 @@ def main():
         for secret in imported['secrets']:
             key=base64.b64encode(('/registry/secrets/'+secret['namespace']+'/'+secret['name']).encode()).decode()
             if key not in actual or not base64.b64decode(actual[key]).startswith(b'k8s:enc:aescbc:v1:'):raise RuntimeError('Imported encrypted Secret missing from restored etcd')
+        additional=[]
+        if (ROOT/'evidence/traefik-dashboard-preparation.json').exists():
+            reference='traefik/traefik-dashboard-config'
+            key=base64.b64encode(('/registry/secrets/'+reference).encode()).decode()
+            if key not in actual or not base64.b64decode(actual[key]).startswith(b'k8s:enc:aescbc:v1:'):raise RuntimeError('Dashboard encrypted Secret missing from restored etcd')
+            additional.append(reference)
         report={'completed_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'kind':'consistent etcd snapshot','operator_copy':str(target),'nas_copy':nas,'ciphertext_sha256':digest,'authenticated_decryption_equal':True,'snapshot_status':status,'isolated_restore_and_start_passed':True,'source_secret_records_compared':len(expected),'imported_encrypted_secret_records_verified':len(imported['secrets']),'production_etcd_untouched':True,'api_encryption_key_recovery_reference':'evidence/config-backups.json','plaintext_exported_to_operator':False}
+        report['additional_encrypted_secret_records_verified']=additional
         (ROOT/'evidence/etcd-recovery.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report),flush=True)
     finally:
         if running:

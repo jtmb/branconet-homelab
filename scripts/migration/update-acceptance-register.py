@@ -28,7 +28,7 @@ extra={
  'gluetun':['vpn-proof.json','final-vpn-egress.json'],
  'qbit-monitor':['private-qbit-monitor.json','monitor-state-backup.json'],
  'unpackerr':['unpackerr-extraction-proof.json'],
- 'sonarr':['media-download-client-proof.json'], 'radarr':['media-download-client-proof.json'],
+ 'sonarr':['media-download-client-proof.json','media-import-prerequisites.json'], 'radarr':['media-download-client-proof.json','media-import-prerequisites.json'],
  'ets2':['ets2-query-proof.json'], 'xteve':['xteve-tuner-proof.json'],
  'pihole':['native-dns-proof.json','native-lan-forwarding.json'],
  'pihole-exporter':['pihole-exporter-integration.json'],
@@ -65,6 +65,13 @@ for e in register['entries']:
         e['backup']={'evidence':['evidence/data-backups.json','evidence/config-backups.json','evidence/archive-verification.json'],'originals_retained':True}
         e['copy_restore']={'replacement_contract':e.get('replacement'),'evidence':['evidence/native-secret-import.json','evidence/bortus-live-proof.json','evidence/bortus-dashboard-proof.json'] if e['source'].startswith(('cicd_','portainer_')) else ['evidence/ingress-certificates.json','evidence/network-port-cutover.json']}
         e['functional_checks']={'status':'Replacement evidence recorded; source retirement pending','legacy_route_gap':['proxy.branconet.lan dashboard equivalence not established'] if chart else []}
+        if chart=='@foundation/ingress' and (ROOT/'evidence/traefik-dashboard-proof.json').exists():
+            dashboard=read('traefik-dashboard-proof.json')
+            e['functional_checks']={'status':'Original dashboard route/auth hashes restored; authenticated login/API proof pending' if not dashboard['live_dashboard_accepted'] else 'Original dashboard authenticated/API proof passed','evidence':['evidence/traefik-dashboard-proof.json','evidence/final-routing-proof.json','evidence/inotify-instance-recovery.json'],'legacy_route_gap':[] if dashboard['live_dashboard_accepted'] else ['Working dashboard credential required for authenticated UI/API proof']}
+            e['copy_restore']['evidence'].append('evidence/etcd-recovery.json')
+            e['status']=e['functional_checks']['status']
+            e['migration_status']=e['status']
+            e['restart_relocation']={'evidence':'evidence/inotify-instance-recovery.json','status':'Actual two-replica ingress restart after watcher-limit recovery; see live dashboard proof'}
         e['restart_relocation']={'status':'See replacement evidence; retained source not retired'}
         continue
     values=yaml.safe_load((ROOT/'k8s-rewrite/charts'/chart/'values.yaml').read_text())

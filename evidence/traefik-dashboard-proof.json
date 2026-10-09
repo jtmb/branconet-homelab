@@ -1,0 +1,40 @@
+{
+  "completed_at": "2026-10-09T21:00:47.710660+00:00",
+  "host": "proxy.branconet.lan",
+  "native_secret_reference": "traefik/traefik-dashboard-config",
+  "checks": [
+    {
+      "node": "192.168.0.4",
+      "unauthenticated_denied": true,
+      "invalid_credentials_denied": true,
+      "authorized_dashboard_passed": false,
+      "authorized_live_router_api_passed": false
+    },
+    {
+      "node": "192.168.0.5",
+      "unauthenticated_denied": true,
+      "invalid_credentials_denied": true,
+      "authorized_dashboard_passed": false,
+      "authorized_live_router_api_passed": false
+    },
+    {
+      "node": "192.168.0.6",
+      "unauthenticated_denied": true,
+      "invalid_credentials_denied": true,
+      "authorized_dashboard_passed": false,
+      "authorized_live_router_api_passed": false
+    }
+  ],
+  "source_hashes_preserved": true,
+  "immutable_source_image_preserved": true,
+  "authorized_existing_credentials_found": false,
+  "credential_source": null,
+  "lan_certificate_verification_skipped": true,
+  "values_or_bodies_reported": false,
+  "live_dashboard_accepted": false,
+  "actual_pod_image_ids": [
+    "docker.io/library/traefik@sha256:a6e718e8f84d4e45282a53a8e7338ab74372abac3ff78f9261a015bc8b45be95"
+  ],
+  "available_ingress_replicas": 2,
+  "bortus_native_secret_read_allowed": true
+}

@@ -134,6 +134,18 @@
   ansible.builtin.command: sysctl -p /etc/sysctl.d/99-branconet-k8s.conf
   changed_when: false
 
+- name: Persist sufficient inotify instances for coexisting cluster workloads
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/98-branconet-inotify.conf
+    mode: '0644'
+    content: "fs.inotify.max_user_instances = 1024\n"
+  tags: [watcher-limits]
+
+- name: Apply the scoped inotify instance limit
+  ansible.builtin.command: sysctl -p /etc/sysctl.d/98-branconet-inotify.conf
+  changed_when: false
+  tags: [watcher-limits]
+
 - name: Enable independent runtime and iSCSI daemon
   ansible.builtin.systemd_service:
     name: "{{ item }}"

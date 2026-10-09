@@ -1806,7 +1806,8 @@
       "functional_checks": {
         "evidence": [
           "evidence/private-radarr.json",
-          "evidence/media-download-client-proof.json"
+          "evidence/media-download-client-proof.json",
+          "evidence/media-import-prerequisites.json"
         ],
         "recorded_boolean_checks": {
           "restart_http_passed": true,
@@ -2036,7 +2037,8 @@
       "functional_checks": {
         "evidence": [
           "evidence/private-sonarr.json",
-          "evidence/media-download-client-proof.json"
+          "evidence/media-download-client-proof.json",
+          "evidence/media-import-prerequisites.json"
         ],
         "recorded_boolean_checks": {
           "restart_http_passed": true,
@@ -3550,7 +3552,7 @@
       "source_type": "swarm",
       "chart": "@foundation/ingress",
       "namespace": "traefik",
-      "status": "Native ingress/DNS ports transferred; original ACME/logs retained",
+      "status": "Original dashboard route/auth hashes restored; authenticated login/API proof pending",
       "source_image": "traefik:v2.11@sha256:a6e718e8f84d4e45282a53a8e7338ab74372abac3ff78f9261a015bc8b45be95",
       "source_declared_mounts": [
         {
@@ -3640,13 +3642,19 @@
         "replacement_contract": null,
         "evidence": [
           "evidence/ingress-certificates.json",
-          "evidence/network-port-cutover.json"
+          "evidence/network-port-cutover.json",
+          "evidence/etcd-recovery.json"
         ]
       },
       "functional_checks": {
-        "status": "Replacement evidence recorded; source retirement pending",
+        "status": "Original dashboard route/auth hashes restored; authenticated login/API proof pending",
+        "evidence": [
+          "evidence/traefik-dashboard-proof.json",
+          "evidence/final-routing-proof.json",
+          "evidence/inotify-instance-recovery.json"
+        ],
         "legacy_route_gap": [
-          "proxy.branconet.lan dashboard equivalence not established"
+          "Working dashboard credential required for authenticated UI/API proof"
         ]
       },
       "restart_relocation": {
@@ -3658,7 +3666,8 @@
         "original_configuration": "evidence/config-backups.json",
         "source_data_retirement_confirmed": false
       },
-      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations."
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "migration_status": "Original dashboard route/auth hashes restored; authenticated login/API proof pending"
     },
     {
       "source": "proxy_whoami",
@@ -7234,7 +7243,7 @@
     }
   ],
   "updated_at": "2026-10-09T20:14:10.968676+00:00",
-  "acceptance_refreshed_at": "2026-10-09T20:38:48.801323+00:00",
+  "acceptance_refreshed_at": "2026-10-09T21:00:48.855988+00:00",
   "full_data_preservation_accepted": false,
   "source_retirement_confirmed": false
 }
