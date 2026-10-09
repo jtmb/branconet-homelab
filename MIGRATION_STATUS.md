@@ -2,17 +2,21 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; execution target before 20:30 UTC. Cluster migration is owned by this chat. BORTUS application development is owned by chat 01a12114-28d9-7623-8aed-9947e08d7065, which delivered app commit 1438b278cdf21e98429b4836c018636b01b982a3 in its isolated worktree. Live deployment/acceptance belongs here.
 
-## Current state at 20:38 UTC
+## Current state at 20:43 UTC
 
 Three Kubernetes nodes and every active Deployment are Ready. All 35 individual application charts now have private evidence; CI run 37985869221 passed and Flux reconciled final chart/port revision 9ed3e4d with all HelmReleases Ready. One active Plex retains the master identity/library, passes real media playback and relocation. All 30 deployed HTTPS hostnames responded in the latest route sweep, with trusted public-domain chains and explicitly unverified default LAN certificates; BORTUS authenticated HTTPS shows native Secrets and three Ready nodes. Fresh native ACME issuance and trusted WordPress HTTPS passed. Actual public DNS/HTTPS requests with normal browser headers returned 200 for all six tested domains; Cloudflare rejected default automation headers with 1010, and its settings were not changed.
 
 The Git → successful CI → validated branch → Flux rollout and rollback contract passed at 20:37:55 UTC. A harmless HTTP echo Pod annotation produced two actual replacement Pods, with the same PVC UID, Longhorn volume and HTTP response hash throughout. Canary CI 37988074177 and rollback CI 37988174145 both succeeded; Flux applied each tested revision. The enriched 42-entry service register now records actual storage, native Secret references, cold backups, scoped functional/restart evidence and route checks. It retains historical source metadata and explicitly records untested behavior. The old proxy.branconet.lan Traefik dashboard does not yet have a proven native equivalent; native ingress and BORTUS management are available. Full application/data acceptance therefore remains open.
+
+Final application/configuration revision 8cd2cfd passed CI 37988697956 and was applied by Flux. At 20:43:08 UTC, all three nodes, all 36 HelmReleases (35 app charts plus cert-manager), and all active Deployments were Ready. HTTP echo returned its original response hash and its deployed Homepage annotation points to the existing http-echo.branconet.local route. Every Longhorn claim in the enriched register has a completed native backup. Operational cutover was Ready at 20:17:48 UTC, 5 hours 48 minutes after goal activation; later acceptance auditing continued beyond the six-hour target. This is operational timing, not a claim that the full preservation/retirement contract is complete.
 
 Thirty-one migrated application volumes have completed cold NAS backups. A separate BORTUS restore passed decryption, byte equality, table counts and SQLite integrity. A final etcd snapshot restored independently and matched 343 Secret ciphertext records. The monitor claim also has a completed cold NAS backup, bringing active-volume coverage to 32. Original Gluster and source data remain retained. Only Vault/Consul and Portainer/agents are still running on Docker. Original removed Redis-state acceptance remains unresolved; no preservation exception is assumed for that historical state.
 
 qBittorrent authenticates with recovered, hash-matched credentials and retains 203 torrents. Sonarr and Radarr download-client tests pass. The monitor polls the real queue, applies the negotiated VPN port and retains its Longhorn state across restart. Discord delivery, an ETS2 game-client join and xTeve SSDP discovery remain untested. Unpackerr extracted an owned ZIP through the existing SMB CSI claim with byte-hash equality using the exact deployed image; real Arr APIs were separately verified, while a completed real download/import remains untested. Legacy xTeve TCP 1901 has no observed listener; the other 69 legacy TCP checks passed after routing settled. xTeve tuner discovery/29-channel lineup/guide XML/M3U checks passed. Source retirement and the migration goal remain open.
 
 ## Execution journal (historical observations)
+
+- 20:43 UTC: application/configuration revision 8cd2cfd passed CI and Flux reconciliation; three nodes, 36 HelmReleases and every active Deployment Ready. Corrected Homepage link and unchanged HTTP echo content verified. Historical Redis-state acceptance, documented end-to-end scenarios, legacy dashboard equivalence and final source retirement remain open.
 
 - 20:38 UTC: actual CI/Flux canary and rollback passed without changing data, image or Secret values. Thirty-five application HelmReleases remain Ready. Service register evidence fields populated; stale production-pending descriptions replaced with scoped observations. HTTP echo's Homepage link corrected to its existing Ingress hostname; final pipeline validation of that documentation/link change is pending.
 
@@ -96,7 +100,7 @@ qBittorrent authenticates with recovered, hash-matched credentials and retains 2
 | AC7 Native Secrets/BORTUS | Passed tested contract | Native aliases/auth/CRUD/conflicts/restart/dashboard/API outage; authenticated LAN HTTPS passed using the default untrusted LAN certificate |
 | AC8 Data preservation | Historical exception unresolved | Source archives/cold copies, actual etcd and NAS BORTUS restores passed; original removed Redis writable state remains unrecovered/unaccepted |
 | AC9 One Plex service | Passed | One active native Plex; all old instances stopped and configs retained; master identity/library counts, real media read, relocation and actual FFmpeg client playback passed |
-| AC10 Reproducibility/docs | Updated; final convergence pending | Plan, operations guide and 42-entry evidence register maintained; recovery keys/images/procedures recorded; complete three-host disaster rebuild not exercised |
+| AC10 Reproducibility/docs | Updated to verified runtime | Plan, operations guide and 42-entry evidence register maintained; 8cd2cfd CI/Flux convergence verified; recovery keys/images/procedures recorded; complete three-host disaster rebuild not exercised |
 | AC11 Retirement approval | Pending | Requires completed evidence and user confirmation |
 
 ## Service evidence template
