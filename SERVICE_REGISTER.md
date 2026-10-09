@@ -1,48 +1,48 @@
 # Migration service coverage
 
-Baseline source inventory is preserved. Private checks establish the recorded behavior; unresolved integrations and final retirement are tracked in MIGRATION_STATUS.md.
+Baseline source metadata is retained. Current evidence and remaining limits are recorded per service in [the register](evidence/service-register.json). No source retirement is accepted.
 
-| Source | Chart / replacement | Namespace | Current status |
-|---|---|---|---|
-| bot_ruckus | apps/ruckus-bot | ruckus | Native running; private checks passed |
-| bot_ruckus-db | apps/ruckus-db | ruckus | Native running; private checks passed |
-| cicd_server-bootstrap | Vault Consul backend: retain consistent recovery data; retire only after native Secrets verification and user confirmation. | — | Source retained; replacement acceptance/final retirement open |
-| cicd_vault | Replace secrets function with native Kubernetes Secrets and BORTUS; retain recovery until final acceptance. | — | Source retained; replacement acceptance/final retirement open |
-| gamesrv_mc-exporter | apps/minecraft-exporter | games | Native running; private checks passed |
-| mealie_mealie | apps/mealie | mealie | Native running; private checks passed |
-| media_bazarr | media-stack/bazarr | plex | Native running; private checks passed |
-| media_flaresolverr | media-stack/flaresolverr | plex | Native running; private checks passed |
-| media_jackett | media-stack/jackett | plex | Native running; private checks passed |
-| media_overseerr | media-stack/overseerr | plex | Native running; private checks passed |
-| media_radarr | media-stack/radarr | plex | Native running; private checks passed |
-| media_sonarr | media-stack/sonarr | plex | Native running; private checks passed |
-| media_tautulli | media-stack/tautulli | plex | Native running; private checks passed |
-| media_unpackerr | media-stack/unpackerr | plex | Native running; private checks passed |
-| media_xteve | apps/xteve | plex | Native running; private checks passed |
-| media_ytdl | media-stack/ytdl | plex | Native running; private checks passed |
-| pi_exporter | apps/pihole-exporter | pihole | Native running; private checks passed |
-| pi_pihole | apps/pihole | pihole | Native running; private checks passed |
-| portainer_agent | Replace cluster-management function with BORTUS; record agent/socket dependency checks before retirement. | — | Source retained; replacement acceptance/final retirement open |
-| portainer_portainer | Replace management function with BORTUS; retain Portainer database and verify feature coverage before retirement. | — | Source retained; replacement acceptance/final retirement open |
-| proxy_traefik | @foundation/ingress | traefik | Native ingress/DNS ports transferred; original ACME/logs retained |
-| proxy_whoami | test-stack/whoami | whoami | Native running; private checks passed |
-| vault_vaultwarden | apps/vaultwarden | vaultwarden | Native running; private checks passed |
-| wordpress_db | apps/wordpress-db | wordpress | Native running; private checks passed |
-| wordpress_phpmyadmin | apps/phpmyadmin | wordpress | Native running; private checks passed |
-| wordpress_redis-db | apps/wordpress-redis | wordpress | Native current state works; original historical state unresolved |
-| wordpress_wp-app | apps/wordpress | wordpress | Native running; private checks passed |
-| ws_aplb | web-app-stack/aplb | web-apps | Native running; private checks passed |
-| ws_homepage | homepage | homepage | Native running; private checks passed |
-| ws_lucinda | web-app-stack/lucinda-art-gallery | web-apps | Native running; private checks passed |
-| ws_mcwebsite | apps/minecraft-website | web-apps | Native running; private checks passed |
-| ws_santos | web-app-stack/santos-web | web-apps | Native running; private checks passed |
-| 192.168.0.4/qbittorrent | media-stack/qbittorrent | plex | Native running; private checks passed |
-| 192.168.0.4/GlueTun-proton | apps/gluetun | plex | Native running; private checks passed |
-| 192.168.0.4/plex-plex-1 | media-stack/plex | plex | Consolidated to master configuration; playback/relocation passed; originals retained |
-| 192.168.0.5/plex-plex-1 | media-stack/plex | plex | Consolidated to master configuration; playback/relocation passed; originals retained |
-| 192.168.0.6/ets2-server | apps/ets2 | games | Native running; private checks passed |
-| 192.168.0.6/plex-plex-1 | media-stack/plex | plex | Consolidated to master configuration; playback/relocation passed; originals retained |
-| repository/media-stack/qbit-monitor | media-stack/qbit-monitor | plex | Native running; private checks passed |
-| repository/test-stack/http-echo | test-stack/http-echo | http-echo | Native running; private checks passed |
-| repository/web-app-stack/jtmb-dev | web-app-stack/jtmb-dev | website-stack | Native running; private checks passed |
-| repository/BORTUS | apps/bortus | bortus | Native running; private checks passed |
+| Source | Chart / replacement | Namespace | Current status | Evidence |
+|---|---|---|---|---|
+| bot_ruckus | apps/ruckus-bot | ruckus | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-ruckus-bot](evidence/private-ruckus-bot.json) |
+| bot_ruckus-db | apps/ruckus-db | ruckus | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-ruckus-db](evidence/private-ruckus-db.json) |
+| cicd_server-bootstrap | Explicit retained replacement contract | — | Source retained; replacement acceptance/final retirement open | Retained; see replacement evidence |
+| cicd_vault | Explicit retained replacement contract | — | Source retained; replacement acceptance/final retirement open | Retained; see replacement evidence |
+| gamesrv_mc-exporter | apps/minecraft-exporter | games | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-minecraft-exporter](evidence/private-minecraft-exporter.json) |
+| mealie_mealie | apps/mealie | mealie | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-mealie](evidence/private-mealie.json) |
+| media_bazarr | media-stack/bazarr | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-bazarr](evidence/private-bazarr.json) |
+| media_flaresolverr | media-stack/flaresolverr | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-flaresolverr](evidence/private-flaresolverr.json); [flaresolverr-browser-proof](evidence/flaresolverr-browser-proof.json) |
+| media_jackett | media-stack/jackett | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-jackett](evidence/private-jackett.json) |
+| media_overseerr | media-stack/overseerr | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-overseerr](evidence/private-overseerr.json) |
+| media_radarr | media-stack/radarr | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-radarr](evidence/private-radarr.json); [media-download-client-proof](evidence/media-download-client-proof.json) |
+| media_sonarr | media-stack/sonarr | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-sonarr](evidence/private-sonarr.json); [media-download-client-proof](evidence/media-download-client-proof.json) |
+| media_tautulli | media-stack/tautulli | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-tautulli](evidence/private-tautulli.json) |
+| media_unpackerr | media-stack/unpackerr | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-unpackerr](evidence/private-unpackerr.json); [unpackerr-extraction-proof](evidence/unpackerr-extraction-proof.json) |
+| media_xteve | apps/xteve | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-xteve](evidence/private-xteve.json); [xteve-tuner-proof](evidence/xteve-tuner-proof.json) |
+| media_ytdl | media-stack/ytdl | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-ytdl](evidence/private-ytdl.json) |
+| pi_exporter | apps/pihole-exporter | pihole | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-pihole-exporter](evidence/private-pihole-exporter.json); [pihole-exporter-integration](evidence/pihole-exporter-integration.json) |
+| pi_pihole | apps/pihole | pihole | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-pihole](evidence/private-pihole.json); [native-dns-proof](evidence/native-dns-proof.json); [native-lan-forwarding](evidence/native-lan-forwarding.json) |
+| portainer_agent | Explicit retained replacement contract | — | Source retained; replacement acceptance/final retirement open | Retained; see replacement evidence |
+| portainer_portainer | Explicit retained replacement contract | — | Source retained; replacement acceptance/final retirement open | Retained; see replacement evidence |
+| proxy_traefik | @foundation/ingress | traefik | Native ingress/DNS ports transferred; original ACME/logs retained | Retained; see replacement evidence |
+| proxy_whoami | test-stack/whoami | whoami | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-whoami](evidence/private-whoami.json) |
+| vault_vaultwarden | apps/vaultwarden | vaultwarden | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-vaultwarden](evidence/private-vaultwarden.json) |
+| wordpress_db | apps/wordpress-db | wordpress | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-wordpress-db](evidence/private-wordpress-db.json) |
+| wordpress_phpmyadmin | apps/phpmyadmin | wordpress | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-phpmyadmin](evidence/private-phpmyadmin.json) |
+| wordpress_redis-db | apps/wordpress-redis | wordpress | Native current Redis works; historical data acceptance unresolved | [private-wordpress-redis](evidence/private-wordpress-redis.json); [redis-current-backup](evidence/redis-current-backup.json); [redis-persistence](evidence/redis-persistence.json) |
+| wordpress_wp-app | apps/wordpress | wordpress | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-wordpress](evidence/private-wordpress.json); [native-acme-proof](evidence/native-acme-proof.json) |
+| ws_aplb | web-app-stack/aplb | web-apps | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-aplb](evidence/private-aplb.json) |
+| ws_homepage | homepage | homepage | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-homepage](evidence/private-homepage.json) |
+| ws_lucinda | web-app-stack/lucinda-art-gallery | web-apps | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-lucinda-art-gallery](evidence/private-lucinda-art-gallery.json) |
+| ws_mcwebsite | apps/minecraft-website | web-apps | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-minecraft-website](evidence/private-minecraft-website.json) |
+| ws_santos | web-app-stack/santos-web | web-apps | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-santos-web](evidence/private-santos-web.json) |
+| 192.168.0.4/qbittorrent | media-stack/qbittorrent | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-qbittorrent](evidence/private-qbittorrent.json); [qbittorrent-api-proof](evidence/qbittorrent-api-proof.json); [qbittorrent-credential-review](evidence/qbittorrent-credential-review.json); [media-download-client-proof](evidence/media-download-client-proof.json); [final-vpn-egress](evidence/final-vpn-egress.json) |
+| 192.168.0.4/GlueTun-proton | apps/gluetun | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-gluetun](evidence/private-gluetun.json); [vpn-proof](evidence/vpn-proof.json); [final-vpn-egress](evidence/final-vpn-egress.json) |
+| 192.168.0.4/plex-plex-1 | media-stack/plex | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-plex](evidence/private-plex.json); [plex-library-proof](evidence/plex-library-proof.json); [plex-relocation-proof](evidence/plex-relocation-proof.json); [plex-playback-proof](evidence/plex-playback-proof.json) |
+| 192.168.0.5/plex-plex-1 | media-stack/plex | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-plex](evidence/private-plex.json); [plex-library-proof](evidence/plex-library-proof.json); [plex-relocation-proof](evidence/plex-relocation-proof.json); [plex-playback-proof](evidence/plex-playback-proof.json) |
+| 192.168.0.6/ets2-server | apps/ets2 | games | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-ets2](evidence/private-ets2.json); [ets2-query-proof](evidence/ets2-query-proof.json) |
+| 192.168.0.6/plex-plex-1 | media-stack/plex | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-plex](evidence/private-plex.json); [plex-library-proof](evidence/plex-library-proof.json); [plex-relocation-proof](evidence/plex-relocation-proof.json); [plex-playback-proof](evidence/plex-playback-proof.json) |
+| repository/media-stack/qbit-monitor | media-stack/qbit-monitor | plex | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-qbit-monitor](evidence/private-qbit-monitor.json); [private-qbit-monitor](evidence/private-qbit-monitor.json); [monitor-state-backup](evidence/monitor-state-backup.json) |
+| repository/test-stack/http-echo | test-stack/http-echo | http-echo | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-http-echo](evidence/private-http-echo.json); [pipeline-rollback-proof](evidence/pipeline-rollback-proof.json) |
+| repository/web-app-stack/jtmb-dev | web-app-stack/jtmb-dev | website-stack | Native HelmRelease Ready; recorded checks passed; source retirement pending | [private-jtmb-dev](evidence/private-jtmb-dev.json) |
+| repository/BORTUS | apps/bortus | bortus | Native HelmRelease Ready; recorded checks passed; source retirement pending | [bortus-live-proof](evidence/bortus-live-proof.json); [bortus-dashboard-proof](evidence/bortus-dashboard-proof.json); [native-bortus-restore](evidence/native-bortus-restore.json) |

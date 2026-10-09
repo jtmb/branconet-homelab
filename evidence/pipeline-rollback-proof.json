@@ -1,0 +1,47 @@
+{
+  "started_at": "2026-10-09T20:35:59.776108+00:00",
+  "baseline": {
+    "pod_uid": "58188f3e-9b5b-4fe6-b848-d4eecee14595",
+    "claim_uid": "9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+    "volume": "pvc-9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+    "http_status": 200,
+    "body_sha256": "0c099c3c1e2aa705ff0c66e536acc4e8c14d990098b39ed52d50868d14c554eb",
+    "canary_present": false
+  },
+  "test_scope": "Pod template annotation only; image/Secrets/PVC/body unchanged",
+  "phases": [
+    {
+      "phase": "canary",
+      "commit": "6921d235678770b82815a8f284abef4b9717273b",
+      "ci_run": 37988074177,
+      "flux_revision": "codex/kubernetes-validated@sha1:6921d235678770b82815a8f284abef4b9717273b",
+      "state": {
+        "pod_uid": "ea78d5b4-a501-40af-81aa-6ab48bac3810",
+        "claim_uid": "9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+        "volume": "pvc-9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+        "http_status": 200,
+        "body_sha256": "0c099c3c1e2aa705ff0c66e536acc4e8c14d990098b39ed52d50868d14c554eb",
+        "canary_present": true
+      }
+    },
+    {
+      "phase": "rollback",
+      "commit": "2c43a925e11de8d2247c5f72320264de5c34e774",
+      "ci_run": 37988174145,
+      "flux_revision": "codex/kubernetes-validated@sha1:2c43a925e11de8d2247c5f72320264de5c34e774",
+      "state": {
+        "pod_uid": "ccaa3f4d-8b3a-4354-8d24-29cc0092d9f4",
+        "claim_uid": "9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+        "volume": "pvc-9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+        "http_status": 200,
+        "body_sha256": "0c099c3c1e2aa705ff0c66e536acc4e8c14d990098b39ed52d50868d14c554eb",
+        "canary_present": false
+      }
+    }
+  ],
+  "completed_at": "2026-10-09T20:37:55.258188+00:00",
+  "git_ci_flux_change_and_rollback_passed": true,
+  "same_claim_and_volume": true,
+  "same_http_body_after_each_rollout": true,
+  "source_data_untouched": true
+}

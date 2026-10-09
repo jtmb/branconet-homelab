@@ -7,7 +7,7 @@
       "source_type": "swarm",
       "chart": "apps/ruckus-bot",
       "namespace": "ruckus",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "jtmb92/ruckus-bot:latest@sha256:824816055190308f9a38a5d0c974e9be3d287272e5f75423d188d81bf9d79330",
       "source_declared_mounts": [],
       "source_instances": [
@@ -65,22 +65,124 @@
         "MYSQL_PORT",
         "MYSQL_USER"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": null,
+        "full_manifest_equal": null,
+        "source_stable": null,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-ruckus-bot.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-ruckus-bot.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": null,
       "private_evidence": "evidence/private-ruckus-bot.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [],
+      "native_secret_references": [
+        {
+          "namespace": "ruckus",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "ruckus.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "ruckus.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 3003,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 3003,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 3003,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.4",
+            "port": 8088,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 8088,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 8088,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "bot_ruckus-db",
       "source_type": "swarm",
       "chart": "apps/ruckus-db",
       "namespace": "ruckus",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "mysql:5.7.41@sha256:bf18020f32cc5d8f5e2add516d52fbf3afc3de431457076340e938596c528171",
       "source_declared_mounts": [
         {
@@ -141,15 +243,106 @@
         "MYSQL_RANDOM_ROOT_PASSWORD",
         "MYSQL_USER"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "ruckus-db-data-0",
+            "volume": "pvc-2f604004-b45f-4061-bdc4-43f5ca2f7fd8",
+            "backup": "backup-6d6f89fbdd9c71d3",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-ruckus-db.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-ruckus-db.json"
+        ],
+        "recorded_boolean_checks": {
+          "sql_access_passed": true,
+          "restart_sql_metadata_equal": true,
+          "copied_source_manifest_verified": true,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-ruckus-db.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-ruckus-db.json",
       "private_evidence": "evidence/private-ruckus-db.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "ruckus",
+          "claim": "ruckus-db-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-2f604004-b45f-4061-bdc4-43f5ca2f7fd8"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "ruckus",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 3306,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 3306,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 3306,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "cicd_server-bootstrap",
@@ -205,12 +398,37 @@
       ],
       "source_routes": [],
       "environment_keys": [],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "replacement_contract": "Vault Consul backend: retain consistent recovery data; retire only after native Secrets verification and user confirmation."
+      "backup": {
+        "evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json",
+          "evidence/archive-verification.json"
+        ],
+        "originals_retained": true
+      },
+      "copy_restore": {
+        "replacement_contract": null,
+        "evidence": [
+          "evidence/native-secret-import.json",
+          "evidence/bortus-live-proof.json",
+          "evidence/bortus-dashboard-proof.json"
+        ]
+      },
+      "functional_checks": {
+        "status": "Replacement evidence recorded; source retirement pending",
+        "legacy_route_gap": []
+      },
+      "restart_relocation": {
+        "status": "See replacement evidence; retained source not retired"
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "replacement_contract": "Vault Consul backend: retain consistent recovery data; retire only after native Secrets verification and user confirmation.",
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations."
     },
     {
       "source": "cicd_vault",
@@ -274,19 +492,44 @@
         "VAULT_ADDR",
         "VAULT_LOCAL_CONFIG"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "replacement_contract": "Replace secrets function with native Kubernetes Secrets and BORTUS; retain recovery until final acceptance."
+      "backup": {
+        "evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json",
+          "evidence/archive-verification.json"
+        ],
+        "originals_retained": true
+      },
+      "copy_restore": {
+        "replacement_contract": null,
+        "evidence": [
+          "evidence/native-secret-import.json",
+          "evidence/bortus-live-proof.json",
+          "evidence/bortus-dashboard-proof.json"
+        ]
+      },
+      "functional_checks": {
+        "status": "Replacement evidence recorded; source retirement pending",
+        "legacy_route_gap": []
+      },
+      "restart_relocation": {
+        "status": "See replacement evidence; retained source not retired"
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "replacement_contract": "Replace secrets function with native Kubernetes Secrets and BORTUS; retain recovery until final acceptance.",
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations."
     },
     {
       "source": "gamesrv_mc-exporter",
       "source_type": "swarm",
       "chart": "apps/minecraft-exporter",
       "namespace": "games",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "ghcr.io/dirien/minecraft-exporter:latest@sha256:d11cea9f5a14316d0df00b97a36e904ba41ff17d293fcf427b68bca2403e4400",
       "source_declared_mounts": [
         {
@@ -335,22 +578,115 @@
       ],
       "source_routes": [],
       "environment_keys": [],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "minecraft-exporter-data-0",
+            "volume": "pvc-4a5257ee-5a76-41d5-a807-cd7d6a9ee74b",
+            "backup": "backup-2248f13c728a7e50",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-minecraft-exporter.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-minecraft-exporter.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-minecraft-exporter.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "minecraft-exporter-data-0"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-minecraft-exporter.json",
       "private_evidence": "evidence/private-minecraft-exporter.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "games",
+          "claim": "minecraft-exporter-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-4a5257ee-5a76-41d5-a807-cd7d6a9ee74b"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "games",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 9150,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 9150,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 9150,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "mealie_mealie",
       "source_type": "swarm",
       "chart": "apps/mealie",
       "namespace": "mealie",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "ghcr.io/mealie-recipes/mealie:v1.0.0-RC1.1@sha256:6df1e795f17af43f082146e471113315487b5f0882f2ee7553d469034d929af1",
       "source_declared_mounts": [
         {
@@ -442,22 +778,141 @@
         "TZ",
         "WEB_CONCURRENCY"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "mealie-data-0",
+            "volume": "pvc-d015a16d-5098-4253-ade1-72d80af87f18",
+            "backup": "backup-fd2bfbea36ec9532",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-mealie.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-mealie.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-mealie.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "mealie-data-0"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-mealie.json",
       "private_evidence": "evidence/private-mealie.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "mealie",
+          "claim": "mealie-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-d015a16d-5098-4253-ade1-72d80af87f18"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "mealie",
+          "name": "source-acme-0",
+          "key": "*"
+        },
+        {
+          "namespace": "mealie",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "mealie.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "mealie.jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "mealie.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "mealie.jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 8089,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 8089,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 8089,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "media_bazarr",
       "source_type": "swarm",
       "chart": "media-stack/bazarr",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "ghcr.io/hotio/bazarr:latest@sha256:004b1072983d1af766fc11d048121ded9d296fdd64ea304762afa9dfcaf51edb",
       "source_declared_mounts": [
         {
@@ -570,22 +1025,142 @@
         "PUID",
         "TZ"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "bazarr-data-0",
+            "volume": "pvc-5bddaab4-1974-4211-bcae-8392d1006804",
+            "backup": "backup-e11c709932f12295",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-bazarr.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-bazarr.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-bazarr.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "bazarr-data-0",
+          "bazarr-data-1",
+          "bazarr-data-2"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-bazarr.json",
       "private_evidence": "evidence/private-bazarr.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "bazarr-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-5bddaab4-1974-4211-bcae-8392d1006804"
+        },
+        {
+          "namespace": "plex",
+          "claim": "bazarr-data-1",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-bazarr-data-1"
+        },
+        {
+          "namespace": "plex",
+          "claim": "bazarr-data-2",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-bazarr-data-2"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "bazarr.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "bazarr.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 6767,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 6767,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 6767,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "media_flaresolverr",
       "source_type": "swarm",
       "chart": "media-stack/flaresolverr",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "ghcr.io/flaresolverr/flaresolverr:latest@sha256:7962759d99d7e125e108e0f5e7f3cdbcd36161776d058d1d9b7153b92ef1af9e",
       "source_declared_mounts": [],
       "source_instances": [
@@ -636,22 +1211,99 @@
         "LOG_LEVEL",
         "TZ"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": null,
+        "full_manifest_equal": null,
+        "source_stable": null,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-flaresolverr.json",
+          "evidence/flaresolverr-browser-proof.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-flaresolverr.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": null,
       "private_evidence": "evidence/private-flaresolverr.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 8191,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 8191,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 8191,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "media_jackett",
       "source_type": "swarm",
       "chart": "media-stack/jackett",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "linuxserver/jackett:latest@sha256:cdea5d3209a6ab1fb8eb954ec0b8169b7d54274617f42bf5c74f22a92075755f",
       "source_declared_mounts": [
         {
@@ -719,22 +1371,126 @@
         "PUID",
         "TZ"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "jackett-data-0",
+            "volume": "pvc-7d4e8aea-5715-4ee3-8e56-352b7b1e99f0",
+            "backup": "backup-98d2111fee01d67d",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-jackett.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-jackett.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-jackett.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "jackett-data-0"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-jackett.json",
       "private_evidence": "evidence/private-jackett.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "jackett-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-7d4e8aea-5715-4ee3-8e56-352b7b1e99f0"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "jackett.branconet.lan",
+            "responding": true,
+            "https_status": 301
+          },
+          {
+            "host": "jackett.branconet.lan",
+            "responding": true,
+            "https_status": 301
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 9117,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 9117,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 9117,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "media_overseerr",
       "source_type": "swarm",
       "chart": "media-stack/overseerr",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "lscr.io/linuxserver/overseerr:latest@sha256:53a1b839ffa81f139e1552840772bff8a5d13f5c78a69cce22458b9a6cd0844d",
       "source_declared_mounts": [
         {
@@ -796,22 +1552,141 @@
         "LOG_LEVEL",
         "TZ"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "overseerr-data-0",
+            "volume": "pvc-47b19910-cc95-4971-9779-06bf1d17e3dd",
+            "backup": "backup-4f04eaa60ce44baf",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-overseerr.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-overseerr.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-overseerr.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "overseerr-data-0"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-overseerr.json",
       "private_evidence": "evidence/private-overseerr.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "overseerr-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-47b19910-cc95-4971-9779-06bf1d17e3dd"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "source-acme-5",
+          "key": "*"
+        },
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "media.jtmb.cc",
+            "responding": true,
+            "https_status": 307
+          },
+          {
+            "host": "overseerr.branconet.lan",
+            "responding": true,
+            "https_status": 307
+          },
+          {
+            "host": "media.jtmb.cc",
+            "responding": true,
+            "https_status": 307
+          },
+          {
+            "host": "overseerr.branconet.lan",
+            "responding": true,
+            "https_status": 307
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 5055,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 5055,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 5055,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "media_radarr",
       "source_type": "swarm",
       "chart": "media-stack/radarr",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "linuxserver/radarr:latest@sha256:ca43905eaf2dd11425efdcfe184892e43806b1ae0a830440c825cecbc2629cfb",
       "source_declared_mounts": [
         {
@@ -901,22 +1776,145 @@
         "PUID",
         "TZ"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "radarr-data-0",
+            "volume": "pvc-7f07da4f-a34e-4bd0-a4a0-90b94f5a0fec",
+            "backup": "backup-fc04fe5ddea48eb3",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-radarr.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-radarr.json",
+          "evidence/media-download-client-proof.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": [
+          "API/download-client checks passed; completed real download/import untested."
+        ]
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-radarr.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "radarr-data-0",
+          "radarr-data-1",
+          "radarr-data-2"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-radarr.json",
       "private_evidence": "evidence/private-radarr.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "radarr-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-7f07da4f-a34e-4bd0-a4a0-90b94f5a0fec"
+        },
+        {
+          "namespace": "plex",
+          "claim": "radarr-data-1",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-radarr-data-1"
+        },
+        {
+          "namespace": "plex",
+          "claim": "radarr-data-2",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-radarr-data-2"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "radarr.branconet.lan",
+            "responding": true,
+            "https_status": 302
+          },
+          {
+            "host": "radarr.branconet.lan",
+            "responding": true,
+            "https_status": 302
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 7878,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 7878,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 7878,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "media_sonarr",
       "source_type": "swarm",
       "chart": "media-stack/sonarr",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "linuxserver/sonarr:latest@sha256:76414c033f290d3c9f1f9dfad71150abe71d92592369a3377a5903d579e6e2b2",
       "source_declared_mounts": [
         {
@@ -1008,22 +2006,145 @@
         "PUID",
         "TZ"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "sonarr-data-0",
+            "volume": "pvc-ff5158b3-cecf-46f9-b85e-ad8566cb9068",
+            "backup": "backup-5fbd59204905090d",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-sonarr.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-sonarr.json",
+          "evidence/media-download-client-proof.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": [
+          "API/download-client checks passed; completed real download/import untested."
+        ]
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-sonarr.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "sonarr-data-0",
+          "sonarr-data-1",
+          "sonarr-data-2"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-sonarr.json",
       "private_evidence": "evidence/private-sonarr.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "sonarr-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-ff5158b3-cecf-46f9-b85e-ad8566cb9068"
+        },
+        {
+          "namespace": "plex",
+          "claim": "sonarr-data-1",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-sonarr-data-1"
+        },
+        {
+          "namespace": "plex",
+          "claim": "sonarr-data-2",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-sonarr-data-2"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "sonarr.branconet.lan",
+            "responding": true,
+            "https_status": 302
+          },
+          {
+            "host": "sonarr.branconet.lan",
+            "responding": true,
+            "https_status": 302
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 8989,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 8989,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 8989,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "media_tautulli",
       "source_type": "swarm",
       "chart": "media-stack/tautulli",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "ghcr.io/tautulli/tautulli:latest@sha256:746b2accd580c8551bff3570eab9c6606bbefe9b33567feace2a3c3c9863a1d1",
       "source_declared_mounts": [
         {
@@ -1085,22 +2206,126 @@
         "PUID",
         "TZ"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "tautulli-data-0",
+            "volume": "pvc-97eb095e-37ec-4185-80ed-4d8f3c19f486",
+            "backup": "backup-288b09f94b6afbd9",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-tautulli.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-tautulli.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-tautulli.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "tautulli-data-0"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-tautulli.json",
       "private_evidence": "evidence/private-tautulli.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "tautulli-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-97eb095e-37ec-4185-80ed-4d8f3c19f486"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "tautulli.branconet.lan",
+            "responding": true,
+            "https_status": 303
+          },
+          {
+            "host": "tautulli.branconet.lan",
+            "responding": true,
+            "https_status": 303
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 9119,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 9119,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 9119,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "media_unpackerr",
       "source_type": "swarm",
       "chart": "media-stack/unpackerr",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "golift/unpackerr:latest@sha256:4ec141eeb0cb2f971d7c92f21cc40b0d2d50d7920eb7a0557443cca52270c0b0",
       "source_declared_mounts": [
         {
@@ -1167,22 +2392,106 @@
         "UN_SONARR_0_API_KEY",
         "UN_SONARR_0_URL"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "unpackerr-data-1",
+            "volume": "pvc-4644e693-b613-465d-a7ff-a5a9d3e1ffc1",
+            "backup": "backup-5a60373620da9e43",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-unpackerr.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-unpackerr.json",
+          "evidence/unpackerr-extraction-proof.json"
+        ],
+        "recorded_boolean_checks": {
+          "configured_api_credentials_and_queues_accessible": true,
+          "actual_process_restart_passed": true,
+          "originals_and_native_data_claim_retained": true,
+          "actual_download_extraction_tested": false
+        },
+        "limitations": [
+          "Owned SMB fixture extracted successfully; completed real Arr download/import untested."
+        ]
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-unpackerr.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-unpackerr.json",
       "private_evidence": "evidence/private-unpackerr.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": false,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "unpackerr-data-0",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-unpackerr-data-0"
+        },
+        {
+          "namespace": "plex",
+          "claim": "unpackerr-data-1",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-4644e693-b613-465d-a7ff-a5a9d3e1ffc1"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "media_xteve",
       "source_type": "swarm",
       "chart": "apps/xteve",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "alturismo/xteve:latest@sha256:7885f2759c0da3c5f2c72b2e45ba4b602bdd7d6f04cc6abba201091f11c93a95",
       "source_declared_mounts": [
         {
@@ -1272,22 +2581,155 @@
       "environment_keys": [
         "TZ"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "xteve-data-0",
+            "volume": "pvc-d40f1490-7254-4599-be82-2fad35abb88b",
+            "backup": "backup-2546cfc2420aa7f0",
+            "state": "Completed"
+          },
+          {
+            "claim": "xteve-data-1",
+            "volume": "pvc-b7207fe9-3768-4ad5-9ca0-ee4429137b33",
+            "backup": "backup-e5f268163b9fb882",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-xteve.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-xteve.json",
+          "evidence/xteve-tuner-proof.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": [
+          "SSDP/multicast discovery untested; original TCP 1901 has no observed backend listener."
+        ]
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-xteve.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "xteve-data-0",
+          "xteve-data-1",
+          "xteve-data-3"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-xteve.json",
       "private_evidence": "evidence/private-xteve.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": false,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "xteve-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-d40f1490-7254-4599-be82-2fad35abb88b"
+        },
+        {
+          "namespace": "plex",
+          "claim": "xteve-data-1",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-b7207fe9-3768-4ad5-9ca0-ee4429137b33"
+        },
+        {
+          "namespace": "plex",
+          "claim": "xteve-data-3",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-xteve-data-3"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 1901,
+            "tcp_open": false
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 1901,
+            "tcp_open": false
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 1901,
+            "tcp_open": false
+          },
+          {
+            "node": "192.168.0.4",
+            "port": 34400,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 34400,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 34400,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "media_ytdl",
       "source_type": "swarm",
       "chart": "media-stack/ytdl",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "ghcr.io/alexta69/metube:latest@sha256:afd3fa2b229e3e6d4c8750618fe148af33a1f70b32af4441ecbd2d08f29d8221",
       "source_declared_mounts": [
         {
@@ -1374,22 +2816,148 @@
         "STATE_DIR",
         "TEMP_DIR"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "ytdl-data-0",
+            "volume": "pvc-5411bcf9-4331-43bd-9a8d-7d0fbf0a9324",
+            "backup": "backup-eb5be9128062e053",
+            "state": "Completed"
+          },
+          {
+            "claim": "ytdl-data-1",
+            "volume": "pvc-dcc218b0-929e-4892-bd72-1a226157af5d",
+            "backup": "backup-708c5fb41c69f500",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-ytdl.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-ytdl.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-ytdl.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "ytdl-data-0",
+          "ytdl-data-1",
+          "ytdl-data-2"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-ytdl.json",
       "private_evidence": "evidence/private-ytdl.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "ytdl-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-5411bcf9-4331-43bd-9a8d-7d0fbf0a9324"
+        },
+        {
+          "namespace": "plex",
+          "claim": "ytdl-data-1",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-dcc218b0-929e-4892-bd72-1a226157af5d"
+        },
+        {
+          "namespace": "plex",
+          "claim": "ytdl-data-2",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-ytdl-data-2"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "ytdl.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "ytdl.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 11742,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 11742,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 11742,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "pi_exporter",
       "source_type": "swarm",
       "chart": "apps/pihole-exporter",
       "namespace": "pihole",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "ekofr/pihole-exporter:latest@sha256:36dab68a7e4b2750802e2326d9340201dc498ac429cbd89cdfb45cbab3fef081",
       "source_declared_mounts": [],
       "source_instances": [
@@ -1433,22 +3001,99 @@
         "PIHOLE_PORT",
         "PORT"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": null,
+        "full_manifest_equal": null,
+        "source_stable": null,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-pihole-exporter.json",
+          "evidence/pihole-exporter-integration.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-pihole-exporter.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": null,
       "private_evidence": "evidence/private-pihole-exporter.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [],
+      "native_secret_references": [
+        {
+          "namespace": "pihole",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 9617,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 9617,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 9617,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "pi_pihole",
       "source_type": "swarm",
       "chart": "apps/pihole",
       "namespace": "pihole",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "pihole/pihole:latest@sha256:ee348529cea9601df86ad94d62a39cad26117e1eac9e82d8876aa0ec7fe1ba27",
       "source_declared_mounts": [
         {
@@ -1532,15 +3177,119 @@
         "TZ",
         "WEBPASSWORD"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "pihole-data-0-retry1",
+            "volume": "pvc-b06ca45b-e902-4f0c-a2bf-77e9fca960e8",
+            "backup": "backup-bfd7c1ccf14cadef",
+            "state": "Completed"
+          },
+          {
+            "claim": "pihole-data-1-retry1",
+            "volume": "pvc-e19b6e39-6a4f-4c6d-b2fe-be27085e1ea9",
+            "backup": "backup-5bada68359d5191e",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-pihole.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-pihole.json",
+          "evidence/native-dns-proof.json",
+          "evidence/native-lan-forwarding.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-pihole.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "pihole-data-0-retry1",
+          "pihole-data-1-retry1"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-pihole.json",
       "private_evidence": "evidence/private-pihole.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "pihole",
+          "claim": "pihole-data-0-retry1",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-b06ca45b-e902-4f0c-a2bf-77e9fca960e8"
+        },
+        {
+          "namespace": "pihole",
+          "claim": "pihole-data-1-retry1",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-e19b6e39-6a4f-4c6d-b2fe-be27085e1ea9"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "pihole",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "pi.branconet.lan",
+            "responding": true,
+            "https_status": 403
+          },
+          {
+            "host": "pi.branconet.lan",
+            "responding": true,
+            "https_status": 403
+          }
+        ],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "portainer_agent",
@@ -1665,12 +3414,37 @@
       "source_ports": [],
       "source_routes": [],
       "environment_keys": [],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "replacement_contract": "Replace cluster-management function with BORTUS; record agent/socket dependency checks before retirement."
+      "backup": {
+        "evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json",
+          "evidence/archive-verification.json"
+        ],
+        "originals_retained": true
+      },
+      "copy_restore": {
+        "replacement_contract": null,
+        "evidence": [
+          "evidence/native-secret-import.json",
+          "evidence/bortus-live-proof.json",
+          "evidence/bortus-dashboard-proof.json"
+        ]
+      },
+      "functional_checks": {
+        "status": "Replacement evidence recorded; source retirement pending",
+        "legacy_route_gap": []
+      },
+      "restart_relocation": {
+        "status": "See replacement evidence; retained source not retired"
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "replacement_contract": "Replace cluster-management function with BORTUS; record agent/socket dependency checks before retirement.",
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations."
     },
     {
       "source": "portainer_portainer",
@@ -1739,12 +3513,37 @@
         "portainer.branconet.lan"
       ],
       "environment_keys": [],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "replacement_contract": "Replace management function with BORTUS; retain Portainer database and verify feature coverage before retirement."
+      "backup": {
+        "evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json",
+          "evidence/archive-verification.json"
+        ],
+        "originals_retained": true
+      },
+      "copy_restore": {
+        "replacement_contract": null,
+        "evidence": [
+          "evidence/native-secret-import.json",
+          "evidence/bortus-live-proof.json",
+          "evidence/bortus-dashboard-proof.json"
+        ]
+      },
+      "functional_checks": {
+        "status": "Replacement evidence recorded; source retirement pending",
+        "legacy_route_gap": []
+      },
+      "restart_relocation": {
+        "status": "See replacement evidence; retained source not retired"
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "replacement_contract": "Replace management function with BORTUS; retain Portainer database and verify feature coverage before retirement.",
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations."
     },
     {
       "source": "proxy_traefik",
@@ -1829,18 +3628,44 @@
         "proxy.branconet.lan"
       ],
       "environment_keys": [],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null
+      "backup": {
+        "evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json",
+          "evidence/archive-verification.json"
+        ],
+        "originals_retained": true
+      },
+      "copy_restore": {
+        "replacement_contract": null,
+        "evidence": [
+          "evidence/ingress-certificates.json",
+          "evidence/network-port-cutover.json"
+        ]
+      },
+      "functional_checks": {
+        "status": "Replacement evidence recorded; source retirement pending",
+        "legacy_route_gap": [
+          "proxy.branconet.lan dashboard equivalence not established"
+        ]
+      },
+      "restart_relocation": {
+        "status": "See replacement evidence; retained source not retired"
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations."
     },
     {
       "source": "proxy_whoami",
       "source_type": "swarm",
       "chart": "test-stack/whoami",
       "namespace": "whoami",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "traefik/whoami:latest@sha256:200689790a0a0ea48ca45992e0450bc26ccab5307375b41c84dfc4f2475937ab",
       "source_declared_mounts": [],
       "source_instances": [
@@ -1870,22 +3695,103 @@
         "whoami.branconet.lan"
       ],
       "environment_keys": [],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": null,
+        "full_manifest_equal": null,
+        "source_stable": null,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-whoami.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-whoami.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": null,
       "private_evidence": "evidence/private-whoami.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [],
+      "native_secret_references": [
+        {
+          "namespace": "whoami",
+          "name": "whoami-launch",
+          "key": "args-0"
+        },
+        {
+          "namespace": "whoami",
+          "name": "whoami-launch",
+          "key": "args-1"
+        },
+        {
+          "namespace": "whoami",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "whoami.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "whoami.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "vault_vaultwarden",
       "source_type": "swarm",
       "chart": "apps/vaultwarden",
       "namespace": "vaultwarden",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "vaultwarden/server:latest@sha256:43498a94b22f9563f2a94b53760ab3e710eefc0d0cac2efda4b12b9eb8690664",
       "source_declared_mounts": [
         {
@@ -1946,22 +3852,126 @@
         "PUID",
         "SIGNUPS_ALLOWED"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "vaultwarden-data-0",
+            "volume": "pvc-0fb0e918-ea61-43f5-af95-662c12f8ffe8",
+            "backup": "backup-d98d4bc16ecbd30a",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-vaultwarden.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-vaultwarden.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-vaultwarden.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "vaultwarden-data-0"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-vaultwarden.json",
       "private_evidence": "evidence/private-vaultwarden.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "vaultwarden",
+          "claim": "vaultwarden-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-0fb0e918-ea61-43f5-af95-662c12f8ffe8"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "vaultwarden",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "vault.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "vault.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 8096,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 8096,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 8096,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "wordpress_db",
       "source_type": "swarm",
       "chart": "apps/wordpress-db",
       "namespace": "wordpress",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "mysql:5.7@sha256:4bc6bc963e6d8443453676cae56536f4b8156d78bae03c0145cbe47c2aad73bb",
       "source_declared_mounts": [
         {
@@ -2015,22 +4025,97 @@
         "MYSQL_RANDOM_ROOT_PASSWORD",
         "MYSQL_USER"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "wordpress-db-data-0",
+            "volume": "pvc-b3f53180-5bce-4d84-ab9c-47460a1e3ad9",
+            "backup": "backup-d6745a26882ca604",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-wordpress-db.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-wordpress-db.json"
+        ],
+        "recorded_boolean_checks": {
+          "sql_access_passed": true,
+          "restart_sql_metadata_equal": true,
+          "copied_source_manifest_verified": true,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-wordpress-db.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-wordpress-db.json",
       "private_evidence": "evidence/private-wordpress-db.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": false,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "wordpress",
+          "claim": "wordpress-db-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-b3f53180-5bce-4d84-ab9c-47460a1e3ad9"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "wordpress",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "wordpress_phpmyadmin",
       "source_type": "swarm",
       "chart": "apps/phpmyadmin",
       "namespace": "wordpress",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "phpmyadmin/phpmyadmin:latest@sha256:42a200db07b4e70fbf32c594ad4521cf16399b8e54bbb5adceae98e7566dfbeb",
       "source_declared_mounts": [],
       "source_instances": [
@@ -2095,22 +4180,98 @@
         "PMA_HOST",
         "PMA_PORT"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": null,
+        "full_manifest_equal": null,
+        "source_stable": null,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-phpmyadmin.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-phpmyadmin.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": null,
       "private_evidence": "evidence/private-phpmyadmin.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [],
+      "native_secret_references": [
+        {
+          "namespace": "wordpress",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 8086,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 8086,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 8086,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "wordpress_redis-db",
       "source_type": "swarm",
       "chart": "apps/wordpress-redis",
       "namespace": "wordpress",
-      "status": "Native current state works; original historical state unresolved",
+      "status": "Native current Redis works; historical data acceptance unresolved",
       "source_image": "redis:alpine@sha256:2afba59292f25f5d1af200496db41bea2c6c816b059f57ae74703a50a03a27d0",
       "source_declared_mounts": [],
       "source_instances": [
@@ -2145,22 +4306,119 @@
       ],
       "source_routes": [],
       "environment_keys": [],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "wordpress-redis-data",
+            "volume": "pvc-e44745fc-6fb4-4f4e-b8f8-8968441260ee",
+            "backup": "backup-ce66f274a3eaef29",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": [
+          "Original source writable /data state removed before archival; unrecovered; user acceptance exception unresolved."
+        ]
+      },
+      "copy_restore": {
+        "evidence": null,
+        "full_manifest_equal": null,
+        "source_stable": null,
+        "restore_evidence": [],
+        "historical_redis_recovered": false
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-wordpress-redis.json",
+          "evidence/redis-current-backup.json",
+          "evidence/redis-persistence.json"
+        ],
+        "recorded_boolean_checks": {
+          "snapshot_readback_equal": true,
+          "native_redis_ping": true,
+          "original_removed_state_recovered": false,
+          "production_routing_accepted": false,
+          "source_current_backup_retained": true
+        },
+        "limitations": [
+          "Original source writable /data state removed before archival; unrecovered; user acceptance exception unresolved."
+        ]
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-wordpress-redis.json",
+        "restart_passed": false,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native current Redis works; historical data acceptance unresolved",
       "copy_evidence": null,
       "private_evidence": "evidence/private-wordpress-redis.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "wordpress",
+          "claim": "wordpress-redis-data",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-e44745fc-6fb4-4f4e-b8f8-8968441260ee"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "wordpress",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 6379,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 6379,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 6379,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "wordpress_wp-app",
       "source_type": "swarm",
       "chart": "apps/wordpress",
       "namespace": "wordpress",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "wordpress:latest@sha256:ee74dc0ebbe7ec43b7f473c0fb4f1dfb6b211d7785f0a95bcdfa10e628c2e67f",
       "source_declared_mounts": [
         {
@@ -2233,22 +4491,132 @@
         "WORDPRESS_DB_PASSWORD",
         "WORDPRESS_DB_USER"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "wordpress-data-0",
+            "volume": "pvc-90b7695b-3cbf-41d9-b6d1-1f9ee3fd5e2f",
+            "backup": "backup-70e567e590e2d69d",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-wordpress.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-wordpress.json",
+          "evidence/native-acme-proof.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-wordpress.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "wordpress-data-0"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-wordpress.json",
       "private_evidence": "evidence/private-wordpress.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "wordpress",
+          "claim": "wordpress-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-90b7695b-3cbf-41d9-b6d1-1f9ee3fd5e2f"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "wordpress",
+          "name": "jtmb-cc-tls",
+          "key": "*"
+        },
+        {
+          "namespace": "wordpress",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 8085,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 8085,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 8085,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "ws_aplb",
       "source_type": "swarm",
       "chart": "web-app-stack/aplb",
       "namespace": "web-apps",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "nginx:latest@sha256:dec7a90bd0973b076832dc56933fe876bc014929e14b4ec49923951405370112",
       "source_declared_mounts": [
         {
@@ -2305,22 +4673,141 @@
       "environment_keys": [
         "DISABLE_IPV6"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "aplb-data-0",
+            "volume": "pvc-24b2b0a8-e215-40b2-abe0-7617a7d8ff82",
+            "backup": "backup-6685dd915e84cdd1",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-aplb.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-aplb.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": true,
+          "relocation_http_passed": true,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-aplb.json",
+        "restart_passed": true,
+        "relocation_passed": true,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "aplb-data-0"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-aplb.json",
       "private_evidence": "evidence/private-aplb.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "web-apps",
+          "claim": "aplb-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-24b2b0a8-e215-40b2-abe0-7617a7d8ff82"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "web-apps",
+          "name": "source-acme-2",
+          "key": "*"
+        },
+        {
+          "namespace": "web-apps",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "aplb.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "aplb.jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "aplb.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "aplb.jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 8082,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 8082,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 8082,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "ws_homepage",
       "source_type": "swarm",
       "chart": "homepage",
       "namespace": "homepage",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "ghcr.io/gethomepage/homepage:latest@sha256:b129cb0f674bd6d204e215bde2c2fc3f11d6ad0e82f6d20007cf80f74e1acbb1",
       "source_declared_mounts": [
         {
@@ -2383,22 +4870,115 @@
       "environment_keys": [
         "HOMEPAGE_ALLOWED_HOSTS"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "homepage-data-1",
+            "volume": "pvc-f1eb8c61-46dc-4743-b5e4-b7ce75110189",
+            "backup": "backup-95c85acba93a8ef3",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-homepage.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-homepage.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-homepage.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "homepage-data-1"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-homepage.json",
       "private_evidence": "evidence/private-homepage.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "homepage",
+          "claim": "homepage-data-1",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-f1eb8c61-46dc-4743-b5e4-b7ce75110189"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "homepage",
+          "name": "homepage-rendered-config",
+          "key": "*"
+        },
+        {
+          "namespace": "homepage",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "homepage.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "homepage.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "ws_lucinda",
       "source_type": "swarm",
       "chart": "web-app-stack/lucinda-art-gallery",
       "namespace": "web-apps",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "nginx:latest@sha256:dec7a90bd0973b076832dc56933fe876bc014929e14b4ec49923951405370112",
       "source_declared_mounts": [
         {
@@ -2455,22 +5035,141 @@
       "environment_keys": [
         "DISABLE_IPV6"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "lucinda-art-gallery-data-0",
+            "volume": "pvc-bc234dae-ef84-4e43-aae0-a63d8e01d202",
+            "backup": "backup-fa5c44d488062722",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-lucinda-art-gallery.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-lucinda-art-gallery.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": true,
+          "relocation_http_passed": true,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-lucinda-art-gallery.json",
+        "restart_passed": true,
+        "relocation_passed": true,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "lucinda-art-gallery-data-0"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-lucinda-art-gallery.json",
       "private_evidence": "evidence/private-lucinda-art-gallery.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "web-apps",
+          "claim": "lucinda-art-gallery-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-bc234dae-ef84-4e43-aae0-a63d8e01d202"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "web-apps",
+          "name": "source-acme-3",
+          "key": "*"
+        },
+        {
+          "namespace": "web-apps",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "lucinda.jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "lucinda.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "lucinda.jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "lucinda.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 8080,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 8080,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 8080,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "ws_mcwebsite",
       "source_type": "swarm",
       "chart": "apps/minecraft-website",
       "namespace": "web-apps",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "nginx:latest@sha256:dec7a90bd0973b076832dc56933fe876bc014929e14b4ec49923951405370112",
       "source_declared_mounts": [
         {
@@ -2527,22 +5226,141 @@
       "environment_keys": [
         "DISABLE_IPV6"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "minecraft-website-data-0",
+            "volume": "pvc-418b136b-9358-4795-acf3-552d1839a21e",
+            "backup": "backup-f939819fec209569",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-minecraft-website.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-minecraft-website.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": true,
+          "relocation_http_passed": true,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-minecraft-website.json",
+        "restart_passed": true,
+        "relocation_passed": true,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "minecraft-website-data-0"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-minecraft-website.json",
       "private_evidence": "evidence/private-minecraft-website.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "web-apps",
+          "claim": "minecraft-website-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-418b136b-9358-4795-acf3-552d1839a21e"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "web-apps",
+          "name": "source-acme-4",
+          "key": "*"
+        },
+        {
+          "namespace": "web-apps",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "mc.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "mc.jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "mc.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "mc.jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 8083,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 8083,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 8083,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "ws_santos",
       "source_type": "swarm",
       "chart": "web-app-stack/santos-web",
       "namespace": "web-apps",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_image": "nginx:latest@sha256:dec7a90bd0973b076832dc56933fe876bc014929e14b4ec49923951405370112",
       "source_declared_mounts": [
         {
@@ -2599,22 +5417,141 @@
       "environment_keys": [
         "DISABLE_IPV6"
       ],
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "santos-web-data-0",
+            "volume": "pvc-da43b501-44d0-4f09-8e58-a1e0d643ec2a",
+            "backup": "backup-f4abd8d6e9ff3566",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-santos-web.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-santos-web.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": true,
+          "relocation_http_passed": true,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-santos-web.json",
+        "restart_passed": true,
+        "relocation_passed": true,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "santos-web-data-0"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-santos-web.json",
       "private_evidence": "evidence/private-santos-web.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "web-apps",
+          "claim": "santos-web-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-da43b501-44d0-4f09-8e58-a1e0d643ec2a"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "web-apps",
+          "name": "source-acme-1",
+          "key": "*"
+        },
+        {
+          "namespace": "web-apps",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "santos.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "santos.jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "santos.branconet.lan",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "santos.jtmb.cc",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [
+          {
+            "node": "192.168.0.4",
+            "port": 8081,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.5",
+            "port": 8081,
+            "tcp_open": true
+          },
+          {
+            "node": "192.168.0.6",
+            "port": 8081,
+            "tcp_open": true
+          }
+        ],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "192.168.0.4/qbittorrent",
       "source_type": "standalone",
       "chart": "media-stack/qbittorrent",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_instance": {
         "name": "qbittorrent",
         "service": null,
@@ -2664,22 +5601,139 @@
         "compose_files": "/tmp/torrent-stack/docker-compose.yml"
       },
       "contract": "Preserve VPN sidecar attachment, config, downloads and port forwarding.",
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "qbittorrent-data-0-retry1",
+            "volume": "pvc-999128b4-0ae2-4396-a8e4-eebace5d26f0",
+            "backup": "backup-afebba69c22ffe32",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-qbittorrent.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-qbittorrent.json",
+          "evidence/qbittorrent-api-proof.json",
+          "evidence/qbittorrent-credential-review.json",
+          "evidence/media-download-client-proof.json",
+          "evidence/final-vpn-egress.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-qbittorrent.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "gluetun-data-0",
+          "gluetun-data-1-retry1",
+          "qbittorrent-data-0-retry1",
+          "qbittorrent-data-1"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-qbittorrent.json",
       "private_evidence": "evidence/private-qbittorrent.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "qbittorrent-data-0-retry1",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-999128b4-0ae2-4396-a8e4-eebace5d26f0"
+        },
+        {
+          "namespace": "plex",
+          "claim": "qbittorrent-data-1",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-qbittorrent-data-1"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "gluetun-launch",
+          "key": "command-0"
+        },
+        {
+          "namespace": "plex",
+          "name": "gluetun-runtime",
+          "key": "*"
+        },
+        {
+          "namespace": "plex",
+          "name": "qbittorrent-launch",
+          "key": "command-0"
+        },
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "qbittorrent.branconet.local",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "qbittorrent.branconet.local",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "192.168.0.4/GlueTun-proton",
       "source_type": "standalone",
       "chart": "apps/gluetun",
       "namespace": "plex",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_instance": {
         "name": "GlueTun-proton",
         "service": null,
@@ -2879,22 +5933,103 @@
         "compose_files": "/tmp/torrent-stack/docker-compose.yml"
       },
       "contract": "One VPN container in qBittorrent pod; own chart/values manage VPN PVC and integration parameters. Preserve ProtonVPN WireGuard.",
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "gluetun-data-1-retry1",
+            "volume": "pvc-cdfd60f4-e76a-4037-827b-02459d1ac3ff",
+            "backup": "backup-3ff4ae3fce5e6c51",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-gluetun.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-gluetun.json",
+          "evidence/vpn-proof.json",
+          "evidence/final-vpn-egress.json"
+        ],
+        "recorded_boolean_checks": {
+          "shared_pod_vpn_egress_equal": true,
+          "vpn_egress_distinct_from_host": true,
+          "actual_tunnel_down_blocks_qbittorrent_egress": true,
+          "tunnel_restored_and_egress_recovered": true,
+          "forwarded_port_file_present": false,
+          "source_wireguard_configuration_preserved": true,
+          "port_forwarding_integration_pending": true,
+          "separate_vpn_process_enabled": false
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-gluetun.json",
+        "restart_passed": false,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-gluetun.json",
       "private_evidence": "evidence/private-gluetun.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": false,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "gluetun-data-0",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-gluetun-data-0"
+        },
+        {
+          "namespace": "plex",
+          "claim": "gluetun-data-1-retry1",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-cdfd60f4-e76a-4037-827b-02459d1ac3ff"
+        }
+      ],
+      "native_secret_references": [],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "192.168.0.4/plex-plex-1",
       "source_type": "standalone",
       "chart": "media-stack/plex",
       "namespace": "plex",
-      "status": "Consolidated to master configuration; playback/relocation passed; originals retained",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_instance": {
         "name": "plex-plex-1",
         "service": null,
@@ -2986,22 +6121,133 @@
         "compose_files": "/tmp/plex-cluster/plex/docker-compose-nvidia-masternode.yml"
       },
       "contract": "Consolidate to one active service; master configuration selected, worker configurations retained.",
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "plex-data-0",
+            "volume": "pvc-f1f3f7d0-4706-43ff-871d-e7b6f7bfe7f2",
+            "backup": "backup-cc67787d8d17bec5",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-plex.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-plex.json",
+          "evidence/plex-library-proof.json",
+          "evidence/plex-relocation-proof.json",
+          "evidence/plex-playback-proof.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-plex.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [
+          "evidence/plex-relocation-proof.json"
+        ],
+        "claim_identity_evidence": [
+          "plex-data-0",
+          "plex-data-1",
+          "plex-data-2",
+          "plex-data-3"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-plex.json",
       "private_evidence": "evidence/private-plex.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": false,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "plex-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-f1f3f7d0-4706-43ff-871d-e7b6f7bfe7f2"
+        },
+        {
+          "namespace": "plex",
+          "claim": "plex-data-1",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-plex-data-1"
+        },
+        {
+          "namespace": "plex",
+          "claim": "plex-data-2",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-plex-data-2"
+        },
+        {
+          "namespace": "plex",
+          "claim": "plex-data-3",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-plex-data-3"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "plex-launch",
+          "key": "command-0"
+        },
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "192.168.0.5/plex-plex-1",
       "source_type": "standalone",
       "chart": "media-stack/plex",
       "namespace": "plex",
-      "status": "Consolidated to master configuration; playback/relocation passed; originals retained",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_instance": {
         "name": "plex-plex-1",
         "service": null,
@@ -3092,22 +6338,133 @@
         "compose_files": "/tmp/plex-cluster/plex/docker-compose-intel-workernode2.yml"
       },
       "contract": "Consolidate to one active service; master configuration selected, worker configurations retained.",
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "plex-data-0",
+            "volume": "pvc-f1f3f7d0-4706-43ff-871d-e7b6f7bfe7f2",
+            "backup": "backup-cc67787d8d17bec5",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-plex.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-plex.json",
+          "evidence/plex-library-proof.json",
+          "evidence/plex-relocation-proof.json",
+          "evidence/plex-playback-proof.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-plex.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [
+          "evidence/plex-relocation-proof.json"
+        ],
+        "claim_identity_evidence": [
+          "plex-data-0",
+          "plex-data-1",
+          "plex-data-2",
+          "plex-data-3"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-plex.json",
       "private_evidence": "evidence/private-plex.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": false,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "plex-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-f1f3f7d0-4706-43ff-871d-e7b6f7bfe7f2"
+        },
+        {
+          "namespace": "plex",
+          "claim": "plex-data-1",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-plex-data-1"
+        },
+        {
+          "namespace": "plex",
+          "claim": "plex-data-2",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-plex-data-2"
+        },
+        {
+          "namespace": "plex",
+          "claim": "plex-data-3",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-plex-data-3"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "plex-launch",
+          "key": "command-0"
+        },
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "192.168.0.6/ets2-server",
       "source_type": "standalone",
       "chart": "apps/ets2",
       "namespace": "games",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_instance": {
         "name": "ets2-server",
         "service": null,
@@ -3145,22 +6502,120 @@
         "compose_files": null
       },
       "contract": "Preserve config and demonstrate game connectivity.",
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "ets2-data-0",
+            "volume": "pvc-90d7e61f-6d1d-4818-886d-6721c198e814",
+            "backup": "backup-90990d9f4d941ff2",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-ets2.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-ets2.json",
+          "evidence/ets2-query-proof.json"
+        ],
+        "recorded_boolean_checks": {
+          "real_steam_server_info_query_passed": true,
+          "source_config_original_retained": true,
+          "client_game_join_pending": true,
+          "actual_restart_after_cold_snapshot_passed": true,
+          "persistent_claim_identity_preserved": true
+        },
+        "limitations": [
+          "Real game-client join untested."
+        ]
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-ets2.json",
+        "restart_passed": false,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-ets2.json",
       "private_evidence": "evidence/private-ets2.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": false,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "games",
+          "claim": "ets2-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-90d7e61f-6d1d-4818-886d-6721c198e814"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "games",
+          "name": "ets2-launch",
+          "key": "args-0"
+        },
+        {
+          "namespace": "games",
+          "name": "ets2-launch",
+          "key": "args-1"
+        },
+        {
+          "namespace": "games",
+          "name": "ets2-launch",
+          "key": "args-2"
+        },
+        {
+          "namespace": "games",
+          "name": "ets2-launch",
+          "key": "command-0"
+        },
+        {
+          "namespace": "games",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "192.168.0.6/plex-plex-1",
       "source_type": "standalone",
       "chart": "media-stack/plex",
       "namespace": "plex",
-      "status": "Consolidated to master configuration; playback/relocation passed; originals retained",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "source_instance": {
         "name": "plex-plex-1",
         "service": null,
@@ -3251,15 +6706,126 @@
         "compose_files": "/tmp/plex-cluster/plex/docker-compose-intel-workernode1.yml"
       },
       "contract": "Consolidate to one active service; master configuration selected, worker configurations retained.",
-      "backup": null,
-      "copy_restore": null,
-      "functional_checks": null,
-      "restart_relocation": null,
-      "rollback": null,
-      "migration_status": "Private checks passed; production routing pending",
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "plex-data-0",
+            "volume": "pvc-f1f3f7d0-4706-43ff-871d-e7b6f7bfe7f2",
+            "backup": "backup-cc67787d8d17bec5",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": "evidence/copy-plex.json",
+        "full_manifest_equal": true,
+        "source_stable": true,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-plex.json",
+          "evidence/plex-library-proof.json",
+          "evidence/plex-relocation-proof.json",
+          "evidence/plex-playback-proof.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": false,
+          "relocation_http_passed": false,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-plex.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [
+          "evidence/plex-relocation-proof.json"
+        ],
+        "claim_identity_evidence": [
+          "plex-data-0",
+          "plex-data-1",
+          "plex-data-2",
+          "plex-data-3"
+        ]
+      },
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": "evidence/copy-plex.json",
       "private_evidence": "evidence/private-plex.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": false,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "plex-data-0",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-f1f3f7d0-4706-43ff-871d-e7b6f7bfe7f2"
+        },
+        {
+          "namespace": "plex",
+          "claim": "plex-data-1",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-plex-data-1"
+        },
+        {
+          "namespace": "plex",
+          "claim": "plex-data-2",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-plex-data-2"
+        },
+        {
+          "namespace": "plex",
+          "claim": "plex-data-3",
+          "bound": true,
+          "storage_class": "",
+          "volume": "plex-plex-data-3"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "plex-launch",
+          "key": "command-0"
+        },
+        {
+          "namespace": "plex",
+          "name": "{{ .Values.environmentSecret }}",
+          "key": "*"
+        }
+      ],
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "repository/media-stack/qbit-monitor",
@@ -3269,12 +6835,108 @@
       "source_images": [
         "jtmb92/qbit-monitor:latest"
       ],
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "contract": "Repository application included even when absent from current Docker inventory. Validate its own values and dependencies.",
-      "migration_status": "Private checks passed; production routing pending",
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": null,
       "private_evidence": "evidence/private-qbit-monitor.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": false,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "destination_storage": [
+        {
+          "namespace": "plex",
+          "claim": "qbit-monitor-state",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-29f9332d-c2a6-4f24-a83f-210620046cd2"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "plex",
+          "name": "qbitmonitor-creds-secret",
+          "key": "discord-webhook-url"
+        },
+        {
+          "namespace": "plex",
+          "name": "qbittorrent-runtime",
+          "key": "QBITTORRENT_PASSWORD"
+        },
+        {
+          "namespace": "plex",
+          "name": "qbittorrent-runtime",
+          "key": "QBITTORRENT_USERNAME"
+        }
+      ],
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json",
+          "evidence/monitor-state-backup.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "qbit-monitor-state",
+            "volume": "pvc-29f9332d-c2a6-4f24-a83f-210620046cd2",
+            "backup": "backup-monitor-20261009201559",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": null,
+        "full_manifest_equal": null,
+        "source_stable": null,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-qbit-monitor.json",
+          "evidence/private-qbit-monitor.json",
+          "evidence/monitor-state-backup.json"
+        ],
+        "recorded_boolean_checks": {
+          "actual_restart_passed": true,
+          "native_credentials_authenticated": true,
+          "discord_notifications_disabled_during_acceptance": true,
+          "discord_delivery_not_tested": true,
+          "source_originals_retained": true,
+          "production_routing_accepted": false
+        },
+        "limitations": [
+          "Discord delivery untested; notifications disabled during acceptance."
+        ]
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-qbit-monitor.json",
+        "restart_passed": true,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "production_routing": {
+        "ingress_checks": [],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "repository/test-stack/http-echo",
@@ -3284,12 +6946,100 @@
       "source_images": [
         "hashicorp/http-echo:latest"
       ],
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "contract": "Repository application included even when absent from current Docker inventory. Validate its own values and dependencies.",
-      "migration_status": "Private checks passed; production routing pending",
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": null,
       "private_evidence": "evidence/private-http-echo.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "destination_storage": [
+        {
+          "namespace": "http-echo",
+          "claim": "http-echo-data-pvc",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-9edde4e3-5a0c-4c0c-b317-47b045ee199e"
+        }
+      ],
+      "native_secret_references": [],
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "http-echo-data-pvc",
+            "volume": "pvc-9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+            "backup": "backup-dcee4b0e8cf5f17a",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": null,
+        "full_manifest_equal": null,
+        "source_stable": null,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-http-echo.json",
+          "evidence/pipeline-rollback-proof.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": true,
+          "relocation_http_passed": true,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-http-echo.json",
+        "restart_passed": true,
+        "relocation_passed": true,
+        "additional_evidence": [],
+        "claim_identity_evidence": [
+          "http-echo-data-pvc"
+        ]
+      },
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "http-echo.branconet.local",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "http-echo.branconet.local",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "repository/web-app-stack/jtmb-dev",
@@ -3299,25 +7049,192 @@
       "source_images": [
         "jtmb92/jtmb-dev:latest"
       ],
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "contract": "Repository application included even when absent from current Docker inventory. Validate its own values and dependencies.",
-      "migration_status": "Private checks passed; production routing pending",
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": null,
       "private_evidence": "evidence/private-jtmb-dev.json",
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "destination_storage": [],
+      "native_secret_references": [],
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": null,
+        "full_manifest_equal": null,
+        "source_stable": null,
+        "restore_evidence": [],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/private-jtmb-dev.json"
+        ],
+        "recorded_boolean_checks": {
+          "restart_http_passed": true,
+          "stable_body_verified": true,
+          "relocation_http_passed": true,
+          "production_routing_accepted": false,
+          "source_originals_retained": true
+        },
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": "evidence/private-jtmb-dev.json",
+        "restart_passed": true,
+        "relocation_passed": true,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "jtmb-dev.branconet.local",
+            "responding": true,
+            "https_status": 200
+          },
+          {
+            "host": "jtmb-dev.branconet.local",
+            "responding": true,
+            "https_status": 200
+          }
+        ],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     },
     {
       "source": "repository/BORTUS",
       "source_type": "management-dependency",
       "chart": "apps/bortus",
       "namespace": "bortus",
-      "status": "Native running; private checks passed",
+      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "contract": "Application code developed in separate chat; migration owns deployment and live native Secrets acceptance.",
-      "migration_status": "Private checks passed; production routing pending",
+      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
       "copy_evidence": null,
       "private_evidence": null,
-      "production_routing_accepted": false
+      "production_routing_accepted": true,
+      "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
+      "rollback": {
+        "instructions": "docs/MIGRATION-OPERATIONS.md",
+        "after_destination_writes": "Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.",
+        "original_configuration": "evidence/config-backups.json",
+        "source_data_retirement_confirmed": false
+      },
+      "destination_storage": [
+        {
+          "namespace": "bortus",
+          "claim": "bortus-data",
+          "bound": true,
+          "storage_class": "longhorn",
+          "volume": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79"
+        }
+      ],
+      "native_secret_references": [
+        {
+          "namespace": "bortus",
+          "name": "bortus-runtime",
+          "key": "jwt-secret"
+        },
+        {
+          "namespace": "bortus",
+          "name": "bortus-runtime",
+          "key": "lookup-token"
+        }
+      ],
+      "backup": {
+        "source_evidence": [
+          "evidence/data-backups.json",
+          "evidence/config-backups.json"
+        ],
+        "native_evidence": [
+          "evidence/native-volume-backups.json"
+        ],
+        "native_backups": [
+          {
+            "claim": "bortus-data",
+            "volume": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+            "backup": "backup-3e9af2adf3715f62",
+            "state": "Completed"
+          }
+        ],
+        "unbacked_active_longhorn_claims": [],
+        "originals_retained": true,
+        "scope_exception": []
+      },
+      "copy_restore": {
+        "evidence": null,
+        "full_manifest_equal": null,
+        "source_stable": null,
+        "restore_evidence": [
+          "evidence/native-bortus-restore.json"
+        ],
+        "historical_redis_recovered": null
+      },
+      "functional_checks": {
+        "evidence": [
+          "evidence/bortus-live-proof.json",
+          "evidence/bortus-dashboard-proof.json",
+          "evidence/native-bortus-restore.json"
+        ],
+        "recorded_boolean_checks": {},
+        "limitations": []
+      },
+      "restart_relocation": {
+        "evidence": null,
+        "restart_passed": false,
+        "relocation_passed": false,
+        "additional_evidence": [],
+        "claim_identity_evidence": []
+      },
+      "production_routing": {
+        "ingress_checks": [
+          {
+            "host": "bortus.branconet.lan",
+            "responding": true,
+            "https_status": 307
+          },
+          {
+            "host": "bortus.branconet.lan",
+            "responding": true,
+            "https_status": 307
+          }
+        ],
+        "legacy_tcp_checks": [],
+        "evidence": [
+          "evidence/final-routing-proof.json",
+          "evidence/application-port-cutover.json"
+        ],
+        "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
+      },
+      "native_helmrelease_ready": true
     }
   ],
-  "updated_at": "2026-10-09T20:14:10.968676+00:00"
+  "updated_at": "2026-10-09T20:14:10.968676+00:00",
+  "acceptance_refreshed_at": "2026-10-09T20:38:48.801323+00:00",
+  "full_data_preservation_accepted": false,
+  "source_retirement_confirmed": false
 }
