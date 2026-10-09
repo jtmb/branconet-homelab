@@ -96,6 +96,7 @@ resources:
             requests:
               cpu: 25m
               memory: 64Mi
+          imagePullPolicy: IfNotPresent
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -161,6 +162,7 @@ resources:
                 key: command-0
           command:
           - $(MIGRATION_COMMAND_0)
+          imagePullPolicy: IfNotPresent
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:

@@ -25,5 +25,8 @@ spec:
     remediation:
       retries: 0
   values:
-    enabled: false
-    replicaCount: 0
+    enabled: true
+    replicaCount: 1
+    migration:
+      staging: true
+  suspend: false

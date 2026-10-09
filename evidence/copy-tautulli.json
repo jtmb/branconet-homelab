@@ -1,0 +1,32 @@
+{
+  "completed_at": "2026-10-09T18:03:18.401006+00:00",
+  "source": "media_tautulli",
+  "chart": "media-stack/tautulli",
+  "namespace": "plex",
+  "release": "tautulli",
+  "source_writers_stopped": true,
+  "originals_retained": true,
+  "target_started": false,
+  "application_accepted": false,
+  "copies": [
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 800,
+      "manifest_sha256": "a6317263752d9ddc0165ea71ce8cdec22c033d0521e083def8d5b1b7b228e2b7",
+      "file_bytes": 152844311,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.4",
+      "sourcePath": "/mnt/nfs-container-volumes/tautulli/config",
+      "destinationPVC": "tautulli-data-0",
+      "mountPath": "/config",
+      "measuredBytes": 155242916,
+      "allocatedGiB": 1,
+      "uid": 1000,
+      "gid": 1000,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    }
+  ],
+  "source_desired_before": 1,
+  "source_restart_on_success": false
+}

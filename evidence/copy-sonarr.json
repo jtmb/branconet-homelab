@@ -1,0 +1,32 @@
+{
+  "completed_at": "2026-10-09T18:05:30.560719+00:00",
+  "source": "media_sonarr",
+  "chart": "media-stack/sonarr",
+  "namespace": "plex",
+  "release": "sonarr",
+  "source_writers_stopped": true,
+  "originals_retained": true,
+  "target_started": false,
+  "application_accepted": false,
+  "copies": [
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 1792,
+      "manifest_sha256": "3943499187ef6b1fdfc0a705dec65109c252473fd697f598cad1a1e2df125ea1",
+      "file_bytes": 465466363,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.6",
+      "sourcePath": "/mnt/nfs-container-volumes/sonarr/config",
+      "destinationPVC": "sonarr-data-0",
+      "mountPath": "/config",
+      "measuredBytes": 464258217,
+      "allocatedGiB": 2,
+      "uid": 1000,
+      "gid": 1000,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    }
+  ],
+  "source_desired_before": 1,
+  "source_restart_on_success": false
+}

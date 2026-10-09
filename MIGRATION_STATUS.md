@@ -49,6 +49,11 @@ Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; execution 
 - Delivered BORTUS app commit integrated as d3a1755 after migration foundation commit 5363504. Conflicting documentation retains actual cluster versions/bootstrap behavior and the delivered native provider contract. App code remains owned by its separate development chat.
 - Prepared one CI validation job and success-dependent publication of codex/kubernetes-validated; Flux source reads only that branch, with 35 individual HelmReleases under the new migration-releases path. All application releases remain disabled except accepted-private BORTUS staging. Remote CI/reconciliation activation is pending.
 
+- 17:56 UTC: BORTUS dashboard reads real Ready nodes, pods, Services, deployments, namespaces and volumes. An actual network-policy API outage returns 503 for lookup/readiness without database fallback; both recover after policy removal. No cluster-admin binding or public ingress.
+- 17:57 UTC: APLB, Lucinda, Santos and Minecraft websites pass stable HTTP content, actual restart and worker relocation on the same claims. Originals retained; public routing remains pending. Overseerr, Mealie and Vaultwarden cold copies also pass full manifests; further application checks are running.
+- Remote GitHub CI run 37967715642 passed and published validated revision 1e6b09b. Current dashboard RBAC/private promotions are being validated for the next revision before Flux adoption. Untested releases are explicitly suspended.
+- Temporary per-link node DNS uses public resolvers while Pi-hole is migrated, with prior resolver metadata recorded. CoreDNS retains conditional LAN forwarding. No persistent host network files or NAS exports changed.
+
 ## Acceptance ledger
 
 | Criterion | Status | Evidence / remaining work |
@@ -59,7 +64,7 @@ Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; execution 
 | AC4 Individual charts/values | In progress | All 35 packages implemented and packaging checks passed; live configuration/application checks remain |
 | AC5 Longhorn persistence/recovery | In progress | Encrypted two-replica device, cross-worker persistence and snapshot restoration passed; per-app recovery remains |
 | AC6 SMB preservation/integration | Pending | Existing share/mounts verified; demonstrate target wiring |
-| AC7 Native Secrets/BORTUS | In progress | All 73 native imports readback-equal and encrypted in etcd; delivered app image privately running, auth/provider/restart checks pending |
+| AC7 Native Secrets/BORTUS | Private checks passed | Native readback/encryption, all aliases, auth/CRUD/conflicts/restart, dashboard and live API outage/recovery passed; public HTTPS pending |
 | AC8 Data preservation | In progress | Seven required archives authenticated; actual restore/copy checks and original Redis-state acceptance pending |
 | AC9 One Plex service | Prepared | All three configs/libraries inspected; consolidate after backup |
 | AC10 Reproducibility/docs | In progress | Plan and report saved; update implementation alongside changes |

@@ -43,7 +43,12 @@ def main():
         holder=socket.socket();holder.bind(('127.0.0.1',0));port=holder.getsockname()[1];holder.close()
         forward=subprocess.Popen([*kube,'port-forward','-n',ns,'service/'+name,str(port)+':'+str(args.port),'--address','127.0.0.1'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
         try:
-            for _ in range(45):
+            for _ in range(180):
+                # kubectl exits if an early connection reaches a container whose
+                # listener is not started yet. Reopen it rather than repeatedly
+                # probing a dead forwarding process.
+                if forward.poll() is not None:
+                    forward=subprocess.Popen([*kube,'port-forward','-n',ns,'service/'+name,str(port)+':'+str(args.port),'--address','127.0.0.1'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
                 try:
                     with urllib.request.urlopen('http://127.0.0.1:'+str(port)+args.path,timeout=20) as response:
                         body=response.read();return {'status':response.status,'bytes':len(body),'body_sha256':hashlib.sha256(body).hexdigest()}

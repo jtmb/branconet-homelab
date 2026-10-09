@@ -1,0 +1,32 @@
+{
+  "completed_at": "2026-10-09T17:57:04.649270+00:00",
+  "source": "media_overseerr",
+  "chart": "media-stack/overseerr",
+  "namespace": "plex",
+  "release": "overseerr",
+  "source_writers_stopped": true,
+  "originals_retained": true,
+  "target_started": false,
+  "application_accepted": false,
+  "copies": [
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 123,
+      "manifest_sha256": "20cdee9ab3566fb9c808a34ef0bcc08ef42cf792905d7624e96761f65b1c0cc0",
+      "file_bytes": 7584951,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.5",
+      "sourcePath": "/mnt/container-program-files/overseerr/config",
+      "destinationPVC": "overseerr-data-0",
+      "mountPath": "/config",
+      "measuredBytes": 7596110,
+      "allocatedGiB": 1,
+      "uid": 911,
+      "gid": 911,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    }
+  ],
+  "source_desired_before": 1,
+  "source_restart_on_success": false
+}

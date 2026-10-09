@@ -1,0 +1,32 @@
+{
+  "completed_at": "2026-10-09T18:07:56.109962+00:00",
+  "source": "gamesrv_mc-exporter",
+  "chart": "apps/minecraft-exporter",
+  "namespace": "games",
+  "release": "minecraft-exporter",
+  "source_writers_stopped": true,
+  "originals_retained": true,
+  "target_started": false,
+  "application_accepted": false,
+  "copies": [
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 18,
+      "manifest_sha256": "74da311efd231af6a94d4d8a28890319777c2654b0798536bde26ea94cbf7037",
+      "file_bytes": 4142,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.6",
+      "sourcePath": "/mnt/nfs-container-volumes/mc-server/world",
+      "destinationPVC": "minecraft-exporter-data-0",
+      "mountPath": "/minecraft/world",
+      "measuredBytes": 4171,
+      "allocatedGiB": 1,
+      "uid": 0,
+      "gid": 65534,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    }
+  ],
+  "source_desired_before": 1,
+  "source_restart_on_success": false
+}

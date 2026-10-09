@@ -19,16 +19,19 @@ migration:
   - flux-system
   - games
   - homepage
+  - http-echo
   - longhorn-system
   - mealie
   - pihole
   - plex
   - ruckus
+  - traefik
   - vaultwarden
   - web-apps
+  - website-stack
   - whoami
   - wordpress
-  dashboardRBACReviewPending: true
+  dashboardRBACReviewPending: false
   newPersistentNonsecretDatabase: Existing operator/development databases remain retained;
     this first cluster deployment uses a new PVC. Never reset an existing production
     database.
@@ -36,426 +39,6 @@ resources:
 - apiVersion: v1
   kind: ServiceAccount
   metadata:
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: bortus
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: bortus
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: bortus-secrets
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: bortus-secrets
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: default
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: default
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: flux-system
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: flux-system
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: games
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: games
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: homepage
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: homepage
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: longhorn-system
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: longhorn-system
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: mealie
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: mealie
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: pihole
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: pihole
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: plex
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: plex
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: ruckus
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: ruckus
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: vaultwarden
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: vaultwarden
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: web-apps
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: web-apps
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: whoami
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: whoami
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
-    name: bortus
-    namespace: bortus
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: Role
-  metadata:
-    name: bortus-secrets
-    namespace: wordpress
-  rules:
-  - apiGroups:
-    - ''
-    resources:
-    - secrets
-    verbs:
-    - get
-    - list
-    - create
-    - update
-- apiVersion: rbac.authorization.k8s.io/v1
-  kind: RoleBinding
-  metadata:
-    name: bortus-secrets
-    namespace: wordpress
-  roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: Role
-    name: bortus-secrets
-  subjects:
-  - kind: ServiceAccount
     name: bortus
     namespace: bortus
 - apiVersion: v1
@@ -512,7 +95,7 @@ resources:
                 name: bortus-runtime
                 key: lookup-token
           - name: BORTUS_SECRET_NAMESPACES
-            value: bortus,bortus-secrets,default,flux-system,games,homepage,longhorn-system,mealie,pihole,plex,ruckus,vaultwarden,web-apps,whoami,wordpress
+            value: bortus,bortus-secrets,default,flux-system,games,homepage,http-echo,longhorn-system,mealie,pihole,plex,ruckus,traefik,vaultwarden,web-apps,website-stack,whoami,wordpress
           - name: BORTUS_SECRET_ALIASES_FILE
             value: /etc/bortus/aliases.json
           startupProbe:
@@ -563,3 +146,2113 @@ resources:
       port: 4000
       targetPort: 4000
     type: ClusterIP
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: bortus
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: bortus
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: &id002
+  - kind: ServiceAccount
+    name: bortus
+    namespace: bortus
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: bortus
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: bortus
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: bortus-secrets
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: bortus-secrets
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: bortus-secrets
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: bortus-secrets
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: default
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: default
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: default
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: default
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: flux-system
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: flux-system
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: flux-system
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - source.toolkit.fluxcd.io
+    resources:
+    - gitrepositories
+    - helmrepositories
+    - helmcharts
+    - ocirepositories
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - kustomize.toolkit.fluxcd.io
+    resources:
+    - kustomizations
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - helm.toolkit.fluxcd.io
+    resources:
+    - helmreleases
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: flux-system
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: games
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: games
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: games
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: games
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: homepage
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: homepage
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: homepage
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: homepage
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: http-echo
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: http-echo
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: http-echo
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: http-echo
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: longhorn-system
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: longhorn-system
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: longhorn-system
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: longhorn-system
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: mealie
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: mealie
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: mealie
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: mealie
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: pihole
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: pihole
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: pihole
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: pihole
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: plex
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: plex
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: plex
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: plex
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: ruckus
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: ruckus
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: ruckus
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: ruckus
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: traefik
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: traefik
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: traefik
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: traefik
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: vaultwarden
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: vaultwarden
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: vaultwarden
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: vaultwarden
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: web-apps
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: web-apps
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: web-apps
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: web-apps
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: website-stack
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: website-stack
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: website-stack
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: website-stack
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: whoami
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: whoami
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: whoami
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: whoami
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-secrets
+    namespace: wordpress
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - secrets
+    verbs:
+    - get
+    - list
+    - create
+    - update
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-secrets
+    namespace: wordpress
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-secrets
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: Role
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: wordpress
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - pods
+    - pods/log
+    - services
+    - configmaps
+    - events
+    - persistentvolumeclaims
+    - endpoints
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - ''
+    resources:
+    - pods/exec
+    - pods/portforward
+    verbs:
+    - get
+    - create
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - deployments/scale
+    - statefulsets
+    - statefulsets/scale
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    - networkpolicies
+    verbs:
+    - get
+    - list
+    - watch
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: RoleBinding
+  metadata:
+    name: bortus-dashboard-manage
+    namespace: wordpress
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: Role
+    name: bortus-dashboard-manage
+  subjects: *id002
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRole
+  metadata:
+    name: bortus-dashboard-view
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - nodes
+    - namespaces
+    - persistentvolumes
+    - pods
+    - persistentvolumeclaims
+    - services
+    - events
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - apps
+    resources:
+    - deployments
+    - statefulsets
+    - daemonsets
+    - replicasets
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - storage.k8s.io
+    resources:
+    - storageclasses
+    - csidrivers
+    - csinodes
+    - volumeattachments
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - longhorn.io
+    resources:
+    - volumes
+    - nodes
+    - replicas
+    - engines
+    - backups
+    - backupvolumes
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - ''
+    resources:
+    - persistentvolumes
+    - nodes
+    verbs:
+    - patch
+    - update
+  - apiGroups:
+    - ''
+    resources:
+    - namespaces
+    verbs:
+    - create
+    - update
+    - patch
+    - delete
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRoleBinding
+  metadata:
+    name: bortus-dashboard-view
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: bortus-dashboard-view
+  subjects: *id002

@@ -1,0 +1,32 @@
+{
+  "completed_at": "2026-10-09T18:09:51.212357+00:00",
+  "source": "wordpress_wp-app",
+  "chart": "apps/wordpress",
+  "namespace": "wordpress",
+  "release": "wordpress",
+  "source_writers_stopped": true,
+  "originals_retained": true,
+  "target_started": false,
+  "application_accepted": false,
+  "copies": [
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 5663,
+      "manifest_sha256": "af4d9193c8f17684c7487906803d307f39fe4ec32660f93bb3e38593ad4d7e29",
+      "file_bytes": 145967967,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.5",
+      "sourcePath": "/mnt/container-program-files/wordpress/wp-app",
+      "destinationPVC": "wordpress-data-0",
+      "mountPath": "/var/www/html",
+      "measuredBytes": 148929375,
+      "allocatedGiB": 1,
+      "uid": 33,
+      "gid": 33,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    }
+  ],
+  "source_desired_before": 1,
+  "source_restart_on_success": false
+}

@@ -1,0 +1,49 @@
+{
+  "completed_at": "2026-10-09T18:05:53.302492+00:00",
+  "source": "media_ytdl",
+  "chart": "media-stack/ytdl",
+  "namespace": "plex",
+  "release": "ytdl",
+  "source_writers_stopped": true,
+  "originals_retained": true,
+  "target_started": false,
+  "application_accepted": false,
+  "copies": [
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 7,
+      "manifest_sha256": "56363e8930ad8db3723a345db36bb14a0174176154251f2825e4cca6298c7076",
+      "file_bytes": 73728,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.5",
+      "sourcePath": "/mnt/nfs-container-volumes/ytdl/state",
+      "destinationPVC": "ytdl-data-0",
+      "mountPath": "/state",
+      "measuredBytes": 73736,
+      "allocatedGiB": 1,
+      "uid": 1000,
+      "gid": 1000,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    },
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 2,
+      "manifest_sha256": "b0c14f6fee90fef92edc4bbd7f4afead0aa91db7a645c7de30a518a1499f70d3",
+      "file_bytes": 617480126,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.5",
+      "sourcePath": "/mnt/nfs-container-volumes/ytdl/tmp_dir",
+      "destinationPVC": "ytdl-data-1",
+      "mountPath": "/tmp_dir",
+      "measuredBytes": 617480129,
+      "allocatedGiB": 2,
+      "uid": 1000,
+      "gid": 1000,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    }
+  ],
+  "source_desired_before": 1,
+  "source_restart_on_success": false
+}

@@ -71,7 +71,10 @@ def main():
     helm=[str(RUNTIME/'bin/helm'),'--kubeconfig',str(RUNTIME/'admin.conf')]
     def run(arguments,body=None,timeout=600):
         result=subprocess.run([*kube,*arguments],input=body,capture_output=True,text=True,timeout=timeout)
-        if result.returncode:raise RuntimeError('Application copy Kubernetes operation failed: '+arguments[0])
+        if result.returncode:
+            diagnostic=RUNTIME/('copy-'+name+'-'+arguments[0]+'.diagnostic')
+            diagnostic.write_text(result.stderr);diagnostic.chmod(0o600)
+            raise RuntimeError('Application copy Kubernetes operation failed: '+arguments[0]+'; protected diagnostic retained')
         return result.stdout
     def remote(host,code):
         result=subprocess.run(['ssh','-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-p','2002','james@'+host,'python3','-'],input=code,capture_output=True,text=True,timeout=120)

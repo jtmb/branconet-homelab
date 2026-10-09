@@ -136,6 +136,7 @@ resources:
             requests:
               cpu: 25m
               memory: 64Mi
+          imagePullPolicy: IfNotPresent
         volumes:
         - name: data-0
           persistentVolumeClaim:

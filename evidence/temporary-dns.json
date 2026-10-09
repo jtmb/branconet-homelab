@@ -1,0 +1,45 @@
+{
+  "captured_at": "2026-10-09T17:56:21.178327+00:00",
+  "nodes": [
+    {
+      "host": "192.168.0.4",
+      "interface": "enp10s0",
+      "previous_dns": "Link 2 (enp10s0): 192.168.0.1",
+      "temporary_dns": [
+        "1.1.1.1",
+        "8.8.8.8"
+      ],
+      "registry_lookup_passed": true,
+      "persistent_network_files_changed": false
+    },
+    {
+      "host": "192.168.0.5",
+      "interface": "enp3s0",
+      "previous_dns": "Link 2 (enp3s0): 192.168.0.6 192.168.0.1",
+      "temporary_dns": [
+        "1.1.1.1",
+        "8.8.8.8"
+      ],
+      "registry_lookup_passed": true,
+      "persistent_network_files_changed": false
+    },
+    {
+      "host": "192.168.0.6",
+      "interface": "enp0s31f6",
+      "previous_dns": "Link 2 (enp0s31f6): 192.168.0.1",
+      "temporary_dns": [
+        "1.1.1.1",
+        "8.8.8.8"
+      ],
+      "registry_lookup_passed": true,
+      "persistent_network_files_changed": false
+    }
+  ],
+  "original_corefile": ".:53 {\n    errors\n    health {\n       lameduck 5s\n    }\n    ready\n    kubernetes cluster.local in-addr.arpa ip6.arpa {\n       pods insecure\n       fallthrough in-addr.arpa ip6.arpa\n       ttl 30\n    }\n    prometheus :9153\n    forward . /etc/resolv.conf {\n       max_concurrent 1000\n    }\n    cache 30 {\n       disable success cluster.local\n       disable denial cluster.local\n    }\n    loop\n    reload\n    loadbalance\n}\n",
+  "temporary_public_forwarders": [
+    "1.1.1.1",
+    "8.8.8.8"
+  ],
+  "lan_domain_forwarder": "192.168.0.6",
+  "revisit_after_native_pihole_cutover": true
+}

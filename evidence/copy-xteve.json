@@ -1,0 +1,49 @@
+{
+  "completed_at": "2026-10-09T18:07:08.828498+00:00",
+  "source": "media_xteve",
+  "chart": "apps/xteve",
+  "namespace": "plex",
+  "release": "xteve",
+  "source_writers_stopped": true,
+  "originals_retained": true,
+  "target_started": false,
+  "application_accepted": false,
+  "copies": [
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 42,
+      "manifest_sha256": "bc4b08b512a6250e06dd81890e8b3fbc31bd6d27280ed2a94d63c1ac4181336f",
+      "file_bytes": 138350808,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.4",
+      "sourcePath": "/mnt/nfs-container-volumes/xteve",
+      "destinationPVC": "xteve-data-0",
+      "mountPath": "/root/.xteve",
+      "measuredBytes": 138350448,
+      "allocatedGiB": 1,
+      "uid": 1000,
+      "gid": 65534,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    },
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 4,
+      "manifest_sha256": "2ba7af3036c432880deac69441efba70057a9586d6aeceae79d07e383ffc123e",
+      "file_bytes": 3264,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.4",
+      "sourcePath": "/mnt/nfs-container-volumes/xteve/config",
+      "destinationPVC": "xteve-data-1",
+      "mountPath": "/config",
+      "measuredBytes": 3269,
+      "allocatedGiB": 1,
+      "uid": 1000,
+      "gid": 65534,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    }
+  ],
+  "source_desired_before": 1,
+  "source_restart_on_success": false
+}
