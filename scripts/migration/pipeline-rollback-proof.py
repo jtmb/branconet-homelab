@@ -2,9 +2,12 @@
 """Prove a harmless Git/CI/Flux rollout and rollback without touching application data."""
 import datetime,hashlib,http.client,json,pathlib,socket,ssl,subprocess,time,yaml
 ROOT=pathlib.Path(__file__).resolve().parents[2];RUNTIME=pathlib.Path.home()/'.local/share/branconet-migration';k=[str(RUNTIME/'bin/kubectl'),'--kubeconfig',str(RUNTIME/'admin.conf')]
+# A Windows-owned checkout must use its owning Git's attributes/EOL handling.
+windows_git=pathlib.Path('/mnt/c/Program Files/Git/cmd/git.exe')
+GIT=str(windows_git) if str(ROOT).startswith('/mnt/c/') and windows_git.exists() else 'git'
 chart=ROOT/'k8s-rewrite/charts/test-stack/http-echo/values.yaml';evidence=ROOT/'evidence/pipeline-rollback-proof.json';marker='branconet.io/pipeline-acceptance'
 if evidence.exists():raise RuntimeError('Inspect the recorded pipeline proof before repeating')
-if subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=ROOT).strip():raise RuntimeError('Clean worktree required before owned canary commits')
+if subprocess.check_output([GIT,'status','--porcelain'],cwd=ROOT).strip():raise RuntimeError('Clean worktree required before owned canary commits')
 original=chart.read_bytes();values=yaml.safe_load(original);d=next(o for o in values['resources'] if o['kind']=='Deployment');annotations=d['spec']['template']['metadata'].setdefault('annotations',{})
 if marker in annotations:raise RuntimeError('Existing canary annotation must be reviewed')
 def get(kind,name=None,ns='http-echo'):
@@ -20,9 +23,9 @@ def capture():
 report={'started_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'baseline':capture(),'test_scope':'Pod template annotation only; image/Secrets/PVC/body unchanged','phases':[]}
 def save():evidence.write_text(json.dumps(report,indent=2)+'\n')
 def commit_and_reconcile(message):
- subprocess.run(['git','-c','core.autocrlf=false','add',str(chart.relative_to(ROOT))],cwd=ROOT,capture_output=True,check=True)
- subprocess.run(['git','-c','core.autocrlf=false','commit','-m',message],cwd=ROOT,capture_output=True,check=True)
- sha=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip();subprocess.run(['git','push','origin','codex/kubernetes-migration'],cwd=ROOT,capture_output=True,check=True);print(json.dumps({'commit':sha,'waiting_for':'CI validation'}),flush=True)
+ subprocess.run([GIT,'add',str(chart.relative_to(ROOT))],cwd=ROOT,capture_output=True,check=True)
+ subprocess.run([GIT,'commit','-m',message],cwd=ROOT,capture_output=True,check=True)
+ sha=subprocess.check_output([GIT,'rev-parse','HEAD'],cwd=ROOT,text=True).strip();subprocess.run([GIT,'push','origin','codex/kubernetes-migration'],cwd=ROOT,capture_output=True,check=True);print(json.dumps({'commit':sha,'waiting_for':'CI validation'}),flush=True)
  run=None
  for attempt in range(90):
   runs=json.loads(subprocess.check_output(['/usr/bin/gh','run','list','--workflow','kubernetes-migration.yml','--limit','8','--json','databaseId,headSha,status,conclusion'],cwd=ROOT))
