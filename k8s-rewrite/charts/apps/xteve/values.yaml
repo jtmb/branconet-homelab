@@ -51,6 +51,8 @@ resources:
           app: xteve
         annotations: {}
       spec:
+        hostNetwork: true
+        dnsPolicy: ClusterFirstWithHostNet
         containers:
         - name: xteve
           image: '{{ .Values.image }}'
@@ -58,6 +60,9 @@ resources:
           - secretRef:
               name: '{{ .Values.environmentSecret }}'
           ports:
+          - name: p1900-udp
+            containerPort: 1900
+            protocol: UDP
           - name: p1900-tcp
             containerPort: 1900
             protocol: TCP

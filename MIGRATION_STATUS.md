@@ -26,6 +26,8 @@ At 21:46 UTC, CI 37995384130 and Flux applied revision 4a1147e; all three nodes,
 
 ## Execution journal (historical observations)
 
+- 21:56 UTC: real SSDP probes from all three LAN interfaces received other device responses but no xTeve response. Direct pod-IP probes returned xTeve discovery advertising its private pod address. Native ssdp=true; the prepared chart correction uses host networking/ClusterFirstWithHostNet and UDP 1900 with the same immutable image and three claims. Host ports 1900/UDP and 34400/TCP were checked free on all three nodes. Rollout and after-correction discovery acceptance are pending; baseline evidence is evidence/xteve-ssdp-proof.json.
+
 - 21:01 UTC: restored original dashboard routing/auth hashes and pinned original Traefik digest; authenticated UI/API test awaits existing login. All three addresses reject unauthenticated/invalid requests. Host watcher quota recovered through scoped Ansible, keeping dynamic file watching enabled. Fresh encrypted etcd/NAS recovery verified 349 records including the new dashboard Secret. Read-only Arr root-folder/client prerequisites recorded without changing libraries.
 
 - 20:43 UTC: application/configuration revision 8cd2cfd passed CI and Flux reconciliation; three nodes, 36 HelmReleases and every active Deployment Ready. Corrected Homepage link and unchanged HTTP echo content verified. Historical Redis-state acceptance, documented end-to-end scenarios, legacy dashboard equivalence and final source retirement remain open.

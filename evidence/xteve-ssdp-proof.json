@@ -1,0 +1,98 @@
+{
+  "before": {
+    "checked_at": "2026-10-09T21:55:59.051980+00:00",
+    "host_network": false,
+    "checks": [
+      {
+        "node": "192.168.0.4",
+        "checks": [
+          {
+            "probe": "lan_multicast",
+            "responses": 27,
+            "xteve_matches": []
+          },
+          {
+            "probe": "pod_unicast",
+            "responses": 1,
+            "xteve_matches": [
+              {
+                "responder": "10.244.216.110",
+                "location_host": "10.244.216.110",
+                "location_port": 34400,
+                "http_response": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "node": "192.168.0.5",
+        "checks": [
+          {
+            "probe": "lan_multicast",
+            "responses": 27,
+            "xteve_matches": []
+          },
+          {
+            "probe": "pod_unicast",
+            "responses": 1,
+            "xteve_matches": [
+              {
+                "responder": "10.244.216.110",
+                "location_host": "10.244.216.110",
+                "location_port": 34400,
+                "http_response": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "node": "192.168.0.6",
+        "checks": [
+          {
+            "probe": "lan_multicast",
+            "responses": 27,
+            "xteve_matches": []
+          },
+          {
+            "probe": "pod_unicast",
+            "responses": 1,
+            "xteve_matches": [
+              {
+                "responder": "10.244.216.110",
+                "location_host": "10.244.216.110",
+                "location_port": 34400,
+                "http_response": true
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "application_configuration_changed": false,
+    "storage_and_identity": {
+      "claims": [
+        {
+          "name": "xteve-data-0",
+          "uid": "d40f1490-7254-4599-be82-2fad35abb88b",
+          "volume": "pvc-d40f1490-7254-4599-be82-2fad35abb88b"
+        },
+        {
+          "name": "xteve-data-1",
+          "uid": "b7207fe9-3768-4ad5-9ca0-ee4429137b33",
+          "volume": "pvc-b7207fe9-3768-4ad5-9ca0-ee4429137b33"
+        },
+        {
+          "name": "xteve-data-3",
+          "uid": "93527524-e3c1-4e2e-a9c4-1a844743d8b1",
+          "volume": "plex-xteve-data-3"
+        }
+      ],
+      "device_identity_sha256": "9c7d2213eb939d7e637e0e680c35821f2866cb2d25b7513147575dd22b4dc402",
+      "tuner_count": 2
+    }
+  },
+  "after": null,
+  "lan_discovery_passed": false
+}
