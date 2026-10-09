@@ -1809,7 +1809,9 @@
           "evidence/media-download-client-proof.json",
           "evidence/media-import-prerequisites.json",
           "evidence/media-indexer-proof.json",
-          "evidence/media-activity-proof.json"
+          "evidence/media-activity-proof.json",
+          "evidence/media-download-import-proof.json",
+          "evidence/media-fixture-webseed-proof.json"
         ],
         "recorded_boolean_checks": {
           "restart_http_passed": true,
@@ -1819,7 +1821,7 @@
           "source_originals_retained": true
         },
         "limitations": [
-          "API/download-client checks passed; completed real download/import untested.",
+          "Real publisher-webseed download and automatic Radarr import passed, with three-way SHA/size equality and owned fixture cleanup. The webseed required eight scoped re-add retries; indexer search and external BitTorrent peer transfers were not tested.",
           "Two enabled indexers fail current configuration tests and have retained pre-migration failure history; settings unchanged."
         ]
       },
@@ -2438,7 +2440,7 @@
           "actual_download_extraction_tested": false
         },
         "limitations": [
-          "Owned SMB fixture extracted successfully; completed real Arr download/import untested."
+          "Owned SMB ZIP fixture extracted successfully; archive-download/extraction/Arr-import chain untested."
         ]
       },
       "restart_relocation": {
@@ -5650,7 +5652,9 @@
           "evidence/qbittorrent-api-proof.json",
           "evidence/qbittorrent-credential-review.json",
           "evidence/media-download-client-proof.json",
-          "evidence/final-vpn-egress.json"
+          "evidence/final-vpn-egress.json",
+          "evidence/media-download-import-proof.json",
+          "evidence/media-fixture-webseed-proof.json"
         ],
         "recorded_boolean_checks": {
           "restart_http_passed": true,
@@ -7250,7 +7254,7 @@
     }
   ],
   "updated_at": "2026-10-09T20:14:10.968676+00:00",
-  "acceptance_refreshed_at": "2026-10-09T22:33:14.598584+00:00",
+  "acceptance_refreshed_at": "2026-10-09T23:10:12.918588+00:00",
   "full_data_preservation_accepted": false,
   "source_retirement_confirmed": false
 }

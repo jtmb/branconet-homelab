@@ -24,11 +24,11 @@ routes={o['host']:o for o in read('final-routing-proof.json')['checks']}
 ports=read('application-port-cutover.json')
 extra={
  'plex':['plex-library-proof.json','plex-relocation-proof.json','plex-playback-proof.json'],
- 'qbittorrent':['qbittorrent-api-proof.json','qbittorrent-credential-review.json','media-download-client-proof.json','final-vpn-egress.json'],
+ 'qbittorrent':['qbittorrent-api-proof.json','qbittorrent-credential-review.json','media-download-client-proof.json','final-vpn-egress.json','media-download-import-proof.json','media-fixture-webseed-proof.json'],
  'gluetun':['vpn-proof.json','final-vpn-egress.json'],
  'qbit-monitor':['private-qbit-monitor.json','monitor-state-backup.json'],
  'unpackerr':['unpackerr-extraction-proof.json'],
- 'sonarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json'], 'radarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json'],
+ 'sonarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json'], 'radarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json','media-download-import-proof.json','media-fixture-webseed-proof.json'],
  'ets2':['ets2-query-proof.json'], 'xteve':['xteve-tuner-proof.json','xteve-ssdp-proof.json','xteve-gateway-readiness-recovery.json'],
  'pihole':['native-dns-proof.json','native-lan-forwarding.json'],
  'pihole-exporter':['pihole-exporter-integration.json'],
@@ -41,10 +41,16 @@ limitations={
  'qbit-monitor':['Discord delivery untested; notifications disabled during acceptance.'],
  'ets2':['Real game-client join untested.'],
  'xteve':['LAN SSDP discovery passed on all three host interfaces; original TCP 1901 has no observed backend listener.'],
- 'unpackerr':['Owned SMB fixture extracted successfully; completed real Arr download/import untested.'],
+ 'unpackerr':['Owned SMB ZIP fixture extracted successfully; archive-download/extraction/Arr-import chain untested.'],
  'sonarr':['API/download-client checks passed; completed real download/import untested.'],
  'radarr':['API/download-client checks passed; completed real download/import untested.','Two enabled indexers fail current configuration tests and have retained pre-migration failure history; settings unchanged.'],
 }
+
+media_path=ROOT/'evidence/media-download-import-proof.json'
+if media_path.exists():
+    media=read('media-download-import-proof.json')
+    if media.get('download_import_data_passed') and media.get('cleanup',{}).get('passed'):
+        limitations['radarr'][0]='Real publisher-webseed download and automatic Radarr import passed, with three-way SHA/size equality and owned fixture cleanup. The webseed required eight scoped re-add retries; indexer search and external BitTorrent peer transfers were not tested.'
 
 def secret_refs(value,result):
     if isinstance(value,dict):

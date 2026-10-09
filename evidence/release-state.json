@@ -200,7 +200,7 @@
     "helmrelease_ready": true,
     "routing_checks_passed": true,
     "evidence_limits": [
-      "API/download-client checks passed; completed real download/import untested.",
+      "Real publisher-webseed download and automatic Radarr import passed, with three-way SHA/size equality and owned fixture cleanup. The webseed required eight scoped re-add retries; indexer search and external BitTorrent peer transfers were not tested.",
       "Two enabled indexers fail current configuration tests and have retained pre-migration failure history; settings unchanged."
     ]
   },
@@ -259,7 +259,7 @@
     "helmrelease_ready": true,
     "routing_checks_passed": false,
     "evidence_limits": [
-      "Owned SMB fixture extracted successfully; completed real Arr download/import untested."
+      "Owned SMB ZIP fixture extracted successfully; archive-download/extraction/Arr-import chain untested."
     ]
   },
   {
