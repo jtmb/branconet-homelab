@@ -106,6 +106,9 @@ resources:
   metadata:
     name: aplb
     namespace: web-apps
+    annotations:
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
   spec:
     ingressClassName: traefik
     tls:

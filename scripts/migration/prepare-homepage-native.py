@@ -8,7 +8,7 @@ original=json.loads(subprocess.check_output(['ssh','-o','BatchMode=yes','-p','20
 docker_names=set((yaml.safe_load(original.pop('docker.yaml','{}')) or {}).keys())
 def strip_docker(obj,legacy=False):
  if isinstance(obj,dict):
-  if legacy or 'container' in obj or obj.get('server') in docker_names:
+  if legacy or 'container' in obj or (isinstance(obj.get('server'),str) and obj.get('server') in docker_names):
    for key in ['server','container','docker']:obj.pop(key,None)
   for value in obj.values():strip_docker(value,legacy)
  elif isinstance(obj,list):
@@ -29,7 +29,7 @@ if existing:
   subprocess.run(k+['replace','-f','-'],input=json.dumps(actual).encode(),capture_output=True,check=True)
 else:subprocess.run(k+['create','-f','-'],input=json.dumps(secret).encode(),capture_output=True,check=True)
 path=ROOT/'k8s-rewrite/charts/homepage/values.yaml';values=yaml.safe_load(path.read_text());deployment=next(o for o in values['resources'] if o['kind']=='Deployment');pod=deployment['spec']['template']['spec'];container=pod['containers'][0]
-pod['volumes']=[v for v in pod['volumes'] if v['name']!='data-0'];pod['nodeSelector']={};container['volumeMounts']=[v for v in container['volumeMounts'] if v['name']!='data-0']
+pod['volumes']=[v for v in pod['volumes'] if v['name'] not in ['data-0','native-config']];pod['nodeSelector']={};container['volumeMounts']=[v for v in container['volumeMounts'] if v['name'] not in ['data-0','native-config']]
 pod['serviceAccountName']='homepage';pod['volumes'].append({'name':'native-config','secret':{'secretName':'homepage-rendered-config'}})
 for filename in data:container['volumeMounts'].append({'name':'native-config','mountPath':'/app/config/'+filename,'subPath':filename,'readOnly':True})
 values['migration']['hostDockerDependencies']=[]
