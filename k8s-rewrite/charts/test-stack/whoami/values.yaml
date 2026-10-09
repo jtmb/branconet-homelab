@@ -4,14 +4,14 @@ image: traefik/whoami:latest@sha256:200689790a0a0ea48ca45992e0450bc26ccab5307375
 environmentSecret: whoami-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - proxy_whoami
   requiredEnvironmentKeys:
   - PATH
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies: []
   sourceCommandArgumentsRequireReview: false
   launchSecretKeys:

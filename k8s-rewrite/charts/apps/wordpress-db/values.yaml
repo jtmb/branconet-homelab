@@ -4,7 +4,7 @@ image: mysql:5.7@sha256:4bc6bc963e6d8443453676cae56536f4b8156d78bae03c0145cbe47c
 environmentSecret: wordpress-db-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - wordpress_db
   requiredEnvironmentKeys:
@@ -19,7 +19,7 @@ migration:
   - PATH
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.5
     sourcePath: /mnt/migration-gluster-read/wordpress/mysql-db

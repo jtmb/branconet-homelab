@@ -4,7 +4,7 @@ image: golift/unpackerr:latest@sha256:4ec141eeb0cb2f971d7c92f21cc40b0d2d50d7920e
 environmentSecret: unpackerr-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - media_unpackerr
   requiredEnvironmentKeys:
@@ -18,7 +18,7 @@ migration:
   - UN_SONARR_0_URL
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.5
     sourcePath: /mnt/container-program-files/unpackerr/config

@@ -4,7 +4,7 @@ image: ghcr.io/gethomepage/homepage:latest@sha256:b129cb0f674bd6d204e215bde2c2fc
 environmentSecret: homepage-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - ws_homepage
   requiredEnvironmentKeys:
@@ -17,7 +17,7 @@ migration:
   - YARN_VERSION
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   hostDockerDependencies: []
   dataCopies:
   - sourceHost: 192.168.0.5

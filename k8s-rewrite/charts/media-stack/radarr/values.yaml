@@ -4,7 +4,7 @@ image: linuxserver/radarr:latest@sha256:ca43905eaf2dd11425efdcfe184892e43806b1ae
 environmentSecret: radarr-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - media_radarr
   requiredEnvironmentKeys:
@@ -25,7 +25,7 @@ migration:
   - XDG_CONFIG_HOME
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.4
     sourcePath: /mnt/nfs-container-volumes/radarr

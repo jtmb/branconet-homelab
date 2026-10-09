@@ -4,7 +4,7 @@ image: jtmb92/ruckus-bot:latest@sha256:824816055190308f9a38a5d0c974e9be3d287272e
 environmentSecret: ruckus-bot-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - bot_ruckus
   requiredEnvironmentKeys:
@@ -19,7 +19,7 @@ migration:
   - YARN_VERSION
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies: []
   sourceCommandArgumentsRequireReview: false
   launchSecretKeys: []

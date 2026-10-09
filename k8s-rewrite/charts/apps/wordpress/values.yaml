@@ -4,7 +4,7 @@ image: wordpress:latest@sha256:ee74dc0ebbe7ec43b7f473c0fb4f1dfb6b211d7785f0a95bc
 environmentSecret: wordpress-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - wordpress_wp-app
   requiredEnvironmentKeys:
@@ -29,7 +29,7 @@ migration:
   - WORDPRESS_DB_USER
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.5
     sourcePath: /mnt/container-program-files/wordpress/wp-app

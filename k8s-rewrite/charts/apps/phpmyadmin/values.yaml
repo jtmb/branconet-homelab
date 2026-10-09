@@ -4,7 +4,7 @@ image: phpmyadmin/phpmyadmin:latest@sha256:42a200db07b4e70fbf32c594ad4521cf16399
 environmentSecret: phpmyadmin-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - wordpress_phpmyadmin
   requiredEnvironmentKeys:
@@ -37,7 +37,7 @@ migration:
   - VERSION
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies: []
   sourceCommandArgumentsRequireReview: false
   launchSecretKeys: []

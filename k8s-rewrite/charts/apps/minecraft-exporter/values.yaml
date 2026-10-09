@@ -4,7 +4,7 @@ image: ghcr.io/dirien/minecraft-exporter:latest@sha256:d11cea9f5a14316d0df00b97a
 environmentSecret: minecraft-exporter-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - gamesrv_mc-exporter
   requiredEnvironmentKeys:
@@ -12,7 +12,7 @@ migration:
   - SSL_CERT_FILE
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.6
     sourcePath: /mnt/nfs-container-volumes/mc-server/world

@@ -4,7 +4,7 @@ image: lscr.io/linuxserver/qbittorrent@sha256:570aeb63bdedcb5f9dd2500bd8f0a75581
 environmentSecret: qbittorrent-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - 192.168.0.4/qbittorrent
   requiredEnvironmentKeys:
@@ -27,7 +27,7 @@ migration:
   - XDG_DATA_HOME
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.5
     sourcePath: /mnt/migration-gluster-read/deluge/config

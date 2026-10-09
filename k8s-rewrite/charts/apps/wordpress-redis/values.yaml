@@ -4,14 +4,14 @@ image: redis:alpine@sha256:2afba59292f25f5d1af200496db41bea2c6c816b059f57ae74703
 environmentSecret: wordpress-redis-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - wordpress_redis-db
   requiredEnvironmentKeys:
   - PATH
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies: []
   sourceCommandArgumentsRequireReview: false
   launchSecretKeys: []

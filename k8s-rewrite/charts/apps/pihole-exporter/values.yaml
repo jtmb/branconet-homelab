@@ -4,7 +4,7 @@ image: ekofr/pihole-exporter:latest@sha256:36dab68a7e4b2750802e2326d9340201dc498
 environmentSecret: pihole-exporter-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - pi_exporter
   requiredEnvironmentKeys:
@@ -15,7 +15,7 @@ migration:
   - PORT
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies: []
   sourceCommandArgumentsRequireReview: false
   launchSecretKeys: []

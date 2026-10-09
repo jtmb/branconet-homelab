@@ -4,7 +4,7 @@ image: linuxserver/sonarr:latest@sha256:76414c033f290d3c9f1f9dfad71150abe71d9259
 environmentSecret: sonarr-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - media_sonarr
   requiredEnvironmentKeys:
@@ -27,7 +27,7 @@ migration:
   - XDG_CONFIG_HOME
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.6
     sourcePath: /mnt/nfs-container-volumes/sonarr/config

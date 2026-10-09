@@ -4,7 +4,7 @@ image: qmcgaw/gluetun@sha256:46407f10497e6b09770e63006439053ab88db9b94f009e88bca
 environmentSecret: gluetun-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - 192.168.0.4/GlueTun-proton
   requiredEnvironmentKeys:
@@ -168,7 +168,7 @@ migration:
   - WIREGUARD_PUBLIC_KEY
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.5
     sourcePath: /mnt/migration-gluster-read/gluetun

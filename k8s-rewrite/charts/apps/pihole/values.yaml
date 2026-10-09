@@ -4,7 +4,7 @@ image: pihole/pihole:latest@sha256:ee348529cea9601df86ad94d62a39cad26117e1eac9e8
 environmentSecret: pihole-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - pi_pihole
   requiredEnvironmentKeys:
@@ -17,7 +17,7 @@ migration:
   - WEBPASSWORD
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.5
     sourcePath: /mnt/migration-gluster-read/dnsmasq.d

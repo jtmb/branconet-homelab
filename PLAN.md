@@ -227,3 +227,26 @@ Every change updates affected Ansible tasks/templates, chart values, Flux config
 - Source checkout initialized on codex/kubernetes-migration at the inspected baseline. BORTUS development requested in a separate worktree/chat.
 - Cluster provisioning, data movement, Secret import, repository changes and application tests have not yet been performed.
 - BORTUS development will be delegated to a separate chat; cluster migration stays in this chat.
+
+## As-built state and outstanding acceptance
+
+At 20:18 UTC on 2026-10-09, the three Kubernetes nodes and all active Deployments are Ready. The CI-validated revision 9ed3e4df0cdcfad396c1fd3f02c75a5a6df90539 reconciled successfully through Flux, including all 35 application charts and the official cert-manager release. Source application containers are stopped; source Vault/Consul and Portainer/agents remain retained. Each application's chart keeps its own configuration and native Secret references. Gluster bricks and source datasets remain intact.
+
+```mermaid
+flowchart LR
+    Repo["Individual charts and values"] --> CI["GitHub chart/composition validation"]
+    CI --> Branch["codex/kubernetes-validated"] --> Flux["Flux source → Kustomization → HelmReleases"]
+    Flux --> Apps["35 native application charts"]
+    Native["Kubernetes Secrets<br/>AES-CBC at rest"] --> Apps
+    Bortus["BORTUS<br/>native Secrets management"] <--> Native
+    Apps --> State["Encrypted Longhorn PVCs<br/>two replicas / retained claims"]
+    Apps --> Media["SMB CSI<br/>unchanged NAS media exports"]
+    State --> NAS["32 cold native-volume NAS backups"]
+    Old["Retained Gluster / source datasets"] --> Archive["Authenticated encrypted recovery archives"]
+    Vault["Retained Vault / Consul"] -. "43 values verified in native Secrets" .-> Native
+    Approval["Completed acceptance + user confirmation"] -. "gates source retirement" .-> Old
+```
+
+Proven checks include cold-copy manifests, encrypted storage persistence/relocation/snapshot restoration, an independent NAS BORTUS database restore, isolated etcd restoration matching 343 Secret ciphertext records, native BORTUS auth/CRUD/aliases/dashboard/outage/restart, production HTTPS/DNS routing, a single Plex library/playback/relocation, qBittorrent's retained 203-entry queue and Arr download-client tests, the monitor's real queue/forwarded-port/restart behavior, and controlled ZIP extraction through existing SMB CSI with the deployed Unpackerr image. The actual evidence and its limits are in MIGRATION_STATUS.md and evidence/*.json.
+
+The original removed Redis writable state remains unrecovered and its acceptance exception remains unresolved. The user-confirmed disposable anonymous directories are limited to the three specifically named FlareSolverr/Vault runtime paths. No broader data-loss exception is assumed. Discord notification delivery, an ETS2 game-client join, a completed real Arr download/import and xTeve multicast discovery have not been tested; legacy xTeve TCP 1901 has no observed listener. LAN HTTPS uses the default untrusted local certificate. These limits remain explicit rather than being treated as passed checks. Final Gluster/Vault retirement requires user confirmation after reviewing the acceptance record.

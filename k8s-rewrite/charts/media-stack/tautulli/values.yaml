@@ -4,7 +4,7 @@ image: ghcr.io/tautulli/tautulli:latest@sha256:746b2accd580c8551bff3570eab9c6606
 environmentSecret: tautulli-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - media_tautulli
   requiredEnvironmentKeys:
@@ -19,7 +19,7 @@ migration:
   - TZ
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.4
     sourcePath: /mnt/nfs-container-volumes/tautulli/config

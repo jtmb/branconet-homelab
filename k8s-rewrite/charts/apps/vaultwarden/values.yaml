@@ -4,7 +4,7 @@ image: vaultwarden/server:latest@sha256:43498a94b22f9563f2a94b53760ab3e710eefc0d
 environmentSecret: vaultwarden-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - vault_vaultwarden
   requiredEnvironmentKeys:
@@ -18,7 +18,7 @@ migration:
   - SIGNUPS_ALLOWED
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.5
     sourcePath: /mnt/container-program-files/vault_warden/swarm

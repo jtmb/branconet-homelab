@@ -4,7 +4,7 @@ image: lscr.io/linuxserver/overseerr:latest@sha256:53a1b839ffa81f139e1552840772b
 environmentSecret: overseerr-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - media_overseerr
   requiredEnvironmentKeys:
@@ -22,7 +22,7 @@ migration:
   - VIRTUAL_ENV
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.5
     sourcePath: /mnt/container-program-files/overseerr/config

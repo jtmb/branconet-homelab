@@ -4,7 +4,7 @@ image: lscr.io/linuxserver/plex@sha256:a3a3a850a64fb747c59f85dbc19b157781c3b9c92
 environmentSecret: plex-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - 192.168.0.4/plex-plex-1
   - 192.168.0.5/plex-plex-1
@@ -40,7 +40,7 @@ migration:
   - VIRTUAL_ENV
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.4
     sourcePath: /var/plex-stack/plex/config

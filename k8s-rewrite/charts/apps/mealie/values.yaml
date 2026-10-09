@@ -4,7 +4,7 @@ image: ghcr.io/mealie-recipes/mealie:v1.0.0-RC1.1@sha256:6df1e795f17af43f082146e
 environmentSecret: mealie-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - mealie_mealie
   requiredEnvironmentKeys:
@@ -45,7 +45,7 @@ migration:
   - WEB_CONCURRENCY
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.5
     sourcePath: /mnt/container-program-files/mealie/mealie-data

@@ -4,7 +4,7 @@ image: linuxserver/jackett:latest@sha256:cdea5d3209a6ab1fb8eb954ec0b8169b7d54274
 environmentSecret: jackett-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - media_jackett
   requiredEnvironmentKeys:
@@ -25,7 +25,7 @@ migration:
   - XDG_DATA_HOME
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.5
     sourcePath: /mnt/container-program-files/jackett

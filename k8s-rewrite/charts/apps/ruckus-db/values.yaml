@@ -4,7 +4,7 @@ image: mysql:5.7.41@sha256:bf18020f32cc5d8f5e2add516d52fbf3afc3de431457076340e93
 environmentSecret: ruckus-db-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - bot_ruckus-db
   requiredEnvironmentKeys:
@@ -19,7 +19,7 @@ migration:
   - PATH
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.4
     sourcePath: /mnt/nfs-container-volumes/bot_ruckus/mysql_data

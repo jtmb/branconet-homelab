@@ -4,7 +4,7 @@ image: alturismo/xteve:latest@sha256:7885f2759c0da3c5f2c72b2e45ba4b602bdd7d6f04c
 environmentSecret: xteve-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - media_xteve
   requiredEnvironmentKeys:
@@ -12,7 +12,7 @@ migration:
   - TZ
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.4
     sourcePath: /mnt/nfs-container-volumes/xteve

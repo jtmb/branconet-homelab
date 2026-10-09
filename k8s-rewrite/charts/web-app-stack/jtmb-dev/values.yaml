@@ -4,13 +4,13 @@ image: jtmb92/jtmb-dev@sha256:d46e9aeb8222d60b6778b6aa2202359b0982da76a69b2d4f01
 environmentSecret: jtmb-dev-runtime
 migration:
   verified: false
-  state: manifest-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - repository/web-app-stack/jtmb-dev
   requiredEnvironmentKeys: []
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
 resources:
 - apiVersion: apps/v1
   kind: Deployment

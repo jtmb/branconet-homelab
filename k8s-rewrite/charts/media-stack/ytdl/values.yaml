@@ -4,7 +4,7 @@ image: ghcr.io/alexta69/metube:latest@sha256:afd3fa2b229e3e6d4c8750618fe148af33a
 environmentSecret: ytdl-runtime
 migration:
   verified: false
-  state: live-integration-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - media_ytdl
   requiredEnvironmentKeys:
@@ -22,7 +22,7 @@ migration:
   - UMASK
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
   dataCopies:
   - sourceHost: 192.168.0.5
     sourcePath: /mnt/nfs-container-volumes/ytdl/state

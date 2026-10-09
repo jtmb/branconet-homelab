@@ -4,13 +4,13 @@ image: hashicorp/http-echo@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57
 environmentSecret: http-echo-runtime
 migration:
   verified: false
-  state: manifest-review-pending
+  state: private-accepted-production-reconciled
   sources:
   - repository/test-stack/http-echo
   requiredEnvironmentKeys: []
   storageSizingVerified: true
   nativeSecretsImported: true
-  applicationChecksPassed: false
+  applicationChecksPassed: true
 resources:
 - apiVersion: apps/v1
   kind: Deployment

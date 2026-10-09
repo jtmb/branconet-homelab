@@ -5,7 +5,7 @@ ROOT=pathlib.Path(__file__).resolve().parents[2];RUNTIME=pathlib.Path.home()/'.l
 def exec_(args):return subprocess.check_output(k+['exec','-n','pihole','deployment/pihole','--']+args,text=True)
 def records():return [v.strip() for v in exec_(['pihole-FTL','--config','dns.hosts']).strip().strip('[]').split(',') if v.strip()]
 before=records();after=list(before)
-for name in ['bortus.branconet.lan','http-echo.branconet.local','echo.branconet.local','jtmb-dev.branconet.local']:
+for name in ['bortus.branconet.lan','http-echo.branconet.local','echo.branconet.local','jtmb-dev.branconet.local','qbittorrent.branconet.local']:
  if not any(name in line.split()[1:] for line in after):after.append('192.168.0.4 '+name)
 exec_(['pihole-FTL','--config','dns.hosts',json.dumps(after)]);exec_(['pihole','restartdns'])
 actual=records()
