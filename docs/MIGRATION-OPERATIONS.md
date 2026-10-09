@@ -158,6 +158,19 @@ xTeve's immutable 2.2 image selects the last available IPv4 address and offers n
 
 Active host networking requires both migration.routingReviewed and migration.hostNetworkingReviewed. Before setting the latter in the Flux release, check 1900/UDP on every eligible host and retain the existing 34400/TCP service ownership. The chart rejects an active deployment missing either review. The responder checks its own UDP reply against the native descriptor for readiness, withdraws advertisements when the backend becomes unavailable, and sends goodbye on termination.
 
-Run scripts/migration/xteve-ssdp-proof.py --phase after to verify real multicast replies from all three LAN interfaces and compare device identity, tuner count and claim identities against the retained baseline. HTTP discovery/lineup checks alone do not prove multicast discovery. For a network-only rollback, restore the previous pod-network settings through the same CI/Flux pipeline while retaining the current claims and destination data; do not restart an outdated source instance.
+Run scripts/migration/xteve-ssdp-proof.py --phase after to verify real multicast replies from all three LAN interfaces and compare device identity, tuner count and claim identities against the retained baseline. HTTP discovery/lineup checks alone do not prove multicast discovery. For a network-only rollback, remove the responder Deployment/ConfigMap from the chart through the same CI/Flux pipeline, retaining the xTeve pod networking, current claims and destination data; do not restart an outdated source instance.
+
+```mermaid
+flowchart LR
+    Client["LAN tuner client"] -->|"M-SEARCH / UDP 1900"| Gateway["Stateless SSDP responder<br/>one eligible Kubernetes node"]
+    Gateway -->|"Read native UDN"| Service["Existing LAN endpoint<br/>192.168.0.4:34400"]
+    Gateway -->|"Reply with existing descriptor URL"| Client
+    Client -->|"HTTP tuner requests"| Service
+    Service --> Xteve["Original xTeve image<br/>pod networking"]
+    Xteve --> Config["Same Longhorn configuration claims"]
+    Xteve --> IPTV["Same SMB IPTV claim"]
+```
+
+The first probe incorrectly used local unicast; the corrected probe queries the native UDN through multicast and passed against the live responder. CI validated revision 519a418 before the exact nonsecret code was applied to the existing ConfigMap to release an in-flight Helm health wait. Its API readback matched byte-for-byte, and Flux then converged the full release. The helper's new pod disables its API token; no data volume is mounted. Recovery details are in evidence/xteve-gateway-readiness-recovery.json, and actual before/after protocol, image, claim and recreation evidence is in evidence/xteve-ssdp-proof.json.
 
 Actual public-DNS HTTPS probes passed with normal browser headers. Default Python headers returned Cloudflare 1010; no Cloudflare settings were changed. This status is documented at https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-1xxx-errors/error-1010/. Run add-native-dns-records.py after recovering Pi-hole to append the recorded native repository/management names without replacing existing records.

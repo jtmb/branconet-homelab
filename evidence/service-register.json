@@ -2624,7 +2624,9 @@
       "functional_checks": {
         "evidence": [
           "evidence/private-xteve.json",
-          "evidence/xteve-tuner-proof.json"
+          "evidence/xteve-tuner-proof.json",
+          "evidence/xteve-ssdp-proof.json",
+          "evidence/xteve-gateway-readiness-recovery.json"
         ],
         "recorded_boolean_checks": {
           "restart_http_passed": true,
@@ -2634,7 +2636,7 @@
           "source_originals_retained": true
         },
         "limitations": [
-          "SSDP/multicast discovery untested; original TCP 1901 has no observed backend listener."
+          "LAN SSDP discovery passed on all three host interfaces; original TCP 1901 has no observed backend listener."
         ]
       },
       "restart_relocation": {
@@ -7248,7 +7250,7 @@
     }
   ],
   "updated_at": "2026-10-09T20:14:10.968676+00:00",
-  "acceptance_refreshed_at": "2026-10-09T21:52:07.072402+00:00",
+  "acceptance_refreshed_at": "2026-10-09T22:33:14.598584+00:00",
   "full_data_preservation_accepted": false,
   "source_retirement_confirmed": false
 }

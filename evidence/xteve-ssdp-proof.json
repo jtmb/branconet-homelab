@@ -94,7 +94,7 @@
     }
   },
   "after": {
-    "checked_at": "2026-10-09T22:22:11.709339+00:00",
+    "checked_at": "2026-10-09T22:29:06.284941+00:00",
     "host_network": false,
     "checks": [
       {
@@ -105,7 +105,7 @@
             "responses": 28,
             "xteve_matches": [
               {
-                "responder": "192.168.0.6",
+                "responder": "192.168.0.5",
                 "location_host": "192.168.0.4",
                 "location_port": 34400,
                 "http_response": true,
@@ -136,7 +136,7 @@
             "responses": 28,
             "xteve_matches": [
               {
-                "responder": "192.168.0.6",
+                "responder": "192.168.0.5",
                 "location_host": "192.168.0.4",
                 "location_port": 34400,
                 "http_response": true,
@@ -167,7 +167,7 @@
             "responses": 28,
             "xteve_matches": [
               {
-                "responder": "192.168.0.6",
+                "responder": "192.168.0.5",
                 "location_host": "192.168.0.4",
                 "location_port": 34400,
                 "http_response": true,
@@ -213,14 +213,41 @@
       "device_identity_sha256": "9c7d2213eb939d7e637e0e680c35821f2866cb2d25b7513147575dd22b4dc402",
       "tuner_count": 2
     },
+    "application_image_ids": [
+      "docker.io/alturismo/xteve@sha256:7885f2759c0da3c5f2c72b2e45ba4b602bdd7d6f04cc6abba201091f11c93a95"
+    ],
+    "immutable_source_image_preserved": true,
+    "tuner_endpoints": [
+      {
+        "endpoint": "lineup.json",
+        "http_status": 200,
+        "bytes": 4297,
+        "entries": 29
+      },
+      {
+        "endpoint": "xmltv/xteve.xml",
+        "http_status": 200,
+        "bytes": 1634888,
+        "valid_xml": true
+      },
+      {
+        "endpoint": "m3u/xteve.m3u",
+        "http_status": 200,
+        "bytes": 8695,
+        "valid_m3u": true
+      }
+    ],
     "native_descriptor": {
       "valid_xml": true,
       "udn_sha256": "ff81f2517976a4e9563a27f9fcc2ed65de5edc5cd9eba1601031943d4595fdcc",
       "url_base_host": "192.168.0.4"
     },
     "gateway": {
+      "uid": "589cd617-fe54-408b-b369-1a37f49e9c53",
       "host_network": true,
-      "host_ip": "192.168.0.6",
+      "host_ip": "192.168.0.5",
+      "ready": true,
+      "api_token_disabled": true,
       "image_ids": [
         "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
       ]
@@ -346,11 +373,161 @@
         "device_identity_sha256": "9c7d2213eb939d7e637e0e680c35821f2866cb2d25b7513147575dd22b4dc402",
         "tuner_count": 2
       }
+    },
+    {
+      "checked_at": "2026-10-09T22:22:11.709339+00:00",
+      "host_network": false,
+      "checks": [
+        {
+          "node": "192.168.0.4",
+          "checks": [
+            {
+              "probe": "lan_multicast",
+              "responses": 28,
+              "xteve_matches": [
+                {
+                  "responder": "192.168.0.6",
+                  "location_host": "192.168.0.4",
+                  "location_port": 34400,
+                  "http_response": true,
+                  "udn_sha256": "ff81f2517976a4e9563a27f9fcc2ed65de5edc5cd9eba1601031943d4595fdcc"
+                }
+              ]
+            },
+            {
+              "probe": "pod_unicast",
+              "responses": 1,
+              "xteve_matches": [
+                {
+                  "responder": "10.244.216.126",
+                  "location_host": "10.244.216.126",
+                  "location_port": 34400,
+                  "http_response": true,
+                  "udn_sha256": "ff81f2517976a4e9563a27f9fcc2ed65de5edc5cd9eba1601031943d4595fdcc"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "node": "192.168.0.5",
+          "checks": [
+            {
+              "probe": "lan_multicast",
+              "responses": 28,
+              "xteve_matches": [
+                {
+                  "responder": "192.168.0.6",
+                  "location_host": "192.168.0.4",
+                  "location_port": 34400,
+                  "http_response": true,
+                  "udn_sha256": "ff81f2517976a4e9563a27f9fcc2ed65de5edc5cd9eba1601031943d4595fdcc"
+                }
+              ]
+            },
+            {
+              "probe": "pod_unicast",
+              "responses": 1,
+              "xteve_matches": [
+                {
+                  "responder": "10.244.216.126",
+                  "location_host": "10.244.216.126",
+                  "location_port": 34400,
+                  "http_response": true,
+                  "udn_sha256": "ff81f2517976a4e9563a27f9fcc2ed65de5edc5cd9eba1601031943d4595fdcc"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "node": "192.168.0.6",
+          "checks": [
+            {
+              "probe": "lan_multicast",
+              "responses": 28,
+              "xteve_matches": [
+                {
+                  "responder": "192.168.0.6",
+                  "location_host": "192.168.0.4",
+                  "location_port": 34400,
+                  "http_response": true,
+                  "udn_sha256": "ff81f2517976a4e9563a27f9fcc2ed65de5edc5cd9eba1601031943d4595fdcc"
+                }
+              ]
+            },
+            {
+              "probe": "pod_unicast",
+              "responses": 1,
+              "xteve_matches": [
+                {
+                  "responder": "10.244.216.126",
+                  "location_host": "10.244.216.126",
+                  "location_port": 34400,
+                  "http_response": true,
+                  "udn_sha256": "ff81f2517976a4e9563a27f9fcc2ed65de5edc5cd9eba1601031943d4595fdcc"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "application_configuration_changed": false,
+      "storage_and_identity": {
+        "claims": [
+          {
+            "name": "xteve-data-0",
+            "uid": "d40f1490-7254-4599-be82-2fad35abb88b",
+            "volume": "pvc-d40f1490-7254-4599-be82-2fad35abb88b"
+          },
+          {
+            "name": "xteve-data-1",
+            "uid": "b7207fe9-3768-4ad5-9ca0-ee4429137b33",
+            "volume": "pvc-b7207fe9-3768-4ad5-9ca0-ee4429137b33"
+          },
+          {
+            "name": "xteve-data-3",
+            "uid": "93527524-e3c1-4e2e-a9c4-1a844743d8b1",
+            "volume": "plex-xteve-data-3"
+          }
+        ],
+        "device_identity_sha256": "9c7d2213eb939d7e637e0e680c35821f2866cb2d25b7513147575dd22b4dc402",
+        "tuner_count": 2
+      },
+      "native_descriptor": {
+        "valid_xml": true,
+        "udn_sha256": "ff81f2517976a4e9563a27f9fcc2ed65de5edc5cd9eba1601031943d4595fdcc",
+        "url_base_host": "192.168.0.4"
+      },
+      "gateway": {
+        "host_network": true,
+        "host_ip": "192.168.0.6",
+        "image_ids": [
+          "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+        ]
+      }
     }
   ],
   "corrected_probe_live_test": {
     "actual_multicast_readiness_check_passed": true,
     "error_reason": []
   },
-  "gateway_ready": false
+  "gateway_ready": true,
+  "gateway_api_token_disabled": true,
+  "gateway_lifecycle": {
+    "before": {
+      "uid": "5297e546-4451-4dee-b8ab-d2133f54e3ac",
+      "name": "xteve-ssdp-6fc9c8c98c-bjmnp",
+      "api_token_disabled": false,
+      "ready": false
+    },
+    "after": {
+      "uid": "589cd617-fe54-408b-b369-1a37f49e9c53",
+      "name": "xteve-ssdp-6b5c97bb75-6zs7c",
+      "api_token_disabled": true,
+      "ready": true
+    },
+    "recreated_by_flux": true,
+    "main_pod_unchanged": true
+  }
 }
