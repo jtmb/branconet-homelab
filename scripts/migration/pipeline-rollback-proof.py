@@ -4,7 +4,7 @@ import datetime,hashlib,http.client,json,pathlib,socket,ssl,subprocess,time,yaml
 ROOT=pathlib.Path(__file__).resolve().parents[2];RUNTIME=pathlib.Path.home()/'.local/share/branconet-migration';k=[str(RUNTIME/'bin/kubectl'),'--kubeconfig',str(RUNTIME/'admin.conf')]
 chart=ROOT/'k8s-rewrite/charts/test-stack/http-echo/values.yaml';evidence=ROOT/'evidence/pipeline-rollback-proof.json';marker='branconet.io/pipeline-acceptance'
 if evidence.exists():raise RuntimeError('Inspect the recorded pipeline proof before repeating')
-if subprocess.check_output(['git','status','--porcelain'],cwd=ROOT).strip():raise RuntimeError('Clean worktree required before owned canary commits')
+if subprocess.check_output(['git','-c','core.autocrlf=false','status','--porcelain'],cwd=ROOT).strip():raise RuntimeError('Clean worktree required before owned canary commits')
 original=chart.read_bytes();values=yaml.safe_load(original);d=next(o for o in values['resources'] if o['kind']=='Deployment');annotations=d['spec']['template']['metadata'].setdefault('annotations',{})
 if marker in annotations:raise RuntimeError('Existing canary annotation must be reviewed')
 def get(kind,name=None,ns='http-echo'):
