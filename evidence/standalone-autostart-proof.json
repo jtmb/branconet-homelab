@@ -1,0 +1,764 @@
+{
+  "observed_at": "2026-10-09T22:43:10.047224+00:00",
+  "nodes": [
+    {
+      "host": "192.168.0.4",
+      "containers": [
+        {
+          "name": "qbittorrent",
+          "id": "132498badb30e19e83fa9e55dfb42678ebeeb1b57b7544a81921009710f133a4",
+          "running": false,
+          "status": "exited",
+          "restart_policy": {
+            "Name": "unless-stopped",
+            "MaximumRetryCount": 0
+          }
+        },
+        {
+          "name": "GlueTun-proton",
+          "id": "33a24d33f114ef0d0014fa60b554ea0b3062c61c45cce059f6feff339c643f53",
+          "running": false,
+          "status": "exited",
+          "restart_policy": {
+            "Name": "",
+            "MaximumRetryCount": 0
+          }
+        },
+        {
+          "name": "plex-plex-1",
+          "id": "ce2b6ef7ea94009c995db627f485aceeedcede949ea253451d0505f77d1f8ad7",
+          "running": false,
+          "status": "exited",
+          "restart_policy": {
+            "Name": "",
+            "MaximumRetryCount": 0
+          }
+        }
+      ],
+      "active_docker_cron_entries": [],
+      "files_scanned": 201,
+      "matches": [
+        {
+          "path": "/etc/init.d/docker",
+          "resolved_path": "/etc/init.d/docker",
+          "sha256": "db2b3251cd856b623d780082a474f45ad1c88bc50ba7fb434f24484331a0d5c2",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/containerd-k8s.service",
+          "resolved_path": "/etc/systemd/system/containerd-k8s.service",
+          "sha256": "343881f8bbdc817cf316cd55c7228e1c9f1895b92a242c7618a81ce49ee6ad70",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/iscsi.service",
+          "resolved_path": "/usr/lib/systemd/system/open-iscsi.service",
+          "sha256": "2764e9ef31f9509b99d8b69c1abf56e8ceddcc405fbcc8284850fd57f67087ac",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/kubelet.service",
+          "resolved_path": "/etc/systemd/system/kubelet.service",
+          "sha256": "1eb4d6776b1a5c3407eaaf6724edab39f4c69669d7e588e45ea45a6d2a1c7044",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/console-setup.service",
+          "resolved_path": "/usr/lib/systemd/system/console-setup.service",
+          "sha256": "50a0af31bcdcd939ad7e3f2ddfcee04e82313c5d6a8d2ed47f23dfdc1f9f2bfd",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/containerd-k8s.service",
+          "resolved_path": "/etc/systemd/system/containerd-k8s.service",
+          "sha256": "343881f8bbdc817cf316cd55c7228e1c9f1895b92a242c7618a81ce49ee6ad70",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/docker.service",
+          "resolved_path": "/usr/lib/systemd/system/docker.service",
+          "sha256": "98154bd5d9c88e56d33dd8d29f3523541e88064c258d567905b4c7c963ea47b0",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/kubelet.service",
+          "resolved_path": "/etc/systemd/system/kubelet.service",
+          "sha256": "1eb4d6776b1a5c3407eaaf6724edab39f4c69669d7e588e45ea45a6d2a1c7044",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/snapd.core-fixup.service",
+          "resolved_path": "/usr/lib/systemd/system/snapd.core-fixup.service",
+          "sha256": "3b515d5e2a0511ae044bfef3b1286aeaede67fa286812d0f4db0770b22530686",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sockets.target.wants/docker.socket",
+          "resolved_path": "/usr/lib/systemd/system/docker.socket",
+          "sha256": "96cd0d89474816ddfb03893b44c36e7d744254aed1bf6d30eca65ff396114656",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sysinit.target.wants/iscsid.service",
+          "resolved_path": "/usr/lib/systemd/system/iscsid.service",
+          "sha256": "c743558f5e1d7527875453b45f7a3fae9962a4c1eb4abc7f9de62ece8b878a7c",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sysinit.target.wants/keyboard-setup.service",
+          "resolved_path": "/usr/lib/systemd/system/keyboard-setup.service",
+          "sha256": "7bfae47456a8ccfd36c05494a6ec80256b4b2454fd737892c09e6c3c83b87e73",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sysinit.target.wants/open-iscsi.service",
+          "resolved_path": "/usr/lib/systemd/system/open-iscsi.service",
+          "sha256": "2764e9ef31f9509b99d8b69c1abf56e8ceddcc405fbcc8284850fd57f67087ac",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/var/spool/cron/crontabs/root",
+          "resolved_path": "/var/spool/cron/crontabs/root",
+          "sha256": "b9f73e8f64dedba93cfc192afe6c6bd15b766cd26bc2ed94e1a9fa64c0dd2ee0",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        }
+      ],
+      "enabled_units": [
+        "snap-core20-2866.mount",
+        "snap-core20-2922.mount",
+        "snap-core22-2437.mount",
+        "snap-core22-2955.mount",
+        "snap-lxd-40575.mount",
+        "snap-lxd-40911.mount",
+        "snap-snapd-27738.mount",
+        "snap-snapd-28254.mount",
+        "apport-autoreport.path",
+        "resolvconf-pull-resolved.path",
+        "apparmor.service",
+        "blk-availability.service",
+        "cloud-config.service",
+        "cloud-final.service",
+        "cloud-init-local.service",
+        "cloud-init.service",
+        "console-setup.service",
+        "containerd-k8s.service",
+        "containerd.service",
+        "cron.service",
+        "dmesg.service",
+        "docker.service",
+        "e2scrub_reap.service",
+        "fail2ban.service",
+        "finalrd.service",
+        "getty@.service",
+        "glusterd.service",
+        "gpu-manager.service",
+        "grub-common.service",
+        "grub-initrd-fallback.service",
+        "irqbalance.service",
+        "iscsid.service",
+        "keyboard-setup.service",
+        "kubelet.service",
+        "lvm2-monitor.service",
+        "lxd-agent.service",
+        "ModemManager.service",
+        "multipathd.service",
+        "networkd-dispatcher.service",
+        "NetworkManager-dispatcher.service",
+        "NetworkManager-wait-online.service",
+        "NetworkManager.service",
+        "nfs-blkmap.service",
+        "nfs-server.service",
+        "open-iscsi.service",
+        "open-vm-tools.service",
+        "pollinate.service",
+        "resolvconf-pull-resolved.service",
+        "resolvconf.service",
+        "rpcbind.service",
+        "rsyslog.service",
+        "secureboot-db.service",
+        "setvtrgb.service",
+        "snap.lxd.activate.service",
+        "snapd.apparmor.service",
+        "snapd.autoimport.service",
+        "snapd.core-fixup.service",
+        "snapd.recovery-chooser-trigger.service",
+        "snapd.seeded.service",
+        "snapd.service",
+        "snapd.system-shutdown.service",
+        "ssh.service",
+        "systemd-networkd-wait-online.service",
+        "systemd-networkd.service",
+        "systemd-pstore.service",
+        "systemd-resolved.service",
+        "systemd-timesyncd.service",
+        "thermald.service",
+        "ua-reboot-cmds.service",
+        "ubuntu-advantage.service",
+        "udisks2.service",
+        "ufw.service",
+        "unattended-upgrades.service",
+        "vgauth.service",
+        "wpa_supplicant.service",
+        "apport-forward.socket",
+        "cloud-init-hotplugd.socket",
+        "cockpit.socket",
+        "dm-event.socket",
+        "docker.socket",
+        "iscsid.socket",
+        "lvm2-lvmpolld.socket",
+        "multipathd.socket",
+        "rpcbind.socket",
+        "snap.lxd.daemon.unix.socket",
+        "snap.lxd.user-daemon.unix.socket",
+        "snapd.socket",
+        "systemd-networkd.socket",
+        "uuidd.socket",
+        "nfs-client.target",
+        "remote-fs.target",
+        "apport-autoreport.timer",
+        "apt-daily-upgrade.timer",
+        "apt-daily.timer",
+        "dpkg-db-backup.timer",
+        "e2scrub_all.timer",
+        "fstrim.timer",
+        "fwupd-refresh.timer",
+        "logrotate.timer",
+        "man-db.timer",
+        "mdcheck_continue.timer",
+        "mdcheck_start.timer",
+        "mdmonitor-oneshot.timer",
+        "motd-news.timer",
+        "snapd.snap-repair.timer",
+        "ua-timer.timer",
+        "update-notifier-download.timer",
+        "update-notifier-motd.timer"
+      ],
+      "changes_performed": false
+    },
+    {
+      "host": "192.168.0.5",
+      "containers": [
+        {
+          "name": "plex-plex-1",
+          "id": "35004d02bb1a4dd765bfdff5305964eef9c2bf2a0f4056b006f2957dfaf357fa",
+          "running": false,
+          "status": "exited",
+          "restart_policy": {
+            "Name": "no",
+            "MaximumRetryCount": 0
+          }
+        }
+      ],
+      "active_docker_cron_entries": [],
+      "files_scanned": 195,
+      "matches": [
+        {
+          "path": "/etc/init.d/docker",
+          "resolved_path": "/etc/init.d/docker",
+          "sha256": "4a23b31d8f74bb420b0fb16684c54c3c8785c2f92c36f902b82d2ef24baeed95",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/containerd-k8s.service",
+          "resolved_path": "/etc/systemd/system/containerd-k8s.service",
+          "sha256": "343881f8bbdc817cf316cd55c7228e1c9f1895b92a242c7618a81ce49ee6ad70",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/iscsi.service",
+          "resolved_path": "/usr/lib/systemd/system/open-iscsi.service",
+          "sha256": "2764e9ef31f9509b99d8b69c1abf56e8ceddcc405fbcc8284850fd57f67087ac",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/kubelet.service",
+          "resolved_path": "/etc/systemd/system/kubelet.service",
+          "sha256": "78072f83a7824e4a3447ce03e29494eeb0e7e767ba25672c1199546855ad9154",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/console-setup.service",
+          "resolved_path": "/usr/lib/systemd/system/console-setup.service",
+          "sha256": "50a0af31bcdcd939ad7e3f2ddfcee04e82313c5d6a8d2ed47f23dfdc1f9f2bfd",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/containerd-k8s.service",
+          "resolved_path": "/etc/systemd/system/containerd-k8s.service",
+          "sha256": "343881f8bbdc817cf316cd55c7228e1c9f1895b92a242c7618a81ce49ee6ad70",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/docker.service",
+          "resolved_path": "/usr/lib/systemd/system/docker.service",
+          "sha256": "f3ebfa72f344ad5de8b15874f0a7a607a1d60603bb0d0240dd6ade80b1f1d8fe",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/kubelet.service",
+          "resolved_path": "/etc/systemd/system/kubelet.service",
+          "sha256": "78072f83a7824e4a3447ce03e29494eeb0e7e767ba25672c1199546855ad9154",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/snapd.core-fixup.service",
+          "resolved_path": "/usr/lib/systemd/system/snapd.core-fixup.service",
+          "sha256": "3b515d5e2a0511ae044bfef3b1286aeaede67fa286812d0f4db0770b22530686",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sockets.target.wants/docker.socket",
+          "resolved_path": "/usr/lib/systemd/system/docker.socket",
+          "sha256": "96cd0d89474816ddfb03893b44c36e7d744254aed1bf6d30eca65ff396114656",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sysinit.target.wants/iscsid.service",
+          "resolved_path": "/usr/lib/systemd/system/iscsid.service",
+          "sha256": "c743558f5e1d7527875453b45f7a3fae9962a4c1eb4abc7f9de62ece8b878a7c",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sysinit.target.wants/keyboard-setup.service",
+          "resolved_path": "/usr/lib/systemd/system/keyboard-setup.service",
+          "sha256": "7bfae47456a8ccfd36c05494a6ec80256b4b2454fd737892c09e6c3c83b87e73",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sysinit.target.wants/open-iscsi.service",
+          "resolved_path": "/usr/lib/systemd/system/open-iscsi.service",
+          "sha256": "2764e9ef31f9509b99d8b69c1abf56e8ceddcc405fbcc8284850fd57f67087ac",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/var/spool/cron/crontabs/root",
+          "resolved_path": "/var/spool/cron/crontabs/root",
+          "sha256": "fb970eb4aa10bae3cbfc807baf2aaca91ccb3ab32bed65762c5060f3d3ee7a22",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        }
+      ],
+      "enabled_units": [
+        "snap-core20-2866.mount",
+        "snap-core20-2922.mount",
+        "snap-core22-2437.mount",
+        "snap-core22-2955.mount",
+        "snap-lxd-40575.mount",
+        "snap-lxd-40911.mount",
+        "snap-snapd-27738.mount",
+        "snap-snapd-28254.mount",
+        "apport-autoreport.path",
+        "resolvconf-pull-resolved.path",
+        "apparmor.service",
+        "blk-availability.service",
+        "cloud-config.service",
+        "cloud-final.service",
+        "cloud-init-local.service",
+        "cloud-init.service",
+        "console-setup.service",
+        "containerd-k8s.service",
+        "containerd.service",
+        "cron.service",
+        "dmesg.service",
+        "docker.service",
+        "e2scrub_reap.service",
+        "fail2ban.service",
+        "finalrd.service",
+        "getty@.service",
+        "glusterd.service",
+        "gpu-manager.service",
+        "grub-common.service",
+        "grub-initrd-fallback.service",
+        "irqbalance.service",
+        "iscsid.service",
+        "keyboard-setup.service",
+        "kubelet.service",
+        "lvm2-monitor.service",
+        "lxd-agent.service",
+        "ModemManager.service",
+        "multipathd.service",
+        "networkd-dispatcher.service",
+        "NetworkManager-dispatcher.service",
+        "NetworkManager-wait-online.service",
+        "NetworkManager.service",
+        "open-iscsi.service",
+        "open-vm-tools.service",
+        "pollinate.service",
+        "resolvconf-pull-resolved.service",
+        "resolvconf.service",
+        "rpcbind.service",
+        "rsyslog.service",
+        "secureboot-db.service",
+        "setvtrgb.service",
+        "snap.lxd.activate.service",
+        "snapd.apparmor.service",
+        "snapd.autoimport.service",
+        "snapd.core-fixup.service",
+        "snapd.recovery-chooser-trigger.service",
+        "snapd.seeded.service",
+        "snapd.service",
+        "snapd.system-shutdown.service",
+        "ssh.service",
+        "systemd-networkd-wait-online.service",
+        "systemd-networkd.service",
+        "systemd-pstore.service",
+        "systemd-resolved.service",
+        "systemd-timesyncd.service",
+        "thermald.service",
+        "ua-reboot-cmds.service",
+        "ubuntu-advantage.service",
+        "udisks2.service",
+        "ufw.service",
+        "unattended-upgrades.service",
+        "vgauth.service",
+        "wpa_supplicant.service",
+        "apport-forward.socket",
+        "cloud-init-hotplugd.socket",
+        "cockpit.socket",
+        "dm-event.socket",
+        "docker.socket",
+        "iscsid.socket",
+        "lvm2-lvmpolld.socket",
+        "multipathd.socket",
+        "rpcbind.socket",
+        "snap.lxd.daemon.unix.socket",
+        "snap.lxd.user-daemon.unix.socket",
+        "snapd.socket",
+        "systemd-networkd.socket",
+        "uuidd.socket",
+        "nfs-client.target",
+        "remote-fs.target",
+        "apport-autoreport.timer",
+        "apt-daily-upgrade.timer",
+        "apt-daily.timer",
+        "dpkg-db-backup.timer",
+        "e2scrub_all.timer",
+        "fstrim.timer",
+        "fwupd-refresh.timer",
+        "logrotate.timer",
+        "man-db.timer",
+        "mdcheck_continue.timer",
+        "mdcheck_start.timer",
+        "mdmonitor-oneshot.timer",
+        "motd-news.timer",
+        "snapd.snap-repair.timer",
+        "ua-timer.timer",
+        "update-notifier-download.timer",
+        "update-notifier-motd.timer"
+      ],
+      "changes_performed": false
+    },
+    {
+      "host": "192.168.0.6",
+      "containers": [
+        {
+          "name": "ets2-server",
+          "id": "414456a40c8d4c9b26877803e3f4720f2131ce06d310156f5bb2415f433b505b",
+          "running": false,
+          "status": "exited",
+          "restart_policy": {
+            "Name": "unless-stopped",
+            "MaximumRetryCount": 0
+          }
+        },
+        {
+          "name": "plex-plex-1",
+          "id": "549dcff38c7d43d811d54b5267dbf08641e277cc98e758d800ee35b44a773f0c",
+          "running": false,
+          "status": "exited",
+          "restart_policy": {
+            "Name": "no",
+            "MaximumRetryCount": 0
+          }
+        }
+      ],
+      "active_docker_cron_entries": [],
+      "files_scanned": 195,
+      "matches": [
+        {
+          "path": "/etc/init.d/docker",
+          "resolved_path": "/etc/init.d/docker",
+          "sha256": "4a23b31d8f74bb420b0fb16684c54c3c8785c2f92c36f902b82d2ef24baeed95",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/containerd-k8s.service",
+          "resolved_path": "/etc/systemd/system/containerd-k8s.service",
+          "sha256": "343881f8bbdc817cf316cd55c7228e1c9f1895b92a242c7618a81ce49ee6ad70",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/iscsi.service",
+          "resolved_path": "/usr/lib/systemd/system/open-iscsi.service",
+          "sha256": "2764e9ef31f9509b99d8b69c1abf56e8ceddcc405fbcc8284850fd57f67087ac",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/kubelet.service",
+          "resolved_path": "/etc/systemd/system/kubelet.service",
+          "sha256": "4afeb56eace5b7ad52930512d6a224fff2243105122bfb3edaf4f98622dcd280",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/console-setup.service",
+          "resolved_path": "/usr/lib/systemd/system/console-setup.service",
+          "sha256": "50a0af31bcdcd939ad7e3f2ddfcee04e82313c5d6a8d2ed47f23dfdc1f9f2bfd",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/containerd-k8s.service",
+          "resolved_path": "/etc/systemd/system/containerd-k8s.service",
+          "sha256": "343881f8bbdc817cf316cd55c7228e1c9f1895b92a242c7618a81ce49ee6ad70",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/docker.service",
+          "resolved_path": "/usr/lib/systemd/system/docker.service",
+          "sha256": "f3ebfa72f344ad5de8b15874f0a7a607a1d60603bb0d0240dd6ade80b1f1d8fe",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/kubelet.service",
+          "resolved_path": "/etc/systemd/system/kubelet.service",
+          "sha256": "4afeb56eace5b7ad52930512d6a224fff2243105122bfb3edaf4f98622dcd280",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/multi-user.target.wants/snapd.core-fixup.service",
+          "resolved_path": "/usr/lib/systemd/system/snapd.core-fixup.service",
+          "sha256": "3b515d5e2a0511ae044bfef3b1286aeaede67fa286812d0f4db0770b22530686",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sockets.target.wants/docker.socket",
+          "resolved_path": "/usr/lib/systemd/system/docker.socket",
+          "sha256": "96cd0d89474816ddfb03893b44c36e7d744254aed1bf6d30eca65ff396114656",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sysinit.target.wants/iscsid.service",
+          "resolved_path": "/usr/lib/systemd/system/iscsid.service",
+          "sha256": "c743558f5e1d7527875453b45f7a3fae9962a4c1eb4abc7f9de62ece8b878a7c",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sysinit.target.wants/keyboard-setup.service",
+          "resolved_path": "/usr/lib/systemd/system/keyboard-setup.service",
+          "sha256": "7bfae47456a8ccfd36c05494a6ec80256b4b2454fd737892c09e6c3c83b87e73",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/etc/systemd/system/sysinit.target.wants/open-iscsi.service",
+          "resolved_path": "/usr/lib/systemd/system/open-iscsi.service",
+          "sha256": "2764e9ef31f9509b99d8b69c1abf56e8ceddcc405fbcc8284850fd57f67087ac",
+          "match_categories": [
+            "startup_wrapper"
+          ]
+        },
+        {
+          "path": "/var/spool/cron/crontabs/root",
+          "resolved_path": "/var/spool/cron/crontabs/root",
+          "sha256": "e35a112c103e775f9b3305dee013b8cabddeb6d7cc0a1b0884f24dc4b5e44c8c",
+          "match_categories": [
+            "generic_docker_reference"
+          ]
+        }
+      ],
+      "enabled_units": [
+        "snap-core20-2866.mount",
+        "snap-core20-2922.mount",
+        "snap-core22-2437.mount",
+        "snap-core22-2955.mount",
+        "snap-lxd-40575.mount",
+        "snap-lxd-40911.mount",
+        "snap-snapd-27738.mount",
+        "snap-snapd-28254.mount",
+        "apport-autoreport.path",
+        "resolvconf-pull-resolved.path",
+        "apparmor.service",
+        "blk-availability.service",
+        "cloud-config.service",
+        "cloud-final.service",
+        "cloud-init-local.service",
+        "cloud-init.service",
+        "console-setup.service",
+        "containerd-k8s.service",
+        "containerd.service",
+        "cron.service",
+        "dmesg.service",
+        "docker.service",
+        "e2scrub_reap.service",
+        "fail2ban.service",
+        "finalrd.service",
+        "getty@.service",
+        "glusterd.service",
+        "gpu-manager.service",
+        "grub-common.service",
+        "grub-initrd-fallback.service",
+        "irqbalance.service",
+        "iscsid.service",
+        "keyboard-setup.service",
+        "kubelet.service",
+        "lvm2-monitor.service",
+        "lxd-agent.service",
+        "ModemManager.service",
+        "multipathd.service",
+        "networkd-dispatcher.service",
+        "NetworkManager-dispatcher.service",
+        "NetworkManager-wait-online.service",
+        "NetworkManager.service",
+        "open-iscsi.service",
+        "open-vm-tools.service",
+        "pollinate.service",
+        "resolvconf-pull-resolved.service",
+        "resolvconf.service",
+        "rpcbind.service",
+        "rsyslog.service",
+        "secureboot-db.service",
+        "setvtrgb.service",
+        "snap.lxd.activate.service",
+        "snapd.apparmor.service",
+        "snapd.autoimport.service",
+        "snapd.core-fixup.service",
+        "snapd.recovery-chooser-trigger.service",
+        "snapd.seeded.service",
+        "snapd.service",
+        "snapd.system-shutdown.service",
+        "ssh.service",
+        "systemd-networkd-wait-online.service",
+        "systemd-networkd.service",
+        "systemd-pstore.service",
+        "systemd-resolved.service",
+        "systemd-timesyncd.service",
+        "thermald.service",
+        "ua-reboot-cmds.service",
+        "ubuntu-advantage.service",
+        "udisks2.service",
+        "ufw.service",
+        "unattended-upgrades.service",
+        "vgauth.service",
+        "wpa_supplicant.service",
+        "apport-forward.socket",
+        "cloud-init-hotplugd.socket",
+        "cockpit.socket",
+        "dm-event.socket",
+        "docker.socket",
+        "iscsid.socket",
+        "lvm2-lvmpolld.socket",
+        "multipathd.socket",
+        "rpcbind.socket",
+        "snap.lxd.daemon.unix.socket",
+        "snap.lxd.user-daemon.unix.socket",
+        "snapd.socket",
+        "systemd-networkd.socket",
+        "uuidd.socket",
+        "nfs-client.target",
+        "remote-fs.target",
+        "apport-autoreport.timer",
+        "apt-daily-upgrade.timer",
+        "apt-daily.timer",
+        "dpkg-db-backup.timer",
+        "e2scrub_all.timer",
+        "fstrim.timer",
+        "fwupd-refresh.timer",
+        "logrotate.timer",
+        "man-db.timer",
+        "mdcheck_continue.timer",
+        "mdcheck_start.timer",
+        "mdmonitor-oneshot.timer",
+        "motd-news.timer",
+        "snapd.snap-repair.timer",
+        "ua-timer.timer",
+        "update-notifier-download.timer",
+        "update-notifier-motd.timer"
+      ],
+      "changes_performed": false
+    }
+  ],
+  "source_changes_performed": false,
+  "scope": {
+    "actual_reboot_performed": false,
+    "arbitrary_external_start_commands_excluded": false,
+    "startup_files": "Host systemd overrides/enabled symlinks; james/root user systemd; cron; init.d; rc.local",
+    "docker_policy_reference": "https://docs.docker.com/engine/containers/start-containers-automatically/"
+  }
+}
