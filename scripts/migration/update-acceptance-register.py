@@ -28,7 +28,7 @@ extra={
  'gluetun':['vpn-proof.json','final-vpn-egress.json'],
  'qbit-monitor':['private-qbit-monitor.json','monitor-state-backup.json'],
  'unpackerr':['unpackerr-extraction-proof.json'],
- 'sonarr':['media-download-client-proof.json','media-import-prerequisites.json'], 'radarr':['media-download-client-proof.json','media-import-prerequisites.json'],
+ 'sonarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json'], 'radarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json'],
  'ets2':['ets2-query-proof.json'], 'xteve':['xteve-tuner-proof.json'],
  'pihole':['native-dns-proof.json','native-lan-forwarding.json'],
  'pihole-exporter':['pihole-exporter-integration.json'],
@@ -43,7 +43,7 @@ limitations={
  'xteve':['SSDP/multicast discovery untested; original TCP 1901 has no observed backend listener.'],
  'unpackerr':['Owned SMB fixture extracted successfully; completed real Arr download/import untested.'],
  'sonarr':['API/download-client checks passed; completed real download/import untested.'],
- 'radarr':['API/download-client checks passed; completed real download/import untested.'],
+ 'radarr':['API/download-client checks passed; completed real download/import untested.','Two enabled indexers fail current configuration tests and have retained pre-migration failure history; settings unchanged.'],
 }
 
 def secret_refs(value,result):

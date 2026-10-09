@@ -1807,7 +1807,8 @@
         "evidence": [
           "evidence/private-radarr.json",
           "evidence/media-download-client-proof.json",
-          "evidence/media-import-prerequisites.json"
+          "evidence/media-import-prerequisites.json",
+          "evidence/media-indexer-proof.json"
         ],
         "recorded_boolean_checks": {
           "restart_http_passed": true,
@@ -1817,7 +1818,8 @@
           "source_originals_retained": true
         },
         "limitations": [
-          "API/download-client checks passed; completed real download/import untested."
+          "API/download-client checks passed; completed real download/import untested.",
+          "Two enabled indexers fail current configuration tests and have retained pre-migration failure history; settings unchanged."
         ]
       },
       "restart_relocation": {
@@ -2038,7 +2040,8 @@
         "evidence": [
           "evidence/private-sonarr.json",
           "evidence/media-download-client-proof.json",
-          "evidence/media-import-prerequisites.json"
+          "evidence/media-import-prerequisites.json",
+          "evidence/media-indexer-proof.json"
         ],
         "recorded_boolean_checks": {
           "restart_http_passed": true,
@@ -7243,7 +7246,7 @@
     }
   ],
   "updated_at": "2026-10-09T20:14:10.968676+00:00",
-  "acceptance_refreshed_at": "2026-10-09T21:00:48.855988+00:00",
+  "acceptance_refreshed_at": "2026-10-09T21:45:12.013858+00:00",
   "full_data_preservation_accepted": false,
   "source_retirement_confirmed": false
 }
