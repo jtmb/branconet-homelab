@@ -30,6 +30,9 @@ if actual['data']!=secret['data']:raise RuntimeError('Native dashboard config re
 # Capture the already-deployed foundation spec, excluding API/default/status fields.
 deployed=json.loads(subprocess.check_output(K+['get','deployment','traefik','-n','traefik','-o','json']))
 spec=deployed['spec'];container=spec['template']['spec']['containers'][0]
+source_image=original['TaskTemplate']['ContainerSpec']['Image']
+if '@sha256:' not in source_image:raise RuntimeError('An immutable source Traefik image is required')
+container['image']=source_image
 for flag in ['--api.dashboard=true','--providers.file.directory=/etc/traefik/dynamic','--providers.file.watch=true']:
     if flag not in container['args']:container['args'].append(flag)
 if any(arg.startswith('--api.insecure') for arg in container['args']):raise RuntimeError('Unexpected insecure API flag')
@@ -40,6 +43,6 @@ deployment={'apiVersion':'apps/v1','kind':'Deployment','metadata':{'name':'traef
 foundation=ROOT/'k8s-rewrite/flux/migration-releases/foundation'
 (foundation/'ingress-deployment.yaml').write_text(yaml.safe_dump(deployment,sort_keys=False))
 path=foundation/'kustomization.yaml';composition=yaml.safe_load(path.read_text());composition['resources']=list(dict.fromkeys(composition['resources']+['ingress-deployment.yaml']));path.write_text(yaml.safe_dump(composition,sort_keys=False))
-report={'prepared_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'host':'proxy.branconet.lan','source':'proxy_traefik','native_secret':'traefik/traefik-dashboard-config','source_auth_hashes_readback_equal':True,'users':len(users),'https_only':True,'insecure_api_enabled':False,'values_reported':False,'live_dashboard_accepted':False,'source_configuration_retained':True}
+report={'prepared_at':datetime.datetime.now(datetime.timezone.utc).isoformat(),'host':'proxy.branconet.lan','source':'proxy_traefik','source_image':source_image,'native_secret':'traefik/traefik-dashboard-config','source_auth_hashes_readback_equal':True,'users':len(users),'https_only':True,'insecure_api_enabled':False,'values_reported':False,'live_dashboard_accepted':False,'source_configuration_retained':True}
 (ROOT/'evidence/traefik-dashboard-preparation.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report))

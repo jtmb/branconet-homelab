@@ -32,7 +32,7 @@ spec:
         - --api.dashboard=true
         - --providers.file.directory=/etc/traefik/dynamic
         - --providers.file.watch=true
-        image: traefik:v2.11
+        image: traefik:v2.11@sha256:a6e718e8f84d4e45282a53a8e7338ab74372abac3ff78f9261a015bc8b45be95
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
