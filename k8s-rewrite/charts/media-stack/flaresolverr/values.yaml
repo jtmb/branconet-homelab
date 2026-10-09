@@ -15,10 +15,11 @@ migration:
   - PYTHON_VERSION
   - TZ
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies: []
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -52,6 +53,11 @@ resources:
           - name: data-0
             mountPath: /config
             readOnly: false
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
         volumes:
         - name: data-0
           emptyDir: {}
@@ -68,3 +74,4 @@ resources:
       port: 8191
       targetPort: 8191
       protocol: TCP
+    type: ClusterIP

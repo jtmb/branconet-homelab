@@ -14,10 +14,11 @@ migration:
   - PIHOLE_PORT
   - PORT
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies: []
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -47,6 +48,11 @@ resources:
           - name: p9617-tcp
             containerPort: 9617
             protocol: TCP
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
 - apiVersion: v1
   kind: Service
   metadata:
@@ -60,3 +66,4 @@ resources:
       port: 9617
       targetPort: 9617
       protocol: TCP
+    type: ClusterIP

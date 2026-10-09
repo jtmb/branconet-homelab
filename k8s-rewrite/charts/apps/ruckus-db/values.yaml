@@ -18,7 +18,7 @@ migration:
   - MYSQL_VERSION
   - PATH
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.4
@@ -30,6 +30,7 @@ migration:
     uid: 999
     gid: 65534
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -63,6 +64,11 @@ resources:
           - name: data-0
             mountPath: /var/lib/mysql
             readOnly: false
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -72,6 +78,8 @@ resources:
   metadata:
     name: ruckus-db-data-0
     namespace: ruckus
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -92,3 +100,4 @@ resources:
       port: 3306
       targetPort: 3306
       protocol: TCP
+    type: ClusterIP

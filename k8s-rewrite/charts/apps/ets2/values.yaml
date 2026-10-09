@@ -20,7 +20,7 @@ migration:
   - STEAMCMDDIR
   - USER
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.6
@@ -32,6 +32,11 @@ migration:
     uid: 1000
     gid: 1000
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys:
+  - args-0
+  - args-1
+  - args-2
+  - command-0
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -61,6 +66,37 @@ resources:
           - name: data-0
             mountPath: /home/steam/.local/share/Euro Truck Simulator 2
             readOnly: false
+          env:
+          - name: MIGRATION_COMMAND_0
+            valueFrom:
+              secretKeyRef:
+                name: ets2-launch
+                key: command-0
+          - name: MIGRATION_ARGS_0
+            valueFrom:
+              secretKeyRef:
+                name: ets2-launch
+                key: args-0
+          - name: MIGRATION_ARGS_1
+            valueFrom:
+              secretKeyRef:
+                name: ets2-launch
+                key: args-1
+          - name: MIGRATION_ARGS_2
+            valueFrom:
+              secretKeyRef:
+                name: ets2-launch
+                key: args-2
+          command:
+          - $(MIGRATION_COMMAND_0)
+          args:
+          - $(MIGRATION_ARGS_0)
+          - $(MIGRATION_ARGS_1)
+          - $(MIGRATION_ARGS_2)
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -72,6 +108,8 @@ resources:
   metadata:
     name: ets2-data-0
     namespace: games
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:

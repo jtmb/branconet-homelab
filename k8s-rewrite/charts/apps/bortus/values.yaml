@@ -463,6 +463,8 @@ resources:
   metadata:
     name: bortus-data
     namespace: bortus
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -560,3 +562,4 @@ resources:
     - name: http
       port: 4000
       targetPort: 4000
+    type: ClusterIP

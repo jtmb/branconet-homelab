@@ -21,7 +21,7 @@ migration:
   - TZ
   - VIRTUAL_ENV
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.5
@@ -33,6 +33,7 @@ migration:
     uid: 911
     gid: 911
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -71,6 +72,11 @@ resources:
           - name: data-0
             mountPath: /config
             readOnly: false
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -80,6 +86,8 @@ resources:
   metadata:
     name: overseerr-data-0
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -100,3 +108,4 @@ resources:
       port: 5055
       targetPort: 5055
       protocol: TCP
+    type: ClusterIP

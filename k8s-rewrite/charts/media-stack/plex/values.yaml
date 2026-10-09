@@ -39,7 +39,7 @@ migration:
   - VERSION
   - VIRTUAL_ENV
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.4
@@ -51,6 +51,8 @@ migration:
     uid: 1000
     gid: 1000
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys:
+  - command-0
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -122,6 +124,18 @@ resources:
           - name: data-3
             mountPath: /tv
             readOnly: false
+          env:
+          - name: MIGRATION_COMMAND_0
+            valueFrom:
+              secretKeyRef:
+                name: plex-launch
+                key: command-0
+          command:
+          - $(MIGRATION_COMMAND_0)
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -140,6 +154,8 @@ resources:
   metadata:
     name: plex-data-0
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -151,6 +167,8 @@ resources:
   kind: PersistentVolume
   metadata:
     name: plex-plex-data-1
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     capacity:
       storage: 1Gi
@@ -177,6 +195,8 @@ resources:
   metadata:
     name: plex-data-1
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: ''
     volumeName: plex-plex-data-1
@@ -189,6 +209,8 @@ resources:
   kind: PersistentVolume
   metadata:
     name: plex-plex-data-2
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     capacity:
       storage: 1Gi
@@ -215,6 +237,8 @@ resources:
   metadata:
     name: plex-data-2
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: ''
     volumeName: plex-plex-data-2
@@ -227,6 +251,8 @@ resources:
   kind: PersistentVolume
   metadata:
     name: plex-plex-data-3
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     capacity:
       storage: 1Gi
@@ -253,6 +279,8 @@ resources:
   metadata:
     name: plex-data-3
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: ''
     volumeName: plex-plex-data-3
@@ -306,3 +334,4 @@ resources:
       port: 32469
       targetPort: 32469
       protocol: TCP
+    type: ClusterIP

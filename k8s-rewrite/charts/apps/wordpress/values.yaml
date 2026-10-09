@@ -28,7 +28,7 @@ migration:
   - WORDPRESS_DB_PASSWORD
   - WORDPRESS_DB_USER
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.5
@@ -40,6 +40,7 @@ migration:
     uid: 33
     gid: 33
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -73,6 +74,11 @@ resources:
           - name: data-0
             mountPath: /var/www/html
             readOnly: false
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -82,6 +88,8 @@ resources:
   metadata:
     name: wordpress-data-0
     namespace: wordpress
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -102,3 +110,4 @@ resources:
       port: 80
       targetPort: 80
       protocol: TCP
+    type: ClusterIP

@@ -11,7 +11,7 @@ migration:
   - PATH
   - SSL_CERT_FILE
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.6
@@ -23,6 +23,7 @@ migration:
     uid: 0
     gid: 65534
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -56,6 +57,11 @@ resources:
           - name: data-0
             mountPath: /minecraft/world
             readOnly: false
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -65,6 +71,8 @@ resources:
   metadata:
     name: minecraft-exporter-data-0
     namespace: games
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -85,3 +93,4 @@ resources:
       port: 9150
       targetPort: 9150
       protocol: TCP
+    type: ClusterIP

@@ -4,7 +4,15 @@
 
 The approved migration foundation pins Flux v2.9.6 and installs source-controller, kustomize-controller, helm-controller and notification-controller. It no longer deletes Helm support or bootstraps through a second competing path. Installing controllers does not activate old repository workloads: chart/source activation follows validation and explicit migration data gates. Individual Helm packages now live beside the retained legacy manifests, each with its own Chart.yaml, values.yaml and templates. They are disabled until reviewed and migrated. Repository validation in `.github/workflows/kubernetes-migration.yml` blocks incomplete implementations; live schema/application tests remain required. See [MIGRATION_STATUS.md](../MIGRATION_STATUS.md) for effective reconciliation evidence. The workflow below describes the legacy raw-manifest layout, not activated migration releases; do not reconcile both paths against the same resources.
 
-Flux CD watches `charts/` in this repo and applies any changes to the cluster automatically. Every app lives in its own `charts/<name>/` subdirectory, giving Fleet-style per-app visibility.
+## Migration pipeline
+
+Changes enter codex/kubernetes-migration. The Kubernetes migration workflow validates all 35 packages and then publishes that exact passing revision to codex/kubernetes-validated. Flux reads only the validated branch. Its migration-releases Kustomization applies the dedicated k8s-rewrite/flux/migration-releases path, which declares one HelmRelease per chart and per-release values. It never traverses the legacy raw charts kustomization. BORTUS uses its accepted private staging settings; other releases remain disabled until their data and live tests complete. The source manifest is k8s-rewrite/flux/migration-source.yaml. Remote CI and actual reconciliation are separate recorded acceptance checks.
+
+Persistent claims/volumes use Helm resource-policy keep, and namespaces disable pruning. Kustomization pruning remains off during migration. Removing a release/file is not authorization to discard its dataset. Promote each release's enabled/replicaCount/migration fields only after that service's evidence passes. Private staging excludes ingress and external Services and does not set application acceptance true.
+
+## Legacy reference workflow
+
+The following raw-manifest workflow is retained as historical reference. It is not the migration activation path. Every migrated application has its own chart/values and HelmRelease.
 
 ## How Deployments Work
 

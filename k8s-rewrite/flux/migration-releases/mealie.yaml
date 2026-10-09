@@ -1,0 +1,29 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: mealie
+  namespace: flux-system
+spec:
+  interval: 5m
+  releaseName: mealie
+  targetNamespace: mealie
+  storageNamespace: mealie
+  timeout: 8m
+  chart:
+    spec:
+      chart: ./k8s-rewrite/charts/apps/mealie
+      sourceRef:
+        kind: GitRepository
+        name: migration-validated
+        namespace: flux-system
+      reconcileStrategy: Revision
+      interval: 1m
+  install:
+    remediation:
+      retries: 0
+  upgrade:
+    remediation:
+      retries: 0
+  values:
+    enabled: false
+    replicaCount: 0

@@ -28,20 +28,24 @@ def main():
         values=yaml.safe_load((directory/'values.yaml').read_text())
         name=yaml.safe_load(chart.read_text())['name']
         lint=subprocess.run([args.helm,'lint',str(directory)],capture_output=True,text=True)
-        blocked=subprocess.run([args.helm,'template',name,str(directory),'--set','enabled=true'],capture_output=True,text=True)
+        blocked=subprocess.run([args.helm,'template',name,str(directory),'--set','enabled=true,migration.verified=false,migration.staging=false'],capture_output=True,text=True)
         rendered=subprocess.run([args.helm,'template',name,str(directory),'--set','enabled=true,migration.verified=true,replicaCount=0'],capture_output=True,text=True)
         objects=list(yaml.safe_load_all(rendered.stdout)) if rendered.returncode==0 else []
         objects=[o for o in objects if o]
         replicas_valid=all(isinstance(o['spec']['replicas'],int) for o in objects if o['kind'] in {'Deployment','StatefulSet'})
         active_empty=not values['resources']
+        private=subprocess.run([args.helm,'template',name,str(directory),'--set','enabled=true,migration.verified=false,migration.staging=true,replicaCount=0'],capture_output=True,text=True)
+        private_objects=[o for o in yaml.safe_load_all(private.stdout) if o] if not private.returncode else []
+        private_valid=private.returncode==0 and all(o['kind'] not in {'Ingress','IngressRoute'} and (o['kind']!='Service' or o['spec'].get('type','ClusterIP')=='ClusterIP') for o in private_objects)
         result={'chart':str(source.relative_to(ROOT)), 'input_sha256':fingerprint.hexdigest(), 'lint_passed':lint.returncode==0,
                 'activation_gate_enforced':blocked.returncode!=0, 'staged_render_passed':rendered.returncode==0,
                 'replica_types_valid':replicas_valid, 'rendered_objects':len(objects),
                 'implementation_incomplete':active_empty,
+                'private_staging_without_external_routes_passed':private_valid,
                 'application_accepted':False}
         results.append(result)
     temporary.cleanup()
-    packaging=all(r['lint_passed'] and r['activation_gate_enforced'] and r['staged_render_passed'] and r['replica_types_valid'] for r in results)
+    packaging=all(r['lint_passed'] and r['activation_gate_enforced'] and r['staged_render_passed'] and r['replica_types_valid'] and r['private_staging_without_external_routes_passed'] for r in results)
     complete=all(not r['implementation_incomplete'] for r in results)
     report={'packaging_passed':packaging,'all_manifests_implemented':complete,'application_acceptance':False,'charts':results}
     output=ROOT/'evidence/chart-validation.json'

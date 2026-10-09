@@ -167,7 +167,7 @@ migration:
   - WIREGUARD_PRIVATE_KEY_SECRETFILE
   - WIREGUARD_PUBLIC_KEY
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.5
@@ -180,11 +180,15 @@ migration:
     gid: 0
   sourceCommandArgumentsRequireReview: false
   processOwner: plex/qbittorrent
+  launchSecretKeys:
+  - command-0
 resources:
 - apiVersion: v1
   kind: PersistentVolume
   metadata:
     name: plex-gluetun-data-0
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     capacity:
       storage: 1Gi
@@ -211,6 +215,8 @@ resources:
   metadata:
     name: gluetun-data-0
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: ''
     volumeName: plex-gluetun-data-0
@@ -224,6 +230,8 @@ resources:
   metadata:
     name: gluetun-data-1
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:

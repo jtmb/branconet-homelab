@@ -44,7 +44,7 @@ migration:
   - VENV_PATH
   - WEB_CONCURRENCY
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.5
@@ -56,6 +56,7 @@ migration:
     uid: 1000
     gid: 65534
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -89,6 +90,11 @@ resources:
           - name: data-0
             mountPath: /app/data
             readOnly: false
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -98,6 +104,8 @@ resources:
   metadata:
     name: mealie-data-0
     namespace: mealie
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -118,3 +126,4 @@ resources:
       port: 9000
       targetPort: 9000
       protocol: TCP
+    type: ClusterIP

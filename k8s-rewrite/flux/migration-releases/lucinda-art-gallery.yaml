@@ -1,0 +1,31 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: lucinda-art-gallery
+  namespace: flux-system
+spec:
+  interval: 5m
+  releaseName: lucinda-art-gallery
+  targetNamespace: web-apps
+  storageNamespace: web-apps
+  timeout: 8m
+  chart:
+    spec:
+      chart: ./k8s-rewrite/charts/web-app-stack/lucinda-art-gallery
+      sourceRef:
+        kind: GitRepository
+        name: migration-validated
+        namespace: flux-system
+      reconcileStrategy: Revision
+      interval: 1m
+  install:
+    remediation:
+      retries: 0
+  upgrade:
+    remediation:
+      retries: 0
+  values:
+    enabled: true
+    replicaCount: 1
+    migration:
+      staging: true

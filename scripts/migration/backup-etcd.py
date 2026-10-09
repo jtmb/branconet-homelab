@@ -21,7 +21,7 @@ def main():
     def run(args,body=None,timeout=180):
         result=subprocess.run([*kube,*args],input=body,capture_output=True,timeout=timeout)
         if result.returncode:
-            diagnostic=result.stderr.decode(errors='replace').splitlines()[-3:] if 'snapshot' in args else []
+            diagnostic=result.stderr.decode(errors='replace').splitlines()[-3:] if 'snapshot' in args or '/proof/snapshot.db' in ' '.join(args) else []
             raise RuntimeError('Etcd recovery check failed: '+args[0]+' '+json.dumps(diagnostic))
         return result.stdout
     etcd=json.loads(run(['get','pod','etcd-masternode','-n','kube-system','-o','json']))
@@ -52,14 +52,18 @@ def main():
     run(['apply','-f','-'],json.dumps({'apiVersion':'networking.k8s.io/v1','kind':'NetworkPolicy','metadata':{'name':name,'namespace':'migration-system'},'spec':{'podSelector':{'matchLabels':labels},'policyTypes':['Ingress','Egress'],'ingress':[],'egress':[]}}).encode())
     pod={'apiVersion':'v1','kind':'Pod','metadata':{'name':name,'namespace':'migration-system','labels':labels},'spec':{'automountServiceAccountToken':False,'restartPolicy':'Never','nodeName':'masternode','containers':[{'name':'transfer','image':'busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662','command':['sh','-c','sleep 1800'],'volumeMounts':[{'name':'proof','mountPath':'/proof'}],'resources':{'requests':{'cpu':'10m','memory':'16Mi'},'limits':{'memory':'64Mi'}}},{'name':'etcd','image':etcd['spec']['containers'][0]['image'],'command':['etcd','--name=empty','--data-dir=/proof/empty','--listen-client-urls=http://127.0.0.1:12379','--advertise-client-urls=http://127.0.0.1:12379','--listen-peer-urls=http://127.0.0.1:12380','--initial-advertise-peer-urls=http://127.0.0.1:12380','--initial-cluster=empty=http://127.0.0.1:12380'],'volumeMounts':[{'name':'proof','mountPath':'/proof'}],'resources':{'requests':{'cpu':'100m','memory':'128Mi'},'limits':{'memory':'512Mi'}}}],'volumes':[{'name':'proof','emptyDir':{}}]}}
     pod['spec']['securityContext']={'runAsUser':0,'runAsGroup':0}
+    # Recovery bytes have already authenticated and compared equal to this exact
+    # root-only source snapshot. Read-only mounting avoids exec stdin corruption.
+    pod['spec']['containers']=[pod['spec']['containers'][1]]
+    pod['spec']['containers'][0]['volumeMounts'].append({'name':'snapshot','mountPath':'/snapshot','readOnly':True})
+    pod['spec']['volumes'].append({'name':'snapshot','hostPath':{'path':snapshot,'type':'File'}})
     run(['create','-f','-'],json.dumps(pod).encode())
     running=None
     try:
         run(['wait','pod/'+name,'-n','migration-system','--for=condition=Ready','--timeout=180s'])
-        run(['exec','-i','-n','migration-system',name,'-c','transfer','--','sh','-c','umask 077; cat > /proof/snapshot.db'],recovered)
         prefix=['exec','-n','migration-system',name,'-c','etcd','--']
-        status=json.loads(run([*prefix,'etcdutl','snapshot','status','/proof/snapshot.db','--write-out=json']))
-        run([*prefix,'etcdutl','snapshot','restore','/proof/snapshot.db','--data-dir=/proof/restored','--name=proof','--initial-cluster=proof=http://127.0.0.1:32380','--initial-advertise-peer-urls=http://127.0.0.1:32380'])
+        status=json.loads(run([*prefix,'etcdutl','snapshot','status','/snapshot','--write-out=json']))
+        run([*prefix,'etcdutl','snapshot','restore','/snapshot','--data-dir=/proof/restored','--name=proof','--initial-cluster=proof=http://127.0.0.1:32380','--initial-advertise-peer-urls=http://127.0.0.1:32380'])
         running=subprocess.Popen([*kube,*prefix,'etcd','--name=proof','--data-dir=/proof/restored','--listen-client-urls=http://127.0.0.1:32379','--advertise-client-urls=http://127.0.0.1:32379','--listen-peer-urls=http://127.0.0.1:32380','--initial-advertise-peer-urls=http://127.0.0.1:32380','--initial-cluster=proof=http://127.0.0.1:32380'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
         restored=None
         for _ in range(30):

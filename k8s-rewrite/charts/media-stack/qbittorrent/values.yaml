@@ -26,7 +26,7 @@ migration:
   - XDG_CONFIG_HOME
   - XDG_DATA_HOME
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.5
@@ -40,6 +40,8 @@ migration:
   sourceCommandArgumentsRequireReview: false
   vpnChartDependency: apps/gluetun
   vpnEgressAndFailureIsolationVerified: false
+  launchSecretKeys:
+  - command-0
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -82,6 +84,18 @@ resources:
           - name: data-1
             mountPath: /downloads
             readOnly: false
+          command:
+          - $(MIGRATION_COMMAND_0)
+          env:
+          - name: MIGRATION_COMMAND_0
+            valueFrom:
+              secretKeyRef:
+                name: qbittorrent-launch
+                key: command-0
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -139,11 +153,21 @@ resources:
               - /gluetun-entrypoint
               - healthcheck
             periodSeconds: 10
+          env:
+          - name: MIGRATION_COMMAND_0
+            valueFrom:
+              secretKeyRef:
+                name: gluetun-launch
+                key: command-0
+          command:
+          - $(MIGRATION_COMMAND_0)
 - apiVersion: v1
   kind: PersistentVolumeClaim
   metadata:
     name: qbittorrent-data-0
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -155,6 +179,8 @@ resources:
   kind: PersistentVolume
   metadata:
     name: plex-qbittorrent-data-1
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     capacity:
       storage: 1Gi
@@ -181,6 +207,8 @@ resources:
   metadata:
     name: qbittorrent-data-1
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: ''
     volumeName: plex-qbittorrent-data-1
@@ -202,3 +230,4 @@ resources:
       port: 8112
       targetPort: 8112
       protocol: TCP
+    type: ClusterIP

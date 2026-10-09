@@ -18,7 +18,7 @@ migration:
   - MYSQL_VERSION
   - PATH
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.5
@@ -30,6 +30,7 @@ migration:
     uid: 999
     gid: 65534
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -66,6 +67,11 @@ resources:
           - name: data-0
             mountPath: /var/lib/mysql
             readOnly: false
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -75,6 +81,8 @@ resources:
   metadata:
     name: wordpress-db-data-0
     namespace: wordpress
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -99,3 +107,4 @@ resources:
       port: 33060
       targetPort: 33060
       protocol: TCP
+    type: ClusterIP

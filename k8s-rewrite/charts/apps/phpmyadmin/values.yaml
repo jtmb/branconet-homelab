@@ -36,10 +36,11 @@ migration:
   - URL
   - VERSION
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies: []
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -69,6 +70,11 @@ resources:
           - name: p80-tcp
             containerPort: 80
             protocol: TCP
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
 - apiVersion: v1
   kind: Service
   metadata:
@@ -82,3 +88,4 @@ resources:
       port: 80
       targetPort: 80
       protocol: TCP
+    type: ClusterIP

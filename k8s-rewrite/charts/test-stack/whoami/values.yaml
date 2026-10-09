@@ -10,10 +10,13 @@ migration:
   requiredEnvironmentKeys:
   - PATH
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies: []
-  sourceCommandArgumentsRequireReview: true
+  sourceCommandArgumentsRequireReview: false
+  launchSecretKeys:
+  - args-0
+  - args-1
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -49,6 +52,24 @@ resources:
           - name: p80-tcp
             containerPort: 80
             protocol: TCP
+          args:
+          - $(MIGRATION_ARGS_0)
+          - $(MIGRATION_ARGS_1)
+          env:
+          - name: MIGRATION_ARGS_0
+            valueFrom:
+              secretKeyRef:
+                name: whoami-launch
+                key: args-0
+          - name: MIGRATION_ARGS_1
+            valueFrom:
+              secretKeyRef:
+                name: whoami-launch
+                key: args-1
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
 - apiVersion: v1
   kind: Service
   metadata:
@@ -62,6 +83,7 @@ resources:
       port: 80
       targetPort: 80
       protocol: TCP
+    type: ClusterIP
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:

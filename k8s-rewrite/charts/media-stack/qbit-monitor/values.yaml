@@ -113,6 +113,8 @@ resources:
   kind: PersistentVolume
   metadata:
     name: qbit-monitor-samba-pv
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     capacity:
       storage: 1Gi
@@ -136,6 +138,8 @@ resources:
   metadata:
     name: qbit-monitor-samba-pvc
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     accessModes:
     - ReadWriteMany

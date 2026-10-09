@@ -24,7 +24,7 @@ migration:
   - VIRTUAL_ENV
   - XDG_CONFIG_HOME
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.4
@@ -36,6 +36,7 @@ migration:
     uid: 1000
     gid: 1000
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -80,6 +81,11 @@ resources:
           - name: data-2
             mountPath: /downloads
             readOnly: false
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -95,6 +101,8 @@ resources:
   metadata:
     name: radarr-data-0
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -106,6 +114,8 @@ resources:
   kind: PersistentVolume
   metadata:
     name: plex-radarr-data-1
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     capacity:
       storage: 1Gi
@@ -132,6 +142,8 @@ resources:
   metadata:
     name: radarr-data-1
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: ''
     volumeName: plex-radarr-data-1
@@ -144,6 +156,8 @@ resources:
   kind: PersistentVolume
   metadata:
     name: plex-radarr-data-2
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     capacity:
       storage: 1Gi
@@ -170,6 +184,8 @@ resources:
   metadata:
     name: radarr-data-2
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: ''
     volumeName: plex-radarr-data-2
@@ -191,6 +207,7 @@ resources:
       port: 7878
       targetPort: 7878
       protocol: TCP
+    type: ClusterIP
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:

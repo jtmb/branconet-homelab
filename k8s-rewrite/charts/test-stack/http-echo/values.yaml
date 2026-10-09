@@ -96,6 +96,8 @@ resources:
   metadata:
     name: http-echo-data-pvc
     namespace: http-echo
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     accessModes:
     - ReadWriteOnce

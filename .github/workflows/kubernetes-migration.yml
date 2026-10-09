@@ -6,6 +6,9 @@ on:
     paths: ['k8s-rewrite/charts/**', 'scripts/migration/**', '.github/workflows/kubernetes-migration.yml']
 permissions:
   contents: read
+concurrency:
+  group: kubernetes-migration-validation
+  cancel-in-progress: false
 jobs:
   charts:
     runs-on: ubuntu-latest
@@ -20,3 +23,15 @@ jobs:
           python scripts/migration/install-tools.py
       - name: Validate every individual chart
         run: python scripts/migration/validate-charts.py
+  publish-validated-source:
+    if: github.event_name == 'push'
+    needs: charts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Publish only a successfully validated revision for Flux
+        run: git push origin HEAD:refs/heads/codex/kubernetes-validated

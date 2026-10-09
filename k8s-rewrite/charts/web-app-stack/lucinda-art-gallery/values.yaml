@@ -17,7 +17,7 @@ migration:
   - PATH
   - PKG_RELEASE
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.5
@@ -29,6 +29,7 @@ migration:
     uid: 0
     gid: 0
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -62,6 +63,11 @@ resources:
           - name: data-0
             mountPath: /usr/share/nginx/html
             readOnly: false
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -71,6 +77,8 @@ resources:
   metadata:
     name: lucinda-art-gallery-data-0
     namespace: web-apps
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -91,3 +99,4 @@ resources:
       port: 80
       targetPort: 80
       protocol: TCP
+    type: ClusterIP

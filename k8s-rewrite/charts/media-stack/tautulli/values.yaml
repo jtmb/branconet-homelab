@@ -18,7 +18,7 @@ migration:
   - TAUTULLI_DOCKER
   - TZ
   storageSizingVerified: true
-  nativeSecretsImported: false
+  nativeSecretsImported: true
   applicationChecksPassed: false
   dataCopies:
   - sourceHost: 192.168.0.4
@@ -30,6 +30,7 @@ migration:
     uid: 1000
     gid: 1000
   sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
 resources:
 - apiVersion: apps/v1
   kind: Deployment
@@ -68,6 +69,11 @@ resources:
           - name: data-0
             mountPath: /config
             readOnly: false
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
         volumes:
         - name: data-0
           persistentVolumeClaim:
@@ -77,6 +83,8 @@ resources:
   metadata:
     name: tautulli-data-0
     namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
   spec:
     storageClassName: longhorn
     accessModes:
@@ -97,6 +105,7 @@ resources:
       port: 8181
       targetPort: 8181
       protocol: TCP
+    type: ClusterIP
 - apiVersion: networking.k8s.io/v1
   kind: Ingress
   metadata:
