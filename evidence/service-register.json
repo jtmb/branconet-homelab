@@ -6920,7 +6920,8 @@
         "evidence": [
           "evidence/private-qbit-monitor.json",
           "evidence/private-qbit-monitor.json",
-          "evidence/monitor-state-backup.json"
+          "evidence/monitor-state-backup.json",
+          "evidence/discord-notification-proof.json"
         ],
         "recorded_boolean_checks": {
           "actual_restart_passed": true,
@@ -6931,7 +6932,7 @@
           "production_routing_accepted": false
         },
         "limitations": [
-          "Discord delivery untested; notifications disabled during acceptance."
+          "One user-authorized Discord test delivered from the production monitor pod through its native webhook. Automated event-driven notifications remain disabled and were not exercised."
         ]
       },
       "restart_relocation": {
@@ -7248,7 +7249,7 @@
     }
   ],
   "updated_at": "2026-10-09T20:14:10.968676+00:00",
-  "acceptance_refreshed_at": "2026-10-10T00:12:37.841505+00:00",
+  "acceptance_refreshed_at": "2026-10-10T00:16:04.330193+00:00",
   "full_data_preservation_accepted": false,
   "source_retirement_confirmed": false,
   "historical_redis_exception_resolved": true,

@@ -2,7 +2,7 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; execution target before 20:30 UTC. Cluster migration is owned by this chat. BORTUS application development is owned by chat 01a12114-28d9-7623-8aed-9947e08d7065, which delivered app commit 1438b278cdf21e98429b4836c018636b01b982a3 in its isolated worktree. Live deployment/acceptance belongs here.
 
-## Current state (runtime checked 23:51 UTC; Sonarr archive import/cleanup checked 23:48 UTC)
+## Current state (runtime checked 2026-10-09 20:16 America/Toronto)
 
 Three Kubernetes nodes and every active Deployment are Ready. All 35 individual application charts now have private evidence; CI run 38006367280 passed and Flux reconciled revision 3e286e3 with all 36 HelmReleases Ready. One active Plex retains the master identity/library, passes real media playback and relocation. All 30 deployed HTTPS hostnames responded in the latest route sweep, with trusted public-domain chains and explicitly unverified default LAN certificates; BORTUS authenticated HTTPS shows native Secrets and three Ready nodes. Fresh native ACME issuance and trusted WordPress HTTPS passed. Actual public DNS/HTTPS requests with normal browser headers returned 200 for all six tested domains; Cloudflare rejected default automation headers with 1010, and its settings were not changed.
 
@@ -117,7 +117,7 @@ At 23:47:08 UTC, production Sonarr automatically imported the licensed Blender S
 |---|---|---|
 | AC1 Three-node Kubernetes | Passed | Three Ready nodes, pod DNS and cross-worker ping passed; independent runtime preserves source Docker |
 | AC2 One CI/CD pipeline | Passed | Actual annotation rollout and rollback through successful CI 37988074177 / 37988174145 and Flux; PVC/volume/HTTP hash unchanged; evidence/pipeline-rollback-proof.json |
-| AC3 Complete service coverage | Accounted; authenticated dashboard proof open | 42 retained source/repository entries, target 33 active native app charts; ETS2 and Minecraft exporter excluded by user; management/secrets replacement contracts retained; original Traefik dashboard route/auth restored, working login needed for UI/API proof |
+| AC3 Complete service coverage | Accounted; authenticated dashboard proof open | 42 retained source/repository entries, 33 Ready active native app charts; ETS2 and Minecraft exporter excluded by user; management/secrets replacement contracts retained; original Traefik dashboard route/auth restored, working login needed for UI/API proof |
 | AC4 Individual charts/values | Private checks passed | 33 retained application packages and private proofs; final pipeline passed; remaining end-to-end scenarios stay explicit |
 | AC5 Longhorn persistence/recovery | Storage proofs passed | Encrypted two-replica storage, relocation and snapshot restore; 32 cold NAS backups including monitor state and independent BORTUS NAS restore passed; not all volumes restore-tested |
 | AC6 SMB preservation/integration | Recorded media scenarios passed | Existing share paths retained; Plex playback/relocation, Radarr publisher-webseed automatic import and production qBittorrent/Unpackerr/Sonarr archive import passed with byte hashes and guarded fixture cleanup. Evidence/media-download-import-proof.json and evidence/sonarr-archive-import-proof.json retain retry/layout limits; external peer transfers and indexer search were not exercised |
@@ -130,7 +130,7 @@ At 23:47:08 UTC, production Sonarr automatically imported the licensed Blender S
 ## Inputs needed to close acceptance
 
 - **Redis disposition resolved:** the user explicitly accepted the unrecovered original cache as disposable. The regenerated persistent Redis cache is backed up and tested.
-- **Original Traefik dashboard (AC3):** an existing working login is needed for authenticated dashboard/router-API proof. Use native Secret name/key references; preserve the copied authentication hashes. Authentication has not been reset.
+- **Legacy Traefik dashboard limitation:** its source BasicAuth hashes, route and denial checks are preserved; an authenticated legacy login remains untested. BORTUS operator bootstrap, authenticated dashboard, native Secrets and live cluster views have passed. No BORTUS bootstrap credential is outstanding.
 - **Discord delivery passed:** one explicitly authorized migration test was delivered from the production monitor pod through its native webhook. Automated notifications remain disabled; automatic event-driven delivery was not tested. ETS2 and the Minecraft exporter are excluded by user direction.
 - **Source retirement (AC11):** resolve the preservation and functional gates, then obtain the user’s final migration/retirement confirmation. A fresh privileged consumer check must precede normal unmount/shutdown. Until then, retain Gluster bricks, Vault/Consul, Portainer/agents, archives and original datasets.
 
@@ -155,7 +155,7 @@ BORTUS changes: native Secrets provider, APIs/UI/lookup/auth, startup synchroniz
 
 ## Latest authorized scope / bootstrap
 
-The user directed game-server/chart removal and accepted original Redis cache disposition on 2026-10-09. ETS2 and the Minecraft exporter are removed from Flux desired state; their native claims, original sources and backups remain retained. Removal is not yet reported as live-verified until evidence/user-scope-update.json records it. The Minecraft website remains deployed.
+The user directed game-server/chart removal and accepted original Redis cache disposition on 2026-10-09. ETS2 and the Minecraft exporter are removed from Flux desired state; their native claims, original sources and backups remain retained. Live removal is verified: no games deployments/pods/services remain; both original claim UIDs and volume names are unchanged and PV reclaim policies remain Retain. CI 38008198328 succeeded and Flux applied 0bc849a69ab2277f2f561732a5a985503f1a7d4e. Global pruning stayed disabled; only the two excluded HelmReleases were explicitly deleted after validated reconciliation. The Minecraft website remains deployed.
 
 BORTUS operator bootstrap is verified through the LAN: https://bortus.branconet.lan/auth/login, username `james`. The password is already held in native Secret `bortus/bortus-operator-access:password`; no reset was needed. Authenticated dashboard, Secrets page and live nodes/pods/volumes returned HTTP 200. See evidence/bortus-operator-bootstrap.json. The LAN certificate is locally untrusted.
 
