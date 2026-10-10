@@ -26,7 +26,7 @@ extra={
  'plex':['plex-library-proof.json','plex-relocation-proof.json','plex-playback-proof.json'],
  'qbittorrent':['qbittorrent-api-proof.json','qbittorrent-credential-review.json','media-download-client-proof.json','final-vpn-egress.json','media-download-import-proof.json','media-fixture-webseed-proof.json','sonarr-archive-import-proof.json'],
  'gluetun':['vpn-proof.json','final-vpn-egress.json'],
- 'qbit-monitor':['private-qbit-monitor.json','monitor-state-backup.json','discord-notification-proof.json'],
+ 'qbit-monitor':['private-qbit-monitor.json','monitor-state-backup.json','discord-notification-proof.json','monitor-alerts-restoration.json'],
  'unpackerr':['unpackerr-extraction-proof.json','sonarr-archive-import-proof.json','sonarr-single-archive-stage.json'],
  'sonarr':['sonarr-archive-import-proof.json','sonarr-single-archive-stage.json','media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json'], 'radarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json','media-download-import-proof.json','media-fixture-webseed-proof.json'],
  'ets2':['ets2-query-proof.json'], 'xteve':['xteve-tuner-proof.json','xteve-ssdp-proof.json','xteve-gateway-readiness-recovery.json'],
@@ -48,6 +48,10 @@ limitations={
 
 if (ROOT/'evidence/discord-notification-proof.json').exists() and read('discord-notification-proof.json').get('delivered'):
     limitations['qbit-monitor']=['One user-authorized Discord test delivered from the production monitor pod through its native webhook. Automated event-driven notifications remain disabled and were not exercised.']
+
+if (ROOT/'evidence/monitor-alerts-restoration.json').exists():
+    alerts=read('monitor-alerts-restoration.json')
+    limitations['qbit-monitor']=['Original automatic notification settings restored with user authorization; live process environment, unchanged image and retained state claim verified. Every event type was not artificially triggered.' if alerts.get('restoration_verified') else 'Original automatic notification restoration authorized by user; live rollout verification pending.']
 
 media_path=ROOT/'evidence/media-download-import-proof.json'
 if media_path.exists():

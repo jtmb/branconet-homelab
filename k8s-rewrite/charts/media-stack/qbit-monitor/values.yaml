@@ -37,7 +37,7 @@ resources:
           image: '{{ .Values.image }}'
           env:
           - name: QBITTORRENT_STATUS_NOTIFICATION
-            value: 'off'
+            value: 'on'
           - name: QBITTORRENT_HOST
             value: http://qbittorrent-webui.plex.svc.cluster.local:8112
           - name: QBITTORRENT_USERNAME
@@ -59,13 +59,13 @@ resources:
           - name: PORT_FORWARD_FILE
             value: /tmp/gluetun/forwarded_port
           - name: PORT_UPDATED_NOTIFICATION
-            value: 'off'
+            value: 'on'
           - name: CHECK_INTERVAL_TORRENT_MONITORING
             value: 10s
           - name: NEW_DOWNLOAD_NOTIFICATION
-            value: 'off'
+            value: 'on'
           - name: METADATA_STUCK_NOTIFICATION
-            value: 'off'
+            value: 'on'
           - name: DOWNLOAD_COMPLETE_NOTIFICATION
             value: 'off'
           - name: DISCORD_WEBHOOK_URL
