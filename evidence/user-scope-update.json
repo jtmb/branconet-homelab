@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-10-10T00:10:57.321084+00:00",
+  "user_decision": "Remove game servers and charts; Redis historical state is disposable.",
+  "excluded_charts": [
+    "apps/ets2",
+    "apps/minecraft-exporter"
+  ],
+  "website_retained": "apps/minecraft-website",
+  "before_claims": [
+    {
+      "name": "ets2-data-0",
+      "uid": "90d7e61f-6d1d-4818-886d-6721c198e814",
+      "volume": "pvc-90d7e61f-6d1d-4818-886d-6721c198e814",
+      "keep": true
+    },
+    {
+      "name": "minecraft-exporter-data-0",
+      "uid": "4a5257ee-5a76-41d5-a807-cd7d6a9ee74b",
+      "volume": "pvc-4a5257ee-5a76-41d5-a807-cd7d6a9ee74b",
+      "keep": true
+    }
+  ],
+  "removed_and_retention_verified": false
+}

@@ -529,7 +529,7 @@
       "source_type": "swarm",
       "chart": "apps/minecraft-exporter",
       "namespace": "games",
-      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
+      "status": "Excluded by user; chart removed; original data, retained PVCs and backups preserved",
       "source_image": "ghcr.io/dirien/minecraft-exporter:latest@sha256:d11cea9f5a14316d0df00b97a36e904ba41ff17d293fcf427b68bca2403e4400",
       "source_declared_mounts": [
         {
@@ -607,16 +607,11 @@
       },
       "functional_checks": {
         "evidence": [
-          "evidence/private-minecraft-exporter.json"
+          "evidence/user-scope-update.json"
         ],
-        "recorded_boolean_checks": {
-          "restart_http_passed": true,
-          "stable_body_verified": false,
-          "relocation_http_passed": false,
-          "production_routing_accepted": false,
-          "source_originals_retained": true
-        },
-        "limitations": []
+        "limitations": [
+          "Game deployment and client-join acceptance removed from scope by user."
+        ]
       },
       "restart_relocation": {
         "evidence": "evidence/private-minecraft-exporter.json",
@@ -633,10 +628,10 @@
         "original_configuration": "evidence/config-backups.json",
         "source_data_retirement_confirmed": false
       },
-      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
+      "migration_status": "Excluded by user; chart removed; original data, retained PVCs and backups preserved",
       "copy_evidence": "evidence/copy-minecraft-exporter.json",
       "private_evidence": "evidence/private-minecraft-exporter.json",
-      "production_routing_accepted": true,
+      "production_routing_accepted": false,
       "acceptance_scope": "Recorded checks only; running/HTTP/TCP do not imply untested application integrations.",
       "destination_storage": [
         {
@@ -679,7 +674,8 @@
         ],
         "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
       },
-      "native_helmrelease_ready": true
+      "native_helmrelease_ready": false,
+      "deployment_excluded_by_user": true
     },
     {
       "source": "mealie_mealie",
@@ -4293,7 +4289,7 @@
       "source_type": "swarm",
       "chart": "apps/wordpress-redis",
       "namespace": "wordpress",
-      "status": "Native current Redis works; historical data acceptance unresolved",
+      "status": "Native current Redis works; unrecovered historical cache explicitly accepted as disposable by user",
       "source_image": "redis:alpine@sha256:2afba59292f25f5d1af200496db41bea2c6c816b059f57ae74703a50a03a27d0",
       "source_declared_mounts": [],
       "source_instances": [
@@ -4347,7 +4343,7 @@
         "unbacked_active_longhorn_claims": [],
         "originals_retained": true,
         "scope_exception": [
-          "Original source writable /data state removed before archival; unrecovered; user acceptance exception unresolved."
+          "Original source writable /data state removed before archival and unrecovered. User explicitly accepted it as disposable on 2026-10-09; current persistent cache is separately backed up."
         ]
       },
       "copy_restore": {
@@ -4371,7 +4367,7 @@
           "source_current_backup_retained": true
         },
         "limitations": [
-          "Original source writable /data state removed before archival; unrecovered; user acceptance exception unresolved."
+          "Original source writable /data state removed before archival and unrecovered. User explicitly accepted it as disposable on 2026-10-09; current persistent cache is separately backed up."
         ]
       },
       "restart_relocation": {
@@ -4387,7 +4383,7 @@
         "original_configuration": "evidence/config-backups.json",
         "source_data_retirement_confirmed": false
       },
-      "migration_status": "Native current Redis works; historical data acceptance unresolved",
+      "migration_status": "Native current Redis works; unrecovered historical cache explicitly accepted as disposable by user",
       "copy_evidence": null,
       "private_evidence": "evidence/private-wordpress-redis.json",
       "production_routing_accepted": true,
@@ -6489,7 +6485,7 @@
       "source_type": "standalone",
       "chart": "apps/ets2",
       "namespace": "games",
-      "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
+      "status": "Excluded by user; chart removed; original data, retained PVCs and backups preserved",
       "source_instance": {
         "name": "ets2-server",
         "service": null,
@@ -6556,18 +6552,10 @@
       },
       "functional_checks": {
         "evidence": [
-          "evidence/private-ets2.json",
-          "evidence/ets2-query-proof.json"
+          "evidence/user-scope-update.json"
         ],
-        "recorded_boolean_checks": {
-          "real_steam_server_info_query_passed": true,
-          "source_config_original_retained": true,
-          "client_game_join_pending": true,
-          "actual_restart_after_cold_snapshot_passed": true,
-          "persistent_claim_identity_preserved": true
-        },
         "limitations": [
-          "Real game-client join untested."
+          "Game deployment and client-join acceptance removed from scope by user."
         ]
       },
       "restart_relocation": {
@@ -6583,7 +6571,7 @@
         "original_configuration": "evidence/config-backups.json",
         "source_data_retirement_confirmed": false
       },
-      "migration_status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
+      "migration_status": "Excluded by user; chart removed; original data, retained PVCs and backups preserved",
       "copy_evidence": "evidence/copy-ets2.json",
       "private_evidence": "evidence/private-ets2.json",
       "production_routing_accepted": false,
@@ -6633,7 +6621,8 @@
         ],
         "scope": "HTTP response and TCP connectivity; full application behavior uses separate evidence."
       },
-      "native_helmrelease_ready": true
+      "native_helmrelease_ready": false,
+      "deployment_excluded_by_user": true
     },
     {
       "source": "192.168.0.6/plex-plex-1",
@@ -7259,7 +7248,9 @@
     }
   ],
   "updated_at": "2026-10-09T20:14:10.968676+00:00",
-  "acceptance_refreshed_at": "2026-10-09T23:49:19.514163+00:00",
+  "acceptance_refreshed_at": "2026-10-10T00:12:37.841505+00:00",
   "full_data_preservation_accepted": false,
-  "source_retirement_confirmed": false
+  "source_retirement_confirmed": false,
+  "historical_redis_exception_resolved": true,
+  "scope_update_evidence": "evidence/user-scope-update.json"
 }

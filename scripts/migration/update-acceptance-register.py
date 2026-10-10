@@ -26,7 +26,7 @@ extra={
  'plex':['plex-library-proof.json','plex-relocation-proof.json','plex-playback-proof.json'],
  'qbittorrent':['qbittorrent-api-proof.json','qbittorrent-credential-review.json','media-download-client-proof.json','final-vpn-egress.json','media-download-import-proof.json','media-fixture-webseed-proof.json','sonarr-archive-import-proof.json'],
  'gluetun':['vpn-proof.json','final-vpn-egress.json'],
- 'qbit-monitor':['private-qbit-monitor.json','monitor-state-backup.json'],
+ 'qbit-monitor':['private-qbit-monitor.json','monitor-state-backup.json','discord-notification-proof.json'],
  'unpackerr':['unpackerr-extraction-proof.json','sonarr-archive-import-proof.json','sonarr-single-archive-stage.json'],
  'sonarr':['sonarr-archive-import-proof.json','sonarr-single-archive-stage.json','media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json'], 'radarr':['media-download-client-proof.json','media-import-prerequisites.json','media-indexer-proof.json','media-activity-proof.json','media-download-import-proof.json','media-fixture-webseed-proof.json'],
  'ets2':['ets2-query-proof.json'], 'xteve':['xteve-tuner-proof.json','xteve-ssdp-proof.json','xteve-gateway-readiness-recovery.json'],
@@ -37,7 +37,7 @@ extra={
  'flaresolverr':['flaresolverr-browser-proof.json'], 'wordpress-redis':['redis-current-backup.json','redis-persistence.json'],
 }
 limitations={
- 'wordpress-redis':['Original source writable /data state removed before archival; unrecovered; user acceptance exception unresolved.'],
+ 'wordpress-redis':['Original source writable /data state removed before archival and unrecovered. User explicitly accepted it as disposable on 2026-10-09; current persistent cache is separately backed up.'],
  'qbit-monitor':['Discord delivery untested; notifications disabled during acceptance.'],
  'ets2':['Real game-client join untested.'],
  'xteve':['LAN SSDP discovery passed on all three host interfaces; original TCP 1901 has no observed backend listener.'],
@@ -45,6 +45,9 @@ limitations={
  'sonarr':['API/download-client checks passed; completed real download/import untested.'],
  'radarr':['API/download-client checks passed; completed real download/import untested.','Two enabled indexers fail current configuration tests and have retained pre-migration failure history; settings unchanged.'],
 }
+
+if (ROOT/'evidence/discord-notification-proof.json').exists() and read('discord-notification-proof.json').get('delivered'):
+    limitations['qbit-monitor']=['One user-authorized Discord test delivered from the production monitor pod through its native webhook. Automated event-driven notifications remain disabled and were not exercised.']
 
 media_path=ROOT/'evidence/media-download-import-proof.json'
 if media_path.exists():
@@ -70,10 +73,19 @@ def secret_refs(value,result):
         for item in value:secret_refs(item,result)
 
 register=read('service-register.json')
+scope=read('user-scope-update.json')
+excluded=set(scope['excluded_charts'])
 for e in register['entries']:
     chart=e.get('chart');ns=e.get('namespace');name=chart.rsplit('/',1)[-1] if chart else None
     e['acceptance_scope']='Recorded checks only; running/HTTP/TCP do not imply untested application integrations.'
     e['rollback']={'instructions':'docs/MIGRATION-OPERATIONS.md','after_destination_writes':'Stop destination writers, checkpoint and reconcile changed data into a reviewed recovery copy before restoring source traffic.','original_configuration':'evidence/config-backups.json','source_data_retirement_confirmed':False}
+    if chart in excluded:
+        e['deployment_excluded_by_user']=True
+        e['native_helmrelease_ready']=False
+        e['production_routing_accepted']=False
+        e['status']=e['migration_status']='Excluded by user; chart removed; original data, retained PVCs and backups preserved'
+        e['functional_checks']={'evidence':['evidence/user-scope-update.json'],'limitations':['Game deployment and client-join acceptance removed from scope by user.']}
+        continue
     if not chart or chart.startswith('@'):
         e['backup']={'evidence':['evidence/data-backups.json','evidence/config-backups.json','evidence/archive-verification.json'],'originals_retained':True}
         e['copy_restore']={'replacement_contract':e.get('replacement'),'evidence':['evidence/native-secret-import.json','evidence/bortus-live-proof.json','evidence/bortus-dashboard-proof.json'] if e['source'].startswith(('cicd_','portainer_')) else ['evidence/ingress-certificates.json','evidence/network-port-cutover.json']}
@@ -115,10 +127,12 @@ for e in register['entries']:
     e['production_routing_accepted']=bool((route_checks or tcp) and all(c['responding'] for c in route_checks) and all(c['tcp_open'] for c in tcp))
     e['native_helmrelease_ready']=ready
     e['migration_status']='Native HelmRelease Ready; recorded checks passed; source retirement pending' if ready else 'Native HelmRelease readiness requires investigation'
-    if name=='wordpress-redis':e['migration_status']='Native current Redis works; historical data acceptance unresolved'
+    if name=='wordpress-redis':e['migration_status']='Native current Redis works; unrecovered historical cache explicitly accepted as disposable by user'
     e['status']=e['migration_status']
 register['acceptance_refreshed_at']=datetime.datetime.now(datetime.timezone.utc).isoformat()
 register['full_data_preservation_accepted']=False
+register['historical_redis_exception_resolved']=True
+register['scope_update_evidence']='evidence/user-scope-update.json'
 register['source_retirement_confirmed']=False
 (ROOT/'evidence/service-register.json').write_text(json.dumps(register,indent=2)+'\n')
 states=read('release-state.json')

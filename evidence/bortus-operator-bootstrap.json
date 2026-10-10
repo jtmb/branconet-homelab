@@ -1,0 +1,31 @@
+{
+  "completed_at": "2026-10-10T00:10:57.321084+00:00",
+  "url": "https://bortus.branconet.lan",
+  "username": "james",
+  "operator_credential_reference": "bortus/bortus-operator-access:password",
+  "existing_operator_preserved": true,
+  "authenticated_lan_checks": {
+    "/": {
+      "http_status": 200,
+      "authenticated": true
+    },
+    "/secrets": {
+      "http_status": 200,
+      "authenticated": true
+    },
+    "/api/cluster/nodes": {
+      "http_status": 200,
+      "authenticated": true
+    },
+    "/api/cluster/pods": {
+      "http_status": 200,
+      "authenticated": true
+    },
+    "/api/cluster/volumes": {
+      "http_status": 200,
+      "authenticated": true
+    }
+  },
+  "lan_default_certificate_trust_skipped": true,
+  "values_or_cookies_reported": false
+}

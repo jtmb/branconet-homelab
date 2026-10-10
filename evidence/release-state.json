@@ -30,11 +30,11 @@
     "release": "ets2",
     "private_accepted": true,
     "flux_suspended": false,
-    "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
-    "helmrelease_ready": true,
+    "status": "Excluded by user; chart removed; original data, retained PVCs and backups preserved",
+    "helmrelease_ready": false,
     "routing_checks_passed": false,
     "evidence_limits": [
-      "Real game-client join untested."
+      "Game deployment and client-join acceptance removed from scope by user."
     ]
   },
   {
@@ -113,10 +113,12 @@
     "release": "minecraft-exporter",
     "private_accepted": true,
     "flux_suspended": false,
-    "status": "Native HelmRelease Ready; recorded checks passed; source retirement pending",
-    "helmrelease_ready": true,
-    "routing_checks_passed": true,
-    "evidence_limits": []
+    "status": "Excluded by user; chart removed; original data, retained PVCs and backups preserved",
+    "helmrelease_ready": false,
+    "routing_checks_passed": false,
+    "evidence_limits": [
+      "Game deployment and client-join acceptance removed from scope by user."
+    ]
   },
   {
     "release": "minecraft-website",
@@ -293,11 +295,11 @@
     "release": "wordpress-redis",
     "private_accepted": true,
     "flux_suspended": false,
-    "status": "Native current Redis works; historical data acceptance unresolved",
+    "status": "Native current Redis works; unrecovered historical cache explicitly accepted as disposable by user",
     "helmrelease_ready": true,
     "routing_checks_passed": true,
     "evidence_limits": [
-      "Original source writable /data state removed before archival; unrecovered; user acceptance exception unresolved."
+      "Original source writable /data state removed before archival and unrecovered. User explicitly accepted it as disposable on 2026-10-09; current persistent cache is separately backed up."
     ]
   },
   {
