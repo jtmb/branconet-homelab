@@ -170,3 +170,5 @@ After the game release removal, an independent restore of the new encrypted etcd
 ## Original automatic monitor alerts
 
 The user authorized restoration of the original four enabled alert categories; download-complete alerts remain off as in the source repository. The chart and acceptance references are updated. Live rollout status, process flags, immutable image and retained Longhorn claim/volume identities are recorded in evidence/monitor-alerts-restoration.json. Final source-retirement confirmation remains outstanding.
+
+Alert restoration verified on 2026-10-09 at 23:07 Toronto time: all five running environment flags match the source repository, the monitor Pod was replaced and is Ready, authenticated real queue polling is observed, the original image digest is unchanged, and the bookkeeping file remains on the identical Longhorn claim/volume. CI 38019327446 passed. Evidence/monitor-alerts-restoration.json records the exact checks; no synthetic event was injected.
