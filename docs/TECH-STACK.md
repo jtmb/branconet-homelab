@@ -22,7 +22,7 @@ One control plane needs a documented etcd/configuration restore; it is not a hig
 | Longhorn | v1.12.1 | Replicated V1 volumes, LUKS encryption, retained PVs |
 | CSI snapshot controller | v8.6.0 | VolumeSnapshot API/controller for tested Longhorn restore |
 | SMB CSI | v1.20.3 | Existing NAS share mounts in application pods |
-| Traefik | v2.11 | Temporary NodePorts 30080 and 30443; application ingress |
+| Traefik | v2.11 original digest | Native LAN 80/443 routing through NodePorts 30080/30443; application ingress |
 | Flux | v2.9.6 | Source, Kustomize, Helm and notification controllers |
 | Helm CLI | v4.3.0 | Individual chart validation and infrastructure install |
 | Ansible core | 2.21.5 operator runtime | Host provisioning through SSH |

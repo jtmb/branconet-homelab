@@ -160,3 +160,9 @@ The user directed game-server/chart removal and accepted original Redis cache di
 BORTUS operator bootstrap is verified through the LAN: https://bortus.branconet.lan/auth/login, username `james`. The password is already held in native Secret `bortus/bortus-operator-access:password`; no reset was needed. Authenticated dashboard, Secrets page and live nodes/pods/volumes returned HTTP 200. See evidence/bortus-operator-bootstrap.json. The LAN certificate is locally untrusted.
 
 One authorized Discord message was created and its exact content confirmed on 2026-10-09 at 20:14 Toronto time. No torrent/credential values or mentions were sent. The initial Python exec found no Python runtime and sent nothing; the installed curl performed the sole webhook request. Evidence/discord-notification-proof.json records the result.
+
+## Fresh recovery / retained-consumer audit — 2026-10-09 20:21 Toronto
+
+The read-only privileged source audit confirmed six retained Docker containers, four Gluster mounts and no direct native Gluster Pod/PV consumers. Gluster remains Started with three replicas/three bricks; Consul still holds files on the source mount. No source shutdown/unmount/data deletion was performed. Final retirement confirmation is still pending.
+
+After the game release removal, an independent restore of the new encrypted etcd snapshot started and matched all 339 current Secret ciphertext records, including 73 original imports and the dashboard configuration. The authenticated operator copy and NAS ciphertext match; production etcd was untouched. Older checkpoints remain retained. The latest evidence is evidence/etcd-recovery.json and evidence/retirement-readiness.json.

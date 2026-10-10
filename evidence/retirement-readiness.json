@@ -1,5 +1,5 @@
 {
-  "captured_at": "2026-10-09T21:06:51.572472+00:00",
+  "captured_at": "2026-10-10T00:20:26.880236+00:00",
   "nodes": {
     "192.168.0.4": {
       "gluster_mounts": [
@@ -26,7 +26,27 @@
             "/var/lib/docker/volumes"
           ]
         }
-      ]
+      ],
+      "mount_open_file_inventory": [
+        {
+          "target": "/mnt/container-program-files",
+          "holders": [
+            {
+              "pid": 3082748,
+              "process": "portainer"
+            }
+          ]
+        }
+      ],
+      "glusterd_active": "active",
+      "glusterd_enabled": "enabled",
+      "gluster_volume": {
+        "name": "staging-gfs",
+        "statusStr": "Started",
+        "typeStr": "Replicate",
+        "replicaCount": "3",
+        "brickCount": "3"
+      }
     },
     "192.168.0.5": {
       "gluster_mounts": [
@@ -51,7 +71,26 @@
             "/var/lib/docker/volumes"
           ]
         }
-      ]
+      ],
+      "mount_open_file_inventory": [
+        {
+          "target": "/mnt/container-program-files",
+          "holders": []
+        },
+        {
+          "target": "/mnt/migration-gluster-read",
+          "holders": []
+        }
+      ],
+      "glusterd_active": "active",
+      "glusterd_enabled": "enabled",
+      "gluster_volume": {
+        "name": "staging-gfs",
+        "statusStr": "Started",
+        "typeStr": "Replicate",
+        "replicaCount": "3",
+        "brickCount": "3"
+      }
     },
     "192.168.0.6": {
       "gluster_mounts": [
@@ -86,7 +125,27 @@
             "/var/lib/docker/volumes"
           ]
         }
-      ]
+      ],
+      "mount_open_file_inventory": [
+        {
+          "target": "/mnt/container-program-files",
+          "holders": [
+            {
+              "pid": 1424360,
+              "process": "consul"
+            }
+          ]
+        }
+      ],
+      "glusterd_active": "active",
+      "glusterd_enabled": "enabled",
+      "gluster_volume": {
+        "name": "staging-gfs",
+        "statusStr": "Started",
+        "typeStr": "Replicate",
+        "replicaCount": "3",
+        "brickCount": "3"
+      }
     }
   },
   "discovered_gluster_host_path_prefixes": [
@@ -98,8 +157,10 @@
   "active_native_pod_gluster_host_paths": [],
   "user_retirement_confirmation_received": false,
   "historical_redis_exception_resolved": true,
-  "authenticated_dashboard_proof_passed": false,
+  "historical_redis_exception_evidence": "evidence/user-scope-update.json",
+  "authenticated_bortus_operator_bootstrap_passed": true,
+  "legacy_traefik_authenticated_login_untested": true,
+  "consumer_inventory_scope": "Host fuser mount inventory and Docker mounts; recheck after stopping approved source services, including any mount-namespace holders.",
   "retirement_ready": false,
-  "source_actions_performed": false,
-  "historical_redis_exception_evidence": "evidence/user-scope-update.json"
+  "source_actions_performed": false
 }
