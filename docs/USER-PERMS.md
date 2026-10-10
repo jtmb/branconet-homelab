@@ -10,7 +10,7 @@ First registration creates a write user. Later users default to readonly. Regist
 
 ## Gates
 
-Middleware at `src/middleware.ts` uses the Next 15.5 Node runtime and verifies cookie identity against the current DB account/sessionVersion. Public paths are `/welcome`, `/auth/login`, `/auth/register`, `/api/auth/*`, framework paths and exact info/health/favicon paths. Exact `/api/vars/lookup` instead requires Bearer authentication inside its handler. Other unauthenticated APIs return 401 and protected pages redirect to welcome. Middleware DB failures return a fixed 503 rather than admitting the request.
+Middleware at `src/middleware.ts` uses the Next 15.5 Node runtime and verifies cookie identity against the current DB account/sessionVersion. Public paths are `/welcome`, `/auth/login`, `/auth/register`, `/api/auth/*`, framework paths and exact info/health/favicon paths. Exact `/api/vars/lookup` and `/api/kv/automation` instead require their distinct Bearer audiences inside their handlers. Other unauthenticated APIs return 401 and protected pages redirect to welcome. Middleware DB failures return a fixed 503 rather than admitting the request.
 
 Server-side `requireOperator()` enforces fresh write plus engineAdmin for infrastructure/configuration operations. `requireWrite()` remains on the account route, whose serialized store checks peer administration and scoped self-password access. KV routes enforce fresh role and deny-aware policy. Flat Secret values require effective administration. Deleted accounts and stale session versions are rejected on ordinary reads/pages as well. Password resets atomically increment sessionVersion, revoking existing cookies, including the resetting user's own cookie for a self-reset. Migrated accounts and legacy JWTs default to version zero, avoiding blanket sign-out on migration. Login signs the current version; the session API no longer treats absent accounts as readonly.
 
@@ -34,7 +34,9 @@ Both /api/nodes mutations and the compatibility POST /api/cluster/nodes inventor
 
 ## Bearer lookup and recovery
 
-Adopted native keys now additionally pass KV read policy on flat reveal. Flat edits/deletions require the versioned endpoint (409), and history cannot be reached through flat/alias routes. Every lookup, including nonsecret configuration, checks the fresh enabled legacy service principal; adopted aliases additionally require exact compatibility grants and deny-aware policy. Unadopted alias behavior remains unchanged. These newly connected bridge checks are being qualified locally.
+Middleware authentication failures return private/no-store 401 or 503 responses, including attempts to present KV credentials as human cookies. The automation entrypoint authenticates its own token before reading a body or calling native APIs.
+
+Adopted native keys now additionally pass KV read policy on flat reveal. Flat edits/deletions require the versioned endpoint (409), and history cannot be reached through flat/alias routes. Every lookup, including nonsecret configuration, checks the fresh enabled legacy service principal; adopted aliases additionally require exact compatibility grants and deny-aware policy. Unadopted alias behavior remains unchanged. These bridge checks passed local unit and production HTTP/TLS qualification.
 
 Desired-replica editing is a labelled explicit form with integer bounds 0–10000, a disabled unchanged/invalid/save state and fixed API errors. Readonly sessions see the desired count. It does not submit on blur or parse fractional input as an integer.
 
@@ -45,6 +47,8 @@ Top navigation, shell containers, provisioning, users, settings and configuratio
 Native Secret values never persist in SQLite, command arguments, generated Git files, errors or logs. Legacy sensitive SQLite rows are quarantined. Recover SQLite identities/configuration/reference metadata and Kubernetes values using independently protected backups and operator credentials.
 
 See [API usage](API-USAGE.md), [Secrets engine](SECRETS-ENGINE.md), [deployment contract](BORTUS-DEPLOYMENT.md) and the [prioritized audit](BORTUS-AUDIT.md).
+
+Exact `/api/kv/automation` has a distinct Bearer audience and ignores human cookies. Its current operations cover scoped status/capabilities/history/value/update/tombstone/rollback/reconcile/outcome resolution; it cannot perform administrator initial adoption/creation or infrastructure/identity administration. Fresh audit views use list policy, with engine administrators permitted global metadata. These routes passed local unit and production HTTP/TLS qualification; remaining workflows/UI are pending.
 
 ## KV foundation in progress
 

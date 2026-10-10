@@ -70,6 +70,43 @@ export class KvRegistry {
     return user;
   }
 
+  async capabilities(actor: KvActor, id: string) {
+    const path = await this.path(id), user = await this.authorize(actor, path, "list");
+    const owner = await this.rules(`user:${user.id}`), identity = actor.identityId ? await this.rules(`identity:${actor.identityId}`) : null;
+    const latest = await this.current(actor);
+    if (latest.role !== user.role || latest.engineAdmin !== user.engineAdmin) throw new KvError(409, "KV permissions changed; refresh capabilities");
+    const permissions = Object.fromEntries(KV_ACTIONS.map(action => [action,
+      (action === "list" || user.role === "write") && policyAllows(owner, path, action) && (!identity || policyAllows(identity, path, action))]));
+    return { pathId: id, revision: path.revision, permissions,
+      nativeMutationEnabled: this.config.guardedAdoption,
+      initializationAllowed: !!permissions.create && this.config.guardedAdoption && user.role === "write" && user.engineAdmin && !actor.identityId,
+      supportedActions: ["list", "read", "create", "update", "delete", "rollback", "reconcile"],
+      guardVerification: "operator assertion; external admission/RBAC evidence required" };
+  }
+
+  async listAudit(actor: KvActor, filters: { pathId?: string; operationId?: string; cursor?: string }) {
+    const user = await this.current(actor);
+    if (filters.pathId) { const path = await this.path(filters.pathId); await this.authorize(actor, path, "list"); }
+    const admin = user.role === "write" && user.engineAdmin && !actor.identityId;
+    const rules = admin ? null : await this.rules(`user:${actor.id}`), identity = actor.identityId ? await this.rules(`identity:${actor.identityId}`) : null;
+    const grants = rules?.filter(rule => rule.effect === "allow" && parseActions(rule.actions).includes("list"));
+    const rows = admin || grants?.length ? await this.db.kvAudit.findMany({ where: {
+      ...(filters.cursor ? { id: { gt: filters.cursor } } : {}), ...(filters.pathId ? { pathId: filters.pathId } : {}), ...(filters.operationId ? { operationId: filters.operationId } : {}),
+      ...(!admin ? { mountId: { not: null }, path: { not: null },
+        ...(!grants!.some(rule => rule.mountId === null && rule.prefix === "") ? { OR: grants!.map(rule => ({ ...(rule.mountId ? { mountId: rule.mountId } : {}),
+          ...(rule.prefix ? { OR: [{ path: rule.prefix }, { path: { startsWith: rule.prefix + "/" } }] } : {}) })) } : {}) } : {}),
+    }, orderBy: { id: "asc" }, take: 101 }) : [];
+    const latest = await this.current(actor);
+    if (admin && (latest.role !== "write" || !latest.engineAdmin)) throw new KvError(403, "Engine administration revoked");
+    const freshRules = admin ? null : await this.rules(`user:${actor.id}`), freshIdentity = identity ? await this.rules(`identity:${actor.identityId}`) : null;
+    const permitted = (row: typeof rows[number]) => admin || !!row.mountId && !!row.path && policyAllows(freshRules!, { mountId: row.mountId, path: row.path }, "list") &&
+      (!freshIdentity || policyAllows(freshIdentity, { mountId: row.mountId, path: row.path }, "list"));
+    const items = rows.slice(0, 100).filter(permitted).map(({ id, actorId, operationId, pathId, mountId, path, namespace, name, action, previousVersion, newVersion, outcome, createdAt }) =>
+      ({ id, actorId, operationId, pathId, mountId, path, namespace, name, action, previousVersion, newVersion, outcome, createdAt }));
+    await this.current(actor);
+    return { items, nextCursor: rows.length > 100 ? rows[99].id : null };
+  }
+
   async path(id: string, client: Client = this.db): Promise<RegisteredPath> {
     const path = await client.kvPath.findUnique({ where: { id }, include: { fields: true, mount: true } });
     if (!path) throw new KvError(404, "KV path not found");

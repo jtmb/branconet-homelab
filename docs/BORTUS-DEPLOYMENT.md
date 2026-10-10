@@ -67,6 +67,8 @@ Keep operator kubeconfig, SSH keys and provisioning credentials independently av
 
 ## Validation ownership
 
+Scoped automation and filtered audit/capability routes passed local production HTTP against the verified mock API. Token cookies/legacy/session audiences are denied, expiry/revocation is fresh, and middleware authentication failures are private/no-store. These checks add no native verbs and do not establish external admission/RBAC or final Linux-image acceptance.
+
 The local native KV HTTP suite starts a disposable production server against a CA-verified HTTPS mock API and synthetic SQLite/accounts. It restarts guarded mode off/on, verifies current/historic binary values without recording them, scope/readonly/legacy/flat denials, version prerequisites, drift/reconcile/rollback/tombstone and administrator revocation. Local native route qualification passed, including empty first creation and refusal to recreate a missing source with prior history. This does not establish live Kubernetes/RBAC or Linux-image acceptance. OpenSSL is required rather than silently skipping this suite.
 
 An additional TLS transport test generates temporary self-signed test credentials with OpenSSL and talks to an HTTPS mock Kubernetes API using the real client/CA/token. It verifies create/read/update/list/delete and body-only value transport. This is still a mock API, not cluster acceptance. OpenSSL absence skips that test explicitly.

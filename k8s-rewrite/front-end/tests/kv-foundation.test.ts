@@ -137,6 +137,25 @@ test("KV metadata ownership, serialized administration and scoped token lifecycl
       await registry.deletePolicy(adminActor, adminDeny.id, adminDeny.revision);
     });
 
+    await t.test("audit pages and capabilities obey fresh scoped/readonly policy and administrator revocation", async () => {
+      const initialMetadataGrant=await db.kvPolicy.findFirstOrThrow({where:{principal:"user:"+scoped.id,mountId:null,prefix:"",actions:'["list"]'}});
+      await registry.deletePolicy(adminActor,initialMetadataGrant.id,initialMetadataGrant.revision); // Replace bootstrap metadata breadth with this fixture's explicit prefix scope.
+      const p=(await registry.listPaths(scopedActor,mount.id)).items[0];
+      const scopedCaps=await registry.capabilities(scopedActor,p.id);assert.equal(scopedCaps.permissions.read,true);assert.equal(scopedCaps.permissions.destroy,false);assert.equal(scopedCaps.initializationAllowed,false);
+      const readerCaps=await registry.capabilities(actor(readerUser),p.id);assert.equal(readerCaps.permissions.list,true);assert.equal(readerCaps.permissions.read,false);assert.equal(readerCaps.permissions.update,false);
+      await db.kvAudit.createMany({data:Array.from({length:205},()=>({actorId:scoped.id,pathId:p.id,mountId:mount.id,path:p.path,namespace:"apps",name:p.name,action:"synthetic-update",previousVersion:1,newVersion:2,outcome:"committed"}))});
+      await db.kvAudit.create({data:{actorId:admin.id,mountId:mount.id,path:"other/private",namespace:"apps",name:"private",action:"synthetic-private",outcome:"committed"}});
+      let cursor:string|undefined,seen=0;const ids=new Set<string>();
+      do {const page=await registry.listAudit(scopedActor,{cursor});assert(page.items.length<=100);for(const row of page.items){assert(row.path==="apps/api"||row.path?.startsWith("apps/api/"));assert(!ids.has(row.id));ids.add(row.id);}seen+=page.items.length;cursor=page.nextCursor??undefined;}while(cursor);
+      assert(seen>=205);
+      const deny=await registry.savePolicy(adminActor,{principal:"user:"+scoped.id,mountId:mount.id,prefix:p.path,effect:"deny",actions:["list"]});
+      await assert.rejects(registry.capabilities(scopedActor,p.id),denied(403));
+      assert(!(await registry.listAudit(scopedActor,{})).items.some(row=>row.pathId===p.id));await registry.deletePolicy(adminActor,deny.id,deny.revision);
+      const changedDb={user:db.user,kvPolicy:db.kvPolicy,kvAudit:{findMany:async(input:any)=>{const rows=await db.kvAudit.findMany(input);await db.user.update({where:{id:admin.id},data:{engineAdmin:false}});return rows;}}} as unknown as PrismaClient;
+      try {await assert.rejects(new KvRegistry(changedDb,registry.namespaces,registry.config).listAudit(adminActor,{}),denied(403));}
+      finally {await db.user.update({where:{id:admin.id},data:{engineAdmin:true}});}
+    });
+
     await t.test("one-time token/hash projection, distinct audience and owner-policy intersection", async () => {
       const issue = () => registry.issueIdentity(scopedActor, { ownerId: scoped.id, name: "consumer", expiresAt: new Date(Date.now() + 3600000), scopes: [{ mountId: mount.id, prefix: "apps/api", actions: ["read", "destroy"] }] });
       const issued = await issue();

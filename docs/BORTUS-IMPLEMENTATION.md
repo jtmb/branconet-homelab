@@ -57,6 +57,27 @@ A command combining shutdown and recursive cleanup of an owned UI fixture was re
 
 ## Native Secrets engine scope
 
+### Current completion ledger
+
+The active app goal includes all A01–A22 findings and the complete selected native KV scope. Intermediate local passes do not complete that goal. The separate charts repository and validated Flux pipeline are complete as reported by infrastructure; the exact pre-KV Linux artifact was inspected, but the final KV artifact/live guard qualification remains separate.
+
+| Selected scope | Current evidence and remaining acceptance |
+|---|---|
+| Mounts/paths/grouped fields and forward metadata migration | Local foundation 08cb427; preservation, ownership, policies and scoped/admin UI checks passed |
+| Immutable native versions, head/resourceVersion CAS, drift and rollback | Local core e1044f4 and public routes/bridges 6ab95f2; synthetic binary/special-key, history isolation and production mock-TLS HTTP passed |
+| Scoped policies and revocable automation identities | Metadata lifecycle passed; exact automation entrypoint now passes focused token/CAS/revocation tests, and production HTTP/TLS passed |
+| Redacted audit and fresh capability views | Focused bounded 100-row pagination, prefix/deny/token filtering and administrator-revocation checks passed; production HTTP/TLS passed |
+| Protected import/export | Pending implementation and bounded binary/permission/CAS/per-path-outcome acceptance |
+| Static rotation, explicit consumer reload/rollout acknowledgement | Pending implementation and metadata-only intent/recovery acceptance; dynamic issuers excluded |
+| Retention, destruction and GC | References are bounded and tombstones retain canonical objects; confirmed owned-history destruction/age/reference/UID/RV GC still pending |
+| Recovery controls | Positive commit read-back/restart/audit recovery and missing-marker/source refusal passed; explicit cleanup/recovery workflow and final image/native backup acceptance pending |
+| Full KV UI and remaining A01–A22 UI/performance checks | Pending value/draft/conflict/history/import/export/rotation/audit interaction checks and remaining Flux/details/mobile/accessibility/performance work |
+| Final immutable artifact and coordinated guarded rollout | Pending final app source/runtime contract, Linux image checks, external RBAC/admission/PVC/runtime-Secret guard evidence and live validation by the delivery coordinator; this app chat performs no live change |
+
+Dynamic credential issuers, PKI, transit and HashiCorp API compatibility remain outside the selected KV scope. Existing Gluster/Vault retirement is not implemented by this application work.
+
+`6ab95f2` commits the qualified human native routes and adopted-target flat/legacy bridges with their evidence. The next stage connects exact-token automation and filtered audit/capability metadata; 73 full tests, zero-warning lint, build/type checks and both production HTTP suites passed (existing 28.04 s, native/token 23.91 s). The HTTP audience test found missing private/no-store middleware failure headers, which were fixed; a preceding concurrent run had a transient registration timeout and is not claimed as passing. See implementation-evidence/kv-automation-audit.json. No live configuration or cluster resource is changed.
+
 Human native value/history/recovery routes and flat/legacy bridges are now connected locally. Bridge tests cover all 603 synthetic aliases, grant revocation/deny/disabled principal, binary text refusal, history denial and unavailable/missing mapping metadata. A new disposable production HTTP suite uses a real verified-TLS mock API, guarded-mode restart, exact special/binary history, scoped/readonly/flat/legacy checks, drift/reconcile/rollback/tombstone and immediate flag revocation. The current production build, 70-test suite, type checking and zero-warning lint passed. Existing HTTP passed in 31.96 s; the native HTTP suite passed in 17.96 s after its added creation assertion was corrected to the implemented 201 response. Missing-marker/missing-source recovery checks also passed. See implementation-evidence/kv-native-http.json. `test:integration` now runs both integration files; neither uses production credentials or cluster state.
 
 Flux cascade now retains repository credentials instead of inferring and deleting `<name>-auth`; progress states the retained credential lifecycle. The production HTTP fixture has a narrow synthetic Flux-kind success mode while every Secret delete remains forbidden, and checks completion/DB removal/no Secret-delete argv. Production build and expanded HTTP passed in 31.34 seconds; the full 69-test suite passed. See [native-core evidence](implementation-evidence/kv-native-core.json).

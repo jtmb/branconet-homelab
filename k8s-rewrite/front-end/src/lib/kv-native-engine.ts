@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import type { V1Secret } from "@kubernetes/client-node";
+import type { Prisma } from "@prisma/client";
 import { KvError, KvMutationError, requireGuarded, type KvAction, type KvActor } from "./kv-contract";
 import { KvRegistry, type RegisteredPath } from "./kv-registry";
 import type { NativeSecretTransport } from "./secret-client";
@@ -24,6 +25,11 @@ export class KvNativeEngine {
   }
   private async canonical(path: RegisteredPath) {
     try { return await this.transport.read(path.namespace, path.name); } catch (error) { throw secretFailure(error); }
+  }
+  private async fresh(actor: KvActor, path: RegisteredPath, action: KvAction | "adopt", client?: Prisma.TransactionClient) {
+    const latest = await this.registry.path(path.id, client);
+    if (latest.revision !== path.revision || latest.mount.revision !== path.mount.revision) throw new KvError(409, "KV metadata changed; refresh before retrying");
+    await this.registry.authorize(actor, latest, action === "adopt" ? "create" : action, client);
   }
   private async initial(path: RegisteredPath, partial = false) {
     if (await this.registry.db.kvOperation.count({ where: { pathId: path.id, outcome: partial ? "committed" : { in: ["committed", "pending", "ambiguous", "recovery-required"] } } }))
@@ -76,7 +82,7 @@ export class KvNativeEngine {
   }
   private async start(actor: KvActor, path: RegisteredPath, action: KvAction | "adopt", previousVersion: number, newVersion: number, aliases: SecretAlias[] = []) {
     return this.registry.serialized(async tx => {
-      await this.registry.authorize(actor, path, action === "adopt" ? "create" : action, tx);
+      await this.fresh(actor, path, action, tx);
       if (action === "adopt" || action === "create") await this.registry.admin(actor, tx);
       const op = await tx.kvOperation.create({ data: { id: randomUUID(), actorId: actor.identityId || actor.id, ...target(path), action, previousVersion, newVersion, outcome: "pending" } });
       await tx.kvAudit.create({ data: { actorId: op.actorId, operationId: op.id, ...target(path), action, previousVersion, newVersion, outcome: "pending" } });
@@ -105,7 +111,7 @@ export class KvNativeEngine {
       if (secret.immutable) throw new KvError(409, "Canonical Secret is immutable");
       if (!Number.isSafeInteger(version)) throw new KvError(413, "KV version counter exceeds its limit");
       const candidateBody = historyBody(path, source.uid, this.registry.config.historyNamespace, historyName, version, operation.id, values, tombstone);
-      await this.registry.authorize(actor, path, action === "adopt" ? "create" : action);
+      await this.fresh(actor, path, action);
       try { candidate = await this.transport.create(this.registry.config.historyNamespace, candidateBody); }
       catch (error) {
         if (secretFailure(error).status !== 503) throw error;
@@ -120,7 +126,7 @@ export class KvNativeEngine {
         operations: [...(current?.operations || []), { id: operation.id, action, previousVersion: current?.head || 0, newVersion: version, historyName, historyUid: identity.uid, createdAt }].slice(-100) };
       state.paths = [...state.paths.filter(p => p.id !== path.id), next];
       const body = stateBody(secret, state, path, values);
-      await this.registry.authorize(actor, path, action === "adopt" ? "create" : action);
+      await this.fresh(actor, path, action);
       if (action === "adopt" || action === "create") await this.registry.admin(actor);
       attemptedCas = true;
       const result = await this.transport.replace(path.namespace, path.name, body);

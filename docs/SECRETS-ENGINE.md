@@ -2,7 +2,7 @@
 
 Kubernetes native Secrets are the authoritative value store. BORTUS uses a TLS-verified Kubernetes client; SQLite stores identities, nonsecret configuration and explicit `SecretReference` metadata. Legacy sensitive DB rows are ignored, never pushed at startup/CRUD and never used as outage fallback.
 
-The [native KV design](BORTUS-KV-DESIGN.md) specifies grouped paths, immutable native history, policies/automation and import/export/rotation. Metadata registration, policies and identity foundations are implemented on the local branch; human native version/adoption/value/recovery routes passed local production HTTP/TLS qualification. Automation, destroy/GC, import/export, rotation and KV UI remain pending. Public Secret projections whitelist named fields and exclude arbitrary annotations/managedFields, including value-bearing last-applied configurations; canonical writes still preserve that unrelated native metadata.
+The [native KV design](BORTUS-KV-DESIGN.md) specifies grouped paths, immutable native history, policies/automation and import/export/rotation. Metadata registration, policies and identity foundations are implemented on the local branch; human native version/adoption/value/recovery routes passed local production HTTP/TLS qualification. Automation passed local API checks; destroy/GC, import/export, rotation and KV UI remain pending. Public Secret projections whitelist named fields and exclude arbitrary annotations/managedFields, including value-bearing last-applied configurations; canonical writes still preserve that unrelated native metadata.
 
 ## Mapping and API
 
@@ -12,7 +12,7 @@ The native transport preserves JSON maps directly because the installed SDK seri
 
 References have `alias`, `namespace`, `name`, `key`. Register via `/api/secret-references` or a metadata-only JSON array mounted as `BORTUS_SECRET_ALIASES_FILE`. See [deployment contract](BORTUS-DEPLOYMENT.md). No underscore parsing occurs: `openvpn_user` remains an exact data key. Preserve legacy aliases explicitly, including `secret_plex_smb-creds_password`; unmapped sensitive lookups error instead of reading old DB values.
 
-`GET /api/vars/lookup?key=<alias>` retains Bearer `BOTRUS_SECRETS_KEY` authentication and `{key,value}`. Aliases resolve from Kubernetes; nonsecret configuration resolves from SQLite. Encrypted-flag, secret/system-category, secret-prefixed and known credential names cannot return DB values. Invalid Bearer: 401; missing alias/key: 404; Kubernetes/config/RBAC outage: 503; collisions: 409. Responses are private/no-store. Only this exact lookup path bypasses cookie middleware.
+`GET /api/vars/lookup?key=<alias>` retains Bearer `BOTRUS_SECRETS_KEY` authentication and `{key,value}`. Aliases resolve from Kubernetes; nonsecret configuration resolves from SQLite. Encrypted-flag, secret/system-category, secret-prefixed and known credential names cannot return DB values. Invalid Bearer: 401; missing alias/key: 404; Kubernetes/config/RBAC outage: 503; collisions: 409. Responses are private/no-store. This exact lookup path has the legacy Bearer audience; exact /api/kv/automation separately bypasses cookie middleware with its scoped KV token audience.
 
 `/api/secrets` lists object metadata and keys without values for authenticated users. Flat value reads and mutations require fresh DB write role plus engineAdmin. Scoped writers use authorized KV endpoints as those are delivered. `/secrets` supplies explicit editing/reveal and resourceVersion protection. Readonly users see metadata only. Nonsecret `/api/vars` stays separate.
 
@@ -33,6 +33,8 @@ Values use authenticated API bodies and process memory; Secret payloads never en
 JWT signing material is external and stable, never auto-persisted. Existing sensitive SQLite rows/historical backups require operator cleanup after import verification. Native values survive app restart independently of DB. SQLite loss requires user/config/alias recovery; Kubernetes loss requires protected etcd/Secret recovery. No Vault/SOPS/Git value backend is introduced.
 
 The optional local runner expects a separately supplied sibling k8s-rewrite/ansible-playbook tree. Kubernetes provisioning roles and lookup plugins are not included in this application-only main merge.
+
+The exact scoped automation handler and filtered audit/capability routes passed local unit and production HTTP/TLS qualification. Cookie and legacy Bearer audiences cannot authenticate automation. Tokens intersect fresh owner/token policy and cannot initialize/adopt native targets or manage infrastructure. Destroy/GC, import/export, rotation and KV UI remain pending.
 
 ## KV delivery architecture (implementation pending)
 

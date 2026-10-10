@@ -36,6 +36,7 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     };
     const request=(route:string,method="GET",body?:unknown,cookie?:string)=>fetch(base+route,{method,headers:{...(cookie?{cookie}:{}),...(body===undefined?{}:{"Content-Type":"application/json"})},body:body===undefined?undefined:JSON.stringify(body),signal:AbortSignal.timeout(15000),redirect:"manual"});
     const checked=async(response:Response,status=200)=>{assert.equal(response.status,status);assert.match(response.headers.get("cache-control")||"",/no-store/);return response.json();};
+    const automate=(body:unknown,credential?:string)=>fetch(base+"/api/kv/automation",{method:"POST",headers:{"Content-Type":"application/json",...(credential?{authorization:"Bearer "+credential}:{})},body:JSON.stringify(body),signal:AbortSignal.timeout(15000)});
     const login=async(username:string,password:string)=>{const response=await request("/api/auth/login","POST",{username,password});assert.equal(response.status,200);return response.headers.get("set-cookie")!.split(";",1)[0];};
     await start(false);
     assert.equal((await request("/api/auth/register","POST",{username:"operator",password:"synthetic-admin-password"})).status,201);
@@ -71,7 +72,26 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     await checked(await request("/api/secrets?namespace=apps&name=imported&key=__proto__","GET",undefined,scoped),403);
     await checked(await request(route+"/data","PUT",{resourceVersion:adopted.resourceVersion,fields:[]},scoped),428);
     await checked(await request(route+"/data","PUT",{resourceVersion:adopted.resourceVersion,expectedHead:0,fields:[]},scoped),409);
-    const changed=await checked(await request(route+"/data","PUT",{resourceVersion:adopted.resourceVersion,expectedHead:1,fields:[{field:"__proto__",encoding:"utf8",value:""},{field:"binary",encoding:"base64",value:binary}]},scoped));assert.equal(changed.head,2);
+    const identity=await checked(await request("/api/kv/identities","POST",{ownerId:scopedUser.id,name:"http-consumer",expiresAt:new Date(Date.now()+3600000).toISOString(),scopes:[{mountId:mount.id,prefix:"services/api",actions:["list","read","update"]}]},scoped),201);
+    const tokenRead={operation:"read",pathId:registry.id};const readsBeforeInvalid=native.calls.length;
+    await checked(await request("/api/kv/automation","POST",tokenRead,admin),401);
+    await checked(await automate(tokenRead,"synthetic-legacy-lookup-token"),401);
+    await checked(await automate(tokenRead,admin.slice(admin.indexOf("=")+1)),401);assert.equal(native.calls.length,readsBeforeInvalid);
+    await checked(await request(route+"/data","GET",undefined,"botrus_auth_token="+identity.credential),401);
+    const tokenData=await checked(await automate(tokenRead,identity.credential));assert.equal(tokenData.fields.find((f:any)=>f.field==="binary").value,binary);
+    const tokenCaps=await checked(await automate({operation:"capabilities",pathId:registry.id},identity.credential));assert.equal(tokenCaps.initializationAllowed,false);assert.equal(tokenCaps.permissions.update,true);
+    await checked(await automate({operation:"read",pathId:createdPath.id},identity.credential),403);
+    await checked(await automate({operation:"adopt",pathId:registry.id},identity.credential),400);
+    await checked(await automate({...tokenRead,command:"forbidden"},identity.credential),400);
+    await checked(await automate({operation:"update",pathId:registry.id,fields:[]},identity.credential),428);
+    const changed=await checked(await automate({operation:"update",pathId:registry.id,resourceVersion:adopted.resourceVersion,expectedHead:1,fields:[{field:"__proto__",encoding:"utf8",value:""},{field:"binary",encoding:"base64",value:binary}]},identity.credential));assert.equal(changed.head,2);
+    const tokenHistory=await checked(await automate({...tokenRead,version:1},identity.credential));assert.equal(tokenHistory.fields.find((f:any)=>f.field==="binary").value,binary);
+    await db.kvIdentity.update({where:{id:identity.id},data:{expiresAt:new Date(0)}});await checked(await automate(tokenRead,identity.credential),401);
+    await db.kvIdentity.update({where:{id:identity.id},data:{expiresAt:new Date(Date.now()+3600000)}});
+    await checked(await request("/api/kv/identities/"+identity.id,"DELETE",undefined,scoped));await checked(await automate(tokenRead,identity.credential),401);
+    const audit=await checked(await request("/api/kv/audit?pathId="+registry.id,"GET",undefined,scoped));assert(audit.items.some((row:any)=>row.actorId===identity.id));assert(audit.items.length<=100);assert(!JSON.stringify(audit).includes(binary));assert(!JSON.stringify(audit).includes(identity.credential));
+    await checked(await request("/api/kv/audit?pathId=invalid","GET",undefined,scoped),400);
+    const readerCapabilities=await checked(await request(route+"/capabilities","GET",undefined,reader));assert.equal(readerCapabilities.permissions.read,false);
     const historical=await checked(await request(route+"/versions/1/data","GET",undefined,admin));assert.equal(historical.fields.find((f:any)=>f.field==="binary").value,binary);assert(!JSON.stringify(historical).includes(privateMarker));
     const lookup=()=>fetch(base+"/api/vars/lookup?key="+alias.alias,{headers:{authorization:"Bearer synthetic-legacy-lookup-token"},signal:AbortSignal.timeout(15000)});
     const lookedUp=await checked(await lookup());assert.equal(lookedUp.value,"");
@@ -100,6 +120,6 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     await db.user.update({where:{id:account.id},data:{engineAdmin:false}});
     await checked(await request(route+"/adopt","GET",undefined,admin),403);
     await checked(await request("/api/secrets?namespace=apps&name=imported&key=unrelated","GET",undefined,admin),403);
-    assert(!output.includes(privateMarker));assert(!output.includes("exact imported value"));assert(!output.includes("flat bypass"));
+    assert(!output.includes(privateMarker));assert(!output.includes("exact imported value"));assert(!output.includes("flat bypass"));assert(!output.includes(identity.credential));
   } finally {await stop();await native?.close();await db.$disconnect();await rm(dir,{recursive:true,force:true});}
 });

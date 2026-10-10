@@ -14,6 +14,7 @@ import type { NativeSecretTransport } from "../src/lib/secret-client";
 import { CREATED_ANNOTATION, HISTORY_ANNOTATION, STATE_ANNOTATION, encodedValues, exportFields, historyValues, parseState, stateBody } from "../src/lib/kv-native-state";
 import { SecretError, SecretStore } from "../src/lib/cluster-secrets";
 import { flatSecretGuard, requireLegacyPrincipal } from "../src/lib/secret-access";
+import { automationRequest, runAutomation } from "../src/lib/kv-automation";
 
 const marker = "synthetic-private-other-key";
 const copy = <T>(value: T): T => JSON.parse(JSON.stringify(value));
@@ -22,6 +23,7 @@ class NativeFixture implements NativeSecretTransport {
   objects = new Map<string,V1Secret>(); counter = 0; reads = 0; writes = 0;
   replaceMode = "normal"; readOutage = false; createTimeout = false;
   afterReplace?: () => Promise<void>;
+  afterCreate?: () => Promise<void>;
   key(ns: string, name: string) { return ns + "/" + name; }
   seed(ns: string, name: string, data: Record<string,string>, extra: Partial<V1Secret> = {}) {
     const value: V1Secret = { apiVersion: "v1", kind: "Secret", type: "Opaque", ...extra, metadata: { ...extra.metadata, name, namespace: ns, uid: "native-uid-" + ++this.counter, resourceVersion: String(this.counter), creationTimestamp: new Date() }, data: copy(data) };
@@ -38,6 +40,7 @@ class NativeFixture implements NativeSecretTransport {
     this.writes++;
     if (this.objects.has(this.key(ns,body.metadata!.name!))) throw { code: 409 };
     const result = this.seed(ns, body.metadata!.name!, body.data || {}, body);
+    await this.afterCreate?.();
     if (this.createTimeout && ns === "history") { this.createTimeout = false; throw { code: 503, body: marker }; }
     return result;
   }
@@ -160,6 +163,27 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       assert.equal((await engine.status(actor,registered.id)).head,2);
       assert.equal((await native.read("apps","imported")).data!.unrelated,other);
     });
+    await t.test("automation has a distinct scoped audience, native CAS and fresh revocation without initialization authority", async () => {
+      const p=await registry.registerPath(actor,{mountId:mount.id,path:"automation/consumer",namespace:"apps",name:"automated",fields:[{field:"binary",key:"key"}]});
+      const created=await engine.create(actor,p.id,{resourceVersion:"absent",expectedHead:0,fields:[]});
+      const identity=await registry.issueIdentity(actor,{ownerId:actor.id,name:"automated",expiresAt:new Date(Date.now()+60000),scopes:[{mountId:mount.id,prefix:"automation",actions:["list","read","update","create"]}]});
+      const token=await registry.authenticateIdentity("Bearer "+identity.credential);
+      const current=await runAutomation(engine,token,{operation:"read",pathId:p.id});assert("fields" in current);assert.equal(current.fields.length,0);
+      assert.equal((await registry.capabilities(token,p.id)).initializationAllowed,false);
+      await assert.rejects(runAutomation(engine,actor,{operation:"read",pathId:p.id}),denied(401));
+      await assert.rejects(runAutomation(engine,token,{operation:"read",pathId:registered.id}),denied(403));
+      for(const operation of ["create","adopt","shell","identity-issue"]) assert.equal(automationRequest.safeParse({operation,pathId:p.id}).success,false);
+      assert.equal(automationRequest.safeParse({operation:"read",pathId:p.id,command:marker}).success,false);
+      await assert.rejects(engine.create(token,p.id,{resourceVersion:"absent",expectedHead:0,fields:[]}),denied(403));
+      await assert.rejects(runAutomation(engine,token,{operation:"update",pathId:p.id,fields:[]}),denied(428));
+      const changed=await runAutomation(engine,token,{operation:"update",pathId:p.id,resourceVersion:created.resourceVersion,expectedHead:1,fields:[{field:"binary",encoding:"base64",value:initial.__proto__}]});
+      assert("head" in changed);assert.equal(changed.head,2);
+      const historical=await runAutomation(engine,token,{operation:"read",pathId:p.id,version:1});assert("fields" in historical);assert.equal(historical.fields.length,0);
+      const tokenAudit=await registry.listAudit(token,{pathId:p.id});assert(tokenAudit.items.some(row=>row.actorId===identity.id));
+      assert(!JSON.stringify(tokenAudit).includes(identity.credential));assert(!JSON.stringify(tokenAudit).includes(initial.__proto__));
+      await registry.revokeIdentity(actor,identity.id);const before=native.reads;
+      await assert.rejects(runAutomation(engine,token,{operation:"read",pathId:p.id}),denied(401));assert.equal(native.reads,before);
+    });
     await t.test("external selected-key drift requires reconcile; rollback creates a new immutable version", async () => {
       const changed = native.objects.get("apps/imported")!; changed.data!["constructor"]=Buffer.from("external").toString("base64"); changed.metadata!.resourceVersion=String(++native.counter);
       await assert.rejects(engine.read(actor,registered.id),denied(409));
@@ -193,6 +217,14 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       assert.equal(pending!.outcome,"recovery-required"); native.afterReplace=undefined;
       await db.$executeRawUnsafe("DROP TRIGGER deny_audit");
       assert.equal((await new KvNativeEngine(registry,native).resolve(actor,pending!.operationId)).outcome,"committed");
+    });
+    await t.test("concurrent retention metadata changes refuse canonical CAS and retain candidate history for recovery", async()=>{
+      const original=await engine.status(actor,registered.id),p=await registry.path(registered.id),histories=(await native.list("history")).length;
+      native.afterCreate=async()=>{await registry.changeRetention(actor,p.id,p.revision,p.retention+1);};
+      try {await assert.rejects(engine.change(actor,registered.id,{resourceVersion:original.resourceVersion,expectedHead:original.head,fields:[]}),denied(409));}
+      finally {native.afterCreate=undefined;}
+      const current=await engine.status(actor,registered.id);assert.equal(current.head,original.head);assert.equal(current.resourceVersion,original.resourceVersion);
+      assert.equal((await native.list("history")).length,histories+1);
     });
     await t.test("tombstone retains object/unrelated values; retention is bounded without deleting last copies", async()=>{
       const path=await registry.path(registered.id); await registry.changeRetention(actor,path.id,path.revision,2);
