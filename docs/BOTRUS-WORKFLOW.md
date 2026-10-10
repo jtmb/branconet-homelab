@@ -38,6 +38,8 @@ The **Flux** view reflects installed Flux resources. The production source is th
 
 The write-role terminal executes shell commands with the application's operating-system permissions as well as its Kubernetes permissions. Treat write accounts as operators with application-host access.
 
+The separate pod-exec handler runs scripts inside the selected pod/container via structured kubectl argv. Runtime session capabilities expose provisioning/operator-shell/pod-exec gates; Windows has no operator host shell, and both shell modes can be disabled by their documented environment flags. Browser capability presentation is still being wired. Node drain requires exact-name confirmation, respects PDB/local-data/unmanaged-pod refusal, and a timeout may leave partial effects that must be inspected.
+
 ## Validation
 
 Run `npm test`, `npm run typecheck`, `npm run build`, then `npm run test:integration`. The HTTP integration suite requires the production build and uses temporary SQLite, fake credentials and a loopback unavailable Kubernetes endpoint. It does not access the operator database or live cluster.

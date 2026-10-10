@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { ensureJwtSecret } from "@/lib/auth-server";
+import { runtimeCapabilities } from "@/lib/runtime-capabilities";
 
 export async function GET() {
   try {
@@ -26,6 +27,7 @@ export async function GET() {
         role: user.role,
         hasUsers: userCount > 0,
         registrationOpen,
+        capabilities: runtimeCapabilities(),
       });
     }
 
@@ -33,9 +35,9 @@ export async function GET() {
       authenticated: false,
       hasUsers: userCount > 0,
       registrationOpen,
+      capabilities: runtimeCapabilities(),
     });
   } catch (err) {
-    console.error("Session error:", err);
     return NextResponse.json(
       { authenticated: false, error: "Internal server error" },
       { status: 500 }

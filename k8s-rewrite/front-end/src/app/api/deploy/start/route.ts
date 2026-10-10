@@ -5,12 +5,13 @@ import { activeJobs } from "@/lib/active-jobs";
 import { syncVarsToYAML, syncInventoryToFile, syncNodesFromVars } from "@/lib/sync-vars";
 import { invalidateCache } from "@/lib/cluster-cache";
 import { requireWrite } from "@/lib/permissions";
+import { runtimeCapabilities } from "@/lib/runtime-capabilities";
 
 export async function POST(request: NextRequest) {
   const auth = await requireWrite();
   if (auth instanceof NextResponse) return auth;
 
-  if (process.env.BORTUS_DISABLE_PROVISIONING === "true" || process.env.KUBERNETES_SERVICE_HOST) return NextResponse.json({ error: "Run bootstrap/provisioning from the independent operator environment" }, { status: 501 });
+  if (!runtimeCapabilities().provisioning) return NextResponse.json({ error: "Run bootstrap/provisioning from the independent operator environment" }, { status: 501 });
 
   try {
     const body = await request.json();

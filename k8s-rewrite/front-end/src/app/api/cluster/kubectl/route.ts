@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireWrite } from "@/lib/permissions";
 import { shellExec } from "@/lib/k8s";
+import { runtimeCapabilities } from "@/lib/runtime-capabilities";
 
 /**
  * POST /api/cluster/kubectl
@@ -11,6 +12,7 @@ import { shellExec } from "@/lib/k8s";
 export async function POST(request: NextRequest) {
   const auth = await requireWrite();
   if (auth instanceof NextResponse) return auth;
+  if (!runtimeCapabilities().operatorShell) return NextResponse.json({ error: "Operator shell is unavailable in this runtime" }, { status: 501 });
 
   try {
     const { command } = await request.json();

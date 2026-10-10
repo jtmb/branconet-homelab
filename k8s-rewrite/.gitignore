@@ -18,6 +18,9 @@ group_vars/all.yml
 # Local development artifacts
 *.log
 logs/
+!front-end/src/app/api/**/logs/
+front-end/src/app/api/**/logs/*
+!front-end/src/app/api/**/logs/route.ts
 
 # IDE settings
 .vscode/

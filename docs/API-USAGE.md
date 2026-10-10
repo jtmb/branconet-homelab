@@ -94,28 +94,40 @@ Cluster list/detail/overview responses add `availability:{state,resources}`. Eac
 | /api/cluster/pods | GET list; type=all/app/system, namespace and labelSelector filters |
 | /api/cluster/pods/[namespace]/[name] | GET detail |
 | /api/cluster/pods/[namespace]/[name]/delete | DELETE pod |
-| /api/cluster/pods/[namespace]/[name]/yaml | GET YAML; PUT apply YAML |
+| /api/cluster/pods/[namespace]/[name]/yaml | GET YAML; PUT versioned replacement |
+| /api/cluster/pods/[namespace]/[name]/logs | GET bounded logs; tail, sinceSeconds, container, previous |
+| /api/cluster/pods/[namespace]/[name]/exec | POST write-role command in selected pod/container via structured argv |
 | /api/cluster/deployments | GET list |
 | /api/cluster/deployments/[namespace]/[name] | GET detail |
 | /api/cluster/deployments/[namespace]/[name]/delete | DELETE deployment |
 | /api/cluster/deployments/[namespace]/[name]/scale | POST replica count |
 | /api/cluster/deployments/[namespace]/[name]/action | POST supported deployment action |
-| /api/cluster/deployments/[namespace]/[name]/yaml | GET YAML; PUT apply YAML |
+| /api/cluster/deployments/[namespace]/[name]/yaml | GET YAML; PUT versioned replacement |
 | /api/cluster/services | GET list |
 | /api/cluster/services/[namespace]/[name] | GET detail |
+| /api/cluster/services/[namespace]/[name]/yaml | GET actual YAML, read-only |
 | /api/cluster/ingresses | GET list |
 | /api/cluster/ingresses/[namespace]/[name] | GET detail |
+| /api/cluster/ingresses/[namespace]/[name]/yaml | GET YAML; PUT scoped versioned replacement |
+| /api/cluster/ingresses/[namespace]/[name]/delete | DELETE write-role ingress |
 | /api/cluster/namespaces | GET list |
 | /api/cluster/namespaces/[name] | GET detail |
 | /api/cluster/namespaces/[name]/delete | DELETE namespace |
-| /api/cluster/namespaces/[name]/yaml | GET YAML; PUT apply YAML |
+| /api/cluster/namespaces/[name]/yaml | GET YAML; PUT versioned replacement |
 | /api/cluster/volumes | GET PVC list |
 | /api/cluster/volumes/[namespace]/[name] | GET PVC detail |
+| /api/cluster/volumes/[namespace]/[name]/yaml | GET actual PVC YAML, read-only |
 | /api/cluster/volumes/reclaim | GET reclaim policies; PATCH policy |
 | /api/cluster/remove | DELETE recorded cluster state |
 | /api/cluster/kubectl | POST JSON command; returns output |
 
-The write-role terminal endpoint executes arbitrary shell commands through bash with application-host permissions. It is not restricted to Kubernetes API access. Service/PVC compatibility menus label their JSON detail response as YAML; they do not currently return actual YAML. Pod logs, node YAML/action and ingress YAML menu paths have no matching handlers. See audit A08 for the route/capability gaps.
+The shared capability matrix defines YAML read for all seven kinds, edit/delete only for supported kinds, logs for pods and explicit node/deployment actions. All declared API handlers exist. YAML edit accepts one exact kind/API-version/namespace/name object within 256 KiB, requires resourceVersion (428 if missing), uses replace with CAS, and invalidates cache after success. Conflict is fixed 409; invalid Kubernetes request is fixed 400. Native Secret YAML is never accepted here. UI wiring and real CLI/RBAC acceptance remain pending; check the implementation ledger.
+
+Node YAML is GET /api/cluster/nodes/[hostname]/yaml. POST /api/cluster/nodes/[hostname]/action supports cordon/uncordon/drain with fresh write role; drain requires confirmName exactly matching hostname, respects PDB/unmanaged/local-data refusals and has a 20-second Kubernetes timeout. No force or emptyDir deletion flag is used. Failed drain may have partial effects; cache is invalidated even on failure and the operator must inspect current state. Logs default to 100 lines, permit 1–1000, cap output at 256 KiB and never follow indefinitely. Pod exec sends a script as one sh -lc argument inside the selected pod; it never concatenates that script into a host shell command.
+
+The write-role operator terminal endpoint executes arbitrary shell commands through bash with application-host permissions. It is not restricted to Kubernetes API access; pod execution is being separated into a scoped endpoint so pod commands do not run in a host shell.
+
+Auth session responses now include capabilities:{provisioning,operatorShell,podExec}. These describe implemented runtime gates, not a successful live RBAC probe. Operator shell is disabled on Windows and when BORTUS_DISABLE_OPERATOR_SHELL=true; pod exec is disabled when BORTUS_DISABLE_POD_EXEC=true. The corresponding handlers enforce these gates with 501. Provisioning retains its container/in-cluster disable behavior. YAML reads also cap output at 256 KiB (413 if exceeded); logs enforce their limit after CLI output. UI wiring is pending A12.
 
 The wrapper accepts structured argv and throws fixed errors instead of returning failed-command stdout/stderr as success. Resource names and namespaces reject whitespace, flags, separators and invalid DNS forms before CLI invocation. Scale accepts integer replicas from 0 through 10000. Mutation/YAML route errors are mapped to fixed 400/403/404/502/503/504 responses; acceptance is tracked under A04/A05. JSON reads now throw on failed commands/invalid JSON; cluster route availability conversion is in progress under A06. Historical command splitting/false-success evidence remains in the audit.
 

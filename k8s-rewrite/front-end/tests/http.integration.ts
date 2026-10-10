@@ -226,7 +226,7 @@ test(
         ["/api/cluster/pods/apps/demo/delete", "DELETE", undefined],
         ["/api/cluster/deployments/apps/demo/delete", "DELETE", undefined],
         ["/api/cluster/namespaces/apps/delete", "DELETE", undefined],
-        ["/api/cluster/namespaces/apps/yaml", "PUT", { yaml: "apiVersion: v1\nkind: Namespace\nmetadata:\n  name: apps\n" }],
+        ["/api/cluster/namespaces/apps/yaml", "PUT", { yaml: 'apiVersion: v1\nkind: Namespace\nmetadata:\n  name: apps\n  resourceVersion: "1"\n' }],
       ] as const) {
         const response = await request(url, method, data, writer);
         assert.equal(response.status, 502, url);
@@ -238,6 +238,35 @@ test(
       const reclaimBody = await reclaim.json();
       assert.equal(reclaimBody.success, false);
       assert.ok(!JSON.stringify(reclaimBody).includes("private-command"));
+      const readPaths = [
+        ["/api/cluster/nodes/test-node/yaml", "Node"], ["/api/cluster/ingresses/apps/web/yaml", "Ingress"],
+        ["/api/cluster/services/apps/web/yaml", "Service"], ["/api/cluster/volumes/apps/data/yaml", "PersistentVolumeClaim"],
+      ];
+      for (const [url, kind] of readPaths) {
+        const response = await request(url, "GET", undefined, reader);
+        assert.equal(response.status, 200, url);
+        assert.ok((await response.json()).yaml.includes(`kind: ${kind}`));
+      }
+      const logs = await request("/api/cluster/pods/apps/demo/logs?tail=50&container=app&previous=true", "GET", undefined, reader);
+      assert.equal(logs.status, 200);
+      assert.equal((await logs.json()).logs, "fixture log line\n");
+      assert.ok((await fixture.calls()).at(-1)!.includes("--limit-bytes=262144"));
+      assert.equal((await request("/api/cluster/pods/apps/demo/logs?tail=1001", "GET", undefined, reader)).status, 400);
+      assert.equal((await request("/api/cluster/pods/apps/demo/exec", "POST", { command: "echo fixture" }, reader)).status, 403);
+      const execResult = await request("/api/cluster/pods/apps/demo/exec", "POST", { command: "echo fixture; pwd" }, writer);
+      assert.equal(execResult.status, 502);
+      assert.deepEqual((await fixture.calls()).at(-1)!.slice(2), ["exec", "demo", "-n", "apps", "--", "sh", "-lc", "echo fixture; pwd"]);
+      assert.equal((await request("/api/cluster/nodes/test-node/action", "POST", { action: "drain" }, writer)).status, 400);
+      assert.equal((await request("/api/cluster/nodes/test-node/action", "POST", { action: "cordon" }, reader)).status, 403);
+      assert.equal((await request("/api/cluster/nodes/test-node/action", "POST", { action: "drain", confirmName: "test-node" }, writer)).status, 502);
+      const drainArgs = (await fixture.calls()).at(-1)!;
+      assert.ok(drainArgs.includes("--timeout=20s") && !drainArgs.includes("--force") && !drainArgs.includes("--delete-emptydir-data"));
+      assert.equal((await request("/api/cluster/ingresses/apps/web/delete", "DELETE", undefined, writer)).status, 502);
+      const sessionCapabilities = await (await request("/api/auth/session", "GET", undefined, reader)).json();
+      assert.equal(sessionCapabilities.capabilities.provisioning, false);
+      if (process.platform === "win32") assert.equal(sessionCapabilities.capabilities.operatorShell, false);
+      const invalidYaml = await request("/api/cluster/namespaces/apps/yaml", "PUT", { yaml: "apiVersion: v1\nkind: Namespace\nmetadata:\n  name: apps\n" }, writer);
+      assert.equal(invalidYaml.status, 428);
       const fluxCreate = await request("/api/flux/repos", "POST", { name: "failed-source", url: "https://example.invalid/repository.git" }, writer);
       assert.equal(fluxCreate.status, 502);
       assert.ok(!(await fluxCreate.text()).includes("private-command"));

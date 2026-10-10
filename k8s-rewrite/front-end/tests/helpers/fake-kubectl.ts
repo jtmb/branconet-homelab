@@ -19,11 +19,17 @@ class Fixture { static int Main(string[] args) {
   }
   int p=Array.IndexOf(args,"get");
   Thread.Sleep(50);
+  if(Array.IndexOf(args,"logs")>=0) { Console.Write("fixture log line\\n"); return 0; }
   if(p<0) { Console.Write("private-command-output-marker"); Console.Error.Write("private-command-error-marker"); return 1; }
   string r=args[p+1]; string f=Path.Combine(d,r+".json");
   string failure=Path.Combine(d,"failure.txt");
   if(File.Exists(failure)&&(File.ReadAllText(failure).Trim()=="all"||File.ReadAllText(failure).Trim()==r)) { Console.Error.Write("private-command-error-marker"); return 1; }
-  if(Array.IndexOf(args,"yaml")>=0) Console.Write("apiVersion: v1\\nkind: Namespace\\nmetadata:\\n  name: apps\\n");
+  if(Array.IndexOf(args,"yaml")>=0) {
+    string kind=r=="persistentvolumeclaim"?"PersistentVolumeClaim":r=="deployment"?"Deployment":r=="ingress"?"Ingress":r=="node"?"Node":r=="pod"?"Pod":r=="service"?"Service":"Namespace";
+    string version=r=="deployment"?"apps/v1":r=="ingress"?"networking.k8s.io/v1":"v1";
+    int ns=Array.IndexOf(args,"-n");
+    Console.Write("apiVersion: "+version+"\\nkind: "+kind+"\\nmetadata:\\n  name: "+args[p+2]+"\\n  resourceVersion: \\"1\\"\\n"+(ns>=0?"  namespace: "+args[ns+1]+"\\n":""));
+  }
   else Console.Write(File.Exists(f)?File.ReadAllText(f):"{\\"items\\":[]}");
   return 0;
 } }`);
@@ -37,11 +43,14 @@ if(!d||!fs.existsSync(d))process.exit(90);
 fs.appendFileSync(path.join(d,'calls.log'),a.map(v=>Buffer.from(v).toString('base64')).join(' ')+'\\n');
 const p=a.indexOf('get');
 Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,50);
+if(a.includes('logs')){process.stdout.write('fixture log line\\n');process.exit(0);}
 if(p<0){process.stdout.write('private-command-output-marker');process.stderr.write('private-command-error-marker');process.exit(1);}
 const f=path.join(d,a[p+1]+'.json');
 const failure=path.join(d,'failure.txt');
 if(fs.existsSync(failure)&&['all',a[p+1]].includes(fs.readFileSync(failure,'utf8').trim())){process.stderr.write('private-command-error-marker');process.exit(1);}
-process.stdout.write(a.includes('yaml')?'apiVersion: v1\\nkind: Namespace\\nmetadata:\\n  name: apps\\n':fs.existsSync(f)?fs.readFileSync(f,'utf8'):'{"items":[]}');
+const kinds={persistentvolumeclaim:'PersistentVolumeClaim',deployment:'Deployment',ingress:'Ingress',node:'Node',pod:'Pod',service:'Service',namespace:'Namespace'};
+const resource=a[p+1],ns=a.indexOf('-n');
+process.stdout.write(a.includes('yaml')?'apiVersion: '+(resource==='deployment'?'apps/v1':resource==='ingress'?'networking.k8s.io/v1':'v1')+'\\nkind: '+kinds[resource]+'\\nmetadata:\\n  name: '+a[p+2]+'\\n  resourceVersion: "1"\\n'+(ns>=0?'  namespace: '+a[ns+1]+'\\n':''):fs.existsSync(f)?fs.readFileSync(f,'utf8'):'{"items":[]}');
 `);
     await chmod(executable, 0o755);
   }

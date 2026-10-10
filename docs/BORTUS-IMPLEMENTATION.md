@@ -15,7 +15,7 @@ An item becomes complete only after implementation and relevant evidence. Local 
 | A05 truthful commands | Typed/sanitized failures; production HTTP failed scale/action/delete/apply/PV and Flux create/cascade | Local acceptance passed; real CLI/image/live unperformed |
 | A06 availability | Explicit unavailable/partial/stale server contracts; browser presentation still pending | Backend local acceptance passed; UI pending |
 | A07 cache cost | Per-resource coalescing/backoff/retention, size/item limits, bounded commands and fixed-fixture timing | Local acceptance passed; image/live peak memory/process evidence unperformed |
-| A08 resource capabilities | API/menu capability matrix and supported logs/YAML/actions | Pending |
+| A08 resource capabilities | Shared API matrix, scoped YAML CAS/logs/node actions/pod exec; menu wiring pending | Backend local acceptance passed; UI pending |
 | A09 deployment state | Owner UID mapping, desired/observed generation/zero replicas and integer bounds | Backend local acceptance passed; UI pending |
 | A10 pod filters | Namespace/type/label selector contract and server filtering | Local API acceptance passed; browser evidence pending |
 | A11 polling/refetch | Shared query/session state, visibility/cancel/overlap/backoff and mutation refetch | Pending |
@@ -67,6 +67,8 @@ That expanded HTTP suite passed in 24.98 s; all 29 unit/transport tests and prod
 Final cache/state HTTP acceptance passed in 9.48 s and saved [cache-http.json](implementation-evidence/cache-http.json). Cold pods: 107.37 ms/1 CLI call (baseline 184.86 ms/10); 12 warm samples p50/p95 14.45/16.37 ms/0 CLI; 20 concurrent cold requests shared 1 call at p50/p95 112.95/113.47 ms; 20 warm requests made 0 calls. Twelve requests during an initial service outage returned 503 with no additional CLI calls. Compare latency observationally, not as controlled image performance. Real child-process output overflow and timeout tests passed; typecheck passed. Fresh build already passed for all runtime changes. UI availability/ownership displays, pagination and real image/RBAC checks remain pending.
 
 Final full unit/transport run: 30 passed, zero skipped. All runtime changes had a successful production build; expanded HTTP and typecheck passed. Main's separate-chart contract was merged as 3588864 with application notes retained. No source/image publication or live mutation occurred.
+
+Resource API/capability stage implements all declared YAML read routes, scoped versioned YAML replacement, bounded pod logs/exec, ingress delete, and confirmed bounded node actions. Runtime capability flags are returned in session responses and enforced on server handlers; menus/polling remain pending. All 33 unit/transport tests passed with zero skipped, production build and typecheck passed, and production HTTP acceptance passed in 26.80 s. Tests cover matrix-to-handler consistency, identity/kind/list/version/size YAML rejection, runtime disable flags and actual read/role/argument/drain boundaries. The repository ignore exception admits only API logs/route.ts source while continuing to exclude runtime log artifacts. Actual CLI/RBAC/image/live acceptance remains external.
 
 ## Native Secrets engine scope decision
 

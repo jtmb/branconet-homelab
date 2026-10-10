@@ -22,6 +22,8 @@ function failure(error: unknown): KubernetesCommandError {
   if (err.killed) return new KubernetesCommandError(504, "Kubernetes request timed out");
   if (/\bForbidden\b/i.test(err.stderr || "")) return new KubernetesCommandError(403, "Kubernetes permission denied");
   if (/\bNotFound\b/i.test(err.stderr || "")) return new KubernetesCommandError(404, "Kubernetes resource not found");
+  if (/\bConflict\b|object has been modified/i.test(err.stderr || "")) return new KubernetesCommandError(409, "Kubernetes resource changed; refresh before retrying");
+  if (/\bBadRequest\b|\bInvalid\b/i.test(err.stderr || "")) return new KubernetesCommandError(400, "Kubernetes rejected the request");
   return new KubernetesCommandError(502, "Kubernetes command failed");
 }
 
