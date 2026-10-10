@@ -128,3 +128,20 @@ export function historyValues(secret: V1Secret, path: RegisteredPath, sourceUid:
     throw new KvError(409, "Owned history identity changed; recovery required");
   return boundedValues(Object.fromEntries(Object.entries(secret.data || {})));
 }
+
+// Only owned identity metadata is usable for preview; all values are verified again before deletion.
+export function historyReference(metadata: V1Secret["metadata"], path: RegisteredPath, sourceUid: string): VersionRef | null {
+  const raw = metadata?.annotations?.[HISTORY_ANNOTATION];
+  if (typeof raw !== "string" || Buffer.byteLength(raw) > 64 * 1024) return null;
+  try {
+    const owned = JSON.parse(raw), keys = ["format", "pathId", "mountId", "path", "namespace", "name", "sourceUid", "version", "operationId", "fields", "tombstone"];
+    if (!owned || typeof owned !== "object" || Object.keys(owned).some(key => !keys.includes(key)) || owned.format !== 1 ||
+      owned.pathId !== path.id || owned.mountId !== path.mountId || owned.path !== path.path || owned.namespace !== path.namespace || owned.name !== path.name ||
+      owned.sourceUid !== sourceUid || !integer(owned.version) || owned.version < 1 || !/^[0-9a-f-]{36}$/.test(owned.operationId) ||
+      typeof owned.tombstone !== "boolean" || !Array.isArray(owned.fields) || !sameMappings(fieldMapping(owned.fields, path.namespace, path.name), path.fields) ||
+      metadata?.name !== "kv-" + path.id.replaceAll("-", "") + "-" + owned.operationId.replaceAll("-", "").slice(0, 24)) return null;
+    const identity = nativeIdentity({ metadata }), createdAt = String(metadata?.creationTimestamp || "");
+    if (!Number.isFinite(Date.parse(createdAt))) return null;
+    return { version: owned.version, operationId: owned.operationId, tombstone: owned.tombstone, name: metadata!.name!, uid: identity.uid, createdAt };
+  } catch { return null; }
+}

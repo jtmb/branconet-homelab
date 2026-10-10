@@ -1,4 +1,5 @@
 import { test } from "node:test";
+import { randomUUID } from "node:crypto";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { mkdtemp, rm } from "node:fs/promises";
@@ -11,7 +12,7 @@ import { KvRegistry } from "../src/lib/kv-registry";
 import { KvNativeEngine } from "../src/lib/kv-native-engine";
 import { KvError, KvMutationError, kvConfig } from "../src/lib/kv-contract";
 import type { NativeSecretTransport } from "../src/lib/secret-client";
-import { CREATED_ANNOTATION, HISTORY_ANNOTATION, STATE_ANNOTATION, encodedValues, exportFields, historyValues, parseState, stateBody } from "../src/lib/kv-native-state";
+import { CREATED_ANNOTATION, HISTORY_ANNOTATION, STATE_ANNOTATION, encodedValues, exportFields, historyBody, historyValues, parseState, stateBody } from "../src/lib/kv-native-state";
 import { SecretError, SecretStore } from "../src/lib/cluster-secrets";
 import { flatSecretGuard, requireLegacyPrincipal } from "../src/lib/secret-access";
 import { automationRequest, runAutomation } from "../src/lib/kv-automation";
@@ -24,6 +25,8 @@ const denied = (status: number) => (error: unknown) => error instanceof KvError 
 class NativeFixture implements NativeSecretTransport {
   objects = new Map<string,V1Secret>(); counter = 0; reads = 0; writes = 0;
   replaceMode = "normal"; readOutage = false; createTimeout = false;
+  deleteMode = "normal"; deletes: { namespace: string; name: string; uid: string; resourceVersion: string }[] = [];
+  malformedReplaceReply = false;
   afterReplace?: () => Promise<void>;
   afterCreate?: () => Promise<void>;
   key(ns: string, name: string) { return ns + "/" + name; }
@@ -38,6 +41,7 @@ class NativeFixture implements NativeSecretTransport {
     return copy(value);
   }
   async list(ns: string) { return [...this.objects.values()].filter(s=>s.metadata?.namespace===ns).map(copy); }
+  async listMetadata(ns: string) { return [...this.objects.values()].filter(s=>s.metadata?.namespace===ns).map(s=>copy(s.metadata!)); }
   async create(ns: string, body: V1Secret) {
     this.writes++;
     if (this.objects.has(this.key(ns,body.metadata!.name!))) throw { code: 409 };
@@ -60,13 +64,17 @@ class NativeFixture implements NativeSecretTransport {
       if (this.replaceMode === "after-outage") this.readOutage = true;
       this.replaceMode = "normal"; throw { code: 503, body: marker };
     }
+    if(this.malformedReplaceReply){this.malformedReplaceReply=false;const reply=copy(result);reply.metadata!.uid="unverifiable-response";return reply;}
     return copy(result);
   }
   async delete(ns: string, name: string, uid: string, resourceVersion: string) {
+    this.deletes.push({namespace:ns,name,uid,resourceVersion});
     const current = this.objects.get(this.key(ns,name));
     if (!current) throw { code: 404 };
     if (current.metadata?.uid !== uid || current.metadata.resourceVersion !== resourceVersion) throw { code: 409 };
+    if(this.deleteMode==="before"){this.deleteMode="normal";throw {code:503};}
     this.objects.delete(this.key(ns,name));
+    if(this.deleteMode==="after"){this.deleteMode="normal";throw {code:503};}
   }
   async probe() {}
 }
@@ -220,6 +228,95 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       await assert.rejects(engine.adopt(actor,oversized.id,{resourceVersion:importedLarge.metadata!.resourceVersion,expectedHead:0,legacyAliases:[]}),denied(413));assert.equal(native.writes,writes);
       const cancelled=new AbortController();cancelled.abort();await assert.rejects(new KvTransfer(engine,cancelled.signal).export(actor,{confirmCredentials:true,selections:[{pathId:p.id}]}),denied(408));
       assert(!JSON.stringify(await db.kvAudit.findMany()).includes(initial.__proto__));assert(!JSON.stringify(await db.kvOperation.findMany()).includes(initial.__proto__));
+    });
+    await t.test("confirmed destruction CAS-removes references, retains canonical data and keeps monotonic versions", async()=>{
+      const p=await registry.registerPath(actor,{mountId:mount.id,path:"cleanup/destroy",namespace:"apps",name:"destroy",fields:[{field:"key",key:"key"}]});
+      await engine.create(actor,p.id,{resourceVersion:"absent",expectedHead:0,fields:[{field:"key",encoding:"utf8",value:"first"}]});
+      const current=async()=>{const s=await engine.status(actor,p.id);return {resourceVersion:s.resourceVersion,expectedHead:s.head};};
+      native.malformedReplaceReply=true;await engine.change(actor,p.id,{...await current(),fields:[{field:"key",encoding:"utf8",value:"second"}]});
+      const source=native.objects.get("apps/destroy")!;source.data!.unrelated=other;source.metadata!.annotations!["private-other-key"]=marker;source.metadata!.resourceVersion=String(++native.counter);
+      const before=await current(),old=copy(source),deletes=native.deletes.length,writes=native.writes;
+      await assert.rejects(engine.destroy(actor,p.id,{...before,versions:[1],confirmPath:"wrong"}),denied(400));
+      await assert.rejects(engine.destroy(actor,p.id,{...before,versions:[1,1],confirmPath:p.path}),denied(400));
+      await assert.rejects(engine.destroy(actor,p.id,{...before,versions:[2],confirmPath:p.path}),denied(409));
+      await assert.rejects(engine.destroy(actor,p.id,{expectedHead:2,versions:[1],confirmPath:p.path}),denied(428));
+      const scopedUser=await db.user.findUniqueOrThrow({where:{username:"scoped"}}),scoped={id:scopedUser.id,sessionVersion:scopedUser.sessionVersion};
+      const reads=native.reads;await assert.rejects(engine.destroy(scoped,p.id,{...before,versions:[1],confirmPath:p.path}),denied(403));assert.equal(native.reads,reads);
+      const aborted=new AbortController();aborted.abort();await assert.rejects(engine.destroy(actor,p.id,{...before,versions:[1],confirmPath:p.path},aborted.signal),denied(408));
+      assert.equal(native.writes,writes);assert.equal(native.deletes.length,deletes);
+      const first=parseState(source).paths[0].versions[0],owned=native.objects.get("history/"+first.name)!,saved=copy(owned);
+      owned.metadata!.uid="replaced-history";await assert.rejects(engine.destroy(actor,p.id,{...before,versions:[1],confirmPath:p.path}),denied(409));native.objects.set("history/"+first.name,saved);
+      native.malformedReplaceReply=true;const result=await engine.destroy(actor,p.id,{...before,versions:[1],confirmPath:p.path});assert.equal(result.cleanupComplete,true);assert.equal(result.head,2);
+      assert.deepEqual(result.cleanup.map(c=>c.outcome),["deleted"]);assert.equal(native.deletes.length,deletes+1);assert.equal(native.deletes.at(-1)!.namespace,"history");
+      await assert.rejects(native.replace("apps","destroy",old),error=>(error as {code:number}).code===409);
+      await assert.rejects(engine.read(actor,p.id,1),denied(404));assert.equal((await engine.read(actor,p.id)).fields[0].value,Buffer.from("second").toString("base64"));
+      await engine.change(actor,p.id,await current(),"delete");
+      const tombstone=await engine.destroy(actor,p.id,{...await current(),versions:[2,3],confirmPath:p.path});assert.equal(tombstone.head,0);assert.equal(tombstone.cleanupComplete,true);
+      assert.deepEqual(native.objects.get("apps/destroy")!.data,{unrelated:other});assert.equal(native.objects.get("apps/destroy")!.metadata!.annotations!["private-other-key"],marker);
+      assert.deepEqual((await engine.read(actor,p.id)).fields,[]);assert.equal((await engine.change(actor,p.id,{...await current(),fields:[]})).head,4);
+      assert(!JSON.stringify(result).includes(marker));assert(!JSON.stringify(result).includes(other));
+    });
+    await t.test("destruction audit failures and source replacement retain recoverable history with explicit partial outcomes",async()=>{
+      const p=await registry.registerPath(actor,{mountId:mount.id,path:"cleanup/partial",namespace:"apps",name:"partial",fields:[{field:"key",key:"key"}]});
+      await engine.create(actor,p.id,{resourceVersion:"absent",expectedHead:0,fields:[]});
+      const current=async()=>{const s=await engine.status(actor,p.id);return {resourceVersion:s.resourceVersion,expectedHead:s.head};};
+      await engine.change(actor,p.id,{...await current(),fields:[]});
+      const ref=parseState(native.objects.get("apps/partial")!).paths[0].versions[0],before=native.writes,deletes=native.deletes.length;
+      await db.$executeRawUnsafe("CREATE TRIGGER deny_cleanup BEFORE INSERT ON kv_audit BEGIN SELECT RAISE(ABORT, 'synthetic audit unavailable'); END");
+      await assert.rejects(engine.destroy(actor,p.id,{...await current(),versions:[1],confirmPath:p.path}),denied(503));assert.equal(native.writes,before);assert.equal(native.deletes.length,deletes);
+      await db.$executeRawUnsafe("DROP TRIGGER deny_cleanup");
+      native.afterReplace=async()=>{await db.$executeRawUnsafe("CREATE TRIGGER deny_cleanup BEFORE INSERT ON kv_audit WHEN NEW.action = 'history-delete' BEGIN SELECT RAISE(ABORT, 'synthetic audit unavailable'); END");};
+      let result;
+      try{result=await engine.destroy(actor,p.id,{...await current(),versions:[1],confirmPath:p.path});}finally{native.afterReplace=undefined;await db.$executeRawUnsafe("DROP TRIGGER deny_cleanup");}
+      assert.equal(result.outcome,"committed");assert.equal(result.cleanupComplete,false);assert.equal(result.cleanup[0].status,503);assert(native.objects.has("history/"+ref.name));assert.equal(native.deletes.length,deletes);
+      await engine.change(actor,p.id,{...await current(),fields:[]});
+      const secondRef=parseState(native.objects.get("apps/partial")!).paths[0].versions[0];
+      native.afterReplace=async()=>{await db.$executeRawUnsafe("CREATE TRIGGER deny_cleanup BEFORE INSERT ON kv_audit WHEN NEW.action = 'history-delete' AND NEW.outcome = 'deleted' BEGIN SELECT RAISE(ABORT, 'synthetic audit unavailable'); END");};
+      try{result=await engine.destroy(actor,p.id,{...await current(),versions:[secondRef.version],confirmPath:p.path});}finally{native.afterReplace=undefined;await db.$executeRawUnsafe("DROP TRIGGER deny_cleanup");}
+      assert.equal(result.cleanupComplete,false);assert.equal(result.cleanup[0].status,503);assert(!native.objects.has("history/"+secondRef.name));const afterDeleted=native.deletes.length;
+      const headRef=parseState(native.objects.get("apps/partial")!).paths[0].versions[0];
+      await engine.change(actor,p.id,await current(),"delete");
+      native.afterReplace=async()=>{const replacement=copy(native.objects.get("apps/partial")!);replacement.metadata!.uid="external-source-replacement";native.objects.set("apps/partial",replacement);};
+      try{result=await engine.destroy(actor,p.id,{...await current(),versions:[headRef.version],confirmPath:p.path});}finally{native.afterReplace=undefined;}
+      assert.equal(result.cleanupComplete,false);assert.equal(result.cleanup[0].status,409);assert(native.objects.has("history/"+headRef.name));assert.equal(native.deletes.length,afterDeleted);
+    });
+    await t.test("explicit administrator GC checks age/references/identity, fences stale CAS and records timeout read-back",async()=>{
+      const p=await registry.registerPath(actor,{mountId:mount.id,path:"cleanup/gc",namespace:"apps",name:"gc",retention:1,fields:[{field:"key",key:"key"}]});
+      await engine.create(actor,p.id,{resourceVersion:"absent",expectedHead:0,fields:[{field:"key",encoding:"base64",value:initial.__proto__}]});
+      const current=async()=>{const s=await engine.status(actor,p.id);return {resourceVersion:s.resourceVersion,expectedHead:s.head};};
+      const oldRef=parseState(native.objects.get("apps/gc")!).paths[0].versions[0];
+      await engine.change(actor,p.id,{...await current(),fields:[]});
+      const orphan=native.objects.get("history/"+oldRef.name)!;orphan.metadata!.creationTimestamp=new Date(Date.now()-48*3600000);
+      const preview=await engine.gcPreview(actor,p.id);assert.equal(preview.items.length,1);assert.equal(preview.minimumAgeHours,24);assert(!JSON.stringify(preview).includes(initial.__proto__));
+      const input={...preview,histories:preview.items,confirmPath:p.path},deletes=native.deletes.length,writes=native.writes;
+      await assert.rejects(engine.gc(actor,p.id,{...input,histories:[{...preview.items[0],uid:"forged"}]}),denied(409));assert.equal(native.writes,writes);assert.equal(native.deletes.length,deletes);
+      await assert.rejects(engine.gc(actor,p.id,{...input,histories:[{...preview.items[0],resourceVersion:"stale"}]}),denied(409));
+      await assert.rejects(engine.gc(actor,p.id,{...input,resourceVersion:"stale"}),denied(409));
+      orphan.metadata!.creationTimestamp=new Date();await assert.rejects(engine.gc(actor,p.id,input),denied(409));orphan.metadata!.creationTimestamp=new Date(Date.now()-48*3600000);
+      const source=native.objects.get("apps/gc")!,state=parseState(source),saved=copy(source);state.paths[0].versions.push(oldRef);source.metadata!.annotations![STATE_ANNOTATION]=JSON.stringify(state);
+      await assert.rejects(engine.gc(actor,p.id,input),denied(409));assert.equal((await engine.gcPreview(actor,p.id)).items.length,0);native.objects.set("apps/gc",saved);
+      const scopedUser=await db.user.findUniqueOrThrow({where:{username:"scoped"}}),scoped={id:scopedUser.id,sessionVersion:scopedUser.sessionVersion};
+      await assert.rejects(engine.gcPreview(scoped,p.id),denied(403));await assert.rejects(engine.gc(scoped,p.id,input),denied(403));
+      const guarded=new KvNativeEngine(new KvRegistry(db,["apps"],kvConfig({BORTUS_HISTORY_NAMESPACE:"history"})),native);await assert.rejects(guarded.gc(actor,p.id,input),denied(403));
+      native.replaceMode="before";await assert.rejects(engine.gc(actor,p.id,input),denied(503));assert.equal(native.deletes.length,deletes);assert(native.objects.has("history/"+oldRef.name));
+      native.afterReplace=async()=>{await db.user.update({where:{id:actor.id},data:{engineAdmin:false}});};
+      let revoked;
+      try{revoked=await engine.gc(actor,p.id,input);}finally{native.afterReplace=undefined;await db.user.update({where:{id:actor.id},data:{engineAdmin:true}});}
+      assert.equal(revoked.cleanupComplete,false);assert.equal(revoked.cleanup[0].status,403);assert.equal(native.deletes.length,deletes);assert(native.objects.has("history/"+oldRef.name));
+      const refresh=await engine.gcPreview(actor,p.id);native.replaceMode="after";native.deleteMode="after";
+      const result=await engine.gc(actor,p.id,{...refresh,histories:refresh.items,confirmPath:p.path});assert.equal(result.cleanupComplete,true);assert.equal(result.cleanup[0].outcome,"absent");
+      assert(!native.objects.has("history/"+oldRef.name));assert.equal(native.deletes.length,deletes+1);assert.equal(native.deletes.at(-1)!.uid,oldRef.uid);
+      await assert.rejects(native.replace("apps","gc",saved),error=>(error as {code:number}).code===409);assert.equal((await engine.status(actor,p.id)).head,2);
+      assert((await db.kvAudit.findMany({where:{operationId:result.operationId,action:"history-delete"}})).some(a=>a.outcome==="absent"));
+      assert(native.deletes.every(d=>d.namespace==="history"));assert(!JSON.stringify(await db.kvAudit.findMany()).includes(initial.__proto__));
+      for(let index=0;index<105;index++){
+        const operationId=randomUUID(),name="kv-"+p.id.replaceAll("-","")+"-"+operationId.replaceAll("-","").slice(0,24),body=historyBody(await registry.path(p.id),saved.metadata!.uid!,"history",name,3,operationId,{},false);
+        native.seed("history",name,{},body);native.objects.get("history/"+name)!.metadata!.creationTimestamp=new Date(Date.now()-48*3600000);
+      }
+      const bounded=await engine.gcPreview(actor,p.id);assert.equal(bounded.items.length,100);assert.equal(bounded.eligible,105);assert.equal(bounded.complete,false);
+      const beforeUnknown=native.deletes.length;await assert.rejects(engine.gc(actor,p.id,{...bounded,histories:[bounded.items[0]],confirmPath:p.path}),denied(409));assert.equal(native.deletes.length,beforeUnknown);
+      native.objects.delete("apps/gc");const remaining=(await native.list("history")).length;
+      await assert.rejects(engine.gcPreview(actor,p.id),(error:unknown)=>error instanceof SecretError&&error.status===404);assert.equal((await native.list("history")).length,remaining);
     });
     await t.test("external selected-key drift requires reconcile; rollback creates a new immutable version", async () => {
       const changed = native.objects.get("apps/imported")!; changed.data!["constructor"]=Buffer.from("external").toString("base64"); changed.metadata!.resourceVersion=String(++native.counter);

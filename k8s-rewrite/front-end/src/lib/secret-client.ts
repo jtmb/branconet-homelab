@@ -1,4 +1,4 @@
-import { KubeConfig, type V1Secret } from "@kubernetes/client-node";
+import { KubeConfig, type V1ObjectMeta, type V1Secret } from "@kubernetes/client-node";
 import https from "node:https";
 import { SecretStore, SecretError, secretFailure, validateTarget, type SecretTransport } from "./cluster-secrets";
 import { kvConfig } from "./kv-contract";
@@ -16,6 +16,7 @@ export function secretNamespaces(): string[] {
 export interface NativeSecretTransport extends SecretTransport {
   delete(namespace: string, name: string, uid: string, resourceVersion: string): Promise<void>;
   probe(namespace: string): Promise<void>;
+  listMetadata(namespace: string): Promise<V1ObjectMeta[]>;
 }
 let active = 0;
 const waiters: { enter: () => void; timer: ReturnType<typeof setTimeout> }[] = [];
@@ -125,6 +126,29 @@ export function createSecretTransport(): NativeSecretTransport {
       delete: async (namespace, name, uid, resourceVersion) => {
         if (!uid || !resourceVersion) throw new SecretError(428, "Owned history UID and resourceVersion required");
         await request("DELETE", route(namespace, name), { apiVersion: "v1", kind: "DeleteOptions", preconditions: { uid, resourceVersion } });
+      },
+      listMetadata: async namespace => {
+        const items: V1ObjectMeta[] = [], cursors = new Set<string>();
+        const deadline = Date.now() + 15000; let cursor = "", bytes = 0;
+        do {
+          const result = await request("GET", route(namespace) + "?limit=100" + (cursor ? "&continue=" + encodeURIComponent(cursor) : ""), undefined, deadline, true);
+          const page = result.value; bytes += result.bytes;
+          if (page.kind !== "PartialObjectMetadataList" || page.apiVersion !== "meta.k8s.io/v1" || !Array.isArray(page.items) ||
+            page.items.length > 100 || items.length + page.items.length > 10000 || bytes > 8 * 1024 * 1024)
+            throw new SecretError(503, "Metadata-only Secret list exceeds the validated limits");
+          for (const item of page.items) {
+            if (item.kind !== "PartialObjectMetadata" || item.apiVersion !== "meta.k8s.io/v1" || Object.hasOwn(item, "data") || Object.hasOwn(item, "stringData") ||
+              item.metadata?.namespace !== namespace || typeof item.metadata?.name !== "string")
+              throw new SecretError(503, "Invalid metadata-only Secret response");
+            validateTarget({ namespace, name: item.metadata.name, key: "validation" });
+            items.push(item.metadata);
+          }
+          cursor = page.metadata?.continue || "";
+          if (typeof cursor !== "string" || cursor.length > 8192 || cursor && (cursors.has(cursor) || !page.items.length))
+            throw new SecretError(503, "Invalid Kubernetes Secret pagination");
+          if (cursor) cursors.add(cursor);
+        } while (cursor);
+        return items;
       },
       probe: async namespace => {
         const { value } = await request("GET", route(namespace) + "?limit=1", undefined, Date.now() + 8000, true);

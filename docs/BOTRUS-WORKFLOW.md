@@ -14,6 +14,8 @@ For an existing database, make a consistent backup and assess migration history 
 
 ## Configuration and Secrets
 
+History cleanup APIs passed local unit and production HTTP/TLS qualification. Select committed versions and confirm the exact path; first tombstone any active head being destroyed. Inspect reference-commit and per-history cleanup outcomes separately. For orphan GC, an administrator previews one path, reviews candidates older than 24 hours, and submits the current source head/RV/path revision plus candidate UID/RV. Changed ownership/references or unavailable sources retain history; no background sweep runs.
+
 The v1 import/export API workflow passed local unit and production HTTP/TLS qualification. Choose explicit paths/versions and acknowledge that export contains credential values. Review metadata-only import plans, then submit the same bounded bundle with current path revision/head/RV and explicit overwrite choices; inspect every per-path outcome before retrying. New native initialization needs an administrator, while already-imported native objects require explicit adoption first. No group destination is inferred from an alias. Full transfer UI remains pending.
 
 Flux repository removal keeps its native authentication Secret. The progress view reports retained credentials; inspect exact references/consumers before explicit native key or KV version cleanup. Repository names never establish Secret ownership, and cascade removal does not require a canonical Secret delete permission.

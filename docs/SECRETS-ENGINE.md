@@ -2,7 +2,7 @@
 
 Kubernetes native Secrets are the authoritative value store. BORTUS uses a TLS-verified Kubernetes client; SQLite stores identities, nonsecret configuration and explicit `SecretReference` metadata. Legacy sensitive DB rows are ignored, never pushed at startup/CRUD and never used as outage fallback.
 
-The [native KV design](BORTUS-KV-DESIGN.md) specifies grouped paths, immutable native history, policies/automation and import/export/rotation. Metadata registration, policies and identity foundations are implemented on the local branch; human native version/adoption/value/recovery routes passed local production HTTP/TLS qualification. Automation passed local API checks; destroy/GC, rotation and KV UI remain pending. Public Secret projections whitelist named fields and exclude arbitrary annotations/managedFields, including value-bearing last-applied configurations; canonical writes still preserve that unrelated native metadata.
+The [native KV design](BORTUS-KV-DESIGN.md) specifies grouped paths, immutable native history, policies/automation and import/export/rotation. Metadata registration, policies and identity foundations are implemented on the local branch; human native version/adoption/value/recovery routes passed local production HTTP/TLS qualification. Automation passed local API checks; rotation and KV UI remain pending. Public Secret projections whitelist named fields and exclude arbitrary annotations/managedFields, including value-bearing last-applied configurations; canonical writes still preserve that unrelated native metadata.
 
 ## Mapping and API
 
@@ -28,13 +28,15 @@ Bootstrap credentials must come independently from the operator environment. Con
 
 ## Security and recovery
 
+History destruction and explicit per-path administrator GC passed local unit and production HTTP/TLS qualification. Reference CAS commits precede owned-history UID/RV deletion; canonical objects and version sequence remain. Head destruction needs a tombstone. GC uses bounded metadata-only preview, a 24-hour minimum age, current source/all-group reference checks and a source CAS fence. Partial cleanup is reported separately, and missing/replaced sources retain their history. See [API contract](API-USAGE.md#human-native-kv-values).
+
 Values use authenticated API bodies and process memory; Secret payloads never enter argv, generated Git files, API errors or app logs. Fixed errors suppress Kubernetes exception bodies. Scope Roles per namespace; service-account list access itself reads values. Browser/Bearer traffic requires TLS. Follow [Kubernetes Secret guidance](https://kubernetes.io/docs/concepts/configuration/secret/) for RBAC and storage protection; base64 is not encryption.
 
 JWT signing material is external and stable, never auto-persisted. Existing sensitive SQLite rows/historical backups require operator cleanup after import verification. Native values survive app restart independently of DB. SQLite loss requires user/config/alias recovery; Kubernetes loss requires protected etcd/Secret recovery. No Vault/SOPS/Git value backend is introduced.
 
 The optional local runner expects a separately supplied sibling k8s-rewrite/ansible-playbook tree. Kubernetes provisioning roles and lookup plugins are not included in this application-only main merge.
 
-The exact scoped automation handler and filtered audit/capability routes passed local unit and production HTTP/TLS qualification. Cookie and legacy Bearer audiences cannot authenticate automation. Tokens intersect fresh owner/token policy and cannot initialize/adopt native targets or manage infrastructure. Destroy/GC, rotation and KV UI remain pending.
+The exact scoped automation handler and filtered audit/capability routes passed local unit and production HTTP/TLS qualification. Cookie and legacy Bearer audiences cannot authenticate automation. Tokens intersect fresh owner/token policy and cannot initialize/adopt native targets or manage infrastructure. Rotation and KV UI remain pending.
 
 ## KV delivery architecture (implementation pending)
 

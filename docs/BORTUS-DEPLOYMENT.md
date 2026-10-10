@@ -67,6 +67,8 @@ Keep operator kubeconfig, SSH keys and provisioning credentials independently av
 
 ## Validation ownership
 
+History destroy/GC APIs passed local unit and production HTTP/TLS qualification. The dedicated history namespace needs get/list/create/delete, including UID/resourceVersion delete preconditions; current namespaces retain get/list/create/update without delete. Metadata-only list negotiation must be supported by the API. No app code creates namespaces or RoleBindings. Final external guard/image/RBAC validation remains required before adoption.
+
 Bounded v1 import/export and audited value-release decisions passed local unit and production HTTP/TLS qualification. They require no additional native RBAC verbs. Values remain in transient request/response memory; path revision/head/RV and explicit overwrite protect existing documents, and audit availability gates value release. Final transfer UI/image/live validation remains pending.
 
 Scoped automation and filtered audit/capability routes passed local production HTTP against the verified mock API. Token cookies/legacy/session audiences are denied, expiry/revocation is fresh, and middleware authentication failures are private/no-store. These checks add no native verbs and do not establish external admission/RBAC or final Linux-image acceptance.

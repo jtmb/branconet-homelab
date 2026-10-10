@@ -30,7 +30,7 @@ export async function nativeTlsFixture(dir: string) {
       if(request.method==="GET") {
         if(name){const value=objects.get(id);return value?send(200,value):send(404,{kind:"Status",code:404});}
         const list=[...objects.values()].filter(s=>s.metadata?.namespace===ns),limit=Number(url.searchParams.get("limit")||20),offset=Number(url.searchParams.get("continue")||0),page=list.slice(offset,offset+limit);
-        return send(200,{apiVersion:metadata?"meta.k8s.io/v1":"v1",kind:metadata?"PartialObjectMetadataList":"SecretList",metadata:{continue:offset+limit<list.length?String(offset+limit):""},items:metadata?page.map(s=>({apiVersion:"meta.k8s.io/v1",kind:"PartialObjectMetadata",metadata:{name:s.metadata?.name,namespace:ns,uid:s.metadata?.uid,resourceVersion:s.metadata?.resourceVersion}})):page});
+        return send(200,{apiVersion:metadata?"meta.k8s.io/v1":"v1",kind:metadata?"PartialObjectMetadataList":"SecretList",metadata:{continue:offset+limit<list.length?String(offset+limit):""},items:metadata?page.map(s=>({apiVersion:"meta.k8s.io/v1",kind:"PartialObjectMetadata",metadata:s.metadata})):page});
       }
       const body=JSON.parse(raw);
       if(request.method==="POST") {

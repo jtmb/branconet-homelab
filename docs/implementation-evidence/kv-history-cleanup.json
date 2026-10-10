@@ -1,0 +1,37 @@
+{
+  "scope": "confirmed native history destruction and explicit per-path administrator garbage collection",
+  "date": "2026-10-10",
+  "sourceBase": "5fc07f0",
+  "runtime": "Node 22.23.3 Windows x64",
+  "fullUnitTests": { "passed": 77, "failed": 0, "skipped": 0 },
+  "lint": "zero warnings",
+  "typecheck": "passed",
+  "productionBuild": "passed",
+  "productionHttp": { "passed": 2, "failed": 0, "skipped": 0, "existingSeconds": 31.91, "nativeSeconds": 33.13, "overallSeconds": 33.46 },
+  "checks": [
+    "exact confirmation, distinct 1-100 version selection, fresh destroy policy, guarded-mode refusal and native head/RV",
+    "active head refusal before tombstone; tombstoned head zero retains sequence and canonical object; later write creates version four",
+    "reference CAS before owned history UID/RV deletion; unrelated native values/metadata preserved",
+    "before/after cleanup audit outage distinguishes retained or already-deleted histories from committed reference operation",
+    "source replacement and fresh administrator withdrawal after source fence retain history and report partial cleanup",
+    "mandatory metadata-only TLS list pagination; repeated cursor, page overflow and full-value response rejected without fallback",
+    "GC preview caps 105 synthetic candidates at 100 with incomplete count; no value bodies/digests returned",
+    "24-hour minimum age, all current references, current head integrity, source UID, candidate UID/RV and exact operation ownership rechecked",
+    "source CAS fence rejects an older canonical snapshot; positive canonical/delete timeout read-back resolves only verified proof or absence",
+    "successful PUT with unverifiable ownership response uses read-back rather than claiming an uncommitted conflict",
+    "production HTTP exercises human and scoped token destruction, administrator GC, guard-disabled refusal, exact TLS metadata negotiation and history-only delete paths"
+  ],
+  "correctionsAndNonpassingRuns": [
+    "Initial source-replacement fixture changed the returned PUT object as well as stored source; fixture now independently replaces stored source to exercise post-CAS cleanup",
+    "That inspection exposed successful unverifiable PUT classification; both native value and reference mutations now enter read-back/recovery",
+    "Missing-source test originally matched only KvError; canonical failures use fixed SecretError. Matcher now checks the same required 404 and retained histories",
+    "Fresh final full-unit/build/type/lint and both HTTP suites passed together"
+  ],
+  "limitations": [
+    "Disposable synthetic SQLite and CA-verified mock API only; no production mutation or operator credentials",
+    "GC preview eligibility is metadata-only; selected immutable/value/operation ownership is verified before the source fence",
+    "Explicit partial cleanup can leave retained histories or recovery-required audit metadata; no blind retry or startup sweep",
+    "No final Linux KV image, live RBAC/admission/old-principal revocation, backup or rollout acceptance",
+    "History UI, rotation, alias/probe bounds and remaining A01-A22 acceptance remain pending; timings are uncontrolled observations"
+  ]
+}

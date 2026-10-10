@@ -10,6 +10,8 @@ First registration creates a write user. Later users default to readonly. Regist
 
 ## Gates
 
+History destruction requires fresh write role, destroy policy, guarded mode and exact path confirmation. GC additionally requires fresh effective engine administration at preview, source fence and deletion authorization; scoped automation supports destruction but cannot run administrator GC. Cleanup endpoints passed local unit and production HTTP/TLS qualification and add no infrastructure authority.
+
 Middleware at `src/middleware.ts` uses the Next 15.5 Node runtime and verifies cookie identity against the current DB account/sessionVersion. Public paths are `/welcome`, `/auth/login`, `/auth/register`, `/api/auth/*`, framework paths and exact info/health/favicon paths. Exact `/api/vars/lookup` and `/api/kv/automation` instead require their distinct Bearer audiences inside their handlers. Other unauthenticated APIs return 401 and protected pages redirect to welcome. Middleware DB failures return a fixed 503 rather than admitting the request.
 
 Server-side `requireOperator()` enforces fresh write plus engineAdmin for infrastructure/configuration operations. `requireWrite()` remains on the account route, whose serialized store checks peer administration and scoped self-password access. KV routes enforce fresh role and deny-aware policy. Flat Secret values require effective administration. Deleted accounts and stale session versions are rejected on ordinary reads/pages as well. Password resets atomically increment sessionVersion, revoking existing cookies, including the resetting user's own cookie for a self-reset. Migrated accounts and legacy JWTs default to version zero, avoiding blanket sign-out on migration. Login signs the current version; the session API no longer treats absent accounts as readonly.
@@ -50,7 +52,7 @@ Native Secret values never persist in SQLite, command arguments, generated Git f
 
 See [API usage](API-USAGE.md), [Secrets engine](SECRETS-ENGINE.md), [deployment contract](BORTUS-DEPLOYMENT.md) and the [prioritized audit](BORTUS-AUDIT.md).
 
-Exact `/api/kv/automation` has a distinct Bearer audience and ignores human cookies. Its current operations cover scoped status/capabilities/history/value/update/tombstone/rollback/reconcile/outcome resolution; it cannot perform administrator initial adoption/creation or infrastructure/identity administration. Fresh audit views use list policy, with engine administrators permitted global metadata. These routes passed local unit and production HTTP/TLS qualification; remaining workflows/UI are pending.
+Exact `/api/kv/automation` has a distinct Bearer audience and ignores human cookies. Its current operations cover scoped status/capabilities/history/value/update/tombstone/rollback/reconcile/destroy/outcome resolution; it cannot perform administrator initial adoption/creation or infrastructure/identity administration. Fresh audit views use list policy, with engine administrators permitted global metadata. These routes passed local unit and production HTTP/TLS qualification; remaining workflows/UI are pending.
 
 ## KV foundation in progress
 

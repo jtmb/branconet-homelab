@@ -47,7 +47,7 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
       { stdio: "ignore" },
     );
     let object: any = null;
-    let listMode = "normal", listReads = 0;
+    let listMode = "normal", listReads = 0, metadataMode = "normal", metadataReads = 0;
     let deleteBody: any;
     const seenUrls: string[] = [];
     let authPassed = true;
@@ -67,7 +67,10 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
             result = { kind: "Status", code: 404, message: "Not found" };
           } else result = object;
         } else if (request.method === "GET" && request.headers.accept?.includes("PartialObjectMetadataList")) {
-          result = { apiVersion: "meta.k8s.io/v1", kind: "PartialObjectMetadataList", metadata: {}, items: object ? [{ metadata: { name: "vpn", namespace: "apps" } }] : [] };
+          metadataReads++;
+          result = { apiVersion: "meta.k8s.io/v1", kind: "PartialObjectMetadataList", metadata: {continue:metadataMode==="repeat" || metadataMode==="pages" && !request.url?.includes("continue=") ? "next-page" : ""},
+            items: Array.from({length:metadataMode==="oversize"?101:metadataMode==="pages"||metadataMode==="repeat"?100:object?1:0},(_,index)=>({apiVersion:"meta.k8s.io/v1",kind:"PartialObjectMetadata",
+              metadata:{name:"item-"+metadataReads+"-"+index,namespace:"apps",uid:"metadata-uid",resourceVersion:"1"},...(metadataMode==="values"?{data:{private:"must not fall back"}}:{})})) };
         } else if (request.method === "GET" && listMode !== "normal") {
           listReads++;
           result = { apiVersion: "v1", kind: "SecretList", metadata: { continue: listMode === "repeat" || !request.url?.includes("continue=") ? "next-page" : "" },
@@ -159,6 +162,10 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
     }
     const transport = createSecretTransport();
     await transport.probe("apps");
+    metadataMode="pages";metadataReads=0;const metadata=await transport.listMetadata("apps");assert.equal(metadata.length,200);assert.equal(metadataReads,2);assert(!JSON.stringify(metadata).includes("fake TLS value"));
+    metadataMode="repeat";metadataReads=0;await assert.rejects(transport.listMetadata("apps"),/Invalid Kubernetes Secret pagination/);assert.equal(metadataReads,2);
+    metadataMode="oversize";await assert.rejects(transport.listMetadata("apps"),/exceeds the validated limits/);
+    metadataMode="values";await assert.rejects(transport.listMetadata("apps"),/Invalid metadata-only Secret response/);metadataMode="normal";
     listMode = "pages"; listReads = 0;
     assert.equal((await transport.list("apps")).length, 40); assert.equal(listReads, 2);
     listMode = "repeat"; listReads = 0;

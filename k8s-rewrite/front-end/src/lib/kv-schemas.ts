@@ -16,3 +16,7 @@ export const nativeAdopt = z.object({ ...nativePrerequisites, legacyAliases: z.a
 export const nativeReconcile = z.object(nativePrerequisites).strict();
 export const nativeRollback = z.object({ ...nativePrerequisites, version: z.number().int().positive() }).strict();
 export const nativeDelete = z.object({ ...nativePrerequisites, confirmPath: z.string() }).strict();
+export const nativeDestroy = nativeDelete.extend({ versions: z.array(z.number().int().positive()).min(1).max(100) }).strict();
+export const historyGcPreview = z.object({ pathId: z.string().uuid() }).strict();
+export const historyGc = nativeDelete.extend({ pathId: z.string().uuid(), pathRevision: z.number().int().positive(),
+  histories: z.array(z.object({ name: z.string().regex(/^kv-[0-9a-f]{32}-[0-9a-f]{24}$/), uid: z.string().min(1).max(128), resourceVersion: z.string().min(1).max(128) }).strict()).min(1).max(100) }).strict();

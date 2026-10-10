@@ -28,6 +28,8 @@ The checked-in flat ESLint configuration follows the [versioned Next 15 guide](h
 
 ## Dependency review, 2026-10-10
 
+Native history GC now uses bounded mandatory PartialObjectMetadataList negotiation before selected immutable-object verification/deletion; no dependency was added. This API stage passed local unit and production HTTP/TLS qualification. Readiness and ordinary alias metadata bounds remain separate pending A21 work.
+
 Compatible lockfile updates keep Next 15.5.27, React 18, Prisma 6.19.3 and Tailwind 3.4.19. PostCSS 8.5.29 replaces Next's pinned 8.4.31 through a scoped override to the declared PostCSS dependency. Nanoid 3.3.20, source-map-js 1.2.2, Browserslist 4.29.3 and baseline-browser-mapping 2.11.28 remove their reported advisories. No forced major upgrade or tool downgrade was used. [Frozen audit metadata](implementation-evidence/dependency-review.json) records before/after results: all dependencies 16→12 findings (10 high, 2 moderate after adding the lint toolchain); production 7→3 high findings. Counts include dependency chains and do not mean 12 independent defects.
 
 | Remaining root advisory | Local reachability and disposition |

@@ -6,9 +6,10 @@ import { KvRegistry, type RegisteredPath } from "./kv-registry";
 import type { NativeSecretTransport } from "./secret-client";
 import { secretFailure } from "./cluster-secrets";
 import { validateAlias, type SecretAlias } from "./secret-aliases";
-import { CREATED_ANNOTATION, encodedValues, equalValues, exportFields, historyBody, historyValues, nativeIdentity, ownedPath, parseState, selectedValues, stateBody, type PathState, type VersionRef } from "./kv-native-state";
+import { CREATED_ANNOTATION, encodedValues, equalValues, exportFields, historyBody, historyReference, historyValues, nativeIdentity, ownedPath, parseState, selectedValues, stateBody, type PathState, type VersionRef } from "./kv-native-state";
 
 export type NativePrerequisites = { resourceVersion?: string; expectedHead?: number; pathRevision?: number };
+export type HistorySelection = { name: string; uid: string; resourceVersion: string };
 const prerequisites = (input: NativePrerequisites, secret: V1Secret, head: number) => {
   if (input.resourceVersion === undefined || input.expectedHead === undefined) throw new KvError(428, "Native resourceVersion and expected head required");
   if (typeof input.resourceVersion !== "string" || !input.resourceVersion || input.resourceVersion.length > 128 || !Number.isSafeInteger(input.expectedHead) || input.expectedHead < 0)
@@ -86,10 +87,10 @@ export class KvNativeEngine {
     const aliases = await this.matchingAliases(path);
     return { pathId: id, ...nativeIdentity(secret), expectedHead: 0, fields: path.fields.map(({field,key}) => ({field,key})), legacyAliases: aliases, guardedAdoption: this.registry.config.guardedAdoption };
   }
-  private async start(actor: KvActor, path: RegisteredPath, action: KvAction | "adopt", previousVersion: number, newVersion: number, aliases: SecretAlias[] = []) {
+  private async start(actor: KvActor, path: RegisteredPath, action: KvAction | "adopt", previousVersion: number, newVersion: number, aliases: SecretAlias[] = [], administrative = false) {
     return this.registry.serialized(async tx => {
       await this.fresh(actor, path, action, tx);
-      if (action === "adopt" || action === "create") await this.registry.admin(actor, tx);
+      if (administrative || action === "adopt" || action === "create") await this.registry.admin(actor, tx);
       const op = await tx.kvOperation.create({ data: { id: randomUUID(), actorId: actor.identityId || actor.id, ...target(path), action, previousVersion, newVersion, outcome: "pending" } });
       await tx.kvAudit.create({ data: { actorId: op.actorId, operationId: op.id, ...target(path), action, previousVersion, newVersion, outcome: "pending" } });
       for (const alias of aliases) await tx.kvLegacyGrant.upsert({ where: { pathId_alias: { pathId: path.id, alias: alias.alias } }, update: {}, create: { pathId: path.id, ...alias } });
@@ -144,8 +145,12 @@ export class KvNativeEngine {
       if (action === "adopt" || action === "create") await this.registry.admin(actor);
       attemptedCas = true;
       const result = await this.transport.replace(path.namespace, path.name, body);
-      const committed = ownedPath(result, path);
-      if (committed?.head !== version || !committed.operations.some(op => op.id === operation.id && op.historyUid === identity.uid) || !equalValues(selectedValues(result, path), values))
+      let verified = false;
+      try {
+        const committed = ownedPath(result, path);
+        verified = committed?.head === version && committed.operations.some(op => op.id === operation.id && op.historyUid === identity.uid) && equalValues(selectedValues(result, path), values);
+      } catch { /* A successful PUT with unverifiable response is an unknown outcome, not a proven conflict. */ }
+      if (!verified)
         throw new KvError(503, "Native commit requires recovery verification");
       if (!await this.finish(operation, "committed")) throw new KvMutationError(503, "Native KV committed; metadata recovery required", operation.id, "recovery-required");
       return { operationId: operation.id, outcome: "committed", head: version, resourceVersion: nativeIdentity(result).resourceVersion, tombstone };
@@ -228,6 +233,164 @@ export class KvNativeEngine {
     else values = action === "delete" ? {} : encodedValues(input.fields, path);
     return this.commit(actor, path, secret, current, values, action, tombstone);
   }
+
+  private async detachHistory(actor: KvActor, path: RegisteredPath, secret: V1Secret, current: PathState, versions: number[], administrative = false) {
+    const head = versions.includes(current.head) ? 0 : current.head;
+    const operation = await this.start(actor, path, "destroy", current.head, head, [], administrative);
+    const state = parseState(secret), sourceUid = nativeIdentity(secret).uid;
+    const next: PathState = { ...current, head, versions: current.versions.filter(ref => !versions.includes(ref.version)),
+      operations: [...current.operations, { id: operation.id, action: "destroy", previousVersion: current.head, newVersion: head, createdAt: new Date().toISOString() }].slice(-100) };
+    state.paths = state.paths.map(p => p.id === path.id ? next : p);
+    let attempted = false;
+    const proven = (result: V1Secret) => {
+      const owner = ownedPath(result, path);
+      return owner?.sourceUid === sourceUid && owner.operations.some(op => op.id === operation.id && op.action === "destroy" && op.newVersion === head) &&
+        !owner.versions.some(ref => versions.includes(ref.version));
+    };
+    try {
+      const body = stateBody(secret, state, path);
+      await this.fresh(actor, path, "destroy");
+      if (administrative) await this.registry.admin(actor);
+      attempted = true;
+      const result = await this.transport.replace(path.namespace, path.name, body);
+      let verified = false; try { verified = proven(result); } catch { /* Verify by read-back below. */ }
+      if (!verified) throw new KvError(503, "History reference update requires recovery verification");
+      if (!await this.finish(operation, "committed")) throw new KvMutationError(503, "History references committed; metadata recovery required", operation.id, "recovery-required");
+      return { operationId: operation.id, outcome: "committed", head, resourceVersion: nativeIdentity(result).resourceVersion };
+    } catch (error) {
+      if (error instanceof KvMutationError) throw error;
+      const safe = secretFailure(error);
+      if (attempted && safe.status === 503) {
+        try {
+          const result = await this.canonical(path);
+          if (proven(result)) {
+            if (!await this.finish(operation, "committed")) throw new KvMutationError(503, "History references committed; metadata recovery required", operation.id, "recovery-required");
+            return { operationId: operation.id, outcome: "committed", head, resourceVersion: nativeIdentity(result).resourceVersion };
+          }
+        } catch (readError) { if (readError instanceof KvMutationError) throw readError; }
+      }
+      const outcome = safe.status === 503 ? "ambiguous" : "conflict", recorded = await this.finish(operation, outcome);
+      throw new KvMutationError(safe.status, safe.status === 503 ? "History reference outcome is ambiguous; inspect operation" : safe.message, operation.id, recorded ? outcome : "recovery-required");
+    }
+  }
+
+  private async cleanupHistory(actor: KvActor, path: RegisteredPath, sourceUid: string, ref: VersionRef, operationId: string, selection?: HistorySelection, administrative = false) {
+    try {
+      const source = await this.canonical(path), state = parseState(source), owner = ownedPath(source, path, state);
+      if (!owner || owner.sourceUid !== sourceUid || state.paths.some(p => p.versions.some(v => v.uid === ref.uid || v.name === ref.name)))
+        throw new KvError(409, "History is referenced or source ownership changed; retained");
+      let history: V1Secret;
+      try { history = await this.transport.read(this.registry.config.historyNamespace, ref.name); }
+      catch (error) { if (secretFailure(error).status === 404) return { version: ref.version, name: ref.name, outcome: "absent", status: 200 }; throw error; }
+      if (history.metadata?.namespace !== this.registry.config.historyNamespace) throw new KvError(409, "History namespace identity changed");
+      historyValues(history, path, sourceUid, ref);
+      const identity = nativeIdentity(history);
+      if (selection && (identity.uid !== selection.uid || identity.resourceVersion !== selection.resourceVersion)) throw new KvError(409, "History preview changed; retained");
+      await this.registry.serialized(async tx => {
+        await this.fresh(actor, path, "destroy", tx);
+        if (administrative) await this.registry.admin(actor, tx);
+        await tx.kvAudit.create({ data: { actorId: actor.identityId || actor.id, ...target(path), operationId, action: "history-delete", newVersion: ref.version, outcome: "pending" } });
+      });
+      let outcome = "deleted";
+      try { await this.transport.delete(this.registry.config.historyNamespace, ref.name, identity.uid, identity.resourceVersion); }
+      catch (error) {
+        if (secretFailure(error).status !== 503) throw error;
+        let absent = false;
+        try { await this.transport.read(this.registry.config.historyNamespace, ref.name); }
+        catch (readError) { absent = secretFailure(readError).status === 404; }
+        if (!absent) throw new KvError(503, "History deletion outcome is ambiguous; inspect before retrying");
+        outcome = "absent";
+      }
+      await this.registry.serialized(async tx => {
+        await tx.kvAudit.create({ data: { actorId: actor.identityId || actor.id, ...target(path), operationId, action: "history-delete", newVersion: ref.version, outcome } });
+      });
+      return { version: ref.version, name: ref.name, outcome, status: 200 };
+    } catch (error) {
+      const safe = secretFailure(error);
+      return { version: ref.version, name: ref.name, outcome: safe.status === 503 ? "recovery-required" : "retained", status: safe.status, error: safe.message };
+    }
+  }
+
+  async destroy(actor: KvActor, id: string, input: NativePrerequisites & { versions: number[]; confirmPath: string }, signal?: AbortSignal) {
+    const deadline = Date.now() + 30000;
+    requireGuarded(this.registry.config);
+    const path = await this.permitted(actor, id, "destroy", input.pathRevision);
+    if (input.confirmPath !== path.path) throw new KvError(400, "Exact logical path confirmation required");
+    if (!Array.isArray(input.versions) || !input.versions.length || input.versions.length > 100 || new Set(input.versions).size !== input.versions.length || input.versions.some(v => !Number.isSafeInteger(v) || v < 1))
+      throw new KvError(400, "Select between one and 100 distinct committed versions");
+    const secret = await this.canonical(path), current = ownedPath(secret, path);
+    if (!current) throw new KvError(409, "Owned canonical source required; history retained");
+    prerequisites(input, secret, current.head);
+    if (input.versions.includes(current.head) && !current.tombstone) throw new KvError(409, "Tombstone the active path before destroying its head");
+    const refs = input.versions.map(version => {
+      const ref = current.versions.find(item => item.version === version);
+      if (!ref) throw new KvError(404, "Committed KV version not found");
+      return ref;
+    });
+    await this.drift(path, secret, current);
+    for (const ref of refs) {
+      if (signal?.aborted || Date.now() >= deadline) throw new KvError(408, "History cleanup stopped before reference mutation");
+      await this.history(path, current, ref);
+    }
+    if (signal?.aborted || Date.now() >= deadline) throw new KvError(408, "History cleanup stopped before reference mutation");
+    const result = await this.detachHistory(actor, path, secret, current, input.versions), cleanup = [];
+    for (const ref of refs) cleanup.push(signal?.aborted || Date.now() >= deadline ? { version: ref.version, name: ref.name, status: 408, outcome: "retained" } :
+      await this.cleanupHistory(actor, path, current.sourceUid, ref, result.operationId));
+    return { ...result, cleanupComplete: cleanup.every(item => ["deleted", "absent"].includes(item.outcome)), cleanup };
+  }
+
+  async gcPreview(actor: KvActor, id: string) {
+    await this.registry.admin(actor);
+    const path = await this.permitted(actor, id, "destroy"), secret = await this.canonical(path), state = parseState(secret), current = ownedPath(secret, path, state);
+    if (!current) throw new KvError(409, "Owned canonical source required; history retained");
+    await this.drift(path, secret, current);
+    const metadata = await this.transport.listMetadata(this.registry.config.historyNamespace), items: HistorySelection[] = [];
+    let retained = 0, eligible = 0;
+    for (const meta of metadata) {
+      const ref = historyReference(meta, path, current.sourceUid);
+      if (!ref) continue;
+      if (Date.now() - Date.parse(ref.createdAt) < 86400000 || state.paths.some(p => p.versions.some(v => v.uid === ref.uid || v.name === ref.name))) { retained++; continue; }
+      eligible++;
+      if (items.length < 100) items.push({ name: ref.name, ...nativeIdentity({ metadata: meta }) });
+    }
+    await this.fresh(actor, path, "destroy"); await this.registry.admin(actor);
+    if (nativeIdentity(await this.canonical(path)).resourceVersion !== nativeIdentity(secret).resourceVersion) throw new KvError(409, "Source changed; refresh cleanup preview");
+    return { pathId: id, pathRevision: path.revision, resourceVersion: nativeIdentity(secret).resourceVersion, expectedHead: current.head,
+      minimumAgeHours: 24, eligible, retained, complete: eligible <= 100, items };
+  }
+
+  async gc(actor: KvActor, id: string, input: NativePrerequisites & { histories: HistorySelection[]; confirmPath: string }, signal?: AbortSignal) {
+    requireGuarded(this.registry.config); await this.registry.admin(actor);
+    const path = await this.permitted(actor, id, "destroy", input.pathRevision);
+    if (input.confirmPath !== path.path || !Array.isArray(input.histories) || !input.histories.length || input.histories.length > 100 || new Set(input.histories.map(h => h.name)).size !== input.histories.length)
+      throw new KvError(400, "Exact path and distinct history confirmation required");
+    const secret = await this.canonical(path), state = parseState(secret), current = ownedPath(secret, path, state);
+    if (!current) throw new KvError(409, "Owned canonical source required; history retained");
+    prerequisites(input, secret, current.head);
+    await this.drift(path, secret, current);
+    const refs: VersionRef[] = [], deadline = Date.now() + 30000;
+    for (const selection of input.histories) {
+      if (signal?.aborted || Date.now() >= deadline) throw new KvError(408, "History cleanup stopped before reference mutation");
+      const history = await this.transport.read(this.registry.config.historyNamespace, selection.name), ref = historyReference(history.metadata, path, current.sourceUid);
+      if (!ref || history.metadata?.namespace !== this.registry.config.historyNamespace || ref.uid !== selection.uid || nativeIdentity(history).resourceVersion !== selection.resourceVersion ||
+        Date.now() - Date.parse(ref.createdAt) < 86400000 || state.paths.some(p => p.versions.some(v => v.uid === ref.uid || v.name === ref.name)))
+        throw new KvError(409, "History is referenced, too recent or ownership changed; retained");
+      const operation = await this.registry.db.kvOperation.findUnique({ where: { id: ref.operationId } });
+      if (!operation || operation.pathId !== path.id || operation.mountId !== path.mountId || operation.path !== path.path ||
+        operation.namespace !== path.namespace || operation.name !== path.name || operation.newVersion !== ref.version ||
+        !["adopt", "create", "update", "delete", "rollback", "reconcile", "rotate"].includes(operation.action))
+        throw new KvError(409, "History operation ownership unavailable; retained");
+      historyValues(history, path, current.sourceUid, ref); refs.push(ref);
+    }
+    await this.registry.admin(actor);
+    if (signal?.aborted || Date.now() >= deadline) throw new KvError(408, "History cleanup stopped before reference mutation");
+    // This source CAS fences any older in-flight canonical commit before its candidates are deleted.
+    const result = await this.detachHistory(actor, path, secret, current, [], true), cleanup = [];
+    for (let index = 0; index < refs.length; index++) cleanup.push(signal?.aborted || Date.now() >= deadline ? { name: refs[index].name, status: 408, outcome: "retained" } :
+      await this.cleanupHistory(actor, path, current.sourceUid, refs[index], result.operationId, input.histories[index], true));
+    return { ...result, cleanupComplete: cleanup.every(item => ["deleted", "absent"].includes(item.outcome)), cleanup };
+  }
+
   async resolve(actor: KvActor, id: string) {
     const operation = await this.registry.db.kvOperation.findUnique({ where: { id } });
     if (!operation) throw new KvError(404, "KV operation not found");
