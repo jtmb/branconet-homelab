@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { requestJson, useQuery, useSession } from "@/lib/use-query";
 import { appendLogTail } from "@/lib/log-tail";
@@ -13,6 +13,7 @@ const ROLES = ["bootstrap", "kubernetes", "network", "dns", "storage", "longhorn
 export default function DeployClient() {
   const session = useSession();
   const history = useQuery<Job[]>("/api/deploy/history");
+  const refetchHistory = history.refetch;
   const [role, setRole] = useState("");
   const [action, setAction] = useState<Action>();
   const [saving, setSaving] = useState(false);
@@ -28,7 +29,7 @@ export default function DeployClient() {
   const eventSource = useRef<EventSource>();
   const pending = useRef<AbortController>();
   const permitted = session.canWrite && session.data?.capabilities?.provisioning === true;
-  const jobs = Array.isArray(history.data) ? history.data : [];
+  const jobs = useMemo(() => Array.isArray(history.data) ? history.data : [], [history.data]);
   const running = jobs.some(job => job.status === "running");
 
   function select(jobId: string, initialOutput = "", initialCursor = 0, truncated = false) {
@@ -54,7 +55,7 @@ export default function DeployClient() {
     initialConnection.current = true;
     const job = jobs.find(item => item.status === "running");
     if (job) select(job.id);
-  }, [history.updatedAt, session.data?.authenticated]);
+  }, [history.updatedAt, session.data?.authenticated, jobs]);
   useEffect(() => {
     if (!selected || !visible || !session.data?.authenticated) return;
     setStreamState("Connecting"); setStreamError("");
@@ -75,7 +76,7 @@ export default function DeployClient() {
         });
         cursor.current = data.cursor;
         setStreamState(data.status === "running" ? "Streaming" : data.status);
-        if (data.done) { terminal = true; stream.close(); history.refetch(); }
+        if (data.done) { terminal = true; stream.close(); refetchHistory(); }
       } catch { terminal = true; stream.close(); setStreamError("Invalid output stream; retry to inspect current status."); }
     };
     stream.onerror = () => {
@@ -83,7 +84,7 @@ export default function DeployClient() {
       stream.close(); setStreamError("Output stream disconnected. Job status is unknown; refresh or retry."); setStreamState("Disconnected");
     };
     return () => { stream.close(); if (eventSource.current === stream) eventSource.current = undefined; };
-  }, [selected, retry, visible, session.data?.authenticated, history.refetch]);
+  }, [selected, retry, visible, session.data?.authenticated, refetchHistory]);
 
   async function loadOutput(job: Job) {
     if (saving) return;

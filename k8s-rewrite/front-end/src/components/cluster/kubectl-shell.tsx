@@ -509,7 +509,7 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
       fitAddonRef.current = null;
     };
     return dispose;
-  }, [executeCommand, write, writePrompt, writeWelcomeBanner]);
+  }, [executeCommand, writePrompt, writeWelcomeBanner]);
 
   // Set container ref — defers terminal creation to when open first becomes true
   const setContainerRef = useCallback(

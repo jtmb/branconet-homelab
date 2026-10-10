@@ -42,7 +42,7 @@ export default function ResourceList({ collection }: { collection: keyof typeof 
     if (filters.selector) queryParams.set("labelSelector", filters.selector);
   }
   const query = useQuery<Result>(`/api/cluster/${collection}${queryParams.size ? "?" + queryParams : ""}`);
-  const rows = Array.isArray(query.data?.[collection]) ? query.data![collection] as Row[] : [];
+  const rows = useMemo(() => Array.isArray(query.data?.[collection]) ? query.data![collection] as Row[] : [], [query.data, collection]);
   const filtered = useMemo(() => rows.filter(row => Object.values(row).some(value => typeof value === "string" && value.toLowerCase().includes(search.toLowerCase()))), [rows, search]);
   const resourceType = collection === "volumes" && kind === "pvc" ? "pvc" : settings.type;
   const detail = (row: Row) => resourceType ? settings.route + (resourceType === "namespace" ? "" : "/" + encodeURIComponent(row.namespace ?? "")) + "/" + encodeURIComponent(row.name ?? "") : undefined;

@@ -1,0 +1,78 @@
+{
+  "capturedAt": "2026-10-10T16:51:12.947Z",
+  "source": "quality/dependency working tree after 39b0335",
+  "runtime": "Node v22.23.3 Windows x64",
+  "cleanInstall": {
+    "newSourceCopy": true,
+    "excluded": [
+      "environment files",
+      "SQLite databases",
+      "node_modules",
+      "build output",
+      "tsbuildinfo",
+      "operator kubeconfig"
+    ],
+    "sourceComparison": "SHA256 comparison of every eligible tracked application file plus eslint.config.mjs: zero differences",
+    "nodeSource": "https://nodejs.org/dist/v22.23.3/node-v22.23.3-win-x64.zip",
+    "nodeArchiveSha256": "2b0ff57b049cda1bbcea2240eec20467018713c1efe1f7360c2681859b90ed71",
+    "nodeHashManifest": "https://nodejs.org/dist/v22.23.3/SHASUMS256.txt",
+    "lockfileSha256": "e70fdda965ea12ddfba240222a9606649916d3b0edff240bdf85969d6dadd75f"
+  },
+  "checks": {
+    "npmCi": true,
+    "lintZeroWarnings": true,
+    "build": true,
+    "typecheck": true,
+    "unit": {
+      "passed": 49,
+      "failed": 0,
+      "skipped": 0
+    },
+    "http": {
+      "passed": true,
+      "initialSeconds": 25.22,
+      "metadataLabelFollowupSeconds": 10.77,
+      "evidence": "quality-node22-http.json"
+    }
+  },
+  "browser": {
+    "initialRunningStream": 1,
+    "activeRunningStreams": 1,
+    "metadataRefreshCounts": {
+      "session": 5,
+      "history": 5
+    },
+    "streamCountAfterThoseRefreshes": 1,
+    "completedOutput": {
+      "characters": 65536,
+      "textNodes": 1,
+      "falseDisconnectedMessage": false
+    },
+    "afterCompletionAndNavigation": {
+      "streamRequests": 2,
+      "activeStreams": 0
+    },
+    "pods": {
+      "rows": 100,
+      "cssViewport": 390,
+      "clientWidth": 380,
+      "scrollWidth": 380,
+      "settledRail": 56,
+      "screenshot": "quality-node22-pods-mobile.png"
+    },
+    "consoleErrorsAndWarnings": 0
+  },
+  "workflow": {
+    "path": ".github/workflows/bortus-quality.yml",
+    "os": "ubuntu-latest",
+    "node": "22.23.3",
+    "externalRun": "Not run/pushed by app executor",
+    "publishesOrDeploys": false
+  },
+  "limitations": [
+    "Windows Node22 qualification, not Linux image or real cluster/RBAC acceptance",
+    "No controlled CPU/RSS/LCP or interaction performance threshold",
+    "Remaining package advisories and ESLint9 retirement documented in TECH-STACK.md",
+    "Screenshot recaptured after rail transition settled; continuous resize/actual browser zoom not tested"
+  ]
+}

@@ -389,7 +389,7 @@ test(
         concurrentWarmPods: { requests: 20, cliCalls: 0 }, concurrentColdPods: { requests: 20, cliCalls: 1, ms: percentiles(concurrentMs) },
         outageServices: { requests: 12, status: 503, ms: percentiles(outageMs), additionalCliCalls: 0 },
         pool: diagnostics.commands,
-        limitations: ["Windows/Node24 synthetic metadata rather than Node22/Linux image", "no real API/RBAC or cold-container memory/peak-process measurement", "timings observational with no controlled host CPU isolation"],
+        limitations: [`Synthetic metadata/fake CLI on ${process.platform}/${process.version}; no deployed Node22/Linux image`, "no real API/RBAC or cold-container memory/peak-process measurement", "timings observational with no controlled host CPU isolation"],
       };
       context.diagnostic(`Cache fixture evidence: ${JSON.stringify(evidence)}`);
       if (process.env.BORTUS_TEST_EVIDENCE_PATH) await writeFile(process.env.BORTUS_TEST_EVIDENCE_PATH, JSON.stringify(evidence, null, 2) + "\n");
