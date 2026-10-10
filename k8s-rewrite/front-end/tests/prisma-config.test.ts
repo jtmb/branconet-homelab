@@ -8,7 +8,8 @@ import path from "node:path";
 
 test("Prisma 6 config loading, validation and forward deploy work with the scoped merger override", { timeout: 90000 }, async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "bortus-prisma-config-"));
-  const env = { ...process.env, DATABASE_URL: `file:${path.join(dir, "fixture.db").replaceAll("\\", "/")}` };
+  const database = `file:${path.join(dir, "fixture.db").replaceAll("\\", "/")}`;
+  const env: NodeJS.ProcessEnv = { ...process.env, DATABASE_URL: database };
   delete env.RUST_LOG;
   try {
     const localRequire = createRequire(path.resolve("package.json"));
@@ -24,7 +25,7 @@ test("Prisma 6 config loading, validation and forward deploy work with the scope
     assert.match(run(["validate"]), /is valid/);
     assert.match(run(["migrate", "deploy"]), /All migrations have been successfully applied/);
     assert.match(run(["migrate", "deploy"]), /No pending migrations/);
-    assert.match(run(["migrate", "diff", "--from-url", env.DATABASE_URL, "--to-schema-datamodel", path.resolve("prisma/schema.prisma"), "--script"]), /empty migration/i);
+    assert.match(run(["migrate", "diff", "--from-url", database, "--to-schema-datamodel", path.resolve("prisma/schema.prisma"), "--script"]), /empty migration/i);
   } finally {
     assert.equal(path.dirname(path.resolve(dir)), path.resolve(tmpdir()));
     assert(path.basename(dir).startsWith("bortus-prisma-config-"));
