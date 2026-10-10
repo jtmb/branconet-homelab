@@ -35,6 +35,23 @@ def source_manifest(folder):
 def unchanged(folder, manifest):
     return all((folder / name).is_file() and sha((folder / name).read_bytes()) == expected for name, expected in manifest.items())
 
+def failed_runtime_outputs(record, work):
+    # A stop-on-failure run has at most one current failed phase. Historical step
+    # names may reuse a result path, so never reread older failures after success.
+    if record.get('passed') or not record['steps']:
+        return []
+    item = record['steps'][-1]
+    match = re.fullmatch('(baseline|candidate)-run-([1-5])', item['phase'])
+    if item['passed'] or not match or 'started_at_unix' not in item:
+        return []
+    result = work / (item['phase'] + '.json')
+    if not result.is_file() or result.stat().st_mtime < item['started_at_unix']:
+        return []
+    observed = json.loads(result.read_text())
+    if observed.get('passed') is not False or observed.get('label') != match[1] or observed.get('run') != int(match[2]):
+        return []
+    return [observed]
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--repository', type=pathlib.Path, required=True)
@@ -91,12 +108,7 @@ def main():
     runner_hash = sha(pathlib.Path(__file__).read_bytes())
     harness_hash = sha((HERE / 'whole-server.mjs').read_bytes())
     if args.resume and record.get('runtime_harness_sha256') != harness_hash:
-        previous = { 'runtime_harness_sha256': record.get('runtime_harness_sha256'), 'runner_sha256': record.get('runner_sha256'), 'measurements': record['measurements'], 'failed_measurements': [] }
-        for item in record['steps']:
-            if not item['passed'] and re.fullmatch('(baseline|candidate)-run-[1-5]', item['phase']):
-                result = work / (item['phase'] + '.json')
-                if result.is_file():
-                    previous['failed_measurements'].append(json.loads(result.read_text()))
+        previous = { 'runtime_harness_sha256': record.get('runtime_harness_sha256'), 'runner_sha256': record.get('runner_sha256'), 'measurements': record['measurements'], 'failed_measurements': failed_runtime_outputs(record, work) }
         record.setdefault('prior_harness_attempts', []).append(previous)
         record['measurements'] = []
         record.pop('measurement_complete', None)
@@ -112,6 +124,7 @@ def main():
     def step(name, command, timeout):
         print(json.dumps({'phase': name, 'state': 'started'}), flush=True)
         start = time.perf_counter()
+        started_at_unix = time.time()
         log = work / (name + '-' + uuid.uuid4().hex[:6] + '.log')
         try:
             result = subprocess.run(command, capture_output=True, timeout=timeout)
@@ -125,7 +138,7 @@ def main():
                     if identity.returncode == 0 and identity.stdout.decode().strip() == '/' + owned:
                         subprocess.run(['docker', 'stop', '--time', '5', owned], capture_output=True, timeout=15)
         log.write_bytes(output + b'\n' + error)
-        item = {'phase': name, 'exit_code': code, 'elapsed_seconds': round(time.perf_counter() - start, 3), 'passed': code == 0}
+        item = {'phase': name, 'started_at_unix': started_at_unix, 'exit_code': code, 'elapsed_seconds': round(time.perf_counter() - start, 3), 'passed': code == 0}
         record['steps'].append(item)
         save()
         print(json.dumps(item), flush=True)

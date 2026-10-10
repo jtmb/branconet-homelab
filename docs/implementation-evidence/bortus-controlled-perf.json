@@ -48695,7 +48695,8 @@
           "runtime_harness_sha256": "2d725ac30757f989a0ba5cd1d21c0c23d29fd5dd4b559a96ad35212575a2158d"
         }
       ],
-      "failed_measurements": [
+      "failed_measurements": [],
+      "reclassified_passed_duplicate_snapshots": [
         {
           "label": "candidate",
           "run": 1,
@@ -52433,5 +52434,14 @@
       ]
     }
   ],
-  "measurement_complete": true
+  "measurement_complete": true,
+  "measurement_runner_commit": "cefc52b125138aea2662bf200902a1bd31e16754",
+  "archival_fix_runner_sha256": "cd79ae39c61d68c8d3fb2b2a93d6c9ba5ef1c6b0a190ba714210808acc3691a8",
+  "post_measurement_record_corrections": [
+    {
+      "kind": "attempt-archive-classification",
+      "passed_snapshots_reclassified": 1,
+      "detail": "An older failed step reread a recycled successful result filename. Snapshot retained intact in reclassified_passed_duplicate_snapshots; actual initial failure and all final observations unchanged."
+    }
+  ]
 }

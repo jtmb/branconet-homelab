@@ -1,5 +1,7 @@
 import importlib.util
 import io
+import json
+import os
 import pathlib
 import tarfile
 import tempfile
@@ -10,6 +12,27 @@ runner = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(runner)
 
 class SourceProvenanceTests(unittest.TestCase):
+    def test_failure_archive_refuses_success_duplicate_and_stale_result_files(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = pathlib.Path(folder)
+            result = root / 'candidate-run-1.json'
+            step = {'phase': 'candidate-run-1', 'passed': False, 'started_at_unix': 100}
+            record = {'passed': False, 'steps': [step]}
+            observed = {'passed': False, 'label': 'candidate', 'run': 1, 'failures': [{'kind': 'fixed assertion'}]}
+            result.write_text(json.dumps(observed))
+            os.utime(result, (101, 101))
+            self.assertEqual(runner.failed_runtime_outputs(record, root), [observed])
+            record['passed'] = True
+            self.assertEqual(runner.failed_runtime_outputs(record, root), [])
+            record['passed'] = False
+            observed['passed'] = True
+            result.write_text(json.dumps(observed))
+            self.assertEqual(runner.failed_runtime_outputs(record, root), [])
+            observed['passed'] = False
+            result.write_text(json.dumps(observed))
+            os.utime(result, (99, 99))
+            self.assertEqual(runner.failed_runtime_outputs(record, root), [])
+
     def test_manifest_refuses_windows_eol_conversion_and_missing_sources(self):
         with tempfile.TemporaryDirectory() as folder:
             root = pathlib.Path(folder)
