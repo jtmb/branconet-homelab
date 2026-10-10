@@ -1,0 +1,78 @@
+{
+  "repository": "https://github.com/jtmb/branconet-charts",
+  "private": true,
+  "authoring_branch": "main",
+  "validated_branch": "validated",
+  "gitrepository": "flux-system/branconet-charts",
+  "kustomization": "flux-system/migration-releases",
+  "composition_path": "./flux/releases",
+  "bortus_chart": "charts/bortus",
+  "initial_ci": 38056843293,
+  "canary": {
+    "phase": "canary",
+    "commit": "bd6a76896596bf9a4d9519415ba2c42e26f0a51c",
+    "ci_run": 38057003120,
+    "state": {
+      "pod_uid": "25a1f27d-2daa-43d2-a426-764de84f5204",
+      "deployment_uid": "77539818-3671-450c-ae58-154a63a41493",
+      "claim_uid": "9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+      "volume": "pvc-9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+      "image": "hashicorp/http-echo@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186",
+      "http_status": 200,
+      "body_sha256": "0c099c3c1e2aa705ff0c66e536acc4e8c14d990098b39ed52d50868d14c554eb",
+      "tls_validation": "Existing LAN certificate unverified for noncredential health probe",
+      "canary": "accepted-20261010134611",
+      "source_revision": "validated@sha1:bd6a76896596bf9a4d9519415ba2c42e26f0a51c",
+      "kustomization_revision": "validated@sha1:bd6a76896596bf9a4d9519415ba2c42e26f0a51c",
+      "helmrelease_revision": "0.1.0+bd6a76896596",
+      "helmrelease_source": "branconet-charts",
+      "helmrelease_generation": 3,
+      "helmrelease_observed_generation": 3
+    }
+  },
+  "rollback": {
+    "phase": "rollback",
+    "commit": "b5978a2414fda51957dd195e065d58470e8920b0",
+    "ci_run": 38057072051,
+    "state": {
+      "pod_uid": "4862645e-faac-436b-bd60-878dc23c7a6b",
+      "deployment_uid": "77539818-3671-450c-ae58-154a63a41493",
+      "claim_uid": "9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+      "volume": "pvc-9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+      "image": "hashicorp/http-echo@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186",
+      "http_status": 200,
+      "body_sha256": "0c099c3c1e2aa705ff0c66e536acc4e8c14d990098b39ed52d50868d14c554eb",
+      "tls_validation": "Existing LAN certificate unverified for noncredential health probe",
+      "canary": null,
+      "source_revision": "validated@sha1:b5978a2414fda51957dd195e065d58470e8920b0",
+      "kustomization_revision": "validated@sha1:b5978a2414fda51957dd195e065d58470e8920b0",
+      "helmrelease_revision": "0.1.0+b5978a2414fd",
+      "helmrelease_source": "branconet-charts",
+      "helmrelease_generation": 3,
+      "helmrelease_observed_generation": 3
+    }
+  },
+  "preservation": {
+    "preservation_passed": true,
+    "differences": [],
+    "claims": 53,
+    "pvs": 53,
+    "longhorn_volumes": 39,
+    "ready_helmreleases": 34,
+    "ready_nodes": 3,
+    "workloads": 61,
+    "rbac_objects": 294
+  },
+  "route_hosts": 30,
+  "route_probes_passed": 90,
+  "credential": {
+    "repository": "jtmb/branconet-charts",
+    "deploy_key_id": 166012451,
+    "read_only": true,
+    "native_secret": "flux-system/branconet-charts-readonly",
+    "known_hosts_source": "TLS-verified GitHub meta API",
+    "values_recorded": false
+  },
+  "old_source_suspended_pinned": true,
+  "original_sources_retained": true
+}

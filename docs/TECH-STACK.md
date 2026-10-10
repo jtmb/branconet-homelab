@@ -32,3 +32,8 @@ flowchart LR
 ```
 
 The image exposes port 4000, uses UID/GID 1000 and a persistent SQLite volume at `/data`. See [deployment contract](BORTUS-DEPLOYMENT.md) for probes, credentials and namespace-scoped RBAC.
+
+The separate private `jtmb/branconet-charts` repository owns deployment charts,
+values and Flux configuration. Its main → CI → validated → Flux pipeline is the
+only application deployer. This repository's BORTUS source/build work is independent;
+see [Flux contract and image releases](FLUX-GITOPS.md).

@@ -1,5 +1,12 @@
 # <h1> branconet-homelab
 
+BORTUS K8s Manager application source lives in `k8s-rewrite/front-end/`.
+The live Kubernetes charts, values and Flux configuration are maintained in the
+separate private [branconet-charts](https://github.com/jtmb/branconet-charts)
+repository. Chart pushes to main pass validation before automatic Flux deployment;
+see [the Flux contract](docs/FLUX-GITOPS.md) and [verified setup](docs/CHARTS-SEPARATION.md).
+The legacy Swarm/Gluster sources below remain retained recovery material.
+
 My personal highly avilable, customizable homelab as code deployment & pipeline which features:
 
 - Ansible

@@ -30,7 +30,7 @@ Container provisioning is disabled. Provision or recover a cluster from an indep
 
 The dashboard lists nodes, namespaces, pods, deployments, services, ingresses and storage using externally supplied Kubernetes credentials. Database node records describe inventory; creating a record does not provision a machine or join it to Kubernetes.
 
-The **Flux** view reflects installed Flux resources and the repositories configured in the target cluster. Publish manifests to that configured source and path. Adding BORTUS source to `main` does not switch the cluster's Flux branch. See [Flux guide](FLUX-GITOPS.md) and [connection guide](CONNECTING-TO-A-CLUSTER.md).
+The **Flux** view reflects installed Flux resources. The production source is the separate private `jtmb/branconet-charts` repository: main pushes pass validation before CI promotes their exact SHA to validated. The existing migration-releases Kustomization uses source branconet-charts and path ./flux/releases. BORTUS's package is charts/bortus, with release overrides in flux/releases/bortus.yaml. Application source pushes do not rebuild or redeploy the running image. See [Flux guide](FLUX-GITOPS.md), its reviewed image-release procedure and [connection guide](CONNECTING-TO-A-CLUSTER.md).
 
 The write-role terminal executes shell commands with the application's operating-system permissions as well as its Kubernetes permissions. Treat write accounts as operators with application-host access.
 
