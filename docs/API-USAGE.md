@@ -129,7 +129,7 @@ The shared capability matrix defines YAML read for all seven kinds, edit/delete 
 
 Node YAML is GET /api/cluster/nodes/[hostname]/yaml. POST /api/cluster/nodes/[hostname]/action supports cordon/uncordon/drain with fresh write role; drain requires confirmName exactly matching hostname, respects PDB/unmanaged/local-data refusals and has a 20-second Kubernetes timeout. No force or emptyDir deletion flag is used. Failed drain may have partial effects; cache is invalidated even on failure and the operator must inspect current state. Logs default to 100 lines, permit 1–1000, cap output at 256 KiB and never follow indefinitely. Pod exec sends a script as one sh -lc argument inside the selected pod; it never concatenates that script into a host shell command.
 
-The write-role operator terminal endpoint executes arbitrary shell commands through bash with application-host permissions. It is not restricted to Kubernetes API access; pod execution is being separated into a scoped endpoint so pod commands do not run in a host shell.
+The write-role operator terminal endpoint executes arbitrary shell commands through bash with application-host permissions when its runtime capability is enabled. Pod execution uses its separate namespaced endpoint, so selected pod commands do not run in a host shell.
 
 Auth session responses now include capabilities:{provisioning,operatorShell,podExec}. These describe implemented runtime gates, not a successful live RBAC probe. Operator shell is disabled on Windows and when BORTUS_DISABLE_OPERATOR_SHELL=true; pod exec is disabled when BORTUS_DISABLE_POD_EXEC=true. The corresponding handlers enforce these gates with 501. Provisioning retains its container/in-cluster disable behavior. YAML reads also cap output at 256 KiB (413 if exceeded); logs enforce their limit after CLI output. UI wiring is pending A12.
 
@@ -155,12 +155,14 @@ Storage's default list contains persistent volumes and optional Longhorn volumes
 |---|---|
 | POST /api/deploy/start | Write role; JSON playbook and roles; returns success/jobId |
 | GET /api/deploy/start | Active job IDs |
-| POST /api/deploy/stop | Write role; cancel job |
-| GET /api/deploy/history | Job history |
-| DELETE /api/deploy/history | Write role; remove history |
-| GET /api/deploy/stream | SSE job output |
+| POST /api/deploy/stop | Write role; 202 cancellation requested for a running job owned by this process; 409 for already-complete/unowned jobs; status is determined by the runner |
+| GET /api/deploy/history | Latest 50 job metadata rows, without output; explicit ?jobId=...&tail=1..65536 returns bounded output/cursor/truncated |
+| DELETE /api/deploy/history | Write role; remove completed history only; running job 409, missing job 404 |
+| GET /api/deploy/stream | jobId plus cursor/Last-Event-ID; Unicode-code-point offsets, 4096-character chunks, 32-KiB frame ceiling, explicit completion/error/reset |
 
-Container provisioning returns 501. Local provisioning requires separately supplied Ansible/playbooks and independent bootstrap credentials; this app merge includes no Kubernetes provisioning roles. The UI does not yet reflect this disabled capability. See [workflow](BOTRUS-WORKFLOW.md) and [audit](BORTUS-AUDIT.md).
+Job output streams read bounded SQLite substrings under consumer backpressure, recheck the current account/session on every poll, and poll at most once per completed 500-ms cycle. The full captured field is not returned to the Node process for polling. Completion, request abort, reader cancellation, missing jobs, authorization failure, DB failure and a 30-minute lifetime close the stream and clear timers. Completed startup never starts a polling interval. Output history is fetched explicitly, never as part of the shared metadata list. Local timer/HTTP/browser and two-MiB Unicode slice evidence is recorded under A18; real runner/image performance remains external.
+
+Container provisioning returns 501. Local provisioning requires separately supplied Ansible/playbooks and independent bootstrap credentials; this app merge includes no Kubernetes provisioning roles. The UI uses the current session/runtime capability and shows independent-operator guidance when provisioning is disabled. See [workflow](BOTRUS-WORKFLOW.md) and [audit](BORTUS-AUDIT.md).
 
 ## Flux
 

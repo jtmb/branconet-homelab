@@ -20,6 +20,8 @@ async function main() {
 const root = process.cwd();
 const dir = await mkdtemp(path.join(tmpdir(), "bortus-ui-test-"));
 const servers: Server[] = [];
+const requestCounts = new Map<string, number>();
+let activeStreams = 0;
 let child: ChildProcess | undefined;
 let db: PrismaClient | undefined;
 try {
@@ -52,6 +54,10 @@ try {
   db = new PrismaClient({ datasources: { db: { url: database } } });
   const writer = await db.user.create({ data: { username: "fixture_writer", passwordHash: "unused", role: "write" } });
   const reader = await db.user.create({ data: { username: "fixture_reader", passwordHash: "unused", role: "readonly" } });
+  await db.job.createMany({ data: [
+    { id: "completed-ui-job", playbook: "fixture.yml", status: "success", output: "🌍 fixture captured output\n".repeat(10000) },
+    { id: "running-ui-job", playbook: "fixture.yml", status: "running", output: "fixture running output\n" },
+  ] });
   const token = (user: typeof writer) => new SignJWT({ sub: user.id, username: user.username, sessionVersion: user.sessionVersion }).setProtectedHeader({ alg: "HS256" }).setIssuedAt().setExpirationTime("1h").sign(new TextEncoder().encode(signing));
   const origin = "http://127.0.0.1:" + env.PORT;
   child = spawn(process.execPath, [path.resolve(".next/standalone/server.js")], { env, stdio: ["ignore", "pipe", "pipe"] });
@@ -68,6 +74,13 @@ try {
   async function gateway(credential: string) {
     const server = createServer(async (request, response) => {
       const url = new URL(request.url ?? "/", origin);
+      if (url.pathname === "/__fixture/status") {
+        response.setHeader("Content-Type", "application/json");
+        response.end(JSON.stringify({ requests: Object.fromEntries(requestCounts), activeStreams }));
+        return;
+      }
+      const requestKey = request.method + " " + url.pathname;
+      requestCounts.set(requestKey, (requestCounts.get(requestKey) ?? 0) + 1);
       if (url.pathname.startsWith("/_next/static/")) {
         try {
           const staticRoot = path.resolve(root, ".next/static");
@@ -78,8 +91,17 @@ try {
         } catch { response.writeHead(404); response.end(); }
         return;
       }
-      const upstream = forward(origin + request.url, { method: request.method, headers: { ...request.headers, cookie: "botrus_auth_token=" + credential, host: "127.0.0.1:" + env.PORT } }, result => { response.writeHead(result.statusCode ?? 502, result.headers); result.pipe(response); });
-      upstream.on("error", () => { response.writeHead(502); response.end(); });
+      const upstream = forward(origin + request.url, { method: request.method, headers: { ...request.headers, cookie: "botrus_auth_token=" + credential, host: "127.0.0.1:" + env.PORT } }, result => {
+        if (result.headers["content-type"]?.startsWith("text/event-stream")) {
+          activeStreams++;
+          let ended = false;
+          const end = () => { if (!ended) { ended = true; activeStreams--; } };
+          result.once("end", end); result.once("close", end); response.once("close", end);
+        }
+        response.writeHead(result.statusCode ?? 502, result.headers); result.pipe(response);
+      });
+      response.once("close", () => upstream.destroy());
+      upstream.on("error", () => { if (!response.destroyed) { if (!response.headersSent) response.writeHead(502); response.end(); } });
       request.pipe(upstream);
     });
     server.listen(0, "127.0.0.1"); await once(server, "listening"); servers.push(server);

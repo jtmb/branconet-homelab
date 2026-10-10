@@ -58,7 +58,7 @@ export default function NodesPage() {
         <button aria-label={"Delete inventory " + row.hostname} disabled={saving} onClick={() => setDeleting(row as NodeRow)} className="text-red-300 underline">Delete</button>
       </div> : undefined} />}
     {deleting && session.canWrite && <ConfirmDialog open title="Delete inventory record" message="This removes only the SQLite inventory record. The live Kubernetes node remains."
-      confirmName={deleting.hostname} danger confirmLabel="Delete inventory" loading={saving} onClose={() => { if (!saving) setDeleting(undefined); }}
+      confirmName={deleting.hostname} error={error} danger confirmLabel="Delete inventory" loading={saving} onClose={() => { if (!saving) setDeleting(undefined); }}
       onConfirm={async () => {
         setSaving(true); setError("");
         try { await requestJson("/api/nodes/" + encodeURIComponent(deleting.id), { method: "DELETE" }); inventory.refetch(); setDeleting(undefined); }

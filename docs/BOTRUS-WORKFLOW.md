@@ -48,6 +48,8 @@ The separate pod-exec handler runs scripts inside the selected pod/container via
 
 ## Validation
 
+Provisioning uses the shared fresh session/runtime capability and metadata-only job history. Container/unsupported runtimes show independent-operator guidance instead of Run controls. Job output is loaded explicitly into a bounded text tail, with cursor-based streaming, hidden-page close/resume, explicit error/retry and unmount cleanup. Completed job deletion and provisioning/cancellation use accessible confirmations with failures inside the focused dialog. Cancellation reports a request rather than claiming completion, and refuses an unowned process. Local unit/HTTP/browser completion/unmount/role/mobile checks passed; browser visibility transitions and real runner/image performance remain separately bounded acceptance.
+
 Keyboard focus is visible on interactive controls. Resource menus use keyboard-aware dropdowns; dialogs expose titles/descriptions, trap focus and return it to their trigger. Logs render as a bounded text snapshot, and YAML syntax tooling is removed from initial route imports. Resource keyboard/mobile/browser and observed-script comparisons passed locally; see [evidence and limits](implementation-evidence/README.md). Other screens, actual zoom and screen-reader/performance checks remain pending.
 
 Deployment details now show desired/observed controller state, including paused/reconciling/scaled-down state and generation. Pod membership follows controller UIDs. Desired replicas use an explicit bounded form; runtime edits may be reconciled back by Flux.

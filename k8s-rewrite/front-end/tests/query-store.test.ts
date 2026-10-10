@@ -114,7 +114,7 @@ test("default timers retain the browser global receiver", async () => {
       assert.equal(this, globalThis);
       scheduled++;
       return {} as ReturnType<typeof setTimeout>;
-    }) as typeof setTimeout;
+    }) as unknown as typeof setTimeout;
     globalThis.clearTimeout = (function (this: typeof globalThis) {
       assert.equal(this, globalThis);
       cancelled++;

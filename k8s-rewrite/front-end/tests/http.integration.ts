@@ -432,6 +432,33 @@ test(
         (await request("/api/deploy/start", "POST", {}, writer)).status,
         501,
       );
+      const completedOutput = "🌍 synthetic output\n".repeat(700);
+      const completedJob = await db.job.create({ data: { playbook: "fixture.yml", status: "success", output: completedOutput } });
+      const orphanJob = await db.job.create({ data: { playbook: "fixture.yml", status: "running" } });
+      const metadataJobs = await request("/api/deploy/history", "GET", undefined, reader);
+      assert.equal(metadataJobs.status, 200);
+      assert((await metadataJobs.json()).every((job: Record<string, unknown>) => !Object.hasOwn(job, "output")));
+      const explicitOutput = await request(`/api/deploy/history?jobId=${completedJob.id}&tail=7`, "GET", undefined, reader);
+      const tail = await explicitOutput.json();
+      assert.equal(tail.output, Array.from(completedOutput).slice(-7).join("")); assert(tail.truncated);
+      assert.equal(tail.cursor, Array.from(completedOutput).length);
+      assert.equal((await request(`/api/deploy/history?jobId=${completedJob.id}&tail=65537`, "GET", undefined, reader)).status, 400);
+      assert.equal((await request(`/api/deploy/stream?jobId=${completedJob.id}&cursor=-1`, "GET", undefined, reader)).status, 400);
+      const streamResponse = await request(`/api/deploy/stream?jobId=${completedJob.id}`, "GET", undefined, reader);
+      assert.equal(streamResponse.status, 200); assert(streamResponse.headers.get("cache-control")?.includes("no-store"));
+      const streamed = await streamResponse.text();
+      const frames = [...streamed.matchAll(/data: (.+)\n/g)].map(match => JSON.parse(match[1]));
+      assert.equal(frames.map(frame => frame.output).join(""), completedOutput);
+      assert.equal(frames.filter(frame => frame.done).length, 1);
+      assert(frames.every(frame => Buffer.byteLength(JSON.stringify(frame)) <= 32768));
+      const resumeResponse = await request(`/api/deploy/stream?jobId=${completedJob.id}&cursor=5`, "GET", undefined, reader);
+      const resumed = [...(await resumeResponse.text()).matchAll(/data: (.+)\n/g)].map(match => JSON.parse(match[1]));
+      assert.equal(resumed.map(frame => frame.output).join(""), Array.from(completedOutput).slice(5).join(""));
+      assert.equal((await request(`/api/deploy/stop?jobId=${orphanJob.id}`, "POST", undefined, writer)).status, 409);
+      assert.equal((await db.job.findUnique({ where: { id: orphanJob.id } }))?.status, "running");
+      assert.equal((await request(`/api/deploy/history?jobId=${orphanJob.id}`, "DELETE", undefined, writer)).status, 409);
+      assert.equal((await request(`/api/deploy/history?jobId=${completedJob.id}`, "DELETE", undefined, reader)).status, 403);
+      assert.equal((await request(`/api/deploy/history?jobId=${completedJob.id}`, "DELETE", undefined, writer)).status, 200);
       const alias = {
         alias: "legacy_user",
         namespace: "apps",

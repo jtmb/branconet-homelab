@@ -33,7 +33,7 @@ Both /api/nodes mutations and the compatibility POST /api/cluster/nodes inventor
 
 Desired-replica editing is a labelled explicit form with integer bounds 0–10000, a disabled unchanged/invalid/save state and fixed API errors. Readonly sessions see the desired count. It does not submit on blur or parse fractional input as an integer.
 
-Top navigation and shell containers share the session subscription. Write controls pause after session failure/staleness; host terminal visibility also requires runtime capability. Logout, revoked role and ended-session events clear terminal instances/metadata and shared queries. The top refresh control checks the server result before refetching active resource queries. User/settings/provisioning forms are still being converted.
+Top navigation, shell containers and provisioning share the session subscription. Write controls pause after session failure/staleness; host terminal and provisioning visibility also require runtime capability. Logout, revoked role and ended-session events clear terminal instances/metadata and shared queries. The top refresh control checks the server result before refetching active resource queries. User/settings forms are still being converted. Job output streams recheck account existence/sessionVersion during reads and close on revocation; metadata and explicit output remain readable to authenticated readonly users.
 
 `GET /api/vars/lookup` uses independently supplied `BOTRUS_SECRETS_KEY`, not user cookies or roles. It returns mapped native Secret values and nonsecret configuration. Keep this credential available only to authorized lookup consumers and require TLS.
 

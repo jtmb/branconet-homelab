@@ -51,8 +51,9 @@ function retainBrowser() {
 }
 export function useQuery<T>(url: string, interval = 10000): QuerySnapshot<T> & { refetch: () => void } {
   const parsed = new URL(url, "https://bortus.invalid");
-  if ((!url.startsWith("/api/cluster/") && !["/api/auth/session", "/api/nodes", "/api/users", "/api/settings", "/api/vars", "/api/secret-references", "/api/secrets"].includes(parsed.pathname) && !url.startsWith("/api/flux/"))
-      || /\/(yaml|logs|exec)(\?|$)/.test(url) || parsed.pathname === "/api/secrets" && parsed.searchParams.has("key"))
+  if ((!url.startsWith("/api/cluster/") && !["/api/auth/session", "/api/nodes", "/api/users", "/api/settings", "/api/vars", "/api/secret-references", "/api/secrets", "/api/deploy/history"].includes(parsed.pathname) && !url.startsWith("/api/flux/"))
+      || /\/(yaml|logs|exec)(\?|$)/.test(url) || parsed.pathname === "/api/secrets" && parsed.searchParams.has("key")
+      || parsed.pathname === "/api/deploy/history" && parsed.searchParams.has("jobId"))
     throw new Error("Shared queries accept only resource and session metadata.");
   const subscribe = useCallback((listener: () => void) => {
     const release = retainBrowser();

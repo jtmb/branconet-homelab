@@ -67,8 +67,9 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
     try { await mutate(base + (actionName === "scale" ? "/scale" : "/action"), "POST", body ?? { action: actionName }); notify("Action accepted. Refreshing resource state."); }
     finally { if (resourceType === "node") changed(); }
   });
-  const confirm = (title: string, message: string, label: string, execute: () => Promise<void>, exactName?: string) =>
-    setConfirmation({ title, message, label, execute, name: exactName });
+  const confirm = (title: string, message: string, label: string, execute: () => Promise<void>, exactName?: string) => {
+    setMessage(""); setConfirmation({ title, message, label, execute, name: exactName });
+  };
   const finishConfirmation = async () => {
     if (!confirmation || busy) return;
     setBusy(true);
@@ -123,6 +124,6 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
       onSave={yaml.edit && session.canWrite && capability.yamlEdit ? async value => { await mutate(base + "/yaml", "PUT", { yaml: value }); notify("YAML replaced. Refreshing resource state."); } : undefined} />}
     {logs !== undefined && <LogModal open onClose={() => setLogs(undefined)} logs={logs} title={`Logs: ${namespace}/${name}`} returnFocus={returnFocus} />}
     {confirmation && <ConfirmDialog open onClose={() => { if (!busy) setConfirmation(undefined); }} title={confirmation.title}
-      message={confirmation.message} confirmLabel={confirmation.label} confirmName={confirmation.name} danger loading={busy} onConfirm={finishConfirmation} returnFocus={returnFocus} />}
+      message={confirmation.message} confirmLabel={confirmation.label} confirmName={confirmation.name} error={message} danger loading={busy} onConfirm={finishConfirmation} returnFocus={returnFocus} />}
   </>;
 }
