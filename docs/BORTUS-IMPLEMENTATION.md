@@ -18,17 +18,17 @@ Local implementation/acceptance and external Linux image/real-cluster acceptance
 | A08 capabilities | Shared matrix/scoped YAML CAS/logs/node actions/pod exec; writer/reader/PVC/node browser menus | Local passed; real ServiceAccount acceptance pending |
 | A09 deployment state | UID ownership; zero/paused/generation state; explicit integer scale form; zero→one actual argv | Local passed; real controller/Flux pending |
 | A10 pod filters | API and browser namespace/type/label filtering; correct empty result | Local passed |
-| A11 polling/refetch | Shared completion-based lifecycle, cancellation/backoff/generation tests; actual browser timer fix | Resource/session/provisioning local passed; settings/users/Flux migration pending |
-| A12 permissions/runtime | Fresh shared session in resource menus/topnav/shells; unsupported host terminal hidden | Resource local passed; remaining forms/flows pending |
-| A13 sorting | Numeric/quantity/date/count/unknown tests; browser restarts 2/7/12 | Canonical resource local passed; remaining tables pending |
-| A14 mobile | 56-pixel narrow rail, local table scrolling, dialog fit; 320/390/768 CSS-width bounds | Resource local passed; remaining screens/actual zoom pending |
-| A15 accessibility | Named controls/links, keyboard menus/dialog trap/return; screenshot checks | Resource dialogs local passed; other controls/automated scan/manual screen reader pending |
+| A11 polling/refetch | Shared completion-based lifecycle, cancellation/backoff/generation tests; actual browser timer fix | Resource/session/provisioning/administration local passed; Flux migration pending |
+| A12 permissions/runtime | Fresh shared session in resources/topnav/shells/provisioning/admin; browser demotion erases user editor/password input | Local passed for migrated callers; Secrets/Flux pending |
+| A13 sorting | Numeric/quantity/date/count/unknown tests; browser restarts 2/7/12; typed admin columns | Resources/admin local passed; Secrets/Flux/child tables pending |
+| A14 mobile | 56-pixel narrow rail, local table scrolling, dialog fit; resources/admin at 320/390/768 CSS widths | Migrated screens local passed; Secrets/Flux/actual zoom pending |
+| A15 accessibility | Named controls/links, resource/admin keyboard dialog trap/return; exact confirmations | Local passed for migrated controls; other controls/automated scan/manual screen reader pending |
 | A16 YAML lifecycle | Reset per open/mode; authoritative readOnly; dirty save/discard; readonly reopening/focus return | Local browser passed |
 | A17 Secret intent | Existing CAS/value safety plus other-key annotation/managed-fields exclusion regression | Engine/editor dirty/empty/delete-intent work pending |
 | A18 SSE | Backpressure/Unicode SQL slices, cursor resume, fresh account checks, terminal cleanup; bounded text tail and browser completion/unmount counts | Local unit/HTTP/browser passed; real runner/image pending |
 | A19 quality gates | Noninteractive lint and clean Node 22 CI | Pending |
 | A20 dependencies | Compatible updates and advisory reachability ledger | Pending |
-| A21 lists/probes/forms | Canonical resource tables bound DOM to 100 rows; validated exact-ID inventory rename; no speculative visible-row prefetch | Partial; other forms/metadata/probes/detail tables pending |
+| A21 lists/probes/forms | Resource/admin tables bound DOM to 100 rows; exact-ID inventory/config edits; explicit save failures; no speculative row prefetch | Partial; Secret metadata/probes/detail tables pending |
 | A22 lazy code | Actions/YAML/log/terminal deferral; observed scripts and offline gzip/Brotli; build estimates | Resource local measurements passed; provisioning/CPU/LCP/fixed mobile performance pending |
 
 ## Reversible stages and evidence
@@ -40,6 +40,8 @@ Local implementation/acceptance and external Linux image/real-cluster acceptance
 - `cf381a9`: scoped resource APIs/capabilities/runtime gates. 33 unit/transport tests, build/typecheck, production HTTP in 26.80 s. Includes narrow source-ignore exception for API logs/route.ts.
 - Current UI/query stage: full 38-test run passed, plus the newly added different-key metadata regression and its 11-test native suite passed. Production build passed after browser-native timers were bound to globalThis. Expanded HTTP passed in 28.47 s, including exact-ID node rename/create/delete, readonly denial and invalid storage/node input. Browser acceptance and byte observations are [recorded separately](implementation-evidence/README.md).
 - `0a962f8`: committed resource/query UI and its evidence. SSE/provisioning follow-up: 44-test full suite, production build/typecheck and expanded HTTP in 26.10 s passed; an additional two-MiB SQLite Unicode slice test passed. Browser counts verify one running stream, completed stream closure, no reopen during metadata polling, one stream after readonly navigation and zero after unmount. Guarded KV mode/legacy-lookup/recovery remain proposed next-stage contracts, not implemented features.
+- `e2c3abd`: committed bounded provisioning streams/output, six focused lifecycle tests and proposed guarded KV/recovery contracts.
+- Administration follow-up: full 49-test suite, build/typecheck and production HTTP in 25.86 s passed. Shared queries/fresh role controls, one abortable mutation per screen, 100-row tables, labelled dialogs, exact deletions and truthful setting/policy state replace one-shot role fetches, overlapping intervals and fake saves. [Browser evidence](implementation-evidence/administration-ui.json) includes open-editor demotion, empty nonsecret save, failed policy apply/recovery, readonly controls and mobile bounds. No browser credential reset or deletion was performed.
 
 The browser found and corrected two defects before acceptance: unbound native timers stopped polling, and an absolutely positioned screen-reader-only Actions header escaped its local scroll region. Regression/browser checks verify the corrections. Initial menu imports briefly raised lists to 149 kB; deferring action code restored their build estimate to 115 kB. Details estimate 113–115 kB versus the historical 133–135 kB. Neither estimate is actual transfer/CPU/LCP.
 

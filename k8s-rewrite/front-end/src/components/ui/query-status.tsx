@@ -1,8 +1,9 @@
 "use client";
 import { QuerySnapshot } from "@/lib/query-store";
 
-export function QueryStatus({ query }: { query: QuerySnapshot<{ availability?: { state?: string } }> & { refetch: () => void } }) {
-  const availability = query.data?.availability;
+export function QueryStatus<T>({ query }: { query: QuerySnapshot<T> & { refetch: () => void } }) {
+  const candidate = query.data && typeof query.data === "object" && "availability" in query.data ? query.data.availability : undefined;
+  const availability = candidate && typeof candidate === "object" && "state" in candidate && typeof candidate.state === "string" ? { state: candidate.state } : undefined;
   const warning = query.error || (availability?.state && !["healthy", "empty"].includes(availability.state));
   if (!warning) return null;
   return <div role="status" className="mb-4 rounded-lg border border-amber-800 bg-amber-950/30 p-3 text-sm text-amber-200">

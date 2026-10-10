@@ -24,7 +24,10 @@ class Fixture { static int Main(string[] args) {
   string r=args[p+1]; string f=Path.Combine(d,r+".json");
   string failure=Path.Combine(d,"failure.txt");
   if(File.Exists(failure)&&(File.ReadAllText(failure).Trim()=="all"||File.ReadAllText(failure).Trim()==r)) { Console.Error.Write("private-command-error-marker"); return 1; }
-  if(Array.IndexOf(args,"yaml")>=0) {
+  if(Array.Exists(args,a=>a.StartsWith("custom-columns="))) {
+    string table=Path.Combine(d,r+"-table.txt"); Console.Write(File.Exists(table)?File.ReadAllText(table):"");
+  }
+  else if(Array.IndexOf(args,"yaml")>=0) {
     string kind=r=="persistentvolumeclaim"?"PersistentVolumeClaim":r=="deployment"?"Deployment":r=="ingress"?"Ingress":r=="node"?"Node":r=="pod"?"Pod":r=="service"?"Service":"Namespace";
     string version=r=="deployment"?"apps/v1":r=="ingress"?"networking.k8s.io/v1":"v1";
     int ns=Array.IndexOf(args,"-n");
@@ -50,7 +53,8 @@ const failure=path.join(d,'failure.txt');
 if(fs.existsSync(failure)&&['all',a[p+1]].includes(fs.readFileSync(failure,'utf8').trim())){process.stderr.write('private-command-error-marker');process.exit(1);}
 const kinds={persistentvolumeclaim:'PersistentVolumeClaim',deployment:'Deployment',ingress:'Ingress',node:'Node',pod:'Pod',service:'Service',namespace:'Namespace'};
 const resource=a[p+1],ns=a.indexOf('-n');
-process.stdout.write(a.includes('yaml')?'apiVersion: '+(resource==='deployment'?'apps/v1':resource==='ingress'?'networking.k8s.io/v1':'v1')+'\\nkind: '+kinds[resource]+'\\nmetadata:\\n  name: '+a[p+2]+'\\n  resourceVersion: "1"\\n'+(ns>=0?'  namespace: '+a[ns+1]+'\\n':''):fs.existsSync(f)?fs.readFileSync(f,'utf8'):'{"items":[]}');
+const table=path.join(d,resource+'-table.txt');
+process.stdout.write(a.some(v=>v.startsWith('custom-columns='))?(fs.existsSync(table)?fs.readFileSync(table,'utf8'):''):a.includes('yaml')?'apiVersion: '+(resource==='deployment'?'apps/v1':resource==='ingress'?'networking.k8s.io/v1':'v1')+'\\nkind: '+kinds[resource]+'\\nmetadata:\\n  name: '+a[p+2]+'\\n  resourceVersion: "1"\\n'+(ns>=0?'  namespace: '+a[ns+1]+'\\n':''):fs.existsSync(f)?fs.readFileSync(f,'utf8'):'{"items":[]}');
 `);
     await chmod(executable, 0o755);
   }

@@ -1,10 +1,11 @@
 "use client";
 import { useState } from "react";
+import dynamic from "next/dynamic";
 import { useQuery, useSession, requestJson, refetchCluster } from "@/lib/use-query";
 import { QueryStatus } from "@/components/ui/query-status";
 import { ResourceTable } from "@/components/cluster/resource-list";
 import ViewportWrapper from "../viewport-wrapper";
-import ConfirmDialog from "../confirm-dialog";
+const ConfirmDialog = dynamic(() => import("../confirm-dialog"), { ssr: false });
 type NodeRow = Record<string, unknown> & { id: string; name: string; hostname: string; ipAddress: string; role: string };
 const blank = { name: "", hostname: "", ipAddress: "", role: "worker" };
 export default function NodesPage() {
@@ -55,7 +56,7 @@ export default function NodesPage() {
         <button aria-label={"Edit inventory " + row.hostname} disabled={saving} onClick={() => {
           const node = row as NodeRow; setEditing(node.id); setForm({ name: node.name, hostname: node.hostname, ipAddress: node.ipAddress, role: node.role }); setOpened(true);
         }} className="text-indigo-300 underline">Edit</button>
-        <button aria-label={"Delete inventory " + row.hostname} disabled={saving} onClick={() => setDeleting(row as NodeRow)} className="text-red-300 underline">Delete</button>
+        <button aria-label={"Delete inventory " + row.hostname} disabled={saving} onClick={() => { setError(""); setDeleting(row as NodeRow); }} className="text-red-300 underline">Delete</button>
       </div> : undefined} />}
     {deleting && session.canWrite && <ConfirmDialog open title="Delete inventory record" message="This removes only the SQLite inventory record. The live Kubernetes node remains."
       confirmName={deleting.hostname} error={error} danger confirmLabel="Delete inventory" loading={saving} onClose={() => { if (!saving) setDeleting(undefined); }}

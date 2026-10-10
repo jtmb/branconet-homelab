@@ -43,6 +43,7 @@ try {
     pv: { items: [] }, sc: { items: [] }, "volumes.longhorn.io": { items: [] },
   };
   for (const [resource, body] of Object.entries(data)) await writeFile(path.join(fixture.bin, resource + ".json"), JSON.stringify(body));
+  await writeFile(path.join(fixture.bin, "pv-table.txt"), "fixture-volume Retain Bound fixture-storage 512Mi fixture-claim " + created + "\n");
   const database = "file:" + path.join(dir, "ui.db").replaceAll("\\", "/");
   const kubeconfig = path.join(dir, "config.json");
   await writeFile(kubeconfig, JSON.stringify({ apiVersion: "v1", kind: "Config", clusters: [{ name: "fixture", cluster: { server: "https://127.0.0.1:1" } }], users: [{ name: "fixture", user: {} }], contexts: [{ name: "fixture", context: { cluster: "fixture", user: "fixture" } }], "current-context": "fixture" }));
@@ -54,6 +55,9 @@ try {
   db = new PrismaClient({ datasources: { db: { url: database } } });
   const writer = await db.user.create({ data: { username: "fixture_writer", passwordHash: "unused", role: "write" } });
   const reader = await db.user.create({ data: { username: "fixture_reader", passwordHash: "unused", role: "readonly" } });
+  await db.user.createMany({ data: Array.from({ length: 205 }, (_, index) => ({ username: "large_user_" + index, passwordHash: "unused", role: "readonly" })) });
+  await db.variable.createMany({ data: Array.from({ length: 205 }, (_, index) => ({ key: "fixture_config_" + index, value: "nonsecret " + index, category: "fixture", encrypted: false })) });
+  await db.appSetting.create({ data: { key: "allow_registration", value: "false" } });
   await db.job.createMany({ data: [
     { id: "completed-ui-job", playbook: "fixture.yml", status: "success", output: "🌍 fixture captured output\n".repeat(10000) },
     { id: "running-ui-job", playbook: "fixture.yml", status: "running", output: "fixture running output\n" },

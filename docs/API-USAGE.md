@@ -68,6 +68,8 @@ Send value-bearing requests from the UI or protected files over TLS; never inclu
 | GET /api/settings | Key/value map |
 | PATCH /api/settings | Write role; upsert JSON key/value; returns success/key/value |
 
+Administration screens check response status before presenting success or refetching metadata. User/settings/configuration reads share bounded lifecycle queries; failed reads show unavailable/Retry and may label a retained prior snapshot. User/configuration saves validate changed input, allow one request at a time, time out after 20 seconds and abort on unmount. No mutation retries automatically after an ambiguous result. Configuration editing sends the existing ID and key; blank nonsecret values are valid. Settings' registration switch shows the persisted app setting separately from effective registration status. PV policy changes use the existing reclaim endpoint one volume at a time with exact-name confirmation, and treat a 207 partial failure as failure. The unused default-PV fake Save is removed.
+
 Nonsecret keys must be valid Ansible identifiers. Legacy sensitive aliases may contain hyphens or path separators; their spelling does not derive a native destination. No DB-to-cluster push remains.
 
 ```bash
