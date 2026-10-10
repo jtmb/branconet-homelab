@@ -16,7 +16,7 @@ Native Secret transport uses Node HTTPS/JSON with the Kubernetes SDK's credentia
 
 | Component | Declared version | Role |
 |---|---|---|
-| Node.js | 22 (Docker image) | Application runtime |
+| Node.js | 22.23.3/bookworm-slim, pinned by SHA256 | Application runtime; installed Debian packages refreshed during build |
 | Next.js | 15.5.27 | App Router and standalone server |
 | React / React DOM | ^18.3.0 | Dashboard UI |
 | TypeScript | ^5.7.0 | Strict type checking |
@@ -30,9 +30,11 @@ Native Secret transport uses Node HTTPS/JSON with the Kubernetes SDK's credentia
 | zod | ^3.23.0 | Input validation |
 | tsx | ^4.20.6 | Node test runner and TypeScript execution |
 | ESLint / eslint-config-next | 9.39.5 / 15.5.27 | Direct noninteractive CLI with Next Core Web Vitals and hook lifecycle rules |
-| kubectl | v1.34.1 Docker default | Other dashboard resource operations |
+| kubectl | v1.37.1 Docker default, checksum verified | Other dashboard resource operations; compatible with the 1.37 API server |
 
-`package-lock.json` records resolved dependency versions. Override Docker `KUBECTL_VERSION` to match the target cluster. Cluster, CNI, storage and Flux versions belong to the operator's deployment configuration rather than this application package.
+`package-lock.json` records resolved dependency versions. The scoped `@prisma/config@6.19.3` override resolves DeepmergeTS 8.0.0 while retaining Prisma/client 6.19.3. Override Docker `KUBECTL_VERSION` for a separately qualified supported patch within one minor of every API server; see the official [patch releases](https://kubernetes.io/releases/) and [skew policy](https://kubernetes.io/releases/version-skew-policy/#kubectl). Cluster, CNI, storage and Flux versions belong to the operator's deployment configuration rather than this application package.
+
+The Docker base is `node:22.23.3-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392`. Builds upgrade installed Debian packages and enforce `perl-base >= 5.36.0-7+deb12u4`, the [Debian fixed version](https://security-tracker.debian.org/tracker/DSA-5902-1). APT security resolution remains time-dependent; record the resulting inventory/image digest for each artifact. npm, npx, Corepack and Yarn are removed only from the final runtime; local Prisma migrations and the standalone server use Node directly. Source/runtime qualification and package findings for this maintenance stage are recorded separately from historical audits and final integrated release acceptance.
 
 The checked-in flat ESLint configuration follows the [versioned Next 15 guide](https://nextjs.org/docs/15/app/api-reference/config/eslint). The lint command invokes ESLint directly and treats warnings as failures; strict TypeScript remains a separate check. Optional legacy YAML syntax-highlighter dependencies are removed because no source imports them. Next 15's ESLint peer contract supports ESLint through major 9; npm reports that 9.39.5 is no longer supported upstream. This tooling maintenance constraint remains explicit rather than bypassing peer dependencies to major 10. The app-only GitHub quality workflow defines lockfile install, lint, build/typechecks and unit/production-HTTP fixtures on Node 22.23.3/Linux, with read-only repository permissions and synthetic credentials. It never publishes an image, imports values or deploys. A [clean Node22 Windows run](implementation-evidence/quality-node22.json) passes every command and matches the tested source by SHA256; external Linux CI/image acceptance remains pending.
 
@@ -46,7 +48,7 @@ Compatible lockfile updates keep Next 15.5.27, React 18, Prisma 6.19.3 and Tailw
 
 | Remaining root advisory | Local reachability and disposition |
 |---|---|
-| [DeepmergeTS recursive object graphs](https://github.com/advisories/GHSA-ggr8-5vv4-36mx) | Prisma → @prisma/config → deepmerge-ts accounts for all three production entries. Installed Prisma config code loads a repository-owned prisma.config JS/TS file with this merger; none exists here. App source imports PrismaClient, not Prisma config/deepmerge, and user JSON/config entries never become those executable config files. No request path was found. Prisma CLI remains in the image for migrations, so this is retained and documented, not described as absent from production. Reassess any future externally supplied executable config. |
+| [DeepmergeTS recursive object graphs](https://github.com/advisories/GHSA-ggr8-5vv4-36mx) | The historical review retained Prisma → @prisma/config → DeepmergeTS 7.1.5. Runtime maintenance replaces that transitive copy with 8.0.0 through a parent-version-scoped override; Prisma CLI remains in the image for migrations. Ordinary config/CLI, full app and image qualification must accompany the override. No vulnerability payload testing is used. |
 | [Braces deeply nested patterns](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) | Braces/micromatch/fast-glob/chokidar are reached by Tailwind source scanning and Next's lint plugin. Inputs are repository/build configuration; no dashboard endpoint accepts glob patterns for these libraries. Retained tooling risk; do not run trusted build tooling on untrusted source/config without isolation. Audit suggests Tailwind 4 or downgrading the matching Next lint package, which is outside this compatible stage. |
 | [PostCSS selector quadratic parsing](https://github.com/advisories/GHSA-rj75-hqrm-r3gf) | Tailwind 3/postcss-nested retain selector-parser 6.1.4; patched major 7 is outside their dependency contract. Only trusted build CSS is processed here, consistent with the advisory's reachability qualification. No CSS upload/sanitizer/playground request path was found. Retained build risk and future-input constraint. |
 
