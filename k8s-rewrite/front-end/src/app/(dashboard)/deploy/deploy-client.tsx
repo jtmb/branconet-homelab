@@ -48,16 +48,16 @@ export default function DeployClient() {
   useEffect(() => {
     if (!session.loading && !session.data?.authenticated) {
       pending.current?.abort(); setAction(undefined); setSelected(undefined); setLog({ output: "", truncated: false });
-    } else if (!session.canWrite) setAction(undefined);
+    } else if (!session.canWrite) { eventSource.current?.close(); setAction(undefined); setSelected(undefined); setLog({ output: "", truncated: false }); }
   }, [session.loading, session.data?.authenticated, session.canWrite]);
   useEffect(() => {
-    if (initialConnection.current || !history.updatedAt || !session.data?.authenticated) return;
+    if (initialConnection.current || !history.updatedAt || !session.canWrite) return;
     initialConnection.current = true;
     const job = jobs.find(item => item.status === "running");
     if (job) select(job.id);
-  }, [history.updatedAt, session.data?.authenticated, jobs]);
+  }, [history.updatedAt, session.canWrite, jobs]);
   useEffect(() => {
-    if (!selected || !visible || !session.data?.authenticated) return;
+    if (!selected || !visible || !session.canWrite) return;
     setStreamState("Connecting"); setStreamError("");
     const stream = new EventSource(`/api/deploy/stream?jobId=${encodeURIComponent(selected)}&cursor=${cursor.current}`);
     let terminal = false;
@@ -84,10 +84,10 @@ export default function DeployClient() {
       stream.close(); setStreamError("Output stream disconnected. Job status is unknown; refresh or retry."); setStreamState("Disconnected");
     };
     return () => { stream.close(); if (eventSource.current === stream) eventSource.current = undefined; };
-  }, [selected, retry, visible, session.data?.authenticated, refetchHistory]);
+  }, [selected, retry, visible, session.canWrite, refetchHistory]);
 
   async function loadOutput(job: Job) {
-    if (saving) return;
+    if (saving || !session.canWrite) return;
     setSaving(true); setError("");
     pending.current?.abort(); const controller = new AbortController(); pending.current = controller;
     const deadline = setTimeout(() => controller.abort(), 20000);
@@ -125,21 +125,21 @@ export default function DeployClient() {
     {permitted && <div className="flex flex-wrap items-end gap-3"><label className="text-sm">Role<select value={role} onChange={event => setRole(event.target.value)} disabled={saving || running} className="mt-1 block rounded border border-zinc-700 bg-zinc-900 p-2">
       <option value="">Full site.yml</option>{ROLES.map(item => <option key={item}>{item}</option>)}</select></label>
       <button disabled={saving || running} onClick={() => setAction({ kind: "start", role })} className="rounded bg-indigo-600 px-3 py-2 disabled:opacity-50">Run provisioning</button></div>}
-    <section aria-label="Job output" className="rounded border border-zinc-800 bg-zinc-900 p-3">
+    {session.canWrite && <section aria-label="Job output" className="rounded border border-zinc-800 bg-zinc-900 p-3">
       <div className="mb-3 flex flex-wrap items-center gap-3"><h2 className="font-semibold">Output · {visible ? streamState : "Paused while page is hidden"}</h2>
         <button onClick={() => setLog({ output: "", truncated: false })} className="rounded bg-zinc-800 px-3 py-1">Clear output</button>
         {selected && streamError && <button onClick={() => setRetry(value => value + 1)} className="underline">Retry output</button>}</div>
       {streamError && <p role="status" className="mb-2 text-amber-200">{streamError}</p>}
       {log.truncated && <p className="mb-2 text-sm text-zinc-400">Showing the latest 65,536 characters. Older captured output remains in job history.</p>}
       <pre tabIndex={0} aria-label="Captured job output" className="max-h-[50dvh] min-h-32 overflow-auto whitespace-pre-wrap break-all rounded bg-black p-3 font-mono text-sm">{log.output || "Select View output to load a job's captured output."}</pre>
-    </section>
+    </section>}
     <section><h2 className="mb-3 text-lg font-semibold">Job history · latest 50</h2>
       {history.error && <p role="status" className="mb-3 text-amber-200">{history.error}. Retained metadata may be stale.<button onClick={history.refetch} className="ml-3 underline">Retry history</button></p>}
       {history.loading ? <p role="status">Loading job metadata…</p> : !history.data ? <p>Job metadata unavailable.</p> : <ResourceTable rows={jobs} resetKey=""
         columns={[{ key: "playbook", label: "Playbook" }, { key: "status", label: "Status" }, { key: "startedAt", label: "Started", sort: "date" }, { key: "finishedAt", label: "Finished", sort: "date" }]}
-        renderActions={row => <div className="flex gap-3"><button disabled={saving} aria-label={`View output for ${row.id}`} onClick={() => { void loadOutput(row as Job); }} className="underline">View output</button>
+        renderActions={session.canWrite ? row => <div className="flex gap-3"><button disabled={saving} aria-label={`View output for ${row.id}`} onClick={() => { void loadOutput(row as Job); }} className="underline">View output</button>
           {permitted && row.status === "running" && <button disabled={saving} aria-label={`Stop job ${row.id}`} onClick={() => setAction({ kind: "stop", job: row as Job })} className="text-red-300 underline">Stop</button>}
-          {session.canWrite && row.status !== "running" && <button disabled={saving} aria-label={`Delete job ${row.id}`} onClick={() => setAction({ kind: "delete", job: row as Job })} className="text-red-300 underline">Delete</button>}</div>} />}
+          {session.canWrite && row.status !== "running" && <button disabled={saving} aria-label={`Delete job ${row.id}`} onClick={() => setAction({ kind: "delete", job: row as Job })} className="text-red-300 underline">Delete</button>}</div> : undefined} />}
     </section>
     {action && session.canWrite && <ConfirmDialog open title={action.kind === "start" ? "Run provisioning" : action.kind === "stop" ? "Request job cancellation" : "Delete job history"}
       message={action.kind === "start" ? `Run site.yml ${action.role ? "role " + action.role : "with all roles"} using the operator's configured inventory and credentials?` : action.kind === "stop" ? "Request cancellation in this process. Inspect job state for completion and partial effects." : "Permanently remove this completed job's captured output and metadata?"}

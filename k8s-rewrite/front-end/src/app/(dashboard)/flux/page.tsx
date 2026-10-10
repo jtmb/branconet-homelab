@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import FluxTreeRow from "./tree-row";
 import { SortHeader, SortHeaderRight, useSort } from "@/components/ui/sortable-header";
 import type { FluxTreeNode } from "@/lib/flux";
+import { useSession } from "@/lib/use-query";
 
 interface DeleteStep {
   step: string;
@@ -43,6 +44,7 @@ function countRoots(trees: FluxTreeNode[]): number {
 }
 
 export default function FluxPage() {
+  const session = useSession();
   const [trees, setTrees] = useState<FluxTreeNode[]>([]);
   const [loading, setLoading] = useState(true);
   const [syncing, setSyncing] = useState<string | null>(null);
@@ -61,6 +63,9 @@ export default function FluxPage() {
     authMethod: "none" as "none" | "ssh" | "https",
     authData: "",
   });
+  useEffect(() => {
+    if (!session.canWrite) { setAdding(false); setShowConfirm(null); setForm(current => ({ ...current, authData: "" })); }
+  }, [session.canWrite]);
 
   const fetchHierarchy = useCallback(async () => {
     try {
@@ -112,6 +117,7 @@ export default function FluxPage() {
   }, [fetchHierarchy]);
 
   async function addRepo() {
+    if (!session.canWrite) return;
     if (!form.name || !form.url) return;
     setAddError(null);
 
@@ -152,6 +158,7 @@ export default function FluxPage() {
   }, []);
 
   async function deleteRepo(id: string, name: string, namespace: string) {
+    if (!session.canWrite) return;
     setShowConfirm(null);
     setDeleteError(null);
     setDeleting(id);
@@ -205,6 +212,7 @@ export default function FluxPage() {
   }
 
   async function triggerSync(id: string) {
+    if (!session.canWrite) return;
     setSyncing(id);
     try {
       await fetch(`/api/flux/repos/${id}/sync`, { method: "POST" });
@@ -252,7 +260,7 @@ export default function FluxPage() {
             />
           </div>
           <div className="ml-auto">
-            {!adding ? (
+            {session.canWrite && !adding ? (
               <button
                 onClick={() => setAdding(true)}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors whitespace-nowrap"
@@ -265,7 +273,7 @@ export default function FluxPage() {
         </div>
 
         {/* Add Repo Modal */}
-        {adding && (
+        {session.canWrite && adding && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
             <div className="bg-zinc-900 border border-zinc-700/60 rounded-2xl w-full max-w-lg mx-4 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
               {/* Modal header */}
@@ -468,8 +476,8 @@ export default function FluxPage() {
               <FluxTreeRow
                 key={node.id}
                 node={node}
-                onSync={(id) => triggerSync(id)}
-                onDelete={(id, name) => setShowConfirm({ id, name, namespace: node.namespace })}
+                onSync={session.canWrite ? (id) => triggerSync(id) : undefined}
+                onDelete={session.canWrite ? (id, name) => setShowConfirm({ id, name, namespace: node.namespace }) : undefined}
                 syncingId={syncing}
                 deletingId={deleting}
               />
@@ -494,7 +502,7 @@ export default function FluxPage() {
         )}
 
         {/* Delete Confirmation */}
-        {showConfirm && (
+        {session.canWrite && showConfirm && (
           <div className="mt-3 p-3 rounded-lg bg-red-500/5 border border-red-500/10 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <XCircle className="w-4 h-4 text-red-400" />

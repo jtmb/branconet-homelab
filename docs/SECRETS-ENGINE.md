@@ -2,7 +2,7 @@
 
 Kubernetes native Secrets are the authoritative value store. BORTUS uses a TLS-verified Kubernetes client; SQLite stores identities, nonsecret configuration and explicit `SecretReference` metadata. Legacy sensitive DB rows are ignored, never pushed at startup/CRUD and never used as outage fallback.
 
-The next-stage [native KV design](BORTUS-KV-DESIGN.md) specifies grouped paths, immutable native history, policies/automation and import/export/rotation. It is a proposed implementation contract, not a claim that those future endpoints are shipped. Public Secret projections whitelist named fields and exclude arbitrary annotations/managedFields, including value-bearing last-applied configurations; canonical writes still preserve that unrelated native metadata.
+The [native KV design](BORTUS-KV-DESIGN.md) specifies grouped paths, immutable native history, policies/automation and import/export/rotation. Metadata registration, policies and identity foundations are implemented on the local branch; native versioning/adoption/import/export/rotation and the KV UI remain pending. Public Secret projections whitelist named fields and exclude arbitrary annotations/managedFields, including value-bearing last-applied configurations; canonical writes still preserve that unrelated native metadata.
 
 ## Mapping and API
 
@@ -10,7 +10,7 @@ References have `alias`, `namespace`, `name`, `key`. Register via `/api/secret-r
 
 `GET /api/vars/lookup?key=<alias>` retains Bearer `BOTRUS_SECRETS_KEY` authentication and `{key,value}`. Aliases resolve from Kubernetes; nonsecret configuration resolves from SQLite. Encrypted-flag, secret/system-category, secret-prefixed and known credential names cannot return DB values. Invalid Bearer: 401; missing alias/key: 404; Kubernetes/config/RBAC outage: 503; collisions: 409. Responses are private/no-store. Only this exact lookup path bypasses cookie middleware.
 
-`/api/secrets` lists object metadata and keys without values for authenticated users. Value reads and all mutations require fresh DB role `write`. `/secrets` supplies explicit editing/reveal and resourceVersion protection. Readonly users see metadata only. Nonsecret `/api/vars` stays separate.
+`/api/secrets` lists object metadata and keys without values for authenticated users. Flat value reads and mutations require fresh DB write role plus engineAdmin. Scoped writers use authorized KV endpoints as those are delivered. `/secrets` supplies explicit editing/reveal and resourceVersion protection. Readonly users see metadata only. Nonsecret `/api/vars` stays separate.
 
 Create refuses existing keys. Update/delete require `resourceVersion`; concurrent changes return 409 without retry. Preserve unrelated data, type, labels, annotations and owner references. Immutable Secrets refuse changes. Last-key deletion keeps an empty object. Namespaces must already exist and be allowed by `BORTUS_SECRET_NAMESPACES`. The text API rejects non-UTF-8 binary keys on read.
 

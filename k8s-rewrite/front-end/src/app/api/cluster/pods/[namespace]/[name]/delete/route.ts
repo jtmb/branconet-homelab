@@ -3,7 +3,7 @@ import { clusterRoute } from "@/lib/cluster-http";
 import { NextRequest, NextResponse } from "next/server";
 import { kubectlExec } from "@/lib/k8s";
 import { invalidateCache } from "@/lib/cluster-cache";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 export async function DELETE(_request: NextRequest, { params }: {
     params: Promise<{
         namespace: string;
@@ -11,7 +11,7 @@ export async function DELETE(_request: NextRequest, { params }: {
     }>;
 }) {
     return clusterRoute(async () => {
-        const auth = await requireWrite();
+        const auth = await requireOperator();
         if (auth instanceof NextResponse)
             return auth;
         const { namespace: rawNamespace, name: rawName } = await params;

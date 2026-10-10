@@ -1,12 +1,14 @@
 import { NextResponse, NextRequest } from "next/server";
 import prisma from "@/lib/db";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 import { jobIdValid, readJobTail } from "@/lib/job-output";
 
 export async function GET(request: NextRequest) {
   try {
     const jobId = request.nextUrl.searchParams.get("jobId");
     if (jobId !== null) {
+      const auth = await requireOperator();
+      if (auth instanceof NextResponse) return auth;
       const rawTail = request.nextUrl.searchParams.get("tail") ?? "65536";
       const tail = Number(rawTail);
       if (!jobIdValid(jobId) || !/^\d{1,5}$/.test(rawTail) || !Number.isInteger(tail) || tail < 1 || tail > 65536)
@@ -21,7 +23,7 @@ export async function GET(request: NextRequest) {
   } catch { return NextResponse.json({ error: "Job history unavailable" }, { status: 503 }); }
 }
 export async function DELETE(request: NextRequest) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
   const jobId = request.nextUrl.searchParams.get("jobId");
   if (!jobIdValid(jobId)) return NextResponse.json({ error: "Valid jobId is required" }, { status: 400 });

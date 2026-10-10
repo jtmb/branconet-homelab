@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 import { shellExec } from "@/lib/k8s";
 import { runtimeCapabilities } from "@/lib/runtime-capabilities";
 
@@ -10,7 +10,7 @@ import { runtimeCapabilities } from "@/lib/runtime-capabilities";
  * Write-gated — only users with write role can run commands.
  */
 export async function POST(request: NextRequest) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
   if (!runtimeCapabilities().operatorShell) return NextResponse.json({ error: "Operator shell is unavailable in this runtime" }, { status: 501 });
 

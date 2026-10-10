@@ -40,8 +40,8 @@ test("SQLite account invariants and session revocation across independent client
     await t.test("cross-demotion, cross-deletion and mixed changes preserve a writer", async () => {
       for (const mode of ["demote", "delete", "mixed"] as const) for (let round = 0; round < 4; round++) {
         await db.user.deleteMany();
-        const a = await db.user.create({ data: { username: "actor_a", passwordHash: "unused-fixture-hash", role: "write" } });
-        const b = await db.user.create({ data: { username: "actor_b", passwordHash: "unused-fixture-hash", role: "write" } });
+        const a = await db.user.create({ data: { username: "actor_a", passwordHash: "unused-fixture-hash", role: "write", engineAdmin: true } });
+        const b = await db.user.create({ data: { username: "actor_b", passwordHash: "unused-fixture-hash", role: "write", engineAdmin: true } });
         const actor = (u: typeof a) => ({ id: u.id, sessionVersion: u.sessionVersion });
         const results = await Promise.allSettled([
           mode === "delete" ? stores[0].delete(actor(a), b.id) : stores[0].update(actor(a), b.id, { role: "readonly", passwordHash: "unused-new-fixture-hash" }),
@@ -49,6 +49,7 @@ test("SQLite account invariants and session revocation across independent client
         ]);
         assert.equal(results.filter(r => r.status === "fulfilled").length, 1);
         assert.equal(await db.user.count({ where: { role: "write" } }), 1);
+        assert.equal(await db.user.count({ where: { role: "write", engineAdmin: true } }), 1);
         for (const result of results) if (result.status === "rejected") assert.ok(result.reason instanceof AccountError && [401, 403].includes(result.reason.status));
       }
     });

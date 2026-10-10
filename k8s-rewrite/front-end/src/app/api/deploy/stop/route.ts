@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { activeJobs } from "@/lib/active-jobs";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 import { jobIdValid } from "@/lib/job-output";
 
 export async function POST(request: NextRequest) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
   try {
     const jobId = request.nextUrl.searchParams.get("jobId") ?? (await request.json().catch(() => ({}))).jobId;

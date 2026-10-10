@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { clusterRoute } from "@/lib/cluster-http";
+import { requireOperator } from "@/lib/permissions";
 import { kubectlExec, validateNamespace, validateResourceName, KubernetesCommandError } from "@/lib/k8s";
 
 function number(value: string | null, fallback: number, maximum: number) {
@@ -9,6 +10,8 @@ function number(value: string | null, fallback: number, maximum: number) {
 }
 export async function GET(request: NextRequest, { params }: { params: Promise<{ namespace: string; name: string }> }) {
   return clusterRoute(async () => {
+    const auth = await requireOperator();
+    if (auth instanceof NextResponse) return auth;
     const target = await params, query = new URL(request.url).searchParams;
     const namespace = validateNamespace(target.namespace), name = validateResourceName(target.name);
     const tail = number(query.get("tail"), 100, 1000), since = number(query.get("sinceSeconds"), 0, 86400);

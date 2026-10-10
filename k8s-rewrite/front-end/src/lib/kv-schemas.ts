@@ -1,0 +1,11 @@
+import { z } from "zod";
+import { KV_ACTIONS } from "./kv-contract";
+export const revision = z.number().int().positive().optional();
+export const mountCreate = z.object({ name: z.string(), namespaces: z.array(z.string()).min(1).max(128) }).strict();
+export const mountUpdate = mountCreate.partial().extend({ revision }).strict().refine(v => v.name !== undefined || v.namespaces !== undefined);
+export const removeMetadata = z.object({ revision }).strict();
+export const pathCreate = z.object({ mountId: z.string().uuid(), path: z.string(), namespace: z.string(), name: z.string(), fields: z.array(z.object({ field: z.string(), key: z.string() }).strict()).min(1).max(64), retention: z.number().int().optional() }).strict();
+export const pathUpdate = z.object({ revision, retention: z.number().int() }).strict();
+export const policyFields = z.object({ principal: z.string().max(128), mountId: z.string().uuid().nullable(), prefix: z.string(), effect: z.enum(["allow", "deny"]), actions: z.array(z.enum(KV_ACTIONS)).min(1).max(10) }).strict();
+export const policyUpdate = policyFields.extend({ revision }).strict();
+export const identityCreate = z.object({ ownerId: z.string().max(128), name: z.string(), expiresAt: z.string().datetime(), scopes: z.array(z.object({ mountId: z.string().uuid(), prefix: z.string(), actions: z.array(z.enum(KV_ACTIONS)).min(1).max(10) }).strict()).min(1).max(32) }).strict();

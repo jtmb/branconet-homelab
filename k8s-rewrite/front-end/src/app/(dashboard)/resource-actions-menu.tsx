@@ -77,11 +77,11 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
     catch (error) { notify(error instanceof Error ? error.message : "Action failed"); }
     finally { setBusy(false); }
   };
-  const items: { label: string; run: () => void; danger?: boolean; disabled?: boolean }[] = [
+  const items: { label: string; run: () => void; danger?: boolean; disabled?: boolean }[] = session.canWrite ? [
     { label: "View YAML", run: () => { void showYaml(false); } },
     { label: "Download YAML", run: () => { void download(); } },
-  ];
-  if (capability.logs) items.unshift({ label: "View Logs", run: () => { void load(async signal => {
+  ] : [];
+  if (session.canWrite && capability.logs) items.unshift({ label: "View Logs", run: () => { void load(async signal => {
     const data = await requestJson<{ logs: string }>(base + "/logs?tail=100", { signal });
     if (!signal.aborted) setLogs(data.logs);
   }); } });

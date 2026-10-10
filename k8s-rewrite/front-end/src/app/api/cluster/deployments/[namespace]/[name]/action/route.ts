@@ -3,7 +3,7 @@ import { clusterRoute } from "@/lib/cluster-http";
 import { NextRequest, NextResponse } from "next/server";
 import { kubectlExec } from "@/lib/k8s";
 import { invalidateCache } from "@/lib/cluster-cache";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 const ACTIONS: Record<string, string[]> = {
     restart: ["rollout", "restart"],
     rollback: ["rollout", "undo"],
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest, { params }: {
     }>;
 }) {
     return clusterRoute(async () => {
-        const auth = await requireWrite();
+        const auth = await requireOperator();
         if (auth instanceof NextResponse)
             return auth;
         const { namespace: rawNamespace, name: rawName } = await params;

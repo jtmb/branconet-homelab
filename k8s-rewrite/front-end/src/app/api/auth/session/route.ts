@@ -25,6 +25,7 @@ export async function GET() {
         authenticated: true,
         username: session.username,
         role: user.role,
+        engineAdmin: user.role === "write" && user.engineAdmin,
         hasUsers: userCount > 0,
         registrationOpen,
         capabilities: runtimeCapabilities(),

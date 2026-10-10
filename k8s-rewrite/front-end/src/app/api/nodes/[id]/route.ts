@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 import { nodeInput } from "@/lib/node-input";
 import { Prisma } from "@prisma/client";
 
@@ -8,7 +8,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
 
   const { id } = await params;
@@ -21,7 +21,7 @@ export async function DELETE(
 }
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
   const { id } = await params;
   const parsed = nodeInput.safeParse(await request.json().catch(() => null));

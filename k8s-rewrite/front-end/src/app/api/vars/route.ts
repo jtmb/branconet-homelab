@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import { requireWrite, getCurrentRole } from "@/lib/permissions";
+import { requireOperator, getCurrentRole } from "@/lib/permissions";
 import { isSensitiveVariable } from "@/lib/variable-policy";
 import { resolveAlias } from "@/lib/secret-references";
 import { nativeSecrets } from "@/lib/secret-client";
@@ -22,7 +22,7 @@ export async function GET() {
   }
 }
 export async function POST(request: Request) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
   try {
     let body;

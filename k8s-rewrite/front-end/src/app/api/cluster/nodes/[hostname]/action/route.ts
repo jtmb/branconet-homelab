@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 import { clusterRoute } from "@/lib/cluster-http";
 import { kubectlExec, validateResourceName } from "@/lib/k8s";
 import { invalidateCache } from "@/lib/cluster-cache";
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ hostname: string }> }) {
   return clusterRoute(async () => {
-    const auth = await requireWrite();
+    const auth = await requireOperator();
     if (auth instanceof NextResponse) return auth;
     const name = validateResourceName((await params).hostname), body = await request.json();
     if (!["cordon", "uncordon", "drain"].includes(body?.action)) return NextResponse.json({ error: "Invalid node action" }, { status: 400 });

@@ -206,6 +206,53 @@ test(
         (await db.user.findUnique({ where: { username: "testreader" } }))?.role,
         "readonly",
       );
+      // A fresh writer without engineAdmin has scoped KV authority, never peer
+      // identity or infrastructure authority capable of extracting SA tokens.
+      const scopedCreate = await request("/api/users", "POST", { username: "scopedwriter", password: "fake-scoped-password", role: "write" }, writer);
+      assert.equal(scopedCreate.status, 201);
+      const scopedUser = await scopedCreate.json(); assert.equal(scopedUser.engineAdmin, false);
+      const scopedLogin = await request("/api/auth/login", "POST", { username: "scopedwriter", password: "fake-scoped-password" });
+      assert.equal(scopedLogin.status, 200);
+      const scopedCookie = scopedLogin.headers.get("set-cookie")!.split(";")[0];
+      const operatorUser = await db.user.findUniqueOrThrow({ where: { username: "testwriter" } });
+      assert.equal(operatorUser.engineAdmin, true);
+      for (const [url, method, data] of [
+        [`/api/users/${operatorUser.id}`, "PATCH", { password: "forbidden-peer-reset" }],
+        [`/api/users/${operatorUser.id}`, "PATCH", { role: "readonly" }],
+        [`/api/users/${operatorUser.id}`, "DELETE", undefined],
+        [`/api/users/${scopedUser.id}`, "PATCH", { engineAdmin: true }],
+        ["/api/users", "POST", { username: "forbidden-peer", password: "unused-password" }],
+        ["/api/cluster/pods/apps/bortus/exec", "POST", { command: "cat /var/run/secrets/kubernetes.io/serviceaccount/token" }],
+        ["/api/cluster/kubectl", "POST", { command: "cat /var/run/secrets/kubernetes.io/serviceaccount/token" }],
+        ["/api/cluster/pods/apps/bortus/yaml", "PUT", { yaml: "credential-extraction-fixture" }],
+        ["/api/cluster/pods/apps/bortus/yaml", "GET", undefined],
+        ["/api/cluster/pods/apps/bortus/logs", "GET", undefined],
+        ["/api/flux/repos", "POST", { name: "exfil", url: "https://example.invalid/exfil.git" }],
+        ["/api/deploy/start", "POST", {}],
+        ["/api/cluster/remove", "DELETE", {}],
+        ["/api/secrets?namespace=apps&name=bortus-runtime&key=jwt-secret", "GET", undefined],
+      ] as const) assert.equal((await request(url, method, data, scopedCookie)).status, 403, url);
+      assert.equal((await fixture.calls()).length, 0, "scoped denial reached kubectl");
+      const mountResponse = await request("/api/kv/mounts", "POST", { name: "apps", namespaces: ["apps"] }, writer);
+      assert.equal(mountResponse.status, 201); assert(mountResponse.headers.get("cache-control")?.includes("no-store"));
+      const kvMount = await mountResponse.json();
+      assert.equal((await request("/api/kv/mounts", "POST", { name: "forbidden", namespaces: ["apps"] }, scopedCookie)).status, 403);
+      assert.equal((await request(`/api/kv/mounts/${kvMount.id}`, "PATCH", { name: "renamed" }, writer)).status, 428);
+      const kvPolicy = { principal: `user:${scopedUser.id}`, mountId: kvMount.id, prefix: "services/api", effect: "allow", actions: ["list", "read", "create", "update"] };
+      assert.equal((await request("/api/kv/policies", "POST", kvPolicy, scopedCookie)).status, 403);
+      assert.equal((await request("/api/kv/policies", "POST", kvPolicy, writer)).status, 201);
+      const registration = await request("/api/kv/paths", "POST", { mountId: kvMount.id, path: "services/api/credentials", namespace: "apps", name: "existing-native", fields: [{ field: "password", key: "under_scored_key" }] }, scopedCookie);
+      assert.equal(registration.status, 201);
+      const kvPath = await registration.json();
+      const pathMetadata = await request(`/api/kv/paths/${kvPath.id}`, "GET", undefined, reader);
+      assert.equal(pathMetadata.status, 200); assert(!JSON.stringify(await pathMetadata.json()).includes("value"));
+      const identityResponse = await request("/api/kv/identities", "POST", { ownerId: scopedUser.id, name: "fixture-consumer", expiresAt: new Date(Date.now() + 3600000).toISOString(), scopes: [{ mountId: kvMount.id, prefix: "services/api", actions: ["read"] }] }, scopedCookie);
+      assert.equal(identityResponse.status, 201);
+      const issuedIdentity = await identityResponse.json(); assert(issuedIdentity.credential.startsWith("bortus_kv_v1_"));
+      const identities = await request("/api/kv/identities", "GET", undefined, scopedCookie);
+      const identityText = await identities.text(); assert(!identityText.includes(issuedIdentity.credential) && !identityText.includes("credentialHash"));
+      assert.equal((await fetch(`${base}/api/vars/lookup?key=k8s_version`, { headers: { authorization: "Bearer " + issuedIdentity.credential } })).status, 401);
+      assert.equal((await request(`/api/kv/identities/${issuedIdentity.id}`, "DELETE", undefined, scopedCookie)).status, 200);
       const callCount = (await fixture.calls()).length;
       const invalidStorage = await request("/api/cluster/volumes?kind=wrong", "GET", undefined, writer);
       assert.equal(invalidStorage.status, 400);
@@ -222,14 +269,15 @@ test(
       assert.equal((await request("/api/nodes/" + inventoryNode.id, "DELETE", undefined, writer)).status, 200);
       assert.equal((await request("/api/nodes/" + inventoryNode.id, "DELETE", undefined, writer)).status, 404);
       for (const resource of ["--raw=/api/v1/secrets", "apps --server=https://example.invalid", "a..b", "apps/name"]) {
-        const response = await request(`/api/cluster/namespaces/${encodeURIComponent(resource)}/yaml`, "GET", undefined, reader);
+        const response = await request(`/api/cluster/namespaces/${encodeURIComponent(resource)}/yaml`, "GET", undefined, writer);
         assert.equal(response.status, 400);
       }
       for (const replicas of [-1, 1.5, 10001, null]) {
         assert.equal((await request("/api/cluster/deployments/apps/demo/scale", "POST", { replicas }, writer)).status, 400);
       }
       assert.equal((await fixture.calls()).length, callCount, "invalid input spawned kubectl");
-      const yamlRead = await request("/api/cluster/namespaces/apps/yaml", "GET", undefined, reader);
+      assert.equal((await request("/api/cluster/namespaces/apps/yaml", "GET", undefined, reader)).status, 403);
+      const yamlRead = await request("/api/cluster/namespaces/apps/yaml", "GET", undefined, writer);
       assert.equal(yamlRead.status, 200);
       assert.ok((await yamlRead.json()).yaml.includes("kind: Namespace"));
       const argv = (await fixture.calls()).at(-1)!;
@@ -257,15 +305,16 @@ test(
         ["/api/cluster/services/apps/web/yaml", "Service"], ["/api/cluster/volumes/apps/data/yaml", "PersistentVolumeClaim"],
       ];
       for (const [url, kind] of readPaths) {
-        const response = await request(url, "GET", undefined, reader);
+        const response = await request(url, "GET", undefined, writer);
         assert.equal(response.status, 200, url);
         assert.ok((await response.json()).yaml.includes(`kind: ${kind}`));
       }
-      const logs = await request("/api/cluster/pods/apps/demo/logs?tail=50&container=app&previous=true", "GET", undefined, reader);
+      assert.equal((await request("/api/cluster/pods/apps/demo/logs?tail=50", "GET", undefined, reader)).status, 403);
+      const logs = await request("/api/cluster/pods/apps/demo/logs?tail=50&container=app&previous=true", "GET", undefined, writer);
       assert.equal(logs.status, 200);
       assert.equal((await logs.json()).logs, "fixture log line\n");
       assert.ok((await fixture.calls()).at(-1)!.includes("--limit-bytes=262144"));
-      assert.equal((await request("/api/cluster/pods/apps/demo/logs?tail=1001", "GET", undefined, reader)).status, 400);
+      assert.equal((await request("/api/cluster/pods/apps/demo/logs?tail=1001", "GET", undefined, writer)).status, 400);
       assert.equal((await request("/api/cluster/pods/apps/demo/exec", "POST", { command: "echo fixture" }, reader)).status, 403);
       const execResult = await request("/api/cluster/pods/apps/demo/exec", "POST", { command: "echo fixture; pwd" }, writer);
       assert.equal(execResult.status, 502);
@@ -438,20 +487,22 @@ test(
       const metadataJobs = await request("/api/deploy/history", "GET", undefined, reader);
       assert.equal(metadataJobs.status, 200);
       assert((await metadataJobs.json()).every((job: Record<string, unknown>) => !Object.hasOwn(job, "output")));
-      const explicitOutput = await request(`/api/deploy/history?jobId=${completedJob.id}&tail=7`, "GET", undefined, reader);
+      assert.equal((await request(`/api/deploy/history?jobId=${completedJob.id}&tail=7`, "GET", undefined, reader)).status, 403);
+      assert.equal((await request(`/api/deploy/stream?jobId=${completedJob.id}`, "GET", undefined, reader)).status, 403);
+      const explicitOutput = await request(`/api/deploy/history?jobId=${completedJob.id}&tail=7`, "GET", undefined, writer);
       const tail = await explicitOutput.json();
       assert.equal(tail.output, Array.from(completedOutput).slice(-7).join("")); assert(tail.truncated);
       assert.equal(tail.cursor, Array.from(completedOutput).length);
-      assert.equal((await request(`/api/deploy/history?jobId=${completedJob.id}&tail=65537`, "GET", undefined, reader)).status, 400);
-      assert.equal((await request(`/api/deploy/stream?jobId=${completedJob.id}&cursor=-1`, "GET", undefined, reader)).status, 400);
-      const streamResponse = await request(`/api/deploy/stream?jobId=${completedJob.id}`, "GET", undefined, reader);
+      assert.equal((await request(`/api/deploy/history?jobId=${completedJob.id}&tail=65537`, "GET", undefined, writer)).status, 400);
+      assert.equal((await request(`/api/deploy/stream?jobId=${completedJob.id}&cursor=-1`, "GET", undefined, writer)).status, 400);
+      const streamResponse = await request(`/api/deploy/stream?jobId=${completedJob.id}`, "GET", undefined, writer);
       assert.equal(streamResponse.status, 200); assert(streamResponse.headers.get("cache-control")?.includes("no-store"));
       const streamed = await streamResponse.text();
       const frames = [...streamed.matchAll(/data: (.+)\n/g)].map(match => JSON.parse(match[1]));
       assert.equal(frames.map(frame => frame.output).join(""), completedOutput);
       assert.equal(frames.filter(frame => frame.done).length, 1);
       assert(frames.every(frame => Buffer.byteLength(JSON.stringify(frame)) <= 32768));
-      const resumeResponse = await request(`/api/deploy/stream?jobId=${completedJob.id}&cursor=5`, "GET", undefined, reader);
+      const resumeResponse = await request(`/api/deploy/stream?jobId=${completedJob.id}&cursor=5`, "GET", undefined, writer);
       const resumed = [...(await resumeResponse.text()).matchAll(/data: (.+)\n/g)].map(match => JSON.parse(match[1]));
       assert.equal(resumed.map(frame => frame.output).join(""), Array.from(completedOutput).slice(5).join(""));
       assert.equal((await request(`/api/deploy/stop?jobId=${orphanJob.id}`, "POST", undefined, writer)).status, 409);

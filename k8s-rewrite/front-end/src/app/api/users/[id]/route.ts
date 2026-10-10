@@ -6,8 +6,9 @@ import { z } from "zod";
 
 const updateUserSchema = z.object({
   role: z.enum(["readonly", "write"]).optional(),
+  engineAdmin: z.boolean().optional(),
   password: z.string().min(8, "Password must be at least 8 characters").optional(),
-}).refine(data => data.role !== undefined || data.password !== undefined, "Provide role or password");
+}).refine(data => data.role !== undefined || data.password !== undefined || data.engineAdmin !== undefined, "Provide role, password or engineAdmin");
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const auth = await requireWrite();
@@ -16,10 +17,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   try {
     const parsed = updateUserSchema.safeParse(await request.json());
     if (!parsed.success) return NextResponse.json({ error: parsed.error.issues[0]?.message }, { status: 400 });
-    const { role, password } = parsed.data;
+    const { role, password, engineAdmin } = parsed.data;
     // Hash outside the lock; recheck actor and invariants in the transaction.
     const passwordHash = password === undefined ? undefined : await bcrypt.hash(password, 12);
-    return NextResponse.json(await accounts.update(auth, id, { role, passwordHash }));
+    return NextResponse.json(await accounts.update(auth, id, { role, passwordHash, engineAdmin }));
   } catch (error) { return accountFailure(error); }
 }
 

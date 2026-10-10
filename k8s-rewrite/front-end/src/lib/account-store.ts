@@ -5,7 +5,7 @@ export class AccountError extends Error {
 }
 
 export type AccountActor = { id: string; sessionVersion: number };
-const publicUser = { id: true, username: true, role: true, createdAt: true } as const;
+const publicUser = { id: true, username: true, role: true, engineAdmin: true, createdAt: true } as const;
 
 export class AccountStore {
   constructor(private readonly db: PrismaClient) {}
@@ -40,29 +40,42 @@ export class AccountStore {
     const user = await tx.user.findUnique({ where: { id: actor.id } });
     if (!user || user.sessionVersion !== actor.sessionVersion) throw new AccountError(401, "Authentication required");
     if (user.role !== "write") throw new AccountError(403, "Write access required");
+    return user;
   }
 
   register(input: { username: string; passwordHash: string }) {
     return this.serialized(async tx => {
       if (!await this.registrationOpen(tx)) throw new AccountError(403, "Registration is locked");
       const role = await tx.user.count() === 0 ? "write" : "readonly";
-      return tx.user.create({ data: { ...input, role }, select: { ...publicUser, sessionVersion: true } });
+      const user = await tx.user.create({ data: { ...input, role, engineAdmin: role === "write" }, select: { ...publicUser, sessionVersion: true } });
+      await tx.kvPolicy.create({ data: { principal: `user:${user.id}`, effect: "allow", actions: JSON.stringify(role === "write" ? ["list", "read", "create", "update", "delete", "rollback", "reconcile", "destroy", "export", "rotate"] : ["list"]) } });
+      return user;
     });
   }
 
   create(actor: AccountActor, input: { username: string; passwordHash: string; role: "write" | "readonly" }) {
     return this.serialized(async tx => {
-      await this.writer(tx, actor);
-      return tx.user.create({ data: input, select: publicUser });
+      const current = await this.writer(tx, actor);
+      if (!current.engineAdmin) throw new AccountError(403, "Engine administration required to manage identities");
+      const user = await tx.user.create({ data: input, select: publicUser });
+      await tx.kvPolicy.create({ data: { principal: `user:${user.id}`, effect: "allow", actions: '["list"]' } });
+      return user;
     });
   }
 
-  update(actor: AccountActor, id: string, input: { role?: "write" | "readonly"; passwordHash?: string }) {
+  update(actor: AccountActor, id: string, input: { role?: "write" | "readonly"; passwordHash?: string; engineAdmin?: boolean }) {
     return this.serialized(async tx => {
-      await this.writer(tx, actor);
+      const current = await this.writer(tx, actor);
       if (actor.id === id && input.role !== undefined) throw new AccountError(403, "You cannot change your own role");
       const target = await tx.user.findUnique({ where: { id } });
       if (!target) throw new AccountError(404, "User not found");
+      if ((id !== actor.id || input.engineAdmin !== undefined || input.role !== undefined) && !current.engineAdmin)
+        throw new AccountError(403, "Engine administration required to manage identities");
+      if (input.engineAdmin === true && (input.role ?? target.role) !== "write")
+        throw new AccountError(400, "An engine administrator must have write role");
+      if (target.role === "write" && target.engineAdmin && (input.role === "readonly" || input.engineAdmin === false) &&
+        await tx.user.count({ where: { role: "write", engineAdmin: true } }) <= 1)
+        throw new AccountError(403, "Cannot remove the last effective engine administrator");
       if (target.role === "write" && input.role === "readonly" && await tx.user.count({ where: { role: "write" } }) <= 1)
         throw new AccountError(403, "Cannot demote the last write user");
       return tx.user.update({
@@ -75,10 +88,14 @@ export class AccountStore {
 
   delete(actor: AccountActor, id: string) {
     return this.serialized(async tx => {
-      await this.writer(tx, actor);
+      const current = await this.writer(tx, actor);
+      if (!current.engineAdmin) throw new AccountError(403, "Engine administration required to manage identities");
       if (actor.id === id) throw new AccountError(403, "You cannot delete yourself");
       const target = await tx.user.findUnique({ where: { id } });
       if (!target) throw new AccountError(404, "User not found");
+      if (target.engineAdmin && !current.engineAdmin) throw new AccountError(403, "Engine administration required to manage an engine administrator");
+      if (target.role === "write" && target.engineAdmin && await tx.user.count({ where: { role: "write", engineAdmin: true } }) <= 1)
+        throw new AccountError(403, "Cannot delete the last effective engine administrator");
       if (target.role === "write" && await tx.user.count({ where: { role: "write" } }) <= 1)
         throw new AccountError(403, "Cannot delete the last write user");
       await tx.user.delete({ where: { id } });

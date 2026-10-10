@@ -1,7 +1,7 @@
 import { validateResourceName, KubernetesCommandError, kubectlExec } from "@/lib/k8s";
 import { clusterRoute } from "@/lib/cluster-http";
 import { NextRequest, NextResponse } from "next/server";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 
 export async function GET() {
   return clusterRoute(async () => {
@@ -18,7 +18,7 @@ export async function GET() {
 
 export async function PATCH(request: NextRequest) {
   return clusterRoute(async () => {
-    const auth = await requireWrite();
+    const auth = await requireOperator();
     if (auth instanceof NextResponse) return auth;
     const body = await request.json();
     if (!Array.isArray(body?.volumes) || !body.volumes.length || body.volumes.length > 100)

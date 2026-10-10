@@ -2,7 +2,7 @@ import { clusterRoute } from "@/lib/cluster-http";
 import { clusterResponse, clusterUnavailable } from "@/lib/cluster-response";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 import { getCachedClusterData } from "@/lib/cluster-cache";
 import { quantityNumber } from "@/lib/table-sort";
 export async function GET() {
@@ -82,7 +82,7 @@ export async function GET() {
     });
 }
 export async function POST(request: NextRequest) {
-    const auth = await requireWrite();
+    const auth = await requireOperator();
     if (auth instanceof NextResponse)
         return auth;
     try {

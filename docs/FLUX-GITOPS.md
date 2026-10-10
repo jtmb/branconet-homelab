@@ -83,7 +83,7 @@ Namespace deletion is polled for up to 60 seconds. Only a confirmed 404 proves a
 
 GitRepository/Kustomization YAML uses the Kubernetes client's serializer (including proper string quoting), a disposable OS temporary file, and the same bounded structured command wrapper. Zero exit establishes apply success; stdout phrases do not. These generated files contain public repository metadata, never private credential values.
 
-See [API usage](API-USAGE.md) for the full application interface. Dashboard writes operate on the connected cluster using the application's credentials.
+See [API usage](API-USAGE.md) for the full application interface. Dashboard writes require fresh write plus engineAdmin and operate on the connected cluster using the application's credentials. Scoped KV writers have metadata views but no Flux mutation controls.
 The `/flux` hierarchy joins source names with Kustomization sourceRef and
 HelmRelease chart sourceRef; the active root is branconet-charts and its existing
 bundle is migration-releases. Repository/bundle detail and Sync show actual

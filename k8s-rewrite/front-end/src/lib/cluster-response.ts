@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { CachedData } from "./cluster-cache";
 import type { ClusterResource } from "./resource-cache";
+import { publicClusterMetadata } from "./cluster-metadata";
 
 export function clusterAvailability(data: Pick<CachedData, "availability">) {
   const states = Object.values(data.availability).map(value => value!.state);
@@ -34,7 +35,7 @@ export function clusterResponse(data: Pick<CachedData, "availability">, payload:
       for (const field of fields[resource as ClusterResource] || []) if (field in body) body[field] = null;
   }
   const availability = clusterAvailability(data);
-  return NextResponse.json({ ...body, availability }, {
+  return NextResponse.json({ ...publicClusterMetadata(body) as Record<string, unknown>, availability, privateFieldsOmitted: true }, {
     headers: { "Cache-Control": "no-store", ...(Object.values(data.availability).some(value => value?.state === "stale") ? { Warning: '110 - "Stale cluster snapshot"' } : {}) },
   });
 }

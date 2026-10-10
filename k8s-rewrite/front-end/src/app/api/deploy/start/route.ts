@@ -4,11 +4,11 @@ import { runAnsiblePlaybook } from "@/lib/ansible";
 import { activeJobs } from "@/lib/active-jobs";
 import { syncVarsToYAML, syncInventoryToFile, syncNodesFromVars } from "@/lib/sync-vars";
 import { invalidateCache } from "@/lib/cluster-cache";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 import { runtimeCapabilities } from "@/lib/runtime-capabilities";
 
 export async function POST(request: NextRequest) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
 
   if (!runtimeCapabilities().provisioning) return NextResponse.json({ error: "Run bootstrap/provisioning from the independent operator environment" }, { status: 501 });

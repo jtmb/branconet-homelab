@@ -1,13 +1,13 @@
 import { clusterRoute } from "@/lib/cluster-http";
 import { NextRequest, NextResponse } from "next/server";
 import { removeRepo } from "@/lib/flux";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 export async function DELETE(request: NextRequest, { params }: {
     params: Promise<{
         id: string;
     }>;
 }) {
-    const auth = await requireWrite();
+    const auth = await requireOperator();
     if (auth instanceof NextResponse)
         return auth;
     try {

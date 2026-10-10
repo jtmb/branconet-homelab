@@ -1,5 +1,6 @@
 "use client";
-import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { useSession } from "@/lib/use-query";
 type Summary = {
   namespace: string;
   name: string;
@@ -19,7 +20,12 @@ async function api(url: string, init?: RequestInit) {
   if (!response.ok) throw new Error(result.error || "Request failed");
   return result;
 }
-export default function SecretsEditor({ canWrite }: { canWrite: boolean }) {
+export default function SecretsEditor() {
+  const session = useSession();
+  const canWrite = session.canWrite;
+  const reveal = useRef({ allowed: canWrite, epoch: 0, mounted: false });
+  if (reveal.current.allowed !== canWrite) { reveal.current.allowed = canWrite; reveal.current.epoch++; }
+  useEffect(() => { const state = reveal.current; state.mounted = true; return () => { state.mounted = false; state.epoch++; }; }, []);
   const [secrets, setSecrets] = useState<Summary[]>([]),
     [refs, setRefs] = useState<Ref[]>([]);
   const [target, setTarget] = useState({
@@ -33,6 +39,7 @@ export default function SecretsEditor({ canWrite }: { canWrite: boolean }) {
     [alias, setAlias] = useState("");
   const [message, setMessage] = useState(""),
     [busy, setBusy] = useState(false);
+  useEffect(() => { if (!canWrite) { setValue(""); setAlias(""); setTarget({ namespace: "", name: "", key: "", resourceVersion: "" }); } }, [canWrite]);
   const refresh = useCallback(async () => {
     const [a, b] = await Promise.all([
       api("/api/secrets"),
@@ -44,7 +51,8 @@ export default function SecretsEditor({ canWrite }: { canWrite: boolean }) {
   useEffect(() => {
     refresh().catch((error) => setMessage(error.message));
   }, [refresh]);
-  async function perform(action: () => Promise<void>) {
+  async function perform(action: () => Promise<void>, requiresWrite = true) {
+    if (requiresWrite && !reveal.current.allowed || busy) return;
     setBusy(true);
     setMessage("");
     try {
@@ -67,6 +75,7 @@ export default function SecretsEditor({ canWrite }: { canWrite: boolean }) {
   }
   async function save(event: FormEvent) {
     event.preventDefault();
+    if (!canWrite) return;
     await perform(async () => {
       const result = await api("/api/secrets", {
         method: "POST",
@@ -103,14 +112,13 @@ export default function SecretsEditor({ canWrite }: { canWrite: boolean }) {
       <button
         className={button}
         disabled={busy}
-        onClick={() => perform(refresh)}
+        onClick={() => perform(refresh, false)}
       >
         Refresh
       </button>
       {!canWrite && (
         <p className="text-sm text-zinc-400">
-          Readonly users can view metadata. Value access requires write
-          permission.
+          Readonly and scoped users can view metadata. Flat value access requires engine administration.
         </p>
       )}
       <div className="overflow-x-auto border border-zinc-800 rounded-lg">
@@ -222,9 +230,11 @@ export default function SecretsEditor({ canWrite }: { canWrite: boolean }) {
                 disabled={busy || !target.resourceVersion}
                 onClick={() =>
                   perform(async () => {
+                    const epoch = reveal.current.epoch;
                     const result = await api(
                       `/api/secrets?${new URLSearchParams(target)}`,
                     );
+                    if (!reveal.current.mounted || !reveal.current.allowed || epoch !== reveal.current.epoch) return;
                     setValue(result.value);
                     setTarget((current) => ({
                       ...current,

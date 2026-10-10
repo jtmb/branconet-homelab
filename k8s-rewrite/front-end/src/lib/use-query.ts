@@ -66,12 +66,13 @@ export function useQuery<T>(url: string, interval = 10000): QuerySnapshot<T> & {
   return { ...snapshot, refetch };
 }
 export interface SessionData {
-  authenticated: boolean; username?: string; role?: "write" | "readonly"; hasUsers?: boolean; registrationOpen?: boolean;
+  authenticated: boolean; username?: string; role?: "write" | "readonly"; engineAdmin?: boolean; hasUsers?: boolean; registrationOpen?: boolean;
   capabilities?: { provisioning: boolean; operatorShell: boolean; podExec: boolean };
 }
 export function useSession() {
   const query = useQuery<SessionData>("/api/auth/session");
-  return { ...query, canWrite: query.data?.authenticated === true && query.data.role === "write" && !query.error && Date.now() - query.updatedAt < 15000 };
+  const freshWriter = query.data?.authenticated === true && query.data.role === "write" && !query.error && Date.now() - query.updatedAt < 15000;
+  return { ...query, canWrite: freshWriter && query.data?.engineAdmin === true, canKvWrite: freshWriter };
 }
 export function refetchCluster() { browserQueries.invalidate(url => url.startsWith("/api/cluster/") || url.startsWith("/api/flux/")); }
 export function clearQueries() { browserQueries.clear(); }

@@ -1,5 +1,5 @@
 import prisma from "@/lib/db";
-import { getCurrentRole, requireWrite } from "@/lib/permissions";
+import { getCurrentRole, requireOperator } from "@/lib/permissions";
 import { NextResponse } from "next/server";
 import { SecretError } from "@/lib/cluster-secrets";
 import { listAliases } from "@/lib/secret-references";
@@ -18,7 +18,7 @@ export async function GET() {
   }
 }
 export async function POST(request: Request) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
   try {
     let body;
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
   }
 }
 export async function DELETE(request: Request) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
   try {
     const alias = new URL(request.url).searchParams.get("alias");

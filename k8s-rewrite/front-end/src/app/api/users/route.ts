@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { accounts, accountFailure } from "@/lib/accounts";
@@ -24,6 +24,7 @@ export async function GET() {
       id: true,
       username: true,
       role: true,
+      engineAdmin: true,
       createdAt: true,
     },
     orderBy: { createdAt: "asc" },
@@ -36,7 +37,7 @@ export async function GET() {
  * POST /api/users — create a new user (write-only)
  */
 export async function POST(request: NextRequest) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
 
   try {

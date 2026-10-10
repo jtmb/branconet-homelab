@@ -53,8 +53,9 @@ try {
     BORTUS_SECRET_NAMESPACES: "apps", BORTUS_DISABLE_PROVISIONING: "true", NODE_ENV: "production" as const, HOSTNAME: "127.0.0.1", PORT: String(await port()) };
   execFileSync(process.execPath, [path.resolve("node_modules/prisma/build/index.js"), "migrate", "deploy"], { env, stdio: "pipe" });
   db = new PrismaClient({ datasources: { db: { url: database } } });
-  const writer = await db.user.create({ data: { username: "fixture_writer", passwordHash: "unused", role: "write" } });
+  const writer = await db.user.create({ data: { username: "fixture_writer", passwordHash: "unused", role: "write", engineAdmin: true } });
   const reader = await db.user.create({ data: { username: "fixture_reader", passwordHash: "unused", role: "readonly" } });
+  const scoped = await db.user.create({ data: { username: "fixture_scoped", passwordHash: "unused", role: "write", engineAdmin: false } });
   await db.user.createMany({ data: Array.from({ length: 205 }, (_, index) => ({ username: "large_user_" + index, passwordHash: "unused", role: "readonly" })) });
   await db.variable.createMany({ data: Array.from({ length: 205 }, (_, index) => ({ key: "fixture_config_" + index, value: "nonsecret " + index, category: "fixture", encrypted: false })) });
   await db.appSetting.create({ data: { key: "allow_registration", value: "false" } });
@@ -111,7 +112,7 @@ try {
     server.listen(0, "127.0.0.1"); await once(server, "listening"); servers.push(server);
     return "http://127.0.0.1:" + (server.address() as { port: number }).port;
   }
-  console.log("UI_FIXTURE_READY " + JSON.stringify({ dir, writerUrl: await gateway(await token(writer)), readerUrl: await gateway(await token(reader)) }));
+  console.log("UI_FIXTURE_READY " + JSON.stringify({ dir, writerUrl: await gateway(await token(writer)), readerUrl: await gateway(await token(reader)), scopedUrl: await gateway(await token(scoped)) }));
   process.stdin.resume();
   await new Promise<void>(resolve => {
     process.once("SIGINT", resolve); process.once("SIGTERM", resolve);

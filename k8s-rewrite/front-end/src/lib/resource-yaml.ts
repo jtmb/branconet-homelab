@@ -6,7 +6,7 @@ import { tmpdir } from "os";
 import { join } from "path";
 import { kubectlExec, validateNamespace, validateResourceName, KubernetesCommandError } from "./k8s";
 import { RESOURCE_CAPABILITIES, type ResourceType } from "./resource-capabilities";
-import { requireWrite } from "./permissions";
+import { requireOperator } from "./permissions";
 import { clusterRoute } from "./cluster-http";
 import { invalidateCache } from "./cluster-cache";
 
@@ -34,6 +34,8 @@ export function validateResourceYaml(type: ResourceType, name: string, namespace
 
 export function resourceYamlGet(type: ResourceType) {
   return async (_request: NextRequest, context: Context) => clusterRoute(async () => {
+    const auth = await requireOperator();
+    if (auth instanceof NextResponse) return auth;
     const { capability, name, namespace } = target(type, await context.params);
     const yaml = await kubectlExec(["get", capability.kind.toLowerCase(), name, ...(namespace ? ["-n", namespace] : []), "-o", "yaml"]);
     if (!yaml.trim()) throw new KubernetesCommandError(502, "Empty Kubernetes YAML response");
@@ -44,7 +46,7 @@ export function resourceYamlGet(type: ResourceType) {
 
 export function resourceYamlPut(type: ResourceType) {
   return async (request: NextRequest, context: Context) => clusterRoute(async () => {
-    const auth = await requireWrite();
+    const auth = await requireOperator();
     if (auth instanceof NextResponse) return auth;
     if (!RESOURCE_CAPABILITIES[type].yamlEdit) return NextResponse.json({ error: "YAML editing is unavailable for this resource" }, { status: 405 });
     const { name, namespace } = target(type, await context.params);

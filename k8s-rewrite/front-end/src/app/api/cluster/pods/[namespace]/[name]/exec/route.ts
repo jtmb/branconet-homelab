@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 import { clusterRoute } from "@/lib/cluster-http";
 import { kubectlExec, validateNamespace, validateResourceName } from "@/lib/k8s";
 import { runtimeCapabilities } from "@/lib/runtime-capabilities";
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ namespace: string; name: string }> }) {
   return clusterRoute(async () => {
-    const auth = await requireWrite();
+    const auth = await requireOperator();
     if (auth instanceof NextResponse) return auth;
     if (!runtimeCapabilities().podExec) return NextResponse.json({ error: "Pod execution is disabled in this runtime" }, { status: 501 });
     const target = await params, namespace = validateNamespace(target.namespace), name = validateResourceName(target.name);
