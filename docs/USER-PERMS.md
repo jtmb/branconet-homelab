@@ -6,13 +6,15 @@ BORTUS has two roles stored in SQLite: `write` for operator access and `readonly
 
 Login verifies the bcrypt password hash and signs an HS256 JWT with stable externally supplied `BOTRUS_JWT_SECRET`. Signing material is never generated or stored in SQLite. The `botrus_auth_token` cookie is HttpOnly, SameSite=Lax, valid for seven days and Secure in production. Rotation invalidates cookies while preserving accounts.
 
-First registration creates a write user. Later users default to readonly. Registration closes unless `ALLOW_REGISTRATION=true` or AppSetting `allow_registration` is true. A write user manages accounts; self-demotion/deletion and removal of the last write user are refused.
+First registration creates a write user. Later users default to readonly. Registration closes unless `ALLOW_REGISTRATION=true` or AppSetting `allow_registration` is true. A write user manages accounts; self-demotion/deletion and removal of the last write user are checked. These count/check/change operations are currently non-atomic: the [audit](BORTUS-AUDIT.md#a01--p1-concurrent-changes-can-remove-every-write-user-r) reproduced concurrent demotions leaving zero writers and concurrent first registrations creating two writers. The protections do not currently guarantee these invariants under concurrency.
 
 ## Gates
 
-Middleware at `src/middleware.ts` verifies cookie identity. Public paths are `/welcome`, `/auth/*`, `/api/auth/*`, exact `/api/cluster/info`, framework/static paths and exact health endpoints. Exact `/api/vars/lookup` instead requires Bearer authentication inside its handler. Other unauthenticated APIs return 401 and protected pages redirect to welcome.
+Middleware at `src/middleware.ts` verifies cookie identity. Public paths are `/welcome`, `/auth/login`, `/auth/register`, `/api/auth/*`, framework paths and exact health endpoints. The current implementation treats `/api/cluster/info` as a prefix, although only the info handler exists; it should become an exact exception. Exact `/api/vars/lookup` instead requires Bearer authentication inside its handler. Other unauthenticated APIs return 401 and protected pages redirect to welcome.
 
-Server-side `requireWrite()` enforces the fresh DB role for mutations. Native Secret handlers separately enforce fresh role for value reads and mutations. Client UI hides operator controls from readonly users; server checks remain authoritative. User creation remains disabled while username/password are empty or a request is saving; the named canCreateUser boolean preserves that validation.
+Server-side `requireWrite()` enforces the fresh DB role for mutations. Native Secret handlers separately enforce fresh role for metadata/value reads and mutations. Ordinary read routes generally rely on JWT middleware alone: deleting a user does not currently revoke those reads before token expiry, and the session API defaults a missing user to readonly. Native Secret reads and write gates reject a deleted account. See audit finding A02.
+
+Some client views hide operator controls, but the shared resource action menu still shows Edit YAML, Execute Shell and Delete to readonly users; the server gates remain authoritative. Provisioning controls also do not reflect the container runtime's disabled capability. See audit A12. User creation remains disabled while username/password are empty or a request is saving; the named canCreateUser boolean preserves that validation.
 
 | Operation | readonly | write |
 |---|---|---|
@@ -31,4 +33,4 @@ Write-role terminal commands execute with the application's operating-system per
 
 Native Secret values never persist in SQLite, command arguments, generated Git files, errors or logs. Legacy sensitive SQLite rows are quarantined. Recover SQLite identities/configuration/reference metadata and Kubernetes values using independently protected backups and operator credentials.
 
-See [API usage](API-USAGE.md), [Secrets engine](SECRETS-ENGINE.md) and [deployment contract](BORTUS-DEPLOYMENT.md).
+See [API usage](API-USAGE.md), [Secrets engine](SECRETS-ENGINE.md), [deployment contract](BORTUS-DEPLOYMENT.md) and the [prioritized audit](BORTUS-AUDIT.md).

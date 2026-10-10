@@ -85,3 +85,7 @@ The integration branch starts from main fa9c226 and imports only the BORTUS app 
 Build images from the clean Docker context, which excludes env/SQLite/kubeconfig files. Local standalone output can trace workspace env files; do not distribute output built from a credential-bearing development checkout. The fresh integration build used no env files.
 
 Main tracks only .env.example with empty signing/lookup placeholders and nonsecret defaults. Previously tracked env files were removed from the original development snapshot while the original local files were preserved. Historical development-branch credentials require rotation outside Git; existing history is unchanged. Rotation requires re-login while preserving users and roles.
+
+## Subsequent audit baseline
+
+The [2026-10-10 audit](BORTUS-AUDIT.md) starts from merged main c2e22ca and reran unit, typecheck, production build and isolated HTTP integration checks successfully. It also reproduced account races/revocation gaps, kubectl argv/error bugs and UI issues using disposable fixtures. Passing the existing suite does not cover those findings. Healthy-cache coalescing and failed-read fanout were measured locally; Node 22/Linux image, real-cluster latency and full screen-reader checks remain unperformed in that audit. The audit changes documentation/evidence only and performs no rollout or live resource mutation.

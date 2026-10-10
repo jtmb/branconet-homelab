@@ -39,3 +39,5 @@ The write-role terminal executes shell commands with the application's operating
 Run `npm test`, `npm run typecheck`, `npm run build`, then `npm run test:integration`. The HTTP integration suite requires the production build and uses temporary SQLite, fake credentials and a loopback unavailable Kubernetes endpoint. It does not access the operator database or live cluster.
 
 Image and live-cluster evidence are separate from those local checks. See [recorded evidence and runtime contract](BORTUS-DEPLOYMENT.md).
+
+The [2026-10-10 performance/correctness/UI audit](BORTUS-AUDIT.md) records the main-source baseline, reproduced account/CLI/UI bugs, local cache measurements and a staged implementation plan. Its [evidence bundle](audit-evidence/README.md) includes a disposable Windows fixture and screenshots. These checks do not establish deployed-image performance. The current lint command prompts for configuration; the audit recommends a noninteractive lint/CI gate before treating lint as validation.

@@ -6,7 +6,7 @@ Development base URL: `http://localhost:4000`. Use the configured TLS ingress in
 
 Dashboard APIs require the HttpOnly `botrus_auth_token` cookie, set by login. Writes require the current `write` role from SQLite. JWTs carry identity, not role.
 
-Public API paths are `/api/auth/*`, exact `/api/cluster/info`, `/api/health/live` and `/api/health/ready`. Exact `/api/vars/lookup` bypasses cookie middleware but requires Bearer `BOTRUS_SECRETS_KEY`. The lookup token is independent of user JWTs.
+Public API paths are `/api/auth/*`, `/api/cluster/info`, `/api/health/live` and `/api/health/ready`. The current middleware implements info as a prefix exception rather than an exact match; no additional matching handler currently exists. Exact `/api/vars/lookup` bypasses cookie middleware but requires Bearer `BOTRUS_SECRETS_KEY`. The lookup token is independent of user JWTs. Ordinary reads do not currently recheck account existence, so a deleted account's valid JWT can still read them; native Secret handlers and write gates recheck the database. See [audit A02/A04](BORTUS-AUDIT.md).
 
 To login without putting credentials in terminal arguments, use a protected, untracked JSON file:
 
@@ -31,7 +31,7 @@ Keep the cookie file protected. Examples below use placeholder names and nonsecr
 | PATCH /api/users/[id] | Write role; role change or password reset |
 | DELETE /api/users/[id] | Write role; delete user |
 
-Registration closes after the first user unless `ALLOW_REGISTRATION=true` or AppSetting `allow_registration` is true. Self-demotion/deletion and removing the last write user are refused. See [permissions](USER-PERMS.md).
+Registration closes after the first user unless `ALLOW_REGISTRATION=true` or AppSetting `allow_registration` is true. Self-demotion/deletion is refused and a last-writer count is checked. These checks are non-atomic: concurrent initial registration and cross-demotion can violate their intended invariants. See [permissions](USER-PERMS.md) and audit A01/A03. PATCH also currently refuses all self-updates, including password-only resets.
 
 ## Native Secrets and aliases
 
@@ -86,7 +86,7 @@ These routes use kubectl with external operator or in-cluster credentials. Clust
 | /api/cluster/refresh | POST invalidate cache |
 | /api/cluster/nodes | GET nodes; POST register a node record |
 | /api/cluster/nodes/[hostname] | GET node detail |
-| /api/cluster/pods | GET list, optional namespace query |
+| /api/cluster/pods | GET unfiltered list; current type/namespace query filtering is not implemented |
 | /api/cluster/pods/[namespace]/[name] | GET detail |
 | /api/cluster/pods/[namespace]/[name]/delete | DELETE pod |
 | /api/cluster/pods/[namespace]/[name]/yaml | GET YAML; PUT apply YAML |
@@ -110,7 +110,9 @@ These routes use kubectl with external operator or in-cluster credentials. Clust
 | /api/cluster/remove | DELETE recorded cluster state |
 | /api/cluster/kubectl | POST JSON command; returns output |
 
-The write-role terminal endpoint executes arbitrary shell commands through bash with application-host permissions. It is not restricted to Kubernetes API access. Service/PVC compatibility menus display read-only YAML using their existing detail APIs; no unsupported mutations are offered.
+The write-role terminal endpoint executes arbitrary shell commands through bash with application-host permissions. It is not restricted to Kubernetes API access. Service/PVC compatibility menus label their JSON detail response as YAML; they do not currently return actual YAML. Pod logs, node YAML/action and ingress YAML menu paths have no matching handlers. See audit A08 for the route/capability gaps.
+
+Current kubectl wrappers split interpolated command strings into argv; unvalidated resource names can become options (audit A04). They also return stderr/stdout from failed commands as a non-null result, so some mutations incorrectly report success (A05). Cluster-list outages can return 200 with empty arrays instead of a distinct unavailable response (A06). Treat these as current limitations to fix, not intended API contracts.
 
 ## Optional Ansible runner
 
@@ -123,7 +125,7 @@ The write-role terminal endpoint executes arbitrary shell commands through bash 
 | DELETE /api/deploy/history | Write role; remove history |
 | GET /api/deploy/stream | SSE job output |
 
-Container provisioning returns 501. Local provisioning requires separately supplied Ansible/playbooks and independent bootstrap credentials; this app merge includes no Kubernetes provisioning roles. See [workflow](BOTRUS-WORKFLOW.md).
+Container provisioning returns 501. Local provisioning requires separately supplied Ansible/playbooks and independent bootstrap credentials; this app merge includes no Kubernetes provisioning roles. The UI does not yet reflect this disabled capability. See [workflow](BOTRUS-WORKFLOW.md) and [audit](BORTUS-AUDIT.md).
 
 ## Flux
 
