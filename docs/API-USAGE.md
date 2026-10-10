@@ -263,6 +263,8 @@ Readiness passed local unit and production HTTP/TLS qualification with coalesced
 
 ## Legacy access administration
 
+The standalone [KV administration UI guide](BORTUS-KV-ADMINISTRATION-UI.md) maps the current routes to explicit previews/confirmations and records synthetic HTTP/browser evidence. It awaits owner wiring. Identity DELETE currently has no revision body; status/version metadata omit destroy UIDs; strict destroy bodies omit pathRevision; consumer-preview marker metadata can shadow rotationId. The component neither invents these fields nor claims those missing CAS/display guarantees; shared API corrections and integrated acceptance remain pending.
+
 Legacy controls passed local unit and production HTTP/TLS qualification: GET/PATCH /api/kv/legacy reads or changes the named principal, POST /api/kv/legacy/preview previews principal/grant/revoke actions, GET/POST /api/kv/legacy/grants lists or restores exact grants, and DELETE /api/kv/legacy/grants/[id] revokes one. All require fresh effective engine administration and private/no-store responses. Principal/grant changes require principal revision; grant creation additionally requires pathRevision, a current explicit alias matching one registered key and a previously committed native path. There is no native value read/write or credential issue in these controls.
 
 | Method/path | Request | Response |

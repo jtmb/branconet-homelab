@@ -1,0 +1,314 @@
+{
+  "capturedAt": "2026-10-10T23:28:00Z",
+  "feature": "Standalone BORTUS KV administration component",
+  "status": "Local synthetic qualification passed; owner screen integration and shared API corrections pending",
+  "baseCommit": "74500af4a9553d98fdf6dd25f71aaba1cddb445a",
+  "branch": "codex/bortus-kv-administration",
+  "runtime": {
+    "node": "v22.23.3",
+    "platform": "win32",
+    "arch": "x64",
+    "next": "15.5.27"
+  },
+  "source": {
+    "stagedBlobsMatchTestedWorkingTree": true,
+    "matchedFiles": 8,
+    "hashKind": "SHA256 of frozen working-tree bytes, paths relative to k8s-rewrite/front-end; not a Linux export identity claim",
+    "files": {
+      "tests/kv-administration.test.ts": "fe502782d47aeeb71f9b189bcc196b006f2abd00566abb8fb1db868197c14190",
+      "src/components/secrets/kv-administration.tsx": "64d3bc1d0e0c7214fd754fd0e275a78c709cd807309c93fa046825862e5df20d",
+      "src/components/secrets/kv-administration-model.ts": "b268163b0c076f723ce192de952774bce5f11fac5c6a4092b674d77e029ee871",
+      "tests/kv-administration-cleanup-fault.ts": "6dfbda5a80b9db99d21f4b7365f90967254a1e4c97c03adc977357f1aaae85f0",
+      "tests/kv-administration.integration.ts": "47b31935a565e9f6645a6126127b6013ba5038ce4b054fe2df4910cab1f82a9b",
+      "tests/helpers/kv-administration-cleanup-fault.ts": "5157a8c34b061b9b6ff99dc214a6a022cfa25cae42aadb04ca1b9e0e84b3095b",
+      "tests/kv-administration-ui-fixture.ts": "e9970f715a7e190c99a8a0dd775d9927c40ba9abdabc03e7149802affc6fdc2f",
+      "tests/helpers/kv-administration-fixture.ts": "24aca7b27f7acadc1ec57330bb9539765e7371f0a6dc2a2653977f0b3dd568ad"
+    }
+  },
+  "checks": [
+    {
+      "command": "npm run lint",
+      "exit": 0,
+      "warnings": 0
+    },
+    {
+      "command": "npm test",
+      "exit": 0,
+      "tests": 123,
+      "passed": 123,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "durationMs": 45698.0583
+    },
+    {
+      "command": "npm run build",
+      "exit": 0,
+      "productionBuild": true
+    },
+    {
+      "command": "npm run typecheck",
+      "exit": 0,
+      "afterProductionBuild": true
+    },
+    {
+      "command": "npm run test:integration",
+      "exit": 0,
+      "tests": 4,
+      "passed": 4,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "durationMs": 37444.4825
+    }
+  ],
+  "newUnitChecks": [
+    "Action names and exact confirmation bodies match actual strict schemas; unsupported UID fields refused",
+    "Engine administration does not bypass data deny, captured capability revision or guarded mode",
+    "Full multi-page aliases/fingerprint and independent configuration acknowledgment",
+    "GC source/path revision, age and exact selected candidate UID/RV",
+    "Readonly/scoped/token session cannot enter administration mutation callback",
+    "Browser fetch retains global receiver",
+    "One-time reply withheld after logout/demotion/account switch",
+    "Ignored-abort late reply fenced on navigation/close",
+    "Deadline reports 408 unknown outcome; mutation sent once",
+    "Stale/revoked request sent once; fixed error excludes private server text and retains validated recovery ID"
+  ],
+  "newProductionHttpChecks": {
+    "fixture": "Actual production Next routes, temporary SQLite, synthetic login and CA-verified native HTTPS mock; no operator credential or live cluster",
+    "stalePolicyRevision": {
+      "status": 409,
+      "patchRequests": 1,
+      "freshExplicitRevisionSucceeds": true
+    },
+    "legacy": {
+      "affectedAliases": 603,
+      "pages": 7,
+      "configurationAcknowledgmentRequired": true,
+      "stalePrincipalStatus": 409
+    },
+    "automation": {
+      "credentialReturnedOnce": true,
+      "metadataOmitsCredentialAndHash": true,
+      "scopedOperationUsesOperationDiscriminator": true,
+      "beforeRevokeStatus": 200,
+      "afterRevokeStatus": 401
+    },
+    "nativePartialCleanup": {
+      "referenceOutcome": "committed",
+      "cleanupComplete": false,
+      "perItemOutcome": "recovery-required",
+      "perItemStatus": 503,
+      "deniedDeletes": 1,
+      "historyObjectRetained": true,
+      "referenceRemoved": true,
+      "headPreserved": true
+    },
+    "absentProofRecovery": {
+      "outcome": "ambiguous",
+      "additionalNativeWrites": 0
+    },
+    "originalPreservation": {
+      "canonicalObject": true,
+      "unrelatedKey": true,
+      "labels": true,
+      "valueBearingUnrelatedAnnotation": true
+    },
+    "freshAdministratorWithdrawalBlocksCallback": true
+  },
+  "browser": {
+    "harness": "Actual component bundled into a disposable browser page; API proxied to actual production routes with a synthetic cookie. Existing application page is not wired.",
+    "syntheticPath": {
+      "id": "dc986814-1165-4618-9dfa-c40f418ea9af",
+      "path": "apps/service/credentials",
+      "namespace": "apps",
+      "name": "original-secret",
+      "mappedKey": "original_under_scored_key"
+    },
+    "policyPageRows": [
+      100,
+      100,
+      7
+    ],
+    "identityPageRows": [
+      100,
+      5
+    ],
+    "legacyPreviewReviewedCounts": [
+      100,
+      200,
+      300,
+      400,
+      500,
+      600,
+      603
+    ],
+    "legacy": {
+      "principalDisableRequiresSeparateConfigurationAcknowledgment": true,
+      "disabledPrincipalRevision": 3,
+      "exactGrantRevocationAndRestore": true,
+      "originalSpellingAndKeyShown": true
+    },
+    "stalePolicy": {
+      "singlePatch": true,
+      "status": 409,
+      "confirmationCleared": true,
+      "commitDisabledUntilNewPreview": true
+    },
+    "oneTimeIdentity": {
+      "explicitIssueDisplaysLocalToken": true,
+      "clearRemovesTextarea": true,
+      "issueDisabledWhileTokenDisplayed": true,
+      "delayedIssueMs": 4000,
+      "lateReplyAfterCloseTokenFields": 0,
+      "roleWithdrawalTokenFields": 0,
+      "roleWithdrawalManagementButtons": 0
+    },
+    "audit": {
+      "pageRows": [
+        100,
+        100,
+        29
+      ],
+      "exactOperationFilter": true,
+      "privateOtherKeyAnnotationVisible": false,
+      "noBrowserValueEndpointRequests": true
+    },
+    "history": {
+      "activeHeadDestructionDisabled": true,
+      "agedOrphanPreviewMinimumHours": 24,
+      "gcExactCandidateUidRv": true,
+      "gcOwnedHistoryDeleted": true,
+      "committedVersionDestroy": true,
+      "retentionChange": {
+        "from": 2,
+        "to": 3,
+        "pathRevisionAfter": 2,
+        "nativeHeadUnchanged": 4,
+        "nativeResourceVersionUnchanged": "12"
+      },
+      "finishedSnapshotRequiresFreshCapture": true
+    },
+    "partialCleanup": {
+      "operationId": "b1304d07-1914-4a3b-a620-b377f04f7d42",
+      "referenceOutcome": "committed",
+      "head": 4,
+      "resourceVersion": "12",
+      "cleanupComplete": false,
+      "version": 3,
+      "cleanupOutcome": "recovery-required",
+      "status": 503,
+      "retained": true,
+      "tlsVerificationPreserved": true,
+      "noBlindRetry": true
+    },
+    "recovery": {
+      "operationId": "55555555-5555-4555-8555-555555555555",
+      "absentProofOutcome": "ambiguous",
+      "noNativeRetry": true
+    },
+    "rotation": {
+      "prepareOnly": true,
+      "generateExplicitlyOnce": true,
+      "generatedValueNeverReturnedToUi": true,
+      "consumer": "apps/Deployment/fixture-consumer",
+      "consumerUid": "consumer-uid",
+      "consumerResourceVersion": "consumer-rv-1",
+      "templateMarkerVerifiedBySyntheticFixture": true,
+      "reloadDistinctFromConsumption": true,
+      "separateOperatorAssertionRequired": true,
+      "acknowledgedMetadataOnly": true,
+      "fullyConfirmedPrepareDisabledByRotateDeny": true
+    },
+    "responsive": [
+      {
+        "viewport": 320,
+        "documentScrollWidth": 310,
+        "bodyScrollWidth": 310,
+        "legacyRows": 100
+      },
+      {
+        "viewport": 390,
+        "documentScrollWidth": 380,
+        "bodyScrollWidth": 380,
+        "auditRows": 100
+      },
+      {
+        "viewport": 768,
+        "documentScrollWidth": 758,
+        "bodyScrollWidth": 758,
+        "view": "static rotation"
+      }
+    ],
+    "finalSourceSmoke": "After fetch binding, expiry presets, pending fieldsets, bounded cursor stack, snapshot wording and deadline fixes; final source loaded and retention/legacy/deny/responsive checks repeated",
+    "screenshots": [
+      "kv-administration-final-390.png",
+      "kv-administration-history-390.png",
+      "kv-administration-rotation-390.png",
+      "kv-administration-partial-390.png"
+    ],
+    "screenshotsContainTokens": false,
+    "viewportOverrideReset": true,
+    "temporaryBrowserClosed": true
+  },
+  "failedAttempts": [
+    {
+      "kind": "environment",
+      "detail": "Initial typecheck lacked generated Prisma Client; generated with Node22 and reran successfully. No application contract changed."
+    },
+    {
+      "kind": "test correction",
+      "detail": "First administration HTTP fixture used action instead of the actual automation operation discriminator; corrected the fixture, preserving the nonpassing attempt."
+    },
+    {
+      "kind": "implementation correction",
+      "detail": "Browser detected illegal fetch receiver; use globalThis as receiver, added regression, and repeated browser/HTTP/unit qualification."
+    },
+    {
+      "kind": "browser tooling",
+      "detail": "Initial tab creation timed out; new tab succeeded. Label selector and datetime-local fill attempts did not establish native picker behavior; explicit role locators and expiry presets were qualified."
+    },
+    {
+      "kind": "unit timeout",
+      "detail": "A full 122-test intermediate run timed out after 90 seconds in unchanged kv-legacy-access.test.ts while browser fixture was active; 117 passed, 3 failed, 2 cancelled. Frozen unchanged-threshold rerun passed all 123 after browser fixture shutdown. Root cause not established.",
+      "durationMs": 135671.5697
+    },
+    {
+      "kind": "automatic approval rejection",
+      "detail": "Combined and narrow recursive removal of stopped old disposable fixture directory were rejected with blocked by policy. Processes stopped; old files retained. The later interactive fixture stopped and cleaned normally."
+    }
+  ],
+  "cleanup": {
+    "interactiveFixtureStopped": true,
+    "interactiveFixtureDirectoryRemoved": true,
+    "partialFaultProxyStoppedAndConfigRestored": true,
+    "oldStoppedFixtureDirectoryRetained": "C:/Users/james/AppData/Local/Temp/bortus-admin-ui-dUtOCM"
+  },
+  "ownerIntegration": {
+    "component": "src/components/secrets/kv-administration.tsx",
+    "props": [
+      "selectedPathId?: string | null",
+      "refreshKey?: string | number",
+      "active?: boolean",
+      "onMetadataChange?: metadata scope callback"
+    ],
+    "defaultClosed": true,
+    "callback": "Refresh other metadata/capability views; do not immediately bump this component refreshKey on token issue or the one-time token is intentionally discarded.",
+    "guide": "../BORTUS-KV-ADMINISTRATION-UI.md",
+    "sharedApiLimits": [
+      "Identity DELETE has no revision/CAS body",
+      "Status/version responses omit canonical/history UIDs for displayed destroy confirmation",
+      "Strict destroy schema omits pathRevision even though engine accepts it internally",
+      "Consumer preview marker rotationId can shadow response identity; UI refuses mismatches",
+      "Maximum-length full 10000-alias acknowledgment can exceed existing 512KiB request bound; no truncation or partial mutation"
+    ]
+  },
+  "limitations": [
+    "Standalone component is not mounted in existing Secrets screen; integrated export/workbench refresh/navigation/bundle acceptance is pending.",
+    "No native Secret, production deployment, RBAC/admission, image, runtime credentials or shared API/auth/cache changed.",
+    "No real workload readiness, actual credential consumption, external-provider rotation or dynamic issuer evidence.",
+    "CSS viewport checks do not establish actual zoom, screen-reader or automated accessibility acceptance.",
+    "No controlled latency/CPU/RSS/performance or final Linux image/source-export gate claimed.",
+    "One-time tokens are transient UI state only; discarded delivery may still have issued an identity on the server and requires metadata inspection/revocation."
+  ]
+}

@@ -91,6 +91,8 @@ Keep operator kubeconfig, SSH keys and provisioning credentials independently av
 
 ## Validation ownership
 
+The standalone [KV administration UI](BORTUS-KV-ADMINISTRATION-UI.md) is qualified against disposable production Next routes, temporary SQLite and CA-verified synthetic native APIs. It changes no deployment/RBAC/migration contract and uses no operator credentials. It still requires owner screen integration and the documented shared API corrections; these Windows fixture/browser passes do not qualify a final Linux image, installed guards, real consumer receipt or live rollout.
+
 Readiness/alias bounds passed local unit and production HTTP/TLS qualification. Public readiness now coalesces bounded metadata-only probes (limit one), checks forward account/KV metadata and aliases, and includes history only when guarded mode is enabled. Use timeoutSeconds at least 10 for the nine-second dependency budget. A ready response remains a dependency read check; it does not certify write verbs, admission, old-principal revocation or recovery backups. No extra native verbs are required.
 
 History destroy/GC APIs passed local unit and production HTTP/TLS qualification. The dedicated history namespace needs get/list/create/delete, including UID/resourceVersion delete preconditions; current namespaces retain get/list/create/update without delete. Metadata-only list negotiation must be supported by the API. No app code creates namespaces or RoleBindings. Final external guard/image/RBAC validation remains required before adoption.

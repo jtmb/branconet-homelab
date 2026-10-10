@@ -117,14 +117,16 @@ The active app goal includes all A01–A22 findings and the complete selected na
 |---|---|
 | Mounts/paths/grouped fields and forward metadata migration | Local foundation 08cb427; preservation, ownership, policies and scoped/admin UI checks passed |
 | Immutable native versions, head/resourceVersion CAS, drift and rollback | Local core e1044f4 and public routes/bridges 6ab95f2; synthetic binary/special-key, history isolation and production mock-TLS HTTP passed |
-| Scoped policies and revocable automation identities | Metadata lifecycle passed; exact automation entrypoint now passes focused token/CAS/revocation tests, and production HTTP/TLS passed |
-| Redacted audit and fresh capability views | Focused bounded 100-row pagination, prefix/deny/token filtering and administrator-revocation checks passed; production HTTP/TLS passed |
+| Scoped policies and revocable automation identities | APIs locally qualified; standalone administration UI adds captured policy previews, one-time issue/revoke and session fencing; owner integration remains pending |
+| Redacted audit and fresh capability views | APIs locally qualified; standalone administration UI adds bounded path/operation-filtered audit and deny-aware native controls; integrated acceptance remains pending |
 | Protected import/export | Human API passed bounded binary/permission/CAS/per-path-outcome unit and production HTTP/TLS acceptance; transfer UI and final image/live evidence pending |
-| Static rotation, explicit consumer reload/rollout acknowledgement | Local unit/build/production HTTP passed atomic intent linking, no-read scoped generation, explicit acknowledgement and administrator UID/RV reload/recovery; UI, broader recovery and final image/live acceptance pending; dynamic issuers excluded |
-| Retention, destruction and GC | Bounded retention/tombstones passed; confirmed owned-history destruction and age/reference/UID/RV GC passed unit and production HTTP/TLS; UI/final image/live evidence pending |
-| Recovery controls | Positive commit read-back/restart/audit recovery and missing-marker/source refusal passed; explicit cleanup/recovery workflow and final image/native backup acceptance pending |
-| Full KV UI and remaining A01–A22 UI/performance checks | Pending value/draft/conflict/history/import/export/rotation/audit interaction checks and remaining Flux/details/mobile/accessibility/performance work |
+| Static rotation, explicit consumer reload/rollout acknowledgement | APIs locally qualified; standalone administration UI qualifies prepare/generate/reload/operator assertion with synthetic native/consumer fixtures; integrated UI, real consumption and final image/live acceptance pending; dynamic issuers excluded |
+| Retention, destruction and GC | APIs locally qualified; standalone administration UI qualifies retention, exact version/GC confirmations and separate reference/per-item cleanup outcomes, including retained 503 cleanup; integrated UID/path-revision contract and image/live acceptance pending |
+| Recovery controls | Positive proof API checks passed; standalone UI inspects exact operation IDs and retains absent-proof ambiguity without native retry; final image/native backup acceptance pending |
+| Full KV UI and remaining A01–A22 UI/performance checks | Standalone administration component is available; owner must wire it into the Secrets screen. Workbench/transfer and integrated mobile/accessibility/performance acceptance remain separate |
 | Final immutable artifact and coordinated guarded rollout | Pending final app source/runtime contract, Linux image checks, external RBAC/admission/PVC/runtime-Secret guard evidence and live validation by the delivery coordinator; this app chat performs no live change |
+
+The standalone [KV administration integration guide](BORTUS-KV-ADMINISTRATION-UI.md) defines the component props, metadata-only refresh callback, session/token lifecycle and shared API limitations. [Local evidence](implementation-evidence/kv-administration-ui.json) records synthetic production HTTP/browser checks and failed attempts. The component does not alter the current page, shared API/auth/cache, image or chart. Missing displayed destroy UIDs, strict destroy pathRevision support and consumer-preview identity shadowing require shared API owner work; local passes do not close those integration gates.
 
 Dynamic credential issuers, PKI, transit and HashiCorp API compatibility remain outside the selected KV scope. Existing Gluster/Vault retirement is not implemented by this application work.
 

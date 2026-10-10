@@ -44,6 +44,8 @@ The checked-in flat ESLint configuration follows the [versioned Next 15 guide](h
 
 ## Dependency review, 2026-10-10
 
+The standalone [KV administration component](BORTUS-KV-ADMINISTRATION-UI.md) uses the existing React, Next 15 usePathname and shared session subscription without adding dependencies. Metadata/token state lives only in the mounted component; it does not extend the shared KV query cache. Its test-only browser harness uses the existing esbuild/tsx tooling and disposable production routes. Integrated bundle/image/performance acceptance remains separate.
+
 Alias and readiness metadata caching passed local unit and production HTTP/TLS checks with bounded coalescing, refresh deadlines and no stale-error fallback. Alias files use bounded Node streams and fatal UTF-8 decoding; readiness uses PartialObjectMetadataList instead of fetching Secret values. Independent shared browser metadata queries and 100-reference alias pages passed local readonly/mobile browser checks. No dependency was added.
 
 Native history GC now uses bounded mandatory PartialObjectMetadataList negotiation before selected immutable-object verification/deletion; no dependency was added. This API stage passed local unit and production HTTP/TLS qualification. Readiness and ordinary alias metadata bounds also passed local checks; image, memory and real-cluster acceptance remain pending.
