@@ -1,5 +1,7 @@
 # BORTUS API usage
 
+Warm Pod list optimization passed local Node22 unit/build/HTTP qualification: `/api/cluster/pods` reuses only the redacted summary/JSON array belonging to the current immutable resource-cache snapshot. Namespace/type/label filters remain independently validated and applied; the response computes fresh availability/stale warnings and preserves the existing JSON contract. Middleware still verifies the current account/session on every request. No account result, private value or query-dependent result is cached by this optimization.
+
 Combined workbench integration passed its recorded Node22 unit/build/HTTP and native-browser subset after metadata commit 7a56ff4 and cherry-pick 1e0030a (source b1a6cb). The explicit Values and versions button opens an on-demand selected-path dialog, seeds fresh pathId/revision capabilities and invalidates metadata only after actions. Optional pathRevision support is now present. Browsing remains metadata-only; no value is passed through the parent cache.
 
 The workbench distinguishes missing native status (explicit 404) from unavailable/unknown status. Initialization may capture resourceVersion absent/head zero only after the not-found response; unknown post-mutation/error state requires refresh rather than guessed prerequisites. Adoption requires a known native source. Server CAS/adoption rules are unchanged.

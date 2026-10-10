@@ -1,5 +1,7 @@
 # BORTUS user permissions
 
+The warm Pod response optimization caches only the redacted metadata projection of a resource snapshot. Middleware still verifies current account existence/sessionVersion for every protected request; no successful authorization result is cached or bypassed. Filtering and current availability/error responses are preserved. Combined Node22 130-test/build/HTTP qualification passed, including account-revocation HTTP checks; controlled performance remains pending.
+
 The integrated workbench receives a fresh selected-path capability result or null and checks its own session/capabilities before private actions. Parent 401/403 removes the selected metadata/dialog; permission/revision failures pause or discard private intent. Readonly may open metadata only, while update-without-read uses an explicit complete-replacement mode. The recorded combined Node22/backend/browser subset passed; integrated transfer/reconcile, full KV lifecycle and final-image/live acceptance remain open.
 
 Fresh create permission does not imply a missing/unadopted target. Client initialization also requires known status or explicit not-found proof, and adoption requires a known source; unavailable/post-mutation unknown status pauses new native actions. Server permissions and CAS remain authoritative.
