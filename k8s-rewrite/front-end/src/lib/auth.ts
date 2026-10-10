@@ -1,4 +1,5 @@
 import { SignJWT, jwtVerify } from "jose";
+import prisma from "./db";
 
 export const AUTH_COOKIE = "botrus_auth_token";
 
@@ -10,9 +11,9 @@ function getSecretKey(): Uint8Array {
 }
 
 export async function signJWT(
-  payload: { sub: string; username: string }
+  payload: { sub: string; username: string; sessionVersion?: number }
 ): Promise<string> {
-  return new SignJWT(payload)
+  return new SignJWT({ ...payload, sessionVersion: payload.sessionVersion ?? 0 })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("7d")
@@ -21,17 +22,28 @@ export async function signJWT(
 
 export async function verifyJWT(
   token: string
-): Promise<{ sub: string; username: string } | null> {
+): Promise<{ sub: string; username: string; sessionVersion: number } | null> {
   try {
-    const { payload } = await jwtVerify(token, getSecretKey());
-    return { sub: payload.sub as string, username: payload.username as string };
+    const { payload } = await jwtVerify(token, getSecretKey(), { algorithms: ["HS256"] });
+    const sessionVersion = payload.sessionVersion ?? 0;
+    if (typeof payload.sub !== "string" || !payload.sub || typeof payload.username !== "string" ||
+      typeof sessionVersion !== "number" || !Number.isSafeInteger(sessionVersion) || sessionVersion < 0) return null;
+    return { sub: payload.sub, username: payload.username, sessionVersion };
   } catch {
     return null;
   }
 }
 
 /** Server-side session from cookies — for API routes & server components */
-export async function getSession(): Promise<{ id: string; username: string } | null> {
+export type Session = { id: string; username: string; sessionVersion: number };
+
+async function currentSession(payload: NonNullable<Awaited<ReturnType<typeof verifyJWT>>>): Promise<Session | null> {
+  const user = await prisma.user.findUnique({ where: { id: payload.sub }, select: { id: true, username: true, sessionVersion: true } });
+  if (!user || user.sessionVersion !== payload.sessionVersion) return null;
+  return { id: user.id, username: user.username, sessionVersion: user.sessionVersion };
+}
+
+export async function getSession(): Promise<Session | null> {
   try {
     const { cookies } = await import("next/headers");
     const cookieStore = await cookies();
@@ -39,7 +51,7 @@ export async function getSession(): Promise<{ id: string; username: string } | n
     if (!token) return null;
     const payload = await verifyJWT(token);
     if (!payload) return null;
-    return { id: payload.sub, username: payload.username };
+    return await currentSession(payload);
   } catch {
     return null;
   }
@@ -48,7 +60,7 @@ export async function getSession(): Promise<{ id: string; username: string } | n
 /** Middleware helper — parse auth cookie from raw request header string */
 export async function getSessionFromHeaders(
   cookieHeader: string | null
-): Promise<{ id: string; username: string } | null> {
+): Promise<Session | null> {
   if (!cookieHeader) return null;
   const match = cookieHeader.match(
     new RegExp(`(?:^|;\\s*)${AUTH_COOKIE}=([^;]*)`)
@@ -57,5 +69,5 @@ export async function getSessionFromHeaders(
   if (!token) return null;
   const payload = await verifyJWT(token);
   if (!payload) return null;
-  return { id: payload.sub, username: payload.username };
+  return currentSession(payload);
 }

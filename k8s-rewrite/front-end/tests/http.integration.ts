@@ -156,6 +156,15 @@ test(
           },
           body: data === undefined ? undefined : JSON.stringify(data),
         });
+      // Exercise the actual route's bootstrap race before the remaining fixture setup.
+      const bootstrap = await Promise.all(Array.from({ length: 4 }, (_, i) => request("/api/auth/register", "POST", {
+        username: `race_bootstrap_${i}`, password: "fake-test-password",
+      })));
+      assert.equal(bootstrap.filter(response => response.status === 201).length, 1);
+      assert.equal(bootstrap.filter(response => response.status === 403).length, 3);
+      assert.equal(await db.user.count({ where: { role: "write" } }), 1);
+      await db.user.deleteMany(); // Disposable fixture DB only; start the normal flow below.
+      assert.equal((await request("/api/cluster/info-extra")).status, 401);
       const first = await request("/api/auth/register", "POST", {
         username: "testwriter",
         password: "fake-test-password",
@@ -260,6 +269,31 @@ test(
         await db.variable.count({ where: { key: "new_password" } }),
         0,
       );
+      const created = await request("/api/users", "POST", {
+        username: "revocation_subject", password: "fake-subject-password", role: "readonly",
+      }, writer);
+      assert.equal(created.status, 201);
+      const subject = await created.json();
+      const loginSubject = async (password: string) => {
+        const response = await request("/api/auth/login", "POST", { username: "revocation_subject", password });
+        assert.equal(response.status, 200);
+        return response.headers.get("set-cookie")!.split(";")[0];
+      };
+      const oldCookie = await loginSubject("fake-subject-password");
+      assert.equal((await request("/api/nodes", "GET", undefined, oldCookie)).status, 200);
+      assert.equal((await request(`/api/users/${subject.id}`, "PATCH", { password: "fake-reset-password" }, writer)).status, 200);
+      assert.equal((await request("/api/nodes", "GET", undefined, oldCookie)).status, 401);
+      assert.equal((await request("/api/auth/session", "GET", undefined, oldCookie)).status, 200);
+      assert.equal((await (await request("/api/auth/session", "GET", undefined, oldCookie)).json()).authenticated, false);
+      const newCookie = await loginSubject("fake-reset-password");
+      assert.equal((await request("/api/nodes", "GET", undefined, newCookie)).status, 200);
+      assert.equal((await request(`/api/users/${subject.id}`, "DELETE", undefined, writer)).status, 200);
+      for (const route of ["/api/nodes", "/api/users", "/api/cluster/pods", "/api/secrets"])
+        assert.equal((await request(route, "GET", undefined, newCookie)).status, 401);
+      assert.equal((await (await request("/api/auth/session", "GET", undefined, newCookie)).json()).authenticated, false);
+      const revokedPage = await fetch(`${base}/pods`, { headers: { cookie: newCookie }, redirect: "manual" });
+      assert.equal(revokedPage.status, 307);
+      assert.ok(revokedPage.headers.get("location")?.endsWith("/welcome"));
       await db.user.update({
         where: { username: "testwriter" },
         data: { role: "readonly" },

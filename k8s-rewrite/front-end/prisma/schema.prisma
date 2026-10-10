@@ -37,9 +37,18 @@ model User {
   username     String   @unique
   passwordHash String
   role         String   @default("readonly") // "readonly" | "write"
+  sessionVersion Int    @default(0)
   createdAt    DateTime @default(now())
 
   @@map("users")
+}
+
+// A seeded row acquires SQLite's write lock before account invariant reads.
+model AccountLock {
+  id     Int @id
+  locked Int @default(0)
+
+  @@map("account_lock")
 }
 
 model Node {

@@ -20,10 +20,10 @@ export async function GET() {
 
     if (session) {
       const user = await prisma.user.findUnique({ where: { id: session.id } });
-      return NextResponse.json({
+      if (user && user.sessionVersion === session.sessionVersion) return NextResponse.json({
         authenticated: true,
         username: session.username,
-        role: user?.role || "readonly",
+        role: user.role,
         hasUsers: userCount > 0,
         registrationOpen,
       });

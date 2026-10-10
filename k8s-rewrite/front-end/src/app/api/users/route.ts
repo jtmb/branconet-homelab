@@ -3,6 +3,7 @@ import prisma from "@/lib/db";
 import { requireWrite } from "@/lib/permissions";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
+import { accounts, accountFailure } from "@/lib/accounts";
 
 const createUserSchema = z.object({
   username: z
@@ -51,37 +52,11 @@ export async function POST(request: NextRequest) {
 
     const { username, password, role } = parsed.data;
 
-    // Check uniqueness
-    const existing = await prisma.user.findUnique({ where: { username } });
-    if (existing) {
-      return NextResponse.json(
-        { error: "Username already taken" },
-        { status: 409 }
-      );
-    }
-
     const passwordHash = await bcrypt.hash(password, 12);
-
-    const user = await prisma.user.create({
-      data: {
-        username,
-        passwordHash,
-        role: role || "readonly",
-      },
-      select: {
-        id: true,
-        username: true,
-        role: true,
-        createdAt: true,
-      },
-    });
+    const user = await accounts.create(auth, { username, passwordHash, role: role || "readonly" });
 
     return NextResponse.json(user, { status: 201 });
   } catch (err) {
-    console.error("[users] POST error:", err);
-    return NextResponse.json(
-      { error: "Failed to create user" },
-      { status: 500 }
-    );
+    return accountFailure(err);
   }
 }

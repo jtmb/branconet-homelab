@@ -88,4 +88,6 @@ Main tracks only .env.example with empty signing/lookup placeholders and nonsecr
 
 ## Subsequent audit baseline
 
+The remediation branch adds migration `20261010160000_account_invariants`: user sessionVersion defaults to zero and account_lock receives its serialization row. Run the normal forward migration before traffic, with a consistent DB backup; never reset existing DB. Legacy cookies retain version-zero compatibility until a password reset increments their user's version. Deleted accounts are rejected immediately. No live migration/rollout has been performed. See [implementation acceptance](BORTUS-IMPLEMENTATION.md).
+
 The [2026-10-10 audit](BORTUS-AUDIT.md) starts from merged main c2e22ca and reran unit, typecheck, production build and isolated HTTP integration checks successfully. It also reproduced account races/revocation gaps, kubectl argv/error bugs and UI issues using disposable fixtures. Passing the existing suite does not cover those findings. Healthy-cache coalescing and failed-read fanout were measured locally; Node 22/Linux image, real-cluster latency and full screen-reader checks remain unperformed in that audit. The audit changes documentation/evidence only and performs no rollout or live resource mutation.

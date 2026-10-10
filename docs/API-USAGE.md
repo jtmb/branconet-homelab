@@ -6,7 +6,7 @@ Development base URL: `http://localhost:4000`. Use the configured TLS ingress in
 
 Dashboard APIs require the HttpOnly `botrus_auth_token` cookie, set by login. Writes require the current `write` role from SQLite. JWTs carry identity, not role.
 
-Public API paths are `/api/auth/*`, `/api/cluster/info`, `/api/health/live` and `/api/health/ready`. The current middleware implements info as a prefix exception rather than an exact match; no additional matching handler currently exists. Exact `/api/vars/lookup` bypasses cookie middleware but requires Bearer `BOTRUS_SECRETS_KEY`. The lookup token is independent of user JWTs. Ordinary reads do not currently recheck account existence, so a deleted account's valid JWT can still read them; native Secret handlers and write gates recheck the database. See [audit A02/A04](BORTUS-AUDIT.md).
+Public API paths are `/api/auth/*`, exact `/api/cluster/info`, `/api/health/live` and `/api/health/ready`. Exact `/api/vars/lookup` bypasses cookie middleware but requires Bearer `BOTRUS_SECRETS_KEY`. The lookup token is independent of user JWTs. Node middleware checks current account existence/sessionVersion for protected reads/pages; deleted accounts and password-reset cookies are rejected. Native Secret handlers and write gates additionally check the current role. A middleware DB outage returns a fixed 503. See [implementation ledger](BORTUS-IMPLEMENTATION.md).
 
 To login without putting credentials in terminal arguments, use a protected, untracked JSON file:
 
@@ -31,7 +31,7 @@ Keep the cookie file protected. Examples below use placeholder names and nonsecr
 | PATCH /api/users/[id] | Write role; role change or password reset |
 | DELETE /api/users/[id] | Write role; delete user |
 
-Registration closes after the first user unless `ALLOW_REGISTRATION=true` or AppSetting `allow_registration` is true. Self-demotion/deletion is refused and a last-writer count is checked. These checks are non-atomic: concurrent initial registration and cross-demotion can violate their intended invariants. See [permissions](USER-PERMS.md) and audit A01/A03. PATCH also currently refuses all self-updates, including password-only resets.
+Registration closes after the first user unless `ALLOW_REGISTRATION=true` or AppSetting `allow_registration` is true. Registration/account changes serialize the final check and mutation in SQLite; actor/session/role are rechecked inside the transaction. Self-role changes/deletion and removal of the last writer are refused. Password-only self-reset is allowed for write users and revokes their prior cookies. Duplicate usernames return 409; retryable account contention may return 503. See [permissions](USER-PERMS.md).
 
 ## Native Secrets and aliases
 

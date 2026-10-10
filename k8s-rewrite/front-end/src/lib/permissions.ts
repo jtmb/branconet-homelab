@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSession } from "@/lib/auth";
+import { getSession, type Session } from "@/lib/auth";
 import prisma from "@/lib/db";
 
 /**
@@ -12,7 +12,7 @@ import prisma from "@/lib/db";
  *   // session.id, session.username are available
  */
 export async function requireWrite(): Promise<
-  { id: string; username: string } | NextResponse
+  Session | NextResponse
 > {
   const session = await getSession();
   if (!session) {
