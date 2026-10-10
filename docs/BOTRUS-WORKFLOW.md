@@ -1,5 +1,9 @@
 # BORTUS workflow guide
 
+For a selected KV path, choose Values and versions to open the workbench explicitly. It begins with metadata, requires separate reveal/adoption/edit actions, and returns focus to the entry button on close. Value drafts remain local to the dialog. The recorded combined Node22/native-browser subset passed; integrated transfer/reconcile and the separate administration UI remain pending.
+
+After a native action, refresh metadata before opening the next action. Unavailable status is labelled explicitly and does not imply a new/unadopted target. A not-found response enables separate explicit initialization under fresh permissions; existing originals require adoption. A new attempt replaces the preceding operation label, while native outcome inspection remains explicit.
+
 KV mount/path search and sorting apply to the loaded cursor page, not to every server record. Page navigation clears its corresponding search. Registration leaves Save disabled for invalid logical-path spelling, duplicate field/key mappings or invalid native names; the server independently enforces normalization, policy, scope and retention limits.
 
 KV metadata UI passed local qualification. From Secrets choose KV mounts and paths. Browse one cursor page, choose an explicit mount, then register a logical path with exact namespace/Secret and field/key mappings. Registration changes metadata only. Effective administrators manage mount scopes; scoped writers require create policy. Opening a path shows its mapping, fresh permissions and independent native status/version metadata; permitted writers edit retention using the displayed metadata revision. A changed revision keeps the draft but disables Save until explicit Reload retention discards it. Unavailable reads show error/Retry with retained metadata labelled; they do not imply an empty list. Full value/adoption/recovery and administrative workflow UI remain open.

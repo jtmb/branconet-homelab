@@ -6,7 +6,7 @@ import { compareValues, type SortKind } from "@/lib/table-sort";
 export type Page<T> = { items: T[]; nextCursor: string | null };
 export type Mount = { id: string; name: string; namespaces: string[]; revision: number };
 export type Path = { id: string; mountId: string; path: string; namespace: string; name: string; fields: { field: string; key: string }[]; retention: number; revision: number };
-export type Capabilities = { revision: number; permissions: Record<string, boolean>; nativeMutationEnabled: boolean; initializationAllowed: boolean; guardVerification: string };
+export type Capabilities = { pathId: string; revision: number; permissions: Record<string, boolean>; nativeMutationEnabled: boolean; initializationAllowed: boolean; guardVerification: string };
 export type Status = { adopted: boolean; resourceVersion: string; head: number; tombstone: boolean; versions: number };
 export type Versions = { items: { version: number; createdAt: string; tombstone: boolean }[]; head: number; resourceVersion: string };
 export const input = "mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm";

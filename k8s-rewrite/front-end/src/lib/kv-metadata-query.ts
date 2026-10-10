@@ -2,6 +2,7 @@
 export function isKvMetadataQuery(url: string): boolean {
   if (!url.startsWith("/api/kv/")) return false;
   const parsed = new URL(url, "https://bortus.invalid");
+  if (url.split(/[?#]/, 1)[0] !== parsed.pathname) return false;
   if (parsed.hash) return false;
   const collectionKeys: Record<string, string[]> = {
     "/api/kv/mounts": ["cursor"], "/api/kv/paths": ["cursor", "mountId"],

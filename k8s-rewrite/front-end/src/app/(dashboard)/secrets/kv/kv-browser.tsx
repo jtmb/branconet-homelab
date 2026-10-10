@@ -1,9 +1,11 @@
 "use client";
 import { useCallback, useEffect, useRef, useState, type MutableRefObject } from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { useQuery, useSession, refetchKvMetadata } from "@/lib/use-query";
 import { MountForm, RegisterForm, RetentionForm } from "./kv-forms";
 import { input, button, surface, usable, fresh, QueryState, CursorControls, MetadataTable, type Page, type Mount, type Path, type Capabilities, type Status, type Versions } from "./kv-ui";
+const KvWorkbench = dynamic(() => import("@/components/secrets/kv-workbench"), { ssr: false, loading: () => <p role="status">Loading value and version workbench…</p> });
 export default function KvBrowser() {
   const session = useSession();
   const [mountCursors, setMountCursors] = useState<string[]>([]), [pathCursors, setPathCursors] = useState<string[]>([]);
@@ -55,10 +57,13 @@ function PathDetail({ id, heading, close }: { id: string; heading: MutableRefObj
   const permitted = capabilities.status !== 401 && capabilities.status !== 403;
   const path = permitted ? usable(pathQuery) : undefined, caps = usable(capabilities), state = permitted ? usable(status) : undefined, history = permitted ? usable(versions) : undefined;
   const canUpdate = session.canKvWrite && fresh(pathQuery) && fresh(capabilities) && caps?.revision === path?.revision && caps?.permissions.update;
+  const [workbenchOpen, setWorkbenchOpen] = useState(false), workbenchTrigger = useRef<HTMLButtonElement>(null);
+  const freshCapabilities = fresh(capabilities) && caps?.pathId === id && caps.revision === path?.revision ? caps : null;
   const focusHeading = useCallback((element: HTMLHeadingElement | null) => { heading.current = element; element?.focus(); }, [heading]);
   return <section className={surface}><div className="flex flex-wrap items-center gap-3"><h2 ref={focusHeading} tabIndex={-1} className="break-all font-semibold">KV path {path?.path ?? id}</h2><button className={button} onClick={close}>Close path</button></div>
     <QueryState query={pathQuery} label="path metadata" retry={pathQuery.refetch} /><QueryState query={capabilities} label="path capabilities" retry={capabilities.refetch} />
     {path && <><p className="break-all">Native target: {path.namespace}/{path.name} · metadata revision {path.revision} · retention {path.retention}</p>
+      <button ref={workbenchTrigger} className={button} disabled={!fresh(pathQuery) || !freshCapabilities} onClick={() => setWorkbenchOpen(true)}>Values and versions</button>
       <MetadataTable label="KV field mappings" rows={path.fields.map(item => ({ id: item.field, field: item.field, key: item.key }))} columns={[{ key: "field", label: "Logical field" }, { key: "key", label: "Exact native key" }]} />
       {session.canKvWrite && caps?.permissions.update && <RetentionForm path={path} editable={!!canUpdate} />}</>}
     {caps && <><p className="text-sm text-zinc-400">Allowed actions: {Object.entries(caps.permissions).filter(([, allowed]) => allowed).map(([action]) => action).join(", ") || "none"}.</p>
@@ -67,5 +72,6 @@ function PathDetail({ id, heading, close }: { id: string; heading: MutableRefObj
     <QueryState query={versions} label="version metadata" retry={versions.refetch} />{history && <><MetadataTable label="KV version metadata" rows={history.items.map(item => ({ id: String(item.version), version: item.version, createdAt: item.createdAt, tombstone: item.tombstone ? "Yes" : "No" }))} columns={[{ key: "version", label: "Version", sort: "number" }, { key: "createdAt", label: "Created" }, { key: "tombstone", label: "Tombstone" }]} />
       {!history.items.length && !versions.error && <p>No committed versions in this native snapshot.</p>}</>}
     <p className="text-sm text-zinc-400">This view shows metadata. Opening it does not reveal values or initialize a path.</p>
+    {workbenchOpen && path && <KvWorkbench path={path} capabilities={freshCapabilities} onClose={() => setWorkbenchOpen(false)} onMetadataRefresh={refetchKvMetadata} returnFocus={() => (workbenchTrigger.current?.isConnected ? workbenchTrigger.current : heading.current)?.focus()} />}
   </section>;
 }

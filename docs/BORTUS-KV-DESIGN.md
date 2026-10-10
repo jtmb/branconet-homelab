@@ -1,5 +1,9 @@
 # Native BORTUS KV engine implementation contract
 
+Combined workbench integration passed the recorded Node22/browser subset: the metadata path panel opens the lazy dialog explicitly, with the selected mapping and fresh path/revision capabilities. Private values remain inside the workbench; callbacks invalidate metadata only. All native request captures include pathRevision/head/resourceVersion. Local standalone Node24 proof does not replace combined Node22/backend acceptance.
+
+Client unknown status is distinct from unadopted or absent. Only a known native source enables adoption; initial absent/head-zero capture requires an actual not-found response. Unknown post-mutation/unavailable state pauses new actions until refresh. Prior operation metadata is cleared when a new native attempt starts. These corrections passed production-route TLS-verified loopback browser checks; wider transfer/lifecycle and image/live acceptance remains open.
+
 Status: native KV APIs locally qualified; full UI and external deployment acceptance in progress, 2026-10-10. Metadata migration, engineAdmin, mount/path/policy/identity endpoints and peer/infrastructure isolation now pass local Node 22 unit/lint/build/type checks. Disposable production HTTP and scoped/admin browser checks also passed. Human native versioning/adoption routes passed local production HTTP/TLS qualification. Automation/audit/capability routes passed local checks; Rotation APIs passed local qualification; KV UI and final-image/live acceptance remain pending. No KV rollout or adoption is authorized by this work-in-progress status. The accepted working scope is Vault-style KV management, with native Kubernetes Secrets authoritative for current and historical values. Dynamic issuers, PKI, transit and HashiCorp API compatibility require a separate selected backend and scope.
 
 ## Mounts, paths and grouped documents

@@ -29,7 +29,11 @@ let native: Awaited<ReturnType<typeof nativeTlsFixture>> | undefined;
 let delayedReveal = false;
 let valueRequests = 0;
 let failKvMounts = false;
+let failKvStatus = false;
+let delayKvStatus = false;
+let releaseKvStatus: (() => void) | undefined;
 const kvFixture = process.env.BORTUS_UI_KV_FIXTURE === "true";
+const guardedKvFixture = kvFixture && process.env.BORTUS_UI_KV_GUARDED_FIXTURE === "true";
 const fixtureMountId = "10000000-0000-4000-8000-000000000000", fixturePathId = "20000000-0000-4000-8000-000000000000";
 try {
   const fixture = await fakeKubectl(dir);
@@ -72,7 +76,7 @@ try {
   const clean = Object.fromEntries(["SystemRoot", "WINDIR", "COMSPEC", "PATH", "TEMP", "TMP", "USERPROFILE", "HOME", "SystemDrive", "APPDATA", "LOCALAPPDATA"].filter(key => process.env[key] !== undefined).map(key => [key, process.env[key]]));
   const signing = randomBytes(48).toString("hex");
   const env = { ...clean, ...fixture.env, DATABASE_URL: database, BOTRUS_JWT_SECRET: signing, BOTRUS_SECRETS_KEY: randomBytes(32).toString("hex"), KUBECONFIG: native?.config ?? kubeconfig,
-    BORTUS_SECRET_NAMESPACES: "apps", BORTUS_DISABLE_PROVISIONING: "true", NODE_ENV: "production" as const, HOSTNAME: "127.0.0.1", PORT: String(await port()) };
+    BORTUS_SECRET_NAMESPACES: "apps", BORTUS_DISABLE_PROVISIONING: "true", BORTUS_KV_GUARDED_ADOPTION: guardedKvFixture ? "true" : "false", NODE_ENV: "production" as const, HOSTNAME: "127.0.0.1", PORT: String(await port()) };
   execFileSync(process.execPath, [path.resolve("node_modules/prisma/build/index.js"), "migrate", "deploy"], { env, stdio: "pipe" });
   db = new PrismaClient({ datasources: { db: { url: database } } });
   const writer = await db.user.create({ data: { username: "fixture_writer", passwordHash: "unused", role: "write", engineAdmin: true } });
@@ -84,7 +88,8 @@ try {
     for (let index = 0; index < 205; index++) {
       const count = [3, 2, 7, 12][index] ?? 1, name = "kv-fixture-" + String(index).padStart(4, "0");
       const fields = Array.from({ length: count }, (_, key) => ({ field: index === 0 ? ["__proto__", "constructor", "toString"][key] : "field_" + key, key: index === 0 ? ["__proto__", "constructor", "toString"][key] : "original_under_scored_key_" + key }));
-      native.seed("apps", name, Object.fromEntries(fields.map(item => [item.key, Buffer.from("fixture KV private value").toString("base64")])));
+      native.seed("apps", name, Object.fromEntries([...fields.map((item, key) => [item.key, index === 0 && key === 1 ? Buffer.from([0, 255]).toString("base64") : index === 0 && key === 2 ? "" : Buffer.from("fixture KV private value").toString("base64")]), ...(index === 0 ? [["unrelated_native_key", Buffer.from("fixture unrelated native value").toString("base64")]] : [])]),
+        index === 0 ? { type: "Opaque", metadata: { labels: { fixture: "retained" }, annotations: { "fixture-private": "fixture annotation value" } } } : {});
       await db.kvPath.create({ data: { id: "20000000-0000-4000-8000-" + String(index).padStart(12, "0"), mountId: fixtureMountId,
         path: index === 0 ? "services/api" : index === 1 ? "services/apiculture" : index === 4 ? "services/api/denied" : "services/service-" + String(index).padStart(4, "0"), namespace: "apps", name, retention: [2, 7, 12][index] ?? 20,
         fields: { create: fields.map(item => ({ ...item, namespace: "apps", name })) } } });
@@ -96,6 +101,8 @@ try {
       { principal: "user:" + scoped.id, mountId: fixtureMountId, prefix: "services/api", effect: "allow", actions: JSON.stringify(["list", "read", "update", "create"]) },
       { principal: "user:" + scoped.id, mountId: fixtureMountId, prefix: "services/api/denied", effect: "deny", actions: JSON.stringify(actions) },
     ] });
+    if (guardedKvFixture) await db.kvPath.create({ data: { id: "30000000-0000-4000-8000-000000000000", mountId: fixtureMountId, path: "services/new-empty", namespace: "apps", name: "kv-ui-new-empty", retention: 20,
+      fields: { create: [{ field: "empty", key: "empty", namespace: "apps", name: "kv-ui-new-empty" }] } } });
   }
   await db.user.createMany({ data: Array.from({ length: 205 }, (_, index) => ({ username: "large_user_" + index, passwordHash: "unused", role: "readonly" })) });
   await db.variable.createMany({ data: Array.from({ length: 205 }, (_, index) => ({ key: "fixture_config_" + index, value: "nonsecret " + index, category: "fixture", encrypted: false })) });
@@ -125,7 +132,7 @@ try {
       const url = new URL(request.url ?? "/", origin);
       if (url.pathname === "/__fixture/status") {
         response.setHeader("Content-Type", "application/json");
-        response.end(JSON.stringify({ requests: Object.fromEntries(requestCounts), activeStreams, valueRequests, nativeObjects: native?.objects.size ?? 0 }));
+        response.end(JSON.stringify({ requests: Object.fromEntries(requestCounts), activeStreams, valueRequests, nativeObjects: native?.objects.size ?? 0, pendingKvStatus: !!releaseKvStatus }));
         return;
       }
       if (native && url.pathname === "/__fixture/native-status") {
@@ -138,15 +145,31 @@ try {
           metadataPreserved: object?.metadata?.labels?.fixture === "retained" && object.metadata.annotations?.["fixture-private"] === "fixture annotation value" }));
         return;
       }
+      if (kvFixture && native && url.pathname === "/__fixture/kv-status") {
+        const object = native.objects.get("apps/kv-fixture-0000"), state = JSON.parse(object?.metadata?.annotations?.["bortus.io/kv-state"] ?? '{"paths":[]}');
+        const ownValues = new Map(Object.entries(object?.data ?? {}));
+        const selected = state.paths.find((item: { id: string }) => item.id === fixturePathId);
+        response.setHeader("Content-Type", "application/json");
+        response.end(JSON.stringify({ head: selected?.head ?? 0, tombstone: selected?.tombstone ?? false, committedVersions: selected?.versions.length ?? 0,
+          binaryOriginalPreserved: ownValues.get("constructor") === Buffer.from([0, 255]).toString("base64"), emptyOriginalPreserved: ownValues.get("toString") === "",
+          unrelatedPreserved: object?.data?.unrelated_native_key === Buffer.from("fixture unrelated native value").toString("base64"),
+          metadataPreserved: object?.metadata?.labels?.fixture === "retained" && object.metadata.annotations?.["fixture-private"] === "fixture annotation value", typePreserved: object?.type === "Opaque" }));
+        return;
+      }
       if (native && url.pathname === "/__fixture/native-control" && request.method === "POST") {
         let raw = ""; for await (const chunk of request) { raw += chunk; if (raw.length > 1024) { response.writeHead(413); response.end(); return; } }
         const action = JSON.parse(raw).action;
         if (action === "delay-reveal") delayedReveal = true;
         else if (action === "withdraw-admin" || action === "restore-admin") await db!.user.update({ where: { id: writer.id }, data: { engineAdmin: action === "restore-admin" } });
         else if (kvFixture && (action === "fail-kv-mounts" || action === "restore-kv-mounts")) failKvMounts = action === "fail-kv-mounts";
+        else if (kvFixture && (action === "fail-kv-status" || action === "restore-kv-status")) failKvStatus = action === "fail-kv-status";
+        else if (kvFixture && action === "delay-kv-status") delayKvStatus = true;
+        else if (kvFixture && action === "release-kv-status") releaseKvStatus?.();
         else if (kvFixture && action === "change-kv-retention") await db!.kvPath.update({ where: { id: fixturePathId }, data: { retention: 5, revision: { increment: 1 } } });
         else if (kvFixture && action === "change-kv-mount") await db!.kvMount.update({ where: { id: fixtureMountId }, data: { revision: { increment: 1 } } });
         else if (kvFixture && action === "deny-kv-update") await db!.kvPolicy.create({ data: { principal: "user:" + scoped.id, mountId: fixtureMountId, prefix: "services/api", effect: "deny", actions: JSON.stringify(["update"]) } });
+        else if (kvFixture && action === "deny-kv-read") await db!.kvPolicy.create({ data: { principal: "user:" + scoped.id, mountId: fixtureMountId, prefix: "services/api", effect: "deny", actions: JSON.stringify(["read"]) } });
+        else if (kvFixture && action === "change-kv-native-revision") { const object = native.objects.get("apps/kv-fixture-0000")!; object.metadata!.resourceVersion = "fixture-external-" + Date.now(); }
         else if (action === "external-change") { const object = native.objects.get("apps/editor-fixture")!; native.seed("apps", "editor-fixture", object.data ?? {}, object); }
         else { response.writeHead(400); response.end(); return; }
         response.writeHead(204); response.end(); return;
@@ -155,6 +178,7 @@ try {
       requestCounts.set(requestKey, (requestCounts.get(requestKey) ?? 0) + 1);
       if (request.method === "GET" && (url.pathname === "/api/secrets" && url.searchParams.has("key") || /^\/api\/kv\/paths\/[^/]+\/(?:versions\/[^/]+\/)?data$/.test(url.pathname))) valueRequests++;
       if (kvFixture && failKvMounts && request.method === "GET" && url.pathname === "/api/kv/mounts") { response.writeHead(503, { "Content-Type": "application/json" }); response.end(JSON.stringify({ error: "Fixture mount metadata unavailable" })); return; }
+      if (kvFixture && failKvStatus && request.method === "GET" && url.pathname === `/api/kv/paths/${fixturePathId}/status`) { response.writeHead(503, { "Content-Type": "application/json" }); response.end(JSON.stringify({ error: "Fixture native status unavailable" })); return; }
       if (url.pathname.startsWith("/_next/static/")) {
         try {
           const staticRoot = path.resolve(root, ".next/static");
@@ -173,7 +197,9 @@ try {
           result.once("end", end); result.once("close", end); response.once("close", end);
         }
         response.writeHead(result.statusCode ?? 502, result.headers);
-        if (delayedReveal && request.method === "GET" && url.pathname === "/api/secrets" && url.searchParams.has("key")) {
+        if (kvFixture && delayKvStatus && request.method === "GET" && url.pathname === `/api/kv/paths/${fixturePathId}/status`) {
+          delayKvStatus = false; result.pause(); releaseKvStatus = () => { releaseKvStatus = undefined; if (!response.destroyed) result.pipe(response); else result.destroy(); };
+        } else if (delayedReveal && request.method === "GET" && url.pathname === "/api/secrets" && url.searchParams.has("key")) {
           delayedReveal = false; result.pause(); setTimeout(() => { if (!response.destroyed) result.pipe(response); else result.destroy(); }, 4000);
         } else result.pipe(response);
       });

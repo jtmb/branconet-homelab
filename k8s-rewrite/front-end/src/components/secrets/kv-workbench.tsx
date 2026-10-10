@@ -40,6 +40,7 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
   const [caps, setCaps] = useState<KvCapabilities | null>(null);
   const [capsAt, setCapsAt] = useState(0), [now, setNow] = useState(Date.now());
   const [status, setStatus] = useState<KvStatus>();
+  const [nativeAbsent, setNativeAbsent] = useState(false);
   const [history, setHistory] = useState<History>(), [historyPage, setHistoryPage] = useState(0);
   const [view, setView] = useState<KvValues>();
   const [edit, setEdit] = useState<Edit>();
@@ -53,6 +54,7 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
   const [busy, setBusy] = useState(false), [message, setMessage] = useState("");
   const [operation, setOperation] = useState<{ id: string; outcome?: string }>();
   const fence = useRef(new ValueFence()), mounted = useRef(false), running = useRef(false);
+  const nativeEpoch = useRef(0);
   const heading = useRef<HTMLHeadingElement>(null), refreshButton = useRef<HTMLButtonElement>(null);
   const capabilityFresh = !!caps && now - capsAt < 15000 && caps.pathId === path.id && caps.revision === path.revision;
   const access = `${session.data?.username ?? ""}:${session.canKvWrite}:${capabilityFresh}:${JSON.stringify(caps?.permissions)}:${caps?.initializationAllowed}:${caps?.nativeMutationEnabled}`;
@@ -106,6 +108,7 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
     } catch (error) {
       if (!mounted.current || !ticket.current()) return;
       if (error instanceof WorkbenchFailure) {
+        if (url === `/api/kv/paths/${encodeURIComponent(path.id)}/status`) { setStatus(undefined); setNativeAbsent(error.status === 404); }
         if (error.status === 401 || error.status === 403) { clearSensitive(); setCaps(null); }
         else if (init.method && init.method !== "GET") { clearSensitive(); setStatus(undefined); refreshParent.current(); }
         setMessage(error.message);
@@ -115,17 +118,21 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
       clearTimeout(timeout); ticket.finish(); running.current = false;
       if (mounted.current) setBusy(false);
     }
-  }, [clearSensitive]);
+  }, [clearSensitive, path.id]);
   const endpoint = `/api/kv/paths/${encodeURIComponent(path.id)}`;
   const refresh = useCallback(() => {
-    void request<KvStatus>(endpoint + "/status", {}, result => { setStatus(result); refreshParent.current(); });
+    if (running.current) return;
+    nativeEpoch.current++;
+    setStatus(undefined); setNativeAbsent(false);
+    void request<KvStatus>(endpoint + "/status", {}, result => { setStatus(result); setNativeAbsent(false); refreshParent.current(); });
   }, [endpoint, request]);
   // Browsing reads only status/capability metadata. Never fetch adoption or values on mount.
   useEffect(() => {
     const controller = new AbortController(); let active = true;
+    const epoch = nativeEpoch.current;
     const timeout = setTimeout(() => controller.abort(), 20000);
-    void workbenchRequest<KvStatus>(endpoint + "/status", { signal: controller.signal }).then(result => { if (active) setStatus(result); })
-      .catch(error => { if (active) setMessage(error instanceof WorkbenchFailure ? error.message : "Native metadata unavailable. Refresh explicitly."); })
+    void workbenchRequest<KvStatus>(endpoint + "/status", { signal: controller.signal }).then(result => { if (active && epoch === nativeEpoch.current) { setStatus(result); setNativeAbsent(false); } })
+      .catch(error => { if (active && epoch === nativeEpoch.current) { setNativeAbsent(error instanceof WorkbenchFailure && error.status === 404); setMessage(error instanceof WorkbenchFailure ? error.message : "Native metadata unavailable. Refresh explicitly."); } })
       .finally(() => clearTimeout(timeout));
     return () => { active = false; controller.abort(); clearTimeout(timeout); };
   }, [endpoint]);
@@ -143,13 +150,15 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
     rememberFocus(); clearSensitive(); setConfirmation({ kind, version, capture: captureRevision(path, status) }); focusPanel();
   }
   function mutate(url: string, method: string, body: object) {
+    nativeEpoch.current++; setStatus(undefined); setNativeAbsent(false);
+    setOperation(undefined);
     void request<{ operationId: string; outcome: string; head: number }>(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }, result => {
-      clearSensitive(); setOperation({ id: result.operationId, outcome: result.outcome }); setStatus(undefined); setHistory(undefined);
+      clearSensitive(); setOperation({ id: result.operationId, outcome: result.outcome }); setStatus(undefined); setNativeAbsent(false); setHistory(undefined);
       setMessage(`Operation ${result.outcome}. Refresh metadata to inspect the new head.`); refreshParent.current(); returnToMetadata();
     });
   }
   function openEdit(create = false, replacement = false) {
-    if (!allowed(create ? "create" : "update", true) || !create && !replacement && !allowed("read") || create && !caps?.initializationAllowed || replacement && !status?.adopted || busy) return;
+    if (!allowed(create ? "create" : "update", true) || !create && !replacement && !allowed("read") || create && (!caps?.initializationAllowed || !status && !nativeAbsent) || replacement && !status?.adopted || busy) return;
     rememberFocus(); clearSensitive();
     if (replacement && status) {
       setEdit({ capture: captureRevision(path, status), original: [], drafts: replacementDrafts(path), create: false, replacement: true }); focusPanel(); return;
@@ -205,6 +214,8 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
       transfer.preview.plans.some(plan => plan.outcome !== "ready" || plan.requiresOverwrite && !transfer.overwrites.includes(plan.documentIndex))) return;
     const plans = transfer.preview.plans.map(plan => ({ documentIndex: plan.documentIndex, pathId: plan.pathId, revision: plan.revision,
       resourceVersion: plan.resourceVersion, expectedHead: plan.expectedHead, overwrite: transfer.overwrites.includes(plan.documentIndex) }));
+    setOperation(undefined);
+    nativeEpoch.current++; setStatus(undefined); setNativeAbsent(false);
     void request<ImportResult>("/api/kv/import", { method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ bundle: transfer.bundle, plans, confirmCredentials: true }) }, result => {
       clearSensitive(); setOutcomes(result.outcomes); setTransferPage(0); setStatus(undefined); setHistory(undefined);
@@ -229,14 +240,15 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
       {!capabilityFresh && <p className="text-sm text-amber-300">Checking fresh permissions. Value controls are paused.</p>}
       {!session.canKvWrite && <p className="text-sm text-zinc-400">Metadata only. Fresh write access and path policy are required for values.</p>}
       {status && <p className="break-words text-sm text-zinc-400">{status.adopted ? `Head ${status.head} · ${status.tombstone ? "soft-deleted" : "active"}` : "Registered; explicit adoption or initialization required"} · native revision {status.resourceVersion}</p>}
+      {!status && <p className="text-sm text-amber-300">{nativeAbsent ? "Native target absent in the latest metadata request. Explicit initialization requires fresh create permission." : "Native status unavailable. Refresh metadata before opening a new native action."}</p>}
       {capture && <p className="break-all rounded-lg border border-zinc-700 p-3 text-sm">Captured head {capture.expectedHead}, native revision {capture.resourceVersion}, path revision {capture.pathRevision}. {capturedMetadataChanged && "Metadata changed. Cancel and reopen the action."}</p>}
       {!panel && <>
         <div className="flex flex-wrap gap-2">
           {allowed("read") && status?.adopted && <button className={button} disabled={busy} onClick={() => reveal()}>Reveal current fields</button>}
           {allowed("update", true) && allowed("read") && status?.adopted && <button className={button} disabled={busy} onClick={() => openEdit()}>Edit grouped fields</button>}
           {allowed("update", true) && !allowed("read") && status?.adopted && <button className={button} disabled={busy} onClick={() => openEdit(false, true)}>Replace complete document without reveal</button>}
-          {allowed("create", true) && caps?.initializationAllowed && !status?.adopted && <>
-            <button className={button} disabled={busy} onClick={openAdoption}>Preview explicit adoption</button>
+          {allowed("create", true) && caps?.initializationAllowed && !status?.adopted && (status || nativeAbsent) && <>
+            {status && <button className={button} disabled={busy} onClick={openAdoption}>Preview explicit adoption</button>}
             <button className={button} disabled={busy} onClick={() => openEdit(true)}>Initialize new native document</button>
           </>}
           {allowed("delete", true) && status?.adopted && !status.tombstone && <button className={button} disabled={busy} onClick={() => startConfirmation("delete")}>Soft-delete document</button>}

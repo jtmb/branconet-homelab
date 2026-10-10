@@ -1,5 +1,13 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+Current integration: metadata/query/request contracts committed as 7a56ff4415772160d9698d3c8a52f5b48193dfb6; workbench b1a6cbee5b583d074ccf192edb6d5d35cbcd8d67 cherry-picked as 1e0030a. Its 120-unit/three-HTTP/21-browser checks are independent Windows Node24 evidence. Root now wires explicit lazy entry, fresh capabilities, metadata-only callbacks and focus return and qualifies the combined source under Node22. Administration/runtime maintenance and whole-server benchmark harness are separately assigned; do not duplicate their files.
+
+The corrected combined Node22 source passed 127 units, zero-warning lint, a fresh production build/typecheck and all three HTTP fixtures (31.01 s provisioning, 39.36 s existing, 43.39 s native; 43.79 s overall). Actual-native browser checks confirmed outage/unknown status hides adoption/initialization, an explicitly held old response cannot replace a newer revision, stale save adds no writes and clears the draft/prior operation, and a genuine 404 permits explicit empty initialization with absent/head-zero/path-revision capture. Close returns focus and the 390-pixel dialog fits. The preceding browser phase separately covered six heads through adoption/edit/no-read replacement/rollback/tombstone/restore with preservation and zero added no-read GETs. [Integrated evidence](implementation-evidence/kv-workbench-integrated.json) retains source hashes, intermediate failures and both phases. No production resources or guards changed; transfer/admin/final-image/live acceptance remains open.
+
+The first combined Node22 run passed 125 units and lint, then build failed on the new fixture's literal constructor/toString preservation comparison. Own-entry Map checks correct the typed fixture assertion. Shared cache admission is tightened around resolved route names so resource-prefix URL normalization cannot bypass private KV/key/job exclusions. Focused regressions and the corrected full run passed; the initial run remains a failed build attempt.
+
+The resolved-route follow-up decodes path segments and refuses malformed escapes. A focused admission-only check returned true for an encoded YAML route before correction; it did not fetch private output or mutate any resource. Encoded-private URL regressions and the final combined build now pass, separately from the preceding intermediate 127-unit run.
+
 Active goal, started 2026-10-10: implement A01–A22 from the [immutable audit baseline](BORTUS-AUDIT.md), validate the changes, and deliver the selected native Secrets engine. Branch: `codex/bortus-performance-ui-audit`; audit baseline `51e8cd6`, application baseline `c2e22ca`. Production rollout and separate chart delivery belong to the infrastructure executors.
 
 ## Acceptance ledger
@@ -26,11 +34,11 @@ Local implementation/acceptance and external Linux image/real-cluster acceptance
 | A04 argv | Structured args/name validation; fake CLI HTTP rejection and argv isolation | Local passed; real CLI/image pending |
 | A05 truthful commands | Fixed typed failures; failed scale/action/delete/apply and Flux cascade retain recovery metadata | Local passed; real CLI/image pending |
 | A06 availability | Explicit backend states; canonical resource lists/details distinguish failed reads from true empty/404 | Resource browser/HTTP passed; remaining legacy callers partial |
-| A07 cache cost | Independent resource coalescing/backoff/retention; pool/queue/deadline/item/output limits; fixed-fixture timing | Local passed; image CPU/RSS/real-cluster pending |
+| A07 cache cost | Independent coalescing/backoff/retention and bounded execution; frozen Linux comparison of audit 51e8cd6 versus checkpoint 1e0030a | Failed controlled warm-latency gate: 1k p50/p95 6.1/9.1 to 10.5/16.2 ms; concurrent warm p95 73.9 to 142.3 ms. Profile/fix/rerun required; cold call reduction alone is insufficient |
 | A08 capabilities | Shared matrix/scoped YAML CAS/logs/node actions/pod exec; writer/reader/PVC/node browser menus | Local passed; real ServiceAccount acceptance pending |
 | A09 deployment state | UID ownership; zero/paused/generation state; explicit integer scale form; zero→one actual argv | Local passed; real controller/Flux pending |
 | A10 pod filters | API and browser namespace/type/label filtering; correct empty result | Local passed |
-| A11 polling/refetch | Shared completion-based lifecycle, cancellation/backoff/generation tests; actual browser timer fix | Resource/session/provisioning/administration local passed; Flux migration pending |
+| A11 polling/refetch | Shared completion-based lifecycle, cancellation/backoff/generation tests; actual browser timer fix | Resource/session/provisioning/administration local passed; Flux and full KV lifecycle/hidden-page dedup migration pending |
 | A12 permissions/runtime | Fresh shared session in resources/topnav/shells/provisioning/admin; browser demotion erases user editor/password input | Local passed for migrated callers and flat Secrets; Flux/full KV UI pending |
 | A13 sorting | Numeric/quantity/date/count/unknown tests; resource/admin, native Secret and KV metadata browser sorting | Resources/admin/Secrets/KV metadata local passed; Flux/child tables pending |
 | A14 mobile | 56-pixel narrow rail, local table scrolling, dialog fit; resources/admin/Secrets/KV metadata at 320/390/768 CSS widths | Migrated screens local passed; Flux/actual zoom pending |
@@ -40,7 +48,7 @@ Local implementation/acceptance and external Linux image/real-cluster acceptance
 | A18 SSE | Backpressure/Unicode SQL slices, cursor resume, fresh account checks, terminal cleanup; bounded text tail and browser completion/unmount counts | Local unit/HTTP/browser passed; real runner/image pending |
 | A19 quality gates | Flat-config zero-warning lint; app-only Node22 CI; clean Node22 Windows install/build/type/49 unit/HTTP pass | Local passed; external pre-KV Linux/image passed; new KV image pending |
 | A20 dependencies | Compatible lockfile/PostCSS updates, unused highlighter removed; production audit 7→3 entries for one retained Prisma-config advisory | Local compatibility/reachability review passed; residual advisories/ESLint retirement documented; image/OS scan pending |
-| A21 lists/probes/forms | Resource/admin/native Secret/KV metadata tables bound DOM to 100 rows; exact-ID revisions/explicit form failures; bounded alias/probe caches and API pages | Partial; metadata/forms local passed; other detail tables and controlled full-server memory measurements pending |
+| A21 lists/probes/forms | Resource/admin/native Secret/KV metadata tables bound DOM to 100 rows; bounded alias/probe caches and API pages | Partial; controlled checkpoint peak container memory 365 to 285 MiB, but native metadata 1k/10k latency 72/246 to 926/7877 ms and 10k Pod capacity fails both 2-MiB limits. Bounded concurrency/adaptation fixes and final candidate rerun required |
 | A22 lazy code | Actions/YAML/log/terminal deferral; observed scripts and offline gzip/Brotli; build estimates | Resource local measurements passed; provisioning/CPU/LCP/fixed mobile performance pending |
 
 ## Reversible stages and evidence
@@ -156,4 +164,4 @@ Legacy administration APIs passed local unit and production HTTP/TLS qualificati
 
 ## Standalone KV workbench
 
-The isolated [KV workbench](BORTUS-KV-WORKBENCH.md) implements the missing value/version/transfer forms in an exclusive component/helper with seven new regression tests. Local 120-test, zero-warning lint, production build/typecheck and all three production HTTP fixtures passed. Standalone browser evidence verifies synthetic adoption/CAS/conflict/binary/empty/history/restore/import/export, confirmed zero-read complete replacement, stale/withdrawn write prevention and confidential-state lifecycle at 320/390/768 pixels. Its selection wiring, the owner's human pathRevision schema fix and final combined image/live acceptance remain outstanding; no production state changed.
+The isolated [KV workbench](BORTUS-KV-WORKBENCH.md) adds value/version/transfer forms with seven helper regressions. Its original Node24 120-test and synthetic standalone browser evidence remain distinct. Root selection wiring and human pathRevision support now pass combined Node22 127-test/build/HTTP and real production-route loopback browser checks above. Integrated transfer/reconcile/history paging, wider lifecycle/accessibility, administration and final image/recovery/live acceptance remain outstanding; no production state changed.

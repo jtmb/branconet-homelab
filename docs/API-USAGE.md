@@ -1,5 +1,13 @@
 # BORTUS API usage
 
+Combined workbench integration passed its recorded Node22 unit/build/HTTP and native-browser subset after metadata commit 7a56ff4 and cherry-pick 1e0030a (source b1a6cb). The explicit Values and versions button opens an on-demand selected-path dialog, seeds fresh pathId/revision capabilities and invalidates metadata only after actions. Optional pathRevision support is now present. Browsing remains metadata-only; no value is passed through the parent cache.
+
+The workbench distinguishes missing native status (explicit 404) from unavailable/unknown status. Initialization may capture resourceVersion absent/head zero only after the not-found response; unknown post-mutation/error state requires refresh rather than guessed prerequisites. Adoption requires a known native source. Server CAS/adoption rules are unchanged.
+
+Shared browser metadata queries apply allowlists to the resolved route and reject normalized alternate spellings that resolve to private value/job/KV-action endpoints. KV metadata uses explicit named paths/filters. These client cache rules do not change API permission or response contracts; server authorization remains authoritative.
+
+Private-route matching decodes URL path segments once and rejects malformed encoding. Percent-encoded private suffixes are excluded before caching; KV metadata additionally requires explicit unnormalized spelling. No private endpoint was requested in the admission regression.
+
 Flux metadata projections passed local unit/build/HTTP qualification: existing unsafe URLs return an empty URL field, arbitrary annotations/managed fields/value bodies are excluded, readiness uses fixed Ready/Not Ready/Unknown states, and raw condition/event messages are withheld. Stored/native source specs and their authentication references remain intact. Conditions expose bounded allowlisted type/status and fixed classifications.
 
 Flux repository creation now validates URLs as public metadata before persistence/native/CLI side effects. Use credential-free HTTPS/SSH (including supported SSH SCP spelling); embedded HTTPS userinfo, SSH passwords, query/fragment authentication, HTTP/other schemes and control characters return a fixed 400 without echoing the URL. Submit private auth separately; native auth Secret collisions remain refusals. All 89 unit tests, lint, fresh production build/typecheck and both production HTTP fixtures passed; see implementation-evidence/flux-confidentiality.json.

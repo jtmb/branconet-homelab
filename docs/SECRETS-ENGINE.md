@@ -1,5 +1,15 @@
 # BORTUS Secrets Engine
 
+The isolated value workbench is now wired behind Values and versions in the selected KV metadata panel. It loads only on explicit entry, receives the exact mapping and fresh capabilities, owns ephemeral private state and returns focus to its entry control. Combined Node22/native/browser qualification passed the recorded integrated subset; standalone Node24 results remain separately labelled. See implementation-evidence/kv-workbench-integrated.json for source hashes and limits.
+
+Unknown native status never offers adoption/initialization as though the target were unadopted. The workbench requires known status or an explicit not-found response before opening initialization, and a known source for adoption; post-mutation state requires refresh. Starting a new native attempt clears the prior operation label. The correction follows an actual loopback browser finding and passed corrected-source outage, stale-save and explicit empty-initialization checks.
+
+A new native attempt also clears status/absence proof. Metadata generations fence delayed initial status responses after a newer explicit refresh or mutation, so stale unadopted/absent controls cannot return. Failed or timed-out attempts require fresh metadata before another action.
+
+Shared metadata query admission now checks the browser-resolved route before applying collection allowlists. Normalized alternate spellings through resource prefixes cannot admit KV values/operation resolution, flat key values or job output. KV metadata paths must use their explicit spelling. Focused privacy regressions passed; private workbench requests remain outside this cache.
+
+Resolved-route checks decode percent-encoded path segments before private-route exclusion and reject malformed escapes. A focused boolean admission check reproduced an encoded YAML spelling being accepted before this follow-up; no private endpoint request or data release was performed. Encoded private routes are included in the final regression set.
+
 Kubernetes native Secrets are the authoritative value store. BORTUS uses a TLS-verified Kubernetes client; SQLite stores identities, nonsecret configuration and explicit `SecretReference` metadata. Legacy sensitive DB rows are ignored, never pushed at startup/CRUD and never used as outage fallback.
 
 The [native KV design](BORTUS-KV-DESIGN.md) specifies grouped paths, immutable native history, policies/automation and import/export/rotation. Metadata registration, policies and identity foundations are implemented on the local branch; human native version/adoption/value/recovery routes passed local production HTTP/TLS qualification. Automation passed local API checks; Rotation APIs passed local qualification; KV UI and final-image/live acceptance remain pending. Public Secret projections whitelist named fields and exclude arbitrary annotations/managedFields, including value-bearing last-applied configurations; canonical writes still preserve that unrelated native metadata.
