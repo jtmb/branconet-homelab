@@ -99,14 +99,20 @@ export default function GitRepoDetailPage() {
         <div className="flex items-center gap-4 text-xs text-zinc-500 mb-6 flex-wrap">
           <span>Namespace: <span className="text-zinc-300 font-mono">{detail.namespace}</span></span>
           <span>Age: <span className="text-zinc-300">{detail.age || "—"}</span></span>
-          <a href={detail.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 transition-colors font-mono truncate max-w-[400px]">
-            {detail.url} <ExternalLink className="w-3 h-3 shrink-0" />
-          </a>
+          {detail.url.startsWith("https://") ? (
+            <a href={detail.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-indigo-400 hover:text-indigo-300 transition-colors font-mono truncate max-w-[400px]">
+              {detail.url} <ExternalLink className="w-3 h-3 shrink-0" />
+            </a>
+          ) : (
+            <span className="font-mono truncate max-w-[400px]">{detail.url || "Repository URL withheld"}</span>
+          )}
           <span>Branch: <span className="text-zinc-300 font-mono">{detail.branch}</span></span>
           {detail.path !== "./" && (
             <span>Path: <span className="text-zinc-300 font-mono">{detail.path}</span></span>
           )}
         </div>
+
+        <p className="text-xs text-zinc-500 mb-4">Controller messages and annotations are withheld because they may contain credentials.</p>
 
         {/* Labels */}
         {detail.labels.length > 0 && (

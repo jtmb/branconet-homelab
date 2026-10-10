@@ -1,4 +1,4 @@
-import { kubectlJSON, kubectlExec, validateNamespace, validateResourceName, KubernetesCommandError } from "./k8s";
+import { kubectlJSON as rawKubectlJSON, kubectlExec, validateNamespace, validateResourceName, KubernetesCommandError } from "./k8s";
 import { createSecretTransport, secretNamespaces } from "./secret-client";
 import { SecretError, secretFailure, validateTarget } from "./cluster-secrets";
 import prisma from "./db";
@@ -7,6 +7,12 @@ import { writeFile, unlink } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
 import { randomUUID } from "crypto";
+import { repositoryUrl, publicRepositoryUrl, fluxReadiness, publicFluxConditions } from "./flux-input";
+import { publicClusterMetadata } from "./cluster-metadata";
+
+async function kubectlJSON(args: readonly string[], timeout = 15000): Promise<any> {
+  return publicClusterMetadata(await rawKubectlJSON(args, timeout));
+}
 
 const FLUX_NAMESPACE = "flux-system";
 
@@ -87,7 +93,7 @@ export async function createGitRepository(
     metadata: { name: validateResourceName(name), namespace: FLUX_NAMESPACE },
     spec: {
       interval,
-      url,
+      url: repositoryUrl(url),
       ref: { branch },
     },
   };
@@ -212,12 +218,12 @@ export async function getFluxStatus(): Promise<FluxRepoStatus[]> {
     const sourceReady = readyCond?.status === "True";
     const ksReady = ksReadyCond?.status === "True";
     const combinedReady = sourceReady && (ks ? ksReady : true); // if no KS exists, only care about source
-    const combinedMessage = ksReadyCond?.message || readyCond?.message || (combinedReady ? "Ready" : "Not Ready");
+    const combinedMessage = fluxReadiness(readyCond, ...(ks ? [ksReadyCond] : []));
 
     return {
       name,
       namespace: item.metadata?.namespace || FLUX_NAMESPACE,
-      url: item.spec?.url || "",
+      url: publicRepositoryUrl(item.spec?.url),
       branch: item.spec?.ref?.branch || "main",
       path: ks?.spec?.path || "./",
       ready: combinedReady,
@@ -335,7 +341,7 @@ export async function getFluxHierarchy(): Promise<FluxTreeNode[]> {
         path: ks.spec?.path || "./",
         namespace: ks.metadata?.namespace || FLUX_NAMESPACE,
         ready: ksReady,
-        status: ksReadyCond?.message || (ksReady ? "Ready" : "Not Ready"),
+        status: fluxReadiness(ksReadyCond),
         lastSync: ks.status?.lastHandledReconcileAt || null,
         revision: ks.status?.lastAppliedRevision || null,
         children: subChildren,
@@ -354,12 +360,12 @@ export async function getFluxHierarchy(): Promise<FluxTreeNode[]> {
       id: dbRepo?.id || `gr-${gr.metadata?.uid || name}`,
       name,
       kind: "GitRepository",
-      url: gr.spec?.url || "",
+      url: publicRepositoryUrl(gr.spec?.url),
       branch: gr.spec?.ref?.branch || "main",
       path: repoKS[0]?.spec?.path || "./",
       namespace: gr.metadata?.namespace || FLUX_NAMESPACE,
       ready: sourceReady,
-      status: readyCond?.message || (sourceReady ? "Ready" : "Not Ready"),
+      status: fluxReadiness(readyCond),
       lastSync: gr.status?.lastHandledReconcileAt || null,
       revision: gr.status?.artifact?.revision || null,
       authMethod: dbRepo?.authMethod || "none",
@@ -427,7 +433,7 @@ function buildKustomizationNode(ks: any): FluxTreeNode {
     path: ks.spec?.path || "./",
     namespace: ks.metadata?.namespace || FLUX_NAMESPACE,
     ready,
-    status: readyCond?.message || (ready ? "Ready" : "Not Ready"),
+    status: fluxReadiness(readyCond),
     lastSync: ks.status?.lastHandledReconcileAt || null,
     revision: ks.status?.lastAppliedRevision || null,
     children: [],
@@ -447,7 +453,7 @@ function buildHelmReleaseNode(hr: any): FluxTreeNode {
     path: hr.spec?.chart?.spec?.chart || "",
     namespace: hr.metadata?.namespace || "default",
     ready,
-    status: readyCond?.message || (ready ? "Ready" : "Not Ready"),
+    status: fluxReadiness(readyCond),
     lastSync: hr.status?.lastHandledReconcileAt || null,
     revision: hr.status?.lastAppliedRevision || null,
     children: [],
@@ -491,6 +497,7 @@ export async function listRepos(): Promise<GitRepoRecord[]> {
     const flux = fluxStatuses.find((f) => f.name === repo.name);
     return {
       ...repo,
+      url: publicRepositoryUrl(repo.url),
       authData: undefined, // Never expose auth data
       createdAt: repo.createdAt.toISOString(),
       updatedAt: repo.updatedAt.toISOString(),
@@ -514,6 +521,7 @@ export async function addRepo(data: {
   authData?: string; // raw credential written only to native Secret
 }): Promise<{ success: boolean; repo?: GitRepoRecord; error?: string }> {
   validateResourceName(data.name);
+  const url = repositoryUrl(data.url);
   const branch = data.branch || "main";
   const path = data.path || "./";
   const authMethod = data.authMethod || "none";
@@ -528,7 +536,7 @@ export async function addRepo(data: {
     repo = await prisma.gitRepo.create({
       data: {
         name: data.name,
-        url: data.url,
+        url,
         branch,
         path,
         namespace: "",
@@ -556,7 +564,7 @@ export async function addRepo(data: {
   }
 
   // 4. Create GitRepository CRD
-  const grResult = await createGitRepository(data.name, data.url, branch, path, secretRef);
+  const grResult = await createGitRepository(data.name, url, branch, path, secretRef);
   if (!grResult.success) {
     return { success: false, error: `Failed to create GitRepository: ${grResult.error}` };
   }
@@ -889,12 +897,7 @@ export async function getGitRepoDetail(name: string): Promise<GitRepoDetail | nu
   const repoRaw = await kubectlJSON(["get", "gitrepository", (validateResourceName(name)), "-n", (FLUX_NAMESPACE), "-o", "json"]);
   if (!repoRaw) return null;
 
-  const conditions = (repoRaw.status?.conditions || []).map((c: any) => ({
-    type: c.type || "",
-    status: c.status || "Unknown",
-    reason: c.reason || "-",
-    message: c.message || "-",
-  }));
+  const conditions = publicFluxConditions(repoRaw.status?.conditions);
   const readyCond = conditions.find((c: any) => c.type === "Ready");
   const ready = readyCond?.status === "True";
 
@@ -919,12 +922,7 @@ export async function getGitRepoDetail(name: string): Promise<GitRepoDetail | nu
     if (ks.spec?.sourceRef?.name !== name) continue;
 
     const ksName = ks.metadata?.name || "unknown";
-    const ksConditions = (ks.status?.conditions || []).map((c: any) => ({
-      type: c.type || "",
-      status: c.status || "Unknown",
-      reason: c.reason || "-",
-      message: c.message || "-",
-    }));
+    const ksConditions = publicFluxConditions(ks.status?.conditions);
     const ksReadyCond = ksConditions.find((c: any) => c.type === "Ready");
     const ksReady = ksReadyCond?.status === "True";
 
@@ -948,7 +946,7 @@ export async function getGitRepoDetail(name: string): Promise<GitRepoDetail | nu
       name: ksName,
       path: ks.spec?.path || "./",
       ready: ksReady,
-      status: ksReadyCond?.message || (ksReady ? "Ready" : "Not Ready"),
+      status: fluxReadiness(ksReadyCond),
       lastSync: ks.status?.lastHandledReconcileAt || null,
       resourceCounts,
       totalResources: bundleTotal,
@@ -961,11 +959,11 @@ export async function getGitRepoDetail(name: string): Promise<GitRepoDetail | nu
   return {
     name,
     namespace: repoRaw.metadata?.namespace || FLUX_NAMESPACE,
-    url: repoRaw.spec?.url || "",
+    url: publicRepositoryUrl(repoRaw.spec?.url),
     branch: repoRaw.spec?.ref?.branch || "main",
     path: bundles[0]?.path || "./",
     ready,
-    status: readyCond?.message || (ready ? "Ready" : "Not Ready"),
+    status: fluxReadiness(readyCond),
     lastSync: repoRaw.status?.lastHandledReconcileAt || null,
     revision: repoRaw.status?.artifact?.revision || null,
     suspended: repoRaw.spec?.suspend === true,
@@ -1000,12 +998,7 @@ export async function getKustomizationDetail(name: string): Promise<Kustomizatio
   const ksRaw = await kubectlJSON(["get", "kustomization", (validateResourceName(name)), "-n", (FLUX_NAMESPACE), "-o", "json"]);
   if (!ksRaw) return null;
 
-  const conditions = (ksRaw.status?.conditions || []).map((c: any) => ({
-    type: c.type || "",
-    status: c.status || "Unknown",
-    reason: c.reason || "-",
-    message: c.message || "-",
-  }));
+  const conditions = publicFluxConditions(ksRaw.status?.conditions);
   const readyCond = conditions.find((c: any) => c.type === "Ready");
   const ready = readyCond?.status === "True";
 
@@ -1038,7 +1031,7 @@ export async function getKustomizationDetail(name: string): Promise<Kustomizatio
       name: ksRaw.spec?.sourceRef?.name || "unknown",
     },
     ready,
-    status: readyCond?.message || (ready ? "Ready" : "Not Ready"),
+    status: fluxReadiness(readyCond),
     lastSync: ksRaw.status?.lastHandledReconcileAt || null,
     revision: ksRaw.status?.lastAppliedRevision || null,
     suspended: ksRaw.spec?.suspend === true,
@@ -1065,18 +1058,18 @@ async function fetchFluxEvents(
   for (const line of lines) {
     const parts = line.trim().split(/\s{2,}/);
     if (parts.length >= 5) {
-      const type = parts[1] || "Normal";
-      const reason = parts[2] || "-";
-      const now = new Date();
-      const lastTimestamp = parts[0] || "";
-      let age = "";
+      const type = ["Normal", "Warning"].includes(parts[1]) ? parts[1] : "Unknown";
+      const reason = "Controller event";
+      let lastTimestamp = "";
+      let age = "Unknown";
       try {
-        const ts = new Date(lastTimestamp);
+        const ts = new Date(parts[0]);
         if (!isNaN(ts.getTime())) {
-          age = formatAge(now.getTime() - ts.getTime());
+          lastTimestamp = ts.toISOString();
+          age = formatAge(Date.now() - ts.getTime());
         }
-      } catch { age = lastTimestamp; }
-      const message = parts.slice(4).join(" ") || parts[3] || "";
+      } catch { /* Invalid producer timestamps are withheld. */ }
+      const message = "Controller output withheld";
       events.push({ type, reason, message, lastTimestamp, age });
     }
   }

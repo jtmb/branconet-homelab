@@ -1,5 +1,9 @@
 # BORTUS API usage
 
+Flux metadata projections passed local unit/build/HTTP qualification: existing unsafe URLs return an empty URL field, arbitrary annotations/managed fields/value bodies are excluded, readiness uses fixed Ready/Not Ready/Unknown states, and raw condition/event messages are withheld. Stored/native source specs and their authentication references remain intact. Conditions expose bounded allowlisted type/status and fixed classifications.
+
+Flux repository creation now validates URLs as public metadata before persistence/native/CLI side effects. Use credential-free HTTPS/SSH (including supported SSH SCP spelling); embedded HTTPS userinfo, SSH passwords, query/fragment authentication, HTTP/other schemes and control characters return a fixed 400 without echoing the URL. Submit private auth separately; native auth Secret collisions remain refusals. All 89 unit tests, lint, fresh production build/typecheck and both production HTTP fixtures passed; see implementation-evidence/flux-confidentiality.json.
+
 Development base URL: `http://localhost:4000`. Use the configured TLS ingress in production.
 
 ## Authentication

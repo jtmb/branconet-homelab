@@ -330,6 +330,20 @@ test(
       if (process.platform === "win32") assert.equal(sessionCapabilities.capabilities.operatorShell, false);
       const invalidYaml = await request("/api/cluster/namespaces/apps/yaml", "PUT", { yaml: "apiVersion: v1\nkind: Namespace\nmetadata:\n  name: apps\n" }, writer);
       assert.equal(invalidYaml.status, 428);
+      const privateUrlMarker = "synthetic-private-repository-url";
+      const beforePrivateUrls = (await fixture.calls()).length;
+      for (const url of [`https://${privateUrlMarker}@example.invalid/repo.git`, `https://example.invalid/repo.git?token=${privateUrlMarker}`, `ssh://git:${privateUrlMarker}@example.invalid/repo.git`]) {
+        const rejected = await request("/api/flux/repos", "POST", { name: "rejected-private-url", url }, writer);
+        assert.equal(rejected.status, 400); assert(!(await rejected.text()).includes(privateUrlMarker));
+      }
+      assert.equal((await fixture.calls()).length, beforePrivateUrls);
+      assert.equal(await db.gitRepo.count({ where: { name: "rejected-private-url" } }), 0);
+      const olderUrl = `https://${privateUrlMarker}@example.invalid/repo.git`;
+      const olderRepo = await db.gitRepo.create({ data: { name: "legacy-private-url", url: olderUrl, authData: privateUrlMarker } });
+      const olderProjection = await request("/api/flux/repos", "GET", undefined, reader);
+      assert.equal(olderProjection.status, 200); assert(!(await olderProjection.text()).includes(privateUrlMarker));
+      assert.equal((await db.gitRepo.findUniqueOrThrow({ where: { id: olderRepo.id } })).url, olderUrl);
+      await db.gitRepo.delete({ where: { id: olderRepo.id } });
       const fluxCreate = await request("/api/flux/repos", "POST", { name: "failed-source", url: "https://example.invalid/repository.git" }, writer);
       assert.equal(fluxCreate.status, 502);
       assert.ok(!(await fluxCreate.text()).includes("private-command"));
