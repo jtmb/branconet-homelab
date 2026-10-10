@@ -15,19 +15,35 @@ export interface SecretTarget {
 }
 export const SECRET_LIST_MAX_ITEMS = 10000;
 export const SECRET_LIST_MAX_BYTES = 32 * 1024 * 1024;
+export const SECRET_LIST_MAX_CONCURRENCY = 4;
 export class SecretListBudget {
   items = 0;
   bytes = 0;
+  private failure?: SecretError;
+  private cancellation = new AbortController();
+  readonly signal = this.cancellation.signal;
   constructor(readonly deadline = Date.now() + 15000) {}
-  check() { if (Date.now() >= this.deadline) throw new SecretError(503, "Kubernetes Secret list timed out"); }
+  fail(error: unknown) {
+    this.failure ??= secretFailure(error);
+    this.cancellation.abort(this.failure);
+  }
+  check() {
+    if (!this.failure && Date.now() >= this.deadline) this.fail(new SecretError(503, "Kubernetes Secret list timed out"));
+    if (this.failure) throw this.failure;
+  }
   remainingBytes() { this.check(); return SECRET_LIST_MAX_BYTES - this.bytes; }
   consumeBytes(bytes: number) {
-    this.check(); this.bytes += bytes;
-    if (!Number.isSafeInteger(bytes) || bytes < 0 || this.bytes > SECRET_LIST_MAX_BYTES) throw new SecretError(503, "Kubernetes Secret list exceeds the aggregate byte limit");
+    if (!Number.isSafeInteger(bytes) || bytes < 0) this.fail(new SecretError(503, "Kubernetes Secret list exceeds the aggregate byte limit"));
+    else this.bytes += bytes; // Include delivered late chunks after cancellation; never buffer them.
+    if (this.bytes > SECRET_LIST_MAX_BYTES) this.fail(new SecretError(503, "Kubernetes Secret list exceeds the aggregate byte limit"));
+    this.check();
   }
   consumeItems(count: number) {
-    this.check(); this.items += count;
-    if (!Number.isSafeInteger(count) || count < 0 || this.items > SECRET_LIST_MAX_ITEMS) throw new SecretError(503, "Kubernetes Secret list exceeds the aggregate item limit");
+    this.check();
+    if (!Number.isSafeInteger(count) || count < 0) this.fail(new SecretError(503, "Kubernetes Secret list exceeds the aggregate item limit"));
+    else this.items += count;
+    if (this.items > SECRET_LIST_MAX_ITEMS) this.fail(new SecretError(503, "Kubernetes Secret list exceeds the aggregate item limit"));
+    this.check();
   }
 }
 export type SecretListOptions = { budget?: SecretListBudget; visit?: (secret: V1Secret) => void };
@@ -104,6 +120,7 @@ export class SecretStore {
     private transport: SecretTransport,
     private namespaces: string[],
     private guard?: FlatSecretGuard,
+    private listConcurrency = 1,
   ) {}
   private check(target: SecretTarget) {
     validateTarget(target);
@@ -118,17 +135,26 @@ export class SecretStore {
     for (const scope of scopes)
       this.check({ namespace: scope, name: "scope", key: "scope" });
     try {
-      const budget = new SecretListBudget(), summaries: ReturnType<typeof secretSummary>[] = [];
-      for (const scope of scopes) {
-        budget.check();
-        const full = await this.transport.list(scope, { budget, visit: secret => { summaries.push(secretSummary(secret)); } });
-        // Compatibility transports may return full records instead of visiting pages.
-        for (const secret of full) {
-          budget.consumeBytes(Buffer.byteLength(JSON.stringify(secret))); budget.consumeItems(1);
-          summaries.push(secretSummary(secret));
-        }
-      }
-      budget.check(); return summaries;
+      if (!Number.isSafeInteger(this.listConcurrency) || this.listConcurrency < 1 || this.listConcurrency > SECRET_LIST_MAX_CONCURRENCY)
+        throw new SecretError(503, "Invalid Kubernetes Secret list concurrency");
+      const budget = new SecretListBudget(), summaries: ReturnType<typeof secretSummary>[][] = scopes.map(() => []);
+      let next = 0;
+      const worker = async () => {
+        try {
+          while (next < scopes.length) {
+            budget.check(); const index = next++, scope = scopes[index];
+            const full = await this.transport.list(scope, { budget, visit: secret => { budget.check(); summaries[index].push(secretSummary(secret)); } });
+            // Compatibility transports may return full records instead of visiting pages.
+            for (const secret of full) {
+              budget.consumeBytes(Buffer.byteLength(JSON.stringify(secret))); budget.consumeItems(1);
+              summaries[index].push(secretSummary(secret));
+            }
+          }
+        } catch (error) { budget.fail(error); }
+      };
+      // Workers settle before returning an error, so no owned request/queue entry is left behind.
+      await Promise.all(Array.from({ length: Math.min(this.listConcurrency, scopes.length) }, worker));
+      budget.check(); return summaries.flat();
     } catch (error) {
       throw secretFailure(error);
     }

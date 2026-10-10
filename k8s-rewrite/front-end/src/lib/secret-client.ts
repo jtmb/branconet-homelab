@@ -1,6 +1,6 @@
 import { KubeConfig, type V1ObjectMeta, type V1Secret } from "@kubernetes/client-node";
 import https from "node:https";
-import { SecretStore, SecretError, secretFailure, validateTarget, SecretListBudget, type SecretTransport } from "./cluster-secrets";
+import { SecretStore, SecretError, secretFailure, validateTarget, SecretListBudget, SECRET_LIST_MAX_CONCURRENCY, type SecretTransport } from "./cluster-secrets";
 import { kvConfig } from "./kv-contract";
 import { KvRegistry } from "./kv-registry";
 import { flatSecretGuard } from "./secret-access";
@@ -20,16 +20,31 @@ export interface NativeSecretTransport extends SecretTransport {
 }
 let active = 0;
 const waiters: { enter: () => void; timer: ReturnType<typeof setTimeout> }[] = [];
-async function slot(deadline: number) {
+async function slot(deadline: number, signal?: AbortSignal) {
   await new Promise<void>((resolve, reject) => {
+    if (signal?.aborted) return reject(secretFailure(signal.reason));
     if (Date.now() >= deadline) return reject(new SecretError(503, "Kubernetes Secret request timed out"));
     if (active < 4) { active++; resolve(); return; }
     if (waiters.length >= 64) return reject(new SecretError(503, "Kubernetes Secret request queue is full"));
-    const waiter = { enter: () => { clearTimeout(waiter.timer); active++; resolve(); }, timer: setTimeout(() => {
+    const cleanup = () => { clearTimeout(waiter.timer); signal?.removeEventListener("abort", cancel); };
+    const cancel = () => {
+      cleanup(); const index = waiters.indexOf(waiter); if (index >= 0) waiters.splice(index, 1);
+      reject(secretFailure(signal?.reason));
+    };
+    const waiter = { enter: () => {
+      cleanup();
+      if (signal?.aborted || Date.now() >= deadline) {
+        reject(signal?.aborted ? secretFailure(signal.reason) : new SecretError(503, "Kubernetes Secret request timed out"));
+        waiters.shift()?.enter(); return;
+      }
+      active++; resolve();
+    }, timer: setTimeout(() => {
+      cleanup();
       const index = waiters.indexOf(waiter); if (index >= 0) waiters.splice(index, 1);
       reject(new SecretError(503, "Kubernetes Secret request timed out"));
     }, Math.max(1, deadline - Date.now())) };
     waiters.push(waiter);
+    signal?.addEventListener("abort", cancel, { once: true });
   });
 }
 const release = () => { active--; waiters.shift()?.enter(); };
@@ -53,9 +68,12 @@ export function createSecretTransport(): NativeSecretTransport {
 
     async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false, byteLimit = 4 * 1024 * 1024, transferBudget?: SecretListBudget): Promise<{ value: any; bytes: number }> {
       deadline = Math.min(deadline, Date.now() + 8000);
-      await slot(deadline);
+      transferBudget?.check();
+      await slot(deadline, transferBudget?.signal);
       let authTimer: ReturnType<typeof setTimeout> | undefined;
+      let authAbort: (() => void) | undefined;
       try {
+        transferBudget?.check();
         const options: https.RequestOptions = { method, rejectUnauthorized: true, headers: {
           Accept: metadata ? "application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1" : "application/json",
           ...(body === undefined ? {} : { "Content-Type": "application/json" }),
@@ -63,10 +81,17 @@ export function createSecretTransport(): NativeSecretTransport {
         // SDK authentication retains CA/client certificates, token refresh and proxies; JSON maps bypass its lossy serializer.
         await Promise.race([config.applyToHTTPSOptions(options), new Promise<never>((_, reject) => {
           authTimer = setTimeout(() => reject(new SecretError(503, "Kubernetes Secret authentication timed out")), Math.max(1, deadline - Date.now()));
+          if (transferBudget) {
+            authAbort = () => reject(secretFailure(transferBudget.signal.reason));
+            transferBudget.signal.addEventListener("abort", authAbort, { once: true });
+          }
         })]);
         clearTimeout(authTimer);
+        if (authAbort) transferBudget?.signal.removeEventListener("abort", authAbort);
+        transferBudget?.check();
         if (Date.now() >= deadline || options.rejectUnauthorized === false) throw new SecretError(503, "Kubernetes Secret request timed out");
-        options.signal = AbortSignal.timeout(Math.max(1, deadline - Date.now()));
+        const timeout = AbortSignal.timeout(Math.max(1, deadline - Date.now()));
+        options.signal = transferBudget ? AbortSignal.any([timeout, transferBudget.signal]) : timeout;
         const serialized = body === undefined ? undefined : JSON.stringify(body);
         if (serialized && Buffer.byteLength(serialized) > 900 * 1024) throw new SecretError(413, "Secret object exceeds the application size limit");
         return await new Promise((resolve, reject) => {
@@ -99,7 +124,7 @@ export function createSecretTransport(): NativeSecretTransport {
           req.end(serialized);
         });
       } catch (error) { throw secretFailure(error); }
-      finally { clearTimeout(authTimer); release(); }
+      finally { clearTimeout(authTimer); if (authAbort) transferBudget?.signal.removeEventListener("abort", authAbort); release(); }
     }
     const route = (namespace: string, name?: string) => {
       validateTarget({ namespace, name: name || "scope", key: "scope" });
@@ -184,5 +209,5 @@ export function createSecretTransport(): NativeSecretTransport {
 }
 export function nativeSecrets(legacyAlias?: string) {
   const config = kvConfig(), namespaces = secretNamespaces().filter(ns => ns !== config.historyNamespace), transport = createSecretTransport();
-  return new SecretStore(transport, namespaces, flatSecretGuard(new KvRegistry(prisma, namespaces, config), transport, getSession, legacyAlias));
+  return new SecretStore(transport, namespaces, flatSecretGuard(new KvRegistry(prisma, namespaces, config), transport, getSession, legacyAlias), SECRET_LIST_MAX_CONCURRENCY);
 }
