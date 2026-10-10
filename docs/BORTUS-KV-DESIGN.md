@@ -147,3 +147,7 @@ The design follows the documented [Secret size/immutable constraints](https://ku
 ## Acceptance sequence
 
 First validate grouped/scalar binary isolation, different-key annotation exclusion, imported spelling, native restart authority and unrelated metadata preservation. Then inject concurrent writers, stale head/RV, external changes, immutable/type/size rejection, before/after-commit timeouts, read-back outage, orphan candidates and source UID replacement. Test policy normalization/deny, owner reset/deletion/demotion/revocation, native/alias bypass denial and concurrent last-effective-admin invariants. Finally validate bounded import/export/rotation intent, retention/destroy/GC preconditions, 603-reference metadata handling and keyboard/mobile UI without retaining values. Local mock TLS/HTTP/browser evidence and external Linux image/RBAC/imported-production acceptance are separate; no production mutation is performed by the app executor.
+
+## Standalone KV workbench
+
+The isolated [KV workbench integration contract](BORTUS-KV-WORKBENCH.md) documents the implemented value/version/transfer forms, explicit mappings, captured native/head/path revisions and transient value lifecycle. Metadata browsing is separate from explicit adoption/reveal. The app owner must integrate selection and the strict human pathRevision prerequisite before combined native qualification; administration remains separately owned.

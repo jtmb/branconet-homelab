@@ -87,3 +87,7 @@ only application deployer. This repository's BORTUS source/build work is indepen
 see [Flux contract and image releases](FLUX-GITOPS.md).
 
 Forward migration 20261010230000_legacy_access_audit adds nullable authorization metadata principal/alias/key on KvAudit. Existing metadata and native values are preserved. Fresh serialized legacy controls use SHA-256 fingerprints of authorization metadata including mount revision/scope, canonical request field order, bounded fresh alias reads, 100-row preview pages and exact affected-alias acknowledgements. There is no new package, credential store or native verb. [Local qualification passed](implementation-evidence/kv-legacy-access.json); final image remains pending.
+
+## Standalone KV workbench
+
+The standalone [KV workbench](BORTUS-KV-WORKBENCH.md) uses existing React/Radix/Tailwind and browser Blob/TextEncoder APIs. Its exclusive browser harness uses existing esbuild/Tailwind plus externally available Playwright and installed Chrome; it adds no package or manifest dependency.
