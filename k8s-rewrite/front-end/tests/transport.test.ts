@@ -73,9 +73,10 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
               metadata:{name:"item-"+metadataReads+"-"+index,namespace:"apps",uid:"metadata-uid",resourceVersion:"1"},...(metadataMode==="values"?{data:{private:"must not fall back"}}:{})})) };
         } else if (request.method === "GET" && listMode !== "normal") {
           listReads++;
-          const offset = Number(new URL(request.url || "/", "https://localhost").searchParams.get("continue") || 0);
-          result = { apiVersion: "v1", kind: "SecretList", metadata: { continue: listMode === "repeat" ? "next-page" : offset < 39 ? String(offset + 1) : "" },
-            items: Array.from({ length: listMode === "oversize" ? 2 : 1 }, (_, index) => ({ ...object, metadata: { ...object.metadata, name: "item-" + listReads + "-" + index } })) };
+          const query = new URL(request.url || "/", "https://localhost").searchParams;
+          const offset = Number(query.get("continue") || 0), limit = Number(query.get("limit"));
+          result = { apiVersion: "v1", kind: "SecretList", metadata: { continue: listMode === "repeat" ? "next-page" : offset + limit < 40 ? String(offset + limit) : "" },
+            items: Array.from({ length: listMode === "oversize" ? limit + 1 : limit }, (_, index) => ({ ...object, metadata: { ...object.metadata, name: "item-" + listReads + "-" + index } })) };
         } else if (request.method === "GET")
           result = {
             apiVersion: "v1",
@@ -168,11 +169,11 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
     metadataMode="oversize";await assert.rejects(transport.listMetadata("apps"),/exceeds the validated limits/);
     metadataMode="values";await assert.rejects(transport.listMetadata("apps"),/Invalid metadata-only Secret response/);metadataMode="normal";
     listMode = "pages"; listReads = 0;
-    assert.equal((await transport.list("apps")).length, 40); assert.equal(listReads, 40);
+    assert.equal((await transport.list("apps")).length, 40); assert.equal(listReads, 2);
     listMode = "repeat"; listReads = 0;
     await assert.rejects(transport.list("apps"), /Invalid Kubernetes Secret pagination/); assert.equal(listReads, 2);
-    listMode = "oversize";
-    await assert.rejects(transport.list("apps"), /exceeds the validated limits/);
+    listMode = "oversize"; listReads = 0;
+    await assert.rejects(transport.list("apps"), /exceeds the validated limits/); assert.equal(listReads, 1);
     await assert.rejects(transport.delete("history", "candidate", "", "7"), (error: any) => error.status === 428);
     await assert.rejects(transport.delete("history", "candidate", "wrong-uid", "7"), (error: any) => error.status === 409);
     await transport.delete("history", "candidate", "fixture-history-uid", "7");

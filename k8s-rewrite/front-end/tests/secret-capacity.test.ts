@@ -63,7 +63,8 @@ test("verified TLS lists keep maximum-size history enumeration metadata-only and
     const sampler = setInterval(() => { maximumActive = Math.max(maximumActive, nativeRequestDiagnostics().active); }, 1);
     let summaries: Awaited<ReturnType<SecretStore["list"]>>;
     try { summaries = await new SecretStore(transport, scopes).list(); } finally { clearInterval(sampler); }
-    assert.equal(summaries.length, 124); assert.equal(native.calls.length - before, 124); assert(!JSON.stringify(summaries).includes(payload));
+    assert.equal(summaries.length, 124); assert.equal(native.calls.length - before, 103); assert(!JSON.stringify(summaries).includes(payload));
+    assert.deepEqual(native.calls.slice(before, before + 4).map(call => call.limit), [20, 10, 10, 10]);
     assert(maximumActive <= 1); assert.equal(new Set(budgets).size, 1); assert.equal(budgets[0].items, 124); assert(budgets[0].bytes < SECRET_LIST_MAX_BYTES);
     for (const namespace of ["byte-a", "byte-b", "byte-c", "unstarted"]) for (let i = 0; i < 32; i++) native.seed(namespace, "large-" + i, { blob: payload });
     const beforeOverflow = native.calls.length;
@@ -78,7 +79,43 @@ test("verified TLS lists keep maximum-size history enumeration metadata-only and
   }
 });
 
-test("334-object/18-namespace fixture measures one-page request cost and preserves the shared deadline", { timeout: 30000 }, async context => {
+test("adaptive GET retries keep the cursor, charge rejected bytes and support the flat maximum record", { timeout: 30000 }, async context => {
+  const dir = await mkdtemp(path.join(tmpdir(), "bortus-secret-adaptive-"));
+  const previous = process.env.KUBECONFIG; let native: Awaited<ReturnType<typeof nativeTlsFixture>> | undefined;
+  try {
+    native = await nativeTlsFixture(dir); process.env.KUBECONFIG = native.config;
+    for (let i = 0; i < 20; i++) native.seed("mixed", "small-" + i, { field: "AQ==" });
+    const payload = Buffer.alloc(256 * 1024, 7).toString("base64");
+    for (let i = 0; i < 25; i++) native.seed("mixed", "large-" + i, { field: payload });
+    const transport = createSecretTransport(), budget = new SecretListBudget(), summaries: unknown[] = [];
+    await transport.list("mixed", { budget, visit: secret => { summaries.push({ name: secret.metadata?.name, keys: Object.keys(secret.data || {}) }); } });
+    assert.equal(summaries.length, 45); assert.equal(new Set(summaries.map(item => (item as { name: string }).name)).size, 45);
+    assert.deepEqual(native.calls.map(call => [call.limit, call.offset]), [[20, 0], [20, 20], [10, 20], [10, 30], [10, 40]]);
+    const acceptedBytes = native.calls.filter((_, index) => index !== 1).reduce((sum, call) => sum + call.responseBytes, 0);
+    assert(budget.bytes > acceptedBytes + 4 * 1024 * 1024, "Rejected prefix bytes remain charged"); assert.equal(budget.items, 45);
+    assert(!JSON.stringify(summaries).includes(payload));
+    const before = native.calls.length, maximum = Buffer.alloc(1024 * 1024, 11).toString("base64");
+    for (let i = 0; i < 3; i++) native.seed("maximum", "flat-" + i, { field: maximum });
+    const maxBudget = new SecretListBudget(), start = performance.now(); let count = 0;
+    await transport.list("maximum", { budget: maxBudget, visit: () => { count++; } });
+    const maximumCalls = native.calls.slice(before);
+    assert.equal(count, 3); assert.deepEqual(maximumCalls.map(call => call.limit), [20, 10, 5, 2, 2]);
+    assert.equal(maxBudget.items, 3); assert(maxBudget.bytes > 16 * 1024 * 1024 && maxBudget.bytes < SECRET_LIST_MAX_BYTES);
+    context.diagnostic(JSON.stringify({ fixture: "Three one-MiB decoded flat records; verified loopback TLS", requests: maximumCalls.length, receivedWireBytes: maxBudget.bytes, elapsedMs: performance.now() - start }));
+    const beforeRefusal = native.calls.length;
+    native.seed("invalid-large", "oversized", { field: Buffer.alloc(4 * 1024 * 1024, 13).toString("base64") });
+    await assert.rejects(transport.list("invalid-large"), error => error instanceof SecretError && error.status === 503 && error.message === "Kubernetes Secret response exceeds the size limit");
+    assert.deepEqual(native.calls.slice(beforeRefusal).map(call => call.limit), [20, 10, 5, 2, 1]);
+    assert.equal(nativeRequestDiagnostics().active, 0); assert.equal(nativeRequestDiagnostics().queued, 0);
+  } finally {
+    if (previous === undefined) delete process.env.KUBECONFIG; else process.env.KUBECONFIG = previous;
+    await native?.close();
+    if (path.dirname(path.resolve(dir)) !== path.resolve(tmpdir()) || !path.basename(dir).startsWith("bortus-secret-adaptive-")) throw new Error("Unsafe adaptive Secret cleanup target");
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test("334-object/18-namespace fixture restores batching and preserves the shared deadline", { timeout: 30000 }, async context => {
   const dir = await mkdtemp(path.join(tmpdir(), "bortus-secret-count-"));
   const previous = process.env.KUBECONFIG; let native: Awaited<ReturnType<typeof nativeTlsFixture>> | undefined;
   try {
@@ -87,15 +124,15 @@ test("334-object/18-namespace fixture measures one-page request cost and preserv
     for (let i = 0; i < 334; i++) native.seed(scopes[i % scopes.length], "secret-" + i, { field: "c3ludGhldGlj" });
     const transport = createSecretTransport(), start = performance.now();
     const summaries = await new SecretStore(transport, scopes).list(), elapsedMs = performance.now() - start;
-    assert.equal(summaries.length, 334); assert.equal(native.calls.length, 334); assert(native.calls.every(call => call.limit === 1));
+    assert.equal(summaries.length, 334); assert.equal(native.calls.length, 18); assert(native.calls.every(call => call.limit === 20));
     const wireBytes = native.calls.reduce((sum, call) => sum + call.responseBytes, 0);
     assert(wireBytes < SECRET_LIST_MAX_BYTES); assert(elapsedMs < 15000);
     context.diagnostic(JSON.stringify({ fixture: "334 small synthetic Secrets across 18 namespaces, verified loopback TLS, fixed 12ms producer delay", objects: 334,
-      namespaces: 18, requests: native.calls.length, wireBytes, elapsedMs, previous20ObjectPageRequestEstimate: 18,
-      limitations: ["Request estimate is arithmetic, not a timed old implementation", "Host CPU/RSS uncontrolled; no live latency or performance improvement claim", "Higher-latency APIs can exceed the unchanged shared 15-second deadline"] }));
-    const before = native.calls.length, budget = new SecretListBudget(Date.now() + 80);
+      namespaces: 18, requests: native.calls.length, wireBytes, elapsedMs, previousOneObjectRequests: 334, previousOneObjectFocusedElapsedMs: 9132.1211,
+      limitations: ["Earlier run used the same synthetic producer delay and shape; host timing is uncontrolled", "Separate controlled Linux RSS qualification is required", "Higher-latency APIs can exceed the unchanged shared 15-second deadline"] }));
+    const before = native.calls.length, budget = new SecretListBudget(Date.now() + 5);
     await assert.rejects(transport.list(scopes[0], { budget, visit: () => {} }), error => error instanceof SecretError && error.status === 503);
-    assert(native.calls.length - before < 19); assert.equal(nativeRequestDiagnostics().active, 0); assert.equal(nativeRequestDiagnostics().queued, 0);
+    assert(native.calls.length - before <= 1); assert.equal(nativeRequestDiagnostics().active, 0); assert.equal(nativeRequestDiagnostics().queued, 0);
   } finally {
     if (previous === undefined) delete process.env.KUBECONFIG; else process.env.KUBECONFIG = previous;
     await native?.close();

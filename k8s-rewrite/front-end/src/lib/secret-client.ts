@@ -35,6 +35,11 @@ async function slot(deadline: number) {
 const release = () => { active--; waiters.shift()?.enter(); };
 export const nativeRequestDiagnostics = () => ({ active, queued: waiters.length, maxConcurrent: 4, maxQueued: 64 });
 
+// Only a bounded full-list GET may retry this locally detected response ceiling.
+class SecretPageTooLarge extends SecretError {
+  constructor() { super(503, "Kubernetes Secret response exceeds the size limit"); }
+}
+
 export function createSecretTransport(): NativeSecretTransport {
   try {
     const config = new KubeConfig();
@@ -46,7 +51,7 @@ export function createSecretTransport(): NativeSecretTransport {
       throw new SecretError(503, "A TLS-verified Kubernetes API connection is required");
     const base = cluster.server.replace(/\/$/, "");
 
-    async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false, byteLimit = 4 * 1024 * 1024): Promise<{ value: any; bytes: number }> {
+    async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false, byteLimit = 4 * 1024 * 1024, transferBudget?: SecretListBudget): Promise<{ value: any; bytes: number }> {
       deadline = Math.min(deadline, Date.now() + 8000);
       await slot(deadline);
       let authTimer: ReturnType<typeof setTimeout> | undefined;
@@ -73,8 +78,12 @@ export function createSecretTransport(): NativeSecretTransport {
             const chunks: Buffer[] = []; let bytes = 0;
             response.on("data", (chunk: Buffer) => {
               bytes += chunk.length;
-              if (bytes > Math.min(4 * 1024 * 1024, byteLimit) || chunks.length >= 16384) { response.destroy(); reject(new SecretError(503, "Kubernetes Secret response exceeds the size limit")); }
-              else chunks.push(chunk);
+              // Count every delivered byte, including rejected/retried page prefixes, before buffering.
+              try { transferBudget?.consumeBytes(chunk.length); }
+              catch (error) { response.destroy(); reject(error); return; }
+              if (bytes > Math.min(4 * 1024 * 1024, byteLimit)) { response.destroy(); reject(new SecretPageTooLarge()); return; }
+              if (chunks.length >= 16384) { response.destroy(); reject(new SecretError(503, "Kubernetes Secret response exceeds the size limit")); return; }
+              chunks.push(chunk);
             });
             response.once("error", reject);
             response.once("end", () => {
@@ -107,12 +116,21 @@ export function createSecretTransport(): NativeSecretTransport {
       read: async (namespace, name) => object((await request("GET", route(namespace, name))).value, namespace, name),
       list: async (namespace, options) => {
         const items: V1Secret[] = [], cursors = new Set<string>();
-        const budget = options?.budget ?? new SecretListBudget(); let cursor = "";
+        const budget = options?.budget ?? new SecretListBudget(); let cursor = "", limit = 20;
         do {
-          // One full object per response keeps individually supported large Secrets operable.
-          const result = await request("GET", route(namespace) + "?limit=1" + (cursor ? "&continue=" + encodeURIComponent(cursor) : ""), undefined, budget.deadline, false, budget.remainingBytes());
-          const page = result.value; budget.consumeBytes(result.bytes);
-          if (page.kind !== "SecretList" || page.apiVersion !== "v1" || !Array.isArray(page.items) || page.items.length > 1)
+          let result: { value: any; bytes: number };
+          for (;;) {
+            try {
+              result = await request("GET", route(namespace) + "?limit=" + limit + (cursor ? "&continue=" + encodeURIComponent(cursor) : ""), undefined, budget.deadline, false, budget.remainingBytes(), budget);
+              break;
+            } catch (error) {
+              if (!(error instanceof SecretPageTooLarge) || limit === 1) throw error;
+              // Keep the cursor and learned smaller limit. At most four reductions per namespace.
+              limit = Math.max(1, Math.floor(limit / 2)); budget.check();
+            }
+          }
+          const page = result.value;
+          if (page.kind !== "SecretList" || page.apiVersion !== "v1" || !Array.isArray(page.items) || page.items.length > limit)
             throw new SecretError(503, "Kubernetes Secret list exceeds the validated limits");
           budget.consumeItems(page.items.length);
           for (const raw of page.items) {

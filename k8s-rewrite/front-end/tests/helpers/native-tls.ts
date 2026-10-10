@@ -11,7 +11,7 @@ export async function nativeTlsFixture(dir: string, responseDelayMs = 0) {
   if(spawnSync(openssl,["version"]).status!==0) throw new Error("OpenSSL is required for native TLS HTTP qualification");
   const key=path.join(dir,"native-key.pem"),cert=path.join(dir,"native-cert.pem"),config=path.join(dir,"native-config");
   execFileSync(openssl,["req","-x509","-newkey","rsa:2048","-nodes","-keyout",key,"-out",cert,"-days","1","-subj","/CN=localhost","-addext","subjectAltName=IP:127.0.0.1,DNS:localhost"],{stdio:"ignore"});
-  const objects=new Map<string,V1Secret>(), calls:{method:string;path:string;metadata:boolean;limit:number|null;responseBytes:number}[]=[]; let revision=0;
+  const objects=new Map<string,V1Secret>(), calls:{method:string;path:string;metadata:boolean;limit:number|null;offset:number;responseBytes:number}[]=[]; let revision=0;
   const clone=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
   const seed=(ns:string,name:string,data:Record<string,string>,extra:Partial<V1Secret>={})=>{
     const body:V1Secret={apiVersion:"v1",kind:"Secret",type:"Opaque",...extra,metadata:{...extra.metadata,namespace:ns,name,uid:"tls-uid-"+ ++revision,resourceVersion:String(revision),creationTimestamp:new Date()},data:clone(data)};
@@ -21,7 +21,7 @@ export async function nativeTlsFixture(dir: string, responseDelayMs = 0) {
     try {
       const url=new URL(request.url||"/","https://localhost"),match=/^\/api\/v1\/namespaces\/([^/]+)\/secrets(?:\/([^/]+))?$/.exec(url.pathname);
       const metadata=!!request.headers.accept?.includes("PartialObjectMetadataList");
-      const call={method:request.method||"",path:url.pathname,metadata,limit:url.searchParams.has("limit")?Number(url.searchParams.get("limit")):null,responseBytes:0};calls.push(call);
+      const call={method:request.method||"",path:url.pathname,metadata,limit:url.searchParams.has("limit")?Number(url.searchParams.get("limit")):null,offset:Number(url.searchParams.get("continue")||0),responseBytes:0};calls.push(call);
       const send=(code:number,result:unknown)=>{
         const serialized=JSON.stringify(result);call.responseBytes=Buffer.byteLength(serialized);
         const finish=()=>{response.writeHead(code,{"Content-Type":"application/json"});response.end(serialized);};
@@ -56,5 +56,5 @@ export async function nativeTlsFixture(dir: string, responseDelayMs = 0) {
   });
   server.listen(0,"127.0.0.1");await once(server,"listening");
   await writeFile(config,JSON.stringify({apiVersion:"v1",kind:"Config",clusters:[{name:"test",cluster:{server:"https://127.0.0.1:"+(server.address() as AddressInfo).port,"certificate-authority":cert}}],contexts:[{name:"test",context:{cluster:"test",user:"test"}}],users:[{name:"test",user:{token:"synthetic-native-api-token"}}],"current-context":"test"}));
-  return {config,seed,objects,calls,async close(){server.closeAllConnections();await new Promise<void>(resolve=>server.close(()=>resolve()));}};
+  return {config,seed,objects,calls,reset(){objects.clear();calls.length=0;revision=0;},async close(){server.closeAllConnections();await new Promise<void>(resolve=>server.close(()=>resolve()));}};
 }

@@ -44,6 +44,8 @@ Set `BORTUS_SECRET_NAMESPACES` to the imported application namespaces, comma-sep
 
 Local: operator `KUBECONFIG` or `~/.kube/config`. In-cluster: mounted service-account token/CA and Kubernetes service host. Require HTTPS with verified certificates. No kubectl/host SSH key/DB bootstrap for Secret operations. Eight-second timeout; failed writes can have an unknown outcome, so read back before retrying.
 
+Flat metadata lists retain exact key/type/immutable/RV summaries and project pages immediately. Full-list GET pages start at 20 objects and only locally oversized successful responses reduce through 10/5/2/1, keeping their cursor and smaller limit. Rejected body prefixes count toward one shared 32-MiB received-body/10,000-accepted-object/15-second scope budget. Metadata-only negotiation and mutations never retry/fall back. Local 100-test/build/HTTP and resource-limited Linux fixture qualification passed; large-record retries cost transfer/CPU/memory, and final server/image/live acceptance remains separate. See [adaptive read evidence](implementation-evidence/secret-adaptive-read.json). No native verbs, runtime env or operator limits change.
+
 Mount a metadata-only ConfigMap JSON file via `BORTUS_SECRET_ALIASES_FILE`, or register aliases using `/api/secret-references`. File format:
 
 ```json
