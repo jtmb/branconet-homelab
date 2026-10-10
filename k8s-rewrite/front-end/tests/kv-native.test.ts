@@ -15,6 +15,8 @@ import { CREATED_ANNOTATION, HISTORY_ANNOTATION, STATE_ANNOTATION, encodedValues
 import { SecretError, SecretStore } from "../src/lib/cluster-secrets";
 import { flatSecretGuard, requireLegacyPrincipal } from "../src/lib/secret-access";
 import { automationRequest, runAutomation } from "../src/lib/kv-automation";
+import { KvTransfer, type bundleSchema } from "../src/lib/kv-transfer";
+import type { z } from "zod";
 
 const marker = "synthetic-private-other-key";
 const copy = <T>(value: T): T => JSON.parse(JSON.stringify(value));
@@ -184,6 +186,41 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       await registry.revokeIdentity(actor,identity.id);const before=native.reads;
       await assert.rejects(runAutomation(engine,token,{operation:"read",pathId:p.id}),denied(401));assert.equal(native.reads,before);
     });
+    await t.test("protected transfers round-trip binary/empty fields with explicit overwrite, partial outcomes and bounded metadata-only preview", async () => {
+      const p=await registry.registerPath(actor,{mountId:mount.id,path:"transfer/source",namespace:"apps",name:"transfer-source",fields:[{field:"binary",key:"__proto__"},{field:"empty",key:"constructor"}]});
+      await engine.create(actor,p.id,{resourceVersion:"absent",expectedHead:0,fields:[{field:"binary",encoding:"base64",value:initial.__proto__},{field:"empty",encoding:"utf8",value:""}]});
+      const nativeSource=native.objects.get("apps/transfer-source")!;nativeSource.data!.unrelated=other;nativeSource.metadata!.annotations!["last-applied"]=marker;nativeSource.metadata!.resourceVersion=String(++native.counter);
+      const transfer=new KvTransfer(engine),bundle=await transfer.export(actor,{confirmCredentials:true,selections:[{pathId:p.id}]});
+      assert.equal(bundle.documents[0].sourceVersion,1);assert(!JSON.stringify(bundle).includes(marker));assert(!JSON.stringify(bundle).includes(other));assert.equal(bundle.documents[0].fields.find(field=>field.field==="empty")!.value,"");
+      const scopedUser=await db.user.findUniqueOrThrow({where:{username:"scoped"}}),scoped={id:scopedUser.id,sessionVersion:scopedUser.sessionVersion},before=native.reads;
+      await assert.rejects(transfer.export(scoped,{confirmCredentials:true,selections:[{pathId:p.id}]}),denied(403));assert.equal(native.reads,before);
+      await registry.savePolicy(actor,{principal:"user:"+scoped.id,mountId:mount.id,prefix:"transfer/source",effect:"allow",actions:["export"]});
+      await assert.rejects(engine.read(scoped,p.id),denied(403));await transfer.export(scoped,{confirmCredentials:true,selections:[{pathId:p.id}]});
+      const restored:z.infer<typeof bundleSchema>={...bundle,documents:bundle.documents.map(doc=>({...doc,path:"transfer/restored",name:"transfer-restored"}))};
+      const plans=(preview:Awaited<ReturnType<KvTransfer["preview"]>>,overwrite=false)=>preview.plans.map((p:any)=>({documentIndex:p.documentIndex,pathId:p.pathId,revision:p.revision,resourceVersion:p.resourceVersion,expectedHead:p.expectedHead,overwrite}));
+      const preview=await transfer.preview(actor,restored);assert(preview.plans.every(p=>p.outcome==="ready"));assert(!JSON.stringify(preview).includes(initial.__proto__));
+      const imported=await transfer.import(actor,{bundle:restored,plans:plans(preview),confirmCredentials:true});assert.equal(imported.success,true);
+      const restoredId=imported.outcomes[0].pathId!;assert.deepEqual((await engine.read(actor,restoredId)).fields,bundle.documents[0].fields);assert(!JSON.stringify(await native.read("apps","transfer-restored")).includes(marker));
+      const empty={...restored,documents:restored.documents.map(doc=>({...doc,fields:[]}))},updatePreview=await transfer.preview(actor,empty);
+      assert.equal((await transfer.import(actor,{bundle:empty,plans:plans(updatePreview),confirmCredentials:true})).outcomes[0].status,409);
+      const oldPath=await registry.path(restoredId);await registry.changeRetention(actor,oldPath.id,oldPath.revision,oldPath.retention+1);
+      assert.equal((await transfer.import(actor,{bundle:empty,plans:plans(updatePreview,true),confirmCredentials:true})).outcomes[0].status,409);
+      const updated=await transfer.import(actor,{bundle:empty,plans:plans(await transfer.preview(actor,empty),true),confirmCredentials:true});assert.equal(updated.success,true);assert.equal((await engine.read(actor,restoredId)).fields.length,0);
+      assert.deepEqual((await transfer.export(actor,{selections:[{pathId:restoredId,version:1}],confirmCredentials:true})).documents[0].fields,bundle.documents[0].fields);
+      const partial={...restored,documents:[restored.documents[0],{...restored.documents[0],path:"transfer/second",name:"transfer-second"}]},partialPlans=plans(await transfer.preview(actor,partial),true);partialPlans[0].resourceVersion="stale";
+      const result=await transfer.import(actor,{bundle:partial,plans:partialPlans,confirmCredentials:true});assert.equal(result.success,false);assert.equal(result.outcomes[0].status,409);assert.equal(result.outcomes[1].outcome,"committed");
+      assert.equal((await engine.read(actor,restoredId)).fields.length,0);
+      const invalid={...restored,documents:[{...restored.documents[0],fields:[{field:"binary",encoding:"base64" as const,value:"bad="}]}]},reads=native.reads;
+      await assert.rejects(transfer.preview(actor,invalid),denied(400));assert.equal(native.reads,reads);
+      await assert.rejects(transfer.preview(actor,{...restored,documents:[restored.documents[0],restored.documents[0]]}),denied(400));
+      const large={...restored,documents:Array.from({length:4},(_,index)=>({...restored.documents[0],path:"transfer/large-"+index,name:"transfer-large-"+index,fields:[{field:"binary",encoding:"utf8" as const,value:"x".repeat(256*1024)}]}))};
+      await assert.rejects(transfer.preview(actor,large),denied(413));
+      const oversized=await registry.registerPath(actor,{mountId:mount.id,path:"transfer/oversized",namespace:"apps",name:"transfer-oversized",fields:[{field:"key",key:"key"}]});
+      const importedLarge=native.seed("apps","transfer-oversized",{key:Buffer.from("selected").toString("base64"),unrelated:"a".repeat(900*1024)}),writes=native.writes;
+      await assert.rejects(engine.adopt(actor,oversized.id,{resourceVersion:importedLarge.metadata!.resourceVersion,expectedHead:0,legacyAliases:[]}),denied(413));assert.equal(native.writes,writes);
+      const cancelled=new AbortController();cancelled.abort();await assert.rejects(new KvTransfer(engine,cancelled.signal).export(actor,{confirmCredentials:true,selections:[{pathId:p.id}]}),denied(408));
+      assert(!JSON.stringify(await db.kvAudit.findMany()).includes(initial.__proto__));assert(!JSON.stringify(await db.kvOperation.findMany()).includes(initial.__proto__));
+    });
     await t.test("external selected-key drift requires reconcile; rollback creates a new immutable version", async () => {
       const changed = native.objects.get("apps/imported")!; changed.data!["constructor"]=Buffer.from("external").toString("base64"); changed.metadata!.resourceVersion=String(++native.counter);
       await assert.rejects(engine.read(actor,registered.id),denied(409));
@@ -210,6 +247,11 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       await db.$executeRawUnsafe("CREATE TRIGGER deny_audit BEFORE INSERT ON kv_audit BEGIN SELECT RAISE(ABORT, 'synthetic audit unavailable'); END");
       const before=native.writes;
       await assert.rejects(engine.change(actor,registered.id,{...(await input()),fields:[]}),denied(503)); assert.equal(native.writes,before);
+      await assert.rejects(engine.read(actor,registered.id),denied(503));
+      const flat=new SecretStore(native,["apps"],flatSecretGuard(registry,native,async()=>actor));
+      await assert.rejects(flat.read({namespace:"apps",name:"imported",key:"constructor"}),denied(503));
+      const legacy=new SecretStore(native,["apps"],flatSecretGuard(registry,native,async()=>null,aliases[2].alias));
+      await assert.rejects(legacy.read(aliases[2]),denied(503));assert.equal(native.writes,before);
       await db.$executeRawUnsafe("DROP TRIGGER deny_audit");
       native.afterReplace=async()=>{await db.$executeRawUnsafe("CREATE TRIGGER deny_audit BEFORE INSERT ON kv_audit BEGIN SELECT RAISE(ABORT, 'synthetic audit unavailable'); END");};
       let pending:KvMutationError|undefined;

@@ -27,9 +27,13 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
       await stop();env.BORTUS_KV_GUARDED_ADOPTION=String(guard);
       child=spawn(process.execPath,[path.resolve(".next/standalone/server.js")],{env,stdio:["ignore","pipe","pipe"]});
       child.stdout?.on("data",chunk=>{output=(output+chunk).slice(-65536);});child.stderr?.on("data",chunk=>{output=(output+chunk).slice(-65536);});
-      for(let attempt=0;attempt<100;attempt++){
+      const startupDeadline=Date.now()+30000;
+      while(Date.now()<startupDeadline){
         if(child.exitCode!==null)throw new Error("Disposable KV HTTP server exited");
-        try{if((await fetch(base+"/api/health/live",{signal:AbortSignal.timeout(500)})).ok)return;}catch{}
+        try{
+          if((await fetch(base+"/api/health/live",{signal:AbortSignal.timeout(500)})).ok &&
+            (await fetch(base+"/api/auth/session",{signal:AbortSignal.timeout(2000)})).ok)return;
+        }catch{}
         await new Promise(resolve=>setTimeout(resolve,100));
       }
       throw new Error("Disposable KV HTTP server not ready");
@@ -92,6 +96,20 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     const audit=await checked(await request("/api/kv/audit?pathId="+registry.id,"GET",undefined,scoped));assert(audit.items.some((row:any)=>row.actorId===identity.id));assert(audit.items.length<=100);assert(!JSON.stringify(audit).includes(binary));assert(!JSON.stringify(audit).includes(identity.credential));
     await checked(await request("/api/kv/audit?pathId=invalid","GET",undefined,scoped),400);
     const readerCapabilities=await checked(await request(route+"/capabilities","GET",undefined,reader));assert.equal(readerCapabilities.permissions.read,false);
+    const exportInput={selections:[{pathId:registry.id,version:1}],confirmCredentials:true};
+    await checked(await request("/api/kv/export","POST",exportInput,reader),403);
+    await checked(await request("/api/kv/export","POST",exportInput,scoped),403);
+    await checked(await request("/api/kv/export","POST",{selections:exportInput.selections},admin),400);
+    const exported=await checked(await request("/api/kv/export","POST",exportInput,admin));assert.equal(exported.format,"bortus-kv");assert(!JSON.stringify(exported).includes(privateMarker));assert.equal(exported.documents[0].fields.find((f:any)=>f.field==="binary").value,binary);
+    const bundle={...exported,documents:exported.documents.map((doc:any)=>({...doc,path:"services/import/http-roundtrip",name:"http-roundtrip"}))};
+    const previewTransfer=await checked(await request("/api/kv/import/preview","POST",{bundle},admin));assert(previewTransfer.plans.every((p:any)=>p.outcome==="ready"));assert(!JSON.stringify(previewTransfer).includes(binary));
+    const transferPlans=(p:any,overwrite=false)=>p.plans.map((item:any)=>({documentIndex:item.documentIndex,pathId:item.pathId,revision:item.revision,resourceVersion:item.resourceVersion,expectedHead:item.expectedHead,overwrite}));
+    const imported=await checked(await request("/api/kv/import","POST",{bundle,plans:transferPlans(previewTransfer),confirmCredentials:true},admin));assert.equal(imported.success,true);
+    const roundtripId=imported.outcomes[0].pathId,roundtrip=await checked(await request("/api/kv/paths/"+roundtripId+"/data","GET",undefined,admin));assert.equal(roundtrip.fields.find((f:any)=>f.field==="binary").value,binary);
+    const emptyBundle={...bundle,documents:bundle.documents.map((doc:any)=>({...doc,fields:[]}))},overwritePreview=await checked(await request("/api/kv/import/preview","POST",{bundle:emptyBundle},admin));
+    const refused=await checked(await request("/api/kv/import","POST",{bundle:emptyBundle,plans:transferPlans(overwritePreview),confirmCredentials:true},admin));assert.equal(refused.success,false);assert.equal(refused.outcomes[0].status,409);
+    const overwritten=await checked(await request("/api/kv/import","POST",{bundle:emptyBundle,plans:transferPlans(overwritePreview,true),confirmCredentials:true},admin));assert.equal(overwritten.success,true);
+    const restoredEmpty=await checked(await request("/api/kv/paths/"+roundtripId+"/data","GET",undefined,admin));assert.deepEqual(restoredEmpty.fields,[]);
     const historical=await checked(await request(route+"/versions/1/data","GET",undefined,admin));assert.equal(historical.fields.find((f:any)=>f.field==="binary").value,binary);assert(!JSON.stringify(historical).includes(privateMarker));
     const lookup=()=>fetch(base+"/api/vars/lookup?key="+alias.alias,{headers:{authorization:"Bearer synthetic-legacy-lookup-token"},signal:AbortSignal.timeout(15000)});
     const lookedUp=await checked(await lookup());assert.equal(lookedUp.value,"");

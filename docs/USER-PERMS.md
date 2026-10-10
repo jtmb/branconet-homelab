@@ -34,6 +34,8 @@ Both /api/nodes mutations and the compatibility POST /api/cluster/nodes inventor
 
 ## Bearer lookup and recovery
 
+Authenticated KV read/export and adopted flat/legacy reveal now require metadata-only audit authorization before value release. Audit outages fail closed; entries contain no values/digests and do not claim client delivery. The read-audit and bounded transfer additions passed local unit and production HTTP/TLS qualification.
+
 Middleware authentication failures return private/no-store 401 or 503 responses, including attempts to present KV credentials as human cookies. The automation entrypoint authenticates its own token before reading a body or calling native APIs.
 
 Adopted native keys now additionally pass KV read policy on flat reveal. Flat edits/deletions require the versioned endpoint (409), and history cannot be reached through flat/alias routes. Every lookup, including nonsecret configuration, checks the fresh enabled legacy service principal; adopted aliases additionally require exact compatibility grants and deny-aware policy. Unadopted alias behavior remains unchanged. These bridge checks passed local unit and production HTTP/TLS qualification.

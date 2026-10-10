@@ -8,7 +8,7 @@ import { secretFailure } from "./cluster-secrets";
 import { validateAlias, type SecretAlias } from "./secret-aliases";
 import { CREATED_ANNOTATION, encodedValues, equalValues, exportFields, historyBody, historyValues, nativeIdentity, ownedPath, parseState, selectedValues, stateBody, type PathState, type VersionRef } from "./kv-native-state";
 
-export type NativePrerequisites = { resourceVersion?: string; expectedHead?: number };
+export type NativePrerequisites = { resourceVersion?: string; expectedHead?: number; pathRevision?: number };
 const prerequisites = (input: NativePrerequisites, secret: V1Secret, head: number) => {
   if (input.resourceVersion === undefined || input.expectedHead === undefined) throw new KvError(428, "Native resourceVersion and expected head required");
   if (typeof input.resourceVersion !== "string" || !input.resourceVersion || input.resourceVersion.length > 128 || !Number.isSafeInteger(input.expectedHead) || input.expectedHead < 0)
@@ -20,8 +20,11 @@ const markerName = (pathId: string, operationId: string) => "kv-" + pathId.repla
 
 export class KvNativeEngine {
   constructor(readonly registry: KvRegistry, readonly transport: NativeSecretTransport, readonly aliases: () => Promise<SecretAlias[]> = async () => []) {}
-  private async permitted(actor: KvActor, id: string, action: KvAction) {
-    const path = await this.registry.path(id); await this.registry.authorize(actor, path, action); return path;
+  private async permitted(actor: KvActor, id: string, action: KvAction, revision?: number) {
+    const path = await this.registry.path(id); await this.registry.authorize(actor, path, action);
+    if(revision!==undefined&&(!Number.isSafeInteger(revision)||revision<1))throw new KvError(400,"Invalid path metadata revision");
+    if(revision!==undefined&&revision!==path.revision)throw new KvError(409,"KV metadata changed; refresh before retrying");
+    return path;
   }
   private async canonical(path: RegisteredPath) {
     try { return await this.transport.read(path.namespace, path.name); } catch (error) { throw secretFailure(error); }
@@ -59,7 +62,10 @@ export class KvNativeEngine {
       const ref = current.versions.find(v => v.version === version); if (!ref) throw new KvError(404, "Committed KV version not found");
       values = await this.history(path, current, ref); tombstone = ref.tombstone;
     } else values = await this.drift(path, secret, current);
-    await this.registry.authorize(actor, path, action); // Do not return a value after revocation during an API read.
+    await this.registry.serialized(async tx => {
+      await this.registry.authorize(actor, path, action, tx);
+      await tx.kvAudit.create({ data: { actorId: actor.identityId || actor.id, ...target(path), action, previousVersion: current.head, newVersion: version ?? current.head, outcome: "authorized" } });
+    }); // Fail closed if current permission or metadata audit is unavailable before value release.
     return { pathId: id, version: version ?? current.head, resourceVersion: nativeIdentity(secret).resourceVersion, head: current.head, tombstone, fields: exportFields(values) };
   }
   async versions(actor: KvActor, id: string) {
@@ -111,21 +117,29 @@ export class KvNativeEngine {
       if (secret.immutable) throw new KvError(409, "Canonical Secret is immutable");
       if (!Number.isSafeInteger(version)) throw new KvError(413, "KV version counter exceeds its limit");
       const candidateBody = historyBody(path, source.uid, this.registry.config.historyNamespace, historyName, version, operation.id, values, tombstone);
+      const createdAt = new Date().toISOString();
+      const canonicalBody = (historyUid: string) => {
+        const ref: VersionRef = { version, name: historyName, uid: historyUid, operationId: operation.id, createdAt, tombstone };
+        const state = parseState(secret);
+        const next: PathState = { id: path.id, mountId: path.mountId, path: path.path, sourceUid: source.uid, fields: path.fields.map(({field,key}) => ({field,key})),
+          head: version, sequence: version, tombstone, versions: [...(current?.versions || []), ref].slice(-path.retention),
+          operations: [...(current?.operations || []), { id: operation.id, action, previousVersion: current?.head || 0, newVersion: version, historyName, historyUid, createdAt }].slice(-100) };
+        state.paths = [...state.paths.filter(p => p.id !== path.id), next];
+        return stateBody(secret, state, path, values);
+      };
+      // A UID is bounded to 128 UTF-16 units; NUL gives the largest JSON escape.
+      // Preflight both annotation/object ceilings before any immutable candidate write.
+      canonicalBody("\u0000".repeat(128));
       await this.fresh(actor, path, action);
       try { candidate = await this.transport.create(this.registry.config.historyNamespace, candidateBody); }
       catch (error) {
         if (secretFailure(error).status !== 503) throw error;
         try { candidate = await this.transport.read(this.registry.config.historyNamespace, historyName); } catch { throw error; }
       }
-      const identity = nativeIdentity(candidate), createdAt = new Date().toISOString();
+      const identity = nativeIdentity(candidate);
       const ref: VersionRef = { version, name: historyName, uid: identity.uid, operationId: operation.id, createdAt, tombstone };
       if (candidate.metadata?.namespace !== this.registry.config.historyNamespace || !equalValues(historyValues(candidate, path, source.uid, ref), values)) throw new KvError(409, "Candidate history ownership changed");
-      const state = parseState(secret);
-      const next: PathState = { id: path.id, mountId: path.mountId, path: path.path, sourceUid: source.uid, fields: path.fields.map(({field,key}) => ({field,key})),
-        head: version, sequence: version, tombstone, versions: [...(current?.versions || []), ref].slice(-path.retention),
-        operations: [...(current?.operations || []), { id: operation.id, action, previousVersion: current?.head || 0, newVersion: version, historyName, historyUid: identity.uid, createdAt }].slice(-100) };
-      state.paths = [...state.paths.filter(p => p.id !== path.id), next];
-      const body = stateBody(secret, state, path, values);
+      const body = canonicalBody(identity.uid);
       await this.fresh(actor, path, action);
       if (action === "adopt" || action === "create") await this.registry.admin(actor);
       attemptedCas = true;
@@ -155,7 +169,7 @@ export class KvNativeEngine {
   }
   async adopt(actor: KvActor, id: string, input: NativePrerequisites & { legacyAliases: string[] }) {
     requireGuarded(this.registry.config);
-    const path = await this.permitted(actor, id, "create"); await this.registry.admin(actor);
+    const path = await this.permitted(actor, id, "create", input.pathRevision); await this.registry.admin(actor);
     const secret = await this.canonical(path);
     if (ownedPath(secret, path)) throw new KvError(409, "KV path is already adopted");
     await this.initial(path);
@@ -168,7 +182,7 @@ export class KvNativeEngine {
   }
   async create(actor: KvActor, id: string, input: NativePrerequisites & { fields: unknown }) {
     requireGuarded(this.registry.config);
-    const path = await this.permitted(actor, id, "create"); await this.registry.admin(actor);
+    const path = await this.permitted(actor, id, "create", input.pathRevision); await this.registry.admin(actor);
     const values = encodedValues(input.fields, path);
     let secret: V1Secret;
     try { secret = await this.canonical(path); }
@@ -202,7 +216,7 @@ export class KvNativeEngine {
   }
   async change(actor: KvActor, id: string, input: NativePrerequisites & { fields?: unknown; version?: number }, action: "update" | "delete" | "rollback" | "reconcile" | "rotate" = "update") {
     requireGuarded(this.registry.config);
-    const path = await this.permitted(actor, id, action), secret = await this.canonical(path), current = ownedPath(secret, path);
+    const path = await this.permitted(actor, id, action, input.pathRevision), secret = await this.canonical(path), current = ownedPath(secret, path);
     if (!current) throw new KvError(409, "KV path requires explicit administrator adoption or creation");
     prerequisites(input, secret, current.head);
     if (action !== "reconcile") await this.drift(path, secret, current);

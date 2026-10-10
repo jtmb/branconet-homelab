@@ -67,6 +67,8 @@ Keep operator kubeconfig, SSH keys and provisioning credentials independently av
 
 ## Validation ownership
 
+Bounded v1 import/export and audited value-release decisions passed local unit and production HTTP/TLS qualification. They require no additional native RBAC verbs. Values remain in transient request/response memory; path revision/head/RV and explicit overwrite protect existing documents, and audit availability gates value release. Final transfer UI/image/live validation remains pending.
+
 Scoped automation and filtered audit/capability routes passed local production HTTP against the verified mock API. Token cookies/legacy/session audiences are denied, expiry/revocation is fresh, and middleware authentication failures are private/no-store. These checks add no native verbs and do not establish external admission/RBAC or final Linux-image acceptance.
 
 The local native KV HTTP suite starts a disposable production server against a CA-verified HTTPS mock API and synthetic SQLite/accounts. It restarts guarded mode off/on, verifies current/historic binary values without recording them, scope/readonly/legacy/flat denials, version prerequisites, drift/reconcile/rollback/tombstone and administrator revocation. Local native route qualification passed, including empty first creation and refusal to recreate a missing source with prior history. This does not establish live Kubernetes/RBAC or Linux-image acceptance. OpenSSL is required rather than silently skipping this suite.

@@ -1,5 +1,7 @@
 # BORTUS implementation evidence
 
+The native HTTP fixture now waits for both liveness and the auth dependency metadata read within a 30-second startup window. A liveness-only parallel run had a cold registration timeout. Mutation requests retain 15-second deadlines; this harness startup sequencing does not establish cold-start performance.
+
 `kv-automation-audit.json` records 73 full tests, a middleware follow-up, zero-warning lint/build/type and both production HTTP suites passing together (28.04 s existing, 23.91 s native/token). It covers distinct token audiences, native CAS, expiry/revocation, audit pagination/filtering, fresh capabilities and concurrent retention metadata. Query/header corrections and the preceding nonpassing fixture run remain recorded. Remaining KV workflows/UI and external image/live acceptance are pending.
 
 `kv-native-http.json` records human native route and adopted-target flat/legacy bridge qualification: 70 unit tests, zero-warning lint/type/build, existing production HTTP (31.96 s) and CA-verified mock-native HTTP (17.96 s), including empty first creation and missing-marker/source recovery. Harness corrections are retained. These are local synthetic results; remaining KV workflows/UI and final KV image/live acceptance are pending.

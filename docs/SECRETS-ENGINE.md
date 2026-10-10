@@ -2,7 +2,7 @@
 
 Kubernetes native Secrets are the authoritative value store. BORTUS uses a TLS-verified Kubernetes client; SQLite stores identities, nonsecret configuration and explicit `SecretReference` metadata. Legacy sensitive DB rows are ignored, never pushed at startup/CRUD and never used as outage fallback.
 
-The [native KV design](BORTUS-KV-DESIGN.md) specifies grouped paths, immutable native history, policies/automation and import/export/rotation. Metadata registration, policies and identity foundations are implemented on the local branch; human native version/adoption/value/recovery routes passed local production HTTP/TLS qualification. Automation passed local API checks; destroy/GC, import/export, rotation and KV UI remain pending. Public Secret projections whitelist named fields and exclude arbitrary annotations/managedFields, including value-bearing last-applied configurations; canonical writes still preserve that unrelated native metadata.
+The [native KV design](BORTUS-KV-DESIGN.md) specifies grouped paths, immutable native history, policies/automation and import/export/rotation. Metadata registration, policies and identity foundations are implemented on the local branch; human native version/adoption/value/recovery routes passed local production HTTP/TLS qualification. Automation passed local API checks; destroy/GC, rotation and KV UI remain pending. Public Secret projections whitelist named fields and exclude arbitrary annotations/managedFields, including value-bearing last-applied configurations; canonical writes still preserve that unrelated native metadata.
 
 ## Mapping and API
 
@@ -34,9 +34,13 @@ JWT signing material is external and stable, never auto-persisted. Existing sens
 
 The optional local runner expects a separately supplied sibling k8s-rewrite/ansible-playbook tree. Kubernetes provisioning roles and lookup plugins are not included in this application-only main merge.
 
-The exact scoped automation handler and filtered audit/capability routes passed local unit and production HTTP/TLS qualification. Cookie and legacy Bearer audiences cannot authenticate automation. Tokens intersect fresh owner/token policy and cannot initialize/adopt native targets or manage infrastructure. Destroy/GC, import/export, rotation and KV UI remain pending.
+The exact scoped automation handler and filtered audit/capability routes passed local unit and production HTTP/TLS qualification. Cookie and legacy Bearer audiences cannot authenticate automation. Tokens intersect fresh owner/token policy and cannot initialize/adopt native targets or manage infrastructure. Destroy/GC, rotation and KV UI remain pending.
 
 ## KV delivery architecture (implementation pending)
+
+Current/historic KV reads, export and adopted flat/legacy read decisions now require a successful metadata-only audit entry before value release. The entry records authorization, not delivery; fresh permissions and audit availability are checked together. No payload/digest is recorded. This addition passed local unit and production HTTP/TLS qualification.
+
+Bounded v1 transfer routes passed local unit and production HTTP/TLS qualification. Preview returns metadata only; commit requires explicit target/mapping, head/RV/path revision and overwrite acknowledgement. Imported unadopted objects require separate administrator adoption. Export requires a dedicated export grant and credential-value acknowledgement, selects only managed fields, and uses ephemeral JSON without server files or stored drafts. See [KV transfer contract](BORTUS-KV-DESIGN.md).
 
 The approved implementation goal now proceeds on the coordinator's stated KV assumption: mounts and logical paths, immutable versions, rollback, path policies, metadata audit, protected import/export, scoped expiring automation tokens and rotation workflows. This is BORTUS KV management; HashiCorp API parity, dynamic credential issuance, PKI and transit are not claimed. The [implementation ledger](BORTUS-IMPLEMENTATION.md) distinguishes implemented and pending acceptance.
 

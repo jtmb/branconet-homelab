@@ -1,5 +1,7 @@
 # Ansible to BORTUS API interaction
 
+Lookup now checks the fresh enabled legacy service principal. On adopted KV targets it additionally requires the exact alias/namespace/name/key compatibility grant and deny-aware path policy, verifies native head drift and records metadata-only authorization before value release. Missing policy/mapping/audit availability fails closed; there is no privileged fallback. Adoption previews existing alias impact rather than granting grouped sibling/history access. Unadopted alias behavior and the plugin's Bearer audience remain unchanged. The audited-read addition is under local qualification.
+
 An optional externally supplied `botrus_secret` plugin resolves `GET /api/vars/lookup?key=<alias>` with `Authorization: Bearer <BOTRUS_SECRETS_KEY>` and consumes `{key,value}`. Its runtime-only cache, 10-second timeout and fatal failure behavior remain. Legacy environment/plugin names are compatibility identifiers.
 
 Explicit aliases map namespace/Secret/key via SQLite metadata or `BORTUS_SECRET_ALIASES_FILE`; no underscore parsing occurs. Mapped credentials read Kubernetes directly. Nonsecret configuration reads SQLite. Sensitive legacy DB rows never return values or push them to the cluster. Native/API outages fail clearly (503), without fallback. Invalid Bearer is 401; missing alias/key is 404; conflicting mappings are 409.

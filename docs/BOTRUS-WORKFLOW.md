@@ -14,6 +14,8 @@ For an existing database, make a consistent backup and assess migration history 
 
 ## Configuration and Secrets
 
+The v1 import/export API workflow passed local unit and production HTTP/TLS qualification. Choose explicit paths/versions and acknowledge that export contains credential values. Review metadata-only import plans, then submit the same bounded bundle with current path revision/head/RV and explicit overwrite choices; inspect every per-path outcome before retrying. New native initialization needs an administrator, while already-imported native objects require explicit adoption first. No group destination is inferred from an alias. Full transfer UI remains pending.
+
 Flux repository removal keeps its native authentication Secret. The progress view reports retained credentials; inspect exact references/consumers before explicit native key or KV version cleanup. Repository names never establish Secret ownership, and cascade removal does not require a canonical Secret delete permission.
 
 Use **Configuration** (`/configuration`) for nonsecret SQLite settings. Use **Secrets** (`/secrets`) for native Secret metadata and, as an effective engine administrator, explicit reveal and key CRUD. Create refuses existing keys; update/delete require the current resourceVersion. Unrelated keys, type and metadata are preserved. Deleting the last Opaque key retains an empty Secret object.

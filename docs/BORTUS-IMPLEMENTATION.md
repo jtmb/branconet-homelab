@@ -57,6 +57,10 @@ A command combining shutdown and recursive cleanup of an owned UI fixture was re
 
 ## Native Secrets engine scope
 
+The transfer/read-audit stage passes 74 unit tests, zero-warning lint, build and type checking. Both production HTTP suites passed together (existing 14.68 s, native 9.76 s; overall 14.91 s), including bounded protected binary import/export, dedicated export policy, overwrite/CAS and fail-closed value-read audit. Its first parallel HTTP run hit a cold native-fixture registration timeout; the fixture now waits for auth dependency metadata as well as liveness under a bounded 30-second startup window, retaining 15-second mutation deadlines. No cold-start performance result is inferred. See [transfer evidence](implementation-evidence/kv-transfer.json).
+
+`c3a98f5` commits scoped automation/audit/capabilities and their evidence. Bounded protected v1 import/export APIs passed local qualification, including path revision bridging into native CAS; full transfer UI and remaining native workflows are pending.
+
 ### Current completion ledger
 
 The active app goal includes all A01–A22 findings and the complete selected native KV scope. Intermediate local passes do not complete that goal. The separate charts repository and validated Flux pipeline are complete as reported by infrastructure; the exact pre-KV Linux artifact was inspected, but the final KV artifact/live guard qualification remains separate.
@@ -67,7 +71,7 @@ The active app goal includes all A01–A22 findings and the complete selected na
 | Immutable native versions, head/resourceVersion CAS, drift and rollback | Local core e1044f4 and public routes/bridges 6ab95f2; synthetic binary/special-key, history isolation and production mock-TLS HTTP passed |
 | Scoped policies and revocable automation identities | Metadata lifecycle passed; exact automation entrypoint now passes focused token/CAS/revocation tests, and production HTTP/TLS passed |
 | Redacted audit and fresh capability views | Focused bounded 100-row pagination, prefix/deny/token filtering and administrator-revocation checks passed; production HTTP/TLS passed |
-| Protected import/export | Pending implementation and bounded binary/permission/CAS/per-path-outcome acceptance |
+| Protected import/export | Human API passed bounded binary/permission/CAS/per-path-outcome unit and production HTTP/TLS acceptance; transfer UI and final image/live evidence pending |
 | Static rotation, explicit consumer reload/rollout acknowledgement | Pending implementation and metadata-only intent/recovery acceptance; dynamic issuers excluded |
 | Retention, destruction and GC | References are bounded and tombstones retain canonical objects; confirmed owned-history destruction/age/reference/UID/RV GC still pending |
 | Recovery controls | Positive commit read-back/restart/audit recovery and missing-marker/source refusal passed; explicit cleanup/recovery workflow and final image/native backup acceptance pending |

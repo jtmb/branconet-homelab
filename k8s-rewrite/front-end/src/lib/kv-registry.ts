@@ -80,7 +80,7 @@ export class KvRegistry {
     return { pathId: id, revision: path.revision, permissions,
       nativeMutationEnabled: this.config.guardedAdoption,
       initializationAllowed: !!permissions.create && this.config.guardedAdoption && user.role === "write" && user.engineAdmin && !actor.identityId,
-      supportedActions: ["list", "read", "create", "update", "delete", "rollback", "reconcile"],
+      supportedActions: ["list", "read", "create", "update", "delete", "rollback", "reconcile", "export"],
       guardVerification: "operator assertion; external admission/RBAC evidence required" };
   }
 

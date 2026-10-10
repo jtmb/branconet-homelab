@@ -3,9 +3,10 @@ import { KvRegistry } from "./kv-registry";
 import type { NativeSecretTransport } from "./secret-client";
 import type { FlatSecretGuard } from "./cluster-secrets";
 import { equalValues, historyValues, ownedPath, parseState, selectedValues } from "./kv-native-state";
+import type { Prisma } from "@prisma/client";
 
-export async function requireLegacyPrincipal(registry: KvRegistry) {
-  const principal = await registry.db.kvServicePrincipal.findUnique({ where: { id: "legacy-lookup" } });
+export async function requireLegacyPrincipal(registry: KvRegistry, client: Pick<Prisma.TransactionClient,"kvServicePrincipal"> = registry.db) {
+  const principal = await client.kvServicePrincipal.findUnique({ where: { id: "legacy-lookup" } });
   if (!principal?.enabled) throw new KvError(403, "Legacy lookup principal is disabled");
 }
 
@@ -42,13 +43,16 @@ export function flatSecretGuard(registry: KvRegistry, transport: NativeSecretTra
     const ref = current.versions.find(v => v.version === current.head);
     const headValues = ref ? historyValues(await transport.read(registry.config.historyNamespace, ref.name), path, current.sourceUid, ref) : {};
     if (!equalValues(headValues, selectedValues(secret!, path))) throw new KvError(409, "Selected native values changed externally; reconcile explicitly");
+    await registry.serialized(async tx => {
     if (legacyAlias !== undefined) {
-      await requireLegacyPrincipal(registry);
+      await requireLegacyPrincipal(registry,tx);
       // Recheck exact grants/denies after the native read, before returning any value.
-      const grant = await registry.db.kvLegacyGrant.findUnique({ where: { pathId_alias: { pathId: path.id, alias: legacyAlias } } });
+      const grant = await tx.kvLegacyGrant.findUnique({ where: { pathId_alias: { pathId: path.id, alias: legacyAlias } } });
       if (!grant || grant.namespace !== target.namespace || grant.name !== target.name || grant.key !== target.key ||
-        !policyAllows([{ mountId: path.mountId, prefix: path.path, effect: "allow", actions: '["read"]' }, ...await registry.rules("legacy-lookup")], path, "read"))
+        !policyAllows([{ mountId: path.mountId, prefix: path.path, effect: "allow", actions: '["read"]' }, ...await registry.rules("legacy-lookup",tx)], path, "read"))
         throw new KvError(403, "Legacy lookup grant revoked");
-    } else { await registry.admin(human!); await registry.authorize(human!, path, "read"); }
+    } else { await registry.admin(human!,tx); await registry.authorize(human!, path, "read",tx); }
+    await tx.kvAudit.create({data:{actorId:legacyAlias===undefined ? human!.id : "legacy-lookup",pathId:path.id,mountId:path.mountId,path:path.path,namespace:path.namespace,name:path.name,action:legacyAlias===undefined ? "flat-read" : "legacy-read",previousVersion:current.head,newVersion:current.head,outcome:"authorized"}});
+    });
   };
 }
