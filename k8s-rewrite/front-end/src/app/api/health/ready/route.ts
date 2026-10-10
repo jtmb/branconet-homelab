@@ -13,6 +13,7 @@ const cache = scope.__bortusReadiness ??= createReadinessCache(async key => {
     prisma.accountLock.findUnique({ where: { id: 1 }, select: { id: true } }),
     prisma.kvServicePrincipal.findUnique({ where: { id: "legacy-lookup" }, select: { id: true } }),
     prisma.user.findFirst({ select: { sessionVersion: true, engineAdmin: true } }), listAliases(),
+    prisma.kvAudit.findFirst({ select: { principal: true, alias: true, key: true } }),
   ]);
   if (!lock || !principal) throw new Error("Migration metadata unavailable");
   const transport = createSecretTransport();

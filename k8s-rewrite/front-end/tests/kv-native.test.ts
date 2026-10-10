@@ -90,7 +90,7 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
     execFileSync(process.execPath, [path.resolve("node_modules/prisma/build/index.js"), "migrate", "deploy"], { env, stdio: "pipe" });
     const accounts = new AccountStore(db), admin = await accounts.register({ username:"operator", passwordHash:"synthetic-hash" });
     const actor = { id: admin.id, sessionVersion: admin.sessionVersion };
-    const registry = new KvRegistry(db, ["apps","history"], kvConfig({ BORTUS_HISTORY_NAMESPACE:"history", BORTUS_KV_GUARDED_ADOPTION:"true" }));
+    const registry = new KvRegistry(db, ["apps","history"], kvConfig({ BORTUS_HISTORY_NAMESPACE:"history", BORTUS_KV_GUARDED_ADOPTION:"true" }), async()=>aliases);
     const mount = await registry.createMount(actor, { name:"apps", namespaces:["apps"] });
     const registered = await registry.registerPath(actor, { mountId:mount.id, path:"services/api/credentials", namespace:"apps", name:"imported", fields:[{field:"__proto__",key:"__proto__"},{field:"constructor",key:"constructor"},{field:"toString",key:"toString"}] });
     const native = new NativeFixture();
@@ -211,8 +211,12 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       await assert.rejects(legacy("new-post-adoption-alias").read(key),denied(403));
       await db.kvLegacyGrant.deleteMany({where:{pathId:registered.id,alias:aliases[0].alias}});
       await assert.rejects(legacy(aliases[0].alias).read(aliases[0]),denied(403));
-      const rule=await registry.savePolicy(actor,{principal:"legacy-lookup",mountId:mount.id,prefix:registered.path,effect:"deny",actions:["read"]});
-      await assert.rejects(legacy(aliases[2].alias).read(aliases[2]),denied(403)); await registry.deletePolicy(actor,rule.id,rule.revision);
+      const legacyRule={principal:"legacy-lookup",mountId:mount.id,prefix:registered.path,effect:"deny" as const,actions:["read" as const]};
+      const preview=await registry.previewPolicy(actor,legacyRule);
+      const rule=await registry.savePolicy(actor,legacyRule,undefined,undefined,{fingerprint:preview.fingerprint!,aliases:aliases.map(ref=>ref.alias),confirmLegacyImpact:true});
+      await assert.rejects(legacy(aliases[2].alias).read(aliases[2]),denied(403));
+      const removePreview=await registry.previewPolicy(actor,null,rule.id,rule.revision);
+      await registry.deletePolicy(actor,rule.id,rule.revision,{fingerprint:removePreview.fingerprint!,aliases:aliases.map(ref=>ref.alias),confirmLegacyImpact:true});
       await db.kvServicePrincipal.update({where:{id:"legacy-lookup"},data:{enabled:false}});
       await assert.rejects(requireLegacyPrincipal(registry),denied(403));
       await assert.rejects(legacy(aliases[2].alias).read(aliases[2]),denied(403));

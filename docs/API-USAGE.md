@@ -240,3 +240,36 @@ New private credentials use native Secrets and are never retained in `GitRepo.au
 Exact public GET `/api/health/live` reports process liveness. `/api/health/ready` checks signing/lookup configuration, migrated SQLite/aliases and native Secret list access across the allowlist, returning 503 on failure. Neither returns credentials.
 
 Readiness passed local unit and production HTTP/TLS qualification with coalesced 10-second results/two-second failure backoff and a nine-second dependency deadline. It verifies forward account/KV metadata and bounded aliases, then requests only a limit-one PartialObjectMetadataList in each current namespace, plus the history namespace when guarded mode is enabled. Four workers share an eight-second native budget; full Secret data lists and write probes are not used. Unsupported metadata negotiation or unavailable dependencies return 503 with fixed metadata only. Readiness does not prove native write RBAC or external admission enforcement.
+
+## Legacy access administration
+
+Legacy controls passed local unit and production HTTP/TLS qualification: GET/PATCH /api/kv/legacy reads or changes the named principal, POST /api/kv/legacy/preview previews principal/grant/revoke actions, GET/POST /api/kv/legacy/grants lists or restores exact grants, and DELETE /api/kv/legacy/grants/[id] revokes one. All require fresh effective engine administration and private/no-store responses. Principal/grant changes require principal revision; grant creation additionally requires pathRevision, a current explicit alias matching one registered key and a previously committed native path. There is no native value read/write or credential issue in these controls.
+
+| Method/path | Request | Response |
+|---|---|---|
+| GET /api/kv/legacy | Cookie only | Named principal enabled/revision, grantCount, audience and includesNonsecretConfiguration |
+| PATCH /api/kv/legacy | enabled, revision, legacyImpact | Updated principal, affectedAliasCount; no credential |
+| POST /api/kv/legacy/preview | kind principal/grant/revoke, intended change fields and revision; optional alias cursor | fingerprint, revision, affectedAliasCount, up to 100 items, nextCursor, selectedGrant and boundary |
+| GET /api/kv/legacy/grants | Optional UUID cursor query | Up to 100 exact metadata grants and nextCursor |
+| POST /api/kv/legacy/grants | pathId, pathRevision, alias, revision, legacyImpact | 201 with committed grant and principal revision |
+| DELETE /api/kv/legacy/grants/[id] | revision, legacyImpact | Committed revocation metadata |
+| POST /api/kv/policies/preview | action create/update/delete; policy fields for create/update; id/revision for update/delete; optional alias cursor | Legacy impact preview, or required:false with no impact for a human-only rule |
+
+For principal preview use kind principal and enabled; for grant preview use kind grant, pathId, pathRevision and alias; for revoke preview use kind revoke and grantId. Prepare the intended JSON metadata request using revisions read from current metadata. For example, use the existing protected login cookie file:
+
+```bash
+curl -b /tmp/botrus-cookies http://localhost:4000/api/kv/legacy
+curl -b /tmp/botrus-cookies http://localhost:4000/api/kv/legacy/preview \
+  -H 'Content-Type: application/json' --data-binary @/protected/legacy-preview.json
+```
+
+Read all nextCursor pages using the same intended change. Prepare a separate commit JSON file with enabled/revision and legacyImpact containing the preview fingerprint, every exact affected alias, confirmLegacyImpact:true and confirmConfigurationImpact:true. Then explicitly apply that reviewed principal change:
+
+```bash
+curl -b /tmp/botrus-cookies -X PATCH http://localhost:4000/api/kv/legacy \
+  -H 'Content-Type: application/json' --data-binary @/protected/legacy-principal-change.json
+```
+
+Impact fingerprints normalize request field order and include fresh mount revision and normalized namespace scope as well as alias, path, grant, principal and policy metadata. Preview items expose mountRevision; a registered alias outside the current mount scope has basis outside-scope and neither beforeAllowed nor afterAllowed. Any changed snapshot requires a new preview and acknowledgement, even if the selected policy's effective result is unchanged.
+
+POST /api/kv/policies/preview accepts action create/update/delete, policy fields, id/revision for an existing rule and optional alias cursor. Legacy-involving policy commits additionally require legacyImpact:{fingerprint,aliases,confirmLegacyImpact:true}. Read every preview page and repeat exactly all affected alias names; changed fingerprint/set returns 409 and missing acknowledgement 428. Principal enable/disable additionally requires confirmConfigurationImpact:true because it controls nonsecret lookup too. Preview items are bounded to 100; acknowledged arrays to 10,000 and serialized bodies to the existing 512-KiB cap. Large acknowledgements fail explicitly, never truncate. Alias-file changes outside SQLite remain independently controlled; the metadata preview does not prove native head/key availability. Forward audit migration 20261010230000_legacy_access_audit adds nullable principal/alias/key metadata; readiness checks these columns before claiming ready. UI/final-image/live acceptance is pending.

@@ -2,6 +2,8 @@ import type { Prisma, PrismaClient } from "@prisma/client";
 import { KvError, KV_ACTIONS, fieldMapping, logicalPath, metadataRevision, policyAllows, parseActions, type KvAction, type KvActor, type KvConfig, type KvRule, type KvScope } from "./kv-contract";
 import { hashMatches, issueCredential, presentedCredential } from "./kv-credentials";
 import { validateTarget } from "./cluster-secrets";
+import { acknowledgeLegacyImpact, legacyImpact, legacyImpactPage, readLegacyAliases, type LegacyAcknowledgement } from "./kv-legacy-access";
+import type { SecretAlias } from "./secret-aliases";
 
 type Client = Prisma.TransactionClient;
 const identityMetadata = { id: true, ownerId: true, name: true, expiresAt: true, revokedAt: true, createdAt: true } as const;
@@ -10,7 +12,8 @@ export type PolicyInput = { principal: string; mountId: string | null; prefix: s
 export type IdentityScope = { mountId: string; prefix: string; actions: KvAction[] };
 
 export class KvRegistry {
-  constructor(readonly db: PrismaClient, readonly namespaces: readonly string[], readonly config: KvConfig) {}
+  constructor(readonly db: PrismaClient, readonly namespaces: readonly string[], readonly config: KvConfig,
+    readonly legacyAliases: (client: Client) => Promise<SecretAlias[]> = readLegacyAliases) {}
 
   async serialized<T>(operation: (tx: Client) => Promise<T>): Promise<T> {
     for (let attempt = 0; attempt < 4; attempt++) {
@@ -101,8 +104,8 @@ export class KvRegistry {
     const freshRules = admin ? null : await this.rules(`user:${actor.id}`), freshIdentity = identity ? await this.rules(`identity:${actor.identityId}`) : null;
     const permitted = (row: typeof rows[number]) => admin || !!row.mountId && !!row.path && policyAllows(freshRules!, { mountId: row.mountId, path: row.path }, "list") &&
       (!freshIdentity || policyAllows(freshIdentity, { mountId: row.mountId, path: row.path }, "list"));
-    const items = rows.slice(0, 100).filter(permitted).map(({ id, actorId, operationId, pathId, mountId, path, namespace, name, action, previousVersion, newVersion, outcome, createdAt }) =>
-      ({ id, actorId, operationId, pathId, mountId, path, namespace, name, action, previousVersion, newVersion, outcome, createdAt }));
+    const items = rows.slice(0, 100).filter(permitted).map(({ id, actorId, operationId, pathId, mountId, path, namespace, name, principal, alias, key, action, previousVersion, newVersion, outcome, createdAt }) =>
+      ({ id, actorId, operationId, pathId, mountId, path, namespace, name, principal, alias, key, action, previousVersion, newVersion, outcome, createdAt }));
     await this.current(actor);
     return { items, nextCursor: rows.length > 100 ? rows[99].id : null };
   }
@@ -235,30 +238,48 @@ export class KvRegistry {
     return { ...input, actions: JSON.stringify(input.actions) };
   }
 
-  savePolicy(actor: KvActor, input: PolicyInput, id?: string, revision?: unknown) {
+  previewPolicy(actor: KvActor, input: PolicyInput | null, id?: string, revision?: unknown, cursor?: string) {
+    return this.serialized(async tx => {
+      await this.admin(actor, tx);
+      const old = id ? await tx.kvPolicy.findUnique({ where: { id } }) : null;
+      if (id && !old) throw new KvError(404, "KV policy not found");
+      if (old && old.revision !== metadataRevision(revision)) throw new KvError(409, "KV policy changed; refresh before editing");
+      if (input) await this.validPolicy(input, tx, id);
+      else if (!old) throw new KvError(400, "Choose an existing policy to remove");
+      if (input?.principal !== "legacy-lookup" && old?.principal !== "legacy-lookup") return { required: false as const, fingerprint: null, affectedAliasCount: 0, items: [], nextCursor: null };
+      return legacyImpactPage(await legacyImpact(this, tx, { kind: "policy", input, previous: old }), cursor);
+    });
+  }
+
+  savePolicy(actor: KvActor, input: PolicyInput, id?: string, revision?: unknown, acknowledgement?: LegacyAcknowledgement) {
     return this.serialized(async tx => {
       await this.admin(actor, tx);
       const data = await this.validPolicy(input, tx, id);
+      const old = id ? await tx.kvPolicy.findUnique({ where: { id } }) : null;
       if (id) {
-        const old = await tx.kvPolicy.findUnique({ where: { id } });
         if (!old) throw new KvError(404, "KV policy not found");
         if (old.revision !== metadataRevision(revision)) throw new KvError(409, "KV policy changed; refresh before editing");
       }
+      const legacy = input.principal === "legacy-lookup" || old?.principal === "legacy-lookup";
+      if (legacy) acknowledgeLegacyImpact(await legacyImpact(this, tx, { kind: "policy", input, previous: old }), acknowledgement);
       const result = id ? await tx.kvPolicy.update({ where: { id }, data: { ...data, revision: { increment: 1 } } }) : await tx.kvPolicy.create({ data });
-      await tx.kvAudit.create({ data: { actorId: actor.id, action: id ? "policy-update" : "policy-create", mountId: input.mountId, path: input.prefix || null, outcome: "committed" } });
+      if (legacy) await tx.kvServicePrincipal.update({ where: { id: "legacy-lookup" }, data: { revision: { increment: 1 } } });
+      await tx.kvAudit.create({ data: { actorId: actor.id, principal: input.principal, action: id ? "policy-update" : "policy-create", mountId: input.mountId, path: input.prefix || null, outcome: "committed" } });
       return { ...result, actions: parseActions(result.actions) };
     });
   }
 
-  deletePolicy(actor: KvActor, id: string, revision: unknown) {
+  deletePolicy(actor: KvActor, id: string, revision: unknown, acknowledgement?: LegacyAcknowledgement) {
     const expected = metadataRevision(revision);
     return this.serialized(async tx => {
       await this.admin(actor, tx);
       const policy = await tx.kvPolicy.findUnique({ where: { id } });
       if (!policy) throw new KvError(404, "KV policy not found");
       if (policy.revision !== expected) throw new KvError(409, "KV policy changed; refresh before editing");
+      if (policy.principal === "legacy-lookup") acknowledgeLegacyImpact(await legacyImpact(this, tx, { kind: "policy", input: null, previous: policy }), acknowledgement);
       await tx.kvPolicy.delete({ where: { id } });
-      await tx.kvAudit.create({ data: { actorId: actor.id, action: "policy-delete", mountId: policy.mountId, path: policy.prefix || null, outcome: "committed" } });
+      if (policy.principal === "legacy-lookup") await tx.kvServicePrincipal.update({ where: { id: "legacy-lookup" }, data: { revision: { increment: 1 } } });
+      await tx.kvAudit.create({ data: { actorId: actor.id, principal: policy.principal, action: "policy-delete", mountId: policy.mountId, path: policy.prefix || null, outcome: "committed" } });
     });
   }
 

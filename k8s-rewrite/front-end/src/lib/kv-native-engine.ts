@@ -99,6 +99,7 @@ export class KvNativeEngine {
       }
       await tx.kvAudit.create({ data: { actorId: op.actorId, operationId: op.id, ...target(path), action, previousVersion, newVersion, outcome: "pending" } });
       for (const alias of aliases) await tx.kvLegacyGrant.upsert({ where: { pathId_alias: { pathId: path.id, alias: alias.alias } }, update: {}, create: { pathId: path.id, ...alias } });
+      if (aliases.length) await tx.kvServicePrincipal.update({ where: { id: "legacy-lookup" }, data: { revision: { increment: 1 } } });
       return op;
     });
   }
