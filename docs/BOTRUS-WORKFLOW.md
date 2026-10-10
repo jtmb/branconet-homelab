@@ -1,5 +1,7 @@
 # BORTUS workflow guide
 
+For an unadopted native key on Secrets, select metadata, optionally reveal, then enter a replacement or choose Intentionally save an empty value. Save remains disabled for untouched selection/reveal. Clear display and draft erases the local editor without a native request. Delete selected key opens an exact namespace/Secret/key confirmation; cancelling sends no delete. Stale versions fail and require refresh/reselection before an explicit retry. Adopted keys still require versioned KV mutations. These editor changes passed local TLS/browser qualification; see [editor evidence](implementation-evidence/secret-intent.json).
+
 The application lives at `k8s-rewrite/front-end/`; its documentation lives at repo-root `docs/`. This main-branch publication includes the dashboard and application runtime. Existing Swarm sources remain in place. Kubernetes charts, provisioning roles and Flux source changes are separate deployment work.
 
 ## Local setup

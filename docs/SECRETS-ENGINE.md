@@ -6,6 +6,8 @@ The [native KV design](BORTUS-KV-DESIGN.md) specifies grouped paths, immutable n
 
 ## Mapping and API
 
+The flat Secret editor now requires a deliberately entered replacement or the explicit empty-value checkbox. Selection, reveal, successful save and Clear display and draft leave Save disabled; clearing never sends a native change or cancels one already sent. Deletion requires the exact namespace/Secret/key; alias removal requires the exact alias and retains native values. Direct requests use the shared bounded request lifecycle, with no automatic retry. Clearing, target changes, permission loss and navigation discard value state and fence late reveal callbacks. Values never enter shared metadata queries or browser storage. Focused regressions, lint/build/type and disposable TLS/browser qualification passed, including intentional empty create/update, stale-version conflicts, late reveal fencing, permission withdrawal and exact/cancelled deletion. See [editor evidence](implementation-evidence/secret-intent.json). Server CAS and adopted-key restrictions remain authoritative.
+
 Optional named consumer reload controls passed local qualification. Only effective administrators with rotate policy can inspect/reload a declared same-namespace Deployment/StatefulSet/DaemonSet. The workflow stores the consumer UID/RV before patching only its template rotation marker, uses JSON Patch consistency tests and accepts positive same-UID marker read-back after timeout. Reload-pending remains explicit on missing/replaced/unreachable consumers or audit failures; no automatic retry occurs. Requesting a template change does not prove pods consumed the replacement.
 
 Consumer projection includes only UID, resourceVersion and a syntactically valid UUID rotation marker; arbitrary workload annotations/env/commands and invalid marker strings are excluded. No credential value is added to kubectl arguments or workflow metadata.
@@ -48,7 +50,7 @@ JWT signing material is external and stable, never auto-persisted. Existing sens
 
 The optional local runner expects a separately supplied sibling k8s-rewrite/ansible-playbook tree. Kubernetes provisioning roles and lookup plugins are not included in this application-only main merge.
 
-The exact scoped automation handler and filtered audit/capability routes passed local unit and production HTTP/TLS qualification. Cookie and legacy Bearer audiences cannot authenticate automation. Tokens intersect fresh owner/token policy and cannot initialize/adopt native targets or manage infrastructure. Rotation and KV UI remain pending.
+The exact scoped automation handler and filtered audit/capability routes passed local unit and production HTTP/TLS qualification. Cookie and legacy Bearer audiences cannot authenticate automation. Tokens intersect fresh owner/token policy and cannot initialize/adopt native targets or manage infrastructure. Rotation APIs also passed local qualification; KV UI and final-image/live acceptance remain pending.
 
 ## KV delivery architecture (implementation pending)
 

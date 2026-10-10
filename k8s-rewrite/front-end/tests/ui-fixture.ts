@@ -8,6 +8,7 @@ import { randomBytes } from "node:crypto";
 import { PrismaClient } from "@prisma/client";
 import { SignJWT } from "jose";
 import { fakeKubectl } from "./helpers/fake-kubectl";
+import { nativeTlsFixture } from "./helpers/native-tls";
 
 async function port() {
   const holder = createServer();
@@ -24,6 +25,8 @@ const requestCounts = new Map<string, number>();
 let activeStreams = 0;
 let child: ChildProcess | undefined;
 let db: PrismaClient | undefined;
+let native: Awaited<ReturnType<typeof nativeTlsFixture>> | undefined;
+let delayedReveal = false;
 try {
   const fixture = await fakeKubectl(dir);
   const created = "2026-10-01T00:00:00Z";
@@ -47,9 +50,14 @@ try {
   const database = "file:" + path.join(dir, "ui.db").replaceAll("\\", "/");
   const kubeconfig = path.join(dir, "config.json");
   await writeFile(kubeconfig, JSON.stringify({ apiVersion: "v1", kind: "Config", clusters: [{ name: "fixture", cluster: { server: "https://127.0.0.1:1" } }], users: [{ name: "fixture", user: {} }], contexts: [{ name: "fixture", context: { cluster: "fixture", user: "fixture" } }], "current-context": "fixture" }));
+  if (process.env.BORTUS_UI_NATIVE_FIXTURE === "true") {
+    native = await nativeTlsFixture(dir);
+    native.seed("apps", "editor-fixture", { editable: Buffer.from("fixture initial native value").toString("base64"), unrelated: Buffer.from("fixture unrelated native value").toString("base64") },
+      { metadata: { labels: { fixture: "retained" }, annotations: { "fixture-private": "fixture annotation value" } } });
+  }
   const clean = Object.fromEntries(["SystemRoot", "WINDIR", "COMSPEC", "PATH", "TEMP", "TMP", "USERPROFILE", "HOME", "SystemDrive", "APPDATA", "LOCALAPPDATA"].filter(key => process.env[key] !== undefined).map(key => [key, process.env[key]]));
   const signing = randomBytes(48).toString("hex");
-  const env = { ...clean, ...fixture.env, DATABASE_URL: database, BOTRUS_JWT_SECRET: signing, BOTRUS_SECRETS_KEY: randomBytes(32).toString("hex"), KUBECONFIG: kubeconfig,
+  const env = { ...clean, ...fixture.env, DATABASE_URL: database, BOTRUS_JWT_SECRET: signing, BOTRUS_SECRETS_KEY: randomBytes(32).toString("hex"), KUBECONFIG: native?.config ?? kubeconfig,
     BORTUS_SECRET_NAMESPACES: "apps", BORTUS_DISABLE_PROVISIONING: "true", NODE_ENV: "production" as const, HOSTNAME: "127.0.0.1", PORT: String(await port()) };
   execFileSync(process.execPath, [path.resolve("node_modules/prisma/build/index.js"), "migrate", "deploy"], { env, stdio: "pipe" });
   db = new PrismaClient({ datasources: { db: { url: database } } });
@@ -87,6 +95,25 @@ try {
         response.end(JSON.stringify({ requests: Object.fromEntries(requestCounts), activeStreams }));
         return;
       }
+      if (native && url.pathname === "/__fixture/native-status") {
+        const object = native.objects.get("apps/editor-fixture");
+        response.setHeader("Content-Type", "application/json");
+        response.end(JSON.stringify({ reads: native.calls.filter(call => call.method === "GET" && call.path.endsWith("/editor-fixture")).length,
+          writes: native.calls.filter(call => call.method === "PUT" || call.method === "POST" || call.method === "DELETE").length,
+          objectRetained: !!object, editablePresent: Object.hasOwn(object?.data ?? {}, "editable"), editableEmpty: object?.data?.editable === "",
+          unrelatedPreserved: object?.data?.unrelated === Buffer.from("fixture unrelated native value").toString("base64"),
+          metadataPreserved: object?.metadata?.labels?.fixture === "retained" && object.metadata.annotations?.["fixture-private"] === "fixture annotation value" }));
+        return;
+      }
+      if (native && url.pathname === "/__fixture/native-control" && request.method === "POST") {
+        let raw = ""; for await (const chunk of request) { raw += chunk; if (raw.length > 1024) { response.writeHead(413); response.end(); return; } }
+        const action = JSON.parse(raw).action;
+        if (action === "delay-reveal") delayedReveal = true;
+        else if (action === "withdraw-admin" || action === "restore-admin") await db!.user.update({ where: { id: writer.id }, data: { engineAdmin: action === "restore-admin" } });
+        else if (action === "external-change") { const object = native.objects.get("apps/editor-fixture")!; native.seed("apps", "editor-fixture", object.data ?? {}, object); }
+        else { response.writeHead(400); response.end(); return; }
+        response.writeHead(204); response.end(); return;
+      }
       const requestKey = request.method + " " + url.pathname;
       requestCounts.set(requestKey, (requestCounts.get(requestKey) ?? 0) + 1);
       if (url.pathname.startsWith("/_next/static/")) {
@@ -106,7 +133,10 @@ try {
           const end = () => { if (!ended) { ended = true; activeStreams--; } };
           result.once("end", end); result.once("close", end); response.once("close", end);
         }
-        response.writeHead(result.statusCode ?? 502, result.headers); result.pipe(response);
+        response.writeHead(result.statusCode ?? 502, result.headers);
+        if (delayedReveal && request.method === "GET" && url.pathname === "/api/secrets" && url.searchParams.has("key")) {
+          delayedReveal = false; result.pause(); setTimeout(() => { if (!response.destroyed) result.pipe(response); else result.destroy(); }, 4000);
+        } else result.pipe(response);
       });
       response.once("close", () => upstream.destroy());
       upstream.on("error", () => { if (!response.destroyed) { if (!response.headersSent) response.writeHead(502); response.end(); } });
@@ -125,6 +155,7 @@ try {
   for (const server of servers) { server.closeAllConnections(); await new Promise<void>(resolve => server.close(() => resolve())); }
   if (child && child.exitCode === null && child.signalCode === null) { child.kill(); await once(child, "exit"); }
   await db?.$disconnect();
+  await native?.close();
   const tempRoot = path.resolve(tmpdir());
   if (!path.resolve(dir).startsWith(tempRoot + path.sep) || !path.basename(dir).startsWith("bortus-ui-test-")) throw new Error("Unsafe UI fixture cleanup target");
   await rm(dir, { recursive: true, force: true });

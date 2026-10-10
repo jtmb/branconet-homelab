@@ -1,5 +1,7 @@
 # BORTUS user permissions
 
+The flat Secret editor uses the fresh shared administrator session. Losing access clears value/draft/target/delete-confirmation state, and late reveal callbacks cannot restore it. Selection/reveal cannot submit a replacement; empty values require explicit intent. Key deletion confirms the exact namespace/Secret/key, and alias removal confirms the exact alias. These client controls supplement fresh server authorization and CAS; local TLS/browser qualification passed, including withdrawal and late-response fencing.
+
 The locally qualified rotation workflow uses fresh rotate policy without granting value read/update access. Optional named consumer inspection/reload additionally requires effective administration; scoped users and scoped tokens cannot use it. Consumer acknowledgement is an explicit operator assertion against the current native rotation head. Public workflow/reload qualification passed locally; final-image/live evidence remains pending.
 
 BORTUS has two roles stored in SQLite: `write` for policy-authorized KV access and `readonly` for permitted metadata. Effective engine administration additionally requires write plus `engineAdmin` and grants infrastructure and peer-account access. The JWT carries user ID, username and sessionVersion, never role; authorization queries the current DB role, so demotion takes effect without re-login.

@@ -19,12 +19,12 @@ Local implementation/acceptance and external Linux image/real-cluster acceptance
 | A09 deployment state | UID ownership; zero/paused/generation state; explicit integer scale form; zero→one actual argv | Local passed; real controller/Flux pending |
 | A10 pod filters | API and browser namespace/type/label filtering; correct empty result | Local passed |
 | A11 polling/refetch | Shared completion-based lifecycle, cancellation/backoff/generation tests; actual browser timer fix | Resource/session/provisioning/administration local passed; Flux migration pending |
-| A12 permissions/runtime | Fresh shared session in resources/topnav/shells/provisioning/admin; browser demotion erases user editor/password input | Local passed for migrated callers; Secrets/Flux pending |
+| A12 permissions/runtime | Fresh shared session in resources/topnav/shells/provisioning/admin; browser demotion erases user editor/password input | Local passed for migrated callers and flat Secrets; Flux/full KV UI pending |
 | A13 sorting | Numeric/quantity/date/count/unknown tests; browser restarts 2/7/12; typed admin columns | Resources/admin local passed; Secrets/Flux/child tables pending |
 | A14 mobile | 56-pixel narrow rail, local table scrolling, dialog fit; resources/admin at 320/390/768 CSS widths | Migrated screens local passed; Secrets/Flux/actual zoom pending |
 | A15 accessibility | Named controls/links, resource/admin keyboard dialog trap/return; exact confirmations | Local passed for migrated controls; other controls/automated scan/manual screen reader pending |
 | A16 YAML lifecycle | Reset per open/mode; authoritative readOnly; dirty save/discard; readonly reopening/focus return | Local browser passed |
-| A17 Secret intent | Existing CAS/value safety plus other-key annotation/managed-fields exclusion regression | Engine/editor dirty/empty/delete-intent work pending |
+| A17 Secret intent | Deliberate replacement/empty checkbox, exact deletion, late-response fencing and shared request lifecycle; TLS/browser conflict/revocation/navigation checks | Flat editor local passed; full KV UI and image/live acceptance pending |
 | A18 SSE | Backpressure/Unicode SQL slices, cursor resume, fresh account checks, terminal cleanup; bounded text tail and browser completion/unmount counts | Local unit/HTTP/browser passed; real runner/image pending |
 | A19 quality gates | Flat-config zero-warning lint; app-only Node22 CI; clean Node22 Windows install/build/type/49 unit/HTTP pass | Local passed; external pre-KV Linux/image passed; new KV image pending |
 | A20 dependencies | Compatible lockfile/PostCSS updates, unused highlighter removed; production audit 7→3 entries for one retained Prisma-config advisory | Local compatibility/reachability review passed; residual advisories/ESLint retirement documented; image/OS scan pending |
@@ -56,6 +56,8 @@ After each behavior change, every docs domain is checked and affected contracts 
 A command combining shutdown and recursive cleanup of an owned UI fixture was rejected by automatic approval review. Narrow shutdown of the two verified disposable processes succeeded; its temporary files were retained. Stdin-controlled fixtures normally stop and clean up. The KV browser fixture's non-PTY stdin had closed before cleanup; its three verified child processes were stopped separately and its synthetic temporary files retained. The earlier blocked historical prototype is never retried or bypassed.
 
 ## Native Secrets engine scope
+
+The qualified flat editor stage addresses A17: selection/reveal/clear/save leave no replacement intent; intentional empty values use an explicit checkbox; key and alias deletions require exact metadata confirmation. Direct requests use the bounded shared lifecycle and fence late values after clearing, permission loss or navigation. All 14 focused regressions, zero-warning lint, a fresh production build/typecheck and browser interactions passed using the owned UI fixture's opt-in `BORTUS_UI_NATIVE_FIXTURE=true` CA-verified mock API. Its controls and assertions remain synthetic and never mount production credentials or expose values in fixture status.
 
 Rotation qualification passes all 86 unit tests, expanded 18-test native and two-test consumer follow-ups, zero-warning lint, a fresh production build/typecheck and both production HTTP suites (30.47 s existing, 32.74 s native; overall 33.10 s). The first scoped fixture lacked sessionVersion and the old migration fixture copied the consumer ALTER too early; both corrections remain recorded. Ordered baseline → KV → consumer migration asserts preserved accounts, hashes, session versions, aliases and an existing rotation intent with zero schema drift. See [rotation evidence](implementation-evidence/kv-rotation.json).
 

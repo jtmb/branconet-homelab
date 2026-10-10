@@ -1,6 +1,9 @@
 "use client";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { useQuery, useSession } from "@/lib/use-query";
+import { useMutation } from "@/lib/use-mutation";
+import dynamic from "next/dynamic";
+const ConfirmDialog = dynamic(() => import("../confirm-dialog"), { ssr: false });
 type Summary = {
   namespace: string;
   name: string;
@@ -10,16 +13,12 @@ type Summary = {
   resourceVersion: string;
 };
 type Ref = { alias: string; namespace: string; name: string; key: string };
+type Target = { namespace: string; name: string; key: string; resourceVersion: string };
+const blank: Target = { namespace: "", name: "", key: "", resourceVersion: "" };
 const input =
   "bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm w-full";
 const button =
   "rounded-lg bg-indigo-500/10 border border-indigo-500/20 px-3 py-2 text-sm text-indigo-300 disabled:opacity-40";
-async function api(url: string, init?: RequestInit) {
-  const response = await fetch(url, { ...init, cache: "no-store" });
-  const result = await response.json();
-  if (!response.ok) throw new Error(result.error || "Request failed");
-  return result;
-}
 export default function SecretsEditor() {
   const session = useSession();
   const canWrite = session.canWrite;
@@ -34,33 +33,35 @@ export default function SecretsEditor() {
   );
   const secrets = secretQuery.data?.secrets ?? [], refs = aliasQuery.data?.references ?? [];
   const refetchSecrets = secretQuery.refetch, refetchAliases = aliasQuery.refetch;
-  const [target, setTarget] = useState({
-    namespace: "",
-    name: "",
-    key: "",
-    resourceVersion: "",
-  });
+  const [target, setTarget] = useState<Target>(blank);
   const [value, setValue] = useState(""),
     [mode, setMode] = useState("create"),
     [alias, setAlias] = useState("");
-  const [message, setMessage] = useState(""),
-    [busy, setBusy] = useState(false);
-  useEffect(() => { if (!canWrite) { setValue(""); setAlias(""); setTarget({ namespace: "", name: "", key: "", resourceVersion: "" }); } }, [canWrite]);
-  const refresh = useCallback(async () => {
+  const [entered, setEntered] = useState(false), [emptyIntent, setEmptyIntent] = useState(false);
+  const [deleting, setDeleting] = useState<{ kind: "key"; target: Target } | { kind: "alias"; alias: string }>();
+  const [message, setMessage] = useState("");
+  const mutation = useMutation(), busy = mutation.busy;
+  const canSave = !!target.namespace && !!target.name && !!target.key && (mode === "create" || !!target.resourceVersion)
+    && (emptyIntent || entered && value !== "");
+  useEffect(() => { if (!canWrite) { setValue(""); setEntered(false); setEmptyIntent(false); setDeleting(undefined); setAlias(""); setTarget(blank); } }, [canWrite]);
+  const refresh = useCallback(() => {
     refetchSecrets();
     refetchAliases();
   }, [refetchSecrets, refetchAliases]);
-  async function perform(action: () => Promise<void>, requiresWrite = true) {
-    if (requiresWrite && !reveal.current.allowed || busy) return;
-    setBusy(true);
+  function clearValue() {
+    reveal.current.epoch++;
+    setValue(""); setEntered(false); setEmptyIntent(false);
+  }
+  function perform<T>(url: string, init: RequestInit, success: (result: T) => void) {
+    if (!reveal.current.allowed || busy) return;
+    const epoch = reveal.current.epoch;
     setMessage("");
-    try {
-      await action();
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Request failed");
-    } finally {
-      setBusy(false);
-    }
+    void mutation.mutate<T>(url, init, result => {
+      if (!reveal.current.mounted || !reveal.current.allowed) return;
+      if (init.method && init.method !== "GET") refresh();
+      if (epoch !== reveal.current.epoch) { setMessage("Request finished. Refresh and select the target to check its current state."); return; }
+      success(result);
+    });
   }
   function select(secret: Summary, key: string) {
     setTarget({
@@ -70,25 +71,23 @@ export default function SecretsEditor() {
       resourceVersion: secret.resourceVersion,
     });
     setMode("update");
-    setValue("");
+    clearValue(); setAlias(""); mutation.clear(); setMessage("");
   }
   async function save(event: FormEvent) {
     event.preventDefault();
-    if (!canWrite) return;
-    await perform(async () => {
-      const result = await api("/api/secrets", {
+    if (!canWrite || !canSave) return;
+    perform<{ secret: Summary }>("/api/secrets", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...target, value, mode }),
-      });
+        body: JSON.stringify({ ...target, value: emptyIntent ? "" : value, mode }),
+      }, result => {
       setTarget((current) => ({
         ...current,
         resourceVersion: result.secret.resourceVersion,
       }));
       setMode("update");
-      setValue("");
+      clearValue();
       setMessage("Native key saved.");
-      await refresh();
     });
   }
   return (
@@ -111,10 +110,11 @@ export default function SecretsEditor() {
       <button
         className={button}
         disabled={busy}
-        onClick={() => perform(refresh, false)}
+        onClick={refresh}
       >
         Refresh
       </button>
+      {mutation.error && <p role="alert" className="text-sm text-red-300">{mutation.error} Refresh metadata and select the target before an explicit retry; the draft has not been retried.</p>}
       {!canWrite && (
         <p className="text-sm text-zinc-400">
           Readonly and scoped users can view metadata. Flat value access requires engine administration.
@@ -176,6 +176,7 @@ export default function SecretsEditor() {
                   <input
                     className={input}
                     required
+                    disabled={busy}
                     value={target[field]}
                     onChange={(e) => {
                       setTarget({
@@ -183,7 +184,7 @@ export default function SecretsEditor() {
                         [field]: e.target.value,
                         resourceVersion: "",
                       });
-                      setValue("");
+                      clearValue(); setAlias("");
                       setMode("create");
                     }}
                   />
@@ -195,7 +196,8 @@ export default function SecretsEditor() {
               <select
                 className={input}
                 value={mode}
-                onChange={(e) => setMode(e.target.value)}
+                disabled={busy}
+                onChange={(e) => { setMode(e.target.value); clearValue(); }}
               >
                 <option value="create">Create new key (refuse existing)</option>
                 <option value="update">Update selected key</option>
@@ -207,19 +209,23 @@ export default function SecretsEditor() {
                 className={`${input} min-h-24`}
                 autoComplete="off"
                 spellCheck={false}
+                disabled={busy || emptyIntent}
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => { setValue(e.target.value); setEntered(true); setEmptyIntent(false); }}
               />
             </label>
             <p className="text-xs text-zinc-500">
-              Empty values are allowed. Updates need a selected key and its
-              current version.
+              Selection and reveal do not prepare a replacement. Enter a new value or explicitly choose an empty value. Updates use the selected version; conflicts require review and an explicit retry.
             </p>
+            <label className="flex items-start gap-2 text-sm text-zinc-400">
+              <input type="checkbox" checked={emptyIntent} disabled={busy} onChange={e => { clearValue(); setEmptyIntent(e.target.checked); }} />
+              Intentionally save an empty value
+            </label>
             <div className="flex flex-wrap gap-3">
               <button
                 className={button}
                 disabled={
-                  busy || (mode === "update" && !target.resourceVersion)
+                  busy || !canSave
                 }
               >
                 Save key
@@ -229,13 +235,11 @@ export default function SecretsEditor() {
                 className={button}
                 disabled={busy || !target.resourceVersion}
                 onClick={() =>
-                  perform(async () => {
-                    const epoch = reveal.current.epoch;
-                    const result = await api(
+                  perform<{ value: string; resourceVersion: string }>(
                       `/api/secrets?${new URLSearchParams(target)}`,
-                    );
-                    if (!reveal.current.mounted || !reveal.current.allowed || epoch !== reveal.current.epoch) return;
+                    { method: "GET" }, result => {
                     setValue(result.value);
+                    setEntered(false); setEmptyIntent(false);
                     setTarget((current) => ({
                       ...current,
                       resourceVersion: result.resourceVersion,
@@ -248,30 +252,16 @@ export default function SecretsEditor() {
               <button
                 type="button"
                 className={button}
-                onClick={() => setValue("")}
+                onClick={() => { clearValue(); setMessage("Display and draft cleared." + (busy ? " The current request may still finish; inspect its outcome." : "")); }}
               >
-                Clear value
+                Clear display and draft
               </button>
               <button
                 type="button"
                 className={`${button} text-red-300`}
                 disabled={busy || !target.resourceVersion}
                 onClick={() =>
-                  perform(async () => {
-                    await api("/api/secrets", {
-                      method: "DELETE",
-                      headers: { "Content-Type": "application/json" },
-                      body: JSON.stringify(target),
-                    });
-                    setValue("");
-                    setTarget((current) => ({
-                      ...current,
-                      resourceVersion: "",
-                    }));
-                    setMode("create");
-                    setMessage("Key deleted; object retained.");
-                    await refresh();
-                  })
+                  { clearValue(); mutation.clear(); setDeleting({ kind: "key", target: { ...target } }); }
                 }
               >
                 Delete selected key
@@ -282,8 +272,7 @@ export default function SecretsEditor() {
             className="space-y-3 border-t border-zinc-800 pt-4"
             onSubmit={(event) => {
               event.preventDefault();
-              perform(async () => {
-                await api("/api/secret-references", {
+              perform("/api/secret-references", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
@@ -292,10 +281,9 @@ export default function SecretsEditor() {
                     name: target.name,
                     key: target.key,
                   }),
-                });
+                }, () => {
                 setAlias("");
                 setMessage("Lookup alias registered.");
-                await refresh();
               });
             }}
           >
@@ -303,6 +291,7 @@ export default function SecretsEditor() {
               Alias for this namespace / Secret / key
               <input
                 required
+                disabled={busy}
                 className={input}
                 value={alias}
                 onChange={(e) => setAlias(e.target.value)}
@@ -331,18 +320,7 @@ export default function SecretsEditor() {
                 <button
                   className="ml-3 text-red-300"
                   disabled={busy}
-                  onClick={() =>
-                    perform(async () => {
-                      await api(
-                        `/api/secret-references?alias=${encodeURIComponent(ref.alias)}`,
-                        { method: "DELETE" },
-                      );
-                      setMessage(
-                        "DB reference removed. File references must be edited by the operator.",
-                      );
-                      await refresh();
-                    })
-                  }
+                  onClick={() => { clearValue(); mutation.clear(); setDeleting({ kind: "alias", alias: ref.alias }); }}
                 >
                   Remove DB alias
                 </button>
@@ -351,6 +329,20 @@ export default function SecretsEditor() {
           ))}
         </ul>
       </section>
+      {deleting && canWrite && <ConfirmDialog key={deleting.kind === "key" ? JSON.stringify(deleting.target) : deleting.alias} open danger loading={busy} error={mutation.error}
+        title={deleting.kind === "key" ? "Delete selected Secret key" : "Remove DB alias"}
+        message={deleting.kind === "key" ? "Delete only this key using its selected resourceVersion. The Secret object and unrelated keys are retained." : "Remove only the SQLite reference. Native values are retained; file references require operator changes."}
+        confirmName={deleting.kind === "key" ? `${deleting.target.namespace}/${deleting.target.name}/${deleting.target.key}` : deleting.alias}
+        confirmLabel={deleting.kind === "key" ? "Delete key" : "Remove alias"}
+        onClose={() => { if (!busy) { setDeleting(undefined); mutation.clear(); } }}
+        onConfirm={() => {
+          if (deleting.kind === "key") perform("/api/secrets", { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify(deleting.target) }, () => {
+            setDeleting(undefined); clearValue(); setTarget(current => ({ ...current, resourceVersion: "" })); setMode("create"); setMessage("Key deleted; object retained.");
+          });
+          else perform(`/api/secret-references?alias=${encodeURIComponent(deleting.alias)}`, { method: "DELETE" }, () => {
+            setDeleting(undefined); setMessage("DB reference removed. File references must be edited by the operator.");
+          });
+        }} />}
     </div>
   );
 }
