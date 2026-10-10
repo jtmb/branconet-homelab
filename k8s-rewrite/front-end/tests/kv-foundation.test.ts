@@ -48,7 +48,7 @@ test("forward KV migration preserves existing users and native references withou
     const old = current.replace(/^  engineAdmin.*\r?\n/m, "").replace(/\/\/ KV tables contain metadata only\.[\s\S]*?(?=model Node)/, "");
     await writeFile(schema, old);
     await mkdir(path.join(dir, "migrations"));
-    for (const file of await readdir("prisma/migrations")) if (file !== "20261010210000_kv_metadata")
+    for (const file of await readdir("prisma/migrations")) if (file === "migration_lock.toml" || file < "20261010210000_kv_metadata")
       await cp(path.join("prisma/migrations", file), path.join(dir, "migrations", file), { recursive: true });
     const cli = path.resolve("node_modules/prisma/build/index.js");
     execFileSync(process.execPath, [cli, "migrate", "deploy", "--schema", schema], { env, stdio: "pipe" });
@@ -57,6 +57,12 @@ test("forward KV migration preserves existing users and native references withou
     await db.secretReference.create({ data: { alias: "secret_original_underscored_key", namespace: "apps", name: "imported", key: "under_scored_key" } });
     await db.variable.create({ data: { key: "legacy_password", value: "synthetic-quarantined-only", encrypted: true, category: "secret" } });
     await cp("prisma/migrations/20261010210000_kv_metadata", path.join(dir, "migrations/20261010210000_kv_metadata"), { recursive: true });
+    const foundation = current.replace(/^  consumerUid.*\r?\n/m, "").replace(/^  consumerResourceVersion.*\r?\n/m, "");
+    await writeFile(schema, foundation);
+    execFileSync(process.execPath, [cli, "migrate", "deploy", "--schema", schema], { env, stdio: "pipe" });
+    await db.$executeRaw`INSERT INTO kv_rotations (id,pathId,actorId,field,consumerKind,consumerNamespace,consumerName,state,revision,createdAt,updatedAt) VALUES ('old-rotation','old-path','old-writer','under_scored_key','Deployment','apps','consumer','prepare',1,'2026-10-01T00:00:00Z','2026-10-01T00:00:00Z')`;
+    for (const file of await readdir("prisma/migrations")) if (file !== "migration_lock.toml" && file > "20261010210000_kv_metadata")
+      await cp(path.join("prisma/migrations", file), path.join(dir, "migrations", file), { recursive: true });
     await writeFile(schema, current);
     execFileSync(process.execPath, [cli, "migrate", "deploy", "--schema", schema], { env, stdio: "pipe" });
     const user = await db.user.findUniqueOrThrow({ where: { id: "old-writer" } });
@@ -67,6 +73,8 @@ test("forward KV migration preserves existing users and native references withou
     assert.deepEqual(JSON.parse(grants.find(p => p.principal === "user:old-reader")!.actions), ["list"]);
     assert.equal(await db.secretReference.count(), 1); assert.equal((await db.secretReference.findFirstOrThrow()).key, "under_scored_key");
     assert.equal(await db.kvPath.count(), 0); assert.equal(await db.kvAudit.count(), 0); assert.equal(await db.kvIdentity.count(), 0);
+    const oldRotation=await db.kvRotation.findUniqueOrThrow({where:{id:"old-rotation"}});
+    assert.equal(oldRotation.field,"under_scored_key");assert.equal(oldRotation.state,"prepare");assert.equal(oldRotation.revision,1);assert.equal(oldRotation.consumerUid,null);assert.equal(oldRotation.consumerResourceVersion,null);
     const diff = execFileSync(process.execPath, [cli, "migrate", "diff", "--from-url", url, "--to-schema-datamodel", schema, "--script"], { env, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
     assert(diff.includes("empty migration"));
   } finally { await db?.$disconnect(); await rm(dir, { recursive: true, force: true }); }

@@ -180,6 +180,8 @@ model KvRotation {
   consumerKind String
   consumerNamespace String
   consumerName String
+  consumerUid  String?
+  consumerResourceVersion String?
   state        String   @default("prepare")
   operationId  String?
   revision     Int      @default(1)

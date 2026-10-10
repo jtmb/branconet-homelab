@@ -14,6 +14,8 @@ For an existing database, make a consistent backup and assess migration history 
 
 ## Configuration and Secrets
 
+Static rotation APIs passed local qualification; KV UI remains pending. Prepare one exact existing field and a same-namespace Deployment/StatefulSet/DaemonSet; generate once with displayed native head/RV and metadata revision. Changing the stored string does not rotate an external credential or prove a consumer used it. Inspect ambiguous operations before further action. Consumer acknowledgement records an explicit assertion; optional named reload is administrator-only and may reconcile back under Flux. No automatic workload restart occurs.
+
 Use Previous aliases / Next aliases on the Secrets screen to browse all references. Native and alias metadata load independently; refresh failures are shown beside the affected source. Alias page navigation does not reload the native Secret list. This browser behavior passed local readonly/mobile checks with 603 synthetic aliases and an unavailable native endpoint.
 
 Alias metadata bounds passed local unit and production HTTP/TLS qualification. Follow nextCursor to inspect all 100-reference pages; current-namespace metadata excludes history. Register strict four-field mappings through the API for immediate cache invalidation, or update the bounded metadata file and allow up to ten seconds for refresh. Readiness coalesces metadata-only dependency probes and does not establish write/admission acceptance.

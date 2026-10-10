@@ -1,0 +1,96 @@
+{
+  "capturedAt": "2026-10-10T20:04:44Z",
+  "source": "rotation stage after 01c59f2b812e2cc207ca2ee58e7d38bf9b45f6b1; working tree before commit",
+  "runtime": {
+    "node": "22.23.3",
+    "platform": "win32",
+    "next": "15.5.27",
+    "prisma": "6.19.3"
+  },
+  "validation": {
+    "unit": {
+      "passed": 86,
+      "failed": 0,
+      "durationMs": 11168.9852
+    },
+    "expandedNativeFollowup": {
+      "passed": 18,
+      "failed": 0,
+      "durationMs": 11964.6415
+    },
+    "consumerMetadataFollowup": {
+      "passed": 2,
+      "failed": 0,
+      "durationMs": 317.3023
+    },
+    "lint": "zero-warning pass",
+    "build": "fresh standalone production pass",
+    "typecheck": "pre/post-build pass",
+    "productionHttp": {
+      "passed": 2,
+      "failed": 0,
+      "existingMs": 30465.6375,
+      "nativeTlsMs": 32736.5626,
+      "overallMs": 33100.0441
+    }
+  },
+  "migration": {
+    "name": "20261010220000_rotation_consumer_identity",
+    "columns": [
+      "nullable consumerUid",
+      "nullable consumerResourceVersion"
+    ],
+    "forwardPreserved": [
+      "users",
+      "password hashes",
+      "session versions",
+      "roles/admin grants",
+      "aliases and original keys",
+      "existing prepare rotation field/state/revision"
+    ],
+    "schemaDiff": "empty",
+    "nativeProtocol": "format-1 unchanged"
+  },
+  "nativeRotationAssertions": [
+    "Fresh rotate policy supports generation without read/update authority",
+    "Exact mapped existing field, consumer namespace/path revision and one unfinished intent per field",
+    "Intent/operation link recorded in serialized transaction before random generation/history creation",
+    "Two concurrent attempts yield one commit and one refusal; stale prerequisites cause zero writes",
+    "32 random bytes become a static base64url UTF-8 replacement only in selected native field/history",
+    "Other selected binary/special keys preserved; metadata/API never contains generated value",
+    "Wrong consumer, stale metadata/native head and drift refuse acknowledgement",
+    "Ambiguous native completion retains linked operation and blocks regeneration/cancellation; positive proof resolves",
+    "Unattempted cancellation is metadata-only; explicit consumption acknowledgement is operator assertion"
+  ],
+  "consumerAssertions": [
+    "Human administrator plus fresh rotate policy only; scoped users/tokens denied",
+    "Only explicit same-namespace Deployment/StatefulSet/DaemonSet",
+    "UID/RV persisted and pending audit committed before patch",
+    "Structured argv JSON Patch tests UID/RV and changes only one owned pod-template marker",
+    "Full workload env/annotations never projected; invalid marker strings excluded",
+    "Positive same-UID marker read-back resolves timeout without repeating patch",
+    "Administrator withdrawal after patch retains reload-pending; scoped recovery denied; restored administration resolves positive marker with one patch total",
+    "Requested annotation does not establish pod readiness or consumer consumption"
+  ],
+  "httpAssertions": [
+    "Human/scoped prepare, generate, metadata list, exact acknowledgement and administrator named reload",
+    "Scoped automation prepare/generate without value read; revoked identity denied",
+    "No-store metadata replies; generated/static and unrelated field contents excluded",
+    "Existing native/history/alias/transfer/cleanup/auth suites preserved"
+  ],
+  "correctionsRetained": [
+    "First scoped fixture account projection omitted sessionVersion; fixed using current DB actor",
+    "Fixture object literals had missing closing braces; type checks corrected before HTTP run",
+    "Old pre-KV fixture copied consumer ALTER before KV table; baseline -> KV -> consumer sequence now validates preserved existing rotation",
+    "Windows fake CLI local variable renamed to avoid C# scope shadowing; canned reload response remains explicitly synthetic"
+  ],
+  "limitations": [
+    "Windows synthetic unit/CA-verified native HTTP/fake CLI evidence; no final Linux image/real admission/RBAC/controller result",
+    "Canned fake workload reply validates routing/argv/metadata, not actual API-server JSON Patch/controller semantics",
+    "Consumer acknowledgement is operator assertion; external credential validity and consumption are not verified",
+    "Unresolved native/reload outcomes retain intent and cannot be blindly retried; broader recovery controls still under delivery",
+    "KV UI, legacy-grant impact controls and remaining audit work pending",
+    "Final-schema/protocol recovery-image compatibility not established; no production mutation or rollout",
+    "Observed durations use an uncontrolled host and do not establish performance acceptance"
+  ]
+}

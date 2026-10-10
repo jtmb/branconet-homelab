@@ -20,3 +20,16 @@ export const nativeDestroy = nativeDelete.extend({ versions: z.array(z.number().
 export const historyGcPreview = z.object({ pathId: z.string().uuid() }).strict();
 export const historyGc = nativeDelete.extend({ pathId: z.string().uuid(), pathRevision: z.number().int().positive(),
   histories: z.array(z.object({ name: z.string().regex(/^kv-[0-9a-f]{32}-[0-9a-f]{24}$/), uid: z.string().min(1).max(128), resourceVersion: z.string().min(1).max(128) }).strict()).min(1).max(100) }).strict();
+export const rotationPrepare = z.object({ pathId: z.string().uuid(), pathRevision: z.number().int().positive(), field: z.string().min(1).max(253),
+  consumer: z.object({ kind: z.enum(["Deployment", "StatefulSet", "DaemonSet"]), namespace: z.string().min(1).max(63), name: z.string().min(1).max(253) }).strict() }).strict();
+export const rotationTarget = { rotationId: z.string().uuid() };
+export const rotationGenerate = z.object({ ...rotationTarget, ...nativePrerequisites, pathRevision: z.number().int().positive(), revision: z.number().int().positive(), confirmPath: z.string().max(512) }).strict();
+export const rotationAcknowledge = rotationGenerate.omit({ pathRevision: true }).extend({ confirmConsumer: z.string().max(384), confirmConsumption: z.literal(true) }).strict();
+export const rotationCancel = z.object({ ...rotationTarget, revision: z.number().int().positive(), confirmPath: z.string().max(512) }).strict();
+export const rotationReload = rotationGenerate.omit({ pathRevision: true }).extend({ confirmConsumer: z.string().max(384), consumerUid: z.string().min(1).max(128), consumerResourceVersion: z.string().min(1).max(128) }).strict();
+export const rotationAction = z.discriminatedUnion("action", [
+  rotationGenerate.extend({ action: z.literal("generate") }).strict(),
+  rotationAcknowledge.extend({ action: z.literal("acknowledge") }).strict(),
+  rotationCancel.extend({ action: z.literal("cancel") }).strict(),
+  z.object({ ...rotationTarget, action: z.literal("resolve") }).strict(),
+]);

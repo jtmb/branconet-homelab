@@ -1,5 +1,7 @@
 # BORTUS technology stack
 
+The locally qualified static rotation workflow uses Node crypto, the existing native CAS/history protocol and metadata-only KvRotation state. An additive forward migration records consumer UID/RV for explicit reload/recovery; no dependency is added. Named workload reload uses structured kubectl JSON Patch conditions and returns only selected identity/marker metadata. Local unit/build/HTTP qualification passed; final-image/live acceptance remains pending.
+
 BORTUS is the Kubernetes management application at `k8s-rewrite/front-end/`. Its source and documentation are included in `main` alongside the existing Swarm homelab. Kubernetes provisioning, charts and live Flux source configuration are maintained separately; this application publication does not replace those systems.
 
 Native Secret transport uses Node HTTPS/JSON with the Kubernetes SDK's credential, CA, client-certificate and proxy handling. This preserves valid `__proto__` map keys that the SDK's generated serializer drops; direct JSON also preserves unknown canonical metadata. Request, queue, body and pagination bounds are documented in the [Secrets engine](SECRETS-ENGINE.md).

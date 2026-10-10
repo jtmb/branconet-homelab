@@ -17,6 +17,7 @@ import { SecretError, SecretStore } from "../src/lib/cluster-secrets";
 import { flatSecretGuard, requireLegacyPrincipal } from "../src/lib/secret-access";
 import { automationRequest, runAutomation } from "../src/lib/kv-automation";
 import { KvTransfer, type bundleSchema } from "../src/lib/kv-transfer";
+import { KvRotations } from "../src/lib/kv-rotation";
 import type { z } from "zod";
 
 const marker = "synthetic-private-other-key";
@@ -126,6 +127,72 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       assert(!history.metadata?.ownerReferences); assert(!history.metadata?.managedFields);
       const audit = await db.kvAudit.findMany(); assert(!JSON.stringify(audit).includes(marker)); assert(!JSON.stringify(audit).includes(other));
       assert(!JSON.stringify(await engine.versions(actor,registered.id)).includes(marker));
+    });
+    await t.test("static rotation links intent before generation, preserves grouped values and requires explicit current-head acknowledgement", async () => {
+      const path=await registry.registerPath(actor,{mountId:mount.id,path:"rotation/static",namespace:"apps",name:"rotation-static",fields:[{field:"__proto__",key:"__proto__"},{field:"other",key:"other"}]});
+      await engine.create(actor,path.id,{resourceVersion:"absent",expectedHead:0,fields:[{field:"__proto__",encoding:"utf8",value:"old static string"},{field:"other",encoding:"base64",value:Buffer.from([0,255,128]).toString("base64")}]});
+      const created=await accounts.create(actor,{username:"rotation_writer",passwordHash:"synthetic-hash",role:"write"}),user=await db.user.findUniqueOrThrow({where:{id:created.id}}),scoped={id:user.id,sessionVersion:user.sessionVersion};
+      await registry.savePolicy(actor,{principal:"user:"+user.id,mountId:mount.id,prefix:"rotation",effect:"allow",actions:["list","rotate"]});
+      const rotations=new KvRotations(engine),consumer={kind:"Deployment" as const,namespace:"apps",name:"rotation-consumer"};
+      await assert.rejects(rotations.prepare(scoped,{pathId:path.id,pathRevision:path.revision,field:"missing",consumer}),denied(400));
+      await assert.rejects(rotations.prepare(scoped,{pathId:path.id,pathRevision:path.revision,field:"__proto__",consumer:{...consumer,namespace:"other"}}),denied(400));
+      const row=await rotations.prepare(scoped,{pathId:path.id,pathRevision:path.revision,field:"__proto__",consumer});
+      await assert.rejects(rotations.prepare(scoped,{pathId:path.id,pathRevision:path.revision,field:"__proto__",consumer}),denied(409));
+      const state=await engine.status(scoped,path.id),before=native.writes;
+      await assert.rejects(rotations.generate(scoped,row.id,{revision:row.revision,confirmPath:path.path,resourceVersion:"stale",expectedHead:state.head}),denied(409));assert.equal(native.writes,before);
+      let linked=false;
+      native.afterCreate=async()=>{const intent=await db.kvRotation.findUniqueOrThrow({where:{id:row.id}});assert.equal(intent.state,"replace-pending");assert(intent.operationId);assert.equal((await db.kvOperation.findUniqueOrThrow({where:{id:intent.operationId}})).outcome,"pending");linked=true;};
+      const outcomes=await Promise.allSettled([0,1].map(()=>rotations.generate(scoped,row.id,{revision:row.revision,confirmPath:path.path,resourceVersion:state.resourceVersion,expectedHead:state.head})));
+      native.afterCreate=undefined;
+      assert.equal(outcomes.filter(r=>r.status==="fulfilled").length,1);assert(linked);
+      const committed=await db.kvRotation.findUniqueOrThrow({where:{id:row.id}});assert.equal(committed.state,"awaiting-ack");
+      const current=await native.read("apps","rotation-static"),generated=Buffer.from(current.data!["__proto__"],"base64").toString("utf8");
+      assert(/^[A-Za-z0-9_-]{43}$/.test(generated));assert.equal(current.data!.other,Buffer.from([0,255,128]).toString("base64"));
+      const persisted={intents:await db.kvRotation.findMany(),ops:await db.kvOperation.findMany(),audit:await db.kvAudit.findMany()};
+      assert(!JSON.stringify(persisted).includes(generated));assert(!JSON.stringify(outcomes).includes(generated));
+      await assert.rejects(engine.read(scoped,path.id),denied(403));
+      await assert.rejects(rotations.generate(scoped,row.id,{revision:committed.revision,confirmPath:path.path,resourceVersion:current.metadata!.resourceVersion!,expectedHead:state.head+1}),denied(409));
+      await assert.rejects(rotations.cancel(scoped,row.id,committed.revision,path.path),denied(409));
+      const ack={revision:committed.revision,confirmPath:path.path,confirmConsumer:"apps/Deployment/rotation-consumer",confirmConsumption:true as const,resourceVersion:current.metadata!.resourceVersion!,expectedHead:state.head+1};
+      await assert.rejects(rotations.acknowledge(scoped,row.id,{...ack,confirmConsumer:"wrong"}),denied(400));
+      const object=native.objects.get(native.key("apps","rotation-static"))!;const original=object.data!.other;object.data!.other=Buffer.from("external change").toString("base64");
+      await assert.rejects(rotations.acknowledge(scoped,row.id,ack),denied(409));object.data!.other=original;
+      const acknowledged=await rotations.acknowledge(scoped,row.id,ack);assert.equal(acknowledged.rotation.state,"acknowledged");assert(acknowledged.acknowledgement.includes("operator assertion"));
+      assert.equal((await rotations.list(scoped,path.id)).items.length,1);
+      const untouched=await rotations.prepare(scoped,{pathId:path.id,pathRevision:path.revision,field:"__proto__",consumer});
+      assert.equal((await rotations.cancel(scoped,untouched.id,untouched.revision,path.path)).state,"cancelled");
+      const ambiguous=await rotations.prepare(scoped,{pathId:path.id,pathRevision:path.revision,field:"__proto__",consumer}),fresh=await engine.status(scoped,path.id);
+      native.replaceMode="after-outage";
+      await assert.rejects(rotations.generate(scoped,ambiguous.id,{revision:ambiguous.revision,confirmPath:path.path,resourceVersion:fresh.resourceVersion,expectedHead:fresh.head}),error=>error instanceof KvMutationError&&error.outcome==="ambiguous");
+      const unresolved=await db.kvRotation.findUniqueOrThrow({where:{id:ambiguous.id}});assert.equal(unresolved.state,"recovery-required");
+      await assert.rejects(rotations.cancel(scoped,ambiguous.id,unresolved.revision,path.path),denied(409));
+      native.readOutage=false;const recovered=await rotations.resolve(scoped,ambiguous.id);assert.equal(recovered.rotation.state,"awaiting-ack");
+      await assert.rejects(rotations.generate(scoped,ambiguous.id,{revision:recovered.rotation.revision,confirmPath:path.path,resourceVersion:fresh.resourceVersion,expectedHead:fresh.head}),denied(409));
+      let consumerState={uid:"consumer-uid",resourceVersion:"consumer-rv",rotationId:undefined as string|undefined},reloads=0;
+      const withConsumer=new KvRotations(engine,{inspect:async()=>({...consumerState}),reload:async pending=>{
+        reloads++;const reserved=await db.kvRotation.findUniqueOrThrow({where:{id:pending.id}});assert.equal(reserved.state,"reload-pending");assert.equal(reserved.consumerUid,consumerState.uid);
+        consumerState={...consumerState,resourceVersion:"changed-rv",rotationId:pending.id};throw new KvError(503,"Synthetic consumer reply timeout");
+      }});
+      await assert.rejects(withConsumer.consumerPreview(scoped,ambiguous.id),denied(403));
+      const preview=await withConsumer.consumerPreview(actor,ambiguous.id),head=await engine.status(actor,path.id);
+      const reload={revision:preview.revision,confirmPath:path.path,confirmConsumer:preview.consumer,consumerUid:preview.uid,consumerResourceVersion:preview.resourceVersion,expectedHead:head.head,resourceVersion:head.resourceVersion};
+      await assert.rejects(withConsumer.reload(scoped,ambiguous.id,reload),denied(403));assert.equal(reloads,0);
+      const requested=await withConsumer.reload(actor,ambiguous.id,reload);assert.equal(requested.rotation.state,"reload-requested");assert.equal(reloads,1);
+      await assert.rejects(withConsumer.reload(actor,ambiguous.id,{...reload,revision:requested.rotation.revision}),denied(409));assert.equal(reloads,1);
+      await rotations.acknowledge(scoped,ambiguous.id,{revision:requested.rotation.revision,confirmPath:path.path,confirmConsumer:preview.consumer,confirmConsumption:true,resourceVersion:head.resourceVersion,expectedHead:head.head});
+      const withdrawn=await rotations.prepare(scoped,{pathId:path.id,pathRevision:path.revision,field:"__proto__",consumer}),pre=await engine.status(scoped,path.id);
+      await rotations.generate(scoped,withdrawn.id,{revision:withdrawn.revision,confirmPath:path.path,resourceVersion:pre.resourceVersion,expectedHead:pre.head});
+      let withdrawnReloads=0;
+      const recovering=new KvRotations(engine,{inspect:async()=>({...consumerState}),reload:async pending=>{
+        withdrawnReloads++;consumerState={...consumerState,rotationId:pending.id};await db.user.update({where:{id:actor.id},data:{engineAdmin:false}});throw new KvError(503,"Synthetic timeout after administrator withdrawal");
+      }});
+      const nextPreview=await recovering.consumerPreview(actor,withdrawn.id),nextHead=await engine.status(scoped,path.id);
+      try{
+        await assert.rejects(recovering.reload(actor,withdrawn.id,{revision:nextPreview.revision,confirmPath:path.path,confirmConsumer:nextPreview.consumer,consumerUid:nextPreview.uid,consumerResourceVersion:nextPreview.resourceVersion,resourceVersion:nextHead.resourceVersion,expectedHead:nextHead.head}),error=>error instanceof KvMutationError&&error.outcome==="recovery-required");
+        assert.equal((await db.kvRotation.findUniqueOrThrow({where:{id:withdrawn.id}})).state,"reload-pending");
+        await assert.rejects(recovering.resolve(scoped,withdrawn.id),denied(403));
+      }finally{await db.user.update({where:{id:actor.id},data:{engineAdmin:true}});}
+      assert.equal((await recovering.resolve(actor,withdrawn.id)).rotation.state,"reload-requested");assert.equal(withdrawnReloads,1);
     });
     await t.test("flat/legacy bridges cannot bypass adopted policies, exact alias grants or history isolation", async () => {
       const raw = new SecretStore(native,["apps"],flatSecretGuard(registry,native,async()=>actor));

@@ -21,6 +21,7 @@ class Fixture { static int Main(string[] args) {
   Thread.Sleep(50);
   if(Array.IndexOf(args,"logs")>=0) { Console.Write("fixture log line\\n"); return 0; }
   if(p<0) {
+    if(File.Exists(Path.Combine(d,"allow-rotation-reload")) && Array.IndexOf(args,"patch")>=0 && Array.Exists(args,a=>a=="deployment"||a=="statefulset"||a=="daemonset")) { string rotationResource=args[Array.IndexOf(args,"patch")+1]; File.Copy(Path.Combine(d,"rotation-reload.json"),Path.Combine(d,rotationResource+".json"),true); Console.Write(File.ReadAllText(Path.Combine(d,rotationResource+".json"))); return 0; }
     if(File.Exists(Path.Combine(d,"allow-flux-mutations")) && (Array.IndexOf(args,"patch")>=0 || Array.IndexOf(args,"delete")>=0) && Array.Exists(args,a=>a=="gitrepository"||a=="kustomization"||a=="helmrelease")) { Console.Write("fixture Flux mutation completed"); return 0; }
     Console.Write("private-command-output-marker"); Console.Error.Write("private-command-error-marker"); return 1;
   }
@@ -50,7 +51,7 @@ fs.appendFileSync(path.join(d,'calls.log'),a.map(v=>Buffer.from(v).toString('bas
 const p=a.indexOf('get');
 Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,50);
 if(a.includes('logs')){process.stdout.write('fixture log line\\n');process.exit(0);}
-if(p<0){if(fs.existsSync(path.join(d,'allow-flux-mutations'))&&(a.includes('patch')||a.includes('delete'))&&a.some(v=>['gitrepository','kustomization','helmrelease'].includes(v))){process.stdout.write('fixture Flux mutation completed');process.exit(0);}process.stdout.write('private-command-output-marker');process.stderr.write('private-command-error-marker');process.exit(1);}
+if(p<0){if(fs.existsSync(path.join(d,'allow-rotation-reload'))&&a.includes('patch')&&['deployment','statefulset','daemonset'].includes(a[a.indexOf('patch')+1])){const r=a[a.indexOf('patch')+1];fs.copyFileSync(path.join(d,'rotation-reload.json'),path.join(d,r+'.json'));process.stdout.write(fs.readFileSync(path.join(d,r+'.json'),'utf8'));process.exit(0);}if(fs.existsSync(path.join(d,'allow-flux-mutations'))&&(a.includes('patch')||a.includes('delete'))&&a.some(v=>['gitrepository','kustomization','helmrelease'].includes(v))){process.stdout.write('fixture Flux mutation completed');process.exit(0);}process.stdout.write('private-command-output-marker');process.stderr.write('private-command-error-marker');process.exit(1);}
 const f=path.join(d,a[p+1]+'.json');
 const failure=path.join(d,'failure.txt');
 if(fs.existsSync(failure)&&['all',a[p+1]].includes(fs.readFileSync(failure,'utf8').trim())){process.stderr.write('private-command-error-marker');process.exit(1);}

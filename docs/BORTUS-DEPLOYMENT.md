@@ -10,6 +10,8 @@ on all nodes with pull policy Never. See the [reviewed image-release procedure](
 
 ## Image and storage contract
 
+The optional named consumer reload adds forward metadata-only migration `20261010220000_rotation_consumer_identity` (nullable consumer UID/RV on KvRotation). It never stores values. Apply migrations before traffic without resetting SQLite. Reload is effective-administrator-only and additionally requires rotate policy, an explicit same-namespace Deployment/StatefulSet/DaemonSet and displayed UID/RV; reviewed get/patch permissions for that consumer are required. No grants are created automatically. Migration/reload qualification passed locally; final recovery-image compatibility remains pending.
+
 Readiness stops scheduling additional scopes after a failed probe and retains the shared worker until already-started probes settle within their native deadlines. Overlapping requests cannot detach those probes and start another refresh immediately. This failure lifecycle passed the focused regression and the final full unit/HTTP run.
 
 Build from repo root: `docker build -t bortus:local k8s-rewrite/front-end`. Override `--build-arg KUBECTL_VERSION=<cluster-compatible-version>` for dashboard CLI operations (default v1.34.1); native Secret API has no kubectl dependency. Docker build excludes env/SQLite/kubeconfig files. Runtime entrypoint runs Prisma migrate deploy and requires signing/lookup env before starting the standalone server. Missing DB schema on existing installations requires a consistent backup and baseline/migration assessment before deploy; never reset production DB.

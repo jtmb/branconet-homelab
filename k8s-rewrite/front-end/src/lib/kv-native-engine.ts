@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import type { V1Secret } from "@kubernetes/client-node";
 import type { Prisma } from "@prisma/client";
 import { KvError, KvMutationError, requireGuarded, type KvAction, type KvActor } from "./kv-contract";
@@ -87,11 +87,16 @@ export class KvNativeEngine {
     const aliases = await this.matchingAliases(path);
     return { pathId: id, ...nativeIdentity(secret), expectedHead: 0, fields: path.fields.map(({field,key}) => ({field,key})), legacyAliases: aliases, guardedAdoption: this.registry.config.guardedAdoption };
   }
-  private async start(actor: KvActor, path: RegisteredPath, action: KvAction | "adopt", previousVersion: number, newVersion: number, aliases: SecretAlias[] = [], administrative = false) {
+  private async start(actor: KvActor, path: RegisteredPath, action: KvAction | "adopt", previousVersion: number, newVersion: number, aliases: SecretAlias[] = [], administrative = false, rotation?: { id: string; revision: number; field: string }) {
     return this.registry.serialized(async tx => {
       await this.fresh(actor, path, action, tx);
       if (administrative || action === "adopt" || action === "create") await this.registry.admin(actor, tx);
       const op = await tx.kvOperation.create({ data: { id: randomUUID(), actorId: actor.identityId || actor.id, ...target(path), action, previousVersion, newVersion, outcome: "pending" } });
+      if (rotation) {
+        const changed = await tx.kvRotation.updateMany({ where: { id: rotation.id, pathId: path.id, field: rotation.field, revision: rotation.revision, state: "prepare", operationId: null },
+          data: { operationId: op.id, state: "replace-pending", revision: { increment: 1 } } });
+        if (changed.count !== 1) throw new KvError(409, "Rotation intent changed; refresh before generating a replacement");
+      }
       await tx.kvAudit.create({ data: { actorId: op.actorId, operationId: op.id, ...target(path), action, previousVersion, newVersion, outcome: "pending" } });
       for (const alias of aliases) await tx.kvLegacyGrant.upsert({ where: { pathId_alias: { pathId: path.id, alias: alias.alias } }, update: {}, create: { pathId: path.id, ...alias } });
       return op;
@@ -101,6 +106,8 @@ export class KvNativeEngine {
     try {
       await this.registry.serialized(async tx => {
         await tx.kvOperation.update({ where: { id: operation.id }, data: { outcome } });
+        await tx.kvRotation.updateMany({ where: { operationId: operation.id, state: { in: ["replace-pending", "recovery-required"] } },
+          data: { state: outcome === "committed" ? "awaiting-ack" : outcome === "conflict" ? "conflict" : "recovery-required", revision: { increment: 1 } } });
         await tx.kvAudit.create({ data: { actorId: operation.actorId, operationId: operation.id, mountId: operation.mountId, pathId: operation.pathId, path: operation.path, namespace: operation.namespace, name: operation.name,
           action: operation.action, previousVersion: operation.previousVersion, newVersion: operation.newVersion, outcome } });
       });
@@ -219,7 +226,7 @@ export class KvNativeEngine {
     prerequisites(input, secret, 0);
     return this.commit(actor, path, secret, undefined, values, "create");
   }
-  async change(actor: KvActor, id: string, input: NativePrerequisites & { fields?: unknown; version?: number }, action: "update" | "delete" | "rollback" | "reconcile" | "rotate" = "update") {
+  async change(actor: KvActor, id: string, input: NativePrerequisites & { fields?: unknown; version?: number }, action: "update" | "delete" | "rollback" | "reconcile" = "update") {
     requireGuarded(this.registry.config);
     const path = await this.permitted(actor, id, action, input.pathRevision), secret = await this.canonical(path), current = ownedPath(secret, path);
     if (!current) throw new KvError(409, "KV path requires explicit administrator adoption or creation");
@@ -232,6 +239,34 @@ export class KvNativeEngine {
     } else if (action === "reconcile") { values = selectedValues(secret, path); tombstone = current.tombstone && !Object.keys(values).length; }
     else values = action === "delete" ? {} : encodedValues(input.fields, path);
     return this.commit(actor, path, secret, current, values, action, tombstone);
+  }
+
+  async rotate(actor: KvActor, id: string, input: NativePrerequisites & { rotationId: string; revision: number; field: string }) {
+    requireGuarded(this.registry.config);
+    const path = await this.permitted(actor, id, "rotate", input.pathRevision), secret = await this.canonical(path), current = ownedPath(secret, path);
+    if (!current || current.tombstone) throw new KvError(409, "Rotation requires an active adopted document");
+    prerequisites(input, secret, current.head);
+    const values = await this.drift(path, secret, current);
+    if (!path.fields.some(mapping => mapping.field === input.field) || !Object.hasOwn(values, input.field)) throw new KvError(400, "Rotation requires an existing mapped field");
+    const operation = await this.start(actor, path, "rotate", current.head, current.sequence + 1, [], false,
+      { id: input.rotationId, revision: input.revision, field: input.field });
+    // Link intent and operation atomically before generating anything. No generated value leaves native storage.
+    try { Object.defineProperty(values, input.field, { value: Buffer.from(randomBytes(32).toString("base64url"), "utf8").toString("base64"), enumerable: true, configurable: true, writable: true }); }
+    catch { await this.finish(operation, "conflict"); throw new KvMutationError(503, "Static replacement generation failed before native mutation", operation.id, "conflict"); }
+    return this.commit(actor, path, secret, current, values, "rotate", false, operation);
+  }
+
+  async rotationProof(actor: KvActor, id: string, operationId: string, input: NativePrerequisites) {
+    const path = await this.permitted(actor, id, "rotate"), secret = await this.canonical(path), current = ownedPath(secret, path);
+    if (!current) throw new KvError(409, "Native rotation ownership requires recovery");
+    prerequisites(input, secret, current.head);
+    const operation = await this.registry.db.kvOperation.findUnique({ where: { id: operationId } });
+    if (!operation || operation.pathId !== path.id || operation.action !== "rotate" || operation.newVersion !== current.head ||
+      !current.operations.some(marker => marker.id === operationId && marker.action === "rotate" && marker.newVersion === current.head))
+      throw new KvError(409, "Rotation is not the current native head; explicit recovery required");
+    await this.drift(path, secret, current);
+    await this.registry.authorize(actor, path, "rotate");
+    return { head: current.head, resourceVersion: nativeIdentity(secret).resourceVersion };
   }
 
   private async detachHistory(actor: KvActor, path: RegisteredPath, secret: V1Secret, current: PathState, versions: number[], administrative = false) {
@@ -391,10 +426,10 @@ export class KvNativeEngine {
     return { ...result, cleanupComplete: cleanup.every(item => ["deleted", "absent"].includes(item.outcome)), cleanup };
   }
 
-  async resolve(actor: KvActor, id: string) {
+  async resolve(actor: KvActor, id: string, action: "list" | "rotate" = "list") {
     const operation = await this.registry.db.kvOperation.findUnique({ where: { id } });
     if (!operation) throw new KvError(404, "KV operation not found");
-    const path = await this.permitted(actor, operation.pathId, "list");
+    const path = await this.permitted(actor, operation.pathId, action);
     if (!["pending", "ambiguous", "recovery-required"].includes(operation.outcome)) return operation;
     try {
       const secret = await this.canonical(path), current = ownedPath(secret, path), proof = current?.operations.find(op => op.id === id);

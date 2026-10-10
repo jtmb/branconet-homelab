@@ -8,6 +8,7 @@ import net,{type AddressInfo} from "node:net";
 import { once } from "node:events";
 import { PrismaClient } from "@prisma/client";
 import { nativeTlsFixture } from "./helpers/native-tls";
+import { fakeKubectl } from "./helpers/fake-kubectl";
 
 test("production native KV routes use verified TLS, exact binary history, fresh policy and legacy isolation",{timeout:120000},async()=>{
   const dir=await mkdtemp(path.join(tmpdir(),"bortus-kv-http-")),database="file:"+path.join(dir,"test.db").replaceAll("\\","/");
@@ -16,10 +17,12 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
   const stop=async()=>{if(child&&child.exitCode===null){child.kill();await once(child,"exit");}child=undefined;};
   try {
     native=await nativeTlsFixture(dir);
+    const cli=await fakeKubectl(dir);
     const aliasFile=path.join(dir,"aliases.json"),alias={alias:"secret_original_under_scored",namespace:"apps",name:"imported",key:"__proto__"};
     await writeFile(aliasFile,JSON.stringify([alias]));
     const env:NodeJS.ProcessEnv={...process.env,DATABASE_URL:database,BOTRUS_JWT_SECRET:"synthetic-http-signing-material",BOTRUS_SECRETS_KEY:"synthetic-legacy-lookup-token",BORTUS_SECRET_NAMESPACES:"apps,history",BORTUS_HISTORY_NAMESPACE:"history",BORTUS_KV_GUARDED_ADOPTION:"false",BORTUS_DISABLE_PROVISIONING:"true",KUBECONFIG:native.config,BORTUS_SECRET_ALIASES_FILE:aliasFile,NODE_ENV:"production",HOSTNAME:"127.0.0.1"};
     delete env.RUST_LOG;delete env.KUBERNETES_SERVICE_HOST;delete env.ALLOW_REGISTRATION;
+    Object.assign(env,cli.env);
     execFileSync(process.execPath,[path.resolve("node_modules/prisma/build/index.js"),"migrate","deploy"],{env,stdio:"pipe"});
     const server=net.createServer();server.listen(0,"127.0.0.1");await once(server,"listening");env.PORT=String((server.address() as AddressInfo).port);await new Promise<void>(resolve=>server.close(()=>resolve()));
     base="http://127.0.0.1:"+env.PORT;
@@ -157,6 +160,37 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     const histories=[...native.objects.values()].filter(s=>s.metadata?.namespace==="history");assert(histories.length>=5);for(const h of histories){assert(h.immutable);assert(!JSON.stringify(h).includes(privateMarker));}
     await checked(await request("/api/secrets?namespace=history&name="+histories[0].metadata!.name+"&key=binary","GET",undefined,admin),403);
     await checked(await request("/api/secret-references","POST",{alias:"forbidden-history",namespace:"history",name:histories[0].metadata!.name,key:"binary"},admin),403);
+    const rotationPath=await checked(await request("/api/kv/paths","POST",{mountId:mount.id,path:"rotation/static",namespace:"apps",name:"rotation-static",fields:[{field:"credential",key:"credential"},{field:"binary",key:"binary"}]},admin),201),rotationRoute="/api/kv/paths/"+rotationPath.id;
+    const rotationFirst=await checked(await request(rotationRoute+"/data","POST",{resourceVersion:"absent",expectedHead:0,fields:[{field:"credential",encoding:"utf8",value:"first static fixture"},{field:"binary",encoding:"base64",value:binary}]},admin),201);
+    await checked(await request("/api/kv/policies","POST",{principal:"user:"+scopedUser.id,mountId:mount.id,prefix:"rotation",effect:"allow",actions:["list","rotate"]},admin),201);
+    const rotationConsumer={kind:"Deployment",namespace:"apps",name:"rotation-consumer"},prepareRotation={pathId:rotationPath.id,pathRevision:rotationPath.revision,field:"credential",consumer:rotationConsumer};
+    await checked(await request("/api/kv/rotations","POST",prepareRotation,reader),403);
+    const rotation=await checked(await request("/api/kv/rotations","POST",prepareRotation,scoped),201);
+    const generateRotation={action:"generate",rotationId:rotation.id,revision:rotation.revision,pathRevision:rotationPath.revision,confirmPath:rotationPath.path,resourceVersion:rotationFirst.resourceVersion,expectedHead:1};
+    await checked(await request("/api/kv/rotations","PATCH",{...generateRotation,confirmPath:"wrong"},scoped),400);
+    const generated=await checked(await request("/api/kv/rotations","PATCH",generateRotation,scoped));assert.equal(generated.head,2);assert.equal(generated.rotation.state,"awaiting-ack");assert(!Object.hasOwn(generated,"fields"));
+    const replacement=Buffer.from(native.objects.get("apps/rotation-static")!.data!.credential,"base64").toString("utf8");assert(/^[A-Za-z0-9_-]{43}$/.test(replacement));assert.equal(native.objects.get("apps/rotation-static")!.data!.binary,binary);assert(!JSON.stringify(generated).includes(replacement));
+    await checked(await request(rotationRoute+"/data","GET",undefined,scoped),403);await checked(await request("/api/kv/rotations","PATCH",generateRotation,scoped),409);
+    const workload={
+      apiVersion:"apps/v1",kind:"Deployment",
+      metadata:{name:"rotation-consumer",namespace:"apps",uid:"consumer-uid",resourceVersion:"consumer-rv"},
+      spec:{template:{
+        metadata:{annotations:{unrelated:"preserved"}},
+        spec:{containers:[{name:"app",image:"example.invalid/synthetic",env:[{name:"OTHER",value:privateMarker}]}]},
+      }},
+    };
+    await writeFile(path.join(cli.bin,"deployment.json"),JSON.stringify(workload));
+    await checked(await request("/api/kv/rotations/"+rotation.id+"/consumer","GET",undefined,scoped),403);
+    const consumerPreview=await checked(await request("/api/kv/rotations/"+rotation.id+"/consumer","GET",undefined,admin));assert(!JSON.stringify(consumerPreview).includes(privateMarker));
+    await writeFile(path.join(cli.bin,"allow-rotation-reload"),"");await writeFile(path.join(cli.bin,"rotation-reload.json"),JSON.stringify({...workload,metadata:{...workload.metadata,resourceVersion:"consumer-next-rv"},spec:{template:{...workload.spec.template,metadata:{annotations:{unrelated:"preserved","bortus.io/rotation-id":rotation.id}}}}}));
+    const reloaded=await checked(await request("/api/kv/rotations/"+rotation.id+"/consumer","POST",{rotationId:rotation.id,revision:consumerPreview.revision,confirmPath:rotationPath.path,confirmConsumer:consumerPreview.consumer,consumerUid:consumerPreview.uid,consumerResourceVersion:consumerPreview.resourceVersion,expectedHead:2,resourceVersion:generated.resourceVersion},admin));assert.equal(reloaded.rotation.state,"reload-requested");
+    const acknowledged=await checked(await request("/api/kv/rotations","PATCH",{action:"acknowledge",rotationId:rotation.id,revision:reloaded.rotation.revision,confirmPath:rotationPath.path,confirmConsumer:consumerPreview.consumer,confirmConsumption:true,expectedHead:2,resourceVersion:generated.resourceVersion},scoped));assert.equal(acknowledged.rotation.state,"acknowledged");
+    const rotationList=await checked(await request("/api/kv/rotations?pathId="+rotationPath.id,"GET",undefined,reader));assert.equal(rotationList.items.length,1);assert(!JSON.stringify(rotationList).includes(replacement));
+    const rotationToken=await checked(await request("/api/kv/identities","POST",{ownerId:scopedUser.id,name:"rotation-only",expiresAt:new Date(Date.now()+3600000).toISOString(),scopes:[{mountId:mount.id,prefix:"rotation",actions:["list","rotate"]}]},scoped),201);
+    const tokenIntent=await checked(await automate({operation:"rotationPrepare",...prepareRotation},rotationToken.credential));
+    await checked(await automate({operation:"rotationGenerate",rotationId:tokenIntent.id,revision:tokenIntent.revision,pathRevision:rotationPath.revision,confirmPath:rotationPath.path,resourceVersion:generated.resourceVersion,expectedHead:2},rotationToken.credential));
+    await checked(await automate({operation:"read",pathId:rotationPath.id},rotationToken.credential),403);
+    await checked(await request("/api/kv/identities/"+rotationToken.id,"DELETE",undefined,scoped));await checked(await automate({operation:"rotationResolve",rotationId:tokenIntent.id},rotationToken.credential),401);
     const beforeProbe=native.calls.length;
     const readiness=await Promise.all(Array.from({length:20},()=>request("/api/health/ready")));assert(readiness.every(r=>r.status===200));
     const probeCalls=native.calls.slice(beforeProbe);assert.equal(probeCalls.length,2);assert(probeCalls.every(c=>c.method==="GET"&&c.metadata));

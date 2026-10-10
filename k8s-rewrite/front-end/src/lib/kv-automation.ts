@@ -1,7 +1,8 @@
 import { z } from "zod";
 import { KvError, type KvActor } from "./kv-contract";
 import type { KvNativeEngine } from "./kv-native-engine";
-import { dataChange, nativeDelete, nativeDestroy, nativeReconcile, nativeRollback } from "./kv-schemas";
+import { dataChange, nativeDelete, nativeDestroy, nativeReconcile, nativeRollback, rotationAcknowledge, rotationCancel, rotationGenerate, rotationPrepare, rotationTarget } from "./kv-schemas";
+import { KvRotations } from "./kv-rotation";
 
 const target = { pathId: z.string().uuid() };
 export const automationRequest = z.discriminatedUnion("operation", [
@@ -15,6 +16,11 @@ export const automationRequest = z.discriminatedUnion("operation", [
   nativeRollback.extend({ operation: z.literal("rollback"), ...target }).strict(),
   nativeReconcile.extend({ operation: z.literal("reconcile"), ...target }).strict(),
   z.object({ operation: z.literal("resolve"), operationId: z.string().uuid() }).strict(),
+  rotationPrepare.extend({ operation: z.literal("rotationPrepare") }).strict(),
+  rotationGenerate.extend({ operation: z.literal("rotationGenerate") }).strict(),
+  rotationAcknowledge.extend({ operation: z.literal("rotationAcknowledge") }).strict(),
+  rotationCancel.extend({ operation: z.literal("rotationCancel") }).strict(),
+  z.object({ operation: z.literal("rotationResolve"), ...rotationTarget }).strict(),
 ]);
 
 export async function runAutomation(engine: KvNativeEngine, actor: KvActor, input: z.infer<typeof automationRequest>) {
@@ -34,5 +40,10 @@ export async function runAutomation(engine: KvNativeEngine, actor: KvActor, inpu
       return engine.change(actor, input.pathId, input, "delete");
     }
     case "resolve": return engine.resolve(actor, input.operationId);
+    case "rotationPrepare": return new KvRotations(engine).prepare(actor, input);
+    case "rotationGenerate": return new KvRotations(engine).generate(actor, input.rotationId, input);
+    case "rotationAcknowledge": return new KvRotations(engine).acknowledge(actor, input.rotationId, input);
+    case "rotationCancel": return new KvRotations(engine).cancel(actor, input.rotationId, input.revision, input.confirmPath);
+    case "rotationResolve": return new KvRotations(engine).resolve(actor, input.rotationId);
   }
 }

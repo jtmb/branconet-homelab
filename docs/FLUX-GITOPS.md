@@ -1,5 +1,7 @@
 # BORTUS and the homelab Flux pipeline
 
+The locally qualified static rotation workflow can explicitly request a named same-namespace Deployment/StatefulSet/DaemonSet template reload for an effective administrator with rotate policy. It patches only the pod-template rotation marker with UID/RV conditions, never edits Git, and reports requested/ambiguous outcomes separately from consumption. Flux may reconcile that marker back; operators must coordinate reload and external credential validity. No automatic restart or cluster-wide reload occurs. This workflow passed local unit and production HTTP/fake-CLI qualification; real Flux/controller acceptance remains pending.
+
 BORTUS K8s Manager displays and manages the Flux resources in the connected
 cluster. Application code remains in `jtmb/branconet-homelab`; the private
 [branconet-charts repository](https://github.com/jtmb/branconet-charts) owns all 33
