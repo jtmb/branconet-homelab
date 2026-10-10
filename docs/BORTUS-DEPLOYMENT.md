@@ -2,6 +2,12 @@
 
 Application deployment contract. Main includes BORTUS source and documentation alongside the existing Swarm homelab. Kubernetes charts, provisioning, Secret import and live Flux source configuration remain separate deployment work. Publishing this application never imports or pushes old SQLite values.
 
+The live chart is maintained in the separate private `jtmb/branconet-charts`
+repository at `charts/bortus`; effective overrides are in `flux/releases/bortus.yaml`.
+The CI-validated Flux source is `branconet-charts` and its existing Kustomization
+is `migration-releases`. Production remains `bortus:migration-1438b27`, preloaded
+on all nodes with pull policy Never. See the [reviewed image-release procedure](FLUX-GITOPS.md).
+
 ## Image and storage contract
 
 Build from repo root: `docker build -t bortus:local k8s-rewrite/front-end`. Override `--build-arg KUBECTL_VERSION=<cluster-compatible-version>` for dashboard CLI operations (default v1.34.1); native Secret API has no kubectl dependency. Docker build excludes env/SQLite/kubeconfig files. Runtime entrypoint runs Prisma migrate deploy and requires signing/lookup env before starting the standalone server. Missing DB schema on existing installations requires a consistent backup and baseline/migration assessment before deploy; never reset production DB.
