@@ -1,0 +1,226 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  @keyframes tab-pop {
+    0%   { transform: scale(1);   filter: brightness(1); }
+    50%  { transform: scale(1.12); filter: brightness(1.4); }
+    100% { transform: scale(1.08); filter: brightness(1.25); }
+  }
+}
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 270 60% 50%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 3.8% 10%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.8% 10%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 270 60% 50%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 50.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 10%;
+    --input: 240 3.7% 10%;
+    --ring: 270 60% 50%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 270 60% 50%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 3.8% 10%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.8% 10%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 270 60% 50%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 50.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 10%;
+    --input: 240 3.7% 10%;
+    --ring: 270 60% 50%;
+  }
+
+  * {
+    border-color: var(--border);
+  }
+
+  /* Search bars: focus shown via border-color transition.
+     Kill Chrome's focus-visible outline on both the input and its parent container. */
+  input[type="text"]:focus,
+  input[type="search"]:focus,
+  input[type="text"]:focus-visible,
+  input[type="search"]:focus-visible {
+    outline: 0;
+  }
+  /* Parent container gets :focus-within when search input is focused */
+  div:has(> input[type="text"]:focus),
+  div:has(> input[type="search"]:focus) {
+    outline: 0;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-geist-sans), geist-sans, 'Inter', system-ui, sans-serif;
+  }
+
+  /* Dark scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: hsl(240, 10%, 8%);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(240, 5%, 26%);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(240, 5%, 35%);
+  }
+  /* Firefox */
+  * {
+    scrollbar-color: hsl(240, 5%, 26%) hsl(240, 10%, 8%);
+    scrollbar-width: thin;
+  }
+}
+
+/* ── Kill Chrome's default focus-visible outline on every element ── */
+/* Below @layer so it beats @layer base specificity. */
+* {
+  outline: 0 !important;
+}
+
+@layer utilities {
+  .text-balance {
+    word-break: break-word;
+  }
+}
+
+/* Terminal styling */
+.xterm {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Menlo', 'Monaco', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Glassmorphism cards */
+.glass-card {
+  background: rgba(24, 24, 27, 0.6);
+  border: 1px solid rgba(56, 56, 61, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+/* Accent utilities */
+.text-accent {
+  color: #6366f1;
+}
+
+.text-accent-hover:hover {
+  color: #818cf8;
+}
+
+.bg-accent {
+  background-color: #6366f1;
+}
+
+.bg-accent-hover:hover {
+  background-color: #4f46e5;
+}
+
+/* Badge utilities */
+.badge-success {
+  background-color: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+
+.badge-error {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.badge-warning {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+}
+
+/* Status dot utilities */
+.dot-success {
+  background-color: #10b981;
+}
+
+.dot-error {
+  background-color: #ef4444;
+}
+
+.dot-warning {
+  background-color: #f59e0b;
+}
+
+.dot-pending {
+  background-color: #6b7280;
+}
+
+/* ── Shared component classes ── */
+
+/* Top navigation bar */
+.topnav-bar {
+  @apply sticky top-0 z-10 bg-zinc-900/50 backdrop-blur-sm;
+  border-bottom: 1px solid hsl(var(--border) / 0.4);
+}
+
+/* Dropdown / popover menu */
+.dropdown {
+  @apply absolute rounded-xl py-1.5 z-30;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  box-shadow: 0 20px 50px -12px rgb(0 0 0 / 0.6);
+}
+
+.dropdown-item {
+  @apply w-full text-left px-4 py-2 text-sm transition-colors;
+  color: hsl(var(--muted-foreground));
+}
+.dropdown-item:hover {
+  background: hsl(var(--secondary));
+  color: hsl(var(--foreground));
+}
+
+/* Card panel */
+.card-panel {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  @apply rounded-2xl;
+}
+
+/* Page header icon */
+.page-header-icon {
+  @apply w-6 h-6 flex-shrink-0;
+}
+
+/* Page header title */
+.page-header-title {
+  @apply text-2xl font-bold text-zinc-100;
+}
+
+/* Section separator */
+.section-border {
+  border-color: hsl(var(--border) / 0.4);
+}

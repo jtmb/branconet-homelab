@@ -26,3 +26,9 @@ My personal highly avilable, customizable homelab as code deployment & pipeline 
     Adittionaly, run adchoc commands using bash adhoccommands.sh
 
 
+
+## BORTUS Kubernetes management app
+
+BORTUS source is in [k8s-rewrite/front-end](k8s-rewrite/front-end). See the [workflow guide](docs/BOTRUS-WORKFLOW.md) and [deployment contract](docs/BORTUS-DEPLOYMENT.md) for setup, native Secret integration and validation.
+
+This addition publishes the dashboard, container runtime and documentation. Kubernetes charts/provisioning and live Flux source changes remain separate from this app merge; the existing Swarm homelab sources are retained.

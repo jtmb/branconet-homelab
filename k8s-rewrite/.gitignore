@@ -1,0 +1,51 @@
+# Kubernetes Secrets (use external secret management)
+secrets/
+!front-end/src/app/api/secrets/
+!front-end/src/app/api/secrets/**
+!front-end/src/app/(dashboard)/secrets/
+!front-end/src/app/(dashboard)/secrets/**
+*.pem
+*.key
+*.crt
+
+# Auto-generated Ansible lookup references
+group_vars/all.yml
+
+# Environment files
+.env.local
+.env
+
+# Local development artifacts
+*.log
+logs/
+
+# IDE settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build artifacts
+dist/
+build/
+
+# Local overrides (use separate repo or Git subtree)
+local-overrides/
+
+# BORTUS runtime and generated artifacts
+node_modules/
+.next/
+*.db
+*.db-*
+*.tsbuildinfo
+.env.*
+!.env.example
