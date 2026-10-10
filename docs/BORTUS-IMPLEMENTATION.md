@@ -28,7 +28,7 @@ Local implementation/acceptance and external Linux image/real-cluster acceptance
 | A18 SSE | Backpressure/Unicode SQL slices, cursor resume, fresh account checks, terminal cleanup; bounded text tail and browser completion/unmount counts | Local unit/HTTP/browser passed; real runner/image pending |
 | A19 quality gates | Flat-config zero-warning lint; app-only Node22 CI; clean Node22 Windows install/build/type/49 unit/HTTP pass | Local passed; external pre-KV Linux/image passed; new KV image pending |
 | A20 dependencies | Compatible lockfile/PostCSS updates, unused highlighter removed; production audit 7→3 entries for one retained Prisma-config advisory | Local compatibility/reachability review passed; residual advisories/ESLint retirement documented; image/OS scan pending |
-| A21 lists/probes/forms | Resource/admin tables bound DOM to 100 rows; exact-ID inventory/config edits; explicit save failures; no speculative row prefetch | Partial; Secret metadata/probes/detail tables pending |
+| A21 lists/probes/forms | Resource/admin tables bound DOM to 100 rows; exact-ID inventory/config edits; explicit save failures; bounded alias/probe caches and 100-alias API/UI pages | Partial; alias/probe unit/HTTP/browser passed; Secret object/detail tables and controlled memory measurements pending |
 | A22 lazy code | Actions/YAML/log/terminal deferral; observed scripts and offline gzip/Brotli; build estimates | Resource local measurements passed; provisioning/CPU/LCP/fixed mobile performance pending |
 
 ## Reversible stages and evidence
@@ -56,6 +56,10 @@ After each behavior change, every docs domain is checked and affected contracts 
 A command combining shutdown and recursive cleanup of an owned UI fixture was rejected by automatic approval review. Narrow shutdown of the two verified disposable processes succeeded; its temporary files were retained. Stdin-controlled fixtures normally stop and clean up. The KV browser fixture's non-PTY stdin had closed before cleanup; its three verified child processes were stopped separately and its synthetic temporary files retained. The earlier blocked historical prototype is never retried or bypassed.
 
 ## Native Secrets engine scope
+
+A21 alias/readiness bounds passed all 83 unit tests, six focused metadata/lifecycle tests, zero-warning lint, a fresh build/typecheck and both final production HTTP suites (26.63 s existing, 28.35 s native; overall 28.59 s). Readonly/mobile browser checks reached all 603 synthetic aliases across seven pages during a native outage, with at most 100 rows and no native-list requests from page navigation. Fixture typing, lost-output rerun, hook dependencies and early probe-failure lifecycle corrections remain in [metadata-bounds.json](implementation-evidence/metadata-bounds.json). Secret object/detail tables, controlled CPU/RSS and final-image/live acceptance remain pending.
+
+`a88832c` commits confirmed history cleanup and its qualification. A21 alias metadata and readiness bounds passed local unit/HTTP/browser qualification: bounded file/DB mappings, 100-reference public pages, exact cached lookup, invalidation and metadata-only coalesced readiness. Full KV UI/rotation and remaining audit acceptance stay active.
 
 History cleanup qualification passes 77 full unit tests, zero-warning lint, a fresh build/type check and both production HTTP suites (existing 31.91 s, native 33.13 s; overall 33.46 s). Source/response and missing-source fixture assertions were corrected during qualification; successful PUT verification now explicitly uses recovery read-back. See [history cleanup evidence](implementation-evidence/kv-history-cleanup.json). No live delete or Linux final image qualification is claimed.
 

@@ -1,24 +1,11 @@
-import fs from "node:fs/promises";
 import prisma from "./db";
-import { SecretError } from "./cluster-secrets";
-import { mergeAliases, type SecretAlias } from "./secret-aliases";
-export async function listAliases(): Promise<SecretAlias[]> {
-  let file: SecretAlias[] = [];
-  if (process.env.BORTUS_SECRET_ALIASES_FILE) {
-    try {
-      file = JSON.parse(
-        await fs.readFile(process.env.BORTUS_SECRET_ALIASES_FILE, "utf8"),
-      );
-      if (!Array.isArray(file)) throw new Error();
-    } catch {
-      throw new SecretError(
-        503,
-        "Explicit alias file is unavailable or invalid",
-      );
-    }
-  }
-  return mergeAliases([file, await prisma.secretReference.findMany()]);
-}
-export async function resolveAlias(alias: string) {
-  return (await listAliases()).find((ref) => ref.alias === alias) || null;
-}
+import { AliasCatalog, MAX_ALIASES, readAliasFile } from "./alias-catalog";
+const scope = globalThis as typeof globalThis & { __bortusAliasCatalog?: AliasCatalog };
+const catalog = scope.__bortusAliasCatalog ??= new AliasCatalog(async (path, signal) => Promise.all([
+  readAliasFile(path, signal),
+  prisma.secretReference.findMany({ take: MAX_ALIASES + 1, select: { alias: true, namespace: true, name: true, key: true } }),
+]));
+const file = () => process.env.BORTUS_SECRET_ALIASES_FILE || "";
+export const listAliases = () => catalog.list(file());
+export const resolveAlias = (alias: string) => catalog.resolve(file(), alias);
+export const invalidateAliases = () => catalog.invalidate();

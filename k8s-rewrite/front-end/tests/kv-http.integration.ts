@@ -157,6 +157,23 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     const histories=[...native.objects.values()].filter(s=>s.metadata?.namespace==="history");assert(histories.length>=5);for(const h of histories){assert(h.immutable);assert(!JSON.stringify(h).includes(privateMarker));}
     await checked(await request("/api/secrets?namespace=history&name="+histories[0].metadata!.name+"&key=binary","GET",undefined,admin),403);
     await checked(await request("/api/secret-references","POST",{alias:"forbidden-history",namespace:"history",name:histories[0].metadata!.name,key:"binary"},admin),403);
+    const beforeProbe=native.calls.length;
+    const readiness=await Promise.all(Array.from({length:20},()=>request("/api/health/ready")));assert(readiness.every(r=>r.status===200));
+    const probeCalls=native.calls.slice(beforeProbe);assert.equal(probeCalls.length,2);assert(probeCalls.every(c=>c.method==="GET"&&c.metadata));
+    const afterProbe=native.calls.length;assert.equal((await request("/api/health/ready")).status,200);assert.equal(native.calls.length,afterProbe);
+    await db.secretReference.createMany({data:Array.from({length:603},(_,i)=>({alias:"bounded_original_"+String(i).padStart(4,"0"),namespace:"apps",name:"imported",key:"__proto__"}))});
+    await db.secretReference.create({data:{alias:"hidden_history_metadata",namespace:"history",name:histories[0].metadata!.name!,key:"binary"}});
+    await checked(await request("/api/secret-references","POST",{alias:"metadata_refresh_trigger",namespace:"apps",name:"imported",key:"__proto__"},admin),201);
+    const aliasesSeen:string[]=[],aliasPages=[];let aliasCursor:string|null=null;
+    do{const page=await checked(await request("/api/secret-references"+(aliasCursor?"?cursor="+encodeURIComponent(aliasCursor):""),"GET",undefined,reader));assert(page.references.length<=100);aliasPages.push(page);aliasesSeen.push(...page.references.map((r:any)=>r.alias));aliasCursor=page.nextCursor;}while(aliasCursor);
+    assert.equal(aliasesSeen.filter(alias=>alias.startsWith("bounded_original_")).length,603);assert.equal(new Set(aliasesSeen).size,aliasesSeen.length);assert(!aliasesSeen.includes("hidden_history_metadata"));assert(!JSON.stringify(aliasPages).includes(binary));
+    await checked(await request("/api/secret-references?namespace=history","GET",undefined,admin),403);
+    await checked(await request("/api/secret-references?cursor=bad%20cursor","GET",undefined,admin),400);
+    await checked(await request("/api/secret-references","POST",{alias:"too_large",namespace:"apps",name:"imported",key:"__proto__",extra:"x".repeat(4096)},admin),413);
+    const beforeCount=await db.secretReference.count(),fill=10000-2-beforeCount;
+    await db.secretReference.createMany({data:Array.from({length:fill},(_,i)=>({alias:"quota_fixture_"+String(i).padStart(5,"0"),namespace:"apps",name:"imported",key:"__proto__"}))});
+    const quota=await Promise.all(["quota_final_a","quota_final_b"].map(alias=>request("/api/secret-references","POST",{alias,namespace:"apps",name:"imported",key:"__proto__"},admin)));
+    assert.deepEqual(quota.map(r=>r.status).sort(),[201,413]);assert.equal(await db.secretReference.count(),9999);
     delete native.objects.get("apps/imported")!.metadata!.annotations!["bortus.io/kv-state"];
     await checked(await request(route+"/adopt","GET",undefined,admin),409);
     await checked(await request("/api/secrets?namespace=apps&name=imported&key=__proto__","GET",undefined,admin),409);

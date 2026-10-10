@@ -10,6 +10,8 @@ on all nodes with pull policy Never. See the [reviewed image-release procedure](
 
 ## Image and storage contract
 
+Readiness stops scheduling additional scopes after a failed probe and retains the shared worker until already-started probes settle within their native deadlines. Overlapping requests cannot detach those probes and start another refresh immediately. This failure lifecycle passed the focused regression and the final full unit/HTTP run.
+
 Build from repo root: `docker build -t bortus:local k8s-rewrite/front-end`. Override `--build-arg KUBECTL_VERSION=<cluster-compatible-version>` for dashboard CLI operations (default v1.34.1); native Secret API has no kubectl dependency. Docker build excludes env/SQLite/kubeconfig files. Runtime entrypoint runs Prisma migrate deploy and requires signing/lookup env before starting the standalone server. Missing DB schema on existing installations requires a consistent backup and baseline/migration assessment before deploy; never reset production DB.
 
 Kubernetes liveness/startup probes: HTTP /api/health/live port 4000. Readiness: /api/health/ready, timeoutSeconds at least 10. Configure readiness period 30s and protect these endpoints from external probe floods. Network policy must permit app to Kubernetes API TCP 443/6443 and DNS; browser/Bearer ingress needs TLS. Mount aliases from a ConfigMap read-only. No host SSH private keys are needed. For a PVC use fsGroup 1000; allow writable /app/.next/cache and /home/shell for existing dashboard operations. Use one replica/Recreate to avoid concurrent SQLite writers/schema deploys.
@@ -66,6 +68,8 @@ The `/secrets` editor uses the existing dark dashboard layout, explicit value re
 Keep operator kubeconfig, SSH keys and provisioning credentials independently available in a protected operator environment/offline store. Creating a cluster cannot depend on its unavailable Secrets. Container provisioning is disabled; migration runs Ansible externally. Local Ansible integration retains Bearer lookup for mapped native Secrets/nonsecret config. Supply bootstrap credentials independently, and use `no_log` for sensitive tasks. See `SECRETS-ENGINE.md`.
 
 ## Validation ownership
+
+Readiness/alias bounds passed local unit and production HTTP/TLS qualification. Public readiness now coalesces bounded metadata-only probes (limit one), checks forward account/KV metadata and aliases, and includes history only when guarded mode is enabled. Use timeoutSeconds at least 10 for the nine-second dependency budget. A ready response remains a dependency read check; it does not certify write verbs, admission, old-principal revocation or recovery backups. No extra native verbs are required.
 
 History destroy/GC APIs passed local unit and production HTTP/TLS qualification. The dedicated history namespace needs get/list/create/delete, including UID/resourceVersion delete preconditions; current namespaces retain get/list/create/update without delete. Metadata-only list negotiation must be supported by the API. No app code creates namespaces or RoleBindings. Final external guard/image/RBAC validation remains required before adoption.
 

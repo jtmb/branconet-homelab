@@ -10,6 +10,8 @@ First registration creates a write user. Later users default to readonly. Regist
 
 ## Gates
 
+Alias registration/deletion now recheck effective administration in the serialized metadata transaction; registration also enforces the combined mapping quota. This metadata bound passed local unit and production HTTP/TLS qualification.
+
 History destruction requires fresh write role, destroy policy, guarded mode and exact path confirmation. GC additionally requires fresh effective engine administration at preview, source fence and deletion authorization; scoped automation supports destruction but cannot run administrator GC. Cleanup endpoints passed local unit and production HTTP/TLS qualification and add no infrastructure authority.
 
 Middleware at `src/middleware.ts` uses the Next 15.5 Node runtime and verifies cookie identity against the current DB account/sessionVersion. Public paths are `/welcome`, `/auth/login`, `/auth/register`, `/api/auth/*`, framework paths and exact info/health/favicon paths. Exact `/api/vars/lookup` and `/api/kv/automation` instead require their distinct Bearer audiences inside their handlers. Other unauthenticated APIs return 401 and protected pages redirect to welcome. Middleware DB failures return a fixed 503 rather than admitting the request.

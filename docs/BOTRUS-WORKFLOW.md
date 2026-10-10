@@ -14,6 +14,10 @@ For an existing database, make a consistent backup and assess migration history 
 
 ## Configuration and Secrets
 
+Use Previous aliases / Next aliases on the Secrets screen to browse all references. Native and alias metadata load independently; refresh failures are shown beside the affected source. Alias page navigation does not reload the native Secret list. This browser behavior passed local readonly/mobile checks with 603 synthetic aliases and an unavailable native endpoint.
+
+Alias metadata bounds passed local unit and production HTTP/TLS qualification. Follow nextCursor to inspect all 100-reference pages; current-namespace metadata excludes history. Register strict four-field mappings through the API for immediate cache invalidation, or update the bounded metadata file and allow up to ten seconds for refresh. Readiness coalesces metadata-only dependency probes and does not establish write/admission acceptance.
+
 History cleanup APIs passed local unit and production HTTP/TLS qualification. Select committed versions and confirm the exact path; first tombstone any active head being destroyed. Inspect reference-commit and per-history cleanup outcomes separately. For orphan GC, an administrator previews one path, reviews candidates older than 24 hours, and submits the current source head/RV/path revision plus candidate UID/RV. Changed ownership/references or unavailable sources retain history; no background sweep runs.
 
 The v1 import/export API workflow passed local unit and production HTTP/TLS qualification. Choose explicit paths/versions and acknowledge that export contains credential values. Review metadata-only import plans, then submit the same bounded bundle with current path revision/head/RV and explicit overwrite choices; inspect every per-path outcome before retrying. New native initialization needs an administrator, while already-imported native objects require explicit adoption first. No group destination is inferred from an alias. Full transfer UI remains pending.

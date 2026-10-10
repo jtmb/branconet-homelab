@@ -43,13 +43,19 @@ Registration closes after the first user unless `ALLOW_REGISTRATION=true` or App
 | GET /api/secrets?namespace=...&name=...&key=... | Write + engineAdmin cookie | UTF-8 value and current resourceVersion |
 | POST /api/secrets | Write + engineAdmin cookie | JSON namespace/name/key/value, mode create or update; update requires resourceVersion; optional type for creation |
 | DELETE /api/secrets | Write + engineAdmin cookie | JSON namespace/name/key/resourceVersion; deletes one key and retains empty object |
-| GET /api/secret-references | Cookie, either role | Metadata-only explicit aliases |
+| GET /api/secret-references?cursor=...&namespace=... | Cookie, either role | At most 100 explicit metadata references plus nextCursor; current scopes only, history excluded |
 | POST /api/secret-references | Write + engineAdmin cookie | JSON alias/namespace/name/key; cannot remap an existing alias |
 | DELETE /api/secret-references?alias=... | Write + engineAdmin cookie | Deletes SQLite mapping only, retaining native key and file mapping |
 
 Create refuses existing keys. Updates/deletes preserve unrelated data, type and metadata without retrying conflicts. Namespace must be allowed by `BORTUS_SECRET_NAMESPACES`. Missing version: 428; stale/create collisions or immutable objects: 409; missing key: 404; invalid input: 400; Kubernetes/config/RBAC outage: 503. Non-UTF-8 values cannot be revealed through the text API. Responses are private/no-store.
 
 Send value-bearing requests from the UI or protected files over TLS; never include them in command arguments, Git or logs. See [Secrets engine](SECRETS-ENGINE.md).
+
+Alias metadata bounds/cache passed local unit and production HTTP/TLS qualification. GET references accepts only optional cursor/namespace and returns at most 100 references plus nextCursor in stable alias order, filtered to current namespaces excluding history. Internal alias resolution/adoption retains all valid mappings, bounded to 10,000 unique aliases and a one-MiB UTF-8 file. File/DB reads coalesce for 10 seconds; alias API mutations invalidate immediately and fixed failures back off for two seconds. A five-second refresh deadline retains an unsettled worker slot rather than launching more reads or serving stale metadata. No credential values enter this cache.
+
+Alias registration uses a strict four-field JSON body, a four-KiB maximum and the shared 20-second body-read deadline; this bound passed local qualification.
+
+Registration/deletion recheck effective administration in a serialized transaction. Registration merges current bounded DB rows with the validated snapshot and refuses a combined quota over 10,000 with 413, including concurrent registrations; conflicts remain 409. These checks passed local unit and production HTTP/TLS qualification.
 
 Native transport writes are limited to 900 KiB of serialized JSON, including existing data/metadata; oversize changes return 413. Requests have eight-second deadlines and four concurrent slots/64 queued. Lists use 20-object pages, with 15-second/10000-object/32-MiB total and four-MiB individual-response limits; oversize/malformed/repeated-cursor lists fail explicitly. Exact special key spellings including `__proto__` are retained through TLS JSON.
 
@@ -218,3 +224,5 @@ New private credentials use native Secrets and are never retained in `GitRepo.au
 ## Health
 
 Exact public GET `/api/health/live` reports process liveness. `/api/health/ready` checks signing/lookup configuration, migrated SQLite/aliases and native Secret list access across the allowlist, returning 503 on failure. Neither returns credentials.
+
+Readiness passed local unit and production HTTP/TLS qualification with coalesced 10-second results/two-second failure backoff and a nine-second dependency deadline. It verifies forward account/KV metadata and bounded aliases, then requests only a limit-one PartialObjectMetadataList in each current namespace, plus the history namespace when guarded mode is enabled. Four workers share an eight-second native budget; full Secret data lists and write probes are not used. Unsupported metadata negotiation or unavailable dependencies return 503 with fixed metadata only. Readiness does not prove native write RBAC or external admission enforcement.

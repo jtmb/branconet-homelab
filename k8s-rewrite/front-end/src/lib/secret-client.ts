@@ -15,7 +15,7 @@ export function secretNamespaces(): string[] {
 }
 export interface NativeSecretTransport extends SecretTransport {
   delete(namespace: string, name: string, uid: string, resourceVersion: string): Promise<void>;
-  probe(namespace: string): Promise<void>;
+  probe(namespace: string, deadline?: number): Promise<void>;
   listMetadata(namespace: string): Promise<V1ObjectMeta[]>;
 }
 let active = 0;
@@ -150,9 +150,10 @@ export function createSecretTransport(): NativeSecretTransport {
         } while (cursor);
         return items;
       },
-      probe: async namespace => {
-        const { value } = await request("GET", route(namespace) + "?limit=1", undefined, Date.now() + 8000, true);
-        if (value.kind !== "PartialObjectMetadataList" || !Array.isArray(value.items) || value.items.length > 1 || value.items.some((i: any) => Object.hasOwn(i, "data")))
+      probe: async (namespace, deadline = Date.now() + 8000) => {
+        const { value } = await request("GET", route(namespace) + "?limit=1", undefined, deadline, true);
+        if (value.kind !== "PartialObjectMetadataList" || value.apiVersion !== "meta.k8s.io/v1" || !Array.isArray(value.items) || value.items.length > 1 ||
+          value.items.some((i: any) => i.kind !== "PartialObjectMetadata" || i.apiVersion !== "meta.k8s.io/v1" || i.metadata?.namespace !== namespace || Object.hasOwn(i, "data") || Object.hasOwn(i, "stringData")))
           throw new SecretError(503, "Metadata-only Secret probe unavailable");
       },
     };

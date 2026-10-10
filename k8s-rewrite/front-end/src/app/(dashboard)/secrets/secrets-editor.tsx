@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
-import { useSession } from "@/lib/use-query";
+import { useQuery, useSession } from "@/lib/use-query";
 type Summary = {
   namespace: string;
   name: string;
@@ -26,8 +26,14 @@ export default function SecretsEditor() {
   const reveal = useRef({ allowed: canWrite, epoch: 0, mounted: false });
   if (reveal.current.allowed !== canWrite) { reveal.current.allowed = canWrite; reveal.current.epoch++; }
   useEffect(() => { const state = reveal.current; state.mounted = true; return () => { state.mounted = false; state.epoch++; }; }, []);
-  const [secrets, setSecrets] = useState<Summary[]>([]),
-    [refs, setRefs] = useState<Ref[]>([]);
+  const [aliasPages, setAliasPages] = useState<string[]>([]);
+  const aliasCursor = aliasPages.at(-1);
+  const secretQuery = useQuery<{ secrets: Summary[] }>("/api/secrets");
+  const aliasQuery = useQuery<{ references: Ref[]; nextCursor: string | null }>(
+    `/api/secret-references${aliasCursor ? `?cursor=${encodeURIComponent(aliasCursor)}` : ""}`,
+  );
+  const secrets = secretQuery.data?.secrets ?? [], refs = aliasQuery.data?.references ?? [];
+  const refetchSecrets = secretQuery.refetch, refetchAliases = aliasQuery.refetch;
   const [target, setTarget] = useState({
     namespace: "",
     name: "",
@@ -41,16 +47,9 @@ export default function SecretsEditor() {
     [busy, setBusy] = useState(false);
   useEffect(() => { if (!canWrite) { setValue(""); setAlias(""); setTarget({ namespace: "", name: "", key: "", resourceVersion: "" }); } }, [canWrite]);
   const refresh = useCallback(async () => {
-    const [a, b] = await Promise.all([
-      api("/api/secrets"),
-      api("/api/secret-references"),
-    ]);
-    setSecrets(a.secrets);
-    setRefs(b.references);
-  }, []);
-  useEffect(() => {
-    refresh().catch((error) => setMessage(error.message));
-  }, [refresh]);
+    refetchSecrets();
+    refetchAliases();
+  }, [refetchSecrets, refetchAliases]);
   async function perform(action: () => Promise<void>, requiresWrite = true) {
     if (requiresWrite && !reveal.current.allowed || busy) return;
     setBusy(true);
@@ -121,6 +120,7 @@ export default function SecretsEditor() {
           Readonly and scoped users can view metadata. Flat value access requires engine administration.
         </p>
       )}
+      {secretQuery.error && <p role="alert" className="text-sm text-amber-300">Secret metadata unavailable: {secretQuery.error}{secretQuery.data && " Previously loaded metadata is shown."}</p>}
       <div className="overflow-x-auto border border-zinc-800 rounded-lg">
         <table className="w-full text-sm">
           <thead>
@@ -158,7 +158,7 @@ export default function SecretsEditor() {
             {!secrets.length && (
               <tr>
                 <td className="p-3 text-zinc-500" colSpan={3}>
-                  No Secrets loaded. Check scope and API connection.
+                  {secretQuery.loading ? "Loading Secret metadata…" : secretQuery.error ? "Secret metadata could not be loaded." : "No Secrets in the configured scope."}
                 </td>
               </tr>
             )}
@@ -316,6 +316,13 @@ export default function SecretsEditor() {
       )}
       <section>
         <h2 className="font-semibold mb-2">Lookup aliases</h2>
+        {aliasQuery.error && <p role="alert" className="text-sm text-amber-300">Alias metadata unavailable: {aliasQuery.error}{aliasQuery.data && " Previously loaded aliases are shown."}</p>}
+        <nav aria-label="Alias pages" className="flex flex-wrap items-center gap-3 mb-3">
+          <button type="button" className={button} disabled={busy || aliasPages.length === 0 || aliasQuery.refreshing} onClick={() => setAliasPages(pages => pages.slice(0, -1))}>Previous aliases</button>
+          <p role="status" className="text-sm text-zinc-400">Page {aliasPages.length + 1} · {refs.length} aliases{aliasQuery.refreshing && " · Loading…"}</p>
+          <button type="button" className={button} disabled={busy || !aliasQuery.data?.nextCursor || !!aliasQuery.error || aliasQuery.refreshing} onClick={() => { const cursor = aliasQuery.data?.nextCursor; if (cursor) setAliasPages(pages => [...pages, cursor]); }}>Next aliases</button>
+        </nav>
+        {!refs.length && <p className="text-sm text-zinc-400">{aliasQuery.loading ? "Loading alias metadata…" : aliasQuery.error ? "Alias metadata could not be loaded." : "No aliases on this page."}</p>}
         <ul className="space-y-1 text-sm text-zinc-400">
           {refs.map((ref) => (
             <li key={ref.alias}>

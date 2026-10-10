@@ -1,5 +1,7 @@
 # BORTUS implementation evidence
 
+[metadata-bounds.json](metadata-bounds.json) records 83 unit tests, six focused metadata/lifecycle tests, zero-warning lint/build/type and both final production HTTP suites (26.63 s existing, 28.35 s native; 28.59 s overall). All 603 synthetic aliases remain available across seven browser pages while the native source fails; six forward page transitions add six alias requests and zero native-list requests. [Mobile evidence](metadata-alias-mobile.png) shows readonly controls, bounded paging and an explicit native outage. No final image, production-inventory or controlled memory result is claimed.
+
 The native HTTP fixture now waits for both liveness and the auth dependency metadata read within a 30-second startup window. A liveness-only parallel run had a cold registration timeout. Mutation requests retain 15-second deadlines; this harness startup sequencing does not establish cold-start performance.
 
 `kv-automation-audit.json` records 73 full tests, a middleware follow-up, zero-warning lint/build/type and both production HTTP suites passing together (28.04 s existing, 23.91 s native/token). It covers distinct token audiences, native CAS, expiry/revocation, audit pagination/filtering, fresh capabilities and concurrent retention metadata. Query/header corrections and the preceding nonpassing fixture run remain recorded. Remaining KV workflows/UI and external image/live acceptance are pending.

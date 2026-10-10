@@ -59,6 +59,9 @@ try {
   await db.user.createMany({ data: Array.from({ length: 205 }, (_, index) => ({ username: "large_user_" + index, passwordHash: "unused", role: "readonly" })) });
   await db.variable.createMany({ data: Array.from({ length: 205 }, (_, index) => ({ key: "fixture_config_" + index, value: "nonsecret " + index, category: "fixture", encrypted: false })) });
   await db.appSetting.create({ data: { key: "allow_registration", value: "false" } });
+  await db.secretReference.createMany({ data: Array.from({ length: 603 }, (_, index) => ({
+    alias: "fixture_alias_" + String(index).padStart(4, "0"), namespace: "apps", name: "fixture-secret", key: "key_" + index,
+  })) });
   await db.job.createMany({ data: [
     { id: "completed-ui-job", playbook: "fixture.yml", status: "success", output: "🌍 fixture captured output\n".repeat(10000) },
     { id: "running-ui-job", playbook: "fixture.yml", status: "running", output: "fixture running output\n" },

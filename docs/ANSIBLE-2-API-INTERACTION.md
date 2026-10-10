@@ -1,5 +1,7 @@
 # Ansible to BORTUS API interaction
 
+The alias catalog bounds/cache passed local unit and production HTTP/TLS qualification: 10,000 explicit mappings and a one-MiB UTF-8 file, ten-second metadata coalescing and exact indexed resolution. Alias API mutations invalidate immediately; externally updated files/DB become visible after the bounded TTL. No values are cached by this catalog, and fresh legacy principal/grant/policy checks remain separate before every adopted value release. Source failures never reuse expired metadata.
+
 Lookup now checks the fresh enabled legacy service principal. On adopted KV targets it additionally requires the exact alias/namespace/name/key compatibility grant and deny-aware path policy, verifies native head drift and records metadata-only authorization before value release. Missing policy/mapping/audit availability fails closed; there is no privileged fallback. Adoption previews existing alias impact rather than granting grouped sibling/history access. Unadopted alias behavior and the plugin's Bearer audience remain unchanged. The audited-read addition passed local unit and production HTTP/TLS qualification.
 
 An optional externally supplied `botrus_secret` plugin resolves `GET /api/vars/lookup?key=<alias>` with `Authorization: Bearer <BOTRUS_SECRETS_KEY>` and consumes `{key,value}`. Its runtime-only cache, 10-second timeout and fatal failure behavior remain. Legacy environment/plugin names are compatibility identifiers.
