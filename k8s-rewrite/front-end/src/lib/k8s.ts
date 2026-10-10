@@ -23,24 +23,12 @@ const SSH_OPTS = [
 ];
 
 /**
- * Execute a kubectl command with -o json and return parsed JSON.
- * Requires a local kubeconfig at ~/.kube/config. Returns null if
- * kubeconfig is missing or kubectl fails.
+ * Execute structured kubectl arguments with verified process outcome and JSON parsing.
  */
 export async function kubectlJSON(
   args: readonly string[],
   timeoutMs = 15000
-): Promise<any | null> {
-  if (!hasLocalKubectl()) return null;
-
-  try {
-    const stdout = await kubectlExec([...args, "-o", "json"], timeoutMs);
-    if (!stdout.trim()) return null;
-    return JSON.parse(stdout);
-  } catch {
-    return null;
-  }
-}
+): Promise<any> { return kubectl.json(args, timeoutMs); }
 
 /**
  * Execute a raw SSH command and return stdout as string (or null on failure).
@@ -67,15 +55,16 @@ export async function sshExec(
 }
 
 /**
- * Execute a raw kubectl command (no -o json). Returns stdout string or null.
- * Requires a local kubeconfig at ~/.kube/config.
+ * Shared bounded process pool for structured kubectl commands.
  */
-const kubectl = createKubectlClient(
+const globals = globalThis as typeof globalThis & { __bortusKubectl?: ReturnType<typeof createKubectlClient> };
+const kubectl = globals.__bortusKubectl ??= createKubectlClient(
   (args, options) => execFileAsync("kubectl", args, options),
   hasLocalKubectl,
   kubectlConfigArgs,
 );
 export const kubectlExec = kubectl.exec;
+export const kubectlDiagnostics = kubectl.diagnostics;
 
 // ── Restricted shell sandbox ──
 const SHELL_HOME = "/home/shell";

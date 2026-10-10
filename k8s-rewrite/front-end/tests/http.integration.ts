@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync, spawn, type ChildProcess } from "node:child_process";
-import { mkdtemp, writeFile, rm } from "node:fs/promises";
+import { mkdtemp, writeFile, rm, unlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import net, { type AddressInfo } from "node:net";
@@ -12,7 +12,7 @@ import { fakeKubectl } from "./helpers/fake-kubectl";
 test(
   "production HTTP auth, metadata migration, quarantined DB rows and unavailable native lookup",
   { timeout: 60000 },
-  async () => {
+  async (context) => {
     const dir = await mkdtemp(path.join(tmpdir(), "bortus-http-test-"));
     const database = `file:${path.join(dir, "test.db").replaceAll("\\", "/")}`;
     const env: NodeJS.ProcessEnv & {
@@ -39,6 +39,18 @@ test(
     try {
       const fixture = await fakeKubectl(dir);
       Object.assign(env, fixture.env);
+      const createdAt = "2026-10-01T00:00:00Z";
+      const applicationPod = { metadata: { name: "api-worker-rs-0", namespace: "apps", uid: "pod-worker", creationTimestamp: createdAt, labels: { app: "worker", tier: "backend" }, ownerReferences: [{ kind: "ReplicaSet", uid: "rs-worker", controller: true }] }, spec: { nodeName: "test-node", containers: [{ name: "app", image: "example.invalid/test:v1" }] }, status: { phase: "Running", containerStatuses: [{ name: "app", ready: true, restartCount: 7 }], initContainerStatuses: [{ name: "init", restartCount: 2 }] } };
+      const fixtureData = {
+        nodes: { items: [{ metadata: { name: "test-node", uid: "node-test" }, status: { conditions: [{ type: "Ready", status: "True" }] } }] },
+        pods: { items: [applicationPod, { metadata: { name: "dns", namespace: "kube-system", labels: { app: "dns" } } }, { metadata: { name: "infra-override", namespace: "apps", labels: { "branconet.io/type": "system" } } }] },
+        deployments: { items: [
+          { metadata: { name: "api", namespace: "apps", uid: "dep-api", generation: 1 }, spec: { replicas: 0 }, status: { observedGeneration: 1 } },
+          { metadata: { name: "api-worker", namespace: "apps", uid: "dep-worker", generation: 2 }, spec: { replicas: 2 }, status: { observedGeneration: 1, replicas: 1, readyReplicas: 1 } },
+        ] },
+        replicasets: { items: [{ metadata: { name: "api-worker-rs", namespace: "apps", uid: "rs-worker", ownerReferences: [{ kind: "Deployment", uid: "dep-worker", controller: true }] } }] },
+      };
+      for (const [resource, data] of Object.entries(fixtureData)) await writeFile(path.join(fixture.bin, `${resource}.json`), JSON.stringify(data));
       const cli = path.resolve("node_modules/prisma/build/index.js");
       execFileSync(process.execPath, [cli, "migrate", "deploy"], {
         env,
@@ -244,6 +256,100 @@ test(
       assert.equal(progress.steps.find((step: { step: string }) => step.step === "flux_crds").status, "error");
       assert.ok(!JSON.stringify(progress).includes("private-command"));
       assert.ok(await db.gitRepo.findUnique({ where: { id: failedRepo.id } }), "failed deletion removed the recovery record");
+      assert.equal((await request("/api/cluster/nodes", "POST", { hostname: "must-not-create", ipAddress: "127.0.0.2" }, reader)).status, 403);
+      assert.equal(await db.node.count({ where: { hostname: "must-not-create" } }), 0);
+      assert.equal((await request("/api/cluster/diagnostics", "GET", undefined, reader)).status, 403);
+      await request("/api/cluster/refresh", "POST", undefined, writer);
+      const beforeCold = (await fixture.calls()).length;
+      const coldStarted = performance.now();
+      const cold = await request("/api/cluster/pods", "GET", undefined, reader);
+      assert.equal(cold.status, 200);
+      const podBody = await cold.json();
+      const coldMs = performance.now() - coldStarted;
+      assert.equal(podBody.pods.length, 3);
+      assert.equal(podBody.availability.state, "healthy");
+      assert.equal((await fixture.calls()).length - beforeCold, 1, "pod list fetched unrelated resource types");
+      const warmCount = (await fixture.calls()).length;
+      const warmMs = [];
+      for (let index = 0; index < 12; index++) {
+        const start = performance.now();
+        await (await request("/api/cluster/pods", "GET", undefined, reader)).json();
+        warmMs.push(performance.now() - start);
+      }
+      const warm = await Promise.all(Array.from({ length: 20 }, () => request("/api/cluster/pods", "GET", undefined, reader)));
+      assert.ok(warm.every(response => response.status === 200));
+      assert.equal((await fixture.calls()).length, warmCount);
+      await request("/api/cluster/refresh", "POST", undefined, writer);
+      const beforeConcurrent = (await fixture.calls()).length;
+      const concurrentMs = await Promise.all(Array.from({ length: 20 }, async () => {
+        const start = performance.now();
+        await (await request("/api/cluster/pods", "GET", undefined, reader)).json();
+        return performance.now() - start;
+      }));
+      assert.equal((await fixture.calls()).length - beforeConcurrent, 1, "cold concurrent reads lost coalescing");
+      const appPods = await (await request("/api/cluster/pods?type=app&namespace=apps&labelSelector=app%3Dworker", "GET", undefined, reader)).json();
+      assert.equal(appPods.pods.length, 1);
+      const systemPods = await (await request("/api/cluster/pods?type=system", "GET", undefined, reader)).json();
+      assert.equal(systemPods.pods.length, 2);
+      assert.equal((await request("/api/cluster/pods?type=invalid", "GET", undefined, reader)).status, 400);
+      const deploymentBody = await (await request("/api/cluster/deployments", "GET", undefined, reader)).json();
+      assert.equal(deploymentBody.deployments.find((deployment: any) => deployment.name === "api").restarts, 0);
+      assert.equal(deploymentBody.deployments.find((deployment: any) => deployment.name === "api").state, "Scaled down");
+      const worker = deploymentBody.deployments.find((deployment: any) => deployment.name === "api-worker");
+      assert.equal(worker.restarts, 9);
+      assert.equal(worker.ready, "1/2");
+      assert.equal(worker.state, "Reconciling");
+      const detail = await (await request("/api/cluster/deployments/apps/api-worker", "GET", undefined, reader)).json();
+      assert.deepEqual(detail.pods.map((pod: any) => pod.metadata.uid), ["pod-worker"]);
+      await writeFile(path.join(fixture.bin, "failure.txt"), "pods");
+      await request("/api/cluster/refresh", "POST", undefined, writer);
+      const stale = await request("/api/cluster/pods", "GET", undefined, reader);
+      assert.equal(stale.status, 200);
+      assert.ok(stale.headers.get("warning"));
+      assert.equal((await stale.json()).availability.state, "stale");
+      const backedOff = (await fixture.calls()).length;
+      await Promise.all(Array.from({ length: 20 }, () => request("/api/cluster/pods", "GET", undefined, reader)));
+      assert.equal((await fixture.calls()).length, backedOff);
+      await writeFile(path.join(fixture.bin, "failure.txt"), "services");
+      const missingPrimary = await request("/api/cluster/services", "GET", undefined, reader);
+      assert.equal(missingPrimary.status, 503);
+      assert.equal((await missingPrimary.json()).availability.state, "unavailable");
+      const outageBefore = (await fixture.calls()).length;
+      const outageMs = [];
+      for (let index = 0; index < 12; index++) {
+        const start = performance.now();
+        const response = await request("/api/cluster/services", "GET", undefined, reader);
+        assert.equal(response.status, 503);
+        await response.json();
+        outageMs.push(performance.now() - start);
+      }
+      assert.equal((await fixture.calls()).length, outageBefore, "outage backoff spawned repeated processes");
+      await unlink(path.join(fixture.bin, "failure.txt"));
+      await request("/api/cluster/refresh", "POST", undefined, writer);
+      const empty = await request("/api/cluster/services", "GET", undefined, reader);
+      const emptyBody = await empty.json();
+      assert.equal(empty.status, 200);
+      assert.deepEqual(emptyBody.services, []);
+      assert.equal(emptyBody.availability.state, "empty");
+      const diagnostics = await (await request("/api/cluster/diagnostics", "GET", undefined, writer)).json();
+      assert.equal(diagnostics.commands.maxConcurrent, 4);
+      assert.ok(diagnostics.resources.pods.failures >= 1);
+      const percentiles = (values: number[]) => {
+        const sorted = [...values].sort((a, b) => a - b);
+        return { p50: sorted[Math.ceil(sorted.length * 0.5) - 1], p95: sorted[Math.ceil(sorted.length * 0.95) - 1] };
+      };
+      const evidence = {
+        capturedAt: new Date().toISOString(), node: process.version, platform: process.platform,
+        fixture: "disposable production HTTP + 50ms metadata-only fake CLI; no real cluster/image acceptance",
+        source: process.env.BORTUS_EVIDENCE_SOURCE || "current working tree",
+        coldPods: { ms: coldMs, cliCalls: 1 }, warmPods: { samples: 12, ms: percentiles(warmMs), cliCalls: 0 },
+        concurrentWarmPods: { requests: 20, cliCalls: 0 }, concurrentColdPods: { requests: 20, cliCalls: 1, ms: percentiles(concurrentMs) },
+        outageServices: { requests: 12, status: 503, ms: percentiles(outageMs), additionalCliCalls: 0 },
+        pool: diagnostics.commands,
+        limitations: ["Windows/Node24 synthetic metadata rather than Node22/Linux image", "no real API/RBAC or cold-container memory/peak-process measurement", "timings observational with no controlled host CPU isolation"],
+      };
+      context.diagnostic(`Cache fixture evidence: ${JSON.stringify(evidence)}`);
+      if (process.env.BORTUS_TEST_EVIDENCE_PATH) await writeFile(process.env.BORTUS_TEST_EVIDENCE_PATH, JSON.stringify(evidence, null, 2) + "\n");
       const values = await request("/api/vars", "GET", undefined, reader);
       assert.equal(values.status, 200);
       const body = await values.text();

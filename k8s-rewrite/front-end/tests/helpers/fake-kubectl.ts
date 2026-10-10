@@ -18,8 +18,11 @@ class Fixture { static int Main(string[] args) {
     m.WaitOne(); try { File.AppendAllText(Path.Combine(d,"calls.log"),String.Join(" ",Array.ConvertAll(args,a=>Convert.ToBase64String(Encoding.UTF8.GetBytes(a))))+"\\n"); } finally { m.ReleaseMutex(); }
   }
   int p=Array.IndexOf(args,"get");
+  Thread.Sleep(50);
   if(p<0) { Console.Write("private-command-output-marker"); Console.Error.Write("private-command-error-marker"); return 1; }
   string r=args[p+1]; string f=Path.Combine(d,r+".json");
+  string failure=Path.Combine(d,"failure.txt");
+  if(File.Exists(failure)&&(File.ReadAllText(failure).Trim()=="all"||File.ReadAllText(failure).Trim()==r)) { Console.Error.Write("private-command-error-marker"); return 1; }
   if(Array.IndexOf(args,"yaml")>=0) Console.Write("apiVersion: v1\\nkind: Namespace\\nmetadata:\\n  name: apps\\n");
   else Console.Write(File.Exists(f)?File.ReadAllText(f):"{\\"items\\":[]}");
   return 0;
@@ -33,8 +36,11 @@ const d=process.env.BORTUS_FAKE_KUBECTL,a=process.argv.slice(2);
 if(!d||!fs.existsSync(d))process.exit(90);
 fs.appendFileSync(path.join(d,'calls.log'),a.map(v=>Buffer.from(v).toString('base64')).join(' ')+'\\n');
 const p=a.indexOf('get');
+Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,50);
 if(p<0){process.stdout.write('private-command-output-marker');process.stderr.write('private-command-error-marker');process.exit(1);}
 const f=path.join(d,a[p+1]+'.json');
+const failure=path.join(d,'failure.txt');
+if(fs.existsSync(failure)&&['all',a[p+1]].includes(fs.readFileSync(failure,'utf8').trim())){process.stderr.write('private-command-error-marker');process.exit(1);}
 process.stdout.write(a.includes('yaml')?'apiVersion: v1\\nkind: Namespace\\nmetadata:\\n  name: apps\\n':fs.existsSync(f)?fs.readFileSync(f,'utf8'):'{"items":[]}');
 `);
     await chmod(executable, 0o755);

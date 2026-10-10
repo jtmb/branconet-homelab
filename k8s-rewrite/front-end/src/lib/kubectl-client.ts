@@ -25,16 +25,48 @@ function failure(error: unknown): KubernetesCommandError {
   return new KubernetesCommandError(502, "Kubernetes command failed");
 }
 
-export function createKubectlClient(execute: Executor, credentialsAvailable: () => boolean, configArgs: () => string[]) {
+export function createKubectlClient(execute: Executor, credentialsAvailable: () => boolean, configArgs: () => string[], limits = { concurrent: 4, queued: 64 }) {
+  let active = 0;
+  const queue: { enter: () => void; timer: ReturnType<typeof setTimeout> }[] = [];
+  const acquire = (timeout: number) => new Promise<void>((resolve, reject) => {
+    if (active < limits.concurrent) { active++; resolve(); return; }
+    if (queue.length >= limits.queued) { reject(new KubernetesCommandError(503, "Cluster command queue is full")); return; }
+    const waiter = {
+      enter: () => { clearTimeout(waiter.timer); active++; resolve(); },
+      timer: setTimeout(() => {
+        const index = queue.indexOf(waiter);
+        if (index >= 0) queue.splice(index, 1);
+        reject(new KubernetesCommandError(504, "Kubernetes request timed out while queued"));
+      }, timeout),
+    };
+    queue.push(waiter);
+  });
+  const release = () => { active--; queue.shift()?.enter(); };
+  async function exec(args: readonly string[], timeoutMs = 10000): Promise<string> {
+    if (!Array.isArray(args) || !args.length || args.some(arg => typeof arg !== "string" || arg.includes("\0")) || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 30000)
+      throw new KubernetesCommandError(400, "Invalid Kubernetes arguments");
+    if (!credentialsAvailable()) throw new KubernetesCommandError(503, "Kubernetes credentials unavailable");
+    const deadline = Date.now() + timeoutMs;
+    await acquire(timeoutMs);
+    try {
+      const remaining = deadline - Date.now();
+      if (remaining <= 0) throw new KubernetesCommandError(504, "Kubernetes request timed out while queued");
+      const { stdout } = await execute([...configArgs(), ...args], { timeout: remaining, maxBuffer: 2 * 1024 * 1024 });
+      return stdout;
+    } catch (error) { throw error instanceof KubernetesCommandError ? error : failure(error); }
+    finally { release(); }
+  }
   return {
-    async exec(args: readonly string[], timeoutMs = 10000): Promise<string> {
-      if (!Array.isArray(args) || !args.length || args.some(arg => typeof arg !== "string" || arg.includes("\0")))
-        throw new KubernetesCommandError(400, "Invalid Kubernetes arguments");
-      if (!credentialsAvailable()) throw new KubernetesCommandError(503, "Kubernetes credentials unavailable");
+    exec,
+    async json(args: readonly string[], timeoutMs = 10000): Promise<any> {
+      if (!Array.isArray(args)) throw new KubernetesCommandError(400, "Invalid Kubernetes arguments");
+      const stdout = await exec([...args, "-o", "json"], timeoutMs);
       try {
-        const { stdout } = await execute([...configArgs(), ...args], { timeout: timeoutMs, maxBuffer: 2 * 1024 * 1024 });
-        return stdout;
-      } catch (error) { throw failure(error); }
+        const value = JSON.parse(stdout);
+        if (!value || typeof value !== "object") throw Error();
+        return value;
+      } catch { throw new KubernetesCommandError(502, "Invalid Kubernetes JSON response"); }
     },
+    diagnostics: () => ({ active, queued: queue.length, maxConcurrent: limits.concurrent, maxQueued: limits.queued }),
   };
 }

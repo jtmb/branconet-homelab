@@ -1,8 +1,9 @@
-import prisma from "./db";
+import { deploymentPods, deploymentState, podRestarts } from "./deployment-state";
 import { kubectlJSON } from "./k8s";
+import { ClusterResourceCache, CLUSTER_RESOURCES, type ClusterResource, type ResourceAvailability } from "./resource-cache";
 
 // =============================================================================
-// In-memory cluster data cache with 10s TTL.
+// Per-resource cluster snapshots with 10s TTL and bounded failure retention.
 // All cluster API routes read from this cache so the front-end's
 // 10s polling interval doesn't hammer kubectl with repeated calls.
 // =============================================================================
@@ -27,7 +28,9 @@ interface ClusterInfo {
   healthyVolumes: number;
 }
 
-interface CachedData {
+export interface CachedData {
+  availability: Partial<Record<ClusterResource, ResourceAvailability>>;
+  rawReplicaSets: any[];
   info: ClusterInfo;
   nodes: any[];
   pods: any[];
@@ -45,11 +48,13 @@ interface CachedData {
   lastFetch: number;
 }
 
-let cache: CachedData | null = null;
-const TTL_MS = 10_000; // 10 seconds
-
-// Fetch in-progress guard — prevents concurrent fetch storms
-let fetchPromise: Promise<CachedData | null> | null = null;
+const commands: Record<ClusterResource, string[]> = {
+  nodes: ["get", "nodes"], pods: ["get", "pods", "-A"], pv: ["get", "pv"], pvc: ["get", "pvc", "-A"],
+  longhorn: ["get", "volumes.longhorn.io", "-A"], sc: ["get", "sc"], namespaces: ["get", "namespaces"],
+  services: ["get", "services", "-A"], deployments: ["get", "deployments", "-A"], replicasets: ["get", "replicasets", "-A"], ingresses: ["get", "ingress", "-A"],
+};
+const globals = globalThis as typeof globalThis & { __bortusResources?: ClusterResourceCache };
+const resourcesCache = globals.__bortusResources ??= new ClusterResourceCache(resource => kubectlJSON(commands[resource], 10000));
 
 /**
  * Format a duration in milliseconds to a human-readable age string.
@@ -70,27 +75,15 @@ function formatAge(ms: number): string {
 /**
 
  * Fetch all cluster data via local kubectl.
- * Runs 10 kubectl queries in parallel, then builds derived info.
+ * Requests only needed resources and builds availability-aware projections.
  */
-async function fetchAllClusterData(): Promise<CachedData | null> {
+async function fetchAllClusterData(resources: readonly ClusterResource[]): Promise<CachedData> {
+  const snapshots = await resourcesCache.read(resources);
   const [nodesResult, podsResult, pvResult, pvcResult, longhornResult, scResult, nsResult, svcResult, deployResult, ingressResult] =
-    await Promise.all([
-      kubectlJSON(["get", "nodes"]),
-      kubectlJSON(["get", "pods", "-A"]),
-      kubectlJSON(["get", "pv"]),
-      kubectlJSON(["get", "pvc", "-A"]),
-      kubectlJSON(["get", "volumes.longhorn.io", "-A"], 8000).catch(() => null),
-      kubectlJSON(["get", "sc"], 5000).catch(() => null),
-      kubectlJSON(["get", "namespaces"], 5000).catch(() => null),
-      kubectlJSON(["get", "services", "-A"], 5000).catch(() => null),
-      kubectlJSON(["get", "deployments", "-A"], 5000).catch(() => null),
-      kubectlJSON(["get", "ingress", "-A"], 5000).catch(() => null),
-    ]);
+    (["nodes", "pods", "pv", "pvc", "longhorn", "sc", "namespaces", "services", "deployments", "ingresses"] as const).map(resource => snapshots[resource]?.value);
+  const availability = Object.fromEntries(Object.entries(snapshots).map(([resource, snapshot]) => [resource, snapshot.availability]));
 
-  // If even nodes query fails, cluster is unreachable
-  if (!nodesResult) return null;
-
-  const allNodes = nodesResult.items || [];
+  const allNodes = nodesResult?.items || [];
   const allPods = podsResult?.items || [];
 
   // ── Derived info ──
@@ -198,77 +191,16 @@ async function fetchAllClusterData(): Promise<CachedData | null> {
     };
   });
 
-  // ── Deployment list ──
-  // Pre-compute pod restarts per deployment via pod name prefix matching.
-  // Kubernetes names pods as <deployment>-<rs-hash>-<pod-hash>.
-  const podRestartsByDeploy = new Map<string, number>();
-  for (const pod of allPods) {
-    const podName: string = pod.metadata?.name || "";
-    const podNs: string = pod.metadata?.namespace || "";
-    // Find the deployment whose name is a prefix of the pod name
-    const deployItems = deployResult?.items || [];
-    for (const dep of deployItems) {
-      const depName: string = dep.metadata?.name || "";
-      const depNs: string = dep.metadata?.namespace || "default";
-      if (podNs === depNs && podName.startsWith(depName + "-")) {
-        const restarts = (pod.status?.containerStatuses || []).reduce(
-          (sum: number, c: any) => sum + (c.restartCount || 0), 0
-        );
-        const key = `${depNs}/${depName}`;
-        podRestartsByDeploy.set(key, (podRestartsByDeploy.get(key) || 0) + restarts);
-        break;
-      }
-    }
-  }
-
+  // Deployment ownership uses controller UIDs, never name prefixes or label coincidence.
+  const ownershipAvailable = ["pods", "replicasets"].every(resource => snapshots[resource as ClusterResource]?.value !== undefined);
   const deployments = (deployResult?.items || []).map((dep: any) => {
-    const created = dep.metadata?.creationTimestamp;
-    const age = created ? formatAge(now - new Date(created).getTime()) : "-";
-    const ready = dep.status?.readyReplicas ?? 0;
-    const desired = dep.status?.replicas ?? 0;
-    const available = dep.status?.availableReplicas ?? 0;
-    const updated = dep.status?.updatedReplicas ?? 0;
-    const depName = dep.metadata?.name || "unknown";
-    const depNs = dep.metadata?.namespace || "default";
-
-    // Determine state
-    let state = "Progressing";
-    if (ready === desired && updated === desired && desired > 0) {
-      state = "Ready";
-    } else if (updated < desired) {
-      state = "Updating";
-    }
-
-    // Determine health from conditions
-    const conditions = dep.status?.conditions || [];
-    const availableCond = conditions.find((c: any) => c.type === "Available");
-    let health = "Unknown";
-    if (availableCond?.status === "True") {
-      health = "Healthy";
-    } else if (conditions.some((c: any) => c.type === "ReplicaFailure" && c.status === "True")) {
-      health = "Degraded";
-    } else if (availableCond?.status === "False") {
-      health = "Unhealthy";
-    }
-
-    // Primary container image
-    const firstContainer = dep.spec?.template?.spec?.containers?.[0];
-    const image = firstContainer?.image || "-";
-
-    // Sum pod restarts
-    const restarts = podRestartsByDeploy.get(`${depNs}/${depName}`) ?? 0;
-
+    const created = dep.metadata?.creationTimestamp || null;
+    const ownedPods = deploymentPods(dep, allPods, snapshots.replicasets?.value?.items || []);
     return {
-      name: depName,
-      namespace: depNs,
-      state,
-      image,
-      ready: `${ready}/${desired}`,
-      upToDate: updated,
-      available,
-      restarts,
-      age,
-      health,
+      name: dep.metadata?.name || "unknown", namespace: dep.metadata?.namespace || "default",
+      ...deploymentState(dep), image: dep.spec?.template?.spec?.containers?.[0]?.image || "-",
+      restarts: ownershipAvailable ? ownedPods.reduce((sum, pod) => sum + podRestarts(pod), 0) : null,
+      ownershipAvailable, created, age: created ? formatAge(now - new Date(created).getTime()) : "-",
     };
   });
 
@@ -295,6 +227,8 @@ async function fetchAllClusterData(): Promise<CachedData | null> {
   });
 
   return {
+    availability,
+    rawReplicaSets: snapshots.replicasets?.value?.items || [],
     info: {
       nodes: allNodes.length,
       readyNodes,
@@ -325,34 +259,9 @@ async function fetchAllClusterData(): Promise<CachedData | null> {
  * Get cluster data from cache or fetch fresh from the remote node.
  * Guarantees only one in-flight fetch at a time.
  */
-export async function getCachedClusterData(): Promise<CachedData | null> {
-  const now = Date.now();
-
-  // Return fresh cache
-  if (cache && now - cache.lastFetch < TTL_MS) {
-    return cache;
-  }
-
-  // If a fetch is already in progress, wait for it
-  if (fetchPromise) {
-    return fetchPromise;
-  }
-
-  // Start a new fetch; other callers will wait on this promise
-  fetchPromise = fetchAllClusterData().finally(() => {
-    fetchPromise = null;
-  });
-
-  const result = await fetchPromise;
-  if (result) cache = result;
-  else cache = null; // fetch failed, clear stale cache
-
-  return cache;
+/** Read only requested resources, sharing each resource's cache and in-flight request. */
+export async function getCachedClusterData(resources: readonly ClusterResource[] = CLUSTER_RESOURCES): Promise<CachedData> {
+  return fetchAllClusterData(resources);
 }
-
-/**
- * Invalidate the cache — call after deployments or manual cluster changes.
- */
-export function invalidateCache(): void {
-  cache = null;
-}
+export function invalidateCache(): void { resourcesCache.invalidate(); }
+export function clusterDiagnostics() { return resourcesCache.diagnostics(); }

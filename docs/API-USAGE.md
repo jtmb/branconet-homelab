@@ -78,15 +78,20 @@ curl -X PATCH -b /tmp/botrus-cookies http://localhost:4000/api/settings \
 
 ## Cluster resources
 
-These routes use kubectl with external operator or in-cluster credentials. Cluster list data uses a 10-second cache. Reads require cookies except the exact public info endpoint; mutations require write role.
+A detail absent from a stale snapshot returns 503 rather than claiming current absence; a successful current empty list can establish 404. Refresh reports cache invalidation only and lets the requesting screen refetch its own resources, avoiding an unrelated whole-cluster prefetch. Diagnostic counters are process-local and reset with the app.
+
+These routes use kubectl with external operator or in-cluster credentials. The resource cache keeps a separate 10-second snapshot per resource, coalesces concurrent reads and retains a labelled stale snapshot for up to 120 seconds on failure. Failed resources back off from 1 to 30 seconds; a confirmed missing optional Longhorn API backs off for 5 minutes. Invalid or over-10000-item lists fail explicitly. Browser availability presentation is pending under A06/A11. Reads require cookies except the exact public info endpoint; mutations require write role.
+
+Cluster list/detail/overview responses add `availability:{state,resources}`. Each requested resource includes healthy/empty/stale/unavailable/unsupported state, sample time, stale age, retry delay, duration and fixed error. Unavailable primary resources return 503 with availability; unavailable secondary fields are null and overall state is partial. True successful empty lists remain arrays. Retained snapshots return labelled stale data and a Warning header. Responses use no-store. Nodes return live nodes and a separate `inventory` array; inventory rows no longer masquerade as live status.
 
 | Endpoint | Methods and purpose |
 |---|---|
 | /api/cluster/info | GET overview |
 | /api/cluster/refresh | POST invalidate cache |
+| /api/cluster/diagnostics | GET write-role cache timing/attempt/failure/item-count and process-pool metadata; no resource values |
 | /api/cluster/nodes | GET nodes; POST register a node record |
 | /api/cluster/nodes/[hostname] | GET node detail |
-| /api/cluster/pods | GET unfiltered list; current type/namespace query filtering is not implemented |
+| /api/cluster/pods | GET list; type=all/app/system, namespace and labelSelector filters |
 | /api/cluster/pods/[namespace]/[name] | GET detail |
 | /api/cluster/pods/[namespace]/[name]/delete | DELETE pod |
 | /api/cluster/pods/[namespace]/[name]/yaml | GET YAML; PUT apply YAML |
@@ -112,11 +117,17 @@ These routes use kubectl with external operator or in-cluster credentials. Clust
 
 The write-role terminal endpoint executes arbitrary shell commands through bash with application-host permissions. It is not restricted to Kubernetes API access. Service/PVC compatibility menus label their JSON detail response as YAML; they do not currently return actual YAML. Pod logs, node YAML/action and ingress YAML menu paths have no matching handlers. See audit A08 for the route/capability gaps.
 
-The remediation wrapper accepts structured argv and throws fixed errors instead of returning failed-command stdout/stderr as success. Resource names and namespaces reject whitespace, flags, separators and invalid DNS forms before CLI invocation. Scale accepts integer replicas from 0 through 10000. Mutation/YAML route errors are mapped to fixed 400/403/404/502/503/504 responses; acceptance is tracked under A04/A05. The read JSON compatibility path still maps errors to null, and cluster-list outages can return 200 with empty arrays pending A06. Historical command splitting/false-success evidence remains in the audit.
+The wrapper accepts structured argv and throws fixed errors instead of returning failed-command stdout/stderr as success. Resource names and namespaces reject whitespace, flags, separators and invalid DNS forms before CLI invocation. Scale accepts integer replicas from 0 through 10000. Mutation/YAML route errors are mapped to fixed 400/403/404/502/503/504 responses; acceptance is tracked under A04/A05. JSON reads now throw on failed commands/invalid JSON; cluster route availability conversion is in progress under A06. Historical command splitting/false-success evidence remains in the audit.
+
+All structured kubectl operations share a four-process pool with at most 64 waiting commands, a two-MiB output bound, and a deadline including queue time. Full queues return fixed 503; timeout returns fixed 504. Secret operations use their separate verified native API transport.
 
 Flux handler exceptions also use this fixed error mapper. Cascade progress identifies the failed step and stops cleanup instead of overwriting a failure with a done status.
 
 PV reclaim PATCH validates 1–100 named volumes and policies before any command. Per-volume command failures produce `success:false` and fixed errors; a mixed/failed batch returns 207. Repository creation is a multi-request operation: a failed apply may leave metadata/earlier resources for explicit recovery. Failed cascade deletion retains its DB record.
+
+Pod classification uses explicit branconet.io/type=app/system, otherwise the infrastructure namespace set in pod-query.ts; selectors support =/==/!=, in/notin and existence/!existence. Invalid type/namespace/selectors return 400 before loading resources. Deployment list/detail uses Pod → ReplicaSet → Deployment controller UID ownership, desired spec replicas and observed generation, including scaled-down state and null restarts/pods when ownership sources are unavailable. Regular/init-container restarts are counted. Node pod counts become null when pod data is unavailable. See [Kubernetes ownership](https://kubernetes.io/docs/concepts/overview/working-with-objects/owners-dependents/).
+
+POST /api/cluster/nodes now requires a fresh write role, matching other inventory mutations. It creates an inventory record, not a live Kubernetes node.
 
 ## Optional Ansible runner
 

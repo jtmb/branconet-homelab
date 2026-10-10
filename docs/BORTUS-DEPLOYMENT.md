@@ -53,6 +53,8 @@ Multiple aliases can reference a key; one alias cannot reference multiple target
 
 ## Bootstrap/recovery
 
+Dashboard deployment attribution additionally lists apps/replicasets to follow controller UIDs. If that permission/resource is unavailable, deployment responses expose partial availability and null ownership/restart data. Ensure this separate dashboard RBAC when accepting the new image. Structured kubectl work shares four active/64 queued slots with deadlines and output limits; write-role /api/cluster/diagnostics exposes process-local counters without values. No native Secret verbs changed in this cache/state stage.
+
 The `/secrets` editor uses the existing dark dashboard layout, explicit value reveal and versioned writes. `/configuration` edits nonsecret variables separately. `/api/health/live` and `/api/health/ready` are exact public probe paths; readiness checks signing/lookup env, migrated SQLite and Kubernetes access across the namespace allowlist.
 
 Keep operator kubeconfig, SSH keys and provisioning credentials independently available in a protected operator environment/offline store. Creating a cluster cannot depend on its unavailable Secrets. Container provisioning is disabled; migration runs Ansible externally. Local Ansible integration retains Bearer lookup for mapped native Secrets/nonsecret config. Supply bootstrap credentials independently, and use `no_log` for sensitive tasks. See `SECRETS-ENGINE.md`.

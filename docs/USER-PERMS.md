@@ -27,6 +27,8 @@ Some client views hide operator controls, but the shared resource action menu st
 
 Write-role terminal commands execute with the application's operating-system permissions and Kubernetes credentials. Treat write accounts as operator accounts with application-host access.
 
+Both /api/nodes mutations and the compatibility POST /api/cluster/nodes inventory endpoint require a fresh write role. Inventory registration does not provision/join a node.
+
 ## Bearer lookup and recovery
 
 `GET /api/vars/lookup` uses independently supplied `BOTRUS_SECRETS_KEY`, not user cookies or roles. It returns mapped native Secret values and nonsecret configuration. Keep this credential available only to authorized lookup consumers and require TLS.

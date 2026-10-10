@@ -1,5 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import { createKubectlClient, KubernetesCommandError, validateNamespace, validateResourceName } from "../src/lib/kubectl-client";
 import { clusterRoute } from "../src/lib/cluster-http";
 
@@ -55,4 +57,45 @@ test("failed subprocess output never becomes a successful mutation or public err
   }
   const unavailable = createKubectlClient(async () => { throw Error("must not execute"); }, () => false, () => []);
   await assert.rejects(unavailable.exec(["get", "nodes"]), { status: 503 });
+});
+
+test("process pool bounds concurrency, queue capacity and queue deadlines", async () => {
+  let release!: (value: { stdout: string }) => void;
+  let calls = 0;
+  const client = createKubectlClient(async () => { calls++; return new Promise(resolve => { release = resolve; }); }, () => true, () => [], { concurrent: 1, queued: 1 });
+  const first = client.exec(["get", "pods"], 1000);
+  await new Promise(resolve => setImmediate(resolve));
+  const queued = client.exec(["get", "nodes"], 30);
+  try {
+    await assert.rejects(client.exec(["get", "services"]), { status: 503 });
+    await assert.rejects(queued, { status: 504 });
+    assert.equal(calls, 1, "timed out queue entry started a subprocess");
+    assert.equal(client.diagnostics().queued, 0);
+  } finally { release({ stdout: "done" }); await first; }
+  assert.equal(client.diagnostics().active, 0);
+  let concurrent = 0, peak = 0;
+  const bounded = createKubectlClient(async () => {
+    concurrent++; peak = Math.max(peak, concurrent);
+    await new Promise(resolve => setTimeout(resolve, 5));
+    concurrent--; return { stdout: "{}" };
+  }, () => true, () => [], { concurrent: 2, queued: 10 });
+  await Promise.all(Array.from({ length: 8 }, () => bounded.exec(["get", "pods"])));
+  assert.equal(peak, 2);
+  assert.equal(bounded.diagnostics().queued, 0);
+});
+
+test("JSON reads reject invalid output instead of producing null success", async () => {
+  for (const stdout of ["", "private-response-marker", "null", "42"]) {
+    const client = createKubectlClient(async () => ({ stdout }), () => true, () => []);
+    await assert.rejects(client.json(["get", "pods"]), { status: 502, message: "Invalid Kubernetes JSON response" });
+  }
+});
+
+test("real child output and timeout bounds produce fixed errors", async () => {
+  const run = promisify(execFile);
+  const oversized = createKubectlClient((_, options) => run(process.execPath, ["-e", "process.stdout.write('fake-output-marker'.repeat(200000))"], options), () => true, () => []);
+  await assert.rejects(oversized.exec(["get", "pods"]), { status: 502, message: "Cluster response exceeds the size limit" });
+  const stalled = createKubectlClient((_, options) => run(process.execPath, ["-e", "setTimeout(()=>{},10000)"], options), () => true, () => []);
+  await assert.rejects(stalled.exec(["get", "pods"], 100), { status: 504, message: "Kubernetes request timed out" });
+  assert.equal(stalled.diagnostics().active, 0);
 });
