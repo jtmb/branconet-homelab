@@ -347,6 +347,31 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       try{result=await engine.destroy(actor,p.id,{...await current(),versions:[headRef.version],confirmPath:p.path});}finally{native.afterReplace=undefined;}
       assert.equal(result.cleanupComplete,false);assert.equal(result.cleanup[0].status,409);assert(native.objects.has("history/"+headRef.name));assert.equal(native.deletes.length,afterDeleted);
     });
+    await t.test("maximum-size owned histories remain operable through metadata-only GC preview and UID/RV-fenced cleanup",async()=>{
+      const p=await registry.registerPath(actor,{mountId:mount.id,path:"cleanup/large",namespace:"apps",name:"large",retention:1,fields:[{field:"blob",key:"blob"}]});
+      await engine.create(actor,p.id,{resourceVersion:"absent",expectedHead:0,fields:[{field:"blob",encoding:"base64",value:Buffer.alloc(256*1024,1).toString("base64")}]});
+      for(let i=2;i<=25;i++) {
+        const status=await engine.status(actor,p.id);
+        await engine.change(actor,p.id,{resourceVersion:status.resourceVersion,expectedHead:status.head,fields:[{field:"blob",encoding:"base64",value:Buffer.alloc(256*1024,i).toString("base64")}]});
+      }
+      const histories=[...native.objects.values()].filter(secret=>secret.metadata?.annotations?.[HISTORY_ANNOTATION]?.includes(p.id));
+      assert.equal(histories.length,25);assert(Buffer.byteLength(JSON.stringify({items:histories.slice(0,20)}))>4*1024*1024);
+      for(const history of histories) history.metadata!.creationTimestamp=new Date(Date.now()-48*3600000);
+      const fullList=native.list.bind(native);native.list=async()=>{throw new Error("Value-bearing history enumeration forbidden");};
+      const beforeDeletes=native.deletes.length;
+      try {
+        const preview=await engine.gcPreview(actor,p.id);assert.equal(preview.eligible,24);assert.equal(preview.items.length,24);assert.equal(preview.retained,1);
+        assert(!JSON.stringify(preview).includes(Buffer.alloc(256*1024,25).toString("base64")));
+        const selected=preview.items[0], original=native.objects.get("history/"+selected.name)!;
+        original.metadata!.resourceVersion=String(++native.counter);
+        await assert.rejects(engine.gc(actor,p.id,{...preview,histories:[selected],confirmPath:p.path}),denied(409));assert.equal(native.deletes.length,beforeDeletes);
+        const refreshed=await engine.gcPreview(actor,p.id), result=await engine.gc(actor,p.id,{...refreshed,histories:[refreshed.items[0]],confirmPath:p.path});
+        assert.equal(result.cleanupComplete,true);assert.equal(native.deletes.length,beforeDeletes+1);
+        assert.equal(native.deletes.at(-1)!.uid,refreshed.items[0].uid);assert.equal(native.deletes.at(-1)!.resourceVersion,refreshed.items[0].resourceVersion);
+        assert(native.objects.has("apps/large"));assert.equal((await engine.versions(actor,p.id)).items.length,1);
+      } finally { native.list=fullList; }
+    });
+
     await t.test("explicit administrator GC checks age/references/identity, fences stale CAS and records timeout read-back",async()=>{
       const p=await registry.registerPath(actor,{mountId:mount.id,path:"cleanup/gc",namespace:"apps",name:"gc",retention:1,fields:[{field:"key",key:"key"}]});
       await engine.create(actor,p.id,{resourceVersion:"absent",expectedHead:0,fields:[{field:"key",encoding:"base64",value:initial.__proto__}]});

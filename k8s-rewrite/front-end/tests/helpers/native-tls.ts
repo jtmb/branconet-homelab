@@ -6,12 +6,12 @@ import { once } from "node:events";
 import type { AddressInfo } from "node:net";
 import type { V1Secret } from "@kubernetes/client-node";
 
-export async function nativeTlsFixture(dir: string) {
+export async function nativeTlsFixture(dir: string, responseDelayMs = 0) {
   const openssl = spawnSync("openssl",["version"]).status===0 ? "openssl" : "C:/Program Files/Git/usr/bin/openssl.exe";
   if(spawnSync(openssl,["version"]).status!==0) throw new Error("OpenSSL is required for native TLS HTTP qualification");
   const key=path.join(dir,"native-key.pem"),cert=path.join(dir,"native-cert.pem"),config=path.join(dir,"native-config");
   execFileSync(openssl,["req","-x509","-newkey","rsa:2048","-nodes","-keyout",key,"-out",cert,"-days","1","-subj","/CN=localhost","-addext","subjectAltName=IP:127.0.0.1,DNS:localhost"],{stdio:"ignore"});
-  const objects=new Map<string,V1Secret>(), calls:{method:string;path:string;metadata:boolean}[]=[]; let revision=0;
+  const objects=new Map<string,V1Secret>(), calls:{method:string;path:string;metadata:boolean;limit:number|null;responseBytes:number}[]=[]; let revision=0;
   const clone=<T>(value:T):T=>JSON.parse(JSON.stringify(value));
   const seed=(ns:string,name:string,data:Record<string,string>,extra:Partial<V1Secret>={})=>{
     const body:V1Secret={apiVersion:"v1",kind:"Secret",type:"Opaque",...extra,metadata:{...extra.metadata,namespace:ns,name,uid:"tls-uid-"+ ++revision,resourceVersion:String(revision),creationTimestamp:new Date()},data:clone(data)};
@@ -21,8 +21,12 @@ export async function nativeTlsFixture(dir: string) {
     try {
       const url=new URL(request.url||"/","https://localhost"),match=/^\/api\/v1\/namespaces\/([^/]+)\/secrets(?:\/([^/]+))?$/.exec(url.pathname);
       const metadata=!!request.headers.accept?.includes("PartialObjectMetadataList");
-      calls.push({method:request.method||"",path:url.pathname,metadata});
-      const send=(code:number,result:unknown)=>{response.writeHead(code,{"Content-Type":"application/json"});response.end(JSON.stringify(result));};
+      const call={method:request.method||"",path:url.pathname,metadata,limit:url.searchParams.has("limit")?Number(url.searchParams.get("limit")):null,responseBytes:0};calls.push(call);
+      const send=(code:number,result:unknown)=>{
+        const serialized=JSON.stringify(result);call.responseBytes=Buffer.byteLength(serialized);
+        const finish=()=>{response.writeHead(code,{"Content-Type":"application/json"});response.end(serialized);};
+        if(responseDelayMs){const timer=setTimeout(finish,responseDelayMs);response.once("close",()=>clearTimeout(timer));}else finish();
+      };
       if(request.headers.authorization!=="Bearer synthetic-native-api-token") return send(403,{message:"synthetic private API error"});
       if(!match) return send(404,{kind:"Status",code:404});
       const [,ns,name]=match,id=ns+"/"+name; let raw="";

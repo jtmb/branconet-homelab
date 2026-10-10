@@ -1,6 +1,6 @@
 import { KubeConfig, type V1ObjectMeta, type V1Secret } from "@kubernetes/client-node";
 import https from "node:https";
-import { SecretStore, SecretError, secretFailure, validateTarget, type SecretTransport } from "./cluster-secrets";
+import { SecretStore, SecretError, secretFailure, validateTarget, SecretListBudget, type SecretTransport } from "./cluster-secrets";
 import { kvConfig } from "./kv-contract";
 import { KvRegistry } from "./kv-registry";
 import { flatSecretGuard } from "./secret-access";
@@ -46,7 +46,7 @@ export function createSecretTransport(): NativeSecretTransport {
       throw new SecretError(503, "A TLS-verified Kubernetes API connection is required");
     const base = cluster.server.replace(/\/$/, "");
 
-    async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false): Promise<{ value: any; bytes: number }> {
+    async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false, byteLimit = 4 * 1024 * 1024): Promise<{ value: any; bytes: number }> {
       deadline = Math.min(deadline, Date.now() + 8000);
       await slot(deadline);
       let authTimer: ReturnType<typeof setTimeout> | undefined;
@@ -73,7 +73,7 @@ export function createSecretTransport(): NativeSecretTransport {
             const chunks: Buffer[] = []; let bytes = 0;
             response.on("data", (chunk: Buffer) => {
               bytes += chunk.length;
-              if (bytes > 4 * 1024 * 1024 || chunks.length >= 16384) { response.destroy(); reject(new SecretError(503, "Kubernetes Secret response exceeds the size limit")); }
+              if (bytes > Math.min(4 * 1024 * 1024, byteLimit) || chunks.length >= 16384) { response.destroy(); reject(new SecretError(503, "Kubernetes Secret response exceeds the size limit")); }
               else chunks.push(chunk);
             });
             response.once("error", reject);
@@ -105,15 +105,20 @@ export function createSecretTransport(): NativeSecretTransport {
     };
     return {
       read: async (namespace, name) => object((await request("GET", route(namespace, name))).value, namespace, name),
-      list: async namespace => {
+      list: async (namespace, options) => {
         const items: V1Secret[] = [], cursors = new Set<string>();
-        const deadline = Date.now() + 15000; let cursor = "", bytes = 0;
+        const budget = options?.budget ?? new SecretListBudget(); let cursor = "";
         do {
-          const result = await request("GET", route(namespace) + "?limit=20" + (cursor ? "&continue=" + encodeURIComponent(cursor) : ""), undefined, deadline);
-          const page = result.value; bytes += result.bytes;
-          if (page.kind !== "SecretList" || page.apiVersion !== "v1" || !Array.isArray(page.items) || page.items.length > 20 || items.length + page.items.length > 10000 || bytes > 32 * 1024 * 1024)
+          // One full object per response keeps individually supported large Secrets operable.
+          const result = await request("GET", route(namespace) + "?limit=1" + (cursor ? "&continue=" + encodeURIComponent(cursor) : ""), undefined, budget.deadline, false, budget.remainingBytes());
+          const page = result.value; budget.consumeBytes(result.bytes);
+          if (page.kind !== "SecretList" || page.apiVersion !== "v1" || !Array.isArray(page.items) || page.items.length > 1)
             throw new SecretError(503, "Kubernetes Secret list exceeds the validated limits");
-          items.push(...page.items.map((item: unknown) => object(item, namespace)));
+          budget.consumeItems(page.items.length);
+          for (const raw of page.items) {
+            const item = object(raw, namespace);
+            if (options?.visit) options.visit(item); else items.push(item);
+          }
           cursor = page.metadata?.continue || "";
           if (typeof cursor !== "string" || cursor.length > 8192 || (cursor && (cursors.has(cursor) || page.items.length === 0)))
             throw new SecretError(503, "Invalid Kubernetes Secret pagination");

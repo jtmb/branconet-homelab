@@ -73,8 +73,9 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
               metadata:{name:"item-"+metadataReads+"-"+index,namespace:"apps",uid:"metadata-uid",resourceVersion:"1"},...(metadataMode==="values"?{data:{private:"must not fall back"}}:{})})) };
         } else if (request.method === "GET" && listMode !== "normal") {
           listReads++;
-          result = { apiVersion: "v1", kind: "SecretList", metadata: { continue: listMode === "repeat" || !request.url?.includes("continue=") ? "next-page" : "" },
-            items: Array.from({ length: listMode === "oversize" ? 21 : 20 }, (_, index) => ({ ...object, metadata: { ...object.metadata, name: "item-" + listReads + "-" + index } })) };
+          const offset = Number(new URL(request.url || "/", "https://localhost").searchParams.get("continue") || 0);
+          result = { apiVersion: "v1", kind: "SecretList", metadata: { continue: listMode === "repeat" ? "next-page" : offset < 39 ? String(offset + 1) : "" },
+            items: Array.from({ length: listMode === "oversize" ? 2 : 1 }, (_, index) => ({ ...object, metadata: { ...object.metadata, name: "item-" + listReads + "-" + index } })) };
         } else if (request.method === "GET")
           result = {
             apiVersion: "v1",
@@ -167,7 +168,7 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
     metadataMode="oversize";await assert.rejects(transport.listMetadata("apps"),/exceeds the validated limits/);
     metadataMode="values";await assert.rejects(transport.listMetadata("apps"),/Invalid metadata-only Secret response/);metadataMode="normal";
     listMode = "pages"; listReads = 0;
-    assert.equal((await transport.list("apps")).length, 40); assert.equal(listReads, 2);
+    assert.equal((await transport.list("apps")).length, 40); assert.equal(listReads, 40);
     listMode = "repeat"; listReads = 0;
     await assert.rejects(transport.list("apps"), /Invalid Kubernetes Secret pagination/); assert.equal(listReads, 2);
     listMode = "oversize";

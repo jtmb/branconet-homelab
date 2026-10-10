@@ -13,9 +13,27 @@ export interface SecretTarget {
   name: string;
   key: string;
 }
+export const SECRET_LIST_MAX_ITEMS = 10000;
+export const SECRET_LIST_MAX_BYTES = 32 * 1024 * 1024;
+export class SecretListBudget {
+  items = 0;
+  bytes = 0;
+  constructor(readonly deadline = Date.now() + 15000) {}
+  check() { if (Date.now() >= this.deadline) throw new SecretError(503, "Kubernetes Secret list timed out"); }
+  remainingBytes() { this.check(); return SECRET_LIST_MAX_BYTES - this.bytes; }
+  consumeBytes(bytes: number) {
+    this.check(); this.bytes += bytes;
+    if (!Number.isSafeInteger(bytes) || bytes < 0 || this.bytes > SECRET_LIST_MAX_BYTES) throw new SecretError(503, "Kubernetes Secret list exceeds the aggregate byte limit");
+  }
+  consumeItems(count: number) {
+    this.check(); this.items += count;
+    if (!Number.isSafeInteger(count) || count < 0 || this.items > SECRET_LIST_MAX_ITEMS) throw new SecretError(503, "Kubernetes Secret list exceeds the aggregate item limit");
+  }
+}
+export type SecretListOptions = { budget?: SecretListBudget; visit?: (secret: V1Secret) => void };
 export interface SecretTransport {
   read(namespace: string, name: string): Promise<V1Secret>;
-  list(namespace: string): Promise<V1Secret[]>;
+  list(namespace: string, options?: SecretListOptions): Promise<V1Secret[]>;
   create(namespace: string, body: V1Secret): Promise<V1Secret>;
   replace(namespace: string, name: string, body: V1Secret): Promise<V1Secret>;
 }
@@ -100,11 +118,17 @@ export class SecretStore {
     for (const scope of scopes)
       this.check({ namespace: scope, name: "scope", key: "scope" });
     try {
-      return (
-        await Promise.all(scopes.map((scope) => this.transport.list(scope)))
-      )
-        .flat()
-        .map(secretSummary);
+      const budget = new SecretListBudget(), summaries: ReturnType<typeof secretSummary>[] = [];
+      for (const scope of scopes) {
+        budget.check();
+        const full = await this.transport.list(scope, { budget, visit: secret => { summaries.push(secretSummary(secret)); } });
+        // Compatibility transports may return full records instead of visiting pages.
+        for (const secret of full) {
+          budget.consumeBytes(Buffer.byteLength(JSON.stringify(secret))); budget.consumeItems(1);
+          summaries.push(secretSummary(secret));
+        }
+      }
+      budget.check(); return summaries;
     } catch (error) {
       throw secretFailure(error);
     }
