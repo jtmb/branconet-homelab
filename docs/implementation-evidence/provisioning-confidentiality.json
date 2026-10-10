@@ -1,0 +1,48 @@
+{
+  "capturedAt": "2026-10-10T20:57:39Z",
+  "source": "provisioning confidentiality stage after 9d2e089; pre-commit working tree",
+  "runtime": { "node": "22.23.3", "platform": "win32", "next": "15.5.27" },
+  "validation": {
+    "focusedConsumer": { "passed": 5, "failed": 0, "durationMs": 382.9594 },
+    "unit": { "passed": 94, "failed": 0, "durationMs": 17838.6548 },
+    "lint": "zero-warning pass",
+    "build": "fresh standalone production pass",
+    "typecheck": "pass",
+    "productionHttp": { "passed": 3, "failed": 0, "provisioningMs": 30225.8078, "existingMs": 18091.7004, "nativeTlsMs": 20291.3964, "overallMs": 30499.2832 },
+    "focusedProductionFollowup": { "passed": 1, "failed": 0, "durationMs": 25347.6582 },
+    "linuxProducer": {
+      "environment": "owned Ubuntu WSL /tmp target; isolated ansible-core packages, Python 3.14.4",
+      "ansible": "2.20.0",
+      "callbackSha256": "2809a548b9549e0e1a6b182a0152e2bb12a6abcabf8ef6b9415fd3463ee0bcf7",
+      "success": { "exitCode": 0, "protocolRecords": 3, "stdoutPrivate": false, "stderrPrivate": false },
+      "failure": { "exitCode": 2, "protocolRecords": 4, "stdoutPrivate": false, "stderrPrivate": false },
+      "fixture": "synthetic localhost debug/shell-output/fail tasks with private task labels, messages and unknown role names; no real provisioning"
+    }
+  },
+  "assertions": [
+    "Only site.yml and eleven fixed role identifiers are accepted; invalid selections fail before preparation/job/child side effects",
+    "Generated stdout callback emits only fixed start/completion and allowlisted role running/failed states, never task/host/module/exception text",
+    "Consumer buffers at most 160 bytes per line and accepts exact LF/CRLF records only; arbitrary stdout/stderr, suffixes, embedded controls and a multi-MiB raw line are withheld",
+    "Duplicate role progress is bounded; success requires supported start/completion, successful process exit and no failed/cancelled role state",
+    "Spawn failures use fixed text; cancellation remains pending until child closure, then reports failure/partial effects and clears owned job tracking",
+    "Progress appends are serialized and terminal persistence waits for in-flight appends",
+    "Production fixture verifies synthetic environment values absent from SQL job output, SSE/history, server logs, argv and generated reference/inventory files",
+    "Standalone runtime can generate the bundled fixed callback; the synthetic child confirms selected callback and platform-null file logger",
+    "Scoped writer provisioning/output gates remain 403 and container provisioning remains disabled"
+  ],
+  "corrections": [
+    "Initial isolated venv creation lacked ensurepip; dependencies were installed only into an owned /tmp target without changing system packages",
+    "Initial Linux producer failed on empty callbacks-enabled and log-path settings; explicit fixed callback and platform null device repaired them",
+    "First production persistence run failed closed on CRLF progress; consumer now accepts LF/CRLF for identical exact records and rejects embedded controls/private suffixes",
+    "A refreshed combined HTTP run had a startup fetch failure; startup diagnostics now report the owned fixture log. It was not reproduced in the focused follow-up or final unchanged-source combined three-suite pass. No readiness assertion or timeout was weakened"
+  ],
+  "limitations": [
+    "No production database, values, cluster, infrastructure playbook, cleanup or deployment was used",
+    "Historical raw Job output is unchanged and may require independent operator review",
+    "External roles/plugins and their independently controlled logging/files remain trusted operator code and must retain sensitive no_log handling",
+    "Linux callback qualification and Windows production consumer qualification are separate; a full deployed Linux runner/controller/image acceptance is pending",
+    "SIGTERM requests cancellation of the owned child; this does not prove all remote/descendant effects stopped",
+    "The transient combined-fixture startup failure remains recorded; no production cause is established",
+    "A21 aggregate namespace/large-list bounds, full KV UI, final recovery image, live admission/RBAC and controlled performance remain open"
+  ]
+}

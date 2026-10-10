@@ -65,7 +65,7 @@ Alias registration uses a strict four-field JSON body, a four-KiB maximum and th
 
 Registration/deletion recheck effective administration in a serialized transaction. Registration merges current bounded DB rows with the validated snapshot and refuses a combined quota over 10,000 with 413, including concurrent registrations; conflicts remain 409. These checks passed local unit and production HTTP/TLS qualification.
 
-Native transport writes are limited to 900 KiB of serialized JSON, including existing data/metadata; oversize changes return 413. Requests have eight-second deadlines and four concurrent slots/64 queued. Lists use 20-object pages, with 15-second/10000-object/32-MiB total and four-MiB individual-response limits; oversize/malformed/repeated-cursor lists fail explicitly. Exact special key spellings including `__proto__` are retained through TLS JSON.
+Native transport writes are limited to 900 KiB of serialized JSON, including existing data/metadata; oversize changes return 413. Requests have eight-second deadlines and four concurrent slots/64 queued. Current full lists use 20-object pages, with 15-second/10000-object/32-MiB limits per namespace and four-MiB individual-response limits; oversize/malformed/repeated-cursor lists fail explicitly. Flat summaries currently collect namespaces in parallel, so these limits do not establish an aggregate memory budget, and a full page of individually supported large objects may exceed the response cap. The A21 shared-budget/streamed-summary correction is pending. History GC preview already uses metadata-only enumeration; synthetic maximum-size history qualification is pending. Exact special key spellings including `__proto__` are retained through TLS JSON.
 
 ### KV metadata foundation (local branch, local checks passed)
 
@@ -195,13 +195,15 @@ POST /api/cluster/nodes now requires fresh write plus engineAdmin, matching othe
 
 ## Optional Ansible runner
 
+New runner output is fixed lifecycle/allowlisted role progress only. Ordinary stdout/stderr, task labels, module results and exception text are withheld before job persistence/streaming. A successful child exit without the supported callback start/completion fails with a fixed message. Progress appends are serialized and terminal persistence waits for in-flight appends, preventing a late flush from replacing the final snapshot. All 94 unit tests, zero-warning lint, fresh build/typecheck and three production HTTP fixtures passed, including private-marker absence in storage/streams/logs/argv/generated references. Isolated Ansible-core 2.20.0 producer success/failure checks passed; full deployed Linux runner/image qualification remains separate. Historical raw job output is not rewritten.
+
 Operator shell scripts are limited to 16 KiB and reject NUL bytes. Pod exec uses its exact namespaced endpoint and a single script argument; the browser never routes a selected pod command through the application-host shell. Both are one-shot command runners with bounded output/time, not interactive PTYs. Client abort does not establish that a command's server-side effects were cancelled.
 
 Storage's default list contains persistent volumes and optional Longhorn volumes. It does not use PV names as PVC identities. The explicit kind=pvc view links exact namespace/claim names to PVC details/YAML. Invalid kind/type filters return 400 before CLI execution. List UI renders at most 100 rows per page with typed numeric/quantity/date sorting; API's bounded snapshot limit remains unchanged.
 
 | Endpoint | Contract |
 |---|---|
-| POST /api/deploy/start | Write + engineAdmin; JSON playbook and roles; returns success/jobId |
+| POST /api/deploy/start | Write + engineAdmin; only site.yml and the eleven supported role identifiers; invalid selection 400 before preparation/job/child side effects; returns success/jobId |
 | GET /api/deploy/start | Active job IDs |
 | POST /api/deploy/stop | Write + engineAdmin; 202 cancellation requested for a running job owned by this process; 409 for already-complete/unowned jobs; status is determined by the runner |
 | GET /api/deploy/history | Latest 50 job metadata rows, without output; administrator-only explicit ?jobId=...&tail=1..65536 returns bounded output/cursor/truncated |
