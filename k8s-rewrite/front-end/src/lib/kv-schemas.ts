@@ -22,7 +22,7 @@ export const legacyPreview = z.discriminatedUnion("kind", [legacyPrincipal.omit(
   legacyGrant.omit({ legacyImpact: true }).extend({ kind: z.literal("grant"), cursor: legacyCursor }).strict(),
   legacyRevoke.omit({ legacyImpact: true }).extend({ kind: z.literal("revoke"), grantId: z.string().uuid(), cursor: legacyCursor }).strict()]);
 export const identityCreate = z.object({ ownerId: z.string().max(128), name: z.string(), expiresAt: z.string().datetime(), scopes: z.array(z.object({ mountId: z.string().uuid(), prefix: z.string(), actions: z.array(z.enum(KV_ACTIONS)).min(1).max(10) }).strict()).min(1).max(32) }).strict();
-export const nativePrerequisites = { resourceVersion: z.string().max(128).optional(), expectedHead: z.number().int().nonnegative().optional() };
+export const nativePrerequisites = { resourceVersion: z.string().max(128).optional(), expectedHead: z.number().int().nonnegative().optional(), pathRevision: z.number().int().positive().safe().optional() };
 export const encodedField = z.object({ field: z.string(), encoding: z.enum(["utf8", "base64"]), value: z.string() }).strict();
 export const dataChange = z.object({ ...nativePrerequisites, fields: z.array(encodedField).max(64) }).strict();
 export const nativeAdopt = z.object({ ...nativePrerequisites, legacyAliases: z.array(z.string().max(253)).max(10000) }).strict();

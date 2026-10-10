@@ -28,6 +28,9 @@ let db: PrismaClient | undefined;
 let native: Awaited<ReturnType<typeof nativeTlsFixture>> | undefined;
 let delayedReveal = false;
 let valueRequests = 0;
+let failKvMounts = false;
+const kvFixture = process.env.BORTUS_UI_KV_FIXTURE === "true";
+const fixtureMountId = "10000000-0000-4000-8000-000000000000", fixturePathId = "20000000-0000-4000-8000-000000000000";
 try {
   const fixture = await fakeKubectl(dir);
   const created = "2026-10-01T00:00:00Z";
@@ -75,6 +78,25 @@ try {
   const writer = await db.user.create({ data: { username: "fixture_writer", passwordHash: "unused", role: "write", engineAdmin: true } });
   const reader = await db.user.create({ data: { username: "fixture_reader", passwordHash: "unused", role: "readonly" } });
   const scoped = await db.user.create({ data: { username: "fixture_scoped", passwordHash: "unused", role: "write", engineAdmin: false } });
+  if (kvFixture) {
+    if (!native) throw new Error("KV UI fixture requires BORTUS_UI_NATIVE_FIXTURE=true");
+    await db.kvMount.createMany({ data: Array.from({ length: 205 }, (_, index) => ({ id: "10000000-0000-4000-8000-" + String(index).padStart(12, "0"), name: index ? "mount-" + String(index).padStart(4, "0") : "services", namespaces: JSON.stringify(["apps"]) })) });
+    for (let index = 0; index < 205; index++) {
+      const count = [3, 2, 7, 12][index] ?? 1, name = "kv-fixture-" + String(index).padStart(4, "0");
+      const fields = Array.from({ length: count }, (_, key) => ({ field: index === 0 ? ["__proto__", "constructor", "toString"][key] : "field_" + key, key: index === 0 ? ["__proto__", "constructor", "toString"][key] : "original_under_scored_key_" + key }));
+      native.seed("apps", name, Object.fromEntries(fields.map(item => [item.key, Buffer.from("fixture KV private value").toString("base64")])));
+      await db.kvPath.create({ data: { id: "20000000-0000-4000-8000-" + String(index).padStart(12, "0"), mountId: fixtureMountId,
+        path: index === 0 ? "services/api" : index === 1 ? "services/apiculture" : index === 4 ? "services/api/denied" : "services/service-" + String(index).padStart(4, "0"), namespace: "apps", name, retention: [2, 7, 12][index] ?? 20,
+        fields: { create: fields.map(item => ({ ...item, namespace: "apps", name })) } } });
+    }
+    const actions = ["list", "read", "create", "update", "delete", "rollback", "reconcile", "destroy", "export", "rotate"];
+    await db.kvPolicy.createMany({ data: [
+      { principal: "user:" + writer.id, prefix: "", effect: "allow", actions: JSON.stringify(actions) },
+      { principal: "user:" + reader.id, prefix: "", effect: "allow", actions: JSON.stringify(["list"]) },
+      { principal: "user:" + scoped.id, mountId: fixtureMountId, prefix: "services/api", effect: "allow", actions: JSON.stringify(["list", "read", "update", "create"]) },
+      { principal: "user:" + scoped.id, mountId: fixtureMountId, prefix: "services/api/denied", effect: "deny", actions: JSON.stringify(actions) },
+    ] });
+  }
   await db.user.createMany({ data: Array.from({ length: 205 }, (_, index) => ({ username: "large_user_" + index, passwordHash: "unused", role: "readonly" })) });
   await db.variable.createMany({ data: Array.from({ length: 205 }, (_, index) => ({ key: "fixture_config_" + index, value: "nonsecret " + index, category: "fixture", encrypted: false })) });
   await db.appSetting.create({ data: { key: "allow_registration", value: "false" } });
@@ -121,13 +143,18 @@ try {
         const action = JSON.parse(raw).action;
         if (action === "delay-reveal") delayedReveal = true;
         else if (action === "withdraw-admin" || action === "restore-admin") await db!.user.update({ where: { id: writer.id }, data: { engineAdmin: action === "restore-admin" } });
+        else if (kvFixture && (action === "fail-kv-mounts" || action === "restore-kv-mounts")) failKvMounts = action === "fail-kv-mounts";
+        else if (kvFixture && action === "change-kv-retention") await db!.kvPath.update({ where: { id: fixturePathId }, data: { retention: 5, revision: { increment: 1 } } });
+        else if (kvFixture && action === "change-kv-mount") await db!.kvMount.update({ where: { id: fixtureMountId }, data: { revision: { increment: 1 } } });
+        else if (kvFixture && action === "deny-kv-update") await db!.kvPolicy.create({ data: { principal: "user:" + scoped.id, mountId: fixtureMountId, prefix: "services/api", effect: "deny", actions: JSON.stringify(["update"]) } });
         else if (action === "external-change") { const object = native.objects.get("apps/editor-fixture")!; native.seed("apps", "editor-fixture", object.data ?? {}, object); }
         else { response.writeHead(400); response.end(); return; }
         response.writeHead(204); response.end(); return;
       }
       const requestKey = request.method + " " + url.pathname;
       requestCounts.set(requestKey, (requestCounts.get(requestKey) ?? 0) + 1);
-      if (request.method === "GET" && url.pathname === "/api/secrets" && url.searchParams.has("key")) valueRequests++;
+      if (request.method === "GET" && (url.pathname === "/api/secrets" && url.searchParams.has("key") || /^\/api\/kv\/paths\/[^/]+\/(?:versions\/[^/]+\/)?data$/.test(url.pathname))) valueRequests++;
+      if (kvFixture && failKvMounts && request.method === "GET" && url.pathname === "/api/kv/mounts") { response.writeHead(503, { "Content-Type": "application/json" }); response.end(JSON.stringify({ error: "Fixture mount metadata unavailable" })); return; }
       if (url.pathname.startsWith("/_next/static/")) {
         try {
           const staticRoot = path.resolve(root, ".next/static");

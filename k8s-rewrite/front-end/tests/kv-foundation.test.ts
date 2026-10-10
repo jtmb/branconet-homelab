@@ -134,6 +134,19 @@ test("KV metadata ownership, serialized administration and scoped token lifecycl
       await assert.rejects(registry.authorize(actor(readerUser), scope, "update"), denied(403));
     });
 
+    await t.test("global-root list grants enumerate real paths while mount, cursor and deny filters remain authoritative", async () => {
+      const broadUser = await db.user.findUniqueOrThrow({ where: { id: broad.id } }), broadActor = actor(broadUser);
+      const all = await registry.listPaths(broadActor);
+      assert.equal(all.items.length, 2);
+      assert.equal((await registry.listPaths(broadActor, mount.id)).items.length, 2);
+      assert.equal((await registry.listPaths(broadActor, "00000000-0000-4000-8000-000000000000")).items.length, 0);
+      assert.equal((await registry.listPaths(broadActor, undefined, all.items.at(-1)!.id)).items.length, 0);
+      const listDeny = await registry.savePolicy(adminActor, { principal: `user:${broad.id}`, mountId: mount.id, prefix: "apps/api/sibling", effect: "deny", actions: ["list"] });
+      assert.equal((await registry.listPaths(broadActor)).items.length, 1);
+      await registry.deletePolicy(adminActor, listDeny.id, listDeny.revision);
+      assert.equal((await registry.listPaths(broadActor)).items.length, 2);
+    });
+
     await t.test("deny overrides user/admin allow and applies to complete path segments", async () => {
       await registry.authorize(scopedActor, scope, "read");
       const deny = await registry.savePolicy(adminActor, { principal: `user:${scoped.id}`, mountId: mount.id, prefix: "apps/api", effect: "deny", actions: ["read"] });

@@ -4,6 +4,7 @@ import { useQuery, useSession } from "@/lib/use-query";
 import { useMutation } from "@/lib/use-mutation";
 import { ResourceTable } from "@/components/cluster/resource-list";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 const ConfirmDialog = dynamic(() => import("../confirm-dialog"), { ssr: false });
 type Summary = {
   namespace: string;
@@ -110,6 +111,7 @@ export default function SecretsEditor() {
     <div className="min-w-0 p-3 sm:p-6 space-y-6">
       <header>
         <h1 className="text-xl font-semibold">Kubernetes Secrets</h1>
+        <Link href="/secrets/kv" prefetch={false} className={button}>KV mounts and paths</Link>
         <p className="text-sm text-zinc-400">
           Values are read and saved directly in Kubernetes. Open the key list for a Secret, then select a key to edit.
         </p>

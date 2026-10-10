@@ -4,6 +4,10 @@ Status: native KV APIs locally qualified; full UI and external deployment accept
 
 ## Mounts, paths and grouped documents
 
+The global-root list-grant query now avoids Prisma's false-empty OR predicate. Effective global list access enumerates permitted paths while explicit mount/cursor filters and deny rules remain enforced. An independent SQLite regression reproduced the omission before correction and now passes with the full 118-test/HTTP/browser qualification.
+
+The `/secrets/kv` metadata UI passed local qualification: cursor pages of at most 100 mounts/paths, explicit mount administration, path field-mapping registration, fresh path capabilities and revision-based retention edits. Refresh preserves retention drafts and requires explicit reload after revision conflict; real permission withdrawal removes them. Registration does not create/adopt native values. Status/history metadata are separate reads; opening a path does not reveal values. Only named metadata GETs enter the shared browser query cache; value, adoption, operation-resolution, transfer and rotation routes are excluded. Full value/history/adoption/recovery, policy/identity/legacy and transfer/rotation UI remain open.
+
 A mount is a metadata namespace with an explicit allowed Kubernetes namespace set. A normalized logical path belongs to one mount and maps to one exact native Secret namespace/name. Each document has an explicit field-name-to-native-data-key mapping, supporting both scalar references and grouped key/value documents. Groups manage at most 64 selected keys in the same Secret. Logical field names default to the original native key spelling; scalar aliases keep their exact namespace/name/key. There is no underscore splitting, target inference, or automatic alias adoption.
 
 SQLite stores mount/path IDs, mappings, policy grants, operation/rotation metadata and audit records. A unique active mapping prevents two engine paths from owning the same native namespace/name/key; disjoint groups may share a Secret. Native resourceVersion serializes their updates. Canonical objects retain unrelated keys, type, labels, annotations, owners and managed fields. Typed or immutable Secret constraints are respected. Removing managed keys keeps the Secret and an empty data object; deleting a last required typed key fails rather than changing the type.
@@ -23,6 +27,10 @@ The default retention is 20 committed versions per path, with an operator maximu
 Creating a new path first registers metadata intent and creates a minimal owned Opaque canonical Secret with empty data. This establishes a source UID. It then performs the same versioned CAS protocol as an adopted object. A failure can leave a recoverable empty object or pending registry intent; it is reported explicitly and does not claim that credential values were committed. Existing-object adoption snapshots selected current fields as version 1 and CAS-adds the native state annotation without altering their values.
 
 ## CAS, history and ambiguous outcomes
+
+Native request schemas now accept the engine's existing optional pathRevision prerequisite as a positive safe integer. New UI clients send their captured path revision with the required native head/resourceVersion; stale metadata is rejected before mutation. Existing clients without this additive field retain their head/RV contract and commit-time fresh metadata checks. Schema and creation/adoption/update HTTP regressions passed without native writes on stale revisions; this adds no migration or native format change.
+
+Update policy authorizes explicit complete replacement independently of read. A no-read UI mode must fetch metadata only, require entered replacements and clearly confirm removal of omitted mapped fields. Preserve-existing-values editing requires read. Server-internal reads for drift/CAS never become caller value access.
 
 Prior committed or unresolved operations prevent initial activation when the canonical object/ownership marker is missing. The app does not reset that path to version one or treat a committed mapping as an unadopted legacy alias. It reports explicit recovery instead. A still-owned empty source left by failed first creation can be resumed with a fresh CAS only when it has no prior committed values; original history candidates remain intact.
 

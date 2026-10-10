@@ -187,7 +187,9 @@ export class KvRegistry {
     const grants = ownerRules.filter(r => r.effect === "allow" && parseActions(r.actions).includes("list"));
     const rows = grants.length ? await this.db.kvPath.findMany({ where: {
       ...(mountId ? { mountId } : {}), ...(cursor ? { id: { gt: cursor } } : {}),
-      OR: grants.map(r => ({ ...(r.mountId ? { mountId: r.mountId } : {}), ...(r.prefix ? { OR: [{ path: r.prefix }, { path: { startsWith: r.prefix + "/" } }] } : {}) })),
+      ...(!grants.some(r => r.mountId === null && r.prefix === "") ? {
+        OR: grants.map(r => ({ ...(r.mountId ? { mountId: r.mountId } : {}), ...(r.prefix ? { OR: [{ path: r.prefix }, { path: { startsWith: r.prefix + "/" } }] } : {}) })),
+      } : {}),
     }, include: { fields: true }, orderBy: { id: "asc" }, take: 101 }) : [];
     const page = rows.slice(0, 100).filter(p => policyAllows(ownerRules, p, "list") && (!identityRules || policyAllows(identityRules, p, "list")));
     return { items: page, nextCursor: rows.length > 100 ? rows[99].id : null };

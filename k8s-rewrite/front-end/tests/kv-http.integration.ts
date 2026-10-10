@@ -65,11 +65,16 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     await start(true);
     const createdPath=await checked(await request("/api/kv/paths","POST",{mountId:mount.id,path:"services/new/empty",namespace:"apps",name:"created-empty",fields:[{field:"empty",key:"empty"}]},admin),201);
     const createdRoute="/api/kv/paths/"+createdPath.id;
-    const created=await checked(await request(createdRoute+"/data","POST",{resourceVersion:"absent",expectedHead:0,fields:[]},admin),201);assert.equal(created.head,1);
+    const beforeCreation=nativeWrites();
+    await checked(await request(createdRoute+"/data","POST",{resourceVersion:"absent",expectedHead:0,pathRevision:createdPath.revision+1,fields:[]},admin),409);assert.equal(nativeWrites(),beforeCreation);
+    const created=await checked(await request(createdRoute+"/data","POST",{resourceVersion:"absent",expectedHead:0,pathRevision:createdPath.revision,fields:[]},admin),201);assert.equal(created.head,1);
     assert.deepEqual(native.objects.get("apps/created-empty")!.data,{});
     const empty=await checked(await request(createdRoute+"/data","GET",undefined,admin));assert.deepEqual(empty.fields,[]);
     await checked(await request(createdRoute+"/data","POST",{resourceVersion:"absent",expectedHead:0,fields:[]},admin),409);
-    const adopted=await checked(await request(route+"/adopt","POST",{resourceVersion:preview.resourceVersion,expectedHead:0,legacyAliases:[alias.alias]},admin));assert.equal(adopted.head,1);
+    const beforeAdoption=nativeWrites();
+    await checked(await request(route+"/adopt","POST",{resourceVersion:preview.resourceVersion,expectedHead:0,pathRevision:registry.revision+1,legacyAliases:[alias.alias]},admin),409);assert.equal(nativeWrites(),beforeAdoption);
+    await checked(await request(route+"/adopt","POST",{resourceVersion:preview.resourceVersion,expectedHead:0,pathRevision:0,legacyAliases:[alias.alias]},admin),400);assert.equal(nativeWrites(),beforeAdoption);
+    const adopted=await checked(await request(route+"/adopt","POST",{resourceVersion:preview.resourceVersion,expectedHead:0,pathRevision:registry.revision,legacyAliases:[alias.alias]},admin));assert.equal(adopted.head,1);
     const data=await checked(await request(route+"/data","GET",undefined,admin));
     assert.equal(data.fields.find((f:any)=>f.field==="__proto__").value,Buffer.from("exact imported value").toString("base64"));assert.equal(data.fields.find((f:any)=>f.field==="binary").value,binary);
     assert(!JSON.stringify(data).includes(privateMarker));
@@ -79,6 +84,8 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     await checked(await request("/api/secrets?namespace=apps&name=imported&key=__proto__","GET",undefined,scoped),403);
     await checked(await request(route+"/data","PUT",{resourceVersion:adopted.resourceVersion,fields:[]},scoped),428);
     await checked(await request(route+"/data","PUT",{resourceVersion:adopted.resourceVersion,expectedHead:0,fields:[]},scoped),409);
+    const beforeStaleMetadata=nativeWrites();
+    await checked(await request(route+"/data","PUT",{resourceVersion:adopted.resourceVersion,expectedHead:1,pathRevision:registry.revision+1,fields:[]},scoped),409);assert.equal(nativeWrites(),beforeStaleMetadata);
     const identity=await checked(await request("/api/kv/identities","POST",{ownerId:scopedUser.id,name:"http-consumer",expiresAt:new Date(Date.now()+3600000).toISOString(),scopes:[{mountId:mount.id,prefix:"services/api",actions:["list","read","update"]}]},scoped),201);
     const tokenRead={operation:"read",pathId:registry.id};const readsBeforeInvalid=native.calls.length;
     await checked(await request("/api/kv/automation","POST",tokenRead,admin),401);
