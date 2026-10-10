@@ -520,6 +520,23 @@ test(
         (await request("/api/secret-references", "POST", alias, writer)).status,
         201,
       );
+      const retainedRepo = await db.gitRepo.create({ data: { name: "fixture-retained-credentials", url: "https://example.invalid/repo.git", branch: "main", path: "./", namespace: "flux-system" } });
+      await writeFile(path.join(fixture.bin, "allow-flux-mutations"), "synthetic Flux kinds only");
+      try {
+        const deleted = await request(`/api/flux/repos/${retainedRepo.id}`, "DELETE", undefined, writer);
+        assert.equal(deleted.status, 200);
+        const deletion = await deleted.json();
+        let progress: any;
+        for (let attempt = 0; attempt < 50; attempt++) {
+          progress = await (await request(`/api/flux/repos/${deletion.deleteId}/delete-progress`, "GET", undefined, writer)).json();
+          if (progress.done) break;
+          await new Promise(resolve => setTimeout(resolve, 50));
+        }
+        assert.equal(progress.done, true); assert.equal(progress.error, undefined);
+        assert(progress.steps.find((s: any) => s.step === "flux_crds").detail.includes("credentials retained"));
+        assert.equal(await db.gitRepo.findUnique({ where: { id: retainedRepo.id } }), null);
+        assert(!(await fixture.calls()).some(args => args.includes("delete") && args.includes("secret")), "Cascade never requests the forbidden inferred Secret deletion");
+      } finally { await unlink(path.join(fixture.bin, "allow-flux-mutations")); }
       const hyphenated = { ...alias, alias: "secret_apps_vpn-creds_openvpn_user" };
       assert.equal((await request("/api/secret-references", "POST", hyphenated, writer)).status, 201);
       assert.equal((await request("/api/vars", "POST", { key: hyphenated.alias, value: "fake native only", mode: "update", resourceVersion: "1" }, writer)).status, 503);

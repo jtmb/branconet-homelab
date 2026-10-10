@@ -2,6 +2,8 @@
 
 BORTUS is the Kubernetes management application at `k8s-rewrite/front-end/`. Its source and documentation are included in `main` alongside the existing Swarm homelab. Kubernetes provisioning, charts and live Flux source configuration are maintained separately; this application publication does not replace those systems.
 
+Native Secret transport uses Node HTTPS/JSON with the Kubernetes SDK's credential, CA, client-certificate and proxy handling. This preserves valid `__proto__` map keys that the SDK's generated serializer drops; direct JSON also preserves unknown canonical metadata. Request, queue, body and pagination bounds are documented in the [Secrets engine](SECRETS-ENGINE.md).
+
 | Component | Declared version | Role |
 |---|---|---|
 | Node.js | 22 (Docker image) | Application runtime |

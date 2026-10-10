@@ -49,6 +49,8 @@ Create refuses existing keys. Updates/deletes preserve unrelated data, type and 
 
 Send value-bearing requests from the UI or protected files over TLS; never include them in command arguments, Git or logs. See [Secrets engine](SECRETS-ENGINE.md).
 
+Native transport writes are limited to 900 KiB of serialized JSON, including existing data/metadata; oversize changes return 413. Requests have eight-second deadlines and four concurrent slots/64 queued. Lists use 20-object pages, with 15-second/10000-object/32-MiB total and four-MiB individual-response limits; oversize/malformed/repeated-cursor lists fail explicitly. Exact special key spellings including `__proto__` are retained through TLS JSON.
+
 ### KV metadata foundation (local branch, local checks passed)
 
 `GET/POST /api/kv/mounts`, `PATCH/DELETE /api/kv/mounts/[id]`, `GET/POST /api/kv/paths`, `GET/PATCH /api/kv/paths/[id]`, `GET/POST /api/kv/policies`, `PATCH/DELETE /api/kv/policies/[id]`, `GET/POST /api/kv/identities` and `DELETE /api/kv/identities/[id]` are implemented metadata endpoints. Cursor pages return `{items,nextCursor}` with at most 100 entries. Mount/policy administration requires effective engineAdmin; path registration requires create policy and write role, registers metadata intent only, and performs no native mutation. Registered namespace scopes remain subsets of the allowlist and exclude history. Active key ownership is unique; disjoint groups may share an object. Path PATCH changes retention only; target/mapping moves are not accepted. Metadata changes require revision (428 missing, 409 stale). All responses are private/no-store; JSON bodies are bounded to 512 KiB and validated strictly.
@@ -175,6 +177,8 @@ Job output streams read bounded SQLite substrings under consumer backpressure, r
 Container provisioning returns 501. Local provisioning requires separately supplied Ansible/playbooks and independent bootstrap credentials; this app merge includes no Kubernetes provisioning roles. The UI uses the current session/runtime capability and shows independent-operator guidance when provisioning is disabled. See [workflow](BOTRUS-WORKFLOW.md) and [audit](BORTUS-AUDIT.md).
 
 ## Flux
+
+Repository DELETE retains native credentials and reports "repository credentials retained for explicit native cleanup" in progress. It performs no inferred `<name>-auth` whole-Secret deletion. Explicit credential lifecycle requires exact native targets/consumers and, for adopted targets, KV policy/version handling. No canonical Secret delete RBAC is added.
 
 | Endpoint | Contract |
 |---|---|

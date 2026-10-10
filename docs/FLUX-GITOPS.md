@@ -75,6 +75,8 @@ with the BORTUS development owner.
 
 ## Dashboard, credentials and recovery
 
+Repository cascade removal retains native credentials and reports that fact in its Flux-resource progress step. It never infers credential ownership from `<repository>-auth` or deletes a whole Secret. Credentials may be shared, imported or adopted by the KV engine; clean them up only through explicit native key/version operations after checking their exact references and consumers. Current-namespace RBAC remains get/list/create/update without Secret delete. Namespace deletion can still remove resources in the selected application namespace; `flux-system`, where repository credentials live, is protected from this cascade.
+
 Application command contract: kubectl operations use argv arrays and validated Kubernetes names. Subprocess failures are fixed typed errors, without raw stderr. Cascade deletion stops on failed discovery/child deletion, ignores only confirmed missing resources when suspending Flux, records the active failed step and retains the DB record when it fails. Conversion and regression evidence are tracked in [BORTUS-IMPLEMENTATION.md](BORTUS-IMPLEMENTATION.md).
 
 JSON source reads also throw fixed failures rather than synthesizing empty success. Flux commands share the app's bounded kubectl process pool and deadlines.

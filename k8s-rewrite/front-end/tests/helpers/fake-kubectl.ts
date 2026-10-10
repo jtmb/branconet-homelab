@@ -20,7 +20,10 @@ class Fixture { static int Main(string[] args) {
   int p=Array.IndexOf(args,"get");
   Thread.Sleep(50);
   if(Array.IndexOf(args,"logs")>=0) { Console.Write("fixture log line\\n"); return 0; }
-  if(p<0) { Console.Write("private-command-output-marker"); Console.Error.Write("private-command-error-marker"); return 1; }
+  if(p<0) {
+    if(File.Exists(Path.Combine(d,"allow-flux-mutations")) && (Array.IndexOf(args,"patch")>=0 || Array.IndexOf(args,"delete")>=0) && Array.Exists(args,a=>a=="gitrepository"||a=="kustomization"||a=="helmrelease")) { Console.Write("fixture Flux mutation completed"); return 0; }
+    Console.Write("private-command-output-marker"); Console.Error.Write("private-command-error-marker"); return 1;
+  }
   string r=args[p+1]; string f=Path.Combine(d,r+".json");
   string failure=Path.Combine(d,"failure.txt");
   if(File.Exists(failure)&&(File.ReadAllText(failure).Trim()=="all"||File.ReadAllText(failure).Trim()==r)) { Console.Error.Write("private-command-error-marker"); return 1; }
@@ -47,7 +50,7 @@ fs.appendFileSync(path.join(d,'calls.log'),a.map(v=>Buffer.from(v).toString('bas
 const p=a.indexOf('get');
 Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,50);
 if(a.includes('logs')){process.stdout.write('fixture log line\\n');process.exit(0);}
-if(p<0){process.stdout.write('private-command-output-marker');process.stderr.write('private-command-error-marker');process.exit(1);}
+if(p<0){if(fs.existsSync(path.join(d,'allow-flux-mutations'))&&(a.includes('patch')||a.includes('delete'))&&a.some(v=>['gitrepository','kustomization','helmrelease'].includes(v))){process.stdout.write('fixture Flux mutation completed');process.exit(0);}process.stdout.write('private-command-output-marker');process.stderr.write('private-command-error-marker');process.exit(1);}
 const f=path.join(d,a[p+1]+'.json');
 const failure=path.join(d,'failure.txt');
 if(fs.existsSync(failure)&&['all',a[p+1]].includes(fs.readFileSync(failure,'utf8').trim())){process.stderr.write('private-command-error-marker');process.exit(1);}

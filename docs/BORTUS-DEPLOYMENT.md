@@ -53,6 +53,8 @@ Multiple aliases can reference a key; one alias cannot reference multiple target
 
 ## Bootstrap/recovery
 
+Repository cascade removal retains native authentication Secrets and reports retained credentials. No inferred name establishes ownership and no canonical Secret delete verb is added. Explicit key/version cleanup requires exact target/consumer review; dedicated owned-history deletion is a separate guarded KV contract.
+
 Dashboard deployment attribution additionally lists apps/replicasets to follow controller UIDs. If that permission/resource is unavailable, deployment responses expose partial availability and null ownership/restart data. Ensure this separate dashboard RBAC when accepting the new image. Structured kubectl work shares four active/64 queued slots with deadlines and output limits; write-role /api/cluster/diagnostics exposes process-local counters without values. No native Secret verbs changed in this cache/state stage.
 
 The resource-capability stage adds pod log get, pod exec create, node patch and pod eviction create to the relevant separate dashboard RBAC when those operator features are enabled. Node drain also reads pods/daemonsets and respects PDBs. Service/PVC YAML remains read-only; ingress YAML/delete follows its existing resource permissions. Validate each capability with the deployed ServiceAccount; UI support is not proof of Kubernetes authorization.

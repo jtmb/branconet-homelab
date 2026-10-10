@@ -14,6 +14,8 @@ For an existing database, make a consistent backup and assess migration history 
 
 ## Configuration and Secrets
 
+Flux repository removal keeps its native authentication Secret. The progress view reports retained credentials; inspect exact references/consumers before explicit native key or KV version cleanup. Repository names never establish Secret ownership, and cascade removal does not require a canonical Secret delete permission.
+
 Use **Configuration** (`/configuration`) for nonsecret SQLite settings. Use **Secrets** (`/secrets`) for native Secret metadata and, as an effective engine administrator, explicit reveal and key CRUD. Create refuses existing keys; update/delete require the current resourceVersion. Unrelated keys, type and metadata are preserved. Deleting the last Opaque key retains an empty Secret object.
 
 User, configuration and settings screens share metadata/session queries with explicit failed-read states and Retry. User/configuration tables render at most 100 rows per page with typed date/text sorting and keyboard actions. Editors are labelled focus-trapped dialogs; deletion requires an exact username or configuration key. Fresh engine administration, valid/changed input and one pending request gate saves. Mutation requests have a 20-second deadline, abort on unmount and never automatically retry an ambiguous outcome. Passwords retain intentional whitespace and leave the UI when an editor closes or write access ends. Configuration edits preserve the existing key/ID.

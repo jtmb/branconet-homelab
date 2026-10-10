@@ -1,5 +1,7 @@
 # BORTUS implementation evidence
 
+`kv-native-core.json` records the internal immutable-history/CAS/drift/rollback/audit-recovery protocol, verified-TLS special-key/pagination/delete-precondition checks, and the HTTP Flux cascade that retains credentials. Public value routes, legacy policy bridges and final KV image acceptance remain pending.
+
 `kv-foundation.json` and `kv-foundation-http.json` record metadata/policy/identity/operator-boundary qualification, including scoped mobile controls in `kv-scoped-users-390.png`. Native value/history operations and final-image/admission acceptance remain pending. External Linux QA referenced there applies only to exact pre-KV revision `6a97105020f67fe36686c2dbf50e9e4afa552c8c`.
 
 For manual browser acceptance, run `npx tsx tests/ui-fixture.ts` from the app after building, with an interactive stdin/PTY. It prints only disposable metadata paths and writer/reader loopback gateway URLs. The fake CLI never contacts a cluster and rejects mutations. The DB, identities, kubeconfig and 208 pods are synthetic; gateways inject fixture identities, so they do not test real-cookie logout. Type `stop` on stdin to stop processes and delete the explicitly verified owned OS-temp directory. Do not use the historical audit fixture as a current acceptance record.

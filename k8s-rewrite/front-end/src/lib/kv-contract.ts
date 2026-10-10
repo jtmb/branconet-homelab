@@ -1,6 +1,9 @@
 import { SecretError, validateTarget } from "./cluster-secrets";
 
 export class KvError extends SecretError {}
+export class KvMutationError extends KvError {
+  constructor(status: number, message: string, readonly operationId: string, readonly outcome: string) { super(status, message); }
+}
 export const KV_ACTIONS = ["list", "read", "create", "update", "delete", "rollback", "reconcile", "destroy", "export", "rotate"] as const;
 export type KvAction = typeof KV_ACTIONS[number];
 export type KvScope = { mountId: string; path: string };

@@ -1,91 +1,132 @@
-import {
-  CoreV1Api,
-  KubeConfig,
-  wrapHttpLibrary,
-  ResponseContext,
-} from "@kubernetes/client-node";
-import fetch from "node-fetch";
-import {
-  SecretStore,
-  SecretError,
-  secretFailure,
-  type SecretTransport,
-} from "./cluster-secrets";
+import { KubeConfig, type V1Secret } from "@kubernetes/client-node";
+import https from "node:https";
+import { SecretStore, SecretError, secretFailure, validateTarget, type SecretTransport } from "./cluster-secrets";
+
 export function secretNamespaces(): string[] {
-  const scopes = (process.env.BORTUS_SECRET_NAMESPACES || "default")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  if (!scopes.length)
-    throw new SecretError(
-      503,
-      "BORTUS_SECRET_NAMESPACES must name at least one namespace",
-    );
+  const scopes = (process.env.BORTUS_SECRET_NAMESPACES || "default").split(",").map(s => s.trim()).filter(Boolean);
+  if (!scopes.length || scopes.length > 100) throw new SecretError(503, "Configure between one and 100 Secret namespaces");
+  for (const namespace of scopes) validateTarget({ namespace, name: "scope", key: "scope" });
   return [...new Set(scopes)];
 }
-export function createSecretTransport(): SecretTransport {
+export interface NativeSecretTransport extends SecretTransport {
+  delete(namespace: string, name: string, uid: string, resourceVersion: string): Promise<void>;
+  probe(namespace: string): Promise<void>;
+}
+let active = 0;
+const waiters: { enter: () => void; timer: ReturnType<typeof setTimeout> }[] = [];
+async function slot(deadline: number) {
+  await new Promise<void>((resolve, reject) => {
+    if (Date.now() >= deadline) return reject(new SecretError(503, "Kubernetes Secret request timed out"));
+    if (active < 4) { active++; resolve(); return; }
+    if (waiters.length >= 64) return reject(new SecretError(503, "Kubernetes Secret request queue is full"));
+    const waiter = { enter: () => { clearTimeout(waiter.timer); active++; resolve(); }, timer: setTimeout(() => {
+      const index = waiters.indexOf(waiter); if (index >= 0) waiters.splice(index, 1);
+      reject(new SecretError(503, "Kubernetes Secret request timed out"));
+    }, Math.max(1, deadline - Date.now())) };
+    waiters.push(waiter);
+  });
+}
+const release = () => { active--; waiters.shift()?.enter(); };
+export const nativeRequestDiagnostics = () => ({ active, queued: waiters.length, maxConcurrent: 4, maxQueued: 64 });
+
+export function createSecretTransport(): NativeSecretTransport {
   try {
     const config = new KubeConfig();
     if (process.env.KUBECONFIG) config.loadFromDefault();
     else if (process.env.KUBERNETES_SERVICE_HOST) config.loadFromCluster();
     else config.loadFromDefault();
     const cluster = config.getCurrentCluster();
-    if (
-      !cluster ||
-      !cluster.server.startsWith("https:") ||
-      cluster.skipTLSVerify
-    )
-      throw new SecretError(
-        503,
-        "A TLS-verified Kubernetes API connection is required",
-      );
-    const api = config.makeApiClient(CoreV1Api);
-    const options = {
-      httpApi: wrapHttpLibrary({
-        async send(request) {
-          const response = await fetch(request.getUrl(), {
-            method: request.getHttpMethod(),
-            headers: request.getHeaders(),
-            body: request.getBody(),
-            agent: request.getAgent(),
-            signal: AbortSignal.timeout(8000),
+    if (!cluster || !cluster.server.startsWith("https:") || cluster.skipTLSVerify)
+      throw new SecretError(503, "A TLS-verified Kubernetes API connection is required");
+    const base = cluster.server.replace(/\/$/, "");
+
+    async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false): Promise<{ value: any; bytes: number }> {
+      deadline = Math.min(deadline, Date.now() + 8000);
+      await slot(deadline);
+      let authTimer: ReturnType<typeof setTimeout> | undefined;
+      try {
+        const options: https.RequestOptions = { method, rejectUnauthorized: true, headers: {
+          Accept: metadata ? "application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1" : "application/json",
+          ...(body === undefined ? {} : { "Content-Type": "application/json" }),
+        } };
+        // SDK authentication retains CA/client certificates, token refresh and proxies; JSON maps bypass its lossy serializer.
+        await Promise.race([config.applyToHTTPSOptions(options), new Promise<never>((_, reject) => {
+          authTimer = setTimeout(() => reject(new SecretError(503, "Kubernetes Secret authentication timed out")), Math.max(1, deadline - Date.now()));
+        })]);
+        clearTimeout(authTimer);
+        if (Date.now() >= deadline || options.rejectUnauthorized === false) throw new SecretError(503, "Kubernetes Secret request timed out");
+        options.signal = AbortSignal.timeout(Math.max(1, deadline - Date.now()));
+        const serialized = body === undefined ? undefined : JSON.stringify(body);
+        if (serialized && Buffer.byteLength(serialized) > 900 * 1024) throw new SecretError(413, "Secret object exceeds the application size limit");
+        return await new Promise((resolve, reject) => {
+          const req = https.request(base + route, options, response => {
+            // API errors/redirects can contain submitted values. Never read or forward those bodies.
+            if (!response.statusCode || response.statusCode < 200 || response.statusCode >= 300) {
+              response.destroy(); reject(secretFailure({ code: response.statusCode })); return;
+            }
+            const chunks: Buffer[] = []; let bytes = 0;
+            response.on("data", (chunk: Buffer) => {
+              bytes += chunk.length;
+              if (bytes > 4 * 1024 * 1024) { response.destroy(); reject(new SecretError(503, "Kubernetes Secret response exceeds the size limit")); }
+              else chunks.push(chunk);
+            });
+            response.once("error", reject);
+            response.once("end", () => {
+              try {
+                const value = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(Buffer.concat(chunks)));
+                if (!value || typeof value !== "object") throw Error();
+                resolve({ value, bytes });
+              } catch { reject(new SecretError(503, "Invalid Kubernetes Secret response")); }
+            });
           });
-          const headers: Record<string, string> = {};
-          response.headers.forEach((value, key) => {
-            headers[key] = value;
-          });
-          return new ResponseContext(response.status, headers, {
-            text: () => response.text(),
-            binary: () => response.buffer(),
-          });
-        },
-      }),
+          req.once("error", reject);
+          if (serialized !== undefined) req.setHeader("Content-Length", Buffer.byteLength(serialized));
+          req.end(serialized);
+        });
+      } catch (error) { throw secretFailure(error); }
+      finally { clearTimeout(authTimer); release(); }
+    }
+    const route = (namespace: string, name?: string) => {
+      validateTarget({ namespace, name: name || "scope", key: "scope" });
+      return `/api/v1/namespaces/${namespace}/secrets${name ? "/" + name : ""}`;
+    };
+    const object = (value: any, namespace: string, name?: string): V1Secret => {
+      if (value.kind !== "Secret" || value.apiVersion !== "v1" || value.metadata?.namespace !== namespace ||
+        (name && value.metadata?.name !== name) || typeof value.metadata?.name !== "string" ||
+        (value.data !== undefined && (!value.data || typeof value.data !== "object" || Array.isArray(value.data) || Object.values(value.data).some(v => typeof v !== "string"))))
+        throw new SecretError(503, "Invalid Kubernetes Secret response");
+      return value as V1Secret; // JSON.parse retains __proto__/constructor/toString and arbitrary native metadata.
     };
     return {
-      read: (namespace, name) =>
-        api.readNamespacedSecret({ namespace, name }, options),
-      list: async (namespace) => {
-        const items = [];
-        let cursor: string | undefined;
+      read: async (namespace, name) => object((await request("GET", route(namespace, name))).value, namespace, name),
+      list: async namespace => {
+        const items: V1Secret[] = [], cursors = new Set<string>();
+        const deadline = Date.now() + 15000; let cursor = "", bytes = 0;
         do {
-          const page = await api.listNamespacedSecret(
-            { namespace, limit: 200, _continue: cursor },
-            options,
-          );
-          items.push(...page.items);
-          cursor = page.metadata?._continue;
+          const result = await request("GET", route(namespace) + "?limit=20" + (cursor ? "&continue=" + encodeURIComponent(cursor) : ""), undefined, deadline);
+          const page = result.value; bytes += result.bytes;
+          if (page.kind !== "SecretList" || page.apiVersion !== "v1" || !Array.isArray(page.items) || page.items.length > 20 || items.length + page.items.length > 10000 || bytes > 32 * 1024 * 1024)
+            throw new SecretError(503, "Kubernetes Secret list exceeds the validated limits");
+          items.push(...page.items.map((item: unknown) => object(item, namespace)));
+          cursor = page.metadata?.continue || "";
+          if (typeof cursor !== "string" || cursor.length > 8192 || (cursor && (cursors.has(cursor) || page.items.length === 0)))
+            throw new SecretError(503, "Invalid Kubernetes Secret pagination");
+          if (cursor) cursors.add(cursor);
         } while (cursor);
         return items;
       },
-      create: (namespace, body) =>
-        api.createNamespacedSecret({ namespace, body }, options),
-      replace: (namespace, name, body) =>
-        api.replaceNamespacedSecret({ namespace, name, body }, options),
+      create: async (namespace, body) => object((await request("POST", route(namespace), body)).value, namespace, body.metadata?.name),
+      replace: async (namespace, name, body) => object((await request("PUT", route(namespace, name), body)).value, namespace, name),
+      delete: async (namespace, name, uid, resourceVersion) => {
+        if (!uid || !resourceVersion) throw new SecretError(428, "Owned history UID and resourceVersion required");
+        await request("DELETE", route(namespace, name), { apiVersion: "v1", kind: "DeleteOptions", preconditions: { uid, resourceVersion } });
+      },
+      probe: async namespace => {
+        const { value } = await request("GET", route(namespace) + "?limit=1", undefined, Date.now() + 8000, true);
+        if (value.kind !== "PartialObjectMetadataList" || !Array.isArray(value.items) || value.items.length > 1 || value.items.some((i: any) => Object.hasOwn(i, "data")))
+          throw new SecretError(503, "Metadata-only Secret probe unavailable");
+      },
     };
-  } catch (error) {
-    throw secretFailure(error);
-  }
+  } catch (error) { throw secretFailure(error); }
 }
-export function nativeSecrets() {
-  return new SecretStore(createSecretTransport(), secretNamespaces());
-}
+export function nativeSecrets() { return new SecretStore(createSecretTransport(), secretNamespaces()); }

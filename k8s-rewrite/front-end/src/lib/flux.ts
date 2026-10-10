@@ -769,8 +769,9 @@ async function performCascadeDelete(
     progress.steps[2].detail = `Delete attempted — GitRepository may not exist`;
   }
 
-  // 2e. Clean up associated secret if present
-  await kubectlExec(["--namespace", FLUX_NAMESPACE, "delete", "secret", validateResourceName(`${name}-auth`), "--wait=false", "--ignore-not-found"]);
+  // Credentials have independent ownership/lifecycle. Never infer them from a repository name.
+  // Current-namespace RBAC deliberately has no whole-Secret delete verb.
+  progress.steps[2].detail += "; repository credentials retained for explicit native cleanup";
   progress.steps[2].status = "done";
 
   // --- Step 3: Delete namespace with polling ---
