@@ -68,8 +68,8 @@ export default function ResourceList({ collection }: { collection: keyof typeof 
     {collection === "deployments" && <p className="mt-4 text-sm text-zinc-400">Pod ownership follows controller UIDs. Unavailable ownership data is shown as —. Flux may restore Git desired state after runtime operations.</p>}
   </main></ViewportWrapper>;
 }
-export function ResourceTable({ rows, columns: fields, detail, type, resetKey, renderActions }: {
-  rows: Row[]; columns: Column[]; detail?: (row: Row) => string | undefined; type?: ResourceType; resetKey: string; renderActions?: (row: Row) => React.ReactNode;
+export function ResourceTable({ rows, columns: fields, detail, type, resetKey, renderActions, label }: {
+  rows: Row[]; columns: Column[]; detail?: (row: Row) => string | undefined; type?: ResourceType; resetKey: string; renderActions?: (row: Row) => React.ReactNode; label?: string;
 }) {
   const { sortKey, sortDir, toggle } = useSort(fields[0]?.key ?? "name");
   const [paging, setPaging] = useState({ page: 1, key: "" });
@@ -79,9 +79,9 @@ export function ResourceTable({ rows, columns: fields, detail, type, resetKey, r
   const column = fields.find(field => field.key === sortKey);
   const sorted = useMemo(() => [...rows].sort((a, b) => compareValues(a[sortKey], b[sortKey], column?.sort, sortDir)
     || compareValues(a.name, b.name) || compareValues(a.namespace, b.namespace)), [rows, sortKey, sortDir, column?.sort]);
-  if (!rows.length) return <p className="rounded-lg border border-zinc-800 p-6 text-zinc-400">No matching resources in this snapshot.</p>;
+  if (!rows.length) return <p className="rounded-lg border border-zinc-800 p-6 text-zinc-400">No matching {label ? label.toLowerCase() : "resources"} in this snapshot.</p>;
   return <>
-    <div className="overflow-x-auto rounded-lg border border-zinc-800"><table className="w-full text-sm"><thead><tr>
+    <div className="overflow-x-auto rounded-lg border border-zinc-800"><table aria-label={label} className="w-full text-sm"><thead><tr>
       {fields.map(field => <th key={field.key} aria-sort={sortKey === field.key ? sortDir === "asc" ? "ascending" : "descending" : "none"} className="whitespace-nowrap border-b border-zinc-800 px-3 py-3 text-left">
         <SortHeader label={field.label} active={sortKey === field.key} dir={sortDir} onClick={() => toggle(field.key)} /></th>)}
       {(type || renderActions) && <th className="relative px-3 text-left"><span className="sr-only">Actions</span></th>}
@@ -93,7 +93,7 @@ export function ResourceTable({ rows, columns: fields, detail, type, resetKey, r
       })}
       {(type || renderActions) && <td className="px-2">{type ? <ResourceActionsMenu resourceType={type} resource={row} /> : renderActions?.(row)}</td>}
     </tr>)}</tbody></table></div>
-    <nav aria-label="Table pagination" className="mt-3 flex flex-wrap items-center gap-3 text-sm">
+    <nav aria-label={label ? `${label} pagination` : "Table pagination"} className="mt-3 flex flex-wrap items-center gap-3 text-sm">
       <span>{rows.length} resources · Page {page} of {totalPages}</span>
       <button disabled={page <= 1} onClick={() => setPaging({ key, page: page - 1 })} className="rounded bg-zinc-800 px-3 py-1 disabled:opacity-40">Previous</button>
       <button disabled={page >= totalPages} onClick={() => setPaging({ key, page: page + 1 })} className="rounded bg-zinc-800 px-3 py-1 disabled:opacity-40">Next</button>

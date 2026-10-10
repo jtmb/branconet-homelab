@@ -1,7 +1,8 @@
 "use client";
-import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useQuery, useSession } from "@/lib/use-query";
 import { useMutation } from "@/lib/use-mutation";
+import { ResourceTable } from "@/components/cluster/resource-list";
 import dynamic from "next/dynamic";
 const ConfirmDialog = dynamic(() => import("../confirm-dialog"), { ssr: false });
 type Summary = {
@@ -19,6 +20,9 @@ const input =
   "bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-sm w-full";
 const button =
   "rounded-lg bg-indigo-500/10 border border-indigo-500/20 px-3 py-2 text-sm text-indigo-300 disabled:opacity-40";
+const secretColumns = [{ key: "namespace", label: "Namespace" }, { key: "name", label: "Secret" }, { key: "type", label: "Type" },
+  { key: "keyCount", label: "Key count", sort: "number" as const }, { key: "immutableDisplay", label: "Immutable" }];
+const keyColumns = [{ key: "name", label: "Key" }];
 export default function SecretsEditor() {
   const session = useSession();
   const canWrite = session.canWrite;
@@ -33,6 +37,17 @@ export default function SecretsEditor() {
   );
   const secrets = secretQuery.data?.secrets ?? [], refs = aliasQuery.data?.references ?? [];
   const refetchSecrets = secretQuery.refetch, refetchAliases = aliasQuery.refetch;
+  const [search, setSearch] = useState(""), [keySearch, setKeySearch] = useState("");
+  const [keyList, setKeyList] = useState<Pick<Summary, "namespace" | "name">>();
+  const keyHeading = useRef<HTMLHeadingElement>(null), editorHeading = useRef<HTMLHeadingElement>(null), objectSearch = useRef<HTMLInputElement>(null);
+  const keyTrigger = useRef<HTMLButtonElement | null>(null);
+  const keyListId = keyList ? JSON.stringify([keyList.namespace, keyList.name]) : "";
+  useEffect(() => { if (keyListId) keyHeading.current?.focus(); }, [keyListId]);
+  const keySecret = keyList && secrets.find(secret => secret.namespace === keyList.namespace && secret.name === keyList.name);
+  const secretRows = useMemo(() => (secretQuery.data?.secrets ?? []).filter(secret => [secret.namespace, secret.name, secret.type].some(text => text.toLowerCase().includes(search.toLowerCase())))
+    .map(secret => ({ id: JSON.stringify([secret.namespace, secret.name]), namespace: secret.namespace, name: secret.name, type: secret.type,
+      keyCount: secret.keys.length, immutableDisplay: secret.immutable ? "Yes" : "No" })), [secretQuery.data, search]);
+  const keyRows = useMemo(() => (keySecret?.keys ?? []).filter(key => key.toLowerCase().includes(keySearch.toLowerCase())).map(key => ({ id: key, name: key })), [keySecret, keySearch]);
   const [target, setTarget] = useState<Target>(blank);
   const [value, setValue] = useState(""),
     [mode, setMode] = useState("create"),
@@ -72,6 +87,7 @@ export default function SecretsEditor() {
     });
     setMode("update");
     clearValue(); setAlias(""); mutation.clear(); setMessage("");
+    editorHeading.current?.focus();
   }
   async function save(event: FormEvent) {
     event.preventDefault();
@@ -91,12 +107,11 @@ export default function SecretsEditor() {
     });
   }
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-w-0 p-3 sm:p-6 space-y-6">
       <header>
         <h1 className="text-xl font-semibold">Kubernetes Secrets</h1>
         <p className="text-sm text-zinc-400">
-          Values are read and saved directly in Kubernetes. Select a key to
-          edit.
+          Values are read and saved directly in Kubernetes. Open the key list for a Secret, then select a key to edit.
         </p>
       </header>
       {message && (
@@ -121,53 +136,26 @@ export default function SecretsEditor() {
         </p>
       )}
       {secretQuery.error && <p role="alert" className="text-sm text-amber-300">Secret metadata unavailable: {secretQuery.error}{secretQuery.data && " Previously loaded metadata is shown."}</p>}
-      <div className="overflow-x-auto border border-zinc-800 rounded-lg">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="text-left text-zinc-400">
-              <th className="p-3">Namespace / Secret</th>
-              <th>Type</th>
-              <th>Keys</th>
-            </tr>
-          </thead>
-          <tbody>
-            {secrets.map((secret) => (
-              <tr
-                className="border-t border-zinc-800 hover:bg-zinc-800/30"
-                key={`${secret.namespace}/${secret.name}`}
-              >
-                <td className="p-3">
-                  {secret.namespace} / {secret.name}
-                  {secret.immutable && " (immutable)"}
-                </td>
-                <td>{secret.type}</td>
-                <td>
-                  {secret.keys.map((key) => (
-                    <button
-                      className="text-indigo-300 mr-3 py-2"
-                      key={key}
-                      disabled={!canWrite || busy || secret.immutable}
-                      onClick={() => select(secret, key)}
-                    >
-                      {key}
-                    </button>
-                  ))}
-                </td>
-              </tr>
-            ))}
-            {!secrets.length && (
-              <tr>
-                <td className="p-3 text-zinc-500" colSpan={3}>
-                  {secretQuery.loading ? "Loading Secret metadata…" : secretQuery.error ? "Secret metadata could not be loaded." : "No Secrets in the configured scope."}
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
+      <section aria-labelledby="secret-objects-heading" className="min-w-0 space-y-3">
+        <h2 id="secret-objects-heading" className="font-semibold">Secret objects</h2>
+        <label className="block max-w-md text-sm">Search Secrets<input ref={objectSearch} className={input} value={search} onChange={event => setSearch(event.target.value)} /></label>
+        {!secrets.length ? <p role="status" className="text-sm text-zinc-400">{secretQuery.loading ? "Loading Secret metadata…" : secretQuery.error ? "Secret metadata could not be loaded." : "No Secrets in the configured scope."}</p>
+          : <ResourceTable label="Secret objects" rows={secretRows} columns={secretColumns} resetKey={search} renderActions={row => <button type="button" className={button}
+            aria-label={`View keys for ${row.namespace}/${row.name}`} onClick={event => { keyTrigger.current = event.currentTarget; setKeyList({ namespace: row.namespace!, name: row.name! }); setKeySearch(""); keyHeading.current?.focus(); }}>View keys</button>} />}
+      </section>
+      {keyList && <section aria-labelledby="secret-keys-heading" className="min-w-0 space-y-3">
+        <div className="flex flex-wrap items-center gap-3"><h2 ref={keyHeading} tabIndex={-1} id="secret-keys-heading" className="break-all font-semibold">Keys in {keyList.namespace}/{keyList.name}</h2>
+          <button type="button" className={button} onClick={() => { setKeyList(undefined); setKeySearch(""); (keyTrigger.current?.isConnected ? keyTrigger.current : objectSearch.current)?.focus(); }}>Close key list</button></div>
+        {keySecret ? <>
+          <label className="block max-w-md text-sm">Search keys<input className={input} value={keySearch} onChange={event => setKeySearch(event.target.value)} /></label>
+          <ResourceTable key={keyListId} label="Secret keys" rows={keyRows} columns={keyColumns} resetKey={keySearch} renderActions={row => <button type="button" className={button}
+            disabled={!canWrite || busy || keySecret.immutable} aria-label={`Select key ${row.name} in ${keyList.namespace}/${keyList.name}`} onClick={() => select(keySecret, row.name!)}>Select key</button>} />
+          {keySecret.immutable && <p className="text-sm text-zinc-400">This Secret is immutable; its keys cannot be edited here.</p>}
+        </> : <p role="status" className="text-sm text-zinc-400">This Secret is absent from the loaded metadata snapshot. Refresh to check its current state.</p>}
+      </section>}
       {canWrite && (
         <section className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 space-y-4">
-          <h2 className="font-semibold">Edit a Secret key</h2>
+          <h2 ref={editorHeading} tabIndex={-1} className="font-semibold">Edit a Secret key</h2>
           <form onSubmit={save} className="space-y-3">
             <div className="grid gap-3 md:grid-cols-3">
               {(["namespace", "name", "key"] as const).map((field) => (

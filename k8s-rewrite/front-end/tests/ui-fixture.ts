@@ -27,6 +27,7 @@ let child: ChildProcess | undefined;
 let db: PrismaClient | undefined;
 let native: Awaited<ReturnType<typeof nativeTlsFixture>> | undefined;
 let delayedReveal = false;
+let valueRequests = 0;
 try {
   const fixture = await fakeKubectl(dir);
   const created = "2026-10-01T00:00:00Z";
@@ -54,6 +55,16 @@ try {
     native = await nativeTlsFixture(dir);
     native.seed("apps", "editor-fixture", { editable: Buffer.from("fixture initial native value").toString("base64"), unrelated: Buffer.from("fixture unrelated native value").toString("base64") },
       { metadata: { labels: { fixture: "retained" }, annotations: { "fixture-private": "fixture annotation value" } } });
+    if (process.env.BORTUS_UI_SECRET_TABLE_FIXTURE === "true") {
+      const encoded = Buffer.from("fixture table private value").toString("base64");
+      for (let index = 0; index < 327; index++) native.seed("apps", "large-secret-" + String(index).padStart(4, "0"), { original_under_scored_key: encoded });
+      native.seed("apps", "many-keys-fixture", Object.fromEntries(["__proto__", "constructor", "toString",
+        ...Array.from({ length: 600 }, (_, index) => "original_under_scored_key_" + String(index).padStart(4, "0"))].map(key => [key, encoded])));
+      for (const [name, count] of [["two", 2], ["seven", 7], ["twelve", 12]] as const) native.seed("apps", "count-fixture-" + name,
+        Object.fromEntries(Array.from({ length: count }, (_, index) => ["key_" + index, encoded])));
+      native.seed("apps", "empty-keys-fixture", {});
+      native.seed("apps", "immutable-fixture", { original_under_scored_key: encoded }, { immutable: true });
+    }
   }
   const clean = Object.fromEntries(["SystemRoot", "WINDIR", "COMSPEC", "PATH", "TEMP", "TMP", "USERPROFILE", "HOME", "SystemDrive", "APPDATA", "LOCALAPPDATA"].filter(key => process.env[key] !== undefined).map(key => [key, process.env[key]]));
   const signing = randomBytes(48).toString("hex");
@@ -92,7 +103,7 @@ try {
       const url = new URL(request.url ?? "/", origin);
       if (url.pathname === "/__fixture/status") {
         response.setHeader("Content-Type", "application/json");
-        response.end(JSON.stringify({ requests: Object.fromEntries(requestCounts), activeStreams }));
+        response.end(JSON.stringify({ requests: Object.fromEntries(requestCounts), activeStreams, valueRequests, nativeObjects: native?.objects.size ?? 0 }));
         return;
       }
       if (native && url.pathname === "/__fixture/native-status") {
@@ -116,6 +127,7 @@ try {
       }
       const requestKey = request.method + " " + url.pathname;
       requestCounts.set(requestKey, (requestCounts.get(requestKey) ?? 0) + 1);
+      if (request.method === "GET" && url.pathname === "/api/secrets" && url.searchParams.has("key")) valueRequests++;
       if (url.pathname.startsWith("/_next/static/")) {
         try {
           const staticRoot = path.resolve(root, ".next/static");
