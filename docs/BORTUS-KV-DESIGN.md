@@ -1,0 +1,92 @@
+# Native BORTUS KV engine implementation contract
+
+Status: implementation plan, 2026-10-10. These routes, migrations and environment additions are not implemented or deployment requirements yet. They are the next application stage after the resource/query UI changes. The accepted working scope is Vault-style KV management, with native Kubernetes Secrets authoritative for current and historical values. Dynamic issuers, PKI, transit and HashiCorp API compatibility require a separate selected backend and scope.
+
+## Mounts, paths and grouped documents
+
+A mount is a metadata namespace with an explicit allowed Kubernetes namespace set. A normalized logical path belongs to one mount and maps to one exact native Secret namespace/name. Each document has an explicit field-name-to-native-data-key mapping, supporting both scalar references and grouped key/value documents. Groups manage at most 64 selected keys in the same Secret. Logical field names default to the original native key spelling; scalar aliases keep their exact namespace/name/key. There is no underscore splitting, target inference, or automatic alias adoption.
+
+SQLite stores mount/path IDs, mappings, policy grants, operation/rotation metadata and audit records. A unique active mapping prevents two engine paths from owning the same native namespace/name/key; disjoint groups may share a Secret. Native resourceVersion serializes their updates. Canonical objects retain unrelated keys, type, labels, annotations, owners and managed fields. Typed or immutable Secret constraints are respected. Removing managed keys keeps the Secret and an empty data object; deleting a last required typed key fails rather than changing the type.
+
+Path segments use one validated normalized representation. Empty/dot segments, ambiguous encoded separators and inconsistent Unicode representations are rejected before policy evaluation. Prefix grants match complete segments: `apps/api` does not grant `apps/apiculture`. Routes identify registered paths by opaque UUID; display paths remain metadata.
+
+The 603 reported legacy aliases across 12 namespaces remain available with their original spellings and explicit targets. The existing 18-namespace allowlist/Roles are not reduced. Adoption is explicit and value/history changes require current native resourceVersion. Registered engine targets additionally pass policy checks on flat reveal/CRUD and alias lookup so those routes cannot bypass policy. Aliases themselves contain no values. Dedicated engine history objects are hidden and denied on flat native/alias routes, even if the operator accidentally includes their namespace in the ordinary allowlist.
+
+## Native current and history ownership
+
+Current values remain in the existing canonical Secret's data. One owned `bortus.io/kv-state` annotation records path IDs, selected key mappings, committed version references, head version, operation IDs and tombstone state. Public metadata uses a named-field whitelist; arbitrary annotations, managedFields, API exception bodies and last-applied configurations never enter responses, audit, UI or history.
+
+Immutable version Secrets live in an externally created dedicated history namespace. They contain only the selected document fields, encoded as native Secret data, plus minimal owned identity/version/operation metadata. They never clone the canonical object's metadata or unrelated data. Scalar/binary imports retain original key spelling and bytes; a history/export operation cannot reveal another key in the source Secret. Cross-namespace ownerReferences are not used. Ownership is verified by path/operation/source namespace/name/UID bindings and referenced history UID, rather than a label alone.
+
+The default retention is 20 committed versions per path, with an operator maximum of 100. Total decoded managed values are bounded to 256 KiB per document and JSON request bodies to 512 KiB. Canonical replacement JSON must fit a conservative 900-KiB object ceiling and the owned annotation must fit 200 KiB; Kubernetes remains the final authority for its 1-MiB Secret and annotation limits. Oversized objects fail before mutation; no truncation or splitting creates misleading versions.
+
+Creating a new path first registers metadata intent and creates a minimal owned Opaque canonical Secret with empty data. This establishes a source UID. It then performs the same versioned CAS protocol as an adopted object. A failure can leave a recoverable empty object or pending registry intent; it is reported explicitly and does not claim that credential values were committed. Existing-object adoption snapshots selected current fields as version 1 and CAS-adds the native state annotation without altering their values.
+
+## CAS, history and ambiguous outcomes
+
+An update creates a new immutable candidate history Secret, then replaces the canonical Secret once with both selected data and its committed history reference in a single resourceVersion CAS. The candidate represents the prospective version, never an unrelated-key snapshot. Only a referenced candidate is committed history. A failed/conflicting CAS leaves a candidate for explicit recovery or garbage collection; it cannot become the displayed head. Rollback creates a new version and uses this same CAS, preserving immutable older versions.
+
+Native reads compare selected current bytes with the committed head in memory. External drift is a 409 reconciliation requirement, never a silent version assignment or value hash persisted to SQLite. Explicit reconcile captures the external selected values into a new version with fresh CAS. An unrelated-key change merely changes resourceVersion; stale writers still receive conflict and must refresh.
+
+Operation IDs distinguish `pending`, `committed`, `conflict`, `ambiguous` and `recovery-required`. A timed-out create/replace is read back by owned operation ID, history reference and UID. Read-back failure remains ambiguous; neither automatic overwrite nor a blind second mutation is permitted. Native annotation/reference state resolves SQLite operation metadata after a restart. Missing/replaced/unreachable canonical objects are recovery conditions, not permission to delete their potential last history copies.
+
+Destroy first CAS-removes a non-head committed reference, then deletes only a verified owned history Secret with UID/resourceVersion preconditions. Active head destruction requires a prior tombstone. Retention drops references in the canonical CAS before garbage collection. Partial cleanup is reported separately from the committed value operation. Garbage collection requires an explicit preview/confirmation, a 24-hour minimum orphan age and rechecks of all current references and source UID. No startup sweep or blind background deletion occurs.
+
+Audit contains actor/identity ID, operation ID, action, exact metadata target, previous/new version and outcome only. It contains no values, base64 payloads, diffs, request bodies or value digests. Audit insertion failure prevents a new operation before native mutation; a post-write audit/update failure is recovery-required, with the native operation marker retained. Public errors are fixed strings. The synthetic different-key last-applied annotation regression is required for current metadata, history, audit, import/export and UI.
+
+## Human policies and automation identities
+
+Current DB roles remain authoritative: readonly sees permitted metadata, never values or mutations. Engine grants restrict write users by mount/path/action with explicit deny overriding allow. Actions are list/read/create/update/delete/rollback/reconcile/destroy/export/rotate. Engine administration manages metadata, policies and identities; it does not mint a broader Kubernetes service account.
+
+A forward `User.engineAdmin` migration grants the flag to existing writers, preserving operator access. Subsequent accounts default false, with the first bootstrap writer true. Effective administration requires both the flag and a current write role. Policy/account mutations use the existing serialization transaction and preserve at least one effective engine administrator as well as the existing last-writer invariant. Policies cannot grant readonly users write/value privileges.
+
+Automation tokens have a distinct opaque `bortus_kv_v1_<id>_<256-bit-random>` prefix/audience, a one-time displayed secret, hashed authentication material in SQLite, an expiry no later than 30 days, and explicit revocation. Their effective rights are token policy intersected with the owning user's fresh role/policy; deletion/reset/session-version change or demotion of the owner revokes their authority. They are neither session JWTs nor engine-admin identities. Middleware permits only the exact automation KV entrypoint, whose handler validates this distinct token and policy before native access. Tokens cannot become human cookies, legacy lookup credentials or arbitrary shell credentials.
+
+The externally supplied `BOTRUS_SECRETS_KEY` retains its existing privileged legacy lookup audience and aliases. It is not accepted for engine administration or exchanged into an automation token. Logs, audit and browser persistence never retain presented tokens; responses carrying values or tokens are no-store.
+
+## Proposed API surface
+
+All human routes require a current authenticated DB account. Value and mutation routes additionally require write role and policy. Administration routes require effective engineAdmin. Requests with values use JSON bodies over authenticated TLS; no values in URLs/argv, storage drafts or logs. Public metadata is cursor-paginated at 100 rows. Every version mutation requires both the native resourceVersion and expected head version; missing prerequisites return 428, conflict/drift 409, invalid input 400, size 413, native outage/denied RBAC 503 with fixed errors.
+
+| Endpoint | Contract |
+|---|---|
+| GET/POST /api/kv/mounts | Permitted metadata list / admin mount creation |
+| PATCH/DELETE /api/kv/mounts/[id] | Admin metadata CAS; deletion refuses active paths/history |
+| GET/POST /api/kv/paths | Filtered metadata list / explicit scalar/group registration intent |
+| GET/PATCH /api/kv/paths/[id] | Whitelisted metadata / explicit metadata CAS; active key ownership cannot silently move |
+| POST /api/kv/paths/[id]/adopt | Snapshot selected existing keys and CAS-bind version 1 |
+| GET/PUT/DELETE /api/kv/paths/[id]/data | Explicit current selected fields with encoding / versioned replacement / confirmed tombstone |
+| GET /api/kv/paths/[id]/versions | Committed version metadata only |
+| GET /api/kv/paths/[id]/versions/[version]/data | Separately authorized explicit historic value reveal |
+| POST /api/kv/paths/[id]/rollback | Source version plus fresh head/RV; creates a new version |
+| POST /api/kv/paths/[id]/reconcile | Explicit external-drift capture with fresh head/RV |
+| DELETE /api/kv/paths/[id]/versions/[version] | Confirmed non-head destruction with reference CAS/owned delete |
+| GET /api/kv/operations/[id] | Metadata-only resolution of committed/ambiguous/recovery outcomes |
+| GET/POST/PATCH/DELETE /api/kv/policies | Admin metadata CAS and deny-aware grants |
+| GET/POST/DELETE /api/kv/identities | Admin/owner scoped token metadata, one-time issue and revoke |
+| POST /api/kv/automation | Exact token audience; structured allowed operation/path ID, same CAS/policy checks |
+| GET /api/kv/audit | Permitted metadata-only filtered cursor page |
+| POST /api/kv/import/preview and /api/kv/import | Explicit target/mapping/encoding; bounded validated preview and per-path CAS outcomes |
+| POST /api/kv/export | Explicit selected paths/current or selected versions; ephemeral grouped fields only |
+| GET/POST/PATCH /api/kv/rotations | Consumer metadata, generate/replace workflow and explicit acknowledgement/recovery |
+| POST /api/kv/history/gc/preview and /api/kv/history/gc | Admin owned-object preview then confirmed checked cleanup |
+
+Import/export uses an explicitly versioned JSON schema with UTF-8 or canonical base64 field encoding; binary bytes are never converted through a lossy text path. Batches are bounded to 100 paths/1 MiB aggregate and return per-path outcomes because Kubernetes offers no cross-object transaction. Overwriting is opt-in and requires displayed expected versions/resourceVersions. Export is an explicit transient response/download, with no server-side file or browser-storage draft. Users are told it contains credential values before invoking it.
+
+Rotation stores only target/consumer/reload/acknowledgement metadata. The workflow records prepare, replace, consumer acknowledgement and recovery stages; optional rollout/reload must name a supported consumer and receive an explicit action. It does not restart all workloads. A random generated static replacement is described as such, never as dynamic credentials or lease issuance. Runtime edits to Flux-managed resources may reconcile back to Git and require operator coordination.
+
+## Proposed runtime and RBAC delta
+
+Existing port 4000, Node 22/Linux, UID/GID 1000, one replica/Recreate, SQLite PVC, signing/lookup credentials, TLS verification, probes and externally supplied bootstrap remain unchanged. Proposed new settings are `BORTUS_HISTORY_NAMESPACE` (default `bortus-history`), `BORTUS_KV_RETENTION` (default 20, integer 1–100) and `BORTUS_KV_MAX_RETENTION` (default 100, integer 1–100, retention must not exceed it). These will become chart requirements only with implemented validation/tests.
+
+The history namespace is created externally. Its dedicated Role grants Secret get/list/create/delete only; deletion always uses UID/RV preconditions. Current allowed namespaces retain Secret get/list/create/update, with no canonical Secret delete and no cluster-wide Secret role. Mount namespace scopes must be subsets of the existing operator allowlist. No RoleBinding is automatically created by the app. Namespace create, dynamic issuers, broad cluster administration and history update/patch are not required by this design. History namespace readiness is checked separately and bounded; ordinary healthy metadata probes do not enumerate all aliases/values/history.
+
+Forward migrations add metadata tables/flags, never reset an existing database or ingest values. A consistent SQLite backup and independently protected native current/history backups are required for rollback. Rolling back code cannot erase native state/history; older flat writers must be denied for adopted targets or kept read-only during recovery. Final delivery includes explicit feature-version compatibility and migration evidence before image rollout.
+
+## Kubernetes constraints checked
+
+The design follows the documented [Secret size/immutable constraints](https://kubernetes.io/docs/concepts/configuration/secret/), [same-namespace owner rules](https://kubernetes.io/docs/concepts/architecture/garbage-collection/), [annotation-size validation](https://github.com/kubernetes/apimachinery/blob/master/pkg/api/validation/objectmeta.go) and [UID/resourceVersion delete preconditions](https://github.com/kubernetes/apimachinery/blob/master/pkg/apis/meta/v1/types.go). BORTUS's lower body/object/retention limits are explicit application design choices.
+
+## Acceptance sequence
+
+First validate grouped/scalar binary isolation, different-key annotation exclusion, imported spelling, native restart authority and unrelated metadata preservation. Then inject concurrent writers, stale head/RV, external changes, immutable/type/size rejection, before/after-commit timeouts, read-back outage, orphan candidates and source UID replacement. Test policy normalization/deny, owner reset/deletion/demotion/revocation, native/alias bypass denial and concurrent last-effective-admin invariants. Finally validate bounded import/export/rotation intent, retention/destroy/GC preconditions, 603-reference metadata handling and keyboard/mobile UI without retaining values. Local mock TLS/HTTP/browser evidence and external Linux image/RBAC/imported-production acceptance are separate; no production mutation is performed by the app executor.

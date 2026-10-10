@@ -8,13 +8,14 @@ import "xterm/css/xterm.css";
 import { K8sIcon } from "@/components/icons/k8s-icon";
 import type { ShellInstance } from "@/lib/shell-manager";
 import { setShellRunning } from "@/lib/shell-manager";
+import { requestJson } from "@/lib/use-query";
 
 interface KubectlShellProps {
   open: boolean;
   onClose: () => void;
   /** Called when the user clicks the minimize button or backdrop */
   onMinimize?: () => void;
-  /** When provided, all commands are prefixed with `exec <podName> -n <namespace> -- ` */
+  /** Commands are sent to the scoped pod-exec endpoint when a pod is selected. */
   namespace?: string;
   podName?: string;
   /** All open shells — rendered as terminal-style tabs in the header */
@@ -38,6 +39,8 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
   const terminalRef = useRef<Terminal | null>(null);
   const fitAddonRef = useRef<FitAddon | null>(null);
   const mountedRef = useRef(false);
+  const commandController = useRef<AbortController>();
+  const commandBusy = useRef(false);
   const [visible, setVisible] = useState(open);
 
   // Compute shell id for the active shell — used to set running state
@@ -91,6 +94,7 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
+      commandController.current?.abort();
     };
   }, []);
 
@@ -177,7 +181,7 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
   const executeCommand = useCallback(
     async (cmd: string) => {
       const term = terminalRef.current;
-      if (!term) return;
+      if (!term || commandBusy.current) return;
 
       const trimmed = cmd.trim();
       if (!trimmed) {
@@ -200,46 +204,38 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
 
       write("\r\n");
 
-      // Track running state with minimum display time so the spinner is always visible
-      const MIN_SPIN_MS = 400;
-
-      // When pod context is set, wrap commands with kubectl exec
       const ctx = podCtxRef.current;
-      const apiCommand =
-        ctx.namespace && ctx.podName
-          ? `kubectl exec ${ctx.podName} -n ${ctx.namespace} -- ${trimmed}`
-          : trimmed;
-
-      const startMs = Date.now();
+      const url = ctx.namespace && ctx.podName
+        ? `/api/cluster/pods/${encodeURIComponent(ctx.namespace)}/${encodeURIComponent(ctx.podName)}/exec`
+        : "/api/cluster/kubectl";
       const sid = shellIdRef.current;
+      const controller = new AbortController();
+      commandController.current = controller;
+      commandBusy.current = true;
+      const timeout = setTimeout(() => controller.abort(), 35000);
       try {
         setShellRunning(sid, true);
-        const res = await fetch("/api/cluster/kubectl", {
+        const data = await requestJson<{ output?: string }>(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ command: apiCommand }),
+          body: JSON.stringify({ command: trimmed }),
+          signal: controller.signal,
         });
-
-        const data = await res.json();
-        if (data.error) {
-          write(`\x1b[1;31m${data.error}\x1b[0m`);
-        } else if (data.output) {
+        if (mountedRef.current && data.output) {
           write(data.output);
         }
         // commands like touch, cd, mkdir produce no stdout — that's fine,
         // just show a new prompt (no artificial "(no output)" message)
       } catch (err: any) {
-        write(`\x1b[1;31mError: ${err?.message || "Request failed"}\x1b[0m`);
+        if (mountedRef.current) write(`\x1b[1;31mError: ${controller.signal.aborted ? "Client request stopped; inspect server state before retrying." : err?.message || "Request failed"}\x1b[0m`);
       } finally {
-        // Ensure spinner is visible for at least MIN_SPIN_MS
-        const elapsed = Date.now() - startMs;
-        if (elapsed < MIN_SPIN_MS) {
-          await new Promise((r) => setTimeout(r, MIN_SPIN_MS - elapsed));
-        }
+        clearTimeout(timeout);
+        commandBusy.current = false;
+        commandController.current = undefined;
         setShellRunning(sid, false);
       }
 
-      writePrompt();
+      if (mountedRef.current) writePrompt();
     },
     [write, writePrompt]
   );
@@ -346,6 +342,10 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
     term.onData((data) => {
       if (!mountedRef.current) return;
       const code = data.charCodeAt(0);
+      if (commandBusy.current) {
+        if (code === 3) commandController.current?.abort();
+        return;
+      }
 
       // Enter
       if (code === 13) {

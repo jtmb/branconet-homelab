@@ -207,6 +207,20 @@ test(
         "readonly",
       );
       const callCount = (await fixture.calls()).length;
+      const invalidStorage = await request("/api/cluster/volumes?kind=wrong", "GET", undefined, writer);
+      assert.equal(invalidStorage.status, 400);
+      assert.equal((await fixture.calls()).length, callCount);
+      assert.equal((await request("/api/nodes", "POST", { hostname: "bad host", ipAddress: "invalid" }, writer)).status, 400);
+      assert.equal((await request("/api/nodes", "POST", { hostname: "inventory-one", ipAddress: "127.0.0.3", role: "worker" }, reader)).status, 403);
+      const inventoryCreate = await request("/api/nodes", "POST", { name: "", hostname: "inventory-one", ipAddress: "127.0.0.3", role: "worker" }, writer);
+      assert.equal(inventoryCreate.status, 200);
+      const inventoryNode = await inventoryCreate.json();
+      assert.equal((await request("/api/nodes/" + inventoryNode.id, "PUT", { hostname: "inventory-renamed", ipAddress: "::1", role: "worker" }, writer)).status, 200);
+      assert.equal(await db.node.count({ where: { hostname: "inventory-one" } }), 0);
+      assert.equal(await db.node.count({ where: { hostname: "inventory-renamed" } }), 1);
+      assert.equal((await request("/api/nodes/" + inventoryNode.id, "DELETE", undefined, reader)).status, 403);
+      assert.equal((await request("/api/nodes/" + inventoryNode.id, "DELETE", undefined, writer)).status, 200);
+      assert.equal((await request("/api/nodes/" + inventoryNode.id, "DELETE", undefined, writer)).status, 404);
       for (const resource of ["--raw=/api/v1/secrets", "apps --server=https://example.invalid", "a..b", "apps/name"]) {
         const response = await request(`/api/cluster/namespaces/${encodeURIComponent(resource)}/yaml`, "GET", undefined, reader);
         assert.equal(response.status, 400);

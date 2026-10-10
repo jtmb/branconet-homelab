@@ -12,6 +12,8 @@ import {
 } from "@/lib/shell-manager";
 
 import { K8sIcon } from "@/components/icons/k8s-icon";
+import { useSession } from "@/lib/use-query";
+import { closeAllShells } from "@/lib/shell-manager";
 
 const KubectlShell = dynamicNext(
   () => import("@/components/cluster/kubectl-shell"),
@@ -26,14 +28,21 @@ const KubectlShell = dynamicNext(
 export default function ShellContainer() {
   const [mounted, setMounted] = useState(false);
   const { shells, maximized } = useShells();
+  const session = useSession();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+  useEffect(() => {
+    if (!session.loading && !session.canWrite) closeAllShells();
+    else if (session.canWrite) shells.forEach(shell => {
+      if (shell.type === "kubectl" ? !session.data?.capabilities?.operatorShell : !session.data?.capabilities?.podExec) closeShell(shell.id);
+    });
+  }, [session.loading, session.canWrite, session.data?.capabilities, shells]);
 
   // Don't render shells until after mount to avoid hydration mismatch
   // (sessionStorage restores shells on client but not server)
-  if (!mounted) return null;
+  if (!mounted || !session.canWrite) return null;
 
   const minimized = shells.filter((s) => s.state === "minimized");
 

@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const { command } = await request.json();
-    if (!command || typeof command !== "string") {
+    if (!command || typeof command !== "string" || command.length > 16384 || command.includes("\0")) {
       return NextResponse.json(
         { error: "Missing or invalid 'command' field" },
         { status: 400 }
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ output: output ?? "" });
   } catch (err: any) {
     return NextResponse.json(
-      { error: err?.message || "Internal error" },
+      { error: "Operator command failed" },
       { status: 500 }
     );
   }

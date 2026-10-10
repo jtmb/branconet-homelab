@@ -1,95 +1,67 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
-Active goal, started 2026-10-10: implement A01–A22 from [the immutable audit baseline](BORTUS-AUDIT.md), validate the changes, and deliver the human-selected native Secrets engine scope. Branch: `codex/bortus-performance-ui-audit`; starting audit commit `51e8cd6`, application/main baseline `c2e22ca`. Production rollout and charts-repository work are separate coordination tasks.
+Active goal, started 2026-10-10: implement A01–A22 from the [immutable audit baseline](BORTUS-AUDIT.md), validate the changes, and deliver the selected native Secrets engine. Branch: `codex/bortus-performance-ui-audit`; audit baseline `51e8cd6`, application baseline `c2e22ca`. Production rollout and separate chart delivery belong to the infrastructure executors.
 
 ## Acceptance ledger
 
-An item becomes complete only after implementation and relevant evidence. Local acceptance and external/image/live acceptance are recorded separately. Historical audit findings/evidence remain unchanged; this ledger records their resolution.
+Local implementation/acceptance and external Linux image/real-cluster acceptance are separate. The historical audit and audit-evidence stay unchanged. An item remains partial while relevant callers or required checks remain.
 
-| Finding | Implementation / acceptance | Status |
+| Finding | Current result | Status |
 |---|---|---|
-| A01 writer invariant | Serialized SQLite transaction/actor recheck; 12 concurrent demotion/deletion/mixed cases across independent clients | Local acceptance passed; image/live unperformed |
-| A02 account revocation | Current-user/session-version Node middleware; deletion/reset HTTP API/page denial; legacy version-zero compatibility | Local acceptance passed; image/live unperformed |
-| A03 bootstrap invariant | Serialized registration/settings decision; six concurrent client requests and four production HTTP requests; uniqueness 409 | Local acceptance passed; image/live unperformed |
-| A04 argv boundaries | Structured args, DNS validation, injected argv tests and production HTTP fake CLI rejection | Local acceptance passed; real CLI/image/live unperformed |
-| A05 truthful commands | Typed/sanitized failures; production HTTP failed scale/action/delete/apply/PV and Flux create/cascade | Local acceptance passed; real CLI/image/live unperformed |
-| A06 availability | Explicit unavailable/partial/stale server contracts; browser presentation still pending | Backend local acceptance passed; UI pending |
-| A07 cache cost | Per-resource coalescing/backoff/retention, size/item limits, bounded commands and fixed-fixture timing | Local acceptance passed; image/live peak memory/process evidence unperformed |
-| A08 resource capabilities | Shared API matrix, scoped YAML CAS/logs/node actions/pod exec; menu wiring pending | Backend local acceptance passed; UI pending |
-| A09 deployment state | Owner UID mapping, desired/observed generation/zero replicas and integer bounds | Backend local acceptance passed; UI pending |
-| A10 pod filters | Namespace/type/label selector contract and server filtering | Local API acceptance passed; browser evidence pending |
-| A11 polling/refetch | Shared query/session state, visibility/cancel/overlap/backoff and mutation refetch | Pending |
-| A12 permissions/runtime UI | Fresh UI session/capabilities; server authority retained | Pending |
-| A13 sorting | Typed numeric/quantity/date sorting with browser evidence | Pending |
-| A14 mobile | Responsive nav/content/dialogs at fixed widths/zoom | Pending |
-| A15 accessibility | Names, links, focus, dialog semantics; keyboard evidence; screen-reader limitation explicit | Pending |
-| A16 YAML lifecycle | Authoritative readOnly and reset/dirty-close behavior | Pending |
-| A17 Secret intent | Explicit dirty/empty replacement/delete confirmation; mock CAS/value-redaction tests | Pending |
-| A18 SSE | Completion/abort/cancel cleanup, no overlapping poll; timer and large-output tests | Pending |
-| A19 quality gates | Noninteractive lint, scoped clean Node 22 CI, focused HTTP/browser coverage | Pending |
-| A20 dependencies | Compatible upgrades, advisory reachability ledger, image/major-upgrade boundaries | Pending |
-| A21 lists/probes/forms | Bounded metadata/probe work, independent aliases, loading/saving/error/pagination | Pending |
-| A22 lazy loading | Route bundle and modal interaction comparison, optional feature loading | Pending |
+| A01 writer invariant | Serialized account transaction; 12 independent-client concurrent demotion/deletion/mixed cases | Local passed; image/live pending |
+| A02 revocation | Fresh account/sessionVersion Node middleware; deleted/reset cookies denied on API/pages; legacy version-zero compatibility | Local passed; image/live pending |
+| A03 bootstrap | Serialized registration/settings decision; six concurrent clients/four HTTP requests; one writer; uniqueness 409 | Local passed; image/live pending |
+| A04 argv | Structured args/name validation; fake CLI HTTP rejection and argv isolation | Local passed; real CLI/image pending |
+| A05 truthful commands | Fixed typed failures; failed scale/action/delete/apply and Flux cascade retain recovery metadata | Local passed; real CLI/image pending |
+| A06 availability | Explicit backend states; canonical resource lists/details distinguish failed reads from true empty/404 | Resource browser/HTTP passed; remaining legacy callers partial |
+| A07 cache cost | Independent resource coalescing/backoff/retention; pool/queue/deadline/item/output limits; fixed-fixture timing | Local passed; image CPU/RSS/real-cluster pending |
+| A08 capabilities | Shared matrix/scoped YAML CAS/logs/node actions/pod exec; writer/reader/PVC/node browser menus | Local passed; real ServiceAccount acceptance pending |
+| A09 deployment state | UID ownership; zero/paused/generation state; explicit integer scale form; zero→one actual argv | Local passed; real controller/Flux pending |
+| A10 pod filters | API and browser namespace/type/label filtering; correct empty result | Local passed |
+| A11 polling/refetch | Shared completion-based lifecycle, cancellation/backoff/generation tests; actual browser timer fix | Resource/session local passed; settings/users/Flux/provisioning migration pending |
+| A12 permissions/runtime | Fresh shared session in resource menus/topnav/shells; unsupported host terminal hidden | Resource local passed; remaining forms/flows pending |
+| A13 sorting | Numeric/quantity/date/count/unknown tests; browser restarts 2/7/12 | Canonical resource local passed; remaining tables pending |
+| A14 mobile | 56-pixel narrow rail, local table scrolling, dialog fit; 320/390/768 CSS-width bounds | Resource local passed; remaining screens/actual zoom pending |
+| A15 accessibility | Named controls/links, keyboard menus/dialog trap/return; screenshot checks | Resource dialogs local passed; other controls/automated scan/manual screen reader pending |
+| A16 YAML lifecycle | Reset per open/mode; authoritative readOnly; dirty save/discard; readonly reopening/focus return | Local browser passed |
+| A17 Secret intent | Existing CAS/value safety plus other-key annotation/managed-fields exclusion regression | Engine/editor dirty/empty/delete-intent work pending |
+| A18 SSE | Server/client completion/abort/poll/output corrections | Pending |
+| A19 quality gates | Noninteractive lint and clean Node 22 CI | Pending |
+| A20 dependencies | Compatible updates and advisory reachability ledger | Pending |
+| A21 lists/probes/forms | Canonical resource tables bound DOM to 100 rows; validated exact-ID inventory rename; no speculative visible-row prefetch | Partial; other forms/metadata/probes/detail tables pending |
+| A22 lazy code | Actions/YAML/log/terminal deferral; observed scripts and offline gzip/Brotli; build estimates | Resource local measurements passed; provisioning/CPU/LCP/fixed mobile performance pending |
 
-## Commit sequence and checks
+## Reversible stages and evidence
 
-1. Account invariants and revocation, including forward SQLite migration and disposable concurrency/HTTP checks.
-2. Structured kubectl boundaries and truthful failures, followed by capability/availability/resource correctness.
-3. Role/runtime UI, query lifecycle, responsive/accessibility/editor/Secret intent fixes.
-4. Measured cache/poll/SSE/list/probe/client-code work without losing healthy coalescing.
-5. Lint/CI and compatible dependency triage; distinct review for any breaking framework/style change.
-6. Selected native Secrets engine capabilities and integrated acceptance.
+- `63a0688`: account invariants/revocation, forward account_lock/sessionVersion migration. 16 unit/transport tests, build/typecheck, production HTTP in 18.59 s; explicit legacy-token follow-up passed.
+- `ac5b35f`: structured commands/fixed failures/Flux recovery. 19 unit/transport tests, build/typecheck, production HTTP in 22.22 s.
+- `3588864`: merged main's separate-chart contract with application notes retained.
+- `0f1e9df`: resource cache/availability/state. 30 unit/transport tests, build/typecheck, production HTTP in 9.48 s; [cache-http.json](implementation-evidence/cache-http.json).
+- `cf381a9`: scoped resource APIs/capabilities/runtime gates. 33 unit/transport tests, build/typecheck, production HTTP in 26.80 s. Includes narrow source-ignore exception for API logs/route.ts.
+- Current UI/query stage: full 38-test run passed, plus the newly added different-key metadata regression and its 11-test native suite passed. Production build passed after browser-native timers were bound to globalThis. Expanded HTTP passed in 28.47 s, including exact-ID node rename/create/delete, readonly denial and invalid storage/node input. Browser acceptance and byte observations are [recorded separately](implementation-evidence/README.md).
 
-Each stage has independently revertible commits, checks all `docs/` for changed contracts, and runs focused regressions plus applicable `npm test`, `npm run typecheck`, `npm run build`, `npm run test:integration`. No operator DB, kubeconfig, password or production resource is used for testing. No ignored prototype cleanup bypass is permitted.
+The browser found and corrected two defects before acceptance: unbound native timers stopped polling, and an absolutely positioned screen-reader-only Actions header escaped its local scroll region. Regression/browser checks verify the corrections. Initial menu imports briefly raised lists to 149 kB; deferring action code restored their build estimate to 115 kB. Details estimate 113–115 kB versus the historical 133–135 kB. Neither estimate is actual transfer/CPU/LCP.
 
-Account implementation now includes a seeded account_lock forward migration, transaction-based account store, Node middleware current-user/session-version checks and reset revocation. `tests/accounts.test.ts` covers two independent Prisma clients, six concurrent bootstrap/open-registration requests, repeated cross-demotion/deletion/mixed attempts, uniqueness, self protection and stale/deleted/demoted actors. Execution evidence remains pending until checks finish.
+Observed desktop Pods scripts changed from 18 files to 11 after disabling speculative sidebar/settings/table prefetch. Offline gzip totals changed from 183,805 to 152,244 bytes; default Brotli from 158,313 to 130,651 bytes. Opening actions plus YAML added two files, 7,063 gzip bytes. Single warm-cache wall-clock UI samples include browser-control overhead and do not establish interaction latency acceptance. No network/CPU throttling, Lighthouse, actual browser zoom or screen-reader result is claimed.
 
-Account stage evidence on Windows/Node 24: all 16 unit/transport tests passed (including five new account tests and 12 cross-change races across independent clients). Production build passed with Node middleware. HTTP integration passed in 18.59 s with four concurrent bootstrap requests leaving one writer, exact info exceptions, reset/deleted-cookie denial on ordinary APIs/pages, fresh migration/zero drift and existing native value-safety checks. Typecheck passed after correcting the test-env type to NodeJS.ProcessEnv. A focused follow-up adds explicit pre-version JWT migration/reset coverage. Docker/image/live acceptance remains external.
+Cold fixed-fixture pods took 107.37 ms/one CLI call versus the audit's 184.86 ms/ten calls. Twelve warm samples p50/p95 14.45/16.37 ms made zero CLI calls; twenty concurrent cold requests shared one call. Initial-outage repeated requests returned 503 with no additional calls during backoff. Latencies are observational across different synthetic metadata, not controlled image results.
 
-Account changes committed as 63a0688. The explicit legacy JWT follow-up and typecheck both passed. The kubectl wrapper now accepts structured argv and throws fixed typed errors on nonzero exit/timeout/permission/missing-resource/size failures; caller conversion and route error mapping are in progress. The read JSON compatibility wrapper still maps failures to null until A06 availability work changes that contract.
+After each behavior change, every docs domain is checked and affected contracts updated. Focused regressions and relevant unit/type/build/HTTP/browser checks accompany each stage. Tests use disposable SQLite, fake credentials/CLI and loopback mock/unavailable native APIs. No operator database, live kubeconfig, production value or production mutation is used. Broad checks are not repeated on an unchanged stage.
 
-Command regression coverage now includes preserved JSON/path argument boundaries, DNS/option/path rejection before execution, fixed error mapping and rejection of successful-looking stdout on nonzero exit. Flux cascade stops on discovery/child/namespace errors and no longer attempts the unsupported shell pipeline. Scale is bounded to integer 0–10000. These checks are not yet recorded as passed; production HTTP fake-CLI evidence is being added.
+A command combining shutdown and recursive cleanup of an owned UI fixture was rejected by automatic approval review. Narrow shutdown of the two verified disposable processes succeeded; its temporary files were retained. Subsequent stdin-controlled fixtures stop and clean up normally. The earlier blocked historical prototype is never retried or bypassed.
 
-The three focused command tests passed. The HTTP fixture now provides a disposable fake executable on Windows and Linux, logs encoded argv, rejects all mutation commands, and asserts actual route validation/failed scale/action/delete/apply and partial PV results. This fixture cannot contact Kubernetes; real CLI/RBAC/argv behavior still requires separate disposable-cluster evidence.
+## Native Secrets engine scope
 
-Final command stage checks passed on Windows/Node 24: 19 unit/transport tests (0 skipped), production build, typecheck, production HTTP integration in 22.22 s. HTTP also verifies Flux apply failure, cascade's active error step, retained recovery metadata and absence of raw command output in responses/server logs. All docs checked; affected API/Flux/workflow/engine/ledger updated. No Docker, real CLI or live test is claimed. Read availability remains A06 work.
+The coordinator stated the working assumption to the human: complete Vault-style KV management, including mounts/paths, grouped fields, immutable versions/rollback, policies, audit, protected import/export, scoped automation and rotation workflows, backed by native Kubernetes Secrets. The optional broader dynamic credentials/PKI/transit question has no direct human answer. KV work proceeds; speculative issuers and full HashiCorp API/feature parity remain outside scope.
 
-Availability/cache conversion is underway. The typed JSON client now throws instead of collapsing failures to null. Each requested resource has separate snapshot/coalescing/backoff/retention state; this replaces the all-resources cache. Route response contracts, projections and focused race/outage evidence are not complete yet.
+The concrete [architecture/API implementation contract](BORTUS-KV-DESIGN.md) specifies scalar/group mapping, native current/history ownership, metadata whitelists, candidate/commit CAS, ambiguous recovery, drift, retention/destruction/GC, policies and token audiences, proposed migrations/env/RBAC, 603 legacy aliases, binary-safe import/export and consumer rotation intent. It is an implementation plan; its future routes/env are not claimed as shipped. Review is not an additional approval gate. The different-key last-applied annotation regression must extend across history/audit/export/UI as those components are added.
 
-New cache/pool tests cover requested-resource coalescing without unrelated fanout, stale expiry/backoff, optional API absence versus true empty/partial response fields, mutation-generation races, invalid/oversized lists, concurrency/queue capacity/deadline and invalid JSON. Execution/HTTP/performance/UI evidence remains pending.
+Values/history stay native; SQLite holds metadata and authentication hashes, never secret values or value digests. Readonly stays metadata-only. Current objects preserve unrelated keys/type/metadata; owned history/auth metadata is minimal. TLS, resourceVersion and fresh account/policy gates remain mandatory. Bootstrap runs externally and cannot depend on Secrets in the cluster being created.
 
-All ten focused cache/command tests passed. Deployment/pod regressions now cover ambiguous names/labels, controller UID and namespace isolation, regular/init restarts, desired/observed generation, zero/paused/failure states and actual type/namespace/label selection. The compatibility cluster-node inventory POST also gained the missing fresh write gate; this is an additional authorization correction discovered during conversion.
+## Runtime/chart interface
 
-The three deployment/filter tests passed. The production HTTP fixture now uses fixed 50-ms metadata queries and verifies one-resource cold pod fetch, 20 shared warm requests with no CLI calls, filters, owner/zero/generation state, fresh role denial on node registration/diagnostics, labelled stale reads with backoff, initial unavailable 503 versus successful empty 200, and diagnostic limits. These new HTTP assertions have not run yet. Browser availability/state acceptance and controlled timing evidence remain outstanding.
+Current image contract: port 4000, Node 22/Linux standalone, UID/GID 1000, one replica/Recreate, writable SQLite PVC `/data/bortus.db`, framework cache, stable externally supplied BOTRUS_JWT_SECRET/BOTRUS_SECRETS_KEY, ServiceAccount token/CA or operator kubeconfig, BORTUS_SECRET_NAMESPACES and metadata-only alias mount. Container provisioning remains disabled. Public probe paths remain exact. Session flags reflect provisioning/operator-shell/pod-exec support; server handlers enforce them independently.
 
-That expanded HTTP suite passed in 24.98 s; all 29 unit/transport tests and production build passed. Metadata-only timing capture and actual subprocess output/timeout tests have since been added and await their final run. See [post-change evidence](implementation-evidence/README.md) for reproduction and comparison limits.
+Apply forward migrations before traffic, with a consistent SQLite backup; never reset an existing database. Existing tokens default to session version zero, and reset increments that version. Current native Secret verbs remain get/list/create/update in all configured namespaces. Proposed dedicated history namespace/get-list-create-delete permissions in BORTUS-KV-DESIGN are not yet chart requirements. Preserve all reported 603 unique aliases in 12 namespaces and the existing 18-namespace allowlist/Roles.
 
-Final cache/state HTTP acceptance passed in 9.48 s and saved [cache-http.json](implementation-evidence/cache-http.json). Cold pods: 107.37 ms/1 CLI call (baseline 184.86 ms/10); 12 warm samples p50/p95 14.45/16.37 ms/0 CLI; 20 concurrent cold requests shared 1 call at p50/p95 112.95/113.47 ms; 20 warm requests made 0 calls. Twelve requests during an initial service outage returned 503 with no additional CLI calls. Compare latency observationally, not as controlled image performance. Real child-process output overflow and timeout tests passed; typecheck passed. Fresh build already passed for all runtime changes. UI availability/ownership displays, pagination and real image/RBAC checks remain pending.
-
-Final full unit/transport run: 30 passed, zero skipped. All runtime changes had a successful production build; expanded HTTP and typecheck passed. Main's separate-chart contract was merged as 3588864 with application notes retained. No source/image publication or live mutation occurred.
-
-Resource API/capability stage implements all declared YAML read routes, scoped versioned YAML replacement, bounded pod logs/exec, ingress delete, and confirmed bounded node actions. Runtime capability flags are returned in session responses and enforced on server handlers; menus/polling remain pending. All 33 unit/transport tests passed with zero skipped, production build and typecheck passed, and production HTTP acceptance passed in 26.80 s. Tests cover matrix-to-handler consistency, identity/kind/list/version/size YAML rejection, runtime disable flags and actual read/role/argument/drain boundaries. The repository ignore exception admits only API logs/route.ts source while continuing to exclude runtime log artifacts. Actual CLI/RBAC/image/live acceptance remains external.
-
-## Native Secrets engine scope decision
-
-The coordinator has stated the working assumption to the human: deliver complete Vault-style KV management (mounts/paths, versions/rollback, policies, audit, import/export, scoped automation and rotation workflows) backed by native Kubernetes Secrets. No direct human answer to the optional broader dynamic credentials/PKI/transit choice has arrived. KV implementation proceeds under that stated assumption; speculative issuers and full HashiCorp API/feature parity are excluded. A later explicit answer may expand the goal.
-
-Design constraints for either choice:
-
-- Canonical name BORTUS; Kubernetes Secrets remain the only authoritative value/history store. SQLite may hold policies, path/reference and audit metadata, never values or value digests.
-- Paths are explicit metadata mapped to exact namespace/name/key. Imported references keep their spelling; no underscore parsing or inferred targets.
-- Policies can restrict existing write privileges; readonly remains metadata-only. Reveal/CRUD always require a current DB write role and policy evaluation.
-- TLS, resourceVersion/CAS, unrelated keys/type/metadata, immutable objects, valid empty values and last-key retention are preserved.
-- Version history, if selected, needs native backing, bounded retention and explicit handling of Kubernetes' per-object size limit. Cross-object history/current writes are not atomic: the design must expose/resolve ambiguous outcomes rather than claim a transaction spanning Secrets.
-- Audit records identify actor, operation, target, result and versions without values, payloads, diffs or content hashes. Export is explicit, ephemeral and over authenticated TLS; no server/browser draft persistence.
-- Rotation workflows describe supported credential consumers and acknowledgement/recovery; dynamic issuance needs a selected real issuer/backend and revocation/lease acceptance. A random-string generator alone does not establish dynamic credentials or Vault parity.
-
-## Runtime/chart interface for the infrastructure executor
-
-Current inputs remain stable: port 4000, Node 22/Linux standalone image, UID/GID 1000, one replica/Recreate, writable SQLite PVC `/data/bortus.db`, writable framework cache, externally supplied stable `BOTRUS_JWT_SECRET`/`BOTRUS_SECRETS_KEY`, ServiceAccount token/CA or operator kubeconfig, `BORTUS_SECRET_NAMESPACES` and optional metadata-only aliases file. Container provisioning stays disabled. Health paths stay exact public exceptions.
-
-The charts coordinator reports cutover complete: private jtmb/branconet-charts main passes CI to validated; Flux source flux-system/branconet-charts, Kustomization flux-system/migration-releases at ./flux/releases, chart charts/bortus and release overrides flux/releases/bortus.yaml. Live BORTUS remains migration-1438b27. These are reported infrastructure-executor results, not app-executor live checks. Preserve the merged main documentation for that contract when integrating this branch. No app deployment is performed here.
-
-Account fixes add a forward migration for session versions and a SQLite account serialization row. Apply migrations before admitting traffic and take a consistent DB backup; do not reset existing DB. Existing tokens default to version zero for migration compatibility; password resets increment the user's version. Native engine retention/RBAC/env additions will be specified after the scope answer, not guessed into the chart. No Secrets value belongs in Git/Helm values. Current native verbs remain get/list/create/update in every allowed namespace until a reviewed selected design establishes a specific additional need.
-
-The app executor does not change the live image/Flux source. Image build, real-cluster performance, native imported-value acceptance and rollout/rollback evidence require the deployment executor and separate authorized cutover.
+The charts coordinator reports private jtmb/branconet-charts main → CI → validated → Flux, source flux-system/branconet-charts, Kustomization flux-system/migration-releases at ./flux/releases, chart charts/bortus and release overrides flux/releases/bortus.yaml. Live BORTUS remains migration-1438b27. These are reported infrastructure results, not app-executor live checks. The app executor does not deploy or change live Flux/image state. Final source/runtime contract and image/native/RBAC/performance/rollback acceptance go to the delivery executor when implementation is verified.

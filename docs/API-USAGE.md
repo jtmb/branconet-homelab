@@ -25,7 +25,7 @@ Keep the cookie file protected. Examples below use placeholder names and nonsecr
 | POST /api/auth/login | JSON username/password; sets 7-day cookie; returns id/username |
 | POST /api/auth/register | JSON username/password; first user gets write, subsequent users readonly |
 | POST /api/auth/logout | Clears cookie |
-| GET /api/auth/session | authenticated, username, role, hasUsers, registrationOpen |
+| GET /api/auth/session | authenticated, username, role, hasUsers, registrationOpen, runtime capabilities (provisioning/operatorShell/podExec) |
 | GET /api/users | User metadata without passwordHash |
 | POST /api/users | Write role; username/password and optional role |
 | PATCH /api/users/[id] | Write role; role change or password reset |
@@ -78,6 +78,10 @@ curl -X PATCH -b /tmp/botrus-cookies http://localhost:4000/api/settings \
 
 ## Cluster resources
 
+Live node CPU uses Kubernetes quantities (including millicores); memory is reported in GiB from its actual suffix. Missing capacity remains null. Live IP, role and capacity come from native node data, while the optional display name may come from inventory. Live status never falls back to inventory status or silently rounds a small nonzero capacity to zero.
+
+Node inventory POST validates DNS hostnames, IPv4/IPv6 addresses and worker/master/control-plane roles, then upserts by hostname. PUT /api/nodes/[id] updates the exact existing inventory record (including hostname changes), with 404 for absent records and 409 for duplicate hostname. DELETE uses the same fixed failure handling. These fresh-write mutations affect inventory only, not Kubernetes membership or provisioning.
+
 A detail absent from a stale snapshot returns 503 rather than claiming current absence; a successful current empty list can establish 404. Refresh reports cache invalidation only and lets the requesting screen refetch its own resources, avoiding an unrelated whole-cluster prefetch. Diagnostic counters are process-local and reset with the app.
 
 These routes use kubectl with external operator or in-cluster credentials. The resource cache keeps a separate 10-second snapshot per resource, coalesces concurrent reads and retains a labelled stale snapshot for up to 120 seconds on failure. Failed resources back off from 1 to 30 seconds; a confirmed missing optional Longhorn API backs off for 5 minutes. Invalid or over-10000-item lists fail explicitly. Browser availability presentation is pending under A06/A11. Reads require cookies except the exact public info endpoint; mutations require write role.
@@ -114,7 +118,7 @@ Cluster list/detail/overview responses add `availability:{state,resources}`. Eac
 | /api/cluster/namespaces/[name] | GET detail |
 | /api/cluster/namespaces/[name]/delete | DELETE namespace |
 | /api/cluster/namespaces/[name]/yaml | GET YAML; PUT versioned replacement |
-| /api/cluster/volumes | GET PVC list |
+| /api/cluster/volumes | GET PV + optional Longhorn list; kind=pvc selects actual claims; type=all/local/nfs/samba/longhorn |
 | /api/cluster/volumes/[namespace]/[name] | GET PVC detail |
 | /api/cluster/volumes/[namespace]/[name]/yaml | GET actual PVC YAML, read-only |
 | /api/cluster/volumes/reclaim | GET reclaim policies; PATCH policy |
@@ -142,6 +146,10 @@ Pod classification uses explicit branconet.io/type=app/system, otherwise the inf
 POST /api/cluster/nodes now requires a fresh write role, matching other inventory mutations. It creates an inventory record, not a live Kubernetes node.
 
 ## Optional Ansible runner
+
+Operator shell scripts are limited to 16 KiB and reject NUL bytes. Pod exec uses its exact namespaced endpoint and a single script argument; the browser never routes a selected pod command through the application-host shell. Both are one-shot command runners with bounded output/time, not interactive PTYs. Client abort does not establish that a command's server-side effects were cancelled.
+
+Storage's default list contains persistent volumes and optional Longhorn volumes. It does not use PV names as PVC identities. The explicit kind=pvc view links exact namespace/claim names to PVC details/YAML. Invalid kind/type filters return 400 before CLI execution. List UI renders at most 100 rows per page with typed numeric/quantity/date sorting; API's bounded snapshot limit remains unchanged.
 
 | Endpoint | Contract |
 |---|---|

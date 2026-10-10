@@ -1,0 +1,104 @@
+import { spawn, execFileSync, type ChildProcess } from "node:child_process";
+import { mkdtemp, writeFile, rm, readFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import { createServer, request as forward, type Server } from "node:http";
+import { once } from "node:events";
+import { randomBytes } from "node:crypto";
+import { PrismaClient } from "@prisma/client";
+import { SignJWT } from "jose";
+import { fakeKubectl } from "./helpers/fake-kubectl";
+
+async function port() {
+  const holder = createServer();
+  holder.listen(0, "127.0.0.1"); await once(holder, "listening");
+  const number = (holder.address() as { port: number }).port;
+  await new Promise<void>(resolve => holder.close(() => resolve()));
+  return number;
+}
+async function main() {
+const root = process.cwd();
+const dir = await mkdtemp(path.join(tmpdir(), "bortus-ui-test-"));
+const servers: Server[] = [];
+let child: ChildProcess | undefined;
+let db: PrismaClient | undefined;
+try {
+  const fixture = await fakeKubectl(dir);
+  const created = "2026-10-01T00:00:00Z";
+  const pod = (name: string, namespace: string, restarts: number) => ({
+    apiVersion: "v1", kind: "Pod", metadata: { name, namespace, uid: name, creationTimestamp: created, labels: { app: "fixture", tier: "front" } },
+    spec: { nodeName: "fixture-node", containers: [{ name: "app", image: "example.invalid/fixture:v1" }] },
+    status: { phase: "Running", podIP: "10.0.0.1", containerStatuses: [{ name: "app", ready: true, restartCount: restarts }] },
+  });
+  const data = {
+    nodes: { items: [{ metadata: { name: "fixture-node", uid: "node-one", creationTimestamp: created }, status: { capacity: { cpu: "250m", memory: "2Gi" }, conditions: [{ type: "Ready", status: "True" }], nodeInfo: { kubeletVersion: "v1.34.1" }, addresses: [{ type: "InternalIP", address: "10.0.0.2" }] } }] },
+    pods: { items: [pod("sort-fixture-12", "kube-system", 12), pod("sort-fixture-2", "apps", 2), pod("sort-fixture-7", "apps", 7),
+      ...Array.from({ length: 205 }, (_, index) => pod("large-pod-" + index, "apps", index))] },
+    namespaces: { items: [{ metadata: { name: "apps", creationTimestamp: created }, status: { phase: "Active" } }] },
+    deployments: { items: [{ apiVersion: "apps/v1", kind: "Deployment", metadata: { name: "scaled-zero", namespace: "apps", uid: "dep-one", generation: 1 }, spec: { replicas: 0 }, status: { observedGeneration: 1 } }] },
+    replicasets: { items: [] }, services: { items: [] }, ingress: { items: [] },
+    pvc: { items: [{ metadata: { name: "fixture-claim", namespace: "apps", uid: "claim-one" }, spec: { resources: { requests: { storage: "512Mi" } } }, status: { phase: "Bound" } }] },
+    pv: { items: [] }, sc: { items: [] }, "volumes.longhorn.io": { items: [] },
+  };
+  for (const [resource, body] of Object.entries(data)) await writeFile(path.join(fixture.bin, resource + ".json"), JSON.stringify(body));
+  const database = "file:" + path.join(dir, "ui.db").replaceAll("\\", "/");
+  const kubeconfig = path.join(dir, "config.json");
+  await writeFile(kubeconfig, JSON.stringify({ apiVersion: "v1", kind: "Config", clusters: [{ name: "fixture", cluster: { server: "https://127.0.0.1:1" } }], users: [{ name: "fixture", user: {} }], contexts: [{ name: "fixture", context: { cluster: "fixture", user: "fixture" } }], "current-context": "fixture" }));
+  const clean = Object.fromEntries(["SystemRoot", "WINDIR", "COMSPEC", "PATH", "TEMP", "TMP", "USERPROFILE", "HOME", "SystemDrive", "APPDATA", "LOCALAPPDATA"].filter(key => process.env[key] !== undefined).map(key => [key, process.env[key]]));
+  const signing = randomBytes(48).toString("hex");
+  const env = { ...clean, ...fixture.env, DATABASE_URL: database, BOTRUS_JWT_SECRET: signing, BOTRUS_SECRETS_KEY: randomBytes(32).toString("hex"), KUBECONFIG: kubeconfig,
+    BORTUS_SECRET_NAMESPACES: "apps", BORTUS_DISABLE_PROVISIONING: "true", NODE_ENV: "production" as const, HOSTNAME: "127.0.0.1", PORT: String(await port()) };
+  execFileSync(process.execPath, [path.resolve("node_modules/prisma/build/index.js"), "migrate", "deploy"], { env, stdio: "pipe" });
+  db = new PrismaClient({ datasources: { db: { url: database } } });
+  const writer = await db.user.create({ data: { username: "fixture_writer", passwordHash: "unused", role: "write" } });
+  const reader = await db.user.create({ data: { username: "fixture_reader", passwordHash: "unused", role: "readonly" } });
+  const token = (user: typeof writer) => new SignJWT({ sub: user.id, username: user.username, sessionVersion: user.sessionVersion }).setProtectedHeader({ alg: "HS256" }).setIssuedAt().setExpirationTime("1h").sign(new TextEncoder().encode(signing));
+  const origin = "http://127.0.0.1:" + env.PORT;
+  child = spawn(process.execPath, [path.resolve(".next/standalone/server.js")], { env, stdio: ["ignore", "pipe", "pipe"] });
+  let output = "";
+  child.stdout?.on("data", chunk => { output = (output + chunk).slice(-65536); });
+  child.stderr?.on("data", chunk => { output = (output + chunk).slice(-65536); });
+  let ready = false;
+  for (let attempt = 0; attempt < 100; attempt++) {
+    if (child.exitCode !== null) throw new Error("Disposable UI server exited");
+    try { if ((await fetch(origin + "/api/health/live", { signal: AbortSignal.timeout(500) })).ok) { ready = true; break; } } catch { /* startup */ }
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+  if (!ready) throw new Error("Disposable UI server did not become ready");
+  async function gateway(credential: string) {
+    const server = createServer(async (request, response) => {
+      const url = new URL(request.url ?? "/", origin);
+      if (url.pathname.startsWith("/_next/static/")) {
+        try {
+          const staticRoot = path.resolve(root, ".next/static");
+          const file = path.resolve(staticRoot, decodeURIComponent(url.pathname.slice("/_next/static/".length)));
+          if (!file.startsWith(staticRoot + path.sep)) throw new Error("Invalid static path");
+          response.setHeader("Content-Type", file.endsWith(".js") ? "application/javascript" : file.endsWith(".css") ? "text/css" : "application/octet-stream");
+          response.end(await readFile(file));
+        } catch { response.writeHead(404); response.end(); }
+        return;
+      }
+      const upstream = forward(origin + request.url, { method: request.method, headers: { ...request.headers, cookie: "botrus_auth_token=" + credential, host: "127.0.0.1:" + env.PORT } }, result => { response.writeHead(result.statusCode ?? 502, result.headers); result.pipe(response); });
+      upstream.on("error", () => { response.writeHead(502); response.end(); });
+      request.pipe(upstream);
+    });
+    server.listen(0, "127.0.0.1"); await once(server, "listening"); servers.push(server);
+    return "http://127.0.0.1:" + (server.address() as { port: number }).port;
+  }
+  console.log("UI_FIXTURE_READY " + JSON.stringify({ dir, writerUrl: await gateway(await token(writer)), readerUrl: await gateway(await token(reader)) }));
+  process.stdin.resume();
+  await new Promise<void>(resolve => {
+    process.once("SIGINT", resolve); process.once("SIGTERM", resolve);
+    process.stdin.on("data", chunk => { if (chunk.toString().trim() === "stop") resolve(); });
+  });
+} finally {
+  for (const server of servers) { server.closeAllConnections(); await new Promise<void>(resolve => server.close(() => resolve())); }
+  if (child && child.exitCode === null && child.signalCode === null) { child.kill(); await once(child, "exit"); }
+  await db?.$disconnect();
+  const tempRoot = path.resolve(tmpdir());
+  if (!path.resolve(dir).startsWith(tempRoot + path.sep) || !path.basename(dir).startsWith("bortus-ui-test-")) throw new Error("Unsafe UI fixture cleanup target");
+  await rm(dir, { recursive: true, force: true });
+  process.stdin.pause();
+}
+}
+void main().catch(error => { console.error(error instanceof Error ? error.message : "Disposable UI fixture failed"); process.exitCode = 1; });

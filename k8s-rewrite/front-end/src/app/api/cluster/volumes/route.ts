@@ -6,6 +6,19 @@ export async function GET(request: NextRequest) {
     return clusterRoute(async () => {
         const { searchParams } = new URL(request.url);
         const typeFilter = searchParams.get("type");
+        const kind = searchParams.get("kind") || "pv";
+        if (!["pv", "pvc"].includes(kind) || typeFilter && !["all", "local", "nfs", "samba", "longhorn"].includes(typeFilter))
+            return NextResponse.json({ error: "Invalid storage filter" }, { status: 400 });
+        if (kind === "pvc") {
+            const data = await getCachedClusterData(["pvc", "sc"]);
+            const volumes = data.rawPvcs.map((pvc: any) => ({
+                id: pvc.metadata?.uid, name: pvc.metadata?.name, namespace: pvc.metadata?.namespace,
+                status: pvc.status?.phase || "Unknown",
+                capacity: pvc.status?.capacity?.storage ?? pvc.spec?.resources?.requests?.storage ?? null,
+                storageClass: pvc.spec?.storageClassName || "none", node: null,
+            })).filter(volume => !typeFilter || typeFilter === "all" || matchesType(volume.storageClass, typeFilter));
+            return clusterResponse(data, { volumes, storageClasses: data.storageClasses }, ["pvc"]);
+        }
         const data = await getCachedClusterData(["pv", "longhorn", "sc"]);
         const unavailable = clusterUnavailable(data, "pv");
         if (unavailable)

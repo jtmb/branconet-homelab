@@ -121,6 +121,16 @@ export function closeShell(id: string): void {
 }
 
 /** Minimize a shell without closing it */
+export function closeAllShells(): void {
+  if (!shells.size) {
+    try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* unavailable */ }
+    return;
+  }
+  shells.clear(); notify();
+  try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* unavailable */ }
+}
+
+/** Minimize a shell without closing it */
 export function minimizeShell(id: string): void {
   const s = shells.get(id);
   if (s) {

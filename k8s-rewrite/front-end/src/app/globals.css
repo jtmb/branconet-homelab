@@ -224,3 +224,9 @@
 .section-border {
   border-color: hsl(var(--border) / 0.4);
 }
+
+/* Preserve visible keyboard focus across custom controls and compact navigation. */
+:where(button, a, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid rgb(129 140 248);
+  outline-offset: 3px;
+}

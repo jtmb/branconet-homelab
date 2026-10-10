@@ -30,6 +30,12 @@ Container provisioning is disabled. Provision or recover a cluster from an indep
 
 ## Cluster and Flux operations
 
+Overview counts now distinguish native Secret object metadata from SQLite nonsecret configuration. Failed independent sources show unavailable counts, not zeros. Clearing dashboard inventory requires a write role and exact confirmation, describes the SQLite records removed and refetches live data; it does not describe live resource removal or a cluster being undeployed.
+
+Nodes displays live cluster state and SQLite inventory in separate sections. Inventory remains accessible during cluster outages and is not promoted to live status. Inventory changes validate names/IPs/roles, expose saving/errors and require confirmation for deletion. Editing by record ID avoids creating a second record when its hostname changes.
+
+Pods, Deployments, Namespaces, Services, Ingresses and Storage now use shared metadata queries and paginated tables (100 rows/page). Search/sort/filter changes reset the page. Pod type/namespace/label filters are applied by the server; labels submit explicitly. Storage distinguishes persistent volumes from actual PVCs and offers exact claim detail links. Empty results are shown only for a successful snapshot; failed requests retain and label previous data or show unavailable state.
+
 The dashboard lists nodes, namespaces, pods, deployments, services, ingresses and storage using externally supplied Kubernetes credentials. Database node records describe inventory; creating a record does not provision a machine or join it to Kubernetes.
 
 Cluster APIs now expose per-resource availability and labelled retained snapshots, fail unavailable primary reads with 503, and keep node inventory separate from live status. Browser availability presentation is being updated under A06/A11; see the implementation ledger for current acceptance.
@@ -38,9 +44,19 @@ The **Flux** view reflects installed Flux resources. The production source is th
 
 The write-role terminal executes shell commands with the application's operating-system permissions as well as its Kubernetes permissions. Treat write accounts as operators with application-host access.
 
-The separate pod-exec handler runs scripts inside the selected pod/container via structured kubectl argv. Runtime session capabilities expose provisioning/operator-shell/pod-exec gates; Windows has no operator host shell, and both shell modes can be disabled by their documented environment flags. Browser capability presentation is still being wired. Node drain requires exact-name confirmation, respects PDB/local-data/unmanaged-pod refusal, and a timeout may leave partial effects that must be inspected.
+The separate pod-exec handler runs scripts inside the selected pod/container via structured kubectl argv. Runtime session capabilities expose provisioning/operator-shell/pod-exec gates; Windows has no operator host shell, and both shell modes can be disabled by their documented environment flags. The resource menu hides exec and mutations for unknown/readonly sessions and offers only implemented operations. Node drain and resource deletion require exact-name confirmation. Drain respects PDB/local-data/unmanaged-pod refusal, and a timeout may leave partial effects that must be inspected. Successful mutations refetch subscribed cluster metadata; YAML/log dialogs load only when opened.
 
 ## Validation
+
+Keyboard focus is visible on interactive controls. Resource menus use keyboard-aware dropdowns; dialogs expose titles/descriptions, trap focus and return it to their trigger. Logs render as a bounded text snapshot, and YAML syntax tooling is removed from initial route imports. Resource keyboard/mobile/browser and observed-script comparisons passed locally; see [evidence and limits](implementation-evidence/README.md). Other screens, actual zoom and screen-reader/performance checks remain pending.
+
+Deployment details now show desired/observed controller state, including paused/reconciling/scaled-down state and generation. Pod membership follows controller UIDs. Desired replicas use an explicit bounded form; runtime edits may be reconciled back by Flux.
+
+Resource detail pages subscribe to the same metadata query lifecycle. A failed read shows unavailable state rather than claiming the resource was deleted; only a fresh 404 is shown as Not Found. Retained/partial/stale responses remain labelled, and menu mutations invalidate active detail/list subscriptions.
+
+Small viewports use a 56-pixel navigation rail with named resource links; desktop navigation can expand/collapse. Comfortable content width applies only on large viewports. Resource screens fit 320/390/768 CSS-width checks, with local table scrolling; remaining-screen and actual zoom acceptance is pending.
+
+YAML, log and resource confirmation dialogs use accessible modal primitives. YAML sessions reset for each resource/mode; readOnly remains authoritative, Save requires an available callback and changed content, and closing a dirty editor requires an explicit discard. Editor drafts are not persisted. Keyboard dirty/discard/read-only reopening and focus trap/return passed in the synthetic browser fixture.
 
 Run `npm test`, `npm run typecheck`, `npm run build`, then `npm run test:integration`. The HTTP integration suite requires the production build and uses temporary SQLite, fake credentials and a loopback unavailable Kubernetes endpoint. It does not access the operator database or live cluster.
 

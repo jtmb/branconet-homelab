@@ -14,7 +14,7 @@ Middleware at `src/middleware.ts` uses the Next 15.5 Node runtime and verifies c
 
 Server-side `requireWrite()` enforces the fresh DB role for mutations. Native Secret handlers separately enforce fresh role for metadata/value reads and mutations. Deleted accounts and stale session versions are rejected on ordinary reads/pages as well. Password resets atomically increment sessionVersion, revoking existing cookies, including the resetting user's own cookie for a self-reset. Migrated accounts and legacy JWTs default to version zero, avoiding blanket sign-out on migration. Login signs the current version; the session API no longer treats absent accounts as readonly.
 
-Some client views hide operator controls, but the shared resource action menu still shows Edit YAML, Execute Shell and Delete to readonly users; the server gates remain authoritative. Provisioning controls also do not reflect the container runtime's disabled capability. See audit A12. User creation remains disabled while username/password are empty or a request is saving; the named canCreateUser boolean preserves that validation.
+The shared resource action menu now uses a shared polled session and the server capability matrix. Unknown/readonly/failed sessions do not receive mutations or exec controls; editor write mode is revoked when session role changes. Server gates remain authoritative. Other client views and provisioning capability controls are still being converted under A12. User creation remains disabled while username/password are empty or a request is saving; the named canCreateUser boolean preserves that validation.
 
 | Operation | readonly | write |
 |---|---|---|
@@ -30,6 +30,10 @@ Write-role terminal commands execute with the application's operating-system per
 Both /api/nodes mutations and the compatibility POST /api/cluster/nodes inventory endpoint require a fresh write role. Inventory registration does not provision/join a node.
 
 ## Bearer lookup and recovery
+
+Desired-replica editing is a labelled explicit form with integer bounds 0–10000, a disabled unchanged/invalid/save state and fixed API errors. Readonly sessions see the desired count. It does not submit on blur or parse fractional input as an integer.
+
+Top navigation and shell containers share the session subscription. Write controls pause after session failure/staleness; host terminal visibility also requires runtime capability. Logout, revoked role and ended-session events clear terminal instances/metadata and shared queries. The top refresh control checks the server result before refetching active resource queries. User/settings/provisioning forms are still being converted.
 
 `GET /api/vars/lookup` uses independently supplied `BOTRUS_SECRETS_KEY`, not user cookies or roles. It returns mapped native Secret values and nonsecret configuration. Keep this credential available only to authorized lookup consumers and require TLS.
 
