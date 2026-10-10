@@ -16,7 +16,7 @@ Native Secret transport uses Node HTTPS/JSON with the Kubernetes SDK's credentia
 | jose | ^6.2.3 | HS256 session JWTs |
 | bcryptjs | ^3.0.3 | User password hashing |
 | @kubernetes/client-node | ^1.4.0 | Native Secret API client |
-| node-fetch | 2.7.0 | Verified HTTPS transport |
+| node-fetch | 2.7.0 | Retained direct dependency; native transport now uses Node HTTPS |
 | zod | ^3.23.0 | Input validation |
 | tsx | ^4.20.6 | Node test runner and TypeScript execution |
 | ESLint / eslint-config-next | 9.39.5 / 15.5.27 | Direct noninteractive CLI with Next Core Web Vitals and hook lifecycle rules |

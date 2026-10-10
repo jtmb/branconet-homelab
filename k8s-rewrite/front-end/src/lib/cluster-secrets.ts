@@ -19,6 +19,7 @@ export interface SecretTransport {
   create(namespace: string, body: V1Secret): Promise<V1Secret>;
   replace(namespace: string, name: string, body: V1Secret): Promise<V1Secret>;
 }
+export type FlatSecretGuard = (action: "read" | "create" | "update" | "delete", target: SecretTarget, secret?: V1Secret) => Promise<void>;
 const dnsLabel = /^[a-z0-9](?:[-a-z0-9]*[a-z0-9])?$/;
 const dnsName = /^[a-z0-9](?:[-a-z0-9.]*[a-z0-9])?$/;
 export function validateTarget(target: SecretTarget): SecretTarget {
@@ -84,6 +85,7 @@ export class SecretStore {
   constructor(
     private transport: SecretTransport,
     private namespaces: string[],
+    private guard?: FlatSecretGuard,
   ) {}
   private check(target: SecretTarget) {
     validateTarget(target);
@@ -111,6 +113,7 @@ export class SecretStore {
     this.check(target);
     try {
       const secret = await this.transport.read(target.namespace, target.name);
+      await this.guard?.("read", target, secret);
       if (!Object.hasOwn(secret.data || {}, target.key))
         throw new SecretError(404, "Kubernetes Secret key not found");
       const bytes = Buffer.from(secret.data![target.key], "base64");
@@ -152,6 +155,7 @@ export class SecretStore {
       } catch (error) {
         if (secretFailure(error).status !== 404 || mode !== "create")
           throw error;
+        await this.guard?.("create", target);
         return secretSummary(
           await this.transport.create(target.namespace, {
             apiVersion: "v1",
@@ -162,6 +166,7 @@ export class SecretStore {
           }),
         );
       }
+      await this.guard?.(mode, target, secret);
       if (secret.immutable) throw new SecretError(409, "Secret is immutable");
       const exists = Object.hasOwn(secret.data || {}, target.key);
       if (mode === "create" && exists)
@@ -200,6 +205,7 @@ export class SecretStore {
       throw new SecretError(428, "resourceVersion is required for deletion");
     try {
       const secret = await this.transport.read(target.namespace, target.name);
+      await this.guard?.("delete", target, secret);
       if (secret.immutable) throw new SecretError(409, "Secret is immutable");
       if (secret.metadata?.resourceVersion !== resourceVersion)
         throw new SecretError(409, "Secret changed; refresh before retrying");

@@ -21,7 +21,7 @@ Resource actions, provisioning and user administration use the shared polled ses
 | Dashboard operational metadata | Yes | Yes | Yes |
 | Native Secret names/key metadata | Yes | Yes | Yes |
 | KV metadata | Permitted list policy | Permitted list policy | Metadata administration |
-| KV values/changes (native implementation pending) | No | Action policy | Action policy; administration can repair policies |
+| KV values/changes (local API checks passed) | No | Action policy | Action policy; administration can repair policies |
 | Flat Secret values/changes, configuration and aliases | No | No | Yes |
 | Peer user creation/reset/role/flag/deletion | No | No | Yes |
 | Own password change | No | Yes | Yes |
@@ -33,6 +33,8 @@ Engine administrator terminal commands execute with the application's operating-
 Both /api/nodes mutations and the compatibility POST /api/cluster/nodes inventory endpoint require fresh effective administration. Inventory registration does not provision/join a node.
 
 ## Bearer lookup and recovery
+
+Adopted native keys now additionally pass KV read policy on flat reveal. Flat edits/deletions require the versioned endpoint (409), and history cannot be reached through flat/alias routes. Every lookup, including nonsecret configuration, checks the fresh enabled legacy service principal; adopted aliases additionally require exact compatibility grants and deny-aware policy. Unadopted alias behavior remains unchanged. These newly connected bridge checks are being qualified locally.
 
 Desired-replica editing is a labelled explicit form with integer bounds 0–10000, a disabled unchanged/invalid/save state and fixed API errors. Readonly sessions see the desired count. It does not submit on blur or parse fractional input as an integer.
 
@@ -46,6 +48,6 @@ See [API usage](API-USAGE.md), [Secrets engine](SECRETS-ENGINE.md), [deployment 
 
 ## KV foundation in progress
 
-Forward migration `20261010210000_kv_metadata` adds `engineAdmin` without rebuilding or resetting the user table, grants it to existing write users, and seeds their initial KV action policy (existing readonly accounts receive list only). First bootstrap registration receives the flag and full initial policy; subsequently created accounts receive no admin flag and list-only policy, including new write accounts. Engine administration requires a fresh write role plus the flag. User metadata/session responses expose the flag; PATCH users accepts engineAdmin. Peer account creation/password/role/flag/deletion requires effective administration regardless of the peer's flag or policy. A scoped write user may change only their own password. The serialized transaction preserves a final writer and effective engine administrator. KV native operations and administration UI are being implemented; local foundation unit/HTTP/browser qualification has passed; native operations remain pending.
+Forward migration `20261010210000_kv_metadata` adds `engineAdmin` without rebuilding or resetting the user table, grants it to existing write users, and seeds their initial KV action policy (existing readonly accounts receive list only). First bootstrap registration receives the flag and full initial policy; subsequently created accounts receive no admin flag and list-only policy, including new write accounts. Engine administration requires a fresh write role plus the flag. User metadata/session responses expose the flag; PATCH users accepts engineAdmin. Peer account creation/password/role/flag/deletion requires effective administration regardless of the peer's flag or policy. A scoped write user may change only their own password. The serialized transaction preserves a final writer and effective engine administrator. Human native KV operations passed local production HTTP/TLS checks; administration UI and remaining workflows are being implemented. Local foundation unit/HTTP/browser qualification passed.
 
 The KV trust boundary enforces the matrix above: infrastructure operations, shell/pod exec, YAML read/download/replacement, pod logs, provisioning output/stream, Flux/workload mutations, flat Secret value access and app/alias/inventory configuration changes now require effective engine administration through the shared server gate. Raw YAML/log/output may contain credentials even when a resource is not a Secret. Shared UI canWrite now means effective administration; canKvWrite retains fresh write-role status for scoped KV controls. Scoped writers must use authorized KV endpoints and cannot reset a broader-policy peer or execute a workload to obtain the app ServiceAccount token. Kubernetes/host administrators and externally controlled workloads remain trusted out-of-band principals. Their direct access is outside application policy isolation. The pre-KV flat writer image cannot enforce this boundary and is not a supported post-adoption recovery image.

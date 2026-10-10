@@ -7,6 +7,7 @@ import { mergeAliases, validateAlias } from "@/lib/secret-aliases";
 import { isSensitiveVariable } from "@/lib/variable-policy";
 import { secretNamespaces } from "@/lib/secret-client";
 import { secretResponse, secretErrorResponse } from "@/lib/secret-http";
+import { kvConfig } from "@/lib/kv-contract";
 export const dynamic = "force-dynamic";
 export async function GET() {
   try {
@@ -28,6 +29,7 @@ export async function POST(request: Request) {
       throw new SecretError(400, "Invalid JSON request");
     }
     const ref = validateAlias(body);
+    if (ref.namespace === kvConfig().historyNamespace) throw new SecretError(403, "Engine history cannot be registered as a flat alias");
     if (!secretNamespaces().includes(ref.namespace))
       throw new SecretError(
         403,

@@ -12,6 +12,8 @@ import { KvNativeEngine } from "../src/lib/kv-native-engine";
 import { KvError, KvMutationError, kvConfig } from "../src/lib/kv-contract";
 import type { NativeSecretTransport } from "../src/lib/secret-client";
 import { CREATED_ANNOTATION, HISTORY_ANNOTATION, STATE_ANNOTATION, encodedValues, exportFields, historyValues, parseState, stateBody } from "../src/lib/kv-native-state";
+import { SecretError, SecretStore } from "../src/lib/cluster-secrets";
+import { flatSecretGuard, requireLegacyPrincipal } from "../src/lib/secret-access";
 
 const marker = "synthetic-private-other-key";
 const copy = <T>(value: T): T => JSON.parse(JSON.stringify(value));
@@ -112,6 +114,41 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       const audit = await db.kvAudit.findMany(); assert(!JSON.stringify(audit).includes(marker)); assert(!JSON.stringify(audit).includes(other));
       assert(!JSON.stringify(await engine.versions(actor,registered.id)).includes(marker));
     });
+    await t.test("flat/legacy bridges cannot bypass adopted policies, exact alias grants or history isolation", async () => {
+      const raw = new SecretStore(native,["apps"],flatSecretGuard(registry,native,async()=>actor));
+      const key={namespace:"apps",name:"imported",key:"constructor"};
+      assert.equal((await raw.read(key)).value,"first credential");
+      const denyRule=await registry.savePolicy(actor,{principal:"user:"+actor.id,mountId:mount.id,prefix:registered.path,effect:"deny",actions:["read"]});
+      await assert.rejects(raw.read(key),denied(403)); await registry.deletePolicy(actor,denyRule.id,denyRule.revision);
+      const rv=(await engine.status(actor,registered.id)).resourceVersion;
+      await assert.rejects(raw.write({...key,value:"extra-ignored"} as any,"not written","update",rv),denied(409));
+      await assert.rejects(raw.deleteKey(key,rv),denied(409));
+      const legacy=(alias:string)=>new SecretStore(native,["apps"],flatSecretGuard(registry,native,async()=>null,alias));
+      for(const ref of aliases) {
+        if(ref.key==="constructor") assert.equal((await legacy(ref.alias).read(ref)).value,"first credential");
+        else await assert.rejects(legacy(ref.alias).read(ref),(error:unknown)=>error instanceof SecretError&&error.status===400); // Binary aliases keep the historical text API refusal.
+      }
+      await assert.rejects(legacy("new-post-adoption-alias").read(key),denied(403));
+      await db.kvLegacyGrant.deleteMany({where:{pathId:registered.id,alias:aliases[0].alias}});
+      await assert.rejects(legacy(aliases[0].alias).read(aliases[0]),denied(403));
+      const rule=await registry.savePolicy(actor,{principal:"legacy-lookup",mountId:mount.id,prefix:registered.path,effect:"deny",actions:["read"]});
+      await assert.rejects(legacy(aliases[2].alias).read(aliases[2]),denied(403)); await registry.deletePolicy(actor,rule.id,rule.revision);
+      await db.kvServicePrincipal.update({where:{id:"legacy-lookup"},data:{enabled:false}});
+      await assert.rejects(requireLegacyPrincipal(registry),denied(403));
+      await assert.rejects(legacy(aliases[2].alias).read(aliases[2]),denied(403));
+      await db.kvServicePrincipal.update({where:{id:"legacy-lookup"},data:{enabled:true}});
+      const history=(await native.list("history"))[0];
+      const accidental=new SecretStore(native,["apps","history"],flatSecretGuard(registry,native,async()=>actor));
+      await assert.rejects(accidental.read({namespace:"history",name:history.metadata!.name!,key:"constructor"}),denied(403));
+      const unadopted=native.seed("apps","unadopted",{key:Buffer.from("legacy current").toString("base64")});
+      assert.equal((await legacy("original_unadopted_alias").read({namespace:"apps",name:unadopted.metadata!.name!,key:"key"})).value,"legacy current");
+      const brokenDb={kvServicePrincipal:db.kvServicePrincipal,kvField:{findUnique:async()=>{throw new Error(marker);}}} as unknown as PrismaClient;
+      const broken=new SecretStore(native,["apps"],flatSecretGuard(new KvRegistry(brokenDb,["apps"],registry.config),native,async()=>null,aliases[2].alias));
+      await assert.rejects(broken.read(aliases[2]),(error:unknown)=>error instanceof SecretError&&error.status===503&&!error.message.includes(marker));
+      await db.kvField.deleteMany({where:{pathId:registered.id,key:"constructor"}});
+      await assert.rejects(legacy(aliases[2].alias).read(aliases[2]),denied(503));
+      await db.kvField.create({data:{pathId:registered.id,field:"constructor",...key}});
+    });
     await t.test("missing/stale prerequisites and concurrent writers cannot overwrite a new head", async () => {
       await assert.rejects(engine.change(actor,registered.id,{fields:[]}),denied(428));
       await assert.rejects(engine.change(actor,registered.id,{resourceVersion:"stale",expectedHead:1,fields:[]}),denied(409));
@@ -195,6 +232,12 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       await assert.rejects(engine.change(actor,registered.id,{...(await input()),fields:[]}),denied(409)); canonical.immutable=false;
       const own=JSON.parse(canonical.metadata!.annotations![STATE_ANNOTATION]); own.paths[0].sourceUid="replaced-source"; canonical.metadata!.annotations![STATE_ANNOTATION]=JSON.stringify(own);
       await assert.rejects(engine.read(actor,registered.id),denied(409));
+      delete canonical.metadata!.annotations![STATE_ANNOTATION];
+      const flat=new SecretStore(native,["apps"],flatSecretGuard(registry,native,async()=>actor));
+      await assert.rejects(flat.read({namespace:"apps",name:"imported",key:"constructor"}),denied(409));
+      await assert.rejects(engine.adoptionPreview(actor,registered.id),denied(409));
+      native.objects.delete("apps/imported"); const before=native.writes;
+      await assert.rejects(engine.create(actor,registered.id,{resourceVersion:"absent",expectedHead:0,fields:[]}),denied(409)); assert.equal(native.writes,before);
       assert(!JSON.stringify(await db.kvOperation.findMany()).includes(marker));
     });
   } finally {

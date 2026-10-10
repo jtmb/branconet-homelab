@@ -1,6 +1,11 @@
 import { KubeConfig, type V1Secret } from "@kubernetes/client-node";
 import https from "node:https";
 import { SecretStore, SecretError, secretFailure, validateTarget, type SecretTransport } from "./cluster-secrets";
+import { kvConfig } from "./kv-contract";
+import { KvRegistry } from "./kv-registry";
+import { flatSecretGuard } from "./secret-access";
+import { getSession } from "./auth";
+import prisma from "./db";
 
 export function secretNamespaces(): string[] {
   const scopes = (process.env.BORTUS_SECRET_NAMESPACES || "default").split(",").map(s => s.trim()).filter(Boolean);
@@ -67,7 +72,7 @@ export function createSecretTransport(): NativeSecretTransport {
             const chunks: Buffer[] = []; let bytes = 0;
             response.on("data", (chunk: Buffer) => {
               bytes += chunk.length;
-              if (bytes > 4 * 1024 * 1024) { response.destroy(); reject(new SecretError(503, "Kubernetes Secret response exceeds the size limit")); }
+              if (bytes > 4 * 1024 * 1024 || chunks.length >= 16384) { response.destroy(); reject(new SecretError(503, "Kubernetes Secret response exceeds the size limit")); }
               else chunks.push(chunk);
             });
             response.once("error", reject);
@@ -129,4 +134,7 @@ export function createSecretTransport(): NativeSecretTransport {
     };
   } catch (error) { throw secretFailure(error); }
 }
-export function nativeSecrets() { return new SecretStore(createSecretTransport(), secretNamespaces()); }
+export function nativeSecrets(legacyAlias?: string) {
+  const config = kvConfig(), namespaces = secretNamespaces().filter(ns => ns !== config.historyNamespace), transport = createSecretTransport();
+  return new SecretStore(transport, namespaces, flatSecretGuard(new KvRegistry(prisma, namespaces, config), transport, getSession, legacyAlias));
+}

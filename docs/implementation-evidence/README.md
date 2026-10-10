@@ -1,6 +1,10 @@
 # BORTUS implementation evidence
 
-`kv-native-core.json` records the internal immutable-history/CAS/drift/rollback/audit-recovery protocol, verified-TLS special-key/pagination/delete-precondition checks, and the HTTP Flux cascade that retains credentials. Public value routes, legacy policy bridges and final KV image acceptance remain pending.
+`kv-native-http.json` records human native route and adopted-target flat/legacy bridge qualification: 70 unit tests, zero-warning lint/type/build, existing production HTTP (31.96 s) and CA-verified mock-native HTTP (17.96 s), including empty first creation and missing-marker/source recovery. Harness corrections are retained. These are local synthetic results; remaining KV workflows/UI and final KV image/live acceptance are pending.
+
+After building, `npm run test:integration` runs both production HTTP files. The native KV suite requires OpenSSL to create a disposable CA/certificate and never silently skips missing TLS prerequisites. It uses no operator credentials or native value export files.
+
+`kv-native-core.json` records the earlier internal immutable-history/CAS/drift/rollback/audit-recovery protocol, verified-TLS special-key/pagination/delete-precondition checks, and the HTTP Flux cascade that retains credentials. Its public-route limitations describe that earlier stage.
 
 `kv-foundation.json` and `kv-foundation-http.json` record metadata/policy/identity/operator-boundary qualification, including scoped mobile controls in `kv-scoped-users-390.png`. Native value/history operations and final-image/admission acceptance remain pending. External Linux QA referenced there applies only to exact pre-KV revision `6a97105020f67fe36686c2dbf50e9e4afa552c8c`.
 

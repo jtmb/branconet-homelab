@@ -25,6 +25,10 @@ export class KvNativeEngine {
   private async canonical(path: RegisteredPath) {
     try { return await this.transport.read(path.namespace, path.name); } catch (error) { throw secretFailure(error); }
   }
+  private async initial(path: RegisteredPath, partial = false) {
+    if (await this.registry.db.kvOperation.count({ where: { pathId: path.id, outcome: partial ? "committed" : { in: ["committed", "pending", "ambiguous", "recovery-required"] } } }))
+      throw new KvError(409, "Path has prior or unresolved native history; explicit recovery required");
+  }
   private async history(path: RegisteredPath, current: PathState, ref: VersionRef) {
     const secret = await this.transport.read(this.registry.config.historyNamespace, ref.name);
     if (secret.metadata?.namespace !== this.registry.config.historyNamespace) throw new KvError(409, "History namespace identity changed");
@@ -65,6 +69,7 @@ export class KvNativeEngine {
     const path = await this.permitted(actor, id, "create"); await this.registry.admin(actor);
     const secret = await this.canonical(path);
     if (ownedPath(secret, path)) throw new KvError(409, "KV path is already adopted");
+    await this.initial(path);
     selectedValues(secret, path, true);
     const aliases = await this.matchingAliases(path);
     return { pathId: id, ...nativeIdentity(secret), expectedHead: 0, fields: path.fields.map(({field,key}) => ({field,key})), legacyAliases: aliases, guardedAdoption: this.registry.config.guardedAdoption };
@@ -91,7 +96,10 @@ export class KvNativeEngine {
   }
   private async commit(actor: KvActor, path: RegisteredPath, secret: V1Secret, current: PathState | undefined, values: Record<string,string>, action: KvAction | "adopt", tombstone = false, prepared?: Awaited<ReturnType<KvNativeEngine["start"]>>) {
     const operation = prepared || await this.start(actor, path, action, current?.head || 0, (current?.sequence || 0) + 1);
-    const version = operation.newVersion!, historyName = markerName(path.id, operation.id), source = nativeIdentity(secret);
+    const version = operation.newVersion!, historyName = markerName(path.id, operation.id);
+    let source: ReturnType<typeof nativeIdentity>;
+    try { source = nativeIdentity(secret); }
+    catch { await this.finish(operation, "recovery-required"); throw new KvMutationError(503, "Native source identity unavailable; inspect operation", operation.id, "recovery-required"); }
     let candidate: V1Secret | undefined, attemptedCas = false;
     try {
       if (secret.immutable) throw new KvError(409, "Canonical Secret is immutable");
@@ -144,6 +152,7 @@ export class KvNativeEngine {
     const path = await this.permitted(actor, id, "create"); await this.registry.admin(actor);
     const secret = await this.canonical(path);
     if (ownedPath(secret, path)) throw new KvError(409, "KV path is already adopted");
+    await this.initial(path);
     prerequisites(input, secret, 0);
     const values = selectedValues(secret, path, true), aliases = await this.matchingAliases(path);
     if (!Array.isArray(input.legacyAliases) || input.legacyAliases.length !== aliases.length || new Set(input.legacyAliases).size !== aliases.length || aliases.some(a => !input.legacyAliases.includes(a.alias)))
@@ -159,6 +168,7 @@ export class KvNativeEngine {
     try { secret = await this.canonical(path); }
     catch (error) {
       if (secretFailure(error).status !== 404) throw error;
+      await this.initial(path);
       if (input.resourceVersion === undefined || input.expectedHead === undefined) throw new KvError(428, "Absent resourceVersion and expected head required");
       if (input.resourceVersion !== "absent" || input.expectedHead !== 0) throw new KvError(409, "New path requires absent resourceVersion and head zero");
       const operation = await this.start(actor, path, "create", 0, 1);
@@ -180,6 +190,7 @@ export class KvNativeEngine {
     if (ownedPath(secret, path)) throw new KvError(409, "KV path already exists; use versioned update");
     let marker: any; try { marker = JSON.parse(secret.metadata?.annotations?.[CREATED_ANNOTATION] || ""); } catch { /* existing imported object needs adoption */ }
     if (marker?.pathId !== path.id || Object.keys(secret.data || {}).length) throw new KvError(409, "Existing native Secret requires explicit adoption");
+    await this.initial(path, true);
     prerequisites(input, secret, 0);
     return this.commit(actor, path, secret, undefined, values, "create");
   }

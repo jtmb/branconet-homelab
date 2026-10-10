@@ -1,12 +1,23 @@
 import { getSession } from "./auth";
 import prisma from "./db";
 import { KvRegistry } from "./kv-registry";
-import { KV_BODY_BYTES, KvError, kvConfig, type KvActor } from "./kv-contract";
+import { KV_BODY_BYTES, KvError, KvMutationError, kvConfig, type KvActor } from "./kv-contract";
+import { KvNativeEngine } from "./kv-native-engine";
+import { createSecretTransport } from "./secret-client";
+import { listAliases } from "./secret-references";
 import { secretNamespaces } from "./secret-client";
 import { secretErrorResponse, secretResponse } from "./secret-http";
 import type { z } from "zod";
 
 export function kvRegistry() { return new KvRegistry(prisma, secretNamespaces(), kvConfig()); }
+export function kvEngine(registry: KvRegistry) { return new KvNativeEngine(registry, createSecretTransport(), listAliases); }
+export function kvErrorResponse(error: unknown) {
+  return error instanceof KvMutationError ? secretResponse({ error: error.message, operationId: error.operationId, outcome: error.outcome }, error.status) : secretErrorResponse(error);
+}
+export function historyVersion(raw: string): number {
+  if (!/^[1-9]\d{0,15}$/.test(raw) || !Number.isSafeInteger(Number(raw))) throw new KvError(400, "Invalid history version");
+  return Number(raw);
+}
 type Context = { params: Promise<Record<string, string>> };
 export function kvHuman(operation: (registry: KvRegistry, actor: KvActor, request: Request, params: Record<string, string>) => Promise<unknown>, status = 200) {
   return async (request: Request, context: Context) => {
@@ -17,22 +28,24 @@ export function kvHuman(operation: (registry: KvRegistry, actor: KvActor, reques
       await registry.current(actor);
       const result = await operation(registry, actor, request, context?.params ? await context.params : {});
       return secretResponse(result ?? { success: true }, status);
-    } catch (error) { return secretErrorResponse(error); }
+    } catch (error) { return kvErrorResponse(error); }
   };
 }
 
 export async function kvBody<T>(request: Request, schema: z.ZodType<T>, maximum = KV_BODY_BYTES): Promise<T> {
   const length = request.headers.get("content-length");
   if (length !== null && (!/^\d+$/.test(length) || Number(length) > maximum)) throw new KvError(413, "KV request exceeds the body limit");
-  if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) throw new KvError(400, "JSON request body required");
+  if (request.headers.get("content-type")?.split(";", 1)[0].trim().toLowerCase() !== "application/json") throw new KvError(400, "JSON request body required");
   if (!request.body) throw new KvError(400, "JSON request body required");
   const reader = request.body.getReader(), chunks: Uint8Array[] = [];
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const deadline = new Promise<never>((_, reject) => { timer = setTimeout(() => { reject(new KvError(408, "KV request body timed out")); void reader.cancel().catch(() => {}); }, 20000); });
   let bytes = 0;
   try {
     while (true) {
-      const next = await reader.read(); if (next.done) break;
+      const next = await Promise.race([reader.read(), deadline]); if (next.done) break;
       bytes += next.value.byteLength;
-      if (bytes > maximum) { await reader.cancel(); throw new KvError(413, "KV request exceeds the body limit"); }
+      if (bytes > maximum || chunks.length >= 4096) { await reader.cancel(); throw new KvError(413, "KV request exceeds the body limit"); }
       chunks.push(next.value);
     }
     let value: unknown;
@@ -41,7 +54,7 @@ export async function kvBody<T>(request: Request, schema: z.ZodType<T>, maximum 
     const parsed = schema.safeParse(value);
     if (!parsed.success) throw new KvError(400, "Invalid KV request fields");
     return parsed.data;
-  } finally { reader.releaseLock(); }
+  } finally { clearTimeout(timer); reader.releaseLock(); }
 }
 
 export function metadataCursor(request: Request): string | undefined {

@@ -1,0 +1,105 @@
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { execFileSync,spawn,type ChildProcess } from "node:child_process";
+import { mkdtemp,writeFile,rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+import net,{type AddressInfo} from "node:net";
+import { once } from "node:events";
+import { PrismaClient } from "@prisma/client";
+import { nativeTlsFixture } from "./helpers/native-tls";
+
+test("production native KV routes use verified TLS, exact binary history, fresh policy and legacy isolation",{timeout:120000},async()=>{
+  const dir=await mkdtemp(path.join(tmpdir(),"bortus-kv-http-")),database="file:"+path.join(dir,"test.db").replaceAll("\\","/");
+  const db=new PrismaClient({datasources:{db:{url:database}}});
+  let native:Awaited<ReturnType<typeof nativeTlsFixture>>|undefined,child:ChildProcess|undefined,output="",base="";
+  const stop=async()=>{if(child&&child.exitCode===null){child.kill();await once(child,"exit");}child=undefined;};
+  try {
+    native=await nativeTlsFixture(dir);
+    const aliasFile=path.join(dir,"aliases.json"),alias={alias:"secret_original_under_scored",namespace:"apps",name:"imported",key:"__proto__"};
+    await writeFile(aliasFile,JSON.stringify([alias]));
+    const env:NodeJS.ProcessEnv={...process.env,DATABASE_URL:database,BOTRUS_JWT_SECRET:"synthetic-http-signing-material",BOTRUS_SECRETS_KEY:"synthetic-legacy-lookup-token",BORTUS_SECRET_NAMESPACES:"apps,history",BORTUS_HISTORY_NAMESPACE:"history",BORTUS_KV_GUARDED_ADOPTION:"false",BORTUS_DISABLE_PROVISIONING:"true",KUBECONFIG:native.config,BORTUS_SECRET_ALIASES_FILE:aliasFile,NODE_ENV:"production",HOSTNAME:"127.0.0.1"};
+    delete env.RUST_LOG;delete env.KUBERNETES_SERVICE_HOST;delete env.ALLOW_REGISTRATION;
+    execFileSync(process.execPath,[path.resolve("node_modules/prisma/build/index.js"),"migrate","deploy"],{env,stdio:"pipe"});
+    const server=net.createServer();server.listen(0,"127.0.0.1");await once(server,"listening");env.PORT=String((server.address() as AddressInfo).port);await new Promise<void>(resolve=>server.close(()=>resolve()));
+    base="http://127.0.0.1:"+env.PORT;
+    const start=async(guard:boolean)=>{
+      await stop();env.BORTUS_KV_GUARDED_ADOPTION=String(guard);
+      child=spawn(process.execPath,[path.resolve(".next/standalone/server.js")],{env,stdio:["ignore","pipe","pipe"]});
+      child.stdout?.on("data",chunk=>{output=(output+chunk).slice(-65536);});child.stderr?.on("data",chunk=>{output=(output+chunk).slice(-65536);});
+      for(let attempt=0;attempt<100;attempt++){
+        if(child.exitCode!==null)throw new Error("Disposable KV HTTP server exited");
+        try{if((await fetch(base+"/api/health/live",{signal:AbortSignal.timeout(500)})).ok)return;}catch{}
+        await new Promise(resolve=>setTimeout(resolve,100));
+      }
+      throw new Error("Disposable KV HTTP server not ready");
+    };
+    const request=(route:string,method="GET",body?:unknown,cookie?:string)=>fetch(base+route,{method,headers:{...(cookie?{cookie}:{}),...(body===undefined?{}:{"Content-Type":"application/json"})},body:body===undefined?undefined:JSON.stringify(body),signal:AbortSignal.timeout(15000),redirect:"manual"});
+    const checked=async(response:Response,status=200)=>{assert.equal(response.status,status);assert.match(response.headers.get("cache-control")||"",/no-store/);return response.json();};
+    const login=async(username:string,password:string)=>{const response=await request("/api/auth/login","POST",{username,password});assert.equal(response.status,200);return response.headers.get("set-cookie")!.split(";",1)[0];};
+    await start(false);
+    assert.equal((await request("/api/auth/register","POST",{username:"operator",password:"synthetic-admin-password"})).status,201);
+    const admin=await login("operator","synthetic-admin-password");
+    const account=await db.user.findUniqueOrThrow({where:{username:"operator"}});
+    const readonly=await request("/api/users","POST",{username:"reader",password:"synthetic-reader-password",role:"readonly"},admin);assert.equal(readonly.status,201);
+    const reader=await login("reader","synthetic-reader-password");
+    const scopedResponse=await request("/api/users","POST",{username:"scoped",password:"synthetic-scoped-password",role:"write"},admin);assert.equal(scopedResponse.status,201);const scopedUser=await scopedResponse.json();
+    const scoped=await login("scoped","synthetic-scoped-password");
+    const mount=await checked(await request("/api/kv/mounts","POST",{name:"applications",namespaces:["apps"]},admin),201);
+    const registry=await checked(await request("/api/kv/paths","POST",{mountId:mount.id,path:"services/api/credentials",namespace:"apps",name:"imported",fields:[{field:"__proto__",key:"__proto__"},{field:"binary",key:"constructor"}]},admin),201);
+    const route="/api/kv/paths/"+registry.id;
+    const privateMarker="synthetic unrelated credential marker",binary=Buffer.from([0,255,128,1]).toString("base64");
+    native.seed("apps","imported",Object.fromEntries([["__proto__",Buffer.from("exact imported value").toString("base64")],["constructor",binary],["unrelated",Buffer.from(privateMarker).toString("base64")]]),{metadata:{annotations:{"kubectl.kubernetes.io/last-applied-configuration":privateMarker},managedFields:[{manager:privateMarker}]}});
+    const preview=await checked(await request(route+"/adopt","GET",undefined,admin));assert(!JSON.stringify(preview).includes(privateMarker));
+    const nativeWrites=()=>native!.calls.filter(c=>c.method!=="GET").length;
+    const before=nativeWrites();
+    await checked(await request(route+"/adopt","POST",{resourceVersion:preview.resourceVersion,expectedHead:0,legacyAliases:[alias.alias]},admin),403);assert.equal(nativeWrites(),before);
+    await start(true);
+    const createdPath=await checked(await request("/api/kv/paths","POST",{mountId:mount.id,path:"services/new/empty",namespace:"apps",name:"created-empty",fields:[{field:"empty",key:"empty"}]},admin),201);
+    const createdRoute="/api/kv/paths/"+createdPath.id;
+    const created=await checked(await request(createdRoute+"/data","POST",{resourceVersion:"absent",expectedHead:0,fields:[]},admin),201);assert.equal(created.head,1);
+    assert.deepEqual(native.objects.get("apps/created-empty")!.data,{});
+    const empty=await checked(await request(createdRoute+"/data","GET",undefined,admin));assert.deepEqual(empty.fields,[]);
+    await checked(await request(createdRoute+"/data","POST",{resourceVersion:"absent",expectedHead:0,fields:[]},admin),409);
+    const adopted=await checked(await request(route+"/adopt","POST",{resourceVersion:preview.resourceVersion,expectedHead:0,legacyAliases:[alias.alias]},admin));assert.equal(adopted.head,1);
+    const data=await checked(await request(route+"/data","GET",undefined,admin));
+    assert.equal(data.fields.find((f:any)=>f.field==="__proto__").value,Buffer.from("exact imported value").toString("base64"));assert.equal(data.fields.find((f:any)=>f.field==="binary").value,binary);
+    assert(!JSON.stringify(data).includes(privateMarker));
+    await checked(await request("/api/kv/policies","POST",{principal:"user:"+scopedUser.id,mountId:mount.id,prefix:"services/api",effect:"allow",actions:["list","read","update"]},admin),201);
+    await checked(await request(route+"/data","GET",undefined,scoped));
+    await checked(await request(route+"/data","GET",undefined,reader),403);
+    await checked(await request("/api/secrets?namespace=apps&name=imported&key=__proto__","GET",undefined,scoped),403);
+    await checked(await request(route+"/data","PUT",{resourceVersion:adopted.resourceVersion,fields:[]},scoped),428);
+    await checked(await request(route+"/data","PUT",{resourceVersion:adopted.resourceVersion,expectedHead:0,fields:[]},scoped),409);
+    const changed=await checked(await request(route+"/data","PUT",{resourceVersion:adopted.resourceVersion,expectedHead:1,fields:[{field:"__proto__",encoding:"utf8",value:""},{field:"binary",encoding:"base64",value:binary}]},scoped));assert.equal(changed.head,2);
+    const historical=await checked(await request(route+"/versions/1/data","GET",undefined,admin));assert.equal(historical.fields.find((f:any)=>f.field==="binary").value,binary);assert(!JSON.stringify(historical).includes(privateMarker));
+    const lookup=()=>fetch(base+"/api/vars/lookup?key="+alias.alias,{headers:{authorization:"Bearer synthetic-legacy-lookup-token"},signal:AbortSignal.timeout(15000)});
+    const lookedUp=await checked(await lookup());assert.equal(lookedUp.value,"");
+    await checked(await request("/api/secrets","POST",{namespace:"apps",name:"imported",key:"__proto__",mode:"update",resourceVersion:changed.resourceVersion,value:"flat bypass"},admin),409);
+    const deny=await checked(await request("/api/kv/policies","POST",{principal:"legacy-lookup",mountId:mount.id,prefix:"services/api",effect:"deny",actions:["read"]},admin),201);
+    await checked(await lookup(),403);
+    await checked(await request("/api/kv/policies/"+deny.id,"DELETE",{revision:deny.revision},admin));
+    const head=await checked(await request(route+"/status","GET",undefined,admin));
+    const rollback=await checked(await request(route+"/rollback","POST",{resourceVersion:head.resourceVersion,expectedHead:head.head,version:1},admin));assert.equal(rollback.head,3);
+    const source=native.objects.get("apps/imported")!;source.data!["__proto__"]=Buffer.from("external native change").toString("base64");source.metadata!.resourceVersion="external-drift";
+    await checked(await request(route+"/data","GET",undefined,admin),409);
+    const drift=await checked(await request(route+"/status","GET",undefined,admin));
+    const reconciled=await checked(await request(route+"/reconcile","POST",{resourceVersion:drift.resourceVersion,expectedHead:drift.head},admin));assert.equal(reconciled.head,4);
+    await checked(await request(route+"/data","DELETE",{resourceVersion:reconciled.resourceVersion,expectedHead:4,confirmPath:"wrong"},admin),400);
+    const removed=await checked(await request(route+"/data","DELETE",{resourceVersion:reconciled.resourceVersion,expectedHead:4,confirmPath:registry.path},admin));assert.equal(removed.tombstone,true);
+    assert.deepEqual(Object.keys(native.objects.get("apps/imported")!.data!),["unrelated"]);
+    const op=await checked(await request("/api/kv/operations/"+removed.operationId,"GET",undefined,reader));assert.equal(op.outcome,"committed");assert(!JSON.stringify(op).includes(privateMarker));
+    const histories=[...native.objects.values()].filter(s=>s.metadata?.namespace==="history");assert(histories.length>=5);for(const h of histories){assert(h.immutable);assert(!JSON.stringify(h).includes(privateMarker));}
+    await checked(await request("/api/secrets?namespace=history&name="+histories[0].metadata!.name+"&key=binary","GET",undefined,admin),403);
+    await checked(await request("/api/secret-references","POST",{alias:"forbidden-history",namespace:"history",name:histories[0].metadata!.name,key:"binary"},admin),403);
+    delete native.objects.get("apps/imported")!.metadata!.annotations!["bortus.io/kv-state"];
+    await checked(await request(route+"/adopt","GET",undefined,admin),409);
+    await checked(await request("/api/secrets?namespace=apps&name=imported&key=__proto__","GET",undefined,admin),409);
+    native.objects.delete("apps/imported");const writesBeforeRecreate=nativeWrites();
+    await checked(await request(route+"/data","POST",{resourceVersion:"absent",expectedHead:0,fields:[]},admin),409);assert.equal(nativeWrites(),writesBeforeRecreate);
+    await db.user.update({where:{id:account.id},data:{engineAdmin:false}});
+    await checked(await request(route+"/adopt","GET",undefined,admin),403);
+    await checked(await request("/api/secrets?namespace=apps&name=imported&key=unrelated","GET",undefined,admin),403);
+    assert(!output.includes(privateMarker));assert(!output.includes("exact imported value"));assert(!output.includes("flat bypass"));
+  } finally {await stop();await native?.close();await db.$disconnect();await rm(dir,{recursive:true,force:true});}
+});
