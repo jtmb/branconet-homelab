@@ -56,7 +56,7 @@ Installation or running pods alone does not satisfy this contract. Every criteri
 
 ```mermaid
 flowchart TB
-    Repo["Existing repository<br/>Application charts and individual values"]
+    Repo["Separate branconet-charts repository<br/>Application charts and individual values"]
     CI["One validation pipeline<br/>Lint, rendering, schema and reference checks"]
     Flux["Flux<br/>Source, Kustomize and Helm controllers"]
     Apps["Application releases<br/>Services, routes and pods"]
@@ -235,7 +235,7 @@ At the 21:32 UTC check on 2026-10-09, the three Kubernetes nodes, all 36 HelmRel
 ```mermaid
 flowchart LR
     Repo["Individual charts and values"] --> CI["GitHub chart/composition validation"]
-    CI --> Branch["codex/kubernetes-validated"] --> Flux["Flux source → Kustomization → HelmReleases"]
+    CI --> Branch["branconet-charts validated"] --> Flux["Flux source → Kustomization → HelmReleases"]
     Flux --> Apps["33 native application charts"]
     Native["Kubernetes Secrets<br/>AES-CBC at rest"] --> Apps
     Bortus["BORTUS<br/>native Secrets management"] <--> Native

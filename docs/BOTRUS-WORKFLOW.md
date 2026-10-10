@@ -69,26 +69,20 @@ ansible-playbook playbooks/site.yml --tags kubernetes
 
 ## Deploying Applications (GitOps)
 
-Applications are managed via FluxCD. Apps are organized into two stacks under `charts/`:
+Applications are managed via FluxCD from the separate private `jtmb/branconet-charts` repository. Each retained application has `charts/<name>/Chart.yaml`, its own values and templates, and `flux/releases/<name>.yaml` for effective release overrides.
 
-| Stack | Path | Kustomization CRD |
-|-------|------|-------------------|
-| **test-stack** | `charts/test-stack/` | `test-stack` (test/dev apps) |
-| **media-stack** | `charts/media-stack/` | `media-stack` (media apps) |
-
-Both stacks pull from the same `branconet-charts` GitRepository.
+The existing `migration-releases` Kustomization uses GitRepository `branconet-charts`, path `./flux/releases`, and prune:false. It owns 33 application HelmReleases plus cert-manager and the preserved foundation. GitHub CI validates main and promotes only successful current-main commits to validated. See [Flux contract](FLUX-GITOPS.md).
 
 ### Adding a New App
 
-1. Create a directory under the appropriate stack: `charts/<stack>/my-app/`
-2. Add Kubernetes manifests (`deployment.yaml`, `service.yaml`, `ingress.yaml`, etc.)
-3. Add a `kustomization.yaml` in the app directory
-4. Register the app in the stack's `kustomization.yaml` (e.g., `charts/test-stack/kustomization.yaml`)
-5. Commit and push to the Git repository
-6. Flux polls every 5 minutes; trigger an immediate sync if needed:
+1. Add `charts/my-app/` with Chart.yaml, values.yaml and Helm templates in the charts repository.
+2. Preserve native Secret references and review image, namespaces, release identity, storage and routes.
+3. Add the HelmRelease to `flux/releases/` and its resource entry to that composition's kustomization.yaml.
+4. Update the reviewed inventory/count validation for an authorized scope change. Excluded games stay excluded.
+5. Run local validation and push main; require successful CI and observed Flux/Helm revisions.
+6. Flux polls its source each minute; trigger an immediate sync if needed:
    ```bash
-   kubectl annotate kustomization test-stack -n flux-system \
-     reconcile.fluxcd.io/requestedAt="$(date -Iseconds)" --overwrite
+   flux reconcile kustomization migration-releases -n flux-system --with-source
    ```
 
 ### Checking App Status
@@ -214,14 +208,9 @@ k8s-rewrite/
 │   │   └── db.ts                   # Prisma client
 │   ├── prisma/schema.prisma        # Variable, Node, Job models
 │   └── seed-db.sh                  # Retired helper; use authenticated configuration/Secrets UI
-└── charts/                          # FluxCD-managed apps (dual stack)
-    ├── kustomization.yaml           # Root: references ./test-stack, ./media-stack
-    ├── test-stack/
-    │   ├── kustomization.yaml
-    │   ├── http-echo/
-    │   ├── nginx-hello/
-    │   └── whoami/
-    └── media-stack/
-        ├── kustomization.yaml
-        └── plex/
+└── charts/                          # Retained migration checkpoint; active charts moved
 ```
+
+The active deployment tree is `jtmb/branconet-charts`: `charts/<name>/`,
+`flux/releases/` and `flux/source.yaml`. BORTUS source pushes alone cannot change
+the deployed image; use the reviewed image-release procedure in FLUX-GITOPS.md.

@@ -18,8 +18,9 @@ kubectl top nodes
 
 ## Namespace Convention
 
-Every Flux repository = one namespace with the **same name**.  
-`charts/<name>/` → namespace `<name>`.
+The single active `branconet-charts` Flux source manages multiple namespaces.
+Use each HelmRelease's actual targetNamespace/storageNamespace; several media
+charts share `plex`. Packages are in the separate charts repository at `charts/<name>/`.
 
 ```bash
 kubectl get ns
@@ -28,7 +29,6 @@ kubectl get all -n plex
 kubectl get all -n traefik
 kubectl get all -n whoami
 kubectl get all -n http-echo
-kubectl get all -n nginx-hello
 kubectl get all -n longhorn-system
 kubectl get all -n flux-system
 ```
@@ -146,12 +146,12 @@ kubectl get gitrepositories -n flux-system
 kubectl get kustomizations -n flux-system
 
 # Check Flux health
-kubectl describe gitrepository <name> -n flux-system
-kubectl describe kustomization <name> -n flux-system
+kubectl describe gitrepository branconet-charts -n flux-system
+kubectl describe kustomization migration-releases -n flux-system
+kubectl get helmreleases -n flux-system
 
 # Manually trigger a Flux reconciliation
-kubectl annotate gitrepository <name> -n flux-system \
-  reconcile.fluxcd.io/requestedAt="$(date -Iseconds)" --overwrite
+flux reconcile kustomization migration-releases -n flux-system --with-source
 
 # Suspend / resume Flux for a repo (stops auto-sync)
 kubectl patch kustomization <name> -n flux-system -p '{"spec":{"suspend":true}}' --type=merge

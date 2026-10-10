@@ -1,4 +1,4 @@
-name: Kubernetes migration validation
+name: Archived migration chart validation (no deployment promotion)
 on:
   push:
     branches: [codex/kubernetes-migration]
@@ -25,15 +25,3 @@ jobs:
         run: python scripts/migration/validate-charts.py
       - name: Validate complete Flux manifest composition
         run: ~/.local/share/branconet-migration/bin/kubectl kustomize k8s-rewrite/flux/migration-releases > /dev/null
-  publish-validated-source:
-    if: github.event_name == 'push'
-    needs: charts
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Publish only a successfully validated revision for Flux
-        run: git push origin HEAD:refs/heads/codex/kubernetes-validated

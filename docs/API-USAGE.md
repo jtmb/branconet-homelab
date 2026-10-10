@@ -366,86 +366,30 @@ Get Fleet-style hierarchical tree of all Flux resources. Each GitRepository is a
 curl -b /tmp/botrus-cookies http://localhost:4000/api/flux/hierarchy | jq .
 ```
 
-**Response:**
+**Response (abridged production topology; dynamic metadata omitted):**
 
 ```json
 {
   "trees": [
     {
-      "id": "cm...",
+      "id": "cluster-branconet-charts",
       "name": "branconet-charts",
       "kind": "GitRepository",
-      "url": "https://github.com/jtmb/branconet-homelab.git",
-      "branch": "k8s-rewrite",
-      "path": "./k8s-rewrite/charts",
+      "url": "ssh://git@github.com/jtmb/branconet-charts.git",
+      "branch": "validated",
       "namespace": "flux-system",
       "ready": true,
       "status": "Ready",
-      "lastSync": "2026-06-16T17:34:07Z",
-      "revision": "fb02389c",
-      "authMethod": "none",
       "children": [
         {
-          "id": "ks-...",
-          "name": "media-stack",
+          "id": "ks-migration-releases",
+          "name": "migration-releases",
           "kind": "Kustomization",
-          "path": "./k8s-rewrite/charts/media-stack/",
+          "path": "./flux/releases",
           "namespace": "flux-system",
           "ready": true,
           "status": "Ready",
-          "lastSync": null,
-          "revision": "fb02389c",
-          "children": [
-            {
-              "id": "ns-...",
-              "name": "plex",
-              "kind": "Namespace",
-              "namespace": "plex",
-              "ready": true,
-              "status": "Ready",
-              "children": []
-            }
-          ]
-        },
-        {
-          "id": "ks-...",
-          "name": "test-stack",
-          "kind": "Kustomization",
-          "path": "./k8s-rewrite/charts/test-stack/",
-          "namespace": "flux-system",
-          "ready": true,
-          "status": "Ready",
-          "lastSync": null,
-          "revision": "fb02389c",
-          "children": [
-            {
-              "id": "ns-...",
-              "name": "http-echo",
-              "kind": "Namespace",
-              "namespace": "http-echo",
-              "ready": true,
-              "status": "Ready",
-              "children": []
-            },
-            {
-              "id": "ns-...",
-              "name": "nginx-hello",
-              "kind": "Namespace",
-              "namespace": "nginx-hello",
-              "ready": true,
-              "status": "Ready",
-              "children": []
-            },
-            {
-              "id": "ns-...",
-              "name": "whoami",
-              "kind": "Namespace",
-              "namespace": "whoami",
-              "ready": true,
-              "status": "Ready",
-              "children": []
-            }
-          ]
+          "children": []
         }
       ]
     }

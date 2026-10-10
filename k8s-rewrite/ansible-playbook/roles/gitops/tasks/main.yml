@@ -14,7 +14,12 @@
   ansible.builtin.command: kubectl -n flux-system get deployments -o json
   changed_when: false
 
-- name: Activate the validated migration source after native state recovery
+- name: Require the independently restored native source credential before activation
+  ansible.builtin.command: "kubectl -n flux-system get secret {{ flux_git_secret_name }} -o name"
+  changed_when: false
+  when: flux_activation_enabled | bool
+
+- name: Activate the validated charts source after native state recovery
   ansible.builtin.copy:
     dest: /etc/kubernetes/flux-migration-bootstrap.yaml
     mode: '0644'
@@ -22,13 +27,15 @@
       apiVersion: source.toolkit.fluxcd.io/v1
       kind: GitRepository
       metadata:
-        name: migration-validated
+        name: {{ flux_git_source_name }}
         namespace: flux-system
       spec:
         interval: 1m
         url: {{ flux_git_url }}
         ref:
           branch: {{ flux_git_branch }}
+        secretRef:
+          name: {{ flux_git_secret_name }}
       ---
       apiVersion: kustomize.toolkit.fluxcd.io/v1
       kind: Kustomization
@@ -40,10 +47,11 @@
         timeout: 10m
         path: {{ flux_git_path }}
         prune: false
+        force: false
         wait: true
         sourceRef:
           kind: GitRepository
-          name: migration-validated
+          name: {{ flux_git_source_name }}
   when: flux_activation_enabled | bool
 
 - name: Apply validated-source activation
