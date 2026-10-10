@@ -1,95 +1,44 @@
+import { validateResourceName, KubernetesCommandError, kubectlExec } from "@/lib/k8s";
+import { clusterRoute } from "@/lib/cluster-http";
 import { NextRequest, NextResponse } from "next/server";
-import { kubectlExec } from "@/lib/k8s";
 import { requireWrite } from "@/lib/permissions";
 
-interface PVInfo {
-  name: string;
-  reclaimPolicy: string;
-  status: string;
-  storageClass: string;
-  capacity: string;
-  claimRef: string;
-  age: string;
-}
-
-/**
- * GET /api/cluster/volumes/reclaim
- * List all PVs with their reclaim policies
- */
 export async function GET() {
-  try {
-    const output = await kubectlExec(
-      "get pv -o custom-columns=NAME:.metadata.name,RECLAIM:.spec.persistentVolumeReclaimPolicy,STATUS:.status.phase,STORAGECLASS:.spec.storageClassName,CAPACITY:.spec.capacity.storage,CLAIM:.spec.claimRef.name,AGE:.metadata.creationTimestamp --no-headers",
-      8000,
-    );
-
-    if (!output || !output.trim()) {
-      return NextResponse.json({ volumes: [] });
-    }
-
-    const volumes: PVInfo[] = output
-      .trim()
-      .split("\n")
-      .map((line) => {
-        const parts = line.trim().split(/\s+/);
-        return {
-          name: parts[0] || "",
-          reclaimPolicy: parts[1] || "Retain",
-          status: parts[2] || "Unknown",
-          storageClass: parts[3] || "none",
-          capacity: parts[4] || "",
-          claimRef: parts[5] || "",
-          age: parts.slice(6).join(" ") || "",
-        };
-      })
-      .filter((v) => v.name);
-
+  return clusterRoute(async () => {
+    const output = await kubectlExec([
+      "get", "pv", "-o", "custom-columns=NAME:.metadata.name,RECLAIM:.spec.persistentVolumeReclaimPolicy,STATUS:.status.phase,STORAGECLASS:.spec.storageClassName,CAPACITY:.spec.capacity.storage,CLAIM:.spec.claimRef.name,AGE:.metadata.creationTimestamp", "--no-headers",
+    ], 8000);
+    const volumes = output.trim() ? output.trim().split("\n").map(line => {
+      const parts = line.trim().split(/\s+/);
+      return { name: parts[0], reclaimPolicy: parts[1], status: parts[2], storageClass: parts[3], capacity: parts[4], claimRef: parts[5], age: parts[6] };
+    }) : [];
     return NextResponse.json({ volumes });
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
-  }
+  });
 }
 
-/**
- * PATCH /api/cluster/volumes/reclaim
- * Change reclaim policy of one or more PVs
- * Body: { volumes: [{ name: string, policy: "Retain" | "Delete" | "Recycle" }] }
- */
 export async function PATCH(request: NextRequest) {
-  const auth = await requireWrite();
-  if (auth instanceof NextResponse) return auth;
-
-  try {
+  return clusterRoute(async () => {
+    const auth = await requireWrite();
+    if (auth instanceof NextResponse) return auth;
     const body = await request.json();
+    if (!Array.isArray(body?.volumes) || !body.volumes.length || body.volumes.length > 100)
+      return NextResponse.json({ error: "Specify between 1 and 100 volumes" }, { status: 400 });
     const volumes: { name: string; policy: string }[] = body.volumes;
-
-    if (!volumes || !Array.isArray(volumes) || volumes.length === 0) {
-      return NextResponse.json({ error: "No volumes specified" }, { status: 400 });
+    for (const volume of volumes) {
+      validateResourceName(volume?.name);
+      if (!["Retain", "Delete", "Recycle"].includes(volume?.policy))
+        return NextResponse.json({ error: "Invalid reclaim policy" }, { status: 400 });
     }
-
-    const validPolicies = ["Retain", "Delete", "Recycle"];
-    const results: { name: string; success: boolean; error?: string }[] = [];
-
-    for (const vol of volumes) {
-      if (!validPolicies.includes(vol.policy)) {
-        results.push({ name: vol.name, success: false, error: `Invalid policy: ${vol.policy}` });
-        continue;
-      }
-
+    const results = [];
+    for (const volume of volumes) {
       try {
-        await kubectlExec(
-          `patch pv ${vol.name} -p '{"spec":{"persistentVolumeReclaimPolicy":"${vol.policy}"}}'`,
-          8000,
-        );
-        results.push({ name: vol.name, success: true });
-      } catch (err) {
-        results.push({ name: vol.name, success: false, error: String(err) });
+        await kubectlExec(["patch", "pv", volume.name, "-p", JSON.stringify({ spec: { persistentVolumeReclaimPolicy: volume.policy } })], 8000);
+        results.push({ name: volume.name, success: true });
+      } catch (error) {
+        results.push({ name: volume.name, success: false, error: error instanceof KubernetesCommandError ? error.message : "Volume update unavailable" });
       }
     }
-
-    const allOk = results.every((r) => r.success);
-    return NextResponse.json({ results, success: allOk }, { status: allOk ? 200 : 207 });
-  } catch (err) {
-    return NextResponse.json({ error: String(err) }, { status: 500 });
-  }
+    const success = results.every(result => result.success);
+    return NextResponse.json({ results, success }, { status: success ? 200 : 207 });
+  });
 }

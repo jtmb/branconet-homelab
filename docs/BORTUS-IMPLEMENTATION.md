@@ -11,8 +11,8 @@ An item becomes complete only after implementation and relevant evidence. Local 
 | A01 writer invariant | Serialized SQLite transaction/actor recheck; 12 concurrent demotion/deletion/mixed cases across independent clients | Local acceptance passed; image/live unperformed |
 | A02 account revocation | Current-user/session-version Node middleware; deletion/reset HTTP API/page denial; legacy version-zero compatibility | Local acceptance passed; image/live unperformed |
 | A03 bootstrap invariant | Serialized registration/settings decision; six concurrent client requests and four production HTTP requests; uniqueness 409 | Local acceptance passed; image/live unperformed |
-| A04 argv boundaries | Structured args, resource validation, fake CLI assertions; real kubectl impact remains external | Pending |
-| A05 truthful commands | Typed/sanitized subprocess failure; mutation/Flux callers and failure matrix | Pending |
+| A04 argv boundaries | Structured args, DNS validation, injected argv tests and production HTTP fake CLI rejection | Local acceptance passed; real CLI/image/live unperformed |
+| A05 truthful commands | Typed/sanitized failures; production HTTP failed scale/action/delete/apply/PV and Flux create/cascade | Local acceptance passed; real CLI/image/live unperformed |
 | A06 availability | Explicit unavailable/partial/stale contracts and browser states | Pending |
 | A07 cache cost | Preserve coalescing; per-resource timing/deadlines/backoff/size handling; fixed before/after fixture | Pending |
 | A08 resource capabilities | API/menu capability matrix and supported logs/YAML/actions | Pending |
@@ -46,9 +46,17 @@ Account implementation now includes a seeded account_lock forward migration, tra
 
 Account stage evidence on Windows/Node 24: all 16 unit/transport tests passed (including five new account tests and 12 cross-change races across independent clients). Production build passed with Node middleware. HTTP integration passed in 18.59 s with four concurrent bootstrap requests leaving one writer, exact info exceptions, reset/deleted-cookie denial on ordinary APIs/pages, fresh migration/zero drift and existing native value-safety checks. Typecheck passed after correcting the test-env type to NodeJS.ProcessEnv. A focused follow-up adds explicit pre-version JWT migration/reset coverage. Docker/image/live acceptance remains external.
 
+Account changes committed as 63a0688. The explicit legacy JWT follow-up and typecheck both passed. The kubectl wrapper now accepts structured argv and throws fixed typed errors on nonzero exit/timeout/permission/missing-resource/size failures; caller conversion and route error mapping are in progress. The read JSON compatibility wrapper still maps failures to null until A06 availability work changes that contract.
+
+Command regression coverage now includes preserved JSON/path argument boundaries, DNS/option/path rejection before execution, fixed error mapping and rejection of successful-looking stdout on nonzero exit. Flux cascade stops on discovery/child/namespace errors and no longer attempts the unsupported shell pipeline. Scale is bounded to integer 0–10000. These checks are not yet recorded as passed; production HTTP fake-CLI evidence is being added.
+
+The three focused command tests passed. The HTTP fixture now provides a disposable fake executable on Windows and Linux, logs encoded argv, rejects all mutation commands, and asserts actual route validation/failed scale/action/delete/apply and partial PV results. This fixture cannot contact Kubernetes; real CLI/RBAC/argv behavior still requires separate disposable-cluster evidence.
+
+Final command stage checks passed on Windows/Node 24: 19 unit/transport tests (0 skipped), production build, typecheck, production HTTP integration in 22.22 s. HTTP also verifies Flux apply failure, cascade's active error step, retained recovery metadata and absence of raw command output in responses/server logs. All docs checked; affected API/Flux/workflow/engine/ledger updated. No Docker, real CLI or live test is claimed. Read availability remains A06 work.
+
 ## Native Secrets engine scope decision
 
-The human's answer is pending between Vault-style KV paths/versions/rollback/policies/audit/import-export/rotation workflows and additionally dynamic credentials/PKI/transit. Scope-dependent implementation waits for that answer. Full Vault parity is not claimed.
+The coordinator has stated the working assumption to the human: deliver complete Vault-style KV management (mounts/paths, versions/rollback, policies, audit, import/export, scoped automation and rotation workflows) backed by native Kubernetes Secrets. No direct human answer to the optional broader dynamic credentials/PKI/transit choice has arrived. KV implementation proceeds under that stated assumption; speculative issuers and full HashiCorp API/feature parity are excluded. A later explicit answer may expand the goal.
 
 Design constraints for either choice:
 
@@ -63,6 +71,8 @@ Design constraints for either choice:
 ## Runtime/chart interface for the infrastructure executor
 
 Current inputs remain stable: port 4000, Node 22/Linux standalone image, UID/GID 1000, one replica/Recreate, writable SQLite PVC `/data/bortus.db`, writable framework cache, externally supplied stable `BOTRUS_JWT_SECRET`/`BOTRUS_SECRETS_KEY`, ServiceAccount token/CA or operator kubeconfig, `BORTUS_SECRET_NAMESPACES` and optional metadata-only aliases file. Container provisioning stays disabled. Health paths stay exact public exceptions.
+
+The charts coordinator reports cutover complete: private jtmb/branconet-charts main passes CI to validated; Flux source flux-system/branconet-charts, Kustomization flux-system/migration-releases at ./flux/releases, chart charts/bortus and release overrides flux/releases/bortus.yaml. Live BORTUS remains migration-1438b27. These are reported infrastructure-executor results, not app-executor live checks. Preserve the merged main documentation for that contract when integrating this branch. No app deployment is performed here.
 
 Account fixes add a forward migration for session versions and a SQLite account serialization row. Apply migrations before admitting traffic and take a consistent DB backup; do not reset existing DB. Existing tokens default to version zero for migration compatibility; password resets increment the user's version. Native engine retention/RBAC/env additions will be specified after the scope answer, not guessed into the chart. No Secrets value belongs in Git/Helm values. Current native verbs remain get/list/create/update in every allowed namespace until a reviewed selected design establishes a specific additional need.
 

@@ -1,11 +1,12 @@
-import { kubectlJSON, kubectlExec, hasLocalKubectl, KUBECONFIG_PATH } from "./k8s";
+import { kubectlJSON, kubectlExec, validateNamespace, validateResourceName, KubernetesCommandError } from "./k8s";
 import { createSecretTransport, secretNamespaces } from "./secret-client";
 import { SecretError, secretFailure, validateTarget } from "./cluster-secrets";
 import prisma from "./db";
-import { execFile } from "child_process";
-import { promisify } from "util";
-
-const execFileAsync = promisify(execFile);
+import { dumpYaml } from "@kubernetes/client-node";
+import { writeFile, unlink } from "fs/promises";
+import { tmpdir } from "os";
+import { join } from "path";
+import { randomUUID } from "crypto";
 
 const FLUX_NAMESPACE = "flux-system";
 
@@ -13,8 +14,20 @@ const FLUX_NAMESPACE = "flux-system";
 // Helpers
 // =============================================================================
 
-function buildKubectlCmd(cmd: string): string {
-  return `--namespace ${FLUX_NAMESPACE} ${cmd}`;
+function buildKubectlCmd(args: readonly string[]): string[] {
+  return ["--namespace", FLUX_NAMESPACE, ...args];
+}
+
+async function ignoringMissing(operation: () => Promise<unknown>): Promise<boolean> {
+  try { await operation(); return true; }
+  catch (error) {
+    if (error instanceof KubernetesCommandError && error.status === 404) return false;
+    throw error;
+  }
+}
+
+async function namespaceExists(namespace: string): Promise<boolean> {
+  return ignoringMissing(() => kubectlExec(["get", "namespace", validateNamespace(namespace), "-o", "name"]));
 }
 
 // =============================================================================
@@ -71,7 +84,7 @@ export async function createGitRepository(
   const resource: any = {
     apiVersion: "source.toolkit.fluxcd.io/v1",
     kind: "GitRepository",
-    metadata: { name, namespace: FLUX_NAMESPACE },
+    metadata: { name: validateResourceName(name), namespace: FLUX_NAMESPACE },
     spec: {
       interval,
       url,
@@ -80,10 +93,10 @@ export async function createGitRepository(
   };
 
   if (secretRef) {
-    resource.spec.secretRef = { name: secretRef };
+    resource.spec.secretRef = { name: validateResourceName(secretRef) };
   }
 
-  const yaml = toYaml(resource);
+  const yaml = dumpYaml(resource);
   const result = await kubectlApplyYaml(yaml);
 
   if (!result) {
@@ -104,23 +117,23 @@ export async function createKustomization(
   const resource: any = {
     apiVersion: "kustomize.toolkit.fluxcd.io/v1",
     kind: "Kustomization",
-    metadata: { name, namespace: FLUX_NAMESPACE },
+    metadata: { name: validateResourceName(name), namespace: FLUX_NAMESPACE },
     spec: {
       interval,
       path,
       prune,
       sourceRef: {
         kind: "GitRepository",
-        name: sourceName,
+        name: validateResourceName(sourceName),
       },
     },
   };
 
   if (targetNamespace) {
-    resource.spec.targetNamespace = targetNamespace;
+    resource.spec.targetNamespace = validateNamespace(targetNamespace);
   }
 
-  const yaml = toYaml(resource);
+  const yaml = dumpYaml(resource);
   const result = await kubectlApplyYaml(yaml);
 
   if (!result) {
@@ -177,8 +190,8 @@ export interface FluxRepoStatus {
 export async function getFluxStatus(): Promise<FluxRepoStatus[]> {
   // Fetch both GitRepositories and Kustomizations
   const [gitReposRaw, kustomizationsRaw] = await Promise.all([
-    kubectlJSON( buildKubectlCmd("get gitrepositories -o json")),
-    kubectlJSON( buildKubectlCmd("get kustomizations -o json")),
+    kubectlJSON( buildKubectlCmd(["get", "gitrepositories", "-o", "json"])),
+    kubectlJSON( buildKubectlCmd(["get", "kustomizations", "-o", "json"])),
   ]);
 
   const kustomizations = (kustomizationsRaw?.items || []) as any[];
@@ -222,7 +235,7 @@ export async function getFluxStatus(): Promise<FluxRepoStatus[]> {
 // =============================================================================
 
 export async function triggerSync(name: string): Promise<{ success: boolean; error?: string }> {
-  const cmd = `annotate gitrepository ${name} reconcile.fluxcd.io/requestedAt="${new Date().toISOString()}" --overwrite`;
+  const cmd = ["annotate", "gitrepository", validateResourceName(name), `reconcile.fluxcd.io/requestedAt=${new Date().toISOString()}`, "--overwrite"];
   const result = await kubectlJSON( buildKubectlCmd(cmd));
   if (!result) {
     return { success: false, error: "Failed to trigger sync" };
@@ -256,9 +269,9 @@ export interface FluxTreeNode {
 export async function getFluxHierarchy(): Promise<FluxTreeNode[]> {
   // Fetch all Flux resources + DB records in parallel
   const [gitReposRaw, kustomizationsRaw, helmReleasesRaw, dbRepos] = await Promise.all([
-    kubectlJSON( buildKubectlCmd("get gitrepositories -o json")),
-    kubectlJSON( buildKubectlCmd("get kustomizations -o json")),
-    kubectlJSON( `--all-namespaces get helmreleases -o json`).catch(() => null),
+    kubectlJSON( buildKubectlCmd(["get", "gitrepositories", "-o", "json"])),
+    kubectlJSON( buildKubectlCmd(["get", "kustomizations", "-o", "json"])),
+    kubectlJSON( ["--all-namespaces", "get", "helmreleases", "-o", "json"]).catch(() => null),
     prisma.gitRepo.findMany({ orderBy: { createdAt: "desc" } }),
   ]);
 
@@ -500,6 +513,7 @@ export async function addRepo(data: {
   authMethod?: string;
   authData?: string; // raw credential written only to native Secret
 }): Promise<{ success: boolean; repo?: GitRepoRecord; error?: string }> {
+  validateResourceName(data.name);
   const branch = data.branch || "main";
   const path = data.path || "./";
   const authMethod = data.authMethod || "none";
@@ -589,6 +603,8 @@ export async function removeRepo(
     return { success: false, error: "Repository not found" };
   }
 
+  validateResourceName(name);
+  validateNamespace(ns);
   const deleteId = dbId || `gr-${name}`;
 
   const steps = dbId
@@ -624,7 +640,9 @@ export async function removeRepo(
     const p = deleteProgressMap.get(deleteId);
     if (p) {
       p.done = true;
-      p.error = String(err);
+      p.error = err instanceof KubernetesCommandError ? err.message : "Flux deletion failed";
+      const active = p.steps.find(step => step.status === "running");
+      if (active) { active.status = "error"; active.detail = p.error; }
     }
   });
 
@@ -650,8 +668,9 @@ async function performCascadeDelete(
   const childHelmReleases: { name: string; ns: string }[] = [];
 
   try {
-    const kustRaw = await kubectlJSON( `--all-namespaces get kustomizations`);
-    const kustItems = (kustRaw?.items || []) as any[];
+    const kustRaw = await kubectlJSON( ["--all-namespaces", "get", "kustomizations"]);
+    if (!kustRaw) throw new KubernetesCommandError(503, "Flux discovery unavailable");
+    const kustItems = (kustRaw.items || []) as any[];
     for (const ks of kustItems) {
       const sourceName = ks.spec?.sourceRef?.name;
       // Child if sourceRef.name matches our repo AND the Kustomization itself isn't named the same
@@ -660,18 +679,19 @@ async function performCascadeDelete(
         childKustomizations.push({ name: ks.metadata.name, ns: ks.metadata.namespace || "flux-system" });
       }
     }
-  } catch { /* proceed with what we have */ }
+  } catch (error) { throw error; }
 
   try {
-    const hrRaw = await kubectlJSON( `--all-namespaces get helmreleases`);
-    const hrItems = (hrRaw?.items || []) as any[];
+    const hrRaw = await kubectlJSON( ["--all-namespaces", "get", "helmreleases"]);
+    if (!hrRaw) throw new KubernetesCommandError(503, "Flux discovery unavailable");
+    const hrItems = (hrRaw.items || []) as any[];
     for (const hr of hrItems) {
       const sourceName = hr.spec?.chart?.spec?.sourceRef?.name;
       if (sourceName === name) {
         childHelmReleases.push({ name: hr.metadata.name, ns: hr.metadata.namespace || "default" });
       }
     }
-  } catch { /* proceed */ }
+  } catch (error) { throw error; }
 
   const totalChildren = childKustomizations.length + childHelmReleases.length;
   progress.steps[0].status = "done";
@@ -686,22 +706,22 @@ async function performCascadeDelete(
   // Delete child Kustomizations first (so their managed resources start terminating)
   for (const child of childKustomizations) {
     try {
-      await kubectlExec(`--namespace ${child.ns} delete kustomization ${child.name} --wait=false --ignore-not-found`);
+      await kubectlExec(["--namespace", (validateNamespace(child.ns)), "delete", "kustomization", (validateResourceName(child.name)), "--wait=false", "--ignore-not-found"]);
       deletedChildren++;
       progress.steps[1].detail = `Deleted Kustomization "${child.name}" (${deletedChildren}/${totalChildren})…`;
     } catch (err) {
-      progress.steps[1].detail = `Warning: failed to delete Kustomization "${child.name}": ${String(err)}`;
+      throw err;
     }
   }
 
   // Delete child HelmReleases
   for (const child of childHelmReleases) {
     try {
-      await kubectlExec(`--namespace ${child.ns} delete helmrelease ${child.name} --wait=false --ignore-not-found`);
+      await kubectlExec(["--namespace", (validateNamespace(child.ns)), "delete", "helmrelease", (validateResourceName(child.name)), "--wait=false", "--ignore-not-found"]);
       deletedChildren++;
       progress.steps[1].detail = `Deleted HelmRelease "${child.name}" (${deletedChildren}/${totalChildren})…`;
     } catch (err) {
-      progress.steps[1].detail = `Warning: failed to delete HelmRelease "${child.name}": ${String(err)}`;
+      throw err;
     }
   }
 
@@ -723,28 +743,23 @@ async function performCascadeDelete(
 
   // 2a. Suspend GitRepository FIRST — keep it suspended permanently.
   //     The parent Kustomization will NOT unsuspend a suspended resource on reconcile.
-  let gitrepoSuspended = false;
-  try {
-    await kubectlExec(
-      `--namespace ${FLUX_NAMESPACE} patch gitrepository ${name} --type merge -p {\"spec\":{\"suspend\":true}}`,
-    );
-    gitrepoSuspended = true;
+  const gitrepoSuspended = await ignoringMissing(() => kubectlExec(
+    ["--namespace", FLUX_NAMESPACE, "patch", "gitrepository", validateResourceName(name), "--type", "merge", "-p", JSON.stringify({ spec: { suspend: true } })],
+  ));
+  if (gitrepoSuspended) {
     progress.steps[2].detail = `Suspended GitRepository "${name}" (kept in cluster to prevent recreation)…`;
-  } catch { /* may not exist */ }
+  }
 
   // 2b. Suspend Kustomization so it stops reconciling before deletion
-  try {
-    await kubectlExec(
-      `--namespace ${FLUX_NAMESPACE} patch kustomization ${name} --type merge -p {\"spec\":{\"suspend\":true}}`,
-    );
-    progress.steps[2].detail = `Suspended Kustomization "${name}"…`;
-  } catch { /* may not exist */ }
+  await ignoringMissing(() => kubectlExec(
+    ["--namespace", FLUX_NAMESPACE, "patch", "kustomization", validateResourceName(name), "--type", "merge", "-p", JSON.stringify({ spec: { suspend: true } })],
+  ));
 
   // Brief pause to let controllers register the suspension
   await new Promise((r) => setTimeout(r, 1000));
 
   // 2c. Delete the Kustomization — it won't be recreated (its YAML is NOT in the parent's git path)
-  try { await kubectlExec(`--namespace ${FLUX_NAMESPACE} delete kustomization ${name} --wait=false --ignore-not-found`); } catch {}
+  await kubectlExec(["--namespace", FLUX_NAMESPACE, "delete", "kustomization", validateResourceName(name), "--wait=false", "--ignore-not-found"]);
 
   // 2d. Do NOT delete the GitRepository — parent Kustomization would recreate it unsuspended.
   //     The suspended GitRepository stays in the cluster, inert, and won't show in the dashboard.
@@ -755,7 +770,7 @@ async function performCascadeDelete(
   }
 
   // 2e. Clean up associated secret if present
-  try { await kubectlExec(`--namespace ${FLUX_NAMESPACE} delete secret ${name}-auth --wait=false --ignore-not-found`); } catch {}
+  await kubectlExec(["--namespace", FLUX_NAMESPACE, "delete", "secret", validateResourceName(`${name}-auth`), "--wait=false", "--ignore-not-found"]);
   progress.steps[2].status = "done";
 
   // --- Step 3: Delete namespace with polling ---
@@ -775,84 +790,35 @@ async function performCascadeDelete(
 
     // Capture PV names bound to PVCs in this namespace BEFORE deletion
     const pvOutput = await kubectlExec(
-      `get pvc -n ${namespace} -o custom-columns=PV:.spec.volumeName --no-headers`,
+      ["get", "pvc", "-n", (validateNamespace(namespace)), "-o", "custom-columns=PV:.spec.volumeName", "--no-headers"],
     );
     if (pvOutput) {
       boundPVs.push(
-        ...pvOutput.trim().split("\n").map((l) => l.trim()).filter(Boolean),
+        ...pvOutput.trim().split("\n").map((l) => l.trim()).filter(l => l && l !== "<none>"),
       );
     }
 
-    const deleteResult = await kubectlExec(`delete namespace ${namespace} --wait=false --ignore-not-found`);
-
-    if (deleteResult === null) {
-      const stillThere = await kubectlExec(`get namespace ${namespace} --no-headers`);
-      if (stillThere && stillThere.trim()) {
-        progress.steps[3].status = "error";
-        progress.steps[3].detail = `Failed to issue delete for namespace "${namespace}"`;
-      } else {
-        progress.steps[3].status = "done";
-        progress.steps[3].detail = `Namespace "${namespace}" already gone`;
-      }
-    } else {
-      let deleted = false;
-      for (let i = 0; i < 24; i++) {
-        await new Promise((r) => setTimeout(r, 2500));
-
-        const nsCheck = await kubectlExec(`get namespace ${namespace} --no-headers`);
-        if (!nsCheck || !nsCheck.trim()) {
-          progress.steps[3].status = "done";
-          progress.steps[3].detail = `Namespace "${namespace}" deleted`;
-          deleted = true;
-          break;
-        }
-
-        const pods = await kubectlExec(`get pods -n ${namespace} --no-headers`);
-        const podCount = pods ? pods.trim().split("\n").filter(Boolean).length : 0;
-        if (podCount > 0) {
-          progress.steps[3].detail = `Terminating: ${podCount} pod${podCount !== 1 ? "s" : ""} remaining…`;
-        } else {
-          progress.steps[3].detail = "Waiting for namespace cleanup…";
-        }
-      }
-
-      if (!deleted) {
-        // Force cleanup: remove finalizers, force-delete all pods, then retry
-        try {
-          progress.steps[3].detail = "Force-clearing finalizers…";
-          await kubectlExec(
-            `get namespace ${namespace} -o json | ` +
-            `python3 -c "import sys,json; d=json.load(sys.stdin); d['spec']['finalizers']=[]; json.dump(d,sys.stdout)" | ` +
-            `kubectl replace --raw "/api/v1/namespaces/${namespace}/finalize" -f -`,
-          );
-          // Force-delete any remaining pods
-          await kubectlExec(`delete pods --all -n ${namespace} --force --grace-period=0 --ignore-not-found`);
-        } catch { /* best effort */ }
-
-        // Quick final check
-        const nsCheck = await kubectlExec(`get namespace ${namespace} --no-headers`);
-        if (!nsCheck || !nsCheck.trim()) {
-          progress.steps[3].status = "done";
-          progress.steps[3].detail = `Namespace "${namespace}" deleted (forced)`;
-        } else {
-          progress.steps[3].status = "error";
-          progress.steps[3].detail = `Could not delete namespace "${namespace}" — may need manual cleanup`;
-        }
-      }
+    await kubectlExec(["delete", "namespace", validateNamespace(namespace), "--wait=false", "--ignore-not-found"]);
+    let deleted = false;
+    for (let i = 0; i < 24; i++) {
+      if (!await namespaceExists(namespace)) { deleted = true; break; }
+      progress.steps[3].detail = `Waiting for namespace "${namespace}" cleanup…`;
+      await new Promise((r) => setTimeout(r, 2500));
     }
+    if (!deleted) throw new KubernetesCommandError(504, "Namespace cleanup timed out; inspect finalizers before retrying");
+    progress.steps[3].status = "done";
+    progress.steps[3].detail = `Namespace "${namespace}" deleted`;
   }
 
   // --- Step 4: Clean up orphaned PersistentVolumes ---
   progress.steps[4].status = "running";
   if (boundPVs.length > 0) {
-    const pvList = boundPVs.join(" ");
     try {
-      await kubectlExec(`delete pv ${pvList} --force --grace-period=0 --ignore-not-found`);
+      await kubectlExec(["delete", "pv", ...boundPVs.map(validateResourceName), "--force", "--grace-period=0", "--ignore-not-found"]);
       progress.steps[4].status = "done";
       progress.steps[4].detail = `Deleted ${boundPVs.length} volume${boundPVs.length !== 1 ? "s" : ""}: ${boundPVs.join(", ")}`;
     } catch (err) {
-      progress.steps[4].status = "error";
-      progress.steps[4].detail = `Failed to delete volumes: ${String(err)}`;
+      throw err;
     }
   } else {
     progress.steps[4].status = "done";
@@ -866,8 +832,7 @@ async function performCascadeDelete(
       await prisma.gitRepo.delete({ where: { id: dbId } });
       progress.steps[5].status = "done";
     } catch (err) {
-      progress.steps[5].status = "error";
-      progress.steps[5].detail = String(err);
+      throw err;
     }
   }
 
@@ -920,7 +885,7 @@ export interface BundleSummary {
 }
 
 export async function getGitRepoDetail(name: string): Promise<GitRepoDetail | null> {
-  const repoRaw = await kubectlJSON(`get gitrepository ${name} -n ${FLUX_NAMESPACE} -o json`);
+  const repoRaw = await kubectlJSON(["get", "gitrepository", (validateResourceName(name)), "-n", (FLUX_NAMESPACE), "-o", "json"]);
   if (!repoRaw) return null;
 
   const conditions = (repoRaw.status?.conditions || []).map((c: any) => ({
@@ -943,7 +908,7 @@ export async function getGitRepoDetail(name: string): Promise<GitRepoDetail | nu
   const age = creationTs ? formatAge(Date.now() - new Date(creationTs).getTime()) : null;
 
   // Fetch Kustomizations that reference this repo
-  const kustomizationsRaw = await kubectlJSON(`get kustomizations -n ${FLUX_NAMESPACE} -o json`);
+  const kustomizationsRaw = await kubectlJSON(["get", "kustomizations", "-n", (FLUX_NAMESPACE), "-o", "json"]);
   const kustomizations = (kustomizationsRaw?.items || []) as any[];
   const bundles: BundleSummary[] = [];
   let totalResources = 0;
@@ -1031,7 +996,7 @@ export interface KustomizationDetail {
 }
 
 export async function getKustomizationDetail(name: string): Promise<KustomizationDetail | null> {
-  const ksRaw = await kubectlJSON(`get kustomization ${name} -n ${FLUX_NAMESPACE} -o json`);
+  const ksRaw = await kubectlJSON(["get", "kustomization", (validateResourceName(name)), "-n", (FLUX_NAMESPACE), "-o", "json"]);
   if (!ksRaw) return null;
 
   const conditions = (ksRaw.status?.conditions || []).map((c: any) => ({
@@ -1088,7 +1053,7 @@ async function fetchFluxEvents(
   namespace: string,
 ): Promise<{ type: string; reason: string; message: string; lastTimestamp: string; age: string }[]> {
   const raw = await kubectlExec(
-    `get events -n ${namespace} --field-selector involvedObject.name=${resourceName} --sort-by=.lastTimestamp`,
+    ["get", "events", "-n", (validateNamespace(namespace)), "--field-selector", "involvedObject.name=" + (validateResourceName(resourceName)), "--sort-by=.lastTimestamp"],
   );
   if (!raw) return [];
 
@@ -1131,63 +1096,13 @@ function formatAge(ms: number): string {
   return `${Math.floor(d / 365)}y`;
 }
 
-// =============================================================================
-// Low-level YAML helpers
-// =============================================================================
-
-function toYaml(obj: any, indent = 0): string {
-  const pad = "  ".repeat(indent);
-  let yaml = "";
-
-  for (const [key, value] of Object.entries(obj)) {
-    if (value === null || value === undefined) continue;
-
-    if (Array.isArray(value)) {
-      yaml += `${pad}${key}:\n`;
-      for (const item of value) {
-        if (typeof item === "object" && item !== null) {
-          yaml += `${pad}  - ${toYaml(item, indent + 2).trimStart()}\n`;
-        } else {
-          yaml += `${pad}  - ${item}\n`;
-        }
-      }
-    } else if (typeof value === "object" && value !== null) {
-      yaml += `${pad}${key}:\n${toYaml(value, indent + 1)}`;
-    } else if (typeof value === "boolean") {
-      yaml += `${pad}${key}: ${value}\n`;
-    } else if (typeof value === "number") {
-      yaml += `${pad}${key}: ${value}\n`;
-    } else {
-      const str = String(value);
-      // Quote if contains special YAML chars
-      if (str.includes(":") || str.includes("#") || str.includes("{") || str.includes("[")) {
-        yaml += `${pad}${key}: "${str.replace(/"/g, '\\"')}"\n`;
-      } else {
-        yaml += `${pad}${key}: ${str}\n`;
-      }
-    }
-  }
-
-  return yaml;
-}
-
 async function kubectlApplyYaml(yaml: string): Promise<boolean> {
-  const fileName = `/tmp/flux-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.yaml`;
-
-  if (!hasLocalKubectl()) return false;
-
-  const { writeFile, unlink } = await import("fs/promises");
+  const fileName = join(tmpdir(), `flux-${randomUUID()}.yaml`);
   try {
-    await writeFile(fileName, yaml);
-    const { stdout } = await execFileAsync(
-      "kubectl",
-      [...(process.env.KUBERNETES_SERVICE_HOST && !process.env.KUBECONFIG ? [] : ["--kubeconfig", KUBECONFIG_PATH]), "apply", "-f", fileName],
-      { timeout: 15000 }
-    );
-    try { await unlink(fileName); } catch {}
-    return stdout.includes("created") || stdout.includes("configured") || stdout.includes("unchanged");
-  } catch {
-    try { await unlink(fileName); } catch {}
-    return false;
+    await writeFile(fileName, yaml, { mode: 0o600 });
+    await kubectlExec(["apply", "-f", fileName], 15000);
+    return true;
+  } finally {
+    await unlink(fileName).catch(() => {});
   }
 }

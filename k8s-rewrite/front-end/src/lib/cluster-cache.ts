@@ -75,16 +75,16 @@ function formatAge(ms: number): string {
 async function fetchAllClusterData(): Promise<CachedData | null> {
   const [nodesResult, podsResult, pvResult, pvcResult, longhornResult, scResult, nsResult, svcResult, deployResult, ingressResult] =
     await Promise.all([
-      kubectlJSON("get nodes"),
-      kubectlJSON("get pods -A"),
-      kubectlJSON("get pv"),
-      kubectlJSON("get pvc -A"),
-      kubectlJSON("get volumes.longhorn.io -A", 8000).catch(() => null),
-      kubectlJSON("get sc", 5000).catch(() => null),
-      kubectlJSON("get namespaces", 5000).catch(() => null),
-      kubectlJSON("get services -A", 5000).catch(() => null),
-      kubectlJSON("get deployments -A", 5000).catch(() => null),
-      kubectlJSON("get ingress -A", 5000).catch(() => null),
+      kubectlJSON(["get", "nodes"]),
+      kubectlJSON(["get", "pods", "-A"]),
+      kubectlJSON(["get", "pv"]),
+      kubectlJSON(["get", "pvc", "-A"]),
+      kubectlJSON(["get", "volumes.longhorn.io", "-A"], 8000).catch(() => null),
+      kubectlJSON(["get", "sc"], 5000).catch(() => null),
+      kubectlJSON(["get", "namespaces"], 5000).catch(() => null),
+      kubectlJSON(["get", "services", "-A"], 5000).catch(() => null),
+      kubectlJSON(["get", "deployments", "-A"], 5000).catch(() => null),
+      kubectlJSON(["get", "ingress", "-A"], 5000).catch(() => null),
     ]);
 
   // If even nodes query fails, cluster is unreachable

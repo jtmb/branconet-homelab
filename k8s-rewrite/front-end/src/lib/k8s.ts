@@ -2,6 +2,8 @@ import { execFile } from "child_process";
 import { promisify } from "util";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { homedir } from "os";
+import { createKubectlClient } from "./kubectl-client";
+export { KubernetesCommandError, validateNamespace, validateResourceName } from "./kubectl-client";
 
 const execFileAsync = promisify(execFile);
 
@@ -26,17 +28,13 @@ const SSH_OPTS = [
  * kubeconfig is missing or kubectl fails.
  */
 export async function kubectlJSON(
-  cmd: string,
+  args: readonly string[],
   timeoutMs = 15000
 ): Promise<any | null> {
   if (!hasLocalKubectl()) return null;
 
   try {
-    const { stdout } = await execFileAsync(
-      "kubectl",
-      [...kubectlConfigArgs(), ...cmd.split(" "), "-o", "json"],
-      { timeout: timeoutMs, maxBuffer: 2 * 1024 * 1024 }
-    );
+    const stdout = await kubectlExec([...args, "-o", "json"], timeoutMs);
     if (!stdout.trim()) return null;
     return JSON.parse(stdout);
   } catch {
@@ -72,26 +70,12 @@ export async function sshExec(
  * Execute a raw kubectl command (no -o json). Returns stdout string or null.
  * Requires a local kubeconfig at ~/.kube/config.
  */
-export async function kubectlExec(
-  cmd: string,
-  timeoutMs = 10000
-): Promise<string | null> {
-  if (!hasLocalKubectl()) return null;
-
-  try {
-    const { stdout } = await execFileAsync(
-      "kubectl",
-      [...kubectlConfigArgs(), ...cmd.split(" ")],
-      { timeout: timeoutMs, maxBuffer: 2 * 1024 * 1024 }
-    );
-    return stdout;
-  } catch (err: any) {
-    // kubectl may exit non-zero even on success (e.g. delete prints to stdout then exits 1).
-    // Prefer stdout; fall back to stderr (includes "error: unknown command" etc).
-    const out = err?.stdout?.trim() || err?.stderr?.trim() || null;
-    return out;
-  }
-}
+const kubectl = createKubectlClient(
+  (args, options) => execFileAsync("kubectl", args, options),
+  hasLocalKubectl,
+  kubectlConfigArgs,
+);
+export const kubectlExec = kubectl.exec;
 
 // ── Restricted shell sandbox ──
 const SHELL_HOME = "/home/shell";

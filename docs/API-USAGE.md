@@ -112,7 +112,11 @@ These routes use kubectl with external operator or in-cluster credentials. Clust
 
 The write-role terminal endpoint executes arbitrary shell commands through bash with application-host permissions. It is not restricted to Kubernetes API access. Service/PVC compatibility menus label their JSON detail response as YAML; they do not currently return actual YAML. Pod logs, node YAML/action and ingress YAML menu paths have no matching handlers. See audit A08 for the route/capability gaps.
 
-Current kubectl wrappers split interpolated command strings into argv; unvalidated resource names can become options (audit A04). They also return stderr/stdout from failed commands as a non-null result, so some mutations incorrectly report success (A05). Cluster-list outages can return 200 with empty arrays instead of a distinct unavailable response (A06). Treat these as current limitations to fix, not intended API contracts.
+The remediation wrapper accepts structured argv and throws fixed errors instead of returning failed-command stdout/stderr as success. Resource names and namespaces reject whitespace, flags, separators and invalid DNS forms before CLI invocation. Scale accepts integer replicas from 0 through 10000. Mutation/YAML route errors are mapped to fixed 400/403/404/502/503/504 responses; acceptance is tracked under A04/A05. The read JSON compatibility path still maps errors to null, and cluster-list outages can return 200 with empty arrays pending A06. Historical command splitting/false-success evidence remains in the audit.
+
+Flux handler exceptions also use this fixed error mapper. Cascade progress identifies the failed step and stops cleanup instead of overwriting a failure with a done status.
+
+PV reclaim PATCH validates 1–100 named volumes and policies before any command. Per-volume command failures produce `success:false` and fixed errors; a mixed/failed batch returns 207. Repository creation is a multi-request operation: a failed apply may leave metadata/earlier resources for explicit recovery. Failed cascade deletion retains its DB record.
 
 ## Optional Ansible runner
 

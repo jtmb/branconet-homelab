@@ -1,31 +1,37 @@
+import { validateNamespace, validateResourceName, KubernetesCommandError } from "@/lib/k8s";
+import { clusterRoute } from "@/lib/cluster-http";
 import { NextRequest, NextResponse } from "next/server";
 import { kubectlExec } from "@/lib/k8s";
 import { invalidateCache } from "@/lib/cluster-cache";
 import { requireWrite } from "@/lib/permissions";
-
-export async function POST(
-  request: NextRequest,
-  { params }: { params: Promise<{ namespace: string; name: string }> }
-) {
-  const auth = await requireWrite();
-  if (auth instanceof NextResponse) return auth;
-
-  const { namespace, name } = await params;
-  try {
-    const { replicas } = await request.json();
-    if (typeof replicas !== "number" || replicas < 0) {
-      return NextResponse.json({ error: "Invalid replicas" }, { status: 400 });
-    }
-    const result = await kubectlExec(
-      `scale deployment/${name} -n ${namespace} --replicas=${replicas}`,
-      10000
-    );
-    if (result === null) {
-      return NextResponse.json({ error: "Scale failed" }, { status: 500 });
-    }
-    invalidateCache();
-    return NextResponse.json({ success: true });
-  } catch {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
-  }
+export async function POST(request: NextRequest, { params }: {
+    params: Promise<{
+        namespace: string;
+        name: string;
+    }>;
+}) {
+    return clusterRoute(async () => {
+        const auth = await requireWrite();
+        if (auth instanceof NextResponse)
+            return auth;
+        const { namespace: rawNamespace, name: rawName } = await params;
+        const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);
+        try {
+            const { replicas } = await request.json();
+            if (!Number.isInteger(replicas) || replicas < 0 || replicas > 10000) {
+                return NextResponse.json({ error: "Invalid replicas" }, { status: 400 });
+            }
+            const result = await kubectlExec(["scale", "deployment/" + (validateResourceName(name)), "-n", (validateNamespace(namespace)), "--replicas=" + (replicas)], 10000);
+            if (result === null) {
+                return NextResponse.json({ error: "Scale failed" }, { status: 500 });
+            }
+            invalidateCache();
+            return NextResponse.json({ success: true });
+        }
+        catch (error) {
+            if (error instanceof KubernetesCommandError)
+                throw error;
+            return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+        }
+    });
 }

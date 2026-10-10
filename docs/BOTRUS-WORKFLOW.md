@@ -16,6 +16,8 @@ For an existing database, make a consistent backup and assess migration history 
 
 Use **Configuration** (`/configuration`) for nonsecret SQLite settings. Use **Secrets** (`/secrets`) for native Secret metadata and, as a write user, explicit reveal and key CRUD. Create refuses existing keys; update/delete require the current resourceVersion. Unrelated keys, type and metadata are preserved. Deleting the last Opaque key retains an empty Secret object.
 
+Flux cascade deletion now stops on command/discovery errors and retains its DB inventory record until cleanup succeeds. A namespace that remains after 60 seconds requires manual finalizer investigation; the dashboard does not automatically strip finalizers. See [Flux integration](FLUX-GITOPS.md).
+
 Register exact alias/namespace/name/key mappings using `/api/secret-references` or the alias JSON file. Underscores and path-style aliases are not parsed into destinations. Bearer lookup returns mapped native values or nonsecret configuration; legacy sensitive SQLite rows are excluded, including during outages.
 
 See [API usage](API-USAGE.md), [Secrets engine](SECRETS-ENGINE.md) and [permissions](USER-PERMS.md). Protect browser and Bearer traffic with TLS outside loopback development.

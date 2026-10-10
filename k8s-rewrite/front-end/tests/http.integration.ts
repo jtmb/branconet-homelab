@@ -7,6 +7,7 @@ import path from "node:path";
 import net, { type AddressInfo } from "node:net";
 import { once } from "node:events";
 import { PrismaClient } from "@prisma/client";
+import { fakeKubectl } from "./helpers/fake-kubectl";
 
 test(
   "production HTTP auth, metadata migration, quarantined DB rows and unavailable native lookup",
@@ -31,10 +32,13 @@ test(
     };
     // Some host RUST_LOG settings are incompatible with the Prisma schema engine logger.
     delete env.RUST_LOG;
+    delete env.KUBERNETES_SERVICE_HOST;
     let child: ChildProcess | undefined,
       db: PrismaClient | undefined,
       output = "";
     try {
+      const fixture = await fakeKubectl(dir);
+      Object.assign(env, fixture.env);
       const cli = path.resolve("node_modules/prisma/build/index.js");
       execFileSync(process.execPath, [cli, "migrate", "deploy"], {
         env,
@@ -190,6 +194,56 @@ test(
         (await db.user.findUnique({ where: { username: "testreader" } }))?.role,
         "readonly",
       );
+      const callCount = (await fixture.calls()).length;
+      for (const resource of ["--raw=/api/v1/secrets", "apps --server=https://example.invalid", "a..b", "apps/name"]) {
+        const response = await request(`/api/cluster/namespaces/${encodeURIComponent(resource)}/yaml`, "GET", undefined, reader);
+        assert.equal(response.status, 400);
+      }
+      for (const replicas of [-1, 1.5, 10001, null]) {
+        assert.equal((await request("/api/cluster/deployments/apps/demo/scale", "POST", { replicas }, writer)).status, 400);
+      }
+      assert.equal((await fixture.calls()).length, callCount, "invalid input spawned kubectl");
+      const yamlRead = await request("/api/cluster/namespaces/apps/yaml", "GET", undefined, reader);
+      assert.equal(yamlRead.status, 200);
+      assert.ok((await yamlRead.json()).yaml.includes("kind: Namespace"));
+      const argv = (await fixture.calls()).at(-1)!;
+      assert.deepEqual(argv.slice(2), ["get", "namespace", "apps", "-o", "yaml"]);
+      for (const [url, method, data] of [
+        ["/api/cluster/deployments/apps/demo/scale", "POST", { replicas: 0 }],
+        ["/api/cluster/deployments/apps/demo/action", "POST", { action: "restart" }],
+        ["/api/cluster/pods/apps/demo/delete", "DELETE", undefined],
+        ["/api/cluster/deployments/apps/demo/delete", "DELETE", undefined],
+        ["/api/cluster/namespaces/apps/delete", "DELETE", undefined],
+        ["/api/cluster/namespaces/apps/yaml", "PUT", { yaml: "apiVersion: v1\nkind: Namespace\nmetadata:\n  name: apps\n" }],
+      ] as const) {
+        const response = await request(url, method, data, writer);
+        assert.equal(response.status, 502, url);
+        const result = await response.text();
+        assert.ok(!result.includes("private-command") && !result.includes('"success":true'));
+      }
+      const reclaim = await request("/api/cluster/volumes/reclaim", "PATCH", { volumes: [{ name: "example-pv", policy: "Retain" }] }, writer);
+      assert.equal(reclaim.status, 207);
+      const reclaimBody = await reclaim.json();
+      assert.equal(reclaimBody.success, false);
+      assert.ok(!JSON.stringify(reclaimBody).includes("private-command"));
+      const fluxCreate = await request("/api/flux/repos", "POST", { name: "failed-source", url: "https://example.invalid/repository.git" }, writer);
+      assert.equal(fluxCreate.status, 502);
+      assert.ok(!(await fluxCreate.text()).includes("private-command"));
+      const failedRepo = await db.gitRepo.findUnique({ where: { name: "failed-source" } });
+      assert.ok(failedRepo, "partial repository metadata must remain available for recovery");
+      const fluxDelete = await request(`/api/flux/repos/${failedRepo.id}`, "DELETE", undefined, writer);
+      assert.equal(fluxDelete.status, 200);
+      const deletion = await fluxDelete.json();
+      let progress;
+      for (let attempt = 0; attempt < 20; attempt++) {
+        progress = await (await request(`/api/flux/repos/${deletion.deleteId}/delete-progress`, "GET", undefined, writer)).json();
+        if (progress.done) break;
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      assert.ok(progress?.done && progress.error);
+      assert.equal(progress.steps.find((step: { step: string }) => step.step === "flux_crds").status, "error");
+      assert.ok(!JSON.stringify(progress).includes("private-command"));
+      assert.ok(await db.gitRepo.findUnique({ where: { id: failedRepo.id } }), "failed deletion removed the recovery record");
       const values = await request("/api/vars", "GET", undefined, reader);
       assert.equal(values.status, 200);
       const body = await values.text();
@@ -309,7 +363,7 @@ test(
       assert.ok(
         !output.includes("fake stale DB marker") &&
           !output.includes("fake unmapped DB marker") &&
-          !output.includes("fake-test-password"),
+          !output.includes("fake-test-password") && !output.includes("private-command"),
       );
     } finally {
       if (child && child.exitCode === null) {
