@@ -5,10 +5,12 @@ import collections
 import datetime
 import hashlib
 import json
+import math
 import os
 import pathlib
 import sqlite3
 import sys
+import time
 
 MAX_BYTES = 256 * 1024 * 1024
 MAX_ROWS = 250_000
@@ -22,7 +24,34 @@ def quote(name):
     return '"' + name.replace('"', '""') + '"'
 
 
-def fingerprint(path):
+def check_deadline(deadline):
+    if deadline is not None and time.monotonic() >= deadline:
+        raise SnapshotError("snapshot_comparison_deadline")
+
+
+def operation_deadline(deadline):
+    now = time.monotonic()
+    if deadline is None:
+        return now + 300
+    try:
+        valid = type(deadline) in (int, float) and math.isfinite(deadline) and now < deadline <= now + 300
+    except (ValueError, OverflowError):
+        valid = False
+    if not valid:
+        raise SnapshotError("snapshot_comparison_deadline")
+    return deadline
+
+
+def checked_rows(connection, sql, deadline):
+    check_deadline(deadline)
+    for row in connection.execute(sql):
+        check_deadline(deadline)
+        yield row
+    check_deadline(deadline)
+
+
+def fingerprint(path, deadline=None):
+    check_deadline(deadline)
     if not path.is_file() or path.stat().st_size > MAX_BYTES:
         raise SnapshotError("snapshot_missing_or_too_large")
     for suffix in ("-wal", "-journal"):
@@ -34,6 +63,7 @@ def fingerprint(path):
     received = 0
     with path.open("rb") as stream:
         while block := stream.read(1024 * 1024):
+            check_deadline(deadline)
             received += len(block)
             if received > MAX_BYTES:
                 raise SnapshotError("snapshot_missing_or_too_large")
@@ -43,6 +73,7 @@ def fingerprint(path):
     state = lambda stat: (stat.st_dev, stat.st_ino, stat.st_size, stat.st_mtime_ns)
     if state(before) != state(after):
         raise SnapshotError("snapshot_changed_during_read")
+    check_deadline(deadline)
     return state(after), digest  # Digests remain in memory; never enter reports.
 
 
@@ -57,63 +88,80 @@ def open_snapshot(path):
     return connection
 
 
-def tables(connection):
-    return sorted(row[0] for row in connection.execute(
-        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_stat%'"))
+def tables(connection, deadline=None):
+    return sorted(row[0] for row in checked_rows(connection,
+        "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_stat%'", deadline))
 
 
-def columns(connection, name):
-    return [row[1] for row in connection.execute("PRAGMA table_info(" + quote(name) + ")")]
+def columns(connection, name, deadline=None):
+    return [row[1] for row in checked_rows(connection, "PRAGMA table_info(" + quote(name) + ")", deadline)]
 
 
-def rows(connection, name, selected):
-    count = connection.execute("SELECT count(*) FROM " + quote(name)).fetchone()[0]
+def rows(connection, name, selected, deadline=None):
+    count = next(checked_rows(connection, "SELECT count(*) FROM " + quote(name), deadline))[0]
     if count > MAX_ROWS:
         raise SnapshotError("table_row_limit_exceeded")
-    return collections.Counter(connection.execute(
-        "SELECT " + ",".join(quote(column) for column in selected) + " FROM " + quote(name)))
+    return collections.Counter(checked_rows(connection,
+        "SELECT " + ",".join(quote(column) for column in selected) + " FROM " + quote(name), deadline))
 
 
-def schema(connection):
-    return list(connection.execute(
+def schema(connection, deadline=None):
+    return list(checked_rows(connection,
         "SELECT type,name,tbl_name,sql FROM sqlite_master "
-        "WHERE name NOT LIKE 'sqlite_stat%' ORDER BY type,name"))
+        "WHERE name NOT LIKE 'sqlite_stat%' ORDER BY type,name", deadline))
 
 
-def compare(source_path, target_path, mode):
+def multiset_counts(original, current, deadline):
+    missing = added = source_count = target_count = 0
+    for row, count in original.items():
+        check_deadline(deadline)
+        source_count += count
+        missing += max(0, count - current[row])
+    for row, count in current.items():
+        check_deadline(deadline)
+        target_count += count
+        added += max(0, count - original[row])
+    return missing, added, source_count, target_count
+
+
+def _compare(source_path, target_path, mode, *, deadline=None):
+    deadline = operation_deadline(deadline)
     source_path, target_path = source_path.resolve(), target_path.resolve()
     if source_path == target_path or os.path.samefile(source_path, target_path):
         raise SnapshotError("independent_snapshots_required")
-    initial = (fingerprint(source_path), fingerprint(target_path))
+    initial = (fingerprint(source_path, deadline), fingerprint(target_path, deadline))
     source = target = None
     try:
         source = open_snapshot(source_path)
+        source.set_progress_handler(lambda: int(time.monotonic() >= deadline), 1000)
+        check_deadline(deadline)
         target = open_snapshot(target_path)
-        integrity = [list(db.execute("PRAGMA integrity_check")) == [("ok",)]
+        target.set_progress_handler(lambda: int(time.monotonic() >= deadline), 1000)
+        integrity = [list(checked_rows(db, "PRAGMA integrity_check", deadline)) == [("ok",)]
                      for db in (source, target)]
-        foreign_keys = [not list(db.execute("PRAGMA foreign_key_check"))
+        foreign_keys = [not list(checked_rows(db, "PRAGMA foreign_key_check", deadline))
                         for db in (source, target)]
-        source_tables, target_tables = tables(source), tables(target)
+        source_tables, target_tables = tables(source, deadline), tables(target, deadline)
         required_tables = {"users", "secret_references", "_prisma_migrations"}
         if not required_tables.issubset(source_tables) or not required_tables.issubset(target_tables):
             raise SnapshotError("bortus_schema_required")
         account_columns = {"id", "username", "passwordHash", "role"}
-        if not account_columns.issubset(columns(source, "users")):
+        if not account_columns.issubset(columns(source, "users", deadline)):
             raise SnapshotError("account_schema_unrecognized")
         checks = []
         for name in source_tables:
-            original_columns = columns(source, name)
-            target_columns = columns(target, name) if name in target_tables else []
+            check_deadline(deadline)
+            original_columns = columns(source, name, deadline)
+            target_columns = columns(target, name, deadline) if name in target_tables else []
             present = name in target_tables
             preserved_columns = set(original_columns).issubset(target_columns)
             item = {"table": name, "present": present,
                     "sourceColumnsPreserved": preserved_columns}
             if present and preserved_columns:
-                original = rows(source, name, original_columns)
-                current = rows(target, name, original_columns)
-                missing = sum((original - current).values())
-                added = sum((current - original).values())
-                item.update(sourceRows=sum(original.values()), targetRows=sum(current.values()),
+                original = rows(source, name, original_columns, deadline)
+                current = rows(target, name, original_columns, deadline)
+                missing, added, source_count, target_count = multiset_counts(original, current, deadline)
+                item.update(sourceRows=source_count, targetRows=target_count,
                             missingOrChangedRows=missing, additionalRows=added,
                             passed=missing == 0 and (mode == "forward" or added == 0))
             else:
@@ -122,23 +170,23 @@ def compare(source_path, target_path, mode):
         # Legacy users acquire sessionVersion=0; existing versions must never reset.
         session_default = None
         if "users" in source_tables and "users" in target_tables:
-            old_columns, new_columns = columns(source, "users"), columns(target, "users")
+            old_columns, new_columns = columns(source, "users", deadline), columns(target, "users", deadline)
             if "sessionVersion" not in old_columns and "sessionVersion" in new_columns:
                 if "id" not in old_columns:
                     raise SnapshotError("account_schema_unrecognized")
-                old_ids = {row[0] for row in source.execute('SELECT id FROM users')}
+                old_ids = {row[0] for row in checked_rows(source, 'SELECT id FROM users', deadline)}
                 session_default = all(version == 0 for identity, version in
-                                      target.execute('SELECT id,sessionVersion FROM users')
+                                      checked_rows(target, 'SELECT id,sessionVersion FROM users', deadline)
                                       if identity in old_ids)
-        same_schema = schema(source) == schema(target)
+        same_schema = schema(source, deadline) == schema(target, deadline)
         migration_complete = None
         if "_prisma_migrations" in target_tables:
             needed = {"finished_at", "rolled_back_at"}
-            if not needed.issubset(columns(target, "_prisma_migrations")):
+            if not needed.issubset(columns(target, "_prisma_migrations", deadline)):
                 raise SnapshotError("migration_schema_unrecognized")
-            migration_complete = not target.execute(
+            migration_complete = not list(checked_rows(target,
                 'SELECT 1 FROM _prisma_migrations WHERE finished_at IS NULL '
-                'AND rolled_back_at IS NULL LIMIT 1').fetchone()
+                'AND rolled_back_at IS NULL LIMIT 1', deadline))
         passed = (all(integrity) and all(foreign_keys) and all(c["passed"] for c in checks)
                   and session_default is not False and migration_complete is not False
                   and (mode == "forward" or (same_schema and source_tables == target_tables)))
@@ -149,13 +197,27 @@ def compare(source_path, target_path, mode):
                   "targetMigrationsTerminal": migration_complete,
                   "sourceTableCount": len(source_tables), "targetTableCount": len(target_tables),
                   "tables": checks}
+        check_deadline(deadline)
+    except sqlite3.Error:
+        check_deadline(deadline)
+        raise
     finally:
         for connection in (source, target):
             if connection is not None:
                 connection.close()
-    if initial != (fingerprint(source_path), fingerprint(target_path)):
+    if initial != (fingerprint(source_path, deadline), fingerprint(target_path, deadline)):
         raise SnapshotError("snapshot_changed_during_comparison")
     return result
+
+
+def compare(source_path, target_path, mode, *, deadline=None):
+    """Library boundary: expose only fixed failure codes, never SQLite or path errors."""
+    try:
+        return _compare(source_path, target_path, mode, deadline=deadline)
+    except SnapshotError:
+        raise
+    except (sqlite3.Error, OSError, ValueError, OverflowError):
+        raise SnapshotError("snapshot_comparison_failed") from None
 
 
 def main():

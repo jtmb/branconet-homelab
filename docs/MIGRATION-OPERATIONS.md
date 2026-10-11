@@ -262,6 +262,43 @@ A fresh encrypted etcd recovery checkpoint after game removal restored all 339 c
 
 ## Final BORTUS KV release gates
 
+The normalization and complete-row comparison libraries accept a caller's absolute
+`time.monotonic()` deadline through the keyword `deadline`. It must be finite,
+unexpired and at most 300 seconds away. Pass the same deadline to both normalizations
+and the recovery comparison; a later step cannot renew the remaining whole-operation
+budget. Normalization also retains its `seconds` cap (default 60, maximum 300),
+using the earlier limit. Comparison defaults to 300 seconds for standalone callers.
+Fingerprint blocks, row iteration, multiset counts and SQLite VM progress check
+the budget; failures never publish successful comparison metadata. These are
+cooperative checks, not a guarantee against an operating-system I/O stall.
+The public comparison library, as well as its CLI, returns only fixed failure
+codes for SQLite and filesystem errors; backend exception text is never reported.
+Archive encryption pins the owned mode700 output directory (or duplicates a
+caller-supplied `directory_fd`) and exclusively creates a mode600 regular file.
+Authentication reads ciphertext through stdin from that same retained file
+descriptor; hashing rewinds that descriptor. Before and after those reads it
+rechecks pathname-to-inode binding, owner, mode, link count, size and timestamps.
+Substitution or modification refuses acceptance and preserves encrypted partials.
+The file and directory entry are flushed before an accepted archive report.
+The original cold-capture wrapper passes its already pinned checkpoint journal
+directory descriptor; independent recovery must pass its own owned run descriptor.
+Local regressions exercise valid ciphertext replacement both before decryption
+and after authentication, same-inode modification after authentication, rejected
+directory ownership and cleanup of the exact source/age child handles. These
+disposable fixture cases do not prove live checkpoint or restore acceptance.
+Normalization pins its newly created mode700 tmpfs directory identity before
+fallible initialization, so an initialization failure can clean only that owned
+partial directory. Full recovery still requires the executable coordinator and
+independent live data proof; local helper qualification cannot replace either.
+
+The [integrated local qualification](../evidence/bortus-restored-consumer-integration-20261011.json)
+records 271 BORTUS helper, 13 complete-row comparison, 11 normalization and eight
+encrypted archive cases passing with unchanged inputs and no skips. It includes
+actual age/SQLite/tmpfs public fixtures and local TLS tests. Node, Docker, SSH,
+operator credential reads and production mutations were not executed.
+
+The selected pure [restored-consumer fence](BORTUS-RESTORED-CONSUMER-FENCE.md) supplies the current distinct PVC/PV/Longhorn mapping, complete physical-PV alias inventory, exact owned Engine/two running RW Replicas and sole inert read-only holder checks. The executor must supply fresh complete authenticated metadata, independently trusted source/target/image identities and the durable completion observation. Recheck before and after streaming; compare each selected name/UID/namespace across observations, allowing opaque RVs to advance. Its return grants metadata eligibility only. It does not perform the restore, prove the image/admission/runtime or authenticate and compare data.
+
 Immutable image delivery uses the [qualified builder](BORTUS-RELEASE-IMAGE.md) followed by the separate [export/preload coordinator](BORTUS-RELEASE-STAGING.md). Supply exact independently verified completed receipt hashes, full source commit and config ID; hold exclusive builder/tag/import ownership. Export checks the source before/after Docker save, and sequential imports verify actual manifest/config/layer identity on each fixed node. Config ID and OCI/runtime digest remain distinct. Durable local/remote pending intents precede dispatch; an existing stage/tag, lost reply or failed validation stops further work without replay or automatic cleanup. The source tools and disposable fixtures are preparation only. Actual image scanning, three preloads, compatible inert holder/runtime acceptance and guarded release remain required.
 
 The 2026-10-11 01:11:50 UTC [read-only refresh](../evidence/bortus-release-preflight-20261011T011150Z.json) confirms that production still uses `bortus:migration-1438b27`, the legacy `bortus` ServiceAccount and the original `bortus-data` claim. All three nodes and 34 HelmReleases are Ready; native admission policies and bindings are absent. This is the accepted migration runtime, not the new KV engine. Application development continues under two scoped sub-agents, with final release operations owned by the migration coordinator.

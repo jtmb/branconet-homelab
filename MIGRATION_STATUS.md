@@ -270,3 +270,22 @@ Root retains and independently verifies the exact [six-record `3f9b21cd` compari
 The [selected export/preload integration](evidence/bortus-release-staging-integration-20261011.json) verifies native `15fb94ba` against seven raw files/modes, 86 retained original artifacts, two exact dependencies and final 26 focused/64 combined tests. Root integrates only the selected helpers, tests, dedicated documentation/evidence and current deployment/operations cross-links. All 249 current BORTUS migration-helper cases pass under WSL without skips and with unchanged source inputs. Actual SSH/Docker/sudo/containerd export/import remain unexecuted; staging tooling does not qualify a runtime, holder, data or final release.
 
 The [independent Linux qualification](evidence/bortus-linux-functional-3f9-20261011.json) verifies 45 artifact copies, all 37 original paired/10 functional artifacts and 420 exact baseline/candidate Git blobs/modes from the two retained archives. Original terminal/logs prove 197 units and four HTTP suites passed without skips on read-only inputs with no network. The first root-verifier receipt byte comparison failed on literal LF-to-CRLF checkout conversion; the actual failure is retained and the corrected verifier explicitly binds both byte forms, without rerunning or altering original tests. Performance acceptance remains false. Bounded outside-source profiling informs the app subagent's next explicit metadata-summary transport candidate; full qualification is still required. Healthy restored-consumer fencing, actual independent full-row data restore, guarded image/RBAC/admission cutover and final live acceptance remain open.
+
+## 2026-10-11 07:45 UTC: restored-consumer and data-library qualification
+
+The [integrated recovery helper evidence](evidence/bortus-restored-consumer-integration-20261011.json)
+binds selected native `4e960e04` (four exact files and 37 original artifacts) and
+root's shared-deadline, fixed-error, initialization-cleanup and pinned-ciphertext
+changes. All 303 local cases pass without skips: 271 BORTUS helpers, 13 complete-row
+comparisons, 11 actual age/SQLite/tmpfs normalization cases and eight archive cases.
+The recovery multiset oracle is unchanged. Metadata fencing requires distinct owned
+storage, two owned running RW replicas with exact address mappings and the sole
+inert holder; it grants neither historical restore completion nor data acceptance.
+
+All seven old BORTUS work chats are verified archived. Coordination continues in
+this chat with the application and native review subagents. The application
+subagent has functionally qualified its explicit metadata-summary candidate;
+unchanged paired performance qualification remains pending. No new release image,
+production mutation, restored data read or source retirement occurred. Executable
+fresh-restore coordination, full independent data recovery, guarded RBAC/admission
+cutover and final live acceptance remain open.

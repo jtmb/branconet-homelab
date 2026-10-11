@@ -6,7 +6,9 @@ import sqlite3
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
+from unittest import mock
 
 SOURCE = pathlib.Path(__file__).resolve().parents[1] / "compare-bortus-databases.py"
 SPEC = importlib.util.spec_from_file_location("database_preservation", SOURCE)
@@ -111,10 +113,10 @@ class PreservationTests(unittest.TestCase):
         wal.unlink()
         original_fingerprint = AUDIT.fingerprint
         calls = 0
-        def changed(path):
+        def changed(path, deadline=None):
             nonlocal calls
             calls += 1
-            state, digest = original_fingerprint(path)
+            state, digest = original_fingerprint(path, deadline)
             return (state, b"changed") if calls == 4 else (state, digest)
         AUDIT.fingerprint = changed
         try:
@@ -163,12 +165,70 @@ class PreservationTests(unittest.TestCase):
             return connection
         AUDIT.open_snapshot = failed_second
         try:
-            with self.assertRaises(sqlite3.DatabaseError):
+            with self.assertRaisesRegex(AUDIT.SnapshotError, '^snapshot_comparison_failed$') as refusal:
                 AUDIT.compare(self.source, self.target, "forward")
+            self.assertNotIn(PRIVATE, str(refusal.exception))
         finally:
             AUDIT.open_snapshot = original_open
         with self.assertRaises(sqlite3.ProgrammingError):
             opened[0].execute('SELECT 1')
+
+    def test_expired_nonfinite_and_overlong_deadlines_refuse_before_read(self):
+        now = time.monotonic()
+        for deadline in (now - 1, now + 301, float('nan'), float('inf'), True, '300', 10 ** 1000):
+            with self.subTest(kind=type(deadline).__name__), \
+                    mock.patch.object(AUDIT, 'fingerprint') as fingerprint, \
+                    self.assertRaisesRegex(AUDIT.SnapshotError, '^snapshot_comparison_deadline$'):
+                AUDIT.compare(self.source, self.target, 'recovery', deadline=deadline)
+            fingerprint.assert_not_called()
+
+    def test_shared_deadline_is_preserved_and_expiry_during_hash_refuses(self):
+        deadline = time.monotonic() + 30
+        with mock.patch.object(AUDIT, 'fingerprint', wraps=AUDIT.fingerprint) as fingerprint:
+            self.assertTrue(AUDIT.compare(self.source, self.target, 'recovery', deadline=deadline)['passed'])
+        self.assertEqual([call.args[1] for call in fingerprint.call_args_list], [deadline] * 4)
+        # First check passes; the first actual file block is read when the budget expires.
+        with mock.patch.object(AUDIT.time, 'monotonic', side_effect=[deadline - 1, deadline]), \
+                self.assertRaisesRegex(AUDIT.SnapshotError, '^snapshot_comparison_deadline$'):
+            AUDIT.fingerprint(self.source, deadline)
+
+    def test_row_iteration_and_multiset_count_checks_deadline(self):
+        deadline = time.monotonic() + 30
+        with contextlib.closing(AUDIT.open_snapshot(self.source)) as connection:
+            iterator = AUDIT.checked_rows(connection, 'SELECT value FROM variables', deadline)
+            self.assertEqual(next(iterator), (PRIVATE.encode(),))
+            with mock.patch.object(AUDIT.time, 'monotonic', return_value=deadline), \
+                    self.assertRaisesRegex(AUDIT.SnapshotError, '^snapshot_comparison_deadline$'):
+                next(iterator)
+        with mock.patch.object(AUDIT.time, 'monotonic', return_value=deadline), \
+                self.assertRaisesRegex(AUDIT.SnapshotError, '^snapshot_comparison_deadline$'):
+            AUDIT.multiset_counts({('public',): 2}, {('public',): 1}, deadline)
+
+    def test_sqlite_vm_interrupts_before_aggregate_result_and_closes_both_connections(self):
+        opened = []
+        original_open = AUDIT.open_snapshot
+        deadline = time.monotonic() + 30
+        clock = [deadline - 1]
+        def tracked(path):
+            db = original_open(path)
+            opened.append(db)
+            return db
+        def aggregate(connection, sql, budget):
+            # No row is produced before ~1M recursive VM operations; only the actual
+            # installed progress handler can stop this query before its aggregate.
+            clock[0] = deadline
+            connection.execute('WITH RECURSIVE n(x) AS (VALUES(1) UNION ALL '
+                               'SELECT x+1 FROM n WHERE x<1000000) SELECT sum(x) FROM n').fetchone()
+            raise AssertionError('SQLite VM deadline was not enforced')
+        with mock.patch.object(AUDIT, 'open_snapshot', side_effect=tracked), \
+                mock.patch.object(AUDIT.time, 'monotonic', side_effect=lambda: clock[0]), \
+                mock.patch.object(AUDIT, 'checked_rows', side_effect=aggregate), \
+                self.assertRaisesRegex(AUDIT.SnapshotError, '^snapshot_comparison_deadline$'):
+            AUDIT.compare(self.source, self.target, 'recovery', deadline=deadline)
+        self.assertEqual(len(opened), 2)
+        for connection in opened:
+            with self.assertRaises(sqlite3.ProgrammingError):
+                connection.execute('SELECT 1')
 
 
 if __name__ == "__main__":

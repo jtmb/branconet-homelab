@@ -128,6 +128,65 @@ class NormalizationTests(unittest.TestCase):
             self.restore(target, seconds=0)
         self.cleaned()
 
+    def test_shared_deadline_is_not_renewed_and_invalid_deadlines_never_spawn(self):
+        target = self.encrypt(frame(self.database_files()))
+        now = time.monotonic()
+        for deadline in (now - 1, now + 301, float('inf'), float('nan'), True, '300', 10 ** 1000):
+            with self.subTest(kind=type(deadline).__name__), \
+                    mock.patch.object(recovery.subprocess, 'Popen') as spawn, \
+                    self.assertRaisesRegex(recovery.RecoveryError, '^sqlite_archive_normalization_failed$'):
+                self.restore(target, deadline=deadline)
+            spawn.assert_not_called()
+        observed = []
+        original_pipe = archive.Pipe
+        def pinned_pipe(stream, deadline, reading):
+            observed.append(deadline)
+            return original_pipe(stream, deadline, reading)
+        deadline = time.monotonic() + 30
+        with mock.patch.object(archive, 'Pipe', side_effect=pinned_pipe):
+            report = self.restore(target, deadline=deadline, seconds=300)
+        try:
+            self.assertEqual(observed, [deadline])
+        finally:
+            recovery.cleanup(report['temporary_directory'], report['temporary_directory_identity'])
+        self.cleaned()
+
+    def test_failure_after_mkdtemp_cleans_the_pinned_owned_directory_without_spawn(self):
+        target = self.encrypt(frame(self.database_files()))
+        with mock.patch.object(pathlib.Path, 'chmod', side_effect=OSError('PUBLIC_INITIALIZATION_FAILURE')), \
+                mock.patch.object(recovery.subprocess, 'Popen') as spawn, \
+                self.assertRaisesRegex(recovery.RecoveryError, '^sqlite_archive_normalization_failed$'):
+            self.restore(target)
+        spawn.assert_not_called()
+        self.cleaned()
+
+    def test_expiry_after_authenticated_read_cleans_tmpfs_and_reaps_owned_child(self):
+        target = self.encrypt(frame(self.database_files(wal=True)))
+        deadline = time.monotonic() + 30
+        original_transfer = archive.transfer
+        original_popen = subprocess.Popen
+        owned = []
+        original_monotonic = time.monotonic
+        clock = [None]
+        def spawn(*args, **kwargs):
+            process = original_popen(*args, **kwargs)
+            owned.append(process)
+            return process
+        def expire(*args, **kwargs):
+            result = original_transfer(*args, **kwargs)
+            clock[0] = deadline
+            return result
+        with mock.patch.object(recovery.subprocess, 'Popen', side_effect=spawn), \
+                mock.patch.object(archive, 'transfer', side_effect=expire), \
+                mock.patch.object(recovery.time, 'monotonic',
+                    side_effect=lambda: original_monotonic() if clock[0] is None else clock[0]), \
+                self.assertRaisesRegex(recovery.RecoveryError, '^sqlite_archive_normalization_failed$'):
+            self.restore(target, deadline=deadline)
+        self.assertEqual(len(owned), 1)
+        self.assertIsNotNone(owned[0].poll())
+        self.assertTrue(owned[0].stdout.closed)
+        self.cleaned()
+
     def test_authenticated_but_bad_framing_and_invalid_database_never_leave_plaintext(self):
         files = self.database_files()
         for data in (frame(files) + b'EXTRA', frame(files)[:-3],

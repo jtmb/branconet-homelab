@@ -6,6 +6,7 @@ import json
 import os
 import pathlib
 import selectors
+import stat
 import struct
 import subprocess
 import time
@@ -167,15 +168,47 @@ def stop_owned(process):
             process.wait(timeout=3)
 
 
-def encrypt_source(source, target, age, recipient_file, identity_file, deadline):
+def encrypt_source(source, target, age, recipient_file, identity_file, deadline, *, directory_fd=None):
     """Own child handles and encrypted partials; failed artifacts are never accepted."""
     target = pathlib.Path(target)
     encryptor = decryptor = None
+    parent_fd = None
     pipes = []
     try:
-        require(not os.path.lexists(target))
-        fd = os.open(target, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-        with os.fdopen(fd, 'wb') as out:
+        parent_fd = os.dup(directory_fd) if directory_fd is not None else os.open(
+            target.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+        parent = os.fstat(parent_fd)
+        require(stat.S_ISDIR(parent.st_mode) and parent.st_uid == os.getuid() and
+                stat.S_IMODE(parent.st_mode) == 0o700)
+        parent_identity = (parent.st_dev, parent.st_ino, parent.st_uid)
+
+        def verify_parent():
+            for item in (os.fstat(parent_fd), target.parent.lstat()):
+                require(stat.S_ISDIR(item.st_mode) and stat.S_IMODE(item.st_mode) == 0o700 and
+                        (item.st_dev, item.st_ino, item.st_uid) == parent_identity)
+
+        verify_parent()
+        fd = os.open(target.name, os.O_CREAT | os.O_EXCL | os.O_RDWR | os.O_NOFOLLOW | os.O_NONBLOCK,
+                     0o600, dir_fd=parent_fd)
+        with os.fdopen(fd, 'w+b', buffering=0) as out:
+            created = os.fstat(out.fileno())
+            created_identity = (created.st_dev, created.st_ino, created.st_uid)
+
+            def verify_ciphertext(expected=None):
+                verify_parent()
+                current = os.fstat(out.fileno())
+                named = os.stat(target.name, dir_fd=parent_fd, follow_symlinks=False)
+                for item in (current, named):
+                    require(stat.S_ISREG(item.st_mode) and stat.S_IMODE(item.st_mode) == 0o600 and
+                            item.st_nlink == 1 and item.st_size <= MAX_TOTAL + 1024 * 1024 and
+                            (item.st_dev, item.st_ino, item.st_uid) == created_identity)
+                    if expected is not None:
+                        require(all(getattr(item, key) == getattr(expected, key) for key in
+                                    ('st_dev', 'st_ino', 'st_size', 'st_mtime_ns', 'st_ctime_ns')))
+                require(time.monotonic() < deadline)
+                return current
+
+            verify_ciphertext()
             encryptor = subprocess.Popen([str(age), '-R', str(recipient_file)], stdin=subprocess.PIPE,
                 stdout=out, stderr=subprocess.DEVNULL)
             reader = Pipe(source.stdout, deadline, True)
@@ -187,18 +220,24 @@ def encrypt_source(source, target, age, recipient_file, identity_file, deadline)
             require(encryptor.wait(timeout=max(0.01, deadline - time.monotonic())) == 0)
             out.flush()
             os.fsync(out.fileno())
-        decryptor = subprocess.Popen([str(age), '-d', '-i', str(identity_file), str(target)],
-            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-        recovered = Pipe(decryptor.stdout, deadline, True)
-        pipes.append(recovered)
-        restored_metadata, restored_digest = transfer(recovered, None)
-        require(decryptor.wait(timeout=max(0.01, deadline - time.monotonic())) == 0 and
-                restored_metadata == metadata and hmac.compare_digest(restored_digest, digest))
-        encrypted_hash = hashlib.sha256()
-        with target.open('rb') as stream:
-            while block := stream.read(CHUNK):
+            encrypted_state = verify_ciphertext()
+            os.fsync(parent_fd)
+            out.seek(0)
+            decryptor = subprocess.Popen([str(age), '-d', '-i', str(identity_file)],
+                stdin=out, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            recovered = Pipe(decryptor.stdout, deadline, True)
+            pipes.append(recovered)
+            restored_metadata, restored_digest = transfer(recovered, None)
+            require(decryptor.wait(timeout=max(0.01, deadline - time.monotonic())) == 0 and
+                    restored_metadata == metadata and hmac.compare_digest(restored_digest, digest))
+            verify_ciphertext(encrypted_state)
+            encrypted_hash = hashlib.sha256()
+            out.seek(0)
+            while block := out.read(CHUNK):
+                require(time.monotonic() < deadline)
                 encrypted_hash.update(block)
-        require(time.monotonic() < deadline)
+            verify_ciphertext(encrypted_state)
+            os.fsync(parent_fd)
         return {'artifact': str(target), 'ciphertext_sha256': encrypted_hash.hexdigest(),
                 'files': metadata['files'], 'plaintext_bytes': metadata['total_bytes'],
                 'authenticated_decryption_equal': True, 'plaintext_persisted': False,
@@ -214,6 +253,8 @@ def encrypt_source(source, target, age, recipient_file, identity_file, deadline)
                 for stream in (process.stdin, process.stdout, process.stderr):
                     if stream and not stream.closed:
                         stream.close()
+        if parent_fd is not None:
+            os.close(parent_fd)
 
 
 def capture(checkpoint):
@@ -228,7 +269,8 @@ def capture(checkpoint):
         source.stdin.close()
         result = encrypt_source(source, checkpoint.journal.directory / 'sqlite-files.age',
             runtime / 'bin/age', pathlib.Path.home() / '.ssh/id_ed25519.pub',
-            pathlib.Path.home() / '.ssh/id_ed25519', time.monotonic() + 300)
+            pathlib.Path.home() / '.ssh/id_ed25519', time.monotonic() + 300,
+            directory_fd=checkpoint.journal.directory_fd)
         require(checkpoint.cold())
         run_id = checkpoint.r['run_id']
         require(len(run_id) == 12 and all(c in '0123456789abcdef' for c in run_id))

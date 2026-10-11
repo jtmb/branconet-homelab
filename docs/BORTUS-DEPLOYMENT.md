@@ -47,6 +47,16 @@ Multiple aliases can reference a key; one alias cannot reference multiple target
 
 ## Bootstrap/recovery
 
+The [restored-consumer metadata fence](BORTUS-RESTORED-CONSUMER-FENCE.md)
+checks distinct owned PVC/PV/Longhorn identities, two owned running RW replicas
+and the sole qualified inert holder before and after a recovery read. It does
+not prove historical completion or data equality. The
+[recovery helper qualification](../evidence/bortus-restored-consumer-integration-20261011.json)
+binds the integrated fence and shared-deadline, pinned-ciphertext and complete-row
+comparison libraries to 303 local passing tests. Real watch continuity,
+independent restored data equality, qualified image and final live acceptance
+remain required; see [migration operations](MIGRATION-OPERATIONS.md).
+
 The `/secrets` editor uses the existing dark dashboard layout, explicit value reveal and versioned writes. `/configuration` edits nonsecret variables separately. `/api/health/live` and `/api/health/ready` are exact public probe paths; readiness checks signing/lookup env, migrated SQLite and Kubernetes access across the namespace allowlist.
 
 Keep operator kubeconfig, SSH keys and provisioning credentials independently available in a protected operator environment/offline store. Creating a cluster cannot depend on its unavailable Secrets. Container provisioning is disabled; migration runs Ansible externally. Local Ansible integration retains Bearer lookup for mapped native Secrets/nonsecret config. Supply bootstrap credentials independently, and use `no_log` for sensitive tasks. See `SECRETS-ENGINE.md`.

@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import importlib.util
 import json
+import math
 import os
 import pathlib
 import sqlite3
@@ -104,12 +105,16 @@ def validate_wal(directory, deadline):
         return committed_size
 
 
-def normalize(source, expected_ciphertext_sha256, identity_file, *, age, parent='/dev/shm', seconds=60):
+def normalize(source, expected_ciphertext_sha256, identity_file, *, age, parent='/dev/shm', seconds=60,
+              deadline=None):
     directory = directory_identity = decryptor = reader = connection = None
-    deadline = time.monotonic() + seconds
     try:
-        parent = tmpfs_parent(parent)
         require(type(seconds) is int and 1 <= seconds <= 300)
+        now = time.monotonic()
+        require(deadline is None or (type(deadline) in (int, float) and math.isfinite(deadline) and
+                                    now < deadline <= now + 300))
+        deadline = min(now + seconds, deadline) if deadline is not None else now + seconds
+        parent = tmpfs_parent(parent)
         require(len(expected_ciphertext_sha256) == 64 and
                 all(c in '0123456789abcdef' for c in expected_ciphertext_sha256))
         fd = os.open(source, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
@@ -123,8 +128,11 @@ def normalize(source, expected_ciphertext_sha256, identity_file, *, age, parent=
             require(cipher_hash.hexdigest() == expected_ciphertext_sha256)
             encrypted.seek(0)
             directory = pathlib.Path(tempfile.mkdtemp(prefix='bortus-sqlite-', dir=parent))
-            directory.chmod(0o700)
             directory_identity = identity(directory)
+            # mkdtemp creates mode700; pin ownership before fallible initialization.
+            require(directory_identity[2] == os.getuid() and
+                    stat.S_IMODE(directory.lstat().st_mode) == 0o700)
+            directory.chmod(0o700)
 
             def file_factory(name, size):
                 require(identity(directory) == directory_identity and name in archive.FILES)

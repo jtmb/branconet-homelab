@@ -104,6 +104,13 @@ and complete independently authenticated archive/normalized row equality, checke
 before/after streaming. Cleanup needs its separate fresh UID/RV and durable intent.
 This library does not supply that remaining coordinator or data acceptance.
 
+The separate pure [restored-consumer fence](BORTUS-RESTORED-CONSUMER-FENCE.md)
+checks current mapping, complete physical-PV alias inventory, exact owned running
+Engine/two RW Replicas and the sole inert read-only holder. Its metadata result
+does not replace this watch's actual same-UID completion provenance. Repeat both
+contracts before and after the bounded data read; preserve owned UID continuity
+while allowing current resourceVersions to advance.
+
 The local suite uses a freshly generated disposable localhost certificate and
 owned loopback HTTPS server, real POSIX files/fsync plus synthetic API callbacks.
 It does not contact Kubernetes or read databases/Secrets, launch Node/browser/
