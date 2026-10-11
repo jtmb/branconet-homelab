@@ -145,7 +145,12 @@ def prepared(client=None):
     def sleep(seconds):
         clock[0] += seconds
 
-    return client, journal, module.Checkpoint(client, journal, sleep, lambda: clock[0])
+    def simulated_archive(operation):
+        assert operation.cold()
+        return {'authenticated_decryption_equal': True, 'nas_ciphertext_equal': True,
+                'plaintext_persisted': False, 'files': ['bortus.db'], 'synthetic_fixture': True}
+
+    return client, journal, module.Checkpoint(client, journal, sleep, lambda: clock[0], simulated_archive)
 
 
 class ColdCheckpointTests(unittest.TestCase):
@@ -164,7 +169,9 @@ class ColdCheckpointTests(unittest.TestCase):
             self.assertTrue(report['owned_holder_removed'])
             self.assertFalse(report['independent_restore_proven'])
             self.assertFalse(report['sqlite_preservation_proven'])
-            self.assertEqual(report['database_or_secret_reads'], 0)
+            self.assertTrue(report['database_byte_reads'])
+            self.assertEqual(report['database_or_secret_reads'], 1)
+            self.assertEqual(report['native_secret_reads'], 0)
             self.assertEqual(client.resources['deployment']['spec']['replicas'], 1)
             self.assertEqual(client.resources['helmrelease']['spec'].get('suspend', False), initially_suspended)
             self.assertEqual(client.resources['kustomization']['spec'].get('suspend', False), initially_suspended)
@@ -227,6 +234,24 @@ class ColdCheckpointTests(unittest.TestCase):
         self.assertTrue(journal.record['writer_resumed_ready'])
         self.assertFalse(any(c[:2] == ('create', 'Backup') for c in client.calls))
         self.assertFalse(any(c[0] == 'delete-holder' for c in client.calls))
+
+    def test_failed_encrypted_archive_resumes_writer_without_snapshot_or_backup(self):
+        client, journal, operation = prepared()
+
+        def fail_archive(checkpoint):
+            self.assertTrue(checkpoint.cold())
+            raise RuntimeError('PRIVATE_TRANSFER_FAILURE')
+
+        operation.archive = fail_archive
+        with self.assertRaises(RuntimeError):
+            operation.capture()
+        self.assertEqual(journal.record['sqlite_archive_state'], 'pending')
+        self.assertTrue(journal.record['writer_resumed_ready'])
+        self.assertFalse(journal.record['database_byte_reads'])
+        self.assertTrue(journal.record['database_byte_read_attempted'])
+        self.assertIsNone(journal.record['database_or_secret_reads'])
+        self.assertFalse(any(c[:2] in (('create', 'Snapshot'), ('create', 'Backup')) for c in client.calls))
+        self.assertNotIn('PRIVATE_TRANSFER_FAILURE', json.dumps(journal.record))
 
     def test_foreign_consumer_blocks_capture_and_unsafe_resume(self):
         client, journal, operation = prepared()

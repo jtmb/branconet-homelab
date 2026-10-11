@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fenced BORTUS-only Longhorn cold checkpoint. No SQLite or Secret reads."""
+"""Fenced BORTUS-only encrypted SQLite/Longhorn checkpoint. No native Secret reads."""
 import argparse
 import datetime
 import importlib.util
@@ -24,6 +24,14 @@ RESOURCES = {
     'deployment': ('deployment', 'bortus', 'bortus', 'replicas'),
     'helmrelease': ('helmrelease', 'bortus', 'flux-system', 'suspend'),
     'kustomization': ('kustomization', 'migration-releases', 'flux-system', 'suspend')}
+
+
+def archive_sqlite(checkpoint):
+    spec = importlib.util.spec_from_file_location('bortus_sqlite_archive',
+        pathlib.Path(__file__).with_name('bortus-sqlite-archive.py'))
+    archive = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(archive)
+    return archive.capture(checkpoint)
 
 
 def now():
@@ -137,12 +145,13 @@ class Journal:
 
 
 class Checkpoint:
-    def __init__(self, client, journal, sleep=time.sleep, monotonic=time.monotonic):
+    def __init__(self, client, journal, sleep=time.sleep, monotonic=time.monotonic, archive=archive_sqlite):
         self.client = client
         self.journal = journal
         self.r = journal.record
         self.sleep = sleep
         self.monotonic = monotonic
+        self.archive = archive
 
     def wait(self, predicate, seconds):
         deadline = self.monotonic() + seconds
@@ -347,6 +356,19 @@ class Checkpoint:
                     self.control(key, False, True)
             self.control('deployment', 1, 0)
             self.wait(self.cold, 180)
+            self.r['sqlite_archive_state'] = 'pending'
+            self.r['database_byte_read_attempted'] = True
+            self.r['database_or_secret_reads'] = None
+            self.journal.save()
+            result = self.archive(self)
+            require(result.get('authenticated_decryption_equal') is True and
+                    result.get('nas_ciphertext_equal') is True and result.get('plaintext_persisted') is False,
+                    'Encrypted SQLite archive not verified')
+            self.r['sqlite_archive'] = result
+            self.r['sqlite_archive_state'] = 'confirmed'
+            self.r['database_byte_reads'] = True
+            self.r['database_or_secret_reads'] = len(result['files'])
+            self.journal.save()
             snapshot = {'apiVersion': 'longhorn.io/v1beta2', 'kind': 'Snapshot',
                 'metadata': {'name': self.r['snapshot_name'], 'namespace': 'longhorn-system',
                              'labels': {'bortus-checkpoint': self.r['run_id']}},
@@ -439,6 +461,8 @@ def prepare(client, expected, image, run_id):
         'backup_name': 'backup-' + run_id, 'cold_snapshot_ready': False,
         'encrypted_nas_backup_complete': False, 'writer_resumed_ready': False,
         'reconcile_flags_restored': False, 'database_or_secret_reads': 0,
+        'database_byte_reads': False, 'native_secret_reads': 0,
+        'database_byte_read_attempted': False,
         'independent_restore_proven': False, 'sqlite_preservation_proven': False}
 
 
