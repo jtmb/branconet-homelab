@@ -1,0 +1,47 @@
+{
+  "observed_at_utc": "2026-10-11T03:04:09.5206423Z",
+  "scope": "Local clean chart checkout packaging and existing guard regressions; no publication or deployment",
+  "repository": "jtmb/branconet-charts",
+  "branch": "codex/bortus-release-coordinator",
+  "source_commit": "c6d87fe2bf311c5a00d57774c7b9a395d59e99da",
+  "tracked_checkout_clean_before_and_after": true,
+  "installer": {
+    "command": "python scripts/install-tools.py",
+    "exit_code": 0,
+    "console_record": "a17f1f",
+    "fixed_upstream_archive_checksums_verified": true
+  },
+  "binary_sha256": {
+    "gitleaks": "88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+    "helm": "57ce7fc4ea77b28ee6fa91ae071abcade74d3f524e80c9decff5877a5ac8eda4",
+    "kubectl": "65691ff77eb6fa44c908b77a1082c9f092c3b9733b5cefabec0d1104890e21a8"
+  },
+  "validation": {
+    "command": "python3 scripts/validate.py",
+    "runtime": "Ubuntu WSL, Python 3, PyYAML 6.0.3",
+    "exit_code": 0,
+    "terminal_console_record": "c3df3d",
+    "report": "bortus-chart-validation-20261011.json",
+    "report_bytes": 5327,
+    "report_sha256": "ef2291e3b7bc67ac81d89b4564a0b010b4400a1956e72067f5afa743be080e29",
+    "chart_count": 33,
+    "helmrelease_count": 34,
+    "foundation_composition_resources": 64,
+    "credential_scan_passed": true,
+    "effective_rendering_passed": true,
+    "original_rendered_equivalence": null
+  },
+  "guard_regressions": {
+    "command": "python3 -m unittest discover -s scripts -p 'test_*.py'",
+    "exit_code": 0,
+    "test_count": 17,
+    "elapsed_seconds": 2.860,
+    "console_record": "06e992"
+  },
+  "limitations": [
+    "The source contains documentation corrections only relative to a82a6cb; the final guarded image/RBAC/admission release is not integrated.",
+    "No original-render equivalence option was supplied; the earlier extraction comparison is a separate historical checkpoint.",
+    "No CI promotion, remote source update, cluster request, admission enforcement or failure/recovery test was performed.",
+    "Application polling, accessibility, performance and final combined image acceptance remain open."
+  ]
+}

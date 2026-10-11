@@ -234,8 +234,8 @@ At the 21:32 UTC check on 2026-10-09, the three Kubernetes nodes, all 36 HelmRel
 
 ```mermaid
 flowchart LR
-    Repo["Individual charts and values"] --> CI["GitHub chart/composition validation"]
-    CI --> Branch["codex/kubernetes-validated"] --> Flux["Flux source → Kustomization → HelmReleases"]
+    Repo["jtmb/branconet-charts<br/>individual charts and values on main"] --> CI["Successful current-main chart/composition validation"]
+    CI --> Branch["validated + immutable commit tag"] --> Flux["branconet-charts source → migration-releases → HelmReleases"]
     Flux --> Apps["33 native application charts"]
     Native["Kubernetes Secrets<br/>AES-CBC at rest"] --> Apps
     Bortus["BORTUS<br/>native Secrets management"] <--> Native
