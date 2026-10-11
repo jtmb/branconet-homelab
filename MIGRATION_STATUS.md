@@ -691,3 +691,17 @@ actual exit1 and uncertain receipt are retained. Root inspected the remote
 receipt, source-after identity and local/remote wrapper closure. Other nodes
 were not attempted. A corrected fresh-owner operation needs separate review;
 the partial attempt is not adopted as three-node success or replayed.
+
+
+## 2026-10-11 13:31 UTC: accepted legacy digest caches completed
+
+[The legacy cache operation](evidence/bortus-legacy-digest-cache-20261011.json)
+completed actual0 on all three nodes after the corrected stage-name helper was
+reviewed. The first failed intent remains separate and unaccepted. Exact archive,
+config,15 layers and digest aliases agree, with owned process/helper closure.
+No app rollout or original data change occurred. The existing writer's literal
+imageID is its config; a separate digest-referenced disposable runtime remains
+required. The BORTUS-only chart proposal passed local validation and root source/
+render review; corrected docs and all other release payloads are verified. It
+remains uncommitted/unpublished pending runtime proof. Source historical1438
+provenance and final KV/schema compatibility remain explicitly distinct.

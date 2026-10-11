@@ -346,3 +346,31 @@ individually verified historical three-word public prose match, with no
 suppression or untriaged selected finding. Two older whole-history provenance
 gaps remain unresolved. Earlier partial scan/exporter failures remain preserved
 and unqualified. Final image and A07/A21 performance acceptance remain open.
+
+
+## Accepted legacy image digest-cache maintenance prerequisite
+
+The [actual legacy cache receipt](../evidence/bortus-legacy-digest-cache-20261011.json)
+binds the retained1438 archive/config and15 ordered layers to manifest3b076
+on all three nodes. Source1438 is recorded historical provenance only; this
+older build is not retroactively granted the new five-label qualification.
+The first operation retained actual exit1 after its first node's tag succeeded:
+a second verification reused an exclusive journal filename. Root inspected its
+remote intent/source-after verification and local/remote wrapper closure;
+the partial receipt was never adopted as three-node success or replayed.
+
+A reviewed corrected wrapper used distinct source/alias stage names and a fresh
+owner. Actual exit0 at13:28:52 UTC verified the first exact existing alias and
+created the two absent aliases without force. Each source and alias retained
+config/platform/layer identity. All four Linux identities and exact Windows
+launcher are absent; all45 frozen preparation files were independently rehashed.
+There was no import, application startup, production schema or Secret operation.
+
+The existing Ready writer reports literal config imageIDa8f40 with a mutable
+tag. That is not normalized into the required repo@3b076 runtime proof. A
+separate disposable public-fixture qualification is required before CI/Flux
+pins the same accepted legacy bytes. This is a pre-schema maintenance step;
+1438 cannot be a final KV rollback image and must leave every active allowlist
+before a forward-schema entrypoint can touch the original claim. Full-row
+production restoration, final image/performance/security and live acceptance
+remain separate requirements.
