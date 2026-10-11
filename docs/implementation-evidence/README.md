@@ -198,3 +198,6 @@ Resource mutation lifecycle evidence is being qualified separately from immutabl
 
 
 The YAML save rendered-identity follow-up is separate from the immutable59ce11-check package. The new deferred-effect fixture reproduces replacement/ABA late-close on that exact source; one ordinary callback-rerender control passes. Candidate ownership adds immediate open/yaml/title/readOnly identity fencing without comparing callback functions. Three new deferred-effect checks/all14 affected hook checks, fresh types and selected lint passed; [separate qualification](yaml-save-render-identity/qualification.json) retains the actual negative and byte binding; no production/browser/performance pass is inferred.
+
+
+Settings permission lifetime has a separate actual-source local negative (late registration success/refetch after withdrawal and permission ABA). The new optional enabled client task scope is used only by Settings; prior14-hook YAML proof remains immutable. Four Settings/seven affected controls, fresh types and corrected selected lint passed with normal owned cleanup. [Separate qualification](settings-mutation-lifetime/qualification.json) retains the original negative, fixture parsing failure and original lint scope; no server permission exception, mutation retry, production/browser/performance pass is claimed.

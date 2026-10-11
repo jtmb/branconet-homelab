@@ -13,7 +13,7 @@ export default function SettingsPage() {
   const session = useSession();
   const settings = useQuery<Record<string, string>>("/api/settings");
   const volumes = useQuery<{ volumes: PV[] }>("/api/cluster/volumes/reclaim", 15000);
-  const mutation = useMutation();
+  const mutation = useMutation(session.canWrite);
   const [mode, setMode] = useState<ViewMode>("comfortable");
   const [selected, setSelected] = useState<PV>();
   const [policy, setPolicy] = useState("Retain");
