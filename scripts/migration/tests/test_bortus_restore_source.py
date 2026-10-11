@@ -213,5 +213,17 @@ class SourceTests(unittest.TestCase):
         self.assertEqual(len(list(pathlib.Path('/proc/self/fd').iterdir())), before)
         self.refuse(lambda: source.check(deadline=time.monotonic()+5), 'ownership')
 
+    def test_directory_fstat_failure_closes_every_just_opened_descriptor(self):
+        before = len(list(pathlib.Path('/proc/self/fd').iterdir()))
+        original_fstat = os.fstat
+        calls = 0
+        def fault(fd):
+            nonlocal calls
+            calls += 1
+            if calls == 2: raise OSError('PRIVATE_SYNTHETIC_DIRECTORY_FSTAT')
+            return original_fstat(fd)
+        with mock.patch.object(module.os, 'fstat', fault): self.refuse(self.open, 'ownership')
+        self.assertEqual(len(list(pathlib.Path('/proc/self/fd').iterdir())), before)
+
 
 if __name__ == '__main__': unittest.main()

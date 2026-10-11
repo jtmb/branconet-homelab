@@ -113,6 +113,15 @@ preflight and repeat-source checks remain separate; neither authorizes an image,
 mutation or restore by itself. See the
 [source-fence integration evidence](../evidence/bortus-restore-source-integration-20261011.json).
 
+Native review subsequently found a just-opened directory FD could escape cleanup
+if the following `fstat` failed before anchor registration. The retained actual
+13-case regression run reproduced one leaked descriptor. Directory descriptors
+are now registered immediately after `open`, before any fallible identity check;
+anchor validation remains separate. All 13 corrected source-fence tests pass on
+frozen inputs with an actual zero exit. The original 12/365 receipts continue to
+describe their earlier sources; see the
+[constructor correction evidence](../evidence/bortus-restore-source-init-correction-20261011.json).
+
 The native immutable handoff at `6e4e9668` passes 30 focused and 179 combined
 cases. Its default scanner exits 1 for one individually reviewed invalid public
 PEM fixture, not zero findings; original errors and review remain retained.

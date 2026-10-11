@@ -1,0 +1,129 @@
+{
+  "scope": "SourceFence directory-fstat initialization cleanup correction; local only",
+  "captured_at_utc": "2026-10-11T08:37:36.108167+00:00",
+  "review": "Native subagent found gap; root reproduced actual one-FD leak before correction",
+  "original_actual_failure": {
+    "command": [
+      "wsl",
+      "-d",
+      "Ubuntu",
+      "-u",
+      "brajam",
+      "--cd",
+      "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+      "--",
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts/migration/tests",
+      "-p",
+      "test_bortus_restore_source.py",
+      "-v"
+    ],
+    "started_at_utc": "2026-10-11T08:35:36.166065+00:00",
+    "completed_at_utc": "2026-10-11T08:35:41.624402+00:00",
+    "actual_exit_code": 1,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "047dc75d16abeec6eb7e994666f874643778892c4dc99afb6bf2d71bc1d863d4",
+    "source_manifest_sha256": "f03849bddac435b50441df47ff516e9c7c6e9e631808aee09336ce921a753e54",
+    "input_source_unchanged": true,
+    "scope": "Pure/POSIX/local TLS/disposable age/SQLite fixtures; no Node/Docker/SSH/production calls"
+  },
+  "corrected_actual_result": {
+    "command": [
+      "wsl",
+      "-d",
+      "Ubuntu",
+      "-u",
+      "brajam",
+      "--cd",
+      "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+      "--",
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts/migration/tests",
+      "-p",
+      "test_bortus_restore_source.py",
+      "-v"
+    ],
+    "started_at_utc": "2026-10-11T08:36:10.873282+00:00",
+    "completed_at_utc": "2026-10-11T08:36:17.151137+00:00",
+    "actual_exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "2f1b9fb80c9073bf540ecda19534e8fe0634a96e50aeccbfa39e2ceee0edc44f",
+    "source_manifest_sha256": "bb465587bd99f20a645ca9a459676e4216015265e461b02243496f2a7b985937",
+    "input_source_unchanged": true,
+    "scope": "Pure/POSIX/local TLS/disposable age/SQLite fixtures; no Node/Docker/SSH/production calls"
+  },
+  "original_log_sha256": "047dc75d16abeec6eb7e994666f874643778892c4dc99afb6bf2d71bc1d863d4",
+  "corrected_log_sha256": "2f1b9fb80c9073bf540ecda19534e8fe0634a96e50aeccbfa39e2ceee0edc44f",
+  "corrected_test_count": 13,
+  "all_corrected_source_inputs_unchanged": true,
+  "original_and_corrected_sources_retained": true,
+  "scan": {
+    "actual_exit_code": 0,
+    "findings": 0,
+    "inputs": [
+      {
+        "path": "scripts/migration/bortus-restore-source.py",
+        "bytes": 8584,
+        "sha256": "46992e6981cff72c2baacc61638660076da59be8c7bd261b7f8de4e3eb060c30"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_restore_source.py",
+        "bytes": 11996,
+        "sha256": "1edcce4c14df14bf80908c0db39fd3788d965aa384d15ae791604071508bea26"
+      },
+      {
+        "path": "docs/BORTUS-OPERATOR-MTLS.md",
+        "bytes": 9859,
+        "sha256": "0bf4b9038f221720fd191db416f33b3c66e8b3f0227674bc4e1c80c2fcf49851"
+      },
+      {
+        "path": "docs/MIGRATION-OPERATIONS.md",
+        "bytes": 98526,
+        "sha256": "9b5c15279afaf8693a0775cd0d6e87c932864b7164d92d283f4253d20468de65"
+      },
+      {
+        "path": "MIGRATION_STATUS.md",
+        "bytes": 89861,
+        "sha256": "78b5304c80ae0b4c78f00ddb2f58e048b43b3ca39a1129979f5c126365dd64eb"
+      }
+    ],
+    "command": [
+      "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-native-window-tools-70320914\\bin\\gitleaks.exe",
+      "dir",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-source-20261011\\scan-init-v2\\input",
+      "--redact",
+      "--no-banner",
+      "--report-format",
+      "json",
+      "--report-path",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-source-20261011\\scan-init-v2\\report.json"
+    ],
+    "scanner_sha256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "4d1df704a7b932a478df18eca2af517e454d87b44160b61dde3ae48a8e6c0621",
+    "configuration": "Pinned default rules; no exclusions or allowlists; five exact inputs only"
+  },
+  "protected_artifacts": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-source-20261011",
+  "production_access_or_mutation": false,
+  "acceptance": {
+    "local_source_init_cleanup": true,
+    "actual_restore_image_cutover": false
+  },
+  "limits": [
+    "Earlier 12/365 qualification remains bound to earlier source",
+    "Fault injection is not an OS/power-loss guarantee",
+    "Scoped scan excludes this later-generated receipt/full repository/image",
+    "Full coordinator, actual restore, qualified image and final live gates remain open"
+  ]
+}

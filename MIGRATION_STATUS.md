@@ -373,3 +373,10 @@ before executor integration. No production request, new image, restored data rea
 mutation or original-source retirement occurred. The native subagent qualifies
 the bounded mutation adapter, while the app subagent qualifies its one measured
 parser change; prior failures and open acceptance gates remain explicit.
+
+Native review then identified a just-opened directory descriptor missing from
+cleanup if its following `fstat` failed. The added actual regression reproduced
+one leaked descriptor before the correction. Root now registers each directory
+FD immediately after open; all 13 source-fence cases pass with frozen inputs.
+Original failure/source artifacts remain retained, and the earlier 365-case
+receipt keeps its original source binding. No live access or mutation occurred.

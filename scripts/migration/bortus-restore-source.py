@@ -84,6 +84,7 @@ class SourceFence:
     def __init__(self, path, checkpoint_sha256, image, alternate_node, api):
         self.fd = None
         self.anchors = []
+        self.directory_fds = []
         failure = None
         try:
             need(os.name == 'posix' and type(checkpoint_sha256) is str and
@@ -94,10 +95,12 @@ class SourceFence:
             need(self.path.is_absolute() and '..' not in self.path.parts and
                  1 < len(self.path.parts) <= 32, 'ownership')
             fd = os.open('/', os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC)
+            self.directory_fds.append(fd)  # Register before any fallible identity check.
             current = pathlib.Path('/')
             self.anchors.append((current, fd, os.fstat(fd)))
             for part in self.path.parts[1:-1]:
                 fd = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC, dir_fd=fd)
+                self.directory_fds.append(fd)
                 current /= part
                 info = os.fstat(fd)
                 self.anchors.append((current, fd, info))
@@ -181,9 +184,10 @@ class SourceFence:
 
     def close(self):
         failure = False
-        for fd in ([self.fd] if self.fd is not None else []) + [entry[1] for entry in reversed(self.anchors)]:
+        for fd in ([self.fd] if self.fd is not None else []) + list(reversed(self.directory_fds)):
             try: os.close(fd)
             except OSError: failure = True
         self.fd = None
         self.anchors = []
+        self.directory_fds = []
         if failure: raise SourceRefused('cleanup')
