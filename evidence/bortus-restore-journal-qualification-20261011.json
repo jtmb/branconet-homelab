@@ -1,0 +1,96 @@
+{
+  "scope": "Local durable independent-restore ownership library; no executor or live restore acceptance",
+  "qualified_source_commit": "82908019bcd522b24ca8615c0995b15d0f0b2c0a",
+  "recorded_utc": "2026-10-11T04:56:49.112417+00:00",
+  "source_bindings": {
+    "scripts/migration/bortus-restore-journal.py": {
+      "tested_working_sha256": "e90b25b1a7226e072f3d3b1b3c872f38cbf2f05797270e9100a60dfa83a12f18",
+      "raw_git_sha256": "e90b25b1a7226e072f3d3b1b3c872f38cbf2f05797270e9100a60dfa83a12f18",
+      "raw_git_equals_tested_working": true
+    },
+    "scripts/migration/tests/test_bortus_restore_journal.py": {
+      "tested_working_sha256": "f7362317b159e1a2259c26fc494d4d049f0498e8bd04a507c7c77c861836cf40",
+      "raw_git_sha256": "f7362317b159e1a2259c26fc494d4d049f0498e8bd04a507c7c77c861836cf40",
+      "raw_git_equals_tested_working": true
+    }
+  },
+  "corrected_run": {
+    "terminal": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-journal-20261011\\terminal.json",
+    "terminal_sha256": "928faa78f6daec663fd81bfd1af35de79d198b09da3747855e0b552a47aafb65",
+    "log": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-journal-20261011\\focused40.log",
+    "log_sha256": "2a8c604bb2f92836966d1e02f8aaa1bba2513126fc56f33322f2609db51aeba8",
+    "actual_exit": 0,
+    "focused_tests": 40,
+    "new_journal_fault_tests": 10,
+    "reported_test_seconds": 0.205
+  },
+  "prior_tool_terminals": [
+    {
+      "id": "ba34d5",
+      "actual_exit": 0,
+      "tests": 9,
+      "reported_seconds": 0.025,
+      "scope": "Initial tests before parent-fsync defect was found",
+      "raw_file_log": null
+    },
+    {
+      "id": "aae398",
+      "actual_exit": 0,
+      "tests": 10,
+      "reported_seconds": 0.026,
+      "scope": "After parent-entry durability correction",
+      "raw_file_log": null
+    }
+  ],
+  "initial_review": {
+    "metadata": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\restore-journal-review-20261011\\initial-parent-fsync-review.json",
+    "metadata_sha256": "26c752e36cafb3669aa5ac8b51076ce9afcf98cdde18cd5f0911bac7818d3343",
+    "executed_script_saved_afterward": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\restore-journal-review-20261011\\initial-parent-fsync-probe.py",
+    "script_sha256": "cccb3571463b6fed9dc26532ad6c0f4c6c9730e32a6c25d6fbe9933a826cc5bc",
+    "initial_source_snapshot_available": false,
+    "initial_stdout_file_available": false,
+    "original_observed_source_sha256": "ee2b5045a1af46d68314b074fcbaee93b9e0739c4cba328a2dd58233e088188d",
+    "finding": "No fsync of new run directory parent before mock API callback; corrected pinned parent and parent fsync"
+  },
+  "corrected_contract": [
+    "Exclusive owned0700 parent/run and600 files, pinned inodes and nonblocking no-follow bounded reads",
+    "Parent directory entry plus record file/run-directory fsync before mutation callback",
+    "Narrow schema/duplicate-key rejection on reopen and every save",
+    "Pending/confirmed/uncertain intent cannot replay or adopt a resource by name after reopen",
+    "Failed API replies/spec/kind/name/namespace/run-label preserve uncertainty with fixed error and no raw API values",
+    "Deletion requires recorded holder UID and fresh separately supplied same-UID resourceVersion",
+    "Foreign/replaced locks/journals/paths refuse; failed owned runs remain for inspection"
+  ],
+  "docs_checked": [
+    "docs\\ANSIBLE-2-API-INTERACTION.md",
+    "docs\\API-USAGE.md",
+    "docs\\BORTUS-DEPLOYMENT.md",
+    "docs\\BOTRUS-WORKFLOW.md",
+    "docs\\CONNECTING-TO-A-CLUSTER.md",
+    "docs\\FLUX-GITOPS.md",
+    "docs\\kubectl-cheatsheet.md",
+    "docs\\MIGRATION-OPERATIONS.md",
+    "docs\\SECRETS-ENGINE.md",
+    "docs\\TECH-STACK.md",
+    "docs\\USER-PERMS.md"
+  ],
+  "post_fix_independent_review": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\restore-journal-review-20261011\\corrected-journal-review.json",
+    "sha256": "febf31f054c1471389c2314c36c8bf079d41181b7214f0babc2bc939d8534699",
+    "actual40_exit0_source_terminal_log_verified": true,
+    "additional_concrete_defect_established": false
+  },
+  "actual_power_loss_test": false,
+  "production_api_calls_or_mutations": false,
+  "new_full68_helper_suite": false,
+  "integrated_fresh_restore_executor": false,
+  "image_admission_or_live_restore_qualified": false,
+  "whole_row_recovery_qualified": false,
+  "limitations": [
+    "Callbacks are disposable public mocks; this library makes no direct API calls",
+    "Full guard/source/spec/storage checks and exact artifact/resource provenance must be implemented by the future executor",
+    "The first failed durability probe is retained by original tool-output reference/metadata and a script saved afterward, not raw source/stdout filesystem capture",
+    "Tests exercise actual POSIX filesystem/fault injection; no actual power loss",
+    "Live images/checkpoint/watches/independent NAS restore/full-row/data preservation remains pending"
+  ]
+}
