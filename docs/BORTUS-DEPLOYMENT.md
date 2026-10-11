@@ -44,6 +44,8 @@ Build context: `k8s-rewrite/front-end`. Port: 4000. SQLite: `/data/bortus.db`, p
 
 ## Secrets and RBAC
 
+Following native full-list transport work uses operation-owned direct HTTPS keepalive connections only: up to four sockets, fresh SDK authentication for every request, exact security-option equality and teardown at success/failure/cancellation/deadline. Proxy and client-certificate agents stay on the SDK's fresh per-request path. No native verb, environment variable, RBAC grant, response ceiling or workload acceptance condition changes. Type checking, 146 unit tests and zero-warning lint passed; final combined build/HTTP/performance qualification remains pending; see BORTUS-NATIVE-LIST-PERFORMANCE.md.
+
 Supply `BOTRUS_JWT_SECRET` and `BOTRUS_SECRETS_KEY` from existing native Secret keys (recommended object `bortus-runtime` in app namespace). Legacy env names remain compatible. Signing material must be stable across restart; it is never auto-generated or persisted in SQLite.
 
 Recommended chart inputs (create credentials independently, never Helm values):

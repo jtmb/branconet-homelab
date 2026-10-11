@@ -1,14 +1,40 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import https from "node:https";
+import http from "node:http";
+import net from "node:net";
+import { once } from "node:events";
+import { KubeConfig } from "@kubernetes/client-node";
 import { SecretStore, SecretListBudget, SecretError, SECRET_LIST_MAX_BYTES, secretSummary } from "../src/lib/cluster-secrets";
 import { createSecretTransport, nativeSecrets, nativeRequestDiagnostics } from "../src/lib/secret-client";
 import { nativeTlsFixture } from "./helpers/native-tls";
 
 const error503 = (error: unknown) => error instanceof SecretError && error.status === 503;
 const idle = () => assert.deepEqual(nativeRequestDiagnostics(), { active: 0, queued: 0, maxConcurrent: 4, maxQueued: 64 });
+async function traceAgents(operation: (entries: { agent: https.Agent; connections: number; destroyed: number }[]) => Promise<void>,
+  before?: (config: KubeConfig, call: number) => void,
+  after?: (options: https.RequestOptions, call: number) => void) {
+  const original = KubeConfig.prototype.applyToHTTPSOptions;
+  const entries: { agent: https.Agent; connections: number; destroyed: number }[] = []; let calls = 0;
+  KubeConfig.prototype.applyToHTTPSOptions = async function (options) {
+    const call = ++calls; before?.(this, call); await original.call(this, options); after?.(options, call);
+    assert(options.agent && typeof options.agent === "object");
+    const agent = options.agent as https.Agent, entry = { agent, connections: 0, destroyed: 0 };
+    const connect = agent.createConnection.bind(agent), destroy = agent.destroy.bind(agent);
+    agent.createConnection = (options, callback) => { entry.connections++; return connect(options, callback); };
+    agent.destroy = () => { entry.destroyed++; destroy(); };
+    entries.push(entry);
+  };
+  try { await operation(entries); }
+  finally { KubeConfig.prototype.applyToHTTPSOptions = original; for (const entry of entries) entry.agent.destroy(); }
+}
+const agentsClosed = (entries: { agent: https.Agent; destroyed: number }[]) => {
+  assert(entries.every(entry => entry.destroyed > 0), "every SDK-created agent must be torn down");
+  assert(entries.every(({ agent }) => [...Object.values(agent.sockets), ...Object.values(agent.freeSockets)].flat().every(socket => !socket || socket.destroyed)), "owned socket must be destroyed");
+};
 async function fixture(operation: (native: Awaited<ReturnType<typeof nativeTlsFixture>>) => Promise<void>, delay = 0) {
   const dir = await mkdtemp(path.join(tmpdir(), "bortus-native-window-"));
   const keys = ["KUBECONFIG", "BORTUS_SECRET_NAMESPACES", "BORTUS_HISTORY_NAMESPACE"] as const;
@@ -22,6 +48,153 @@ async function fixture(operation: (native: Awaited<ReturnType<typeof nativeTlsFi
     await rm(dir, { recursive: true, force: true });
   }
 }
+
+test("full-list keepalive shares at most four TLS connections only within one complete operation", { timeout: 30000 }, async () => {
+  await fixture(async native => {
+    const scopes = Array.from({ length: 18 }, (_, i) => "pool-" + i);
+    process.env.BORTUS_SECRET_NAMESPACES = scopes.join(",");
+    for (const scope of scopes) native.seed(scope, "object", Object.fromEntries([["__proto__", ""], ["binary", "/wA="], ["empty", ""]]));
+    await traceAgents(async entries => {
+      const first = await nativeSecrets().list();
+      assert.equal(first.length, 18); assert.deepEqual(first.map(row => row.namespace), scopes);
+      assert(first.every(row => JSON.stringify(row.keys) === JSON.stringify(["__proto__", "binary", "empty"])));
+      assert.equal(entries.length, 18); assert.equal(entries.filter(entry => entry.connections).length, 1);
+      assert(entries[0].connections > 0 && entries[0].connections <= 4);
+      assert.equal(entries[0].agent.maxSockets, 4); assert.equal(entries[0].agent.maxTotalSockets, 4); assert.equal(entries[0].agent.maxFreeSockets, 4);
+      agentsClosed(entries); idle();
+      assert.deepEqual(await nativeSecrets().list(), first);
+      assert.equal(entries.length, 36); assert.equal(entries.filter(entry => entry.connections).length, 2);
+      assert.notEqual(entries[0].agent, entries[18].agent); agentsClosed(entries); idle();
+    });
+  }, 12);
+});
+
+test("pooled requests refresh SDK authorization and fail closed when its next credential is withdrawn", { timeout: 30000 }, async () => {
+  await fixture(async native => {
+    for (let i = 0; i < 21; i++) native.seed("auth", "object-" + i, { field: "" });
+    await traceAgents(async entries => {
+      await assert.rejects(createSecretTransport().list("auth"), error => error503(error) && (error as Error).message === "Kubernetes credentials or Secret RBAC denied access");
+      assert.equal(entries.length, 2); assert.equal(native.calls.length, 2);
+      assert.equal(entries[0].connections, 1); assert.equal(entries[1].connections, 0);
+      agentsClosed(entries); idle();
+    }, (config, call) => { if (call === 2) Object.assign(config.getCurrentUser()!, { token: "synthetic-withdrawn-credential" }); });
+  });
+});
+
+test("cancelled SDK authentication destroys late agents without a request or interference with unrelated reads", { timeout: 30000 }, async () => {
+  await fixture(async native => {
+    native.seed("race", "object", { field: "" });
+    for (const rejectLate of [false, true]) {
+    const priorCalls = native.calls.length;
+    const original = KubeConfig.prototype.applyToHTTPSOptions;
+    let release!: () => void, entered!: () => void, completed!: () => void;
+    const gate = new Promise<void>(resolve => { release = resolve; }), started = new Promise<void>(resolve => { entered = resolve; }), late = new Promise<void>(resolve => { completed = resolve; });
+    let calls = 0, lateAgent: https.Agent | undefined, lateDestroyed = 0;
+    KubeConfig.prototype.applyToHTTPSOptions = async function (options) {
+      if (++calls !== 1) { await original.call(this, options); return; }
+      entered(); await gate; await original.call(this, options);
+      lateAgent = options.agent as https.Agent; const destroy = lateAgent.destroy.bind(lateAgent);
+      lateAgent.destroy = () => { lateDestroyed++; destroy(); }; completed();
+      if (rejectLate) throw new Error("Synthetic late SDK failure");
+    };
+    try {
+      const budget = new SecretListBudget(), pending = createSecretTransport().list("race", { budget });
+      const rejected = assert.rejects(pending, error => error503(error) && (error as Error).message === "Synthetic authentication cancellation");
+      await started; budget.fail(new SecretError(503, "Synthetic authentication cancellation")); await rejected;
+      assert.equal(native.calls.length, priorCalls); idle();
+      assert.equal((await createSecretTransport().read("race", "object")).metadata?.name, "object");
+      assert.equal(native.calls.length, priorCalls + 1); idle();
+      release(); await late; await new Promise<void>(resolve => setImmediate(resolve));
+      assert(lateAgent && lateDestroyed > 0); assert.equal(Object.keys(lateAgent.sockets).length, 0);
+      assert.equal(native.calls.length, priorCalls + 1); idle();
+    } finally { release(); KubeConfig.prototype.applyToHTTPSOptions = original; lateAgent?.destroy(); }
+    }
+    await traceAgents(async entries => {
+      await assert.rejects(createSecretTransport().list("race"), error503); assert.equal(native.calls.length, 2);
+      assert.equal(entries.length, 1); assert.equal(entries[0].connections, 0); agentsClosed(entries); idle();
+    }, undefined, options => { options.rejectUnauthorized = false; });
+    await traceAgents(async entries => {
+      const budget = new SecretListBudget();
+      budget.onFinish = () => { throw new SecretError(503, "Synthetic pool registration failure"); };
+      await assert.rejects(createSecretTransport().list("race", { budget }), error503);
+      assert.equal(native.calls.length, 2); assert.equal(entries.length, 1);
+      assert.equal(entries[0].connections, 0); agentsClosed(entries); idle();
+    });
+  });
+});
+
+test("fresh security-option changes never reuse the earlier trusted connection", { timeout: 30000 }, async () => {
+  await fixture(async native => {
+    for (let i = 0; i < 21; i++) native.seed("trust", "object-" + i, { field: "" });
+    await traceAgents(async entries => {
+      await assert.rejects(createSecretTransport().list("trust"), error503);
+      assert.equal(entries.length, 2); assert.equal(entries[0].connections, 1); assert.equal(entries[1].connections, 1);
+      agentsClosed(entries); idle();
+    }, undefined, (options, call) => {
+      if (call === 2) { options.ca = Buffer.from("synthetic untrusted CA"); (options.agent as https.Agent).options.ca = options.ca; }
+    });
+    await traceAgents(async entries => {
+      assert.equal((await createSecretTransport().list("trust")).length, 21);
+      assert.equal(entries.length, 2); assert(entries.every(entry => entry.connections === 1)); agentsClosed(entries); idle();
+    }, undefined, (options, call) => {
+      if (call === 2) { options.servername = "localhost"; (options.agent as https.Agent).options.servername = "localhost"; }
+    });
+  });
+});
+
+test("client-certificate and real HTTP proxy agents retain fresh request boundaries", { timeout: 30000 }, async () => {
+  await fixture(async native => {
+    for (let i = 0; i < 21; i++) native.seed("boundary", "object-" + i, { field: "" });
+    const cert = await readFile(path.join(path.dirname(native.config), "native-cert.pem")), key = await readFile(path.join(path.dirname(native.config), "native-key.pem"));
+    let mutualRequests = 0;
+    const mutual = https.createServer({ cert, key, ca: cert, requestCert: true, rejectUnauthorized: true }, (request, response) => {
+      assert((request.socket as import("node:tls").TLSSocket).authorized); mutualRequests++;
+      const url = new URL(request.url || "/", "https://localhost"), limit = Number(url.searchParams.get("limit")), offset = Number(url.searchParams.get("continue") || 0);
+      const records = [...native.objects.values()], page = records.slice(offset, offset + limit);
+      response.writeHead(200, { "Content-Type": "application/json" }); response.end(JSON.stringify({ kind: "SecretList", apiVersion: "v1", metadata: { continue: offset + limit < records.length ? String(offset + limit) : "" }, items: page }));
+    });
+    mutual.listen(0, "127.0.0.1"); await once(mutual, "listening");
+    const originalConfig = await readFile(native.config), config = JSON.parse(originalConfig.toString("utf8"));
+    config.clusters[0].cluster.server = "https://127.0.0.1:" + (mutual.address() as net.AddressInfo).port;
+    Object.assign(config.users[0].user, { "client-certificate": path.join(path.dirname(native.config), "native-cert.pem"), "client-key": path.join(path.dirname(native.config), "native-key.pem") });
+    await writeFile(native.config, JSON.stringify(config));
+    try {
+      await traceAgents(async entries => {
+        assert.equal((await createSecretTransport().list("boundary")).length, 21); assert.equal(mutualRequests, 2);
+        assert.equal(entries.length, 2); assert(entries.every(entry => entry.connections === 1 && !Reflect.get(entry.agent, "keepAlive"))); agentsClosed(entries); idle();
+      });
+    } finally { await writeFile(native.config, originalConfig); mutual.closeAllConnections(); await new Promise<void>(resolve => mutual.close(() => resolve())); }
+    const connections = new Set<net.Socket>(); let tunnels = 0;
+    const proxy = http.createServer((_request, response) => { response.writeHead(405); response.end(); });
+    proxy.on("connection", socket => { connections.add(socket); socket.once("close", () => connections.delete(socket)); });
+    proxy.on("connect", (request, downstream, head) => {
+      tunnels++; const [host, port] = (request.url || "").split(":");
+      const upstream = net.connect(Number(port), host); connections.add(upstream); upstream.once("close", () => connections.delete(upstream));
+      upstream.once("error", () => downstream.destroy()); downstream.once("error", () => upstream.destroy());
+      upstream.once("connect", () => { downstream.write("HTTP/1.1 200 Connection Established\r\n\r\n"); if (head.length) upstream.write(head); downstream.pipe(upstream); upstream.pipe(downstream); });
+    });
+    proxy.listen(0, "127.0.0.1"); await once(proxy, "listening");
+    try {
+      await traceAgents(async entries => {
+        assert.equal((await createSecretTransport().list("boundary")).length, 21); assert.equal(tunnels, 2);
+        assert.equal(entries.length, 2); assert(entries.every(entry => entry.agent.constructor !== https.Agent && !Reflect.get(entry.agent, "keepAlive"))); agentsClosed(entries); idle();
+      }, config => { Object.assign(config.getCurrentCluster()!, { proxyUrl: "http://127.0.0.1:" + (proxy.address() as net.AddressInfo).port }); });
+    } finally { for (const socket of connections) socket.destroy(); await new Promise<void>(resolve => proxy.close(() => resolve())); }
+  });
+});
+
+test("externally owned list budgets explicitly finish or expire their connection pools", { timeout: 30000 }, async () => {
+  await fixture(async native => {
+    native.seed("finish", "object", { field: "" });
+    await traceAgents(async entries => {
+      const budget = new SecretListBudget(); await createSecretTransport().list("finish", { budget });
+      assert.equal(entries[0].destroyed, 0); budget.finish(); agentsClosed(entries); idle();
+      const expiring = new SecretListBudget(Date.now() + 100); await createSecretTransport().list("finish", { budget: expiring });
+      assert.equal(entries[1].destroyed, 0); await new Promise(resolve => setTimeout(resolve, 120));
+      assert(expiring.signal.aborted); agentsClosed(entries); idle();
+    });
+  });
+});
 
 test("production 200-object windows return exact 1000/10000-object TLS inventories with bounded calls", { timeout: 30000 }, async () => {
   await fixture(async native => {

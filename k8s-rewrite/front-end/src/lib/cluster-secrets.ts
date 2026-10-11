@@ -21,11 +21,18 @@ export class SecretListBudget {
   bytes = 0;
   private failure?: SecretError;
   private cancellation = new AbortController();
+  private cleanups = new Set<() => void>();
   readonly signal = this.cancellation.signal;
   constructor(readonly deadline = Date.now() + 15000) {}
+  onFinish(cleanup: () => void) { this.check(); this.cleanups.add(cleanup); }
+  finish() {
+    const cleanups = [...this.cleanups]; this.cleanups.clear();
+    for (const cleanup of cleanups) cleanup();
+  }
   fail(error: unknown) {
     this.failure ??= secretFailure(error);
     this.cancellation.abort(this.failure);
+    this.finish();
   }
   check() {
     if (!this.failure && Date.now() >= this.deadline) this.fail(new SecretError(503, "Kubernetes Secret list timed out"));
@@ -153,8 +160,10 @@ export class SecretStore {
         } catch (error) { budget.fail(error); }
       };
       // Workers settle before returning an error, so no owned request/queue entry is left behind.
-      await Promise.all(Array.from({ length: Math.min(this.listConcurrency, scopes.length) }, worker));
-      budget.check(); return summaries.flat();
+      try {
+        await Promise.all(Array.from({ length: Math.min(this.listConcurrency, scopes.length) }, worker));
+        budget.check(); return summaries.flat();
+      } finally { budget.finish(); }
     } catch (error) {
       throw secretFailure(error);
     }

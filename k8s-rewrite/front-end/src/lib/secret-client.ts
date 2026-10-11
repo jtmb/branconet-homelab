@@ -1,5 +1,7 @@
 import { KubeConfig, type V1ObjectMeta, type V1Secret } from "@kubernetes/client-node";
 import https from "node:https";
+import type { Agent as RequestAgent } from "node:http";
+import { isDeepStrictEqual } from "node:util";
 import { SecretStore, SecretError, secretFailure, validateTarget, SecretListBudget, SECRET_LIST_MAX_CONCURRENCY, type SecretTransport } from "./cluster-secrets";
 import { kvConfig } from "./kv-contract";
 import { KvRegistry } from "./kv-registry";
@@ -67,6 +69,26 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
     if (!cluster || !cluster.server.startsWith("https:") || cluster.skipTLSVerify)
       throw new SecretError(503, "A TLS-verified Kubernetes API connection is required");
     const base = cluster.server.replace(/\/$/, "");
+    const listAgents = new WeakMap<SecretListBudget, https.Agent>();
+    const listAgent = (fresh: https.Agent, budget: SecretListBudget) => {
+      // Proxy and client-certificate agents retain the SDK's fresh per-request behavior.
+      // Authentication headers are never stored here; the SDK still refreshes every request.
+      if (cluster.proxyUrl || fresh.constructor !== https.Agent ||
+        [fresh.options.cert, fresh.options.key, fresh.options.pfx, fresh.options.passphrase].some(value => value !== undefined && value !== null)) return fresh;
+      const current = listAgents.get(budget);
+      if (current) {
+        if (!isDeepStrictEqual(current.options, fresh.options)) return fresh;
+        fresh.destroy(); return current;
+      }
+      Object.assign(fresh, { keepAlive: true, maxSockets: 4, maxTotalSockets: 4, maxFreeSockets: 4 });
+      listAgents.set(budget, fresh);
+      const timer = setTimeout(() => budget.fail(new SecretError(503, "Kubernetes Secret list timed out")), Math.max(1, budget.deadline - Date.now()));
+      timer.unref();
+      const cleanup = () => { clearTimeout(timer); listAgents.delete(budget); fresh.destroy(); };
+      try { budget.onFinish(cleanup); }
+      catch (error) { cleanup(); throw error; }
+      return fresh;
+    };
 
     async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false, byteLimit = 4 * 1024 * 1024, transferBudget?: SecretListBudget): Promise<{ value: any; bytes: number }> {
       deadline = Math.min(deadline, Date.now() + 8000);
@@ -74,14 +96,27 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
       await slot(deadline, transferBudget?.signal);
       let authTimer: ReturnType<typeof setTimeout> | undefined;
       let authAbort: (() => void) | undefined;
+      let ownedAgent: RequestAgent | undefined;
+      let authenticatedOptions: https.RequestOptions | undefined;
+      let finished = false;
       try {
         transferBudget?.check();
         const options: https.RequestOptions = { method, rejectUnauthorized: true, headers: {
           Accept: metadata ? "application/json;as=PartialObjectMetadataList;g=meta.k8s.io;v=v1" : "application/json",
           ...(body === undefined ? {} : { "Content-Type": "application/json" }),
         } };
+        authenticatedOptions = options;
         // SDK authentication retains CA/client certificates, token refresh and proxies; JSON maps bypass its lossy serializer.
-        await Promise.race([config.applyToHTTPSOptions(options), new Promise<never>((_, reject) => {
+        const captureAgent = () => {
+          const agent = options.agent;
+          if (agent && typeof agent === "object") {
+            ownedAgent = agent;
+            // SDK authentication cannot be aborted; late completion must never open or retain a connection.
+            if (finished) agent.destroy();
+          }
+        };
+        const authentication = config.applyToHTTPSOptions(options).then(captureAgent, error => { captureAgent(); throw error; });
+        await Promise.race([authentication, new Promise<never>((_, reject) => {
           authTimer = setTimeout(() => reject(new SecretError(503, "Kubernetes Secret authentication timed out")), Math.max(1, deadline - Date.now()));
           if (transferBudget) {
             authAbort = () => reject(secretFailure(transferBudget.signal.reason));
@@ -92,6 +127,11 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
         if (authAbort) transferBudget?.signal.removeEventListener("abort", authAbort);
         transferBudget?.check();
         if (Date.now() >= deadline || options.rejectUnauthorized === false) throw new SecretError(503, "Kubernetes Secret request timed out");
+        const fresh = options.agent;
+        if (fresh instanceof https.Agent) {
+          options.agent = transferBudget ? listAgent(fresh, transferBudget) : fresh;
+          if (transferBudget && options.agent === fresh && fresh === listAgents.get(transferBudget)) ownedAgent = undefined;
+        }
         const timeout = AbortSignal.timeout(Math.max(1, deadline - Date.now()));
         options.signal = transferBudget ? AbortSignal.any([timeout, transferBudget.signal]) : timeout;
         const serialized = body === undefined ? undefined : JSON.stringify(body);
@@ -126,7 +166,13 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
           req.end(serialized);
         });
       } catch (error) { throw secretFailure(error); }
-      finally { clearTimeout(authTimer); if (authAbort) transferBudget?.signal.removeEventListener("abort", authAbort); release(); }
+      finally {
+        finished = true; clearTimeout(authTimer); if (authAbort) transferBudget?.signal.removeEventListener("abort", authAbort);
+        ownedAgent?.destroy();
+        const agent = authenticatedOptions?.agent;
+        if (agent && typeof agent === "object" && (!transferBudget || agent !== listAgents.get(transferBudget))) agent.destroy();
+        release();
+      }
     }
     const route = (namespace: string, name?: string) => {
       validateTarget({ namespace, name: name || "scope", key: "scope" });
@@ -144,7 +190,7 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
       list: async (namespace, options) => {
         const items: V1Secret[] = [], cursors = new Set<string>();
         const budget = options?.budget ?? new SecretListBudget(); let cursor = ""; let limit: number = initialListPageLimit;
-        do {
+        try { do {
           let result: { value: any; bytes: number };
           for (;;) {
             try {
@@ -171,6 +217,7 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
           if (cursor) cursors.add(cursor);
         } while (cursor);
         return items;
+        } finally { if (!options?.budget) budget.finish(); }
       },
       create: async (namespace, body) => object((await request("POST", route(namespace), body)).value, namespace, body.metadata?.name),
       replace: async (namespace, name, body) => object((await request("PUT", route(namespace, name), body)).value, namespace, name),
