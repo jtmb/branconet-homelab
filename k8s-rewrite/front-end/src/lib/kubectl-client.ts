@@ -2,6 +2,15 @@ export class KubernetesCommandError extends Error {
   constructor(public readonly status: number, message: string) { super(message); }
 }
 
+/** Host-shell failures never return captured output or dynamic error text. */
+export function operatorCommandFailure(error: unknown): KubernetesCommandError {
+  const err = (error || {}) as { code?: string | number; killed?: boolean };
+  if (err.code === "ENOENT") return new KubernetesCommandError(503, "Operator shell is unavailable");
+  if (err.code === "ERR_CHILD_PROCESS_STDIO_MAXBUFFER") return new KubernetesCommandError(502, "Operator command response exceeds the size limit");
+  if (err.killed) return new KubernetesCommandError(504, "Operator command timed out");
+  return new KubernetesCommandError(502, "Operator command failed");
+}
+
 export function validateResourceName(value: string): string {
   if (typeof value !== "string" || value.length > 253 || !/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*$/.test(value))
     throw new KubernetesCommandError(400, "Invalid Kubernetes resource name");

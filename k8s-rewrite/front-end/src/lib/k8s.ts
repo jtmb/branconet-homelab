@@ -2,7 +2,7 @@ import { execFile } from "child_process";
 import { promisify } from "util";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { homedir } from "os";
-import { createKubectlClient } from "./kubectl-client";
+import { createKubectlClient, operatorCommandFailure } from "./kubectl-client";
 export { KubernetesCommandError, validateNamespace, validateResourceName } from "./kubectl-client";
 
 const execFileAsync = promisify(execFile);
@@ -67,7 +67,7 @@ export const kubectlExec = kubectl.exec;
 export const kubectlPodList = kubectl.listPods;
 export const kubectlDiagnostics = kubectl.diagnostics;
 
-// ── Restricted shell sandbox ──
+// ── Operator shell working-directory helper ──
 const SHELL_HOME = "/home/shell";
 const RESTRICTED_BASHRC = `${SHELL_HOME}/.restricted_bashrc`;
 
@@ -97,15 +97,14 @@ function ensureRestrictedShell() {
 }
 
 /**
- * Execute a shell command via bash -c, sandboxed to /home/shell.
- * KUBECONFIG is set so kubectl works naturally. The restricted bashrc
- * (sourced via BASH_ENV) overrides cd so the user cannot navigate
- * outside /home/shell.
+ * Execute a trusted operator command via bash -c with application-host privileges.
+ * The BASH_ENV working-directory helper is not an operating-system sandbox.
+ * Only successful stdout is returned; failed output is discarded.
  */
 export async function shellExec(
   cmd: string,
   timeoutMs = 30000
-): Promise<string | null> {
+): Promise<string> {
   ensureRestrictedShell();
   try {
     const { stdout } = await execFileAsync(
@@ -124,12 +123,7 @@ export async function shellExec(
       }
     );
     return stdout;
-  } catch (err: any) {
-    // bash -c exits with the command's exit code, so non-zero is expected.
-    // Return stdout + stderr so the user sees error messages.
-    const out = [err?.stdout?.trim(), err?.stderr?.trim()]
-      .filter(Boolean)
-      .join("\n");
-    return out || null;
+  } catch (error) {
+    throw operatorCommandFailure(error);
   }
 }
