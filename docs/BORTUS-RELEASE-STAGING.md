@@ -207,7 +207,7 @@ records one reviewed run completed at 12:18:51 UTC on 2026-10-11. Exact config
 and five source labels matched before execution. Three disposable stages ran
 with no network, read-only root, UID/GID1000, 2CPU/1GiB/128PID limits and bounded
 tmpfs mounts: package inventory, fresh schema/restart and legacy1438 forward
-migration/restart. Liveness returned200; native-unavailable readiness returned503.
+migration/restart. Liveness returned 200; native-unavailable readiness returned503.
 All11 migrations completed with zero schema drift and the expected account lock,
 legacy principal and write/admin versus readonly/nonadmin policy bridge.
 
@@ -541,3 +541,22 @@ focus-refresh attribution. This is not one uninterrupted 11-pass run. The select
 ten-file default scan retains one independently reviewed unchanged public prose
 finding, zero untriaged findings and two historical provenance findings still
 open. This candidate is not deployed; performance and whole-audit gates stay open.
+
+## 2026-10-11: deployment-action coercion fix reviewed
+
+The [root review](../evidence/bortus-deployment-action-root-review-20261011.json)
+verifies source 42f2f864/final evidence dbc3c2a9: 343 exact raw Git files, 29
+original artifacts, eight executed source/dependency bindings and 22 checked
+document originals. The actual transpiled route previously accepted an array
+action and returned 200 after dispatching rollout restart; that negative result
+is retained. The corrected handler requires one literal supported string and
+returns fixed 400 for coerced/inherited/unknown shapes before command dispatch.
+
+Six focused route controls, fresh noEmit types and selected zero-warning lint
+pass. The first test-only getter oracle failure remains retained. All four valid
+actions retain their exact structured arguments/15-second timeout, authorization
+and typed failures. The selected six-file default scan reports one independently
+reviewed unchanged public prose span, zero untriaged findings and two historical
+provenance findings still open. This candidate has no fresh production build/HTTP,
+real kubectl/cluster, image or performance qualification; broad A04/A05 acceptance
+remains open. It is not deployed.
