@@ -173,7 +173,8 @@ columns are explicit; the original scanexit1/prose finding and two pending
 historical provenance findings remain retained. No new runtime pass or final
 acceptance is inferred. The app subagent's later ab8d450 handler-query change
 passes13focused tests/types/lint and awaits fresh production HTTP qualification.
-It cannot change the already-minimal warm Pods/native performance result.
+It does not qualify performance: the frozen harness repeats warm/concurrent
+Pods requests; each native/configuration profile has one inventory request.
 
 ## Current orchestration and application qualification
 
@@ -651,3 +652,24 @@ recorded. Read-only production-holder, active admission, fresh cold checkpoint,
 independent complete-row recovery and final application/performance gates stay
 open. Coordination remains this root plus two sub-agents; all seven old BORTUS
 execution chats are currently verified archived.
+
+
+## 2026-10-11 13:02 UTC: c29fc inert runtime and fresh closure verified
+
+[Actual digest aliases and Kubernetes probes](evidence/bortus-app-three-node-runtime-c29fc-20261011.json)
+completed normally on all three nodes. Each runtime reports the exact068254f3
+manifest; Node22.23.3/Prisma6.19.3, two public rows, SQLite integrity and bounded
+reader framing pass. All test Pods were deleted with UID/resourceVersion
+preconditions and independently verified absent. All owned processes and24
+frozen helper hashes were checked. The original Ready1438 writer and Deployment
+remain unchanged. No original PVC/schema, Secret value or app entrypoint was used.
+
+The accepted1438 archive has also been read-only bound to its existing config
+and15 ordered layers. A separate CI/Flux proposal will pin those same accepted
+bytes by3b076 manifest digest before enabling strict admission. Its cache aliases
+and proposal remain under qualification; nothing has been published or rolled out.
+Temporary pre-schema admission may allow the accepted1438 digest plus the qualified
+inert image for independent restore. Before forward schema migration,1438 must be
+removed from every active allowlist and verified refused. It is not a final KV
+compatible rollback image. Full-row production restore and live acceptance remain
+open; the newer ab8d handler source also needs final image qualification.

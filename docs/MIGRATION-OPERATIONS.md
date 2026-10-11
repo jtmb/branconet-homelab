@@ -579,9 +579,10 @@ actual auth/UI/consumer acceptance and final live release remain separate gates.
 The [single sequential preload](../evidence/bortus-app-preload-c29fc-20261011.json)
 completed at12:37:08 UTC on all three nodes. Archive/config/source labels and
 selected/runtime OCI manifest match on every node; root verifies the terminal
-and exact process closure. This is immutable cache staging. Exact digest-name
-aliases and current-image Kubernetes public-fixture runtime remain open; no
-production application, PVC consumer, schema or admission change was dispatched.
+and exact process closure. This is immutable cache staging. At this12:37
+checkpoint, digest aliases and inert Kubernetes runtime were pending; their
+later completion is recorded below. No production app, PVC consumer, schema
+or admission change was dispatched.
 
 The [bounded selected-file probe](../evidence/bortus-app-minizip-metadata-c29fc-20261011.json)
 found no MiniZip pathname/ELF token/linkage in its selected package/runtime
@@ -603,3 +604,28 @@ The original selected default scan remains exit1 with one individually verified
 historical prose match and no suppression; a corrected three-word UTF8byte
 column review retains the original mistaken count. Two older whole-history
 provenance findings remain unresolved. Later handler work is qualified separately.
+
+
+## c29fc digest aliases and inert Kubernetes runtime completed
+
+The [actual three-node runtime receipt](../evidence/bortus-app-three-node-runtime-c29fc-20261011.json)
+records the separate alias-only operation at12:55:18 UTC and inert public
+runtime at12:56:45 UTC on2026-10-11, both actual exit0. Each node verifies the
+same config, five source labels, ordered layers and OCI manifest068254f3;
+absent digest cache names were created without force or image replacement.
+The image is referenced by its manifest digest, never its Docker config ID.
+
+All three nodes ran Node22.23.3/Prisma6.19.3 against two public SQLite rows in
+an8-MiB memory volume, with integrity and an8192-byte reader frame checked.
+Pods used UID1000, read-only root, dropped capabilities and no service-account
+token, production PVC or application entrypoint. Six owned execs completed.
+UID/resourceVersion-preconditioned deletion and a fresh complete PodList prove
+all three probe names/UIDs and the owner label absent. Root independently
+verified all seven runtime process identities and the exact Windows launcher
+absent, plus all24 frozen helper hashes unchanged. The original Deployment and
+Ready writer retain their exact UIDs, resourceVersions and1438 image.
+
+This qualifies c29fc as an inert public-fixture runtime only. The newer ab8d
+application source needs its own final image qualification. No production-row
+restore, active admission, original PVC schema migration, app rollout, security,
+performance or live auth/UI/consumer acceptance follows from these probes.

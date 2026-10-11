@@ -235,6 +235,32 @@ records actual exit0 on 192.168.0.4/.5/.6, completed at12:37:08 UTC on
 and OCI manifest `sha256:068254f38c47f99fd35604185a806a92147d934010329638b32adb5c19802c90`.
 That manifest differs from the Docker config ID `sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c`.
 The original receipt and owned launcher terminal agree; root freshly verifies
-launcher absence. This stages the image only. Exact digest-name cache aliases
-and current-image Kubernetes public-fixture runtime remain to be qualified.
+launcher absence. This stages the image only. At this12:37 checkpoint, exact
+digest-name cache aliases and public-fixture runtime were pending; their later
+completed qualification is recorded below.
 No new app Pod, admission guard, PVC consumer or production schema was deployed.
+
+
+## c29fc digest aliases and inert Kubernetes runtime completed
+
+The [actual three-node runtime receipt](../evidence/bortus-app-three-node-runtime-c29fc-20261011.json)
+records the separate alias-only operation at12:55:18 UTC and inert public
+runtime at12:56:45 UTC on2026-10-11, both actual exit0. Each node verifies the
+same config, five source labels, ordered layers and OCI manifest068254f3;
+absent digest cache names were created without force or image replacement.
+The image is referenced by its manifest digest, never its Docker config ID.
+
+All three nodes ran Node22.23.3/Prisma6.19.3 against two public SQLite rows in
+an8-MiB memory volume, with integrity and an8192-byte reader frame checked.
+Pods used UID1000, read-only root, dropped capabilities and no service-account
+token, production PVC or application entrypoint. Six owned execs completed.
+UID/resourceVersion-preconditioned deletion and a fresh complete PodList prove
+all three probe names/UIDs and the owner label absent. Root independently
+verified all seven runtime process identities and the exact Windows launcher
+absent, plus all24 frozen helper hashes unchanged. The original Deployment and
+Ready writer retain their exact UIDs, resourceVersions and1438 image.
+
+This qualifies c29fc as an inert public-fixture runtime only. The newer ab8d
+application source needs its own final image qualification. No production-row
+restore, active admission, original PVC schema migration, app rollout, security,
+performance or live auth/UI/consumer acceptance follows from these probes.

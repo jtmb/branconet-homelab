@@ -285,11 +285,36 @@ actual auth/UI/consumer acceptance and final live release remain separate gates.
 
 The [exact c29fc preload](../evidence/bortus-app-preload-c29fc-20261011.json)
 completed on all three nodes with matching archive/config/source labels and
-OCI manifest068254f3. No application rollout followed. Digest-name alias and
-current-image Kubernetes runtime qualification are separate prerequisites.
+OCI manifest068254f3. No application rollout followed. The separate later
+digest-name alias and inert Kubernetes qualification are recorded below.
 The [selected MiniZip metadata probe](../evidence/bortus-app-minizip-metadata-c29fc-20261011.json)
 closed normally with owned cleanup; its narrow negative result does not accept
 image security. The original legacy writer, suspended HelmRelease, grant-free
 external bortus-kv principal and completed cold checkpoint remain the rollout
 starting point. Production full-row recovery, principal/admission/schema
 migration and actual auth/UI/consumer acceptance remain required.
+
+
+## c29fc digest aliases and inert Kubernetes runtime completed
+
+The [actual three-node runtime receipt](../evidence/bortus-app-three-node-runtime-c29fc-20261011.json)
+records the separate alias-only operation at12:55:18 UTC and inert public
+runtime at12:56:45 UTC on2026-10-11, both actual exit0. Each node verifies the
+same config, five source labels, ordered layers and OCI manifest068254f3;
+absent digest cache names were created without force or image replacement.
+The image is referenced by its manifest digest, never its Docker config ID.
+
+All three nodes ran Node22.23.3/Prisma6.19.3 against two public SQLite rows in
+an8-MiB memory volume, with integrity and an8192-byte reader frame checked.
+Pods used UID1000, read-only root, dropped capabilities and no service-account
+token, production PVC or application entrypoint. Six owned execs completed.
+UID/resourceVersion-preconditioned deletion and a fresh complete PodList prove
+all three probe names/UIDs and the owner label absent. Root independently
+verified all seven runtime process identities and the exact Windows launcher
+absent, plus all24 frozen helper hashes unchanged. The original Deployment and
+Ready writer retain their exact UIDs, resourceVersions and1438 image.
+
+This qualifies c29fc as an inert public-fixture runtime only. The newer ab8d
+application source needs its own final image qualification. No production-row
+restore, active admission, original PVC schema migration, app rollout, security,
+performance or live auth/UI/consumer acceptance follows from these probes.
