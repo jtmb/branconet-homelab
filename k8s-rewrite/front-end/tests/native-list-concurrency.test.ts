@@ -109,7 +109,7 @@ test("production native factory opts into bounded TLS parallelism and excludes h
       assert.deepEqual(row.keys, reference.keys); assert.equal(row.resourceVersion, reference.rv); assert.equal(row.immutable, reference.immutable);
       assert.equal(row.type, "Opaque"); assert.equal("data" in row || "annotations" in row || "managedFields" in row, false);
     }
-    assert.equal(native.calls.length, 18); assert(native.calls.every(call => call.method === "GET" && call.limit === 20 && !call.metadata && !call.path.includes("/history/")));
+    assert.equal(native.calls.length, 18); assert(native.calls.every(call => call.method === "GET" && call.limit === 200 && !call.metadata && !call.path.includes("/history/")));
     assert.deepEqual(nativeRequestDiagnostics(), { active: 0, queued: 0, maxConcurrent: 4, maxQueued: 64 });
   }, 30);
 });

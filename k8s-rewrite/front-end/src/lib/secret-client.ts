@@ -55,8 +55,10 @@ class SecretPageTooLarge extends SecretError {
   constructor() { super(503, "Kubernetes Secret response exceeds the size limit"); }
 }
 
-export function createSecretTransport(): NativeSecretTransport {
+export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): NativeSecretTransport {
   try {
+    if (initialListPageLimit !== 20 && initialListPageLimit !== 200)
+      throw new SecretError(503, "Invalid Kubernetes Secret list page limit");
     const config = new KubeConfig();
     if (process.env.KUBECONFIG) config.loadFromDefault();
     else if (process.env.KUBERNETES_SERVICE_HOST) config.loadFromCluster();
@@ -141,7 +143,7 @@ export function createSecretTransport(): NativeSecretTransport {
       read: async (namespace, name) => object((await request("GET", route(namespace, name))).value, namespace, name),
       list: async (namespace, options) => {
         const items: V1Secret[] = [], cursors = new Set<string>();
-        const budget = options?.budget ?? new SecretListBudget(); let cursor = "", limit = 20;
+        const budget = options?.budget ?? new SecretListBudget(); let cursor = ""; let limit: number = initialListPageLimit;
         do {
           let result: { value: any; bytes: number };
           for (;;) {
@@ -150,8 +152,9 @@ export function createSecretTransport(): NativeSecretTransport {
               break;
             } catch (error) {
               if (!(error instanceof SecretPageTooLarge) || limit === 1) throw error;
-              // Keep the cursor and learned smaller limit. At most four reductions per namespace.
-              limit = Math.max(1, Math.floor(limit / 2)); budget.check();
+              // Skip directly to the existing first fallback, avoiding another charged oversized prefix.
+              // Keep the cursor and smaller limit: 200 (or compatibility 20) -> 10 -> 5 -> 2 -> 1.
+              limit = limit === 200 ? 10 : Math.max(1, Math.floor(limit / 2)); budget.check();
             }
           }
           const page = result.value;
@@ -208,6 +211,6 @@ export function createSecretTransport(): NativeSecretTransport {
   } catch (error) { throw secretFailure(error); }
 }
 export function nativeSecrets(legacyAlias?: string) {
-  const config = kvConfig(), namespaces = secretNamespaces().filter(ns => ns !== config.historyNamespace), transport = createSecretTransport();
+  const config = kvConfig(), namespaces = secretNamespaces().filter(ns => ns !== config.historyNamespace), transport = createSecretTransport(200);
   return new SecretStore(transport, namespaces, flatSecretGuard(new KvRegistry(prisma, namespaces, config), transport, getSession, legacyAlias), SECRET_LIST_MAX_CONCURRENCY);
 }
