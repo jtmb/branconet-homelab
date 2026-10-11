@@ -1,5 +1,10 @@
 # Independent restored-data composition
 
+The separate [locally qualified callable coordinator](BORTUS-INDEPENDENT-RESTORE.md)
+composes source validation, actual watch, durable creates, this
+data step and independently observed holder deletion. It retains the separate
+actual image/admission/live acceptance requirements.
+
 `scripts/migration/bortus-restore-data.py` is a callable library with no CLI,
 API, Kubernetes launcher or holder deletion. It composes the existing live
 [Collector](BORTUS-RESTORE-WATCH.md),
