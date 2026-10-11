@@ -1,0 +1,78 @@
+{
+  "scope": "Local authenticated private-tmpfs SQLite normalization plus migration-helper regression qualification; no live recovery acceptance",
+  "qualified_source_commit": "c78aeee0f275f878c5192c5f4aa87f9f46ede1a8",
+  "source_sha256": {
+    "scripts/migration/inspect-bortus-checkpoint.py": "0b5826747d3fea6a01c1353be7d3a25eafee455c1040f5be483ac5576bc5443b",
+    "scripts/migration/checkpoint-bortus-volume.py": "b242b6d79016b124fc187992e0d78265cdb2f993f4afe40c9abef2c73122955f",
+    "scripts/migration/bortus-sqlite-archive.py": "61e0ef9a1bf81a738aa5fc732f73dc372b55128b5c6e62264220ad23cba7492e",
+    "scripts/migration/normalize-bortus-sqlite-archive.py": "44ab159936dc114c050625e78acca4b05228e0282ccaefeef79656be3fffa2f3",
+    "scripts/migration/compare-bortus-databases.py": "427a52f9162101da3a5dd24aae6dc254f138558d7967f2976e43acee1b4f2066",
+    "scripts/migration/inspect-bortus-release-rbac.py": "0c72eb4e8f87c5377f3416c3c255016415490d5791003294cb562d9e93ae90cb",
+    "scripts/migration/tests/test_bortus_checkpoint_preflight.py": "8376dbfbd0fd76aab78e30f7b75466252b14c658a7b976d4d196b43f8d0cfc58",
+    "scripts/migration/tests/test_bortus_cold_checkpoint.py": "25df7b17d4bfe8d3b755b7fbbb0bba2ad4f0db0ca2ad1ad2b89722c05ae95a84",
+    "scripts/migration/tests/test_database_preservation.py": "87ce1f374331eeef39aaba934710112e2f87abeb76e3c129de83ea829ffed29a",
+    "scripts/migration/tests/test_node_sqlite_reader.py": "8fc064bc423f160e5304aa6684e7bffd2df6ac1d36d6e76c00505659da46658b",
+    "scripts/migration/tests/test_release_rbac_inventory.py": "4defacd56a55711c3f5e4aa6b9b251f7c9ba43a3f5449b1ed8c07bc34e2d048f",
+    "scripts/migration/tests/test_sqlite_archive_normalization.py": "7b4c94d58c914711610f2ac515a2f3c6fab7e14b15889671a07c521b6c3bb8c0",
+    "scripts/migration/tests/test_sqlite_encrypted_archive.py": "a38ba705ef74678681ec574342a0cc13ac3335f170787074958df55a259fe3ed"
+  },
+  "raw_git_blobs_equal_qualified_working_bytes": true,
+  "initial_focused_qualification": {
+    "console_record": "79cddd",
+    "exit_code": 0,
+    "tests": 6,
+    "elapsed_seconds": 0.302
+  },
+  "final_complete_suite": {
+    "console_record": "222fc7",
+    "exit_code": 0,
+    "tests": 50,
+    "normalization_tests": 8,
+    "actual_linux_reader_tests": 2,
+    "actual_linux_reader_fixture_cases": 8,
+    "cold_checkpoint_tests": 13,
+    "preflight_tests": 9,
+    "database_comparator_tests": 9,
+    "rbac_tests": 3,
+    "encryption_tests": 6,
+    "elapsed_seconds": 6.938,
+    "runtime": "Ubuntu WSL Python 3.14.4",
+    "command": "python3 -B -m unittest discover -s scripts/migration/tests -p test_*.py -v"
+  },
+  "meaningful_normalization_coverage": [
+    "Actual age authentication with generated disposable SSH identity",
+    "Committed row present only in WAL appears after normalization; original database bytes unchanged",
+    "SQLite accepts both little- and big-endian WAL checksum dialects",
+    "Legitimate SQLite WAL reset with old-salt tail retains both committed rows",
+    "Damaged current WAL header/frame checksum and partial frame refused before SQLite can ignore data",
+    "Wrong ciphertext hash, unsafe parent, symlink source and invalid deadline refused without tmpfs writes",
+    "Authenticated malformed framing, invalid SQLite and foreign-key failure clean exact partial copy",
+    "Truncated age authentication fails and owned decryption child exits",
+    "Directory inode/owner drift and unrelated file refuse cleanup; exact CLI cleanup succeeds"
+  ],
+  "privacy_and_ownership": {
+    "production_data_mounts_used": false,
+    "production_database_opened": false,
+    "native_secret_reads": 0,
+    "operator_private_key_used_in_tests": false,
+    "test_identity": "generated disposable SSH identity only",
+    "plaintext_recovery_storage": "mode-0700 directory on verified /dev/shm tmpfs; mode-0600 files",
+    "persistent_plaintext_production_written": false,
+    "plaintext_values_or_digests_in_reports": false,
+    "all_owned_test_children_and_containers_closed": true,
+    "all_owned_tmpfs_copies_removed_after_tests": true,
+    "cleanup_recursive": false,
+    "source_ciphertext_inode_pinned_and_rechecked": true
+  },
+  "sqlite_format_reference": "https://www.sqlite.org/fileformat2.html#wal_format",
+  "limitations": {
+    "integrated_live_cold_capture_proven": false,
+    "live_nas_ciphertext_copy_proven": false,
+    "live_original_and_migrated_whole_row_comparison_proven": false,
+    "independent_fresh_native_longhorn_restore_proven": false,
+    "native_current_history_or_etcd_restore_proven": false,
+    "final_release_image_or_three_node_preload_proven": false,
+    "all_possible_crash_recovery_journal_states_qualified": false,
+    "capture_source_reads_atomic": false
+  }
+}
