@@ -1,0 +1,47 @@
+{
+  "recordedAtUtc": "2026-10-11T02:54:31.6649198Z",
+  "scope": "Read-only BORTUS Helm failure-contract metadata; no controller failure or rollout experiment",
+  "observationToolChunk": "f8ddf6",
+  "helmRelease": {
+    "namespace": "flux-system",
+    "name": "bortus",
+    "uid": "bed3008a-474f-411e-9956-1248e3718220",
+    "resourceVersion": "863564",
+    "installRemediationRetries": 0,
+    "upgradeRemediationRetries": 0,
+    "explicitInstallStrategy": null,
+    "explicitUpgradeStrategy": null,
+    "explicitRemediateLastFailure": null,
+    "explicitCleanupOnFail": null
+  },
+  "controllerImage": "ghcr.io/fluxcd/helm-controller:v1.6.5",
+  "explicitControllerFeatureFlags": [],
+  "observedV2UpgradeStrategyNames": [
+    "RemediateOnFailure",
+    "RetryOnFailure"
+  ],
+  "observedV2RemediationStrategyNames": [
+    "rollback",
+    "uninstall"
+  ],
+  "documentedDefaultLastFailureRemediation": "false when retries is zero",
+  "finalRequiredContract": {
+    "installStrategy": "RemediateOnFailure",
+    "upgradeStrategy": "RemediateOnFailure",
+    "installRetries": 0,
+    "upgradeRetries": 0,
+    "installRemediateLastFailure": false,
+    "upgradeRemediateLastFailure": false,
+    "upgradeCleanupOnFail": false,
+    "waitsEnabled": true
+  },
+  "documentation": "https://fluxcd.io/flux/components/helm/helmreleases/#upgrade-remediation",
+  "limitations": [
+    "Separate resource reads are not atomic",
+    "Default semantics are supported by live CRD descriptions and official API contract, not an actual failed rollout",
+    "Explicit final fields are required in a later reviewed validated chart revision",
+    "Adoption remains disabled until guarded migration and effective authorization gates pass"
+  ],
+  "productionMutations": false,
+  "credentialsRead": false
+}
