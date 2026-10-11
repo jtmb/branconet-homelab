@@ -70,3 +70,6 @@ receipt supports stopped-schema qualification while continuous zero writers and
 same physical storage remain established. It does not prove original rows,
 live Ready status, forward execution or recovery acceptance. The trusted root
 phase callback must independently bind image, guards and the actual receipt.
+
+
+Root independently qualified the integrated shared graph on `1daea8f`: [65 scoped controls passed](../evidence/bortus-quiescent-composition-root-20261011.json) without skips in 14.251 seconds. Frozen working sources remain unchanged, and the test supervisor is absent. Actual local TLS/age/SQLite fixtures use mocked kubectl/SSH; this is local composition acceptance and does not authorize or prove live latest-data capture or forward migration.
