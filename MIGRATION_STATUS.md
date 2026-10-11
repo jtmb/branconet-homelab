@@ -1,6 +1,12 @@
 # Migration acceptance evidence
 
-Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; execution target before 20:30 UTC. Cluster migration is owned by this chat. BORTUS application development is owned by chat 01a12114-28d9-7623-8aed-9947e08d7065, which delivered app commit 1438b278cdf21e98429b4836c018636b01b982a3 in its isolated worktree. Live deployment/acceptance belongs here.
+Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
+
+## Current orchestration and application qualification
+
+Three agents are active: coordinator, BORTUS application integration, and native transport/evidence. The six identifiable former BORTUS execution/review chats are confirmed archived; unrelated projects remain unchanged. Archiving removed managed checkouts, so application work was recovered from snapshot da84f0f00aeb0daca299358e93fc7074acd2055e (parent b82980e783daf09e1aabe00f3a5db99fef3e13fa), including 17 changed paths and both qualification logs. All six original source-file hashes were recovered; the workbench discrepancy was traced to mixed line endings by replaying the original patch records. Source and evidence backups remain outside the managed checkouts.
+
+The recovered freshness stage has 144 passing unit tests, lint, build and four HTTP suites in its retained evidence; fresh browser acceptance remains pending. Native transport evidence is packaged in e0eaea89795b05ede2febecca2d3cde89c11f874, following 0940f868, 21a2edc6 and 16975f5. Its completed six-run benchmark preserves complete inventories and safety failures, but the native latency no-regression gate remains unmet. Warm-response tail latency and complete 10,000-Pod capacity also remain open. A separate bounded TLS connection-reuse diagnostic is scheduled without changing those acceptance gates. These are development results, not evidence that the new engine is deployed. Final combined source/image qualification, guarded live migration and compatible recovery remain required.
 
 ## Current state (runtime checked 2026-10-09 20:16 America/Toronto)
 
