@@ -754,3 +754,27 @@ completed backup and unused restore target are confirmed. This is read-only
 preflight evidence; admission publication, actual probes and whole-row restoration
 remain open. The earlier metadata_shape refusal is retained. See the
 [typed-collection evidence](../evidence/bortus-typed-collection-preflight-20261011.json).
+
+## 2026-10-11: coordinator review and subagent ownership
+
+Coordination now uses this migration coordinator and the two existing application
+and native/recovery subagents. The seven old BORTUS chats are archived; no new
+chats or chat messages are part of this orchestration. Application edits remain
+in the isolated application worktree, and the recovery module in its own branch.
+
+The [independent FIFO review](../evidence/bortus-account-fifo-root-review-20261011.json)
+verifies 338 raw source Git blobs/modes, 16 raw qualification blobs/modes, 37
+private originals, all 351 ZIP members, 337 executed source files and the 4,262
+compiled hash inventory. The retained five stages have actual zero exits, with
+235 unit tests and four original strict HTTP tests passing. The default scanner's
+actual exit remains one: all 159 selected public checksum/prose byte spans were
+independently rehashed; two historical provenance findings remain open. This
+receipt covers a48601a/b6fde8d only, not the subsequent shell-error correction,
+final image, live application acceptance or performance.
+
+Automatic approval review rejected the combined guard chart push/PR command,
+stating "blocked by policy", before execution. The
+[rejection record](../evidence/bortus-phase1-publication-review-rejection-20261011.json)
+leaves guard publication, live admission probes and independent whole-row restore
+open. Existing source, storage, credentials and running writer are preserved.
+The active goal remains incomplete; local recovery and app qualification continue.
