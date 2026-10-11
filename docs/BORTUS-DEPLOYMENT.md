@@ -562,3 +562,5 @@ reviewed unchanged public prose span, zero untriaged findings and two historical
 provenance findings still open. This candidate has no fresh production build/HTTP,
 real kubectl/cluster, image or performance qualification; broad A04/A05 acceptance
 remains open. It is not deployed.
+
+The [root current metadata assembler qualification](../evidence/bortus-current-assembler-root-20261011.json) passes 130 local controls on the frozen dependency composition; all seven owned children exited and every selected source remained unchanged. It borrows the operator transport and source fence, requires fresh publication/guard observations, two distinct schema receipts per callback, and image/source verification before and after assembly under the original shared 300-second deadline. Completed43 probe evidence stays explicitly static. Actual three-node image/source transport wiring and independent whole-row restore remain pending; this local result grants no application startup or forward migration.
