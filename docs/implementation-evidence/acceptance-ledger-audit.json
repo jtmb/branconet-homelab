@@ -46,8 +46,8 @@
       "id": "A02",
       "finding": "revocation",
       "originalValidation": "With an already-issued cookie, delete its account and assert session is unauthenticated and all protected pages/ordinary APIs reject it. Retest demotion, native metadata/value permissions, expiry and logout. Password-reset revocation is currently a source-level follow-up, not a reproduced finding.",
-      "localCompletedScope": "Fresh middleware/account/sessionVersion checks; disposable reset/delete cookies fail session, four ordinary APIs and /pods; legacy version-zero and native role/owner withdrawal tests pass.",
-      "stillRequired": "Original universal protected-page/API breadth is not exhaustively enumerated by these four routes/one page. Add explicit expired-cookie/logout integration controls and route inventory coverage; qualify exact image restart/withdrawal without cached authority.",
+      "localCompletedScope": "Fresh middleware/account/sessionVersion checks; disposable reset/delete cookies fail session, four ordinary APIs and /pods; legacy version-zero and native role/owner withdrawal tests pass. Supplemental exact ab8 production build also passed expired-cookie/logout-clear controls and 120 anonymous protected filesystem-template requests; this is middleware rejection, not authorized handler breadth.",
+      "stillRequired": "Universal authorized protected handler/action coverage and exact-image restart/withdrawal remain open. Logout clears the returned cookie; global token revocation is not claimed.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/accounts.test.ts",
         "k8s-rewrite/front-end/tests/http.integration.ts",
@@ -58,7 +58,8 @@
       "evidence": [
         "combined-c29fc8c/qualification.json",
         "shared-freshness-browser.json",
-        "workbench-lifecycle-browser.json"
+        "workbench-lifecycle-browser.json",
+        "acceptance-supplement/assessment.json"
       ],
       "overallDeliveredAcceptancePassed": false
     },
@@ -67,7 +68,7 @@
       "finding": "bootstrap",
       "originalValidation": "Concurrent distinct and duplicate usernames on an empty DB must leave exactly one bootstrap writer. Repeat with registration explicitly open/closed and with the AppSetting override; test uniqueness failures without leaking internal DB errors.",
       "localCompletedScope": "Six distinct empty-DB registrations in both closed/open modes leave one writer; duplicate username returns409; four production HTTP registrations cover closed bootstrap.",
-      "stillRequired": "The original concurrent duplicate-name and AppSetting override permutations are not explicitly established by the distinct-client tests. Add those disposable controls; final image bootstrap/preservation remains separate.",
+      "stillRequired": "The original concurrent duplicate-name and AppSetting override permutations are not explicitly established by the distinct-client tests. Add those disposable controls; final image bootstrap/preservation remains separate. Supplemental attempt2 failed before the first closed/missing-setting/distinct case completed (AssertionError; exact failed predicate/outcomes not retained). No added registration acceptance; a causal diagnostic is pending.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/accounts.test.ts",
         "k8s-rewrite/front-end/tests/http.integration.ts",
@@ -75,7 +76,8 @@
       ],
       "evidence": [
         "combined-c29fc8c/qualification.json",
-        "administration-ui.json"
+        "administration-ui.json",
+        "acceptance-supplement/assessment.json"
       ],
       "overallDeliveredAcceptancePassed": false
     },
@@ -99,8 +101,8 @@
       "id": "A05",
       "finding": "truthful commands",
       "originalValidation": "Exercise exit 1 with stderr, stdout, both and neither, timeout, missing executable, RBAC denial and a true success. All mutation routes must reject failed commands; UI must retain state and display an actionable error. Keep native Secret values out of errors/logs.",
-      "localCompletedScope": "Typed subprocess failures/timeout/missing executable/denial, actual bounded Node child and selected failed scale/action/delete/apply/reclaim/exec HTTP paths pass; Flux browser retains actionable errors and partial recovery.",
-      "stillRequired": "Original stdout-only/stderr-only/neither combinations and every mutation route success/failure matrix are not exhaustively bound by selected route fixtures. Complete that matrix with matching real CLI/image evidence; preserve207 partial outcomes.",
+      "localCompletedScope": "Typed subprocess failures/timeout/missing executable/denial, actual bounded Node child and selected failed scale/action/delete/apply/reclaim/exec HTTP paths pass; Flux browser retains actionable errors and partial recovery. Six supplemental exit17 stdout-only/stderr-only/neither production namespace-delete and shared-client controls passed strict502/fixed redacted errors. Exact fake execution proven after original tmpfs noexec/EACCES negative.",
+      "stillRequired": "Every mutation route success/failure/UI matrix, explicit exit1 permutations and matching real CLI/image evidence remain open; retain207 partial outcomes. Supplemental exit17 failure cases cover stream presence, not all exit codes/routes.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/kubectl.test.ts",
         "k8s-rewrite/front-end/tests/http.integration.ts",
@@ -110,7 +112,8 @@
       "evidence": [
         "combined-c29fc8c/qualification.json",
         "flux-browser.json",
-        "administration-ui.json"
+        "administration-ui.json",
+        "acceptance-supplement/assessment.json"
       ],
       "overallDeliveredAcceptancePassed": false
     },

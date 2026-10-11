@@ -184,3 +184,5 @@ Handler account snapshot scope: [qualification and retained originals](handler-a
 [Handler account production qualification](handler-account-production/qualification.json): exactab8d450 freshLinux build0, original4strictHTTP0/no skips plus13actual GET checks,2CPU/1GiB runtime and authoritative cleanup;265rawproduction defaultscan0. No fullunits/benchmark repetition or image/live/A07/A21 pass. Exact originals are copied or explicitly bound as ZIP members, with private fullsource/build manifests retained.
 
 The public-only page-batching parser diagnostic was rejected for small typical savings and long-annotation regressions; production source and A07/A21 gates remain unchanged. See [assessment](selected-page-batch/assessment.json).
+
+Supplemental A02/A05 clause evidence and the retained first A03 failure are recorded in [acceptance-supplement/assessment.json](acceptance-supplement/assessment.json). Both attempts are terminal1; their completed scopes are separate from failure and full acceptance.
