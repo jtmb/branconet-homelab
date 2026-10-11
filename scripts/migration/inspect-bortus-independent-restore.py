@@ -34,11 +34,16 @@ def valid_name(name):
 def url_matches(url, backup_name, volume_name):
     require(isinstance(url, str), 'Backup URL missing')
     parts = urllib.parse.urlsplit(url)
+    try:
+        query = urllib.parse.parse_qs(parts.query, strict_parsing=True,
+                                     keep_blank_values=True, max_num_fields=2)
+    except ValueError:
+        raise RuntimeError('Exact credential-free source NAS backup required') from None
     require(parts.scheme == 'cifs' and parts.hostname == '192.168.0.8' and
             parts.username is None and parts.password is None and parts.port is None and
             not parts.fragment and
             parts.path == '/container_backups/k8s-migration-20261009/longhorn' and
-            urllib.parse.parse_qs(parts.query, strict_parsing=True) == {
+            query == {
                 'backup': [backup_name], 'volume': [volume_name]},
             'Exact credential-free source NAS backup required')
 

@@ -123,7 +123,8 @@ class RestorePreflightTests(unittest.TestCase):
     def test_foreign_or_credential_bearing_urls_are_never_exported(self):
         client, record = prepared()
         original = record['backup_url']
-        for bad in (original + '&token=PRIVATE_VALUE', original.replace('192.168.0.8', 'user:PRIVATE_VALUE@192.168.0.8'),
+        for bad in (original + '&backup=', original + '&volume=', original + '&token=',
+                    original + '&token=PRIVATE_VALUE', original.replace('192.168.0.8', 'user:PRIVATE_VALUE@192.168.0.8'),
                     original.replace('192.168.0.8', '192.168.0.9'), original.replace('backup=', 'backup=other-'),
                     original + '#PRIVATE_VALUE', original.replace('/longhorn?', '/longhorn/../other?')):
             client, record = prepared()

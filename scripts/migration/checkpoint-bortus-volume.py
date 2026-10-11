@@ -413,7 +413,11 @@ class Checkpoint:
                 return False
             require(isinstance(status.get('url'), str), 'Completed backup URL missing')
             url = urllib.parse.urlsplit(status['url'])
-            query = urllib.parse.parse_qs(url.query, strict_parsing=True)
+            try:
+                query = urllib.parse.parse_qs(url.query, strict_parsing=True,
+                                             keep_blank_values=True, max_num_fields=2)
+            except ValueError:
+                raise RuntimeError('Expected credential-free completed NAS backup URL') from None
             require(url.scheme == 'cifs' and url.hostname == '192.168.0.8' and
                     url.username is None and url.password is None and url.port is None and not url.fragment and
                     url.path.rstrip('/') == '/container_backups/k8s-migration-20261009/longhorn' and

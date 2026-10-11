@@ -308,6 +308,9 @@ class ColdCheckpointTests(unittest.TestCase):
     def test_foreign_or_credential_bearing_backup_url_never_recorded_or_cleaned_up(self):
         prefix = 'cifs://192.168.0.8/container_backups/k8s-migration-20261009/longhorn'
         for url in (prefix + '?backup=other&volume=pvc-fixture',
+                    prefix + '?backup=backup-123456abcdef&volume=pvc-fixture&backup=',
+                    prefix + '?backup=backup-123456abcdef&volume=pvc-fixture&volume=',
+                    prefix + '?backup=backup-123456abcdef&volume=pvc-fixture&token=',
                     prefix + '?backup=backup-123456abcdef&volume=pvc-fixture&token=PRIVATE_QUERY',
                     prefix.replace('192.168.0.8', 'user:PRIVATE_PASSWORD@192.168.0.8') +
                     '?backup=backup-123456abcdef&volume=pvc-fixture'):
