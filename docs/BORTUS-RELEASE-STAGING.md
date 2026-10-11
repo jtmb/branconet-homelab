@@ -419,3 +419,29 @@ an additional typed collection item-header assumption in probe cleanup; its
 qualified correction is required before fixture creation. No forward schema or
 new application entrypoint has started. Two subagents and the migration coordinator
 continue the active goal; the seven old BORTUS chats remain archived.
+
+## 2026-10-11: continuous source-control preparation
+
+The [quiescent checkpoint](BORTUS-QUIESCENT-SOURCE.md) composes capture, full
+backup and owned-holder removal while the source stays at zero writers. Its
+[control observer](BORTUS-QUIESCENT-WATCH.md) owns three concurrent verified TLS
+streams and fsynced metadata; a caller must check the actual prerequisite before
+and after mutation dispatch and independently close the borrowed resources.
+Only the explicit once-only owner transition resumes `migration-releases` so
+validated Flux can withdraw the legacy image from the guards. The BORTUS
+HelmRelease remains suspended and Deployment remains zero throughout that future
+transition. This preparation has not run against the live source.
+
+Independent root mTLS fixtures reproduced a deadline-renewal defect in the first
+immutable observer: three late bookmarks left its readers live after the absolute
+lease. The corrected source refreshes the remaining original budget before each
+read; the same root fixture now observes sticky deadline failure and zero live
+readers. The original handoff and failing observation are retained. The corrected
+handoff passes 86 scoped local controls; root combined integration qualification
+now passes all 524 test_bortus*.py cases with zero failures/errors/skips and 151
+frozen inputs, including the required JSON fixture. The initial fixture-omitting
+staging run is retained; production Python sources did not change between runs. These checks grant no live restore, forward-schema, image, rollback
+or whole-row acceptance. The deadline-aware encrypted archive callback and
+actual source/image/schema/guard producers must still be wired before live use.
+
+See the [root integration evidence](../evidence/bortus-quiescent-root-integration-20261011.json).

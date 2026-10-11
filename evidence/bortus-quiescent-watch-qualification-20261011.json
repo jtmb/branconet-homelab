@@ -1,0 +1,122 @@
+{
+  "original_v1": {
+    "observer_tests": 18,
+    "actual_exit": 0,
+    "retained": true,
+    "quiescent_tests": 19
+  },
+  "whole_lease": {
+    "fixture_expiry_seconds": 0.35,
+    "bookmarks_required": false,
+    "maximum_seconds": 2100,
+    "quiet_fixture_seconds": 0.15
+  },
+  "docs_review_sha256": "83f91cd76476274eb7cb591ade94b9641d9acf854101015e02735ce6e76a32a5",
+  "limits": {
+    "list_items": 1,
+    "watch_bytes": 8388608,
+    "fixed_controls": 3,
+    "frame_bytes": 1048576,
+    "events": 9997
+  },
+  "live_acceptance": false,
+  "scope": "Local controlled mTLS/POSIX qualification only",
+  "artifacts": {
+    "archive_bytes": 1254759,
+    "archive_sha256": "8f642c67997f9fa3f80bdfe3c7ee43b7a2ad9153cd533ca3750bd8d17cd715ae",
+    "terminal_sha256": "673dc79eb33e2ed213d79cf5c31fbc553eb9021487c86a58783b05b8e3116b59"
+  },
+  "baseline_commit": "ac6bc2c4f07343dbab5a15697b1d9f3a31812710",
+  "tests": {
+    "observer": 26,
+    "quiescent": 19,
+    "total": 85,
+    "skipped": 0,
+    "unchanged_cold": 40
+  },
+  "actual_terminal": {
+    "actual_exit_code": 0,
+    "completed_utc": "2026-10-11T11:20:26.293721-04:00",
+    "results": [
+      {
+        "exit_code": 0,
+        "log_sha256": "fca961672a77e435b32f343ff6c5fc549e90d2fb46bf94a3a481e0c27b6dbaa2",
+        "pattern": "test_bortus_quiescent_watch.py",
+        "pid": 2028463,
+        "start_ticks": "23114396"
+      },
+      {
+        "exit_code": 0,
+        "log_sha256": "d047a6b2c95a4c1b6c59a78e8dbc21ea73d366ed2e3d321a3153723f73f931ec",
+        "pattern": "test_bortus_quiescent_source.py",
+        "pid": 2028678,
+        "start_ticks": "23115125"
+      },
+      {
+        "exit_code": 0,
+        "log_sha256": "6d88475b1c6cd4ae48b3ab364c0085a1a838b6f42d71e3e3e6ef1d6c8e95e9ea",
+        "pattern": "test_bortus_cold_checkpoint.py",
+        "pid": 2028680,
+        "start_ticks": "23115202"
+      },
+      {
+        "exit_code": 0,
+        "log_sha256": "7c854272693758533d80027d2de931fe02117f62be921c32dea8bf001a011363",
+        "pattern": "test_bortus_cold_resume_order.py",
+        "pid": 2028681,
+        "start_ticks": "23115218"
+      },
+      {
+        "exit_code": 0,
+        "log_sha256": "09838e8829a8421ca7f43ccacfdab500a1cd45c2b3be5f3c8b02ef15120036e8",
+        "pattern": "test_bortus_cold_journal.py",
+        "pid": 2028683,
+        "start_ticks": "23115260"
+      },
+      {
+        "exit_code": 0,
+        "log_sha256": "ef25a7315f14788ff299123eaa86b6e05fa608a52d46159448b6b724148691f6",
+        "pattern": "test_bortus_cold_delete_intent.py",
+        "pid": 2028684,
+        "start_ticks": "23115276"
+      }
+    ],
+    "source_frozen": true,
+    "terminal": true
+  },
+  "forward_acceptance": false,
+  "abi": 1,
+  "limitations": [
+    "No actual operator/private API/Node/Docker/SSH or control mutations.",
+    "GET/watch/API boundaries are non-atomic; caller transport checks actual prerequisite before/after each dispatch.",
+    "Fsync injections are not actual power-loss testing.",
+    "No replay/relist/adoption or automatic resume; inherited ReadySourceFence/restore-watch/shared helpers remain unchanged."
+  ],
+  "source_bindings": {
+    "scripts/migration/tests/test_bortus_quiescent_watch.py": {
+      "sha256": "9f93e462551c074c981179ec0502902e407ab6b9efa152d88c997df54229ea2d",
+      "bytes": 18811
+    },
+    "scripts/migration/tests/test_bortus_quiescent_source.py": {
+      "sha256": "1d25dfc2cf2828a9546e05e41ed00bef70a3e4d5faaaee459d65ea0d8aa08dcb",
+      "bytes": 18227
+    },
+    "scripts/migration/bortus-quiescent-watch.py": {
+      "sha256": "313e321c1e11c090b8b3aca43783f462eb1d69dd9ca0b6cad2729ab1cb5752a6",
+      "bytes": 23514
+    },
+    "scripts/migration/bortus-quiescent-source.py": {
+      "sha256": "81a11106422da2e221174359b7b16cce494e41919181498b14654dc86f2dee61",
+      "bytes": 22397
+    },
+    "docs/BORTUS-QUIESCENT-WATCH.md": {
+      "sha256": "9d604fe6fb9598a32bc4c5b2215869861b09db2b3009d279bd12a395a83484c1",
+      "bytes": 4188
+    },
+    "docs/BORTUS-QUIESCENT-SOURCE.md": {
+      "sha256": "da561162aa0f51becc7c94f7bd7ea9bf889ca32b84d8dcdd06e54e5267662538",
+      "bytes": 5494
+    }
+  },
+  "owned_test_processes_absent": true
+}

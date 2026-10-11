@@ -1,0 +1,127 @@
+{
+  "scope": "Pinned unchanged default Gitleaks8.30.1 quiescent integration selected sources/evidence/affected docs only",
+  "actual_exit": 1,
+  "findings": 4,
+  "files": 14,
+  "inputs": [
+    {
+      "path": "scripts/migration/bortus-quiescent-source.py",
+      "bytes": 22397,
+      "sha256": "81a11106422da2e221174359b7b16cce494e41919181498b14654dc86f2dee61"
+    },
+    {
+      "path": "scripts/migration/bortus-quiescent-watch.py",
+      "bytes": 23823,
+      "sha256": "8d9998ffab2c4fe26b60e7e466c42b5b239d485cc6732f5084a969fc17997928"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_quiescent_source.py",
+      "bytes": 18227,
+      "sha256": "1d25dfc2cf2828a9546e05e41ed00bef70a3e4d5faaaee459d65ea0d8aa08dcb"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_quiescent_watch.py",
+      "bytes": 19472,
+      "sha256": "bbb75b3e16a07a944d4d46891702971a51f06a6a37603dba7d90aada3be8045b"
+    },
+    {
+      "path": "docs/BORTUS-QUIESCENT-SOURCE.md",
+      "bytes": 5494,
+      "sha256": "da561162aa0f51becc7c94f7bd7ea9bf889ca32b84d8dcdd06e54e5267662538"
+    },
+    {
+      "path": "docs/BORTUS-QUIESCENT-WATCH.md",
+      "bytes": 4374,
+      "sha256": "9341f61698df3b21f5f27b605fb6079e65d6ac93c0c3513d05e3185616db8f68"
+    },
+    {
+      "path": "evidence/bortus-quiescent-watch-qualification-20261011.json",
+      "bytes": 4156,
+      "sha256": "e883a13463654baa84494c35be7acf2b7c3ecee370afbd168cf0df84b93397b5"
+    },
+    {
+      "path": "evidence/bortus-quiescent-watch-lease-qualification-20261011.json",
+      "bytes": 2940,
+      "sha256": "c4c3dd11ef570d8fb4d3050fb97ebf5a38f27cdcfa18201e6b8f51ee6bb34d17"
+    },
+    {
+      "path": "evidence/bortus-quiescent-root-integration-20261011.json",
+      "bytes": 21203,
+      "sha256": "696b55d6c43b3d05cde7b3dfbbe03ea8d611efa21e4fafeef3776dfcee76e8b6"
+    },
+    {
+      "path": "docs/BORTUS-INDEPENDENT-RESTORE.md",
+      "bytes": 12762,
+      "sha256": "15120004edaff0412dae77ccb6f5ad21388a99db6b7ae137977335299a76dcef"
+    },
+    {
+      "path": "docs/BORTUS-RELEASE-STAGING.md",
+      "bytes": 29709,
+      "sha256": "ac126605816b163d7fce94bd60270a95af4cad85f036c810a843a83c9fc4d256"
+    },
+    {
+      "path": "docs/MIGRATION-OPERATIONS.md",
+      "bytes": 129628,
+      "sha256": "a5d32c092ab4a3dd7fef809561d1a39eed12aaa31bd62eebe3a8d17263fe737c"
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "bytes": 19687,
+      "sha256": "a7c4e01d45975766f4aac313a02877b655b0cff3d979e9d5557e717f72e22571"
+    },
+    {
+      "path": "MIGRATION_STATUS.md",
+      "bytes": 122575,
+      "sha256": "c12dbf4599e054b8de93fdda44765e5664b6ef4454cb143c73113edba1345786"
+    }
+  ],
+  "binary_sha256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+  "report_sha256": "a781d9e2d9fe90a4985783862788a1c57743874924c0c5403a6745af82ce1fa0",
+  "completed_at_utc": "2026-10-11T15:47:30.578408+00:00",
+  "full_history_findings_resolved": false,
+  "image_security_or_live_accepted": false,
+  "actual_production_restore_accepted": false,
+  "owned_child_reaped": true,
+  "reviewed_findings": [
+    {
+      "rule": "generic-api-key",
+      "file": "evidence/bortus-quiescent-root-integration-20261011.json",
+      "line": 132,
+      "line_span_sha256": "22904f5d56a07b488b87b959eae4a3fb489d65f2d6c1eb55e60db63f605a96d0",
+      "classification": "Verified exact public source file SHA256 binding, not credential material",
+      "source_path": "scripts/migration/import-secrets.py",
+      "source_sha256": "455262b2c070281ecbb1c059de37bf26cf41cd3b80e2100aa2ebdd27fe52be17"
+    },
+    {
+      "rule": "generic-api-key",
+      "file": "evidence/bortus-quiescent-root-integration-20261011.json",
+      "line": 164,
+      "line_span_sha256": "cb045d9dcb89b4cb9668ffe34802264d074196e17f21464dd76d01c7ef0f6f39",
+      "classification": "Verified exact public source file SHA256 binding, not credential material",
+      "source_path": "scripts/migration/qbittorrent-api-proof.py",
+      "source_sha256": "bb693c5849449b879349f17381f9c9400296d1f2155cac784501f19d821cbcd7"
+    },
+    {
+      "rule": "generic-api-key",
+      "file": "evidence/bortus-quiescent-root-integration-20261011.json",
+      "line": 171,
+      "line_span_sha256": "c8d7fb7fc4f07b3673459ecf39e0f18926f84be6059ab3f6c025d811a4999dad",
+      "classification": "Verified exact public source file SHA256 binding, not credential material",
+      "source_path": "scripts/migration/review-qbittorrent-credentials.py",
+      "source_sha256": "4c14ffb3a15131e001b0e1ae3f3173e6655d17a5376f37d14cfe1b3d47ea3a7c"
+    },
+    {
+      "rule": "generic-api-key",
+      "file": "evidence/bortus-quiescent-root-integration-20261011.json",
+      "line": 190,
+      "line_span_sha256": "03231fc74cee0c986fe4de92c9a537d5db34b6355ffcf9cbf7282fd632cd5e02",
+      "classification": "Verified exact public source file SHA256 binding, not credential material",
+      "source_path": "scripts/migration/verify-secret-encryption.py",
+      "source_sha256": "04d37745fd4a7d1b5db5e62639e0b1be446c4dd94a1c43cdb5f349193d7b4507"
+    }
+  ],
+  "untriaged_findings": 0,
+  "default_rules_changed": false,
+  "exclusions_used": false,
+  "scan_clean": false
+}
