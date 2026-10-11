@@ -186,3 +186,5 @@ Handler account snapshot scope: [qualification and retained originals](handler-a
 The public-only page-batching parser diagnostic was rejected for small typical savings and long-annotation regressions; production source and A07/A21 gates remain unchanged. See [assessment](selected-page-batch/assessment.json).
 
 Supplemental A02/A05 clause evidence and the retained first A03 failure are recorded in [acceptance-supplement/assessment.json](acceptance-supplement/assessment.json). Both attempts are terminal1; their completed scopes are separate from failure and full acceptance.
+
+Resource-menu private withdrawal: [focused source qualification](resource-private-withdrawal/qualification.json) retains the actual held-log withdrawal failure, two disposable fixture setup failures and deadline cleanup limitation. Three hook/state/deferred-read scenarios plus fresh types and selected lint pass; a new build/actual-browser result is required before DOM acceptance. A07/A21 and final image/live gates remain open.

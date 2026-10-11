@@ -31,12 +31,21 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
   const [confirmation, setConfirmation] = useState<Confirmation>();
   const returnFocus = () => trigger.current?.focus();
   useEffect(() => () => { pending.current?.abort(); if (timer.current) clearTimeout(timer.current); }, []);
-  useEffect(() => { if (!session.canWrite) { setYaml(value => value ? { ...value, edit: false } : undefined); setConfirmation(undefined); } }, [session.canWrite]);
+  useEffect(() => {
+    if (!session.canWrite) {
+      pending.current?.abort();
+      pending.current = undefined;
+      setYaml(undefined); setLogs(undefined); setConfirmation(undefined);
+      setBusy(false); setMessage("");
+      if (timer.current) clearTimeout(timer.current);
+    }
+  }, [session.canWrite]);
   const notify = (text: string) => {
     setMessage(text); if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => setMessage(""), 6000);
   };
   const load = async (task: (signal: AbortSignal) => Promise<void>) => {
+    if (!session.canWrite) return;
     pending.current?.abort();
     const controller = new AbortController();
     pending.current = controller;
@@ -119,11 +128,11 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
       </DropdownMenu.Content></DropdownMenu.Portal>
     </DropdownMenu.Root>
     {(message || busy) && <p role="status" className="fixed bottom-4 right-4 z-[70] max-w-[calc(100vw-2rem)] rounded-lg border border-zinc-700 bg-zinc-900 p-3 text-sm">{busy ? "Working…" : message}</p>}
-    {yaml && <YamlModal open onClose={() => setYaml(undefined)} yaml={yaml.value} title={`${capability.kind} YAML: ${namespace ? namespace + "/" : ""}${name}`}
+    {session.canWrite && yaml && <YamlModal open onClose={() => setYaml(undefined)} yaml={yaml.value} title={`${capability.kind} YAML: ${namespace ? namespace + "/" : ""}${name}`}
       readOnly={!yaml.edit || !session.canWrite || !capability.yamlEdit} returnFocus={returnFocus}
       onSave={yaml.edit && session.canWrite && capability.yamlEdit ? async value => { await mutate(base + "/yaml", "PUT", { yaml: value }); notify("YAML replaced. Refreshing resource state."); } : undefined} />}
-    {logs !== undefined && <LogModal open onClose={() => setLogs(undefined)} logs={logs} title={`Logs: ${namespace}/${name}`} returnFocus={returnFocus} />}
-    {confirmation && <ConfirmDialog open onClose={() => { if (!busy) setConfirmation(undefined); }} title={confirmation.title}
+    {session.canWrite && logs !== undefined && <LogModal open onClose={() => setLogs(undefined)} logs={logs} title={`Logs: ${namespace}/${name}`} returnFocus={returnFocus} />}
+    {session.canWrite && confirmation && <ConfirmDialog open onClose={() => { if (!busy) setConfirmation(undefined); }} title={confirmation.title}
       message={confirmation.message} confirmLabel={confirmation.label} confirmName={confirmation.name} error={message} danger loading={busy} onConfirm={finishConfirmation} returnFocus={returnFocus} />}
   </>;
 }
