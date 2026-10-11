@@ -2,7 +2,8 @@ import { execFile } from "child_process";
 import { promisify } from "util";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { homedir } from "os";
-import { createKubectlClient, operatorCommandFailure } from "./kubectl-client";
+import { createKubectlClient } from "./kubectl-client";
+import { executeOperatorCommand } from "./operator-command";
 export { KubernetesCommandError, validateNamespace, validateResourceName } from "./kubectl-client";
 
 const execFileAsync = promisify(execFile);
@@ -33,7 +34,7 @@ export async function kubectlJSON(
 /**
  * Execute a raw SSH command and return stdout as string (or null on failure).
  *
- * BOOTSTRAP-ONLY — used exclusively by ensureKubeconfig() to fetch the initial
+ * BOOTSTRAP-ONLY â€” used exclusively by ensureKubeconfig() to fetch the initial
  * kubeconfig from the master node. Never called from kubectl hot paths.
  */
 export async function sshExec(
@@ -67,7 +68,7 @@ export const kubectlExec = kubectl.exec;
 export const kubectlPodList = kubectl.listPods;
 export const kubectlDiagnostics = kubectl.diagnostics;
 
-// ── Operator shell working-directory helper ──
+// â”€â”€ Operator shell working-directory helper â”€â”€
 const SHELL_HOME = "/home/shell";
 const RESTRICTED_BASHRC = `${SHELL_HOME}/.restricted_bashrc`;
 
@@ -79,7 +80,7 @@ function ensureRestrictedShell() {
   if (!existsSync(RESTRICTED_BASHRC)) {
     writeFileSync(
       RESTRICTED_BASHRC,
-      `# Botrus K8s restricted shell — do not edit\n` +
+      `# Botrus K8s restricted shell â€” do not edit\n` +
       `# Override cd to prevent escaping /home/shell\n` +
       `cd() {\n` +
       `  local target="\${1:-\$HOME}"\n` +
@@ -106,24 +107,16 @@ export async function shellExec(
   timeoutMs = 30000
 ): Promise<string> {
   ensureRestrictedShell();
-  try {
-    const { stdout } = await execFileAsync(
-      "bash",
-      ["-c", cmd],
-      {
-        cwd: SHELL_HOME,
-        timeout: timeoutMs,
-        maxBuffer: 2 * 1024 * 1024,
-        env: {
-          ...process.env,
-          KUBECONFIG: KUBECONFIG_PATH,
-          BASH_ENV: RESTRICTED_BASHRC,
-          HOME: SHELL_HOME,
-        },
-      }
-    );
-    return stdout;
-  } catch (error) {
-    throw operatorCommandFailure(error);
-  }
+  return executeOperatorCommand(cmd, {
+    cwd: SHELL_HOME,
+    timeout: timeoutMs,
+    maxBuffer: 2 * 1024 * 1024,
+    env: {
+      ...process.env,
+      KUBECONFIG: KUBECONFIG_PATH,
+      BASH_ENV: RESTRICTED_BASHRC,
+      HOME: SHELL_HOME,
+    },
+    encoding: "utf8",
+  });
 }
