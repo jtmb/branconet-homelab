@@ -134,3 +134,6 @@ Current [coherent terminal and real-zoom qualification](terminal-final-qualifica
 
 
 Exact3f9b21c passed197units/four production HTTP suites on Linux Node22.23.3 and all unchanged frozen six-profile/three-pair assertion inventories. Overall no-regression performance remains failed: native200/1k/large and warm1k concurrent/25large sequential regress; no final image/live/AT pass. Original source modes, reports, recalculated percentiles and owned cleanup are retained in [3f9 Linux receipt](implementation-evidence/paired-3f9b21c-qualification.json).
+
+
+[Native3f9 correlated characterization](native-request-characterization-3f9b21c/manifest.json) retains v1 unattachedSDK/v2 ESM correction/v3 native-only CPU observations and all terminal/ownership/shim hashes. Diagnostic-only; no acceptance pass or source/gate change.
