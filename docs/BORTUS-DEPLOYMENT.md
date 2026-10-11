@@ -63,6 +63,18 @@ Keep operator kubeconfig, SSH keys and provisioning credentials independently av
 
 ## Validation ownership
 
+The `dafb41c3` explicit metadata-summary candidate has independently verified
+[Windows functional evidence](../evidence/bortus-windows-functional-dafb-20261011.json):
+48 focused cases, 205 units, lint/types and four production HTTP suites pass with
+no skips. Root retains 25 original artifacts, 314 tested working files with raw
+Git blob/mode bindings and 687 unchanged compiled outputs. The successful fresh
+build from the earlier qualification attempt was reused after only a test
+observer changed; its original failure and successful build terminal are retained.
+One historical mixed-EOL test fixture has normalized-text equality only, with
+separate tested/raw hashes. Root's default scan passes on exactly 264 raw production
+inputs. Unchanged paired performance, fresh Linux qualification, release image
+and final live acceptance remain pending; no production source switch is implied.
+
 An additional TLS transport test generates temporary self-signed test credentials with OpenSSL and talks to an HTTPS mock Kubernetes API using the real client/CA/token. It verifies create/read/update/list/delete and body-only value transport. This is still a mock API, not cluster acceptance. OpenSSL absence skips that test explicitly.
 
 `npm run test:integration` requires a completed build. It migrates a fresh temporary SQLite DB, checks zero schema drift, starts the production standalone server on loopback, and validates real registration/roles, variable redaction, Bearer lookup, stale DB rejection, unavailable readiness, alias collisions and demotion enforcement. It uses fake credentials and an unavailable loopback Kubernetes endpoint, then removes its temporary DB. It never touches the operator DB or live cluster.

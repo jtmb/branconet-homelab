@@ -289,3 +289,22 @@ unchanged paired performance qualification remains pending. No new release image
 production mutation, restored data read or source retirement occurred. Executable
 fresh-restore coordination, full independent data recovery, guarded RBAC/admission
 cutover and final live acceptance remain open.
+
+## 2026-10-11 07:53 UTC: summary candidate functional evidence independently checked
+
+Root verifies the [Windows functional package](evidence/bortus-windows-functional-dafb-20261011.json)
+for immutable application candidate `dafb41c3`: 48 focused tests, 205 units,
+lint/types and four production HTTP suites pass with no skips. The retained 25
+original artifacts, 314 tested working files/raw Git bindings and 687 compiled
+outputs match their manifests. Only the concurrency-test observer changed between
+the successful fresh build and final qualification. A first verifier path-prefix
+error is retained in the actual tool result; the corrected verifier does not
+change or rerun the original tests. One historical mixed-EOL fixture is explicitly
+bound through normalized-text equality rather than raw-byte equivalence.
+
+The pinned default root scan passes on exactly 264 raw production inputs, with
+no exclusions or allowlists. Whole historical evidence/image cleanliness is not
+claimed. Unchanged paired performance and fresh Linux qualification remain open.
+The native subagent now implements the bounded restored-data step in its isolated
+branch from root `ddd6d42`, preserving old review probes. No production source,
+image, credential, storage or controller changes were made.
