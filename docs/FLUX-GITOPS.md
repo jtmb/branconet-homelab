@@ -234,7 +234,8 @@ Separate exact branch push, PR creation and reviewed-head merge commands succeed
 No manual Flux reconciliation was used. The
 [publication evidence](../evidence/bortus-phase1-guard-publication-20261011.json)
 records actual publication and metadata checks. It does not prove the 43 admission
-probes or independent whole-row restore: neither has run yet. Review identified
+probes or independent whole-row restore; neither had run at that publication
+checkpoint. The subsequent actual attempts are recorded below. Review identified
 an additional typed collection item-header assumption in probe cleanup; its
 qualified correction is required before fixture creation. No forward schema or
 new application entrypoint has started. Two subagents and the migration coordinator
@@ -265,3 +266,32 @@ or whole-row acceptance. The deadline-aware encrypted archive callback and
 actual source/image/schema/guard producers must still be wired before live use.
 
 See the [root integration evidence](../evidence/bortus-quiescent-root-integration-20261011.json).
+
+
+## 2026-10-11: actual admission attempts and explicit fixture recovery
+
+The [actual probe progress](../evidence/bortus-admission-progress-20261011.json)
+retains the first 12-case refusal. Its inert Pod and replicas-zero Deployment
+were explicitly deleted with their confirmed creation UIDs, fresh RVs, full
+semantic specs and complete LIST/name absence checks. The original uncertain
+PUT journal remains unchanged. Kubernetes added the standard Secret-volume
+mode 420; the exact strict matcher correction and cleanup composition pass 58
+root controls against the current frozen dependencies.
+
+A distinct new probe reached 25 completed cases before a generic probe refusal.
+All six recorded fixture mutations are confirmed; its inert Pod and zero-replica
+Deployment remain retained for explicit owned cleanup. A separate actual dry-run
+for the next scaleIO-reference case returns a correctly attributed guard denial.
+That diagnostic does not prove the earlier failure's cause or a full 43-case pass.
+No whole-row restore, forward schema or new app entrypoint has run.
+
+The [independent process-group review](../evidence/bortus-operator-group-root-review-20261011.json)
+checks 341 raw frontend files, 364 retained artifacts, a successful fresh build,
+six HTTP/process controls and thirteen enabled-shell controls. Root also verifies
+340 actual retained source files and 4262 compiled files. The selected eight-file
+default scan returns one finding: an exact unchanged public prose span,
+independently reviewed with zero untriaged findings; it is not a clean scan or
+resolution of the two historical provenance findings. This proof covers the
+prior process-group source only. A subsequently reproduced browser retention
+bug and its candidate fix still require independent final source/UI review;
+performance, final image, complete audit and live recovery acceptance stay open.

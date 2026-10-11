@@ -1,0 +1,90 @@
+{
+  "scope": "Actual guarded probe progress and explicit owned-fixture recovery; not43-case acceptance",
+  "original_probe": {
+    "run": "b473091bebef",
+    "actual_exit": 1,
+    "completed_cases": 12,
+    "failure": "uncertain",
+    "journal_sha256": "bc694359d9bf30fdea71da328443ff341d889ad588c9473388d82f42aa98eee1",
+    "uncertain_operation": "Deployment-switch-12",
+    "post_update_default420_matcher_defect_reproduced": true,
+    "historical_pending_put_body_or_response_reconstructed": false,
+    "original_uncertainty_retained": true
+  },
+  "current_dependency_qualification": {
+    "local_controls": 58,
+    "actual_exit": 0,
+    "source_manifest_sha256": "fbc045d55d5dff51b3334b87eee11bcdb58413f1a95edd1f853d91772de059e9",
+    "source_frozen": true,
+    "all_four_owned_children_absent": true
+  },
+  "explicit_original_fixture_cleanup": {
+    "actual_exit": 0,
+    "scope": "explicitownedfixturecleanuponly",
+    "run": "/home/brajam/.local/share/branconet-migration/root-admission-v11-45c843fa93d1/explicit-cleanup-root",
+    "source_manifest_sha256": "fbc045d55d5dff51b3334b87eee11bcdb58413f1a95edd1f853d91772de059e9",
+    "receipt_sha256": "4605395d84ca36ac4aa3cbc268d3d4cbc339bbacf3b3b7e76030fd34ed02b8fc",
+    "result": {
+      "receipt_basename": "record.json",
+      "original_uncertainty_retained": true,
+      "fixtures_absent": true,
+      "actual_enforcement_accepted": false,
+      "overall_live_restore_acceptance": false
+    },
+    "original_uncertain_journal_unchanged": true,
+    "admission_accepted": false,
+    "forward_schema_or_app_entrypoint_run": false
+  },
+  "new_probe": {
+    "run": "48be1b43980e",
+    "actual_exit": 1,
+    "completed_cases": 25,
+    "failure": "probe",
+    "journal_sha256": "a1b2c83a525ac34a2cf5cdbb7e7f73a7da294f93dd9d88be66fa1ccf9d6360e4",
+    "all_six_mutations_confirmed": true,
+    "automatic_replay_or_cleanup_performed": false,
+    "owned_inert_pod_and_zero_deployment_retained": true,
+    "generic_failure_cause_proven": false
+  },
+  "single_failed_case_diagnostic": {
+    "scope": "singlefailedcaseactualdryrunonly",
+    "case": {
+      "case_id": "DaemonSet:legacy-default-secret-scaleIO:bortus-runtime",
+      "kind": "DaemonSet",
+      "namespace": "bortus",
+      "operation": "CREATE",
+      "subresource": "",
+      "scenario": "legacy-default-secret-scaleIO",
+      "protected_reference": "bortus-runtime",
+      "expected_outcome": "guard_denied"
+    },
+    "mutations_or_application_entrypoint_run": false,
+    "http_status": 403,
+    "status_metadata": {
+      "kind": "Status",
+      "apiVersion": "v1",
+      "reason": "Forbidden",
+      "code": 403,
+      "status": "Failure"
+    },
+    "result": {
+      "http_status": 403,
+      "outcome": "guard_denied",
+      "other_failure": null,
+      "attribution": {
+        "source": "api_guard_rejection",
+        "reason": "Forbidden",
+        "policy_name": "bortus-kv-guard-templates",
+        "binding_name": "bortus-kv-guard-templates",
+        "policy_uid": "f4d81951-3305-49c1-b727-190445d95fb6",
+        "binding_uid": "6ed3bc55-3fc6-47dd-854b-b1977321a511",
+        "validation_index": 0
+      }
+    },
+    "actual_exit": 0
+  },
+  "actual43_enforcement_accepted": false,
+  "whole_row_restore_accepted": false,
+  "forward_schema_or_new_app_entrypoint_run": false,
+  "original_data_and_controller_retirement_authorized": false
+}
