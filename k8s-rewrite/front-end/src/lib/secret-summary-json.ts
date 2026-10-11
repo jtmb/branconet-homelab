@@ -152,14 +152,15 @@ export interface NativeSecretSummaryPage { items: NativeSecretSummary[]; cursor:
 export function parseSecretSummaryPage(chunks: readonly Buffer[], namespace: string, limit: number): NativeSecretSummaryPage {
   try {
     if (!Number.isSafeInteger(limit) || limit < 1 || limit > 200 || chunks.length > 16384 || chunks.reduce((n, b) => n + b.length, 0) > 4 * 1024 * 1024) throw invalid();
-    const reader = new Reader(chunks), items: NativeSecretSummary[] = [], seen = new Set<string>();
+    const reader = new Reader(chunks), items: NativeSecretSummary[] = []; let seen = 0;
     let version: string | undefined, kind: string | undefined, cursor = "", haveItems = false;
     const item = (): NativeSecretSummary => {
-      const fields = new Set<string>(); let apiVersion: string | undefined, kind: string | undefined, metadata: NativeSecretSummary["metadata"] | undefined;
+      let fields = 0; let apiVersion: string | undefined, kind: string | undefined, metadata: NativeSecretSummary["metadata"] | undefined;
       let type = "Opaque", immutable = false; const keys = new Set<string>();
       reader.members(key => {
-        if (["apiVersion", "kind", "metadata", "data", "stringData", "type", "immutable"].includes(key)) {
-          if (fields.has(key)) throw invalid(); fields.add(key);
+        const bit = key === "apiVersion" ? 1 : key === "kind" ? 2 : key === "metadata" ? 4 : key === "data" ? 8 : key === "stringData" ? 16 : key === "type" ? 32 : key === "immutable" ? 64 : 0;
+        if (bit) {
+          if (fields & bit) throw invalid(); fields |= bit;
         }
         if (key === "apiVersion") apiVersion = reader.text();
         else if (key === "kind") kind = reader.text();
@@ -179,7 +180,8 @@ export function parseSecretSummaryPage(chunks: readonly Buffer[], namespace: str
       return { metadata, type, immutable, keys: [...keys].sort() };
     };
     reader.members(key => {
-      if (["apiVersion", "kind", "metadata", "items"].includes(key)) { if (seen.has(key)) throw invalid(); seen.add(key); }
+      const bit = key === "apiVersion" ? 1 : key === "kind" ? 2 : key === "metadata" ? 4 : key === "items" ? 8 : 0;
+      if (bit) { if (seen & bit) throw invalid(); seen |= bit; }
       if (key === "apiVersion") version = reader.text();
       else if (key === "kind") kind = reader.text();
       else if (key === "metadata") {
