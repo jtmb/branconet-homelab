@@ -1,0 +1,67 @@
+{
+  "scope": "A22 local optional-code contribution characterization, not whole audit or before/after performance acceptance",
+  "source_commit": "f0c0a2a27d82cc6958422d719f77cdecf18a50ff",
+  "production_commit": "6fb0104329bec4ad6a5f25fcadf40713b38c4b51",
+  "root_verification": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-optional-code-20261011\\terminal.json",
+    "sha256": "ad655e3d79045096887fe9aa3447ff7957e1484151c986a66406010daf8f7757",
+    "verified_raw_git_blobs_modes": 986,
+    "verified_exact_artifacts": 19,
+    "source_doc_byte_relations": 24,
+    "actual_exit_code": 0,
+    "runtime_rerun": false
+  },
+  "profile": {
+    "viewport": [
+      390,
+      844
+    ],
+    "cpu_throttle": 4,
+    "latency_ms": 150,
+    "download_bytes_per_second": 200000,
+    "pairs_per_route": 3,
+    "samples": 12
+  },
+  "observations": {
+    "deploy_cold_initial_wire_bytes": 164448,
+    "deploy_cold_optional_wire_bytes": 3281,
+    "pods_cold_initial_wire_bytes": 161058,
+    "pods_cold_optional_wire_bytes": 7770,
+    "warm_initial_and_optional_wire_bytes": 0,
+    "warm_cache_proof": "requestServedFromCache true, fromDiskCache false; actual memory-cache observation",
+    "initial_lcp_medians_ms": {
+      "deploy_cold": 1696,
+      "deploy_warm": 628,
+      "pods_cold": 592,
+      "pods_warm": 328
+    }
+  },
+  "original_attempts": [
+    {
+      "attempt": 1,
+      "actual_exit_code": 0,
+      "limit": "Fixture lacked production static cache headers; retained uncached observation"
+    },
+    {
+      "attempt": 2,
+      "actual_exit_code": 1,
+      "limit": "Disk-only cache oracle failed; failed warm rows not retained before assertion; cause not claimed from this attempt"
+    }
+  ],
+  "qualified_attempt": {
+    "attempt": 3,
+    "browser_exit_code": 0,
+    "lint_exit_code": 0,
+    "typecheck_exit_code": 0,
+    "chrome_exit_code": 0,
+    "fixture_exit_code": 0
+  },
+  "limitations": [
+    "Offline gzip/Brotli estimates are separate from observed encoded response bytes",
+    "No baseline-versus-candidate speed acceptance or field/CoreWebVitals claim",
+    "Renderer CPU spans overlap and cannot be summed as totalCPU",
+    "First shell/terminal feature not measured; concrete terminal keyboard/Clear/lifecycle fixes remain open",
+    "Wider actualzoom/manualAT, finalcoherentQA/image, unchangedA07/A21benchmark and guardedlive/data acceptance pending"
+  ],
+  "live_acceptance": false
+}
