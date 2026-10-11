@@ -589,3 +589,5 @@ finding, and two historical provenance findings remain unresolved. This accepts
 source-local behavior only. A fresh production build, affected browser checks,
 unchanged paired performance, final image and live upgrade remain pending.
 The original running application and data have not been changed by this review.
+
+The separately prepared [4ae9 release context](../evidence/bortus-release-context-4ae9-20261011.json) contains 267 production files and eleven migrations. Every archived byte, Git blob and mode independently matches the final raw-source receipt. The full production-source default credential scan returns zero findings; this excludes docs/tests and does not resolve historical provenance findings. No image was built or deployed, and functional/performance acceptance remains separate.
