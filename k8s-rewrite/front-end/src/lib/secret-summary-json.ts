@@ -17,8 +17,9 @@ class Reader {
   expect(byte: number) { if (this.take() !== byte) throw invalid(); }
   space() { while ([32, 9, 10, 13].includes(this.peek())) this.take(); }
   private hex(byte: number) { return byte >= 48 && byte <= 57 || byte >= 65 && byte <= 70 || byte >= 97 && byte <= 102; }
-  string() {
+  string(): boolean {
     this.expect(34);
+    let plainAscii = true;
     for (;;) {
       if (this.peek() < 0) throw invalid();
       const chunk = this.chunks[this.index];
@@ -32,12 +33,14 @@ class Reader {
       while (this.offset < chunk.length && chunk[this.offset] >= 32 && chunk[this.offset] < 128 && chunk[this.offset] !== 34 && chunk[this.offset] !== 92) this.offset++;
       if (this.offset === chunk.length) continue;
       const byte = this.take();
-      if (byte === 34) return;
+      if (byte === 34) return plainAscii;
       if (byte === 92) {
+        plainAscii = false;
         const escaped = this.take();
         if (escaped === 117) { for (let i = 0; i < 4; i++) if (!this.hex(this.take())) throw invalid(); }
         else if (![34, 92, 47, 98, 102, 110, 114, 116].includes(escaped)) throw invalid();
       } else if (byte >= 128) {
+        plainAscii = false;
         const length = byte >= 194 && byte <= 223 ? 1 : byte >= 224 && byte <= 239 ? 2 : byte >= 240 && byte <= 244 ? 3 : -1;
         if (length < 0) throw invalid();
         for (let i = 0; i < length; i++) {
@@ -77,9 +80,15 @@ class Reader {
       if (!digit(this.peek())) throw invalid(); do { this.take(); } while (digit(this.peek()));
     }
   }
-  capture(parse: () => void): unknown {
+  capture(parse: () => unknown, selectedString = false): unknown {
     this.space(); this.peek(); const startIndex = this.index, startOffset = this.offset;
-    parse(); const pieces: Buffer[] = [];
+    const plainAscii = parse();
+    // The complete grammar above already rejected control/invalid bytes. ASCII
+    // decoding is safe only for an unescaped selected string in this one chunk.
+    if (selectedString && plainAscii === true && startIndex === this.index) {
+      return this.chunks[startIndex].toString("ascii", startOffset + 1, this.offset - 1);
+    }
+    const pieces: Buffer[] = [];
     for (let i = startIndex; i <= this.index && i < this.chunks.length; i++) {
       const end = i === this.index ? this.offset : this.chunks[i].length;
       pieces.push(this.chunks[i].subarray(i === startIndex ? startOffset : 0, end));
@@ -87,7 +96,7 @@ class Reader {
     const selected = pieces.length === 1 ? pieces[0] : Buffer.concat(pieces);
     return JSON.parse(this.decoder.decode(selected));
   }
-  text(): string { return this.capture(() => this.string()) as string; }
+  text(): string { return this.capture(() => this.string(), true) as string; }
   members(member: (key: string) => void) {
     this.space(); this.expect(123); this.space();
     if (this.peek() === 125) { this.take(); return; }

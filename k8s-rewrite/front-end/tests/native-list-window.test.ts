@@ -78,23 +78,26 @@ test("summary TLS pagination retains bounded oversized retry, exact key inventor
 });
 
 test("summary parsing cannot publish after its request/list deadline or silently retry", { timeout: 30000 }, async () => {
-  await fixture(async () => {
-    const budget = new SecretListBudget(), originalRequest = https.request, decode = TextDecoder.prototype.decode, clock = Date.now;
-    const raw = Buffer.from('{"apiVersion":"v1","kind":"SecretList","items":[]}'); let calls = 0, visited = 0;
+  for (const phase of ["selected-ascii", "metadata-decode"] as const) await fixture(async () => {
+    const budget = new SecretListBudget(), originalRequest = https.request, decode = TextDecoder.prototype.decode, bufferText = Buffer.prototype.toString, clock = Date.now;
+    const raw = Buffer.from('{"apiVersion":"v1","kind":"SecretList","metadata":{},"items":[]}'); let calls = 0, visited = 0, clockAdvances = 0;
     https.request = ((_url: string, _options: https.RequestOptions, receive: (response: http.IncomingMessage) => void) => {
       calls++; const request = new EventEmitter() as EventEmitter & { end(): void; setHeader(): void };
       request.setHeader = () => {}; request.end = () => setImmediate(() => {
         const response = new EventEmitter() as EventEmitter & { statusCode: number; destroy(): void }; response.statusCode = 200; response.destroy = () => {};
         receive(response as unknown as http.IncomingMessage);
-        TextDecoder.prototype.decode = function (...args) { const value = Reflect.apply(decode, this, args); Date.now = () => clock() + 20000; return value; };
+        const expire = () => { clockAdvances++; Date.now = () => clock() + 20000; };
+        TextDecoder.prototype.decode = function (...args) { const value = Reflect.apply(decode, this, args); if (phase === "metadata-decode") expire(); return value; };
+        Buffer.prototype.toString = function (...args: Parameters<Buffer["toString"]>) { const value = bufferText.apply(this, args); if (phase === "selected-ascii" && args[0] === "ascii") expire(); return value; };
         try { response.emit("data", raw); response.emit("end"); }
-        finally { TextDecoder.prototype.decode = decode; Date.now = clock; }
+        finally { TextDecoder.prototype.decode = decode; Buffer.prototype.toString = bufferText; Date.now = clock; }
       }); return request;
     }) as unknown as typeof https.request;
     try {
       await assert.rejects(createSecretTransport(200).listSummaries!("summary", { budget, visit: () => { visited++; } }), error => error503(error) && (error as Error).message === "Kubernetes Secret list timed out");
+      assert.ok(clockAdvances > 0, "the selected parse phase must actually cross its deadline");
       assert.equal(calls, 1); assert.equal(visited, 0); assert.equal(budget.items, 0); assert.equal(budget.bytes, raw.length); idle();
-    } finally { https.request = originalRequest; TextDecoder.prototype.decode = decode; Date.now = clock; budget.finish(); }
+    } finally { https.request = originalRequest; TextDecoder.prototype.decode = decode; Buffer.prototype.toString = bufferText; Date.now = clock; budget.finish(); }
   });
 });
 async function fixture(operation: (native: Awaited<ReturnType<typeof nativeTlsFixture>>) => Promise<void>, delay = 0) {

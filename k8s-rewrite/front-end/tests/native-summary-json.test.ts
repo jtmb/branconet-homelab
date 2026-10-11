@@ -51,14 +51,56 @@ test("summary retains exact metadata/key identity across every byte/chunk split,
 test("accepted values and unknown-field values are never decoded or JSON-materialized", () => {
   const raw = Buffer.from(page({ public: "VALUE_SENTINEL".repeat(100000) }, { stringData: { text: "VALUE_SENTINEL" }, unknown: { values: ["VALUE_SENTINEL", { more: "VALUE_SENTINEL" }] } }));
   const decode = TextDecoder.prototype.decode, json = JSON.parse;
+  const bufferText = Buffer.prototype.toString;
   TextDecoder.prototype.decode = function (...args) {
     const value = Reflect.apply(decode, this, args); assert.equal(value.includes("VALUE_SENTINEL"), false, "only selected metadata/key/header bytes may be decoded"); return value;
   };
   JSON.parse = (text, reviver) => { assert.equal(text.includes("VALUE_SENTINEL"), false); return json(text, reviver); };
+  Buffer.prototype.toString = function (...args: Parameters<Buffer["toString"]>) {
+    const value = bufferText.apply(this, args); assert.equal(value.includes("VALUE_SENTINEL"), false, "selected ASCII materialization must never include native/unknown values"); return value;
+  };
   try {
     const result = parseSecretSummaryPage([raw.subarray(0, 100), raw.subarray(100, 10003), raw.subarray(10003)], "apps", 200);
     assert.deepEqual(result.items[0].keys, ["public"]); assert.equal(JSON.stringify(result).includes("VALUE_SENTINEL"), false);
-  } finally { TextDecoder.prototype.decode = decode; JSON.parse = json; }
+  } finally { TextDecoder.prototype.decode = decode; JSON.parse = json; Buffer.prototype.toString = bufferText; }
+});
+
+test("selected same-chunk ASCII bypasses decoding; escaped, Unicode and split strings keep exact fallback semantics", () => {
+  const decoded: string[] = [], ascii: string[] = [];
+  const decode = TextDecoder.prototype.decode, bufferText = Buffer.prototype.toString;
+  TextDecoder.prototype.decode = function (...args) { const value = Reflect.apply(decode, this, args); decoded.push(value); return value; };
+  Buffer.prototype.toString = function (...args: Parameters<Buffer["toString"]>) { const value = bufferText.apply(this, args); if (args[0] === "ascii") ascii.push(value); return value; };
+  try {
+    const raw = Buffer.from(page(JSON.parse('{"__proto__":"VALUE_SENTINEL","constructor":"","":"AA==","K~Y":"VALUE_SENTINEL"}')));
+    const expected = parseSecretSummaryPage([raw], "apps", 200);
+    assert.deepEqual(expected.items[0].keys, ["", "K~Y", "__proto__", "constructor"]);
+    assert.deepEqual(decoded.map(text => JSON.parse(text)), [{ continue: "public-cursor" }, metadata, true]);
+    assert.ok(ascii.includes("__proto__") && ascii.includes("") && ascii.includes("SecretList"));
+    assert.equal(ascii.some(text => text.includes("VALUE_SENTINEL")), false);
+    const variants = [raw, Buffer.from(raw.toString().replace('"kind"', '"k\\u0069nd"').replace('"K~Y"', '"K\\u007eY"')),
+      Buffer.from(raw.toString().replace('"K~Y"', '"snow-雪😀\\n\\\"\\\\\\uD800"'))];
+    for (const variant of variants) {
+      const full = JSON.parse(variant.toString()); const oracle = { ...expected, items: [{ ...expected.items[0], keys: Object.keys(full.items[0].data).sort() }] };
+      for (let split = 0; split <= variant.length; split++) assert.deepEqual(parseSecretSummaryPage([variant.subarray(0, split), Buffer.alloc(0), variant.subarray(split)], "apps", 200), oracle);
+      assert.deepEqual(parseSecretSummaryPage(Array.from(variant, (_, i) => variant.subarray(i, i + 1)), "apps", 200), oracle);
+    }
+    const afterVariants = decoded.length;
+    parseSecretSummaryPage([raw], "apps", 200);
+    assert.equal(decoded.length - afterVariants, 3, "complete metadata objects and boolean retain existing JSON/fatal decoding");
+  } finally { TextDecoder.prototype.decode = decode; Buffer.prototype.toString = bufferText; }
+});
+
+test("all256 selected-key bytes preserve grammar and identity across word and chunk boundaries", () => {
+  const template = Buffer.from(page({ "K~Y": "VALUE_SENTINEL" })), at = template.indexOf(Buffer.from("K~Y")) + 1;
+  for (let byte = 0; byte < 256; byte++) {
+    const raw = Buffer.from(template); raw[at] = byte;
+    for (const split of [0, at - 1, at, at + 1, at + 2, raw.length]) {
+      const run = () => parseSecretSummaryPage([raw.subarray(0, split), Buffer.alloc(0), raw.subarray(split)], "apps", 200);
+      if (byte >= 32 && byte < 128 && byte !== 34 && byte !== 92) {
+        assert.deepEqual(run().items[0].keys, Object.keys(JSON.parse(raw.toString()).items[0].data));
+      } else assert.throws(run, error => { assert.equal((error as Error).message, "Invalid Kubernetes Secret summary response"); return true; });
+    }
+  }
 });
 
 test("complete validation rejects malformed skipped values and invalid UTF8 even after valid metadata", () => {
