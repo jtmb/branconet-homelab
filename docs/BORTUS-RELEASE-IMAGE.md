@@ -186,3 +186,5 @@ This qualifies c29fc as an inert public-fixture runtime only. The newer ab8d
 application source needs its own final image qualification. No production-row
 restore, active admission, original PVC schema migration, app rollout, security,
 performance or live auth/UI/consumer acceptance follows from these probes.
+
+The fresh [4ae9 Linux functional qualification](../evidence/bortus-functional-4ae9-root-20261011.json) passed its production build, 262 unit tests without skips, whole-source lint, fresh type checking and six existing HTTP/process controls. Root independently rehashed 344 executed sources, 77 test/helpers, 4,262 compiled files and all five original stage logs against the final 345 raw Git frontend bindings. All observed owned processes and containers are absent. The first read-only root count assertion accidentally included 22 doc rows; the corrected frontend-only check passed without rerunning qualification. Browser lifecycle, universal action, paired performance, immutable final image and live release gates remain separate and pending. Production remains unchanged.
