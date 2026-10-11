@@ -72,8 +72,11 @@ build from the earlier qualification attempt was reused after only a test
 observer changed; its original failure and successful build terminal are retained.
 One historical mixed-EOL test fixture has normalized-text equality only, with
 separate tested/raw hashes. Root's default scan passes on exactly 264 raw production
-inputs. Unchanged paired performance, fresh Linux qualification, release image
-and final live acceptance remain pending; no production source switch is implied.
+inputs. The completed [paired and Linux qualification](../evidence/bortus-paired-performance-dafb-20261011.json)
+also passes 205 Linux units and four HTTP suites without skips. Root verifies
+50 original artifacts, 421 exported source blobs/modes and all 4,122 statistics.
+Performance acceptance fails: the large native medians are slower, so release
+image and final live acceptance remain pending; no production switch is implied.
 
 An additional TLS transport test generates temporary self-signed test credentials with OpenSSL and talks to an HTTPS mock Kubernetes API using the real client/CA/token. It verifies create/read/update/list/delete and body-only value transport. This is still a mock API, not cluster acceptance. OpenSSL absence skips that test explicitly.
 

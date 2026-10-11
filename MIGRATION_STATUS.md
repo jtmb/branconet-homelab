@@ -308,3 +308,20 @@ claimed. Unchanged paired performance and fresh Linux qualification remain open.
 The native subagent now implements the bounded restored-data step in its isolated
 branch from root `ddd6d42`, preserving old review probes. No production source,
 image, credential, storage or controller changes were made.
+
+## 2026-10-11 07:59 UTC: paired summary candidate and Linux results verified
+
+The [independent paired/Linux evidence](evidence/bortus-paired-performance-dafb-20261011.json)
+verifies 40 paired and ten Linux functional original artifacts, all 421 baseline
+and candidate exported Git blobs/modes, six alternating measurement records and
+all 4,122 per-phase/whole-run reported statistics. Actual Linux qualification
+passes 205 units and four production HTTP suites without skips, on read-only
+inputs with network disabled and owned containers closed at terminal.
+
+Performance acceptance fails. Native large medians increase from 199.25 to 288.27
+ms and from 123.86 to 180.09 ms; passing functional assertions and lower whole-run
+CPU do not replace those failed gates. The application subagent has begun one
+separate, approved observation with metadata-only profiling on the exact candidate
+build to locate the remaining cost. Profiling is diagnostic and cannot grant
+acceptance. The native subagent is implementing and qualifying the restored-data
+step. No production image switch, restored data read or source retirement occurred.

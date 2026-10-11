@@ -1,0 +1,326 @@
+{
+  "scope": "Independent unchanged synthetic paired comparison metadata and aggregate verification; performance acceptance fails",
+  "verified_at_utc": "2026-10-11T07:59:34.054069+00:00",
+  "candidate_commit": "dafb41c3c226ef03913df2ab6c113a9820a709c6",
+  "baseline_commit": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "candidate_is_final": false,
+  "original_artifacts": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-paired-dafb-20261011\\raw-report.json",
+      "sha256": "47045c3c51d65a7e086ba1914af50f3764f14e37d9b6f55b4a0e80edfa6b04e5",
+      "bytes": 856025
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-paired-dafb-20261011\\summary.json",
+      "sha256": "21fb2242dbe890c1f6874f9885cbeee6134f441719f68db6920ae0964e069979",
+      "bytes": 222452
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-paired-dafb-20261011\\terminal.json",
+      "sha256": "b96c0cb1379729fe35e32f64bd773182d2a751bb9899970a44a18892c640224a",
+      "bytes": 301
+    }
+  ],
+  "six_unique_alternating_records_verified": true,
+  "per_phase_and_whole_run_numeric_comparisons": 4122,
+  "assertions_passed": true,
+  "performance_accepted": false,
+  "terminal": {
+    "owner": "paired-dafb41c-20261011-074727-252a",
+    "actual_runner_exit_code": 0,
+    "terminal": true,
+    "observed_at_utc": "2026-10-11T07:53:25.372640+00:00",
+    "runner_pid": 1863569,
+    "protected_work": "/home/brajam/.cache/bortus-controlled-perf/run-68ece1a7b4cb",
+    "owned_live_containers": []
+  },
+  "limitations": [
+    "Exact committed checkpoint, not the final integrated candidate or live before/after.",
+    "HTTP loopback + fixed-delay fake CLI and verified-TLS synthetic native API; no real cluster/ingress.",
+    "CPU quota/affinity does not reserve physical cores or eliminate host contention.",
+    "Cgroup totals include driver, mock native API, Next server, Prisma/CLI children and file cache; actual Next PID RSS/HWM is reported separately.",
+    "Fresh-process cache cold is not OS cache cold; source builds are excluded from runtime cgroups.",
+    "Browser polling/hidden lifecycle, DOM/render/LCP/transfer and actual zoom are not inferred from HTTP server measurements.",
+    "Different error outcomes cannot support a valid latency speedup comparison.",
+    "services-after-pods fixture contains empty services, but baseline serves a warmed shared cache and candidate performs a deferred resource read with a different availability envelope; the unchanged summary comparison flag does not establish equivalent cache-state/response-contract timing."
+  ],
+  "verified_selected_medians": [
+    {
+      "profile": "metadata-1000",
+      "phase": "warm-pods-12",
+      "http_p50_ms": {
+        "baseline": 7.551978000001327,
+        "candidate": 5.647798999998486
+      },
+      "http_p95_ms": {
+        "baseline": 10.608067000001029,
+        "candidate": 8.241212000000814
+      }
+    },
+    {
+      "profile": "metadata-1000",
+      "phase": "warm-pods-concurrent-20",
+      "http_p50_ms": {
+        "baseline": 47.69890900000064,
+        "candidate": 39.00582299999951
+      },
+      "http_p95_ms": {
+        "baseline": 79.50653500000044,
+        "candidate": 79.55617200000052
+      }
+    },
+    {
+      "profile": "metadata-200",
+      "phase": "warm-pods-12",
+      "http_p50_ms": {
+        "baseline": 4.384439999999813,
+        "candidate": 4.648689000001468
+      },
+      "http_p95_ms": {
+        "baseline": 7.112873000000036,
+        "candidate": 7.139654000000519
+      }
+    },
+    {
+      "profile": "kv-sized-native-25",
+      "phase": "warm-pods-concurrent-20",
+      "http_p50_ms": {
+        "baseline": 28.260566000000836,
+        "candidate": 30.74662299999909
+      },
+      "http_p95_ms": {
+        "baseline": 50.39159700000164,
+        "candidate": 52.0000629999995
+      }
+    },
+    {
+      "profile": "metadata-1000",
+      "phase": "native-secret-metadata",
+      "http_p50_ms": {
+        "baseline": 76.46586500000012,
+        "candidate": 109.4820980000004
+      },
+      "http_p95_ms": {
+        "baseline": 76.46586500000012,
+        "candidate": 109.4820980000004
+      }
+    },
+    {
+      "profile": "kv-sized-native-25",
+      "phase": "native-secret-metadata",
+      "http_p50_ms": {
+        "baseline": 199.2461540000004,
+        "candidate": 288.2694709999996
+      },
+      "http_p95_ms": {
+        "baseline": 199.2461540000004,
+        "candidate": 288.2694709999996
+      }
+    },
+    {
+      "profile": "maximum-flat-native-3",
+      "phase": "native-secret-metadata",
+      "http_p50_ms": {
+        "baseline": 123.85615699999835,
+        "candidate": 180.09085100000084
+      },
+      "http_p95_ms": {
+        "baseline": 123.85615699999835,
+        "candidate": 180.09085100000084
+      }
+    },
+    {
+      "profile": "metadata-10000",
+      "phase": "native-secret-metadata",
+      "http_p50_ms": {
+        "baseline": 277.14017599999715,
+        "candidate": 290.5189709999977
+      },
+      "http_p95_ms": {
+        "baseline": 277.14017599999715,
+        "candidate": 290.5189709999977
+      }
+    }
+  ],
+  "whole_run": {
+    "baseline": {
+      "cgroup_peak_mib": {
+        "median": 357.046875,
+        "min": 355.6796875,
+        "max": 367.859375
+      },
+      "cgroup_cpu_seconds": {
+        "median": 36.805596,
+        "min": 36.272127,
+        "max": 37.289538
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    },
+    "candidate": {
+      "cgroup_peak_mib": {
+        "median": 423.36328125,
+        "min": 408.921875,
+        "max": 424.3828125
+      },
+      "cgroup_cpu_seconds": {
+        "median": 30.982018,
+        "min": 30.894858,
+        "max": 31.116554
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    }
+  },
+  "raw_records_and_summary_changed": false,
+  "original_paired_artifacts_verified": 40,
+  "original_functional_artifacts_verified": 10,
+  "raw_git_blobs_and_modes_verified": 421,
+  "raw_source_archives": [
+    {
+      "label": "baseline",
+      "files": 157,
+      "sha256": "22bae32a7013c9b81c05be6ab2939bf0a96936bdb4af7871c0249b52ab8d4e81"
+    },
+    {
+      "label": "candidate",
+      "files": 264,
+      "sha256": "a0523a4a68ab4d542d15b2b237642a9b076008ac84b5a29988f13a07a26aada2"
+    }
+  ],
+  "paired_manifest_sha256": "ee83cac1c415aa6a733f2fa2f59d67fe32b661b123011a7b4b329f959d3d2004",
+  "functional_manifest_sha256": "5928b4f7e8f2391e08605f5183e2a44fab57d21a7b5a3b89846f42f5dc0493c9",
+  "Linux_functional": {
+    "units": 205,
+    "HTTP_suites": 4,
+    "skipped": 0,
+    "record": {
+      "sourceCommit": "dafb41c3c226ef03913df2ab6c113a9820a709c6",
+      "sourceBuildRecord": "run-68ece1a7b4cb/record.json",
+      "runtimeImage": "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+      "readonlySource": true,
+      "network": "none",
+      "stages": [
+        {
+          "phase": "unit",
+          "actualExit": 0,
+          "seconds": 64.83192443847656,
+          "logSha256": "cb81f9625f5c7396bda474094b7b65d2e1e3fe01769e6dda5fc1dd3c268c0ddd",
+          "command": [
+            "docker",
+            "run",
+            "--rm",
+            "--pull",
+            "never",
+            "--network",
+            "none",
+            "--cpus",
+            "4",
+            "--cpuset-cpus",
+            "0,1,2,3",
+            "--memory",
+            "4g",
+            "--memory-swap",
+            "4g",
+            "--pids-limit",
+            "512",
+            "--mount",
+            "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/functional-dafb41c-20261011-075425/source,target=/source,readonly",
+            "--mount",
+            "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/run-68ece1a7b4cb/candidate/node_modules,target=/source/node_modules,readonly",
+            "--mount",
+            "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/run-68ece1a7b4cb/candidate/.next,target=/source/.next,readonly",
+            "--workdir",
+            "/source",
+            "--env",
+            "DATABASE_URL=file:/tmp/disposable-test-default.db",
+            "--env",
+            "NEXT_TELEMETRY_DISABLED=1",
+            "--env",
+            "NODE_ENV=test",
+            "--name",
+            "bortus-functional-unit-functional-dafb41c-20261011-075425",
+            "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+            "sh",
+            "-c",
+            "node node_modules/tsx/dist/cli.mjs --test --test-concurrency=2 tests/*.test.ts"
+          ]
+        },
+        {
+          "phase": "http",
+          "actualExit": 0,
+          "seconds": 52.14698648452759,
+          "logSha256": "a6ac2ee4f261c723653b3f8c1dce8ece1005d53fa478e4c99fa89ae2ea5bacae",
+          "command": [
+            "docker",
+            "run",
+            "--rm",
+            "--pull",
+            "never",
+            "--network",
+            "none",
+            "--cpus",
+            "4",
+            "--cpuset-cpus",
+            "0,1,2,3",
+            "--memory",
+            "4g",
+            "--memory-swap",
+            "4g",
+            "--pids-limit",
+            "512",
+            "--mount",
+            "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/functional-dafb41c-20261011-075425/source,target=/source,readonly",
+            "--mount",
+            "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/run-68ece1a7b4cb/candidate/node_modules,target=/source/node_modules,readonly",
+            "--mount",
+            "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/run-68ece1a7b4cb/candidate/.next,target=/source/.next,readonly",
+            "--workdir",
+            "/source",
+            "--env",
+            "DATABASE_URL=file:/tmp/disposable-test-default.db",
+            "--env",
+            "NEXT_TELEMETRY_DISABLED=1",
+            "--env",
+            "NODE_ENV=test",
+            "--name",
+            "bortus-functional-http-functional-dafb41c-20261011-075425",
+            "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+            "sh",
+            "-c",
+            "node node_modules/tsx/dist/cli.mjs --test --test-concurrency=2 tests/*.integration.ts"
+          ]
+        }
+      ],
+      "testConcurrency": 2,
+      "productionCommands": false,
+      "activeStartTicks": "20446039",
+      "terminal": true,
+      "actualExit": 0,
+      "terminalAtUTC": "2026-10-11T07:56:25.409065+00:00",
+      "ownedLiveContainers": []
+    }
+  },
+  "release_image_or_live_acceptance": false,
+  "protected_artifacts": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-paired-dafb-20261011",
+  "root_verifier": {
+    "script_sha256": "a01de53092b139e20b49a815df34dd2c776ab9ddcc6711adf4a9035226fe9bf1",
+    "recompute_script_sha256": "166fb9b076a24276f02466904ce609320cf4fbb2fd3629ce46b38d36bb4d83ea",
+    "terminal": {
+      "completed_at_utc": "2026-10-11T07:59:34.0926477Z",
+      "pid": 48960,
+      "actual_exit_code": 0
+    },
+    "stdout_sha256": "ef180ad1a9923114e7ab3d652f3158528a7a7baa799023af6e7c00ce89d1cbc0",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "combined_verification_sha256": "04be38f3da532c6720c7cf9e7ed77e7c2b24af51bafa084bac8cd9932ef5b05d"
+  }
+}
