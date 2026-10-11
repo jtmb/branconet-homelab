@@ -1,0 +1,211 @@
+{
+  "sourceCommit": "ab8d450790ed8970c25ccfec78fa924c8f08ff6a",
+  "actualTerminal": "2026-10-11T12:58:00.840054+00:00",
+  "owner": {
+    "owner": "functional-ab8d450-20261011-125210-2d8f04",
+    "supervisorPid": 1985551,
+    "supervisorStartTicks": "22240325",
+    "work": "/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04",
+    "sourceCommit": "ab8d450790ed8970c25ccfec78fa924c8f08ff6a",
+    "testSourceFiles": 67,
+    "startedAtUTC": "2026-10-11T12:54:36.129096+00:00"
+  },
+  "stages": [
+    {
+      "phase": "fresh-build",
+      "actualExit": 0,
+      "seconds": 115.51177525520325,
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--pull",
+        "never",
+        "--cpus",
+        "4",
+        "--cpuset-cpus",
+        "0,1,2,3",
+        "--memory",
+        "4g",
+        "--memory-swap",
+        "4g",
+        "--pids-limit",
+        "256",
+        "--user",
+        "1000:1000",
+        "--mount",
+        "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04/source,target=/source",
+        "--workdir",
+        "/source",
+        "--env",
+        "DATABASE_URL=file:/tmp/bortus-functional-build.db",
+        "--env",
+        "NEXT_TELEMETRY_DISABLED=1",
+        "--env",
+        "CIRCLE_NODE_TOTAL=4",
+        "--entrypoint",
+        "bash",
+        "--name",
+        "bortus-functional-build-functional-ab8d450-20261011-125210-2d8f04",
+        "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+        "-lc",
+        "npm ci && npm run build"
+      ]
+    },
+    {
+      "phase": "http",
+      "actualExit": 0,
+      "seconds": 81.34800815582275,
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--pull",
+        "never",
+        "--cpus",
+        "2",
+        "--cpuset-cpus",
+        "0,1",
+        "--memory",
+        "1g",
+        "--memory-swap",
+        "1g",
+        "--pids-limit",
+        "256",
+        "--user",
+        "1000:1000",
+        "--mount",
+        "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04/source,target=/source,readonly",
+        "--workdir",
+        "/source",
+        "--env",
+        "DATABASE_URL=file:/tmp/bortus-functional-build.db",
+        "--env",
+        "NEXT_TELEMETRY_DISABLED=1",
+        "--env",
+        "CIRCLE_NODE_TOTAL=4",
+        "--entrypoint",
+        "bash",
+        "--network",
+        "none",
+        "--env",
+        "NODE_ENV=test",
+        "--name",
+        "bortus-functional-http-functional-ab8d450-20261011-125210-2d8f04",
+        "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+        "-lc",
+        "node node_modules/tsx/dist/cli.mjs --test --test-concurrency=2 tests/*.integration.ts"
+      ]
+    },
+    {
+      "phase": "affected-http",
+      "actualExit": 0,
+      "seconds": 5.835792303085327,
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--pull",
+        "never",
+        "--cpus",
+        "2",
+        "--cpuset-cpus",
+        "0,1",
+        "--memory",
+        "1g",
+        "--memory-swap",
+        "1g",
+        "--pids-limit",
+        "256",
+        "--user",
+        "1000:1000",
+        "--mount",
+        "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04/source,target=/source,readonly",
+        "--workdir",
+        "/source",
+        "--env",
+        "DATABASE_URL=file:/tmp/bortus-functional-build.db",
+        "--env",
+        "NEXT_TELEMETRY_DISABLED=1",
+        "--env",
+        "CIRCLE_NODE_TOTAL=4",
+        "--entrypoint",
+        "bash",
+        "--network",
+        "none",
+        "--env",
+        "NODE_ENV=test",
+        "--name",
+        "bortus-functional-affected-http-functional-ab8d450-20261011-125210-2d8f04",
+        "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+        "-lc",
+        "node qa/handler-http.cjs"
+      ]
+    }
+  ],
+  "sourceFilesUnchanged": 333,
+  "compiledFilesUnchanged": 4262,
+  "originalHTTPPassed": 4,
+  "supplementalHTTPChecks": 13,
+  "ownedSupervisorAbsent": true,
+  "ownedContainersAbsent": true,
+  "retainedSource": "/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04/source",
+  "retainedCompiled": "/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04/source/.next",
+  "copies": [
+    {
+      "path": "fresh-build.log",
+      "bytes": 13998,
+      "SHA256": "1bbf62354534b92a855440d328fb05b19a481abb0a8375f15e99b43684f8d252"
+    },
+    {
+      "path": "http.log",
+      "bytes": 2963,
+      "SHA256": "2cc0ba8326d94ab7a64c2cf3e8e88bc5c4116f577d95c2ca02248b8d76cc3011"
+    },
+    {
+      "path": "affected-http.log",
+      "bytes": 181,
+      "SHA256": "fe744b80c936c9f2a171fdd40dfebbbc624574a40e61c06f75a35b49be7e6093"
+    },
+    {
+      "path": "handle.json",
+      "bytes": 364,
+      "SHA256": "c3925e4b92ed6130a7158d5edd4b076f046360ab318ed0671580bedce5c93e53"
+    },
+    {
+      "path": "input.json",
+      "bytes": 93877,
+      "SHA256": "b4555613267d0c667f8736a79cf6d7224c43f43dececf448ccd00c0eb1d4043e"
+    },
+    {
+      "path": "record.json",
+      "bytes": 745171,
+      "SHA256": "0daf22ee50942e1346478073bd31fc187320a42e34f7cfe3cc935ea6e9eef78f"
+    },
+    {
+      "path": "source.tar.gz",
+      "bytes": 412803,
+      "SHA256": "ecedcf5e5cda0da846d8ea74bca984bffbb8f2280ba451fbc32c989ac50e1156"
+    },
+    {
+      "path": "supervisor.py",
+      "bytes": 4164,
+      "SHA256": "aa6d2000210bd1e9671200c93525fbf239dd2f8af8b64bd924ca4e2747328a80"
+    },
+    {
+      "path": "supervisor.stdout",
+      "bytes": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "supervisor.stderr",
+      "bytes": 0,
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "terminal.json",
+      "bytes": 745171,
+      "SHA256": "0daf22ee50942e1346478073bd31fc187320a42e34f7cfe3cc935ea6e9eef78f"
+    }
+  ]
+}
