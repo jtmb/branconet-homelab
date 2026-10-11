@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSession, getSessionFromHeaders, type Session } from "@/lib/auth";
+import { getSession, getSessionFromHeaders, getSessionAccount, type Session } from "@/lib/auth";
 import prisma from "@/lib/db";
 
 /**
@@ -50,11 +50,9 @@ export async function isOperatorFromHeaders(cookie: string | null): Promise<bool
 }
 
 export async function getOperatorRole(): Promise<"readonly" | "write" | null> {
-  const session = await getSession();
-  if (!session) return null;
-  const user = await prisma.user.findUnique({ where: { id: session.id }, select: { role: true, engineAdmin: true, sessionVersion: true } });
-  if (!user || user.sessionVersion !== session.sessionVersion) return null;
-  return user.role === "write" && user.engineAdmin ? "write" : "readonly";
+  const account = await getSessionAccount();
+  if (!account) return null;
+  return account.role === "write" && account.engineAdmin ? "write" : "readonly";
 }
 
 /**

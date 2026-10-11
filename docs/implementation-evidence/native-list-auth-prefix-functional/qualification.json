@@ -1,0 +1,511 @@
+{
+  "scope": "Fresh handler account consolidation and optional rejected-prefix sizing; functional only",
+  "source_parent": "6ebcd116601253c3bff1e021253fbc10b6540ca8",
+  "runtime": "Windows Node22.23.3",
+  "terminal_actual_exit": 0,
+  "tests_passed": {
+    "focused-auth": 10,
+    "focused-prefix": 3,
+    "native-window": 14,
+    "full-unit": 161
+  },
+  "checks": [
+    {
+      "name": "pre-types",
+      "started_utc": "2026-10-11T04:29:21.181039+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "pid": 45644,
+      "exit_code": 0,
+      "wall_seconds": 7.844809800008079,
+      "finished_utc": "2026-10-11T04:29:29.026400+00:00"
+    },
+    {
+      "name": "focused-auth",
+      "started_utc": "2026-10-11T04:29:29.028907+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/native-auth-snapshot.test.ts"
+      ],
+      "pid": 22336,
+      "exit_code": 0,
+      "wall_seconds": 2.8920521999825723,
+      "finished_utc": "2026-10-11T04:29:31.920914+00:00"
+    },
+    {
+      "name": "focused-prefix",
+      "started_utc": "2026-10-11T04:29:31.923914+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/native-list-prefix.test.ts"
+      ],
+      "pid": 19616,
+      "exit_code": 0,
+      "wall_seconds": 1.8228999999992084,
+      "finished_utc": "2026-10-11T04:29:33.746438+00:00"
+    },
+    {
+      "name": "native-window",
+      "started_utc": "2026-10-11T04:29:33.748445+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/native-list-window.test.ts"
+      ],
+      "pid": 48992,
+      "exit_code": 0,
+      "wall_seconds": 7.5536621999926865,
+      "finished_utc": "2026-10-11T04:29:41.302332+00:00"
+    },
+    {
+      "name": "full-unit",
+      "started_utc": "2026-10-11T04:29:41.306335+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/accounts.test.ts",
+        "tests/ansible-progress.test.ts",
+        "tests/flux-credentials.test.ts",
+        "tests/job-output.test.ts",
+        "tests/job-stream.test.ts",
+        "tests/kubectl.test.ts",
+        "tests/kv-foundation.test.ts",
+        "tests/kv-legacy-access.test.ts",
+        "tests/kv-metadata-query.test.ts",
+        "tests/kv-native-request.test.ts",
+        "tests/kv-native.test.ts",
+        "tests/kv-rotation-consumer.test.ts",
+        "tests/kv-workbench.test.ts",
+        "tests/metadata-bounds.test.ts",
+        "tests/metadata-query.test.ts",
+        "tests/mutation-task.test.ts",
+        "tests/native-auth-snapshot.test.ts",
+        "tests/native-list-concurrency.test.ts",
+        "tests/native-list-prefix.test.ts",
+        "tests/native-list-window.test.ts",
+        "tests/native-secrets.test.ts",
+        "tests/query-store.test.ts",
+        "tests/resource-cache.test.ts",
+        "tests/resource-capabilities.test.ts",
+        "tests/resource-state.test.ts",
+        "tests/secret-capacity.test.ts",
+        "tests/transport.test.ts"
+      ],
+      "pid": 42788,
+      "exit_code": 0,
+      "wall_seconds": 19.987002200010465,
+      "finished_utc": "2026-10-11T04:30:01.293213+00:00"
+    },
+    {
+      "name": "lint",
+      "started_utc": "2026-10-11T04:30:01.296718+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/eslint/bin/eslint.js",
+        ".",
+        "--max-warnings=0"
+      ],
+      "pid": 38228,
+      "exit_code": 0,
+      "wall_seconds": 25.62807109998539,
+      "finished_utc": "2026-10-11T04:30:26.924618+00:00"
+    },
+    {
+      "name": "final-types",
+      "started_utc": "2026-10-11T04:30:26.928145+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "pid": 45096,
+      "exit_code": 0,
+      "wall_seconds": 8.57244799999171,
+      "finished_utc": "2026-10-11T04:30:35.501015+00:00"
+    }
+  ],
+  "source": [
+    {
+      "path": "k8s-rewrite/front-end/src/lib/auth.ts",
+      "tested_working_sha256": "0fd90638b395bdda6a4a540821a8721fd618fc79f5d90c311a38a4e35a7b3818",
+      "raw_git_lf_sha256": "0fd90638b395bdda6a4a540821a8721fd618fc79f5d90c311a38a4e35a7b3818"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/permissions.ts",
+      "tested_working_sha256": "c894d04fa4cbcfaa09e97f1248100b671b29927b13950a4e964b0135a994b704",
+      "raw_git_lf_sha256": "c894d04fa4cbcfaa09e97f1248100b671b29927b13950a4e964b0135a994b704"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/secret-client.ts",
+      "tested_working_sha256": "e16f7f7f2906206276afe3d75710cefdf9441e86a85c340e1ef9901bc22bd0e2",
+      "raw_git_lf_sha256": "e16f7f7f2906206276afe3d75710cefdf9441e86a85c340e1ef9901bc22bd0e2"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/native-auth-snapshot.test.ts",
+      "tested_working_sha256": "7e7275c0ccd737e8c14114dcba681a8d720524e7343a0c6914453e8264132606",
+      "raw_git_lf_sha256": "7e7275c0ccd737e8c14114dcba681a8d720524e7343a0c6914453e8264132606"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/native-list-prefix.test.ts",
+      "tested_working_sha256": "de87e5cf46d2758e5f5e06d6e76e26fbf3d5acf2a829c794fc955b29bfd964b5",
+      "raw_git_lf_sha256": "de87e5cf46d2758e5f5e06d6e76e26fbf3d5acf2a829c794fc955b29bfd964b5"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/native-list-window.test.ts",
+      "tested_working_sha256": "892052d4ad66fecd453a97214551d1673445ff20ae090a69448470174600a889",
+      "raw_git_lf_sha256": "892052d4ad66fecd453a97214551d1673445ff20ae090a69448470174600a889"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/secret-capacity.test.ts",
+      "tested_working_sha256": "abe0ff73a2f165a2f744550c99af3ee72761e0b08595af489cf4e18c84d7e2c6",
+      "raw_git_lf_sha256": "0b0433ef92cf6b36051d87523aa6332fd2dbfcea26af495c68f105dd1734fcc9"
+    }
+  ],
+  "current_app_base_compatibility": [
+    {
+      "ref": "6ebcd116:k8s-rewrite/front-end/src/lib/auth.ts",
+      "raw_git_sha256": "dd4db9c4988e09664d437f37535a5582d26a0348cea1b855be0cae8199505bd5"
+    },
+    {
+      "ref": "6ebcd116:k8s-rewrite/front-end/src/lib/permissions.ts",
+      "raw_git_sha256": "01aa0f906a40bc45682c61eb9451d5fe5e13d23224fe69f188737db34c4a525a"
+    },
+    {
+      "ref": "fd6f4b:k8s-rewrite/front-end/src/lib/auth.ts",
+      "raw_git_sha256": "dd4db9c4988e09664d437f37535a5582d26a0348cea1b855be0cae8199505bd5"
+    },
+    {
+      "ref": "fd6f4b:k8s-rewrite/front-end/src/lib/permissions.ts",
+      "raw_git_sha256": "01aa0f906a40bc45682c61eb9451d5fe5e13d23224fe69f188737db34c4a525a"
+    },
+    {
+      "ref": "57960042:k8s-rewrite/front-end/src/lib/auth.ts",
+      "raw_git_sha256": "dd4db9c4988e09664d437f37535a5582d26a0348cea1b855be0cae8199505bd5"
+    },
+    {
+      "ref": "57960042:k8s-rewrite/front-end/src/lib/permissions.ts",
+      "raw_git_sha256": "01aa0f906a40bc45682c61eb9451d5fe5e13d23224fe69f188737db34c4a525a"
+    }
+  ],
+  "unchanged_frozen_lf_sha256": {
+    "whole-server.mjs": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b",
+    "run.py": "cd79ae39c61d68c8d3fb2b2a93d6c9ba5ef1c6b0a190ba714210808acc3691a8",
+    "summarize.py": "94983e4f9d5d5a167ff6435098daa4bfbe9f618995af7dec8b0a742c92f238a6"
+  },
+  "auth": "One fresh handler account lookup plus independent fresh middleware lookup; no cross-request authorization cache; ordinary KV/legacy/transactional guards unchanged",
+  "prefix": "Existing bounded chunks, fixeddepth32 and scalar count only; duplicates of recognized root headers detected; nested names and unseen trailing headers not compared; no rejected items accepted; no concat/UTF8decode/JSON.parse/native string retention",
+  "invariants": "global4/64queued, request8s inclfreshSDKauth, response4MiB/write900KiB, aggregate15s/10000items/32MiB, complete fresh responses/samecursor/max4reductions/cancelownedonly/TLS/CAS/privacy preserved",
+  "failed_attempts": [
+    {
+      "owner": "v1",
+      "actual_exit": 2,
+      "cause": "New test Prisma generic forwarding spy cast TS2352 before units; explicit unknown test-only cast correction"
+    },
+    {
+      "owner": "v2",
+      "actual_exit": 1,
+      "cause": "Test request context omitted actual WorkStore; valid cookies returnednull correctly; fixed actual dynamic WorkStore context without auth/cookie mocks"
+    },
+    {
+      "owner": "v3",
+      "actual_exit": 1,
+      "cause": "160/161 units; old compatibility retry oracle expected20/10/5/2/2 instead of approved20/2/2; updated exact identities/cursor/receivedcharge, frozenacceptance untouched"
+    }
+  ],
+  "limitations": [
+    "No new build/HTTP/Linux benchmark/image/browser/live qualification",
+    "Observed prior SQLspan1.28-2.65ms cannot explain whole native small-profile gap",
+    "A07/A21 native frozen no-regression remains failed/open until new coherent uninstrumented comparison",
+    "No performance inferred from local functional diagnostic timings"
+  ],
+  "raw_artifacts": [
+    {
+      "path": "native-auth-retry-qualification-v1/closure.json",
+      "sha256": "56ddc8bb0756a65c6902300bee37d440057a7eba316e6224e701a32d034c2084"
+    },
+    {
+      "path": "native-auth-retry-qualification-v1/handle.json",
+      "sha256": "1cf930c5e479e1393d9607a2735bb5171665502082d1ceacefa5e7050ccd4300"
+    },
+    {
+      "path": "native-auth-retry-qualification-v1/launcher.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v1/launcher.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v1/pre-types.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v1/pre-types.stdout",
+      "sha256": "5ab885953b4d930e2a1bd35b2ad391ee3da89acbb5be20aee72d88f7681b3e0d"
+    },
+    {
+      "path": "native-auth-retry-qualification-v1/progress.json",
+      "sha256": "30fb8c10793955a37f077f55d505789d954aae13b6496c4ab580a1556a0e419f"
+    },
+    {
+      "path": "native-auth-retry-qualification-v1/qualify.py",
+      "sha256": "df8577a4af5aa2f0fc4a3dce9f26f669309d9250197e1bfa7cbdfef24428af06"
+    },
+    {
+      "path": "native-auth-retry-qualification-v1/source-manifest.json",
+      "sha256": "bfd53448cd5af563874614ac849cedd2a3038bc330923f7ddd9ca89fee4a87f3"
+    },
+    {
+      "path": "native-auth-retry-qualification-v1/terminal.json",
+      "sha256": "0f0e944711a74d97fa544ad7cca66576a18e85555b430c5e090499f423acd181"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/closure.json",
+      "sha256": "6db656a4b104284200c813316987d97db80a408218f75276a60f6b9d1bef03fa"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/focused-auth.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/focused-auth.stdout",
+      "sha256": "0fbf3cf7f36c2e899ae40c0890d7c8ae92f6e7c83caf9b9327ec2ebc878f6e0f"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/handle.json",
+      "sha256": "a95c65a18d2bc65693e7bca51adc97bf9e376aeb1db6faeed13cea4dad85f180"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/launcher.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/launcher.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/pre-types.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/pre-types.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/progress.json",
+      "sha256": "0d0064e740e1e59385d6c46b2f10858196bc117e1844cc88e8b02b04ef680249"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/qualify.py",
+      "sha256": "df8577a4af5aa2f0fc4a3dce9f26f669309d9250197e1bfa7cbdfef24428af06"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/source-manifest.json",
+      "sha256": "69f8130bc537f58fc59d13945eb45cf823b469dadca4223829a40bc85973aa13"
+    },
+    {
+      "path": "native-auth-retry-qualification-v2/terminal.json",
+      "sha256": "9e4d24da6442cd485dcda9bee2b9b8dd0ef359c283cbd8805de64caec1ef3467"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/additional-failed-oracle-source.json",
+      "sha256": "e26b4da254911bfb136f7abadef1e9095512314ebe80f79f0a9986e0f29864b7"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/closure.json",
+      "sha256": "f514cef474e795f17ea6e51170a9bb9b5d3fe72ddad98fc42c2067717fb03405"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/focused-auth.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/focused-auth.stdout",
+      "sha256": "7ffae3af3b1634ce5a222f60ef8b832dd51e013a1094229c01e80248bcaf8771"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/focused-prefix.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/focused-prefix.stdout",
+      "sha256": "a2357ef648dd902565d3d5c1833ace21e793202d9554627c51ba30408d8a7e6e"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/full-unit.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/full-unit.stdout",
+      "sha256": "f1d6decb8c5748c22c84f6c00b266d59d213e902eefe90bb4974db99eff01324"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/handle.json",
+      "sha256": "8fe7fe524546197c9cd0d2fe88ec01478ce6034e049ed88c58e0af7eab554927"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/launcher.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/launcher.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/native-window.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/native-window.stdout",
+      "sha256": "b384d1ca032b1fbd676165e34e933d182d9f576e0678dcaf95dc90e789d3e3b1"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/pre-types.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/pre-types.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/progress.json",
+      "sha256": "5ecfabcadd38b0a3a41da0f7d23023fa3cf766d0c7c964bf1b0e19a6da7ceb91"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/qualify.py",
+      "sha256": "df8577a4af5aa2f0fc4a3dce9f26f669309d9250197e1bfa7cbdfef24428af06"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/source-manifest.json",
+      "sha256": "b2ba62b7c4991ef557950fd3ad44e2097f308b1a0aa91c7e805a71edc8627662"
+    },
+    {
+      "path": "native-auth-retry-qualification-v3/terminal.json",
+      "sha256": "bb00e247ae0a5ab01e3b0c32009acffc724b4a1d174b91a30101789693f8960d"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/closure.json",
+      "sha256": "e2df7900bc436ce7ced3161845a2be8a6dd1cafc3168cfba3fdb834847f4812d"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/final-types.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/final-types.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/focused-auth.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/focused-auth.stdout",
+      "sha256": "5e360a6d420eee84a36262397e9458ea66505df1190e3e76871d8975e2f9ab71"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/focused-prefix.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/focused-prefix.stdout",
+      "sha256": "77533f5ce7f207a6561e0ef99d7ba0e8f6bc66adeb40161880e0be22622ea41b"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/full-unit.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/full-unit.stdout",
+      "sha256": "f5dfdeb7ba404e66dc362f027abb45420b18a1d650cec68eff1e604aebcbe561"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/handle.json",
+      "sha256": "e2fa399b40177ede712cf77770c125ab7ad73fd605d082df058193260518a538"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/launcher.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/launcher.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/lint.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/lint.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/native-window.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/native-window.stdout",
+      "sha256": "1465243d19d810fa76cf2c57130cb084cf1b05bf5313026c36538587b7588f95"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/pre-types.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/pre-types.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/progress.json",
+      "sha256": "5f32e891791ce8e1bb7158b99de5fed0afc42c65ddf9603d98b42ec461b56ffc"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/qualify.py",
+      "sha256": "df8577a4af5aa2f0fc4a3dce9f26f669309d9250197e1bfa7cbdfef24428af06"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/source-manifest.json",
+      "sha256": "a8bd7fe8df8f7b0b0e5fabee7fe80502219b9ee631e2d339e06b0ce5ee79f487"
+    },
+    {
+      "path": "native-auth-retry-qualification-v4/terminal.json",
+      "sha256": "59b52c1182b7ffc588e2ccc6275f420953698e8cd3a924a2d29f68aa424e08f3"
+    }
+  ],
+  "retained_exact_source_snapshots": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c",
+  "docs_checked": [
+    "docs/ANSIBLE-2-API-INTERACTION.md",
+    "docs/API-USAGE.md",
+    "docs/audit-evidence/README.md",
+    "docs/BORTUS-AUDIT.md",
+    "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+    "docs/BORTUS-DEPLOYMENT.md",
+    "docs/BORTUS-IMPLEMENTATION.md",
+    "docs/BORTUS-KV-DESIGN.md",
+    "docs/BORTUS-KV-WORKBENCH.md",
+    "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+    "docs/BOTRUS-WORKFLOW.md",
+    "docs/CHARTS-SEPARATION.md",
+    "docs/CONNECTING-TO-A-CLUSTER.md",
+    "docs/FLUX-GITOPS.md",
+    "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+    "docs/implementation-evidence/README.md",
+    "docs/kubectl-cheatsheet.md",
+    "docs/SECRETS-ENGINE.md",
+    "docs/TECH-STACK.md",
+    "docs/USER-PERMS.md"
+  ]
+}

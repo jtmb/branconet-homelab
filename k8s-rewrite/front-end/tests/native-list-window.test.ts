@@ -49,6 +49,52 @@ async function fixture(operation: (native: Awaited<ReturnType<typeof nativeTlsFi
   }
 }
 
+test("prefix hints retry the same cursor with fresh complete inventory and never resize non-size failures", { timeout: 30000 }, async () => {
+  await fixture(async () => {
+    for (const mode of ["hint", "closed", "malformed-prefix", "aggregate", "cancel", "deadline", "api", "malformed-complete"] as const) {
+      const budget = new SecretListBudget(); if (mode === "aggregate") budget.bytes = SECRET_LIST_MAX_BYTES - 10;
+      const initialBytes = budget.bytes, paths: { limit: number; cursor: string }[] = [], rows: string[] = [];
+      const original = https.request, now = Date.now; let delivered = 0;
+      const item = (index: number) => ({ apiVersion: "v1", kind: "Secret", metadata: { namespace: "hint", name: "object-" + index }, data: {} });
+      https.request = ((url: string, _options: https.RequestOptions, receive: (response: http.IncomingMessage) => void) => {
+        const target = new URL(url), call = { limit: Number(target.searchParams.get("limit")), cursor: target.searchParams.get("continue") || "" }; paths.push(call);
+        const req = new EventEmitter() as EventEmitter & { end(): void; setHeader(): void };
+        req.setHeader = () => {}; req.end = () => setImmediate(() => {
+          const res = new EventEmitter() as EventEmitter & { statusCode: number; destroy(): void }; res.statusCode = mode === "api" ? 500 : 200; res.destroy = () => {};
+          receive(res as unknown as http.IncomingMessage);
+          const data = (chunk: Buffer) => { if (mode !== "api") delivered += chunk.length; res.emit("data", chunk); };
+          try {
+            if (paths.length === 1) {
+              if (mode === "malformed-complete") data(Buffer.from('{"apiVersion":'));
+              else {
+                const prefix = mode === "closed" ? '{"apiVersion":"v1","kind":"SecretList","items":[{},{}]}' : mode === "malformed-prefix" ? '{"apiVersion":"v1","kind":"SecretList","kind":"Other","items":[{},{},{' : '{"apiVersion":"v1","kind":"SecretList","items":[{},{},{"unfinished":"';
+                data(Buffer.from(prefix));
+                if (mode === "cancel") budget.fail(new SecretError(503, "Synthetic hint cancellation"));
+                if (mode === "deadline") Date.now = () => now() + 20000;
+                data(Buffer.alloc(4 * 1024 * 1024));
+              }
+            } else {
+              const offset = Number(call.cursor), count = Math.min(call.limit, 3 - offset);
+              data(Buffer.from(JSON.stringify({ apiVersion: "v1", kind: "SecretList", metadata: { continue: offset + count < 3 ? String(offset + count) : "" }, items: Array.from({ length: count }, (_, i) => item(offset + i)) })));
+            }
+            res.emit("end"); data(Buffer.from("late-public-bytes")); res.emit("end");
+          } finally { Date.now = now; }
+        }); return req;
+      }) as unknown as typeof https.request;
+      try {
+        const pending = createSecretTransport(200).list("hint", { budget, visit: record => rows.push(record.metadata!.name!) });
+        if (mode === "hint" || mode === "closed" || mode === "malformed-prefix") {
+          await pending; assert.deepEqual(rows, ["object-0", "object-1", "object-2"]); assert.equal(budget.items, 3);
+          assert.deepEqual(paths, mode === "hint" ? [{ limit: 200, cursor: "" }, { limit: 2, cursor: "" }, { limit: 2, cursor: "2" }] : [{ limit: 200, cursor: "" }, { limit: 10, cursor: "" }]);
+        } else {
+          await assert.rejects(pending, error503); assert.equal(paths.length, 1); assert.deepEqual(rows, []); assert.equal(budget.items, 0);
+        }
+        assert.equal(budget.bytes, initialBytes + delivered); idle();
+      } finally { https.request = original; Date.now = now; budget.finish(); }
+    }
+  });
+});
+
 test("settled responses discard late end/data/errors without decoding and still charge every delivered byte", { timeout: 30000 }, async () => {
   await fixture(async () => {
     for (const mode of ["oversize", "response-error", "request-error", "cancel", "aggregate", "success"] as const) {
@@ -300,9 +346,9 @@ test("200-to-10 reductions retain zero/nonzero cursors and charge mixed-size rej
   });
 });
 
-test("200 windows preserve large-record successful limits and the four-reduction response refusal", { timeout: 30000 }, async () => {
+test("200 windows use completed-prefix 3-large sizing and preserve fallback/refusal limits", { timeout: 30000 }, async () => {
   await fixture(async native => {
-    for (const [count, size, expectedLimits] of [[25, 256 * 1024, [200, 10, 10, 10]], [3, 1024 * 1024, [200, 10, 5, 2, 2]]] as const) {
+    for (const [count, size, expectedLimits] of [[25, 256 * 1024, [200, 10, 10, 10]], [3, 1024 * 1024, [200, 2, 2]]] as const) {
       native.reset(); const payload = Buffer.alloc(size, 11).toString("base64"), expected: ReturnType<typeof secretSummary>[] = [];
       for (let i = 0; i < count; i++) {
         native.seed("large", "object-" + i, { payload });
@@ -312,6 +358,7 @@ test("200 windows preserve large-record successful limits and the four-reduction
       await createSecretTransport(200).list("large", { budget, visit: record => rows.push(secretSummary(record)) });
       assert.deepEqual(rows, expected); assert.equal(budget.items, count); assert(budget.bytes < SECRET_LIST_MAX_BYTES);
       assert.deepEqual(native.calls.map(call => call.limit), expectedLimits); assert(native.calls.every(call => call.method === "GET" && !call.metadata)); idle();
+      assert.deepEqual(native.calls.map(call => call.offset), count === 3 ? [0, 0, 2] : [0, 0, 10, 20]);
     }
     native.reset(); native.seed("oversized", "object", { payload: Buffer.alloc(4 * 1024 * 1024, 13).toString("base64") });
     const budget = new SecretListBudget();

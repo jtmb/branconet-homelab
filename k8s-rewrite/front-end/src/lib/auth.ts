@@ -57,6 +57,34 @@ export async function getSession(): Promise<Session | null> {
   }
 }
 
+// A fresh handler account snapshot, separate from middleware and transactional checks.
+export type SessionAccount = Session & { role: string; engineAdmin: boolean };
+async function currentAccount(payload: NonNullable<Awaited<ReturnType<typeof verifyJWT>>>): Promise<SessionAccount | null> {
+  const user = await prisma.user.findUnique({ where: { id: payload.sub }, select: { id: true, username: true, sessionVersion: true, role: true, engineAdmin: true } });
+  if (!user || user.sessionVersion !== payload.sessionVersion) return null;
+  return user;
+}
+
+export async function getSessionAccount(): Promise<SessionAccount | null> {
+  let payload;
+  try {
+    const { cookies } = await import("next/headers");
+    const token = (await cookies()).get(AUTH_COOKIE)?.value;
+    if (!token) return null;
+    payload = await verifyJWT(token);
+  } catch { return null; }
+  // Database failure remains an availability error, never an authenticated snapshot.
+  return payload ? currentAccount(payload) : null;
+}
+
+export async function getSessionAccountFromHeaders(cookieHeader: string | null): Promise<SessionAccount | null> {
+  if (!cookieHeader) return null;
+  const token = cookieHeader.match(new RegExp(`(?:^|;\\s*)${AUTH_COOKIE}=([^;]*)`))?.[1];
+  if (!token) return null;
+  const payload = await verifyJWT(token);
+  return payload ? currentAccount(payload) : null;
+}
+
 /** Middleware helper — parse auth cookie from raw request header string */
 export async function getSessionFromHeaders(
   cookieHeader: string | null

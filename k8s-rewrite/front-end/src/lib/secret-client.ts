@@ -54,7 +54,107 @@ export const nativeRequestDiagnostics = () => ({ active, queued: waiters.length,
 
 // Only a bounded full-list GET may retry this locally detected response ceiling.
 class SecretPageTooLarge extends SecretError {
-  constructor() { super(503, "Kubernetes Secret response exceeds the size limit"); }
+  constructor(readonly completedItems?: number) { super(503, "Kubernetes Secret response exceeds the size limit"); }
+}
+
+// An optional sizing hint, never inventory or authority: scan only existing bounded chunks.
+// No decoding, concatenation, native string storage, partial objects or accepted items.
+// Only literal known root headers are disambiguated. Nested member names are not compared.
+export function rejectedSecretListItemCount(chunks: readonly Buffer[], limit: number): number | undefined {
+  if (!Number.isSafeInteger(limit) || limit < 1 || limit > 200) return;
+  let length = 0;
+  if (chunks.length > 16384) return;
+  for (const chunk of chunks) { length += chunk.length; if (length > 4 * 1024 * 1024) return; }
+  let chunkIndex = 0, offset = 0;
+  const peek = (): number => {
+    while (chunkIndex < chunks.length && offset === chunks[chunkIndex].length) { chunkIndex++; offset = 0; }
+    return chunkIndex < chunks.length ? chunks[chunkIndex][offset] : -1;
+  };
+  const take = () => { const byte = peek(); if (byte >= 0) offset++; return byte; };
+  const space = () => { for (;;) { const byte = peek(); if (byte !== 32 && byte !== 9 && byte !== 10 && byte !== 13) return; take(); } };
+  const hex = (byte: number) => byte >= 48 && byte <= 57 || byte >= 65 && byte <= 70 || byte >= 97 && byte <= 102;
+  // 1 complete, 0 valid unfinished prefix, -1 malformed/unavailable.
+  const string = (): number => {
+    if (take() !== 34) return -1;
+    for (;;) {
+      let byte = peek(); if (byte < 0) return 0;
+      // Large native base64 strings usually stay in this direct, allocation-free ASCII loop.
+      const chunk = chunks[chunkIndex];
+      while (offset < chunk.length && chunk[offset] >= 32 && chunk[offset] < 128 && chunk[offset] !== 34 && chunk[offset] !== 92) offset++;
+      if (offset === chunk.length) continue;
+      byte = take(); if (byte < 0) return 0; if (byte === 34) return 1;
+      if (byte === 92) {
+        const escaped = take(); if (escaped < 0) return 0;
+        if (escaped === 117) { for (let i = 0; i < 4; i++) { const digit = take(); if (digit < 0) return 0; if (!hex(digit)) return -1; } }
+        else if (escaped !== 34 && escaped !== 92 && escaped !== 47 && escaped !== 98 && escaped !== 102 && escaped !== 110 && escaped !== 114 && escaped !== 116) return -1;
+      } else if (byte >= 128) {
+        const length = byte >= 194 && byte <= 223 ? 1 : byte >= 224 && byte <= 239 ? 2 : byte >= 240 && byte <= 244 ? 3 : -1;
+        if (length < 0) return -1;
+        for (let i = 0; i < length; i++) {
+          const next = take(); if (next < 0) return 0;
+          if (next < 128 || next > 191 || i === 0 && (byte === 224 && next < 160 || byte === 237 && next > 159 || byte === 240 && next < 144 || byte === 244 && next > 143)) return -1;
+        }
+      } else return -1;
+    }
+  };
+  const literal = (expected: string): number => {
+    for (let i = 0; i < expected.length; i++) { const byte = take(); if (byte < 0) return 0; if (byte !== expected.charCodeAt(i)) return -1; }
+    return 1;
+  };
+  const digit = (byte: number) => byte >= 48 && byte <= 57;
+  const value = (depth: number): number => {
+    if (depth > 32) return -1;
+    space(); let byte = peek(); if (byte < 0) return 0;
+    if (byte === 34) return string();
+    if (byte === 123 || byte === 91) {
+      const object = byte === 123, end = object ? 125 : 93; take(); space();
+      if (peek() === end) { take(); return 1; }
+      for (;;) {
+        if (peek() < 0) return 0;
+        if (object) { const status = string(); if (status !== 1) return status; space(); byte = take(); if (byte < 0) return 0; if (byte !== 58) return -1; }
+        const status = value(depth + 1); if (status !== 1) return status;
+        space(); byte = take(); if (byte < 0) return 0; if (byte === end) return 1; if (byte !== 44) return -1; space();
+      }
+    }
+    if (byte === 116) return literal("true"); if (byte === 102) return literal("false"); if (byte === 110) return literal("null");
+    if (byte === 45) { take(); byte = peek(); if (byte < 0) return 0; }
+    if (!digit(byte)) return -1;
+    take(); if (byte !== 48) while (digit(peek())) take();
+    if (peek() === 46) { take(); if (peek() < 0) return 0; if (!digit(peek())) return -1; while (digit(peek())) take(); }
+    if (peek() === 101 || peek() === 69) { take(); if (peek() === 43 || peek() === 45) take(); if (peek() < 0) return 0; if (!digit(peek())) return -1; while (digit(peek())) take(); }
+    return 1;
+  };
+  space(); if (take() !== 123) return;
+  let seen = 0;
+  for (;;) {
+    space(); if (take() !== 34) return;
+    // These constant public header names are the only strings compared or retained.
+    let candidates = 15, length = 0;
+    for (;;) {
+      const byte = take(); if (byte === 34) break; if (byte < 0 || byte === 92) return;
+      if ("apiVersion".charCodeAt(length) !== byte) candidates &= ~1;
+      if ("kind".charCodeAt(length) !== byte) candidates &= ~2;
+      if ("metadata".charCodeAt(length) !== byte) candidates &= ~4;
+      if ("items".charCodeAt(length) !== byte) candidates &= ~8;
+      if (!candidates) return; length++;
+    }
+    const key = length === 10 && candidates & 1 ? 1 : length === 4 && candidates & 2 ? 2 : length === 8 && candidates & 4 ? 4 : length === 5 && candidates & 8 ? 8 : 0;
+    if (!key || seen & key) return; seen |= key;
+    space(); if (take() !== 58) return; space();
+    if (key === 8) {
+      if ((seen & 3) !== 3 || take() !== 91) return;
+      let count = 0;
+      for (;;) {
+        space(); const byte = peek(); if (byte < 0) return count > 0 ? count : undefined;
+        if (byte !== 123 || count >= limit) return;
+        const status = value(1); if (status !== 1) return status === 0 && count > 0 ? count : undefined;
+        count++; space(); const next = take();
+        if (next < 0) return count; if (next !== 44) return;
+      }
+    }
+    const status = key === 1 ? literal('"v1"') : key === 2 ? literal('"SecretList"') : peek() === 123 ? value(1) : -1;
+    if (status !== 1) return; space(); if (take() !== 44) return;
+  }
 }
 
 export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): NativeSecretTransport {
@@ -90,7 +190,7 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
       return fresh;
     };
 
-    async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false, byteLimit = 4 * 1024 * 1024, transferBudget?: SecretListBudget): Promise<{ value: any; bytes: number }> {
+    async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false, byteLimit = 4 * 1024 * 1024, transferBudget?: SecretListBudget, retryPageLimit?: number): Promise<{ value: any; bytes: number }> {
       deadline = Math.min(deadline, Date.now() + 8000);
       transferBudget?.check();
       await slot(deadline, transferBudget?.signal);
@@ -155,7 +255,16 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
               try { transferBudget?.consumeBytes(chunk.length); }
               catch (error) { fail(error); response.destroy(); return; }
               if (settled) return;
-              if (bytes > Math.min(4 * 1024 * 1024, byteLimit)) { fail(new SecretPageTooLarge()); response.destroy(); return; }
+              if (bytes > Math.min(4 * 1024 * 1024, byteLimit)) {
+                try {
+                  const count = retryPageLimit !== undefined && byteLimit >= 4 * 1024 * 1024 ? rejectedSecretListItemCount(chunks, retryPageLimit) : undefined;
+                  transferBudget?.check();
+                  if (Date.now() >= deadline) throw new SecretError(503, "Kubernetes Secret request timed out");
+                  if (options.signal?.aborted) throw secretFailure(options.signal.reason);
+                  fail(new SecretPageTooLarge(count));
+                } catch (error) { fail(error); }
+                response.destroy(); return;
+              }
               if (chunks.length >= 16384) { fail(new SecretError(503, "Kubernetes Secret response exceeds the size limit")); response.destroy(); return; }
               chunks.push(chunk);
             });
@@ -210,13 +319,13 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
           let result: { value: any; bytes: number };
           for (;;) {
             try {
-              result = await request("GET", route(namespace) + "?limit=" + limit + (cursor ? "&continue=" + encodeURIComponent(cursor) : ""), undefined, budget.deadline, false, budget.remainingBytes(), budget);
+              result = await request("GET", route(namespace) + "?limit=" + limit + (cursor ? "&continue=" + encodeURIComponent(cursor) : ""), undefined, budget.deadline, false, budget.remainingBytes(), budget, limit);
               break;
             } catch (error) {
               if (!(error instanceof SecretPageTooLarge) || limit === 1) throw error;
-              // Skip directly to the existing first fallback, avoiding another charged oversized prefix.
-              // Keep the cursor and smaller limit: 200 (or compatibility 20) -> 10 -> 5 -> 2 -> 1.
-              limit = limit === 200 ? 10 : Math.max(1, Math.floor(limit / 2)); budget.check();
+              // A scalar rejected-prefix hint can only reduce the existing fallback, never accept items.
+              const fallback = limit === 200 ? 10 : Math.max(1, Math.floor(limit / 2));
+              limit = Math.min(fallback, error.completedItems ?? fallback); budget.check();
             }
           }
           const page = result.value;
