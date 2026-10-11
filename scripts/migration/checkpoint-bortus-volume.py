@@ -314,6 +314,8 @@ class Checkpoint:
                 ref.get('name') == 'bortus-data' and pspec.get('persistentVolumeReclaimPolicy') == 'Retain'
                 and pspec.get('csi', {}).get('driver') == 'driver.longhorn.io' and
                 pspec['csi'].get('volumeHandle') == ids['longhorn_volume']['name'], 'PV mapping changed')
+        preflight.sole_longhorn_pv(self.client.get('pvs'), ids['pv'],
+                                   ids['longhorn_volume']['name'])
         require(volume.get('spec', {}).get('encrypted') is True and
                 type(volume['spec'].get('numberOfReplicas')) is int and
                 volume['spec']['numberOfReplicas'] == 2 and

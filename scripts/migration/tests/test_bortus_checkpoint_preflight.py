@@ -22,7 +22,7 @@ def fixture():
         'annotations': {'helm.sh/resource-policy': 'keep'}},
         'spec': {'volumeName': 'pvc-fixture', 'storageClassName': 'longhorn'},
         'status': {'phase': 'Bound'}}
-    pv = {'metadata': metadata('pvc-fixture'), 'spec': {
+    pv = {'apiVersion': 'v1', 'kind': 'PersistentVolume', 'metadata': metadata('pvc-fixture'), 'spec': {
         'claimRef': {'uid': 'bortus-data-uid', 'namespace': 'bortus', 'name': 'bortus-data'},
         'csi': {'driver': 'driver.longhorn.io', 'volumeHandle': 'pvc-fixture'},
         'persistentVolumeReclaimPolicy': 'Retain'}}
@@ -44,7 +44,9 @@ def fixture():
     target = {'metadata': metadata('default', 'longhorn-system'), 'status': {'available': True}}
     rs = {'metadata': metadata('rs-fixture', 'bortus') | {'ownerReferences': [
         {'kind': 'Deployment', 'controller': True, 'name': 'bortus', 'uid': 'bortus-uid'}]}}
-    return [claim, pv, volume, deployment, {'items': [pod]}, release, owner, target, rs]
+    pvs = {'apiVersion': 'v1', 'kind': 'PersistentVolumeList',
+           'metadata': {'resourceVersion': 'opaque-list-rv'}, 'items': [copy.deepcopy(pv)]}
+    return [claim, pv, volume, deployment, {'items': [pod]}, release, owner, target, rs, pvs]
 
 
 class CheckpointPreflight(unittest.TestCase):

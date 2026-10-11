@@ -12,6 +12,9 @@ import sys
 RUNTIME = pathlib.Path.home() / '.local/share/branconet-migration'
 APP = 'bortus'
 CLAIM = 'bortus-data'
+MAX_PV_ITEMS = 10000
+MAX_PV_IDENTITY = 253
+MAX_PV_RESOURCE_VERSION = 256
 
 
 def require(condition, message):
@@ -32,8 +35,51 @@ def uses_claim(pod):
                for v in pod.get('spec', {}).get('volumes', []))
 
 
+def sole_longhorn_pv(inventory, expected, handle):
+    """Require a complete bounded cluster PV list; aliases count even when inactive."""
+    failure = 'Complete sole original Longhorn PV inventory required; output withheld'
+    require(isinstance(inventory, dict) and inventory.get('apiVersion') == 'v1' and
+            inventory.get('kind') == 'PersistentVolumeList', failure)
+    meta = inventory.get('metadata')
+    require(isinstance(meta, dict) and isinstance(meta.get('resourceVersion'), str) and
+            0 < len(meta['resourceVersion']) <= MAX_PV_RESOURCE_VERSION, failure)
+    require('continue' not in meta or meta['continue'] == '', failure)
+    require('remainingItemCount' not in meta or
+            (type(meta['remainingItemCount']) is int and meta['remainingItemCount'] == 0), failure)
+    require(expected.get('namespace') in (None, '') and
+            isinstance(handle, str) and 0 < len(handle) <= MAX_PV_IDENTITY, failure)
+    items = inventory.get('items')
+    require(isinstance(items, list) and 0 < len(items) <= MAX_PV_ITEMS, failure)
+    names, uids, matches = set(), set(), []
+    for item in items:
+        require(isinstance(item, dict) and
+                ('apiVersion' not in item or item['apiVersion'] == 'v1') and
+                ('kind' not in item or item['kind'] == 'PersistentVolume'), failure)
+        imeta, spec = item.get('metadata'), item.get('spec')
+        require(isinstance(imeta, dict) and isinstance(spec, dict), failure)
+        require(all(isinstance(imeta.get(k), str) and 0 < len(imeta[k]) <= limit
+                    for k, limit in [('name', MAX_PV_IDENTITY), ('uid', MAX_PV_IDENTITY),
+                                     ('resourceVersion', MAX_PV_RESOURCE_VERSION)]) and
+                imeta.get('namespace') in (None, ''), failure)
+        require(imeta['name'] not in names and imeta['uid'] not in uids, failure)
+        names.add(imeta['name'])
+        uids.add(imeta['uid'])
+        csi = spec.get('csi')
+        if 'csi' in spec:
+            require(isinstance(csi, dict) and all(isinstance(csi.get(k), str) and
+                    0 < len(csi[k]) <= MAX_PV_IDENTITY for k in ('driver', 'volumeHandle')), failure)
+            if csi['driver'] == 'driver.longhorn.io' and csi['volumeHandle'] == handle:
+                matches.append(imeta)
+    require(len(matches) == 1 and matches[0]['name'] == expected['name'] and
+            matches[0]['uid'] == expected['uid'] and not matches[0].get('deletionTimestamp'), failure)
+    return {'items': len(items), 'resourceVersion': meta['resourceVersion'],
+            'sole_original_longhorn_pv': True}
+
+
 def evaluate(objects, expected_claim_uid, holder_image=None):
-    claim, pv, volume, deployment, pods, release, owner, target, replica_set = objects
+    require(isinstance(objects, (tuple, list)) and len(objects) == 10,
+            'Complete checkpoint input inventory required')
+    claim, pv, volume, deployment, pods, release, owner, target, replica_set, pvs = objects
     ids = {key: identity(obj) for key, obj in zip(
         ('claim', 'pv', 'longhorn_volume', 'deployment', 'helmrelease', 'kustomization', 'backup_target'),
         (claim, pv, volume, deployment, release, owner, target))}
@@ -51,6 +97,7 @@ def evaluate(objects, expected_claim_uid, holder_image=None):
     csi = pv.get('spec', {}).get('csi', {})
     require(csi.get('driver') == 'driver.longhorn.io' and
             csi.get('volumeHandle') == ids['longhorn_volume']['name'], 'PV driver or handle differs')
+    pv_inventory = sole_longhorn_pv(pvs, ids['pv'], ids['longhorn_volume']['name'])
     require(pv['spec'].get('persistentVolumeReclaimPolicy') == 'Retain', 'PV Retain policy missing')
     require(claim.get('metadata', {}).get('annotations', {}).get('helm.sh/resource-policy') == 'keep',
             'Claim keep policy missing')
@@ -106,6 +153,7 @@ def evaluate(objects, expected_claim_uid, holder_image=None):
     report = {
         'scope': 'Read-only BORTUS checkpoint prerequisites; no capture or recovery acceptance',
         'identities': ids, 'writer': writer_id | {'nodeName': writer['spec']['nodeName']},
+        'physical_volume_pv_inventory': pv_inventory,
         'checks_passed': True, 'active_claim_consumers': 1, 'encrypted_replicas': 2,
         'preserve_reconcile_state': {
             'helmrelease_suspend': rspec.get('suspend', False),
@@ -141,12 +189,19 @@ def evaluate(objects, expected_claim_uid, holder_image=None):
 class Client:
     def get(self, kind, name=None, namespace=None):
         argv = [str(RUNTIME / 'bin/kubectl'), '--kubeconfig', str(RUNTIME / 'admin.conf'),
-                '--request-timeout=20s', 'get', kind]
-        if name:
-            argv.append(name)
-        if namespace:
-            argv.extend(['-n', namespace])
-        argv.extend(['-o', 'json'])
+                '--request-timeout=20s', 'get']
+        if kind == 'pvs':
+            require(name is None and namespace is None, 'Cluster PV collection required')
+            # Raw collection preserves its RV/continuation instead of kubectl flattening it.
+            # One extra item detects the count bound; continuation never means success.
+            argv.extend(['--raw', '/api/v1/persistentvolumes?limit=' + str(MAX_PV_ITEMS + 1)])
+        else:
+            argv.append(kind)
+            if name:
+                argv.append(name)
+            if namespace:
+                argv.extend(['-n', namespace])
+            argv.extend(['-o', 'json'])
         result = subprocess.run(argv, capture_output=True, timeout=25)
         require(result.returncode == 0 and len(result.stdout) <= 8 * 1024 * 1024,
                 'Bounded read-only API query failed; output withheld')
@@ -176,7 +231,7 @@ class Client:
             self.get('helmrelease', APP, 'flux-system'),
             self.get('kustomization', 'migration-releases', 'flux-system'),
             self.get('backuptargets.longhorn.io', 'default', 'longhorn-system'),
-            self.get('replicaset', controllers[0]['name'], APP)),
+            self.get('replicaset', controllers[0]['name'], APP), self.get('pvs')),
             expected_claim_uid, holder_image)
 
 

@@ -34,7 +34,7 @@ class FakeClient:
     def __init__(self):
         self.objects = fixtures.fixture()
         self.resources = dict(zip(('pvc', 'pv', 'volumes.longhorn.io', 'deployment', 'pods',
-                                  'helmrelease', 'kustomization', 'backuptargets.longhorn.io', 'replicaset'),
+                                  'helmrelease', 'kustomization', 'backuptargets.longhorn.io', 'replicaset', 'pvs'),
                                  self.objects))
         self.owned = {}
         self.calls = []

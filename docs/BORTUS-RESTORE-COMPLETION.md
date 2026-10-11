@@ -121,3 +121,5 @@ Run the pure synthetic suite with
 `python -B -m unittest discover -s scripts/migration/tests -p test_bortus_restore_completion.py -v`.
 No native performance fixture, driver, runner, summarizer or acceptance gate is
 changed by this library.
+
+The source inspection and repeated cold storage checks also require the complete cluster PV inventory in [BORTUS-PHYSICAL-VOLUME-FENCE.md](BORTUS-PHYSICAL-VOLUME-FENCE.md); any other Longhorn PV using the original handle refuses regardless of claim namespace or inactive state. This closes a scoped inventory gap and does not establish an atomic consumer/admission barrier or restored-data acceptance.
