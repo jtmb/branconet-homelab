@@ -7,6 +7,7 @@ import json
 import os
 import pathlib
 import re
+import stat
 import subprocess
 import sys
 import time
@@ -99,6 +100,36 @@ class Client(preflight.Client):
             'preconditions': {'uid': meta['uid'], 'resourceVersion': meta['resourceVersion']}})
 
 
+def checkpoint_directory():
+    """Durably establish protected run parents before any checkpoint API call."""
+    require(os.name == 'posix', 'POSIX checkpoint runtime required')
+    fd = os.open(RUNTIME, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        for child in ('recovery', 'bortus-checkpoints'):
+            info = os.fstat(fd)
+            require(info.st_uid == os.getuid() and stat.S_IMODE(info.st_mode) == 0o700,
+                    'Protected checkpoint parent required')
+            try:
+                os.mkdir(child, mode=0o700, dir_fd=fd)
+            except FileExistsError:
+                pass
+            next_fd = os.open(child, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)
+            try:
+                info = os.fstat(next_fd)
+                require(info.st_uid == os.getuid() and stat.S_IMODE(info.st_mode) == 0o700,
+                        'Protected checkpoint directory required')
+                os.fsync(fd)  # Persist the child name, including newly created parents.
+            except Exception:
+                os.close(next_fd)
+                raise
+            os.close(fd)
+            fd = next_fd
+        os.fsync(fd)
+        return RUNTIME / 'recovery/bortus-checkpoints'
+    finally:
+        os.close(fd)
+
+
 class Journal:
     def __init__(self, directory, record=None):
         self.directory = pathlib.Path(directory)
@@ -107,41 +138,123 @@ class Journal:
         self.record = record
         self.opened = False
         self.locked = False
+        self.parent_fd = None
+        self.directory_fd = None
+        self.journal_inode = None
+
+    def _read(self, name, limit):
+        fd = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=self.directory_fd)
+        try:
+            info = os.fstat(fd)
+            require(stat.S_ISREG(info.st_mode) and info.st_uid == os.getuid() and
+                    stat.S_IMODE(info.st_mode) == 0o600 and info.st_size <= limit,
+                    'Invalid protected checkpoint record')
+            with os.fdopen(fd, 'rb', closefd=False) as out:
+                raw = out.read(limit + 1)
+            require(len(raw) <= limit, 'Checkpoint record exceeds bound')
+            return raw, (info.st_dev, info.st_ino)
+        finally:
+            os.close(fd)
+
+    def _owned(self):
+        require(self.opened and self.locked, 'Journal is not exclusively open')
+        for path, fd in ((self.directory.parent, self.parent_fd), (self.directory, self.directory_fd)):
+            current, pinned = path.lstat(), os.fstat(fd)
+            require(stat.S_ISDIR(current.st_mode) and current.st_uid == os.getuid() and
+                    stat.S_IMODE(current.st_mode) == 0o700 and
+                    (current.st_dev, current.st_ino) == (pinned.st_dev, pinned.st_ino),
+                    'Checkpoint directory identity changed')
+        raw, lock_inode = self._read('active.lock', 128)
+        require(raw == self.lock_value and lock_inode == self.lock_inode,
+                'Checkpoint lock identity changed')
+        if self.journal_inode is not None:
+            _, current = self._read('journal.json', 1024 * 1024)
+            require(current == self.journal_inode, 'Checkpoint record identity changed')
+        else:
+            try:
+                os.stat('journal.json', dir_fd=self.directory_fd, follow_symlinks=False)
+            except FileNotFoundError:
+                pass
+            else:
+                require(False, 'Checkpoint journal already exists')
 
     def open(self, new):
-        if new:
-            self.directory.mkdir(mode=0o700, parents=False, exist_ok=False)
-        require(self.directory.is_dir() and not self.directory.is_symlink(), 'Invalid run directory')
-        fd = os.open(self.lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-        self.locked = True
-        with os.fdopen(fd, 'w', encoding='ascii') as out:
-            out.write(str(os.getpid()) + '\n')
-        if not new:
-            require(self.path.is_file() and not self.path.is_symlink(), 'Missing retained journal')
-            self.record = json.loads(self.path.read_text(encoding='utf-8'))
-        else:
-            require(not os.path.lexists(self.path), 'Journal already exists')
-        self.opened = True
-        self.save()
-        return self
+        require(os.name == 'posix' and self.directory_fd is None and self.parent_fd is None,
+                'Invalid checkpoint journal runtime')
+        try:
+            self.parent_fd = os.open(self.directory.parent, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+            info = os.fstat(self.parent_fd)
+            require(info.st_uid == os.getuid() and stat.S_IMODE(info.st_mode) == 0o700,
+                    'Protected checkpoint parent required')
+            if new:
+                os.mkdir(self.directory.name, mode=0o700, dir_fd=self.parent_fd)
+                os.fsync(self.parent_fd)
+            self.directory_fd = os.open(self.directory.name,
+                os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=self.parent_fd)
+            info = os.fstat(self.directory_fd)
+            require(info.st_uid == os.getuid() and stat.S_IMODE(info.st_mode) == 0o700,
+                    'Invalid run directory')
+            fd = os.open('active.lock', os.O_CREAT | os.O_EXCL | os.O_WRONLY | os.O_NOFOLLOW,
+                         0o600, dir_fd=self.directory_fd)
+            self.locked = True
+            self.lock_value = (str(os.getpid()) + ':' + uuid.uuid4().hex + '\n').encode('ascii')
+            info = os.fstat(fd)
+            self.lock_inode = (info.st_dev, info.st_ino)
+            with os.fdopen(fd, 'wb') as out:
+                out.write(self.lock_value)
+                out.flush()
+                os.fsync(out.fileno())
+            os.fsync(self.directory_fd)
+            if not new:
+                raw, self.journal_inode = self._read('journal.json', 1024 * 1024)
+                self.record = json.loads(raw)
+            require(isinstance(self.record, dict), 'Invalid checkpoint record')
+            self.opened = True
+            self.save()
+            return self
+        except FileExistsError:
+            self.close()
+            raise
+        except Exception:
+            self.close()
+            raise RuntimeError('Checkpoint journal unavailable; inspect without replay') from None
 
     def save(self):
-        require(self.opened and self.locked, 'Journal is not exclusively open')
+        self._owned()
         self.record['updated_at_utc'] = now()
-        target = self.directory / ('journal-' + uuid.uuid4().hex + '.next')
-        fd = os.open(target, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
-        with os.fdopen(fd, 'w', encoding='utf-8') as out:
-            json.dump(self.record, out, indent=2)
-            out.write('\n')
+        raw = (json.dumps(self.record, indent=2) + '\n').encode('utf-8')
+        require(len(raw) <= 1024 * 1024, 'Checkpoint record exceeds bound')
+        target = 'journal-' + uuid.uuid4().hex + '.next'
+        fd = os.open(target, os.O_CREAT | os.O_EXCL | os.O_WRONLY | os.O_NOFOLLOW,
+                     0o600, dir_fd=self.directory_fd)
+        with os.fdopen(fd, 'wb') as out:
+            out.write(raw)
             out.flush()
             os.fsync(out.fileno())
-        os.replace(target, self.path)
+            info = os.fstat(out.fileno())
+            new_inode = (info.st_dev, info.st_ino)
+        self._owned()
+        os.replace(target, 'journal.json', src_dir_fd=self.directory_fd, dst_dir_fd=self.directory_fd)
+        os.fsync(self.directory_fd)  # The pending name is durable before a caller mutates.
+        _, self.journal_inode = self._read('journal.json', 1024 * 1024)
+        require(self.journal_inode == new_inode, 'Checkpoint record identity changed')
 
     def close(self):
-        # Only this process's exact lock, never a stale lock from another run.
-        if self.locked and self.lock.is_file() and self.lock.read_text(encoding='ascii') == str(os.getpid()) + '\n':
-            self.lock.unlink()
-        self.locked = False
+        try:
+            if self.locked and self.directory_fd is not None:
+                raw, current = self._read('active.lock', 128)
+                if raw == self.lock_value and current == self.lock_inode:
+                    os.unlink('active.lock', dir_fd=self.directory_fd)
+                    os.fsync(self.directory_fd)
+        except (OSError, RuntimeError):
+            pass  # Retain foreign/replaced locks and partial owned runs for inspection.
+        finally:
+            self.locked = self.opened = False
+            for attr in ('directory_fd', 'parent_fd'):
+                fd = getattr(self, attr)
+                if fd is not None:
+                    os.close(fd)
+                    setattr(self, attr, None)
 
 
 class Checkpoint:
@@ -482,8 +595,7 @@ def main():
     journal = None
     try:
         require(os.name == 'posix', 'Run only in the operator WSL environment')
-        directory = RUNTIME / 'recovery/bortus-checkpoints'
-        directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+        directory = checkpoint_directory()
         client = Client()
         if args.mode == 'capture':
             expected = json.loads(args.preflight_report.read_text(encoding='utf-8'))

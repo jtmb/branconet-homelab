@@ -1,0 +1,117 @@
+{
+  "scope": "Cold checkpoint durable ownership correction, local POSIX fault qualification only",
+  "parent_coordinator_commit": "af4a161d1fb6c84013515a0a5e1d15518b2abe07",
+  "previous_helper_working_sha256": "a57609cc308b2d1968deb69322f609cc2ab15285756690a9c75a26b2ff0fb748",
+  "source_sha256": {
+    "scripts/migration/bortus-restore-completion.py": "6e5c36ad8faaf4228e00ba608143317c4069a0e50a98a0fd760f5c5228e95ec4",
+    "scripts/migration/bortus-restore-journal.py": "e90b25b1a7226e072f3d3b1b3c872f38cbf2f05797270e9100a60dfa83a12f18",
+    "scripts/migration/bortus-sqlite-archive.py": "61e0ef9a1bf81a738aa5fc732f73dc372b55128b5c6e62264220ad23cba7492e",
+    "scripts/migration/checkpoint-bortus-volume.py": "732ee28fc64aa6d5e88f2e3c3f14e0284e9f8681f3af315c471454347a0204ce",
+    "scripts/migration/compare-bortus-databases.py": "427a52f9162101da3a5dd24aae6dc254f138558d7967f2976e43acee1b4f2066",
+    "scripts/migration/inspect-bortus-checkpoint.py": "0b5826747d3fea6a01c1353be7d3a25eafee455c1040f5be483ac5576bc5443b",
+    "scripts/migration/inspect-bortus-independent-restore.py": "69b4e285288eded354172b1487d7971a666baa6084274391b5acf70d261e0326",
+    "scripts/migration/normalize-bortus-sqlite-archive.py": "44ab159936dc114c050625e78acca4b05228e0282ccaefeef79656be3fffa2f3",
+    "scripts/migration/tests/test_bortus_checkpoint_preflight.py": "8376dbfbd0fd76aab78e30f7b75466252b14c658a7b976d4d196b43f8d0cfc58",
+    "scripts/migration/tests/test_bortus_cold_checkpoint.py": "c5193b13b44a0635a8aaeb34c17ab206886a433ca7524b267f177f3be27b0130",
+    "scripts/migration/tests/test_bortus_cold_journal.py": "a69f0689c770b169929a1b2a20e5a8ae12d858081d61ad4648bc324d2de15e75",
+    "scripts/migration/tests/test_bortus_independent_restore_preflight.py": "4bad5bae8dfe2581fd82672ff8544f5e69b5b32796f1973364fe337f0fcf31fc",
+    "scripts/migration/tests/test_bortus_restore_completion.py": "b78f8fd41ccd818a1675c5fd96da491a3ffeb36b36ef08cf1221e66efef69278",
+    "scripts/migration/tests/test_bortus_restore_journal.py": "f7362317b159e1a2259c26fc494d4d049f0498e8bd04a507c7c77c861836cf40",
+    "scripts/migration/tests/test_database_preservation.py": "87ce1f374331eeef39aaba934710112e2f87abeb76e3c129de83ea829ffed29a",
+    "scripts/migration/tests/test_node_sqlite_reader.py": "8fc064bc423f160e5304aa6684e7bffd2df6ac1d36d6e76c00505659da46658b",
+    "scripts/migration/tests/test_release_rbac_inventory.py": "4defacd56a55711c3f5e4aa6b9b251f7c9ba43a3f5449b1ed8c07bc34e2d048f",
+    "scripts/migration/tests/test_sqlite_archive_normalization.py": "7b4c94d58c914711610f2ac515a2f3c6fab7e14b15889671a07c521b6c3bb8c0",
+    "scripts/migration/tests/test_sqlite_encrypted_archive.py": "a38ba705ef74678681ec574342a0cc13ac3335f170787074958df55a259fe3ed"
+  },
+  "local_artifacts": {
+    "corrected-full-stderr.log": "f9df83ee1ce64d26e6048b27e9391785013c2ff682a0812f94c69ccc4130ec97",
+    "corrected-full-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "corrected-full-terminal.json": "b27d9db08f9618aa9b761ae44bca06a600255240b794ae3589c6981578c34eb7",
+    "initial-helper.py": "a57609cc308b2d1968deb69322f609cc2ab15285756690a9c75a26b2ff0fb748",
+    "initial-stderr.log": "d81581ef827bb03375fb188ddc8ae779c68260a2f01366609cf239334d188c97",
+    "initial-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "initial-terminal.json": "cea825264bd513a6ecee3dc85a103699223cce8535494e815beb114b4b4fecfc",
+    "initial-test.py": "52610fbd0fc965bf2287605ee1ed20c66b3edc9b6565888e844ec02a836c83be",
+    "initial2-stderr.log": "b955d5b1682f130416bd463b3ae3c9c1f263138451a322add7ac0ca3b5190ec4",
+    "initial2-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "initial2-terminal.json": "e78b5daa47a7f0d0a711b63cdc21babbf95cf0bc3cf0ac4903902e631e1e1470",
+    "initial2-test.py": "c82060969b8a9680b8b5033f2b6a4549a47ebeddb59356cde7d22837a4952657",
+    "qualified-checkpoint-bortus-volume.py": "732ee28fc64aa6d5e88f2e3c3f14e0284e9f8681f3af315c471454347a0204ce",
+    "qualified-test_bortus_cold_checkpoint.py": "c5193b13b44a0635a8aaeb34c17ab206886a433ca7524b267f177f3be27b0130",
+    "qualified-test_bortus_cold_journal.py": "a69f0689c770b169929a1b2a20e5a8ae12d858081d61ad4648bc324d2de15e75"
+  },
+  "independent_review": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\cold-restore-coordinator-review-20261011\\corrected-review\\review.json",
+    "sha256": "782dc8133537d3f59f385f78ec184f094ff4c0c43ac85fe704254d13288a3d95",
+    "no_additional_concrete_defect_in_scoped_fix": true,
+    "review_reran_tests": false
+  },
+  "original_native_review": {
+    "directory": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\cold-restore-coordinator-review-20261011",
+    "artifacts": {
+      "alias-consumer-probe.json": "769b2f85bb24423e1950998440dfab625d9a6afc278b1a19938928e30b5723a4",
+      "cold-journal-directory-flush.py": "96e67bf9cf4e0190c7bf73aad4f28d27dc65b73702f57860b59e2d4aed5b3919",
+      "durability-probe-terminal.json": "9f026c6ec0b35dfb7e7a8ef03723a5599a863fdc9de7646a03212705ef2572f7",
+      "durability-probe-v2-terminal.json": "2274f9e962aff4cc57963c5de123c0b3e7a2dc048a9516e544f2e5615bed138f",
+      "durability-probe-v2.stderr": "160c2e05a19dbb928ee019dcb835ec14b4a63467096fe85f1ccc332503c40b24",
+      "durability-probe-v2.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "durability-probe.stderr": "cb96aed6cfb33e53e863fdebf8b4d99a3d6bdae0fb69c9e2bf98124d87bb18ea",
+      "durability-probe.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kubernetes-v1.34-api-concepts.html": "8cd8b9e0c2ef6804f0511a820bfcbcbcbdf842493154ce082644fbdd8d1b0555",
+      "review-and-watch-interface.md": "f20ccc7300bb82444bc8b843857129648bd394c0fd9e52b7af11b19bab68b92f",
+      "review-summary.json": "e24386554ec799b017f27c894fdb30ac00a5c10427115c128dd723b26ffc4210",
+      "settlement-working-byte-review.json": "6d8ac57e864798b896876e201ae09a5ffba90088eef9d6f3693fe0c2e531acd5",
+      "source-manifest.json": "6bacc786861d4de4405fb318fbbea0f2b03f7efef28205413619e3559c14264d",
+      "watch-primary-source.json": "6ea4960f369eb51c27f06e3bb21cc6124b40159874aa0066516626956f79fe86"
+    }
+  },
+  "initial_root_tests": {
+    "first": {
+      "actual_exit_code": 1,
+      "tests": 6,
+      "failures": 2,
+      "errors": 2,
+      "limitation": "Unconfigured Mock mutation reply produced an incidental identity error; missing new parent-chain helper produced another error; original bytes/log retained"
+    },
+    "second": {
+      "actual_exit_code": 1,
+      "tests": 6,
+      "failures": 3,
+      "errors": 1,
+      "test_double_corrected": true,
+      "limitation": "Three old directory durability decisions fail; new protected-parent helper not present yet"
+    }
+  },
+  "corrected_tests": {
+    "actual_exit_code": 0,
+    "tests": 110,
+    "new_actual_posix_cases": 9,
+    "reported_seconds": 7.628,
+    "skipped": 0,
+    "complete_helper_group": true,
+    "actual_age_and_linux_node_fixtures": true,
+    "owned_child_processes_completed": true
+  },
+  "behavior": [
+    "durable protected ancestor entries before Client",
+    "run-parent flush before journal opens",
+    "file flush and directory flush before mutation callback",
+    "nonce and inode fenced lock and record ownership",
+    "bounded no-follow nonblocking metadata records",
+    "initialization and closure release owned descriptors and preserve foreign state"
+  ],
+  "root_docs_checked": 12,
+  "production_api_calls": 0,
+  "production_data_or_operator_key_reads": 0,
+  "production_mutations": 0,
+  "power_loss_test_performed": false,
+  "watch_or_restore_executor_implemented": false,
+  "live_data_acceptance": false,
+  "pending": [
+    "physical same-volumeHandle PV/claim alias refusal",
+    "durable pending/uncertain holder-delete intent",
+    "actual bounded durable watch/list-RV collector",
+    "qualified image, preload and actual admission",
+    "fresh independent encrypted capture/restore and full row equality"
+  ]
+}

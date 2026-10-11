@@ -1,6 +1,7 @@
 import copy
 import importlib.util
 import json
+import os
 import pathlib
 import tempfile
 import unittest
@@ -340,10 +341,11 @@ class ColdCheckpointTests(unittest.TestCase):
             sent = json.loads(run.call_args.kwargs['input'])
             self.assertEqual(sent['preconditions'], {'uid': obj['metadata']['uid'], 'resourceVersion': '1'})
 
+    @unittest.skipUnless(os.name == 'posix', 'Production journal requires POSIX ownership checks')
     def test_existing_run_or_process_lock_never_overwrites_retained_journal(self):
         with tempfile.TemporaryDirectory() as folder:
             path = pathlib.Path(folder) / 'existing'
-            path.mkdir()
+            path.mkdir(mode=0o700)
             journal = path / 'journal.json'
             journal.write_text('{"retained":true}', encoding='utf-8')
             lock = path / 'active.lock'
