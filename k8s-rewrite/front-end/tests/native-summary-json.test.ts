@@ -9,6 +9,35 @@ const refuse = (raw: string | Buffer) => assert.throws(() => parseSecretSummaryP
   assert.equal((error as Error).message, "Invalid Kubernetes Secret summary response"); return true;
 });
 
+test("fatal selected-field decoder is document-owned and no decode failure contaminates the next document", () => {
+  const Original = TextDecoder;
+  let constructions = 0, decodes = 0, failAt = Infinity;
+  class ObservedDecoder extends Original {
+    constructor(label?: string, options?: TextDecoderOptions) {
+      super(label, options); constructions++; assert.equal(options?.fatal, true);
+    }
+    decode(...args: Parameters<TextDecoder["decode"]>) {
+      if (++decodes === failAt) throw new Error("PRIVATE_DYNAMIC_DECODER_ERROR");
+      return super.decode(...args);
+    }
+  }
+  Object.defineProperty(globalThis, "TextDecoder", { value: ObservedDecoder, writable: true, configurable: true });
+  try {
+    const raw = Buffer.from(page({ binary: "AA==", public: "VALUE_SENTINEL" }, { metadata: { ...metadata, annotations: { public: "snow-雪😀\n\"\\" } } }));
+    const chunks = Array.from(raw, (_, i) => raw.subarray(i, i + 1));
+    const expected = parseSecretSummaryPage(chunks, "apps", 200);
+    assert.equal(constructions, 1); assert.ok(decodes > 10);
+    assert.equal(JSON.stringify(expected).includes("VALUE_SENTINEL"), false);
+    failAt = decodes + 3;
+    assert.throws(() => parseSecretSummaryPage(chunks, "apps", 200), error => {
+      assert.equal((error as Error).message, "Invalid Kubernetes Secret summary response"); return true;
+    });
+    assert.equal(constructions, 2); failAt = Infinity;
+    assert.deepEqual(parseSecretSummaryPage(chunks, "apps", 200), expected);
+    assert.equal(constructions, 3);
+  } finally { Object.defineProperty(globalThis, "TextDecoder", { value: Original, writable: true, configurable: true }); }
+});
+
 test("summary retains exact metadata/key identity across every byte/chunk split, without value DTOs", () => {
   const data = JSON.parse('{"__proto__":"VALUE_SENTINEL","constructor":"","toString":"AA==","":"snow-雪😀","binary":"\\u0000\\n\\\"\\\\"}');
   const raw = Buffer.from(page(data, { stringData: { private: "VALUE_SENTINEL" }, unknown: [{ private: "VALUE_SENTINEL", number: -1.25e3, nested: [true, false, null] }] }));

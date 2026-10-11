@@ -7,6 +7,7 @@ const invalid = () => new SecretError(503, "Invalid Kubernetes Secret summary re
 class Reader {
   private index = 0;
   private offset = 0;
+  private readonly decoder = new TextDecoder("utf-8", { fatal: true });
   constructor(private readonly chunks: readonly Buffer[]) {}
   peek(): number {
     while (this.index < this.chunks.length && this.offset === this.chunks[this.index].length) { this.index++; this.offset = 0; }
@@ -84,7 +85,7 @@ class Reader {
       pieces.push(this.chunks[i].subarray(i === startIndex ? startOffset : 0, end));
     }
     const selected = pieces.length === 1 ? pieces[0] : Buffer.concat(pieces);
-    return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(selected));
+    return JSON.parse(this.decoder.decode(selected));
   }
   text(): string { return this.capture(() => this.string()) as string; }
   members(member: (key: string) => void) {
