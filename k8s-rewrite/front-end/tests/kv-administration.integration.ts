@@ -150,6 +150,8 @@ test(
       const source = await fixture.checked(
         await fixture.request(`/api/kv/paths/${fixture.registered.id}/status`),
       );
+      const versions = await fixture.checked(await fixture.request(`/api/kv/paths/${fixture.registered.id}/versions`));
+      const selectedHistory = versions.items.find((row: { version: number }) => row.version === 2);
       const fault = await administrationCleanupFault(fixture.dir);
       try {
         const cleanup = await client.run((request) =>
@@ -157,6 +159,8 @@ test(
             `/api/kv/paths/${fixture.registered.id}/destroy`,
             "POST",
             {
+              sourceUid: source.uid,
+              histories: [{ version: 2, name: selectedHistory.name, uid: selectedHistory.uid }],
               resourceVersion: source.resourceVersion,
               expectedHead: source.head,
               confirmPath: fixture.registered.path,

@@ -99,6 +99,18 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
     native.seed("apps","imported", { ...initial, unrelated:other }, { metadata:{ labels:{app:"preserved"}, annotations:{"kubectl.kubernetes.io/last-applied-configuration":marker}, managedFields:[{manager:marker}], ownerReferences:[{apiVersion:"v1",kind:"ConfigMap",name:"owner",uid:"owner-uid"}] } });
     const aliases = Array.from({length:603},(_,index)=>({alias:"secret_original_underscored_"+index,namespace:"apps",name:"imported",key:index%2?"__proto__":"constructor"}));
     const engine = new KvNativeEngine(registry,native,async()=>aliases);
+    // Existing destruction scenarios now supply the captured metadata identities.
+    // Read the disposable fixture directly; never auto-upgrade production captures.
+    const destroyCaptured = async (acting: Parameters<KvNativeEngine["destroy"]>[0], id: string, input: Parameters<KvNativeEngine["destroy"]>[2], signal?: AbortSignal) => {
+      const path = await registry.path(id), source = native.objects.get(path.namespace + "/" + path.name)!;
+      const state = parseState(source).paths.find(item => item.id === id)!;
+      const histories = input.versions.map(version => {
+        const ref = state.versions.find(item => item.version === version)!;
+        return { version, name: ref.name, uid: ref.uid };
+      });
+      return engine.destroy(acting, id, { sourceUid: source.metadata!.uid, histories, ...input }, signal);
+    };
+
     const input = async () => { const s = await engine.status(actor,registered.id); return {resourceVersion:s.resourceVersion,expectedHead:s.head}; };
 
     await t.test("guard and initial administrator approval fail before native mutation", async () => {
@@ -307,25 +319,57 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       native.malformedReplaceReply=true;await engine.change(actor,p.id,{...await current(),fields:[{field:"key",encoding:"utf8",value:"second"}]});
       const source=native.objects.get("apps/destroy")!;source.data!.unrelated=other;source.metadata!.annotations!["private-other-key"]=marker;source.metadata!.resourceVersion=String(++native.counter);
       const before=await current(),old=copy(source),deletes=native.deletes.length,writes=native.writes;
-      await assert.rejects(engine.destroy(actor,p.id,{...before,versions:[1],confirmPath:"wrong"}),denied(400));
-      await assert.rejects(engine.destroy(actor,p.id,{...before,versions:[1,1],confirmPath:p.path}),denied(400));
-      await assert.rejects(engine.destroy(actor,p.id,{...before,versions:[2],confirmPath:p.path}),denied(409));
-      await assert.rejects(engine.destroy(actor,p.id,{expectedHead:2,versions:[1],confirmPath:p.path}),denied(428));
+      await assert.rejects(destroyCaptured(actor,p.id,{...before,versions:[1],confirmPath:"wrong"}),denied(400));
+      await assert.rejects(destroyCaptured(actor,p.id,{...before,versions:[1,1],confirmPath:p.path}),denied(400));
+      await assert.rejects(destroyCaptured(actor,p.id,{...before,versions:[2],confirmPath:p.path}),denied(409));
+      await assert.rejects(destroyCaptured(actor,p.id,{expectedHead:2,versions:[1],confirmPath:p.path}),denied(428));
       const scopedUser=await db.user.findUniqueOrThrow({where:{username:"scoped"}}),scoped={id:scopedUser.id,sessionVersion:scopedUser.sessionVersion};
-      const reads=native.reads;await assert.rejects(engine.destroy(scoped,p.id,{...before,versions:[1],confirmPath:p.path}),denied(403));assert.equal(native.reads,reads);
-      const aborted=new AbortController();aborted.abort();await assert.rejects(engine.destroy(actor,p.id,{...before,versions:[1],confirmPath:p.path},aborted.signal),denied(408));
+      const reads=native.reads;await assert.rejects(destroyCaptured(scoped,p.id,{...before,versions:[1],confirmPath:p.path}),denied(403));assert.equal(native.reads,reads);
+      const aborted=new AbortController();aborted.abort();await assert.rejects(destroyCaptured(actor,p.id,{...before,versions:[1],confirmPath:p.path},aborted.signal),denied(408));
       assert.equal(native.writes,writes);assert.equal(native.deletes.length,deletes);
       const first=parseState(source).paths[0].versions[0],owned=native.objects.get("history/"+first.name)!,saved=copy(owned);
-      owned.metadata!.uid="replaced-history";await assert.rejects(engine.destroy(actor,p.id,{...before,versions:[1],confirmPath:p.path}),denied(409));native.objects.set("history/"+first.name,saved);
-      native.malformedReplaceReply=true;const result=await engine.destroy(actor,p.id,{...before,versions:[1],confirmPath:p.path});assert.equal(result.cleanupComplete,true);assert.equal(result.head,2);
+      owned.metadata!.uid="replaced-history";await assert.rejects(destroyCaptured(actor,p.id,{...before,versions:[1],confirmPath:p.path}),denied(409));native.objects.set("history/"+first.name,saved);
+      native.malformedReplaceReply=true;const result=await destroyCaptured(actor,p.id,{...before,versions:[1],confirmPath:p.path});assert.equal(result.cleanupComplete,true);assert.equal(result.head,2);
       assert.deepEqual(result.cleanup.map(c=>c.outcome),["deleted"]);assert.equal(native.deletes.length,deletes+1);assert.equal(native.deletes.at(-1)!.namespace,"history");
       await assert.rejects(native.replace("apps","destroy",old),error=>(error as {code:number}).code===409);
       await assert.rejects(engine.read(actor,p.id,1),denied(404));assert.equal((await engine.read(actor,p.id)).fields[0].value,Buffer.from("second").toString("base64"));
       await engine.change(actor,p.id,await current(),"delete");
-      const tombstone=await engine.destroy(actor,p.id,{...await current(),versions:[2,3],confirmPath:p.path});assert.equal(tombstone.head,0);assert.equal(tombstone.cleanupComplete,true);
+      const tombstone=await destroyCaptured(actor,p.id,{...await current(),versions:[2,3],confirmPath:p.path});assert.equal(tombstone.head,0);assert.equal(tombstone.cleanupComplete,true);
       assert.deepEqual(native.objects.get("apps/destroy")!.data,{unrelated:other});assert.equal(native.objects.get("apps/destroy")!.metadata!.annotations!["private-other-key"],marker);
       assert.deepEqual((await engine.read(actor,p.id)).fields,[]);assert.equal((await engine.change(actor,p.id,{...await current(),fields:[]})).head,4);
       assert(!JSON.stringify(result).includes(marker));assert(!JSON.stringify(result).includes(other));
+    });
+    await t.test("destroy requires exact displayed canonical and selected history identities before any side effect", async () => {
+      const p = await registry.registerPath(actor,{mountId:mount.id,path:"cleanup/identity",namespace:"apps",name:"identity",fields:[{field:"key",key:"key"}]});
+      await engine.create(actor,p.id,{resourceVersion:"absent",expectedHead:0,fields:[]});
+      const first = await engine.status(actor,p.id);
+      await engine.change(actor,p.id,{resourceVersion:first.resourceVersion,expectedHead:1,fields:[]});
+      const status = await engine.status(actor,p.id), versions = await engine.versions(actor,p.id);
+      const selected = versions.items[0];
+      assert.equal(versions.uid,status.uid);
+      assert.equal(selected.name,parseState(native.objects.get("apps/identity")!).paths[0].versions[0].name);
+      const captured = {resourceVersion:status.resourceVersion,expectedHead:status.head,pathRevision:p.revision,confirmPath:p.path,versions:[1],sourceUid:status.uid,histories:[{version:1,name:selected.name,uid:selected.uid}]};
+      const writes=native.writes,deletes=native.deletes.length,source=copy(native.objects.get("apps/identity")!);
+      await assert.rejects(engine.destroy(actor,p.id,{...captured,sourceUid:undefined}),denied(428));
+      await assert.rejects(engine.destroy(actor,p.id,{...captured,histories:undefined}),denied(428));
+      await assert.rejects(engine.destroy(actor,p.id,{...captured,sourceUid:"wrong-source"}),denied(409));
+      await assert.rejects(engine.destroy(actor,p.id,{...captured,histories:[{...captured.histories[0],uid:"wrong-history"}]}),denied(409));
+      await assert.rejects(engine.destroy(actor,p.id,{...captured,histories:[{...captured.histories[0],name:versions.items[1].name}]}),denied(409));
+      await assert.rejects(engine.destroy(actor,p.id,{...captured,histories:[captured.histories[0],captured.histories[0]]}),denied(400));
+      await assert.rejects(engine.destroy(actor,p.id,{...captured,histories:[{...captured.histories[0],version:2}]}),denied(400));
+      const history=native.objects.get("history/"+selected.name)!,oldHistory=copy(history);
+      history.metadata!.uid="recreated-history";
+      await assert.rejects(engine.destroy(actor,p.id,captured),denied(409));
+      native.objects.set("history/"+selected.name,oldHistory);
+      native.objects.get("apps/identity")!.metadata!.uid="recreated-source";
+      await assert.rejects(engine.destroy(actor,p.id,captured),denied(409));
+      native.objects.set("apps/identity",source);
+      assert.equal(native.writes,writes); assert.equal(native.deletes.length,deletes);
+      assert.deepEqual(native.objects.get("apps/identity"),source);
+      assert.deepEqual(native.objects.get("history/"+selected.name),oldHistory);
+      const accepted = await engine.destroy(actor,p.id,captured);
+      assert.equal(accepted.cleanupComplete,true); assert.equal(accepted.head,2);
+      assert(!JSON.stringify(versions).includes("digest")); assert(!JSON.stringify(versions).includes(marker));
     });
     await t.test("destruction audit failures and source replacement retain recoverable history with explicit partial outcomes",async()=>{
       const p=await registry.registerPath(actor,{mountId:mount.id,path:"cleanup/partial",namespace:"apps",name:"partial",fields:[{field:"key",key:"key"}]});
@@ -334,21 +378,21 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       await engine.change(actor,p.id,{...await current(),fields:[]});
       const ref=parseState(native.objects.get("apps/partial")!).paths[0].versions[0],before=native.writes,deletes=native.deletes.length;
       await db.$executeRawUnsafe("CREATE TRIGGER deny_cleanup BEFORE INSERT ON kv_audit BEGIN SELECT RAISE(ABORT, 'synthetic audit unavailable'); END");
-      await assert.rejects(engine.destroy(actor,p.id,{...await current(),versions:[1],confirmPath:p.path}),denied(503));assert.equal(native.writes,before);assert.equal(native.deletes.length,deletes);
+      await assert.rejects(destroyCaptured(actor,p.id,{...await current(),versions:[1],confirmPath:p.path}),denied(503));assert.equal(native.writes,before);assert.equal(native.deletes.length,deletes);
       await db.$executeRawUnsafe("DROP TRIGGER deny_cleanup");
       native.afterReplace=async()=>{await db.$executeRawUnsafe("CREATE TRIGGER deny_cleanup BEFORE INSERT ON kv_audit WHEN NEW.action = 'history-delete' BEGIN SELECT RAISE(ABORT, 'synthetic audit unavailable'); END");};
       let result;
-      try{result=await engine.destroy(actor,p.id,{...await current(),versions:[1],confirmPath:p.path});}finally{native.afterReplace=undefined;await db.$executeRawUnsafe("DROP TRIGGER deny_cleanup");}
+      try{result=await destroyCaptured(actor,p.id,{...await current(),versions:[1],confirmPath:p.path});}finally{native.afterReplace=undefined;await db.$executeRawUnsafe("DROP TRIGGER deny_cleanup");}
       assert.equal(result.outcome,"committed");assert.equal(result.cleanupComplete,false);assert.equal(result.cleanup[0].status,503);assert(native.objects.has("history/"+ref.name));assert.equal(native.deletes.length,deletes);
       await engine.change(actor,p.id,{...await current(),fields:[]});
       const secondRef=parseState(native.objects.get("apps/partial")!).paths[0].versions[0];
       native.afterReplace=async()=>{await db.$executeRawUnsafe("CREATE TRIGGER deny_cleanup BEFORE INSERT ON kv_audit WHEN NEW.action = 'history-delete' AND NEW.outcome = 'deleted' BEGIN SELECT RAISE(ABORT, 'synthetic audit unavailable'); END");};
-      try{result=await engine.destroy(actor,p.id,{...await current(),versions:[secondRef.version],confirmPath:p.path});}finally{native.afterReplace=undefined;await db.$executeRawUnsafe("DROP TRIGGER deny_cleanup");}
+      try{result=await destroyCaptured(actor,p.id,{...await current(),versions:[secondRef.version],confirmPath:p.path});}finally{native.afterReplace=undefined;await db.$executeRawUnsafe("DROP TRIGGER deny_cleanup");}
       assert.equal(result.cleanupComplete,false);assert.equal(result.cleanup[0].status,503);assert(!native.objects.has("history/"+secondRef.name));const afterDeleted=native.deletes.length;
       const headRef=parseState(native.objects.get("apps/partial")!).paths[0].versions[0];
       await engine.change(actor,p.id,await current(),"delete");
       native.afterReplace=async()=>{const replacement=copy(native.objects.get("apps/partial")!);replacement.metadata!.uid="external-source-replacement";native.objects.set("apps/partial",replacement);};
-      try{result=await engine.destroy(actor,p.id,{...await current(),versions:[headRef.version],confirmPath:p.path});}finally{native.afterReplace=undefined;}
+      try{result=await destroyCaptured(actor,p.id,{...await current(),versions:[headRef.version],confirmPath:p.path});}finally{native.afterReplace=undefined;}
       assert.equal(result.cleanupComplete,false);assert.equal(result.cleanup[0].status,409);assert(native.objects.has("history/"+headRef.name));assert.equal(native.deletes.length,afterDeleted);
     });
     await t.test("maximum-size owned histories remain operable through metadata-only GC preview and UID/RV-fenced cleanup",async()=>{

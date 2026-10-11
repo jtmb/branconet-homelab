@@ -115,3 +115,5 @@ Forward migration 20261010230000_legacy_access_audit adds nullable authorization
 ## Standalone KV workbench
 
 The standalone [KV workbench](BORTUS-KV-WORKBENCH.md) uses existing React/Radix/Tailwind and browser Blob/TextEncoder APIs. Its exclusive browser harness uses existing esbuild/Tailwind plus externally available Playwright and installed Chrome; it adds no package or manifest dependency.
+
+The locally qualified responsive UID workflow stage uses an immediate icon-rail width below the768px desktop breakpoint; sidebar width transitions are confined to desktop collapse/expand. This avoids leaving a narrow mobile content column during viewport reflow. Fresh affected actual-route browser qualification passed unchanged320/390/768 fit assertions; native/API behavior is unchanged by this CSS delta.

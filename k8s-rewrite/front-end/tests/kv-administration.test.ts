@@ -43,6 +43,7 @@ const snapshot: PathSnapshot = {
   },
   status: {
     pathId: id,
+    uid: "captured-source-uid",
     resourceVersion: "captured-rv",
     head: 2,
     tombstone: false,
@@ -58,11 +59,12 @@ const snapshot: PathSnapshot = {
   },
   versions: {
     pathId: id,
+    uid: "captured-source-uid",
     resourceVersion: "captured-rv",
     head: 2,
     items: [
-      { version: 1, createdAt: "2026-10-01T00:00:00Z", tombstone: false },
-      { version: 2, createdAt: "2026-10-02T00:00:00Z", tombstone: false },
+      { version: 1, name: "kv-" + "1".repeat(32) + "-" + "a".repeat(24), uid: "history-one", createdAt: "2026-10-01T00:00:00Z", tombstone: false },
+      { version: 2, name: "kv-" + "1".repeat(32) + "-" + "b".repeat(24), uid: "history-two", createdAt: "2026-10-02T00:00:00Z", tombstone: false },
     ],
   },
 };
@@ -100,6 +102,8 @@ test("admin action names and captured bodies match the real strict routes", () =
   assert.equal(body.resourceVersion, "captured-rv");
   assert.equal(body.expectedHead, 2);
   assert.equal(body.pathRevision, snapshot.path.revision);
+  assert.equal(body.sourceUid, "captured-source-uid");
+  assert.deepEqual(body.histories, [{ version: 1, name: snapshot.versions.items[0].name, uid: "history-one" }]);
   assert(
     policyUpdate.safeParse({
       principal: "legacy-lookup",
@@ -118,6 +122,19 @@ test("admin action names and captured bodies match the real strict routes", () =
   assert(
     !nativeDestroy.safeParse({ ...body, uid: "invented-api-field" }).success,
   );
+});
+
+test("destroy captures remain frozen and incompatible native metadata cannot build a body", () => {
+  const body = destroyBody(snapshot, [1], pathConfirmation(snapshot));
+  const changed: PathSnapshot = { ...snapshot, versions: { ...snapshot.versions, uid: "replacement-source" } };
+  assert.throws(() => destroyBody(changed, [1], pathConfirmation(changed)));
+  assert.throws(() => destroyBody({ ...snapshot, versions: { ...snapshot.versions, resourceVersion: "new-rv" } }, [1], pathConfirmation(snapshot)));
+  assert.throws(() => destroyBody({ ...snapshot, versions: { ...snapshot.versions, head: 3 } }, [1], pathConfirmation(snapshot)));
+  assert.throws(() => destroyBody({ ...snapshot, versions: { ...snapshot.versions, items: [{ ...snapshot.versions.items[0], uid: "" }] } }, [1], pathConfirmation(snapshot)));
+  const newRows = { ...snapshot, versions: { ...snapshot.versions, items: [{ ...snapshot.versions.items[0], uid: "replacement-history" }] } };
+  assert.equal(destroyBody(newRows, [1], pathConfirmation(newRows)).histories[0].uid, "replacement-history");
+  assert.equal(body.histories[0].uid, "history-one");
+  assert(pathConfirmation(snapshot).includes("uid=captured-source-uid"));
 });
 
 test("admin capability does not bypass a data deny, stale capability or guarded-mode disable", () => {

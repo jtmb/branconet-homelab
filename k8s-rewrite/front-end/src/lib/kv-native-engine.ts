@@ -10,6 +10,8 @@ import { CREATED_ANNOTATION, encodedValues, equalValues, exportFields, historyBo
 
 export type NativePrerequisites = { resourceVersion?: string; expectedHead?: number; pathRevision?: number };
 export type HistorySelection = { name: string; uid: string; resourceVersion: string };
+export type DestroySelection = { version: number; name: string; uid: string };
+export type DestroyInput = NativePrerequisites & { versions: number[]; confirmPath: string; sourceUid?: string; histories?: DestroySelection[] };
 const prerequisites = (input: NativePrerequisites, secret: V1Secret, head: number) => {
   if (input.resourceVersion === undefined || input.expectedHead === undefined) throw new KvError(428, "Native resourceVersion and expected head required");
   if (typeof input.resourceVersion !== "string" || !input.resourceVersion || input.resourceVersion.length > 128 || !Number.isSafeInteger(input.expectedHead) || input.expectedHead < 0)
@@ -51,7 +53,7 @@ export class KvNativeEngine {
   }
   async status(actor: KvActor, id: string) {
     const path = await this.permitted(actor, id, "list"), secret = await this.canonical(path), current = ownedPath(secret, path);
-    return { pathId: id, resourceVersion: nativeIdentity(secret).resourceVersion, adopted: !!current, head: current?.head || 0, tombstone: current?.tombstone || false,
+    return { pathId: id, ...nativeIdentity(secret), adopted: !!current, head: current?.head || 0, tombstone: current?.tombstone || false,
       versions: current?.versions.length || 0, guardedAdoption: this.registry.config.guardedAdoption, guardVerification: "operator assertion; external admission/RBAC evidence required" };
   }
   async read(actor: KvActor, id: string, version?: number, action: "read" | "export" = "read") {
@@ -71,7 +73,7 @@ export class KvNativeEngine {
   }
   async versions(actor: KvActor, id: string) {
     const path = await this.permitted(actor, id, "list"), secret = await this.canonical(path), current = ownedPath(secret, path);
-    return { pathId: id, resourceVersion: nativeIdentity(secret).resourceVersion, head: current?.head || 0, items: (current?.versions || []).map(({version,createdAt,tombstone}) => ({version,createdAt,tombstone})) };
+    return { pathId: id, ...nativeIdentity(secret), head: current?.head || 0, items: (current?.versions || []).map(({version,name,uid,createdAt,tombstone}) => ({version,name,uid,createdAt,tombstone})) };
   }
   private async matchingAliases(path: RegisteredPath) {
     const aliases = await this.aliases();
@@ -347,7 +349,7 @@ export class KvNativeEngine {
     }
   }
 
-  async destroy(actor: KvActor, id: string, input: NativePrerequisites & { versions: number[]; confirmPath: string }, signal?: AbortSignal) {
+  async destroy(actor: KvActor, id: string, input: DestroyInput, signal?: AbortSignal) {
     const deadline = Date.now() + 30000;
     requireGuarded(this.registry.config);
     const path = await this.permitted(actor, id, "destroy", input.pathRevision);
@@ -357,10 +359,19 @@ export class KvNativeEngine {
     const secret = await this.canonical(path), current = ownedPath(secret, path);
     if (!current) throw new KvError(409, "Owned canonical source required; history retained");
     prerequisites(input, secret, current.head);
+    if (input.sourceUid === undefined || input.histories === undefined) throw new KvError(428, "Canonical UID and selected history identities required");
+    if (typeof input.sourceUid !== "string" || !input.sourceUid || input.sourceUid.length > 128 || !Array.isArray(input.histories) ||
+      input.histories.length !== input.versions.length || new Set(input.histories.map(item => item?.version)).size !== input.histories.length ||
+      input.histories.some(item => !item || !Number.isSafeInteger(item.version) || !input.versions.includes(item.version) ||
+        typeof item.name !== "string" || !/^kv-[0-9a-f]{32}-[0-9a-f]{24}$/.test(item.name) || typeof item.uid !== "string" || !item.uid || item.uid.length > 128))
+      throw new KvError(400, "Invalid selected history identity capture");
+    if (input.sourceUid !== nativeIdentity(secret).uid) throw new KvError(409, "Canonical Secret identity changed; refresh before retrying");
     if (input.versions.includes(current.head) && !current.tombstone) throw new KvError(409, "Tombstone the active path before destroying its head");
     const refs = input.versions.map(version => {
       const ref = current.versions.find(item => item.version === version);
       if (!ref) throw new KvError(404, "Committed KV version not found");
+      const captured = input.histories!.find(item => item.version === version)!;
+      if (captured.name !== ref.name || captured.uid !== ref.uid) throw new KvError(409, "Committed history identity changed; refresh before retrying");
       return ref;
     });
     await this.drift(path, secret, current);

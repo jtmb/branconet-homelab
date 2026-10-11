@@ -31,7 +31,7 @@ export default function ClusterSidebar() {
 
   return (
     <aside
-      className={`sticky top-0 h-screen flex flex-col bg-zinc-900/50 sidebar-border backdrop-blur-sm transition-all duration-300 ${
+      className={`sticky top-0 h-screen flex flex-col bg-zinc-900/50 sidebar-border backdrop-blur-sm transition-none md:transition-[width] md:duration-300 ${
         collapsed ? "w-14 shrink-0" : "w-14 md:w-56 shrink-0"
       }`}
     >

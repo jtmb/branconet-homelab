@@ -141,7 +141,7 @@ function Check({
         disabled={disabled}
         onChange={(event) => onChange(event.target.checked)}
       />
-      <span className="min-w-0 break-words">{label}</span>
+      <span className="min-w-0 break-all">{label}</span>
     </label>
   );
 }
@@ -1501,6 +1501,7 @@ async function capturePath(
     status.pathId !== pathId ||
     versions.pathId !== pathId ||
     capabilities.revision !== path.revision ||
+    !status.uid || versions.uid !== status.uid ||
     versions.head !== status.head ||
     versions.resourceVersion !== status.resourceVersion
   )
@@ -1517,12 +1518,11 @@ function PathIdentity({ snapshot }: { snapshot: PathSnapshot }) {
       </p>
       <p className="break-all text-xs text-zinc-400">
         Captured path {snapshot.path.id}, revision {snapshot.path.revision};
-        head {snapshot.status.head}; native resourceVersion{" "}
+        head {snapshot.status.head}; canonical UID {snapshot.status.uid}; native resourceVersion{" "}
         {snapshot.status.resourceVersion};{" "}
         {snapshot.status.tombstone ? "tombstoned" : "active"};{" "}
-        {snapshot.status.adopted ? "adopted" : "not adopted"}. UID ownership is
-        checked by the server; this status API does not expose source/history
-        UIDs.
+        {snapshot.status.adopted ? "adopted" : "not adopted"}. Canonical and selected history
+        identities are captured explicitly; ownership and delete preconditions remain server checks.
       </p>
       <p className="text-xs text-zinc-400">
         Native changes:{" "}
@@ -1700,7 +1700,7 @@ function History({
     <fieldset
       disabled={task.busy}
       aria-label="History administration"
-      className="space-y-4"
+      className="min-w-0 space-y-4"
     >
       <div className={boxClass}>
         <h3 className="font-medium">Committed-version retention</h3>
@@ -1772,7 +1772,7 @@ function History({
             {snapshot.versions.items.map((row) => (
               <Check
                 key={row.version}
-                label={`Version ${row.version} · ${row.createdAt} · ${row.tombstone ? "tombstone" : "value snapshot"}${row.version === snapshot.status.head ? " · current head" : ""}`}
+                label={`Version ${row.version} · ${row.name} · UID ${row.uid} · ${row.createdAt} · ${row.tombstone ? "tombstone" : "value snapshot"}${row.version === snapshot.status.head ? " · current head" : ""}`}
                 disabled={
                   finished ||
                   (row.version === snapshot.status.head &&

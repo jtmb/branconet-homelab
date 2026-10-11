@@ -113,6 +113,7 @@ export type PathMetadata = {
 };
 export type NativeStatus = {
   pathId: string;
+  uid: string;
   resourceVersion: string;
   head: number;
   adopted: boolean;
@@ -128,9 +129,10 @@ export type Capabilities = {
 };
 export type Versions = {
   pathId: string;
+  uid: string;
   resourceVersion: string;
   head: number;
-  items: { version: number; createdAt: string; tombstone: boolean }[];
+  items: { version: number; name: string; uid: string; createdAt: string; tombstone: boolean }[];
 };
 export type PathSnapshot = {
   path: PathMetadata;
@@ -221,7 +223,7 @@ export function canAct(
 export const consumerTarget = (row: Rotation) =>
   `${row.consumerNamespace}/${row.consumerKind}/${row.consumerName}`;
 export const pathConfirmation = (snapshot: PathSnapshot) =>
-  `${snapshot.path.id} ${snapshot.path.namespace}/${snapshot.path.name} ${snapshot.path.path} revision=${snapshot.path.revision} head=${snapshot.status.head} rv=${snapshot.status.resourceVersion}`;
+  `${snapshot.path.id} ${snapshot.path.namespace}/${snapshot.path.name} ${snapshot.path.path} revision=${snapshot.path.revision} head=${snapshot.status.head} uid=${snapshot.status.uid} rv=${snapshot.status.resourceVersion}`;
 export const policyConfirmation = (policy: Policy | PolicyFields) =>
   "id" in policy
     ? `policy ${policy.id} revision=${policy.revision}`
@@ -307,12 +309,16 @@ export function destroyBody(
   if (
     confirmation !== pathConfirmation(snapshot) ||
     !canAct(snapshot, "destroy") ||
+    !snapshot.status.uid ||
+    snapshot.versions.uid !== snapshot.status.uid ||
+    snapshot.versions.resourceVersion !== snapshot.status.resourceVersion ||
+    snapshot.versions.head !== snapshot.status.head ||
     !versions.length ||
     versions.length > 100 ||
     new Set(versions).size !== versions.length ||
     versions.some(
       (version) =>
-        !snapshot.versions.items.some((row) => row.version === version),
+        !snapshot.versions.items.some((row) => row.version === version && row.name && row.uid),
     )
   )
     throw new AdminInputError(
@@ -324,6 +330,11 @@ export function destroyBody(
     );
   return {
     versions,
+    sourceUid: snapshot.status.uid,
+    histories: versions.map(version => {
+      const row = snapshot.versions.items.find(item => item.version === version)!;
+      return { version, name: row.name, uid: row.uid };
+    }),
     confirmPath: snapshot.path.path,
     pathRevision: snapshot.path.revision,
     resourceVersion: snapshot.status.resourceVersion,
