@@ -1,5 +1,7 @@
 # BORTUS technology stack
 
+
+The frozen `whole-server.mjs` repeats only `/api/cluster/pods` in `warm-pods-12` and `warm-pods-concurrent-20` when the profile has fewer than 10000 Pods. Each profile makes one configuration metadata GET and one native Secret metadata GET; neither has a repeated warm phase. References to warm/concurrent 25-large or 3-large profiles describe their Pod reads, not native metadata reads. A07/A21 remain failed/open; the original driver, assertions and thresholds are unchanged.
 Shared-query focus refresh coalesces an active read, including the read started by visibility restoration. It immediately refreshes idle visible subscriptions; explicit invalidation continues to abort/fence old generations. This removes duplicate focus-driven request replacement without changing hidden aborts, metadata-only storage or fresh server authorization. Six focused query regressions, combined170-unit quality and nine actual browser checks passed.
 
 The qualified Flux fixture keeps its 201-root/bundle/inventory metadata within the unchanged generic two-MiB CLI ceiling; the trusted eight-MiB exception remains Pods-only. Its public discovery/reply holds and optional external axe script are test setup, not runtime dependencies or performance acceptance.
@@ -214,3 +216,5 @@ The actual focused public-fixture qualification passed20 tests, zero-warning lin
 
 
 Exact combined source c29fc8c44847172e040e83df11c51ad42f1da51e (fixed-known-field duplicate guards plus robustness-only Longhorn overview counter) passed fresh Linux Node22.23.3 npm ci/build,214 units, zero-warning lint, types and all four strict production HTTP suites, with no skips. The actual terminal was0 at2026-10-11T11:45:13.559138Z; owned supervisor and containers were absent. All332 raw source/test inputs and4262 .next files remained unchanged. [Combined Linux/source qualification](implementation-evidence/combined-c29fc8c/qualification.json) retains14 original artifacts, exact runner scripts, raw frontend Git blobs/modes and a pinned default265-file production-only scan0/0. That scan excludes docs/tests/dependencies/image/history; the two historical checksum source-provenance findings remain pending. The original213-unit Windows bitmask and20-test A06 receipts retain separate source scopes. A07/A21 still failed/open on4668; no new pair, image/runtime/live or actual AT pass is inferred.
+
+The public-only page-batching parser diagnostic was rejected for small typical savings and long-annotation regressions; production source and A07/A21 gates remain unchanged. See [assessment](implementation-evidence/selected-page-batch/assessment.json).

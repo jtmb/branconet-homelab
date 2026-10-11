@@ -1,5 +1,7 @@
 # BORTUS implementation evidence
 
+
+The frozen `whole-server.mjs` repeats only `/api/cluster/pods` in `warm-pods-12` and `warm-pods-concurrent-20` when the profile has fewer than 10000 Pods. Each profile makes one configuration metadata GET and one native Secret metadata GET; neither has a repeated warm phase. References to warm/concurrent 25-large or 3-large profiles describe their Pod reads, not native metadata reads. A07/A21 remain failed/open; the original driver, assertions and thresholds are unchanged.
 [Bounded administration metadata qualification](metadata-body-qualification.json) binds 3-MiB fresh-admin policy/legacy commit readers to the complete 10,000-alias actual HTTP body and refusal controls. The first full run passed build/176 units/lint/types and three HTTP suites, then failed a new fixture assumption; the corrected affected HTTP plus lint/types passed. Exact production bytes stayed unchanged. Both terminal captures are retained; wider workflow/image/live acceptance remains open.
 
 [Flux scoped qualification](flux-stage-qualification.json) binds final170-unit/build/lint/type/four-HTTP source to nine actual browser checks and three genuine200% zoom checks. Default physical maximum-one assertions were preserved and passed. Pinned axe4.14.0 reported20 passes/no violations/no incomplete findings against readonly Flux at390CSS pixels. This scoped automation does not establish a complete AT audit. Viewport screenshot supports manual readability review; full-page and real-zoom capture limitations remain explicit.
@@ -180,3 +182,5 @@ The ONE public-only lexical metadata boundary/depth prototype on exactc29fc matc
 Handler account snapshot scope: [qualification and retained originals](handler-account-snapshot/qualification.json) cover only vars/aliases/session GET fresh handler queries,13 actual Next/SQLite tests, types and zero-warning lint. Original audit LF/CRLF and parser mixed-EOL proofs plus a corrected historical prose scanner word count are retained; original scans/clauses stay unchanged. Build/production HTTP/full source/image/live and A07/A21 remain open.
 
 [Handler account production qualification](handler-account-production/qualification.json): exactab8d450 freshLinux build0, original4strictHTTP0/no skips plus13actual GET checks,2CPU/1GiB runtime and authoritative cleanup;265rawproduction defaultscan0. No fullunits/benchmark repetition or image/live/A07/A21 pass. Exact originals are copied or explicitly bound as ZIP members, with private fullsource/build manifests retained.
+
+The public-only page-batching parser diagnostic was rejected for small typical savings and long-annotation regressions; production source and A07/A21 gates remain unchanged. See [assessment](selected-page-batch/assessment.json).
