@@ -260,6 +260,70 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     await db.secretReference.createMany({data:Array.from({length:fill},(_,i)=>({alias:"quota_fixture_"+String(i).padStart(5,"0"),namespace:"apps",name:"imported",key:"__proto__"}))});
     const quota=await Promise.all(["quota_final_a","quota_final_b"].map(alias=>request("/api/secret-references","POST",{alias,namespace:"apps",name:"imported",key:"__proto__"},admin)));
     assert.deepEqual(quota.map(r=>r.status).sort(),[201,413]);assert.equal(await db.secretReference.count(),9999);
+    // Exercise the full supported catalog and maximum-length acknowledgement through production HTTP.
+    // Aliases are authorization metadata only; no native value request is required for impact previews/commits.
+    const maximumAliases=Array.from({length:10000},(_,i)=>"secret_"+String(i).padStart(5,"0")+"_"+"x".repeat(240));
+    assert(maximumAliases.every(value=>value.length===253));
+    const maximumRefs=maximumAliases.map(alias=>({alias,namespace:"apps",name:"imported",key:"__proto__"}));
+    await db.secretReference.deleteMany();
+    await db.secretReference.createMany({data:maximumRefs.slice(1)});
+    await writeFile(aliasFile,JSON.stringify([maximumRefs[0]]));
+    assert.equal(await db.secretReference.count(),9999);
+    const maximumPolicy={principal:"legacy-lookup",mountId:mount.id,prefix:registry.path,effect:"deny",actions:["read"]};
+    const maximumPreview=await checked(await request("/api/kv/policies/preview","POST",{action:"create",...maximumPolicy},admin));
+    assert.equal(maximumPreview.affectedAliasCount,10000);assert.equal(maximumPreview.items.length,100);
+    const maximumAck={fingerprint:maximumPreview.fingerprint,aliases:maximumAliases,confirmLegacyImpact:true};
+    const maximumPolicyBody={...maximumPolicy,legacyImpact:maximumAck};
+    const maximumBodyBytes=Buffer.byteLength(JSON.stringify(maximumPolicyBody));
+    assert(maximumBodyBytes>512*1024&&maximumBodyBytes<3*1024*1024);
+    const beforeMetadataWrites=nativeWrites(),beforePolicyCount=await db.kvPolicy.count(),beforePrincipal=await db.kvServicePrincipal.findUniqueOrThrow({where:{id:"legacy-lookup"}});
+    const metadataRoutes=[
+      ["/api/kv/policies","POST"],
+      ["/api/kv/policies/00000000-0000-4000-8000-000000000000","PATCH"],
+      ["/api/kv/policies/00000000-0000-4000-8000-000000000000","DELETE"],
+      ["/api/kv/legacy","PATCH"],
+      ["/api/kv/legacy/grants","POST"],
+      ["/api/kv/legacy/grants/00000000-0000-4000-8000-000000000000","DELETE"],
+    ];
+    const oversizedMetadata={padding:"x".repeat(3*1024*1024)};
+    for(const [metadataRoute,method] of metadataRoutes){
+      await checked(await request(metadataRoute,method,oversizedMetadata,reader),403);
+      await checked(await request(metadataRoute,method,oversizedMetadata,scoped),403);
+      await checked(await request(metadataRoute,method,oversizedMetadata,admin),413);
+    }
+    await checked(await request("/api/kv/policies","POST",{...maximumPolicyBody,fields:[{field:"unaccepted-value",encoding:"utf8",value:"x".repeat(128*1024)}]},admin),400);
+    await checked(await request("/api/kv/policies","POST",{...maximumPolicyBody,legacyImpact:{...maximumAck,aliases:maximumAliases.slice(0,-1)}},admin),409);
+    assert.equal(await db.kvPolicy.count(),beforePolicyCount);
+    assert.equal((await db.kvServicePrincipal.findUniqueOrThrow({where:{id:"legacy-lookup"}})).revision,beforePrincipal.revision);
+    const boundedBody={padding:"x".repeat(600*1024)};
+    await checked(await request(route+"/data","PUT",{fields:[{field:"__proto__",encoding:"utf8",value:"x".repeat(600*1024)}]},admin),413);
+    await checked(await request("/api/kv/mounts","POST",boundedBody,admin),413);
+    await checked(await request("/api/kv/policies/preview","POST",maximumPolicyBody,admin),413);
+    await checked(await request("/api/kv/import/preview","POST",{padding:"x".repeat(1200*1024)},admin),413);
+    await checked(await request("/api/kv/import","POST",{padding:"x".repeat(1200*1024)},admin),413);
+    const bodyIdentity=await checked(await request("/api/kv/identities","POST",{ownerId:account.id,name:"body-limit-probe",expiresAt:new Date(Date.now()+3600000).toISOString(),scopes:[{mountId:mount.id,prefix:registry.path,actions:["list"]}]},admin),201);
+    await checked(await automate({operation:"status",pathId:registry.id,...boundedBody},bodyIdentity.credential),413);
+    await checked(await request("/api/kv/identities/"+bodyIdentity.id,"DELETE",undefined,admin));
+    const bodyScopePolicies=await db.kvPolicy.findMany({where:{principal:"identity:"+bodyIdentity.id},select:{id:true,revision:true}});
+    assert.equal(bodyScopePolicies.length,1);
+    for(const policy of bodyScopePolicies)await checked(await request("/api/kv/policies/"+policy.id,"DELETE",{revision:policy.revision},admin));
+    const maximumSaved=await checked(await request("/api/kv/policies","POST",maximumPolicyBody,admin),201);
+    const maximumUpdate={...maximumPolicy,effect:"allow"};
+    const updateMaximumPreview=await checked(await request("/api/kv/policies/preview","POST",{action:"update",id:maximumSaved.id,revision:maximumSaved.revision,...maximumUpdate},admin));
+    assert.equal(updateMaximumPreview.affectedAliasCount,10000);
+    const maximumUpdated=await checked(await request("/api/kv/policies/"+maximumSaved.id,"PATCH",{...maximumUpdate,revision:maximumSaved.revision,legacyImpact:{...maximumAck,fingerprint:updateMaximumPreview.fingerprint}},admin));
+    const removeMaximumPreview=await checked(await request("/api/kv/policies/preview","POST",{action:"delete",id:maximumSaved.id,revision:maximumUpdated.revision},admin));
+    assert.equal(removeMaximumPreview.affectedAliasCount,10000);
+    await checked(await request("/api/kv/policies/"+maximumSaved.id,"DELETE",{revision:maximumUpdated.revision,legacyImpact:{...maximumAck,fingerprint:removeMaximumPreview.fingerprint}},admin));
+    const maximumState=await checked(await request("/api/kv/legacy","GET",undefined,admin));
+    const maximumPrincipalChange={kind:"principal",enabled:false,revision:maximumState.revision};
+    const maximumPrincipalPreview=await checked(await request("/api/kv/legacy/preview","POST",maximumPrincipalChange,admin));
+    assert.equal(maximumPrincipalPreview.affectedAliasCount,10000);
+    await checked(await request("/api/kv/legacy","PATCH",{enabled:false,revision:maximumState.revision,legacyImpact:{...maximumAck,fingerprint:maximumPrincipalPreview.fingerprint,confirmConfigurationImpact:true}},admin));
+    assert.equal((await db.kvServicePrincipal.findUniqueOrThrow({where:{id:"legacy-lookup"}})).enabled,false);
+    assert.equal(await db.kvPolicy.count(),beforePolicyCount);
+    assert.equal(nativeWrites(),beforeMetadataWrites);
+    console.log("MAXIMUM_ALIAS_BODY_HTTP "+JSON.stringify({aliases:maximumAliases.length,aliasLength:253,bodyBytes:maximumBodyBytes,policyCreateUpdateDelete:true,principalCommit:true,metadataRefusals:metadataRoutes.length,nativeWrites:0}));
     delete native.objects.get("apps/imported")!.metadata!.annotations!["bortus.io/kv-state"];
     await checked(await request(route+"/adopt","GET",undefined,admin),409);
     await checked(await request("/api/secrets?namespace=apps&name=imported&key=__proto__","GET",undefined,admin),409);

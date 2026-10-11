@@ -1,0 +1,11 @@
+{
+  "scope": "Test-only correction after terminal failed HTTP suite; production source unchanged from completed build176unitlinttype checks",
+  "previousSourceSha256": "c0eba67c53e3a441c54b97b7e76fc9c4198eea1a373584794802e6458fb3db47",
+  "correctedSourceSha256": "98a65ab226ccbc867d72a29a0c296c5414dce1102a530eb72ab8e83aaa8afc49",
+  "corrections": [
+    "Legacy GET returns revision directly, not nested principal.revision",
+    "Revocation intentionally retains identity policy metadata; explicitly remove the synthetic probe policy through fresh-admin DELETE before exact original policy-count assertion"
+  ],
+  "originalFailure": "Cannot read properties of undefined (reading revision) at kv-http.integration.ts316; three other HTTP suites passed",
+  "retry": "Lint/typecheck and affected native KV production HTTP only; not an invented new full build/unit run"
+}

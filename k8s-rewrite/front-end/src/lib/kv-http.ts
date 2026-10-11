@@ -1,7 +1,7 @@
 import { getSession } from "./auth";
 import prisma from "./db";
 import { KvRegistry } from "./kv-registry";
-import { KV_BODY_BYTES, KvError, KvMutationError, kvConfig, type KvActor } from "./kv-contract";
+import { KV_BODY_BYTES, KV_ADMIN_METADATA_BODY_BYTES, KvError, KvMutationError, kvConfig, type KvActor } from "./kv-contract";
 import { KvNativeEngine } from "./kv-native-engine";
 import { createSecretTransport } from "./secret-client";
 import { listAliases } from "./secret-references";
@@ -55,6 +55,13 @@ export async function kvBody<T>(request: Request, schema: z.ZodType<T>, maximum 
     if (!parsed.success) throw new KvError(400, "Invalid KV request fields");
     return parsed.data;
   } finally { clearTimeout(timer); reader.releaseLock(); }
+}
+
+/** Policy/legacy metadata commits only. Authorization is checked before the larger read;
+ * each commit still rechecks administration inside its serialized transaction. */
+export async function kvAdminMetadataBody<T>(registry: KvRegistry, actor: KvActor, request: Request, schema: z.ZodType<T>): Promise<T> {
+  await registry.admin(actor);
+  return kvBody(request, schema, KV_ADMIN_METADATA_BODY_BYTES);
 }
 
 export function metadataCursor(request: Request): string | undefined {

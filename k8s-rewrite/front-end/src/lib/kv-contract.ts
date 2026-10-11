@@ -10,6 +10,9 @@ export type KvScope = { mountId: string; path: string };
 export type KvRule = { mountId: string | null; prefix: string; effect: string; actions: string };
 export type KvActor = { id: string; sessionVersion: number; identityId?: string };
 export const KV_BODY_BYTES = 512 * 1024;
+// Complete policy/legacy acknowledgements contain up to 10,000 exact 253-byte aliases.
+// Only fresh human administrators on the named strict metadata commit routes use this limit.
+export const KV_ADMIN_METADATA_BODY_BYTES = 3 * 1024 * 1024;
 export const KV_VALUE_BYTES = 256 * 1024;
 
 // Reject alternate spellings instead of silently normalizing policy inputs.
