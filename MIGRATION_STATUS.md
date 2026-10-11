@@ -391,3 +391,10 @@ subsequent owned UID absence. The actual reader/coordinator, fresh checkpoint,
 qualified images, live restore and complete release gates remain open. The app
 agent's latest controlled performance run also remains a failure; no production
 change is justified by these preparatory results.
+
+The fresh admitted-resource comparison and shared holder predicate now pass all
+408 combined local cases without skips on frozen inputs. StorageClass/claim
+changes, holder credentials/writes/helpers, replacements and incomplete deletion
+inventories refuse. Initial inert Pod spec confirmation remains distinct from
+Running/Ready/no-restart validation before data reads. Root has not executed a
+live restore or deployed a new image; full coordination and live gates remain open.

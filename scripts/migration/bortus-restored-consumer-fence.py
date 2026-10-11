@@ -213,6 +213,66 @@ def conditions_ok(status):
         need(not (c['type'] == 'Restore' and c.get('reason') == 'RestoreFailure'), 'restore_failure')
 
 
+def holder_matches(pod, image, claim, node, require_ready=True):
+    """Pure exact inert spec; readiness is separately mandatory before any reader."""
+    failure = None
+    value = None
+    try:
+        bounded(pod)
+        need(type(require_ready) is bool and type(pod) is dict and
+             pod.get('apiVersion') == 'v1' and pod.get('kind') == 'Pod' and
+             type(pod.get('spec')) is dict, 'holder')
+        identity(pod, 'bortus')
+        text(image, 512)
+        need(re.fullmatch(r'[A-Za-z0-9.:/_-]+@sha256:[0-9a-f]{64}', image) is not None and
+             ':' not in image.split('@')[0].rsplit('/', 1)[-1] and '://' not in image, 'holder')
+        name(claim)
+        name(node)
+        value = _holder_matches(pod, image, claim, node, require_ready)
+    except Refused as error:
+        failure = error.code
+    except Exception:
+        failure = 'holder'
+    if failure:
+        raise Refused(failure)
+    return value
+
+
+def _holder_matches(pod, image, claim, node, require_ready):
+    # API defaulted benign fields are allowed only with their exact inert defaults.
+    import copy
+    spec = copy.deepcopy(pod['spec'])
+    for key, value in {'dnsPolicy': 'ClusterFirst', 'schedulerName': 'default-scheduler',
+        'terminationGracePeriodSeconds': 30, 'enableServiceLinks': True,
+        'serviceAccountName': 'default', 'serviceAccount': 'default',
+        'preemptionPolicy': 'PreemptLowerPriority', 'priority': 0}.items():
+        if key in spec:
+            need(type(spec[key]) is type(value) and spec.pop(key) == value, 'holder')
+    if 'tolerations' in spec:
+        need(strict_equal(spec.pop('tolerations'), [
+            {'key': 'node.kubernetes.io/not-ready', 'operator': 'Exists',
+             'effect': 'NoExecute', 'tolerationSeconds': 300},
+            {'key': 'node.kubernetes.io/unreachable', 'operator': 'Exists',
+             'effect': 'NoExecute', 'tolerationSeconds': 300}]), 'holder')
+    for container in spec.get('containers', []):
+        for key, value in {'terminationMessagePath': '/dev/termination-log',
+                           'terminationMessagePolicy': 'File'}.items():
+            if key in container:
+                need(container.pop(key) == value, 'holder')
+    need(strict_equal(spec, holder_spec(image, claim, node)), 'holder')
+    need(not pod['metadata'].get('ownerReferences'), 'holder')
+    if not require_ready:
+        return identity(pod, 'bortus')
+    status = pod.get('status', {})
+    need(status.get('phase') == 'Running' and ready(status), 'holder')
+    cs = status.get('containerStatuses')
+    need(type(cs) is list and len(cs) == 1 and cs[0].get('name') == 'holder' and
+         cs[0].get('ready') is True and type(cs[0].get('state', {}).get('running')) is dict and
+         cs[0].get('image') == image and type(cs[0].get('restartCount')) is int and
+         cs[0]['restartCount'] == 0, 'holder')
+    return identity(pod, 'bortus')
+
+
 def evaluate(expected, objects):
     try:
         return _evaluate(expected, objects)
@@ -343,34 +403,6 @@ def _evaluate(expected, objects):
     pod = consumers[0]
     hid = identity(pod, 'bortus')
     matches(hid, ids['holder'])
-    # API defaulted benign fields are allowed only with their exact inert defaults.
-    import copy
-    spec = copy.deepcopy(pod['spec'])
-    for key, value in {'dnsPolicy': 'ClusterFirst', 'schedulerName': 'default-scheduler',
-        'terminationGracePeriodSeconds': 30, 'enableServiceLinks': True,
-        'serviceAccountName': 'default', 'serviceAccount': 'default',
-        'preemptionPolicy': 'PreemptLowerPriority', 'priority': 0}.items():
-        if key in spec:
-            need(type(spec[key]) is type(value) and spec.pop(key) == value, 'holder')
-    if 'tolerations' in spec:
-        need(strict_equal(spec.pop('tolerations'), [
-            {'key': 'node.kubernetes.io/not-ready', 'operator': 'Exists',
-             'effect': 'NoExecute', 'tolerationSeconds': 300},
-            {'key': 'node.kubernetes.io/unreachable', 'operator': 'Exists',
-             'effect': 'NoExecute', 'tolerationSeconds': 300}]), 'holder')
-    for container in spec.get('containers', []):
-        for key, value in {'terminationMessagePath': '/dev/termination-log',
-                           'terminationMessagePolicy': 'File'}.items():
-            if key in container:
-                need(container.pop(key) == value, 'holder')
-    need(strict_equal(spec, holder_spec(image, actual['claim'].name, actual['node'].name)), 'holder')
-    status = pod.get('status', {})
-    need(not pod['metadata'].get('ownerReferences') and status.get('phase') == 'Running' and
-         ready(status), 'holder')
-    cs = status.get('containerStatuses')
-    need(type(cs) is list and len(cs) == 1 and cs[0].get('name') == 'holder' and
-         cs[0].get('ready') is True and type(cs[0].get('state', {}).get('running')) is dict and
-         cs[0].get('image') == image and type(cs[0].get('restartCount')) is int and
-         cs[0]['restartCount'] == 0, 'holder')
+    holder_matches(pod, image, actual['claim'].name, actual['node'].name)
     return Eligibility(actual['claim'], actual['pv'], actual['volume'], actual['backup'], hid,
         eid, tuple(sorted(replica_ids)), actual['node'], (prv, porv, erv, rrv))

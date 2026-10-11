@@ -48,6 +48,14 @@ containers, projected credentials, mounts or writable changes refuse. Actual
 container status must be running/ready with no restarts. This metadata comparison
 does not prove entrypoint/runtime behavior or admission acceptance.
 
+The same pure `holder_matches(pod, image, claim, node, require_ready=True)`
+predicate now supplies the holder checks to the whole-consumer evaluator and
+the coordinator's admitted-spec validation. Passing `require_ready=False` checks
+the complete inert spec and current identity only, allowing the initial create
+reply to be validated before scheduling. Reader/data acceptance always requires
+the default true readiness check and the complete consumer/storage fence. A
+metadata match cannot substitute for fresh API delivery or qualified images.
+
 Success returns an immutable tuple of selected resource identities, engine and
 replica identities and collection RVs, with metadata eligibility true and runtime,
 data and atomic-snapshot acceptance false. Failures contain fixed codes only.

@@ -12,6 +12,13 @@ cases pass without skips on frozen inputs. The
 [integration receipt](../evidence/bortus-restore-mutations-integration-20261011.json)
 records this preparatory result; it does not establish live restore acceptance.
 
+The pure admitted-resource comparison now validates the reviewed StorageClass,
+claim and holder against full fresh GETs and created identities before journal
+confirmation. It permits only explicit inert API defaults and separately fenced
+claim binding names. Holder deletion needs a complete fresh Pod LIST with both
+owned UID and name absent; a terminating holder or replacement refuses. API
+freshness, reviewed proposal authorization and the actual executor remain required.
+
 The acceptance contract and architecture are in [PLAN.md](../PLAN.md); current evidence is in [MIGRATION_STATUS.md](../MIGRATION_STATUS.md). BORTUS application and native-transport development are handled by two scoped sub-agents in separate worktrees. Together with the migration coordinator, these are the three execution agents; former execution chats are archived. Cluster operations remain with the migration owner.
 
 ## Current operation and recovery

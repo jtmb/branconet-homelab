@@ -35,6 +35,33 @@ URLs and raw errors are dropped. This projection does not prove the admitted spe
 The coordinator must make a fresh full-resource GET and enforce the reviewed spec,
 source, image/admission and ownership fences before journal confirmation.
 
+`bortus-restore-admitted.py` provides the pure `validate(resource, proposal,
+reply, current, require_ready=False)` comparison for those fresh GETs. The
+proposal must already be authorized by MutationAPI; this evaluator cannot
+authorize an arbitrary proposal or establish API freshness. It binds the created
+UID/name/namespace while permitting an opaque RV to advance. StorageClass fields
+match exactly; claim specs permit only the Filesystem default and an independently
+fenced controller binding name. Extra spec fields refuse. The retained annotation
+is required. The Filesystem default follows the pinned
+[Kubernetes v1.37.1 defaulting source](https://github.com/kubernetes/kubernetes/blob/v1.37.1/pkg/apis/core/v1/defaults.go#L325-L330).
+
+`holder_absent(complete_pod_list, owned_identity)` checks the complete fresh
+namespace inventory after DELETE. A still-present or terminating UID, a same-name
+replacement, incomplete list or reused UID refuses. Its selected collection RV
+can accompany a durable deletion confirmation; acknowledgment alone cannot.
+
+The admitted-resource evaluator and shared holder extraction pass 408 combined
+local cases on frozen inputs, including ten table-driven spec/absence cases and
+all existing consumer, mutation, watch and encrypted-data suites. No local case
+contacts the cluster or qualifies live admission. Exact results are in the
+[admitted-resource receipt](../evidence/bortus-restore-admitted-20261011.json).
+
+The coordinator uses the shared pure holder predicate from the
+[consumer fence](BORTUS-RESTORED-CONSUMER-FENCE.md) to validate the complete inert
+admitted Pod spec before create confirmation. Initial spec validation permits a
+not-yet-Ready Pod; the subsequent reader and whole-consumer checks require Running,
+Ready, no restarts and the exact image. These are distinct requirements.
+
 `api.delete(intent, deadline=absolute_deadline)` is only a callback for the existing
 durable `holder_delete` transaction. It performs a fresh fixed Pod GET and requires
 the exact current owned UID/RV from the pending preconditions, no deletion and the
