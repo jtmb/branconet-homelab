@@ -273,3 +273,5 @@ flux bootstrap github \
 ## BORTUS private credentials
 
 New private-repo credentials write native Secrets in flux-system through verified API access. GitRepo.authData is empty; old DB authData is never replayed. Existing native collisions fail instead of overwrite. No credential argv. Native value-bearing resources must stay outside Git/Flux; charts reference existing Secrets. See BORTUS-DEPLOYMENT.md.
+
+The historical migration branch's `.github/workflows/kubernetes-migration.yml` now performs read-only package validation and cannot publish `codex/kubernetes-validated`. Do not restore that publisher when combining application and migration documentation. Active chart delivery belongs to private `jtmb/branconet-charts`; application quality CI does not deploy charts or images.
