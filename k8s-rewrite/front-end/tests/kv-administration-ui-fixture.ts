@@ -1,7 +1,7 @@
 import { administrationFixture } from "./helpers/kv-administration-fixture";
 
 async function main() {
-  const fixture = await administrationFixture(true);
+  const fixture = await administrationFixture(process.argv.includes("--integrated") ? "integrated" : true);
   console.log(
     "ADMIN_UI_FIXTURE_READY " +
       JSON.stringify({

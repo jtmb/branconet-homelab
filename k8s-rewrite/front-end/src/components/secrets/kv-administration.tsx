@@ -58,6 +58,8 @@ export type KvAdministrationProps = {
   selectedPathId?: string | null;
   refreshKey?: string | number;
   active?: boolean;
+  initialOpen?: boolean;
+  onClose?: () => void;
   onMetadataChange?: (
     scope:
       | "policies"
@@ -2514,16 +2516,20 @@ export function KvAdministration({
   selectedPathId = null,
   refreshKey = 0,
   active = true,
+  initialOpen = false,
+  onClose,
   onMetadataChange = noop,
 }: KvAdministrationProps) {
   const session = useSession(),
     pathname = usePathname(),
-    [open, setOpen] = useState(false),
+    [open, setOpen] = useState(initialOpen),
     [epoch, setEpoch] = useState(0);
+  const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     const clear = () => {
       setEpoch((value) => value + 1);
       setOpen(false);
+      onClose?.();
     };
     const hidden = () => {
       if (document.visibilityState === "hidden") clear();
@@ -2536,17 +2542,20 @@ export function KvAdministration({
       window.removeEventListener("pagehide", clear);
       document.removeEventListener("visibilitychange", hidden);
     };
-  }, []);
-  if (!active) return null;
+  }, [onClose]);
   const fresh =
     !!session.data?.authenticated &&
     !session.error &&
     Date.now() - session.updatedAt < 15000;
+  useEffect(() => {
+    if (open && active && fresh) heading.current?.focus();
+  }, [open, active, fresh]);
+  if (!active) return null;
   return (
     <section aria-label="BORTUS KV engine administration" className={boxClass}>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold text-zinc-100">
+          <h2 ref={heading} tabIndex={-1} className="text-lg font-semibold text-zinc-100">
             Engine administration
           </h2>
           <p className="text-sm text-zinc-400">
@@ -2559,6 +2568,7 @@ export function KvAdministration({
           onClick={() => {
             setOpen(!open);
             setEpoch((value) => value + 1);
+            if (open) onClose?.();
           }}
         >
           {open

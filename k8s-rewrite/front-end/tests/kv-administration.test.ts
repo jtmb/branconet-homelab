@@ -99,6 +99,7 @@ test("admin action names and captured bodies match the real strict routes", () =
   assert(nativeDestroy.safeParse(body).success);
   assert.equal(body.resourceVersion, "captured-rv");
   assert.equal(body.expectedHead, 2);
+  assert.equal(body.pathRevision, snapshot.path.revision);
   assert(
     policyUpdate.safeParse({
       principal: "legacy-lookup",

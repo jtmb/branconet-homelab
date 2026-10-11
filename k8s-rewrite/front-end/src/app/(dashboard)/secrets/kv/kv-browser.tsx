@@ -6,24 +6,31 @@ import { useQuery, useSession, refetchKvMetadata } from "@/lib/use-query";
 import { MountForm, RegisterForm, RetentionForm } from "./kv-forms";
 import { input, button, surface, usable, fresh, QueryState, CursorControls, MetadataTable, type Page, type Mount, type Path, type Capabilities, type Status, type Versions } from "./kv-ui";
 const KvWorkbench = dynamic(() => import("@/components/secrets/kv-workbench"), { ssr: false, loading: () => <p role="status">Loading value and version workbench…</p> });
+const KvAdministration = dynamic(() => import("@/components/secrets/kv-administration"), { ssr: false, loading: () => <p role="status">Loading administration and audit…</p> });
 export default function KvBrowser() {
   const session = useSession();
   const [mountCursors, setMountCursors] = useState<string[]>([]), [pathCursors, setPathCursors] = useState<string[]>([]);
   const [mountId, setMountId] = useState(""), [search, setSearch] = useState(""), [mountSearch, setMountSearch] = useState(""), [mountEditor, setMountEditor] = useState<Mount | "new">(), [registration, setRegistration] = useState<Mount>();
   const [selected, setSelected] = useState<string>(), [message, setMessage] = useState("");
+  const [administrationOpen, setAdministrationOpen] = useState(false), [administrationRefresh, setAdministrationRefresh] = useState(0);
+  const administrationTrigger = useRef<HTMLButtonElement>(null);
+  const closeAdministration = useCallback(() => { setAdministrationOpen(false); administrationTrigger.current?.focus(); }, []);
   const heading = useRef<HTMLHeadingElement | null>(null), searchInput = useRef<HTMLInputElement>(null), trigger = useRef<HTMLButtonElement | null>(null), formTrigger = useRef<HTMLButtonElement | null>(null);
   const mounts = useQuery<Page<Mount>>("/api/kv/mounts" + (mountCursors.length ? "?cursor=" + encodeURIComponent(mountCursors.at(-1)!) : ""));
   const pathParams = new URLSearchParams(); if (mountId) pathParams.set("mountId", mountId); if (pathCursors.length) pathParams.set("cursor", pathCursors.at(-1)!);
   const paths = useQuery<Page<Path>>("/api/kv/paths" + (pathParams.size ? "?" + pathParams : ""));
   const mountData = usable(mounts), pathData = usable(paths);
   useEffect(() => { if (!session.canWrite) setMountEditor(undefined); if (!session.canKvWrite) setRegistration(undefined); }, [session.canWrite, session.canKvWrite]);
+  useEffect(() => { if (!session.data?.authenticated || session.error) setAdministrationOpen(false); }, [session.data?.authenticated, session.error]);
   const rows = (pathData?.items ?? []).filter(item => [item.path, item.namespace, item.name].some(text => text.toLowerCase().includes(search.toLowerCase())))
     .map(item => ({ id: item.id, path: item.path, namespace: item.namespace, name: item.name, fieldCount: item.fields.length, retention: item.retention }));
   function closeDetail() { setSelected(undefined); (trigger.current?.isConnected ? trigger.current : searchInput.current)?.focus(); }
   function closeForms() { setMountEditor(undefined); setRegistration(undefined); (formTrigger.current?.isConnected ? formTrigger.current : searchInput.current)?.focus(); }
   return <main className="min-w-0 space-y-6 p-3 sm:p-6"><header className="space-y-2"><h1 className="text-xl font-semibold">KV Secrets</h1>
     <p className="text-sm text-zinc-400">Mounts organize logical paths. Each path maps named fields to exact native Secret keys; values remain in Kubernetes.</p>
-    <div className="flex flex-wrap gap-3"><Link href="/secrets" prefetch={false} className={button}>Native objects and aliases</Link><button className={button} onClick={refetchKvMetadata}>Refresh KV metadata</button></div></header>
+    <div className="flex flex-wrap gap-3"><Link href="/secrets" prefetch={false} className={button}>Native objects and aliases</Link><button className={button} onClick={() => { setAdministrationRefresh(value => value + 1); refetchKvMetadata(); }}>Refresh KV metadata</button>
+      <button ref={administrationTrigger} className={button} disabled={!session.data?.authenticated || !fresh(session)} aria-expanded={administrationOpen} aria-controls="kv-administration-panel" onClick={() => { if (administrationOpen) closeAdministration(); else setAdministrationOpen(true); }}>Administration and audit</button></div></header>
+    {administrationOpen && <section id="kv-administration-panel"><KvAdministration initialOpen selectedPathId={selected ?? null} refreshKey={administrationRefresh} onClose={closeAdministration} onMetadataChange={refetchKvMetadata} /></section>}
     {message && <p role="status" className="text-emerald-300">{message}</p>}
     <section aria-labelledby="kv-mounts" className={surface}><div className="flex flex-wrap items-center gap-3"><h2 id="kv-mounts" className="font-semibold">Mounts</h2>
       {session.canWrite && <button className={button} onClick={event => { formTrigger.current = event.currentTarget; setRegistration(undefined); setMountEditor("new"); }}>Create mount</button>}</div>

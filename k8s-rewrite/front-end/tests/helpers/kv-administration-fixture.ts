@@ -1,5 +1,5 @@
 import { spawn, execFileSync, type ChildProcess } from "node:child_process";
-import { mkdtemp, readFile, writeFile, rm } from "node:fs/promises";
+import { mkdtemp, readFile, writeFile, rm, cp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { createServer, request as forward, type Server } from "node:http";
@@ -11,7 +11,7 @@ import { nativeTlsFixture } from "./native-tls";
 import { fakeKubectl } from "./fake-kubectl";
 
 /** Production Next HTTP + CA-verified native mock + disposable SQLite. No operator credentials. */
-export async function administrationFixture(browser = false) {
+export async function administrationFixture(browser: boolean | "integrated" = false) {
   const root = process.cwd(),
     dir = await mkdtemp(path.join(tmpdir(), "bortus-admin-ui-"));
   let child: ChildProcess | undefined, gateway: Server | undefined;
@@ -77,6 +77,10 @@ export async function administrationFixture(browser = false) {
     env.PORT = String((holder.address() as { port: number }).port);
     await new Promise<void>((resolve) => holder.close(() => resolve()));
     const origin = "http://127.0.0.1:" + env.PORT;
+    if (browser === "integrated") {
+      // Next standalone intentionally omits static assets; use this build's exact assets.
+      await cp(path.resolve(".next/static"), path.resolve(".next/standalone/.next/static"), { recursive: true });
+    }
     child = spawn(
       process.execPath,
       [path.resolve(".next/standalone/server.js")],
@@ -363,6 +367,7 @@ export async function administrationFixture(browser = false) {
       } else throw new Error("Unknown synthetic fixture control");
     };
     if (browser) {
+      if (browser === true) {
       const source = `import React from 'react'; import {createRoot} from 'react-dom/client'; import KvAdministration from './src/components/secrets/kv-administration'; createRoot(document.getElementById('root')).render(<main className="mx-auto max-w-5xl p-3 text-zinc-100"><h1 className="mb-3 text-xl font-semibold">Synthetic BORTUS administration qualification</h1><p className="mb-4 break-all text-xs text-zinc-400">owner=${owner.id} mount=${mount.id} path=${registered.id}</p><KvAdministration selectedPathId=${JSON.stringify(registered.id)} /><a className="mt-4 block text-indigo-300" href="/away">Navigate away</a></main>);`;
       await build({
         stdin: { contents: source, loader: "tsx", resolveDir: root },
@@ -385,6 +390,7 @@ export async function administrationFixture(browser = false) {
         ],
         { stdio: "pipe" },
       );
+      }
       gateway = createServer(async (incoming, response) => {
         const url = new URL(incoming.url ?? "/", origin);
         if (
@@ -426,7 +432,7 @@ export async function administrationFixture(browser = false) {
           );
           return;
         }
-        if (url.pathname === "/" || url.pathname === "/away") {
+        if (browser === true && (url.pathname === "/" || url.pathname === "/away")) {
           response.setHeader("Content-Type", "text/html");
           response.end(
             url.pathname === "/away"
@@ -435,7 +441,7 @@ export async function administrationFixture(browser = false) {
           );
           return;
         }
-        if (url.pathname === "/bundle.js" || url.pathname === "/style.css") {
+        if (browser === true && (url.pathname === "/bundle.js" || url.pathname === "/style.css")) {
           response.setHeader(
             "Content-Type",
             url.pathname.endsWith("js") ? "application/javascript" : "text/css",
@@ -500,7 +506,7 @@ export async function administrationFixture(browser = false) {
       origin,
       ambiguousOperationId,
       browserUrl: gateway
-        ? "http://127.0.0.1:" + (gateway.address() as { port: number }).port
+        ? "http://127.0.0.1:" + (gateway.address() as { port: number }).port + (browser === "integrated" ? "/secrets/kv" : "")
         : null,
     };
   } catch (error) {

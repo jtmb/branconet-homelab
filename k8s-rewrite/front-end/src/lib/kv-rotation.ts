@@ -88,7 +88,8 @@ export class KvRotations {
     const metadata = await this.consumer.inspect(row);
     await this.registry.admin(actor);
     await this.row(actor, id);
-    return { rotationId: id, revision: row.revision, consumer: this.consumerName(row), ...metadata, reload: "explicit request only; Flux may reconcile the annotation back" };
+    const { rotationId: rotationIdMarker, ...identity } = metadata;
+    return { rotationId: id, revision: row.revision, consumer: this.consumerName(row), ...identity, ...(rotationIdMarker ? { rotationIdMarker } : {}), reload: "explicit request only; Flux may reconcile the annotation back" };
   }
   async reload(actor: KvActor, id: string, input: NativePrerequisites & { revision: number; confirmPath: string; confirmConsumer: string; consumerUid: string; consumerResourceVersion: string }, signal?: AbortSignal) {
     requireGuarded(this.registry.config);

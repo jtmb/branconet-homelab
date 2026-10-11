@@ -121,11 +121,15 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     const overwritten=await checked(await request("/api/kv/import","POST",{bundle:emptyBundle,plans:transferPlans(overwritePreview,true),confirmCredentials:true},admin));assert.equal(overwritten.success,true);
     const restoredEmpty=await checked(await request("/api/kv/paths/"+roundtripId+"/data","GET",undefined,admin));assert.deepEqual(restoredEmpty.fields,[]);
     const cleanupRoute="/api/kv/paths/"+roundtripId,cleanupPath=bundle.documents[0].path;
+    const cleanupMetadata=await checked(await request(cleanupRoute,"GET",undefined,admin));
+    const cleanupChanged=await checked(await request(cleanupRoute,"PATCH",{revision:cleanupMetadata.revision,retention:19},admin));assert.equal(cleanupChanged.revision,cleanupMetadata.revision+1);
+    const beforeStaleDestroy=nativeWrites();
+    await checked(await request(cleanupRoute+"/destroy","POST",{versions:[1],resourceVersion:restoredEmpty.resourceVersion,expectedHead:2,pathRevision:cleanupMetadata.revision,confirmPath:cleanupPath},admin),409);assert.equal(nativeWrites(),beforeStaleDestroy);
     await checked(await request(cleanupRoute+"/versions/1","DELETE",{resourceVersion:restoredEmpty.resourceVersion,expectedHead:2,confirmPath:cleanupPath},reader),403);
     await checked(await request(cleanupRoute+"/versions/1","DELETE",{resourceVersion:restoredEmpty.resourceVersion,expectedHead:2,confirmPath:cleanupPath},scoped),403);
     await checked(await request(cleanupRoute+"/destroy","POST",{versions:[2],resourceVersion:restoredEmpty.resourceVersion,expectedHead:2,confirmPath:cleanupPath},admin),409);
     await checked(await request(cleanupRoute+"/versions/1","DELETE",{resourceVersion:restoredEmpty.resourceVersion,expectedHead:2,confirmPath:"wrong"},admin),400);
-    const destroyed=await checked(await request(cleanupRoute+"/versions/1","DELETE",{resourceVersion:restoredEmpty.resourceVersion,expectedHead:2,confirmPath:cleanupPath},admin));assert.equal(destroyed.cleanupComplete,true);assert.equal(destroyed.head,2);
+    const destroyed=await checked(await request(cleanupRoute+"/versions/1","DELETE",{resourceVersion:restoredEmpty.resourceVersion,expectedHead:2,pathRevision:cleanupChanged.revision,confirmPath:cleanupPath},admin));assert.equal(destroyed.cleanupComplete,true);assert.equal(destroyed.head,2);
     await checked(await request(cleanupRoute+"/versions/1/data","GET",undefined,admin),404);
     const tombstoned=await checked(await request(cleanupRoute+"/data","DELETE",{resourceVersion:destroyed.resourceVersion,expectedHead:2,confirmPath:cleanupPath},admin));
     const destroyedHead=await checked(await request(cleanupRoute+"/destroy","POST",{versions:[2,3],resourceVersion:tombstoned.resourceVersion,expectedHead:3,confirmPath:cleanupPath},admin));assert.equal(destroyedHead.head,0);assert.equal(destroyedHead.cleanupComplete,true);
@@ -206,17 +210,18 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     const generated=await checked(await request("/api/kv/rotations","PATCH",generateRotation,scoped));assert.equal(generated.head,2);assert.equal(generated.rotation.state,"awaiting-ack");assert(!Object.hasOwn(generated,"fields"));
     const replacement=Buffer.from(native.objects.get("apps/rotation-static")!.data!.credential,"base64").toString("utf8");assert(/^[A-Za-z0-9_-]{43}$/.test(replacement));assert.equal(native.objects.get("apps/rotation-static")!.data!.binary,binary);assert(!JSON.stringify(generated).includes(replacement));
     await checked(await request(rotationRoute+"/data","GET",undefined,scoped),403);await checked(await request("/api/kv/rotations","PATCH",generateRotation,scoped),409);
+    const previousRotationMarker="33333333-3333-4333-8333-333333333333";
     const workload={
       apiVersion:"apps/v1",kind:"Deployment",
       metadata:{name:"rotation-consumer",namespace:"apps",uid:"consumer-uid",resourceVersion:"consumer-rv"},
       spec:{template:{
-        metadata:{annotations:{unrelated:"preserved"}},
+        metadata:{annotations:{unrelated:"preserved","bortus.io/rotation-id":previousRotationMarker}},
         spec:{containers:[{name:"app",image:"example.invalid/synthetic",env:[{name:"OTHER",value:privateMarker}]}]},
       }},
     };
     await writeFile(path.join(cli.bin,"deployment.json"),JSON.stringify(workload));
     await checked(await request("/api/kv/rotations/"+rotation.id+"/consumer","GET",undefined,scoped),403);
-    const consumerPreview=await checked(await request("/api/kv/rotations/"+rotation.id+"/consumer","GET",undefined,admin));assert(!JSON.stringify(consumerPreview).includes(privateMarker));
+    const consumerPreview=await checked(await request("/api/kv/rotations/"+rotation.id+"/consumer","GET",undefined,admin));assert(!JSON.stringify(consumerPreview).includes(privateMarker));assert.equal(consumerPreview.rotationId,rotation.id);assert.equal(consumerPreview.rotationIdMarker,previousRotationMarker);assert.equal(consumerPreview.uid,"consumer-uid");assert.equal(consumerPreview.resourceVersion,"consumer-rv");
     await writeFile(path.join(cli.bin,"allow-rotation-reload"),"");await writeFile(path.join(cli.bin,"rotation-reload.json"),JSON.stringify({...workload,metadata:{...workload.metadata,resourceVersion:"consumer-next-rv"},spec:{template:{...workload.spec.template,metadata:{annotations:{unrelated:"preserved","bortus.io/rotation-id":rotation.id}}}}}));
     const reloaded=await checked(await request("/api/kv/rotations/"+rotation.id+"/consumer","POST",{rotationId:rotation.id,revision:consumerPreview.revision,confirmPath:rotationPath.path,confirmConsumer:consumerPreview.consumer,consumerUid:consumerPreview.uid,consumerResourceVersion:consumerPreview.resourceVersion,expectedHead:2,resourceVersion:generated.resourceVersion},admin));assert.equal(reloaded.rotation.state,"reload-requested");
     const acknowledged=await checked(await request("/api/kv/rotations","PATCH",{action:"acknowledge",rotationId:rotation.id,revision:reloaded.rotation.revision,confirmPath:rotationPath.path,confirmConsumer:consumerPreview.consumer,confirmConsumption:true,expectedHead:2,resourceVersion:generated.resourceVersion},scoped));assert.equal(acknowledged.rotation.state,"acknowledged");

@@ -325,6 +325,7 @@ export function destroyBody(
   return {
     versions,
     confirmPath: snapshot.path.path,
+    pathRevision: snapshot.path.revision,
     resourceVersion: snapshot.status.resourceVersion,
     expectedHead: snapshot.status.head,
   };
