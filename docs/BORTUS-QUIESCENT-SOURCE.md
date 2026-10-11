@@ -77,3 +77,12 @@ reader, image/guard validation and final forward/rollback execution.
 The separate [continuous control observer](BORTUS-QUIESCENT-WATCH.md) supplies
 the borrowed trace through actual verified TLS streams and fsynced metadata.
 Its controlled local fixtures remain separate from live source continuity.
+
+
+The [quiescent archive adapter](BORTUS-QUIESCENT-ARCHIVE.md) is now available
+with a [root composition receipt](../evidence/bortus-quiescent-archive-root-20261011.json):
+45 scoped local controls pass against current dependencies. It supplies the
+encrypted, authenticated SQLite stream and exclusive fsynced NAS ciphertext
+copy under the original quiescent deadline; existing archive callers retain
+their default behavior. No live capture was dispatched. Actual schema/image/
+admission producers and independent restore still precede forward execution.

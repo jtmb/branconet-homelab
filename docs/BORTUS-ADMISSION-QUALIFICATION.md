@@ -260,8 +260,8 @@ mode 420; the exact strict matcher correction and cleanup composition pass 58
 root controls against the current frozen dependencies.
 
 A distinct new probe reached 25 completed cases before a generic probe refusal.
-All six recorded fixture mutations are confirmed; its inert Pod and zero-replica
-Deployment remain retained for explicit owned cleanup. A separate actual dry-run
+All six recorded fixture mutations were confirmed; its inert Pod and zero-replica
+Deployment were subsequently explicitly recovered (see the current evidence below). A separate actual dry-run
 for the next scaleIO-reference case returns a correctly attributed guard denial.
 That diagnostic does not prove the earlier failure's cause or a full 43-case pass.
 No whole-row restore, forward schema or new app entrypoint has run.
@@ -273,6 +273,34 @@ six HTTP/process controls and thirteen enabled-shell controls. Root also verifie
 default scan returns one finding: an exact unchanged public prose span,
 independently reviewed with zero untriaged findings; it is not a clean scan or
 resolution of the two historical provenance findings. This proof covers the
-prior process-group source only. A subsequently reproduced browser retention
-bug and its candidate fix still require independent final source/UI review;
-performance, final image, complete audit and live recovery acceptance stay open.
+prior process-group source only. All six recorded fixture mutations were confirmed; its inert Pod and zero-replica
+Deployment were subsequently explicitly recovered (see the current evidence below).
+
+
+## 2026-10-11: current admission and private-resource evidence
+
+The [current admission receipt](../evidence/bortus-admission-current-20261011.json)
+records successful explicit cleanup of both the 25-case and subsequent one-case
+fixtures, preserving each original refusal. The latest distinct run completed
+all 40 protection cases, then refused a legacy ReplicaSet dry-run response. Its
+two persistent inert fixtures are retained for explicit recovery. A separate
+actual HTTP201 dry-run response has a valid UID and no resourceVersion; its name
+remains absent. This diagnostic does not reconstruct the earlier reply or grant
+the missing three-case, whole-row restore, schema or application acceptance.
+
+Flux metadata independently showed Ready=Unknown while Reconciling=True, both
+Progressing at the unchanged chart revision. The root read-only provider now
+waits at most ten seconds for that exact current-generation state within the
+original absolute deadline. A fresh Ready=True proof is still required; other
+failures refuse, and mutations are not retried. The current dependency and
+readiness composition passes 79 local controls.
+
+The [private-resource review](../evidence/bortus-private-resource-root-review-20261011.json)
+binds candidate f27cfa10 to 342 raw Git files, 416 retained artifacts, 341 actual
+source files and 4262 compiled files; three focused controls, a fresh build, six
+HTTP/process controls and six browser checks pass. Two mixed-line-ending
+bindings explicitly run from working bytes to raw Git bytes; both directions
+were independently verified. The selected default scan still reports one
+individually reviewed unchanged public prose finding. Historical findings,
+performance and final live-image acceptance remain open. This candidate is not
+deployed.

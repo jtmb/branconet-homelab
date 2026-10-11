@@ -168,8 +168,9 @@ def stop_owned(process):
             process.wait(timeout=3)
 
 
-def encrypt_source(source, target, age, recipient_file, identity_file, deadline, *, directory_fd=None):
+def encrypt_source(source, target, age, recipient_file, identity_file, deadline, *, directory_fd=None, cleanup=None):
     """Own child handles and encrypted partials; failed artifacts are never accepted."""
+    require(cleanup is None or callable(cleanup))
     target = pathlib.Path(target)
     encryptor = decryptor = None
     parent_fd = None
@@ -210,7 +211,8 @@ def encrypt_source(source, target, age, recipient_file, identity_file, deadline,
 
             verify_ciphertext()
             encryptor = subprocess.Popen([str(age), '-R', str(recipient_file)], stdin=subprocess.PIPE,
-                stdout=out, stderr=subprocess.DEVNULL)
+                stdout=out, stderr=subprocess.DEVNULL,
+                **({'start_new_session': True} if cleanup is not None else {}))
             reader = Pipe(source.stdout, deadline, True)
             writer = Pipe(encryptor.stdin, deadline, False)
             pipes += [reader, writer]
@@ -224,7 +226,8 @@ def encrypt_source(source, target, age, recipient_file, identity_file, deadline,
             os.fsync(parent_fd)
             out.seek(0)
             decryptor = subprocess.Popen([str(age), '-d', '-i', str(identity_file)],
-                stdin=out, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+                stdin=out, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                **({'start_new_session': True} if cleanup is not None else {}))
             recovered = Pipe(decryptor.stdout, deadline, True)
             pipes.append(recovered)
             restored_metadata, restored_digest = transfer(recovered, None)
@@ -245,16 +248,34 @@ def encrypt_source(source, target, age, recipient_file, identity_file, deadline,
     except Exception:
         raise ArchiveError('cold_sqlite_archive_failed') from None
     finally:
-        for pipe in pipes:
-            pipe.close()
-        for process in (source, encryptor, decryptor):
-            stop_owned(process)
-            if process:
-                for stream in (process.stdin, process.stdout, process.stderr):
-                    if stream and not stream.closed:
-                        stream.close()
-        if parent_fd is not None:
-            os.close(parent_fd)
+        if cleanup is None:
+            for pipe in pipes:
+                pipe.close()
+            for process in (source, encryptor, decryptor):
+                stop_owned(process)
+                if process:
+                    for stream in (process.stdin, process.stdout, process.stderr):
+                        if stream and not stream.closed:
+                            stream.close()
+            if parent_fd is not None:
+                os.close(parent_fd)
+        else:
+            failed = False
+            for pipe in pipes:
+                try: pipe.close()
+                except Exception: failed = True
+            for process in (source, encryptor, decryptor):
+                try: cleanup(process)
+                except Exception: failed = True
+                if process:
+                    for stream in (process.stdin, process.stdout, process.stderr):
+                        if stream and not stream.closed:
+                            try: stream.close()
+                            except Exception: failed = True
+            if parent_fd is not None:
+                try: os.close(parent_fd)
+                except Exception: failed = True
+            require(not failed)
 
 
 def capture(checkpoint):
