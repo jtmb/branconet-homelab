@@ -340,3 +340,33 @@ schema-forward, new KV adoption, final app security/performance or live auth/UI
 acceptance. Next guard publication must separately resuspend BORTUS and retain
 both accepted legacy and qualified inert images only for pre-schema restoration;
 legacy must leave all allowlists before any forward-schema entrypoint.
+
+
+## 2026-10-11: actual legacy schema metadata qualification
+
+The [root live schema receipt](../evidence/bortus-current-legacy-schema-20261011.json)
+passes against the sole Ready legacy digest writer. Seven migration names,
+finished/non-rolled-back history and all thirteen application table column layouts
+match; writer UID/RV, owner/template and claim/PV identities match before and after.
+The fixed Node program opens SQLite read-only and selects only migration ledger
+and schema metadata. It runs through stdin; no app entrypoint, application rows
+or credential values are read. Separate reads and name-based exec are non-atomic.
+
+The first actual check failed because raw Git SQL checksums differ from deployed
+SQL file bytes. Actual ledger hashes match all seven files in the immutable legacy
+image: six are exact Git LF-to-CRLF conversions; the seventh is exact Git LF. The
+new manifest pins this exact mixed history. It does not accept arbitrary alternate
+checksums. Original failure and diagnostic receipts remain retained. An earlier
+local launcher used Windows CRLF reader bytes instead of the already qualified
+embedded LF program; that failure and its non-causal negative checks are retained.
+
+The [callable producer](../scripts/migration/schema-current-writer-v1/current-schema-producer.py)
+is source-bound with its fixed reader, exact image migration manifest and controls.
+Six actual disposable Node fixtures and sixteen local producer controls pass,
+including identity/RV/storage drift, forward schema refusal, FIFO nonblocking open,
+selector-constructor failure child reaping and bounded output/deadline cleanup.
+The actual producer uses fresh verified mTLS metadata and an exclusive fsynced
+0600 receipt in a 0700 directory. Receipt names match the phase-one callback ABI.
+Invoke it fresh under the callback's shared deadline each time; this observed
+receipt is historical evidence. Guard publication, actual admission probes,
+independent whole-row restoration and final app/image/performance remain open.
