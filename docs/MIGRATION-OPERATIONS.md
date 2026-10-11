@@ -424,3 +424,16 @@ The [current delivery refresh](../evidence/bortus-delivery-current-refresh-20261
 
 
 The checkpoint source fence also requires the complete cluster PV inventory described in [BORTUS-PHYSICAL-VOLUME-FENCE.md](BORTUS-PHYSICAL-VOLUME-FENCE.md). Only the original PV name/UID may reference the original Longhorn volumeHandle through driver.longhorn.io; any duplicate or foreign PV alias refuses even when inactive, unbound or deleting. The fixed raw API list accepts at most 10,000 PVs within the existing 8 MiB output check and refuses continuation, malformed/missing lists or absent original identity. Independent restore preflight inherits this fresh source fence. Every cold storage check repeats it, including the existing before/after encrypted archive streaming and NAS-copy checks. These separate reads are not atomic and do not establish live capture or restore acceptance.
+
+## Actual immutable recovery-holder preparation
+
+The [7e30 holder receipt](../evidence/bortus-holder-source-image-7e30-20261011.json)
+binds independently verified source/test artifacts to an actual immutable build
+and verified export. The application candidate's performance gate remains failed;
+this preparation is for an explicit inert Node reader, with no application startup.
+Default image/image-config Secret scanning has zero findings. The scanner reports
+346 vulnerability entries, including four fixable High bundled-kubectl entries;
+production remediation and inert-holder reachability review remain required.
+Three-node OCI preload, actual Node reader/runtime and guard qualification, fresh
+checkpoint and independent complete-row restore remain open. All original sources
+and data stay retained. No build/export/scanner result grants those later gates.

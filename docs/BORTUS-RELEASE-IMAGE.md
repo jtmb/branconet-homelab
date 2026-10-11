@@ -83,3 +83,10 @@ not full independent restore or restored-data acceptance. See
 The local tests use public disposable source archives, actual POSIX file/dir
 flushes and injected filesystem/subprocess faults. They do not contact the
 builder, read operator credentials, run Docker, build an image or deploy.
+
+Root selected immutable `7e30b9b4` for an inert recovery holder after independently
+verifying its raw/working sources, 687 compiled files, original Windows and Linux
+functional artifacts. The actual immutable build completed at 09:14:59 UTC on
+2026-10-11. Exact source/context/build/config bindings are in the
+[holder receipt](../evidence/bortus-holder-source-image-7e30-20261011.json).
+This build does not qualify application performance, image runtime or deployment.

@@ -99,3 +99,13 @@ files/modes, 86 original artifacts, both unchanged dependencies and the final
 `test_bortus*.py` migration-helper cases pass under WSL without skips. Source
 and test inputs remain unchanged through execution. The [integration receipt](../evidence/bortus-release-staging-integration-20261011.json)
 records the exact scope; it grants no actual export, preload or runtime acceptance.
+
+The actual `7e30b9b4` holder export completed at 09:19:37 UTC on 2026-10-11.
+The protected 1,150,322,688-byte archive has verified config/source/layer bindings;
+its [receipt](../evidence/bortus-holder-source-image-7e30-20261011.json) records
+export separately from still-pending three-node preload/runtime/admission.
+A pinned Trivy 0.75.0 default image and image-config scan completed with zero
+Secret findings and 346 vulnerability entries (67 High, one Critical). Scanner
+exit 1 represents findings, not an accepted clean image. Four fixable High entries
+are in bundled kubectl's Go/x/net dependencies. Its production remediation and
+the inert Node-only holder reachability review remain open; no app entrypoint ran.

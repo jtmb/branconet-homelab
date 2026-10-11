@@ -40,3 +40,12 @@ Version checks use official [Kubernetes releases](https://dl.k8s.io/release/stab
 ## BORTUS native Secrets runtime
 
 The delivered container uses Node 22, Next.js 15.5.27 and @kubernetes/client-node 1.4.0 with verified TLS. Prisma/SQLite holds user hashes/roles, nonsecret configuration and SecretReference metadata. Native Kubernetes Secrets hold values; no database-to-cluster push or SSH startup kubeconfig bootstrap remains. See [BORTUS-DEPLOYMENT.md](BORTUS-DEPLOYMENT.md) for probes, PVC, ServiceAccount and scoped Secret RBAC. Other dashboard operations use kubectl and require separate deployment permissions and live acceptance.
+
+Image qualification now uses a private pinned [Trivy 0.75.0 release](https://github.com/aquasecurity/trivy/releases/tag/v0.75.0)
+binary verified against the immutable release asset digest and published checksum.
+It is installed only under the protected operator runtime, without a global install.
+Image archive and image-config Secret scanners plus vulnerability scanning use
+default built-in rules, no user ignore/config files, one worker and disabled
+telemetry. Raw reports stay outside Git. The [actual holder scan](../evidence/bortus-holder-source-image-7e30-20261011.json)
+records findings and scope; zero Secret findings does not mean vulnerability-clean
+or final runtime/release acceptance.

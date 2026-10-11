@@ -421,3 +421,17 @@ skips on frozen inputs; the [guard integration receipt](evidence/bortus-restore-
 records a zero-finding default scan of eleven selected inputs. This corrects the
 tracked local findings; callers still protect their own input-bearing tracebacks.
 No test contacts production or establishes actual recovery/admission.
+
+## 2026-10-11: actual immutable holder build and export
+
+Root independently verifies `7e30b9b4`: 264 raw production files, 314 working
+bindings, 687 compiled files, 44 Windows originals, 40 paired artifacts/421 source
+blobs and ten Linux functional originals. Windows focused51/unit208/HTTP4 and
+Linux unit208/HTTP4 results remain exact-bound; performance acceptance remains
+failed. The [holder receipt](evidence/bortus-holder-source-image-7e30-20261011.json)
+records the actual completed build/config identity and 1,150,322,688-byte verified
+export. Default Trivy image/image-config Secret scan is zero; vulnerability scan
+returns 346 entries, 67 High and one Critical, including four fixable High entries
+in bundled kubectl. Image-clean, inert runtime/reachability, three preloads, actual
+admission, fresh checkpoint and independent full-row recovery remain pending.
+No application entrypoint ran, no data writer changed and no original retired.
