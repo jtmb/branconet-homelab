@@ -59,6 +59,28 @@ and [PyYAML 6.0.3 constructors](https://github.com/yaml/pyyaml/blob/6.0.3/lib/ya
 
 ## Coordinator integration and scoped live access
 
+The separate `bortus-restore-metadata.py` read-only adapter uses the same fresh
+options provider for each TLS connection. Its fixed scope is named BORTUS PVC/Pod,
+cluster PV/Node and Longhorn Volume/Backup/Engine/Replica GETs, plus complete PV,
+BORTUS Pod and Longhorn Engine/Replica lists. It exposes no Secret endpoint,
+mutation, proxy, redirect, retry, connection pool or credential fallback.
+Reads have an absolute finite deadline of at most 300 seconds, a 30-second socket
+timeout and an 8-MiB body cap; late reads refuse. Strict UTF8 JSON rejects duplicate
+keys/nonfinite constants and bounds tree depth/nodes/strings. Lists require the
+correct API/kind, opaque collection resourceVersion, no continuation/remaining
+items, at most 10,000 objects and unique names/UIDs with the expected namespace.
+Public errors contain fixed codes, with underlying response/parser frames dropped.
+These are fresh individual reads, not an atomic source or health snapshot. The
+executor must pass them through the full identity/consumer/restore fences.
+Nineteen disposable loopback TLS tests pass, including credential freshness,
+revocation, fixed scope, malformed/oversized/incomplete replies, a slow trickle,
+late-connect refusal before dispatch and independent owned closure. A closure
+failure drops even a successfully parsed response before the public refusal.
+The first run's three expected-cancellation fixture teardown failures remain in
+the actual tool record; the corrected fixture suppresses only expected peer
+cancellation, without weakening production assertions. Actual executor/live use
+remains pending.
+
 The native immutable handoff at `6e4e9668` passes 30 focused and 179 combined
 cases. Its default scanner exits 1 for one individually reviewed invalid public
 PEM fixture, not zero findings; original errors and review remain retained.

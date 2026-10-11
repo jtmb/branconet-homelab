@@ -57,6 +57,14 @@ comparison libraries to 303 local passing tests. Real watch continuity,
 independent restored data equality, qualified image and final live acceptance
 remain required; see [migration operations](MIGRATION-OPERATIONS.md).
 
+The [restored-data composition](BORTUS-RESTORE-DATA.md) now joins those libraries
+under one deadline and a separate durable data intent, preserving the borrowed
+watch and leaving holder deletion to the executor. The scoped
+[metadata reader](BORTUS-OPERATOR-MTLS.md) uses fresh verified TLS for each fixed
+GET/complete LIST. Their integrated local suite passes 350 tests without skips;
+local fixtures grant no live restore, image/admission or cutover acceptance.
+See [integration evidence](../evidence/bortus-restore-data-metadata-integration-20261011.json).
+
 The `/secrets` editor uses the existing dark dashboard layout, explicit value reveal and versioned writes. `/configuration` edits nonsecret variables separately. `/api/health/live` and `/api/health/ready` are exact public probe paths; readiness checks signing/lookup env, migrated SQLite and Kubernetes access across the namespace allowlist.
 
 Keep operator kubeconfig, SSH keys and provisioning credentials independently available in a protected operator environment/offline store. Creating a cluster cannot depend on its unavailable Secrets. Container provisioning is disabled; migration runs Ansible externally. Local Ansible integration retains Bearer lookup for mapped native Secrets/nonsecret config. Supply bootstrap credentials independently, and use `no_log` for sensitive tasks. See `SECRETS-ENGINE.md`.

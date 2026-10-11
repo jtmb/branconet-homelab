@@ -1,0 +1,387 @@
+{
+  "scope": "Local restored-data composition and read-only restore metadata integration",
+  "captured_at_utc": "2026-10-11T08:18:14.379636+00:00",
+  "native_commit": "bfd12c5ab0b9fdf51f9468923ba63fed2addf97e",
+  "native_raw_git_bindings": {
+    "native_commit": "bfd12c5ab0b9fdf51f9468923ba63fed2addf97e",
+    "files": [
+      {
+        "path": "docs/BORTUS-RESTORE-DATA.md",
+        "mode": "100644",
+        "blob": "f3c5f40ee3e913a333a96dafd5abe301f6815cbb",
+        "bytes": 5916,
+        "raw_git_sha256": "8d5701802d4590d325fc5cbc30946d1c883d63afa1abf8b568941817aa58f543",
+        "working_sha256": "8d5701802d4590d325fc5cbc30946d1c883d63afa1abf8b568941817aa58f543",
+        "relation": "exact"
+      },
+      {
+        "path": "docs/MIGRATION-OPERATIONS.md",
+        "mode": "100644",
+        "blob": "c77fcf2db33167bac8d48c94658f3e966275fb46",
+        "bytes": 96305,
+        "raw_git_sha256": "acb03196b28c96b131ed7c7f299591fc7fa0cf52d6e251c16decea8951a6d2aa",
+        "working_sha256": "73fb0a106befcf2b4f93634587e33fd38a65de795fdea7192148b8b03d277336",
+        "relation": "literal_LF_to_CRLF"
+      },
+      {
+        "path": "docs/implementation-evidence/bortus-restore-data/qualification.json",
+        "mode": "100644",
+        "blob": "48f5f1309c2f7e553ccf7ca0b50e8b058bebaeff",
+        "bytes": 8616,
+        "raw_git_sha256": "082523e6918679642aa05999eec4ce3e8105c9f848a2b99696f3306524bc91a4",
+        "working_sha256": "082523e6918679642aa05999eec4ce3e8105c9f848a2b99696f3306524bc91a4",
+        "relation": "exact"
+      },
+      {
+        "path": "docs/implementation-evidence/bortus-restore-data/scan-review.json",
+        "mode": "100644",
+        "blob": "90087c891536eca5879972771116e103e22ba6fb",
+        "bytes": 1131,
+        "raw_git_sha256": "dec57beb8633f3abbb7e93767a16a5fba18d8195ae5232944916b429a777f4b7",
+        "working_sha256": "dec57beb8633f3abbb7e93767a16a5fba18d8195ae5232944916b429a777f4b7",
+        "relation": "exact"
+      },
+      {
+        "path": "scripts/migration/bortus-restore-data.py",
+        "mode": "100644",
+        "blob": "c6b7cdb5952ed087ea124c05dd6639e59b76bed1",
+        "bytes": 19998,
+        "raw_git_sha256": "3e69f9fa7a4d358aa9fe2ff11817c0ce825955af6f3ba7144ecc4a2eaad43cb7",
+        "working_sha256": "3e69f9fa7a4d358aa9fe2ff11817c0ce825955af6f3ba7144ecc4a2eaad43cb7",
+        "relation": "exact"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_restore_data.py",
+        "mode": "100644",
+        "blob": "e8328f451590164324f964db6a2b78d1a5ca90c3",
+        "bytes": 26941,
+        "raw_git_sha256": "1af2338d47eea4241e079d022bc74a3fca83345c8e274ef986bc088f19b81683",
+        "working_sha256": "1af2338d47eea4241e079d022bc74a3fca83345c8e274ef986bc088f19b81683",
+        "relation": "exact"
+      }
+    ],
+    "original_artifact_count": 113,
+    "dependencies_unchanged": true,
+    "raw_git_modes_verified": true,
+    "manual_ops_doc_merge_required": true,
+    "live_restore_acceptance": false
+  },
+  "native_handoff_verification_sha256": "4b974f8d6d39f2b34eb40509fbbda2826b3ac167803eb0599bb8b569825b3dea",
+  "actual_test_count": 350,
+  "test_results": [
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--cd",
+        "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+        "--",
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/migration/tests",
+        "-p",
+        "test_bortus*.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-11T08:16:19.820936+00:00",
+      "completed_at_utc": "2026-10-11T08:16:39.745284+00:00",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "0dcc1645466cfef7bb68af52df3c6bc28bcc3b04369ede152e43c6440f6eb739",
+      "source_manifest_sha256": "2be8104d5f2429a8b80f02cac4fdd7e8235335efe164d6e4794883150b39d9b7",
+      "input_source_unchanged": true,
+      "scope": "Pure/POSIX/local TLS/disposable age/SQLite fixtures; no Node/Docker/SSH/production calls",
+      "test_count": 318,
+      "elapsed_test_seconds": 18.409
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--cd",
+        "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+        "--",
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/migration/tests",
+        "-p",
+        "test_database_preservation.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-11T08:16:39.785841+00:00",
+      "completed_at_utc": "2026-10-11T08:16:40.516730+00:00",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "8bc6a3b528755b407046be23b32e2fbd8234fa2481d1a7485b5c661197b0dbb8",
+      "source_manifest_sha256": "2be8104d5f2429a8b80f02cac4fdd7e8235335efe164d6e4794883150b39d9b7",
+      "input_source_unchanged": true,
+      "scope": "Pure/POSIX/local TLS/disposable age/SQLite fixtures; no Node/Docker/SSH/production calls",
+      "test_count": 13,
+      "elapsed_test_seconds": 0.376
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--cd",
+        "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+        "--",
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/migration/tests",
+        "-p",
+        "test_sqlite_archive_normalization.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-11T08:16:40.550816+00:00",
+      "completed_at_utc": "2026-10-11T08:16:41.328937+00:00",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e7c9cef0204af0763acc2b474206952197466abeb3e2235b8e50a5032a624df5",
+      "source_manifest_sha256": "2be8104d5f2429a8b80f02cac4fdd7e8235335efe164d6e4794883150b39d9b7",
+      "input_source_unchanged": true,
+      "scope": "Pure/POSIX/local TLS/disposable age/SQLite fixtures; no Node/Docker/SSH/production calls",
+      "test_count": 11,
+      "elapsed_test_seconds": 0.394
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--cd",
+        "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+        "--",
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/migration/tests",
+        "-p",
+        "test_sqlite_encrypted_archive.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-11T08:16:41.364461+00:00",
+      "completed_at_utc": "2026-10-11T08:16:41.894418+00:00",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7d0cc4e63376aed9a6fc86574dfda410bda4d250f58563e7824c1e1eb8e59e66",
+      "source_manifest_sha256": "2be8104d5f2429a8b80f02cac4fdd7e8235335efe164d6e4794883150b39d9b7",
+      "input_source_unchanged": true,
+      "scope": "Pure/POSIX/local TLS/disposable age/SQLite fixtures; no Node/Docker/SSH/production calls",
+      "test_count": 8,
+      "elapsed_test_seconds": 0.193
+    }
+  ],
+  "tested_source_manifest_sha256": "2be8104d5f2429a8b80f02cac4fdd7e8235335efe164d6e4794883150b39d9b7",
+  "tested_sources_unchanged": true,
+  "default_selected_byte_scan": {
+    "actual_exit_code": 0,
+    "command": [
+      "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-native-window-tools-70320914\\bin\\gitleaks.exe",
+      "dir",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-data-metadata-20261011\\scan-v1\\input",
+      "--redact",
+      "--no-banner",
+      "--report-format",
+      "json",
+      "--report-path",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-data-metadata-20261011\\scan-v1\\report.json"
+    ],
+    "scanner_sha256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "configuration": "Pinned default rules; no exclusions or allowlists",
+    "inputs": [
+      {
+        "path": "scripts/migration/bortus-restore-data.py",
+        "bytes": 19998,
+        "sha256": "3e69f9fa7a4d358aa9fe2ff11817c0ce825955af6f3ba7144ecc4a2eaad43cb7"
+      },
+      {
+        "path": "scripts/migration/bortus-restore-metadata.py",
+        "bytes": 9124,
+        "sha256": "0e26ed33aff81b744a600088bdbb3ec694f467208faf6d1ce2978c4b0219e959"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_restore_data.py",
+        "bytes": 26941,
+        "sha256": "1af2338d47eea4241e079d022bc74a3fca83345c8e274ef986bc088f19b81683"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_restore_metadata.py",
+        "bytes": 12973,
+        "sha256": "18120a000a87dd32946fb553ed48a2b07fa54b3cb278273ac68fbd1c681cc4b7"
+      },
+      {
+        "path": "docs/BORTUS-RESTORE-DATA.md",
+        "bytes": 5916,
+        "sha256": "8d5701802d4590d325fc5cbc30946d1c883d63afa1abf8b568941817aa58f543"
+      },
+      {
+        "path": "docs/BORTUS-OPERATOR-MTLS.md",
+        "bytes": 6935,
+        "sha256": "3492f554e8697bc6b9799682fa3f96aa868054fa32ac5354d577d5369b8421f2"
+      },
+      {
+        "path": "docs/MIGRATION-OPERATIONS.md",
+        "bytes": 96815,
+        "sha256": "f1d955a755726aa99b5a0ce858ee7371402d6fadbb80149f8078cdb2b2b8837c"
+      },
+      {
+        "path": "docs/BORTUS-DEPLOYMENT.md",
+        "bytes": 15862,
+        "sha256": "710672848ed1cbef5b618a0aa7c507dd0335d9947526f02c11c47736f0cd9995"
+      },
+      {
+        "path": "docs/BORTUS-RESTORE-WATCH.md",
+        "bytes": 9112,
+        "sha256": "233ff1b30821cce419cea0400f5ded72b4d4c8ca108685df83b7163b8b514d92"
+      },
+      {
+        "path": "MIGRATION_STATUS.md",
+        "bytes": 87829,
+        "sha256": "192ed3996aa341c0861cea1aee93ada319ede5778450c88a01a763bcf6551dc2"
+      },
+      {
+        "path": "docs/implementation-evidence/bortus-restore-data/qualification.json",
+        "bytes": 8616,
+        "sha256": "082523e6918679642aa05999eec4ce3e8105c9f848a2b99696f3306524bc91a4"
+      },
+      {
+        "path": "docs/implementation-evidence/bortus-restore-data/scan-review.json",
+        "bytes": 1131,
+        "sha256": "dec57beb8633f3abbb7e93767a16a5fba18d8195ae5232944916b429a777f4b7"
+      }
+    ],
+    "findings": 0,
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "dbf2c3ff3cbba0f6f01259b6efd2ea828b2ab11cfa45aabe5fbf86e69067ba04"
+  },
+  "docs_checked": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "sha256": "d161d3821709befb6a55b5aafefd4395765a7b2895d099d048e85a8bdd39c5b7"
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "sha256": "7a99b284806bc5b19f815e9e74fb2bb8124be167e62104b566bcb5af8da3b83e"
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "sha256": "710672848ed1cbef5b618a0aa7c507dd0335d9947526f02c11c47736f0cd9995"
+    },
+    {
+      "path": "docs/BORTUS-OPERATOR-MTLS.md",
+      "sha256": "3492f554e8697bc6b9799682fa3f96aa868054fa32ac5354d577d5369b8421f2"
+    },
+    {
+      "path": "docs/BORTUS-PHYSICAL-VOLUME-FENCE.md",
+      "sha256": "89cd19cf4b4717ed2d6f2c2ea4b61f74c9b9c0cd19eb5b9ba2dda6dcf6a4455e"
+    },
+    {
+      "path": "docs/BORTUS-RELEASE-IMAGE.md",
+      "sha256": "c6bef853b17792edd455ecfec88fd63d5bf88aa882a4b1a4df35cdc8c76a5190"
+    },
+    {
+      "path": "docs/BORTUS-RELEASE-STAGING.md",
+      "sha256": "a154e9c1cc48507f56497aaf69b83bdfa32a4ba44c67453111cba0d42f542446"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-COMPLETION.md",
+      "sha256": "ca5ab7c38a0b481baea277cd04d7c9c1744486c58db3c3ed5e97a6e9e8f4bd72"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-DATA.md",
+      "sha256": "8d5701802d4590d325fc5cbc30946d1c883d63afa1abf8b568941817aa58f543"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-WATCH.md",
+      "sha256": "233ff1b30821cce419cea0400f5ded72b4d4c8ca108685df83b7163b8b514d92"
+    },
+    {
+      "path": "docs/BORTUS-RESTORED-CONSUMER-FENCE.md",
+      "sha256": "1768228d6e0f7d3fd05fe4a1a1a9a4824c09611bcb4d0485a37ab22a0a72f117"
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "sha256": "2af9884b0fb41b91a586c59401a3de4c86ee3da41e9fc235dd61e98f678507a9"
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "sha256": "53b1a4878c66750a9399d3a3d19b2b4e8ee2654b92235191f14efddc5453f8e4"
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "sha256": "f40afd26e66aec05f9acfe0ac5f054b20c8437f6ee44bae43a730ca738111158"
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "sha256": "fab19db188ba6b8189dab2d5449bde7e594194849dad20cadecf96309c6ce06a"
+    },
+    {
+      "path": "docs/MIGRATION-OPERATIONS.md",
+      "sha256": "f1d955a755726aa99b5a0ce858ee7371402d6fadbb80149f8078cdb2b2b8837c"
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "sha256": "187a69bf8b5b9e397d7824925372f13b4bcc41dab088350d24dfdf747508f004"
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "sha256": "635e9b492444a036f84513a26d75a761824a12b702e42108065b5e123dc67fbd"
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "sha256": "ac7b52960426f91dbc914bca41883d2b05bafea64bf407b1ceaab6f9750e48c5"
+    }
+  ],
+  "protected_artifacts": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-data-metadata-20261011",
+  "review": "Native read-only review found deadline/public-response-local gaps; fixed and covered by TLS tests",
+  "earlier_actual_failures": [
+    "Initial metadata17-run: three expected TLS peer-cancellation fixture teardown failures; actual tool record retained",
+    "Integration-v1: unchanged dependency working LF/CRLF discrepancy; actual tool record retained",
+    "Integration-v2: concurrently corrected native working file refused; actual tool record retained",
+    "Native fsync/context regressions: 113 original artifacts retained and verified"
+  ],
+  "acceptance": {
+    "local_metadata_reader": true,
+    "local_data_composition": true,
+    "actual_independent_restore": false,
+    "image_runtime_admission": false,
+    "production_cutover": false,
+    "whole_goal_complete": false
+  },
+  "limits": [
+    "No Node/Docker/SSH/private API/operator credential/production data execution by these root tests",
+    "Local metadata tests use disposable TLS; data tests use controlled Collector transport callbacks",
+    "Fresh-restore executor, actual API exec transport and durable holder deletion remain pending",
+    "All originals and application production image retained",
+    "Default scan covers exactly12 selected files, not this later-generated receipt/full repository/image",
+    "Deadlines are cooperative and cannot bound an OS stall; separate metadata reads are not atomic"
+  ]
+}

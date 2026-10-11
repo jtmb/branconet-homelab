@@ -122,3 +122,9 @@ The disposable HTTPS fixture explicitly sets `context.minimum_version = TLSv1_2`
 its first default-context failure is retained. The policy is not relaxed when
 Python reports a MINIMUM_SUPPORTED sentinel. Actual mutual TLS success/missing
 client certificate refusal and fresh context security withdrawal are covered.
+
+The separate [restored-data composition](BORTUS-RESTORE-DATA.md) borrows this
+Collector and checks its live prerequisite throughout capture, normalization,
+comparison and exact cleanup. It never closes the borrowed watcher; the executor
+must retain it through separately durable UID/RV holder deletion and close it in
+its outer finally. Local composition tests do not establish a production watch.

@@ -325,3 +325,28 @@ separate, approved observation with metadata-only profiling on the exact candida
 build to locate the remaining cost. Profiling is diagnostic and cannot grant
 acceptance. The native subagent is implementing and qualifying the restored-data
 step. No production image switch, restored data read or source retirement occurred.
+
+## 2026-10-11: subagent ownership and restore-data integration
+
+Execution uses this coordinator and two subagents only; the seven former BORTUS
+work chats are archived. The app subagent owns heavy builds and performance
+qualification; the native subagent owns isolated helper development. No new work
+chats are required. The app reports functional qualification of its approved
+decoder change; unchanged paired performance remains pending.
+
+Root verified final native `bfd12c5a` raw Git files/modes and 113 original
+artifacts, including the earlier fsync and private-exception-context failures.
+The first integration verifier stopped on an unchanged dependency's LF/CRLF
+working-byte difference; the next correctly refused concurrently edited native
+working bytes. The final verifier uses the corrected immutable handoff and
+explicit raw-Git/line-ending bindings; both failed actual tool records remain.
+
+The combined root suite passes 350 local cases without skips on frozen inputs:
+318 BORTUS helpers, 13 full-row comparisons, 11 archive normalizations and eight
+encrypted archive cases. This includes 28 data-composition and 19 local TLS
+metadata-reader cases. Metadata review caught deadline and public-error gaps,
+now fixed and covered. The first 17-case metadata run had three expected TLS
+cancellation fixture teardown failures; the corrected fixture suppresses only
+expected peer cancellation. No production request or mutation, Node/Docker run,
+restored-data read, new image switch or source retirement occurred. Full executor,
+actual independent restoration, guarded cutover and final acceptance remain open.
