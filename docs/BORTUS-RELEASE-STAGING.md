@@ -292,3 +292,24 @@ pins the same accepted legacy bytes. This is a pre-schema maintenance step;
 before a forward-schema entrypoint can touch the original claim. Full-row
 production restoration, final image/performance/security and live acceptance
 remain separate requirements.
+
+
+## Accepted legacy digest inert runtime completed
+
+The [actual legacy runtime receipt](../evidence/bortus-legacy-digest-runtime-20261011.json)
+records one public-only Kubernetes qualification completed at13:33:19 UTC,
+actual exit0. All three Pods used literal repo@3b076 spec and actual imageID;
+Node22.23.3/Prisma6.19.3, two public SQLite rows, integrity and8192-byte reader
+framing pass. It uses the same frozen fixture/reader contract with no token,
+production PVC, native Secret value or application entrypoint. Exact cleanup
+uses UID/resourceVersion deletion plus independently fresh complete PodList
+absence. Root verifies all seven Linux processes/exact Windows launcher absent
+and all27 helper inputs unchanged. The original Deployment/Ready writer's UIDs,
+resourceVersions and mutable spec image remain identical before and after.
+
+This is current accepted-artifact runtime proof for the proposed pre-schema
+legacy digest pin. Historical source qualification and modern five-label
+provenance remain distinct. CI/Flux still must publish and observe the owned
+replacement writer, storage/controller identities and unchanged credential
+references. It is not production-row preservation, schema-forward, active
+admission or final KV/performance/security acceptance.

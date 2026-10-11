@@ -705,3 +705,15 @@ required. The BORTUS-only chart proposal passed local validation and root source
 render review; corrected docs and all other release payloads are verified. It
 remains uncommitted/unpublished pending runtime proof. Source historical1438
 provenance and final KV/schema compatibility remain explicitly distinct.
+
+
+## 2026-10-11 13:34 UTC: legacy digest runtime and independent closure pass
+
+[Actual legacy1438 digest probes](evidence/bortus-legacy-digest-runtime-20261011.json)
+pass on all three nodes with exact repo@3b076 runtime imageID, public Node/Prisma/
+SQLite fixtures and bounded framing. Complete probe absence, seven owned process
+identities, Windows launcher and27 helper hashes were independently verified.
+The original Ready writer/Deployment retain exact UIDs/resourceVersions/images.
+All cache/runtime prerequisites for reviewing the BORTUS-only Flux digest pin
+are now recorded; CI/Flux publication and actual replacement remain pending.
+No original database, credential, native Secret or final KV schema was changed.

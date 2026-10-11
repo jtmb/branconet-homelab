@@ -1,0 +1,317 @@
+{
+  "scope": "Actual accepted1438 digest-referenced inert public fixtures on three nodes; no application rollout",
+  "historical_source_only": true,
+  "modern_five_label_source_requalified": false,
+  "final_kv_compatible": false,
+  "actual_legacy_cache_receipt_sha256": "b4b4f762fa933cb4b4569cb6b2b21c4b782319ac23141ee5aa34eceeb0ee4f5b",
+  "actual_runtime_receipt_sha256": "7d6a2e5bb390c2de2f6fae635c0ee909bc06e0b78a86d7a6837b68c21924d08c",
+  "actual_inert_runtime": {
+    "scope": "Actual inert image Node/Prisma/reader runtime on public memory fixtures only",
+    "source_commit": "1438b278cdf21e98429b4836c018636b01b982a3",
+    "historical_source_only": true,
+    "modern_five_label_qualified": false,
+    "config_image_id": "sha256:a8f40f067fd2c3f8e0d8686147a95fa092430d23fece150a74e519498ef206fc",
+    "holder_image": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+    "started_at_utc": "2026-10-11T13:33:14.130599+00:00",
+    "phase": "completed",
+    "nodes": [
+      {
+        "host": "192.168.0.4",
+        "node": "masternode",
+        "name": "bortus-image-probe-ae259960a5f1-0",
+        "phase": "completed",
+        "spec_sha256": "f33857974820a1b8f1eec6576632b25ad63d65edea5e67e56c8e1ac662082115",
+        "create_pending_at_utc": "2026-10-11T13:33:14.361178+00:00",
+        "created": {
+          "name": "bortus-image-probe-ae259960a5f1-0",
+          "uid": "eaa674a5-cb1c-483a-9f99-ea6136f9b7e9",
+          "resourceVersion": "1121156"
+        },
+        "actual_image_id": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+        "fixture": {
+          "node": "v22.23.3",
+          "prisma": "6.19.3",
+          "rows": 2,
+          "integrity": true
+        },
+        "framing": {
+          "files": [
+            "bortus.db"
+          ],
+          "total_bytes": 8192
+        },
+        "delete": {
+          "name": "bortus-image-probe-ae259960a5f1-0",
+          "uid": "eaa674a5-cb1c-483a-9f99-ea6136f9b7e9",
+          "resourceVersion": "1121180"
+        },
+        "absence_confirmed": true
+      },
+      {
+        "host": "192.168.0.5",
+        "node": "workernode2",
+        "name": "bortus-image-probe-ae259960a5f1-1",
+        "phase": "completed",
+        "spec_sha256": "6bb410443dd7fe6ae8e7d0ecf98f979c5d48d35896d672d1d539f29ee538ae0e",
+        "create_pending_at_utc": "2026-10-11T13:33:16.259514+00:00",
+        "created": {
+          "name": "bortus-image-probe-ae259960a5f1-1",
+          "uid": "27fc626d-08fc-4aa6-b4f3-77390a75ea2b",
+          "resourceVersion": "1121185"
+        },
+        "actual_image_id": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+        "fixture": {
+          "node": "v22.23.3",
+          "prisma": "6.19.3",
+          "rows": 2,
+          "integrity": true
+        },
+        "framing": {
+          "files": [
+            "bortus.db"
+          ],
+          "total_bytes": 8192
+        },
+        "delete": {
+          "name": "bortus-image-probe-ae259960a5f1-1",
+          "uid": "27fc626d-08fc-4aa6-b4f3-77390a75ea2b",
+          "resourceVersion": "1121195"
+        },
+        "absence_confirmed": true
+      },
+      {
+        "host": "192.168.0.6",
+        "node": "workernode1",
+        "name": "bortus-image-probe-ae259960a5f1-2",
+        "phase": "completed",
+        "spec_sha256": "f76803170196c4431f85a4d18cd645193d4327ce3bed6b0fb1cb1aaff64bdd4b",
+        "create_pending_at_utc": "2026-10-11T13:33:18.012748+00:00",
+        "created": {
+          "name": "bortus-image-probe-ae259960a5f1-2",
+          "uid": "8e059eef-04eb-47d5-b085-2fcf5e2024fb",
+          "resourceVersion": "1121205"
+        },
+        "actual_image_id": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+        "fixture": {
+          "node": "v22.23.3",
+          "prisma": "6.19.3",
+          "rows": 2,
+          "integrity": true
+        },
+        "framing": {
+          "files": [
+            "bortus.db"
+          ],
+          "total_bytes": 8192
+        },
+        "delete": {
+          "name": "bortus-image-probe-ae259960a5f1-2",
+          "uid": "8e059eef-04eb-47d5-b085-2fcf5e2024fb",
+          "resourceVersion": "1121216"
+        },
+        "absence_confirmed": true
+      }
+    ],
+    "owner": "ae259960a5f1",
+    "launcher_pid": 1996017,
+    "launcher_start_ticks": "22472105",
+    "owned_execs": [
+      {
+        "pid": 1996024,
+        "start_ticks": "22472261",
+        "pod_name": "bortus-image-probe-ae259960a5f1-0",
+        "pod_uid": "eaa674a5-cb1c-483a-9f99-ea6136f9b7e9",
+        "terminal": true,
+        "started_at_utc": "2026-10-11T13:33:15.480122+00:00",
+        "actual_exit": 0,
+        "owned_child_reaped": true,
+        "completed_at_utc": "2026-10-11T13:33:15.890352+00:00"
+      },
+      {
+        "pid": 1996050,
+        "start_ticks": "22472308",
+        "pod_name": "bortus-image-probe-ae259960a5f1-0",
+        "pod_uid": "eaa674a5-cb1c-483a-9f99-ea6136f9b7e9",
+        "terminal": true,
+        "started_at_utc": "2026-10-11T13:33:15.959407+00:00",
+        "actual_exit": 0,
+        "owned_child_reaped": true,
+        "completed_at_utc": "2026-10-11T13:33:16.120034+00:00"
+      },
+      {
+        "pid": 1996068,
+        "start_ticks": "22472455",
+        "pod_name": "bortus-image-probe-ae259960a5f1-1",
+        "pod_uid": "27fc626d-08fc-4aa6-b4f3-77390a75ea2b",
+        "terminal": true,
+        "started_at_utc": "2026-10-11T13:33:17.424435+00:00",
+        "actual_exit": 0,
+        "owned_child_reaped": true,
+        "completed_at_utc": "2026-10-11T13:33:17.659818+00:00"
+      },
+      {
+        "pid": 1996083,
+        "start_ticks": "22472485",
+        "pod_name": "bortus-image-probe-ae259960a5f1-1",
+        "pod_uid": "27fc626d-08fc-4aa6-b4f3-77390a75ea2b",
+        "terminal": true,
+        "started_at_utc": "2026-10-11T13:33:17.722799+00:00",
+        "actual_exit": 0,
+        "owned_child_reaped": true,
+        "completed_at_utc": "2026-10-11T13:33:17.876688+00:00"
+      },
+      {
+        "pid": 1996102,
+        "start_ticks": "22472627",
+        "pod_name": "bortus-image-probe-ae259960a5f1-2",
+        "pod_uid": "8e059eef-04eb-47d5-b085-2fcf5e2024fb",
+        "terminal": true,
+        "started_at_utc": "2026-10-11T13:33:19.143142+00:00",
+        "actual_exit": 0,
+        "owned_child_reaped": true,
+        "completed_at_utc": "2026-10-11T13:33:19.469134+00:00"
+      },
+      {
+        "pid": 1996121,
+        "start_ticks": "22472664",
+        "pod_name": "bortus-image-probe-ae259960a5f1-2",
+        "pod_uid": "8e059eef-04eb-47d5-b085-2fcf5e2024fb",
+        "terminal": true,
+        "started_at_utc": "2026-10-11T13:33:19.516631+00:00",
+        "actual_exit": 0,
+        "owned_child_reaped": true,
+        "completed_at_utc": "2026-10-11T13:33:19.706748+00:00"
+      }
+    ],
+    "application_deployed": false,
+    "production_data_read": false,
+    "admission_accepted": false,
+    "overall_live_restore_acceptance": false,
+    "legacy_archive_binding_sha256": "6e33fb1546f06def0e0508add105ecb06d86765020bd711e6e5f1ea1d498f2ea",
+    "alias_receipt_sha256": "b4b4f762fa933cb4b4569cb6b2b21c4b782319ac23141ee5aa34eceeb0ee4f5b",
+    "reader_source_sha256": "cffc1f76dbe3d4230394d310affdb0acf692559a79546b4ad345ecc39c0712e4",
+    "kubectl_sha256": "65691ff77eb6fa44c908b77a1082c9f092c3b9733b5cefabec0d1104890e21a8",
+    "original_before": {
+      "deployment": {
+        "name": "bortus",
+        "uid": "4deedc67-038a-4f82-a2d4-a83af316f2f6",
+        "resourceVersion": "1078135"
+      },
+      "writer": {
+        "name": "bortus-d69b559bb-dmrjv",
+        "uid": "4c674c03-985c-4ca8-b7e9-59a13ea7e3a3",
+        "resourceVersion": "1052023"
+      },
+      "containers": [
+        {
+          "name": "bortus",
+          "image": "bortus:migration-1438b27"
+        }
+      ]
+    },
+    "original_after": {
+      "deployment": {
+        "name": "bortus",
+        "uid": "4deedc67-038a-4f82-a2d4-a83af316f2f6",
+        "resourceVersion": "1078135"
+      },
+      "writer": {
+        "name": "bortus-d69b559bb-dmrjv",
+        "uid": "4c674c03-985c-4ca8-b7e9-59a13ea7e3a3",
+        "resourceVersion": "1052023"
+      },
+      "containers": [
+        {
+          "name": "bortus",
+          "image": "bortus:migration-1438b27"
+        }
+      ]
+    },
+    "completed_at_utc": "2026-10-11T13:33:19.889704+00:00",
+    "inert_public_runtime_qualified": true,
+    "terminal": true,
+    "actual_exit": 0
+  },
+  "independent_root_closure": {
+    "verified_at_utc": "2026-10-11T13:33:46.891712+00:00",
+    "scope": "Independent actual accepted1438 digest inert public three-node runtime closure; historical source only/no schema data acceptance",
+    "receipt_sha256": "7d6a2e5bb390c2de2f6fae635c0ee909bc06e0b78a86d7a6837b68c21924d08c",
+    "actual_exit": 0,
+    "windows_owner": {
+      "pid": 32344,
+      "exact_start_utc": "2026-10-11T13:33:13.8635763Z",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--exec",
+        "python3",
+        "-B",
+        "/home/brajam/.local/share/branconet-migration/legacy1438-inert-preparation-ae259960a5f1/inert-runtime-legacy1438.py",
+        "--owner",
+        "ae259960a5f1",
+        "--manifest-sha256",
+        "4f88003952c1441193f55dd273dadc3edb1c94bf8433e64d7e2f92e97405bbe0",
+        "--alias-receipt",
+        "/home/brajam/.local/share/branconet-migration/legacy-runtime-alias-1438-79031d9abdcc/record.json",
+        "--alias-receipt-sha256",
+        "b4b4f762fa933cb4b4569cb6b2b21c4b782319ac23141ee5aa34eceeb0ee4f5b"
+      ],
+      "owner": "ae259960a5f1",
+      "owned_process_absent": true
+    },
+    "linux_owners": [
+      {
+        "pid": 1996017,
+        "start_ticks": "22472105",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1996024,
+        "start_ticks": "22472261",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1996050,
+        "start_ticks": "22472308",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1996068,
+        "start_ticks": "22472455",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1996083,
+        "start_ticks": "22472485",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1996102,
+        "start_ticks": "22472627",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1996121,
+        "start_ticks": "22472664",
+        "owned_process_absent": true
+      }
+    ],
+    "complete_pod_list_resource_version": "1121381",
+    "all_three_probe_name_uid_absences_fresh": true,
+    "owner_label_absent": true,
+    "original_writer_ready_same_uid_and_images": true,
+    "original_deployment_same_uid_ready": true,
+    "helpers_unchanged": true,
+    "secret_value_read": false,
+    "application_deployed": false,
+    "overall_live_restore_accepted": false
+  },
+  "ci_flux_rollout_done": false,
+  "production_full_row_restore_accepted": false,
+  "schema_migration_accepted": false,
+  "final_security_performance_or_live_release_accepted": false,
+  "verified_at_utc": "2026-10-11T13:34:43.984504+00:00"
+}
