@@ -281,9 +281,9 @@ Deployment were subsequently explicitly recovered (see the current evidence belo
 
 The [current admission receipt](../evidence/bortus-admission-current-20261011.json)
 records successful explicit cleanup of both the 25-case and subsequent one-case
-fixtures, preserving each original refusal. The latest distinct run completed
+fixtures, preserving each original refusal. An earlier distinct run completed
 all 40 protection cases, then refused a legacy ReplicaSet dry-run response. Its
-two persistent inert fixtures are retained for explicit recovery. A separate
+two persistent inert fixtures were subsequently explicitly recovered. A separate
 actual HTTP201 dry-run response has a valid UID and no resourceVersion; its name
 remains absent. This diagnostic does not reconstruct the earlier reply or grant
 the missing three-case, whole-row restore, schema or application acceptance.
@@ -304,3 +304,41 @@ were independently verified. The selected default scan still reports one
 individually reviewed unchanged public prose finding. Historical findings,
 performance and final live-image acceptance remain open. This candidate is not
 deployed.
+
+## 2026-10-11: completed admission stage and current verification preparation
+
+The [current admission receipt](../evidence/bortus-admission-current-20261011.json)
+records a distinct completed operator run: 40 policy outcomes plus three legacy
+positive dry-run checks, all eleven operations confirmed, and 135.613 seconds
+within the original 300-second budget. The original writer stays Ready with the
+same template. Both inert fixtures have named404 and complete LIST/name/UID
+absence proof. Six guard UID/RV/spec pins and chart/CI/Flux stable fields remain
+exact. The Flux owner's status RV may advance during normal reconciliation,
+with fresh Ready/current-generation proof at the same UID/revision.
+
+The root reporting wrapper incorrectly expected 43 entries in the policy-only
+array and exited 1 after operator completion. Independent read-only verification
+checks the original unchanged completed transcript, strict attribution, separate
+three positives, all confirmed deletes and fresh current closure; it exits 0.
+Its first overly strict full Flux owner RV equality assertion is also retained.
+No admission probes were replayed or lost responses reconstructed.
+
+The [pinned current-verification proposal](../evidence/bortus-pinned-current-root-20261011.json)
+passes 117 local controls with isolated exact-source suite copies. The original
+shared fixture-directory setup failure remains retained. This separately qualified
+private callback reuses the completed 43 transcript as labelled static evidence,
+with fresh six exact guard UID/RV/spec GETs, source/image/publication fences and
+two distinct schema receipts inside each callback floor. All six callbacks share
+one absolute 300-second deadline. Actual producer wiring, independent whole-row
+restore, final checkpoint, schema upgrade, rollback and release acceptance remain
+open. No live callback or application entrypoint was dispatched.
+
+The [log-choice candidate review](../evidence/bortus-log-container-root-review-20261011.json)
+verifies 342 raw Git files, 192 original artifacts and 341 retained source and 4262
+compiled files. Six focused controls, fresh types/lint/build and six HTTP/process
+checks pass. Eight browser checks belong to an overall failed attempt; three
+complementary checks pass on the same immutable build with exact compiled shared
+focus-refresh attribution. This is not one uninterrupted 11-pass run. The selected
+ten-file default scan retains one independently reviewed unchanged public prose
+finding, zero untriaged findings and two historical provenance findings still
+open. This candidate is not deployed; performance and whole-audit gates stay open.
