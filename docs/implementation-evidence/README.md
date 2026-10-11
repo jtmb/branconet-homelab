@@ -131,3 +131,6 @@ Current [coherent terminal and real-zoom qualification](terminal-final-qualifica
 
 
 [Native ASCII prefix qualification](native-ascii-qualification.json) binds one allocation-free string scan fast path to33 focused/197 total units, fresh Windows Node22 build/lint/types/fourHTTP and exact312 retained working source inputs. Scalar grammar, byte charging, complete inventory and limits remain unchanged. Current performance remains unmeasured; earlier32eb no-regression failure is retained.
+
+
+Exact3f9b21c passed197units/four production HTTP suites on Linux Node22.23.3 and all unchanged frozen six-profile/three-pair assertion inventories. Overall no-regression performance remains failed: native200/1k/large and warm1k concurrent/25large sequential regress; no final image/live/AT pass. Original source modes, reports, recalculated percentiles and owned cleanup are retained in [3f9 Linux receipt](implementation-evidence/paired-3f9b21c-qualification.json).
