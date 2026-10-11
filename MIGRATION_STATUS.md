@@ -463,3 +463,18 @@ zero skips and frozen source. Together with the preceding 423-case scoped run,
 the two runs cover 465 unique current cases; only the three staging Python files
 changed between runs. This is local qualification; actual preload/runtime,
 active admission, fresh checkpoint and independent restore remain pending.
+
+
+## 2026-10-11 10:21 UTC: actual three-node staging and inert runtime
+
+The [actual receipt](evidence/bortus-holder-preload-runtime-7e30-20261011.json)
+confirms source-bound preload on all three nodes, separately verified digest
+cache names, and Node 22.23.3/Prisma 6.19.3 public SQLite integrity plus unchanged
+reader framing on every node. All fixture Pods are deleted with UID/RV and
+complete-list absence; the original writer UID/image remains unchanged. No
+production PVC/Secret data was read and no app entrypoint ran. Three failed
+probe attempts and the precise cache/display-name/launcher corrections remain
+recorded. Read-only production-holder, active admission, fresh cold checkpoint,
+independent complete-row recovery and final application/performance gates stay
+open. Coordination remains this root plus two sub-agents; all seven old BORTUS
+execution chats are currently verified archived.

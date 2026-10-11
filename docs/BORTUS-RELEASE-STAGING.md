@@ -111,7 +111,8 @@ the old remote commands created new sessions after sudo authorization. Its
 protected root/node refused or uncertain records remain retained. Local Python
 child tests reproduce the session mismatch and qualify shared-session handling;
 they do not execute sudo, SSH, ctr or an operator password. Actual new preload
-and holder/runtime acceptance remain with the migration owner.
+and holder/runtime acceptance remain with the migration owner. The later actual
+three-node result and its limited runtime scope are recorded below.
 
 Root independently verifies selected native commit `15fb94ba`: seven exact raw
 files/modes, 86 original artifacts, both unchanged dependencies and the final
@@ -123,9 +124,41 @@ records the exact scope; it grants no actual export, preload or runtime acceptan
 The actual `7e30b9b4` holder export completed at 09:19:37 UTC on 2026-10-11.
 The protected 1,150,322,688-byte archive has verified config/source/layer bindings;
 its [receipt](../evidence/bortus-holder-source-image-7e30-20261011.json) records
-export separately from still-pending three-node preload/runtime/admission.
+export separately from the later three-node preload and public-fixture runtime.
+Admission and production-holder/data qualification remain pending.
 A pinned Trivy 0.75.0 default image and image-config scan completed with zero
 Secret findings and 346 vulnerability entries (67 High, one Critical). Scanner
 exit 1 represents findings, not an accepted clean image. Four fixable High entries
 are in bundled kubectl's Go/x/net dependencies. Its production remediation and
 the inert Node-only holder reachability review remain open; no app entrypoint ran.
+
+The fresh explicit preload completed on all three nodes at 10:03:40 UTC on
+2026-10-11. The [actual staging/runtime receipt](../evidence/bortus-holder-preload-runtime-7e30-20261011.json)
+binds every node to source/config/layers and the same OCI manifest. The first
+public runtime probe exposed `ErrImageNeverPull`: ctr import had retained the
+release tag without a digest image-name alias. Root separately created each
+absent exact `docker.io/library/bortus@sha256:…` name, without force or changing
+the source, and verified its target plus source/config/layers before and after.
+This is a recorded operator cache correction, not a capability of the preload helper.
+
+The actual kubelet Pod spec and status.imageID use that exact digest, while
+status.image displays the verified source release tag. The failed strict display-name
+comparison remains recorded. Current production-reader/consumer fencing still
+needs a narrow immutable-imageID correction; a display name cannot replace digest proof.
+
+The final public-fixture attempt completed at 10:21:15 UTC: Node 22.23.3,
+Prisma 6.19.3, two public SQLite rows and integrity, plus the unchanged bounded
+Node reader's 8,192-byte framing passed on every node. The image entrypoint was
+overridden; token automount was disabled, root filesystem was read-only and
+only an owned writable memory emptyDir held the fixture. Each Pod was deleted
+with current UID/RV preconditions and complete-list absence; the original writer
+UID/image remained unchanged. No production PVC/Secret data was read. This
+qualifies that inert public runtime, not a read-only production PVC holder,
+active admission, application startup, fresh checkpoint or independent recovery.
+
+Three failed attempts remain retained. The third was a private launcher quoting
+error: the WSL default shell expanded dollar-prefixed Prisma methods before SQL.
+The final launcher used base64 plus `--exec` and verified decoded source SHA
+before execution. Source/log/terminal identities and the exact cleanup of each
+failed fixture remain in protected records. The image vulnerability findings
+and final application performance acceptance stay separate and unresolved.

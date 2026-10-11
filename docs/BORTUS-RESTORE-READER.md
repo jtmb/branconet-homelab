@@ -54,3 +54,12 @@ POSIX files/memfds and controlled Python children substituted for kubectl. It
 tests inherited FD/stdin-only program delivery, drift, deadlines, ownership and
 pre-return cleanup. No operator files, kubectl, Node, Docker, SSH or private API
 are used. The full executor and live acceptance remain coordinator-owned.
+
+
+The [actual inert public-fixture runtime](../evidence/bortus-holder-preload-runtime-7e30-20261011.json)
+now executes the bounded Node reader on all three nodes. It uses writable memory
+fixtures, not a production PVC or this full ReaderLauncher composition. Actual CRI
+status.image displays a verified release tag despite exact digest Pod spec and
+status.imageID. The current strict display-name comparison requires a separately
+qualified narrow correction before production-holder acceptance; no broader
+name/config-ID substitution is authorized by the fixture result.

@@ -440,6 +440,8 @@ this preparation is for an explicit inert Node reader, with no application start
 Default image/image-config Secret scanning has zero findings. The scanner reports
 346 vulnerability entries, including four fixable High bundled-kubectl entries;
 production remediation and inert-holder reachability review remain required.
-Three-node OCI preload, actual Node reader/runtime and guard qualification, fresh
-checkpoint and independent complete-row restore remain open. All original sources
+Three-node OCI preload and actual inert public-fixture Node/Prisma/reader runtime
+now pass with [separate actual evidence](../evidence/bortus-holder-preload-runtime-7e30-20261011.json).
+Read-only production-holder fencing, active guard qualification, fresh checkpoint
+and independent complete-row restore remain open. All original sources
 and data stay retained. No build/export/scanner result grants those later gates.
