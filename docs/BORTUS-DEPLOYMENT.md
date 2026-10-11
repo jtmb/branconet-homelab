@@ -210,3 +210,23 @@ BORTUS storage is healthy. This prerequisite pauses Helm upgrades while leaving
 workload self-healing available; it installs no guard, new app image, schema or
 KV adoption. The completed cold checkpoint and originals remain intact. Final
 app performance, guarded release and independent full-row restore stay open.
+
+## Combined source and maintenance follow-through
+
+The [root follow-through receipt](../evidence/bortus-app-maintenance-follow-through-20261011.json)
+independently verifies application source c29fc8c: 333 raw Git blobs/modes, 20
+exact original artifacts, 332 unchanged retained Linux source/test files and
+4,262 compiled outputs. Fresh build, 214 units, lint/types and all four strict
+HTTP suites exited zero with no skips; the owned supervisor and containers are
+absent. This includes the Longhorn robustness-only health classification fix
+and scalar known-field duplicate flags. It establishes functional correctness,
+not the still-open A07/A21 performance gate or final image/live acceptance.
+
+Chart docs-only follow-through 564fbc56894cca4d6b7934bff9c46311306cdc08 passed
+main validation/promotion run 38137251240. At 11:55:44 UTC Flux source/owner are
+Ready at that revision, BORTUS maintenance remains unchanged and every other
+release is reconciled. Original writer/data/workload/RBAC/node preservation
+checks pass. A prior 11:55:11 read caught four releases still reconciling their
+unchanged packages; that actual nonpassing observation remains recorded. No
+manual reconciliation, application restart, image upgrade, guard or adoption
+was dispatched. The original completed cold checkpoint and data remain retained.

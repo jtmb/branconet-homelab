@@ -94,6 +94,23 @@ have closed with actual zero exits and owned cleanup. This is functional evidenc
 not a new performance pass. Work stays with root plus two subagents; seven old
 BORTUS chats remain archived.
 
+## 2026-10-11 11:55 UTC: functional evidence and docs follow-through verified
+
+[Root follow-through evidence](evidence/bortus-app-maintenance-follow-through-20261011.json)
+independently verifies c29fc8c's 333 raw source blobs/modes, 20 artifacts,
+332 retained Linux source files and 4,262 compiled files. Fresh build, 214 units,
+lint/types and four HTTP suites pass with zero skips and owned process closure.
+This covers the health-counter fix and scalar duplicate flags; performance,
+final image/live engine and independent complete-row restore remain open.
+
+Chart docs-only commit 564fbc5 is validated/promoted and observed at the same
+Ready source/owner revision at 11:55:44 UTC. All other releases are reconciled;
+same writer/storage/workload/RBAC/node preservation passes. The earlier read
+while four unchanged releases reconciled is retained. The grant-free external
+SA and BORTUS-only Helm suspension remain in place, with no active guard,
+schema/adoption or new app image. Root plus two subagents continue; seven old
+BORTUS chats are archived and all original data is preserved.
+
 ## Current orchestration and application qualification
 
 Three agents are active: coordinator, BORTUS application integration, and native transport/evidence. Seven identifiable former BORTUS execution/review chats are confirmed archived; unrelated projects remain unchanged. Before archiving the additional idle dependency/runtime chat, its clean committed handoff was preserved as a verified complete-history Git bundle and raw source archive outside managed checkouts. Its package, lockfile and Dockerfile match the current app source; [preservation evidence](evidence/bortus-runtime-thread-archive.json) records the exact artifacts. Earlier archiving removed managed checkouts, so application work was recovered from snapshot da84f0f00aeb0daca299358e93fc7074acd2055e (parent b82980e783daf09e1aabe00f3a5db99fef3e13fa), including 17 changed paths and both qualification logs. All six original source-file hashes were recovered; the workbench discrepancy was traced to mixed line endings by replaying the original patch records. Source and evidence backups remain outside the managed checkouts.
