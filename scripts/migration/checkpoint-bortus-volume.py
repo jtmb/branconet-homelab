@@ -449,6 +449,22 @@ class Checkpoint:
         self.journal.save()
         return obj
 
+    def delete_owned_holder(self):
+        # A lost reply or failed confirmation must remain inspectable, never retried.
+        require('holder_delete_intent' not in self.r, 'Holder deletion already attempted; inspect only')
+        holder = self.holder()
+        self.r['holder_delete_intent'] = {'identity': identity(holder), 'state': 'pending'}
+        self.journal.save()
+        try:
+            self.client.delete_holder(holder)
+        except Exception:
+            self.r['holder_delete_intent']['state'] = 'uncertain'
+            self.journal.save()
+            raise
+        self.r['holder_delete_intent']['state'] = 'confirmed'
+        self.r['holder_delete_accepted'] = True
+        self.journal.save()
+
     def capture(self):
         body = self.r['holder_proposal']
         # Qualify admission/schema before suspending controllers or stopping a writer.
@@ -543,9 +559,7 @@ class Checkpoint:
         self.wait(backup_done, 1800)
         self.r['encrypted_nas_backup_complete'] = True
         self.journal.save()
-        holder = self.holder()
-        self.client.delete_holder(holder)
-        self.r['holder_delete_accepted'] = True
+        self.delete_owned_holder()
         self.wait(lambda: all(identity(p)['uid'] != self.r['holder_identity']['uid']
                              for p in self.client.get('pods', namespace='bortus').get('items', [])), 120)
         self.r['owned_holder_removed'] = True

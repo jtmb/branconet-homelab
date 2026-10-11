@@ -1,0 +1,56 @@
+{
+  "scope": "Durable no-replay holder delete intent; synthetic API and actual POSIX filesystem fault qualification",
+  "source_sha256": {
+    "scripts/migration/checkpoint-bortus-volume.py": "684ebdb584b107b68d672db911509c34659b86fdab6b58bccc8f1ba890054a2a",
+    "scripts/migration/tests/test_bortus_cold_delete_intent.py": "e68b734a7d636c7fe1d7b6e37e2b167e992f1caebe8943b48874645cc6e6614b",
+    "scripts/migration/tests/test_bortus_cold_checkpoint.py": "c5193b13b44a0635a8aaeb34c17ab206886a433ca7524b267f177f3be27b0130",
+    "scripts/migration/tests/test_bortus_cold_journal.py": "a1cfa8ebac5ee32c21b3bda2a87601048f0ddac05f761486c5883348532d07dc"
+  },
+  "artifacts": {
+    "initial-checkpoint-bortus-volume.py": "684ebdb584b107b68d672db911509c34659b86fdab6b58bccc8f1ba890054a2a",
+    "initial-stderr.log": "1a69379b6acec2d8645abc0daba2cc430b6a85a0ce1e211b78e5b76dd3582741",
+    "initial-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "initial-terminal.json": "25d7c8b33e5073ad1e31701db0c2e8b8bc58962ce5d8a8ec6b9970181ea100b7",
+    "initial-test_bortus_cold_checkpoint.py": "c5193b13b44a0635a8aaeb34c17ab206886a433ca7524b267f177f3be27b0130",
+    "initial-test_bortus_cold_delete_intent.py": "3149a02d060929e00ea860bfaab3f97e65ebdae742ce3ee37469b51c17c122af",
+    "initial-test_bortus_cold_journal.py": "a1cfa8ebac5ee32c21b3bda2a87601048f0ddac05f761486c5883348532d07dc",
+    "qualified-checkpoint-bortus-volume.py": "684ebdb584b107b68d672db911509c34659b86fdab6b58bccc8f1ba890054a2a",
+    "qualified-stderr.log": "36f72e15fa844d7447c024d19598e88a9b561ae37a9114c47bf90f7c347fddc2",
+    "qualified-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qualified-terminal.json": "dfde7130ef6df3863b24899f00caf4599c95f4daca0d60f0cf3947ecc85f4be2",
+    "qualified-test_bortus_cold_checkpoint.py": "c5193b13b44a0635a8aaeb34c17ab206886a433ca7524b267f177f3be27b0130",
+    "qualified-test_bortus_cold_delete_intent.py": "e68b734a7d636c7fe1d7b6e37e2b167e992f1caebe8943b48874645cc6e6614b",
+    "qualified-test_bortus_cold_journal.py": "a1cfa8ebac5ee32c21b3bda2a87601048f0ddac05f761486c5883348532d07dc"
+  },
+  "artifact_directory": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-cold-delete-intent-20261011",
+  "tests": {
+    "actual_exit_code": 0,
+    "actual_tests": 29,
+    "new_posix_delete_cases": 6,
+    "reported_seconds": 0.058,
+    "initial_run_exit_code": 0,
+    "initial_tests": 28,
+    "initial_qualification_limit": "No failed run; added uncertainty-write failure coverage and reran affected group only"
+  },
+  "behavior": [
+    "Exact live holder identity includingUID/resourceVersion durably pending before preconditioned delete",
+    "Submission success durably confirmed; ambiguity durably uncertain when possible",
+    "Failed confirmation or uncertainty flush retains prior pending state",
+    "Any retained delete intent refuses another deletion request",
+    "Reopening/resuming reads state and restores controllers without deletion retry",
+    "Foreign holder identity refused before pending or API",
+    "Error response content never saved"
+  ],
+  "full_helper_suite_for_this_source_run": false,
+  "production_api_calls": 0,
+  "production_data_reads": 0,
+  "production_mutations": 0,
+  "power_loss_test": false,
+  "live_capture_or_independent_restore": false,
+  "pending": [
+    "Physical-volume PV/claim alias fence",
+    "Actual bounded durable watch collector",
+    "Qualified image, preload and admission",
+    "Fresh encrypted independent restore and full-data equality"
+  ]
+}
