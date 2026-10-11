@@ -1,0 +1,407 @@
+{
+  "productionCommit": "6fb0104329bec4ad6a5f25fcadf40713b38c4b51",
+  "parent": "cd4ff760fd6687180f9354fcd90196ff1c7e1cdd",
+  "scope": "New opt-in fixture/harness/docs only; production/build unchanged",
+  "capturedAt": "2026-10-11T05:37:38.672279+00:00",
+  "samples": 12,
+  "summaries": [
+    {
+      "route": "/deploy",
+      "cache": "cold",
+      "samples": 3,
+      "lcpMedianMs": 1696,
+      "initialScriptDurationMedianMs": 79.238,
+      "initialTaskDurationMedianMs": 260.467,
+      "dialogClickToFrameMedianMs": 388.2000000178814,
+      "initialActualEncodedBytes": [
+        164448,
+        164448,
+        164448
+      ],
+      "optionalActualEncodedBytes": [
+        3281,
+        3281,
+        3281
+      ],
+      "initialOfflineCompression": {
+        "files": 12,
+        "rawBytes": 510489,
+        "gzipBytes": 159329,
+        "brotliBytes": 136955
+      },
+      "optionalOfflineCompression": {
+        "files": 1,
+        "rawBytes": 7271,
+        "gzipBytes": 2885,
+        "brotliBytes": 2572
+      }
+    },
+    {
+      "route": "/deploy",
+      "cache": "warm",
+      "samples": 3,
+      "lcpMedianMs": 628,
+      "initialScriptDurationMedianMs": 79.181,
+      "initialTaskDurationMedianMs": 281.71000000000004,
+      "dialogClickToFrameMedianMs": 214.40000000596046,
+      "initialActualEncodedBytes": [
+        0,
+        0,
+        0
+      ],
+      "optionalActualEncodedBytes": [
+        0,
+        0,
+        0
+      ],
+      "initialOfflineCompression": {
+        "files": 12,
+        "rawBytes": 510489,
+        "gzipBytes": 159329,
+        "brotliBytes": 136955
+      },
+      "optionalOfflineCompression": {
+        "files": 1,
+        "rawBytes": 7271,
+        "gzipBytes": 2885,
+        "brotliBytes": 2572
+      }
+    },
+    {
+      "route": "/pods",
+      "cache": "cold",
+      "samples": 3,
+      "lcpMedianMs": 592,
+      "initialScriptDurationMedianMs": 320.379,
+      "initialTaskDurationMedianMs": 827.4359999999999,
+      "dialogClickToFrameMedianMs": 669.6999999880791,
+      "initialActualEncodedBytes": [
+        161058,
+        161058,
+        161058
+      ],
+      "optionalActualEncodedBytes": [
+        7770,
+        7770,
+        7770
+      ],
+      "initialOfflineCompression": {
+        "files": 12,
+        "rawBytes": 501226,
+        "gzipBytes": 155961,
+        "brotliBytes": 134006
+      },
+      "optionalOfflineCompression": {
+        "files": 2,
+        "rawBytes": 17716,
+        "gzipBytes": 6978,
+        "brotliBytes": 6220
+      }
+    },
+    {
+      "route": "/pods",
+      "cache": "warm",
+      "samples": 3,
+      "lcpMedianMs": 328,
+      "initialScriptDurationMedianMs": 218.038,
+      "initialTaskDurationMedianMs": 747.067,
+      "dialogClickToFrameMedianMs": 586.6999999880791,
+      "initialActualEncodedBytes": [
+        0,
+        0,
+        0
+      ],
+      "optionalActualEncodedBytes": [
+        0,
+        0,
+        0
+      ],
+      "initialOfflineCompression": {
+        "files": 12,
+        "rawBytes": 501226,
+        "gzipBytes": 155961,
+        "brotliBytes": 134006
+      },
+      "optionalOfflineCompression": {
+        "files": 2,
+        "rawBytes": 17716,
+        "gzipBytes": 6978,
+        "brotliBytes": 6220
+      }
+    }
+  ],
+  "browserLauncher": {
+    "source": "cd4ff760 unchanged production build; new measurement harness",
+    "startedAt": "2026-10-11T05:33:31.5333973Z",
+    "pid": 42036,
+    "terminal": true,
+    "exitCode": 0,
+    "completedAt": "2026-10-11T05:34:43.7166741Z"
+  },
+  "quality": {
+    "source": "cd4ff760 production unchanged; optionalbrowser/ui-fixture test-only stage",
+    "pid": 6252,
+    "startedAt": "2026-10-11T05:35:15.1318476Z",
+    "terminal": true,
+    "stages": [
+      {
+        "stage": "lint",
+        "exitCode": 0
+      },
+      {
+        "stage": "typecheck",
+        "exitCode": 0
+      }
+    ],
+    "phase": "typecheck",
+    "exitCode": 0,
+    "completedAt": "2026-10-11T05:36:08.2704783Z"
+  },
+  "sources": [
+    {
+      "path": "k8s-rewrite/front-end/tests/optional-code.browser.mjs",
+      "sha256": "5be30eb4406ad9b350d8764db9de9a5fdcdb02d70066e48612d933da9ed79c16"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/ui-fixture.ts",
+      "sha256": "cfe0385d8ec14e09162dbecb95ee8a654fc2cd1595a6aa85c3d35a0ccd2fc022"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "optional-code-attempt1-preservation.json",
+      "sha256": "66a03af900362a9a748ff3e0c2807c740679db7973555c607431ef7b96351d2e",
+      "bytes": 642
+    },
+    {
+      "path": "optional-code-browser-attempt1.json",
+      "sha256": "dce68492b0b947e61afe907376710680d4ff88b20967a420b11d34b40a4acf0a",
+      "bytes": 78181
+    },
+    {
+      "path": "optional-code-browser-attempt1.mjs",
+      "sha256": "8807af940f2fd335557b2889fb6b8406c448fd8cf5c9f3625df7071d7e345ab1",
+      "bytes": 14527
+    },
+    {
+      "path": "optional-code-browser-attempt2.json",
+      "sha256": "cca1481ae02989d251b19ea99692a870c648df7a17d88deac16c1021599f9698",
+      "bytes": 7936
+    },
+    {
+      "path": "optional-code-browser-attempt2.mjs",
+      "sha256": "6374ca90fd0e5b5976bbe162c191c9ac89c2d7e8f54616ed12bf0523bb66f022",
+      "bytes": 15091
+    },
+    {
+      "path": "optional-code-browser-summary.json",
+      "sha256": "38dbda7e1f75ca2cb9d70b756b39cab8ee4c77e8f9c70e3cfd0e3190fe2e563e",
+      "bytes": 3113
+    },
+    {
+      "path": "optional-code-browser.json",
+      "sha256": "2e119a4d962dea842ae99f1ecaded3ade42daa17f2fea9debe824be291e9fb17",
+      "bytes": 100938
+    },
+    {
+      "path": "optional-code-browser1-cli.txt",
+      "sha256": "914dad373ab7774c659caefe2988f58ee9164859f65c03c41be5050a87112689",
+      "bytes": 432
+    },
+    {
+      "path": "optional-code-browser1-launcher.json",
+      "sha256": "3e83a934a2c19a7bcb2f8455c2be0f37d103eddcf50baf9e32afd8063864ef78",
+      "bytes": 236
+    },
+    {
+      "path": "optional-code-browser1-source.json",
+      "sha256": "c09808624a33105bc05de951d99d30e2fa4a961b562da96338f0d74912075998",
+      "bytes": 3577
+    },
+    {
+      "path": "optional-code-browser2-cli.txt",
+      "sha256": "597245e55682845da198c22295ed80fe8bc45652eb4a94df8bb32ef9c40edc60",
+      "bytes": 37
+    },
+    {
+      "path": "optional-code-browser2-launcher.json",
+      "sha256": "eabdc817b63ac3450b6a6987f58a5d632774a87e2119fffd78f8a7861eb152b8",
+      "bytes": 236
+    },
+    {
+      "path": "optional-code-browser2-source.json",
+      "sha256": "d9961c249315a33c87fe47bc3078555c99798bd459f9c3b7f6295b8526fe214a",
+      "bytes": 3645
+    },
+    {
+      "path": "optional-code-browser3-cli.txt",
+      "sha256": "914dad373ab7774c659caefe2988f58ee9164859f65c03c41be5050a87112689",
+      "bytes": 432
+    },
+    {
+      "path": "optional-code-browser3-launcher.json",
+      "sha256": "b10f021fef8cbf076eb627cfbb8ce244873f6578837563e19b360db98bdaeab0",
+      "bytes": 236
+    },
+    {
+      "path": "optional-code-browser3-source.json",
+      "sha256": "946e6c707b2d044fa46cb9a468e17f51e2e5148ed96d6dc1c29d9cf85c0a62e1",
+      "bytes": 3639
+    },
+    {
+      "path": "optional-code-quality-cli.txt",
+      "sha256": "17541a599b030f2272111622c68a29255f2803bc985091692175770b9988043e",
+      "bytes": 124
+    },
+    {
+      "path": "optional-code-quality.json",
+      "sha256": "0774408329131703804834510d7246e546cf6b37f3deb88332b4ff9317748497",
+      "bytes": 418
+    },
+    {
+      "path": "optional-code-ui-fixture-attempt1.ts",
+      "sha256": "0772362be17c300e53cd5ff3ae1c95ff773f33099a0bcc70b170fd0d7e1e10b8",
+      "bytes": 28327
+    }
+  ],
+  "docsReviewed": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "sha256": "00a52c258f628c649b6be8ceb27b22433eee83000ed5952880ad0ba01a570cc4",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "sha256": "26511f2b9784567cbc3003adbf526c7056bc41021d18305e6848aac4993548ed",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "sha256": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "sha256": "70f72f8cff246e9600c92fcf127684f9bc7c94b285017c5e12cfb55603fa4572",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "sha256": "18c810b8c7a3db512f6719c26b65294764c3bab3c7ded00e2493f37c7b81b4a2",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "sha256": "c88d96fd058938b72eefa179cabd2762f9caa5d7f4ad540da7aee82f7a648b68",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "sha256": "5ba08b70f7eba4957198552bfc44d9f4c83bb354f3739fdefd7cfca28b42a5a9",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "sha256": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "sha256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "sha256": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "sha256": "6ef1fd0d9a899e6025bc6bf6ceef66362f7e0966e5b07d914fd5e29052ccfaf5",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "sha256": "8c5b41364bd16510049e090423cc71d3069115a08e5e5e22792f4e1126679cec",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "sha256": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "sha256": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "sha256": "cb35a994799df82886f9577555e1f53c8057d512d831e54acb3144927fe7a58a",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "sha256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "sha256": "402ee008499fbc62f094f6f0e87ba54eaaebab927d706d8b2439c161c5ff74e6",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "sha256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "sha256": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "sha256": "5887492cded6d9ae8945efc6f3bf52ba905f7aa9c892dab75e8cfb7c989a122f",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "sha256": "eec908e61f1a14465c18f7313cff1bb867f4954ce924f56a48fc12e7a830cfd5",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "sha256": "471a811dec0cf33f1cd7d5e544d21c20f168bf46d527213940a4dfded9dc4eb1",
+      "review": "Read current test/measurement and deployment contract; affected docs updated, historical evidence preserved"
+    }
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "actualTerminalExit": 0,
+      "scope": "12geometry/focus/no-mutation samples, directstaticgateway withoutproductionheaders; allwarm scripts retransferred, not warm-cache proof"
+    },
+    {
+      "attempt": 2,
+      "actualTerminalExit": 1,
+      "scope": "ColdNextimmutable/gzip sample passed; disk-only cache oracle failed; warm rows notcaptured beforeassertion, originalcause notinferred"
+    },
+    {
+      "attempt": 3,
+      "actualTerminalExit": 0,
+      "scope": "12samples; everywarm initialscript requestServedFromCachetrue/fromDiskCachefalse/encoded0; directmemorycache proof"
+    }
+  ],
+  "limitations": [
+    "Current-source contribution observations, not before/after audit speed acceptance",
+    "CDP ScriptDuration/TaskDuration are renderer elapsed CPU task metrics; trace durations overlap and must not be summed as totalCPU",
+    "Offline gzip/defaultBrotli are estimates of exact public chunks; encodedDataLength is actual local response/cache observation",
+    "Locator wall timings include automation/scroll overhead; event-to-frame is separately observed",
+    "Buffered initial LCP is recorded before explicit interaction; no Lighthouse/field/CoreWebVitals claim",
+    "Existing fixture runner disabled and no real provision or shell executed",
+    "No dynamic credential values/tokens/rawDOM/raw trace event arguments persisted",
+    "Firstterminal optional feature not measured in this stage",
+    "Scoped source6fb rawscan314verified/2historic untriaged; finalcurrentimage/source scan remainsseparate"
+  ]
+}

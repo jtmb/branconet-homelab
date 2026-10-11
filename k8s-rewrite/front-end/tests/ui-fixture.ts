@@ -1,5 +1,5 @@
 import { spawn, execFileSync, type ChildProcess } from "node:child_process";
-import { mkdtemp, writeFile, rm, readFile } from "node:fs/promises";
+import { mkdtemp, writeFile, rm, readFile, cp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { createServer, request as forward, type Server } from "node:http";
@@ -37,6 +37,7 @@ let delayKvCapabilities = false;
 let releaseKvCapabilities: (() => void) | undefined;
 const kvFixture = process.env.BORTUS_UI_KV_FIXTURE === "true";
 const fluxFixture = process.env.BORTUS_UI_FLUX_FIXTURE === "true";
+const productionAssetsFixture = process.env.BORTUS_UI_PRODUCTION_ASSETS_FIXTURE === "true";
 const fluxHolds = new Set<string>(), fluxFailures = new Set<string>();
 const fluxReleases = new Map<string, () => void>();
 const activeFlux = new Map<string, number>(), maxActiveFlux = new Map<string, number>();
@@ -146,6 +147,9 @@ try {
   ] });
   const token = (user: typeof writer) => new SignJWT({ sub: user.id, username: user.username, sessionVersion: user.sessionVersion }).setProtectedHeader({ alg: "HS256" }).setIssuedAt().setExpirationTime("1h").sign(new TextEncoder().encode(signing));
   const origin = "http://127.0.0.1:" + env.PORT;
+  // Match standalone production asset serving for opt-in browser cost measurements.
+  // Default lifecycle fixtures retain their original direct static gateway.
+  if (productionAssetsFixture) await cp(path.resolve(root, ".next/static"), path.resolve(root, ".next/standalone/.next/static"), { recursive: true, force: true });
   child = spawn(process.execPath, [path.resolve(".next/standalone/server.js")], { env, stdio: ["ignore", "pipe", "pipe"] });
   let output = "";
   child.stdout?.on("data", chunk => { output = (output + chunk).slice(-65536); });
@@ -241,7 +245,7 @@ try {
       if (request.method === "GET" && (url.pathname === "/api/secrets" && url.searchParams.has("key") || /^\/api\/kv\/paths\/[^/]+\/(?:versions\/[^/]+\/)?data$/.test(url.pathname))) valueRequests++;
       if (kvFixture && failKvMounts && request.method === "GET" && url.pathname === "/api/kv/mounts") { response.writeHead(503, { "Content-Type": "application/json" }); response.end(JSON.stringify({ error: "Fixture mount metadata unavailable" })); return; }
       if (kvFixture && failKvStatus && request.method === "GET" && url.pathname === `/api/kv/paths/${fixturePathId}/status`) { response.writeHead(503, { "Content-Type": "application/json" }); response.end(JSON.stringify({ error: "Fixture native status unavailable" })); return; }
-      if (url.pathname.startsWith("/_next/static/")) {
+      if (!productionAssetsFixture && url.pathname.startsWith("/_next/static/")) {
         try {
           const staticRoot = path.resolve(root, ".next/static");
           const file = path.resolve(staticRoot, decodeURIComponent(url.pathname.slice("/_next/static/".length)));

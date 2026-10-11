@@ -121,3 +121,6 @@ The displayed destroy UID stage is recorded in [kv-identity-qualification.json](
 
 
 `kv-workflows-qualification.json` binds the unchanged6fb01043 production source to ten actual administration browser checks, four complete603-alias commit acknowledgments, specific modal focus review and scoped19-rule axe results. Failed attempts1–3, original harness bytes, launcher/source/CLI records and normal cleanup remain distinct. This new test/docs stage does not invent a new build/HTTP pass or establish real consumer receipt, fullAT/zoom, performance, final image or live adoption.
+
+
+`optional-code-qualification.json` preserves both initial cache/oracle attempts, exact public chunks and12 actual mobile cold/warm samples from unchanged production; modern CDP cache-event/wire assertions and opt-in real Next asset forwarding keep production cache/encoding observable. Local timings characterize current source only. Source-only fixture/harness changes passed lint/types; no new build/unit/HTTP or first-terminal/image/live pass is inferred.

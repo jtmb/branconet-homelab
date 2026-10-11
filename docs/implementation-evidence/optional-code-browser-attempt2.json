@@ -1,0 +1,257 @@
+{
+  "startedAt": "2026-10-11T05:32:00.255Z",
+  "source": "cd4ff760; unchanged6fb01043 production build",
+  "scope": "Actual /deploy and /pods with existing disposable fixture. Initial versus explicitly opened optional chunks; no baseline speed claim",
+  "profile": {
+    "width": 390,
+    "height": 844,
+    "cpuRate": 4,
+    "latencyMs": 150,
+    "downloadBytesPerSecond": 200000,
+    "uploadBytesPerSecond": 93750,
+    "pairs": 3
+  },
+  "samples": [
+    {
+      "route": "/deploy",
+      "pair": 0,
+      "cache": "cold",
+      "initial": {
+        "locatorReadyWallMs": 2573,
+        "metrics": {
+          "Nodes": 294,
+          "LayoutDuration": 104.102,
+          "RecalcStyleDuration": 16.858999999999998,
+          "ScriptDuration": 257.52599999999995,
+          "TaskDuration": 615.8929999999999,
+          "JSHeapUsedSize": 5046592
+        },
+        "trace": {
+          "events": {
+            "EvaluateScript": {
+              "count": 16,
+              "totalDurationUs": 193057
+            },
+            "v8.compile": {
+              "count": 16,
+              "totalDurationUs": 2082
+            },
+            "V8.CompileCode": {
+              "count": 1181,
+              "totalDurationUs": 191468
+            },
+            "FunctionCall": {
+              "count": 47,
+              "totalDurationUs": 139033
+            }
+          },
+          "eventCount": 10172
+        },
+        "scripts": [
+          {
+            "path": "/_next/static/chunks/main-app-33cdf12d12e2e84a.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": null,
+            "encodedDataLength": 907
+          },
+          {
+            "path": "/_next/static/chunks/webpack-2bac943887c17342.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 2877
+          },
+          {
+            "path": "/_next/static/chunks/297-7295b248ad97a1e5.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 4225
+          },
+          {
+            "path": "/_next/static/chunks/7079-a18d7d4efb3fa77d.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 3699
+          },
+          {
+            "path": "/_next/static/chunks/4053-30e55f0d19c53bef.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 12537
+          },
+          {
+            "path": "/_next/static/chunks/app/(dashboard)/layout-3447b8dbb394de85.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 6816
+          },
+          {
+            "path": "/_next/static/chunks/1329-b5408eb27fea13c5.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 17988
+          },
+          {
+            "path": "/_next/static/chunks/9593-d4758274730e208a.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 4015
+          },
+          {
+            "path": "/_next/static/chunks/4922-f53e10189ab5f5e9.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 5598
+          },
+          {
+            "path": "/_next/static/chunks/app/(dashboard)/deploy/page-042b91d6e16a8f2f.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 3953
+          },
+          {
+            "path": "/_next/static/chunks/1255-5cd2fe06309409a0.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 47037
+          },
+          {
+            "path": "/_next/static/chunks/4bd1b696-f785427dddbba9fb.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 54796
+          }
+        ],
+        "lcp": {
+          "startTime": 2436,
+          "renderTime": 2436,
+          "loadTime": 0,
+          "size": 19044
+        },
+        "geometry": {
+          "client": 390,
+          "scroll": 390,
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        }
+      },
+      "interaction": {
+        "locatorVisibleWallMs": 550,
+        "eventToFirstMenuOrDialogFrameMs": 434.19999998807907,
+        "metrics": {
+          "Nodes": 331,
+          "LayoutDuration": 9.658,
+          "RecalcStyleDuration": 38.208,
+          "ScriptDuration": 135.874,
+          "TaskDuration": 283.146,
+          "JSHeapUsedSize": 6769064
+        },
+        "trace": {
+          "events": {
+            "FunctionCall": {
+              "count": 85,
+              "totalDurationUs": 174848
+            },
+            "V8.CompileCode": {
+              "count": 276,
+              "totalDurationUs": 45760
+            },
+            "EvaluateScript": {
+              "count": 1,
+              "totalDurationUs": 5373
+            },
+            "v8.compile": {
+              "count": 1,
+              "totalDurationUs": 208
+            }
+          },
+          "eventCount": 4073
+        },
+        "scripts": [
+          {
+            "path": "/_next/static/chunks/4803.476da54261017c96.js",
+            "status": 200,
+            "fromDiskCache": false,
+            "fromServiceWorker": false,
+            "cacheControl": "public, max-age=31536000, immutable",
+            "contentEncoding": "gzip",
+            "encodedDataLength": 3281
+          }
+        ],
+        "geometry": {
+          "left": 8,
+          "right": 382,
+          "top": 283.5,
+          "bottom": 560.5,
+          "width": 390,
+          "height": 844,
+          "focusInside": true
+        }
+      },
+      "noMutation": true
+    }
+  ],
+  "checks": [],
+  "failures": [
+    "Warm static asset was retransferred"
+  ],
+  "terminal": true,
+  "ownedProcesses": {
+    "fixturePid": 27308,
+    "chromePid": 41612
+  },
+  "browserVersion": "154.0.8037.99",
+  "networkRule": {
+    "ruleIds": [
+      "2F7CC1C09425FEEB689261F22D6D72B1"
+    ]
+  },
+  "phase": {
+    "route": "/deploy",
+    "pair": 0,
+    "cache": "warm"
+  },
+  "cleanup": {
+    "chromeExitCode": 0,
+    "chromeSignal": null,
+    "fixtureExitCode": 0,
+    "fixtureSignal": null
+  },
+  "completedAt": "2026-10-11T05:32:09.606Z"
+}
