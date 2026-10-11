@@ -98,7 +98,7 @@ def exact(reader, count):
     return b''.join(parts)
 
 
-def transfer(reader, writer):
+def transfer(reader, writer, *, file_factory=None):
     """Validate framing and bound allocations; return only an in-memory digest."""
     digest = hashlib.sha256()
 
@@ -139,15 +139,22 @@ def transfer(reader, writer):
             require(size >= 512)
         found.append(name)
         total += size
-        remaining = size
-        first = True
-        while remaining:
-            chunk = exact(reader, min(remaining, CHUNK))
-            if first and name == 'bortus.db':
-                require(chunk.startswith(b'SQLite format 3\x00'))
-            send(chunk)
-            remaining -= len(chunk)
-            first = False
+        sink = file_factory(name, size) if file_factory else None
+        try:
+            remaining = size
+            first = True
+            while remaining:
+                chunk = exact(reader, min(remaining, CHUNK))
+                if first and name == 'bortus.db':
+                    require(chunk.startswith(b'SQLite format 3\x00'))
+                send(chunk)
+                if sink:
+                    sink.write(chunk)
+                remaining -= len(chunk)
+                first = False
+        finally:
+            if sink:
+                sink.close()
 
 
 def stop_owned(process):
