@@ -1,3 +1,4 @@
+import { nativeAsciiValueSpan } from "./secret-ascii-span";
 import { KubeConfig, type V1ObjectMeta, type V1Secret } from "@kubernetes/client-node";
 import https from "node:https";
 import type { Agent as RequestAgent } from "node:http";
@@ -109,6 +110,42 @@ export function rejectedSecretListItemCount(chunks: readonly Buffer[], limit: nu
       } else return -1;
     }
   };
+  const longString = (): number => {
+    if (take() !== 34) return -1;
+    for (;;) {
+      let byte = peek(); if (byte < 0) return 0;
+      // Large native base64 strings usually stay in this direct, allocation-free ASCII loop.
+      const chunk = chunks[chunkIndex];
+      const advanced = nativeAsciiValueSpan(chunk, offset);
+      if (advanced) { offset += advanced; continue; }
+      // Skip four unescaped ASCII string bytes at a time without decoding or
+      // copying them. Zero-byte detection may stop early through a borrow, but
+      // never skips a quote/backslash; the scalar grammar remains authoritative.
+      while (offset + 4 <= chunk.length) {
+        const word = chunk.readUInt32LE(offset);
+        if ((word & 0x80808080) !== 0 || ((word + 0x60606060) & 0x80808080) !== (0x80808080 | 0)) break;
+        const quote = word ^ 0x22222222, escape = word ^ 0x5c5c5c5c;
+        if (((quote - 0x01010101) & ~quote & 0x80808080) !== 0 ||
+          ((escape - 0x01010101) & ~escape & 0x80808080) !== 0) break;
+        offset += 4;
+      }
+      while (offset < chunk.length && chunk[offset] >= 32 && chunk[offset] < 128 && chunk[offset] !== 34 && chunk[offset] !== 92) offset++;
+      if (offset === chunk.length) continue;
+      byte = take(); if (byte < 0) return 0; if (byte === 34) return 1;
+      if (byte === 92) {
+        const escaped = take(); if (escaped < 0) return 0;
+        if (escaped === 117) { for (let i = 0; i < 4; i++) { const digit = take(); if (digit < 0) return 0; if (!hex(digit)) return -1; } }
+        else if (escaped !== 34 && escaped !== 92 && escaped !== 47 && escaped !== 98 && escaped !== 102 && escaped !== 110 && escaped !== 114 && escaped !== 116) return -1;
+      } else if (byte >= 128) {
+        const length = byte >= 194 && byte <= 223 ? 1 : byte >= 224 && byte <= 239 ? 2 : byte >= 240 && byte <= 244 ? 3 : -1;
+        if (length < 0) return -1;
+        for (let i = 0; i < length; i++) {
+          const next = take(); if (next < 0) return 0;
+          if (next < 128 || next > 191 || i === 0 && (byte === 224 && next < 160 || byte === 237 && next > 159 || byte === 240 && next < 144 || byte === 244 && next > 143)) return -1;
+        }
+      } else return -1;
+    }
+  };
   const literal = (expected: string): number => {
     for (let i = 0; i < expected.length; i++) { const byte = take(); if (byte < 0) return 0; if (byte !== expected.charCodeAt(i)) return -1; }
     return 1;
@@ -117,7 +154,7 @@ export function rejectedSecretListItemCount(chunks: readonly Buffer[], limit: nu
   const value = (depth: number): number => {
     if (depth > 32) return -1;
     space(); let byte = peek(); if (byte < 0) return 0;
-    if (byte === 34) return string();
+    if (byte === 34) return chunks[chunkIndex].length - offset >= 4096 ? longString() : string();
     if (byte === 123 || byte === 91) {
       const object = byte === 123, end = object ? 125 : 93; take(); space();
       if (peek() === end) { take(); return 1; }

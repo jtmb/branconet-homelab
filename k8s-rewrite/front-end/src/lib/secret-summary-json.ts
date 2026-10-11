@@ -1,3 +1,4 @@
+import { nativeAsciiValueSpan } from "./secret-ascii-span";
 import { SecretError, validateTarget, type NativeSecretSummary } from "./cluster-secrets";
 
 const invalid = () => new SecretError(503, "Invalid Kubernetes Secret summary response");
@@ -50,17 +51,56 @@ class Reader {
       } else throw invalid();
     }
   }
+  private longString(): boolean {
+    this.expect(34);
+    let plainAscii = true;
+    for (;;) {
+      if (this.peek() < 0) throw invalid();
+      const chunk = this.chunks[this.index];
+      const advanced = nativeAsciiValueSpan(chunk, this.offset);
+      if (advanced) { this.offset += advanced; continue; }
+      while (this.offset + 4 <= chunk.length) {
+        const word = chunk.readUInt32LE(this.offset);
+        if ((word & 0x80808080) !== 0 || ((word + 0x60606060) & 0x80808080) !== (0x80808080 | 0)) break;
+        const quote = word ^ 0x22222222, escape = word ^ 0x5c5c5c5c;
+        if (((quote - 0x01010101) & ~quote & 0x80808080) !== 0 || ((escape - 0x01010101) & ~escape & 0x80808080) !== 0) break;
+        this.offset += 4;
+      }
+      while (this.offset < chunk.length && chunk[this.offset] >= 32 && chunk[this.offset] < 128 && chunk[this.offset] !== 34 && chunk[this.offset] !== 92) this.offset++;
+      if (this.offset === chunk.length) continue;
+      const byte = this.take();
+      if (byte === 34) return plainAscii;
+      if (byte === 92) {
+        plainAscii = false;
+        const escaped = this.take();
+        if (escaped === 117) { for (let i = 0; i < 4; i++) if (!this.hex(this.take())) throw invalid(); }
+        else if (![34, 92, 47, 98, 102, 110, 114, 116].includes(escaped)) throw invalid();
+      } else if (byte >= 128) {
+        plainAscii = false;
+        const length = byte >= 194 && byte <= 223 ? 1 : byte >= 224 && byte <= 239 ? 2 : byte >= 240 && byte <= 244 ? 3 : -1;
+        if (length < 0) throw invalid();
+        for (let i = 0; i < length; i++) {
+          const next = this.take();
+          if (next < 128 || next > 191 || i === 0 && (byte === 224 && next < 160 || byte === 237 && next > 159 || byte === 240 && next < 144 || byte === 244 && next > 143)) throw invalid();
+        }
+      } else throw invalid();
+    }
+  }
+  valueString(): boolean {
+    this.peek(); const chunk = this.chunks[this.index];
+    return chunk && chunk.length - this.offset >= 4096 ? this.longString() : this.string();
+  }
   private literal(text: string) { for (let i = 0; i < text.length; i++) this.expect(text.charCodeAt(i)); }
-  skip(depth = 0) {
+  skip(depth = 0, nativeValues = false) {
     if (depth > 32) throw invalid();
     this.space(); let byte = this.peek();
-    if (byte === 34) { this.string(); return; }
+    if (byte === 34) { if (nativeValues) this.valueString(); else this.string(); return; }
     if (byte === 123 || byte === 91) {
       const object = byte === 123, end = object ? 125 : 93; this.take(); this.space();
       if (this.peek() === end) { this.take(); return; }
       for (;;) {
         if (object) { this.string(); this.space(); this.expect(58); }
-        this.skip(depth + 1); this.space(); byte = this.take();
+        this.skip(depth + 1, nativeValues); this.space(); byte = this.take();
         if (byte === end) return;
         if (byte !== 44) throw invalid();
         this.space();
@@ -130,8 +170,8 @@ export function parseSecretSummaryPage(chunks: readonly Buffer[], namespace: str
           const value = reader.capture(() => reader.skip(2));
           if (!value || typeof value !== "object" || Array.isArray(value)) throw invalid(); metadata = value;
         } else if (key === "data" || key === "stringData") {
-          reader.members(name => { reader.string(); if (key === "data") keys.add(name); });
-        } else reader.skip(2);
+          reader.members(name => { reader.valueString(); if (key === "data") keys.add(name); });
+        } else reader.skip(2, true);
       });
       if (apiVersion !== "v1" || kind !== "Secret" || !metadata || metadata.namespace !== namespace || typeof metadata.name !== "string" ||
         metadata.uid !== undefined && typeof metadata.uid !== "string" || metadata.resourceVersion !== undefined && typeof metadata.resourceVersion !== "string") throw invalid();
@@ -155,7 +195,7 @@ export function parseSecretSummaryPage(chunks: readonly Buffer[], namespace: str
           if (items.length >= limit) throw invalid(); items.push(item()); reader.space();
           const byte = reader.take(); if (byte === 93) return; if (byte !== 44) throw invalid(); reader.space();
         }
-      } else reader.skip(1);
+      } else reader.skip(1, true);
     });
     reader.space(); if (reader.peek() !== -1 || version !== "v1" || kind !== "SecretList" || !haveItems) throw invalid();
     return { items, cursor };

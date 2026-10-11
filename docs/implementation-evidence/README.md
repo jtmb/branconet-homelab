@@ -137,3 +137,12 @@ Exact3f9b21c passed197units/four production HTTP suites on Linux Node22.23.3 and
 
 
 [Native3f9 correlated characterization](native-request-characterization-3f9b21c/manifest.json) retains v1 unattachedSDK/v2 ESM correction/v3 native-only CPU observations and all terminal/ownership/shim hashes. Diagnostic-only; no acceptance pass or source/gate change.
+
+
+### Distinct long native value scan (qualification pending)
+
+The native summary and rejected-prefix grammars use a distinct long-value method only when the current chunk has at least 4 KiB remaining. It checks bounded 4 KiB Buffer views using numeric quote/backslash searches, native ASCII validation and all raw control bytes 0–31 before advancing. Short spans, escapes, multibyte UTF-8 and chunk boundaries retain the existing scalar grammar. Selected keys, headers and text keep the original string method; captured metadata retains its complete fatal decoding and JSON parsing. No native value string is decoded, copied or cached by this path. Complete schema/UTF-8 validation, prefix-only sizing hints, received-byte charging, four active requests, 64 queued requests and all existing size/item/deadline/permission bounds remain unchanged.
+
+The retained isolated diagnostic supports a CPU optimization for large ASCII values, with small-case and p95 variability recorded separately. It does not establish endpoint latency or A07/A21 acceptance. Windows functional qualification passed; Linux and frozen performance remain pending.
+
+The distinct-value scanner passed54 focused and211 full unit tests, a fresh production build, zero-warning lint, types and all four strict production HTTP suites on Windows Node22.23.3, no skips. The normal launcher terminal,331 exact frozen working inputs and fresh compiled outputs are retained in [distinct scanner qualification](native-distinct-span/qualification.json). Both original string methods remain byte-for-byte unchanged. All earlier diagnostic attempts, including the original setup failure and rejected broader/threshold variants with untrimmed timings, are retained. A07/A21 remain failed/open on the preceding frozen candidate; this local functional pass does not establish endpoint latency, Linux, image or live acceptance.
