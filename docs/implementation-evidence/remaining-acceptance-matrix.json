@@ -1,0 +1,220 @@
+{
+  "capturedAt": "2026-10-11T01:14:06.341790+00:00",
+  "source": "da84f0f00aeb0daca299358e93fc7074acd2055e with exact original raw-source recovery",
+  "scope": "Planning and source/evidence gap matrix; not a new validation pass",
+  "audit": [
+    {
+      "id": "A01",
+      "finding": "writer invariant",
+      "ledgerCurrentEvidence": "Serialized account transaction; 12 independent-client concurrent demotion/deletion/mixed cases",
+      "ledgerStatus": "Local passed; image/live pending",
+      "nextAcceptance": "Final combined Linux image/forward migration and guarded live account-invariant qualification."
+    },
+    {
+      "id": "A02",
+      "finding": "revocation",
+      "ledgerCurrentEvidence": "Fresh account/sessionVersion Node middleware; deleted/reset cookies denied on API/pages; legacy version-zero compatibility",
+      "ledgerStatus": "Local passed; image/live pending",
+      "nextAcceptance": "Final combined image/restart/live revocation proof; fresh account/sessionVersion remains mandatory."
+    },
+    {
+      "id": "A03",
+      "finding": "bootstrap",
+      "ledgerCurrentEvidence": "Serialized registration/settings decision; six concurrent clients/four HTTP requests; one writer; uniqueness 409",
+      "ledgerStatus": "Local passed; image/live pending",
+      "nextAcceptance": "Final combined image bootstrap/registration qualification with retained users and stable externals."
+    },
+    {
+      "id": "A04",
+      "finding": "argv",
+      "ledgerCurrentEvidence": "Structured args/name validation; fake CLI HTTP rejection and argv isolation",
+      "ledgerStatus": "Local passed; real CLI/image pending",
+      "nextAcceptance": "Real kubectl/image acceptance of structured arguments; preserve size/deadline/queue bounds."
+    },
+    {
+      "id": "A05",
+      "finding": "truthful commands",
+      "ledgerCurrentEvidence": "Fixed typed failures; failed scale/action/delete/apply and Flux cascade retain recovery metadata",
+      "ledgerStatus": "Local passed; real CLI/image pending",
+      "nextAcceptance": "Finish Flux response/mutation lifecycle and truthful failures, then real CLI/image acceptance."
+    },
+    {
+      "id": "A06",
+      "finding": "availability",
+      "ledgerCurrentEvidence": "Explicit backend states; canonical resource lists/details distinguish failed reads from true empty/404",
+      "ledgerStatus": "Resource browser/HTTP passed; remaining legacy callers partial",
+      "nextAcceptance": "Migrate remaining Flux/legacy availability callers; unavailable must remain distinct from empty/404."
+    },
+    {
+      "id": "A07",
+      "finding": "cache cost",
+      "ledgerCurrentEvidence": "Independent coalescing/backoff/retention and bounded execution; fixed Linux comparisons of audit 51e8cd6 versus checkpoint 1e0030a and warm candidate 61e2588",
+      "ledgerStatus": "Failed: latest 1k warm p50 improves 7.0 to 5.8 ms and concurrent p95 83.2 to 78.6 ms, but sequential p95 regresses 13.0 to 20.7 ms. Audit-small p95 also regresses. Original failure retained; further correction required",
+      "nextAcceptance": "Request-correlated diagnostic, safe resource-only warm snapshots and unchanged exact-byte controlled comparison; gate remains failed."
+    },
+    {
+      "id": "A08",
+      "finding": "capabilities",
+      "ledgerCurrentEvidence": "Shared matrix/scoped YAML CAS/logs/node actions/pod exec; writer/reader/PVC/node browser menus",
+      "ledgerStatus": "Local passed; real ServiceAccount acceptance pending",
+      "nextAcceptance": "Qualify supported actions using actual guarded ServiceAccount/RBAC; no inferred permission pass."
+    },
+    {
+      "id": "A09",
+      "finding": "deployment state",
+      "ledgerCurrentEvidence": "UID ownership; zero/paused/generation state; explicit integer scale form; zero\u2192one actual argv",
+      "ledgerStatus": "Local passed; real controller/Flux pending",
+      "nextAcceptance": "Real controller/Flux ownership, zero/paused/generation behavior in final source/image."
+    },
+    {
+      "id": "A10",
+      "finding": "pod filters",
+      "ledgerCurrentEvidence": "API and browser namespace/type/label filtering; correct empty result",
+      "ledgerStatus": "Local passed",
+      "nextAcceptance": "Retain namespace/type/label, true empty, identity and privacy assertions in complete10kPod and final regression."
+    },
+    {
+      "id": "A11",
+      "finding": "polling/refetch",
+      "ledgerCurrentEvidence": "Shared completion-based lifecycle, cancellation/backoff/generation tests; actual browser timer fix",
+      "ledgerStatus": "Resource/session/provisioning/administration local passed; Flux and full KV lifecycle/hidden-page dedup migration pending",
+      "nextAcceptance": "Current freshness actual-route subset, then native-status/Flux completion/visibility/cancellation/dedup and late-reply flows."
+    },
+    {
+      "id": "A12",
+      "finding": "permissions/runtime",
+      "ledgerCurrentEvidence": "Fresh shared session in resources/topnav/shells/provisioning/admin; browser demotion erases user editor/password input",
+      "ledgerStatus": "Local passed for migrated callers and flat Secrets; Flux/full KV UI pending",
+      "nextAcceptance": "Finish Flux private-auth mutation cancellation/role withdrawal and full KV transfer/rotation/recovery lifecycle."
+    },
+    {
+      "id": "A13",
+      "finding": "sorting",
+      "ledgerCurrentEvidence": "Numeric/quantity/date/count/unknown tests; resource/admin, native Secret and KV metadata browser sorting",
+      "ledgerStatus": "Resources/admin/Secrets/KV metadata local passed; Flux/child tables pending",
+      "nextAcceptance": "Typed sorting and bounded DOM for Flux/child/history tables with real browser evidence."
+    },
+    {
+      "id": "A14",
+      "finding": "mobile",
+      "ledgerCurrentEvidence": "56-pixel narrow rail, local table scrolling, dialog fit; resources/admin/Secrets/KV metadata at 320/390/768 CSS widths",
+      "ledgerStatus": "Migrated screens local passed; Flux/actual zoom pending",
+      "nextAcceptance": "Flux and all remaining workflows at320/390/768CSSpixels; actual browser zoom evidence distinct from viewport emulation."
+    },
+    {
+      "id": "A15",
+      "finding": "accessibility",
+      "ledgerCurrentEvidence": "Named controls/links, resource/admin keyboard dialogs; KV path/form focus and return; exact confirmations",
+      "ledgerStatus": "Local passed for migrated controls; other controls/automated scan/manual screen reader pending",
+      "nextAcceptance": "Keyboard/focus/name review of remaining controls, automated accessibility scan and actual screen-reader/manual AT evidence."
+    },
+    {
+      "id": "A16",
+      "finding": "YAML lifecycle",
+      "ledgerCurrentEvidence": "Reset per open/mode; authoritative readOnly; dirty save/discard; readonly reopening/focus return",
+      "ledgerStatus": "Local browser passed",
+      "nextAcceptance": "Retain qualified YAML edit/cancel/view/reset/read-only behavior in final combined browser regression."
+    },
+    {
+      "id": "A17",
+      "finding": "Secret intent",
+      "ledgerCurrentEvidence": "Deliberate replacement/empty checkbox, exact deletion, late-response fencing and shared request lifecycle; TLS/browser conflict/revocation/navigation checks",
+      "ledgerStatus": "Flat editor local passed; full KV UI and image/live acceptance pending",
+      "nextAcceptance": "Integrated transfer/export/reconcile and all KV private-state/CAS/empty/binary/policy-withdrawal flows; final image/live."
+    },
+    {
+      "id": "A18",
+      "finding": "SSE",
+      "ledgerCurrentEvidence": "Backpressure/Unicode SQL slices, cursor resume, fresh account checks, terminal cleanup; bounded text tail and browser completion/unmount counts",
+      "ledgerStatus": "Local unit/HTTP/browser passed; real runner/image pending",
+      "nextAcceptance": "Final Linux runner/callback/SSE lifecycle and bounded-output qualification in coherent image."
+    },
+    {
+      "id": "A19",
+      "finding": "quality gates",
+      "ledgerCurrentEvidence": "Flat-config zero-warning lint; app-only Node22 CI; clean Node22 Windows install/build/type/49 unit/HTTP pass",
+      "ledgerStatus": "Local passed; external pre-KV Linux/image passed; new KV image pending",
+      "nextAcceptance": "Final exact combined Linux clean install/lint/build/types/units/HTTP/browser/image suite; earlier isolated image is insufficient."
+    },
+    {
+      "id": "A20",
+      "finding": "dependencies",
+      "ledgerCurrentEvidence": "Scoped DeepmergeTS 8 override retains Prisma/client 6.19.3; pinned Node/bookworm security refresh and runtime package-manager removal; production npm zero, full npm nine entries",
+      "ledgerStatus": "Isolated Linux compatibility and package scan passed reporting; 346 raw image rows/ESLint retirement remain; final integrated release pending",
+      "nextAcceptance": "Final integrated runtime/package provenance and scan; preserve remaining image/tooling findings and framework compatibility."
+    },
+    {
+      "id": "A21",
+      "finding": "lists/probes/forms",
+      "ledgerCurrentEvidence": "Resource/admin/native Secret/KV metadata tables bound DOM to 100 rows; bounded alias/probe caches and API pages",
+      "ledgerStatus": "Partial; latest controlled whole-container peak memory 358 to 285 MiB, but native metadata 1k/10k latency 76/286 to 883/7837 ms and 10k Pod capacity fails both 2-MiB limits. Native scheduling correction is separately assigned; final candidate qualification remains required",
+      "nextAcceptance": "Bounded complete10kPods; final native transport candidate and full-server memory/latency acceptance; lists/probes/form failure workflows."
+    },
+    {
+      "id": "A22",
+      "finding": "lazy code",
+      "ledgerCurrentEvidence": "Actions/YAML/log/terminal deferral; observed scripts and offline gzip/Brotli; build estimates",
+      "ledgerStatus": "Resource local measurements passed; provisioning/CPU/LCP/fixed mobile performance pending",
+      "nextAcceptance": "Provisioning and final optional-code wire/parse/execute/LCP/first-interaction measurements under fixed mobile cold/warm profile."
+    }
+  ],
+  "sourceConfirmedGaps": [
+    {
+      "area": "Flux hierarchy",
+      "source": "k8s-rewrite/front-end/src/app/(dashboard)/flux/page.tsx",
+      "observations": [
+        "fetchHierarchy suppresses failed reads",
+        "10-second setInterval has no overlap/visibility/abort control",
+        "delete progress uses1.5-second interval and unowned delayed dismiss",
+        "sync omits response-status check and owns no delayed refresh",
+        "add mutation has no pending guard/abort; authData lifecycle needs fencing"
+      ]
+    },
+    {
+      "area": "Flux child tables",
+      "source": "k8s-rewrite/front-end/src/app/(dashboard)/flux/[repoName]/page.tsx and [bundleName]/page.tsx",
+      "observations": [
+        "one-shot private fetch lifecycle",
+        "clickable rows without link semantics",
+        "remaining tables need typed sorting and bounding"
+      ]
+    },
+    {
+      "area": "Pods capacity/warm",
+      "source": "src/lib/kubectl-client.ts,src/lib/resource-cache.ts,src/lib/cluster-cache.ts,src/app/api/cluster/pods/route.ts",
+      "observations": [
+        "generic2MiB stdout limit rejects5.9MiB unchanged10kfixture",
+        "resource cache already validates10kitems and preserves10sTTL/120sretention/backoff/generation",
+        "Pod route asks full CachedData projection, including unused runningPods scan"
+      ]
+    },
+    {
+      "area": "Destroy/administration API",
+      "source": "docs/BORTUS-KV-ADMINISTRATION-UI.md;src/components/secrets/kv-administration.tsx",
+      "observations": [
+        "canonical/history UIDs absent from public destroy DTO/display",
+        "identity revoke has no revision/CAS parameter",
+        "max10kalias acknowledgement can exceed512KiB; never omit aliases"
+      ]
+    }
+  ],
+  "additionalNativeKvAcceptance": [
+    "Integrated transfer/export/reconcile browser",
+    "Full static rotation and explicit consumer reload/consumption workflow",
+    "Legacy complete-impact acknowledgements and large-body handling",
+    "Retention/destruction/GC/ambiguous recovery browser",
+    "Final immutable source/schema/lock/11migrations/format1/runtime/RBAC/protectedrefs/recovery handoff"
+  ],
+  "coordinatorOwnedAcceptance": [
+    "Guard/admission install and exact immutable approved image",
+    "Revoke old bortus credential-reaching grants before adoption",
+    "Encrypted DB/PVC/nativecurrent-history checkpoint and positive restore/recovery",
+    "Final production delivery/live evidence; no production changes by app executor"
+  ],
+  "excludedScope": [
+    "Dynamic issuers/PKI/transit/fullVaultAPIparity",
+    "Secretvalues inSQL/argv/Git/logs/sharedcache",
+    "Fallback pushes or automatic mutation retries",
+    "Swarm/Gluster/Vault/Consul retirement or game servers"
+  ]
+}
