@@ -58,3 +58,17 @@ Root selected integration independently verifies the seven raw files, 25 retaine
 artifacts and 16 unchanged dependencies. The [scoped integrated suite](../evidence/bortus-independent-restore-integration-20261011.json)
 passes 423 `test_bortus*.py` cases with no skips or changed source. Five differently
 named modules are outside this run; no live restore is established.
+
+The [actual fresh BORTUS cold checkpoint](../evidence/bortus-cold-checkpoint-b473091bebef-20261011.json)
+completed at 10:45:09 UTC on 2026-10-11. The immutable inert reader mounted the
+original claim read-only; SQLite bytes went directly into authenticated age
+ciphertext and the NAS copy matched. A cold snapshot and full encrypted 1 GiB
+Longhorn NAS backup completed. Complete raw PodList name/UID checks prove reader
+absence; the original writer is Ready on workernode2, its volume is healthy, and
+Deployment/HelmRelease/Kustomization fields are restored. Capture exposed a
+cross-node RWO resume-order defect; exact owned-reader removal and explicit
+same-journal recovery completed without recapturing data or repeating creates.
+All failed setup, transient-detach and controller-default-label attempts remain
+recorded. A fresh read-only source preflight validates this closed checkpoint and
+an absent masternode restore target. Complete SQLite row equality, independent
+restoration, active admission and the final application release remain pending.

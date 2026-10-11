@@ -2,6 +2,22 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
 
+## 2026-10-11 10:45 UTC - fresh checkpoint closed, independent restore pending
+
+[Actual cold checkpoint and recovery evidence](evidence/bortus-cold-checkpoint-b473091bebef-20261011.json)
+records authenticated SQLite ciphertext/NAS equality, the cold snapshot and full
+encrypted Longhorn NAS backup. The reader is absent by raw complete PodList
+name/UID proof; BORTUS is Ready on workernode2, storage is healthy and original
+Flux flags are restored. The cross-node RWO resume-order failure and explicit
+same-journal recovery remain recorded separately; no data recapture or duplicate
+Backup create occurred. The fresh source preflight passed with masternode as
+alternate and an absent target. Whole-row independent recovery, active guard
+enforcement, final image/performance and guarded release remain open. The app
+subagent's fresh Linux4668 build, 211 units, lint, types and four HTTP suites
+passed; its single unchanged frozen paired comparison runs after checkpoint
+closure. The coordinator and two subagents own current work; seven former BORTUS
+execution chats remain archived.
+
 ## Current orchestration and application qualification
 
 Three agents are active: coordinator, BORTUS application integration, and native transport/evidence. Seven identifiable former BORTUS execution/review chats are confirmed archived; unrelated projects remain unchanged. Before archiving the additional idle dependency/runtime chat, its clean committed handoff was preserved as a verified complete-history Git bundle and raw source archive outside managed checkouts. Its package, lockfile and Dockerfile match the current app source; [preservation evidence](evidence/bortus-runtime-thread-archive.json) records the exact artifacts. Earlier archiving removed managed checkouts, so application work was recovered from snapshot da84f0f00aeb0daca299358e93fc7074acd2055e (parent b82980e783daf09e1aabe00f3a5db99fef3e13fa), including 17 changed paths and both qualification logs. All six original source-file hashes were recovered; the workbench discrepancy was traced to mixed line endings by replaying the original patch records. Source and evidence backups remain outside the managed checkouts.

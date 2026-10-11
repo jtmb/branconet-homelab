@@ -1,0 +1,571 @@
+{
+  "scope": "Actual BORTUS-only cold encrypted checkpoint and explicit recorded recovery; independent data restoration and application release pending",
+  "checkpoint_run_id": "b473091bebef",
+  "source_commit": "8c210d589d37600665d3309b8b9b14a73920c2eb",
+  "completed_at_utc": "2026-10-11T10:45:09.578063+00:00",
+  "final_journal_sha256": "ab7fc36ab5a4d8056f940202cb08e6434fad3a1a0abd3461649492fd0e065db2",
+  "checkpoint_sources": {
+    "scripts/migration/checkpoint-bortus-volume.py": "4208f8e62e1c32a432bc8a485981541fc06fecbaac7a094e7f2ebd0cd5f7d257",
+    "scripts/migration/inspect-bortus-checkpoint.py": "51cd7d9f8aedf79270be68d95416bb107cc90bf1aa9748893175bcf79a8b297e",
+    "scripts/migration/bortus-sqlite-archive.py": "cffc1f76dbe3d4230394d310affdb0acf692559a79546b4ad345ecc39c0712e4"
+  },
+  "holder_image": "docker.io/library/bortus@sha256:ad9c203b32dfdc9307ea27116855073d90a3f46e2b8a7c9ffbd5174a3447d8b1",
+  "holder_runtime_imageID": "docker.io/library/bortus@sha256:ad9c203b32dfdc9307ea27116855073d90a3f46e2b8a7c9ffbd5174a3447d8b1",
+  "original_identities": {
+    "claim": {
+      "name": "bortus-data",
+      "uid": "19cc4b60-4536-4d80-8789-e27b5ad48b79",
+      "resourceVersion": "43233",
+      "namespace": "bortus"
+    },
+    "pv": {
+      "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+      "uid": "89b8b6ec-c932-4686-9890-26df90a5c799",
+      "resourceVersion": "10369",
+      "namespace": null
+    },
+    "longhorn_volume": {
+      "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+      "uid": "74acb150-7031-4fab-9868-86f3f3a30e16",
+      "resourceVersion": "689326",
+      "namespace": "longhorn-system"
+    },
+    "deployment": {
+      "name": "bortus",
+      "uid": "4deedc67-038a-4f82-a2d4-a83af316f2f6",
+      "resourceVersion": "91492",
+      "namespace": "bortus"
+    },
+    "helmrelease": {
+      "name": "bortus",
+      "uid": "bed3008a-474f-411e-9956-1248e3718220",
+      "resourceVersion": "1049721",
+      "namespace": "flux-system"
+    },
+    "kustomization": {
+      "name": "migration-releases",
+      "uid": "f3757d64-04bd-46db-8b40-ae666999449c",
+      "resourceVersion": "1049641",
+      "namespace": "flux-system"
+    }
+  },
+  "cold_snapshot": {
+    "name": "bortus-cold-b473091bebef",
+    "uid": "bfff29fd-6a41-40d9-bc48-9f883eb558d3",
+    "resourceVersion": "1049926",
+    "namespace": "longhorn-system"
+  },
+  "full_nas_backup": {
+    "name": "backup-b473091bebef",
+    "uid": "83a3da54-79e8-44cb-a5e6-9427245520eb",
+    "resourceVersion": "1052791",
+    "namespace": "longhorn-system"
+  },
+  "backup_url": "cifs://192.168.0.8/container_backups/k8s-migration-20261009/longhorn?backup=backup-b473091bebef&volume=pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+  "sqlite_archive": {
+    "artifact": "/home/brajam/.local/share/branconet-migration/recovery/bortus-checkpoints/b473091bebef/sqlite-files.age",
+    "ciphertext_sha256": "f46b309d1f2e5702f6de54205ec5f9448bf2d8a72df8e9779209a69e1f828e8b",
+    "files": [
+      "bortus.db"
+    ],
+    "plaintext_bytes": 167936,
+    "authenticated_decryption_equal": true,
+    "plaintext_persisted": false,
+    "sqlite_integrity_or_row_preservation_proven": false,
+    "nas_artifact": "/mnt/container-backups/k8s-migration-20261009/bortus-sqlite-b473091bebef.age",
+    "nas_ciphertext_equal": true
+  },
+  "restored_fields": {
+    "deployment": {
+      "identity": {
+        "name": "bortus",
+        "uid": "4deedc67-038a-4f82-a2d4-a83af316f2f6",
+        "resourceVersion": "91492",
+        "namespace": "bortus"
+      },
+      "original": 1,
+      "current": 1
+    },
+    "helmrelease": {
+      "identity": {
+        "name": "bortus",
+        "uid": "bed3008a-474f-411e-9956-1248e3718220",
+        "resourceVersion": "1049721",
+        "namespace": "flux-system"
+      },
+      "original": false,
+      "current": false
+    },
+    "kustomization": {
+      "identity": {
+        "name": "migration-releases",
+        "uid": "f3757d64-04bd-46db-8b40-ae666999449c",
+        "resourceVersion": "1049641",
+        "namespace": "flux-system"
+      },
+      "original": false,
+      "current": false
+    }
+  },
+  "actual_attempts": [
+    {
+      "operation": "fresh read-only preflight",
+      "actual_exit": 0,
+      "mutations": 0
+    },
+    {
+      "operation": "cold capture",
+      "actual_exit": 1,
+      "failure": "Writer rescheduled across nodes while read-only holder retained original RWO attachment; Ready wait expired",
+      "archive_and_snapshot_confirmed": true
+    },
+    {
+      "operation": "writer recovery setup v1",
+      "actual_exit": 1,
+      "failure": "Journal file passed instead of directory; before client/API construction",
+      "api_mutations": 0
+    },
+    {
+      "operation": "writer recovery v2",
+      "actual_exit": 1,
+      "failure": "Owned reader removed; normal Longhorn detaching transient refused strict healthy check",
+      "holder_delete_confirmed": true
+    },
+    {
+      "operation": "writer recovery v3",
+      "actual_exit": 0,
+      "phase": "Fresh healthy Ready writer observed; same-journal original Flux fields restored",
+      "data_capture_replayed": false
+    },
+    {
+      "operation": "remaining full backup v1",
+      "actual_exit": 1,
+      "failure": "Backup create confirmed; whole-label equality refused controller-added public RWO label",
+      "backup_create_confirmed": true
+    },
+    {
+      "operation": "remaining full backup observe-only v2",
+      "actual_exit": 0,
+      "api_mutations": 0,
+      "phase": "Same owned Backup Completed; exact UID/snapshot/full mode/target/size/URL and known public RWO label validated"
+    },
+    {
+      "operation": "fresh independent restore source preflight",
+      "actual_exit": 0,
+      "mutations": 0,
+      "database_or_secret_reads": 0
+    }
+  ],
+  "after_checkpoint": {
+    "pod_list_resourceVersion": "1053144",
+    "items": 1,
+    "name_and_uid_absent": true,
+    "writer_ready": true,
+    "volume_healthy": true
+  },
+  "read_only_restore_preflight": {
+    "sha256": "ffa3364db86ee33a336928a0ba47532d76dd103516730eb9354b1876d67efd80",
+    "checkpoint_journal_sha256": "ab7fc36ab5a4d8056f940202cb08e6434fad3a1a0abd3461649492fd0e065db2",
+    "source_node": "workernode2",
+    "alternate_node": {
+      "name": "masternode",
+      "uid": "f2df6169-4592-4544-b62c-74d89f598648",
+      "resourceVersion": "1053560",
+      "namespace": null
+    },
+    "restore_target_name": "bortus-restore-b473091bebef",
+    "required_protected_claim_names": [
+      "bortus-data",
+      "bortus-restore-b473091bebef"
+    ],
+    "checks_passed": true,
+    "mutations": 0
+  },
+  "closure": {
+    "linux_processes": [
+      {
+        "run": "holder-cold-capture-7e30-20261011-v1",
+        "pid": 1942200,
+        "start_ticks": "21415316",
+        "alive": false
+      },
+      {
+        "run": "holder-cold-writer-recovery-20261011-v1",
+        "pid": 1950522,
+        "start_ticks": "21436560",
+        "alive": false
+      },
+      {
+        "run": "holder-cold-writer-recovery-20261011-v2",
+        "pid": 1950601,
+        "start_ticks": "21440032",
+        "alive": false
+      },
+      {
+        "run": "holder-cold-writer-recovery-20261011-v3",
+        "pid": 1951676,
+        "start_ticks": "21450313",
+        "alive": false
+      },
+      {
+        "run": "holder-cold-backup-finish-20261011-v1",
+        "pid": 1952439,
+        "start_ticks": "21458449",
+        "alive": false
+      },
+      {
+        "run": "holder-cold-backup-finish-20261011-v2",
+        "pid": 1952847,
+        "start_ticks": "21463162",
+        "alive": false
+      }
+    ],
+    "runtime_parent_mode": "0755",
+    "linux_run_directories_mode": "0700",
+    "linux_original_files_mode": "0600",
+    "journal_lock_absent": true,
+    "holder_name_and_uid_absent": true,
+    "original_writer_ready": true,
+    "original_volume_healthy": true,
+    "original_flux_fields_restored": true
+  },
+  "retained_private_artifacts": {
+    "base": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-recovery-holder-7e30-20261011",
+    "linux_files": [
+      {
+        "path": "holder-cold-preflight-7e30-20261011-v1/preflight.json",
+        "mode": 384,
+        "sha256": "9ee927aa8de5bab673ecbadf50bec81ca010e1788f069f4f4dbb9c4bc2aae01c",
+        "bytes": 4158
+      },
+      {
+        "path": "holder-cold-preflight-7e30-20261011-v1/stderr",
+        "mode": 384,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "path": "holder-cold-preflight-7e30-20261011-v1/stdout",
+        "mode": 384,
+        "sha256": "c7809fb71d4e3ace7539c60ce0e400ed6ac17df68695b7050fd6ba3a0c05c5a8",
+        "bytes": 91
+      },
+      {
+        "path": "holder-cold-preflight-7e30-20261011-v1/terminal.json",
+        "mode": 384,
+        "sha256": "0da584d82d7e07cc16a5e27691efabea02eac2a408eaf62a9790c0caa49421bd",
+        "bytes": 5109
+      },
+      {
+        "path": "holder-cold-capture-7e30-20261011-v1/handle.json",
+        "mode": 384,
+        "sha256": "d7140b22a5ea013f779d9b4f3e50929ecd0aaec4123313c6e6be5ff5b31f8207",
+        "bytes": 604
+      },
+      {
+        "path": "holder-cold-capture-7e30-20261011-v1/terminal.json",
+        "mode": 384,
+        "sha256": "f2dfdefec126c9e0d7795e9ce63ff8fe55c4466a73c0340f6b550e2d83e0c63b",
+        "bytes": 1164
+      },
+      {
+        "path": "holder-cold-writer-recovery-20261011-v1/handle.json",
+        "mode": 384,
+        "sha256": "84d227cf2b3266e74a9e76d4a52912aa79bbdee8c92aa93a9c76b408c4e824c0",
+        "bytes": 232
+      },
+      {
+        "path": "holder-cold-writer-recovery-20261011-v2/handle.json",
+        "mode": 384,
+        "sha256": "3c2a32f15e4b099be54f253510f01bf62f8e680cedd9acea873165c446bda4d8",
+        "bytes": 232
+      },
+      {
+        "path": "holder-cold-writer-recovery-20261011-v2/terminal.json",
+        "mode": 384,
+        "sha256": "28ce7d7f1e321f9b51e098b80158ddb5d69ce1aaff4e84575cfb45896f0c38c6",
+        "bytes": 592
+      },
+      {
+        "path": "holder-cold-writer-recovery-20261011-v3/handle.json",
+        "mode": 384,
+        "sha256": "58b46f998985755294d571199f35bd808d469de45708665bf5062c32374894d0",
+        "bytes": 232
+      },
+      {
+        "path": "holder-cold-writer-recovery-20261011-v3/terminal.json",
+        "mode": 384,
+        "sha256": "b8555b6a7b3c385de98c89ac3abf73bef3ca080c81e47432bfc7e2f9791fb307",
+        "bytes": 683
+      },
+      {
+        "path": "holder-cold-backup-finish-20261011-v1/handle.json",
+        "mode": 384,
+        "sha256": "8bc3fcb6e6e824591c666bf3dc73276b0f707488be0ffebef3f1e423072633cc",
+        "bytes": 621
+      },
+      {
+        "path": "holder-cold-backup-finish-20261011-v1/terminal.json",
+        "mode": 384,
+        "sha256": "169769b62329aa331027a62aa0ac3d97cc91c326bb82eef3fe122cc9d5f1ed34",
+        "bytes": 779
+      },
+      {
+        "path": "holder-cold-backup-finish-20261011-v2/handle.json",
+        "mode": 384,
+        "sha256": "ccd045810ae203509aa675c8f29d69fde2870bf8fc9b8d1a50c300a9f1e97100",
+        "bytes": 621
+      },
+      {
+        "path": "holder-cold-backup-finish-20261011-v2/terminal.json",
+        "mode": 384,
+        "sha256": "e7f85d312aca632f5ff4eec6f12fb0a5a2642cd12f45b0c76af86f8a37c34b23",
+        "bytes": 1047
+      },
+      {
+        "path": "final-cold-checkpoint/journal.json",
+        "mode": 384,
+        "sha256": "ab7fc36ab5a4d8056f940202cb08e6434fad3a1a0abd3461649492fd0e065db2",
+        "bytes": 8514
+      }
+    ],
+    "windows_files": [
+      {
+        "name": "cold-backup-finish-v1.child.json",
+        "bytes": 177,
+        "sha256": "9411529dfd7eba043a564d1d3edc5628f7f7e6b9934bc7e42f97c696334af910"
+      },
+      {
+        "name": "cold-backup-finish-v1.launcher-terminal.json",
+        "bytes": 114,
+        "sha256": "5af22700c03e7844a202524b3c7f3425e6b580e910c895a223ecb1027d53b23e"
+      },
+      {
+        "name": "cold-backup-finish-v1.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "cold-backup-finish-v1.stdout",
+        "bytes": 729,
+        "sha256": "ca759f6c8ef5252e55f7919d3696ea673c49651c712ebd35eeb16577e897c8ae"
+      },
+      {
+        "name": "cold-backup-finish-v2.child.json",
+        "bytes": 177,
+        "sha256": "aaff9fde0d120a847cc5aaecd744205676ebe5b19ff87c05707703d8b9e0d2ed"
+      },
+      {
+        "name": "cold-backup-finish-v2.launcher-terminal.json",
+        "bytes": 114,
+        "sha256": "6d860bd0afa9a78669ba602552971819c4646efc9f2a29a4d38971db58d363b0"
+      },
+      {
+        "name": "cold-backup-finish-v2.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "cold-backup-finish-v2.stdout",
+        "bytes": 963,
+        "sha256": "4220451e7076f52f7311641f060387dfcecfa6b1d1dec127339b853072c3c306"
+      },
+      {
+        "name": "cold-capture-v1.child.json",
+        "bytes": 562,
+        "sha256": "e3c00c351ff85f5cb98a4df6792e84480f1037c458a495ffec7c4c4d6fa82fcb"
+      },
+      {
+        "name": "cold-capture-v1.launcher-terminal.json",
+        "bytes": 114,
+        "sha256": "7060347218f3193105a6be8823c3f4b454d04f1c358fd068a75457636f91b5a1"
+      },
+      {
+        "name": "cold-capture-v1.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "cold-capture-v1.stdout",
+        "bytes": 1112,
+        "sha256": "8c0dd9e4473843793b72664561b40815a30542ea286e3dd280336e2c1737b168"
+      },
+      {
+        "name": "cold-collected-v1.json",
+        "bytes": 11459,
+        "sha256": "a21a7dd11151d7a243c66d3ffa2439029273e93d46585dbef030656079003b9d"
+      },
+      {
+        "name": "cold-preflight-v1.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "cold-preflight-v1.stdout",
+        "bytes": 3741,
+        "sha256": "8e82dfdb2bf65980fba3aff6f3ea85e7c992c589452018f9faa92eebdd66a622"
+      },
+      {
+        "name": "cold-preflight-v1.terminal.json",
+        "bytes": 5268,
+        "sha256": "8fcb1da8034670689cacb73259fa774bf10a74c3f81e19929e11d792246636ee"
+      },
+      {
+        "name": "cold-writer-recovery-v1.child.json",
+        "bytes": 177,
+        "sha256": "3d6f18b102576c473f26c79bb33efae93d0abe44935cc5a6fe386c36f60de6b2"
+      },
+      {
+        "name": "cold-writer-recovery-v1.launcher-terminal.json",
+        "bytes": 114,
+        "sha256": "e008faa15302cf17a8a0c1b26e978a17421b03c93f6b797551f936ef9ef33777"
+      },
+      {
+        "name": "cold-writer-recovery-v1.stderr",
+        "bytes": 12467,
+        "sha256": "28853f8e0c73d80a4c3c1846ad7d9fba53b834002c05300238bd63b034bede1e"
+      },
+      {
+        "name": "cold-writer-recovery-v1.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "cold-writer-recovery-v2.child.json",
+        "bytes": 177,
+        "sha256": "0350e6172a5f4c9890a0b071a210fe58cc21a16ad82e55b21a35e96525e0235c"
+      },
+      {
+        "name": "cold-writer-recovery-v2.launcher-terminal.json",
+        "bytes": 114,
+        "sha256": "a00c6c3390e2d23e73747f13d4c40b404d606c639731e1cd03c18a8a8cf08ab4"
+      },
+      {
+        "name": "cold-writer-recovery-v2.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "cold-writer-recovery-v2.stdout",
+        "bytes": 568,
+        "sha256": "feac3fdf6bf4c81a8b832b6e269b099d2ba26e0d8d9d57563aa5f343c3d5cf88"
+      },
+      {
+        "name": "cold-writer-recovery-v3.child.json",
+        "bytes": 177,
+        "sha256": "203716df6e39ae86bbcc97dbbbc2b7e77e7bafe4762572c6f49926220d81cd01"
+      },
+      {
+        "name": "cold-writer-recovery-v3.launcher-terminal.json",
+        "bytes": 114,
+        "sha256": "bd5287f1f1be78e029828013d5d2618a08e1c0da733704d04511876d99713ef5"
+      },
+      {
+        "name": "cold-writer-recovery-v3.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "cold-writer-recovery-v3.stdout",
+        "bytes": 653,
+        "sha256": "7be32201f0dd1d976c40f0846c16dee7aa2774450f31db1075f0d098ae19c755"
+      },
+      {
+        "name": "collect-cold-checkpoint-v1.py",
+        "bytes": 3367,
+        "sha256": "2e2b5c6879818aff4a3b104cf11b3bfe6d71af3978c75d3b6b597df5158c1018"
+      },
+      {
+        "name": "finish-cold-backup-v1.py",
+        "bytes": 8305,
+        "sha256": "6b64d91781a582ce025517e58f1b0fec8985625e89821b142cc7a014bcf6e7af"
+      },
+      {
+        "name": "finish-cold-backup-v2.py",
+        "bytes": 8700,
+        "sha256": "d1579bd39e0a8540af375a4c9c8156878f6e9542176f1708d5c70f0c6dfd0553"
+      },
+      {
+        "name": "launch-cold-checkpoint-v1.py",
+        "bytes": 6921,
+        "sha256": "60a8916fdf0e28cdaaee81c6e021fcc588b7588778d843f1d4e819e93b0b216d"
+      },
+      {
+        "name": "observe-cold-checkpoint-v1.py",
+        "bytes": 3139,
+        "sha256": "c4e90bdb1ecf66020114ac6aee10b7d32b7816501b9b25496d3f3541e9f83f3b"
+      },
+      {
+        "name": "prepare-cold-backup-v2.py",
+        "bytes": 1430,
+        "sha256": "879694a0f8ba2740d0f9200294044f30479b097bbda067e13f1cea4f1ab66304"
+      },
+      {
+        "name": "prepare-cold-checkpoint-v1.py",
+        "bytes": 3141,
+        "sha256": "cd6e410db4e34f3d26f8a80e0eb8159fdc592c0b34ec050f66ff33029247144e"
+      },
+      {
+        "name": "prepare-cold-recovery-v2.py",
+        "bytes": 571,
+        "sha256": "d149e94a892c92716e2ed10f445e1e5cde2fdaa9f45d04a1b50508d42910b54f"
+      },
+      {
+        "name": "prepare-cold-recovery-v3.py",
+        "bytes": 1187,
+        "sha256": "55c18c9bed58ec583cddd8f553b91193433014f24bbaf189ed96e70d3cc32ef7"
+      },
+      {
+        "name": "prepare-restore-preflight-v1.py",
+        "bytes": 3152,
+        "sha256": "799663fda9623c4973c0e8e8fc95a6f076e1f4385b68d05859dc2ed7fc68bc8b"
+      },
+      {
+        "name": "recover-cold-writer-v1.py",
+        "bytes": 5346,
+        "sha256": "17e9bdf71e01d5e11a17f09d7d90722fbda5b8b41db6224468f7c36b54c50197"
+      },
+      {
+        "name": "recover-cold-writer-v2.py",
+        "bytes": 5440,
+        "sha256": "d010eccbc1aa3e6f48ec6a3596ef67a874679cbe39adceecd1d1cf547964f706"
+      },
+      {
+        "name": "recover-cold-writer-v3.py",
+        "bytes": 4895,
+        "sha256": "e87e6aac6bbe62f35f3e1747d6e4edcdfbc348b8d0f2960011520cf3c4207f3d"
+      },
+      {
+        "name": "restore-preflight-v1.stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "restore-preflight-v1.stdout",
+        "bytes": 6153,
+        "sha256": "ce335e84e12a39dce9d68023999eb145c241de1ff8f440eab3c4ad281c1986d1"
+      },
+      {
+        "name": "restore-preflight-v1.terminal.json",
+        "bytes": 8602,
+        "sha256": "3daf7b3f739ef59973b8388bfccb0601e7cc06fc955142d33d236d1072ffc3bf"
+      }
+    ],
+    "linux_manifest_sha256": "f8ee3c03446d0fb0f5ab2232213b23b682c949b32fa7fa296df76ac35ab57bdd"
+  },
+  "gates": {
+    "cold_checkpoint_complete": true,
+    "authenticated_sqlite_and_nas_ciphertext_equal": true,
+    "encrypted_full_nas_backup_complete": true,
+    "native_secret_reads": 0,
+    "data_capture_replayed": false,
+    "duplicate_holder_delete_or_backup_create": false,
+    "sqlite_integrity_and_complete_row_preservation_proven": false,
+    "independent_restore_proven": false,
+    "active_guard_admission_proven": false,
+    "application_release_accepted": false,
+    "performance_accepted": false,
+    "originals_retired": false,
+    "overall_live_acceptance": false
+  }
+}
