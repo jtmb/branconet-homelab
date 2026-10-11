@@ -1,0 +1,149 @@
+{
+  "scope": "Owned public loopback HTTPS/mTLS, pinned synthetic config/POSIX/Python children only",
+  "actual_exit": 0,
+  "tests": 29,
+  "skips": 0,
+  "test_seconds": 7.127,
+  "source": {
+    "scripts/migration/bortus-restore-reader.py": {
+      "sha256": "4c91bd5ded784acf8e28fae16408c1d79bda549166385aeb7ac841dfb1471a05",
+      "bytes": 14030
+    },
+    "scripts/migration/tests/test_bortus_restore_reader.py": {
+      "sha256": "2a8a36bb4248be4b720672e3941706acdf270372d6fa293e3b68c07a80d5bf87",
+      "bytes": 14530
+    }
+  },
+  "dependencies": {
+    "scripts/migration/bortus-restore-mutations.py": {
+      "sha256": "12195e009f90af1cfeed42f274e5293b0b36d35d809c0abbe1763d5c30b903ff",
+      "bytes": 15921
+    },
+    "scripts/migration/bortus-operator-mtls.py": {
+      "sha256": "ff4b44fd76362890ef86cd80cef28d3f1f36ffd6d999da40f30add883ed2ac9d",
+      "bytes": 10539
+    },
+    "scripts/migration/bortus-restore-data.py": {
+      "sha256": "3e69f9fa7a4d358aa9fe2ff11817c0ce825955af6f3ba7144ecc4a2eaad43cb7",
+      "bytes": 19998
+    },
+    "scripts/migration/bortus-restore-watch.py": {
+      "sha256": "e33315fd0b0802cf1ff4e14c8ef3c822f944ea214afb6e6eb07b7047268a0e95",
+      "bytes": 34472
+    },
+    "scripts/migration/bortus-restore-journal.py": {
+      "sha256": "e90b25b1a7226e072f3d3b1b3c872f38cbf2f05797270e9100a60dfa83a12f18",
+      "bytes": 12724
+    },
+    "scripts/migration/bortus-restore-completion.py": {
+      "sha256": "4c5274f42dd55850ecdf42fa9b80a44a20fc96139a006a54218e893c752d3763",
+      "bytes": 10499
+    },
+    "scripts/migration/bortus-restored-consumer-fence.py": {
+      "sha256": "33e3ff219b769ac2fc894096b448edf1d80d8f1cecc1d926e3971e599fbdf0b4",
+      "bytes": 18152
+    },
+    "scripts/migration/bortus-restore-metadata.py": {
+      "sha256": "eabae6334e167adf32d09160d23daa36878089c930c954f2a1b3f5c8b41168db",
+      "bytes": 9229
+    },
+    "scripts/migration/inspect-bortus-independent-restore.py": {
+      "sha256": "69b4e285288eded354172b1487d7971a666baa6084274391b5acf70d261e0326",
+      "bytes": 10763
+    },
+    "scripts/migration/checkpoint-bortus-volume.py": {
+      "sha256": "cb7aef9bbf733fd762df062bec33266d28a27a669b7c5747d7550b32fe2e3a0a",
+      "bytes": 33137
+    },
+    "scripts/migration/inspect-bortus-checkpoint.py": {
+      "sha256": "c77e26a60e9e7d5f2217ad04c4c0f1f33b58013e577476f1dfc0f3f0c10bbc9a",
+      "bytes": 15369
+    },
+    "scripts/migration/bortus-sqlite-archive.py": {
+      "sha256": "7323efd7f8785171a001615b34b62eecd7b78c8012ff05dd691cd6b457b9a980",
+      "bytes": 13392
+    },
+    "scripts/migration/normalize-bortus-sqlite-archive.py": {
+      "sha256": "770f430da8fe8373a7931ade6e37040b0af25d007ba88b9d3a4ab3d54fa750dc",
+      "bytes": 11487
+    },
+    "scripts/migration/compare-bortus-databases.py": {
+      "sha256": "7bd68c3da31fd41065dc8add101ef6003e74ba3b2475c3e4aaeaf850cfb536d3",
+      "bytes": 11807
+    },
+    "scripts/migration/tests/test_bortus_restore_mutations.py": {
+      "sha256": "c8f226ea321090e9c7c36e9d07ecc65c7b9062be02fba6a98243af450cc70a10",
+      "bytes": 25163
+    },
+    "scripts/migration/tests/test_bortus_restore_watch.py": {
+      "sha256": "eae70907770b718891b3510c7090496fdf8cfb44418693bc1be156dd61ae4f6b",
+      "bytes": 36712
+    },
+    "scripts/migration/tests/test_bortus_restored_consumer_fence.py": {
+      "sha256": "74c1d635162602a6fe91937a19e31c186c674f7aa8e22dba195a817d51968e0f",
+      "bytes": 14531
+    }
+  },
+  "attempts": {
+    "v1": {
+      "terminal": {
+        "terminal": true,
+        "actual_exit": 0,
+        "seconds": 7.383,
+        "utc": "2026-10-11T08:51:30.323202+00:00",
+        "owned_child_absent": true,
+        "source_unchanged": true,
+        "scope": "owned local TLS/config/POSIX/Python fixtures only; no live acceptance"
+      },
+      "terminal_sha256": "cc7b2a614b71aeb014265fa14c47a17c7e5ae631e2743295a4f5ee0f1f3d54d9",
+      "manifest_sha256": "f6bfa8fe2bce89e0747bac0841e97c5d91eaa986aee1b753656ecc846019d25e",
+      "log_sha256": "a9b8ab0d15cb854efdc89f926a81c8f127771b0482234ad1affe3d2984cfd534",
+      "handle_sha256": "8943426ee717a375359f4cc2c6d1341401373f3a9ada06195a745f4c37934e96",
+      "child_sha256": "3d838135961a1198f52c34f533d0f2b9fdcdee5cfd143568522082e8b6998434"
+    },
+    "v2": {
+      "terminal": {
+        "terminal": true,
+        "actual_exit": 0,
+        "seconds": 7.833,
+        "utc": "2026-10-11T08:53:43.850040+00:00",
+        "owned_child_absent": true,
+        "source_unchanged": true,
+        "scope": "owned local TLS/config/POSIX/Python fixtures only; no live acceptance"
+      },
+      "terminal_sha256": "00fb1631d168701ab5c80ccb7eccc9341089791ad72186f2b35266288a2d5b35",
+      "manifest_sha256": "a293c797b516419a7b76cda36332fef59006e461c4876b36c68a7685f5ea32b2",
+      "log_sha256": "44ea4e7756e3e120b2f953c8af57d02a170ddd94b61fe39f8564685e88dca3d5",
+      "handle_sha256": "7eee1946668569ee270118bbf55be7415723514fdcf4ea78c5f905d5ab3f9e5b",
+      "child_sha256": "9be099815cbc4a233689ed619d7e327c90af6d625712b16eeca6e502c194ce09"
+    }
+  },
+  "retained_archive": {
+    "sha256": "db62e57012ef328875782e823efe52218dd8ee6b228a88c0e89667d938fe06c7",
+    "bytes": 257701
+  },
+  "owned_handles_absent": [
+    1909421,
+    1909428,
+    1911367,
+    1911368
+  ],
+  "originals_preserved": true,
+  "runtime_tests": {
+    "actual_local_mtls_get": true,
+    "actual_controlled_python_children": true,
+    "actual_inherited_existing_config_fd": true,
+    "actual_program_stdin_only": true,
+    "parent_fds_pipes_child_closure_checked": true,
+    "metadata_watch_transport_controlled": true
+  },
+  "limits": {
+    "no_atomic_get_exec_uid_precondition": true,
+    "post_read_uid_spec_source_health_watch_fences_required": true,
+    "operator_credential_reads": 0,
+    "private_api_calls": 0,
+    "kubectl_node_docker_ssh_executions": 0,
+    "live_restore_acceptance": false,
+    "image_runtime_admission_acceptance": false
+  }
+}

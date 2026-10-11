@@ -80,6 +80,7 @@ class RestorePreflightTests(unittest.TestCase):
         self.assertEqual(record, before)
         self.assertEqual(client.calls, [])
         sc, claim, holder = report['proposals']
+        self.assertEqual(report['source_node_name'], 'node-fixture')
         name = 'bortus-restore-123456abcdef'
         self.assertEqual(sc['parameters']['fromBackup'], record['backup_url'])
         self.assertEqual(sc['reclaimPolicy'], 'Retain')

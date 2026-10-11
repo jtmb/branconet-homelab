@@ -105,6 +105,7 @@ class SourceTests(unittest.TestCase):
         proposals = source.prepare(deadline=time.monotonic() + 5)
         proof = source.check(deadline=time.monotonic() + 5)
         self.assertEqual(proposals['checkpoint_run_id'], self.record['run_id'])
+        self.assertEqual(proposals['source_node_name'], 'node-fixture')
         self.assertEqual(proof['checkpoint_journal_sha256'], self.digest)
         self.assertEqual(proof['claim']['uid'], self.record['baseline']['identities']['claim']['uid'])
         self.assertEqual(set(proof), {'checkpoint_journal_sha256', 'original_ciphertext_sha256',

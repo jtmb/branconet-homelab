@@ -143,6 +143,7 @@ def prepare(client, record, image, alternate_node):
     holder['spec']['volumes'][0]['persistentVolumeClaim']['claimName'] = name
     return {'scope': 'Read-only fresh BORTUS restore prerequisites; no restore or data read',
         'checkpoint_run_id': run_id, 'source_identities': fresh['identities'],
+        'source_node_name': fresh['writer']['nodeName'],
         'snapshot_identity': identity(snapshot), 'backup_identity': identity(backup),
         'storageclass_identity': identity(sc), 'alternate_node_identity': identity(node),
         'original_ciphertext_sha256': archive['ciphertext_sha256'],

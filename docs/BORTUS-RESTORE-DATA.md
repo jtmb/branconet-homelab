@@ -49,6 +49,9 @@ before returning a handle, that callback must close its own child. Local
 callback success does not prove those gates. It captures directly into the exclusive
 `restored-sqlite.age` in the pinned mode-0700 run directory, never fabricating an
 original Checkpoint or using the original capture wrapper/NAS archive name.
+The separate [reader launcher](BORTUS-RESTORE-READER.md) supplies the fixed exec
+callback with fresh Pod UID/RV/spec checks and inherited protected kubeconfig FD.
+Its GET/exec race requires the existing post-read identity/spec fence.
 
 Before source launch, an exclusive mode-0600 `data.json` pending intent is
 file/directory-fsynced under the WatchJournal's pinned owned directory. Any

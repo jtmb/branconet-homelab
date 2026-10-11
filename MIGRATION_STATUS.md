@@ -398,3 +398,16 @@ changes, holder credentials/writes/helpers, replacements and incomplete deletion
 inventories refuse. Initial inert Pod spec confirmation remains distinct from
 Running/Ready/no-restart validation before data reads. Root has not executed a
 live restore or deployed a new image; full coordination and live gates remain open.
+
+Root integrates the immutable constrained inert-holder reader `b6340aeb`,
+independently verifying seven raw Git files/modes, 64 retained artifacts and
+17 tested dependencies. Five exact reader files and two manual documentation
+snippets preserve current root dependencies. The source preflight exposes the
+fresh original writer node for later placement fencing. All 437 combined local
+cases pass without skips on frozen inputs, including 29 reader cases using
+loopback mTLS and controlled Python children. No Node/kubectl/production request
+is executed by these fixtures. The [integration receipt](evidence/bortus-restore-reader-integration-20261011.json)
+keeps live acceptance false. Native adversarial review found three malformed-input
+issues in the shared holder-state, refusal-local privacy and source-node boundary;
+those corrections require their own qualification. Full coordination, qualified
+image/admission, fresh checkpoint and actual independent recovery remain open.

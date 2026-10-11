@@ -113,6 +113,11 @@ preflight and repeat-source checks remain separate; neither authorizes an image,
 mutation or restore by itself. See the
 [source-fence integration evidence](../evidence/bortus-restore-source-integration-20261011.json).
 
+The initial restore proposal report also returns the freshly checked original
+writer's `source_node_name`. The coordinator uses it for alternate-node placement
+in the complete restored-consumer expectation. It is selected metadata, and the
+source checks must continue to reject a writer on the proposed alternate node.
+
 Native review subsequently found a just-opened directory FD could escape cleanup
 if the following `fstat` failed before anchor registration. The retained actual
 13-case regression run reproduced one leaked descriptor. Directory descriptors
