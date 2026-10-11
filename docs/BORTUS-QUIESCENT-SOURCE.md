@@ -86,3 +86,21 @@ encrypted, authenticated SQLite stream and exclusive fsynced NAS ciphertext
 copy under the original quiescent deadline; existing archive callers retain
 their default behavior. No live capture was dispatched. Actual schema/image/
 admission producers and independent restore still precede forward execution.
+
+
+The combined composition supplies `quiescent_module=observer_module.quiescent`
+when constructing QuiescentArchive. Its default graph remains unchanged; the
+explicit injection binds the archive's strict operation identity to the observer's
+exported source classes without global module reassignment. Construct the operation
+from that same module and use the observer's actual trace and ControlJournal.
+
+After captured-zero, `archive_callback.schema_metadata(operation, manifest_path,
+manifest_sha256, deadline=operation.deadline)` authenticates the exact newly
+captured ciphertext into private tmpfs, checks the pinned actual legacy-image
+seven-migration ledger and public topology, independently cleans tmpfs and repeats
+zero-writer/source/watch fences before returning a new protected schema receipt.
+It does not use or weaken the Ready-writer producer. This source-bound archive
+receipt supports stopped-schema qualification while continuous zero writers and
+same physical storage remain established. It does not prove original rows,
+live Ready status, forward execution or recovery acceptance. The trusted root
+phase callback must independently bind image, guards and the actual receipt.

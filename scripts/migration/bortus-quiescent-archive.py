@@ -12,6 +12,9 @@ import stat
 import subprocess
 import sys
 import time
+import types
+import sqlite3
+import uuid
 
 
 def load(name, filename):
@@ -24,6 +27,7 @@ quiescent = load('quiescent_archive_source', 'bortus-quiescent-source.py')
 reader = load('quiescent_archive_reader', 'bortus-restore-reader.py')
 archive = load('quiescent_archive_crypto', 'bortus-sqlite-archive.py')
 credentials = reader.credentials
+normalization = load('quiescent_schema_normalization', 'normalize-bortus-sqlite-archive.py')
 RUNTIME = pathlib.Path.home() / '.local/share/branconet-migration'
 NAS_ROOT = '/mnt/container-backups/k8s-migration-20261009'
 spawn = subprocess.Popen
@@ -212,14 +216,19 @@ def copy_nas(cipher,run_id,expected_sha,deadline,children):
 
 
 class QuiescentArchive:
-    def __init__(self,options,kubeconfig_path,recipient_path,identity_path):
+    def __init__(self,options,kubeconfig_path,recipient_path,identity_path,*,quiescent_module=None):
         need(type(options)is credentials.OperatorMTLSOptions and options.path==pathlib.Path(kubeconfig_path),'configuration')
+        selected=quiescent if quiescent_module is None else quiescent_module
+        need(type(selected)is types.ModuleType and pathlib.Path(selected.__file__).resolve()==
+            pathlib.Path(quiescent.__file__).resolve() and
+            selected.QuiescentCheckpoint.__module__==selected.__name__,'configuration')
+        self.quiescent=selected
         self.options,self.config=options,pathlib.Path(kubeconfig_path)
         self.recipient,self.identity=pathlib.Path(recipient_path),pathlib.Path(identity_path)
         self.attempted=False
 
     def _capture(self,operation,deadline):
-        need(type(operation)is quiescent.QuiescentCheckpoint and deadline==operation.deadline and
+        need(type(operation)is self.quiescent.QuiescentCheckpoint and deadline==operation.deadline and
             operation.r.get('sqlite_archive_state')=='pending' and not self.attempted,'configuration')
         remaining(deadline);self.attempted=True
         source=None;descriptors=[];pins=[];children=Children(deadline);failure=None;result=None
@@ -284,4 +293,83 @@ class QuiescentArchive:
         if failure:
             operation=deadline=result=None
             raise Refused(failure)
+        return result
+
+
+    def _schema_metadata(self,operation,manifest_path,manifest_sha256,deadline):
+        temporary=connection=key=None;failure=result=None
+        try:
+            need(type(operation)is self.quiescent.QuiescentCheckpoint and deadline==operation.deadline and
+                operation.r.get('quiescent',{}).get('state')in('captured-zero','guard-transition-open') and
+                operation.r.get('sqlite_archive_state')=='confirmed','configuration')
+            remaining(deadline);before=operation.source(stopped=True)
+            need(type(manifest_sha256)is str and re.fullmatch('[0-9a-f]{64}',manifest_sha256),'configuration')
+            fd=os.open(manifest_path,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK)
+            try:
+                info=os.fstat(fd);need(stat.S_ISREG(info.st_mode) and info.st_uid==os.getuid() and
+                    info.st_nlink==1 and info.st_mode&0o022==0 and 0<info.st_size<=65536,'configuration')
+                raw=os.read(fd,65537);after_info=os.fstat(fd);path_info=os.stat(manifest_path,follow_symlinks=False)
+                need(len(raw)==info.st_size and all(getattr(info,k)==getattr(after_info,k)==getattr(path_info,k)
+                    for k in('st_dev','st_ino','st_size','st_mtime_ns','st_ctime_ns','st_mode','st_uid','st_nlink')) and
+                    hashlib.sha256(raw).hexdigest()==manifest_sha256,'configuration')
+            finally:os.close(fd)
+            manifest=json.loads(raw);expected=manifest['migrations'];topology=manifest['public_table_columns']
+            need(manifest['legacy_image']==operation.r['baseline']['legacy_image'] and len(expected)==7 and
+                len(topology)==13 and all(re.fullmatch('[a-z_]+',n)for n in topology),'configuration')
+            cipher=operation.r['sqlite_archive'];need(cipher['artifact']==str(operation.journal.directory/'sqlite-files.age'),'ownership')
+            key=Pin(self.identity,65536)
+            # A bounded subordinate budget never extends the existing whole lease.
+            limit=min(deadline,time.monotonic()+300)
+            temporary=normalization.normalize(cipher['artifact'],cipher['ciphertext_sha256'],key.child_path,
+                age=binary('age'),seconds=300,deadline=limit)
+            connection=sqlite3.connect('file:'+temporary['database_path']+'?mode=ro',uri=True,timeout=1)
+            connection.set_progress_handler(lambda:int(time.monotonic()>=limit),1000)
+            connection.execute('PRAGMA trusted_schema=OFF');connection.execute('BEGIN')
+            rows=connection.execute('SELECT migration_name,checksum,finished_at,rolled_back_at FROM _prisma_migrations ORDER BY migration_name LIMIT 33').fetchall()
+            need(len(rows)==7 and all(row[0]==e['name'] and row[1]==e['checksum'] and row[2]is not None and
+                row[3]is None for row,e in zip(rows,expected)),'archive')
+            names=[row[0]for row in connection.execute("SELECT name FROM sqlite_schema WHERE type='table' AND name!='_prisma_migrations' ORDER BY name LIMIT 65")]
+            need(names==sorted(topology),'archive')
+            for name in names:
+                remaining(limit)
+                actual=[list(row[1:6])for row in connection.execute('PRAGMA table_info('+name+')')]
+                need(actual==topology[name],'archive')
+            connection.execute('COMMIT');connection.close();connection=None
+            normalization.cleanup(temporary['temporary_directory'],temporary['temporary_directory_identity']);temporary=None
+            key.check();after=operation.source(stopped=True)
+            need(all(before[k]['uid']==after[k]['uid']for k in before),'ownership');remaining(deadline)
+            receipt={'abi':1,'scope':'authenticated latest quiescent archive schema metadata only',
+                'run_id':operation.r['run_id'],'ciphertext_sha256':cipher['ciphertext_sha256'],
+                'manifest_sha256':manifest_sha256,'source_identities':after,'schema_migrations':7,
+                'migration_checksums_match':True,'migrations_complete':True,'tables_and_columns_match':True,
+                'tmpfs_cleaned':True,'live_ready_writer_proven':False,'whole_row_preservation_proven':False,
+                'forward_acceptance':False,'producer_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest()}
+            operation.journal._owned();name='quiescent-schema-'+uuid.uuid4().hex[:12]+'.json'
+            payload=json.dumps(receipt,sort_keys=True,separators=(',',':')).encode()+b'\n'
+            fd=os.open(name,os.O_CREAT|os.O_EXCL|os.O_WRONLY|os.O_NOFOLLOW,0o600,dir_fd=operation.journal.directory_fd)
+            try:
+                with os.fdopen(fd,'wb')as stream:stream.write(payload);stream.flush();os.fsync(stream.fileno())
+                os.fsync(operation.journal.directory_fd)
+            except Exception:raise Refused('archive')from None
+            operation.source(stopped=True);remaining(deadline)
+            result={'schema_receipt_path':str(operation.journal.directory/name),
+                'schema_receipt_sha256':hashlib.sha256(payload).hexdigest(),'schema_migrations':7}
+        except Refused as error:failure=error.code
+        except Exception:failure='archive'
+        finally:
+            if connection:
+                try:connection.close()
+                except Exception:failure='cleanup'
+            if temporary:
+                try:normalization.cleanup(temporary['temporary_directory'],temporary['temporary_directory_identity'])
+                except Exception:failure='cleanup'
+            if key:
+                try:key.close()
+                except Exception:failure='cleanup'
+        return(None if failure else result),failure
+
+    def schema_metadata(self,operation,manifest_path,manifest_sha256,*,deadline):
+        result,failure=self._schema_metadata(operation,manifest_path,manifest_sha256,deadline)
+        operation=manifest_path=manifest_sha256=deadline=None
+        if failure:raise Refused(failure)
         return result
