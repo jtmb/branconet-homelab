@@ -632,3 +632,28 @@ Get job status and output.
 The retained /cluster compatibility pages reuse current viewport/dialog components. Service/PVC menus offer read-only YAML through their existing APIs; no unimplemented mutation actions are offered.
 
 Legacy credential names in the reference table are lookup aliases requiring explicit native namespace/name/key mappings; they are no longer SQLite values or seeded by the retired helper. Bootstrap ansible_become_password comes from an independent operator environment when the target cluster does not exist.
+
+
+## 2026-10-11: narrow auth/command proof and registration failure
+
+The [independent acceptance review](../evidence/bortus-app-narrow-auth-command-a03-20261011.json)
+verifies two immutable docs/evidence commits,27 raw Git blobs/modes and46 original
+artifacts against their retained Linux bytes. Source333/compiled4262 hashes remain
+unchanged from ab8d450; nine owned process identities and three containers are absent.
+Seventeen A02 checks pass: expired cookies, logout response attributes/applied cookie
+jar,120 anonymous protected templates and exact public boundaries. These prove
+neither stolen-token/global logout revocation nor all authorized handler behavior.
+Six A05 production/shared-client stdout-only/stderr-only/neither cases pass fixed
+502 redaction and child settlement. The first noexec fixture failure is retained;
+actual EACCES and same-byte executable-bind controls establish the fixture cause.
+
+A03 remains failed. Its named first concurrent bootstrap case retains exactly one
+writer/effective administrator/policy but returns three busy503 refusals where
+strict403 is required. Exact inner Prisma lock/timeout subtype is unproven; the
+remaining nine permutations were not run. The proposed process-local bounded queue
+must retain the real DB lock and fresh checks, pass unchanged strict predicates,
+and prove independent-process invariants before acceptance. Neither source edits
+nor acceptance follows from the proposal. Original default scans remain exit1 with
+one independently verified unchanged public prose span, zero new untriaged findings
+and two older unresolved source-provenance findings. No suppression, full A02/A03/A05,
+performance, new image or live KV acceptance is claimed.
