@@ -203,11 +203,11 @@ def evaluate_restore_transition(expected, events, *, watch_started_before_create
         seen_rvs.add(rv)
         last = rv
         spec = _mapping(obj.get("spec"), {"fromBackup", "encrypted", "numberOfReplicas",
-                                            "size", "dataEngine", "standby"}, set(), "spec_shape", index)
+                                            "size", "dataEngine", "Standby"}, set(), "spec_shape", index)
         _require(spec["fromBackup"] == expected.backup_url and spec["encrypted"] is True
                  and type(spec["numberOfReplicas"]) is int and spec["numberOfReplicas"] == 2
                  and spec["size"] == SIZE_BYTES and spec["dataEngine"] == "v1"
-                 and spec["standby"] is False, "spec_drift", index)
+                 and spec["Standby"] is False, "spec_drift", index)
         flags = _status(obj.get("status", {}), index)
         if initialized is None:
             if flags is None or flags == (False, False):

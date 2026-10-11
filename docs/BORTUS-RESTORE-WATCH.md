@@ -14,7 +14,8 @@ consumer fences, restore health, authenticated independent data equality or live
 acceptance. No production request is made by importing it.
 
 The dependency snapshot is exact root `689c83486ebb2722d81ff89bc5b67dda089d3d06`.
-The original ownership journal and pure transition evaluator remain unchanged.
+The original ownership journal remains unchanged. The pure transition evaluator
+now uses the installed schema's canonical `Standby` field, as described below.
 Use `WatchJournal`, a subclass that serializes the original journal's file/inode
 replacement with concurrent sidecar checks. It does not hold that lock during
 slow API callbacks; the reader continues draining while a create reply is pending.
@@ -57,8 +58,19 @@ A frame returned after the whole deadline is charged and rejected before project
 
 Early dynamic-CSI events are drained before the final Volume name is known. The
 sidecar retains only bounded identities, source/spec-match booleans, literal
-restore flags and fixed deletion/restore-failure booleans. Raw condition text,
+restore flags and fixed status-valid/deletion/restore-failure booleans. ABI 2
+checks the installed spec's exact `Standby` spelling and literal false and refuses
+lowercase aliases. Its status-valid projection preserves refusal of faulted,
+deleting, standby and unsupported state/robustness values; raw status text is not
+retained. The original ABI 1 fixtures used an incorrect lowercase spec spelling
+and dropped these status checks; their historical receipts do not qualify this
+corrected source. Raw condition text,
 addresses, source URLs, headers, auth, errors and whole objects never enter it.
+
+The corrected tests cover canonical/missing/aliased/nonboolean spec flags and
+status types/enums. Owned real HTTPS streams also reproduce a faulted or standby
+event after metadata completion and verify sticky refusal before holder dispatch.
+These remain synthetic API fixtures; they do not create a production restore.
 The closed metadata schema is checked before each save. The ownership journal's
 pinned run/lock protection and separate sidecar inode/hash checks precede atomic
 replacement and file/directory fsync. Retained files cannot grant readiness after

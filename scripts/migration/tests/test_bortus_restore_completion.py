@@ -32,7 +32,7 @@ def event(rv, flags=(True, True), *, event_type="MODIFIED"):
         "metadata": {"name": EXPECTED.volume_name, "namespace": EXPECTED.namespace,
                      "uid": UID, "resourceVersion": rv},
         "spec": {"fromBackup": URL, "encrypted": True, "numberOfReplicas": 2,
-                 "size": "1073741824", "dataEngine": "v1", "standby": False},
+                 "size": "1073741824", "dataEngine": "v1", "Standby": False},
         "status": status}}
 
 
@@ -136,7 +136,7 @@ class RestoreCompletionTests(unittest.TestCase):
         for key, value in (("fromBackup", URL + "&token=PRIVATE_SENTINEL"),
                            ("encrypted", False), ("numberOfReplicas", 1),
                            ("numberOfReplicas", True), ("size", "2147483648"),
-                           ("size", 1073741824), ("dataEngine", "v2"), ("standby", True)):
+                           ("size", 1073741824), ("dataEngine", "v2"), ("Standby", True)):
             for position in range(3):
                 events = trace()
                 events[position]["object"]["spec"][key] = value
@@ -146,6 +146,20 @@ class RestoreCompletionTests(unittest.TestCase):
         for key in event("a")["object"]["spec"]:
             events = trace()
             del events[1]["object"]["spec"][key]
+            self.refuse(events, "spec_shape")
+
+    def test_installed_capital_Standby_requires_literal_false_without_alias(self):
+        self.assertTrue(evaluate(trace()).metadata_transition_eligible)
+        for position in range(3):
+            for value in (None, 0, True, "false"):
+                events = trace()
+                events[position]["object"]["spec"]["Standby"] = value
+                self.refuse(events, "spec_drift")
+            events = trace()
+            events[position]["object"]["spec"]["standby"] = events[position]["object"]["spec"].pop("Standby")
+            self.refuse(events, "spec_shape")
+            events = trace()
+            events[position]["object"]["spec"]["standby"] = False
             self.refuse(events, "spec_shape")
 
     def test_original_resource_must_be_distinct(self):

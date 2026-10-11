@@ -83,7 +83,9 @@ original arrival order, preserving all Volume events and their flag absence:
 - Volume metadata: name, namespace, uid, resourceVersion; optional
   deletionTimestamp must be null. Spec: fromBackup, encrypted literal true,
   numberOfReplicas integer 2, size string `1073741824`, dataEngine `v1` and
-  standby literal false. Other spec/metadata fields must be removed by the
+  `Standby` literal false (capital S, as serialized by the installed schema). A
+  lowercase `standby` alias, missing field, integer zero or both spellings refuse.
+  Other spec/metadata fields must be removed by the
   collector after independent source/ownership validation.
 - Status may omit both initial restore flags or be absent initially. Once either
   flag exists, both must be literal booleans. Optional state, robustness and
@@ -101,6 +103,15 @@ and reject duplicate JSON keys before projection; the library cannot recover
 ambiguity already lost by JSON decoding. Its limits are ABI limits, not evidence
 of network limits. Failures contain a fixed code and bounded event index only;
 callers must not log exception tracebacks with input locals or raw payloads.
+
+The coordinator corrected the initial fixtures' lowercase spec spelling after
+checking the retained installed CRD and pinned [VolumeSpec source](https://github.com/longhorn/longhorn-manager/blob/8320238242e8c804325d9588ec1db10feb9f36b8/k8s/pkg/apis/longhorn/v1beta2/volume.go).
+The status field remains `isStandby`. The collector's ABI 2 also retains a fixed
+`status_valid` boolean so observed faulted/deleting/standby or unsupported status
+values cannot disappear during projection. Earlier ABI 1 test receipts remain
+historical; qualification of the corrected source is recorded separately.
+The canonical flag regression checks every event position and refuses true,
+null, integer and string values or either lowercase-alias shape.
 
 ## Result and remaining gates
 
@@ -128,7 +139,8 @@ The callable [durable LIST/watch collector](BORTUS-RESTORE-WATCH.md) now impleme
 the local TLS readiness/durable projection prerequisite. Its local fixtures do
 not establish a live watch, approved operator transport adapter, full restore
 executor, image/admission fences or restored-data acceptance. The pure transition
-library above remains unchanged.
+library's canonical spec-field correction and the collector's status projection
+are qualified separately from the original integration receipts.
 
 The separately integrated [embedded operator adapter](BORTUS-OPERATOR-MTLS.md)
 now passes a scoped live complete LIST and watch HTTP handshake. That probe

@@ -34,7 +34,7 @@ def volume(rv='opaque-1', flags=(True, True), uid=None, name='fresh-volume'):
         'metadata': {'name': name, 'namespace': 'longhorn-system', 'uid': uid or UID(5),
                      'resourceVersion': rv},
         'spec': {'fromBackup': 'cifs://192.168.0.8/container_backups/k8s-migration-20261009/longhorn?backup=backup-fixture&volume=original-volume',
-                 'encrypted': True, 'numberOfReplicas': 2, 'size': '1073741824', 'dataEngine': 'v1', 'standby': False},
+                 'encrypted': True, 'numberOfReplicas': 2, 'size': '1073741824', 'dataEngine': 'v1', 'Standby': False},
         'status': status}
 
 
@@ -222,6 +222,75 @@ class RestoreWatchTests(unittest.TestCase):
         self.assertEqual('opaque-list', c.state['collection_rv'])
         self.assertEqual(['opaque-token'], self.fixture.requests[1][1]['continue'])
         self.assertEqual(3, self.option_calls)
+
+    def test_installed_Standby_case_and_literal_false_are_required(self):
+        c = self.create().start()
+        self.assertEqual(2, c.state['abi'])
+        self.assertTrue(c._project({'type': 'MODIFIED', 'object': volume()})['spec_matches'])
+        for value in (None, True, 0, 'false'):
+            obj = volume()
+            obj['spec']['Standby'] = value
+            self.assertFalse(c._project({'type': 'MODIFIED', 'object': obj})['spec_matches'])
+        obj = volume()
+        obj['spec']['standby'] = obj['spec'].pop('Standby')
+        self.assertFalse(c._project({'type': 'MODIFIED', 'object': obj})['spec_matches'])
+        obj = volume()
+        obj['spec']['standby'] = False
+        self.assertFalse(c._project({'type': 'MODIFIED', 'object': obj})['spec_matches'])
+
+    def test_status_projection_rejects_invalid_state_robustness_or_standby(self):
+        c = self.create().start()
+        for key, values in [('state', ['error', 'faulted', 'deleting', None, 0, []]),
+                            ('robustness', ['faulted', 'PRIVATE_SYNTHETIC_VALUE', None, 0, []]),
+                            ('isStandby', [True, None, 0, 'false'])]:
+            for value in values:
+                obj = volume()
+                obj['status'][key] = value
+                projected = c._project({'type': 'MODIFIED', 'object': obj})
+                self.assertIs(projected['status_valid'], False)
+                self.assertNotIn(key, projected)
+                self.assertNotIn('PRIVATE_SYNTHETIC_VALUE', json.dumps(projected))
+        for key, values in [('state', ['', 'creating', 'attached', 'detached', 'attaching', 'detaching']),
+                            ('robustness', ['', 'unknown', 'healthy', 'degraded']), ('isStandby', [False])]:
+            for value in values:
+                obj = volume()
+                obj['status'][key] = value
+                self.assertIs(c._project({'type': 'MODIFIED', 'object': obj})['status_valid'], True)
+
+    def completed_target(self):
+        c = self.create().start()
+        claim, pv = self.claim()
+        self.fixture.send(volume('started-rv'))
+        self.fixture.send(volume('complete-rv', (True, False)))
+        self.wait(lambda: c.state['sequence'] == 2)
+        c.bind_target(claim, pv, volume('complete-rv', (True, False)))
+        self.assertTrue(c.seal(volume('complete-rv', (True, False))).metadata_transition_eligible)
+        return c
+
+    def test_observed_faulted_status_after_completion_blocks_holder_dispatch(self):
+        c = self.completed_target()
+        obj = volume('faulted-rv', (True, False))
+        obj['status']['robustness'] = 'faulted'
+        self.fixture.send(obj)
+        self.wait(lambda: c.state['failure'] is not None)
+        mutation = mock.Mock(side_effect=AssertionError('Mutation must not run'))
+        with self.assertRaises(module.WatchRefused):
+            c.perform_create('holder_create', mutation, lambda _: None)
+        mutation.assert_not_called()
+        record = json.loads((self.journal.directory / 'watch.json').read_text())
+        self.assertIs(record['observations'][-1]['status_valid'], False)
+        self.assertIs(record['data_acceptance'], False)
+        self.assertNotIn('robustness', json.dumps(record))
+
+    def test_observed_standby_status_after_completion_stickily_refuses(self):
+        c = self.completed_target()
+        obj = volume('standby-rv', (True, False))
+        obj['status']['isStandby'] = True
+        self.fixture.send(obj)
+        self.wait(lambda: c.state['failure'] is not None)
+        with self.assertRaises(module.WatchRefused):
+            c.prerequisite()
+        self.assertIs(c.state['observations'][-1]['status_valid'], False)
 
     def test_initial_volume_cannot_be_adopted_as_new(self):
         c = self.create([page([volume()])]).start(); claim, pv = self.claim()

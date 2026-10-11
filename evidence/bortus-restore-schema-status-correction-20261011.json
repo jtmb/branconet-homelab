@@ -1,0 +1,341 @@
+{
+  "scope": "Root restore compatibility and status-projection correction; no live independent restore/data acceptance",
+  "verified_at_utc": "2026-10-11T07:11:39.134740+00:00",
+  "canonical_spec_field": "Standby",
+  "canonical_status_field": "isStandby",
+  "sidecar_abi": 2,
+  "no_lowercase_spec_alias": true,
+  "status_valid_projection_prevents_faulted_deleting_standby_or_unsupported_status_loss": true,
+  "primary_schema_and_source_bindings": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\longhorn-1121-restore-contract-20261011\\volumes.longhorn.io.json",
+      "bytes": 17227,
+      "sha256": "016426c3b8e55af67943053b89831db27e2470793dae620539352d7f6cc3b0c1"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\longhorn-1121-restore-contract-20261011\\public-source\\k8s\\pkg\\apis\\longhorn\\v1beta2\\volume.go",
+      "bytes": 21359,
+      "sha256": "619b740463ce758358e8e7a273c5d85498aacdb6cfea46dfa05426d3f1e8f671"
+    }
+  ],
+  "primary_source_url": "https://github.com/longhorn/longhorn-manager/blob/8320238242e8c804325d9588ec1db10feb9f36b8/k8s/pkg/apis/longhorn/v1beta2/volume.go",
+  "original_source_regression": {
+    "scope": "Original-source pure metadata compatibility/fault regression reproduction",
+    "original_watch_sha256": "755c0c6c36fd44d29c7bf829cb301bd9e56b97100036150877f8909fe1768a97",
+    "original_completion_sha256": "6e5c36ad8faaf4228e00ba608143317c4069a0e50a98a0fd760f5c5228e95ec4",
+    "installed_schema_uses_capital_Standby": true,
+    "canonical_installed_shape_spec_matches": false,
+    "faulted_status_was_dropped": true,
+    "synthetic_public_input_only": true,
+    "network_or_data_reads_or_mutations": false
+  },
+  "root_tests": {
+    "count": 223,
+    "skips": 0,
+    "terminal": {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--cd",
+        "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+        "--",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/migration/tests",
+        "-p",
+        "test_bortus*.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-11T07:08:24.253205+00:00",
+      "completed_at_utc": "2026-10-11T07:08:35.490677+00:00",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ae89418ab9767660421c5fd3fd292eb9515612d9a466214f2acec1c93965dba5",
+      "scope": "Pure/POSIX/local HTTPS fixtures only; no production calls",
+      "input_source_manifest_sha256": "8149788168551d8d6ee46e24c44445841080ed824228810560201ee31a4a0973",
+      "input_source_unchanged": true
+    },
+    "tested_source": [
+      {
+        "path": "scripts/migration/bortus-restore-completion.py",
+        "bytes": 10273,
+        "sha256": "95a950bd7c2858a3a8b6420458c5cd99190d5c8320e063db26863b9a32d3557a"
+      },
+      {
+        "path": "scripts/migration/bortus-restore-watch.py",
+        "bytes": 34472,
+        "sha256": "e33315fd0b0802cf1ff4e14c8ef3c822f944ea214afb6e6eb07b7047268a0e95"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_restore_completion.py",
+        "bytes": 16335,
+        "sha256": "02b2dd80c60ea518c02e26203bb2845c84879751ad917d542a1397c4a8053ee8"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_restore_watch.py",
+        "bytes": 36712,
+        "sha256": "eae70907770b718891b3510c7090496fdf8cfb44418693bc1be156dd61ae4f6b"
+      },
+      {
+        "path": "docs/BORTUS-RESTORE-COMPLETION.md",
+        "bytes": 10367,
+        "sha256": "708f273023185b00222d3fcdf2df186a6cdca5eeb7f5ca18a0ab78bf9575cd39"
+      },
+      {
+        "path": "docs/BORTUS-RESTORE-WATCH.md",
+        "bytes": 8164,
+        "sha256": "8b12e3ee0b3b71583a0ac53c8451e0a65d7cf1c6d6e77586501d8ac401fa1f97"
+      }
+    ],
+    "current_code_test_bytes_match_frozen_inputs": true,
+    "docs_changed_after_test_are_not_runtime_inputs": true
+  },
+  "original_scoped_metadata_probe": {
+    "started_at_utc": "2026-10-11T07:03:32.774756+00:00",
+    "completed_at_utc": "2026-10-11T07:03:33.984008+00:00",
+    "actual_exit_code": 0,
+    "source_sha256": "f5f776e1303f56af26e185620c0530c0e326b9ac84547e4d4798ea63bc56ef5c",
+    "stdout_sha256": "2362bc2cfd5f031626d4b5006784c363e747a6d51c3da14e14ab2bd01713a59e",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scope": "Three scoped read-only Longhorn object/collection reads, selected original volume metadata only",
+    "mutations": 0,
+    "database_or_secret_reads": 0
+  },
+  "corrected_one_volume_live_projection": {
+    "scope": "One live original-volume metadata compatibility read; not a restore target or watch",
+    "identity": {
+      "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+      "namespace": "longhorn-system",
+      "uid": "74acb150-7031-4fab-9868-86f3f3a30e16",
+      "resourceVersion": "689326"
+    },
+    "canonical_Standby_present_false": true,
+    "lowercase_alias_absent": true,
+    "status_isStandby_false": true,
+    "corrected_spec_matches": true,
+    "corrected_status_valid": true,
+    "not_bound_to_a_restore_source": true,
+    "mutations": 0,
+    "database_or_secret_reads": 0,
+    "independent_restore_proven": false
+  },
+  "corrected_live_terminal": {
+    "started_at_utc": "2026-10-11T07:10:58.000119+00:00",
+    "completed_at_utc": "2026-10-11T07:10:58.339488+00:00",
+    "actual_exit_code": 0,
+    "source_sha256": "3f55dd961ec5cecc80184accbe62146b0ce8974be8b3b233e9135973241134cf",
+    "stdout_sha256": "9e586f322668bb903eeb79a0608c44670e60a1c6593f5410245b0d1ef7b88e1c",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "protected_original_artifacts": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\corrected-live-probe.py",
+      "bytes": 1533,
+      "sha256": "ff349a0158a0b954553b7c5d3b3b9073d9e918d551415f95d293eecf96c0ff09"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\corrected-live-probe.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\corrected-live-probe.stdout",
+      "bytes": 563,
+      "sha256": "9e586f322668bb903eeb79a0608c44670e60a1c6593f5410245b0d1ef7b88e1c"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\corrected-live-probe.terminal.json",
+      "bytes": 411,
+      "sha256": "4f59c5cab2830018ae7cdca545d4545b448e53454102d45bf118fa1b6638409e"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\metadata.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\metadata.stdout",
+      "bytes": 6105,
+      "sha256": "2362bc2cfd5f031626d4b5006784c363e747a6d51c3da14e14ab2bd01713a59e"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\original-probe.py",
+      "bytes": 1944,
+      "sha256": "1014b11320a28b0c2537e79a3606ae06d76f72f1c8a24f1937e2c97d1a42a983"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\original-regression.json",
+      "bytes": 520,
+      "sha256": "24f7255a145a5c86ac9ea667900f8d4bf0e737f90c9336713d827341f6178cf8"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\standby-fix-v1\\source\\docs\\BORTUS-RESTORE-COMPLETION.md",
+      "bytes": 10367,
+      "sha256": "708f273023185b00222d3fcdf2df186a6cdca5eeb7f5ca18a0ab78bf9575cd39"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\standby-fix-v1\\source\\docs\\BORTUS-RESTORE-WATCH.md",
+      "bytes": 8164,
+      "sha256": "8b12e3ee0b3b71583a0ac53c8451e0a65d7cf1c6d6e77586501d8ac401fa1f97"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\standby-fix-v1\\source\\scripts\\migration\\bortus-restore-completion.py",
+      "bytes": 10273,
+      "sha256": "95a950bd7c2858a3a8b6420458c5cd99190d5c8320e063db26863b9a32d3557a"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\standby-fix-v1\\source\\scripts\\migration\\bortus-restore-watch.py",
+      "bytes": 34472,
+      "sha256": "e33315fd0b0802cf1ff4e14c8ef3c822f944ea214afb6e6eb07b7047268a0e95"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\standby-fix-v1\\source\\scripts\\migration\\tests\\test_bortus_restore_completion.py",
+      "bytes": 16335,
+      "sha256": "02b2dd80c60ea518c02e26203bb2845c84879751ad917d542a1397c4a8053ee8"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\standby-fix-v1\\source\\scripts\\migration\\tests\\test_bortus_restore_watch.py",
+      "bytes": 36712,
+      "sha256": "eae70907770b718891b3510c7090496fdf8cfb44418693bc1be156dd61ae4f6b"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\standby-fix-v1\\source-manifest.json",
+      "bytes": 1047,
+      "sha256": "8149788168551d8d6ee46e24c44445841080ed824228810560201ee31a4a0973"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\standby-fix-v1\\stderr.log",
+      "bytes": 37251,
+      "sha256": "ae89418ab9767660421c5fd3fd292eb9515612d9a466214f2acec1c93965dba5"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\standby-fix-v1\\stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\standby-fix-v1\\terminal.json",
+      "bytes": 868,
+      "sha256": "8fa10a2c251e2e4763dde2d37dac09272bc4b19df239def3428e4519720c4c62"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\terminal.json",
+      "bytes": 575,
+      "sha256": "c37c7a4868cd63cadcf0d68957f9ff89608d2419661510eed34b6edec71a5dc5"
+    }
+  ],
+  "mutations": 0,
+  "database_or_secret_reads": 0,
+  "independent_restore_proven": false,
+  "whole_row_preservation_proven": false,
+  "earlier_native_receipts_retained_historical_not_rewritten": true,
+  "final_scoped_default_scan": {
+    "scope": "Ten exact correction source/test/docs/evidence inputs only; not full repository/image",
+    "actual_exit_code": 0,
+    "findings": 0,
+    "default_rules": true,
+    "no_exclusions_or_allowlists": true,
+    "tool_sha256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "command": [
+      "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-native-window-tools-70320914\\bin\\gitleaks.exe",
+      "dir",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\final-scan-input",
+      "--redact",
+      "--no-banner",
+      "--report-format",
+      "json",
+      "--report-path",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\final-scan.json"
+    ],
+    "files": [
+      {
+        "path": "scripts/migration/bortus-restore-completion.py",
+        "bytes": 10273,
+        "sha256": "95a950bd7c2858a3a8b6420458c5cd99190d5c8320e063db26863b9a32d3557a"
+      },
+      {
+        "path": "scripts/migration/bortus-restore-watch.py",
+        "bytes": 34472,
+        "sha256": "e33315fd0b0802cf1ff4e14c8ef3c822f944ea214afb6e6eb07b7047268a0e95"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_restore_completion.py",
+        "bytes": 16335,
+        "sha256": "02b2dd80c60ea518c02e26203bb2845c84879751ad917d542a1397c4a8053ee8"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_restore_watch.py",
+        "bytes": 36712,
+        "sha256": "eae70907770b718891b3510c7090496fdf8cfb44418693bc1be156dd61ae4f6b"
+      },
+      {
+        "path": "docs/BORTUS-RESTORE-COMPLETION.md",
+        "bytes": 10480,
+        "sha256": "ca5ab7c38a0b481baea277cd04d7c9c1744486c58db3c3ed5e97a6e9e8f4bd72"
+      },
+      {
+        "path": "docs/BORTUS-RESTORE-WATCH.md",
+        "bytes": 8245,
+        "sha256": "ef2cab1a99d39542086a4b0ca9ee71b01f7558784eca625292ec16d2b6c7a251"
+      },
+      {
+        "path": "docs/MIGRATION-OPERATIONS.md",
+        "bytes": 91859,
+        "sha256": "97c81126fe823f851bc525e0035edd2fbdc6e6f9a3275edf6488da8e0a53efef"
+      },
+      {
+        "path": "MIGRATION_STATUS.md",
+        "bytes": 80755,
+        "sha256": "4883282e05907fec1bc1314f380f492d8477a9c7d3c8cc4b596fccdf13aeba27"
+      },
+      {
+        "path": "evidence/bortus-restore-schema-status-correction-20261011.json",
+        "bytes": 11281,
+        "sha256": "b54bc6abd520c151a2ca04cabb5af90639000e3ad9f27689d7325d41cc8e6989"
+      },
+      {
+        "path": "evidence/bortus-paired-performance-3f9-20261011.json",
+        "bytes": 6609,
+        "sha256": "de4809c5f83964a4f630cfe93029887f8f863181a5bd1ba4bd7fc95a05b442eb"
+      }
+    ],
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "f668896ced0289b67f30313d3f022ea8fdc67da85d652ae9a1dffa0122ab082d",
+    "checked_docs": 16
+  },
+  "final_doc_inventory_path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-target-fence-20261011\\docs-check.json",
+  "final_doc_inventory_sha256": "4ba41253e7cd6ace2db7cc0b63ce8ffcc474a30b13d0a32cbba5ef4808ff46fb",
+  "staged_raw_to_tested_source_relations": [
+    {
+      "path": "scripts/migration/bortus-restore-completion.py",
+      "git_raw_sha256": "95a950bd7c2858a3a8b6420458c5cd99190d5c8320e063db26863b9a32d3557a",
+      "tested_working_sha256": "95a950bd7c2858a3a8b6420458c5cd99190d5c8320e063db26863b9a32d3557a",
+      "relation": "exact"
+    },
+    {
+      "path": "scripts/migration/bortus-restore-watch.py",
+      "git_raw_sha256": "47139ec56b35a931d5e992193d611894738dc1736e9ed7ea757f197b91fe1313",
+      "tested_working_sha256": "e33315fd0b0802cf1ff4e14c8ef3c822f944ea214afb6e6eb07b7047268a0e95",
+      "relation": "literal-LF-to-CRLF"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restore_completion.py",
+      "git_raw_sha256": "02b2dd80c60ea518c02e26203bb2845c84879751ad917d542a1397c4a8053ee8",
+      "tested_working_sha256": "02b2dd80c60ea518c02e26203bb2845c84879751ad917d542a1397c4a8053ee8",
+      "relation": "exact"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restore_watch.py",
+      "git_raw_sha256": "2569da56242ec4cc86fd047d93901f26801f7ff23d1792e3e3e0af1137a87844",
+      "tested_working_sha256": "eae70907770b718891b3510c7090496fdf8cfb44418693bc1be156dd61ae4f6b",
+      "relation": "literal-LF-to-CRLF"
+    }
+  ]
+}

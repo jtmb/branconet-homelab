@@ -1,0 +1,197 @@
+{
+  "scope": "Independent unchanged synthetic paired comparison metadata and aggregate verification; performance acceptance fails",
+  "verified_at_utc": "2026-10-11T07:10:23.119461+00:00",
+  "candidate_commit": "3f9b21cd5beb568c8faddec75d6ba55ae889c310",
+  "baseline_commit": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "candidate_is_final": false,
+  "original_artifacts": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-paired-3f9-20261011\\raw-report.json",
+      "sha256": "a3fe6ef3736b56eba9b6bde99a057bef6a0b987bf0bf91f6d86486dfc73f7896",
+      "bytes": 855860
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-paired-3f9-20261011\\summary.json",
+      "sha256": "b792e9249ceb3fbc2958f70024e6cb09b13675567e10ad9da891ae4bc35c7bb3",
+      "bytes": 222455
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-paired-3f9-20261011\\terminal.json",
+      "sha256": "97b56951c58dab5f5277503c6ee3e649f05419c4345a15afb0b3aef54029f16b",
+      "bytes": 301
+    }
+  ],
+  "six_unique_alternating_records_verified": true,
+  "per_phase_and_whole_run_numeric_comparisons": 4122,
+  "assertions_passed": true,
+  "performance_accepted": false,
+  "terminal": {
+    "owner": "paired-3f9b21c-20261011-065856-3b80",
+    "actual_runner_exit_code": 0,
+    "terminal": true,
+    "observed_at_utc": "2026-10-11T07:05:14.885011+00:00",
+    "runner_pid": 1844575,
+    "protected_work": "/home/brajam/.cache/bortus-controlled-perf/run-622cdf52624a",
+    "owned_live_containers": []
+  },
+  "limitations": [
+    "Exact committed checkpoint, not the final integrated candidate or live before/after.",
+    "HTTP loopback + fixed-delay fake CLI and verified-TLS synthetic native API; no real cluster/ingress.",
+    "CPU quota/affinity does not reserve physical cores or eliminate host contention.",
+    "Cgroup totals include driver, mock native API, Next server, Prisma/CLI children and file cache; actual Next PID RSS/HWM is reported separately.",
+    "Fresh-process cache cold is not OS cache cold; source builds are excluded from runtime cgroups.",
+    "Browser polling/hidden lifecycle, DOM/render/LCP/transfer and actual zoom are not inferred from HTTP server measurements.",
+    "Different error outcomes cannot support a valid latency speedup comparison.",
+    "services-after-pods fixture contains empty services, but baseline serves a warmed shared cache and candidate performs a deferred resource read with a different availability envelope; the unchanged summary comparison flag does not establish equivalent cache-state/response-contract timing."
+  ],
+  "verified_selected_medians": [
+    {
+      "profile": "metadata-1000",
+      "phase": "warm-pods-12",
+      "http_p50_ms": {
+        "baseline": 6.761255000001256,
+        "candidate": 5.646387000000686
+      },
+      "http_p95_ms": {
+        "baseline": 14.159969000000274,
+        "candidate": 9.464078999999401
+      }
+    },
+    {
+      "profile": "metadata-1000",
+      "phase": "warm-pods-concurrent-20",
+      "http_p50_ms": {
+        "baseline": 42.99433599999975,
+        "candidate": 41.77909699999873
+      },
+      "http_p95_ms": {
+        "baseline": 73.88237100000151,
+        "candidate": 85.60963100000117
+      }
+    },
+    {
+      "profile": "metadata-200",
+      "phase": "warm-pods-12",
+      "http_p50_ms": {
+        "baseline": 4.550551000000269,
+        "candidate": 4.31202200000007
+      },
+      "http_p95_ms": {
+        "baseline": 7.908315000000584,
+        "candidate": 7.1144640000002255
+      }
+    },
+    {
+      "profile": "kv-sized-native-25",
+      "phase": "warm-pods-concurrent-20",
+      "http_p50_ms": {
+        "baseline": 27.870803999998316,
+        "candidate": 28.540490999999747
+      },
+      "http_p95_ms": {
+        "baseline": 49.24314299999969,
+        "candidate": 48.71829799999978
+      }
+    },
+    {
+      "profile": "metadata-1000",
+      "phase": "native-secret-metadata",
+      "http_p50_ms": {
+        "baseline": 75.56478799999968,
+        "candidate": 101.10901500000182
+      },
+      "http_p95_ms": {
+        "baseline": 75.56478799999968,
+        "candidate": 101.10901500000182
+      }
+    },
+    {
+      "profile": "kv-sized-native-25",
+      "phase": "native-secret-metadata",
+      "http_p50_ms": {
+        "baseline": 204.32314100000076,
+        "candidate": 266.74246199999834
+      },
+      "http_p95_ms": {
+        "baseline": 204.32314100000076,
+        "candidate": 266.74246199999834
+      }
+    },
+    {
+      "profile": "maximum-flat-native-3",
+      "phase": "native-secret-metadata",
+      "http_p50_ms": {
+        "baseline": 127.88121600000159,
+        "candidate": 190.56768100000045
+      },
+      "http_p95_ms": {
+        "baseline": 127.88121600000159,
+        "candidate": 190.56768100000045
+      }
+    },
+    {
+      "profile": "metadata-10000",
+      "phase": "native-secret-metadata",
+      "http_p50_ms": {
+        "baseline": 253.48410499999954,
+        "candidate": 255.5562370000007
+      },
+      "http_p95_ms": {
+        "baseline": 253.48410499999954,
+        "candidate": 255.5562370000007
+      }
+    }
+  ],
+  "whole_run": {
+    "baseline": {
+      "cgroup_peak_mib": {
+        "median": 371.078125,
+        "min": 353.39453125,
+        "max": 371.703125
+      },
+      "cgroup_cpu_seconds": {
+        "median": 36.138706,
+        "min": 35.574075,
+        "max": 37.582179
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    },
+    "candidate": {
+      "cgroup_peak_mib": {
+        "median": 413.6015625,
+        "min": 412.1953125,
+        "max": 417.16015625
+      },
+      "cgroup_cpu_seconds": {
+        "median": 32.370436,
+        "min": 30.819525,
+        "max": 32.411939
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    }
+  },
+  "prior_32eb_root_verifier_setup_failures": [
+    {
+      "tool_terminal": "5ebff2",
+      "actual_exit": 1,
+      "reason": "Verifier omitted conditional native metric fields."
+    },
+    {
+      "tool_terminal": "cf2e61",
+      "actual_exit": 1,
+      "reason": "Verifier treated raw cgroup event text as a parsed map."
+    }
+  ],
+  "original_filesystem_logs_for_verifier_setup_failures_available": false,
+  "raw_records_and_summary_changed": false
+}

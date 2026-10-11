@@ -256,7 +256,7 @@ class Collector:
         self.connection = self.response = self.thread = None
         self.inode = self.digest = self.expected = None
         self.stopping = False
-        self.state = {'abi': 1, 'phase': 'starting', 'failure': None,
+        self.state = {'abi': 2, 'phase': 'starting', 'failure': None,
             'lease_id': str(uuid.uuid4()), 'run_id': journal.record['run_id'],
             'checkpoint_sha256': journal.record['checkpoint_journal_sha256'],
             'proposal_sha256': journal.record['reviewed_proposal_sha256'],
@@ -314,7 +314,7 @@ class Collector:
             'checkpoint_sha256', 'proposal_sha256', 'collector_sha256', 'collection_rv', 'list_bytes',
             'frames', 'watch_bytes', 'sequence', 'baseline', 'observations', 'authorizations',
             'target', 'metadata_eligible', 'data_acceptance'}, 'proof_schema')
-        require(s['abi'] == 1 and s['phase'] in ('starting', 'ready', 'bound', 'eligible', 'failed', 'closed') and
+        require(s['abi'] == 2 and s['phase'] in ('starting', 'ready', 'bound', 'eligible', 'failed', 'closed') and
                 completion._uid(s['lease_id']) and s['run_id'] == self.journal.record['run_id'] and
                 s['checkpoint_sha256'] == self.journal.record['checkpoint_journal_sha256'] and
                 s['proposal_sha256'] == self.journal.record['reviewed_proposal_sha256'] and
@@ -342,12 +342,12 @@ class Collector:
             volume_identity({'metadata': identity})
         for p in s['observations']:
             require(type(p) is dict and set(p) == {'type', 'identity', 'source_matches', 'spec_matches',
-                'flags_valid', 'flags', 'restore_failure', 'deleting'} and
+                'flags_valid', 'flags', 'status_valid', 'restore_failure', 'deleting'} and
                 p['type'] in ('ADDED', 'MODIFIED', 'DELETED'), 'proof_schema')
             volume_identity({'metadata': p['identity']})
             require(set(p['identity']) == {'name', 'namespace', 'uid', 'resourceVersion'} and
                 all(type(p[k]) is bool for k in ('source_matches', 'spec_matches', 'flags_valid',
-                                                'restore_failure', 'deleting')) and
+                                                'status_valid', 'restore_failure', 'deleting')) and
                 type(p['flags']) is dict and set(p['flags']) <= {'restoreInitiated', 'restoreRequired'} and
                 all(type(v) is bool for v in p['flags'].values()), 'proof_schema')
         seen = set()
@@ -463,12 +463,18 @@ class Collector:
         flags = {k: status[k] for k in fields if k in status and type(status[k]) is bool}
         flags_valid = (all(k not in status for k in fields) or
                        all(k in status and type(status[k]) is bool for k in fields))
+        status_valid = (
+            ('state' not in status or (type(status['state']) is str and status['state'] in
+                ('', 'creating', 'attached', 'detached', 'attaching', 'detaching'))) and
+            ('robustness' not in status or (type(status['robustness']) is str and
+                status['robustness'] in ('', 'unknown', 'healthy', 'degraded'))) and
+            ('isStandby' not in status or status['isStandby'] is False))
         return {'type': kind, 'identity': identity,
             'source_matches': spec.get('fromBackup') == self.source.backup_url,
             'spec_matches': spec.get('encrypted') is True and type(spec.get('numberOfReplicas')) is int and
                 spec['numberOfReplicas'] == 2 and spec.get('size') == completion.SIZE_BYTES and
-                spec.get('dataEngine') == 'v1' and spec.get('standby') is False,
-            'flags_valid': flags_valid, 'flags': flags,
+                spec.get('dataEngine') == 'v1' and spec.get('Standby') is False and 'standby' not in spec,
+            'flags_valid': flags_valid, 'flags': flags, 'status_valid': status_valid,
             'restore_failure': any(c.get('type') == 'Restore' and c.get('reason') == 'RestoreFailure'
                                    for c in conditions),
             'deleting': obj['metadata'].get('deletionTimestamp') is not None or status.get('state') == 'deleting'}
@@ -481,11 +487,11 @@ class Collector:
         result = []
         for p in observations:
             require(p['identity']['name'] == target['name'] and p['identity']['uid'] == target['uid'] and
-                    p['source_matches'] and p['spec_matches'] and p['flags_valid'] and
+                    p['source_matches'] and p['spec_matches'] and p['flags_valid'] and p['status_valid'] and
                     not p['restore_failure'] and not p['deleting'] and p['type'] != 'DELETED', 'target_drift')
             result.append({'type': p['type'], 'object': {'apiVersion': completion.API_VERSION, 'kind': 'Volume',
                 'metadata': p['identity'], 'spec': {'fromBackup': self.source.backup_url, 'encrypted': True,
-                    'numberOfReplicas': 2, 'size': completion.SIZE_BYTES, 'dataEngine': 'v1', 'standby': False},
+                    'numberOfReplicas': 2, 'size': completion.SIZE_BYTES, 'dataEngine': 'v1', 'Standby': False},
                 'status': p['flags']}})
         return result
 
@@ -596,7 +602,7 @@ class Collector:
                         'volume_binding')
                 expected = self.source.expected(vmeta['name'], vmeta['uid']); completion._expected(expected)
                 current = self._project({'type': 'MODIFIED', 'object': volume})
-                require(current['source_matches'] and current['spec_matches'] and current['flags_valid'] and
+                require(current['source_matches'] and current['spec_matches'] and current['flags_valid'] and current['status_valid'] and
                         not current['restore_failure'] and not current['deleting'], 'volume_binding')
                 self.expected = expected; self.state['target'] = vmeta
                 self._validate_target_trace()  # Earlier events bind only through confirmed UID replies.
@@ -611,7 +617,7 @@ class Collector:
                 current = self._project({'type': 'MODIFIED', 'object': fresh_volume})
                 events = self._target_events()
                 require(current['identity'] == events[-1]['object']['metadata'] and current['source_matches'] and
-                        current['spec_matches'] and current['flags_valid'] and not current['deleting'] and
+                        current['spec_matches'] and current['flags_valid'] and current['status_valid'] and not current['deleting'] and
                         not current['restore_failure'] and current['flags'] == events[-1]['object']['status'], 'seal_rv')
                 result = completion.evaluate_restore_transition(self.expected, events,
                     watch_started_before_create=True, longhorn_version=completion.LONGHORN_VERSION,
