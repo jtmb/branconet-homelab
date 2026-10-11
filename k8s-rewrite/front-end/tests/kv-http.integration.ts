@@ -9,6 +9,7 @@ import { once } from "node:events";
 import { PrismaClient } from "@prisma/client";
 import { nativeTlsFixture } from "./helpers/native-tls";
 import { fakeKubectl } from "./helpers/fake-kubectl";
+import { nextFinalizeProbe } from "./helpers/next-finalize-probe";
 
 test("production native KV routes use verified TLS, exact binary history, fresh policy and legacy isolation",{timeout:120000},async()=>{
   const dir=await mkdtemp(path.join(tmpdir(),"bortus-kv-http-")),database="file:"+path.join(dir,"test.db").replaceAll("\\","/");
@@ -18,6 +19,7 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
   try {
     native=await nativeTlsFixture(dir);
     const cli=await fakeKubectl(dir);
+    const finalizeProbe=await nextFinalizeProbe(dir,process.env.BORTUS_TEST_NEXT_UNPATCHED==="true");
     const aliasFile=path.join(dir,"aliases.json"),alias={alias:"secret_original_under_scored",namespace:"apps",name:"imported",key:"__proto__"};
     await writeFile(aliasFile,JSON.stringify([alias]));
     const env:NodeJS.ProcessEnv={...process.env,DATABASE_URL:database,BOTRUS_JWT_SECRET:"synthetic-http-signing-material",BOTRUS_SECRETS_KEY:"synthetic-legacy-lookup-token",BORTUS_SECRET_NAMESPACES:"apps,history",BORTUS_HISTORY_NAMESPACE:"history",BORTUS_KV_GUARDED_ADOPTION:"false",BORTUS_DISABLE_PROVISIONING:"true",KUBECONFIG:native.config,BORTUS_SECRET_ALIASES_FILE:aliasFile,NODE_ENV:"production",HOSTNAME:"127.0.0.1"};
@@ -28,7 +30,7 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     base="http://127.0.0.1:"+env.PORT;
     const start=async(guard:boolean)=>{
       await stop();env.BORTUS_KV_GUARDED_ADOPTION=String(guard);
-      child=spawn(process.execPath,[path.resolve(".next/standalone/server.js")],{env,stdio:["ignore","pipe","pipe"]});
+      child=spawn(process.execPath,["--require",finalizeProbe,path.resolve(".next/standalone/server.js")],{env,stdio:["ignore","pipe","pipe"]});
       child.stdout?.on("data",chunk=>{output=(output+chunk).slice(-65536);});child.stderr?.on("data",chunk=>{output=(output+chunk).slice(-65536);});
       const startupDeadline=Date.now()+30000;
       while(Date.now()<startupDeadline){
@@ -41,8 +43,18 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
       }
       throw new Error("Disposable KV HTTP server not ready");
     };
-    const request=(route:string,method="GET",body?:unknown,cookie?:string)=>fetch(base+route,{method,headers:{...(cookie?{cookie}:{}),...(body===undefined?{}:{"Content-Type":"application/json"})},body:body===undefined?undefined:JSON.stringify(body),signal:AbortSignal.timeout(15000),redirect:"manual"});
-    const checked=async(response:Response,status=200)=>{assert.equal(response.status,status);assert.match(response.headers.get("cache-control")||"",/no-store/);return response.json();};
+    let lastRequestMethod="GET";
+    const request=(route:string,method="GET",body?:unknown,cookie?:string)=>{lastRequestMethod=method;return fetch(base+route,{method,headers:{...(cookie?{cookie}:{}),...(body===undefined?{}:{"Content-Type":"application/json"})},body:body===undefined?undefined:JSON.stringify(body),signal:AbortSignal.timeout(15000),redirect:"manual"});};
+    const checked=async(response:Response,status=200)=>{
+      if(response.status!==status){
+        const errorBody=await response.clone().json().catch(()=>null);
+        const responseBytes=await response.clone().arrayBuffer();
+        const serverFrames=[...output.matchAll(/\bat\s+(?:([A-Za-z0-9_.$]+)\s+\()?([^\r\n()]+?\.js):(\d+):(\d+)\)?/g)].filter(frame=>/[\\/]\.next[\\/]|[\\/]next[\\/]dist[\\/]/.test(frame[2])).map(frame=>({module:path.basename(frame[2].replaceAll("\\","/")),function:frame[1]??"anonymous",line:Number(frame[3]),column:Number(frame[4])})).filter(frame=>/^[A-Za-z0-9_.\[\]-]+$/.test(frame.module)).slice(-12);
+        const fixedErrors=["Authentication required","Authentication service unavailable","Engine administration required","KV metadata unavailable","KV metadata is busy; retry shortly","Kubernetes Secrets unavailable; no database fallback is permitted"];
+        console.log("HTTP_STATUS_DIAGNOSTIC "+JSON.stringify({route:new URL(response.url).pathname,method:lastRequestMethod,expected:status,actual:response.status,jsonError:!!errorBody,responseBytes:responseBytes.byteLength,contentType:response.headers.get("content-type")?.includes("json")?"json":response.headers.get("content-type")?.includes("html")?"html":"other",fixedApiError:fixedErrors.includes(errorBody?.error)?errorBody.error:null,noStore:/no-store/.test(response.headers.get("cache-control")||""),serverStreamError:/Invalid state|Premature close|ECONNRESET|aborted|fetch failed/i.test(output),serverBodyDisturbed:/Response body object should not be disturbed or locked|Request body was disturbed/.test(output),serverDatabaseError:/SQLITE_BUSY|database is locked|P1008|P2028|P2034/.test(output),serverFrames}));
+      }
+      assert.equal(response.status,status);assert.match(response.headers.get("cache-control")||"",/no-store/);return response.json();
+    };
     const automate=(body:unknown,credential?:string)=>fetch(base+"/api/kv/automation",{method:"POST",headers:{"Content-Type":"application/json",...(credential?{authorization:"Bearer "+credential}:{})},body:JSON.stringify(body),signal:AbortSignal.timeout(15000)});
     const login=async(username:string,password:string)=>{const response=await request("/api/auth/login","POST",{username,password});assert.equal(response.status,200);return response.headers.get("set-cookie")!.split(";",1)[0];};
     await start(false);
@@ -286,6 +298,8 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
       ["/api/kv/legacy/grants/00000000-0000-4000-8000-000000000000","DELETE"],
     ];
     const oversizedMetadata={padding:"x".repeat(3*1024*1024)};
+    const scopedRefusalAccount=await db.user.findUniqueOrThrow({where:{id:scopedUser.id},select:{role:true,engineAdmin:true}});
+    assert.equal(scopedRefusalAccount.role,"write");assert.equal(scopedRefusalAccount.engineAdmin,false);
     for(const [metadataRoute,method] of metadataRoutes){
       await checked(await request(metadataRoute,method,oversizedMetadata,reader),403);
       await checked(await request(metadataRoute,method,oversizedMetadata,scoped),403);
@@ -332,6 +346,15 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     await db.user.update({where:{id:account.id},data:{engineAdmin:false}});
     await checked(await request(route+"/adopt","GET",undefined,admin),403);
     await checked(await request("/api/secrets?namespace=apps&name=imported&key=unrelated","GET",undefined,admin),403);
+    const completedFinalizations=output.match(/BORTUS_TEST_FINALIZE_DONE/g)?.length??0;
+    const ownedRequests=output.match(/BORTUS_TEST_OWNED_ROUTE_REQUEST/g)?.length??0;
+    assert(completedFinalizations>=20,"Delayed standalone middleware finalization actually exercised");
+    assert(ownedRequests>=20,"Probe must observe each exact request body's construction");
+    assert(!output.includes("BORTUS_TEST_ADAPTER_BEFORE_FINALIZE"),"Route request construction must await middleware body finalization");
+    console.log("NEXT_FINALIZE_ORDERING "+JSON.stringify({delayedFinalizations:completedFinalizations,ownedRequests,delayMs:100,routeBeforeFinalize:false}));
     assert(!output.includes(privateMarker));assert(!output.includes("exact imported value"));assert(!output.includes("flat bypass"));assert(!output.includes(identity.credential));
-  } finally {await stop();await native?.close();await db.$disconnect();await rm(dir,{recursive:true,force:true});}
+  } finally {
+    console.log("NEXT_FINALIZE_PROBE "+JSON.stringify({negativeControl:process.env.BORTUS_TEST_NEXT_UNPATCHED==="true",begun:output.match(/BORTUS_TEST_FINALIZE_BEGIN/g)?.length??0,completed:output.match(/BORTUS_TEST_FINALIZE_DONE/g)?.length??0,ownedRequests:output.match(/BORTUS_TEST_OWNED_ROUTE_REQUEST/g)?.length??0,routeBeforeFinalize:output.includes("BORTUS_TEST_ADAPTER_BEFORE_FINALIZE")}));
+    await stop();await native?.close();await db.$disconnect();await rm(dir,{recursive:true,force:true});
+  }
 });

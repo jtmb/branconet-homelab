@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Modal } from "../ui/modal";
-import { useQuery, useSession } from "../../lib/use-query";
+import { refetchKvMetadata, useQuery, useSession } from "../../lib/use-query";
 import {
-  ValueFence, WorkbenchFailure, captureRevision, convertEncoding, draftChange, draftsFor, parseTransfer, replacementDrafts, workbenchRequest,
+  ValueFence, WorkbenchFailure, captureRevision, captureMatchesMetadata, convertEncoding, draftChange, draftsFor, parseTransfer, replacementDrafts, workbenchRequest,
   type EncodedField, type FieldDraft, type ImportOutcome, type ImportPreview, type ImportResult, type KvCapabilities,
   type KvPermission, type KvSelectedPath, type KvStatus, type KvValues, type RevisionCapture, type TransferBundle,
 } from "./kv-workbench-model";
@@ -16,8 +16,8 @@ export interface KvWorkbenchProps {
   /** Fresh parent capability ceiling; the workbench shares that endpoint's query lifecycle. */
   capabilities: KvCapabilities | null;
   onClose: () => void;
-  /** Metadata invalidation only. No values are passed to the parent. */
-  onMetadataRefresh: () => void;
+  /** Optional metadata-change notification. Shared invalidation is owned here; do not invalidate again. */
+  onMetadataRefresh?: () => void;
   returnFocus?: () => void;
 }
 type History = { pathId: string; resourceVersion: string; head: number; items: { version: number; createdAt: string; tombstone: boolean }[] };
@@ -44,9 +44,18 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
   const capabilityStamp = useRef(capabilityQuery.updatedAt); capabilityStamp.current = capabilityQuery.updatedAt;
   const caps = capabilities?.pathId === path.id && !capabilityQuery.error && !capabilityQuery.stale && (blockedAt === undefined || capabilityQuery.updatedAt > blockedAt)
     ? capabilityQuery.data ?? null : null;
-  const [status, setStatus] = useState<KvStatus>();
-  const [nativeAbsent, setNativeAbsent] = useState(false);
-  const [history, setHistory] = useState<History>(), [historyPage, setHistoryPage] = useState(0);
+  const endpoint = `/api/kv/paths/${encodeURIComponent(path.id)}`;
+  const statusQuery = useQuery<KvStatus>(endpoint + "/status"), historyQuery = useQuery<History>(endpoint + "/versions");
+  const [metadataBlockedAt, setMetadataBlockedAt] = useState<number>();
+  const metadataStamp = useRef(0); metadataStamp.current = Math.max(statusQuery.updatedAt, statusQuery.errorAt ?? 0, historyQuery.updatedAt);
+  const status = !statusQuery.error && !statusQuery.stale && Date.now() - statusQuery.updatedAt < 15000 &&
+    (metadataBlockedAt === undefined || statusQuery.updatedAt > metadataBlockedAt) && statusQuery.data?.pathId === path.id ? statusQuery.data : undefined;
+  const nativeAbsent = statusQuery.status === 404 && !statusQuery.errorStale && statusQuery.errorAt !== undefined &&
+    Date.now() - statusQuery.errorAt < 15000 && (metadataBlockedAt === undefined || statusQuery.errorAt > metadataBlockedAt);
+  const [historyOpen, setHistoryOpen] = useState(false), [historyPage, setHistoryPage] = useState(0);
+  const history = historyOpen && caps?.permissions.list && !historyQuery.error && !historyQuery.stale && Date.now() - historyQuery.updatedAt < 15000 &&
+    (metadataBlockedAt === undefined || historyQuery.updatedAt > metadataBlockedAt) && historyQuery.data?.pathId === path.id &&
+    status && historyQuery.data.head === status.head && historyQuery.data.resourceVersion === status.resourceVersion ? historyQuery.data : undefined;
   const [view, setView] = useState<KvValues>();
   const [edit, setEdit] = useState<Edit>();
   const [adoption, setAdoption] = useState<{ preview: Adoption; capture: RevisionCapture }>();
@@ -59,14 +68,15 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
   const [busy, setBusy] = useState(false), [message, setMessage] = useState("");
   const [operation, setOperation] = useState<{ id: string; outcome?: string }>();
   const fence = useRef(new ValueFence()), mounted = useRef(false), running = useRef(false);
-  const nativeEpoch = useRef(0);
   const heading = useRef<HTMLHeadingElement>(null), refreshButton = useRef<HTMLButtonElement>(null);
   const capabilityFresh = !!caps && Date.now() - capabilityQuery.updatedAt < 15000 && caps.pathId === path.id && caps.revision === path.revision;
   const access = `${session.data?.username ?? ""}:${session.canKvWrite}:${capabilityFresh}:${JSON.stringify(caps?.permissions)}:${caps?.initializationAllowed}:${caps?.nativeMutationEnabled}`;
   const accessRef = useRef(access);
   if (accessRef.current !== access) { fence.current.invalidate(); accessRef.current = access; }
   const allowed = (permission: KvPermission, mutation = false) => session.canKvWrite && capabilityFresh && caps?.permissions[permission] === true && (!mutation || caps.nativeMutationEnabled);
-  const refreshParent = useRef(onMetadataRefresh); refreshParent.current = onMetadataRefresh;
+  const notifyParent = useRef(onMetadataRefresh); notifyParent.current = onMetadataRefresh;
+  const blockMetadata = useCallback(() => setMetadataBlockedAt(metadataStamp.current), []);
+  const refreshMetadata = useCallback(() => { blockMetadata(); refetchKvMetadata(); notifyParent.current?.(); }, [blockMetadata]);
   const clearSensitive = useCallback(() => {
     fence.current.invalidate(); setView(undefined); setEdit(undefined); setAdoption(undefined); setConfirmation(undefined);
     setExact(""); setAck(false); setImportOpen(false); setImportText(""); setTransfer(undefined);
@@ -89,7 +99,7 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
     const timeout = setTimeout(() => {
       if (mounted.current && ticket.current()) {
         clearSensitive();
-        if (init.method && init.method !== "GET") { setStatus(undefined); refreshParent.current(); }
+        if (init.method && init.method !== "GET") { refreshMetadata(); }
         setMessage("Request timed out. Refresh metadata and inspect the operation before retrying.");
       }
       ticket.abort();
@@ -100,9 +110,8 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
     } catch (error) {
       if (!mounted.current || !ticket.current()) return;
       if (error instanceof WorkbenchFailure) {
-        if (url === `/api/kv/paths/${encodeURIComponent(path.id)}/status`) { setStatus(undefined); setNativeAbsent(error.status === 404); }
         if (error.status === 401 || error.status === 403) { clearSensitive(); setBlockedAt(capabilityStamp.current); refetchCapabilities(); refetchSession(); }
-        else if (init.method && init.method !== "GET") { clearSensitive(); setStatus(undefined); refreshParent.current(); }
+        else if (init.method && init.method !== "GET") { clearSensitive(); refreshMetadata(); }
         setMessage(error.message);
         if (error.operationId) setOperation({ id: error.operationId, outcome: error.outcome });
       } else setMessage("Request unavailable. Refresh metadata and inspect the result before retrying.");
@@ -110,24 +119,11 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
       clearTimeout(timeout); ticket.finish(); running.current = false;
       if (mounted.current) setBusy(false);
     }
-  }, [clearSensitive, path.id, refetchCapabilities, refetchSession]);
-  const endpoint = `/api/kv/paths/${encodeURIComponent(path.id)}`;
+  }, [clearSensitive, refetchCapabilities, refetchSession, refreshMetadata]);
   const refresh = useCallback(() => {
-    if (running.current) return;
-    nativeEpoch.current++;
-    setStatus(undefined); setNativeAbsent(false);
-    void request<KvStatus>(endpoint + "/status", {}, result => { setStatus(result); setNativeAbsent(false); refreshParent.current(); });
-  }, [endpoint, request]);
-  // Browsing reads only status/capability metadata. Never fetch adoption or values on mount.
-  useEffect(() => {
-    const controller = new AbortController(); let active = true;
-    const epoch = nativeEpoch.current;
-    const timeout = setTimeout(() => controller.abort(), 20000);
-    void workbenchRequest<KvStatus>(endpoint + "/status", { signal: controller.signal }).then(result => { if (active && epoch === nativeEpoch.current) { setStatus(result); setNativeAbsent(false); } })
-      .catch(error => { if (active && epoch === nativeEpoch.current) { setNativeAbsent(error instanceof WorkbenchFailure && error.status === 404); setMessage(error instanceof WorkbenchFailure ? error.message : "Native metadata unavailable. Refresh explicitly."); } })
-      .finally(() => clearTimeout(timeout));
-    return () => { active = false; controller.abort(); clearTimeout(timeout); };
-  }, [endpoint]);
+    if (!running.current) refreshMetadata();
+  }, [refreshMetadata]);
+  // Status/history share the parent's metadata owner; values/adoption remain explicit and private.
   function rememberFocus() { /* The stable Refresh metadata control receives focus after an inline action closes. */ }
   function returnToMetadata() { requestAnimationFrame(() => refreshButton.current?.focus()); }
   function focusPanel() { requestAnimationFrame(() => heading.current?.focus()); }
@@ -142,11 +138,11 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
     rememberFocus(); clearSensitive(); setConfirmation({ kind, version, capture: captureRevision(path, status) }); focusPanel();
   }
   function mutate(url: string, method: string, body: object) {
-    nativeEpoch.current++; setStatus(undefined); setNativeAbsent(false);
+    blockMetadata();
     setOperation(undefined);
     void request<{ operationId: string; outcome: string; head: number }>(url, { method, headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }, result => {
-      clearSensitive(); setOperation({ id: result.operationId, outcome: result.outcome }); setStatus(undefined); setNativeAbsent(false); setHistory(undefined);
-      setMessage(`Operation ${result.outcome}. Refresh metadata to inspect the new head.`); refreshParent.current(); returnToMetadata();
+      clearSensitive(); setOperation({ id: result.operationId, outcome: result.outcome }); blockMetadata();
+      setMessage(`Operation ${result.outcome}. Refresh metadata to inspect the new head.`); refreshMetadata(); returnToMetadata();
     });
   }
   function openEdit(create = false, replacement = false) {
@@ -207,18 +203,18 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
     const plans = transfer.preview.plans.map(plan => ({ documentIndex: plan.documentIndex, pathId: plan.pathId, revision: plan.revision,
       resourceVersion: plan.resourceVersion, expectedHead: plan.expectedHead, overwrite: transfer.overwrites.includes(plan.documentIndex) }));
     setOperation(undefined);
-    nativeEpoch.current++; setStatus(undefined); setNativeAbsent(false);
+    blockMetadata();
     void request<ImportResult>("/api/kv/import", { method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ bundle: transfer.bundle, plans, confirmCredentials: true }) }, result => {
-      clearSensitive(); setOutcomes(result.outcomes); setTransferPage(0); setStatus(undefined); setHistory(undefined);
-      setMessage(result.success ? "All documents committed. Refresh metadata." : "Batch partially committed or refused. Inspect every outcome before preparing a fresh preview."); refreshParent.current();
+      clearSensitive(); setOutcomes(result.outcomes); setTransferPage(0); blockMetadata();
+      setMessage(result.success ? "All documents committed. Refresh metadata." : "Batch partially committed or refused. Inspect every outcome before preparing a fresh preview."); refreshMetadata();
     });
   }
   const changed = edit ? draftChange(edit.drafts, edit.original) : undefined;
   const replacementIntent = !!edit?.replacement && (changed?.changed || edit.drafts.every(draft => !draft.present));
   const panel = edit || adoption || confirmation || importOpen;
   const capture = edit?.capture ?? adoption?.capture ?? confirmation?.capture;
-  const capturedMetadataChanged = !!capture && capture.pathRevision !== path.revision;
+  const capturedMetadataChanged = !!capture && !captureMatchesMetadata(capture, path, status, nativeAbsent);
   return <Modal open onClose={close} returnFocus={returnFocus} title={`KV · ${path.path}`} description={`${path.namespace}/${path.name} · ${path.fields.length} explicitly mapped fields`}>
     <div className="space-y-4 text-zinc-100">
       <div className="flex flex-wrap gap-2">
@@ -233,7 +229,7 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
       {!session.canKvWrite && <p className="text-sm text-zinc-400">Metadata only. Fresh write access and path policy are required for values.</p>}
       {status && <p className="break-words text-sm text-zinc-400">{status.adopted ? `Head ${status.head} · ${status.tombstone ? "soft-deleted" : "active"}` : "Registered; explicit adoption or initialization required"} · native revision {status.resourceVersion}</p>}
       {!status && <p className="text-sm text-amber-300">{nativeAbsent ? "Native target absent in the latest metadata request. Explicit initialization requires fresh create permission." : "Native status unavailable. Refresh metadata before opening a new native action."}</p>}
-      {capture && <p className="break-all rounded-lg border border-zinc-700 p-3 text-sm">Captured head {capture.expectedHead}, native revision {capture.resourceVersion}, path revision {capture.pathRevision}. {capturedMetadataChanged && "Metadata changed. Cancel and reopen the action."}</p>}
+      {capture && <p className="break-all rounded-lg border border-zinc-700 p-3 text-sm">Captured head {capture.expectedHead}, native revision {capture.resourceVersion}, path revision {capture.pathRevision}. {capturedMetadataChanged && "Metadata changed or is unavailable. Refresh, then cancel and reopen if the captured head or revisions differ."}</p>}
       {!panel && <>
         <div className="flex flex-wrap gap-2">
           {allowed("read") && status?.adopted && <button className={button} disabled={busy} onClick={() => reveal()}>Reveal current fields</button>}
@@ -258,9 +254,8 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
           {!view.fields.length && <p className="text-sm">No managed fields in this version.</p>}
         </section>}
         <section aria-label="Immutable version history" className="space-y-3">
-          <button className={button} disabled={busy || !caps?.permissions.list || !capabilityFresh} onClick={() => {
-            void request<History>(endpoint + "/versions", {}, result => { setHistory(result); setHistoryPage(0); });
-          }}>Browse immutable history metadata</button>
+          <button className={button} disabled={busy || !caps?.permissions.list || !capabilityFresh} onClick={() => { setHistoryOpen(true); setHistoryPage(0); }}>Browse immutable history metadata</button>
+          {historyOpen && !history && <p className="text-sm text-amber-300">History metadata unavailable or does not match the current native snapshot. Refresh metadata before choosing a version.</p>}
           {history && <>
             <div className="max-w-full overflow-x-auto rounded-lg border border-zinc-800"><table className="w-full text-left text-sm"><caption className="p-2 text-left">Committed versions · rollback and restore create a new version</caption>
               <thead><tr><th className="p-2">Version</th><th className="p-2">Created</th><th className="p-2">State</th><th className="p-2">Actions</th></tr></thead>

@@ -1,0 +1,106 @@
+TAP version 13
+# Subtest: captured revisions stay frozen across background metadata changes
+ok 1 - captured revisions stay frozen across background metadata changes
+  ---
+  duration_ms: 1.3304
+  type: 'test'
+  ...
+# Subtest: action capture pauses on native or mapping change and outage; only fresh absence matches initial creation
+ok 2 - action capture pauses on native or mapping change and outage; only fresh absence matches initial creation
+  ---
+  duration_ms: 0.2691
+  type: 'test'
+  ...
+# Subtest: group drafts preserve special keys, binary bytes and original empty values; untouched save disabled
+ok 3 - group drafts preserve special keys, binary bytes and original empty values; untouched save disabled
+  ---
+  duration_ms: 1.2026
+  type: 'test'
+  ...
+# Subtest: encoding conversion preserves exact bytes; rejects invalid base64, surrogates and binary UTF-8
+ok 4 - encoding conversion preserves exact bytes; rejects invalid base64, surrogates and binary UTF-8
+  ---
+  duration_ms: 0.4695
+  type: 'test'
+  ...
+# Subtest: write-without-read drafts require complete explicit input and contain only metadata, never current values
+ok 5 - write-without-read drafts require complete explicit input and contain only metadata, never current values
+  ---
+  duration_ms: 0.2463
+  type: 'test'
+  ...
+# Subtest: value cancellation fences late completion and a subsequent request remains independent
+ok 6 - value cancellation fences late completion and a subsequent request remains independent
+  ---
+  duration_ms: 0.3164
+  type: 'test'
+  ...
+# Subtest: bounded import parsing and errors never reflect value input
+ok 7 - bounded import parsing and errors never reflect value input
+  ---
+  duration_ms: 23.5778
+  type: 'test'
+  ...
+# Subtest: failed value responses are sanitized, use no-store and make no blind retry
+ok 8 - failed value responses are sanitized, use no-store and make no blind retry
+  ---
+  duration_ms: 20.937
+  type: 'test'
+  ...
+# Subtest: 404 absence expires independently under a held retry and cannot renew a successful snapshot
+ok 9 - 404 absence expires independently under a held retry and cannot renew a successful snapshot
+  ---
+  duration_ms: 1.9261
+  type: 'test'
+  ...
+# Subtest: missing-target evidence is invalid on hide, invalidation and last unsubscribe; late 404 is fenced
+ok 10 - missing-target evidence is invalid on hide, invalidation and last unsubscribe; late 404 is fenced
+  ---
+  duration_ms: 0.5491
+  type: 'test'
+  ...
+# Subtest: visibility restoration and focus share the active fresh read; explicit invalidation still fences it
+ok 11 - visibility restoration and focus share the active fresh read; explicit invalidation still fences it
+  ---
+  duration_ms: 0.9819
+  type: 'test'
+  ...
+# Subtest: shared subscriptions never overlap polling; hidden/unmounted requests abort and late results cannot replace new state
+ok 12 - shared subscriptions never overlap polling; hidden/unmounted requests abort and late results cannot replace new state
+  ---
+  duration_ms: 0.5418
+  type: 'test'
+  ...
+# Subtest: outage keeps labelled prior data, exponential retries recover, invalidation and sign-out clear pending state
+ok 13 - outage keeps labelled prior data, exponential retries recover, invalidation and sign-out clear pending state
+  ---
+  duration_ms: 0.6778
+  type: 'test'
+  ...
+# Subtest: 401 discards prior data and metadata query inactivity is bounded
+ok 14 - 401 discards prior data and metadata query inactivity is bounded
+  ---
+  duration_ms: 1.8209
+  type: 'test'
+  ...
+# Subtest: numeric, Kubernetes quantities, count pairs and chronological sorts preserve unknown values last
+ok 15 - numeric, Kubernetes quantities, count pairs and chronological sorts preserve unknown values last
+  ---
+  duration_ms: 0.6871
+  type: 'test'
+  ...
+# Subtest: default timers retain the browser global receiver
+ok 16 - default timers retain the browser global receiver
+  ---
+  duration_ms: 0.2589
+  type: 'test'
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 16
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 439.7201

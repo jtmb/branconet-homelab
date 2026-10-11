@@ -79,6 +79,6 @@ function PathDetail({ id, heading, close }: { id: string; heading: MutableRefObj
     <QueryState query={versions} label="version metadata" retry={versions.refetch} />{history && <><MetadataTable label="KV version metadata" rows={history.items.map(item => ({ id: String(item.version), version: item.version, name: item.name, uid: item.uid, createdAt: item.createdAt, tombstone: item.tombstone ? "Yes" : "No" }))} columns={[{ key: "version", label: "Version", sort: "number" }, { key: "name", label: "History Secret" }, { key: "uid", label: "History UID" }, { key: "createdAt", label: "Created", sort: "date" }, { key: "tombstone", label: "Tombstone" }]} />
       {!history.items.length && !versions.error && <p>No committed versions in this native snapshot.</p>}</>}
     <p className="text-sm text-zinc-400">This view shows metadata. Opening it does not reveal values or initialize a path.</p>
-    {workbenchOpen && path && <KvWorkbench path={path} capabilities={freshCapabilities} onClose={() => setWorkbenchOpen(false)} onMetadataRefresh={refetchKvMetadata} returnFocus={() => (workbenchTrigger.current?.isConnected ? workbenchTrigger.current : heading.current)?.focus()} />}
+    {workbenchOpen && path && <KvWorkbench path={path} capabilities={freshCapabilities} onClose={() => setWorkbenchOpen(false)} returnFocus={() => (workbenchTrigger.current?.isConnected ? workbenchTrigger.current : heading.current)?.focus()} />}
   </section>;
 }

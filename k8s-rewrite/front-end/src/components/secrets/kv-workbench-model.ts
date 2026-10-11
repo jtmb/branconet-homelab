@@ -25,6 +25,12 @@ export type ImportResult = { success: boolean; atomic: false; outcomes: ImportOu
 export function captureRevision(path: KvSelectedPath, native: { resourceVersion: string; head: number }): RevisionCapture {
   return Object.freeze({ resourceVersion: native.resourceVersion, expectedHead: native.head, pathRevision: path.revision });
 }
+/** Metadata refresh may pause an action, but never upgrade its frozen capture. */
+export function captureMatchesMetadata(capture: RevisionCapture, path: KvSelectedPath, status: KvStatus | undefined, nativeAbsent: boolean): boolean {
+  return capture.pathRevision === path.revision && (status
+    ? status.pathId === path.id && capture.resourceVersion === status.resourceVersion && capture.expectedHead === status.head
+    : nativeAbsent && capture.resourceVersion === "absent" && capture.expectedHead === 0);
+}
 export function canonicalBase64(field: EncodedField): string {
   if (field.encoding === "base64") {
     if (!/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(field.value)) throw new Error("Use canonical base64.");

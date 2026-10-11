@@ -31,6 +31,7 @@ let valueRequests = 0;
 let failKvMounts = false;
 let failKvStatus = false;
 let delayKvStatus = false;
+let delayedKvStatusPath: string | undefined;
 let releaseKvStatus: (() => void) | undefined;
 let delayKvCapabilities = false;
 let releaseKvCapabilities: (() => void) | undefined;
@@ -208,7 +209,7 @@ try {
         else if (action === "withdraw-admin" || action === "restore-admin") await db!.user.update({ where: { id: writer.id }, data: { engineAdmin: action === "restore-admin" } });
         else if (kvFixture && (action === "fail-kv-mounts" || action === "restore-kv-mounts")) failKvMounts = action === "fail-kv-mounts";
         else if (kvFixture && (action === "fail-kv-status" || action === "restore-kv-status")) failKvStatus = action === "fail-kv-status";
-        else if (kvFixture && action === "delay-kv-status") delayKvStatus = true;
+        else if (kvFixture && (action === "delay-kv-status" || action === "delay-kv-empty-status")) { delayKvStatus = true; delayedKvStatusPath = action === "delay-kv-status" ? fixturePathId : "30000000-0000-4000-8000-000000000000"; }
         else if (kvFixture && action === "release-kv-status") releaseKvStatus?.();
         else if (kvFixture && action === "delay-kv-capabilities") delayKvCapabilities = true;
         else if (kvFixture && action === "release-kv-capabilities") releaseKvCapabilities?.();
@@ -217,6 +218,7 @@ try {
         else if (kvFixture && action === "deny-kv-update") await db!.kvPolicy.create({ data: { principal: "user:" + scoped.id, mountId: fixtureMountId, prefix: "services/api", effect: "deny", actions: JSON.stringify(["update"]) } });
         else if (kvFixture && action === "deny-kv-read") await db!.kvPolicy.create({ data: { principal: "user:" + scoped.id, mountId: fixtureMountId, prefix: "services/api", effect: "deny", actions: JSON.stringify(["read"]) } });
         else if (kvFixture && action === "change-kv-native-revision") { const object = native.objects.get("apps/kv-fixture-0000")!; object.metadata!.resourceVersion = "fixture-external-" + Date.now(); }
+        else if (kvFixture && action === "change-kv-native-managed-field") { const object = native.objects.get("apps/kv-fixture-0000")!; Object.defineProperty(object.data!, "__proto__", { value: Buffer.from("synthetic externally changed selected field").toString("base64"), enumerable: true, writable: true, configurable: true }); object.metadata!.resourceVersion = "fixture-external-managed-" + Date.now(); }
         else if (action === "external-change") { const object = native.objects.get("apps/editor-fixture")!; native.seed("apps", "editor-fixture", object.data ?? {}, object); }
         else { response.writeHead(400); response.end(); return; }
         response.writeHead(204); response.end(); return;
@@ -260,7 +262,7 @@ try {
         if (fluxFixture && fluxHolds.has(fluxPhase)) {
           fluxHolds.delete(fluxPhase); result.pause();
           fluxReleases.set(fluxPhase, () => { fluxReleases.delete(fluxPhase); if (!response.destroyed) result.pipe(response); else result.destroy(); });
-        } else if (kvFixture && delayKvStatus && request.method === "GET" && url.pathname === `/api/kv/paths/${fixturePathId}/status`) {
+        } else if (kvFixture && delayKvStatus && request.method === "GET" && url.pathname === `/api/kv/paths/${delayedKvStatusPath ?? fixturePathId}/status`) {
           delayKvStatus = false; result.pause(); releaseKvStatus = () => { releaseKvStatus = undefined; if (!response.destroyed) result.pipe(response); else result.destroy(); };
         } else if (kvFixture && delayKvCapabilities && request.method === "GET" && url.pathname === `/api/kv/paths/${fixturePathId}/capabilities`) {
           delayKvCapabilities = false; result.pause(); releaseKvCapabilities = () => { releaseKvCapabilities = undefined; if (!response.destroyed) result.pipe(response); else result.destroy(); };

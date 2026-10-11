@@ -1,5 +1,7 @@
 export interface QuerySnapshot<T = unknown> {
   data?: T; error?: string; status?: number;
+  /** A failed metadata read has its own expiry; it never renews successful data. */
+  errorAt?: number; errorStale?: boolean;
   loading: boolean; refreshing: boolean; updatedAt: number; stale?: boolean;
 }
 export const EMPTY_QUERY: QuerySnapshot = Object.freeze({ loading: true, refreshing: false, updatedAt: 0 });
@@ -58,7 +60,7 @@ export class QueryStore {
     entry.generation++;
     entry.controller?.abort();
     entry.controller = undefined;
-    this.publish(entry, { loading: entry.snapshot.data === undefined, refreshing: false });
+    this.publish(entry, { loading: entry.snapshot.data === undefined, refreshing: false, errorStale: true });
   }
   private prune() {
     const inactive = [...this.entries].filter(([, e]) => !e.listeners.size).sort((a, b) => a[1].usedAt - b[1].usedAt);
@@ -67,22 +69,29 @@ export class QueryStore {
     });
   }
   private expire(entry: Entry) {
-    if (entry.snapshot.data !== undefined && !entry.snapshot.stale && this.now() - entry.snapshot.updatedAt >= 15000)
-      this.publish(entry, { stale: true });
+    const patch: Partial<QuerySnapshot> = {};
+    if (entry.snapshot.data !== undefined && !entry.snapshot.stale && this.now() - entry.snapshot.updatedAt >= 15000) patch.stale = true;
+    if (entry.snapshot.error && !entry.snapshot.errorStale && entry.snapshot.errorAt !== undefined && this.now() - entry.snapshot.errorAt >= 15000) patch.errorStale = true;
+    if (Object.keys(patch).length) this.publish(entry, patch);
+  }
+  private expiryAt(entry: Entry) {
+    const success = entry.snapshot.data !== undefined && !entry.snapshot.stale ? entry.snapshot.updatedAt + 15000 : Infinity;
+    const failure = entry.snapshot.error && !entry.snapshot.errorStale && entry.snapshot.errorAt !== undefined ? entry.snapshot.errorAt + 15000 : Infinity;
+    return Math.min(success, failure);
   }
   /** A single timer alternates freshness notification and polling, including slow in-flight loads. */
   private watchPendingFreshness(entry: Entry) {
     this.expire(entry);
-    if (entry.snapshot.data === undefined || entry.snapshot.stale) return;
-    entry.timer = this.schedule(() => { entry.timer = undefined; this.expire(entry); }, Math.max(1, entry.snapshot.updatedAt + 15000 - this.now()));
+    const expiry = this.expiryAt(entry);
+    if (!Number.isFinite(expiry)) return;
+    entry.timer = this.schedule(() => { entry.timer = undefined; this.watchPendingFreshness(entry); }, Math.max(1, expiry - this.now()));
   }
   private scheduleNext(url: string, entry: Entry, refreshAt: number) {
     if (entry.timer) this.cancel(entry.timer);
     entry.timer = undefined;
     this.expire(entry);
     const untilRefresh = Math.max(1, refreshAt - this.now());
-    const untilExpiry = entry.snapshot.data !== undefined && !entry.snapshot.stale
-      ? Math.max(1, entry.snapshot.updatedAt + 15000 - this.now()) : Infinity;
+    const untilExpiry = Math.max(1, this.expiryAt(entry) - this.now());
     entry.timer = this.schedule(() => {
       entry.timer = undefined;
       if (this.now() >= refreshAt) void this.run(url, entry);
@@ -102,14 +111,14 @@ export class QueryStore {
       const data = await this.runtime.load(url, controller.signal);
       if (generation !== entry.generation || controller.signal.aborted) return;
       entry.failures = 0;
-      this.publish(entry, { data, error: undefined, status: 200, updatedAt: this.now(), loading: false, refreshing: false, stale: false });
+      this.publish(entry, { data, error: undefined, errorAt: undefined, errorStale: undefined, status: 200, updatedAt: this.now(), loading: false, refreshing: false, stale: false });
     } catch (error) {
       if (generation !== entry.generation || controller.signal.aborted) return;
       entry.failures++;
       const failure = error instanceof QueryFailure ? error : undefined;
       this.publish(entry, {
         data: failure?.status === 401 ? undefined : entry.snapshot.data,
-        error: failure?.message ?? "Request failed. Try again.", status: failure?.status, loading: false, refreshing: false,
+        error: failure?.message ?? "Request failed. Try again.", status: failure?.status, errorAt: this.now(), errorStale: false, loading: false, refreshing: false,
       });
     } finally {
       if (generation === entry.generation) {

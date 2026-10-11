@@ -1,0 +1,60 @@
+{
+  "startedAt": "2026-10-11T04:52:49.975Z",
+  "scope": "Actual built /secrets/kv; disposable public SQLite and CA-verified synthetic native TLS only",
+  "checks": [
+    {
+      "name": "Parent/workbench share status, versions and capabilities; opening requests no values"
+    },
+    {
+      "name": "Explicit adoption and grouped edit preserve exact binary, empty, unrelated, type and metadata",
+      "head": 2
+    },
+    {
+      "name": "One unchanged shared status poll preserves draft and frozen capture"
+    },
+    {
+      "name": "Native status outage pauses save without writes or draft loss; unchanged fresh recovery resumes capture"
+    },
+    {
+      "name": "External selected-field drift pauses frozen draft without writes; explicit reconcile creates new head",
+      "head": 3
+    }
+  ],
+  "failures": [
+    "locator.waitFor: Timeout 30000ms exceeded."
+  ],
+  "terminal": true,
+  "ownedProcesses": {
+    "fixturePid": 9372,
+    "chromePid": 2800
+  },
+  "phase": "save grouped fields",
+  "mutationResponses": [
+    {
+      "path": "/api/kv/paths/20000000-0000-4000-8000-000000000000/adopt",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/kv/paths/20000000-0000-4000-8000-000000000000/data",
+      "method": "PUT",
+      "status": 200
+    },
+    {
+      "path": "/api/kv/paths/20000000-0000-4000-8000-000000000000/reconcile",
+      "method": "POST",
+      "status": 200
+    }
+  ],
+  "editEncodings": [
+    "base64",
+    "base64"
+  ],
+  "cleanup": {
+    "chromeExitCode": 0,
+    "chromeSignal": null,
+    "fixtureExitCode": 0,
+    "fixtureSignal": null
+  },
+  "completedAt": "2026-10-11T04:53:40.187Z"
+}

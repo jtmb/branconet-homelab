@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { captureRevision, canonicalBase64, convertEncoding, draftChange, draftsFor, parseTransfer, replacementDrafts, ValueFence, WorkbenchFailure, workbenchRequest, type KvSelectedPath } from "../src/components/secrets/kv-workbench-model";
+import { captureRevision, captureMatchesMetadata, canonicalBase64, convertEncoding, draftChange, draftsFor, parseTransfer, replacementDrafts, ValueFence, WorkbenchFailure, workbenchRequest, type KvSelectedPath } from "../src/components/secrets/kv-workbench-model";
 const path: KvSelectedPath = { id: "path", mountId: "mount", path: "apps/api", namespace: "apps", name: "original", revision: 7,
   fields: [{ field: "__proto__", key: "original_under_score" }, { field: "binary", key: "bytes" }, { field: "empty", key: "zero" }] };
 const fields = [{ field: "__proto__", encoding: "utf8" as const, value: "synthetic text" }, { field: "binary", encoding: "base64" as const, value: "AP8=" }, { field: "empty", encoding: "utf8" as const, value: "" }];
@@ -9,6 +9,21 @@ test("captured revisions stay frozen across background metadata changes", () => 
   const capture = captureRevision(path, native); native.resourceVersion = "101"; native.head = 4;
   assert.deepEqual(capture, { resourceVersion: "100", expectedHead: 3, pathRevision: 7 }); assert.equal(Object.isFrozen(capture), true);
 });
+test("action capture pauses on native or mapping change and outage; only fresh absence matches initial creation", () => {
+  const native = { pathId: path.id, resourceVersion: "100", head: 3, adopted: true, tombstone: false, guardedAdoption: true };
+  const capture = captureRevision(path, native);
+  assert.equal(captureMatchesMetadata(capture, path, { ...native }, false), true);
+  for (const changed of [{ ...native, resourceVersion: "101" }, { ...native, head: 4 }, { ...native, pathId: "other" }])
+    assert.equal(captureMatchesMetadata(capture, path, changed, false), false);
+  assert.equal(captureMatchesMetadata(capture, { ...path, revision: 8 }, native, false), false);
+  assert.equal(captureMatchesMetadata(capture, path, undefined, false), false);
+  assert.equal(captureMatchesMetadata(capture, path, undefined, true), false);
+  const initial = captureRevision(path, { resourceVersion: "absent", head: 0 });
+  assert.equal(captureMatchesMetadata(initial, path, undefined, true), true);
+  assert.equal(captureMatchesMetadata(initial, path, undefined, false), false);
+  assert.deepEqual(capture, { resourceVersion: "100", expectedHead: 3, pathRevision: 7 });
+});
+
 test("group drafts preserve special keys, binary bytes and original empty values; untouched save disabled", () => {
   const drafts = draftsFor(path, fields), unchanged = draftChange(drafts, fields);
   assert.equal(unchanged.changed, false); assert.equal(unchanged.error, ""); assert.deepEqual(unchanged.fields, fields);

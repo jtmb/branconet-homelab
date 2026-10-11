@@ -21,6 +21,44 @@ function fixture() {
 }
 const flush = async () => { await Promise.resolve(); await Promise.resolve(); };
 
+test("404 absence expires independently under a held retry and cannot renew a successful snapshot", async () => {
+  const { store, requests, tick } = fixture(); let notifications = 0;
+  const stop = store.subscribe("/status", () => { notifications++; }, 1000);
+  requests[0].resolve({ head: 1 }); await flush();
+  const successAt = store.snapshot("/status").updatedAt;
+  tick(1000); requests[1].reject(new QueryFailure("Native target absent", 404)); await flush();
+  const failureAt = store.snapshot("/status").errorAt;
+  assert.equal(store.snapshot("/status").errorStale, false);
+  assert.equal(store.snapshot("/status").updatedAt, successAt);
+  tick(2000); assert.equal(requests.length, 3);
+  tick(12000); assert.equal(store.snapshot("/status").stale, true);
+  assert.equal(store.snapshot("/status").errorStale, false);
+  const before = notifications;
+  tick(1000); assert.equal(store.snapshot("/status").errorStale, true);
+  assert.equal(store.snapshot("/status").errorAt, failureAt);
+  assert(notifications > before, "Failure expiry must notify without another completed response");
+  assert.equal(requests.length, 3, "Held retry cannot overlap another request");
+  stop();
+});
+
+test("missing-target evidence is invalid on hide, invalidation and last unsubscribe; late 404 is fenced", async () => {
+  const { store, requests } = fixture();
+  const stop = store.subscribe("/status", () => {});
+  requests[0].reject(new QueryFailure("Native target absent", 404)); await flush();
+  assert.equal(store.snapshot("/status").data, undefined);
+  assert.equal(store.snapshot("/status").updatedAt, 0);
+  store.setVisible(false); assert.equal(store.snapshot("/status").errorStale, true);
+  store.setVisible(true); assert.equal(requests.length, 2);
+  store.invalidate(); assert.equal(requests[1].signal.aborted, true);
+  requests[2].resolve({ head: 2 }); await flush();
+  requests[1].reject(new QueryFailure("Old missing target", 404)); await flush();
+  assert.equal(store.snapshot("/status").status, 200);
+  assert.equal(store.snapshot("/status").errorAt, undefined);
+  store.invalidate(); requests[3].reject(new QueryFailure("Native target absent", 404)); await flush();
+  assert.equal(store.snapshot("/status").errorStale, false);
+  stop(); assert.equal(store.snapshot("/status").errorStale, true);
+});
+
 test("visibility restoration and focus share the active fresh read; explicit invalidation still fences it", async () => {
   const { store, requests, tick } = fixture();
   const stop = store.subscribe("/metadata", () => {});
