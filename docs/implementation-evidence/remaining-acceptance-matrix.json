@@ -1,6 +1,6 @@
 {
   "capturedAt": "2026-10-11T01:14:06.341790+00:00",
-  "source": "da84f0f00aeb0daca299358e93fc7074acd2055e with exact original raw-source recovery",
+  "source": "5fa509223eb4319a142f2296d10eec091d6cd539 integrated native plus qualified bounded Pods/resource-only checkpoint (commit recorded by Git)",
   "scope": "Planning and source/evidence gap matrix; not a new validation pass",
   "audit": [
     {
@@ -50,7 +50,7 @@
       "finding": "cache cost",
       "ledgerCurrentEvidence": "Independent coalescing/backoff/retention and bounded execution; fixed Linux comparisons of audit 51e8cd6 versus checkpoint 1e0030a and warm candidate 61e2588",
       "ledgerStatus": "Failed: latest 1k warm p50 improves 7.0 to 5.8 ms and concurrent p95 83.2 to 78.6 ms, but sequential p95 regresses 13.0 to 20.7 ms. Audit-small p95 also regresses. Original failure retained; further correction required",
-      "nextAcceptance": "Request-correlated diagnostic, safe resource-only warm snapshots and unchanged exact-byte controlled comparison; gate remains failed."
+      "nextAcceptance": "Request-correlated exact current-candidate diagnostic, then unchanged exact-byte six-profile controlled comparison in an exclusive window. Fresh auth remains essential; A07 is still failed."
     },
     {
       "id": "A08",
@@ -146,9 +146,9 @@
     {
       "id": "A21",
       "finding": "lists/probes/forms",
-      "ledgerCurrentEvidence": "Resource/admin/native Secret/KV metadata tables bound DOM to 100 rows; bounded alias/probe caches and API pages",
+      "ledgerCurrentEvidence": "Resource/admin/native Secret/KV metadata tables bound DOM to 100 rows; bounded alias/probe caches and API pages; integrated bounded complete 10k Pod route passed actual HTTP/privacy/filter/partial-response checks",
       "ledgerStatus": "Partial; latest controlled whole-container peak memory 358 to 285 MiB, but native metadata 1k/10k latency 76/286 to 883/7837 ms and 10k Pod capacity fails both 2-MiB limits. Native scheduling correction is separately assigned; final candidate qualification remains required",
-      "nextAcceptance": "Bounded complete10kPods; final native transport candidate and full-server memory/latency acceptance; lists/probes/form failure workflows."
+      "nextAcceptance": "Linux full-server memory/RSS, native full inventory and final image/live qualification; local wire/output bounds do not prove RSS."
     },
     {
       "id": "A22",
@@ -183,9 +183,9 @@
       "area": "Pods capacity/warm",
       "source": "src/lib/kubectl-client.ts,src/lib/resource-cache.ts,src/lib/cluster-cache.ts,src/app/api/cluster/pods/route.ts",
       "observations": [
-        "generic2MiB stdout limit rejects5.9MiB unchanged10kfixture",
-        "resource cache already validates10kitems and preserves10sTTL/120sretention/backoff/generation",
-        "Pod route asks full CachedData projection, including unused runningPods scan"
+        "Qualified trusted Pods-only 8MiB/10k complete collection; general2MiB unchanged",
+        "Actual production HTTP verified every10k identity and complete labelled stale inventory after partial reply",
+        "Resource-only warm snapshot skips unused overview scan; controlled p95/RSS acceptance still open"
       ]
     },
     {
@@ -216,5 +216,11 @@
     "Secretvalues inSQL/argv/Git/logs/sharedcache",
     "Fallback pushes or automatic mutation retries",
     "Swarm/Gluster/Vault/Consul retirement or game servers"
-  ]
+  ],
+  "latestLocalQualification": {
+    "unitTests": 167,
+    "httpSuites": 4,
+    "record": "pod-list-combined-qualification.json",
+    "browser": "shared-freshness-browser.json (six checks; prior application UI source)"
+  }
 }

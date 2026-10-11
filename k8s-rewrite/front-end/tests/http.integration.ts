@@ -456,6 +456,47 @@ test(
       };
       context.diagnostic(`Cache fixture evidence: ${JSON.stringify(evidence)}`);
       if (process.env.BORTUS_TEST_EVIDENCE_PATH) await writeFile(process.env.BORTUS_TEST_EVIDENCE_PATH, JSON.stringify(evidence, null, 2) + "\n");
+      // Complete production-route inventory beyond the old 2-MiB process ceiling.
+      const largePods = { items: Array.from({ length: 10000 }, (_, index) => ({
+        kind: "Pod", metadata: { name: "capacity-pod-" + index, namespace: index % 3 ? "apps" : "kube-system", uid: "capacity-uid-" + index,
+          labels: { app: "fixed-workload" }, annotations: { private: "private-large-pod-marker" + "x".repeat(420) } },
+        spec: { containers: [{ name: "app", env: [{ name: "PRIVATE", value: "private-large-pod-marker" }] }] },
+        status: { phase: "Running", containerStatuses: [{ ready: true, restartCount: 0 }] },
+      })) };
+      const largePodJson = JSON.stringify(largePods);
+      const largePodBytes = Buffer.byteLength(largePodJson);
+      assert.ok(largePodBytes > 2 * 1024 * 1024 && largePodBytes < 8 * 1024 * 1024);
+      try {
+        await writeFile(path.join(fixture.bin, "pods.json"), largePodJson);
+        await request("/api/cluster/refresh", "POST", undefined, writer);
+        const beforeLarge = (await fixture.calls()).length;
+        const largeResponse = await request("/api/cluster/pods", "GET", undefined, reader);
+        assert.equal(largeResponse.status, 200);
+        const largeText = await largeResponse.text();
+        assert.ok(!largeText.includes("private-large-pod-marker"));
+        const largeBody = JSON.parse(largeText);
+        assert.equal(largeBody.pods.length, 10000);
+        assert.ok(largeBody.pods.every((pod: any, index: number) => pod.id === "capacity-uid-" + index && pod.name === "capacity-pod-" + index && pod.namespace === (index % 3 ? "apps" : "kube-system") && pod.restarts === 0 && pod.ready === "1/1"));
+        assert.equal((await fixture.calls()).length - beforeLarge, 1);
+        const filteredLarge = await (await request("/api/cluster/pods?type=system&labelSelector=app%3Dfixed-workload", "GET", undefined, reader)).json();
+        assert.equal(filteredLarge.pods.length, 3334);
+        const zeroLarge = await (await request("/api/cluster/pods?namespace=absent", "GET", undefined, reader)).json();
+        assert.deepEqual(zeroLarge.pods, []);
+        assert.equal(zeroLarge.availability.state, "healthy");
+        assert.equal((await fixture.calls()).length - beforeLarge, 1, "large warm/filtered requests spawned commands");
+        await writeFile(path.join(fixture.bin, "pods.json"), JSON.stringify({ metadata: { continue: "private-incomplete-cursor" }, items: largePods.items.slice(0, 2) }));
+        await request("/api/cluster/refresh", "POST", undefined, writer);
+        const partialResponse = await request("/api/cluster/pods", "GET", undefined, reader);
+        assert.ok(partialResponse.headers.get("warning"));
+        const partialBody = await partialResponse.json();
+        assert.equal(partialBody.availability.state, "stale");
+        assert.equal(partialBody.pods.length, 10000, "partial list replaced complete retained inventory");
+        assert.equal(partialBody.availability.resources.pods.error, "Incomplete Kubernetes Pod list");
+        context.diagnostic(`Complete Pod capacity evidence: ${JSON.stringify({ inputBytes: largePodBytes, objects: 10000, coldCliCalls: 1, warmFilterCliCalls: 0, projectedIdentityCount: 10000, privateFieldsOmitted: true, partialReply: "labelled stale complete inventory retained" })}`);
+      } finally {
+        await writeFile(path.join(fixture.bin, "pods.json"), JSON.stringify(fixtureData.pods));
+        await request("/api/cluster/refresh", "POST", undefined, writer);
+      }
       const values = await request("/api/vars", "GET", undefined, reader);
       assert.equal(values.status, 200);
       const body = await values.text();

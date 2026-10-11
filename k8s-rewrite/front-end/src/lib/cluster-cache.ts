@@ -1,5 +1,5 @@
 import { deploymentPods, deploymentState, podRestarts } from "./deployment-state";
-import { kubectlJSON } from "./k8s";
+import { kubectlJSON, kubectlPodList } from "./k8s";
 import { ClusterResourceCache, CLUSTER_RESOURCES, type ClusterResource, type ResourceAvailability } from "./resource-cache";
 
 // =============================================================================
@@ -54,7 +54,7 @@ const commands: Record<ClusterResource, string[]> = {
   services: ["get", "services", "-A"], deployments: ["get", "deployments", "-A"], replicasets: ["get", "replicasets", "-A"], ingresses: ["get", "ingress", "-A"],
 };
 const globals = globalThis as typeof globalThis & { __bortusResources?: ClusterResourceCache };
-const resourcesCache = globals.__bortusResources ??= new ClusterResourceCache(resource => kubectlJSON(commands[resource], 10000));
+const resourcesCache = globals.__bortusResources ??= new ClusterResourceCache(resource => resource === "pods" ? kubectlPodList(10000) : kubectlJSON(commands[resource], 10000));
 
 /**
  * Format a duration in milliseconds to a human-readable age string.
@@ -262,6 +262,11 @@ async function fetchAllClusterData(resources: readonly ClusterResource[]): Promi
 /** Read only requested resources, sharing each resource's cache and in-flight request. */
 export async function getCachedClusterData(resources: readonly ClusterResource[] = CLUSTER_RESOURCES): Promise<CachedData> {
   return fetchAllClusterData(resources);
+}
+/** Resource-only snapshot: no overview counters or unrelated projections are constructed. */
+export async function getCachedClusterResource(resource: ClusterResource) {
+  const snapshots = await resourcesCache.read([resource]);
+  return snapshots[resource]!;
 }
 export function invalidateCache(): void { resourcesCache.invalidate(); }
 export function clusterDiagnostics() { return resourcesCache.diagnostics(); }

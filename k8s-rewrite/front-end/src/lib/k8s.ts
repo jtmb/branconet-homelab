@@ -64,6 +64,7 @@ const kubectl = globals.__bortusKubectl ??= createKubectlClient(
   kubectlConfigArgs,
 );
 export const kubectlExec = kubectl.exec;
+export const kubectlPodList = kubectl.listPods;
 export const kubectlDiagnostics = kubectl.diagnostics;
 
 // ── Restricted shell sandbox ──

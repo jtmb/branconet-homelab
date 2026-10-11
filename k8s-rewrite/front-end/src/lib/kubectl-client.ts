@@ -13,6 +13,9 @@ export function validateNamespace(value: string): string {
   return value;
 }
 
+export const POD_LIST_MAX_BYTES = 8 * 1024 * 1024;
+export const POD_LIST_MAX_ITEMS = 10000;
+
 type Executor = (args: string[], options: { timeout: number; maxBuffer: number }) => Promise<{ stdout: string }>;
 
 function failure(error: unknown): KubernetesCommandError {
@@ -44,7 +47,7 @@ export function createKubectlClient(execute: Executor, credentialsAvailable: () 
     queue.push(waiter);
   });
   const release = () => { active--; queue.shift()?.enter(); };
-  async function exec(args: readonly string[], timeoutMs = 10000): Promise<string> {
+  async function execBounded(args: readonly string[], timeoutMs: number, maxBuffer: number): Promise<string> {
     if (!Array.isArray(args) || !args.length || args.some(arg => typeof arg !== "string" || arg.includes("\0")) || !Number.isInteger(timeoutMs) || timeoutMs < 1 || timeoutMs > 30000)
       throw new KubernetesCommandError(400, "Invalid Kubernetes arguments");
     if (!credentialsAvailable()) throw new KubernetesCommandError(503, "Kubernetes credentials unavailable");
@@ -53,13 +56,35 @@ export function createKubectlClient(execute: Executor, credentialsAvailable: () 
     try {
       const remaining = deadline - Date.now();
       if (remaining <= 0) throw new KubernetesCommandError(504, "Kubernetes request timed out while queued");
-      const { stdout } = await execute([...configArgs(), ...args], { timeout: remaining, maxBuffer: 2 * 1024 * 1024 });
+      const { stdout } = await execute([...configArgs(), ...args], { timeout: remaining, maxBuffer });
+      if (typeof stdout !== "string" || Buffer.byteLength(stdout, "utf8") > maxBuffer)
+        throw new KubernetesCommandError(502, "Cluster response exceeds the size limit");
       return stdout;
     } catch (error) { throw error instanceof KubernetesCommandError ? error : failure(error); }
     finally { release(); }
   }
+  const exec = (args: readonly string[], timeoutMs = 10000) => execBounded(args, timeoutMs, 2 * 1024 * 1024);
   return {
     exec,
+    /** Trusted complete all-namespace Pod list only; callers cannot select a resource or byte ceiling. */
+    async listPods(timeoutMs = 10000): Promise<{ items: any[] }> {
+      const deadline = Date.now() + timeoutMs;
+      const stdout = await execBounded(["get", "pods", "-A", "-o", "json"], timeoutMs, POD_LIST_MAX_BYTES);
+      let value: any;
+      try { value = JSON.parse(stdout); }
+      catch { throw new KubernetesCommandError(502, "Invalid Kubernetes JSON response"); }
+      if (!value || typeof value !== "object" || Array.isArray(value) || !Array.isArray(value.items)
+        || value.items.length > POD_LIST_MAX_ITEMS || (value.kind !== undefined && !["PodList", "List"].includes(value.kind))
+        || value.items.some((item: any) => !item || typeof item !== "object" || Array.isArray(item) || (item.kind !== undefined && item.kind !== "Pod"))
+        || (value.metadata !== undefined && (!value.metadata || typeof value.metadata !== "object" || Array.isArray(value.metadata))))
+        throw new KubernetesCommandError(502, "Cluster list exceeds limits or has an invalid shape");
+      const metadata = value.metadata;
+      if (metadata && ((metadata.continue !== undefined && metadata.continue !== "")
+        || (metadata.remainingItemCount !== undefined && metadata.remainingItemCount !== 0)))
+        throw new KubernetesCommandError(502, "Incomplete Kubernetes Pod list");
+      if (Date.now() >= deadline) throw new KubernetesCommandError(504, "Kubernetes request timed out");
+      return value;
+    },
     async json(args: readonly string[], timeoutMs = 10000): Promise<any> {
       if (!Array.isArray(args)) throw new KubernetesCommandError(400, "Invalid Kubernetes arguments");
       const stdout = await exec([...args, "-o", "json"], timeoutMs);
