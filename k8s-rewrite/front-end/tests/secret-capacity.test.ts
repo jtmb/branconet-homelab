@@ -59,6 +59,8 @@ test("verified TLS lists keep maximum-size history enumeration metadata-only and
     for (const namespace of scopes.slice(1)) native.seed(namespace, "small", { field: "AQ==" });
     const before = native.calls.length, budgets: SecretListBudget[] = [], rawList = transport.list.bind(transport);
     transport.list = async (namespace, options) => { budgets.push(options!.budget!); const full = await rawList(namespace, options); assert.equal(full.length, 0); return full; };
+    const rawSummaries = transport.listSummaries!.bind(transport);
+    transport.listSummaries = async (namespace, options) => { budgets.push(options!.budget!); const summary = await rawSummaries(namespace, options); assert.equal(summary.length, 0); return summary; };
     let maximumActive = 0;
     const sampler = setInterval(() => { maximumActive = Math.max(maximumActive, nativeRequestDiagnostics().active); }, 1);
     let summaries: Awaited<ReturnType<SecretStore["list"]>>;

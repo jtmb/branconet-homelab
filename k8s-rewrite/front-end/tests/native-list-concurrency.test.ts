@@ -141,6 +141,8 @@ test("parallel TLS retry prefixes share the byte ceiling and leave no native wor
     for (const scope of scopes.slice(0, 4)) for (let i = 0; i < 24; i++) native.seed(scope, "record-" + i, { payload });
     const transport = createSecretTransport(), raw = transport.list.bind(transport), budgets: SecretListBudget[] = [];
     transport.list = async (namespace, options) => { budgets.push(options!.budget!); return raw(namespace, options); };
+    const rawSummaries = transport.listSummaries!.bind(transport);
+    transport.listSummaries = async (namespace, options) => { budgets.push(options!.budget!); return rawSummaries(namespace, options); };
     await assert.rejects(new SecretStore(transport, scopes, undefined, 4).list(), error => error503(error) && (error as Error).message.includes("aggregate byte"));
     assert.equal(new Set(budgets).size, 1); assert(budgets[0].signal.aborted); assert(budgets[0].bytes > SECRET_LIST_MAX_BYTES);
     assert(!native.calls.some(call => call.path.includes("/unstarted/")));

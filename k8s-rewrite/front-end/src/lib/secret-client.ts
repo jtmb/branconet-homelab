@@ -8,6 +8,7 @@ import { KvRegistry } from "./kv-registry";
 import { flatSecretGuard } from "./secret-access";
 import { getSession } from "./auth";
 import prisma from "./db";
+import { parseSecretSummaryPage } from "./secret-summary-json";
 
 export function secretNamespaces(): string[] {
   const scopes = (process.env.BORTUS_SECRET_NAMESPACES || "default").split(",").map(s => s.trim()).filter(Boolean);
@@ -201,7 +202,7 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
       return fresh;
     };
 
-    async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false, byteLimit = 4 * 1024 * 1024, transferBudget?: SecretListBudget, retryPageLimit?: number): Promise<{ value: any; bytes: number }> {
+    async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false, byteLimit = 4 * 1024 * 1024, transferBudget?: SecretListBudget, retryPageLimit?: number, summaryNamespace?: string): Promise<{ value: any; bytes: number }> {
       deadline = Math.min(deadline, Date.now() + 8000);
       transferBudget?.check();
       await slot(deadline, transferBudget?.signal);
@@ -286,8 +287,13 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
                 transferBudget?.check();
                 if (Date.now() >= deadline) throw new SecretError(503, "Kubernetes Secret request timed out");
                 if (options.signal?.aborted) throw secretFailure(options.signal.reason);
-                const value = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(Buffer.concat(chunks)));
+                const value = summaryNamespace !== undefined && retryPageLimit !== undefined
+                  ? parseSecretSummaryPage(chunks, summaryNamespace, retryPageLimit)
+                  : JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(Buffer.concat(chunks)));
                 if (!value || typeof value !== "object") throw Error();
+                transferBudget?.check();
+                if (Date.now() >= deadline) throw new SecretError(503, "Kubernetes Secret request timed out");
+                if (options.signal?.aborted) throw secretFailure(options.signal.reason);
                 settled = true; chunks.length = 0; options.signal?.removeEventListener("abort", abort);
                 resolve({ value, bytes });
               } catch (error) { fail(error instanceof SecretError ? error : new SecretError(503, "Invalid Kubernetes Secret response")); }
@@ -323,6 +329,32 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
     };
     return {
       read: async (namespace, name) => object((await request("GET", route(namespace, name))).value, namespace, name),
+      listSummaries: async (namespace, options) => {
+        const items: Awaited<ReturnType<NonNullable<NativeSecretTransport["listSummaries"]>>> = [], cursors = new Set<string>();
+        const budget = options?.budget ?? new SecretListBudget(); let cursor = "", limit: number = initialListPageLimit;
+        try {
+          do {
+            let result: { value: any; bytes: number };
+            for (;;) {
+              try {
+                result = await request("GET", route(namespace) + "?limit=" + limit + (cursor ? "&continue=" + encodeURIComponent(cursor) : ""), undefined, budget.deadline, false, budget.remainingBytes(), budget, limit, namespace);
+                break;
+              } catch (error) {
+                if (!(error instanceof SecretPageTooLarge) || limit === 1) throw error;
+                const fallback = limit === 200 ? 10 : Math.max(1, Math.floor(limit / 2));
+                limit = Math.min(fallback, error.completedItems ?? fallback); budget.check();
+              }
+            }
+            const page = result.value as ReturnType<typeof parseSecretSummaryPage>;
+            budget.consumeItems(page.items.length);
+            for (const summary of page.items) { if (options?.visit) options.visit(summary); else items.push(summary); }
+            cursor = page.cursor;
+            if (cursor && (cursors.has(cursor) || !page.items.length)) throw new SecretError(503, "Invalid Kubernetes Secret pagination");
+            if (cursor) cursors.add(cursor);
+          } while (cursor);
+          return items;
+        } finally { if (!options?.budget) budget.finish(); }
+      },
       list: async (namespace, options) => {
         const items: V1Secret[] = [], cursors = new Set<string>();
         const budget = options?.budget ?? new SecretListBudget(); let cursor = ""; let limit: number = initialListPageLimit;

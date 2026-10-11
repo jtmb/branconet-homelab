@@ -1,4 +1,4 @@
-import type { V1Secret } from "@kubernetes/client-node";
+import type { V1ObjectMeta, V1Secret } from "@kubernetes/client-node";
 
 export class SecretError extends Error {
   constructor(
@@ -54,9 +54,12 @@ export class SecretListBudget {
   }
 }
 export type SecretListOptions = { budget?: SecretListBudget; visit?: (secret: V1Secret) => void };
+export interface NativeSecretSummary { metadata: V1ObjectMeta; type: string; immutable: boolean; keys: string[] }
+export type SecretSummaryListOptions = { budget?: SecretListBudget; visit?: (summary: NativeSecretSummary) => void };
 export interface SecretTransport {
   read(namespace: string, name: string): Promise<V1Secret>;
   list(namespace: string, options?: SecretListOptions): Promise<V1Secret[]>;
+  listSummaries?(namespace: string, options?: SecretSummaryListOptions): Promise<NativeSecretSummary[]>;
   create(namespace: string, body: V1Secret): Promise<V1Secret>;
   replace(namespace: string, name: string, body: V1Secret): Promise<V1Secret>;
 }
@@ -150,6 +153,13 @@ export class SecretStore {
         try {
           while (next < scopes.length) {
             budget.check(); const index = next++, scope = scopes[index];
+            if (this.transport.listSummaries) {
+              const project = (summary: NativeSecretSummary) => { budget.check(); summaries[index].push({ namespace: summary.metadata.namespace, name: summary.metadata.name,
+                resourceVersion: summary.metadata.resourceVersion, type: summary.type, immutable: summary.immutable, keys: summary.keys }); };
+              const metadata = await this.transport.listSummaries(scope, { budget, visit: project });
+              for (const summary of metadata) { budget.consumeBytes(Buffer.byteLength(JSON.stringify(summary))); budget.consumeItems(1); project(summary); }
+              continue;
+            }
             const full = await this.transport.list(scope, { budget, visit: secret => { budget.check(); summaries[index].push(secretSummary(secret)); } });
             // Compatibility transports may return full records instead of visiting pages.
             for (const secret of full) {

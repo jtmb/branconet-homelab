@@ -35,6 +35,68 @@ const agentsClosed = (entries: { agent: https.Agent; destroyed: number }[]) => {
   assert(entries.every(entry => entry.destroyed > 0), "every SDK-created agent must be torn down");
   assert(entries.every(({ agent }) => [...Object.values(agent.sockets), ...Object.values(agent.freeSockets)].flat().every(socket => !socket || socket.destroyed)), "owned socket must be destroyed");
 };
+
+test("explicit summary TLS path preserves full list visitors and values, and fresh authorization", { timeout: 30000 }, async () => {
+  await fixture(async native => {
+    const data = JSON.parse('{"__proto__":"AA==","empty":"","private":"VkFMVUVfU0VOVElORUw="}');
+    for (let i = 0; i < 21; i++) native.seed("summary", "object-" + i, data, { immutable: true, metadata: { annotations: { "bortus.io/kv-state": '{"format":1}' } } });
+    const transport = createSecretTransport(), values: string[] = [];
+    assert.deepEqual(await transport.list("summary", { visit: secret => values.push(secret.data!.private) }), []);
+    assert.equal(values.length, 21); assert(values.every(value => value === data.private));
+    const full = await transport.read("summary", "object-0"); assert.deepEqual(full.data, data);
+    await traceAgents(async entries => {
+      const summaries = await transport.listSummaries!("summary");
+      assert.equal(summaries.length, 21); assert.equal(entries.length, 2); agentsClosed(entries); idle();
+      for (const row of summaries) {
+        assert.deepEqual(row.keys, ["__proto__", "empty", "private"]); assert.equal(row.metadata.annotations?.["bortus.io/kv-state"], '{"format":1}');
+        assert(row.metadata.uid && row.metadata.resourceVersion); assert.equal(row.immutable, true);
+        assert.equal(Object.hasOwn(row, "data"), false); assert.equal(JSON.stringify(row).includes(data.private), false);
+      }
+    });
+    await traceAgents(async entries => {
+      await assert.rejects(createSecretTransport().listSummaries!("summary"), error503);
+      assert.equal(entries.length, 2); agentsClosed(entries); idle();
+    }, (config, call) => { if (call === 2) Object.assign(config.getCurrentUser()!, { token: "synthetic-withdrawn-credential" }); });
+  });
+});
+
+test("summary TLS pagination retains bounded oversized retry, exact key inventory and received byte charge", { timeout: 30000 }, async () => {
+  await fixture(async native => {
+    const value = Buffer.alloc(256 * 1024, 65).toString("base64");
+    for (let i = 0; i < 25; i++) native.seed("summary", "object-" + i, { public: value, empty: "" });
+    const budget = new SecretListBudget();
+    try {
+      const rows = await createSecretTransport(200).listSummaries!("summary", { budget });
+      assert.equal(rows.length, 25); assert.equal(budget.items, 25); assert(budget.bytes > 4 * 1024 * 1024 && budget.bytes <= SECRET_LIST_MAX_BYTES);
+      assert.deepEqual(native.calls.map(call => call.limit), [200, 10, 10, 10]);
+      assert.deepEqual(native.calls.map(call => call.offset), [0, 0, 10, 20]);
+      assert.deepEqual(rows.map(row => row.metadata.name), Array.from({ length: 25 }, (_, i) => "object-" + i));
+      assert(rows.every(row => JSON.stringify(row.keys) === '["empty","public"]' && !Object.hasOwn(row, "data")));
+      idle();
+    } finally { budget.finish(); }
+  });
+});
+
+test("summary parsing cannot publish after its request/list deadline or silently retry", { timeout: 30000 }, async () => {
+  await fixture(async () => {
+    const budget = new SecretListBudget(), originalRequest = https.request, decode = TextDecoder.prototype.decode, clock = Date.now;
+    const raw = Buffer.from('{"apiVersion":"v1","kind":"SecretList","items":[]}'); let calls = 0, visited = 0;
+    https.request = ((_url: string, _options: https.RequestOptions, receive: (response: http.IncomingMessage) => void) => {
+      calls++; const request = new EventEmitter() as EventEmitter & { end(): void; setHeader(): void };
+      request.setHeader = () => {}; request.end = () => setImmediate(() => {
+        const response = new EventEmitter() as EventEmitter & { statusCode: number; destroy(): void }; response.statusCode = 200; response.destroy = () => {};
+        receive(response as unknown as http.IncomingMessage);
+        TextDecoder.prototype.decode = function (...args) { const value = Reflect.apply(decode, this, args); Date.now = () => clock() + 20000; return value; };
+        try { response.emit("data", raw); response.emit("end"); }
+        finally { TextDecoder.prototype.decode = decode; Date.now = clock; }
+      }); return request;
+    }) as unknown as typeof https.request;
+    try {
+      await assert.rejects(createSecretTransport(200).listSummaries!("summary", { budget, visit: () => { visited++; } }), error => error503(error) && (error as Error).message === "Kubernetes Secret list timed out");
+      assert.equal(calls, 1); assert.equal(visited, 0); assert.equal(budget.items, 0); assert.equal(budget.bytes, raw.length); idle();
+    } finally { https.request = originalRequest; TextDecoder.prototype.decode = decode; Date.now = clock; budget.finish(); }
+  });
+});
 async function fixture(operation: (native: Awaited<ReturnType<typeof nativeTlsFixture>>) => Promise<void>, delay = 0) {
   const dir = await mkdtemp(path.join(tmpdir(), "bortus-native-window-"));
   const keys = ["KUBECONFIG", "BORTUS_SECRET_NAMESPACES", "BORTUS_HISTORY_NAMESPACE"] as const;
@@ -406,6 +468,8 @@ test("batched cancellation aborts owned active/queued TLS requests while an unre
     const transport = createSecretTransport(200), raw = transport.list.bind(transport), budgets: SecretListBudget[] = [];
     const unrelated = transport.read("apps", "blocker");
     transport.list = (namespace, options) => { budgets.push(options!.budget!); return raw(namespace, options); };
+    const summaries = transport.listSummaries!.bind(transport);
+    transport.listSummaries = (namespace, options) => { budgets.push(options!.budget!); return summaries(namespace, options); };
     const pending = new SecretStore(transport, ["a", "b", "c", "d", "unstarted"], undefined, 4).list();
     const reject = assert.rejects(pending, error => error503(error) && (error as Error).message === "Kubernetes Secret list timed out");
     const until = Date.now() + 2000;
