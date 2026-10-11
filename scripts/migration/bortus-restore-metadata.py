@@ -12,6 +12,7 @@ MAX_BYTES = 8 * 1024 * 1024
 MAX_ITEMS = 10000
 LONGHORN = '/apis/longhorn.io/v1beta2/namespaces/longhorn-system/'
 RESOURCES = {
+    'storageclass': ('/apis/storage.k8s.io/v1/storageclasses', 'storage.k8s.io/v1', 'StorageClass', ''),
     'claim': ('/api/v1/namespaces/bortus/persistentvolumeclaims', 'v1', 'PersistentVolumeClaim', 'bortus'),
     'pv': ('/api/v1/persistentvolumes', 'v1', 'PersistentVolume', ''),
     'node': ('/api/v1/nodes', 'v1', 'Node', ''),

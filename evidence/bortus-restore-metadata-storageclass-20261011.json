@@ -1,0 +1,88 @@
+{
+  "scope": "Fixed named StorageClass GET extension; local TLS only",
+  "captured_at_utc": "2026-10-11T08:20:04.881946+00:00",
+  "test_count": 20,
+  "actual_result": {
+    "command": [
+      "wsl",
+      "-d",
+      "Ubuntu",
+      "-u",
+      "brajam",
+      "--cd",
+      "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+      "--",
+      "python3",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts/migration/tests",
+      "-p",
+      "test_bortus_restore_metadata.py",
+      "-v"
+    ],
+    "started_at_utc": "2026-10-11T08:19:25.929042+00:00",
+    "completed_at_utc": "2026-10-11T08:19:28.801002+00:00",
+    "actual_exit_code": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "7a88b2999e94ebe8a8058f7fa5d540d4ec3ce6143159aa6615ab4f27b15898ad",
+    "source_manifest_sha256": "b84d4f1e627491eb1a2be69fc11deb5ca10cd2294d07ed55d50a8ebeadb381ea",
+    "input_source_unchanged": true,
+    "scope": "Pure/POSIX/local TLS/disposable age/SQLite fixtures; no Node/Docker/SSH/production calls"
+  },
+  "tested_source_unchanged": true,
+  "source_manifest_sha256": "b84d4f1e627491eb1a2be69fc11deb5ca10cd2294d07ed55d50a8ebeadb381ea",
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "7a88b2999e94ebe8a8058f7fa5d540d4ec3ce6143159aa6615ab4f27b15898ad",
+  "scan": {
+    "actual_exit_code": 0,
+    "findings": 0,
+    "scanner_sha256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "command": [
+      "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-native-window-tools-70320914\\bin\\gitleaks.exe",
+      "dir",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-data-metadata-20261011\\scan-metadata-v2\\input",
+      "--redact",
+      "--no-banner",
+      "--report-format",
+      "json",
+      "--report-path",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-data-metadata-20261011\\scan-metadata-v2\\report.json"
+    ],
+    "inputs": [
+      {
+        "path": "scripts/migration/bortus-restore-metadata.py",
+        "bytes": 9229,
+        "sha256": "eabae6334e167adf32d09160d23daa36878089c930c954f2a1b3f5c8b41168db"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_restore_metadata.py",
+        "bytes": 13483,
+        "sha256": "8b8800f5076cb996168b3e33de78bf8a4a32b7b62e7e6b195461db6b47d97e3a"
+      },
+      {
+        "path": "docs/BORTUS-OPERATOR-MTLS.md",
+        "bytes": 7522,
+        "sha256": "a460265350df457035e405564ba0ef47d8a1b409121720c776c7845bf857cb9d"
+      },
+      {
+        "path": "MIGRATION_STATUS.md",
+        "bytes": 88371,
+        "sha256": "b1908640e8ce3d4c5e237acfe4548961f153108abe2d2f481437ea52b2781fe8"
+      }
+    ],
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "1fb5f78af1cb45606cb49346100fcdba066881646451cbfeca52f253c6109b18",
+    "configuration": "Pinned defaults, no exclusions/allowlists; four exact inputs only"
+  },
+  "protected_artifacts": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-data-metadata-20261011",
+  "live_API_or_mutations": false,
+  "old_combined_350_receipt_reused_for_current_source": false,
+  "acceptance": {
+    "local_reader_extension": true,
+    "actual_restore_or_release": false
+  }
+}

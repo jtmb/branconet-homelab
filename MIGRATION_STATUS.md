@@ -350,3 +350,11 @@ cancellation fixture teardown failures; the corrected fixture suppresses only
 expected peer cancellation. No production request or mutation, Node/Docker run,
 restored-data read, new image switch or source retirement occurred. Full executor,
 actual independent restoration, guarded cutover and final acceptance remain open.
+
+The next scoped reader revision adds only a fixed named StorageClass GET, needed
+to validate the actual admitted class after creation. All 20 focused metadata
+tests pass with frozen inputs; the earlier 350-case combined qualification keeps
+its original source binding. No live API call occurred. The native subagent is
+building the constrained restore mutation adapter against this exact dependency;
+the application subagent reports the decoder candidate's unchanged performance
+gate still fails, so release acceptance remains open.

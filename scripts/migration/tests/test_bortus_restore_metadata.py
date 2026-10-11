@@ -139,6 +139,14 @@ class MetadataTests(unittest.TestCase):
         self.assertEqual([auth for _, auth in self.fixture.requests],
             ['Bearer PUBLIC_ROTATION_' + str(n) for n in range(1, 5)])
 
+    def test_storageclass_named_read_has_no_list_or_namespace_escape(self):
+        self.fixture.body = item('storageclass')
+        self.assertEqual(self.get('storageclass'), self.fixture.body)
+        self.assertEqual(self.fixture.requests[-1][0], '/apis/storage.k8s.io/v1/storageclasses/fixture')
+        self.refuse(lambda: self.list('storageclass'), 'request_scope')
+        self.fixture.body['metadata']['namespace'] = 'bortus'
+        self.refuse(lambda: self.get('storageclass'), 'metadata_identity')
+
     def test_scope_rejected_before_credentials(self):
         for name in ('../secret', 'a/b', 'a?x=y', 'a..b', '-a', 'a-', 'A', 'a' * 64):
             self.refuse(lambda: self.get(name=name), 'request_scope')

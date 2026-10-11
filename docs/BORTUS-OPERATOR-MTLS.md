@@ -61,7 +61,7 @@ and [PyYAML 6.0.3 constructors](https://github.com/yaml/pyyaml/blob/6.0.3/lib/ya
 
 The separate `bortus-restore-metadata.py` read-only adapter uses the same fresh
 options provider for each TLS connection. Its fixed scope is named BORTUS PVC/Pod,
-cluster PV/Node and Longhorn Volume/Backup/Engine/Replica GETs, plus complete PV,
+cluster StorageClass/PV/Node and Longhorn Volume/Backup/Engine/Replica GETs, plus complete PV,
 BORTUS Pod and Longhorn Engine/Replica lists. It exposes no Secret endpoint,
 mutation, proxy, redirect, retry, connection pool or credential fallback.
 Reads have an absolute finite deadline of at most 300 seconds, a 30-second socket
@@ -72,7 +72,7 @@ items, at most 10,000 objects and unique names/UIDs with the expected namespace.
 Public errors contain fixed codes, with underlying response/parser frames dropped.
 These are fresh individual reads, not an atomic source or health snapshot. The
 executor must pass them through the full identity/consumer/restore fences.
-Nineteen disposable loopback TLS tests pass, including credential freshness,
+Nineteen original disposable loopback TLS tests pass, including credential freshness,
 revocation, fixed scope, malformed/oversized/incomplete replies, a slow trickle,
 late-connect refusal before dispatch and independent owned closure. A closure
 failure drops even a successfully parsed response before the public refusal.
@@ -80,6 +80,14 @@ The first run's three expected-cancellation fixture teardown failures remain in
 the actual tool record; the corrected fixture suppresses only expected peer
 cancellation, without weakening production assertions. Actual executor/live use
 remains pending.
+
+The subsequent fixed named StorageClass read allows the executor to independently
+check the admitted restore class after POST; no StorageClass list endpoint or
+namespace override is exposed. Its separate twentieth regression covers the
+exact storage API path/kind and rejects namespace/list escapes. This scoped
+extension passes all 20 focused tests with frozen inputs and an actual zero exit;
+the earlier 19/350 receipts remain bound to their original sources. See the
+[extension evidence](../evidence/bortus-restore-metadata-storageclass-20261011.json).
 
 The native immutable handoff at `6e4e9668` passes 30 focused and 179 combined
 cases. Its default scanner exits 1 for one individually reviewed invalid public
