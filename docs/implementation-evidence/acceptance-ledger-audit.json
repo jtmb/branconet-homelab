@@ -68,7 +68,7 @@
       "finding": "bootstrap",
       "originalValidation": "Concurrent distinct and duplicate usernames on an empty DB must leave exactly one bootstrap writer. Repeat with registration explicitly open/closed and with the AppSetting override; test uniqueness failures without leaking internal DB errors.",
       "localCompletedScope": "Six distinct empty-DB registrations in both closed/open modes leave one writer; duplicate username returns409; four production HTTP registrations cover closed bootstrap.",
-      "stillRequired": "The original concurrent duplicate-name and AppSetting override permutations are not explicitly established by the distinct-client tests. Add those disposable controls; final image bootstrap/preservation remains separate. Supplemental attempt2 failed before the first closed/missing-setting/distinct case completed (AssertionError; exact failed predicate/outcomes not retained). No added registration acceptance; a causal diagnostic is pending.",
+      "stillRequired": "A03 first closed/missing-setting/distinct six-request case reproducibly fails required403:1 fulfilled,5 refusals (403,503,503,503,403), with one writer/effective administrator/policy. The fixed busy503 retry exhaustion is not accepted as403. Exact inner Prisma subtype remains unretained. Correct the demonstrated liveness/refusal defect, then qualify all ten original distinct/duplicate AppSetting/environment cases; final image bootstrap/preservation remains separate.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/accounts.test.ts",
         "k8s-rewrite/front-end/tests/http.integration.ts",
@@ -77,7 +77,8 @@
       "evidence": [
         "combined-c29fc8c/qualification.json",
         "administration-ui.json",
-        "acceptance-supplement/assessment.json"
+        "acceptance-supplement/assessment.json",
+        "a03-causal/assessment.json"
       ],
       "overallDeliveredAcceptancePassed": false
     },
