@@ -1,0 +1,74 @@
+{
+  "scope": "Pure metadata evaluator coordinator integration; no live acceptance",
+  "source_commit": "e1e0f8d7b9a16837ff2c9edb582613c69706d87f",
+  "source_bindings": {
+    "scripts/migration/bortus-restore-completion.py": {
+      "raw_git_sha256": "6e5c36ad8faaf4228e00ba608143317c4069a0e50a98a0fd760f5c5228e95ec4",
+      "source_blob": "acf4110e02d37266ef2218711b9b380f5594e8b4"
+    },
+    "scripts/migration/tests/test_bortus_restore_completion.py": {
+      "raw_git_sha256": "b78f8fd41ccd818a1675c5fd96da491a3ffeb36b36ef08cf1221e66efef69278",
+      "source_blob": "ea38c8c5dc9d48e54badc5c3d09013f9d9b41dd2"
+    },
+    "docs/BORTUS-RESTORE-COMPLETION.md": {
+      "raw_git_sha256": "dc0a5e33ac19a8da2a46d7a62614b5d1682791c125e5449c3e792d2e69d875b2",
+      "source_blob": "02d426e695da307fda010e7072dcac627d64f0f5"
+    },
+    "docs/implementation-evidence/restore-transition-qualification.json": {
+      "raw_git_sha256": "0e546ffeabe7da61b0b6aab5a3ead8d4d5b14349fe2c249efad5b501c84c029c",
+      "source_blob": "4e6aeb73b791468c221774df71def4e47f4795c4"
+    }
+  },
+  "native_artifacts": {
+    "doc-review.json": "c9487801248d8c4f1636964c9e4488ef6c52746455cb482473df4144c856ad79",
+    "handoff.json": "8636097fead0e39b746836bbdbc42889d25bc939844ef1d6f87657a1bc1cf663",
+    "raw-git-scan-terminal.json": "628616bad17348cd6fd5839ca3c68a5f8aaea74892543a4783fac4fada51d9dd",
+    "raw-git-scan.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "raw-git-scan.stderr": "d3e9f29bc6a6e68720a743fc064a2d38c7540a6cf369b434003206fa219eb5a7",
+    "raw-git-scan.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scan-terminal.json": "357b8c1a8c26941d082e7c49dfdc4d61dbec6aea308f7f51e5e93016da33c450",
+    "scan.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "source-manifest.json": "e0eda01d75ac56fb477360f1a7693d7d29db9af68181bac8a6497014f2ce5a59",
+    "stderr.log": "0c13f4db71d39bb7bf386526a8ba661ad53a96001bed227639adb4a0a7fb856a",
+    "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "terminal.json": "47d088098c1b027a421ed04d7bc17b2e41c7a46a689fd0239ae351ded653cf3c"
+  },
+  "coordinator_run": {
+    "directory": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-transition-20261011",
+    "terminal_sha256": "996e3cb1d2e932c171b6836386cab8611513354605541e3be1fc89a4ea01c327",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "0c13f4db71d39bb7bf386526a8ba661ad53a96001bed227639adb4a0a7fb856a",
+    "actual_exit_code": 0,
+    "tests": 33,
+    "process_completed": true
+  },
+  "root_docs_checked": 12,
+  "older_app_document_overwrite": false,
+  "exact_source_import": true,
+  "watch_collector_implemented": false,
+  "restore_executor_implemented": false,
+  "live_mutations": 0,
+  "secret_or_database_reads": 0,
+  "data_acceptance": false,
+  "remaining": [
+    "durable actual precreation watch and continuity",
+    "installed schema and image compatibility",
+    "current protected admission and preload",
+    "healthy two RW replicas and sole readonly consumer",
+    "independent authenticated NAS archive and complete normalized recovery rows"
+  ],
+  "final_root_docs_review_sha256": {
+    "ANSIBLE-2-API-INTERACTION.md": "d161d3821709befb6a55b5aafefd4395765a7b2895d099d048e85a8bdd39c5b7",
+    "API-USAGE.md": "7a99b284806bc5b19f815e9e74fb2bb8124be167e62104b566bcb5af8da3b83e",
+    "BORTUS-DEPLOYMENT.md": "535734601e1a191ec7b1aa7296a88d9572fa9074a47640fbd0f964294288f74c",
+    "BORTUS-RESTORE-COMPLETION.md": "dc0a5e33ac19a8da2a46d7a62614b5d1682791c125e5449c3e792d2e69d875b2",
+    "BOTRUS-WORKFLOW.md": "aa0f673c68f4806521d2666c93330c77025d4034414c4808f731adaa1744a0ca",
+    "CONNECTING-TO-A-CLUSTER.md": "53b1a4878c66750a9399d3a3d19b2b4e8ee2654b92235191f14efddc5453f8e4",
+    "FLUX-GITOPS.md": "a8b07073f9893f24b3f993a129d9a6303b96e82a2e41ebad39dd9840435746b5",
+    "kubectl-cheatsheet.md": "fab19db188ba6b8189dab2d5449bde7e594194849dad20cadecf96309c6ce06a",
+    "MIGRATION-OPERATIONS.md": "8ca443303d287453b07b7a5556db432fd08916500837975e98f1cc42e8272cd6",
+    "SECRETS-ENGINE.md": "187a69bf8b5b9e397d7824925372f13b4bcc41dab088350d24dfdf747508f004",
+    "TECH-STACK.md": "031060c25de9a9177664fd58659758fda71eceb1dc54674e56b73354386666b4",
+    "USER-PERMS.md": "ac7b52960426f91dbc914bca41883d2b05bafea64bf407b1ceaab6f9750e48c5"
+  }
+}
