@@ -1,5 +1,25 @@
 # Controlled whole-server performance qualification
 
+## Warm-Pods candidate follow-up
+
+Exact candidate `61e25884d125696b9b215cd3e507555129393f67` completed three new alternating pairs against the same audit baseline, fixed six profiles and Linux Node22/cgroup constraints. [Raw follow-up](implementation-evidence/warm-pods-controlled.json) and [validated summary](implementation-evidence/warm-pods-controlled-summary.json) preserve all observations; the original checkpoint below is unchanged. Builds passed in 83.708/87.582 seconds. This candidate predates the administration entry integration and the separately assigned native-list correction.
+
+| Observation, median across three runs | Baseline | Candidate |
+|---|---:|---:|
+| 1,000 Pods sequential warm p50 | 7.0 ms | 5.8 ms |
+| 1,000 Pods sequential warm p95 | 13.0 ms | 20.7 ms |
+| 1,000 Pods concurrent warm p95 | 83.2 ms | 78.6 ms |
+| Audit-small sequential warm p95 | 17.0 ms | 19.3 ms |
+| 1,000 Pods cold p50 / CLI calls | 218.5 ms / 10 | 109.3 ms / 1 |
+| Native metadata 1,000 objects | 75.6 ms / 18 requests | 883.3 ms / 54 requests |
+| Native metadata 10,000 objects | 285.8 ms / 54 requests | 7,836.6 ms / 504 requests |
+| Whole-container peak memory | 358.3 MiB (357.0–358.8) | 285.0 MiB (285.0–306.3) |
+| Whole-container CPU | 39.34 s (35.27–51.13) | 31.88 s (31.82–65.77) |
+
+Warm reads still use zero CLI calls and preserve all accepted inventory. **A07 remains failed**: improved warm medians/concurrent latency do not satisfy the sequential p95 gate. Native-list latency and 10,000-Pod capacity remain unresolved; both sources exceed their 2-MiB Pod CLI limits, so error responses are excluded from successful latency comparisons. CPU ranges overlap and host cores are not reserved; no general CPU or statistical-significance claim follows.
+
+The runtime driver checksum is `7ffe01dfd5903126e3071004678a472188d4dcb88fa0be6ce4da50a3c9f79e8e` for every new measurement. Its Windows CRLF checkout differs from the original checkpoint's LF checksum `ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b`; removing CRLF yields byte-for-byte equality with the committed/original LF driver. No workload/assertion/threshold was edited. Raw follow-up SHA-256 is `5225482854bce92f0098e3201021d1cf94d19b162b6ce3a2a032d56a22380dbb`; protected artifacts remain in `/home/brajam/.cache/bortus-controlled-perf/run-63a281156724`. A later changed candidate needs its own complete record; no unchanged repeat is used to replace these failures.
+
 This is an independent checkpoint comparison for audit A07/A21 server cost. It provides server-side evidence relevant to A11; it does not complete browser polling/lifecycle, UI behavior A08–A20 or optional client-code A22 acceptance. The immutable audit and application remain unchanged by this benchmark. The final integrated source still needs its own rerun.
 
 The [raw record](implementation-evidence/bortus-controlled-perf.json), [validated aggregate](implementation-evidence/bortus-controlled-perf-summary.json) and [reproducible harness](../benchmarks/bortus-controlled-perf/README.md) preserve source provenance, every request's timing/status/size, phase CPU/RSS/process/API counts, assertions and earlier attempts. A successful harness run means the expected successes **and expected negative cases** occurred. It does not mean that every audit performance gate passed.
