@@ -69,37 +69,11 @@ ansible-playbook playbooks/site.yml --tags kubernetes
 
 ## Deploying Applications (GitOps)
 
-Applications are managed via FluxCD. Apps are organized into two stacks under `charts/`:
+Use the separate private `jtmb/branconet-charts` repository. Every application has its own `charts/<name>/` package and effective values in `flux/releases/<name>.yaml`. Change those files, validate the effective renders and push to `main`. Successful current-main chart CI promotes the exact tested SHA to `validated`; Flux's existing `branconet-charts` source and `migration-releases` Kustomization apply `./flux/releases`.
 
-| Stack | Path | Kustomization CRD |
-|-------|------|-------------------|
-| **test-stack** | `charts/test-stack/` | `test-stack` (test/dev apps) |
-| **media-stack** | `charts/media-stack/` | `media-stack` (media apps) |
+Do not deploy the legacy raw `test-stack`/`media-stack` root or restore the retired migration publisher. Native Secret values stay outside Git. Preserve existing PVC identities and wait for the service's data/consumer gates before activation. New BORTUS source also requires a separately qualified immutable image and guarded release; an application source push alone does not change the running image.
 
-Both stacks pull from the same `branconet-charts` GitRepository.
-
-### Adding a New App
-
-1. Create a directory under the appropriate stack: `charts/<stack>/my-app/`
-2. Add Kubernetes manifests (`deployment.yaml`, `service.yaml`, `ingress.yaml`, etc.)
-3. Add a `kustomization.yaml` in the app directory
-4. Register the app in the stack's `kustomization.yaml` (e.g., `charts/test-stack/kustomization.yaml`)
-5. Commit and push to the Git repository
-6. Flux polls every 5 minutes; trigger an immediate sync if needed:
-   ```bash
-   kubectl annotate kustomization test-stack -n flux-system \
-     reconcile.fluxcd.io/requestedAt="$(date -Iseconds)" --overwrite
-   ```
-
-### Checking App Status
-
-- **Dashboard:** `/flux` page shows all repositories and their sync status
-- **CLI:** `kubectl get kustomization -n flux-system`
-- **Manual sync trigger:**
-  ```bash
-  kubectl annotate gitrepository my-app -n flux-system \
-    reconcile.fluxcd.io/requestedAt="$(date -Iseconds)" --overwrite
-  ```
+For status, inspect the `/flux` dashboard, `kubectl get helmreleases -n flux-system`, and source/applied revisions. Manual reconciliation of the existing owner is an operator mutation, not a CI bypass. See [FLUX-GITOPS.md](FLUX-GITOPS.md) for the current pipeline, commands and historical boundaries.
 
 ## Managing Variables
 

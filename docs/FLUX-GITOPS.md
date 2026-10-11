@@ -1,97 +1,36 @@
 # Flux GitOps Guide
 
-## Overview
+## Active chart delivery
 
-The approved migration foundation pins Flux v2.9.6 and installs source-controller, kustomize-controller, helm-controller and notification-controller. It no longer deletes Helm support or bootstraps through a second competing path. Installing controllers does not activate old repository workloads: chart/source activation follows validation and explicit migration data gates. Individual Helm packages now live beside the retained legacy manifests, each with its own Chart.yaml, values.yaml and templates. They are disabled until reviewed and migrated. Repository validation in `.github/workflows/kubernetes-migration.yml` blocks incomplete implementations; live schema/application tests remain required. See [MIGRATION_STATUS.md](../MIGRATION_STATUS.md) for effective reconciliation evidence. The workflow below describes the legacy raw-manifest layout, not activated migration releases; do not reconcile both paths against the same resources.
+Application charts live in the separate private [jtmb/branconet-charts](https://github.com/jtmb/branconet-charts) repository. BORTUS application source remains in `branconet-homelab`. Edit each application's `charts/<name>/values.yaml` or templates and its effective overrides in `flux/releases/<name>.yaml`; each application keeps its own chart and values.
 
-## Migration pipeline
-
-Changes enter codex/kubernetes-migration. The Kubernetes migration workflow validates all 33 in-scope packages and then publishes that exact passing revision to codex/kubernetes-validated. Flux reads only the validated branch. Its migration-releases Kustomization applies the dedicated k8s-rewrite/flux/migration-releases path, which declares one HelmRelease per chart and per-release values. It never traverses the legacy raw charts kustomization. All 33 in-scope application releases are enabled and Ready using reviewed per-release values; the package defaults retain their activation guards. ETS2 and the Minecraft exporter were removed by user direction; their data remains retained. The source manifest is k8s-rewrite/flux/migration-source.yaml. Remote CI and actual reconciliation are separate recorded acceptance checks.
-
-Persistent claims/volumes use Helm resource-policy keep, and namespaces disable pruning. Kustomization pruning remains off during migration. Removing a release/file is not authorization to discard its dataset. Because global pruning is disabled, the two excluded game HelmReleases were explicitly deleted only after CI validated the desired-state removal and Flux applied it; their Helm keep PVCs and Retain PVs survived with unchanged identities. Promote each release's enabled/replicaCount/migration fields only after that service's evidence passes. Private staging excludes ingress and external Services and does not set application acceptance true.
-
-## Legacy reference workflow
-
-The following raw-manifest workflow is retained as historical reference. It is not the migration activation path. Every migrated application has its own chart/values and HelmRelease.
-
-## How Deployments Work
+Push chart changes to `main`. `.github/workflows/charts.yml` validates all chart packages, effective rendered releases and composed infrastructure. Only a successful non-PR main run can promote. The promotion job checks that the remote main SHA still matches the tested SHA, then atomically pushes that exact commit to `validated` and its `validated-<full-sha>` tag. If it observes a newer main revision, it skips promotion. This check is not an atomic lock on subsequent main changes; the promoted revision is nevertheless the exact validated commit. CI has no cluster credentials.
 
 ```mermaid
 flowchart LR
-    A["Edit YAML"] --> B["git push"]
-    B --> C["Flux polls repo"]
-    C --> D["Kustomize builds"]
-    D --> E["kubectl apply"]
-    E --> F["Cluster updated"]
-    F --> G["Drift auto-corrected"]
+    Charts[Private charts repository: main] --> CI[Validate charts, values and infrastructure]
+    CI --> Promotion[Exact passing SHA: validated branch and commit tag]
+    Promotion --> Source[Flux source: branconet-charts]
+    Source --> Owner[Existing migration-releases: ./flux/releases]
+    Owner --> Helm[Individual HelmReleases and values]
+    Helm --> Apps[Cluster workloads]
 ```
 
-1. **You change a manifest** — edit any `.yaml` in `charts/` or add a new app
-2. **Commit & push** to the `k8s-rewrite` branch
-3. **Flux detects it** — `GitRepository` polls GitHub every 5 minutes
-4. **Kustomize builds it** — `charts/kustomization.yaml` flattens all subdirectories into two Kustomization stacks
-5. **Applied server-side** — Flux runs the equivalent of `kubectl apply -k charts/ --server-side`
-6. **Drift correction** — manual `kubectl edit` changes get reverted
-7. **Pruning** — deleted files get removed from the cluster
+Flux polls the private repository each minute using a repository-specific read-only SSH deploy key in a native Secret outside Git. In `flux-system`, the existing `branconet-charts` GitRepository reads `validated`; the existing `migration-releases` Kustomization reads `./flux/releases`. Keep these owners rather than creating another bootstrap or source for the same resources. The approved foundation pins Flux v2.9.6 with source, Kustomize, Helm and notification controllers.
 
-## Directory Structure
+The [06:26 UTC scoped read](../evidence/flux-delivery-doc-refresh-20261011.json) observed source Ready, Kustomization Ready/Healthy, and the same source/applied revision `validated@sha1:53d224197fc6253ecac04ffd51e4b16b566c55e2`. These separate reads are not atomic; GitHub CI was not refreshed in that read. The earlier [delivery evidence](../evidence/bortus-delivery-current-refresh-20261011.json) records successful CI run 38057725194 for that SHA. Ready reconciliation does not prove the new BORTUS KV engine is deployed or accepted.
 
-```
-k8s-rewrite/
-├── charts/
-│   ├── kustomization.yaml              ← Root: Flux builds this
-│   ├── test-stack/                      ← Test/dev apps
-│   │   ├── kustomization.yaml
-│   │   ├── http-echo/
-│   │   │   ├── kustomization.yaml
-│   │   │   ├── namespace.yaml
-│   │   │   ├── deployment.yaml
-│   │   │   ├── service.yaml
-│   │   │   ├── ingress.yaml
-│   │   │   └── ingressroute.yaml
-│   │   ├── nginx-hello/
-│   │   └── whoami/
-│   └── media-stack/                     ← Media apps
-│       ├── kustomization.yaml
-│       └── plex/
-├── clusters/
-│   ├── prd/flux-system/                 ← Production cluster bootstrap
-│   ├── dev/flux-system/                 ← Dev cluster bootstrap
-│   └── README.md
-└── ansible-playbook/roles/gitops/       ← Automates Flux install + bootstrap
-```
+Application source pushes run separate application quality checks. They do not update the deployed image. Image delivery requires the qualified immutable source/image, image availability on every eligible node, guarded schema/data/RBAC/admission checks and a reviewed chart update. Follow [MIGRATION-OPERATIONS.md](MIGRATION-OPERATIONS.md) and [MIGRATION_STATUS.md](../MIGRATION_STATUS.md) for the current release gates.
 
-### Stack Architecture
+## Data and ownership rules
 
-The `charts/` directory is split into **two stacks**, each with its own Flux Kustomization CRD:
+Global Kustomization pruning and force are disabled during migration. Namespaces disable pruning; persistent claims/volumes use Helm `resource-policy: keep` and PV reclaim policy `Retain`. Removing a release or file is not permission to remove its data. The user excluded ETS2 and Minecraft exporter; their original datasets and protected claims remain retained. The Minecraft website remains in scope.
 
-| Stack | Path | Kustomization CRD | Apps |
-|-------|------|-------------------|------|
-| **test-stack** | `./k8s-rewrite/charts/test-stack/` | `test-stack` | http-echo, nginx-hello, whoami |
-| **media-stack** | `./k8s-rewrite/charts/media-stack/` | `media-stack` | plex |
+Native application Secret values stay outside Git. Charts contain existing Secret references only. Preserve service identities, existing claims, mount paths and storage settings when editing a release. Do not enable an unaccepted application or replace a claim merely because the chart renders successfully. Private staging excludes external routing and does not establish application acceptance.
 
-Both stacks pull from the same `branconet-charts` GitRepository. The root `kustomization.yaml` references both stacks as resources:
+## Retired migration layout
 
-```yaml
-# charts/kustomization.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ./test-stack
-  - ./media-stack
-```
-
-Each stack has its own `kustomization.yaml` referencing its apps:
-
-```yaml
-# charts/test-stack/kustomization.yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ./http-echo
-  - ./nginx-hello
-  - ./whoami
-```
+The raw manifests under this repository's `k8s-rewrite/charts/`, the old `test-stack`/`media-stack` workflow and the migration `codex/kubernetes-validated` branch are historical reference. The migration source is suspended and its publisher was removed. `.github/workflows/kubernetes-migration.yml` performs read-only archive validation. Do not restore that publisher, reconcile the raw-chart root, or bootstrap `branconet-homelab` alongside the active private chart owner. Legacy RBAC from this checkout must not be reapplied during the guarded BORTUS release.
 
 ## View Status
 
@@ -139,139 +78,50 @@ The tree is powered by `GET /api/flux/hierarchy` which queries GitRepositories, 
 
 ### kubectl / CLI
 
-```bash
-# What Flux resources are running?
-kubectl get gitrepositories,kustomizations -n flux-system
+Run these commands with the operator's protected kubeconfig or equivalent authorized credentials:
 
-# Fleet-style listing (with flux CLI)
+```bash
+kubectl get gitrepository branconet-charts -n flux-system
+kubectl get kustomization migration-releases -n flux-system
+kubectl get helmreleases -n flux-system
 flux get sources git -n flux-system
 flux get kustomizations -n flux-system
-
-# Detailed per-app status
-flux get kustomizations --watch
-
-# See what Flux would change
-flux diff kustomization test-stack -n flux-system
 ```
 
-## Add a New App
+Inspect `status.artifact.revision` on the source and `status.lastAppliedRevision` on the Kustomization. A successful CI run alone is not reconciliation evidence. A reconciled Kustomization alone is not application or data acceptance.
 
-1. Create `charts/<stack>/<name>/` directory (in the appropriate stack: `test-stack` or `media-stack`)
-2. Add `kustomization.yaml`:
+## Add or update an application
 
-```yaml
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - namespace.yaml
-  - deployment.yaml
-  - service.yaml
-```
+1. Work in the private chart repository and preserve the existing chart/release when updating an app.
+2. Change `charts/<name>/values.yaml` or `templates/` and the effective `flux/releases/<name>.yaml`. For a new app, register its HelmRelease in `flux/releases/kustomization.yaml`.
+3. Supply native Secrets externally; commit references only. Review storage ownership, data migration and consumer dependencies before activation.
+4. Run the private repository's documented unit tests and `scripts/validate.py`; review rendered resources.
+5. Push to main. Wait for the exact successful CI promotion and Flux's source/applied revision, then verify the actual workload, retained data and application behavior.
 
-3. Add your Kubernetes manifests
-4. Register in the stack's `kustomization.yaml`:
+## Manual reconciliation
 
-```yaml
-# charts/test-stack/kustomization.yaml (or media-stack/kustomization.yaml)
-resources:
-  - ./http-echo
-  - ./<name>          # ← add this
-```
-
-5. Commit + push — Flux auto-syncs within 5 minutes
-
-## Manual Sync
+These are operator mutations. Use them only after reviewing the desired remote revision and its acceptance gates; they do not bypass CI or replace validation:
 
 ```bash
-# Sync a specific stack immediately
-flux reconcile kustomization test-stack -n flux-system
-
-# Or without flux CLI:
-kubectl annotate kustomization test-stack -n flux-system \
-  reconcile.fluxcd.io/requestedAt="$(date +%s)"
+flux reconcile source git branconet-charts -n flux-system
+flux reconcile kustomization migration-releases -n flux-system
 ```
 
-## Pause / Resume
+Pausing the shared Kustomization pauses delivery for all its resources. Resume only after checking which validated revision will be applied:
 
 ```bash
-# Stop Flux from touching a specific stack
-flux suspend kustomization test-stack -n flux-system
-
-# Resume
-flux resume kustomization test-stack -n flux-system
-
-# Without flux CLI:
-kubectl patch kustomization test-stack -n flux-system \
-  --type merge -p '{"spec":{"suspend":true}}'
-kubectl patch kustomization test-stack -n flux-system \
-  --type merge -p '{"spec":{"suspend":false}}'
+flux suspend kustomization migration-releases -n flux-system
+flux resume kustomization migration-releases -n flux-system
 ```
-
-## Drift Detection
-
-Flux detects manual changes (`kubectl edit`, `kubectl scale`, etc.) and reverts them within 5 minutes.
-
-- `READY: True` — cluster state matches Git
-- `READY: False` — drift detected, check with:
-  ```bash
-  kubectl describe kustomization test-stack -n flux-system
-  ```
 
 ## Troubleshooting
 
-### "kustomize build failed"
-```bash
-# Test locally what Flux sees:
-kubectl apply -k charts/ --dry-run=server
-```
-
-### Stale revision (not picking up new commits)
-```bash
-# Check Flux can reach GitHub:
-kubectl get gitrepository branconet-charts -n flux-system -o yaml | grep -A10 status
-```
-
-### "Reconciliation in progress" stuck
-```bash
-kubectl get events -n flux-system --sort-by='.lastTimestamp' | tail -20
-```
-
-### New app not appearing
-Did you:
-1. Create `charts/<stack>/<app>/kustomization.yaml`?
-2. Add it to the stack's `kustomization.yaml` resources (e.g., `charts/test-stack/kustomization.yaml`)?
-3. Commit **and push** both changes?
-
-Flux watches the **remote** repo, not local files. Changes only apply after `git push`.
-
-## Bootstrapping a New Cluster
-
-See `clusters/README.md` for the full bootstrap procedure and multi-cluster setup.
-
-Quick bootstrap:
-```bash
-flux bootstrap github \
-  --owner=jtmb \
-  --repository=branconet-homelab \
-  --branch=k8s-rewrite \
-  --path=./k8s-rewrite/clusters/prd \
-  --personal
-```
-
-## How It Compares to Fleet (Rancher)
-
-| Feature | Fleet | Flux |
-|---------|-------|------|
-| Repo scan | Auto-discovery (`fleet.yaml`) | Explicit (`kustomization.yaml` per dir) |
-| Per-app status | `fleet bundle list` | `flux get kustomizations` |
-| Self-healing | Yes | Yes (`prune: true`) |
-| Multi-cluster | Cluster groups | Separate bootstrap per cluster |
-| Sync interval | Per bundle | Per Kustomization |
-| Drift detection | Built-in | Built-in + alerts |
-| Dependencies | None (built into Rancher) | Standalone controllers |
+- Check successful CI for the expected main SHA and its promotion; a newer main revision causes an older promotion job to skip.
+- Compare source artifact and applied revisions; inspect source/Kustomization conditions and events without exposing deploy keys or application Secrets.
+- Inspect the affected HelmRelease and rendered values when the source is Ready but a workload fails.
+- Validate `./flux/releases` in the private repository. The legacy raw-chart root is not an appropriate dry run for current delivery.
+- Source reconciliation, Helm reconciliation and application readiness are separate observations. Do not assume they have a fixed combined completion time.
 
 ## BORTUS private credentials
 
-New private-repo credentials write native Secrets in flux-system through verified API access. GitRepo.authData is empty; old DB authData is never replayed. Existing native collisions fail instead of overwrite. No credential argv. Native value-bearing resources must stay outside Git/Flux; charts reference existing Secrets. See BORTUS-DEPLOYMENT.md.
-
-The historical migration branch's `.github/workflows/kubernetes-migration.yml` now performs read-only package validation and cannot publish `codex/kubernetes-validated`. Do not restore that publisher when combining application and migration documentation. Active chart delivery belongs to private `jtmb/branconet-charts`; application quality CI does not deploy charts or images.
+New private-repo credentials write native Secrets in `flux-system` through verified API access. `GitRepo.authData` is empty; old DB authData is never replayed. Existing native collisions fail instead of overwriting. Credentials never enter argv. Native value-bearing resources stay outside Git/Flux; charts reference existing Secrets. See [BORTUS-DEPLOYMENT.md](BORTUS-DEPLOYMENT.md).
