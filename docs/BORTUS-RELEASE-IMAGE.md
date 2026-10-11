@@ -109,7 +109,7 @@ scanner status `will_not_fix`; no suppression or application reachability
 acceptance follows from that status. The earlier inert-holder assessment cannot
 qualify the application image. At that scan checkpoint, runtime/schema fixtures were pending; the later
 disposable fixture below records their scoped result. Kubectl remediation and
-security review, A07/A21 performance, three-node delivery, active guards,
+security review, A07/A21 performance, three-node runtime qualification, active guards,
 independent complete-row recovery and final live acceptance stay open.
 This qualification dispatched no application rollout, cluster mutation or
 production data read; the original writer and data remain preserved.
@@ -140,3 +140,23 @@ database frames remained in memory/tmpfs and cleanup completed. No production
 PVC/database/native credentials, Kubernetes operation, image preload or rollout
 was used. Application security, A07/A21, full-row production recovery, admission,
 actual auth/UI/consumer acceptance and final live release remain separate gates.
+
+## c29fc selected MiniZip package/file review
+
+The [single bounded metadata probe](../evidence/bortus-app-minizip-metadata-c29fc-20261011.json)
+completed at12:27:50 UTC with actual exit0 on the exact config/source image.
+Installed package selection finds zlib1g from source zlib; nine selected regular
+files totaling242,823,089 bytes were read with no symlink following. No selected
+MiniZip-owned pathname, positive ELF token or linked MiniZip library was found.
+The sole positive text reference was zlib's copyright notice. Scope is limited
+to selected package-owned files and fixed Node/kubectl/curl/openssl/Prisma binaries;
+stripped, inlined, compressed or obfuscated code is not excluded. It is not an
+all-image inventory, reachability proof or application security pass.
+
+Root freshly verified eight Linux process identities, the Windows launcher and
+complete owner-labelled container-list absence. No app entrypoint, native
+credential or production mount was used. The original default Trivy exit1,
+346 vulnerability entries, Critical finding and kubectl remediation remain
+unsuppressed. The [separate preload receipt](../evidence/bortus-app-preload-c29fc-20261011.json)
+confirms image staging on all three nodes; current Kubernetes runtime, active
+guards, independent production recovery and final live acceptance remain open.

@@ -249,7 +249,7 @@ scanner status `will_not_fix`; no suppression or application reachability
 acceptance follows from that status. The earlier inert-holder assessment cannot
 qualify the application image. At that scan checkpoint, runtime/schema fixtures were pending; the later
 disposable fixture below records their scoped result. Kubectl remediation and
-security review, A07/A21 performance, three-node delivery, active guards,
+security review, A07/A21 performance, three-node runtime qualification, active guards,
 independent complete-row recovery and final live acceptance stay open.
 This qualification dispatched no application rollout, cluster mutation or
 production data read; the original writer and data remain preserved.
@@ -280,3 +280,16 @@ database frames remained in memory/tmpfs and cleanup completed. No production
 PVC/database/native credentials, Kubernetes operation, image preload or rollout
 was used. Application security, A07/A21, full-row production recovery, admission,
 actual auth/UI/consumer acceptance and final live release remain separate gates.
+
+## Current image staging checkpoint
+
+The [exact c29fc preload](../evidence/bortus-app-preload-c29fc-20261011.json)
+completed on all three nodes with matching archive/config/source labels and
+OCI manifest068254f3. No application rollout followed. Digest-name alias and
+current-image Kubernetes runtime qualification are separate prerequisites.
+The [selected MiniZip metadata probe](../evidence/bortus-app-minizip-metadata-c29fc-20261011.json)
+closed normally with owned cleanup; its narrow negative result does not accept
+image security. The original legacy writer, suspended HelmRelease, grant-free
+external bortus-kv principal and completed cold checkpoint remain the rollout
+starting point. Production full-row recovery, principal/admission/schema
+migration and actual auth/UI/consumer acceptance remain required.

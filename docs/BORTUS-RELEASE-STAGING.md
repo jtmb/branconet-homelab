@@ -195,7 +195,7 @@ scanner status `will_not_fix`; no suppression or application reachability
 acceptance follows from that status. The earlier inert-holder assessment cannot
 qualify the application image. At that scan checkpoint, runtime/schema fixtures were pending; the later
 disposable fixture below records their scoped result. Kubectl remediation and
-security review, A07/A21 performance, three-node delivery, active guards,
+security review, A07/A21 performance, three-node runtime qualification, active guards,
 independent complete-row recovery and final live acceptance stay open.
 This qualification dispatched no application rollout, cluster mutation or
 production data read; the original writer and data remain preserved.
@@ -226,3 +226,15 @@ database frames remained in memory/tmpfs and cleanup completed. No production
 PVC/database/native credentials, Kubernetes operation, image preload or rollout
 was used. Application security, A07/A21, full-row production recovery, admission,
 actual auth/UI/consumer acceptance and final live release remain separate gates.
+
+## c29fc three-node preload completed
+
+The [single current preload receipt](../evidence/bortus-app-preload-c29fc-20261011.json)
+records actual exit0 on 192.168.0.4/.5/.6, completed at12:37:08 UTC on
+2026-10-11. All three nodes match the exact archive, config, five source labels
+and OCI manifest `sha256:068254f38c47f99fd35604185a806a92147d934010329638b32adb5c19802c90`.
+That manifest differs from the Docker config ID `sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c`.
+The original receipt and owned launcher terminal agree; root freshly verifies
+launcher absence. This stages the image only. Exact digest-name cache aliases
+and current-image Kubernetes public-fixture runtime remain to be qualified.
+No new app Pod, admission guard, PVC consumer or production schema was deployed.

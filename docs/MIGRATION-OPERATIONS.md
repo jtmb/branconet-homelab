@@ -542,7 +542,7 @@ scanner status `will_not_fix`; no suppression or application reachability
 acceptance follows from that status. The earlier inert-holder assessment cannot
 qualify the application image. At that scan checkpoint, runtime/schema fixtures were pending; the later
 disposable fixture below records their scoped result. Kubectl remediation and
-security review, A07/A21 performance, three-node delivery, active guards,
+security review, A07/A21 performance, three-node runtime qualification, active guards,
 independent complete-row recovery and final live acceptance stay open.
 This qualification dispatched no application rollout, cluster mutation or
 production data read; the original writer and data remain preserved.
@@ -573,3 +573,33 @@ database frames remained in memory/tmpfs and cleanup completed. No production
 PVC/database/native credentials, Kubernetes operation, image preload or rollout
 was used. Application security, A07/A21, full-row production recovery, admission,
 actual auth/UI/consumer acceptance and final live release remain separate gates.
+
+## c29fc staging and bounded image metadata checkpoint
+
+The [single sequential preload](../evidence/bortus-app-preload-c29fc-20261011.json)
+completed at12:37:08 UTC on all three nodes. Archive/config/source labels and
+selected/runtime OCI manifest match on every node; root verifies the terminal
+and exact process closure. This is immutable cache staging. Exact digest-name
+aliases and current-image Kubernetes public-fixture runtime remain open; no
+production application, PVC consumer, schema or admission change was dispatched.
+
+The [bounded selected-file probe](../evidence/bortus-app-minizip-metadata-c29fc-20261011.json)
+found no MiniZip pathname/ELF token/linkage in its selected package/runtime
+files, with one copyright text reference. Eight Linux owners, the Windows child
+and complete labelled container list are verified absent. Whole-image security
+and reachability are not accepted; original default scan findings remain.
+Complete production-row independent recovery, compatible guard withdrawal,
+final performance/security and actual engine acceptance stay required.
+
+## Immutable application audit reconciliation
+
+The [root acceptance-ledger review](../evidence/bortus-app-acceptance-ledger-review-20261011.json)
+verifies all22 original validation clauses,45 source blob/mode/working-byte
+bindings,25 retained evidence byte bindings and seven exact publication files
+at immutable55fdb44e/c29fc. All delivered acceptance flags remainfalse; this
+is a source/evidence review, not another runtime or final image qualification.
+Git LF, Windows CRLF and one retained mixed-EOL source relation are explicit.
+The original selected default scan remains exit1 with one individually verified
+historical prose match and no suppression; a corrected three-word UTF8byte
+column review retains the original mistaken count. Two older whole-history
+provenance findings remain unresolved. Later handler work is qualified separately.

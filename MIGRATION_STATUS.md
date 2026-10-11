@@ -146,6 +146,35 @@ A07/A21 performance, exhaustive UI/auth/consumer checks, active guards,
 independent actual full-row recovery and final live acceptance remain open.
 Root plus two subagents continue separately; the seven old chats are archived.
 
+## 2026-10-11 12:37 UTC: current image preloaded; bounded MiniZip review closed
+
+[Current preload evidence](evidence/bortus-app-preload-c29fc-20261011.json)
+verifies the one completed sequential operation on all three nodes, matching
+archive/config/source labels and OCI manifest068254f3; actual terminal exit0
+and fresh owned-process absence are recorded. Digest-name cache aliases and
+current-image Kubernetes runtime remain separate pending qualifications.
+No production app, PVC consumer, schema or guard rollout occurred.
+
+[The selected MiniZip metadata probe](evidence/bortus-app-minizip-metadata-c29fc-20261011.json)
+closed actual0 with all owned processes/containers absent. No selected
+MiniZip pathname/ELF token/linkage was found; one copyright reference was.
+This narrow probe is not whole-image reachability/security acceptance and
+does not suppress the original Critical/kubectl or other scan findings.
+Production full-row recovery, guarded release, A07/A21 and exhaustive live
+auth/UI/consumer acceptance remain open. Seven old BORTUS chats are confirmed
+archived; root and two existing subagents own further work.
+
+## 2026-10-11 12:49 UTC: immutable audit ledger independently checked
+
+[Root audit verification](evidence/bortus-app-acceptance-ledger-review-20261011.json)
+binds all22 unchanged original validation clauses,45 source files and25 evidence
+files at55fdb44e/c29fc. Raw/working EOL relations and corrected scanner byte
+columns are explicit; the original scanexit1/prose finding and two pending
+historical provenance findings remain retained. No new runtime pass or final
+acceptance is inferred. The app subagent's later ab8d450 handler-query change
+passes13focused tests/types/lint and awaits fresh production HTTP qualification.
+It cannot change the already-minimal warm Pods/native performance result.
+
 ## Current orchestration and application qualification
 
 Three agents are active: coordinator, BORTUS application integration, and native transport/evidence. Seven identifiable former BORTUS execution/review chats are confirmed archived; unrelated projects remain unchanged. Before archiving the additional idle dependency/runtime chat, its clean committed handoff was preserved as a verified complete-history Git bundle and raw source archive outside managed checkouts. Its package, lockfile and Dockerfile match the current app source; [preservation evidence](evidence/bortus-runtime-thread-archive.json) records the exact artifacts. Earlier archiving removed managed checkouts, so application work was recovered from snapshot da84f0f00aeb0daca299358e93fc7074acd2055e (parent b82980e783daf09e1aabe00f3a5db99fef3e13fa), including 17 changed paths and both qualification logs. All six original source-file hashes were recovered; the workbench discrepancy was traced to mixed line endings by replaying the original patch records. Source and evidence backups remain outside the managed checkouts.
