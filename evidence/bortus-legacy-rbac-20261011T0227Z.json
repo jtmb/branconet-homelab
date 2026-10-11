@@ -1,0 +1,3424 @@
+{
+  "checkedAtUtc": "2026-10-11T02:25:16.945653+00:00",
+  "scope": "read-only RBAC metadata; no credential reads or mutations",
+  "principal": "system:serviceaccount:bortus:bortus",
+  "groups": [
+    "system:authenticated",
+    "system:serviceaccounts",
+    "system:serviceaccounts:bortus"
+  ],
+  "grants": [
+    {
+      "binding": {
+        "kind": "ClusterRoleBinding",
+        "namespace": null,
+        "name": "bortus-dashboard-view",
+        "uid": "12d5292a-6df2-4dd5-84c3-511930ab7e63",
+        "resourceVersion": "43238"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "ClusterRole",
+        "name": "bortus-dashboard-view"
+      },
+      "scope": "cluster",
+      "roleResolved": true,
+      "roleUid": "dc778367-3611-4337-b3ad-3e65ba528d1d",
+      "roleResourceVersion": "43237",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "nodes",
+            "namespaces",
+            "persistentvolumes",
+            "pods",
+            "persistentvolumeclaims",
+            "services",
+            "events"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "statefulsets",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            "storage.k8s.io"
+          ],
+          "resources": [
+            "storageclasses",
+            "csidrivers",
+            "csinodes",
+            "volumeattachments"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            "longhorn.io"
+          ],
+          "resources": [
+            "volumes",
+            "nodes",
+            "replicas",
+            "engines",
+            "backups",
+            "backupvolumes"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "persistentvolumes",
+            "nodes"
+          ],
+          "verbs": [
+            "patch",
+            "update"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "namespaces"
+          ],
+          "verbs": [
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "ClusterRoleBinding",
+        "namespace": null,
+        "name": "system:basic-user",
+        "uid": "0ea1fb26-43e5-470f-bda1-803838754cf5",
+        "resourceVersion": "155"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "Group",
+          "name": "system:authenticated"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "ClusterRole",
+        "name": "system:basic-user"
+      },
+      "scope": "cluster",
+      "roleResolved": true,
+      "roleUid": "7c41804b-dc65-42ea-8d25-d97a37e80f5a",
+      "roleResourceVersion": "59",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            "authorization.k8s.io"
+          ],
+          "resources": [
+            "selfsubjectaccessreviews",
+            "selfsubjectrulesreviews"
+          ],
+          "verbs": [
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "authentication.k8s.io"
+          ],
+          "resources": [
+            "selfsubjectreviews"
+          ],
+          "verbs": [
+            "create"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "ClusterRoleBinding",
+        "namespace": null,
+        "name": "system:cluster-trust-bundle-discovery",
+        "uid": "2cac2d75-777c-4ee2-bf0a-9772868afb16",
+        "resourceVersion": "172"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "Group",
+          "name": "system:serviceaccounts"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "ClusterRole",
+        "name": "system:cluster-trust-bundle-discovery"
+      },
+      "scope": "cluster",
+      "roleResolved": true,
+      "roleUid": "2bca75b0-82df-4b96-9f6d-cd40bdd06067",
+      "roleResourceVersion": "103",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            "certificates.k8s.io"
+          ],
+          "resources": [
+            "clustertrustbundles"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "ClusterRoleBinding",
+        "namespace": null,
+        "name": "system:discovery",
+        "uid": "bd35b487-e6d8-4942-bef0-c993a52a6dcb",
+        "resourceVersion": "153"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "Group",
+          "name": "system:authenticated"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "ClusterRole",
+        "name": "system:discovery"
+      },
+      "scope": "cluster",
+      "roleResolved": true,
+      "roleUid": "ecfa6ff1-af24-43dd-9050-2c2eae73ec9d",
+      "roleResourceVersion": "53",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "verbs": [
+            "get"
+          ],
+          "nonResourceURLs": [
+            "/api",
+            "/api/*",
+            "/apis",
+            "/apis/*",
+            "/healthz",
+            "/livez",
+            "/openapi",
+            "/openapi/*",
+            "/readyz",
+            "/version",
+            "/version/"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "ClusterRoleBinding",
+        "namespace": null,
+        "name": "system:public-info-viewer",
+        "uid": "05cea4c6-e79a-4f2c-8bf5-9076e15d2fd5",
+        "resourceVersion": "157"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "Group",
+          "name": "system:authenticated"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "ClusterRole",
+        "name": "system:public-info-viewer"
+      },
+      "scope": "cluster",
+      "roleResolved": true,
+      "roleUid": "3cd82ce0-904a-4ad6-9b4a-7c16b29cd9ca",
+      "roleResourceVersion": "62",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "verbs": [
+            "get"
+          ],
+          "nonResourceURLs": [
+            "/healthz",
+            "/livez",
+            "/readyz",
+            "/version",
+            "/version/"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 1
+    },
+    {
+      "binding": {
+        "kind": "ClusterRoleBinding",
+        "namespace": null,
+        "name": "system:service-account-issuer-discovery",
+        "uid": "38dd7d43-2ca1-400a-819a-ba3a14249c21",
+        "resourceVersion": "170"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "Group",
+          "name": "system:serviceaccounts"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "ClusterRole",
+        "name": "system:service-account-issuer-discovery"
+      },
+      "scope": "cluster",
+      "roleResolved": true,
+      "roleUid": "919b4d03-6c75-439e-b864-666788f6bf9a",
+      "roleResourceVersion": "99",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "verbs": [
+            "get"
+          ],
+          "nonResourceURLs": [
+            "/.well-known/openid-configuration",
+            "/.well-known/openid-configuration/",
+            "/openid/v1/jwks",
+            "/openid/v1/jwks/"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "bortus",
+        "name": "bortus-dashboard-manage",
+        "uid": "126c36e8-b5ff-4ed6-a806-5d8d84e3bda8",
+        "resourceVersion": "43291"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "bortus",
+      "roleResolved": true,
+      "roleUid": "c82f69f6-2db6-42ec-8f43-6bda3fa3aebd",
+      "roleResourceVersion": "43253",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "bortus",
+        "name": "bortus-secrets",
+        "uid": "eb97a860-f52c-45ac-af3e-7f9650a963c0",
+        "resourceVersion": "43290"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "bortus",
+      "roleResolved": true,
+      "roleUid": "c2b46753-0b18-4dcd-b766-5b24e396ba08",
+      "roleResourceVersion": "43249",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "bortus-secrets",
+        "name": "bortus-dashboard-manage",
+        "uid": "2784c5b7-20d8-4166-a9cb-2e95bdd1fc5d",
+        "resourceVersion": "43293"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "bortus-secrets",
+      "roleResolved": true,
+      "roleUid": "6f83a3f9-3d46-414c-a9c7-b38369e7e5b7",
+      "roleResourceVersion": "43256",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "bortus-secrets",
+        "name": "bortus-secrets",
+        "uid": "948c3377-fbf1-4a4a-860d-6bd282a58fbc",
+        "resourceVersion": "43292"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "bortus-secrets",
+      "roleResolved": true,
+      "roleUid": "0a6cc346-b406-4482-8948-6e2ab6add5dc",
+      "roleResourceVersion": "43255",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "default",
+        "name": "bortus-dashboard-manage",
+        "uid": "30b956ac-8ce8-4a6a-b7fd-1d9faaae0881",
+        "resourceVersion": "43295"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "default",
+      "roleResolved": true,
+      "roleUid": "70c99a8b-060f-40e7-aef6-ef866ce02ec7",
+      "roleResourceVersion": "43258",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "default",
+        "name": "bortus-secrets",
+        "uid": "8456af6b-b6e5-42b4-8c8b-81ad6c49fc0c",
+        "resourceVersion": "43294"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "default",
+      "roleResolved": true,
+      "roleUid": "5dd3126c-1a69-4c4d-8889-166226863c80",
+      "roleResourceVersion": "43257",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "flux-system",
+        "name": "bortus-dashboard-manage",
+        "uid": "47471a46-2e2c-4483-ad33-8ed568648a87",
+        "resourceVersion": "43298"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "flux-system",
+      "roleResolved": true,
+      "roleUid": "4d0a99a9-7046-460b-8b06-0c64c56289c3",
+      "roleResourceVersion": "43260",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "source.toolkit.fluxcd.io"
+          ],
+          "resources": [
+            "gitrepositories",
+            "helmrepositories",
+            "helmcharts",
+            "ocirepositories"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "kustomize.toolkit.fluxcd.io"
+          ],
+          "resources": [
+            "kustomizations"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "helm.toolkit.fluxcd.io"
+          ],
+          "resources": [
+            "helmreleases"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "flux-system",
+        "name": "bortus-secrets",
+        "uid": "b41a8b83-cca6-4acb-8afa-e26b0803cd60",
+        "resourceVersion": "43296"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "flux-system",
+      "roleResolved": true,
+      "roleUid": "0f3091dc-13be-4afa-bdd3-e96c7e7bea27",
+      "roleResourceVersion": "43259",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "games",
+        "name": "bortus-dashboard-manage",
+        "uid": "485809e6-8d3f-4b75-b772-5fba8a0cd537",
+        "resourceVersion": "43300"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "games",
+      "roleResolved": true,
+      "roleUid": "1d6bd9a2-e4ff-4bf3-a774-c15ca1ba6cfb",
+      "roleResourceVersion": "43262",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "games",
+        "name": "bortus-secrets",
+        "uid": "670e3bb6-228f-49a2-9fa7-b804d24e60b9",
+        "resourceVersion": "43299"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "games",
+      "roleResolved": true,
+      "roleUid": "04ea1bcf-37f4-422c-919a-cf9f9f43e232",
+      "roleResourceVersion": "43261",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "homepage",
+        "name": "bortus-dashboard-manage",
+        "uid": "bc2f8189-473a-4aa2-9f13-fab267c75647",
+        "resourceVersion": "43302"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "homepage",
+      "roleResolved": true,
+      "roleUid": "4fe79f3a-6fac-4509-abfb-71429553746d",
+      "roleResourceVersion": "43264",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "homepage",
+        "name": "bortus-secrets",
+        "uid": "c19d8b49-d483-426e-8956-936ee1f53c0e",
+        "resourceVersion": "43301"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "homepage",
+      "roleResolved": true,
+      "roleUid": "02045c74-d58c-42a0-88e8-5045428b82ee",
+      "roleResourceVersion": "43263",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "http-echo",
+        "name": "bortus-dashboard-manage",
+        "uid": "d6b64c5a-5086-4c3f-9cc8-2cc6d2da20f5",
+        "resourceVersion": "43304"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "http-echo",
+      "roleResolved": true,
+      "roleUid": "339cc0ef-8350-4f68-ad8a-e7bf20f8966f",
+      "roleResourceVersion": "43266",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "http-echo",
+        "name": "bortus-secrets",
+        "uid": "a876c505-dfb0-4df5-8bd8-309ea55dc048",
+        "resourceVersion": "43303"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "http-echo",
+      "roleResolved": true,
+      "roleUid": "1d06e8e8-47f2-4056-b64b-a8e11bca8c69",
+      "roleResourceVersion": "43265",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "longhorn-system",
+        "name": "bortus-dashboard-manage",
+        "uid": "3f37c3be-b0bf-46b0-a996-8870fc94284b",
+        "resourceVersion": "43306"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "longhorn-system",
+      "roleResolved": true,
+      "roleUid": "39e9be4f-e357-4022-bfa1-2f116399b1f5",
+      "roleResourceVersion": "43268",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "longhorn-system",
+        "name": "bortus-secrets",
+        "uid": "9250fe23-0f8e-4956-bbc2-bf95eeb13edc",
+        "resourceVersion": "43305"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "longhorn-system",
+      "roleResolved": true,
+      "roleUid": "c703b6d7-fd85-4f70-9d0c-606ba0c9cfbb",
+      "roleResourceVersion": "43267",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "mealie",
+        "name": "bortus-dashboard-manage",
+        "uid": "5b642034-99a6-4b44-a3a5-10bb9f3bb828",
+        "resourceVersion": "43308"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "mealie",
+      "roleResolved": true,
+      "roleUid": "a9b4cc15-ebcf-448b-8b6a-22f1706eea18",
+      "roleResourceVersion": "43270",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "mealie",
+        "name": "bortus-secrets",
+        "uid": "1c9eca4c-7679-4c3b-bf35-b0137509ef2a",
+        "resourceVersion": "43307"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "mealie",
+      "roleResolved": true,
+      "roleUid": "da1abd99-eedd-4c9c-8d3f-23b1440bef1a",
+      "roleResourceVersion": "43269",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "pihole",
+        "name": "bortus-dashboard-manage",
+        "uid": "2b366667-847a-4be1-b7f1-56475c955c36",
+        "resourceVersion": "43310"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "pihole",
+      "roleResolved": true,
+      "roleUid": "e11839ef-88ef-414b-af95-24b038cec05c",
+      "roleResourceVersion": "43272",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "pihole",
+        "name": "bortus-secrets",
+        "uid": "341a2180-1d55-45df-b382-4ea9c3d14db8",
+        "resourceVersion": "43309"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "pihole",
+      "roleResolved": true,
+      "roleUid": "f93a38da-230a-4b21-938f-95353ede5cdf",
+      "roleResourceVersion": "43271",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "plex",
+        "name": "bortus-dashboard-manage",
+        "uid": "f75d8369-b7a0-4d15-bb1b-0c482a8c74fe",
+        "resourceVersion": "43312"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "plex",
+      "roleResolved": true,
+      "roleUid": "2612bbcb-6cbf-4797-8016-e1f3b4d17b25",
+      "roleResourceVersion": "43275",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "plex",
+        "name": "bortus-secrets",
+        "uid": "accaf7f9-297c-4f9f-8705-84422da236dd",
+        "resourceVersion": "43311"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "plex",
+      "roleResolved": true,
+      "roleUid": "50dab7d4-2224-488f-9242-98ca8f759603",
+      "roleResourceVersion": "43273",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "ruckus",
+        "name": "bortus-dashboard-manage",
+        "uid": "6f279008-4aca-4ee8-9a1e-c79bb63f1912",
+        "resourceVersion": "43314"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "ruckus",
+      "roleResolved": true,
+      "roleUid": "abecd4c5-ccbe-40b3-a57d-3224f486f2e3",
+      "roleResourceVersion": "43277",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "ruckus",
+        "name": "bortus-secrets",
+        "uid": "28f10188-5830-4e53-89ce-e6322fa1ed86",
+        "resourceVersion": "43313"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "ruckus",
+      "roleResolved": true,
+      "roleUid": "61c73ee2-6a3e-46d7-9990-c3284a0b3b5f",
+      "roleResourceVersion": "43276",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "traefik",
+        "name": "bortus-dashboard-manage",
+        "uid": "93271dca-4cfe-4ebc-8fa2-f54b2d174ccd",
+        "resourceVersion": "43316"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "traefik",
+      "roleResolved": true,
+      "roleUid": "89df2fff-12b6-4b5c-858b-b2c6e96b5a82",
+      "roleResourceVersion": "43279",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "traefik",
+        "name": "bortus-secrets",
+        "uid": "174a79f5-0636-4fbc-b364-7c48aba3630b",
+        "resourceVersion": "43315"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "traefik",
+      "roleResolved": true,
+      "roleUid": "34a9abaf-18bb-49b9-af88-ffcfceae6c1b",
+      "roleResourceVersion": "43278",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "vaultwarden",
+        "name": "bortus-dashboard-manage",
+        "uid": "85e04dfe-cdfd-4e41-b29d-2941ebee8001",
+        "resourceVersion": "43318"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "vaultwarden",
+      "roleResolved": true,
+      "roleUid": "48e75365-750e-4638-9f78-6a52f60a30d2",
+      "roleResourceVersion": "43281",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "vaultwarden",
+        "name": "bortus-secrets",
+        "uid": "ac5391b5-a1ce-42fc-866f-5380133ab5bb",
+        "resourceVersion": "43317"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "vaultwarden",
+      "roleResolved": true,
+      "roleUid": "777a5875-3f21-477c-86b9-f0c715fdad9b",
+      "roleResourceVersion": "43280",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "web-apps",
+        "name": "bortus-dashboard-manage",
+        "uid": "467f9b16-b68a-409d-abcd-cd50ec6feecd",
+        "resourceVersion": "43320"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "web-apps",
+      "roleResolved": true,
+      "roleUid": "ba9551e8-0e9b-48ec-b6bf-0c1d72d26024",
+      "roleResourceVersion": "43283",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "web-apps",
+        "name": "bortus-secrets",
+        "uid": "90ad6f70-c17e-42d5-846b-2524eac41171",
+        "resourceVersion": "43319"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "web-apps",
+      "roleResolved": true,
+      "roleUid": "08a4312e-3c54-49a0-b317-757ef2b4328f",
+      "roleResourceVersion": "43282",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "website-stack",
+        "name": "bortus-dashboard-manage",
+        "uid": "df70688e-4bd2-4178-b300-07f85765c8e6",
+        "resourceVersion": "43322"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "website-stack",
+      "roleResolved": true,
+      "roleUid": "4cbdb0b6-6e00-4089-a78c-9f31d65516ee",
+      "roleResourceVersion": "43285",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "website-stack",
+        "name": "bortus-secrets",
+        "uid": "8b47a0ea-03f2-44c2-bb09-0b7f8af57896",
+        "resourceVersion": "43321"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "website-stack",
+      "roleResolved": true,
+      "roleUid": "9d1e1cf1-0a85-4b38-8242-9a9da6628db2",
+      "roleResourceVersion": "43284",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "whoami",
+        "name": "bortus-dashboard-manage",
+        "uid": "8cf5098d-0a39-4232-924b-92253c870b74",
+        "resourceVersion": "43325"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "whoami",
+      "roleResolved": true,
+      "roleUid": "b73ef69c-273c-41d4-aeb9-64f15407237e",
+      "roleResourceVersion": "43287",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "whoami",
+        "name": "bortus-secrets",
+        "uid": "2890a199-a166-4d8d-92ac-156d9ba65675",
+        "resourceVersion": "43323"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "whoami",
+      "roleResolved": true,
+      "roleUid": "6fd473ef-c01d-4607-9566-641643cc5100",
+      "roleResourceVersion": "43286",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "wordpress",
+        "name": "bortus-dashboard-manage",
+        "uid": "79f0c381-83be-460d-91ee-32147c39fa26",
+        "resourceVersion": "43328"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-dashboard-manage"
+      },
+      "scope": "wordpress",
+      "roleResolved": true,
+      "roleUid": "c846b078-021e-47c0-8b58-dd336e3fe5ae",
+      "roleResourceVersion": "43289",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods",
+            "pods/log",
+            "services",
+            "configmaps",
+            "events",
+            "persistentvolumeclaims",
+            "endpoints"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "pods/exec",
+            "pods/portforward"
+          ],
+          "verbs": [
+            "get",
+            "create"
+          ]
+        },
+        {
+          "apiGroups": [
+            "apps"
+          ],
+          "resources": [
+            "deployments",
+            "deployments/scale",
+            "statefulsets",
+            "statefulsets/scale",
+            "daemonsets",
+            "replicasets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "batch"
+          ],
+          "resources": [
+            "jobs",
+            "cronjobs"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        },
+        {
+          "apiGroups": [
+            "networking.k8s.io"
+          ],
+          "resources": [
+            "ingresses",
+            "networkpolicies"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "watch",
+            "create",
+            "update",
+            "patch",
+            "delete"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    },
+    {
+      "binding": {
+        "kind": "RoleBinding",
+        "namespace": "wordpress",
+        "name": "bortus-secrets",
+        "uid": "6a525482-51bd-40a8-9763-8e8cf9f521bf",
+        "resourceVersion": "43326"
+      },
+      "matchedSubjects": [
+        {
+          "kind": "ServiceAccount",
+          "name": "bortus",
+          "namespace": "bortus"
+        }
+      ],
+      "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "bortus-secrets"
+      },
+      "scope": "wordpress",
+      "roleResolved": true,
+      "roleUid": "03dae767-7bdd-4661-8365-4769c3df2500",
+      "roleResourceVersion": "43288",
+      "aggregationRulePresent": false,
+      "rules": [
+        {
+          "apiGroups": [
+            ""
+          ],
+          "resources": [
+            "secrets"
+          ],
+          "verbs": [
+            "get",
+            "list",
+            "create",
+            "update"
+          ]
+        }
+      ],
+      "unmatchedSubjectCount": 0
+    }
+  ],
+  "matchingBindingCount": 42,
+  "unresolvedRoleCount": 0,
+  "sourceCounts": {
+    "roles": 52,
+    "rolebindings": 52,
+    "clusterroles": 103,
+    "clusterrolebindings": 87
+  },
+  "limitations": [
+    "Separate resource reads are not an atomic Kubernetes snapshot.",
+    "This inventories RBAC grants, not other authorizers or an actual authorization decision.",
+    "Aggregated ClusterRole rules are the API's current rules, not proof of controller convergence.",
+    "No permissions were revoked. Actual authorization and preservation checks remain required.",
+    "Unmatched binding subjects must be preserved during any later reviewed revocation."
+  ]
+}
