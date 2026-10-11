@@ -70,8 +70,10 @@ cannot recover a transient initialization/completion transition already lost.
 The executor still has to prove actual TLS-verified HTTP readiness and durable
 capture before creation, retain early events until the new claim/PV/Volume UID
 chain is confirmed, and bind its final GET identity/resourceVersion to an event
-durably observed before sealing. This is source review, not an implemented or
-executed collector.
+durably observed before sealing. The separately implemented
+[collector](BORTUS-RESTORE-WATCH.md) now qualifies these prerequisites through
+local TLS/POSIX fixtures; this is not a live operator watch or full restore
+executor qualification.
 
 The input ABI is a **closed metadata projection** of watch events in their
 original arrival order, preserving all Volume events and their flag absence:
@@ -121,5 +123,11 @@ Run the pure synthetic suite with
 `python -B -m unittest discover -s scripts/migration/tests -p test_bortus_restore_completion.py -v`.
 No native performance fixture, driver, runner, summarizer or acceptance gate is
 changed by this library.
+
+The callable [durable LIST/watch collector](BORTUS-RESTORE-WATCH.md) now implements
+the local TLS readiness/durable projection prerequisite. Its local fixtures do
+not establish a live watch, approved operator transport adapter, full restore
+executor, image/admission fences or restored-data acceptance. The pure transition
+library above remains unchanged.
 
 The source inspection and repeated cold storage checks also require the complete cluster PV inventory in [BORTUS-PHYSICAL-VOLUME-FENCE.md](BORTUS-PHYSICAL-VOLUME-FENCE.md); any other Longhorn PV using the original handle refuses regardless of claim namespace or inactive state. This closes a scoped inventory gap and does not establish an atomic consumer/admission barrier or restored-data acceptance.

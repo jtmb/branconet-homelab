@@ -1,0 +1,124 @@
+{
+  "scope": "Local HTTPS/POSIX collector prerequisites; no production, restored data or performance acceptance",
+  "base_dependency_commit": "689c83486ebb2722d81ff89bc5b67dda089d3d06",
+  "source": [
+    {
+      "path": "scripts/migration/bortus-restore-watch.py",
+      "bytes": 33221,
+      "raw_sha256": "721d145a9d3a9bb715542e52674e54241231fb5e79c31d42f5355a37e92c26fb",
+      "git_blob": "4a4cc9a5ec3b963a18d0207fafd45957fecfa70c"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restore_watch.py",
+      "bytes": 32384,
+      "raw_sha256": "627e85e56d224e2864f6514f5bc50f4e21b8eee03c14fa13f2e356db90e95edf",
+      "git_blob": "0b1a38373a893041a0121654e2de0cbd96d7c88c"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-WATCH.md",
+      "bytes": 6805,
+      "raw_sha256": "93e4bf09f1c399b931023659939aebe2248c2e12b8109e5af5e53d23b11e7e11",
+      "git_blob": "c477f6d662c6ecd496d98a3034f643018a5d334d"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-COMPLETION.md",
+      "bytes": 7482,
+      "raw_sha256": "be8e4b26907358c1a1689c9456d6ed31e3efb0036a309471fc10cab188d94f0d",
+      "git_blob": "076820ca09ae2079449544d425c9a722eb3c907b"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "scripts/migration/bortus-restore-completion.py",
+      "raw_sha256": "6e5c36ad8faaf4228e00ba608143317c4069a0e50a98a0fd760f5c5228e95ec4",
+      "unchanged_root_dependency": true
+    },
+    {
+      "path": "scripts/migration/bortus-restore-journal.py",
+      "raw_sha256": "e90b25b1a7226e072f3d3b1b3c872f38cbf2f05797270e9100a60dfa83a12f18",
+      "unchanged_root_dependency": true
+    },
+    {
+      "path": "scripts/migration/checkpoint-bortus-volume.py",
+      "raw_sha256": "cb7aef9bbf733fd762df062bec33266d28a27a669b7c5747d7550b32fe2e3a0a",
+      "unchanged_root_dependency": true
+    },
+    {
+      "path": "scripts/migration/inspect-bortus-checkpoint.py",
+      "raw_sha256": "c77e26a60e9e7d5f2217ad04c4c0f1f33b58013e577476f1dfc0f3f0c10bbc9a",
+      "unchanged_root_dependency": true
+    },
+    {
+      "path": "scripts/migration/inspect-bortus-independent-restore.py",
+      "raw_sha256": "69b4e285288eded354172b1487d7971a666baa6084274391b5acf70d261e0326",
+      "unchanged_root_dependency": true
+    }
+  ],
+  "tests": [
+    {
+      "run": "qualification-v4",
+      "tests": 49,
+      "seconds": 4.907,
+      "actual_exit_code": 0,
+      "terminal_sha256": "22f4857829f3a513cce85dd27377305953c0b39c1914c0b7b405a48b180de47d",
+      "log_sha256": "177607cf5f684a6897c051e27e73c94b26a3bbea6a7545829691d6aa863fcf4e"
+    },
+    {
+      "run": "qualification-combined-v1",
+      "tests": 149,
+      "seconds": 5.225,
+      "actual_exit_code": 0,
+      "terminal_sha256": "6419a03e23e1a94e8c0c5860e072fba452317be5c8229f6ffb3af6e56ff92ba6",
+      "log_sha256": "e243b5cf7d38f87a38f60494d5c4d32456bee08ea5e78e8973e364a04e6b3839"
+    }
+  ],
+  "retained_attempts": [
+    {
+      "run": "qualification-v1",
+      "result": "actual1;22tests,2failures,16errors; TLS minimum-version fixture sentinel",
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\durable-restore-watch-v1\\qualification-v1",
+      "artifacts": {
+        "terminal.json": "251368bcb35dfbc22bfdef967c498d92150fb38d336918f8ad52042559748179",
+        "stderr.log": "21f2f1fccbba90cef41aa13754f33baff72ac01e9fdedf19d8e48f3c2e7d989c",
+        "source-manifest.json": "e430fc58a0156e0fb20b86a6ebb1b2b9ef9d07bb2aab11c067dca6bbb33b071c"
+      }
+    },
+    {
+      "run": "qualification-v2",
+      "result": "actual0;35tests; fixture reset traceback retained",
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\durable-restore-watch-v1\\qualification-v2",
+      "artifacts": {
+        "terminal.json": "2bb63caa2b3e02e48853394d5edd0f76c0013d67fb07f2dbfa0e45cc4b57c70d",
+        "stderr.log": "ad089cf9ad4bbe58302c4991405e09d1d0997dbd9ff630abd0ebf944f7d69373",
+        "source-manifest.json": "5439e2f6eae291de8ea20b34567095dbc9ee075ea4f1683f2c8f7a40d5c2fe23"
+      }
+    },
+    {
+      "run": "qualification-v3",
+      "result": "actual0;46tests; later extended partial-body/deadline coverage",
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\durable-restore-watch-v1\\qualification-v3",
+      "artifacts": {
+        "terminal.json": "31c812707a6b47b48c7035edc1ef993f05c440e361216e00423990d0f093ecd2",
+        "stderr.log": "b663791e25a3037122069a50c53f4fcc6c1ee150cad7c9846771ded84ac74860",
+        "source-manifest.json": "5f424406afb7dda666c885aeca1165bde41aff8f7845163e4210ee389ccc2368"
+      }
+    }
+  ],
+  "data_acceptance": false,
+  "live_watch_proven": false,
+  "operator_transport_adapter_qualified": false,
+  "owned_launcher_pids_absent": [
+    34552,
+    26836,
+    48636,
+    39764,
+    41924
+  ],
+  "fixture_cleanup": "Test teardown asserts owned reader/server threads absent; disposable certificate/fixture directories removed",
+  "remaining": [
+    "approved bounded operator credential/TLS adapter",
+    "full restore executor/source/consumer/image/admission fences",
+    "fresh healthy two-RW and independently authenticated archive/whole-row equality",
+    "live release qualification"
+  ]
+}
