@@ -12,7 +12,8 @@ export type { ResourceType } from "@/lib/resource-capabilities";
 const YamlModal = dynamic(() => import("./yaml-modal"), { ssr: false });
 const LogModal = dynamic(() => import("./log-modal"), { ssr: false });
 type Resource = { metadata?: { namespace?: string; name?: string }; name?: string; namespace?: string;
-  spec?: { replicas?: number; paused?: boolean; unschedulable?: boolean }; desiredReplicas?: number; replicas?: number; paused?: boolean };
+  spec?: { replicas?: number; paused?: boolean; unschedulable?: boolean; containers?: { name?: string }[];
+    initContainers?: { name?: string }[]; ephemeralContainers?: { name?: string }[] }; desiredReplicas?: number; replicas?: number; paused?: boolean };
 export interface ResourceActionProps { resourceType: ResourceType; resource: Resource; onAction?: () => void; initialOpen?: boolean }
 interface Confirmation { title: string; message: string; label: string; name?: string; execute: () => Promise<void> }
 export default function ResourceActionsMenu({ resourceType, resource, onAction, initialOpen = false }: ResourceActionProps) {
@@ -27,7 +28,7 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [yaml, setYaml] = useState<{ value: string; edit: boolean }>();
-  const [logs, setLogs] = useState<string>();
+  const [logs, setLogs] = useState<{ containers: string[]; container: string; value?: string; error?: string }>();
   const [confirmation, setConfirmation] = useState<Confirmation>();
   const returnFocus = () => trigger.current?.focus();
   useEffect(() => () => { pending.current?.abort(); if (timer.current) clearTimeout(timer.current); }, []);
@@ -66,6 +67,32 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
     anchor.download = `${resourceType}-${namespace ? namespace + "-" : ""}${name}.yaml`;
     anchor.click(); URL.revokeObjectURL(url);
   });
+  const readLogs = async (container: string, containers: string[], signal: AbortSignal) => {
+    setLogs({ containers, container });
+    try {
+      const query = new URLSearchParams({ tail: "100", container });
+      const data = await requestJson<{ logs: string }>(base + "/logs?" + query, { signal });
+      if (!signal.aborted) setLogs({ containers, container, value: data.logs });
+    } catch (error) {
+      if (!signal.aborted) setLogs({ containers, container, error: error instanceof Error ? error.message : "Log request failed" });
+      throw error;
+    }
+  };
+  const showLogs = () => load(async signal => {
+    // List rows deliberately omit container details; use the existing redacted
+    // Pod metadata endpoint rather than letting kubectl choose a sidecar.
+    const pod = resource.spec?.containers ? resource : (await requestJson<{ pod: Resource }>(base, { signal })).pod;
+    if (signal.aborted) return;
+    const containers = [...new Set([...(pod.spec?.containers ?? []), ...(pod.spec?.initContainers ?? []), ...(pod.spec?.ephemeralContainers ?? [])]
+      .map(container => container.name).filter((name): name is string => typeof name === "string" && name.length > 0))];
+    setLogs({ containers, container: "" });
+    if (containers.length === 1) await readLogs(containers[0], containers, signal);
+  });
+  const selectLogContainer = (container: string) => {
+    if (!logs?.containers.includes(container)) return;
+    void load(signal => readLogs(container, logs.containers, signal));
+  };
+  const closeLogs = () => { pending.current?.abort(); pending.current = undefined; setLogs(undefined); setBusy(false); };
   const changed = () => { refetchCluster(); onAction?.(); };
   const mutate = async (url: string, method: string, body?: unknown) => {
     if (!session.canWrite) throw new Error("A current write role is required.");
@@ -90,10 +117,7 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
     { label: "View YAML", run: () => { void showYaml(false); } },
     { label: "Download YAML", run: () => { void download(); } },
   ] : [];
-  if (session.canWrite && capability.logs) items.unshift({ label: "View Logs", run: () => { void load(async signal => {
-    const data = await requestJson<{ logs: string }>(base + "/logs?tail=100", { signal });
-    if (!signal.aborted) setLogs(data.logs);
-  }); } });
+  if (session.canWrite && capability.logs) items.unshift({ label: "View Logs", run: () => { void showLogs(); } });
   if (session.canWrite) {
     if (capability.yamlEdit) items.push({ label: "Edit YAML", run: () => { void showYaml(true); } });
     if (resourceType === "pod" && session.data?.capabilities?.podExec) items.push({ label: "Execute Shell", run: () => { openShell("exec", namespace, name, trigger.current); } });
@@ -131,7 +155,9 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
     {session.canWrite && yaml && <YamlModal open onClose={() => setYaml(undefined)} yaml={yaml.value} title={`${capability.kind} YAML: ${namespace ? namespace + "/" : ""}${name}`}
       readOnly={!yaml.edit || !session.canWrite || !capability.yamlEdit} returnFocus={returnFocus}
       onSave={yaml.edit && session.canWrite && capability.yamlEdit ? async value => { await mutate(base + "/yaml", "PUT", { yaml: value }); notify("YAML replaced. Refreshing resource state."); } : undefined} />}
-    {session.canWrite && logs !== undefined && <LogModal open onClose={() => setLogs(undefined)} logs={logs} title={`Logs: ${namespace}/${name}`} returnFocus={returnFocus} />}
+    {session.canWrite && logs !== undefined && <LogModal open onClose={closeLogs} logs={logs.value} containers={logs.containers}
+      container={logs.container} onContainerChange={selectLogContainer} loading={busy} error={logs.error}
+      title={`Logs: ${namespace}/${name}`} returnFocus={returnFocus} />}
     {session.canWrite && confirmation && <ConfirmDialog open onClose={() => { if (!busy) setConfirmation(undefined); }} title={confirmation.title}
       message={confirmation.message} confirmLabel={confirmation.label} confirmName={confirmation.name} error={message} danger loading={busy} onConfirm={finishConfirmation} returnFocus={returnFocus} />}
   </>;
