@@ -233,6 +233,8 @@ The 2026-10-11 01:11:50 UTC [read-only refresh](../evidence/bortus-release-prefl
 
 The separate chart repository's prepared [guard contract](https://github.com/jtmb/branconet-charts/blob/a82a6cb9e244b0ec05489bc7251f3e29411c64dc/docs/BORTUS-ADMISSION-GUARD.md) is outside Flux composition and has an empty approved-image list. It cannot be installed as a finished release. Review its final diff against the qualified application source before publication. Use the existing main → successful current-main CI → validated → `branconet-charts` → `migration-releases` owner for every chart change.
 
+The current application entrypoint runs `prisma migrate deploy` before starting the server, independently of guarded adoption. Therefore the initial qualified-image rollout with adoption disabled already applies forward SQLite migrations; take the fresh consistent recovery checkpoint first and compare the resulting database before enabling adoption. Native KV ownership adoption is the later operation. The prepared guard document's step six currently places forward migration after the flag change; correct that sequence in the final chart handoff. A false adoption flag does not defer schema migration or make a pre-KV recovery image compatible with the new schema.
+
 | Gate | Required evidence before proceeding |
 |---|---|
 | Final coherent source | One immutable combined commit; full A01–A22 and KV acceptance ledger; exact tracked source/mode, schema, lock and all eleven forward-migration identities. Local tests and actual browser checks must cover the combined source. |
