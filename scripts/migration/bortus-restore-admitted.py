@@ -84,6 +84,7 @@ def validate(resource, proposal, reply, current, *, require_ready=False):
     """Proposal must already be authorized by MutationAPI; current must be a fresh GET."""
     value, failure = _validate(resource, proposal, reply, current, require_ready)
     if failure:
+        resource = proposal = reply = current = require_ready = None
         raise AdmittedRefused(failure)
     return value
 
@@ -110,5 +111,6 @@ def holder_absent(collection, owned):
     """Only complete fresh namespace LIST absence; no 404/reply/terminating shortcut."""
     value, failure = _absent(collection, owned)
     if failure:
+        collection = owned = None
         raise AdmittedRefused(failure)
     return value

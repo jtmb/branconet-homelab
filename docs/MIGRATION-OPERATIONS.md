@@ -24,6 +24,14 @@ claim binding names. Holder deletion needs a complete fresh Pod LIST with both
 owned UID and name absent; a terminating holder or replacement refuses. API
 freshness, reviewed proposal authorization and the actual executor remain required.
 
+Holder readiness requires exactly one current container state, `running`; conflicting
+waiting/terminated states refuse. The pure admitted-spec, absence and shared holder
+refusal boundaries clear public raw arguments before raising fixed errors. Callers
+must still avoid logging their own input-bearing traceback frames. Fresh source
+inspection validates the current writer node as a bounded DNS subdomain before
+returning `source_node_name` or comparing alternate placement; malformed non-string
+or path-like fields never enter the report. These local guards are not live proof.
+
 The initial proposal report now binds `source_node_name` from its freshly checked
 writer for the coordinator's alternate-node expectation. Repeated source checks
 remain required; the recorded name does not establish ongoing writer placement.

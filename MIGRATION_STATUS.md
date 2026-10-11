@@ -411,3 +411,13 @@ keeps live acceptance false. Native adversarial review found three malformed-inp
 issues in the shared holder-state, refusal-local privacy and source-node boundary;
 those corrections require their own qualification. Full coordination, qualified
 image/admission, fresh checkpoint and actual independent recovery remain open.
+
+The three reproduced malformed-input/privacy findings are corrected through
+immutable native handoff `53ae5da4`: exact running-only container state, bounded
+DNS writer node and cleared public refusal arguments. Root independently verifies
+ten blobs/modes and 98 retained artifacts, preserves the integrated reader, and
+merges three documentation paragraphs. All 443 combined local cases pass without
+skips on frozen inputs; the [guard integration receipt](evidence/bortus-restore-validation-guards-integration-20261011.json)
+records a zero-finding default scan of eleven selected inputs. This corrects the
+tracked local findings; callers still protect their own input-bearing tracebacks.
+No test contacts production or establishes actual recovery/admission.

@@ -150,6 +150,65 @@ class AdmittedTests(unittest.TestCase):
         spec['priority'] = False
         self.refuse(lambda: self.validate('pod'))
 
+    def test_ready_holder_requires_only_running_current_state(self):
+        for state in ({'running': {}, 'waiting': {}}, {'running': {}, 'terminated': {}},
+                      {'running': {}, 'unknown': {}}, {'running': None}, {}, []):
+            with self.subTest(state=state):
+                self.setUp()
+                self.current['pod']['status']['containerStatuses'][0]['state'] = state
+                self.refuse(lambda: self.validate('pod', True))
+        self.setUp()
+        self.current['pod']['status']['containerStatuses'][0]['state'] = {'running': {}}
+        self.validate('pod', True)
+
+    def assert_private_frames_cleared(self, action, exception):
+        try:
+            action()
+        except exception as error:
+            self.assertIsNone(error.__context__)
+            self.assertIsNone(error.__cause__)
+            traceback = error.__traceback__
+            selected = []
+            while traceback:
+                frame = traceback.tb_frame
+                if pathlib.Path(frame.f_code.co_filename).name in (
+                        'bortus-restore-admitted.py', 'bortus-restored-consumer-fence.py'):
+                    selected.append(frame.f_code.co_name)
+                    self.assertNotIn('PUBLIC_PRIVATE_SENTINEL', repr(frame.f_locals))
+                traceback = traceback.tb_next
+            self.assertTrue(selected)
+        else:
+            self.fail('Expected fixed refusal')
+
+    def test_admitted_refusal_clears_raw_public_arguments(self):
+        self.current['pod']['spec']['containers'][0]['env'] = [
+            {'name': 'fixture', 'value': 'PUBLIC_PRIVATE_SENTINEL'}]
+        self.p['pod']['metadata']['annotations'] = {'fixture': 'PUBLIC_PRIVATE_SENTINEL'}
+        self.reply['pod']['metadata']['annotations'] = {'fixture': 'PUBLIC_PRIVATE_SENTINEL'}
+        self.assert_private_frames_cleared(lambda: self.validate('pod'), m.AdmittedRefused)
+
+    def test_absence_refusal_clears_collection_and_owned_arguments(self):
+        owned = {k: self.current['pod']['metadata'][k] for k in ('name', 'namespace', 'uid', 'resourceVersion')}
+        owned['resourceVersion'] = 'PUBLIC_PRIVATE_SENTINEL'
+        collection = fixtures.inventory('Pod', [self.current['pod']])
+        collection['metadata']['annotations'] = {'fixture': 'PUBLIC_PRIVATE_SENTINEL'}
+        self.assert_private_frames_cleared(lambda: m.holder_absent(collection, owned), m.AdmittedRefused)
+
+    def test_shared_holder_refusal_clears_raw_public_arguments(self):
+        pod = self.current['pod']
+        pod['spec']['containers'][0]['env'] = [{'name': 'fixture', 'value': 'PUBLIC_PRIVATE_SENTINEL'}]
+        self.assert_private_frames_cleared(lambda: m.health.holder_matches(
+            pod, self.e['holder_image'], NAME, 'node'), m.health.Refused)
+
+    def test_malformed_scope_and_readiness_arguments_are_also_cleared(self):
+        marker = {'fixture': 'PUBLIC_PRIVATE_SENTINEL'}
+        self.assert_private_frames_cleared(lambda: m.validate(marker, self.p['pod'],
+            self.reply['pod'], self.current['pod']), m.AdmittedRefused)
+        self.assert_private_frames_cleared(lambda: m.validate('pod', self.p['pod'],
+            self.reply['pod'], self.current['pod'], require_ready=marker), m.AdmittedRefused)
+        self.assert_private_frames_cleared(lambda: m.health.holder_matches(self.current['pod'],
+            self.e['holder_image'], NAME, 'node', require_ready=marker), m.health.Refused)
+
     def test_malformed_custom_inputs_and_unknown_scope(self):
         for obj in (None, [], 'PRIVATE', {'metadata': []}):
             self.refuse(lambda: m.validate('pod', self.p['pod'], self.reply['pod'], obj))

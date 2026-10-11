@@ -103,6 +103,21 @@ class RestorePreflightTests(unittest.TestCase):
             self.assertFalse(report[flag])
         self.assertEqual(report['database_or_secret_reads'], 0)
 
+    def test_source_node_is_bounded_dns_name_before_report_or_placement(self):
+        for invalid in (True, 1, {'fixture': 'PUBLIC_PRIVATE_SENTINEL'}, [], '../invalid-node',
+                        'Uppercase', 'a' * 64, 'a.' * 127 + 'a', 'node..example', '-node', 'node-'):
+            with self.subTest(value=invalid):
+                client, record = prepared()
+                client.objects[4]['items'][0]['spec']['nodeName'] = invalid
+                with self.assertRaises(RuntimeError) as caught:
+                    module.prepare(client, record, IMAGE, 'other-node')
+                self.assertEqual(str(caught.exception), 'Writer placement is incomplete')
+                self.assertEqual(client.calls, [])
+        client, record = prepared()
+        client.objects[4]['items'][0]['spec']['nodeName'] = 'source-node.example'
+        self.assertEqual(module.prepare(client, record, IMAGE, 'other-node')['source_node_name'],
+                         'source-node.example')
+
     def test_incomplete_ambiguous_or_wrong_checkpoint_refused(self):
         for field in ('cold_snapshot_ready', 'encrypted_nas_backup_complete', 'writer_resumed_ready',
                       'reconcile_flags_restored', 'owned_holder_removed', 'sqlite_archive_state',

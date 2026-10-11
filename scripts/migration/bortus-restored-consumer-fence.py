@@ -234,6 +234,7 @@ def holder_matches(pod, image, claim, node, require_ready=True):
     except Exception:
         failure = 'holder'
     if failure:
+        pod = image = claim = node = require_ready = None
         raise Refused(failure)
     return value
 
@@ -267,7 +268,8 @@ def _holder_matches(pod, image, claim, node, require_ready):
     need(status.get('phase') == 'Running' and ready(status), 'holder')
     cs = status.get('containerStatuses')
     need(type(cs) is list and len(cs) == 1 and cs[0].get('name') == 'holder' and
-         cs[0].get('ready') is True and type(cs[0].get('state', {}).get('running')) is dict and
+         cs[0].get('ready') is True and type(cs[0].get('state')) is dict and
+         set(cs[0]['state']) == {'running'} and type(cs[0]['state']['running']) is dict and
          cs[0].get('image') == image and type(cs[0].get('restartCount')) is int and
          cs[0]['restartCount'] == 0, 'holder')
     return identity(pod, 'bortus')

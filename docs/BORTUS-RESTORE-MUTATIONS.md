@@ -49,6 +49,8 @@ is required. The Filesystem default follows the pinned
 namespace inventory after DELETE. A still-present or terminating UID, a same-name
 replacement, incomplete list or reused UID refuses. Its selected collection RV
 can accompany a durable deletion confirmation; acknowledgment alone cannot.
+Both public admitted-spec and absence refusal boundaries clear raw inputs before
+raising fixed errors; caller-owned traceback frames remain the caller's responsibility.
 
 The admitted-resource evaluator and shared holder extraction pass 408 combined
 local cases on frozen inputs, including ten table-driven spec/absence cases and

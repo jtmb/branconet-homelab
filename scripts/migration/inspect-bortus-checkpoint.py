@@ -121,7 +121,11 @@ def evaluate(objects, expected_claim_uid, holder_image=None):
             any(c.get('type') == 'Ready' and c.get('status') == 'True'
                 for c in writer['status'].get('conditions', [])), 'Writer is not Ready')
     writer_id = identity(writer)
-    require(writer_id['namespace'] == APP and writer.get('spec', {}).get('nodeName'),
+    node_name = writer.get('spec', {}).get('nodeName')
+    require(writer_id['namespace'] == APP and type(node_name) is str and
+            0 < len(node_name) <= 253 and all(len(label) <= 63 and
+                re.fullmatch(r'[a-z0-9](?:[a-z0-9-]*[a-z0-9])?', label)
+                for label in node_name.split('.')),
             'Writer placement is incomplete')
     owners = [o for o in writer.get('metadata', {}).get('ownerReferences', []) if o.get('controller') is True]
     require(len(owners) == 1 and owners[0].get('kind') == 'ReplicaSet' and

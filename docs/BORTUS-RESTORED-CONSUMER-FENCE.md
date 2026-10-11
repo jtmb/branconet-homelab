@@ -45,7 +45,11 @@ environment or arguments, one read-only claim mount, nonroot runtime defaults,
 read-only root filesystem, no capabilities or privilege escalation and bounded
 resources. Only explicit benign API defaults are accepted; extra init/sidecar
 containers, projected credentials, mounts or writable changes refuse. Actual
-container status must be running/ready with no restarts. This metadata comparison
+container status must be running/ready with no restarts, and its current state
+must contain exactly the `running` member. Contradictory waiting/terminated states
+refuse. The shared holder predicate clears raw public arguments before raising
+a fixed refusal; this prevents those arguments remaining in its traceback locals.
+This metadata comparison
 does not prove entrypoint/runtime behavior or admission acceptance.
 
 The same pure `holder_matches(pod, image, claim, node, require_ready=True)`
