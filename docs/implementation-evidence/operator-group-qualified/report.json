@@ -1,0 +1,207 @@
+{
+  "scope": "A05 enabled production host-shell four exit1 streams, success, actual30s process trees/TERM-ignore/2MiB overflow, unavailable and auth/runtime controls",
+  "node": "v22.23.3",
+  "startedUtc": "2026-10-11T15:27:05.044Z",
+  "pid": 1,
+  "checks": [
+    "fresh-effective-admin-enabled-shell",
+    "exit1-stdout",
+    "exit1-stderr",
+    "exit1-both",
+    "exit1-neither",
+    "success-stdout",
+    "output-bound-2MiB",
+    "timeout",
+    "ignore-term",
+    "overflow-ignore-term",
+    "fresh-engine-admin-withdrawal",
+    "missing-bash",
+    "runtime-disabled"
+  ],
+  "performanceAcceptance": false,
+  "childExits": [
+    [
+      0,
+      null
+    ],
+    [
+      0,
+      null
+    ]
+  ],
+  "ownedServerPid": 52,
+  "outcomes": [
+    {
+      "id": "exit1-stdout",
+      "status": 502,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "exit1-stderr",
+      "status": 502,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "exit1-both",
+      "status": 502,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "exit1-neither",
+      "status": 502,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "success-stdout",
+      "status": 200,
+      "hasOutput": true,
+      "hasError": false,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "output-bound-2MiB",
+      "status": 502,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "timeout",
+      "status": 504,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "ignore-term",
+      "status": 504,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "overflow-ignore-term",
+      "status": 502,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "fresh-engine-admin-withdrawal",
+      "status": 403,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "missing-bash",
+      "status": 503,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "runtime-disabled",
+      "status": 501,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    }
+  ],
+  "processTrees": [
+    {
+      "mode": "timeout",
+      "before": {
+        "pid": 75,
+        "state": "S",
+        "ppid": 74,
+        "group": 74,
+        "startTicks": "23155494",
+        "readError": null
+      },
+      "after": {
+        "pid": 75,
+        "state": "Z",
+        "ppid": 1,
+        "group": 74,
+        "startTicks": "23155494",
+        "readError": null
+      },
+      "leader": {
+        "pid": 74,
+        "state": null,
+        "readError": "ENOENT"
+      },
+      "wallMs": 30272.60433
+    },
+    {
+      "mode": "ignore-term",
+      "before": {
+        "pid": 77,
+        "state": "S",
+        "ppid": 76,
+        "group": 76,
+        "startTicks": "23158522",
+        "readError": null
+      },
+      "after": {
+        "pid": 77,
+        "state": "Z",
+        "ppid": 1,
+        "group": 76,
+        "startTicks": "23158522",
+        "readError": null
+      },
+      "leader": {
+        "pid": 76,
+        "state": null,
+        "readError": "ENOENT"
+      },
+      "wallMs": 30282.156048999997
+    },
+    {
+      "mode": "overflow-ignore-term",
+      "before": {
+        "pid": 79,
+        "state": "S",
+        "ppid": 78,
+        "group": 78,
+        "startTicks": "23161550",
+        "readError": null
+      },
+      "after": {
+        "pid": 79,
+        "state": "Z",
+        "ppid": 1,
+        "group": 78,
+        "startTicks": "23161550",
+        "readError": null
+      },
+      "leader": {
+        "pid": 78,
+        "state": null,
+        "readError": "ENOENT"
+      },
+      "wallMs": 475.84152699999686
+    }
+  ],
+  "ownedServerPids": [
+    81,
+    97
+  ],
+  "childExit": [
+    0,
+    null
+  ],
+  "fixtureRemoved": true,
+  "completedUtc": "2026-10-11T15:28:12.048Z",
+  "harnessSHA256": "3b1127f40055fcabf6a5fd008b58e104e40c4bfde56d2712ff5aefc65d1a7329"
+}
