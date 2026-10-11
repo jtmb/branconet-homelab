@@ -70,7 +70,7 @@ export interface SessionData {
 }
 export function useSession() {
   const query = useQuery<SessionData>("/api/auth/session");
-  const freshWriter = query.data?.authenticated === true && query.data.role === "write" && !query.error && Date.now() - query.updatedAt < 15000;
+  const freshWriter = query.data?.authenticated === true && query.data.role === "write" && !query.error && !query.stale && Date.now() - query.updatedAt < 15000;
   return { ...query, canWrite: freshWriter && query.data?.engineAdmin === true, canKvWrite: freshWriter };
 }
 export function refetchCluster() { browserQueries.invalidate(url => url.startsWith("/api/cluster/") || url.startsWith("/api/flux/")); }

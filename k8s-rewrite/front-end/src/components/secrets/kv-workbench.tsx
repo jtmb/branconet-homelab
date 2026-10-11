@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Modal } from "../ui/modal";
-import { useSession } from "../../lib/use-query";
+import { useQuery, useSession } from "../../lib/use-query";
 import {
   ValueFence, WorkbenchFailure, captureRevision, convertEncoding, draftChange, draftsFor, parseTransfer, replacementDrafts, workbenchRequest,
   type EncodedField, type FieldDraft, type ImportOutcome, type ImportPreview, type ImportResult, type KvCapabilities,
@@ -13,7 +13,7 @@ export type { KvCapabilities, KvSelectedPath } from "./kv-workbench-model";
 export interface KvWorkbenchProps {
   /** Explicit registered mapping, never an inferred native target. */
   path: KvSelectedPath;
-  /** Seed from the fresh capability endpoint; the workbench also refreshes it every ten seconds. */
+  /** Fresh parent capability ceiling; the workbench shares that endpoint's query lifecycle. */
   capabilities: KvCapabilities | null;
   onClose: () => void;
   /** Metadata invalidation only. No values are passed to the parent. */
@@ -37,8 +37,13 @@ export default KvWorkbench;
 
 function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus }: KvWorkbenchProps) {
   const session = useSession();
-  const [caps, setCaps] = useState<KvCapabilities | null>(null);
-  const [capsAt, setCapsAt] = useState(0), [now, setNow] = useState(Date.now());
+  const capabilityQuery = useQuery<KvCapabilities>(`/api/kv/paths/${encodeURIComponent(path.id)}/capabilities`);
+  const { refetch: refetchCapabilities } = capabilityQuery;
+  const { refetch: refetchSession } = session;
+  const [blockedAt, setBlockedAt] = useState<number>();
+  const capabilityStamp = useRef(capabilityQuery.updatedAt); capabilityStamp.current = capabilityQuery.updatedAt;
+  const caps = capabilities?.pathId === path.id && !capabilityQuery.error && !capabilityQuery.stale && (blockedAt === undefined || capabilityQuery.updatedAt > blockedAt)
+    ? capabilityQuery.data ?? null : null;
   const [status, setStatus] = useState<KvStatus>();
   const [nativeAbsent, setNativeAbsent] = useState(false);
   const [history, setHistory] = useState<History>(), [historyPage, setHistoryPage] = useState(0);
@@ -56,7 +61,7 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
   const fence = useRef(new ValueFence()), mounted = useRef(false), running = useRef(false);
   const nativeEpoch = useRef(0);
   const heading = useRef<HTMLHeadingElement>(null), refreshButton = useRef<HTMLButtonElement>(null);
-  const capabilityFresh = !!caps && now - capsAt < 15000 && caps.pathId === path.id && caps.revision === path.revision;
+  const capabilityFresh = !!caps && Date.now() - capabilityQuery.updatedAt < 15000 && caps.pathId === path.id && caps.revision === path.revision;
   const access = `${session.data?.username ?? ""}:${session.canKvWrite}:${capabilityFresh}:${JSON.stringify(caps?.permissions)}:${caps?.initializationAllowed}:${caps?.nativeMutationEnabled}`;
   const accessRef = useRef(access);
   if (accessRef.current !== access) { fence.current.invalidate(); accessRef.current = access; }
@@ -68,28 +73,15 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
   }, []);
   useEffect(() => {
     mounted.current = true; const currentFence = fence.current;
-    const ended = () => { clearSensitive(); setCaps(null); };
+    const ended = () => { clearSensitive(); setBlockedAt(capabilityStamp.current); };
+    const hidden = () => { if (document.visibilityState === "hidden") clearSensitive(); };
     window.addEventListener("bortus-session-ended", ended);
-    return () => { mounted.current = false; currentFence.invalidate(); window.removeEventListener("bortus-session-ended", ended); };
+    window.addEventListener("pagehide", clearSensitive);
+    document.addEventListener("visibilitychange", hidden);
+    return () => { mounted.current = false; currentFence.invalidate(); window.removeEventListener("bortus-session-ended", ended); window.removeEventListener("pagehide", clearSensitive); document.removeEventListener("visibilitychange", hidden); };
   }, [clearSensitive]);
   useEffect(() => { clearSensitive(); }, [access, clearSensitive]);
-  // Parent updates can remove access immediately, but never upgrade an open action's revision.
-  useEffect(() => { setCaps(capabilities?.pathId === path.id ? capabilities : null); setCapsAt(Date.now()); }, [capabilities, path.id]);
-  useEffect(() => {
-    let active = true, timer: ReturnType<typeof setTimeout> | undefined;
-    let controller: AbortController | undefined;
-    const load = async () => {
-      controller = new AbortController(); const timeout = setTimeout(() => controller?.abort(), 8000);
-      try {
-        const result = await workbenchRequest<KvCapabilities>(`/api/kv/paths/${encodeURIComponent(path.id)}/capabilities`, { signal: controller.signal });
-        if (active) { setCaps(result); setCapsAt(Date.now()); setNow(Date.now()); }
-      } catch { if (active) { setCaps(null); setCapsAt(0); } }
-      finally { clearTimeout(timeout); if (active) timer = setTimeout(load, 10000); }
-    };
-    void load();
-    const clock = setInterval(() => setNow(Date.now()), 1000);
-    return () => { active = false; controller?.abort(); clearTimeout(timer); clearInterval(clock); };
-  }, [path.id, path.revision]);
+  // Shared timestamps gate access; an unchanged successful read never changes a frozen action capture.
   const request = useCallback(async <T,>(url: string, init: RequestInit, success: (result: T) => void) => {
     if (running.current) return;
     running.current = true; setBusy(true); setMessage("");
@@ -109,7 +101,7 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
       if (!mounted.current || !ticket.current()) return;
       if (error instanceof WorkbenchFailure) {
         if (url === `/api/kv/paths/${encodeURIComponent(path.id)}/status`) { setStatus(undefined); setNativeAbsent(error.status === 404); }
-        if (error.status === 401 || error.status === 403) { clearSensitive(); setCaps(null); }
+        if (error.status === 401 || error.status === 403) { clearSensitive(); setBlockedAt(capabilityStamp.current); refetchCapabilities(); refetchSession(); }
         else if (init.method && init.method !== "GET") { clearSensitive(); setStatus(undefined); refreshParent.current(); }
         setMessage(error.message);
         if (error.operationId) setOperation({ id: error.operationId, outcome: error.outcome });
@@ -118,7 +110,7 @@ function Workbench({ path, capabilities, onClose, onMetadataRefresh, returnFocus
       clearTimeout(timeout); ticket.finish(); running.current = false;
       if (mounted.current) setBusy(false);
     }
-  }, [clearSensitive, path.id]);
+  }, [clearSensitive, path.id, refetchCapabilities, refetchSession]);
   const endpoint = `/api/kv/paths/${encodeURIComponent(path.id)}`;
   const refresh = useCallback(() => {
     if (running.current) return;

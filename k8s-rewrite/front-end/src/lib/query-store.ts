@@ -1,6 +1,6 @@
 export interface QuerySnapshot<T = unknown> {
   data?: T; error?: string; status?: number;
-  loading: boolean; refreshing: boolean; updatedAt: number;
+  loading: boolean; refreshing: boolean; updatedAt: number; stale?: boolean;
 }
 export const EMPTY_QUERY: QuerySnapshot = Object.freeze({ loading: true, refreshing: false, updatedAt: 0 });
 export class QueryFailure extends Error {
@@ -66,6 +66,29 @@ export class QueryStore {
       if (this.now() - e.usedAt > 300000 || i < inactive.length - 32) this.entries.delete(url);
     });
   }
+  private expire(entry: Entry) {
+    if (entry.snapshot.data !== undefined && !entry.snapshot.stale && this.now() - entry.snapshot.updatedAt >= 15000)
+      this.publish(entry, { stale: true });
+  }
+  /** A single timer alternates freshness notification and polling, including slow in-flight loads. */
+  private watchPendingFreshness(entry: Entry) {
+    this.expire(entry);
+    if (entry.snapshot.data === undefined || entry.snapshot.stale) return;
+    entry.timer = this.schedule(() => { entry.timer = undefined; this.expire(entry); }, Math.max(1, entry.snapshot.updatedAt + 15000 - this.now()));
+  }
+  private scheduleNext(url: string, entry: Entry, refreshAt: number) {
+    if (entry.timer) this.cancel(entry.timer);
+    entry.timer = undefined;
+    this.expire(entry);
+    const untilRefresh = Math.max(1, refreshAt - this.now());
+    const untilExpiry = entry.snapshot.data !== undefined && !entry.snapshot.stale
+      ? Math.max(1, entry.snapshot.updatedAt + 15000 - this.now()) : Infinity;
+    entry.timer = this.schedule(() => {
+      entry.timer = undefined;
+      if (this.now() >= refreshAt) void this.run(url, entry);
+      else { this.expire(entry); this.scheduleNext(url, entry, refreshAt); }
+    }, Math.min(untilRefresh, untilExpiry));
+  }
   private async run(url: string, entry: Entry) {
     if (!this.visible || !entry.listeners.size || entry.controller) return;
     if (entry.timer) this.cancel(entry.timer);
@@ -73,12 +96,13 @@ export class QueryStore {
     const controller = new AbortController();
     const generation = entry.generation;
     entry.controller = controller;
+    this.watchPendingFreshness(entry);
     this.publish(entry, { loading: entry.snapshot.data === undefined, refreshing: true });
     try {
       const data = await this.runtime.load(url, controller.signal);
       if (generation !== entry.generation || controller.signal.aborted) return;
       entry.failures = 0;
-      this.publish(entry, { data, error: undefined, status: 200, updatedAt: this.now(), loading: false, refreshing: false });
+      this.publish(entry, { data, error: undefined, status: 200, updatedAt: this.now(), loading: false, refreshing: false, stale: false });
     } catch (error) {
       if (generation !== entry.generation || controller.signal.aborted) return;
       entry.failures++;
@@ -92,7 +116,7 @@ export class QueryStore {
         entry.controller = undefined;
         if (this.visible && entry.listeners.size) {
           const delay = Math.min(60000, entry.interval * 2 ** Math.min(entry.failures, 3));
-          entry.timer = this.schedule(() => { entry.timer = undefined; void this.run(url, entry); }, delay);
+          this.scheduleNext(url, entry, this.now() + delay);
         }
       }
     }

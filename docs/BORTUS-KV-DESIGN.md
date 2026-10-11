@@ -1,5 +1,7 @@
 # Native BORTUS KV engine implementation contract
 
+Client capability freshness follow-up shares the selected-path parent's metadata GET and adds central expiry notifications for slow refreshes/backoff. It clears private state on page hiding and retains exact native action captures. No native format/schema, server permission or value-cache change occurs. Corrected Node22 source passed 144 units, lint/build/typecheck and four HTTP suites; actual-route browser freshness checks remain pending in the [execution handoff](implementation-evidence/shared-freshness-handoff.json). Full KV/Flux lifecycle and final image/live gates remain open.
+
 Combined workbench integration passed the recorded Node22/browser subset: the metadata path panel opens the lazy dialog explicitly, with the selected mapping and fresh path/revision capabilities. Private values remain inside the workbench; callbacks invalidate metadata only. All native request captures include pathRevision/head/resourceVersion. Local standalone Node24 proof does not replace combined Node22/backend acceptance.
 
 Client unknown status is distinct from unadopted or absent. Only a known native source enables adoption; initial absent/head-zero capture requires an actual not-found response. Unknown post-mutation/unavailable state pauses new actions until refresh. Prior operation metadata is cleared when a new native attempt starts. These corrections passed production-route TLS-verified loopback browser checks; wider transfer/lifecycle and image/live acceptance remains open.
