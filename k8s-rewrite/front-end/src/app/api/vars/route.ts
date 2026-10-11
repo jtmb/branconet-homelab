@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import { requireOperator, getCurrentRole } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
+import { getSessionAccount } from "@/lib/auth";
 import { isSensitiveVariable } from "@/lib/variable-policy";
 import { resolveAlias } from "@/lib/secret-references";
 import { nativeSecrets } from "@/lib/secret-client";
@@ -9,7 +10,8 @@ import { secretResponse, secretErrorResponse } from "@/lib/secret-http";
 export const dynamic = "force-dynamic";
 export async function GET() {
   try {
-    if (!(await getCurrentRole()))
+    const account = await getSessionAccount();
+    if (!account || !["readonly", "write"].includes(account.role))
       throw new SecretError(401, "Authentication required");
     const vars = await prisma.variable.findMany({
       orderBy: { category: "asc" },

@@ -176,3 +176,5 @@ The ONE public-only lexical metadata boundary/depth prototype on exactc29fc matc
 
 
 [ONE bounded off-thread mechanism diagnostic](offthread-parser-diagnostic/qualification.json) retains exact c29fc source/compiled VM, one owned Node22 run,120 differential cases/95 refusals, seven ownership/deadline controls and56 untrimmed timing observations. All4-slot/byte/item/output equivalence checks passed and owned Node/workers exited0, but startup and200/1k/long-metadata wall results reject the worker mechanism. No production edit/retry/pair or endpoint/image/live acceptance is inferred.
+
+Handler account snapshot scope: [qualification and retained originals](handler-account-snapshot/qualification.json) cover only vars/aliases/session GET fresh handler queries,13 actual Next/SQLite tests, types and zero-warning lint. Original audit LF/CRLF and parser mixed-EOL proofs plus a corrected historical prose scanner word count are retained; original scans/clauses stay unchanged. Build/production HTTP/full source/image/live and A07/A21 remain open.

@@ -34,6 +34,9 @@ test("fresh native handler account snapshots retain independent middleware and r
     const { workAsyncStorage } = await import("next/dist/server/app-render/work-async-storage.external");
     const { createWorkStore } = await import("next/dist/server/async-storage/work-store");
     const { cookies } = await import("next/headers");
+    const { GET: variables } = await import("../src/app/api/vars/route");
+    const { GET: aliases } = await import("../src/app/api/secret-references/route");
+    const { GET: session } = await import("../src/app/api/auth/session/route");
     let queries = 0, outage = false, nativeCalls = 0;
     const find = singleton.user.findUnique.bind(singleton.user);
     restoreFind = () => { singleton.user.findUnique = find; };
@@ -134,6 +137,52 @@ test("fresh native handler account snapshots retain independent middleware and r
         assert.equal(response.headers.get("Cache-Control"), "no-store, private");
         assert.deepEqual(await response.json(), { error: "Kubernetes Secrets unavailable; no database fallback is permitted" });
         assert.equal(nativeCalls, before);
+      } finally { outage = false; }
+    });
+    await t.test("vars aliases and session each read one fresh minimal handler account", async () => {
+      const user = await create("handler_snapshot"), cookie = await token(user.id, "untrusted-token-name");
+      for (const operation of [variables, () => aliases(new Request("http://localhost/api/secret-references")), session]) {
+        const before = queries;
+        const response = await context(cookie, operation);
+        assert.equal(response.status, 200); assert.equal(queries - before, 1);
+      }
+      await writer.user.update({ where: { id: user.id }, data: { role: "readonly", engineAdmin: false, username: "handler_renamed" } });
+      const before = queries;
+      const response = await context(cookie, session);
+      const body = await response.json();
+      assert.equal(body.authenticated, true); assert.equal(body.role, "readonly");
+      assert.equal(body.engineAdmin, false); assert.equal(body.username, "handler_renamed");
+      assert.equal(queries - before, 1); assert.equal("passwordHash" in body, false);
+      assert.equal((await context(cookie, variables)).status, 200);
+      assert.equal((await context(cookie, () => aliases(new Request("http://localhost/api/secret-references")))).status, 200);
+    });
+    await t.test("middleware admission cannot survive handler deletion or session-version reset", async () => {
+      for (const change of ["delete", "reset"] as const) {
+        const user = await create("handler_revoked_" + change), cookie = await token(user.id, user.username);
+        assert.equal((await middleware(new NextRequest("http://localhost/api/vars", { headers: { cookie } }))).headers.get("x-middleware-next"), "1");
+        if (change === "delete") await writer.user.delete({ where: { id: user.id } });
+        else await writer.user.update({ where: { id: user.id }, data: { sessionVersion: 1 } });
+        for (const operation of [variables, () => aliases(new Request("http://localhost/api/secret-references"))]) {
+          const before = queries; assert.equal((await context(cookie, operation)).status, 401); assert.equal(queries - before, 1);
+        }
+        const before = queries, response = await context(cookie, session);
+        assert.equal(response.status, 200); assert.equal((await response.json()).authenticated, false); assert.equal(queries - before, 1);
+      }
+    });
+    await t.test("handler snapshots are not shared across requests or database outages", async () => {
+      const user = await create("handler_outage"), cookie = await token(user.id, user.username);
+      const before = queries;
+      assert.equal((await context(cookie, session)).status, 200);
+      await writer.user.update({ where: { id: user.id }, data: { sessionVersion: 1 } });
+      assert.equal((await (await context(cookie, session)).json()).authenticated, false);
+      assert.equal(queries - before, 2);
+      outage = true;
+      try {
+        assert.equal((await context(cookie, variables)).status, 503);
+        assert.equal((await context(cookie, () => aliases(new Request("http://localhost/api/secret-references")))).status, 503);
+        const response = await context(cookie, session);
+        assert.equal(response.status, 500);
+        assert.deepEqual(await response.json(), { authenticated: false, error: "Internal server error" });
       } finally { outage = false; }
     });
   } finally {

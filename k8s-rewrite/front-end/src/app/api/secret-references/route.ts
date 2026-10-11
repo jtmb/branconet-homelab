@@ -1,4 +1,5 @@
-import { getCurrentRole, requireOperator } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
+import { getSessionAccount } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { SecretError } from "@/lib/cluster-secrets";
 import { invalidateAliases, listAliases } from "@/lib/secret-references";
@@ -14,7 +15,8 @@ const aliasBody = z.object({ alias: z.string().max(253), namespace: z.string().m
 export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   try {
-    if (!(await getCurrentRole()))
+    const account = await getSessionAccount();
+    if (!account || !["readonly", "write"].includes(account.role))
       throw new SecretError(401, "Authentication required");
     const params = new URL(request.url).searchParams, cursor = params.get("cursor"), namespace = params.get("namespace");
     if ([...params.keys()].some(key => !["cursor", "namespace"].includes(key) || params.getAll(key).length !== 1) ||
