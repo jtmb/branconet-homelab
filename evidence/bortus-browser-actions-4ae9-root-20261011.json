@@ -1,0 +1,65 @@
+{
+  "reviewedAtUTC": "2026-10-11T18:48:08.587407+00:00",
+  "sourceCommit": "4ae9f5c28dcf64ebda019bc40f7b27b3524e61db",
+  "manifests": [
+    {
+      "name": "universal-4ae9-originals",
+      "sha256": "2f973951736d272bf0378c6c3234141bd499a46a56ff0c342dea17ad47a4c966",
+      "originals": 99
+    },
+    {
+      "name": "4ae9-originals-v2",
+      "sha256": "0848d50176a6856dd1aaed81c9fa42f853fa5d109f29ee331f73dd121ce5a81d",
+      "originals": 264
+    }
+  ],
+  "universal": {
+    "groups": [
+      7,
+      8,
+      5,
+      3,
+      4
+    ],
+    "actions": 27,
+    "controlLabels": 513,
+    "failureOutcomes": 270,
+    "actualExit": 0,
+    "recordSha256": "eedc8b60ea5924cc8d67fedbae5163ada94b7a47285dde8c89a7dda2e9e4a257",
+    "freshClosure": {
+      "sourceFiles": 344,
+      "compiledFiles": 4262,
+      "knownPidsAbsent": true,
+      "allOwnedContainerNamesAbsent": true
+    }
+  },
+  "browser": {
+    "completedChecks": 10,
+    "composition": "7+1+2 across retained runs; first two terminal1 after completed assertions",
+    "runs": [
+      {
+        "owner": "lifecycle-4ae9-20261011-142042-fa5288",
+        "completedChecks": 7,
+        "actualExit": 1,
+        "recordSha256": "baab789d155ab10e9d1e424bdd07768e3d3360a90c6970003c593fde03c0039e"
+      },
+      {
+        "owner": "lifecycle-complement-4ae9-20261011-142331-870ec2",
+        "completedChecks": 1,
+        "actualExit": 1,
+        "recordSha256": "8ce2ac766cf61f0ccfe9e511b5256207dbea49f3912c9e086181d0a8a28292c5"
+      },
+      {
+        "owner": "lifecycle-complement4-4ae9-20261011-143005-55fa38",
+        "completedChecks": 2,
+        "actualExit": 0,
+        "recordSha256": "f1bc22b6283b117b030c24b461c941f7df8adbbb43a78d623041ad8a3b031c6b"
+      }
+    ],
+    "requestCountingAccepted": false
+  },
+  "liveAccepted": false,
+  "performanceAccepted": false,
+  "privateRootReceiptSha256": "fec40b2c878e210e8b9aa7fa4255d6679f399bc9f06349ca6046b2e13298bd6f",
+  "reviewScope": "Independent original hashes, completed browser assertions, compiled route records and fresh existing WSL source/process/container closure. Controlled public fixtures, not production cluster API acceptance."
+}
