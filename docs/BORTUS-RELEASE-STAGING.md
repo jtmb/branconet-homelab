@@ -176,3 +176,25 @@ All failed setup, transient-detach and controller-default-label attempts remain
 recorded. A fresh read-only source preflight validates this closed checkpoint and
 an absent masternode restore target. Complete SQLite row equality, independent
 restoration, active admission and the final application release remain pending.
+
+## Exact c29fc application image qualification
+
+The [c29fc image receipt](../evidence/bortus-app-source-image-c29fc-20261011.json)
+records the single source-bound build (12:06:21 UTC) and export (12:10:33 UTC)
+on 2026-10-11. Its 265 production entries match independently verified raw Git
+sources and the tested build context. The Docker config ID is
+`sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c`;
+this is not a qualified OCI manifest or runtime digest. The archive's ordered
+layers/config/labels match the completed receipt. Exact child owners are closed.
+
+A fresh pinned Trivy 0.75.0 default image and image-config scan completed at
+12:11:00 UTC with exit 1: zero Secret findings, 346 vulnerability entries
+(125 Low, 142 Medium, 67 High, 11 Unknown, one Critical). Nineteen fixable entries
+are in bundled kubectl, including four High. The Critical zlib finding has
+scanner status `will_not_fix`; no suppression or application reachability
+acceptance follows from that status. The earlier inert-holder assessment cannot
+qualify the application image. Current runtime/schema fixtures, kubectl
+remediation/security review, A07/A21 performance, three-node delivery, active
+guards, independent complete-row recovery and final live acceptance stay open.
+This qualification dispatched no application rollout, cluster mutation or
+production data read; the original writer and data remain preserved.
