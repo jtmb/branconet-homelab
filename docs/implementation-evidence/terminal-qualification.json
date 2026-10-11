@@ -1,0 +1,399 @@
+{
+  "capturedAt": "2026-10-11T05:58:55.085121+00:00",
+  "base": "f0c0a2a27d82cc6958422d719f77cdecf18a50ff",
+  "scope": "Local terminal UI source; no backend/native mutation or finalimage claim",
+  "build": {
+    "source": "f0c0a2a plus terminal viewport/keyboard/private lifecycle draft; build/lint/types only",
+    "startedAt": "2026-10-11T05:54:02.0492840Z",
+    "pid": 18236,
+    "checks": [
+      {
+        "command": "npm run build",
+        "exitCode": 0,
+        "completedAt": "2026-10-11T05:55:03.4295525Z"
+      },
+      {
+        "command": "npm run lint",
+        "exitCode": 0,
+        "completedAt": "2026-10-11T05:55:09.5321366Z"
+      },
+      {
+        "command": "npm run typecheck",
+        "exitCode": 0,
+        "completedAt": "2026-10-11T05:55:12.5970271Z"
+      }
+    ],
+    "terminal": true,
+    "exitCode": 0,
+    "completedAt": "2026-10-11T05:55:12.6010273Z"
+  },
+  "browserChecks": 11,
+  "samples": 6,
+  "summary": {
+    "cold": {
+      "samples": 3,
+      "lcpMedianMs": 592,
+      "clickFrameMedianMs": 850.3000000119209,
+      "initialWireBytes": [
+        161611,
+        161611,
+        161611
+      ],
+      "optionalWireBytes": [
+        70802,
+        70802,
+        70802
+      ],
+      "initialScriptMedianMs": 288.474,
+      "terminalScriptMedianMs": 111.41699999999999
+    },
+    "warm": {
+      "samples": 3,
+      "lcpMedianMs": 304,
+      "clickFrameMedianMs": 585.5,
+      "initialWireBytes": [
+        0,
+        0,
+        0
+      ],
+      "optionalWireBytes": [
+        0,
+        0,
+        0
+      ],
+      "initialScriptMedianMs": 167.259,
+      "terminalScriptMedianMs": 108.38599999999998
+    }
+  },
+  "sourceBindings": [
+    {
+      "path": "src/components/cluster/shell-container.tsx",
+      "sha256": "66983beb3da044f2bb9f01e6d30f4ff27effeb4e9b418b3a18d61cdd214463ea"
+    },
+    {
+      "path": "src/components/cluster/kubectl-shell.tsx",
+      "sha256": "f8406ae8d03c76ffe83dac31e9fa24881c07091acffaac82be06a591602c2453"
+    },
+    {
+      "path": "src/lib/shell-manager.ts",
+      "sha256": "29324caa64aecd07321b6020bfc2c7d465d10f29b529bc6559c95bcb15c28db4"
+    },
+    {
+      "path": "src/app/(dashboard)/resource-actions-menu.tsx",
+      "sha256": "f1224ecf4a6247b153e0422ca4a2ff17cec06e10d7a765889407a9ada922fb23"
+    },
+    {
+      "path": "tests/terminal.browser.mjs",
+      "sha256": "ebee221e096f9a10878f749a2a2fed100507a6c3cf1d1495b7469d3120829a39"
+    },
+    {
+      "path": "tests/ui-fixture.ts",
+      "sha256": "cfe0385d8ec14e09162dbecb95ee8a654fc2cd1595a6aa85c3d35a0ccd2fc022"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "docs/implementation-evidence/terminal-browser-attempt1.json",
+      "sha256": "274566cf87dae690e39d32e20d977458274e08660206525b2c62a0cce08349a2",
+      "bytes": 40365
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser-attempt2.json",
+      "sha256": "773affc06cea6623fdd2875ba1c4f956397126faa9ca3a6ef8121a1716f15b60",
+      "bytes": 48164
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser.json",
+      "sha256": "1b00d92050d3cf8f6f4def87107d7cdf5bdbc464815f65b135c5b412d673523d",
+      "bytes": 48363
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser1-cli.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser1-harness.mjs",
+      "sha256": "a5427e36b121b687abca8137b878ab1f13bf0d51613b94ebda4ca892cc00a549",
+      "bytes": 18453
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser1-launcher.json",
+      "sha256": "f0d63a13fcd4978176feda5e034f050ee49eeea2c5de860c0faaffe24377f814",
+      "bytes": 278
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser1-source.json",
+      "sha256": "8698b0d8615b95a8fc3b0c272200021b4b25d09ad1db931eef4de09c8d8147cd",
+      "bytes": 1032
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser2-cli.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser2-harness.mjs",
+      "sha256": "b602e27c48e66dbece67fd01e6bc48a1c0876c1bf1c09b52acbe1d961d8d7793",
+      "bytes": 19588
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser2-launcher.json",
+      "sha256": "b7ca04669fc8ba007ff33f3d61456992cf3b4d20508768d966bfaeeba6bd117a",
+      "bytes": 278
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser2-source.json",
+      "sha256": "7d7662862b4fbd9cb66e653f216e8dff0fb24f3a461d441b1f2f647fc0d89795",
+      "bytes": 1032
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser3-cli.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser3-harness.mjs",
+      "sha256": "ebee221e096f9a10878f749a2a2fed100507a6c3cf1d1495b7469d3120829a39",
+      "bytes": 22181
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser3-launcher.json",
+      "sha256": "bcf06d1cfbeb1cfbbb6e555123f0066a8f2c6964b7fa306a52df4915c6d74d9b",
+      "bytes": 278
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-browser3-source.json",
+      "sha256": "d600280e5f15cd83ab721d966e63d2c54a793c12663355b9c54eddf9d960e805",
+      "bytes": 1032
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-mobile.png",
+      "sha256": "fa6a87f0b592f5d4a669dd72340c866108bfba13beec5ad4e3f50d3e4d6f0e9c",
+      "bytes": 39286
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-quality1-cli.txt",
+      "sha256": "6c49049efd4963006414cc6c9126e5c413f602f3d05e6dc74de2f0fffe3cc1d6",
+      "bytes": 13428
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-quality1.json",
+      "sha256": "5aad5384e958277665333d35c117f9b8f660396d31457d806e770549a17df2ff",
+      "bytes": 949
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-quality2-cli.txt",
+      "sha256": "c116f3b2c6cf127bacd26c54a65905cd718ab9ffdff6ac2a1f46da54981f1bf6",
+      "bytes": 13475
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-quality2.json",
+      "sha256": "8a29a892705501cf8ed14c8bae6698397b62e0578748621253cd1b54af812f89",
+      "bytes": 949
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-quality3-cli.txt",
+      "sha256": "8492845c87eeb782ac8d7f779be35410e2c4bedbe0a6234c129789aabe0599af",
+      "bytes": 13427
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-quality3.json",
+      "sha256": "9a13fddeb30bde79d12900fdc70d1024b3e6d15223c982292b53b84310f88cb6",
+      "bytes": 949
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-reproduction-cli.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-reproduction-launcher.json",
+      "sha256": "9554334551e1faf50630a135506f25f39c1aaac1304b72f7ca2ca1715ed0e3ff",
+      "bytes": 257
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-reproduction.json",
+      "sha256": "88e124dd2ec84bb6acf390bb5ee02539e50e17917f2cdaa183536d9481279580",
+      "bytes": 1015
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-source.json",
+      "sha256": "8aa43bbac8164c6be5e40bad288213090f20ce0bb5dc12da520c46081da4f0e3",
+      "bytes": 1032
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-tab-diagnostic-cli.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-tab-diagnostic-harness.mjs",
+      "sha256": "3b9ba8e9ccbde90133b4a69f02bcc793187f233398e40106252c3cc835cc5f25",
+      "bytes": 20003
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-tab-diagnostic-launcher.json",
+      "sha256": "f119817ccf095e1cf39def17e1e1248dbeb38f9b0c1aa8727eb9c0fe0ab71a51",
+      "bytes": 278
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-tab-diagnostic.json",
+      "sha256": "981de10b3ce574779bfa668d0aa608a3539bd2e6aaff618a1a786120acaf2b88",
+      "bytes": 808
+    }
+  ],
+  "retainedOriginalAttemptSources": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-browser1-source\\src\\app\\(dashboard)\\resource-actions-menu.tsx",
+      "sha256": "f1224ecf4a6247b153e0422ca4a2ff17cec06e10d7a765889407a9ada922fb23",
+      "bytes": 9872
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-browser1-source\\src\\components\\cluster\\kubectl-shell.tsx",
+      "sha256": "3a09977e7ad4fd24578677b9e116d79d6d5ddd3597e7756194d4e1f66789ee03",
+      "bytes": 23585
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-browser1-source\\src\\components\\cluster\\shell-container.tsx",
+      "sha256": "281d76e4854a05fb175122e8fa64c71170a1a7ff7a6b6d7c799df8c76117776a",
+      "bytes": 6946
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-browser1-source\\src\\lib\\shell-manager.ts",
+      "sha256": "29324caa64aecd07321b6020bfc2c7d465d10f29b529bc6559c95bcb15c28db4",
+      "bytes": 5430
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-browser1-source\\tests\\terminal.browser.mjs",
+      "sha256": "a5427e36b121b687abca8137b878ab1f13bf0d51613b94ebda4ca892cc00a549",
+      "bytes": 18453
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-browser2-source\\src\\app\\(dashboard)\\resource-actions-menu.tsx",
+      "sha256": "f1224ecf4a6247b153e0422ca4a2ff17cec06e10d7a765889407a9ada922fb23",
+      "bytes": 9872
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-browser2-source\\src\\components\\cluster\\kubectl-shell.tsx",
+      "sha256": "8c4d3c2fbbac947ba05d2b130e09c04086ef9a33db1bec69520b2429cd06d06c",
+      "bytes": 23591
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-browser2-source\\src\\components\\cluster\\shell-container.tsx",
+      "sha256": "61629bcb25d2978627ea02b951c5887feb50aa81cd89f67ee4382a0574306661",
+      "bytes": 6952
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-browser2-source\\src\\lib\\shell-manager.ts",
+      "sha256": "29324caa64aecd07321b6020bfc2c7d465d10f29b529bc6559c95bcb15c28db4",
+      "bytes": 5430
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-browser2-source\\tests\\terminal.browser.mjs",
+      "sha256": "b602e27c48e66dbece67fd01e6bc48a1c0876c1bf1c09b52acbe1d961d8d7793",
+      "bytes": 19588
+    }
+  ],
+  "docsReviewed": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "sha256": "00a52c258f628c649b6be8ceb27b22433eee83000ed5952880ad0ba01a570cc4"
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "sha256": "26511f2b9784567cbc3003adbf526c7056bc41021d18305e6848aac4993548ed"
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "sha256": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670"
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "sha256": "70f72f8cff246e9600c92fcf127684f9bc7c94b285017c5e12cfb55603fa4572"
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "sha256": "18c810b8c7a3db512f6719c26b65294764c3bab3c7ded00e2493f37c7b81b4a2"
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "sha256": "c88d96fd058938b72eefa179cabd2762f9caa5d7f4ad540da7aee82f7a648b68"
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "sha256": "f44577473e3c57164357aa4d688f8df9c4e40137ffda7515b4b9b0f9b2664629"
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "sha256": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b"
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "sha256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412"
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "sha256": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8"
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "sha256": "6ef1fd0d9a899e6025bc6bf6ceef66362f7e0966e5b07d914fd5e29052ccfaf5"
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "sha256": "f97e3467665504a5302dd889ea4703a8f8ef07b1736a5eae2af33d42fdb405e1"
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "sha256": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038"
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "sha256": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb"
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "sha256": "cb35a994799df82886f9577555e1f53c8057d512d831e54acb3144927fe7a58a"
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "sha256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b"
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "sha256": "402ee008499fbc62f094f6f0e87ba54eaaebab927d706d8b2439c161c5ff74e6"
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "sha256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0"
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "sha256": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92"
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "sha256": "5887492cded6d9ae8945efc6f3bf52ba905f7aa9c892dab75e8cfb7c989a122f"
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "sha256": "5033554da344d6576ec21f96611e6fee6684abb1d8fd1f67ac33324e3c3807e4"
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "sha256": "1f9db2006870961e0fb236b21d5621a255c6571b6e133da3e969d4223bf960e6"
+    }
+  ],
+  "provenanceLimits": [
+    "Reproduction original raw harness before later expansion was not separately captured; retained launcher/report and original committed production source remain distinct",
+    "Raw Git versus checkout working source hashes are separate; no normalize-after-hash inference",
+    "Original failed attempt1, passing attempt2 with contrast finding, and Tab-trap diagnostic are not rewritten as final passes"
+  ],
+  "remaining": [
+    "Actual wider2xzoom/loading/manualAT",
+    "Complete coherent fullQA",
+    "A07/A21 unchanged final frozen performance comparison remains unmet",
+    "Final OCI/runner/security/recovery/live acceptance; historical scanner2untriaged remains unchanged"
+  ]
+}

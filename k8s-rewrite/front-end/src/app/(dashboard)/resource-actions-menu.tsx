@@ -87,7 +87,7 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
   }); } });
   if (session.canWrite) {
     if (capability.yamlEdit) items.push({ label: "Edit YAML", run: () => { void showYaml(true); } });
-    if (resourceType === "pod" && session.data?.capabilities?.podExec) items.push({ label: "Execute Shell", run: () => { openShell("exec", namespace, name); } });
+    if (resourceType === "pod" && session.data?.capabilities?.podExec) items.push({ label: "Execute Shell", run: () => { openShell("exec", namespace, name, trigger.current); } });
     if (resourceType === "deployment") {
       const replicas = resource.spec?.replicas ?? resource.desiredReplicas ?? resource.replicas ?? 1;
       const paused = resource.spec?.paused ?? resource.paused ?? false;

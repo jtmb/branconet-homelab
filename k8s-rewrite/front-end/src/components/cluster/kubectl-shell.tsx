@@ -172,8 +172,8 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
     term.writeln("\x1b[1;36m╔══════════════════════════════════════════╗\x1b[0m");
     term.writeln(`\x1b[1;36m║\x1b[0m   \x1b[1;33m${padBox(titleText)}\x1b[1;36m║\x1b[0m`);
     term.writeln(`\x1b[1;36m║\x1b[0m   ${padBox(hintText)}\x1b[1;36m║\x1b[0m`);
-    term.writeln(`\x1b[1;36m║\x1b[0m   \x1b[2m${padBox(exampleText)}\x1b[1;36m║\x1b[0m`);
-    term.writeln(`\x1b[1;36m║\x1b[0m   \x1b[2m${shortcutsLine}\x1b[0m\x1b[1;36m║\x1b[0m`);
+    term.writeln(`\x1b[1;36m║\x1b[0m   ${padBox(exampleText)}\x1b[1;36m║\x1b[0m`);
+    term.writeln(`\x1b[1;36m║\x1b[0m   ${shortcutsLine}\x1b[0m\x1b[1;36m║\x1b[0m`);
     term.writeln("\x1b[1;36m╚══════════════════════════════════════════╝\x1b[0m");
   }, [namespace, podName]);
 
@@ -296,16 +296,21 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
       allowTransparency: false,
       convertEol: true,
       rows: 10,
+      screenReaderMode: true,
     });
 
     const fitAddon = new FitAddon();
     term.loadAddon(fitAddon);
+    // A one-shot command runner has no tab completion; preserve browser Tab/Shift+Tab navigation.
+    term.attachCustomKeyEventHandler(event => event.key !== "Tab");
 
     terminalRef.current = term;
     fitAddonRef.current = fitAddon;
 
     try {
       term.open(containerRef.current);
+      term.textarea?.setAttribute("aria-label", namespace && podName ? `Command input for ${namespace}/${podName}` : "Operator command input");
+      term.focus();
     } catch {
       return;
     }
@@ -509,7 +514,7 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
       fitAddonRef.current = null;
     };
     return dispose;
-  }, [executeCommand, writePrompt, writeWelcomeBanner]);
+  }, [executeCommand, writePrompt, writeWelcomeBanner, namespace, podName]);
 
   // Set container ref — defers terminal creation to when open first becomes true
   const setContainerRef = useCallback(
@@ -519,40 +524,40 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
     []
   );
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      if (containerRef.current && (containerRef.current as any).__termCleanup) {
-        (containerRef.current as any).__termCleanup();
-      }
-    };
-  }, []);
-
   // Initialize terminal when it becomes open
   useEffect(() => {
+    let cleanup: (() => void) | undefined;
+    let frame: number | undefined;
     if (open && containerRef.current && !terminalRef.current) {
-      requestAnimationFrame(() => {
-        const cleanup = createTerminal();
-        if (cleanup && containerRef.current) {
-          (containerRef.current as any).__termCleanup = cleanup;
-        }
-      });
+      frame = requestAnimationFrame(() => { cleanup = createTerminal(); });
     }
+    return () => { if (frame !== undefined) cancelAnimationFrame(frame); cleanup?.(); };
   }, [open, createTerminal]);
 
   return (
     <>
       {/* Shell panel — slides up from bottom (no backdrop) */}
       <div
-        className={`absolute bottom-0 left-0 right-0 z-50 transition-transform duration-300 ease-out ${
+        role="region"
+        aria-label={namespace && podName ? `Terminal for ${namespace}/${podName}` : "Operator terminal"}
+        className={`relative w-full transition-transform duration-300 ease-out ${
           visible ? "translate-y-0" : "translate-y-full"
         }`}
         style={{ height: `${shellHeight}vh` }}
       >
         {/* Header bar — matches minimized bar design */}
         <div
-          className="flex items-center h-6 px-1.5 bg-zinc-900 rounded-t-md cursor-ns-resize select-none"
+          role="separator" tabIndex={0} aria-label="Terminal height" aria-orientation="horizontal"
+          aria-valuemin={20} aria-valuemax={80} aria-valuenow={shellHeight}
+          className="h-2 bg-zinc-800 cursor-ns-resize"
           onMouseDown={startResize}
+          onKeyDown={event => {
+            const height = event.key === "Home" ? 20 : event.key === "End" ? 80 : event.key === "ArrowUp" ? Math.min(80, shellHeight + 5) : event.key === "ArrowDown" ? Math.max(20, shellHeight - 5) : undefined;
+            if (height !== undefined) { event.preventDefault(); setShellHeight(height); }
+          }}
+        />
+        <div
+          className="flex items-center min-h-9 px-1.5 bg-zinc-900 rounded-t-md select-none"
         >
           {/* Tab labels — left side, scrollable */}
           <div className="flex items-center gap-1.5 flex-1 min-w-0 overflow-x-auto">
@@ -562,14 +567,13 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
               return (
                 <span
                   key={s.id}
-                  className={`flex items-center gap-1.5 text-[11px] font-medium whitespace-nowrap shrink-0 cursor-pointer rounded px-1 py-0.5 transition-colors ${
+                  className={`flex items-center gap-1.5 text-xs font-medium whitespace-nowrap shrink-0 rounded px-1 py-0.5 transition-colors ${
                     isActive
                       ? "text-zinc-200"
-                      : "text-zinc-500 hover:text-zinc-200 hover:bg-zinc-800/50"
+                      : "text-zinc-300 hover:text-zinc-100 hover:bg-zinc-800/50"
                   }`}
-                  onClick={isActive ? undefined : () => onSwitchTab?.(s.id)}
-                  title={isActive ? undefined : `Switch to ${label}`}
                 >
+                  <button aria-label={`Switch to ${label} Shell`} aria-pressed={isActive} onClick={() => { if (isActive) terminalRef.current?.focus(); else onSwitchTab?.(s.id); }} className="flex min-h-8 items-center gap-1.5 rounded px-1 hover:bg-zinc-800">
                   {i > 0 && <span className="text-zinc-700">|</span>}
                   {s.type === "kubectl" ? (
                     <K8sIcon className={isActive ? "w-3 h-3 shrink-0 text-sky-400" : "w-3 h-3 shrink-0 text-current"} />
@@ -580,14 +584,16 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
                   {s.running && (
                     <Loader2 className="w-2.5 h-2.5 shrink-0 animate-spin text-amber-400" />
                   )}
+                  </button>
                   {shells && shells.length > 1 && (
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         onCloseTab?.(s.id);
                       }}
-                      className="w-3.5 h-3.5 rounded-sm flex items-center justify-center text-zinc-600 hover:text-zinc-200 hover:bg-zinc-700 transition-colors"
+                      className="w-8 h-8 rounded-sm flex items-center justify-center text-zinc-300 hover:bg-zinc-700 transition-colors"
                       title={`Close ${label}`}
+                      aria-label={`Close ${label}`}
                     >
                       <X className="w-2.5 h-2.5" />
                     </button>
@@ -604,27 +610,31 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
                 e.stopPropagation();
                 const term = terminalRef.current;
                 if (term) {
-                  term.clear();
+                  term.reset(); history.current = []; historyIdx.current = -1;
                   writeWelcomeBanner();
                   writePrompt();
+                  term.focus();
                 }
               }}
-              className="w-5 h-5 rounded flex items-center justify-center text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
+              className="w-8 h-8 rounded flex items-center justify-center text-zinc-300 hover:bg-zinc-800 transition-colors"
               title="Clear terminal"
+              aria-label="Clear terminal"
             >
               <Trash2 className="w-3 h-3" />
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); onMinimize?.(); }}
-              className="w-5 h-5 rounded flex items-center justify-center text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
+              className="w-8 h-8 rounded flex items-center justify-center text-zinc-300 hover:bg-zinc-800 transition-colors"
               title="Minimize"
+              aria-label="Minimize terminal"
             >
               <Minimize2 className="w-3 h-3" />
             </button>
             <button
               onClick={(e) => { e.stopPropagation(); onClose(); }}
-              className="w-5 h-5 rounded flex items-center justify-center text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors"
+              className="w-8 h-8 rounded flex items-center justify-center text-zinc-300 hover:bg-zinc-800 transition-colors"
               title="Close shell"
+              aria-label="Close shell"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -632,7 +642,7 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
         </div>
 
         {/* Terminal container — always rendered, hidden when closed */}
-        <div className="h-[calc(100%-24px)] bg-zinc-950 border border-zinc-800 rounded-b-xl overflow-hidden">
+        <div className="h-[calc(100%-44px)] bg-zinc-950 border border-zinc-800 overflow-hidden">
           <div ref={setContainerRef} className="w-full h-full" />
         </div>
       </div>
