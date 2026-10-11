@@ -1,0 +1,156 @@
+{
+  "schema": 1,
+  "scope": "Local quiescent interval transport; not live continuity or forward acceptance",
+  "qualification": {
+    "tests": 81,
+    "focusedIntervalTests": 16,
+    "actualExitCode": 0,
+    "seconds": 20.704,
+    "sourceUnchanged": true,
+    "ownedChildReaped": true
+  },
+  "source": [
+    {
+      "path": "scripts/migration/bortus-quiescent-interval.py",
+      "mode": "100644",
+      "blob": "ef64f17f2b723083f0200b00ec0f0b027f5d9deb",
+      "rawGitSha256": "c2e8b600825c77e6b4eece4d41fb8f28023b5a5650d6dc58305859af80579caf",
+      "workingSha256": "c2e8b600825c77e6b4eece4d41fb8f28023b5a5650d6dc58305859af80579caf",
+      "relation": "exact"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_quiescent_interval.py",
+      "mode": "100644",
+      "blob": "a4a3542bf16a3465308c7f0027007b937c05e39c",
+      "rawGitSha256": "10e975b96f7d9e5c9f8dd1d5b28378bf59fca13b4bfdbcee944a9f0641f1ef90",
+      "workingSha256": "10e975b96f7d9e5c9f8dd1d5b28378bf59fca13b4bfdbcee944a9f0641f1ef90",
+      "relation": "exact"
+    },
+    {
+      "path": "docs/BORTUS-QUIESCENT-INTERVAL.md",
+      "mode": "100644",
+      "blob": "9d7ae13560dd3ed8496dd432d9ec0bc04497881c",
+      "rawGitSha256": "a4f7611729839f4934479050080ab3357d48d503c5eb32425d7bac6437efd69d",
+      "workingSha256": "a4f7611729839f4934479050080ab3357d48d503c5eb32425d7bac6437efd69d",
+      "relation": "exact"
+    },
+    {
+      "path": "docs/BORTUS-QUIESCENT-ARCHIVE.md",
+      "mode": "100644",
+      "blob": "e68529058d5ae9c902bb2f75808d051666387d28",
+      "rawGitSha256": "1a993e31210af50f2c52715d00597653c3b7e5a2c2d7d647a749f43029d0749e",
+      "workingSha256": "1a993e31210af50f2c52715d00597653c3b7e5a2c2d7d647a749f43029d0749e",
+      "relation": "exact"
+    },
+    {
+      "path": "docs/BORTUS-QUIESCENT-SOURCE.md",
+      "mode": "100644",
+      "blob": "d2239a812c44811ffb139d40f63a00dabdbcd3f8",
+      "rawGitSha256": "60cc38a6b0cfafa6ed9945a730017c4924145d26b44134a9d63c1fbc0bf0d7d8",
+      "workingSha256": "60cc38a6b0cfafa6ed9945a730017c4924145d26b44134a9d63c1fbc0bf0d7d8",
+      "relation": "exact"
+    },
+    {
+      "path": "docs/BORTUS-QUIESCENT-WATCH.md",
+      "mode": "100644",
+      "blob": "ea2f379114ebcfa45e697066e08c85562d8d85b0",
+      "rawGitSha256": "7b731e7977219c7e4061fb1fb4e445d2e926979e184f3691b1f48e61aeb2609b",
+      "workingSha256": "7b731e7977219c7e4061fb1fb4e445d2e926979e184f3691b1f48e61aeb2609b",
+      "relation": "exact"
+    },
+    {
+      "path": "docs/MIGRATION-OPERATIONS.md",
+      "mode": "100644",
+      "blob": "e38533f51500111fee3a28f6aca5dcd6a6d70f62",
+      "rawGitSha256": "c993eb4e71d6802b0e1b1e80e381964428235e4d8f4b0e06f2ed7eedd5919277",
+      "workingSha256": "c993eb4e71d6802b0e1b1e80e381964428235e4d8f4b0e06f2ed7eedd5919277",
+      "relation": "exact"
+    }
+  ],
+  "originalAttempts": {
+    "v1": {
+      "actualExitCode": 1,
+      "cause": "Incorrect pin_config tuple unpack caused local descriptor closure before mocked kubectl dispatch; retained"
+    },
+    "v2": {
+      "actualExitCode": 0,
+      "tests": 12
+    },
+    "v3": {
+      "actualExitCode": 0,
+      "tests": 15
+    },
+    "v4": {
+      "actualExitCode": 0,
+      "tests": 80
+    },
+    "v5": {
+      "actualExitCode": 0,
+      "tests": 81
+    }
+  },
+  "scan": {
+    "actualExitCode": 0,
+    "findings": 0,
+    "binarySha256": "88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+    "version": "8.30.1",
+    "selected": [
+      {
+        "path": "scripts/migration/bortus-quiescent-interval.py",
+        "sha256": "c2e8b600825c77e6b4eece4d41fb8f28023b5a5650d6dc58305859af80579caf",
+        "bytes": 19783
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_quiescent_interval.py",
+        "sha256": "10e975b96f7d9e5c9f8dd1d5b28378bf59fca13b4bfdbcee944a9f0641f1ef90",
+        "bytes": 12935
+      },
+      {
+        "path": "docs/BORTUS-QUIESCENT-INTERVAL.md",
+        "sha256": "a4f7611729839f4934479050080ab3357d48d503c5eb32425d7bac6437efd69d",
+        "bytes": 3939
+      },
+      {
+        "path": "docs/BORTUS-QUIESCENT-ARCHIVE.md",
+        "sha256": "1a993e31210af50f2c52715d00597653c3b7e5a2c2d7d647a749f43029d0749e",
+        "bytes": 5402
+      },
+      {
+        "path": "docs/BORTUS-QUIESCENT-SOURCE.md",
+        "sha256": "60cc38a6b0cfafa6ed9945a730017c4924145d26b44134a9d63c1fbc0bf0d7d8",
+        "bytes": 7662
+      },
+      {
+        "path": "docs/BORTUS-QUIESCENT-WATCH.md",
+        "sha256": "7b731e7977219c7e4061fb1fb4e445d2e926979e184f3691b1f48e61aeb2609b",
+        "bytes": 5988
+      },
+      {
+        "path": "docs/MIGRATION-OPERATIONS.md",
+        "sha256": "c993eb4e71d6802b0e1b1e80e381964428235e4d8f4b0e06f2ed7eedd5919277",
+        "bytes": 139391
+      }
+    ],
+    "scope": "/home/brajam/.cache/bortus-quiescent-interval/package-62c1a9/scope",
+    "defaults": true,
+    "noExclusions": true
+  },
+  "closure": {
+    "allFiveLinuxTestPidsAbsent": true,
+    "allFiveWindowsWslPidsAbsent": true,
+    "receiptSha256": "74d6b0a2bc2da42019026e9f7c2e81314f48767abda64e8b964e22b2812b67eb"
+  },
+  "originalsZipSha256": "71720132a49354da41b9789c0831ac186cedc490cea12dec36e21835ce703610",
+  "finalLogSha256": "951d257c230025e3e97b61747e7eb5ad968299d94d801ea61c32d3c7625ca6c7",
+  "finalTerminalSha256": "b814d30152d3c90ed58632d3ab19c4599f8590b7a85de7cd07f1d9d86e745a74",
+  "limits": {
+    "liveAPI": false,
+    "operatorCredentialsRead": false,
+    "actualKubectl": false,
+    "NodeDockerSSH": false,
+    "static43IsHistorical": true,
+    "phaseSourceImageSchemaAndGuardQualificationSeparate": true,
+    "dataAcceptance": false,
+    "defaultColdClientUnchanged": true
+  }
+}

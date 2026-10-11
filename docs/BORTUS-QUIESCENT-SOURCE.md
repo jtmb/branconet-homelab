@@ -107,3 +107,9 @@ phase callback must independently bind image, guards and the actual receipt.
 
 
 Root independently qualified the integrated shared graph on `1daea8f`: [65 scoped controls passed](../evidence/bortus-quiescent-composition-root-20261011.json) without skips in 14.251 seconds. Frozen working sources remain unchanged, and the test supervisor is absent. Actual local TLS/age/SQLite fixtures use mocked kubectl/SSH; this is local composition acceptance and does not authorize or prove live latest-data capture or forward migration.
+
+The separate [lease-bound interval client](BORTUS-QUIESCENT-INTERVAL.md) now supplies
+fixed inherited reads and once-only conditional dispatches under the actual borrowed
+Observer and original absolute lease. Construct the graph from its exported watch/
+quiescent modules; Ready/default clients are unchanged. This transport is separate
+from root-owned source/image/schema/guard phase qualification and live acceptance.
