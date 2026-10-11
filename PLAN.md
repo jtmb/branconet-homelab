@@ -226,7 +226,7 @@ Every change updates affected Ansible tasks/templates, chart values, Flux config
 - Migration goal activated at 2026-10-09 14:30 UTC (10:30 a.m. Toronto); execution target before 20:30 UTC (4:30 p.m. Toronto).
 - Source checkout initialized on codex/kubernetes-migration at the inspected baseline. BORTUS development requested in a separate worktree/chat.
 - Cluster provisioning, data movement, Secret import, repository changes and application tests have not yet been performed.
-- BORTUS development will be delegated to a separate chat; cluster migration stays in this chat.
+- At initial approval, BORTUS development was delegated to a separate chat. The 2026-10-10 orchestration directive supersedes that arrangement: this coordinator and two scoped sub-agents now own execution, and the former chats are archived.
 
 ## As-built state and outstanding acceptance
 
@@ -256,7 +256,7 @@ At 23:47:08 UTC, production Sonarr automatically imported the licensed Blender S
 
 ## User scope update — 2026-10-09
 
-The user directed removal of game servers and their charts, and accepted the original Redis cache as disposable. Remove ETS2 and the Minecraft exporter through CI/Flux; preserve their original datasets, protected claims and backups. The Minecraft website remains in scope. BORTUS bootstrap and operator access belong to migration; application code changes remain owned by the separate BORTUS development chat. Native Secrets remain authoritative. No source retirement is authorized by this scope change. See evidence/user-scope-update.json and evidence/bortus-operator-bootstrap.json.
+The user directed removal of game servers and their charts, and accepted the original Redis cache as disposable. Remove ETS2 and the Minecraft exporter through CI/Flux; preserve their original datasets, protected claims and backups. The Minecraft website remains in scope. BORTUS bootstrap and operator access belong to migration; application code changes are owned by the scoped BORTUS application sub-agent. Native Secrets remain authoritative. No source retirement is authorized by this scope change. See evidence/user-scope-update.json and evidence/bortus-operator-bootstrap.json.
 
 ## Original monitor alerts — user authorization
 
