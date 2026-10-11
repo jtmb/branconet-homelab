@@ -1,0 +1,3900 @@
+{
+  "label": "baseline",
+  "run": 1,
+  "node": "v22.23.3",
+  "platform": "linux",
+  "arch": "x64",
+  "profiles": [
+    {
+      "fixture": {
+        "name": "audit-small",
+        "pods": 3,
+        "secret_objects": 334,
+        "secret_decoded_payload_bytes_each": 64,
+        "config_rows": 200,
+        "namespaces": 18,
+        "native_active_scopes": 18,
+        "alias_references": 603,
+        "pod_cli_json_bytes": 1776,
+        "common_expected_fields": "every Pod name/namespace and every native Secret name/namespace/type/exact key map; complete expected counts"
+      },
+      "phases": [
+        {
+          "name": "cold-pods",
+          "elapsed_ms": 197.59351500000002,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 312683,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 3,
+          "server_rss_kib": 191232,
+          "server_peak_rss_kib": 191232,
+          "peak_sampled_server_rss_kib": 191232,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-2",
+              "status": 200,
+              "elapsed_ms": 196.1277009999999,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ]
+        },
+        {
+          "name": "warm-pods-12",
+          "elapsed_ms": 85.74832500000002,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 141675,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 7,
+          "server_rss_kib": 193344,
+          "server_peak_rss_kib": 193344,
+          "peak_sampled_server_rss_kib": 193344,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-3",
+              "status": 200,
+              "elapsed_ms": 6.448675000000094,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-4",
+              "status": 200,
+              "elapsed_ms": 9.069907999999941,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-5",
+              "status": 200,
+              "elapsed_ms": 8.55555000000004,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-6",
+              "status": 200,
+              "elapsed_ms": 15.686342999999852,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-7",
+              "status": 200,
+              "elapsed_ms": 9.586877000000186,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-8",
+              "status": 200,
+              "elapsed_ms": 8.604999000000134,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-9",
+              "status": 200,
+              "elapsed_ms": 5.356077999999798,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-10",
+              "status": 200,
+              "elapsed_ms": 4.403909999999996,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-11",
+              "status": 200,
+              "elapsed_ms": 5.369172000000162,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-12",
+              "status": 200,
+              "elapsed_ms": 3.308415999999852,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-13",
+              "status": 200,
+              "elapsed_ms": 3.5936909999995805,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-14",
+              "status": 200,
+              "elapsed_ms": 2.838384000000133,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ],
+          "latency_ms": {
+            "n": 12,
+            "min": 2.838384000000133,
+            "p50": 5.369172000000162,
+            "p95": 15.686342999999852,
+            "max": 15.686342999999852
+          }
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "elapsed_ms": 62.57285499999989,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 86986,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 6,
+          "server_rss_kib": 195072,
+          "server_peak_rss_kib": 195072,
+          "peak_sampled_server_rss_kib": 195072,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-15",
+              "status": 200,
+              "elapsed_ms": 24.569320999999945,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-16",
+              "status": 200,
+              "elapsed_ms": 25.777518000000327,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-17",
+              "status": 200,
+              "elapsed_ms": 27.132104999999683,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-18",
+              "status": 200,
+              "elapsed_ms": 28.30554200000006,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-19",
+              "status": 200,
+              "elapsed_ms": 31.277004999999917,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-20",
+              "status": 200,
+              "elapsed_ms": 32.75894100000005,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-21",
+              "status": 200,
+              "elapsed_ms": 34.08612799999992,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-22",
+              "status": 200,
+              "elapsed_ms": 35.83660699999973,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-23",
+              "status": 200,
+              "elapsed_ms": 37.13219300000037,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-24",
+              "status": 200,
+              "elapsed_ms": 39.02661900000021,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-25",
+              "status": 200,
+              "elapsed_ms": 39.890674999999646,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-26",
+              "status": 200,
+              "elapsed_ms": 41.101522999999816,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-27",
+              "status": 200,
+              "elapsed_ms": 42.416487999999845,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-28",
+              "status": 200,
+              "elapsed_ms": 43.86078600000019,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-29",
+              "status": 200,
+              "elapsed_ms": 47.00737799999979,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-30",
+              "status": 200,
+              "elapsed_ms": 49.709241999999904,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-31",
+              "status": 200,
+              "elapsed_ms": 50.31411100000014,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-32",
+              "status": 200,
+              "elapsed_ms": 52.31277600000021,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-33",
+              "status": 200,
+              "elapsed_ms": 54.81441000000041,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-34",
+              "status": 200,
+              "elapsed_ms": 55.92342699999972,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ]
+        },
+        {
+          "name": "services-after-pods",
+          "elapsed_ms": 7.147287000000233,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 8560,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 1,
+          "server_rss_kib": 195072,
+          "server_peak_rss_kib": 195072,
+          "peak_sampled_server_rss_kib": 195072,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-35",
+              "status": 200,
+              "elapsed_ms": 4.434254999999666,
+              "response_body_bytes": 15
+            }
+          ]
+        },
+        {
+          "name": "configuration-metadata",
+          "elapsed_ms": 13.002738000000136,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 13915,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 1,
+          "server_rss_kib": 195840,
+          "server_peak_rss_kib": 195840,
+          "peak_sampled_server_rss_kib": 195840,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-36",
+              "status": 200,
+              "elapsed_ms": 10.346226000000115,
+              "response_body_bytes": 44091
+            }
+          ],
+          "expected_count": 200,
+          "equivalent_expected_inventory": true
+        },
+        {
+          "name": "native-secret-metadata",
+          "elapsed_ms": 89.47837400000026,
+          "cli_calls": 0,
+          "native_api_calls": 18,
+          "cgroup_cpu_usage_usec": 115123,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 7,
+          "server_rss_kib": 197568,
+          "server_peak_rss_kib": 197568,
+          "peak_sampled_server_rss_kib": 197568,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-37",
+              "status": 200,
+              "elapsed_ms": 85.09219600000006,
+              "response_body_bytes": 51373
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 334,
+          "native_produced_response_body_bytes": 151310,
+          "native_returned_objects_including_retries": 334
+        },
+        {
+          "name": "all-alias-metadata",
+          "elapsed_ms": 12.621826000000056,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 15639,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 1,
+          "server_rss_kib": 198144,
+          "server_peak_rss_kib": 198144,
+          "peak_sampled_server_rss_kib": 198144,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-38",
+              "status": 200,
+              "elapsed_ms": 9.17892299999994,
+              "response_body_bytes": 61921
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 603
+        },
+        {
+          "name": "readiness-five-sequential",
+          "elapsed_ms": 302.4694929999996,
+          "cli_calls": 0,
+          "native_api_calls": 90,
+          "cgroup_cpu_usage_usec": 387015,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 24,
+          "server_rss_kib": 202368,
+          "server_peak_rss_kib": 202368,
+          "peak_sampled_server_rss_kib": 202368,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-39",
+              "status": 200,
+              "elapsed_ms": 85.90638799999988,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-40",
+              "status": 200,
+              "elapsed_ms": 51.56305100000009,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-41",
+              "status": 200,
+              "elapsed_ms": 54.84248899999966,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-42",
+              "status": 200,
+              "elapsed_ms": 50.50992799999949,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-43",
+              "status": 200,
+              "elapsed_ms": 56.79802400000062,
+              "response_body_bytes": 18
+            }
+          ],
+          "native_metadata_only_calls": 0,
+          "native_produced_response_body_bytes": 756550
+        },
+        {
+          "name": "cold-pods-concurrent-20",
+          "elapsed_ms": 259.95935499999996,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 419649,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 11,
+          "server_rss_kib": 193896,
+          "server_peak_rss_kib": 193896,
+          "peak_sampled_server_rss_kib": 193896,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-45",
+              "status": 200,
+              "elapsed_ms": 256.20745499999975,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-46",
+              "status": 200,
+              "elapsed_ms": 256.1257150000001,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-47",
+              "status": 200,
+              "elapsed_ms": 256.1613439999992,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-48",
+              "status": 200,
+              "elapsed_ms": 256.05678499999976,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-49",
+              "status": 200,
+              "elapsed_ms": 256.04394500000035,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-50",
+              "status": 200,
+              "elapsed_ms": 256.04658500000005,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-51",
+              "status": 200,
+              "elapsed_ms": 256.0438949999998,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-52",
+              "status": 200,
+              "elapsed_ms": 256.0036449999998,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-53",
+              "status": 200,
+              "elapsed_ms": 255.96949499999937,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-54",
+              "status": 200,
+              "elapsed_ms": 252.33219399999962,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-55",
+              "status": 200,
+              "elapsed_ms": 253.49737100000038,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-56",
+              "status": 200,
+              "elapsed_ms": 253.5409899999995,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-57",
+              "status": 200,
+              "elapsed_ms": 253.50060099999973,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-58",
+              "status": 200,
+              "elapsed_ms": 253.48751100000027,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-59",
+              "status": 200,
+              "elapsed_ms": 253.48641099999986,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-60",
+              "status": 200,
+              "elapsed_ms": 253.45132100000046,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-61",
+              "status": 200,
+              "elapsed_ms": 253.35751100000016,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-62",
+              "status": 200,
+              "elapsed_ms": 253.2795210000004,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-63",
+              "status": 200,
+              "elapsed_ms": 253.28985099999954,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-64",
+              "status": 200,
+              "elapsed_ms": 250.67555699999957,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ]
+        },
+        {
+          "name": "slow-optional-longhorn-cold-pods",
+          "elapsed_ms": 1123.974131,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 350126,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 4,
+          "server_rss_kib": 192284,
+          "server_peak_rss_kib": 192284,
+          "peak_sampled_server_rss_kib": 192284,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-66",
+              "status": 200,
+              "elapsed_ms": 1121.4891980000002,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ]
+        },
+        {
+          "name": "outage-two-sequential",
+          "elapsed_ms": 405.5535540000001,
+          "cli_calls": 20,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 651995,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 7,
+          "server_rss_kib": 198156,
+          "server_peak_rss_kib": 198156,
+          "peak_sampled_server_rss_kib": 198156,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-68",
+              "status": 200,
+              "elapsed_ms": 195.74821300000076,
+              "response_body_bytes": 11
+            },
+            {
+              "request_id": "native-diag-69",
+              "status": 200,
+              "elapsed_ms": 206.70184299999892,
+              "response_body_bytes": 11
+            }
+          ],
+          "response_semantics_equivalent": false,
+          "comparison_is_latency_speedup_valid": false
+        },
+        {
+          "name": "readiness-inaccessible-scope",
+          "elapsed_ms": 62.84387799999968,
+          "cli_calls": 0,
+          "native_api_calls": 18,
+          "cgroup_cpu_usage_usec": 87228,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 6,
+          "server_rss_kib": 191716,
+          "server_peak_rss_kib": 191716,
+          "peak_sampled_server_rss_kib": 191524,
+          "observed_process_count_max": 2,
+          "requests": [
+            {
+              "request_id": "native-diag-71",
+              "status": 503,
+              "elapsed_ms": 61.6665009999997,
+              "response_body_bytes": 66
+            }
+          ],
+          "rejects_inaccessible_scope": true
+        }
+      ],
+      "startups": [
+        {
+          "ready_and_session_ms": 1258.437927,
+          "port": 35519
+        },
+        {
+          "ready_and_session_ms": 1317.2433270000001,
+          "port": 43493
+        },
+        {
+          "ready_and_session_ms": 1249.4223409999995,
+          "port": 46883
+        },
+        {
+          "ready_and_session_ms": 1262.872956000001,
+          "port": 34139
+        },
+        {
+          "ready_and_session_ms": 1229.6258500000004,
+          "port": 33483
+        }
+      ],
+      "process_before_restart": {
+        "rss_kib": 202368,
+        "peak_rss_kib": 202368,
+        "threads": 14,
+        "cpu_ticks": 199
+      },
+      "steady_rss_kib": {
+        "n": 20,
+        "min": 191232,
+        "p50": 196992,
+        "p95": 201600,
+        "max": 202368
+      },
+      "process_after_concurrency": {
+        "rss_kib": 193896,
+        "peak_rss_kib": 193896,
+        "threads": 14,
+        "cpu_ticks": 166
+      },
+      "completed": true
+    },
+    {
+      "fixture": {
+        "name": "metadata-200",
+        "pods": 200,
+        "secret_objects": 200,
+        "secret_decoded_payload_bytes_each": 64,
+        "config_rows": 200,
+        "namespaces": 18,
+        "native_active_scopes": 18,
+        "alias_references": 603,
+        "pod_cli_json_bytes": 118015,
+        "common_expected_fields": "every Pod name/namespace and every native Secret name/namespace/type/exact key map; complete expected counts"
+      },
+      "phases": [
+        {
+          "name": "cold-pods",
+          "elapsed_ms": 182.69624499999918,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 299403,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 3,
+          "server_rss_kib": 189552,
+          "server_peak_rss_kib": 189552,
+          "peak_sampled_server_rss_kib": 189552,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-73",
+              "status": 200,
+              "elapsed_ms": 179.82841700000063,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            }
+          ]
+        },
+        {
+          "name": "warm-pods-12",
+          "elapsed_ms": 71.89918100000068,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 88780,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 6,
+          "server_rss_kib": 191856,
+          "server_peak_rss_kib": 191856,
+          "peak_sampled_server_rss_kib": 191856,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-74",
+              "status": 200,
+              "elapsed_ms": 6.91576299999906,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-75",
+              "status": 200,
+              "elapsed_ms": 8.416622000000643,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-76",
+              "status": 200,
+              "elapsed_ms": 5.611209000000599,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-77",
+              "status": 200,
+              "elapsed_ms": 4.759913999998389,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-78",
+              "status": 200,
+              "elapsed_ms": 4.956352000001061,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-79",
+              "status": 200,
+              "elapsed_ms": 8.546995999999126,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-80",
+              "status": 200,
+              "elapsed_ms": 5.280848000000333,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-81",
+              "status": 200,
+              "elapsed_ms": 4.873577000000296,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-82",
+              "status": 200,
+              "elapsed_ms": 4.344363999998677,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-83",
+              "status": 200,
+              "elapsed_ms": 4.209084000000075,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-84",
+              "status": 200,
+              "elapsed_ms": 4.160734999999477,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-85",
+              "status": 200,
+              "elapsed_ms": 3.529670999998416,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            }
+          ],
+          "latency_ms": {
+            "n": 12,
+            "min": 3.529670999998416,
+            "p50": 4.873577000000296,
+            "p95": 8.546995999999126,
+            "max": 8.546995999999126
+          }
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "elapsed_ms": 75.61684100000093,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 112199,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 8,
+          "server_rss_kib": 192432,
+          "server_peak_rss_kib": 192432,
+          "peak_sampled_server_rss_kib": 192432,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-86",
+              "status": 200,
+              "elapsed_ms": 15.692326000000321,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-87",
+              "status": 200,
+              "elapsed_ms": 20.598825000000943,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-88",
+              "status": 200,
+              "elapsed_ms": 26.308274999999412,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-89",
+              "status": 200,
+              "elapsed_ms": 26.589084000001094,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-90",
+              "status": 200,
+              "elapsed_ms": 26.959082999999737,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-91",
+              "status": 200,
+              "elapsed_ms": 28.780558000000383,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-92",
+              "status": 200,
+              "elapsed_ms": 34.06925600000068,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-93",
+              "status": 200,
+              "elapsed_ms": 34.4605049999991,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-94",
+              "status": 200,
+              "elapsed_ms": 35.41522299999997,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-95",
+              "status": 200,
+              "elapsed_ms": 37.18392900000072,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-96",
+              "status": 200,
+              "elapsed_ms": 42.232161999998425,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-97",
+              "status": 200,
+              "elapsed_ms": 44.311923000001116,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-98",
+              "status": 200,
+              "elapsed_ms": 47.837954000000536,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-99",
+              "status": 200,
+              "elapsed_ms": 51.068420999999944,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-100",
+              "status": 200,
+              "elapsed_ms": 55.03041099999973,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-101",
+              "status": 200,
+              "elapsed_ms": 59.36437599999954,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-102",
+              "status": 200,
+              "elapsed_ms": 61.015965999999025,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-103",
+              "status": 200,
+              "elapsed_ms": 63.82141899999988,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-104",
+              "status": 200,
+              "elapsed_ms": 66.46518300000025,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-105",
+              "status": 200,
+              "elapsed_ms": 71.2194670000008,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            }
+          ]
+        },
+        {
+          "name": "services-after-pods",
+          "elapsed_ms": 7.109554000000571,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 9964,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 0,
+          "server_rss_kib": 192432,
+          "server_peak_rss_kib": 192432,
+          "peak_sampled_server_rss_kib": 192432,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-106",
+              "status": 200,
+              "elapsed_ms": 4.417550000000119,
+              "response_body_bytes": 15
+            }
+          ]
+        },
+        {
+          "name": "configuration-metadata",
+          "elapsed_ms": 13.500024000000849,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 15520,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 2,
+          "server_rss_kib": 193008,
+          "server_peak_rss_kib": 193008,
+          "peak_sampled_server_rss_kib": 193008,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-107",
+              "status": 200,
+              "elapsed_ms": 11.022870000000694,
+              "response_body_bytes": 44091
+            }
+          ],
+          "expected_count": 200,
+          "equivalent_expected_inventory": true
+        },
+        {
+          "name": "native-secret-metadata",
+          "elapsed_ms": 75.04684799999995,
+          "cli_calls": 0,
+          "native_api_calls": 18,
+          "cgroup_cpu_usage_usec": 106094,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 6,
+          "server_rss_kib": 195120,
+          "server_peak_rss_kib": 195120,
+          "peak_sampled_server_rss_kib": 195120,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-108",
+              "status": 200,
+              "elapsed_ms": 72.10161999999946,
+              "response_body_bytes": 30765
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 200,
+          "native_produced_response_body_bytes": 91172,
+          "native_returned_objects_including_retries": 200
+        },
+        {
+          "name": "all-alias-metadata",
+          "elapsed_ms": 11.822111000001314,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 13641,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 2,
+          "server_rss_kib": 195120,
+          "server_peak_rss_kib": 195120,
+          "peak_sampled_server_rss_kib": 195120,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-109",
+              "status": 200,
+              "elapsed_ms": 8.56342399999994,
+              "response_body_bytes": 61921
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 603
+        },
+        {
+          "name": "readiness-five-sequential",
+          "elapsed_ms": 275.3272429999997,
+          "cli_calls": 0,
+          "native_api_calls": 90,
+          "cgroup_cpu_usage_usec": 384336,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 24,
+          "server_rss_kib": 201648,
+          "server_peak_rss_kib": 201648,
+          "peak_sampled_server_rss_kib": 201648,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-110",
+              "status": 200,
+              "elapsed_ms": 58.4046070000004,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-111",
+              "status": 200,
+              "elapsed_ms": 50.97887600000104,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-112",
+              "status": 200,
+              "elapsed_ms": 55.13986699999987,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-113",
+              "status": 200,
+              "elapsed_ms": 55.23095099999955,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-114",
+              "status": 200,
+              "elapsed_ms": 54.286646000000474,
+              "response_body_bytes": 18
+            }
+          ],
+          "native_metadata_only_calls": 0,
+          "native_produced_response_body_bytes": 455860
+        },
+        {
+          "name": "cold-pods-concurrent-20",
+          "elapsed_ms": 288.84353900000133,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 536322,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 23,
+          "server_rss_kib": 196460,
+          "server_peak_rss_kib": 196568,
+          "peak_sampled_server_rss_kib": 196568,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-116",
+              "status": 200,
+              "elapsed_ms": 275.6904149999991,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-117",
+              "status": 200,
+              "elapsed_ms": 276.02725499999906,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-118",
+              "status": 200,
+              "elapsed_ms": 277.54833099999996,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-119",
+              "status": 200,
+              "elapsed_ms": 277.87063000000126,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-120",
+              "status": 200,
+              "elapsed_ms": 278.5048939999997,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-121",
+              "status": 200,
+              "elapsed_ms": 279.01707200000055,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-122",
+              "status": 200,
+              "elapsed_ms": 279.51046099999985,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-123",
+              "status": 200,
+              "elapsed_ms": 281.29023699999925,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-124",
+              "status": 200,
+              "elapsed_ms": 281.56158700000015,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-125",
+              "status": 200,
+              "elapsed_ms": 281.8203360000007,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-126",
+              "status": 200,
+              "elapsed_ms": 282.0764849999996,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-127",
+              "status": 200,
+              "elapsed_ms": 282.3458449999998,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-128",
+              "status": 200,
+              "elapsed_ms": 282.5778140000002,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-129",
+              "status": 200,
+              "elapsed_ms": 282.6731799999998,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-130",
+              "status": 200,
+              "elapsed_ms": 282.7612200000003,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-131",
+              "status": 200,
+              "elapsed_ms": 282.90644900000007,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-132",
+              "status": 200,
+              "elapsed_ms": 283.2031189999998,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-133",
+              "status": 200,
+              "elapsed_ms": 283.3069080000005,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-134",
+              "status": 200,
+              "elapsed_ms": 273.8716349999995,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            },
+            {
+              "request_id": "native-diag-135",
+              "status": 200,
+              "elapsed_ms": 274.20796399999927,
+              "response_body_bytes": 43214,
+              "equivalent_expected_inventory": true,
+              "returned_count": 200
+            }
+          ]
+        }
+      ],
+      "startups": [
+        {
+          "ready_and_session_ms": 1184.4710030000006,
+          "port": 33321
+        },
+        {
+          "ready_and_session_ms": 1208.826801000001,
+          "port": 37217
+        }
+      ],
+      "process_before_restart": {
+        "rss_kib": 201648,
+        "peak_rss_kib": 201648,
+        "threads": 14,
+        "cpu_ticks": 194
+      },
+      "steady_rss_kib": {
+        "n": 20,
+        "min": 189360,
+        "p50": 193008,
+        "p95": 201456,
+        "max": 201648
+      },
+      "process_after_concurrency": {
+        "rss_kib": 196460,
+        "peak_rss_kib": 196568,
+        "threads": 14,
+        "cpu_ticks": 165
+      },
+      "completed": true
+    },
+    {
+      "fixture": {
+        "name": "metadata-1000",
+        "pods": 1000,
+        "secret_objects": 1000,
+        "secret_decoded_payload_bytes_each": 64,
+        "config_rows": 1000,
+        "namespaces": 18,
+        "native_active_scopes": 18,
+        "alias_references": 603,
+        "pod_cli_json_bytes": 590469,
+        "common_expected_fields": "every Pod name/namespace and every native Secret name/namespace/type/exact key map; complete expected counts"
+      },
+      "phases": [
+        {
+          "name": "cold-pods",
+          "elapsed_ms": 217.31128000000172,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 334643,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 3,
+          "server_rss_kib": 191856,
+          "server_peak_rss_kib": 191856,
+          "peak_sampled_server_rss_kib": 191856,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-137",
+              "status": 200,
+              "elapsed_ms": 204.4408080000012,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            }
+          ]
+        },
+        {
+          "name": "warm-pods-12",
+          "elapsed_ms": 116.32816400000229,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 155192,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 11,
+          "server_rss_kib": 194300,
+          "server_peak_rss_kib": 195012,
+          "peak_sampled_server_rss_kib": 195012,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-138",
+              "status": 200,
+              "elapsed_ms": 8.599700000002485,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-139",
+              "status": 200,
+              "elapsed_ms": 8.314321000001655,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-140",
+              "status": 200,
+              "elapsed_ms": 12.109560000000783,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-141",
+              "status": 200,
+              "elapsed_ms": 8.611855000002834,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-142",
+              "status": 200,
+              "elapsed_ms": 7.49374799999714,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-143",
+              "status": 200,
+              "elapsed_ms": 10.120646999999735,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-144",
+              "status": 200,
+              "elapsed_ms": 9.012361999997665,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-145",
+              "status": 200,
+              "elapsed_ms": 6.357348999998067,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-146",
+              "status": 200,
+              "elapsed_ms": 5.142568999999639,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-147",
+              "status": 200,
+              "elapsed_ms": 5.504288000000088,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-148",
+              "status": 200,
+              "elapsed_ms": 5.72646099999838,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-149",
+              "status": 200,
+              "elapsed_ms": 9.368468000000576,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            }
+          ],
+          "latency_ms": {
+            "n": 12,
+            "min": 5.142568999999639,
+            "p50": 8.314321000001655,
+            "p95": 12.109560000000783,
+            "max": 12.109560000000783
+          }
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "elapsed_ms": 107.02508200000011,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 164057,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 10,
+          "server_rss_kib": 195724,
+          "server_peak_rss_kib": 196216,
+          "peak_sampled_server_rss_kib": 195724,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-150",
+              "status": 200,
+              "elapsed_ms": 14.894932999999583,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-151",
+              "status": 200,
+              "elapsed_ms": 18.423180000001594,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-152",
+              "status": 200,
+              "elapsed_ms": 21.34740299999976,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-153",
+              "status": 200,
+              "elapsed_ms": 27.437034000002313,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-154",
+              "status": 200,
+              "elapsed_ms": 33.25473899999997,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-155",
+              "status": 200,
+              "elapsed_ms": 34.87578600000052,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-156",
+              "status": 200,
+              "elapsed_ms": 53.604300999999396,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-157",
+              "status": 200,
+              "elapsed_ms": 41.76100900000165,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-158",
+              "status": 200,
+              "elapsed_ms": 46.74349699999948,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-159",
+              "status": 200,
+              "elapsed_ms": 49.71709999999803,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-160",
+              "status": 200,
+              "elapsed_ms": 56.47790999999779,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-161",
+              "status": 200,
+              "elapsed_ms": 63.98714699999982,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-162",
+              "status": 200,
+              "elapsed_ms": 66.55923999999868,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-163",
+              "status": 200,
+              "elapsed_ms": 71.37164800000028,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-164",
+              "status": 200,
+              "elapsed_ms": 74.6500589999996,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-165",
+              "status": 200,
+              "elapsed_ms": 80.2631500000025,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-166",
+              "status": 200,
+              "elapsed_ms": 87.37493800000084,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-167",
+              "status": 200,
+              "elapsed_ms": 90.62029099999927,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-168",
+              "status": 200,
+              "elapsed_ms": 93.16574500000206,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-169",
+              "status": 200,
+              "elapsed_ms": 99.03027600000132,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            }
+          ]
+        },
+        {
+          "name": "services-after-pods",
+          "elapsed_ms": 8.073519999998098,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 8837,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 1,
+          "server_rss_kib": 195724,
+          "server_peak_rss_kib": 196216,
+          "peak_sampled_server_rss_kib": 195724,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-170",
+              "status": 200,
+              "elapsed_ms": 5.207766999999876,
+              "response_body_bytes": 15
+            }
+          ]
+        },
+        {
+          "name": "configuration-metadata",
+          "elapsed_ms": 23.956719999998313,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 31814,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 3,
+          "server_rss_kib": 198364,
+          "server_peak_rss_kib": 198796,
+          "peak_sampled_server_rss_kib": 198604,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-171",
+              "status": 200,
+              "elapsed_ms": 20.912704999998823,
+              "response_body_bytes": 220891
+            }
+          ],
+          "expected_count": 1000,
+          "equivalent_expected_inventory": true
+        },
+        {
+          "name": "native-secret-metadata",
+          "elapsed_ms": 94.58154400000058,
+          "cli_calls": 0,
+          "native_api_calls": 18,
+          "cgroup_cpu_usage_usec": 139528,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 9,
+          "server_rss_kib": 203356,
+          "server_peak_rss_kib": 203356,
+          "peak_sampled_server_rss_kib": 203356,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-172",
+              "status": 200,
+              "elapsed_ms": 89.725989999999,
+              "response_body_bytes": 153789
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 1000,
+          "native_produced_response_body_bytes": 450196,
+          "native_returned_objects_including_retries": 1000
+        },
+        {
+          "name": "all-alias-metadata",
+          "elapsed_ms": 12.495477000000392,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 15832,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 1,
+          "server_rss_kib": 203740,
+          "server_peak_rss_kib": 203740,
+          "peak_sampled_server_rss_kib": 203740,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-173",
+              "status": 200,
+              "elapsed_ms": 9.371854000000894,
+              "response_body_bytes": 61921
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 603
+        },
+        {
+          "name": "readiness-five-sequential",
+          "elapsed_ms": 308.5269589999989,
+          "cli_calls": 0,
+          "native_api_calls": 90,
+          "cgroup_cpu_usage_usec": 429882,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 28,
+          "server_rss_kib": 210268,
+          "server_peak_rss_kib": 210268,
+          "peak_sampled_server_rss_kib": 209884,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-174",
+              "status": 200,
+              "elapsed_ms": 57.11525299999994,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-175",
+              "status": 200,
+              "elapsed_ms": 68.7818580000021,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-176",
+              "status": 200,
+              "elapsed_ms": 60.68839099999968,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-177",
+              "status": 200,
+              "elapsed_ms": 59.528355999998894,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-178",
+              "status": 200,
+              "elapsed_ms": 60.04741500000091,
+              "response_body_bytes": 18
+            }
+          ],
+          "native_metadata_only_calls": 0,
+          "native_produced_response_body_bytes": 2250980
+        },
+        {
+          "name": "cold-pods-concurrent-20",
+          "elapsed_ms": 333.22439600000143,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 524867,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 18,
+          "server_rss_kib": 200348,
+          "server_peak_rss_kib": 201372,
+          "peak_sampled_server_rss_kib": 200348,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-180",
+              "status": 200,
+              "elapsed_ms": 325.5207949999967,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-181",
+              "status": 200,
+              "elapsed_ms": 326.822071999999,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-182",
+              "status": 200,
+              "elapsed_ms": 300.41820599999846,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-183",
+              "status": 200,
+              "elapsed_ms": 301.54823300000135,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-184",
+              "status": 200,
+              "elapsed_ms": 302.994200000001,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-185",
+              "status": 200,
+              "elapsed_ms": 304.3973560000013,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-186",
+              "status": 200,
+              "elapsed_ms": 291.46218800000133,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-187",
+              "status": 200,
+              "elapsed_ms": 293.56167300000016,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-188",
+              "status": 200,
+              "elapsed_ms": 296.6874740000021,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-189",
+              "status": 200,
+              "elapsed_ms": 298.05188199999975,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-190",
+              "status": 200,
+              "elapsed_ms": 305.61785299999974,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-191",
+              "status": 200,
+              "elapsed_ms": 308.1905770000012,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-192",
+              "status": 200,
+              "elapsed_ms": 309.614583999999,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-193",
+              "status": 200,
+              "elapsed_ms": 311.01010099999985,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-194",
+              "status": 200,
+              "elapsed_ms": 312.4521370000002,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-195",
+              "status": 200,
+              "elapsed_ms": 313.86422400000083,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-196",
+              "status": 200,
+              "elapsed_ms": 315.3204909999986,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-197",
+              "status": 200,
+              "elapsed_ms": 316.8047169999991,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-198",
+              "status": 200,
+              "elapsed_ms": 318.31451299999753,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            },
+            {
+              "request_id": "native-diag-199",
+              "status": 200,
+              "elapsed_ms": 321.5184339999978,
+              "response_body_bytes": 216468,
+              "equivalent_expected_inventory": true,
+              "returned_count": 1000
+            }
+          ]
+        }
+      ],
+      "startups": [
+        {
+          "ready_and_session_ms": 1196.7745670000004,
+          "port": 38875
+        },
+        {
+          "ready_and_session_ms": 1293.933144999999,
+          "port": 42741
+        }
+      ],
+      "process_before_restart": {
+        "rss_kib": 210268,
+        "peak_rss_kib": 210268,
+        "threads": 14,
+        "cpu_ticks": 210
+      },
+      "steady_rss_kib": {
+        "n": 20,
+        "min": 193156,
+        "p50": 199900,
+        "p95": 208924,
+        "max": 209884
+      },
+      "process_after_concurrency": {
+        "rss_kib": 200348,
+        "peak_rss_kib": 201372,
+        "threads": 14,
+        "cpu_ticks": 173
+      },
+      "completed": true
+    },
+    {
+      "fixture": {
+        "name": "metadata-10000",
+        "pods": 10000,
+        "secret_objects": 10000,
+        "secret_decoded_payload_bytes_each": 64,
+        "config_rows": 10000,
+        "namespaces": 18,
+        "native_active_scopes": 18,
+        "alias_references": 603,
+        "pod_cli_json_bytes": 5914546,
+        "common_expected_fields": "every Pod name/namespace and every native Secret name/namespace/type/exact key map; complete expected counts"
+      },
+      "phases": [
+        {
+          "name": "cold-pods",
+          "elapsed_ms": 231.58742300000085,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 363988,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 5,
+          "server_rss_kib": 195432,
+          "server_peak_rss_kib": 195432,
+          "peak_sampled_server_rss_kib": 195432,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-201",
+              "status": 200,
+              "elapsed_ms": 229.17177900000024,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            }
+          ]
+        },
+        {
+          "name": "services-after-pods",
+          "elapsed_ms": 7.763660000000527,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 9956,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 1,
+          "server_rss_kib": 195816,
+          "server_peak_rss_kib": 195816,
+          "peak_sampled_server_rss_kib": 195432,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-202",
+              "status": 200,
+              "elapsed_ms": 6.681282999998075,
+              "response_body_bytes": 15
+            }
+          ]
+        },
+        {
+          "name": "configuration-metadata",
+          "elapsed_ms": 217.5921269999999,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 293658,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 25,
+          "server_rss_kib": 215156,
+          "server_peak_rss_kib": 221112,
+          "peak_sampled_server_rss_kib": 215352,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-203",
+              "status": 200,
+              "elapsed_ms": 198.27274299999772,
+              "response_body_bytes": 2218891
+            }
+          ],
+          "expected_count": 10000,
+          "equivalent_expected_inventory": true
+        },
+        {
+          "name": "native-secret-metadata",
+          "elapsed_ms": 307.9752479999988,
+          "cli_calls": 0,
+          "native_api_calls": 54,
+          "cgroup_cpu_usage_usec": 447940,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 27,
+          "server_rss_kib": 234584,
+          "server_peak_rss_kib": 234584,
+          "peak_sampled_server_rss_kib": 234584,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-204",
+              "status": 200,
+              "elapsed_ms": 273.62330199999997,
+              "response_body_bytes": 1537789
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 10000,
+          "native_produced_response_body_bytes": 4501868,
+          "native_returned_objects_including_retries": 10000
+        },
+        {
+          "name": "all-alias-metadata",
+          "elapsed_ms": 14.926384999998845,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 18253,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 1,
+          "server_rss_kib": 234776,
+          "server_peak_rss_kib": 234776,
+          "peak_sampled_server_rss_kib": 234776,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-205",
+              "status": 200,
+              "elapsed_ms": 11.530872999999701,
+              "response_body_bytes": 61921
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 603
+        },
+        {
+          "name": "readiness-five-sequential",
+          "elapsed_ms": 1059.6670139999987,
+          "cli_calls": 0,
+          "native_api_calls": 270,
+          "cgroup_cpu_usage_usec": 1570295,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 111,
+          "server_rss_kib": 254096,
+          "server_peak_rss_kib": 254804,
+          "peak_sampled_server_rss_kib": 254804,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-206",
+              "status": 200,
+              "elapsed_ms": 254.823762,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-207",
+              "status": 200,
+              "elapsed_ms": 191.35876799999824,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-208",
+              "status": 200,
+              "elapsed_ms": 196.47034699999858,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-209",
+              "status": 200,
+              "elapsed_ms": 231.40769300000102,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-210",
+              "status": 200,
+              "elapsed_ms": 183.64410000000134,
+              "response_body_bytes": 18
+            }
+          ],
+          "native_metadata_only_calls": 0,
+          "native_produced_response_body_bytes": 22509340
+        },
+        {
+          "name": "cold-pods-concurrent-20",
+          "elapsed_ms": 278.0902040000001,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 502942,
+          "cgroup_throttled_usec": 3520,
+          "server_cpu_ticks": 19,
+          "server_rss_kib": 200864,
+          "server_peak_rss_kib": 200864,
+          "peak_sampled_server_rss_kib": 200864,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-212",
+              "status": 200,
+              "elapsed_ms": 274.09984299999996,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-213",
+              "status": 200,
+              "elapsed_ms": 274.04661399999895,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-214",
+              "status": 200,
+              "elapsed_ms": 274.05661300000065,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-215",
+              "status": 200,
+              "elapsed_ms": 273.9598029999979,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-216",
+              "status": 200,
+              "elapsed_ms": 273.9380439999986,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-217",
+              "status": 200,
+              "elapsed_ms": 273.91821400000117,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-218",
+              "status": 200,
+              "elapsed_ms": 273.86253299999953,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-219",
+              "status": 200,
+              "elapsed_ms": 273.8262130000003,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-220",
+              "status": 200,
+              "elapsed_ms": 273.78611399999863,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-221",
+              "status": 200,
+              "elapsed_ms": 273.75516399999833,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-222",
+              "status": 200,
+              "elapsed_ms": 273.7286839999979,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-223",
+              "status": 200,
+              "elapsed_ms": 273.69934400000056,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-224",
+              "status": 200,
+              "elapsed_ms": 274.3252930000017,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-225",
+              "status": 200,
+              "elapsed_ms": 274.333673000001,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-226",
+              "status": 200,
+              "elapsed_ms": 274.60866200000237,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-227",
+              "status": 200,
+              "elapsed_ms": 274.5566319999998,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-228",
+              "status": 200,
+              "elapsed_ms": 274.50599200000215,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-229",
+              "status": 200,
+              "elapsed_ms": 274.46965199999977,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-230",
+              "status": 200,
+              "elapsed_ms": 274.485772,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            },
+            {
+              "request_id": "native-diag-231",
+              "status": 200,
+              "elapsed_ms": 274.45883200000026,
+              "response_body_bytes": 11,
+              "equivalent_expected_inventory": false,
+              "returned_count": 0
+            }
+          ]
+        }
+      ],
+      "startups": [
+        {
+          "ready_and_session_ms": 1253.966453000001,
+          "port": 42921
+        },
+        {
+          "ready_and_session_ms": 1284.963538,
+          "port": 45679
+        }
+      ],
+      "process_before_restart": {
+        "rss_kib": 254096,
+        "peak_rss_kib": 254804,
+        "threads": 14,
+        "cpu_ticks": 316
+      },
+      "steady_rss_kib": {
+        "n": 20,
+        "min": 239444,
+        "p50": 248468,
+        "p95": 254804,
+        "max": 254804
+      },
+      "process_after_concurrency": {
+        "rss_kib": 200864,
+        "peak_rss_kib": 200864,
+        "threads": 14,
+        "cpu_ticks": 171
+      },
+      "completed": true
+    },
+    {
+      "fixture": {
+        "name": "kv-sized-native-25",
+        "pods": 3,
+        "secret_objects": 25,
+        "secret_decoded_payload_bytes_each": 262144,
+        "config_rows": 200,
+        "namespaces": 18,
+        "native_active_scopes": 1,
+        "alias_references": 603,
+        "pod_cli_json_bytes": 1776,
+        "common_expected_fields": "every Pod name/namespace and every native Secret name/namespace/type/exact key map; complete expected counts"
+      },
+      "phases": [
+        {
+          "name": "cold-pods",
+          "elapsed_ms": 197.10887599999842,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 309466,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 3,
+          "server_rss_kib": 191020,
+          "server_peak_rss_kib": 191020,
+          "peak_sampled_server_rss_kib": 191020,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-233",
+              "status": 200,
+              "elapsed_ms": 194.32741799999712,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ]
+        },
+        {
+          "name": "warm-pods-12",
+          "elapsed_ms": 62.38187100000141,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 80138,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 7,
+          "server_rss_kib": 192940,
+          "server_peak_rss_kib": 192940,
+          "peak_sampled_server_rss_kib": 192940,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-234",
+              "status": 200,
+              "elapsed_ms": 6.776824000000488,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-235",
+              "status": 200,
+              "elapsed_ms": 6.9503550000008545,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-236",
+              "status": 200,
+              "elapsed_ms": 5.173814999998285,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-237",
+              "status": 200,
+              "elapsed_ms": 5.350406999998086,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-238",
+              "status": 200,
+              "elapsed_ms": 4.677584000000934,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-239",
+              "status": 200,
+              "elapsed_ms": 9.18181800000093,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-240",
+              "status": 200,
+              "elapsed_ms": 5.161198000001605,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-241",
+              "status": 200,
+              "elapsed_ms": 3.5443689999992785,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-242",
+              "status": 200,
+              "elapsed_ms": 2.9165570000004664,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-243",
+              "status": 200,
+              "elapsed_ms": 3.837095999999292,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-244",
+              "status": 200,
+              "elapsed_ms": 2.900497999999061,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-245",
+              "status": 200,
+              "elapsed_ms": 2.8403330000001006,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ],
+          "latency_ms": {
+            "n": 12,
+            "min": 2.8403330000001006,
+            "p50": 4.677584000000934,
+            "p95": 9.18181800000093,
+            "max": 9.18181800000093
+          }
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "elapsed_ms": 65.71243500000128,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 86297,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 6,
+          "server_rss_kib": 193900,
+          "server_peak_rss_kib": 193900,
+          "peak_sampled_server_rss_kib": 193900,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-246",
+              "status": 200,
+              "elapsed_ms": 11.478794999999081,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-247",
+              "status": 200,
+              "elapsed_ms": 13.035641999998916,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-248",
+              "status": 200,
+              "elapsed_ms": 14.834732999999687,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-249",
+              "status": 200,
+              "elapsed_ms": 21.10136799999964,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-250",
+              "status": 200,
+              "elapsed_ms": 21.25991900000008,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-251",
+              "status": 200,
+              "elapsed_ms": 23.53427400000146,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-252",
+              "status": 200,
+              "elapsed_ms": 25.23546300000089,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-253",
+              "status": 200,
+              "elapsed_ms": 28.084297000001243,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-254",
+              "status": 200,
+              "elapsed_ms": 31.593659000001935,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-255",
+              "status": 200,
+              "elapsed_ms": 33.382164000002376,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-256",
+              "status": 200,
+              "elapsed_ms": 37.89501200000086,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-257",
+              "status": 200,
+              "elapsed_ms": 40.30570199999784,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-258",
+              "status": 200,
+              "elapsed_ms": 42.679605999997875,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-259",
+              "status": 200,
+              "elapsed_ms": 44.992300000001705,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-260",
+              "status": 200,
+              "elapsed_ms": 48.248492999999144,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-261",
+              "status": 200,
+              "elapsed_ms": 49.722719000001234,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-262",
+              "status": 200,
+              "elapsed_ms": 53.55314999999973,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-263",
+              "status": 200,
+              "elapsed_ms": 56.52666400000089,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-264",
+              "status": 200,
+              "elapsed_ms": 60.783322999999655,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-265",
+              "status": 200,
+              "elapsed_ms": 60.89968299999964,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ]
+        },
+        {
+          "name": "services-after-pods",
+          "elapsed_ms": 7.330137000000832,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 8545,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 1,
+          "server_rss_kib": 194092,
+          "server_peak_rss_kib": 194092,
+          "peak_sampled_server_rss_kib": 194092,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-266",
+              "status": 200,
+              "elapsed_ms": 4.576288000000204,
+              "response_body_bytes": 15
+            }
+          ]
+        },
+        {
+          "name": "configuration-metadata",
+          "elapsed_ms": 14.563590000001568,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 16459,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 1,
+          "server_rss_kib": 194860,
+          "server_peak_rss_kib": 194860,
+          "peak_sampled_server_rss_kib": 194860,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-267",
+              "status": 200,
+              "elapsed_ms": 12.292853999999352,
+              "response_body_bytes": 44091
+            }
+          ],
+          "expected_count": 200,
+          "equivalent_expected_inventory": true
+        },
+        {
+          "name": "native-secret-metadata",
+          "elapsed_ms": 229.13354099999924,
+          "cli_calls": 0,
+          "native_api_calls": 18,
+          "cgroup_cpu_usage_usec": 335751,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 21,
+          "server_rss_kib": 236524,
+          "server_peak_rss_kib": 236524,
+          "peak_sampled_server_rss_kib": 236524,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-268",
+              "status": 200,
+              "elapsed_ms": 204.00025200000164,
+              "response_body_bytes": 3763
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 25,
+          "native_produced_response_body_bytes": 8748637,
+          "native_returned_objects_including_retries": 25
+        },
+        {
+          "name": "all-alias-metadata",
+          "elapsed_ms": 23.359223999999813,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 35396,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 3,
+          "server_rss_kib": 236524,
+          "server_peak_rss_kib": 236524,
+          "peak_sampled_server_rss_kib": 236524,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-269",
+              "status": 200,
+              "elapsed_ms": 20.008613000001787,
+              "response_body_bytes": 59713
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 603
+        },
+        {
+          "name": "readiness-five-sequential",
+          "elapsed_ms": 755.9718110000031,
+          "cli_calls": 0,
+          "native_api_calls": 90,
+          "cgroup_cpu_usage_usec": 1105870,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 64,
+          "server_rss_kib": 279796,
+          "server_peak_rss_kib": 306384,
+          "peak_sampled_server_rss_kib": 302380,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-270",
+              "status": 200,
+              "elapsed_ms": 163.52371399999902,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-271",
+              "status": 200,
+              "elapsed_ms": 136.99234199999773,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-272",
+              "status": 200,
+              "elapsed_ms": 154.12086999999883,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-273",
+              "status": 200,
+              "elapsed_ms": 174.16243100000065,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-274",
+              "status": 200,
+              "elapsed_ms": 124.13691199999812,
+              "response_body_bytes": 18
+            }
+          ],
+          "native_metadata_only_calls": 0,
+          "native_produced_response_body_bytes": 43743185
+        },
+        {
+          "name": "cold-pods-concurrent-20",
+          "elapsed_ms": 244.2083539999985,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 399286,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 12,
+          "server_rss_kib": 193832,
+          "server_peak_rss_kib": 193832,
+          "peak_sampled_server_rss_kib": 193640,
+          "observed_process_count_max": 11,
+          "requests": [
+            {
+              "request_id": "native-diag-276",
+              "status": 200,
+              "elapsed_ms": 241.94120099999782,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-277",
+              "status": 200,
+              "elapsed_ms": 241.88658000000214,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-278",
+              "status": 200,
+              "elapsed_ms": 241.8971100000017,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-279",
+              "status": 200,
+              "elapsed_ms": 241.89630100000068,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-280",
+              "status": 200,
+              "elapsed_ms": 241.9000300000007,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-281",
+              "status": 200,
+              "elapsed_ms": 241.88660000000164,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-282",
+              "status": 200,
+              "elapsed_ms": 241.869200000001,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-283",
+              "status": 200,
+              "elapsed_ms": 241.8528499999993,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-284",
+              "status": 200,
+              "elapsed_ms": 241.807291000001,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-285",
+              "status": 200,
+              "elapsed_ms": 241.7553599999992,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-286",
+              "status": 200,
+              "elapsed_ms": 241.7234099999987,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-287",
+              "status": 200,
+              "elapsed_ms": 241.71542099999715,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-288",
+              "status": 200,
+              "elapsed_ms": 237.83142999999836,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-289",
+              "status": 200,
+              "elapsed_ms": 237.97175900000002,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-290",
+              "status": 200,
+              "elapsed_ms": 238.05926900000122,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-291",
+              "status": 200,
+              "elapsed_ms": 238.31902799999807,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-292",
+              "status": 200,
+              "elapsed_ms": 239.3960249999982,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-293",
+              "status": 200,
+              "elapsed_ms": 239.46252599999934,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-294",
+              "status": 200,
+              "elapsed_ms": 239.55866499999684,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-295",
+              "status": 200,
+              "elapsed_ms": 239.63346499999898,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ]
+        }
+      ],
+      "startups": [
+        {
+          "ready_and_session_ms": 1257.5700660000002,
+          "port": 42427
+        },
+        {
+          "ready_and_session_ms": 1250.9232650000013,
+          "port": 33905
+        }
+      ],
+      "process_before_restart": {
+        "rss_kib": 279796,
+        "peak_rss_kib": 306384,
+        "threads": 14,
+        "cpu_ticks": 256
+      },
+      "steady_rss_kib": {
+        "n": 20,
+        "min": 196204,
+        "p50": 262032,
+        "p95": 284688,
+        "max": 302380
+      },
+      "process_after_concurrency": {
+        "rss_kib": 193832,
+        "peak_rss_kib": 193832,
+        "threads": 14,
+        "cpu_ticks": 161
+      },
+      "completed": true
+    },
+    {
+      "fixture": {
+        "name": "maximum-flat-native-3",
+        "pods": 3,
+        "secret_objects": 3,
+        "secret_decoded_payload_bytes_each": 1048576,
+        "config_rows": 200,
+        "namespaces": 18,
+        "native_active_scopes": 1,
+        "alias_references": 603,
+        "pod_cli_json_bytes": 1776,
+        "common_expected_fields": "every Pod name/namespace and every native Secret name/namespace/type/exact key map; complete expected counts"
+      },
+      "phases": [
+        {
+          "name": "cold-pods",
+          "elapsed_ms": 187.39518600000156,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 314822,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 4,
+          "server_rss_kib": 190924,
+          "server_peak_rss_kib": 190924,
+          "peak_sampled_server_rss_kib": 190924,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-297",
+              "status": 200,
+              "elapsed_ms": 183.83196500000122,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ]
+        },
+        {
+          "name": "warm-pods-12",
+          "elapsed_ms": 76.53218099999867,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 92966,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 7,
+          "server_rss_kib": 192844,
+          "server_peak_rss_kib": 192844,
+          "peak_sampled_server_rss_kib": 192844,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-298",
+              "status": 200,
+              "elapsed_ms": 8.974463999998989,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-299",
+              "status": 200,
+              "elapsed_ms": 8.226764999999432,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-300",
+              "status": 200,
+              "elapsed_ms": 8.84951799999908,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-301",
+              "status": 200,
+              "elapsed_ms": 5.090438999999606,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-302",
+              "status": 200,
+              "elapsed_ms": 4.7249379999993835,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-303",
+              "status": 200,
+              "elapsed_ms": 7.60004299999855,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-304",
+              "status": 200,
+              "elapsed_ms": 8.47800400000051,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-305",
+              "status": 200,
+              "elapsed_ms": 4.302264000001742,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-306",
+              "status": 200,
+              "elapsed_ms": 6.0612939999991795,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-307",
+              "status": 200,
+              "elapsed_ms": 3.2116020000030403,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-308",
+              "status": 200,
+              "elapsed_ms": 4.212350999998307,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-309",
+              "status": 200,
+              "elapsed_ms": 3.594091999999364,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ],
+          "latency_ms": {
+            "n": 12,
+            "min": 3.2116020000030403,
+            "p50": 5.090438999999606,
+            "p95": 8.974463999998989,
+            "max": 8.974463999998989
+          }
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "elapsed_ms": 71.438814000001,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 95599,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 7,
+          "server_rss_kib": 193804,
+          "server_peak_rss_kib": 193804,
+          "peak_sampled_server_rss_kib": 193804,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-310",
+              "status": 200,
+              "elapsed_ms": 12.535324999997101,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-311",
+              "status": 200,
+              "elapsed_ms": 15.704712999999174,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-312",
+              "status": 200,
+              "elapsed_ms": 21.45461400000204,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-313",
+              "status": 200,
+              "elapsed_ms": 21.54542399999991,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-314",
+              "status": 200,
+              "elapsed_ms": 21.880685000000085,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-315",
+              "status": 200,
+              "elapsed_ms": 24.925794999999198,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-316",
+              "status": 200,
+              "elapsed_ms": 26.61861200000203,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-317",
+              "status": 200,
+              "elapsed_ms": 29.410485000000335,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-318",
+              "status": 200,
+              "elapsed_ms": 33.07675500000187,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-319",
+              "status": 200,
+              "elapsed_ms": 35.205494999998336,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-320",
+              "status": 200,
+              "elapsed_ms": 39.09800600000017,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-321",
+              "status": 200,
+              "elapsed_ms": 41.63760999999795,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-322",
+              "status": 200,
+              "elapsed_ms": 44.96556699999928,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-323",
+              "status": 200,
+              "elapsed_ms": 46.55771399999867,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-324",
+              "status": 200,
+              "elapsed_ms": 50.046807000002445,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-325",
+              "status": 200,
+              "elapsed_ms": 52.67500400000063,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-326",
+              "status": 200,
+              "elapsed_ms": 56.95466300000044,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-327",
+              "status": 200,
+              "elapsed_ms": 59.14641699999993,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-328",
+              "status": 200,
+              "elapsed_ms": 62.85398400000122,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-329",
+              "status": 200,
+              "elapsed_ms": 66.33549700000003,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ]
+        },
+        {
+          "name": "services-after-pods",
+          "elapsed_ms": 8.284560000000056,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 10020,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 1,
+          "server_rss_kib": 193804,
+          "server_peak_rss_kib": 193804,
+          "peak_sampled_server_rss_kib": 193804,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-330",
+              "status": 200,
+              "elapsed_ms": 5.534327000001213,
+              "response_body_bytes": 15
+            }
+          ]
+        },
+        {
+          "name": "configuration-metadata",
+          "elapsed_ms": 13.05446099999972,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 14240,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 0,
+          "server_rss_kib": 194572,
+          "server_peak_rss_kib": 194572,
+          "peak_sampled_server_rss_kib": 194572,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-331",
+              "status": 200,
+              "elapsed_ms": 10.59809999999925,
+              "response_body_bytes": 44091
+            }
+          ],
+          "expected_count": 200,
+          "equivalent_expected_inventory": true
+        },
+        {
+          "name": "native-secret-metadata",
+          "elapsed_ms": 147.8302270000022,
+          "cli_calls": 0,
+          "native_api_calls": 18,
+          "cgroup_cpu_usage_usec": 180188,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 12,
+          "server_rss_kib": 214156,
+          "server_peak_rss_kib": 214156,
+          "peak_sampled_server_rss_kib": 214156,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-332",
+              "status": 200,
+              "elapsed_ms": 144.45071800000005,
+              "response_body_bytes": 463
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 3,
+          "native_produced_response_body_bytes": 4196924,
+          "native_returned_objects_including_retries": 3
+        },
+        {
+          "name": "all-alias-metadata",
+          "elapsed_ms": 26.38388600000326,
+          "cli_calls": 0,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 46023,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 1,
+          "server_rss_kib": 214348,
+          "server_peak_rss_kib": 214348,
+          "peak_sampled_server_rss_kib": 214348,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-333",
+              "status": 200,
+              "elapsed_ms": 23.076450000000477,
+              "response_body_bytes": 59713
+            }
+          ],
+          "equivalent_expected_inventory": true,
+          "expected_count": 603
+        },
+        {
+          "name": "readiness-five-sequential",
+          "elapsed_ms": 679.9918360000011,
+          "cli_calls": 0,
+          "native_api_calls": 90,
+          "cgroup_cpu_usage_usec": 1009613,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 57,
+          "server_rss_kib": 247124,
+          "server_peak_rss_kib": 249768,
+          "peak_sampled_server_rss_kib": 247124,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-334",
+              "status": 200,
+              "elapsed_ms": 165.7602229999975,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-335",
+              "status": 200,
+              "elapsed_ms": 137.029939,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-336",
+              "status": 200,
+              "elapsed_ms": 155.42055099999925,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-337",
+              "status": 200,
+              "elapsed_ms": 103.04500899999766,
+              "response_body_bytes": 18
+            },
+            {
+              "request_id": "native-diag-338",
+              "status": 200,
+              "elapsed_ms": 115.50793500000145,
+              "response_body_bytes": 18
+            }
+          ],
+          "native_metadata_only_calls": 0,
+          "native_produced_response_body_bytes": 20984620
+        },
+        {
+          "name": "cold-pods-concurrent-20",
+          "elapsed_ms": 234.68675700000313,
+          "cli_calls": 10,
+          "native_api_calls": 0,
+          "cgroup_cpu_usage_usec": 410120,
+          "cgroup_throttled_usec": 0,
+          "server_cpu_ticks": 12,
+          "server_rss_kib": 194232,
+          "server_peak_rss_kib": 194232,
+          "peak_sampled_server_rss_kib": 194232,
+          "observed_process_count_max": 12,
+          "requests": [
+            {
+              "request_id": "native-diag-340",
+              "status": 200,
+              "elapsed_ms": 231.47308299999713,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-341",
+              "status": 200,
+              "elapsed_ms": 231.4033930000005,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-342",
+              "status": 200,
+              "elapsed_ms": 231.4130029999942,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-343",
+              "status": 200,
+              "elapsed_ms": 231.35010399999737,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-344",
+              "status": 200,
+              "elapsed_ms": 231.32008300000598,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-345",
+              "status": 200,
+              "elapsed_ms": 231.298103000001,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-346",
+              "status": 200,
+              "elapsed_ms": 231.27617399999872,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-347",
+              "status": 200,
+              "elapsed_ms": 231.3151149999976,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-348",
+              "status": 200,
+              "elapsed_ms": 228.39470000000438,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-349",
+              "status": 200,
+              "elapsed_ms": 228.5048900000038,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-350",
+              "status": 200,
+              "elapsed_ms": 228.59580000000278,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-351",
+              "status": 200,
+              "elapsed_ms": 228.66219999999885,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-352",
+              "status": 200,
+              "elapsed_ms": 228.7880890000015,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-353",
+              "status": 200,
+              "elapsed_ms": 228.85138999999617,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-354",
+              "status": 200,
+              "elapsed_ms": 228.9249889999992,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-355",
+              "status": 200,
+              "elapsed_ms": 228.95202900000004,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-356",
+              "status": 200,
+              "elapsed_ms": 228.99410799999896,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-357",
+              "status": 200,
+              "elapsed_ms": 229.00693899999897,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-358",
+              "status": 200,
+              "elapsed_ms": 229.04547900000034,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            },
+            {
+              "request_id": "native-diag-359",
+              "status": 200,
+              "elapsed_ms": 229.09361799999897,
+              "response_body_bytes": 653,
+              "equivalent_expected_inventory": true,
+              "returned_count": 3
+            }
+          ]
+        }
+      ],
+      "startups": [
+        {
+          "ready_and_session_ms": 1167.0259779999978,
+          "port": 39561
+        },
+        {
+          "ready_and_session_ms": 1308.528632999998,
+          "port": 39797
+        }
+      ],
+      "process_before_restart": {
+        "rss_kib": 247124,
+        "peak_rss_kib": 249768,
+        "threads": 14,
+        "cpu_ticks": 228
+      },
+      "steady_rss_kib": {
+        "n": 20,
+        "min": 193804,
+        "p50": 214540,
+        "p95": 246696,
+        "max": 247124
+      },
+      "process_after_concurrency": {
+        "rss_kib": 194232,
+        "peak_rss_kib": 194232,
+        "threads": 14,
+        "cpu_ticks": 164
+      },
+      "completed": true
+    }
+  ],
+  "failures": [],
+  "definitions": {
+    "cold": "Fresh Next process, /api/auth/session initialized, no cluster resource request; OS/file caches not flushed",
+    "warm": "Same process immediately after one successful identical resource read",
+    "cli_delay_ms": 50,
+    "native_delay_ms": 12,
+    "warm_samples": 12,
+    "concurrency": 20,
+    "percentile": "nearest rank ceil(p*n)-1",
+    "rss_sample_interval_ms": 50,
+    "cgroup_scope": "Whole runtime fixture container: driver/native API/Next/Prisma/fake CLI/file cache; not server-only RSS",
+    "fixture_payloads_persisted_in_evidence": false,
+    "max_response_body_bytes": 33554432,
+    "request_deadline_ms": 20000,
+    "startup_deadline_ms": 30000,
+    "run_wall_deadline_seconds": 540
+  },
+  "enforced_limits": {
+    "memory_max": "1073741824",
+    "swap_max": "0",
+    "cpu_max": "200000 100000",
+    "cpuset": "0-1",
+    "pids_max": "256"
+  },
+  "clock_ticks_per_second": 100,
+  "native_port": 38361,
+  "diagnostic_only": true,
+  "source_commit": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "cgroup_cpu": {
+    "usage_usec": 38888902,
+    "user_usec": 30713140,
+    "system_usec": 8175761,
+    "nr_periods": 334,
+    "nr_throttled": 1,
+    "throttled_usec": 3520,
+    "nr_bursts": 0,
+    "burst_usec": 0
+  },
+  "cgroup_memory_current_bytes": 313671680,
+  "cgroup_memory_peak_bytes": 384757760,
+  "cgroup_memory_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+  "passed": true
+}
