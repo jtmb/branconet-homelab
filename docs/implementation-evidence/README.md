@@ -195,3 +195,6 @@ Deployment action argument validation: [qualified local route controls](deployme
 
 
 Resource mutation lifecycle evidence is being qualified separately from immutable log-choice/A04 receipts. Exact2949 menu bytes and the new local held-mutation negative are retained outside Git; terminal1 proves late refetch/onAction after withdrawal. Candidate source adds owned request/settlement fences only. Eleven focused actual-source checks, fresh types and selected lint passed; the initial two failures and first lint failure are retained. See [the source-bound matrix and qualification](resource-mutation-lifecycle/qualification.json). Fresh production-browser/build gates are still separate; no original A05 clause or performance gate is relaxed.
+
+
+The YAML save rendered-identity follow-up is separate from the immutable59ce11-check package. The new deferred-effect fixture reproduces replacement/ABA late-close on that exact source; one ordinary callback-rerender control passes. Candidate ownership adds immediate open/yaml/title/readOnly identity fencing without comparing callback functions. Three new deferred-effect checks/all14 affected hook checks, fresh types and selected lint passed; [separate qualification](yaml-save-render-identity/qualification.json) retains the actual negative and byte binding; no production/browser/performance pass is inferred.

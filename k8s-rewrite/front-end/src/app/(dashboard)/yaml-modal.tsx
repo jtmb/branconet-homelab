@@ -13,6 +13,9 @@ export default function YamlModal({ open, onClose, yaml, title, readOnly = true,
   const [error, setError] = useState("");
   const [discard, setDiscard] = useState(false);
   const generation = useRef(0);
+  const identity = useRef({ open, yaml, title, readOnly });
+  if (identity.current.open !== open || identity.current.yaml !== yaml || identity.current.title !== title || identity.current.readOnly !== readOnly)
+    identity.current = { open, yaml, title, readOnly };
   useEffect(() => {
     const owner = ++generation.current;
     setEditing(false); setContent(yaml); setSaving(false); setError(""); setDiscard(false);
@@ -26,10 +29,12 @@ export default function YamlModal({ open, onClose, yaml, title, readOnly = true,
   const save = async () => {
     if (!canEdit || !onSave || !dirty || saving) return;
     const owner = generation.current;
+    const rendered = identity.current;
+    const owns = () => generation.current === owner && identity.current === rendered;
     setSaving(true); setError("");
-    try { await onSave(content); if (generation.current === owner) onClose(); }
-    catch (failure) { if (generation.current === owner) setError(failure instanceof Error ? failure.message : "Save failed"); }
-    finally { if (generation.current === owner) setSaving(false); }
+    try { await onSave(content); if (owns()) onClose(); }
+    catch (failure) { if (owns()) setError(failure instanceof Error ? failure.message : "Save failed"); }
+    finally { if (owns()) setSaving(false); }
   };
   return <Modal open={open} onClose={close} title={title} returnFocus={returnFocus}
     description={canEdit ? "Replacement requires the displayed resourceVersion. Refresh after a conflict." : "Read-only YAML."}
