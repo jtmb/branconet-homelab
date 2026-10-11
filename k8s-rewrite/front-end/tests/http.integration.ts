@@ -36,6 +36,7 @@ test(
     let child: ChildProcess | undefined,
       db: PrismaClient | undefined,
       output = "";
+    let phase = "fixture-setup";
     try {
       const fixture = await fakeKubectl(dir);
       Object.assign(env, fixture.env);
@@ -133,6 +134,7 @@ test(
           stdio: ["ignore", "pipe", "pipe"],
         },
       );
+      console.log("HTTP_FIXTURE_PROCESS " + JSON.stringify({ pid: child.pid }));
       child.stdout?.on("data", (chunk) => {
         output += chunk.toString();
       });
@@ -151,7 +153,9 @@ test(
         await new Promise((resolve) => setTimeout(resolve, 100));
       }
       assert.ok(started, "production server did not start");
+      phase = "unauthenticated-secrets";
       assert.equal((await fetch(`${base}/api/secrets`)).status, 401);
+      phase = "unauthenticated-lookup";
       assert.equal(
         (await fetch(`${base}/api/vars/lookup?key=k8s_version`)).status,
         401,
@@ -173,6 +177,7 @@ test(
           body: data === undefined ? undefined : JSON.stringify(data),
         });
       // Exercise the actual route's bootstrap race before the remaining fixture setup.
+      phase = "bootstrap-and-authorized-flow";
       const bootstrap = await Promise.all(Array.from({ length: 4 }, (_, i) => request("/api/auth/register", "POST", {
         username: `race_bootstrap_${i}`, password: "fake-test-password",
       })));
@@ -705,11 +710,22 @@ test(
           !output.includes("fake unmapped DB marker") &&
           !output.includes("fake-test-password") && !output.includes("private-command"),
       );
+    } catch (error) {
+      const cause = error instanceof Error ? error.cause : undefined;
+      const code = cause && typeof cause === "object" && "code" in cause ? cause.code : null;
+      const allowedCodes = ["ECONNREFUSED", "ECONNRESET", "EPIPE", "UND_ERR_SOCKET", "UND_ERR_CONNECT_TIMEOUT", "UND_ERR_HEADERS_TIMEOUT", "UND_ERR_BODY_TIMEOUT"];
+      const frames = [...output.matchAll(/\bat\s+(?:([A-Za-z0-9_.$]+)\s+\()?([^\r\n()]+?\.js):(\d+):(\d+)\)?/g)]
+        .filter(frame => /[\\/]\.next[\\/]|[\\/]next[\\/]dist[\\/]/.test(frame[2]))
+        .map(frame => ({ module: path.basename(frame[2].replaceAll("\\", "/")), function: frame[1] ?? "anonymous", line: Number(frame[3]), column: Number(frame[4]) }))
+        .filter(frame => /^[A-Za-z0-9_.\[\]-]+$/.test(frame.module)).slice(-12);
+      console.log("HTTP_CONNECTION_DIAGNOSTIC " + JSON.stringify({ phase, causeCode: typeof code === "string" && allowedCodes.includes(code) ? code : null, childPid: child?.pid, childExitCode: child?.exitCode, childSignal: child?.signalCode, frames }));
+      throw error;
     } finally {
       if (child && child.exitCode === null) {
         child.kill();
         await once(child, "exit");
       }
+      console.log("HTTP_FIXTURE_CLEANUP " + JSON.stringify({ pid: child?.pid, exitCode: child?.exitCode, signal: child?.signalCode }));
       await db?.$disconnect();
       await rm(dir, { recursive: true, force: true });
     }

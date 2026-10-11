@@ -111,70 +111,30 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
     promptLength.current = 2; // "$ " after the ANSI codes
   }, [write]);
 
-  // Build contextual welcome banner
+  // Public instructions wrap at the fitted terminal width; identities are never truncated.
   const writeWelcomeBanner = useCallback(() => {
     const term = terminalRef.current;
     if (!term) return;
-    const titleText = namespace && podName
-      ? `kubectl exec — ${namespace}/${podName}`
-      : "kubectl Shell — Botrus K8s";
-    const hintText = namespace && podName
-      ? "Type commands to run inside the pod"
-      : "Working directory: /home/shell";
-    const exampleText = namespace && podName
-      ? "e.g. ls -la, cat /etc/hosts, ps aux"
-      : "e.g. ls, kubectl get pods -A, cat file.txt";
-
-    // Content width inside the box: ║___<content>║
-    // Box is 44 chars wide (╔ + 42×═ + ╗), so content = 44 - 1(║) - 3(margin) - 1(║) = 39
-    const BOX_W = 39;
-
-    /** Visual display width — accounts for East Asian double-width characters */
-    const visualWidth = (s: string): number => {
-      let w = 0;
-      for (const ch of s) {
-        const cp = ch.codePointAt(0) ?? 0;
-        // East Asian Wide & Fullwidth ranges (CJK, box drawing, etc.)
-        // Arrows (0x2190-0x21FF) are Ambiguous but xterm.js renders them single-width here.
-        if (
-          (cp >= 0x2500 && cp <= 0x257F) || // box drawing (╔═║ etc.)
-          (cp >= 0x2E80 && cp <= 0x9FFF) || // CJK Radicals through CJK Unified
-          (cp >= 0xFF01 && cp <= 0xFFE6)    // Fullwidth forms
-        ) {
-          w += 2;
-        } else {
-          w += 1;
-        }
+    const lines = [
+      namespace && podName ? "Pod command runner" : "Operator command runner",
+      namespace && podName ? `${namespace}/${podName}` : "Application-host commands",
+      "One command per request.",
+      "No interactive PTY.",
+      "Clear erases local input/history.",
+      "Ctrl+C stops the client request.",
+      "Inspect server state before retrying.",
+    ];
+    const width = Math.max(2, term.cols);
+    for (const text of lines) {
+      let remaining = text;
+      while (remaining.length > width) {
+        const space = remaining.lastIndexOf(" ", width);
+        const end = space > 0 ? space : width;
+        term.writeln(remaining.slice(0, end));
+        remaining = remaining.slice(end).trimStart();
       }
-      return w;
-    };
-
-    const padBox = (s: string): string => {
-      // Strip ANSI for visual width calculation
-      const plain = s.replace(/\x1b\[[0-9;]*m/g, "");
-      const vw = visualWidth(plain);
-      if (vw > BOX_W) {
-        // Truncate — walk chars keeping count until BOX_W - 1, then append …
-        let acc = 0;
-        let i = 0;
-        for (const ch of plain) {
-          acc += visualWidth(ch);
-          i++;
-          if (acc >= BOX_W - 1) break;
-        }
-        return plain.slice(0, i) + "…";
-      }
-      return s + " ".repeat(BOX_W - vw);
-    };
-
-    const shortcutsLine = padBox("clear  ctrl+c  ctrl+l  ↑↓ history");
-
-    term.writeln("\x1b[1;36m╔══════════════════════════════════════════╗\x1b[0m");
-    term.writeln(`\x1b[1;36m║\x1b[0m   \x1b[1;33m${padBox(titleText)}\x1b[1;36m║\x1b[0m`);
-    term.writeln(`\x1b[1;36m║\x1b[0m   ${padBox(hintText)}\x1b[1;36m║\x1b[0m`);
-    term.writeln(`\x1b[1;36m║\x1b[0m   ${padBox(exampleText)}\x1b[1;36m║\x1b[0m`);
-    term.writeln(`\x1b[1;36m║\x1b[0m   ${shortcutsLine}\x1b[0m\x1b[1;36m║\x1b[0m`);
-    term.writeln("\x1b[1;36m╚══════════════════════════════════════════╝\x1b[0m");
+      term.writeln(remaining);
+    }
   }, [namespace, podName]);
 
   // Send command to API
@@ -309,6 +269,7 @@ export default function KubectlShell({ open, onClose, onMinimize, namespace, pod
 
     try {
       term.open(containerRef.current);
+      fitAddon.fit();
       term.textarea?.setAttribute("aria-label", namespace && podName ? `Command input for ${namespace}/${podName}` : "Operator command input");
       term.focus();
     } catch {

@@ -1,0 +1,146 @@
+{
+  "startedAt": "2026-10-11T06:03:59.197Z",
+  "scope": "Actual disposable local application routes, real chrome.tabs zoom, owned existing bundled Chromium/profile; no viewport/DPR/CSS zoom emulation",
+  "checks": [
+    {
+      "name": "Actual2x zoom, unchanged browser window and public four-corner full-surface screenshot preflight",
+      "capture": "legacyClip"
+    }
+  ],
+  "failures": [
+    "The expression evaluated to a falsy value:\n\n  assert(loadingFit.top>=0&&loadingFit.bottom<=loadingFit.height)\n"
+  ],
+  "terminal": true,
+  "ownedProcesses": {
+    "fixturePid": 36124,
+    "chromePid": 36276
+  },
+  "extension": {
+    "hostScope": "http://127.0.0.1/*",
+    "noContentScriptsOrStorage": true,
+    "manifestSha256": "e0ae37941aa2f778a9aede9c082ec574125050bb6e08957da016cea46da8f379",
+    "workerSha256": "c10954d02ec31b7c20ee5225c1b8e7feceedde9e5d91fc40e171b3415c753770"
+  },
+  "browserVersion": "149.0.7827.55",
+  "preflight": {
+    "before": {
+      "cssWidth": 984,
+      "cssHeight": 749,
+      "clientWidth": 984,
+      "scrollWidth": 984,
+      "dpr": 1,
+      "outerWidth": 1000,
+      "outerHeight": 900
+    },
+    "after": {
+      "cssWidth": 492,
+      "cssHeight": 374,
+      "clientWidth": 487,
+      "scrollWidth": 487,
+      "dpr": 2,
+      "outerWidth": 1000,
+      "outerHeight": 900
+    },
+    "actual": {
+      "before": {
+        "factor": 1,
+        "window": {
+          "left": 10,
+          "top": 10,
+          "width": 1000,
+          "height": 900,
+          "state": "normal"
+        }
+      },
+      "after": {
+        "factor": 2,
+        "window": {
+          "left": 10,
+          "top": 10,
+          "width": 1000,
+          "height": 900,
+          "state": "normal"
+        }
+      }
+    },
+    "layout": {
+      "layoutViewport": {
+        "pageX": 0,
+        "pageY": 0,
+        "clientWidth": 984,
+        "clientHeight": 749
+      },
+      "cssLayoutViewport": {
+        "pageX": 0,
+        "pageY": 0,
+        "clientWidth": 492,
+        "clientHeight": 374
+      }
+    },
+    "attempts": [
+      {
+        "method": "legacyClip",
+        "width": 984,
+        "height": 749,
+        "corners": [
+          [
+            255,
+            0,
+            0
+          ],
+          [
+            0,
+            255,
+            0
+          ],
+          [
+            0,
+            0,
+            255
+          ],
+          [
+            255,
+            255,
+            0
+          ]
+        ],
+        "whole": true
+      }
+    ]
+  },
+  "loadingDiagnostic": {
+    "loadingFit": {
+      "left": 56,
+      "right": 487,
+      "top": 330.5,
+      "bottom": 374.5,
+      "width": 492,
+      "height": 374,
+      "focusInside": false
+    },
+    "precise": {
+      "visual": {
+        "width": 487,
+        "height": 374.5,
+        "offsetLeft": 0,
+        "offsetTop": 0
+      },
+      "innerWidth": 492,
+      "innerHeight": 374,
+      "clientWidth": 487,
+      "clientHeight": 374
+    }
+  },
+  "loadingImage": {
+    "width": 974,
+    "height": 749,
+    "capture": "legacyClip"
+  },
+  "cleanup": {
+    "chromeExitCode": 0,
+    "chromeSignal": null,
+    "fixtureExitCode": 0,
+    "fixtureSignal": null
+  },
+  "completedAt": "2026-10-11T06:04:07.811Z"
+}

@@ -60,7 +60,13 @@ try{
   const hasProbe=()=>region.evaluate(el=>el.querySelector('.xterm-accessibility')?.textContent.includes('PUBLIC_UNSUBMITTED_PROBE')??false);
   await until(hasProbe,'Public unsent input was not exposed in accessibility supporting DOM');
   await region.getByRole('button',{name:'Clear terminal',exact:true}).click();await until(async()=>!await hasProbe(),'Active Clear retained unsent input');assert(await input.evaluate(el=>el===document.activeElement));
-  const separator=region.getByRole('separator',{name:'Terminal height',exact:true});await separator.focus();await page.keyboard.press('Home');assert.equal(await separator.getAttribute('aria-valuenow'),'20');await page.keyboard.press('ArrowUp');assert.equal(await separator.getAttribute('aria-valuenow'),'25');await page.keyboard.press('End');assert.equal(await separator.getAttribute('aria-valuenow'),'80');await page.keyboard.press('Home');
+  const separator=region.getByRole('separator',{name:'Terminal height',exact:true});await separator.focus();await page.keyboard.press('Home');assert.equal(await separator.getAttribute('aria-valuenow'),'20');await page.keyboard.press('ArrowUp');assert.equal(await separator.getAttribute('aria-valuenow'),'25');await page.keyboard.press('End');assert.equal(await separator.getAttribute('aria-valuenow'),'80');
+  await region.getByRole('button',{name:'Clear terminal',exact:true}).click();
+  const expectedWelcome=['Pod command runner','apps/large-pod-0','One command per request.','No interactive PTY.','Clear erases local input/history.','Ctrl+C stops the client request.','Inspect server state before retrying.'];
+  await until(async()=>region.evaluate((el,lines)=>{const text=el.querySelector('.xterm-accessibility')?.textContent?.replace(/\s/g,'')??'';return lines.every(line=>text.includes(line.replace(/\s/g,'')));},expectedWelcome),'Complete public mobile instructions missing');
+  report.publicWelcome={complete:true,width:390,heightPercent:80,identityComplete:true,noDecorativeBox:await region.evaluate(el=>!/[╔═║╗╚╝]/.test(el.querySelector('.xterm-accessibility')?.textContent??''))};assert(report.publicWelcome.noDecorativeBox);
+  await page.screenshot({path:'../../docs/implementation-evidence/terminal-public-welcome-mobile.png'});
+  await separator.focus();await page.keyboard.press('Home');
   report.checks.push({name:'Keyboard restore/input focus, active Clear erases unsent buffer, keyboard height20→25→80→20; minimized no fake Clear'});save();
   const second=page.getByRole('button',{name:'Actions for large-pod-1',exact:true});await second.click();await page.getByRole('menuitem',{name:'Execute Shell',exact:true}).click();
   await page.getByRole('textbox',{name:'Command input for apps/large-pod-1',exact:true}).waitFor();
