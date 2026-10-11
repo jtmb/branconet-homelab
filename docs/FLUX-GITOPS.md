@@ -187,3 +187,30 @@ checks pass. A prior 11:55:11 read caught four releases still reconciling their
 unchanged packages; that actual nonpassing observation remains recorded. No
 manual reconciliation, application restart, image upgrade, guard or adoption
 was dispatched. The original completed cold checkpoint and data remain retained.
+
+
+## 2026-10-11 13:48 UTC: legacy digest CI→Flux rollout verified
+
+The [actual rollout receipt](../evidence/bortus-legacy-digest-flux-rollout-20261011.json)
+records PR #2 merged as `182eafd4da4cda56b2a846d0c5f067e527eb79c4`.
+Its tree exactly equals reviewed head `f15f1e03`; main run `38144292988`
+completed validation and promotion successfully. Flux source and migration
+owner are Ready at that exact validated revision with prune/force false.
+BORTUS HelmRelease is resumed, UpgradeSucceeded at generation9. Its sole Ready
+writer is `bortus-5c55f6d5b5-67mnk` on workernode2, with literal spec and
+actual imageID `docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879`.
+The complete PodList shows the previous writer name and UID absent. This
+supersedes the earlier mutable-tag/config-only writer observation.
+
+Deployment, Flux owner/source, HelmRelease, PVC/PV and external principal UIDs
+are preserved. The claim remains Bound, its PV Retain, and Longhorn is encrypted
+and healthy with two running replicas. Existing credential references and the
+legacy service account remain unchanged. The external `bortus-kv` principal
+still has zero grants and automount false; all six guard objects remain absent.
+All three nodes and the other33 releases are Ready with current observed
+generations. No manual reconcile, native Secret value or production DB read was
+used. This is accepted-artifact maintenance, not production-row restoration,
+schema-forward, new KV adoption, final app security/performance or live auth/UI
+acceptance. Next guard publication must separately resuspend BORTUS and retain
+both accepted legacy and qualified inert images only for pre-schema restoration;
+legacy must leave all allowlists before any forward-schema entrypoint.
