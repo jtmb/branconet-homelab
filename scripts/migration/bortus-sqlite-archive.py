@@ -24,7 +24,7 @@ async function header(o){const b=Buffer.from(JSON.stringify(o));const n=Buffer.a
  await put(Buffer.from('BORTUS1\n'));let total=0;const found=[],missing=[];
  for(const name of names){
   const path='/data/'+name;let fd;
-  try{fd=fs.openSync(path,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW);}
+  try{fd=fs.openSync(path,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW|fs.constants.O_NONBLOCK);}
   catch(e){if(e.code==='ENOENT'&&name!=='bortus.db'){missing.push(path);continue;}throw new Error('READ_FAILED');}
   try{
    const before=fs.fstatSync(fd,{bigint:true}),size=Number(before.size);

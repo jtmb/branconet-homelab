@@ -46,17 +46,17 @@ class NodeReaderTests(unittest.TestCase):
             if found.returncode == 0:
                 container = json.loads(found.stdout)[0]
                 self.assertEqual(container['Config']['Labels'].get('bortus.reader-fixture'), name)
-                subprocess.run(['docker', 'rm', '-f', name], check=True,
+                subprocess.run(['docker', 'rm', '-f', container['Id']], check=True,
                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=5)
             raise
         finally:
             for stream in (process.stdin, process.stdout, process.stderr):
                 if stream and not stream.closed:
                     stream.close()
-        self.assertIsNotNone(process.poll())
-        remaining = subprocess.run(['docker', 'ps', '-aq', '--filter', 'name=^/' + name + '$'],
-            capture_output=True, check=True, timeout=5)
-        self.assertEqual(remaining.stdout.strip(), b'')
+            self.assertIsNotNone(process.poll())
+            remaining = subprocess.run(['docker', 'ps', '-aq', '--filter', 'name=^/' + name + '$'],
+                capture_output=True, check=True, timeout=5)
+            self.assertEqual(remaining.stdout.strip(), b'')
         return process.returncode, output, error
 
     def database(self, folder):
@@ -88,7 +88,7 @@ class NodeReaderTests(unittest.TestCase):
             self.assertEqual(restored.getvalue(), output)
 
     def test_actual_reader_missing_database_symlink_nonfile_and_oversize_refused(self):
-        for case in ('missing', 'symlink-database', 'symlink-sidecar', 'nonfile', 'oversize'):
+        for case in ('missing', 'symlink-database', 'symlink-sidecar', 'nonfile', 'oversize', 'fifo'):
             with self.subTest(case=case), tempfile.TemporaryDirectory() as temp:
                 folder = pathlib.Path(temp)
                 if case != 'missing':
@@ -101,6 +101,8 @@ class NodeReaderTests(unittest.TestCase):
                     (folder / 'bortus.db-wal').symlink_to('public.wal')
                 elif case == 'nonfile':
                     (folder / 'bortus.db-wal').mkdir()
+                elif case == 'fifo':
+                    os.mkfifo(folder / 'bortus.db-wal')
                 elif case == 'oversize':
                     with (folder / 'bortus.db-wal').open('wb') as stream:
                         stream.truncate(archive.MAX_FILE + 1)
