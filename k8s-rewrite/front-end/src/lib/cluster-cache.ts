@@ -106,7 +106,7 @@ async function fetchAllClusterData(resources: readonly ClusterResource[]): Promi
     longhornVolumes = longhornResult.items.length;
     healthyVolumes = longhornResult.items.filter(
       (v: any) =>
-        v.status?.state === "attached" || v.status?.robustness === "healthy"
+        v.status?.robustness === "healthy"
     ).length;
   }
 
