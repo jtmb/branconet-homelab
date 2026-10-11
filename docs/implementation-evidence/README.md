@@ -125,3 +125,6 @@ The displayed destroy UID stage is recorded in [kv-identity-qualification.json](
 
 `optional-code-qualification.json` preserves both initial cache/oracle attempts, exact public chunks and12 actual mobile cold/warm samples from unchanged production; modern CDP cache-event/wire assertions and opt-in real Next asset forwarding keep production cache/encoding observable. Local timings characterize current source only. Source-only fixture/harness changes passed lint/types; no new build/unit/HTTP or first-terminal/image/live pass is inferred.
 Current [coherent terminal and real-zoom qualification](terminal-final-qualification.json) retains the first failed HTTP group, affected diagnostic and actual passing four-suite group,196 units/build/lint/types,11terminal checks/six fixed-mobile contribution samples and four genuine2x checks. Corrected scrolled full-surface captures and exact qualified working sources are separately bound; actualAT/frozenperformance/OCI/runner/live gates remain open.
+
+
+[32eb227e unchanged comparison and Linux functional receipt](paired-32eb227e-qualification.json) retains complete raw six-profile/three-pair reports, exact frozen modes/source blobs, all196Linuxunits/fourHTTP, first missing-fixture and Docker prerequisite failures, durable terminal/cleanup and nonpassing overall performance. This is not final image/live/AT acceptance.
