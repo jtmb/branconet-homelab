@@ -10,6 +10,14 @@ write. Their files are exclusive mode 0600. Pinned nofollow directory/file
 identities and file/directory/parent fsyncs precede dispatch. Existing runs are
 never reopened, overwritten, adopted or replayed.
 
+After manual inspection of a retained failed attempt, the migration owner may
+explicitly authorize a fresh preload with `--attempt-id <unique-lowercase-12hex>`.
+This optional preload-only ID appends `-attempt-<id>` to both the root run and
+each remote stage, and is bound in the closed request, reply and receipts. It
+does not change the immutable image/tag or bypass tag absence checks. Reusing
+the same attempt, an existing stage or a destination release tag still refuses.
+There is no automatic retry; the omitted-ID default paths remain unchanged.
+
 Export first checks the exact Docker tag's config ID and all five source/owner
 labels on `james@192.168.0.4:2002`. A durable pending receipt precedes Docker
 save of that tag. Received archive chunks are bounded and written directly to
@@ -46,6 +54,11 @@ pinned `--export-sha256`. The caller supplies only a bounded JSON line with
 value in arguments, shell history, files, reports or logs. This tool does not
 read operator credential files. The password passes only in memory through
 SSH stdin to `sudo -S -p '' -v`; subsequent containerd commands use `sudo -n`.
+Authorization and those commands share the remote Python session so sudo's
+session-scoped timestamp remains usable. Timeouts kill only the newly owned
+command PID; they never signal the shared session/process group. SSH's own
+local process ownership remains separate. A successful authorization does not
+prove that a later policy/expiry check will permit a command.
 No interactive prompt or alternate auth fallback is offered. Python cannot
 guarantee zeroization of immutable password objects; no such claim is made.
 
@@ -92,6 +105,13 @@ fixed-image distribution/recovery receipts remain historical.
 Local fixtures exercise public archives and actual POSIX persistence with
 mocked Docker, SSH, sudo and ctr responses. They establish tooling behavior,
 not a real export/import, power-loss durability or runtime acceptance.
+
+The first actual immutable holder preload stopped before transfer/import when
+the old remote commands created new sessions after sudo authorization. Its
+protected root/node refused or uncertain records remain retained. Local Python
+child tests reproduce the session mismatch and qualify shared-session handling;
+they do not execute sudo, SSH, ctr or an operator password. Actual new preload
+and holder/runtime acceptance remain with the migration owner.
 
 Root independently verifies selected native commit `15fb94ba`: seven exact raw
 files/modes, 86 original artifacts, both unchanged dependencies and the final

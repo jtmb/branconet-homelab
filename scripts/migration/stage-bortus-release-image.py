@@ -26,9 +26,10 @@ def require(ok, code): b.require(ok, code)
 
 
 class OperationRun(b.Run):
-    def __init__(self, parent, commit, purpose):
+    def __init__(self, parent, commit, purpose, attempt_id=None):
         require(os.name == 'posix' and b.hexid(commit, 40) and purpose in ('export', 'preload'), 'operation')
-        self.parent = pathlib.Path(parent); self.name = 'bortus-' + purpose + '-' + commit
+        require(attempt_id is None or (purpose == 'preload' and b.hexid(attempt_id, 12)), 'attempt')
+        self.parent = pathlib.Path(parent); self.name = 'bortus-' + purpose + '-' + commit + (('-attempt-' + attempt_id) if attempt_id is not None else '')
         self.directory = self.parent / self.name; self.parent_fd = self.fd = None; self.anchors = []
         try:
             require(self.parent.is_absolute() and len(self.parent.parts) <= 32 and '..' not in self.parent.parts, 'runtime_parent')
@@ -47,6 +48,7 @@ class OperationRun(b.Run):
                 'owner': str(uuid.uuid4()), 'source_commit': commit, 'image_tag': 'bortus:release-' + commit,
                 'purpose': purpose, 'phase': 'validating', 'started_at_utc': b.now(), 'runtime_qualified': False,
                 'deployed': False, 'nodes': []}
+            if attempt_id is not None: self.record['attempt_id'] = attempt_id
             self.save()
         except Exception:
             self.close(); raise
@@ -264,9 +266,9 @@ def preload_execute(run, host, request, archive):
 
 
 def preload(build_receipt, receipt_sha, export_receipt, export_sha, commit, config_id, runtime_parent,
-            password, invoke=preload_execute):
+            password, invoke=preload_execute, *, attempt_id=None):
     require(type(password) is str and 0 < len(password.encode()) <= 4096 and not any(c in password for c in '\0\r\n'), 'stdin_authorization')
-    run = OperationRun(runtime_parent, commit, 'preload'); failure = None; dispatched = False; request = None
+    run = OperationRun(runtime_parent, commit, 'preload', attempt_id=attempt_id); failure = None; dispatched = False; request = None
     try:
         receipt(run, build_receipt, receipt_sha, commit, config_id)
         run.copy_input(export_receipt, 'export-receipt.json', MAX_METADATA)
@@ -291,12 +293,14 @@ def preload(build_receipt, receipt_sha, export_receipt, export_sha, commit, conf
             request = {'sudo_password': password, 'source_commit': commit, 'config_image_id': config_id,
                 'labels': run.record['labels'], 'archive_sha256': verified['archive_sha256'], 'archive_bytes': verified['archive_bytes'],
                 'layer_blob_digests': verified['layer_blob_digests'], 'ordered_diff_ids': verified['ordered_diff_ids']}
+            if attempt_id is not None: request['attempt_id'] = attempt_id
             require(len((json.dumps(request) + '\n').encode()) <= 256 * 1024, 'node_request_bound')
             with run.open_input('image.tar', verified['archive_sha256']) as stream:
                 dispatched = True; reply = invoke(run, host, request, stream); run.check_input('image.tar', stream.fileno())
             request.clear()
             require(type(reply) is dict and set(reply) == {'phase', 'source_commit', 'config_image_id', 'runtime_manifest_digest',
-                'selected_manifest_digest', 'archive_sha256', 'archive_bytes', 'labels', 'import_exit_code', 'runtime_qualified'} and
+                'selected_manifest_digest', 'archive_sha256', 'archive_bytes', 'labels', 'import_exit_code', 'runtime_qualified'} | ({'attempt_id'} if attempt_id is not None else set()) and
+                (attempt_id is None or reply['attempt_id'] == attempt_id) and
                 reply['phase'] == 'completed' and reply['source_commit'] == commit and reply['config_image_id'] == config_id and
                 reply['labels'] == run.record['labels'] and reply['archive_sha256'] == verified['archive_sha256'] and
                 type(reply['archive_bytes']) is int and reply['archive_bytes'] == verified['archive_bytes'] and type(reply['import_exit_code']) is int and
@@ -323,15 +327,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('operation', choices=('export', 'preload'))
     for name in ('build-receipt', 'receipt-sha256', 'source-commit', 'config-image-id', 'runtime-parent'):
         parser.add_argument('--' + name, required=True)
-    parser.add_argument('--export-receipt'); parser.add_argument('--export-sha256'); args = parser.parse_args()
+    parser.add_argument('--export-receipt'); parser.add_argument('--export-sha256'); parser.add_argument('--attempt-id'); args = parser.parse_args()
     try:
         values = [args.build_receipt, args.receipt_sha256, args.source_commit, args.config_image_id, args.runtime_parent]
+        require(args.operation == 'preload' or args.attempt_id is None, 'attempt')
         if args.operation == 'export': result = export_image(*values, invoke=export_execute)
         else:
             raw = __import__('sys').stdin.buffer.readline(8193); require(0 < len(raw) <= 8192 and raw.endswith(b'\n'), 'stdin_request')
             request = json.loads(raw, object_pairs_hook=b.unique); require(type(request) is dict and set(request) == {'sudo_password'}, 'stdin_request')
             result = preload(args.build_receipt, args.receipt_sha256, args.export_receipt, args.export_sha256,
-                args.source_commit, args.config_image_id, args.runtime_parent, request.pop('sudo_password'))
+                args.source_commit, args.config_image_id, args.runtime_parent, request.pop('sudo_password'), attempt_id=args.attempt_id)
             raw = None
         print(json.dumps({k: result[k] for k in ('phase', 'source_commit', 'image_tag', 'config_image_id', 'runtime_qualified', 'deployed')})); return 0
     except Exception:

@@ -1,0 +1,59 @@
+{
+  "scope": "Actual first immutable holder preload failure; no destination archive or import on first node",
+  "source_commit": "7e30b9b428a66cd3f5e618cec5e694d5f03302ac",
+  "config_image_id": "sha256:4412cd43c4e075ad27e58e8e5fc12220f53d68bd139c4cab8081edf653d2bc7d",
+  "actual_root_exit": 1,
+  "root_phase": "uncertain",
+  "root_failure": "preload_stream",
+  "root_owned_pid": 1925090,
+  "root_owned_start_ticks": "21063366",
+  "owned_child_reaped_and_absent": true,
+  "first_node": {
+    "home": "/home/james",
+    "stage_exists": true,
+    "anchor_modes": [
+      {
+        "path": "/home",
+        "uid": 0,
+        "mode": "0o755"
+      },
+      {
+        "path": "/home/james",
+        "uid": 1000,
+        "mode": "0o750"
+      }
+    ],
+    "files": [
+      {
+        "name": "record.json",
+        "bytes": 3338
+      },
+      {
+        "name": "images-before.stderr",
+        "bytes": 29
+      }
+    ],
+    "record": {
+      "phase": "refused",
+      "failure": "node_staging_failed",
+      "import_exit_code": null,
+      "images-before_exit_code": 1,
+      "runtime_manifest_digest": null,
+      "source_commit": "7e30b9b428a66cd3f5e618cec5e694d5f03302ac"
+    }
+  },
+  "classified_public_error": {
+    "matched_known_public_error": "sudo: a password is required",
+    "error_bytes": 29,
+    "import_intent_present": false,
+    "archive_exists": false
+  },
+  "remaining_nodes_dispatched": false,
+  "original_root_and_node_stages_retained": true,
+  "inspection_stdout_sha256": "6806cccfcefa86a73dd20719636ef7a6780d69db0c5d0f39e94ad4bdea93f94e",
+  "error_classification_stdout_sha256": "0b9361036d5f4fa552f462f73ec166d7cd483867bd9d32542184efdc8703000a",
+  "root_terminal_tool_output_id": "db794c",
+  "owned_pid_absence_tool_output_id": "b944c7",
+  "runtime_qualified": false,
+  "application_deployed": false
+}

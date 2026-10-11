@@ -1,0 +1,140 @@
+{
+  "abi": 1,
+  "root_source_base": "f596769b5ee9809caba6fbf7e97089c41e51296a",
+  "scope": "shared sudo session + explicit preload-only fresh-attempt ID; local POSIX/Python fixtures, remote tools mocked",
+  "actual_exit": 0,
+  "cases": 31,
+  "seconds": 4.066,
+  "skips": 0,
+  "tested_working_sources": [
+    {
+      "path": "scripts/migration/stage-bortus-release-image.py",
+      "sha256": "69a5fcb70984fca647f8014e5f37bcd3bc6d7c6ced34011016085ea92ca02d41"
+    },
+    {
+      "path": "scripts/migration/bortus-release-preload-node.py",
+      "sha256": "84c941ac96ee97e836d2680936f017e63574e1fd9fc095dd6591b8af83375172"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_release_stage.py",
+      "sha256": "f868b4bd4ecdd7db7d4e771b82be2ad1ed0707f82c6e2723a3f26e333ff3ff8f"
+    }
+  ],
+  "unchanged_dependencies": [
+    {
+      "path": "scripts/migration/build-bortus-release-image.py",
+      "raw_git_sha256": "9b7765fd6295eeb64bd0661a070fb9100fbaa58411916257f937e9068aa8f27f",
+      "working_sha256": "9b7765fd6295eeb64bd0661a070fb9100fbaa58411916257f937e9068aa8f27f"
+    },
+    {
+      "path": "scripts/migration/prepare-bortus-release-context.py",
+      "raw_git_sha256": "3b0c0c7b66468a78b91a001373675031b341ab804fa9b511029231e740f638db",
+      "working_sha256": "3b0c0c7b66468a78b91a001373675031b341ab804fa9b511029231e740f638db"
+    }
+  ],
+  "original_attempts": [
+    {
+      "path": "preload-session-v1/bortus-release-preload-node.py",
+      "bytes": 15672,
+      "sha256": "4279942f55e95692b58fa824ee60ce91f61a1baef7b67c62339c27900913b784"
+    },
+    {
+      "path": "preload-session-v1/focused.log",
+      "bytes": 3254,
+      "sha256": "9e4777c30fef81cbffb4e72c98b438cb92a53c679def11498d34b415e42dd37e"
+    },
+    {
+      "path": "preload-session-v1/stage-bortus-release-image.py",
+      "bytes": 22029,
+      "sha256": "c63fba13c2a4cf78813f3857e05b828b1f076e914d90573448b6cf79ad3dc680"
+    },
+    {
+      "path": "preload-session-v1/terminal.json",
+      "bytes": 109,
+      "sha256": "cb892535776b50a2c2138aff93b04707da0665628c82270c771401bfd4183e29"
+    },
+    {
+      "path": "preload-session-v1/test_bortus_release_stage.py",
+      "bytes": 33988,
+      "sha256": "05f237ac8a2ac2f5d73b120aa5cae02492f94326f566f5fb3801ca2e2adfe225"
+    },
+    {
+      "path": "preload-session-v2/bortus-release-preload-node.py",
+      "bytes": 16450,
+      "sha256": "84c941ac96ee97e836d2680936f017e63574e1fd9fc095dd6591b8af83375172"
+    },
+    {
+      "path": "preload-session-v2/focused.log",
+      "bytes": 134,
+      "sha256": "d828cca6e7b24196eb35633d0528e4b318ed8e96b3b8d4b65ecd3ce16294294a"
+    },
+    {
+      "path": "preload-session-v2/stage-bortus-release-image.py",
+      "bytes": 22689,
+      "sha256": "69a5fcb70984fca647f8014e5f37bcd3bc6d7c6ced34011016085ea92ca02d41"
+    },
+    {
+      "path": "preload-session-v2/terminal.json",
+      "bytes": 113,
+      "sha256": "588cad68f8a65d2f34e9d763559edd5b2f891499f63099e5f4f995969c4784c6"
+    },
+    {
+      "path": "preload-session-v2/test_bortus_release_stage.py",
+      "bytes": 33988,
+      "sha256": "05f237ac8a2ac2f5d73b120aa5cae02492f94326f566f5fb3801ca2e2adfe225"
+    },
+    {
+      "path": "preload-session-v3/bortus-release-preload-node.py",
+      "bytes": 16450,
+      "sha256": "84c941ac96ee97e836d2680936f017e63574e1fd9fc095dd6591b8af83375172"
+    },
+    {
+      "path": "preload-session-v3/focused.log",
+      "bytes": 135,
+      "sha256": "04350288893168b0357fd4f3e6a8aa4fa0909c318967d287390a84e55f492793"
+    },
+    {
+      "path": "preload-session-v3/stage-bortus-release-image.py",
+      "bytes": 22689,
+      "sha256": "69a5fcb70984fca647f8014e5f37bcd3bc6d7c6ced34011016085ea92ca02d41"
+    },
+    {
+      "path": "preload-session-v3/terminal.json",
+      "bytes": 119,
+      "sha256": "7a2392aaf6b9f84733358bdf9770968e02b2970eeb4e61487ad82ee72a73fc7f"
+    },
+    {
+      "path": "preload-session-v3/test_bortus_release_stage.py",
+      "bytes": 35165,
+      "sha256": "f868b4bd4ecdd7db7d4e771b82be2ad1ed0707f82c6e2723a3f26e333ff3ff8f"
+    }
+  ],
+  "original_regression": {
+    "actual_exit": 1,
+    "cases": 4,
+    "failures": 1,
+    "errors": 2,
+    "seconds": 0.354
+  },
+  "earlier_corrected_pass": {
+    "actual_exit": 0,
+    "cases": 30,
+    "seconds": 3.861
+  },
+  "root_actual_failure": {
+    "source": "root retained live stage; native did not access operator run",
+    "known_public_stderr": "sudo: a password is required\n",
+    "bytes": 29,
+    "transfer_or_import_dispatched": false
+  },
+  "closure": "actual local children waited; descriptor inventory unchanged; no remote subprocesses executed",
+  "limits": [
+    "no operator credentials read",
+    "no sudo/SSH/Docker/ctr/network calls",
+    "manual new attempt requires root inspection and authorization",
+    "same attempt or existing tag still refuses",
+    "config ID distinct from runtime/manifest digest"
+  ],
+  "runtime_qualified": false,
+  "deployed": false
+}

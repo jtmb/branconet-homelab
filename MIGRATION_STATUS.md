@@ -447,3 +447,19 @@ through execution. This run excludes five differently named test modules. Local
 TLS/watch/age/SQLite composition is distinct from actual operator execution.
 Current image/preload/runtime/admission qualification and fresh independent
 restore remain required; both actual acceptance flags stay false.
+
+## 2026-10-11 09:57 UTC: failed preload inspected; session correction qualified
+
+The [first actual immutable holder preload](evidence/bortus-holder-preload-first-failure-20261011.json)
+stopped on the first node before image transfer/import: authorization succeeded,
+but a separately started sudo session required a password. Both protected stages
+remain retained; no second or third node was dispatched. The selected
+[session correction](evidence/bortus-preload-session-integration-20261011.json)
+shares authorization/command session while cancelling only the owned PID, and
+allows an explicitly reviewed new unique attempt without replaying the old one.
+Root verifies six raw files/modes, 21 original artifacts and two unchanged
+dependencies. All 68 current staging and additional recovery cases pass with
+zero skips and frozen source. Together with the preceding 423-case scoped run,
+the two runs cover 465 unique current cases; only the three staging Python files
+changed between runs. This is local qualification; actual preload/runtime,
+active admission, fresh checkpoint and independent restore remain pending.

@@ -396,6 +396,101 @@ class StageTests(unittest.TestCase):
         self.assertNotIn('sudo_password', request); self.assertIsNone(failure.exception.__context__)
         self.assertEqual('authorization', str(failure.exception))
 
+    def test_actual_authorization_and_command_children_share_session(self):
+        # Reproduce sudo's session-scoped timestamp using only owned Python children.
+        import sys
+        home = self.path / 'session-home'; home.mkdir()
+        run = n.NodeRun(home, self.commit); self.addCleanup(run.close)
+        sid = self.path / 'public-session-id'
+        real_run, real_popen = subprocess.run, subprocess.Popen
+        children = []
+        def authorize(argv, **kwargs):
+            self.assertEqual(['sudo', '-S', '-p', '', '-v'], argv)
+            code = 'import os,pathlib,sys; assert sys.stdin.buffer.read()==b"PUBLIC_SUDO_FIXTURE_INPUT\\n"; pathlib.Path(sys.argv[1]).write_text(str(os.getsid(0)))'
+            return real_run([sys.executable, '-B', '-c', code, str(sid)], **kwargs)
+        def launch(argv, **kwargs):
+            self.assertEqual(n.CTR, argv)
+            code = 'import os,pathlib,sys; assert os.getsid(0)==int(pathlib.Path(sys.argv[1]).read_text()); sys.stdout.buffer.write(b"PUBLIC SAME SESSION")'
+            process = real_popen([sys.executable, '-B', '-c', code, str(sid)], **kwargs)
+            children.append(process); return process
+        before = set(os.listdir('/proc/self/fd'))
+        with mock.patch.object(n.subprocess, 'run', side_effect=authorize):
+            n.authenticate(self.request(), None)
+        with mock.patch.object(n.subprocess, 'Popen', side_effect=launch):
+            self.assertEqual(b'PUBLIC SAME SESSION', n.command(run, 'session-capture', n.CTR))
+            self.assertEqual(b'', n.command(run, 'session-import', n.CTR, capture=False))
+        self.assertEqual(str(os.getsid(0)), sid.read_text())
+        self.assertTrue(all(p.poll() == 0 for p in children))
+        self.assertEqual(before, set(os.listdir('/proc/self/fd')))
+        for p in run.path.rglob('*'):
+            if p.is_file(): self.assertNotIn(b'PUBLIC_SUDO_FIXTURE_INPUT', p.read_bytes())
+
+    def test_manual_attempt_uses_distinct_root_and_node_runs_and_same_attempt_refuses(self):
+        self.export()
+        original = s.OperationRun(self.runtime, self.commit, 'preload'); original.close()
+        homes = []
+        for host in s.HOSTS:
+            home = self.path / ('home-' + host); home.mkdir(mode=0o755)
+            existing = n.NodeRun(home, self.commit); existing.close(); homes.append(home)
+        original_record = (original.directory / 'record.json').read_bytes()
+        seen = []
+        def invoke(run, host, request, archive):
+            seen.append(request['attempt_id'])
+            return n.receive(copy.deepcopy(request), archive, self.path / ('home-' + host), self.fake_ctr, lambda p: True)
+        attempt = '123456abcdef'
+        result = s.preload(self.receipt_path, self.receipt_sha, self.export_receipt, self.export_sha,
+            self.commit, self.config_id, self.runtime, 'PUBLIC_SUDO_FIXTURE_INPUT', invoke, attempt_id=attempt)
+        self.assertEqual([attempt] * 3, seen); self.assertEqual(attempt, result['attempt_id'])
+        self.assertEqual(original_record, (original.directory / 'record.json').read_bytes())
+        self.assertTrue((self.runtime / ('bortus-preload-' + self.commit + '-attempt-' + attempt)).is_dir())
+        for home in homes:
+            self.assertTrue((home / ('.bortus-release-preload-' + self.commit + '-attempt-' + attempt)).is_dir())
+        seen.clear()
+        with self.assertRaises(FileExistsError):
+            s.preload(self.receipt_path, self.receipt_sha, self.export_receipt, self.export_sha,
+                self.commit, self.config_id, self.runtime, 'PUBLIC_SUDO_FIXTURE_INPUT', invoke, attempt_id=attempt)
+        self.assertEqual([], seen)
+
+    def test_invalid_attempts_refuse_without_directory_or_authorization(self):
+        for attempt in ('', 'abc', 'A' * 12, '../badname00', 123, True):
+            before = set(self.runtime.iterdir())
+            with self.subTest(attempt=attempt), self.assertRaises(Exception):
+                s.OperationRun(self.runtime, self.commit, 'preload', attempt_id=attempt)
+            self.assertEqual(before, set(self.runtime.iterdir()))
+            request = self.request(); request['attempt_id'] = attempt
+            with mock.patch.object(n, 'authenticate') as auth, self.assertRaises(RuntimeError):
+                n.receive(request, io.BytesIO(self.archive_bytes), self.path)
+            auth.assert_not_called()
+        with self.assertRaises(Exception): s.OperationRun(self.runtime, self.commit, 'export', attempt_id='1' * 12)
+
+    def test_new_attempt_never_bypasses_existing_tag_or_adopts_remote_run(self):
+        for tag in (self.tag, 'docker.io/library/' + self.tag):
+            home = self.path / ('attempt-tag-' + str(len(list(self.path.iterdir())))); home.mkdir()
+            self.existing_tag = tag; request = self.request(); request['attempt_id'] = '1' * 12
+            with self.assertRaises(RuntimeError):
+                n.receive(request, io.BytesIO(self.archive_bytes), home, self.fake_ctr, lambda p: True)
+            self.assertEqual(['images-before'], self.node_calls); self.node_calls.clear()
+            with self.assertRaises(FileExistsError):
+                n.receive(self.request() | {'attempt_id': '1' * 12}, io.BytesIO(self.archive_bytes), home, self.fake_ctr, lambda p: True)
+            self.assertEqual([], self.node_calls)
+
+    def test_attempt_reply_mismatch_stops_sequence_and_same_attempt_cannot_replay(self):
+        self.export()
+        self.node_reply_mutation = lambda reply, host: reply.update(attempt_id='0' * 12)
+        attempt = 'abcdef123456'
+        with self.assertRaises(s.b.BuildRefused):
+            s.preload(self.receipt_path, self.receipt_sha, self.export_receipt, self.export_sha,
+                self.commit, self.config_id, self.runtime, 'PUBLIC_SUDO_FIXTURE_INPUT', self.fake_node, attempt_id=attempt)
+        self.assertEqual([s.HOSTS[0]], self.imports)
+        directory = self.runtime / ('bortus-preload-' + self.commit + '-attempt-' + attempt)
+        raw = (directory / 'record.json').read_bytes()
+        self.assertEqual('uncertain', json.loads(raw)['phase'])
+        self.imports.clear()
+        with self.assertRaises(FileExistsError):
+            s.preload(self.receipt_path, self.receipt_sha, self.export_receipt, self.export_sha,
+                self.commit, self.config_id, self.runtime, 'PUBLIC_SUDO_FIXTURE_INPUT', self.fake_node, attempt_id=attempt)
+        self.assertEqual([], self.imports); self.assertEqual(raw, (directory / 'record.json').read_bytes())
+
     def test_export_archive_flush_failure_preserves_pending_without_completion(self):
         original = os.fsync; dispatch = False
         def action(run, stage):

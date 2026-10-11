@@ -33,9 +33,11 @@ def unique(pairs):
 
 
 class NodeRun:
-    def __init__(self, home, commit):
+    def __init__(self, home, commit, attempt_id=None):
+        require(attempt_id is None or (type(attempt_id) is str and re.fullmatch('[0-9a-f]{12}', attempt_id)), 'attempt')
         self.home = pathlib.Path(home); self.fd = None; self.anchors = []
-        self.name = '.bortus-release-preload-' + commit; self.path = self.home / self.name
+        self.name = '.bortus-release-preload-' + commit + (('-attempt-' + attempt_id) if attempt_id is not None else '')
+        self.path = self.home / self.name
         try:
             require(self.home.is_absolute() and '..' not in self.home.parts and len(self.home.parts) <= 32, 'home')
             fd = os.open('/', os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC)
@@ -50,7 +52,9 @@ class NodeRun:
             self.fd = os.open(self.name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC, dir_fd=fd)
             self.owned_identity = identity(os.fstat(self.fd)); self.record_identity = None
             self.record = {'phase': 'receiving', 'source_commit': commit,
-                'owner': str(uuid.uuid4()), 'runtime_qualified': False}; self.save()
+                'owner': str(uuid.uuid4()), 'runtime_qualified': False}
+            if attempt_id is not None: self.record['attempt_id'] = attempt_id
+            self.save()
         except Exception: self.close(); raise
 
     def owned(self):
@@ -91,7 +95,9 @@ def command(run, stage, argv, cap=MAX_METADATA, timeout=30, capture=True):
         out = stack.enter_context(os.fdopen(out_fd, 'wb')) if out_fd is not None else None
         err = stack.enter_context(os.fdopen(err_fd, 'wb'))
         process = subprocess.Popen(argv, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE if capture else out,
-            stderr=err, start_new_session=True)
+            stderr=err, start_new_session=False)
+        # sudo -n must share sudo -S -v's session timestamp context. Cancellation
+        # targets only this owned PID; never signal the shared process group.
         failed = []; reader = None
         if capture:
             def receive():
@@ -172,7 +178,7 @@ def authenticate(request, authorize):
         require(type(password) is str and 0 < len(password.encode()) <= 4096 and not any(c in password for c in '\0\r\n'), 'authorization')
         if authorize is None:
             authorized = subprocess.run(['sudo', '-S', '-p', '', '-v'], input=password.encode() + b'\n',
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=30, check=False)
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=30, check=False, start_new_session=False)
             require(authorized.returncode == 0, 'authorization')
         else: require(authorize(password), 'authorization')
     except Exception: failure = True
@@ -181,8 +187,10 @@ def authenticate(request, authorize):
 
 
 def receive(request, source, home, invoke=command, authorize=None):
-    require(type(request) is dict and set(request) == {'sudo_password', 'source_commit', 'config_image_id', 'labels',
-        'archive_sha256', 'archive_bytes', 'layer_blob_digests', 'ordered_diff_ids'} and
+    fields = {'sudo_password', 'source_commit', 'config_image_id', 'labels',
+        'archive_sha256', 'archive_bytes', 'layer_blob_digests', 'ordered_diff_ids'}
+    require(type(request) is dict and set(request) in (fields, fields | {'attempt_id'}) and
+        ('attempt_id' not in request or (type(request['attempt_id']) is str and re.fullmatch('[0-9a-f]{12}', request['attempt_id']))) and
         type(request['source_commit']) is str and re.fullmatch(r'[0-9a-f]{40}', request['source_commit']) and
         sha(request['config_image_id']) and type(request['archive_bytes']) is int and 0 < request['archive_bytes'] <= MAX_ARCHIVE and
         type(request['archive_sha256']) is str and re.fullmatch(r'[0-9a-f]{64}', request['archive_sha256']) and
@@ -201,7 +209,7 @@ def receive(request, source, home, invoke=command, authorize=None):
     except (ValueError, TypeError, AttributeError): owner = None
     require(owner == request['labels']['io.branconet.bortus.build-owner'] and owner is not None, 'request_owner')
     authenticate(request, authorize)
-    run = NodeRun(home, request['source_commit']); dispatched = False; failure = None
+    run = NodeRun(home, request['source_commit'], request.get('attempt_id')); dispatched = False; failure = None
     try:
         run.record.update(request); run.save(); tag = 'bortus:release-' + request['source_commit']
         existing = invoke(run, 'images-before', CTR + ['images', 'list'], cap=1024 * 1024)
@@ -228,6 +236,7 @@ def receive(request, source, home, invoke=command, authorize=None):
         run.record['import_exit_code'] = 0
         root, selected = runtime_image(run, tag, request, invoke)
         result = {k: request[k] for k in ('source_commit', 'config_image_id', 'archive_sha256', 'archive_bytes', 'labels')}
+        if 'attempt_id' in request: result['attempt_id'] = request['attempt_id']
         result.update(phase='completed', runtime_manifest_digest=root, selected_manifest_digest=selected,
                       import_exit_code=0, runtime_qualified=False)
         run.record.update(result); run.save()
