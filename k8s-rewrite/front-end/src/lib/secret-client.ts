@@ -80,6 +80,17 @@ export function rejectedSecretListItemCount(chunks: readonly Buffer[], limit: nu
       let byte = peek(); if (byte < 0) return 0;
       // Large native base64 strings usually stay in this direct, allocation-free ASCII loop.
       const chunk = chunks[chunkIndex];
+      // Skip four unescaped ASCII string bytes at a time without decoding or
+      // copying them. Zero-byte detection may stop early through a borrow, but
+      // never skips a quote/backslash; the scalar grammar remains authoritative.
+      while (offset + 4 <= chunk.length) {
+        const word = chunk.readUInt32LE(offset);
+        if ((word & 0x80808080) !== 0 || ((word + 0x60606060) & 0x80808080) !== (0x80808080 | 0)) break;
+        const quote = word ^ 0x22222222, escape = word ^ 0x5c5c5c5c;
+        if (((quote - 0x01010101) & ~quote & 0x80808080) !== 0 ||
+          ((escape - 0x01010101) & ~escape & 0x80808080) !== 0) break;
+        offset += 4;
+      }
       while (offset < chunk.length && chunk[offset] >= 32 && chunk[offset] < 128 && chunk[offset] !== 34 && chunk[offset] !== 92) offset++;
       if (offset === chunk.length) continue;
       byte = take(); if (byte < 0) return 0; if (byte === 34) return 1;

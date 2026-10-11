@@ -128,3 +128,6 @@ Current [coherent terminal and real-zoom qualification](terminal-final-qualifica
 
 
 [32eb227e unchanged comparison and Linux functional receipt](paired-32eb227e-qualification.json) retains complete raw six-profile/three-pair reports, exact frozen modes/source blobs, all196Linuxunits/fourHTTP, first missing-fixture and Docker prerequisite failures, durable terminal/cleanup and nonpassing overall performance. This is not final image/live/AT acceptance.
+
+
+[Native ASCII prefix qualification](native-ascii-qualification.json) binds one allocation-free string scan fast path to33 focused/197 total units, fresh Windows Node22 build/lint/types/fourHTTP and exact312 retained working source inputs. Scalar grammar, byte charging, complete inventory and limits remain unchanged. Current performance remains unmeasured; earlier32eb no-regression failure is retained.

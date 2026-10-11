@@ -48,3 +48,27 @@ test("hint work is bounded and never concatenates decodes parses or retains nati
     assert.equal(hint(header + '{},{},{', 1), undefined);
   } finally { Buffer.concat = concat; TextDecoder.prototype.decode = decode; JSON.parse = parse; }
 });
+
+test("ASCII word skipping preserves every byte class at word and chunk boundaries", () => {
+  for (let byte = 0; byte <= 255; byte++) {
+    for (let alignment = 0; alignment < 8; alignment++) {
+      const before = Buffer.from(header + '{"a":"' + "x".repeat(alignment));
+      const raw = Buffer.concat([before, Buffer.from([byte]), Buffer.from('Z"},{"unfinished":')]);
+      const expected = byte >= 32 && byte < 128 && byte !== 34 && byte !== 92 ? 1 : undefined;
+      for (const split of [before.length - 3, before.length, before.length + 1, before.length + 3, raw.length]) {
+        const chunks = [raw.subarray(0, split), Buffer.alloc(0), raw.subarray(split)];
+        assert.equal(rejectedSecretListItemCount(chunks, 200), expected, `byte ${byte}, alignment ${alignment}, split ${split}`);
+      }
+    }
+  }
+  // Escaped controls/quotes/backslashes and multibyte strings remain valid,
+  // including the zero-byte detector's harmless early-stop/borrow cases.
+  for (const value of [" \"#", "\\]},{", "\u0000\n\r\t\u001f", "雪😀", "\u007f", "z".repeat(8193)]) {
+    for (let alignment = 0; alignment < 8; alignment++) {
+      const raw = Buffer.from(header + JSON.stringify({ a: "x".repeat(alignment) + value }) + ',{"unfinished":');
+      for (let split = 0; split <= Math.min(raw.length, header.length + 32); split++) {
+        assert.equal(rejectedSecretListItemCount([raw.subarray(0, split), raw.subarray(split)], 200), 1);
+      }
+    }
+  }
+});
