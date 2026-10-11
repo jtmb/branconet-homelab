@@ -1,0 +1,60 @@
+{
+  "scope": "Scoped read-only BORTUS checkpoint prerequisite inspection; no capture, migration or recovery acceptance",
+  "qualified_source_commit": "3fcef127e8054a7f6b45fc89a375c2930c2b8f98",
+  "source_files": {
+    "scripts/migration/inspect-bortus-checkpoint.py": "0b5826747d3fea6a01c1353be7d3a25eafee455c1040f5be483ac5576bc5443b",
+    "scripts/migration/tests/test_bortus_checkpoint_preflight.py": "8376dbfbd0fd76aab78e30f7b75466252b14c658a7b976d4d196b43f8d0cfc58"
+  },
+  "regression_tests": {
+    "count": 9,
+    "exit_code": 0,
+    "elapsed_seconds": 0.008,
+    "console_record": "decf4f",
+    "coverage": [
+      "Metadata projection and explicit nonacceptance fields",
+      "Expected claim identity, PV/CSI/Longhorn mapping and retention",
+      "Encryption, exact replica count, health and backup availability",
+      "Exclusive Ready nonterminating writer and real controller UID chain",
+      "Deployment and Flux ownership and safety-setting drift",
+      "Inert read-only unqualified holder proposal and image syntax refusals",
+      "Early output overwrite refusal before API reads",
+      "Sanitized private exception with no report creation"
+    ]
+  },
+  "live_read": {
+    "report": "bortus-checkpoint-preflight-20261011-v2.json",
+    "report_sha256": "c00dbd2644f3e9f39beb021e5792c3d15092c26ddc3b500cba75c4a14952d499",
+    "console_record": "27ddb4",
+    "exit_code": 0,
+    "started_at_utc": "2026-10-11T03:22:21.490577+00:00",
+    "completed_at_utc": "2026-10-11T03:22:23.327544+00:00",
+    "expected_claim_uid": "19cc4b60-4536-4d80-8789-e27b5ad48b79",
+    "checks_passed": true,
+    "active_claim_consumers": 1,
+    "encrypted_replicas": 2,
+    "mutations": 0,
+    "database_or_secret_reads": 0,
+    "holder_proposed": false
+  },
+  "independent_byte_verification": {
+    "console_record": "77b540",
+    "working_files_equal_raw_git_blobs": true,
+    "helper_test_and_final_report_verified": true,
+    "captured_uids_stable_across_two_reads": true
+  },
+  "prior_read_preserved": {
+    "report": "bortus-checkpoint-preflight-20261011.json",
+    "console_record": "1b62a9",
+    "exit_code": 0,
+    "scope": "Before collection timestamps and early output overwrite refusal were added"
+  },
+  "limitations": {
+    "separate_resource_reads_are_atomic": false,
+    "historical_pv_and_longhorn_uid_equality_proven": false,
+    "image_qualification_preload_or_admission_proven": false,
+    "cold_capture_proven": false,
+    "independent_restore_proven": false,
+    "migration_or_data_preservation_proven": false,
+    "writer_ownership_requires_recheck_before_fenced_capture": true
+  }
+}
