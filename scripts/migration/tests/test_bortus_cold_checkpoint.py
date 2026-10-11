@@ -105,7 +105,10 @@ class FakeClient:
         if dry_run:
             return obj
         if body['kind'] == 'Pod':
-            obj['status'] = {'phase': 'Running', 'conditions': [{'type': 'Ready', 'status': 'True'}]}
+            obj['status'] = {'phase': 'Running', 'conditions': [{'type': 'Ready', 'status': 'True'}],
+                'containerStatuses': [{'name': 'holder', 'image': 'registry.example/bortus:release-fixture',
+                    'imageID': body['spec']['containers'][0]['image'], 'restartCount': 0,
+                    'ready': True, 'state': {'running': {}}}]}
             obj['spec']['containers'][0].update(terminationMessagePath='/dev/termination-log',
                                                terminationMessagePolicy='File')
             self.resources['pods']['items'].append(obj)
@@ -226,7 +229,7 @@ class ColdCheckpointTests(unittest.TestCase):
             self.assertTrue(any(s['controls']['deployment'].get('intent', {}).get('state') == 'uncertain'
                                 for s in journal.saved))
 
-    def test_ambiguous_snapshot_retains_holder_and_resumes_without_backup_creation(self):
+    def test_ambiguous_snapshot_releases_holder_and_resumes_without_backup_creation(self):
         client, journal, operation = prepared()
         client.fail_snapshot = True
         with self.assertRaises(RuntimeError):
@@ -234,7 +237,8 @@ class ColdCheckpointTests(unittest.TestCase):
         self.assertEqual(journal.record['snapshot_create_state'], 'uncertain')
         self.assertTrue(journal.record['writer_resumed_ready'])
         self.assertFalse(any(c[:2] == ('create', 'Backup') for c in client.calls))
-        self.assertFalse(any(c[0] == 'delete-holder' for c in client.calls))
+        self.assertEqual(1, sum(c[0] == 'delete-holder' for c in client.calls))
+        self.assertTrue(journal.record['owned_holder_removed'])
 
     def test_failed_encrypted_archive_resumes_writer_without_snapshot_or_backup(self):
         client, journal, operation = prepared()
@@ -306,7 +310,7 @@ class ColdCheckpointTests(unittest.TestCase):
             with self.subTest(image=image):
                 self.assertFalse(module.valid_digest(image))
 
-    def test_foreign_or_credential_bearing_backup_url_never_recorded_or_cleaned_up(self):
+    def test_foreign_or_credential_bearing_backup_url_never_recorded_or_accepted(self):
         prefix = 'cifs://192.168.0.8/container_backups/k8s-migration-20261009/longhorn'
         for url in (prefix + '?backup=other&volume=pvc-fixture',
                     prefix + '?backup=backup-123456abcdef&volume=pvc-fixture&backup=',
@@ -323,7 +327,8 @@ class ColdCheckpointTests(unittest.TestCase):
             self.assertFalse(journal.record['encrypted_nas_backup_complete'])
             self.assertNotIn('backup_url', journal.record)
             self.assertNotIn('PRIVATE_', json.dumps(journal.record))
-            self.assertFalse(any(c[0] == 'delete-holder' for c in client.calls))
+            self.assertEqual(1, sum(c[0] == 'delete-holder' for c in client.calls))
+            self.assertTrue(journal.record['owned_holder_removed'])
 
     def test_conditional_patch_and_delete_bodies_use_stdin_not_argv(self):
         client = module.Client()

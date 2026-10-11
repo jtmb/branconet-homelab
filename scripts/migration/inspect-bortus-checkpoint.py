@@ -13,6 +13,7 @@ RUNTIME = pathlib.Path.home() / '.local/share/branconet-migration'
 APP = 'bortus'
 CLAIM = 'bortus-data'
 MAX_PV_ITEMS = 10000
+MAX_POD_ITEMS = 10000
 MAX_PV_IDENTITY = 253
 MAX_PV_RESOURCE_VERSION = 256
 
@@ -33,6 +34,43 @@ def identity(obj):
 def uses_claim(pod):
     return any(v.get('persistentVolumeClaim', {}).get('claimName') == CLAIM
                for v in pod.get('spec', {}).get('volumes', []))
+
+
+def complete_pods(inventory):
+    """Return only a bounded complete namespace collection, including inactive Pods."""
+    failure = 'Complete bounded BORTUS Pod inventory required; output withheld'
+    require(isinstance(inventory, dict) and inventory.get('apiVersion') == 'v1' and
+            inventory.get('kind') == 'PodList', failure)
+    meta = inventory.get('metadata')
+    require(isinstance(meta, dict) and isinstance(meta.get('resourceVersion'), str) and
+            0 < len(meta['resourceVersion']) <= MAX_PV_RESOURCE_VERSION and
+            ('continue' not in meta or meta['continue'] == '') and
+            ('remainingItemCount' not in meta or
+             (type(meta['remainingItemCount']) is int and meta['remainingItemCount'] == 0)), failure)
+    items = inventory.get('items')
+    require(isinstance(items, list) and len(items) <= MAX_POD_ITEMS, failure)
+    names, uids = set(), set()
+    for pod in items:
+        require(isinstance(pod, dict) and
+                ('apiVersion' not in pod or pod['apiVersion'] == 'v1') and
+                ('kind' not in pod or pod['kind'] == 'Pod'), failure)
+        pm, spec, status = pod.get('metadata'), pod.get('spec'), pod.get('status')
+        require(isinstance(pm, dict) and isinstance(spec, dict) and isinstance(status, dict) and
+                pm.get('namespace') == APP and all(isinstance(pm.get(k), str) and
+                0 < len(pm[k]) <= limit for k, limit in [('name', MAX_PV_IDENTITY),
+                ('uid', MAX_PV_IDENTITY), ('resourceVersion', MAX_PV_RESOURCE_VERSION)]) and
+                status.get('phase') in ('Pending', 'Running', 'Succeeded', 'Failed', 'Unknown'), failure)
+        require(pm['name'] not in names and pm['uid'] not in uids, failure)
+        names.add(pm['name'])
+        uids.add(pm['uid'])
+        volumes = spec.get('volumes', [])
+        require(isinstance(volumes, list) and all(isinstance(v, dict) for v in volumes), failure)
+        for volume in volumes:
+            if 'persistentVolumeClaim' in volume:
+                pvc = volume['persistentVolumeClaim']
+                require(isinstance(pvc, dict) and isinstance(pvc.get('claimName'), str) and
+                        0 < len(pvc['claimName']) <= MAX_PV_IDENTITY, failure)
+    return items
 
 
 def sole_longhorn_pv(inventory, expected, handle):
@@ -104,6 +142,8 @@ def evaluate(objects, expected_claim_uid, holder_image=None):
     require(volume.get('spec', {}).get('encrypted') is True and
             type(volume['spec'].get('numberOfReplicas')) is int and
             volume['spec']['numberOfReplicas'] == 2, 'Longhorn encryption/replicas differ')
+    require(all(not obj['metadata'].get('deletionTimestamp') for obj in (claim, pv, volume)),
+            'Original storage is deleting')
     require(volume.get('status', {}).get('robustness') == 'healthy', 'Longhorn volume is not healthy')
     require(ids['deployment']['name'] == APP and ids['deployment']['namespace'] == APP,
             'Unexpected Deployment identity')
@@ -112,7 +152,7 @@ def evaluate(objects, expected_claim_uid, holder_image=None):
             'Exactly one configured BORTUS writer is required')
     require(spec.get('strategy', {}).get('type') == 'Recreate', 'Recreate strategy required')
     require(uses_claim(spec.get('template', {})), 'Deployment does not mount original claim')
-    active = [p for p in pods.get('items', []) if uses_claim(p) and
+    active = [p for p in complete_pods(pods) if uses_claim(p) and
               p.get('status', {}).get('phase') not in ('Succeeded', 'Failed')]
     require(len(active) == 1, 'Unexpected additional or missing claim consumer')
     writer = active[0]
@@ -199,6 +239,9 @@ class Client:
             # Raw collection preserves its RV/continuation instead of kubectl flattening it.
             # One extra item detects the count bound; continuation never means success.
             argv.extend(['--raw', '/api/v1/persistentvolumes?limit=' + str(MAX_PV_ITEMS + 1)])
+        elif kind == 'pods':
+            require(name is None and namespace == APP, 'BORTUS Pod collection required')
+            argv.extend(['--raw', '/api/v1/namespaces/bortus/pods?limit=' + str(MAX_POD_ITEMS + 1)])
         else:
             argv.append(kind)
             if name:
@@ -214,6 +257,8 @@ class Client:
         except (ValueError, UnicodeError):
             raise RuntimeError('Invalid API JSON; output withheld') from None
         require(isinstance(obj, dict), 'Invalid API object')
+        if kind == 'pods':
+            complete_pods(obj)
         return obj
 
     def inspect(self, expected_claim_uid, holder_image=None):
@@ -222,7 +267,7 @@ class Client:
         require(isinstance(volume_name, str) and re.fullmatch(r'[a-z0-9][a-z0-9.-]*', volume_name),
                 'Invalid volume identity')
         pods = self.get('pods', namespace=APP)
-        active = [p for p in pods.get('items', []) if uses_claim(p) and
+        active = [p for p in complete_pods(pods) if uses_claim(p) and
                   p.get('status', {}).get('phase') not in ('Succeeded', 'Failed')]
         require(len(active) == 1, 'Unexpected additional or missing claim consumer')
         controllers = [o for o in active[0].get('metadata', {}).get('ownerReferences', [])

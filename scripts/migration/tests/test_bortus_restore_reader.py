@@ -61,7 +61,8 @@ class ReaderTests(unittest.TestCase):
         pod = self.base.fixture.get_body
         pod['status'] = {'phase': 'Running', 'conditions': [{'type': 'Ready', 'status': 'True'}],
             'containerStatuses': [{'name': 'holder', 'ready': True, 'state': {'running': {}},
-                                  'image': pod['spec']['containers'][0]['image'], 'restartCount': 0}]}
+                                  'image': pod['spec']['containers'][0]['image'],
+                                  'imageID': pod['spec']['containers'][0]['image'], 'restartCount': 0}]}
         self.holder = m.data.health.identity(pod, 'bortus')
         self.launcher = m.ReaderLauncher(self.base.api, str(self.path), self.options)
         self.commands = []

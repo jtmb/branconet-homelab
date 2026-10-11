@@ -158,8 +158,11 @@ def inert_holder(pod, proposal):
     states = status.get('containerStatuses')
     need(type(states) is list and len(states) == 1 and type(states[0]) is dict and
          states[0].get('name') == 'holder' and states[0].get('ready') is True and
-         type(states[0].get('state', {}).get('running')) is dict and
-         states[0].get('image') == proposal['spec']['containers'][0]['image'] and
+         type(states[0].get('state')) is dict and set(states[0]['state']) == {'running'} and
+         type(states[0]['state']['running']) is dict and
+         states[0].get('imageID') == proposal['spec']['containers'][0]['image'] and
+         type(states[0].get('image')) is str and 0 < len(states[0]['image']) <= 4096 and
+         all(32 < ord(c) < 127 for c in states[0]['image']) and
          type(states[0].get('restartCount')) is int and states[0]['restartCount'] == 0, 'holder')
 
 

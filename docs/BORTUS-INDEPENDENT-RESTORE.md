@@ -18,6 +18,15 @@ source/image/three-preload/runtime/guard checks. Boolean shortcuts refuse; the
 binding is rechecked before later mutations/data/delete and cannot change. A
 config image ID is not a registry manifest digest.
 
+The separate [admission validator and callable probe collector](BORTUS-ADMISSION-QUALIFICATION.md)
+check six-object identity/spec/type-check metadata and forty actual dry-run
+outcomes. Root publishes through the existing Flux owner after a fresh completed
+cold checkpoint and resumed Ready writer, then supplies current revision/pin
+verification to the bounded collector. Disposable inert Pod and replicas-zero
+Deployment fixture mutations have durable ownership and complete-list absence
+checks. Local HTTPS fixtures and returned metadata cannot grant the restore
+callback's live admission acceptance; separate actual root receipts are required.
+
 Exclusive fsynced intent/journal bind checkpoint, qualification and helper source
 hashes before mutation. The actual Collector starts before creates. SC/PVC/holder
 creates require durable pending intent and fresh full admitted-spec GET validation
@@ -72,3 +81,13 @@ All failed setup, transient-detach and controller-default-label attempts remain
 recorded. A fresh read-only source preflight validates this closed checkpoint and
 an absent masternode restore target. Complete SQLite row equality, independent
 restoration, active admission and the final application release remain pending.
+
+Root integrated the selected admission collector, exact runtime imageID checks
+and cold holder-release ordering fix through immutable handoffs, preserving the
+actual earlier checkpoint evidence. The [combined local receipt](../evidence/bortus-admission-cold-helper-integration-20261011.json)
+records 474 passing current test_bortus*.py cases, zero failures/errors/skips,
+144 frozen Python source files and reaped exact process owners. This discovery
+scope excludes differently named test modules. Loopback/fake API and disposable
+local data checks do not prove live guard enforcement or independent recovery.
+The corrected helper has not recaptured live data; the completed checkpoint
+remains bound to its original executed source and explicit recovery journal.

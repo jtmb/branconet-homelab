@@ -52,6 +52,14 @@ a fixed refusal; this prevents those arguments remaining in its traceback locals
 This metadata comparison
 does not prove entrypoint/runtime behavior or admission acceptance.
 
+The exact approved tagless Pod spec digest must equal the literal running
+container status.imageID repository/digest reference. Missing IDs, config IDs,
+digest-only IDs, registry aliases or docker-pullable substitutions refuse.
+Bounded visible-ASCII status.image is display metadata only and can show the
+imported release tag. It cannot provide fallback identity or override imageID.
+Root's separate qualification binds actual runtime name, config/source and
+preload proof; this pure predicate cannot manufacture that evidence.
+
 The same pure `holder_matches(pod, image, claim, node, require_ready=True)`
 predicate now supplies the holder checks to the whole-consumer evaluator and
 the coordinator's admitted-spec validation. Passing `require_ready=False` checks
@@ -79,3 +87,13 @@ constructs replica addresses from storageIP and port; its
 checks failedAt, healthyAt, active and deletion. The pinned
 [instance-manager GetURL helper](https://github.com/longhorn/longhorn-instance-manager/blob/2b5d65ffe205/pkg/util/util.go#L74-L76)
 uses `net.JoinHostPort`. The local qualification exercises synthetic metadata only.
+
+Root integrated the selected admission collector, exact runtime imageID checks
+and cold holder-release ordering fix through immutable handoffs, preserving the
+actual earlier checkpoint evidence. The [combined local receipt](../evidence/bortus-admission-cold-helper-integration-20261011.json)
+records 474 passing current test_bortus*.py cases, zero failures/errors/skips,
+144 frozen Python source files and reaped exact process owners. This discovery
+scope excludes differently named test modules. Loopback/fake API and disposable
+local data checks do not prove live guard enforcement or independent recovery.
+The corrected helper has not recaptured live data; the completed checkpoint
+remains bound to its original executed source and explicit recovery journal.

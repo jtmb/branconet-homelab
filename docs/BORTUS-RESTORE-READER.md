@@ -16,6 +16,18 @@ running/Ready un-restarted holder container. Recreated, deleting, drifted, writa
 or credential-bearing holders refuse before exec. Full before/after source and
 consumer health fences remain coordinator/data-step duties.
 
+The exact approved tagless Pod spec image must also equal the literal current
+container status.imageID, including repository and digest. Missing IDs, config
+IDs, digest-only IDs, registry aliases and docker-pullable substitutions refuse.
+status.image is bounded display metadata (up to 4096 visible ASCII characters);
+it may show the imported release tag and supplies no image proof. It never
+replaces a missing/mismatched imageID. Current state must contain only running.
+Root separately binds actual runtime name, config/source and three-node preload
+evidence in its trusted qualification receipt. The immutable native handoff
+retains the original failing five-case public regression and 71 passing local
+imageID/reader/consumer/admitted-resource cases; root integration testing and
+guarded restored-holder acceptance remain separate.
+
 The existing protected kubeconfig inode is opened no-follow/nonblocking through
 pinned safe directory anchors. Owner/mode0600/single-link/bounded size and read
 continuity are checked. Closed embedded mTLS YAML and actual certificate/key loading
@@ -60,6 +72,18 @@ The [actual inert public-fixture runtime](../evidence/bortus-holder-preload-runt
 now executes the bounded Node reader on all three nodes. It uses writable memory
 fixtures, not a production PVC or this full ReaderLauncher composition. Actual CRI
 status.image displays a verified release tag despite exact digest Pod spec and
-status.imageID. The current strict display-name comparison requires a separately
-qualified narrow correction before production-holder acceptance; no broader
-name/config-ID substitution is authorized by the fixture result.
+status.imageID. The selected correction accepts bounded display metadata while
+requiring exact spec and literal runtime imageID. Neither a display name nor a
+config image ID substitutes for immutable runtime identity. The cold checkpoint
+used an independently checked exact runtime fence; full guarded restored-holder
+and complete-row data acceptance remain pending.
+
+Root integrated the selected admission collector, exact runtime imageID checks
+and cold holder-release ordering fix through immutable handoffs, preserving the
+actual earlier checkpoint evidence. The [combined local receipt](../evidence/bortus-admission-cold-helper-integration-20261011.json)
+records 474 passing current test_bortus*.py cases, zero failures/errors/skips,
+144 frozen Python source files and reaped exact process owners. This discovery
+scope excludes differently named test modules. Loopback/fake API and disposable
+local data checks do not prove live guard enforcement or independent recovery.
+The corrected helper has not recaptured live data; the completed checkpoint
+remains bound to its original executed source and explicit recovery journal.

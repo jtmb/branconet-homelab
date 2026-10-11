@@ -297,13 +297,15 @@ class Checkpoint:
         entry['current'] = new
         self.journal.save()
 
-    def storage(self):
+    def storage(self, *, resuming=False):
         ids = self.r['baseline']['identities']
         claim = self.client.get('pvc', 'bortus-data', 'bortus')
         pv = self.client.get('pv', ids['pv']['name'])
         volume = self.client.get('volumes.longhorn.io', ids['longhorn_volume']['name'], 'longhorn-system')
         require(same_id(claim, ids['claim']) and same_id(pv, ids['pv']) and
                 same_id(volume, ids['longhorn_volume']), 'Storage identity changed')
+        require(all(not obj['metadata'].get('deletionTimestamp') for obj in (claim, pv, volume)),
+                'Original storage is deleting')
         require(claim.get('status', {}).get('phase') == 'Bound' and
                 claim.get('spec', {}).get('volumeName') == ids['pv']['name'] and
                 claim['metadata'].get('annotations', {}).get('helm.sh/resource-policy') == 'keep',
@@ -318,8 +320,13 @@ class Checkpoint:
                                    ids['longhorn_volume']['name'])
         require(volume.get('spec', {}).get('encrypted') is True and
                 type(volume['spec'].get('numberOfReplicas')) is int and
-                volume['spec']['numberOfReplicas'] == 2 and
-                volume.get('status', {}).get('robustness') == 'healthy', 'Longhorn safety changed')
+                volume['spec']['numberOfReplicas'] == 2, 'Longhorn safety changed')
+        status = volume.get('status', {})
+        healthy = status.get('robustness') == 'healthy'
+        require(healthy or (resuming and status.get('robustness') == 'unknown' and
+                status.get('state') in ('detached', 'detaching', 'attaching')),
+                'Longhorn safety changed')
+        return healthy
 
     def holder(self):
         expected = self.r.get('holder_identity')
@@ -340,11 +347,31 @@ class Checkpoint:
                 spec.get('volumes') == proposal['volumes'] and
                 spec.get('initContainers', []) == [] and spec.get('ephemeralContainers', []) == [],
                 'Holder contract changed')
+        # Display image names are not an authority for the selected immutable image.
+        statuses = obj.get('status', {}).get('containerStatuses', [])
+        require(isinstance(statuses, list), 'Holder runtime changed')
+        if statuses:
+            require(len(statuses) == 1 and isinstance(statuses[0], dict) and
+                    statuses[0].get('name') == 'holder' and
+                    type(statuses[0].get('restartCount')) is int and
+                    statuses[0]['restartCount'] == 0, 'Holder runtime changed')
+            cs = statuses[0]
+            display = cs.get('image')
+            require(type(display) is str and 0 < len(display) <= 4096 and
+                    all(32 <= ord(c) <= 126 for c in display), 'Holder runtime changed')
+            if cs.get('imageID'):
+                require(cs['imageID'] == proposed['image'], 'Holder runtime changed')
+        if obj.get('status', {}).get('phase') == 'Running':
+            require(len(statuses) == 1 and statuses[0].get('imageID') == proposed['image'] and
+                    statuses[0].get('ready') is True and
+                    isinstance(statuses[0].get('state'), dict) and
+                    set(statuses[0]['state']) == {'running'} and
+                    isinstance(statuses[0]['state']['running'], dict), 'Holder runtime changed')
         # API defaults are allowed outside the bounded container/volume contract.
         return obj
 
     def consumers(self):
-        return [p for p in self.client.get('pods', namespace='bortus').get('items', [])
+        return [p for p in preflight.complete_pods(self.client.get('pods', namespace='bortus'))
                 if preflight.uses_claim(p) and p.get('status', {}).get('phase') not in ('Succeeded', 'Failed')]
 
     def cold(self):
@@ -366,7 +393,7 @@ class Checkpoint:
             for c in holder.get('status', {}).get('conditions', []))
 
     def writer_ready(self):
-        self.storage()
+        healthy = self.storage(resuming=True)
         kind, name, ns, _ = RESOURCES['deployment']
         deployment = self.client.get(kind, name, ns)
         require(same_id(deployment, self.r['controls']['deployment']['identity']) and
@@ -387,14 +414,14 @@ class Checkpoint:
         require(len(owners) == 1 and owners[0].get('kind') == 'Deployment' and
                 owners[0].get('uid') == identity(deployment)['uid'] and owners[0].get('name') == 'bortus',
                 'Unexpected resumed writer')
-        return writer.get('status', {}).get('phase') == 'Running' and any(
+        return healthy and writer.get('status', {}).get('phase') == 'Running' and any(
             c.get('type') == 'Ready' and c.get('status') == 'True'
             for c in writer.get('status', {}).get('conditions', []))
 
     def resume(self):
         # Resume also serves an explicitly requested interrupted-run recovery.
         # Resolve pending outcomes by reads; do not repeat the original mutation.
-        self.storage()
+        self.storage(resuming=True)
         for key in ('deployment', 'helmrelease', 'kustomization'):
             entry = self.r['controls'][key]
             intent = entry.get('intent')
@@ -425,6 +452,8 @@ class Checkpoint:
                     return all(identity(p)['uid'] == holder_uid for p in active)
 
                 self.wait(original_writer_gone, 180)
+            if key == 'deployment':
+                self.storage(resuming=True)
             self.control(key, current, entry['original'])
             if key == 'deployment':
                 self.wait(self.writer_ready, 180)
@@ -467,7 +496,27 @@ class Checkpoint:
         self.r['holder_delete_accepted'] = True
         self.journal.save()
 
+    def release_holder(self):
+        # A retained intent is never replayed, even if the reply might have been lost.
+        self.storage()
+        allowed = {self.r['baseline']['writer']['uid'], self.r['holder_identity']['uid']}
+        require(all(identity(p)['uid'] in allowed for p in self.consumers()),
+                'Unexpected consumer blocks holder release')
+        self.delete_owned_holder()
+
+        def absent():
+            expected = self.r['holder_identity']
+            return all(identity(p)['name'] != expected['name'] and
+                       identity(p)['uid'] != expected['uid']
+                       for p in preflight.complete_pods(self.client.get('pods', namespace='bortus')))
+
+        self.wait(absent, 120)
+        self.r['owned_holder_removed'] = True
+        self.journal.save()
+
     def capture(self):
+        require('holder_create_state' not in self.r and 'holder_identity' not in self.r and
+                'holder_delete_intent' not in self.r, 'Capture already attempted; inspect only')
         body = self.r['holder_proposal']
         # Qualify admission/schema before suspending controllers or stopping a writer.
         self.client.create(body, dry_run=True)
@@ -520,9 +569,21 @@ class Checkpoint:
             self.r['cold_snapshot_ready'] = True
             self.journal.save()
         finally:
-            # Attempt only conditional restoration of recorded fields. On ambiguity,
-            # identity drift or a competing consumer, leave the journal for inspection.
-            self.resume()
+            # Release the RWO reader before a writer can be scheduled on another node.
+            # Even a capture failure independently attempts conditional restoration.
+            release_failed = False
+            try:
+                self.release_holder()
+            except Exception:
+                release_failed = True
+            try:
+                self.resume()
+            except Exception:
+                if release_failed:
+                    raise RuntimeError('Holder release and writer restoration unresolved; inspect journal') from None
+                raise
+            if release_failed:
+                raise RuntimeError('Holder release unresolved; inspect retained intent') from None
         backup = {'apiVersion': 'longhorn.io/v1beta2', 'kind': 'Backup',
             'metadata': {'name': self.r['backup_name'], 'namespace': 'longhorn-system',
                 'labels': {'backup-volume': self.r['baseline']['identities']['longhorn_volume']['name'],
@@ -532,6 +593,7 @@ class Checkpoint:
         self.create_owned('backup', backup)
 
         def backup_done():
+            self.storage()
             obj = self.client.get('backups.longhorn.io', self.r['backup_name'], 'longhorn-system')
             require(same_id(obj, self.r['backup_identity']) and
                     all(obj.get('spec', {}).get(k) == backup['spec'][k]
@@ -542,6 +604,7 @@ class Checkpoint:
             require(not status.get('error') and status.get('state') != 'Error', 'Backup controller failed')
             if status.get('state') != 'Completed':
                 return False
+            require(self.writer_ready(), 'Resumed writer not Ready at backup completion')
             require(isinstance(status.get('url'), str), 'Completed backup URL missing')
             url = urllib.parse.urlsplit(status['url'])
             try:
@@ -561,10 +624,6 @@ class Checkpoint:
         self.wait(backup_done, 1800)
         self.r['encrypted_nas_backup_complete'] = True
         self.journal.save()
-        self.delete_owned_holder()
-        self.wait(lambda: all(identity(p)['uid'] != self.r['holder_identity']['uid']
-                             for p in self.client.get('pods', namespace='bortus').get('items', [])), 120)
-        self.r['owned_holder_removed'] = True
         self.r['completed_at_utc'] = now()
         self.journal.save()
 

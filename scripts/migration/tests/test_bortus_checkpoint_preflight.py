@@ -27,13 +27,13 @@ def fixture():
         'csi': {'driver': 'driver.longhorn.io', 'volumeHandle': 'pvc-fixture'},
         'persistentVolumeReclaimPolicy': 'Retain'}}
     volume = {'metadata': metadata('pvc-fixture', 'longhorn-system'),
-        'spec': {'encrypted': True, 'numberOfReplicas': 2}, 'status': {'robustness': 'healthy'}}
+        'spec': {'encrypted': True, 'numberOfReplicas': 2}, 'status': {'robustness': 'healthy', 'state': 'attached'}}
     podspec = {'nodeName': 'node-fixture', 'volumes': [
         {'name': 'data', 'persistentVolumeClaim': {'claimName': 'bortus-data'}}],
         'containers': [{'name': 'app', 'env': [{'name': 'FIXTURE_PRIVATE', 'value': 'not-for-report'}]}]}
     deployment = {'metadata': metadata('bortus', 'bortus'),
         'spec': {'replicas': 1, 'strategy': {'type': 'Recreate'}, 'template': {'spec': podspec}}}
-    pod = {'metadata': metadata('writer-fixture', 'bortus') | {'ownerReferences': [
+    pod = {'apiVersion': 'v1', 'kind': 'Pod', 'metadata': metadata('writer-fixture', 'bortus') | {'ownerReferences': [
         {'kind': 'ReplicaSet', 'controller': True, 'name': 'rs-fixture', 'uid': 'rs-fixture-uid'}]}, 'spec': podspec,
         'status': {'phase': 'Running', 'conditions': [{'type': 'Ready', 'status': 'True'}]}}
     release = {'metadata': metadata('bortus', 'flux-system'), 'spec': {
@@ -46,7 +46,8 @@ def fixture():
         {'kind': 'Deployment', 'controller': True, 'name': 'bortus', 'uid': 'bortus-uid'}]}}
     pvs = {'apiVersion': 'v1', 'kind': 'PersistentVolumeList',
            'metadata': {'resourceVersion': 'opaque-list-rv'}, 'items': [copy.deepcopy(pv)]}
-    return [claim, pv, volume, deployment, {'items': [pod]}, release, owner, target, rs, pvs]
+    return [claim, pv, volume, deployment, {'apiVersion': 'v1', 'kind': 'PodList',
+        'metadata': {'resourceVersion': 'opaque-pods-rv'}, 'items': [pod]}, release, owner, target, rs, pvs]
 
 
 class CheckpointPreflight(unittest.TestCase):

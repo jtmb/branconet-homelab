@@ -76,7 +76,8 @@ def fixture():
                             replicaModeMap={k: 'RW' for k in addresses})
     holder = obj('Pod', 'holder', 8, 'bortus', m.holder_spec(expected['holder_image'], 'claim', 'node'),
         {'phase': 'Running', 'conditions': [{'type': 'Ready', 'status': 'True'}],
-         'containerStatuses': [{'name': 'holder', 'image': expected['holder_image'], 'ready': True,
+         'containerStatuses': [{'name': 'holder', 'image': expected['holder_image'],
+                                'imageID': expected['holder_image'], 'ready': True,
                                 'restartCount': 0, 'state': {'running': {'startedAt': 'public'}}}]})
     return expected, dict(claim=claim, pv=pv, volume=volume, backup=backup, node=node,
         pvs=inventory('PersistentVolume', [copy.deepcopy(pv)]), pods=inventory('Pod', [holder]),

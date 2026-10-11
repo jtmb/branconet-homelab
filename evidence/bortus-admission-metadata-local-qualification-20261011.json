@@ -1,0 +1,167 @@
+{
+  "abi": 1,
+  "scope": "pure bounded six-guard spec/UID/type-check metadata and jointly covering40 probe outcomes; no observer or API proof",
+  "actual_exit": 0,
+  "cases": 17,
+  "seconds": 0.16,
+  "skips": 0,
+  "tested_working_sources": [
+    {
+      "path": "scripts/migration/bortus-admission-qualification.py",
+      "sha256": "91b1ea3c76f906ef0cbcc62835fa0bd8fef1cfd5fe96db54953fe907d7da65a3"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_admission_qualification.py",
+      "sha256": "4fd958681780fbfd5c7b6470aed76fec642f8571b9a91e1291618883bc398e3e"
+    },
+    {
+      "path": "scripts/migration/tests/fixtures/bortus-admission-render-v1.json",
+      "sha256": "bbf39920285695c0b409f306caa3547287c1e9dbd8061567ddacdabffa669d5f"
+    }
+  ],
+  "chart_source": {
+    "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+    "files": [
+      {
+        "path": "scripts/render_bortus_admission_guard.py",
+        "raw_git_sha256": "82949bab6375281f1114f4ee6bea38f58303a8d0a17e8dc0cfe4d53f8c0a914c",
+        "working_sha256": "82949bab6375281f1114f4ee6bea38f58303a8d0a17e8dc0cfe4d53f8c0a914c"
+      },
+      {
+        "path": "delivery/bortus-adoption-guard/policy.yaml.tmpl",
+        "raw_git_sha256": "284812671171dc2e2310587094cfc7c20038b86a31a6f90a717b4dec064805e7",
+        "working_sha256": "284812671171dc2e2310587094cfc7c20038b86a31a6f90a717b4dec064805e7"
+      },
+      {
+        "path": "delivery/bortus-adoption-guard/binding.yaml.tmpl",
+        "raw_git_sha256": "89a734e97b54629e86354be4b8a7d8deae42e1ace192da885d5d0bd6d87ecf88",
+        "working_sha256": "89a734e97b54629e86354be4b8a7d8deae42e1ace192da885d5d0bd6d87ecf88"
+      }
+    ]
+  },
+  "official_semantics_sources": [
+    "https://kubernetes.io/docs/reference/kubernetes-api/admissionregistration/validating-admission-policy-v1/",
+    "https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/",
+    "https://github.com/kubernetes/kubernetes/blob/v1.37.0/pkg/apis/admissionregistration/v1/defaults.go"
+  ],
+  "official_sources_raw_artifact_retained": false,
+  "first_default_selector_regression": {
+    "actual_exit": 1,
+    "cases": 1,
+    "seconds": 0.026,
+    "errors": 1
+  },
+  "original_attempts": [
+    {
+      "path": "admission-validator-v1/bortus-admission-qualification.py",
+      "bytes": 15218,
+      "sha256": "e31d479355f361824c70b7cc5a57fdc1f7f2c29d0a21713bea51903752e5e03e"
+    },
+    {
+      "path": "admission-validator-v1/bortus-admission-render-v1.json",
+      "bytes": 26232,
+      "sha256": "bbf39920285695c0b409f306caa3547287c1e9dbd8061567ddacdabffa669d5f"
+    },
+    {
+      "path": "admission-validator-v1/focused.log",
+      "bytes": 119,
+      "sha256": "da1ac8d21448ba775ab334792211545b75db73488d200e7918814b45a9614b32"
+    },
+    {
+      "path": "admission-validator-v1/terminal.json",
+      "bytes": 99,
+      "sha256": "a7e5747fca14deac6c8fca1223c8449de235e5fbd03b7df4ee3c758a208e7731"
+    },
+    {
+      "path": "admission-validator-v1/test_bortus_admission_qualification.py",
+      "bytes": 10052,
+      "sha256": "62297acc57b19c1d721d1ba0e1e0ff4ea5d6b122f080756a596081f1ffaceba0"
+    },
+    {
+      "path": "admission-validator-v2/bortus-admission-qualification.py",
+      "bytes": 15218,
+      "sha256": "e31d479355f361824c70b7cc5a57fdc1f7f2c29d0a21713bea51903752e5e03e"
+    },
+    {
+      "path": "admission-validator-v2/bortus-admission-render-v1.json",
+      "bytes": 26232,
+      "sha256": "bbf39920285695c0b409f306caa3547287c1e9dbd8061567ddacdabffa669d5f"
+    },
+    {
+      "path": "admission-validator-v2/focused.log",
+      "bytes": 1614,
+      "sha256": "8510b0f47cf47cb5b53d2725d09f6a854999c1794c8f3a50806d7e6dfdf55746"
+    },
+    {
+      "path": "admission-validator-v2/terminal.json",
+      "bytes": 107,
+      "sha256": "2e2ff4571b896596029e6c3fc0d857b1ab7e6e2313c17b7a4af098616ba50f47"
+    },
+    {
+      "path": "admission-validator-v2/test_bortus_admission_qualification.py",
+      "bytes": 10659,
+      "sha256": "8575af66a724db370996246030fea97335c78fe5c8c730890ecf1bdc09d81365"
+    },
+    {
+      "path": "admission-validator-v3/bortus-admission-qualification.py",
+      "bytes": 15889,
+      "sha256": "a8169591a64bfce13163d5e2b86db832d75db4cbd38c2775d7738148c95a8d65"
+    },
+    {
+      "path": "admission-validator-v3/bortus-admission-render-v1.json",
+      "bytes": 26232,
+      "sha256": "bbf39920285695c0b409f306caa3547287c1e9dbd8061567ddacdabffa669d5f"
+    },
+    {
+      "path": "admission-validator-v3/focused.log",
+      "bytes": 120,
+      "sha256": "573a444e9f8ba40af23c4b9aa57bf5bacff9f0af9032fbf83317c9e3bb3bd2ae"
+    },
+    {
+      "path": "admission-validator-v3/terminal.json",
+      "bytes": 109,
+      "sha256": "73a9295fb10f17f7fb62ad15d5a3c10f61fb28c427dcb6c1a568458bc5a7f8a2"
+    },
+    {
+      "path": "admission-validator-v3/test_bortus_admission_qualification.py",
+      "bytes": 10659,
+      "sha256": "290e6a6662a0bf0bc5e773e029a8f0a23f8161f1845577607fd9738f4e3a35c1"
+    },
+    {
+      "path": "admission-validator-v4/bortus-admission-qualification.py",
+      "bytes": 17053,
+      "sha256": "91b1ea3c76f906ef0cbcc62835fa0bd8fef1cfd5fe96db54953fe907d7da65a3"
+    },
+    {
+      "path": "admission-validator-v4/bortus-admission-render-v1.json",
+      "bytes": 26232,
+      "sha256": "bbf39920285695c0b409f306caa3547287c1e9dbd8061567ddacdabffa669d5f"
+    },
+    {
+      "path": "admission-validator-v4/focused.log",
+      "bytes": 121,
+      "sha256": "ed9fef71e4a313348c1a5b6df85d1a904a8b58ca1b637436677803285a64423d"
+    },
+    {
+      "path": "admission-validator-v4/terminal.json",
+      "bytes": 106,
+      "sha256": "7996e5f401f1aa26e18b6d214957abfdacf442bdcdb8c6abbd23029edd4be10a"
+    },
+    {
+      "path": "admission-validator-v4/test_bortus_admission_qualification.py",
+      "bytes": 12616,
+      "sha256": "4fd958681780fbfd5c7b6470aed76fec642f8571b9a91e1291618883bc398e3e"
+    }
+  ],
+  "probe_count": 40,
+  "coverage_map_sha256": "fa74e3b075a365543ce4b2d005a1705beeff7ce673ac5d799e96927002cfcf84",
+  "limitations": [
+    "caller must independently prove fresh actual GET/request and unambiguous API guard attribution",
+    "raw probe errors/values never enter closed metadata outcomes",
+    "exact full CEL/spec match establishes structural coverage;40 finite cases cover orthogonal live behavior",
+    "additional Secret names marked structural-only",
+    "no policy install/API/SSH/operator credentials/CEL binary/Node/Docker/live calls"
+  ],
+  "actual_enforcement_accepted": false,
+  "overall_live_restore_acceptance": false
+}

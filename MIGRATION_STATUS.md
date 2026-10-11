@@ -18,6 +18,25 @@ passed; its single unchanged frozen paired comparison runs after checkpoint
 closure. The coordinator and two subagents own current work; seven former BORTUS
 execution chats remain archived.
 
+## 2026-10-11: combined admission and cold helper qualification
+
+The [root integration receipt](evidence/bortus-admission-cold-helper-integration-20261011.json)
+records four selected immutable handoffs and all 474 current test_bortus*.py
+cases passing on 144 frozen Python files, with zero skips and exact process
+closure. Cold holder release now precedes writer resume; healthy cold operations
+remain strict while same-identity normal attachment transitions are permitted
+only during resume. Literal runtime imageID, complete PodList metadata and
+admission-policy attribution remain enforced. Actual earlier checkpoint source
+and failures are preserved; this local run makes no production API request.
+Active admission and independent complete-row restoration remain open.
+
+The app subagent reports the single unchanged paired comparison for candidate
+4668ceb failed the original performance gates: the 1k native list median is
+125.469 ms versus baseline 91.168 ms. Fresh Linux functional checks passed.
+The candidate is not accepted for release. No unchanged pair is rerun and no
+performance gate is weakened. Coordination remains root plus two subagents;
+seven former BORTUS execution chats are archived.
+
 ## Current orchestration and application qualification
 
 Three agents are active: coordinator, BORTUS application integration, and native transport/evidence. Seven identifiable former BORTUS execution/review chats are confirmed archived; unrelated projects remain unchanged. Before archiving the additional idle dependency/runtime chat, its clean committed handoff was preserved as a verified complete-history Git bundle and raw source archive outside managed checkouts. Its package, lockfile and Dockerfile match the current app source; [preservation evidence](evidence/bortus-runtime-thread-archive.json) records the exact artifacts. Earlier archiving removed managed checkouts, so application work was recovered from snapshot da84f0f00aeb0daca299358e93fc7074acd2055e (parent b82980e783daf09e1aabe00f3a5db99fef3e13fa), including 17 changed paths and both qualification logs. All six original source-file hashes were recovered; the workbench discrepancy was traced to mixed line endings by replaying the original patch records. Source and evidence backups remain outside the managed checkouts.

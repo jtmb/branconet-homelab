@@ -1,0 +1,128 @@
+# Admission qualification metadata and callable probes
+
+`scripts/migration/bortus-admission-qualification.py` validates bounded caller
+inputs without making requests or installing policies. The chart guard source is
+frozen at `710e5ecd`: three policies and three bindings, Fail/Deny/Equivalent,
+the exact BORTUS namespace, complete CREATE/UPDATE workload coverage including
+ephemeral containers, and new-or-old protected references. The module's literal
+CEL/spec reconstruction must equal the independently supplied canonical renders;
+matching weakened caller renders cannot relax it. Original and exact restore
+claims, runtime/operator Secret references and one to eight exact tagless image
+digests are mandatory. Additional explicitly reviewed Secret references remain
+protected. There are no selectors, parameters or label exemptions.
+
+Call `evaluate(expected_renders, actual_gets, contract, probe_outcomes,
+pinned_guard_identities=...)`. The six independently recorded kind/name/UID pins
+must match fresh GETs. ResourceVersions remain opaque, may advance and are
+returned with canonical public policy-spec SHA-256s. Each policy needs current
+observedGeneration and present typeChecking; absent/empty expressionWarnings is
+the documented warning-free form. Stale results, warnings, deletion, identity or
+spec drift refuse without returning raw objects or warning text. Canonical specs
+normalize only literal empty namespaceSelector/objectSelector maps inserted by
+the [Kubernetes v1.37 defaulting source](https://github.com/kubernetes/kubernetes/blob/v1.37.0/pkg/apis/admissionregistration/v1/defaults.go).
+Those defaults match all objects; every nonempty selector still refuses.
+
+`probe_catalog(contract)` provides closed metadata descriptors for positive
+original/restore inert Pods and negative legacy/new/default principal, mutable
+tag/label, registry alias, pull policy, init/ephemeral, deprecated principal alias,
+all protected Secret delivery forms and oldObject-removal UPDATE cases across
+the workload families. The jointly covering corpus has exactly 40 cases, rather
+than Cartesian repetition at every mutation. `coverage_map(contract)` and the
+returned coverage tuples identify which cases cover each family, reference and
+scenario. Both required Secrets get every listed delivery form; the four
+oldObject-removal cases cover both claims and both Secrets. Extra explicitly
+reviewed Secret names are marked structural-only, never claimed to have actual
+probe coverage. Exact full CEL/spec matching proves structural coverage across
+families independently of this finite actual corpus, including the new/old
+ephemeral claim branches. The actual ephemeral fixture triggers
+through its `bortus-kv` service-account principal. Its descriptor names that
+principal; `structural_only_ephemeral_claim_names` marks both claims as unprobed
+for that specific trigger. It references no nonexistent restore PVC. All four
+oldObject-removal UPDATE cases use Deployment; Job init CREATE remains covered.
+Root constructs the real requests from reviewed
+fixtures and independently bind their descriptors to actual outcomes. Every
+case must appear once. Results contain only http_status, outcome, attribution
+and other_failure. A negative needs Forbidden/403 with an exact selected
+policy/binding UID and validation index; generic 403, RBAC, schema or immutability
+errors do not count. Raw API messages, parent metadata, credentials and values
+must never enter these outcomes or public refusal frames.
+
+`bortus-admission-operator.py` supplies `AdmissionOperator(source_fence, options,
+contract, renders, expected_chart_commit, verify_publication).qualify(directory,
+deadline=...)`. Use its exact exported `source.SourceFence`; the caller owns and
+closes that borrowed fence. Permanent
+guards remain owned by the existing Flux publication path; a trusted current
+publication callback must bind exact chart/validated/Ready revision and six
+independently observed UID/RV/spec pins. Publication and its potentially long CI
+wait happen before the bounded collector invocation. The fresh completed cold
+checkpoint must precede guard activation, with the original writer resumed and
+Ready: a guard denying legacy Deployment updates cannot be activated before
+the cold helper's scale/resume sequence. Guard-protected independent restore
+requires that unchanged Ready original writer throughout.
+
+The callback returns closed chart_commit/validated_revision/flux_revision fields,
+literal ci_success/flux_ready, the owned Flux Kustomization kind/name/namespace/
+UID/RV, six kind/name/UID/RV/spec_sha256 pins, and publication_receipt_sha256.
+It verifies prior publication, rather than publishing inside the evaluation
+deadline. Independent verified-TLS GETs must match these pins and current exact
+specs/type checking before fixtures and around probes. One absolute deadline of
+at most 300 seconds includes all requests, source rechecks and cleanup; the
+30-second socket limit is not a fresh operation budget. Options are fresh on
+every connection; bodies/replies are bounded to 1 MiB/8 MiB, without redirects,
+compression, retries or Secret endpoints.
+
+Only root-authorized disposable approved inert Pod and replicas-zero Deployment
+fixtures supply actual server oldObject for ephemeral and reference-removal
+dry-runs. All four removal cases use Deployment, avoiding Job's immutable
+template as a confounding failure; Job remains covered by init CREATE. Durable
+pending/UID/RV intents precede fixture mutations, and successful deletion needs
+a complete fresh namespace inventory proving name and UID absence. No dummy
+fixture mounts original/restored PVC contents or starts the application. Failed
+or ambiguous operations remain for root review rather than replay/adoption.
+
+The collector exclusively creates a protected fsynced run with durable proposal
+intents before each fixture mutation. Its four oldObject switches use a
+replicas-zero Deployment, fresh owned UID/RV and exact spec GETs; ephemeral
+dry-run uses the actual owned inert Pod. DELETE acknowledgment needs the exact
+owned identity, followed by complete namespace LIST absence of both name and UID.
+Failures retain fixtures and uncertain receipts; no automatic cleanup mutation
+or new attempt is made. The receipt includes closed selected outcomes, not raw
+API messages. Only the exact reviewed Kubernetes Status policy/binding validation
+cause counts as denial; RBAC, schema, immutable-field and ambiguous causes refuse.
+Canonical-spec matching and fresh pinned UIDs bind the single validation index;
+Status itself does not carry policy UIDs or prove them. Thirteen owned local
+HTTPS/POSIX regressions pass alongside seventeen pure validator cases: thirty
+cases passed on the final source without skips. The first collector source/logs
+and prior immutable descriptor set remain retained. No cluster requests were made.
+
+The pure validator remains an input validator, not an admission engine. Root must
+perform fresh verified-TLS GETs, parse unambiguous policy/binding attribution
+from protected actual API replies, prove binding propagation and request
+identity, and repeat identity/spec checks before use. A forged closed record can
+never establish observation provenance. Returned `actual_enforcement_accepted`
+and `overall_live_restore_acceptance` are always false. The restore callback's
+admission receipt must bind separate real evidence; neither a bare Boolean nor
+this local library can grant image, RBAC, runtime, data or release acceptance.
+
+The official [policy API](https://kubernetes.io/docs/reference/kubernetes-api/admissionregistration/validating-admission-policy-v1/)
+defines current observedGeneration and typeChecking. The [admission guide](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/)
+documents empty typeChecking as warning-free. Chart CEL evaluation and actual
+server request qualification remain separate from this metadata validation.
+See the [callable restore coordinator](BORTUS-INDEPENDENT-RESTORE.md).
+
+Seventeen pure local regressions pass, including independent frozen chart-render
+equivalence, weakened expected/live specs, UID replacement, stale type checking,
+missing/duplicated cases, false Boolean shortcuts, unattributed/RBAC/schema
+errors, opaque RV changes and public refusal-frame privacy. The first
+empty-default-selector refusal and earlier Cartesian fixture versions are
+retained. No actual API, policy installation, CEL runtime or live probe was run.
+
+Root integrated the selected admission collector, exact runtime imageID checks
+and cold holder-release ordering fix through immutable handoffs, preserving the
+actual earlier checkpoint evidence. The [combined local receipt](../evidence/bortus-admission-cold-helper-integration-20261011.json)
+records 474 passing current test_bortus*.py cases, zero failures/errors/skips,
+144 frozen Python source files and reaped exact process owners. This discovery
+scope excludes differently named test modules. Loopback/fake API and disposable
+local data checks do not prove live guard enforcement or independent recovery.
+The corrected helper has not recaptured live data; the completed checkpoint
+remains bound to its original executed source and explicit recovery journal.

@@ -1,0 +1,340 @@
+{
+  "contract": {
+    "approved_image_references": [
+      "fixture.invalid/bortus@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ],
+    "guarded_service_account": "bortus-kv",
+    "namespace": "bortus",
+    "protected_pvc_names": [
+      "bortus-data",
+      "bortus-restore-111111111111"
+    ],
+    "protected_secret_names": [
+      "bortus-runtime",
+      "bortus-operator-access"
+    ]
+  },
+  "renders": [
+    {
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingAdmissionPolicy",
+      "metadata": {
+        "name": "bortus-kv-guard-pods"
+      },
+      "spec": {
+        "failurePolicy": "Fail",
+        "matchConditions": [
+          {
+            "expression": "request.namespace == \"bortus\"",
+            "name": "exact-bortus-namespace"
+          }
+        ],
+        "matchConstraints": {
+          "matchPolicy": "Equivalent",
+          "resourceRules": [
+            {
+              "apiGroups": [
+                ""
+              ],
+              "apiVersions": [
+                "v1"
+              ],
+              "operations": [
+                "CREATE",
+                "UPDATE"
+              ],
+              "resources": [
+                "pods",
+                "pods/ephemeralcontainers"
+              ],
+              "scope": "Namespaced"
+            }
+          ]
+        },
+        "validations": [
+          {
+            "expression": "!(variables.newProtected || variables.oldProtected) || (size(variables.containers) > 0 && variables.containers.all(c, has(c.image) && c.image in variables.approvedImages && has(c.imagePullPolicy) && c.imagePullPolicy == 'Never'))",
+            "message": "BORTUS protected identity, metadata claim or credential references require approved compatible immutable images in every container with pullPolicy Never.",
+            "reason": "Forbidden"
+          }
+        ],
+        "variables": [
+          {
+            "expression": "[\"fixture.invalid/bortus@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"]",
+            "name": "approvedImages"
+          },
+          {
+            "expression": "[\"bortus-data\", \"bortus-restore-111111111111\"]",
+            "name": "protectedClaims"
+          },
+          {
+            "expression": "[\"bortus-runtime\", \"bortus-operator-access\"]",
+            "name": "protectedSecrets"
+          },
+          {
+            "expression": "has(object.spec) ? object.spec : null",
+            "name": "podSpec"
+          },
+          {
+            "expression": "oldObject != null && has(oldObject.spec) ? oldObject.spec : null",
+            "name": "oldPodSpec"
+          },
+          {
+            "expression": "variables.podSpec == null ? [] : ((has(variables.podSpec.containers) ? variables.podSpec.containers : []) + (has(variables.podSpec.initContainers) ? variables.podSpec.initContainers : []) + (has(variables.podSpec.ephemeralContainers) ? variables.podSpec.ephemeralContainers : []))",
+            "name": "containers"
+          },
+          {
+            "expression": "variables.oldPodSpec == null ? [] : ((has(variables.oldPodSpec.containers) ? variables.oldPodSpec.containers : []) + (has(variables.oldPodSpec.initContainers) ? variables.oldPodSpec.initContainers : []) + (has(variables.oldPodSpec.ephemeralContainers) ? variables.oldPodSpec.ephemeralContainers : []))",
+            "name": "oldContainers"
+          },
+          {
+            "expression": "variables.podSpec != null && ((has(variables.podSpec.serviceAccountName) && variables.podSpec.serviceAccountName == \"bortus-kv\") || (has(variables.podSpec.serviceAccount) && variables.podSpec.serviceAccount == \"bortus-kv\") || (has(variables.podSpec.imagePullSecrets) && variables.podSpec.imagePullSecrets.exists(s, has(s.name) && s.name in variables.protectedSecrets)) || variables.containers.exists(c, (has(c.env) && c.env.exists(e, has(e.valueFrom) && has(e.valueFrom.secretKeyRef) && has(e.valueFrom.secretKeyRef.name) && e.valueFrom.secretKeyRef.name in variables.protectedSecrets)) || (has(c.envFrom) && c.envFrom.exists(e, has(e.secretRef) && has(e.secretRef.name) && e.secretRef.name in variables.protectedSecrets))) || (has(variables.podSpec.volumes) && variables.podSpec.volumes.exists(v, (has(v.persistentVolumeClaim) && has(v.persistentVolumeClaim.claimName) && v.persistentVolumeClaim.claimName in variables.protectedClaims) || (has(v.secret) && has(v.secret.secretName) && v.secret.secretName in variables.protectedSecrets) || (has(v.projected) && has(v.projected.sources) && v.projected.sources.exists(s, has(s.secret) && has(s.secret.name) && s.secret.name in variables.protectedSecrets)) || (has(v.azureFile) && has(v.azureFile.secretName) && v.azureFile.secretName in variables.protectedSecrets) || (has(v.csi) && has(v.csi.nodePublishSecretRef) && has(v.csi.nodePublishSecretRef.name) && v.csi.nodePublishSecretRef.name in variables.protectedSecrets) || (has(v.flexVolume) && has(v.flexVolume.secretRef) && has(v.flexVolume.secretRef.name) && v.flexVolume.secretRef.name in variables.protectedSecrets) || (has(v.cephfs) && has(v.cephfs.secretRef) && has(v.cephfs.secretRef.name) && v.cephfs.secretRef.name in variables.protectedSecrets) || (has(v.rbd) && has(v.rbd.secretRef) && has(v.rbd.secretRef.name) && v.rbd.secretRef.name in variables.protectedSecrets) || (has(v.iscsi) && has(v.iscsi.secretRef) && has(v.iscsi.secretRef.name) && v.iscsi.secretRef.name in variables.protectedSecrets) || (has(v.scaleIO) && has(v.scaleIO.secretRef) && has(v.scaleIO.secretRef.name) && v.scaleIO.secretRef.name in variables.protectedSecrets) || (has(v.storageos) && has(v.storageos.secretRef) && has(v.storageos.secretRef.name) && v.storageos.secretRef.name in variables.protectedSecrets))))",
+            "name": "newProtected"
+          },
+          {
+            "expression": "variables.oldPodSpec != null && ((has(variables.oldPodSpec.serviceAccountName) && variables.oldPodSpec.serviceAccountName == \"bortus-kv\") || (has(variables.oldPodSpec.serviceAccount) && variables.oldPodSpec.serviceAccount == \"bortus-kv\") || (has(variables.oldPodSpec.imagePullSecrets) && variables.oldPodSpec.imagePullSecrets.exists(s, has(s.name) && s.name in variables.protectedSecrets)) || variables.oldContainers.exists(c, (has(c.env) && c.env.exists(e, has(e.valueFrom) && has(e.valueFrom.secretKeyRef) && has(e.valueFrom.secretKeyRef.name) && e.valueFrom.secretKeyRef.name in variables.protectedSecrets)) || (has(c.envFrom) && c.envFrom.exists(e, has(e.secretRef) && has(e.secretRef.name) && e.secretRef.name in variables.protectedSecrets))) || (has(variables.oldPodSpec.volumes) && variables.oldPodSpec.volumes.exists(v, (has(v.persistentVolumeClaim) && has(v.persistentVolumeClaim.claimName) && v.persistentVolumeClaim.claimName in variables.protectedClaims) || (has(v.secret) && has(v.secret.secretName) && v.secret.secretName in variables.protectedSecrets) || (has(v.projected) && has(v.projected.sources) && v.projected.sources.exists(s, has(s.secret) && has(s.secret.name) && s.secret.name in variables.protectedSecrets)) || (has(v.azureFile) && has(v.azureFile.secretName) && v.azureFile.secretName in variables.protectedSecrets) || (has(v.csi) && has(v.csi.nodePublishSecretRef) && has(v.csi.nodePublishSecretRef.name) && v.csi.nodePublishSecretRef.name in variables.protectedSecrets) || (has(v.flexVolume) && has(v.flexVolume.secretRef) && has(v.flexVolume.secretRef.name) && v.flexVolume.secretRef.name in variables.protectedSecrets) || (has(v.cephfs) && has(v.cephfs.secretRef) && has(v.cephfs.secretRef.name) && v.cephfs.secretRef.name in variables.protectedSecrets) || (has(v.rbd) && has(v.rbd.secretRef) && has(v.rbd.secretRef.name) && v.rbd.secretRef.name in variables.protectedSecrets) || (has(v.iscsi) && has(v.iscsi.secretRef) && has(v.iscsi.secretRef.name) && v.iscsi.secretRef.name in variables.protectedSecrets) || (has(v.scaleIO) && has(v.scaleIO.secretRef) && has(v.scaleIO.secretRef.name) && v.scaleIO.secretRef.name in variables.protectedSecrets) || (has(v.storageos) && has(v.storageos.secretRef) && has(v.storageos.secretRef.name) && v.storageos.secretRef.name in variables.protectedSecrets))))",
+            "name": "oldProtected"
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingAdmissionPolicyBinding",
+      "metadata": {
+        "name": "bortus-kv-guard-pods"
+      },
+      "spec": {
+        "policyName": "bortus-kv-guard-pods",
+        "validationActions": [
+          "Deny"
+        ]
+      }
+    },
+    {
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingAdmissionPolicy",
+      "metadata": {
+        "name": "bortus-kv-guard-templates"
+      },
+      "spec": {
+        "failurePolicy": "Fail",
+        "matchConditions": [
+          {
+            "expression": "request.namespace == \"bortus\"",
+            "name": "exact-bortus-namespace"
+          }
+        ],
+        "matchConstraints": {
+          "matchPolicy": "Equivalent",
+          "resourceRules": [
+            {
+              "apiGroups": [
+                "apps"
+              ],
+              "apiVersions": [
+                "v1"
+              ],
+              "operations": [
+                "CREATE",
+                "UPDATE"
+              ],
+              "resources": [
+                "deployments",
+                "statefulsets",
+                "daemonsets",
+                "replicasets"
+              ],
+              "scope": "Namespaced"
+            },
+            {
+              "apiGroups": [
+                ""
+              ],
+              "apiVersions": [
+                "v1"
+              ],
+              "operations": [
+                "CREATE",
+                "UPDATE"
+              ],
+              "resources": [
+                "replicationcontrollers"
+              ],
+              "scope": "Namespaced"
+            },
+            {
+              "apiGroups": [
+                "batch"
+              ],
+              "apiVersions": [
+                "v1"
+              ],
+              "operations": [
+                "CREATE",
+                "UPDATE"
+              ],
+              "resources": [
+                "jobs"
+              ],
+              "scope": "Namespaced"
+            }
+          ]
+        },
+        "validations": [
+          {
+            "expression": "!(variables.newProtected || variables.oldProtected) || (size(variables.containers) > 0 && variables.containers.all(c, has(c.image) && c.image in variables.approvedImages && has(c.imagePullPolicy) && c.imagePullPolicy == 'Never'))",
+            "message": "BORTUS protected identity, metadata claim or credential references require approved compatible immutable images in every container with pullPolicy Never.",
+            "reason": "Forbidden"
+          }
+        ],
+        "variables": [
+          {
+            "expression": "[\"fixture.invalid/bortus@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"]",
+            "name": "approvedImages"
+          },
+          {
+            "expression": "[\"bortus-data\", \"bortus-restore-111111111111\"]",
+            "name": "protectedClaims"
+          },
+          {
+            "expression": "[\"bortus-runtime\", \"bortus-operator-access\"]",
+            "name": "protectedSecrets"
+          },
+          {
+            "expression": "has(object.spec) && has(object.spec.template) && has(object.spec.template.spec) ? object.spec.template.spec : null",
+            "name": "podSpec"
+          },
+          {
+            "expression": "oldObject != null && has(oldObject.spec) && has(oldObject.spec.template) && has(oldObject.spec.template.spec) ? oldObject.spec.template.spec : null",
+            "name": "oldPodSpec"
+          },
+          {
+            "expression": "variables.podSpec == null ? [] : ((has(variables.podSpec.containers) ? variables.podSpec.containers : []) + (has(variables.podSpec.initContainers) ? variables.podSpec.initContainers : []) + (has(variables.podSpec.ephemeralContainers) ? variables.podSpec.ephemeralContainers : []))",
+            "name": "containers"
+          },
+          {
+            "expression": "variables.oldPodSpec == null ? [] : ((has(variables.oldPodSpec.containers) ? variables.oldPodSpec.containers : []) + (has(variables.oldPodSpec.initContainers) ? variables.oldPodSpec.initContainers : []) + (has(variables.oldPodSpec.ephemeralContainers) ? variables.oldPodSpec.ephemeralContainers : []))",
+            "name": "oldContainers"
+          },
+          {
+            "expression": "variables.podSpec != null && ((has(variables.podSpec.serviceAccountName) && variables.podSpec.serviceAccountName == \"bortus-kv\") || (has(variables.podSpec.serviceAccount) && variables.podSpec.serviceAccount == \"bortus-kv\") || (has(variables.podSpec.imagePullSecrets) && variables.podSpec.imagePullSecrets.exists(s, has(s.name) && s.name in variables.protectedSecrets)) || variables.containers.exists(c, (has(c.env) && c.env.exists(e, has(e.valueFrom) && has(e.valueFrom.secretKeyRef) && has(e.valueFrom.secretKeyRef.name) && e.valueFrom.secretKeyRef.name in variables.protectedSecrets)) || (has(c.envFrom) && c.envFrom.exists(e, has(e.secretRef) && has(e.secretRef.name) && e.secretRef.name in variables.protectedSecrets))) || (has(variables.podSpec.volumes) && variables.podSpec.volumes.exists(v, (has(v.persistentVolumeClaim) && has(v.persistentVolumeClaim.claimName) && v.persistentVolumeClaim.claimName in variables.protectedClaims) || (has(v.secret) && has(v.secret.secretName) && v.secret.secretName in variables.protectedSecrets) || (has(v.projected) && has(v.projected.sources) && v.projected.sources.exists(s, has(s.secret) && has(s.secret.name) && s.secret.name in variables.protectedSecrets)) || (has(v.azureFile) && has(v.azureFile.secretName) && v.azureFile.secretName in variables.protectedSecrets) || (has(v.csi) && has(v.csi.nodePublishSecretRef) && has(v.csi.nodePublishSecretRef.name) && v.csi.nodePublishSecretRef.name in variables.protectedSecrets) || (has(v.flexVolume) && has(v.flexVolume.secretRef) && has(v.flexVolume.secretRef.name) && v.flexVolume.secretRef.name in variables.protectedSecrets) || (has(v.cephfs) && has(v.cephfs.secretRef) && has(v.cephfs.secretRef.name) && v.cephfs.secretRef.name in variables.protectedSecrets) || (has(v.rbd) && has(v.rbd.secretRef) && has(v.rbd.secretRef.name) && v.rbd.secretRef.name in variables.protectedSecrets) || (has(v.iscsi) && has(v.iscsi.secretRef) && has(v.iscsi.secretRef.name) && v.iscsi.secretRef.name in variables.protectedSecrets) || (has(v.scaleIO) && has(v.scaleIO.secretRef) && has(v.scaleIO.secretRef.name) && v.scaleIO.secretRef.name in variables.protectedSecrets) || (has(v.storageos) && has(v.storageos.secretRef) && has(v.storageos.secretRef.name) && v.storageos.secretRef.name in variables.protectedSecrets))))",
+            "name": "newProtected"
+          },
+          {
+            "expression": "variables.oldPodSpec != null && ((has(variables.oldPodSpec.serviceAccountName) && variables.oldPodSpec.serviceAccountName == \"bortus-kv\") || (has(variables.oldPodSpec.serviceAccount) && variables.oldPodSpec.serviceAccount == \"bortus-kv\") || (has(variables.oldPodSpec.imagePullSecrets) && variables.oldPodSpec.imagePullSecrets.exists(s, has(s.name) && s.name in variables.protectedSecrets)) || variables.oldContainers.exists(c, (has(c.env) && c.env.exists(e, has(e.valueFrom) && has(e.valueFrom.secretKeyRef) && has(e.valueFrom.secretKeyRef.name) && e.valueFrom.secretKeyRef.name in variables.protectedSecrets)) || (has(c.envFrom) && c.envFrom.exists(e, has(e.secretRef) && has(e.secretRef.name) && e.secretRef.name in variables.protectedSecrets))) || (has(variables.oldPodSpec.volumes) && variables.oldPodSpec.volumes.exists(v, (has(v.persistentVolumeClaim) && has(v.persistentVolumeClaim.claimName) && v.persistentVolumeClaim.claimName in variables.protectedClaims) || (has(v.secret) && has(v.secret.secretName) && v.secret.secretName in variables.protectedSecrets) || (has(v.projected) && has(v.projected.sources) && v.projected.sources.exists(s, has(s.secret) && has(s.secret.name) && s.secret.name in variables.protectedSecrets)) || (has(v.azureFile) && has(v.azureFile.secretName) && v.azureFile.secretName in variables.protectedSecrets) || (has(v.csi) && has(v.csi.nodePublishSecretRef) && has(v.csi.nodePublishSecretRef.name) && v.csi.nodePublishSecretRef.name in variables.protectedSecrets) || (has(v.flexVolume) && has(v.flexVolume.secretRef) && has(v.flexVolume.secretRef.name) && v.flexVolume.secretRef.name in variables.protectedSecrets) || (has(v.cephfs) && has(v.cephfs.secretRef) && has(v.cephfs.secretRef.name) && v.cephfs.secretRef.name in variables.protectedSecrets) || (has(v.rbd) && has(v.rbd.secretRef) && has(v.rbd.secretRef.name) && v.rbd.secretRef.name in variables.protectedSecrets) || (has(v.iscsi) && has(v.iscsi.secretRef) && has(v.iscsi.secretRef.name) && v.iscsi.secretRef.name in variables.protectedSecrets) || (has(v.scaleIO) && has(v.scaleIO.secretRef) && has(v.scaleIO.secretRef.name) && v.scaleIO.secretRef.name in variables.protectedSecrets) || (has(v.storageos) && has(v.storageos.secretRef) && has(v.storageos.secretRef.name) && v.storageos.secretRef.name in variables.protectedSecrets))))",
+            "name": "oldProtected"
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingAdmissionPolicyBinding",
+      "metadata": {
+        "name": "bortus-kv-guard-templates"
+      },
+      "spec": {
+        "policyName": "bortus-kv-guard-templates",
+        "validationActions": [
+          "Deny"
+        ]
+      }
+    },
+    {
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingAdmissionPolicy",
+      "metadata": {
+        "name": "bortus-kv-guard-cronjobs"
+      },
+      "spec": {
+        "failurePolicy": "Fail",
+        "matchConditions": [
+          {
+            "expression": "request.namespace == \"bortus\"",
+            "name": "exact-bortus-namespace"
+          }
+        ],
+        "matchConstraints": {
+          "matchPolicy": "Equivalent",
+          "resourceRules": [
+            {
+              "apiGroups": [
+                "batch"
+              ],
+              "apiVersions": [
+                "v1"
+              ],
+              "operations": [
+                "CREATE",
+                "UPDATE"
+              ],
+              "resources": [
+                "cronjobs"
+              ],
+              "scope": "Namespaced"
+            }
+          ]
+        },
+        "validations": [
+          {
+            "expression": "!(variables.newProtected || variables.oldProtected) || (size(variables.containers) > 0 && variables.containers.all(c, has(c.image) && c.image in variables.approvedImages && has(c.imagePullPolicy) && c.imagePullPolicy == 'Never'))",
+            "message": "BORTUS protected identity, metadata claim or credential references require approved compatible immutable images in every container with pullPolicy Never.",
+            "reason": "Forbidden"
+          }
+        ],
+        "variables": [
+          {
+            "expression": "[\"fixture.invalid/bortus@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"]",
+            "name": "approvedImages"
+          },
+          {
+            "expression": "[\"bortus-data\", \"bortus-restore-111111111111\"]",
+            "name": "protectedClaims"
+          },
+          {
+            "expression": "[\"bortus-runtime\", \"bortus-operator-access\"]",
+            "name": "protectedSecrets"
+          },
+          {
+            "expression": "has(object.spec) && has(object.spec.jobTemplate) && has(object.spec.jobTemplate.spec) && has(object.spec.jobTemplate.spec.template) && has(object.spec.jobTemplate.spec.template.spec) ? object.spec.jobTemplate.spec.template.spec : null",
+            "name": "podSpec"
+          },
+          {
+            "expression": "oldObject != null && has(oldObject.spec) && has(oldObject.spec.jobTemplate) && has(oldObject.spec.jobTemplate.spec) && has(oldObject.spec.jobTemplate.spec.template) && has(oldObject.spec.jobTemplate.spec.template.spec) ? oldObject.spec.jobTemplate.spec.template.spec : null",
+            "name": "oldPodSpec"
+          },
+          {
+            "expression": "variables.podSpec == null ? [] : ((has(variables.podSpec.containers) ? variables.podSpec.containers : []) + (has(variables.podSpec.initContainers) ? variables.podSpec.initContainers : []) + (has(variables.podSpec.ephemeralContainers) ? variables.podSpec.ephemeralContainers : []))",
+            "name": "containers"
+          },
+          {
+            "expression": "variables.oldPodSpec == null ? [] : ((has(variables.oldPodSpec.containers) ? variables.oldPodSpec.containers : []) + (has(variables.oldPodSpec.initContainers) ? variables.oldPodSpec.initContainers : []) + (has(variables.oldPodSpec.ephemeralContainers) ? variables.oldPodSpec.ephemeralContainers : []))",
+            "name": "oldContainers"
+          },
+          {
+            "expression": "variables.podSpec != null && ((has(variables.podSpec.serviceAccountName) && variables.podSpec.serviceAccountName == \"bortus-kv\") || (has(variables.podSpec.serviceAccount) && variables.podSpec.serviceAccount == \"bortus-kv\") || (has(variables.podSpec.imagePullSecrets) && variables.podSpec.imagePullSecrets.exists(s, has(s.name) && s.name in variables.protectedSecrets)) || variables.containers.exists(c, (has(c.env) && c.env.exists(e, has(e.valueFrom) && has(e.valueFrom.secretKeyRef) && has(e.valueFrom.secretKeyRef.name) && e.valueFrom.secretKeyRef.name in variables.protectedSecrets)) || (has(c.envFrom) && c.envFrom.exists(e, has(e.secretRef) && has(e.secretRef.name) && e.secretRef.name in variables.protectedSecrets))) || (has(variables.podSpec.volumes) && variables.podSpec.volumes.exists(v, (has(v.persistentVolumeClaim) && has(v.persistentVolumeClaim.claimName) && v.persistentVolumeClaim.claimName in variables.protectedClaims) || (has(v.secret) && has(v.secret.secretName) && v.secret.secretName in variables.protectedSecrets) || (has(v.projected) && has(v.projected.sources) && v.projected.sources.exists(s, has(s.secret) && has(s.secret.name) && s.secret.name in variables.protectedSecrets)) || (has(v.azureFile) && has(v.azureFile.secretName) && v.azureFile.secretName in variables.protectedSecrets) || (has(v.csi) && has(v.csi.nodePublishSecretRef) && has(v.csi.nodePublishSecretRef.name) && v.csi.nodePublishSecretRef.name in variables.protectedSecrets) || (has(v.flexVolume) && has(v.flexVolume.secretRef) && has(v.flexVolume.secretRef.name) && v.flexVolume.secretRef.name in variables.protectedSecrets) || (has(v.cephfs) && has(v.cephfs.secretRef) && has(v.cephfs.secretRef.name) && v.cephfs.secretRef.name in variables.protectedSecrets) || (has(v.rbd) && has(v.rbd.secretRef) && has(v.rbd.secretRef.name) && v.rbd.secretRef.name in variables.protectedSecrets) || (has(v.iscsi) && has(v.iscsi.secretRef) && has(v.iscsi.secretRef.name) && v.iscsi.secretRef.name in variables.protectedSecrets) || (has(v.scaleIO) && has(v.scaleIO.secretRef) && has(v.scaleIO.secretRef.name) && v.scaleIO.secretRef.name in variables.protectedSecrets) || (has(v.storageos) && has(v.storageos.secretRef) && has(v.storageos.secretRef.name) && v.storageos.secretRef.name in variables.protectedSecrets))))",
+            "name": "newProtected"
+          },
+          {
+            "expression": "variables.oldPodSpec != null && ((has(variables.oldPodSpec.serviceAccountName) && variables.oldPodSpec.serviceAccountName == \"bortus-kv\") || (has(variables.oldPodSpec.serviceAccount) && variables.oldPodSpec.serviceAccount == \"bortus-kv\") || (has(variables.oldPodSpec.imagePullSecrets) && variables.oldPodSpec.imagePullSecrets.exists(s, has(s.name) && s.name in variables.protectedSecrets)) || variables.oldContainers.exists(c, (has(c.env) && c.env.exists(e, has(e.valueFrom) && has(e.valueFrom.secretKeyRef) && has(e.valueFrom.secretKeyRef.name) && e.valueFrom.secretKeyRef.name in variables.protectedSecrets)) || (has(c.envFrom) && c.envFrom.exists(e, has(e.secretRef) && has(e.secretRef.name) && e.secretRef.name in variables.protectedSecrets))) || (has(variables.oldPodSpec.volumes) && variables.oldPodSpec.volumes.exists(v, (has(v.persistentVolumeClaim) && has(v.persistentVolumeClaim.claimName) && v.persistentVolumeClaim.claimName in variables.protectedClaims) || (has(v.secret) && has(v.secret.secretName) && v.secret.secretName in variables.protectedSecrets) || (has(v.projected) && has(v.projected.sources) && v.projected.sources.exists(s, has(s.secret) && has(s.secret.name) && s.secret.name in variables.protectedSecrets)) || (has(v.azureFile) && has(v.azureFile.secretName) && v.azureFile.secretName in variables.protectedSecrets) || (has(v.csi) && has(v.csi.nodePublishSecretRef) && has(v.csi.nodePublishSecretRef.name) && v.csi.nodePublishSecretRef.name in variables.protectedSecrets) || (has(v.flexVolume) && has(v.flexVolume.secretRef) && has(v.flexVolume.secretRef.name) && v.flexVolume.secretRef.name in variables.protectedSecrets) || (has(v.cephfs) && has(v.cephfs.secretRef) && has(v.cephfs.secretRef.name) && v.cephfs.secretRef.name in variables.protectedSecrets) || (has(v.rbd) && has(v.rbd.secretRef) && has(v.rbd.secretRef.name) && v.rbd.secretRef.name in variables.protectedSecrets) || (has(v.iscsi) && has(v.iscsi.secretRef) && has(v.iscsi.secretRef.name) && v.iscsi.secretRef.name in variables.protectedSecrets) || (has(v.scaleIO) && has(v.scaleIO.secretRef) && has(v.scaleIO.secretRef.name) && v.scaleIO.secretRef.name in variables.protectedSecrets) || (has(v.storageos) && has(v.storageos.secretRef) && has(v.storageos.secretRef.name) && v.storageos.secretRef.name in variables.protectedSecrets))))",
+            "name": "oldProtected"
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "admissionregistration.k8s.io/v1",
+      "kind": "ValidatingAdmissionPolicyBinding",
+      "metadata": {
+        "name": "bortus-kv-guard-cronjobs"
+      },
+      "spec": {
+        "policyName": "bortus-kv-guard-cronjobs",
+        "validationActions": [
+          "Deny"
+        ]
+      }
+    }
+  ]
+}
