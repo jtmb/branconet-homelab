@@ -137,33 +137,49 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
         const serialized = body === undefined ? undefined : JSON.stringify(body);
         if (serialized && Buffer.byteLength(serialized) > 900 * 1024) throw new SecretError(413, "Secret object exceeds the application size limit");
         return await new Promise((resolve, reject) => {
+          const chunks: Buffer[] = []; let settled = false;
+          const fail = (error: unknown) => {
+            if (settled) return;
+            settled = true; chunks.length = 0; options.signal?.removeEventListener("abort", abort); reject(error);
+          };
+          const abort = () => fail(secretFailure(options.signal?.reason));
           const req = https.request(base + route, options, response => {
             // API errors/redirects can contain submitted values. Never read or forward those bodies.
             if (!response.statusCode || response.statusCode < 200 || response.statusCode >= 300) {
-              response.destroy(); reject(secretFailure({ code: response.statusCode })); return;
+              fail(secretFailure({ code: response.statusCode })); response.destroy(); return;
             }
-            const chunks: Buffer[] = []; let bytes = 0;
+            let bytes = 0;
             response.on("data", (chunk: Buffer) => {
               bytes += chunk.length;
               // Count every delivered byte, including rejected/retried page prefixes, before buffering.
               try { transferBudget?.consumeBytes(chunk.length); }
-              catch (error) { response.destroy(); reject(error); return; }
-              if (bytes > Math.min(4 * 1024 * 1024, byteLimit)) { response.destroy(); reject(new SecretPageTooLarge()); return; }
-              if (chunks.length >= 16384) { response.destroy(); reject(new SecretError(503, "Kubernetes Secret response exceeds the size limit")); return; }
+              catch (error) { fail(error); response.destroy(); return; }
+              if (settled) return;
+              if (bytes > Math.min(4 * 1024 * 1024, byteLimit)) { fail(new SecretPageTooLarge()); response.destroy(); return; }
+              if (chunks.length >= 16384) { fail(new SecretError(503, "Kubernetes Secret response exceeds the size limit")); response.destroy(); return; }
               chunks.push(chunk);
             });
-            response.once("error", reject);
+            response.once("error", fail);
             response.once("end", () => {
+              if (settled) return;
               try {
+                transferBudget?.check();
+                if (Date.now() >= deadline) throw new SecretError(503, "Kubernetes Secret request timed out");
+                if (options.signal?.aborted) throw secretFailure(options.signal.reason);
                 const value = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(Buffer.concat(chunks)));
                 if (!value || typeof value !== "object") throw Error();
+                settled = true; chunks.length = 0; options.signal?.removeEventListener("abort", abort);
                 resolve({ value, bytes });
-              } catch { reject(new SecretError(503, "Invalid Kubernetes Secret response")); }
+              } catch (error) { fail(error instanceof SecretError ? error : new SecretError(503, "Invalid Kubernetes Secret response")); }
             });
           });
-          req.once("error", reject);
-          if (serialized !== undefined) req.setHeader("Content-Length", Buffer.byteLength(serialized));
-          req.end(serialized);
+          req.once("error", fail);
+          if (!settled) options.signal?.addEventListener("abort", abort, { once: true });
+          if (options.signal?.aborted) abort();
+          try {
+            if (serialized !== undefined) req.setHeader("Content-Length", Buffer.byteLength(serialized));
+            req.end(serialized);
+          } catch (error) { fail(error); }
         });
       } catch (error) { throw secretFailure(error); }
       finally {

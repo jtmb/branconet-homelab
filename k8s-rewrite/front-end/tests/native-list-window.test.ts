@@ -6,7 +6,7 @@ import path from "node:path";
 import https from "node:https";
 import http from "node:http";
 import net from "node:net";
-import { once } from "node:events";
+import { EventEmitter, once } from "node:events";
 import { KubeConfig } from "@kubernetes/client-node";
 import { SecretStore, SecretListBudget, SecretError, SECRET_LIST_MAX_BYTES, secretSummary } from "../src/lib/cluster-secrets";
 import { createSecretTransport, nativeSecrets, nativeRequestDiagnostics } from "../src/lib/secret-client";
@@ -48,6 +48,58 @@ async function fixture(operation: (native: Awaited<ReturnType<typeof nativeTlsFi
     await rm(dir, { recursive: true, force: true });
   }
 }
+
+test("settled responses discard late end/data/errors without decoding and still charge every delivered byte", { timeout: 30000 }, async () => {
+  await fixture(async () => {
+    for (const mode of ["oversize", "response-error", "request-error", "cancel", "aggregate", "success"] as const) {
+      const budget = new SecretListBudget(), initialBytes = mode === "aggregate" ? SECRET_LIST_MAX_BYTES - 100 : 0;
+      budget.bytes = initialBytes;
+      const prefix = Buffer.from('{"apiVersion":"v1","kind":"SecretList","metadata":{"continue":""},"items":[]}');
+      const late = Buffer.alloc(45), excess = Buffer.alloc(mode === "oversize" ? 4 * 1024 * 1024 : 200);
+      const cancelled = new SecretError(503, "Synthetic cancelled response");
+      const originalRequest = https.request, originalConcat = Buffer.concat, originalDecode = TextDecoder.prototype.decode, originalParse = JSON.parse;
+      let requests = 0, delivered = 0, settlements = 0; const work = { concat: 0, decode: 0, parse: 0 };
+      https.request = ((_url: string, _options: https.RequestOptions, receive: (response: http.IncomingMessage) => void) => {
+        requests++;
+        const request = new EventEmitter() as EventEmitter & { end(): void; setHeader(): void };
+        request.setHeader = () => {};
+        request.end = () => { setImmediate(() => {
+          const response = new EventEmitter() as EventEmitter & { statusCode: number; destroy(): void };
+          response.statusCode = 200; response.destroy = () => {};
+          receive(response as unknown as http.IncomingMessage);
+          // Only the synchronous owned response handlers are observed; SDK/TLS setup remains unchanged.
+          Buffer.concat = (...args) => { work.concat++; return originalConcat(...args); };
+          TextDecoder.prototype.decode = function (...args) { work.decode++; return originalDecode.apply(this, args); };
+          JSON.parse = (...args) => { work.parse++; return originalParse(...args); };
+          const data = (chunk: Buffer) => { delivered += chunk.length; response.emit("data", chunk); };
+          try {
+            data(prefix);
+            if (mode === "oversize" || mode === "aggregate") data(excess);
+            if (mode === "response-error") response.emit("error", new Error("Synthetic response failure"));
+            if (mode === "request-error") request.emit("error", new Error("Synthetic request failure"));
+            if (mode === "cancel") budget.fail(cancelled);
+            response.emit("end");
+            data(late); response.emit("end");
+            if (mode !== "response-error") response.emit("error", new Error("Synthetic late response failure"));
+            if (mode !== "request-error") request.emit("error", new Error("Synthetic late request failure"));
+          } finally { Buffer.concat = originalConcat; TextDecoder.prototype.decode = originalDecode; JSON.parse = originalParse; }
+        }); };
+        return request;
+      }) as unknown as typeof https.request;
+      try {
+        const pending = createSecretTransport(200).list("late", { budget, visit: () => assert.fail("Synthetic empty/rejected page has no accepted object") }).then(
+          value => { settlements++; return value; }, error => { settlements++; throw error; });
+        if (mode === "success") assert.deepEqual(await pending, []);
+        else await assert.rejects(pending, error => error503(error) && (mode !== "cancel" || error === cancelled));
+        assert.equal(settlements, 1); assert.equal(requests, mode === "oversize" ? 5 : 1);
+        assert.equal(budget.bytes, initialBytes + delivered); assert.equal(budget.items, 0);
+        assert.deepEqual(work, mode === "success" ? { concat: 1, decode: 1, parse: 1 } : { concat: 0, decode: 0, parse: 0 });
+        if (mode === "aggregate") assert(budget.bytes > SECRET_LIST_MAX_BYTES && budget.signal.aborted);
+        idle();
+      } finally { https.request = originalRequest; Buffer.concat = originalConcat; TextDecoder.prototype.decode = originalDecode; JSON.parse = originalParse; budget.finish(); }
+    }
+  });
+});
 
 test("full-list keepalive shares at most four TLS connections only within one complete operation", { timeout: 30000 }, async () => {
   await fixture(async native => {
