@@ -48,8 +48,8 @@ def url_matches(url, backup_name, volume_name):
             'Exact credential-free source NAS backup required')
 
 
-def prepare(client, record, image, alternate_node):
-    """Qualify separately read metadata; proposals never establish admission or restore."""
+def validate_source(client, record, image, alternate_node):
+    """Repeat original checkpoint/source fences without adopting restore targets."""
     require(cold.valid_digest(image) and valid_name(alternate_node), 'Invalid holder input')
     run_id = record.get('run_id')
     require(isinstance(run_id, str) and re.fullmatch(r'[0-9a-f]{12}', run_id),
@@ -109,6 +109,15 @@ def prepare(client, record, image, alternate_node):
             alternate_node != fresh['writer']['nodeName'] and not node.get('spec', {}).get('unschedulable') and
             any(c.get('type') == 'Ready' and c.get('status') == 'True'
                 for c in node.get('status', {}).get('conditions', [])), 'Alternate Ready node required')
+    return fresh, snapshot, backup, sc, node
+
+
+def prepare(client, record, image, alternate_node):
+    """Qualify source plus absent targets; proposals never prove admission or restore."""
+    fresh, snapshot, backup, sc, node = validate_source(client, record, image, alternate_node)
+    run_id = record['run_id']
+    archive = record['sqlite_archive']
+    bstatus = backup['status']
     name = 'bortus-restore-' + run_id
     for kind, namespace in (('storageclasses', None), ('pvc', 'bortus'), ('pods', 'bortus')):
         collection = client.get(kind, namespace=namespace)

@@ -51,7 +51,7 @@ class Fixture:
                 except (ConnectionResetError, BrokenPipeError, ssl.SSLError): pass
             def do_GET(self):
                 fixture.requests.append((self.path, self.headers.get('Authorization')))
-                body = fixture.body
+                body = fixture.body(self.path) if callable(fixture.body) else fixture.body
                 body = body if type(body) is bytes else json.dumps(body).encode()
                 self.send_response(fixture.status)
                 self.send_header('Content-Type', 'application/json')
@@ -135,15 +135,14 @@ class MetadataTests(unittest.TestCase):
         for resource in module.LISTABLE:
             self.fixture.body = page(resource, [item(resource)])
             self.assertEqual(self.list(resource), self.fixture.body)
-        self.assertEqual(self.calls, 4)
+        self.assertEqual(self.calls, len(module.LISTABLE))
         self.assertEqual([auth for _, auth in self.fixture.requests],
-            ['Bearer PUBLIC_ROTATION_' + str(n) for n in range(1, 5)])
+            ['Bearer PUBLIC_ROTATION_' + str(n) for n in range(1, len(module.LISTABLE) + 1)])
 
-    def test_storageclass_named_read_has_no_list_or_namespace_escape(self):
+    def test_storageclass_named_read_has_no_namespace_escape(self):
         self.fixture.body = item('storageclass')
         self.assertEqual(self.get('storageclass'), self.fixture.body)
         self.assertEqual(self.fixture.requests[-1][0], '/apis/storage.k8s.io/v1/storageclasses/fixture')
-        self.refuse(lambda: self.list('storageclass'), 'request_scope')
         self.fixture.body['metadata']['namespace'] = 'bortus'
         self.refuse(lambda: self.get('storageclass'), 'metadata_identity')
 

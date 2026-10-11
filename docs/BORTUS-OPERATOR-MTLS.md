@@ -62,7 +62,10 @@ and [PyYAML 6.0.3 constructors](https://github.com/yaml/pyyaml/blob/6.0.3/lib/ya
 The separate `bortus-restore-metadata.py` read-only adapter uses the same fresh
 options provider for each TLS connection. Its fixed scope is named BORTUS PVC/Pod,
 cluster StorageClass/PV/Node and Longhorn Volume/Backup/Engine/Replica GETs, plus complete PV,
-BORTUS Pod and Longhorn Engine/Replica lists. It exposes no Secret endpoint,
+BORTUS Pod and Longhorn Engine/Replica lists. The source-fence revision also adds
+fixed BORTUS Deployment/ReplicaSet, Flux-system HelmRelease/Kustomization and
+Longhorn Snapshot/BackupTarget GETs, plus complete StorageClass and BORTUS PVC
+lists for the original preflight's target-absence checks. It exposes no Secret endpoint,
 mutation, proxy, redirect, retry, connection pool or credential fallback.
 Reads have an absolute finite deadline of at most 300 seconds, a 30-second socket
 timeout and an 8-MiB body cap; late reads refuse. Strict UTF8 JSON rejects duplicate
@@ -82,12 +85,33 @@ cancellation, without weakening production assertions. Actual executor/live use
 remains pending.
 
 The subsequent fixed named StorageClass read allows the executor to independently
-check the admitted restore class after POST; no StorageClass list endpoint or
-namespace override is exposed. Its separate twentieth regression covers the
-exact storage API path/kind and rejects namespace/list escapes. This scoped
+check the admitted restore class after POST. Its separate twentieth regression covers the
+exact storage API path/kind and rejects namespace escapes. This scoped
 extension passes all 20 focused tests with frozen inputs and an actual zero exit;
 the earlier 19/350 receipts remain bound to their original sources. See the
 [extension evidence](../evidence/bortus-restore-metadata-storageclass-20261011.json).
+
+The later source-fence extension retains strict complete-list limits for the two
+additional inventories, with no continuation or partial acceptance. Earlier
+receipts describe their original, narrower scopes; current source qualification
+is required before executor use.
+
+`bortus-restore-source.py` owns nofollow read-only descriptors for a reviewed
+mode-0600 checkpoint journal under pinned nonwritable directory anchors. Each
+invocation checks the exact file identity and SHA before and after fresh scoped
+TLS reads. It reuses the original preflight evaluator with the same absolute
+deadline and independently validates the original source/consumer, completed
+cold snapshot/full backup, class and alternate node. `prepare` additionally
+checks complete target-absence inventories; `check` repeats source fences after
+target creation without hiding or adopting target resources. Only selected
+identities and checkpoint/ciphertext bindings cross the check boundary. Fixed
+refusals drop private parser/response frames. Descriptor cleanup is explicit.
+This library has no CLI, mutation, database/Secret read or restore acceptance;
+local qualification passes 12 actual loopback TLS/ownership/privacy cases and
+365 combined root cases without skips on frozen inputs. The target-absence
+preflight and repeat-source checks remain separate; neither authorizes an image,
+mutation or restore by itself. See the
+[source-fence integration evidence](../evidence/bortus-restore-source-integration-20261011.json).
 
 The native immutable handoff at `6e4e9668` passes 30 focused and 179 combined
 cases. Its default scanner exits 1 for one individually reviewed invalid public

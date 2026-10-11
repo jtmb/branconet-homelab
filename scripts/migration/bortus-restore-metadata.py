@@ -13,16 +13,22 @@ MAX_ITEMS = 10000
 LONGHORN = '/apis/longhorn.io/v1beta2/namespaces/longhorn-system/'
 RESOURCES = {
     'storageclass': ('/apis/storage.k8s.io/v1/storageclasses', 'storage.k8s.io/v1', 'StorageClass', ''),
+    'deployment': ('/apis/apps/v1/namespaces/bortus/deployments', 'apps/v1', 'Deployment', 'bortus'),
+    'replicaset': ('/apis/apps/v1/namespaces/bortus/replicasets', 'apps/v1', 'ReplicaSet', 'bortus'),
+    'helmrelease': ('/apis/helm.toolkit.fluxcd.io/v2/namespaces/flux-system/helmreleases', 'helm.toolkit.fluxcd.io/v2', 'HelmRelease', 'flux-system'),
+    'kustomization': ('/apis/kustomize.toolkit.fluxcd.io/v1/namespaces/flux-system/kustomizations', 'kustomize.toolkit.fluxcd.io/v1', 'Kustomization', 'flux-system'),
     'claim': ('/api/v1/namespaces/bortus/persistentvolumeclaims', 'v1', 'PersistentVolumeClaim', 'bortus'),
     'pv': ('/api/v1/persistentvolumes', 'v1', 'PersistentVolume', ''),
     'node': ('/api/v1/nodes', 'v1', 'Node', ''),
     'pod': ('/api/v1/namespaces/bortus/pods', 'v1', 'Pod', 'bortus'),
     'volume': (LONGHORN + 'volumes', 'longhorn.io/v1beta2', 'Volume', 'longhorn-system'),
     'backup': (LONGHORN + 'backups', 'longhorn.io/v1beta2', 'Backup', 'longhorn-system'),
+    'snapshot': (LONGHORN + 'snapshots', 'longhorn.io/v1beta2', 'Snapshot', 'longhorn-system'),
+    'backuptarget': (LONGHORN + 'backuptargets', 'longhorn.io/v1beta2', 'BackupTarget', 'longhorn-system'),
     'engine': (LONGHORN + 'engines', 'longhorn.io/v1beta2', 'Engine', 'longhorn-system'),
     'replica': (LONGHORN + 'replicas', 'longhorn.io/v1beta2', 'Replica', 'longhorn-system'),
 }
-LISTABLE = frozenset(('pv', 'pod', 'engine', 'replica'))
+LISTABLE = frozenset(('pv', 'pod', 'engine', 'replica', 'storageclass', 'claim'))
 
 
 class MetadataRefused(RuntimeError):

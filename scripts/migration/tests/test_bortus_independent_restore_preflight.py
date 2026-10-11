@@ -52,6 +52,27 @@ def prepared():
 
 
 class RestorePreflightTests(unittest.TestCase):
+    def test_repeated_source_fence_does_not_hide_or_adopt_created_targets(self):
+        client, record = prepared()
+        name = 'bortus-restore-' + record['run_id']
+        for collection in client.collections.values():
+            collection['items'].append({'metadata': {'name': name}})
+        before = copy.deepcopy(client.collections)
+        fresh, _, backup, _, _ = module.validate_source(client, record, IMAGE, 'other-node')
+        self.assertEqual(fresh['identities']['claim']['uid'], record['baseline']['identities']['claim']['uid'])
+        self.assertEqual(backup['metadata']['uid'], record['backup_identity']['uid'])
+        self.assertEqual(client.collections, before)
+        with self.assertRaises(RuntimeError): module.prepare(client, record, IMAGE, 'other-node')
+        self.assertEqual(client.calls, [])
+
+    def test_repeated_source_fence_still_refuses_original_backup_or_identity_drift(self):
+        for change in ('backup', 'claim'):
+            client, record = prepared()
+            if change == 'backup': client.owned[record['backup_name']]['status']['state'] = 'Error'
+            else: client.resources['pvc']['metadata']['uid'] = 'foreign-claim'
+            with self.assertRaises(RuntimeError): module.validate_source(client, record, IMAGE, 'other-node')
+            self.assertEqual(client.calls, [])
+
     def test_complete_checkpoint_creates_only_independent_inert_proposals(self):
         client, record = prepared()
         before = copy.deepcopy(record)

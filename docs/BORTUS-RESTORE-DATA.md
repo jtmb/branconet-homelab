@@ -30,6 +30,14 @@ source and target identity tuple pins every name/namespace/UID, including Engine
 two Replicas, holder and alternate node. Later RVs may advance without sorting;
 replacement UIDs or names refuse.
 
+The coordinator's [source-fence adapter](BORTUS-OPERATOR-MTLS.md) now supplies
+the repeated original checkpoint/source checks through pinned journal descriptors
+and fresh scoped TLS reads, reusing the original preflight evaluator. It returns
+selected metadata for conversion to this exact SourceSnapshot interface. Initial
+target-absence preflight remains mandatory and cannot be bypassed or replaced by
+the repeat-source result. Actual runtime/API exec, qualified image and final live
+restore acceptance remain coordinator duties.
+
 `launch_reader(holder_identity, deadline)` returns one newly owned `Popen` with
 pipe stdin/stdout and suppressed private stderr. The library writes exactly
 `bortus-sqlite-archive.NODE_READER`, through a bounded nonblocking pipe, without

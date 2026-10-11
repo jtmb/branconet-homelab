@@ -358,3 +358,18 @@ its original source binding. No live API call occurred. The native subagent is
 building the constrained restore mutation adapter against this exact dependency;
 the application subagent reports the decoder candidate's unchanged performance
 gate still fails, so release acceptance remains open.
+
+## 2026-10-11: repeated original-source fences over TLS
+
+Root adds the pinned read-only source adapter and reuses the original full
+checkpoint/source/consumer/snapshot/backup/class/node evaluator. Initial
+`prepare` still requires target absence; repeat `validate_source` never hides or
+adopts targets after creation. The metadata scope adds only the fixed source
+owners/snapshot/target GETs and complete class/PVC inventories needed by that
+existing contract. Twelve real local TLS/source/ownership/privacy tests and two
+preflight regressions pass; the combined root suite passes 365 tests without
+skips with frozen inputs. Scoped scan and final immutable handoff remain required
+before executor integration. No production request, new image, restored data read,
+mutation or original-source retirement occurred. The native subagent qualifies
+the bounded mutation adapter, while the app subagent qualifies its one measured
+parser change; prior failures and open acceptance gates remain explicit.
