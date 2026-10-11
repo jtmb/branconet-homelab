@@ -568,3 +568,24 @@ The [root current metadata assembler qualification](../evidence/bortus-current-a
 The [root current source/image verification receipt](../evidence/bortus-current-image-root-20261011.json) records 154 local controls and one actual isolated read-only callback passing in 17.731 seconds. Twelve sequential SSH inspections freshly verify manifest/config hashes, source labels, ordered descriptors and cache blob presence on the three Ready nodes; all owned SSH children are absent. Two new schema receipts and exact current writer/storage/guard pins accompany the explicitly reused completed43 transcript. Layer bytes and the prior inert runtime fixture are not reexecuted. The timing-only callback trace correctly remains incomplete/refused because only one of six calls ran; its graph and deadline are never reused. This establishes timing and current prerequisites, not independent whole-row recovery or application startup. The initial v19 missing fixture-directory failure is retained; frozen v20 suites passed on unchanged exact sources.
 
 The [actual independent b473 recovery proof](../evidence/bortus-independent-live-b473-20261011.json) completed at 17:41:44 UTC in 189.566 seconds under the original 300-second deadline. The separately restored encrypted Longhorn volume passed the complete SQLite recovery-row comparison against the authenticated cold archive. Both tmpfs copies were cleaned; all four operations, six callbacks, 72 fresh SSH inspections and twelve schema receipts completed. Same-UID watch evidence records restore flags true/true at RV1220694 then true/false at RV1220836, with no later regression. The inert reader is absent by fresh named404 and complete PodList UID/name checks; its StorageClass remains retained and its PVC remains Bound. Fresh post-run metadata confirms the original Ready writer/template/storage and six guard UID/RV/spec pins, plus current Ready Flux revision. The first post-review used the wrong lowercase standby key and refused; the corrected exact Longhorn `Standby` review passed without replaying restoration. Static completed43 outcomes and prior image runtime proof remain explicitly reused. Exact schema invocation floors are enforced by executed source, not separately reconstructed from retained scalar fields. Original coordinator overall flags remain false; this separate receipt accepts the cold-baseline recovery gate only. Latest-data capture, updated app build/performance/image, forward schema migration and final rollback/live acceptance remain pending. Gluster/Vault/Consul originals are retained.
+
+## 2026-10-11: mutation lifetime source review
+
+The [root lifecycle review](../evidence/bortus-lifecycle-root-review-20261011.json)
+binds the successive resource, YAML and Settings fixes through candidate
+`4ae9f5c`. Independent byte review verifies 379 unique Git blobs, 1,032
+frontend bindings, 143 retained originals and 66 documentation relations.
+The final affected controls pass 11, 14 and 7 respectively, alongside fresh
+types and corrected selected lint. Resource callbacks reject stale targets,
+navigation and permissions; YAML replacement and close/reopen cannot inherit
+an old save; Settings permission withdrawal and restoration cannot revive
+an earlier mutation or retry it automatically.
+
+Original negative and fixture/lint failures remain retained. The exact source
+snapshot for one intermediate three-test Settings run is missing; the final
+four Settings/seven affected controls have verified source bindings. Each
+selected default scan retains one independently reviewed unchanged prose
+finding, and two historical provenance findings remain unresolved. This accepts
+source-local behavior only. A fresh production build, affected browser checks,
+unchanged paired performance, final image and live upgrade remain pending.
+The original running application and data have not been changed by this review.
