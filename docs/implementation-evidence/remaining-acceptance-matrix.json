@@ -6,156 +6,200 @@
     {
       "id": "A01",
       "finding": "writer invariant",
-      "ledgerCurrentEvidence": "Serialized account transaction; 12 independent-client concurrent demotion/deletion/mixed cases",
-      "ledgerStatus": "Local passed; image/live pending",
-      "nextAcceptance": "Final combined Linux image/forward migration and guarded live account-invariant qualification."
+      "ledgerCurrentEvidence": "Twelve independent-client SQLite cross-demotion/delete/mixed races retain one writer and engine administrator; self-change restrictions and fixed rejected outcomes pass.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Exact image forward-migration/restart preservation and guarded deployment verification remain separate. No new live concurrency test is required by the original disposable-only validation.",
+      "originalValidation": "A concurrency regression must attempt cross-demotion, cross-deletion and mixed changes repeatedly, assert at least one writer remains, verify rejected changes return a defined conflict/error, and retain self-change restrictions. Use disposable SQLite only.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A02",
       "finding": "revocation",
-      "ledgerCurrentEvidence": "Fresh account/sessionVersion Node middleware; deleted/reset cookies denied on API/pages; legacy version-zero compatibility",
-      "ledgerStatus": "Local passed; image/live pending",
-      "nextAcceptance": "Final combined image/restart/live revocation proof; fresh account/sessionVersion remains mandatory."
+      "ledgerCurrentEvidence": "Fresh middleware/account/sessionVersion checks; disposable reset/delete cookies fail session, four ordinary APIs and /pods; legacy version-zero and native role/owner withdrawal tests pass.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Original universal protected-page/API breadth is not exhaustively enumerated by these four routes/one page. Add explicit expired-cookie/logout integration controls and route inventory coverage; qualify exact image restart/withdrawal without cached authority.",
+      "originalValidation": "With an already-issued cookie, delete its account and assert session is unauthenticated and all protected pages/ordinary APIs reject it. Retest demotion, native metadata/value permissions, expiry and logout. Password-reset revocation is currently a source-level follow-up, not a reproduced finding.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A03",
       "finding": "bootstrap",
-      "ledgerCurrentEvidence": "Serialized registration/settings decision; six concurrent clients/four HTTP requests; one writer; uniqueness 409",
-      "ledgerStatus": "Local passed; image/live pending",
-      "nextAcceptance": "Final combined image bootstrap/registration qualification with retained users and stable externals."
+      "ledgerCurrentEvidence": "Six distinct empty-DB registrations in both closed/open modes leave one writer; duplicate username returns409; four production HTTP registrations cover closed bootstrap.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "The original concurrent duplicate-name and AppSetting override permutations are not explicitly established by the distinct-client tests. Add those disposable controls; final image bootstrap/preservation remains separate.",
+      "originalValidation": "Concurrent distinct and duplicate usernames on an empty DB must leave exactly one bootstrap writer. Repeat with registration explicitly open/closed and with the AppSetting override; test uniqueness failures without leaking internal DB errors.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A04",
       "finding": "argv",
-      "ledgerCurrentEvidence": "Structured args/name validation; fake CLI HTTP rejection and argv isolation",
-      "ledgerStatus": "Local passed; real CLI/image pending",
-      "nextAcceptance": "Real kubectl/image acceptance of structured arguments; preserve size/deadline/queue bounds."
+      "ledgerCurrentEvidence": "Structured argv/name validation; invalid flags, spaces, separators and names refuse before execution; fake-CLI production HTTP verifies namespace isolation.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Original real matching kubectl in a disposable cluster is still required: verify cross-resource/server/credential/raw-path refusal and enumerate read/write handlers. No production exfiltration probe.",
+      "originalValidation": "Instrument argv on all read/write handlers; reject spaces, leading hyphens, encoded separators and global flags before spawning. In a disposable cluster with a real matching kubectl, prove readonly resource endpoints cannot select another resource, server, credential or raw API path. Never run a Secret-exfiltration probe against production.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A05",
       "finding": "truthful commands",
-      "ledgerCurrentEvidence": "Fixed typed failures; failed scale/action/delete/apply and Flux cascade retain recovery metadata",
-      "ledgerStatus": "Local command/Flux HTTP/browser subset passed; realCLI/image pending",
-      "nextAcceptance": "Retain truthful command outcomes and current UID/RV Sync plus duplicate-cascade/retention protections in final realCLI/image acceptance."
+      "ledgerCurrentEvidence": "Typed subprocess failures/timeout/missing executable/denial, actual bounded Node child and selected failed scale/action/delete/apply/reclaim/exec HTTP paths pass; Flux browser retains actionable errors and partial recovery.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Original stdout-only/stderr-only/neither combinations and every mutation route success/failure matrix are not exhaustively bound by selected route fixtures. Complete that matrix with matching real CLI/image evidence; preserve207 partial outcomes.",
+      "originalValidation": "Exercise exit 1 with stderr, stdout, both and neither, timeout, missing executable, RBAC denial and a true success. All mutation routes must reject failed commands; UI must retain state and display an actionable error. Keep native Secret values out of errors/logs.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A06",
       "finding": "availability",
-      "ledgerCurrentEvidence": "Explicit backend states; canonical resource lists/details distinguish failed reads from true empty/404; attached state is separate from robustness; explicit healthy-only overview counter correction passed20 focused tests/lint/types with stale/unavailable fixtures",
-      "ledgerStatus": "Resource and Flux HTTP/browser passed; wider legacy callers/image partial",
-      "nextAcceptance": "Final image/live availability acceptance; unavailable remains distinct from empty/404. Combined Linux214/fourHTTP and focused robustness fixtures passed."
+      "ledgerCurrentEvidence": "Missing/unavailable/empty/stale resource states, failed optional resource and native outages pass unit/HTTP/browser subsets. Robustness-only Longhorn count passes20 focused cases plus combined Linux214/four HTTP.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Repeat exact final-image/RBAC/outage/empty behavior and guarded live observation; attached degraded/faulted/unknown must never count healthy. No pending combined Linux claim remains.",
+      "originalValidation": "Test missing credentials, failed nodes, one failed resource, timeout, 401 and a genuinely empty cluster. The UI must distinguish each state and must never present stale data as current.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A07",
       "finding": "cache cost",
-      "ledgerCurrentEvidence": "Immutable unchanged baseline51e8 versus4668 three alternating pairs/six profiles; native-distinct-span/controlled-paired/assessment.json",
-      "ledgerStatus": "Failed/open: native1k91.168→125.469ms, native20080.813→116.700ms; warm200 p95 and several native/large profiles regress. Original earlier reports remain unchanged.",
-      "nextAcceptance": "Material evidence-supported production improvement, coherent functional qualification and coordinated unchanged frozen comparison; no automatic repeated pair or gate relaxation."
+      "ledgerCurrentEvidence": "Complete10k Pod route, bounded failure/backoff/resource snapshot and fixed Node22/Linux cold/warm/concurrent/outage data retained. Latest unchanged4668 comparison fails native/some warm no-regression gates.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit; FAILED performance",
+      "nextAcceptance": "FAILED/OPEN. Material functional-qualified change and unchanged six-profile/three-pair comparison required; CPU/RSS/bytes are whole-fixture observations. Baseline incomplete10kPods and distinct Services-after-Pods envelopes are noncomparative. No pair exists for c29fc.",
+      "originalValidation": "Repeat cold/warm/concurrent/outage baselines with fixed fixture delays; inject a slow optional resource, >2 MiB lists and 1k/10k pods. Measure p50/p95, process counts, response size, CPU and peak memory in the Node 22/Linux image. Require no warm-cache regression and bounded repeated-failure cost.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A08",
       "finding": "capabilities",
-      "ledgerCurrentEvidence": "Shared matrix/scoped YAML CAS/logs/node actions/pod exec; writer/reader/PVC/node browser menus",
-      "ledgerStatus": "Local passed; real ServiceAccount acceptance pending",
-      "nextAcceptance": "Qualify supported actions using actual guarded ServiceAccount/RBAC; no inferred permission pass."
+      "ledgerCurrentEvidence": "Every declared capability maps to a handler; runtime flags and YAML identity/RV controls pass units. Selected writer/readonly YAML/logs/node/PVC/exec menus, failures and argv pass HTTP/browser.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Original every-advertised-action role/method/content-type/error inventory is not fully executed. Explicit multi-container unavailable-Pod logs and missing-resource/permission browser cases still need a complete matrix; final ServiceAccount checks remain separate, no live destructive test required.",
+      "originalValidation": "For every advertised action, verify route/method, role, namespace/name encoding, success/error handling and content type. Test logs with multiple containers and unavailable pods. Cover missing resources and API permission errors in browser flows; no live destructive test is needed.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A09",
       "finding": "deployment state",
-      "ledgerCurrentEvidence": "UID ownership; zero/paused/generation state; explicit integer scale form; zero→one actual argv",
-      "ledgerStatus": "Local passed; real controller/Flux pending",
-      "nextAcceptance": "Real controller/Flux ownership, zero/paused/generation behavior in final source/image."
+      "ledgerCurrentEvidence": "Controller UID attribution handles ambiguous names/namespace/orphans; desired/observed generation, missing status, zero/paused states and invalid scale inputs pass; browser scale-up from zero emitsone.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Retain original rolling-update/owner permutations in final image/controller observation; unit ownership does not establish real reconciliation success.",
+      "originalValidation": "Cover overlapping names, namespaces, arbitrary ReplicaSet names, orphan pods, rolling updates, missing status, zero replicas and fractional/oversized inputs. Assert correct attribution and that scale-up from zero requests one.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A10",
       "finding": "pod filters",
-      "ledgerCurrentEvidence": "API and browser namespace/type/label filtering; correct empty result",
-      "ledgerStatus": "Local passed",
-      "nextAcceptance": "Retain namespace/type/label, true empty, identity and privacy assertions in complete10kPod and final regression."
+      "ledgerCurrentEvidence": "Namespace/type label overrides, absent labels, combined filters, exact empty/invalid queries and privacy/complete10k production HTTP pass; retained browser filters pass.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Local original filter scope covered. Preserve these checks in final image/real-resource observation; complete inventory alone is no speed claim.",
+      "originalValidation": "Mixed system/app namespaces, `branconet.io/type` labels, absent labels, combined filters, empty results and invalid query values. Document exact response/filter behavior.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A11",
       "finding": "polling/refetch",
-      "ledgerCurrentEvidence": "Shared completion-based lifecycle, cancellation/backoff/generation tests; actual browser timer fix",
-      "ledgerStatus": "Resource/session/provisioning/admin/sharedKV/Flux/shared native-workbench and administration workflows locally passed; final image remains open",
-      "nextAcceptance": "Final combined image lifecycle and real supported controller/runner acceptance; retain private clearing, original expiry and no hidden polling."
+      "ledgerCurrentEvidence": "Shared generation/freshness/backoff lifecycle tests and resource/admin/provisioning/Flux/workbench browser delay, real hidden, withdrawal, held-reply, post-mutation and404 expiry subsets pass. Flux physical reads maxone and public hidden deletion monitoring pass.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "No universal lifecycle proof for all future callers. Final image/real controller and enabled runner lifecycle remains; keep private clearing, operation ambiguity and no auto replay. Native status/shared workbench is locally qualified, not still unimplemented.",
+      "originalValidation": "Delay/reorder responses, navigate during a fetch, switch tab visibility, expire a cookie and fail refresh/apply. Assert newest-response wins, requests stop when appropriate, errors are visible and post-mutation data updates promptly.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A12",
       "finding": "permissions/runtime",
-      "ledgerCurrentEvidence": "Fresh shared session in resources/topnav/shells/provisioning/admin; browser demotion erases user editor/password input",
-      "ledgerStatus": "Migrated resources/admin/flatSecrets/Flux and integratedKV recorded permissions/lifecycle subsets locally passed",
-      "nextAcceptance": "Final combined image/live owner/policy/sessionVersion withdrawal and preserve all recorded local UI subsets."
+      "ledgerCurrentEvidence": "Fresh role/session/runtime capability units and direct401/403/501 HTTP gates; selected readonly/scoped/demoted/deleted browser controls, private clearing and write-without-read workflow pass.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Explicit enabled real Linux provisioning/operator runner and final owner/policy/sessionVersion revocation checks remain; source runtime flags are not real RBAC probes. Retained local KV/admin scope is complete only for recorded cases.",
+      "originalValidation": "Browser flows for readonly/write/deleted/demoted users and provisioning enabled/disabled. Direct unauthorized calls must still fail. Role changes should update visible controls without granting cached authority. [Screenshot](audit-evidence/readonly-actions.jpg).",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A13",
       "finding": "sorting",
-      "ledgerCurrentEvidence": "Numeric/quantity/date/count/unknown tests; resource/admin, native Secret and KV metadata browser sorting",
-      "ledgerStatus": "Resources/admin/Secrets/KVmetadata/Flux child tables local passed",
-      "nextAcceptance": "Complete history/fullKV workflow typed sorting and final combined browser preservation."
+      "ledgerCurrentEvidence": "Typed numeric/quantity/count/date null-last/stable comparators pass; resource2/7/12 and native/KV/admin/Flux201-row browser ordering/count2/10, both date directions, exact pagination pass.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Original exact0/2/7/12/missing both-direction browser oracle is not recorded for every numeric table; add specific remaining numeric-table cases rather than infer all tables from comparator units.",
+      "originalValidation": "Compare 0, 2, 7, 12, missing values and both directions in the browser; verify no row identity changes. [Screenshot](audit-evidence/pods-numeric-sort.jpg).",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A14",
       "finding": "mobile",
-      "ledgerCurrentEvidence": "56-pixel narrow rail, local table scrolling, dialog fit; resources/admin/Secrets/KV metadata at 320/390/768 CSS widths",
-      "ledgerStatus": "Recorded resource/KV/admin/Flux fixed widths and terminal320/390/768/1280 locally passed; wider actual200% provisioning/KV/terminal geometry+keyboard+corrected full-surface visual review passed",
-      "nextAcceptance": "Retain current full-surface realzoom and fixed-width source proof in final image; actualAT and realrunner/live remain separate."
+      "ledgerCurrentEvidence": "Recorded resource/Secrets/KV/admin/Flux320/390/768 widths and long metadata fit; terminal320/390/768/1280 and genuine tabs2x provisioning/KV/terminal plus Flux zoom geometry/keyboard pass; current public terminal welcome readable.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Full original width/touch/focus/every-dialog cross-product is not exhaustive; scope remaining resource/admin dialogs and touch targets explicitly in final image. Actual screen-reader proof is separate. Preserve full-surface versus earlier clipped screenshot distinction.",
+      "originalValidation": "320/390/768/1280 widths, zoom at 200%, long resource names, touch targets, scrolling and menu focus. No clipped dialogs or unreachable actions. [Screenshot](audit-evidence/mobile-expanded.jpg).",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A15",
       "finding": "accessibility",
-      "ledgerCurrentEvidence": "Named controls/links, resource/admin keyboard dialogs; KV path/form focus and return; exact confirmations",
-      "ledgerStatus": "Named/keyboard controls and scopedFlux/UID/administration axe locally passed. Prior Radix/background incomplete manually reviewed by32actual forward/reverse Tab steps, blocked background focus and close return; wider manualAT pending",
-      "nextAcceptance": "Actual screen-reader announcements/assistive-technology review remains open; scoped axe/AX/supporting DOM/keyboard and current realzoom are bounded local evidence."
+      "ledgerCurrentEvidence": "Named semantic controls, dialog roles, focus return and recorded keyboard paths pass; scoped pinned axe/AX scans and manual incomplete review retained.32 forward/reverse Tab steps and attempted background focus remain trapped; terminal Restore/Switch are keyboard-qualified buttons.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Actual screen-reader announcements/AT review is OPEN. Original every-modal and collapsed-sidebar/table keyboard inventory is not universal. Scoped zero violations, AX/xterm DOM and actualzoom cannot substitute for NVDA/Narrator/VoiceOver observation; terminal contrast incomplete review remains explicit.",
+      "originalValidation": "Keyboard-only navigation through collapsed sidebar, tables and every modal; inspect accessible names/dialog roles, focus return and screen-reader announcements. Run an automated accessibility scan, then manually review findings rather than treating a score as acceptance.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A16",
       "finding": "YAML lifecycle",
-      "ledgerCurrentEvidence": "Reset per open/mode; authoritative readOnly; dirty save/discard; readonly reopening/focus return",
-      "ledgerStatus": "Local browser passed",
-      "nextAcceptance": "Retain qualified YAML edit/cancel/view/reset/read-only behavior in final combined browser regression."
+      "ledgerCurrentEvidence": "Per-open/mode reset, read-only viewer, dirty save/discard, fetched revision checks, error and close/focus-return unit/HTTP/browser subsets pass.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Original edit/error/reopen and changed-fetched-version browser permutations are not exhaustively recorded; add explicit controls before final image browser acceptance. Existing edit/cancel/view/dirty discard/read-only/focus cases remain qualified.",
+      "originalValidation": "Edit/cancel/view, edit/error/reopen, different fetched versions and mode transitions. Viewer must never be editable or show Save; newly opened edit must use the fetched version or clearly offer draft recovery. [Screenshot](audit-evidence/yaml-view-retains-edit.jpg).",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A17",
       "finding": "Secret intent",
-      "ledgerCurrentEvidence": "Deliberate replacement/empty checkbox, exact deletion, late-response fencing and shared request lifecycle; TLS/browser conflict/revocation/navigation checks",
-      "ledgerStatus": "Flat editor/integrated workbench CAS/history/transfer/no-read/lifecycle plus displayed UID/retention/destroy/GC/recovery and policy/legacy/staticrotation recorded UI subsets locally passed; final image/live open",
-      "nextAcceptance": "Final coherent image/native/live acceptance, including positive backup/recovery and real consumer receipt; preserve exact scoped evidence and fresh authority."
+      "ledgerCurrentEvidence": "Flat selection/reveal/Clear/explicit-empty/exact delete/cancel/stale-CAS TLS/browser passes. Integrated adoption/grouped fields/binary/empty/history/rollback/restore/no-read/transfer/status lifecycle plus UID destroy/GC,603-alias policy/legacy/static rotation/recovery-ambiguity subsets pass.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Final compatible image/guarded native CAS/retention/destruction/recovery remain; real consumer receipt is required separately from an operator consumption assertion. No actualAT or live engine completion follows from disposable TLS cases.",
+      "originalValidation": "Metadata-only selection cannot silently overwrite; explicit empty create/update works; clear-display never changes Kubernetes by itself; cancelled deletion sends no request; stale versions fail. Use the mock TLS native API and inspect redacted assertions only.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A18",
       "finding": "SSE",
-      "ledgerCurrentEvidence": "Backpressure/Unicode SQL slices, cursor resume, fresh account checks, terminal cleanup; bounded text tail and browser completion/unmount counts",
-      "ledgerStatus": "Local unit/HTTP/browser passed; real runner/image pending",
-      "nextAcceptance": "Final Linux runner/callback/SSE lifecycle and bounded-output qualification in coherent image."
+      "ledgerCurrentEvidence": "Completed-at-open/first-read, early abort/cancel/missing/DB failure/deadline timer cleanup, nonoverlap/backpressure/revocation pass; actual SQLite Unicode bounded slices and browser stream/unmount counts retained.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Real enabled Linux runner producer/callback/SSE and exact image confidentiality/output qualification remain. Browser synthetic output and bounded query bytes do not establish field workload performance.",
+      "originalValidation": "Fake-timer tests for completed-at-open, completion during first read, early abort, cancel, missing job and DB failure. Assert zero active timers after termination. Measure large-output DB reads and bounded per-client work before changing storage.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A19",
       "finding": "quality gates",
-      "ledgerCurrentEvidence": "Flat-config zero-warning lint; app-only Node22 CI; clean Node22 Windows install/build/type/49 unit/HTTP pass",
-      "ledgerStatus": "Local passed; external pre-KV Linux/image passed; new KV image pending",
-      "nextAcceptance": "Final exact combined Linux clean install/lint/build/types/units/HTTP/browser/image suite; earlier isolated image is insufficient."
+      "ledgerCurrentEvidence": "Clean Linux Node22.23.3 c29fc install/build214 units/lint/types/four strict HTTP pass with no skips, no operator inputs and exact source/build ownership. Direct ESLint and app-only workflow retained; causal missing-await negative fails while patched control passes.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Original CI deliberately reintroduced negative control for EACH audit regression and published redacted remote workflow result not established. Final coherent OCI/runtime/browser qualification remains; current local Linux proof supersedes old49-unit summary, not remote CI/image acceptance.",
+      "originalValidation": "Run CI from a clean checkout with no operator env/DB/kubeconfig. It must finish without prompts, fail on each deliberately reintroduced regression and publish redacted results. Next 15 describes the deprecated lint workflow and direct ESLint migration in its [versioned ESLint guide](https://nextjs.org/docs/15/app/api-reference/config/eslint).",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A20",
       "finding": "dependencies",
-      "ledgerCurrentEvidence": "Scoped DeepmergeTS 8 override retains Prisma/client 6.19.3; pinned Node/bookworm security refresh and runtime package-manager removal; production npm zero, full npm nine entries",
-      "ledgerStatus": "Isolated Linux compatibility and package scan passed reporting; 346 raw image rows/ESLint retirement remain; final integrated release pending",
-      "nextAcceptance": "Final integrated runtime/package provenance and scan; preserve remaining image/tooling findings and framework compatibility."
+      "ledgerCurrentEvidence": "Pinned Next15.5.27/Node22, scoped override and historical isolated fresh/legacy11-migration image/runtime/package inspection retained; current clean Linux functional and raw production-only default scan pass.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Root reports new exact c29fc image build/export0 and default Trivy reporting1: zero Secrets,125LOW/142MEDIUM/67HIGH/11UNKNOWN/1CRITICAL;19fixable findings all embedded kubectl. Report SHA83c300c91e5d80d2d163fa6a99c252a09dd50314b18a012745a61823530abd7b, protected root-final-app-c29fc-20261011/image-scan-safe-review.json. Final reachability/expiry/remediation, runtime and full/omit-dev package reports remain required; inert-holder exception does not apply. Two historical checksum provenance findings remain untriaged;265-file production scan0 does not waive them.",
+      "originalValidation": "Clean install, full audit/omit-dev audit, Node 22/Linux build, native transport/HTTP/browser checks and image package inspection. Record remaining exceptions with precise reachability rationale and expiry; no credentials in build context.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A21",
       "finding": "lists/probes/forms",
-      "ledgerCurrentEvidence": "Resource/admin/native Secret/KV metadata tables bound DOM to 100 rows; bounded alias/probe caches and API pages; integrated bounded complete 10k Pod route passed actual HTTP/privacy/filter/partial-response checks",
-      "ledgerStatus": "Partial; integrated8MiB/10k complete Pod capacity locally passed with privacy/filter/stale assertions. Original controlled native latency/memory failures remain historical evidence; exact combined performance and remaining Flux/full KV form bounds are separate gates",
-      "nextAcceptance": "Linux full-server memory/RSS, native full inventory and final image/live qualification; local wire/output bounds do not prove RSS."
+      "ledgerCurrentEvidence": "Resource/admin/Secret/KV/Flux100-row DOM pages,201/205/334/603 inventories,complete10kPods; bounded alias/readiness four-worker deadlines/TLS refusal; complete10,000x253 admin acknowledgments and strict other route limits pass.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit; FAILED performance",
+      "nextAcceptance": "OPEN latency/RSS gate: bounded wire/DOM bytes do not prove peak memory. Exact final server large config/metadata200/1k/10k render/RSS/repeated-save/drop/malformed permutations and image readiness inaccessible namespace/TLS remain; existing native no-regression still fails.",
+      "originalValidation": "200/1k/10k metadata/config entries, slow/failing independent sources, repeated save clicks, dropped network and malformed responses. Measure render time, response bytes, probe request count/deadline and peak memory. Validate readiness still rejects an inaccessible namespace and respects TLS.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
     {
       "id": "A22",
       "finding": "lazy code",
-      "ledgerCurrentEvidence": "12 actual /deploy and /pods fixedmobile cold/warm samples on actualproductionassets; distinct deferredchunks, rendererScript/Task duration, overlappingcompile/evaluate traces, bufferedLCP, eventframe and fit/focus/no mutation",
-      "ledgerStatus": "Current-source modal characterization passed; firstterminal/widerroutes, realrunner/finalimage and performance acceptance separate",
-      "nextAcceptance": "Current twelve modal and six terminal fixed-mobile contribution observations passed; source-before/after controlled performance and final Linux image/runner remain separate gates."
+      "ledgerCurrentEvidence": "Twelve /deploy,/pods modal and six terminal fixed390 mobile cold/warm samples bind production assets, actual wire/mixed disk-or-memory warm zero-wire, offline gzip/Brotli, initial/deferred JS/renderer task/compile/LCP/click-frame; loading refusal/focus and genuine2x pass.",
+      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
+      "nextAcceptance": "Original controlled source-before/after contribution comparison is not established by current-source observations. Renderer/trace intervals overlap; real runner/final image contribution and broader speed acceptance remain separate. First-terminal and widerzoom are locally recorded, not pending implementation.",
+      "originalValidation": "Compare gzip/Brotli transfer, initial JS, parse/execute time, LCP and first modal/terminal interaction under a fixed mobile profile. Check loading/error/focus behavior and keep browser cold/warm measurements separate.",
+      "clauseAuditRecord": "acceptance-ledger-audit.json"
     }
   ],
   "sourceConfirmedGaps": [
@@ -193,7 +237,7 @@
       "observations": [
         "Canonical/history UID DTO/display and exact selected tuple capture passed172unit/fourHTTP logic qualification plus finalCSSbuild/sevenactualbrowser checks; no finalimage/live pass.",
         "identity revoke has no revision/CAS parameter",
-        "Complete10,000 x253 acknowledgment2,560,286bytes passes strict fresh-admin3MiB HTTP gate; generic/value/automation512KiB and import1MiB+wrapper unchanged. Four actual603-alias commits each captured all seven preview pages. Guarded Next backport/finalization source passed196units/build/lint/types and joint4HTTP proof; final Linux/image pending."
+        "Complete10,000 x253 acknowledgment2,560,286bytes passes strict fresh-admin3MiB HTTP gate; generic/value/automation512KiB and import1MiB+wrapper unchanged. Four actual603-alias commits each captured all seven preview pages. Guarded Next backport/finalization source passed196units/build/lint/types and joint4HTTP proof; current combined Linux214/fourHTTP passed; final image/live pending."
       ]
     }
   ],
@@ -229,21 +273,21 @@
   "nextImplementationStages": [
     {
       "priority": 1,
-      "area": "Terminal accessibility and first-interaction cost",
-      "gap": "Restore/Switch are buttons, minimized Clear clears input/history and public welcome, Tab/ShiftTab/Close/focus return passed actual browser; terminal-final-qualification.json and terminal-final-browser.json retain six cold/warm samples. Actual assistive-technology announcements remain open.",
-      "verification": "Retain qualified source-bound terminal receipts and failed attempts; actual supported screen-reader review and final image/live checks remain separate from AX/axe/keyboard evidence."
+      "area": "Original local validation coverage",
+      "gap": "A02 expiry/logout/all-route coverage;A03 concurrent duplicate/AppSetting override;A04/A05/A08 handler/command/action matrix;A13 exact numeric browser permutations;A14/A15 exhaustive widths/modal/touch/actualAT;A16 error/reopen/fetched version",
+      "verification": "See exact stillRequired clauses in acceptance-ledger-audit.json; no rerun of already-covered suites inferred."
     },
     {
       "priority": 2,
-      "area": "Wider A14/A15 manual accessibility and zoom",
-      "gap": "Wide-zoom-final-browser.json passed four genuine2x full-surface checks with chrome.tabs zoom and actual geometry/focus; actual screen-reader announcements remain open.",
-      "verification": "Preserve genuine zoom receipts and supporting AX/axe/keyboard scope; do not infer an actual AT pass."
+      "area": "Measured substantial performance mechanism",
+      "gap": "A07/A21 failed latest4668, currentc29fc no comparison; parser micro-deltas insufficient",
+      "verification": "Design-only bounded parser worker proposal; preserve4slots/sockets/fresh auth/all grammar/depth/bounds; establish startup/IPC/critical-path benefit before code or another pair."
     },
     {
       "priority": 3,
-      "area": "Final exact combined performance and image",
-      "gap": "A07 remains failed/open; native late-stage evidence is diagnostic/functional, not speed acceptance. Final Linux/OCI runtime and compatible recovery image unqualified.",
-      "verification": "Coordinate exact-byte unchanged controlled benchmark and final clean Linux install/build/units/HTTP/image/runtime/package scan plus stable source/schema/lock/recovery contract."
+      "area": "Final image and guarded engine delivery",
+      "gap": "Current root c29fc scan has19fixable embedded kubectl entries, criticalzlibwill_not_fix; actual app runtime and final reachability/remediation open",
+      "verification": "Root exact image/scan receipt, official supported kubectl remediation assessment, final runtime/schema/preservation/RBAC/admission/realconsumer/positive restore; releaseheld."
     }
   ],
   "currentPendingStage": {
@@ -261,14 +305,16 @@
   "terminalCheckpoint": {
     "source": "f0c0a2a plus qualified terminal source; final immutable commit follows",
     "qualified": "build/lint/types and11actual terminal checks/6characterization samples",
-    "open": "Wider actual zoom/loading/manual AT, coherent QA, frozen performance and image/live"
+    "open": "Actual AT and exact final OCI/runner/image/live; wider genuine zoom and current-source six terminal contribution observations locally recorded. Controlled source-before/after performance remains open."
   },
   "currentSourceCheckpoint": {
-    "base": "4bea97aa",
-    "proof": "196unit/build/lint/types and current4HTTP;11terminal checks/6samples and4genuine2xchecks",
-    "open": "ActualAT; unchanged final frozen performance; finalOCI/runner/image/package/guarded live recovery"
+    "source": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+    "proof": "combined-c29fc8c/qualification.json: clean Linux214/four strictHTTP/build/lint/types0/no skips; historical scoped browser receipts remain unchanged UI-source continuity to32eb",
+    "newBrowserRun": false,
+    "open": "Original-clause local coverage gaps/actualAT/failed A07-A21/realCLI/finalimage runtime-remediation/live engine",
+    "clauseAudit": "acceptance-ledger-audit.json"
   },
-  "updatedAt": "2026-10-11T11:37:57.095575+00:00",
+  "updatedAt": "2026-10-11T12:09:46.232342+00:00",
   "latestSupplementalQualification": {
     "fixedFieldCommit": "a6cd871cabd0d36b7cd90a9f54a3551e91fa56ff",
     "windowsUnits": 213,
@@ -287,5 +333,20 @@
       "scan": "265 raw production-only/default0/0; historical2pending",
       "record": "combined-c29fc8c/qualification.json"
     }
+  },
+  "currentClauseAudit": {
+    "source": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+    "reviewedHead": "5392ac3b1af63a72aa17009739f9629f0aa9ac84",
+    "record": "acceptance-ledger-audit.json",
+    "rows": 22,
+    "newExecution": false,
+    "currentLinux": "214 units/four HTTP/no skips/install-build-lint-types0",
+    "actualAT": "open",
+    "performance": "failed/open; latest4668; no c29fc pair"
+  },
+  "historicalSourceCheckpoint": {
+    "base": "4bea97aa",
+    "proof": "196unit/build/lint/types and current4HTTP;11terminal checks/6samples and4genuine2xchecks",
+    "open": "ActualAT; unchanged final frozen performance; finalOCI/runner/image/package/guarded live recovery"
   }
 }

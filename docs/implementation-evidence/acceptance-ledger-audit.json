@@ -1,0 +1,942 @@
+{
+  "capturedAt": "2026-10-11T12:09:46.232342+00:00",
+  "reviewedHead": "5392ac3b1af63a72aa17009739f9629f0aa9ac84",
+  "productionSourceCommit": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+  "scope": "Read-only original-clause acceptance audit; documentation correction only, no execution/benchmark/image/live pass",
+  "immutableAuditSHA256": "70f72f8cff246e9600c92fcf127684f9bc7c94b285017c5e12cfb55603fa4572",
+  "allOriginalRowsReviewed": 22,
+  "latestExactFunctional": {
+    "record": "combined-c29fc8c/qualification.json",
+    "LinuxUnits": 214,
+    "httpSuites": 4,
+    "skipped": 0,
+    "buildLintTypes": "exit0",
+    "browserRerunOnC29fc": false
+  },
+  "browserSourceContinuity": {
+    "referenceCommit": "32eb227eb8dda3f0f39ae538705e7c20b86f471a",
+    "currentSource": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+    "changedSrcPaths": [
+      "k8s-rewrite/front-end/src/lib/cluster-cache.ts",
+      "k8s-rewrite/front-end/src/lib/cluster-secrets.ts",
+      "k8s-rewrite/front-end/src/lib/secret-ascii-span.ts",
+      "k8s-rewrite/front-end/src/lib/secret-client.ts",
+      "k8s-rewrite/front-end/src/lib/secret-summary-json.ts"
+    ],
+    "allDashboardAndComponentAndCssBlobsIdentical": true,
+    "limitation": "UI continuity preserves earlier recorded scope; backend performance/overview deltas have fresh functional proof, not new browser/image/live proof"
+  },
+  "rows": [
+    {
+      "id": "A01",
+      "finding": "writer invariant",
+      "originalValidation": "A concurrency regression must attempt cross-demotion, cross-deletion and mixed changes repeatedly, assert at least one writer remains, verify rejected changes return a defined conflict/error, and retain self-change restrictions. Use disposable SQLite only.",
+      "localCompletedScope": "Twelve independent-client SQLite cross-demotion/delete/mixed races retain one writer and engine administrator; self-change restrictions and fixed rejected outcomes pass.",
+      "stillRequired": "Exact image forward-migration/restart preservation and guarded deployment verification remain separate. No new live concurrency test is required by the original disposable-only validation.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/accounts.test.ts",
+        "k8s-rewrite/front-end/src/lib/account-store.ts"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A02",
+      "finding": "revocation",
+      "originalValidation": "With an already-issued cookie, delete its account and assert session is unauthenticated and all protected pages/ordinary APIs reject it. Retest demotion, native metadata/value permissions, expiry and logout. Password-reset revocation is currently a source-level follow-up, not a reproduced finding.",
+      "localCompletedScope": "Fresh middleware/account/sessionVersion checks; disposable reset/delete cookies fail session, four ordinary APIs and /pods; legacy version-zero and native role/owner withdrawal tests pass.",
+      "stillRequired": "Original universal protected-page/API breadth is not exhaustively enumerated by these four routes/one page. Add explicit expired-cookie/logout integration controls and route inventory coverage; qualify exact image restart/withdrawal without cached authority.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/accounts.test.ts",
+        "k8s-rewrite/front-end/tests/http.integration.ts",
+        "k8s-rewrite/front-end/src/middleware.ts",
+        "k8s-rewrite/front-end/src/lib/auth.ts",
+        "k8s-rewrite/front-end/src/lib/permissions.ts"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "shared-freshness-browser.json",
+        "workbench-lifecycle-browser.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A03",
+      "finding": "bootstrap",
+      "originalValidation": "Concurrent distinct and duplicate usernames on an empty DB must leave exactly one bootstrap writer. Repeat with registration explicitly open/closed and with the AppSetting override; test uniqueness failures without leaking internal DB errors.",
+      "localCompletedScope": "Six distinct empty-DB registrations in both closed/open modes leave one writer; duplicate username returns409; four production HTTP registrations cover closed bootstrap.",
+      "stillRequired": "The original concurrent duplicate-name and AppSetting override permutations are not explicitly established by the distinct-client tests. Add those disposable controls; final image bootstrap/preservation remains separate.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/accounts.test.ts",
+        "k8s-rewrite/front-end/tests/http.integration.ts",
+        "k8s-rewrite/front-end/src/lib/account-store.ts"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "administration-ui.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A04",
+      "finding": "argv",
+      "originalValidation": "Instrument argv on all read/write handlers; reject spaces, leading hyphens, encoded separators and global flags before spawning. In a disposable cluster with a real matching kubectl, prove readonly resource endpoints cannot select another resource, server, credential or raw API path. Never run a Secret-exfiltration probe against production.",
+      "localCompletedScope": "Structured argv/name validation; invalid flags, spaces, separators and names refuse before execution; fake-CLI production HTTP verifies namespace isolation.",
+      "stillRequired": "Original real matching kubectl in a disposable cluster is still required: verify cross-resource/server/credential/raw-path refusal and enumerate read/write handlers. No production exfiltration probe.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/kubectl.test.ts",
+        "k8s-rewrite/front-end/tests/http.integration.ts",
+        "k8s-rewrite/front-end/src/lib/kubectl-client.ts"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A05",
+      "finding": "truthful commands",
+      "originalValidation": "Exercise exit 1 with stderr, stdout, both and neither, timeout, missing executable, RBAC denial and a true success. All mutation routes must reject failed commands; UI must retain state and display an actionable error. Keep native Secret values out of errors/logs.",
+      "localCompletedScope": "Typed subprocess failures/timeout/missing executable/denial, actual bounded Node child and selected failed scale/action/delete/apply/reclaim/exec HTTP paths pass; Flux browser retains actionable errors and partial recovery.",
+      "stillRequired": "Original stdout-only/stderr-only/neither combinations and every mutation route success/failure matrix are not exhaustively bound by selected route fixtures. Complete that matrix with matching real CLI/image evidence; preserve207 partial outcomes.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/kubectl.test.ts",
+        "k8s-rewrite/front-end/tests/http.integration.ts",
+        "k8s-rewrite/front-end/src/lib/kubectl-client.ts",
+        "k8s-rewrite/front-end/src/lib/flux.ts"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "flux-browser.json",
+        "administration-ui.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A06",
+      "finding": "availability",
+      "originalValidation": "Test missing credentials, failed nodes, one failed resource, timeout, 401 and a genuinely empty cluster. The UI must distinguish each state and must never present stale data as current.",
+      "localCompletedScope": "Missing/unavailable/empty/stale resource states, failed optional resource and native outages pass unit/HTTP/browser subsets. Robustness-only Longhorn count passes20 focused cases plus combined Linux214/four HTTP.",
+      "stillRequired": "Repeat exact final-image/RBAC/outage/empty behavior and guarded live observation; attached degraded/faulted/unknown must never count healthy. No pending combined Linux claim remains.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/resource-cache.test.ts",
+        "k8s-rewrite/front-end/tests/cluster-overview-health.test.ts",
+        "k8s-rewrite/front-end/tests/http.integration.ts",
+        "k8s-rewrite/front-end/src/lib/cluster-cache.ts"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "overview-health/qualification.json",
+        "flux-browser.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A07",
+      "finding": "cache cost",
+      "originalValidation": "Repeat cold/warm/concurrent/outage baselines with fixed fixture delays; inject a slow optional resource, >2 MiB lists and 1k/10k pods. Measure p50/p95, process counts, response size, CPU and peak memory in the Node 22/Linux image. Require no warm-cache regression and bounded repeated-failure cost.",
+      "localCompletedScope": "Complete10k Pod route, bounded failure/backoff/resource snapshot and fixed Node22/Linux cold/warm/concurrent/outage data retained. Latest unchanged4668 comparison fails native/some warm no-regression gates.",
+      "stillRequired": "FAILED/OPEN. Material functional-qualified change and unchanged six-profile/three-pair comparison required; CPU/RSS/bytes are whole-fixture observations. Baseline incomplete10kPods and distinct Services-after-Pods envelopes are noncomparative. No pair exists for c29fc.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/resource-cache.test.ts",
+        "k8s-rewrite/front-end/src/lib/cluster-cache.ts",
+        "k8s-rewrite/front-end/src/lib/secret-client.ts",
+        "k8s-rewrite/front-end/src/lib/secret-summary-json.ts",
+        "k8s-rewrite/front-end/tests/pod-list-capacity.test.ts"
+      ],
+      "evidence": [
+        "native-distinct-span/controlled-paired/assessment.json",
+        "combined-c29fc8c/qualification.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A08",
+      "finding": "capabilities",
+      "originalValidation": "For every advertised action, verify route/method, role, namespace/name encoding, success/error handling and content type. Test logs with multiple containers and unavailable pods. Cover missing resources and API permission errors in browser flows; no live destructive test is needed.",
+      "localCompletedScope": "Every declared capability maps to a handler; runtime flags and YAML identity/RV controls pass units. Selected writer/readonly YAML/logs/node/PVC/exec menus, failures and argv pass HTTP/browser.",
+      "stillRequired": "Original every-advertised-action role/method/content-type/error inventory is not fully executed. Explicit multi-container unavailable-Pod logs and missing-resource/permission browser cases still need a complete matrix; final ServiceAccount checks remain separate, no live destructive test required.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/resource-capabilities.test.ts",
+        "k8s-rewrite/front-end/tests/http.integration.ts",
+        "k8s-rewrite/front-end/src/lib/resource-capabilities.ts"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "README.md"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A09",
+      "finding": "deployment state",
+      "originalValidation": "Cover overlapping names, namespaces, arbitrary ReplicaSet names, orphan pods, rolling updates, missing status, zero replicas and fractional/oversized inputs. Assert correct attribution and that scale-up from zero requests one.",
+      "localCompletedScope": "Controller UID attribution handles ambiguous names/namespace/orphans; desired/observed generation, missing status, zero/paused states and invalid scale inputs pass; browser scale-up from zero emitsone.",
+      "stillRequired": "Retain original rolling-update/owner permutations in final image/controller observation; unit ownership does not establish real reconciliation success.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/resource-state.test.ts",
+        "k8s-rewrite/front-end/tests/http.integration.ts",
+        "k8s-rewrite/front-end/src/lib/deployment-state.ts"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "README.md"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A10",
+      "finding": "pod filters",
+      "originalValidation": "Mixed system/app namespaces, `branconet.io/type` labels, absent labels, combined filters, empty results and invalid query values. Document exact response/filter behavior.",
+      "localCompletedScope": "Namespace/type label overrides, absent labels, combined filters, exact empty/invalid queries and privacy/complete10k production HTTP pass; retained browser filters pass.",
+      "stillRequired": "Local original filter scope covered. Preserve these checks in final image/real-resource observation; complete inventory alone is no speed claim.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/resource-state.test.ts",
+        "k8s-rewrite/front-end/tests/http.integration.ts",
+        "k8s-rewrite/front-end/src/app/api/cluster/pods/route.ts"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "README.md"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A11",
+      "finding": "polling/refetch",
+      "originalValidation": "Delay/reorder responses, navigate during a fetch, switch tab visibility, expire a cookie and fail refresh/apply. Assert newest-response wins, requests stop when appropriate, errors are visible and post-mutation data updates promptly.",
+      "localCompletedScope": "Shared generation/freshness/backoff lifecycle tests and resource/admin/provisioning/Flux/workbench browser delay, real hidden, withdrawal, held-reply, post-mutation and404 expiry subsets pass. Flux physical reads maxone and public hidden deletion monitoring pass.",
+      "stillRequired": "No universal lifecycle proof for all future callers. Final image/real controller and enabled runner lifecycle remains; keep private clearing, operation ambiguity and no auto replay. Native status/shared workbench is locally qualified, not still unimplemented.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/query-store.test.ts",
+        "k8s-rewrite/front-end/tests/kv-workbench.test.ts",
+        "k8s-rewrite/front-end/src/lib/query-store.ts",
+        "k8s-rewrite/front-end/src/components/secrets/kv-workbench.tsx",
+        "k8s-rewrite/front-end/src/app/(dashboard)/flux/page.tsx"
+      ],
+      "evidence": [
+        "shared-freshness-browser.json",
+        "flux-browser.json",
+        "workbench-lifecycle-browser.json",
+        "kv-workflows-browser.json",
+        "job-stream-ui.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A12",
+      "finding": "permissions/runtime",
+      "originalValidation": "Browser flows for readonly/write/deleted/demoted users and provisioning enabled/disabled. Direct unauthorized calls must still fail. Role changes should update visible controls without granting cached authority. [Screenshot](audit-evidence/readonly-actions.jpg).",
+      "localCompletedScope": "Fresh role/session/runtime capability units and direct401/403/501 HTTP gates; selected readonly/scoped/demoted/deleted browser controls, private clearing and write-without-read workflow pass.",
+      "stillRequired": "Explicit enabled real Linux provisioning/operator runner and final owner/policy/sessionVersion revocation checks remain; source runtime flags are not real RBAC probes. Retained local KV/admin scope is complete only for recorded cases.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/resource-capabilities.test.ts",
+        "k8s-rewrite/front-end/tests/http.integration.ts",
+        "k8s-rewrite/front-end/src/lib/permissions.ts",
+        "k8s-rewrite/front-end/src/components/secrets/kv-workbench.tsx"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "administration-ui.json",
+        "flux-browser.json",
+        "workbench-lifecycle-browser.json",
+        "kv-workflows-browser.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A13",
+      "finding": "sorting",
+      "originalValidation": "Compare 0, 2, 7, 12, missing values and both directions in the browser; verify no row identity changes. [Screenshot](audit-evidence/pods-numeric-sort.jpg).",
+      "localCompletedScope": "Typed numeric/quantity/count/date null-last/stable comparators pass; resource2/7/12 and native/KV/admin/Flux201-row browser ordering/count2/10, both date directions, exact pagination pass.",
+      "stillRequired": "Original exact0/2/7/12/missing both-direction browser oracle is not recorded for every numeric table; add specific remaining numeric-table cases rather than infer all tables from comparator units.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/query-store.test.ts",
+        "k8s-rewrite/front-end/src/components/ui/sortable-header.tsx"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "README.md",
+        "secret-tables.json",
+        "kv-metadata-ui.json",
+        "flux-browser.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A14",
+      "finding": "mobile",
+      "originalValidation": "320/390/768/1280 widths, zoom at 200%, long resource names, touch targets, scrolling and menu focus. No clipped dialogs or unreachable actions. [Screenshot](audit-evidence/mobile-expanded.jpg).",
+      "localCompletedScope": "Recorded resource/Secrets/KV/admin/Flux320/390/768 widths and long metadata fit; terminal320/390/768/1280 and genuine tabs2x provisioning/KV/terminal plus Flux zoom geometry/keyboard pass; current public terminal welcome readable.",
+      "stillRequired": "Full original width/touch/focus/every-dialog cross-product is not exhaustive; scope remaining resource/admin dialogs and touch targets explicitly in final image. Actual screen-reader proof is separate. Preserve full-surface versus earlier clipped screenshot distinction.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/src/app/(dashboard)/sidebar.tsx",
+        "k8s-rewrite/front-end/src/app/globals.css",
+        "k8s-rewrite/front-end/src/components/cluster/kubectl-shell.tsx"
+      ],
+      "evidence": [
+        "terminal-final-browser.json",
+        "wide-zoom-final-browser.json",
+        "flux-browser.json",
+        "flux-zoom-browser.json",
+        "kv-workflows-browser.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A15",
+      "finding": "accessibility",
+      "originalValidation": "Keyboard-only navigation through collapsed sidebar, tables and every modal; inspect accessible names/dialog roles, focus return and screen-reader announcements. Run an automated accessibility scan, then manually review findings rather than treating a score as acceptance.",
+      "localCompletedScope": "Named semantic controls, dialog roles, focus return and recorded keyboard paths pass; scoped pinned axe/AX scans and manual incomplete review retained.32 forward/reverse Tab steps and attempted background focus remain trapped; terminal Restore/Switch are keyboard-qualified buttons.",
+      "stillRequired": "Actual screen-reader announcements/AT review is OPEN. Original every-modal and collapsed-sidebar/table keyboard inventory is not universal. Scoped zero violations, AX/xterm DOM and actualzoom cannot substitute for NVDA/Narrator/VoiceOver observation; terminal contrast incomplete review remains explicit.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/src/components/secrets/kv-administration.tsx",
+        "k8s-rewrite/front-end/src/app/(dashboard)/sidebar.tsx",
+        "k8s-rewrite/front-end/src/components/cluster/kubectl-shell.tsx"
+      ],
+      "evidence": [
+        "flux-browser.json",
+        "kv-workflows-browser.json",
+        "terminal-final-browser.json",
+        "wide-zoom-final-browser.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A16",
+      "finding": "YAML lifecycle",
+      "originalValidation": "Edit/cancel/view, edit/error/reopen, different fetched versions and mode transitions. Viewer must never be editable or show Save; newly opened edit must use the fetched version or clearly offer draft recovery. [Screenshot](audit-evidence/yaml-view-retains-edit.jpg).",
+      "localCompletedScope": "Per-open/mode reset, read-only viewer, dirty save/discard, fetched revision checks, error and close/focus-return unit/HTTP/browser subsets pass.",
+      "stillRequired": "Original edit/error/reopen and changed-fetched-version browser permutations are not exhaustively recorded; add explicit controls before final image browser acceptance. Existing edit/cancel/view/dirty discard/read-only/focus cases remain qualified.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/resource-capabilities.test.ts",
+        "k8s-rewrite/front-end/src/app/(dashboard)/yaml-modal.tsx"
+      ],
+      "evidence": [
+        "README.md",
+        "combined-c29fc8c/qualification.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A17",
+      "finding": "Secret intent",
+      "originalValidation": "Metadata-only selection cannot silently overwrite; explicit empty create/update works; clear-display never changes Kubernetes by itself; cancelled deletion sends no request; stale versions fail. Use the mock TLS native API and inspect redacted assertions only.",
+      "localCompletedScope": "Flat selection/reveal/Clear/explicit-empty/exact delete/cancel/stale-CAS TLS/browser passes. Integrated adoption/grouped fields/binary/empty/history/rollback/restore/no-read/transfer/status lifecycle plus UID destroy/GC,603-alias policy/legacy/static rotation/recovery-ambiguity subsets pass.",
+      "stillRequired": "Final compatible image/guarded native CAS/retention/destruction/recovery remain; real consumer receipt is required separately from an operator consumption assertion. No actualAT or live engine completion follows from disposable TLS cases.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/kv-workbench.test.ts",
+        "k8s-rewrite/front-end/src/components/secrets/kv-workbench.tsx",
+        "k8s-rewrite/front-end/src/components/secrets/kv-administration.tsx"
+      ],
+      "evidence": [
+        "secret-intent.json",
+        "workbench-lifecycle-browser.json",
+        "kv-identity-browser.json",
+        "kv-workflows-browser.json",
+        "combined-c29fc8c/qualification.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A18",
+      "finding": "SSE",
+      "originalValidation": "Fake-timer tests for completed-at-open, completion during first read, early abort, cancel, missing job and DB failure. Assert zero active timers after termination. Measure large-output DB reads and bounded per-client work before changing storage.",
+      "localCompletedScope": "Completed-at-open/first-read, early abort/cancel/missing/DB failure/deadline timer cleanup, nonoverlap/backpressure/revocation pass; actual SQLite Unicode bounded slices and browser stream/unmount counts retained.",
+      "stillRequired": "Real enabled Linux runner producer/callback/SSE and exact image confidentiality/output qualification remain. Browser synthetic output and bounded query bytes do not establish field workload performance.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/job-stream.test.ts",
+        "k8s-rewrite/front-end/tests/job-output.test.ts",
+        "k8s-rewrite/front-end/src/lib/job-stream.ts"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "job-stream-ui.json",
+        "job-output-sql.json",
+        "provisioning-confidentiality.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A19",
+      "finding": "quality gates",
+      "originalValidation": "Run CI from a clean checkout with no operator env/DB/kubeconfig. It must finish without prompts, fail on each deliberately reintroduced regression and publish redacted results. Next 15 describes the deprecated lint workflow and direct ESLint migration in its [versioned ESLint guide](https://nextjs.org/docs/15/app/api-reference/config/eslint).",
+      "localCompletedScope": "Clean Linux Node22.23.3 c29fc install/build214 units/lint/types/four strict HTTP pass with no skips, no operator inputs and exact source/build ownership. Direct ESLint and app-only workflow retained; causal missing-await negative fails while patched control passes.",
+      "stillRequired": "Original CI deliberately reintroduced negative control for EACH audit regression and published redacted remote workflow result not established. Final coherent OCI/runtime/browser qualification remains; current local Linux proof supersedes old49-unit summary, not remote CI/image acceptance.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/package.json",
+        ".github/workflows/bortus-quality.yml",
+        "k8s-rewrite/front-end/scripts/patch-next-body-finalize.mjs"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "workbench-lifecycle-qualification.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A20",
+      "finding": "dependencies",
+      "originalValidation": "Clean install, full audit/omit-dev audit, Node 22/Linux build, native transport/HTTP/browser checks and image package inspection. Record remaining exceptions with precise reachability rationale and expiry; no credentials in build context.",
+      "localCompletedScope": "Pinned Next15.5.27/Node22, scoped override and historical isolated fresh/legacy11-migration image/runtime/package inspection retained; current clean Linux functional and raw production-only default scan pass.",
+      "stillRequired": "Root reports new exact c29fc image build/export0 and default Trivy reporting1: zero Secrets,125LOW/142MEDIUM/67HIGH/11UNKNOWN/1CRITICAL;19fixable findings all embedded kubectl. Report SHA83c300c91e5d80d2d163fa6a99c252a09dd50314b18a012745a61823530abd7b, protected root-final-app-c29fc-20261011/image-scan-safe-review.json. Final reachability/expiry/remediation, runtime and full/omit-dev package reports remain required; inert-holder exception does not apply. Two historical checksum provenance findings remain untriaged;265-file production scan0 does not waive them.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/package.json",
+        "k8s-rewrite/front-end/package-lock.json",
+        "k8s-rewrite/front-end/Dockerfile",
+        "k8s-rewrite/front-end/docker-entrypoint.sh"
+      ],
+      "evidence": [
+        "combined-c29fc8c/qualification.json",
+        "runtime-maintenance/README.md",
+        "workbench-raw-source-scan-handoff.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A21",
+      "finding": "lists/probes/forms",
+      "originalValidation": "200/1k/10k metadata/config entries, slow/failing independent sources, repeated save clicks, dropped network and malformed responses. Measure render time, response bytes, probe request count/deadline and peak memory. Validate readiness still rejects an inaccessible namespace and respects TLS.",
+      "localCompletedScope": "Resource/admin/Secret/KV/Flux100-row DOM pages,201/205/334/603 inventories,complete10kPods; bounded alias/readiness four-worker deadlines/TLS refusal; complete10,000x253 admin acknowledgments and strict other route limits pass.",
+      "stillRequired": "OPEN latency/RSS gate: bounded wire/DOM bytes do not prove peak memory. Exact final server large config/metadata200/1k/10k render/RSS/repeated-save/drop/malformed permutations and image readiness inaccessible namespace/TLS remain; existing native no-regression still fails.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/tests/metadata-bounds.test.ts",
+        "k8s-rewrite/front-end/tests/http.integration.ts",
+        "k8s-rewrite/front-end/src/lib/metadata-cache.ts",
+        "k8s-rewrite/front-end/src/lib/readiness.ts"
+      ],
+      "evidence": [
+        "metadata-body-qualification.json",
+        "flux-browser.json",
+        "combined-c29fc8c/qualification.json",
+        "native-distinct-span/controlled-paired/assessment.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    },
+    {
+      "id": "A22",
+      "finding": "lazy code",
+      "originalValidation": "Compare gzip/Brotli transfer, initial JS, parse/execute time, LCP and first modal/terminal interaction under a fixed mobile profile. Check loading/error/focus behavior and keep browser cold/warm measurements separate.",
+      "localCompletedScope": "Twelve /deploy,/pods modal and six terminal fixed390 mobile cold/warm samples bind production assets, actual wire/mixed disk-or-memory warm zero-wire, offline gzip/Brotli, initial/deferred JS/renderer task/compile/LCP/click-frame; loading refusal/focus and genuine2x pass.",
+      "stillRequired": "Original controlled source-before/after contribution comparison is not established by current-source observations. Renderer/trace intervals overlap; real runner/final image contribution and broader speed acceptance remain separate. First-terminal and widerzoom are locally recorded, not pending implementation.",
+      "sourcePaths": [
+        "k8s-rewrite/front-end/src/app/(dashboard)/deploy/page.tsx",
+        "k8s-rewrite/front-end/src/app/(dashboard)/pods/page.tsx",
+        "k8s-rewrite/front-end/src/components/cluster/kubectl-shell.tsx"
+      ],
+      "evidence": [
+        "optional-code-qualification.json",
+        "terminal-final-qualification.json",
+        "terminal-final-browser.json",
+        "wide-zoom-final-browser.json"
+      ],
+      "overallDeliveredAcceptancePassed": false
+    }
+  ],
+  "sourceBindings": {
+    "k8s-rewrite/front-end/tests/accounts.test.ts": {
+      "mode": "100644",
+      "blob": "6d9bdb72d154d24f8fcb505414ae4fb71353cf5f",
+      "rawGitSHA256": "31e14ae21ece84431076a83f24c2fbe9567ab382dd5b4c702e760890cbd8f01e",
+      "workingSHA256": "cd1505d1a6f54b87f5aed6c9461169af8407ee7e2b98edf5e5244623a362500d"
+    },
+    "k8s-rewrite/front-end/src/lib/account-store.ts": {
+      "mode": "100644",
+      "blob": "245813ddf144fc1395995746942587d4dc5ad75c",
+      "rawGitSHA256": "2cdb7804ad18feeb379885231eb9543b139fa0df211501bcd4b410cdf640c86e",
+      "workingSHA256": "6057df624aedb796f5df5b0fcb82286931ab6141d1aa965fe43c340091fa732a"
+    },
+    "k8s-rewrite/front-end/tests/http.integration.ts": {
+      "mode": "100644",
+      "blob": "bccdbd573c6ac35ce35b3a710ba3a5b91167c130",
+      "rawGitSHA256": "6b58c0c735a94d884a2963ee112d85c4c5a828c4af22054b00104df80cfd77d5",
+      "workingSHA256": "1ab4c3e2d71fc1572fce5d0909ca6205721d38dd92a19c7cd3b988ea353f22b2"
+    },
+    "k8s-rewrite/front-end/src/middleware.ts": {
+      "mode": "100644",
+      "blob": "41cce3ca61c84019b11c203fce806c9fd4cfa5b7",
+      "rawGitSHA256": "9e3155260d2e0cf9edceabfc85d878cd9ee915bfe2c9f693aebcddd6145e4d89",
+      "workingSHA256": "9208171affcc5f1f40b29e6ab40368b8ecf1eeb87a42bbb7b1a06676047165ec"
+    },
+    "k8s-rewrite/front-end/src/lib/auth.ts": {
+      "mode": "100644",
+      "blob": "2c345230401c6288b3905fa07c26aca0d83f0775",
+      "rawGitSHA256": "0fd90638b395bdda6a4a540821a8721fd618fc79f5d90c311a38a4e35a7b3818",
+      "workingSHA256": "db8b90c2009356bb41d8a33cd86f00ec728fcc8cbb41d0c25c59c19c578e3e99"
+    },
+    "k8s-rewrite/front-end/src/lib/permissions.ts": {
+      "mode": "100644",
+      "blob": "7fc4f859ec41425efe4b912e3963a017d5261331",
+      "rawGitSHA256": "c894d04fa4cbcfaa09e97f1248100b671b29927b13950a4e964b0135a994b704",
+      "workingSHA256": "d96930d2d5647ba2315f461aafdeae44200a8503914a817b42234d21cae26928"
+    },
+    "k8s-rewrite/front-end/tests/kubectl.test.ts": {
+      "mode": "100644",
+      "blob": "8cea9432e637e785f6ac669fde373350ceae06a1",
+      "rawGitSHA256": "42780a9e8aaaeed6083de4a8afceed39f4680cd709f9ed2a91ffd87a6b650d05",
+      "workingSHA256": "1799c414f04db47b1db9102ed723792143b1d089c0a5787f2b5e03ae50f038b3"
+    },
+    "k8s-rewrite/front-end/src/lib/kubectl-client.ts": {
+      "mode": "100644",
+      "blob": "8efd60fdfbbaf4501959d4d8044b49b3da4cf13b",
+      "rawGitSHA256": "b09ab2ffaa7bb98ce714e6f4d1534c013f26de53786ee3945710193bf5683ca6",
+      "workingSHA256": "3389feaa290773ff3f94f592c66ebef531f8e216b033bbeb7ebd4bf27287791a"
+    },
+    "k8s-rewrite/front-end/src/lib/flux.ts": {
+      "mode": "100644",
+      "blob": "3b7a0f7a2e5c11186df0acf43c94b918c812fb00",
+      "rawGitSHA256": "cd884c0afb291051ec9fc77152ad3e94ab4a03383d55640eb45d095307f20d76",
+      "workingSHA256": "09da0aa190f030d1229269b753cde0b741984212b3356d83e705280b07772dbe"
+    },
+    "k8s-rewrite/front-end/tests/resource-cache.test.ts": {
+      "mode": "100644",
+      "blob": "495a4ee9c57f610ca3a4d92ed49ae13b9ea3a234",
+      "rawGitSHA256": "f902727351220a707f482e66750ce864f3316d95d89b347b1995c6c6be2b4de8",
+      "workingSHA256": "f2b846f90bd7ef0d3efdcbff24be08d330efce8011b31f55a0efedd4f3913275"
+    },
+    "k8s-rewrite/front-end/tests/cluster-overview-health.test.ts": {
+      "mode": "100644",
+      "blob": "9b2209dbe6f6e3d619b3a89eb3d214cff9426e43",
+      "rawGitSHA256": "a52d6cea3fabb930203db4286730294e2118438931404bcfe58a3dc5dc5ebbf0",
+      "workingSHA256": "a52d6cea3fabb930203db4286730294e2118438931404bcfe58a3dc5dc5ebbf0"
+    },
+    "k8s-rewrite/front-end/src/lib/cluster-cache.ts": {
+      "mode": "100644",
+      "blob": "c2e2ae8c090655f9dd31b1edfac6968f15df5107",
+      "rawGitSHA256": "cf9e971d8fdce9f04fd750f807eb159d4e418db0a2489aedad85de1ae113b97a",
+      "workingSHA256": "2907f5f700d69eea4181dbed2cab6e8e4842b80c7bfec78909a3fcb8e29a1939"
+    },
+    "k8s-rewrite/front-end/src/lib/secret-client.ts": {
+      "mode": "100644",
+      "blob": "9d9da480faeb2eb79bb697a8afd5e164c47924db",
+      "rawGitSHA256": "4de72da11f1bebb5614cc41b2ac35a90b50c031a06075224a4e65a4b707bdd32",
+      "workingSHA256": "c7862ad3f055db5da294168126163235a93d49611bb87f139357d2e43a8074f7"
+    },
+    "k8s-rewrite/front-end/src/lib/secret-summary-json.ts": {
+      "mode": "100644",
+      "blob": "5e1cd605a2ce0969c0f673853e9c23708c678fd4",
+      "rawGitSHA256": "2a552d7fd49608961e1569bec9cb3afd56fc630d1182872a5f4199997130ee61",
+      "workingSHA256": "f5f0c8b96245697f3c5ca46e7f0d2d1ace9b15190d3ac83e0ccea3f490eb1310"
+    },
+    "k8s-rewrite/front-end/tests/resource-capabilities.test.ts": {
+      "mode": "100644",
+      "blob": "2855e59440bcb938ae2a64485ec727d1c3601b4e",
+      "rawGitSHA256": "7c2b2ef737b10b10902dd99a7a8f52b907293097b321b2b87e611b1a9a3a4de9",
+      "workingSHA256": "a5afde36fa0e7b276fa2b9c532590c9d60d686371060912ea16bdfc43177cbb2"
+    },
+    "k8s-rewrite/front-end/src/lib/resource-capabilities.ts": {
+      "mode": "100644",
+      "blob": "ad53bc387d92bc3c1485b9bf29891542ce56903e",
+      "rawGitSHA256": "48bcb1e2cfa2619facdd494d9123df6368099e6d602ec5b85016dc82c88feda7",
+      "workingSHA256": "9bb0843471f11de4bc55424016c201259ab4147c99b20ac78b03664c5e462119"
+    },
+    "k8s-rewrite/front-end/tests/resource-state.test.ts": {
+      "mode": "100644",
+      "blob": "2409cb0c2b1a4dcffbb5b0bd6fa3046c5b0c0bb2",
+      "rawGitSHA256": "d726354abef5c08210aa8dd311691e24a4b29f1efa9aa895d8997b505050b68c",
+      "workingSHA256": "786f3623a97c666beefec317cab9a63cd6d5722ee3787cdeab7120cc03339c1e"
+    },
+    "k8s-rewrite/front-end/src/app/api/cluster/pods/route.ts": {
+      "mode": "100644",
+      "blob": "e82b842b8cc9e0089ae3938bf12c22323a409084",
+      "rawGitSHA256": "6a49d6aa82653080e94f0887155416e9c7241054be588d5d1db17f4137fcdb1a",
+      "workingSHA256": "3ae9bb3906b30f53139aea4a80ea8d3b391a49ac30598115fd7669d9461995e8"
+    },
+    "k8s-rewrite/front-end/tests/query-store.test.ts": {
+      "mode": "100644",
+      "blob": "78849f169f82773afcbff869650553b5675f0e94",
+      "rawGitSHA256": "ca257224ce61d5d979081aab02309338534ae1d315da445f530d8c773fe0b5cf",
+      "workingSHA256": "88192df241070afcc9f3495ee99a0c1700ad22594d8967108bb62247e918617c"
+    },
+    "k8s-rewrite/front-end/tests/kv-workbench.test.ts": {
+      "mode": "100644",
+      "blob": "3f8d111da28abb2f912aa02dad3ffc8b0856053f",
+      "rawGitSHA256": "09bf1d6538958c83250bf8aea4af02ceee40d64920246e837f63163e4ffefb92",
+      "workingSHA256": "6b489c0b6e8a85664168f29a4f18e717cdacafe7e4766bda8210b178f40f22d9"
+    },
+    "k8s-rewrite/front-end/src/lib/query-store.ts": {
+      "mode": "100644",
+      "blob": "6d4a47a7448d88f03231dccaae506cc9626176eb",
+      "rawGitSHA256": "31cdd7f3f29491f002261eec227de4d7fe385c3aeed54bc9cb6d37026cc77995",
+      "workingSHA256": "e3b7200f474b8cfc1d1539ea950d709c534c067e010e7e02ed1a3878d09f9ec6"
+    },
+    "k8s-rewrite/front-end/src/components/secrets/kv-workbench.tsx": {
+      "mode": "100644",
+      "blob": "d3984d2a95a0de8178fbec857ddc549a99240be5",
+      "rawGitSHA256": "fa8a9d41387285f6ff8c12abe1e043b1d182db2fcb633c776ba9cfd599a531bd",
+      "workingSHA256": "200e624f49b102fc2af647fa37b24777fd459487d5c9748369ed3fb6d55129b5"
+    },
+    "k8s-rewrite/front-end/src/app/(dashboard)/flux/page.tsx": {
+      "mode": "100644",
+      "blob": "df016282a05d2e0040237c91c4dacf9e635c5b71",
+      "rawGitSHA256": "07f6ddc22ff9afc930da4f6e6aa121ab95276ccb0d3ead6a7a204ff56ad04663",
+      "workingSHA256": "07f6ddc22ff9afc930da4f6e6aa121ab95276ccb0d3ead6a7a204ff56ad04663"
+    },
+    "k8s-rewrite/front-end/src/components/ui/sortable-header.tsx": {
+      "mode": "100644",
+      "blob": "ea88409107680c0a84dc610ba5061d4a1c7472c7",
+      "rawGitSHA256": "3ee80c3d227b6f71dc2b974ad6866b64b4a06683c2a3330f9ee65af5e92a0f01",
+      "workingSHA256": "a42f4f531d1ece6fcfb395b4353febaedce3b2559c1af43aab324c8c14399583"
+    },
+    "k8s-rewrite/front-end/src/app/(dashboard)/sidebar.tsx": {
+      "mode": "100644",
+      "blob": "b9095f56e7062f88872d0dfd54eaf0c5c9e170a9",
+      "rawGitSHA256": "d219a5eb7e4ec36bc98c370ede03caff3bed7596d4e1eaa1b1d68859cbb2c5bc",
+      "workingSHA256": "c6763b9f406b0c6a53801a60ec65ae3adbf1295219eca169e4053e29f0ca5bf5"
+    },
+    "k8s-rewrite/front-end/src/app/globals.css": {
+      "mode": "100644",
+      "blob": "e7f198b2c69df1b970fd8e5905615eb647d97b02",
+      "rawGitSHA256": "1b4c32a3133db6ea3290dc0d2c0bfa1ad988fef89a51431784b69db92fb45963",
+      "workingSHA256": "eefa5b11cbb392c105417773ff76fdbcd7aa860fd8720e63e62ef034a5997555"
+    },
+    "k8s-rewrite/front-end/src/components/secrets/kv-administration.tsx": {
+      "mode": "100644",
+      "blob": "8aaf67cf40884fe504f98aab2fdd65ee21b62b8d",
+      "rawGitSHA256": "e7d0b3cec895ad4104a85420ffa0c9939e78ea6d869590bb0b05110a49056573",
+      "workingSHA256": "01eea93d45671c5f1743adfbb9c84633c8b1fa3e660e39b9e7e05d833b28d598"
+    },
+    "k8s-rewrite/front-end/tests/job-stream.test.ts": {
+      "mode": "100644",
+      "blob": "9dad3c2481e0f02c0295851b4c562f260ad3adf6",
+      "rawGitSHA256": "159895bb6de7fd4acb6f668adb4b8e5c6ec09745a62aab4c5caadbb3e017ce46",
+      "workingSHA256": "f7c482d4f25097b2080557ed3a9b0b3b8089f56c3a468be950989f38c22facc7"
+    },
+    "k8s-rewrite/front-end/tests/job-output.test.ts": {
+      "mode": "100644",
+      "blob": "751190d9fd4d1dd116eac31673237ad6e0035484",
+      "rawGitSHA256": "bd03f3984eb60addd6eaad6810a824a3dec66bfeffbe8818017454edf6e0d6ec",
+      "workingSHA256": "240a722699d5fee4fe900714ec4df00b1e814bab1722fd7107495ee0e2341c77"
+    },
+    "k8s-rewrite/front-end/package.json": {
+      "mode": "100644",
+      "blob": "cb204abed7964bf74f2edc4f443861c70687eef8",
+      "rawGitSHA256": "2a1855b767526544b72f4704fefa114daa4208c95573226089259c7ae53951dc",
+      "workingSHA256": "2a1855b767526544b72f4704fefa114daa4208c95573226089259c7ae53951dc"
+    },
+    ".github/workflows/bortus-quality.yml": {
+      "mode": "100644",
+      "blob": "7fc63c314e11450b7789503a543fbf3cf266177e",
+      "rawGitSHA256": "2aefe9774b86014876751920b69f8c7c0c5edb93f0d4318f17d14dda7eeeb2a1",
+      "workingSHA256": "afc464054b70640e425fa63a3f3d0fb70cdea444419a6037d28a166ff1051b5f"
+    },
+    "k8s-rewrite/front-end/scripts/patch-next-body-finalize.mjs": {
+      "mode": "100644",
+      "blob": "49d0cc78708a3b20ee2bdd73e4fb3ee8856e490c",
+      "rawGitSHA256": "dd0944ee5a89603723a3e961c84344b268c728249a1baeef7309d80b3d47f448",
+      "workingSHA256": "dd0944ee5a89603723a3e961c84344b268c728249a1baeef7309d80b3d47f448"
+    },
+    "k8s-rewrite/front-end/package-lock.json": {
+      "mode": "100644",
+      "blob": "d2fbf4ee6dd08243bb84b6407596ca0dfe80b06d",
+      "rawGitSHA256": "32b54a6453b70a6438e5a1ed2f0e7a49cc1c971418bdd6eebb29cef4e9c0654c",
+      "workingSHA256": "32b54a6453b70a6438e5a1ed2f0e7a49cc1c971418bdd6eebb29cef4e9c0654c"
+    },
+    "k8s-rewrite/front-end/Dockerfile": {
+      "mode": "100644",
+      "blob": "ee563499310c69fb09c2b95fa1a1242ac69f4c9e",
+      "rawGitSHA256": "5be26d8ac43ce45dacad4c392a4369aad2ca7eb4adcc0f17ea9442578f692b2a",
+      "workingSHA256": "dce0fe33af229531b01862ba1173d655e6e18a7e77028c867b657a522492fcf3"
+    },
+    "k8s-rewrite/front-end/docker-entrypoint.sh": {
+      "mode": "100644",
+      "blob": "b36697d466ed3d3252f3f5694123dbcd7b78c140",
+      "rawGitSHA256": "41b57ab771ba397e1e8a10f5dd220ab59c2e664a5cc0133e0e9e3b3917d88433",
+      "workingSHA256": "5c62e14ed84a5bfd80fcf5bdda63049507da01efdfd39935f69be5118cfaffb5"
+    },
+    "k8s-rewrite/front-end/tests/metadata-bounds.test.ts": {
+      "mode": "100644",
+      "blob": "cc6f601a5cb1e27400cd9cad8847d69271d22dd7",
+      "rawGitSHA256": "67715389152f47c6acc2ae26c51031ad1739e2ddfdee7f2f4c9a6b67ee65cf5d",
+      "workingSHA256": "f1c0d9774a473f452014e6fa2a8e43068dd3dbb44ca671dfdf110b9353a24c2f"
+    },
+    "k8s-rewrite/front-end/src/lib/metadata-cache.ts": {
+      "mode": "100644",
+      "blob": "4c720a61ae64e128534f62c56d5f44544f1261f2",
+      "rawGitSHA256": "036e0e1cebda211c94aa0abd8e9a27897856b944b215aad9d3d4fc04cf41cfb8",
+      "workingSHA256": "290c0c8768f19616d4f87b637467cd76a3580a3b9ae4779108f5ae8c0f7b84c9"
+    },
+    "k8s-rewrite/front-end/src/app/(dashboard)/deploy/page.tsx": {
+      "mode": "100644",
+      "blob": "c9ce6f66457257524bd445da46fd9c67097a8fad",
+      "rawGitSHA256": "feacfe801ed86369dab676f9b9d1a01779fac4d60e2d4b72bb25b8385feec527",
+      "workingSHA256": "5465f08ae89c66a8e0e0874afb51cf88e3db119353d53baf7c2bfd5a5a2971fa"
+    },
+    "k8s-rewrite/front-end/src/app/(dashboard)/pods/page.tsx": {
+      "mode": "100644",
+      "blob": "d010f5fc95f1100397905b06ed51a3f910716b0a",
+      "rawGitSHA256": "1a8640851912720b28322d739aeb6e4420b14b0ffa33050e6ec876b694d2b2e4",
+      "workingSHA256": "3eff1bc641c228a370f51a68e238b8e76352d956d5423b0d632615ead39e2d88"
+    },
+    "k8s-rewrite/front-end/tests/pod-list-capacity.test.ts": {
+      "mode": "100644",
+      "blob": "b67ab6f68d53ce11d285d10e031d179279729059",
+      "rawGitSHA256": "7dfbd9be65859ebdd37b1bde6771b67ff92472d820f619229898b0ce99bc6b12",
+      "workingSHA256": "6b370cabd75405d8e96dd41f27ecd1a8a61f9189df40ab93170e501e61710bc6"
+    },
+    "k8s-rewrite/front-end/src/lib/deployment-state.ts": {
+      "mode": "100644",
+      "blob": "53e7cdcf53021c3aaf6e929ceae845ce65be9c7d",
+      "rawGitSHA256": "4cc5bd9d3a53f0777839292504d7be172bac1324ef8c2f1ca16544536407a8a6",
+      "workingSHA256": "eb25470584dd1c24ebf032bbb75d2d825e5f59b6e77e287eb6ace8e04a7a71f6"
+    },
+    "k8s-rewrite/front-end/src/components/cluster/kubectl-shell.tsx": {
+      "mode": "100644",
+      "blob": "3873f6097bf00ad3f437286c1ffbeafd1a3612b3",
+      "rawGitSHA256": "4ad2957fbd46b1cc6352110609d30c31f97440ce13e4ce6424f2ac8921393b38",
+      "workingSHA256": "ee3211a41612ecf767efb29af3ed741b48091d47d8a7aa94db8c690fcefd3aa8"
+    },
+    "k8s-rewrite/front-end/src/app/(dashboard)/yaml-modal.tsx": {
+      "mode": "100644",
+      "blob": "601b071a8e55374db030de3b96e5b7dcb1df8768",
+      "rawGitSHA256": "0c08daa318574a8a54e2164314bd9fd9f23f053df5446cfc80429cbd7e460351",
+      "workingSHA256": "8b5a77d8643e4fa2667682fee383830ae3620744db22c5c1bc441947b1476a3d"
+    },
+    "k8s-rewrite/front-end/src/lib/job-stream.ts": {
+      "mode": "100644",
+      "blob": "6b26c3f97b97ea22a3f36f9818a436c9225017d5",
+      "rawGitSHA256": "c57778b4c9cae363e351cefe1c3bbeeffc4714968470a3ec2aaea2b8d8a4b639",
+      "workingSHA256": "427d60d39324d16f74cdd446de7133b2711b3885da3925b486c6b9e5de76b633"
+    },
+    "k8s-rewrite/front-end/src/lib/readiness.ts": {
+      "mode": "100644",
+      "blob": "6fc3d1b6f66f2be7b548107b9a07d3bfa0a5d690",
+      "rawGitSHA256": "02dbee75409252f2094c2209d5e886405eaace493671b86b6cef48cf40112c0e",
+      "workingSHA256": "c05d532b735d84299695bcf95ebc35ea803da32fe0ef5d36dd2891a0e933afee"
+    }
+  },
+  "evidenceBindings": {
+    "combined-c29fc8c/qualification.json": {
+      "sha256": "c2ee2f911ec3185b06b0b488a83c387f16ed1bbd8c112577148f0261d39798cd",
+      "bytes": 4586
+    },
+    "shared-freshness-browser.json": {
+      "sha256": "f06b5233048dfea5cacc4f6543418b61aeed48c7137a8159c22332a804a34443",
+      "bytes": 3347
+    },
+    "workbench-lifecycle-browser.json": {
+      "sha256": "94cc323b9943e16f8d817a2f36efb64e966c74926e4334819a7b0a912e895361",
+      "bytes": 9552
+    },
+    "administration-ui.json": {
+      "sha256": "ab1bb82f3d8f8a188c6a7bb5fba77bc0c3a841155f4021173bab6ad7d68796bf",
+      "bytes": 3020
+    },
+    "flux-browser.json": {
+      "sha256": "e527dd32b8b5a95450813043444829903eafa2c2bb26b793e487ebfd5ec4e4cb",
+      "bytes": 20939
+    },
+    "overview-health/qualification.json": {
+      "sha256": "061624619e1e5fe25a2c453168a7a448b35542233cf8e22ad8b383fd793d86e6",
+      "bytes": 70736
+    },
+    "native-distinct-span/controlled-paired/assessment.json": {
+      "sha256": "c1f8025d46e31ce224d478e6b249b6b660193c4338a7214821c70f44cce8c147",
+      "bytes": 2666
+    },
+    "README.md": {
+      "sha256": "4611f25463f0703a2844959e3854d52f2df933f3618bd5fe14d7e90e40564511",
+      "bytes": 48508,
+      "scope": "Current documentation narrative and retained linked historical browser receipts, not a machine browser run"
+    },
+    "kv-workflows-browser.json": {
+      "sha256": "7e91bf5bf375f9803ff434efaf7bcb9bda4163787d6b007d1388937714dbcb39",
+      "bytes": 8069
+    },
+    "job-stream-ui.json": {
+      "sha256": "5069adf86abf4006ea15eee5cd823e577f5c7d5f9a554451d48358656d6bfffa",
+      "bytes": 1054
+    },
+    "secret-tables.json": {
+      "sha256": "58bb783e634ceb60880072b25ec47b73ba1f03f6ae7b6c4c6c146e1a98e3a049",
+      "bytes": 6096
+    },
+    "kv-metadata-ui.json": {
+      "sha256": "4a9b71754c215072440546604dacf074551e80b3e43576a10ac56bc42959a44b",
+      "bytes": 14432
+    },
+    "terminal-final-browser.json": {
+      "sha256": "99e18ea4acfe2e1969563e6950a6f56a7c00be8946ae8678e67285c9697bac77",
+      "bytes": 43418
+    },
+    "wide-zoom-final-browser.json": {
+      "sha256": "5ff947a795cb8727306e84f9aa8830efedacc17d840bcaf87072c27e305e8953",
+      "bytes": 7657
+    },
+    "flux-zoom-browser.json": {
+      "sha256": "99ef2e56adab0027affd3b4bc3a29eb0195a0f4dc02285ddd2f6e3addd333844",
+      "bytes": 4526
+    },
+    "secret-intent.json": {
+      "sha256": "36394f407ced958ebcf67a95ccfcd2f6e660373633555ebe06f7dfd3dc5a459d",
+      "bytes": 4311
+    },
+    "kv-identity-browser.json": {
+      "sha256": "eb448b9971ad2f12d0274de100b336bfbdcd65f76167168297fb1c11fd60fe52",
+      "bytes": 2705
+    },
+    "job-output-sql.json": {
+      "sha256": "37ead2940f6cc44174c58db5ca276532a9598756b34eab0d8ed678f14cbc9d7c",
+      "bytes": 488
+    },
+    "provisioning-confidentiality.json": {
+      "sha256": "55dd68e15f2f196469f23bb2ec19dc110bca111beae815668df880923b232f06",
+      "bytes": 4341
+    },
+    "workbench-lifecycle-qualification.json": {
+      "sha256": "debb779010c945b7dace4b2965cbab697827ad8ec717f7091078ab1354c60c25",
+      "bytes": 15758
+    },
+    "runtime-maintenance/README.md": {
+      "sha256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0",
+      "bytes": 11524
+    },
+    "workbench-raw-source-scan-handoff.json": {
+      "sha256": "7725457a3ee2aa6149c046e05ba3e213e794fcb02c4555d89c1f65bcfa25892d",
+      "bytes": 3529
+    },
+    "metadata-body-qualification.json": {
+      "sha256": "a480f3dcede3589750b3909c216ebed09aceecd82c1fa75d26b1486f283bf136",
+      "bytes": 3985
+    },
+    "optional-code-qualification.json": {
+      "sha256": "92b4851377a7b6a93e423dba45e5565f8f0e57c9277cb7f0a171fe6cec85b4b6",
+      "bytes": 15147
+    },
+    "terminal-final-qualification.json": {
+      "sha256": "768ce5c56674c563a355f9645bd9170a0aa25c2d0c0b77247c7835796a0b1362",
+      "bytes": 134564
+    }
+  },
+  "docsReviewedBeforeChange": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "sha256Before": "00a52c258f628c649b6be8ceb27b22433eee83000ed5952880ad0ba01a570cc4",
+      "bytesBefore": 5932
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "sha256Before": "4e9a67bceda144dffbb0c46b9109fc1f3a050d8394805135007de879dca9af43",
+      "bytesBefore": 84127
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "sha256Before": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670",
+      "bytesBefore": 4505
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "sha256Before": "70f72f8cff246e9600c92fcf127684f9bc7c94b285017c5e12cfb55603fa4572",
+      "bytesBefore": 43379
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "sha256Before": "8ac2d47407146e257416b8583c42d3a44e192496ee1f90f3a9a3d0edb13a77c1",
+      "bytesBefore": 42489
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "sha256Before": "3ca55d9864f5317b88e600089768031cc98430494474f372b542177a1801354f",
+      "bytesBefore": 51005
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "sha256Before": "2bf336bdbcb25ba4acbcfd732f4a76cd48913e2b1b6007b7f576c773a79679f1",
+      "bytesBefore": 116183
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "sha256Before": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b",
+      "bytesBefore": 21837
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "sha256Before": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412",
+      "bytesBefore": 42354
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "sha256Before": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8",
+      "bytesBefore": 22212
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "sha256Before": "15235e65613ba4ccc049d50ed50a39b3d7a596f9eeb3d0449d3bab14dd42a89f",
+      "bytesBefore": 62397
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "sha256Before": "a2a6d5bf0312084ad5428181302259bf5eb2dc5818607e27d52ea5110ae0e7e7",
+      "bytesBefore": 31534
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "sha256Before": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038",
+      "bytesBefore": 3649
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "sha256Before": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb",
+      "bytesBefore": 2613
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "sha256Before": "cb35a994799df82886f9577555e1f53c8057d512d831e54acb3144927fe7a58a",
+      "bytesBefore": 16893
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "sha256Before": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "bytesBefore": 5310
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "sha256Before": "b14ac00e55d25f98ab674436a22aae579ce7ebf54762912937ff8046f50d4334",
+      "bytesBefore": 47635
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "sha256Before": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0",
+      "bytesBefore": 11524
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "sha256Before": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92",
+      "bytesBefore": 1823
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "sha256Before": "5de3d74a922081bd07eab1b672b6ed6be45c3c1743f8928979cb3168f6cc3ad9",
+      "bytesBefore": 50043
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "sha256Before": "863e2c7f7f2f05aa958f5e980b5633092fb528592d133fd50fe659e6d6df592a",
+      "bytesBefore": 61165
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "sha256Before": "c491f1114a13cc791f9a5349b91d4e2e917cf67da7b92cd9d653cdb348cebde8",
+      "bytesBefore": 32036
+    }
+  ],
+  "scopeLimits": [
+    "No universal action/modal/route acceptance inferred from representative cases",
+    "Actual screen-reader/remote CI negative controls/real CLI/final image and live engine remain open",
+    "A07/A21 failed on latest4668 unchanged comparison; no c29fc pair",
+    "Two legacy full-source checksum provenance findings remain untriaged; narrow scans do not waive them"
+  ],
+  "auditPreparation": "Path-only source references corrected before acceptance: eight missing shorthand paths detected; exact existing paths and raw blob/mode/working hashes now bound. No source or tests executed.",
+  "coordinatorReportedImageScan": {
+    "source": "c29fc",
+    "safeReview": "root-final-app-c29fc-20261011/image-scan-safe-review.json",
+    "rawReportSHA256": "83c300c91e5d80d2d163fa6a99c252a09dd50314b18a012745a61823530abd7b",
+    "independentAppArtifactVerification": false,
+    "reportingExit": 1,
+    "zeroSecrets": true,
+    "fixableAllKubectl": 19,
+    "acceptance": "open; holder-only assessment not transferable"
+  }
+}
