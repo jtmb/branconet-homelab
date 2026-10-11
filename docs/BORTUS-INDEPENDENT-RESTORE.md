@@ -3,7 +3,10 @@
 `scripts/migration/bortus-independent-restore.py` is locally qualified as a callable
 composition over immutable root `8f69b51`, with no CLI. Its exported reader is
 loaded once and supplies the exact MutationAPI/Collector/data/credentials classes.
-SourceFence constructs its own exact read-only MetadataAPI. Use
+SourceFence constructs its own exact read-only MetadataAPI. Validated typed lists
+infer only absent item type headers; named reads and conflicting explicit headers
+remain strict. The original live preflight refused headerless PodList items before
+any mutation. Current-source qualification is recorded below. Use
 `restore(run_directory, checkpoint_journal, checkpoint_sha256, original_archive,
 holder_image, alternate_node, kubeconfig_path, options, qualify_image, *, age,
 recipient_file, identity_file, deadline)` with one absolute monotonic deadline at
@@ -144,3 +147,11 @@ The actual producer uses fresh verified mTLS metadata and an exclusive fsynced
 Invoke it fresh under the callback's shared deadline each time; this observed
 receipt is historical evidence. Guard publication, actual admission probes,
 independent whole-row restoration and final app/image/performance remain open.
+
+The current reader passes 57 scoped metadata/source/checkpoint preflight tests
+with frozen inputs and an actual reaped child. Fresh actual SourceFence.prepare
+also passes using the same metadata bytes: original storage/controller identities,
+completed backup and unused restore target are confirmed. This is read-only
+preflight evidence; admission publication, actual probes and whole-row restoration
+remain open. The earlier metadata_shape refusal is retained. See the
+[typed-collection evidence](../evidence/bortus-typed-collection-preflight-20261011.json).

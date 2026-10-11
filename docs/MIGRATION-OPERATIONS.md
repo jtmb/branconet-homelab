@@ -735,3 +735,22 @@ The actual producer uses fresh verified mTLS metadata and an exclusive fsynced
 Invoke it fresh under the callback's shared deadline each time; this observed
 receipt is historical evidence. Guard publication, actual admission probes,
 independent whole-row restoration and final app/image/performance remain open.
+
+## 2026-10-11: live collection metadata refusal
+
+The next read-only phase-one preflight refused at BORTUS PodList item validation:
+the validated collection's items omit `apiVersion` and `kind`. The retained
+diagnostic reports only shape booleans and fixed error codes. No guards, restore
+resources or application mutations were dispatched. The adapter now supplies
+only absent headers from a fully validated typed collection, while retaining
+explicit-header, identity, completeness and duplicate refusals. Current-source
+local TLS controls and a fresh actual preflight pass as recorded below; old
+receipts remain bound to their original reader.
+
+The current reader passes 57 scoped metadata/source/checkpoint preflight tests
+with frozen inputs and an actual reaped child. Fresh actual SourceFence.prepare
+also passes using the same metadata bytes: original storage/controller identities,
+completed backup and unused restore target are confirmed. This is read-only
+preflight evidence; admission publication, actual probes and whole-row restoration
+remain open. The earlier metadata_shape refusal is retained. See the
+[typed-collection evidence](../evidence/bortus-typed-collection-preflight-20261011.json).

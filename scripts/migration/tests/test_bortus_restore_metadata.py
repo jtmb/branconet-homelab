@@ -146,6 +146,47 @@ class MetadataTests(unittest.TestCase):
         self.fixture.body['metadata']['namespace'] = 'bortus'
         self.refuse(lambda: self.get('storageclass'), 'metadata_identity')
 
+    def test_typed_list_supplies_only_absent_item_headers(self):
+        for resource in sorted(module.LISTABLE):
+            for missing in (('apiVersion',), ('kind',), ('apiVersion', 'kind')):
+                with self.subTest(resource=resource, missing=missing):
+                    expected = item(resource)
+                    raw = copy.deepcopy(expected)
+                    for key in missing: del raw[key]
+                    self.fixture.body = page(resource, [raw])
+                    self.assertEqual(self.list(resource)['items'], [expected])
+                    self.assertEqual(self.fixture.body['items'], [raw])
+
+    def test_typed_list_rejects_explicit_wrong_item_headers(self):
+        for resource in sorted(module.LISTABLE):
+            for key in ('apiVersion', 'kind'):
+                for value in (None, '', False, {}, [], 'Secret'):
+                    with self.subTest(resource=resource, key=key, value=value):
+                        raw = item(resource); raw[key] = value
+                        self.fixture.body = page(resource, [raw])
+                        self.refuse(lambda: self.list(resource), 'metadata_shape')
+
+    def test_named_get_does_not_infer_missing_headers(self):
+        for key in ('apiVersion', 'kind'):
+            self.fixture.body = item(); del self.fixture.body[key]
+            self.refuse(self.get, 'metadata_shape')
+
+    def test_headerless_list_preserves_identity_and_collection_refusals(self):
+        raw = item('pod'); del raw['apiVersion']; del raw['kind']
+        for key, value in (('namespace', 'other'), ('uid', ''), ('resourceVersion', '')):
+            broken = copy.deepcopy(raw); broken['metadata'][key] = value
+            self.fixture.body = page('pod', [broken])
+            self.refuse(lambda: self.list('pod'), 'metadata_identity')
+        self.fixture.body = page('pod', [raw, copy.deepcopy(raw)])
+        self.refuse(lambda: self.list('pod'), 'metadata_identity')
+        for key, value in (('continue', 'more'), ('resourceVersion', '')):
+            self.fixture.body = page('pod', [raw]); self.fixture.body['metadata'][key] = value
+            self.refuse(lambda: self.list('pod'), 'metadata_incomplete')
+        self.fixture.body = page('pod', [raw]); self.fixture.body['kind'] = 'SecretList'
+        self.refuse(lambda: self.list('pod'), 'metadata_incomplete')
+        self.fixture.body = page('pod', [None])
+        self.refuse(lambda: self.list('pod'), 'metadata_shape')
+
     def test_scope_rejected_before_credentials(self):
         for name in ('../secret', 'a/b', 'a?x=y', 'a..b', '-a', 'a-', 'A', 'a' * 64):
             self.refuse(lambda: self.get(name=name), 'request_scope')

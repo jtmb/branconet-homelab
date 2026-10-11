@@ -155,9 +155,19 @@ class MetadataAPI:
                      ('remainingItemCount' not in meta or type(meta['remainingItemCount']) is int and
                       meta['remainingItemCount'] == 0) and type(items) is list and len(items) <= MAX_ITEMS,
                      'metadata_incomplete')
-                identities = [object_identity(item, resource) for item in items]
+                # A validated typed collection supplies only omitted item TypeMeta.
+                # Named GETs and explicitly supplied conflicting headers stay strict.
+                normalized = []
+                for item in items:
+                    need(type(item) is dict, 'metadata_shape')
+                    item = dict(item)
+                    item.setdefault('apiVersion', version)
+                    item.setdefault('kind', kind)
+                    normalized.append(item)
+                identities = [object_identity(item, resource) for item in normalized]
                 need(len({e[0] for e in identities}) == len(items) and
                      len({e[1] for e in identities}) == len(items), 'metadata_identity')
+                obj['items'] = normalized
             need(time.monotonic() < deadline, 'deadline')
             value = obj
         except MetadataRefused as error:

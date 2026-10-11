@@ -73,6 +73,12 @@ keys/nonfinite constants and bounds tree depth/nodes/strings. Lists require the
 correct API/kind, opaque collection resourceVersion, no continuation/remaining
 items, at most 10,000 objects and unique names/UIDs with the expected namespace.
 Public errors contain fixed codes, with underlying response/parser frames dropped.
+After validating a complete typed collection, the adapter fills only omitted
+item `apiVersion`/`kind` from that collection. Explicit wrong, empty or null
+headers still refuse; named GETs do not infer headers. Identity, namespace,
+unique name/UID and collection completeness checks remain required. This handles
+the actual headerless BORTUS PodList response observed before guard publication.
+The original refusal is retained; this revision is locally and live qualified below.
 These are fresh individual reads, not an atomic source or health snapshot. The
 executor must pass them through the full identity/consumer/restore fences.
 Nineteen original disposable loopback TLS tests pass, including credential freshness,
@@ -144,3 +150,11 @@ no Secrets read and no cluster mutation performed. This proves scoped operator
 transport access only: durable live history, restoration and data/image release
 acceptance remain open. Exact hashes, test terminals, the initial refusals and
 scope limits are in [integration evidence](../evidence/bortus-operator-mtls-integration-20261011.json).
+
+The current reader passes 57 scoped metadata/source/checkpoint preflight tests
+with frozen inputs and an actual reaped child. Fresh actual SourceFence.prepare
+also passes using the same metadata bytes: original storage/controller identities,
+completed backup and unused restore target are confirmed. This is read-only
+preflight evidence; admission publication, actual probes and whole-row restoration
+remain open. The earlier metadata_shape refusal is retained. See the
+[typed-collection evidence](../evidence/bortus-typed-collection-preflight-20261011.json).

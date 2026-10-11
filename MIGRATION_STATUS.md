@@ -799,3 +799,13 @@ The actual producer uses fresh verified mTLS metadata and an exclusive fsynced
 Invoke it fresh under the callback's shared deadline each time; this observed
 receipt is historical evidence. Guard publication, actual admission probes,
 independent whole-row restoration and final app/image/performance remain open.
+
+## Typed collection preflight — 2026-10-11
+
+The current reader passes 57 scoped metadata/source/checkpoint preflight tests
+with frozen inputs and an actual reaped child. Fresh actual SourceFence.prepare
+also passes using the same metadata bytes: original storage/controller identities,
+completed backup and unused restore target are confirmed. This is read-only
+preflight evidence; admission publication, actual probes and whole-row restoration
+remain open. The earlier metadata_shape refusal is retained. See the
+[typed-collection evidence](evidence/bortus-typed-collection-preflight-20261011.json).
