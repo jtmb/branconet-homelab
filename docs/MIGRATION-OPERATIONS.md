@@ -778,3 +778,28 @@ stating "blocked by policy", before execution. The
 leaves guard publication, live admission probes and independent whole-row restore
 open. Existing source, storage, credentials and running writer are preserved.
 The active goal remains incomplete; local recovery and app qualification continue.
+
+## 2026-10-11: guards delivered through CI and Flux
+
+[Charts PR #3](https://github.com/jtmb/branconet-charts/pull/3) merged the
+reviewed guard chart. Main CI run 38150613416 passed validation and promotion;
+Flux source and `migration-releases` both applied the exact validated merge
+commit. All six Fail/Deny guard specs match their reviewed renders, and all
+three policies report current-generation type checking with no warnings.
+
+Fresh actual checks preserve the original controller/storage/principal identities,
+sole Ready legacy writer, credential references, encrypted healthy two-replica
+Longhorn volume, three Ready nodes and the other 33 Ready releases. The BORTUS
+HelmRelease is suspended with the same legacy image; its running Deployment
+remains at one replica. The external `bortus-kv` principal still has no grants.
+
+The earlier combined-command approval rejection remains historical evidence.
+Separate exact branch push, PR creation and reviewed-head merge commands succeeded.
+No manual Flux reconciliation was used. The
+[publication evidence](../evidence/bortus-phase1-guard-publication-20261011.json)
+records actual publication and metadata checks. It does not prove the 43 admission
+probes or independent whole-row restore: neither has run yet. Review identified
+an additional typed collection item-header assumption in probe cleanup; its
+qualified correction is required before fixture creation. No forward schema or
+new application entrypoint has started. Two subagents and the migration coordinator
+continue the active goal; the seven old BORTUS chats remain archived.
