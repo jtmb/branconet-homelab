@@ -125,3 +125,45 @@ flux resume kustomization migration-releases -n flux-system
 ## BORTUS private credentials
 
 New private-repo credentials write native Secrets in `flux-system` through verified API access. `GitRepo.authData` is empty; old DB authData is never replayed. Existing native collisions fail instead of overwriting. Credentials never enter argv. Native value-bearing resources stay outside Git/Flux; charts reference existing Secrets. See [BORTUS-DEPLOYMENT.md](BORTUS-DEPLOYMENT.md).
+
+## BORTUS maintenance prerequisite PR
+
+The [chart prerequisite PR](https://github.com/jtmb/branconet-charts/pull/1)
+publishes candidate 47bfca2a5c98bf2834cb5e3f2cd18cfffbe7b015 for review.
+It suspends only the BORTUS HelmRelease and adds a grant-free, token-automount-
+disabled bortus-kv ServiceAccount through the existing Flux composition. It
+includes earlier offline delivery preparation but references no admission
+policies/bindings, changes no image, and grants no new permissions. The existing
+writer can still self-heal. Global pruning and force remain disabled.
+
+The [root publication receipt](../evidence/bortus-chart-prerequisite-publication-20261011.json)
+independently binds 302 frozen inputs, 10 selected raw Git blobs/modes and 35
+original artifacts. Existing 22 units and full validation pass; all 33
+application renders match the retained prior report. A fresh 11:41 UTC read
+finds the same Ready writer, three Ready nodes, active Flux owner and absent
+target ServiceAccount, with no data/Secret value reads or mutations. The PR's
+exact-head CI is pending at this checkpoint. No merge, promotion or live
+reconciliation is claimed; those observations and preserved workload/storage
+checks are still required. Final performance/image/admission/independent restore
+and native KV acceptance remain open. The completed cold journal is unchanged.
+
+## Observed BORTUS maintenance publication
+
+[Chart PR 1](https://github.com/jtmb/branconet-charts/pull/1) merged as
+ba7c8e5bbbabe174cbbaec5b0ba7367336f62752 at 11:46 UTC. Exact-main CI run
+38136779991 passed validation and promotion; main and validated match that SHA.
+The [root live receipt](../evidence/bortus-chart-prerequisite-publication-20261011.json)
+observes source and migration-releases Ready at the same applied revision at
+11:49 UTC. Its inventory adds only bortus-kv, Flux-owned with token automount
+disabled and no Secret references or RBAC grants. The same BORTUS HelmRelease
+is suspended and has exactly the previously reviewed failure settings; removing
+those eleven fields and suspension reproduces the original whole spec hash.
+The first overly narrow suspension-only assertion is retained as an actual
+failed read, followed by this exact corrected comparison; no checks were weakened.
+
+Original writer UID, Ready state, all workload specs/images, claims/PVs,
+Longhorn identities/settings, RBAC and nodes match the before checkpoint.
+BORTUS storage is healthy. This prerequisite pauses Helm upgrades while leaving
+workload self-healing available; it installs no guard, new app image, schema or
+KV adoption. The completed cold checkpoint and originals remain intact. Final
+app performance, guarded release and independent full-row restore stay open.

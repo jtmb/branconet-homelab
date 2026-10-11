@@ -58,6 +58,42 @@ it preserves original Reader semantics, and no new performance pass, final image
 or rollout is claimed. Root plus two subagents continue; seven old execution
 chats remain archived. All Gluster/Vault/Consul originals remain preserved.
 
+## 2026-10-11 11:44 UTC: chart prerequisite PR open
+
+[Chart PR 1](https://github.com/jtmb/branconet-charts/pull/1) contains the
+BORTUS-only Helm suspension and grant-free Flux-owned bortus-kv SA. Root
+independently verifies 302 frozen inputs, 10 raw blobs/modes, 35 originals and
+unchanged 33 application renders. Existing 22 tests and full validator pass;
+fresh live metadata inspection preserves the same Ready writer, three Ready
+nodes and active Flux owner. [Publication evidence](evidence/bortus-chart-prerequisite-publication-20261011.json)
+records the exact candidate and PR. Exact-head CI is pending; merge, promotion,
+live suspension/SA observation and final guarded application acceptance remain
+open. No guard, new grant, schema/adoption or image is activated.
+
+App candidate c29fc8c fixes Longhorn health classification using robustness
+alone and includes the scalar known-field allocation change. Focused 20 tests,
+lint/types pass; its fresh combined Linux qualification runs. It has no new
+performance acceptance. Root plus two subagents continue, with seven old BORTUS
+chats archived and Gluster/Vault/Consul originals preserved.
+
+## 2026-10-11 11:49 UTC: prerequisite promoted and observed live
+
+[Chart PR 1](https://github.com/jtmb/branconet-charts/pull/1) merged as
+ba7c8e5; exact-main validation/promotion passed and Flux source/owner are Ready
+at that same revision. [Live maintenance evidence](evidence/bortus-chart-prerequisite-publication-20261011.json)
+confirms only the new grant-free bortus-kv SA enters inventory, the same BORTUS
+HR is suspended with the reviewed failure settings, and the same writer remains
+Ready. All workload specs, claims/PVs, Longhorn settings, RBAC and node identities
+match the before checkpoint; BORTUS storage remains healthy. Original checkpoint
+and data remain intact. The first suspension-only comparison failure is retained;
+exact removal of eleven reviewed settings plus suspension reproduces the original
+whole HR spec hash. Final image/performance/guard/adoption/restore gates stay open.
+
+App c29fc8c's fresh Linux build, 214 units, lint/types and four strict HTTP suites
+have closed with actual zero exits and owned cleanup. This is functional evidence,
+not a new performance pass. Work stays with root plus two subagents; seven old
+BORTUS chats remain archived.
+
 ## Current orchestration and application qualification
 
 Three agents are active: coordinator, BORTUS application integration, and native transport/evidence. Seven identifiable former BORTUS execution/review chats are confirmed archived; unrelated projects remain unchanged. Before archiving the additional idle dependency/runtime chat, its clean committed handoff was preserved as a verified complete-history Git bundle and raw source archive outside managed checkouts. Its package, lockfile and Dockerfile match the current app source; [preservation evidence](evidence/bortus-runtime-thread-archive.json) records the exact artifacts. Earlier archiving removed managed checkouts, so application work was recovered from snapshot da84f0f00aeb0daca299358e93fc7074acd2055e (parent b82980e783daf09e1aabe00f3a5db99fef3e13fa), including 17 changed paths and both qualification logs. All six original source-file hashes were recovered; the workbench discrepancy was traced to mixed line endings by replaying the original patch records. Source and evidence backups remain outside the managed checkouts.
