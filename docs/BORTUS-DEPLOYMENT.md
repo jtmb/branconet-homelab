@@ -145,3 +145,26 @@ All failed setup, transient-detach and controller-default-label attempts remain
 recorded. A fresh read-only source preflight validates this closed checkpoint and
 an absent masternode restore target. Complete SQLite row equality, independent
 restoration, active admission and the final application release remain pending.
+
+The [root maintenance/preflight review](../evidence/bortus-maintenance-preflight-review-20261011.json)
+verifies 37 offline proposal payloads, 20 raw committed source blobs/modes, six
+exact canonical guard renders, the grant-free externally Flux-owned bortus-kv
+ServiceAccount and the BORTUS-only declarative suspension. The actual 11:15 UTC
+metadata-only preflight using the corrected helpers passed against the unchanged
+completed checkpoint: original writer/storage are healthy, the target remains
+absent and masternode is the alternate. It reads no database or native Secret
+values and makes no mutation. Neither offline renders nor this preflight prove
+admission, independent restoration or application acceptance.
+
+Keep Deny activation held until a qualified compatible app image permits the
+planned recovery route. An inert-only allowlist would deny legacy writer
+replacement even with its HelmRelease suspended. With prune:false, removing
+guard files/references does not remove live Deny bindings. The reviewed
+pre-adoption withdrawal alternative explicitly changes all three existing
+bindings to Audit through validated Flux, requires fresh observation and owned
+holder absence, then resumes the unchanged legacy release through another
+validated revision. Audit is not enforcement acceptance. That withdrawal path
+is forbidden after forward schema/principal migration or KV adoption; retain
+guards and recover with an approved compatible image and current accepted data.
+Actual invocation still needs the root's current image/runtime and admission
+proof callback; complete probes before creating the isolated restore target.

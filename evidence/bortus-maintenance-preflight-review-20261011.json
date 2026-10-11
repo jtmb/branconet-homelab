@@ -1,0 +1,803 @@
+{
+  "scope": "Root independent verified offline Flux maintenance sequence and corrected-helper actual source preflight; no guard publication or restore",
+  "recorded_at_utc": "2026-10-11T11:25:02.240396+00:00",
+  "maintenance_review": {
+    "scope": "Root independent offline maintenance proposal and actual metadata-only corrected-helper preflight verification",
+    "proposal_manifest_sha256": "47856916fd065850765847034ac03e0109aa5531244af43925c371a911d77416",
+    "proposal_source_manifest_sha256": "f8cf6e9a1e9b4697ed2c0e9e8a97e0eb4e6c13e7cb349d2c46b2725c2bfca364",
+    "payload_files_verified": 37,
+    "raw_source_blobs_and_modes_verified": 20,
+    "pure_review": {
+      "canonical_guards_match": true,
+      "guard_objects": 6,
+      "child_objects": 7,
+      "grants_added": 0,
+      "withdrawal_alternatives_are_audit_only": true,
+      "current_collector_probe_cases": 40
+    },
+    "actual_source_preflight": {
+      "scope": "Fresh current completed checkpoint/independent restore prerequisites only",
+      "actual_exit": 0,
+      "sources": [
+        {
+          "path": "scripts/migration/inspect-bortus-independent-restore.py",
+          "sha256": "01c5102e789d1eca00dac8543d4d4be4e47de03584092518d987ce1429cfdbe0"
+        },
+        {
+          "path": "scripts/migration/checkpoint-bortus-volume.py",
+          "sha256": "a2a0969d2b62766032f8490f116903b9542327fb6ac978d6fca0e0fd04625b07"
+        },
+        {
+          "path": "scripts/migration/inspect-bortus-checkpoint.py",
+          "sha256": "95b4fe7d67f3a9a818d7cca4cf539b11a06f3cfc54e39a6e403d61e4836d1de5"
+        }
+      ],
+      "checkpoint_journal_sha256": "ab7fc36ab5a4d8056f940202cb08e6434fad3a1a0abd3461649492fd0e065db2",
+      "mutations": 0,
+      "database_or_secret_reads": 0,
+      "completed_at_utc": "2026-10-11T11:15:38.136482+00:00",
+      "preflight_sha256": "3dd2f2de912c56e183afa0b0ad4028bad359ea2dbcc8d9de95d50a6c565ac3bc",
+      "report": {
+        "scope": "Read-only fresh BORTUS restore prerequisites; no restore or data read",
+        "checkpoint_run_id": "b473091bebef",
+        "source_identities": {
+          "claim": {
+            "name": "bortus-data",
+            "uid": "19cc4b60-4536-4d80-8789-e27b5ad48b79",
+            "resourceVersion": "43233",
+            "namespace": "bortus"
+          },
+          "pv": {
+            "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+            "uid": "89b8b6ec-c932-4686-9890-26df90a5c799",
+            "resourceVersion": "10369",
+            "namespace": null
+          },
+          "longhorn_volume": {
+            "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+            "uid": "74acb150-7031-4fab-9868-86f3f3a30e16",
+            "resourceVersion": "1052848",
+            "namespace": "longhorn-system"
+          },
+          "deployment": {
+            "name": "bortus",
+            "uid": "4deedc67-038a-4f82-a2d4-a83af316f2f6",
+            "resourceVersion": "1052028",
+            "namespace": "bortus"
+          },
+          "helmrelease": {
+            "name": "bortus",
+            "uid": "bed3008a-474f-411e-9956-1248e3718220",
+            "resourceVersion": "1064146",
+            "namespace": "flux-system"
+          },
+          "kustomization": {
+            "name": "migration-releases",
+            "uid": "f3757d64-04bd-46db-8b40-ae666999449c",
+            "resourceVersion": "1064921",
+            "namespace": "flux-system"
+          },
+          "backup_target": {
+            "name": "default",
+            "uid": "999fe7cd-e073-4a52-ba62-87db1857f876",
+            "resourceVersion": "1065097",
+            "namespace": "longhorn-system"
+          },
+          "replica_set": {
+            "name": "bortus-d69b559bb",
+            "uid": "eed90242-aa20-4690-84d4-9e932032eb93",
+            "resourceVersion": "1052027",
+            "namespace": "bortus"
+          }
+        },
+        "source_node_name": "workernode2",
+        "snapshot_identity": {
+          "name": "bortus-cold-b473091bebef",
+          "uid": "bfff29fd-6a41-40d9-bc48-9f883eb558d3",
+          "resourceVersion": "1049941",
+          "namespace": "longhorn-system"
+        },
+        "backup_identity": {
+          "name": "backup-b473091bebef",
+          "uid": "83a3da54-79e8-44cb-a5e6-9427245520eb",
+          "resourceVersion": "1052845",
+          "namespace": "longhorn-system"
+        },
+        "storageclass_identity": {
+          "name": "longhorn",
+          "uid": "48c9bbe8-16b9-4780-bc9d-ae51f2513c7c",
+          "resourceVersion": "1366",
+          "namespace": null
+        },
+        "alternate_node_identity": {
+          "name": "masternode",
+          "uid": "f2df6169-4592-4544-b62c-74d89f598648",
+          "resourceVersion": "1063751",
+          "namespace": null
+        },
+        "original_ciphertext_sha256": "f46b309d1f2e5702f6de54205ec5f9448bf2d8a72df8e9779209a69e1f828e8b",
+        "checks_passed": true,
+        "mutations": 0,
+        "database_or_secret_reads": 0,
+        "separate_resource_reads_are_atomic": false,
+        "restore_target_name": "bortus-restore-b473091bebef",
+        "proposals": [
+          {
+            "apiVersion": "storage.k8s.io/v1",
+            "kind": "StorageClass",
+            "metadata": {
+              "name": "bortus-restore-b473091bebef",
+              "labels": {
+                "bortus-restore": "b473091bebef"
+              }
+            },
+            "provisioner": "driver.longhorn.io",
+            "reclaimPolicy": "Retain",
+            "volumeBindingMode": "Immediate",
+            "allowVolumeExpansion": true,
+            "parameters": {
+              "backupTargetName": "default",
+              "dataEngine": "v1",
+              "dataLocality": "disabled",
+              "disableRevisionCounter": "true",
+              "encrypted": "true",
+              "fromBackup": "cifs://192.168.0.8/container_backups/k8s-migration-20261009/longhorn?backup=backup-b473091bebef&volume=pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+              "fsType": "ext4",
+              "numberOfReplicas": "2",
+              "staleReplicaTimeout": "30",
+              "unmapMarkSnapChainRemoved": "ignored",
+              "csi.storage.k8s.io/provisioner-secret-name": "longhorn-crypto",
+              "csi.storage.k8s.io/provisioner-secret-namespace": "longhorn-system",
+              "csi.storage.k8s.io/node-publish-secret-name": "longhorn-crypto",
+              "csi.storage.k8s.io/node-publish-secret-namespace": "longhorn-system",
+              "csi.storage.k8s.io/node-stage-secret-name": "longhorn-crypto",
+              "csi.storage.k8s.io/node-stage-secret-namespace": "longhorn-system",
+              "csi.storage.k8s.io/node-expand-secret-name": "longhorn-crypto",
+              "csi.storage.k8s.io/node-expand-secret-namespace": "longhorn-system"
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "PersistentVolumeClaim",
+            "metadata": {
+              "name": "bortus-restore-b473091bebef",
+              "namespace": "bortus",
+              "labels": {
+                "bortus-restore": "b473091bebef"
+              },
+              "annotations": {
+                "helm.sh/resource-policy": "keep"
+              }
+            },
+            "spec": {
+              "storageClassName": "bortus-restore-b473091bebef",
+              "accessModes": [
+                "ReadWriteOnce"
+              ],
+              "resources": {
+                "requests": {
+                  "storage": "1Gi"
+                }
+              }
+            }
+          },
+          {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+              "name": "bortus-restore-b473091bebef",
+              "namespace": "bortus",
+              "labels": {
+                "bortus-restore": "b473091bebef"
+              }
+            },
+            "spec": {
+              "nodeName": "masternode",
+              "automountServiceAccountToken": false,
+              "restartPolicy": "Never",
+              "securityContext": {
+                "runAsNonRoot": true,
+                "runAsUser": 1000,
+                "runAsGroup": 1000,
+                "seccompProfile": {
+                  "type": "RuntimeDefault"
+                }
+              },
+              "containers": [
+                {
+                  "name": "holder",
+                  "image": "docker.io/library/bortus@sha256:ad9c203b32dfdc9307ea27116855073d90a3f46e2b8a7c9ffbd5174a3447d8b1",
+                  "imagePullPolicy": "Never",
+                  "command": [
+                    "node",
+                    "-e",
+                    "setInterval(()=>{},1000)"
+                  ],
+                  "securityContext": {
+                    "allowPrivilegeEscalation": false,
+                    "readOnlyRootFilesystem": true,
+                    "capabilities": {
+                      "drop": [
+                        "ALL"
+                      ]
+                    }
+                  },
+                  "resources": {
+                    "requests": {
+                      "cpu": "5m",
+                      "memory": "32Mi"
+                    },
+                    "limits": {
+                      "cpu": "100m",
+                      "memory": "128Mi"
+                    }
+                  },
+                  "volumeMounts": [
+                    {
+                      "name": "data",
+                      "mountPath": "/data",
+                      "readOnly": true
+                    }
+                  ]
+                }
+              ],
+              "volumes": [
+                {
+                  "name": "data",
+                  "persistentVolumeClaim": {
+                    "claimName": "bortus-restore-b473091bebef",
+                    "readOnly": true
+                  }
+                }
+              ]
+            }
+          }
+        ],
+        "required_protected_claim_names": [
+          "bortus-data",
+          "bortus-restore-b473091bebef"
+        ],
+        "required_qualified_holder_image": "docker.io/library/bortus@sha256:ad9c203b32dfdc9307ea27116855073d90a3f46e2b8a7c9ffbd5174a3447d8b1",
+        "holder_image_qualification_proven": false,
+        "holder_preload_and_actual_admission_proven": false,
+        "independent_restore_proven": false,
+        "whole_row_preservation_proven": false,
+        "collected_at_utc": "2026-10-11T11:15:38.081761+00:00"
+      }
+    },
+    "preflight_original_files": [
+      {
+        "name": "preflight.json",
+        "bytes": 7096,
+        "sha256": "3dd2f2de912c56e183afa0b0ad4028bad359ea2dbcc8d9de95d50a6c565ac3bc",
+        "linux_mode": "0600"
+      },
+      {
+        "name": "stdout",
+        "bytes": 76,
+        "sha256": "2165da06cfafff60f7449910f96dfd7cc3e06571ca7b4795fd9a6c642dce3e69",
+        "linux_mode": "0600"
+      },
+      {
+        "name": "stderr",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "linux_mode": "0600"
+      },
+      {
+        "name": "terminal.json",
+        "bytes": 8362,
+        "sha256": "e47706c0d72c359df17088ed6cb177c17e4ee076d399f4101ea348f198ff3ab6",
+        "linux_mode": "0600"
+      }
+    ],
+    "proposal_path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\admission-maintenance-proposal-287dfcc-20261011-v1",
+    "decision": "Do not publish/activate inert-only Deny while final app performance/runtime proof remains absent. SA/suspension are preparation, not final adoption; explicit prune-false-aware withdrawal required for any separately reviewed pre-KV window.",
+    "gates": {
+      "published": false,
+      "ci_validated": false,
+      "live_guard_enforcement": false,
+      "independent_row_restore": false,
+      "overall_acceptance": false
+    }
+  },
+  "proposal_payload_bindings": [
+    {
+      "bytes": 382,
+      "path": "contract.json",
+      "sha256": "cb641838219151cf4c7425b9ba1ac44777bcc893bb019790e51d0553e3c8c22c"
+    },
+    {
+      "bytes": 373,
+      "path": "existing-files.diff",
+      "sha256": "173b1403dafda806c7b30e0ed7bee751b027f4c2bdc18d4c371321bb135516c9"
+    },
+    {
+      "bytes": 7607,
+      "path": "flux/releases/bortus-restore-maintenance/bortus-kv-guard-cronjobs-ValidatingAdmissionPolicy.yaml",
+      "sha256": "2d5f2d00bb4bd4f5e1960cbc1970eb86040ac0533067777ff20817e540fdab33"
+    },
+    {
+      "bytes": 201,
+      "path": "flux/releases/bortus-restore-maintenance/bortus-kv-guard-cronjobs-ValidatingAdmissionPolicyBinding.yaml",
+      "sha256": "38eff9d0fca1d783908d020b88619bb7293aed311bcfec929914ddec9b3d1fa8"
+    },
+    {
+      "bytes": 7193,
+      "path": "flux/releases/bortus-restore-maintenance/bortus-kv-guard-pods-ValidatingAdmissionPolicy.yaml",
+      "sha256": "2055f63f80b92076a1bf7eed31deaeda6f757e002ca3075ae2c0fca4fb357e2b"
+    },
+    {
+      "bytes": 193,
+      "path": "flux/releases/bortus-restore-maintenance/bortus-kv-guard-pods-ValidatingAdmissionPolicyBinding.yaml",
+      "sha256": "444e087bd9406de9235b89ddcbde0428e8f44043951437b45decb44908862385"
+    },
+    {
+      "bytes": 7747,
+      "path": "flux/releases/bortus-restore-maintenance/bortus-kv-guard-templates-ValidatingAdmissionPolicy.yaml",
+      "sha256": "d41395b1f1e01de171a35925e3d28c45ca8cadcee1a7084aafccf0094acb912a"
+    },
+    {
+      "bytes": 203,
+      "path": "flux/releases/bortus-restore-maintenance/bortus-kv-guard-templates-ValidatingAdmissionPolicyBinding.yaml",
+      "sha256": "b3411d26413b62e9971f99dbb9687364e780d0ea5793f7eae98a1a7bb1333718"
+    },
+    {
+      "bytes": 460,
+      "path": "flux/releases/bortus-restore-maintenance/kustomization.yaml",
+      "sha256": "deb693fb032ce3a68c8bc0fdd4b0fc05e5b753db5dd909101e62065eb1981f62"
+    },
+    {
+      "bytes": 120,
+      "path": "flux/releases/bortus-restore-maintenance/serviceaccount.yaml",
+      "sha256": "ba565ae7dcd29fe2ac7aeb549f368da3c6111a212da3d2b3a4a2fc6a2ce7b04a"
+    },
+    {
+      "bytes": 930,
+      "path": "flux/releases/bortus.yaml",
+      "sha256": "2927830c18fe1203bf03abe6b14e7cf25ade9c061e7c8131a27cc8b396109530"
+    },
+    {
+      "bytes": 695,
+      "path": "flux/releases/kustomization.yaml",
+      "sha256": "14b1b811f853a04c0067ec3db1ffacb8fe522ce3da7a4f486edff7f3f1c519d7"
+    },
+    {
+      "bytes": 10184,
+      "path": "MAINTENANCE-SEQUENCING.md",
+      "sha256": "2dbe12e47d5e9676d1dfb8ddf5d22731601c0618ae806e1daae982da08109838"
+    },
+    {
+      "bytes": 210,
+      "path": "maintenance-withdrawal/bortus-kv-guard-cronjobs-ValidatingAdmissionPolicyBinding.yaml",
+      "sha256": "af5c71441eb6510903d4da2d15725a955b93b2fdcf397dbcc74b6f3851fb8943"
+    },
+    {
+      "bytes": 202,
+      "path": "maintenance-withdrawal/bortus-kv-guard-pods-ValidatingAdmissionPolicyBinding.yaml",
+      "sha256": "2e18c7c0285b7fbeb8c4222a2009ee5216db981232b33948f2e0a1b86e293c25"
+    },
+    {
+      "bytes": 212,
+      "path": "maintenance-withdrawal/bortus-kv-guard-templates-ValidatingAdmissionPolicyBinding.yaml",
+      "sha256": "774c8134d758e96e48ffcc58ae2c0f9890ca4356af1dacb2db917b7ce947212b"
+    },
+    {
+      "bytes": 37864,
+      "path": "source-inputs/application/scripts/migration/bortus-admission-operator.py",
+      "sha256": "d3eaa607f18a8592bbb1e656c2ee94871b7d483b979da55c442739d2efe5db55"
+    },
+    {
+      "bytes": 17153,
+      "path": "source-inputs/application/scripts/migration/bortus-admission-qualification.py",
+      "sha256": "1dee5e381b53b34fea495676d332bcb172331b98068f72cb4c26123609c1ebeb"
+    },
+    {
+      "bytes": 19434,
+      "path": "source-inputs/application/scripts/migration/bortus-independent-restore.py",
+      "sha256": "c513e1a46174656f41c23427ea861970261d5c548253e4b2beab8f216b0f9112"
+    },
+    {
+      "bytes": 8584,
+      "path": "source-inputs/application/scripts/migration/bortus-restore-source.py",
+      "sha256": "46992e6981cff72c2baacc61638660076da59be8c7bd261b7f8de4e3eb060c30"
+    },
+    {
+      "bytes": 18290,
+      "path": "source-inputs/application/scripts/migration/inspect-bortus-checkpoint.py",
+      "sha256": "95b4fe7d67f3a9a818d7cca4cf539b11a06f3cfc54e39a6e403d61e4836d1de5"
+    },
+    {
+      "bytes": 11205,
+      "path": "source-inputs/application/scripts/migration/inspect-bortus-independent-restore.py",
+      "sha256": "01c5102e789d1eca00dac8543d4d4be4e47de03584092518d987ce1429cfdbe0"
+    },
+    {
+      "bytes": 980,
+      "path": "source-inputs/chart/AGENTS.md",
+      "sha256": "ae75efbccfc591d35c8dbf6586461c97196e0654bf5074e4bc4c6572590e915a"
+    },
+    {
+      "bytes": 928,
+      "path": "source-inputs/chart/charts/bortus/templates/resources.yaml",
+      "sha256": "79dad4fd095891975a48a7ad51e33e9891189d67ca912ea44dfc76b1d5e2d5cf"
+    },
+    {
+      "bytes": 39654,
+      "path": "source-inputs/chart/charts/bortus/values.yaml",
+      "sha256": "bed87df25a610694bda8b643e88fee019c7affa6cbaf0c0c0137607cd905db56"
+    },
+    {
+      "bytes": 181,
+      "path": "source-inputs/chart/delivery/bortus-adoption-guard/binding.yaml.tmpl",
+      "sha256": "89a734e97b54629e86354be4b8a7d8deae42e1ace192da885d5d0bd6d87ecf88"
+    },
+    {
+      "bytes": 2113,
+      "path": "source-inputs/chart/delivery/bortus-adoption-guard/policy.yaml.tmpl",
+      "sha256": "284812671171dc2e2310587094cfc7c20038b86a31a6f90a717b4dec064805e7"
+    },
+    {
+      "bytes": 3867,
+      "path": "source-inputs/chart/docs/ACCEPTANCE.md",
+      "sha256": "a28d91eaf5cbe17885f13cf6a6412ee14f3bf56b587d24ae3262403e43efe047"
+    },
+    {
+      "bytes": 12898,
+      "path": "source-inputs/chart/docs/BORTUS-ADMISSION-GUARD.md",
+      "sha256": "e704725d2a07f1e23d92632e7f5289a54094fcf6907868d3be0071bd90f0c597"
+    },
+    {
+      "bytes": 37690,
+      "path": "source-inputs/chart/docs/BORTUS-DELIVERY.md",
+      "sha256": "1a7d73022677b5e4025b6f48f4d2e33eda8568a9422334387343fa38108bb6f6"
+    },
+    {
+      "bytes": 7191,
+      "path": "source-inputs/chart/docs/OPERATIONS.md",
+      "sha256": "1c940874c2a6185243e8ac734c3ea0562047a3e8406a78d4406e8fb8b5214166"
+    },
+    {
+      "bytes": 931,
+      "path": "source-inputs/chart/flux/releases/bortus.yaml",
+      "sha256": "2e7ed14ef8be48fb642982fdbff56575856bb96a767d771beae80cba6eb496b1"
+    },
+    {
+      "bytes": 666,
+      "path": "source-inputs/chart/flux/releases/kustomization.yaml",
+      "sha256": "ef812f57dc75c37d72d5f2e36dc260cc4b999305bdae7d601c1da25134c47aaf"
+    },
+    {
+      "bytes": 585,
+      "path": "source-inputs/chart/flux/source.yaml",
+      "sha256": "5de402ee59b62b4b48cc7ca4f7a96372377c0fa98cc9f8bf9bef86708a427a21"
+    },
+    {
+      "bytes": 2868,
+      "path": "source-inputs/chart/README.md",
+      "sha256": "c49992b35ee2d2b598334b05c8aeaa5eb468cb5936d7a4cd173916e7593228e0"
+    },
+    {
+      "bytes": 7116,
+      "path": "source-inputs/chart/scripts/render_bortus_admission_guard.py",
+      "sha256": "82949bab6375281f1114f4ee6bea38f58303a8d0a17e8dc0cfe4d53f8c0a914c"
+    },
+    {
+      "bytes": 6938,
+      "path": "source-manifest.json",
+      "sha256": "f8cf6e9a1e9b4697ed2c0e9e8a97e0eb4e6c13e7cb349d2c46b2725c2bfca364"
+    }
+  ],
+  "proposal_source_bindings": [
+    {
+      "blob": "909eda68a5df3ca06f422dd00348fe1b8c6a582c",
+      "bytes": 980,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "AGENTS.md",
+      "repo": "chart",
+      "sha256": "ae75efbccfc591d35c8dbf6586461c97196e0654bf5074e4bc4c6572590e915a"
+    },
+    {
+      "blob": "a8aeb91ec765bd85aea5c4f6a99cc0776bb7da16",
+      "bytes": 2868,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "README.md",
+      "repo": "chart",
+      "sha256": "c49992b35ee2d2b598334b05c8aeaa5eb468cb5936d7a4cd173916e7593228e0"
+    },
+    {
+      "blob": "aca5985c90950e74a23fa585bb22b84060337049",
+      "bytes": 3867,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "docs/ACCEPTANCE.md",
+      "repo": "chart",
+      "sha256": "a28d91eaf5cbe17885f13cf6a6412ee14f3bf56b587d24ae3262403e43efe047"
+    },
+    {
+      "blob": "c2410bfff30fe7ebab6589ea100a57565882b151",
+      "bytes": 12898,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "docs/BORTUS-ADMISSION-GUARD.md",
+      "repo": "chart",
+      "sha256": "e704725d2a07f1e23d92632e7f5289a54094fcf6907868d3be0071bd90f0c597"
+    },
+    {
+      "blob": "9e9a6f6785d681ea52752e3975a5d8f793cd7ac7",
+      "bytes": 37690,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "docs/BORTUS-DELIVERY.md",
+      "repo": "chart",
+      "sha256": "1a7d73022677b5e4025b6f48f4d2e33eda8568a9422334387343fa38108bb6f6"
+    },
+    {
+      "blob": "f062beaa5a600626896f39024b71e260cbec84e4",
+      "bytes": 7191,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "docs/OPERATIONS.md",
+      "repo": "chart",
+      "sha256": "1c940874c2a6185243e8ac734c3ea0562047a3e8406a78d4406e8fb8b5214166"
+    },
+    {
+      "blob": "509ab273ed01903bab7cc0a32e8228b04eea96a3",
+      "bytes": 585,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "flux/source.yaml",
+      "repo": "chart",
+      "sha256": "5de402ee59b62b4b48cc7ca4f7a96372377c0fa98cc9f8bf9bef86708a427a21"
+    },
+    {
+      "blob": "64df35a1c6f23b021b24cadacade8436b8ec0f2f",
+      "bytes": 931,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "flux/releases/bortus.yaml",
+      "repo": "chart",
+      "sha256": "2e7ed14ef8be48fb642982fdbff56575856bb96a767d771beae80cba6eb496b1"
+    },
+    {
+      "blob": "238a6345bcb61920a4f9f4286a7950c406c7435d",
+      "bytes": 666,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "flux/releases/kustomization.yaml",
+      "repo": "chart",
+      "sha256": "ef812f57dc75c37d72d5f2e36dc260cc4b999305bdae7d601c1da25134c47aaf"
+    },
+    {
+      "blob": "74ec744300ccee964634d8eb7b110854b0ec82bf",
+      "bytes": 39654,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "charts/bortus/values.yaml",
+      "repo": "chart",
+      "sha256": "bed87df25a610694bda8b643e88fee019c7affa6cbaf0c0c0137607cd905db56"
+    },
+    {
+      "blob": "8882207fdb754f805bcb1f1a540fd13e8f09485c",
+      "bytes": 928,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "charts/bortus/templates/resources.yaml",
+      "repo": "chart",
+      "sha256": "79dad4fd095891975a48a7ad51e33e9891189d67ca912ea44dfc76b1d5e2d5cf"
+    },
+    {
+      "blob": "b96b8d66310571631cb748748217166f61f753d4",
+      "bytes": 7116,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "scripts/render_bortus_admission_guard.py",
+      "repo": "chart",
+      "sha256": "82949bab6375281f1114f4ee6bea38f58303a8d0a17e8dc0cfe4d53f8c0a914c"
+    },
+    {
+      "blob": "b6e859cf0426082099278507311d0dd747af6f51",
+      "bytes": 2113,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "delivery/bortus-adoption-guard/policy.yaml.tmpl",
+      "repo": "chart",
+      "sha256": "284812671171dc2e2310587094cfc7c20038b86a31a6f90a717b4dec064805e7"
+    },
+    {
+      "blob": "99769b436336f61217598748d6f64ea97f0b7be0",
+      "bytes": 181,
+      "commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+      "mode": "100644",
+      "path": "delivery/bortus-adoption-guard/binding.yaml.tmpl",
+      "repo": "chart",
+      "sha256": "89a734e97b54629e86354be4b8a7d8deae42e1ace192da885d5d0bd6d87ecf88"
+    },
+    {
+      "blob": "39098ef5639e0ae5aa7dd5bbd49582aa417f095f",
+      "bytes": 8584,
+      "commit": "287dfcc3feef518fac4de326a3aa988df0295177",
+      "mode": "100644",
+      "path": "scripts/migration/bortus-restore-source.py",
+      "repo": "application",
+      "sha256": "46992e6981cff72c2baacc61638660076da59be8c7bd261b7f8de4e3eb060c30"
+    },
+    {
+      "blob": "b0d86d91258a34200765802bd36ad5f592593c36",
+      "bytes": 11205,
+      "commit": "287dfcc3feef518fac4de326a3aa988df0295177",
+      "mode": "100644",
+      "path": "scripts/migration/inspect-bortus-independent-restore.py",
+      "repo": "application",
+      "sha256": "01c5102e789d1eca00dac8543d4d4be4e47de03584092518d987ce1429cfdbe0"
+    },
+    {
+      "blob": "88ddec36399cb702a86f72130b1cae3aad2306b7",
+      "bytes": 18290,
+      "commit": "287dfcc3feef518fac4de326a3aa988df0295177",
+      "mode": "100644",
+      "path": "scripts/migration/inspect-bortus-checkpoint.py",
+      "repo": "application",
+      "sha256": "95b4fe7d67f3a9a818d7cca4cf539b11a06f3cfc54e39a6e403d61e4836d1de5"
+    },
+    {
+      "blob": "1dc8bf671cbc9f3f261d117e7802aca09b56a766",
+      "bytes": 17153,
+      "commit": "287dfcc3feef518fac4de326a3aa988df0295177",
+      "mode": "100644",
+      "path": "scripts/migration/bortus-admission-qualification.py",
+      "repo": "application",
+      "sha256": "1dee5e381b53b34fea495676d332bcb172331b98068f72cb4c26123609c1ebeb"
+    },
+    {
+      "blob": "d5627cad3eb7b2da6d483143055c1bbd100ca5e5",
+      "bytes": 37864,
+      "commit": "287dfcc3feef518fac4de326a3aa988df0295177",
+      "mode": "100644",
+      "path": "scripts/migration/bortus-admission-operator.py",
+      "repo": "application",
+      "sha256": "d3eaa607f18a8592bbb1e656c2ee94871b7d483b979da55c442739d2efe5db55"
+    },
+    {
+      "blob": "b6d9a19bd3de7ee69d212ff3713a797ec9d7bacd",
+      "bytes": 19434,
+      "commit": "287dfcc3feef518fac4de326a3aa988df0295177",
+      "mode": "100644",
+      "path": "scripts/migration/bortus-independent-restore.py",
+      "repo": "application",
+      "sha256": "c513e1a46174656f41c23427ea861970261d5c548253e4b2beab8f216b0f9112"
+    }
+  ],
+  "root_review_originals": [
+    {
+      "name": "verify-maintenance-proposal-v1.py",
+      "sha256": "a0a82aedf9175cc4bd2638b8033c1d81baa8d1aa5bc43fb8a954cb5d229b1a95",
+      "bytes": 6778
+    },
+    {
+      "name": "maintenance-review-v1.json",
+      "sha256": "607441ed3b66b5c24d142c33f5100affdce63faa2a500ee53c3dd61e35cf1440",
+      "bytes": 11112
+    },
+    {
+      "name": "maintenance-review-v1.stdout",
+      "sha256": "3acec9d70eb2ec0399d09e355f9e3aea1a0a77b6b4ea76958e73c757737f58ce",
+      "bytes": 20993
+    },
+    {
+      "name": "maintenance-review-v1.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "name": "prepare-restore-preflight-v2.py",
+      "sha256": "23017cf7b6c842e2d7b47380c50f11808e2bbb1a137b3d37354305e71407ba10",
+      "bytes": 3152
+    },
+    {
+      "name": "restore-preflight-v2.stdout",
+      "sha256": "92c76ee0b0caa2e094fcaa31ed5ff5c9ee423b15efcf747503bba063eb58b98a",
+      "bytes": 6153
+    },
+    {
+      "name": "restore-preflight-v2.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "name": "restore-preflight-v2.terminal.json",
+      "sha256": "26bc66c8d5e08770d820b3502b34e428d9c41d1bda356a985f9171d2a3aaed18",
+      "bytes": 8602
+    },
+    {
+      "name": "verify-app-diagnostic-v1.py",
+      "sha256": "82b9a40ad29d1abb5c88fc1624347ff2320c50e84097e89b62f82682d6e8a8f6",
+      "bytes": 2752
+    },
+    {
+      "name": "app-decoder-transport-root-verification-v1.json",
+      "sha256": "be1d9c84b4a86d8509b95c63360e3953a9227d3534709b940e5dfce0e66da49d",
+      "bytes": 50502
+    }
+  ],
+  "app_diagnostic_verification": {
+    "scope": "Read-only root independent verification of rejected public decoder diagnostic and current transport review",
+    "evidence_commit": "cd25c6bf46577acf4b3e08e725f2e8a35aa19609",
+    "production_candidate": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f",
+    "assessment_sha256": "e47c7d26807c1fbca6940db4693ab2af054c35a482a4c73baa6a7a9a4922d915",
+    "scan_sha256": "59334d6e31d7628295efcdabccfc94ec44bc910aa5a899e39a65b24849abe834",
+    "original_copies_verified": 36,
+    "source_bindings_verified": [
+      {
+        "path": "k8s-rewrite/front-end/src/lib/secret-client.ts",
+        "gitMode": "100644",
+        "gitBlob": "9d9da480faeb2eb79bb697a8afd5e164c47924db",
+        "rawSha256": "4de72da11f1bebb5614cc41b2ac35a90b50c031a06075224a4e65a4b707bdd32",
+        "workingSha256": "c7862ad3f055db5da294168126163235a93d49611bb87f139357d2e43a8074f7",
+        "workingRelation": "literal LF to CRLF",
+        "productionCandidate": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f"
+      },
+      {
+        "path": "k8s-rewrite/front-end/src/lib/cluster-secrets.ts",
+        "gitMode": "100644",
+        "gitBlob": "866b42b5f5fe9327335c49d7fb454428b6df4a02",
+        "rawSha256": "a39eed8e5bba0c9813ec82e3b9f33ec9af0f9e7c282c1d3edcd4aa64a24865e1",
+        "workingSha256": "61ea585afa95f1747ce4d55df81fffb36a5150077a7f74f53aa0198028f8c70c",
+        "workingRelation": "literal LF to CRLF",
+        "productionCandidate": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f"
+      },
+      {
+        "path": "k8s-rewrite/front-end/src/lib/secret-summary-json.ts",
+        "gitMode": "100644",
+        "gitBlob": "a44764e1e21dc1dcda8448a0d2e0c1783efddf83",
+        "rawSha256": "48c67346c066eeb075bcc6303ef7e7d4b3af23105743a35e27a121ae75fe4142",
+        "workingSha256": "791e5dad01ec4c5ccd5f0948b234a21bea99989105d98a04eea9110ab2153aad",
+        "workingRelation": "declared mixed EOL original working bytes, CRLF-to-LF comparison only",
+        "productionCandidate": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f"
+      },
+      {
+        "path": "k8s-rewrite/front-end/tests/native-list-window.test.ts",
+        "gitMode": "100644",
+        "gitBlob": "fed0ede2116c002e6d082a0765f88838cf0c6781",
+        "rawSha256": "abf3d264c6b2ba232200ec96ad78ab642bf07c2e1403a112e9f2dbb1ae0ca50d",
+        "workingSha256": "a93bbc19d8fca8137c3fe96f17c6845ffdbca4f243032e5b9b802c932585228a",
+        "workingRelation": "literal LF to CRLF",
+        "productionCandidate": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f"
+      },
+      {
+        "path": "k8s-rewrite/front-end/tests/helpers/native-tls.ts",
+        "gitMode": "100644",
+        "gitBlob": "0c641e1df4db59c80428d3a637c5cd84f1d88e15",
+        "rawSha256": "d00a12a8f25aa4a4d4d29ae220bd2f8264f6a4945f9bc939bd1c3cbfe69104f7",
+        "workingSha256": "34a880eafbc7b90f8a7cb540c1cef5f089684ae57b62c943e0a2e05a57317afd",
+        "workingRelation": "literal LF to CRLF",
+        "productionCandidate": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f"
+      },
+      {
+        "path": "benchmarks/bortus-controlled-perf/whole-server.mjs",
+        "gitMode": "100644",
+        "gitBlob": "5d291426b71fb02b4861fd569138eadcf5a838c4",
+        "rawSha256": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b",
+        "workingSha256": "7ffe01dfd5903126e3071004678a472188d4dcb88fa0be6ce4da50a3c9f79e8e",
+        "workingRelation": "literal LF to CRLF",
+        "productionCandidate": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f"
+      }
+    ],
+    "scanner_input_blobs_verified": 45,
+    "raw_frontend_git_tree_unchanged_from_candidate": true,
+    "default_evidence_scan_exit": 0,
+    "default_evidence_scan_findings": 0,
+    "production_change_qualified": false,
+    "performance_acceptance": false
+  },
+  "acceptance": {
+    "current_corrected_helper_metadata_preflight_passed": true,
+    "canonical_six_rendered_guard_objects_match": true,
+    "flux_publication_or_live_admission_proven": false,
+    "independent_database_restore_proven": false,
+    "final_image_performance_proven": false,
+    "overall_live_acceptance": false
+  }
+}

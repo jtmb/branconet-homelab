@@ -37,6 +37,27 @@ The candidate is not accepted for release. No unchanged pair is rerun and no
 performance gate is weakened. Coordination remains root plus two subagents;
 seven former BORTUS execution chats are archived.
 
+## 2026-10-11 11:15 UTC: current source compatibility and maintenance sequence
+
+The [root-reviewed proposal/preflight](evidence/bortus-maintenance-preflight-review-20261011.json)
+binds 37 protected offline payloads and 20 committed blobs/modes, exact six guard
+renders and a grant-free Flux-owned bortus-kv SA. Corrected current helper
+metadata preflight passes with the same completed checkpoint, healthy original
+writer/storage, absent isolated target and masternode alternate; no data/Secret
+reads or mutations. Guard publication/admission and whole-row restore stay open.
+Deny activation remains held: inert-only guards prevent legacy writer self-heal;
+prune:false means a Git revert alone cannot remove live protection. The explicit
+pre-KV Audit withdrawal/resume alternative is not enforcement acceptance and is
+forbidden after schema/principal migration/adoption.
+
+Root also verifies app evidence cd25c6bf: 36 original diagnostic copies, six source
+bindings and 45 unchanged scanner inputs. Rejected metadata decode changes remain
+rejected; operation-local TLS reuse already occurs on 14 of 18 requests. The app
+subagent is qualifying a demonstrated scalar known-field allocation reduction;
+it preserves original Reader semantics, and no new performance pass, final image
+or rollout is claimed. Root plus two subagents continue; seven old execution
+chats remain archived. All Gluster/Vault/Consul originals remain preserved.
+
 ## Current orchestration and application qualification
 
 Three agents are active: coordinator, BORTUS application integration, and native transport/evidence. Seven identifiable former BORTUS execution/review chats are confirmed archived; unrelated projects remain unchanged. Before archiving the additional idle dependency/runtime chat, its clean committed handoff was preserved as a verified complete-history Git bundle and raw source archive outside managed checkouts. Its package, lockfile and Dockerfile match the current app source; [preservation evidence](evidence/bortus-runtime-thread-archive.json) records the exact artifacts. Earlier archiving removed managed checkouts, so application work was recovered from snapshot da84f0f00aeb0daca299358e93fc7074acd2055e (parent b82980e783daf09e1aabe00f3a5db99fef3e13fa), including 17 changed paths and both qualification logs. All six original source-file hashes were recovered; the workbench discrepancy was traced to mixed line endings by replaying the original patch records. Source and evidence backups remain outside the managed checkouts.
