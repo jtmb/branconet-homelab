@@ -59,6 +59,20 @@ not sorted: resourceVersions are bounded opaque identities, not numeric clocks.
 Duplicate Volume resourceVersions are refused; BOOKMARKs provide no transition
 evidence. The library does not prove that no event was omitted by a caller.
 
+The collector's API semantics are now reviewed against the official current
+[Kubernetes v1.37 API concepts](https://kubernetes.io/docs/reference/using-api/api-concepts/#efficient-detection-of-changes),
+matching the installed cluster major/minor. A complete most-recent LIST supplies
+the collection resourceVersion; item resourceVersions do not replace it. A watch
+from that exact nonzero version reports subsequent changes. The restore-specific
+design inference is to refuse eligibility permanently after an ERROR/410, EOF,
+overflow or unproven reconnect: relisting can establish a new current state but
+cannot recover a transient initialization/completion transition already lost.
+The executor still has to prove actual TLS-verified HTTP readiness and durable
+capture before creation, retain early events until the new claim/PV/Volume UID
+chain is confirmed, and bind its final GET identity/resourceVersion to an event
+durably observed before sealing. This is source review, not an implemented or
+executed collector.
+
 The input ABI is a **closed metadata projection** of watch events in their
 original arrival order, preserving all Volume events and their flag absence:
 
