@@ -1,0 +1,100 @@
+TAP version 13
+# Subtest: held mutations cannot notify/refetch after withdrawal or unmount, including confirmations and YAML saves
+not ok 1 - held mutations cannot notify/refetch after withdrawal or unmount, including confirmations and YAML saves
+  ---
+  duration_ms: 231.2516
+  type: 'test'
+  location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-app-recovered\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\resource-private-state.test.ts:2:5768'
+  failureType: 'testCodeFailure'
+  error: |-
+    Restart/withdraw/success: late mutation must not own callbacks
+    + actual - expected
+    
+      {
+    +   callbacks: 1,
+    +   refetches: 1
+    -   callbacks: 0,
+    -   refetches: 0
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    refetches: 0
+    callbacks: 0
+  actual:
+    refetches: 1
+    callbacks: 1
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\resource-private-state.test.ts:130:16)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: deployment form fences held success/error across withdrawal and unmount
+not ok 2 - deployment form fences held success/error across withdrawal and unmount
+  ---
+  duration_ms: 15.0199
+  type: 'test'
+  location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-app-recovered\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\resource-private-state.test.ts:2:7220'
+  failureType: 'testCodeFailure'
+  error: |-
+    Disposed form must not refetch after settlement
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\resource-private-state.test.ts:146:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: fresh permission withdrawal erases held logs; public action trigger stays available and restore requires another read
+ok 3 - fresh permission withdrawal erases held logs; public action trigger stays available and restore requires another read
+  ---
+  duration_ms: 79.9388
+  type: 'test'
+  ...
+# Subtest: multiple containers require a choice; switching clears previous content and fences the first reply
+ok 4 - multiple containers require a choice; switching clears previous content and fences the first reply
+  ---
+  duration_ms: 78.3526
+  type: 'test'
+  ...
+# Subtest: list action resolves public Pod names once; absent metadata never triggers an unselected log read
+ok 5 - list action resolves public Pod names once; absent metadata never triggers an unselected log read
+  ---
+  duration_ms: 154.0049
+  type: 'test'
+  ...
+# Subtest: held private read is aborted on withdrawal and cannot repopulate after session restoration
+ok 6 - held private read is aborted on withdrawal and cannot repopulate after session restoration
+  ---
+  duration_ms: 35.7833
+  type: 'test'
+  ...
+# Subtest: held YAML viewer/editor and confirmations are erased; stale YAML completion is fenced
+ok 7 - held YAML viewer/editor and confirmations are erased; stale YAML completion is fenced
+  ---
+  duration_ms: 102.3703
+  type: 'test'
+  ...
+# Subtest: log dialog permits explicit same-container refresh and provides a named container choice
+ok 8 - log dialog permits explicit same-container refresh and provides a named container choice
+  ---
+  duration_ms: 6.7588
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 6
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2444.5862

@@ -15,7 +15,7 @@ type Resource = { metadata?: { namespace?: string; name?: string }; name?: strin
   spec?: { replicas?: number; paused?: boolean; unschedulable?: boolean; containers?: { name?: string }[];
     initContainers?: { name?: string }[]; ephemeralContainers?: { name?: string }[] }; desiredReplicas?: number; replicas?: number; paused?: boolean };
 export interface ResourceActionProps { resourceType: ResourceType; resource: Resource; onAction?: () => void; initialOpen?: boolean }
-interface Confirmation { title: string; message: string; label: string; name?: string; execute: () => Promise<void> }
+interface Confirmation { title: string; message: string; label: string; name?: string; execute: (signal: AbortSignal) => Promise<void> }
 export default function ResourceActionsMenu({ resourceType, resource, onAction, initialOpen = false }: ResourceActionProps) {
   const session = useSession();
   const capability = RESOURCE_CAPABILITIES[resourceType];
@@ -24,6 +24,11 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
   const base = resourceBase(resourceType, namespace, name);
   const trigger = useRef<HTMLButtonElement>(null);
   const pending = useRef<AbortController>();
+  const allowed = useRef(session.canWrite);
+  allowed.current = session.canWrite;
+  const identity = useRef(base);
+  identity.current = base;
+  const owns = (signal: AbortSignal) => allowed.current && identity.current === base && !signal.aborted && pending.current?.signal === signal;
   const timer = useRef<ReturnType<typeof setTimeout>>();
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
@@ -31,37 +36,43 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
   const [logs, setLogs] = useState<{ containers: string[]; container: string; value?: string; error?: string }>();
   const [confirmation, setConfirmation] = useState<Confirmation>();
   const returnFocus = () => trigger.current?.focus();
-  useEffect(() => () => { pending.current?.abort(); if (timer.current) clearTimeout(timer.current); }, []);
   useEffect(() => {
-    if (!session.canWrite) {
-      pending.current?.abort();
-      pending.current = undefined;
-      setYaml(undefined); setLogs(undefined); setConfirmation(undefined);
-      setBusy(false); setMessage("");
-      if (timer.current) clearTimeout(timer.current);
-    }
-  }, [session.canWrite]);
+    allowed.current = session.canWrite;
+    return () => { allowed.current = false; pending.current?.abort(); if (timer.current) clearTimeout(timer.current); };
+  }, [session.canWrite, base]);
+  useEffect(() => {
+    pending.current?.abort();
+    pending.current = undefined;
+    setYaml(undefined); setLogs(undefined); setConfirmation(undefined);
+    setBusy(false); setMessage("");
+    if (timer.current) clearTimeout(timer.current);
+  }, [session.canWrite, base]);
   const notify = (text: string) => {
     setMessage(text); if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => setMessage(""), 6000);
   };
-  const load = async (task: (signal: AbortSignal) => Promise<void>) => {
-    if (!session.canWrite) return;
+  const load = async (task: (signal: AbortSignal) => Promise<void>, propagateError = false) => {
+    if (!allowed.current || identity.current !== base) return;
     pending.current?.abort();
     const controller = new AbortController();
     pending.current = controller;
     setBusy(true);
     try { await task(controller.signal); }
-    catch (error) { if (!controller.signal.aborted) notify(error instanceof Error ? error.message : "Request failed"); }
-    finally { if (!controller.signal.aborted) setBusy(false); }
+    catch (error) {
+      if (owns(controller.signal)) {
+        if (propagateError) throw error;
+        notify(error instanceof Error ? error.message : "Request failed");
+      }
+    }
+    finally { if (owns(controller.signal)) { pending.current = undefined; setBusy(false); } }
   };
   const showYaml = (edit: boolean) => load(async signal => {
     const data = await requestJson<{ yaml: string }>(base + "/yaml", { signal });
-    if (!signal.aborted) setYaml({ value: data.yaml, edit });
+    if (owns(signal)) setYaml({ value: data.yaml, edit });
   });
   const download = () => load(async signal => {
     const data = await requestJson<{ yaml: string }>(base + "/yaml", { signal });
-    if (signal.aborted) return;
+    if (!owns(signal)) return;
     const url = URL.createObjectURL(new Blob([data.yaml], { type: "application/yaml" }));
     const anchor = document.createElement("a"); anchor.href = url;
     anchor.download = `${resourceType}-${namespace ? namespace + "-" : ""}${name}.yaml`;
@@ -72,9 +83,9 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
     try {
       const query = new URLSearchParams({ tail: "100", container });
       const data = await requestJson<{ logs: string }>(base + "/logs?" + query, { signal });
-      if (!signal.aborted) setLogs({ containers, container, value: data.logs });
+      if (owns(signal)) setLogs({ containers, container, value: data.logs });
     } catch (error) {
-      if (!signal.aborted) setLogs({ containers, container, error: error instanceof Error ? error.message : "Log request failed" });
+      if (owns(signal)) setLogs({ containers, container, error: error instanceof Error ? error.message : "Log request failed" });
       throw error;
     }
   };
@@ -82,7 +93,7 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
     // List rows deliberately omit container details; use the existing redacted
     // Pod metadata endpoint rather than letting kubectl choose a sidecar.
     const pod = resource.spec?.containers ? resource : (await requestJson<{ pod: Resource }>(base, { signal })).pod;
-    if (signal.aborted) return;
+    if (!owns(signal)) return;
     const containers = [...new Set([...(pod.spec?.containers ?? []), ...(pod.spec?.initContainers ?? []), ...(pod.spec?.ephemeralContainers ?? [])]
       .map(container => container.name).filter((name): name is string => typeof name === "string" && name.length > 0))];
     setLogs({ containers, container: "" });
@@ -94,24 +105,24 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
   };
   const closeLogs = () => { pending.current?.abort(); pending.current = undefined; setLogs(undefined); setBusy(false); };
   const changed = () => { refetchCluster(); onAction?.(); };
-  const mutate = async (url: string, method: string, body?: unknown) => {
-    if (!session.canWrite) throw new Error("A current write role is required.");
-    await requestJson(url, { method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) });
-    changed();
+  const mutate = async (signal: AbortSignal, url: string, method: string, body?: unknown) => {
+    if (!owns(signal)) return;
+    await requestJson(url, { signal, method, headers: { "Content-Type": "application/json" }, body: body === undefined ? undefined : JSON.stringify(body) });
+    if (owns(signal)) changed();
   };
-  const action = (actionName: string, body?: unknown) => load(async () => {
-    try { await mutate(base + (actionName === "scale" ? "/scale" : "/action"), "POST", body ?? { action: actionName }); notify("Action accepted. Refreshing resource state."); }
-    finally { if (resourceType === "node") changed(); }
+  const action = (actionName: string, body?: unknown) => load(async signal => {
+    try { await mutate(signal, base + (actionName === "scale" ? "/scale" : "/action"), "POST", body ?? { action: actionName }); if (owns(signal)) notify("Action accepted. Refreshing resource state."); }
+    finally { if (resourceType === "node" && owns(signal)) changed(); }
   });
-  const confirm = (title: string, message: string, label: string, execute: () => Promise<void>, exactName?: string) => {
+  const confirm = (title: string, message: string, label: string, execute: (signal: AbortSignal) => Promise<void>, exactName?: string) => {
     setMessage(""); setConfirmation({ title, message, label, execute, name: exactName });
   };
   const finishConfirmation = async () => {
     if (!confirmation || busy) return;
-    setBusy(true);
-    try { await confirmation.execute(); setConfirmation(undefined); notify("Action accepted. Refreshing resource state."); }
-    catch (error) { notify(error instanceof Error ? error.message : "Action failed"); }
-    finally { setBusy(false); }
+    await load(async signal => {
+      await confirmation.execute(signal);
+      if (owns(signal)) { setConfirmation(undefined); notify("Action accepted. Refreshing resource state."); }
+    });
   };
   const items: { label: string; run: () => void; danger?: boolean; disabled?: boolean }[] = session.canWrite ? [
     { label: "View YAML", run: () => { void showYaml(false); } },
@@ -126,7 +137,7 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
       const paused = resource.spec?.paused ?? resource.paused ?? false;
       items.push(
         { label: "Restart", run: () => { void action("restart"); } },
-        { label: "Rollback", run: () => confirm("Roll back deployment", "Flux may restore Git desired state after this runtime operation.", "Roll back", () => mutate(base + "/action", "POST", { action: "rollback" })) },
+        { label: "Rollback", run: () => confirm("Roll back deployment", "Flux may restore Git desired state after this runtime operation.", "Roll back", signal => mutate(signal, base + "/action", "POST", { action: "rollback" })) },
         { label: "Scale Up", disabled: paused || !Number.isInteger(replicas) || replicas >= 10000, run: () => { void action("scale", { replicas: replicas + 1 }); } },
         { label: "Scale Down", disabled: paused || !Number.isInteger(replicas) || replicas <= 0, run: () => { void action("scale", { replicas: replicas - 1 }); } },
         { label: paused ? "Resume" : "Pause", run: () => { void action(paused ? "resume" : "pause"); } },
@@ -135,13 +146,13 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
     if (resourceType === "node") {
       const cordoned = resource.spec?.unschedulable ?? false;
       items.push({ label: cordoned ? "Uncordon" : "Cordon", run: () => { void action(cordoned ? "uncordon" : "cordon"); } },
-        { label: "Drain", danger: true, run: () => confirm("Drain node", "Evicts managed pods while respecting disruption budgets. Refuses unmanaged pods and local data. A failure or timeout can leave the node cordoned or partially drained; inspect it before retrying.", "Drain", async () => {
-          try { await mutate(base + "/action", "POST", { action: "drain", confirmName: name }); } finally { changed(); }
+        { label: "Drain", danger: true, run: () => confirm("Drain node", "Evicts managed pods while respecting disruption budgets. Refuses unmanaged pods and local data. A failure or timeout can leave the node cordoned or partially drained; inspect it before retrying.", "Drain", async signal => {
+          try { await mutate(signal, base + "/action", "POST", { action: "drain", confirmName: name }); } finally { if (owns(signal)) changed(); }
         }, name) });
     }
     if (capability.delete) items.push({ label: "Delete", danger: true, run: () => confirm(`Delete ${capability.kind}`,
       `Delete ${namespace ? namespace + "/" : ""}${name}? Controllers or Flux may recreate it. Inspect dependent resources before deleting.`, "Delete",
-      () => mutate(base + "/delete", "DELETE"), name) });
+      signal => mutate(signal, base + "/delete", "DELETE"), name) });
   }
   return <>
     <DropdownMenu.Root defaultOpen={initialOpen}>
@@ -154,7 +165,7 @@ export default function ResourceActionsMenu({ resourceType, resource, onAction, 
     {(message || busy) && <p role="status" className="fixed bottom-4 right-4 z-[70] max-w-[calc(100vw-2rem)] rounded-lg border border-zinc-700 bg-zinc-900 p-3 text-sm">{busy ? "Working…" : message}</p>}
     {session.canWrite && yaml && <YamlModal open onClose={() => setYaml(undefined)} yaml={yaml.value} title={`${capability.kind} YAML: ${namespace ? namespace + "/" : ""}${name}`}
       readOnly={!yaml.edit || !session.canWrite || !capability.yamlEdit} returnFocus={returnFocus}
-      onSave={yaml.edit && session.canWrite && capability.yamlEdit ? async value => { await mutate(base + "/yaml", "PUT", { yaml: value }); notify("YAML replaced. Refreshing resource state."); } : undefined} />}
+      onSave={yaml.edit && session.canWrite && capability.yamlEdit ? value => load(async signal => { await mutate(signal, base + "/yaml", "PUT", { yaml: value }); if (owns(signal)) notify("YAML replaced. Refreshing resource state."); }, true) : undefined} />}
     {session.canWrite && logs !== undefined && <LogModal open onClose={closeLogs} logs={logs.value} containers={logs.containers}
       container={logs.container} onContainerChange={selectLogContainer} loading={busy} error={logs.error}
       title={`Logs: ${namespace}/${name}`} returnFocus={returnFocus} />}

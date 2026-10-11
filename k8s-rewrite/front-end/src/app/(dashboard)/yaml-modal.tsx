@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 
 interface YamlModalProps {
@@ -12,18 +12,24 @@ export default function YamlModal({ open, onClose, yaml, title, readOnly = true,
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [discard, setDiscard] = useState(false);
-  useEffect(() => { setEditing(false); setContent(yaml); setError(""); setDiscard(false); }, [open, yaml, title, readOnly]);
+  const generation = useRef(0);
+  useEffect(() => {
+    const owner = ++generation.current;
+    setEditing(false); setContent(yaml); setSaving(false); setError(""); setDiscard(false);
+    return () => { generation.current = owner + 1; };
+  }, [open, yaml, title, readOnly]);
   const canEdit = !readOnly && !!onSave;
   const editable = canEdit && editing;
   const dirty = editable && content !== yaml;
   const close = () => { if (saving) return; if (dirty) setDiscard(true); else onClose(); };
   if (!open) return null;
   const save = async () => {
-    if (!canEdit || !onSave || !dirty) return;
+    if (!canEdit || !onSave || !dirty || saving) return;
+    const owner = generation.current;
     setSaving(true); setError("");
-    try { await onSave(content); onClose(); }
-    catch (failure) { setError(failure instanceof Error ? failure.message : "Save failed"); }
-    finally { setSaving(false); }
+    try { await onSave(content); if (generation.current === owner) onClose(); }
+    catch (failure) { if (generation.current === owner) setError(failure instanceof Error ? failure.message : "Save failed"); }
+    finally { if (generation.current === owner) setSaving(false); }
   };
   return <Modal open={open} onClose={close} title={title} returnFocus={returnFocus}
     description={canEdit ? "Replacement requires the displayed resourceVersion. Refresh after a conflict." : "Read-only YAML."}
