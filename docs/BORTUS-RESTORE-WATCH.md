@@ -83,8 +83,9 @@ PVC create; a confirmed bound target and sealed transition precede holder create
 `prerequisite()` returns an informational immutable reference; it is not accepted
 as authorization input. Callers must use the guarded API rather than bypass it
 with a bare journal callback. The callback must separately enforce the reviewed
-proposal and fresh source/admission/image fences. TLS/API callback execution for
-mutations is supplied by the future executor, not this observer.
+proposal and fresh source/admission/image fences. The separate
+[scoped mutation adapter](BORTUS-RESTORE-MUTATIONS.md) supplies dispatch-once TLS
+callbacks; fresh admitted-spec validation and the full executor remain separate.
 
 `bind_target(claim,pv,volume)` requires the confirmed create UID (with the fresh
 claim RV allowed to advance), exact new PVC/PV/Longhorn mapping, supported driver,

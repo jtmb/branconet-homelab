@@ -17,6 +17,8 @@ Python callback. It passes that one deadline through encryption, both
 normalizations and comparison without granting a fresh budget. The outer
 executor owns and closes the Collector after any separate UID/RV holder-delete
 transaction. This step never closes the borrowed watch or deletes the holder.
+The separate [scoped mutation adapter](BORTUS-RESTORE-MUTATIONS.md) supplies the
+create/delete transport; submission never replaces admitted-spec or absence proof.
 
 `source_fence(deadline)` must independently revalidate the cold checkpoint's
 source/consumer/storage and completed backup fences, returning the immutable

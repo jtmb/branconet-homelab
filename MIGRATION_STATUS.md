@@ -380,3 +380,14 @@ one leaked descriptor before the correction. Root now registers each directory
 FD immediately after open; all 13 source-fence cases pass with frozen inputs.
 Original failure/source artifacts remain retained, and the earlier 365-case
 receipt keeps its original source binding. No live access or mutation occurred.
+
+Root then integrated the immutable native scoped mutation adapter `454d6c72`,
+verifying eight raw Git blobs/modes and 106 retained artifacts. Five new files
+and three manually merged documentation snippets preserve the current root
+metadata reader and source validator. All 398 combined local cases pass without
+skips on frozen inputs, including 32 actual loopback mutation cases. Create
+projections require fresh admitted-spec validation; DELETE submission requires
+subsequent owned UID absence. The actual reader/coordinator, fresh checkpoint,
+qualified images, live restore and complete release gates remain open. The app
+agent's latest controlled performance run also remains a failure; no production
+change is justified by these preparatory results.
