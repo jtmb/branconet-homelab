@@ -1,0 +1,84 @@
+{
+  "scope": "Single instrumented native-stage explanatory observation; no performance acceptance",
+  "immutable_evidence_commit": "f9a83fb1c4fb25b50ac199d4fe5de3ca2f0374b2",
+  "immutable_evidence_directory": "docs/implementation-evidence/native-list-stage-observer-v3/",
+  "summary_sha256": "f6bf67f25e2cc19c0295857562dcddfe7c9a88818b04ce70dea81e94104cb01f",
+  "verified_artifact_count": 70,
+  "all_listed_raw_git_blobs_equal_retained_working_bytes": true,
+  "source_commits": {
+    "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+    "candidate": "15786222e4b01b0692ad9aebab99b8734b505c7b"
+  },
+  "actual_terminal_exit": 0,
+  "coverage_review_exit": 0,
+  "original_failures_retained": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\native-stage-observer-failures-v1-v2",
+  "source_archives_retained": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\native-stage-observer-reviewed-v3",
+  "preparation_package_sha256": "a6ea648c694a34353d1070ed19f0ecc19b9afddbec5ce76e55071bf4984f5dff",
+  "findings": {
+    "candidate_rejected_three_large_page_limits": [
+      200,
+      10,
+      5
+    ],
+    "delivered_bytes_each": 4195462,
+    "decoded_rejected_prefix_bytes_each": 4194108,
+    "post_rejection_UTF8_decode_ms": [
+      2.9154829999999947,
+      2.9721830000000864,
+      2.8906420000000708
+    ],
+    "post_rejection_failed_JSON_parse_ms": [
+      6.815434000000096,
+      5.4291860000000725,
+      5.733316000000059
+    ],
+    "candidate_all_3_large_delivered_bytes": 16783410,
+    "baseline_all_3_large_delivered_bytes": 4196924,
+    "candidate_SDK_auth_calls_by_profile": [
+      18,
+      18,
+      18,
+      54,
+      21,
+      22
+    ],
+    "baseline_TLS_connections_by_profile": [
+      18,
+      18,
+      18,
+      54,
+      18,
+      18
+    ],
+    "candidate_TLS_connections_by_profile": [
+      4,
+      4,
+      4,
+      4,
+      5,
+      6
+    ]
+  },
+  "baseline_edge_auth": "Unobserved; original operation passes through unchanged when the Node hook is absent. Missing stages are not zero latency. Node/Edge differences are not established as a causal latency explanation.",
+  "limitations": [
+    "Inclusive overlapping instrumented spans and a single observation; not paired performance acceptance.",
+    "Global/namespace scheduling differs from baseline. A wave lower bound does not establish full causal attribution.",
+    "Fresh SQL, auth and factory costs were measured; removing authorization is not authorized.",
+    "Current no-regression gate remains failed. Guard qualification and new combined uninstrumented comparison are pending.",
+    "Completed-item scalar oversize retry sizing remains a hypothesis, not implemented."
+  ],
+  "packaging_scan": {
+    "tool": "Pinned Gitleaks 8.30.1 default rules, redacted",
+    "findings": 115,
+    "untriaged": 0,
+    "suppression_config": false,
+    "verified_public_raw_Git_files": 421,
+    "individual_review_path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\native-stage-observer-v3-packaging-scan-review.json",
+    "individual_review_sha256": "79a45ba36f94f8858deb831f3183fac42d02f374346b97e097da7e4d19b4e0a2",
+    "scan_report_sha256": "6eadc48e99761952ff75edb2c47e05b14a8abc9831f5c11ede20fdb02a287874"
+  },
+  "owned_cleanup_sha256": "0da64160753e1ccb2caf99a596efbb588ca0b7052e30eb98af572b7f642513ba",
+  "terminal_sha256": "622226c944e7764c4f2ce0c117c26d9550b47a0cc40a7c6778a6d496a6718a36",
+  "performance_no_regression_pass": false,
+  "late_settlement_source_fix_qualified": false
+}

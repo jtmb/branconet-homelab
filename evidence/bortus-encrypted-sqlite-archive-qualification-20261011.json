@@ -1,0 +1,97 @@
+{
+  "scope": "Local encrypted SQLite archive and inert Linux reader qualification; no production capture or restore",
+  "qualified_source_commit": "275bb4284d15c8ce032460cd13bc80854c162eb1",
+  "archive_implementation_commit": "d1cba1c8715dbdb86577e44864583e3315e32aae",
+  "source_sha256": {
+    "scripts/migration/bortus-sqlite-archive.py": "d3d1c77fec6e17bd92b95852423192e86215d9a19f035966b52181418e110344",
+    "scripts/migration/checkpoint-bortus-volume.py": "b242b6d79016b124fc187992e0d78265cdb2f993f4afe40c9abef2c73122955f",
+    "scripts/migration/tests/test_sqlite_encrypted_archive.py": "a38ba705ef74678681ec574342a0cc13ac3335f170787074958df55a259fe3ed",
+    "scripts/migration/tests/test_bortus_cold_checkpoint.py": "25df7b17d4bfe8d3b755b7fbbb0bba2ad4f0db0ca2ad1ad2b89722c05ae95a84",
+    "scripts/migration/tests/test_node_sqlite_reader.py": "d5213585bd6df244cf5d43b2d8d8d9f42f1790b11cb43c4873c632bd471851fc"
+  },
+  "independent_raw_git_verification": {
+    "console_record": "d38b40",
+    "all_working_bytes_equal_committed_blobs": true
+  },
+  "initial_failure_retained": {
+    "console_record": "a00194",
+    "exit_code": 1,
+    "tests": 5,
+    "failures": 1,
+    "elapsed_seconds": 0.093,
+    "case": "Output overwrite refusal left the owned source outside cleanup",
+    "correction": "Move overwrite refusal inside process-owning try/finally",
+    "corrected_console_record": "974ce2",
+    "corrected_exit_code": 0,
+    "corrected_tests": 5,
+    "corrected_elapsed_seconds": 0.063,
+    "original_producer_pid": 1804886,
+    "original_producer_absent_on_corrected_inspection": true
+  },
+  "migration_helper_suite": {
+    "console_record": "e8271e",
+    "exit_code": 0,
+    "tests": 40,
+    "elapsed_seconds": 0.524,
+    "runtime": "Ubuntu WSL Python 3.14.4",
+    "age_version": "v1.3.2",
+    "observed_age_binary_sha256": "eb7dd1b518f0a307c99cd97782623c5321da049154b04acd2d98d21aa7bc9b2c",
+    "binary_provenance": "Observed installed binary; no fresh published-checksum proof in this qualification",
+    "archive_tests": 6,
+    "cold_checkpoint_tests": 13,
+    "preflight_tests": 9,
+    "database_comparator_tests": 9,
+    "rbac_tests": 3,
+    "coverage": [
+      "Exact filename/order/header/type/size/aggregate bounds and SQLite signature",
+      "Missing completion, truncation, duplicate JSON keys and trailing bytes refused",
+      "Actual age encrypt/decrypt with generated disposable SSH identity and public fixture",
+      "Ciphertext-only mode-0600 artifact and no public value in report",
+      "Owned source/encrypt/decrypt process exit and failed-source partial retention",
+      "Output overwrite refusal leaves original artifact and closes owned source",
+      "Injected cold archive failure restores writer without snapshot or backup; ambiguous byte count stays unknown"
+    ]
+  },
+  "actual_linux_reader": {
+    "console_record": "23c283",
+    "exit_code": 0,
+    "tests": 2,
+    "fixture_cases": 7,
+    "elapsed_seconds": 6.098,
+    "installed_image_config_id": "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+    "image_role": "Already installed Linux Node 22.23.3 test image; not final BORTUS release or registry-manifest qualification",
+    "image_pulled_or_built": false,
+    "reader_changed_for_test": false,
+    "container_network": "none",
+    "root_filesystem": "read-only",
+    "data_bind_mount": "read-only disposable public fixtures",
+    "cases": [
+      "Database without optional sidecars",
+      "Database plus WAL/SHM/journal and multi-chunk output",
+      "Missing database",
+      "Symlink database",
+      "Symlink sidecar",
+      "Nonfile sidecar",
+      "Oversized sparse sidecar"
+    ],
+    "all_owned_processes_exited": true,
+    "all_owned_containers_absent": true
+  },
+  "privacy": {
+    "production_mounts_used": false,
+    "production_sqlite_or_native_secret_values_read": false,
+    "operator_private_key_read": false,
+    "synthetic_identity_only": true,
+    "plaintext_fixture_only": true,
+    "plaintext_production_persisted": false
+  },
+  "limitations": {
+    "concurrent_source_change_or_new_sidecar_behavior_tested": false,
+    "integrated_live_capture_executed": false,
+    "actual_nas_scp_hash_equality_tested": false,
+    "fresh_sqlite_integrity_or_row_preservation_proven": false,
+    "fresh_native_volume_independent_restore_proven": false,
+    "fresh_native_etcd_checkpoint_proven": false,
+    "final_release_image_preload_or_admission_proven": false
+  }
+}
