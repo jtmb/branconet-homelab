@@ -23,11 +23,12 @@ export async function POST(request: NextRequest, { params }: {
         const { namespace: rawNamespace, name: rawName } = await params;
         const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);
         try {
-            const { action } = await request.json();
-            const kubectlAction = ACTIONS[action];
-            if (!kubectlAction) {
-                return NextResponse.json({ error: `Unknown action: ${action}` }, { status: 400 });
+            const body = await request.json();
+            const action = body?.action;
+            if (typeof action !== "string" || !Object.hasOwn(ACTIONS, action)) {
+                return NextResponse.json({ error: "Invalid deployment action" }, { status: 400 });
             }
+            const kubectlAction = ACTIONS[action];
             const result = await kubectlExec([...kubectlAction, "deployment", name, "-n", namespace], 15000);
             if (result === null) {
                 return NextResponse.json({ error: "Action failed" }, { status: 500 });
