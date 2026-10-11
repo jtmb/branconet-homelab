@@ -1,6 +1,6 @@
 {
-  "capturedAt": "2026-10-11T03:19:24.156604+00:00",
-  "source": "15786222 qualified capacity checkpoint plus final qualified Flux/focus working source;170units/build/lint/types/4HTTP,9actualChrome and3real200%zoom checks locally passed; immutable provenance packaged separately",
+  "capturedAt": "2026-10-11T03:34:44.705705+00:00",
+  "source": "a740723 committed Flux/focus checkpoint;170units/build/lint/types/4HTTP,9actualChrome and3real200%zoom checks locally passed; source/raw-Git scan provenance separately packaged",
   "scope": "Planning and source/evidence gap matrix; not a new validation pass",
   "audit": [
     {
@@ -173,9 +173,9 @@
       "area": "Flux child tables",
       "source": "k8s-rewrite/front-end/src/app/(dashboard)/flux/[repoName]/page.tsx and [bundleName]/page.tsx",
       "observations": [
-        "Prepared route-isolated shared public queries and unavailable versus404 states; actual-route qualification pending",
-        "Explicit keyboard links with prefetch disabled replace clickable rows",
-        "Typed sorting/search and100-row paging prepared;201-row complete inventory and long metadata fit remain browser gates"
+        "Route-isolated shared public queries and unavailable versus404 states qualified against actual production route.",
+        "Explicit keyboard links/prefetch disabled,201-row search/inventory, typed numeric sorting and100-row paging passed actual browser.",
+        "Long metadata fit passed320/390/768 CSSwidths; broader full-KV and assistive-technology acceptance remains separate."
       ]
     },
     {
@@ -217,9 +217,43 @@
     "Swarm/Gluster/Vault/Consul retirement or game servers"
   ],
   "latestLocalQualification": {
-    "unitTests": 167,
+    "unitTests": 170,
     "httpSuites": 4,
-    "record": "pod-list-combined-qualification.json",
-    "browser": "shared-freshness-browser.json (six checks; prior application UI source)"
-  }
+    "record": "flux-combined-quality.json",
+    "browser": "flux-browser.json (nine checks); flux-zoom-browser.json (three real200% geometry/keyboard checks; screenshots clip enlarged surface)",
+    "source": "a7407235873492f6a962e5a0f66e42d041f889f3",
+    "scan": "flux-committed-scan-handoff.json (107individually reviewed;2historical source-byte residuals)"
+  },
+  "nextImplementationStages": [
+    {
+      "priority": 1,
+      "area": "Destroy identity capture",
+      "source": [
+        "src/lib/kv-native-engine.ts",
+        "src/lib/kv-schemas.ts",
+        "src/components/secrets/kv-administration-model.ts",
+        "src/components/secrets/kv-administration.tsx"
+      ],
+      "gap": "Status and versions omit canonical/history UID fields; destroy UI/API cannot acknowledge displayed selected identities. Existing server ownership and deletion preconditions are retained.",
+      "verification": "Missing/altered/recreated identity capture must fail before reference writes/deletion; exact selected UID controls visible in actual browser."
+    },
+    {
+      "priority": 2,
+      "area": "Workbench metadata lifecycle",
+      "gap": "Workbench status/history use local explicit reads alongside parent shared queries; version createdAt is sorted as text. Consolidate metadata reads while preserving explicit action capture and private value fence.",
+      "verification": "Deduplicated reads; held old status/history cannot reopen an action; no hidden polls/values in shared store; null/equal date sorting."
+    },
+    {
+      "priority": 3,
+      "area": "Full KV workflow acceptance",
+      "gap": "Integrated transfer/export/reconcile, static rotation consumption/reload, complete legacy impact, retention/destroy/GC/ambiguous recovery browser coverage remains incomplete.",
+      "verification": "Real production route with disposable SQLite/TLSnative fixture, fresh scopes/owner revocation, captured CAS, no automatic retry and metadata-only evidence."
+    },
+    {
+      "priority": 4,
+      "area": "Remaining A14/A15/A22 and final image",
+      "gap": "Wider KV dialog accessibility/manual findings, full realzoom visual capture, provisioning mobile CPU/LCP and final Linux image/runtime/recovery remain open.",
+      "verification": "Scoped scanner/manual review and real browser geometry/focus; fixed mobile cold/warm timings; final immutable combined source/schema/lock/runtime and coordinator release gates."
+    }
+  ]
 }

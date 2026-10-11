@@ -106,3 +106,7 @@ The isolated [dependency/runtime maintenance qualification](runtime-maintenance/
 # Execution routing handoff, 2026-10-11
 
 [Shared freshness handoff](shared-freshness-handoff.json) preserves the exact uncommitted source, corrected Node22 144-unit/lint/build/type/four-HTTP pass, first lint failure and full CLI captures. The current execution chat stops after its in-flight QA step following the coordinator's human-requested move to sub-agents. No actual-route freshness browser proof, new profile/benchmark or final image/live acceptance is claimed. Resume from the recorded authoritative checkout and hashes without replacing earlier evidence.
+
+## Flux committed-source scan handoff
+
+[Scan handoff](flux-committed-scan-handoff.json) binds the exact645 raw Git blobs/modes at a740723 independently from qualified working-file bytes. Pinned default-rule Gitleaks8.30.1 exited1 with109 redacted findings:107 individually verified public source checksums/prose and two unmatched historical tested-working-byte checksum fields. The raw report, terminal record, individual review and two archive preparation failures are retained. This is a truthful residual, not a zero-untriaged or full acceptance pass. The updated [remaining matrix](remaining-acceptance-matrix.json) prioritizes canonical/history UID destroy capture, shared workbench metadata and full KV workflow/accessibility/performance/image evidence.
