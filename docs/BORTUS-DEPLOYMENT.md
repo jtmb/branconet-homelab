@@ -80,6 +80,8 @@ The baseline included stale /cluster component imports, icon title props and she
 
 Container build runs without env files (excluded by .dockerignore). Local Next standalone output traces an .env file from the workspace; do not distribute that local directory. Build the image from the clean Docker context instead, and inject runtime keys from native Secret references.
 
+The migration coordinator's new `scripts/migration/prepare-bortus-release-context.py` prepares a deterministic raw-Git context from an exact application commit, excluding local/generated/credential paths without reading excluded payloads. See [MIGRATION-OPERATIONS.md](MIGRATION-OPERATIONS.md) for output protection, bounds and refusal behavior. This is preparation only: source/context credential qualification, final source freeze, actual image build and deployment acceptance remain separate gates.
+
 Previously tracked `.env`/`.env.local` files are removed from Git tracking while preserved on this local worktree. `.env.example` contains empty signing/lookup placeholders and nonsecret defaults. Existing Git history is unchanged; migration should generate new runtime signing/lookup credentials rather than reuse values historically committed. This invalidates old sessions, requiring re-login while preserving user accounts/roles.
 
 A temporary build without .env/signing/lookup credentials compiled and generated all pages successfully. Windows junction-based node_modules caused standalone tracing symlink warnings in that temporary copy; it is not an image/run proof. The normal worktree standalone build/HTTP test passed. The clean build also reports inherited jose JWE compression Edge-runtime warnings; JWT registration/authentication is covered by the passing production HTTP test.
