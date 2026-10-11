@@ -247,8 +247,36 @@ A fresh pinned Trivy 0.75.0 default image and image-config scan completed at
 are in bundled kubectl, including four High. The Critical zlib finding has
 scanner status `will_not_fix`; no suppression or application reachability
 acceptance follows from that status. The earlier inert-holder assessment cannot
-qualify the application image. Current runtime/schema fixtures, kubectl
-remediation/security review, A07/A21 performance, three-node delivery, active
-guards, independent complete-row recovery and final live acceptance stay open.
+qualify the application image. At that scan checkpoint, runtime/schema fixtures were pending; the later
+disposable fixture below records their scoped result. Kubectl remediation and
+security review, A07/A21 performance, three-node delivery, active guards,
+independent complete-row recovery and final live acceptance stay open.
 This qualification dispatched no application rollout, cluster mutation or
 production data read; the original writer and data remain preserved.
+
+## Disposable c29fc image runtime and synthetic forward migration
+
+The [runtime receipt](../evidence/bortus-app-disposable-runtime-c29fc-20261011.json)
+records one reviewed run completed at 12:18:51 UTC on 2026-10-11. Exact config
+and five source labels matched before execution. Three disposable stages ran
+with no network, read-only root, UID/GID1000, 2CPU/1GiB/128PID limits and bounded
+tmpfs mounts: package inventory, fresh schema/restart and legacy1438 forward
+migration/restart. Liveness returned200; native-unavailable readiness returned503.
+All11 migrations completed with zero schema drift and the expected account lock,
+legacy principal and write/admin versus readonly/nonadmin policy bridge.
+
+The legacy fixture uses the exact historical schema and seven raw migrations,
+with every original application table populated. The unchanged comparator
+checked all14 original tables, all original columns and complete row multisets:
+21 source rows survived unchanged, including both users and the alias with an
+underscored key. Added migration rows are separately recorded. SQLite integrity,
+foreign keys, terminal migration state and new sessionVersion default0 passed.
+These are synthetic rows; the fixture's arbitrary hashes do not establish login
+behavior, and this is not production preservation or independent storage recovery.
+
+Root freshly checked absence of all20 owned Linux process identities, the exact
+Windows launcher and the complete owner-labelled Docker container list. Fixture
+database frames remained in memory/tmpfs and cleanup completed. No production
+PVC/database/native credentials, Kubernetes operation, image preload or rollout
+was used. Application security, A07/A21, full-row production recovery, admission,
+actual auth/UI/consumer acceptance and final live release remain separate gates.

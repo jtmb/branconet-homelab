@@ -1,0 +1,743 @@
+{
+  "scope": "Actual disposable exact c29fc image packages/fresh/restart/synthetic1438 forward migration only; no production recovery/authentication/security/performance/live acceptance",
+  "recorded_at_utc": "2026-10-11T12:21:57.279174+00:00",
+  "source_commit": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+  "config_image_id": "sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c",
+  "source_image_receipt": "evidence/bortus-app-source-image-c29fc-20261011.json",
+  "root_review": {
+    "scope": "Root private synthetic exact-image runtime dispatch review; no production or security acceptance",
+    "owner": "854de2890fc9",
+    "harness_manifest_sha256": "f18d7d1cdc3dea24f0a30e4f4693b8dc437216b95c30dbaee8dd6c032177c3f7",
+    "exact_members": 29,
+    "raw_reference_blobs": 11,
+    "legacy_blobs": 9,
+    "exact_original_ast_literals": 2,
+    "target": "/home/brajam/.local/share/branconet-migration/image-runtime-preparation-c29fc-854de2890fc9",
+    "prepared_at_utc": "2026-10-11T12:18:20.733808+00:00",
+    "single_dispatch": true,
+    "rollout_authorized": false
+  },
+  "runtime": {
+    "owner": "854de2890fc9",
+    "source_commit": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+    "config_image_id": "sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c",
+    "build_receipt_sha256": "9dd7f856c873231aab05ac7b6902d112160daf3e10f1b6da6fd5d35692453138",
+    "phase": "completed",
+    "started_at_utc": "2026-10-11T12:18:21.248236+00:00",
+    "actual_production_rows_tested": false,
+    "restored_data_accepted": false,
+    "rollout_authorized": false,
+    "performance_accepted": false,
+    "stages": [
+      {
+        "stage": "packages",
+        "container": "bortus-image-qa-854de2890fc9-packages",
+        "phase": "returned_and_closed",
+        "pending_at_utc": "2026-10-11T12:18:23.534485+00:00",
+        "runtime_exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:26.319996+00:00",
+        "result": {
+          "package_versions": {
+            "prisma": "6.19.3",
+            "@prisma/config": "6.19.3",
+            "deepmerge-ts": "8.0.0",
+            "next": "15.5.27",
+            "@kubernetes/client-node": "1.4.0"
+          },
+          "kubectl": "v1.37.1",
+          "node": "22.23.3",
+          "platform": "linux",
+          "arch": "x64",
+          "uid": 1000,
+          "gid": 1000
+        },
+        "owned_container_absent": true
+      },
+      {
+        "stage": "fresh",
+        "container": "bortus-image-qa-854de2890fc9-fresh",
+        "phase": "returned_and_closed",
+        "pending_at_utc": "2026-10-11T12:18:27.374965+00:00",
+        "runtime_exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:37.660228+00:00",
+        "result": {
+          "migration_mode": "fresh",
+          "node": "22.23.3",
+          "platform": "linux",
+          "arch": "x64",
+          "uid": 1000,
+          "gid": 1000,
+          "database_created": true,
+          "first_boot": {
+            "live_status": 200,
+            "ready_without_native_credentials": 503,
+            "migration_success_observed": true
+          },
+          "second_boot": {
+            "live_status": 200,
+            "ready_without_native_credentials": 503,
+            "migration_success_observed": true
+          },
+          "applied_migration_count": 11,
+          "expected_migration_count": 11,
+          "kv_metadata_tables": {
+            "kvMount": 0,
+            "kvPath": 0,
+            "kvField": 0,
+            "kvPolicy": 0,
+            "kvIdentity": 0,
+            "kvServicePrincipal": 1,
+            "kvLegacyGrant": 0,
+            "kvOperation": 0,
+            "kvAudit": 0,
+            "kvRotation": 0
+          },
+          "migration_lock_and_legacy_principal_present": true,
+          "synthetic_legacy_accounts_aliases_and_quarantined_value_preserved": null,
+          "existing_writer_admin_reader_nonadmin": null,
+          "existing_user_policy_bridge_present": null,
+          "ownership_history_audit_not_ingested_from_legacy_sqlite": true,
+          "synthetic_existing_metadata_and_nullable_additive_columns_preserved": null,
+          "zero_schema_drift": true,
+          "restart_preservation_verified": true,
+          "native_credentials_or_production_database_mounted": false,
+          "fixture_signing_material_values_or_hashes_recorded": false,
+          "passed": true
+        },
+        "owned_container_absent": true
+      },
+      {
+        "stage": "legacy-forward",
+        "container": "bortus-image-qa-854de2890fc9-legacy-forward",
+        "phase": "returned_and_closed",
+        "pending_at_utc": "2026-10-11T12:18:38.776237+00:00",
+        "runtime_exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:50.217599+00:00",
+        "result": {
+          "migration_mode": "legacy-forward",
+          "node": "22.23.3",
+          "platform": "linux",
+          "arch": "x64",
+          "uid": 1000,
+          "gid": 1000,
+          "database_created": true,
+          "first_boot": {
+            "live_status": 200,
+            "ready_without_native_credentials": 503,
+            "migration_success_observed": true
+          },
+          "second_boot": {
+            "live_status": 200,
+            "ready_without_native_credentials": 503,
+            "migration_success_observed": true
+          },
+          "applied_migration_count": 11,
+          "expected_migration_count": 11,
+          "kv_metadata_tables": {
+            "kvMount": 0,
+            "kvPath": 0,
+            "kvField": 0,
+            "kvPolicy": 2,
+            "kvIdentity": 0,
+            "kvServicePrincipal": 1,
+            "kvLegacyGrant": 0,
+            "kvOperation": 0,
+            "kvAudit": 0,
+            "kvRotation": 0
+          },
+          "migration_lock_and_legacy_principal_present": true,
+          "synthetic_legacy_accounts_aliases_and_quarantined_value_preserved": true,
+          "existing_writer_admin_reader_nonadmin": true,
+          "existing_user_policy_bridge_present": true,
+          "ownership_history_audit_not_ingested_from_legacy_sqlite": true,
+          "synthetic_existing_metadata_and_nullable_additive_columns_preserved": null,
+          "zero_schema_drift": true,
+          "restart_preservation_verified": true,
+          "native_credentials_or_production_database_mounted": false,
+          "fixture_signing_material_values_or_hashes_recorded": false,
+          "passed": true
+        },
+        "owned_container_absent": true
+      }
+    ],
+    "processes": [
+      {
+        "pid": 1981946,
+        "start_ticks": "22022839",
+        "started_at_utc": "2026-10-11T12:18:21.269818+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:23.524024+00:00"
+      },
+      {
+        "pid": 1981947,
+        "start_ticks": "22023067",
+        "started_at_utc": "2026-10-11T12:18:23.544704+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:23.801467+00:00"
+      },
+      {
+        "pid": 1981948,
+        "start_ticks": "22023094",
+        "started_at_utc": "2026-10-11T12:18:23.812334+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:26.309641+00:00"
+      },
+      {
+        "pid": 1981949,
+        "start_ticks": "22023346",
+        "started_at_utc": "2026-10-11T12:18:26.330442+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:26.577183+00:00"
+      },
+      {
+        "pid": 1981950,
+        "start_ticks": "22023372",
+        "started_at_utc": "2026-10-11T12:18:26.592982+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:26.830270+00:00"
+      },
+      {
+        "pid": 1981951,
+        "start_ticks": "22023397",
+        "started_at_utc": "2026-10-11T12:18:26.841892+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:27.099341+00:00"
+      },
+      {
+        "pid": 1981952,
+        "start_ticks": "22023424",
+        "started_at_utc": "2026-10-11T12:18:27.109981+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:27.354922+00:00"
+      },
+      {
+        "pid": 1981953,
+        "start_ticks": "22023451",
+        "started_at_utc": "2026-10-11T12:18:27.385323+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:27.625256+00:00"
+      },
+      {
+        "pid": 1981954,
+        "start_ticks": "22023477",
+        "started_at_utc": "2026-10-11T12:18:27.640995+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:37.649557+00:00"
+      },
+      {
+        "pid": 1981985,
+        "start_ticks": "22024480",
+        "started_at_utc": "2026-10-11T12:18:37.670440+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:37.925629+00:00"
+      },
+      {
+        "pid": 1981986,
+        "start_ticks": "22024507",
+        "started_at_utc": "2026-10-11T12:18:37.941345+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:38.208045+00:00"
+      },
+      {
+        "pid": 1981987,
+        "start_ticks": "22024535",
+        "started_at_utc": "2026-10-11T12:18:38.227770+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:38.486878+00:00"
+      },
+      {
+        "pid": 1981988,
+        "start_ticks": "22024562",
+        "started_at_utc": "2026-10-11T12:18:38.497837+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:38.755416+00:00"
+      },
+      {
+        "pid": 1981989,
+        "start_ticks": "22024592",
+        "started_at_utc": "2026-10-11T12:18:38.796613+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:39.035612+00:00"
+      },
+      {
+        "pid": 1981990,
+        "start_ticks": "22024617",
+        "started_at_utc": "2026-10-11T12:18:39.046681+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:50.206562+00:00"
+      },
+      {
+        "pid": 1982015,
+        "start_ticks": "22025735",
+        "started_at_utc": "2026-10-11T12:18:50.228150+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:50.522267+00:00"
+      },
+      {
+        "pid": 1982016,
+        "start_ticks": "22025766",
+        "started_at_utc": "2026-10-11T12:18:50.538687+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:50.791790+00:00"
+      },
+      {
+        "pid": 1982017,
+        "start_ticks": "22025793",
+        "started_at_utc": "2026-10-11T12:18:50.803153+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:51.069363+00:00"
+      },
+      {
+        "pid": 1982019,
+        "start_ticks": "22025821",
+        "started_at_utc": "2026-10-11T12:18:51.081030+00:00",
+        "terminal": true,
+        "exit_code": 0,
+        "completed_at_utc": "2026-10-11T12:18:51.317778+00:00"
+      }
+    ],
+    "launcher_pid": 1981945,
+    "launcher_start_ticks": "22022828",
+    "pending_at_utc": "2026-10-11T12:18:21.258830+00:00",
+    "harness_manifest_sha256": "f18d7d1cdc3dea24f0a30e4f4693b8dc437216b95c30dbaee8dd6c032177c3f7",
+    "whole_original_row_comparison": {
+      "mode": "forward",
+      "passed": true,
+      "sourceIntegrity": true,
+      "targetIntegrity": true,
+      "sourceForeignKeysValid": true,
+      "targetForeignKeysValid": true,
+      "schemaIdentical": false,
+      "legacySessionVersionZero": true,
+      "targetMigrationsTerminal": true,
+      "sourceTableCount": 14,
+      "targetTableCount": 25,
+      "tables": [
+        {
+          "table": "_prisma_migrations",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 7,
+          "targetRows": 11,
+          "missingOrChangedRows": 0,
+          "additionalRows": 4,
+          "passed": true
+        },
+        {
+          "table": "app_settings",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "cluster_state",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "deployments",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "git_repos",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "jobs",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "longhorn_volumes",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "nodes",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "pods",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "pvc",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "secret_references",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "services",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "users",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 2,
+          "targetRows": 2,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        },
+        {
+          "table": "variables",
+          "present": true,
+          "sourceColumnsPreserved": true,
+          "sourceRows": 1,
+          "targetRows": 1,
+          "missingOrChangedRows": 0,
+          "additionalRows": 0,
+          "passed": true
+        }
+      ]
+    },
+    "disposable_runtime_and_forward_rows_passed": true,
+    "terminal": true,
+    "actual_exit_code": 0,
+    "completed_at_utc": "2026-10-11T12:18:51.373145+00:00"
+  },
+  "runtime_receipt_sha256": "1431203482e6d429d54e48e71730f15fe634c113fee5262efe4295580d4df4f1",
+  "root_fresh_closure": {
+    "scope": "Fresh root-owned process/container absence and exact successful fixture receipt verification",
+    "verified_at_utc": "2026-10-11T12:20:30.759790+00:00",
+    "runtime_receipt_sha256": "1431203482e6d429d54e48e71730f15fe634c113fee5262efe4295580d4df4f1",
+    "linux_owners": [
+      {
+        "pid": 1981945,
+        "start_ticks": "22022828",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981946,
+        "start_ticks": "22022839",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981947,
+        "start_ticks": "22023067",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981948,
+        "start_ticks": "22023094",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981949,
+        "start_ticks": "22023346",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981950,
+        "start_ticks": "22023372",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981951,
+        "start_ticks": "22023397",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981952,
+        "start_ticks": "22023424",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981953,
+        "start_ticks": "22023451",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981954,
+        "start_ticks": "22023477",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981985,
+        "start_ticks": "22024480",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981986,
+        "start_ticks": "22024507",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981987,
+        "start_ticks": "22024535",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981988,
+        "start_ticks": "22024562",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981989,
+        "start_ticks": "22024592",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1981990,
+        "start_ticks": "22024617",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1982015,
+        "start_ticks": "22025735",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1982016,
+        "start_ticks": "22025766",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1982017,
+        "start_ticks": "22025793",
+        "owned_process_absent": true
+      },
+      {
+        "pid": 1982019,
+        "start_ticks": "22025821",
+        "owned_process_absent": true
+      }
+    ],
+    "windows_owner": {
+      "pid": 42732,
+      "exact_start_utc": "2026-10-11T12:18:21.1131307Z",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--exec",
+        "python3",
+        "-B",
+        "/home/brajam/.local/share/branconet-migration/image-runtime-preparation-c29fc-854de2890fc9/qualify-image.py",
+        "--build-receipt",
+        "/home/brajam/.local/share/branconet-migration/image-runtime-preparation-c29fc-854de2890fc9/completed-build-receipt.json",
+        "--runtime-parent",
+        "/home/brajam/.local/share/branconet-migration",
+        "--owner",
+        "854de2890fc9",
+        "--harness-manifest-sha256",
+        "f18d7d1cdc3dea24f0a30e4f4693b8dc437216b95c30dbaee8dd6c032177c3f7"
+      ],
+      "owner": "854de2890fc9",
+      "owned_process_absent": true
+    },
+    "complete_label_filtered_container_list_empty": true,
+    "container_list_exit_code": 0,
+    "synthetic_full_rows_checked": 21,
+    "original_tables_checked": 14,
+    "rollout_authorized": false,
+    "actual_production_database_tested": false
+  },
+  "harness_originals": [
+    {
+      "name": "manifest.json",
+      "sha256": "f18d7d1cdc3dea24f0a30e4f4693b8dc437216b95c30dbaee8dd6c032177c3f7"
+    },
+    {
+      "name": "handoff.json",
+      "sha256": "2bd47650bd134a6032543931b6b30c107d039db00745b6766e7621eb90e222a8"
+    },
+    {
+      "name": "source-bindings.json",
+      "sha256": "b09f4ebe9e76cd7cfb8cd04c65ccdbfcb759e54e30e880b2996535f35a380a15"
+    },
+    {
+      "name": "legacy-source.json",
+      "sha256": "d1dc17e042364a2fa3aeeadd63035dda5065203d0caabe543ae3d374e76e1064"
+    },
+    {
+      "name": "qualify-image.py",
+      "sha256": "a1b0a30b2fe87d2fd2bd7a524970ab5a32113df533a867266cf42619ae08de8a"
+    },
+    {
+      "name": "runtime-smoke.cjs",
+      "sha256": "248514fb351a5dce86131e477f2659b010909c93415db2fcdddd8950124fcccc"
+    },
+    {
+      "name": "package-probe.cjs",
+      "sha256": "30b0e5269c9f5f61f3647b921dade2ae13fdd711842bc7a4dd1677ba064bb8b9"
+    },
+    {
+      "name": "compare-bortus-databases.py",
+      "sha256": "e08787dafc064a5f256b0cdfb870d581c4631fdfc726919e3012f638cf132400"
+    },
+    {
+      "name": "README.md",
+      "sha256": "b74798d8cfc65be5a9da5a3cbe02da8b1b49210225add8385c0989166daf2f8f"
+    },
+    {
+      "name": "preparation-checks.json",
+      "sha256": "432b0534a33c51e8ba6928aade46c7b88b1f64a6ff01d2dc6c096190adbcc416"
+    }
+  ],
+  "root_private_originals": [
+    {
+      "name": "qualify-final-app-v1.py",
+      "sha256": "d35dc8681436e6856bbbd4f33c45661cd40200a35c0a9a3f8777b66142812a2e"
+    },
+    {
+      "name": "runtime-root-review.json",
+      "sha256": "01964fa2bc04b90b0c59c4c51db369f28bbb4e3dd831998e45cb9b01b0a17bd3"
+    },
+    {
+      "name": "runtime-transfer.stdout",
+      "sha256": "8bcf855d08d0aee0401047d8702ce4e60dce79d96be0afad6974106cf0dc93f9"
+    },
+    {
+      "name": "runtime-transfer.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "runtime-intent.json",
+      "sha256": "0c04d3483a71859f0c5a62b0254ef2192a664591325d85cb812bcdb8286f3d6d"
+    },
+    {
+      "name": "runtime-owner.json",
+      "sha256": "35d5ef19510d73342b1ab54866fff2548ca2a57d737d2fabcb8e591cd5b2a65a"
+    },
+    {
+      "name": "runtime.stdout",
+      "sha256": "c22099dea80307e198e16bf33c61580448f6bbf568c30a3a332407c6e5ed4cb5"
+    },
+    {
+      "name": "runtime.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "runtime-terminal.json",
+      "sha256": "9679a49b4991097f95a0a23bf9e9c108f14dc8db88f5e45150104646dfbd2da8"
+    },
+    {
+      "name": "completed-runtime-receipt.json",
+      "sha256": "1431203482e6d429d54e48e71730f15fe634c113fee5262efe4295580d4df4f1"
+    },
+    {
+      "name": "verify-runtime-closure-v1.py",
+      "sha256": "866a7d072ca7de94c7e30fc46e2975292ac54f0ae64dac3a68a0de783cfcea87"
+    },
+    {
+      "name": "runtime-root-closure.json",
+      "sha256": "2a5a1bc7fc8e6a1dc3985bd3220d078995ac63857aa5c8eeb602d5869a329a07"
+    },
+    {
+      "name": "runtime-closure-container.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "runtime-closure-container.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "limitations": [
+    "Arbitrary fixture password hashes are not bcrypt login proof; current HTTP suites retain their separate scope.",
+    "Synthetic whole-row forward migration does not establish actual production data preservation or independent Longhorn restoration.",
+    "The config ID is not a qualified OCI manifest/containerd runtime digest; no new image preload was dispatched.",
+    "The fresh image scan still has346 vulnerability entries/19 fixablekubectl entries; fixture success does not grant application security acceptance.",
+    "No native Secret credentials or production database/PVC/kubeconfig were mounted; no native API/adoption/active guards/live release acceptance.",
+    "A07/A21 performance and exhaustive UI/lifecycle/actual AT controls remain open."
+  ],
+  "acceptance": {
+    "disposable_image_startup_restart": true,
+    "synthetic_original_whole_rows": true,
+    "packages_verified": true,
+    "fixture_and_process_closure": true,
+    "actual_production_database": false,
+    "independent_actual_restoration": false,
+    "image_security": false,
+    "performance": false,
+    "authentication_from_this_fixture": false,
+    "three_node_runtime_digest": false,
+    "active_guard": false,
+    "final_live": false,
+    "rollout_authorized": false
+  }
+}

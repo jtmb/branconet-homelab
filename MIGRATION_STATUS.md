@@ -128,6 +128,24 @@ cold checkpoint remain preserved. Root and two subagents continue; seven old
 BORTUS chats remain archived. App audit reconciliation and kubectl remediation
 review run separately from migration execution.
 
+## 2026-10-11 12:18 UTC: exact-image disposable runtime and synthetic rows pass
+
+[The single disposable c29fc run](evidence/bortus-app-disposable-runtime-c29fc-20261011.json)
+passed package inventory, actual entrypoint fresh/restart and legacy1438
+forward/restart under no-network/read-only UID1000 resource limits. All11
+migrations/zero schema drift and liveness200/native-unavailable readiness503
+passed. All14 original tables' complete original-column row multisets preserve
+21 synthetic source rows; integrity/FK/sessionVersion default0 checks pass.
+This is not production data, actual login proof or independent Longhorn restore.
+
+All three containers and20 exact Linux process owners plus the Windows child
+are freshly verified absent. No native credential/PVC/production database,
+cluster mutation, new image preload or app rollout occurred. The original
+writer and completed cold checkpoint remain preserved. Security/kubectl,
+A07/A21 performance, exhaustive UI/auth/consumer checks, active guards,
+independent actual full-row recovery and final live acceptance remain open.
+Root plus two subagents continue separately; the seven old chats are archived.
+
 ## Current orchestration and application qualification
 
 Three agents are active: coordinator, BORTUS application integration, and native transport/evidence. Seven identifiable former BORTUS execution/review chats are confirmed archived; unrelated projects remain unchanged. Before archiving the additional idle dependency/runtime chat, its clean committed handoff was preserved as a verified complete-history Git bundle and raw source archive outside managed checkouts. Its package, lockfile and Dockerfile match the current app source; [preservation evidence](evidence/bortus-runtime-thread-archive.json) records the exact artifacts. Earlier archiving removed managed checkouts, so application work was recovered from snapshot da84f0f00aeb0daca299358e93fc7074acd2055e (parent b82980e783daf09e1aabe00f3a5db99fef3e13fa), including 17 changed paths and both qualification logs. All six original source-file hashes were recovered; the workbench discrepancy was traced to mixed line endings by replaying the original patch records. Source and evidence backups remain outside the managed checkouts.
