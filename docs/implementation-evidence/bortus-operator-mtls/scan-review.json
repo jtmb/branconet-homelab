@@ -1,0 +1,24 @@
+{
+  "scanner_report_sha256": "2df7e5dbf63c963cb8132458b9a87356bfdabbc70c614ad182f1bf156bea171c",
+  "actual_scanner_exit_code": 1,
+  "default_rules": true,
+  "allowlists_or_exclusions": false,
+  "findings": 1,
+  "individually_reviewed": 1,
+  "unresolved": 0,
+  "classifications": [
+    {
+      "fingerprint": "C:/Users/james/AppData/Local/BORTUS/handoffs/native-window-20261010-205407-602f2c0c/operator-mtls-v1/scan-input/scripts/migration/tests/test_bortus_operator_mtls.py:private-key:197",
+      "rule": "private-key",
+      "path": "scripts/migration/tests/test_bortus_operator_mtls.py",
+      "start_line": 197,
+      "end_line": 229,
+      "start_column": 43,
+      "end_column": 42,
+      "source_raw_sha256": "fdb87cde2fa334faac065b4bf56ff0e56f7f6baf70c5fab8c407368f44b7287c",
+      "source_git_blob": "67ef40335f3e0f489c92ff6b5e08e43801000228",
+      "classification": "Public invalid-PEM test literals and intervening source; no credential material",
+      "proof": "AST-bound encrypted/plain fixtures have only a three-zero-byte DER placeholder, not a valid ASN.1 key; actual test refuses these. Generated disposable keys and operator files are outside scan/source/Git."
+    }
+  ]
+}

@@ -130,4 +130,9 @@ not establish a live watch, approved operator transport adapter, full restore
 executor, image/admission fences or restored-data acceptance. The pure transition
 library above remains unchanged.
 
+The separately integrated [embedded operator adapter](BORTUS-OPERATOR-MTLS.md)
+now passes a scoped live complete LIST and watch HTTP handshake. That probe
+consumes no frames and cannot substitute for the durable live restore sequence,
+healthy replicas, independent archive/whole-row equality or image/admission gates.
+
 The source inspection and repeated cold storage checks also require the complete cluster PV inventory in [BORTUS-PHYSICAL-VOLUME-FENCE.md](BORTUS-PHYSICAL-VOLUME-FENCE.md); any other Longhorn PV using the original handle refuses regardless of claim namespace or inactive state. This closes a scoped inventory gap and does not establish an atomic consumer/admission barrier or restored-data acceptance.

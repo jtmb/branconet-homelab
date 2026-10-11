@@ -1,7 +1,13 @@
 # Durable BORTUS restore LIST/watch collector
 
 `scripts/migration/bortus-restore-watch.py` provides a callable library, with no
-production CLI or kubeconfig adapter. It implements actual TLS-verified HTTP200
+production CLI. The separate [embedded mTLS adapter](BORTUS-OPERATOR-MTLS.md)
+implements the reviewed kubeconfig shape. The coordinator's scoped 06:33 UTC
+probe passed the complete live Longhorn LIST and TLS1.3 watch HTTP handshake,
+with fresh options for both requests; no frames were consumed and no durable
+live restore lease or data acceptance is established by that probe. See the
+[operator qualification](../evidence/bortus-operator-mtls-integration-20261011.json).
+The collector implements actual TLS-verified HTTP200
 LIST/watch readiness and durably binds that prerequisite before guarded create
 callbacks. It does not establish image/admission qualification, current source or
 consumer fences, restore health, authenticated independent data equality or live
@@ -20,8 +26,9 @@ options callable returning a verified SSLContext and optional Authorization
 header for each request. It requires certificate/hostname verification and TLS1.2+
 and rejects redirects, non-200, non-JSON and encoded bodies. It does not consult
 proxy environment variables, write credentials, cache auth, log response bodies,
-or parse kubeconfig/exec plugins. The future executor must separately qualify
-its approved operator transport adapter; unsupported behavior must refuse.
+or parse kubeconfig/exec plugins. The separate embedded-only adapter supplies
+fresh options; the future executor must qualify actual approved operator access.
+Unsupported behavior must refuse.
 
 `Collector.start()` takes a complete most-recent Longhorn Volume LIST (at most 32
 pages / 4,096 initial objects / 8 MiB body), preserving the opaque collection RV across

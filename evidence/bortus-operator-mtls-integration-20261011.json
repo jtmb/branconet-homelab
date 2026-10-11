@@ -1,0 +1,262 @@
+{
+  "scope": "Immutable selected adapter integration, kubeadm identifier correction, actual WSL helpers and scoped live mTLS access only",
+  "native_commit": "6e4e9668cf599962a2a54302f7ea6db2acb8a0f3",
+  "selected_integration": {
+    "commit": "6e4e9668cf599962a2a54302f7ea6db2acb8a0f3",
+    "handoff_sha256": "9e4c28b38e6f11b6f746eb0cfd4d8246c8269f052d3bb93b19aea1cf30753459",
+    "patch_sha256": "fe4087b55d89b0868ba683bd2543eb79aa2940bb22368bf4c2435e0eaf482416",
+    "raw_files_and_git_blobs": 13,
+    "retained_artifacts": 12,
+    "unchanged_dependency_files": 17,
+    "root_checkout_relations": {
+      "exact": 0,
+      "literal_LF_to_CRLF": 13
+    },
+    "invalid_public_key_constant_lines": [
+      197,
+      229,
+      297
+    ],
+    "scanner_actual_exit": 1,
+    "individual_false_positive_confirmed": 1,
+    "scan_scope_files": 11,
+    "full_repo_scan_accepted": false,
+    "live_operator_acceptance": false,
+    "verification_exit": 0
+  },
+  "native_original_focused_tests": 30,
+  "native_original_combined_tests": 179,
+  "root_initial_integrated_tests": 192,
+  "root_final_kubeadm_fix_tests": 193,
+  "root_final_test_seconds": 6.57,
+  "root_final_test_exit": 0,
+  "original_first_live_probe": {
+    "observed_at": "2026-10-11T06:32:17.406636+00:00",
+    "approved_origin": "https://192.168.0.4:6443",
+    "source_path": "/home/brajam/.local/share/branconet-migration/admin.conf",
+    "list_pages": 0,
+    "list_items": 0,
+    "list_bytes": 0,
+    "collection_resource_version": null,
+    "fresh_options_calls": 0,
+    "watch_http_accepted": false,
+    "negotiated_watch_tls": null,
+    "owned_response_connection_closed": true,
+    "watch_frames_consumed": 0,
+    "durable_watch_or_restore_acceptance": false,
+    "mutations": 0,
+    "secret_reads": 0,
+    "failure_code": "tls_request",
+    "exit_code": 1
+  },
+  "corrected_live_probe": {
+    "observed_at": "2026-10-11T06:33:57.656082+00:00",
+    "approved_origin": "https://192.168.0.4:6443",
+    "source_path": "/home/brajam/.local/share/branconet-migration/admin.conf",
+    "list_pages": 1,
+    "list_items": 39,
+    "list_bytes": 213701,
+    "collection_resource_version": "952382",
+    "fresh_options_calls": 2,
+    "watch_http_accepted": true,
+    "negotiated_watch_tls": "TLSv1.3",
+    "owned_response_connection_closed": true,
+    "watch_frames_consumed": 0,
+    "durable_watch_or_restore_acceptance": false,
+    "mutations": 0,
+    "secret_reads": 0,
+    "failure_code": null,
+    "exit_code": 0
+  },
+  "root_final_default_scan": {
+    "completed_at": "2026-10-11T06:34:54.836677+00:00",
+    "scanner_version": "8.30.1",
+    "scanner_binary_sha256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "default_rules": true,
+    "exclusions_or_allowlists": false,
+    "source_files": [
+      {
+        "path": "scripts/migration/bortus-operator-mtls.py",
+        "sha256": "ff4b44fd76362890ef86cd80cef28d3f1f36ffd6d999da40f30add883ed2ac9d",
+        "bytes": 10539
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_operator_mtls.py",
+        "sha256": "00e0e5e4ef1ea66f0ba7c4918491f52e32eaec6727824d515e3758b1d839962f",
+        "bytes": 18310
+      },
+      {
+        "path": "docs/BORTUS-OPERATOR-MTLS.md",
+        "sha256": "e200d816caf8c6c5945dff219ca34f5a6ed20a38159048467bf9634d6ab0cb07",
+        "bytes": 5306
+      },
+      {
+        "path": "docs/BORTUS-RESTORE-WATCH.md",
+        "sha256": "265dd33673c0a1750f360d21007cd27ce09ac1401baf9e1fb6881c5cbe73f371",
+        "bytes": 7395
+      },
+      {
+        "path": "docs/BORTUS-RESTORE-COMPLETION.md",
+        "sha256": "6625f0edec6d105bac26fea6d06d5cd6b0d8491dd76abbcc95c8c1a647b5bf30",
+        "bytes": 9481
+      }
+    ],
+    "actual_exit_code": 1,
+    "findings": 1,
+    "individual_reviews": [
+      {
+        "rule": "private-key",
+        "path": "scripts/migration/tests/test_bortus_operator_mtls.py",
+        "start_line": 213,
+        "end_line": 245,
+        "source_sha256": "00e0e5e4ef1ea66f0ba7c4918491f52e32eaec6727824d515e3758b1d839962f",
+        "invalid_public_fixture_constant_lines": [
+          213,
+          245,
+          313
+        ],
+        "classification": "Invalid public PEM envelopes with only AAAA three-zero-byte placeholder, not credential material"
+      }
+    ],
+    "unresolved_findings": 0,
+    "report_sha256": "231f486ea2ba5c95b955864c3fb182dc1be245dc4bfeb51f1a3dfcd6624d4ccf",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "a26e3e5a40c487d1a652f5b76c44f35e4fedeeaa4f53672812c960a09f155379",
+    "full_repository_or_image_scan": false
+  },
+  "root_source_fix_binding": [
+    {
+      "path": "scripts/migration/bortus-operator-mtls.py",
+      "bytes": 10539,
+      "sha256": "ff4b44fd76362890ef86cd80cef28d3f1f36ffd6d999da40f30add883ed2ac9d"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_operator_mtls.py",
+      "bytes": 18310,
+      "sha256": "00e0e5e4ef1ea66f0ba7c4918491f52e32eaec6727824d515e3758b1d839962f"
+    },
+    {
+      "path": "docs/BORTUS-OPERATOR-MTLS.md",
+      "bytes": 4020,
+      "sha256": "7b616f3e689d92345adf6a8e0275af9cda0674cc93342972ab285a8837bd772b"
+    }
+  ],
+  "artifact_bindings": {
+    "attempt1-observed-tool-result.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\attempt1-observed-tool-result.json",
+      "sha256": "8c63cc329bba8b8d658e15243f58ff4580464f8a7c0874c0a54301b11212d239",
+      "bytes": 382
+    },
+    "integration-verification.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\integration-verification.json",
+      "sha256": "0c90460f8100936ded1e08df9cbc9a1de1b5fd0ac1d24d32d70779762c652fca",
+      "bytes": 703
+    },
+    "live-readonly-probe-v2.py": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\live-readonly-probe-v2.py",
+      "sha256": "7a1190f592ce3ed6f84cc21e47ce4e72d9e212ac3b713c40e2ea47f703d2515a",
+      "bytes": 2752
+    },
+    "live-readonly-probe-v2.stderr": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\live-readonly-probe-v2.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "live-readonly-probe-v2.stdout": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\live-readonly-probe-v2.stdout",
+      "sha256": "ac32cb653f05fb8a98d10ff09e242e35a9bde3d47e052d493165fb6c47c49baa",
+      "bytes": 551
+    },
+    "live-readonly-probe-v2.terminal.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\live-readonly-probe-v2.terminal.json",
+      "sha256": "3abdd1d8540c256651fb25d157a705258d79f0d78481aad5522265ec0185bccf",
+      "bytes": 591
+    },
+    "live-readonly-probe.py": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\live-readonly-probe.py",
+      "sha256": "3d9950215ed4f3e86f1939dcc75ecb4006dd8df32037a761e62e73ac9de64655",
+      "bytes": 2801
+    },
+    "live-readonly-probe.stderr": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\live-readonly-probe.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "live-readonly-probe.stdout": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\live-readonly-probe.stdout",
+      "sha256": "3e9ad3b41d11626f58615b5478427fc0085fb006c4ac75db7e9066a764b80386",
+      "bytes": 546
+    },
+    "live-readonly-probe.terminal.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\live-readonly-probe.terminal.json",
+      "sha256": "2ec6b685d8f2a985cb06b7dceeda5c37877b05fc5e769a5905a28a4abc3fcb5f",
+      "bytes": 479
+    },
+    "root-final-scan.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\root-final-scan.json",
+      "sha256": "231f486ea2ba5c95b955864c3fb182dc1be245dc4bfeb51f1a3dfcd6624d4ccf",
+      "bytes": 763
+    },
+    "root-final-scan.stderr": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\root-final-scan.stderr",
+      "sha256": "a26e3e5a40c487d1a652f5b76c44f35e4fedeeaa4f53672812c960a09f155379",
+      "bytes": 79
+    },
+    "root-final-scan.stdout": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\root-final-scan.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "root-final-scan.terminal.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\root-final-scan.terminal.json",
+      "sha256": "81478adcb4a194e98826d1251c83f609ca908e37b820457c67cf2710d3f9b1dd",
+      "bytes": 2057
+    },
+    "root-kubeadm-fix-source-manifest.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\root-kubeadm-fix-source-manifest.json",
+      "sha256": "3f434c38a696019b28e69e028e7fc024f8d3c93b6002b17a7a418230aee135a2",
+      "bytes": 518
+    },
+    "root-wsl-kubeadm-fix.stderr": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\root-wsl-kubeadm-fix.stderr",
+      "sha256": "ea69d7354c99709165db63448df592d94040da6680b79fc9f84ca114fd425be1",
+      "bytes": 32048
+    },
+    "root-wsl-kubeadm-fix.stdout": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\root-wsl-kubeadm-fix.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "root-wsl-kubeadm-fix.terminal.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\root-wsl-kubeadm-fix.terminal.json",
+      "sha256": "d799ec0cab036116c6d6ab81140175fde05b8b5e486ba2766091c38fc8f3287f",
+      "bytes": 524
+    },
+    "root-wsl-tests.stderr": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\root-wsl-tests.stderr",
+      "sha256": "d3c104636aac2a90d153db7253fd1fd33da90876ca279280809ff7b1dff037ee",
+      "bytes": 31907
+    },
+    "root-wsl-tests.stdout": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\root-wsl-tests.stdout",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "root-wsl-tests.terminal.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-operator-mtls-20261011\\root-wsl-tests.terminal.json",
+      "sha256": "2b4c200257f047f568b67ac3990e4c89c0da269980961fc1030f6e3ab3e0f6a3",
+      "bytes": 722
+    }
+  },
+  "retained_failures": [
+    "Native parser exception context regression",
+    "Root verifier assumed two instead of three invalid public fixture constants (before patch)",
+    "Initial live adapter refusal for kubeadm @ context (no request sent)",
+    "Native/root unchanged default scanner exit1, individually reviewed invalid public fixture"
+  ],
+  "durable_live_watch_accepted": false,
+  "full_restore_or_whole_row_accepted": false,
+  "image_admission_rbac_live_release_accepted": false,
+  "performance_accepted": false,
+  "originals_retired": false
+}
