@@ -673,3 +673,21 @@ inert image for independent restore. Before forward schema migration,1438 must b
 removed from every active allowlist and verified refused. It is not a final KV
 compatible rollback image. Full-row production restore and live acceptance remain
 open; the newer ab8d handler source also needs final image qualification.
+
+
+## 2026-10-11 13:20 UTC: fresh handler production qualification independently verified
+
+[The ab8/be8 handoff](evidence/bortus-app-handler-production-ab8-20261011.json)
+passes one fresh Linux build, all four unchanged strict HTTP tests and13
+supplemental GET checks. Raw source/artifact bindings and unchanged retained
+compiled output were independently verified, with exact owned process/container
+closure. The three handlers remove redundant account reads without sharing
+middleware authorization state or changing mutations. This newer source still
+needs its final image; the live1438 writer is unchanged.
+
+The first legacy digest cache attempt stopped after the first node's tag command
+returned0: its second verification reused an exclusive journal filename. The
+actual exit1 and uncertain receipt are retained. Root inspected the remote
+receipt, source-after identity and local/remote wrapper closure. Other nodes
+were not attempted. A corrected fresh-owner operation needs separate review;
+the partial attempt is not adopted as three-node success or replayed.

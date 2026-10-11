@@ -318,3 +318,31 @@ This qualifies c29fc as an inert public-fixture runtime only. The newer ab8d
 application source needs its own final image qualification. No production-row
 restore, active admission, original PVC schema migration, app rollout, security,
 performance or live auth/UI/consumer acceptance follows from these probes.
+
+
+## Separate ab8 handler qualification
+
+The [independent handler/build review](../evidence/bortus-app-handler-production-ab8-20261011.json)
+binds immutable application sourceab8d450 and evidence-only publicationbe8e891.
+Three GET handlers use one fresh five-field account snapshot per handler:
+variables and Secret aliases avoid a redundant role query; auth/session avoids
+reading a full passwordHash-bearing account row. Middleware and handler
+freshness checks remain independent. Mutations, native Secret behavior and the
+production parser are unchanged by this patch. This is qualified application
+source in the separate worktree; the coordinator frontend and live1438 writer
+have not been replaced.
+
+One actual pinned LinuxNode22 run passed a fresh production build, the four
+original strict HTTP tests and13 supplemental affected-route checks. Root
+independently verifies333 raw source/test bindings,67 unchanged original tests,
+4262 unchanged compiled files,15 exact published originals and all11 original
+Linux artifacts (the ZIP also contains its added complete proof). The exact
+supervisor and all owned containers are absent. No image build, full unit rerun,
+paired performance or live auth/consumer acceptance is implied.
+
+The complete265-file raw production default scan has exit0/zero findings.
+The separate complete23-file publication default scan retains exit1 and one
+individually verified historical three-word public prose match, with no
+suppression or untriaged selected finding. Two older whole-history provenance
+gaps remain unresolved. Earlier partial scan/exporter failures remain preserved
+and unqualified. Final image and A07/A21 performance acceptance remain open.
