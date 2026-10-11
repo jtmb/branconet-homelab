@@ -349,9 +349,15 @@ test(
       assert.ok(!(await fluxCreate.text()).includes("private-command"));
       const failedRepo = await db.gitRepo.findUnique({ where: { name: "failed-source" } });
       assert.ok(failedRepo, "partial repository metadata must remain available for recovery");
+      await writeFile(path.join(fixture.bin, "hold-flux-discovery"), "synthetic bounded discovery hold");
       const fluxDelete = await request(`/api/flux/repos/${failedRepo.id}`, "DELETE", undefined, writer);
       assert.equal(fluxDelete.status, 200);
       const deletion = await fluxDelete.json();
+      try {
+        const duplicate = await request(`/api/flux/repos/${failedRepo.id}`, "DELETE", undefined, writer);
+        assert.equal(duplicate.status, 409);
+        assert.equal((await duplicate.json()).error, "Repository removal is already running");
+      } finally { await unlink(path.join(fixture.bin, "hold-flux-discovery")); }
       let progress;
       for (let attempt = 0; attempt < 20; attempt++) {
         progress = await (await request(`/api/flux/repos/${deletion.deleteId}/delete-progress`, "GET", undefined, writer)).json();
@@ -359,6 +365,41 @@ test(
         await new Promise(resolve => setTimeout(resolve, 100));
       }
       assert.ok(progress?.done && progress.error);
+      const syncSource = { apiVersion: "source.toolkit.fluxcd.io/v1", kind: "GitRepository", metadata: { name: "fixture-native-source", namespace: "flux-system", uid: "fixture-sync-uid", resourceVersion: "17" } };
+      await writeFile(path.join(fixture.bin, "gitrepository.json"), JSON.stringify(syncSource));
+      await writeFile(path.join(fixture.bin, "allow-flux-sync"), "synthetic annotation success");
+      try {
+        const sourceQuery = "?name=fixture-native-source&namespace=flux-system";
+        const sourceRoute = "/api/flux/repos/gr-fixture-sync-uid/sync";
+        const beforeSync = (await fixture.calls()).length;
+        assert.equal((await request(sourceRoute + sourceQuery, "POST", undefined, reader)).status, 403);
+        assert.equal((await request(sourceRoute + "?name=fixture-native-source&namespace=apps", "POST", undefined, writer)).status, 400);
+        assert.equal((await request(sourceRoute + "?name=" + encodeURIComponent("invalid;name") + "&namespace=flux-system", "POST", undefined, writer)).status, 400);
+        assert.equal((await fixture.calls()).length, beforeSync);
+        assert.equal((await request("/api/flux/repos/gr-wrong-uid/sync" + sourceQuery, "POST", undefined, writer)).status, 409);
+        const wrongCalls = (await fixture.calls()).slice(beforeSync);
+        assert.equal(wrongCalls.length, 1); assert(wrongCalls[0].includes("get") && !wrongCalls[0].includes("annotate"));
+        const beforeAccepted = (await fixture.calls()).length;
+        const accepted = await request(sourceRoute + sourceQuery, "POST", undefined, writer);
+        assert.equal(accepted.status, 200); assert.deepEqual(await accepted.json(), { success: true });
+        const acceptedCalls = (await fixture.calls()).slice(beforeAccepted);
+        assert.equal(acceptedCalls.length, 2);
+        assert(acceptedCalls[0].includes("get") && acceptedCalls[0].includes("fixture-native-source"));
+        assert(acceptedCalls[1].includes("annotate") && acceptedCalls[1].includes("--resource-version=17"));
+        assert(acceptedCalls[1].includes("--namespace") && acceptedCalls[1].includes("flux-system"));
+        assert.equal((await request(`/api/flux/repos/${failedRepo.id}/sync?name=different&namespace=flux-system`, "POST", undefined, writer)).status, 409);
+        await writeFile(path.join(fixture.bin, "gitrepository.json"), JSON.stringify({ ...syncSource, metadata: { ...syncSource.metadata, resourceVersion: undefined } }));
+        const beforeMalformed = (await fixture.calls()).length;
+        assert.equal((await request(sourceRoute + sourceQuery, "POST", undefined, writer)).status, 502);
+        assert.equal((await fixture.calls()).length, beforeMalformed + 1);
+        await writeFile(path.join(fixture.bin, "gitrepository.json"), JSON.stringify(syncSource));
+        await unlink(path.join(fixture.bin, "allow-flux-sync"));
+        const failedSync = await request(sourceRoute + sourceQuery, "POST", undefined, writer);
+        assert.equal(failedSync.status, 502); assert(!(await failedSync.text()).includes("private-command"));
+      } finally {
+        await unlink(path.join(fixture.bin, "allow-flux-sync")).catch(error => { if (error.code !== "ENOENT") throw error; });
+        await unlink(path.join(fixture.bin, "gitrepository.json"));
+      }
       assert.equal(progress.steps.find((step: { step: string }) => step.step === "flux_crds").status, "error");
       assert.ok(!JSON.stringify(progress).includes("private-command"));
       assert.ok(await db.gitRepo.findUnique({ where: { id: failedRepo.id } }), "failed deletion removed the recovery record");

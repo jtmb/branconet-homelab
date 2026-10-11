@@ -35,6 +35,15 @@ let releaseKvStatus: (() => void) | undefined;
 let delayKvCapabilities = false;
 let releaseKvCapabilities: (() => void) | undefined;
 const kvFixture = process.env.BORTUS_UI_KV_FIXTURE === "true";
+const fluxFixture = process.env.BORTUS_UI_FLUX_FIXTURE === "true";
+const fluxHolds = new Set<string>(), fluxFailures = new Set<string>();
+const fluxReleases = new Map<string, () => void>();
+const activeFlux = new Map<string, number>(), maxActiveFlux = new Map<string, number>();
+const fluxReadEvents: { id: number; key: string; event: string; at: number; active: number; writableFinished?: boolean }[] = [];
+let nextFluxRead = 0, droppedFluxEvents = 0;
+function fluxReadEvent(event: typeof fluxReadEvents[number]) {
+  if (fluxReadEvents.length < 2000) fluxReadEvents.push(event); else droppedFluxEvents++;
+}
 const guardedKvFixture = kvFixture && process.env.BORTUS_UI_KV_GUARDED_FIXTURE === "true";
 const fixtureMountId = "10000000-0000-4000-8000-000000000000", fixturePathId = "20000000-0000-4000-8000-000000000000";
 try {
@@ -56,6 +65,24 @@ try {
     pv: { items: [] }, sc: { items: [] }, "volumes.longhorn.io": { items: [] },
   };
   for (const [resource, body] of Object.entries(data)) await writeFile(path.join(fixture.bin, resource + ".json"), JSON.stringify(body));
+  if (fluxFixture) {
+    const repositories = Array.from({ length: 201 }, (_, index) => ({
+      apiVersion: "source.toolkit.fluxcd.io/v1", kind: "GitRepository",
+      metadata: { name: index < 5 ? `sort-repo-${index}` : `fixture-repo-${String(index).padStart(4, "0")}`, namespace: "flux-system", uid: `fixture-source-${index}`, resourceVersion: "17", creationTimestamp: created },
+      spec: { url: "https://example.invalid/" + "repository-path-".repeat(12) + "repo.git", ref: { branch: "long-branch-".repeat(20) } },
+      status: { lastHandledReconcileAt: index === 1 ? null : index === 2 ? "invalid-date" : index === 4 ? "2025-01-01T00:00:00Z" : created, artifact: { revision: index === 1 ? null : `main:fixture-${index}` }, conditions: [{ type: "Ready", status: "True" }] },
+    }));
+    const inventory = (count: number) => ({ entries: Array.from({ length: count }, (_, index) => ({ id: `apps_fixture-deployment-${String(index).padStart(4, "0")}_apps_Deployment`, v: "v1" })) });
+    const bundles = Array.from({ length: 201 }, (_, index) => ({ apiVersion: "kustomize.toolkit.fluxcd.io/v1", kind: "Kustomization",
+      metadata: { name: `fixture-bundle-${String(index).padStart(4, "0")}`, namespace: "flux-system", uid: `fixture-bundle-uid-${index}`, resourceVersion: "1", creationTimestamp: created },
+      spec: { sourceRef: { kind: "GitRepository", name: "sort-repo-0" }, path: "./" + "long-path/".repeat(30), targetNamespace: "apps" },
+      status: { lastHandledReconcileAt: created, conditions: [{ type: "Ready", status: "True" }], inventory: inventory(index === 0 ? 201 : index === 1 ? 2 : index === 2 ? 10 : 12) },
+    }));
+    for (const [resource, body] of Object.entries({ gitrepositories: { items: repositories }, gitrepository: repositories[0], kustomizations: { items: bundles }, kustomization: bundles[0], helmreleases: { items: [] }, events: { items: [] } }))
+      await writeFile(path.join(fixture.bin, resource + ".json"), JSON.stringify(body));
+    await writeFile(path.join(fixture.bin, "allow-flux-sync"), "synthetic annotation success only");
+    await writeFile(path.join(fixture.bin, "allow-flux-mutations"), "synthetic Flux CRD mutation success only");
+  }
   await writeFile(path.join(fixture.bin, "pv-table.txt"), "fixture-volume Retain Bound fixture-storage 512Mi fixture-claim " + created + "\n");
   const database = "file:" + path.join(dir, "ui.db").replaceAll("\\", "/");
   const kubeconfig = path.join(dir, "config.json");
@@ -134,8 +161,24 @@ try {
       const url = new URL(request.url ?? "/", origin);
       if (url.pathname === "/__fixture/status") {
         response.setHeader("Content-Type", "application/json");
-        response.end(JSON.stringify({ requests: Object.fromEntries(requestCounts), activeStreams, valueRequests, nativeObjects: native?.objects.size ?? 0, pendingKvStatus: !!releaseKvStatus, pendingKvCapabilities: !!releaseKvCapabilities }));
+        response.end(JSON.stringify({ requests: Object.fromEntries(requestCounts), activeStreams, valueRequests, nativeObjects: native?.objects.size ?? 0, pendingKvStatus: !!releaseKvStatus, pendingKvCapabilities: !!releaseKvCapabilities,
+          heldFluxReplies: [...fluxReleases.keys()], activeFluxReads: Object.fromEntries(activeFlux), maxActiveFluxReads: Object.fromEntries(maxActiveFlux), fluxReadEvents, droppedFluxEvents }));
         return;
+      }
+      if (fluxFixture && url.pathname === "/__fixture/flux-control" && request.method === "POST") {
+        let raw = ""; for await (const chunk of request) { raw += chunk; if (raw.length > 1024) { response.writeHead(413); response.end(); return; } }
+        const action = JSON.parse(raw).action;
+        if (action === "withdraw-admin" || action === "restore-admin") await db!.user.update({ where: { id: writer.id }, data: { engineAdmin: action === "restore-admin" } });
+        else if (action === "hold-hierarchy") fluxHolds.add("hierarchy");
+        else if (action === "hold-progress") fluxHolds.add("progress");
+        else if (action === "hold-sync") fluxHolds.add("sync");
+        else if (action === "hold-removal") fluxHolds.add("removal");
+        else if (action === "release-replies") for (const release of [...fluxReleases.values()]) release();
+        else if (action === "fail-hierarchy" || action === "restore-hierarchy") { if (action === "fail-hierarchy") fluxFailures.add("hierarchy"); else fluxFailures.delete("hierarchy"); }
+        else if (action === "hold-discovery") await writeFile(path.join(fixture.bin, "hold-flux-discovery"), "synthetic bounded discovery hold");
+        else if (action === "release-discovery") await rm(path.join(fixture.bin, "hold-flux-discovery"), { force: true });
+        else { response.writeHead(400); response.end(); return; }
+        response.writeHead(204); response.end(); return;
       }
       if (native && url.pathname === "/__fixture/native-status") {
         const object = native.objects.get("apps/editor-fixture");
@@ -180,6 +223,19 @@ try {
       }
       const requestKey = request.method + " " + url.pathname;
       requestCounts.set(requestKey, (requestCounts.get(requestKey) ?? 0) + 1);
+      const fluxPhase = url.pathname === "/api/flux/hierarchy" ? "hierarchy" : url.pathname.endsWith("/delete-progress") ? "progress" : url.pathname.endsWith("/sync") ? "sync" : request.method === "DELETE" && url.pathname.startsWith("/api/flux/repos/") ? "removal" : "";
+      if (fluxFixture && request.method === "GET" && url.pathname.startsWith("/api/flux/")) {
+        const readId = ++nextFluxRead;
+        const active = (activeFlux.get(requestKey) ?? 0) + 1; activeFlux.set(requestKey, active);
+        maxActiveFlux.set(requestKey, Math.max(maxActiveFlux.get(requestKey) ?? 0, active));
+        fluxReadEvent({ id: readId, key: requestKey, event: "start", at: Date.now(), active });
+        response.once("finish", () => fluxReadEvent({ id: readId, key: requestKey, event: "finish", at: Date.now(), active: activeFlux.get(requestKey) ?? 0, writableFinished: response.writableFinished }));
+        response.once("close", () => {
+          const remaining = Math.max(0, (activeFlux.get(requestKey) ?? 0) - 1); activeFlux.set(requestKey, remaining);
+          fluxReadEvent({ id: readId, key: requestKey, event: "close", at: Date.now(), active: remaining, writableFinished: response.writableFinished });
+        });
+      }
+      if (fluxFixture && fluxFailures.has(fluxPhase)) { response.writeHead(503, { "Content-Type": "application/json" }); response.end(JSON.stringify({ error: "Fixture Flux metadata unavailable" })); return; }
       if (request.method === "GET" && (url.pathname === "/api/secrets" && url.searchParams.has("key") || /^\/api\/kv\/paths\/[^/]+\/(?:versions\/[^/]+\/)?data$/.test(url.pathname))) valueRequests++;
       if (kvFixture && failKvMounts && request.method === "GET" && url.pathname === "/api/kv/mounts") { response.writeHead(503, { "Content-Type": "application/json" }); response.end(JSON.stringify({ error: "Fixture mount metadata unavailable" })); return; }
       if (kvFixture && failKvStatus && request.method === "GET" && url.pathname === `/api/kv/paths/${fixturePathId}/status`) { response.writeHead(503, { "Content-Type": "application/json" }); response.end(JSON.stringify({ error: "Fixture native status unavailable" })); return; }
@@ -201,7 +257,10 @@ try {
           result.once("end", end); result.once("close", end); response.once("close", end);
         }
         response.writeHead(result.statusCode ?? 502, result.headers);
-        if (kvFixture && delayKvStatus && request.method === "GET" && url.pathname === `/api/kv/paths/${fixturePathId}/status`) {
+        if (fluxFixture && fluxHolds.has(fluxPhase)) {
+          fluxHolds.delete(fluxPhase); result.pause();
+          fluxReleases.set(fluxPhase, () => { fluxReleases.delete(fluxPhase); if (!response.destroyed) result.pipe(response); else result.destroy(); });
+        } else if (kvFixture && delayKvStatus && request.method === "GET" && url.pathname === `/api/kv/paths/${fixturePathId}/status`) {
           delayKvStatus = false; result.pause(); releaseKvStatus = () => { releaseKvStatus = undefined; if (!response.destroyed) result.pipe(response); else result.destroy(); };
         } else if (kvFixture && delayKvCapabilities && request.method === "GET" && url.pathname === `/api/kv/paths/${fixturePathId}/capabilities`) {
           delayKvCapabilities = false; result.pause(); releaseKvCapabilities = () => { releaseKvCapabilities = undefined; if (!response.destroyed) result.pipe(response); else result.destroy(); };

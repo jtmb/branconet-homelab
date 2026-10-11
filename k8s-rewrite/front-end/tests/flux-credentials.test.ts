@@ -28,7 +28,7 @@ test("Flux conditions preserve structured readiness and withhold arbitrary contr
   assert.equal(publicFluxConditions([{ type: Object.create(null), status: "True" }])[0].type, "Other");
 });
 
-test("private Flux credentials use verified native bodies, never SQLite/argv/errors; imported auth is retained", async () => {
+test("private Flux credentials use verified native bodies, never SQLite/argv/errors; imported auth is retained", async context => {
   const dir = await mkdtemp(path.join(tmpdir(), "bortus-flux-credentials-"));
   const native = await nativeTlsFixture(dir), cli = await fakeKubectl(dir);
   const changed = { ...cli.env, DATABASE_URL: "file:" + path.join(dir, "metadata.db").replaceAll("\\", "/"), KUBECONFIG: native.config, BORTUS_SECRET_NAMESPACES: "flux-system" };
@@ -70,6 +70,44 @@ test("private Flux credentials use verified native bodies, never SQLite/argv/err
     assert.equal(detail.events[1].lastTimestamp, "2026-10-01T00:00:00.000Z"); assert.notEqual(detail.events[1].age, "Unknown");
     assert.equal((await db.gitRepo.findUniqueOrThrow({ where: { id: legacy.id } })).url, unsafeUrl);
     assert.equal(JSON.parse(await readFile(path.join(cli.bin, "gitrepository.json"), "utf8")).spec.secretRef.name, "imported-auth");
+
+    // Cleanup may elapse while discovery is still running. Its public progress
+    // and duplicate-admission fence must survive until the cascade is terminal.
+    const { removeRepo, getDeleteProgress } = await import("../src/lib/flux");
+    const retentionRepo = await db.gitRepo.create({ data: { name: "retention-fixture", namespace: "flux-system", url: "https://example.invalid/repo.git" } });
+    const cleanupCallbacks: Array<() => void> = [], cleanupTimers: NodeJS.Timeout[] = [];
+    const originalTimeout = globalThis.setTimeout;
+    const timeoutMock = context.mock.method(globalThis, "setTimeout", (callback: (...args: unknown[]) => void, delay?: number, ...args: unknown[]) => {
+      const timer = originalTimeout(callback, delay, ...args);
+      if (delay === 300000) { cleanupCallbacks.push(() => callback(...args)); cleanupTimers.push(timer); }
+      return timer;
+    });
+    await writeFile(path.join(cli.bin, "hold-flux-discovery"), "hold");
+    try {
+      assert.equal((await removeRepo(retentionRepo.id)).deleteId, retentionRepo.id);
+      assert.equal(getDeleteProgress(retentionRepo.id)?.done, false);
+      assert.equal(cleanupCallbacks.length, 1);
+      cleanupCallbacks[0]();
+      assert.equal(getDeleteProgress(retentionRepo.id)?.done, false);
+      assert.equal(cleanupCallbacks.length, 2);
+      const callsBeforeDuplicate = (await cli.calls()).length;
+      await assert.rejects(removeRepo(retentionRepo.id), error => error instanceof KubernetesCommandError && error.status === 409);
+      await assert.rejects(removeRepo("gr-alternate-public-id", retentionRepo.name, "flux-system"), error => error instanceof KubernetesCommandError && error.status === 409);
+      assert.equal((await cli.calls()).length, callsBeforeDuplicate);
+      await rm(path.join(cli.bin, "hold-flux-discovery"));
+      const deadline = Date.now() + 10000;
+      while (!getDeleteProgress(retentionRepo.id)?.done && Date.now() < deadline)
+        await new Promise(resolve => originalTimeout(resolve, 20));
+      assert.equal(getDeleteProgress(retentionRepo.id)?.done, true);
+      assert(getDeleteProgress(retentionRepo.id)?.error, "Synthetic mutation failure must remain terminal");
+      assert(await db.gitRepo.findUnique({ where: { id: retentionRepo.id } }), "Failed cascade must retain its row");
+      cleanupCallbacks[1]();
+      assert.equal(getDeleteProgress(retentionRepo.id), undefined, "Only terminal progress may expire");
+    } finally {
+      timeoutMock.mock.restore();
+      for (const timer of cleanupTimers) clearTimeout(timer);
+      await rm(path.join(cli.bin, "hold-flux-discovery"), { force: true });
+    }
   } finally {
     await db?.$disconnect(); await native.close();
     for (const [key, value] of Object.entries(prior)) { if (value === undefined) delete process.env[key]; else process.env[key] = value; }

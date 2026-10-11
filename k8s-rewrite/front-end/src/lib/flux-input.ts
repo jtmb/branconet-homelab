@@ -1,5 +1,15 @@
 import { KubernetesCommandError } from "./kubectl-client";
 
+/** kubectl normally collects pages; an incomplete discovery cannot establish empty children. */
+export function requireCompleteFluxList(value: any): void {
+  if (!value || typeof value !== "object" || Array.isArray(value) || !Array.isArray(value.items) || value.items.length > 10000
+    || value.items.some((item: unknown) => !item || typeof item !== "object" || Array.isArray(item))
+    || (value.metadata !== undefined && (!value.metadata || typeof value.metadata !== "object" || Array.isArray(value.metadata)))
+    || (value.metadata && ((value.metadata.continue !== undefined && value.metadata.continue !== "")
+      || (value.metadata.remainingItemCount !== undefined && value.metadata.remainingItemCount !== 0))))
+    throw new KubernetesCommandError(502, "Invalid or incomplete Flux resource list");
+}
+
 /** Repository locations are persisted/public metadata. Authentication belongs in a native Secret. */
 export function repositoryUrl(value: unknown): string {
   const invalid = () => new KubernetesCommandError(400, "Use a credential-free HTTPS or SSH repository URL; provide authentication separately");

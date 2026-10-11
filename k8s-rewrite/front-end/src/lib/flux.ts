@@ -7,11 +7,14 @@ import { writeFile, unlink } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
 import { randomUUID } from "crypto";
-import { repositoryUrl, publicRepositoryUrl, fluxReadiness, publicFluxConditions } from "./flux-input";
+import { repositoryUrl, publicRepositoryUrl, fluxReadiness, publicFluxConditions, requireCompleteFluxList } from "./flux-input";
 import { publicClusterMetadata } from "./cluster-metadata";
 
 async function kubectlJSON(args: readonly string[], timeout = 15000): Promise<any> {
-  return publicClusterMetadata(await rawKubectlJSON(args, timeout));
+  const value = await rawKubectlJSON(args, timeout);
+  const get = args.indexOf("get");
+  if (get >= 0 && ["gitrepositories", "kustomizations", "helmreleases"].includes(args[get + 1])) requireCompleteFluxList(value);
+  return publicClusterMetadata(value);
 }
 
 const FLUX_NAMESPACE = "flux-system";
@@ -69,9 +72,13 @@ export function getDeleteProgress(id: string): DeleteProgress | undefined {
   return deleteProgressMap.get(id);
 }
 
-// Clean up stale progress entries after 5 minutes
+// Keep active admission/progress intact; only completed entries are eligible for cleanup.
 function scheduleProgressCleanup(id: string) {
-  setTimeout(() => { deleteProgressMap.delete(id); }, 5 * 60 * 1000);
+  setTimeout(() => {
+    const progress = deleteProgressMap.get(id);
+    if (progress && !progress.done) scheduleProgressCleanup(id);
+    else deleteProgressMap.delete(id);
+  }, 5 * 60 * 1000);
 }
 
 // =============================================================================
@@ -240,8 +247,11 @@ export async function getFluxStatus(): Promise<FluxRepoStatus[]> {
 // Sync trigger
 // =============================================================================
 
-export async function triggerSync(name: string): Promise<{ success: boolean; error?: string }> {
+export async function triggerSync(name: string, expectedResourceVersion?: string): Promise<{ success: boolean; error?: string }> {
+  if (expectedResourceVersion !== undefined && (!expectedResourceVersion || expectedResourceVersion.length > 1024 || expectedResourceVersion.includes("\0")))
+    throw new KubernetesCommandError(400, "Invalid repository resource version");
   const cmd = ["annotate", "gitrepository", validateResourceName(name), `reconcile.fluxcd.io/requestedAt=${new Date().toISOString()}`, "--overwrite"];
+  if (expectedResourceVersion !== undefined) cmd.push(`--resource-version=${expectedResourceVersion}`);
   const result = await kubectlJSON( buildKubectlCmd(cmd));
   if (!result) {
     return { success: false, error: "Failed to trigger sync" };
@@ -277,7 +287,7 @@ export async function getFluxHierarchy(): Promise<FluxTreeNode[]> {
   const [gitReposRaw, kustomizationsRaw, helmReleasesRaw, dbRepos] = await Promise.all([
     kubectlJSON( buildKubectlCmd(["get", "gitrepositories", "-o", "json"])),
     kubectlJSON( buildKubectlCmd(["get", "kustomizations", "-o", "json"])),
-    kubectlJSON( ["--all-namespaces", "get", "helmreleases", "-o", "json"]).catch(() => null),
+    kubectlJSON( ["--all-namespaces", "get", "helmreleases", "-o", "json"]),
     prisma.gitRepo.findMany({ orderBy: { createdAt: "desc" } }),
   ]);
 
@@ -614,6 +624,9 @@ export async function removeRepo(
   validateResourceName(name);
   validateNamespace(ns);
   const deleteId = dbId || `gr-${name}`;
+  if (deleteProgressMap.get(deleteId)?.done === false || [...deleteProgressMap.values()].some(progress =>
+    !progress.done && progress.repoName === name && progress.namespace === ns))
+    throw new KubernetesCommandError(409, "Repository removal is already running");
 
   const steps = dbId
     ? [
@@ -850,12 +863,26 @@ async function performCascadeDelete(
 
 export async function syncRepo(
   id: string,
+  repoName?: string,
+  namespace?: string,
 ): Promise<{ success: boolean; error?: string }> {
+  if (namespace !== undefined && namespace !== FLUX_NAMESPACE)
+    throw new KubernetesCommandError(400, "Repository reconciliation requires the Flux namespace");
+  if (repoName !== undefined) validateResourceName(repoName);
   const repo = await prisma.gitRepo.findUnique({ where: { id } });
-  if (!repo) {
-    return { success: false, error: "Repository not found" };
+  if (repo) {
+    if (repoName !== undefined && repoName !== repo.name)
+      throw new KubernetesCommandError(409, "Repository identity changed. Refresh before reconciling");
+    return triggerSync(repo.name);
   }
-  return triggerSync(repo.name);
+  if (!repoName || !id.startsWith("gr-")) return { success: false, error: "Repository not found" };
+  const current = await kubectlJSON(buildKubectlCmd(["get", "gitrepository", repoName]));
+  if (current?.kind !== "GitRepository" || current?.metadata?.name !== repoName || current?.metadata?.namespace !== FLUX_NAMESPACE
+    || typeof current?.metadata?.uid !== "string" || !current.metadata.uid || typeof current?.metadata?.resourceVersion !== "string")
+    throw new KubernetesCommandError(502, "Invalid repository identity response");
+  if (id !== `gr-${current.metadata.uid}`)
+    throw new KubernetesCommandError(409, "Repository identity changed. Refresh before reconciling");
+  return triggerSync(repoName, current.metadata.resourceVersion);
 }
 
 // =============================================================================

@@ -21,6 +21,29 @@ function fixture() {
 }
 const flush = async () => { await Promise.resolve(); await Promise.resolve(); };
 
+test("visibility restoration and focus share the active fresh read; explicit invalidation still fences it", async () => {
+  const { store, requests, tick } = fixture();
+  const stop = store.subscribe("/metadata", () => {});
+  requests[0].resolve({ revision: "initial" }); await flush();
+  store.setVisible(false);
+  store.refreshActive();
+  tick(30000);
+  assert.equal(requests.length, 1);
+  store.setVisible(true);
+  store.refreshActive(); store.refreshActive();
+  assert.equal(requests.length, 2);
+  assert.equal(requests[1].signal.aborted, false);
+  store.invalidate();
+  assert.equal(requests[1].signal.aborted, true);
+  assert.equal(requests.length, 3);
+  requests[2].resolve({ revision: "after-mutation" }); await flush();
+  requests[1].resolve({ revision: "before-mutation" }); await flush();
+  assert.deepEqual(store.snapshot("/metadata").data, { revision: "after-mutation" });
+  store.refreshActive();
+  assert.equal(requests.length, 4, "Visible idle focus must obtain a new authoritative read");
+  stop(); assert.equal(requests[3].signal.aborted, true);
+});
+
 test("shared subscriptions never overlap polling; hidden/unmounted requests abort and late results cannot replace new state", async () => {
   const { store, requests, timers, tick } = fixture();
   const first = store.subscribe("/pods", () => {});

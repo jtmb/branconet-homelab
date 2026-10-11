@@ -37,7 +37,7 @@ const browserQueries = new QueryStore({
 });
 let subscribers = 0;
 function visibility() { browserQueries.setVisible(document.visibilityState !== "hidden"); }
-function focus() { if (document.visibilityState !== "hidden") browserQueries.invalidate(); }
+function focus() { if (document.visibilityState !== "hidden") browserQueries.refreshActive(); }
 function retainBrowser() {
   if (subscribers++ === 0) {
     visibility();

@@ -136,6 +136,12 @@ export class QueryStore {
       if (entry.listeners.size && this.visible) void this.run(url, entry);
     });
   }
+  /** Focus shares a current fresh read; explicit invalidation still replaces its generation. */
+  refreshActive() {
+    this.entries.forEach((entry, url) => {
+      if (this.visible && entry.listeners.size) void this.run(url, entry);
+    });
+  }
   clear(match: (url: string) => boolean = () => true) {
     this.entries.forEach((entry, url) => {
       if (!match(url)) return;

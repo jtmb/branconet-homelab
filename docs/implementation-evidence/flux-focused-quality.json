@@ -1,0 +1,25 @@
+{
+  "source": "15786222 plus Flux draft",
+  "startedAt": "2026-10-11T02:44:58.2076119Z",
+  "pid": 19272,
+  "checks": [
+    {
+      "command": "node node_modules/tsx/dist/cli.mjs --test tests/flux-credentials.test.ts tests/flux-list-completeness.test.ts tests/mutation-task.test.ts tests/query-store.test.ts tests/table-sort.test.ts",
+      "exitCode": 0,
+      "completedAt": "2026-10-11T02:45:03.8325781Z"
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "exitCode": 0,
+      "completedAt": "2026-10-11T02:45:07.3126067Z"
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js . --max-warnings=0",
+      "exitCode": 0,
+      "completedAt": "2026-10-11T02:45:12.8315092Z"
+    }
+  ],
+  "terminal": true,
+  "exitCode": 0,
+  "completedAt": "2026-10-11T02:45:12.8351206Z"
+}

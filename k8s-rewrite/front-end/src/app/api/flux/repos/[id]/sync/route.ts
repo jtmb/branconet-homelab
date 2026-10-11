@@ -2,7 +2,7 @@ import { clusterRoute } from "@/lib/cluster-http";
 import { NextRequest, NextResponse } from "next/server";
 import { syncRepo } from "@/lib/flux";
 import { requireOperator } from "@/lib/permissions";
-export async function POST(_request: NextRequest, { params }: {
+export async function POST(request: NextRequest, { params }: {
     params: Promise<{
         id: string;
     }>;
@@ -12,7 +12,8 @@ export async function POST(_request: NextRequest, { params }: {
         return auth;
     try {
         const { id } = await params;
-        const result = await syncRepo(id);
+        const url = new URL(request.url);
+        const result = await syncRepo(id, url.searchParams.get("name") ?? undefined, url.searchParams.get("namespace") ?? undefined);
         if (!result.success) {
             return NextResponse.json({ error: result.error }, { status: 400 });
         }
