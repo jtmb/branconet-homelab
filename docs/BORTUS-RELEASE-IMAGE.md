@@ -70,6 +70,8 @@ manifest or runtime digest. Successful completion records no qualified runtime
 digest and `deployed=false`, `runtime_accepted=false`. This helper has no run,
 deploy, export or preload API. Image scanning, runtime/migration/data acceptance,
 admission, distribution and release are separate coordinator gates.
+The separate [export/preload helper](BORTUS-RELEASE-STAGING.md) consumes this
+exact completed receipt and retains its own independent staging intents.
 
 The prior `build-bortus-image.py` binds a historical fixed image/source checkpoint;
 its evidence remains historical. This generic helper does not reinterpret that
