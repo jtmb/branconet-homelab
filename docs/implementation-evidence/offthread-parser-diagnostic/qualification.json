@@ -1,0 +1,1131 @@
+{
+  "capturedAt": "2026-10-11T12:30:04.220935+00:00",
+  "sourceCommit": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+  "baseHead": "55fdb44e5cc1f93db8f4bc821ad97f8c3a233ec8",
+  "scope": "ONE public-only mechanism diagnostic; modeled request slots/budget; no production edits/TLS/auth/endpoint benchmark/image/live acceptance",
+  "owner": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\offthread-parser-20261011-122212-18d3f5",
+  "actualOS": {
+    "harnessSHA256": "125b5b7f62a1da0249cef852d3218e020b392283d56709173d40952e53b744b8",
+    "startedUtc": "2026-10-11T12:27:59.3850386Z",
+    "pid": 39984,
+    "ownedPIDAbsent": true,
+    "reaped": true,
+    "completedUtc": "2026-10-11T12:28:07.1151952Z",
+    "nodeRuns": 1,
+    "actualOSExit": 0,
+    "timedOut": false
+  },
+  "elapsedMs": 7580.2551,
+  "cleanup": {
+    "producerExit": {
+      "exitCode": 0,
+      "forced": false
+    },
+    "parserExit": {
+      "exitCode": 0,
+      "forced": false
+    },
+    "producerJobs": 0,
+    "parserJobs": 0
+  },
+  "equivalence": {
+    "cases": 120,
+    "refusals": 95
+  },
+  "ownershipDeadlineControls": [
+    {
+      "mode": "inline",
+      "case": "Cancellation after accepted body/parse ownership fences late result",
+      "elapsedMs": 2.683599999999956,
+      "heldUntilSettlement": true,
+      "published": 0,
+      "activeAfter": 0,
+      "chargedBytes": 8533
+    },
+    {
+      "mode": "inline",
+      "case": "Post-parse original-budget clock crosses deadline",
+      "published": 0,
+      "chargedBytes": 8533
+    },
+    {
+      "mode": "inline",
+      "case": "Expired/pre-aborted budget starts no owned job",
+      "requestsStarted": 0
+    },
+    {
+      "mode": "worker",
+      "case": "Cancellation after accepted body/parse ownership fences late result",
+      "elapsedMs": 23.8904,
+      "heldUntilSettlement": true,
+      "published": 0,
+      "activeAfter": 0,
+      "chargedBytes": 8533
+    },
+    {
+      "mode": "worker",
+      "case": "Post-parse original-budget clock crosses deadline",
+      "published": 0,
+      "chargedBytes": 8533
+    },
+    {
+      "mode": "worker",
+      "case": "Expired/pre-aborted budget starts no owned job",
+      "requestsStarted": 0
+    },
+    {
+      "mode": "worker",
+      "case": "Actual deadline while parser owned keeps slot until reply; no publication",
+      "published": 0,
+      "activeAfter": 0,
+      "heldUntilSettlement": true
+    }
+  ],
+  "caps": {
+    "activeHeldRequests": 4,
+    "aggregateBodyBytes": 33554432,
+    "pageBytes": 4194304,
+    "acceptedItems": 10000,
+    "operationDeadlineMs": 15000,
+    "globalNodeDeadlineMs": 55000,
+    "cpuAffinityMask": 3,
+    "parserWorkers": 1,
+    "producerWorkers": 1,
+    "perRequestDeadlineMs": 8000,
+    "chunkCeiling": 16384,
+    "rawDepth": 32
+  },
+  "compiled": {
+    "inputSHA256": "b4c89a1d15b9fa408608ba5fdcb32e58510c2b34d8d5250d837fdf7ce383e4c0",
+    "outputSHA256": "f756ba7c89080fe8d847bc7989b12b01e236cd918d57cc28d517a98d17355eff",
+    "summaryRawSHA256": "2a552d7fd49608961e1569bec9cb3afd56fc630d1182872a5f4199997130ee61",
+    "productionParserBodyUnchanged": true
+  },
+  "copies": [
+    {
+      "path": "child-exit.json",
+      "bytes": 69,
+      "sha256": "599474b6dfc57a377ed4432ba6b30acc65c606da6506c9c372606346087d45e6"
+    },
+    {
+      "path": "cluster-secrets.ts",
+      "bytes": 12091,
+      "sha256": "a39eed8e5bba0c9813ec82e3b9f33ec9af0f9e7c282c1d3edcd4aa64a24865e1"
+    },
+    {
+      "path": "diagnostic.cjs",
+      "bytes": 18014,
+      "sha256": "125b5b7f62a1da0249cef852d3218e020b392283d56709173d40952e53b744b8"
+    },
+    {
+      "path": "exact-parser-input.ts",
+      "bytes": 17313,
+      "sha256": "b4c89a1d15b9fa408608ba5fdcb32e58510c2b34d8d5250d837fdf7ce383e4c0"
+    },
+    {
+      "path": "exact-parser.js",
+      "bytes": 19994,
+      "sha256": "f756ba7c89080fe8d847bc7989b12b01e236cd918d57cc28d517a98d17355eff"
+    },
+    {
+      "path": "handle.json",
+      "bytes": 342,
+      "sha256": "ae5fa04d3d4020538f0d0d44762aab3df9dc638d58868b2976c8d424a7725b9d"
+    },
+    {
+      "path": "inputs.json",
+      "bytes": 2600,
+      "sha256": "f62a6898ea4ba6cf4b3bdd8aee98a2d0f23b656dbf06f9b39b4f3a6d8171fd9d"
+    },
+    {
+      "path": "launch-frozen.json",
+      "bytes": 545,
+      "sha256": "f36c517bca66d65bd1a9ee07c61df852bad2deb5c3dca01b2be14328bca9a7c4"
+    },
+    {
+      "path": "launch.ps1",
+      "bytes": 2818,
+      "sha256": "ccba28cd039609620639b2c0e95a8945aa6282d81f79bfa81ffaa36228d9798e"
+    },
+    {
+      "path": "launcher-terminal.json",
+      "bytes": 318,
+      "sha256": "da7e2628581dc44004a636b77f0844c05ed460b19a1820c1fab057b3c11a5858"
+    },
+    {
+      "path": "node.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "node.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "progress.json",
+      "bytes": 58,
+      "sha256": "0ed3171ca7a221c11df26e2806166a46d913f9eb61756bc1eb5eb3beef1cff7c"
+    },
+    {
+      "path": "report.json",
+      "bytes": 175772,
+      "sha256": "c6e2e019644b64f323d9d8ff4b5242f1c82e6d4fbe9a025d5402e9c8ab79fbe6"
+    },
+    {
+      "path": "secret-ascii-span.ts",
+      "bytes": 765,
+      "sha256": "94eaa99e9acb826fb3d42c55e7921642bfbbc972aa5011f72ee8ff46abdbcd39"
+    },
+    {
+      "path": "secret-client.ts",
+      "bytes": 29393,
+      "sha256": "4de72da11f1bebb5614cc41b2ac35a90b50c031a06075224a4e65a4b707bdd32"
+    },
+    {
+      "path": "secret-summary-json.ts",
+      "bytes": 11859,
+      "sha256": "2a552d7fd49608961e1569bec9cb3afd56fc630d1182872a5f4199997130ee61"
+    },
+    {
+      "path": "started.json",
+      "bytes": 1885,
+      "sha256": "7486439c2c06d51dfcb9180120ebe11cd1f07b3de911f8c4e9dfdd79db88dcb0"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 23430,
+      "sha256": "f0b4d682880457accf23578638f94c4cf547ceea9dbb85bf48feb09cf25a137c"
+    }
+  ],
+  "docsReviewed": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "sha256": "00a52c258f628c649b6be8ceb27b22433eee83000ed5952880ad0ba01a570cc4"
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "sha256": "4e9a67bceda144dffbb0c46b9109fc1f3a050d8394805135007de879dca9af43"
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "sha256": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670"
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "sha256": "70f72f8cff246e9600c92fcf127684f9bc7c94b285017c5e12cfb55603fa4572"
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "sha256": "8ac2d47407146e257416b8583c42d3a44e192496ee1f90f3a9a3d0edb13a77c1"
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "sha256": "3ca55d9864f5317b88e600089768031cc98430494474f372b542177a1801354f"
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "sha256": "4a2ea759413d63609a1311eac663af7aa6cf47380f93a05c7bee97dd0ad20e7c"
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "sha256": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b"
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "sha256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412"
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "sha256": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8"
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "sha256": "24822682b9dbcd25fee521963800727850fe8300c75762f4dc01a410a821c338"
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "sha256": "a2a6d5bf0312084ad5428181302259bf5eb2dc5818607e27d52ea5110ae0e7e7"
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "sha256": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038"
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "sha256": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb"
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "sha256": "cb35a994799df82886f9577555e1f53c8057d512d831e54acb3144927fe7a58a"
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "sha256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b"
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "sha256": "4611f25463f0703a2844959e3854d52f2df933f3618bd5fe14d7e90e40564511"
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "sha256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0"
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "sha256": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92"
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "sha256": "5de3d74a922081bd07eab1b672b6ed6be45c3c1743f8928979cb3168f6cc3ad9"
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "sha256": "863e2c7f7f2f05aa958f5e980b5633092fb528592d133fd50fe659e6d6df592a"
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "sha256": "c491f1114a13cc791f9a5349b91d4e2e917cf67da7b92cd9d653cdb348cebde8"
+    }
+  ],
+  "result": "Rejected for production: one parser-worker mechanism does not materially improve200/1k and regresses long annotations and first-cold wall time; no retries or source change",
+  "coldStartupMs": 39.66420000000005,
+  "coldCompleteWallMs": [
+    112.14269999999999,
+    156.0321
+  ],
+  "summary": [
+    {
+      "profile": "public200",
+      "inline": {
+        "wallMs": {
+          "n": 7,
+          "median": 76.14370000000008,
+          "p95": 91.14300000000003,
+          "min": 74.50950000000012,
+          "max": 91.14300000000003,
+          "raw": [
+            76.14370000000008,
+            91.14300000000003,
+            76.44490000000042,
+            74.50950000000012,
+            75.10300000000007,
+            75.36810000000014,
+            77.14409999999998
+          ]
+        },
+        "callbackSumMs": {
+          "n": 7,
+          "median": 3.6078000000006796,
+          "p95": 6.990299999999479,
+          "min": 3.1601000000009662,
+          "max": 6.990299999999479,
+          "raw": [
+            4.17659999999978,
+            6.990299999999479,
+            3.476400000000467,
+            3.7737999999994827,
+            3.1601000000009662,
+            3.6078000000006796,
+            3.3249999999989086
+          ]
+        },
+        "largestCallbackMs": {
+          "n": 7,
+          "median": 0.4057999999999993,
+          "p95": 4.00610000000006,
+          "min": 0.38040000000000873,
+          "max": 4.00610000000006,
+          "raw": [
+            0.431999999999789,
+            4.00610000000006,
+            0.38040000000000873,
+            0.39210000000002765,
+            0.43560000000024957,
+            0.4057999999999993,
+            0.39580000000023574
+          ]
+        },
+        "readyDispatchMaxMs": {
+          "n": 7,
+          "median": 1.1240999999999985,
+          "p95": 4.658800000000156,
+          "min": 0.9704999999999018,
+          "max": 4.658800000000156,
+          "raw": [
+            1.185399999999845,
+            4.658800000000156,
+            0.9788999999996122,
+            1.5363999999999578,
+            0.9704999999999018,
+            1.1240999999999985,
+            1.078599999999824
+          ]
+        },
+        "loopGapMaxMs": {
+          "n": 7,
+          "median": 15.033300000000054,
+          "p95": 15.763000000000375,
+          "min": 14.661899999999605,
+          "max": 15.763000000000375,
+          "raw": [
+            14.661899999999605,
+            15.763000000000375,
+            14.755599999999959,
+            15.07529999999997,
+            14.805499999999938,
+            15.033300000000054,
+            15.352200000000266
+          ]
+        },
+        "chargedBytes": 91172,
+        "peakHeldSlots": 4
+      },
+      "worker": {
+        "wallMs": {
+          "n": 7,
+          "median": 76.82450000000017,
+          "p95": 93.43960000000015,
+          "min": 75.36869999999999,
+          "max": 93.43960000000015,
+          "raw": [
+            76.97539999999981,
+            93.43960000000015,
+            75.36869999999999,
+            77.87159999999994,
+            76.3153000000002,
+            76.82450000000017,
+            75.83879999999999
+          ]
+        },
+        "callbackSumMs": {
+          "n": 7,
+          "median": 0.18679999999994834,
+          "p95": 0.27980000000070504,
+          "min": 0.16980000000012296,
+          "max": 0.27980000000070504,
+          "raw": [
+            0.16980000000012296,
+            0.18630000000121072,
+            0.18679999999994834,
+            0.1841999999996915,
+            0.27980000000070504,
+            0.19529999999940628,
+            0.2581000000000131
+          ]
+        },
+        "largestCallbackMs": {
+          "n": 7,
+          "median": 0.026499999999941792,
+          "p95": 0.10239999999976135,
+          "min": 0.022300000000086584,
+          "max": 0.10239999999976135,
+          "raw": [
+            0.026499999999941792,
+            0.02400000000034197,
+            0.022300000000086584,
+            0.023199999999633292,
+            0.09830000000010841,
+            0.0522000000000844,
+            0.10239999999976135
+          ]
+        },
+        "readyDispatchMaxMs": {
+          "n": 7,
+          "median": 0.2830000000003565,
+          "p95": 0.46230000000014115,
+          "min": 0.22990000000027067,
+          "max": 0.46230000000014115,
+          "raw": [
+            0.28350000000000364,
+            0.2318000000000211,
+            0.42650000000003274,
+            0.46230000000014115,
+            0.2830000000003565,
+            0.2537999999999556,
+            0.22990000000027067
+          ]
+        },
+        "loopGapMaxMs": {
+          "n": 7,
+          "median": 15.066399999999703,
+          "p95": 15.751999999999953,
+          "min": 14.422599999999875,
+          "max": 15.751999999999953,
+          "raw": [
+            15.066399999999703,
+            15.751999999999953,
+            14.52579999999989,
+            15.330699999999979,
+            15.432800000000043,
+            14.426899999999932,
+            14.422599999999875
+          ]
+        },
+        "chargedBytes": 91172,
+        "peakHeldSlots": 4,
+        "requestRoundTripMedianMs": {
+          "n": 7,
+          "median": 0.9849999999996726,
+          "p95": 1.3299000000001797,
+          "min": 0.8000999999999294,
+          "max": 1.3299000000001797,
+          "raw": [
+            1.231499999999869,
+            1.3299000000001797,
+            0.9605999999998858,
+            0.9849999999996726,
+            0.8000999999999294,
+            1.2733000000002903,
+            0.830199999999877
+          ]
+        },
+        "totalWorkerParseMs": {
+          "n": 7,
+          "median": 4.381600000000162,
+          "p95": 8.22059999999965,
+          "min": 4.040300000000116,
+          "max": 8.22059999999965,
+          "raw": [
+            4.176799999999275,
+            8.22059999999965,
+            4.040300000000116,
+            4.381600000000162,
+            4.158399999999801,
+            4.513500000001841,
+            4.6041000000004715
+          ]
+        }
+      },
+      "wallMedianChangePct": 0.8940989208563455,
+      "wallP95ChangePct": 2.5197766147703415
+    },
+    {
+      "profile": "public334-small",
+      "inline": {
+        "wallMs": {
+          "n": 7,
+          "median": 89.44529999999986,
+          "p95": 108.36670000000004,
+          "min": 75.26980000000003,
+          "max": 108.36670000000004,
+          "raw": [
+            108.36670000000004,
+            76.5127,
+            89.44529999999986,
+            89.61720000000014,
+            75.26980000000003,
+            76.17660000000001,
+            91.21860000000015
+          ]
+        },
+        "callbackSumMs": {
+          "n": 7,
+          "median": 6.135299999999916,
+          "p95": 15.77940000000035,
+          "min": 5.158699999999044,
+          "max": 15.77940000000035,
+          "raw": [
+            15.77940000000035,
+            8.219699999999875,
+            6.135299999999916,
+            6.162299999999732,
+            5.521600000000035,
+            5.745899999999892,
+            5.158699999999044
+          ]
+        },
+        "largestCallbackMs": {
+          "n": 7,
+          "median": 0.5399999999999636,
+          "p95": 2.7532000000001062,
+          "min": 0.39840000000003783,
+          "max": 2.7532000000001062,
+          "raw": [
+            2.7532000000001062,
+            1.1484000000000378,
+            0.5399999999999636,
+            0.616399999999885,
+            0.4148000000000138,
+            0.4724999999998545,
+            0.39840000000003783
+          ]
+        },
+        "readyDispatchMaxMs": {
+          "n": 7,
+          "median": 1.623299999999972,
+          "p95": 4.33809999999994,
+          "min": 1.2970000000000255,
+          "max": 4.33809999999994,
+          "raw": [
+            4.33809999999994,
+            2.4698000000000775,
+            1.623299999999972,
+            1.6815999999998894,
+            1.3234999999999673,
+            1.4727000000000317,
+            1.2970000000000255
+          ]
+        },
+        "loopGapMaxMs": {
+          "n": 7,
+          "median": 15.692600000000084,
+          "p95": 16.573399999999765,
+          "min": 14.21810000000005,
+          "max": 16.573399999999765,
+          "raw": [
+            15.692600000000084,
+            14.543900000000122,
+            15.950199999999995,
+            15.907900000000154,
+            14.21810000000005,
+            14.54989999999998,
+            16.573399999999765
+          ]
+        },
+        "chargedBytes": 151310,
+        "peakHeldSlots": 4
+      },
+      "worker": {
+        "wallMs": {
+          "n": 7,
+          "median": 76.48170000000005,
+          "p95": 91.08389999999986,
+          "min": 75.66480000000001,
+          "max": 91.08389999999986,
+          "raw": [
+            77.125,
+            91.08389999999986,
+            76.48170000000005,
+            76.03960000000006,
+            76.42800000000011,
+            77.0793000000001,
+            75.66480000000001
+          ]
+        },
+        "callbackSumMs": {
+          "n": 7,
+          "median": 0.22589999999945576,
+          "p95": 0.48200000000019827,
+          "min": 0.1760999999996784,
+          "max": 0.48200000000019827,
+          "raw": [
+            0.22589999999945576,
+            0.48200000000019827,
+            0.27080000000023574,
+            0.20539999999959946,
+            0.20970000000011169,
+            0.35270000000036816,
+            0.1760999999996784
+          ]
+        },
+        "largestCallbackMs": {
+          "n": 7,
+          "median": 0.028699999999844295,
+          "p95": 0.27880000000004657,
+          "min": 0.01919999999972788,
+          "max": 0.27880000000004657,
+          "raw": [
+            0.028699999999844295,
+            0.27880000000004657,
+            0.05780000000004293,
+            0.020800000000008367,
+            0.02430000000003929,
+            0.16009999999982938,
+            0.01919999999972788
+          ]
+        },
+        "readyDispatchMaxMs": {
+          "n": 7,
+          "median": 0.29539999999997235,
+          "p95": 0.6262000000001535,
+          "min": 0.18650000000002365,
+          "max": 0.6262000000001535,
+          "raw": [
+            0.25,
+            0.4006000000001677,
+            0.6262000000001535,
+            0.2985999999998512,
+            0.18650000000002365,
+            0.29539999999997235,
+            0.266399999999976
+          ]
+        },
+        "loopGapMaxMs": {
+          "n": 7,
+          "median": 14.072799999999916,
+          "p95": 15.827399999999898,
+          "min": 13.296800000000076,
+          "max": 15.827399999999898,
+          "raw": [
+            13.296800000000076,
+            15.827399999999898,
+            14.326700000000073,
+            14.263900000000149,
+            14.072799999999916,
+            13.966699999999946,
+            13.333099999999831
+          ]
+        },
+        "chargedBytes": 151310,
+        "peakHeldSlots": 4,
+        "requestRoundTripMedianMs": {
+          "n": 7,
+          "median": 1.2856999999999061,
+          "p95": 2.044800000000123,
+          "min": 1.0558999999998377,
+          "max": 2.044800000000123,
+          "raw": [
+            1.8432999999999993,
+            2.0299999999999727,
+            1.2146000000000186,
+            1.2856999999999061,
+            1.0558999999998377,
+            1.2656999999999243,
+            2.044800000000123
+          ]
+        },
+        "totalWorkerParseMs": {
+          "n": 7,
+          "median": 7.313599999999951,
+          "p95": 10.032599999999093,
+          "min": 6.019800000000032,
+          "max": 10.032599999999093,
+          "raw": [
+            9.448699999999008,
+            10.032599999999093,
+            7.313599999999951,
+            6.486499999999751,
+            6.019800000000032,
+            7.766600000000608,
+            7.117999999999938
+          ]
+        }
+      },
+      "wallMedianChangePct": -14.49332720668368,
+      "wallP95ChangePct": -15.94844172610237
+    },
+    {
+      "profile": "public1000-long-annotations16KiB",
+      "inline": {
+        "wallMs": {
+          "n": 7,
+          "median": 142.35399999999936,
+          "p95": 155.05109999999968,
+          "min": 129.7453999999998,
+          "max": 155.05109999999968,
+          "raw": [
+            150.63410000000022,
+            138.4488999999994,
+            155.05109999999968,
+            142.35399999999936,
+            132.19730000000072,
+            143.60030000000006,
+            129.7453999999998
+          ]
+        },
+        "callbackSumMs": {
+          "n": 7,
+          "median": 101.20819999999912,
+          "p95": 111.1141000000016,
+          "min": 86.20889999999872,
+          "max": 111.1141000000016,
+          "raw": [
+            111.1141000000016,
+            107.36079999999856,
+            101.20819999999912,
+            105.54720000000088,
+            86.20889999999872,
+            97.87969999999859,
+            88.35799999999836
+          ]
+        },
+        "largestCallbackMs": {
+          "n": 7,
+          "median": 8.072300000000723,
+          "p95": 10.377799999999297,
+          "min": 6.880900000000111,
+          "max": 10.377799999999297,
+          "raw": [
+            8.828800000000228,
+            10.377799999999297,
+            7.457599999999729,
+            8.072300000000723,
+            7.1469999999999345,
+            8.173699999999371,
+            6.880900000000111
+          ]
+        },
+        "readyDispatchMaxMs": {
+          "n": 7,
+          "median": 18.672500000000582,
+          "p95": 20.87580000000071,
+          "min": 13.580799999999726,
+          "max": 20.87580000000071,
+          "raw": [
+            18.683399999999892,
+            19.3786999999993,
+            18.672500000000582,
+            18.019599999999627,
+            13.580799999999726,
+            20.87580000000071,
+            15.042999999999665
+          ]
+        },
+        "loopGapMaxMs": {
+          "n": 7,
+          "median": 41.384799999999814,
+          "p95": 62.64220000000023,
+          "min": 35.50280000000021,
+          "max": 62.64220000000023,
+          "raw": [
+            53.47440000000006,
+            62.64220000000023,
+            38.55210000000079,
+            53.092099999999846,
+            35.50280000000021,
+            37.09519999999975,
+            41.384799999999814
+          ]
+        },
+        "chargedBytes": 16790196,
+        "peakHeldSlots": 4
+      },
+      "worker": {
+        "wallMs": {
+          "n": 7,
+          "median": 152.808,
+          "p95": 171.5506000000005,
+          "min": 144.42749999999978,
+          "max": 171.5506000000005,
+          "raw": [
+            171.5506000000005,
+            155.77469999999994,
+            152.808,
+            144.42749999999978,
+            148.5751999999993,
+            157.67240000000038,
+            152.7586999999994
+          ]
+        },
+        "callbackSumMs": {
+          "n": 7,
+          "median": 6.72780000000148,
+          "p95": 9.787499999999454,
+          "min": 5.934399999998277,
+          "max": 9.787499999999454,
+          "raw": [
+            7.4231999999992695,
+            6.72780000000148,
+            6.491700000000492,
+            5.934399999998277,
+            6.77900000000227,
+            6.404600000001665,
+            9.787499999999454
+          ]
+        },
+        "largestCallbackMs": {
+          "n": 7,
+          "median": 0.597700000000259,
+          "p95": 3.5077000000001135,
+          "min": 0.4768000000003667,
+          "max": 3.5077000000001135,
+          "raw": [
+            1.5329000000001543,
+            0.5824999999995271,
+            0.5893999999998414,
+            0.4768000000003667,
+            0.9139000000004671,
+            0.597700000000259,
+            3.5077000000001135
+          ]
+        },
+        "readyDispatchMaxMs": {
+          "n": 7,
+          "median": 4.416199999999662,
+          "p95": 5.906600000000253,
+          "min": 3.569999999999709,
+          "max": 5.906600000000253,
+          "raw": [
+            4.115700000000288,
+            4.9179000000003725,
+            4.203300000000127,
+            5.906600000000253,
+            4.672800000000279,
+            3.569999999999709,
+            4.416199999999662
+          ]
+        },
+        "loopGapMaxMs": {
+          "n": 7,
+          "median": 14.988199999999779,
+          "p95": 18.981000000000677,
+          "min": 8.493800000000192,
+          "max": 18.981000000000677,
+          "raw": [
+            15.565300000000207,
+            17.019400000000132,
+            18.981000000000677,
+            13.894099999999526,
+            14.988199999999779,
+            10.63760000000002,
+            8.493800000000192
+          ]
+        },
+        "chargedBytes": 16790196,
+        "peakHeldSlots": 4,
+        "requestRoundTripMedianMs": {
+          "n": 7,
+          "median": 12.177300000000287,
+          "p95": 15.11160000000018,
+          "min": 11.848399999999856,
+          "max": 15.11160000000018,
+          "raw": [
+            15.11160000000018,
+            12.077800000000025,
+            12.177300000000287,
+            12.941399999999703,
+            11.963600000000042,
+            12.423900000000685,
+            11.848399999999856
+          ]
+        },
+        "totalWorkerParseMs": {
+          "n": 7,
+          "median": 102.89880000000085,
+          "p95": 112.8139000000001,
+          "min": 99.63380000000143,
+          "max": 112.8139000000001,
+          "raw": [
+            112.8139000000001,
+            110.54669999999987,
+            103.11130000000048,
+            102.89880000000085,
+            101.45099999999911,
+            99.63380000000143,
+            101.73609999999917
+          ]
+        }
+      },
+      "wallMedianChangePct": 7.343664385967852,
+      "wallP95ChangePct": 10.641330503299141
+    },
+    {
+      "profile": "public1000",
+      "inline": {
+        "wallMs": {
+          "n": 7,
+          "median": 89.59060000000045,
+          "p95": 104.52400000000034,
+          "min": 77.2177999999999,
+          "max": 104.52400000000034,
+          "raw": [
+            77.2177999999999,
+            89.3137999999999,
+            104.52400000000034,
+            89.9680999999996,
+            87.8761999999997,
+            102.5675999999994,
+            89.59060000000045
+          ]
+        },
+        "callbackSumMs": {
+          "n": 7,
+          "median": 14.149699999999484,
+          "p95": 15.463200000001052,
+          "min": 12.576999999996588,
+          "max": 15.463200000001052,
+          "raw": [
+            14.171899999998914,
+            14.149699999999484,
+            15.463200000001052,
+            13.457600000000639,
+            12.576999999996588,
+            14.31539999999859,
+            13.357899999999063
+          ]
+        },
+        "largestCallbackMs": {
+          "n": 7,
+          "median": 1.2001000000000204,
+          "p95": 1.280399999999645,
+          "min": 1.0131000000001222,
+          "max": 1.280399999999645,
+          "raw": [
+            1.0425000000000182,
+            1.262699999999768,
+            1.2622999999998683,
+            1.2001000000000204,
+            1.0131000000001222,
+            1.280399999999645,
+            1.1845000000002983
+          ]
+        },
+        "readyDispatchMaxMs": {
+          "n": 7,
+          "median": 3.0372999999999593,
+          "p95": 3.649000000000342,
+          "min": 2.476599999999962,
+          "max": 3.649000000000342,
+          "raw": [
+            2.789099999999962,
+            3.0949999999998,
+            3.4301000000000386,
+            3.0372999999999593,
+            2.476599999999962,
+            3.649000000000342,
+            2.8703999999997905
+          ]
+        },
+        "loopGapMaxMs": {
+          "n": 7,
+          "median": 15.435599999999795,
+          "p95": 16.911300000000665,
+          "min": 13.364700000000084,
+          "max": 16.911300000000665,
+          "raw": [
+            13.364700000000084,
+            15.271899999999732,
+            16.090799999999945,
+            15.435599999999795,
+            14.820700000000215,
+            15.72019999999975,
+            16.911300000000665
+          ]
+        },
+        "chargedBytes": 450196,
+        "peakHeldSlots": 4
+      },
+      "worker": {
+        "wallMs": {
+          "n": 7,
+          "median": 90.60730000000058,
+          "p95": 104.28189999999995,
+          "min": 89.44910000000073,
+          "max": 104.28189999999995,
+          "raw": [
+            90.18060000000014,
+            90.5608000000002,
+            91.64669999999978,
+            104.28189999999995,
+            90.66290000000026,
+            90.60730000000058,
+            89.44910000000073
+          ]
+        },
+        "callbackSumMs": {
+          "n": 7,
+          "median": 0.2643999999991138,
+          "p95": 0.38140000000021246,
+          "min": 0.2510999999994965,
+          "max": 0.38140000000021246,
+          "raw": [
+            0.25329999999985375,
+            0.2510999999994965,
+            0.3267000000000735,
+            0.38140000000021246,
+            0.251100000002225,
+            0.2643999999991138,
+            0.32989999999972497
+          ]
+        },
+        "largestCallbackMs": {
+          "n": 7,
+          "median": 0.035600000000158616,
+          "p95": 0.15000000000009095,
+          "min": 0.022999999999683496,
+          "max": 0.15000000000009095,
+          "raw": [
+            0.022999999999683496,
+            0.024399999999786814,
+            0.06979999999975917,
+            0.15000000000009095,
+            0.02400000000034197,
+            0.035600000000158616,
+            0.061599999999998545
+          ]
+        },
+        "readyDispatchMaxMs": {
+          "n": 7,
+          "median": 0.22109999999975116,
+          "p95": 0.29359999999996944,
+          "min": 0.17619999999988067,
+          "max": 0.29359999999996944,
+          "raw": [
+            0.20730000000003201,
+            0.20029999999997017,
+            0.22109999999975116,
+            0.2697000000002845,
+            0.17619999999988067,
+            0.29359999999996944,
+            0.2842000000000553
+          ]
+        },
+        "loopGapMaxMs": {
+          "n": 7,
+          "median": 15.655999999999949,
+          "p95": 16.109199999999873,
+          "min": 15.330500000000029,
+          "max": 16.109199999999873,
+          "raw": [
+            15.330500000000029,
+            16.109199999999873,
+            15.614800000000287,
+            16.07860000000028,
+            15.518799999999828,
+            15.655999999999949,
+            16.09400000000005
+          ]
+        },
+        "chargedBytes": 450196,
+        "peakHeldSlots": 4,
+        "requestRoundTripMedianMs": {
+          "n": 7,
+          "median": 2.6660000000001673,
+          "p95": 2.976599999999962,
+          "min": 2.4243999999998778,
+          "max": 2.976599999999962,
+          "raw": [
+            2.4288000000001375,
+            2.6660000000001673,
+            2.976599999999962,
+            2.7217000000000553,
+            2.7314000000005763,
+            2.558600000000297,
+            2.4243999999998778
+          ]
+        },
+        "totalWorkerParseMs": {
+          "n": 7,
+          "median": 15.993599999999788,
+          "p95": 17.26330000000098,
+          "min": 15.287299999996321,
+          "max": 17.26330000000098,
+          "raw": [
+            15.49329999999918,
+            16.414600000000064,
+            17.26330000000098,
+            16.634599999998954,
+            15.993599999999788,
+            15.913399999999456,
+            15.287299999996321
+          ]
+        }
+      },
+      "wallMedianChangePct": 1.1348288771368065,
+      "wallP95ChangePct": -0.23162144579272903
+    }
+  ],
+  "limitations": [
+    "Timer-only producer runs on a distinct worker so inline endpoint blocking cannot delay the producer itself; IPC body delivery is common to both modes. No actual TLS, SDK authentication, API, KubeConfig, native retries or HTTP serialization is modeled.",
+    "One parser worker and one producer worker share the same two-CPU affinity. No production process pool, source modification, credential/value cache or changed frozen benchmark.",
+    "Full exact metadata is cloned back from parser worker, including long public annotation strings; no DTO/unknown-field loss. Body bytes charged once before buffering; copying can transiently duplicate memory and is not a32MiB RSS promise.",
+    "Namespace jobs hold four slots through full parse and post-parse deadline checks; callbacks, samples, IPC and producer instrumentation add overhead. No result establishes A07/A21 or explains the full34ms endpoint gap.",
+    "Cancellation/deadline controls model parse ownership and late reply refusal; they do not replace real SDK/socket cancellation or final integrated HTTP tests.",
+    "Windows1ms timer observations often follow roughly15ms cadence; no Linux endpoint scheduling/GC attribution from modeled producer/IPC timings",
+    "Only first334 cold operation observed; worker startup is a single retained observation, no startup percentile",
+    "The original control label expired/pre-aborted executes an expired-budget check, not an independent pre-aborted-start test. Accepted-body cancellation and real pending-worker deadline have distinct actual controls.",
+    "Worker callbackSyncMs measures post-message synchronous work, not all inbound structured-clone CPU. Round-trip includes queue/copy/parse; intervals overlap and are not summed into totalCPU."
+  ],
+  "performanceAcceptance": false
+}
