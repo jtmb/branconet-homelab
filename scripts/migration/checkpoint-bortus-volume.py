@@ -105,10 +105,10 @@ def checkpoint_directory():
     require(os.name == 'posix', 'POSIX checkpoint runtime required')
     fd = os.open(RUNTIME, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
     try:
+        info = os.fstat(fd)
+        require(info.st_uid == os.getuid() and stat.S_IMODE(info.st_mode) & 0o022 == 0,
+                'Owned non-writable runtime anchor required')
         for child in ('recovery', 'bortus-checkpoints'):
-            info = os.fstat(fd)
-            require(info.st_uid == os.getuid() and stat.S_IMODE(info.st_mode) == 0o700,
-                    'Protected checkpoint parent required')
             try:
                 os.mkdir(child, mode=0o700, dir_fd=fd)
             except FileExistsError:

@@ -186,6 +186,24 @@ class ColdJournalTests(unittest.TestCase):
                 journal.close()
                 self.assertEqual(foreign_inode, inode(directory / name))
 
+    def test_owned_readable_runtime_anchor_keeps_recovery_private_without_chmod(self):
+        with tempfile.TemporaryDirectory() as parent:
+            runtime = pathlib.Path(parent)
+            runtime.chmod(0o755)  # The actual operator runtime uses this mode.
+            with mock.patch.object(module, 'RUNTIME', runtime):
+                directory = module.checkpoint_directory()
+            self.assertEqual(0o755, stat.S_IMODE(runtime.stat().st_mode))
+            self.assertEqual(0o700, stat.S_IMODE((runtime / 'recovery').stat().st_mode))
+            self.assertEqual(0o700, stat.S_IMODE(directory.stat().st_mode))
+        for mode in (0o775, 0o757):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory() as parent:
+                runtime = pathlib.Path(parent)
+                runtime.chmod(mode)
+                with mock.patch.object(module, 'RUNTIME', runtime):
+                    with self.assertRaises(RuntimeError):
+                        module.checkpoint_directory()
+                self.assertFalse((runtime / 'recovery').exists())
+
     def test_replaced_run_directory_preserves_foreign_lock_and_closes_handles(self):
         _, memory, _ = fixtures.prepared()
         with tempfile.TemporaryDirectory() as parent:
