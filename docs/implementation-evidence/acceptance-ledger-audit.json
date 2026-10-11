@@ -31,14 +31,15 @@
       "id": "A01",
       "finding": "writer invariant",
       "originalValidation": "A concurrency regression must attempt cross-demotion, cross-deletion and mixed changes repeatedly, assert at least one writer remains, verify rejected changes return a defined conflict/error, and retain self-change restrictions. Use disposable SQLite only.",
-      "localCompletedScope": "Twelve independent-client SQLite cross-demotion/delete/mixed races retain one writer and engine administrator; self-change restrictions and fixed rejected outcomes pass.",
+      "localCompletedScope": "Twelve independent-client SQLite cross-demotion/delete/mixed races retain one writer and engine administrator; self-change restrictions and fixed rejected outcomes pass. Final FIFO source also passes six actual two-process cross-demotion/delete/mixed SQLite races, demonstrating SQL authority independently of each process queue.",
       "stillRequired": "Exact image forward-migration/restart preservation and guarded deployment verification remain separate. No new live concurrency test is required by the original disposable-only validation.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/accounts.test.ts",
         "k8s-rewrite/front-end/src/lib/account-store.ts"
       ],
       "evidence": [
-        "combined-c29fc8c/qualification.json"
+        "combined-c29fc8c/qualification.json",
+        "account-fifo-full/qualification.json"
       ],
       "overallDeliveredAcceptancePassed": false
     },
@@ -67,19 +68,25 @@
       "id": "A03",
       "finding": "bootstrap",
       "originalValidation": "Concurrent distinct and duplicate usernames on an empty DB must leave exactly one bootstrap writer. Repeat with registration explicitly open/closed and with the AppSetting override; test uniqueness failures without leaking internal DB errors.",
-      "localCompletedScope": "Six distinct empty-DB registrations in both closed/open modes leave one writer; duplicate username returns409; four production HTTP registrations cover closed bootstrap. Material FIFO candidate now passes the original named strict403 case, all ten distinct/duplicate environment/AppSetting permutations, and six actual independent-process last-writer/admin SQL races; focused11tests/types/lint passed with original1GiB types OOM retained.",
-      "stillRequired": "Fresh coherent full functional/build/fourHTTP qualification of FIFO source, exact image bootstrap/preservation and remaining delivered acceptance. The prior busy503 failure is retained; focused ten-case result uses unchanged403/409 expectations, not503 acceptance.",
+      "localCompletedScope": "Final branded FIFO source passes all ten unchanged concurrent distinct/duplicate empty-DB environment/AppSetting permutations with exactly one bootstrap writer/admin, complete matching policies and strict403/409 refusals. Queue saturation/expiry/fault/fresh actor and genuine module-copy checks pass; six actual independent-process SQL races retain last-writer/admin invariants. Fresh Linux235-unit/build/lint/type/fourHTTP qualification passed; original busy503 and1GiB types OOM failures remain retained.",
+      "stillRequired": "Exact final-image bootstrap/forward-schema/restart preservation and guarded delivered acceptance remain separate. The original local registration permutations are now established with unchanged403/409 expectations;503 is not accepted as a substitute.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/accounts.test.ts",
         "k8s-rewrite/front-end/tests/http.integration.ts",
-        "k8s-rewrite/front-end/src/lib/account-store.ts"
+        "k8s-rewrite/front-end/src/lib/account-store.ts",
+        "k8s-rewrite/front-end/src/lib/account-change-queue.ts",
+        "k8s-rewrite/front-end/tests/account-registration.test.ts",
+        "k8s-rewrite/front-end/tests/account-process.test.ts",
+        "k8s-rewrite/front-end/tests/account-queue.test.ts"
       ],
       "evidence": [
         "combined-c29fc8c/qualification.json",
         "administration-ui.json",
         "acceptance-supplement/assessment.json",
         "a03-causal/assessment.json",
-        "account-fifo/assessment.json"
+        "account-fifo/assessment.json",
+        "account-fifo-brand/assessment.json",
+        "account-fifo-full/qualification.json"
       ],
       "overallDeliveredAcceptancePassed": false
     },
@@ -943,5 +950,13 @@
     "zeroSecrets": true,
     "fixableAllKubectl": 19,
     "acceptance": "open; holder-only assessment not transferable"
+  },
+  "fifoFunctionalQualification": {
+    "sourceCommit": "a48601ae69dfacd3812ba72c3b668ccb891ed552",
+    "unitPassed": 235,
+    "httpPassed": 4,
+    "evidence": "account-fifo-full/qualification.json",
+    "historicalBindingsUnchanged": true,
+    "scope": "Material FIFO and final branded revision; no image/live/performance acceptance"
   }
 }
