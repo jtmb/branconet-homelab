@@ -1,4 +1,5 @@
 import type { Prisma, PrismaClient } from "@prisma/client";
+import { accountChangeQueue, isAccountQueueBusy } from "./account-change-queue";
 
 export class AccountError extends Error {
   constructor(public readonly status: number, message: string) { super(message); }
@@ -15,7 +16,14 @@ export class AccountStore {
     return (await client.appSetting.findUnique({ where: { key: "allow_registration" } }))?.value === "true";
   }
 
-  private async serialized<T>(operation: (tx: Prisma.TransactionClient) => Promise<T>): Promise<T> {
+  private serialized<T>(operation: (tx: Prisma.TransactionClient) => Promise<T>): Promise<T> {
+    return accountChangeQueue().run(() => this.databaseTransaction(operation)).catch(error => {
+      if (isAccountQueueBusy(error)) throw new AccountError(503, "Account change is busy; retry shortly");
+      throw error;
+    });
+  }
+
+  private async databaseTransaction<T>(operation: (tx: Prisma.TransactionClient) => Promise<T>): Promise<T> {
     for (let attempt = 0; attempt < 4; attempt++) {
       try {
         return await this.db.$transaction(async (tx) => {

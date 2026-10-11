@@ -67,8 +67,8 @@
       "id": "A03",
       "finding": "bootstrap",
       "originalValidation": "Concurrent distinct and duplicate usernames on an empty DB must leave exactly one bootstrap writer. Repeat with registration explicitly open/closed and with the AppSetting override; test uniqueness failures without leaking internal DB errors.",
-      "localCompletedScope": "Six distinct empty-DB registrations in both closed/open modes leave one writer; duplicate username returns409; four production HTTP registrations cover closed bootstrap.",
-      "stillRequired": "A03 first closed/missing-setting/distinct six-request case reproducibly fails required403:1 fulfilled,5 refusals (403,503,503,503,403), with one writer/effective administrator/policy. The fixed busy503 retry exhaustion is not accepted as403. Exact inner Prisma subtype remains unretained. Correct the demonstrated liveness/refusal defect, then qualify all ten original distinct/duplicate AppSetting/environment cases; final image bootstrap/preservation remains separate.",
+      "localCompletedScope": "Six distinct empty-DB registrations in both closed/open modes leave one writer; duplicate username returns409; four production HTTP registrations cover closed bootstrap. Material FIFO candidate now passes the original named strict403 case, all ten distinct/duplicate environment/AppSetting permutations, and six actual independent-process last-writer/admin SQL races; focused11tests/types/lint passed with original1GiB types OOM retained.",
+      "stillRequired": "Fresh coherent full functional/build/fourHTTP qualification of FIFO source, exact image bootstrap/preservation and remaining delivered acceptance. The prior busy503 failure is retained; focused ten-case result uses unchanged403/409 expectations, not503 acceptance.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/accounts.test.ts",
         "k8s-rewrite/front-end/tests/http.integration.ts",
@@ -78,7 +78,8 @@
         "combined-c29fc8c/qualification.json",
         "administration-ui.json",
         "acceptance-supplement/assessment.json",
-        "a03-causal/assessment.json"
+        "a03-causal/assessment.json",
+        "account-fifo/assessment.json"
       ],
       "overallDeliveredAcceptancePassed": false
     },
