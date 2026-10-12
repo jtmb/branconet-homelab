@@ -2,6 +2,12 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
 
+## 2026-10-12: source export cleared and phase callback integrated
+
+The [transparent compiler pin correction](evidence/bortus-header-pins-root-20261012.json) at `18c86a7` keeps all four complete public checksums and verifier behavior, with nine passing controls and identical native ELF. The unchanged exporter now accepts272 raw production files with its default scan, without exclusions. The prior a00 comparison remains a failed baseline-only build with zero candidate measurements. A distinct fresh original comparison is running; performance and final-image acceptance remain pending.
+
+The [integrated phase producer](evidence/bortus-quiescent-phase-root-20261012.json) passes19 local controls on176 unchanged private files. It combines fresh guards/watch fences with Ready schema before stop and a pinned authenticated archive-schema receipt after capture. Root still must supply actual image/source/publication authority and dispatch. No production writer stop or forward entrypoint has occurred.
+
 ## 2026-10-12: corrected app source and SQLite NAS transport reviewed
 
 [Root source review](evidence/bortus-app-source-root-review-20261012.json) verifies350 raw frontend blobs/modes and744 retained originals, plus the eight-file CI HOME correction at `a00baa8`. The user-approved eight-request cap keeps the original body/item/deadline/namespace/privacy limits. Default scans retain their public-digest/prose findings with zero untriaged items and no exclusions. [Fresh fullfunctional checks](evidence/bortus-app-fullfunctional-root-20261012.json) pass build, lint, fresh types,267 units and six integration controls. All370 originals and4263 compiled bytes are independently verified. Executed input bytes are four raw-exact and346 CRLF-to-LF equivalent files, each actual0664; this is a working-EOL qualification, not raw-Git byte execution. Final paired performance, image and live acceptance remain separate.

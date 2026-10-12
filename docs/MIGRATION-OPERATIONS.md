@@ -950,6 +950,13 @@ for original-lease reads and durable once-only CAS dispatches guarded by the act
 continuous Observer. This adds no CLI or live authority and changes no existing
 Ready/cold default; phase/schema/image/guard producers remain separately required.
 
+The [separate phase producer](BORTUS-QUIESCENT-PHASE.md) now supplies canonical
+six-guard reads, unchanged Ready-before-stop schema receipts and static authenticated
+latest-capture schema proof with fresh zero-writer/observer fences. Actual root
+source/image/publication authority remains an explicit callback and must be wired
+to current receipt bytes and fresh cache metadata before use; local controls do not
+accept a final image, latest-data capture or forward migration.
+
 
 The separate [custom kubectl security build contract](BORTUS-KUBECTL-SECURITY-BUILD.md)
 consumes pinned upstream1.37.1 source and Go1.26.9 archives, with reviewed

@@ -74,6 +74,12 @@ This preparation has no CLI and grants no live authorization. Root still must
 wire and qualify the actual durable control-watch producer, schema-only inert
 reader, image/guard validation and final forward/rollback execution.
 
+The separate [phase producer](BORTUS-QUIESCENT-PHASE.md) supplies the exact callback
+packet without changing this core. Its authenticated captured-schema SHA remains
+stable across both forward checks; fresh guard/source/watch reads confirm the
+explicit phase pins. Root-owned image/publication proof and actual launch remain
+required. Ready schema collection is unchanged before stop.
+
 The separate [continuous control observer](BORTUS-QUIESCENT-WATCH.md) supplies
 the borrowed trace through actual verified TLS streams and fsynced metadata.
 Its controlled local fixtures remain separate from live source continuity.

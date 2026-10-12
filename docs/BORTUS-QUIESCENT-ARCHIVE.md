@@ -89,6 +89,11 @@ same physical storage remain established. It does not prove original rows,
 live Ready status, forward execution or recovery acceptance. The trusted root
 phase callback must independently bind image, guards and the actual receipt.
 
+The separate [phase producer](BORTUS-QUIESCENT-PHASE.md) performs this schema
+authentication once after captured-zero, then pins the static receipt/ciphertext
+and repeats fresh zero-writer/source/watch checks. This avoids a second new schema
+receipt during entrypoint-pending and preserves the core's identical-packet check.
+
 
 Root independently qualified the integrated shared graph on `1daea8f`: [65 scoped controls passed](../evidence/bortus-quiescent-composition-root-20261011.json) without skips in 14.251 seconds. Frozen working sources remain unchanged, and the test supervisor is absent. Actual local TLS/age/SQLite fixtures use mocked kubectl/SSH; this is local composition acceptance and does not authorize or prove live latest-data capture or forward migration.
 

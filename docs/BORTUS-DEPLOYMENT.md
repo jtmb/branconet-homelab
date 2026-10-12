@@ -26,6 +26,11 @@ All370 originals and4263 compiled bytes are verified. Git archive applied EOL
 conversion: four executed files are raw-exact,346 are CRLF-to-LF equivalent and
 all350 actual source modes are0664. The original records remain intact; no raw-Git
 byte-execution claim follows from this working-EOL qualification.
+The child candidate `18c86a7` changes only the compiler’s public header-pin
+representation; its full checksums, verifier and resulting ELF remain identical.
+[Root pin/export review](../evidence/bortus-header-pins-root-20261012.json) passes
+nine focused controls and the unchanged272-file raw source exporter/default scan.
+The original performance comparison is now running on that source.
 This source review does not establish the final image, hosted CI, performance or
 live release. Production remains on its original writer until those checks and
 latest-data recovery pass.

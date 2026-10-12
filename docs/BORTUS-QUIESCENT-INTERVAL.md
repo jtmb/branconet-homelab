@@ -59,5 +59,10 @@ compatible rollback remain separate root-owned producers and acceptance gates.
 Controlled local children and TLS observers qualify the transport contract only;
 they do not authorize live capture or prove production continuity.
 
+The separate [phase producer](BORTUS-QUIESCENT-PHASE.md) now composes the existing
+Ready-before-stop and authenticated archive-after-capture schema producers with
+fresh canonical guard reads and the borrowed observer. Root still supplies actual
+source/image/publication authority; the interval client's transport is unchanged.
+
 
 The [root integrated interval-client qualification](../evidence/bortus-quiescent-interval-root-20261011.json) verifies all eight raw native files and52 original artifacts, then passes81 scoped controls without skips in20.074 seconds against current frozen root dependencies. Durable pending intents, bounded IO/owned child closure, observer prerequisites, exact UID/RV controls and no replay are enforced by the new separate adapter; inherited Ready/default clients remain unchanged. Actual local TLS observers and public controlled children qualify composition only. Root observed the supervisor absent and all source hashes unchanged. No live capture/forward entrypoint was dispatched; actual phase-specific image/schema/guard production, CI/Flux dispatch and latest-data/live/rollback acceptance remain open.
