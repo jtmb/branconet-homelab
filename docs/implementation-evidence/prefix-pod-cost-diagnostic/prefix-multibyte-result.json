@@ -1,0 +1,806 @@
+{
+  "sourceHashes": {
+    "secretClient": "2ed5d0e5f21dbcbcd9de886a9590b747f22a13fe69d0ea558ed58736d3da5df5",
+    "ascii": "94eaa99e9acb826fb3d42c55e7921642bfbbc972aa5011f72ee8ff46abdbcd39",
+    "extractedPrefix": "102370c06514abd498eedc4228215f2f535b13dd1585989c2add7c8db374c3d4",
+    "harness": "a7eb3db47fce7f7afe4add2892f1355f447079afb10674751595e80461800fb4",
+    "elf": "5a1dc3515ad8e44ba26743018593f14969ffcd74568694a97cf49d60719926ef",
+    "pod": "a6c68adc5565e02b7945e2d710bd15356123739007d92f04115200bc444e3891",
+    "proposedPod": "c6230d2858cc1b29b49876db1c11c7cb63aa6a4150df6ab9631ef98e87786f28"
+  },
+  "runtime": {
+    "node": "v22.23.3",
+    "v8": "12.4.254.21-node.57",
+    "openssl": "3.5.8"
+  },
+  "controls": [
+    {
+      "name": "exact-reference-prefix-equivalence",
+      "passed": true,
+      "cases": 2533,
+      "noValuesReturned": true
+    },
+    {
+      "name": "same-redacted-pod-body-headers-status",
+      "cases": 32,
+      "passed": true
+    }
+  ],
+  "prefixTimings": [
+    {
+      "fixture": "short",
+      "bytes": 342,
+      "chunks": 1,
+      "observations": [
+        {
+          "run": 0,
+          "label": "js",
+          "repetitions": 1000,
+          "elapsedMs": 12.679165000000012,
+          "cpuUserMs": 22.011,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 0,
+          "label": "native",
+          "repetitions": 1000,
+          "elapsedMs": 0.6759390000000849,
+          "cpuUserMs": 0.668,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 1,
+          "label": "native",
+          "repetitions": 1000,
+          "elapsedMs": 0.6798690000000533,
+          "cpuUserMs": 0.622,
+          "cpuSystemMs": 0.051
+        },
+        {
+          "run": 1,
+          "label": "js",
+          "repetitions": 1000,
+          "elapsedMs": 10.696549000000005,
+          "cpuUserMs": 22.666,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 2,
+          "label": "js",
+          "repetitions": 1000,
+          "elapsedMs": 8.105045000000018,
+          "cpuUserMs": 16.447,
+          "cpuSystemMs": 0.118
+        },
+        {
+          "run": 2,
+          "label": "native",
+          "repetitions": 1000,
+          "elapsedMs": 0.6243780000000925,
+          "cpuUserMs": 0.527,
+          "cpuSystemMs": 0.093
+        },
+        {
+          "run": 3,
+          "label": "native",
+          "repetitions": 1000,
+          "elapsedMs": 0.6463489999999865,
+          "cpuUserMs": 0.546,
+          "cpuSystemMs": 0.097
+        },
+        {
+          "run": 3,
+          "label": "js",
+          "repetitions": 1000,
+          "elapsedMs": 4.903340999999955,
+          "cpuUserMs": 10.711,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 4,
+          "label": "js",
+          "repetitions": 1000,
+          "elapsedMs": 4.901340000000005,
+          "cpuUserMs": 8.897,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 4,
+          "label": "native",
+          "repetitions": 1000,
+          "elapsedMs": 0.6828089999999065,
+          "cpuUserMs": 2.113,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 5,
+          "label": "native",
+          "repetitions": 1000,
+          "elapsedMs": 0.62179900000001,
+          "cpuUserMs": 0.62,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 5,
+          "label": "js",
+          "repetitions": 1000,
+          "elapsedMs": 5.191869999999994,
+          "cpuUserMs": 6.687,
+          "cpuSystemMs": 0.352
+        },
+        {
+          "run": 6,
+          "label": "js",
+          "repetitions": 1000,
+          "elapsedMs": 4.954449999999952,
+          "cpuUserMs": 10.162,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 6,
+          "label": "native",
+          "repetitions": 1000,
+          "elapsedMs": 0.6252789999999777,
+          "cpuUserMs": 0.623,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 7,
+          "label": "native",
+          "repetitions": 1000,
+          "elapsedMs": 0.6212090000000217,
+          "cpuUserMs": 0.619,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 7,
+          "label": "js",
+          "repetitions": 1000,
+          "elapsedMs": 3.1058040000000346,
+          "cpuUserMs": 6.255,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 8,
+          "label": "js",
+          "repetitions": 1000,
+          "elapsedMs": 2.456504999999993,
+          "cpuUserMs": 2.338,
+          "cpuSystemMs": 0.114
+        },
+        {
+          "run": 8,
+          "label": "native",
+          "repetitions": 1000,
+          "elapsedMs": 0.661658999999986,
+          "cpuUserMs": 0.658,
+          "cpuSystemMs": 0
+        }
+      ]
+    },
+    {
+      "fixture": "large",
+      "bytes": 4193086,
+      "chunks": 256,
+      "observations": [
+        {
+          "run": 0,
+          "label": "js",
+          "repetitions": 3,
+          "elapsedMs": 6.109038999999939,
+          "cpuUserMs": 7.741,
+          "cpuSystemMs": 0.659
+        },
+        {
+          "run": 0,
+          "label": "native",
+          "repetitions": 3,
+          "elapsedMs": 13.768252999999959,
+          "cpuUserMs": 18.697,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 1,
+          "label": "native",
+          "repetitions": 3,
+          "elapsedMs": 13.768639000000007,
+          "cpuUserMs": 13.557,
+          "cpuSystemMs": 0.205
+        },
+        {
+          "run": 1,
+          "label": "js",
+          "repetitions": 3,
+          "elapsedMs": 6.1333980000000565,
+          "cpuUserMs": 7.768,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 2,
+          "label": "js",
+          "repetitions": 3,
+          "elapsedMs": 11.97953700000005,
+          "cpuUserMs": 22.138,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 2,
+          "label": "native",
+          "repetitions": 3,
+          "elapsedMs": 13.776993000000061,
+          "cpuUserMs": 15.473,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 3,
+          "label": "native",
+          "repetitions": 3,
+          "elapsedMs": 13.840904000000023,
+          "cpuUserMs": 13.835,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 3,
+          "label": "js",
+          "repetitions": 3,
+          "elapsedMs": 4.985222000000022,
+          "cpuUserMs": 4.98,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 4,
+          "label": "js",
+          "repetitions": 3,
+          "elapsedMs": 4.994239999999991,
+          "cpuUserMs": 4.989,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 4,
+          "label": "native",
+          "repetitions": 3,
+          "elapsedMs": 13.739454000000023,
+          "cpuUserMs": 13.549,
+          "cpuSystemMs": 0.186
+        },
+        {
+          "run": 5,
+          "label": "native",
+          "repetitions": 3,
+          "elapsedMs": 13.74395400000003,
+          "cpuUserMs": 13.739,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 5,
+          "label": "js",
+          "repetitions": 3,
+          "elapsedMs": 4.898719999999912,
+          "cpuUserMs": 4.894,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 6,
+          "label": "js",
+          "repetitions": 3,
+          "elapsedMs": 4.883001000000036,
+          "cpuUserMs": 4.854,
+          "cpuSystemMs": 0.024
+        },
+        {
+          "run": 6,
+          "label": "native",
+          "repetitions": 3,
+          "elapsedMs": 13.73645399999998,
+          "cpuUserMs": 13.731,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 7,
+          "label": "native",
+          "repetitions": 3,
+          "elapsedMs": 13.793383000000063,
+          "cpuUserMs": 13.747,
+          "cpuSystemMs": 0.037
+        },
+        {
+          "run": 7,
+          "label": "js",
+          "repetitions": 3,
+          "elapsedMs": 5.25129000000004,
+          "cpuUserMs": 5.245,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 8,
+          "label": "js",
+          "repetitions": 3,
+          "elapsedMs": 4.909410999999977,
+          "cpuUserMs": 4.904,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 8,
+          "label": "native",
+          "repetitions": 3,
+          "elapsedMs": 13.76053300000001,
+          "cpuUserMs": 13.685,
+          "cpuSystemMs": 0.07
+        }
+      ]
+    }
+  ],
+  "podTimings": [
+    {
+      "pods": 3,
+      "observations": [
+        {
+          "run": 0,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 5.121249999999918,
+          "cpuUserMs": 7.452,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 0,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 5.198419999999942,
+          "cpuUserMs": 5.618,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 1,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 4.778361000000018,
+          "cpuUserMs": 5.21,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 1,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 3.928972999999928,
+          "cpuUserMs": 3.925,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 2,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 4.26219100000003,
+          "cpuUserMs": 4.631,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 2,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 4.510451999999987,
+          "cpuUserMs": 4.506,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 3,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 4.639070999999944,
+          "cpuUserMs": 5.417,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 3,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 4.070682000000033,
+          "cpuUserMs": 4.526,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 4,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 3.670833000000016,
+          "cpuUserMs": 3.991,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 4,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 4.521191000000044,
+          "cpuUserMs": 5.294,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 5,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 4.706991000000016,
+          "cpuUserMs": 10.765,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 5,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 3.231453999999985,
+          "cpuUserMs": 2.956,
+          "cpuSystemMs": 0.272
+        },
+        {
+          "run": 6,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 3.924041999999986,
+          "cpuUserMs": 4.711,
+          "cpuSystemMs": 0.105
+        },
+        {
+          "run": 6,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 4.159211999999911,
+          "cpuUserMs": 4.577,
+          "cpuSystemMs": 0.087
+        },
+        {
+          "run": 7,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 4.250852000000009,
+          "cpuUserMs": 4.654,
+          "cpuSystemMs": 0.096
+        },
+        {
+          "run": 7,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 3.829443000000083,
+          "cpuUserMs": 9.336,
+          "cpuSystemMs": 0.193
+        },
+        {
+          "run": 8,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 3.130484000000024,
+          "cpuUserMs": 3.939,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 8,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 3.713212999999996,
+          "cpuUserMs": 8.062,
+          "cpuSystemMs": 0
+        }
+      ]
+    },
+    {
+      "pods": 200,
+      "observations": [
+        {
+          "run": 0,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 14.590432000000078,
+          "cpuUserMs": 15.739,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 0,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 11.806437000000074,
+          "cpuUserMs": 4.364,
+          "cpuSystemMs": 7.436
+        },
+        {
+          "run": 1,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 16.933956999999964,
+          "cpuUserMs": 24.277,
+          "cpuSystemMs": 8.448
+        },
+        {
+          "run": 1,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 14.264345000000048,
+          "cpuUserMs": 10.236,
+          "cpuSystemMs": 7.078
+        },
+        {
+          "run": 2,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 12.358185999999932,
+          "cpuUserMs": 15.475,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 2,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 5.065970000000107,
+          "cpuUserMs": 4.939,
+          "cpuSystemMs": 0.126
+        },
+        {
+          "run": 3,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 7.37929599999984,
+          "cpuUserMs": 14.476,
+          "cpuSystemMs": 0.376
+        },
+        {
+          "run": 3,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 20.565374999999904,
+          "cpuUserMs": 27.194,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 4,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 17.811801999999943,
+          "cpuUserMs": 11.901,
+          "cpuSystemMs": 7.823
+        },
+        {
+          "run": 4,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 8.060638000000154,
+          "cpuUserMs": 9.544,
+          "cpuSystemMs": 0.236
+        },
+        {
+          "run": 5,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 12.48040200000014,
+          "cpuUserMs": 10.466,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 5,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 19.129703000000063,
+          "cpuUserMs": 33.949,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 6,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 12.298181000000113,
+          "cpuUserMs": 12.51,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 6,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 4.088792000000012,
+          "cpuUserMs": 4.881,
+          "cpuSystemMs": 0.064
+        },
+        {
+          "run": 7,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 12.832915999999841,
+          "cpuUserMs": 25.073,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 7,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 15.510735999999952,
+          "cpuUserMs": 16.645,
+          "cpuSystemMs": 3.741
+        },
+        {
+          "run": 8,
+          "label": "text",
+          "repetitions": 100,
+          "elapsedMs": 13.761842999999999,
+          "cpuUserMs": 20.349,
+          "cpuSystemMs": 0.097
+        },
+        {
+          "run": 8,
+          "label": "bytes",
+          "repetitions": 100,
+          "elapsedMs": 3.70389299999988,
+          "cpuUserMs": 4.192,
+          "cpuSystemMs": 0.034
+        }
+      ]
+    },
+    {
+      "pods": 1000,
+      "observations": [
+        {
+          "run": 0,
+          "label": "text",
+          "repetitions": 30,
+          "elapsedMs": 40.256206999999904,
+          "cpuUserMs": 47.106,
+          "cpuSystemMs": 8.351
+        },
+        {
+          "run": 0,
+          "label": "bytes",
+          "repetitions": 30,
+          "elapsedMs": 5.140360000000101,
+          "cpuUserMs": 4.995,
+          "cpuSystemMs": 0.135
+        },
+        {
+          "run": 1,
+          "label": "bytes",
+          "repetitions": 30,
+          "elapsedMs": 3.8321849999999813,
+          "cpuUserMs": 4.023,
+          "cpuSystemMs": 0.011
+        },
+        {
+          "run": 1,
+          "label": "text",
+          "repetitions": 30,
+          "elapsedMs": 29.50143900000012,
+          "cpuUserMs": 30.866,
+          "cpuSystemMs": 15.133
+        },
+        {
+          "run": 2,
+          "label": "text",
+          "repetitions": 30,
+          "elapsedMs": 27.172976999999946,
+          "cpuUserMs": 27.172,
+          "cpuSystemMs": 8.35
+        },
+        {
+          "run": 2,
+          "label": "bytes",
+          "repetitions": 30,
+          "elapsedMs": 9.635131999999885,
+          "cpuUserMs": 17.219,
+          "cpuSystemMs": 0.202
+        },
+        {
+          "run": 3,
+          "label": "bytes",
+          "repetitions": 30,
+          "elapsedMs": 6.6695770000001176,
+          "cpuUserMs": 8.569,
+          "cpuSystemMs": 3.491
+        },
+        {
+          "run": 3,
+          "label": "text",
+          "repetitions": 30,
+          "elapsedMs": 30.379176000000143,
+          "cpuUserMs": 41.603,
+          "cpuSystemMs": 4.245
+        },
+        {
+          "run": 4,
+          "label": "text",
+          "repetitions": 30,
+          "elapsedMs": 26.459708999999975,
+          "cpuUserMs": 22.751,
+          "cpuSystemMs": 3.817
+        },
+        {
+          "run": 4,
+          "label": "bytes",
+          "repetitions": 30,
+          "elapsedMs": 2.3497859999999946,
+          "cpuUserMs": 2.059,
+          "cpuSystemMs": 0.283
+        },
+        {
+          "run": 5,
+          "label": "bytes",
+          "repetitions": 30,
+          "elapsedMs": 3.4271429999998873,
+          "cpuUserMs": 3.494,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 5,
+          "label": "text",
+          "repetitions": 30,
+          "elapsedMs": 29.4429090000001,
+          "cpuUserMs": 38.321,
+          "cpuSystemMs": 7.669
+        },
+        {
+          "run": 6,
+          "label": "text",
+          "repetitions": 30,
+          "elapsedMs": 26.227319999999963,
+          "cpuUserMs": 22.373,
+          "cpuSystemMs": 4.311
+        },
+        {
+          "run": 6,
+          "label": "bytes",
+          "repetitions": 30,
+          "elapsedMs": 2.3401060000001053,
+          "cpuUserMs": 2.331,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 7,
+          "label": "bytes",
+          "repetitions": 30,
+          "elapsedMs": 3.362092999999959,
+          "cpuUserMs": 4.769,
+          "cpuSystemMs": 0
+        },
+        {
+          "run": 7,
+          "label": "text",
+          "repetitions": 30,
+          "elapsedMs": 29.4544249999999,
+          "cpuUserMs": 41.416,
+          "cpuSystemMs": 3.569
+        },
+        {
+          "run": 8,
+          "label": "text",
+          "repetitions": 30,
+          "elapsedMs": 26.081739999999854,
+          "cpuUserMs": 10.637,
+          "cpuSystemMs": 15.571
+        },
+        {
+          "run": 8,
+          "label": "bytes",
+          "repetitions": 30,
+          "elapsedMs": 2.3518960000001243,
+          "cpuUserMs": 2.044,
+          "cpuSystemMs": 0.298
+        }
+      ]
+    }
+  ],
+  "failures": [],
+  "loader": {
+    "path": "/output/counter.node",
+    "mode": 493,
+    "identicalTmpCopy": true,
+    "mounts": [
+      {
+        "mountpoint": "/tmp",
+        "flags": "rw,nosuid,nodev,noexec,relatime"
+      },
+      {
+        "mountpoint": "/output",
+        "flags": "rw,relatime"
+      }
+    ]
+  },
+  "memory": {
+    "rss": 182550528,
+    "heapTotal": 44728320,
+    "heapUsed": 34622336,
+    "external": 38879301,
+    "arrayBuffers": 35455155
+  },
+  "passed": true
+}

@@ -214,3 +214,6 @@ The exact 4ae9 candidate completed the unchanged baseline 51e8 six-profile compa
 
 
 Indexed flat `4e70ac9` original paired evidence: [raw](indexed-flat-4e70-controlled-performance/raw.json), [unchanged summary](indexed-flat-4e70-controlled-performance/summary.json), [assessment/source manifest](indexed-flat-4e70-controlled-performance/assessment.json), [36-original/429-raw-Git manifest](indexed-flat-4e70-controlled-performance/manifest.json), runner/summary terminal records. Six observations and both builds passed correctness; A07/A21 no-regression remains failed/open. Runtime is pinned full Node22.23.3 for both sources, not the historical slim image. Prior setup/loader/scanner failures stay retained separately.
+
+
+[Rejected prefix and exact frozen-ASCII Pod encoding cost controls](prefix-pod-cost-diagnostic/ascii-qualification.json) preserve all original arrays/negative attempts,2533 prefix cases and35 ASCII response cases. Neither mechanism is adopted; A07/A21 remain failed/open and cap8 is unchanged.

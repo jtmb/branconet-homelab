@@ -1,0 +1,23 @@
+{
+  "scope": "Preparation tool output transcription, not original file-backed runtime stdout/stderr; no Docker/Node dispatch occurred.",
+  "failures": [
+    {
+      "kind": "PowerShell ParserError",
+      "classification": "quoted Python preparation command rejected before execution",
+      "message": "An expression was expected after (."
+    },
+    {
+      "kind": "Python ValueError",
+      "file": "prepare-ascii-dispatch.py",
+      "line": 5,
+      "classification": "incorrect literal substring anchor in supervisor command preparation",
+      "message": "substring not found"
+    },
+    {
+      "kind": "Python missing file",
+      "file": "dispatch-pod-ascii-cost.py",
+      "classification": "dependent dispatch file absent after failed preparation",
+      "code": 2
+    }
+  ]
+}
