@@ -12,8 +12,9 @@ The owned test child and eight recorded sudo-shim identities are absent. The
 first combined run correctly refused fixture ancestry on the Windows mount;
 its failures and fixtures remain retained, with no ownership checks weakened.
 Root verifies five raw Git files,85 originals and the complete CRC-valid handoff
-ZIP. Real age and local public credential/body shims run; production credentials,
-SSH/sudo/Kubernetes/etcd do not. Fresh production configuration/etcd capture,
+ZIP. Real age and local public credential/body shims run. No production data or
+credentials were read. Actual SSH, sudo, Kubernetes and etcd calls remain unexecuted.
+Fresh production configuration/etcd capture,
 API decryption/Longhorn recovery, final performance/image and live upgrade remain
 open. Gluster/Vault/Consul originals and historical checkpoints remain retained.
 
