@@ -1,0 +1,70 @@
+{
+  "scope": "Root integration and private POSIX local qualification of fresh etcd transport plus targeted configuration capture; no live checkpoint",
+  "observed_utc": "2026-10-12T07:16:57.408544+00:00",
+  "native": {
+    "commit": "18090f839f178558ff42f75995cd659a2b66986b",
+    "parent_not_imported": "d553ed19331b6efbfabd4ff1c255173446c0a271",
+    "handoff_sha256": "adcd6d284ae43752148fe05aef11d59d3558aeca9bc275e3b26ddd7b84e9dffd",
+    "helper_sha256": "86b053b1267a9bf48a66f12fb231ee0845cfe23149c7f076b732e363c4ade4d6",
+    "raw_git_files_verified": 5,
+    "original_artifacts_verified": 85,
+    "zip_bytes": 261395,
+    "zip_members": 85,
+    "zip_crc_valid": true,
+    "zip_sha256": "01fb2fe4aaccdc1a038a01fca1e9db0ed0e1448711180c2509c9ec748580199d",
+    "earlier_v5_handoff_preserved": true
+  },
+  "root": {
+    "actual_exit_code": 0,
+    "tests": 47,
+    "skips": 0,
+    "resource_warnings": 0,
+    "test_seconds": 7.992,
+    "wall_seconds": 8.337837061029859,
+    "frozen_source_files": 164,
+    "sources_unchanged": true,
+    "exact_private_source_copy": true,
+    "default_root_imports": true,
+    "test_child_pid": 2212513,
+    "test_child_start_ticks": "28841673",
+    "test_child_reaped": true,
+    "test_child_absent": true,
+    "recorded_sudo_shim_handles": 8,
+    "recorded_sudo_shim_handles_all_absent": true,
+    "terminal_sha256": "957b09236f66fc341cd98088179364cbc1fbd698cbc885abfaa75cbc69ebd7af",
+    "source_manifest_sha256": "2604c223182d5aca52a7c38c20fa2fce870401dfe893820f43799f92dd6de489",
+    "stderr_sha256": "ab51f9aa24df876940c7ee0b6ea23ccb50735551108c5a3f12b3bd310817c23d"
+  },
+  "retained_failed_root_attempt": {
+    "actual_exit_code": 1,
+    "tests": 47,
+    "failures": 2,
+    "errors": 20,
+    "source_unchanged": true,
+    "cause": "Public fixtures were created beneath world-writable Windows-mounted ancestry; protected Pin correctly refused. Identical source was copied to private POSIX ancestry for the separate accepted run. No ownership/control change.",
+    "fixtures_preserved_outside_git": true
+  },
+  "scope_exercised": [
+    "19 raw-etcd orchestration fixture controls",
+    "19 default-transport/finalization fixture controls",
+    "9 configuration capture fixture controls",
+    "actual age/public identities and authenticated ciphertext equality",
+    "actual local consuming-password and NOPASSWD shims with separate body FIFO",
+    "fresh TLS context and inherited kubeconfig FD using public certificates",
+    "PID/start/UID/FIFO/key/tool ownership drift",
+    "once-only resource and archive intents, failures/expiry/directory-fsync/descendant closure"
+  ],
+  "mocked_or_not_executed": [
+    "real SSH/sudo/kubectl/Kubernetes/etcd",
+    "production credentials or data",
+    "actual API Secret decryption and Longhorn restoration"
+  ],
+  "acceptance": {
+    "integrated_local_controls": true,
+    "production_configuration_capture": false,
+    "production_etcd_checkpoint": false,
+    "api_decryption_restore": false,
+    "longhorn_restore": false,
+    "final_bortus_release": false
+  }
+}

@@ -2,6 +2,21 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
 
+## 2026-10-12: fresh checkpoint transport and configuration capture integrated
+
+[Root integration evidence](evidence/bortus-etcd-config-root-integration-20261012.json)
+binds the reviewed native18090f8 transport to the targeted32-file configuration
+capture. All47 local controls pass without skips or ResourceWarnings in7.992s
+(8.338s wall), using164 unchanged source files in an exact private POSIX copy.
+The owned test child and eight recorded sudo-shim identities are absent. The
+first combined run correctly refused fixture ancestry on the Windows mount;
+its failures and fixtures remain retained, with no ownership checks weakened.
+Root verifies five raw Git files,85 originals and the complete CRC-valid handoff
+ZIP. Real age and local public credential/body shims run; production credentials,
+SSH/sudo/Kubernetes/etcd do not. Fresh production configuration/etcd capture,
+API decryption/Longhorn recovery, final performance/image and live upgrade remain
+open. Gluster/Vault/Consul originals and historical checkpoints remain retained.
+
 ## 2026-10-11 10:45 UTC - fresh checkpoint closed, independent restore pending
 
 [Actual cold checkpoint and recovery evidence](evidence/bortus-cold-checkpoint-b473091bebef-20261011.json)

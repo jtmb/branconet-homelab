@@ -35,7 +35,8 @@ The fresh targeted configuration-capture draft uses the qualified checkpoint
 transport interface and age; no new runtime dependency is introduced. Its fixed
 32 standard Kubernetes recovery files complement the historical broader host
 archives. Nine local fixture controls pass against immutable checkpoint v11;
-root default helper integration and current production capture remain pending;
+the checkpoint helper is integrated from native commit18090f8. All47 root
+combined controls pass in7.992s; current production capture remains pending;
 see [migration operations](MIGRATION-OPERATIONS.md).
 
 Longhorn is the default persistent application storage. Each chart declares its own PVC mounts and values. Existing NAS media at //192.168.0.8/plex_smb_share remains intact; requested integration is a separate live acceptance check. The Samba role installs the client CSI driver only. It does not create a guest share or overwrite exports, credentials, fstab or files. Host-local default storage and a new NFS server are not part of this migration.
