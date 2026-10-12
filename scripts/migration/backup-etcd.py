@@ -480,11 +480,11 @@ def resource_matches(proposal,obj,ready=False):
             if k not in expected and k in actual:
                 need(type(actual[k])is type(v)and actual[k]==v,'resource');actual.pop(k)
         tolerations=[{'key':'node.kubernetes.io/not-ready','operator':'Exists','effect':'NoExecute','tolerationSeconds':300},{'key':'node.kubernetes.io/unreachable','operator':'Exists','effect':'NoExecute','tolerationSeconds':300}]
-        if 'tolerations'in actual:need(actual.pop('tolerations')==tolerations,'resource')
+        if 'tolerations'not in expected and 'tolerations'in actual:need(actual.pop('tolerations')==tolerations,'resource')
         need(type(actual.get('containers'))is list and len(actual['containers'])==1,'resource')
         container=actual['containers'][0]
         for k,v in {'terminationMessagePath':'/dev/termination-log','terminationMessagePolicy':'File'}.items():
-            if k in container:need(container.pop(k)==v,'resource')
+            if k not in expected['containers'][0]and k in container:need(container.pop(k)==v,'resource')
         if ready:
             states=obj.get('status',{}).get('containerStatuses');need(type(states)is list and len(states)==1 and states[0]['name']=='etcd'and states[0]['ready']is True and set(states[0]['state'])=={'running'}and states[0]['imageID']==expected['containers'][0]['image'],'resource')
     need(actual==expected,'resource');return i

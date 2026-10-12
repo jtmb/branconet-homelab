@@ -1,5 +1,13 @@
 # Fresh etcd/native Secret recovery checkpoint
 
+Scoped cleanup compares a confirmed API-defaulted create reply with its fresh
+owned GET. Known Pod tolerations and container termination-message defaults are
+removed only when absent from the expected spec. Fields already present in the
+expected spec remain subject to exact equality; altered defaults, unknown
+fields, UID replacement and incomplete absence inventories still refuse.
+The current public TCP/cache probe retained its initial pre-delete mismatch and
+uses a separate explicit owned cleanup receipt, never replaying the failed run.
+
 `backup-etcd.py` replaces the historical unbounded snapshot orchestration. It is
 separate from BORTUS SQLite framing. Local fixtures do not qualify a current
 production snapshot, API decryption, Longhorn unlock or full disaster rebuild.
@@ -250,3 +258,5 @@ grant live acceptance or authorize old-run replay.
 Root independently ran the integrated streaming consumer and corrected factory: all75 controls pass, no skips or resource warnings, actual launcher0 in17.958s. All165 frozen source files remain unchanged and the owned test child is reaped. The [root receipt](../evidence/bortus-cifs-close-root-20261012.json) distinguishes this local qualification from a fresh actual configuration capture and etcd restore, which remain pending. The two refused actual archives and original PUBLIC fixture failures remain retained and cannot be adopted or replayed.
 
 The [fresh actual configuration receipt](../evidence/bortus-kubernetes-config-actual-20261012.json) records run62333f4abb52, launcher0 in3.399s, all32 files read twice with exact private-byte equality and authenticated age plaintext equality. The83615-byte ciphertext SHA is `f939cc28e3e79878ea3164cd5bc823cb0ce8cba988fd9a6ef6d78caabf3eb6b7`; operator mode600 and actual CIFS NAS mode755 are independently checked with full SHA/size readback. All five transport children exited0, were reaped and are absent; transport is closed and source identities unchanged. All journal operations are confirmed. This accepts only current configuration capture/publication, not continuous configuration history, etcd recovery, API decryption, Longhorn restore or full disaster recovery. Both prior refused run outputs remain retained without replay/adoption.
+
+The [root isolation/default-spec receipt](../evidence/bortus-current-isolation-root-20261012.json) verifies4 raw source files and28 retained originals. All77 integrated controls pass with unchanged165 source inputs, no skips/resource warnings and actual launcher0. The first source freeze incorrectly counted regenerated disposable TLS fixtures; that failure and a later preparation type error remain retained. The current disposable probe verifies fresh TCP reachability both directions before deny, fresh refusal both directions after deny, positive loopback listeners, Calico3/3Ready and exact etcd digest/PullNever version-only exit0. Its initial cleanup mismatch retains terminal1; a separate explicit once-only owned cleanup exits0, proves all3 Pods and policy absent, and removes policy after target absence. All449 recorded exec children are reaped/absent. The explicit cleanup code was retained in its tool invocation rather than independently saved before dispatch; durable identities/proposals/source/records remain hash-bound. These are sampled enforcement/cache and cleanup proofs, not continuous isolation or a production snapshot/restore.

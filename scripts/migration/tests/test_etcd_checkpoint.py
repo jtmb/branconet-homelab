@@ -56,6 +56,9 @@ class Client:
             return {'metadata':{'name':'longhorn-crypto','namespace':'longhorn-system','uid':'original-key','resourceVersion':'b'},'data':{'CRYPTO_KEY_VALUE':self.t.document['files']['/etc/kubernetes/longhorn-crypto-key']}}
         if args[0]=='create':
             kind='pod'if body['kind']=='Pod'else'networkpolicy';obj=copy.deepcopy(body);obj['metadata'].update(uid=kind+'-owned',resourceVersion='created');self.objects[kind]=obj
+            if kind=='pod'and self.mode=='api-defaults':
+                obj['spec']['tolerations']=[{'key':'node.kubernetes.io/not-ready','operator':'Exists','effect':'NoExecute','tolerationSeconds':300},{'key':'node.kubernetes.io/unreachable','operator':'Exists','effect':'NoExecute','tolerationSeconds':300}]
+                obj['spec']['containers'][0].update(terminationMessagePath='/dev/termination-log',terminationMessagePolicy='File')
             if kind=='pod'and self.mode=='lost-create':raise m.Refused('child')
             return copy.deepcopy(obj)
         if args[:2]==['delete','--raw']:
@@ -115,6 +118,24 @@ class Tests(unittest.TestCase):
         previous=(self.parent/('etcd-'+self.run_id)/'record.json').read_bytes();calls=len(self.client.calls)
         with self.assertRaises(m.Refused):self.execute()
         self.assertEqual(previous,(self.parent/('etcd-'+self.run_id)/'record.json').read_bytes());self.assertEqual(calls,len(self.client.calls))
+    def test_api_defaulted_create_fresh_get_and_once_only_cleanup(self):
+        self.client.mode='api-defaults';r=self.execute()
+        self.assertEqual('completed',r['phase']);self.assertEqual({},self.client.objects)
+        self.assertTrue(r['operations']['pod-delete']['result']['absence_confirmed'])
+        self.assertEqual(2,sum(c[0]=='api'and c[1][0]=='delete'for c in self.client.calls))
+    def test_expected_defaults_cannot_hide_changed_or_unknown_fields(self):
+        _,pod=m.proposals(self.run_id,self.source['restore_image']);expected=copy.deepcopy(pod);expected['metadata'].update(uid='owned',resourceVersion='created')
+        expected['spec']['tolerations']=[{'key':'node.kubernetes.io/not-ready','operator':'Exists','effect':'NoExecute','tolerationSeconds':300},{'key':'node.kubernetes.io/unreachable','operator':'Exists','effect':'NoExecute','tolerationSeconds':300}]
+        expected['spec']['containers'][0].update(terminationMessagePath='/dev/termination-log',terminationMessagePolicy='File')
+        self.assertEqual('owned',m.resource_matches(expected,copy.deepcopy(expected))['uid'])
+        variants=[]
+        for key,value in [('terminationMessagePath','/foreign'),('terminationMessagePolicy','FallbackToLogsOnError'),('unknownDefault',True)]:
+            bad=copy.deepcopy(expected);bad['spec']['containers'][0][key]=value;variants.append(bad)
+        bad=copy.deepcopy(expected);bad['spec']['tolerations'][0]['tolerationSeconds']=301;variants.append(bad)
+        bad=copy.deepcopy(expected);bad['spec']['tolerations'].append({'key':'foreign','operator':'Exists'});variants.append(bad)
+        for bad in variants:
+            with self.assertRaises(m.Refused):m.resource_matches(expected,bad)
+            with self.assertRaises(m.Refused):m.resource_matches(pod,bad)
     def test_extra_restored_record_is_refusal_not_subset_success(self):
         self.client.mode='extra-record'
         with self.assertRaises(m.Refused):self.execute()
