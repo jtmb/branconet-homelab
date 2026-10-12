@@ -1030,3 +1030,14 @@ AES-CBC/protobuf Secret-to-API oracle. It changes no raw checkpoint acceptance,
 starts no production process and creates no resources. Root must bind actual
 authenticated inputs, isolation/cache/CNI and UID/RV cleanup before dispatch.
 Local fixtures do not grant API decryption or full disaster-recovery acceptance.
+The separate callable API transport now supplies explicit binary stdin and fixed
+ConfigMap/ephemeral PUT/conditional cleanup methods under its own closed journal.
+Existing checkpoint transport defaults remain unchanged. Root must wire real
+source/material/cache/isolation receipt verification and the complete ciphertext
+baseline before API addition; this source preparation has dispatched no resource.
+
+## 2026-10-12: root integrated API transport and TLS readiness qualified locally
+
+The [root qualification](../evidence/bortus-api-transport-readiness-root-20261012.json) verifies eleven native raw blobs/modes and 564 retained artifacts, then integrates the separate recovery journal/transport and fixed readiness operation. All 14 root Python transport controls and 15 actual pinned Node22 TLS controls pass, with 176 inputs unchanged and a fresh successful query proving the owned Node container absent. The first root supervisor refused during a transport run; unchanged inputs and observed child closure are retained, but its exact supervisory predicate is unproven. Successful tool output is retained by the execution tools; receipt fields are explicit transcriptions rather than claims of original stdout files.
+
+The default checkpoint transport and CJS oracle remain unchanged. The new API journal/adapter requires actual external source/material/cache/CNI receipt authority and original absolute deadlines. Verified TLS readiness precedes the once-only oracle; pending/uncertain mutations cannot replay or adopt. These public/shim/TLS controls grant no cached-binary, live API decryption, Longhorn or complete recovery acceptance. No live resource or credential delivery occurred.

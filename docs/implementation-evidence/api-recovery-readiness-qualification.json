@@ -1,0 +1,178 @@
+{
+  "abi": 1,
+  "scope": "separate readiness delta; public Node22 TLS + controlled Python child fixtures only",
+  "parent_immutable_transport_commit": "df4bab009522a9fdf844016040e56d563fbf66bf",
+  "terminal": {
+    "terminal": true,
+    "actual_exit_code": 0,
+    "stages": [
+      {
+        "stage": "node15",
+        "pid": 2317724,
+        "start_ticks": "31308329",
+        "actual_exit_code": 0,
+        "reaped": true
+      },
+      {
+        "stage": "python14",
+        "pid": 2317948,
+        "start_ticks": "31308677",
+        "actual_exit_code": 0,
+        "reaped": true
+      }
+    ],
+    "source_count": 177,
+    "sources_unchanged": true,
+    "exact_readiness_literal_unchanged": true,
+    "owned_container_absent": true,
+    "elapsed_seconds": 8.566844490997028,
+    "completed_utc": "2026-10-12T14:06:04.729911+00:00",
+    "live_API_or_operator_material": false
+  },
+  "node_controls": {
+    "abi": 1,
+    "node": "v22.23.3",
+    "public_controls": 15,
+    "records": [
+      {
+        "case": "verified mTLS200",
+        "passed": true,
+        "requests": 1,
+        "child_closed": true
+      },
+      {
+        "case": "bounded503 startup",
+        "passed": true,
+        "requests": 3,
+        "child_closed": true
+      },
+      {
+        "case": "late listener",
+        "passed": true,
+        "requests": 1,
+        "child_closed": true
+      },
+      {
+        "case": "wrong CA",
+        "passed": true,
+        "requests": 0,
+        "child_closed": true
+      },
+      {
+        "case": "wrong SAN",
+        "passed": true,
+        "requests": 0,
+        "child_closed": true
+      },
+      {
+        "case": "401 refuses",
+        "passed": true,
+        "requests": 1,
+        "child_closed": true
+      },
+      {
+        "case": "redirect refuses",
+        "passed": true,
+        "requests": 1,
+        "child_closed": true
+      },
+      {
+        "case": "200 wrong body",
+        "passed": true,
+        "requests": 1,
+        "child_closed": true
+      },
+      {
+        "case": "encoding refuses",
+        "passed": true,
+        "requests": 1,
+        "child_closed": true
+      },
+      {
+        "case": "length bound",
+        "passed": true,
+        "requests": 1,
+        "child_closed": true
+      },
+      {
+        "case": "chunk bound",
+        "passed": true,
+        "requests": 1,
+        "child_closed": true
+      },
+      {
+        "case": "partial quiet absolute expiry",
+        "passed": true,
+        "requests": 1,
+        "child_closed": true
+      },
+      {
+        "case": "503 absolute expiry",
+        "passed": true,
+        "requests": 3,
+        "child_closed": true
+      },
+      {
+        "case": "extra input refuses",
+        "passed": true,
+        "requests": 0,
+        "child_closed": true
+      },
+      {
+        "case": "credential inode contents drift",
+        "passed": true,
+        "requests": 1,
+        "child_closed": true
+      }
+    ],
+    "operator_material_read": false,
+    "live_api_recovery": false
+  },
+  "python_controls": 14,
+  "processes_independently_absent": [
+    2317723,
+    2317724,
+    2317948
+  ],
+  "fresh_owner_filtered_container_list_empty": true,
+  "source_manifest": [
+    {
+      "path": "scripts/migration/bortus-api-recovery-transport.py",
+      "sha256": "7a405edac9867982f77c4ef13abe65eecd3ea1e5efa82af50be01d6ff185a43c"
+    },
+    {
+      "path": "scripts/migration/tests/test_api_recovery_transport.py",
+      "sha256": "a67c6e08f182ca23e0349320b9267f8b6229b575f4ac453ea56899aa53c1d442"
+    },
+    {
+      "path": "scripts/migration/tests/test_api_recovery_ready.cjs",
+      "sha256": "16f0299ec70f08fc1dabee2d4a4f7762694405ba375abd1bc2349fcd301f7227"
+    }
+  ],
+  "readiness_literal": [
+    {
+      "path": "fixture/readiness-source.cjs",
+      "sha256": "22e1e2f2d9afeb434a4c501bd7619158434a56bc419f2fc55c0a1640c4a24d4e"
+    }
+  ],
+  "primary": [
+    {
+      "url": "https://raw.githubusercontent.com/kubernetes/kubernetes/v1.37.1/staging/src/k8s.io/apiserver/pkg/server/healthz/healthz.go",
+      "path": "primary/healthz.go",
+      "sha256": "402193f301014c598ad42cfd127f3237d9e59d97ce66e8b8e821731703de2751"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "originals.zip",
+      "sha256": "9ffba05474b97b76cd06340a384d2a0ce858436bdc0e26bfc7f457ed1c89370e",
+      "members": 192
+    }
+  ],
+  "live_recovery_accepted": false,
+  "limits": [
+    "Actual public TLS only; no cluster/operator keys/API/etcd recovery",
+    "Original14 qualification/failure unchanged in prior immutable handoff",
+    "Root still owns source/material/cache/CNI/baseline ciphertext/current keys/resource absence/terminal fences"
+  ]
+}
