@@ -7,5 +7,7 @@ const catalog = scope.__bortusAliasCatalog ??= new AliasCatalog(async (path, sig
 ]));
 const file = () => process.env.BORTUS_SECRET_ALIASES_FILE || "";
 export const listAliases = () => catalog.list(file());
+export const pageAliases = (namespaces: ReadonlySet<string>, namespace: string | null, cursor: string | null) =>
+  catalog.page(file(), namespaces, namespace, cursor);
 export const resolveAlias = (alias: string) => catalog.resolve(file(), alias);
 export const invalidateAliases = () => catalog.invalidate();

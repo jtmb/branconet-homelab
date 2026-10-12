@@ -23,3 +23,7 @@ Bootstrap/recovery must not depend on Secrets in the cluster being created. Keep
 The optional local runner expects a separately supplied sibling k8s-rewrite/ansible-playbook tree. Kubernetes provisioning roles and lookup plugins are not included in this application-only main merge.
 
 The locally qualified legacy-control workflow can disable the named legacy-lookup principal without rotating BOTRUS_SECRETS_KEY. This disables mapped values and nonsecret configuration lookup alike; affected-alias preview and explicit configuration-impact acknowledgement are required. Policy changes involving legacy-lookup and exact grant revocation require current metadata acknowledgement. Runtime native ownership/head/deny checks remain separate; no credential values enter those previews. See [unit/HTTP evidence](implementation-evidence/kv-legacy-access.json). The standalone [administration UI](BORTUS-KV-ADMINISTRATION-UI.md) now qualifies all 603 aliases across seven preview pages and exact grant revoke/restore; screen integration and final-image acceptance remain pending.
+
+## Current JWT-key and alias-page candidate
+
+The human alias metadata GET uses cursor-indexed page projection and clones only its current100 returned references. Existing complete list and exact alias resolution used by provisioning/lookup are unchanged, including original spelling, catalog limits, TTL/invalidation and fresh legacy/policy/grant checks before value release. No new value or authorization cache is introduced.

@@ -185,6 +185,24 @@ test("fresh native handler account snapshots retain independent middleware and r
         assert.deepEqual(await response.json(), { authenticated: false, error: "Internal server error" });
       } finally { outage = false; }
     });
+    await t.test("operator signing-material rotation does not retain cookies or bypass fresh account withdrawal", async () => {
+      const original = process.env.BOTRUS_JWT_SECRET;
+      try {
+        const user = await create("signing_rotation"), oldCookie = await token(user.id, user.username);
+        assert.equal(await context(oldCookie, getOperatorRole), "write");
+        process.env.BOTRUS_JWT_SECRET = "public-native-auth-replacement-signing";
+        const before = queries;
+        assert.equal(await context(oldCookie, getOperatorRole), null); assert.equal(queries, before);
+        const replacement = await token(user.id, user.username);
+        assert.equal(await context(replacement, getOperatorRole), "write");
+        await writer.user.update({ where: { id: user.id }, data: { role: "readonly", engineAdmin: false } });
+        const calls = nativeCalls; assert.equal((await values(replacement)).status, 403); assert.equal(nativeCalls, calls);
+        await writer.user.update({ where: { id: user.id }, data: { sessionVersion: 1 } });
+        assert.equal((await metadata(replacement)).status, 401);
+        const reset = await token(user.id, user.username, 1); assert.equal((await metadata(reset)).status, 200);
+        await writer.user.delete({ where: { id: user.id } }); assert.equal((await metadata(reset)).status, 401);
+      } finally { process.env.BOTRUS_JWT_SECRET = original; }
+    });
   } finally {
     restoreFind();
     await Promise.all(clients.map(client => client.$disconnect()));

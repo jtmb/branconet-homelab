@@ -2,7 +2,7 @@ import { requireOperator } from "@/lib/permissions";
 import { getSessionAccount } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import { SecretError } from "@/lib/cluster-secrets";
-import { invalidateAliases, listAliases } from "@/lib/secret-references";
+import { invalidateAliases, listAliases, pageAliases } from "@/lib/secret-references";
 import { mergeAliases, validateAlias } from "@/lib/secret-aliases";
 import { isSensitiveVariable } from "@/lib/variable-policy";
 import { secretNamespaces } from "@/lib/secret-client";
@@ -23,8 +23,7 @@ export async function GET(request: Request) {
       cursor !== null && !/^[a-zA-Z0-9_.:/-]{1,253}$/.test(cursor)) throw new SecretError(400, "Invalid alias metadata filters");
     const namespaces = secretNamespaces().filter(ns => ns !== kvConfig().historyNamespace);
     if (namespace !== null && !namespaces.includes(namespace)) throw new SecretError(403, "Namespace is outside the configured Secret scope");
-    const rows = (await listAliases()).filter(ref => namespaces.includes(ref.namespace) && (!namespace || ref.namespace === namespace) && (cursor === null || ref.alias > cursor));
-    return secretResponse({ references: rows.slice(0, 100), nextCursor: rows.length > 100 ? rows[99].alias : null });
+    return secretResponse(await pageAliases(new Set(namespaces), namespace, cursor));
   } catch (error) {
     return secretErrorResponse(error);
   }

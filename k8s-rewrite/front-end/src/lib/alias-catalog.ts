@@ -42,5 +42,24 @@ export class AliasCatalog {
   }
   invalidate() { this.cache.invalidate(); }
   async list(key: string) { return (await this.cache.get(key)).rows.map(ref => ({ ...ref })); }
+  async page(key: string, namespaces: ReadonlySet<string>, namespace: string | null, cursor: string | null) {
+    const rows = (await this.cache.get(key)).rows;
+    let start = 0, end = rows.length;
+    if (cursor !== null) {
+      while (start < end) {
+        const middle = start + Math.floor((end - start) / 2);
+        if (rows[middle].alias <= cursor) start = middle + 1;
+        else end = middle;
+      }
+    }
+    const references: SecretAlias[] = [];
+    for (let index = start; index < rows.length; index++) {
+      const ref = rows[index];
+      if (!namespaces.has(ref.namespace) || (namespace !== null && ref.namespace !== namespace)) continue;
+      if (references.length === 100) return { references, nextCursor: references[99].alias };
+      references.push({ ...ref });
+    }
+    return { references, nextCursor: null };
+  }
   async resolve(key: string, alias: string) { const ref = (await this.cache.get(key)).index.get(alias); return ref ? { ...ref } : null; }
 }

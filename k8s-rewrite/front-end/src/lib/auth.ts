@@ -1,30 +1,27 @@
 import { SignJWT, jwtVerify } from "jose";
 import prisma from "./db";
+import { HmacKeySlot } from "./jwt-key";
 
 export const AUTH_COOKIE = "botrus_auth_token";
 
-function getSecretKey(): Uint8Array {
-  const secret = process.env.BOTRUS_JWT_SECRET;
-  if (!secret)
-    throw new Error("BOTRUS_JWT_SECRET not configured. Call ensureJwtSecret() first.");
-  return new TextEncoder().encode(secret);
-}
+const keyScope = globalThis as typeof globalThis & { __bortusJwtKeySlot?: HmacKeySlot };
+const signingKey = keyScope.__bortusJwtKeySlot ??= new HmacKeySlot(() => process.env.BOTRUS_JWT_SECRET);
 
 export async function signJWT(
   payload: { sub: string; username: string; sessionVersion?: number }
 ): Promise<string> {
-  return new SignJWT({ ...payload, sessionVersion: payload.sessionVersion ?? 0 })
+  return signingKey.run(key => new SignJWT({ ...payload, sessionVersion: payload.sessionVersion ?? 0 })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("7d")
-    .sign(getSecretKey());
+    .sign(key));
 }
 
 export async function verifyJWT(
   token: string
 ): Promise<{ sub: string; username: string; sessionVersion: number } | null> {
   try {
-    const { payload } = await jwtVerify(token, getSecretKey(), { algorithms: ["HS256"] });
+    const { payload } = await signingKey.run(key => jwtVerify(token, key, { algorithms: ["HS256"] }));
     const sessionVersion = payload.sessionVersion ?? 0;
     if (typeof payload.sub !== "string" || !payload.sub || typeof payload.username !== "string" ||
       typeof sessionVersion !== "number" || !Number.isSafeInteger(sessionVersion) || sessionVersion < 0) return null;

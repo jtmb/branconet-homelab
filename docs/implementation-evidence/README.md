@@ -223,3 +223,5 @@ Indexed flat `4e70ac9` original paired evidence: [raw](indexed-flat-4e70-control
 
 
 Flat16 candidate `2216fa6` original paired evidence: [raw](metadata16-2216-controlled-performance/raw.json), [unchanged summary](metadata16-2216-controlled-performance/summary.json), [assessment/source manifest](metadata16-2216-controlled-performance/assessment.json), [101-original/429-raw-Git manifest](metadata16-2216-controlled-performance/manifest.json), runner/summary terminals and independent closure. Six observations and both builds passed original correctness; A07/A21 no-regression remains failed/open. Full Node22.23.3 runtime is shared by both sources; no live adoption or image acceptance. All earlier failed preparations remain retained.
+
+[JWT signing-key/alias-page source qualification](jwt-alias-source-qualification.json):28 affected source tests, fresh nonincremental types and zero-warning lint; original fixture failures retained. Fresh whole-source compiled/HTTP qualification and A07/A21 performance remain open. Canonical2216 prototype build inputs are unchanged.
