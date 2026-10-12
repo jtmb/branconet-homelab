@@ -217,3 +217,6 @@ Indexed flat `4e70ac9` original paired evidence: [raw](indexed-flat-4e70-control
 
 
 [Rejected prefix and exact frozen-ASCII Pod encoding cost controls](prefix-pod-cost-diagnostic/ascii-qualification.json) preserve all original arrays/negative attempts,2533 prefix cases and35 ASCII response cases. Neither mechanism is adopted; A07/A21 remain failed/open and cap8 is unchanged.
+
+
+[ASCII generator artifact framing](prefix-pod-cost-diagnostic/generator-framing-clarification.json): the timestamp declaration and Pod function are two exact disjoint frozen-driver byte slices, concatenated for the diagnostic VM. The composed file is not claimed to be a contiguous driver substring; all original controls/timings/archives remain unchanged.
