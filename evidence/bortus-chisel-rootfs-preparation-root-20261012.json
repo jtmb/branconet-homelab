@@ -27,6 +27,7 @@
   "libtinfo_version": "6.4+20240113-1ubuntu2.2",
   "partial_package_scanner_metadata_outside_rootfs": true,
   "missing_sed_and_unusable_c_rehash_explicit": true,
+  "tool_requirement_clarification": "e50 uses sed only for Docker build-time entrypoint normalization. No frontend caller or Markdown documentation promise requires c_rehash/update-ca-certificates; historical scanner inventories mention their files. Complete inherited Debian command equivalence is not an application acceptance gate.",
   "application_or_node_or_kubectl_copied": false,
   "rootfs_binaries_executed": false,
   "security_accepted": false,
@@ -41,7 +42,7 @@
   "remaining_requirements": [
     "Final-image ownership and directory traversal.",
     "Node/native addon/Prisma/SQLite/custom kubectl compatibility and unchanged application data contracts.",
-    "Preserved operator and entrypoint commands, including explicit missing-tool resolution.",
+    "Preserved actual application/entrypoint/operator requirements with explicit source-based tool mapping; incidental baseline utilities do not impose universal equivalence.",
     "Complete image scanner package visibility, default scan and any precisely justified expiring exceptions.",
     "Actual final image functional/browser/live/rollback acceptance."
   ]

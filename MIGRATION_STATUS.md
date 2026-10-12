@@ -4,6 +4,10 @@ Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original m
 
 ## 2026-10-12: recovery transport qualified; image advisory triage remains open
 
+The [actual fixed-cache inspection](evidence/bortus-api-cache-actual-root-20261012.json) passes fixed OCI digest/platform/static-ELF checks and copied runner/API help/version as UID1000. A distinct read-only review binds14 completed records and the31,203,840-byte archive and freshly verifies all five remote process identities absent. No API server/container started; original-image CRI execution and accepted-material API decryption remain open.
+
+The [latest raw-source functional qualification](evidence/bortus-canonical-e50-functional-root-20261012.json) passes build, lint, fresh types,267 units and eight integrations. Root independently verifies383 originals,353 raw Git byte/mode bindings and4263 current compiled hashes plus fresh owner/container absence. This is local functional acceptance, separate from performance, browser, image/security and live rollout.
+
 The [integrated API recovery transport](evidence/bortus-api-transport-readiness-root-20261012.json) passes14 Python transport and15 pinned Node22 TLS-readiness controls. All176 inputs remain unchanged. This proves the local transport/readiness contract; actual cached binaries, current isolation, accepted-material API recovery and final cleanup still require live evidence. No writer or live resource changed.
 
 The [independent Debian review](evidence/bortus-debian-high-triage-root-20261012.json) verifies26 retained artifacts and15 primary-source snapshots. All43 HIGH findings correspond to8 CVEs across5 source-package families; every installed binary/source version matches the image metadata and all eight Trixie CVE tables remain vulnerable. All162 default findings are retained. A20 permits precisely justified, expiring residual exceptions after complete qualification; no exception is accepted here. Runtime alternatives remain isolated prototypes.
@@ -12,7 +16,7 @@ The [cache prerequisite review](evidence/bortus-api-cache-preflight-root-2026101
 
 The [isolated runtime preparation](evidence/bortus-chisel-rootfs-preparation-root-20261012.json) has independently verified Git/archive/filesystem and signed release/index/deb provenance. It is preparation only: application compatibility, missing commands, final ownership, complete scanner visibility and image acceptance remain open. No production source or runtime was replaced.
 
-The eighteen-request evaluation remains completed without adoption. The sixteen-MiB page proposal is awaiting the user's answer; candidate source remains capped at eight requests with four-MiB pages. Production deployment is unchanged. Gluster/Vault/Consul originals and backups remain preserved.
+The eighteen-request evaluation remains completed without adoption. The user approved the isolated sixteen-MiB Secret metadata evaluation; candidate source remains capped at eight requests with four-MiB pages. Production deployment is unchanged. Gluster/Vault/Consul originals and backups remain preserved.
 
 ## 2026-10-12: fixed isolated API recovery proposal reviewed
 
@@ -1221,7 +1225,7 @@ The [independent root review](evidence/bortus-eighteen-request-evaluation-root-2
 
 The single native-list observation measures 123.791 ms (334 small records), 77.500 ms (200), 105.643 ms (1,000), 142.666 ms (10,000), 337.225 ms (25 large) and 253.744 ms (three largest). API calls remain 18/18/18/54/21/20. This is one unpaired observation; prior eight-request paired medians are reference values, not matched causal comparisons. It does not demonstrate broad improvement or satisfy A07/A21. The candidate source cap stays eight and no live deployment changes. Missing dependency chunks and then wrong native-loader cwd caused two retained control setup failures; corrected controls retain the mandatory actual native-load assertion. Root metadata path/oracle-field read errors were corrected without replaying measurement.
 
-A proposed 16 MiB metadata-list page evaluation awaits user approval because the accepted contract preserves the current 4 MiB page ceiling. The existing 32 MiB aggregate, 10,000-item, deadline, namespace, authorization, redaction and runtime limits would remain unchanged. No page-bound change, source adoption or rollout is authorized by the eighteen-request evaluation.
+The user approved evaluating a16 MiB ceiling for Secret metadata lists on2026-10-12. The experiment retains the32 MiB aggregate,10,000-item, deadline, namespace, authorization, redaction and runtime limits; generic/non-flat responses stay at4 MiB and candidate concurrency stays eight. Both matching transport/native-selector input guards may change only in an isolated prototype. This authorizes evaluation only; production source remains4 MiB and no adoption or deployment is approved by this evaluation.
 
 ## 2026-10-12: default e50 image scan completed; security review remains open
 
