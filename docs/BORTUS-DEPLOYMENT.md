@@ -34,7 +34,7 @@ The [original performance comparison](../evidence/bortus-paired-loader-refusal-r
 passes both raw builds, then fails the first candidate native metadata assertion.
 Root verifies the compiled default loader was rewritten into an undefined call.
 Unbundled loader tests and an identical ELF do not establish compiled-route
-correctness. A genuine compiled regression/fix is required before performance
+correctness. The later [actual compiled correction](../evidence/bortus-compiled-native-root-20261012.json) verifies raw352-source build, unchanged4263 compiled outputs and a334-record/18-namespace status200 route that actually loads the native ELF. Its fixture-only child passes two cleanup controls; full current-suite, final image and live acceptance remain separate. The original six-observation comparison completed but regressed some large-value and warm paths, so A07/A21 remain open. This fixes the loader gate before further performance
 or image acceptance; the frozen driver and expected responses remain unchanged.
 This source review does not establish the final image, hosted CI, performance or
 live release. Production remains on its original writer until those checks and
