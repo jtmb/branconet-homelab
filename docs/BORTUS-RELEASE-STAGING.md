@@ -630,3 +630,7 @@ The [root retained-master preload controls](../evidence/bortus-retained-master-p
 ## 2026-10-12: observed retained archive; import held
 
 The [current master inspection](../evidence/bortus-retained-master-inspection-root-20261012.json) confirms the exact retained c29 tar stat metadata and historical receipt, with independent reader closure. This is current inspection authority only; the full archive remains unverified and no image import/alias was performed. Successful retained import restores the source release tag; the required utility digest alias needs its own separately reviewed stage. The earlier unprivileged diagnostic and cache-alias refusal are preserved.
+
+## 2026-10-12: fixed master import verified
+
+The [master import](../evidence/bortus-retained-master-import-root-20261012.json) completed once under its original600s shared lease in148.136s. Full tar/ordered-layer validation and source-tag cache checks passed, all six actual image jobs exited0, and independent UID/start closure passed. The current utility digest alias is still absent by this stage design; it needs a separate reviewed no-force alias-only owner. No transfer, pull, worker preload or application resource changed. Original archive and failed owners remain preserved.

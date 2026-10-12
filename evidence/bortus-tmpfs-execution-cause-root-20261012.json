@@ -1,0 +1,82 @@
+{
+  "abi": 1,
+  "observed_utc": "2026-10-12T21:19:52.926287+00:00",
+  "scope": "source-unchanged failed-test child metadata plus controlled temp-mount causal comparison; no application acceptance replacement",
+  "diagnostic_handoff_sha256": "5b009b28fab22ff89d0aca6d482dea24f7b140690495404db184de4d4055d787",
+  "diagnostic_originals_independently_verified": 69,
+  "actual_selected_test_exit": 1,
+  "actual_diagnostic_container_exit": 0,
+  "actual_diagnostic_supervisor_exit": 1,
+  "supervisor_failure": "output1001/0700 denied UID1000 post-observation read; original unchanged",
+  "kubectl_launch_failures": {
+    "count": 4,
+    "code": "EACCES",
+    "signal": null,
+    "killed": false,
+    "fixture_regular_mode": 493,
+    "fixture_uid": 1001
+  },
+  "resource_exhaustion_observed": false,
+  "causal_handoff_sha256": "2563c6bfecb30f6716783bbbbaf8d2f4a4b1a0e250dea97be744b6c35af842e6",
+  "causal_originals_independently_verified": 91,
+  "actual_causal_supervisor_exit": 0,
+  "conditions": [
+    {
+      "phase": "original-flags",
+      "mount": {
+        "fsType": "tmpfs",
+        "flags": [
+          "nodev",
+          "noexec",
+          "nosuid",
+          "relatime",
+          "rw"
+        ]
+      },
+      "executable": {
+        "sha256": "306c6ca7407560340797866e077e053627ad409277d1b9da58106fce4cf717cb",
+        "bytes": 17,
+        "mode": 493,
+        "uid": 1001,
+        "regular": true
+      },
+      "code": "EACCES",
+      "signal": null,
+      "killed": false,
+      "status": null,
+      "durationMs": 8.383364
+    },
+    {
+      "phase": "explicit-exec",
+      "mount": {
+        "fsType": "tmpfs",
+        "flags": [
+          "nodev",
+          "nosuid",
+          "relatime",
+          "rw"
+        ]
+      },
+      "executable": {
+        "sha256": "306c6ca7407560340797866e077e053627ad409277d1b9da58106fce4cf717cb",
+        "bytes": 17,
+        "mode": 493,
+        "uid": 1001,
+        "regular": true
+      },
+      "code": null,
+      "signal": null,
+      "killed": false,
+      "status": 0,
+      "durationMs": 11.239963
+    }
+  ],
+  "causal_finding": "original local tmpfs noexec denies identical17-byte0755 script; explicit exec only removes noexec and returns0",
+  "original_CI_adds_tmpfs": false,
+  "original_CI_commands_source_and_oracles_changed": false,
+  "correction": "exec only on disposable compiler-CI fixture tmpfs; supervisor-readable output0755 inside private0700 owner",
+  "production_runtime_or_source_changed": false,
+  "first_diagnostic_dispatcher_refused_before_supervisor_test_or_container": "V3 root-created WORK700 notchowned; preserved, corrected only in freshV4 workspace",
+  "original_full_functional_failure_preserved": true,
+  "overall_acceptance": false
+}
