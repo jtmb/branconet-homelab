@@ -19,16 +19,18 @@ if (process.platform !== "linux" || process.arch !== "x64") {
     collect2: { realpath: "/usr/lib/gcc/x86_64-linux-gnu/12/collect2", sha256: "06c070d6b746da665041ea6f2e7d30faf9ef4e1f87cb9c932f963953e32aeec2" },
     "ld.bfd": { realpath: linker, sha256: "f6d71a1bcd45764550a42dfaa179bc43b63ee879ec6f875bfd39fca013515da7" },
   };
-  const headers = {
-    "node_api.h": "2d4560831e525b47b060ec8a0864ab73993df9e20215ce9f0fe7b24cd31af32a",
-    "js_native_api.h": "624b39a85f0fe332f7cc1eb537e98f0e119be8503c742265fef6bdd53893adc8",
-    "js_native_api_types.h": "c63d227f42878411e2a291ce81e0adf83ce57b81c0ea806740108b979b741156",
-    "node_api_types.h": "088766b3cf1f0cd9b292c361ad30f7a04e7cc6db35a20ca52c572c1adf9635e7",
-  };
+  // Immutable public file checksums, retained verbatim for inspection.
+  const headerPins = [
+    { path: "node_api.h", sha256: "2d4560831e525b47b060ec8a0864ab73993df9e20215ce9f0fe7b24cd31af32a" },
+    { path: "js_native_api.h", sha256: "624b39a85f0fe332f7cc1eb537e98f0e119be8503c742265fef6bdd53893adc8" },
+    { path: "js_native_api_types.h", sha256: "c63d227f42878411e2a291ce81e0adf83ce57b81c0ea806740108b979b741156" },
+    { path: "node_api_types.h", sha256: "088766b3cf1f0cd9b292c361ad30f7a04e7cc6db35a20ca52c572c1adf9635e7" },
+  ];
+  const headers = Object.fromEntries(headerPins.map(pin => [pin.path, pin.sha256]));
   if (process.version !== "v22.23.3" || hash(process.execPath) !== "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48" ||
       hash(compiler) !== "75e997ec62297a6484f491bae28ab0ccb489daba23e398fd10fe68e9e6f0def8" ||
       hash(linker) !== "f6d71a1bcd45764550a42dfaa179bc43b63ee879ec6f875bfd39fca013515da7" ||
-      Object.entries(headers).some(([name, expected]) => hash("/usr/local/include/node/" + name) !== expected)) {
+      headerPins.some(pin => hash("/usr/local/include/node/" + pin.path) !== pin.sha256)) {
     throw Error("Pinned native selector build inputs unavailable");
   }
   const selectedTools = {};
