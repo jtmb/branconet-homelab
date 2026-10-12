@@ -220,3 +220,6 @@ Indexed flat `4e70ac9` original paired evidence: [raw](indexed-flat-4e70-control
 
 
 [ASCII generator artifact framing](prefix-pod-cost-diagnostic/generator-framing-clarification.json): the timestamp declaration and Pod function are two exact disjoint frozen-driver byte slices, concatenated for the diagnostic VM. The composed file is not claimed to be a contiguous driver substring; all original controls/timings/archives remain unchanged.
+
+
+Flat16 candidate `2216fa6` original paired evidence: [raw](metadata16-2216-controlled-performance/raw.json), [unchanged summary](metadata16-2216-controlled-performance/summary.json), [assessment/source manifest](metadata16-2216-controlled-performance/assessment.json), [101-original/429-raw-Git manifest](metadata16-2216-controlled-performance/manifest.json), runner/summary terminals and independent closure. Six observations and both builds passed original correctness; A07/A21 no-regression remains failed/open. Full Node22.23.3 runtime is shared by both sources; no live adoption or image acceptance. All earlier failed preparations remain retained.
