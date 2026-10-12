@@ -92,3 +92,9 @@ The config image ID is `sha256:db6a14d34ee75d8477e03d7efd0323100ca8b85941b6a46f9
 The [independent root export review](../evidence/bortus-patched-app-export-e50-root-20261012.json) records actual export/supervisor exit 0 in 66.877 seconds. Root verifies the complete 1,197,207,552-byte archive SHA, 71 outer members, Linux/amd64 config and exact five source labels, all 17 ordered layer hashes/diff IDs and 41,240 layer entries. Effective final files contain the exact reviewed custom kubectl and native selector ELF, all eleven canonical migrations, Prisma schema/support files and entrypoint. Source content and nonroot runtime/entrypoint settings match. Owned supervisor/helper/observed children are absent. The config image ID remains distinct from an OCI runtime digest.
 
 Full-image security scanning is separate and in progress; image/application runtime, performance, latest-data, guarded schema/RBAC/admission and live/rollback acceptance remain open. This export neither executes the image nor deploys it.
+
+## 2026-10-12: default e50 image scan completed; security review remains open
+
+The [independent root scan review](../evidence/bortus-patched-app-security-e50-root-20261012.json) verifies all 13 original artifacts, raw report counts/config ID, exact default vulnerability/secret/image-config flags, closed environment, unchanged receipt/archive/tool pins and actual scanner/supervisor absence. Trivy exits 1 with 162 Debian 13.7 findings: 43 High, 58 Medium, 60 Low and one Unknown. It reports zero Critical, fixable or secret findings. Node.js and the patched kubectl target report zero vulnerability findings.
+
+Every original finding remains retained without suppression. Zero available fixes does not establish absence of risk. Debian advisory and actual component/exploit-path review remains separate, and no full-image security, runtime or deployment acceptance is granted.
