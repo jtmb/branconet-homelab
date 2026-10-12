@@ -113,3 +113,7 @@ fixed inherited reads and once-only conditional dispatches under the actual borr
 Observer and original absolute lease. Construct the graph from its exported watch/
 quiescent modules; Ready/default clients are unchanged. This transport is separate
 from root-owned source/image/schema/guard phase qualification and live acceptance.
+
+A [fresh actual Ready-writer schema check](../evidence/bortus-current-schema-20261012.json) exits0 in0.776s: unchanged legacy3b076 writerUID, seven complete original migrations/checksums and all13 public table topologies match. No credential/application rows or application entrypoint were read/run. The bound producer closes/waits its exec; an independent childPID was not recorded, so that stronger absence claim is not made. This is current metadata, not latest whole-row data recovery or forward-schema acceptance.
+
+The default quiescent NAS transport prerequisite was missing: runtime/bin/ssh did not exist. Root [exclusively copied the public system executable](../evidence/bortus-sqlite-nas-tool-20261012.json), boundSHA c6942676b14478f22ccad4b62c40033d18fae3212b5777fd6941aa6e4db1e183, owned0700 with file/directory fsync. SystemSSH stays byte-identical; no connection or private key read/hash occurred. The separate opt-in CIFS SQLite-cipher writer remains in qualification; no current-data capture or writer stop has begun.
