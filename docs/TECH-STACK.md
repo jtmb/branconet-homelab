@@ -33,9 +33,10 @@ Kubernetes uses containerd-k8s.service, /run/containerd-k8s/containerd.sock and 
 
 The targeted configuration capture uses the checkpoint transport interface and
 age, with no new runtime dependency. Its32 standard recovery files complement
-broader historical host archives. All47 combined root controls pass in7.992s;
-actual fresh capture remains pending. The scoped CIFS ciphertext-mode correction
-passes12 local controls. See [migration operations](MIGRATION-OPERATIONS.md).
+broader historical host archives. All75 combined root controls pass. The fresh
+actual32-file authenticated capture and exact NAS ciphertext readback are
+accepted. Independent etcd/Longhorn recovery remains pending. See
+[migration operations](MIGRATION-OPERATIONS.md).
 
 Longhorn is the default persistent application storage. Each chart declares its own PVC mounts and values. Existing NAS media at //192.168.0.8/plex_smb_share remains intact; requested integration is a separate live acceptance check. The Samba role installs the client CSI driver only. It does not create a guest share or overwrite exports, credentials, fstab or files. Host-local default storage and a new NFS server are not part of this migration.
 
@@ -104,5 +105,4 @@ without skips or ResourceWarnings on164 unchanged private POSIX source files.
 Fourteen configuration cases include exact CIFS mode handling and closed-prefix
 refusals. Retained server dry-run metadata proves exact admitted policy spec
 and typed complete collections, with no persistent resource ownership inferred.
-Fresh actual configuration capture and scoped etcd streaming integration remain
-pending. Historical failed artifacts are retained.
+The streaming consumer and narrow CIFS creator-close correction are now integrated and pass75 root controls. The [fresh actual configuration receipt](../evidence/bortus-kubernetes-config-actual-20261012.json) accepts only the32-file age archive and exact NAS ciphertext readback. Etcd restore, API decryption, Longhorn recovery and the guarded app rollout remain pending. Both refused archives remain retained without replay/adoption.

@@ -50,13 +50,11 @@ Multiple aliases can reference a key; one alias cannot reference multiple target
 The fresh guarded release requires current encrypted configuration alongside
 SQLite/native-volume/etcd checkpoints. The targeted32-file callable
 `capture-kubernetes-recovery-config.py` uses the separately qualified Transport,
-without historical-helper fallback. Nine initial controls and47 combined root
-controls pass; actual fresh capture remains pending. The first real run
-read/authenticated its operator archive but refused NAS publication on the
-existing CIFS mount's forced0755 ciphertext mode. Both outputs remain retained.
-The scoped ciphertext-only correction passes12 local controls; operator files
-stay0600 and a distinct fresh run remains pending. NAS data, keys, permissions
-and mounts were unchanged. See [migration operations](MIGRATION-OPERATIONS.md)
+without historical-helper fallback. The integrated transport/writer passes75
+root controls. A new actual32-file capture and authenticated ciphertext NAS
+readback are accepted, with launcher0 and all owned processes closed. Both
+prior refused outputs remain retained without replay/adoption. No plaintext
+keys, mount settings or NAS permissions changed. See [migration operations](MIGRATION-OPERATIONS.md)
 for exact scope, per-read consistency and independent restore limitations.
 
 The [restored-consumer metadata fence](BORTUS-RESTORED-CONSUMER-FENCE.md)
@@ -676,8 +674,7 @@ without skips or ResourceWarnings on164 unchanged private POSIX source files.
 Fourteen configuration cases include exact CIFS mode handling and closed-prefix
 refusals. Retained server dry-run metadata proves exact admitted policy spec
 and typed complete collections, with no persistent resource ownership inferred.
-Fresh actual configuration capture and scoped etcd streaming integration remain
-pending. Historical failed artifacts are retained.
+The streaming consumer and narrow CIFS creator-close correction are now integrated and pass75 root controls. The [fresh actual configuration receipt](../evidence/bortus-kubernetes-config-actual-20261012.json) accepts only the32-file age archive and exact NAS ciphertext readback. Etcd restore, API decryption, Longhorn recovery and the guarded app rollout remain pending. Both refused archives remain retained without replay/adoption.
 
 
 The [second retained actual configuration run](../evidence/bortus-config-close-refusal-20261012.json)
@@ -685,7 +682,7 @@ authenticated its32-file operator archive, then refused the CIFS creator-close/
 reopen timestamp fence. The NAS ciphertext hash matches; the refused run remains
 unaccepted without replay/adoption. A distinct encrypted public fixture proves
 both timestamps advance3.7178ms on close while device/inode/owner/mode/link-count/
-size and full mount identity stay exact. The narrow CIFS-boundary correction is
-in preparation: pin a fresh full reopened fingerprint and preserve strict full
-readback/POSIX/owner/inode/hash/mount/deadline checks. No production etcd snapshot
-or data/key/permission/mount change was performed.
+size and full mount identity stay exact. The narrow CIFS-boundary correction is integrated: it pins a full reopened
+fingerprint and preserves strict full readback/POSIX/owner/inode/hash/mount/
+deadline checks. The new successful configuration archive is distinct from
+this retained failed run; no production etcd snapshot is claimed.
