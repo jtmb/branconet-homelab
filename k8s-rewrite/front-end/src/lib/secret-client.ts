@@ -10,6 +10,7 @@ import { flatSecretGuard } from "./secret-access";
 import { getSession } from "./auth";
 import prisma from "./db";
 import { parseSecretSummaryPage } from "./secret-summary-json";
+import { parseFlatSecretSummaryPage } from "./secret-flat-summary";
 
 export function secretNamespaces(): string[] {
   const scopes = (process.env.BORTUS_SECRET_NAMESPACES || "default").split(",").map(s => s.trim()).filter(Boolean);
@@ -28,7 +29,7 @@ async function slot(deadline: number, signal?: AbortSignal) {
   await new Promise<void>((resolve, reject) => {
     if (signal?.aborted) return reject(secretFailure(signal.reason));
     if (Date.now() >= deadline) return reject(new SecretError(503, "Kubernetes Secret request timed out"));
-    if (active < 4) { active++; resolve(); return; }
+    if (active < SECRET_LIST_MAX_CONCURRENCY) { active++; resolve(); return; }
     if (waiters.length >= 64) return reject(new SecretError(503, "Kubernetes Secret request queue is full"));
     const cleanup = () => { clearTimeout(waiter.timer); signal?.removeEventListener("abort", cancel); };
     const cancel = () => {
@@ -52,7 +53,7 @@ async function slot(deadline: number, signal?: AbortSignal) {
   });
 }
 const release = () => { active--; waiters.shift()?.enter(); };
-export const nativeRequestDiagnostics = () => ({ active, queued: waiters.length, maxConcurrent: 4, maxQueued: 64 });
+export const nativeRequestDiagnostics = () => ({ active, queued: waiters.length, maxConcurrent: SECRET_LIST_MAX_CONCURRENCY, maxQueued: 64 });
 
 // Only a bounded full-list GET may retry this locally detected response ceiling.
 class SecretPageTooLarge extends SecretError {
@@ -206,7 +207,7 @@ export function rejectedSecretListItemCount(chunks: readonly Buffer[], limit: nu
   }
 }
 
-export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): NativeSecretTransport {
+function buildSecretTransport(initialListPageLimit: 20 | 200 = 20, flatListing = false): NativeSecretTransport {
   try {
     if (initialListPageLimit !== 20 && initialListPageLimit !== 200)
       throw new SecretError(503, "Invalid Kubernetes Secret list page limit");
@@ -229,7 +230,7 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
         if (!isDeepStrictEqual(current.options, fresh.options)) return fresh;
         fresh.destroy(); return current;
       }
-      Object.assign(fresh, { keepAlive: true, maxSockets: 4, maxTotalSockets: 4, maxFreeSockets: 4 });
+      Object.assign(fresh, { keepAlive: true, maxSockets: SECRET_LIST_MAX_CONCURRENCY, maxTotalSockets: SECRET_LIST_MAX_CONCURRENCY, maxFreeSockets: SECRET_LIST_MAX_CONCURRENCY });
       listAgents.set(budget, fresh);
       const timer = setTimeout(() => budget.fail(new SecretError(503, "Kubernetes Secret list timed out")), Math.max(1, budget.deadline - Date.now()));
       timer.unref();
@@ -239,7 +240,7 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
       return fresh;
     };
 
-    async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false, byteLimit = 4 * 1024 * 1024, transferBudget?: SecretListBudget, retryPageLimit?: number, summaryNamespace?: string): Promise<{ value: any; bytes: number }> {
+    async function request(method: string, route: string, body?: unknown, deadline = Date.now() + 8000, metadata = false, byteLimit = 4 * 1024 * 1024, transferBudget?: SecretListBudget, retryPageLimit?: number, summaryNamespace?: string, flatSummary = false): Promise<{ value: any; bytes: number }> {
       deadline = Math.min(deadline, Date.now() + 8000);
       transferBudget?.check();
       await slot(deadline, transferBudget?.signal);
@@ -325,7 +326,7 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
                 if (Date.now() >= deadline) throw new SecretError(503, "Kubernetes Secret request timed out");
                 if (options.signal?.aborted) throw secretFailure(options.signal.reason);
                 const value = summaryNamespace !== undefined && retryPageLimit !== undefined
-                  ? parseSecretSummaryPage(chunks, summaryNamespace, retryPageLimit)
+                  ? (flatSummary ? parseFlatSecretSummaryPage(chunks, summaryNamespace, retryPageLimit) : parseSecretSummaryPage(chunks, summaryNamespace, retryPageLimit))
                   : JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(Buffer.concat(chunks)));
                 if (!value || typeof value !== "object") throw Error();
                 transferBudget?.check();
@@ -392,6 +393,32 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
           return items;
         } finally { if (!options?.budget) budget.finish(); }
       },
+      listFlatSummaries: flatListing ? async (namespace, options) => {
+        const items: Awaited<ReturnType<NonNullable<NativeSecretTransport["listFlatSummaries"]>>> = [], cursors = new Set<string>();
+        const budget = options?.budget ?? new SecretListBudget(); let cursor = "", limit: number = initialListPageLimit;
+        try {
+          do {
+            let result: { value: any; bytes: number };
+            for (;;) {
+              try {
+                result = await request("GET", route(namespace) + "?limit=" + limit + (cursor ? "&continue=" + encodeURIComponent(cursor) : ""), undefined, budget.deadline, false, budget.remainingBytes(), budget, limit, namespace, true);
+                break;
+              } catch (error) {
+                if (!(error instanceof SecretPageTooLarge) || limit === 1) throw error;
+                const fallback = limit === 200 ? 10 : Math.max(1, Math.floor(limit / 2));
+                limit = Math.min(fallback, error.completedItems ?? fallback); budget.check();
+              }
+            }
+            const page = result.value as ReturnType<typeof parseFlatSecretSummaryPage>;
+            budget.consumeItems(page.items.length);
+            for (const summary of page.items) { if (options?.visit) options.visit(summary); else items.push(summary); }
+            cursor = page.cursor;
+            if (cursor && (cursors.has(cursor) || !page.items.length)) throw new SecretError(503, "Invalid Kubernetes Secret pagination");
+            if (cursor) cursors.add(cursor);
+          } while (cursor);
+          return items;
+        } finally { if (!options?.budget) budget.finish(); }
+      } : undefined,
       list: async (namespace, options) => {
         const items: V1Secret[] = [], cursors = new Set<string>();
         const budget = options?.budget ?? new SecretListBudget(); let cursor = ""; let limit: number = initialListPageLimit;
@@ -462,7 +489,10 @@ export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): Nati
     };
   } catch (error) { throw secretFailure(error); }
 }
+export function createSecretTransport(initialListPageLimit: 20 | 200 = 20): NativeSecretTransport {
+  return buildSecretTransport(initialListPageLimit);
+}
 export function nativeSecrets(legacyAlias?: string) {
-  const config = kvConfig(), namespaces = secretNamespaces().filter(ns => ns !== config.historyNamespace), transport = createSecretTransport(200);
+  const config = kvConfig(), namespaces = secretNamespaces().filter(ns => ns !== config.historyNamespace), transport = buildSecretTransport(200, true);
   return new SecretStore(transport, namespaces, flatSecretGuard(new KvRegistry(prisma, namespaces, config), transport, getSession, legacyAlias), SECRET_LIST_MAX_CONCURRENCY);
 }

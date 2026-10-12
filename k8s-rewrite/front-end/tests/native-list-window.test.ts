@@ -13,7 +13,7 @@ import { createSecretTransport, nativeSecrets, nativeRequestDiagnostics } from "
 import { nativeTlsFixture } from "./helpers/native-tls";
 
 const error503 = (error: unknown) => error instanceof SecretError && error.status === 503;
-const idle = () => assert.deepEqual(nativeRequestDiagnostics(), { active: 0, queued: 0, maxConcurrent: 4, maxQueued: 64 });
+const idle = () => assert.deepEqual(nativeRequestDiagnostics(), { active: 0, queued: 0, maxConcurrent: 8, maxQueued: 64 });
 async function traceAgents(operation: (entries: { agent: https.Agent; connections: number; destroyed: number }[]) => Promise<void>,
   before?: (config: KubeConfig, call: number) => void,
   after?: (options: https.RequestOptions, call: number) => void) {
@@ -212,7 +212,7 @@ test("settled responses discard late end/data/errors without decoding and still 
   });
 });
 
-test("full-list keepalive shares at most four TLS connections only within one complete operation", { timeout: 30000 }, async () => {
+test("full-list keepalive shares at most eight TLS connections only within one complete operation", { timeout: 30000 }, async () => {
   await fixture(async native => {
     const scopes = Array.from({ length: 18 }, (_, i) => "pool-" + i);
     process.env.BORTUS_SECRET_NAMESPACES = scopes.join(",");
@@ -222,8 +222,8 @@ test("full-list keepalive shares at most four TLS connections only within one co
       assert.equal(first.length, 18); assert.deepEqual(first.map(row => row.namespace), scopes);
       assert(first.every(row => JSON.stringify(row.keys) === JSON.stringify(["__proto__", "binary", "empty"])));
       assert.equal(entries.length, 18); assert.equal(entries.filter(entry => entry.connections).length, 1);
-      assert(entries[0].connections > 0 && entries[0].connections <= 4);
-      assert.equal(entries[0].agent.maxSockets, 4); assert.equal(entries[0].agent.maxTotalSockets, 4); assert.equal(entries[0].agent.maxFreeSockets, 4);
+      assert(entries[0].connections > 0 && entries[0].connections <= 8);
+      assert.equal(entries[0].agent.maxSockets, 8); assert.equal(entries[0].agent.maxTotalSockets, 8); assert.equal(entries[0].agent.maxFreeSockets, 8);
       agentsClosed(entries); idle();
       assert.deepEqual(await nativeSecrets().list(), first);
       assert.equal(entries.length, 36); assert.equal(entries.filter(entry => entry.connections).length, 2);
@@ -473,14 +473,14 @@ test("batched cancellation aborts owned active/queued TLS requests while an unre
     transport.list = (namespace, options) => { budgets.push(options!.budget!); return raw(namespace, options); };
     const summaries = transport.listSummaries!.bind(transport);
     transport.listSummaries = (namespace, options) => { budgets.push(options!.budget!); return summaries(namespace, options); };
-    const pending = new SecretStore(transport, ["a", "b", "c", "d", "unstarted"], undefined, 4).list();
+    const pending = new SecretStore(transport, ["a", "b", "c", "d", "e", "f", "g", "h", "unstarted"], undefined, 8).list();
     const reject = assert.rejects(pending, error => error503(error) && (error as Error).message === "Kubernetes Secret list timed out");
     const until = Date.now() + 2000;
-    while (native.calls.length < 4 && Date.now() < until) await new Promise(resolve => setTimeout(resolve, 1));
-    assert.equal(native.calls.length, 4); assert.equal(nativeRequestDiagnostics().active, 4); assert.equal(nativeRequestDiagnostics().queued, 1);
+    while (native.calls.length < 8 && Date.now() < until) await new Promise(resolve => setTimeout(resolve, 1));
+    assert.equal(native.calls.length, 8); assert.equal(nativeRequestDiagnostics().active, 8); assert.equal(nativeRequestDiagnostics().queued, 1);
     assert.equal(new Set(budgets).size, 1); budgets[0].fail(new SecretError(503, "Kubernetes Secret list timed out"));
     await reject; assert.equal(nativeRequestDiagnostics().queued, 0); assert.equal(nativeRequestDiagnostics().active, 1);
     assert.equal((await unrelated).metadata?.name, "blocker");
-    assert.equal(native.calls.length, 4); assert(!native.calls.some(call => call.path.includes("/d/") || call.path.includes("/unstarted/"))); idle();
+    assert.equal(native.calls.length, 8); assert(!native.calls.some(call => call.path.includes("/h/") || call.path.includes("/unstarted/"))); idle();
   }, 300);
 });

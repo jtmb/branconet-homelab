@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "predev": "node scripts/patch-next-body-finalize.mjs",
-    "prebuild": "node scripts/patch-next-body-finalize.mjs",
+    "prebuild": "node scripts/patch-next-body-finalize.mjs && node scripts/build-secret-flat-native.mjs",
+    "postbuild": "node scripts/package-secret-flat-native.mjs",
     "dev": "next dev -p 4000",
     "build": "prisma generate && next build",
     "start": "next start -p 4000",

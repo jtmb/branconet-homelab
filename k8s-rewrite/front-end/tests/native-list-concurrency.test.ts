@@ -68,7 +68,7 @@ test("a denied scope cancels its siblings, redacts native errors and returns no 
 test("invalid concurrency and out-of-scope requests fail before transport work", async () => {
   let calls = 0;
   const transport: SecretTransport = { read: forbidden, create: forbidden, replace: forbidden, async list() { calls++; return []; } };
-  for (const concurrency of [0, 5, NaN, 1.5]) await assert.rejects(new SecretStore(transport, ["apps"], undefined, concurrency).list(), error503);
+  for (const concurrency of [0, 9, NaN, 1.5]) await assert.rejects(new SecretStore(transport, ["apps"], undefined, concurrency).list(), error503);
   await assert.rejects(new SecretStore(transport, ["apps"], undefined, 4).list("outside"), error => error instanceof SecretError && error.status === 403);
   assert.equal(calls, 0);
 });
@@ -102,7 +102,7 @@ test("production native factory opts into bounded TLS parallelism and excludes h
     const observer = setInterval(() => { maximum = Math.max(maximum, nativeRequestDiagnostics().active); }, 1);
     let rows;
     try { rows = await nativeSecrets().list(); } finally { clearInterval(observer); }
-    assert.equal(rows.length, 334); assert.equal(maximum, 4);
+    assert.equal(rows.length, 334); assert.equal(maximum, 8);
     assert.equal(new Set(rows.map(row => row.namespace + "/" + row.name)).size, 334);
     for (const row of rows) {
       const reference = expected.get(row.namespace + "/" + row.name)!;
@@ -110,7 +110,7 @@ test("production native factory opts into bounded TLS parallelism and excludes h
       assert.equal(row.type, "Opaque"); assert.equal("data" in row || "annotations" in row || "managedFields" in row, false);
     }
     assert.equal(native.calls.length, 18); assert(native.calls.every(call => call.method === "GET" && call.limit === 200 && !call.metadata && !call.path.includes("/history/")));
-    assert.deepEqual(nativeRequestDiagnostics(), { active: 0, queued: 0, maxConcurrent: 4, maxQueued: 64 });
+    assert.deepEqual(nativeRequestDiagnostics(), { active: 0, queued: 0, maxConcurrent: 8, maxQueued: 64 });
   }, 30);
 });
 
@@ -118,8 +118,8 @@ test("TLS queue stays capped at 64; cancelled listings drain without aborting ot
   await tlsFixture(async native => {
     native.seed("apps", "blocker", { field: "" });
     const transport = createSecretTransport();
-    const blockers = Promise.all(Array.from({ length: 4 }, () => transport.read("apps", "blocker")));
-    assert.equal(nativeRequestDiagnostics().active, 4);
+    const blockers = Promise.all(Array.from({ length: 8 }, () => transport.read("apps", "blocker")));
+    assert.equal(nativeRequestDiagnostics().active, 8);
     const budgets = Array.from({ length: 65 }, () => new SecretListBudget());
     const queued = Promise.allSettled(budgets.map(budget => transport.list("apps", { budget, visit: () => {} })));
     assert.equal(nativeRequestDiagnostics().queued, 64);
@@ -127,10 +127,10 @@ test("TLS queue stays capped at 64; cancelled listings drain without aborting ot
     const results = await queued;
     assert(results.every(result => result.status === "rejected" && error503(result.reason)));
     assert(results.some(result => result.status === "rejected" && result.reason.message === "Kubernetes Secret request queue is full"));
-    assert.equal(nativeRequestDiagnostics().queued, 0); assert.equal(nativeRequestDiagnostics().active, 4);
-    assert.equal((await blockers).length, 4);
-    assert.equal(native.calls.length, 4); assert(native.calls.every(call => call.path.endsWith("/blocker")));
-    assert.deepEqual(nativeRequestDiagnostics(), { active: 0, queued: 0, maxConcurrent: 4, maxQueued: 64 });
+    assert.equal(nativeRequestDiagnostics().queued, 0); assert.equal(nativeRequestDiagnostics().active, 8);
+    assert.equal((await blockers).length, 8);
+    assert.equal(native.calls.length, 8); assert(native.calls.every(call => call.path.endsWith("/blocker")));
+    assert.deepEqual(nativeRequestDiagnostics(), { active: 0, queued: 0, maxConcurrent: 8, maxQueued: 64 });
   }, 200);
 });
 
@@ -151,6 +151,6 @@ test("parallel TLS retry prefixes share the byte ceiling and leave no native wor
       assert.equal(calls[0].limit, 20); assert(calls.some(call => call.limit === 10));
       assert(calls.every(call => call.method === "GET" && [20, 10].includes(call.limit!)));
     }
-    assert.deepEqual(nativeRequestDiagnostics(), { active: 0, queued: 0, maxConcurrent: 4, maxQueued: 64 });
+    assert.deepEqual(nativeRequestDiagnostics(), { active: 0, queued: 0, maxConcurrent: 8, maxQueued: 64 });
   });
 });

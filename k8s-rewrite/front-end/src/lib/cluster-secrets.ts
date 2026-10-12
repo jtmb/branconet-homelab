@@ -15,7 +15,7 @@ export interface SecretTarget {
 }
 export const SECRET_LIST_MAX_ITEMS = 10000;
 export const SECRET_LIST_MAX_BYTES = 32 * 1024 * 1024;
-export const SECRET_LIST_MAX_CONCURRENCY = 4;
+export const SECRET_LIST_MAX_CONCURRENCY = 8;
 export class SecretListBudget {
   items = 0;
   bytes = 0;
@@ -55,11 +55,14 @@ export class SecretListBudget {
 }
 export type SecretListOptions = { budget?: SecretListBudget; visit?: (secret: V1Secret) => void };
 export interface NativeSecretSummary { metadata: V1ObjectMeta; type: string; immutable: boolean; keys: string[] }
+export interface FlatNativeSecretSummary { namespace: string | undefined; name: string | undefined; resourceVersion: string | undefined; type: string; immutable: boolean; keys: string[] }
 export type SecretSummaryListOptions = { budget?: SecretListBudget; visit?: (summary: NativeSecretSummary) => void };
+export type FlatSecretSummaryListOptions = { budget?: SecretListBudget; visit?: (summary: FlatNativeSecretSummary) => void };
 export interface SecretTransport {
   read(namespace: string, name: string): Promise<V1Secret>;
   list(namespace: string, options?: SecretListOptions): Promise<V1Secret[]>;
   listSummaries?(namespace: string, options?: SecretSummaryListOptions): Promise<NativeSecretSummary[]>;
+  listFlatSummaries?(namespace: string, options?: FlatSecretSummaryListOptions): Promise<FlatNativeSecretSummary[]>;
   create(namespace: string, body: V1Secret): Promise<V1Secret>;
   replace(namespace: string, name: string, body: V1Secret): Promise<V1Secret>;
 }
@@ -153,6 +156,12 @@ export class SecretStore {
         try {
           while (next < scopes.length) {
             budget.check(); const index = next++, scope = scopes[index];
+            if (this.transport.listFlatSummaries) {
+              const project = (summary: FlatNativeSecretSummary) => { budget.check(); summaries[index].push(summary); };
+              const metadata = await this.transport.listFlatSummaries(scope, { budget, visit: project });
+              for (const summary of metadata) { budget.consumeBytes(Buffer.byteLength(JSON.stringify(summary))); budget.consumeItems(1); project(summary); }
+              continue;
+            }
             if (this.transport.listSummaries) {
               const project = (summary: NativeSecretSummary) => { budget.check(); summaries[index].push({ namespace: summary.metadata.namespace, name: summary.metadata.name,
                 resourceVersion: summary.metadata.resourceVersion, type: summary.type, immutable: summary.immutable, keys: summary.keys }); };

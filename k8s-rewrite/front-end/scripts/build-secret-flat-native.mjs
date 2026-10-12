@@ -1,0 +1,41 @@
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import crypto from "node:crypto";
+import { execFileSync } from "node:child_process";
+
+const hash = file => crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
+const root = process.cwd(), output = path.join(root, "native", "secret-flat-selector.node");
+if (process.platform !== "linux" || process.arch !== "x64") {
+  console.log(JSON.stringify({ nativeFlatBuild: "portable-development-fallback", platform: process.platform, arch: process.arch }));
+} else {
+  const compiler = "/usr/bin/x86_64-linux-gnu-gcc-12", linker = "/usr/bin/x86_64-linux-gnu-ld.bfd";
+  const headers = {
+    "node_api.h": "2d4560831e525b47b060ec8a0864ab73993df9e20215ce9f0fe7b24cd31af32a",
+    "js_native_api.h": "624b39a85f0fe332f7cc1eb537e98f0e119be8503c742265fef6bdd53893adc8",
+    "js_native_api_types.h": "c63d227f42878411e2a291ce81e0adf83ce57b81c0ea806740108b979b741156",
+    "node_api_types.h": "088766b3cf1f0cd9b292c361ad30f7a04e7cc6db35a20ca52c572c1adf9635e7",
+  };
+  if (process.version !== "v22.23.3" || hash(process.execPath) !== "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48" ||
+      hash(compiler) !== "75e997ec62297a6484f491bae28ab0ccb489daba23e398fd10fe68e9e6f0def8" ||
+      hash(linker) !== "f6d71a1bcd45764550a42dfaa179bc43b63ee879ec6f875bfd39fca013515da7" ||
+      Object.entries(headers).some(([name, expected]) => hash("/usr/local/include/node/" + name) !== expected)) {
+    throw Error("Pinned native selector build inputs unavailable");
+  }
+  const source = path.join(root, "native", "secret-flat-selector.c"), temp = fs.mkdtempSync(path.join(os.tmpdir(), "bortus-native-build-"));
+  try {
+    const args = ["-O3", "-ffreestanding", "-fno-builtin", "-fno-stack-protector", "-fPIC", "-shared", "-DNAPI_VERSION=8", "-DNODE_GYP_MODULE_NAME=selector",
+      "-Wl,--build-id=none", "-Wl,-z,noexecstack", "-I/usr/local/include/node", source];
+    const first = path.join(temp, "first.node"), second = path.join(temp, "second.node");
+    for (const target of [first, second]) execFileSync(compiler, [...args, "-o", target], { timeout: 30000, stdio: "pipe", env: { ...process.env, SOURCE_DATE_EPOCH: "0" } });
+    if (hash(first) !== hash(second)) throw Error("Native selector build is not reproducible");
+    fs.copyFileSync(first, output);
+    fs.writeFileSync(path.join(root, "native", "secret-flat-selector-build.json"), JSON.stringify({ scope: "Generated build provenance; not performance acceptance", target: "linux-x64", napi: 8,
+      sourceSha256: hash(source), elfSha256: hash(output), compilerSha256: hash(compiler), linkerSha256: hash(linker), headers, identicalCompiles: 2,
+      externalRuntimeDependency: "libc memcpy; NAPI symbols resolved by Node", compilerArguments: args }, null, 2) + "\n");
+    console.log(JSON.stringify({ nativeFlatBuild: "complete", target: "linux-x64", napi: 8, identicalCompiles: 2, elfSha256: hash(output) }));
+  } finally {
+    if (path.dirname(temp) !== os.tmpdir() || !path.basename(temp).startsWith("bortus-native-build-")) throw Error("Owned native build cleanup refused");
+    fs.rmSync(temp, { recursive: true, force: true });
+  }
+}
