@@ -2,7 +2,7 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
 
-## 2026-10-12: flat16 functional qualification complete; paired comparison and rollout remain open
+## 2026-10-12: flat16 functional qualification and paired execution complete; performance and rollout remain open
 
 The [actual fixed-cache inspection](evidence/bortus-api-cache-actual-root-20261012.json) passes fixed OCI digest/platform/static-ELF checks and copied runner/API help/version as UID1000. A distinct read-only review binds14 completed records and the31,203,840-byte archive and freshly verifies all five remote process identities absent. No API server/container started; original-image CRI execution and accepted-material API decryption remain open.
 
