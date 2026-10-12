@@ -98,3 +98,45 @@ loopback mTLS fixtures. Source bytes remain unchanged and owned processes/contai
 are absent. Public source checksum metadata is represented explicitly as path/SHA
 records; original metadata remains retained. This is local helper qualification,
 not execution against accepted archives or live API recovery.
+
+The separate `bortus-api-recovery-specs.py` contains fixed proposal generation
+and a pure persistent-resource matcher. It dispatches nothing. It preserves exact
+image digests, nonroot UID1000, denied network, no token/production mounts and
+initially empty owned `/proof`. A nonroot init creates owned subdirectories in
+memory volumes, mounted through fixed subPaths; actual server defaulting and
+volume permissions remain live prerequisites. Known absent defaults normalize
+only exact literal values, for each ordinary/init/ephemeral container. Explicit
+values, added containers/mounts and changed UID still refuse. Persistent RV is
+mandatory and opaque. Runtime matching requires exact spec digest and literal
+status.imageID; bounded status.image is display only.
+
+The proposed order is bundle, exact snapshot status/integrity restore, restored
+loopback etcd, complete ciphertext map in private RAM, then a once-only API
+ephemeral-container update with fresh Pod UID/RV. Root must compare that baseline
+after API startup and again after the oracle, because the oracle alone covers
+only its own read interval. The update body preserves the complete current Pod
+spec and adds only the fixed API container; actual subresource CAS semantics,
+admission/defaulting and cleanup are not established by pure controls.
+
+Pinned [v1.37.1 image source](https://github.com/kubernetes/kubernetes/blob/v1.37.1/build/server-image/kube-apiserver/Dockerfile)
+copies `/go-runner` and `/usr/local/bin/kube-apiserver`, and assigns the latter
+`cap_net_bind_service=+ep`. This source evidence is not the actual e190 cached ELF
+or xattr proof. The draft gives only the API container NET_BIND_SERVICE in its
+bounding capabilities, with no privilege escalation, to avoid excluding the
+file capability; its actual nonroot runtime compatibility remains unqualified.
+The [pinned runner](https://github.com/kubernetes/kubernetes/blob/v1.37.1/staging/src/k8s.io/component-base/logs/kube-log-runner/kube-log-runner.go)
+redirects child streams to `/dev/null` before launch. Restore commands instead
+use owned exec streams with supervised discard and actual exit0. There is no
+assumed shell in distroless images, wrapper transfer, mutable pull or copied key.
+
+Root still owns the missing narrowly scoped launcher bindings: authenticated
+accepted config/snapshot pins and fresh original material correspondence,
+server dry-run/default matching, cached executable proof, streaming exec stdin,
+ephemeral PUT once-only intent, TLS readiness and independent conditional cleanup.
+No API recovery procedure or resource has been executed by this source proposal.
+The [12-control qualification](implementation-evidence/api-recovery-proposal-qualification.json)
+is pure Windows/public preparation. It retains the original11-control pass and
+the actual followup refusal-test failure where Python compared integer0 equal to
+explicit Booleanfalse. Type-strict recursive matching now refuses that
+substitution; original source/results stay preserved. There is no actual API,
+cache, TLS transport or ephemeral-update acceptance in these controls.

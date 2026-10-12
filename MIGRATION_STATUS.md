@@ -2,6 +2,10 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
 
+## 2026-10-12: fixed isolated API recovery proposal reviewed
+
+[Root proposal review](evidence/bortus-api-recovery-specs-root-20261012.json) verifies four raw source/doc files and31 originals. All12 unchanged pure matcher/proposal controls pass independently on Windows in0.203s, with three source files unchanged and the owned child reaped. Fixed nonroot memory mounts, immutable public program, denied network, explicit image IDs and same-UID/opaque-RV checks are prepared. The original Boolean/integer refusal failure is retained; strict recursive typing fixes it. The private launcher outline is not integrated or executable authority. Actual cached ELF/capability/defaulting/ephemeral transport, accepted-material API recovery and resource cleanup proof remain open; no live resource or writer was changed.
+
 ## 2026-10-12: eight-request paired comparison verified; performance remains open
 
 [Independent comparison review](evidence/bortus-performance-eight-root-20261012.json) verifies36 originals,429 raw Git blobs/modes and both actual production tar archives. All six unique alternating observations pass the original inventory assertions; root independently recomputes1320 reported distributions and observes supervisor/runner absence. Both sources used the same pinned full Node22 image and2CPU/1GiB measurement limits. No driver, dataset, limit or oracle changed.
