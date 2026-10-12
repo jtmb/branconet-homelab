@@ -716,3 +716,21 @@ deadline checks. The new successful configuration archive is distinct from
 this retained failed run; no production etcd snapshot is claimed.
 
 The [approved eight-request diagnostic](../evidence/bortus-eight-request-evaluation-root-20261012.json) passes all seven admission/cancellation/size/item/namespace/generic-metadata controls and all six unchanged benchmark driver assertions. Root verifies all56 retained originals and both CRC-valid handoff ZIPs. One measured observation uses the corrected indexed native flat-summary parser with an eight-request cap, original six profiles/driver and2CPU/1GiB limits; production source remains unchanged. The1000-item path measures76.311ms versus96.871ms for the prior four-request flat prototype and80.814ms for the matched old baseline. The25-large-value path remains237.754ms versus187.792ms baseline, and3-large-values161.629ms versus156.379ms baseline. Sequential size-refusal/fallback and fixture serialization dominate those remaining gaps. This is an evaluation result, not a fresh paired no-regression acceptance, source adoption or final release. The initial fixture loader failure is retained; only missing declared chunk registration was corrected before the passing controls.
+
+## 2026-10-12: eight-request paired comparison verified; performance remains open
+
+[Independent comparison review](../evidence/bortus-performance-eight-root-20261012.json) verifies36 originals,429 raw Git blobs/modes and both actual production tar archives. All six unique alternating observations pass the original inventory assertions; root independently recomputes1320 reported distributions and observes supervisor/runner absence. Both sources used the same pinned full Node22 image and2CPU/1GiB measurement limits. No driver, dataset, limit or oracle changed.
+
+Native Secret-list median HTTP milliseconds, baseline → candidate:
+
+| Case | Baseline | Eight requests | Native API calls |
+|---|---:|---:|---|
+|334 small records|99.443|78.369|18 →18|
+|200 records|61.745|65.986|18 →18|
+|1,000 records|71.387|71.292|18 →18|
+|10,000 records|245.394|169.477|54 →54|
+|25 large records|172.868|229.442|18 →21|
+|3 maximum-size records|118.893|165.136|18 →20|
+
+All native inventories are complete. Large-value cases make extra page requests; some warm/concurrent Pod results regress. A07/A21 remain failed/open, with every original tail/range retained. The baseline10,000-Pod false-empty result is ineligible for equivalent-success latency comparisons. Whole-fixture CPU and peak memory include the fixture producer/driver, so they are not isolated app costs. This comparison authorizes no performance pass, final image or live rollout; remediation continues on the unchanged privacy/namespace/size/deadline contract.
+

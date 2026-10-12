@@ -1,0 +1,114 @@
+{
+  "originals_verified": 36,
+  "source_blobs_and_tar_modes_verified": 429,
+  "distributions_recomputed": 1320,
+  "unique_observations": 6,
+  "pairs": 3,
+  "original_inventory_oracles_passed": true,
+  "runner_exit": 0,
+  "terminal_owned_containers": 0,
+  "performance_acceptance": false,
+  "profiles": [
+    {
+      "name": "audit-small",
+      "native_http_ms": {
+        "baseline": 99.44274900000028,
+        "candidate": 78.36856999999964
+      },
+      "native_api_calls": {
+        "baseline": 18,
+        "candidate": 18
+      }
+    },
+    {
+      "name": "metadata-200",
+      "native_http_ms": {
+        "baseline": 61.74465699999928,
+        "candidate": 65.9857549999997
+      },
+      "native_api_calls": {
+        "baseline": 18,
+        "candidate": 18
+      }
+    },
+    {
+      "name": "metadata-1000",
+      "native_http_ms": {
+        "baseline": 71.38746300000093,
+        "candidate": 71.29216399999859
+      },
+      "native_api_calls": {
+        "baseline": 18,
+        "candidate": 18
+      }
+    },
+    {
+      "name": "metadata-10000",
+      "native_http_ms": {
+        "baseline": 245.39394399999946,
+        "candidate": 169.4767670000001
+      },
+      "native_api_calls": {
+        "baseline": 54,
+        "candidate": 54
+      }
+    },
+    {
+      "name": "kv-sized-native-25",
+      "native_http_ms": {
+        "baseline": 172.86793100000068,
+        "candidate": 229.4419909999997
+      },
+      "native_api_calls": {
+        "baseline": 18,
+        "candidate": 21
+      }
+    },
+    {
+      "name": "maximum-flat-native-3",
+      "native_http_ms": {
+        "baseline": 118.8930419999997,
+        "candidate": 165.13636399999814
+      },
+      "native_api_calls": {
+        "baseline": 18,
+        "candidate": 20
+      }
+    }
+  ],
+  "public_checksums": [
+    {
+      "kind": "raw-report",
+      "sha256": "698c818ec99d8c56d148fb1422d414ed0a39fd4ffee3b5acea6da780a0dd22e0"
+    },
+    {
+      "kind": "summary",
+      "sha256": "ac9d10a1379fbd055a32b028d94ab0258cfcac112670369f76b43a8a14b8012a"
+    },
+    {
+      "kind": "terminal",
+      "sha256": "d1d4aa3752294ce2e0fd473a1c77a26dc1e5dc9b053993764591fe262f21b787"
+    }
+  ],
+  "baseline_commit": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "candidate_commit": "4e70ac9aafce379d9e9d4f1271dfa798ce8562ea",
+  "runtime": "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
+  "same_runtime_for_both_builds_and_measurements": true,
+  "historical_slim_runtime": false,
+  "runtime_cpu": 2,
+  "runtime_memory_bytes": 1073741824,
+  "original_driver_limits_and_oracles_changed": false,
+  "root_observed_supervisor_and_runner_absent": true,
+  "A07": "failed/open",
+  "A21": "failed/open",
+  "scope": "Original three-pair whole-server comparison with complete native Secret inventories; execution pass, regression acceptance failed",
+  "limitations": [
+    "Warm and concurrent repeats measure Pods; Secret lists each have one cold request per profile per observation.",
+    "HTTP nearest-rank p95 and full ranges retained; no significance or tolerance claim.",
+    "10,000-Pod baseline incomplete inventory is excluded from equivalent-success latency comparisons.",
+    "Whole-fixture CPU/memory include fixture producer/driver; not isolated application costs.",
+    "Final image/runtime, live rollout and recovery gates remain open."
+  ],
+  "native_large_cases_require_extra_page_requests": true,
+  "production_changes": false
+}

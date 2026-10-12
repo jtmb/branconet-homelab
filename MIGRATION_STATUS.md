@@ -2,9 +2,26 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
 
+## 2026-10-12: eight-request paired comparison verified; performance remains open
+
+[Independent comparison review](evidence/bortus-performance-eight-root-20261012.json) verifies36 originals,429 raw Git blobs/modes and both actual production tar archives. All six unique alternating observations pass the original inventory assertions; root independently recomputes1320 reported distributions and observes supervisor/runner absence. Both sources used the same pinned full Node22 image and2CPU/1GiB measurement limits. No driver, dataset, limit or oracle changed.
+
+Native Secret-list median HTTP milliseconds, baseline → candidate:
+
+| Case | Baseline | Eight requests | Native API calls |
+|---|---:|---:|---|
+|334 small records|99.443|78.369|18 →18|
+|200 records|61.745|65.986|18 →18|
+|1,000 records|71.387|71.292|18 →18|
+|10,000 records|245.394|169.477|54 →54|
+|25 large records|172.868|229.442|18 →21|
+|3 maximum-size records|118.893|165.136|18 →20|
+
+All native inventories are complete. Large-value cases make extra page requests; some warm/concurrent Pod results regress. A07/A21 remain failed/open, with every original tail/range retained. The baseline10,000-Pod false-empty result is ineligible for equivalent-success latency comparisons. Whole-fixture CPU and peak memory include the fixture producer/driver, so they are not isolated app costs. This comparison authorizes no performance pass, final image or live rollout; remediation continues on the unchanged privacy/namespace/size/deadline contract.
+
 ## 2026-10-12: actual compiled native route correction verified
 
-[Root compiled-route evidence](evidence/bortus-compiled-native-root-20261012.json) verifies the production build at `69a357a` and fixture-only child `4e70ac9`: all352 executed source files match raw Git bytes/modes, all4263 compiled outputs are unchanged, and738 retained originals are bound. The actual route loads the native ELF and returns200 with all334 exact records across18 namespaces. The signal-cleanup fixture passes two controls; fresh353-source types and affected lint pass. All owned processes/containers are closed. The failed18c86 comparison remains retained. This is focused compiled-route qualification, not a rerun of the full267-unit suite, final image or live deployment. The subsequent original six-observation comparison completed, but reported large-value and warm-request regressions; independent summary review remains pending and A07/A21 remain open.
+[Root compiled-route evidence](evidence/bortus-compiled-native-root-20261012.json) verifies the production build at `69a357a` and fixture-only child `4e70ac9`: all352 executed source files match raw Git bytes/modes, all4263 compiled outputs are unchanged, and738 retained originals are bound. The actual route loads the native ELF and returns200 with all334 exact records across18 namespaces. The signal-cleanup fixture passes two controls; fresh353-source types and affected lint pass. All owned processes/containers are closed. The failed18c86 comparison remains retained. This is focused compiled-route qualification, not a rerun of the full267-unit suite, final image or live deployment. The subsequent original six-observation comparison completed, but reported large-value and warm-request regressions; independent summary review is complete and A07/A21 remain open.
 
 ## 2026-10-12: isolated API recovery helper locally qualified
 

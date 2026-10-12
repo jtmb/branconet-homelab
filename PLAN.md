@@ -288,3 +288,5 @@ namespace permissions, fresh authorization and value-redaction contracts remain
 unchanged. The original six-profile driver/datasets/oracles and2CPU/1GiB runtime
 caps remain the comparison. Evaluation does not grant a performance pass or
 production adoption; every profile and tail retains its actual result.
+
+The original three-pair eight-request evaluation completed with all native inventories, but regressed large-value and some warm/concurrent paths. [Root evidence](evidence/bortus-performance-eight-root-20261012.json) preserves all six observations and unchanged limits. A07/A21 remain open; no performance acceptance or live adoption follows the evaluation.
