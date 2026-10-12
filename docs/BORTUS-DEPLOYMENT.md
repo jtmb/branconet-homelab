@@ -674,7 +674,7 @@ without skips or ResourceWarnings on164 unchanged private POSIX source files.
 Fourteen configuration cases include exact CIFS mode handling and closed-prefix
 refusals. Retained server dry-run metadata proves exact admitted policy spec
 and typed complete collections, with no persistent resource ownership inferred.
-The streaming consumer and narrow CIFS creator-close correction are now integrated and pass75 root controls. The [fresh actual configuration receipt](../evidence/bortus-kubernetes-config-actual-20261012.json) accepts only the32-file age archive and exact NAS ciphertext readback. Etcd restore, API decryption, Longhorn recovery and the guarded app rollout remain pending. Both refused archives remain retained without replay/adoption.
+The streaming consumer and narrow CIFS creator-close correction are now integrated and pass75 root controls. The [fresh actual configuration receipt](../evidence/bortus-kubernetes-config-actual-20261012.json) accepts only the32-file age archive and exact NAS ciphertext readback. The raw etcd checkpoint and complete encrypted-registry restore now have [actual acceptance](../evidence/bortus-etcd-actual-recovery-root-20261012.json); API decryption, Longhorn recovery and the guarded app rollout remain pending. Both refused archives remain retained without replay/adoption.
 
 
 The [second retained actual configuration run](../evidence/bortus-config-close-refusal-20261012.json)
