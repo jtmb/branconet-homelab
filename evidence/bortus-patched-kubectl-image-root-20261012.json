@@ -1,0 +1,88 @@
+{
+  "scope": "Root integration/local POSIX orchestration and actual six-artifact read-only input validation; no actual image build or live acceptance",
+  "integration": {
+    "observedUTC": "2026-10-12T05:42:02.169328+00:00",
+    "nativeCommit": "093c84280ccb387b53a02ff85de08bdb1f55407b",
+    "parentNotIntegrated": "b914c11209844e77a48c7b1010da6bac19b59f99",
+    "handoffSha256": "686d2cf80d4b83ae7364ca48e8c712c14b088d6ae44a6437033bba66cce015d9",
+    "rawFilesVerified": 10,
+    "originalArtifactsVerified": 50,
+    "originalZipMembers": 1879,
+    "originalZipCRCValid": true,
+    "docsReadBeforeSourceEdit": 28,
+    "selectedNewFiles": {
+      "scripts/migration/build-bortus-patched-kubectl-image.py": "47495123f4fed1ed9a0794489221760b1e0192541e200283bd099989430d10ea",
+      "scripts/migration/bortus-kubectl-image-remote.py": "56354456d69b40c592030c017b1767b2ca575ca4e8c17f0d653111e2b4098738",
+      "scripts/migration/tests/test_bortus_patched_kubectl_image.py": "0a34e0f165121cac92db18dc85263cab62febf3f390567ac17a10a90d0bca53a",
+      "docs/BORTUS-PATCHED-KUBECTL-IMAGE.md": "9b79da205dc3f1beed4d1532906048bbd9909aebd9d4b6f1704b2d6610869e47",
+      "evidence/bortus-patched-kubectl-image-adapter-20261012.json": "da18a6872f27370ba6abfd777b64c9d1ab54b74f3e9052d684acab2dc38ea4ba"
+    },
+    "mergedDocAppendices": [
+      "docs/BORTUS-RELEASE-IMAGE.md",
+      "docs/BORTUS-RELEASE-STAGING.md",
+      "docs/BORTUS-DEPLOYMENT.md",
+      "docs/MIGRATION-OPERATIONS.md",
+      "docs/TECH-STACK.md"
+    ],
+    "laterRootActualBuildSectionsPreserved": true,
+    "defaultBuilderExporterDockerfileChanged": false,
+    "actualImageBuilt": false,
+    "clusterChanged": false
+  },
+  "unitTests": {
+    "actualExit": 0,
+    "controls": 21,
+    "noSkips": true,
+    "unitSeconds": 2.51,
+    "wallSeconds": 2.620252166991122,
+    "sourceHashesUnchanged": {
+      "scripts/migration/stage-bortus-release-image.py": "69a5fcb70984fca647f8014e5f37bcd3bc6d7c6ced34011016085ea92ca02d41",
+      "scripts/migration/build-bortus-patched-kubectl-image.py": "47495123f4fed1ed9a0794489221760b1e0192541e200283bd099989430d10ea",
+      "scripts/migration/prepare-bortus-release-context.py": "3b0c0c7b66468a78b91a001373675031b341ab804fa9b511029231e740f638db",
+      "scripts/migration/build-bortus-release-image.py": "9b7765fd6295eeb64bd0661a070fb9100fbaa58411916257f937e9068aa8f27f",
+      "scripts/migration/build-bortus-kubectl-security.py": "ad5c958e3c90f1f3db4f7b8996dced0e2cb4c5b6f70ff8681982a26d46f40fee",
+      "scripts/migration/bortus-kubectl-image-remote.py": "56354456d69b40c592030c017b1767b2ca575ca4e8c17f0d653111e2b4098738",
+      "scripts/migration/tests/test_bortus_patched_kubectl_image.py": "0a34e0f165121cac92db18dc85263cab62febf3f390567ac17a10a90d0bca53a"
+    },
+    "ownedChildReaped": true,
+    "testPid": 2166472
+  },
+  "actualInputValidation": {
+    "actualExit": 0,
+    "artifacts": 6,
+    "rootSeconds": 3.1381890819757245,
+    "nativeSeconds": 3.429172732983716,
+    "originalsUnchanged": true,
+    "changedPaths": 31916,
+    "sourceDiffZipBytes": 247076441,
+    "sourceDiffMetadataBytes": 12741184,
+    "binarySha256": "a3c4741294f061550b30bd2e3f357197ffbac37eefc5a45d686fe9cd29032b75",
+    "binaryBytes": 61960354,
+    "metadataAndCompleteZIPCRCAndPayloadHashesChecked": true,
+    "liveDispatchCalls": 0
+  },
+  "completionContract": "Both record.json and injection-binding.json must be completed and match exact configID,owner,source/context plus actual launcher terminal0. Legacy export receipt alone cannot accept the injected binary.",
+  "retainedHarnessRefusal": {
+    "actualRootExit": 1,
+    "cause": "Frozen-source check accidentally included newly created test-fixture runtime copies. Selected seven original source files remain unchanged; corrected harness checks those exact identities. First21-test log retained; new scoped run has actual terminal0.",
+    "sourceAndTestBehaviorChanged": false
+  },
+  "retainedNativeAttempts": "v1 stdout ResourceWarning and v4 final-directory-fsync failure are retained in immutable native handoff; final21 controls include their causal cleanup/durability fixes.",
+  "docsInventoryChecked": 29,
+  "defaultBuilderExporterAndFrontendDockerfileChanged": false,
+  "imageBuilt": false,
+  "imageSecurityAccepted": false,
+  "runtimeAccepted": false,
+  "deployed": false,
+  "schemaChanged": false,
+  "latestDataCheckpointAccepted": false,
+  "privateOriginalSha256": {
+    "root-linux-terminal.json": "018286853912b2a33ae373c66a655ed871a9a43fcdbceab9b9498341a49aa66b",
+    "root-tests.stderr": "997ac70cef24dca9dd6e69d2a808916b93a3b6fd5b7d1c09ff055bfbba201709",
+    "native-actual-input-terminal.json": "a8ea271f0d9e4b483fff0119897bbb7370de94691ae360405e097dcdc236b8b8",
+    "qualification-v2-terminal.json": "d8ab2edf0b5589e0c87d261f01f484cebdddb3fa302296636895bece25dc2030",
+    "integration-review.json": "5cdebba5bc4bd0aa8f7a99acd2bedebbdf4c542a45b85cd74d05da1f2a2ffed2",
+    "qualification-terminal.json": "b5f18fcd6864dd41d4b5d2b88d874e05bc5403dd2276a9df2fb7bc1391f056af"
+  },
+  "completedUTC": "2026-10-12T05:44:26.558216+00:00"
+}
