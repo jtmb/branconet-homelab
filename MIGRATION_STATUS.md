@@ -1202,3 +1202,11 @@ Following the failed eight-request comparison, the user approved evaluating eigh
 The [actual e50 build receipt](evidence/bortus-patched-app-build-e50-root-20261012.json) records helper exit 0 in 307.112 seconds, completed image/injection receipts, exact five-label inspection and owned-process closure. Full archive/security/runtime qualification remains pending. No deployment occurred.
 
 The [independently reviewed prototype diagnostics](evidence/bortus-rejected-performance-prototypes-root-20261012.json) reject both scalar native prefix counting and global Pod-response pre-encoding. Neither changes production behavior or accepts performance.
+
+## 2026-10-12: eighteen-request evaluation completed without adoption
+
+The [independent root review](evidence/bortus-eighteen-request-evaluation-root-20261012.json) verifies all 61 retained originals, 1,640 current source/compiled hashes, the sole compiled 8-to-18 anchor, eight passing control sections and six actual native ELF loads. All six original inventory oracles pass, and the original driver is unchanged. Root confirms observed process absence and a fresh successful query proving the owned container absent.
+
+The single native-list observation measures 123.791 ms (334 small records), 77.500 ms (200), 105.643 ms (1,000), 142.666 ms (10,000), 337.225 ms (25 large) and 253.744 ms (three largest). API calls remain 18/18/18/54/21/20. This is one unpaired observation; prior eight-request paired medians are reference values, not matched causal comparisons. It does not demonstrate broad improvement or satisfy A07/A21. The candidate source cap stays eight and no live deployment changes. Missing dependency chunks and then wrong native-loader cwd caused two retained control setup failures; corrected controls retain the mandatory actual native-load assertion. Root metadata path/oracle-field read errors were corrected without replaying measurement.
+
+A proposed 16 MiB metadata-list page evaluation awaits user approval because the accepted contract preserves the current 4 MiB page ceiling. The existing 32 MiB aggregate, 10,000-item, deadline, namespace, authorization, redaction and runtime limits would remain unchanged. No page-bound change, source adoption or rollout is authorized by the eighteen-request evaluation.
