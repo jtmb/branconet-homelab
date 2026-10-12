@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Fresh raw-etcd age checkpoint; exact authenticated bytes, bounded owned restore."""
-import base64,copy,datetime,hashlib,importlib.util,json,math,os,pathlib,re,selectors,shlex,signal,stat,subprocess,sys,time,uuid
+import base64,copy,datetime,hashlib,importlib.util,json,math,os,pathlib,re,selectors,shlex,signal,stat,subprocess,sys,time,types,uuid
 
 
 def load(name,file):
@@ -392,6 +392,12 @@ def snapshot_status(status,pin):
         type(pin['digest'])is str and re.fullmatch('[0-9a-f]{64}',pin['digest']),'snapshot')
     return status['revision']
 
+def nas_writer():
+    """Use the closed cipher-only factory with this graph's exact base program."""
+    path=pathlib.Path(__file__).with_name('capture-kubernetes-recovery-config.py');before=sha(path.read_bytes());factory=load('etcd_cipher_nas_factory',path.name)
+    program=factory.nas_program(types.SimpleNamespace(q=q),prefix='etcd');need(sha(path.read_bytes())==before,'ownership')
+    return program,{'prefix':'etcd','writer_sha256':sha(program.encode()),'factory_source_sha256':before,'base_program_sha256':sha(q.NAS_PROGRAM.encode())}
+
 def read_age(client,cipher,identity,deadline,maximum):
     cipher.check();os.lseek(cipher.fd,0,0)
     with os.fdopen(os.dup(cipher.fd),'rb')as source:
@@ -524,13 +530,13 @@ def _checkpoint(*,deadline,expected_source,config_bundle,recipient,identity_file
         need(all(any(v.startswith(('k8s:enc:aescbc:v1:'+n+':').encode())for n in names)for v in expected.values()),'keys')
         for key in(b'/registry/secrets/longhorn-system/longhorn-crypto',b'/registry/secrets/bortus/bortus-runtime'):need(key in expected and any(expected[key].startswith(('k8s:enc:aescbc:v1:'+n+':').encode())for n in names),'keys')
         source();need(correspondence()==key_identity,'keys');ledger.intent('archive',{'snapshot_revision':revision});stream=c.remote_start({'mode':'read','run_id':run_id,'inode':pin['inode']});stream.stdin.close();archive,plain=raw_archive(c,stream,ledger.path/'snapshot.age',pins[0].child_path,pins[1].child_path,deadline,ledger.fd);need(plain.hex()==pin['digest'],'snapshot');ledger.confirm('archive',archive)
-        cipher=q.Pin(ledger.path/'snapshot.age',MAX+1048576);pins.append(cipher);cipher.check();os.lseek(cipher.fd,0,0);name='etcd-'+run_id+'.age';ledger.intent('nas',{'name':name,'ciphertext_sha256':archive['ciphertext_sha256']});nas=c.spawn([*SSH,shlex.join(['python3','-c',q.NAS_PROGRAM.replace('bortus-sqlite-','etcd-')])]);w=q.archive.Pipe(nas.stdin,deadline,False)
+        cipher=q.Pin(ledger.path/'snapshot.age',MAX+1048576);pins.append(cipher);cipher.check();os.lseek(cipher.fd,0,0);name='etcd-'+run_id+'.age';program,writer_binding=nas_writer();ledger.intent('nas',{'name':name,'ciphertext_sha256':archive['ciphertext_sha256'],'writer_binding':writer_binding});nas=c.spawn([*SSH,shlex.join(['python3','-c',program])]);w=q.archive.Pipe(nas.stdin,deadline,False)
         try:
             w.write(json.dumps({'name':name,'bytes':archive['cipher_bytes'],'sha256':archive['ciphertext_sha256'],'seconds':left(deadline)}).encode()+b'\n')
             for b in iter(lambda:os.read(cipher.fd,65536),b''):w.write(b)
             nas.stdin.close()
         finally:w.close()
-        reply=decode(collect(nas,deadline,c.children,maximum=1024));need(reply=={'bytes':archive['cipher_bytes'],'sha256':archive['ciphertext_sha256'],'fsynced':True,'same_inode_readback':True},'nas');cipher.check();ledger.confirm('nas',reply)
+        reply=decode(collect(nas,deadline,c.children,maximum=1024));need(type(reply)is dict and set(reply)=={'bytes','sha256','fsynced','same_inode_readback','cipher_mode','cifs_mount'}and type(reply['bytes'])is int and reply['bytes']==archive['cipher_bytes']and reply['sha256']==archive['ciphertext_sha256']and reply['fsynced']is True and reply['same_inode_readback']is True and type(reply['cipher_mode'])is int and type(reply['cifs_mount'])is bool and(reply['cipher_mode']==0o600 or reply['cipher_mode']==0o755 and reply['cifs_mount']is True),'nas');cipher.check();left(deadline);ledger.confirm('nas',reply)
         ledger.intent('proof-bytes',{'snapshot_revision':revision});os.lseek(cipher.fd,0,0)
         with os.fdopen(os.dup(cipher.fd),'rb')as encrypted:
             decrypted=c.spawn([str(RUNTIME/'bin/age'),'-d','-i',pins[1].child_path],stdin=encrypted);receive=c.remote_start({'mode':'receive','run_id':run_id,'bytes':archive['snapshot_bytes'],'seconds':left(deadline)});r=q.archive.Pipe(decrypted.stdout,deadline,True);w=q.archive.Pipe(receive.stdin,deadline,False);count=0

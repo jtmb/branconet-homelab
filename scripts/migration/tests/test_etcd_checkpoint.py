@@ -7,7 +7,7 @@ spec=importlib.util.spec_from_file_location('etcd_checkpoint',HERE.parent/'backu
 
 class Client:
     def __init__(self,test):
-        self.t=test;self.deadline=test.deadline;self.children=m.q.Children(self.deadline);self.jobs=[];self.calls=[];self.objects={};self.restoring=False;self.mode='normal'
+        self.t=test;self.deadline=test.deadline;self.children=m.q.Children(self.deadline);self.jobs=[];self.calls=[];self.objects={};self.restoring=False;self.mode='normal';self.nas_mode=0o600;self.nas_cifs=False;self.nas_bad_field=None
     def spawn(self,args,stdin=subprocess.PIPE,stdout=subprocess.PIPE,pass_fds=()):
         self.calls.append(('spawn',list(args)))
         if self.mode=='tamper-cipher'and '-d'in args and (self.t.parent/('etcd-'+self.t.run_id)/'snapshot.age').exists():
@@ -15,8 +15,14 @@ class Client:
             with p.open('r+b')as f:f.seek(-1,2);b=f.read(1);f.seek(-1,2);f.write(bytes([b[0]^1]));f.flush();os.fsync(f.fileno())
             self.mode='normal'
         if args[0]==str(m.SSH_BINARY):
-            tokens=shlex.split(args[-1]);self.t.assertEqual(['python3','-c'],tokens[:2]);self.t.assertEqual(m.q.NAS_PROGRAM.replace('bortus-sqlite-','etcd-'),tokens[2])
-            code=tokens[2].replace(repr(m.q.NAS_ROOT),repr(str(self.t.nas)));args=[sys.executable,'-B','-c',code]
+            tokens=shlex.split(args[-1]);self.t.assertEqual(['python3','-c'],tokens[:2]);expected,binding=m.nas_writer();self.t.assertEqual(expected,tokens[2]);disk=json.loads((self.t.parent/('etcd-'+self.t.run_id)/'record.json').read_text());self.t.assertEqual('pending',disk['operations']['nas']['state']);self.t.assertEqual(binding,disk['operations']['nas']['details']['writer_binding'])
+            code=tokens[2].replace(repr(m.q.NAS_ROOT),repr(str(self.t.nas)))
+            if self.nas_cifs:code=code.replace('try:\n mount_before=mount_identity()',"def mount_identity():return ('/mnt/container-backups',('PUBLIC PIN',),('cifs','PUBLIC SOURCE','rw'))\ntry:\n mount_before=mount_identity()")
+            if self.nas_mode!=0o600:
+                needle=" digest=hashlib.sha256();left=info['bytes']";self.t.assertEqual(1,code.count(needle));code=code.replace(needle,' os.fchmod(target,'+str(self.nas_mode)+')\n'+needle)
+            if self.nas_bad_field:
+                key,value=self.nas_bad_field;needle=" print(json.dumps({'bytes':info['bytes']";self.t.assertEqual(1,code.count(needle));code=code.replace(needle," result="+repr({'bytes':None,'sha256':None,'fsynced':True,'same_inode_readback':True,'cipher_mode':self.nas_mode,'cifs_mount':self.nas_cifs})+";result.update(bytes=info['bytes'],sha256=digest.hexdigest());result["+repr(key)+"]="+repr(value)+";print(json.dumps(result));raise SystemExit(0)\n"+needle)
+            args=[sys.executable,'-B','-c',code]
         p=subprocess.Popen(args,stdin=stdin,stdout=stdout,stderr=subprocess.DEVNULL,start_new_session=True,pass_fds=pass_fds)
         self.jobs.append({'pid':p.pid,'start_ticks':pathlib.Path('/proc/'+str(p.pid)+'/stat').read_text().split()[21],'process':p});return p
     def remote_start(self,r):
@@ -200,6 +206,32 @@ class Tests(unittest.TestCase):
         class Inventory:
             def api(self,args):raise AssertionError('No dispatch for unknown kind')
         with self.assertRaises(m.Refused):m.absent(Inventory(),'secret','owned-name','owned-uid')
+    def test_cipher_forced0755_on_exact_cifs_retains_six_fields_and_writer_binding(self):
+        self.client.nas_mode=0o755;self.client.nas_cifs=True;result=self.execute();nas=result['operations']['nas'];self.assertEqual(0o755,nas['result']['cipher_mode']);self.assertIs(True,nas['result']['cifs_mount']);self.assertEqual({'bytes','sha256','fsynced','same_inode_readback','cipher_mode','cifs_mount'},set(nas['result']));self.assertEqual(m.nas_writer()[1],nas['details']['writer_binding']);self.assertEqual(0o600,(self.parent/('etcd-'+self.run_id)/'snapshot.age').stat().st_mode&0o777)
+    def test_cipher0755_on_non_cifs_refuses_after_retaining_exclusive_output(self):
+        self.client.nas_mode=0o755
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertTrue((self.nas/('etcd-'+self.run_id+'.age')).exists());self.assertFalse(self.client.objects)
+    def test_cipher_worldwrite_on_cifs_refuses_before_restore(self):
+        self.client.nas_mode=0o777;self.client.nas_cifs=True
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertFalse(self.client.objects)
+    def test_cipher_reply_boolean_mode_refuses_not_truthy_acceptance(self):
+        self.client.nas_bad_field=('cipher_mode',True)
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertFalse(self.client.objects)
+    def test_cipher_reply_boolean_count_refuses_not_numeric_acceptance(self):
+        self.client.nas_bad_field=('bytes',True)
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertFalse(self.client.objects)
+    def test_cipher_reply_fake_cifs_flag_or_extra_field_refuses(self):
+        self.client.nas_bad_field=('cifs_mount',1)
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertFalse(self.client.objects)
+    def test_cipher_reply_extra_field_refuses(self):
+        self.client.nas_bad_field=('extra','PUBLIC METADATA')
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertFalse(self.client.objects)
     def test_pending_directory_flush_failure_no_mutation(self):
         original=m.Ledger.save
         def fail(ledger):

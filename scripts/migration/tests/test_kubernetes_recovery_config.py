@@ -2,6 +2,7 @@
 import base64
 import copy
 import importlib.util
+import hashlib
 import json
 import os
 import pathlib
@@ -43,6 +44,9 @@ class Client:
         self.lost_reply = False
         self.nas_mode = 0o600
         self.cifs = False
+        self.close_fault = None
+        self.read_fault = None
+        self.old_writer = False
         self.root = root
 
     def check(self):
@@ -65,7 +69,11 @@ class Client:
             assert command[:2] == ['python3', '-c']
             expected = m.nas_program(e)
             assert command[2] == expected
-            code = expected.replace(repr(e.q.NAS_ROOT), repr(str(self.root / 'nas')))
+            selected = expected
+            if self.old_writer:
+                selected = (HERE / 'fixtures/cifs-writer-e210.py').read_text()
+                assert hashlib.sha256(selected.encode()).hexdigest() == '1b65cd2243bc434361ed939435d1f51a2cb93f9cb0e91b05492c0ea1065ab629'
+            code = selected.replace(repr(e.q.NAS_ROOT), repr(str(self.root / 'nas')))
             if self.cifs:
                 code = code.replace('try:\n mount_before=mount_identity()',
                     "def mount_identity():return ('/mnt/container-backups',('PUBLIC MOUNT ID',),('cifs','PUBLIC SOURCE','rw'))\ntry:\n mount_before=mount_identity()")
@@ -74,6 +82,33 @@ class Client:
                 assert code.count(literal) == 1
                 code = code.replace(literal,
                     ' os.fchmod(target,' + str(self.nas_mode) + ')\n' + literal)
+            if self.close_fault:
+                fault = self.close_fault
+                ops = {
+                    'timestamp': "os.utime(info['name'],ns=(before.st_atime_ns,before.st_mtime_ns+3717800),dir_fd=parent,follow_symlinks=False)",
+                    'size': "f=os.open(info['name'],os.O_WRONLY|os.O_APPEND,dir_fd=parent);os.write(f,b'X');os.close(f)",
+                    'mode': "os.chmod(info['name'],0o640,dir_fd=parent,follow_symlinks=False)",
+                    'link': "os.link(info['name'],info['name']+'.link',src_dir_fd=parent,dst_dir_fd=parent,follow_symlinks=False)",
+                    'inode': "f=os.open(info['name'],os.O_RDONLY,dir_fd=parent);b=os.read(f,537919489);os.close(f);os.rename(info['name'],info['name']+'.old',src_dir_fd=parent,dst_dir_fd=parent);f=os.open(info['name'],os.O_CREAT|os.O_EXCL|os.O_WRONLY,0o600,dir_fd=parent);os.write(f,b);os.fchmod(f," + str(self.nas_mode) + ");os.close(f)",
+                }
+                if fault == 'owner':
+                    literal = 'after=os.fstat(target)'
+                    assert code.count(literal) == 1
+                    code = code.replace(literal, literal + ";import types;after=types.SimpleNamespace(**{k:getattr(after,k)for k in ('st_dev','st_ino','st_uid','st_mode','st_nlink','st_size','st_mtime_ns','st_ctime_ns')});after.st_uid+=1")
+                else:
+                    literal = "os.close(target);target=os.open(info['name'],os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=parent)"
+                    assert code.count(literal) == 1
+                    code = code.replace(literal, 'os.close(target);' + ops[fault] + ";target=os.open(info['name'],os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=parent)")
+            if self.read_fault:
+                literal = 'block=os.read(target,65536)'
+                assert code.count(literal) == 1
+                if self.read_fault == 'timestamp':
+                    addition = "os.utime(info['name'],ns=(after.st_atime_ns,after.st_mtime_ns+3717800),dir_fd=parent,follow_symlinks=False)"
+                elif self.read_fault == 'mount':
+                    addition = "mount_identity=lambda:('/mnt/container-backups',('PUBLIC REPLACED MOUNT ID',),('cifs','PUBLIC SOURCE','rw'))"
+                else:
+                    raise AssertionError('Unknown public fault')
+                code = code.replace(literal, literal + ';' + addition)
             if self.lost_reply:
                 code = code.replace("print(json.dumps({'bytes':", "sys.exit(1); print(json.dumps({'bytes':")
             args = [sys.executable, '-B', '-c', code]
@@ -253,6 +288,53 @@ class Tests(unittest.TestCase):
             with self.subTest(prefix=prefix), self.assertRaises(m.Refused):
                 m.nas_program(e, prefix=prefix)
 
+    def test_cifs_creator_close_timestamp_only_accepts_exact_authenticated_cipher(self):
+        self.client.cifs = True
+        self.client.nas_mode = 0o755
+        self.client.close_fault = 'timestamp'
+        result = self.capture()
+        self.assertEqual(pathlib.Path(result['path']).read_bytes(), (self.nas / 'config-123456789abc.age').read_bytes())
+        self.assertEqual(0o755, result['nas_cipher_mode'])
+        self.assertTrue(result['nas_cifs_mount'])
+    def test_same_posix_creator_close_timestamp_change_refuses(self):
+        self.client.close_fault = 'timestamp'
+        with self.assertRaises(m.Refused): self.capture()
+        self.assertEqual('pending', self.record()['operations']['publish_configuration']['state'])
+    def test_old_exact_e210_writer_refuses_observed_timestamp_fixture(self):
+        self.client.cifs = True
+        self.client.nas_mode = 0o755
+        self.client.close_fault = 'timestamp'
+        self.client.old_writer = True
+        with self.assertRaises(m.Refused): self.capture()
+        self.assertEqual('pending', self.record()['operations']['publish_configuration']['state'])
+    def test_cifs_inode_change_across_creator_close_refuses(self):
+        self.client.cifs = True
+        self.client.close_fault = 'inode'
+        with self.assertRaises(m.Refused): self.capture()
+    def test_cifs_size_change_across_creator_close_refuses(self):
+        self.client.cifs = True
+        self.client.close_fault = 'size'
+        with self.assertRaises(m.Refused): self.capture()
+    def test_cifs_owner_change_across_creator_close_refuses(self):
+        self.client.cifs = True
+        self.client.close_fault = 'owner'
+        with self.assertRaises(m.Refused): self.capture()
+    def test_cifs_mode_change_across_creator_close_refuses(self):
+        self.client.cifs = True
+        self.client.close_fault = 'mode'
+        with self.assertRaises(m.Refused): self.capture()
+    def test_cifs_link_change_across_creator_close_refuses(self):
+        self.client.cifs = True
+        self.client.close_fault = 'link'
+        with self.assertRaises(m.Refused): self.capture()
+    def test_cifs_post_reopen_timestamp_change_refuses(self):
+        self.client.cifs = True
+        self.client.read_fault = 'timestamp'
+        with self.assertRaises(m.Refused): self.capture()
+    def test_cifs_post_reopen_mount_change_refuses(self):
+        self.client.cifs = True
+        self.client.read_fault = 'mount'
+        with self.assertRaises(m.Refused): self.capture()
     def test_completion_directory_fsync_failure_refuses_visible_success(self):
         original_save = e.Ledger.save
         original_fsync = os.fsync

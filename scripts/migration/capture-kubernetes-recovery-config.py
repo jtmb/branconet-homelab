@@ -100,7 +100,23 @@ def mount_identity():
  if selected is None:raise ValueError()
  return selected
 '''
+    old_reopen = "if tuple(getattr(before,k)for k in('st_dev','st_ino','st_size','st_mtime_ns','st_ctime_ns'))!=tuple(getattr(os.fstat(target),k)for k in('st_dev','st_ino','st_size','st_mtime_ns','st_ctime_ns')):raise ValueError()"
+    new_reopen = """after=os.fstat(target)
+ core_fields=('st_dev','st_ino','st_uid','st_mode','st_nlink','st_size')
+ full_fields=core_fields+('st_mtime_ns','st_ctime_ns')
+ cifs_close=mount_before[0]=='/mnt/container-backups' and mount_before[2][0]=='cifs'
+ close_fields=core_fields if cifs_close else full_fields
+ if tuple(getattr(before,k)for k in close_fields)!=tuple(getattr(after,k)for k in close_fields):raise ValueError()
+ check(after)
+ reopened=tuple(getattr(after,k)for k in full_fields)
+ def check_reopened():
+  current=os.fstat(target)
+  check(current)
+  if tuple(getattr(current,k)for k in full_fields)!=reopened:raise ValueError()"""
     replacements = {
+        old_reopen: new_reopen,
+        'block=os.read(target,65536)': 'check_reopened()\n  block=os.read(target,65536)\n  check_reopened()',
+        'check(os.fstat(target))': 'check_reopened()',
         'try:\n header=': mount_reader + '\ntry:\n mount_before=mount_identity()\n header=',
         'for v in (i,n):': 'if mount_identity()!=mount_before:raise ValueError()\n  for v in (i,n):',
         'stat.S_IMODE(v.st_mode)!=0o600':

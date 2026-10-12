@@ -198,3 +198,53 @@ single prior canonical-policy dry run remains unchanged rather than repeated.
 These results qualify the two scoped source corrections; actual snapshot,
 persistent resource runtime/CNI isolation and authenticated registry equality
 remain pending. The original generic CLI collection refusal remains retained.
+
+The etcd NAS streaming consumer now uses the separately qualified closed
+`nas_program(e,prefix='etcd')` cipher-only factory from the recovery-config
+producer. The shared quiescent NAS program stays unchanged. The etcd
+512MiB snapshot/cipher headroom and original lease remain unchanged; the smaller
+config copy ceiling is not reused. Base-program, factory-source and derived
+writer hashes are saved in the pending NAS intent before dispatch. Confirmation
+retains exactly six reply fields (count, ciphertext SHA, fsync/readback and
+literal mode/CIFS flags). Operator ciphertext remains pinned0600; remote0755
+is accepted only for authenticated ciphertext on the exact pinned CIFS
+`/mnt/container-backups` mount. POSIX files remain600-only; writable modes,
+non-CIFS755, malformed fields and identity/mount drift refuse. No plaintext key,
+config or proof file receives this exception. Mount checks give correspondence
+at observation points, not continuous mount history. Local qualification and
+root actual publication remain separate; prior failed exclusive outputs are
+retained and never adopted/reopened/replayed.
+
+The streaming/factory composition passed 51 local controls (the prior 44 plus
+seven CIFS-mode/closed-reply cases) with unchanged executable/factory bytes.
+Actual public age encryption/authentication and redirected owned NAS-program
+children were used; CIFS mount identity and forced file modes are controlled
+fixture substitutions, not an actual CIFS transport qualification. Recorded
+owned process identities are absent. Root retains actual NAS/config execution
+ownership; no etcd snapshot or live restore was performed by this qualification.
+
+One new encrypted PUBLIC NAS fixture retained a strict e210 writer refusal at
+creator-close/reopen: mtime and ctime each advanced 3,717,800ns while device,
+inode, UID, mode0755, link count1, size243, FD/path correspondence and full
+mount identity stayed equal. The original failed writer/probes remain retained.
+The scoped factory correction permits only that timestamp boundary on the exact
+CIFS `/mnt/container-backups` mount. Device/inode/UID/mode/link-count/size must
+remain equal; POSIX requires the full timestamp fingerprint across close.
+Immediate reopened FD/path/mount correspondence establishes a full fingerprint
+including timestamps. Each readback chunk and final check must keep it stable;
+complete ciphertext SHA/count remain mandatory. No lease, ceiling, six-field
+reply, source-key/plaintext-proof or shared quiescent-program behavior changes.
+A close-boundary observation does not authorize arbitrary later timestamp or
+mount drift, nor does it prove continuous history or actual recovery acceptance.
+
+The boundary correction passed 75 combined local controls: 51 existing etcd /
+transport controls plus 24 config-factory controls (14 original and ten causal
+boundary cases). Public age ciphers and owned local redirected writer processes
+were used; CIFS mount identity and the observed timestamp pattern are controlled
+fixture substitutions. The exact prior writer fixture is pinned to its actual
+1b65 source hash and still refuses. Shared quiescent code and etcd source /
+transport / size / deadline contracts stay unchanged. Actual NAS requalification
+and current configuration/etcd recovery belong to root; fixture success does not
+grant live acceptance or authorize old-run replay.
+
+Root independently ran the integrated streaming consumer and corrected factory: all75 controls pass, no skips or resource warnings, actual launcher0 in17.958s. All165 frozen source files remain unchanged and the owned test child is reaped. The [root receipt](../evidence/bortus-cifs-close-root-20261012.json) distinguishes this local qualification from a fresh actual configuration capture and etcd restore, which remain pending. The two refused actual archives and original PUBLIC fixture failures remain retained and cannot be adopted or replayed.
