@@ -33,6 +33,7 @@ NAS_ROOT = '/mnt/container-backups/k8s-migration-20261009'
 spawn = subprocess.Popen
 POPEN_TYPE = subprocess.Popen
 CLEANUP_GRACE = .250
+SSH_IDENTITY = pathlib.Path.home() / '.ssh/id_ed25519'
 
 
 class Refused(RuntimeError):
@@ -172,7 +173,61 @@ def binary(name):
     return path
 
 
-def copy_nas(cipher,run_id,expected_sha,deadline,children):
+class NasToolPin:
+    """Fixed public SSH executable; private identity bytes are never read here."""
+    def __init__(self, expected_sha):
+        self.path=binary('ssh');self.fds=[];self.anchors=[]
+        try:
+            need(type(expected_sha)is str and re.fullmatch('[0-9a-f]{64}',expected_sha),'configuration')
+            fd=os.open('/',os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC);self.fds.append(fd);place=pathlib.Path('/')
+            for part in self.path.parts[1:-1]:
+                fd=os.open(part,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC,dir_fd=fd);self.fds.append(fd);place/=part;i=os.fstat(fd)
+                need(i.st_uid in(0,os.getuid())and not i.st_mode&0o022,'ownership');self.anchors.append((place,fd,(i.st_dev,i.st_ino,i.st_uid,stat.S_IMODE(i.st_mode))))
+            self.fd=os.open(self.path.name,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK|os.O_CLOEXEC,dir_fd=fd);self.fds.append(self.fd);i=os.fstat(self.fd)
+            need(stat.S_ISREG(i.st_mode)and i.st_uid==os.getuid()and i.st_nlink==1 and stat.S_IMODE(i.st_mode)==0o700 and 0<i.st_size<=4*1024*1024,'ownership')
+            raw=os.pread(self.fd,i.st_size+1,0);need(len(raw)==i.st_size and hashlib.sha256(raw).hexdigest()==expected_sha,'ownership');self.identity=credentials.fingerprint(i);self.check()
+        except Exception:self.close();raise
+    def check(self):reader.check_pinned(self.path,self.fd,self.identity,self.anchors)
+    def close(self):reader.close_descriptors(self.fds);self.fds=[]
+
+
+class NasIntent:
+    """One closed exclusive sidecar; its confirmation also requires callback/launcher0."""
+    def __init__(self,operation,binding,name,size,digest):
+        self.journal=operation.journal;self.identity=None
+        self.data={'abi':1,'scope':'quiescent SQLite ciphertext NAS only','run_id':operation.r['run_id'],
+            'state':'pending','writer_binding':binding,'name':name,'cipher_bytes':size,'ciphertext_sha256':digest,
+            'requires_return_and_launcher_terminal0':True,'result':None}
+        self.save(new=True)
+    def save(self,new=False):
+        self.journal._owned();fd=None;name='sqlite-nas.json'if new else'sqlite-nas-'+uuid.uuid4().hex+'.next'
+        if not new:
+            current=os.stat('sqlite-nas.json',dir_fd=self.journal.directory_fd,follow_symlinks=False)
+            need(credentials.fingerprint(current)==self.identity,'ownership')
+        try:
+            raw=json.dumps(self.data,sort_keys=True,separators=(',',':')).encode()+b'\n';need(len(raw)<=4096,'ownership')
+            fd=os.open(name,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600,dir_fd=self.journal.directory_fd)
+            with os.fdopen(fd,'wb',closefd=False)as stream:stream.write(raw);stream.flush();os.fsync(fd)
+            self.journal._owned()
+            if not new:
+                need(credentials.fingerprint(os.stat('sqlite-nas.json',dir_fd=self.journal.directory_fd,follow_symlinks=False))==self.identity,'ownership')
+                os.replace(name,'sqlite-nas.json',src_dir_fd=self.journal.directory_fd,dst_dir_fd=self.journal.directory_fd)
+            self.identity=credentials.fingerprint(os.fstat(fd));os.fsync(self.journal.directory_fd)
+        finally:
+            if fd is not None:os.close(fd)
+    def finish(self,state,result=None):self.data.update(state=state,result=result);self.save()
+
+
+def sqlite_cipher_writer(ssh_sha256):
+    path=pathlib.Path(__file__).with_name('capture-kubernetes-recovery-config.py');before=hashlib.sha256(path.read_bytes()).hexdigest()
+    factory=load('quiescent_cipher_nas_factory',path.name)
+    program=factory.nas_program(types.SimpleNamespace(q=sys.modules[__name__]),prefix='bortus-sqlite')
+    need(hashlib.sha256(path.read_bytes()).hexdigest()==before,'ownership')
+    return program,{'prefix':'bortus-sqlite','factory_source_sha256':before,'base_program_sha256':hashlib.sha256(NAS_PROGRAM.encode()).hexdigest(),
+        'writer_sha256':hashlib.sha256(program.encode()).hexdigest(),'ssh_sha256':ssh_sha256}
+
+
+def _copy_nas_default(cipher,run_id,expected_sha,deadline,children):
     child=None;pipes=[]
     try:
         cipher.check();size=os.fstat(cipher.fd).st_size;need(0<size<=archive.MAX_TOTAL+1048576,'nas')
@@ -215,8 +270,88 @@ def copy_nas(cipher,run_id,expected_sha,deadline,children):
         need(not failed,'cleanup')
 
 
+def copy_nas(cipher,run_id,expected_sha,deadline,children,*,cifs_ciphertext=False,operation=None,ssh_sha256=None):
+    need(type(cifs_ciphertext)is bool,'configuration')
+    if not cifs_ciphertext:return _copy_nas_default(cipher,run_id,expected_sha,deadline,children)
+    return _copy_nas_cipher(cipher,run_id,expected_sha,deadline,children,cifs_ciphertext=True,operation=operation,ssh_sha256=ssh_sha256)
+
+
+def _copy_nas_cipher(cipher,run_id,expected_sha,deadline,children,*,cifs_ciphertext=False,operation=None,ssh_sha256=None):
+    child=None;pipes=[];pins=[];intent=None;failure=None;result=None
+    try:
+        need(type(cifs_ciphertext)is bool,'configuration')
+        cipher.check();size=os.fstat(cipher.fd).st_size;need(0<size<=archive.MAX_TOTAL+1048576,'nas')
+        name='bortus-sqlite-'+run_id+'.age'
+        program=NAS_PROGRAM;extra=[];pass_fds=()
+        if cifs_ciphertext:
+            need(operation is not None and operation.deadline==deadline and operation.r['run_id']==run_id and operation.r.get('sqlite_archive_state')=='pending','configuration')
+            need(type(run_id)is str and re.fullmatch('[0-9a-f]{12}',run_id)and type(expected_sha)is str and re.fullmatch('[0-9a-f]{64}',expected_sha),'configuration')
+            key=Pin(SSH_IDENTITY,65536);pins.append(key);tool=NasToolPin(ssh_sha256);pins.append(tool)
+            program,binding=sqlite_cipher_writer(ssh_sha256);intent=NasIntent(operation,binding,name,size,expected_sha)
+            extra=['-o','IdentitiesOnly=yes','-o','IdentityAgent=none','-i',str(SSH_IDENTITY)];pass_fds=(tool.fd,)
+            for pin in pins:pin.check()
+        args=[str(binary('ssh')),'-T','-o','BatchMode=yes','-o','StrictHostKeyChecking=yes','-o','ForwardAgent=no',
+            *extra,'-o','ConnectTimeout='+str(max(1,min(30,int(remaining(deadline))))),'-p','2002','james@192.168.0.4',
+            'python3 -c '+shlex.quote(program)]
+        if cifs_ciphertext:args[0]='/proc/self/fd/'+str(tool.fd)
+        child=spawn(args,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,start_new_session=True,
+            close_fds=True,**({'pass_fds':pass_fds}if cifs_ciphertext else{}),env={'HOME':str(pathlib.Path.home()),'PATH':'/usr/bin:/bin','LANG':'C.UTF-8'})
+        writer=archive.Pipe(child.stdin,deadline,False);pipes.append(writer)
+        writer.write(json.dumps({'name':name,'bytes':size,'sha256':expected_sha,'seconds':remaining(deadline)},separators=(',',':')).encode()+b'\n')
+        os.lseek(cipher.fd,0,os.SEEK_SET);digest=hashlib.sha256()
+        while True:
+            remaining(deadline);block=os.read(cipher.fd,archive.CHUNK)
+            if not block:break
+            digest.update(block);writer.write(block)
+        child.stdin.close();cipher.check();need(digest.hexdigest()==expected_sha,'nas')
+        response=archive.Pipe(child.stdout,deadline,True);pipes.append(response);raw=bytearray()
+        while len(raw)<=1024:
+            block=response.read(min(1025-len(raw),1024))
+            if not block:break
+            raw.extend(block)
+        need(len(raw)<=1024 and child.wait(timeout=remaining(deadline))==0,'nas')
+        def unique(pairs):
+            value={}
+            for key,item in pairs:need(key not in value,'nas');value[key]=item
+            return value
+        result=json.loads(raw,**({'object_pairs_hook':unique}if cifs_ciphertext else{}));fields={'bytes','sha256','fsynced','same_inode_readback'}|({'cipher_mode','cifs_mount'}if cifs_ciphertext else set())
+        need(type(result)is dict and set(result)==fields and
+            type(result['bytes'])is int and result['bytes']==size and result['sha256']==expected_sha and
+            result['fsynced']is True and result['same_inode_readback']is True,'nas')
+        if cifs_ciphertext:need(type(result['cipher_mode'])is int and type(result['cifs_mount'])is bool and(result['cipher_mode']==0o600 or result['cipher_mode']==0o755 and result['cifs_mount']is True),'nas')
+        cipher.check();remaining(deadline)
+        for pin in pins:pin.check()
+    except Refused as error:failure=error.code
+    except Exception:failure='nas'
+    finally:
+        failed=False
+        for pipe in pipes:
+            try:pipe.close()
+            except Exception:failed=True
+        try:children(child)
+        except Exception:failed=True
+        if child:
+            for stream in(child.stdin,child.stdout,child.stderr):
+                if stream and not stream.closed:
+                    try:stream.close()
+                    except Exception:failed=True
+        for pin in reversed(pins):
+            try:pin.close()
+            except Exception:failed=True
+        if failed:failure='cleanup'
+        if intent:
+            try:
+                if not failure:remaining(deadline)
+                intent.finish('uncertain'if failure else'confirmed',None if failure else result)
+                if not failure:remaining(deadline)
+            except Exception:failure='nas'
+    cipher=operation=child=pins=pipes=intent=None
+    if failure:raise Refused(failure)
+    return NAS_ROOT+'/'+name
+
+
 class QuiescentArchive:
-    def __init__(self,options,kubeconfig_path,recipient_path,identity_path,*,quiescent_module=None):
+    def __init__(self,options,kubeconfig_path,recipient_path,identity_path,*,quiescent_module=None,cifs_ciphertext_nas=False,ssh_sha256=None):
         need(type(options)is credentials.OperatorMTLSOptions and options.path==pathlib.Path(kubeconfig_path),'configuration')
         selected=quiescent if quiescent_module is None else quiescent_module
         need(type(selected)is types.ModuleType and pathlib.Path(selected.__file__).resolve()==
@@ -225,6 +360,8 @@ class QuiescentArchive:
         self.quiescent=selected
         self.options,self.config=options,pathlib.Path(kubeconfig_path)
         self.recipient,self.identity=pathlib.Path(recipient_path),pathlib.Path(identity_path)
+        need(type(cifs_ciphertext_nas)is bool and(not cifs_ciphertext_nas or type(ssh_sha256)is str and re.fullmatch('[0-9a-f]{64}',ssh_sha256)),'configuration')
+        self.cifs_ciphertext_nas,self.ssh_sha256=cifs_ciphertext_nas,ssh_sha256
         self.attempted=False
 
     def _capture(self,operation,deadline):
@@ -264,7 +401,8 @@ class QuiescentArchive:
             for pin in pins:pin.check()
             fresh();reader.check_pinned(self.config,config_fd,config_identity,anchors)
             cipher=Pin(target,archive.MAX_TOTAL+1048576);pins.append(cipher)
-            result['nas_artifact']=copy_nas(cipher,run_id,result['ciphertext_sha256'],deadline,children)
+            result['nas_artifact']=copy_nas(cipher,run_id,result['ciphertext_sha256'],deadline,children,
+                **({'cifs_ciphertext':True,'operation':operation,'ssh_sha256':self.ssh_sha256}if self.cifs_ciphertext_nas else{}))
             result['nas_ciphertext_equal']=True;fresh()
             for pin in pins:pin.check()
             remaining(deadline)

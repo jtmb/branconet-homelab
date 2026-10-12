@@ -281,6 +281,8 @@ class Tests(unittest.TestCase):
         default = m.nas_program(e)
         etcd = m.nas_program(e, prefix='etcd')
         self.assertEqual(default.replace('config-', 'etcd-'), etcd)
+        sqlite = m.nas_program(e, prefix='bortus-sqlite')
+        self.assertEqual(default.replace('config-', 'bortus-sqlite-'), sqlite)
         self.assertEqual(before, e.q.NAS_PROGRAM)
 
     def test_writer_factory_rejects_unknown_or_untyped_prefix(self):

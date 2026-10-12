@@ -2,6 +2,12 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
 
+## 2026-10-12: corrected app source and SQLite NAS transport reviewed
+
+[Root source review](evidence/bortus-app-source-root-review-20261012.json) verifies350 raw frontend blobs/modes and744 retained originals, plus the eight-file CI HOME correction at `a00baa8`. The user-approved eight-request cap keeps the original body/item/deadline/namespace/privacy limits. Default scans retain their public-digest/prose findings with zero untriaged items and no exclusions. Fresh fullfunctional execution is underway; final paired performance, image and live acceptance remain separate.
+
+[Root SQLite NAS integration](evidence/bortus-sqlite-cifs-root-integration-20261012.json) verifies seven raw files and20 retained originals. All57 archive/factory controls pass; the explicit ciphertext-only CIFS option preserves default callers. The broader test stage refused incomplete fixture staging and a short startup lease under concurrent load; its owned process group was stopped and reaped. That stage is not accepted and will run with complete fixtures. No production writer stop or latest-data capture occurred.
+
 ## 2026-10-12: fresh checkpoint transport and configuration capture integrated
 
 The [second actual configuration run](evidence/bortus-config-close-refusal-20261012.json)

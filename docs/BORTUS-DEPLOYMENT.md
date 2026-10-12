@@ -12,6 +12,18 @@ The app uses Node 22, Next.js 15.5.27, Prisma/SQLite and the official Kubernetes
 
 Build context: `k8s-rewrite/front-end`. Port: 4000. SQLite: `/data/bortus.db`, persistent RWO PVC at `/data`, one replica, Recreate strategy, UID/GID 1000. SQLite stores users/password hashes, roles, nonsecret configuration and lookup metadata. Run migrations before traffic; back up consistently. Legacy sensitive rows are quarantined from APIs, never used as fallback. After separate import/readback acceptance, scrub obsolete working DB values and protect historical backups outside Git.
 
+## Current source qualification
+
+The reviewed candidate `a00baa8` includes the approved eight-request native
+Secret-list cap, flat parser, strict loader failures and pinned Linux compiler.
+The dedicated quality workflow runs its original build/check/integration commands
+as host UID with explicit writable `HOME=/tmp/bortus-quality-home`. Root verifies
+350 raw source files and their Git modes, retained originals and CI delta; see
+[source evidence](../evidence/bortus-app-source-root-review-20261012.json).
+This source review does not establish the final image, hosted CI, performance or
+live release. Production remains on its original writer until those checks and
+latest-data recovery pass.
+
 ## Secrets and RBAC
 
 Supply `BOTRUS_JWT_SECRET` and `BOTRUS_SECRETS_KEY` from existing native Secret keys (recommended object `bortus-runtime` in app namespace). Legacy env names remain compatible. Signing material must be stable across restart; it is never auto-generated or persisted in SQLite.

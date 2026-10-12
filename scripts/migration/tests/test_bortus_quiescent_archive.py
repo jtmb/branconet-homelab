@@ -68,7 +68,7 @@ class Tests(unittest.TestCase):
         for key in m.quiescent.CONTROL_KEYS:self.client.resources[key]['spec'][m.quiescent.cold.RESOURCES[key][3]]=m.quiescent.TARGETS[key]
         holder=self.client.resources['pods']['items'][-1];self.client.resources['pods']['items']=[holder]
         self.nas=self.root/'nas';self.nas.mkdir(mode=0o700)
-        self.frame=frame();self.source_mode='normal';self.nas_mode='normal'
+        self.frame=frame();self.source_mode='normal';self.nas_mode='normal';self.nas_cifs=False;self.nas_permissions=0o600;self.nas_close_fault=False;self.nas_read_fault=False;self.nas_reply=None;self.nas_duplicate=False
         for obj,key,val in((m,'RUNTIME',self.runtime),(m,'spawn',self.spawn)):
             patch=mock.patch.object(obj,key,val);patch.start();self.patches.append(patch)
         self.callback=m.QuiescentArchive(m.credentials.OperatorMTLSOptions(str(self.config)),str(self.config),str(self.pub),str(self.key))
@@ -80,8 +80,24 @@ class Tests(unittest.TestCase):
             code='import base64,sys,time; program=sys.stdin.buffer.read(); '
             code+='time.sleep(30)'if self.source_mode=='hang'else'sys.stdout.buffer.write(base64.b64decode('+repr(base64.b64encode(self.frame).decode())+'))'
         else:
-            self.assertEqual('ssh',pathlib.Path(args[0]).name);self.assertIn('ForwardAgent=no',args)
+            self.assertTrue(pathlib.Path(args[0]).name=='ssh'or args[0].startswith('/proc/self/fd/'));self.assertIn('ForwardAgent=no',args)
             public=shlex.split(args[-1]);self.assertEqual(['python3','-c'],public[:2]);code=public[2]
+            if args[0].startswith('/proc/self/fd/'):
+                self.assertIn(int(args[0].split('/')[-1]),kwargs['pass_fds']);self.assertIn('IdentitiesOnly=yes',args);self.assertIn('IdentityAgent=none',args)
+                self.assertEqual(str(self.key),args[args.index('-i')+1]);intent=json.loads((self.journal.directory/'sqlite-nas.json').read_text());self.assertEqual('pending',intent['state'])
+                self.assertEqual(hashlib.sha256(code.encode()).hexdigest(),intent['writer_binding']['writer_sha256']);self.assertEqual(self.ssh_sha,intent['writer_binding']['ssh_sha256'])
+            if self.nas_cifs:
+                code=code.replace('try:\n mount_before=mount_identity()',"def mount_identity():return ('/mnt/container-backups',('PUBLIC ID',),('cifs','PUBLIC SOURCE','rw'))\ntry:\n mount_before=mount_identity()")
+            if self.nas_permissions!=0o600:
+                literal=" digest=hashlib.sha256();left=info['bytes']";self.assertEqual(1,code.count(literal));code=code.replace(literal,' os.fchmod(target,'+str(self.nas_permissions)+')\n'+literal)
+            if self.nas_close_fault:
+                literal="os.close(target);target=os.open(info['name'],os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=parent)";self.assertEqual(1,code.count(literal));code=code.replace(literal,"os.close(target);os.utime(info['name'],ns=(before.st_atime_ns,before.st_mtime_ns+3717800),dir_fd=parent,follow_symlinks=False);target=os.open(info['name'],os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=parent)")
+            if self.nas_read_fault:
+                literal='block=os.read(target,65536)';self.assertEqual(1,code.count(literal));code=code.replace(literal,literal+";os.utime(info['name'],ns=(after.st_atime_ns,after.st_mtime_ns+3717800),dir_fd=parent,follow_symlinks=False)")
+            if self.nas_reply:
+                k,v=self.nas_reply;literal=" print(json.dumps({'bytes':info['bytes']";self.assertEqual(1,code.count(literal));code=code.replace(literal," result={'bytes':info['bytes'],'sha256':digest.hexdigest(),'fsynced':True,'same_inode_readback':True,'cipher_mode':"+str(self.nas_permissions)+",'cifs_mount':"+repr(self.nas_cifs)+"};result["+repr(k)+"]="+repr(v)+";print(json.dumps(result));raise SystemExit(0)\n"+literal)
+            if self.nas_duplicate:
+                literal=" print(json.dumps({'bytes':info['bytes']";self.assertEqual(1,code.count(literal));code=code.replace(literal," print('{'+json.dumps('cipher_mode')+':384,'+json.dumps({'bytes':info['bytes'],'sha256':digest.hexdigest(),'fsynced':True,'same_inode_readback':True,'cipher_mode':384,'cifs_mount':False})[1:]);raise SystemExit(0)\n"+literal)
             code=code.replace(repr(m.NAS_ROOT),repr(str(self.nas)))
             if self.nas_mode=='fsync-fail':code=code.replace('os.fsync(target);','raise OSError();os.fsync(target);')
             elif self.nas_mode=='hang':code='import time;time.sleep(30)'
@@ -98,6 +114,70 @@ class Tests(unittest.TestCase):
         self.folder.cleanup();self.assertFalse(failed)
         self.assertTrue(all(c.poll()is not None for c in self.children))
     def execute(self):return self.callback(self.op,self.op.deadline)
+    def enable_cipher_cifs(self):
+        self.ssh_sha=hashlib.sha256((self.runtime/'bin/ssh').read_bytes()).hexdigest()
+        patch=mock.patch.object(m,'SSH_IDENTITY',self.key);patch.start();self.patches.append(patch)
+        self.callback=m.QuiescentArchive(m.credentials.OperatorMTLSOptions(str(self.config)),str(self.config),str(self.pub),str(self.key),cifs_ciphertext_nas=True,ssh_sha256=self.ssh_sha)
+    def sidecar(self):return json.loads((self.journal.directory/'sqlite-nas.json').read_text())
+    def test_opt_in_cifs_timestamp_boundary_exact_cipher_and_confirmed_bound_intent(self):
+        self.enable_cipher_cifs();self.nas_cifs=True;self.nas_permissions=0o755;self.nas_close_fault=True;r=self.execute()
+        self.assertEqual(pathlib.Path(r['artifact']).read_bytes(),(self.nas/pathlib.Path(r['nas_artifact']).name).read_bytes());s=self.sidecar();self.assertEqual('confirmed',s['state']);self.assertEqual(0o755,s['result']['cipher_mode']);self.assertTrue(s['result']['cifs_mount']);self.assertTrue(s['requires_return_and_launcher_terminal0']);self.assertEqual(r['ciphertext_sha256'],s['ciphertext_sha256'])
+    def test_opt_in_posix_timestamp_boundary_refuses_no_confirmation(self):
+        self.enable_cipher_cifs();self.nas_close_fault=True
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertEqual('uncertain',self.sidecar()['state'])
+    def test_opt_in_posix_mode755_refuses(self):
+        self.enable_cipher_cifs();self.nas_permissions=0o755
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertEqual('uncertain',self.sidecar()['state'])
+    def test_opt_in_cifs_world_write_refuses(self):
+        self.enable_cipher_cifs();self.nas_cifs=True;self.nas_permissions=0o777
+        with self.assertRaises(m.Refused):self.execute()
+    def test_opt_in_post_reopen_timestamp_drift_refuses(self):
+        self.enable_cipher_cifs();self.nas_cifs=True;self.nas_read_fault=True
+        with self.assertRaises(m.Refused):self.execute()
+    def test_opt_in_cipher_mode_boolean_reply_refuses(self):
+        self.enable_cipher_cifs();self.nas_reply=('cipher_mode',True)
+        with self.assertRaises(m.Refused):self.execute()
+    def test_opt_in_cifs_integer_reply_refuses(self):
+        self.enable_cipher_cifs();self.nas_reply=('cifs_mount',1)
+        with self.assertRaises(m.Refused):self.execute()
+    def test_opt_in_reply_size_mismatch_refuses(self):
+        self.enable_cipher_cifs();self.nas_reply=('bytes',1)
+        with self.assertRaises(m.Refused):self.execute()
+    def test_opt_in_duplicate_reply_members_refuse(self):
+        self.enable_cipher_cifs();self.nas_duplicate=True
+        with self.assertRaises(m.Refused):self.execute()
+    def test_opt_in_hanging_remote_original_deadline_closes_child(self):
+        self.enable_cipher_cifs();self.op.deadline=time.monotonic()+.5;self.nas_mode='hang';start=time.monotonic()
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertLess(time.monotonic()-start,1.2);self.assertEqual('uncertain',self.sidecar()['state']);self.assertTrue(all(c.poll()is not None for c in self.children))
+    def test_opt_in_overbound_cipher_size_refuses_before_dispatch(self):
+        self.enable_cipher_cifs();p=self.root/'sparse-public.age';p.touch(mode=0o600)
+        with p.open('r+b')as f:f.truncate(m.archive.MAX_TOTAL+1048577)
+        pin=m.Pin(p,m.archive.MAX_TOTAL+1048577)
+        try:
+            with self.assertRaises(m.Refused):m.copy_nas(pin,self.op.r['run_id'],'a'*64,self.op.deadline,m.Children(self.op.deadline),cifs_ciphertext=True,operation=self.op,ssh_sha256=self.ssh_sha)
+        finally:pin.close()
+        self.assertEqual([],self.commands)
+    def test_opt_in_public_ssh_substitution_refuses_before_nas_dispatch(self):
+        self.enable_cipher_cifs();(self.runtime/'bin/ssh').write_text('PUBLIC REPLACEMENT')
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertFalse(any(c[0][0].startswith('/proc/self/fd/')for c in self.commands));self.assertFalse((self.journal.directory/'sqlite-nas.json').exists())
+    def test_opt_in_pending_sidecar_collision_never_adopted_or_dispatched(self):
+        self.enable_cipher_cifs();p=self.journal.directory/'sqlite-nas.json';p.write_bytes(b'PUBLIC RETAINED');p.chmod(0o600)
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertEqual(b'PUBLIC RETAINED',p.read_bytes());self.assertFalse(any(c[0][0].startswith('/proc/self/fd/')for c in self.commands))
+    def test_opt_in_pending_flush_failure_prevents_dispatch(self):
+        self.enable_cipher_cifs();original=m.os.fsync
+        def fsync(fd):
+            if (self.journal.directory/'sqlite-nas.json').exists():raise OSError('PUBLIC FAULT')
+            return original(fd)
+        with mock.patch.object(m.os,'fsync',side_effect=fsync),self.assertRaises(m.Refused):self.execute()
+        self.assertFalse(any(c[0][0].startswith('/proc/self/fd/')for c in self.commands))
+    def test_opt_in_literal_selection_and_hash_required(self):
+        for flag,sha in [(1,'a'*64),(True,None),(True,'wrong')]:
+            with self.assertRaises(m.Refused):m.QuiescentArchive(m.credentials.OperatorMTLSOptions(str(self.config)),str(self.config),str(self.pub),str(self.key),cifs_ciphertext_nas=flag,ssh_sha256=sha)
     def test_actual_age_authenticated_public_sqlite_and_exclusive_same_inode_nas(self):
         result=self.execute();self.assertEqual({'artifact','ciphertext_sha256','files','plaintext_bytes','authenticated_decryption_equal','plaintext_persisted','sqlite_integrity_or_row_preservation_proven','nas_artifact','nas_ciphertext_equal'},set(result))
         self.assertTrue(result['authenticated_decryption_equal']);self.assertTrue(result['nas_ciphertext_equal']);self.assertFalse(result['plaintext_persisted'])

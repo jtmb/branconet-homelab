@@ -44,6 +44,24 @@ not atomic with local cancellation, so a lost reply never grants acceptance.
 The local absolute deadline bounds transport; a remote remaining-duration budget
 is additional protection, never authority to renew the local lease.
 
+The default NAS caller remains strict600 with its original four-field reply.
+Explicit `cifs_ciphertext_nas=True, ssh_sha256=<approved public binary SHA>`
+selects only the qualified recovery-config factory's closed `bortus-sqlite`
+ciphertext writer. Config/etcd writer bytes remain unchanged. Before dispatch an
+exclusive fsynced `sqlite-nas.json` sidecar binds factory/base/derived program and
+public SSH hashes, ciphertext size/hash and pending ownership. The unchanged
+nine-key archive result requires the sidecar, callback and actual launcher to
+finish successfully. Lost replies retain uncertainty without adoption/replay.
+Only verified exact CIFS ciphertext may use mount-forced755 and the qualified
+creator-close timestamp boundary; POSIX remains600/full-timestamp strict and
+all reopened identity/mount/hash checks remain mandatory. Local ciphertext and
+credentials remain600; no plaintext permission exception is introduced.
+The opt-in pins an exclusive owned700 `runtime/bin/ssh` copy and its protected
+ancestors, executes its inherited descriptor, and selects the pinned existing
+`~/.ssh/id_ed25519` with IdentitiesOnly=yes/IdentityAgent=none/no forwarded agent.
+The public tool copy must be prepared by root; its observed absence is a live
+prerequisite, not permission to download or silently choose another binary.
+
 The returned exact nine-key result matches capture_quiescent's existing ABI.
 It authenticates framed bytes and equal encrypted NAS bytes only. SQLite integrity,
 whole rows, fresh restore, schema migration, image/admission and release acceptance
@@ -79,3 +97,10 @@ fixed inherited reads and once-only conditional dispatches under the actual borr
 Observer and original absolute lease. Construct the graph from its exported watch/
 quiescent modules; Ready/default clients are unchanged. This transport is separate
 from root-owned source/image/schema/guard phase qualification and live acceptance.
+
+Root verifies the seven selected raw files and retained transport originals.
+All57 focused archive/factory controls pass in a private POSIX graph with165
+unchanged sources; see [integration evidence](../evidence/bortus-sqlite-cifs-root-integration-20261012.json).
+The broader stage refused missing schema fixture staging and a short startup
+lease under concurrent build load; it is retained without acceptance. Actual
+latest-data capture and explicit coordinator selection remain pending.

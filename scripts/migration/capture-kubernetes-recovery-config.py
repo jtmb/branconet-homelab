@@ -82,7 +82,7 @@ def nas_program(e, prefix='config'):
     authenticated ciphertext; it never handles a plaintext configuration/key.
     The mount identity is checked throughout, with no shared-helper changes.
     """
-    need(type(prefix) is str and prefix in ('config', 'etcd'), 'input')
+    need(type(prefix) is str and prefix in ('config', 'etcd', 'bortus-sqlite'), 'input')
     program = e.q.NAS_PROGRAM.replace('bortus-sqlite-', prefix + '-')
     mount_reader = r'''
 def mount_identity():
