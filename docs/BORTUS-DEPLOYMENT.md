@@ -20,6 +20,12 @@ The dedicated quality workflow runs its original build/check/integration command
 as host UID with explicit writable `HOME=/tmp/bortus-quality-home`. Root verifies
 350 raw source files and their Git modes, retained originals and CI delta; see
 [source evidence](../evidence/bortus-app-source-root-review-20261012.json).
+The separate [fullfunctional review](../evidence/bortus-app-fullfunctional-root-20261012.json)
+passes fresh build/lint/types,267 unit tests and six integration controls at UID1001.
+All370 originals and4263 compiled bytes are verified. Git archive applied EOL
+conversion: four executed files are raw-exact,346 are CRLF-to-LF equivalent and
+all350 actual source modes are0664. The original records remain intact; no raw-Git
+byte-execution claim follows from this working-EOL qualification.
 This source review does not establish the final image, hosted CI, performance or
 live release. Production remains on its original writer until those checks and
 latest-data recovery pass.

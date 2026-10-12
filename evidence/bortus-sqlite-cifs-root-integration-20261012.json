@@ -14,11 +14,32 @@
     "errors": 3,
     "cause": "Python-only source copy omitted schema fixture JSON; short test startup deadline expired during concurrent app build; observer cleanup then refused",
     "owned_group_stopped_and_reaped_absent": true,
-    "acceptance": false
+    "acceptance": false,
+    "scope": "Retained first incomplete-fixture run"
   },
   "default_nas_behavior_preserved": true,
   "explicit_cifs_selection_required": true,
   "latest_data_capture": false,
   "writer_stopped": false,
-  "live_calls": false
+  "live_calls": false,
+  "retained_second_stage": {
+    "actual_exit_code": 1,
+    "errors": 2,
+    "source_files": 167,
+    "cause": "Private copy included schema JSON but omitted repository-relative migration SQL layout",
+    "reaped_absent": true,
+    "acceptance": false
+  },
+  "complete_layout_integration": {
+    "actual_exit_code": 0,
+    "tests": 17,
+    "source_files": 174,
+    "source_unchanged": true,
+    "pid": 2274253,
+    "reaped_absent": true,
+    "wall_seconds": 9.54973147297278,
+    "test_deadlines_unchanged": true,
+    "warnings_or_skips": 0,
+    "live_calls": false
+  }
 }

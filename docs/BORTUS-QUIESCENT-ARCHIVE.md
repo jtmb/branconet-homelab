@@ -101,6 +101,7 @@ from root-owned source/image/schema/guard phase qualification and live acceptanc
 Root verifies the seven selected raw files and retained transport originals.
 All57 focused archive/factory controls pass in a private POSIX graph with165
 unchanged sources; see [integration evidence](../evidence/bortus-sqlite-cifs-root-integration-20261012.json).
-The broader stage refused missing schema fixture staging and a short startup
-lease under concurrent build load; it is retained without acceptance. Actual
-latest-data capture and explicit coordinator selection remain pending.
+Two incomplete fixture attempts remain retained without acceptance. With the
+complete private repository layout, all17 unchanged interval/composition tests
+pass on174 unchanged files, with exact owned-process closure and no warnings or
+skips. Actual latest-data capture and explicit coordinator selection remain pending.
