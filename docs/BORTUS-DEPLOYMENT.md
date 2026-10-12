@@ -47,15 +47,17 @@ Multiple aliases can reference a key; one alias cannot reference multiple target
 
 ## Bootstrap/recovery
 
-The fresh guarded release requires a current encrypted configuration capture in
-addition to SQLite, native-volume and etcd checkpoints. The prepared callable
-`scripts/migration/capture-kubernetes-recovery-config.py` captures the fixed standard
-Kubernetes PKI, encryption keys, component kubeconfigs and static-pod manifests
-using the checkpoint Transport. It has no historical-helper fallback. Its nine
-local fixture controls pass against immutable checkpoint v11. The checkpoint
-helper is now integrated from native commit18090f8; all47 combined root controls pass in7.992s on an exact private POSIX copy.
-Actual live capture remains pending. See [migration operations](MIGRATION-OPERATIONS.md)
-for its exact scope, two-read consistency and independent restore limitations.
+The fresh guarded release requires current encrypted configuration alongside
+SQLite/native-volume/etcd checkpoints. The targeted32-file callable
+`capture-kubernetes-recovery-config.py` uses the separately qualified Transport,
+without historical-helper fallback. Nine initial controls and47 combined root
+controls pass; actual fresh capture remains pending. The first real run
+read/authenticated its operator archive but refused NAS publication on the
+existing CIFS mount's forced0755 ciphertext mode. Both outputs remain retained.
+The scoped ciphertext-only correction passes12 local controls; operator files
+stay0600 and a distinct fresh run remains pending. NAS data, keys, permissions
+and mounts were unchanged. See [migration operations](MIGRATION-OPERATIONS.md)
+for exact scope, per-read consistency and independent restore limitations.
 
 The [restored-consumer metadata fence](BORTUS-RESTORED-CONSUMER-FENCE.md)
 checks distinct owned PVC/PV/Longhorn identities, two owned running RW replicas
@@ -407,7 +409,7 @@ credential references were pending; the subsequent completed rollout is below. I
 admission or final KV/performance/security acceptance.
 
 
-## 2026-10-11 13:48 UTC: legacy digest CIâ†’Flux rollout verified
+## 2026-10-11 13:48 UTC: legacy digest CI→Flux rollout verified
 
 The [actual rollout receipt](../evidence/bortus-legacy-digest-flux-rollout-20261011.json)
 records PR #2 merged as `182eafd4da4cda56b2a846d0c5f067e527eb79c4`.
@@ -624,7 +626,7 @@ The [independent root comparison review](../evidence/bortus-performance-4ae9-roo
 
 The [primary remediation receipt](../evidence/bortus-image-remediation-research-20261012.json) retains all20 unique Debian High/Critical IDs from the default4ae9 scan and current Debian release tables. All20 primary requests succeeded. Debian13 contains fixes for some Bookworm findings (for example [util-linux target-path redirection](https://security-tracker.debian.org/tracker/CVE-2026-53613) and [OpenSSL DTLS retransmission](https://security-tracker.debian.org/tracker/CVE-2026-84782)); several other findings remain vulnerable there. A base upgrade alone cannot establish security acceptance. No suppression or change to original346 findings is applied.
 
-Root downloaded the exact upstream Kubernetes1.37.1 source42196261bytes and Go1.26.9 Linuxamd64 toolchain66935201bytes onto the separate build host, then independently rehashed both and observed the downloader absent. The source checksum remainsd58492a0â€¦ and Go42d158b4â€¦; full bindings are in the receipt. Actual source layout is flat with two file and three directory symlinks, unlike the draft fixture; those cases are corrected before compilation. Inputs are public archives, no cluster or credential mount is involved. Custom compilation, vendor diff review, binary scan, final source/image injection and runtime acceptance remain pending.
+Root downloaded the exact upstream Kubernetes1.37.1 source42196261bytes and Go1.26.9 Linuxamd64 toolchain66935201bytes onto the separate build host, then independently rehashed both and observed the downloader absent. The source checksum remainsd58492a0… and Go42d158b4…; full bindings are in the receipt. Actual source layout is flat with two file and three directory symlinks, unlike the draft fixture; those cases are corrected before compilation. Inputs are public archives, no cluster or credential mount is involved. Custom compilation, vendor diff review, binary scan, final source/image injection and runtime acceptance remain pending.
 
 
 The separate [custom kubectl security build contract](BORTUS-KUBECTL-SECURITY-BUILD.md)
@@ -665,3 +667,14 @@ The [root qualification](../evidence/bortus-patched-kubectl-image-root-20261012.
 Root separately validates all six actual compiled artifacts in3.138s: complete247,076,441-byte source diff ZIP,12,741,184-byte metadata sidecar/all31,916 paths, ELF, completed build receipt, actual version and Go build metadata. Their identities and bytes remain unchanged. These checks call no build, transfer, SSH or Docker operation. The default builder/export/five-label contracts and frontend Dockerfile remain unchanged.
 
 A future source-linked build must carry both completed image and injection receipts, exact owner/config/context identities and actual launcher terminal0. The adapter supplies the separately verified kubectl through a named BuildKit context and checks its SHA in the image consumer; interrupted or mismatched outcomes cannot qualify. Actual consumer/source image construction, full image/runtime/performance, latest-data and live schema/RBAC/admission/rollback gates remain open.
+
+
+[Current root qualification](../evidence/bortus-canonical-cifs-root-20261012.json)
+verifies canonical deny-all policy generation, fixed typed LIST endpoints and
+the closed configuration/etcd ciphertext-writer factory:58 local controls pass
+without skips or ResourceWarnings on164 unchanged private POSIX source files.
+Fourteen configuration cases include exact CIFS mode handling and closed-prefix
+refusals. Retained server dry-run metadata proves exact admitted policy spec
+and typed complete collections, with no persistent resource ownership inferred.
+Fresh actual configuration capture and scoped etcd streaming integration remain
+pending. Historical failed artifacts are retained.

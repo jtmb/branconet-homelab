@@ -444,8 +444,10 @@ def raw_archive(client,source,target,recipient,identity,deadline,directory_fd):
     return result,plain
 
 def absent(client,kind,name,uid):
+    need(kind in('pod','networkpolicy'),'input')
     need(client.api(['get',kind,name,'-n',NS,'--ignore-not-found','-o','json'])is None,'resource')
-    obj=client.api(['get',kind,'-n',NS,'-o','json']);need(obj['apiVersion']==('v1'if kind=='pod'else'networking.k8s.io/v1')and obj['kind']==('PodList'if kind=='pod'else'NetworkPolicyList')and type(obj['items'])is list and len(obj['items'])<=10000 and type(obj['metadata'].get('resourceVersion'))is str and obj['metadata']['resourceVersion']and type(obj['metadata'].get('continue',''))is str and obj['metadata'].get('continue','')==''and type(obj['metadata'].get('remainingItemCount',0))is int and obj['metadata'].get('remainingItemCount',0)==0,'resource');seen=set();uids=set()
+    path='/api/v1/namespaces/migration-system/pods'if kind=='pod'else'/apis/networking.k8s.io/v1/namespaces/migration-system/networkpolicies'
+    obj=client.api(['get','--raw',path]);need(obj['apiVersion']==('v1'if kind=='pod'else'networking.k8s.io/v1')and obj['kind']==('PodList'if kind=='pod'else'NetworkPolicyList')and type(obj['items'])is list and len(obj['items'])<=10000 and type(obj['metadata'].get('resourceVersion'))is str and obj['metadata']['resourceVersion']and type(obj['metadata'].get('continue',''))is str and obj['metadata'].get('continue','')==''and type(obj['metadata'].get('remainingItemCount',0))is int and obj['metadata'].get('remainingItemCount',0)==0,'resource');seen=set();uids=set()
     for item in obj['items']:
         i=identity(item);need(i['namespace']==NS and i['name']not in seen and i['uid']not in uids and i['name']!=name and i['uid']!=uid,'resource');seen.add(i['name']);uids.add(i['uid'])
 def cleanup(client,ledger,kind,created,deadline):
@@ -457,7 +459,7 @@ def cleanup(client,ledger,kind,created,deadline):
     absent(client,kind,i['name'],i['uid']);ledger.confirm(action,{'absence_confirmed':True})
 def proposals(run_id,image):
     name='etcd-recovery-'+run_id;labels={'migration.etcd-run':run_id}
-    policy={'apiVersion':'networking.k8s.io/v1','kind':'NetworkPolicy','metadata':{'name':name,'namespace':NS,'labels':labels},'spec':{'podSelector':{'matchLabels':labels},'policyTypes':['Ingress','Egress'],'ingress':[],'egress':[]}}
+    policy={'apiVersion':'networking.k8s.io/v1','kind':'NetworkPolicy','metadata':{'name':name,'namespace':NS,'labels':labels},'spec':{'podSelector':{'matchLabels':labels},'policyTypes':['Ingress','Egress']}}
     pod={'apiVersion':'v1','kind':'Pod','metadata':{'name':name,'namespace':NS,'labels':labels},'spec':{'automountServiceAccountToken':False,'restartPolicy':'Never','nodeName':'masternode','securityContext':{'runAsUser':0,'runAsGroup':0},'containers':[{'name':'etcd','image':image,'imagePullPolicy':'Never','command':['etcd','--name=empty','--data-dir=/proof/empty','--listen-client-urls=http://127.0.0.1:12379','--advertise-client-urls=http://127.0.0.1:12379','--listen-peer-urls=http://127.0.0.1:12380','--initial-advertise-peer-urls=http://127.0.0.1:12380','--initial-cluster=empty=http://127.0.0.1:12380'],'volumeMounts':[{'name':'proof','mountPath':'/proof'},{'name':'snapshot','mountPath':'/snapshot','readOnly':True}],'resources':{'requests':{'cpu':'100m','memory':'128Mi'},'limits':{'cpu':'1','memory':'2Gi'}}}],'volumes':[{'name':'proof','emptyDir':{'medium':'Memory','sizeLimit':'1536Mi'}},{'name':'snapshot','hostPath':{'path':'/dev/shm/migration-etcd-'+run_id+'/snapshot.db','type':'File'}}]}}
     return policy,pod
 

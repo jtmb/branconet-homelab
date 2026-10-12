@@ -164,3 +164,37 @@ original files unchanged in an exact private POSIX copy. The test child and eigh
 recorded sudo-shim identities are absent. The original Windows-mounted fixture
 run correctly refused unsafe ancestry and remains retained. No ownership check
 was weakened. Real SSH/sudo/API/etcd and production credentials remain unexecuted.
+
+Current server-side dry runs on Kubernetes v1.37.1 found that the API omits empty
+NetworkPolicy ingress/egress arrays. The separate canonical proposal now omits
+those fields and retains both explicit Ingress/Egress policyTypes and the exact
+owned-run selector. No generic admission normalization is added: any supplied
+nonempty/null/unexpected rule field or selector/policyTypes drift refuses. The
+original serialization mismatch and dry-run replies remain retained. Dry-run
+CREATE has no resourceVersion and never grants persistent ownership; named
+absence and original source identity remain checked separately. Actual CNI
+isolation and authenticated etcd restoration remain unqualified by dry run.
+
+The canonical-policy variant passed 41 local controls and one current server-side
+dry run with exact admitted/proposed policy specs and named absence. The same
+read-only preparation found a separate dispatch blocker: kubectl's collection
+JSON is generic v1/List, while the cleanup fence requires typed PodList or
+NetworkPolicyList. Fixed native raw LIST endpoints are required before actual
+checkpoint dispatch; no generic collection-schema relaxation is authorized by
+the canonical proposal change. Current complete raw policy inventory has zero
+items; this metadata read does not prove actual CNI isolation.
+
+The scoped follow-up uses only the two fixed native raw LIST endpoints for Pod
+and NetworkPolicy in migration-system. The complete typed API/kind/RV,
+continuation/item-count/10,000-item bounds and exact name/UID absence checks
+remain unchanged; generic CLI v1/List is never reinterpreted. Unknown resource
+kinds refuse before dispatch. The original collection-shape blocker remains
+historical evidence rather than an accepted inventory.
+
+The combined canonical-policy/typed-list variant passes 44 local controls with
+unchanged executable inputs. Its read-only current native collections are typed
+complete PodList (six identities) and NetworkPolicyList (zero identities). The
+single prior canonical-policy dry run remains unchanged rather than repeated.
+These results qualify the two scoped source corrections; actual snapshot,
+persistent resource runtime/CNI isolation and authenticated registry equality
+remain pending. The original generic CLI collection refusal remains retained.

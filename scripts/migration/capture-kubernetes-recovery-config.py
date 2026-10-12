@@ -75,13 +75,52 @@ def validate_files(files):
     return decoded
 
 
+def nas_program(e, prefix='config'):
+    """Keep the NAS writer strict; admit mount-forced0755 only for CIFS ciphertext.
+
+    The operator archive remains pinned0600. The remote program receives only
+    authenticated ciphertext; it never handles a plaintext configuration/key.
+    The mount identity is checked throughout, with no shared-helper changes.
+    """
+    need(type(prefix) is str and prefix in ('config', 'etcd'), 'input')
+    program = e.q.NAS_PROGRAM.replace('bortus-sqlite-', prefix + '-')
+    mount_reader = r'''
+def mount_identity():
+ with open('/proc/self/mountinfo',encoding='utf-8')as stream:
+  raw=stream.read(1048577)
+ if len(raw)>1048576:raise ValueError()
+ selected=None
+ import re
+ for line in raw.splitlines():
+  fields=line.split();cut=fields.index('-')
+  mount=re.sub(r'\\([0-7]{3})',lambda m:chr(int(m[1],8)),fields[4])
+  if str(root)==mount or str(root).startswith(mount.rstrip('/')+'/'):
+   if selected is None or len(mount)>len(selected[0]):
+    selected=(mount,tuple(fields[:6]),tuple(fields[cut+1:]))
+ if selected is None:raise ValueError()
+ return selected
+'''
+    replacements = {
+        'try:\n header=': mount_reader + '\ntry:\n mount_before=mount_identity()\n header=',
+        'for v in (i,n):': 'if mount_identity()!=mount_before:raise ValueError()\n  for v in (i,n):',
+        'stat.S_IMODE(v.st_mode)!=0o600':
+            '(stat.S_IMODE(v.st_mode)!=0o600 and not (stat.S_IMODE(v.st_mode)==0o755 and mount_before[0]=="/mnt/container-backups" and mount_before[2][0]=="cifs"))',
+        "'same_inode_readback':True}":
+            "'same_inode_readback':True,'cipher_mode':stat.S_IMODE(os.fstat(target).st_mode),'cifs_mount':mount_before[0]=='/mnt/container-backups' and mount_before[2][0]=='cifs'}",
+    }
+    for original, replacement in replacements.items():
+        need(program.count(original) == 1, 'transport')
+        program = program.replace(original, replacement)
+    return program
+
+
 def copy_nas(client, e, cipher, run_id, expected_sha, deadline):
     """Publish only ciphertext through the fixed exclusive/readback NAS program."""
     cipher.check()
     size = os.fstat(cipher.fd).st_size
     need(0 < size <= MAX_DOCUMENT + 1048576, 'archive')
     name = 'config-' + run_id + '.age'
-    program = e.q.NAS_PROGRAM.replace('bortus-sqlite-', 'config-')
+    program = nas_program(e)
     child = pipe = None
     failure = None
     try:
@@ -101,11 +140,15 @@ def copy_nas(client, e, cipher, run_id, expected_sha, deadline):
         need(digest.hexdigest() == expected_sha, 'archive')
         response = e.decode(e.collect(child, deadline, client.children, maximum=1024))
         need(type(response) is dict and set(response) == {
-            'bytes', 'sha256', 'fsynced', 'same_inode_readback'
+            'bytes', 'sha256', 'fsynced', 'same_inode_readback', 'cipher_mode', 'cifs_mount'
         } and type(response['bytes']) is int and response['bytes'] == size
             and response['sha256'] == expected_sha
             and response['fsynced'] is True
-            and response['same_inode_readback'] is True, 'archive')
+            and response['same_inode_readback'] is True
+            and type(response['cipher_mode']) is int
+            and type(response['cifs_mount']) is bool
+            and (response['cipher_mode'] == 0o600 or
+                 response['cipher_mode'] == 0o755 and response['cifs_mount'] is True), 'archive')
         cipher.check()
         client.check()
     except Exception:
@@ -130,7 +173,8 @@ def copy_nas(client, e, cipher, run_id, expected_sha, deadline):
     if failure:
         raise Refused(failure)
     e.left(deadline)
-    return e.q.NAS_ROOT + '/' + name
+    return {'path': e.q.NAS_ROOT + '/' + name,
+            'cipher_mode': response['cipher_mode'], 'cifs_mount': response['cifs_mount']}
 
 
 def capture(*, client, checkpoint, parent, run_id, recipient_file, identity_file):
@@ -227,7 +271,7 @@ def _capture(client, e, parent, run_id, recipient_file, identity_file):
         # retains uncertain ciphers, and verifies same-inode ciphertext readback.
         ledger.intent('publish_configuration', {'ciphertext_sha256': cipher_sha})
         nas = copy_nas(client, e, cipher, run_id, cipher_sha, deadline)
-        ledger.confirm('publish_configuration', {'path': nas, 'readback': True})
+        ledger.confirm('publish_configuration', dict(nas, readback=True))
         second = client.remote({'mode': 'keys', 'run_id': run_id, 'paths': list(FILES)})
         need(validate_files(second) == decoded, 'drift')
         client.check()
@@ -243,7 +287,8 @@ def _capture(client, e, parent, run_id, recipient_file, identity_file):
         ledger.save()
         e.left(deadline)
         result = {'path': str(target), 'sha256': cipher_sha,
-                  'record': str(ledger.path / 'record.json'), 'nas_copy': nas,
+                  'record': str(ledger.path / 'record.json'), 'nas_copy': nas['path'],
+                  'nas_cipher_mode': nas['cipher_mode'], 'nas_cifs_mount': nas['cifs_mount'],
                   'file_count': len(FILES)}
     except Exception as exc:
         failure = exc.code if isinstance(exc, Refused) else 'archive'

@@ -4,6 +4,16 @@ Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original m
 
 ## 2026-10-12: fresh checkpoint transport and configuration capture integrated
 
+[Current canonical/CIFS qualification](evidence/bortus-canonical-cifs-root-20261012.json)
+passes58 local controls with zero skips on164 unchanged private POSIX sources.
+Actual server dry runs exposed and qualified policy serialization and typed-LIST
+corrections before any real checkpoint. The first real32-file configuration run
+read/authenticated its operator archive, but publication refused the existing
+CIFS mount's forced0755 ciphertext mode. Both equal ciphertexts remain retained;
+the failed run is not accepted/replayed/adopted. The scoped cipher-only correction
+and closed-prefix factory now pass14 configuration cases. A distinct fresh run,
+etcd streaming integration, final performance/image and live upgrade remain open.
+
 [Root integration evidence](evidence/bortus-etcd-config-root-integration-20261012.json)
 binds the reviewed native18090f8 transport to the targeted32-file configuration
 capture. All47 local controls pass without skips or ResourceWarnings in7.992s

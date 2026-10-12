@@ -41,6 +41,8 @@ class Client:
         self.reads = 0
         self.drift = False
         self.lost_reply = False
+        self.nas_mode = 0o600
+        self.cifs = False
         self.root = root
 
     def check(self):
@@ -61,9 +63,17 @@ class Client:
         if args[:len(e.SSH)] == e.SSH:
             command = shlex.split(args[-1])
             assert command[:2] == ['python3', '-c']
-            expected = e.q.NAS_PROGRAM.replace('bortus-sqlite-', 'config-')
+            expected = m.nas_program(e)
             assert command[2] == expected
             code = expected.replace(repr(e.q.NAS_ROOT), repr(str(self.root / 'nas')))
+            if self.cifs:
+                code = code.replace('try:\n mount_before=mount_identity()',
+                    "def mount_identity():return ('/mnt/container-backups',('PUBLIC MOUNT ID',),('cifs','PUBLIC SOURCE','rw'))\ntry:\n mount_before=mount_identity()")
+            if self.nas_mode != 0o600:
+                literal = ' digest=hashlib.sha256();left=info[\'bytes\']'
+                assert code.count(literal) == 1
+                code = code.replace(literal,
+                    ' os.fchmod(target,' + str(self.nas_mode) + ')\n' + literal)
             if self.lost_reply:
                 code = code.replace("print(json.dumps({'bytes':", "sys.exit(1); print(json.dumps({'bytes':")
             args = [sys.executable, '-B', '-c', code]
@@ -207,6 +217,41 @@ class Tests(unittest.TestCase):
         with self.assertRaises(m.Refused):
             self.capture()
         self.assertEqual([], list(self.parent.iterdir()))
+
+    def test_mount_forced0755_cipher_only_on_exact_cifs(self):
+        self.client.nas_mode = 0o755
+        self.client.cifs = True
+        result = self.capture()
+        self.assertEqual(0o755, result['nas_cipher_mode'])
+        self.assertTrue(result['nas_cifs_mount'])
+        self.assertEqual(0o600, pathlib.Path(result['path']).stat().st_mode & 0o777)
+        self.assertEqual(pathlib.Path(result['path']).read_bytes(),
+                         (self.nas / 'config-123456789abc.age').read_bytes())
+
+    def test0755_cipher_on_non_cifs_refuses(self):
+        self.client.nas_mode = 0o755
+        with self.assertRaises(m.Refused):
+            self.capture()
+        self.assertEqual('pending', self.record()['operations']['publish_configuration']['state'])
+
+    def test_world_writable_cipher_on_cifs_refuses(self):
+        self.client.nas_mode = 0o777
+        self.client.cifs = True
+        with self.assertRaises(m.Refused):
+            self.capture()
+        self.assertEqual('pending', self.record()['operations']['publish_configuration']['state'])
+
+    def test_writer_factory_etcd_prefix_preserves_shared_default(self):
+        before = e.q.NAS_PROGRAM
+        default = m.nas_program(e)
+        etcd = m.nas_program(e, prefix='etcd')
+        self.assertEqual(default.replace('config-', 'etcd-'), etcd)
+        self.assertEqual(before, e.q.NAS_PROGRAM)
+
+    def test_writer_factory_rejects_unknown_or_untyped_prefix(self):
+        for prefix in ('bortus', '../config', '', None, 1, True):
+            with self.subTest(prefix=prefix), self.assertRaises(m.Refused):
+                m.nas_program(e, prefix=prefix)
 
     def test_completion_directory_fsync_failure_refuses_visible_success(self):
         original_save = e.Ledger.save

@@ -31,13 +31,11 @@ One control plane needs a documented etcd/configuration restore; it is not a hig
 
 Kubernetes uses containerd-k8s.service, /run/containerd-k8s/containerd.sock and /var/lib/containerd-k8s. Existing Docker/containerd configuration, runtime and data remain available during migration. Native Kubernetes Secrets use API encryption at rest; secret values remain outside Git. Encryption keys and Kubernetes recovery configuration must be included in encrypted recovery backups.
 
-The fresh targeted configuration-capture draft uses the qualified checkpoint
-transport interface and age; no new runtime dependency is introduced. Its fixed
-32 standard Kubernetes recovery files complement the historical broader host
-archives. Nine local fixture controls pass against immutable checkpoint v11;
-the checkpoint helper is integrated from native commit18090f8. All47 root
-combined controls pass in7.992s; current production capture remains pending;
-see [migration operations](MIGRATION-OPERATIONS.md).
+The targeted configuration capture uses the checkpoint transport interface and
+age, with no new runtime dependency. Its32 standard recovery files complement
+broader historical host archives. All47 combined root controls pass in7.992s;
+actual fresh capture remains pending. The scoped CIFS ciphertext-mode correction
+passes12 local controls. See [migration operations](MIGRATION-OPERATIONS.md).
 
 Longhorn is the default persistent application storage. Each chart declares its own PVC mounts and values. Existing NAS media at //192.168.0.8/plex_smb_share remains intact; requested integration is a separate live acceptance check. The Samba role installs the client CSI driver only. It does not create a guest share or overwrite exports, credentials, fstab or files. Host-local default storage and a new NFS server are not part of this migration.
 
@@ -97,3 +95,14 @@ The [root qualification](../evidence/bortus-patched-kubectl-image-root-20261012.
 Root separately validates all six actual compiled artifacts in3.138s: complete247,076,441-byte source diff ZIP,12,741,184-byte metadata sidecar/all31,916 paths, ELF, completed build receipt, actual version and Go build metadata. Their identities and bytes remain unchanged. These checks call no build, transfer, SSH or Docker operation. The default builder/export/five-label contracts and frontend Dockerfile remain unchanged.
 
 A future source-linked build must carry both completed image and injection receipts, exact owner/config/context identities and actual launcher terminal0. The adapter supplies the separately verified kubectl through a named BuildKit context and checks its SHA in the image consumer; interrupted or mismatched outcomes cannot qualify. Actual consumer/source image construction, full image/runtime/performance, latest-data and live schema/RBAC/admission/rollback gates remain open.
+
+
+[Current root qualification](../evidence/bortus-canonical-cifs-root-20261012.json)
+verifies canonical deny-all policy generation, fixed typed LIST endpoints and
+the closed configuration/etcd ciphertext-writer factory:58 local controls pass
+without skips or ResourceWarnings on164 unchanged private POSIX source files.
+Fourteen configuration cases include exact CIFS mode handling and closed-prefix
+refusals. Retained server dry-run metadata proves exact admitted policy spec
+and typed complete collections, with no persistent resource ownership inferred.
+Fresh actual configuration capture and scoped etcd streaming integration remain
+pending. Historical failed artifacts are retained.

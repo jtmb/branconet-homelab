@@ -57,6 +57,8 @@ class Client:
             disk=json.loads((self.t.parent/('etcd-'+self.t.run_id)/'record.json').read_text());self.t.assertEqual('pending',disk['operations'][kind+'-delete']['state'])
             if self.mode=='lost-delete'and kind=='pod':raise m.Refused('child')
             self.objects.pop(kind);return {'kind':'Status','status':'Success'}
+        if args[:2]==['get','--raw']:
+            self.t.assertIn(args[2],('/api/v1/namespaces/migration-system/pods','/apis/networking.k8s.io/v1/namespaces/migration-system/networkpolicies'));kind='pod'if args[2].endswith('/pods')else'networkpolicy';args=['get',kind,'-n',m.NS]
         if args[0]=='get':
             kind=args[1]
             if len(args)>2 and args[2]!='-n':
@@ -153,6 +155,51 @@ class Tests(unittest.TestCase):
             elif mode=='image':bad['status']['containerStatuses'][0]['imageID']='sha256:config'
             else:bad['status']['containerStatuses'][0]['state']['waiting']={}
             with self.assertRaises(m.Refused):m.resource_matches(pod,bad,True)
+    def test_canonical_deny_policy_matches_actual_omitted_empty_rule_serialization(self):
+        policy,_=m.proposals(self.run_id,self.source['restore_image']);obj=copy.deepcopy(policy);obj['metadata'].update(uid='owned-policy',resourceVersion='opaque-rv')
+        self.assertEqual({'podSelector','policyTypes'},set(policy['spec']));self.assertEqual(['Ingress','Egress'],policy['spec']['policyTypes']);self.assertEqual('owned-policy',m.resource_matches(policy,obj)['uid'])
+        for change in({'ingress':[{}]},{'egress':[{}]},{'ingress':None},{'egress':[]},{'podSelector':{}},{'policyTypes':['Ingress']}):
+            bad=copy.deepcopy(obj);bad['spec'].update(change)
+            with self.assertRaises(m.Refused):m.resource_matches(policy,bad)
+    def test_canonical_policy_does_not_relax_persistent_uid_rv_or_owned_name(self):
+        policy,_=m.proposals(self.run_id,self.source['restore_image']);obj=copy.deepcopy(policy);obj['metadata'].update(uid='owned-policy',resourceVersion='opaque-rv')
+        for change in({'uid':None},{'uid':True},{'resourceVersion':None},{'resourceVersion':''},{'name':'foreign-policy'},{'namespace':'foreign'}):
+            bad=copy.deepcopy(obj);bad['metadata'].update(change)
+            with self.assertRaises(m.Refused):m.resource_matches(policy,bad)
+    def test_fresh_policy_uid_replacement_refuses_cleanup_without_adoption(self):
+        original=self.client.api
+        def api(args,body=None,maximum=None):
+            result=original(args,body,maximum)
+            if args[:2]==['get','networkpolicy']and len(args)>2 and args[2]!='-n'and result:result['metadata']['uid']='foreign-policy'
+            return result
+        self.client.api=api
+        with self.assertRaises(m.Refused):self.execute()
+        self.assertIn('networkpolicy',self.client.objects);self.assertFalse(any(c[0]=='api'and c[1][0]=='delete'and '/networkpolicies/'in c[1][2]for c in self.client.calls))
+    def test_absence_uses_exact_typed_native_endpoints_without_cli_reinterpretation(self):
+        for kind,path,api,collection in [('pod','/api/v1/namespaces/migration-system/pods','v1','PodList'),('networkpolicy','/apis/networking.k8s.io/v1/namespaces/migration-system/networkpolicies','networking.k8s.io/v1','NetworkPolicyList')]:
+            calls=[]
+            class Inventory:
+                def api(self,args):
+                    calls.append(args)
+                    if args[:2]==['get','--raw']:return {'apiVersion':api,'kind':collection,'metadata':{'resourceVersion':'opaque-rv','continue':'','remainingItemCount':0},'items':[]}
+                    return None
+            m.absent(Inventory(),kind,'owned-name','owned-uid');self.assertEqual(['get','--raw',path],calls[-1]);self.assertEqual(2,len(calls))
+    def test_typed_absence_refuses_generic_partial_overbound_foreign_and_duplicate_items(self):
+        good={'apiVersion':'v1','kind':'PodList','metadata':{'resourceVersion':'opaque-rv','continue':'','remainingItemCount':0},'items':[]}
+        item={'metadata':{'name':'another','namespace':m.NS,'uid':'another-uid','resourceVersion':'opaque-item'}}
+        bads=[dict(good,kind='List'),dict(good,apiVersion='foreign'),dict(good,items={}),dict(good,items=[item]*10001)]
+        for change in({'resourceVersion':''},{'resourceVersion':True},{'continue':'next'},{'remainingItemCount':1},{'remainingItemCount':True}):bads.append(dict(good,metadata=dict(good['metadata'],**change)))
+        for change in({'uid':'owned-uid'},{'name':'owned-name'},{'namespace':'foreign'},{'uid':None}):
+            value=copy.deepcopy(item);value['metadata'].update(change);bads.append(dict(good,items=[value]))
+        bads.append(dict(good,items=[item,item]))
+        for obj in bads:
+            class Inventory:
+                def api(self,args):return obj if args[:2]==['get','--raw']else None
+            with self.assertRaises(m.Refused):m.absent(Inventory(),'pod','owned-name','owned-uid')
+    def test_absence_unknown_kind_refuses_before_any_dispatch(self):
+        class Inventory:
+            def api(self,args):raise AssertionError('No dispatch for unknown kind')
+        with self.assertRaises(m.Refused):m.absent(Inventory(),'secret','owned-name','owned-uid')
     def test_pending_directory_flush_failure_no_mutation(self):
         original=m.Ledger.save
         def fail(ledger):
