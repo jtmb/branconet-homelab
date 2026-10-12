@@ -10,17 +10,33 @@ import { PrismaClient } from "@prisma/client";
 import { SignJWT } from "jose";
 import { nativeTlsFixture } from "./helpers/native-tls";
 
+async function stopCompiledChild(child: ChildProcess | undefined) {
+  if (child && child.exitCode === null && child.signalCode === null) {
+    const exited = once(child, "exit"); child.kill("SIGTERM");
+    const timer = setTimeout(() => child.kill("SIGKILL"), 5000);
+    try { await exited; } finally { clearTimeout(timer); }
+  }
+}
+
+test("compiled fixture cleanup settles for an already-signaled owned child", { timeout: 10000 }, async () => {
+  const helperDir = path.dirname(process.env.BORTUS_TEST_NATIVE_LOAD_PROBE ?? "tests/helpers/native-load-probe.cjs");
+  const child = spawn(process.execPath, [path.resolve(helperDir, "idle-child.cjs")], { stdio: ["ignore", "ignore", "ignore", "ipc"] });
+  try {
+    const [message] = await once(child, "message"); assert.deepEqual(message, { ready: true });
+    const exited = once(child, "exit"); child.kill("SIGTERM"); await exited;
+    assert.equal(child.exitCode, null); assert.equal(child.signalCode, "SIGTERM");
+    await stopCompiledChild(child);
+    console.log("COMPILED_EARLY_SIGNAL_CLEANUP " + JSON.stringify({ pid: child.pid, signal: child.signalCode, settled: true }));
+  } finally { await stopCompiledChild(child); }
+});
+
 test("compiled native GET loads the actual selector and preserves the complete audit-small metadata oracle", { timeout: 60000 }, async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "bortus-compiled-native-"));
   const database = "file:" + path.join(dir, "fixture.db").replaceAll("\\", "/");
   const db = new PrismaClient({ datasources: { db: { url: database } } });
   let child: ChildProcess | undefined, native: Awaited<ReturnType<typeof nativeTlsFixture>> | undefined;
   const stop = async () => {
-    if (child && child.exitCode === null) {
-      const exited = once(child, "exit"); child.kill("SIGTERM");
-      const timer = setTimeout(() => child?.kill("SIGKILL"), 5000);
-      try { await exited; } finally { clearTimeout(timer); }
-    }
+    await stopCompiledChild(child);
     if (child) console.log("COMPILED_NATIVE_CLEANUP " + JSON.stringify({ pid: child.pid, exitCode: child.exitCode, signal: child.signalCode }));
   };
   try {
