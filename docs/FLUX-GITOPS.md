@@ -361,3 +361,9 @@ focus-refresh attribution. This is not one uninterrupted 11-pass run. The select
 ten-file default scan retains one independently reviewed unchanged public prose
 finding, zero untriaged findings and two historical provenance findings still
 open. This candidate is not deployed; performance and whole-audit gates stay open.
+
+## 2026-10-12 06:00 UTC: current charts delivery and cluster health
+
+The [read-only receipt](../evidence/bortus-current-delivery-health-20261012.json) confirms current charts `main` and `validated` both point to7828f5b5d219770077b72bd53d81fe745c61b621. The single [validation/promotion workflow](https://github.com/jtmb/branconet-charts/actions/runs/38150613416) succeeded for that exact push. The current Ready charts GitRepository and unsuspended Ready `migration-releases` Kustomization consume and apply that same validated revision. All3 nodes are Ready and all33 other HelmReleases are current, Ready and unsuspended.
+
+BORTUS retains its original Deployment and service account and one Ready old3b076 writer. Its HelmRelease remains suspended at generation10/status observedGeneration10; its retained Ready condition belongs to generation9, so no current active Helm reconciliation or final engine rollout is claimed. This is maintenance status, not new image/schema/performance/data/recovery acceptance. No mutation or credential/Secret value was reported.
