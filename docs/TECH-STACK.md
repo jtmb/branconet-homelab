@@ -49,3 +49,11 @@ default built-in rules, no user ignore/config files, one worker and disabled
 telemetry. Raw reports stay outside Git. The [actual holder scan](../evidence/bortus-holder-source-image-7e30-20261011.json)
 records findings and scope; zero Secret findings does not mean vulnerability-clean
 or final runtime/release acceptance.
+
+
+The separate [custom kubectl security build contract](BORTUS-KUBECTL-SECURITY-BUILD.md)
+consumes pinned upstream1.37.1 source and Go1.26.9 archives, with reviewed
+x/net0.60.0 and transitive pins. It is a local-only candidate for a custom
+binary, not an upstream1.37.2 release or image security pass. Existing Dockerfile
+and release-builder defaults remain unchanged pending separately qualified
+source-linked injection and actual image/runtime acceptance.

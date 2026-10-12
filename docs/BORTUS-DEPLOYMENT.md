@@ -615,3 +615,11 @@ The [independent root comparison review](../evidence/bortus-performance-4ae9-roo
 The [primary remediation receipt](../evidence/bortus-image-remediation-research-20261012.json) retains all20 unique Debian High/Critical IDs from the default4ae9 scan and current Debian release tables. All20 primary requests succeeded. Debian13 contains fixes for some Bookworm findings (for example [util-linux target-path redirection](https://security-tracker.debian.org/tracker/CVE-2026-53613) and [OpenSSL DTLS retransmission](https://security-tracker.debian.org/tracker/CVE-2026-84782)); several other findings remain vulnerable there. A base upgrade alone cannot establish security acceptance. No suppression or change to original346 findings is applied.
 
 Root downloaded the exact upstream Kubernetes1.37.1 source42196261bytes and Go1.26.9 Linuxamd64 toolchain66935201bytes onto the separate build host, then independently rehashed both and observed the downloader absent. The source checksum remainsd58492a0… and Go42d158b4…; full bindings are in the receipt. Actual source layout is flat with two file and three directory symlinks, unlike the draft fixture; those cases are corrected before compilation. Inputs are public archives, no cluster or credential mount is involved. Custom compilation, vendor diff review, binary scan, final source/image injection and runtime acceptance remain pending.
+
+
+The separate [custom kubectl security build contract](BORTUS-KUBECTL-SECURITY-BUILD.md)
+consumes pinned upstream1.37.1 source and Go1.26.9 archives, with reviewed
+x/net0.60.0 and transitive pins. It is a local-only candidate for a custom
+binary, not an upstream1.37.2 release or image security pass. Existing Dockerfile
+and release-builder defaults remain unchanged pending separately qualified
+source-linked injection and actual image/runtime acceptance.
