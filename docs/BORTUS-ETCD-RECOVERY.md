@@ -2,6 +2,10 @@
 
 Current scope: the [fresh raw checkpoint and complete encrypted Secret-registry restore](../evidence/bortus-etcd-actual-recovery-root-20261012.json) are accepted. API plaintext decryption, Longhorn/LUKS restore and full control-plane disaster recovery remain open. Earlier local and failed-run sections below are retained historical evidence.
 
+The separate [isolated API recovery preparation](BORTUS-ETCD-API-PROOF.md) supplies
+fixed memory-only bundle framing and an independent AES-CBC/protobuf-to-API oracle.
+It grants no live decryption acceptance or changes to this raw checkpoint.
+
 Scoped cleanup compares a confirmed API-defaulted create reply with its fresh
 owned GET. Known Pod tolerations and container termination-message defaults are
 removed only when absent from the expected spec. Fields already present in the

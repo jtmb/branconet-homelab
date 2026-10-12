@@ -2,6 +2,10 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
 
+## 2026-10-12: isolated API recovery helper locally qualified
+
+[Root helper evidence](evidence/bortus-etcd-api-helper-root-20261012.json) verifies seven raw files,27 originals and seven pinned primary references. All25 unchanged public Node22 controls pass, including actual tmpfs writes, loopback verified TLS, certificate refusal, complete typed Secret/ciphertext maps and expiry/owned closure. Source hashes are explicitly labelled public metadata. No accepted archive, original key or live etcd/API instance was used. Root is preparing a distinct owned actual procedure; API plaintext/Longhorn/full-cluster recovery remain open.
+
 ## 2026-10-12: source export cleared and phase callback integrated
 
 The [transparent compiler pin correction](evidence/bortus-header-pins-root-20261012.json) at `18c86a7` keeps all four complete public checksums and verifier behavior, with nine passing controls and identical native ELF. The unchanged exporter now accepts272 raw production files with its default scan, without exclusions. The prior a00 comparison remains a failed baseline-only build with zero candidate measurements. The [distinct fresh original comparison](evidence/bortus-paired-loader-refusal-root-20261012.json) passes both raw builds and baseline-run1, then refuses candidate audit-small before a complete profile. Root verifies that the compiled native loader became an undefined call, while the native ELF matches its accepted build. The failed owner is retained; no candidate/pair performance acceptance follows. A compiled-route loader correction/regression is in progress; final image and live upgrade remain pending.

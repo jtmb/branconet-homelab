@@ -1023,3 +1023,10 @@ size and full mount identity stay exact. The narrow CIFS-boundary correction is 
 fingerprint and preserves strict full readback/POSIX/owner/inode/hash/mount/
 deadline checks. The new successful configuration archive is distinct from
 this retained failed run; no production etcd snapshot is claimed.
+
+The [isolated API plaintext recovery preparation](BORTUS-ETCD-API-PROOF.md)
+supplies fixed memory-bundle framing and an independent retained-snapshot
+AES-CBC/protobuf Secret-to-API oracle. It changes no raw checkpoint acceptance,
+starts no production process and creates no resources. Root must bind actual
+authenticated inputs, isolation/cache/CNI and UID/RV cleanup before dispatch.
+Local fixtures do not grant API decryption or full disaster-recovery acceptance.
