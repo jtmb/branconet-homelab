@@ -1006,3 +1006,14 @@ refusals. Retained server dry-run metadata proves exact admitted policy spec
 and typed complete collections, with no persistent resource ownership inferred.
 Fresh actual configuration capture and scoped etcd streaming integration remain
 pending. Historical failed artifacts are retained.
+
+
+The [second retained actual configuration run](../evidence/bortus-config-close-refusal-20261012.json)
+authenticated its32-file operator archive, then refused the CIFS creator-close/
+reopen timestamp fence. The NAS ciphertext hash matches; the refused run remains
+unaccepted without replay/adoption. A distinct encrypted public fixture proves
+both timestamps advance3.7178ms on close while device/inode/owner/mode/link-count/
+size and full mount identity stay exact. The narrow CIFS-boundary correction is
+in preparation: pin a fresh full reopened fingerprint and preserve strict full
+readback/POSIX/owner/inode/hash/mount/deadline checks. No production etcd snapshot
+or data/key/permission/mount change was performed.

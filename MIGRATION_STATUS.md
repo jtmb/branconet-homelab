@@ -4,6 +4,17 @@ Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original m
 
 ## 2026-10-12: fresh checkpoint transport and configuration capture integrated
 
+The [second actual configuration run](evidence/bortus-config-close-refusal-20261012.json)
+also authenticated32 files, then refused CIFS timestamp changes at creator close/
+reopen. Its equal operator/NAS ciphertexts stay retained without acceptance,
+replay or adoption. An encrypted public fixture proves a3.7178ms timestamp shift
+with identical remaining identity fields and mount. A narrow close-boundary fix
+is being qualified; actual fresh configuration/etcd acceptance remains open.
+
+The user authorized evaluating eight concurrent Secret-list requests, retaining
+the32MiB aggregate/10,000-item/page/deadline/privacy/namespace checks. Production
+remains on the current source while the bounded performance prototype is tested.
+
 [Current canonical/CIFS qualification](evidence/bortus-canonical-cifs-root-20261012.json)
 passes58 local controls with zero skips on164 unchanged private POSIX sources.
 Actual server dry runs exposed and qualified policy serialization and typed-LIST

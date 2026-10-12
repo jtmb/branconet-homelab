@@ -276,3 +276,15 @@ The subsequent user request adds the complete A01–A22 audit remediation and th
 | Retained originals | Gluster bricks, Vault/Consul and recovery artifacts remain intact until explicit final retirement approval |
 
 The precise ordered cutover and recovery requirements are in [MIGRATION-OPERATIONS.md](docs/MIGRATION-OPERATIONS.md). Its new restore preflight and exclusive ownership journal are preparatory libraries with scoped local qualification. A future executor must bind actual controller completion to the exact new Volume UID and backup source, retain durable no-replay ownership through interrupted operations, and prove the restored data with authenticated archives and complete-row equality. Reset in-memory Longhorn history after detach cannot be used as proof by itself. Source/image, actual completion observations, independent restore and the final live gates remain open; helper tests do not satisfy them.
+
+
+### Accepted performance evaluation update, 2026-10-12
+
+The user approved evaluating an eight-request Secret-list cap after actual
+traces showed the old baseline starts18 requests together and the current
+four-request path incurs repeated12ms response waves. The32MiB aggregate byte
+limit,10,000-item limit, per-page limits,15s aggregate/8s request deadlines,
+namespace permissions, fresh authorization and value-redaction contracts remain
+unchanged. The original six-profile driver/datasets/oracles and2CPU/1GiB runtime
+caps remain the comparison. Evaluation does not grant a performance pass or
+production adoption; every profile and tail retains its actual result.
