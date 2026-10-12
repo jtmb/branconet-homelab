@@ -10,6 +10,15 @@ if (process.platform !== "linux" || process.arch !== "x64") {
   console.log(JSON.stringify({ nativeFlatBuild: "portable-development-fallback", platform: process.platform, arch: process.arch }));
 } else {
   const compiler = "/usr/bin/x86_64-linux-gnu-gcc-12", linker = "/usr/bin/x86_64-linux-gnu-ld.bfd";
+  // No inherited compiler, include, library, preload or locale overrides.
+  const compileEnv = { PATH: "/usr/bin:/bin", LANG: "C", LC_ALL: "C", TZ: "UTC", SOURCE_DATE_EPOCH: "0" };
+  const selection = ["-B/usr/bin/", "-fuse-ld=bfd"];
+  const toolPins = {
+    cc1: { realpath: "/usr/lib/gcc/x86_64-linux-gnu/12/cc1", sha256: "18a3506428fe238a6c14c9a39251a11c7203245d632df40ddb8e9d3bf2d387d8" },
+    as: { realpath: "/usr/bin/x86_64-linux-gnu-as", sha256: "41fe4f5a03389ea5cf7c92d6753fa1ecc69b45b12534fd8713c53bba0e2d7e17" },
+    collect2: { realpath: "/usr/lib/gcc/x86_64-linux-gnu/12/collect2", sha256: "06c070d6b746da665041ea6f2e7d30faf9ef4e1f87cb9c932f963953e32aeec2" },
+    "ld.bfd": { realpath: linker, sha256: "f6d71a1bcd45764550a42dfaa179bc43b63ee879ec6f875bfd39fca013515da7" },
+  };
   const headers = {
     "node_api.h": "2d4560831e525b47b060ec8a0864ab73993df9e20215ce9f0fe7b24cd31af32a",
     "js_native_api.h": "624b39a85f0fe332f7cc1eb537e98f0e119be8503c742265fef6bdd53893adc8",
@@ -22,17 +31,24 @@ if (process.platform !== "linux" || process.arch !== "x64") {
       Object.entries(headers).some(([name, expected]) => hash("/usr/local/include/node/" + name) !== expected)) {
     throw Error("Pinned native selector build inputs unavailable");
   }
+  const selectedTools = {};
+  for (const [name, expected] of Object.entries(toolPins)) {
+    const selected = execFileSync(compiler, [...selection, "-print-prog-name=" + name], { env: compileEnv, encoding: "utf8", timeout: 5000 }).trim();
+    const realpath = fs.realpathSync(selected.startsWith("/") ? selected : "/usr/bin/" + selected);
+    if (realpath !== expected.realpath || hash(realpath) !== expected.sha256) throw Error("Pinned compiler subtool selection failed");
+    selectedTools[name] = { selected, realpath, sha256: hash(realpath) };
+  }
   const source = path.join(root, "native", "secret-flat-selector.c"), temp = fs.mkdtempSync(path.join(os.tmpdir(), "bortus-native-build-"));
   try {
-    const args = ["-O3", "-ffreestanding", "-fno-builtin", "-fno-stack-protector", "-fPIC", "-shared", "-DNAPI_VERSION=8", "-DNODE_GYP_MODULE_NAME=selector",
+    const args = [...selection, "-O3", "-ffreestanding", "-fno-builtin", "-fno-stack-protector", "-fPIC", "-shared", "-DNAPI_VERSION=8", "-DNODE_GYP_MODULE_NAME=selector",
       "-Wl,--build-id=none", "-Wl,-z,noexecstack", "-I/usr/local/include/node", source];
     const first = path.join(temp, "first.node"), second = path.join(temp, "second.node");
-    for (const target of [first, second]) execFileSync(compiler, [...args, "-o", target], { timeout: 30000, stdio: "pipe", env: { ...process.env, SOURCE_DATE_EPOCH: "0" } });
+    for (const target of [first, second]) execFileSync(compiler, [...args, "-o", target], { timeout: 30000, stdio: "pipe", env: compileEnv });
     if (hash(first) !== hash(second)) throw Error("Native selector build is not reproducible");
     fs.copyFileSync(first, output);
     fs.writeFileSync(path.join(root, "native", "secret-flat-selector-build.json"), JSON.stringify({ scope: "Generated build provenance; not performance acceptance", target: "linux-x64", napi: 8,
       sourceSha256: hash(source), elfSha256: hash(output), compilerSha256: hash(compiler), linkerSha256: hash(linker), headers, identicalCompiles: 2,
-      externalRuntimeDependency: "libc memcpy; NAPI symbols resolved by Node", compilerArguments: args }, null, 2) + "\n");
+      externalRuntimeDependency: "libc memcpy; NAPI symbols resolved by Node", selectedTools, compileEnv, compilerArguments: args }, null, 2) + "\n");
     console.log(JSON.stringify({ nativeFlatBuild: "complete", target: "linux-x64", napi: 8, identicalCompiles: 2, elfSha256: hash(output) }));
   } finally {
     if (path.dirname(temp) !== os.tmpdir() || !path.basename(temp).startsWith("bortus-native-build-")) throw Error("Owned native build cleanup refused");

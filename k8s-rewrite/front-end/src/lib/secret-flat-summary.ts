@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-import { existsSync } from "node:fs";
+import { lstatSync } from "node:fs";
 import path from "node:path";
 import { SecretError, type FlatNativeSecretSummary } from "./cluster-secrets";
 import { parseSecretSummaryPage } from "./secret-summary-json";
@@ -9,18 +9,31 @@ export interface FlatSummarySelector {
   flat(chunks: Buffer[], limit: number, namespace: string): FlatSummaryPage;
 }
 
-// Only executable code is shared. No response, credential or authority is cached.
-let loaded = false;
-let selector: FlatSummarySelector | undefined;
-function nativeSelector() {
-  if (loaded) return selector;
-  const file = path.join(process.cwd(), "native", "secret-flat-selector.node");
-  if (!existsSync(file)) { loaded = true; return undefined; }
-  const addon = createRequire(path.join(process.cwd(), "package.json"))(file) as FlatSummarySelector;
-  if (!addon || typeof addon.flat !== "function") throw Error();
-  selector = addon; loaded = true;
-  return selector;
+const unavailable = () => new SecretError(503, "Invalid Kubernetes Secret summary response");
+export function createNativeSelectorLoader(file: string,
+  probe: (file: string) => { isFile(): boolean } = lstatSync,
+  load: (file: string) => unknown = file => createRequire(path.join(process.cwd(), "package.json"))(file)) {
+  // Only executable code is shared. No response, credential or authority is cached.
+  let loaded = false;
+  let selector: FlatSummarySelector | undefined;
+  return () => {
+    if (loaded) return selector;
+    let stat: { isFile(): boolean };
+    try { stat = probe(file); }
+    catch (error) {
+      if ((error as NodeJS.ErrnoException)?.code === "ENOENT") { loaded = true; return undefined; }
+      throw unavailable();
+    }
+    try {
+      if (!stat.isFile()) throw Error();
+      const addon = load(file) as FlatSummarySelector | null;
+      if (!addon || typeof addon.flat !== "function") throw Error();
+      selector = addon; loaded = true;
+      return selector;
+    } catch { throw unavailable(); }
+  };
 }
+const nativeSelector = createNativeSelectorLoader(path.join(process.cwd(), "native", "secret-flat-selector.node"));
 
 export const nativeFlatSummaryAvailable = () => Boolean(nativeSelector());
 

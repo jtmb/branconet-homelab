@@ -1,6 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createFlatSummaryParser, parseFlatSecretSummaryPage } from "../src/lib/secret-flat-summary";
+import { createFlatSummaryParser, createNativeSelectorLoader, parseFlatSecretSummaryPage } from "../src/lib/secret-flat-summary";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import { parseSecretSummaryPage } from "../src/lib/secret-summary-json";
 import { SecretError, SecretStore, type SecretTransport } from "../src/lib/cluster-secrets";
 
@@ -40,4 +43,39 @@ test("flat Store visits share budget and retain namespace ordering; generic and 
   const rows = await new SecretStore(transport, ["apps", "other"], undefined, 8).list();
   assert.deepEqual(rows.map(row => row.namespace), ["apps", "other"]);
   assert.equal(rows.length, 2);
+});
+const fixed = (error: unknown) => error instanceof SecretError && error.status === 503 && error.message === "Invalid Kubernetes Secret summary response";
+test("native loader permits only ENOENT fallback; filesystem/load/ABI faults fail closed without retry", () => {
+  let loads = 0;
+  const read = () => { loads++; return { flat() { return project([raw]); } }; };
+  assert.equal(createNativeSelectorLoader("missing", () => { throw Object.assign(Error("PRIVATE_FS"), { code: "ENOENT" }); }, read)(), undefined);
+  for (const code of ["EACCES", "ENOTDIR", "EIO"]) assert.throws(createNativeSelectorLoader("file", () => { throw Object.assign(Error("PRIVATE_FS"), { code }); }, read), fixed);
+  assert.equal(loads, 0);
+  assert.throws(createNativeSelectorLoader("dir", () => ({ isFile: () => false }), read), fixed); assert.equal(loads, 0);
+  for (const load of [() => { loads++; throw Error("PRIVATE_LOAD_ERROR"); }, () => { loads++; return { flat: false }; }]) {
+    const loader = createNativeSelectorLoader("file", () => ({ isFile: () => true }), load);
+    const before: number = loads; assert.throws(loader, fixed); assert.equal(loads, before + 1);
+  }
+});
+test("actual missing/nonregular/inaccessible module paths distinguish filesystem errors from absence", () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "bortus-native-loader-"));
+  const sealed = path.join(dir, "sealed"); let loads = 0;
+  try {
+    const load = () => { loads++; throw Error("Unexpected native loading"); };
+    assert.equal(createNativeSelectorLoader(path.join(dir, "absent.node"), fs.lstatSync, load)(), undefined);
+    const file = path.join(dir, "plain"); fs.writeFileSync(file, "public");
+    assert.throws(createNativeSelectorLoader(path.join(file, "child.node"), fs.lstatSync, load), fixed);
+    assert.throws(createNativeSelectorLoader(dir, fs.lstatSync, load), fixed);
+    fs.mkdirSync(sealed); fs.writeFileSync(path.join(sealed, "public.node"), "public");
+    if (process.platform !== "win32") {
+      fs.chmodSync(sealed, 0);
+      assert.throws(() => fs.lstatSync(path.join(sealed, "public.node")), (error: unknown) => (error as NodeJS.ErrnoException).code === "EACCES");
+      assert.throws(createNativeSelectorLoader(path.join(sealed, "public.node"), fs.lstatSync, load), fixed);
+    }
+    assert.equal(loads, 0);
+  } finally {
+    if (fs.existsSync(sealed)) fs.chmodSync(sealed, 0o700);
+    assert.equal(path.dirname(dir), os.tmpdir()); assert(path.basename(dir).startsWith("bortus-native-loader-"));
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });
