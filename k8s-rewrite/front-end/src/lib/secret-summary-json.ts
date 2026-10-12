@@ -1,5 +1,5 @@
 import { nativeAsciiValueSpan } from "./secret-ascii-span";
-import { SecretError, validateTarget, type NativeSecretSummary } from "./cluster-secrets";
+import { SecretError, validateTarget, type NativeSecretSummary, type FlatNativeSecretSummary } from "./cluster-secrets";
 
 const invalid = () => new SecretError(503, "Invalid Kubernetes Secret summary response");
 
@@ -150,8 +150,21 @@ class Reader {
 export interface NativeSecretSummaryPage { items: NativeSecretSummary[]; cursor: string }
 
 export function parseSecretSummaryPage(chunks: readonly Buffer[], namespace: string, limit: number): NativeSecretSummaryPage {
+  return parseBoundedSummaryPage(chunks, namespace, limit, 4 * 1024 * 1024);
+}
+
+// Only the distinct flat metadata entry permits the larger page. The generic
+// entry keeps its fixed ceiling and complete metadata output contract.
+export function parsePortableFlatSecretSummaryPage(chunks: readonly Buffer[], namespace: string, limit: number): { items: FlatNativeSecretSummary[]; cursor: string } {
+  const page = parseBoundedSummaryPage(chunks, namespace, limit, 16 * 1024 * 1024);
+  return { items: page.items.map(summary => ({ namespace: summary.metadata.namespace,
+    name: summary.metadata.name, resourceVersion: summary.metadata.resourceVersion,
+    type: summary.type, immutable: summary.immutable, keys: summary.keys })), cursor: page.cursor };
+}
+
+function parseBoundedSummaryPage(chunks: readonly Buffer[], namespace: string, limit: number, maximumBytes: number): NativeSecretSummaryPage {
   try {
-    if (!Number.isSafeInteger(limit) || limit < 1 || limit > 200 || chunks.length > 16384 || chunks.reduce((n, b) => n + b.length, 0) > 4 * 1024 * 1024) throw invalid();
+    if (!Number.isSafeInteger(limit) || limit < 1 || limit > 200 || chunks.length > 16384 || chunks.reduce((n, b) => n + b.length, 0) > maximumBytes) throw invalid();
     const reader = new Reader(chunks), items: NativeSecretSummary[] = []; let seen = 0;
     let version: string | undefined, kind: string | undefined, cursor = "", haveItems = false;
     const item = (): NativeSecretSummary => {

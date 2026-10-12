@@ -1,7 +1,7 @@
 import { lstatSync } from "node:fs";
 import path from "node:path";
 import { SecretError, type FlatNativeSecretSummary } from "./cluster-secrets";
-import { parseSecretSummaryPage } from "./secret-summary-json";
+import { parsePortableFlatSecretSummaryPage } from "./secret-summary-json";
 
 export interface FlatSummaryPage { items: FlatNativeSecretSummary[]; cursor: string }
 export interface FlatSummarySelector {
@@ -42,10 +42,7 @@ export function createFlatSummaryParser(addon?: FlatSummarySelector) {
   return (chunks: Buffer[], namespace: string, limit: number): FlatSummaryPage => {
     try {
       if (addon) return addon.flat(chunks, limit, namespace);
-      const page = parseSecretSummaryPage(chunks, namespace, limit);
-      return { items: page.items.map(summary => ({ namespace: summary.metadata.namespace,
-        name: summary.metadata.name, resourceVersion: summary.metadata.resourceVersion,
-        type: summary.type, immutable: summary.immutable, keys: summary.keys })), cursor: page.cursor };
+      return parsePortableFlatSecretSummaryPage(chunks, namespace, limit);
     } catch {
       // A native fault must never cause a second parse or a weakened fallback.
       throw new SecretError(503, "Invalid Kubernetes Secret summary response");

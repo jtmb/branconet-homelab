@@ -3,7 +3,7 @@
 /* Prototype-only flat projection: complete bounded byte validation, native
  * selected summary objects, no ignored/native value strings or DOM. */
 #define MAX_CHUNKS 16384
-#define MAX_BYTES (4u * 1024u * 1024u)
+#define MAX_BYTES (16u * 1024u * 1024u)
 typedef unsigned int U;
 typedef struct { const unsigned char *p; size_t n; U begin; } Part;
 typedef struct { U begin, end; int ascii, cross; } Span;

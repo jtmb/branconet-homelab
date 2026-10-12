@@ -305,7 +305,7 @@ function buildSecretTransport(initialListPageLimit: 20 | 200 = 20, flatListing =
               try { transferBudget?.consumeBytes(chunk.length); }
               catch (error) { fail(error); response.destroy(); return; }
               if (settled) return;
-              if (bytes > Math.min(4 * 1024 * 1024, byteLimit)) {
+              if (bytes > Math.min(flatSummary ? 16 * 1024 * 1024 : 4 * 1024 * 1024, byteLimit)) {
                 try {
                   const count = retryPageLimit !== undefined && byteLimit >= 4 * 1024 * 1024 ? rejectedSecretListItemCount(chunks, retryPageLimit) : undefined;
                   transferBudget?.check();
