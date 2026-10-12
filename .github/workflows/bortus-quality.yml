@@ -36,10 +36,10 @@ jobs:
           docker run --rm --name "$name" --platform linux/amd64 \
             --cpus 4 --memory 4g --memory-swap 4g --pids-limit 256 \
             --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app" \
-            --workdir /app -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
             -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
             -e CIRCLE_NODE_TOTAL=4 --entrypoint bash "$BORTUS_CI_IMAGE" \
-            -lc 'npm ci && npm run build'
+            -lc 'mkdir -p "$HOME" && npm ci && npm run build'
       - name: Original lint, type and unit checks with isolated runtime network
         shell: bash
         run: |
@@ -49,10 +49,10 @@ jobs:
           docker run --rm --pull never --name "$name" --network none \
             --cpus 4 --memory 4g --memory-swap 4g --pids-limit 256 \
             --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app,readonly" \
-            --workdir /app -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
             -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
             --entrypoint bash "$BORTUS_CI_IMAGE" \
-            -lc 'npm run lint && npm run typecheck -- --incremental false && npm test'
+            -lc 'mkdir -p "$HOME" && npm run lint && npm run typecheck -- --incremental false && npm test'
       - name: Original strict integration and process controls
         shell: bash
         run: |
@@ -62,6 +62,6 @@ jobs:
           docker run --rm --pull never --name "$name" --network none \
             --cpus 2 --memory 1g --memory-swap 1g --pids-limit 256 \
             --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app,readonly" \
-            --workdir /app -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
             -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
-            --entrypoint bash "$BORTUS_CI_IMAGE" -lc 'npm run test:integration'
+            --entrypoint bash "$BORTUS_CI_IMAGE" -lc 'mkdir -p "$HOME" && npm run test:integration'
