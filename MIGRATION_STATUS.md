@@ -10,6 +10,8 @@ The [independent Debian review](evidence/bortus-debian-high-triage-root-20261012
 
 The [cache prerequisite review](evidence/bortus-api-cache-preflight-root-20261012.json) verifies19 public controls and the one successful read-only direct-home SSH preflight. Parent permissions/pins pass;26,876,416,000 disk bytes and10,854,596,608 memory bytes were available. Existing directory permissions are unchanged. Actual privileged cached-image/ELF inspection and live API recovery remain pending.
 
+The [isolated runtime preparation](evidence/bortus-chisel-rootfs-preparation-root-20261012.json) has independently verified Git/archive/filesystem and signed release/index/deb provenance. It is preparation only: application compatibility, missing commands, final ownership, complete scanner visibility and image acceptance remain open. No production source or runtime was replaced.
+
 The eighteen-request evaluation remains completed without adoption. The sixteen-MiB page proposal is awaiting the user's answer; candidate source remains capped at eight requests with four-MiB pages. Production deployment is unchanged. Gluster/Vault/Consul originals and backups remain preserved.
 
 ## 2026-10-12: fixed isolated API recovery proposal reviewed
