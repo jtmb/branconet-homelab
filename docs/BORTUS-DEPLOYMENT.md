@@ -30,7 +30,12 @@ The child candidate `18c86a7` changes only the compiler’s public header-pin
 representation; its full checksums, verifier and resulting ELF remain identical.
 [Root pin/export review](../evidence/bortus-header-pins-root-20261012.json) passes
 nine focused controls and the unchanged272-file raw source exporter/default scan.
-The original performance comparison is now running on that source.
+The [original performance comparison](../evidence/bortus-paired-loader-refusal-root-20261012.json)
+passes both raw builds, then fails the first candidate native metadata assertion.
+Root verifies the compiled default loader was rewritten into an undefined call.
+Unbundled loader tests and an identical ELF do not establish compiled-route
+correctness. A genuine compiled regression/fix is required before performance
+or image acceptance; the frozen driver and expected responses remain unchanged.
 This source review does not establish the final image, hosted CI, performance or
 live release. Production remains on its original writer until those checks and
 latest-data recovery pass.
