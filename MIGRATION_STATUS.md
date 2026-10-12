@@ -2,6 +2,16 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
 
+## 2026-10-12: recovery transport qualified; image advisory triage remains open
+
+The [integrated API recovery transport](evidence/bortus-api-transport-readiness-root-20261012.json) passes14 Python transport and15 pinned Node22 TLS-readiness controls. All176 inputs remain unchanged. This proves the local transport/readiness contract; actual cached binaries, current isolation, accepted-material API recovery and final cleanup still require live evidence. No writer or live resource changed.
+
+The [independent Debian review](evidence/bortus-debian-high-triage-root-20261012.json) verifies26 retained artifacts and15 primary-source snapshots. All43 HIGH findings correspond to8 CVEs across5 source-package families; every installed binary/source version matches the image metadata and all eight Trixie CVE tables remain vulnerable. All162 default findings are retained. A20 permits precisely justified, expiring residual exceptions after complete qualification; no exception is accepted here. Runtime alternatives remain isolated prototypes.
+
+The [cache prerequisite review](evidence/bortus-api-cache-preflight-root-20261012.json) verifies19 public controls and the one successful read-only direct-home SSH preflight. Parent permissions/pins pass;26,876,416,000 disk bytes and10,854,596,608 memory bytes were available. Existing directory permissions are unchanged. Actual privileged cached-image/ELF inspection and live API recovery remain pending.
+
+The eighteen-request evaluation remains completed without adoption. The sixteen-MiB page proposal is awaiting the user's answer; candidate source remains capped at eight requests with four-MiB pages. Production deployment is unchanged. Gluster/Vault/Consul originals and backups remain preserved.
+
 ## 2026-10-12: fixed isolated API recovery proposal reviewed
 
 [Root proposal review](evidence/bortus-api-recovery-specs-root-20261012.json) verifies four raw source/doc files and31 originals. All12 unchanged pure matcher/proposal controls pass independently on Windows in0.203s, with three source files unchanged and the owned child reaped. Fixed nonroot memory mounts, immutable public program, denied network, explicit image IDs and same-UID/opaque-RV checks are prepared. The original Boolean/integer refusal failure is retained; strict recursive typing fixes it. The private launcher outline is not integrated or executable authority. Actual cached ELF/capability/defaulting/ephemeral transport, accepted-material API recovery and resource cleanup proof remain open; no live resource or writer was changed.

@@ -1,0 +1,30 @@
+{
+  "scope": "Independent review of the retained default image scan, installed package metadata and Debian primary-source snapshots",
+  "source_commit": "e50ecd10151565d0fdbe9c4e5e3c2f57e5cf5675",
+  "handoff_sha256": "e1c7095a5829d21b66e7d68b037c5edb5c9c7b89277610cd35bb8c6e213c8b5a",
+  "review_sha256": "55a2267a095c0ee9731a53239e0a8c5b1e9e350fcdc7f4faa1460ea218733587",
+  "default_report_sha256": "55571d6283d0e7416206213809a06c6b866b64b60dc180f9dc897fa07fe9c63c",
+  "corrected_package_metadata_sha256": "d3181b9463a7de33fffca3a493ebac8f3c9957aeec4b22f520c2ad911342073e",
+  "originals_verified": 26,
+  "primary_snapshots_verified": 15,
+  "high_rows_independently_recomputed": 43,
+  "unique_cves": 8,
+  "source_package_families": 5,
+  "all_binary_and_source_versions_match_image_metadata": true,
+  "all_eight_primary_cve_tables_mark_trixie_vulnerable": true,
+  "no_dsa_rows": 42,
+  "postponed_rows": 1,
+  "ignored_or_not_affected_rows": 0,
+  "all_original_162_default_findings_retained": true,
+  "accepted_exceptions": 0,
+  "image_security_accepted": false,
+  "source_or_runtime_changed": false,
+  "deployed": false,
+  "acceptance_contract": "A20 requires compatible updates, complete qualification and precise reachability rationale plus expiry for residual exceptions. Universal zero-HIGH is not its original clause; this review accepts no exception.",
+  "limitations": [
+    "No immediate Debian security advisory does not establish fixed or safe code.",
+    "An unstable/testing fix does not establish a supported Trixie upgrade.",
+    "Missing homed and Archive::Tar paths narrow component presence without overriding affected source-package status.",
+    "The original package-metadata parser error and its corrected result remain retained; no image measurement was replayed."
+  ]
+}

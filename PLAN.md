@@ -8,6 +8,8 @@ Approved by the user on 2026-10-09. Execution target: under six hours from execu
 - As directed by the user on 2026-10-10, execution now uses three agents total: this coordinator plus the BORTUS application and native-transport sub-agents. Application and migration ownership remain separate, with scoped worktrees and reviewed handoffs; the former execution chats are archived. No new execution chats are required.
 - After plan approval, create the migration goal with this full acceptance contract and execution target. Gluster/Vault retirement follows the user's final migration confirmation.
 
+Current execution gates (2026-10-12): the isolated API transport has29 passing local transport/TLS controls; live recovery remains open. The patched image's43 HIGH Debian findings are independently triaged and retained, with no accepted exception. A20 requires complete qualification and precise reachability rationale plus expiry for residual exceptions. Eighteen-request performance evaluation is complete without adoption; the sixteen-MiB page evaluation still awaits the user's answer. Detailed receipts and remaining gates are maintained in [MIGRATION_STATUS.md](MIGRATION_STATUS.md).
+
 ## Verified starting point
 
 Vault was unsealed using the user-supplied key and returned HTTP 200, initialized=true, sealed=false, standby=false. Authenticated inventory found 40 current KV records containing 43 values. Secret values and credentials must not be written into this plan, Git, command arguments, or reports.
