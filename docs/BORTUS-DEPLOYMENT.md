@@ -47,6 +47,15 @@ Multiple aliases can reference a key; one alias cannot reference multiple target
 
 ## Bootstrap/recovery
 
+The fresh guarded release requires a current encrypted configuration capture in
+addition to SQLite, native-volume and etcd checkpoints. The prepared callable
+`scripts/migration/capture-kubernetes-recovery-config.py` captures the fixed standard
+Kubernetes PKI, encryption keys, component kubeconfigs and static-pod manifests
+using the checkpoint Transport. It has no historical-helper fallback. Its nine
+local fixture controls pass against immutable checkpoint v11; root default
+integration and actual live capture remain pending. See [migration operations](MIGRATION-OPERATIONS.md)
+for its exact scope, two-read consistency and independent restore limitations.
+
 The [restored-consumer metadata fence](BORTUS-RESTORED-CONSUMER-FENCE.md)
 checks distinct owned PVC/PV/Longhorn identities, two owned running RW replicas
 and the sole qualified inert holder before and after a recovery read. It does

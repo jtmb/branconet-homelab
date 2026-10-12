@@ -31,6 +31,13 @@ One control plane needs a documented etcd/configuration restore; it is not a hig
 
 Kubernetes uses containerd-k8s.service, /run/containerd-k8s/containerd.sock and /var/lib/containerd-k8s. Existing Docker/containerd configuration, runtime and data remain available during migration. Native Kubernetes Secrets use API encryption at rest; secret values remain outside Git. Encryption keys and Kubernetes recovery configuration must be included in encrypted recovery backups.
 
+The fresh targeted configuration-capture draft uses the qualified checkpoint
+transport interface and age; no new runtime dependency is introduced. Its fixed
+32 standard Kubernetes recovery files complement the historical broader host
+archives. Nine local fixture controls pass against immutable checkpoint v11;
+root default helper integration and current production capture remain pending;
+see [migration operations](MIGRATION-OPERATIONS.md).
+
 Longhorn is the default persistent application storage. Each chart declares its own PVC mounts and values. Existing NAS media at //192.168.0.8/plex_smb_share remains intact; requested integration is a separate live acceptance check. The Samba role installs the client CSI driver only. It does not create a guest share or overwrite exports, credentials, fstab or files. Host-local default storage and a new NFS server are not part of this migration.
 
 Ansible bootstraps hosts independently of BORTUS. Nonsecret configuration is versioned in group_vars/all.yml; sudo is passed through the migration runner's stdin. Active application chart delivery uses the separate private `jtmb/branconet-charts` repository: main, successful chart CI, exact-SHA promotion to `validated`, then the existing Flux `branconet-charts` source and `migration-releases` owner at `./flux/releases`. The old migration publisher and raw-manifest roots are historical; do not reactivate them. Application source quality CI is separate and does not publish a running image. Git stores charts, values and Secret references, not Secret values. See [PLAN.md](../PLAN.md) for architecture graphs and acceptance criteria, [MIGRATION-OPERATIONS.md](MIGRATION-OPERATIONS.md) for operations, and [FLUX-GITOPS.md](FLUX-GITOPS.md) for reconciliation.

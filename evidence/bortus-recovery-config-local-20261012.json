@@ -1,0 +1,76 @@
+{
+  "scope": "Targeted Kubernetes recovery-configuration callable local qualification; no live capture or restore accepted",
+  "observed_utc": "2026-10-12T07:06:13.658421+00:00",
+  "sources": [
+    {
+      "path": "scripts/migration/capture-kubernetes-recovery-config.py",
+      "sha256": "e656c80f9daa55f27a8d377ae5ed4bb513791e12879e04530e41959eec2ab243",
+      "bytes": 11663
+    },
+    {
+      "path": "scripts/migration/tests/test_kubernetes_recovery_config.py",
+      "sha256": "de405aefe3cea2beae2c0064a629d39bf7251ca984b2b7ebac24e7914a1b7749",
+      "bytes": 9830
+    }
+  ],
+  "checkpoint_dependency": {
+    "retained_qualification": "qualification-transport-7a5c19-v11",
+    "helper_sha256": "86b053b1267a9bf48a66f12fb231ee0845cfe23149c7f076b732e363c4ade4d6",
+    "root_default_integration_pending": true
+  },
+  "qualification": {
+    "actual_exit_code": 0,
+    "tests": 9,
+    "skips": 0,
+    "resource_warnings": 0,
+    "test_seconds": 0.98,
+    "wall_seconds": 1.426937093026936,
+    "frozen_source_files": 125,
+    "sources_unchanged": true,
+    "owned_child_pid": 2210912,
+    "owned_child_start_ticks": "28781441",
+    "owned_child_reaped": true,
+    "owned_child_absent": true,
+    "terminal_sha256": "a0622797f12130950ba18c30c2ed1ae9431591670e3930a1e6f19135c998bc29",
+    "source_manifest_sha256": "de9070ca96c3a1357241f19a583384ea947390815ae777fc2e833040812aa724",
+    "stderr_sha256": "24b07bea89921808adcba56f24ea2e39f08dd80621611974f777b9f3a4720e79"
+  },
+  "actual_scope": [
+    "real age encryption/authenticated decryption using a disposable SSH identity",
+    "actual fixed NAS writer child redirected to a disposable owned directory",
+    "complete fixed32-file payload compared after decryption",
+    "ciphertext-only NAS equalbytes and0600 outputs",
+    "drift, missing/noncanonical file data and authentication mismatch refusal",
+    "exclusive duplicate run and lost NAS reply refusal without replay",
+    "completion-directory fsync fault refuses visible success",
+    "expired lease prevents owner creation"
+  ],
+  "mocked": [
+    "privileged configuration reads",
+    "SSH transport",
+    "sudo",
+    "Kubernetes API"
+  ],
+  "retained_earlier_failure": {
+    "attempt": "root-config-capture-controls-20261012-941fc8",
+    "actual_exit_code": 1,
+    "stage": "source SHA fence",
+    "tests_dispatched": false,
+    "reason": "native working helper changed while source freeze was requested; immutable v11 source used for new owned qualification"
+  },
+  "credential_transport_fixture": {
+    "kind": "public marker through actual WSL PTY getpass",
+    "actual_exit_code": 0,
+    "input_echoed": false,
+    "private_credentials_used": false
+  },
+  "acceptance": {
+    "local_callable": true,
+    "production_configuration_capture": false,
+    "etcd_restore": false,
+    "api_secret_decryption_restore": false,
+    "longhorn_restore": false,
+    "full_three_host_rebuild": false,
+    "final_release": false
+  }
+}
