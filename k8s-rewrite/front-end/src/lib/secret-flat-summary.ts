@@ -1,4 +1,3 @@
-import { createRequire } from "node:module";
 import { lstatSync } from "node:fs";
 import path from "node:path";
 import { SecretError, type FlatNativeSecretSummary } from "./cluster-secrets";
@@ -12,7 +11,9 @@ export interface FlatSummarySelector {
 const unavailable = () => new SecretError(503, "Invalid Kubernetes Secret summary response");
 export function createNativeSelectorLoader(file: string,
   probe: (file: string) => { isFile(): boolean } = lstatSync,
-  load: (file: string) => unknown = file => createRequire(path.join(process.cwd(), "package.json"))(file)) {
+  // Obtain Node's built-in loader at runtime; webpack must not replace this
+  // absolute native require with a bundled module/context lookup.
+  load: (file: string) => unknown = file => process.getBuiltinModule("module").createRequire(path.join(process.cwd(), "package.json"))(file)) {
   // Only executable code is shared. No response, credential or authority is cached.
   let loaded = false;
   let selector: FlatSummarySelector | undefined;
