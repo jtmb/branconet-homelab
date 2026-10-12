@@ -1,0 +1,72 @@
+{
+  "scope": "Actual custom kubectl preparation failed before compiler dispatch; retained no-replay run",
+  "observedUTC": "2026-10-12T04:50:47.798189+00:00",
+  "helperSourceSha256": "a6e2b5a254fe984194a4227307eaafc9a97d592c4206392342151cb95fd74535",
+  "actualExit": 1,
+  "terminalAtUTC": "2026-10-12T04:42:57.976400+00:00",
+  "supervisorAbsent": true,
+  "allCommandPidsAbsent": true,
+  "completedActualStages": [
+    "go-version",
+    "go-module-abi",
+    "pin-0",
+    "pin-1",
+    "pin-2",
+    "pin-3",
+    "pin-4",
+    "vendor",
+    "modules"
+  ],
+  "actualGoToolchainAndOfflineModuleAbiPassed": true,
+  "compilerDispatched": false,
+  "helperFailureCode": "record_bound",
+  "nativeJournalOnDiskPhase": "pending",
+  "pendingNotAdoptedOrReplayed": true,
+  "recordBytes": 5960,
+  "sourceOriginalZipBytes": 63352205,
+  "sourceDiffZipBytes": 275523080,
+  "sourceDiffZipMembers": 43022,
+  "sourceDiffZipCRCValid": true,
+  "diffMetadata": {
+    "changedPaths": 37388,
+    "modeOnlyChanges": 5465,
+    "meaningfulOtherChanges": 31923,
+    "prospectiveRecordBytes": 3757314,
+    "recordBound": 1048576,
+    "diffMetadataBytes": 10765818,
+    "modePairs": [
+      [
+        384,
+        384
+      ],
+      [
+        384,
+        436
+      ]
+    ]
+  },
+  "sourceDiffRoots": {
+    "LICENSES": 185,
+    "_output": 31730,
+    "go.mod": 1,
+    "go.sum": 1,
+    "go.work.sum": 1,
+    "staging": 66,
+    "vendor": 5404
+  },
+  "newPathRoots": {
+    "_output": 31730,
+    "vendor": 14
+  },
+  "cause": "Upstream GOPATH module cache inside _output enters full source inventory; detailed changed_paths exceeded unchanged1MiB main record limit and failure save remained bounded. Record-bound output and original sources/logs retained.",
+  "newCompilationAccepted": false,
+  "binaryScanAccepted": false,
+  "imageInjected": false,
+  "clusterChanged": false,
+  "privateObservationSha256": {
+    "observe-3.stdout": "872b5f68eeb98b8f4dbc61fcc299fb607588231f519293993578adb4c184d3f5",
+    "failure-inspection.stdout": "0f66c5b67102745fd75c87c0d0c70044485837e382bec5acda185a87db5ae8a6",
+    "failure-diff-diagnosis.json": "59efc29864a1a1843327a10e89221e456df1689d0c4723b99455a50962edb7ba",
+    "failure-diff-path-diagnosis.json": "b1e25c239ca0a46d1b854888fb09c7b1e07965d9997f82a736335ed9205dae1a"
+  }
+}
