@@ -1,0 +1,190 @@
+{
+  "observedUTC": "2026-10-12T05:28:53.157739+00:00",
+  "actualCompilerAccepted": true,
+  "actualVersionMetadataAccepted": true,
+  "securityAccepted": false,
+  "imageInjected": false,
+  "clusterChanged": false,
+  "nativeRecordSha256": "f090f04d69cd17f43f6bfc12b0d673e0e5b32614c5ed31eb68c51e14be9d9804",
+  "supervisorTerminalSha256": "670c3548f64c1da26d55bfcbf6b1554a586e9baf6c0320254afb7aba83e51071",
+  "helperSha256": "ad5c958e3c90f1f3db4f7b8996dced0e2cb4c5b6f70ff8681982a26d46f40fee",
+  "binarySha256": "a3c4741294f061550b30bd2e3f357197ffbac37eefc5a45d686fe9cd29032b75",
+  "binaryBytes": 61960354,
+  "versionSha256": "444a68afcdb794d2f721267a90eb1623fb18793a888a31c5f0d22f5e1189d19b",
+  "buildInfoSha256": "9381256c6ad1376d65fa5f790da5f4557fccfa95f071cdb72d82b64bd17ce800",
+  "actualStages": [
+    "go-version",
+    "go-module-abi",
+    "pin-0",
+    "pin-1",
+    "pin-2",
+    "pin-3",
+    "pin-4",
+    "vendor",
+    "modules",
+    "build",
+    "kubectl-version",
+    "build-info"
+  ],
+  "all12ActualExitZero": true,
+  "customVersion": "v1.37.1-bortus.security.1-dirty",
+  "goVersion": "go1.26.9",
+  "dependencies": {
+    "golang.org/x/net": "v0.60.0",
+    "golang.org/x/sys": "v0.48.0",
+    "golang.org/x/term": "v0.46.0",
+    "golang.org/x/text": "v0.42.0"
+  },
+  "modulePins": {
+    "golang.org/x/net": "v0.60.0",
+    "golang.org/x/crypto": "v0.57.0",
+    "golang.org/x/sys": "v0.48.0",
+    "golang.org/x/term": "v0.46.0",
+    "golang.org/x/text": "v0.42.0"
+  },
+  "changedPaths": 31916,
+  "modeOnlyChanges": 0,
+  "sourceDiffRoots": {
+    "_output": 31723,
+    "go.mod": 1,
+    "go.sum": 1,
+    "go.work.sum": 1,
+    "staging": 66,
+    "vendor": 124
+  },
+  "newPathRoots": {
+    "_output": 31723,
+    "vendor": 14
+  },
+  "sourceDiffZipSha256": "04ae09651126653f21e92c55d273713bce0da66575d594b4e18c0c52faf971a9",
+  "sourceDiffZipBytes": 247076441,
+  "sourceDiffZipMembers": 32085,
+  "sourceDiffByteChecks": 32084,
+  "sourceOriginalZipSha256": "c7931bb40e7b5add74155629fc3d69da8788246971e345907773a2cbe0431ada",
+  "sourceOriginalZipBytes": 63352197,
+  "sourceOriginalZipMembers": 31261,
+  "bothZipCRCValid": true,
+  "sourceDiffMetadataSha256": "9a2b6bf7aae859a05b90a84a437b996b82382918f595b3697e580d4bad21e3b1",
+  "sourceDiffMetadataBytes": 12741184,
+  "recordBytes": 8902,
+  "completedUTC": "2026-10-12T05:18:10.492470+00:00",
+  "allTransferredOriginalsIndependentlyVerified": 34,
+  "scope": "Actual pinned custom kubectl compilation, complete retained provenance and default binary component scan; no image or live deployment acceptance",
+  "helperNativeCommit": "b914c11209844e77a48c7b1010da6bac19b59f99",
+  "helperRootCommit": "7cb8ddad136b4392d4368d333eb51e56d34296ad",
+  "supervisorActualExit": 0,
+  "supervisorCompletedUTC": "2026-10-12T05:18:10.550143+00:00",
+  "buildProcessClosure": {
+    "observedUTC": "2026-10-12T05:24:38.913498+00:00",
+    "all12CommandPidsAndSupervisorHelperAbsent": true,
+    "pids": [
+      3615692,
+      3615693,
+      3623498,
+      3623507,
+      3623511,
+      3623757,
+      3623977,
+      3624193,
+      3624434,
+      3624715,
+      3639177,
+      3641881,
+      3660186,
+      3660191
+    ]
+  },
+  "componentScanner": {
+    "actualExit": 0,
+    "terminal": true,
+    "ownedScannerReaped": true,
+    "completedUTC": "2026-10-12T05:31:11.064199+00:00",
+    "binarySha256": "a3c4741294f061550b30bd2e3f357197ffbac37eefc5a45d686fe9cd29032b75",
+    "scannerVersion": "0.75.0",
+    "scannerSha256": "93f9da8e4ba5e0c1c76d8234ed2494cf9afb0a96fd21953e424bb795f3299b8e",
+    "reportSha256": "852e9f342de38ce1b187be3deb09451f64ec768b908b11ff11eca5a839087606",
+    "vulnerabilitiesBySeverity": {},
+    "secretFindings": 0,
+    "goBinaryTargets": [
+      "kubectl"
+    ],
+    "rules": "Default all-severity vulnerability/secret rules; no custom config, ignorefile, ignore-unfixed, VEX or suppression",
+    "componentScanOnly": true,
+    "imageInjected": false,
+    "clusterChanged": false
+  },
+  "componentScannerCoverage": {
+    "analyzedGoBinaryTargets": [
+      "kubectl"
+    ],
+    "packages": 90,
+    "stdlib": "v1.26.9",
+    "xnet": "v0.60.0",
+    "dbMetadata": {
+      "Version": 2,
+      "NextUpdate": "2026-10-13T01:14:57.362084798Z",
+      "UpdatedAt": "2026-10-12T01:14:57.362085088Z",
+      "DownloadedAt": "2026-10-12T05:31:09.836997557Z"
+    }
+  },
+  "semanticDiffClassification": {
+    "root-or-staging-module-record": 69,
+    "vendor/golang.org/x/crypto": 17,
+    "vendor/golang.org/x/net": 20,
+    "vendor/golang.org/x/sys": 47,
+    "vendor/golang.org/x/term": 1,
+    "vendor/golang.org/x/text": 8,
+    "vendor/golang.org/x/tools": 30,
+    "vendor/modules.txt": 1
+  },
+  "transitiveModuleUpgrades": {
+    "golang.org/x/sync": "v0.23.0",
+    "golang.org/x/tools": "v0.49.0",
+    "golang.org/x/mod": "v0.41.0"
+  },
+  "originalDefaultImageScanPreserved": {
+    "source": "4ae9f5c28dcf64ebda019bc40f7b27b3524e61db",
+    "findings": 346,
+    "critical": 1,
+    "high": 67,
+    "imageAcceptance": false
+  },
+  "retainedNonqualifyingReviewAttempts": [
+    {
+      "scope": "Review wrapper syntax refusal before WSL review or scanner dispatch",
+      "accepted": false
+    },
+    {
+      "scope": "Existing exclusive review output refused before WSL dispatch; new output owner selected",
+      "accepted": false
+    },
+    {
+      "scope": "First binary copy mode600 omitted executable Go analysis; report has zero language targets and is not accepted",
+      "reportSha256": "7448988ff35acefa1a110caca3c468811cb7edbe9b08f6e828badffa22f2f746",
+      "actualScannerExitNotRetained": true,
+      "accepted": false,
+      "primaryAnalyzerSource": "https://raw.githubusercontent.com/aquasecurity/trivy/v0.75.0/pkg/fanal/analyzer/language/golang/binary/binary.go",
+      "primaryAnalyzerSourceSha256": "1dce9fb77b47ab07c868e7dfcbc549718d69ef315f0921bd082bdea358810f61"
+    }
+  ],
+  "finalBinaryCopyMode": "0755 inside private0700 parent, matching original built binary mode; scanner only parses, never executes it",
+  "independentRepeatedBitIdenticalBuildClaimed": false,
+  "finalImageSecurityAcceptance": false,
+  "latestDataMigrationAcceptance": false,
+  "liveEngineAcceptance": false,
+  "docsInventoryChecked": 28,
+  "componentScanAccepted": true,
+  "privateArtifactSha256": {
+    "root-review.json": "6ce42874f30cb3530f1f7c5c591cbfb533bb8459084313a87a88565d92dc2413",
+    "semantic-diff-review.json": "62104f28e4f20f853a3c68d6905e4f68a64e8e2d2ef93e81a26bb5c61a8bc592",
+    "transfer-manifest.json": "858ea4bb08fb1c9e880560776be59b00e3d13238766153c5986b395acc5cf320",
+    "scan-v3-terminal.json": "a6de5320a6be04e9d25b860a0555afe033a99481169809c819bc51bb93cc234a",
+    "scan-v3-child-terminal.json": "af60a5f13131553f82356c9f2b85e3a0ad4f0b6fabe8867289bce627caef13ca",
+    "scan-v3-intent.json": "a8f4b3b49f4bbd67a81689344804052d5292c4a439f414e44a374e4af91fe7b5",
+    "scan-v3-db-metadata.json": "09a615e77b0c3e67066da0ac4f025477a535102c4f3d5225ba6a443becbd81d6",
+    "supervisor-terminal.json": "670c3548f64c1da26d55bfcbf6b1554a586e9baf6c0320254afb7aba83e51071",
+    "completed-read.stdout": "8b15fce18db51d705579eb7ea1c995eb421573771041a96cb778940aeec87c38",
+    "retain-terminal.json": "5a7a3342ff3bdf87bd00d62e04f01fb3d7d679920b7c4a417288f6b715e27000",
+    "binary-scan-v3-terminal.json": "75a21b0226db00561ca4fb6d3660b050ed95e18bb100e5d85335fd00f74199a5"
+  }
+}
