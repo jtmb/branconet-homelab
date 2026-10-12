@@ -1,16 +1,12 @@
-FROM node:22.23.3-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392 AS base
-# Refresh installed Debian security packages too; installing curl alone leaves
-# vulnerable packages inherited from the pinned base untouched.
+FROM node:22.23.3-trixie-slim@sha256:154ba2f4d6fec323d28e4f4bb86bba4677f1223391a1979cf521304e03a98dfa AS base
+# Record the actual resulting package inventory; an immutable base and upgrade
+# do not imply that every distribution advisory has an available fix.
 RUN apt-get update && apt-get upgrade -y \
- && apt-get install -y --no-install-recommends ca-certificates openssl curl bash \
- && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' perl-base)" ge '5.36.0-7+deb12u4' \
+ && apt-get install -y --no-install-recommends ca-certificates openssl bash \
  && rm -rf /var/lib/apt/lists/*
-ARG KUBECTL_VERSION=v1.37.1
-ARG TARGETARCH=amd64
-RUN curl -fsSLo /usr/local/bin/kubectl "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl" \
- && curl -fsSLo /tmp/kubectl.sha256 "https://dl.k8s.io/release/${KUBECTL_VERSION}/bin/linux/${TARGETARCH}/kubectl.sha256" \
- && echo "$(cat /tmp/kubectl.sha256)  /usr/local/bin/kubectl" | sha256sum --check \
- && chmod 755 /usr/local/bin/kubectl && rm /tmp/kubectl.sha256
+COPY --from=bortus_kubectl /kubectl /usr/local/bin/kubectl
+ARG BORTUS_KUBECTL_SHA256
+RUN echo "${BORTUS_KUBECTL_SHA256}  /usr/local/bin/kubectl" | sha256sum --check && chmod 755 /usr/local/bin/kubectl
 WORKDIR /app
 
 FROM node:22.23.3-bookworm@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d AS builder
