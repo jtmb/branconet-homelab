@@ -1,0 +1,89 @@
+{
+  "scope": "Exact utility cache-name actor refusal and independent read-only journal/identity observation; no alias replay or image/resource execution",
+  "run_id": "ccb202f34fc4",
+  "helper_handoff_sha256": "ecef1b655edda0bb910e87fad2b02fd02b0188b86512fce0d06b4e4f3df8f5a6",
+  "helper_qualified_sources": 10,
+  "helper_qualified_originals": 74,
+  "helper_windows_controls": 21,
+  "helper_posix_controls": 6,
+  "reader_handoff_sha256": "f55ab9bb27a574e7f122b7734bfc2f69a9ea16080fda3d12cbd9d74a7da48a69",
+  "reader_root_verified_artifacts": 10,
+  "reader_root_verified_sources": 7,
+  "reader_root_verified_originals": 24,
+  "actor_terminal": {
+    "actual_exit": 1,
+    "failure": "cache_alias_refused",
+    "child_exit": 1,
+    "child_reaped": true,
+    "out_sha256": "89ca5dfdc19592d04a6aa4b2e3291f1aa16d0e0590f03a5c1aa71245d9fb6dc8",
+    "export_replayed": false
+  },
+  "reader_terminal": {
+    "actual_exit": 0,
+    "failure": null,
+    "child_exit": 0,
+    "child_reaped": true,
+    "out_sha256": "8e3e7017f24fcaebb48005186e71f34d87e429fd82c5972b6520416b442a5101",
+    "cache_mutations": false
+  },
+  "reader_result": {
+    "abi": 1,
+    "run_id": "ccb202f34fc4",
+    "record_sha256": "804c37825282fee912ba46f907c5e381ff29443d86348832eee0231912971ef1",
+    "record_bytes": 401,
+    "recorded_phase": "refused",
+    "recorded_alias_outcome": null,
+    "before": null,
+    "after": null,
+    "alias_intent": null,
+    "failure": "node_utility_cache_refused",
+    "jobs": [
+      {
+        "actual_exit_code": 0,
+        "pid": 2124224,
+        "reaped": true,
+        "role": "containerd_readonly",
+        "start_ticks": "1813469532",
+        "observed": {
+          "pid_absent": true,
+          "same_identity_absent": true,
+          "pid_reused": false
+        }
+      }
+    ],
+    "all_recorded_identities_absent": true,
+    "overall_acceptance": false
+  },
+  "local_fresh_identity_closure": [
+    {
+      "pid": 2427582,
+      "start_ticks": "32615303",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2428935,
+      "start_ticks": "32689096",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2427624,
+      "start_ticks": "32617469",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2429010,
+      "start_ticks": "32692005",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    }
+  ],
+  "alias_job_dispatched": false,
+  "alias_intent_recorded": false,
+  "current_cache_name_resampled": false,
+  "refusal_cause": "Not distinguished: images-list parser/source-name selection; exact bounded discriminator preparation pending",
+  "evaluation_acceptance": false,
+  "overall_acceptance": false
+}
