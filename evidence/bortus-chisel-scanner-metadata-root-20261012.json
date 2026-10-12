@@ -1,0 +1,89 @@
+{
+  "scope": "Faithful signed partial-package metadata and preliminary scanner-report visibility review only; no scanner gate or application image/runtime/security acceptance",
+  "signed_controls_exactly_compared": 17,
+  "scanner_partial_status_sha256": "7c9d8d148fab71effb80a1008caa45930578c40458afcbb2a1626b344a092962",
+  "snapshot_input_rootfs_sha256": "9a8bbbb97d805fe9fd2c6acd21e1c148ef2d7d94d524646b55195cbeb2a23fc6",
+  "original_regular_file_contents_unchanged_verified": 99,
+  "scanner_only_absolute_symlink_mappings": 6,
+  "detected_os": {
+    "Family": "ubuntu",
+    "Name": "24.04"
+  },
+  "detected_package_full_versions": {
+    "base-files": "13ubuntu10.5",
+    "bash": "5.2.21-2ubuntu4",
+    "ca-certificates": "20260601~24.04.1",
+    "coreutils": "9.4-3ubuntu6.3",
+    "dash": "0.5.12-6ubuntu5",
+    "gcc-14-base": "14.2.0-4ubuntu2~24.04.1",
+    "grep": "3.11-4build1",
+    "libc6": "2.39-0ubuntu8.9",
+    "libcap2": "1:2.66-5ubuntu2.4",
+    "libgcc-s1": "14.2.0-4ubuntu2~24.04.1",
+    "libpcre2-8-0": "10.42-4ubuntu2.1",
+    "libselinux1": "3.5-2ubuntu2.1",
+    "libssl3t64": "3.0.13-0ubuntu3.16",
+    "libstdc++6": "14.2.0-4ubuntu2~24.04.1",
+    "libtinfo6": "6.4+20240113-1ubuntu2.2",
+    "openssl": "3.0.13-0ubuntu3.16",
+    "zlib1g": "1:1.3.dfsg-3.1ubuntu2.2"
+  },
+  "metadata_epoch_release_reconstruction_independently_verified": true,
+  "raw_report_sha256": "2e25cd14a88f88d795fbc23c9985c04d58db540cf0d41c52feca27faad082018",
+  "raw_report_findings": [
+    {
+      "VulnerabilityID": "CVE-2026-18374",
+      "PkgName": "libc6",
+      "InstalledVersion": "2.39-0ubuntu8.9",
+      "FixedVersion": null,
+      "Severity": "MEDIUM",
+      "Status": "affected"
+    },
+    {
+      "VulnerabilityID": "CVE-2026-89092",
+      "PkgName": "libc6",
+      "InstalledVersion": "2.39-0ubuntu8.9",
+      "FixedVersion": null,
+      "Severity": "MEDIUM",
+      "Status": "affected"
+    },
+    {
+      "VulnerabilityID": "CVE-2026-86145",
+      "PkgName": "libpcre2-8-0",
+      "InstalledVersion": "10.42-4ubuntu2.1",
+      "FixedVersion": null,
+      "Severity": "MEDIUM",
+      "Status": "affected"
+    },
+    {
+      "VulnerabilityID": "CVE-2026-89161",
+      "PkgName": "libpcre2-8-0",
+      "InstalledVersion": "10.42-4ubuntu2.1",
+      "FixedVersion": null,
+      "Severity": "MEDIUM",
+      "Status": "affected"
+    },
+    {
+      "VulnerabilityID": "CVE-2026-85091",
+      "PkgName": "zlib1g",
+      "InstalledVersion": "1:1.3.dfsg-3.1ubuntu2.2",
+      "FixedVersion": null,
+      "Severity": "MEDIUM",
+      "Status": "affected"
+    }
+  ],
+  "raw_report_secret_findings": 0,
+  "scanner_source_fingerprint": "93f9da8e4ba5e0c1c76d8234ed2494cf9afb0a96fd21953e424bb795f3299b8e",
+  "database_pins_unchanged": true,
+  "observed_supervisor_exit": 1,
+  "actual_scanner_exit_not_durably_recorded": true,
+  "scanner_gate_accepted": false,
+  "retained_failures": [
+    "V1 safe extraction refused signed absolute links before scanner invocation; the isolated scanner-only V2 snapshot explicitly confines six equivalent links.",
+    "V2 postscan checker incorrectly compared upstream Version without Epoch/Release; report review reconstructs full versions and retains original report without scanner replay. Child returncode was not durably recorded before the assertion, so no scanner gate is claimed."
+  ],
+  "node_app_kubectl_copied_or_executed": false,
+  "complete_final_image_scan_pending": true,
+  "runtime_accepted": false,
+  "deployed": false
+}
