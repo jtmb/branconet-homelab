@@ -1,0 +1,501 @@
+{
+  "manifest_sha256": "28078e05a4954826113bc584c4675f2f862b1f9f4066df790afc1b8520b06c3d",
+  "raw_sha256": "bc8d6cac711c092f3a09707c74f179868ebf34f0207d017fa2566e2bc75a3485",
+  "summary_sha256": "ab0aa35cdb2dbebf80a381c3a1437775eefe2aa802acc828962baab5bd0341f1",
+  "originals_verified": 101,
+  "raw_git_blob_mode_archive_bindings_verified": 429,
+  "source_tar_members": [
+    157,
+    272
+  ],
+  "independent_distributions_recomputed": 1386,
+  "verification_composition": "101 artifacts +429 raw Git bindings/archive members verified before root metadata key error; corrected remainder independently recomputes all distributions; no workload replay",
+  "root_metadata_error": "First distribution reader used summary process-count field against raw phase; corrected explicit observed_container_process_count_max to observed_process_count_max mapping",
+  "alternating_observations": 6,
+  "actual_runner_supervisor_exit": 0,
+  "actual_summary_exit": {
+    "actualExitCode": 0,
+    "originalUnchangedSummarizer": true,
+    "toolRecord": "1d0598/b88b0c",
+    "scope": "Original summarizer completed after runner terminal; performance verdict independent."
+  },
+  "fresh_identity_closure": [
+    {
+      "pid": 2437138,
+      "start_ticks": "32832047",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2437692,
+      "start_ticks": "32835488",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2434268,
+      "start_ticks": "32809308",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2439730,
+      "start_ticks": "32842219",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2434235,
+      "start_ticks": "32809189",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2435027,
+      "start_ticks": "32819366",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2438270,
+      "start_ticks": "32838873",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2435682,
+      "start_ticks": "32828629",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2441187,
+      "start_ticks": "32845624",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2434234,
+      "start_ticks": "32809174",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2434227,
+      "start_ticks": null,
+      "pid_absent": true
+    }
+  ],
+  "native_cold_comparison": [
+    {
+      "fixture": "audit-small",
+      "objects": 334,
+      "baseline_http_median_ms": 100.94365000000016,
+      "candidate_http_median_ms": 82.81868399999985,
+      "baseline_calls": 18,
+      "candidate_calls": 18
+    },
+    {
+      "fixture": "metadata-200",
+      "objects": 200,
+      "baseline_http_median_ms": 71.07776600000034,
+      "candidate_http_median_ms": 73.53328599999986,
+      "baseline_calls": 18,
+      "candidate_calls": 18
+    },
+    {
+      "fixture": "metadata-1000",
+      "objects": 1000,
+      "baseline_http_median_ms": 77.63449799999944,
+      "candidate_http_median_ms": 77.71024100000068,
+      "baseline_calls": 18,
+      "candidate_calls": 18
+    },
+    {
+      "fixture": "metadata-10000",
+      "objects": 10000,
+      "baseline_http_median_ms": 289.5847450000001,
+      "candidate_http_median_ms": 181.56212799999776,
+      "baseline_calls": 54,
+      "candidate_calls": 54
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "objects": 25,
+      "baseline_http_median_ms": 194.19278900000063,
+      "candidate_http_median_ms": 162.76240099999995,
+      "baseline_calls": 18,
+      "candidate_calls": 18
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "objects": 3,
+      "baseline_http_median_ms": 136.8923399999985,
+      "candidate_http_median_ms": 122.3294739999983,
+      "baseline_calls": 18,
+      "candidate_calls": 18
+    }
+  ],
+  "equivalent_success_median_regressions": [
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-12",
+      "metric": "http_p50_ms",
+      "baseline": 6.6652359999998225,
+      "candidate": 7.019798000000264
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-concurrent-20",
+      "metric": "http_p95_ms",
+      "baseline": 57.567291000000296,
+      "candidate": 57.84685400000035
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "configuration-metadata",
+      "metric": "http_p50_ms",
+      "baseline": 10.132609999999659,
+      "candidate": 10.320089999999254
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "configuration-metadata",
+      "metric": "http_p95_ms",
+      "baseline": 10.132609999999659,
+      "candidate": 10.320089999999254
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "all-alias-metadata",
+      "metric": "http_p95_ms",
+      "baseline": 9.341147000000092,
+      "candidate": 11.42393500000071
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "readiness-five-sequential",
+      "metric": "http_p95_ms",
+      "baseline": 63.60193600000002,
+      "candidate": 108.93320700000004
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "warm-pods-12",
+      "metric": "http_p50_ms",
+      "baseline": 5.202609999998458,
+      "candidate": 5.48883300000125
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "warm-pods-12",
+      "metric": "http_p95_ms",
+      "baseline": 8.383176999999705,
+      "candidate": 8.584991999998238
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "configuration-metadata",
+      "metric": "http_p50_ms",
+      "baseline": 9.445625000000291,
+      "candidate": 10.52143999999862
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "configuration-metadata",
+      "metric": "http_p95_ms",
+      "baseline": 9.445625000000291,
+      "candidate": 10.52143999999862
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "native-secret-metadata",
+      "metric": "http_p50_ms",
+      "baseline": 71.07776600000034,
+      "candidate": 73.53328599999986
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "native-secret-metadata",
+      "metric": "http_p95_ms",
+      "baseline": 71.07776600000034,
+      "candidate": 73.53328599999986
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "all-alias-metadata",
+      "metric": "http_p95_ms",
+      "baseline": 9.75564900000063,
+      "candidate": 12.025464999998803
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "readiness-five-sequential",
+      "metric": "http_p95_ms",
+      "baseline": 57.2640109999993,
+      "candidate": 110.1374620000006
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "warm-pods-12",
+      "metric": "http_p95_ms",
+      "baseline": 11.314352999997936,
+      "candidate": 11.339884000000893
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "warm-pods-concurrent-20",
+      "metric": "http_p95_ms",
+      "baseline": 86.20661499999915,
+      "candidate": 91.92411899999934
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "configuration-metadata",
+      "metric": "http_p50_ms",
+      "baseline": 21.43896400000085,
+      "candidate": 25.838901999999507
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "configuration-metadata",
+      "metric": "http_p95_ms",
+      "baseline": 21.43896400000085,
+      "candidate": 25.838901999999507
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "native-secret-metadata",
+      "metric": "http_p50_ms",
+      "baseline": 77.63449799999944,
+      "candidate": 77.71024100000068
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "native-secret-metadata",
+      "metric": "http_p95_ms",
+      "baseline": 77.63449799999944,
+      "candidate": 77.71024100000068
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "all-alias-metadata",
+      "metric": "http_p95_ms",
+      "baseline": 9.834317000000738,
+      "candidate": 10.080803000000742
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "readiness-five-sequential",
+      "metric": "http_p95_ms",
+      "baseline": 84.99413099999947,
+      "candidate": 107.66334899999856
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "all-alias-metadata",
+      "metric": "http_p95_ms",
+      "baseline": 11.448796000000584,
+      "candidate": 13.104382999998052
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "warm-pods-12",
+      "metric": "http_p50_ms",
+      "baseline": 4.8322079999998095,
+      "candidate": 5.623821000001044
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "warm-pods-concurrent-20",
+      "metric": "http_p95_ms",
+      "baseline": 56.004555999999866,
+      "candidate": 57.1826570000012
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "configuration-metadata",
+      "metric": "http_p50_ms",
+      "baseline": 9.846328000003268,
+      "candidate": 10.60080200000084
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "configuration-metadata",
+      "metric": "http_p95_ms",
+      "baseline": 9.846328000003268,
+      "candidate": 10.60080200000084
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "warm-pods-12",
+      "metric": "http_p50_ms",
+      "baseline": 4.437158000000636,
+      "candidate": 5.089586000001873
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "warm-pods-12",
+      "metric": "http_p95_ms",
+      "baseline": 7.336148999998841,
+      "candidate": 7.896561000001384
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "warm-pods-concurrent-20",
+      "metric": "http_p50_ms",
+      "baseline": 32.073575999998866,
+      "candidate": 34.49675600000046
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "all-alias-metadata",
+      "metric": "http_p95_ms",
+      "baseline": 9.732907000001433,
+      "candidate": 21.38918299999932
+    }
+  ],
+  "whole_run": {
+    "baseline": {
+      "cgroup_peak_mib": {
+        "median": 358.53515625,
+        "min": 356.82421875,
+        "max": 364.24609375
+      },
+      "cgroup_cpu_seconds": {
+        "median": 39.129774,
+        "min": 38.558276,
+        "max": 39.309309
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    },
+    "candidate": {
+      "cgroup_peak_mib": {
+        "median": 421.10546875,
+        "min": 409.56640625,
+        "max": 424.34375
+      },
+      "cgroup_cpu_seconds": {
+        "median": 33.621359,
+        "min": 33.248982,
+        "max": 33.955813
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    }
+  },
+  "performance_no_regression_accepted": false,
+  "live_adoption": false,
+  "noncomparable_service_after_pods_observations": [
+    {
+      "fixture": "audit-small",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baseline": 5.330794999999853,
+      "candidate": 86.08441400000083
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baseline": 5.330794999999853,
+      "candidate": 86.08441400000083
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baseline": 4.50031399999898,
+      "candidate": 86.2228040000009
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baseline": 4.50031399999898,
+      "candidate": 86.2228040000009
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baseline": 5.552241999997932,
+      "candidate": 88.19786799999929
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baseline": 5.552241999997932,
+      "candidate": 88.19786799999929
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baseline": 7.447899999999208,
+      "candidate": 92.09907000000021
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baseline": 7.447899999999208,
+      "candidate": 92.09907000000021
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baseline": 4.919599000000744,
+      "candidate": 86.94442899999922
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baseline": 4.919599000000744,
+      "candidate": 86.94442899999922
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baseline": 5.189415000000736,
+      "candidate": 85.935682000003
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baseline": 5.189415000000736,
+      "candidate": 85.935682000003
+    }
+  ],
+  "semantic_comparability_caveat": "Frozen services-after-pods flag defaults true, but source cache/envelope contracts differ; explicitly exclude those observations from latency regression/speedup claims. Baseline10k Pod incomplete inventory remains noncomparative.",
+  "scope": "Independent original three alternating pair review of qualified flat16 evaluation source; performance remains failed/open",
+  "candidate_commit": "2216fa62acf642862517dbda884c345197e540ed",
+  "baseline_commit": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "original_driver_exporter_oracles_limits_unchanged": true,
+  "owned_containers_absent": {
+    "actual_exit": 0,
+    "stdout_sha256": "d2bfad3ff0620b43118ec81b3a5e9ecc25a5d773c00c24bbbfe1708f2400a710",
+    "owned_names": []
+  },
+  "runtime_scope": "Same pinned full Node22.23.3 c4d552 image,4CPU/4GiB build and2CPU/1GiB measurement with fixed affinity256pids/noswap/netnone; whole fixture includes producer/driver",
+  "concurrency": 8,
+  "flat_metadata_page_mib": 16,
+  "generic_page_mib": 4,
+  "aggregate_mib": 32,
+  "items_limit": 10000,
+  "adoption_or_deployment": false
+}
