@@ -30,6 +30,7 @@ MAX_TREE = 2 * 1024 * 1024 * 1024
 MAX_FILE = 128 * 1024 * 1024
 MAX_MEMBERS = 100000
 MAX_LOG = 128 * 1024 * 1024
+MAX_DIFF_METADATA = 64 * 1024 * 1024
 spawn = subprocess.Popen
 
 
@@ -126,7 +127,9 @@ def extract(archive, destination, prefix, deadline=None, *, flat=False):
                         if not raw: break
                         count += len(raw); need(count <= member.size, 'archive_size'); out.write(raw)
                     need(count == member.size, 'archive_size'); out.flush(); os.fsync(fd)
-                os.fchmod(fd, 0o700 if member.mode & 0o111 else 0o600)
+                # Public pinned archive modes are source input, not credentials.
+                # The entire run/synthetic root remains inaccessible behind0700.
+                os.fchmod(fd, member.mode)
             finally: os.close(fd)
         for name, target in links.items():
             path = output/name; path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
@@ -280,6 +283,25 @@ def environment(run, go):
         'KUBE_GIT_VERSION_FILE':str(version)}
 
 
+def save_diff_metadata(run, changed, before, after):
+    """Detailed public tree metadata stays outside the bounded ownership receipt."""
+    need(len(changed)<=MAX_MEMBERS and changed==sorted(set(changed)),'diff_paths')
+    data={'abi':1,'changed_paths':changed,'entries':{p:{'before':before.get(p),'after':after.get(p)}for p in changed}}
+    run.owned();name='source-diff-metadata.json'
+    fd=os.open(name,os.O_CREAT|os.O_EXCL|os.O_WRONLY|os.O_NOFOLLOW,0o600,dir_fd=run.directory_fd)
+    try:
+        count=0;h=hashlib.sha256()
+        with os.fdopen(fd,'wb',closefd=False)as out:
+            for text in json.JSONEncoder(sort_keys=True,indent=2).iterencode(data):
+                need(time.monotonic()<run.deadline,'deadline');raw=text.encode();count+=len(raw)
+                need(count<=MAX_DIFF_METADATA,'diff_metadata_bound');out.write(raw);h.update(raw)
+            out.flush();os.fsync(fd)
+        run.owned();os.fsync(run.directory_fd)
+    finally:os.close(fd)
+    return {'changed_paths_count':len(changed),'source_diff_metadata_sha256':h.hexdigest(),
+            'source_diff_metadata_path':str(run.path/name)}
+
+
 def retain_diff(run, source, before):
     after=inventory(source,run.deadline);changed=[p for p in sorted(set(before)|set(after))if before.get(p)!=after.get(p)]
     # Original bytes were pinned in source-original.zip before dependency mutation.
@@ -291,7 +313,8 @@ def retain_diff(run, source, before):
         out.writestr('diff.json',json.dumps({p:{'before':before.get(p),'after':after.get(p)}for p in changed},indent=2))
     os.chmod(run.path/'source-diff.zip',0o600)
     with open(run.path/'source-diff.zip','rb')as fd:os.fsync(fd.fileno())
-    run.record.update(source_diff_sha256=hash_file(run.path/'source-diff.zip',MAX_TREE)[0],changed_paths=changed)
+    metadata=save_diff_metadata(run,changed,before,after)
+    run.record.update(source_diff_sha256=hash_file(run.path/'source-diff.zip',MAX_TREE)[0],**metadata)
     run.save()
 
 

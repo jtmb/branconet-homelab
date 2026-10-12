@@ -57,3 +57,11 @@ x/net0.60.0 and transitive pins. It is a local-only candidate for a custom
 binary, not an upstream1.37.2 release or image security pass. Existing Dockerfile
 and release-builder defaults remain unchanged pending separately qualified
 source-linked injection and actual image/runtime acceptance.
+
+
+Custom kubectl build receipts keep detailed source/cache diffs in a bounded,
+protected fsynced metadata sidecar and full before/after ZIP; only count/SHA/path
+stay in the1MiB ownership record. Public archive modes are preserved inside the
+private run. The first actual attempt failed before compiler dispatch at the
+record bound; earlier fixtures did not qualify its cache scale. Existing image
+contracts and defaults remain unchanged; see [custom build](BORTUS-KUBECTL-SECURITY-BUILD.md).

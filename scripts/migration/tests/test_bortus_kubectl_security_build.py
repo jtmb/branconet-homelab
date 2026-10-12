@@ -69,8 +69,10 @@ else:raise SystemExit(9)
         self.assertEqual('completed',result['phase']);self.assertFalse(result['security_accepted']);self.assertFalse(result['image_injected'])
         self.assertEqual(12,len(result['commands']));self.assertTrue(all(c['state']=='confirmed'for c in result['commands']))
         self.assertEqual(['list','-mod=mod','-m','all'],result['commands'][1]['argv'][1:])
-        run=self.root/'kubectl-security-0123456789ab';self.assertIn('vendor/public.go',result['changed_paths'])
-        self.assertIn('go.sum',result['changed_paths'])
+        run=self.root/'kubectl-security-0123456789ab';metadata=json.loads((run/'source-diff-metadata.json').read_text())
+        self.assertIn('vendor/public.go',metadata['changed_paths']);self.assertIn('go.sum',metadata['changed_paths'])
+        self.assertEqual(len(metadata['changed_paths']),result['changed_paths_count']);self.assertNotIn('changed_paths',result)
+        self.assertEqual(m.hash_file(run/'source-diff-metadata.json',m.MAX_DIFF_METADATA)[0],result['source_diff_metadata_sha256'])
         self.assertTrue((run/'source-diff.zip').is_file());self.assertTrue((run/'source-original.zip').is_file())
         self.assertTrue(all(stat.S_IMODE(p.stat().st_mode)==0o600 for p in run.glob('*.stdout')))
         before=len(list(pathlib.Path('/proc/self/fd').iterdir()))
@@ -219,6 +221,38 @@ else:raise SystemExit(9)
         bad=self.root/'chain';archive(bad,None,{},[(directory,b''),(link,b''),(chain,b'')]);other=self.root/'chain-output';other.mkdir()
         with self.assertRaises(m.Refused):m.extract(bad,other,'kubernetes',flat=True)
         self.assertEqual([],list(other.iterdir()))
+    def test_archive_public_file_modes_are_preserved_inside_private_root(self):
+        path=self.root/'mode-input';archive(path,None,{'data':b'public','public.sh':b'#!/bin/bash\n'})
+        dest=self.root/'mode-output';dest.mkdir(mode=0o700);source=m.extract(path,dest,'kubernetes',flat=True)
+        self.assertEqual(0o700,stat.S_IMODE(source.stat().st_mode))
+        self.assertEqual(0o644,stat.S_IMODE((source/'data').stat().st_mode));self.assertEqual(0o755,stat.S_IMODE((source/'public.sh').stat().st_mode))
+    def test_over_one_mib_paths_sidecar_preserves_bounded_failure_receipt(self):
+        run=self.run_owned(30)
+        try:
+            names=sorted('vendor/public/'+str(n).zfill(6)+'/'+('p'*72)for n in range(18000))
+            self.assertGreater(len(json.dumps(names).encode()),1024*1024)
+            before={};after={p:{'sha256':'1'*64,'bytes':1,'mode':0o644}for p in names}
+            summary=m.save_diff_metadata(run,names,before,after);run.record.update(summary,phase='refused',failure='public_fixture');run.save()
+            disk=json.loads((run.path/'record.json').read_text());self.assertLess((run.path/'record.json').stat().st_size,16384)
+            self.assertEqual(18000,disk['changed_paths_count']);self.assertEqual('refused',disk['phase']);self.assertNotIn('changed_paths',disk)
+            metadata=json.loads((run.path/'source-diff-metadata.json').read_text());self.assertEqual(names,metadata['changed_paths'])
+            self.assertEqual(after,{p:v['after']for p,v in metadata['entries'].items()})
+            self.assertEqual(0o600,stat.S_IMODE((run.path/'source-diff-metadata.json').stat().st_mode))
+            with self.assertRaises(FileExistsError):m.save_diff_metadata(run,names,before,after)
+        finally:run.close()
+    def test_diff_metadata_flush_failure_retains_bounded_inspect_only_record(self):
+        run=self.run_owned();original=os.fsync
+        def fail(fd):
+            if os.readlink('/proc/self/fd/'+str(fd)).endswith('/source-diff-metadata.json'):raise OSError('public injected fault')
+            return original(fd)
+        try:
+            with mock.patch.object(m.os,'fsync',fail):
+                with self.assertRaises(OSError):m.save_diff_metadata(run,['vendor/public'],{},{'vendor/public':{'link':'public'}})
+            run.record.update(phase='refused',failure='public_fixture');run.save()
+            self.assertEqual('refused',json.loads((run.path/'record.json').read_text())['phase'])
+            self.assertNotIn('source_diff_metadata_sha256',json.loads((run.path/'record.json').read_text()))
+            self.assertTrue((run.path/'source-diff-metadata.json').is_file())
+        finally:run.close()
 
 
 if __name__=='__main__':unittest.main()

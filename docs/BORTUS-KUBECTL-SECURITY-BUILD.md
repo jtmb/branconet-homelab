@@ -22,6 +22,11 @@ bytes, including vendor changes. Fresh Go module output and binary build metadat
 must agree with the pins; Go1.26.9 and x/net0.60.0 are required in the binary.
 The retained diff also includes any go.mod/go.sum updates by the explicit module
 inventory query; it is frozen after pin qualification and before compilation.
+Detailed ordered paths and before/after metadata are an exclusive600,
+file-and-directory-fsynced `source-diff-metadata.json`, bounded to64MiB. The
+ownership receipt keeps only its count/SHA/path and full ZIP SHA, retaining its
+1MiB ceiling so failures remain writable even for large diffs. Full ZIP bytes
+and all generated `_output` cache paths stay retained; none are silently excluded.
 Module inventory explicitly uses `go list -mod=mod -m all`; default automatic
 vendoring cannot compute `all` after the vendor directory exists. Before any
 dependency fetch/build, the supplied real Go must pass a tiny no-network local
@@ -49,12 +54,18 @@ before/after copying. Archives are bounded to512MiB compressed,2GiB tree,
 chains and special files refuse before extraction. Safe links resolve only to
 terminal regular files or directories in the same tree; hardlinks require
 regular files, and link chains refuse. No archive-created link is traversed.
+Regular file modes are preserved exactly from the pinned public archive, normally
+644/755, inside the private700 run/root. They are public source inputs; metadata,
+archives and logs remain600. This avoids artificial mode-only vendor changes.
 The exact official source archive is flat and is placed inside one synthetic
 owned `kubernetes` directory without rewriting TarInfo offsets. A wrapped source
 archive refuses; the Go archive still requires its literal `go` root. The three
 official cluster/gce directory symlinks and two file symlinks are retained.
 
 Fresh empty HOME, GOPATH, GOCACHE and temporary directories isolate the build.
+Upstream setup redirects GOPATH into the fresh private source `_output` tree;
+the parent GOPATH setting does not prevent that override. These generated cache
+paths remain part of the complete retained diff/inventory in this contract.
 No ambient environment, Git credentials, SSH agent, operator config or module
 credential settings are forwarded. Public module proxy/checksum services are
 fixed; GOTOOLCHAIN=local prevents implicit toolchain downloads. All commands use
@@ -79,6 +90,14 @@ then renew relevant image/runtime/function/performance gates. Current image
 contracts and their retained default scan counts remain unchanged. See
 [release image builder](BORTUS-RELEASE-IMAGE.md).
 
+The first actual root build preparation attempt stopped before compiler dispatch:
+nine prerequisite commands passed, then37388 changed paths would have produced
+a 3,757,314-byte ownership receipt above 1,048,576. Its complete 275,523,080-byte ZIP
+and10,765,818-byte diff metadata remain retained in the failed owned run. Generated
+module-cache files dominated the changes; earlier controlled fixtures did not
+establish that actual archive/cache scale. This correction qualifies bounded
+metadata plumbing and faithful modes locally, not a successful patched build.
+
 
 Root [integrated helper qualification](../evidence/bortus-kubectl-security-build-root-20261012.json) verifies all9 selected raw native files and84 retained originals, then passes18 controls without skips against the current checkout. Actual unittest time1.805s/root wall1.891s; frozen source hashes stay unchanged. These are controlled Python/bash child/archive/version fixtures, not actual Go compiler acceptance. Default image builder remains unchanged. Root separately dispatched the exact helper on the existing build host with two-core affinity, pinned public archives, fresh HOME/module/cache and one2400s budget. Supervisor/helper PID/start identities were observed live in preparation; no final binary, scan, image injection or cluster deployment is yet accepted.
 
@@ -88,3 +107,6 @@ Root [integrated helper qualification](../evidence/bortus-kubectl-security-build
 The [actual build receipt](../evidence/bortus-kubectl-actual-preparation-failed-20261012.json) records terminal1 before the compiler stage. Actual Go1.26.9 version/offline module ABI, five dependency pins, upstream vendor regeneration and the full module query passed. Full source diff ZIP275523080bytes/43022members is CRC-valid. The detailed37388-path list would make the main record3757314bytes, above its unchanged1MiB bound; a later failure save also remains bounded, leaving the prior5960-byte pending record. All observed commands and supervisor are absent.
 
 31730 newly inventoried paths are upstream module cache under `_output`;5465 changes are mode-only. The original full diff/archives/logs stay intact and this owner is never reopened, adopted or replayed. The next source correction stores detailed diff metadata separately under a finite bound and retains compact count/SHA identity in the main record. Local18-control success did not cover this real source size. No compiler, final binary, image injection or cluster change is accepted.
+
+
+Root [bounded-diff correction qualification](../evidence/bortus-kubectl-diff-metadata-root-20261012.json) verifies8 raw native files/37 original artifacts and passes21 causal controls without skips in2.097s (2.187s wall). The >1MiB path-list fixture retains all18k paths outside the bounded main record and proves small failure receipts remain writable; public archive modes are preserved under the private root. Detailed sidecar is finite64MiB, main record remains1MiB, and no source/vendor/cache path is dropped. Frozen sources remain unchanged. A documentation-only apply check refused because newer root sections follow the native EOF; exact native insertions were merged with those sections preserved, before source changes/tests. This local result does not establish a corrected actual build or image.

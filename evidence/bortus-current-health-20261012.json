@@ -1,0 +1,48 @@
+{
+  "observedUTC": "2026-10-12T04:55:24.718757+00:00",
+  "nodes": [
+    {
+      "name": "masternode",
+      "uid": "f2df6169-4592-4544-b62c-74d89f598648",
+      "ready": true,
+      "version": "v1.37.1"
+    },
+    {
+      "name": "workernode1",
+      "uid": "e8d4555f-7cea-445f-b84f-6416964045a9",
+      "ready": true,
+      "version": "v1.37.1"
+    },
+    {
+      "name": "workernode2",
+      "uid": "eda66e65-f388-4b97-b64f-a709cda81894",
+      "ready": true,
+      "version": "v1.37.1"
+    }
+  ],
+  "helmReleases": {
+    "total": 34,
+    "currentReadyUnsuspended": 33,
+    "othersAllCurrentReadyUnsuspended": true
+  },
+  "bortusHelmRelease": {
+    "uid": "bed3008a-474f-411e-9956-1248e3718220",
+    "generation": 10,
+    "observedGeneration": 10,
+    "suspended": true,
+    "readyCondition": true
+  },
+  "bortusDeployment": {
+    "uid": "4deedc67-038a-4f82-a2d4-a83af316f2f6",
+    "generation": 8,
+    "desiredReplicas": 1,
+    "readyReplicas": 1,
+    "serviceAccount": "bortus",
+    "images": [
+      "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879"
+    ]
+  },
+  "readOnly": true,
+  "valuesReported": false,
+  "privateReceiptSHA256": "e8d7d420119352fa26f373de261846264567a98cf37dfd7535f7cc33b255465c"
+}
