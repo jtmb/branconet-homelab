@@ -1,0 +1,37 @@
+{
+  "packetSHA256": "a27afe86c164cf67c83111300252dad2ca6db36f244b94f6a11db5b6ce15ccf7",
+  "files": 21,
+  "zipMembers": 22,
+  "currentOriginalsVerified": 13,
+  "inspectionSameBirthAbsent": true,
+  "currentHeadersCompared": 6,
+  "headerBytesRead": 15520,
+  "fullELFHashRepeated": false,
+  "NodeELFSHA256": "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48",
+  "NodeVersion": "22.23.3",
+  "bundledOpenSSL": "3.5.8",
+  "matchedHighAdvisory": "CVE-2026-84782",
+  "builtInTLSSelectorExcludesDTLSPrecondition": true,
+  "ordinaryTLSPeerCertificateExposureUnresolved": "CVE-2026-35189",
+  "defaultTrivyReportUnchanged": true,
+  "defaultTrivyMedium": 5,
+  "defaultTrivyHigh": 0,
+  "securityAccepted": false,
+  "exceptionsAccepted": false,
+  "versionChanged": false,
+  "runtimeExecuted": false,
+  "scope": "Primary advisory/version and bounded ELF-linkage review; no complete security acceptance",
+  "rootTool": "f4d7a2",
+  "assessmentSHA256": "0ae4e210ee4f86bd0ce910a14b99e73c62b54f38c088c701ff1ed655709078bf",
+  "remediationSHA256": "eeab3f0038c1224ae166f33d0beada7ea8bf511d81f47867932b5aafe240938e",
+  "primaryURLs": [
+    "https://openssl-library.org/news/secadv/20260929.txt",
+    "https://raw.githubusercontent.com/nodejs/node/v22.23.3/deps/openssl/openssl/VERSION.dat",
+    "https://raw.githubusercontent.com/nodejs/node/v22.23.3/src/crypto/crypto_context.cc",
+    "https://raw.githubusercontent.com/nodejs/node/v26.11.1/deps/openssl/openssl/VERSION.dat"
+  ],
+  "choicesPreparedOnly": [
+    "custom Node22.23.3/full OpenSSL3.5.9 source update",
+    "official Node26.11.1/coherent new qualification"
+  ]
+}
