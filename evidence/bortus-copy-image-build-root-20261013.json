@@ -233,15 +233,544 @@
     "initialHandoffSHA256": "c242113fe9b60c092bf1d556b12dded33a0c0ab7fc37cd636ae5747560c21679",
     "rootReviewTool": "3ee2e2",
     "closeBeforeAcknowledgementGapFound": true,
-    "correctionPending": true,
-    "adopted": false
+    "correctionPending": false,
+    "adopted": false,
+    "sourceCloseCorrectionHandoffSHA256": "a65afa59d3bff07348b5c735ddc19401795191f92201dafa196ff8b463bcba9e",
+    "sourceCorrectionReceived": true,
+    "completeSourceAndRuntimeReviewPending": true
   },
-  "independentFullImageInputPostPending": true,
+  "independentFullImageInputPostPending": false,
   "exportDigestQualified": false,
   "runtimeQualified": false,
   "fullImageSecurityQualified": false,
   "performanceGate": "A07/A21 remain failed/open; two-reader candidate unadopted",
   "productionDeployed": false,
   "originalDataRetired": false,
-  "overallAcceptance": false
+  "overallAcceptance": false,
+  "independentImageInputPost": {
+    "actualRootTool": "2ee876",
+    "actualExit": 0,
+    "sourceHandoffSHA256": "82ab0503461d2eb6c932a2306f623b0471e4a404690e031fac5cb634a876c456",
+    "sourceReviewRootTool": "009844",
+    "selectedDefaultScan": {
+      "rootTool": "98e0ff",
+      "files": 3,
+      "actualExit": 0,
+      "findings": 0
+    },
+    "freshCurrentAndStageRootTool": "1e65bf",
+    "terminalSHA256": "e3c2c7709c20c53f04d34b8cc1541444fcf55034d9900e6d0794e4784915bc25",
+    "resultSHA256": "5030ac0028bb677409c668bc1f8e1ac110d8a254574ee5d5fdbda3207dd27c5e",
+    "actual": {
+      "actual_exit": 0,
+      "failure": null,
+      "finalizer_steps": [],
+      "independent_reader_own_birth_absence_required": true,
+      "overall_acceptance": false,
+      "primary_refusal": null,
+      "result": {
+        "PATH_in_image_env": true,
+        "abi": 1,
+        "actor_births": [
+          {
+            "pgrp": 2986958,
+            "pid": 2986958,
+            "ppid": 2986957,
+            "start_ticks": "41313461",
+            "state": "R",
+            "uid": 1000
+          },
+          {
+            "pgrp": 2987049,
+            "pid": 2987049,
+            "ppid": 2986958,
+            "same_identity_absent": true,
+            "start_ticks": "41315714",
+            "state": "R",
+            "uid": 1000
+          },
+          {
+            "pgrp": 2987066,
+            "pid": 2987066,
+            "ppid": 2986958,
+            "same_identity_absent": true,
+            "start_ticks": "41316114",
+            "state": "R",
+            "uid": 1000
+          },
+          {
+            "pgrp": 2987079,
+            "pid": 2987079,
+            "ppid": 2986958,
+            "same_identity_absent": true,
+            "start_ticks": "41316486",
+            "state": "R",
+            "uid": 1000
+          },
+          {
+            "pgrp": 2987340,
+            "pid": 2987340,
+            "ppid": 2986958,
+            "same_identity_absent": true,
+            "start_ticks": "41325825",
+            "state": "R",
+            "uid": 1000
+          }
+        ],
+        "actor_literal_actual_exit": 0,
+        "actor_literal_phase": "completed",
+        "actor_record_sha256": "93251658c20ef631fd32ce97b0b71e1d472a7c1f9ca72d4ea170d447df51d12b",
+        "actor_terminal_sha256": "16843485de93147bfafec1bb780b5d05d2d460931c45aeb9f6c94f04743abcba",
+        "app_objects": 30902,
+        "current_all_pins_unchanged": true,
+        "current_input_hashes": [
+          {
+            "bytes": 29080,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-post-a45cb40e139f-v1.py",
+            "sha256": "dbdf1e4dd2fa19243c420b92beb773642f8ab02f91e7e7d3c8f473f1dde9f47b"
+          },
+          {
+            "bytes": 39071,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/copy-only-image-dispatcher.py",
+            "sha256": "6668c09e057f9a75c0d8fdb1896a279b5580600c27d6e4f70a2765097684e459"
+          },
+          {
+            "bytes": 4933,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/assembly-bindings.json",
+            "sha256": "57689d4d2721dcdd0a98757e7c3afb4e198b082153a801a6dde4afde86947255"
+          },
+          {
+            "bytes": 39071,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/copy-only-image-dispatcher.py",
+            "sha256": "6668c09e057f9a75c0d8fdb1896a279b5580600c27d6e4f70a2765097684e459"
+          },
+          {
+            "bytes": 20225,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/dependencies/build-bortus-release-image.py",
+            "sha256": "9b7765fd6295eeb64bd0661a070fb9100fbaa58411916257f937e9068aa8f27f"
+          },
+          {
+            "bytes": 7376,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/dependencies/prepare-bortus-release-context.py",
+            "sha256": "3b0c0c7b66468a78b91a001373675031b341ab804fa9b511029231e740f638db"
+          },
+          {
+            "bytes": 11687,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/doc-review.json",
+            "sha256": "16aef1ce5c2b340a2ebc8382944e931fe0e7f4014145f00836b2bd4e3af347ec"
+          },
+          {
+            "bytes": 1893,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/Dockerfile.copy-only-runtime",
+            "sha256": "0da150a0bca1839f9b81ae513a468eaa831512c73c024a099d785963a4a4d6d7"
+          },
+          {
+            "bytes": 2966,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/numeric-stage-map.json",
+            "sha256": "3650078d0f6d31d2fdc6fb05f1b2876f500e7507ee6ed0a97ac7ee8d19f0073a"
+          },
+          {
+            "bytes": 1790,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/REVIEW.md",
+            "sha256": "eec81e9e7b5653565b0b52a4d27206c1285bc3dacffc01664b65771054d9b9a4"
+          },
+          {
+            "bytes": 2952,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/ROOTCOMMANDS.md",
+            "sha256": "d1f635c1985a86b7ceef0c8c31822248330a6481efe5def6d8ed80fd0e839d71"
+          },
+          {
+            "bytes": 3264,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/verifier-static-name-inventory.json",
+            "sha256": "9cc216258dc74d44bbc696179e4e23844c4eedba96aa1db819b5f72366a7f928"
+          },
+          {
+            "bytes": 3706,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/terminal.json",
+            "sha256": "16843485de93147bfafec1bb780b5d05d2d460931c45aeb9f6c94f04743abcba"
+          },
+          {
+            "bytes": 3451,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/record.json",
+            "sha256": "93251658c20ef631fd32ce97b0b71e1d472a7c1f9ca72d4ea170d447df51d12b"
+          },
+          {
+            "bytes": 336,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/started.json",
+            "sha256": "474e04ff351cddcaee6773ba9f8820f1caed135b86c01c5fb18ef3f289d26f18"
+          },
+          {
+            "bytes": 569,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/observed-owners.json",
+            "sha256": "248e2534fca632284e6e357517ac66eec57e3a9a6c159921128f13910f83efca"
+          },
+          {
+            "bytes": 3438,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/verified-inputs.json",
+            "sha256": "1803be71584ddddf364303299bf16b35a24b83231715a89d41d9ce034ea2cb64"
+          },
+          {
+            "bytes": 1846,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/build-intent.json",
+            "sha256": "3d6300bb7823b9a72de7a940e85b8abe936e3e44bd94d14ebeb73b713239e3c5"
+          },
+          {
+            "bytes": 265,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-01-tag-before/pending.json",
+            "sha256": "14f2baf925b93ad49c788a6606ec06b24a07ed58398400bb46f5720f56811d67"
+          },
+          {
+            "bytes": 105,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-01-tag-before/started.json",
+            "sha256": "9b3809620d841c81661a292d1812f613662e7a70706286aa9c8517964357b793"
+          },
+          {
+            "bytes": 264,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-01-tag-before/terminal.json",
+            "sha256": "9e6d001fb64aa245a9b5d891faac6e15b0a9ab5c828617894970da0b209a83f2"
+          },
+          {
+            "bytes": 0,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-01-tag-before/caller.stdout",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 0,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-01-tag-before/caller.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 274,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-02-tag-before-dispatch/pending.json",
+            "sha256": "149149b572c8c82961ccf4d9340af6cb0a04f7d034509453c29122fbcf6196d5"
+          },
+          {
+            "bytes": 105,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-02-tag-before-dispatch/started.json",
+            "sha256": "649f82e485157e9693bd65d3199495a3284f60d8a9b9edf6ba3e667448f3367b"
+          },
+          {
+            "bytes": 264,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-02-tag-before-dispatch/terminal.json",
+            "sha256": "112dc159cdb41b1046a24881410124a2fb67fbc7244d04e38e918e35a89aae38"
+          },
+          {
+            "bytes": 0,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-02-tag-before-dispatch/caller.stdout",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 0,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-02-tag-before-dispatch/caller.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 1708,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-03-build/pending.json",
+            "sha256": "e427d120272c2e3beee0a1f7e46100d74678acad392bd96ff4f9535886b9908a"
+          },
+          {
+            "bytes": 105,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-03-build/started.json",
+            "sha256": "58527e703e5f075243136313952642b654b389818b04a4cb883312493a440a7d"
+          },
+          {
+            "bytes": 267,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-03-build/terminal.json",
+            "sha256": "f311812331f3656c18dcf945c967b0f89429e2048ad8a4e2f3fe8892731fad85"
+          },
+          {
+            "bytes": 0,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-03-build/caller.stdout",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 5557,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-03-build/caller.stderr",
+            "sha256": "94f2c51ba4f44006cef2174d515af397c71931e234111d18d5d276a8b1f23ec0"
+          },
+          {
+            "bytes": 499,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-04-inspect/pending.json",
+            "sha256": "0393fa616648441773815c3c5b91a4941b56f959f66f1bfe9297325c7f6cdf6c"
+          },
+          {
+            "bytes": 105,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-04-inspect/started.json",
+            "sha256": "38100915e28eb8b5e13408a7fd31738066cc1c233e33318c08b4d63fb69169b3"
+          },
+          {
+            "bytes": 267,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-04-inspect/terminal.json",
+            "sha256": "7fb5c77694b46b493e95194e8899d4f4e0b7ab8907ebd99f18d4082a1a2c3314"
+          },
+          {
+            "bytes": 1616,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-04-inspect/caller.stdout",
+            "sha256": "3a14223cdba3e7bc39423911700c43dcf537ca1bac07bf045900ff64bfa26b9f"
+          },
+          {
+            "bytes": 0,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/command-04-inspect/caller.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 7376,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/dependencies/prepare-bortus-release-context.py",
+            "sha256": "3b0c0c7b66468a78b91a001373675031b341ab804fa9b511029231e740f638db"
+          },
+          {
+            "bytes": 20225,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-source-a45cb40e139f-v3/dependencies/build-bortus-release-image.py",
+            "sha256": "9b7765fd6295eeb64bd0661a070fb9100fbaa58411916257f937e9068aa8f27f"
+          },
+          {
+            "bytes": 426118,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-inputs-a45cb40e139f/source.tar.gz",
+            "sha256": "43444c972a636469bc816cc9c36935afff785fb1ba25e4d3e92bc5eb65162258"
+          },
+          {
+            "bytes": 75989,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-assembly-inputs-a45cb40e139f/source-manifest.json",
+            "sha256": "c0befdb818f4c8f67ccb7ef17f868bfe6d8322883493abca21686634554e92cc"
+          },
+          {
+            "bytes": 6524120,
+            "path": "/home/brajam/.local/share/branconet-migration/root-canonical-a720-lock-prune-success-context-7082a658ec5e/copy-context-manifest.json",
+            "sha256": "dcb3e5766265b6b0a4f07dca54db6c56a8584b4500300f62e5c11ca3032ba5a7"
+          },
+          {
+            "bytes": 1415,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-components-a45cb40e139f/component-manifests.json",
+            "sha256": "b273506aa03ae0892b3ba5ff5e9357102cdedb3ea30ce9d2927a9a1791aae399"
+          },
+          {
+            "bytes": 3772,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-components-a45cb40e139f/terminal.json",
+            "sha256": "55e62764e7cb8b48877b9fe99c546412b2e699b93725a0a08fc4d00740a9900d"
+          },
+          {
+            "bytes": 932,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-components-post-a45cb40e139f-v1/terminal.json",
+            "sha256": "5a83be6270c68a6f9424cd6136b5cc66f105cbcc2e298c095efc3ea0cda5c06e"
+          },
+          {
+            "bytes": 3279,
+            "path": "/home/brajam/.local/share/branconet-migration/root-canonical-a720-lock-prune-success-context-7082a658ec5e/terminal.json",
+            "sha256": "6db85345bc4f3551636ae7857a9feab7db980dfb9c706e2fcf372d29e1a28548"
+          },
+          {
+            "bytes": 151171,
+            "path": "/home/brajam/.local/share/branconet-migration/root-command-image-cut-post-v2-b6e2022f3492/rootfs-inventory.json",
+            "sha256": "2f2af559740c6185088927bfd031afd72c2b466fcae93bb04a9f75bdf9022849"
+          },
+          {
+            "bytes": 443702,
+            "path": "/home/brajam/.local/share/branconet-migration/root-command-image-cut-provenance-v4-b6e2022f3492/signed-package-provenance.json",
+            "sha256": "c846f4f84b4a463f75abb5e7fb53c639927c18f2815e7ea00fd3ba0bd9f3dcfc"
+          },
+          {
+            "bytes": 4462,
+            "path": "/home/brajam/.local/share/branconet-migration/root-partial21-status-20261013-v1/status",
+            "sha256": "73dc1f4cd93e6e1aaaeed50dd43dbf5ba0c1aa758e78dfb7790fc2919f754bc6"
+          },
+          {
+            "bytes": 61960354,
+            "path": "/home/brajam/.local/share/branconet-migration/root-custom-kubectl-review-20261012-53c90b1e408a/originals/kubectl",
+            "sha256": "a3c4741294f061550b30bd2e3f357197ffbac37eefc5a45d686fe9cd29032b75"
+          },
+          {
+            "bytes": 61960354,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/kubectl/kubectl",
+            "sha256": "a3c4741294f061550b30bd2e3f357197ffbac37eefc5a45d686fe9cd29032b75"
+          },
+          {
+            "bytes": 4462,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/partial_status/status",
+            "sha256": "73dc1f4cd93e6e1aaaeed50dd43dbf5ba0c1aa758e78dfb7790fc2919f754bc6"
+          },
+          {
+            "bytes": 1893,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/build-context/Dockerfile",
+            "sha256": "0da150a0bca1839f9b81ae513a468eaa831512c73c024a099d785963a4a4d6d7"
+          },
+          {
+            "bytes": 72456104,
+            "path": "/home/brajam/.local/share/branconet-migration/root-copy-image-assembly-a45cb40e139f-v3/empty-docker-config/cli-plugins/docker-buildx",
+            "sha256": "84554b12c90d21f3627d7f6a99aeabf69dc3aab8c2de41ed6f85097ed7cfd2c0"
+          }
+        ],
+        "empty_sticky_tmp_var_tmp_preserved": true,
+        "image_bytes": 275889397,
+        "image_config_id": "sha256:1f842e41cd4ab136c26e41ebb3a659305be435e0657a0d44e82d5b226360bdd0",
+        "labels": {
+          "io.branconet.bortus.build-owner": "67e5f0c8-6319-4f76-a083-c9b399ba3c93",
+          "io.branconet.bortus.context-sha256": "43444c972a636469bc816cc9c36935afff785fb1ba25e4d3e92bc5eb65162258",
+          "io.branconet.bortus.manifest-sha256": "c0befdb818f4c8f67ccb7ef17f868bfe6d8322883493abca21686634554e92cc",
+          "io.branconet.bortus.source-tree": "22dd3622b5b03a78ef080ed3db8054badec63319",
+          "org.opencontainers.image.revision": "a720e4cd021de4d58467047777ec13087bccfbc6"
+        },
+        "layers": [
+          "sha256:0b2af63bcaa16a3e13e7b46851d6db1c2a044bbf7338313f060f2b97feaeba24",
+          "sha256:6e3609b7a5303cce886fed09777d8d0588a162d3d08f61dbe49f3c4ed97d576b",
+          "sha256:36317b2d09848e2f7f1f094e2418306cf8458e0309e1b087e429f6dd9c8a6e8c",
+          "sha256:0ecea9e8f02142d1e56a721b9a651760f2e292663954713076bbb628416b2a4a",
+          "sha256:2f7e85da509dc47abd118a6001843a1c9fbd971650c34361a570a3c6a0c2fd41",
+          "sha256:d3c0e8da40c810d3e3816b60b6c0717b482be8b9df9347f253f99711f3b905e3",
+          "sha256:ed5d1ddfa34617ff7430cd90c1cf000cb34e8fb7f6eb41292e91bbefa67df294",
+          "sha256:ffacfad7936f01441cc5711cf914f5e14949d09e716b036c79f3accbb85bec62",
+          "sha256:90ab4412f9422f04dda5e89b50ae85d1c927c991b6ef08b27add0303331c4147",
+          "sha256:b22862e3ef21c2d12ac7b5a1dabb11104627148d2b1ce2b0b373a00a0e6f5970",
+          "sha256:500c675fc3e3286d99db9b98aac83aa0081bbafda440d386afcc2929a9fee4ad",
+          "sha256:7a9823102f1518db017577abc65886ca0dbf7edb53d7141f7c71d4b641c71e45",
+          "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef"
+        ],
+        "no_image_or_container_mutation": true,
+        "node_objects": 12,
+        "original_c4_PATH_matches_if_present": true,
+        "original_stream_artifact_hashes": [
+          {
+            "bytes": 265,
+            "path": "command-01-tag-before/pending.json",
+            "sha256": "14f2baf925b93ad49c788a6606ec06b24a07ed58398400bb46f5720f56811d67"
+          },
+          {
+            "bytes": 105,
+            "path": "command-01-tag-before/started.json",
+            "sha256": "9b3809620d841c81661a292d1812f613662e7a70706286aa9c8517964357b793"
+          },
+          {
+            "bytes": 264,
+            "path": "command-01-tag-before/terminal.json",
+            "sha256": "9e6d001fb64aa245a9b5d891faac6e15b0a9ab5c828617894970da0b209a83f2"
+          },
+          {
+            "bytes": 0,
+            "path": "command-01-tag-before/caller.stdout",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 0,
+            "path": "command-01-tag-before/caller.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 274,
+            "path": "command-02-tag-before-dispatch/pending.json",
+            "sha256": "149149b572c8c82961ccf4d9340af6cb0a04f7d034509453c29122fbcf6196d5"
+          },
+          {
+            "bytes": 105,
+            "path": "command-02-tag-before-dispatch/started.json",
+            "sha256": "649f82e485157e9693bd65d3199495a3284f60d8a9b9edf6ba3e667448f3367b"
+          },
+          {
+            "bytes": 264,
+            "path": "command-02-tag-before-dispatch/terminal.json",
+            "sha256": "112dc159cdb41b1046a24881410124a2fb67fbc7244d04e38e918e35a89aae38"
+          },
+          {
+            "bytes": 0,
+            "path": "command-02-tag-before-dispatch/caller.stdout",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 0,
+            "path": "command-02-tag-before-dispatch/caller.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 1708,
+            "path": "command-03-build/pending.json",
+            "sha256": "e427d120272c2e3beee0a1f7e46100d74678acad392bd96ff4f9535886b9908a"
+          },
+          {
+            "bytes": 105,
+            "path": "command-03-build/started.json",
+            "sha256": "58527e703e5f075243136313952642b654b389818b04a4cb883312493a440a7d"
+          },
+          {
+            "bytes": 267,
+            "path": "command-03-build/terminal.json",
+            "sha256": "f311812331f3656c18dcf945c967b0f89429e2048ad8a4e2f3fe8892731fad85"
+          },
+          {
+            "bytes": 0,
+            "path": "command-03-build/caller.stdout",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "bytes": 5557,
+            "path": "command-03-build/caller.stderr",
+            "sha256": "94f2c51ba4f44006cef2174d515af397c71931e234111d18d5d276a8b1f23ec0"
+          },
+          {
+            "bytes": 499,
+            "path": "command-04-inspect/pending.json",
+            "sha256": "0393fa616648441773815c3c5b91a4941b56f959f66f1bfe9297325c7f6cdf6c"
+          },
+          {
+            "bytes": 105,
+            "path": "command-04-inspect/started.json",
+            "sha256": "38100915e28eb8b5e13408a7fd31738066cc1c233e33318c08b4d63fb69169b3"
+          },
+          {
+            "bytes": 267,
+            "path": "command-04-inspect/terminal.json",
+            "sha256": "7fb5c77694b46b493e95194e8899d4f4e0b7ab8907ebd99f18d4082a1a2c3314"
+          },
+          {
+            "bytes": 1616,
+            "path": "command-04-inspect/caller.stdout",
+            "sha256": "3a14223cdba3e7bc39423911700c43dcf537ca1bac07bf045900ff64bfa26b9f"
+          },
+          {
+            "bytes": 0,
+            "path": "command-04-inspect/caller.stderr",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ],
+        "overall_acceptance": false,
+        "public_image_env_keys": [
+          "BORTUS_DISABLE_PROVISIONING",
+          "DATABASE_URL",
+          "HOSTNAME",
+          "NEXT_TELEMETRY_DISABLED",
+          "NODE_ENV",
+          "PATH",
+          "PORT"
+        ],
+        "readonly_query_jobs": [
+          {
+            "actual_exit": 0,
+            "birth": {
+              "pgrp": 2988384,
+              "pid": 2988384,
+              "ppid": 2988359,
+              "same_identity_absent": true,
+              "start_ticks": "41383152",
+              "state": "R",
+              "uid": 1000
+            },
+            "path": "command-01-image-current",
+            "reaped": true,
+            "same_identity_absent": true
+          }
+        ],
+        "recorded_actor_births_fresh_absent": 5,
+        "root_actor_outer_actual0_still_external": true,
+        "rootfs_objects": 904,
+        "runtime_PATH_requires_explicit_supply_or_actual_proof": false,
+        "runtime_digest_qualified": false,
+        "runtime_dirs_objects": 5,
+        "scope": "current completed COPY image metadata/input/closure only",
+        "source_objects": 10
+      }
+    },
+    "freshOwnAndQuery": {
+      "rootTool": "e4ef32",
+      "actualExit": 0,
+      "birthsAbsent": 2
+    }
+  }
 }
