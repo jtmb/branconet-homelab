@@ -1,0 +1,275 @@
+{
+  "scope": "Single authorized mechanism-cost sample; original application benchmark untouched",
+  "exactPost": {
+    "postcheckExit": 0,
+    "source": "a720e4cd021de4d58467047777ec13087bccfbc6",
+    "actualSupervisorExit": 0,
+    "costObservations": 24,
+    "publicHTTPRequests": 480,
+    "actualFreshSessionSQLCalls": 480,
+    "durableJournalEqualFinalAll24": true,
+    "observedActiveBounds": [
+      1,
+      2
+    ],
+    "noStatisticalTrim": true,
+    "allOwnedReadersDrained": true,
+    "allOwnedClientSocketsDrained": true,
+    "currentSource362Verified": true,
+    "currentGraphObjects": {
+      "dependencies": 40635,
+      "compiled": 5384
+    },
+    "preparationInputs": 20,
+    "performanceAcceptance": false,
+    "productionAdoption": false,
+    "readOnly": true,
+    "observedUtc": "2026-10-13T14:57:31.057323+00:00"
+  },
+  "freshPost": {
+    "actualControlOuterExit": 0,
+    "source": "a720e4cd021de4d58467047777ec13087bccfbc6",
+    "freshIdentities": [
+      {
+        "pid": 2920040,
+        "startTicks": "40237299",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920041,
+        "startTicks": "40237305",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920042,
+        "startTicks": "40237318",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920130,
+        "startTicks": "40239331",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920144,
+        "startTicks": "40239374",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920157,
+        "startTicks": "40239433",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920170,
+        "startTicks": "40239476",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920183,
+        "startTicks": "40239488",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920283,
+        "startTicks": "40239651",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920354,
+        "startTicks": "40239787",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920367,
+        "startTicks": "40239831",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920379,
+        "startTicks": "40239898",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920402,
+        "startTicks": "40239951",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920421,
+        "startTicks": "40239994",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920465,
+        "startTicks": "40240401",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2920228,
+        "startTicks": "40239524",
+        "sameIdentityAbsent": true
+      }
+    ],
+    "exactContainerQueries": [
+      {
+        "target": "2dc6503e438663121a9606c599b19a4c800655044b272d2f28e34642c67c8780",
+        "actualExit": 1,
+        "exactNotFound": true,
+        "queryIdentity": {
+          "pid": 2920903,
+          "startTicks": "40258814",
+          "pgid": 2920903,
+          "sid": 2920903
+        },
+        "queryReaped": true,
+        "querySameIdentityAbsent": true
+      },
+      {
+        "target": "bortus-direct-account-two-read-cost-20261013-v1-sync-cost",
+        "actualExit": 1,
+        "exactNotFound": true,
+        "queryIdentity": {
+          "pid": 2920922,
+          "startTicks": "40258857",
+          "pgid": 2920922,
+          "sid": 2920922
+        },
+        "queryReaped": true,
+        "querySameIdentityAbsent": true
+      }
+    ],
+    "readOnly": true,
+    "signalsOrDeletes": false,
+    "sourceDependenciesInputsUnchangedReported": true,
+    "noReplay": true
+  },
+  "untrimmedPairedAssessment": {
+    "publicHTTPRequests": 480,
+    "observations": 24,
+    "pairedRows": [
+      {
+        "pair": 1,
+        "oneReaderMs": 60.244226000000026,
+        "twoReadersMs": 22.92209099999991,
+        "twoOverOneRatio": 0.38048610666854443,
+        "includesFirstConnection": true
+      },
+      {
+        "pair": 2,
+        "oneReaderMs": 14.390315999999984,
+        "twoReadersMs": 12.682775999999876,
+        "twoOverOneRatio": 0.8813410351794839,
+        "includesFirstConnection": false
+      },
+      {
+        "pair": 3,
+        "oneReaderMs": 13.892252999999982,
+        "twoReadersMs": 11.334577000000081,
+        "twoOverOneRatio": 0.8158919219222466,
+        "includesFirstConnection": false
+      },
+      {
+        "pair": 4,
+        "oneReaderMs": 11.249658999999838,
+        "twoReadersMs": 11.599093999999923,
+        "twoOverOneRatio": 1.0310618304074897,
+        "includesFirstConnection": false
+      },
+      {
+        "pair": 5,
+        "oneReaderMs": 10.135916999999836,
+        "twoReadersMs": 8.654952000000094,
+        "twoOverOneRatio": 0.8538893915568009,
+        "includesFirstConnection": false
+      },
+      {
+        "pair": 6,
+        "oneReaderMs": 9.252390999999989,
+        "twoReadersMs": 10.576381000000083,
+        "twoOverOneRatio": 1.1430970653964037,
+        "includesFirstConnection": false
+      },
+      {
+        "pair": 7,
+        "oneReaderMs": 9.011121999999887,
+        "twoReadersMs": 9.244412000000011,
+        "twoOverOneRatio": 1.0258891179145202,
+        "includesFirstConnection": false
+      },
+      {
+        "pair": 8,
+        "oneReaderMs": 10.058211000000028,
+        "twoReadersMs": 10.087970000000041,
+        "twoOverOneRatio": 1.0029586772438968,
+        "includesFirstConnection": false
+      },
+      {
+        "pair": 9,
+        "oneReaderMs": 9.16873099999998,
+        "twoReadersMs": 9.393589999999904,
+        "twoOverOneRatio": 1.02452454979865,
+        "includesFirstConnection": false
+      },
+      {
+        "pair": 10,
+        "oneReaderMs": 8.726425999999947,
+        "twoReadersMs": 9.7516099999998,
+        "twoOverOneRatio": 1.1174803980461028,
+        "includesFirstConnection": false
+      },
+      {
+        "pair": 11,
+        "oneReaderMs": 10.581230999999889,
+        "twoReadersMs": 9.833916000000045,
+        "twoOverOneRatio": 0.9293735294126125,
+        "includesFirstConnection": false
+      },
+      {
+        "pair": 12,
+        "oneReaderMs": 7.606989999999996,
+        "twoReadersMs": 7.807786999999962,
+        "twoOverOneRatio": 1.0263963801713905,
+        "includesFirstConnection": false
+      }
+    ],
+    "allRowsRetained": true,
+    "pairsTwoFaster": 5,
+    "pairsTwoSlower": 7,
+    "medianPairedRatio": 1.0137416135212733,
+    "backendMedianMs": [
+      10.097063999999932,
+      9.960943000000043
+    ],
+    "limitations": [
+      "One shared process with instrumented SQL/ELU/timers",
+      "First pair includes distinct first connections and earlier setup effects; no startup attribution",
+      "Independent backend medians and paired ratios are different statistics",
+      "Next/JWT/original A07 benchmark not measured"
+    ],
+    "decision": "Do not adopt; sample does not show consistent improvement",
+    "performanceAcceptance": false
+  },
+  "case18Immutable": {
+    "handoffSHA256": "b7f35ffc7adc276ce29be2a6c24d0b99f36a7520e5b9fa62023ca9bbe958804f",
+    "originalsCurrentAndCRCVerified": 116,
+    "rootTool": "f0217b"
+  },
+  "sourceScanner": {
+    "actualExit": 0,
+    "findings": 0,
+    "files": 6,
+    "freshCurrentVerified": true
+  },
+  "preparationScanner": {
+    "actualExit": 0,
+    "findings": 0,
+    "files": 3,
+    "freshCurrentVerified": true
+  },
+  "pendingUserDecision": "Extend evaluation to original unchanged three-pair benchmark on an isolated candidate; no adoption/deployment",
+  "canonicalActiveReaders": 1,
+  "productionAdoption": false,
+  "performanceAcceptance": false,
+  "originalDataRetired": false
+}
