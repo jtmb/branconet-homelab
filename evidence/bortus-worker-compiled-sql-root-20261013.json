@@ -1,0 +1,81 @@
+{
+  "scope": "Actual compiled middleware/handler-to-worker SQL qualification; performance and adoption remain open",
+  "sourceCommit": "8299384bee524a70cc745ee14b68c04a7302fec0",
+  "fixtureSourceHandoffSHA256": "c634cb281f94cd6a4b072a819c2b111f2dcadf02aaac0e0df3ddbfad5df34a16",
+  "preparationHandoffSHA256": "e60a4a2137c1aefa19e75bededcca7e6947fef6f344b280fdf7591e5955c140c",
+  "intentSHA256": "28d710511e65fc87b96ecd712566400b407e0c05e2094db817244b5c9b6a2877",
+  "terminalSHA256": "dd9015ae727febece814231c36ecae098b2625c8db8da790b6eebfe23aaaf4a1",
+  "independentFreshSHA256": "45be27809f0a117509b9d3b9b5d8f5830bc5ce00fafb1d0f8e111103bda8b502",
+  "actualRootTools": {
+    "defaultSourceScan": "ffc6c5",
+    "scanFresh": "90b56e",
+    "prepare": "18ac52",
+    "dispatch": "81dda1",
+    "closure": "6c3c16",
+    "independentFresh": "a45fe5",
+    "furtherPostClosure": "088de9"
+  },
+  "actorExit": 0,
+  "containerExit": 0,
+  "compiledFixture": {
+    "actualExit": 0,
+    "requests": 10,
+    "freshSQLCalls": 12,
+    "statuses": [
+      200,
+      200,
+      200,
+      200,
+      200,
+      401,
+      200,
+      401,
+      200,
+      503
+    ],
+    "knownProjectionCounts": [
+      5,
+      7
+    ],
+    "actualConnectionOwners": 1,
+    "actualStatementOwners": 2,
+    "compiledMiddlewareAndHandlerAttachmentVerified": true,
+    "actualWorkerSQLJoinVerified": true,
+    "actualWorkerOwners": 1,
+    "actualConnectionOwnersByThread": [
+      {
+        "threadId": 1,
+        "owners": 1
+      }
+    ],
+    "actualPreparedStatementOwnersByThread": [
+      {
+        "threadId": 1,
+        "owners": 2
+      }
+    ],
+    "compatibilityNumericIDsAreNamespacedMappings": true,
+    "parentBodyAssertionsPassed": 10,
+    "revocationRoleDeletionAndSchemaOutageVerified": true,
+    "noRowArgumentOrBodyOutput": true,
+    "performanceAcceptance": false
+  },
+  "completeReportsStableThroughActualServerExit": {
+    "completeNumericReportsStableThroughActualServerExit": true,
+    "reports": 2
+  },
+  "rootNumericJoinRecomputed": true,
+  "dispatchAndSettlementFrames": 13,
+  "freshRuntimeBirthsAbsent": 19,
+  "exactContainerIDAndNameAbsent": true,
+  "furtherPostAndQueryBirthsAbsent": 3,
+  "currentSourceFiles": 370,
+  "currentInputs": 24,
+  "currentRetainedDependencyObjects": 40635,
+  "currentRetainedCompiledObjects": 5382,
+  "defaultSourceScanFiles": 25,
+  "defaultSourceScanFindings": 0,
+  "allOriginalsRetained": true,
+  "productionAdoption": false,
+  "performanceAcceptance": false
+}
