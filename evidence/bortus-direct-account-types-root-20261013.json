@@ -47,7 +47,11 @@
     "httpComplete": false,
     "sourceDependenciesInputsUnchangedReported": true,
     "containerClosureReported": true,
-    "independentFailureClosurePending": true
+    "independentFailureClosurePending": false,
+    "independentFreshIdentitiesAbsent": 137,
+    "independentExactContainerAbsenceQueries": 8,
+    "independentSourceCompiledObjectsBound": 5384,
+    "originalRaisingCallsiteCaptured": false
   },
   "rootTools": [
     "10e1a5",
@@ -60,9 +64,39 @@
     "a31715",
     "fd4804",
     "c70193",
-    "ccad04"
+    "ccad04",
+    "8a27bf",
+    "2fbe51",
+    "3a9f72",
+    "d6f891",
+    "68f339",
+    "e6530c",
+    "e8f230",
+    "a079e3",
+    "3f78e7"
   ],
   "productionAdoption": false,
   "performanceAcceptance": false,
-  "overallAcceptance": false
+  "overallAcceptance": false,
+  "supervisorCorrection": {
+    "changedFunctions": [
+      "stat",
+      "close"
+    ],
+    "newFunction": "signal_owned_group",
+    "allOtherFunctionsAndMainUnchanged": true,
+    "controls": 8,
+    "allPassed": true,
+    "actualCoreExit": 0,
+    "actualRootOuterExit": 0,
+    "innerSeconds": 0.2690233960165642,
+    "freshIdentitiesAbsent": 6,
+    "sourceInputsUnchanged": 13,
+    "coreInputsUnchanged": 6,
+    "unusedOuterV1V2V3PreservedUnrun": true,
+    "originalFailureUnchanged": true,
+    "originalCallsiteProved": false,
+    "noWorkloadOrBenchmarkReplay": true,
+    "remainingHttpNotDispatched": true
+  }
 }
