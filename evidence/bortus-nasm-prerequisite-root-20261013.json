@@ -1,0 +1,183 @@
+{
+  "acquisition": {
+    "NASM_downloaded": false,
+    "Node_build": false,
+    "acquired_public_artifacts": [
+      {
+        "bytes": 11861,
+        "canonical_url": "https://ftp-master.debian.org/keys/archive-key-12.asc",
+        "final_url_public": "https://ftp-master.debian.org/keys/archive-key-12.asc",
+        "role": "archive12",
+        "sha256": "c2a9a16fde95e037bafd0fa6b7e31f41b4ff1e85851de5558f19a2a2f0e955e2"
+      },
+      {
+        "bytes": 11861,
+        "canonical_url": "https://ftp-master.debian.org/keys/archive-key-13.asc",
+        "final_url_public": "https://ftp-master.debian.org/keys/archive-key-13.asc",
+        "role": "archive13",
+        "sha256": "6f1d277429dd7ffedcc6f8688a7ad9a458859b1139ffa026d1eeaadcbffb0da7"
+      },
+      {
+        "bytes": 8790396,
+        "canonical_url": "https://deb.debian.org/debian/dists/bookworm/main/binary-amd64/Packages.xz",
+        "final_url_public": "https://deb.debian.org/debian/dists/bookworm/main/binary-amd64/Packages.xz",
+        "role": "packages",
+        "sha256": "9e0b5aabb2465b3d2e7a7fe27f9913846277833f7a2826e7767acccff5b588c5"
+      },
+      {
+        "bytes": 151075,
+        "canonical_url": "https://deb.debian.org/debian/dists/bookworm/InRelease",
+        "final_url_public": "https://deb.debian.org/debian/dists/bookworm/InRelease",
+        "role": "release",
+        "sha256": "77737fa4b34f2693e982cc9ee35736816c35a7778fc2d326cc1bbf5b301fe1aa"
+      },
+      {
+        "bytes": 461,
+        "canonical_url": "https://ftp-master.debian.org/keys/release-12.asc",
+        "final_url_public": "https://ftp-master.debian.org/keys/release-12.asc",
+        "role": "release12",
+        "sha256": "521e9f6a9f9b92ee8d5ce74345e8cfd04028dae9db6f571259d584b293549824"
+      },
+      {
+        "bytes": 1384,
+        "canonical_url": "https://ftp-master.debian.org/keys/release-13.asc",
+        "final_url_public": "https://ftp-master.debian.org/keys/release-13.asc",
+        "role": "release13",
+        "sha256": "4d097bb93f83d731f475c5b92a0c2fcf108cfce1d4932792fca72d00b48d198b"
+      }
+    ],
+    "actor_tool": "cba8ec",
+    "actual_exit": 1,
+    "commands": [
+      {
+        "actual_exit": 0,
+        "path": "command-01-archive12",
+        "reaped": true,
+        "terminal_sha256": "b9db4cb72f5cb9b02ecb9a490f907e619ca9617e380c6ec60fe437d41115a41d"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-02-release12",
+        "reaped": true,
+        "terminal_sha256": "493d5cad1cf90e9ae67d9786fcc0f62d2116ed33657d0070eb9b6f5d4a631e3f"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-03-archive13",
+        "reaped": true,
+        "terminal_sha256": "8fb0e0dd4b5624f71bfd1c51b26a821fa729637b9ce3a2c5eb113e13fda85ef7"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-04-release13",
+        "reaped": true,
+        "terminal_sha256": "d6a432f210d9ffc4b7d05d51d8ec3e1abb769b4975c2f428d52642a06b5ed532"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-05-release",
+        "reaped": true,
+        "terminal_sha256": "b8b0a47e43c49479e646611f91f471fc5440e50009ea5b8e5e56b9126911b440"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-06-debian-release-signature",
+        "reaped": true,
+        "terminal_sha256": "65fb8a789b73ad0be688c9ce4176bc9e7781a775e0c6916a480cf1182642914f"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-07-packages",
+        "reaped": true,
+        "terminal_sha256": "05849410d54c76dae793fb6fd0e983483c4811fd0a878e5845715417f654cc20"
+      }
+    ],
+    "failure": {
+      "stage": 4,
+      "type": 4
+    },
+    "finalizers": [],
+    "overall_acceptance": false,
+    "source_generation": false,
+    "terminal_sha256": "ff659afeda7642e5f4ddc19c3bc5dc3701e0bc67a24d00d3db170f7017521a95",
+    "tool_executed": false,
+    "tool_tree_created": false
+  },
+  "controls": {
+    "actor_tool": "559ff1",
+    "actual_exit": 0,
+    "current_source_files": 3,
+    "independent_post_tool": "562b7f",
+    "original_distinct_births_absent": 2,
+    "sparse_case_modeled_TarInfo_boundary": true,
+    "stderr_sha256": "17f5ddbb631b663b5ac470211bdf9a0de2783ed24eeccdb45be6e92aede4af29",
+    "structural_fixtures_not_actual_GPG_or_signed_index": true,
+    "suite_exit": 0,
+    "terminal_sha256": "cfbfdd816e5efe9dacf534d507d7a43f1a6018d44098dcb80994155292c2912b",
+    "tests": 8
+  },
+  "current_index_witness": {
+    "actual_exit": 0,
+    "all6_current_artifact_hashes_verified": true,
+    "all7_original_commands_actual_zero_and_birth_absent": true,
+    "compressed_and_complete_plain_index_hashes_verified": true,
+    "crypto_replayed": false,
+    "current_NASM_architecture": "amd64",
+    "current_NASM_package_bytes": 405156,
+    "current_NASM_package_sha256": "0180693ad5d2da8b36e7d73b9b596dc3e9f900238e3de699976c0576875b878f",
+    "current_NASM_version": "2.16.01-1",
+    "current_ValueError_frames": [
+      {
+        "function": "need",
+        "line": 5
+      },
+      {
+        "function": "fields",
+        "line": 292
+      },
+      {
+        "function": "selected_package",
+        "line": 303
+      }
+    ],
+    "current_selected_package_parser_returned": false,
+    "download_replayed": false,
+    "keyring_matches_current_four_pinned_public_keys": true,
+    "maximum_line_bytes": 75649,
+    "maximum_stanza_bytes": 76338,
+    "network": false,
+    "original_births_absent": 8,
+    "original_signature_command_actual_exit": 0,
+    "prior_generic_secondary_reader_failed_before_publication": true,
+    "scope": "new current witness, not retrospective original exception attribution",
+    "source_files_current": 1,
+    "tool": "b83201",
+    "tool_executed": false
+  },
+  "original_data_retired": false,
+  "production_adoption": false,
+  "production_deployment": false,
+  "remaining": [
+    "scoped package-index parser correction and causal controls",
+    "actual NASM package signed provenance/projection",
+    "fixed builder tool compatibility",
+    "exact Node22 regeneration/build/security/performance",
+    "private recovery and guarded live acceptance"
+  ],
+  "scope": "root public NASM parser controls, literal signed acquisition refusal and current read-only existing-index discriminator",
+  "source_scan": {
+    "V2_all8_actual_exit": 1,
+    "V2_all8_findings": 2,
+    "V2_findings_only_historical_removed_public_fingerprints": true,
+    "all8_scan_pass_claimed": false,
+    "current3_findings": 0,
+    "current3_fresh_tool": "de0f83",
+    "current3_runtime_actual_exit": 0,
+    "original7_actual_exit": 1,
+    "original7_findings": 2,
+    "standalone_actual5_exit": 0,
+    "standalone_actual5_findings": 0,
+    "standalone_actual5_fresh_tool": "4ff310",
+    "suppression_or_filter": false
+  }
+}
