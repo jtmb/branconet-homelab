@@ -10,6 +10,96 @@
     "suite_exit": 0,
     "terminal_sha256": "9169bb2f7c4bf7c403155854b7d7ad6b91749986ae33c861b7297e62f949a0b7"
   },
+  "current_header_diagnosis": {
+    "actor_same_birth_absent": true,
+    "actual_exit": 0,
+    "archives_original_full_hashes_and_fingerprints_unchanged": true,
+    "current_source_files": 3,
+    "independent_post_tool": "fbda31",
+    "original_failure_retrospectively_attributed": false,
+    "result": {
+      "GPG": false,
+      "abi": 1,
+      "current_observations": [
+        {
+          "actual_parser_returned": true,
+          "complete_counts": {
+            "expanded_regular_bytes": 553575480,
+            "objects": 32585
+          },
+          "first_false_function": null,
+          "first_false_source_line": null,
+          "headers_seen": 32585,
+          "last_header": {
+            "PAX_bytes": 0,
+            "PAX_keys": [],
+            "bytes": 36883,
+            "gid": 1001,
+            "mode": 420,
+            "name": "node-v22.23.3/vcbuild.bat",
+            "sparse": false,
+            "type_hex": "30",
+            "uid": 1001
+          },
+          "partial_counts": null,
+          "role": "node",
+          "traceback": []
+        },
+        {
+          "actual_parser_returned": false,
+          "exception_type_enum": 1,
+          "first_false_function": "archive_rows",
+          "first_false_source_line": 258,
+          "headers_seen": 1,
+          "last_header": {
+            "PAX_bytes": 47,
+            "PAX_keys": [
+              "comment"
+            ],
+            "bytes": 0,
+            "gid": 0,
+            "mode": 509,
+            "name": "openssl-3.5.9",
+            "sparse": false,
+            "type_hex": "35",
+            "uid": 0
+          },
+          "partial_counts": {
+            "directories": 0,
+            "hardlinks": 0,
+            "objects": 0,
+            "regular": 0,
+            "symlinks": 0
+          },
+          "role": "openssl",
+          "traceback": [
+            {
+              "function": "archive_rows",
+              "line": 258
+            },
+            {
+              "function": "need",
+              "line": 5
+            }
+          ]
+        }
+      ],
+      "extraction": false,
+      "network": false,
+      "original_actor_literal_exit": 1,
+      "original_cause_inferred": false,
+      "original_source_main_invoked": false,
+      "overall_acceptance": false,
+      "scope": "current public archive parser source attribution only"
+    },
+    "result_sha256": "c5f947d974d12ad581cd53d909bbda3d059ae17c080cc3c73d21a82246b1eebf",
+    "scoped_correction_execution": false,
+    "source_findings": 0,
+    "source_handoff_sha256": "8dbcad798597e5823a219b43b11fef462a01cd746f803be90b4439685fff3c44",
+    "source_scan_fresh_tool": "95b62d",
+    "source_scan_tool": "99bf44",
+    "terminal_sha256": "a2c1ceee5520891ffdcb489b80d7fab8cdcdc273b20a1164771143c58504867e"
+  },
   "default_source_scans": {
     "controls": "33062a",
     "controls_fresh": "ba7942",
