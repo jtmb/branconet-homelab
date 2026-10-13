@@ -208,3 +208,10 @@ The unchanged original three-alternating-pair comparison remains pending root so
 ## Current JWT-key and alias-page candidate
 
 Alias metadata paging clones at most100 returned rows after a binary cursor search, with fresh request namespace/history filtering. The catalog still validates the complete bounded input, coalesces10-second metadata loads, refuses invalid/conflicting/over-limit or expired failed sources, and invalidates immediately after alias mutations. Policy, grant, value and account authorization are never cached by page projection; all list/resolve consumers retain their existing semantics.
+
+
+## Direct fresh-account reader evaluation
+
+A separate reversible candidate replaces only the session/account authority reads with selected Node22.23.3 `node:sqlite` reads. Each middleware/handler boundary executes fresh parameterized SQL for its original three/five fields; no account, role, session, JWT or result cache is introduced. Other permissions, login/password operations, AccountStore/AccountLock mutations and KV transactional checks remain on Prisma. Alias pages remain100, and all native request/page/aggregate/item/deadline/privacy bounds remain unchanged. This candidate has no functional/compiled/performance qualification or live adoption yet; A07/A21 stay failed/open.
+
+The proposed auxiliary owner admits one active read and64 queued per actual isolate/module owner, with a5000ms monotonic envelope. SQLite timeout0 avoids deliberate synchronous lock waiting; numeric BUSY alone retries the read after bounded asynchronous25ms delays. Queued expiry and late/configuration/replaced-file results fail closed. Active ownership is retained until actual checks/settlement/close. Existing null versus fixed availability status mappings remain unchanged. The selected experimental API runs synchronously on the HTTP isolate: timers cannot interrupt SQLite/kernel I/O, so this is not a hard five-second response or atomic path-binding guarantee. Warnings remain visible. Protected-path identity/schema/Prisma URL parity and real compiled ownership need qualification before any original performance comparison.

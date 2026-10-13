@@ -1,5 +1,5 @@
 import { SignJWT, jwtVerify } from "jose";
-import prisma from "./db";
+import { directAccountReader } from "./direct-account-reader";
 import { HmacKeySlot } from "./jwt-key";
 
 export const AUTH_COOKIE = "botrus_auth_token";
@@ -35,7 +35,7 @@ export async function verifyJWT(
 export type Session = { id: string; username: string; sessionVersion: number };
 
 async function currentSession(payload: NonNullable<Awaited<ReturnType<typeof verifyJWT>>>): Promise<Session | null> {
-  const user = await prisma.user.findUnique({ where: { id: payload.sub }, select: { id: true, username: true, sessionVersion: true } });
+  const user = await directAccountReader.readSession(payload.sub);
   if (!user || user.sessionVersion !== payload.sessionVersion) return null;
   return { id: user.id, username: user.username, sessionVersion: user.sessionVersion };
 }
@@ -57,7 +57,7 @@ export async function getSession(): Promise<Session | null> {
 // A fresh handler account snapshot, separate from middleware and transactional checks.
 export type SessionAccount = Session & { role: string; engineAdmin: boolean };
 async function currentAccount(payload: NonNullable<Awaited<ReturnType<typeof verifyJWT>>>): Promise<SessionAccount | null> {
-  const user = await prisma.user.findUnique({ where: { id: payload.sub }, select: { id: true, username: true, sessionVersion: true, role: true, engineAdmin: true } });
+  const user = await directAccountReader.readAccount(payload.sub);
   if (!user || user.sessionVersion !== payload.sessionVersion) return null;
   return user;
 }

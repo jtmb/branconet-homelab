@@ -17,7 +17,7 @@ test("fresh native handler account snapshots retain independent middleware and r
   const keys = ["DATABASE_URL", "BOTRUS_JWT_SECRET"] as const;
   const previous = Object.fromEntries(keys.map(key => [key, process.env[key]]));
   process.env.DATABASE_URL = url; process.env.BOTRUS_JWT_SECRET = "public-native-auth-fixture-only";
-  const clients: PrismaClient[] = []; let restoreFind = () => {};
+  const clients: PrismaClient[] = []; let restoreReads = () => {};
   try {
     const env = { ...process.env }; delete env.RUST_LOG;
     execFileSync(process.execPath, [path.resolve("node_modules/prisma/build/index.js"), "migrate", "deploy"], { env, stdio: "pipe" });
@@ -38,12 +38,15 @@ test("fresh native handler account snapshots retain independent middleware and r
     const { GET: aliases } = await import("../src/app/api/secret-references/route");
     const { GET: session } = await import("../src/app/api/auth/session/route");
     let queries = 0, outage = false, nativeCalls = 0;
-    const find = singleton.user.findUnique.bind(singleton.user);
-    restoreFind = () => { singleton.user.findUnique = find; };
-    singleton.user.findUnique = ((...args: Parameters<typeof find>) => {
-      queries++; if (outage) throw new Error("Private synthetic database detail");
-      return find(...args);
-    }) as unknown as typeof singleton.user.findUnique;
+    const { directAccountReader } = await import("../src/lib/direct-account-reader");
+    const sessionRead = directAccountReader.readSession.bind(directAccountReader), accountRead = directAccountReader.readAccount.bind(directAccountReader);
+    restoreReads = () => { directAccountReader.readSession = sessionRead; directAccountReader.readAccount = accountRead; };
+    directAccountReader.readSession = (...args: Parameters<typeof sessionRead>) => {
+      queries++; if (outage) throw new Error("Private synthetic database detail"); return sessionRead(...args);
+    };
+    directAccountReader.readAccount = (...args: Parameters<typeof accountRead>) => {
+      queries++; if (outage) throw new Error("Private synthetic database detail"); return accountRead(...args);
+    };
     const context = <T>(cookie: string | null, operation: () => T) => {
       const request = new NextRequest("http://localhost/api/secrets", { headers: cookie ? { cookie } : {} });
       const store = createRequestStoreForAPI(request, { pathname: "/api/secrets" }, { tags: [], expirationsByCacheKind: new Map() }, undefined, undefined);
@@ -204,7 +207,8 @@ test("fresh native handler account snapshots retain independent middleware and r
       } finally { process.env.BOTRUS_JWT_SECRET = original; }
     });
   } finally {
-    restoreFind();
+    restoreReads();
+    const { directAccountReader } = await import("../src/lib/direct-account-reader"); await directAccountReader.close();
     await Promise.all(clients.map(client => client.$disconnect()));
     for (const key of keys) { if (previous[key] === undefined) delete process.env[key]; else process.env[key] = previous[key]; }
     if (path.dirname(path.resolve(dir)) !== path.resolve(tmpdir()) || !path.basename(dir).startsWith("bortus-native-auth-")) throw Error("Unsafe native auth fixture cleanup");
