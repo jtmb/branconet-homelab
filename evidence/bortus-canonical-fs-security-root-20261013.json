@@ -1,0 +1,186 @@
+{
+  "scope": "Canonical a720 full filesystem equality and unsuppressed default image scan; runtime/security acceptance remains open",
+  "sourceCommit": "a720e4cd021de4d58467047777ec13087bccfbc6",
+  "actualRootTools": {
+    "filesystemScanStage": "afadea",
+    "filesystemDispatch": "195dea",
+    "filesystemClosure": "be066a",
+    "pure12": "d8edd5",
+    "filesystemIndependent": "8e68d0",
+    "scannerSourceScanStage": "ac5b03",
+    "scannerDispatch": "bab8f3",
+    "scannerClosure": "00a417",
+    "scannerIndependent": "3ed555"
+  },
+  "filesystem": {
+    "actualExit": 0,
+    "filesystemActorExit": 0,
+    "actorManifestPinGap": "V1 did not independently pin three manifests; this separate gate pins approved exact SHA before and after current source-tree and stored-inventory comparison",
+    "sourceSHA256": "1b0917936bb9663e164012ea464957e01a7d61edaa7beb05cb95e8151e6b099f",
+    "terminalSHA256": "1b71c6620f1ba6770be1ccd6579011f5a285e4570a381b37a5b9c511aa2247ef",
+    "resultSHA256": "bad2b8306b045b8eeb72c2f5e5fd66074b76a5d04d8c9a563783c92c5f5d16ac",
+    "manifestPins": [
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/root-canonical-a720-lock-prune-success-context-7082a658ec5e/copy-context-manifest.json",
+        "sha256": "dcb3e5766265b6b0a4f07dca54db6c56a8584b4500300f62e5c11ca3032ba5a7"
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/root-command-image-cut-post-v2-b6e2022f3492/rootfs-inventory.json",
+        "sha256": "2f2af559740c6185088927bfd031afd72c2b466fcae93bb04a9f75bdf9022849"
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/root-copy-components-a45cb40e139f/component-manifests.json",
+        "sha256": "b273506aa03ae0892b3ba5ff5e9357102cdedb3ea30ce9d2927a9a1791aae399"
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/root-retained-export-chain-post-a45cb40e139f-v1/result.json",
+        "sha256": "64d6ed109ed6cd137070eeca0e156f7711c4736c26fff6797f0e26767878a58f"
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/root-retained-export-chain-post-a45cb40e139f-v1/terminal.json",
+        "sha256": "5d66a6d264642159caf34db044c13ea0282e5e4bb6cebe5690e2a34673a0065a"
+      }
+    ],
+    "objects": 31792,
+    "inventorySHA256": "c9d0fd057249b82e5831fb220d9e717c6014edf063385a382bebab3d8b6b2cb5",
+    "inventoryBytes": 6807905,
+    "currentArchiveSHA256": "65126d42e222fc86b70d072fc54125afa0b4d6d8b528fec080b5d4374d5dd86c",
+    "currentSourcesAndInventoryExact": true,
+    "actorBirthAbsent": true,
+    "pureControls": 12,
+    "pureControlsExit": 0,
+    "pureControlBirthsAbsent": true,
+    "readerBirth": {
+      "pid": 3017338,
+      "startTicks": "41754576"
+    },
+    "filesystemQualified": true,
+    "runtimeQualified": false,
+    "securityQualified": false,
+    "overallAcceptance": false
+  },
+  "defaultImageScan": {
+    "actualIndependentExit": 0,
+    "actualScannerExit": 1,
+    "scannerAndOwnerBirthsAbsent": 2,
+    "currentToolArchiveReportCacheAndSourceVerified": true,
+    "terminalSHA256": "c9c7696a2ed0281e2fa69a031b5ed8e3590439ed5343e78e3b97ab3fda2fb635",
+    "resultSHA256": "e302fba31e3d0908e312247e7c349ef1fed31eb237f66404dd084b8f97cf8f64",
+    "reportSHA256": "4cba486c089c630606b96b609e654b4e8cfd71462d033911ad7e411ab434ae84",
+    "reportBytes": 235299,
+    "OS": {
+      "Family": "ubuntu",
+      "Name": "24.04"
+    },
+    "analyzerTargets": [
+      {
+        "class": "os-pkgs",
+        "type": "ubuntu",
+        "target": "/proc/self/fd/9 (ubuntu 24.04)",
+        "packages": 21,
+        "vulnerabilities": 5,
+        "secrets": 0
+      },
+      {
+        "class": "lang-pkgs",
+        "type": "node-pkg",
+        "target": "Node.js",
+        "packages": 202,
+        "vulnerabilities": 0,
+        "secrets": 0
+      },
+      {
+        "class": "lang-pkgs",
+        "type": "gobinary",
+        "target": "usr/local/bin/kubectl",
+        "packages": 90,
+        "vulnerabilities": 0,
+        "secrets": 0
+      }
+    ],
+    "nodePackageEntries": [],
+    "findings": [
+      {
+        "id": "CVE-2026-18374",
+        "package": "libc6",
+        "installed": "2.39-0ubuntu8.9",
+        "severity": "MEDIUM",
+        "fixed": null,
+        "status": "affected"
+      },
+      {
+        "id": "CVE-2026-89092",
+        "package": "libc6",
+        "installed": "2.39-0ubuntu8.9",
+        "severity": "MEDIUM",
+        "fixed": null,
+        "status": "affected"
+      },
+      {
+        "id": "CVE-2026-86145",
+        "package": "libpcre2-8-0",
+        "installed": "10.42-4ubuntu2.1",
+        "severity": "MEDIUM",
+        "fixed": null,
+        "status": "affected"
+      },
+      {
+        "id": "CVE-2026-89161",
+        "package": "libpcre2-8-0",
+        "installed": "10.42-4ubuntu2.1",
+        "severity": "MEDIUM",
+        "fixed": null,
+        "status": "affected"
+      },
+      {
+        "id": "CVE-2026-85091",
+        "package": "zlib1g",
+        "installed": "1:1.3.dfsg-3.1ubuntu2.2",
+        "severity": "MEDIUM",
+        "fixed": null,
+        "status": "affected"
+      }
+    ],
+    "vulnerabilities": 5,
+    "severityCounts": {
+      "MEDIUM": 5
+    },
+    "secretFindings": 0,
+    "fixableFindings": 0,
+    "DBMetadata": {
+      "DownloadedAt": "2026-10-13T19:03:39.38612938Z",
+      "NextUpdate": "2026-10-14T13:06:33.602530891Z",
+      "UpdatedAt": "2026-10-13T13:06:33.602531196Z",
+      "Version": 2
+    },
+    "cache": [
+      {
+        "bytes": 1614467072,
+        "path": "db/trivy.db",
+        "sha256": "c15cf177c389e33276a4cb3cc1310acc82cf7b396b408a5f12102e8a4fa34246"
+      },
+      {
+        "bytes": 152,
+        "path": "db/metadata.json",
+        "sha256": "9cd9c885290128cc6d4ac2f257e22caa1b5b505520e738987ff2109da7e3d2bd"
+      },
+      {
+        "bytes": 262144,
+        "path": "fanal/fanal.db",
+        "sha256": "3b87fa219c5b0ab6a440f8c97e940adeb7c3b3aeefcf370b66931c60f776fb97"
+      }
+    ],
+    "noSuppressionOrSeverityFilter": true,
+    "partialSignedPackages": 21,
+    "fullPackageInstallationClaimed": false,
+    "filesystemIndependentReaderBirthAbsent": true,
+    "filesystemIndependentReceiptSHA256": "01785ffae2385dfd475c0888b2b41856f5c5c3a9ea656913897bde64c1ea15cc",
+    "securityAccepted": false,
+    "overallAcceptance": false
+  },
+  "nodeCoreSecurityCoverage": "Node.js target contains202 npm packages and no node package entry; no Node ELF vulnerability pass is inferred",
+  "residualExceptionsAccepted": false,
+  "nativePrismaHTTPImageQualified": false,
+  "productionAdopted": false,
+  "overallAcceptance": false
+}
