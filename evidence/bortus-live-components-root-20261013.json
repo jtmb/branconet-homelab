@@ -1,0 +1,397 @@
+{
+  "scope": "Read-only live baseline and public image-component qualification; no performance adoption or image/live rollout acceptance",
+  "observedUtc": "2026-10-13T17:17:45.059668+00:00",
+  "liveMetadataOriginal": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-live-metadata-refresh-20261013.json",
+    "sha256": "2e76b9eab25164909a07aa4ea3bbf5a654081d1f6c353ffd57a8d46f81f52664",
+    "rootTool": "db547b",
+    "readOnly": true,
+    "secretsRequested": false
+  },
+  "cluster": {
+    "nodesReady": 3,
+    "pods": 97,
+    "nonCompletedUnreadyPods": [],
+    "PVCsBound": 54,
+    "activeHelmReleasesReadyAtCurrentGeneration": 33,
+    "BORTUSHelmRelease": {
+      "namespace": "flux-system",
+      "name": "bortus",
+      "suspended": true,
+      "generation": 10,
+      "observedGeneration": 10,
+      "conditions": {
+        "Ready": "True"
+      }
+    },
+    "BORTUSPod": [
+      {
+        "namespace": "bortus",
+        "name": "bortus-5c55f6d5b5-67mnk",
+        "phase": "Running",
+        "node": "workernode2",
+        "ready": 1,
+        "containers": 1,
+        "restarts": 0,
+        "images": [
+          "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879"
+        ],
+        "waitingReasons": []
+      }
+    ],
+    "longhorn": {
+      "volumes": 40,
+      "stateCounts": {
+        "attached": 30,
+        "detached": 10
+      },
+      "robustnessCounts": {
+        "healthy": 30,
+        "unknown": 10
+      },
+      "allEncrypted": true,
+      "allTwoReplicas": true,
+      "restoreProof": false
+    },
+    "gitRepositories": [
+      {
+        "namespace": "flux-system",
+        "name": "branconet-charts",
+        "generation": 1,
+        "observedGeneration": 1,
+        "conditions": {
+          "Ready": "True"
+        },
+        "revision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621"
+      },
+      {
+        "namespace": "flux-system",
+        "name": "migration-validated",
+        "generation": 3,
+        "observedGeneration": 3,
+        "conditions": {
+          "Ready": "True"
+        },
+        "revision": "codex/kubernetes-validated@sha1:373a1e513e1bfb8b13ed5212ccc1b0f57a5ff301"
+      }
+    ],
+    "kustomizations": [
+      {
+        "namespace": "flux-system",
+        "name": "migration-releases",
+        "generation": 14,
+        "observedGeneration": 14,
+        "conditions": {
+          "Ready": "True"
+        },
+        "revision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621"
+      }
+    ]
+  },
+  "charts": {
+    "nameWithOwner": "jtmb/branconet-charts",
+    "isPrivate": true,
+    "defaultBranch": "main",
+    "repositoryRootTool": "957451",
+    "activeWorkflowCount": 1,
+    "workflow": {
+      "id": 380548207,
+      "name": "Charts validation and Flux promotion",
+      "path": ".github/workflows/charts.yml",
+      "state": "active"
+    },
+    "workflowRootTool": "11f6d1",
+    "latestSuccessfulMainRun": {
+      "id": 38150613416,
+      "headSha": "7828f5b5d219770077b72bd53d81fe745c61b621",
+      "createdAt": "2026-10-11T15:16:49Z",
+      "status": "completed",
+      "conclusion": "success",
+      "rootTool": "72ce27"
+    },
+    "FluxReadsValidatedBranch": true
+  },
+  "components": {
+    "sourceHandoffSHA256": "5d735ce2a2a008a36ba8a6f02430609894d98b04414a12659cda879973641c0e",
+    "sourceReviewTool": "cd8286",
+    "selectedDefaultScan": {
+      "rootTool": "e07a42",
+      "files": 6,
+      "actualExit": 0,
+      "findings": 0,
+      "freshBirthAndCurrentBytesCheckedBeforeStaging": true
+    },
+    "stageRootTool": "401e2a",
+    "actualRootTool": "74ea0e",
+    "terminalSHA256": "55e62764e7cb8b48877b9fe99c546412b2e699b93725a0a08fc4d00740a9900d",
+    "actual": {
+      "actual_exit": 0,
+      "container_closure": true,
+      "container_known": true,
+      "failure": null,
+      "finalizer_steps": [],
+      "overall_acceptance": false,
+      "reader_own_birth_requires_root_fresh_absence": true,
+      "result": {
+        "actual_jobs": [
+          {
+            "actual_exit": 0,
+            "birth": {
+              "pgrp": 2983773,
+              "pid": 2983773,
+              "ppid": 2983772,
+              "same_identity_absent": true,
+              "start_ticks": "41163978",
+              "state": "R",
+              "uid": 1000
+            },
+            "path": "command-01-image-before",
+            "reaped": true,
+            "same_identity_absent": true
+          },
+          {
+            "actual_exit": 0,
+            "birth": {
+              "pgrp": 2983786,
+              "pid": 2983786,
+              "ppid": 2983772,
+              "same_identity_absent": true,
+              "start_ticks": "41163985",
+              "state": "R",
+              "uid": 1000
+            },
+            "path": "command-02-names-before",
+            "reaped": true,
+            "same_identity_absent": true
+          },
+          {
+            "actual_exit": 0,
+            "birth": {
+              "pgrp": 2983798,
+              "pid": 2983798,
+              "ppid": 2983772,
+              "same_identity_absent": true,
+              "start_ticks": "41163991",
+              "state": "R",
+              "uid": 1000
+            },
+            "path": "command-03-create",
+            "reaped": true,
+            "same_identity_absent": true
+          },
+          {
+            "actual_exit": 0,
+            "birth": {
+              "pgrp": 2983811,
+              "pid": 2983811,
+              "ppid": 2983772,
+              "same_identity_absent": true,
+              "start_ticks": "41164005",
+              "state": "R",
+              "uid": 1000
+            },
+            "path": "command-04-inspect-known",
+            "reaped": true,
+            "same_identity_absent": true
+          },
+          {
+            "actual_exit": 0,
+            "birth": {
+              "pgrp": 2983823,
+              "pid": 2983823,
+              "ppid": 2983772,
+              "same_identity_absent": true,
+              "start_ticks": "41164010",
+              "state": "R",
+              "uid": 1000
+            },
+            "path": "command-05-copy-node",
+            "reaped": true,
+            "same_identity_absent": true
+          },
+          {
+            "actual_exit": 0,
+            "birth": {
+              "pgrp": 2983835,
+              "pid": 2983835,
+              "ppid": 2983772,
+              "same_identity_absent": true,
+              "start_ticks": "41164083",
+              "state": "R",
+              "uid": 1000
+            },
+            "path": "command-06-copy-license",
+            "reaped": true,
+            "same_identity_absent": true
+          },
+          {
+            "actual_exit": 0,
+            "birth": {
+              "pgrp": 2983847,
+              "pid": 2983847,
+              "ppid": 2983772,
+              "same_identity_absent": true,
+              "start_ticks": "41164089",
+              "state": "R",
+              "uid": 1000
+            },
+            "path": "command-07-inspect-known",
+            "reaped": true,
+            "same_identity_absent": true
+          },
+          {
+            "actual_exit": 0,
+            "birth": {
+              "pgrp": 2983860,
+              "pid": 2983860,
+              "ppid": 2983772,
+              "same_identity_absent": true,
+              "start_ticks": "41164119",
+              "state": "R",
+              "uid": 1000
+            },
+            "path": "command-08-remove",
+            "reaped": true,
+            "same_identity_absent": true
+          },
+          {
+            "actual_exit": 1,
+            "birth": {
+              "pgrp": 2983873,
+              "pid": 2983873,
+              "ppid": 2983772,
+              "same_identity_absent": true,
+              "start_ticks": "41164130",
+              "state": "R",
+              "uid": 1000
+            },
+            "path": "command-09-after-remove",
+            "reaped": true,
+            "same_identity_absent": true
+          },
+          {
+            "actual_exit": 0,
+            "birth": {
+              "pgrp": 2983894,
+              "pid": 2983894,
+              "ppid": 2983772,
+              "same_identity_absent": true,
+              "start_ticks": "41164137",
+              "state": "R",
+              "uid": 1000
+            },
+            "path": "command-10-image-after",
+            "reaped": true,
+            "same_identity_absent": true
+          }
+        ],
+        "actual_source_license_path": "/usr/local/LICENSE",
+        "actual_source_node_path": "/usr/local/bin/node",
+        "component_manifest_sha256": "b273506aa03ae0892b3ba5ff5e9357102cdedb3ea30ce9d2927a9a1791aae399",
+        "container_id": "fc27c5f3c158542eda539ef69c8b48a4be778728b5d66aabdbca3ba9f744cc66",
+        "container_never_started": true,
+        "container_removed_and_named_ID_absent": true,
+        "daemon_CPU_memory_quota_claimed": false,
+        "license_bytes": 145485,
+        "license_sha256": "c738ae413cf561f174e34f6961f8ca458aae2369a73640dda6234c629b98bcc4",
+        "no_shadow_or_private_config_copied": true,
+        "node_bytes": 124827920,
+        "node_context": "/home/brajam/.local/share/branconet-migration/root-copy-components-a45cb40e139f/node",
+        "node_objects": 12,
+        "node_sha256": "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48",
+        "overall_acceptance": false,
+        "public_passwd_group_generated": true,
+        "runtime_dirs_context": "/home/brajam/.local/share/branconet-migration/root-copy-components-a45cb40e139f/runtime_dirs",
+        "runtime_dirs_objects": 5,
+        "source_image": "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d"
+      }
+    },
+    "independentRootTool": "a376d1",
+    "postTerminalSHA256": "5a83be6270c68a6f9424cd6136b5cc66f105cbcc2e298c095efc3ea0cda5c06e",
+    "independent": {
+      "actual_exit": 0,
+      "component_manifest_sha256": "b273506aa03ae0892b3ba5ff5e9357102cdedb3ea30ce9d2927a9a1791aae399",
+      "component_terminal_sha256": "55e62764e7cb8b48877b9fe99c546412b2e699b93725a0a08fc4d00740a9900d",
+      "container_id": "fc27c5f3c158542eda539ef69c8b48a4be778728b5d66aabdbca3ba9f744cc66",
+      "current_source_unchanged": true,
+      "exact_ID_and_name_absent": true,
+      "metadata_only": true,
+      "node_objects": 12,
+      "overall_acceptance": false,
+      "query_jobs": [
+        {
+          "actual_exit": 1,
+          "birth": {
+            "pgrp": 2984072,
+            "pid": 2984072,
+            "ppid": 2984071,
+            "same_identity_absent": true,
+            "start_ticks": "41172706",
+            "state": "R",
+            "uid": 1000
+          },
+          "label": "exact-id",
+          "reaped": true
+        },
+        {
+          "actual_exit": 0,
+          "birth": {
+            "pgrp": 2984091,
+            "pid": 2984091,
+            "ppid": 2984071,
+            "same_identity_absent": true,
+            "start_ticks": "41172710",
+            "state": "R",
+            "uid": 1000
+          },
+          "label": "exact-name",
+          "reaped": true
+        }
+      ],
+      "recorded_component_births_fresh_absent": 11,
+      "runtime_dirs_objects": 5
+    },
+    "freshPostOwnAndQueries": {
+      "rootTool": "982bd4",
+      "actualExit": 0,
+      "birthsAbsent": 3
+    },
+    "stagingDiagnostic": {
+      "rootTool": "2bd1e1",
+      "actualExit": 1,
+      "reason": "Windows command-length limit before any WSL stage; corrected with stdin",
+      "workloadReplay": false
+    },
+    "postStageDiagnostic": {
+      "rootTool": "d6da8d",
+      "actualExit": 1,
+      "reason": "Missing json import in final producer print after successful stage; actual post ran once and passed",
+      "workloadReplay": false
+    }
+  },
+  "immutableCanonicalContext": {
+    "rootTool": "4740be",
+    "actualExit": 0,
+    "files": 93,
+    "ZIPmembers": 94,
+    "currentReadSources": 90,
+    "handoffSHA256": "4e93011a8a26ff676e2787d1c7b366e9c14367db2405aab8b15685cf5bab3ad0",
+    "legacyAuthorityLabel": "9d48660",
+    "actualRootPublicCopyTool": "9d4866",
+    "actualRootPublicCopyExit": 0,
+    "directRootUNCRead": false
+  },
+  "publicBuildx": {
+    "metadataRootTool": "6d1f4a",
+    "path": "/usr/libexec/docker/cli-plugins/docker-buildx",
+    "bytes": 72456104,
+    "sha256": "84554b12c90d21f3627d7f6a99aeabf69dc3aab8c2de41ed6f85097ed7cfd2c0",
+    "uid": 0,
+    "mode": "0755",
+    "nlink": 1
+  },
+  "productionAdoption": false,
+  "newImageQualified": false,
+  "dataRetired": false,
+  "overallAcceptance": false
+}
