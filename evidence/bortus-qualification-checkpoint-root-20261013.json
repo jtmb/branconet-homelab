@@ -1,0 +1,237 @@
+{
+  "abi": 1,
+  "date": "2026-10-13",
+  "selectedScans": [
+    {
+      "scope": "seven tested observer/lifecycle sources",
+      "actualExit": 0,
+      "findings": 0
+    },
+    {
+      "scope": "eight raw bb09b32 docs files",
+      "actualExit": 0,
+      "findings": 0
+    }
+  ],
+  "scanOriginals": 44,
+  "scanHandoffSHA256": "502da8d3b3fbd784c9f31256e97b8eca91930cc03356882b44a8534f53e5b8eb",
+  "public27": {
+    "actualOuterExit": 1,
+    "classification": "public27_supervisor_late_durability_closure_or_deadline",
+    "wholeDeadlineSeconds": 90,
+    "terminalMissing": true,
+    "stdoutBytes": 0,
+    "stderrBytes": 3245,
+    "finalTestCountObserved": false,
+    "rootRecordedIdentitiesAbsent": 2,
+    "ownedSessionGroupRemaining": 0,
+    "freshCensusProcesses": 97,
+    "cryptoLiveTCPOrMaterialAccepted": false
+  },
+  "pairedPerformance": {
+    "candidate": "8cfb1c886e40b1ee02b8f16738a61799748189fd",
+    "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+    "preflightExit": 0,
+    "frozenInputs": 66,
+    "originalFiveAndExporterUnchanged": true,
+    "dispatchUTC": "2026-10-13T04:48:05.644556+00:00",
+    "observationPending": false,
+    "runsPerSource": 3,
+    "noAcceptanceClaim": true,
+    "actualOuterExit": 0,
+    "driverExit": 0,
+    "supervisorExit": 0,
+    "allSixObservationsComplete": true,
+    "independentClosure": {
+      "exactIdentities": 10,
+      "sameIdentitiesRemaining": [],
+      "dispatchPIDPresent": false,
+      "exactContainerQueries": 8,
+      "containersRemaining": [],
+      "actualOuterExit": 0,
+      "runnerExit": 0,
+      "supervisorExit": 0,
+      "frozenInputsUnchanged": 66,
+      "exportedSourceHashesUnchanged": 431,
+      "observations": 6,
+      "profilesPerObservation": 6,
+      "rawSHA256": "96a0c9e323034a6f55494e8e8c7acb3db79c1296915669286f068f94115d82a7",
+      "summarySHA256": "f2d788313eb78b43edd9d5db117741b8907c000c9c1f0f99e3abd7bf03d4b0bc",
+      "performanceAccepted": false
+    },
+    "warmCacheAcceptancePassed": false,
+    "wholeFixture": {
+      "baseline": {
+        "cgroup_peak_mib": {
+          "median": 364.38671875,
+          "min": 354.1484375,
+          "max": 369.26953125
+        },
+        "cgroup_cpu_seconds": {
+          "median": 35.211534,
+          "min": 34.840021,
+          "max": 35.234898
+        },
+        "cgroup_throttled_ms": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "oom_observed": false
+      },
+      "candidate": {
+        "cgroup_peak_mib": {
+          "median": 419.5625,
+          "min": 415.66796875,
+          "max": 428.9375
+        },
+        "cgroup_cpu_seconds": {
+          "median": 30.906267,
+          "min": 30.152557,
+          "max": 31.139939
+        },
+        "cgroup_throttled_ms": {
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "oom_observed": false
+      }
+    },
+    "profiles": [
+      {
+        "fixture": "audit-small",
+        "warm-pods-12": {
+          "equivalentSuccess": true,
+          "baselineP50": 5.552682000000004,
+          "candidateP50": 5.687770999999884,
+          "baselineP95": 15.93226900000036,
+          "candidateP95": 12.176204999999754
+        },
+        "warm-pods-concurrent-20": {
+          "equivalentSuccess": true,
+          "baselineP50": 28.55891799999972,
+          "candidateP50": 38.203018999999586,
+          "baselineP95": 49.46612899999991,
+          "candidateP95": 60.286487999999736
+        },
+        "native-secret-metadata": {
+          "equivalentSuccess": true,
+          "baselineP50": 88.81577199999992,
+          "candidateP50": 76.30325900000025,
+          "baselineP95": 88.81577199999992,
+          "candidateP95": 76.30325900000025
+        }
+      },
+      {
+        "fixture": "metadata-200",
+        "warm-pods-12": {
+          "equivalentSuccess": true,
+          "baselineP50": 4.04768999999942,
+          "candidateP50": 4.561885999999504,
+          "baselineP95": 7.421659000001455,
+          "candidateP95": 7.675290999999561
+        },
+        "warm-pods-concurrent-20": {
+          "equivalentSuccess": true,
+          "baselineP50": 36.38248999999996,
+          "candidateP50": 39.75521000000117,
+          "baselineP95": 58.57304099999965,
+          "candidateP95": 70.98654200000055
+        },
+        "native-secret-metadata": {
+          "equivalentSuccess": true,
+          "baselineP50": 67.89949499999966,
+          "candidateP50": 68.83724799999982,
+          "baselineP95": 67.89949499999966,
+          "candidateP95": 68.83724799999982
+        }
+      },
+      {
+        "fixture": "metadata-1000",
+        "warm-pods-12": {
+          "equivalentSuccess": true,
+          "baselineP50": 5.992094999999608,
+          "candidateP50": 5.785300000001371,
+          "baselineP95": 10.093290999999226,
+          "candidateP95": 9.60657099999844
+        },
+        "warm-pods-concurrent-20": {
+          "equivalentSuccess": true,
+          "baselineP50": 42.488493999999264,
+          "candidateP50": 49.00590899999952,
+          "baselineP95": 77.17855100000088,
+          "candidateP95": 76.25223000000005
+        },
+        "native-secret-metadata": {
+          "equivalentSuccess": true,
+          "baselineP50": 70.83451000000059,
+          "candidateP50": 76.09172000000035,
+          "baselineP95": 70.83451000000059,
+          "candidateP95": 76.09172000000035
+        }
+      },
+      {
+        "fixture": "metadata-10000",
+        "native-secret-metadata": {
+          "equivalentSuccess": true,
+          "baselineP50": 259.4159089999994,
+          "candidateP50": 175.48283699999956,
+          "baselineP95": 259.4159089999994,
+          "candidateP95": 175.48283699999956
+        }
+      },
+      {
+        "fixture": "kv-sized-native-25",
+        "warm-pods-12": {
+          "equivalentSuccess": true,
+          "baselineP50": 3.732633999999962,
+          "candidateP50": 4.4646409999986645,
+          "baselineP95": 6.357185000000754,
+          "candidateP95": 6.528900000001158
+        },
+        "warm-pods-concurrent-20": {
+          "equivalentSuccess": true,
+          "baselineP50": 28.301408999999694,
+          "candidateP50": 38.198026000001846,
+          "baselineP95": 48.23617899999954,
+          "candidateP95": 56.31605900000068
+        },
+        "native-secret-metadata": {
+          "equivalentSuccess": true,
+          "baselineP50": 187.84897300000011,
+          "candidateP50": 152.30929300000207,
+          "baselineP95": 187.84897300000011,
+          "candidateP95": 152.30929300000207
+        }
+      },
+      {
+        "fixture": "maximum-flat-native-3",
+        "warm-pods-12": {
+          "equivalentSuccess": true,
+          "baselineP50": 3.95643900000141,
+          "candidateP50": 4.4378450000003795,
+          "baselineP95": 6.220331000000442,
+          "candidateP95": 6.623580999999831
+        },
+        "warm-pods-concurrent-20": {
+          "equivalentSuccess": true,
+          "baselineP50": 28.014455000000453,
+          "candidateP50": 37.346880000000965,
+          "baselineP95": 51.383097000001726,
+          "candidateP95": 54.8580759999968
+        },
+        "native-secret-metadata": {
+          "equivalentSuccess": true,
+          "baselineP50": 116.25638400000025,
+          "candidateP50": 113.9057130000001,
+          "baselineP95": 116.25638400000025,
+          "candidateP95": 113.9057130000001
+        }
+      }
+    ]
+  },
+  "limitsAdopted": false,
+  "deploymentOccurred": false,
+  "overallAcceptance": false
+}
