@@ -92,7 +92,14 @@ export class DirectAccountReader {
     for (const component of file.slice(current.length).split(path.sep).filter(Boolean)) {
       current = path.join(current, component); parts.push(current);
     }
-    const [stats] = await Promise.all([Promise.all(parts.map(part => lstat(part, { bigint: true }))), access(file, constants.R_OK)]);
+    // Retain the active owner until every initiated check settles, including faults.
+    const checks = await Promise.allSettled([...parts.map(part => Promise.resolve().then(() => lstat(part, { bigint: true }))),
+      Promise.resolve().then(() => access(file, constants.R_OK))]);
+    if (checks.some(check => check.status === "rejected")) throw unavailable();
+    const stats = checks.slice(0, -1).map(check => {
+      if (check.status !== "fulfilled" || !check.value) throw unavailable();
+      return check.value;
+    });
     if (stats.some((stat, index) => stat.isSymbolicLink() || (index === stats.length - 1 ? !stat.isFile() : !stat.isDirectory()))) throw unavailable();
     const leaf = stats[stats.length - 1]; return { dev: leaf.dev, ino: leaf.ino };
   }

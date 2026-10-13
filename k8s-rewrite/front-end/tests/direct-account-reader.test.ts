@@ -7,6 +7,7 @@ import { mkdtemp, rm, rename, chmod, symlink } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { DatabaseSync, StatementSync } from "node:sqlite";
+import { createRequire, syncBuiltinESMExports } from "node:module";
 import { PrismaClient } from "@prisma/client";
 import { DirectAccountReader, accountDatabaseLocation } from "../src/lib/direct-account-reader";
 
@@ -65,13 +66,45 @@ test("direct fresh authority uses real independent SQL, bounds and file/schema f
         const target = path.join(dir, name), db = new DatabaseSync(target);
         db.exec('CREATE TABLE users(id TEXT PRIMARY KEY,username TEXT NOT NULL,sessionVersion INTEGER NOT NULL,role TEXT NOT NULL,engineAdmin BOOLEAN NOT NULL)');
         db.prepare('INSERT INTO users VALUES(?,?,?,?,?)').run("public-path", "public", 7, "readonly", 0); db.close();
-        const config = `file:${name}?connection_limit=1`, prisma = client(`file:${target.replaceAll("\\", "/")}?connection_limit=1`);
+        const relative = path.relative(path.resolve("prisma"), target).replaceAll("\\", "/");
+        const config = `file:${name}?connection_limit=1`, prisma = client(`file:${relative}?connection_limit=1`);
         const selected = reader(() => config, dir);
         assert.equal(accountDatabaseLocation(config, dir), target);
         equalRows(await selected.readSession("public-path"), await prisma.user.findUnique({ where: { id: "public-path" }, select: { id: true, username: true, sessionVersion: true } }));
       }
       for (const config of [undefined, "postgresql:public", "file:", "file://remote/path", "file:bad\0path"]) {
         await assert.rejects(reader(() => config).readSession(user.id), fixedRefusal);
+      }
+    });
+    await t.test("a rejected filesystem check cannot release ownership while a sibling remains pending", async () => {
+      // Filesystem-facade fault model only; real valid-path controls remain separate.
+      const fs = createRequire(path.resolve("package.json"))("node:fs/promises") as typeof import("node:fs/promises");
+      const original = fs.lstat, get = StatementSync.prototype.get;
+      let release!: () => void, entered!: () => void, heldOnce = false, leafCalls = 0, statementCalls = 0;
+      const held = new Promise<void>(resolve => { entered = resolve; });
+      const fence = new Promise<void>(resolve => { release = resolve; });
+      fs.lstat = (async (...args: Parameters<typeof original>) => {
+        if (args[0] === dir && !heldOnce) { heldOnce = true; entered(); await fence; }
+        if (args[0] === file && ++leafCalls === 1) throw Error("Public filesystem rejection");
+        return Reflect.apply(original, fs, args);
+      }) as typeof original;
+      StatementSync.prototype.get = function (this: StatementSync, ...args: unknown[]) {
+        statementCalls++; return Reflect.apply(get, this, args);
+      } as typeof get;
+      syncBuiltinESMExports();
+      const owned = reader(), first = owned.readSession(user.id), second = owned.readSession(user.id);
+      const outcomes = Promise.allSettled([first, second]);
+      try {
+        await held; await sleep(20);
+        assert.equal(owned.activity().active, 1); assert.equal(owned.activity().queued, 1);
+        assert.equal(leafCalls, 1); assert.equal(statementCalls, 0);
+        release();
+        const settled = await outcomes;
+        assert.equal(settled[0].status, "rejected"); assert.equal(settled[1].status, "fulfilled");
+        assert.equal(owned.activity().active, 0);
+      } finally {
+        release(); await outcomes;
+        fs.lstat = original; StatementSync.prototype.get = get; syncBuiltinESMExports(); await owned.close();
       }
     });
     await t.test("noncanonical SQLite boolean integers preserve actual Prisma BOOLEAN interpretation", async () => {
