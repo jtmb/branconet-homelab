@@ -1,0 +1,98 @@
+{
+  "abi": 1,
+  "collectedDateUTC": "2026-10-13",
+  "recordedUTC": "2026-10-13T05:10:50Z",
+  "readOnly": true,
+  "atomicSnapshot": false,
+  "nodes": [
+    {
+      "name": "masternode",
+      "uid": "f2df6169-4592-4544-b62c-74d89f598648",
+      "ready": true,
+      "kubelet": "v1.37.1"
+    },
+    {
+      "name": "workernode1",
+      "uid": "e8d4555f-7cea-445f-b84f-6416964045a9",
+      "ready": true,
+      "kubelet": "v1.37.1"
+    },
+    {
+      "name": "workernode2",
+      "uid": "eda66e65-f388-4b97-b64f-a709cda81894",
+      "ready": true,
+      "kubelet": "v1.37.1"
+    }
+  ],
+  "charts": {
+    "repository": "jtmb/branconet-charts",
+    "private": true,
+    "defaultBranch": "main",
+    "mainSHA": "7828f5b5d219770077b72bd53d81fe745c61b621",
+    "activeWorkflows": 1,
+    "workflow": "Charts validation and Flux promotion",
+    "workflowPath": ".github/workflows/charts.yml",
+    "pushRun": {
+      "id": 38150613416,
+      "status": "completed",
+      "conclusion": "success",
+      "headBranch": "main",
+      "headSHA": "7828f5b5d219770077b72bd53d81fe745c61b621"
+    }
+  },
+  "flux": {
+    "gitRepository": "branconet-charts",
+    "sourceReady": true,
+    "sourceObservedGeneration": 1,
+    "artifactRevision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621",
+    "kustomization": "migration-releases",
+    "kustomizationReady": true,
+    "kustomizationObservedGeneration": 14,
+    "lastAppliedRevision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621",
+    "helmReleases": 34,
+    "activeHelmReleases": 33,
+    "allActiveReady": true
+  },
+  "bortus": {
+    "suspended": true,
+    "helmReleaseGeneration": 10,
+    "helmReleaseObservedGeneration": 10,
+    "readyConditionObservedGeneration": 9,
+    "readyConditionHistorical": true,
+    "readyDeploymentReplicas": 1,
+    "pod": "bortus-5c55f6d5b5-67mnk",
+    "podUID": "5347ff1f-679c-45ee-b008-8132af41014a",
+    "podReady": true,
+    "imageID": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879"
+  },
+  "storage": {
+    "pvcTotal": 54,
+    "pvcBound": 54,
+    "longhornAttachedAllObservedHealthy": true,
+    "longhornAllObservedEncrypted": true,
+    "longhornConfiguredReplicas": 2,
+    "detachedRobustnessUnknown": true,
+    "dataIntegrityOrRestoreProved": false
+  },
+  "toolRefs": [
+    "013a28",
+    "c80ce7",
+    "8145d0",
+    "7bd991",
+    "b4a9d1",
+    "80d9f7",
+    "bbf358",
+    "3a9c9a",
+    "a305e8",
+    "6ff733",
+    "640649"
+  ],
+  "limitations": [
+    "Metadata health is not backup or plaintext restore acceptance.",
+    "BORTUS Ready condition at generation9 is historical while its release is suspended at generation10.",
+    "Retained game and recovery PVCs remain protected; no game releases were installed.",
+    "The GitHub connector could not access the private repository; authenticated gh read-only API calls supplied repository/branch/workflow evidence."
+  ],
+  "liveRollout": false,
+  "overallAcceptance": false
+}
