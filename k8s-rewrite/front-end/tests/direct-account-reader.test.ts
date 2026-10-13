@@ -78,7 +78,7 @@ test("direct fresh authority uses real independent SQL, bounds and file/schema f
     });
     await t.test("a rejected filesystem check retains ownership through every sibling and the explicit yield", async () => {
       // Filesystem/scheduler fault model only; real valid-path controls remain separate.
-      const fs = createRequire(path.resolve("package.json"))("node:fs") as typeof import("node:fs");
+      const fs = createRequire(path.resolve("package.json"))("node:fs") as { -readonly [K in keyof typeof import("node:fs")]: (typeof import("node:fs"))[K] };
       const original = fs.lstatSync, access = fs.accessSync, schedule = global.setImmediate, get = StatementSync.prototype.get;
       let release!: () => void, entered!: () => void, faultOnce = false, heldOnce = false, accessCalls = 0, statementCalls = 0;
       const observed: string[] = [], held = new Promise<void>(resolve => { entered = resolve; });
@@ -111,7 +111,7 @@ test("direct fresh authority uses real independent SQL, bounds and file/schema f
       }
     });
     await t.test("abort during the identity yield rejects without releasing active ownership or executing SQL", async () => {
-      const fs = createRequire(path.resolve("package.json"))("node:fs") as typeof import("node:fs");
+      const fs = createRequire(path.resolve("package.json"))("node:fs") as { -readonly [K in keyof typeof import("node:fs")]: (typeof import("node:fs"))[K] };
       const access = fs.accessSync, get = StatementSync.prototype.get, owned = reader(), abort = new AbortController(); let fired = false, calls = 0;
       fs.accessSync = ((...args: Parameters<typeof access>) => { const result = Reflect.apply(access, fs, args); if (!fired) { fired = true; queueMicrotask(() => abort.abort()); } return result; }) as typeof access;
       StatementSync.prototype.get = function (this: StatementSync, ...args: unknown[]) { calls++; return Reflect.apply(get, this, args); } as typeof get;
@@ -122,7 +122,7 @@ test("direct fresh authority uses real independent SQL, bounds and file/schema f
       } finally { fs.accessSync = access; StatementSync.prototype.get = get; syncBuiltinESMExports(); await owned.close(); }
     });
     await t.test("close during the identity yield drains actual ownership before a later reopen", async () => {
-      const fs = createRequire(path.resolve("package.json"))("node:fs") as typeof import("node:fs");
+      const fs = createRequire(path.resolve("package.json"))("node:fs") as { -readonly [K in keyof typeof import("node:fs")]: (typeof import("node:fs"))[K] };
       const access = fs.accessSync, get = StatementSync.prototype.get, owned = reader(); let fired = false, calls = 0, closed: Promise<void> | undefined;
       fs.accessSync = ((...args: Parameters<typeof access>) => { const result = Reflect.apply(access, fs, args); if (!fired) { fired = true; queueMicrotask(() => { closed = owned.close(); }); } return result; }) as typeof access;
       StatementSync.prototype.get = function (this: StatementSync, ...args: unknown[]) { calls++; return Reflect.apply(get, this, args); } as typeof get;
