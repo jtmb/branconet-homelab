@@ -18,7 +18,7 @@ const equalRows = (a: unknown, b: unknown) => assert.ok(isDeepStrictEqual(a, b),
 test("direct fresh authority uses real independent SQL, bounds and file/schema fences", { timeout: 90000 }, async t => {
   const dir = await mkdtemp(path.join(tmpdir(), "bortus-direct-account-"));
   const file = path.join(dir, "public.db"), url = `file:${file.replaceAll("\\", "/")}`;
-  const env = { ...process.env, DATABASE_URL: url }; delete env.RUST_LOG;
+  const env: NodeJS.ProcessEnv = { ...process.env, DATABASE_URL: url }; delete env.RUST_LOG;
   const readers: DirectAccountReader[] = [], clients: PrismaClient[] = [];
   let child: ChildProcess | undefined;
   const inbox: string[] = [];
@@ -73,7 +73,7 @@ test("direct fresh authority uses real independent SQL, bounds and file/schema f
         equalRows(await selected.readSession("public-path"), await prisma.user.findUnique({ where: { id: "public-path" }, select: { id: true, username: true, sessionVersion: true } }));
       }
       for (const config of [undefined, "postgresql:public", "file:", "file://remote/path", "file:bad\0path"]) {
-        await assert.rejects(reader(() => config).readSession(user.id), fixedRefusal);
+        await assert.rejects(reader(() => config as string).readSession(user.id), fixedRefusal);
       }
     });
     await t.test("a rejected filesystem check cannot release ownership while a sibling remains pending", async () => {

@@ -13,7 +13,7 @@ async function main() {
 const started = performance.now(), deadline = started + 60000;
 const dir = await mkdtemp(path.join(tmpdir(), "bortus-direct-cost-"));
 const url = `file:${path.join(dir, "public.db").replaceAll("\\", "/")}`;
-const env = { ...process.env, DATABASE_URL: url }; delete env.RUST_LOG;
+const env: NodeJS.ProcessEnv = { ...process.env, DATABASE_URL: url }; delete env.RUST_LOG;
 let prisma: PrismaClient | undefined, reader: DirectAccountReader | undefined;
 const clients: PrismaClient[] = [], readers: DirectAccountReader[] = [];
 const observations: { backend: number; ordinal: number; boundaryPairs: number; elapsedMs: number; cpuUs: number; rssBytes: number; heapUsedBytes: number; timerTicks: number; maxTimerLatenessMs: number; processPeakRssKiB: number }[] = [];
