@@ -1,0 +1,50 @@
+{
+  "scope": "Distinct pure matcher proposal; no actual version or recovery acceptance",
+  "originalSpecSHA256": "f0804decca97727e44c99422c4282927a25d9e88fef5bbb8878da77bbb97898c",
+  "proposedSpecSHA256": "5e47c252e3e4f8387face23d33e89450c30a7b8f77e518db86d31f10b956783d",
+  "change": "Two lines permit only absent-expected/exact-empty observed resources in ephemeralContainers; ordinary containers unchanged.",
+  "originalGraphsUntouched": true,
+  "sourceInputsUnchangedDuringControls": true,
+  "originalRequestBodyBytesUnchanged": true,
+  "initialLauncher": {
+    "actualChildExit": 5,
+    "actualRootOuterExit": 1,
+    "tests": 0,
+    "cause": "Detached execution namespace; unittest discovered no tests",
+    "preserved": true
+  },
+  "correctedLauncher": {
+    "actualChildExit": 0,
+    "actualRootOuterExit": 0,
+    "tests": 16,
+    "seconds": 0.156,
+    "usesRealMainModule": true
+  },
+  "defaultSelectedSourceScanner": {
+    "actualExit": 0,
+    "findings": 0,
+    "changedSourceAndReviewFiles": 3
+  },
+  "freshOriginalAndCorrectedTestIdentitiesAbsent": 2,
+  "controls": [
+    "original rejection and exact-empty acceptance",
+    "absence unchanged",
+    "zero/False/list/null/string/nonempty resource refusal",
+    "command/security/unknown-field drift refusal",
+    "explicit resources preserved",
+    "ordinary container normalization unchanged",
+    "original request bytes and input objects unchanged",
+    "UID and nonempty resourceVersion fences"
+  ],
+  "rootTools": {
+    "initial": "a9c58d",
+    "corrected": "ad91c1",
+    "freshClosure": "b8d899",
+    "scanner": "9bf761"
+  },
+  "transportConstructorOrAPIRequests": 0,
+  "originalLiveRefusalCauseProved": false,
+  "actualNewVersionDispatch": false,
+  "productionAdoption": false,
+  "overallAcceptance": false
+}
