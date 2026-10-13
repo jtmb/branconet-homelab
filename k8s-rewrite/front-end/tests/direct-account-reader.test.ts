@@ -76,36 +76,61 @@ test("direct fresh authority uses real independent SQL, bounds and file/schema f
         await assert.rejects(reader(() => config as string).readSession(user.id), fixedRefusal);
       }
     });
-    await t.test("a rejected filesystem check cannot release ownership while a sibling remains pending", async () => {
-      // Filesystem-facade fault model only; real valid-path controls remain separate.
-      const fs = createRequire(path.resolve("package.json"))("node:fs/promises") as typeof import("node:fs/promises");
-      const original = fs.lstat, get = StatementSync.prototype.get;
-      let release!: () => void, entered!: () => void, heldOnce = false, leafCalls = 0, statementCalls = 0;
-      const held = new Promise<void>(resolve => { entered = resolve; });
+    await t.test("a rejected filesystem check retains ownership through every sibling and the explicit yield", async () => {
+      // Filesystem/scheduler fault model only; real valid-path controls remain separate.
+      const fs = createRequire(path.resolve("package.json"))("node:fs") as typeof import("node:fs");
+      const original = fs.lstatSync, access = fs.accessSync, schedule = global.setImmediate, get = StatementSync.prototype.get;
+      let release!: () => void, entered!: () => void, faultOnce = false, heldOnce = false, accessCalls = 0, statementCalls = 0;
+      const observed: string[] = [], held = new Promise<void>(resolve => { entered = resolve; });
       const fence = new Promise<void>(resolve => { release = resolve; });
-      fs.lstat = (async (...args: Parameters<typeof original>) => {
-        if (args[0] === dir && !heldOnce) { heldOnce = true; entered(); await fence; }
-        if (args[0] === file && ++leafCalls === 1) throw Error("Public filesystem rejection");
+      fs.lstatSync = ((...args: Parameters<typeof original>) => {
+        if (!heldOnce) observed.push(String(args[0]));
+        if (!faultOnce) { faultOnce = true; throw Error("Public filesystem rejection"); }
         return Reflect.apply(original, fs, args);
       }) as typeof original;
-      StatementSync.prototype.get = function (this: StatementSync, ...args: unknown[]) {
-        statementCalls++; return Reflect.apply(get, this, args);
-      } as typeof get;
+      fs.accessSync = ((...args: Parameters<typeof access>) => { accessCalls++; return Reflect.apply(access, fs, args); }) as typeof access;
+      global.setImmediate = ((...args: Parameters<typeof schedule>) => {
+        if (!heldOnce) { heldOnce = true; entered(); return schedule(() => { void fence.then(() => Reflect.apply(args[0], global, args.slice(1))); }); }
+        return Reflect.apply(schedule, global, args);
+      }) as typeof schedule;
+      StatementSync.prototype.get = function (this: StatementSync, ...args: unknown[]) { statementCalls++; return Reflect.apply(get, this, args); } as typeof get;
       syncBuiltinESMExports();
-      const owned = reader(), first = owned.readSession(user.id), second = owned.readSession(user.id);
-      const outcomes = Promise.allSettled([first, second]);
+      const owned = reader(), first = owned.readSession(user.id), second = owned.readSession(user.id), outcomes = Promise.allSettled([first, second]);
       try {
         await held; await sleep(20);
-        assert.equal(owned.activity().active, 1); assert.equal(owned.activity().queued, 1);
-        assert.equal(leafCalls, 1); assert.equal(statementCalls, 0);
-        release();
-        const settled = await outcomes;
+        const parts: string[] = []; let current = path.parse(file).root; parts.push(current);
+        for (const component of file.slice(current.length).split(path.sep).filter(Boolean)) { current = path.join(current, component); parts.push(current); }
+        assert.deepEqual(observed, parts); assert.equal(accessCalls, 1);
+        assert.equal(owned.activity().active, 1); assert.equal(owned.activity().queued, 1); assert.equal(statementCalls, 0);
+        release(); const settled = await outcomes;
         assert.equal(settled[0].status, "rejected"); assert.equal(settled[1].status, "fulfilled");
-        assert.equal(owned.activity().active, 0);
+        assert.equal(owned.activity().active, 0); assert.equal(owned.activity().queued, 0);
       } finally {
-        release(); await outcomes;
-        fs.lstat = original; StatementSync.prototype.get = get; syncBuiltinESMExports(); await owned.close();
+        release(); await outcomes; fs.lstatSync = original; fs.accessSync = access; global.setImmediate = schedule;
+        StatementSync.prototype.get = get; syncBuiltinESMExports(); await owned.close();
       }
+    });
+    await t.test("abort during the identity yield rejects without releasing active ownership or executing SQL", async () => {
+      const fs = createRequire(path.resolve("package.json"))("node:fs") as typeof import("node:fs");
+      const access = fs.accessSync, get = StatementSync.prototype.get, owned = reader(), abort = new AbortController(); let fired = false, calls = 0;
+      fs.accessSync = ((...args: Parameters<typeof access>) => { const result = Reflect.apply(access, fs, args); if (!fired) { fired = true; queueMicrotask(() => abort.abort()); } return result; }) as typeof access;
+      StatementSync.prototype.get = function (this: StatementSync, ...args: unknown[]) { calls++; return Reflect.apply(get, this, args); } as typeof get;
+      syncBuiltinESMExports();
+      try {
+        await assert.rejects(owned.readSession(user.id, abort.signal), fixedRefusal); assert.ok(fired); assert.equal(calls, 0);
+        assert.equal(owned.activity().active, 1); await owned.close(); assert.equal(owned.activity().active, 0); assert.equal(owned.activity().queued, 0);
+      } finally { fs.accessSync = access; StatementSync.prototype.get = get; syncBuiltinESMExports(); await owned.close(); }
+    });
+    await t.test("close during the identity yield drains actual ownership before a later reopen", async () => {
+      const fs = createRequire(path.resolve("package.json"))("node:fs") as typeof import("node:fs");
+      const access = fs.accessSync, get = StatementSync.prototype.get, owned = reader(); let fired = false, calls = 0, closed: Promise<void> | undefined;
+      fs.accessSync = ((...args: Parameters<typeof access>) => { const result = Reflect.apply(access, fs, args); if (!fired) { fired = true; queueMicrotask(() => { closed = owned.close(); }); } return result; }) as typeof access;
+      StatementSync.prototype.get = function (this: StatementSync, ...args: unknown[]) { calls++; return Reflect.apply(get, this, args); } as typeof get;
+      syncBuiltinESMExports();
+      try {
+        await assert.rejects(owned.readSession(user.id), fixedRefusal); assert.ok(closed); await closed; assert.equal(calls, 0);
+        assert.equal(owned.activity().active, 0); assert.equal(owned.activity().queued, 0); assert.ok(await owned.readSession(user.id));
+      } finally { fs.accessSync = access; StatementSync.prototype.get = get; syncBuiltinESMExports(); await owned.close(); }
     });
     await t.test("noncanonical SQLite boolean integers preserve actual Prisma BOOLEAN interpretation", async () => {
       const db = new DatabaseSync(file);

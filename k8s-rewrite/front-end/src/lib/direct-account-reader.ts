@@ -1,6 +1,5 @@
 import path from "node:path";
-import { constants } from "node:fs";
-import { access, lstat } from "node:fs/promises";
+import { constants, lstatSync, accessSync, type BigIntStats } from "node:fs";
 import type { DatabaseSync, StatementSync } from "node:sqlite";
 
 export type SessionRow = { id: string; username: string; sessionVersion: number };
@@ -92,9 +91,17 @@ export class DirectAccountReader {
     for (const component of file.slice(current.length).split(path.sep).filter(Boolean)) {
       current = path.join(current, component); parts.push(current);
     }
-    // Retain the active owner until every initiated check settles, including faults.
-    const checks = await Promise.allSettled([...parts.map(part => Promise.resolve().then(() => lstat(part, { bigint: true }))),
-      Promise.resolve().then(() => access(file, constants.R_OK))]);
+    // Diagnostic only: complete every check, including after earlier faults.
+    const checks: Array<PromiseSettledResult<BigIntStats | undefined>> = [];
+    for (const part of parts) {
+      try { checks.push({ status: "fulfilled", value: lstatSync(part, { bigint: true }) }); }
+      catch { checks.push({ status: "rejected", reason: undefined }); }
+    }
+    try { accessSync(file, constants.R_OK); checks.push({ status: "fulfilled", value: undefined }); }
+    catch { checks.push({ status: "rejected", reason: undefined }); }
+    // Permit queued cancel/close/expiry callbacks before SQL or authority settlement.
+    // Active ownership remains held through the actual check sequence and this yield.
+    await new Promise<void>(resolve => setImmediate(resolve));
     if (checks.some(check => check.status === "rejected")) throw unavailable();
     const stats = checks.slice(0, -1).map(check => {
       if (check.status !== "fulfilled" || !check.value) throw unavailable();
