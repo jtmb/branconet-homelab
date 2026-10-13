@@ -1,0 +1,58 @@
+{
+  "actualExit": 0,
+  "actorExit": 1,
+  "saveExit": 0,
+  "refusalStage": 6,
+  "refusalType": 7,
+  "archiveBytes": 275913728,
+  "archiveSHA256": "65126d42e222fc86b70d072fc54125afa0b4d6d8b528fec080b5d4374d5dd86c",
+  "archivePath": "/home/brajam/.local/share/branconet-migration/root-copy-image-export-a45cb40e139f-v2/image.tar",
+  "actorAnd2CLIBirthsAbsent": true,
+  "currentSourceFiles": 7,
+  "controls": [
+    {
+      "owner": "root-copy-image-export-v2-controls-20261013",
+      "actualExit": 1,
+      "controlsPassed": false,
+      "birthsAbsent": true
+    },
+    {
+      "owner": "root-copy-image-export-v2-controls-20261013-v2",
+      "actualExit": 0,
+      "controlsPassed": true,
+      "birthsAbsent": true
+    }
+  ],
+  "archiveParserAccepted": false,
+  "runtimeQualified": false,
+  "overallAcceptance": false,
+  "scope": "Actual save plus independently retained refusal/closure; descriptor chain source review only",
+  "actualRootTools": {
+    "scan": "df9686",
+    "freshStage": "264444",
+    "pure14": "7ed1e0",
+    "exportDispatch": "c997ba",
+    "exportClosure": "9128f0",
+    "readOnlyRefusalDiscriminator": "9871c1",
+    "currentArchiveMetadata": "e72aa3",
+    "currentIndexMetadata": "a5dbe6",
+    "freshClosure": "5feb99"
+  },
+  "descriptorObservation": {
+    "dockerImageId": "sha256:1f842e41cd4ab136c26e41ebb3a659305be435e0657a0d44e82d5b226360bdd0",
+    "dockerImageIdKind": "OCI index digest in this actual Docker image store",
+    "indexBytes": 856,
+    "selectedImageManifestDigest": "sha256:bb225a91f11644962265fcb32e7d294a5b397f6422349decd53542d98b81b69e",
+    "selectedImageManifestBytes": 2767,
+    "actualConfigDigest": "sha256:24c8fe6d08d8c74aa9cec5f33d311ace952e530bef202050676e36af7675b577",
+    "actualConfigBytes": 6651,
+    "layerCount": 13,
+    "registryPublished": false,
+    "descriptorChainQualificationComplete": false
+  },
+  "sourceFiles": 7,
+  "defaultSourceScanExit": 0,
+  "defaultSourceScanFindings": 0,
+  "correction": "Historical config_image_id receipt fields contain Docker .Id. Current archive demonstrates it is an OCI index digest, not the config blob digest. Preserve raw receipts; do not use that historical field as config proof.",
+  "saveReplayed": false
+}
