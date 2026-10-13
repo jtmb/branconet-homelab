@@ -1,0 +1,415 @@
+{
+  "scope": "Canonical lock-respecting prune and context composition pass; small causal trace only",
+  "source": "a720e4cd021de4d58467047777ec13087bccfbc6",
+  "pruneActorExit": 0,
+  "pruneChild": {
+    "status": 0,
+    "signal": null,
+    "errorCode": null
+  },
+  "pruneComplete": {
+    "phase": "prune",
+    "actualExit": 0,
+    "sourceUnchanged": true,
+    "performance": false,
+    "productionAdoption": false
+  },
+  "originalPackageAndLockBinding": {
+    "packageSHA256": "d32b9511c74bdcb940fe045d6604d4b41a585603593d4406f81e275b7907f961",
+    "lockSHA256": "32b54a6453b70a6438e5a1ed2f0e7a49cc1c971418bdd6eebb29cef4e9c0654c",
+    "originalPackageSHA256": "d32b9511c74bdcb940fe045d6604d4b41a585603593d4406f81e275b7907f961",
+    "originalLockSHA256": "32b54a6453b70a6438e5a1ed2f0e7a49cc1c971418bdd6eebb29cef4e9c0654c",
+    "command": [
+      "npm",
+      "prune",
+      "--omit=dev",
+      "--package-lock=true",
+      "--no-save",
+      "--ignore-scripts"
+    ],
+    "coherentBuildAndPrune": true,
+    "actualExit": 0
+  },
+  "preparation": {
+    "actualExit": 0,
+    "failure": null,
+    "childReaped": true,
+    "childSameBirthAbsent": true,
+    "elapsedSeconds": 72.89033942500828,
+    "runtime": false
+  },
+  "independentPreparation": {
+    "actual_exit": 0,
+    "failure": null,
+    "overall_acceptance": false,
+    "reader_birth_requires_root_fresh_absence": true,
+    "result": {
+      "compiled_manifest_sha256": "29d38a55f53db97906d2d6c3f7bbfaaa4836acab3711e84bb4eb898985283a5a",
+      "current_compiled_and_native_old_and_new_match": true,
+      "current_dependency_authority_objects": 40635,
+      "current_source_files": 274,
+      "fresh_copied_full_dependencies_equal": true,
+      "literal_external_preparation_exit": 0,
+      "native_manifest_sha256": "b6b9a0f9e646a642223140f6d686380da3f3e9d777f30596a38d2b0424043229",
+      "new_three_topdirs_mode": "0755",
+      "original_failed_actor_exit": 1,
+      "original_receipts_unchanged": true,
+      "overall_acceptance": false,
+      "runtime_dispatched": false
+    }
+  },
+  "actualToolMetadata": {
+    "npmVersion": "10.9.9",
+    "arboristVersion": "8.0.5",
+    "node": "v22.23.3",
+    "nodeSHA256": "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48",
+    "publicToolSources": [
+      {
+        "path": "/usr/local/lib/node_modules/npm/package.json",
+        "sha256": "7c04bf69824d17a1db64defd3a9a86d538781bf2d6ca2764e3f1143fa5b71166"
+      },
+      {
+        "path": "/usr/local/lib/node_modules/npm/lib/commands/prune.js",
+        "sha256": "3c7ebbd8d4b2f36835d25927f26eee3b6366e268d23d6f37fc82095644bf71e2"
+      },
+      {
+        "path": "/usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/package.json",
+        "sha256": "ef3199b9a2bff8840c6fbe243f0661b55ddfab0c08618402110ecc3624db9a82"
+      },
+      {
+        "path": "/usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js",
+        "sha256": "496a1cff821848cc5d01341a70d916b01d017a380a12553e30906a468f27a47f"
+      },
+      {
+        "path": "/usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/reify.js",
+        "sha256": "f3a2443071941e92d1dd176dc77dbc7ba669850c5d1f50bb7df8ef08b4cfb310"
+      }
+    ],
+    "fixedCommand": [
+      "npm",
+      "prune",
+      "--omit=dev",
+      "--package-lock=true",
+      "--no-save",
+      "--ignore-scripts"
+    ],
+    "offline": "true",
+    "audit": "false",
+    "fund": "false",
+    "updateNotifier": "false"
+  },
+  "prunedObjects": 29814,
+  "prunedManifestSHA256": "d25a265b1abdf2b0825a8ea65d9218a5066f3644c8ca9d586b07a706185c0c67",
+  "independentContextPost": {
+    "actual_exit": 0,
+    "failure": null,
+    "overall_acceptance": false,
+    "reader_own_birth_requires_root_fresh_absence": true,
+    "result": {
+      "actual_prune_only_actor_exit": 0,
+      "actual_tool_metadata": {
+        "arboristVersion": "8.0.5",
+        "audit": "false",
+        "fixedCommand": [
+          "npm",
+          "prune",
+          "--omit=dev",
+          "--package-lock=true",
+          "--no-save",
+          "--ignore-scripts"
+        ],
+        "fund": "false",
+        "node": "v22.23.3",
+        "nodeSHA256": "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48",
+        "npmVersion": "10.9.9",
+        "offline": "true",
+        "publicToolSources": [
+          {
+            "path": "/usr/local/lib/node_modules/npm/package.json",
+            "sha256": "7c04bf69824d17a1db64defd3a9a86d538781bf2d6ca2764e3f1143fa5b71166"
+          },
+          {
+            "path": "/usr/local/lib/node_modules/npm/lib/commands/prune.js",
+            "sha256": "3c7ebbd8d4b2f36835d25927f26eee3b6366e268d23d6f37fc82095644bf71e2"
+          },
+          {
+            "path": "/usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/package.json",
+            "sha256": "ef3199b9a2bff8840c6fbe243f0661b55ddfab0c08618402110ecc3624db9a82"
+          },
+          {
+            "path": "/usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/build-ideal-tree.js",
+            "sha256": "496a1cff821848cc5d01341a70d916b01d017a380a12553e30906a468f27a47f"
+          },
+          {
+            "path": "/usr/local/lib/node_modules/npm/node_modules/@npmcli/arborist/lib/arborist/reify.js",
+            "sha256": "f3a2443071941e92d1dd176dc77dbc7ba669850c5d1f50bb7df8ef08b4cfb310"
+          }
+        ],
+        "updateNotifier": "false"
+      },
+      "actual_tool_metadata_sha256": "59ac63f1b672de8ed6145063336e81fd9efa16a02cea32f0b2d1fff130cba623",
+      "complete_compiled_native_pruned_manifests_match": true,
+      "context_selection": {
+        "abi": 1,
+        "compiled_manifest_sha256": "29d38a55f53db97906d2d6c3f7bbfaaa4836acab3711e84bb4eb898985283a5a",
+        "exclude_exact_subtrees": [
+          "standalone/node_modules"
+        ],
+        "excluded_compiled_objects": 3332,
+        "excluded_rows_sha256": "d8ce4cad88d2cea43a612e67f22b1ac696f7244557dd11084b8c873fc4f271d8",
+        "node_modules_only_source": "exact_pruned_tree",
+        "original_compiled_unchanged": true,
+        "pruned_manifest_sha256": "d25a265b1abdf2b0825a8ea65d9218a5066f3644c8ca9d586b07a706185c0c67",
+        "pruned_objects": 29814,
+        "standalone_retained_objects": 715
+      },
+      "context_selection_sha256": "32bce66deb606ba4f9bbc215644fc49280a4e416060a6745ef419538ccdd3766",
+      "copy_context": "/home/brajam/.cache/bortus-controlled-perf/canonical-a720-pruned-artifacts-7082a658ec5e/copy-context",
+      "copy_context_manifest_sha256": "dcb3e5766265b6b0a4f07dca54db6c56a8584b4500300f62e5c11ca3032ba5a7",
+      "entrypoint_normalization": {
+        "copied_mode": "0755",
+        "normalized_copy_sha256": "41b57ab771ba397e1e8a10f5dd220ab59c2e664a5cc0133e0e9e3b3917d88433",
+        "original_blob_sha256": "41b57ab771ba397e1e8a10f5dd220ab59c2e664a5cc0133e0e9e3b3917d88433",
+        "original_unchanged": true
+      },
+      "exact_prune_container_absent": true,
+      "native_load_or_functionality_or_image_security_acceptance": false,
+      "new_readonly_Docker_jobs": [
+        {
+          "absent": true,
+          "actual_exit": 1,
+          "birth": {
+            "pgid": 2974043,
+            "pid": 2974043,
+            "sid": 2974043,
+            "startTicks": "40902373",
+            "uid": 1000
+          },
+          "reaped": true
+        }
+      ],
+      "overall_acceptance": false,
+      "partial21_status_sha256": "73dc1f4cd93e6e1aaaeed50dd43dbf5ba0c1aa758e78dfb7790fc2919f754bc6",
+      "recorded_original_unique_births_fresh_absent": 18,
+      "retained_dependency_objects": 40635,
+      "retained_original_build_actor_exit": 1,
+      "source_commit": "a720e4cd021de4d58467047777ec13087bccfbc6",
+      "source_objects": 274
+    }
+  },
+  "readerAndQueryFreshAbsent": true,
+  "rootTools": {
+    "sourceVerify": "906291",
+    "selected284ScanAndFresh": "01e732",
+    "sourceStage": "ebc2fb",
+    "actualPreparation": "a34a89",
+    "prepPost": "8b93a4",
+    "prepFresh": "24e143",
+    "actualPrune": "ae2ef8",
+    "post": "2a0445",
+    "postFresh": "7ddd75"
+  },
+  "sourceScans": {
+    "pruneFiles": 284,
+    "pruneActualExit": 0,
+    "pruneFindings": 0,
+    "postFiles": 6,
+    "postActualExit": 0,
+    "postFindings": 0,
+    "postFreshTool": "0491a3"
+  },
+  "smallCausal": {
+    "exactPost": {
+      "postcheckExit": 0,
+      "source": "a720e4cd021de4d58467047777ec13087bccfbc6",
+      "actualSupervisorExit": 0,
+      "publicRequests": 21,
+      "freshSQL": 65,
+      "actualCompiledAttachment": true,
+      "currentSource362Verified": true,
+      "currentGraphObjects": {
+        "dependencies": 40635,
+        "compiled": 5384
+      },
+      "preparationInputs": 32,
+      "fixturePods": 3,
+      "performanceAcceptance": false,
+      "productionAdoption": false,
+      "readOnly": true,
+      "observedUtc": "2026-10-13T16:54:26.468578+00:00"
+    },
+    "freshPost": {
+      "actualObservationOuterExit": 0,
+      "fixturePods": 3,
+      "source": "a720e4cd021de4d58467047777ec13087bccfbc6",
+      "freshIdentities": [
+        {
+          "pid": 2975176,
+          "startTicks": "40955024",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975183,
+          "startTicks": "40955029",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975184,
+          "startTicks": "40955037",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975221,
+          "startTicks": "40956266",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975234,
+          "startTicks": "40956298",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975247,
+          "startTicks": "40956341",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975260,
+          "startTicks": "40956374",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975261,
+          "startTicks": "40956377",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975357,
+          "startTicks": "40956523",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975426,
+          "startTicks": "40956658",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975443,
+          "startTicks": "40956793",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975455,
+          "startTicks": "40956928",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975487,
+          "startTicks": "40956994",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975500,
+          "startTicks": "40957027",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975513,
+          "startTicks": "40957064",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975554,
+          "startTicks": "40957099",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975573,
+          "startTicks": "40957131",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975594,
+          "startTicks": "40957482",
+          "sameIdentityAbsent": true
+        },
+        {
+          "pid": 2975317,
+          "startTicks": "40956405",
+          "sameIdentityAbsent": true
+        }
+      ],
+      "exactContainerQueries": [
+        {
+          "target": "7551ad40eaa5a4a3cb4c3681938b901f4650c029c2dd1d291c3241deffca1c9f",
+          "actualExit": 1,
+          "exactNotFound": true,
+          "queryIdentity": {
+            "pid": 2975688,
+            "startTicks": "40960317",
+            "pgid": 2975688,
+            "sid": 2975688
+          },
+          "queryReaped": true,
+          "querySameIdentityAbsent": true
+        },
+        {
+          "target": "bortus-warm-small-compiled-observation-20261013-v2-warm-compiled",
+          "actualExit": 1,
+          "exactNotFound": true,
+          "queryIdentity": {
+            "pid": 2975708,
+            "startTicks": "40960339",
+            "pgid": 2975708,
+            "sid": 2975708
+          },
+          "queryReaped": true,
+          "querySameIdentityAbsent": true
+        }
+      ],
+      "readOnly": true,
+      "signalsOrDeletes": false,
+      "sourceDependenciesInputsUnchangedReported": true,
+      "noReplay": true
+    },
+    "analysisSHA256": "efbd7c5205bbfd290ffa4f6fa0516129786b58673541837c2dd7bbd7145bc8d1",
+    "traceSHA256": "3c5ebf0192d55e2f0d01248872b376defb7a0f479dc603a9e88a12ae3c1424b2",
+    "allWarm20Retained": true,
+    "warmHeldUs": 94690,
+    "warmYieldWindowsUs": 89768,
+    "warmFSWindowsUs": 1680,
+    "warmSQLUs": 1715,
+    "warmResponseConstructorIncludingEnvelopeUs": 1397,
+    "limitations": [
+      "FS10\u219211 includes path setup/checks/hook cost; not pure filesystem CPU",
+      "Queue1\u21922 is actual owned admission wait, independent of firstSQL/ALS assumptions",
+      "Yield12\u219213 records real scheduled callback wait; includes other requests/framework/client/kernel activity, not CPU alone",
+      "Response32\u219233 includes envelope34\u219235 including availability30\u219231; nested spans are not additive",
+      "Response-minus-envelope includes headers/construction/hook cost; not an isolated encoder",
+      "HTTP write/end spans may nest, so synchronous emission uses interval union",
+      "BeforeAdmission and AfterResponse\u2192Emission are unattributed JWT/Next/scheduling windows, not classified pure work",
+      "Instrumentation changes latency; parent body validation/client work shares cgroup; no baseline/gate comparison",
+      "Current diagnostic starts publicJWT plus coldseed, not originaldriver auth/session startup; all20 warm results retained"
+    ],
+    "rootActor": "888b48",
+    "rootExact": "5a1580",
+    "rootFresh": "bade1d",
+    "rootAnalysis": "c1bb7e",
+    "sourceSelected8ScanExit": 0,
+    "sourceFindings": 0,
+    "sourceFresh": "3047cf"
+  },
+  "offlineFailedImmutable": {
+    "files": 70,
+    "ZIPMembers": 71,
+    "currentOriginals": 67,
+    "handoffSHA256": "95cd89d9deb29ae9f4cb18286d7c0582840c830942d3ce41ba4414a4d89f76d2",
+    "rootVerification": "ec1d28"
+  },
+  "newImageQualified": false,
+  "nativeRuntimeQualified": false,
+  "performanceAccepted": false,
+  "productionChanged": false,
+  "originalDataRetired": false,
+  "goalStatus": "active"
+}
