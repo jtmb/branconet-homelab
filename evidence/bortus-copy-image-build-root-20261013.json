@@ -1,0 +1,247 @@
+{
+  "scope": "Actual local canonical COPY-only image build; runtime/security/live acceptance pending",
+  "sourceCommit": "a720e4cd021de4d58467047777ec13087bccfbc6",
+  "actualRootTool": "9d9e0b",
+  "actorExit": 0,
+  "terminalSHA256": "16843485de93147bfafec1bb780b5d05d2d460931c45aeb9f6c94f04743abcba",
+  "recordSHA256": "93251658c20ef631fd32ce97b0b71e1d472a7c1f9ca72d4ea170d447df51d12b",
+  "actual": {
+    "actual_exit": 0,
+    "build_dispatched": true,
+    "build_exit": 0,
+    "failure": null,
+    "finalizer_steps": [],
+    "independent_root_closure_required": true,
+    "overall_acceptance": false,
+    "owner_created": true,
+    "phase": "completed",
+    "primary_refusal": null,
+    "result": {
+      "actual_jobs": [
+        {
+          "actual_exit": 0,
+          "birth": {
+            "pgrp": 2987049,
+            "pid": 2987049,
+            "ppid": 2986958,
+            "same_identity_absent": true,
+            "start_ticks": "41315714",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-01-tag-before",
+          "reaped": true,
+          "same_identity_absent": true
+        },
+        {
+          "actual_exit": 0,
+          "birth": {
+            "pgrp": 2987066,
+            "pid": 2987066,
+            "ppid": 2986958,
+            "same_identity_absent": true,
+            "start_ticks": "41316114",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-02-tag-before-dispatch",
+          "reaped": true,
+          "same_identity_absent": true
+        },
+        {
+          "actual_exit": 0,
+          "birth": {
+            "pgrp": 2987079,
+            "pid": 2987079,
+            "ppid": 2986958,
+            "same_identity_absent": true,
+            "start_ticks": "41316486",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-03-build",
+          "reaped": true,
+          "same_identity_absent": true
+        },
+        {
+          "actual_exit": 0,
+          "birth": {
+            "pgrp": 2987340,
+            "pid": 2987340,
+            "ppid": 2986958,
+            "same_identity_absent": true,
+            "start_ticks": "41325825",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-04-inspect",
+          "reaped": true,
+          "same_identity_absent": true
+        }
+      ],
+      "application_tree": "22dd3622b5b03a78ef080ed3db8054badec63319",
+      "build_exit_code": 0,
+      "component_bindings": {
+        "Dockerfile": "0da150a0bca1839f9b81ae513a468eaa831512c73c024a099d785963a4a4d6d7",
+        "app": "dcb3e5766265b6b0a4f07dca54db6c56a8584b4500300f62e5c11ca3032ba5a7",
+        "buildx": "84554b12c90d21f3627d7f6a99aeabf69dc3aab8c2de41ed6f85097ed7cfd2c0",
+        "component_actual_terminal": "55e62764e7cb8b48877b9fe99c546412b2e699b93725a0a08fc4d00740a9900d",
+        "component_post_terminal": "5a83be6270c68a6f9424cd6136b5cc66f105cbcc2e298c095efc3ea0cda5c06e",
+        "docker": "018f1a3d2dacf73614077ded6d05d2b9954630627a3722f1f19e46f5c973cec6",
+        "kubectl": "a3c4741294f061550b30bd2e3f357197ffbac37eefc5a45d686fe9cd29032b75",
+        "native_final_consumer": "8dde4ce66cf7045bfa7d5c0c0fb8ad3ff3d98809fbe24b76487b520ea664f6c2",
+        "node_runtime_dirs": "b273506aa03ae0892b3ba5ff5e9357102cdedb3ea30ce9d2927a9a1791aae399",
+        "rootfs": "2f2af559740c6185088927bfd031afd72c2b466fcae93bb04a9f75bdf9022849",
+        "signed_provenance": "c846f4f84b4a463f75abb5e7fb53c639927c18f2815e7ea00fd3ba0bd9f3dcfc",
+        "source_archive": "43444c972a636469bc816cc9c36935afff785fb1ba25e4d3e92bc5eb65162258",
+        "source_manifest": "c0befdb818f4c8f67ccb7ef17f868bfe6d8322883493abca21686634554e92cc",
+        "status": "73dc1f4cd93e6e1aaaeed50dd43dbf5ba0c1aa758e78dfb7790fc2919f754bc6"
+      },
+      "config_image_id": "sha256:1f842e41cd4ab136c26e41ebb3a659305be435e0657a0d44e82d5b226360bdd0",
+      "context_sha256": "43444c972a636469bc816cc9c36935afff785fb1ba25e4d3e92bc5eb65162258",
+      "daemon_CPU_memory_quota_claimed": false,
+      "image_bytes": 275889397,
+      "image_manifest_digest": null,
+      "image_tag": "bortus:release-a720e4cd021de4d58467047777ec13087bccfbc6",
+      "labels": {
+        "io.branconet.bortus.build-owner": "67e5f0c8-6319-4f76-a083-c9b399ba3c93",
+        "io.branconet.bortus.context-sha256": "43444c972a636469bc816cc9c36935afff785fb1ba25e4d3e92bc5eb65162258",
+        "io.branconet.bortus.manifest-sha256": "c0befdb818f4c8f67ccb7ef17f868bfe6d8322883493abca21686634554e92cc",
+        "io.branconet.bortus.source-tree": "22dd3622b5b03a78ef080ed3db8054badec63319",
+        "org.opencontainers.image.revision": "a720e4cd021de4d58467047777ec13087bccfbc6"
+      },
+      "manifest_sha256": "c0befdb818f4c8f67ccb7ef17f868bfe6d8322883493abca21686634554e92cc",
+      "no_container_started": true,
+      "overall_acceptance": false,
+      "owner": "67e5f0c8-6319-4f76-a083-c9b399ba3c93",
+      "partial_packages": 21,
+      "phase": "completed",
+      "runtime_digest_qualified": false,
+      "slices": 72,
+      "source_commit": "a720e4cd021de4d58467047777ec13087bccfbc6"
+    }
+  },
+  "freshActorClosure": {
+    "rootTool": "996391",
+    "actualExit": 0,
+    "recordedCLIandOwnBirthsAbsent": 5,
+    "daemonBuildClosureClaimed": false
+  },
+  "publicConfigEnv": {
+    "rootTool": "801549",
+    "actualExit": 0,
+    "fixedConfigImageId": "sha256:1f842e41cd4ab136c26e41ebb3a659305be435e0657a0d44e82d5b226360bdd0",
+    "values": [
+      "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "NODE_ENV=production",
+      "NEXT_TELEMETRY_DISABLED=1",
+      "PORT=4000",
+      "HOSTNAME=0.0.0.0",
+      "DATABASE_URL=file:/data/bortus.db",
+      "BORTUS_DISABLE_PROVISIONING=true"
+    ],
+    "noContainerStarted": true
+  },
+  "source": {
+    "handoffSHA256": "3a68203e31bd8708fea0dda779aff71ad7415b09cfe1956cdac76413c74ad4bf",
+    "reviewRootTool": "f5f07d",
+    "dispatcherSHA256": "6668c09e057f9a75c0d8fdb1896a279b5580600c27d6e4f70a2765097684e459",
+    "defaultSelectedScan": {
+      "rootTool": "08963c",
+      "files": 10,
+      "actualExit": 0,
+      "findings": 0
+    },
+    "freshCurrentAndStageRootTool": "642e5e"
+  },
+  "rawRelease": {
+    "actualExit": 0,
+    "owned": {
+      "pid": 45160,
+      "creationFileTime": 134363863879827631
+    },
+    "jobTotalProcesses": 555,
+    "jobActiveProcessesAtClosure": 0,
+    "jobTerminatedProcesses": 0,
+    "sourceCurrentUnchanged": true,
+    "sourceArchiveSHA256": "43444c972a636469bc816cc9c36935afff785fb1ba25e4d3e92bc5eb65162258",
+    "sourceManifestSHA256": "c0befdb818f4c8f67ccb7ef17f868bfe6d8322883493abca21686634554e92cc",
+    "includedFiles": 274,
+    "applicationTree": "22dd3622b5b03a78ef080ed3db8054badec63319",
+    "elapsedSeconds": 9.25,
+    "imageBuilt": false,
+    "overallAcceptance": false
+  },
+  "rawReleaseRootTool": "3f4b43",
+  "rawReleaseIndependentCurrentAndStage": {
+    "rootTool": "fb62ba",
+    "actualExit": 0,
+    "tarGitBlobModeBindings": 274,
+    "producerSameBirthAbsent": true,
+    "exclusiveLinuxFiles": 2
+  },
+  "earlierUnexecutedV1": "Component exit-code preflight mismatch caught in source review before staging/execution",
+  "preservedActualV2Failure": {
+    "rootTool": "3d8cba",
+    "actorExit": 1,
+    "literalFailure": "copy_image_late_durability_or_deadline",
+    "ownerAbsentRootTool": "da0fa9",
+    "ownerCreated": false,
+    "buildDispatched": false,
+    "exactOriginalPrimaryStage": "unrecorded",
+    "actualExpiryProved": false,
+    "currentReadOnlyDiagnostic": {
+      "rootTool": "528558",
+      "outerExit": 0,
+      "firstFailedStage": 8,
+      "scope": "current V2 rootfs tree_check predicate sample, not reconstructed original exception"
+    },
+    "currentReadOnlyMetadata": {
+      "rootTool": "2c860b",
+      "outerExit": 0,
+      "objects": 904,
+      "exactMismatches": [
+        {
+          "path": "tmp",
+          "type": "directory",
+          "signedMode": "01777"
+        },
+        {
+          "path": "var/tmp",
+          "type": "directory",
+          "signedMode": "01777"
+        }
+      ]
+    }
+  },
+  "V3CorrectionScope": "Only exact pinned empty rootfs tmp and var/tmp directories allow signed sticky01777, original filesystem untouched; app/components retain strict checks; numeric primary failures no longer overwritten when owner absent",
+  "threePodOriginals": {
+    "rootTool": "94e811",
+    "actualExit": 0,
+    "currentOriginalsAndCRC": 173
+  },
+  "applicationDocsPublication": {
+    "commit": "d456072e54e2e83f77460ffcfaedbb570e73f203",
+    "rootTool": "7eac6d",
+    "actualExit": 0,
+    "currentRawGitDocs": 3,
+    "ZIPoriginalsCRCAndHash": 21,
+    "frontendUnchanged": true
+  },
+  "workerCandidate": {
+    "scope": "Separate held source-only evaluation; no compiler/runtime/benchmark dispatched",
+    "initialHandoffSHA256": "c242113fe9b60c092bf1d556b12dded33a0c0ab7fc37cd636ae5747560c21679",
+    "rootReviewTool": "3ee2e2",
+    "closeBeforeAcknowledgementGapFound": true,
+    "correctionPending": true,
+    "adopted": false
+  },
+  "independentFullImageInputPostPending": true,
+  "exportDigestQualified": false,
+  "runtimeQualified": false,
+  "fullImageSecurityQualified": false,
+  "performanceGate": "A07/A21 remain failed/open; two-reader candidate unadopted",
+  "productionDeployed": false,
+  "originalDataRetired": false,
+  "overallAcceptance": false
+}
