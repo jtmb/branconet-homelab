@@ -1,0 +1,159 @@
+{
+  "abi": 1,
+  "source": "a720e4cd021de4d58467047777ec13087bccfbc6",
+  "compiledBuildSource": "16adaeaac8d38de57fe0cbdb01e9ab2be3bd7f27",
+  "rootActualObservationTool": "405d77",
+  "rootExactAndFreshTool": "4a24c5",
+  "rootFocusedLeaseTool": "864c97",
+  "actualOuterExit": 0,
+  "requests": 21,
+  "podsPerResponse": 1000,
+  "freshSQL": 65,
+  "sessionQueries": 21,
+  "schemaVersionQueries": 42,
+  "initialSchemaQueries": 2,
+  "memoHits": 20,
+  "memoMisses": 1,
+  "warmCLICalls": 0,
+  "allCurrentFieldsBodyOraclesPassed": true,
+  "actualOriginalNextExitAndTerminalSealVerified": true,
+  "capturedHostBirthsFreshAbsent": 19,
+  "exactContainerIDAndNameQueriesAbsent": 2,
+  "currentSourceFiles": 362,
+  "currentCompiledObjects": 5384,
+  "currentDependencyObjects": 40635,
+  "currentPreparationInputsPlusIntent": 25,
+  "effectiveDeadlineSeconds": 180,
+  "closureReserveSeconds": 60,
+  "retainedErroneousTerminalAnnotationSeconds": 300,
+  "annotationPreservedAndIndependentlyGuarded": true,
+  "traceSHA256": "04e4b75ea06e94f8614cbaed3af1357a03bdac80bd715694dc42aaad52491c07",
+  "percentileDefinition": "nearest rank sorted[ceil(p*n)-1], all20 warm requests2..21",
+  "metrics": {
+    "admissionQueue": {
+      "n": 20,
+      "p50Us": 29506,
+      "p95Us": 32969,
+      "maxUs": 36238,
+      "sumUs": 490905
+    },
+    "heldOwner": {
+      "n": 20,
+      "p50Us": 3337,
+      "p95Us": 12693,
+      "maxUs": 12821,
+      "sumUs": 106177
+    },
+    "identitySetupAndChecks": {
+      "n": 40,
+      "p50Us": 34,
+      "p95Us": 69,
+      "maxUs": 119,
+      "sumUs": 1542
+    },
+    "yieldWindows": {
+      "n": 40,
+      "p50Us": 1977,
+      "p95Us": 6996,
+      "maxUs": 8743,
+      "sumUs": 101597
+    },
+    "responseIncludingEnvelope": {
+      "n": 20,
+      "p50Us": 436,
+      "p95Us": 541,
+      "maxUs": 583,
+      "sumUs": 8601
+    },
+    "envelopeIncludingAvailability": {
+      "n": 20,
+      "p50Us": 7,
+      "p95Us": 16,
+      "maxUs": 47,
+      "sumUs": 201
+    },
+    "warmSQL": {
+      "n": 60,
+      "p50Us": 23,
+      "p95Us": 49,
+      "maxUs": 70,
+      "sumUs": 1588
+    }
+  },
+  "serverWarmArrivalSpreadUs": 84037,
+  "parentWarmElapsedUs": 151936,
+  "limitations": [
+    "Instrumented finite current fixture; no baseline comparison or original performance acceptance",
+    "Parent full-field JSON validation shares2CPU cgroup; actual server starts spread84.037ms",
+    "Yield waits include client/framework/kernel scheduling exposure; not removable CPU",
+    "Nested Response/envelope/availability spans overlap and are not additive"
+  ],
+  "publicObserverControls": {
+    "earlierV5": 14,
+    "finalV6": 14,
+    "actualOuterExitEach": 0,
+    "capturedHostBirthsEachFreshAbsent": 15,
+    "exactContainerQueriesEach": 2,
+    "actualCompiledAttachmentFromControls": false
+  },
+  "typedEnvelopeControls": {
+    "count": 9,
+    "actualOuterExit": 0,
+    "rootActualTool": "1f5268",
+    "noTransportOrAPICalls": true,
+    "liveTCPSuccess": false
+  },
+  "immutablePacketsRootVerified": [
+    {
+      "packet": "app-sync-warm-pod-observer-controls-qualified-20261013-v2",
+      "handoffSHA256": "ebd285f24fda0b85dd030752b553c6ebb3a4018d62bb8f1d14a3f5d67b0143bd",
+      "archiveFilesVerified": 103,
+      "currentPacketFilesVerified": 0,
+      "currentOriginalLocationsVerified": 103,
+      "CRCVerified": true,
+      "workloadReplayed": false
+    },
+    {
+      "packet": "app-sync-warm-pod-observer-controls-qualified-20261013-v3",
+      "handoffSHA256": "b5551fe47f4f070ed8f62f7113eddcdc8875b26ac7126d4bb2eb848f4c9372be",
+      "archiveFilesVerified": 107,
+      "currentPacketFilesVerified": 0,
+      "currentOriginalLocationsVerified": 107,
+      "CRCVerified": true,
+      "workloadReplayed": false
+    },
+    {
+      "packet": "app-sync-warm-pod-compiled-observation-qualified-20261013-v2",
+      "handoffSHA256": "6f2dfe29e4ed348ab6ea698c7ed8887a41d4576981ef9f36b0ff25df41a43187",
+      "archiveFilesVerified": 130,
+      "currentPacketFilesVerified": 0,
+      "currentOriginalLocationsVerified": 130,
+      "CRCVerified": true,
+      "workloadReplayed": false
+    },
+    {
+      "packet": "native-api-secret-proof-20261012-87c8146d/public-tcp-e983-refusal-cleanup-originals-immutable-v1",
+      "handoffSHA256": "8e2ad1186e5e7fa35b82c0efa54724e076816e2892ff7ab236306bf214b43ef8",
+      "archiveFilesVerified": 261,
+      "currentPacketFilesVerified": 261,
+      "currentOriginalLocationsVerified": 0,
+      "CRCVerified": true,
+      "workloadReplayed": false
+    }
+  ],
+  "nextProposal": {
+    "name": "lazy immutable row Blob with fresh per-request availability composition",
+    "sourceOnly": true,
+    "productionChange": false,
+    "runtimeDispatched": false,
+    "rootRawGitCRCVerification": "8bd383"
+  },
+  "originalPerformanceGate": "failed/open, two concurrent warm cases regress",
+  "nativeConcurrency": 8,
+  "oneActiveHeldThroughSettlement": true,
+  "realSetImmediateYieldsPerRead": 2,
+  "queuedLimit": 64,
+  "readerDeadlineMs": 5000,
+  "productionAdoption": false,
+  "originalDataRetired": false
+}

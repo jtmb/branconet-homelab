@@ -2,7 +2,7 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
 
-Current checkpoint: a720 passes composed functional and fresh compiled10HTTP/12SQL qualification, but its unchanged original three-pair comparison fails the no-warm-regression gate in two concurrent cases. A07 is failed/open; the six complete observations and fresh cleanup are retained. Recovery helper29/identity9 and sampled utility-cache metadata/closure pass within scope. The fresh public TCP attempt failed; its processes and three exact-owned temporary resources are now independently confirmed closed/absent after guarded cleanup. Final image/security, live TCP/crypto recovery, latest backups and guarded rollout remain open. Native concurrency stays eight; no candidate adoption or original data retirement.
+Current checkpoint: a720 passes composed functional and fresh compiled10HTTP/12SQL qualification, but its unchanged original three-pair comparison fails the no-warm-regression gate in two concurrent cases. A07 is failed/open; the six complete observations and fresh cleanup are retained. Recovery helper29/identity9 and sampled utility-cache metadata/closure pass within scope. The fresh public TCP attempt failed; its processes and three exact-owned temporary resources are now independently confirmed closed/absent after guarded cleanup. Final image/security, live TCP/crypto recovery, latest backups and guarded rollout remain open. A separate compiled21-request trace passes correctness and attribution; it confirms existing row memoization and leaves a bounded secondary response-body hypothesis to evaluate. Native concurrency stays eight; no candidate adoption or original data retirement.
 
 ## 2026-10-12: flat16 functional qualification and paired execution complete; performance and rollout remain open
 
@@ -1460,3 +1460,24 @@ Default corrected-source scanning retains literal exit1 and two public checksum-
 Separate cleanup787848d38638 exits0 in1.980 seconds under its original30-second deadline, with an early recorded child gate and the same inherited deadline. Fresh full specs and fixed UIDs precede each once-only DELETE with current resourceVersion preconditions. Both utility Pods are verified absent before withdrawing their policy. All three actions and the five final read-only checks pass. Root freshly verifies the recorded supervisor, child and24 CLI jobs absent; original refused ledgers remain byte-identical. The two selected cleanup sources pass default scanning with zero findings and fresh scanner absence. This root outer is not claimed as a generally qualified failure-closure controller.
 
 A separate five-query read-only observer exits0 and independently confirms all three names/UIDs absent from complete typed collections, all200 source files unchanged, and its reader/five jobs freshly absent. The original TCP actor remains exit1 and its gate remains open. No private material, benchmark replay, live app adoption or original data retirement follows. The [root receipt](evidence/bortus-public-tcp-refusal-root-20261013.json) includes both failure and cleanup scopes.
+
+### Compiled warm-request attribution with unchanged bounds (2026-10-13)
+
+The [root causal receipt](evidence/bortus-warm-causal-root-20261013.json) qualifies one current compiled trace: one cold seed plus20 warm requests return every1000-Pod field correctly. All65 fresh queries, explicit request/operation/database ownership,20 row-memo hits and actual original Next shutdown/terminal publication checks pass. Independent review verifies362 source files,5384 compiled objects,40635 dependency objects and25 preparation inputs;19 captured host births and exact container ID/name queries are absent. Root verifies103 earlier-control,107 final-control,130 trace and261 TCP failure/cleanup originals. Nine pure typed-envelope tests pass separately; they do not qualify live denial.
+
+Across20 disjoint held-reader intervals,106.177ms includes101.597ms in scheduled-yield windows,1.542ms in identity setup/check windows and1.588ms in SQLite calls. Response construction occupies8.601ms; envelope work occupies0.201ms and overlaps it. These are instrumented wall spans, not isolated CPU costs. Warm row projection/stringification is already memoized. Nearest-rank p50/p95 is used consistently with the frozen driver. All20 client promises start together, but server arrivals spread84.037ms; parent full-field validation shares the2CPU cgroup. The151.936ms parent phase is not original benchmark latency or a simultaneous server burst.
+
+The dispatcher enforces its original180-second deadline before verification and retains60 seconds for closure. The inherited controller incorrectly labels its terminal annotation300; that original remains unchanged. A focused independent source/deadline guard proves180 and records the discrepancy without replaying the observation or current-graph/container checks.
+
+```mermaid
+flowchart LR
+  A[Fresh authenticated request] --> B[Admission queue]
+  B --> C[Identity checks and real yield]
+  C --> D[Fresh SQLite read]
+  D --> E[Identity checks and real yield]
+  E --> F[Existing redacted row JSON memo]
+  F --> G[Fresh availability and response body]
+  G --> H[HTTP delivery]
+```
+
+A distinct secondary hypothesis proposes a lazy immutable row Blob and a fresh per-request availability/body composition; Blob is an immutable representation in the pinned [Node22 documentation](https://nodejs.org/download/release/v22.23.3/docs/api/buffer.html#class-blob). Complete-read costs, clone/cancel/mutation isolation and small-response behavior remain unproved. No source edit or adoption follows. Both real yields, one active reader through settlement,64 queued reads,5000ms deadline and native8/16MiB/32MiB/10000-item bounds stay fixed. Original performance gates remain failed/open; final image/security, live TCP/crypto recovery, latest backups, guarded rollout and original data retirement remain open.
