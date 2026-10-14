@@ -1141,7 +1141,7 @@
     "newNodeDefaultSuiteExit": 0,
     "newNodeFailures": 0,
     "privateRecoveryProved": false,
-    "allFiveDiagnosticTemporaryResourcesAbsent": true,
+    "allFiveDiagnosticTemporaryResourcesAbsent": false,
     "performanceAccepted": false,
     "records": [
       {
@@ -1351,19 +1351,12 @@
       "applicationRuntimeAccepted": false
     },
     "latestPublicRecoveryDiagnostic": {
-      "run": "804f6e2b6694",
-      "actorExit": 1,
-      "podRVOnlyDifferent": true,
-      "atSampleEntrySnapshot": true,
-      "metadataAndIPObservedEqual": true,
-      "allKnownTwentyStatusFieldsEqual": true,
-      "untrackedStatusDeltaObserved": true,
-      "managedFieldsDeltaObserved": true,
-      "whichStatusPathOrWriterProved": false,
-      "cleanupExit": 0,
-      "independentExit": 0,
-      "allFiveNamesUIDsAbsent": true,
-      "laterNineBirthsAbsent": true
+      "run": "855ecc9cd780",
+      "dispatched": true,
+      "outcomeVerified": false,
+      "cleanupVerified": false,
+      "strictRVGuardChanged": false,
+      "privateMaterialReachable": false
     },
     "a13FiveColumnAttempt": {
       "serverExit": 1,
@@ -1515,11 +1508,12 @@
       "imageExportExit": 0,
       "independentSavedChainExit": 0,
       "OCIConfigDigest": "sha256:41bb50990f9c037179f36cf2e1d12b82812711cbf21ee9e28b06dfad309c37ed",
-      "fullFilesystemQualified": false,
+      "fullFilesystemQualified": true,
       "newImageSecurityAccepted": false,
       "appNativeTLSAccepted": false,
       "performanceAccepted": false,
-      "productionChanged": false
+      "productionChanged": false,
+      "filesystemObjects": 31794
     },
     "accountingObservationControls": {
       "testsPassed": 18,
@@ -1527,7 +1521,8 @@
       "laterExit": 0,
       "strictRVGuardChanged": false,
       "liveRecoveryAccepted": false
-    }
+    },
+    "publicDiagnosticCleanupPending": true
   },
   "current6eRawSourceQualification": {
     "scope": "Current6e raw-Git archive, independent provenance and default selected production-source scan only",
@@ -1802,5 +1797,74 @@
     "appNativeTLSAccepted": false,
     "performanceAccepted": false,
     "productionChanged": false
+  },
+  "current6eFullFilesystem": {
+    "scope": "Complete new current6e/newa7 ordered filesystem metadata/content comparison only",
+    "actorTool": "8441a4",
+    "actualExit": 0,
+    "independentTool": "a5be13",
+    "independentExit": 0,
+    "laterTool": "e758a2",
+    "laterExit": 0,
+    "objects": 31794,
+    "layers": 13,
+    "inventoryBytes": 6808223,
+    "inventorySHA256": "2433f78187c63e13768dabd8bf4d5b846c7460b33c073f0d38a0d963fa410aea",
+    "expandedRegularBytes": 935551356,
+    "pathMismatches": 0,
+    "metadataMismatches": 0,
+    "actorAndIndependentReaderBirthsAbsent": true,
+    "currentManifestPins": 3,
+    "sourceHelpersExact": 25,
+    "noHostExtractionOrXattrApplication": true,
+    "defaultSourceScan": {
+      "actualExit": 0,
+      "files": 6,
+      "findings": 0
+    },
+    "independentSourceScan": {
+      "combinedFiles": 259,
+      "actualExit": 1,
+      "findings": 4,
+      "selectedIndependentSourceFiles": 1,
+      "selectedIndependentSourceFindings": 0,
+      "classification": "Four exact unchanged previously classified804 fixture/public hashes",
+      "unresolved": 0,
+      "suppressionOrReplay": false
+    },
+    "NodeLoaderAppOrTLSExecuted": false,
+    "securityAccepted": false,
+    "performanceAccepted": false,
+    "productionChanged": false
+  },
+  "public855Dispatch": {
+    "scope": "Dispatched public-only strict checkpoint diagnostic; outcome and cleanup verification pending",
+    "run": "855ecc9cd780",
+    "controls": [
+      "b05e9952774e",
+      "27b094647c1b"
+    ],
+    "actualDispatchTool": "6b0cec",
+    "wholeSeconds": 600,
+    "OSCloseSeconds": 1,
+    "sourceReviewTool": "96ffe3",
+    "sourceReviewExit": 0,
+    "stagerTool": "fa0cd9",
+    "stageExit": 0,
+    "runtimeSources": 246,
+    "unchangedVs804": 244,
+    "strictGateSHA256": "57d0d4808a304769b89068b594095f9b7c8743cafee63d24f36da0e71548a41c",
+    "runtimeManifestSHA256": "e0ef31a26ffebe01f2f5efcb759e720a0b19a8c95f4309f8c4479ca9006c65d9",
+    "actual18ControlsQualified": true,
+    "originalNetworkOraclesAndPrivateStopPreserved": true,
+    "sourceScanActualExit": 1,
+    "sourceScanFindings": 4,
+    "sourceScanUnresolved": 0,
+    "sourceScanNoSuppressionOrReplay": true,
+    "outcomeVerified": false,
+    "cleanupVerified": false,
+    "privateMaterialReachable": false,
+    "RVGuardChanged": false,
+    "productionImageChanged": false
   }
 }
