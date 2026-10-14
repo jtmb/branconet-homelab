@@ -121,6 +121,59 @@ class RecoverySpecs(unittest.TestCase):
         self.assertEqual(m.matches(final, actual, UID, runtime=True)['uid'], UID)
         with self.assertRaises(ValueError): m.ephemeral_update(final, actual, self.p['ephemeral_api'], UID)
 
+    def test_ephemeral_api_mount_uses_supported_whole_readonly_volume(self):
+        api = self.p['ephemeral_api']
+        self.assertEqual(api['volumeMounts'], [
+            {'name': 'proof', 'mountPath': '/memory-proof', 'readOnly': True}])
+        files = {
+            '--client-ca-file': 'ca.crt', '--tls-cert-file': 'apiserver.crt',
+            '--tls-private-key-file': 'apiserver.key', '--service-account-key-file': 'sa.pub',
+            '--service-account-signing-key-file': 'sa.key',
+            '--encryption-provider-config': 'encryption-config.json',
+        }
+        for flag, name in files.items():
+            self.assertIn(flag + '=/memory-proof/proof/' + name, api['command'])
+        for mount in api['volumeMounts']:
+            self.assertNotIn('subPath', mount)
+            self.assertNotIn('subPathExpr', mount)
+        # Ordinary containers retain their existing writable subdirectory mounts.
+        for container in self.pod['spec']['containers']:
+            self.assertEqual(container['volumeMounts'][:2], [
+                {'name': 'proof', 'mountPath': '/proof', 'subPath': 'proof'},
+                {'name': 'tools', 'mountPath': '/tools', 'subPath': 'tools'}])
+
+    def test_ephemeral_mount_or_file_path_drift_is_rejected(self):
+        for mutation in ('subPath', 'subPathExpr', 'writable', 'extraMount', 'oldFlag'):
+            api = copy.deepcopy(self.p['ephemeral_api'])
+            if mutation in ('subPath', 'subPathExpr'):
+                api['volumeMounts'][0][mutation] = 'proof'
+            elif mutation == 'writable':
+                api['volumeMounts'][0]['readOnly'] = False
+            elif mutation == 'extraMount':
+                api['volumeMounts'].append({'name': 'tools', 'mountPath': '/tools'})
+            else:
+                api['command'] = [arg.replace('=/memory-proof/proof/', '=/proof/')
+                                  for arg in api['command']]
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                m.ephemeral_update(self.pod, resource(self.pod, runtime=True), api, UID)
+            final = copy.deepcopy(self.pod)
+            final['spec']['ephemeralContainers'] = [self.p['ephemeral_api']]
+            actual = resource(final, runtime=True)
+            actual['spec']['ephemeralContainers'] = [api]
+            self.refuse(actual, final, runtime=True)
+
+    def test_ephemeral_empty_resource_default_only_is_accepted(self):
+        final = copy.deepcopy(self.pod)
+        final['spec']['ephemeralContainers'] = [self.p['ephemeral_api']]
+        actual = resource(final, defaults=True, runtime=True)
+        actual['spec']['ephemeralContainers'][0]['resources'] = {}
+        self.assertEqual(m.matches(final, actual, UID, runtime=True)['uid'], UID)
+        for value in (None, [], {'limits': {'cpu': '1'}}, {'requests': {}}):
+            bad = copy.deepcopy(actual)
+            bad['spec']['ephemeralContainers'][0]['resources'] = value
+            with self.subTest(resources=value):
+                self.refuse(bad, final, runtime=True)
+
     def test_modified_api_program_and_invalid_reply_refuse(self):
         current = resource(self.pod, runtime=True)
         api = copy.deepcopy(self.p['ephemeral_api']); api['command'].append('--anonymous-auth=true')

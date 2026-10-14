@@ -81,21 +81,20 @@ def proposals(run_id, exact_program_text):
 def api_container():
     return {'name': 'api', 'image': API_IMAGE, 'imagePullPolicy': 'Never',
            'securityContext': dict(copy.deepcopy(SC), capabilities={'drop': ['ALL'], 'add': ['NET_BIND_SERVICE']}),
-           'volumeMounts': [{'name': 'proof', 'mountPath': '/proof', 'subPath': 'proof'},
-                            {'name': 'tools', 'mountPath': '/tools', 'subPath': 'tools'}],
+           'volumeMounts': [{'name': 'proof', 'mountPath': '/memory-proof', 'readOnly': True}],
            'command': ['/go-runner', '--log-file=/dev/null', '--also-stdout=false',
                '--redirect-stderr=true', '/usr/local/bin/kube-apiserver',
                '--bind-address=127.0.0.1', '--advertise-address=127.0.0.1',
                '--secure-port=16443', '--etcd-servers=http://127.0.0.1:32379',
                '--etcd-compaction-interval=0s', '--endpoint-reconciler-type=none',
                '--authorization-mode=Node,RBAC', '--enable-admission-plugins=NodeRestriction',
-               '--client-ca-file=/proof/ca.crt', '--tls-cert-file=/proof/apiserver.crt',
-               '--tls-private-key-file=/proof/apiserver.key',
+               '--client-ca-file=/memory-proof/proof/ca.crt', '--tls-cert-file=/memory-proof/proof/apiserver.crt',
+               '--tls-private-key-file=/memory-proof/proof/apiserver.key',
                '--service-account-issuer=https://kubernetes.default.svc.cluster.local',
-               '--service-account-key-file=/proof/sa.pub',
-               '--service-account-signing-key-file=/proof/sa.key',
+               '--service-account-key-file=/memory-proof/proof/sa.pub',
+               '--service-account-signing-key-file=/memory-proof/proof/sa.key',
                '--service-cluster-ip-range=10.96.0.0/12',
-               '--encryption-provider-config=/proof/encryption-config.json', '--v=0']}
+               '--encryption-provider-config=/memory-proof/proof/encryption-config.json', '--v=0']}
 
 SNAPSHOT_STATUS = ['etcdutl', '--write-out=json', 'snapshot', 'status', '/proof/snapshot.db']
 RESTORE = ['etcdutl', 'snapshot', 'restore', '/proof/snapshot.db',
@@ -171,6 +170,8 @@ def _pod_spec(expected, actual):
         for wanted, observed in zip(expected[key], actual[key]):
             _need(type(observed) is dict)
             _container_defaults(wanted, observed)
+            if key == 'ephemeralContainers':
+                _known_absent_defaults(wanted, observed, {'resources': {}})
     _need(_exact(expected, actual))
 
 def _status_matches(proposal, obj):

@@ -1,0 +1,38 @@
+{
+  "scope": "Migration source integration only; no live private recovery",
+  "previousRepoSourceSHA256": "f0804decca97727e44c99422c4282927a25d9e88fef5bbb8878da77bbb97898c",
+  "newSourceSHA256": "c9b562346e781a9a31ccbc542be5dbfb9ecbc7f83c11e8265ba26befb01b9765",
+  "newSourceEqualsQualifiedPublicDiagnostic": true,
+  "changes": [
+    "ephemeral whole proof volume read-only and six file paths",
+    "literal empty ephemeral resources default normalization"
+  ],
+  "actualTestCommand": [
+    "python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "scripts/migration/tests",
+    "-p",
+    "test_bortus_api_recovery_specs.py"
+  ],
+  "actualTestExit": 0,
+  "testsPassed": 15,
+  "toolOutputChunk": "0a6ed0",
+  "priorRedTestOutputChunk": "30770c",
+  "priorImplementationCopyGuardsRefusedBeforeMutation": true,
+  "testsSHA256": "c084a5c91646fb3e3e4bc43ac23fb6a4319978a5c18756194f88f6fe5b05992b",
+  "docsChecked": 70,
+  "affectedDocs": [
+    "docs/BORTUS-ETCD-API-PROOF.md",
+    "docs/BORTUS-ADMISSION-QUALIFICATION.md",
+    "docs/BORTUS-DEPLOYMENT.md",
+    "docs/MIGRATION-OPERATIONS.md"
+  ],
+  "oldFrozenActorsRepinned": false,
+  "privateMaterialReleased": false,
+  "productionChanged": false,
+  "privateRecoveryQualified": false
+}
