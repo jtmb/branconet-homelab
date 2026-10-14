@@ -199,3 +199,7 @@ k8s-rewrite/
         ├── kustomization.yaml
         └── plex/
 ```
+
+## 2026-10-14: remaining five-column sort attempt fails at fixture resource lookup
+
+The [literal A13 failure receipt](../evidence/bortus-a13-five-column-failure-root-20261014.json) retains server1/browser1. Deployments Restarts, Nodes Pods/Age and Namespaces Age complete eight directions with wire/display preconditions and unchanged complete row identity checks. Ingress stops at the six-row API length assertion; the failed body was not separately retained. Source and compiled command inspection identifies a fixture mismatch: it wrote `ingresses.json` while the app requests singular `ingress` and the fake CLI reads `ingress.json`. The whole five-column matrix remains unqualified; a separate source-only fixture correction keeps the browser and all ten expected observations byte-identical. Exact/Linux/Windows posts pass with374 source/39 inputs/5383 compiled/40635 dependency objects current,151 Linux births absent,10 Windows births with no live process and exact CID/name absent. Later reader/query checks pass. A root review-directory mode check failed after UNC creation; the exact reader inadvertently ran before root corrected0755/0644 to0700/0600 ahead of the fresh readers. This metadata error and the failed actor are retained. No application, benchmark, production image or cluster change follows.
