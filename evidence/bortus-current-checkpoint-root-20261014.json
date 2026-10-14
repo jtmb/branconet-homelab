@@ -1351,13 +1351,15 @@
       "applicationRuntimeAccepted": false
     },
     "latestPublicRecoveryDiagnostic": {
-      "run": "ce1b966ae3f4",
+      "run": "804f6e2b6694",
       "actorExit": 1,
       "podRVOnlyDifferent": true,
-      "atPreExecCrossControlSnapshot": true,
+      "atSampleEntrySnapshot": true,
       "metadataAndIPObservedEqual": true,
-      "actualMetadataAndIPGuardsExecuted": false,
-      "statusDeltaOrWriterProved": false,
+      "allKnownTwentyStatusFieldsEqual": true,
+      "untrackedStatusDeltaObserved": true,
+      "managedFieldsDeltaObserved": true,
+      "whichStatusPathOrWriterProved": false,
       "cleanupExit": 0,
       "independentExit": 0,
       "allFiveNamesUIDsAbsent": true,
@@ -1460,6 +1462,44 @@
       "postReaderAndQueryBirthsAbsent": 3,
       "newNodeRuntimeAccepted": false,
       "imageID": null
+    },
+    "current6eNodeComponent": {
+      "actorExit": 0,
+      "independentExit": 0,
+      "copierBirthAbsent": true,
+      "nodeRows": 12,
+      "runtimeDirectoryRows": 5,
+      "newNodeRuntimeAccepted": false,
+      "imageID": null
+    },
+    "current6eCopyContext": {
+      "actorExit": 0,
+      "independentExit": 0,
+      "contextObjects": 30904,
+      "manifestSHA256": "769e5c492c4d9672104747a428b4fb9fe04b893865c57748a2999e178944c4fa",
+      "rawReleaseAccepted": false,
+      "imageID": null
+    },
+    "checkpointObservationControls": {
+      "actualExit": 0,
+      "independentExit": 0,
+      "testsPassed": 33,
+      "currentSources": 194,
+      "birthsAbsent": 2,
+      "strictRVGuardChanged": false,
+      "gateSourceChanged": true,
+      "liveRecoveryAccepted": false
+    },
+    "rawSourceExport": {
+      "originalExit": 1,
+      "diagnosticExit": 1,
+      "bothIndependentFailurePostsExit": 0,
+      "partialArchivesAccepted": false,
+      "diagnosticParentPhase": 6,
+      "diagnosticWinError": 31,
+      "query31ControlsExit": 0,
+      "query31Controls": 10,
+      "newExportPending": true
     }
   }
 }
