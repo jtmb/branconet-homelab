@@ -1,0 +1,684 @@
+{
+  "scope": "Finite five remaining numeric/formatted-age columns; no whole UI or assistive technology acceptance",
+  "actualServerToolExit": 0,
+  "serverDispatch": "a4544c",
+  "serverFinal": "0be86e",
+  "actualBrowserToolExit": 0,
+  "browserDispatch": "8d8463",
+  "browserFinal": "9c2678",
+  "checks": [
+    "/deployments:Restarts: both directions, actual wire normalization, ties and complete name/link/cell identity",
+    "/nodes:Pods: both directions, actual wire normalization, ties and complete name/link/cell identity",
+    "/nodes:Age: both directions, actual wire normalization, ties and complete name/link/cell identity",
+    "/name-spaces:Age: both directions, actual wire normalization, ties and complete name/link/cell identity",
+    "/ingresses:Age: both directions, actual wire normalization, ties and complete name/link/cell identity"
+  ],
+  "observations": [
+    {
+      "route": "/deployments",
+      "column": "Restarts",
+      "sortKind": "number",
+      "direction": "asc",
+      "names": [
+        "a13-a-old",
+        "a13-c-missing",
+        "a13-b-two",
+        "a13-e-two",
+        "a13-d-seven",
+        "a13-z-young"
+      ],
+      "values": [
+        "0",
+        "0",
+        "2",
+        "2",
+        "7",
+        "12"
+      ],
+      "missingSemantics": "actual-production-zero-normalization",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/deployments",
+      "column": "Restarts",
+      "sortKind": "number",
+      "direction": "desc",
+      "names": [
+        "a13-z-young",
+        "a13-d-seven",
+        "a13-b-two",
+        "a13-e-two",
+        "a13-a-old",
+        "a13-c-missing"
+      ],
+      "values": [
+        "12",
+        "7",
+        "2",
+        "2",
+        "0",
+        "0"
+      ],
+      "missingSemantics": "actual-production-zero-normalization",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/nodes",
+      "column": "Pods",
+      "sortKind": "number",
+      "direction": "asc",
+      "names": [
+        "a13-a-old",
+        "a13-c-missing",
+        "a13-b-two",
+        "a13-e-two",
+        "a13-d-seven",
+        "a13-z-young"
+      ],
+      "values": [
+        "0",
+        "0",
+        "2",
+        "2",
+        "7",
+        "12"
+      ],
+      "missingSemantics": "actual-production-zero-normalization",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/nodes",
+      "column": "Pods",
+      "sortKind": "number",
+      "direction": "desc",
+      "names": [
+        "a13-z-young",
+        "a13-d-seven",
+        "a13-b-two",
+        "a13-e-two",
+        "a13-a-old",
+        "a13-c-missing"
+      ],
+      "values": [
+        "12",
+        "7",
+        "2",
+        "2",
+        "0",
+        "0"
+      ],
+      "missingSemantics": "actual-production-zero-normalization",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/nodes",
+      "column": "Age",
+      "sortKind": "age",
+      "direction": "asc",
+      "names": [
+        "a13-z-young",
+        "a13-b-two",
+        "a13-e-two",
+        "a13-d-seven",
+        "a13-a-old",
+        "a13-c-missing"
+      ],
+      "values": [
+        "2h",
+        "2d",
+        "2d",
+        "7d",
+        "12d",
+        "\u2014"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/nodes",
+      "column": "Age",
+      "sortKind": "age",
+      "direction": "desc",
+      "names": [
+        "a13-a-old",
+        "a13-d-seven",
+        "a13-b-two",
+        "a13-e-two",
+        "a13-z-young",
+        "a13-c-missing"
+      ],
+      "values": [
+        "12d",
+        "7d",
+        "2d",
+        "2d",
+        "2h",
+        "\u2014"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/name-spaces",
+      "column": "Age",
+      "sortKind": "age",
+      "direction": "asc",
+      "names": [
+        "a13-z-young",
+        "a13-b-two",
+        "a13-e-two",
+        "a13-d-seven",
+        "a13-a-old",
+        "a13-c-missing"
+      ],
+      "values": [
+        "2h",
+        "2d",
+        "2d",
+        "7d",
+        "12d",
+        "-"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/name-spaces",
+      "column": "Age",
+      "sortKind": "age",
+      "direction": "desc",
+      "names": [
+        "a13-a-old",
+        "a13-d-seven",
+        "a13-b-two",
+        "a13-e-two",
+        "a13-z-young",
+        "a13-c-missing"
+      ],
+      "values": [
+        "12d",
+        "7d",
+        "2d",
+        "2d",
+        "2h",
+        "-"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/ingresses",
+      "column": "Age",
+      "sortKind": "age",
+      "direction": "asc",
+      "names": [
+        "a13-z-young",
+        "a13-b-two",
+        "a13-e-two",
+        "a13-d-seven",
+        "a13-a-old",
+        "a13-c-missing"
+      ],
+      "values": [
+        "2h",
+        "2d",
+        "2d",
+        "7d",
+        "12d",
+        "-"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/ingresses",
+      "column": "Age",
+      "sortKind": "age",
+      "direction": "desc",
+      "names": [
+        "a13-a-old",
+        "a13-d-seven",
+        "a13-b-two",
+        "a13-e-two",
+        "a13-z-young",
+        "a13-c-missing"
+      ],
+      "values": [
+        "12d",
+        "7d",
+        "2d",
+        "2d",
+        "2h",
+        "-"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    }
+  ],
+  "preconditions": [
+    {
+      "route": "/deployments",
+      "column": "Restarts",
+      "wire": [
+        {
+          "name": "a13-z-young",
+          "value": 12
+        },
+        {
+          "name": "a13-b-two",
+          "value": 2
+        },
+        {
+          "name": "a13-a-old",
+          "value": 0
+        },
+        {
+          "name": "a13-d-seven",
+          "value": 7
+        },
+        {
+          "name": "a13-c-missing",
+          "value": 0
+        },
+        {
+          "name": "a13-e-two",
+          "value": 2
+        }
+      ],
+      "displayed": [
+        {
+          "name": "a13-a-old",
+          "value": "0"
+        },
+        {
+          "name": "a13-b-two",
+          "value": "2"
+        },
+        {
+          "name": "a13-c-missing",
+          "value": "0"
+        },
+        {
+          "name": "a13-d-seven",
+          "value": "7"
+        },
+        {
+          "name": "a13-e-two",
+          "value": "2"
+        },
+        {
+          "name": "a13-z-young",
+          "value": "12"
+        }
+      ]
+    },
+    {
+      "route": "/nodes",
+      "column": "Pods",
+      "wire": [
+        {
+          "name": "a13-z-young",
+          "value": 12
+        },
+        {
+          "name": "a13-b-two",
+          "value": 2
+        },
+        {
+          "name": "a13-a-old",
+          "value": 0
+        },
+        {
+          "name": "a13-d-seven",
+          "value": 7
+        },
+        {
+          "name": "a13-c-missing",
+          "value": 0
+        },
+        {
+          "name": "a13-e-two",
+          "value": 2
+        }
+      ],
+      "displayed": [
+        {
+          "name": "a13-a-old",
+          "value": "0"
+        },
+        {
+          "name": "a13-b-two",
+          "value": "2"
+        },
+        {
+          "name": "a13-c-missing",
+          "value": "0"
+        },
+        {
+          "name": "a13-d-seven",
+          "value": "7"
+        },
+        {
+          "name": "a13-e-two",
+          "value": "2"
+        },
+        {
+          "name": "a13-z-young",
+          "value": "12"
+        }
+      ]
+    },
+    {
+      "route": "/nodes",
+      "column": "Age",
+      "wire": [
+        {
+          "name": "a13-z-young",
+          "value": "2h"
+        },
+        {
+          "name": "a13-b-two",
+          "value": "2d"
+        },
+        {
+          "name": "a13-a-old",
+          "value": "12d"
+        },
+        {
+          "name": "a13-d-seven",
+          "value": "7d"
+        },
+        {
+          "name": "a13-c-missing",
+          "value": null
+        },
+        {
+          "name": "a13-e-two",
+          "value": "2d"
+        }
+      ],
+      "displayed": [
+        {
+          "name": "a13-z-young",
+          "value": "2h"
+        },
+        {
+          "name": "a13-d-seven",
+          "value": "7d"
+        },
+        {
+          "name": "a13-b-two",
+          "value": "2d"
+        },
+        {
+          "name": "a13-e-two",
+          "value": "2d"
+        },
+        {
+          "name": "a13-a-old",
+          "value": "12d"
+        },
+        {
+          "name": "a13-c-missing",
+          "value": "\u2014"
+        }
+      ]
+    },
+    {
+      "route": "/name-spaces",
+      "column": "Age",
+      "wire": [
+        {
+          "name": "a13-z-young",
+          "value": "2h"
+        },
+        {
+          "name": "a13-b-two",
+          "value": "2d"
+        },
+        {
+          "name": "a13-a-old",
+          "value": "12d"
+        },
+        {
+          "name": "a13-d-seven",
+          "value": "7d"
+        },
+        {
+          "name": "a13-c-missing",
+          "value": "-"
+        },
+        {
+          "name": "a13-e-two",
+          "value": "2d"
+        }
+      ],
+      "displayed": [
+        {
+          "name": "a13-a-old",
+          "value": "12d"
+        },
+        {
+          "name": "a13-b-two",
+          "value": "2d"
+        },
+        {
+          "name": "a13-c-missing",
+          "value": "-"
+        },
+        {
+          "name": "a13-d-seven",
+          "value": "7d"
+        },
+        {
+          "name": "a13-e-two",
+          "value": "2d"
+        },
+        {
+          "name": "a13-z-young",
+          "value": "2h"
+        }
+      ]
+    },
+    {
+      "route": "/ingresses",
+      "column": "Age",
+      "wire": [
+        {
+          "name": "a13-z-young",
+          "value": "2h"
+        },
+        {
+          "name": "a13-b-two",
+          "value": "2d"
+        },
+        {
+          "name": "a13-a-old",
+          "value": "12d"
+        },
+        {
+          "name": "a13-d-seven",
+          "value": "7d"
+        },
+        {
+          "name": "a13-c-missing",
+          "value": "-"
+        },
+        {
+          "name": "a13-e-two",
+          "value": "2d"
+        }
+      ],
+      "displayed": [
+        {
+          "name": "a13-a-old",
+          "value": "12d"
+        },
+        {
+          "name": "a13-b-two",
+          "value": "2d"
+        },
+        {
+          "name": "a13-c-missing",
+          "value": "-"
+        },
+        {
+          "name": "a13-d-seven",
+          "value": "7d"
+        },
+        {
+          "name": "a13-e-two",
+          "value": "2d"
+        },
+        {
+          "name": "a13-z-young",
+          "value": "2h"
+        }
+      ]
+    }
+  ],
+  "requestEvents": [
+    {
+      "route": "/api/cluster/deployments",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/deployments",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/nodes",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/nodes",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/namespaces",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/namespaces",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/ingresses",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/ingresses",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "exactPostExit": 0,
+  "linuxFreshExit": 0,
+  "windowsFreshExit": 0,
+  "currentSourceFiles": 374,
+  "currentInputs": 39,
+  "currentCompiledObjects": 5383,
+  "currentDependencyObjects": 40635,
+  "linuxBirthsAbsent": 33,
+  "windowsBirthsNoLive": 10,
+  "laterLinuxReaderAndTwoQueriesAbsent": 3,
+  "laterWindowsReaderNoLive": true,
+  "exactContainerIDAndNameAbsent": true,
+  "priorFailedAttemptPreserved": true,
+  "fixtureOnlyCorrection": "data.ingresses -> data.ingress plus matching comment; browser and all ten expected rows byte-identical",
+  "sourceScannerExit": 0,
+  "sourceScannerFiles": 13,
+  "generatedScannerExit": 0,
+  "generatedScannerFiles": 43,
+  "scannerFindings": 0,
+  "oldCasesReplayed": 0,
+  "performanceAccepted": false,
+  "deliveredImageAccepted": false,
+  "wholeUIOrATAccepted": false,
+  "productionChanged": false,
+  "owningDocsPublicationPending": true,
+  "records": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a13-followup-browser-20261014-v3\\terminal.json",
+      "bytes": 30754,
+      "sha256": "d3a6b66a9b16504462f5db5bb64f19f843b7f24c85de0a4d15cf248f54d6c06d"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a13-followup-browser-20261014-v3\\dispatch-owned.json",
+      "bytes": 669,
+      "sha256": "a67e9553b2d74331257f16f0cb589e5c208a3bfe2c26635cf98d16b8eceb36c6"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a13-followup-browser-20261014-v3\\output\\browser-report.json",
+      "bytes": 12398,
+      "sha256": "18b1c6fb99e64ac87c328fb4f11e462e7ce59c53fd96f9b6d8c2bacfdb60ef38"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a13-followup-browser-20261014-v3\\output\\browser-terminal.json",
+      "bytes": 578,
+      "sha256": "5b64ee23ffa9a2d7f158f3871242d63604fd46c900488f09a428e752e9abccc4"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-a13-followup-browser-postcheck-20261014-v3\\legacy-review-result.json",
+      "bytes": 20466,
+      "sha256": "b8d0fbb635187bc73218b54ec85df790cc375f66cdc20f57ca9e96b622ace6ca"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-a13-followup-browser-postcheck-20261014-v3\\fresh-result.json",
+      "bytes": 18156,
+      "sha256": "b87adb6f506df7b3a343128bc3db6067cc78e684152e34e1d428157e4d5b96ee"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a13-followup-browser-postcheck-20261014-v3\\windows-fresh-result.json",
+      "bytes": 3670,
+      "sha256": "627c02335f0cbeece4af45842fdf107d73bba2bc2e25c4c25a64df2332e9bbf3"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-a13-qualified-later-20261014.json",
+      "bytes": 534,
+      "sha256": "c02b83f4921d1aac749503b000355e36fe98b4c1980aef1ca17c71d93ff72f66"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a13-qualified-windows-later-20261014.json",
+      "bytes": 396,
+      "sha256": "b636c39c4941098dfd7dff547cc510682690d443872120640b4f2ab16281fc7d"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a13-v4-source-review-20261014.json",
+      "bytes": 229,
+      "sha256": "a68a7c3a5a1e612f73e20b8532f2517f4263ae077b23d2ddc36bf2a5b7ca1201"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a13-followup-generated-source-audit-20261014-v2.json",
+      "bytes": 5588,
+      "sha256": "f46889a348af06af4f9c071588c7503b622f48da2e3b857706c09c2f2c4fd7b3"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a13-v4-source-scan-latest.json",
+      "bytes": 3629,
+      "sha256": "5a237c9fac8f5c26cead84bfd358f06f91a3359e5919a74c5cc43b31d60cc4ec"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a13-v3-generated-source-scan-latest.json",
+      "bytes": 11765,
+      "sha256": "065d0391fc0a60544b49e61373980abb0ee45cb092b3b939595c9a382606d277"
+    }
+  ]
+}
