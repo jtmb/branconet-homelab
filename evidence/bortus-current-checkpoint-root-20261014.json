@@ -197,17 +197,20 @@
     "metadataAcquisitionExit": 0,
     "nodes": 3,
     "nodesReady": 3,
-    "observedUtc": "2026-10-14T18:19:03.390525+00:00",
+    "observedUtc": "2026-10-14T21:38:42.895833+00:00",
     "originalSummaryFormatterCause": "HelmRelease lives in flux-system; formatter initially assumed bortus namespace; saved metadata re-read without another SSH/API acquisition",
     "originalSummaryFormatterExit": 1,
     "pods": 97,
     "pvcs": 54,
     "pvcsBound": 54,
-    "rawSHA256": "150228264e9202a2ea3b8c2ebdf86f4dd0efed9056a5d7f6878221374055dd70",
+    "rawSHA256": "caa0f677540c1ddad00d0a15cc2519442327aeeb913793b095d5dae9cc4341ab",
     "readOnly": true,
     "savedSummaryReaderExit": 0,
     "secretPayloadsRequested": false,
-    "previousSummaryFormatterFailurePreservedInPriorReceipt": true
+    "previousSummaryFormatterFailurePreservedInPriorReceipt": true,
+    "previousHealthSnapshotObservedUtc": "2026-10-14T18:19:03.390525+00:00",
+    "currentSnapshotTool": "a29f5b",
+    "currentSummaryFormatterExit": 0
   },
   "nodeV8": {
     "actorActualExit": null,
@@ -1265,6 +1268,31 @@
         "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-live-metadata-refresh-current-20261014-205208.json",
         "bytes": 42007,
         "sha256": "32a1ff8f6ca44866bbe1a7af96393468ec9ec9af575545ab04ed332506b5de69"
+      },
+      {
+        "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-failure-context-metadata-controls-root-20261014.json",
+        "bytes": 4207,
+        "sha256": "bcbb740655b7aa8c2df26eba7e3edce5512b0fa1d769878c2f6921935893117e"
+      },
+      {
+        "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-current6e-runtime-inputs-root-20261014.json",
+        "bytes": 5856,
+        "sha256": "60072ba785b5f9f9b20269c7573f6d9de545c92fcf8820adbf6ded32ea5d5e7b"
+      },
+      {
+        "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-live-metadata-refresh-current-20261014-213841-summary.json",
+        "bytes": 1924,
+        "sha256": "8d71d1a7d482fa0dac60ea989d7136f3777d1b20a0ed74b0641168eac67b35e0"
+      },
+      {
+        "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-live-metadata-refresh-current-20261014-213841.json",
+        "bytes": 42007,
+        "sha256": "caa0f677540c1ddad00d0a15cc2519442327aeeb913793b095d5dae9cc4341ab"
+      },
+      {
+        "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-current6e-prune-qualified-root-20261014.json",
+        "bytes": 8008,
+        "sha256": "1ba739d2b3da203de81c0ed7458f60ee206916f3e2566b5c0048d849323c798d"
       }
     ],
     "newBrowserPartialCheckpoints": 0,
@@ -1323,14 +1351,17 @@
       "applicationRuntimeAccepted": false
     },
     "latestPublicRecoveryDiagnostic": {
-      "run": "c7e27f41c92d",
+      "run": "ce1b966ae3f4",
       "actorExit": 1,
       "podRVOnlyDifferent": true,
       "atPreExecCrossControlSnapshot": true,
-      "writerOrHistoricalCauseProved": false,
+      "metadataAndIPObservedEqual": true,
+      "actualMetadataAndIPGuardsExecuted": false,
+      "statusDeltaOrWriterProved": false,
       "cleanupExit": 0,
       "independentExit": 0,
-      "allFiveNamesUIDsAbsent": true
+      "allFiveNamesUIDsAbsent": true,
+      "laterNineBirthsAbsent": true
     },
     "a13FiveColumnAttempt": {
       "serverExit": 1,
@@ -1397,12 +1428,38 @@
       "runtimeAccepted": false
     },
     "liveSnapshot": {
-      "observedUtc": "2026-10-14T20:52:10.498944+00:00",
+      "observedUtc": "2026-10-14T21:38:42.895833+00:00",
       "nodesReady": 3,
       "pvcsBound": 54,
       "activeHelmReady": 33,
       "bortusOldImageReady": true,
       "bortusReleaseSuspended": true
+    },
+    "metadataFailureRecorderControls": {
+      "actualExit": 0,
+      "tests": 14,
+      "strictGateChanged": false,
+      "currentSources": 7,
+      "birthsAbsent": 2
+    },
+    "current6eRuntimeMetadata": {
+      "originalProducerExit": 1,
+      "correctedProducerExit": 0,
+      "generatedFiles": 6,
+      "currentMetadataPins": 24,
+      "workerFiles": 3,
+      "newImageID": null
+    },
+    "current6ePruneQualification": {
+      "actorExit": 0,
+      "independentExit": 0,
+      "laterExit": 0,
+      "prunedObjects": 29814,
+      "prunedManifestSHA256": "d25a265b1abdf2b0825a8ea65d9218a5066f3644c8ca9d586b07a706185c0c67",
+      "originalHostBirthsAbsent": 23,
+      "postReaderAndQueryBirthsAbsent": 3,
+      "newNodeRuntimeAccepted": false,
+      "imageID": null
     }
   }
 }
