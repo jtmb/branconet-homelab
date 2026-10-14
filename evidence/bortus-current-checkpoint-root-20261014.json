@@ -1517,7 +1517,9 @@
       "isolatedRuntimeQualified": true,
       "defaultImageScannerExit": 1,
       "mediumFindings": 10,
-      "securityAccepted": false
+      "securityAccepted": false,
+      "SDKAndNodeTLS4Qualified": true,
+      "productionSecretTransportQualified": false
     },
     "accountingObservationControls": {
       "testsPassed": 18,
@@ -2033,5 +2035,84 @@
     "liveRecoveryAccepted": false,
     "productionGuardChanged": false,
     "privateMaterialUsed": false
+  },
+  "current6eSDKAndNodeTLS4": {
+    "scope": "Four original SDK KubeConfig/Node HTTPS cases on current6e/a7 image only",
+    "actorTool": "a4e0e1",
+    "actorExit": 0,
+    "independentTool": "2e7c7b",
+    "independentExit": 0,
+    "laterTool": "b7e691",
+    "laterExit": 0,
+    "laterReaderAbsentTool": "ea0bb5",
+    "fixtureSHA256": "708624d7931769ed93b74bfcf647d29b7a12c2dab515106f183861318e435b10",
+    "originalFourCaseFixtureUnchanged": true,
+    "sourceFilesCurrent": 8,
+    "originalOutputsCurrent": 76,
+    "originalHostBirthsAbsent": 15,
+    "independentAndTwoQueryBirthsAbsent": 3,
+    "exactContainerIDAndNameAbsent": true,
+    "checks": {
+      "SDKAuthenticationAndNodeTLSOnly": true,
+      "abi": 1,
+      "clusterRequests": false,
+      "modules": "127",
+      "nodeVersion": "v22.23.3",
+      "openssl": "3.5.9",
+      "operatorMaterialUsed": false,
+      "overallAcceptance": false,
+      "productionSecretTransportQualified": false,
+      "records": [
+        {
+          "case": "server",
+          "passed": true,
+          "requests": 1,
+          "tlsServerErrors": 0
+        },
+        {
+          "case": "badca",
+          "passed": true,
+          "requests": 0,
+          "tlsServerErrors": 0
+        },
+        {
+          "case": "badsan",
+          "passed": true,
+          "requests": 0,
+          "tlsServerErrors": 0
+        },
+        {
+          "case": "server-no-client",
+          "passed": true,
+          "requests": 0,
+          "tlsServerErrors": 1
+        }
+      ]
+    },
+    "NodeELFSHA256": "a7b77e9ed047b69abc17d1ea56bc64fd0eb16201137299b51a1fd4c0604d4244",
+    "imageConfigDigest": "sha256:41bb50990f9c037179f36cf2e1d12b82812711cbf21ee9e28b06dfad309c37ed",
+    "dockerLocalImageID": "sha256:270b1b49bd1ce6b836e9f6a8c86005d95c7f42fd913f5a53597a266d648fc105",
+    "SDKAndNodeTLS4Qualified": true,
+    "productionSecretTransportQualified": false,
+    "materialProducerTool": "63df70",
+    "materialProducerExit": 0,
+    "materialIndependentTool": "101c0f",
+    "materialIndependentExit": 0,
+    "materialReaderNoLive": true,
+    "materialDependencyObjectsBeforeAfter": 1246,
+    "materialDependencyBytes": 57459502,
+    "syntheticMaterialSHA256": "2ba18bfb13713ce046a49a671cdcdd77107397b290b38899647da9a47e195432",
+    "PEMBodiesInGit": false,
+    "sourceScan": {
+      "actorFiles": 11,
+      "actorExit": 0,
+      "independentFiles": 5,
+      "independentExit": 0,
+      "laterSourceScanAfterExecution": true,
+      "laterSourceFindings": 0
+    },
+    "performanceAccepted": false,
+    "securityAccepted": false,
+    "productionChanged": false
   }
 }
