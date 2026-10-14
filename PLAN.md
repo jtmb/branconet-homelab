@@ -8,7 +8,7 @@ Approved by the user on 2026-10-09. Execution target: under six hours from execu
 - As directed by the user on 2026-10-10, execution now uses three agents total: this coordinator plus the BORTUS application and native-transport sub-agents. Application and migration ownership remain separate, with scoped worktrees and reviewed handoffs; the former execution chats are archived. No new execution chats are required.
 - After plan approval, create the migration goal with this full acceptance contract and execution target. Gluster/Vault retirement follows the user's final migration confirmation.
 
-Current checkpoint: performance acceptance remains failed/open. Seven CPU/GC helper controls and the completed 13-request diagnostic trace pass, including exact/fresh cleanup. The coarse CPU counters do not isolate a source remedy; a bounded server function profile is being prepared with the original benchmark unchanged. V8 header generation and configuration pass, but the build is interrupted across a WSL boot change. Docker reports container exit 255, with no actor or build-phase terminal. The exact stopped container is removed and partial evidence retained; no new ELF is qualified. A public TCP attempt exits 1 before its operation directory exists. A separate read-only prefix diagnostic identifies a current cross-boot monotonic cache-receipt refusal; the original historical exception is unknown. Fresh cache attestation now passes on the current boot: four read-only jobs exit zero, 17 source files remain unchanged, and eight remote/four local process identities are absent. The supervisor prerequisite constant is corrected with all functions and guards unchanged. The fresh public TCP test exits zero and its independent read-only post check proves three exact resource absences and recorded process cleanup. Same-holder private recovery remains open. The 03:30 UTC metadata snapshot shows three Ready nodes, 54 Bound PVCs and 33 current Ready active Helm releases; BORTUS remains on its existing image with its release suspended. No candidate is adopted or deployed, no original data/backups are retired, and no user decision is pending.
+Current checkpoint: the two missing A16 browser cases pass their complete compiled workflow and independent source/cleanup checks; four prior failed workflows remain preserved. A13 zero/missing count ordering and actual screen-reader acceptance remain separate. The isolated HS256 candidate 4df4d32 passes functional qualification but its unchanged original three-pair performance benchmark still fails five of ten comparable warm cases; it is not adopted. Completed CPU/GC and function profiles provide no new grounded source correction, and the original benchmark remains unchanged. Fresh Node V9 generation/configuration pass and compilation is running; the default suite, new ELF and final-image security are unqualified. Current-boot cache attestation passes. Same-holder private recovery is preparing a guarded original600 caller with an explicitly bounded API startup-status transition; source controls are not a live recovery pass. The 2026-10-14 13:18 UTC metadata snapshot records three Ready nodes, 54 Bound PVCs and 33 Ready active Helm releases; BORTUS retains its existing image and suspended HelmRelease. No candidate adoption, production rollout or original-data retirement has occurred. The goal is active and no user decision is pending.
 
 ## Verified starting point
 
@@ -58,7 +58,7 @@ Installation or running pods alone does not satisfy this contract. Every criteri
 
 ```mermaid
 flowchart TB
-    Repo["Existing repository<br/>Application charts and individual values"]
+    Repo["Private jtmb/branconet-charts<br/>Individual charts and values"]
     CI["One validation pipeline<br/>Lint, rendering, schema and reference checks"]
     Flux["Flux<br/>Source, Kustomize and Helm controllers"]
     Apps["Application releases<br/>Services, routes and pods"]
@@ -79,6 +79,8 @@ flowchart TB
     Flux --> Cluster
     LH --> Cluster
 ```
+
+Charts are delivered from the separate private `jtmb/branconet-charts` repository. BORTUS application source remains separate; chart changes pass the single chart validation pipeline before Flux reconciles releases.
 
 The existing playbook topology is one control plane and two workers. Longhorn replicates application storage. Document control-plane recovery separately because one control plane does not provide control-plane high availability.
 
