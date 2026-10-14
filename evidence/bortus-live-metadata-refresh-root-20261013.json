@@ -1,0 +1,61 @@
+{
+  "Longhorn_replicas_each": 2,
+  "PVCs_Bound": 54,
+  "Pods": 97,
+  "active_HelmReleases_Ready": 33,
+  "actual_exit": 0,
+  "attached_healthy": 30,
+  "bortus_image": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+  "bortus_ready": true,
+  "bortus_restarts": 0,
+  "data_retirement": false,
+  "detached_unknown": 10,
+  "encrypted_Longhorn_volumes": 40,
+  "environment_values_reported": false,
+  "kustomizations": [
+    {
+      "conditions": {
+        "Ready": "True"
+      },
+      "generation": 14,
+      "name": "migration-releases",
+      "namespace": "flux-system",
+      "observedGeneration": 14,
+      "revision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621"
+    }
+  ],
+  "nodes_Ready": 3,
+  "observedUtc": "2026-10-13T23:47:14.038716+00:00",
+  "production_mutation": false,
+  "raw_bytes": 42007,
+  "raw_sha256": "930982a635f3fbdaa3e6d25c88df5592eeb7b74edeb2f2e6079b3afe56c3c82a",
+  "scope": "read-only metadata snapshot; no application, DR, pipeline push, or rollout acceptance",
+  "secret_payloads_requested": false,
+  "sources": [
+    {
+      "conditions": {
+        "Ready": "True"
+      },
+      "generation": 1,
+      "name": "branconet-charts",
+      "namespace": "flux-system",
+      "observedGeneration": 1,
+      "revision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621"
+    },
+    {
+      "conditions": {
+        "Ready": "True"
+      },
+      "generation": 3,
+      "name": "migration-validated",
+      "namespace": "flux-system",
+      "observedGeneration": 3,
+      "revision": "codex/kubernetes-validated@sha1:373a1e513e1bfb8b13ed5212ccc1b0f57a5ff301"
+    }
+  ],
+  "suspended_HelmRelease": {
+    "name": "bortus",
+    "namespace": "flux-system"
+  },
+  "total_HelmReleases": 34
+}

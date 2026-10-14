@@ -103,6 +103,51 @@
     "tool_executed": false,
     "tool_tree_created": false
   },
+  "builder_compatibility": {
+    "NASM_version": "2.16.01",
+    "actor_tool": "e11815",
+    "actual_exit": 0,
+    "build": false,
+    "commands": [
+      "readelf -dW",
+      "readelf --version-info -W",
+      "nasm -v"
+    ],
+    "container_namespace_coordinates_are_not_host_PIDs": true,
+    "container_namespace_jobs": 3,
+    "corrected_post_exact_LF_only": true,
+    "exact_CID_and_name_fresh_absent": true,
+    "finalizers": [],
+    "fixed_image": "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
+    "full_sysroot_manifest_qualified": false,
+    "generator_qualified": false,
+    "independent_post_tool": "79fc63",
+    "later_reader_and_query_births_absent": 5,
+    "original_acquisition_records_current": 6,
+    "original_host_births_absent": 18,
+    "prior_independent_post_actual_exit": 1,
+    "prior_post_reason": "exact absent formatted Docker inspect emits a single LF, not empty bytes",
+    "projected_tool_files_current": 2,
+    "required_GLIBC_versions": [
+      "GLIBC_2.14",
+      "GLIBC_2.2.5",
+      "GLIBC_2.3",
+      "GLIBC_2.3.4",
+      "GLIBC_2.33",
+      "GLIBC_2.34",
+      "GLIBC_2.4",
+      "GLIBC_2.7"
+    ],
+    "required_dynamic_libraries": [
+      "libc.so.6"
+    ],
+    "result_sha256": "fd2b8736906f0ecc3e9a1546f68b357c279e0aa412d289a5d7da7312a415a296",
+    "runtime_inclusion": false,
+    "source_files_current": 4,
+    "terminal_sha256": "be281cba292d24fdaf7815a244e438d1d55ad449ceb491dbf04c75d3e1c65476",
+    "three_actual_commands_exit_zero": true,
+    "workload_replayed_for_post_correction": false
+  },
   "continuation_refusal": {
     "actor_same_birth_absent": true,
     "actor_tool": "19ff16",
@@ -178,17 +223,30 @@
     "tool": "b83201",
     "tool_executed": false
   },
+  "identity_annotation_controls": {
+    "actor_tool": "ad5de6",
+    "actual_exit": 0,
+    "independent_post_tool": "f0ed90",
+    "old_controls_replayed": false,
+    "only_extra_annotation_accepted": "same_identity_absent: true",
+    "original_distinct_births_absent": 2,
+    "six_original_identity_fields_exact": true,
+    "source_files_current": 3,
+    "suite_exit": 0,
+    "terminal_sha256": "3b2fb93ba57a3e13501b1362450bb9a6e160fae1b027ec78abf2a72706bdc517",
+    "tests": 2
+  },
   "original_data_retired": false,
   "production_adoption": false,
   "production_deployment": false,
   "remaining": [
-    "narrow original terminal birth annotation guard correction and causal controls",
-    "actual NASM package signed provenance/projection",
-    "fixed builder tool compatibility",
-    "exact Node22 regeneration/build/security/performance",
+    "review corrected private-PID/TMPDIR/closure build actor",
+    "exact Node22 OpenSSL3.5.9 generation and build with upstream default tests",
+    "runtime ABI/Prisma/TLS/final-image and security qualification",
+    "original performance acceptance",
     "private recovery and guarded live acceptance"
   ],
-  "scope": "root public NASM parser controls, literal signed acquisition refusal and current read-only existing-index discriminator",
+  "scope": "root NASM focused controls, retained signed authority continuation and fixed-builder loader/version qualification; prior refusals retained",
   "scoped_index_controls": {
     "Release_and_deb_control_line_bytes": 16384,
     "actor_tool": "d42fa3",
@@ -220,5 +278,55 @@
     "standalone_actual5_findings": 0,
     "standalone_actual5_fresh_tool": "4ff310",
     "suppression_or_filter": false
+  },
+  "successful_continuation": {
+    "Release_Valid_Until": null,
+    "Release_signature_date": "2026-07-11",
+    "actor_tool": "3a2a7a",
+    "actual_exit": 0,
+    "build": false,
+    "complete_plain_index_sha256": "515e692f2c4121c6fcec444ef100cc18f79a991910615f3a88c8b7becfc94d2f",
+    "complete_signed_index_selection_recomputed": true,
+    "disclosed_NASM_CVEs": [
+      "CVE-2026-6069",
+      "CVE-2026-6067",
+      "CVE-2025-8845"
+    ],
+    "finalizers": [],
+    "generation": false,
+    "host_install": false,
+    "independent_post_tool": "6bc16f",
+    "one_new_package_download": true,
+    "original_and_new_distinct_host_births_absent": 10,
+    "original_records_current": 24,
+    "original_signature_or_downloads_replayed": false,
+    "package": {
+      "Architecture": "amd64",
+      "Filename": "pool/main/n/nasm/nasm_2.16.01-1_amd64.deb",
+      "Package": "nasm",
+      "SHA256": "0180693ad5d2da8b36e7d73b9b596dc3e9f900238e3de699976c0576875b878f",
+      "Size": "405156",
+      "Version": "2.16.01-1"
+    },
+    "result_sha256": "8b16093687bfbad82b207ecded6e175fdfa2de8f205278e4d150cdbe7657383e",
+    "retained_artifacts_current": 6,
+    "runtime_image_inclusion": false,
+    "security_exception_accepted": false,
+    "source_files_current": 2,
+    "terminal_sha256": "f957d4942d868b7f199c9abf9953a79d846300a9033502eb85b6bc00468302bd",
+    "tools": [
+      {
+        "bytes": 1923760,
+        "mode": 365,
+        "path": "usr/bin/nasm",
+        "sha256": "09524fc8537260fed21b7d2f81115f5615d1ecc50be11ea92f30384845e57f76"
+      },
+      {
+        "bytes": 3046,
+        "mode": 256,
+        "path": "usr/share/doc/nasm/copyright",
+        "sha256": "cc42d1d93aedec675ce979cd2a7ae6ad280219be43f63683dfc96388b8c5cc81"
+      }
+    ]
   }
 }
