@@ -1,0 +1,84 @@
+{
+  "sourceCommit": "4df4d3251715dae689420a9f6242263aeb9bdbee",
+  "scope": "Two A08 missing/stale-absent Pod metadata browser states only",
+  "actualBrowserExit": 0,
+  "actualServerExit": 0,
+  "exactPostExit": 0,
+  "linuxPostExit": 0,
+  "windowsPostExit": 0,
+  "laterExit": 0,
+  "casesPassed": 2,
+  "checks": [
+    "Disappeared list-row target: actual metadata404 visible, no selector/log request/false snapshot",
+    "Absent target in actual stale snapshot: metadata503 visible, no selector/log request/false snapshot"
+  ],
+  "requestEvents": [
+    {
+      "route": "/api/cluster/pods/apps/large-pod-0",
+      "method": "GET",
+      "status": 404
+    },
+    {
+      "route": "/api/cluster/pods/apps/large-pod-0",
+      "method": "GET",
+      "status": 503
+    }
+  ],
+  "linuxBirthsFreshAbsent": 33,
+  "windowsNoLiveRecordedBirths": 10,
+  "laterLinuxReaderAndQueryBirthsAbsent": 3,
+  "laterWindowsReaderNoLive": true,
+  "currentSourceFiles": 371,
+  "currentInputFiles": 42,
+  "productChanged": false,
+  "performanceAccepted": false,
+  "deliveredImageAccepted": false,
+  "actualScreenReaderAccepted": false,
+  "records": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a08-metadata-browser-20261014-v5\\output\\browser-report.json",
+      "bytes": 3227,
+      "sha256": "b708e2eeb00727d872642cec413a87c5c075bf429ccf3cb4c31e233d94b5b0c2"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a08-metadata-browser-20261014-v5\\terminal.json",
+      "bytes": 31281,
+      "sha256": "c50b1b61334de507eb11e5a13b07bc6c58fd656620f01a78d56847f7c9ba0139"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-a08-metadata-browser-postcheck-20261014-v5\\fresh-result.json",
+      "bytes": 7968,
+      "sha256": "69ff15c9cc931101bc5ea4d2435c8c2534401967a3da2670397f0e6d8b6abeca"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a08-v5-windows-fresh-postcheck-20261014-v2\\windows-fresh-result.json",
+      "bytes": 3668,
+      "sha256": "e54bfd13f12d3c2cf57d692dbacac5f7085502e345d2865b234fa4c18d797bf5"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a08-v5-later-20261014.json",
+      "bytes": 454,
+      "sha256": "18672469c0e29def06e3fbe95869c6f3fac22530631e69082f068507b971d8fe"
+    }
+  ],
+  "priorActorFailuresPreserved": 4,
+  "originalWindowsFreshReaderExit": 1,
+  "replacementStrictReaderExit": 0,
+  "oldEightLogChecksOuterFailureStillPartial": true,
+  "metadataStatuses": [
+    404,
+    503
+  ],
+  "refreshes": 2,
+  "logsRequested": 0,
+  "scopeExcludesColdWhollyUnavailable503": true,
+  "immutableOriginals": {
+    "owner": "app-a08-qualified-originals-20261014-v1",
+    "currentOriginals": 1363,
+    "ZIPMembers": 1363,
+    "archiveBytes": 38378634,
+    "archiveSHA256": "558614e10ffbbc8a3675e065dba4b83f146d7ebbf67f402331b07fc4c0fc22d5",
+    "manifestSHA256": "ddd97234d6670fced54ca827dba59840a16546efda7128f9fa75c6f325e82992",
+    "CRCAndSHAAndCurrentBytes": true
+  }
+}
