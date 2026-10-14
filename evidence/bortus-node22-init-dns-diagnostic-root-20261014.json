@@ -1,0 +1,121 @@
+{
+  "scope": "Finite unchanged-script init and DNS diagnosis; no default-suite or runtime/security acceptance",
+  "actualDiagnosticToolExit": 0,
+  "actualIndependentToolExit": 0,
+  "recordedOriginalHostBirthsAbsent": 29,
+  "independentReaderAndQueryBirthsLaterAbsent": 5,
+  "savedRootCheckerBirthLaterAbsent": true,
+  "bothExactCreatedContainerIdsAndNamesAbsent": true,
+  "sourceFilesCurrent": 5,
+  "originalWorkObjectsAndPhysicalFingerprintCurrent": 51008,
+  "version": {
+    "node": "22.23.3",
+    "openssl": "3.5.9",
+    "moduleABI": "127"
+  },
+  "baselineClusterTests": [
+    {
+      "actualExit": -15,
+      "timedOut": true
+    },
+    {
+      "actualExit": -15,
+      "timedOut": true
+    }
+  ],
+  "initClusterTests": [
+    {
+      "actualExit": 0,
+      "timedOut": false
+    },
+    {
+      "actualExit": 0,
+      "timedOut": false
+    }
+  ],
+  "existingDnsBothCells": {
+    "initialServers": 1,
+    "callbackBeforeSetServers": 0,
+    "setServersThrew": false,
+    "callbackError": "ECONNREFUSED"
+  },
+  "reachableLoopbackDnsBothCells": {
+    "echoReachabilityConfirmed": true,
+    "dnsDatagramsSeen": 1,
+    "setServersThrew": true,
+    "error": "ERR_DNS_SET_SERVERS_FAILED",
+    "callbackErrorAfterCancel": "ECANCELLED"
+  },
+  "limits": {
+    "wholeSeconds": 900,
+    "closureReserve": 30,
+    "OSCloseMargin": 1,
+    "cpus": 2,
+    "memoryGiB": 8,
+    "swapGiB": 0,
+    "pids": 512,
+    "network": "none",
+    "readonlyRoot": true,
+    "clusterTestSeconds": 120,
+    "dnsSeconds": 10
+  },
+  "interpretation": "Init resolves both reproduced cluster timeouts in this finite diagnostic; reachable DNS preserves the expected pending-query state. Original full-suite remains failed and has not been rerun. Original failed worker PID identities are not retrospectively proved.",
+  "sourcePreparationV1PreservedUnrun": true,
+  "V11Corrections": [
+    "directory fsync for durable phase records",
+    "hold and revalidate actual init executable/namespace FDs through release/removal",
+    "independent awaited socket cleanup with deadline retained"
+  ],
+  "upstreamTestSourceChanged": false,
+  "performanceAccepted": false,
+  "defaultSuitePassed": false,
+  "securityOrRuntimeAccepted": false,
+  "productionChanged": false,
+  "records": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-init-dns-diagnostic-actual-20261014-v1-1.json",
+      "bytes": 317,
+      "sha256": "22a0151864f2f736ce823ce6658e3c83a2f95883e8fda4771e0965b5acd6b2b0"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-init-dns-diagnostic-20261014-v1-1\\started.json",
+      "bytes": 366,
+      "sha256": "3da6c7994783a5ad364356c6e4db72aef2113bd552a8059877b5354c73a5d2b9"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-init-dns-diagnostic-20261014-v1-1\\terminal.json",
+      "bytes": 12135,
+      "sha256": "f1a947406d3f3ac74bd5d0c17a89aa0317f2e73f049893ccaf4f124c56b6f35f"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-init-dns-diagnostic-20261014-v1-1\\result.json",
+      "bytes": 11858,
+      "sha256": "aba2a3050332df75c58376b682932189ab4d466512c6744d26ae1b345cdaee0e"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-init-dns-independent-20261014-v1\\started.json",
+      "bytes": 337,
+      "sha256": "0db0a32f9863039fe3c3ecfcab60911fe6213f31151bc0c8efed98dc1c8bccb0"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-init-dns-independent-20261014-v1\\terminal.json",
+      "bytes": 10417,
+      "sha256": "254e7f14eb91425349eea8dbbae95d42669b5fd6154618c70f1e1d120c0c17b3"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-init-dns-independent-20261014-v1\\result.json",
+      "bytes": 10257,
+      "sha256": "341a95f9d423a305ce232ce41d7b1da6ad8fb2c6221cdb551a6ec3efa6502b1a"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-init-dns-later-20261014.json",
+      "bytes": 403,
+      "sha256": "1e347e5e9cb28164c3a79710f7a7be133a3929834c40080907e4cdbd966c7088"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-node22-init-dns-root-checker-closure-20261014.json",
+      "bytes": 101,
+      "sha256": "f36c7b47d761df5af500add108a83f930e3f87881511520d71619210737e7cfc"
+    }
+  ]
+}
