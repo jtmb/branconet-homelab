@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Server, Loader2, Plus, Trash2, Save, Pencil, Search } from "lucide-react";
 import ViewportWrapper from "@/app/(dashboard)/viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
+import { requestJson, useSession } from "@/lib/use-query";
+import { useMutation } from "@/lib/use-mutation";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
 import { findLegacyLiveNode, sortLegacyClusterRows } from "@/lib/legacy-cluster-sort";
 
@@ -24,9 +26,13 @@ interface NodeData {
 }
 
 export default function NodesPage() {
+  const session = useSession();
+  const mutation = useMutation(session.canWrite);
   const [dbNodes, setDbNodes] = useState<NodeData[]>([]);
   const [liveNodes, setLiveNodes] = useState<NodeData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [inventoryError, setInventoryError] = useState("");
+  const [notice, setNotice] = useState("");
   const [adding, setAdding] = useState(false);
   const [search, setSearch] = useState("");
   const [form, setForm] = useState({ name: "", hostname: "", ipAddress: "", role: "worker" });
@@ -36,11 +42,21 @@ export default function NodesPage() {
   const [editIp, setEditIp] = useState("");
   const [editRole, setEditRole] = useState("");
 
+  useEffect(() => {
+    if (session.canWrite) return;
+    setNotice("");
+    setAdding(false);
+    setForm({ name: "", hostname: "", ipAddress: "", role: "worker" });
+    setEditingId(null);
+    setEditName(""); setEditHost(""); setEditIp(""); setEditRole("");
+  }, [session.canWrite]);
+
   const fetchDbNodes = useCallback(async () => {
     try {
-      const res = await fetch("/api/nodes");
-      setDbNodes(await res.json());
-    } catch { /* ignore */ }
+      const nodes = await requestJson<NodeData[]>("/api/nodes");
+      if (!Array.isArray(nodes)) throw new Error("Invalid inventory response");
+      setDbNodes(nodes); setInventoryError("");
+    } catch { setInventoryError("Node inventory unavailable. Refresh inventory before managing records."); }
   }, []);
 
   const fetchLive = useCallback(async () => {
@@ -63,42 +79,43 @@ export default function NodesPage() {
   }, [fetchDbNodes, fetchLive]);
 
   async function addNode() {
-    if (!form.hostname || !form.ipAddress) return;
-    const res = await fetch("/api/nodes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+    if (!session.canWrite || inventoryError || mutation.busy || !form.hostname || !form.ipAddress) return;
+    setNotice("");
+    await mutation.mutate("/api/nodes", {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(form),
+    }, () => {
+      setForm({ name: "", hostname: "", ipAddress: "", role: "worker" }); setAdding(false);
+      setNotice("Inventory record saved. Live cluster nodes were not changed.");
+      void fetchDbNodes(); void fetchLive();
     });
-    if (res.ok) {
-      setForm({ name: "", hostname: "", ipAddress: "", role: "worker" });
-      setAdding(false);
-      fetchDbNodes();
-    }
   }
 
   function startEdit(n: NodeData) {
+    if (!session.canWrite || inventoryError || mutation.busy) return;
+    mutation.clear(); setNotice("");
     setEditingId(n.id);
-    setEditName(n.name || n.hostname);
-    setEditHost(n.hostname);
-    setEditIp(n.ipAddress);
-    setEditRole(n.role);
+    setEditName(n.name || n.hostname); setEditHost(n.hostname); setEditIp(n.ipAddress); setEditRole(n.role);
   }
 
-  async function saveEdit(id: string) {
-    await fetch("/api/nodes", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+  async function saveEdit(inventoryId: string) {
+    if (!session.canWrite || inventoryError || mutation.busy) return;
+    setNotice("");
+    await mutation.mutate(`/api/nodes/${encodeURIComponent(inventoryId)}`, {
+      method: "PUT", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: editName, hostname: editHost, ipAddress: editIp, role: editRole }),
+    }, () => {
+      setEditingId(null); setNotice("Inventory record updated. Live cluster nodes were not changed.");
+      void fetchDbNodes(); void fetchLive();
     });
-    setEditingId(null);
-    fetchDbNodes();
-    fetchLive();  // force-live refresh so display updates immediately
   }
 
-  async function deleteNode(id: string) {
-    await fetch(`/api/nodes/${id}`, { method: "DELETE" });
-    fetchDbNodes();
-    fetchLive();
+  async function deleteNode(inventoryId: string) {
+    if (!session.canWrite || inventoryError || mutation.busy) return;
+    setNotice("");
+    await mutation.mutate(`/api/nodes/${encodeURIComponent(inventoryId)}`, { method: "DELETE" }, () => {
+      setNotice("Inventory record removed. The live cluster node was not deleted.");
+      void fetchDbNodes(); void fetchLive();
+    });
   }
 
   const totalNodes = liveNodes.length || dbNodes.length;
@@ -136,6 +153,10 @@ export default function NodesPage() {
           </span>
         </div>
 
+        <p className="mb-3 text-sm text-zinc-400">Inventory changes do not join, rename or delete live Kubernetes nodes. <Link href="/nodes" className="underline">Manage all inventory records</Link>.</p>
+        {notice && <p role="status" className="mb-3 text-emerald-300">{notice}</p>}
+        {!editingId && inventoryError && <p role="status" className="mb-3 text-amber-300">{inventoryError}<button onClick={fetchDbNodes} className="ml-2 underline">Refresh inventory</button></p>}
+        {!editingId && session.canWrite && mutation.error && <p role="alert" className="mb-3 text-red-300">{mutation.error} Refresh inventory to check the result before retrying.<button onClick={fetchDbNodes} className="ml-2 underline">Refresh inventory</button></p>}
         {/* Filter Bar */}
         <div className="flex items-center gap-3 mb-6">
           <div className="relative flex-1 max-w-xs">
@@ -163,13 +184,14 @@ export default function NodesPage() {
             />
           </div>
           {/* Add Node Form */}
-          {!adding ? (
+          {session.canWrite && (!adding ? (
             <button
-              onClick={() => setAdding(true)}
+              onClick={() => { if (!session.canWrite || inventoryError || mutation.busy) return; mutation.clear(); setNotice(""); setAdding(true); }}
+              disabled={mutation.busy || !!inventoryError}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors ml-auto"
             >
               <Plus className="w-4 h-4" />
-              Add Node
+              Add inventory node
             </button>
           ) : (
           <div className="glass-card p-4 rounded-xl mb-6 flex items-end gap-3 flex-wrap">
@@ -177,6 +199,7 @@ export default function NodesPage() {
               <label className="text-xs text-zinc-500 mb-1 block">Name</label>
               <input
                 value={form.name}
+                disabled={mutation.busy}
                 onChange={e => setForm({ ...form, name: e.target.value })}
                 placeholder="Living Room"
                 className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-32"
@@ -186,6 +209,7 @@ export default function NodesPage() {
               <label className="text-xs text-zinc-500 mb-1 block">Hostname</label>
               <input
                 value={form.hostname}
+                disabled={mutation.busy}
                 onChange={e => setForm({ ...form, hostname: e.target.value })}
                 placeholder="u4"
                 className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-28"
@@ -195,6 +219,7 @@ export default function NodesPage() {
               <label className="text-xs text-zinc-500 mb-1 block">IP Address</label>
               <input
                 value={form.ipAddress}
+                disabled={mutation.busy}
                 onChange={e => setForm({ ...form, ipAddress: e.target.value })}
                 placeholder="192.168.0.28"
                 className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200 w-40"
@@ -204,28 +229,32 @@ export default function NodesPage() {
               <label className="text-xs text-zinc-500 mb-1 block">Role</label>
               <select
                 value={form.role}
+                disabled={mutation.busy}
                 onChange={e => setForm({ ...form, role: e.target.value })}
                 className="bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-sm text-zinc-200"
               >
                 <option value="worker">Worker</option>
                 <option value="master">Master</option>
+                <option value="control-plane">Control plane</option>
               </select>
             </div>
             <button
               onClick={addNode}
-              disabled={!form.hostname || !form.ipAddress}
+              aria-label="Save inventory node"
+              disabled={mutation.busy || !!inventoryError || !form.hostname || !form.ipAddress}
               className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
             </button>
             <button
-              onClick={() => setAdding(false)}
+              onClick={() => { mutation.clear(); setAdding(false); }}
+              disabled={mutation.busy}
               className="px-4 py-2 rounded-lg border border-zinc-700 text-zinc-400 hover:text-zinc-200 text-sm transition-colors"
             >
               Cancel
             </button>
           </div>
-        )}
+        ))}
         </div>
 
         {/* Node List */}
@@ -263,6 +292,7 @@ export default function NodesPage() {
               <tbody>
                 {displayNodes.map((node) => {
                   const liveInfo = findLegacyLiveNode(liveNodes, node);
+                  const inventory = dbNodes.find(record => record.hostname === node.hostname);
                   const isReady = (liveInfo?.status || node.status) === "ready";
                   const isLive = !!liveInfo;
                   const roles = (liveInfo?.role || node.role || "worker").split(",");
@@ -317,22 +347,24 @@ export default function NodesPage() {
                         {liveInfo?.age || node.age || "—"}
                       </td>
                       <td className="px-2 py-2.5 text-right">
-                        <div className="flex items-center justify-end gap-1">
+                        {session.canWrite && inventory && <div className="flex items-center justify-end gap-1">
                           <button
-                            onClick={() => startEdit(node)}
+                            onClick={() => startEdit(inventory)}
+                            disabled={mutation.busy || !!inventoryError}
                             className="p-1.5 rounded-lg hover:bg-zinc-700/50 text-zinc-500 hover:text-zinc-300 transition-colors"
-                            title="Edit"
+                            title={`Edit inventory ${inventory.hostname}`}
                           >
                             <Pencil className="w-3.5 h-3.5" />
                           </button>
                           <button
-                            onClick={() => deleteNode(node.id)}
+                            onClick={() => deleteNode(inventory.id)}
+                            disabled={mutation.busy || !!inventoryError}
                             className="p-1.5 rounded-lg hover:bg-red-500/10 text-zinc-500 hover:text-red-400 transition-colors"
-                            title="Delete"
+                            title={`Delete inventory ${inventory.hostname}`}
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
-                        </div>
+                        </div>}
                       </td>
                     </tr>
                   );
@@ -343,17 +375,20 @@ export default function NodesPage() {
         )}
 
         {/* Edit Modal */}
-        {editingId && (
+        {session.canWrite && editingId && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
             <div className="bg-zinc-900 border border-zinc-700/60 rounded-2xl w-full max-w-sm mx-4 shadow-2xl overflow-hidden">
               <div className="px-5 py-4 border-b border-zinc-700/40">
                 <h3 className="text-sm font-semibold text-zinc-200">Edit Node</h3>
               </div>
               <div className="p-5 flex flex-col gap-3">
+                {inventoryError && <p role="status" className="text-sm text-amber-300">{inventoryError}<button onClick={fetchDbNodes} className="ml-2 underline">Refresh inventory</button></p>}
+                {mutation.error && <p role="alert" className="text-sm text-red-300">{mutation.error} Refresh inventory to check the result before retrying.<button onClick={fetchDbNodes} className="ml-2 underline">Refresh inventory</button></p>}
                 <div>
                   <label className="text-xs text-zinc-500 mb-1 block">Name</label>
                   <input
                     value={editName}
+                    disabled={mutation.busy}
                     onChange={e => setEditName(e.target.value)}
                     placeholder="Name"
                     className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500 outline-none focus:ring-0 transition-colors"
@@ -363,6 +398,7 @@ export default function NodesPage() {
                   <label className="text-xs text-zinc-500 mb-1 block">Hostname</label>
                   <input
                     value={editHost}
+                    disabled={mutation.busy}
                     onChange={e => setEditHost(e.target.value)}
                     className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500 outline-none focus:ring-0 transition-colors"
                   />
@@ -371,6 +407,7 @@ export default function NodesPage() {
                   <label className="text-xs text-zinc-500 mb-1 block">IP Address</label>
                   <input
                     value={editIp}
+                    disabled={mutation.busy}
                     onChange={e => setEditIp(e.target.value)}
                     className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500 outline-none focus:ring-0 transition-colors"
                   />
@@ -379,23 +416,27 @@ export default function NodesPage() {
                   <label className="text-xs text-zinc-500 mb-1 block">Role</label>
                   <select
                     value={editRole}
+                    disabled={mutation.busy}
                     onChange={e => setEditRole(e.target.value)}
                     className="w-full bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:border-indigo-500 outline-none focus:ring-0 transition-colors"
                   >
                     <option value="worker">Worker</option>
                     <option value="master">Master</option>
+                    <option value="control-plane">Control plane</option>
                   </select>
                 </div>
               </div>
               <div className="px-5 py-3 border-t border-zinc-700/40 flex items-center justify-end gap-2">
                 <button
-                  onClick={() => setEditingId(null)}
+                  onClick={() => { mutation.clear(); setEditingId(null); }}
+                  disabled={mutation.busy}
                   className="px-4 py-2 rounded-lg border border-zinc-700 text-zinc-400 hover:text-zinc-200 text-sm transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => saveEdit(editingId)}
+                  disabled={mutation.busy || !!inventoryError || !editHost || !editIp}
                   className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors"
                 >
                   Save
