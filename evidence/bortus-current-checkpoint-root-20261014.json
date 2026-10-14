@@ -1,4 +1,104 @@
 {
+  "A16BrowserAttempts": {
+    "V1": {
+      "acceptedCases": 0,
+      "browserExit": 1,
+      "failure": "Optional sandbox image query PermissionError; exit states unfinished",
+      "independentFailurePosts": [
+        0,
+        0,
+        0
+      ],
+      "linuxBirthsAbsent": 27,
+      "partialChecks": 2,
+      "partialRequestEvents": 6,
+      "serverExit": 1,
+      "uncapturedBirthAbsenceClaimed": false,
+      "windowsRecordedBirthsAbsent": 12
+    },
+    "V2": {
+      "acceptedCases": 0,
+      "browserExit": 1,
+      "browserReportExit": 0,
+      "checks": 2,
+      "failure": "One-shot driver gate pipe remained open; original outer deadline refused",
+      "independentFailurePosts": [
+        0,
+        0,
+        0
+      ],
+      "linuxBirthsAbsent": 282,
+      "requestEvents": 6,
+      "serverExit": 1,
+      "windowsRecordedBirthsAbsent": 14
+    },
+    "V3": {
+      "acceptedCases": 0,
+      "browserExit": 1,
+      "browserReportExit": 0,
+      "checks": 2,
+      "driverExit": 0,
+      "failure": "Immediate FILETIME object absence check failed; job empty/own handles closed",
+      "independentFailurePosts": [
+        0,
+        0,
+        0
+      ],
+      "linuxBirthsAbsent": 38,
+      "requestEvents": 6,
+      "serverExit": 1,
+      "windowsRecordedBirthsAbsent": 13
+    },
+    "V4": {
+      "acceptedCases": 0,
+      "allHistoricalStatesInferred": false,
+      "browserExit": 1,
+      "browserReportExit": 0,
+      "checks": 2,
+      "driverExit": 0,
+      "failure": "One Chrome process object remained queryable at existing five-second check; its historical live/signaled state was not recorded",
+      "independentFailurePosts": [
+        0,
+        0,
+        0
+      ],
+      "independentFailurePostsPending": false,
+      "linuxBirthsAbsent": 40,
+      "remainingRecordedPID": 21708,
+      "requestEvents": 6,
+      "serverExit": 1,
+      "windowsRecordedBirthsNowAbsent": 13
+    },
+    "currentConclusion": "UI assertions have run, but no complete accepted browser workflow yet. Validate Windows process object queryability versus actual kernel liveness before another attempt; do not retrospectively upgrade failures."
+  },
+  "A16WindowsJobControls": {
+    "actualExit": 1,
+    "browserOrAppRuntimeStarted": false,
+    "controlsPassed": 0,
+    "helperReportedAllFourBirthsAbsentAndJobEmpty": true,
+    "imageQueryScopedControlExit": 0,
+    "latestFinishControlTool": "7bdc06",
+    "latestFinishControlsActualExit": 0,
+    "latestFinishControlsPassed": 2,
+    "next": "Correct census requirement to retain all bounded members and require expected parent/descendant membership; record actual member image metadata, then two original cases",
+    "normalCaseRefused": "Exact two member assumption observed four actual owned-job births, including expected parent and descendant",
+    "originalV2FailurePreserved": true,
+    "qualificationAccepted": false,
+    "timeoutCaseStarted": false,
+    "tool": "99202d"
+  },
+  "WindowsProcessStateControl": {
+    "UIAcceptance": false,
+    "actualExit": 0,
+    "historicalV4StateInferred": false,
+    "queryableExitedSameBirthObserved": true,
+    "runningExitCode": 259,
+    "runningWaitResult": 258,
+    "terminatedExitCode": 0,
+    "terminatedWaitResult": 0,
+    "tool": "e92089",
+    "wholeSeconds": 15
+  },
   "cpuGCControls": {
     "actualDispatch": "eee0c1",
     "actualOuterExit": 0,
@@ -27,9 +127,33 @@
     "requests": 13,
     "sourceRemedyJustified": false
   },
+  "currentCacheD917": {
+    "ZIPMembers": 38,
+    "actualCallerExit": 0,
+    "actualOuterExit": 0,
+    "bootAfter": "7fbd3ead-db6c-4422-8cde-63afd93dabec",
+    "currentRawRows": 36,
+    "elapsedSeconds": 22.558494755001448,
+    "privateRecoveryAccepted": false,
+    "sourceFilesCurrent": 17
+  },
+  "functionProfile": {
+    "NextSpans": 26,
+    "SQLQueries": 41,
+    "actualExit": 0,
+    "exactV2Exit": 0,
+    "failedV1ReaderPreserved": true,
+    "freshExit": 0,
+    "helperCasesPassed": 3,
+    "laterExit": 0,
+    "performanceAccepted": false,
+    "rawProfileBytes": 709585,
+    "requests": 13,
+    "sourceRemedyJustified": false
+  },
   "goalComplete": false,
   "health": {
-    "acceptanceScope": "metadata snapshot only; no push rollout, disaster recovery or migration adoption claim",
+    "acceptanceScope": "metadata snapshot only; no rollout, DR or adoption claim",
     "activeHelmReleases": 33,
     "activeHelmReleasesReady": 33,
     "allLonghornEncryptedTwoReplicas": true,
@@ -44,14 +168,18 @@
       "detached/unknown": 10
     },
     "longhornVolumes": 40,
+    "metadataAcquisitionExit": 0,
     "nodes": 3,
     "nodesReady": 3,
-    "observedUtc": "2026-10-14T03:30:19.256128+00:00",
+    "observedUtc": "2026-10-14T09:18:18.101136-04:00",
+    "originalSummaryFormatterCause": "HelmRelease lives in flux-system; formatter initially assumed bortus namespace; saved metadata re-read without another SSH/API acquisition",
+    "originalSummaryFormatterExit": 1,
     "pods": 97,
     "pvcs": 54,
     "pvcsBound": 54,
-    "rawSHA256": "ddf05392cbb4612bd9fa086ace80c80506fe56571fe909a539ea65f7a3224614",
+    "rawSHA256": "0cbf2bcd98e56949a2d0360c254ddd5ce3a5b4606b7804ea5894c754d2c20953",
     "readOnly": true,
+    "savedSummaryReaderExit": 0,
     "secretPayloadsRequested": false
   },
   "nodeV8": {
@@ -84,6 +212,35 @@
     "reportedContainerOOMKilled": false,
     "retainedPartialRecords": 73,
     "sixActorSourceFilesCurrent": true
+  },
+  "nodeV9": {
+    "actorActualExit": null,
+    "actorDispatched": true,
+    "actorTool": "2f57fa/session63012",
+    "buildActualExit": null,
+    "configureActualExit": 0,
+    "defaultSuiteAccepted": false,
+    "defaultSuiteActualExit": null,
+    "generatorActualExit": 0,
+    "independentOutcomeReaderPrepared": true,
+    "independentOutcomeReaderSHA256": "7de34f3900747e9784b3e015f9803598a5d3432447c7b4a94938cd728d7a890a",
+    "limitsUnchanged": true,
+    "newELFQualified": false,
+    "originalGeneratorConfigureBuildTestSeconds": [
+      900,
+      120,
+      7200,
+      2400
+    ],
+    "originalWholeClosureSeconds": [
+      10800,
+      60
+    ],
+    "partialV8OutputReused": false,
+    "productionAdopted": false,
+    "sourceDefaultScanExit": 0,
+    "sourceDefaultScanFindings": 0,
+    "sourceSHA256": "9dd336ab97dcf44e75a67b90d4bc2f98798d2fab053c535dadfe92e0ec98deb3"
   },
   "productionAdopted": false,
   "publicTCP": {
@@ -227,5 +384,13 @@
     },
     "transportCreatedByDiagnostic": false
   },
-  "retirementAuthorized": false
+  "retirementAuthorized": false,
+  "sameHolderSourceControls": {
+    "actualExit": 0,
+    "actualLiveHolderGate": false,
+    "defaultSourceScannerActualExit": 1,
+    "passed": 12,
+    "privateRecoveryAccepted": false,
+    "publicSourceChecksumFinding": 1
+  }
 }
