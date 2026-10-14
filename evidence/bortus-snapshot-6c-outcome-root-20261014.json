@@ -1,0 +1,231 @@
+{
+  "scope": "Public-only snapshot identity comparison; literal failed guard and separately verified cleanup",
+  "run": "6c4041e249e8",
+  "actualActorToolExit": 1,
+  "actualCallerExit": 1,
+  "firstFailedPredicate": {
+    "source": "real-composition/same-live-holder-gates.py",
+    "line": 253,
+    "expression": "need(ids==expected)",
+    "sourceEnum": 59
+  },
+  "numericEqualityProjection": {
+    "abi": 1,
+    "all_equal": false,
+    "equal_fields": [
+      [
+        1,
+        1,
+        1
+      ],
+      [
+        1,
+        2,
+        1
+      ],
+      [
+        1,
+        3,
+        1
+      ],
+      [
+        1,
+        4,
+        0
+      ],
+      [
+        2,
+        1,
+        1
+      ],
+      [
+        2,
+        2,
+        1
+      ],
+      [
+        2,
+        3,
+        1
+      ],
+      [
+        2,
+        4,
+        1
+      ],
+      [
+        3,
+        1,
+        1
+      ],
+      [
+        3,
+        2,
+        1
+      ],
+      [
+        3,
+        3,
+        1
+      ],
+      [
+        3,
+        4,
+        1
+      ]
+    ],
+    "field_enum": {
+      "name": 1,
+      "namespace": 2,
+      "resourceVersion": 4,
+      "uid": 3
+    },
+    "identities_or_raw_values_returned": false,
+    "kind_enum": {
+      "configmap": 3,
+      "pod": 1,
+      "policy": 2
+    },
+    "original_guard_replaced": false,
+    "overall_acceptance": false
+  },
+  "onlyPodResourceVersionDiffers": true,
+  "expectedPodVersionOrigin": "First gate snapshot before later public setup; not the creation journal RV",
+  "statusDeltaOrWriterCaptured": false,
+  "historicalB85Or9dfCauseProved": false,
+  "traceEvents": 1147,
+  "traceBytes": 19533,
+  "traceMaximumEvents": 4096,
+  "traceMaximumBytes": 65536,
+  "originalStrictGuardUnchanged": true,
+  "extraAPISamplesByTracer": false,
+  "privatePromptReachable": false,
+  "privateMaterialDelivered": false,
+  "registeredActorJobs": 936,
+  "registeredActorShards": 4,
+  "registeredActorRowsAllExitZero": false,
+  "nonzeroActorRows": [
+    {
+      "index": 883,
+      "exit": -15,
+      "roleProved": false
+    }
+  ],
+  "actualIndependentBeforeCleanupExit": 0,
+  "beforeCleanupUnionCoordinatesAbsent": 937,
+  "currentRuntimeSources": 246,
+  "sourceDefaultScannerExit": 1,
+  "sourceDefaultFindings": 4,
+  "sourceFindingsExactPreviouslyReviewedPublicBytes": true,
+  "sourceFindingsUnresolved": 0,
+  "actualCleanupToolExit": 0,
+  "actualIndependentAfterCleanupExit": 0,
+  "cleanupJobs": 172,
+  "cleanupRegistryComplete": true,
+  "unionRecordedCoordinatesCurrentAbsent": 1110,
+  "cleanupConfirmedOrder": [
+    "pod",
+    "control0",
+    "control1",
+    "configmap",
+    "policy"
+  ],
+  "independentReadOnlyGETs": 8,
+  "allFiveNamesAndRecordedUIDsAbsent": true,
+  "laterReaderAndEightQueryCoordinatesAbsent": 9,
+  "currentCleanupSources": 2,
+  "privateOrProductionRecoveryAccepted": false,
+  "originalDataRetired": false,
+  "records": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-private600-6c4041e249e8\\started.json",
+      "bytes": 501,
+      "sha256": "a80feff4479ec7a0a4340d850e1dc13f8aa937dde5d5090a79a596c8a9203974"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-private600-6c4041e249e8\\terminal.json",
+      "bytes": 528,
+      "sha256": "ec1a5a8c38610c3de8437549933a3a3fea5411bcf85e30ef0dd3edecde27d475"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-private600-6c4041e249e8\\caller-terminal.json",
+      "bytes": 1052,
+      "sha256": "24635459553dcfe9e142c3172035b192fc03cc239086aa836079ba4f2b57ce6f"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-private600-6c4041e249e8\\stage6-first-false.json",
+      "bytes": 177,
+      "sha256": "deee6d6b72833efad1d0b7c564e1af4df80f16e1fef3dbf0bba0e948865c45a2"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-private600-6c4041e249e8\\stage6-snapshot-equality.json",
+      "bytes": 417,
+      "sha256": "887a9830f7aab1cb1e854096fbbeeb7e30c2019eb95b06c37b3d619a5635eadf"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-private600-6c4041e249e8\\stage6-trace-summary.json",
+      "bytes": 256,
+      "sha256": "42a25521e3dc1fef9cc2ebe4b03e8c90a089dec763937e11473cec7d17c9cc12"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-private600-actual-root-6c4041e249e8.json",
+      "bytes": 333,
+      "sha256": "62b2b08223315021d9da065201ad06daa74c68624696efec3abe43fd24cf9a62"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-stage6-outcome-independent-6c4041e249e8-v1-1\\result.json",
+      "bytes": 4718,
+      "sha256": "818dce4ce9bef7bea70b4edc382884cdb74c0d0c42cdd4ad0ae060b7ad19f840"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-snapshot-6c-precleanup-post-later-20261014.json",
+      "bytes": 265,
+      "sha256": "3aa0ede73450dc1f8f67b41c69c293c1b70b8be380e7e938dfab1e51f08b6abe"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-private600-owned-cleanup-6c4041e249e8-v1\\started.json",
+      "bytes": 323,
+      "sha256": "7a6679fba852d76bc76c20e33f7e267961270696cbd05ab92de26a5f4ed869b9"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-private600-owned-cleanup-6c4041e249e8-v1\\terminal.json",
+      "bytes": 589,
+      "sha256": "f462315826619be18a6fbd5eb77e64a335142279fb5d3f3165bb1bf231d8ba5a"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-private600-owned-cleanup-6c4041e249e8-v1\\result.json",
+      "bytes": 1416,
+      "sha256": "65c21a89c0faa3d0fc5f6fa36cc2cab8b23b8d0e4222dbfca625a1d6f7b0769b"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-stage6-cleanup-independent-6c4041e249e8-v1\\started.json",
+      "bytes": 319,
+      "sha256": "733238a184de5523e81d95a2130aa93488621a6f2047e8f79f6215e73f65c1ee"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-stage6-cleanup-independent-6c4041e249e8-v1\\terminal.json",
+      "bytes": 569,
+      "sha256": "83992aad3ca6a3b8c40fa1a34c8ca0ea05ada2caa6f2f1684ab4cddcc7bcba50"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-stage6-cleanup-independent-6c4041e249e8-v1\\result.json",
+      "bytes": 2978,
+      "sha256": "8f9734a2999f298c21c5761476d72218fb69102a893b4c2d7e306964fc630da1"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-snapshot-6c-cleanup-post-later-20261014.json",
+      "bytes": 325,
+      "sha256": "5a19df6991c46892969cb0c7ae6df55cd03c75f944869b6df482b3f82a09489a"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-snapshot-6c-source-review-20261014.json",
+      "bytes": 400,
+      "sha256": "bd768bb18c25ae8458023483a295be1de69beb7f5c75bba35e4054c4b8c66889"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-snapshot-6c-scan-review-20261014.json",
+      "bytes": 482,
+      "sha256": "d7f98eabb025dc7981cc57d350653964ab88c1ecea086cadd118e4166ca2ac1a"
+    }
+  ]
+}
