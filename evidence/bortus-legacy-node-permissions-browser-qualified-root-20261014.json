@@ -1,0 +1,167 @@
+{
+  "scope": "Nine finite corrected legacy Nodes browser workflows; isolated test fixture only",
+  "source": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+  "actualServerExit": 0,
+  "actualBrowserExit": 0,
+  "actualIndependentExactLinuxWindowsExits": [
+    0,
+    0,
+    0
+  ],
+  "actualCases": 9,
+  "pageRequestEvents": 38,
+  "checks": [
+    "readonly/scoped metadata remains readable and inventory writes are denied",
+    "writer Add is named and only exact inventory association supplies row actions",
+    "edit uses exact inventory-ID PUT; rename keeps one inventory record and live node",
+    "409 edit error is visible once inside modal and preserves draft",
+    "explicit fixture transport503 blocks inventory mutations and recovery retains draft",
+    "delete removes exact inventory record only; live rows survive",
+    "fresh role demotion clears draft; restoration needs explicit fresh entry",
+    "withdrawn pending owner cannot revive modal or late success; server acceptance remains explicit",
+    "sessionVersion revocation clears draft and server denies old cookie without live-node CLI mutation"
+  ],
+  "observations": [
+    {
+      "deniedPrincipals": 2,
+      "direct403": 4,
+      "mutationControls": 0
+    },
+    {
+      "namedAddSave": true,
+      "addedInventory": true,
+      "liveOnlyActions": 0,
+      "liveRowsUnchanged": true
+    },
+    {
+      "exactPutIdentity": true,
+      "noUpsertDuringEdit": true,
+      "inventoryCountUnchanged": true,
+      "canonicalUnmatchedRecordReachable": true,
+      "liveRowsUnchanged": true
+    },
+    {
+      "response409": true,
+      "singleVisibleModalAlert": true,
+      "draftPreserved": true
+    },
+    {
+      "fixtureTransport503": true,
+      "noPlaywrightResponseInterception": true,
+      "fourControlsDisabled": true,
+      "liveMetadataRetained": true,
+      "recovery200": true,
+      "draftPreserved": true
+    },
+    {
+      "exactDeleteIdentity": true,
+      "removedInventoryOnly": true,
+      "liveRowsUnchanged": true,
+      "setupRecreatedInventory": true
+    },
+    {
+      "freshRole": true,
+      "server403": true,
+      "draftCleared": true,
+      "noAutomaticReopen": true
+    },
+    {
+      "responseHeldAfterAcceptance": true,
+      "freshAdmin403": true,
+      "draftCleared": true,
+      "noLateNotification": true,
+      "serverAcceptanceObserved": true
+    },
+    {
+      "freshSessionRevoked": true,
+      "server401": true,
+      "draftCleared": true,
+      "mutationCliCalls": 0,
+      "noClusterRemove": true
+    }
+  ],
+  "alertDiagnostics": [
+    {
+      "checkpoint": "failed-edit-modal",
+      "globalAlerts": 2,
+      "appMains": 1,
+      "appAlerts": 1,
+      "modalAlerts": 1,
+      "appAlertsOutsideModal": 0,
+      "visibleModalAlerts": 1,
+      "frameworkHosts": 1,
+      "frameworkAlerts": 1,
+      "frameworkValidAlerts": 1
+    },
+    {
+      "checkpoint": "after-pending-withdrawal",
+      "globalAlerts": 1,
+      "appMains": 1,
+      "appAlerts": 0,
+      "modalAlerts": 0,
+      "appAlertsOutsideModal": 0,
+      "visibleModalAlerts": 0,
+      "frameworkHosts": 1,
+      "frameworkAlerts": 1,
+      "frameworkValidAlerts": 1
+    }
+  ],
+  "originalFailedBrowserV1Preserved": true,
+  "historicalV1GlobalAlertCountKnown": false,
+  "correction": "Scope product alert checks to the Nodes main/modal and independently verify the pinned framework announcer; product code and nine business oracles unchanged",
+  "synthetic503Scope": "Explicit gateway transport fault only; not database outage proof",
+  "acceptedWriteCancellationScope": "Client callback fencing cannot undo an already accepted server write",
+  "currentSourceFiles": 374,
+  "currentInputFiles": 39,
+  "preparationCopies": 40,
+  "originalHandoffInputCount": 35,
+  "metadataCountCorrectionPreserved": true,
+  "currentCompiledObjects": 5383,
+  "currentInstalledObjects": 40635,
+  "linuxRecordedHostBirthsAbsent": 40,
+  "windowsRecordedBirthsNoLive": 10,
+  "laterLinuxReaderAndTwoQueryBirthsAbsent": 3,
+  "laterWindowsReaderNoLive": true,
+  "exactContainerIdAndNameAbsent": true,
+  "actualAssistiveTechnologyQualified": false,
+  "allTableAccessibilityQualified": false,
+  "performanceAccepted": false,
+  "productionAdopted": false,
+  "records": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-legacy-node-permissions-browser-postcheck-20261014-v2\\legacy-review-result.json",
+      "bytes": 14147,
+      "sha256": "0858408237553b25a37c5b974fa02a509c9d1cc8de9f38603c814fdb1802001c"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-legacy-node-permissions-browser-postcheck-20261014-v2\\fresh-result.json",
+      "bytes": 12570,
+      "sha256": "073068eb47de281fb18594f999a5d898f700788271cbab6640391e582a011979"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-legacy-node-permissions-browser-postcheck-20261014-v2\\windows-fresh-result.json",
+      "bytes": 3672,
+      "sha256": "7b5ddaddc5551a0eca59c52006242f2acf189f2e1bf139b5ba6f1b8712ea75d0"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node-permissions-browser-v2-later-20261014.json",
+      "bytes": 299,
+      "sha256": "d6d45632560d24381e82c2788c868b68da3a5ccdff02cb644bfa00e6edd3c6d7"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-node-permissions-browser-v2-windows-later-20261014.json",
+      "bytes": 408,
+      "sha256": "1dd05395edfddf2a39476fc0b903926f3cf7127f887023c4c119ae297aa896b4"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-node-permissions-browser-v2-source-review-20261014.json",
+      "bytes": 563,
+      "sha256": "8b0a0c8ad15f7581a08e0235a64ecc36626ba31b9f64f14e1a6842042d327a93"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-legacy-node-permissions-browser-preparation-20261014-v2\\handoff-input-count-correction.json",
+      "bytes": 7042,
+      "sha256": "f965b33a123a811e3cf2befe8041d3d402ccf077c2b674d024090f89036d786b"
+    }
+  ]
+}
