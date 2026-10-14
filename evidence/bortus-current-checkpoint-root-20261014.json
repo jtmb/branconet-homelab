@@ -1141,7 +1141,7 @@
     "newNodeDefaultSuiteExit": 0,
     "newNodeFailures": 0,
     "privateRecoveryProved": false,
-    "allFiveDiagnosticTemporaryResourcesAbsent": true,
+    "allFiveDiagnosticTemporaryResourcesAbsent": false,
     "performanceAccepted": false,
     "records": [
       {
@@ -1351,11 +1351,11 @@
       "applicationRuntimeAccepted": false
     },
     "latestPublicRecoveryDiagnostic": {
-      "run": "855ecc9cd780",
-      "actorExit": 1,
-      "outcomeVerified": true,
-      "cleanupVerified": true,
-      "strictRVGuardChanged": false,
+      "run": "851978e4b2a5",
+      "dispatched": true,
+      "outcomeVerified": false,
+      "cleanupVerified": false,
+      "strictPostCommitRVGuardChanged": false,
       "privateMaterialReachable": false
     },
     "a13FiveColumnAttempt": {
@@ -1528,7 +1528,7 @@
       "strictRVGuardChanged": false,
       "liveRecoveryAccepted": false
     },
-    "publicDiagnosticCleanupPending": false,
+    "publicDiagnosticCleanupPending": true,
     "precheckpointReadinessCandidateQualifiedLocally": true
   },
   "current6eRawSourceQualification": {
@@ -2114,5 +2114,38 @@
     "performanceAccepted": false,
     "securityAccepted": false,
     "productionChanged": false
+  },
+  "public851Dispatch": {
+    "scope": "Dispatched public-only stronger precheckpoint readiness diagnostic; outcome and cleanup pending",
+    "run": "851978e4b2a5",
+    "controls": [
+      "1068e3900eae",
+      "3847cb6ba05d"
+    ],
+    "actorDispatchTool": "011c29",
+    "wholeSeconds": 600,
+    "closureSeconds": 1,
+    "sourceReviewTool": "0fe0bb",
+    "sourceReviewExit": 0,
+    "stagerTool": "c56af4",
+    "stagerExit": 0,
+    "packetRows": 261,
+    "runtimeSources": 246,
+    "unchangedVs855": 242,
+    "sourceGraph183Unchanged": true,
+    "gateSHA256": "183dc3b57c25c6de571d0ef1cd5de3b4010898de1622282b4b2ca577d8c414cb",
+    "runtimeManifestSHA256": "e408d2274033f0f5b75bc0abf2cc56754cf19d9c7a169876eacd442df0336501",
+    "actual41ReadinessAndSeparate18ObservationControlsBound": true,
+    "oneCheckpointAndStrictPostCommitRVPreserved": true,
+    "originalSevenTCPOraclesPreserved": true,
+    "physicalStopBeforePrivateMaterialPreserved": true,
+    "sourceScanExit": 1,
+    "sourceScanFindings": 4,
+    "sourceScanUnresolved": 0,
+    "suppressionOrReplay": false,
+    "outcomeVerified": false,
+    "cleanupVerified": false,
+    "productionImageOrGuardChanged": false,
+    "privateRecoveryAccepted": false
   }
 }
