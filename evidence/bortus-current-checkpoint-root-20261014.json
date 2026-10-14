@@ -1141,7 +1141,7 @@
     "newNodeDefaultSuiteExit": 0,
     "newNodeFailures": 0,
     "privateRecoveryProved": false,
-    "allFiveDiagnosticTemporaryResourcesAbsent": true,
+    "allFiveDiagnosticTemporaryResourcesAbsent": false,
     "performanceAccepted": false,
     "records": [
       {
@@ -1351,13 +1351,11 @@
       "applicationRuntimeAccepted": false
     },
     "latestPublicRecoveryDiagnostic": {
-      "run": "851978e4b2a5",
-      "actorExit": 1,
-      "sevenTCPValidatorReturned": true,
-      "finalComparisonPassed": false,
-      "whichOperandFailedEstablished": false,
-      "outcomeVerified": true,
-      "cleanupVerified": true,
+      "run": "836c60e5a010",
+      "dispatched": true,
+      "outcomeVerified": false,
+      "cleanupVerified": false,
+      "strictPostCommitRVGuardChanged": false,
       "privateMaterialReachable": false
     },
     "a13FiveColumnAttempt": {
@@ -1532,7 +1530,7 @@
       "strictRVGuardChanged": false,
       "liveRecoveryAccepted": false
     },
-    "publicDiagnosticCleanupPending": false,
+    "publicDiagnosticCleanupPending": true,
     "precheckpointReadinessCandidateQualifiedLocally": true,
     "sampleEqualityDiagnosticsQualifiedLocally": true
   },
@@ -2438,6 +2436,40 @@
     },
     "sourceOnlyVersionsV11V12RetainedUnrun": true,
     "productionGuardChanged": false,
+    "privateRecoveryAccepted": false
+  },
+  "public836Dispatch": {
+    "scope": "One public-only final-comparison diagnostic; outcome and exact-UID cleanup pending",
+    "run": "836c60e5a010",
+    "controls": [
+      "8b8766a5f8c6",
+      "bcb2a209a90e"
+    ],
+    "actorDispatchTool": "f19135",
+    "wholeSeconds": 600,
+    "closureSeconds": 1,
+    "sourceReviewTool": "aa0091",
+    "sourceReviewExit": 0,
+    "stagerTool": "a3aa46",
+    "stagerExit": 0,
+    "packetRows": 260,
+    "runtimeSources": 246,
+    "unchangedVs851": 242,
+    "sourceGraph183Unchanged": true,
+    "gateSHA256": "81f798d8c47a530748deb1a52e2242484c8fb41760ec53d0207b8621c3bb1d33",
+    "runtimeManifestSHA256": "a243601489c5f2ddfa2ce6cc036a3ed0222c6b56de65f94c2bb150dc6a55957c",
+    "integralActual47GateAndObservationControls": true,
+    "original41ControlsPreserved": true,
+    "oneCheckpointAndStrictPostCommitRVPreserved": true,
+    "originalSevenTCPOraclesPreserved": true,
+    "physicalStopBeforePrivateMaterialPreserved": true,
+    "sourceScanExit": 1,
+    "sourceScanFindings": 4,
+    "sourceScanUnresolved": 0,
+    "suppressionOrReplay": false,
+    "outcomeVerified": false,
+    "cleanupVerified": false,
+    "productionImageOrGuardChanged": false,
     "privateRecoveryAccepted": false
   }
 }
