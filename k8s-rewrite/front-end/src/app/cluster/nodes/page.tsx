@@ -5,6 +5,7 @@ import { Server, Loader2, Plus, Trash2, Save, Pencil, Search } from "lucide-reac
 import ViewportWrapper from "@/app/(dashboard)/viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
+import { sortLegacyClusterRows } from "@/lib/legacy-cluster-sort";
 
 interface NodeData {
   id: string;
@@ -119,11 +120,7 @@ export default function NodesPage() {
           );
         })
       : unfilteredNodes;
-    return [...result].sort((a, b) => {
-      const va = String((a as any)[sortKey] ?? "").toLowerCase();
-      const vb = String((b as any)[sortKey] ?? "").toLowerCase();
-      return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
-    });
+    return sortLegacyClusterRows(result, "nodes", sortKey, sortDir);
   }, [unfilteredNodes, search, sortKey, sortDir]);
 
   return (
