@@ -1138,8 +1138,8 @@
     "HTTP": 8,
     "newBrowserActualExit": 0,
     "newBrowserAllNineQualified": true,
-    "newNodeDefaultSuiteExit": 2,
-    "newNodeFailures": 90,
+    "newNodeDefaultSuiteExit": 0,
+    "newNodeFailures": 0,
     "privateRecoveryProved": false,
     "allFiveDiagnosticTemporaryResourcesAbsent": true,
     "performanceAccepted": false,
@@ -1499,7 +1499,34 @@
       "diagnosticWinError": 31,
       "query31ControlsExit": 0,
       "query31Controls": 10,
-      "newExportPending": true
+      "newExportPending": false,
+      "V3ActualExit": 0,
+      "V3IndependentExit": 0,
+      "V3RawSourceAccepted": true,
+      "V3ProductionSourceScanExit": 0
+    },
+    "historicalPID512DefaultSuiteExit": 2,
+    "historicalPID512DefaultSuiteFailures": 90,
+    "currentDelivery": {
+      "source": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+      "rawSourceQualified": true,
+      "rawSourceFiles": 282,
+      "imageBuildExit": 0,
+      "imageExportExit": 0,
+      "independentSavedChainExit": 0,
+      "OCIConfigDigest": "sha256:41bb50990f9c037179f36cf2e1d12b82812711cbf21ee9e28b06dfad309c37ed",
+      "fullFilesystemQualified": false,
+      "newImageSecurityAccepted": false,
+      "appNativeTLSAccepted": false,
+      "performanceAccepted": false,
+      "productionChanged": false
+    },
+    "accountingObservationControls": {
+      "testsPassed": 18,
+      "independentExit": 0,
+      "laterExit": 0,
+      "strictRVGuardChanged": false,
+      "liveRecoveryAccepted": false
     }
   },
   "current6eRawSourceQualification": {
@@ -1726,5 +1753,54 @@
       "findings": 0
     },
     "retainedSourceSyntaxWarning": "Unchanged cifs-writer-e210 invalid escape SyntaxWarning during AST review"
+  },
+  "current6eImageExport": {
+    "scope": "One actual saved image and independently recomputed OCI archive/descriptor/layer chain; no filesystem reconstruction/runtime/registry publication",
+    "source": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+    "frontendTree": "2c4023aff26848e39890ed0fef51339d27c90680",
+    "exportTool": "a1fd0e",
+    "actualExportExit": 0,
+    "actualSaveExit": 0,
+    "independentTool": "49cada",
+    "independentExit": 0,
+    "laterTool": "5143da",
+    "laterExit": 0,
+    "archiveBytes": 277117952,
+    "archiveSHA256": "2737b45ff62bbde6729c0bc5aa948681395344961cdee34f5b229a82661b55a6",
+    "dockerLocalIndexDigest": "sha256:270b1b49bd1ce6b836e9f6a8c86005d95c7f42fd913f5a53597a266d648fc105",
+    "platformManifestDigest": "sha256:04d53895730ee9947810ab61615cbc8ddebcfa46ef402b20389c020c0137680b",
+    "OCIConfigDigest": "sha256:41bb50990f9c037179f36cf2e1d12b82812711cbf21ee9e28b06dfad309c37ed",
+    "attestationManifestDigest": "sha256:18048fab556690e104ac6d9a459034133ab47e1b2cca2b009b04a534c3dcf813",
+    "actualOrderedLayers": 13,
+    "publicConfigEnvExact": true,
+    "sourceFilesCurrent": 2,
+    "originalOutputMetadataFilesCurrent": 19,
+    "originalExportBirthsAbsent": 4,
+    "independentReaderAbsent": true,
+    "archiveCurrent": true,
+    "defaultSourceScan": {
+      "actualExit": 0,
+      "files": 7,
+      "findings": 0
+    },
+    "independentSourceScan": {
+      "actualExit": 0,
+      "combinedFiles": 5,
+      "selectedPostFiles": 4,
+      "findings": 0
+    },
+    "qualifiedOriginalDefinitionsExact": 24,
+    "retainedObserverHelpersExact": 20,
+    "firstMetadataFreezerFailure": {
+      "beforeAnyWrites": true,
+      "reason": "Expected metadata file count20 corrected to actual19; no save replay"
+    },
+    "fullFilesystemQualified": false,
+    "runtimeDigestQualified": false,
+    "registryPublicationQualified": false,
+    "newImageSecurityAccepted": false,
+    "appNativeTLSAccepted": false,
+    "performanceAccepted": false,
+    "productionChanged": false
   }
 }
