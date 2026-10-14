@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { sortLegacyClusterRows } from "../src/lib/legacy-cluster-sort";
+import { findLegacyLiveNode, sortLegacyClusterRows } from "../src/lib/legacy-cluster-sort";
 
 const rows = Object.freeze([
   Object.freeze({ name: "twelve", namespace: "apps", restarts: 12 }),
@@ -75,4 +75,18 @@ test("legacy text and equal-value sorts retain deterministic name/namespace iden
   }
   const nodes = [{ hostname: "z", cpu: 2 }, { hostname: "a", cpu: 2 }];
   assert.deepEqual(sortLegacyClusterRows(nodes, "nodes", "cpu", "desc"), [nodes[1], nodes[0]]);
+});
+
+test("legacy live Node identity prefers hostname over an earlier shared IP and preserves inventory fallback", () => {
+  const first = Object.freeze({ hostname: "node-twelve", ipAddress: "10.0.0.2", cpu: 12, memory: 12, pods: 12 });
+  const exact = Object.freeze({ hostname: "node-two", ipAddress: "10.0.0.2", cpu: 2, memory: 2, pods: 2 });
+  const missing = Object.freeze({ hostname: "node-missing", ipAddress: "10.0.0.2", cpu: null, memory: null, pods: 0 });
+  const live = Object.freeze([first, exact, missing]);
+  assert.equal(findLegacyLiveNode(live, exact), exact);
+  assert.equal(findLegacyLiveNode(live, missing), missing);
+  assert.deepEqual(findLegacyLiveNode(live, exact), { hostname: "node-two", ipAddress: "10.0.0.2", cpu: 2, memory: 2, pods: 2 });
+  assert.equal(findLegacyLiveNode(live, { hostname: "inventory-alias", ipAddress: "10.0.0.2" }), first);
+  assert.equal(findLegacyLiveNode(live, { hostname: "offline", ipAddress: "10.0.0.9" }), undefined);
+  assert.equal(findLegacyLiveNode([], exact), undefined);
+  assert.deepEqual(live, [first, exact, missing]);
 });

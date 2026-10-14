@@ -5,7 +5,7 @@ import { Server, Loader2, Plus, Trash2, Save, Pencil, Search } from "lucide-reac
 import ViewportWrapper from "@/app/(dashboard)/viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
-import { sortLegacyClusterRows } from "@/lib/legacy-cluster-sort";
+import { findLegacyLiveNode, sortLegacyClusterRows } from "@/lib/legacy-cluster-sort";
 
 interface NodeData {
   id: string;
@@ -262,9 +262,7 @@ export default function NodesPage() {
               </thead>
               <tbody>
                 {displayNodes.map((node) => {
-                  const liveInfo = liveNodes.find(
-                    (ln) => ln.hostname === node.hostname || ln.ipAddress === node.ipAddress
-                  );
+                  const liveInfo = findLegacyLiveNode(liveNodes, node);
                   const isReady = (liveInfo?.status || node.status) === "ready";
                   const isLive = !!liveInfo;
                   const roles = (liveInfo?.role || node.role || "worker").split(",");

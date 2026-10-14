@@ -19,3 +19,11 @@ export function sortLegacyClusterRows<T extends object>(rows: readonly T[], coll
     || compareValues(Reflect.get(a, identity), Reflect.get(b, identity))
     || compareValues(Reflect.get(a, "namespace"), Reflect.get(b, "namespace")));
 }
+
+/** Prefer the stable Kubernetes hostname before the inventory-only IP fallback. */
+export function findLegacyLiveNode<T extends { hostname: string; ipAddress: string }>(
+  liveNodes: readonly T[], node: { hostname: string; ipAddress: string },
+): T | undefined {
+  return liveNodes.find(live => live.hostname === node.hostname)
+    ?? liveNodes.find(live => live.ipAddress === node.ipAddress);
+}
