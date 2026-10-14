@@ -197,20 +197,26 @@
     "metadataAcquisitionExit": 0,
     "nodes": 3,
     "nodesReady": 3,
-    "observedUtc": "2026-10-14T21:38:42.895833+00:00",
+    "observedUtc": "2026-10-14T23:54:13.205925+00:00",
     "originalSummaryFormatterCause": "HelmRelease lives in flux-system; formatter initially assumed bortus namespace; saved metadata re-read without another SSH/API acquisition",
     "originalSummaryFormatterExit": 1,
     "pods": 97,
     "pvcs": 54,
     "pvcsBound": 54,
-    "rawSHA256": "caa0f677540c1ddad00d0a15cc2519442327aeeb913793b095d5dae9cc4341ab",
+    "rawSHA256": "d47575aff287a089817f1e145a3a780bc3ff288c323213a43ccccfb81c9893a7",
     "readOnly": true,
     "savedSummaryReaderExit": 0,
     "secretPayloadsRequested": false,
     "previousSummaryFormatterFailurePreservedInPriorReceipt": true,
-    "previousHealthSnapshotObservedUtc": "2026-10-14T18:19:03.390525+00:00",
-    "currentSnapshotTool": "a29f5b",
-    "currentSummaryFormatterExit": 0
+    "previousHealthSnapshotObservedUtc": "2026-10-14T21:38:42.895833+00:00",
+    "currentSnapshotTool": "1baab6",
+    "currentSummaryFormatterExit": 0,
+    "bortusHelmReleaseNamespace": "flux-system",
+    "originalCombinedFormatterExit": 1,
+    "savedOnlyFormatterExit": 0,
+    "acquisitionReplayed": false,
+    "currentSummaryFormatterTool": "67dde0",
+    "originalFormatterFailure": "StopIteration: incorrectly expected HelmRelease in application namespace"
   },
   "nodeV8": {
     "actorActualExit": null,
@@ -1141,7 +1147,7 @@
     "newNodeDefaultSuiteExit": 0,
     "newNodeFailures": 0,
     "privateRecoveryProved": false,
-    "allFiveDiagnosticTemporaryResourcesAbsent": false,
+    "allFiveDiagnosticTemporaryResourcesAbsent": true,
     "performanceAccepted": false,
     "records": [
       {
@@ -1293,6 +1299,16 @@
         "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-current6e-prune-qualified-root-20261014.json",
         "bytes": 8008,
         "sha256": "1ba739d2b3da203de81c0ed7458f60ee206916f3e2566b5c0048d849323c798d"
+      },
+      {
+        "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-live-metadata-refresh-current-20261014-235410-summary.json",
+        "bytes": 2140,
+        "sha256": "cf5c04537bf3f866e2cefb4ac1f8262fe9bc503cbe7a61bb039ead36e310ff92"
+      },
+      {
+        "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-live-metadata-refresh-current-20261014-235410.json",
+        "bytes": 42007,
+        "sha256": "d47575aff287a089817f1e145a3a780bc3ff288c323213a43ccccfb81c9893a7"
       }
     ],
     "newBrowserPartialCheckpoints": 0,
@@ -1352,10 +1368,15 @@
     },
     "latestPublicRecoveryDiagnostic": {
       "run": "836c60e5a010",
-      "dispatched": true,
-      "outcomeVerified": false,
-      "cleanupVerified": false,
-      "strictPostCommitRVGuardChanged": false,
+      "actorExit": 1,
+      "sevenTCPValidatorReturned": true,
+      "finalComparisonPassed": false,
+      "whichOperandFailedEstablished": true,
+      "firstControlResourceVersionChanged": true,
+      "holderAllFieldsEqual": true,
+      "secondControlComparisonSkipped": true,
+      "outcomeVerified": true,
+      "cleanupVerified": true,
       "privateMaterialReachable": false
     },
     "a13FiveColumnAttempt": {
@@ -1423,7 +1444,7 @@
       "runtimeAccepted": false
     },
     "liveSnapshot": {
-      "observedUtc": "2026-10-14T21:38:42.895833+00:00",
+      "observedUtc": "2026-10-14T23:54:13.205925+00:00",
       "nodesReady": 3,
       "pvcsBound": 54,
       "activeHelmReady": 33,
@@ -1530,7 +1551,7 @@
       "strictRVGuardChanged": false,
       "liveRecoveryAccepted": false
     },
-    "publicDiagnosticCleanupPending": true,
+    "publicDiagnosticCleanupPending": false,
     "precheckpointReadinessCandidateQualifiedLocally": true,
     "sampleEqualityDiagnosticsQualifiedLocally": true
   },
@@ -2471,5 +2492,65 @@
     "cleanupVerified": false,
     "productionImageOrGuardChanged": false,
     "privateRecoveryAccepted": false
+  },
+  "public836OutcomeCleanup": {
+    "scope": "Failed public836 final control comparison and completed exact-UID cleanup",
+    "run": "836c60e5a010",
+    "actorTool": "c782c7",
+    "actorExit": 1,
+    "elapsedSeconds": 181.08687037499476,
+    "failureAtGateLine": 424,
+    "checkpointWritten": true,
+    "sevenTCPNetworkValidatorReturned": true,
+    "holderFinalIdentityAndAddressEqual": true,
+    "firstControlNameNamespaceUIDAndAddressEqual": true,
+    "firstControlResourceVersionEqual": false,
+    "secondControlComparisonEvaluated": false,
+    "finalCompoundIdentityComparisonPassed": false,
+    "whichOperandFailedEstablished": true,
+    "firstControlAccountingOrWriterCauseEstablished": false,
+    "historical851CauseEstablished": false,
+    "strictPostCommitRVGuardChanged": false,
+    "privateRecoveryAccepted": false,
+    "matchedOutcomeTool": "a343fe",
+    "matchedOutcomeExit": 0,
+    "originalRegisteredJobs": 2506,
+    "originalRegistryComplete": false,
+    "cleanupTool": "cd6133",
+    "cleanupExit": 0,
+    "cleanupJobs": 182,
+    "cleanupRegistryComplete": true,
+    "independentCleanupTool": "3da9be",
+    "independentCleanupExit": 0,
+    "originalAndCleanupPrincipalUnionBirthsAbsent": 2690,
+    "allFiveResourceNamesAndRecordedUIDsAbsent": true,
+    "laterTool": "80395b",
+    "laterExit": 0,
+    "observerAndEightQueryBirthsAbsent": 9,
+    "currentSources": 246,
+    "currentCleanupSources": 2,
+    "laterReaderAbsentTool": "b98f4b",
+    "laterReaderBirthAbsent": true,
+    "productionImageChanged": false,
+    "originalDataRetired": false
+  },
+  "current6eSecuritySourceFollowup": {
+    "scope": "Finite Node public-zlib source boundary and source-only PCRE2 remediation preparation",
+    "independentSourceReviewTool": "b7b3f0",
+    "independentSourceReviewExit": 0,
+    "currentSmallSourceBindings": 16,
+    "inspectedNodePublicJSBindingUsesMemoryBuffers": true,
+    "completeGzFileStaticOrDynamicReachabilityExclusion": false,
+    "NodeBundledGzFunctionsRemainPresent": true,
+    "libvipsStaticOrFutureAddonReachabilityUnproved": true,
+    "pcre2ExactNobleSourceAcquisitionExecuted": false,
+    "sourcePackagingFormatNotYetAuthenticated": true,
+    "officialPoolDiscoveryUsesOrigTarAndDiffGz": true,
+    "sourceFormatMustBeReadFromAuthenticatedDsc": true,
+    "maintained1042BackportProposalOnly": true,
+    "noCrossSuiteBinaryOrProductSourceChange": true,
+    "scannerFindingsRemain": 10,
+    "exceptionsAccepted": false,
+    "securityAccepted": false
   }
 }
