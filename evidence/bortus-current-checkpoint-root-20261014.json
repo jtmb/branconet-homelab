@@ -1521,7 +1521,9 @@
       "mediumFindings": 10,
       "securityAccepted": false,
       "SDKAndNodeTLS4Qualified": true,
-      "productionSecretTransportQualified": false
+      "productionSecretTransportQualified": false,
+      "packagedSecretTransportFiniteCasesQualified": true,
+      "liveProductionSecretTransportQualified": false
     },
     "accountingObservationControls": {
       "testsPassed": 18,
@@ -2282,5 +2284,108 @@
     "bundledZlibExposureResolved": false,
     "exceptionsAccepted": false,
     "securityAccepted": false
+  },
+  "current6ePackagedSecretTransportFinite": {
+    "scope": "Finite REAL packaged application HTTP/native SecretTransport compatibility on immutable current image",
+    "productSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+    "actorTool": "2caf9d",
+    "actorExit": 0,
+    "independentTool": "0cc68d",
+    "independentExit": 0,
+    "laterTool": "e9fd6e",
+    "laterExit": 0,
+    "laterReaderAbsentTool": "f44bd3",
+    "laterReaderBirthAbsent": true,
+    "fixtureSHA256": "bdc358cff41933ed50d5f1a7f7b3acd61f76a70fa9af463203f7d199c2712674",
+    "originalNativeProbeSHA256": "a670ff7b7ca605c74c27c41891b15edff628e74cdb9ab9dc33ba9897865b7bc6",
+    "rawGitSourceAndOracleBindings": 14,
+    "currentSources": 15,
+    "currentOriginalOutputs": 81,
+    "originalHostBirthsAbsent": 22,
+    "readerAndTwoQueryBirthsAbsent": 3,
+    "currentCombinedPins": 110,
+    "exactContainerIDAndNameAbsent": true,
+    "checks": {
+      "SDKErrorCategoryOracleReplayed": false,
+      "TLS4": [
+        {
+          "case": "server",
+          "metadataObjects": 334,
+          "namespaces": 18,
+          "passed": true,
+          "status": 200
+        },
+        {
+          "case": "badca",
+          "passed": true,
+          "status": 503,
+          "successfulUpstreamHTTPRequests": 0
+        },
+        {
+          "case": "badsan",
+          "passed": true,
+          "status": 503,
+          "successfulUpstreamHTTPRequests": 0
+        },
+        {
+          "case": "server-no-client",
+          "passed": true,
+          "status": 503,
+          "successfulUpstreamHTTPRequests": 0
+        }
+      ],
+      "abi": 1,
+      "actualPackagedCompiledApp": true,
+      "appSourceOrDependencyOverlay": false,
+      "completeMetadataObjects334": true,
+      "completeNamespaces18": true,
+      "configurationRecovery200": true,
+      "nativeArtifactDigest": "8dde4ce66cf7045bfa7d5c0c0fb8ad3ff3d98809fbe24b76487b520ea664f6c2",
+      "nativeLoadedByCompiledApp": true,
+      "onlyPublicSyntheticMaterial": true,
+      "operatorSelectedValue200": true,
+      "originalEntrypointExecuted": true,
+      "outsideNamespace403BeforeNative": true,
+      "overallAcceptance": false,
+      "performanceAccepted": false,
+      "privateMetadataAndOtherValuesNotReturned": true,
+      "productionOrLiveAccepted": false,
+      "readonlyMetadata200": true,
+      "readonlyValueAndMutation403BeforeNative": true,
+      "realSecretTransportTLS": true,
+      "unauth401BeforeNative": true,
+      "upstreamMutations": 0,
+      "upstreamRBAC403Sanitized503": true,
+      "workerArtifactsExact": true,
+      "workerSQLThreadOwnershipObserved": false
+    },
+    "packagedCompiledSecretTransportFiniteCasesQualified": true,
+    "allNativeTransportContractsQualified": false,
+    "workerSQLThreadOwnershipObserved": false,
+    "liveProductionSecretTransportQualified": false,
+    "performanceAccepted": false,
+    "securityAccepted": false,
+    "productionChanged": false,
+    "retainedFirstIndependentFailure": {
+      "tool": "5f2cc7",
+      "exit": 1,
+      "stage": 1,
+      "ownerCreated": false,
+      "APIQueries": 0,
+      "exactPublicNativeLoadRecordBytes": 99,
+      "actualPublicMetadataMode": "0644",
+      "distinctReaderAllowsOnlyExactKnownPublicRecord0644": true,
+      "otherOriginalOutputsMode": "0600",
+      "originalChmodOrActorReplay": false
+    },
+    "sourceScans": {
+      "actorFiles": 18,
+      "actorExit": 0,
+      "correctedIndependentFiles": 6,
+      "correctedIndependentExit": 0,
+      "laterFiles": 4,
+      "laterExit": 0,
+      "findings": 0
+    }
   }
 }
