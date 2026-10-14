@@ -1,0 +1,448 @@
+{
+  "scope": "Original A13 numeric/count browser subset; actual production normalization",
+  "sourceCommit": "4df4d3251715dae689420a9f6242263aeb9bdbee",
+  "actualServerExit": 0,
+  "actualBrowserExit": 0,
+  "exactPostExit": 0,
+  "linuxFreshExit": 0,
+  "windowsFreshExit": 0,
+  "laterExit": 0,
+  "columns": 8,
+  "directionObservations": [
+    {
+      "route": "/pods",
+      "column": "Restarts",
+      "direction": "asc",
+      "names": [
+        "a13-missing",
+        "a13-zero",
+        "a13-two-a",
+        "a13-two-b",
+        "a13-seven",
+        "a13-twelve"
+      ],
+      "values": [
+        "0",
+        "0",
+        "2",
+        "2",
+        "7",
+        "12"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/pods",
+      "column": "Restarts",
+      "direction": "desc",
+      "names": [
+        "a13-twelve",
+        "a13-seven",
+        "a13-two-a",
+        "a13-two-b",
+        "a13-missing",
+        "a13-zero"
+      ],
+      "values": [
+        "12",
+        "7",
+        "2",
+        "2",
+        "0",
+        "0"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/pods",
+      "column": "Ready",
+      "direction": "asc",
+      "names": [
+        "a13-missing",
+        "a13-zero",
+        "a13-two-a",
+        "a13-two-b",
+        "a13-seven",
+        "a13-twelve"
+      ],
+      "values": [
+        "0/12",
+        "0/12",
+        "2/12",
+        "2/20",
+        "7/12",
+        "12/12"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/pods",
+      "column": "Ready",
+      "direction": "desc",
+      "names": [
+        "a13-twelve",
+        "a13-seven",
+        "a13-two-b",
+        "a13-two-a",
+        "a13-missing",
+        "a13-zero"
+      ],
+      "values": [
+        "12/12",
+        "7/12",
+        "2/20",
+        "2/12",
+        "0/12",
+        "0/12"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/deployments",
+      "column": "Ready",
+      "direction": "asc",
+      "names": [
+        "a13-deployment-0",
+        "a13-deployment-2",
+        "a13-deployment-7",
+        "a13-deployment-12"
+      ],
+      "values": [
+        "0/12",
+        "2/12",
+        "7/12",
+        "12/12"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/deployments",
+      "column": "Ready",
+      "direction": "desc",
+      "names": [
+        "a13-deployment-12",
+        "a13-deployment-7",
+        "a13-deployment-2",
+        "a13-deployment-0"
+      ],
+      "values": [
+        "12/12",
+        "7/12",
+        "2/12",
+        "0/12"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/deployments",
+      "column": "Up to date",
+      "direction": "asc",
+      "names": [
+        "a13-deployment-0",
+        "a13-deployment-2",
+        "a13-deployment-7",
+        "a13-deployment-12"
+      ],
+      "values": [
+        "0",
+        "2",
+        "7",
+        "12"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/deployments",
+      "column": "Up to date",
+      "direction": "desc",
+      "names": [
+        "a13-deployment-12",
+        "a13-deployment-7",
+        "a13-deployment-2",
+        "a13-deployment-0"
+      ],
+      "values": [
+        "12",
+        "7",
+        "2",
+        "0"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/deployments",
+      "column": "Available",
+      "direction": "asc",
+      "names": [
+        "a13-deployment-0",
+        "a13-deployment-2",
+        "a13-deployment-7",
+        "a13-deployment-12"
+      ],
+      "values": [
+        "0",
+        "2",
+        "7",
+        "12"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/deployments",
+      "column": "Available",
+      "direction": "desc",
+      "names": [
+        "a13-deployment-12",
+        "a13-deployment-7",
+        "a13-deployment-2",
+        "a13-deployment-0"
+      ],
+      "values": [
+        "12",
+        "7",
+        "2",
+        "0"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/nodes",
+      "column": "CPU",
+      "direction": "asc",
+      "names": [
+        "a13-node-0",
+        "a13-node-2",
+        "a13-node-7",
+        "a13-node-12",
+        "a13-node-missing"
+      ],
+      "values": [
+        "0",
+        "2",
+        "7",
+        "12",
+        "\u2014"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/nodes",
+      "column": "CPU",
+      "direction": "desc",
+      "names": [
+        "a13-node-12",
+        "a13-node-7",
+        "a13-node-2",
+        "a13-node-0",
+        "a13-node-missing"
+      ],
+      "values": [
+        "12",
+        "7",
+        "2",
+        "0",
+        "\u2014"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/nodes",
+      "column": "Memory (GiB)",
+      "direction": "asc",
+      "names": [
+        "a13-node-0",
+        "a13-node-2",
+        "a13-node-7",
+        "a13-node-12",
+        "a13-node-missing"
+      ],
+      "values": [
+        "0",
+        "2",
+        "7",
+        "12",
+        "\u2014"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/nodes",
+      "column": "Memory (GiB)",
+      "direction": "desc",
+      "names": [
+        "a13-node-12",
+        "a13-node-7",
+        "a13-node-2",
+        "a13-node-0",
+        "a13-node-missing"
+      ],
+      "values": [
+        "12",
+        "7",
+        "2",
+        "0",
+        "\u2014"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/storage",
+      "column": "Capacity",
+      "direction": "asc",
+      "names": [
+        "a13-volume-0",
+        "a13-volume-2",
+        "a13-volume-7",
+        "a13-volume-12",
+        "a13-volume-missing"
+      ],
+      "values": [
+        "0Gi",
+        "2Gi",
+        "7Gi",
+        "12Gi",
+        "unknown"
+      ],
+      "completeIdentityMappingUnchanged": true
+    },
+    {
+      "route": "/storage",
+      "column": "Capacity",
+      "direction": "desc",
+      "names": [
+        "a13-volume-12",
+        "a13-volume-7",
+        "a13-volume-2",
+        "a13-volume-0",
+        "a13-volume-missing"
+      ],
+      "values": [
+        "12Gi",
+        "7Gi",
+        "2Gi",
+        "0Gi",
+        "unknown"
+      ],
+      "completeIdentityMappingUnchanged": true
+    }
+  ],
+  "requestEvents": [
+    {
+      "route": "/api/cluster/pods",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/pods",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/deployments",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/deployments",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/nodes",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/nodes",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/volumes",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/volumes",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "wireNormalization": "Omitted Pod restartCount becomes0; Nodes absent capacity becomesnull; PV absent capacity becomesunknown",
+  "identityScope": "Complete name/href/displayed-cell tuple; not physical DOM node identity",
+  "apiInterception": false,
+  "productSourceChanged": false,
+  "readinessRaceObserved": false,
+  "proposedReadinessVariantExecuted": false,
+  "sourceFiles": 371,
+  "generatedFiles": 4,
+  "compiledObjects": 5382,
+  "dependencyObjects": 40635,
+  "browserDependencyFiles": 481,
+  "currentInputs": 30,
+  "linuxBirthsAbsent": 62,
+  "windowsNoLiveBirths": 10,
+  "retainedSignaledObjectCount": 0,
+  "exactContainerNameAndIdAbsent": true,
+  "laterLinuxBirthsAbsent": 3,
+  "laterWindowsReaderNoLive": true,
+  "performanceAccepted": false,
+  "allTablesAndDateColumnsAccepted": false,
+  "actualScreenReaderAccepted": false,
+  "deliveredImageAccepted": false,
+  "productionAdopted": false,
+  "boundsSeconds": {
+    "server": 480,
+    "closureReserve": 60,
+    "attach": 420,
+    "browserInternal": 300,
+    "browserOuter": 330
+  },
+  "privateRecords": [
+    {
+      "label": "preparationHandoff",
+      "bytes": 7053,
+      "sha256": "5d0d8f908005ba031edbdb803823bd5c253785a1288de09c1eb02661d26a731d"
+    },
+    {
+      "label": "postHandoff",
+      "bytes": 2247,
+      "sha256": "ddc3d247192f225329d7f89f62fa58379dac92a76cf727cb0ed6a5c9f40edebc"
+    },
+    {
+      "label": "serverTerminal",
+      "bytes": 53991,
+      "sha256": "1604b566b60c2143a00317ef00837909327303b8b988fae3e917e5d401af9d93"
+    },
+    {
+      "label": "browserTerminal",
+      "bytes": 558,
+      "sha256": "96079f895f06f6902bef149c4b79cb5842fc6ab89dfcd578c929d894f3a330ce"
+    },
+    {
+      "label": "browserReport",
+      "bytes": 8112,
+      "sha256": "01abf934aade117763c210e0403b2924e14318d00dc6200cab5db84ff8074bbc"
+    },
+    {
+      "label": "exact",
+      "bytes": 15549,
+      "sha256": "cfcc3be57434feee0f00b2be4766a435feb6cc7a93e615000381e4743cfa62c4"
+    },
+    {
+      "label": "linuxFresh",
+      "bytes": 16225,
+      "sha256": "41e30d73d9c0d01ebf0c913c2be9e0b8fc2442b57bcf4c0d19ccde7d4c8b4984"
+    },
+    {
+      "label": "windowsFresh",
+      "bytes": 3670,
+      "sha256": "1e1a0e0769aae4a7e6bee9b58a464a4dc735d9448076f0b4c3bcf614e9ff91f2"
+    },
+    {
+      "label": "later",
+      "bytes": 473,
+      "sha256": "81fa88ea12bd4f3ae15cf5879122aa8a468a42761da2e35de19e32c1c82e85b4"
+    }
+  ]
+}
