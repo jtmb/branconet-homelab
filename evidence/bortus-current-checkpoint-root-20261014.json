@@ -1533,7 +1533,8 @@
       "liveRecoveryAccepted": false
     },
     "publicDiagnosticCleanupPending": false,
-    "precheckpointReadinessCandidateQualifiedLocally": true
+    "precheckpointReadinessCandidateQualifiedLocally": true,
+    "sampleEqualityDiagnosticsQualifiedLocally": true
   },
   "current6eRawSourceQualification": {
     "scope": "Current6e raw-Git archive, independent provenance and default selected production-source scan only",
@@ -2387,5 +2388,56 @@
       "laterExit": 0,
       "findings": 0
     }
+  },
+  "sampleEqualityControls": {
+    "scope": "Local failed-sample equality diagnostics only; no guard weakening or live recovery",
+    "controlTool": "d48d80",
+    "controlExit": 0,
+    "tests": 47,
+    "originalMethodsRawPreserved": 41,
+    "newGroups": 6,
+    "independentTool": "3ab719",
+    "independentExit": 0,
+    "laterTool": "f7ddd0",
+    "laterExit": 0,
+    "currentSources": 196,
+    "originalBirthsAbsent": 2,
+    "independentReaderBirthAbsent": true,
+    "gateSHA256": "81f798d8c47a530748deb1a52e2242484c8fb41760ec53d0207b8621c3bb1d33",
+    "helperSHA256": "82c0586a8d066a15c66b085c8794e803a7f9817b45bd4051188fad157dfa4d9b",
+    "gateOnlyChange": "Three assignment expressions bind existing return values at physical424; removing bindings reproduces exact original gate bytes",
+    "originalCallOrderAndShortCircuitPreserved": true,
+    "originalSevenTCPAndStrict274PredicatesPreserved": true,
+    "failureOnlyEqualityBits": {
+      "operandCounts": 3,
+      "fieldCounts": [
+        13,
+        5,
+        5
+      ],
+      "unevaluated": "explicit null",
+      "rawValuesOrIdentities": false
+    },
+    "extraAPIOrGuardCalls": false,
+    "originalExclusiveFailureReceiptCap": 4096,
+    "builtinKeySubtypeCollisionRejectedBeforeLookups": true,
+    "qualifiedSupervisorHelpersExact": 20,
+    "sourceGraph183Unchanged": true,
+    "sourceScan": {
+      "literalExit": 1,
+      "files": 206,
+      "findings": 1,
+      "classification": "Unchanged malformed AAAA rejection fixture",
+      "unresolved": 0,
+      "suppressionOrReplay": false
+    },
+    "independentSourceScan": {
+      "exit": 0,
+      "files": 1,
+      "findings": 0
+    },
+    "sourceOnlyVersionsV11V12RetainedUnrun": true,
+    "productionGuardChanged": false,
+    "privateRecoveryAccepted": false
   }
 }
