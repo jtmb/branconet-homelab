@@ -1,5 +1,7 @@
 # BORTUS implementation evidence
 
+[A13 numeric/count browser qualification](a13-count-browser-qualification.json) records eight columns/sixteen directions through the real compiled UI/API, including zero, count ties and reachable null/unknown values. Exact name/link/cell mappings and independent Linux/Windows closure passed; broader table/date/AT/performance acceptance remains separate. The proposed readiness-wait variant remains unused.
+
 [A16 current-build two-case qualification](a16-current-browser-qualification.json) records actual failed-save/discard/reopen and changed-fetched-version flows, complete browser/server exit0, five GET 200 plus one PUT 502, and independent closure. Four earlier failed workflows remain literal failures; no performance, mobile, actual AT, final-image or adoption claim follows.
 
 
