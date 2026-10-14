@@ -1526,7 +1526,8 @@
       "strictRVGuardChanged": false,
       "liveRecoveryAccepted": false
     },
-    "publicDiagnosticCleanupPending": false
+    "publicDiagnosticCleanupPending": false,
+    "precheckpointReadinessCandidateQualifiedLocally": true
   },
   "current6eRawSourceQualification": {
     "scope": "Current6e raw-Git archive, independent provenance and default selected production-source scan only",
@@ -1984,5 +1985,53 @@
     "readerBirthAbsent": true,
     "securityAccepted": false,
     "productionChanged": false
+  },
+  "precheckpointReadbackControls": {
+    "scope": "Stronger precheckpoint finite resource-readback readiness; local controls only",
+    "controlTool": "384069",
+    "controlExit": 0,
+    "tests": 41,
+    "originalMethodsPreserved": 33,
+    "newGroups": 8,
+    "independentTool": "fde814",
+    "independentExit": 0,
+    "laterTool": "a7e460",
+    "laterExit": 0,
+    "currentSources": 195,
+    "originalBirthsAbsent": 2,
+    "readerBirthAbsent": true,
+    "gateSHA256": "183dc3b57c25c6de571d0ef1cd5de3b4010898de1622282b4b2ca577d8c414cb",
+    "supervisorSHA256": "ba8209091c2a7660d3f8a98db565d60b48089da6553d18fae382e97ecd1b606a",
+    "strictPostCheckpointRVPredicateUnchanged": true,
+    "strictPredicatePhysicalLine": 274,
+    "finalCommitSnapshotMustBeReadyBeforeWrite": true,
+    "oneCheckpointAndFailureLatchPreserved": true,
+    "waitUsesExistingDeadline": true,
+    "exactReadback": {
+      "allocatedCPU": "150m",
+      "requestedCPU": "130m",
+      "memory": "256Mi",
+      "CPULimit": "2",
+      "memoryLimit": "1536Mi"
+    },
+    "originalFixtureChange": "Adds exact ready accounting maps; source hash bindings updated only; all33 test methods byte-identical",
+    "unrelatedOversizedStatusCanStillOmitOptionalObservation": true,
+    "sourceScan": {
+      "literalExit": 1,
+      "files": 204,
+      "findings": 1,
+      "classification": "Unchanged malformed AAAA rejection fixture",
+      "unresolved": 0,
+      "suppressionOrReplay": false
+    },
+    "independentSourceScan": {
+      "exit": 0,
+      "files": 1,
+      "findings": 0
+    },
+    "cgroupOrWriterOrFutureQuiescenceProved": false,
+    "liveRecoveryAccepted": false,
+    "productionGuardChanged": false,
+    "privateMaterialUsed": false
   }
 }
