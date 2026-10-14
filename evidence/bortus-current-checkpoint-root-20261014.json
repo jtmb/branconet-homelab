@@ -1250,6 +1250,21 @@
         "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-local-control-outcomes-root-20261014.json",
         "bytes": 4730,
         "sha256": "51e3edcf2ebb04f6557a19ec87e1bfdaf9363b970652511fff9e0e7334c5b52d"
+      },
+      {
+        "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-node22-static-abi-qualified-root-20261014.json",
+        "bytes": 6954,
+        "sha256": "5376035e44c5bd608a871812a9cafc9ee9c787de9d167b9c325fa8400efcb1e2"
+      },
+      {
+        "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-public-c7-outcome-root-20261014.json",
+        "bytes": 8415,
+        "sha256": "7ddfac94ac15797f71f8094cab106a459500bdec69e7562ccf5e4c9029fbe058"
+      },
+      {
+        "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-live-metadata-refresh-current-20261014-205208.json",
+        "bytes": 42007,
+        "sha256": "32a1ff8f6ca44866bbe1a7af96393468ec9ec9af575545ab04ed332506b5de69"
       }
     ],
     "newBrowserPartialCheckpoints": 0,
@@ -1308,9 +1323,11 @@
       "applicationRuntimeAccepted": false
     },
     "latestPublicRecoveryDiagnostic": {
-      "run": "6c4041e249e8",
+      "run": "c7e27f41c92d",
       "actorExit": 1,
       "podRVOnlyDifferent": true,
+      "atPreExecCrossControlSnapshot": true,
+      "writerOrHistoricalCauseProved": false,
       "cleanupExit": 0,
       "independentExit": 0,
       "allFiveNamesUIDsAbsent": true
@@ -1364,9 +1381,28 @@
       "liveAccepted": false
     },
     "ABIParserControls": {
-      "actualExit": 1,
-      "firstCaseFailed": true,
-      "ABIActorRun": false
+      "originalExit": 1,
+      "correctedExit": 0,
+      "correctedTests": 13
+    },
+    "staticABIQualification": {
+      "actorExit": 0,
+      "independentExit": 0,
+      "laterExit": 0,
+      "subjects": 6,
+      "missingVersions": 0,
+      "missingStrongSymbols": 0,
+      "unresolvedWeakSymbols": 27,
+      "hostBirthsAbsent": 19,
+      "runtimeAccepted": false
+    },
+    "liveSnapshot": {
+      "observedUtc": "2026-10-14T20:52:10.498944+00:00",
+      "nodesReady": 3,
+      "pvcsBound": 54,
+      "activeHelmReady": 33,
+      "bortusOldImageReady": true,
+      "bortusReleaseSuspended": true
     }
   }
 }
