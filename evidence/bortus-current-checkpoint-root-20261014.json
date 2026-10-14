@@ -1141,7 +1141,7 @@
     "newNodeDefaultSuiteExit": 0,
     "newNodeFailures": 0,
     "privateRecoveryProved": false,
-    "allFiveDiagnosticTemporaryResourcesAbsent": false,
+    "allFiveDiagnosticTemporaryResourcesAbsent": true,
     "performanceAccepted": false,
     "records": [
       {
@@ -1352,9 +1352,9 @@
     },
     "latestPublicRecoveryDiagnostic": {
       "run": "855ecc9cd780",
-      "dispatched": true,
-      "outcomeVerified": false,
-      "cleanupVerified": false,
+      "actorExit": 1,
+      "outcomeVerified": true,
+      "cleanupVerified": true,
       "strictRVGuardChanged": false,
       "privateMaterialReachable": false
     },
@@ -1513,7 +1513,11 @@
       "appNativeTLSAccepted": false,
       "performanceAccepted": false,
       "productionChanged": false,
-      "filesystemObjects": 31794
+      "filesystemObjects": 31794,
+      "isolatedRuntimeQualified": true,
+      "defaultImageScannerExit": 1,
+      "mediumFindings": 10,
+      "securityAccepted": false
     },
     "accountingObservationControls": {
       "testsPassed": 18,
@@ -1522,7 +1526,7 @@
       "strictRVGuardChanged": false,
       "liveRecoveryAccepted": false
     },
-    "publicDiagnosticCleanupPending": true
+    "publicDiagnosticCleanupPending": false
   },
   "current6eRawSourceQualification": {
     "scope": "Current6e raw-Git archive, independent provenance and default selected production-source scan only",
@@ -1866,5 +1870,119 @@
     "privateMaterialReachable": false,
     "RVGuardChanged": false,
     "productionImageChanged": false
+  },
+  "public855OutcomeCleanup": {
+    "scope": "Literal failed public-only855 diagnostic and completed exact-UID cleanup",
+    "run": "855ecc9cd780",
+    "actorTool": "8a0a0a",
+    "actorExit": 1,
+    "matchedOutcomeTool": "39f4c6",
+    "matchedOutcomeExit": 0,
+    "strictRVGuardChanged": false,
+    "observedCPURequestMilli": [
+      150,
+      130
+    ],
+    "allocatedCPURequestMilli": [
+      150,
+      150
+    ],
+    "otherResourceQuantitiesUnchanged": true,
+    "managedFieldsTimestampClassOnlyChanged": true,
+    "writerOrHistorical804CauseInferred": false,
+    "privateRecoveryAccepted": false,
+    "cleanupTool": "87b3e0",
+    "cleanupExit": 0,
+    "independentCleanupTool": "9af295",
+    "independentCleanupExit": 0,
+    "laterTool": "f4f161",
+    "laterExit": 0,
+    "laterReaderAbsentTool": "5cc0fe",
+    "allFiveResourcesAbsent": true,
+    "originalIncompleteActorRegistryPreserved": true,
+    "observerAndQueryBirthsAbsent": 9,
+    "currentRuntimeSources": 246,
+    "currentCleanupSources": 2,
+    "originalDataRetired": false
+  },
+  "current6eRuntimeQualified": {
+    "scope": "Isolated current6e/newNode image runtime and independent closure",
+    "productSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+    "actorTool": "e1e91d",
+    "actorExit": 0,
+    "independentTool": "77c691",
+    "independentExit": 0,
+    "laterTool": "5454de",
+    "laterExit": 0,
+    "laterReaderAbsentTool": "f6de0e",
+    "currentSources": 3,
+    "currentOriginalOutputs": 81,
+    "originalHostBirthsAbsent": 22,
+    "readerAndTwoQueryBirthsAbsent": true,
+    "containerIDAndNameAbsent": true,
+    "nodeVersion": "v22.23.3",
+    "nodeELFSHA256": "a7b77e9ed047b69abc17d1ea56bc64fd0eb16201137299b51a1fd4c0604d4244",
+    "checks": {
+      "abi": 1,
+      "freshDatabasePermission403": true,
+      "loopbackLive200": true,
+      "nativeLoaded": true,
+      "nativePublicValidAndInvalid": true,
+      "nativeTLSHTTPClientQualified": false,
+      "noKubernetesClientTraffic": true,
+      "nodeELFExact": true,
+      "nodeVersion": "v22.23.3",
+      "originalEntrypointExecuted": true,
+      "overallAcceptance": false,
+      "performance": false,
+      "prismaMigrationsAndGeneratedClientQueryPassed": true,
+      "productionDataOrCredentialsUsed": false,
+      "readonlyMutation403": true,
+      "registerLoginSessionPassed": true,
+      "uid": 1000,
+      "unauthenticatedRequestDenied": true,
+      "writeMutation200": true
+    },
+    "dockerLocalImageID": "sha256:270b1b49bd1ce6b836e9f6a8c86005d95c7f42fd913f5a53597a266d648fc105",
+    "selectedImageManifestDigest": "sha256:04d53895730ee9947810ab61615cbc8ddebcfa46ef402b20389c020c0137680b",
+    "imageConfigDigest": "sha256:41bb50990f9c037179f36cf2e1d12b82812711cbf21ee9e28b06dfad309c37ed",
+    "nativeTLSHTTPClientQualified": false,
+    "performanceAccepted": false,
+    "securityAccepted": false,
+    "productionChanged": false
+  },
+  "current6eSecurityFindings": {
+    "scope": "Literal fresh default image scan with findings; no waiver",
+    "actorTool": "69f0c1",
+    "scannerExit": 1,
+    "independentTool": "0f2afd",
+    "independentExit": 0,
+    "laterTool": "5454de",
+    "laterExit": 0,
+    "laterReaderAbsentTool": "f6de0e",
+    "vulnerabilities": 10,
+    "severityCounts": {
+      "MEDIUM": 10
+    },
+    "secretFindings": 0,
+    "fixableFindings": 0,
+    "defaultRulesAndDBRefresh": true,
+    "exclusionsOrSuppression": false,
+    "reportSHA256": "d6010e244e325f2dd503fb0ec8e11cec98e16a6d2ad94a913317508c820167dd",
+    "reportBytes": 251513,
+    "actualDBMetadata": {
+      "DownloadedAt": "2026-10-14T22:48:26.900653885Z",
+      "NextUpdate": "2026-10-15T19:14:58.511503003Z",
+      "UpdatedAt": "2026-10-14T19:14:58.511503573Z",
+      "Version": 2
+    },
+    "cacheFilesIndependentlyHashed": 3,
+    "toolAndArchiveIndependentlyHashed": true,
+    "currentSourceFiles": 1,
+    "currentOriginalOutputs": 9,
+    "originalScannerBirthsAbsent": 2,
+    "readerBirthAbsent": true,
+    "securityAccepted": false,
+    "productionChanged": false
   }
 }
