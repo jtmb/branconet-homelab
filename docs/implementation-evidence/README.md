@@ -1,5 +1,10 @@
 # BORTUS implementation evidence
 
+[A08 two metadata-error browser cases](a08-metadata-browser-qualification.json) record actual404/stale-absent503 feedback, no selector/log CLI, four retained actor failures and independent cleanup. Historical eight completed checks in outer1 remain partial/unjoined; no universal A08 pass.
+
+[A13 raw-date browser scope](a13-date-browser-qualification.json) records Pods/Deployments Age, four exact directions, missing-last and duplicate-date ties with complete name/link/immutable-cell mappings. Other table/date kinds, physical DOM identity, actual AT and performance remain separate.
+
+
 [A13 numeric/count browser qualification](a13-count-browser-qualification.json) records eight columns/sixteen directions through the real compiled UI/API, including zero, count ties and reachable null/unknown values. Exact name/link/cell mappings and independent Linux/Windows closure passed; broader table/date/AT/performance acceptance remains separate. The proposed readiness-wait variant remains unused.
 
 [A16 current-build two-case qualification](a16-current-browser-qualification.json) records actual failed-save/discard/reopen and changed-fetched-version flows, complete browser/server exit0, five GET 200 plus one PUT 502, and independent closure. Four earlier failed workflows remain literal failures; no performance, mobile, actual AT, final-image or adoption claim follows.

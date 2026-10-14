@@ -1,0 +1,186 @@
+{
+  "scope": "Two A13 raw-date Age columns/four directions through actual compiledUI/API; no all-table/datekind/physicalDOMidentity/AT acceptance",
+  "source": "4df4d3251715dae689420a9f6242263aeb9bdbee",
+  "actualNewCases": 2,
+  "directionObservations": 4,
+  "checks": [
+    "/pods: actual raw-date ascending/descending, missing-last and duplicate-date name tie; API/name/link/immutable-cell identity retained",
+    "/deployments: actual raw-date ascending/descending, missing-last and duplicate-date name tie; API/name/link/immutable-cell identity retained"
+  ],
+  "observations": [
+    {
+      "route": "/pods",
+      "column": "Age",
+      "sortKind": "date",
+      "direction": "asc",
+      "names": [
+        "a13-date-z-oldest",
+        "a13-date-b-second",
+        "a13-date-e-second",
+        "a13-date-d-third",
+        "a13-date-a-newest",
+        "a13-date-c-missing"
+      ],
+      "created": [
+        "1999-01-01T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2017-06-03T00:00:00Z",
+        "2025-09-04T00:00:00Z",
+        null
+      ],
+      "missingLast": true,
+      "duplicateDateTieNamesAscending": true,
+      "nameLinkAndImmutableCellsUnchanged": true,
+      "elapsedAgeTextNotComparedAsImmutable": true
+    },
+    {
+      "route": "/pods",
+      "column": "Age",
+      "sortKind": "date",
+      "direction": "desc",
+      "names": [
+        "a13-date-a-newest",
+        "a13-date-d-third",
+        "a13-date-b-second",
+        "a13-date-e-second",
+        "a13-date-z-oldest",
+        "a13-date-c-missing"
+      ],
+      "created": [
+        "2025-09-04T00:00:00Z",
+        "2017-06-03T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "1999-01-01T00:00:00Z",
+        null
+      ],
+      "missingLast": true,
+      "duplicateDateTieNamesAscending": true,
+      "nameLinkAndImmutableCellsUnchanged": true,
+      "elapsedAgeTextNotComparedAsImmutable": true
+    },
+    {
+      "route": "/deployments",
+      "column": "Age",
+      "sortKind": "date",
+      "direction": "asc",
+      "names": [
+        "a13-date-z-oldest",
+        "a13-date-b-second",
+        "a13-date-e-second",
+        "a13-date-d-third",
+        "a13-date-a-newest",
+        "a13-date-c-missing"
+      ],
+      "created": [
+        "1999-01-01T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2017-06-03T00:00:00Z",
+        "2025-09-04T00:00:00Z",
+        null
+      ],
+      "missingLast": true,
+      "duplicateDateTieNamesAscending": true,
+      "nameLinkAndImmutableCellsUnchanged": true,
+      "elapsedAgeTextNotComparedAsImmutable": true
+    },
+    {
+      "route": "/deployments",
+      "column": "Age",
+      "sortKind": "date",
+      "direction": "desc",
+      "names": [
+        "a13-date-a-newest",
+        "a13-date-d-third",
+        "a13-date-b-second",
+        "a13-date-e-second",
+        "a13-date-z-oldest",
+        "a13-date-c-missing"
+      ],
+      "created": [
+        "2025-09-04T00:00:00Z",
+        "2017-06-03T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "1999-01-01T00:00:00Z",
+        null
+      ],
+      "missingLast": true,
+      "duplicateDateTieNamesAscending": true,
+      "nameLinkAndImmutableCellsUnchanged": true,
+      "elapsedAgeTextNotComparedAsImmutable": true
+    }
+  ],
+  "requestEvents": [
+    {
+      "route": "/api/cluster/pods",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/pods",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/deployments",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/deployments",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "fixture": "Six public Pods and six Deployments; four fixed UTC dates, missing timestamp andduplicate-date name tie. Actual fakeCLI/APIprojection; no response interception orclockoverride.",
+  "identity": "Complete row name/href/immutable-cell mapping preserved; elapsed Age text excluded from immutable claim; missing displayed dash.",
+  "sourceFiles": 371,
+  "generatedExtras": 4,
+  "inputFiles": 30,
+  "compiledObjects": 5382,
+  "dependencyObjects": 40635,
+  "independentClosure": {
+    "linuxBirthsAbsent": 52,
+    "exactCIDAndNameAbsent": true,
+    "windowsNoLiveBirths": 11,
+    "retainedSignaledObjects": 0,
+    "laterRootReceipt": "root-a13-date-later-20261014.json",
+    "laterTool": "f694c7=0"
+  },
+  "rootTools": [
+    "serverb45855/session32298->d82b61=0",
+    "browser0fdb2c/session63853->1dac06=0",
+    "exacte7107e=0",
+    "Linux767feb=0",
+    "Windows939da1=0"
+  ],
+  "previousEightCountCasesReplayed": false,
+  "unusedSourceV1Retained": true,
+  "actualAT": false,
+  "performanceAcceptance": false,
+  "deliveredImageAcceptance": false,
+  "liveAdoption": false,
+  "immutableOriginals": {
+    "count": 292,
+    "archiveSHA256": "5eb5073a9bd71d54edb4dfeb6a6a14499a364c77b7872dbeb2f9b4c9e213809e",
+    "manifestSHA256": "19aa5580aad6428d841ac367f83d49140ed1dc5895323e111100a61ea1621087",
+    "handoffSHA256": "6c19aceb212345c9189dcdf969a845488d49667f8b499bd2c19604e4690723c0"
+  },
+  "receiptSHA256": [
+    {
+      "scope": "exact",
+      "sha256": "09df3fc26301dd3310c9351028179b0171f85047ac8c144d27326b8441382c54"
+    },
+    {
+      "scope": "linuxFresh",
+      "sha256": "61db60447ff422654b5dd7dda0c4891376d90d6945991ff55105529f30a51921"
+    },
+    {
+      "scope": "windowsFresh",
+      "sha256": "d1bf9cbf69b307383c924da1c02dda5bb3f593a914ba7a87a5ccd47b2b66480e"
+    }
+  ]
+}
