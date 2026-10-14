@@ -1,4 +1,5 @@
-import { SignJWT, jwtVerify } from "jose";
+import { SignJWT } from "jose";
+import { verifyHS256Profile } from "./jwt-verify";
 import { directAccountReader } from "./direct-account-reader";
 import { HmacKeySlot } from "./jwt-key";
 
@@ -21,7 +22,7 @@ export async function verifyJWT(
   token: string
 ): Promise<{ sub: string; username: string; sessionVersion: number } | null> {
   try {
-    const { payload } = await signingKey.run(key => jwtVerify(token, key, { algorithms: ["HS256"] }));
+    const { payload } = await signingKey.run(key => Promise.resolve(verifyHS256Profile(token, key)));
     const sessionVersion = payload.sessionVersion ?? 0;
     if (typeof payload.sub !== "string" || !payload.sub || typeof payload.username !== "string" ||
       typeof sessionVersion !== "number" || !Number.isSafeInteger(sessionVersion) || sessionVersion < 0) return null;
