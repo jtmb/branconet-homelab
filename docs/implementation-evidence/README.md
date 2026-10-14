@@ -1,5 +1,7 @@
 # BORTUS implementation evidence
 
+[A16 current-build two-case qualification](a16-current-browser-qualification.json) records actual failed-save/discard/reopen and changed-fetched-version flows, complete browser/server exit0, five GET 200 plus one PUT 502, and independent closure. Four earlier failed workflows remain literal failures; no performance, mobile, actual AT, final-image or adoption claim follows.
+
 
 The frozen `whole-server.mjs` repeats only `/api/cluster/pods` in `warm-pods-12` and `warm-pods-concurrent-20` when the profile has fewer than 10000 Pods. Each profile makes one configuration metadata GET and one native Secret metadata GET; neither has a repeated warm phase. References to warm/concurrent 25-large or 3-large profiles describe their Pod reads, not native metadata reads. A07/A21 remain failed/open; the original driver, assertions and thresholds are unchanged.
 [Bounded administration metadata qualification](metadata-body-qualification.json) binds 3-MiB fresh-admin policy/legacy commit readers to the complete 10,000-alias actual HTTP body and refusal controls. The first full run passed build/176 units/lint/types and three HTTP suites, then failed a new fixture assumption; the corrected affected HTTP plus lint/types passed. Exact production bytes stayed unchanged. Both terminal captures are retained; wider workflow/image/live acceptance remains open.

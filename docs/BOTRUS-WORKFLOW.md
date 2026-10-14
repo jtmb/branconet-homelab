@@ -90,6 +90,8 @@ Small viewports use a 56-pixel navigation rail with named resource links; deskto
 
 YAML, log and resource confirmation dialogs use accessible modal primitives. YAML sessions reset for each resource/mode; readOnly remains authoritative, Save requires an available callback and changed content, and closing a dirty editor requires an explicit discard. Editor drafts are not persisted. Keyboard dirty/discard/read-only reopening and focus trap/return passed in the synthetic browser fixture.
 
+A separate finite current-build check passed failed-save draft retention followed by discard/reopen, and fresh-version View/Edit reopening after the public fixture changed resourceVersion. It recorded five GET 200 responses and one PUT 502 through the actual routes. This adds two cases; four earlier failed workflows remain preserved. See [A16 qualification scope and closure](implementation-evidence/a16-current-browser-qualification.json). It does not establish mobile, screen-reader, performance or delivered-image acceptance.
+
 Run `npm test`, `npm run typecheck`, `npm run build`, then `npm run test:integration`. The HTTP integration suite requires the production build and uses temporary SQLite, fake credentials and a loopback unavailable Kubernetes endpoint. It does not access the operator database or live cluster.
 
 Image and live-cluster evidence are separate from those local checks. See [recorded evidence and runtime contract](BORTUS-DEPLOYMENT.md).
