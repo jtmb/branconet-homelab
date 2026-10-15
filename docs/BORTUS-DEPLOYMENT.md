@@ -1,5 +1,9 @@
 # BORTUS application deployment
 
+## Unqualified overview source follow-up (2026-10-15)
+
+The overview Clear dashboard inventory confirmation now receives its existing error state through the shared dialog error prop, so a refused DELETE can display actionable feedback inside the still-open confirmation. The request, typed confirmation, pending/close behavior and fresh server authorization are unchanged. This is a source-confirmed A05 correction, not a runtime-reproduced or browser-qualified result. Fresh build and a focused actual refusal/retained-confirmation/explicit-retry check are still required. Earlier current6e compiled/browser/image receipts retain their exact old payload; they do not qualify this new frontend source. No performance, native Secret, runtime, live deployment or adoption gate changes.
+
 Administration entry wiring, captured destroy pathRevision and separate consumer rotationIdMarker change UI/public metadata only. They add no migration, native format, runtime input, RBAC verb or automatic consumer reload. Combined Node22 140-unit/four-HTTP/build/type and recorded actual-route browser subset passed. Final coherent Linux image/recovery qualification remains pending; the isolated maintenance image does not qualify these later changes.
 
 The combined metadata/workbench source passed its recorded local Node22 unit/build/HTTP and native-browser subset. See implementation-evidence/kv-workbench-integrated.json; this is not final-image qualification. Its on-demand dialog entry adds no runtime input, migration or native verb and preserves externally verified guarded-mode requirements. The a82a6cb/ea849ee Linux QA image does not contain these later UI/request changes; final coherent image/schema/lock/migration/recovery qualification remains open.

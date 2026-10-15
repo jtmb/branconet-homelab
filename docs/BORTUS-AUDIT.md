@@ -113,6 +113,8 @@ P1 means fix first because account access, operator decisions or resource bounda
 
 **Validation:** Exercise exit 1 with stderr, stdout, both and neither, timeout, missing executable, RBAC denial and a true success. All mutation routes must reject failed commands; UI must retain state and display an actionable error. Keep native Secret values out of errors/logs.
 
+**Source follow-up (2026-10-15):** The overview Clear dashboard inventory confirmation now receives its existing error state through the shared dialog error prop, so a refused DELETE can display actionable feedback inside the still-open confirmation. The request, typed confirmation, pending/close behavior and fresh server authorization are unchanged. This is a source-confirmed A05 correction, not a runtime-reproduced or browser-qualified result. Fresh build and a focused actual refusal/retained-confirmation/explicit-retry check are still required. Earlier current6e compiled/browser/image receipts retain their exact old payload; they do not qualify this new frontend source. No performance, native Secret, runtime, live deployment or adoption gate changes.
+
 ### A06 — P2: unavailable resource data looks like a healthy empty cluster (R/S)
 
 **Source:** `src/app/api/cluster/pods/route.ts:8–10`; `src/lib/k8s.ts:42–43`; `src/lib/cluster-cache.ts:77–90`, `:315–319`, `:346–348`; `src/app/(dashboard)/pods/page.tsx:40–47`.

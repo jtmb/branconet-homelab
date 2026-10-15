@@ -124,7 +124,18 @@
         "administration-ui.json",
         "acceptance-supplement/assessment.json"
       ],
-      "overallDeliveredAcceptancePassed": false
+      "overallDeliveredAcceptancePassed": false,
+      "sourceFollowup20261015": {
+        "scope": "Overview Clear dashboard inventory error propagation only",
+        "sourceConfirmedGap": "Existing failure catch retains the dialog but its ConfirmDialog call omitted the shared error prop.",
+        "sourceCorrection": "Pass existing error state to the shared in-modal alert; request/confirmation/pending/close/authorization unchanged.",
+        "runtimeReproduced": false,
+        "freshBuildQualified": false,
+        "focusedBrowserQualified": false,
+        "priorCurrent6eQualificationsRemainHistorical": true,
+        "requiredNext": "Fresh build and one synthetic DELETE refusal retains confirmation/input/inventory with in-dialog error, followed by one explicit successful retry; no automatic retry.",
+        "overallDeliveredAcceptancePassed": false
+      }
     },
     {
       "id": "A06",

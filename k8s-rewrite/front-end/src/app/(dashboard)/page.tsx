@@ -43,7 +43,7 @@ export default function ClusterPage() {
       {session.canWrite && info?.hasDbCluster && <button onClick={() => { setError(""); setConfirm(true); }} className="rounded border border-red-800 px-3 py-2 text-red-300">Clear dashboard inventory</button>}
     </section>
     {confirm && session.canWrite && <ConfirmDialog open title="Clear dashboard inventory" message="Removes SQLite cluster state, node, pod, service, deployment and Git repository inventory records. Live cluster resources and native Secrets remain. Rebuilding inventory may require operator work."
-      confirmName="inventory" confirmLabel="Clear inventory" danger loading={saving} onClose={() => { if (!saving) setConfirm(false); }} onConfirm={async () => {
+      confirmName="inventory" confirmLabel="Clear inventory" danger loading={saving} error={error} onClose={() => { if (!saving) setConfirm(false); }} onConfirm={async () => {
         setSaving(true);
         try { await requestJson("/api/cluster/remove", { method: "DELETE" }); refetchCluster(); setConfirm(false); }
         catch (failure) { setError(failure instanceof Error ? failure.message : "Inventory removal failed"); }
