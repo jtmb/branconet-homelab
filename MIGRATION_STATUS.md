@@ -2,7 +2,7 @@
 
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; subsequent application and native-transport work now belongs to two scoped sub-agents, following the user's 2026-10-10 instruction to use sub-agents and archive old execution chats.
 
-Current progress (2026-10-15; latest live cluster snapshot is from2026-10-15 at12:37 UTC):
+Current progress (2026-10-15; latest [read-only cluster snapshot](evidence/cluster-health-readonly-20261015-2131.json) is from21:31:57 UTC):
 
 - **Cluster:** three Ready nodes, 54 Bound PVCs and 33 Ready active Helm releases. BORTUS still runs the previous image with its release suspended. The separate chart source and Flux release reconciliation are Ready at `validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621`.
 - **Application:** source ce259b00 adds the deterministic SQL writer-lock regression control to the qualified Flux corrections and browser fixture. [Hosted CI38789392711](evidence/bortus-a19-original-ci-clause-root-20261015.json) passes clean locked build, lint/types,342 units,eight integrations,all eight pristine/mutant controls and the compiled Pods browser smoke. The original A19 CI clause is qualified for this source, with default log/result scan0/zero and all44 validation clauses preserved. The [A04 composite](evidence/bortus-a04-composite-boundary-root-20261015.json) qualifies the original command boundary. Performance, image/security, recovery and live gates remain open. Main and production are unchanged.

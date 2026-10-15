@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "scope": "Read-only current cluster health snapshot; no acceptance or mutation",
+  "tool": "95c7b0",
+  "actualExit": 0,
+  "observedAt": "2026-10-15T21:31:57.672292+00:00",
+  "requests": 7,
+  "requestTimeoutSeconds": 8,
+  "perProcessTimeoutSeconds": 10,
+  "resourcesRead": ["nodes", "pods", "persistentvolumeclaims", "helmreleases", "deployments", "gitrepositories", "kustomizations"],
+  "readOnly": true,
+  "nodes": {"total": 3, "ready": 3},
+  "pvcs": {"total": 54, "bound": 54},
+  "pods": {"total": 97, "running": 91, "readyRunning": 91, "succeeded": 6},
+  "helmReleases": {"total": 34, "active": 33, "activeReady": 33},
+  "bortus": {
+    "readyReplicas": 1,
+    "image": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879"
+  },
+  "fluxSources": [
+    {"name": "branconet-charts", "ready": true, "revision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621"},
+    {"name": "migration-validated", "ready": true, "revision": "codex/kubernetes-validated@sha1:373a1e513e1bfb8b13ed5212ccc1b0f57a5ff301"}
+  ],
+  "fluxReconciliation": {"name": "migration-releases", "ready": true, "revision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621"},
+  "newCandidateDeployed": false,
+  "recoveryQualified": false,
+  "dataRetirementAuthorized": false
+}
