@@ -6,20 +6,24 @@
     {
       "id": "A01",
       "finding": "writer invariant",
-      "ledgerCurrentEvidence": "Twelve independent-client SQLite cross-demotion/delete/mixed races retain one writer and engine administrator; self-change restrictions and fixed rejected outcomes pass. Final FIFO source also passes six actual two-process cross-demotion/delete/mixed SQLite races, demonstrating SQL authority independently of each process queue.",
+      "ledgerCurrentEvidence": "Twelve independent-client SQLite cross-demotion/delete/mixed races retain one writer and engine administrator; self-change restrictions and fixed rejected outcomes pass. Final FIFO source also passes six actual two-process cross-demotion/delete/mixed SQLite races, demonstrating SQL authority independently of each process queue. Additional deterministic A01 SQL-lock sensitivity passes pristine and fails the sole copied transaction-bypass mutant at exact2vs1 invariant in hosted8; original six races unchanged.",
       "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
       "nextAcceptance": "Exact image forward-migration/restart preservation and guarded deployment verification remain separate. No new live concurrency test is required by the original disposable-only validation.",
       "originalValidation": "A concurrency regression must attempt cross-demotion, cross-deletion and mixed changes repeatedly, assert at least one writer remains, verify rejected changes return a defined conflict/error, and retain self-change restrictions. Use disposable SQLite only.",
-      "clauseAuditRecord": "acceptance-ledger-audit.json"
+      "clauseAuditRecord": "acceptance-ledger-audit.json",
+      "currentCrossProcessSensitivityQualified": true,
+      "currentSensitivityEvidence": "a19-original-ci-clause-qualification-root-20261015.json"
     },
     {
       "id": "A02",
       "finding": "revocation",
-      "ledgerCurrentEvidence": "Fresh middleware/account/sessionVersion checks; disposable reset/delete cookies fail session, four ordinary APIs and /pods; legacy version-zero and native role/owner withdrawal tests pass. Supplemental exact ab8 production build also passed expired-cookie/logout-clear controls and 120 anonymous protected filesystem-template requests; this is middleware rejection, not authorized handler breadth.",
-      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
-      "nextAcceptance": "Issued-valid-cookie account deletion must still be qualified across all current protected pages and ordinary API method templates; anonymous GET rejection is not that proof. The source inventory has88 protected API templates/124 declared methods and32 protected page templates. Retest the original demotion/native/expiry/logout clauses using their distinct contracts; successful authorized mutations on every handler are A05 scope, not an A02 requirement. No global logout token revocation is claimed.",
+      "ledgerCurrentEvidence": "Exact6e compiled login\u00e2\u2020\u2019sameunexpiredcookie exactaccountdeletion passes sessionfalse,124 ordinary API401 and32 protected page307 responses in160 calls, with independent/final closure. Current demotion/native/expiry tests and packaged native permission controls plus historical logout/applied-cookie checks satisfy the distinct contracts;17 auth/test files remain rawGit exact6e\u00e2\u2020\u20193e9474e and logout remains exactab8\u00e2\u2020\u2019current. The historical supplement remains actor1 after17 completed checks before unrelated A05 failure.",
+      "ledgerStatus": "Original source clause qualified; delivered/live acceptance separate",
+      "nextAcceptance": "No remaining original A02 source-clause gate after ROOT composite qualification. Delivered/live acceptance stays separate; neither global logout token revocation nor reuse of a copied JWT is required or claimed. Authorized mutation success/failure breadth belongs to A05.",
       "originalValidation": "With an already-issued cookie, delete its account and assert session is unauthenticated and all protected pages/ordinary APIs reject it. Retest demotion, native metadata/value permissions, expiry and logout. Password-reset revocation is currently a source-level follow-up, not a reproduced finding.",
-      "clauseAuditRecord": "acceptance-ledger-audit.json"
+      "clauseAuditRecord": "acceptance-ledger-audit.json",
+      "currentSourceOriginalClauseCompositeQualified": true,
+      "currentSourceQualificationEvidence": "a02-composite-boundary-qualification-root-20261015.json"
     },
     {
       "id": "A03",
@@ -203,11 +207,13 @@
     {
       "id": "A19",
       "finding": "quality gates",
-      "ledgerCurrentEvidence": "Clean Linux Node22.23.3 c29fc install/build214 units/lint/types/four strict HTTP pass with no skips, no operator inputs and exact source/build ownership. Direct ESLint and app-only workflow retained; causal missing-await negative fails while patched control passes.",
-      "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
-      "nextAcceptance": "Hosted exact-frontend run38770022640 passed locked build/lint/types/342-unit/8-HTTP, the unchanged five flat sensitivities, and A02 deleted-account/A03 bootstrap-writer DB sensitivities. All seven pristine0/mutant1 outcomes matched exact unchanged assertions, including only declared DB children and parent subtestsFailed aggregates; original/restoration checks passed and default log/result scan135142 was0/zero. Raw source authority is1dbbd8, not normalized5aa92f. A01 cross-process sensitivity, browser CI smoke and remaining meaningful source-regression/original A19 coverage remain open; manual/actual AT gates are separate. The deployment VM and synthetic DB scope is not universal compiled-route/cluster acceptance.",
+      "ledgerCurrentEvidence": "Hosted run38789392711 on exactce259b frontend0f2bd/workflowf8b7 passes clean locked install/build/lint/types, unchanged342+8, all8 pristine0/intended-mutant1 pairs and208-row finite browser smoke. No operatorenv/DB/kubeconfig or prompts; exact assertions, rawTAP, two process SQLite warnings and cleanup/restoration verified. Default complete log/result scan a53496 is0/zero/current/noLive. Original A19 source CI clause is qualified; historical false fields remain unchanged.",
+      "ledgerStatus": "Original source clause qualified; delivered/live acceptance separate",
+      "nextAcceptance": "No remaining original A19 source CI clause gate for this qualified source. Other A01\u00e2\u20ac\u201cA22 clauses, actual AT, two warm performance regressions, image/security, recovery, delivered/live and adoption remain separate; they are not additional invented CI regression requirements.",
       "originalValidation": "Run CI from a clean checkout with no operator env/DB/kubeconfig. It must finish without prompts, fail on each deliberately reintroduced regression and publish redacted results. Next 15 describes the deprecated lint workflow and direct ESLint migration in its [versioned ESLint guide](https://nextjs.org/docs/15/app/api-reference/config/eslint).",
-      "clauseAuditRecord": "acceptance-ledger-audit.json"
+      "clauseAuditRecord": "acceptance-ledger-audit.json",
+      "currentSourceCIClauseQualified": true,
+      "currentSourceQualificationEvidence": "a19-original-ci-clause-qualification-root-20261015.json"
     },
     {
       "id": "A20",
@@ -617,17 +623,18 @@
     "qualifiedProductSourceCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
     "latestQualifiedOriginalUnits": 342,
     "latestQualifiedOriginalHTTP": 8,
-    "latestQualifiedHostedRun": 38770022640,
+    "latestQualifiedHostedRun": 38789392711,
     "latestFiniteOverviewTerminalCases": 4,
     "stillOpen": [
-      "Other deliberate source-regression coverage",
-      "Remaining original A01-A22 clauses",
+      "Remaining distinct A01\u00e2\u20ac\u201cA22 clauses",
       "Two warm performance regressions",
       "Image/security/recovery/live/adoption and actual AT"
     ],
-    "latestQualifiedCISourceCommit": "e386e5bfdcaf07e01054f98f1e537452334db171",
-    "latestQualifiedSensitivityCases": 7,
-    "nextSourceWork": "ROOT review/default scan then bounded qualification of new source-only A01 SQL-lock sensitivity candidate. Existing six races/seven controls unchanged; separate Flux build and browser fixture mount qualification remain source-specific."
+    "latestQualifiedCISourceCommit": "ce259b00602ee622f0e1030be6da429fc5f44344",
+    "latestQualifiedSensitivityCases": 8,
+    "nextSourceWork": "Finite remaining A05 advertised-action/mutation-route UI and A08 logs/pod states matrix; do not replay already qualified shared command outcomes/API45.",
+    "currentSourceCIClauseQualified": true,
+    "latestQualifiedFiniteBrowserSmoke": true
   },
   "latestLocalQualification": {
     "productionCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
@@ -825,7 +832,9 @@
     "candidateExecuted": false,
     "allHTTP503CausesResolved": false,
     "productionMountChanged": false,
-    "wholeA19Accepted": false
+    "wholeA19Accepted": false,
+    "historicalSourcePreparationOnly": true,
+    "supersededForCurrentStatusBy": "currentOriginalSourceClauseReconciliation20261015"
   },
   "currentA01ProcessSensitivityCandidate20261015": {
     "status": "SOURCE ONLY; one new deterministic cross-demotion SQL-lock sensitivity pristine/mutant pair unrun",
@@ -835,7 +844,9 @@
     "packageAndLockUnchanged": true,
     "testsRun": false,
     "A01CrossProcessSensitivityQualified": false,
-    "wholeA19Accepted": false
+    "wholeA19Accepted": false,
+    "historicalSourcePreparationOnly": true,
+    "supersededForCurrentStatusBy": "currentOriginalSourceClauseReconciliation20261015"
   },
   "currentA04CommandBoundaryQualification20261015": {
     "status": "Original A04 command boundary qualified for reviewed source; delivered/live acceptance remains separate",
@@ -861,5 +872,24 @@
     "productionAdopted": false,
     "performanceAccepted": false,
     "historicalArtifactsUnmodified": true
+  },
+  "currentOriginalSourceClauseReconciliation20261015": {
+    "status": "Original source CI and A02 distinct-contract clauses qualified; whole delivered acceptance false",
+    "qualifiedCISourceCommit": "ce259b00602ee622f0e1030be6da429fc5f44344",
+    "frontendTree": "0f2bd8ffb8dd1e1900f9608226c347efc19d9246",
+    "workflowBlob": "f8b7ec07d69dcd1806ca44f6c566685108639cb3",
+    "hostedRun": 38789392711,
+    "sourceCIReceipt": "a19-original-ci-clause-qualification-root-20261015.json",
+    "sourceCIReceiptSHA256": "5ce69188966c3d709643a29e5c30bc843a5431ee0bee5b18f3c44210d1a727c4",
+    "currentSourceCIClauseQualified": true,
+    "a02Receipt": "a02-composite-boundary-qualification-root-20261015.json",
+    "a02ReceiptSHA256": "9e862bca6cbd75de15cdbb32d5a680ac3ad80a6c8dd1acb4605f531ea45f5a6a",
+    "currentSourceA02OriginalClauseCompositeQualified": true,
+    "A01SeparateProcessSQLLockSensitivityQualified": true,
+    "original44ValidationClausesUnchanged": true,
+    "overallDeliveredAcceptancePassed": false,
+    "performanceAccepted": false,
+    "actualHumanATQualified": false,
+    "productionAdopted": false
   }
 }
