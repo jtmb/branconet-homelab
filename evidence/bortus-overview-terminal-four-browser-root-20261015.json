@@ -1,0 +1,132 @@
+{
+  "scope": "Four finite real-browser terminal/inventory behaviors on fresh compiled application; no whole A05/image/performance/live acceptance",
+  "source": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
+  "frontendTree": "2d47cae1abf1ed2d969ee552e41104fd29791713",
+  "actualServerOuterExit": 0,
+  "actualBrowserOuterExit": 0,
+  "separateSuccessfulReadinessTool": "1badb0",
+  "checks": [
+    "real public command success",
+    "real public command failure remains redacted and usable",
+    "Real authorized DELETE500 rolls back all six tables; modal/input/visible actionable error and authority retained",
+    "Explicit trigger removal then one user retry200 clears inventory only and closes confirmation"
+  ],
+  "observations": [
+    {
+      "ordinal": 1,
+      "actualHTTPStatus": 200,
+      "expectedOutputOrFixedErrorMatched": true,
+      "promptRetained": true,
+      "runningIndicatorAbsent": true
+    },
+    {
+      "ordinal": 2,
+      "actualHTTPStatus": 502,
+      "expectedOutputOrFixedErrorMatched": true,
+      "promptRetained": true,
+      "runningIndicatorAbsent": true
+    },
+    {
+      "actual500": true,
+      "sixTableRollback": true,
+      "dialogInputRetained": true,
+      "inDialogAlertVisible": true,
+      "stableAuthority": true
+    },
+    {
+      "explicitRetry200": true,
+      "inventoryCleared": true,
+      "modalClosed": true,
+      "keepersUnchanged": true,
+      "mutationCliCalls": 0,
+      "nativeObjects": 0
+    }
+  ],
+  "actualHTTPEvents": [
+    {
+      "route": "operator-shell",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "route": "operator-shell",
+      "method": "POST",
+      "status": 502
+    },
+    {
+      "route": "inventory-remove",
+      "method": "DELETE",
+      "status": 500
+    },
+    {
+      "route": "inventory-remove",
+      "method": "DELETE",
+      "status": 200
+    }
+  ],
+  "reportComposition": {
+    "terminalCases": 2,
+    "dialogCases": 2,
+    "terminalBodySHA256": "9b5361661a21ddd53b80c595f98389599ed509b21de7060e617ef30566a32ae5",
+    "dialogBrowserSourceSHA256": "ef96cfa43ae92026ab553161e8088faf391a5e77197ee08c403707f38e677d92"
+  },
+  "alertDiagnostics": [
+    {
+      "dialogCount": 1,
+      "visible": true,
+      "alerts": 1,
+      "typedInputRetained": true
+    }
+  ],
+  "currentSourceFiles": 374,
+  "generatedExtras": 4,
+  "currentInputFiles": 44,
+  "compiledObjects": 5383,
+  "installedObjects": 40635,
+  "sourceAndDepsCompiledInputsCurrent": true,
+  "originalWindowsNode": "24.18.0",
+  "originalChrome": "149.0.7827.55",
+  "sourceDefaultScan": {
+    "files": 13,
+    "actualExit": 0,
+    "findings": 0
+  },
+  "all44NonIntentRebindPayloadsByteExact": true,
+  "exactPostExit": 0,
+  "linuxFreshPostExit": 0,
+  "windowsFreshPostExit": 0,
+  "freshLinuxBirthsAbsent": 39,
+  "freshExactCIDAndNameQueries": 2,
+  "windowsRecordedBirthsNoLive": 12,
+  "all12ImagePathsResolved": true,
+  "original480sAnd60sClosureReserveAnd330sBrowserLease": true,
+  "fixtureShellTmpfs": "1MiB /home/shell rw/noexec/nosuid/nodev UID1000 mode0700",
+  "APIResponseInterception": false,
+  "clusterMutations": 0,
+  "productionCredentialsUsed": false,
+  "priorPrematureLaunchFailure": {
+    "serverExit": 1,
+    "browserLauncherExit": 1,
+    "businessCases": 0,
+    "browserJobNeverCreated": true,
+    "closureReceiptSHA256": "edc026c8c79755ea60f2530f5a922f298fae12d7874be2ddbf1f212d766acd54"
+  },
+  "finalClosure": {
+    "actualExit": 0,
+    "receiptSHA256": "8393bc69223a5aa5fac4e184e10abd2e0e238e477facf018930b1cbba48cd659",
+    "currentFDPathFPObjects": 168,
+    "linuxBirthsFreshAbsent": 58,
+    "reader": {
+      "pid": 264788,
+      "startTicks": "2456273"
+    },
+    "ownReaderFreshAbsent": true,
+    "windowsFreshReaderNoLive": true
+  },
+  "rawBrowserReportSHA256": "bf1a9dd5c08259340a9dc45414cb0a953f04452198a063599c6374b7d7f98b44",
+  "wholeA05Accepted": false,
+  "screenReaderAccepted": false,
+  "deliveredImageAcceptance": false,
+  "performanceAcceptance": false,
+  "productionAdoption": false
+}
