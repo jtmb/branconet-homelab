@@ -203,7 +203,7 @@
       "finding": "quality gates",
       "ledgerCurrentEvidence": "Clean Linux Node22.23.3 c29fc install/build214 units/lint/types/four strict HTTP pass with no skips, no operator inputs and exact source/build ownership. Direct ESLint and app-only workflow retained; causal missing-await negative fails while patched control passes.",
       "ledgerStatus": "Local recorded subsets; original breadth/external gates remain explicit",
-      "nextAcceptance": "The ea628d exact-frontend hosted clean install/build/lint/types/342-unit/8-HTTP run and redacted-log scan passed. The separate A04/A05/A06 sensitivity step is prepared source-only and remains unrun; remaining deliberately reintroduced source-regression coverage and complete original A19 acceptance remain open. Manual clauses are separate.",
+      "nextAcceptance": "Hosted exact-frontend run38760696046 passed locked build/lint/types/342-unit/8-HTTP and three deliberate A04/A05/A06 sensitivities: pristine0/mutant1 at each unchanged named assertion, with source restoration and default log/result scan0/zero. Remaining meaningful source-regression coverage and complete original A19 acceptance remain open; manual/actual AT clauses are separate.",
       "originalValidation": "Run CI from a clean checkout with no operator env/DB/kubeconfig. It must finish without prompts, fail on each deliberately reintroduced regression and publish redacted results. Next 15 describes the deprecated lint workflow and direct ESLint migration in its [versioned ESLint guide](https://nextjs.org/docs/15/app/api-reference/config/eslint).",
       "clauseAuditRecord": "acceptance-ledger-audit.json"
     },
@@ -450,13 +450,6 @@
     "productUnchanged": true,
     "allClosurePassed": true
   },
-  "currentA19RegressionSensitivityCandidate20261015": {
-    "status": "SOURCE ONLY; no test/build/push execution",
-    "evidence": "a19-regression-sensitivity-source.json",
-    "cases": 3,
-    "pristinePlusMutantRuns": 6,
-    "wholeA19Accepted": false
-  },
   "currentOverviewAndHostedQualification20261015": {
     "sourceCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
     "frontendTree": "2d47cae1abf1ed2d969ee552e41104fd29791713",
@@ -554,18 +547,22 @@
     "productionAdoption": false
   },
   "currentA19CIWiring20261015": {
-    "status": "PRIOR EXACT FRONTEND HOSTED342+8 QUALIFIED; NEW THREE-MUTANT STEP SOURCE ONLY",
+    "status": "HOSTED342+8 AND THREE FINITE REGRESSION SENSITIVITIES QUALIFIED; COMPLETE A19 OPEN",
     "qualifiedProductSourceCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
-    "hostedRun": 38750289826,
+    "hostedRun": 38760696046,
     "hostedOriginalUnitsPassed": 342,
     "hostedOriginalHTTPPassed": 8,
     "hostedOldWorkflowSHA256": "f1a81fb4365b2b3bf35573976d9d722b5b368cc038710c6c6d78d3f01f3f5997",
-    "newCandidateWorkflowSHA256": "69f0bedd4f99452895416b6a081c55660dc6307caeffa7911de9cfb7741943b7",
-    "newSensitivityStepRun": false,
-    "newCandidateHostedRun": false,
+    "newSensitivityStepRun": true,
+    "newCandidateHostedRun": 38760696046,
     "original342And8TestBodiesChanged": false,
     "remainingRegressionCoverageOpen": true,
-    "wholeA19Accepted": false
+    "wholeA19Accepted": false,
+    "qualifiedCISourceCommit": "e9274f89630157daa4a922a45fada713b48b2ed5",
+    "qualifiedCIFrontendTree": "8cc04e769bed874ddf513590aaaa69c9a1723cb2",
+    "hostedRunWithThreeSensitivities": 38760696046,
+    "qualifiedWorkflowSHA256": "69f0bedd4f99452895416b6a081c55660dc6307caeffa7911de9cfb7741943b7",
+    "priorHostedRunWithoutSensitivity": 38750289826
   },
   "historicalCurrentPendingStageBeforeCurrentQualification20261015": {
     "unitTests": 196,
@@ -609,18 +606,20 @@
     "overallDeliveredAcceptancePassed": false
   },
   "currentPendingStage": {
-    "sourceCandidate": "SOURCE ONLY three-mutant A19 CI sensitivity step; no test/build/push run",
     "qualifiedProductSourceCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
     "latestQualifiedOriginalUnits": 342,
     "latestQualifiedOriginalHTTP": 8,
-    "latestQualifiedHostedRun": 38750289826,
+    "latestQualifiedHostedRun": 38760696046,
     "latestFiniteOverviewTerminalCases": 4,
     "stillOpen": [
       "Other deliberate source-regression coverage",
       "Remaining original A01-A22 clauses",
       "Two warm performance regressions",
       "Image/security/recovery/live/adoption and actual AT"
-    ]
+    ],
+    "latestQualifiedCISourceCommit": "e9274f89630157daa4a922a45fada713b48b2ed5",
+    "latestQualifiedSensitivityCases": 3,
+    "nextSourceWork": "Additional meaningful source mutants are proposals only, not approved or implemented."
   },
   "latestLocalQualification": {
     "productionCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
@@ -638,8 +637,39 @@
   "currentSourceCheckpoint": {
     "qualifiedProductSourceCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
     "frontendTree": "2d47cae1abf1ed2d969ee552e41104fd29791713",
-    "newCIChangesOnly": "Separate sensitivity script/manifest/package command/workflow; uncommitted/unrun; production runtime files unchanged",
     "performanceAccepted": false,
-    "imageLiveAdoptionAccepted": false
+    "imageLiveAdoptionAccepted": false,
+    "qualifiedCISourceCommit": "e9274f89630157daa4a922a45fada713b48b2ed5",
+    "qualifiedCIFrontendTree": "8cc04e769bed874ddf513590aaaa69c9a1723cb2",
+    "CIQualification": "Committed separate three-mutant step passed hosted run38760696046; runtime src/tests/lock unchanged from ea628d."
+  },
+  "historicalA19RegressionSensitivityCandidate20261015": {
+    "status": "SOURCE ONLY; no test/build/push execution",
+    "evidence": "a19-regression-sensitivity-source.json",
+    "cases": 3,
+    "pristinePlusMutantRuns": 6,
+    "wholeA19Accepted": false
+  },
+  "currentA19RegressionSensitivityQualification20261015": {
+    "status": "HOSTED THREE FINITE MUTANTS QUALIFIED; COMPLETE A19 OPEN",
+    "evidence": "a19-three-regression-sensitivity-qualification.json",
+    "owningSourceCommit": "e9274f89630157daa4a922a45fada713b48b2ed5",
+    "frontendTree": "8cc04e769bed874ddf513590aaaa69c9a1723cb2",
+    "hostedRun": 38760696046,
+    "cases": 3,
+    "pristineExits": [
+      0,
+      0,
+      0
+    ],
+    "mutantExits": [
+      1,
+      1,
+      1
+    ],
+    "originalsAndRestorationVerified": true,
+    "hostedLogDefaultScanExit": 0,
+    "hostedLogDefaultScanFindings": 0,
+    "wholeA19Accepted": false
   }
 }
