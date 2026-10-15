@@ -1,0 +1,72 @@
+{
+  "abi": 1,
+  "scope": "Two focused PUBLIC three-group controls: listener construction and qualifier seam; not private recovery",
+  "ROOTReportedLaunchContextBoot": "19d54e89-533f-46e2-b89d-25657251c8d7",
+  "startedRecordsHaveIntrinsicBoot": false,
+  "construction": {
+    "actualTool": "7517bd",
+    "actualExit": 0,
+    "tests": 3,
+    "noSkip": true,
+    "closureTool": "cf7806",
+    "currentPins": 12,
+    "recordedActorBirthsAbsent": 2,
+    "terminalSHA256": "44779e8db9e7498f0e09a5f3733b610db2018a131f46f45f9a5adee265808fb7",
+    "closurePath": "/home/brajam/.local/share/branconet-migration/root-listener-budget-controls-own-20261015-v1.json",
+    "closureSHA256": "ea0fb2dbaaf85154939d581d881e95d9451154b3df5f4b75f3993b14b3b3b857",
+    "scannerActualExit": 0,
+    "scannerFindings": 0
+  },
+  "seam": {
+    "actualTool": "d6e5da",
+    "actualExit": 0,
+    "tests": 3,
+    "noSkip": true,
+    "closureTool": "a86b13",
+    "currentPins": 28,
+    "recordedActorBirthsAbsent": 2,
+    "terminalSHA256": "0fe06144bb121c7f17c6964c8c30c9f7eb5e4458bd4c027fc46ab0008440c18f",
+    "closurePath": "/home/brajam/.local/share/branconet-migration/root-listener-seam-controls-own-20261015-v1.json",
+    "closureSHA256": "726b7d884b1e7729aefc69a8b009c7041e6b3735cbcf60a2164da4a13f7e74e7",
+    "scannerTool": "887fca",
+    "scannerActualExit": 0,
+    "scannerFindings": 0,
+    "scannerFiles": 10
+  },
+  "gate": {
+    "qualified63SHA256": "8f4ecc91c63ced5ec7a0b650baf4a5428088501c705e588f016ac1d3a511728a",
+    "heldCandidateSHA256": "faa308a8ec9c48c0524f458e584e995877d1a31a7047402b981d25b6bd9de7a5",
+    "bytes": 60672,
+    "change": "_listen min cap literal300000 to600000; min remaining original deadline unchanged",
+    "exactInverseRecoversWholeQualifiedGate": true,
+    "legacy63RowsUnchanged": 198,
+    "graphRowsUnchanged": 183
+  },
+  "semantics": {
+    "construction": [
+      "public remaining<=300 unchanged",
+      "private remaining>300 uses original remaining with600000 cap",
+      "expired deadline refuses before launch"
+    ],
+    "seam": [
+      "fixed legacy63 plus actual construction3 authority and exact full gate inverse",
+      "extra gate byte/cap/legacy row/proof byte/count/exit/closure perturbations refuse",
+      "expired,over600,or expiry during held public reads refuses without renewal"
+    ]
+  },
+  "limits": {
+    "originalSupervisorSeconds": 30,
+    "closureReserveSeconds": 2,
+    "OSOnlyMarginSeconds": 1,
+    "originalPrivateLeaseSecondsUnchanged": 600,
+    "privateRetryExecuted": false,
+    "privateCandidateFrozen": false,
+    "runtimeTimerIntegrated": false,
+    "legacy63OrMaterialSuitesReplayed": false,
+    "privateRecoveryAccepted": false,
+    "historicalA57FailureStillLiteral1": true,
+    "exclusiveTimerCauseOfHistoricalFailureProven": false,
+    "closureReadersOwnBirthSeparatelyFreshChecked": false
+  },
+  "statusText": "Public listener construction3 and integration seam3 qualified. Recovery remains pending; no new private candidate or retry. Existing600 deadline, same-holder/UID/RV/security/source/seven-TCP/private-oracle and cleanup gates remain unchanged."
+}
