@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "sourceParent": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
+  "sourceParent": "26ae036fb5aef2dcde438829448831be45f56d5a",
   "files": [
     {
       "path": "src/lib/kubectl-client.ts",
@@ -37,6 +37,26 @@
     {
       "path": "package.json",
       "sha256": "692674575ba632fcd3a02fcff9b7ede08e2ef0c8ececff4998d4be97b327dd76"
+    },
+    {
+      "path": "tests/deployment-action.test.ts",
+      "sha256": "092286657848a3a48145b13153d022f03cc33908d8105ff30d800dcac6160377"
+    },
+    {
+      "path": "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "sha256": "b12762c4437c8e2d829c821f4dca327709014134c81a27840818f3ad066a3157"
+    },
+    {
+      "path": "tests/metadata-query.test.ts",
+      "sha256": "644c4e7c2cd0255c6bee4675c0f36ef09b0442af1c7bba11c9c406e58d40eb08"
+    },
+    {
+      "path": "src/lib/metadata-query.ts",
+      "sha256": "de56370763d8a325633db2876235f5419657a4ebb9c4e1c22f82714597961d1d"
+    },
+    {
+      "path": "src/lib/kv-metadata-query.ts",
+      "sha256": "f5fffd9be7fcd97164fe02b26ee5c43bac1c96cbf5250fa6e18f30d1190640b6"
     }
   ],
   "cases": [
@@ -75,6 +95,30 @@
       "operator": "strictEqual",
       "witness": "actual: 'empty'",
       "mutantSHA256": "65f5db583e08837873a5c2797bf6be560e7450be766bc1ee7f497726ff52134e"
+    },
+    {
+      "id": "deployment-action-coercion",
+      "source": "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "testFile": "tests/deployment-action.test.ts",
+      "testName": "deployment actions reject coerced/inherited/unknown action shapes before execution",
+      "before": "if (typeof action !== \"string\" || !Object.hasOwn(ACTIONS, action)) {",
+      "after": "if (!Object.hasOwn(ACTIONS, action)) {",
+      "assertionLine": 49,
+      "operator": "strictEqual",
+      "witness": "actual: 200",
+      "mutantSHA256": "2b91ee9c6598e7f0f31023d2e95de739e92fa16f49c6b93512227c303b4e6e8a"
+    },
+    {
+      "id": "private-kv-cache-admission",
+      "source": "src/lib/metadata-query.ts",
+      "testFile": "tests/metadata-query.test.ts",
+      "testName": "shared cache denies private requests even through normalized resource-prefix spellings",
+      "before": "if (path.startsWith(\"/api/kv/\")) return isKvMetadataQuery(url);",
+      "after": "if (path.startsWith(\"/api/kv/\")) return true;",
+      "assertionLine": 14,
+      "operator": "strictEqual",
+      "witness": "actual: true",
+      "mutantSHA256": "c0bcbb26be2993fac5589ec523c025033f96a398fcce4abf92db36d344c4bd14"
     }
   ]
 }

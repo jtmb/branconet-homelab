@@ -53,7 +53,7 @@ jobs:
             -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
             --entrypoint bash "$BORTUS_CI_IMAGE" \
             -lc 'mkdir -p "$HOME" && npm run lint && npm run typecheck -- --incremental false && node --import tsx --test tests/*.test.ts'
-      - name: Three source regression sensitivity checks (A04/A05/A06)
+      - name: Five source regression sensitivity checks (A04/A05/A06/action/cache)
         timeout-minutes: 5
         shell: bash
         run: |
