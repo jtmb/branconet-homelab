@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "scope": "Failed pre-start inspection and exact never-started container cleanup only",
+  "actorDispatch": "f6268f",
+  "actorTerminal": "f79014",
+  "actorExit": 1,
+  "primary": {
+    "stage": 4,
+    "type": 5
+  },
+  "originalFinalizers": [
+    1
+  ],
+  "containerStarted": false,
+  "compilationOrTestsExecuted": false,
+  "outputEmpty": true,
+  "inspection": {
+    "requested": "no-new-privileges:true",
+    "actual": [
+      "no-new-privileges:true"
+    ],
+    "incorrectExpected": [
+      "no-new-privileges"
+    ],
+    "concreteFalsePredicateVerified": true,
+    "exclusiveOriginalExceptionLineRecorded": false
+  },
+  "cleanupTool": "8c6144",
+  "cleanupExit": 0,
+  "cleanup": {
+    "CID": "c18eb32a8f6f3cb60dda0fd745b401acb1fc184e37a066b2b3c8fc212a39c419",
+    "actorBirthsAbsent": 7,
+    "cleanupJobs": [
+      {
+        "actual_exit": 0,
+        "birth": {
+          "pgrp": 698136,
+          "pid": 698136,
+          "ppid": 698129,
+          "same_identity_absent": true,
+          "start_ticks": "5581098",
+          "state": "R",
+          "uid": 1000
+        },
+        "path": "command-01-fresh-exact-owned-created",
+        "reaped": true
+      },
+      {
+        "actual_exit": 0,
+        "birth": {
+          "pgrp": 698149,
+          "pid": 698149,
+          "ppid": 698129,
+          "same_identity_absent": true,
+          "start_ticks": "5581105",
+          "state": "R",
+          "uid": 1000
+        },
+        "path": "command-02-remove-never-started",
+        "reaped": true
+      },
+      {
+        "actual_exit": 1,
+        "birth": {
+          "pgrp": 698161,
+          "pid": 698161,
+          "ppid": 698129,
+          "same_identity_absent": true,
+          "start_ticks": "5581117",
+          "state": "R",
+          "uid": 1000
+        },
+        "path": "command-03-exact-id-absence",
+        "reaped": true
+      },
+      {
+        "actual_exit": 0,
+        "birth": {
+          "pgrp": 698181,
+          "pid": 698181,
+          "ppid": 698129,
+          "same_identity_absent": true,
+          "start_ticks": "5581127",
+          "state": "R",
+          "uid": 1000
+        },
+        "path": "command-04-exact-name-absence",
+        "reaped": true
+      }
+    ],
+    "exactCIDAndNameAbsent": true,
+    "name": "bortus-node22-default-test-init-resolver-pid1024-20261014-v2",
+    "neverStartedExactCIDRemoved": true,
+    "noBuildOrImageExecutableStarted": true,
+    "originalActorExit": 1,
+    "originalFailurePreserved": true,
+    "recordsCurrent": 37,
+    "sourceFilesCurrent": 15
+  },
+  "evidence": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-bundled-zlib-full-20261015-v1\\started.json",
+      "bytes": 344,
+      "sha256": "1aed228317957d3cb5ee663ab518e0208ba7120367a4cc30cb190e76c59dce2f"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-bundled-zlib-full-20261015-v1\\terminal.json",
+      "bytes": 319,
+      "sha256": "694d1e1fc5d1ca49886ccaacc3e91b40ba21c8877d566553ab6cd283b74c5d77"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-bundled-zlib-full-20261015-v1\\created.json",
+      "bytes": 289,
+      "sha256": "163ae0b839744dcb8f3e453ebe5be95c98184d2bdb2e4fc8ea478339bd354567"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-bundled-zlib-full-20261015-v1\\create-intent.json",
+      "bytes": 4025,
+      "sha256": "a8bcc2447b942c326639e569808501b34cd7c8752e12f34cf3230a711bed21b1"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-bundled-zlib-full-20261015-v1\\command-04-inspect\\caller.stdout",
+      "bytes": 17618,
+      "sha256": "78c2f3b2f7088ea03701ea725785ee12300efe1caa8a48e7005f6765025d8695"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-bundled-zlib-full-20261015-v1\\command-05-inspect\\caller.stdout",
+      "bytes": 17618,
+      "sha256": "7d7084aa26ad94d749a1650b330020ff17e5f0204249344c40923b88fd19b4da"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-prestart-failure-cleanup-20261015-v1\\terminal.json",
+      "bytes": 1389,
+      "sha256": "38a27c1a5ea3cae454c42b64d1221d93d3d07e7cb07eeebca38dada9d07d0810"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-prestart-failure-cleanup-20261015-v1\\result.json",
+      "bytes": 1283,
+      "sha256": "1d07b2b804e30c1bfd1dd6961a2e5c4147e85b05b77958278738b94e40b9ce35"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-node22-bundled-zlib-full-source-20261015-v1\\node22-build-owned.py",
+      "bytes": 45927,
+      "sha256": "b6b685d0f23fca11f61b4ebda709f7a42af32a5fc0fc151a8b018368292ae9cd"
+    }
+  ],
+  "sourceOrBuildQualified": false,
+  "imageOrNodeChanged": false,
+  "securityAccepted": false,
+  "productionAdopted": false,
+  "ownReaderFreshAbsenceClaimed": false,
+  "nextStep": "Source-only corrected operational packet; no second build attempt recorded here"
+}
