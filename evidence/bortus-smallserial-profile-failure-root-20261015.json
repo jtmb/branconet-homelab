@@ -1,0 +1,64 @@
+{
+  "scope": "Failed diagnostic profile; no complete paired observation or performance acceptance",
+  "actor": {
+    "initialTool": "27413d",
+    "finalTool": "1afd2d",
+    "actualExit": 1,
+    "classification": "AssertionError",
+    "originalWholeSeconds": 300,
+    "closureReserveSeconds": 60,
+    "oneSharedStageSeconds": 180,
+    "childSeconds": 150,
+    "CPU": 2,
+    "memoryBytes": 1073741824,
+    "network": "none",
+    "measuredGraphClosureCurrent": true,
+    "allCLIIdentitiesAbsent": true,
+    "namedContainersRemaining": [],
+    "failureFinalizerContainerRemovalVerified": true
+  },
+  "baseline": {
+    "requestsPassed": 14,
+    "partialOnly": true,
+    "privateProfileBytes": [
+      801066
+    ]
+  },
+  "candidate": {
+    "requestsAttempted": 1,
+    "firstRoute": "/api/auth/session",
+    "HTTPStatus": 500,
+    "responseBytes": 55,
+    "records": 0,
+    "privateProfileBytes": [
+      814804,
+      20327
+    ]
+  },
+  "sourceWitness": {
+    "WorkerPreloadOccursBeforeArgvEntryInstalled": true,
+    "historicalExceptionRecorded": false,
+    "oldEvalWorkerAdapterDidNotExercisePreload": true,
+    "newFileWorkerControlNotYetRun": true
+  },
+  "independentObserverFailures": [
+    {
+      "tool": "e35c46",
+      "exit": 1,
+      "cause": "success-only removedVerified field absent on failure finalizer"
+    },
+    {
+      "tool": "34cde8",
+      "exit": 1,
+      "cause": "historical V1 reader-owned record is0644; blanket pin requires0600",
+      "mismatchInspectionTool": "fcf08a",
+      "mismatchingRows": 1,
+      "pins": 121
+    }
+  ],
+  "completeProfilingObservation": false,
+  "performanceAccepted": false,
+  "sourceAdopted": false,
+  "productionChanged": false,
+  "originalStoresChanged": false
+}
