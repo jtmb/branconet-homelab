@@ -38,7 +38,7 @@ test("private Flux credentials use verified native bodies, never SQLite/argv/err
     const migrateEnv = { ...process.env }; delete migrateEnv.RUST_LOG;
     execFileSync(process.execPath, [path.resolve("node_modules/prisma/build/index.js"), "migrate", "deploy"], { env: migrateEnv, stdio: "pipe" });
     db = (await import("../src/lib/db")).default;
-    const { addRepo, createFluxSecret, getFluxStatus, getGitRepoDetail, listRepos } = await import("../src/lib/flux");
+    const { addRepo, createFluxSecret, getFluxStatus, getFluxHierarchy, getGitRepoDetail, listRepos } = await import("../src/lib/flux");
     const credentials = ["synthetic-private-https-token", "synthetic-private-ssh-key\nsecond line\n"];
     for (const [index, authMethod] of ["https", "ssh"].entries()) {
       const name = "private-fixture-" + authMethod, credential = credentials[index];
@@ -65,6 +65,12 @@ test("private Flux credentials use verified native bodies, never SQLite/argv/err
     await writeFile(path.join(cli.bin, "events.json"), `LAST SEEN  TYPE  REASON  OBJECT  MESSAGE\n${marker}  Warning  ${marker}  GitRepository/legacy-source  ${marker}\n2026-10-01T00:00:00Z  Normal  ${marker}  GitRepository/legacy-source  ${marker}\n`);
     const legacy = await db.gitRepo.create({ data: { name: "legacy-source", url: unsafeUrl, authData: marker } });
     for (const projection of [await getFluxStatus(), await getGitRepoDetail("legacy-source"), await listRepos()]) assert(!JSON.stringify(projection).includes(marker));
+    // Exercise the actual hierarchy through the executable fixture, not a copied argv builder.
+    const callsBeforeHierarchy = (await cli.calls()).length;
+    assert(!JSON.stringify(await getFluxHierarchy()).includes(marker));
+    assert.deepEqual((await cli.calls()).slice(callsBeforeHierarchy).filter(args => args.includes("--all-namespaces")), [
+      ["--kubeconfig", native.config, "get", "helmreleases", "--all-namespaces", "-o", "json", "-o", "json"],
+    ], "Hierarchy discovery must place the all-namespace flag after its get command");
     const detail = (await getGitRepoDetail("legacy-source"))!;
     assert.equal(detail.url, ""); assert.equal(detail.events[0].lastTimestamp, ""); assert.equal(detail.events[0].age, "Unknown");
     assert.equal(detail.events[1].lastTimestamp, "2026-10-01T00:00:00.000Z"); assert.notEqual(detail.events[1].age, "Unknown");
@@ -83,6 +89,7 @@ test("private Flux credentials use verified native bodies, never SQLite/argv/err
       return timer;
     });
     await writeFile(path.join(cli.bin, "hold-flux-discovery"), "hold");
+    const callsBeforeDiscovery = (await cli.calls()).length;
     try {
       assert.equal((await removeRepo(retentionRepo.id)).deleteId, retentionRepo.id);
       assert.equal(getDeleteProgress(retentionRepo.id)?.done, false);
@@ -99,6 +106,10 @@ test("private Flux credentials use verified native bodies, never SQLite/argv/err
       while (!getDeleteProgress(retentionRepo.id)?.done && Date.now() < deadline)
         await new Promise(resolve => originalTimeout(resolve, 20));
       assert.equal(getDeleteProgress(retentionRepo.id)?.done, true);
+      assert.deepEqual((await cli.calls()).slice(callsBeforeDiscovery).filter(args => args.includes("--all-namespaces")), [
+        ["--kubeconfig", native.config, "get", "kustomizations", "--all-namespaces", "-o", "json"],
+        ["--kubeconfig", native.config, "get", "helmreleases", "--all-namespaces", "-o", "json"],
+      ], "Both cascade discovery lists must retain all namespaces after the get command");
       assert(getDeleteProgress(retentionRepo.id)?.error, "Synthetic mutation failure must remain terminal");
       assert(await db.gitRepo.findUnique({ where: { id: retentionRepo.id } }), "Failed cascade must retain its row");
       cleanupCallbacks[1]();

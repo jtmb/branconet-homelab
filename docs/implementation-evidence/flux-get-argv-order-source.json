@@ -1,0 +1,209 @@
+{
+  "scope": "SOURCE ONLY three Flux get/namespace argv reorderings and strengthened existing behavioral assertions",
+  "sourceParent": "25619a46c4f91f64ba4f4bc9528e79d5a512bf64",
+  "rootReportedRealCLIComparison": {
+    "tool": "1e4dbf",
+    "oldLeadingFlagExit": 1,
+    "getFirstExit": 0,
+    "getFirstValidJSONList": true,
+    "getFirstItems": 0,
+    "getFirstStdoutBytes": 119,
+    "oldStderrBytes": 63,
+    "exactOldErrorReasonKnown": false,
+    "independentlyExecutedByAppAgent": false
+  },
+  "changes": [
+    {
+      "role": "hierarchy",
+      "before": [
+        "--all-namespaces",
+        "get",
+        "helmreleases",
+        "-o",
+        "json"
+      ],
+      "after": [
+        "get",
+        "helmreleases",
+        "--all-namespaces",
+        "-o",
+        "json"
+      ]
+    },
+    {
+      "role": "cascade child Kustomization discovery",
+      "before": [
+        "--all-namespaces",
+        "get",
+        "kustomizations"
+      ],
+      "after": [
+        "get",
+        "kustomizations",
+        "--all-namespaces"
+      ]
+    },
+    {
+      "role": "cascade child HelmRelease discovery",
+      "before": [
+        "--all-namespaces",
+        "get",
+        "helmreleases"
+      ],
+      "after": [
+        "get",
+        "helmreleases",
+        "--all-namespaces"
+      ]
+    }
+  ],
+  "unchanged": [
+    "structured execution and literal argument values",
+    "complete-list admission and redaction",
+    "generic2MiB output and existing deadlines/pool",
+    "fresh authorization",
+    "cascade error/progress/DB-retention behavior",
+    "namespace protection and retained credentials",
+    "original test assertions and fixture implementation",
+    "HTTP/browser/security/performance oracles"
+  ],
+  "regressionTest": {
+    "file": "tests/flux-credentials.test.ts",
+    "existingParent": "private Flux credentials use verified native bodies, never SQLite/argv/errors; imported auth is retained",
+    "newBehavior": "Actual getFluxHierarchy and existing removeRepo cascade go through the existing executable fake kubectl; assert exact full argv with kubeconfig and original appended JSON pairs",
+    "newAssertions": 3,
+    "existingParentCountUnchanged": true,
+    "fakeCLIChanged": false,
+    "actualRealCLICompatibilityProvenByTheseAssertions": false,
+    "execution": "UNRUN"
+  },
+  "requiredNextValidation": [
+    "Focused existing parent test at unchanged original bounds",
+    "Root matching real kubectl three get-first forms against disposable public API",
+    "Fresh compile/build/type and appropriate full qualification after root review"
+  ],
+  "all22DocsChecked": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "sha256BeforeCheckout": "6041d0990fcf78b263d2cc53f9aa8afa3cc3baed8939382a6a9ec7e5bfdb2c1d",
+      "charactersRead": 6335
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "sha256BeforeCheckout": "06b44be46059c6d427530a4bf279cedab3470dbbf0e34d51c0369407ddb4151a",
+      "charactersRead": 156308
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "sha256BeforeCheckout": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670",
+      "charactersRead": 4458
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "sha256BeforeCheckout": "14e26b20e7c193c5905fc271453b840bafea9dcf267d244211d731ee4a8ab086",
+      "charactersRead": 59209
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "sha256BeforeCheckout": "8f2246d8d56341e94b232514eddd1dfe2ab935572b983ace664af9b66edf1bbe",
+      "charactersRead": 115736
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "sha256BeforeCheckout": "60c43582d75c924a638ab1134ae628e44be79a5494f059b1871552268dbf557d",
+      "charactersRead": 115295
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "sha256BeforeCheckout": "6a902b23d1232a58767be5eadd3a28ac37afb5117c36e2b09a634a7960d4d60d",
+      "charactersRead": 247875
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "sha256BeforeCheckout": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b",
+      "charactersRead": 21744
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "sha256BeforeCheckout": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412",
+      "charactersRead": 42183
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "sha256BeforeCheckout": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8",
+      "charactersRead": 22129
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "sha256BeforeCheckout": "5b74f21a5f21548b990e4fccd96bf7f0095ff84a9ce886ce1e02d8928f16e39a",
+      "charactersRead": 100745
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "sha256BeforeCheckout": "54a9e788ab6c592ec6609a23e522e3239917344cbb6a3a6de1bc253b4dfa9831",
+      "charactersRead": 55330
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "sha256BeforeCheckout": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038",
+      "charactersRead": 3604
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "sha256BeforeCheckout": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb",
+      "charactersRead": 2582
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "sha256BeforeCheckout": "cb35a994799df82886f9577555e1f53c8057d512d831e54acb3144927fe7a58a",
+      "charactersRead": 16756
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "sha256BeforeCheckout": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "charactersRead": 5310
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "sha256BeforeCheckout": "8cef07cf1d7142b8dde48d637b95b2b685fdd7aade1ec06ec0d7ccfce2b5a0dc",
+      "charactersRead": 86573
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "sha256BeforeCheckout": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0",
+      "charactersRead": 11460
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "sha256BeforeCheckout": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92",
+      "charactersRead": 1780
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "sha256BeforeCheckout": "faaccb910a5b10a1d4e61e4aa7426d9a43b709989d37409d27cde4eb5f7e003e",
+      "charactersRead": 93934
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "sha256BeforeCheckout": "240ab89d2117c381da836b24266d4cc2051623f504ac77e9deda008619c4b940",
+      "charactersRead": 130547
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "sha256BeforeCheckout": "2a1851e0c9b6dfa5cfc279dd181338bc831c3f6c6ef5653e408801dccc1f8ffd",
+      "charactersRead": 92181
+    }
+  ],
+  "all44OriginalValidationClausesUnchanged": true,
+  "NextGuide": {
+    "installedDistDocsAbsent": true,
+    "officialVersionedGuideRead": "https://raw.githubusercontent.com/vercel/next.js/v15.5.27/docs/01-app/03-api-reference/03-file-conventions/route.mdx",
+    "NextAPIsChanged": false
+  },
+  "testsRun": false,
+  "compiledCandidateQualified": false,
+  "browserHTTP503CauseProven": false,
+  "securityAccepted": false,
+  "performanceAccepted": false,
+  "productionAdoption": false
+}
