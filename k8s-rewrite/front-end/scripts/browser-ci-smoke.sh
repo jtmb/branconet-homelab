@@ -23,6 +23,7 @@ done
 [[ "${GITHUB_SHA:-}" =~ ^[a-f0-9]{40}$ ]]
 marker="${GITHUB_RUN_ID}:${GITHUB_RUN_ATTEMPT}:${GITHUB_SHA}:$(sha256sum ci/browser-tools/package-lock.json | cut -d ' ' -f 1):$(sha256sum scripts/browser-ci-smoke.sh | cut -d ' ' -f 1)"
 directory_owned=0
+fixture_logs_emitted=0
 cidfiles=()
 capture_cid() {
   local file="$1" cid
@@ -33,7 +34,7 @@ capture_cid() {
   printf '%s' "$cid"
 }
 cleanup() {
-  local status=$? cleanup_failed=0 file owned left i
+  local status=$? cleanup_failed=0 confirmed=0 name_queries=0 names_absent=true uncertain_create=false file owned left i
   trap - EXIT INT TERM
   # Only exclusive CID files armed before this invocation's create can grant authority.
   # An interrupted create without a valid CID file remains uncertain; never adopt its name.
@@ -41,24 +42,34 @@ cleanup() {
     file="${cidfiles[i]}"
     if [[ -e "$file" || -L "$file" ]]; then
       if owned="$(capture_cid "$file")"; then
+        confirmed=$((confirmed+1))
         if left="$(timeout 5s docker ps -aq --no-trunc --filter "id=$owned")"; then
           if [[ -n "$left" ]]; then
-            if [[ "$left" == "$owned" ]]; then timeout 10s docker rm -f "$owned" >/dev/null 2>&1 || cleanup_failed=1
+            if [[ "$left" == "$owned" ]]; then
+              # Browser is already removed; give the confirmed app a bounded orderly stop.
+              if [[ "$file" == "$tools/app.cid" && "$fixture_logs_emitted" == 0 ]]; then
+                timeout 7s docker stop --time 5 "$owned" >/dev/null 2>&1 || cleanup_failed=1
+                if timeout 3s docker logs --tail 3 "$owned" 2>/dev/null; then fixture_logs_emitted=1; else cleanup_failed=1; fi
+              fi
+              timeout 10s docker rm -f "$owned" >/dev/null 2>&1 || cleanup_failed=1
             else cleanup_failed=1; fi
           fi
         else cleanup_failed=1; fi
-      else cleanup_failed=1; fi
-    fi
+      else uncertain_create=true; cleanup_failed=1; fi
+    else uncertain_create=true; cleanup_failed=1; fi
   done
   for candidate in "$browser" "$app" "$acquirer"; do
+    name_queries=$((name_queries+1))
     if left="$(timeout 5s docker ps -aq --no-trunc --filter "name=^/${candidate}$")"; then
-      [[ -z "$left" ]] || cleanup_failed=1
-    else cleanup_failed=1; fi
+      if [[ -n "$left" ]]; then names_absent=false; cleanup_failed=1; fi
+    else names_absent=false; cleanup_failed=1; fi
   done
   if [[ "$directory_owned" == 1 && -d "$tools" && ! -L "$tools" && "$tools" == "$(realpath "$RUNNER_TEMP")/bortus-browser-tools-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" ]]; then
     if ! rm -rf -- "$tools"; then cleanup_failed=1; fi
   fi
-  if [[ "$status" == 0 && "$cleanup_failed" == 1 ]]; then status=1; fi
+  if [[ "$cleanup_failed" == 0 ]]; then cleanup_failed=false; else cleanup_failed=true; fi
+  printf '{"browserCICleanupFailed":%s,"confirmedCIDCount":%s,"exactNameQueryCount":%s,"exactNamesAbsent":%s,"uncertainCreate":%s}\n' "$cleanup_failed" "$confirmed" "$name_queries" "$names_absent" "$uncertain_create"
+  if [[ "$status" == 0 && "$cleanup_failed" == true ]]; then status=1; fi
   exit "$status"
 }
 if [[ "$1" == run ]]; then
@@ -141,4 +152,5 @@ timeout 25s docker stop --time 20 "$cid" >/dev/null
 actual="$(timeout 5s docker inspect --format '{{.State.ExitCode}}' "$cid")"
 test "$actual" = 0
 timeout 5s docker logs "$cid"
+fixture_logs_emitted=1
 printf '%s\n' 'Finite compiled browser smoke and fixture shutdown passed.'
