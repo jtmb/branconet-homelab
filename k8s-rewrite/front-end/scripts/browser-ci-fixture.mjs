@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import { cp, mkdir, mkdtemp, readFile, realpath, rm, symlink, writeFile } from 'node:fs/promises';
-import { spawn } from 'node:child_process';
+import { cp, mkdir, mkdtemp, readFile, realpath, lstat, rm, symlink, writeFile } from 'node:fs/promises';
+import { spawn, spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
@@ -18,6 +18,41 @@ const sha = bytes => createHash('sha256').update(bytes).digest('hex');
 const sleep = (ms, unref = false) => new Promise(resolve => { const timer = setTimeout(resolve, ms); if (unref) timer.unref(); });
 async function settled(ms) {
   return Promise.race([closePromise.then(() => true), sleep(ms, true).then(() => false)]);
+}
+async function fixtureExecutionDiagnostic(dir, deadline) {
+  const result = { tmpMountRecords: 0, tmpNoexec: null, fakeFileRegular: false, fakeFileExecutable: false,
+    spawnObserved: false, actualExit: null, spawnErrorClass: 0, errno: null, signalNumber: 0,
+    stdoutBytes: 0, stderrBytes: 0, diagnosticFailed: false };
+  try {
+    const mounts = await readFile('/proc/self/mountinfo', 'utf8');
+    if (Buffer.byteLength(mounts) > 1048576) throw Error('Diagnostic mount bound');
+    const matches = mounts.split('\n').map(line => line.split(' ')).filter(fields => fields[4] === '/tmp');
+    result.tmpMountRecords = matches.length;
+    if (matches.length === 1) result.tmpNoexec = matches[0][5].split(',').includes('noexec');
+    const fixtureDir = await realpath(dir);
+    if (path.dirname(fixtureDir) !== await realpath(tmpdir()) || !path.basename(fixtureDir).startsWith('bortus-ui-test-')) throw Error('Diagnostic fixture scope');
+    const bin = path.join(fixtureDir, 'fake-bin'), executable = path.join(bin, 'kubectl');
+    const metadata = await lstat(executable);
+    result.fakeFileRegular = metadata.isFile() && !metadata.isSymbolicLink();
+    result.fakeFileExecutable = (metadata.mode & 0o111) !== 0;
+    if (!result.fakeFileRegular) throw Error('Diagnostic executable scope');
+    const remaining = Math.min(5000, deadline - Date.now());
+    if (remaining <= 0) throw Error('Diagnostic original deadline');
+    const child = spawnSync(executable, ['get', 'pods', '-A', '-o', 'json'], {
+      env: { PATH: bin + path.delimiter + process.env.PATH, BORTUS_FAKE_KUBECTL: bin, HOME: '/tmp/bortus-ci-home', TMPDIR: '/tmp' },
+      timeout: remaining, killSignal: 'SIGKILL', maxBuffer: 1048576,
+    });
+    result.spawnObserved = true;
+    result.actualExit = Number.isInteger(child.status) && child.status >= 0 && child.status <= 255 ? child.status : null;
+    // Fixed enum:0 none,1 EACCES,2 ENOENT,3 EPERM,4 ENOEXEC,5 ETIMEDOUT,6 ENOBUFS,7 other.
+    const errors = { EACCES: 1, ENOENT: 2, EPERM: 3, ENOEXEC: 4, ETIMEDOUT: 5, ENOBUFS: 6 };
+    result.spawnErrorClass = child.error ? (Object.hasOwn(errors, child.error.code) ? errors[child.error.code] : 7) : 0;
+    result.errno = Number.isInteger(child.error?.errno) && child.error.errno >= -4096 && child.error.errno <= 0 ? child.error.errno : null;
+    result.signalNumber = child.signal === null ? 0 : child.signal === 'SIGKILL' ? 9 : child.signal === 'SIGTERM' ? 15 : 1;
+    result.stdoutBytes = child.stdout?.byteLength ?? 0; result.stderrBytes = child.stderr?.byteLength ?? 0;
+  } catch { result.diagnosticFailed = true; }
+  // Only fixed Booleans/enums/counts: never print command output, error bodies or paths.
+  console.log(JSON.stringify({ fixtureExecutionDiagnostic: result }));
 }
 try {
   const pins = JSON.parse(await readFile(path.join(root, 'ci/browser-tools/provenance.json'), 'utf8'));
@@ -65,6 +100,7 @@ try {
       assert.equal(url.protocol, 'http:'); assert.equal(url.hostname, '127.0.0.1');
       assert.equal(url.pathname, '/'); assert.equal(url.search, ''); assert.equal(url.hash, '');
       assert.equal(url.username, ''); assert.equal(url.password, ''); assert.match(url.port, /^\d+$/);
+      await fixtureExecutionDiagnostic(state.dir, deadline);
       await writeFile(path.join(exchange, 'ready.json'), JSON.stringify({ schema: 1, writerUrl: url.origin }) + '\n', { flag: 'wx', mode: 0o600 });
       ready = true; break;
     }
