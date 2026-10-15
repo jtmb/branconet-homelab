@@ -1147,7 +1147,7 @@
     "newNodeDefaultSuiteExit": 0,
     "newNodeFailures": 0,
     "privateRecoveryProved": false,
-    "allFiveDiagnosticTemporaryResourcesAbsent": true,
+    "allFiveDiagnosticTemporaryResourcesAbsent": false,
     "performanceAccepted": false,
     "records": [
       {
@@ -1367,16 +1367,11 @@
       "applicationRuntimeAccepted": false
     },
     "latestPublicRecoveryDiagnostic": {
-      "run": "836c60e5a010",
-      "actorExit": 1,
-      "sevenTCPValidatorReturned": true,
-      "finalComparisonPassed": false,
-      "whichOperandFailedEstablished": true,
-      "firstControlResourceVersionChanged": true,
-      "holderAllFieldsEqual": true,
-      "secondControlComparisonSkipped": true,
-      "outcomeVerified": true,
-      "cleanupVerified": true,
+      "run": "a729dd61955d",
+      "dispatched": true,
+      "outcomeVerified": false,
+      "cleanupVerified": false,
+      "strictPostCommitRVGuardChanged": false,
       "privateMaterialReachable": false
     },
     "a13FiveColumnAttempt": {
@@ -1551,7 +1546,7 @@
       "strictRVGuardChanged": false,
       "liveRecoveryAccepted": false
     },
-    "publicDiagnosticCleanupPending": false,
+    "publicDiagnosticCleanupPending": true,
     "precheckpointReadinessCandidateQualifiedLocally": true,
     "sampleEqualityDiagnosticsQualifiedLocally": true
   },
@@ -2664,5 +2659,39 @@
     "allOriginalFailuresPreserved": true,
     "securityAccepted": false,
     "performanceAccepted": false
+  },
+  "publicA729Dispatch": {
+    "scope": "One public-only final-comparison diagnostic; outcome and exact-UID cleanup pending",
+    "run": "a729dd61955d",
+    "controls": [
+      "b26359bde8be",
+      "375cf16d54de"
+    ],
+    "actorDispatchTool": "438615",
+    "wholeSeconds": 600,
+    "closureSeconds": 1,
+    "sourceReviewTool": "e6057e",
+    "sourceReviewExit": 0,
+    "stagerTool": "cfcb7a",
+    "stagerExit": 0,
+    "packetRows": 261,
+    "runtimeSources": 246,
+    "unchangedVs836": 242,
+    "sourceGraph183Unchanged": true,
+    "gateSHA256": "4d4cc9ae1c96a067d7e150c33517e105a208082c57cf70699ebba747b69fbe7d",
+    "runtimeManifestSHA256": "dd21e4697e26769c0118632629e872209f84a4f7307ef9d84de8dae4d95f7cbe",
+    "integralActual55GateAndObservationControls": true,
+    "original47ControlsPreserved": true,
+    "oneCheckpointAndStrictPostCommitRVPreserved": true,
+    "originalSevenTCPOraclesPreserved": true,
+    "physicalStopBeforePrivateMaterialPreserved": true,
+    "sourceScanExit": 1,
+    "sourceScanFindings": 4,
+    "sourceScanUnresolved": 0,
+    "suppressionOrReplay": false,
+    "outcomeVerified": false,
+    "cleanupVerified": false,
+    "productionImageOrGuardChanged": false,
+    "privateRecoveryAccepted": false
   }
 }
