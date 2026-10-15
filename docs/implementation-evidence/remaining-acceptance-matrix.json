@@ -625,7 +625,7 @@
     ],
     "latestQualifiedCISourceCommit": "e386e5bfdcaf07e01054f98f1e537452334db171",
     "latestQualifiedSensitivityCases": 7,
-    "nextSourceWork": "ROOT review/default scan of wrapper-only mount/fake-CLI numeric diagnostics after actual stage4 Pods503; browser remains failed, no cause or oracle change. A01 new deterministic process control paused before implementation."
+    "nextSourceWork": "ROOT review/default scan and hosted validation of one app-fixture tmpfs exec option; safe diagnostics/oracles unchanged. Separate committed Flux argv fix awaits fresh build/matchingCLI qualification; A01 source control paused."
   },
   "latestLocalQualification": {
     "productionCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
@@ -783,7 +783,18 @@
     "newCleanupQueries": 0,
     "wholeA19Accepted": false
   },
-  "currentA19BrowserFixtureExecutionDiagnosticCandidate20261015": {
+  "currentFluxGetArgvOrderCandidate20261015": {
+    "status": "SOURCE ONLY; three get-first all-namespace list calls and new existing-test assertions unrun",
+    "evidence": "flux-get-argv-order-source.json",
+    "rootObservedRealCLIComparisonTool": "1e4dbf",
+    "productCallsitesChanged": 3,
+    "realCLIErrorReasonKnown": false,
+    "newTestsRun": false,
+    "freshBuildQualified": false,
+    "wholeA19Accepted": false,
+    "performanceAccepted": false
+  },
+  "historicalA19BrowserFixtureExecutionDiagnosticCandidate20261015": {
     "status": "Diagnostic hosted run failed at Pods HTTP503; stop/cleanup observed; wrapper execution diagnostic source only/unrun",
     "evidence": "a19-browser-ci-fixture-exec-diagnostic-source.json",
     "failedHostedRun": 38778394877,
@@ -800,15 +811,18 @@
     "browserAccepted": false,
     "wholeA19Accepted": false
   },
-  "currentFluxGetArgvOrderCandidate20261015": {
-    "status": "SOURCE ONLY; three get-first all-namespace list calls and new existing-test assertions unrun",
-    "evidence": "flux-get-argv-order-source.json",
-    "rootObservedRealCLIComparisonTool": "1e4dbf",
-    "productCallsitesChanged": 3,
-    "realCLIErrorReasonKnown": false,
-    "newTestsRun": false,
-    "freshBuildQualified": false,
-    "wholeA19Accepted": false,
-    "performanceAccepted": false
+  "currentA19BrowserAppTmpExecCandidate20261015": {
+    "status": "SOURCE ONLY one app-fixture tmpfs exec option after observed noexec/EACCES; smoke remains failed until actual pass",
+    "evidence": "a19-browser-ci-app-tmp-exec-source.json",
+    "failedHostedRun": 38781205292,
+    "observedTmpNoexec": true,
+    "observedFakeSpawnErrorClass": 1,
+    "observedErrno": -13,
+    "observedPodsStatus": 503,
+    "recordedStopAndCleanupPassed": true,
+    "candidateExecuted": false,
+    "allHTTP503CausesResolved": false,
+    "productionMountChanged": false,
+    "wholeA19Accepted": false
   }
 }

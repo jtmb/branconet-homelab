@@ -1288,7 +1288,18 @@
     "newCleanupQueries": 0,
     "wholeA19Accepted": false
   },
-  "currentA19BrowserFixtureExecutionDiagnosticCandidate20261015": {
+  "currentFluxGetArgvOrderCandidate20261015": {
+    "status": "SOURCE ONLY; three get-first all-namespace list calls and new existing-test assertions unrun",
+    "evidence": "flux-get-argv-order-source.json",
+    "rootObservedRealCLIComparisonTool": "1e4dbf",
+    "productCallsitesChanged": 3,
+    "realCLIErrorReasonKnown": false,
+    "newTestsRun": false,
+    "freshBuildQualified": false,
+    "wholeA19Accepted": false,
+    "performanceAccepted": false
+  },
+  "historicalA19BrowserFixtureExecutionDiagnosticCandidate20261015": {
     "status": "Diagnostic hosted run failed at Pods HTTP503; stop/cleanup observed; wrapper execution diagnostic source only/unrun",
     "evidence": "a19-browser-ci-fixture-exec-diagnostic-source.json",
     "failedHostedRun": 38778394877,
@@ -1305,15 +1316,18 @@
     "browserAccepted": false,
     "wholeA19Accepted": false
   },
-  "currentFluxGetArgvOrderCandidate20261015": {
-    "status": "SOURCE ONLY; three get-first all-namespace list calls and new existing-test assertions unrun",
-    "evidence": "flux-get-argv-order-source.json",
-    "rootObservedRealCLIComparisonTool": "1e4dbf",
-    "productCallsitesChanged": 3,
-    "realCLIErrorReasonKnown": false,
-    "newTestsRun": false,
-    "freshBuildQualified": false,
-    "wholeA19Accepted": false,
-    "performanceAccepted": false
+  "currentA19BrowserAppTmpExecCandidate20261015": {
+    "status": "SOURCE ONLY one app-fixture tmpfs exec option after observed noexec/EACCES; smoke remains failed until actual pass",
+    "evidence": "a19-browser-ci-app-tmp-exec-source.json",
+    "failedHostedRun": 38781205292,
+    "observedTmpNoexec": true,
+    "observedFakeSpawnErrorClass": 1,
+    "observedErrno": -13,
+    "observedPodsStatus": 503,
+    "recordedStopAndCleanupPassed": true,
+    "candidateExecuted": false,
+    "allHTTP503CausesResolved": false,
+    "productionMountChanged": false,
+    "wholeA19Accepted": false
   }
 }
