@@ -287,7 +287,7 @@ export async function getFluxHierarchy(): Promise<FluxTreeNode[]> {
   const [gitReposRaw, kustomizationsRaw, helmReleasesRaw, dbRepos] = await Promise.all([
     kubectlJSON( buildKubectlCmd(["get", "gitrepositories", "-o", "json"])),
     kubectlJSON( buildKubectlCmd(["get", "kustomizations", "-o", "json"])),
-    kubectlJSON( ["--all-namespaces", "get", "helmreleases", "-o", "json"]),
+    kubectlJSON( ["get", "helmreleases", "--all-namespaces", "-o", "json"]),
     prisma.gitRepo.findMany({ orderBy: { createdAt: "desc" } }),
   ]);
 
@@ -689,7 +689,7 @@ async function performCascadeDelete(
   const childHelmReleases: { name: string; ns: string }[] = [];
 
   try {
-    const kustRaw = await kubectlJSON( ["--all-namespaces", "get", "kustomizations"]);
+    const kustRaw = await kubectlJSON( ["get", "kustomizations", "--all-namespaces"]);
     if (!kustRaw) throw new KubernetesCommandError(503, "Flux discovery unavailable");
     const kustItems = (kustRaw.items || []) as any[];
     for (const ks of kustItems) {
@@ -703,7 +703,7 @@ async function performCascadeDelete(
   } catch (error) { throw error; }
 
   try {
-    const hrRaw = await kubectlJSON( ["--all-namespaces", "get", "helmreleases"]);
+    const hrRaw = await kubectlJSON( ["get", "helmreleases", "--all-namespaces"]);
     if (!hrRaw) throw new KubernetesCommandError(503, "Flux discovery unavailable");
     const hrItems = (hrRaw.items || []) as any[];
     for (const hr of hrItems) {

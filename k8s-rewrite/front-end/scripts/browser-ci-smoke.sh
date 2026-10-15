@@ -121,7 +121,7 @@ test ! -e "$tools/app.cid" && test ! -L "$tools/app.cid"
 cidfiles+=("$tools/app.cid")
 timeout 15s docker create --pull never --cidfile "$tools/app.cid" --name "$app" --platform linux/amd64 --network none \
   --cpus 2 --memory 1g --memory-swap 1g --pids-limit 256 --cap-drop ALL --security-opt no-new-privileges \
-  --user "$(id -u):$(id -g)" --read-only --tmpfs /tmp:rw,nosuid,nodev,size=512m \
+  --user "$(id -u):$(id -g)" --read-only --tmpfs /tmp:rw,exec,nosuid,nodev,size=512m \
   --mount "type=bind,source=$root,target=/app,readonly" \
   --mount "type=bind,source=$tools/exchange,target=/exchange" --workdir /app \
   -e HOME=/tmp/bortus-ci-home --entrypoint node "$compiler" scripts/browser-ci-fixture.mjs >/dev/null
