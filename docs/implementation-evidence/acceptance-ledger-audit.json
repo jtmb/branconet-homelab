@@ -435,7 +435,7 @@
       "finding": "quality gates",
       "originalValidation": "Run CI from a clean checkout with no operator env/DB/kubeconfig. It must finish without prompts, fail on each deliberately reintroduced regression and publish redacted results. Next 15 describes the deprecated lint workflow and direct ESLint migration in its [versioned ESLint guide](https://nextjs.org/docs/15/app/api-reference/config/eslint).",
       "localCompletedScope": "Clean Linux Node22.23.3 c29fc install/build214 units/lint/types/four strict HTTP pass with no skips, no operator inputs and exact source/build ownership. Direct ESLint and app-only workflow retained; causal missing-await negative fails while patched control passes.",
-      "stillRequired": "Hosted exact-frontend run38764208687 passed locked build/lint/types/342-unit/8-HTTP and five deliberate source sensitivities: A04 name admission, A05 failed stdout as success, A06 outage as empty, deployment action coercion and private KV cache admission. All pristine0/mutant1 outcomes matched unchanged named assertion/operator/location, originals/restoration passed and default log/result scan was0/zero. Remaining meaningful source-regression coverage and complete original A19 acceptance stay open; manual/actual AT clauses are separate. The added deployment route test uses its existing VM/controlled dependency fixture, not a real compiled mutation. A separate source-only issued-deleted-account/bootstrap DB sensitivity candidate is unrun; A01 cross-process invariant sensitivity remains open.",
+      "stillRequired": "Hosted exact-frontend run38770022640 passed locked build/lint/types/342-unit/8-HTTP, the unchanged five flat sensitivities, and A02 deleted-account/A03 bootstrap-writer DB sensitivities. All seven pristine0/mutant1 outcomes matched exact unchanged assertions, including only declared DB children and parent subtestsFailed aggregates; original/restoration checks passed and default log/result scan135142 was0/zero. Raw source authority is1dbbd8, not normalized5aa92f. A01 cross-process sensitivity, browser CI smoke and remaining meaningful source-regression/original A19 coverage remain open; manual/actual AT gates are separate. The deployment VM and synthetic DB scope is not universal compiled-route/cluster acceptance.",
       "sourcePaths": [
         "k8s-rewrite/front-end/package.json",
         ".github/workflows/bortus-quality.yml",
@@ -1131,26 +1131,28 @@
     "productionAdoption": false
   },
   "currentA19CIWiring20261015": {
-    "status": "PRIOR FIVE-CASE HOSTED342+8 QUALIFIED; DB TWO-CASE SOURCE CANDIDATE UNRUN; COMPLETE A19 OPEN",
+    "status": "HOSTED342+8 AND SEVEN FINITE REGRESSION SENSITIVITIES QUALIFIED; COMPLETE A19 OPEN",
     "qualifiedProductSourceCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
-    "hostedRun": 38764208687,
+    "hostedRun": 38770022640,
     "hostedOriginalUnitsPassed": 342,
     "hostedOriginalHTTPPassed": 8,
     "hostedOldWorkflowSHA256": "f1a81fb4365b2b3bf35573976d9d722b5b368cc038710c6c6d78d3f01f3f5997",
     "newSensitivityStepRun": true,
-    "newCandidateHostedRun": 38764208687,
+    "newCandidateHostedRun": 38770022640,
     "original342And8TestBodiesChanged": false,
     "remainingRegressionCoverageOpen": true,
     "wholeA19Accepted": false,
-    "qualifiedCISourceCommit": "cfabf77658bff5e8742b350447af12954e9e62cc",
-    "qualifiedCIFrontendTree": "b78f417d7e4a1e9e41cb98dacf32a7b5ec1dcf7f",
+    "qualifiedCISourceCommit": "e386e5bfdcaf07e01054f98f1e537452334db171",
+    "qualifiedCIFrontendTree": "2dd777cadd669b214631401a98f85bf4a4eeda78",
     "hostedRunWithThreeSensitivities": 38760696046,
-    "qualifiedWorkflowSHA256": "27da97df1242303e5945229df864760863afbfdefe43ebe403204ecbadd4be1f",
+    "qualifiedWorkflowSHA256": "a1f099051765beb635eb3ca161ae328ce458fb99ee53f010eb63b0272613853a",
     "priorHostedRunWithoutSensitivity": 38750289826,
     "newFiveCaseRunnerRun": true,
     "priorHostedRunWithThreeSensitivities": 38760696046,
     "hostedRunWithFiveSensitivities": 38764208687,
-    "newDBRunnerRun": false
+    "newDBRunnerRun": true,
+    "qualifiedWorkflowGitBlob": "a8198320c23d28628750ae86e573e038208ea032",
+    "hostedRunWithSevenSensitivities": 38770022640
   },
   "historicalA19RegressionSensitivityCandidate20261015": {
     "status": "SOURCE ONLY; no test/build/push execution",
@@ -1190,7 +1192,18 @@
     "hostedLogDefaultScanFindings": 0,
     "wholeA19Accepted": false
   },
-  "currentA19RegressionSensitivityQualification20261015": {
+  "historicalA19DBSensitivityCandidate20261015": {
+    "status": "SOURCE ONLY A02 deleted-account/A03 bootstrap candidate; unrun",
+    "evidence": "a19-db-regression-sensitivity-source.json",
+    "cases": 2,
+    "copiedFiles": 29,
+    "children": 4,
+    "flatFiveRunnerBytesUnchanged": true,
+    "flatFivePackageOnlyPinRebound": true,
+    "A01CrossProcessSensitivityStillOpen": true,
+    "wholeA19Accepted": false
+  },
+  "historicalFiveA19RegressionSensitivityQualification20261015": {
     "status": "HOSTED FIVE FINITE MUTANTS QUALIFIED; COMPLETE A19 OPEN",
     "evidence": "a19-five-regression-sensitivity-qualification.json",
     "owningSourceCommit": "cfabf77658bff5e8742b350447af12954e9e62cc",
@@ -1216,15 +1229,40 @@
     "hostedLogDefaultScanFindings": 0,
     "wholeA19Accepted": false
   },
-  "currentA19DBSensitivityCandidate20261015": {
-    "status": "SOURCE ONLY A02 deleted-account/A03 bootstrap candidate; unrun",
-    "evidence": "a19-db-regression-sensitivity-source.json",
-    "cases": 2,
-    "copiedFiles": 29,
-    "children": 4,
-    "flatFiveRunnerBytesUnchanged": true,
-    "flatFivePackageOnlyPinRebound": true,
-    "A01CrossProcessSensitivityStillOpen": true,
+  "currentA19RegressionSensitivityQualification20261015": {
+    "status": "HOSTED SEVEN FINITE MUTANTS QUALIFIED; COMPLETE A19 OPEN",
+    "evidence": "a19-seven-regression-sensitivity-qualification.json",
+    "owningSourceCommit": "e386e5bfdcaf07e01054f98f1e537452334db171",
+    "frontendTree": "2dd777cadd669b214631401a98f85bf4a4eeda78",
+    "workflowGitBlob": "a8198320c23d28628750ae86e573e038208ea032",
+    "hostedRun": 38770022640,
+    "cases": 7,
+    "flatCases": 5,
+    "databaseCases": 2,
+    "pristineExits": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "mutantExits": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "originalsAndRestorationVerified": true,
+    "hostedLogDefaultScanExit": 0,
+    "hostedLogDefaultScanFindings": 0,
+    "rawCommittedSourceScanTool": "1dbbd8",
+    "A01CrossProcessSensitivityQualified": false,
+    "browserCISmokeQualified": false,
     "wholeA19Accepted": false
   }
 }
