@@ -1,0 +1,175 @@
+{
+  "scope": "SOURCE ONLY diagnostic for failed finite compiled Pods browser CI; no oracle or product correction",
+  "sourceParent": "7bf484e6afe2a09ade066d7958bd20bf44e34256",
+  "historicalSourceOnlyReceiptUnchanged": "a19-browser-ci-smoke-source.json",
+  "failedHostedRun": 38775576367,
+  "failedRunURL": "https://github.com/jtmb/branconet-homelab/actions/runs/38775576367",
+  "validationCommit": "174127fa5da9526313201f65367410ac5f44cf36",
+  "frontendTree": "501f34a99c0672e26afd219e44c043a2cebaad06",
+  "workflowGitBlob": "b945ae89321d544a9a2de4ca7210c90aba6062bb",
+  "actualFetchMetadataExit": 0,
+  "actualFetchLogExit": 0,
+  "rootFetchFile": {
+    "name": "root-hosted-ci-38775576367-fetch.json",
+    "sha256": "8c6e0cba41ece497306923507ad28afdbd1734ba77fc13cd93b7e01032cf62a6"
+  },
+  "rootRetainedPrivateLog": {
+    "bytes": 497959,
+    "sha256": "40b8d2ac560bfa3c3903882854f0177d74f55c20a4334f0706c72fcc48edd6c8",
+    "copiedIntoRepository": false
+  },
+  "actualHostedStepConclusions": [
+    {
+      "conclusion": "success",
+      "name": "Set up job",
+      "number": 1,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "number": 2,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Locked install and native/standalone build in pinned compiler image",
+      "number": 3,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Original lint, type and unit checks with isolated runtime network",
+      "number": 4,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+      "number": 5,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+      "number": 6,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Original strict integration and process controls",
+      "number": 7,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Acquire locked browser CI tools (no app dependency change)",
+      "number": 8,
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "name": "Finite compiled Pods browser smoke",
+      "number": 9,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "number": 18,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Complete job",
+      "number": 19,
+      "status": "completed"
+    }
+  ],
+  "actualBrowserResult": {
+    "classification": "AssertionError",
+    "assertionStageRetained": false,
+    "causeProven": false,
+    "cleanupProvenByEmittedEvidence": false
+  },
+  "sourceReview": {
+    "dashboardLayoutElement": "div",
+    "resourceListMainCountFromSource": 1,
+    "confirmedOracleMismatch": false,
+    "historicalFailureStageInferred": false
+  },
+  "diagnosticStages": {
+    "1": "Chromium launch",
+    "2": "Context/page creation",
+    "3": "Navigation and matching real Pod response",
+    "4": "Wire status",
+    "5": "JSON decode",
+    "6": "Wire row count",
+    "7": "Private-field omission marker",
+    "8": "Unique wire identity count",
+    "9": "Selected fixture wire identity/restarts",
+    "10": "Owned main count",
+    "11": "Search count",
+    "12": "Initial100-row readiness",
+    "13": "Search fill",
+    "14": "Filtered3-row readiness",
+    "15": "Search input equality",
+    "16": "Rendered row projection",
+    "17": "Rendered name set",
+    "18": "Eight non-Age cells",
+    "19": "Link href equality"
+  },
+  "diagnosticValues": "Fixed numeric stages/counts and equality Booleans only; no actual observed strings or error message/args/body/credential/screenshot",
+  "originalAssertionsSelectorsResourcesTimeoutsUnchanged": true,
+  "diagnosticFailureCannotReplacePrimary": true,
+  "cleanup": {
+    "newQueries": 0,
+    "existingCIDAndThreeNameQueriesOnly": true,
+    "reverseConfirmedCIDOrderUnchanged": true,
+    "primaryNonzeroPreserved": true,
+    "fixedSummaryFields": [
+      "browserCICleanupFailed",
+      "confirmedCIDCount",
+      "exactNameQueryCount",
+      "exactNamesAbsent",
+      "uncertainCreate"
+    ],
+    "ownedAppStopMaxSeconds": 7,
+    "dockerStopGraceSeconds": 5,
+    "fixedWrapperLogReadMaxSeconds": 3,
+    "withinExistingCleanupSeconds": 60
+  },
+  "all22DocsChecked": [
+    "docs/ANSIBLE-2-API-INTERACTION.md",
+    "docs/API-USAGE.md",
+    "docs/audit-evidence/README.md",
+    "docs/BORTUS-AUDIT.md",
+    "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+    "docs/BORTUS-DEPLOYMENT.md",
+    "docs/BORTUS-IMPLEMENTATION.md",
+    "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+    "docs/BORTUS-KV-DESIGN.md",
+    "docs/BORTUS-KV-WORKBENCH.md",
+    "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+    "docs/BOTRUS-WORKFLOW.md",
+    "docs/CHARTS-SEPARATION.md",
+    "docs/CONNECTING-TO-A-CLUSTER.md",
+    "docs/FLUX-GITOPS.md",
+    "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+    "docs/implementation-evidence/README.md",
+    "docs/implementation-evidence/runtime-maintenance/README.md",
+    "docs/kubectl-cheatsheet.md",
+    "docs/SECRETS-ENGINE.md",
+    "docs/TECH-STACK.md",
+    "docs/USER-PERMS.md"
+  ],
+  "all44ClausesUnchanged": true,
+  "candidateRun": false,
+  "testsRun": false,
+  "toolsAcquiredByThisCandidate": false,
+  "wholeA19Accepted": false,
+  "browserCISmokeQualified": false,
+  "actualATQualified": false,
+  "performanceAccepted": false,
+  "productionAdoption": false
+}
