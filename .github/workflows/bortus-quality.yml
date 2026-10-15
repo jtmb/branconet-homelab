@@ -93,3 +93,13 @@ jobs:
             --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
             -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
             --entrypoint bash "$BORTUS_CI_IMAGE" -lc 'mkdir -p "$HOME" && npm run test:integration'
+      - name: Acquire locked browser CI tools (no app dependency change)
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          timeout --signal=TERM --kill-after=15s 240s bash scripts/browser-ci-smoke.sh acquire
+      - name: Finite compiled Pods browser smoke
+        timeout-minutes: 6
+        shell: bash
+        run: |
+          timeout --signal=TERM --kill-after=60s 300s bash scripts/browser-ci-smoke.sh run
