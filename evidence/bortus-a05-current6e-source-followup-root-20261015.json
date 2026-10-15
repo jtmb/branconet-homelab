@@ -1,0 +1,101 @@
+{
+  "scope": "A05 bounded current6e source audit. No product/source/test change or execution. Original A05 clause: BORTUS-AUDIT.md104\u2013114; ledger112\u2013114 already credits all shared exit/stdout/stderr/timeout/missing/redaction controls and selected route/UI work. Existing 11 enabled-shell productionHTTP checks are real earlier evidence (qualified source54f970, not relabeled current6e); selected per-file raw equality is recorded below.\n\nPrimary next task: one focused actual-browser terminal command/error propagation check through the real current6e route. No fresh shared failure matrix and no full mutation-route acceptance claim.\n\nSource chain: POST /api/cluster/kubectl lines13\u201330 requires fresh operator permission/runtime capability, validates command then awaits shellExec and translates typed status/error. k8s.ts104\u2013122 invokes executeOperatorCommand with unchanged30000ms/2MiB; operator-command.ts7\u201310 spawns bash,31\u201354 counts/caps streams, rejects any nonzero/signal and discards failed stdout. use-query.ts8\u201320 throws QueryFailure for !ok. kubectl-shell.tsx166\u2013198 submits POST, writes stdout only on success, renders fixed Error on rejection, clears busy/running and writes a new prompt. This inspected chain has no newly established false-success source defect.\n\nWhy this boundary: tests/terminal.browser.mjs line1 explicitly says no submitted shell command/private output; its checks cover initialization/geometry/focus/disposal/lazy-chunk refusal. tests/operator-command.test.ts and operator-process.integration.ts already cover real child failures/lifecycle and are not missing. Existing HTTP success/failure controls do not prove actual xterm receives HTTP failure/rendered error. The proposed two browser submissions fill that specific seam: (1) printf fixed PUBLIC_SUCCESS, exit0: real200/output appears, no Error; (2) emit fixed public failed-output marker then exit1: real502/fixed Operator command failed, no failed marker in response or terminal, error visible, terminal remains open, command-running/busy clears and prompt accepts an explicit next input. Use one captured failed command only, not four-stream/timeout/missing repetitions. No page.route/API interception or fabricated response; synthetic admin/session/isolated subprocess, no cluster/private credentials. Keep original30s/2MiB and route/server lifecycle. Source docs require writable /home/shell (BORTUS-DEPLOYMENT.md43), so use the already qualified enabled-shell environment rather than an EROFS setup false cause; do not silently change a read-only image deployment profile. This is public harmless output only and no persistent command mutation is needed. Reuse retained terminal fixture/browser lifecycle, qualified enabled-shell HTTP fixture and actual compiled current6e authority; check their composition before runnable source preparation. No new runner/framework/whole suite or broad matrix.\n\nSeparate source-level UI gap (not claimed runtime reproduced, not part of command-chain qualification): overview page.tsx45\u201351 retains Clear dashboard inventory confirmation on DELETE failure and sets error, but never passes error={error} to ConfirmDialog. The only error rendering is background page32; ConfirmDialog.tsx14 has the in-modal error slot but receives none. ResourceActionsMenu.tsx172\u2013173 correctly passes error={message}. Under the modal this may make the actionable error unavailable in the dialog. If ROOT prioritizes a product fix, smallest follow-up is pass the existing error into this confirmation and verify one isolated DB refusal keeps inventory/dialog/input and renders its fixed error inside dialog, plus successful explicit retry. No DB/CLI failure was induced here and no universal A05 closure follows.\n\nPrior HTTP manifest precision: operator-command.ts is absent from that particular sourceManifest, so its raw equality is UNKNOWN/null, not a mismatch assertion; k8s.ts is present but differs. The separately qualified current shared controls remain accepted as ROOT stated. Do not borrow historical11HTTP as full current6e whole-graph proof.\n",
+  "productCommit": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+  "selectedSourcePins": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\legacy-node-permissions-full-20261014-v1\\source\\src\\app\\api\\cluster\\kubectl\\route.ts",
+      "sha256": "689589f6e3dd51aeeefa6baf0359cebb2c6c155d1feba105b750d2c7c8f2077a",
+      "bytes": 1426,
+      "current6eGitBlob": "953b802fe24b757b4c5d674314f99d615b4d37f2",
+      "sameAsPrior11HTTPSource": true,
+      "prior11HTTPSourceManifestHasPath": true
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\legacy-node-permissions-full-20261014-v1\\source\\src\\lib\\operator-command.ts",
+      "sha256": "5e1275b571725f0eed01b386fd5ca50fa49f01c15db5a34c009be9a6f3c0ffae",
+      "bytes": 2520,
+      "current6eGitBlob": "56c6146e62fe1ae05eb2c1ae08cfd96a0b4b80b3",
+      "sameAsPrior11HTTPSource": null,
+      "prior11HTTPSourceManifestHasPath": false
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\legacy-node-permissions-full-20261014-v1\\source\\src\\lib\\kubectl-client.ts",
+      "sha256": "7e68bdf6284a83359a94b82a04e85950938c1c3e7ef88e6e2c7a3b3bd03244ab",
+      "bytes": 7043,
+      "current6eGitBlob": "d4f9e60e636d5deeb4d5a27712f16a2b7f6f5a80",
+      "sameAsPrior11HTTPSource": true,
+      "prior11HTTPSourceManifestHasPath": true
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\legacy-node-permissions-full-20261014-v1\\source\\src\\lib\\k8s.ts",
+      "sha256": "ecc3cc0527c52e081007d65a8ea5ddd46c7de2a7363d15af762cd3729a590e04",
+      "bytes": 4136,
+      "current6eGitBlob": "ad7cf65967e60f5ba1b19153448709778f0f2d24",
+      "sameAsPrior11HTTPSource": false,
+      "prior11HTTPSourceManifestHasPath": true
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\legacy-node-permissions-full-20261014-v1\\source\\src\\lib\\use-query.ts",
+      "sha256": "92bd1bdf32e8b64f7622da449a0bafafd696f7d84493d3e28aadd4585eed4938",
+      "bytes": 3950,
+      "current6eGitBlob": "bcd33b6a4be1fa8fdcc28c205d0c8d96b202cb1d",
+      "sameAsPrior11HTTPSource": true,
+      "prior11HTTPSourceManifestHasPath": true
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\legacy-node-permissions-full-20261014-v1\\source\\src\\components\\cluster\\kubectl-shell.tsx",
+      "sha256": "4ad2957fbd46b1cc6352110609d30c31f97440ce13e4ce6424f2ac8921393b38",
+      "bytes": 21304,
+      "current6eGitBlob": "3873f6097bf00ad3f437286c1ffbeafd1a3612b3",
+      "sameAsPrior11HTTPSource": true,
+      "prior11HTTPSourceManifestHasPath": true
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\legacy-node-permissions-full-20261014-v1\\source\\tests\\terminal.browser.mjs",
+      "sha256": "b7fcfa82840c4457df875089b3342ee21cb58ca32d4a3e103b11954e9177ef60",
+      "bytes": 23155,
+      "current6eGitBlob": "4115abe9a2b137eac7786da6e463ce6273f8fc18",
+      "sameAsPrior11HTTPSource": true,
+      "prior11HTTPSourceManifestHasPath": true
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\legacy-node-permissions-full-20261014-v1\\source\\tests\\operator-command.test.ts",
+      "sha256": "deb0fc99b009e79de0c6fa8c5d3ef5141cf6d48881109c1e5731adb94d4429a1",
+      "bytes": 2959,
+      "current6eGitBlob": "6012f7572be521ea5f41121ba3e428a71b60658c",
+      "sameAsPrior11HTTPSource": true,
+      "prior11HTTPSourceManifestHasPath": true
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\legacy-node-permissions-full-20261014-v1\\source\\tests\\operator-process.integration.ts",
+      "sha256": "6d819a0b9106265a909ebcf26dd06ae6d699722844b0f4994df7a90ae455867d",
+      "bytes": 3834,
+      "current6eGitBlob": "dd341275d9d8df97be0f57e32b8f8e1757c9cb86",
+      "sameAsPrior11HTTPSource": null,
+      "prior11HTTPSourceManifestHasPath": false
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\legacy-node-permissions-full-20261014-v1\\source\\src\\app\\(dashboard)\\page.tsx",
+      "sha256": "0043cdbcad24d16e05a221a3cb2f8bb2a29a62a1ea8859439ca4c38b6c332d10",
+      "bytes": 4414,
+      "current6eGitBlob": "d69659accc32c01a8961e022f16a2e194c60d920",
+      "sameAsPrior11HTTPSource": true,
+      "prior11HTTPSourceManifestHasPath": true
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\legacy-node-permissions-full-20261014-v1\\source\\src\\app\\(dashboard)\\confirm-dialog.tsx",
+      "sha256": "f7c88a79d54a013f99a6d799a7ca9ef63bc768940552b252d33d588868bb98ce",
+      "bytes": 1646,
+      "current6eGitBlob": "d8d5785f4c1b2f9d8fc0747158e61a029a60ed1c",
+      "sameAsPrior11HTTPSource": true,
+      "prior11HTTPSourceManifestHasPath": true
+    }
+  ],
+  "executedTargets": 0,
+  "A05Accepted": false,
+  "rootReadTool": "228a38",
+  "rootCurrent11SourceHashesAndGitBlobsVerified": true,
+  "sourcePacketSHA256": "e4c6d546d0c290f86800d286b8e6f5a37f594349c5d5e15fb8e49d9cd1c9f6b3",
+  "nextProductFixDelegatedToAppAgent": true,
+  "nextTerminalGateSourceOnlyDelegatedToNativeAgent": true
+}

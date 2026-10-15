@@ -1,5 +1,5 @@
 {
-  "scope": "Source-reviewed A02 issued-then-deleted-cookie breadth proposal; executable fixture pending",
+  "scope": "Current6e source-reviewed issued-cookie deletion breadth, first executable attempt retained as literal failure",
   "source": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
   "frontendTree": "2c4023aff26848e39890ed0fef51339d27c90680",
   "owningPublication": "9fbd85f9aa758c806cf7d29d407a1d01ac22500d",
@@ -39,7 +39,149 @@
   "PIDs": 256,
   "network": "none",
   "readOnlyRoot": true,
-  "fixtureExecuted": false,
+  "fixtureExecuted": true,
   "A02Accepted": false,
-  "productionChanged": false
+  "productionChanged": false,
+  "firstExecutableAttempt": {
+    "initialTool": "516c3b",
+    "finalTool": "3429b9",
+    "actualExit": 1,
+    "sourceReview": "0ccaf8",
+    "stagedSourcePreflight": "67eaa2",
+    "environmentPreflight": "5dbbd4",
+    "sourcePreparer": "306862",
+    "manifestSHA256": "b738bb737c815003c7aa60ed4e96077d58b4341b23f6884cb3821d6acb3c824b",
+    "ZIP_SHA256": "13d32cde7eab7913b3ac4d05d929655f2c88ed87037ad0f0c0236502e6d2aae5",
+    "currentBootID": "19d54e89-533f-46e2-b89d-25657251c8d7",
+    "rawHelpersPreserved": 17,
+    "requestsObserved": 129,
+    "setupCalls": 4,
+    "API401AssertionsPassed": 124,
+    "firstPageStatus": 307,
+    "pageAssertionsPassed": 0,
+    "firstRefusal": {
+      "condition": 1129,
+      "errorClass": "AssertionError"
+    },
+    "LocationValueRetained": false,
+    "zeroPostWithdrawalWorkQualified": false,
+    "finalNonVictimRowsQualified": false,
+    "runtimeReportedContainerAndHostBirthsClosed": true,
+    "sourceAndInputsUnchangedReported": true,
+    "independentClosurePending": false,
+    "sourceDefaultScan": {
+      "actualTool": "899c23",
+      "literalExit": 1,
+      "findings": 4,
+      "classifiedAs": "four exact pinned public Node C header content SHA256 fields",
+      "unresolved": 0,
+      "suppressionOrReplay": false
+    },
+    "fixtureDiagnosis": {
+      "rootSourceInspection": "4a2faf",
+      "installedNextSource": "next/dist/server/web/next-url.js:15-17 and adapter.js:105,148-159",
+      "mechanism": "NextURL canonicalizes loopback127/IPv6 to localhost before middleware receives request.url; the fixture uses a literal127 origin. This source mechanism does not recover the historical unretained Location.",
+      "proposedCorrection": "use a localhost loopback request base; retain exact307 and exact same-origin/welcome with no followed redirects; no product edit"
+    },
+    "exactPost": {
+      "tool": "04304c",
+      "actualExit": 0,
+      "pins": 839
+    },
+    "freshPost": {
+      "tool": "f66303",
+      "actualExit": 0,
+      "hostBirthsFreshAbsent": 18,
+      "exactContainerIDAndNameAbsent": true,
+      "acceptedWholeMatrix": false
+    },
+    "laterAndOwnClosurePending": false,
+    "retainedLater": {
+      "tool": "fe84cf",
+      "actualExit": 1,
+      "reason": "same19-name set, WindowsPath ordering disagrees with native string ordering"
+    },
+    "combinedRootClosure": {
+      "tool": "1c19d0",
+      "actualExit": 0,
+      "pins": 858,
+      "hostBirthsFreshAbsent": 22,
+      "ownSHA256": "97d87aaeb5c625cdd147af646d76868bf82df4b748827f3cf71ec8da89174e07",
+      "noChildOrAPI": true
+    }
+  },
+  "fixtureOriginCorrectionReview": {
+    "tool": "d67b8a",
+    "exactlyThreeHostLiterals": true,
+    "allOtherFixtureBytesAndAssertionsRawExact": true,
+    "fixtureSHA256": "a2b3a7e14bc8dc5713af6d398cdce3c3f4df433d530d587b42a5864f199a0dbf",
+    "productChanged": false
+  },
+  "localhostAttempt": {
+    "sourceReview": "b0b480",
+    "fullManifestZIPInputsAndHelperReview": "29d7f1",
+    "stageResume": "a18de2",
+    "nativePreflight": "f7523a",
+    "environmentPreflight": "91f1e8",
+    "preparer": "64c9c1",
+    "initialTool": "ce3b8e",
+    "finalTool": "4c002e",
+    "actualExit": 1,
+    "requestsObserved": 129,
+    "API401AssertionsPassed": 124,
+    "firstPageStatus": 307,
+    "pageAssertionsPassed": 0,
+    "firstRefusal": {
+      "condition": 1129,
+      "errorClass": "AssertionError"
+    },
+    "fixtureOnlyThreeHostLiteralsChanged": true,
+    "LocationValueRetained": false,
+    "diagnosis": "localhost host-literal change did not resolve the exact Location refusal; do not treat loopback normalization alone as the observed cause",
+    "sourceAndInputsUnchangedReported": true,
+    "containerAndHostBirthClosureReported": true,
+    "independentClosurePending": false,
+    "nextDiagnostic": "allowlisted parsed redirect booleans before unchanged exact assertion; no raw header/body/credential publication",
+    "nativeModePreflightRefusal": {
+      "tool": "1d02e1",
+      "cause": "one prior public metadata receipt actual0644, guessed0600; all844 hashes match; no reader started"
+    },
+    "correctedPostSource": "root-a02-localhost-failure-post-modefix-20261015-v1",
+    "exactPost": {
+      "tool": "f91801",
+      "actualExit": 0
+    },
+    "freshPost": {
+      "tool": "9fc0ab",
+      "actualExit": 0,
+      "birthsAbsent": 18,
+      "exactContainerIDAndNameAbsent": true
+    },
+    "combinedRootClosure": {
+      "tool": "718539",
+      "actualExit": 0,
+      "originalPins": 844,
+      "postFiles": 19,
+      "hostBirthsFreshAbsent": 21,
+      "ownSHA256": "dafaede02150f59854c436c213468f1a405df36e5cd0f2ec39a48ecde078fff3",
+      "noChildOrAPI": true
+    }
+  },
+  "relativeRepresentationFixtureReview": {
+    "rootTool": "fb9eca",
+    "frameworkSourceReview": "0fd7a6",
+    "fixtureSHA256": "ee5ea890631c2b3f0c757aa61555455ca7043594e7a304acb63c86b5d9353d9b",
+    "exactRepresentations": [
+      "absolute same-origin base plus /welcome",
+      "literal /welcome"
+    ],
+    "resolvedOriginPathQueryFragmentRequired": true,
+    "firstPageDiagnosticsAllowlistedBooleans": 19,
+    "arbitraryRelativeOrExternalRedirectAccepted": false,
+    "originalBenchmarkChanged": false,
+    "executed": true,
+    "otherFixtureAssertionsUnchanged": true,
+    "original160RequestCountAndRouteSetUnchanged": true
+  },
+  "latestCompiledAttemptReceipt": "evidence/bortus-a02-issued-deleted-compiled-root-20261015.json"
 }
