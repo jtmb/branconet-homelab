@@ -22,6 +22,10 @@ Current progress (2026-10-15; latest live cluster snapshot is from2026-10-15 at1
 
 The goal remains active. There is no pending user decision. Detailed dated outcomes and retained failures follow below and in the linked evidence.
 
+Latest isolated checks (2026-10-15,19:52 UTC): the [first resource browser attempt](evidence/bortus-resource-browser-failure-root-20261015.json) fails an assertion before the28 API negatives run. Its retained frame identifies the helper await, not the exact assertion or HTTP status. Independent checks verify138 actor records, current build/dependencies, container ID/name absence,211 final pins,45 absent Linux births and11 Windows births no longer live, followed by final reader closure. A fresh diagnostic fixture preserves all9/28 assertions and records bounded public progress; its result is pending. A09 zero-to-one remains unproved.
+
+The [separate2b private-recovery attempt](evidence/bortus-private2b-failure-cleanup-root-20261015.json) refuses at public setup stage2/type2, before a sudo prompt or material projection. Actual tool exit1 and source unchanged are retained. An independent eight-GET observer confirms all five named test resources absent; later/final checks verify269 current pins,11 absent recorded births and final reader absence. A definite source blocker is the cache receipt's required previous boot7f versus current boot19d; the cache freshness guard will be preserved and its receipt refreshed through the existing procedure. Actual private recovery remains unproved.
+
 ## Verified starting point
 
 Vault was unsealed using the user-supplied key and returned HTTP 200, initialized=true, sealed=false, standby=false. Authenticated inventory found 40 current KV records containing 43 values. Secret values and credentials must not be written into this plan, Git, command arguments, or reports.
