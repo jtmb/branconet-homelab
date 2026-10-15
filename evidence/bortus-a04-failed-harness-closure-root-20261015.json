@@ -1,0 +1,695 @@
+{
+  "scope": "Three retained failed disposable harness attempts and independently verified cleanup; no real Kubernetes business gate qualified",
+  "bootID": "19d54e89-533f-46e2-b89d-25657251c8d7",
+  "sourceCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
+  "compiledAndDependencyAuthorities": "Existing source374/compiled5383/dependencies40635; pre-tree checks and independent current full-tree checks pass for each retained failure",
+  "cases": [
+    {
+      "variant": "v1-2",
+      "rootTool": "df7300",
+      "actorLiteralExit": 1,
+      "elapsedSeconds": 18.359,
+      "reason": "Harness expected SecurityOpt no-new-privileges:true; actual inspect returned no-new-privileges. Container never started.",
+      "terminalSHA256": "b0c34f97525ee657639e8fb2e75d84f4eb728d098674f31395b704f85aff444e",
+      "recordedJobs": [
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 310990,
+            "pid": 310990,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2926727",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-01-fresh-api-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311003,
+            "pid": 311003,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2926749",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-02-fresh-etcd-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311015,
+            "pid": 311015,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2926774",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-03-fresh-anchor",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311027,
+            "pid": 311027,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2926799",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-04-fresh-etcd",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311039,
+            "pid": 311039,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2926824",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-05-fresh-api",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311052,
+            "pid": 311052,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2926848",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-06-image-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311066,
+            "pid": 311066,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2926873",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-07-image-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311078,
+            "pid": 311078,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2926897",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-08-create-api-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311090,
+            "pid": 311090,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2926935",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-09-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311102,
+            "pid": 311102,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2926955",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-10-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311115,
+            "pid": 311115,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2926975",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-11-remove-api-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311129,
+            "pid": 311129,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2927003",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-12-cid-absent",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 311143,
+            "pid": 311143,
+            "ppid": 310487,
+            "same_identity_absent": true,
+            "start_ticks": "2927024",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-13-name-absent",
+          "reaped": true,
+          "refusalSteps": []
+        }
+      ],
+      "independentPostTool": "3775da",
+      "independentPostExit": 0,
+      "independentResultSHA256": "b54b4bf6c70bfc26e987127922f6c81a07acc30f7eb5b597ad336514d90d7fe8",
+      "currentActorRecords": 70,
+      "actorBirthsFreshAbsent": 14,
+      "postAndQueryBirthsFreshAbsent": 7,
+      "oneExactCIDAndFiveNamesConfirmedAbsent": true
+    },
+    {
+      "variant": "v1-3",
+      "rootTool": "6365e5",
+      "actorLiteralExit": 1,
+      "elapsedSeconds": 18.063,
+      "reason": "Daemon refused local log-driver startup: compression cannot be enabled with max-file=1. Container never started.",
+      "terminalSHA256": "29be78dc03187684589e71adc230bed05d536216eab773cb1030daa4167c02ce",
+      "recordedJobs": [
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 315741,
+            "pid": 315741,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2963805",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-01-fresh-api-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 315827,
+            "pid": 315827,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2963830",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-02-fresh-etcd-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 315902,
+            "pid": 315902,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2963856",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-03-fresh-anchor",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 315955,
+            "pid": 315955,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2963879",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-04-fresh-etcd",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 315983,
+            "pid": 315983,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2963902",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-05-fresh-api",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 316001,
+            "pid": 316001,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2963926",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-06-image-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 316014,
+            "pid": 316014,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2963954",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-07-image-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 316027,
+            "pid": 316027,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2963980",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-08-create-api-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 316039,
+            "pid": 316039,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2964010",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-09-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 1,
+          "birth": {
+            "pgrp": 316051,
+            "pid": 316051,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2964030",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-10-api-version",
+          "reaped": true,
+          "refusalSteps": [
+            1
+          ]
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 316063,
+            "pid": 316063,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2964059",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-11-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 316076,
+            "pid": 316076,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2964079",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-12-remove-api-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 316089,
+            "pid": 316089,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2964107",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-13-cid-absent",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 316102,
+            "pid": 316102,
+            "ppid": 315416,
+            "same_identity_absent": true,
+            "start_ticks": "2964127",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-14-name-absent",
+          "reaped": true,
+          "refusalSteps": []
+        }
+      ],
+      "independentPostTool": "07102f",
+      "independentPostExit": 0,
+      "independentResultSHA256": "e761dd74b3896dee92e2084f47404c31d3bd9368c3482a6220a63478ac0d3322",
+      "currentActorRecords": 76,
+      "actorBirthsFreshAbsent": 15,
+      "postAndQueryBirthsFreshAbsent": 7,
+      "oneExactCIDAndFiveNamesConfirmedAbsent": true
+    },
+    {
+      "variant": "v1-4",
+      "rootTool": "15af12",
+      "actorLiteralExit": 1,
+      "elapsedSeconds": 7.218,
+      "reason": "Runtime attempted container start but entry exec returned operation not permitted (CLI255). No version result or API/application business check exists; exact cause remains under investigation.",
+      "terminalSHA256": "d8bb416d2ee14688878121bb67f44f256072084a7aa12c20d0189d0f47e8bda8",
+      "recordedJobs": [
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 320864,
+            "pid": 320864,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992064",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-01-fresh-api-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 320877,
+            "pid": 320877,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992083",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-02-fresh-etcd-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 320890,
+            "pid": 320890,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992104",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-03-fresh-anchor",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 320902,
+            "pid": 320902,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992123",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-04-fresh-etcd",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 320915,
+            "pid": 320915,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992143",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-05-fresh-api",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 320928,
+            "pid": 320928,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992169",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-06-image-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 320940,
+            "pid": 320940,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992192",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-07-image-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 320953,
+            "pid": 320953,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992216",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-08-create-api-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 320965,
+            "pid": 320965,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992246",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-09-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 255,
+          "birth": {
+            "pgrp": 320978,
+            "pid": 320978,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992267",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-10-api-version",
+          "reaped": true,
+          "refusalSteps": [
+            1
+          ]
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 321056,
+            "pid": 321056,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992313",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-11-inspect",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 321069,
+            "pid": 321069,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992335",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-12-remove-api-version",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 321081,
+            "pid": 321081,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992369",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-13-cid-absent",
+          "reaped": true,
+          "refusalSteps": []
+        },
+        {
+          "actualExit": 0,
+          "birth": {
+            "pgrp": 321113,
+            "pid": 321113,
+            "ppid": 320861,
+            "same_identity_absent": true,
+            "start_ticks": "2992396",
+            "state": "R",
+            "uid": 1000
+          },
+          "path": "command-14-name-absent",
+          "reaped": true,
+          "refusalSteps": []
+        }
+      ],
+      "independentPostTool": "8d7c01",
+      "independentPostExit": 0,
+      "independentResultSHA256": "c21bd2272df02f338b800a408acc6ac8c1a94298fb54e19acef55caa1667c587",
+      "currentActorRecords": 76,
+      "actorBirthsFreshAbsent": 15,
+      "postAndQueryBirthsFreshAbsent": 7,
+      "oneExactCIDAndFiveNamesConfirmedAbsent": true
+    }
+  ],
+  "rootOwnTool": "105c61",
+  "rootFreshTool": "8eda9f",
+  "rootOwnSHA256": "2e015923e96fa14ba549d845c4e8f22e953a543e5c5d7a0f6b3817fdeaa12f32",
+  "currentActorRecords": 222,
+  "actorBirthsAbsent": 44,
+  "postAndQueryBirthsAbsent": 21,
+  "postRecordsCurrent": 102,
+  "sixWindowsDispatchersRecordedBirthsNoLive": true,
+  "rootOwnReaderBirthAbsent": true,
+  "all44OriginalValidationClausesUnchanged": true,
+  "versionsQualified": false,
+  "realAPIApplicationCasesQualified": false,
+  "A04Accepted": false,
+  "capabilitiesChangedAfterExecRefusal": false,
+  "productionChanged": false,
+  "originalDataChanged": false,
+  "next": "Read-only exact-image filesystem capability/metadata investigation; retain exec-denial cause as unknown until supported. No blind target retry or capability addition."
+}
