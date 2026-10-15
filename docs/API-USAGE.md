@@ -1,5 +1,7 @@
 # BORTUS K8s — API Usage
 
+The [original A19 CI clause](../evidence/bortus-a19-original-ci-clause-root-20261015.json) is qualified for source ce259b00 by hosted run38789392711: clean locked build,lint/types,342 units,eight integrations,eight exact pristine/mutant regression controls and the compiled Pods browser smoke all pass. The complete retained log/result pass the default unsuppressed secret scan. The new deterministic SQL-lock control preserves one writer in pristine source and detects both unsafe demotions in the disposable mutant. This qualifies the reviewed CI contract; performance, human AT, image security,recovery and live rollout remain separate.
+
 All API endpoints are served by the Next.js dev server at `http://localhost:4000`.
 
 ## Authentication

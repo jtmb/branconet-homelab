@@ -1,5 +1,7 @@
 # Branconet migration technology and topology
 
+The [original A19 CI clause](../evidence/bortus-a19-original-ci-clause-root-20261015.json) is qualified for source ce259b00 by hosted run38789392711: clean locked build,lint/types,342 units,eight integrations,eight exact pristine/mutant regression controls and the compiled Pods browser smoke all pass. The complete retained log/result pass the default unsuppressed secret scan. The new deterministic SQL-lock control preserves one writer in pristine source and detects both unsafe demotions in the disposable mutant. This qualifies the reviewed CI contract; performance, human AT, image security,recovery and live rollout remain separate.
+
 The approved target is Kubernetes on the existing three Ubuntu 22.04.4 machines. [MIGRATION_STATUS.md](../MIGRATION_STATUS.md) records what has actually passed; this document describes configuration, not deployment completion.
 
 | Host | Address | Target role |
