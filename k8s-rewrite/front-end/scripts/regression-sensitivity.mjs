@@ -13,11 +13,12 @@ const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const started = Date.now(), deadline = started + 240_000, reserveMs = 20_000;
 const outputLimit = 1024 * 1024;
 assert.equal(manifest.schema, 1);
-assert.deepEqual(manifest.cases.map(value => value.id), ["A04-name-admission", "A05-failed-stdout", "A06-outage-empty"]);
-assert.equal(manifest.files.length, 9);
+assert.deepEqual(manifest.cases.map(value => value.id), ["A04-name-admission", "A05-failed-stdout", "A06-outage-empty", "deployment-action-coercion", "private-kv-cache-admission"]);
+assert.equal(manifest.files.length, 14);
 const originals = new Map();
 for (const row of manifest.files) {
-  assert.match(row.path, /^(?:src\/lib\/[a-z-]+\.ts|tests\/[a-z-]+\.test\.ts|package\.json|tsconfig\.json)$/);
+  assert.ok(/^(?:src\/lib\/[a-z-]+\.ts|tests\/[a-z-]+\.test\.ts|package\.json|tsconfig\.json)$/.test(row.path) ||
+    row.path === "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts");
   assert.ok(!originals.has(row.path));
   const path = join(root, row.path);
   assert.ok(lstatSync(path).isFile() && !lstatSync(path).isSymbolicLink());
@@ -116,7 +117,7 @@ finally {
   for (const caseRow of manifest.cases) {
     try { rmSync(join(work, caseRow.id), { recursive: true, force: true }); } catch { restorationFailures.push(`${caseRow.id}:cleanup`); }
   }
-  const result = { schema: 1, completed: !primary && restorationFailures.length === 0 && records.length === 6,
+  const result = { schema: 1, completed: !primary && restorationFailures.length === 0 && records.length === 10,
     cases: manifest.cases.map(value => value.id), records, restorationFailures, elapsedMs: Date.now() - started,
     originalSelectedInputsUnchanged: !restorationFailures.some(value => value.endsWith("originals")),
     originalUnitAndIntegrationExecution: "separate unchanged workflow steps", wholeA19Accepted: false };
@@ -125,4 +126,4 @@ finally {
 }
 if (primary) throw primary;
 assert.deepEqual(restorationFailures, []);
-assert.equal(records.length, 6);
+assert.equal(records.length, 10);
