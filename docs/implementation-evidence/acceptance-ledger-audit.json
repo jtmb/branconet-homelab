@@ -355,7 +355,7 @@
       "finding": "permissions/runtime",
       "originalValidation": "Browser flows for readonly/write/deleted/demoted users and provisioning enabled/disabled. Direct unauthorized calls must still fail. Role changes should update visible controls without granting cached authority. [Screenshot](audit-evidence/readonly-actions.jpg).",
       "localCompletedScope": "Fresh role/session/runtime capability units and direct401/403/501 HTTP gates; selected readonly/scoped/demoted/deleted browser controls, private clearing and write-without-read workflow pass.",
-      "stillRequired": "The remaining original source review is the finite provisioning-enabled browser permutation: disabled/readonly/demotion/deletion browser and direct401/403/501 controls are retained; enabled synthetic HTTP success/failure alone is not a browser result. No explicit enabled-Run structured browser record has yet been identified. Real host provisioning/RBAC field validation and final image delivery are separate, not added original source gates.",
+      "stillRequired": "The finite enabled-Run browser seam remains pending: its first isolated attempt failed while waiting for both fixed completion/withheld-output tokens, with zero accepted cases. Exact/fresh/current/container/final closure passed; the cause is unobserved and bounded Boolean diagnostics are source-only. Retained disabled/readonly/demotion/deletion browser and direct unauthorized controls remain. Real host provisioning/RBAC/image delivery are separate, not added original source gates.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/resource-capabilities.test.ts",
         "k8s-rewrite/front-end/tests/http.integration.ts",
@@ -369,7 +369,17 @@
         "workbench-lifecycle-browser.json",
         "kv-workflows-browser.json"
       ],
-      "overallDeliveredAcceptancePassed": false
+      "overallDeliveredAcceptancePassed": false,
+      "currentEnabledRunFixtureFailure": {
+        "evidence": "a12-enabled-run-fixture-failure-root-20261015.json",
+        "literalServerExit": 1,
+        "literalBrowserExit": 1,
+        "acceptedCases": 0,
+        "boundedFinalClosureVerified": true,
+        "ownReaderFreshAbsenceClaimed": false,
+        "originalA12SourceClauseQualified": false,
+        "diagnosticContinuationSourceOnly": true
+      }
     },
     {
       "id": "A13",
