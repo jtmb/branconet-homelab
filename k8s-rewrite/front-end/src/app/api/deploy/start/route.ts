@@ -8,6 +8,8 @@ import { requireOperator } from "@/lib/permissions";
 import { runtimeCapabilities } from "@/lib/runtime-capabilities";
 import { ansibleSelection, AnsibleSelectionError } from "@/lib/ansible-selection";
 
+const PREPARATION_OUTPUT = "[Generated lookup references and inventory]\n";
+
 export async function POST(request: NextRequest) {
   const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
@@ -29,7 +31,7 @@ export async function POST(request: NextRequest) {
       data: {
         playbook: playbookFile,
         status: "running",
-        output: `[Generated lookup references and inventory]\n`,
+        output: PREPARATION_OUTPUT,
         startedAt: new Date(),
       },
     });
@@ -64,7 +66,7 @@ async function runAnsible(
   let emitter: Awaited<ReturnType<typeof runAnsiblePlaybook>>;
   try { emitter = await runAnsiblePlaybook(playbookFile, roles, signal); }
   catch {
-    try { await prisma.job.update({ where: { id: jobId }, data: { output: "[Provisioning runner could not start]\n", status: "failed", finishedAt: new Date() } }); }
+    try { await prisma.job.update({ where: { id: jobId }, data: { output: PREPARATION_OUTPUT + "[Provisioning runner could not start]\n", status: "failed", finishedAt: new Date() } }); }
     catch { console.error("Failed to save final provisioning state"); }
     finally { activeJobs.delete(jobId); }
     return;
@@ -86,7 +88,7 @@ async function runAnsible(
         outputBuffer = "";
         flushing = flushing.then(async () => {
           // Fixed progress only. Terminal persistence waits for any in-flight append.
-          try { await prisma.$executeRaw`UPDATE "Job" SET "output" = "output" || ${text} WHERE "id" = ${jobId} AND "status" = 'running'`; }
+          try { await prisma.$executeRaw`UPDATE "jobs" SET "output" = "output" || ${text} WHERE "id" = ${jobId} AND "status" = 'running'`; }
           catch { /* Final full progress snapshot remains authoritative. */ }
         });
       }
@@ -110,7 +112,7 @@ async function runAnsible(
       await prisma.job.update({
         where: { id: jobId },
         data: {
-          output: fullOutput,
+          output: PREPARATION_OUTPUT + fullOutput,
           status: isSuccess ? "success" : "failed",
           finishedAt: new Date(),
         },
