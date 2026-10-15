@@ -355,7 +355,7 @@
       "finding": "permissions/runtime",
       "originalValidation": "Browser flows for readonly/write/deleted/demoted users and provisioning enabled/disabled. Direct unauthorized calls must still fail. Role changes should update visible controls without granting cached authority. [Screenshot](audit-evidence/readonly-actions.jpg).",
       "localCompletedScope": "Fresh role/session/runtime capability units and direct401/403/501 HTTP gates; selected readonly/scoped/demoted/deleted browser controls, private clearing and write-without-read workflow pass.",
-      "stillRequired": "One actual deleted-account browser flow remains: open a writer mutation draft, delete that synthetic account using an independent keeper through the actual API, observe existing fresh-session control/draft withdrawal and old-cookie rejection. The current fccc347/8 and one enabled synthetic Run case with both fixed messages are independently qualified. HTTP/unit deletion and browser sessionVersion revocation do not substitute for the missing browser deletion. No every-page cross-product or real host gate is added.",
+      "stillRequired": "No remaining original A12 source-clause gate after ROOT composition of retained readonly/write/demotion/disabled/direct unauthorized proofs, the enabled synthetic Run and one actual deleted-account browser flow. Reviewed source fccc/FE4658; delivered image/live, real-host provisioning, actual AT and performance remain separate. No every-page cross-product is added.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/resource-capabilities.test.ts",
         "k8s-rewrite/front-end/tests/http.integration.ts",
@@ -398,7 +398,7 @@
         "exactIntendedAssertionsVerified": true,
         "sourceRestored": true,
         "ownedContainersAbsent": true,
-        "pending": "Historical focused-only stage; fresh full and finite enabled-Run results now recorded separately; deleted-account browser flow remains pending"
+        "pending": "Historical focused-only stage; later full347/8, enabled Run and deleted-account browser source qualifications are recorded separately; delivery remains separate"
       },
       "currentProvisioningOutputFullQualification": {
         "evidence": "provisioning-output-full-functional-root-20261015.json",
@@ -427,7 +427,26 @@
         "windowsFreshReaderNoLive": true,
         "originalA12SourceClauseQualified": false,
         "deletedAccountBrowserFlowQualified": false,
-        "deliveryAccepted": false
+        "deliveryAccepted": false,
+        "phase": "Historical finite enabled-only record before separately qualified deleted-account browser and whole original source composition; original false fields retained"
+      },
+      "currentOriginalA12SourceClauseQualification": {
+        "evidence": "a12-source-composite-root-20261015.json",
+        "sha256": "64daf21fb636cddb2a6a74ef7ce72257b3a77af980db179ac20d81aa5debd457",
+        "source": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+        "frontendTree": "4658deeff3bc5d952307c11503832b96b44dfe27",
+        "originalSourceClauseQualified": true,
+        "deletedAccountBrowserFlowQualified": true,
+        "deletedEvidence": "a12-deleted-browser-qualified-root-20261015.json",
+        "keeperDELETE": 200,
+        "oldCookieGET": 401,
+        "oldCookiePOST": 401,
+        "draftAndControlsWithdrawn": true,
+        "keeperAndOthersPreserved": true,
+        "currentPins": 219,
+        "previousLinuxBirthsAbsent": 45,
+        "windowsFreshReaderNoLive": true,
+        "deliveredAcceptance": false
       }
     },
     {
@@ -615,7 +634,23 @@
       ],
       "overallDeliveredAcceptancePassed": false,
       "currentSourceCIClauseQualified": true,
-      "currentSourceQualificationEvidence": "a19-original-ci-clause-qualification-root-20261015.json"
+      "currentSourceQualificationEvidence": "a19-original-ci-clause-qualification-root-20261015.json",
+      "currentFreshHostedSourceCIQualification": {
+        "evidence": "provisioning-hosted-ci-qualified-root-20261015.json",
+        "sha256": "243f5346238a81e4012212a9d1c4837cf82b38f89952babad07a6e7dde1eedbf",
+        "run": 38819528566,
+        "validationCommit": "76e4bfba75b3434df0b2b5efe62e356d6ffc546a",
+        "source": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+        "frontendTree": "4658deeff3bc5d952307c11503832b96b44dfe27",
+        "unitTests": 347,
+        "HTTPIntegrations": 8,
+        "sensitivityPairs": 8,
+        "all12StepsPassed": true,
+        "defaultRetainedLogResultScanExit": 0,
+        "defaultFindings": 0,
+        "currentSourceCIClauseQualified": true,
+        "deliveredAcceptance": false
+      }
     },
     {
       "id": "A20",

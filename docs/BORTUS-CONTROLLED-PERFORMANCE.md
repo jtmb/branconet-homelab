@@ -1,6 +1,8 @@
 # Controlled whole-server performance qualification
 
-Current source A19 CI and A02 composite clauses are qualified; see [Current source CI qualification](implementation-evidence/a19-original-ci-clause-qualification-root-20261015.json) and [A02 composite qualification](implementation-evidence/a02-composite-boundary-qualification-root-20261015.json). Delivered, AT, performance, image, recovery and live acceptance remain separate.
+Current source-only performance review identifies no justified production change within the fixed authorization/queue/yield/size boundaries. The Pods GET already uses a resource-only snapshot and memoized redacted rows/row JSON; its single middleware account envelope is required. Duplicate middleware/handler envelopes on other routes do not establish the Pods cause. Existing profiles lack a comparable baseline middleware partition and a joined main-thread encoding/framework-write partition for the failing1k/largest warm cases. Nested counters are not additive causal shares. No new benchmark or sampling campaign is proposed, and the original warm failures remain failed.
+
+Current source A19 CI and A02 composite clauses are qualified; see [Fresh source CI qualification](implementation-evidence/provisioning-hosted-ci-qualified-root-20261015.json) and [A02 composite qualification](implementation-evidence/a02-composite-boundary-qualification-root-20261015.json). Delivered, AT, performance, image, recovery and live acceptance remain separate.
 
 ## Historical finite A19 sensitivity qualification
 
