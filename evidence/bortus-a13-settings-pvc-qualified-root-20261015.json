@@ -1,0 +1,469 @@
+{
+  "scope": "Three finite Settings PV Capacity/Created and Storage PVC Capacity cases; six directions. No universal/physicalDOM/AT/performance/adoption acceptance.",
+  "source": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+  "frontendTree": "2c4023aff26848e39890ed0fef51339d27c90680",
+  "actualNewCases": 3,
+  "directionObservations": 6,
+  "checks": [
+    "/settings:Capacity: both directions, actual wire normalization, ties and complete name/link/cell identity",
+    "/settings:Created: both directions, actual wire normalization, ties and complete name/link/cell identity",
+    "/storage?kind=pvc:Capacity: both directions, actual wire normalization, ties and complete name/link/cell identity"
+  ],
+  "observations": [
+    {
+      "route": "/settings",
+      "column": "Capacity",
+      "sortKind": "quantity",
+      "direction": "asc",
+      "names": [
+        "a13-pv-a-zero",
+        "a13-pv-b-two",
+        "a13-pv-c-tie",
+        "a13-pv-d-seven",
+        "a13-pv-e-twelve",
+        "a13-pv-f-missing"
+      ],
+      "values": [
+        "0Gi",
+        "2Gi",
+        "2048Mi",
+        "7Gi",
+        "12Gi",
+        "<none>"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/settings",
+      "column": "Capacity",
+      "sortKind": "quantity",
+      "direction": "desc",
+      "names": [
+        "a13-pv-e-twelve",
+        "a13-pv-d-seven",
+        "a13-pv-b-two",
+        "a13-pv-c-tie",
+        "a13-pv-a-zero",
+        "a13-pv-f-missing"
+      ],
+      "values": [
+        "12Gi",
+        "7Gi",
+        "2Gi",
+        "2048Mi",
+        "0Gi",
+        "<none>"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/settings",
+      "column": "Created",
+      "sortKind": "date",
+      "direction": "asc",
+      "names": [
+        "a13-pv-e-twelve",
+        "a13-pv-b-two",
+        "a13-pv-c-tie",
+        "a13-pv-d-seven",
+        "a13-pv-a-zero",
+        "a13-pv-f-missing"
+      ],
+      "values": [
+        "2026-10-01T12:00:00Z",
+        "2026-10-02T12:00:00Z",
+        "2026-10-02T12:00:00Z",
+        "2026-10-07T12:00:00Z",
+        "2026-10-12T12:00:00Z",
+        "<none>"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/settings",
+      "column": "Created",
+      "sortKind": "date",
+      "direction": "desc",
+      "names": [
+        "a13-pv-a-zero",
+        "a13-pv-d-seven",
+        "a13-pv-b-two",
+        "a13-pv-c-tie",
+        "a13-pv-e-twelve",
+        "a13-pv-f-missing"
+      ],
+      "values": [
+        "2026-10-12T12:00:00Z",
+        "2026-10-07T12:00:00Z",
+        "2026-10-02T12:00:00Z",
+        "2026-10-02T12:00:00Z",
+        "2026-10-01T12:00:00Z",
+        "<none>"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/storage?kind=pvc",
+      "column": "Capacity",
+      "sortKind": "quantity",
+      "direction": "asc",
+      "names": [
+        "a13-pvc-a-zero",
+        "a13-pvc-b-two",
+        "a13-pvc-c-tie",
+        "a13-pvc-d-seven",
+        "a13-pvc-e-twelve",
+        "a13-pvc-f-missing"
+      ],
+      "values": [
+        "0Gi",
+        "2Gi",
+        "2048Mi",
+        "7Gi",
+        "12Gi",
+        "\u2014"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    },
+    {
+      "route": "/storage?kind=pvc",
+      "column": "Capacity",
+      "sortKind": "quantity",
+      "direction": "desc",
+      "names": [
+        "a13-pvc-e-twelve",
+        "a13-pvc-d-seven",
+        "a13-pvc-b-two",
+        "a13-pvc-c-tie",
+        "a13-pvc-a-zero",
+        "a13-pvc-f-missing"
+      ],
+      "values": [
+        "12Gi",
+        "7Gi",
+        "2Gi",
+        "2048Mi",
+        "0Gi",
+        "\u2014"
+      ],
+      "missingSemantics": "missing-last",
+      "stableTieNamesAscending": true,
+      "nameLinkAndAllCellMappingUnchanged": true
+    }
+  ],
+  "preconditions": [
+    {
+      "route": "/settings",
+      "column": "Capacity",
+      "wire": [
+        {
+          "name": "a13-pv-e-twelve",
+          "value": "12Gi"
+        },
+        {
+          "name": "a13-pv-b-two",
+          "value": "2Gi"
+        },
+        {
+          "name": "a13-pv-f-missing",
+          "value": "<none>"
+        },
+        {
+          "name": "a13-pv-a-zero",
+          "value": "0Gi"
+        },
+        {
+          "name": "a13-pv-d-seven",
+          "value": "7Gi"
+        },
+        {
+          "name": "a13-pv-c-tie",
+          "value": "2048Mi"
+        }
+      ],
+      "displayed": [
+        {
+          "name": "a13-pv-a-zero",
+          "value": "0Gi"
+        },
+        {
+          "name": "a13-pv-b-two",
+          "value": "2Gi"
+        },
+        {
+          "name": "a13-pv-c-tie",
+          "value": "2048Mi"
+        },
+        {
+          "name": "a13-pv-d-seven",
+          "value": "7Gi"
+        },
+        {
+          "name": "a13-pv-e-twelve",
+          "value": "12Gi"
+        },
+        {
+          "name": "a13-pv-f-missing",
+          "value": "<none>"
+        }
+      ]
+    },
+    {
+      "route": "/settings",
+      "column": "Created",
+      "wire": [
+        {
+          "name": "a13-pv-e-twelve",
+          "value": "2026-10-01T12:00:00Z"
+        },
+        {
+          "name": "a13-pv-b-two",
+          "value": "2026-10-02T12:00:00Z"
+        },
+        {
+          "name": "a13-pv-f-missing",
+          "value": "<none>"
+        },
+        {
+          "name": "a13-pv-a-zero",
+          "value": "2026-10-12T12:00:00Z"
+        },
+        {
+          "name": "a13-pv-d-seven",
+          "value": "2026-10-07T12:00:00Z"
+        },
+        {
+          "name": "a13-pv-c-tie",
+          "value": "2026-10-02T12:00:00Z"
+        }
+      ],
+      "displayed": [
+        {
+          "name": "a13-pv-e-twelve",
+          "value": "2026-10-01T12:00:00Z"
+        },
+        {
+          "name": "a13-pv-d-seven",
+          "value": "2026-10-07T12:00:00Z"
+        },
+        {
+          "name": "a13-pv-b-two",
+          "value": "2026-10-02T12:00:00Z"
+        },
+        {
+          "name": "a13-pv-c-tie",
+          "value": "2026-10-02T12:00:00Z"
+        },
+        {
+          "name": "a13-pv-a-zero",
+          "value": "2026-10-12T12:00:00Z"
+        },
+        {
+          "name": "a13-pv-f-missing",
+          "value": "<none>"
+        }
+      ]
+    },
+    {
+      "route": "/storage?kind=pvc",
+      "column": "Capacity",
+      "wire": [
+        {
+          "name": "a13-pvc-e-twelve",
+          "value": "12Gi"
+        },
+        {
+          "name": "a13-pvc-b-two",
+          "value": "2Gi"
+        },
+        {
+          "name": "a13-pvc-f-missing",
+          "value": null
+        },
+        {
+          "name": "a13-pvc-a-zero",
+          "value": "0Gi"
+        },
+        {
+          "name": "a13-pvc-d-seven",
+          "value": "7Gi"
+        },
+        {
+          "name": "a13-pvc-c-tie",
+          "value": "2048Mi"
+        }
+      ],
+      "displayed": [
+        {
+          "name": "a13-pvc-a-zero",
+          "value": "0Gi"
+        },
+        {
+          "name": "a13-pvc-b-two",
+          "value": "2Gi"
+        },
+        {
+          "name": "a13-pvc-c-tie",
+          "value": "2048Mi"
+        },
+        {
+          "name": "a13-pvc-d-seven",
+          "value": "7Gi"
+        },
+        {
+          "name": "a13-pvc-e-twelve",
+          "value": "12Gi"
+        },
+        {
+          "name": "a13-pvc-f-missing",
+          "value": "\u2014"
+        }
+      ]
+    }
+  ],
+  "requestEvents": [
+    {
+      "route": "/api/cluster/volumes/reclaim",
+      "kind": null,
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/volumes/reclaim",
+      "kind": null,
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/volumes",
+      "kind": "pv",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/volumes",
+      "kind": "pvc",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/volumes",
+      "kind": "pvc",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "actualServerExit": 0,
+  "actualBrowserExit": 0,
+  "allIndependentPostExits": 0,
+  "rootTools": {
+    "browser": "de524a",
+    "server": "fd3acd",
+    "exact": "1c978d",
+    "linuxFresh": "387811",
+    "windowsFresh": "5d95f8",
+    "linuxLater": "03c656",
+    "windowsLater": "009421"
+  },
+  "actualProofs": [
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/app-a13-settings-pvc-browser-postcheck-20261015-v3/legacy-review-result.json",
+      "bytes": 16799,
+      "sha256": "4833ee9cd2f57952e5031a53e1b71631dacdee70edc5eead6460050a47894fa5"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/app-a13-settings-pvc-browser-postcheck-20261015-v3/fresh-result.json",
+      "bytes": 16408,
+      "sha256": "df4f1534f39ce2f0cabc4cfa3223a5fc85dcfad8e117cb58fe283a81833ff449"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a13-settings-pvc-browser-postcheck-20261015-v3\\windows-fresh-result.json",
+      "bytes": 3989,
+      "sha256": "5cae9affc9064cac5b9bd4def9427d5572a77c71f2053d1942089e0e0c14e7a1"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/root-a13-settings-pvc-success-later-20261015-v3.json",
+      "bytes": 2080,
+      "sha256": "d66ed7113600154121197e99f041c7bf50790509e336c822f1f00e672ef34648"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a13-settings-pvc-success-windows-later-20261015-v3.json",
+      "bytes": 507,
+      "sha256": "47c41d5a860eccf5a7104955bb4a84f66bb1f6be369b405aff7578bb3bbaff48"
+    }
+  ],
+  "sourceFiles": 374,
+  "generatedExtras": 4,
+  "inputs": 40,
+  "compiledObjects": 5383,
+  "dependencies": 40635,
+  "linuxBirthsAbsent": 58,
+  "exactContainerIDAndNameAbsent": true,
+  "windowsBirthsNoLive": 11,
+  "laterLinuxReaderAndQueryBirthsAbsent": 3,
+  "laterWindowsReaderNoLive": true,
+  "windowsQueryabilityIsNotLiveness": true,
+  "originalBounds": {
+    "server": 480,
+    "closure": 60,
+    "attach": 420,
+    "browserInternal": 300,
+    "browserOuter": 330,
+    "cpus": 2,
+    "memoryBytes": 1073741824,
+    "pids": 256
+  },
+  "priorAttempts": [
+    {
+      "version": "v1-1",
+      "serverExit": 1,
+      "browserExit": 1,
+      "partialCases": 2,
+      "partialDirections": 4,
+      "wholeMatrixAccepted": false,
+      "firstPVCWaitFailed": true,
+      "noCapturedDOMCausation": true
+    },
+    {
+      "version": "v2",
+      "serverExit": 1,
+      "browserExit": 1,
+      "partialCases": 2,
+      "partialDirections": 4,
+      "wholeMatrixAccepted": false,
+      "browserReadinessFailureRetained": true,
+      "launcherImageQueryWinError": 31,
+      "windowsFreshReaderExit": 1,
+      "windowsFreshReaderWinError": 5,
+      "supplementalDirectNoLiveObservations": 11,
+      "supplementalCIMDifferentBirthObservations": 1,
+      "all12DirectAPINoLiveClaim": false,
+      "failedReaderNotRewritten": true
+    }
+  ],
+  "corrections": {
+    "fixtureExpectedBusinessOraclesUnchanged": true,
+    "initialPVReadinessAdded": true,
+    "ResourceComboboxSelectorSourceGrounded": true,
+    "historicalCauseUnproved": true,
+    "unrunDiagnosticRegexVariantPreserved": true
+  },
+  "oldCasesReplayed": 0,
+  "allTableSortsQualified": false,
+  "physicalDOMIdentityQualified": false,
+  "actualAssistiveTechnology": false,
+  "performanceAccepted": false,
+  "deliveredImageAccepted": false,
+  "productionAdopted": false,
+  "rootCurrentActualProofBindingsVerified": true
+}
