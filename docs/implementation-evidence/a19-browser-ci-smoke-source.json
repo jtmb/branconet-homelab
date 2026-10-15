@@ -1,0 +1,181 @@
+{
+  "scope": "SOURCE ONLY minimal compiled synthetic Pods browser CI smoke",
+  "sourceParent": "e1ef6bd64409eeaf317d418194d5ae3f2cb122b0",
+  "priorHostedSevenCaseRun": 38770022640,
+  "priorQualificationReceiptUnchanged": "a19-seven-regression-sensitivity-qualification.json",
+  "fixture": [
+    {
+      "path": "tests/ui-fixture.ts",
+      "sha256": "cfe0385d8ec14e09162dbecb95ee8a654fc2cd1595a6aa85c3d35a0ccd2fc022",
+      "bytes": 28777
+    },
+    {
+      "path": "tests/helpers/fake-kubectl.ts",
+      "sha256": "1bc214f11df16d955598e1dc8e390528eaec2b9c34d81f33edd982580599bee4",
+      "bytes": 6777
+    },
+    {
+      "path": "tests/helpers/native-tls.ts",
+      "sha256": "d00a12a8f25aa4a4d4d29ae220bd2f8264f6a4945f9bc939bd1c3cbfe69104f7",
+      "bytes": 5490
+    }
+  ],
+  "tools": {
+    "scope": "CI-only public tool metadata and unchanged fixture source pins; runtime tooling/image qualification pending",
+    "version": "1.62.1",
+    "officialVersionedDocumentation": "https://raw.githubusercontent.com/microsoft/playwright/v1.62.1/docs/src/docker.md",
+    "image": {
+      "registry": "mcr.microsoft.com/playwright",
+      "versionLabel": "v1.62.1-noble",
+      "indexDigest": "sha256:dcc5531e97840b9b5e794f2814476b21571c5124a3fca2267d73041f56e7580e",
+      "amd64ManifestDigest": "sha256:c091b21d9fae78c76e85cd4356431e9b018402f172a214fc7d7a5e9a7e29d8ac",
+      "configDigestFromRetainedMetadata": "sha256:fee853fafa59550d162cef52bca02d907694b44ebf6ef9fb075bcc0c65d8dedb",
+      "layers": 7,
+      "compressedLayerBytes": 949411114,
+      "actualImageAcquired": false,
+      "imageSecurityQualified": false,
+      "platformAndRepoDigestMustBeCheckedBeforeBrowser": true
+    },
+    "package": {
+      "name": "playwright-core",
+      "version": "1.62.1",
+      "tarball": "https://registry.npmjs.org/playwright-core/-/playwright-core-1.62.1.tgz",
+      "integrity": "sha512-wPYSwEBJY9GHraISXqyqtx0na0LpO3XEX7jNDhntbex7tzUS7kLnZsOlFruFJB4Hi/rhDMjXGqHewDZ68nYZVw==",
+      "dependencyCount": 0,
+      "optionalDependencyCount": 0,
+      "unpackedBytes": 13442086,
+      "files": 111,
+      "integrityEnforcement": "npm ci with exact committed CI-only lock, ignore-scripts, zero fetch retries and strict TLS; no app package/lock mutation",
+      "npmSignaturesIndependentlyVerified": false,
+      "actualPackageAcquired": false
+    },
+    "retainedPublicMetadata": [
+      {
+        "file": "result.json",
+        "parent": "root-a19-playwright-registry-metadata-20261015-v1",
+        "sha256": "8b35f85d8896aaff34ae2de5946f9103a2aba68d33c0fd46485868d89bb4096a"
+      },
+      {
+        "file": "result.json",
+        "parent": "root-a19-playwright-package-metadata-20261015-v1",
+        "sha256": "a8d158c14cdad23ae8d849fb23380082536be837ee94bd852a6d16c710b1fc54"
+      }
+    ],
+    "fixtureFiles": [
+      {
+        "path": "tests/ui-fixture.ts",
+        "sha256": "cfe0385d8ec14e09162dbecb95ee8a654fc2cd1595a6aa85c3d35a0ccd2fc022",
+        "bytes": 28777
+      },
+      {
+        "path": "tests/helpers/fake-kubectl.ts",
+        "sha256": "1bc214f11df16d955598e1dc8e390528eaec2b9c34d81f33edd982580599bee4",
+        "bytes": 6777
+      },
+      {
+        "path": "tests/helpers/native-tls.ts",
+        "sha256": "d00a12a8f25aa4a4d4d29ae220bd2f8264f6a4945f9bc939bd1c3cbfe69104f7",
+        "bytes": 5490
+      }
+    ],
+    "unchangedFixtureSourceCommit": "e1ef6bd64409eeaf317d418194d5ae3f2cb122b0",
+    "scopeLimits": [
+      "Synthetic metadata browser smoke only; no mutation/negative sensitivity/AT/sort/performance or image security acceptance",
+      "Linux browser executable startup remains unqualified until actual CI; Windows browser success does not qualify this image",
+      "Chromium sandbox deliberately disabled; isolation comes from disposable nonroot network-none containers, no sandbox security proof"
+    ]
+  },
+  "expectedFiniteChecks": 1,
+  "expectedWireRows": 208,
+  "expectedInitialDOMPageRows": 100,
+  "expectedFilteredNames": [
+    "sort-fixture-12",
+    "sort-fixture-2",
+    "sort-fixture-7"
+  ],
+  "expectedNonAgeCellsPerRow": 8,
+  "expectedLinkHrefs": 3,
+  "APIResponseInterception": false,
+  "mutationsAttempted": false,
+  "bounds": {
+    "toolAcquisitionWholeSeconds": 240,
+    "toolAcquisitionKillSeconds": 15,
+    "imagePullSeconds": 180,
+    "npmToolInstallSeconds": 35,
+    "npmFetchSeconds": 15,
+    "npmRetries": 0,
+    "runtimeWholeSeconds": 300,
+    "runtimeCleanupSeconds": 60,
+    "appStageSeconds": 180,
+    "browserSeconds": 150,
+    "perContainerCPU": 2,
+    "perContainerMemoryMiB": 1024,
+    "concurrentCPUCeiling": 4,
+    "concurrentMemoryMiBCeiling": 2048,
+    "extraSwap": false,
+    "pidsEach": 256,
+    "appTmpfsMiB": 512,
+    "browserTmpfsMiB": 256,
+    "browserPrivateShmMiB": 64,
+    "fixtureOutputBytesPerStreamMax": 1048576
+  },
+  "network": "Public tool acquisition only; app network none; browser joins exact owned app namespace",
+  "operatorEnvironmentForwarded": false,
+  "privileged": false,
+  "hostIPC": false,
+  "hostNetwork": false,
+  "chromiumSandboxEnabled": false,
+  "browserSecurityQualified": false,
+  "separateAppProductionDependencyChange": false,
+  "existingSevenCaseRunnersChanged": false,
+  "original342And8Changed": false,
+  "all44OriginalValidationClausesUnchanged": true,
+  "all22DocsChecked": [
+    "docs/ANSIBLE-2-API-INTERACTION.md",
+    "docs/API-USAGE.md",
+    "docs/audit-evidence/README.md",
+    "docs/BORTUS-AUDIT.md",
+    "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+    "docs/BORTUS-DEPLOYMENT.md",
+    "docs/BORTUS-IMPLEMENTATION.md",
+    "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+    "docs/BORTUS-KV-DESIGN.md",
+    "docs/BORTUS-KV-WORKBENCH.md",
+    "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+    "docs/BOTRUS-WORKFLOW.md",
+    "docs/CHARTS-SEPARATION.md",
+    "docs/CONNECTING-TO-A-CLUSTER.md",
+    "docs/FLUX-GITOPS.md",
+    "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+    "docs/implementation-evidence/README.md",
+    "docs/implementation-evidence/runtime-maintenance/README.md",
+    "docs/kubectl-cheatsheet.md",
+    "docs/SECRETS-ENGINE.md",
+    "docs/TECH-STACK.md",
+    "docs/USER-PERMS.md"
+  ],
+  "toolAcquisitionRun": false,
+  "smokeRun": false,
+  "testsRun": false,
+  "wholeA19Accepted": false,
+  "actualATQualified": false,
+  "performanceAccepted": false,
+  "productionAdoption": false,
+  "sourceVariant": "V1-3; prior V1-1 and V1-2 retained unrun after source review",
+  "ownership": {
+    "preexistingThreeNamesRefuseBeforeCleanupInstalled": true,
+    "removalAuthority": "Only validated exclusive CID files armed before this invocation docker create; names grant absence evidence only",
+    "interruptedCreateWithoutCID": "Uncertain/refuse; never adopt by name",
+    "toolsCleanupAuthority": "Exclusive mkdir succeeded or current acquire-to-run marker and owner/mode checked before installing destructive cleanup",
+    "acquisitionMarkerBinds": [
+      "GitHub run",
+      "attempt",
+      "source commit",
+      "tool lock SHA256",
+      "script SHA256"
+    ],
+    "fixtureShutdownEvidence": "Literal app exit0 plus fixed browserFixtureClosed/orderlyStopRequested booleans and stdout/stderr counts in retained CI log",
+    "runtimeQualified": false,
+    "confirmedCIDRemovalOrder": "Reverse creation order: browser then app; acquisition has one CID"
+  }
+}
