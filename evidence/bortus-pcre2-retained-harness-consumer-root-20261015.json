@@ -1,0 +1,88 @@
+{
+  "scope": "Finite canonical-loader grep and libselinux compatibility only",
+  "actualTool": "d3f6bb",
+  "actualExit": 0,
+  "containerRemoved": true,
+  "consumerJobs": 14,
+  "publicCorpusCases": 10,
+  "baselineAndCandidatePublicCorpusEqual": true,
+  "actualLoadedComponentHashesValidated": true,
+  "newCompilerOrReadelfExecuted": false,
+  "retainedHarnessSHA256": "c89529ad8b69fdec3628155482bb6fca10cf3ff2f4224e79f7f80b486260fa77",
+  "subjectSpecificExactDependencySets": {
+    "grep": [
+      "loader",
+      "libc",
+      "selectedPCRE8"
+    ],
+    "harnessListBeforeDlopen": [
+      "loader",
+      "libc"
+    ],
+    "selinuxLookup": [
+      "loader",
+      "libc",
+      "libselinux",
+      "selectedPCRE8"
+    ]
+  },
+  "hostLoaderFallbackAccepted": false,
+  "ldCacheUsed": false,
+  "wholeSeconds": 300,
+  "closureReserveSeconds": 30,
+  "innerSeconds": 180,
+  "CPU": 2,
+  "memoryBytes": 1073741824,
+  "network": "none",
+  "sourceReview": {
+    "tool": "f817a9",
+    "payload": 17,
+    "ZIPMembers": 18,
+    "defaultScanExit": 0,
+    "findings": 0,
+    "runtimeStaged": 12,
+    "controllerHelpersRawExact": 20,
+    "captureHelpersRawExact": 4,
+    "publicCorpusAndHarnessSourceByteExact": true,
+    "nativePreflight": "533443"
+  },
+  "failedPriorRuntimeActorExit": 1,
+  "originalPCREBuildExit": 1,
+  "staticWeakSymbolsRetained": 18,
+  "independentClosurePending": false,
+  "serializedSELinuxDatabaseQualified": false,
+  "SELinuxKernelPolicyQualified": false,
+  "applicationQualified": false,
+  "imageQualified": false,
+  "securityAccepted": false,
+  "performanceAccepted": false,
+  "productionChanged": false,
+  "independentClosure": {
+    "postTool": "a4a345",
+    "postExit": 0,
+    "sourceFiles": 12,
+    "actorRecords": 149,
+    "failedReaderRecords": 2,
+    "CLIJobs": 13,
+    "freshHostBirthsAbsent": 23,
+    "laterTool": "2b7681",
+    "laterExit": 0,
+    "ownTool": "24c279",
+    "ownExit": 0,
+    "ownRecordSHA256": "e9ab6b4ad015c04c8113244dc36e3518b7f3dcb2ec916be99639d41289d8a881",
+    "finalHostBirthsFreshAbsent": 27,
+    "source455AndStage239Current": true,
+    "harnessFingerprintCurrent": true,
+    "exactContainerIDAndNameAbsent": true
+  },
+  "retainedObserverRefusal": {
+    "tool": "d050cc",
+    "exit": 1,
+    "stage": 1,
+    "type": 5,
+    "targetQueriesCreated": false,
+    "currentSourceWitness": "85c8fe",
+    "cause": "Reader literal retained prior container name; corrected reader changes literal and coordinates, preserves twenty helpers and nested run",
+    "originalInternalAssertionRecorded": false
+  }
+}

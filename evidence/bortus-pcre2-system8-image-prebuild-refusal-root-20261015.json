@@ -1,0 +1,44 @@
+{
+  "scope": "Isolated COPY-only system8 image preparation refuses before build; no image/runtime/security acceptance",
+  "sourceReview": {
+    "tool": "51b9ae",
+    "payload": 15,
+    "ZIPMembers": 16,
+    "runtimeFiles": 9,
+    "helpersRawExact": 27,
+    "nestedRunFenceRawExact": true,
+    "dependenciesRawExact": true,
+    "defaultScanLiteralExit": 0,
+    "findings": 0,
+    "nativePreflight": "a61215"
+  },
+  "actor": {
+    "initialTool": "934c5b",
+    "finalTool": "471e3c",
+    "actualExit": 1,
+    "stage": 20,
+    "type": 5,
+    "buildDispatched": false,
+    "buildExit": null,
+    "finalizerSteps": [],
+    "wholeSeconds": 300,
+    "OSCloseMarginSeconds": 1,
+    "daemonResourceQuotaClaimed": false
+  },
+  "actualCommand": {
+    "exit": 1,
+    "role": "baseline-image-current",
+    "stdoutBytes": 1,
+    "stderrBytes": 115,
+    "exactNoSuchImageReported": true,
+    "baseConfigID": "sha256:41bb50990f9c037179f36cf2e1d12b82812711cbf21ee9e28b06dfad309c37ed",
+    "reaped": true,
+    "reportedSameBirthAbsent": true
+  },
+  "rootOutputReviewTool": "939520",
+  "independentFailureClosurePending": true,
+  "explanation": "Added daemon-cache inspect requirement refuses because saved baseline image is absent locally; raw component and exported full-filesystem authorities remain retained. COPY producer builds FROM scratch, not from that daemon image. Fresh corrected source is pending review.",
+  "newBuildOrContainerStarted": false,
+  "productionChanged": false,
+  "securityAccepted": false
+}
