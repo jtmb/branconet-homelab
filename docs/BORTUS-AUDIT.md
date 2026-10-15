@@ -10,7 +10,7 @@ The three Flux list calls now use `get <resource> --all-namespaces`. On committe
 
 Historical seven-case qualification on run `38770022640` remains immutable in [its source-bound receipt](implementation-evidence/a19-seven-regression-sensitivity-qualification.json). It is superseded for current CI status by the eight-case hosted qualification; it does not alter the separate AT/performance/image/recovery/live limits.
 
-Hosted browser CI remains unqualified: run `38781205292` recorded Pods HTTP503, app `/tmp` noexec and fake-CLI EACCES. The new source-only correction adds explicit exec only to the disposable app tmpfs; driver, diagnostic, assertions, ownership, limits and production mounts are unchanged. It has not run. Exact prior failures and recorded cleanup scope are retained in [the CI fixture source receipt](implementation-evidence/a19-browser-ci-app-tmp-exec-source.json). Actual AT, performance and adoption remain open.
+Historical fixture failure: run `38781205292` recorded Pods HTTP503 from disposable app `/tmp` noexec/fake-CLI EACCES; its unchanged [source-only correction record](implementation-evidence/a19-browser-ci-app-tmp-exec-source.json) describes that preparation stage. The corrected hosted browser smoke and later eight sensitivity pairs have since passed; [current original A19 CI qualification](implementation-evidence/a19-original-ci-clause-qualification-root-20261015.json) supersedes the old unrun status. Actual AT, performance and adoption remain separate.
 
 Historical five-case qualification on run `38764208687` remains immutable in [its source-bound receipt](implementation-evidence/a19-five-regression-sensitivity-qualification.json). Current original-clause CI status uses the later eight-case run.
 
