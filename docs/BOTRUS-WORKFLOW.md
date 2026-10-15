@@ -120,6 +120,8 @@ YAML, log and resource confirmation dialogs use accessible modal primitives. YAM
 
 A separate finite current-build check passed failed-save draft retention followed by discard/reopen, and fresh-version View/Edit reopening after the public fixture changed resourceVersion. It recorded five GET 200 responses and one PUT 502 through the actual routes. This adds two cases; four earlier failed workflows remain preserved. See [A16 qualification scope and closure](implementation-evidence/a16-current-browser-qualification.json). It does not establish mobile, screen-reader, performance or delivered-image acceptance.
 
+ROOT qualifies the original A16 source clause by composing the retained failed-save/discard/reopen and changed-fetched-version browser cases with five unchanged YAML/menu/modal/backend/route files through the current qualified ab7 build. No test was replayed; historical failures and delivery/mobile/AT/performance limits remain unchanged. [A16 source composition](implementation-evidence/a16-source-composite-qualification-root-20261015.json).
+
 Run `npm test`, `npm run typecheck`, `npm run build`, then `npm run test:integration`. The HTTP integration suite requires the production build and uses temporary SQLite, fake credentials and a loopback unavailable Kubernetes endpoint. It does not access the operator database or live cluster.
 
 Image and live-cluster evidence are separate from those local checks. See [recorded evidence and runtime contract](BORTUS-DEPLOYMENT.md).
