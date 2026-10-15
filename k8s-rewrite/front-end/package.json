@@ -16,6 +16,7 @@
     "pretest": "node scripts/build-account-worker.mjs",
     "test": "tsx --test tests/*.test.ts",
     "test:integration": "tsx --test tests/*.integration.ts",
+    "test:regression-sensitivity": "node scripts/regression-sensitivity.mjs",
     "typecheck": "tsc --noEmit",
     "db:deploy": "prisma migrate deploy"
   },

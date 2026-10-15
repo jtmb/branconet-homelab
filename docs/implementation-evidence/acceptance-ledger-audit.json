@@ -125,7 +125,23 @@
         "acceptance-supplement/assessment.json"
       ],
       "overallDeliveredAcceptancePassed": false,
-      "sourceFollowup20261015": {
+      "currentFiniteOverviewTerminalFollowup20261015": {
+        "sourceCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
+        "cases": 4,
+        "terminalStatuses": [
+          200,
+          502
+        ],
+        "inventoryDeleteStatuses": [
+          500,
+          200
+        ],
+        "modalInputInventoryRetainedAfter500": true,
+        "explicitRetryClearsInventoryOnly": true,
+        "rootReceipt": "evidence/bortus-overview-terminal-four-browser-root-20261015.json",
+        "wholeA05Accepted": false
+      },
+      "historicalSourceOnlyFollowup20261015": {
         "scope": "Overview Clear dashboard inventory error propagation only",
         "sourceConfirmedGap": "Existing failure catch retains the dialog but its ConfirmDialog call omitted the shared error prop.",
         "sourceCorrection": "Pass existing error state to the shared in-modal alert; request/confirmation/pending/close/authorization unchanged.",
@@ -419,7 +435,7 @@
       "finding": "quality gates",
       "originalValidation": "Run CI from a clean checkout with no operator env/DB/kubeconfig. It must finish without prompts, fail on each deliberately reintroduced regression and publish redacted results. Next 15 describes the deprecated lint workflow and direct ESLint migration in its [versioned ESLint guide](https://nextjs.org/docs/15/app/api-reference/config/eslint).",
       "localCompletedScope": "Clean Linux Node22.23.3 c29fc install/build214 units/lint/types/four strict HTTP pass with no skips, no operator inputs and exact source/build ownership. Direct ESLint and app-only workflow retained; causal missing-await negative fails while patched control passes.",
-      "stillRequired": "The readonly npm-pretest write mismatch is fixed and the exact revised checks command passed lint/types/342 original units with independent current/birth/CID-name/later closure. A fresh complete clean-checkout install/build/eight-HTTP workflow, deliberately reintroduced negative control for EACH original regression, and published redacted hosted workflow results remain unqualified. Checks-only is not full CI, performance or delivery acceptance.",
+      "stillRequired": "The ea628d exact-frontend hosted clean install/build/lint/types/342-unit/8-HTTP run and redacted-log scan passed. The separate A04/A05/A06 sensitivity step is prepared source-only and remains unrun; remaining deliberately reintroduced source-regression coverage and complete original A19 acceptance remain open. Manual clauses are separate.",
       "sourcePaths": [
         "k8s-rewrite/front-end/package.json",
         ".github/workflows/bortus-quality.yml",
@@ -436,7 +452,7 @@
       "finding": "dependencies",
       "originalValidation": "Clean install, full audit/omit-dev audit, Node 22/Linux build, native transport/HTTP/browser checks and image package inspection. Record remaining exceptions with precise reachability rationale and expiry; no credentials in build context.",
       "localCompletedScope": "Pinned Next15.5.27/Node22, scoped override and historical isolated fresh/legacy11-migration image/runtime/package inspection retained; current clean Linux functional and raw production-only default scan pass.",
-      "stillRequired": "Root reports new exact c29fc image build/export0 and default Trivy reporting1: zero Secrets,125LOW/142MEDIUM/67HIGH/11UNKNOWN/1CRITICAL;19fixable findings all embedded kubectl. Report SHA83c300c91e5d80d2d163fa6a99c252a09dd50314b18a012745a61823530abd7b, protected root-final-app-c29fc-20261011/image-scan-safe-review.json. Final reachability/expiry/remediation, runtime and full/omit-dev package reports remain required; inert-holder exception does not apply. Two historical checksum provenance findings remain untriaged;265-file production scan0 does not waive them.",
+      "stillRequired": "Fresh public-lock full audit remains literal1 with nine dev rows (7HIGH/2MODERATE); omit-dev is0/zero. The coordinator accepted only trusted-source controlled build use until2026-10-22T23:59:59Z with boundary-change/expiry re-review. Final pruned immutable package/bundle inspection and image/security qualification remain required; current ten MEDIUM image findings are not waived. Earlier c29fc image counts below are historical, not the current canonical image. See currentOverviewAndHostedQualification20261015 and the root npm residual receipt.",
       "sourcePaths": [
         "k8s-rewrite/front-end/package.json",
         "k8s-rewrite/front-end/package-lock.json",
@@ -448,7 +464,8 @@
         "runtime-maintenance/README.md",
         "workbench-raw-source-scan-handoff.json"
       ],
-      "overallDeliveredAcceptancePassed": false
+      "overallDeliveredAcceptancePassed": false,
+      "historicalEarlierImageRequirement": "Root reports new exact c29fc image build/export0 and default Trivy reporting1: zero Secrets,125LOW/142MEDIUM/67HIGH/11UNKNOWN/1CRITICAL;19fixable findings all embedded kubectl. Report SHA83c300c91e5d80d2d163fa6a99c252a09dd50314b18a012745a61823530abd7b, protected root-final-app-c29fc-20261011/image-scan-safe-review.json. Final reachability/expiry/remediation, runtime and full/omit-dev package reports remain required; inert-holder exception does not apply. Two historical checksum provenance findings remain untriaged;265-file production scan0 does not waive them."
     },
     {
       "id": "A21",
@@ -1028,7 +1045,51 @@
     "productUnchanged": true,
     "allClosurePassed": true
   },
-  "currentA19CIWiring20261015": {
+  "currentA19RegressionSensitivityCandidate20261015": {
+    "status": "SOURCE ONLY; no test/build/push execution",
+    "evidence": "a19-regression-sensitivity-source.json",
+    "cases": 3,
+    "pristinePlusMutantRuns": 6,
+    "wholeA19Accepted": false
+  },
+  "currentOverviewAndHostedQualification20261015": {
+    "sourceCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
+    "frontendTree": "2d47cae1abf1ed2d969ee552e41104fd29791713",
+    "freshLocalUnits": 342,
+    "freshLocalHTTP": 8,
+    "hostedRun": 38750289826,
+    "hostedUnits": 342,
+    "hostedHTTP": 8,
+    "browserFiniteCases": 4,
+    "priorQualifiedReceipts": [
+      {
+        "path": "evidence/bortus-overview-inventory-fresh-root-20261015.json",
+        "sha256": "cb7271ba64e00af6cf9c1185eec17b27a31829c7b77571490efd6fcb2ece246d"
+      },
+      {
+        "path": "evidence/bortus-hosted-ci-exact-app-root-20261015.json",
+        "sha256": "f8e750eaec5bc01a9ad263161d5aa40e9bced774e2b29e608d2879b3434b3ab4"
+      },
+      {
+        "path": "evidence/bortus-overview-terminal-four-browser-root-20261015.json",
+        "sha256": "16930eb3ac33b7438493413b4dab5c1bde8b358034f290938ebfbc7587141289"
+      },
+      {
+        "path": "evidence/bortus-npm-audit-build-residual-root-20261015.json",
+        "sha256": "3e809225fd55879f73ebbf3e9532b71c6d8a4b91bfae9543379d33423c6b6936"
+      },
+      {
+        "path": "evidence/bortus-terminal-failure-retry-root-20261015.json",
+        "sha256": "7336c4c20eba994338be5b91702c9c827e4544dc585d98863730c1326b105670"
+      }
+    ],
+    "wholeA05Accepted": false,
+    "wholeA19Accepted": false,
+    "performanceAccepted": false,
+    "imageAccepted": false,
+    "liveAdoption": false
+  },
+  "historicalReadOnlyCIWiringQualification20261015": {
     "status": "READONLY_CHECKS342_LINT_TYPES_QUALIFIED",
     "workflow": ".github/workflows/bortus-quality.yml",
     "workflowWorkingBytesSHA256": "f1a81fb4365b2b3bf35573976d9d722b5b368cc038710c6c6d78d3f01f3f5997",
@@ -1075,5 +1136,19 @@
     "originalProfileFailurePreserved": true,
     "performanceAccepted": false,
     "productionAdoption": false
+  },
+  "currentA19CIWiring20261015": {
+    "status": "PRIOR EXACT FRONTEND HOSTED342+8 QUALIFIED; NEW THREE-MUTANT STEP SOURCE ONLY",
+    "qualifiedProductSourceCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
+    "hostedRun": 38750289826,
+    "hostedOriginalUnitsPassed": 342,
+    "hostedOriginalHTTPPassed": 8,
+    "hostedOldWorkflowSHA256": "f1a81fb4365b2b3bf35573976d9d722b5b368cc038710c6c6d78d3f01f3f5997",
+    "newCandidateWorkflowSHA256": "69f0bedd4f99452895416b6a081c55660dc6307caeffa7911de9cfb7741943b7",
+    "newSensitivityStepRun": false,
+    "newCandidateHostedRun": false,
+    "original342And8TestBodiesChanged": false,
+    "remainingRegressionCoverageOpen": true,
+    "wholeA19Accepted": false
   }
 }

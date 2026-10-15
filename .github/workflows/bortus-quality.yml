@@ -53,6 +53,20 @@ jobs:
             -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
             --entrypoint bash "$BORTUS_CI_IMAGE" \
             -lc 'mkdir -p "$HOME" && npm run lint && npm run typecheck -- --incremental false && node --import tsx --test tests/*.test.ts'
+      - name: Three source regression sensitivity checks (A04/A05/A06)
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          name="bortus-quality-sensitivity-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+          docker run --rm --pull never --name "$name" --network none \
+            --cpus 2 --memory 1g --memory-swap 1g --pids-limit 256 \
+            --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app,readonly" \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED \
+            -e DATABASE_URL -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
+            --entrypoint bash "$BORTUS_CI_IMAGE" \
+            -lc 'mkdir -p "$HOME" && npm run test:regression-sensitivity'
       - name: Original strict integration and process controls
         shell: bash
         run: |
