@@ -1,0 +1,91 @@
+{
+  "scope": "Acquire exact public API-server and etcd images for future isolated A04 validation; not a cluster/version/security pass",
+  "originalAttempt": {
+    "tool": "4c2bfc",
+    "actualExit": 1,
+    "sevenCLIExits": 0,
+    "failure": "Incorrectly required Docker manifest-list ID to equal OCI config digest",
+    "apiPullReturnedZero": true,
+    "etcdPullDispatched": false,
+    "literalUncertaintyPreserved": true
+  },
+  "continuation": {
+    "tool": "7d0610",
+    "actualExit": 0,
+    "sourceSHA256": "e6d615d823585c5777e2fe1dc68777cdc459b4b388e0a969ffae80f4261e7a9b",
+    "bindingSHA256": "07690cb6328e4586924bc64bd6f1418c8fbec0a72cfea84f4e923436cc1d6287",
+    "wholeSeconds": 300,
+    "closureReserveSeconds": 30,
+    "perPullMaxSeconds": 120,
+    "perStreamBytes": 65536,
+    "originalAPIRepulled": false,
+    "newPulls": [
+      "etcd"
+    ],
+    "newPullUncertain": false,
+    "containersCreated": false
+  },
+  "sourceReviews": {
+    "initialHelpersRawExact": 20,
+    "correctedInitialReview": "94beb8",
+    "initialDefaultScanTool": "f7ff05",
+    "initialDefaultScanLiteralExit": 1,
+    "initialFindings": 1,
+    "classificationTool": "4e5ad3",
+    "classifiedPublicPhrase": "generatedSAkeys, RBAC/default ",
+    "unresolved": 0,
+    "suppressionOrReplay": false,
+    "continuationReview": "a1ca63",
+    "originalRecordsVerified": 15,
+    "continuationScanTool": "dac306",
+    "continuationScanExit": 0,
+    "continuationFindings": 0
+  },
+  "independent": {
+    "tool": "fbf317",
+    "actualExit": 0,
+    "recordSHA256": "3c8b676cc509d53fb8c464ecb43f2e2025c7e40bf859112013e630ebc15dbcb9",
+    "oldAndNewHostBirthsAbsent": 14,
+    "newCommandRecordPins": 25,
+    "laterTool": "a46d6b",
+    "laterExit": 0,
+    "originalAndReaderBirthsFreshAbsent": 15,
+    "all25CurrentRecordFP9AndSHAExact": true,
+    "firstActorReaderTool": "07bc30",
+    "firstActorReaderExit": 0,
+    "firstActorOwnAbsenceTool": "dff21f",
+    "firstRootPlatformAssumptionFailureTool": "9c9653",
+    "firstRootPlatformAssumptionExit": 1,
+    "readOnlyPlatformObservation": "cdf99d",
+    "failedRootQueryBirthAbsenceClaim": false
+  },
+  "images": [
+    {
+      "role": "api",
+      "topDigest": "sha256:e190f914a6cc21cab9268485d1ae7282fdeab1315ac64b668aa42d732fd1061d",
+      "selectedManifest": "sha256:1f207ab66b1ca6579dd5bf1024396015ca2a0f638157a7741d2d88d7b3c82c51",
+      "configDigest": "sha256:82ae6c548117fbd112a45e1ae093211fdb53dda179b5b6f8f2d881dd463a572a",
+      "localStoreID": "sha256:1f207ab66b1ca6579dd5bf1024396015ca2a0f638157a7741d2d88d7b3c82c51",
+      "actualSize": 31183342,
+      "rootFSLayerCount": 15
+    },
+    {
+      "role": "etcd",
+      "topDigest": "sha256:6ecefbe2510c4a30573a62a4d6dd175acf881ca67003fcd91849a16df7a724d5",
+      "selectedManifest": "sha256:1f445fa5dd06b08f3c0cf9f46e2891e9bc66cbf7e0b9c66627c40658edf4bc98",
+      "configDigest": "sha256:270fbeb69717150d82de2f31e6d6a93a6a60f8843d63df68cebe33c4b59c5f78",
+      "localStoreID": "sha256:1f445fa5dd06b08f3c0cf9f46e2891e9bc66cbf7e0b9c66627c40658edf4bc98",
+      "actualSize": 22342384,
+      "rootFSLayerCount": 17
+    }
+  ],
+  "authority": "Four original raw index/leaf descriptor hashes and sizes recomputed; Docker daemon verifies config/layer bytes. Explicit linux/amd64 inspect returns selected manifest ID, distinct from config digest.",
+  "independentConfigAndLayerContentRehashClaimed": false,
+  "hardFilesystemQuotaOrIndependentContainerdFreeSpaceClaimed": false,
+  "versionsExecuted": false,
+  "clusterStarted": false,
+  "realKubectlAcceptancePassed": false,
+  "wholeA04Accepted": false,
+  "appOrProductionChanged": false,
+  "originalDataRetired": false
+}

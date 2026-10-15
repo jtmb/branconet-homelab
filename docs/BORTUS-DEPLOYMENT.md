@@ -1,5 +1,11 @@
 # BORTUS application deployment
 
+## 2026-10-15: hosted regression sensitivity and real-CLI prerequisites
+
+The [hosted CI receipt](../evidence/bortus-hosted-three-regressions-root-20261015.json) records run38760696046 on validation commit8f0c0e3. Its exact frontend8cc04e7/workflow1f6ea96 match owning sourcee9274f8; docs-only26ae036 preserves both. Clean install/build/lint/types,342 units and eight integrations pass. Three unchanged tests pass on pristine copies and fail at their intended assertions after separate name-admission, failed-stdout and outage-as-empty mutations. All six bounded cases finish with original/restored bytes intact and zero skipped/cancelled tests. Default selected-source, hosted-log and docs scans report zero findings. This qualifies three deliberate faults only; other A19 regressions, the two original warm performance failures and final image/recovery/live gates remain open. Main and production are unchanged.
+
+The [A04 image receipt](../evidence/bortus-a04-control-plane-images-root-20261015.json) records acquisition of two exact public control-plane images. The first actor remains exit1 because it confused the Docker store's manifest ID with its config digest. A fresh continuation reuses the API pull and pulls only etcd, then verifies explicit linux/amd64 leaf descriptors; its actor and independent checks exit0. Four raw index/leaf hashes and sizes,25 current command records and15 original/reader birth absences are verified. Config and layer contents rely on Docker's verified descriptor handling, with no independent content-rehash claim. No image version executable or disposable API cluster has run yet. These QA prerequisites do not qualify A04 or change the home cluster, release image, permanent guards, storage or original data.
+
 Integration contract for the migration coordinator. Cluster provisioning, Secret import, charts and live acceptance belong to the migration chat. This change never imports or pushes old SQLite values.
 
 ## Image and storage contract
