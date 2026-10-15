@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "status": "one deterministic cross-process SQL-lock regression control locally qualified",
+  "sourceCommit": "ce259b00602ee622f0e1030be6da429fc5f44344",
+  "frontendTree": "0f2bd8ffb8dd1e1900f9608226c347efc19d9246",
+  "actualTool": "f62c2e",
+  "actualOuterExit": 0,
+  "exactTool": "414da4",
+  "exactExit": 0,
+  "freshTool": "1dbd2c",
+  "freshExit": 0,
+  "finalOwnTool": "8ac3d4",
+  "finalOwnExit": 0,
+  "finalFreshTool": "ddf642",
+  "finalFreshExit": 0,
+  "originalPinsCurrent": 132,
+  "originalAndPostBirthsAbsent": 21,
+  "postPinsCurrent": 20,
+  "exactContainerIDAndNameAbsent": true,
+  "finalReaderAbsent": true,
+  "report": {
+    "schema": 1,
+    "completed": true,
+    "id": "A01-SQL-writer-lock",
+    "records": [
+      {
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "fd0bba1fb379d1db88a70f97dffdd162183c19507cfbcf74cff71fb82e7c78d5",
+        "stderrSHA256": "d162e22e2a04724faff94134efc01b44cb8ae7a19d15e942aad3e02fd967a846",
+        "stdoutBytes": 735,
+        "stderrBytes": 166,
+        "lockProof": {
+          "schema": 1,
+          "acquired": false,
+          "busyCode": 5,
+          "firstCount": 2,
+          "secondCount": null,
+          "countCalls": [
+            1,
+            0
+          ],
+          "outcomes": [
+            {
+              "success": true,
+              "status": null
+            },
+            {
+              "success": false,
+              "status": 403
+            }
+          ],
+          "writers": 1,
+          "administrators": 1,
+          "distinctParticipantProcesses": true,
+          "participantExits": [
+            0,
+            0
+          ]
+        },
+        "cleanupProof": {
+          "failures": [],
+          "twoParticipants": true,
+          "bothReportedExit": true
+        }
+      },
+      {
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "0745fb36b525063cfa87162e652a5572e69a2bbb6b454fe3f60d60c7be045bf8",
+        "stderrSHA256": "becd8a827c1720310255d90e6df3426ca49368f4ce5bcdebfb854e77d4ea08be",
+        "stdoutBytes": 1389,
+        "stderrBytes": 167,
+        "lockProof": {
+          "schema": 1,
+          "acquired": true,
+          "busyCode": null,
+          "firstCount": 2,
+          "secondCount": 2,
+          "countCalls": [
+            1,
+            1
+          ],
+          "outcomes": [
+            {
+              "success": true,
+              "status": null
+            },
+            {
+              "success": true,
+              "status": null
+            }
+          ],
+          "writers": 0,
+          "administrators": 0,
+          "distinctParticipantProcesses": true,
+          "participantExits": [
+            0,
+            0
+          ]
+        },
+        "cleanupProof": {
+          "failures": [],
+          "twoParticipants": true,
+          "bothReportedExit": true
+        }
+      }
+    ],
+    "restorationFailures": [],
+    "elapsedMs": 2325,
+    "originalSelectedInputsUnchanged": true,
+    "existingSixRacesAndSevenSensitivityControlsUnchanged": true,
+    "wholeA19Accepted": false,
+    "crossProcessSensitivityScope": "One deterministic cross-demotion SQL-lock control only"
+  },
+  "sourceScan": {
+    "actualExit": 0,
+    "findings": 0,
+    "files": 398
+  },
+  "evaluationScan": {
+    "actualExit": 0,
+    "findings": 0,
+    "files": 46
+  },
+  "postSourceScan": {
+    "actualExit": 0,
+    "findings": 0,
+    "files": 6
+  },
+  "historicalRefusals": [
+    "Raw source comparison initially refused CRLF versus Git LF; corrected text correspondence preserves originals.",
+    "First evaluation preparation required raw schema byte equality; all927 schema lexemes were equal, formatting differed.",
+    "Evaluation V1.1 scanner1/one generic-api-key finding on public927-lexeme checksum field named tokenSHA256; V1.2 only renames field to lexemeSHA256, retains value and default scanner configuration.",
+    "77648e checked own-reader absence but its hash list filtered rather than asserted; ddf642 asserts every current post hash and full fingerprint."
+  ],
+  "existingSixRacesAndSevenControlsUnchanged": true,
+  "original342AndEightIntegrationDefinitionsUnchanged": true,
+  "wholeA19Accepted": false,
+  "hostedRun": 38789392711,
+  "hostedStatus": "in_progress",
+  "performanceAccepted": false,
+  "productionAdopted": false,
+  "originalDataPreserved": true
+}

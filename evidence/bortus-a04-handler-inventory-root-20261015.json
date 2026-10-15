@@ -1,0 +1,1259 @@
+{
+  "scope": "SOURCE ONLY original A04 finite handler reconciliation; not new tests or automatic acceptance",
+  "sourceCommit": "ab7c6867f20af434aed704d1644e8b08267eda0a",
+  "frontendTree": "da4ed3bd2282424c1f40009678db8374b83ac73d",
+  "routeFiles": 43,
+  "exportedMethods": 50,
+  "resourceCapabilityKinds": 7,
+  "routes": [
+    {
+      "path": "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "route": "/api/cluster/deployments/[namespace]/[name]/action",
+      "sha256": "b12762c4437c8e2d829c821f4dca327709014134c81a27840818f3ad066a3157",
+      "bytes": 1911,
+      "methods": [
+        {
+          "method": "POST",
+          "line": 13
+        }
+      ],
+      "family": "fixed direct mutation/read",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace, validateResourceName, KubernetesCommandError } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 4,
+          "text": "import { kubectlExec } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 6,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 20,
+          "text": "const auth = await requireOperator();"
+        },
+        {
+          "line": 24,
+          "text": "const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);"
+        },
+        {
+          "line": 32,
+          "text": "const result = await kubectlExec([...kubectlAction, \"deployment\", name, \"-n\", namespace], 15000);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/deployments/[namespace]/[name]/delete/route.ts",
+      "route": "/api/cluster/deployments/[namespace]/[name]/delete",
+      "sha256": "149112bd8347b0ef53f9b1fd3bc08e88adcb88390e40ee0b2f076c1ac50185b1",
+      "bytes": 1046,
+      "methods": [
+        {
+          "method": "DELETE",
+          "line": 7
+        }
+      ],
+      "family": "fixed direct mutation/read",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 4,
+          "text": "import { kubectlExec } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 6,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 14,
+          "text": "const auth = await requireOperator();"
+        },
+        {
+          "line": 18,
+          "text": "const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);"
+        },
+        {
+          "line": 19,
+          "text": "const result = await kubectlExec([\"delete\", \"deployment\", (validateResourceName(name)), \"-n\", (validateNamespace(namespace)), \"--wait=false\"], 15000);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/deployments/[namespace]/[name]/route.ts",
+      "route": "/api/cluster/deployments/[namespace]/[name]",
+      "sha256": "e0859a4847bce49f1f42a43e728e8d1546970a969be969a2acc95db398b6f769",
+      "bytes": 1677,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 7
+        }
+      ],
+      "family": "validated cached detail",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 6,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 15,
+          "text": "const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);"
+        },
+        {
+          "line": 16,
+          "text": "const data = await getCachedClusterData([\"deployments\", \"pods\", \"replicasets\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/deployments/[namespace]/[name]/scale/route.ts",
+      "route": "/api/cluster/deployments/[namespace]/[name]/scale",
+      "sha256": "95d4831c4579eb6c55f283253d6c4b97438867bb8d9704ef37406354dcd73a59",
+      "bytes": 1698,
+      "methods": [
+        {
+          "method": "POST",
+          "line": 7
+        }
+      ],
+      "family": "fixed direct mutation/read",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace, validateResourceName, KubernetesCommandError } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 4,
+          "text": "import { kubectlExec } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 6,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 14,
+          "text": "const auth = await requireOperator();"
+        },
+        {
+          "line": 18,
+          "text": "const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);"
+        },
+        {
+          "line": 24,
+          "text": "const result = await kubectlExec([\"scale\", \"deployment/\" + (validateResourceName(name)), \"-n\", (validateNamespace(namespace)), \"--replicas=\" + (replicas)], 10000);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/deployments/[namespace]/[name]/yaml/route.ts",
+      "route": "/api/cluster/deployments/[namespace]/[name]/yaml",
+      "sha256": "ac870cdfa41aa27da52d80020ff88ed5cfdc46e8b95f9688216944edfafdb1a2",
+      "bytes": 173,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 3
+        },
+        {
+          "method": "PUT",
+          "line": 4
+        }
+      ],
+      "family": "YAML factory",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { resourceYamlGet, resourceYamlPut } from \"@/lib/resource-yaml\";"
+        },
+        {
+          "line": 3,
+          "text": "export const GET = resourceYamlGet(\"deployment\");"
+        },
+        {
+          "line": 4,
+          "text": "export const PUT = resourceYamlPut(\"deployment\");"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/deployments/route.ts",
+      "route": "/api/cluster/deployments",
+      "sha256": "45de666a7f7d6337a1e55b37eb69d3cc391ea0b65c00d09202c6e1386692a237",
+      "bytes": 616,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "family": "fixed collectors/local metadata or inventory",
+      "sourceReferences": [
+        {
+          "line": 4,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 7,
+          "text": "const data = await getCachedClusterData([\"deployments\", \"pods\", \"replicasets\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/diagnostics/route.ts",
+      "route": "/api/cluster/diagnostics",
+      "sha256": "674aad619afdcb1c13acbfb633589a056c7855b0ff9883313954e3b60e267c9c",
+      "bytes": 468,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "family": "fixed collectors/local metadata or inventory",
+      "sourceReferences": [
+        {
+          "line": 2,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 7,
+          "text": "const auth = await requireOperator();"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/info/route.ts",
+      "route": "/api/cluster/info",
+      "sha256": "aec8814af32d6b847a35971856e3baa6d32aa8a97d7c80a8b9616ccb0d264e08",
+      "bytes": 987,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "family": "fixed collectors/local metadata or inventory",
+      "sourceReferences": [
+        {
+          "line": 5,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 15,
+          "text": "const data = await getCachedClusterData([\"nodes\", \"pods\", \"longhorn\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/ingresses/[namespace]/[name]/delete/route.ts",
+      "route": "/api/cluster/ingresses/[namespace]/[name]/delete",
+      "sha256": "ba364ff651214fec9de3256437b9f5b94bb323c12c244c3b4b0eb2f907281afd",
+      "bytes": 812,
+      "methods": [
+        {
+          "method": "DELETE",
+          "line": 7
+        }
+      ],
+      "family": "fixed direct mutation/read",
+      "sourceReferences": [
+        {
+          "line": 2,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 4,
+          "text": "import { kubectlExec, validateNamespace, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 9,
+          "text": "const auth = await requireOperator();"
+        },
+        {
+          "line": 12,
+          "text": "await kubectlExec([\"delete\", \"ingress\", validateResourceName(target.name), \"-n\", validateNamespace(target.namespace), \"--wait=false\"], 15000);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/ingresses/[namespace]/[name]/route.ts",
+      "route": "/api/cluster/ingresses/[namespace]/[name]",
+      "sha256": "052a41a190a468e417483ef3470165429b37819dc0932395880741859435e6b0",
+      "bytes": 1217,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "family": "validated cached detail",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 5,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 14,
+          "text": "const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);"
+        },
+        {
+          "line": 15,
+          "text": "const data = await getCachedClusterData([\"ingresses\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/ingresses/[namespace]/[name]/yaml/route.ts",
+      "route": "/api/cluster/ingresses/[namespace]/[name]/yaml",
+      "sha256": "93bd47b8518e998968ab82c7a0a1e055cee32ccc7bb3b761338f385635ffded5",
+      "bytes": 167,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 3
+        },
+        {
+          "method": "PUT",
+          "line": 4
+        }
+      ],
+      "family": "YAML factory",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { resourceYamlGet, resourceYamlPut } from \"@/lib/resource-yaml\";"
+        },
+        {
+          "line": 3,
+          "text": "export const GET = resourceYamlGet(\"ingress\");"
+        },
+        {
+          "line": 4,
+          "text": "export const PUT = resourceYamlPut(\"ingress\");"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/ingresses/route.ts",
+      "route": "/api/cluster/ingresses",
+      "sha256": "f58ce8a3a6cde036467d0a63a6b206f71d078d632d4b957ec0c4c42e2451d6f9",
+      "bytes": 583,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "family": "fixed collectors/local metadata or inventory",
+      "sourceReferences": [
+        {
+          "line": 4,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 7,
+          "text": "const data = await getCachedClusterData([\"ingresses\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/kubectl/route.ts",
+      "route": "/api/cluster/kubectl",
+      "sha256": "689589f6e3dd51aeeefa6baf0359cebb2c6c155d1feba105b750d2c7c8f2077a",
+      "bytes": 1426,
+      "methods": [
+        {
+          "method": "POST",
+          "line": 12
+        }
+      ],
+      "family": "explicit operator shell",
+      "sourceReferences": [
+        {
+          "line": 2,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 13,
+          "text": "const auth = await requireOperator();"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/namespaces/[name]/delete/route.ts",
+      "route": "/api/cluster/namespaces/[name]/delete",
+      "sha256": "d868cd043b11d5dabff7fe05e91e7246dff3e742277330d20a32a6832e065ebf",
+      "bytes": 861,
+      "methods": [
+        {
+          "method": "DELETE",
+          "line": 7
+        }
+      ],
+      "family": "fixed direct mutation/read",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 4,
+          "text": "import { kubectlExec } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 6,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 13,
+          "text": "const auth = await requireOperator();"
+        },
+        {
+          "line": 17,
+          "text": "const name = validateNamespace(rawName);"
+        },
+        {
+          "line": 18,
+          "text": "const result = await kubectlExec([\"delete\", \"namespace\", name, \"--wait=false\"], 15000);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/namespaces/[name]/route.ts",
+      "route": "/api/cluster/namespaces/[name]",
+      "sha256": "76a54dd02ed754b4b40a5d3ce4500d8260d5b63f72ea0b733d6ffe0892fe39a8",
+      "bytes": 2354,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "family": "validated cached detail",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 5,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 13,
+          "text": "const name = validateNamespace(rawName);"
+        },
+        {
+          "line": 14,
+          "text": "const data = await getCachedClusterData([\"namespaces\", \"pods\", \"deployments\", \"replicasets\", \"services\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/namespaces/[name]/yaml/route.ts",
+      "route": "/api/cluster/namespaces/[name]/yaml",
+      "sha256": "16ce4260d90328f05d883348e75c0bcc4e6ec454f8e753d59e1b5e7f2971eb97",
+      "bytes": 171,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 3
+        },
+        {
+          "method": "PUT",
+          "line": 4
+        }
+      ],
+      "family": "YAML factory",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { resourceYamlGet, resourceYamlPut } from \"@/lib/resource-yaml\";"
+        },
+        {
+          "line": 3,
+          "text": "export const GET = resourceYamlGet(\"namespace\");"
+        },
+        {
+          "line": 4,
+          "text": "export const PUT = resourceYamlPut(\"namespace\");"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/namespaces/route.ts",
+      "route": "/api/cluster/namespaces",
+      "sha256": "969efd8d51a73235e6ad3c932864c0025e5d1c533e3e6230e0a38091dfe190dc",
+      "bytes": 588,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "family": "fixed collectors/local metadata or inventory",
+      "sourceReferences": [
+        {
+          "line": 4,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 7,
+          "text": "const data = await getCachedClusterData([\"namespaces\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/nodes/[hostname]/action/route.ts",
+      "route": "/api/cluster/nodes/[hostname]/action",
+      "sha256": "fdaaa8bae06ac3c1783257c5510488388a7b17fff50cc9045f40258a239191fe",
+      "bytes": 1237,
+      "methods": [
+        {
+          "method": "POST",
+          "line": 7
+        }
+      ],
+      "family": "fixed direct mutation/read",
+      "sourceReferences": [
+        {
+          "line": 2,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 4,
+          "text": "import { kubectlExec, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 9,
+          "text": "const auth = await requireOperator();"
+        },
+        {
+          "line": 11,
+          "text": "const name = validateResourceName((await params).hostname), body = await request.json();"
+        },
+        {
+          "line": 15,
+          "text": "await kubectlExec([body.action, name, ...(body.action === \"drain\" ? [\"--ignore-daemonsets\", \"--timeout=20s\"] : [])], 25000);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/nodes/[hostname]/route.ts",
+      "route": "/api/cluster/nodes/[hostname]",
+      "sha256": "c06735736aab3140e54430aeece6589eb79d5303e0660436346692ea163bd8eb",
+      "bytes": 1221,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "family": "validated cached detail",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 5,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 13,
+          "text": "const hostname = validateResourceName(rawHostname);"
+        },
+        {
+          "line": 14,
+          "text": "const data = await getCachedClusterData([\"nodes\", \"pods\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/nodes/[hostname]/yaml/route.ts",
+      "route": "/api/cluster/nodes/[hostname]/yaml",
+      "sha256": "1a82bab0ecb6dab7d6103dd05650c3b4281ec2976abc662c0dc6f53b5ba33187",
+      "bytes": 100,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 3
+        }
+      ],
+      "family": "YAML factory",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { resourceYamlGet } from \"@/lib/resource-yaml\";"
+        },
+        {
+          "line": 3,
+          "text": "export const GET = resourceYamlGet(\"node\");"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/nodes/route.ts",
+      "route": "/api/cluster/nodes",
+      "sha256": "ff640e3be2b718c0e35a91bd681619b8f55a2491fe943e3473697047ed52b1e2",
+      "bytes": 5466,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 8
+        },
+        {
+          "method": "POST",
+          "line": 84
+        }
+      ],
+      "family": "fixed collectors/local metadata or inventory",
+      "sourceReferences": [
+        {
+          "line": 5,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 6,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 11,
+          "text": "const clusterData = await getCachedClusterData([\"nodes\", \"pods\"]);"
+        },
+        {
+          "line": 85,
+          "text": "const auth = await requireOperator();"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/pods/[namespace]/[name]/delete/route.ts",
+      "route": "/api/cluster/pods/[namespace]/[name]/delete",
+      "sha256": "eb438f955a77b7c62cd8a85bcfe4265ed80fed2927c57324946fe1a4d6a7fbc2",
+      "bytes": 1039,
+      "methods": [
+        {
+          "method": "DELETE",
+          "line": 7
+        }
+      ],
+      "family": "fixed direct mutation/read",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 4,
+          "text": "import { kubectlExec } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 6,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 14,
+          "text": "const auth = await requireOperator();"
+        },
+        {
+          "line": 18,
+          "text": "const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);"
+        },
+        {
+          "line": 19,
+          "text": "const result = await kubectlExec([\"delete\", \"pod\", (validateResourceName(name)), \"-n\", (validateNamespace(namespace)), \"--wait=false\"], 15000);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/pods/[namespace]/[name]/exec/route.ts",
+      "route": "/api/cluster/pods/[namespace]/[name]/exec",
+      "sha256": "7a0ccce622750a48af0aa8cda946463d431fc1eff25c4b21a02511827fcad534",
+      "bytes": 1398,
+      "methods": [
+        {
+          "method": "POST",
+          "line": 7
+        }
+      ],
+      "family": "fixed direct mutation/read",
+      "sourceReferences": [
+        {
+          "line": 2,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 4,
+          "text": "import { kubectlExec, validateNamespace, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 9,
+          "text": "const auth = await requireOperator();"
+        },
+        {
+          "line": 12,
+          "text": "const target = await params, namespace = validateNamespace(target.namespace), name = validateResourceName(target.name);"
+        },
+        {
+          "line": 16,
+          "text": "const output = await kubectlExec([\"exec\", name, \"-n\", namespace, ...(body.container !== undefined ? [\"-c\", validateNamespace(body.container)] : []), \"--\", \"sh\", \"-lc\", body.command], 15000);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/pods/[namespace]/[name]/logs/route.ts",
+      "route": "/api/cluster/pods/[namespace]/[name]/logs",
+      "sha256": "b3ffbf0d634b4e5d22651ba30eb18fab7428d0faa617b8c2a5241f3646f305bd",
+      "bytes": 1836,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 11
+        }
+      ],
+      "family": "fixed direct mutation/read",
+      "sourceReferences": [
+        {
+          "line": 3,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 4,
+          "text": "import { kubectlExec, validateNamespace, validateResourceName, KubernetesCommandError } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 13,
+          "text": "const auth = await requireOperator();"
+        },
+        {
+          "line": 16,
+          "text": "const namespace = validateNamespace(target.namespace), name = validateResourceName(target.name);"
+        },
+        {
+          "line": 20,
+          "text": "const logs = await kubectlExec([\"logs\", name, \"-n\", namespace, `--tail=${tail}`, \"--limit-bytes=262144\", \"--timestamps\", ...(container !== null ? [\"-c\", validateNamespace(container)] : []), ...(since ? [`--since=${since}s`] : []), ...(previous === \"true\" ? [\"--previous\"] : [])]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/pods/[namespace]/[name]/route.ts",
+      "route": "/api/cluster/pods/[namespace]/[name]",
+      "sha256": "84ffbfa56c984b143c2167957f9495cd487b69db8fffebc41d0c221eea6c8571",
+      "bytes": 1163,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "family": "validated cached detail",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 5,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 14,
+          "text": "const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);"
+        },
+        {
+          "line": 15,
+          "text": "const data = await getCachedClusterData([\"pods\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/pods/[namespace]/[name]/yaml/route.ts",
+      "route": "/api/cluster/pods/[namespace]/[name]/yaml",
+      "sha256": "64ae389bc4d29aef9321eb94ade8245c4ee9ff3f8895fd01bfbd45da742083b2",
+      "bytes": 159,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 3
+        },
+        {
+          "method": "PUT",
+          "line": 4
+        }
+      ],
+      "family": "YAML factory",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { resourceYamlGet, resourceYamlPut } from \"@/lib/resource-yaml\";"
+        },
+        {
+          "line": 3,
+          "text": "export const GET = resourceYamlGet(\"pod\");"
+        },
+        {
+          "line": 4,
+          "text": "export const PUT = resourceYamlPut(\"pod\");"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/pods/route.ts",
+      "route": "/api/cluster/pods",
+      "sha256": "6a49d6aa82653080e94f0887155416e9c7241054be588d5d1db17f4137fcdb1a",
+      "bytes": 839,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "family": "fixed collectors/local metadata or inventory",
+      "sourceReferences": []
+    },
+    {
+      "path": "src/app/api/cluster/refresh/route.ts",
+      "route": "/api/cluster/refresh",
+      "sha256": "7bd6021b8a98d02c83af4d557be82b0620b2508109020cd68353b5a4e6c01a77",
+      "bytes": 408,
+      "methods": [
+        {
+          "method": "POST",
+          "line": 5
+        }
+      ],
+      "family": "fixed collectors/local metadata or inventory",
+      "sourceReferences": [
+        {
+          "line": 3,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 6,
+          "text": "const auth = await requireOperator();"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/remove/route.ts",
+      "route": "/api/cluster/remove",
+      "sha256": "d9fd3030095efba0e75e768e09517a972c263256d494366848beac93fdc6802c",
+      "bytes": 976,
+      "methods": [
+        {
+          "method": "DELETE",
+          "line": 6
+        }
+      ],
+      "family": "fixed collectors/local metadata or inventory",
+      "sourceReferences": [
+        {
+          "line": 4,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 7,
+          "text": "const auth = await requireOperator();"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/services/[namespace]/[name]/route.ts",
+      "route": "/api/cluster/services/[namespace]/[name]",
+      "sha256": "8f55b06288565055e1bd1793a46aca3be6fccdd4cfc011dfb4aa070120cafa92",
+      "bytes": 1212,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "family": "validated cached detail",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 5,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 14,
+          "text": "const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);"
+        },
+        {
+          "line": 15,
+          "text": "const data = await getCachedClusterData([\"services\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/services/[namespace]/[name]/yaml/route.ts",
+      "route": "/api/cluster/services/[namespace]/[name]/yaml",
+      "sha256": "4ea00e5cf248a62c2d7f70424f1a3bf0c238b3ca7cfdb0f54f4e83b338faf186",
+      "bytes": 103,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 3
+        }
+      ],
+      "family": "YAML factory",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { resourceYamlGet } from \"@/lib/resource-yaml\";"
+        },
+        {
+          "line": 3,
+          "text": "export const GET = resourceYamlGet(\"service\");"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/services/route.ts",
+      "route": "/api/cluster/services",
+      "sha256": "99ee28979ca7dda36f1b7485d3d881579eb2b1b05b1277a96142a013b4614613",
+      "bytes": 578,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "family": "fixed collectors/local metadata or inventory",
+      "sourceReferences": [
+        {
+          "line": 4,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 7,
+          "text": "const data = await getCachedClusterData([\"services\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/volumes/[namespace]/[name]/route.ts",
+      "route": "/api/cluster/volumes/[namespace]/[name]",
+      "sha256": "5c80e5ae3d5f01fc3883ae8c4712c1bc7942d30abac3db0e720bb7d539652502",
+      "bytes": 1168,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        }
+      ],
+      "family": "validated cached detail",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateNamespace, validateResourceName } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 5,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 14,
+          "text": "const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);"
+        },
+        {
+          "line": 15,
+          "text": "const data = await getCachedClusterData([\"pvc\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/volumes/[namespace]/[name]/yaml/route.ts",
+      "route": "/api/cluster/volumes/[namespace]/[name]/yaml",
+      "sha256": "6dab38c4a92232b79cf1adebaf70471ca9e6f29b91d6b4c22c9035bc66b5b889",
+      "bytes": 99,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 3
+        }
+      ],
+      "family": "YAML factory",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { resourceYamlGet } from \"@/lib/resource-yaml\";"
+        },
+        {
+          "line": 3,
+          "text": "export const GET = resourceYamlGet(\"pvc\");"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/volumes/reclaim/route.ts",
+      "route": "/api/cluster/volumes/reclaim",
+      "sha256": "ad9dce6beeabb3fb91aa5d95ed54e3fe7c40e624125f07d8a2ec7e82cc3a3be4",
+      "bytes": 2324,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 6
+        },
+        {
+          "method": "PATCH",
+          "line": 19
+        }
+      ],
+      "family": "fixed direct mutation/read",
+      "sourceReferences": [
+        {
+          "line": 1,
+          "text": "import { validateResourceName, KubernetesCommandError, kubectlExec } from \"@/lib/k8s\";"
+        },
+        {
+          "line": 4,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 8,
+          "text": "const output = await kubectlExec(["
+        },
+        {
+          "line": 21,
+          "text": "const auth = await requireOperator();"
+        },
+        {
+          "line": 28,
+          "text": "validateResourceName(volume?.name);"
+        },
+        {
+          "line": 35,
+          "text": "await kubectlExec([\"patch\", \"pv\", volume.name, \"-p\", JSON.stringify({ spec: { persistentVolumeReclaimPolicy: volume.policy } })], 8000);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/cluster/volumes/route.ts",
+      "route": "/api/cluster/volumes",
+      "sha256": "6733833e9118902521e7053b1fe0b068a593ef6fddae44220b4cd1189e71299b",
+      "bytes": 2640,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        }
+      ],
+      "family": "fixed collectors/local metadata or inventory",
+      "sourceReferences": [
+        {
+          "line": 4,
+          "text": "import { getCachedClusterData } from \"@/lib/cluster-cache\";"
+        },
+        {
+          "line": 13,
+          "text": "const data = await getCachedClusterData([\"pvc\", \"sc\"]);"
+        },
+        {
+          "line": 22,
+          "text": "const data = await getCachedClusterData([\"pv\", \"longhorn\", \"sc\"]);"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/flux/hierarchy/route.ts",
+      "route": "/api/flux/hierarchy",
+      "sha256": "d26678b12705282ea7681b4219640c70d58c763fcc40b8c5b4387987e81f50d4",
+      "bytes": 364,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 4
+        }
+      ],
+      "family": "Flux",
+      "sourceReferences": []
+    },
+    {
+      "path": "src/app/api/flux/kustomizations/[name]/route.ts",
+      "route": "/api/flux/kustomizations/[name]",
+      "sha256": "d6b709cea2237afa35be79576de5702c781d8c5c62e736803382852a6cf7175d",
+      "bytes": 666,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 4
+        }
+      ],
+      "family": "Flux",
+      "sourceReferences": []
+    },
+    {
+      "path": "src/app/api/flux/repos/[id]/delete-progress/route.ts",
+      "route": "/api/flux/repos/[id]/delete-progress",
+      "sha256": "2c684af0343585258fca004dcb36170def680235161c2e865b0a1b2d5af496f8",
+      "bytes": 616,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 4
+        }
+      ],
+      "family": "Flux",
+      "sourceReferences": []
+    },
+    {
+      "path": "src/app/api/flux/repos/[id]/detail/route.ts",
+      "route": "/api/flux/repos/[id]/detail",
+      "sha256": "11c9a0eed8309169179ca8d6b64f378f60a351774ee6b73d14d7921482008724",
+      "bytes": 645,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 4
+        }
+      ],
+      "family": "Flux",
+      "sourceReferences": []
+    },
+    {
+      "path": "src/app/api/flux/repos/[id]/route.ts",
+      "route": "/api/flux/repos/[id]",
+      "sha256": "9bae5dba8949a9a026729b6773075c1cbffff60dcb454b424630ca9f6efe5a9f",
+      "bytes": 1002,
+      "methods": [
+        {
+          "method": "DELETE",
+          "line": 5
+        }
+      ],
+      "family": "Flux",
+      "sourceReferences": [
+        {
+          "line": 4,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 10,
+          "text": "const auth = await requireOperator();"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/flux/repos/[id]/sync/route.ts",
+      "route": "/api/flux/repos/[id]/sync",
+      "sha256": "d1032c657cebd297a425dfee54f8dcb5e4d2f84a574d5f9248fd8555cc600945",
+      "bytes": 905,
+      "methods": [
+        {
+          "method": "POST",
+          "line": 5
+        }
+      ],
+      "family": "Flux",
+      "sourceReferences": [
+        {
+          "line": 4,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 10,
+          "text": "const auth = await requireOperator();"
+        }
+      ]
+    },
+    {
+      "path": "src/app/api/flux/repos/route.ts",
+      "route": "/api/flux/repos",
+      "sha256": "02b94e71671fbdc3d4f7d37d17fcabfb7fbf198f7e383845f88524469e1cf426",
+      "bytes": 1382,
+      "methods": [
+        {
+          "method": "GET",
+          "line": 5
+        },
+        {
+          "method": "POST",
+          "line": 14
+        }
+      ],
+      "family": "Flux",
+      "sourceReferences": [
+        {
+          "line": 4,
+          "text": "import { requireOperator } from \"@/lib/permissions\";"
+        },
+        {
+          "line": 15,
+          "text": "const auth = await requireOperator();"
+        }
+      ]
+    }
+  ],
+  "supportingSource": {
+    "src/lib/kubectl-client.ts": {
+      "bytes": 7043,
+      "sha256": "7e68bdf6284a83359a94b82a04e85950938c1c3e7ef88e6e2c7a3b3bd03244ab"
+    },
+    "src/lib/k8s.ts": {
+      "bytes": 4136,
+      "sha256": "ecc3cc0527c52e081007d65a8ea5ddd46c7de2a7363d15af762cd3729a590e04"
+    },
+    "src/lib/resource-capabilities.ts": {
+      "bytes": 1544,
+      "sha256": "48bcb1e2cfa2619facdd494d9123df6368099e6d602ec5b85016dc82c88feda7"
+    },
+    "src/lib/resource-yaml.ts": {
+      "bytes": 3843,
+      "sha256": "556b2e5b9c72d95276019f60b9a09efdc87c61d331580265529984ad933d8cf3"
+    },
+    "src/lib/cluster-cache.ts": {
+      "bytes": 10079,
+      "sha256": "cf9e971d8fdce9f04fd750f807eb159d4e418db0a2489aedad85de1ae113b97a"
+    },
+    "src/lib/pod-query.ts": {
+      "bytes": 3953,
+      "sha256": "fe5a030155f1be0a0d2f9cce914545233ab8d44fa8e707831697946fa7e7f3c5"
+    },
+    "src/lib/flux.ts": {
+      "bytes": 43547,
+      "sha256": "adbd6be0b5ab72f17501e7b9dc3beca628ccdb80bee4ba705419fce2cd3cc92f"
+    },
+    "tests/kubectl.test.ts": {
+      "bytes": 5751,
+      "sha256": "42780a9e8aaaeed6083de4a8afceed39f4680cd709f9ed2a91ffd87a6b650d05"
+    },
+    "tests/http.integration.ts": {
+      "bytes": 47933,
+      "sha256": "6b58c0c735a94d884a2963ee112d85c4c5a828c4af22054b00104df80cfd77d5"
+    },
+    "tests/resource-capabilities.test.ts": {
+      "bytes": 2937,
+      "sha256": "7c2b2ef737b10b10902dd99a7a8f52b907293097b321b2b87e611b1a9a3a4de9"
+    },
+    "tests/flux-credentials.test.ts": {
+      "bytes": 12103,
+      "sha256": "e4fc1e2d066300a26ad60837f7747e1a8d903f868df76eec25c8e25d365fea87"
+    }
+  },
+  "evidenceComposition": {
+    "originalReal44": "b5adf7/0; matched b44259/0; root own898625/0 fresh1899c7/0",
+    "newReal45": "c6e4ab/0; matched independent and own pending ROOT execution",
+    "freshFunctional": "e58ef0/0;342+8;exact1113d7/0 fresh90878f/0 own50178d/0 finalfresh6d1b19/0"
+  },
+  "noNewTargetOrTests": true,
+  "allA04Accepted": false
+}
