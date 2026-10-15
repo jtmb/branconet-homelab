@@ -149,8 +149,8 @@
       "id": "A07",
       "finding": "cache cost",
       "originalValidation": "Repeat cold/warm/concurrent/outage baselines with fixed fixture delays; inject a slow optional resource, >2 MiB lists and 1k/10k pods. Measure p50/p95, process counts, response size, CPU and peak memory in the Node 22/Linux image. Require no warm-cache regression and bounded repeated-failure cost.",
-      "localCompletedScope": "Complete10k Pod route, bounded failure/backoff/resource snapshot and fixed Node22/Linux cold/warm/concurrent/outage data retained. Latest unchanged4668 comparison fails native/some warm no-regression gates.",
-      "stillRequired": "FAILED/OPEN. Material functional-qualified change and unchanged six-profile/three-pair comparison required; CPU/RSS/bytes are whole-fixture observations. Baseline incomplete10kPods and distinct Services-after-Pods envelopes are noncomparative. No pair exists for c29fc.",
+      "localCompletedScope": "Complete10k Pod route, bounded failure/backoff/resource snapshot and fixed Node22/Linux cold/warm/concurrent/outage data retained. Historical unchanged4668 comparison fails native/some warm no-regression gates. Latest isolatedd69/6e+c046 original three-pair/six-profile evaluation completed; two of ten warm cases regressed, eight improved; functional/closure0 is not performance acceptance.",
+      "stillRequired": "FAILED/OPEN. Latest isolatedd69 bookkeeping comparison fails small serial and1k concurrent warm p95. A grounded correction must preserve original acceptance and pass unchanged six-profile/three-pair comparison; CPU/RSS/bytes remain whole-fixture observations. Historical incomplete baseline10k and Services-after-Pods envelopes remain noncomparative; no product/image/live adoption.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/resource-cache.test.ts",
         "k8s-rewrite/front-end/src/lib/cluster-cache.ts",
@@ -162,7 +162,8 @@
         "native-distinct-span/controlled-paired/assessment.json",
         "combined-c29fc8c/qualification.json"
       ],
-      "overallDeliveredAcceptancePassed": false
+      "overallDeliveredAcceptancePassed": false,
+      "latestBookkeepingEvaluation": "account-bookkeeping-paired-evaluation.json"
     },
     {
       "id": "A08",
@@ -442,8 +443,8 @@
       "id": "A21",
       "finding": "lists/probes/forms",
       "originalValidation": "200/1k/10k metadata/config entries, slow/failing independent sources, repeated save clicks, dropped network and malformed responses. Measure render time, response bytes, probe request count/deadline and peak memory. Validate readiness still rejects an inaccessible namespace and respects TLS.",
-      "localCompletedScope": "Resource/admin/Secret/KV/Flux100-row DOM pages,201/205/334/603 inventories,complete10kPods; bounded alias/readiness four-worker deadlines/TLS refusal; complete10,000x253 admin acknowledgments and strict other route limits pass.",
-      "stillRequired": "OPEN latency/RSS gate: bounded wire/DOM bytes do not prove peak memory. Exact final server large config/metadata200/1k/10k render/RSS/repeated-save/drop/malformed permutations and image readiness inaccessible namespace/TLS remain; existing native no-regression still fails.",
+      "localCompletedScope": "Resource/admin/Secret/KV/Flux100-row DOM pages,201/205/334/603 inventories,complete10kPods; bounded alias/readiness four-worker deadlines/TLS refusal; complete10,000x253 admin acknowledgments and strict other route limits pass. Latest isolatedd69 original comparison has complete six-profile inventories and independent closure, but two warm p95 gates regress and peak whole-fixture RSS rises.",
+      "stillRequired": "OPEN latency/RSS gate: bounded wire/DOM bytes do not prove peak memory. Exact final server large config/metadata200/1k/10k render/RSS/repeated-save/drop/malformed permutations and image readiness inaccessible namespace/TLS remain; existing native no-regression still fails. Latest bookkeeping evaluation is FAILED/OPEN (2/10warm); focused83/build-only/compiled10HTTP12SQL13joins do not satisfy full delivery/performance.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/metadata-bounds.test.ts",
         "k8s-rewrite/front-end/tests/http.integration.ts",
@@ -456,7 +457,8 @@
         "combined-c29fc8c/qualification.json",
         "native-distinct-span/controlled-paired/assessment.json"
       ],
-      "overallDeliveredAcceptancePassed": false
+      "overallDeliveredAcceptancePassed": false,
+      "latestBookkeepingEvaluation": "account-bookkeeping-paired-evaluation.json"
     },
     {
       "id": "A22",
@@ -1005,5 +1007,14 @@
     "supplementalDifferentBirthObservationNotDirectAPI": true,
     "noOtherCasesReplayed": true,
     "remaining": "Finite Settings PV Capacity/Created and Storage PVC Capacity only. Preserve original A13 breadth/physical DOM/AT and final delivery limits; no universal table/date or performance acceptance."
+  },
+  "latestAccountBookkeepingEvaluation20261015": {
+    "record": "account-bookkeeping-paired-evaluation.json",
+    "candidate": "d69f116057f51f5ef18d6f625528d702486d2027",
+    "performanceAccepted": false,
+    "warmRegressions": 2,
+    "warmComparableCases": 10,
+    "productUnchanged": true,
+    "allClosurePassed": true
   }
 }
