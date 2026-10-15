@@ -31,14 +31,15 @@ export default function ClusterSidebar() {
 
   return (
     <aside
-      className={`sticky top-0 h-screen flex flex-col bg-zinc-900/50 sidebar-border backdrop-blur-sm transition-all duration-300 ${
-        collapsed ? "w-14" : "w-56"
+      className={`sticky top-0 h-screen flex flex-col bg-zinc-900/50 sidebar-border backdrop-blur-sm transition-none md:transition-[width] md:duration-300 ${
+        collapsed ? "w-14 shrink-0" : "w-14 md:w-56 shrink-0"
       }`}
     >
       {/* Collapse toggle */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="flex items-center justify-center h-12 border-b section-border text-zinc-500 hover:text-zinc-300 transition-colors flex-shrink-0 outline-none"
+        className="hidden md:flex items-center justify-center h-12 border-b section-border text-zinc-500 hover:text-zinc-300 transition-colors flex-shrink-0"
+        aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
         title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
       >
         {collapsed ? (
@@ -49,7 +50,7 @@ export default function ClusterSidebar() {
       </button>
 
       {/* Nav items */}
-      <nav className="flex-1 py-3 space-y-1 px-2 overflow-y-auto">
+      <nav aria-label="Main navigation" className="flex-1 py-3 space-y-1 px-1 md:px-2 overflow-y-auto">
         {NAV_ITEMS.map((item) => {
           const isActive =
             pathname === item.href ||
@@ -59,7 +60,11 @@ export default function ClusterSidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors outline-none ${
+              prefetch={false}
+              aria-label={item.label}
+              title={item.label}
+              aria-current={isActive ? "page" : undefined}
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 isActive
                   ? "bg-zinc-800/50 text-zinc-100"
                   : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30"
@@ -68,7 +73,7 @@ export default function ClusterSidebar() {
               <item.icon
                 className={`w-5 h-5 flex-shrink-0 ${isActive ? item.color : ""}`}
               />
-              {!collapsed && <span className="truncate">{item.label}</span>}
+              {!collapsed && <span className="hidden md:inline truncate">{item.label}</span>}
             </Link>
           );
         })}
@@ -76,7 +81,7 @@ export default function ClusterSidebar() {
 
       {/* Bottom branding */}
       {!collapsed && (
-        <div className="px-3 py-3 border-t section-border flex-shrink-0">
+        <div className="hidden md:block px-3 py-3 border-t section-border flex-shrink-0">
           <p className="text-[10px] text-zinc-600 tracking-wide uppercase">
             BORTUS Homelab
           </p>

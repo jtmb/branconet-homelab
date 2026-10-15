@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { invalidateCache } from "@/lib/cluster-cache";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 
 export async function DELETE() {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
   try {
     // Clean all cluster-related tables in a transaction

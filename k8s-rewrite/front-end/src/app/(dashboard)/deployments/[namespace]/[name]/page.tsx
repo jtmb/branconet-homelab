@@ -3,9 +3,12 @@
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Rocket, Loader2, ChevronRight } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useQuery } from "@/lib/use-query";
+import { QueryStatus } from "@/components/ui/query-status";
+import { deploymentState } from "@/lib/deployment-state";
+import { DeploymentControls } from "@/components/cluster/deployment-controls";
 import ViewportWrapper from "../../../viewport-wrapper";
-import ResourceActionsMenu from "../../../resource-actions-menu";
+import ResourceActionsMenu from "../../../resource-actions-trigger";
 
 function formatAge(ms: number): string {
   const s = Math.floor(ms / 1000);
@@ -22,46 +25,12 @@ function formatAge(ms: number): string {
 export default function DeploymentDetailPage() {
   const router = useRouter();
   const { namespace, name } = useParams<{ namespace: string; name: string }>();
-  const [deployment, setDeployment] = useState<any>(null);
-  const [pods, setPods] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-  const [editingDesired, setEditingDesired] = useState(false);
-  const [desiredInput, setDesiredInput] = useState("");
-  const [scalingDesired, setScalingDesired] = useState(false);
-
-  const fetchDeployment = useCallback(async () => {
-    try {
-      const res = await fetch(`/api/cluster/deployments/${namespace}/${name}`);
-      if (res.status === 404) { setNotFound(true); setLoading(false); return; }
-      const data = await res.json();
-      setDeployment(data.deployment);
-      setPods(data.pods || []);
-    } catch {
-      setNotFound(true);
-    } finally {
-      setLoading(false);
-    }
-  }, [namespace, name]);
-
-  const doScaleDesired = useCallback(async (newReplicas: number) => {
-    setScalingDesired(true);
-    try {
-      const res = await fetch(`/api/cluster/deployments/${namespace}/${name}/scale`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ replicas: newReplicas }),
-      });
-      if (res.ok) {
-        await fetchDeployment();
-        router.refresh();
-      }
-    } finally {
-      setScalingDesired(false);
-    }
-  }, [namespace, name, fetchDeployment, router]);
-
-  useEffect(() => { fetchDeployment(); }, [fetchDeployment]);
+  const query = useQuery<any>(`/api/cluster/deployments/${encodeURIComponent(namespace)}/${encodeURIComponent(name)}`);
+  const deployment = query.data?.deployment;
+  const pods = query.data?.pods ?? [];
+  const loading = query.loading;
+  const notFound = query.status === 404;
+  const fetchDeployment = query.refetch;
 
   if (loading) {
     return (
@@ -75,8 +44,8 @@ export default function DeploymentDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <Rocket className="w-12 h-12 text-zinc-600" />
-        <h2 className="text-lg font-semibold text-zinc-300">Deployment Not Found</h2>
-        <p className="text-sm text-zinc-500">{namespace}/{name}</p>
+        <h2 className="text-lg font-semibold text-zinc-300">{notFound ? "Deployment Not Found" : "Deployment Unavailable"}</h2>
+        <QueryStatus query={query} /><p className="text-sm text-zinc-500">{namespace}/{name}</p>
         <Link href="/deployments" className="text-indigo-400 hover:underline text-sm">← Back to Deployments</Link>
       </div>
     );
@@ -85,7 +54,8 @@ export default function DeploymentDetailPage() {
   const created = deployment.metadata?.creationTimestamp;
   const ageMs = created ? Date.now() - new Date(created).getTime() : 0;
   const ns = deployment.metadata?.namespace || namespace;
-  const desired = deployment.spec?.replicas ?? 0;
+  const desired = deployment.spec?.replicas ?? 1;
+  const state = deploymentState(deployment);
   const ready = deployment.status?.readyReplicas ?? 0;
   const available = deployment.status?.availableReplicas ?? 0;
   const updated = deployment.status?.updatedReplicas ?? 0;
@@ -104,7 +74,7 @@ export default function DeploymentDetailPage() {
     <div className="flex flex-col min-h-0">
 
       <ViewportWrapper>
-      <main className="px-3 sm:px-4 lg:px-6 py-6">
+      <main className="px-3 sm:px-4 lg:px-6 py-6"><QueryStatus query={query} />
         {/* Breadcrumb */}
         <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
           <Link href="/deployments" className="hover:text-zinc-300 transition-colors">Deployments</Link>
@@ -114,59 +84,20 @@ export default function DeploymentDetailPage() {
         <div className="flex items-center gap-3 mb-6">
           <Rocket className="page-header-icon text-amber-400" />
           <h1 className="page-header-title">{deployment.metadata?.name}</h1>
-          <span className="text-xs px-2 py-0.5 rounded-full badge-success">{ready}/{desired} ready</span>
+          <span className="text-xs px-2 py-0.5 rounded-full">{state.state} · {ready}/{desired} ready</span>
           <span className="text-xs text-zinc-500 bg-zinc-800/60 px-2 py-0.5 rounded-full">{ns}</span>
           <span className="text-xs text-zinc-500 ml-auto">{ageMs > 0 ? formatAge(ageMs) : "…"}</span>
           <ResourceActionsMenu resourceType="deployment" resource={deployment} onAction={fetchDeployment} />
         </div>
 
+        <p className="mb-4 text-sm text-zinc-400">Controller generation {state.observedGeneration}/{state.generation}. {query.data?.ownershipAvailable === false ? "Pod ownership data is unavailable." : "Pods follow controller UIDs."} Flux may restore Git desired state after runtime operations.</p>
         {/* Summary */}
         <section className="glass-card p-4 rounded-xl mb-6">
         <h2 className="text-sm font-semibold text-zinc-200">Summary</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div>
             <p className="text-xs text-zinc-500 mb-0.5">Desired</p>
-            {editingDesired ? (
-              <input
-                autoFocus
-                type="number"
-                min={0}
-                className="w-20 text-sm font-medium bg-zinc-800 border border-indigo-500/50 rounded px-2 py-0.5 text-zinc-200 outline-none focus:border-indigo-400"
-                value={desiredInput}
-                onChange={(e) => setDesiredInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    const v = parseInt(desiredInput, 10);
-                    if (!isNaN(v) && v >= 0 && v !== desired) {
-                      doScaleDesired(v);
-                    }
-                    setEditingDesired(false);
-                  }
-                  if (e.key === "Escape") setEditingDesired(false);
-                }}
-                onBlur={() => {
-                  const v = parseInt(desiredInput, 10);
-                  if (!isNaN(v) && v >= 0 && v !== desired) {
-                    doScaleDesired(v);
-                  }
-                  setEditingDesired(false);
-                }}
-              />
-            ) : (
-              <p
-                className="text-sm font-medium text-zinc-200 cursor-pointer hover:text-indigo-400 transition-colors border border-transparent hover:border-indigo-500/30 rounded px-2 py-0.5 -mx-2"
-                onClick={() => {
-                  setDesiredInput(String(desired));
-                  setEditingDesired(true);
-                }}
-                title="Click to edit desired replicas"
-              >
-                {scalingDesired ? (
-                  <Loader2 className="w-3.5 h-3.5 inline animate-spin text-indigo-400 mr-1" />
-                ) : null}
-                {desired}
-              </p>
-            )}
+            <DeploymentControls key={`${namespace}/${name}/${desired}`} namespace={namespace} name={name} desired={desired} />
           </div>
           <SummaryItem label="Ready" value={String(ready)} highlight={ready !== desired} />
           <SummaryItem label="Up-to-date" value={String(updated)} />

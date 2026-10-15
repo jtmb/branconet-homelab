@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/patch-next-body-finalize.mjs && node scripts/build-account-worker.mjs",
+    "prebuild": "node scripts/patch-next-body-finalize.mjs && node scripts/build-secret-flat-native.mjs && node scripts/build-account-worker.mjs",
+    "postbuild": "node scripts/package-secret-flat-native.mjs && node scripts/package-account-worker.mjs",
     "dev": "next dev -p 4000",
     "build": "prisma generate && next build",
     "start": "next start -p 4000",
-    "lint": "next lint",
+    "lint": "eslint . --max-warnings=0",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
+    "pretest": "node scripts/build-account-worker.mjs",
     "test": "tsx --test tests/*.test.ts",
-    "test:integration": "tsx --test tests/http.integration.ts",
+    "test:integration": "tsx --test tests/*.integration.ts",
     "typecheck": "tsc --noEmit",
     "db:deploy": "prisma migrate deploy"
   },
@@ -34,22 +38,27 @@
     "prisma": "^6.0.0",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "react-syntax-highlighter": "^16.1.1",
     "tailwind-merge": "^2.5.0",
     "xterm": "^5.3.0",
     "zod": "^3.23.0",
     "zustand": "^5.0.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.3.7",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.0.0",
     "@types/react": "^18.3.0",
     "@types/react-dom": "^18.3.0",
-    "@types/react-syntax-highlighter": "^15.5.13",
     "autoprefixer": "^10.4.0",
-    "postcss": "^8.4.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^15.5.27",
+    "postcss": "^8.5.29",
     "tailwindcss": "^3.4.0",
     "tsx": "^4.20.6",
     "typescript": "^5.7.0"
+  },
+  "overrides": {
+    "next": { "postcss": "$postcss" },
+    "@prisma/config@6.19.3": { "deepmerge-ts": "8.0.0" }
   }
 }

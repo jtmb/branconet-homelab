@@ -99,6 +99,27 @@ test("read imported values; list is metadata only; restart reads native store", 
   );
   assert.equal(api.mutations, 0);
 });
+test("public Secret projections exclude annotations and managed fields containing another key's value", async () => {
+  const { api, store } = setup();
+  const object = api.objects.get("apps/vpn")!;
+  const unrelated = "synthetic-other-key-never-public";
+  object.metadata!.annotations = {
+    "kubectl.kubernetes.io/last-applied-configuration": JSON.stringify({ data: { password: encode(unrelated) }, stringData: { password: unrelated } }),
+  };
+  object.metadata!.managedFields = [{ manager: unrelated }];
+  const before = structuredClone(object.metadata);
+  for (const projection of [await store.list(), await store.read(target)]) {
+    const publicJson = JSON.stringify(projection);
+    assert(!publicJson.includes(unrelated));
+    assert(!publicJson.includes(encode(unrelated)));
+    assert(!publicJson.includes("annotations"));
+    assert(!publicJson.includes("managedFields"));
+  }
+  await store.write(target, "synthetic-current-key", "update", "7");
+  const after = (await api.read("apps", "vpn")).metadata;
+  assert.deepEqual(after?.annotations, before?.annotations);
+  assert.deepEqual(after?.managedFields, before?.managedFields);
+});
 test("create, update, key deletion preserve unrelated data/type/all metadata", async () => {
   const { api, store } = setup();
   const old = await api.read("apps", "vpn");
@@ -311,6 +332,7 @@ test("Bearer lookup requires token, keeps response contract and redacts failures
 test("middleware permits exact Bearer/probe paths but protects similar paths", async () => {
   for (const pathname of [
     "/api/vars/lookup",
+    "/api/kv/automation",
     "/api/health/live",
     "/api/health/ready",
   ])
@@ -321,13 +343,12 @@ test("middleware permits exact Bearer/probe paths but protects similar paths", a
     );
   for (const pathname of [
     "/api/vars/lookup/other",
+    "/api/kv/automation/other",
+    "/api/kv/automation-fake",
     "/api/secrets",
     "/api/health/ready/other",
   ])
-    assert.equal(
-      (await middleware(new NextRequest(`https://bortus${pathname}`))).status,
-      401,
-    );
+    { const response=await middleware(new NextRequest(`https://bortus${pathname}`));assert.equal(response.status,401);assert.match(response.headers.get("cache-control")||"",/no-store/); }
 });
 test("transport rejects HTTP and insecure TLS kubeconfig without API access", async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "bortus-transport-test-"));

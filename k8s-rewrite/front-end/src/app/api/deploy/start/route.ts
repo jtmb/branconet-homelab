@@ -4,18 +4,20 @@ import { runAnsiblePlaybook } from "@/lib/ansible";
 import { activeJobs } from "@/lib/active-jobs";
 import { syncVarsToYAML, syncInventoryToFile, syncNodesFromVars } from "@/lib/sync-vars";
 import { invalidateCache } from "@/lib/cluster-cache";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
+import { runtimeCapabilities } from "@/lib/runtime-capabilities";
+import { ansibleSelection, AnsibleSelectionError } from "@/lib/ansible-selection";
 
 export async function POST(request: NextRequest) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
 
-  if (process.env.BORTUS_DISABLE_PROVISIONING === "true" || process.env.KUBERNETES_SERVICE_HOST) return NextResponse.json({ error: "Run bootstrap/provisioning from the independent operator environment" }, { status: 501 });
+  if (!runtimeCapabilities().provisioning) return NextResponse.json({ error: "Run bootstrap/provisioning from the independent operator environment" }, { status: 501 });
 
   try {
     const body = await request.json();
-    const { playbook, roles } = body;
-    const playbookFile = playbook || "site.yml";
+    const selected = ansibleSelection(body?.playbook ?? "site.yml", body?.roles ?? []);
+    const playbookFile = selected.playbook;
 
     // Fail before launching on invalid lookup references; never use old generated files.
     await syncVarsToYAML();
@@ -37,10 +39,11 @@ export async function POST(request: NextRequest) {
     activeJobs.set(job.id, controller);
 
     // Start Ansible asynchronously (don't await)
-    runAnsible(job.id, playbookFile, roles || [], controller.signal);
+    void runAnsible(job.id, playbookFile, selected.roles, controller.signal);
 
     return NextResponse.json({ success: true, jobId: job.id });
   } catch (err) {
+    if (err instanceof AnsibleSelectionError) return NextResponse.json({ error: err.message }, { status: 400 });
     return NextResponse.json({ error: "Provisioning preparation failed" }, { status: 500 });
   }
 }
@@ -58,32 +61,34 @@ async function runAnsible(
   roles: string[],
   signal: AbortSignal
 ) {
-  const emitter = await runAnsiblePlaybook(playbookFile, roles, signal);
+  let emitter: Awaited<ReturnType<typeof runAnsiblePlaybook>>;
+  try { emitter = await runAnsiblePlaybook(playbookFile, roles, signal); }
+  catch {
+    try { await prisma.job.update({ where: { id: jobId }, data: { output: "[Provisioning runner could not start]\n", status: "failed", finishedAt: new Date() } }); }
+    catch { console.error("Failed to save final provisioning state"); }
+    finally { activeJobs.delete(jobId); }
+    return;
+  }
 
   let outputBuffer = "";
   let flushTimer: ReturnType<typeof setTimeout> | null = null;
   let finalizing = false;
+  let flushing = Promise.resolve();
 
   // Throttled DB flush: accumulate output, write every 500ms
   function scheduleFlush() {
     if (flushTimer || finalizing) return;
-    flushTimer = setTimeout(async () => {
+    flushTimer = setTimeout(() => {
       flushTimer = null;
       if (finalizing) return;
       if (outputBuffer) {
         const text = outputBuffer;
         outputBuffer = "";
-        try {
-          const current = await prisma.job.findUnique({ where: { id: jobId } });
-          if (current) {
-            await prisma.job.update({
-              where: { id: jobId },
-              data: { output: current.output + text },
-            });
-          }
-        } catch {
-          // DB write failed — silently retry next flush
-        }
+        flushing = flushing.then(async () => {
+          // Fixed progress only. Terminal persistence waits for any in-flight append.
+          try { await prisma.$executeRaw`UPDATE "Job" SET "output" = "output" || ${text} WHERE "id" = ${jobId} AND "status" = 'running'`; }
+          catch { /* Final full progress snapshot remains authoritative. */ }
+        });
       }
     }, 500);
   }
@@ -94,8 +99,10 @@ async function runAnsible(
   });
 
   emitter.on("close", async ({ exitCode, fullOutput }: { exitCode: number | null; fullOutput: string }) => {
+    if (finalizing) return;
     finalizing = true;
     if (flushTimer) clearTimeout(flushTimer);
+    await flushing;
 
     const isSuccess = exitCode === 0;
 
@@ -122,15 +129,17 @@ async function runAnsible(
 
       }
     } catch (err) {
-      console.error("Failed to save final job state:", err);
+      console.error("Failed to save final provisioning state");
     }
 
     activeJobs.delete(jobId);
   });
 
-  emitter.on("error", async (err: Error) => {
+  emitter.on("error", async () => {
+    if (finalizing) return;
     finalizing = true;
     if (flushTimer) clearTimeout(flushTimer);
+    await flushing;
 
     try {
       const current = await prisma.job.findUnique({ where: { id: jobId } });
@@ -138,7 +147,7 @@ async function runAnsible(
         await prisma.job.update({
           where: { id: jobId },
           data: {
-            output: current.output + `\nERROR: ${err.message}\n`,
+            output: current.output + "\n[Provisioning runner failed]\n",
             status: "failed",
             finishedAt: new Date(),
           },
