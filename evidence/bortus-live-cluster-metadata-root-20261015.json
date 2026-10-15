@@ -1,0 +1,58 @@
+{
+  "observedUTC": "2026-10-15T12:37:28.318003+00:00",
+  "actualKubectlExit": 0,
+  "runningPods": 91,
+  "runningNotReady": [],
+  "readOnly": true,
+  "credentialsOrSecretValuesPublished": false,
+  "rootActualToolFirstSnapshot": "2dae60",
+  "rootDerivedFirstSnapshot": {
+    "observedUTC": "2026-10-15T12:35:30.795732+00:00",
+    "allSevenQueriesPassed": true,
+    "ReadyNodes": 3,
+    "BoundPVCs": 54,
+    "totalPVCs": 54,
+    "totalPods": 97,
+    "runningPods": 91,
+    "completedPods": 6,
+    "otherPodPhases": 0,
+    "ReadyActiveHelmReleases": 33,
+    "bortusSuspended": true,
+    "chartsSourceReady": true,
+    "chartsRevision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621",
+    "kustomizationReady": true,
+    "longhornVolumes": 40,
+    "longhornAllEncrypted": true,
+    "longhornAllTwoReplicas": true,
+    "longhornAttachedHealthy": 30,
+    "longhornDetachedUnknown": 10
+  },
+  "rootClientObservedUTC": "2026-10-15T12:37:28.245589+00:00",
+  "limits": "Read-only metadata snapshot; not application/data-recovery/live-upgrade acceptance",
+  "podsWhoseNameContainsBortus": [
+    {
+      "namespace": "bortus",
+      "name": "bortus-5c55f6d5b5-67mnk",
+      "images": [
+        {
+          "image": "docker.io/library/bortus:migration-1438b27",
+          "imageID": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+          "ready": true
+        }
+      ]
+    },
+    {
+      "namespace": "migration-system",
+      "name": "migration-nas-bortus-restore",
+      "images": [
+        {
+          "image": "docker.io/library/python:3.12-slim",
+          "imageID": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1",
+          "ready": false
+        }
+      ]
+    }
+  ],
+  "bortusApplicationReady": true,
+  "nameFilterIncludesRecoveryHelpers": true
+}

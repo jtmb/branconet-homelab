@@ -42,3 +42,8 @@ Pod CIDR is 10.244.0.0/16; service CIDR is 10.96.0.0/12. Calico does not use Swa
 BORTUS application access is a separate deployment dependency. Its running integration must use native Kubernetes Secrets and satisfy authorization/restart tests. Development is assigned to scoped application and native-transport sub-agents; migration operations and live acceptance remain with the coordinator. Former execution chats are archived.
 
 The delivered BORTUS container connects through its mounted service-account token and CA. Secret namespaces are explicitly allowlisted, each with get/list/create/update Roles; values are never recovered from SQLite. Explicit lookup aliases identify namespace/name/key without underscore parsing. Other dashboard/Flux/exec permissions are separate. See [BORTUS-DEPLOYMENT.md](BORTUS-DEPLOYMENT.md) and [SECRETS-ENGINE.md](SECRETS-ENGINE.md). Local operator kubeconfig and provisioning credentials remain independently available for recovery.
+
+
+## 2026-10-15 operator observation
+
+The WSL operator kubeconfig path in the fetch example is currently absent. Do not replace another kubeconfig or copy credentials into Git to compensate. The [current read-only snapshot](../evidence/bortus-live-cluster-metadata-root-20261015.json) uses the established SSH identity with strict host checking and runs kubectl on the master, where its existing operator configuration works. No credential values are emitted. WSL restart also changes process boot identity; later local verification must distinguish original-boot records from current processes.

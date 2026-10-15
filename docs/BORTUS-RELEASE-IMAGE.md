@@ -813,3 +813,20 @@ The [COPY-only image attempt](../evidence/bortus-pcre2-system8-image-prebuild-re
 ## 2026-10-15: corrected system8 image assembles locally
 
 The [fresh COPY-only producer](../evidence/bortus-pcre2-system8-image-assembly-root-20261015.json) completes all four Docker jobs with actual0 under the original300-second bound. It reconstructs the qualified current6e application/Node components and adds only the selected system PCRE8 payload and explicit public provenance. The inspected local Docker identity is681de2d3; its OCI index/leaf/raw-config relationship is not yet qualified. Independent actor closure, saved export/descriptor chain, exact31795-object filesystem comparison, fresh runtime and default security scan remain pending. No container or production workload starts in this assembly. All ten previous scanner findings and the failed first lookup remain retained; no security exception or deployment follows.
+
+
+## 2026-10-15: current cluster and boot-aware image closure
+
+The [read-only live snapshot](../evidence/bortus-live-cluster-metadata-root-20261015.json) verifies3 Ready nodes,54 Bound PVCs,91 Running/Ready Pods and6 completed Pods, with no other phases. All33 active Helm releases and chart/Flux reconciliation are Ready. BORTUS remains suspended and serves the previous3b076fb9 image. Longhorn has40 encrypted two-replica volumes:30 attached/healthy and10 detached/unknown; detached status is retained, not promoted to healthy. These metadata checks do not prove application recovery or upgrade acceptance.
+
+The [image assembly closure](../evidence/bortus-pcre2-system8-image-assembly-root-20261015.json) now passes independent and final root checks for9 source files,26 actor records and3 owned payload files. WSL restarted between assembly and observation; the first observer1 created no owner. The corrected reader binds current boot19d54e89 and original boot7fbd3ead explicitly, records five original births in the different boot, and never compares their PID/start tuples with current processes. The current reader is freshly absent. The first export source refuses before owner/CLI/save because one input row incorrectly expects0600 for the original qualified0644 status file. That file is unchanged; only a fresh binding correction is allowed. Saved export/fullFS/runtime/security qualification remains pending.
+
+
+## 2026-10-15: fresh image export completes
+
+The [corrected export](../evidence/bortus-pcre2-system8-export-root-20261015.json) returns actual0 for all three inspect/save/inspect jobs. Its278025216-byte archive hashes to f9f5c926 and binds15 ordered layer digests to the actual saved Linux/amd64 manifest4f8cfddc and raw configf67ca934. The local Docker identity681de2d3 is recorded separately. Registry publication, attestation semantics, complete filesystem reconstruction, fresh runtime and security acceptance remain unproved. The first matched post draft is held unrun after source review finds it must also pin the staged manifest; its fresh correction preserves the archive/parser guards. No application or production workload changes.
+
+
+## 2026-10-15: complete system8 filesystem equation passes
+
+The [new ordered-layer reconstruction](../evidence/bortus-pcre2-system8-fullfs-root-20261015.json) returns actual0 and compares all31795 entries with the expected inventory. Root separately compares the entire saved baseline plus declared delta: one PCRE8 payload replacement, one public provenance addition,31793 unchanged old entries and no removed paths. Alias, parent metadata, package-origin status and Chisel visibility remain exact. Inventory3530793c binds15 layers and937737229 expanded regular bytes without extracting files onto the host. The independent export chain and final current-boot reader absence pass; native held-descriptor/fullFS closure also passes, with all3 source files/5 actor records current, the archive hash/fingerprint current and both the original fullFS process and independent reader freshly absent. This proves the filesystem equation, not fresh runtime, default security scan, residual acceptance, performance or live delivery.
