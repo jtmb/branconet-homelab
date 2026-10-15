@@ -1,5 +1,12 @@
 # Immutable BORTUS release image builder
 
+
+## Current qualification checkpoint: 2026-10-15
+
+The [fresh hosted CI receipt](../evidence/bortus-provisioning-hosted-ci-qualified-root-20261015.json) qualifies original A19 source CI for frontend4658deef: clean native/standalone build, lint/types,347 units,eight HTTP checks,all eight pristine0/mutant1 sensitivity pairs and compiled Pods smoke pass. The [A12 source composite](../evidence/bortus-a12-source-composite-root-20261015.json) now includes the actual deleted-account browser flow and the enabled Run. These are source qualifications; the older dated sections below preserve their historical open states.
+
+The [isolated Noble zlib source qualification](../evidence/bortus-zlib-noble-local-source-qualification-root-20261015.json) passes upstream check/test64 for both trees after all eight distribution patches. Its original writer fails the unchanged canary regression at stage4/79; the minimal reset candidate passes at stage6/0, including recovery/normal clear. Independent current-file, host-identity and exact container checks pass. The evaluation flags are not Noble binary-equivalence evidence. No system image, installed library or Node bundled zlib has changed, and no residual exception or security pass is accepted. The existing scanner1/ten Medium findings remain. Performance, private recovery, human AT, coherent final image and guarded live acceptance remain open.
+
 ## 2026-10-15: hosted regression sensitivity and real-CLI prerequisites
 
 The [seven-case hosted CI receipt](../evidence/bortus-hosted-seven-regressions-root-20261015.json) records successful run 38770022640 on validation commit 3420513e, with frontend 2dd777ca/workflow a8198320 equal to owning source e386e5bf; docs commit e1ef6bd6 preserves both. Clean install/build, lint/types, 342 units and eight integrations pass. Seven pristine cases pass and their separate source mutations fail at the unchanged intended assertions. The two new database controls specifically detect deleted-account JWT fallback and multiple bootstrap writers; their expected nested child assertions and parent aggregates are matched exactly. The earlier five controls remain intact. All fourteen bounded children restore inputs; no tests are skipped. Default raw-source, hosted-log and docs scans report zero findings. Whole A19 remains open for meaningful cross-process regression sensitivity and the small browser CI smoke suite. Original warm performance failures, image security, recovery and live gates remain open; main and production are unchanged.
