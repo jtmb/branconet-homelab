@@ -36,9 +36,26 @@
     "reportedSameBirthAbsent": true
   },
   "rootOutputReviewTool": "939520",
-  "independentFailureClosurePending": true,
-  "explanation": "Added daemon-cache inspect requirement refuses because saved baseline image is absent locally; raw component and exported full-filesystem authorities remain retained. COPY producer builds FROM scratch, not from that daemon image. Fresh corrected source is pending review.",
+  "independentFailureClosurePending": false,
+  "explanation": "Added inspect targets saved raw-config digest41bb as a daemon-local image identity and gets exact No such image. This does not prove that previous Docker identity/index or saved archive is absent. FROM-scratch producer uses retained raw components and exported full-filesystem authorities, so this extra lookup is unnecessary. Distinct corrected source deletes only the lookup and uses fresh coordinates.",
   "newBuildOrContainerStarted": false,
   "productionChanged": false,
-  "securityAccepted": false
+  "securityAccepted": false,
+  "independentClosure": {
+    "sourceReview": "a0fe1a",
+    "defaultScanExit": 0,
+    "findings": 0,
+    "rawHelpersSame": 20,
+    "nativePreflight": "3ad9e3",
+    "postTool": "b94616",
+    "postExit": 0,
+    "ownTool": "83d04f",
+    "ownExit": 0,
+    "sourceFilesCurrent": 9,
+    "actorRecordsCurrent": 9,
+    "ownedFilesCurrent": 3,
+    "hostBirthsFreshAbsent": 3,
+    "ownRecordSHA256": "6f8610e9f934217685e875f64644d113c9c8845e2c2c6eb173dc58f80203ec04",
+    "childOrDockerOrNetworkInvoked": false
+  }
 }
