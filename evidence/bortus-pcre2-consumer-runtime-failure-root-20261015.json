@@ -1,0 +1,64 @@
+{
+  "scope": "Failed finite canonical-loader PCRE2 consumer evaluation; no image or security acceptance",
+  "actor": {
+    "tool": "22edaf",
+    "actualExit": 1,
+    "stage": 4,
+    "type": 5,
+    "containerRemoved": true,
+    "createUncertain": false,
+    "wholeSeconds": 300,
+    "closureReserveSeconds": 30,
+    "innerSeconds": 180,
+    "CPU": 2,
+    "memoryBytes": 1073741824,
+    "network": "none"
+  },
+  "worker": {
+    "actualExit": 1,
+    "classification": "ValueError",
+    "finalizers": [],
+    "captures": 3,
+    "allRecordedNamespaceBirthsAbsent": true
+  },
+  "actualJobs": [
+    {
+      "role": "compile-public-harness",
+      "exit": 0,
+      "stderrBytes": 0
+    },
+    {
+      "role": "readelf-public-harness",
+      "exit": 0
+    },
+    {
+      "role": "baseline-list-grep",
+      "exit": 0,
+      "stdoutBytes": 334
+    }
+  ],
+  "currentSourceWitness": {
+    "tool": "8cda7e",
+    "grepActualModules": [
+      "PCRE2-8",
+      "libc",
+      "canonical loader"
+    ],
+    "sharedPredicateAlsoRequiredLibselinux": true,
+    "originalInternalAssertionRecorded": false
+  },
+  "sourceReview": {
+    "tool": "7077f3",
+    "defaultScanExit": 0,
+    "findings": 0,
+    "files": 16,
+    "runtimeStaged": 11,
+    "nativePreflight": "83ac92"
+  },
+  "originalPCREBuildExit": 1,
+  "staticABIWeakSymbolsRetained": 18,
+  "consumerRuntimeQualified": false,
+  "independentFailureClosurePending": true,
+  "securityAccepted": false,
+  "productionChanged": false
+}
