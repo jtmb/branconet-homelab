@@ -1,0 +1,169 @@
+{
+  "status": "READ_ONLY_BOUNDED_SOURCE_FOLLOWUP_NO_FIX_OR_ACCEPTANCE",
+  "priorFrozenPacket": "dash-noble-source-applicability-20261016-v1",
+  "priorApplicabilitySHA256": "1e3ad789b6fe8000d0e606372558e18c0855e6a428a3cf97a261f2c7a31da16b",
+  "sourceArchive": {
+    "bytes": 453507,
+    "sha256": "96a4b90ab571a9e6fb8ae1612debc8f1ce1594f8d6075ebac5fd596a209fe742"
+  },
+  "reviewedLocalSources": [
+    {
+      "source": "9cb81363f33333ea00d6f5d7f71036c780d88e1c",
+      "gitPath": "k8s-rewrite/front-end/docker-entrypoint.sh",
+      "archiveNativePath": "/home/brajam/.local/share/branconet-migration/root-9cb-d901-lock-prune-source-20261016-v1/source.tar.gz",
+      "archiveMember": "docker-entrypoint.sh",
+      "bytes": 204,
+      "sha256": "41b57ab771ba397e1e8a10f5dd220ab59c2e664a5cc0133e0e9e3b3917d88433",
+      "reviewedLines": {
+        "first": 1,
+        "last": 6
+      }
+    },
+    {
+      "source": "9cb81363f33333ea00d6f5d7f71036c780d88e1c",
+      "gitPath": "k8s-rewrite/front-end/src/lib/operator-command.ts",
+      "archiveNativePath": "/home/brajam/.local/share/branconet-migration/root-9cb-d901-lock-prune-source-20261016-v1/source.tar.gz",
+      "archiveMember": "src/lib/operator-command.ts",
+      "bytes": 2520,
+      "sha256": "5e1275b571725f0eed01b386fd5ca50fa49f01c15db5a34c009be9a6f3c0ffae",
+      "reviewedLines": {
+        "first": 7,
+        "last": 11
+      }
+    },
+    {
+      "source": "9cb81363f33333ea00d6f5d7f71036c780d88e1c",
+      "gitPath": "k8s-rewrite/front-end/src/lib/ansible.ts",
+      "archiveNativePath": "/home/brajam/.local/share/branconet-migration/root-9cb-d901-lock-prune-source-20261016-v1/source.tar.gz",
+      "archiveMember": "src/lib/ansible.ts",
+      "bytes": 2594,
+      "sha256": "9c6e07584f4c04297f2e78ce61388485e51b95354412ad9383d076fea89772d1",
+      "reviewedLines": {
+        "first": 24,
+        "last": 35
+      }
+    },
+    {
+      "source": "9cb81363f33333ea00d6f5d7f71036c780d88e1c",
+      "gitPath": "k8s-rewrite/front-end/src/lib/k8s.ts",
+      "archiveNativePath": "/home/brajam/.local/share/branconet-migration/root-9cb-d901-lock-prune-source-20261016-v1/source.tar.gz",
+      "archiveMember": "src/lib/k8s.ts",
+      "bytes": 4136,
+      "sha256": "ecc3cc0527c52e081007d65a8ea5ddd46c7de2a7363d15af762cd3729a590e04",
+      "reviewedLines": {
+        "first": 100,
+        "last": 113
+      }
+    },
+    {
+      "nativePath": "/home/brajam/.cache/bortus-controlled-perf/9cb-d901-pruned-artifacts-20261016-v1/copy-context/node_modules/prisma/build/index.js",
+      "bytes": 2809306,
+      "sha256": "c2a77456b70e8ba1e640e122824ed694433828a7c0d76ff3db7fc376b4b0e1a0",
+      "reviewedSpans": [
+        {
+          "label": "get-platform-exec-binding",
+          "startLine": 240,
+          "startColumn": 31929,
+          "endLine": 240,
+          "endColumnExclusive": 32059,
+          "excerpt": "a8e=(0,lJ.promisify)(cJ.default.exec),Va=Ne(\"prisma:get-platform\"),s8e=[\"1.0.x\",\"1.1.x\",\"3.0.x\"];async function pJ(){let e=TD.defa",
+          "excerptSHA256": "bf32fcd210bdb8518a5c29cc0a425666861521b1eeb8c013d5e1bd6dd41e52ad"
+        },
+        {
+          "label": "fixed-libssl-probe",
+          "startLine": 241,
+          "startColumn": 1090,
+          "endLine": 241,
+          "endColumnExclusive": 2290,
+          "excerpt": "async function p8e(e){let r='grep -v \"libssl.so.0\"',n=await uJ(e);if(n){Va(`Found libssl.so file using platform-specific paths: ${n}`);let o=oJ(n);if(Va(`The parsed libssl version is: ${o}`),o)return{libssl:o,strategy:\"libssl-specific-path\"}}Va('Falling back to \"ldconfig\" and other generic paths');let i=await SD(`ldconfig -p | sed \"s/.*=>s*//\" | sed \"s|.*/||\" | grep libssl | sort | ${r}`);if(i||(i=await uJ([\"/lib64\",\"/usr/lib64\",\"/lib\",\"/usr/lib\"])),i){Va(`Found libssl.so file using \"ldconfig\" or other generic paths: ${i}`);let o=oJ(i);if(Va(`The parsed libssl version is: ${o}`),o)return{libssl:o,strategy:\"ldconfig\"}}let a=await SD(\"openssl version -v\");if(a){Va(`Found openssl binary with version: ${a}`);let o=c8e(a);if(Va(`The parsed openssl version is: ${o}`),o)return{libssl:o,strategy:\"openssl-binary\"}}return Va(\"Couldn't find any version of libssl or OpenSSL in the system\"),{}}async function uJ(e){for(let r of e){let n=await d8e(r);if(n)return n}}async function d8e(e){try{return(await _M.default.readdir(e)).find(n=>n.startsWith(\"libssl.so.\")&&!n.startsWith(\"libssl.so.0\"))}catch(r){if(r.code===\"ENOENT\")return;throw r}}async function Ni(){let{binaryTarget:e}=await fJ();return e}f",
+          "excerptSHA256": "e2356c33d3cc3c2d9f1fbafca668b8e9a42d2d53edc2d3e760c46de3462a6d79"
+        },
+        {
+          "label": "probe-wrapper",
+          "startLine": 242,
+          "startColumn": 889,
+          "endLine": 242,
+          "endColumnExclusive": 1189,
+          "excerpt": "function SD(e){return h8e(async()=>{let r=await a8e(e);return Va(`Command \"${e}\" successfully returned \"${r.stdout}\"`),r.stdout})}async function g8e(){return typeof TD.default.machine==\"function\"?TD.default.machine():(await SD(\"uname -m\"))?.trim()}function mJ(e){return e.startsWith(\"1.\")}var dm={};W",
+          "excerptSHA256": "824a8821558a389d611210e4140a60bc9050e2e784730b88af21f84d3d5600f2"
+        },
+        {
+          "label": "generator-shell-branch",
+          "startLine": 309,
+          "startColumn": 1373,
+          "endLine": 309,
+          "endColumnExclusive": 1743,
+          "excerpt": "ERATOR_INVOCATION:\"true\"},execArgv:[\"--max-old-space-size=8096\"]}):this.child=(0,Qce.spawn)(this.pathOrCommand,{stdio:[\"pipe\",\"inherit\",\"pipe\"],env:{...process.env,PRISMA_GENERATOR_INVOCATION:\"true\"},shell:!0}),this.child.on(\"exit\",(i,a)=>{if(l8(`child exited with code ${i} on signal ${a}`),this.exited=!0,i){let o=new zm(`Generator ${JSON.stringify(this.pathOrCommand)",
+          "excerptSHA256": "d1ecbefa0680e65b9a5d35f1d1658c6ce638096240b4df67870c3b3d4698e6d9"
+        }
+      ],
+      "wholeDependencyCopied": false
+    }
+  ],
+  "upstream": {
+    "tag": "v0.5.13.5",
+    "commit": "037bbdfd330017c368caf6242f977974123239b5",
+    "path": "src/expand.c",
+    "gitBlobOID": "76e67ce75d39c54435f79e02b162b3c94316c317",
+    "webReviewedLines": {
+      "first": 1890,
+      "last": 1943
+    },
+    "recursiveCallWebLine": 1936,
+    "rawBytes": null,
+    "rawSHA256": null,
+    "rawDigestGap": "Raw upstream file was not downloaded; exact tag/commit/blob identity plus primary web source observation only.",
+    "maintainedFixIdentified": false
+  },
+  "officialURLs": [
+    {
+      "url": "https://kernel.googlesource.com/pub/scm/utils/dash/dash/%2B/refs/tags/v0.5.13.5",
+      "purpose": "Exact advertised latest release tag/commit"
+    },
+    {
+      "url": "https://kernel.googlesource.com/pub/scm/utils/dash/dash/%2B/refs/tags/v0.5.13.5/src/expand.c",
+      "purpose": "Fallback recursion remains1890\u20131943"
+    },
+    {
+      "url": "https://security-tracker.debian.org/tracker/CVE-2026-102473",
+      "purpose": "Current unfixed tracker status"
+    },
+    {
+      "url": "https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1149887",
+      "purpose": "Initial maintainer/security report; no patch attached in reviewed log"
+    },
+    {
+      "url": "https://ubuntu.com/security/CVE-2026-102473",
+      "purpose": "Retained current Noble Needs evaluation status"
+    },
+    {
+      "url": "https://docs.prisma.io/docs/orm/v6/prisma-migrate/workflows/development-and-production",
+      "purpose": "Migrate deploy does not generate artifacts; no generator branch reachability inferred merely from bundle presence"
+    }
+  ],
+  "findings": [
+    "The exact image entrypoint has only quoted required-env checks, fixed migrate deploy invocation and exec node; no glob/case/trim pattern and no argument expansion.",
+    "Exact app operator-command uses explicit bash, not implicit dash; direct Ansible spawn sets shell:false. These observations do not cover commands deliberately entered by a trusted operator.",
+    "Prisma Node CLI includes fixed get-platform exec calls (ldconfig/sed/grep/openssl/uname). The regexes are inside quoted sed arguments; interpolation is a fixed grep expression, not inspected user data.",
+    "Prisma bundle also contains generator shell:true branch; its presence does not establish reachability through fixed migrate deploy. No complete transitive shell-call audit was performed.",
+    "Advertised upstream0.5.13.5 still has fallback recursive pmatch; no maintained patch or fixed release was found in the consulted primary materials."
+  ],
+  "unresolvedConditions": [
+    "Whether an attacker can cause a relevant production shell caller to pass hostile multi-star pattern operands or subject filenames to this fallback matcher.",
+    "Transitive Node/dependency shell callers, deliberate operator commands and writable-volume filename influence are not proven unreachable.",
+    "No runtime reachability, CPU impact or exploit behavior was exercised."
+  ],
+  "candidateChange": null,
+  "noManufacturedPatch": true,
+  "noNewDownload": true,
+  "noPackageExecution": true,
+  "noBuildOrInstall": true,
+  "noOriginalPacketChange": true,
+  "scannerOutcome": {
+    "literalExit": 1,
+    "medium": 12,
+    "secretFindings": 0,
+    "unchanged": true
+  },
+  "securityAcceptance": false
+}
