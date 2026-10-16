@@ -14,6 +14,8 @@ type Element = { type: unknown; props: Record<string, unknown> };
 type Request = { url: string; method: string; body?: string; signal?: AbortSignal;
   resolve?: (data: unknown) => void; reject?: (error: Error) => void };
 function fixture(initialAuthority: boolean, inventoryUnavailable = false) {
+  // A stable component boundary only; this model does not execute Radix or portals.
+  const ModalBoundary = () => null;
   const slots: unknown[] = [], effects = new Map<number, { deps: unknown[]; cleanup?: () => void }>();
   let index = 0, dirty = false, canWrite = initialAuthority, tree: unknown;
   let scheduled: (() => void)[] = [];
@@ -41,6 +43,7 @@ function fixture(initialAuthority: boolean, inventoryUnavailable = false) {
     "@/lib/use-query": query, "next/link": { __esModule: true, default: "Link" },
     "lucide-react": Object.fromEntries(["Server", "Loader2", "Plus", "Trash2", "Save", "Pencil", "Search"].map(name => [name, name])),
     "@/app/(dashboard)/viewport-wrapper": { __esModule: true, default: "Viewport" },
+    "@/components/ui/modal": { Modal: ModalBoundary },
     "@/components/ui/sortable-header": { SortHeader: "SortHeader", useSort: () => ({ sortKey: "hostname", sortDir: "asc", toggle: () => {} }) },
     "@/lib/legacy-cluster-sort": sorting };
   const require = createRequire(resolve("package.json"));
@@ -58,6 +61,7 @@ function fixture(initialAuthority: boolean, inventoryUnavailable = false) {
   const render = () => { let count = 0; do { assert(++count < 12); index = 0; dirty = false; scheduled = []; tree = page(); for (const run of scheduled) run(); } while (dirty); };
   const walk = (value: unknown): Element[] => Array.isArray(value) ? value.flatMap(walk) : value && typeof value === "object" && "props" in value ? [value as Element, ...walk((value as Element).props.children)] : [];
   const elements = () => walk(tree), text = (value: unknown): string => typeof value === "string" ? value : Array.isArray(value) ? value.map(text).join("") : value && typeof value === "object" && "props" in value ? text((value as Element).props.children) : "";
+  const modalElement = () => elements().find(e => e.type === ModalBoundary && e.props.open === true && e.props.title === "Edit Node");
   const click = (button: Element) => { (button.props.onClick as () => void)(); render(); };
   const button = (label: string) => { const found = elements().find(e => e.type === "button" && text(e.props.children).trim() === label); assert(found, label); return found; };
   const title = (label: string) => { const found = elements().find(e => e.type === "button" && e.props.title === label); assert(found, label); return found; };
@@ -68,11 +72,11 @@ function fixture(initialAuthority: boolean, inventoryUnavailable = false) {
   return { requests, elements, text, click, button, title, input, change, settle, inventory,
     failInventory: () => { inventoryUnavailable = true; },
     restoreInventory: () => { inventoryUnavailable = false; },
-    modalElements: () => walk(elements().find(e => String(e.props.className).startsWith("fixed inset-0"))),
+    modalElements: () => walk(modalElement()),
     mutations: () => requests.filter(r => r.method !== "GET"),
     authority: (value: boolean) => { canWrite = value; render(); },
     metadata: () => elements().filter(e => e.type === "Link" && e.props.href !== "/nodes").map(e => ({ href: e.props.href, text: e.props.children })),
-    modal: () => elements().some(e => e.type === "h3" && e.props.children === "Edit Node"),
+    modal: () => Boolean(modalElement()),
     alerts: () => elements().filter(e => e.props.role === "alert").map(e => text(e.props.children)),
   };
 }
@@ -112,6 +116,7 @@ test("legacy Nodes failed edit retains draft and actionable error without retry 
     f.click(f.title("Edit inventory fixture-node")); f.change(f.input("Name"), "held draft"); f.click(f.button("Save"));
     f.mutations()[0].reject!(new Error(failure)); await f.settle();
     assert.equal(f.modal(), true); assert.equal(f.input("Name").props.value, "held draft");
+    assert.equal(f.modalElements().filter(e => e.type === "input" && e.props.value === "held draft").length, 1, "The retained draft must remain inside the shared Modal boundary");
     assert.equal(f.alerts().length, 1); assert(f.alerts()[0].includes(failure)); assert(f.alerts()[0].includes("Refresh inventory"));
     assert.equal(f.modalElements().filter(e => e.props.role === "alert").length, 1, "The single announced error must be visible inside the edit overlay");
     assert.equal(f.requests.length, reads + 1); assert.equal(f.mutations().length, 1);
@@ -181,6 +186,7 @@ test("legacy Nodes inventory read failure during edit keeps draft and visible re
   f.click(f.button("Save")); f.mutations()[0].reject!(new Error("Node inventory update unavailable")); await f.settle();
   f.failInventory(); f.click(f.button("Refresh inventory")); await f.settle();
   assert.equal(f.input("Name").props.value, "retained draft"); assert.equal(f.button("Save").props.disabled, true);
+  assert.equal(f.modalElements().filter(e => e.type === "input" && e.props.value === "retained draft").length, 1, "The retained draft must remain inside the shared Modal boundary");
   assert.equal(f.modalElements().filter(e => e.props.role === "status").length, 1);
   f.click(f.button("Save")); assert.equal(f.mutations().length, 1);
   f.restoreInventory(); f.click(f.button("Refresh inventory")); await f.settle();
