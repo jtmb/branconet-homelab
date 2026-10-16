@@ -149,7 +149,7 @@ export default function NodesPage() {
         <div className="flex items-center gap-3 mb-4">
           <Server className="page-header-icon text-blue-400" />
           <h1 className="page-header-title">Nodes</h1>
-          <span className="text-sm text-zinc-500 ml-auto">
+          <span className="text-sm text-zinc-400 ml-auto">
             {loading ? "…" : `${totalNodes} nodes`}
           </span>
         </div>
@@ -349,7 +349,7 @@ export default function NodesPage() {
                       <td className="px-2 py-2.5 text-sm text-zinc-400 font-mono tabular-nums whitespace-nowrap">
                         {liveInfo?.pods != null ? liveInfo.pods : node.pods != null ? node.pods : "—"}
                       </td>
-                      <td className="px-2 py-2.5 text-sm text-zinc-500 whitespace-nowrap">
+                      <td className="px-2 py-2.5 text-sm text-zinc-400 whitespace-nowrap">
                         {liveInfo?.age || node.age || "—"}
                       </td>
                       <td className="px-2 py-2.5 text-right">

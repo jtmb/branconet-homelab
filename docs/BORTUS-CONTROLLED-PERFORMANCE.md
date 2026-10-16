@@ -1,6 +1,6 @@
 # Controlled whole-server performance qualification
 
-Owning source `30f866f` changes only four Edit Node label foreground classes and remains unrendered. The following actual build/browser qualifications bind reviewed source `3d559850`/frontend `4d3fd544`, not the class-only follow-up. No new build or browser replay has occurred for `30f866f`.
+Reviewed source `30f866f` passed the fresh four-phase352-unit/eight-HTTP build. Its four Edit Node labels measured6.912758604:1 in the actual dialog; scoped axe reported color-contrast inapplicable. Both narrow observer actors remain exit1. The current owning follow-up changes only the legacy Nodes count and Age foregrounds to `text-zinc-400` after actual active-page axe violations; this two-class source change remains build/render-pending. The broader keyboard/19-observation/36-measurement qualifications below remain bound to reviewed `3d559850`, with no corpus replay or transfer to the new follow-up.
 
 The [A15 keyboard composition](implementation-evidence/a15-keyboard-composition-root-20261016.json) is independently closed for25 full dialog variants, one scoped history-entry subset and the ancillary menu observation. Final checks bind573 current records,159 Linux births,58 Windows births and eight retained container ID/name queries. The three earlier actor failures remain1. Manual contrast/axe classification and actual screen-reader announcements remain open; no AX-as-AT or blanket axe clearance is claimed.
 
