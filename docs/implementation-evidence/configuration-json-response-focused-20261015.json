@@ -1,0 +1,426 @@
+{
+  "schemaVersion": 1,
+  "status": "FINITE FOCUSED JSON RESPONSE QUALIFICATION PASSED; FULL BUILD/BROWSER/PERFORMANCE OPEN",
+  "sourceBase": "b9e9a6afb410af25b2616f153d69535daed642ee",
+  "historicalReviewedSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+  "historicalReviewedFrontendTree": "4658deeff3bc5d952307c11503832b96b44dfe27",
+  "sourcePreparation": {
+    "path": "configuration-json-response-source-20261015.json",
+    "sha256": "e7b5175588f35d88868be8de67896c9ef2a6c4e3a65ea1be5795c38debc95c87",
+    "historicalUnrunStatusPreserved": true
+  },
+  "qualification": {
+    "path": "configuration-json-focused-results-20261015/qualification.json",
+    "sha256": "5eeada3f85b857eed9835fbccfab7a18c8357d53581c2eafe679cb59e9a5c225",
+    "qualifier": "configuration-json-focused-results-20261015/qualify.py",
+    "qualifierSHA256": "e0f5a1accaac4c6f34af133c1f4387d41e458e00324498ac18442e81769d4058",
+    "tool": "cae903/0",
+    "retainedRecords": 51,
+    "sourceFiles": 11,
+    "packetFiles": 5,
+    "stagedCurrentBytesMatch": true
+  },
+  "actualExecution": {
+    "rootDispatch": "8b0b5b/session5543",
+    "rootTerminal": "8f13a7/0",
+    "owner": "/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1",
+    "controllers": 4,
+    "controllerExits": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "durationSeconds": 11.046000000002095,
+    "initialRefusal": {
+      "tool": "bcb182",
+      "result": "Failed before any staging/actor because Windowsfile was unavailable through /mnt/c",
+      "correction": "UNC staging plus native700/600, original unchanged controller",
+      "functionalFailureClaimed": false
+    },
+    "noRerunByQualifier": true
+  },
+  "runtime": {
+    "image": "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
+    "node": "22.23.3",
+    "depsQualifiedInstalledObjects": 40635,
+    "newInstall": false,
+    "cpus": 2,
+    "memoryBytes": 1073741824,
+    "swapExtraBytes": 0,
+    "pids": 256,
+    "network": "none; same-container loopback HTTP",
+    "readOnlyRoot": true,
+    "user": "1000:1000",
+    "wholeSeconds": 240,
+    "closureSeconds": 20,
+    "childSeconds": 30,
+    "outputBytesPerStream": 1048576,
+    "sharedDeadlineNotReset": true
+  },
+  "cases": [
+    {
+      "mode": "pristine",
+      "actualOuterExit": 0,
+      "actualChildExit": 0,
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "failureWitnesses": [],
+      "completeSourceRestoration": true,
+      "cid": "198a2d0a00bcb439de3eb98d0eadec83ebe0c28c56e010fec2700dafde65f18d",
+      "name": "bortus-configuration-json-focused-20261015-v1-pristine",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    },
+    {
+      "mode": "old-parse",
+      "actualOuterExit": 0,
+      "actualChildExit": 1,
+      "tests": 5,
+      "passed": 4,
+      "failed": 1,
+      "failureWitnesses": [
+        {
+          "name": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
+          "operator": "rejects",
+          "line": 39
+        }
+      ],
+      "completeSourceRestoration": true,
+      "cid": "249766ab72cb21174a966df7ddec7032bb92fd48b367f7975b304cb06607d827",
+      "name": "bortus-configuration-json-focused-20261015-v1-old-parse",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    },
+    {
+      "mode": "save-noop",
+      "actualOuterExit": 0,
+      "actualChildExit": 1,
+      "tests": 5,
+      "passed": 3,
+      "failed": 2,
+      "failureWitnesses": [
+        {
+          "name": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
+          "operator": "throws",
+          "line": 48
+        },
+        {
+          "name": "real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds",
+          "operator": "strictEqual",
+          "line": 143
+        }
+      ],
+      "completeSourceRestoration": true,
+      "cid": "d352564dc6f869c7c2b84db8521c0715f1643e3af45fcd7ae3ffb4b03f944ef8",
+      "name": "bortus-configuration-json-focused-20261015-v1-save-noop",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    },
+    {
+      "mode": "remove-noop",
+      "actualOuterExit": 0,
+      "actualChildExit": 1,
+      "tests": 5,
+      "passed": 4,
+      "failed": 1,
+      "failureWitnesses": [
+        {
+          "name": "real HTTP configuration DELETE needs a true acknowledgment before closing confirmation",
+          "operator": "strictEqual",
+          "line": 91
+        }
+      ],
+      "completeSourceRestoration": true,
+      "cid": "c0a2459bb0907a606a5f1f1b0465c215dcb53c3647b49622e73b073791f54bbe",
+      "name": "bortus-configuration-json-focused-20261015-v1-remove-noop",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    }
+  ],
+  "inputs": [
+    {
+      "kind": "source",
+      "path": "package.json",
+      "bytes": 2381,
+      "sha256": "63acc50361a9e67e1aac84d7d7fa0ef352c966bf2c589eb4707c97601a8bd442"
+    },
+    {
+      "kind": "source",
+      "path": "package-lock.json",
+      "bytes": 315466,
+      "sha256": "984756b9a6ee2caf522a7174fba3575631b3e794da73faa969df042baa9a6356"
+    },
+    {
+      "kind": "source",
+      "path": "tsconfig.json",
+      "bytes": 672,
+      "sha256": "f38625630fef3e188f3a86b2f27233e6b01574999388ebb03bd5f7f30726abc3"
+    },
+    {
+      "kind": "source",
+      "path": "tests/request-json-response.test.ts",
+      "bytes": 9788,
+      "sha256": "20e4d736eea3d3ea37b42fe533752a77f0a451c0c7d695ae876910fc5ab02dc8"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/use-query.ts",
+      "bytes": 4473,
+      "sha256": "3cf6a05a4166f62677d9261594ca1a30031750c4b6465809ad4c014a1824f3f0"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/configuration-response.ts",
+      "bytes": 1721,
+      "sha256": "6790dab7ca8531052750c875278eab793f5464ee511de6af2ba4e3fe6c7518d0"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/query-store.ts",
+      "bytes": 7775,
+      "sha256": "e3b7200f474b8cfc1d1539ea950d709c534c067e010e7e02ed1a3878d09f9ec6"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/mutation-task.ts",
+      "bytes": 2314,
+      "sha256": "d0eac5c8adf86ac686ad5c00d6582ff3b14f7f0f0f33f3cb223e03988c9f1ef7"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/metadata-query.ts",
+      "bytes": 945,
+      "sha256": "4efb064666eccb9d6ac1ffbba02b2cdf7f52e4d751f18a6d2272d8761e0dc308"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/kv-metadata-query.ts",
+      "bytes": 1004,
+      "sha256": "fbd0fab3637c26a93bad4259b3f76d8621c801a45d9339ba7a1dec13f810f608"
+    },
+    {
+      "kind": "source",
+      "path": "src/app/(dashboard)/configuration/page.tsx",
+      "bytes": 6066,
+      "sha256": "c68a447bb7fa8f9e097650d256dbd548e68a2f69e04e474a07f3fcae1fe5d54c"
+    },
+    {
+      "kind": "packet",
+      "path": "controller.py",
+      "bytes": 4775,
+      "sha256": "168abe1766c144b8bc3c727d8572388ad91ec5b29e9ef0a5e2d2c15b00c43547"
+    },
+    {
+      "kind": "packet",
+      "path": "run.cjs",
+      "bytes": 5050,
+      "sha256": "e71df75e2bedaf591c38d5e1b191e6e655d6f29d489927f2ba2834662151a3ae"
+    },
+    {
+      "kind": "packet",
+      "path": "manifest.json",
+      "bytes": 1485,
+      "sha256": "51a48b2321a352040c444f694d2ebe321d0bee12bfa2cb0375256e73eddeba5b"
+    },
+    {
+      "kind": "packet",
+      "path": "mutations.json",
+      "bytes": 2361,
+      "sha256": "de042bede7ba9ba5780f25852742a50c4c0503d8df0f172bc097411f5bee7c0c"
+    },
+    {
+      "kind": "packet",
+      "path": "expectations.json",
+      "bytes": 1019,
+      "sha256": "4a51aadcf00921296edc31660785d415ec2cb2336583ebd1fc7339018e418937"
+    }
+  ],
+  "sourceRawAndGitBlobs": [
+    {
+      "path": "k8s-rewrite/front-end/src/lib/use-query.ts",
+      "testedWorkingSHA256": "3cf6a05a4166f62677d9261594ca1a30031750c4b6465809ad4c014a1824f3f0",
+      "gitBlob": "f097ba8cb7c6e87634520e05f1b21ef5b74eed82",
+      "rawGitLineEndingNote": "Git stores LF; tested working bytes pinned separately. Fresh combined Git-export functional qualification remains required."
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/(dashboard)/configuration/page.tsx",
+      "testedWorkingSHA256": "c68a447bb7fa8f9e097650d256dbd548e68a2f69e04e474a07f3fcae1fe5d54c",
+      "gitBlob": "caef4eac2504fea4fdb46f9187962c77dc840a2e",
+      "rawGitLineEndingNote": "Git stores LF; tested working bytes pinned separately. Fresh combined Git-export functional qualification remains required."
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/configuration-response.ts",
+      "testedWorkingSHA256": "6790dab7ca8531052750c875278eab793f5464ee511de6af2ba4e3fe6c7518d0",
+      "gitBlob": "332c67fd90c521fcd062c408a50fddccfe11ece9",
+      "rawGitLineEndingNote": "Git stores LF; tested working bytes pinned separately. Fresh combined Git-export functional qualification remains required."
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/request-json-response.test.ts",
+      "testedWorkingSHA256": "20e4d736eea3d3ea37b42fe533752a77f0a451c0c7d695ae876910fc5ab02dc8",
+      "gitBlob": "33954cae07694c49143a9c7d5b2b7decc63a1e85",
+      "rawGitLineEndingNote": "Git stores LF; tested working bytes pinned separately. Fresh combined Git-export functional qualification remains required."
+    }
+  ],
+  "closure": {
+    "sourceRestored": true,
+    "currentSourcePacketPins": 16,
+    "inheritedBootCheck": true,
+    "actualExactCIDNamePairsAbsent": 4,
+    "oneFreshExactQueryPerCIDAndName": true,
+    "hostPIDStartTracked": false,
+    "allBirthAbsenceClaimed": false,
+    "extraSelfAbsenceChain": false
+  },
+  "rootPreExecutionScan": {
+    "tool": "34adf3/0",
+    "actualExit": 0,
+    "findings": 0,
+    "selectedFiles": 27,
+    "packet": "C:/Users/james/AppData/Local/BORTUS/handoffs/root-configuration-json-focused-source-scan-v1-20261014-384f0fc6",
+    "scope": "Historical pre-execution source/docs selection, before final publication edits",
+    "noSuppression": true
+  },
+  "publicationScanResult": "C:/Users/james/AppData/Local/BORTUS/handoffs/app-configuration-json-focused-publication-scan-v1-latest.json",
+  "publicationScanReportedSeparately": true,
+  "originalValidationChecks": [
+    {
+      "path": "docs/implementation-evidence/acceptance-ledger-audit.json",
+      "clauses": 22,
+      "unchanged": true
+    },
+    {
+      "path": "docs/implementation-evidence/remaining-acceptance-matrix.json",
+      "clauses": 22,
+      "unchanged": true
+    }
+  ],
+  "documentationReview": {
+    "command": "rg --files docs -g '*.md'",
+    "checked": 22,
+    "updated": [
+      "docs/API-USAGE.md",
+      "docs/BORTUS-AUDIT.md",
+      "docs/BORTUS-IMPLEMENTATION.md",
+      "docs/BOTRUS-WORKFLOW.md",
+      "docs/implementation-evidence/README.md"
+    ],
+    "pins": [
+      {
+        "path": "docs/USER-PERMS.md",
+        "sha256": "c7e346b5665c6a36318c8c19d70f00f3421d36e8522e4c55bc1c4ad1ee294b22"
+      },
+      {
+        "path": "docs/TECH-STACK.md",
+        "sha256": "eb8ca97a21d800a740c44af88d741f3c78dc5895167a090ec1130b0f553d994d"
+      },
+      {
+        "path": "docs/SECRETS-ENGINE.md",
+        "sha256": "a32a0343cdfd073325b30a9c3eca0f1652d49210f75ef02b57ef600c3924de21"
+      },
+      {
+        "path": "docs/kubectl-cheatsheet.md",
+        "sha256": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92"
+      },
+      {
+        "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+        "sha256": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b"
+      },
+      {
+        "path": "docs/BORTUS-AUDIT.md",
+        "sha256": "876e54dbb547772297b1431168d850964dcf3eb51aed75f4076c8fc5ab910e11"
+      },
+      {
+        "path": "docs/BORTUS-IMPLEMENTATION.md",
+        "sha256": "6bc692e4ae2aa595be103eb2bfac27dc203069bd77b150727e7fa404cd6b8158"
+      },
+      {
+        "path": "docs/BORTUS-DEPLOYMENT.md",
+        "sha256": "c880f84e434a1e1301b1f19d27745aef73da77592c22fb2d9a2327bd95bb9c6e"
+      },
+      {
+        "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+        "sha256": "bff85e44e938678c86768fbc65f00ea65403e0b7c0819481b2dcae2ccaa35226"
+      },
+      {
+        "path": "docs/BOTRUS-WORKFLOW.md",
+        "sha256": "512ad5f6b64cd6d5264b58bfb9f18fb65d4b52b5be24ea8d2f5ee3e268b2dddd"
+      },
+      {
+        "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+        "sha256": "624c1b712dd0565a539d5dcf5621a420c6b89064bf76534aa376fac997141e08"
+      },
+      {
+        "path": "docs/BORTUS-KV-WORKBENCH.md",
+        "sha256": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8"
+      },
+      {
+        "path": "docs/BORTUS-KV-DESIGN.md",
+        "sha256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412"
+      },
+      {
+        "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+        "sha256": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb"
+      },
+      {
+        "path": "docs/CHARTS-SEPARATION.md",
+        "sha256": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038"
+      },
+      {
+        "path": "docs/FLUX-GITOPS.md",
+        "sha256": "1d8e32ee9ce3bf0a6b6e96fc8860404a91c126d4e0bd3dd1496e00c07d96368e"
+      },
+      {
+        "path": "docs/audit-evidence/README.md",
+        "sha256": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670"
+      },
+      {
+        "path": "docs/API-USAGE.md",
+        "sha256": "c015823b6d1100bfe78469c50d73b4b6e8745e97210cede6a91b2c6669c7f93f"
+      },
+      {
+        "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+        "sha256": "6041d0990fcf78b263d2cc53f9aa8afa3cc3baed8939382a6a9ec7e5bfdb2c1d"
+      },
+      {
+        "path": "docs/implementation-evidence/README.md",
+        "sha256": "302337d2b514aa1886e136f94a38eeb8695c0a235479e55c2ca75e047d3b86b2"
+      },
+      {
+        "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+        "sha256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0"
+      },
+      {
+        "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+        "sha256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b"
+      }
+    ]
+  },
+  "continuity": {
+    "A12": "use-query.ts whole-file equality changes; session/authorization/subscription/refetch tail remains unchanged by reviewed LF comparison. Five HTTP tests qualify malformed401/403 effects only.",
+    "A13": "All13 composite source paths unchanged; no whole-frontend evidence transfer.",
+    "actorFramework": "Existing controller only mode/owner/label derivation; original safety/deadline/deps/image unchanged."
+  },
+  "limits": [
+    "Actual tests exercise real loopback HTTP helper, configuration decoders, QueryStore and MutationTask; not compiled browser or production Next routes.",
+    "No full352/unit corpus, integration, lint, types or build pass claimed for this candidate.347+5=352 is arithmetic only.",
+    "A07 original immutable benchmark remainsFAILED2/10warm; no new timing or peak RSS claim.",
+    "Original A21 size/render/bytes/probe/peak measurements, actual browser, image/live/AT/adoption remain separate.",
+    "Historical source-only prep and failed/refused attempts remain unmodified."
+  ],
+  "productionAdopted": false,
+  "fullFunctionalAccepted": false,
+  "compiledBrowserAccepted": false,
+  "performanceAccepted": false,
+  "publicationScannerRecipe": {
+    "path": "C:/Users/james/AppData/Local/BORTUS/handoffs/app-configuration-json-focused-publication-scan-20261015-v1.py",
+    "sha256": "88c18710a5e1cbc782718080236f3ffbfdb233d451da935ce87d50f5db7f890a",
+    "selectedFiles": 83,
+    "defaultRules": true,
+    "redact": 100,
+    "deadlineSeconds": 30,
+    "configurationOrSuppression": false,
+    "actualResultReportedSeparately": true
+  }
+}

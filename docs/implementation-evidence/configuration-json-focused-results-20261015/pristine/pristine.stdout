@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible
+ok 1 - real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible
+  ---
+  duration_ms: 69.65102
+  type: 'test'
+  ...
+# Subtest: real HTTP malformed/null/primitive errors preserve401 clearing and403 session invalidation
+ok 2 - real HTTP malformed/null/primitive errors preserve401 clearing and403 session invalidation
+  ---
+  duration_ms: 11.63268
+  type: 'test'
+  ...
+# Subtest: real HTTP configuration DELETE needs a true acknowledgment before closing confirmation
+ok 3 - real HTTP configuration DELETE needs a true acknowledgment before closing confirmation
+  ---
+  duration_ms: 19.455921
+  type: 'test'
+  ...
+# Subtest: real HTTP wrong-shape configuration reads retain prior metadata and expose a fixed error
+ok 4 - real HTTP wrong-shape configuration reads retain prior metadata and expose a fixed error
+  ---
+  duration_ms: 45.158957
+  type: 'test'
+  ...
+# Subtest: real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds
+ok 5 - real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds
+  ---
+  duration_ms: 27.439848
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 397.035876

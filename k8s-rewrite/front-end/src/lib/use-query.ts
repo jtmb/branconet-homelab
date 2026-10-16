@@ -4,17 +4,25 @@ import { useCallback, useSyncExternalStore } from "react";
 import { EMPTY_QUERY, QueryFailure, QuerySnapshot, QueryStore } from "./query-store";
 import { isKvMetadataQuery } from "./kv-metadata-query";
 import { isSharedMetadataQuery } from "./metadata-query";
+import { configurationList } from "./configuration-response";
 
 export async function requestJson<T = Record<string, unknown>>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, { ...init, cache: "no-store" });
-  const data = await response.json().catch(() => ({}));
+  let data: unknown;
+  if (response.status !== 204) {
+    try { data = await response.json(); }
+    catch {
+      if (response.ok) throw new QueryFailure("Server response could not be verified. Any change may already have been saved. Refresh before trying again.", 502);
+    }
+  }
   if (!response.ok) {
     if (response.status === 401) {
       browserQueries.clear();
       window.dispatchEvent(new Event("bortus-session-ended"));
     }
     if (response.status === 403) browserQueries.invalidate(key => key === "/api/auth/session");
-    throw new QueryFailure(typeof data.error === "string" ? data.error : `Request failed (${response.status})`, response.status, data);
+    const error = data && typeof data === "object" && "error" in data ? data.error : undefined;
+    throw new QueryFailure(typeof error === "string" ? error : `Request failed (${response.status})`, response.status, data);
   }
   return data as T;
 }
@@ -27,6 +35,7 @@ const browserQueries = new QueryStore({
     if (signal.aborted) controller.abort();
     try {
       const data = await requestJson<{ authenticated?: boolean }>(url, { signal: controller.signal });
+      if (url === "/api/vars") return configurationList(data);
       if (url === "/api/auth/session" && data.authenticated === false) {
         browserQueries.clear(key => key !== url);
         window.dispatchEvent(new Event("bortus-session-ended"));

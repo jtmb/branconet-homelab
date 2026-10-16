@@ -1,0 +1,54 @@
+TAP version 13
+# Subtest: real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible
+not ok 1 - real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible
+  ---
+  duration_ms: 48.142721
+  type: 'test'
+  location: '/tmp/configuration-json-GGrkeG/tests/request-json-response.test.ts:2:2671'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection (invalid).'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: [Function: invalid]
+  operator: 'rejects'
+  stack: |-
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async <anonymous> (/tmp/configuration-json-GGrkeG/tests/request-json-response.test.ts:39:7)
+    async fixture (/tmp/configuration-json-GGrkeG/tests/request-json-response.test.ts:26:9)
+    async TestContext.<anonymous> (/tmp/configuration-json-GGrkeG/tests/request-json-response.test.ts:36:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: real HTTP malformed/null/primitive errors preserve401 clearing and403 session invalidation
+ok 2 - real HTTP malformed/null/primitive errors preserve401 clearing and403 session invalidation
+  ---
+  duration_ms: 14.703067
+  type: 'test'
+  ...
+# Subtest: real HTTP configuration DELETE needs a true acknowledgment before closing confirmation
+ok 3 - real HTTP configuration DELETE needs a true acknowledgment before closing confirmation
+  ---
+  duration_ms: 24.828079
+  type: 'test'
+  ...
+# Subtest: real HTTP wrong-shape configuration reads retain prior metadata and expose a fixed error
+ok 4 - real HTTP wrong-shape configuration reads retain prior metadata and expose a fixed error
+  ---
+  duration_ms: 47.845197
+  type: 'test'
+  ...
+# Subtest: real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds
+ok 5 - real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds
+  ---
+  duration_ms: 30.46032
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 4
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 338.301419
