@@ -1,0 +1,351 @@
+{
+  "status": "ACTUAL_HOSTED_FAILURE_PRESERVED",
+  "run": 38861922778,
+  "url": "https://github.com/jtmb/branconet-homelab/actions/runs/38861922778",
+  "attempt": 1,
+  "ciCommit": "1871ce8fa5d7ec606236f81c54d70346a4cda7ca",
+  "frontendTree": "e65194dbec34f6a13d3f224589e3de35ad895df6",
+  "sourceCommit": "0b5ff585132fe24992c5b316495e10a55ea6c5fe",
+  "conclusion": "failure",
+  "unitTests": {
+    "tests": 352,
+    "passed": 352,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "successfulSensitivityPairs": 7,
+  "sensitivityGroups": [
+    {
+      "schema": 1,
+      "completed": true,
+      "cases": [
+        "A04-name-admission",
+        "A05-failed-stdout",
+        "A06-outage-empty",
+        "deployment-action-coercion",
+        "private-kv-cache-admission"
+      ],
+      "records": [
+        {
+          "id": "A04-name-admission",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "f668cb931adb84c4837ed965180269b1a24fa3311c82d1e01b53cc7b30d0fae4",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 328,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A04-name-admission",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "656cf9ad441a0bc1d4b10e752ff26e7f572663a08e339bea38942ee42a4bd61e",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 971,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A05-failed-stdout",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "ddf699d0bed8bc30f1e631feed42e9eca8b4206621535c8234a7ffb416e9b032",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 342,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A05-failed-stdout",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "a016fd18c4d403d198439265a9578013e1902792d8a9469a4b100838051e985a",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 976,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A06-outage-empty",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "b60fe96f75056ec8e03c3739b1b2231fd1397fb9addeec9d88f71baeceefe96e",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 360,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A06-outage-empty",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "dad39204e4bd3f9a5f73831d338a9a360d1802dbf1755d93071a84f2fded35ca",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 981,
+          "stderrBytes": 0
+        },
+        {
+          "id": "deployment-action-coercion",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "6fdc8b5f9a04bd9809cc721c2ef68cb1624eceba05de9282b4328f63577a7f37",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 355,
+          "stderrBytes": 0
+        },
+        {
+          "id": "deployment-action-coercion",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "9d6c9c5520fcfd69c85d03835973bb73987e1421e2ab91cbb333804a13fbd2a4",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 986,
+          "stderrBytes": 0
+        },
+        {
+          "id": "private-kv-cache-admission",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "e0370c27b6061694fc8a7338bd0b922e5565002ab5817954b97984106630abd7",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 362,
+          "stderrBytes": 0
+        },
+        {
+          "id": "private-kv-cache-admission",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "e774d7f8c53df152cb322cea1c53453f38f20248f312432a87e3fff22539dfb2",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 1107,
+          "stderrBytes": 0
+        }
+      ],
+      "restorationFailures": [],
+      "elapsedMs": 3590,
+      "originalSelectedInputsUnchanged": true,
+      "originalUnitAndIntegrationExecution": "separate unchanged workflow steps",
+      "wholeA19Accepted": false
+    },
+    {
+      "schema": 1,
+      "completed": true,
+      "cases": [
+        "A02-deleted-account",
+        "A03-bootstrap-writer"
+      ],
+      "records": [
+        {
+          "id": "A02-deleted-account",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "6b956917e3ad6e7b2400cfa29fe83676ddceac0962797e56a717ad11a7e319a0",
+          "stderrSHA256": "aadc494d457a69ee51d972bea78b7cb07dde37c9d3180ca2fafac911fe29d579",
+          "stdoutBytes": 1263,
+          "stderrBytes": 166
+        },
+        {
+          "id": "A02-deleted-account",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "50d11f52946d96a7565b64bc868731df8ced1889a042f3084a777c8c6b13776a",
+          "stderrSHA256": "cfc460e4994fb01169fbb581d78c359102ca881d67c89532b9049ea1be5295eb",
+          "stdoutBytes": 2542,
+          "stderrBytes": 166
+        },
+        {
+          "id": "A03-bootstrap-writer",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "7eccfd428021dcf1cb0a85431c3d64ce6f0da4fd567483e9bfb80d28d696c92a",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 2177,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A03-bootstrap-writer",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "a7c11c4d856998f6ee9a4d0a73f6f0d83cd2cb961b46f75b119aa45bd7ede6be",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 7755,
+          "stderrBytes": 0
+        }
+      ],
+      "restorationFailures": [],
+      "elapsedMs": 6537,
+      "originalSelectedInputsUnchanged": true,
+      "flatFiveRunnerUnchanged": true,
+      "wholeA19Accepted": false,
+      "A01CrossProcessSensitivityQualified": false
+    }
+  ],
+  "failedStep": 7,
+  "failureScope": "Process runner preflight unchanged DB-manifest checksum at line21:98; no A01 pristine/mutant child or SQL-lock business oracle ran.",
+  "actualDependencySHA256": "408aa134975b40661b599043c4e938fccded9ee00929ad6ae579d83573c2db6f",
+  "stalePinnedSHA256": "4e9c8b4118d081d036213d80877d3d8c51b3bf448c4fbabde1ac3c21210d6361",
+  "HTTPIntegrationSkipped": true,
+  "browserAcquisitionAndSmokeSkipped": true,
+  "sourceCIQualified": false,
+  "noRerun": true,
+  "noDeployOrAdoption": true,
+  "steps": [
+    {
+      "number": 1,
+      "name": "Set up job",
+      "conclusion": "success"
+    },
+    {
+      "number": 2,
+      "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "conclusion": "success"
+    },
+    {
+      "number": 3,
+      "name": "Locked install and native/standalone build in pinned compiler image",
+      "conclusion": "success"
+    },
+    {
+      "number": 4,
+      "name": "Original lint, type and unit checks with isolated runtime network",
+      "conclusion": "success"
+    },
+    {
+      "number": 5,
+      "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+      "conclusion": "success"
+    },
+    {
+      "number": 6,
+      "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+      "conclusion": "success"
+    },
+    {
+      "number": 7,
+      "name": "Separate-process SQL writer-lock regression sensitivity",
+      "conclusion": "failure"
+    },
+    {
+      "number": 8,
+      "name": "Original strict integration and process controls",
+      "conclusion": "skipped"
+    },
+    {
+      "number": 9,
+      "name": "Acquire locked browser CI tools (no app dependency change)",
+      "conclusion": "skipped"
+    },
+    {
+      "number": 10,
+      "name": "Finite compiled Pods browser smoke",
+      "conclusion": "skipped"
+    },
+    {
+      "number": 20,
+      "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "conclusion": "success"
+    },
+    {
+      "number": 21,
+      "name": "Complete job",
+      "conclusion": "success"
+    }
+  ],
+  "rawEvidence": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\run.json",
+      "bytes": 12578,
+      "sha256": "b095384e5daf63f2311c6ec5fab43da3c5ee0671a5e5ae82a73fda420a9ec4ed"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\jobs.json",
+      "bytes": 3281,
+      "sha256": "2c08351f51157f146589fe1f522660869fc64934e647cc43854423dd81726fc1"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\main.json",
+      "bytes": 342,
+      "sha256": "705bd70cb725068f83d06f9e1c56d0404c8d8537397d38724732b2d3c0b9d09d"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\logs\\0_quality.txt",
+      "bytes": 248004,
+      "sha256": "fda13e68b64483b3ab5a6dfdb9218761c3622bce55b215481d4daad90228673b"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\logs\\quality\\1_Set up job.txt",
+      "bytes": 1931,
+      "sha256": "f35568a0438238887f8a927ecca441690a22a64a801b2712a03ba98521a43d45"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\logs\\quality\\20_Post Run actions_checkout@11d5960a326750d5838078e36cf38b85af677262.txt",
+      "bytes": 1729,
+      "sha256": "01a9ae8e31b0d9493af28731df7a2e0d0322bf255afd88fd8f4956e10e9144a1"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\logs\\quality\\21_Complete job.txt",
+      "bytes": 386,
+      "sha256": "562f9ca7baa52550c9e90407b9136b560ad580aec43b42ad611f7720c4f7c169"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\logs\\quality\\2_Run actions_checkout@11d5960a326750d5838078e36cf38b85af677262.txt",
+      "bytes": 6721,
+      "sha256": "5078ad3bd400bcc2eaf0940432318b77a414b50d4a35c0246be5d7bf939ad271"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\logs\\quality\\3_Locked install and native_standalone build in pinned compiler image.txt",
+      "bytes": 25055,
+      "sha256": "880db1a8958507fc5ff5745907399d3b8b6e3dfd7dfbdb7c560eba2edfdbd718"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\logs\\quality\\4_Original lint, type and unit checks with isolated runtime network.txt",
+      "bytes": 159677,
+      "sha256": "733c5efc50cfd752e63e39b20950251af85cb97db413708dea1d291685a6113b"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\logs\\quality\\5_Five source regression sensitivity checks (A04_A05_A06_action_cache).txt",
+      "bytes": 19953,
+      "sha256": "9e9fa8850e08b7292e141a171832164357f2ccc4b366c8b62060edb01d11ad1f"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\logs\\quality\\6_Deleted-account and bootstrap DB regression sensitivity checks.txt",
+      "bytes": 29184,
+      "sha256": "49e0627ed79758c20ad4e191d718222be264abe37fa138f222bad93fa688d3d1"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\logs\\quality\\7_Separate-process SQL writer-lock regression sensitivity.txt",
+      "bytes": 3392,
+      "sha256": "6907dc4a7bbe62acf32c820054eeb1ba37e080ad9a72b02718344882e83db9f9"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v1\\logs\\quality\\system.txt",
+      "bytes": 628,
+      "sha256": "63950b23b9977cbeb2d3e6476a0230d25d42e2f496d15459e097e1d244fef423"
+    }
+  ]
+}
