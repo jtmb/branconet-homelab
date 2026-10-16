@@ -7,6 +7,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import { requestJson, useSession } from "@/lib/use-query";
 import { useMutation } from "@/lib/use-mutation";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
+import { Modal } from "@/components/ui/modal";
 import { findLegacyLiveNode, sortLegacyClusterRows } from "@/lib/legacy-cluster-sort";
 
 interface NodeData {
@@ -163,6 +164,7 @@ export default function NodesPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
             <input
               type="text"
+              aria-label="Search inventory nodes"
               placeholder="Search…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -196,8 +198,9 @@ export default function NodesPage() {
           ) : (
           <div className="glass-card p-4 rounded-xl mb-6 flex items-end gap-3 flex-wrap">
             <div>
-              <label className="text-xs text-zinc-500 mb-1 block">Name</label>
+              <label htmlFor="inventory-add-name" className="text-xs text-zinc-500 mb-1 block">Name</label>
               <input
+                id="inventory-add-name"
                 value={form.name}
                 disabled={mutation.busy}
                 onChange={e => setForm({ ...form, name: e.target.value })}
@@ -206,8 +209,9 @@ export default function NodesPage() {
               />
             </div>
             <div>
-              <label className="text-xs text-zinc-500 mb-1 block">Hostname</label>
+              <label htmlFor="inventory-add-hostname" className="text-xs text-zinc-500 mb-1 block">Hostname</label>
               <input
+                id="inventory-add-hostname"
                 value={form.hostname}
                 disabled={mutation.busy}
                 onChange={e => setForm({ ...form, hostname: e.target.value })}
@@ -216,8 +220,9 @@ export default function NodesPage() {
               />
             </div>
             <div>
-              <label className="text-xs text-zinc-500 mb-1 block">IP Address</label>
+              <label htmlFor="inventory-add-ip" className="text-xs text-zinc-500 mb-1 block">IP Address</label>
               <input
+                id="inventory-add-ip"
                 value={form.ipAddress}
                 disabled={mutation.busy}
                 onChange={e => setForm({ ...form, ipAddress: e.target.value })}
@@ -226,8 +231,9 @@ export default function NodesPage() {
               />
             </div>
             <div>
-              <label className="text-xs text-zinc-500 mb-1 block">Role</label>
+              <label htmlFor="inventory-add-role" className="text-xs text-zinc-500 mb-1 block">Role</label>
               <select
+                id="inventory-add-role"
                 value={form.role}
                 disabled={mutation.busy}
                 onChange={e => setForm({ ...form, role: e.target.value })}
@@ -376,17 +382,14 @@ export default function NodesPage() {
 
         {/* Edit Modal */}
         {session.canWrite && editingId && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="bg-zinc-900 border border-zinc-700/60 rounded-2xl w-full max-w-sm mx-4 shadow-2xl overflow-hidden">
-              <div className="px-5 py-4 border-b border-zinc-700/40">
-                <h3 className="text-sm font-semibold text-zinc-200">Edit Node</h3>
-              </div>
-              <div className="p-5 flex flex-col gap-3">
+          <Modal open title="Edit Node" onClose={() => { if (mutation.busy) return; mutation.clear(); setEditingId(null); }}>
+              <div className="flex flex-col gap-3">
                 {inventoryError && <p role="status" className="text-sm text-amber-300">{inventoryError}<button onClick={fetchDbNodes} className="ml-2 underline">Refresh inventory</button></p>}
                 {mutation.error && <p role="alert" className="text-sm text-red-300">{mutation.error} Refresh inventory to check the result before retrying.<button onClick={fetchDbNodes} className="ml-2 underline">Refresh inventory</button></p>}
                 <div>
-                  <label className="text-xs text-zinc-500 mb-1 block">Name</label>
+                  <label htmlFor="inventory-edit-name" className="text-xs text-zinc-500 mb-1 block">Name</label>
                   <input
+                    id="inventory-edit-name"
                     value={editName}
                     disabled={mutation.busy}
                     onChange={e => setEditName(e.target.value)}
@@ -395,8 +398,9 @@ export default function NodesPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-zinc-500 mb-1 block">Hostname</label>
+                  <label htmlFor="inventory-edit-hostname" className="text-xs text-zinc-500 mb-1 block">Hostname</label>
                   <input
+                    id="inventory-edit-hostname"
                     value={editHost}
                     disabled={mutation.busy}
                     onChange={e => setEditHost(e.target.value)}
@@ -404,8 +408,9 @@ export default function NodesPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-zinc-500 mb-1 block">IP Address</label>
+                  <label htmlFor="inventory-edit-ip" className="text-xs text-zinc-500 mb-1 block">IP Address</label>
                   <input
+                    id="inventory-edit-ip"
                     value={editIp}
                     disabled={mutation.busy}
                     onChange={e => setEditIp(e.target.value)}
@@ -413,8 +418,9 @@ export default function NodesPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-xs text-zinc-500 mb-1 block">Role</label>
+                  <label htmlFor="inventory-edit-role" className="text-xs text-zinc-500 mb-1 block">Role</label>
                   <select
+                    id="inventory-edit-role"
                     value={editRole}
                     disabled={mutation.busy}
                     onChange={e => setEditRole(e.target.value)}
@@ -426,7 +432,7 @@ export default function NodesPage() {
                   </select>
                 </div>
               </div>
-              <div className="px-5 py-3 border-t border-zinc-700/40 flex items-center justify-end gap-2">
+              <div className="mt-4 border-t border-zinc-700/40 pt-3 flex items-center justify-end gap-2">
                 <button
                   onClick={() => { mutation.clear(); setEditingId(null); }}
                   disabled={mutation.busy}
@@ -442,8 +448,7 @@ export default function NodesPage() {
                   Save
                 </button>
               </div>
-            </div>
-          </div>
+          </Modal>
         )}
       </main>
       </ViewportWrapper>

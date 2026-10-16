@@ -1,5 +1,7 @@
 # BORTUS technology stack
 
+A15 isolated source candidate (not yet runtime-qualified): legacy `/cluster/nodes` Edit Node now uses the existing shared Radix Modal; its Add/Edit labels are associated with fields and inventory Search has an explicit name. The final keyboard-focus outline now overrides the older important outline reset. Session, mutation, draft and error behavior is unchanged. The [finite A15 inventory](implementation-evidence/a15-keyboard-modal-source-20261015.json) distinguishes the 18 modal mount sites and retained keyboard/axe subsets from pending current-source checks and actual screen-reader announcements. Original A15 remains open; prior functional/browser/CI qualifications bind their original source, not this candidate.
+
 The recorded fccc7c06 A19 CI and A02 composite source clauses remain qualified at their stated source; see [Fresh source CI qualification](implementation-evidence/provisioning-hosted-ci-qualified-root-20261015.json) and [A02 composite qualification](implementation-evidence/a02-composite-boundary-qualification-root-20261015.json). Delivered, AT, performance, image, recovery and live acceptance remain separate.
 
 ## Historical finite A19 sensitivity qualification
