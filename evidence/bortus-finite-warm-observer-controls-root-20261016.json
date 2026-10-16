@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "scope": "Finite diagnostic observer controls only; no application performance acceptance",
+  "qualifiedJoinedObserverSHA256": "45969322767b35390e6f43fa97e7be928ba4d830f1f062b02ae89bec6cb2dd2b",
+  "fix": "Preserve own property descriptors; when original method is inherited, create a configurable shadow and remove it during restoration.",
+  "retainedActorExits": [
+    1,
+    1,
+    0
+  ],
+  "failedAttempts": [
+    {
+      "version": "v1",
+      "cause": "No qualified groups; bounded original failure retained"
+    },
+    {
+      "version": "v1-1",
+      "cause": "HTTP-control descriptor setup/restoration TypeError; no qualified groups"
+    }
+  ],
+  "acceptedReport": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\account-two-warm-focused-controls-20261016-v1-2\\output\\focused-controls-report.json",
+    "bytes": 1790,
+    "sha256": "fe9078f4c0860eeac2896e00f27677440280e1c6c9f153af1f6603844684e027",
+    "report": {
+      "actualExit": 0,
+      "controls": [
+        {
+          "id": "http-normal-forwarding",
+          "passed": true,
+          "actualHTTPRequests": 14,
+          "fullPublicBodiesExact": true,
+          "originalReceiverArgsCallbacksResultsAndErrorsPreserved": true,
+          "publicationRefused": false,
+          "finishListenersPreserved": true,
+          "nativeErrorModels": 0,
+          "instrumentationFaultModels": 0
+        },
+        {
+          "id": "http-fault-forwarding",
+          "passed": true,
+          "actualHTTPRequests": 14,
+          "fullPublicBodiesExact": true,
+          "originalReceiverArgsCallbacksResultsAndErrorsPreserved": true,
+          "publicationRefused": true,
+          "finishListenersPreserved": true,
+          "nativeErrorModels": 2,
+          "instrumentationFaultModels": 6
+        },
+        {
+          "id": "worker-positive-14",
+          "passed": true,
+          "actualFileWorkerExit": 0,
+          "expectedOperations": 14,
+          "actualOperations": 14,
+          "actualRealYields": 28,
+          "publicationRefused": false,
+          "defaultInheritedRequire": true,
+          "workerExecArgvOverridden": false,
+          "entryRegistrationAndListenerRestorationVerified": true
+        },
+        {
+          "id": "worker-positive-22",
+          "passed": true,
+          "actualFileWorkerExit": 0,
+          "expectedOperations": 22,
+          "actualOperations": 22,
+          "actualRealYields": 44,
+          "publicationRefused": false,
+          "defaultInheritedRequire": true,
+          "workerExecArgvOverridden": false,
+          "entryRegistrationAndListenerRestorationVerified": true
+        },
+        {
+          "id": "worker-expected22-actual14-refused",
+          "passed": true,
+          "actualFileWorkerExit": 0,
+          "expectedOperations": 22,
+          "actualOperations": 14,
+          "actualRealYields": 28,
+          "publicationRefused": true,
+          "defaultInheritedRequire": true,
+          "workerExecArgvOverridden": false,
+          "entryRegistrationAndListenerRestorationVerified": true
+        }
+      ],
+      "actualHTTPRequests": 28,
+      "actualFileWorkers": 3,
+      "actualPublicWorkerOperations": 50,
+      "actualRealYields": 100,
+      "original14MeansRetainedOperationCountNotControlCorpus": true,
+      "oldFiveTwoSixControlCorporaReplayed": false,
+      "actualNextOrEdgeJoinProven": false,
+      "actualAccountOrSQLLoaded": false,
+      "original72BusinessRequestDiagnosticExecuted": false,
+      "performanceAcceptance": false
+    }
+  },
+  "qualification": {
+    "actualExit": 0,
+    "currentPublicRecords": 246,
+    "originalAndPostBirthsAbsent": 51,
+    "exactCIDNameQueriesRetained": 6,
+    "noNewDockerQueries": true,
+    "graphsRewalkedHere": false,
+    "noWindowsJob": true,
+    "finalPath": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-finite-warm-three-owners-final-current-20261016-v1.json",
+    "finalSHA256": "2a1bd42fe34364b015dbe6ced7dbedf73a7649e8ec04e2831a62044d8d10c9a3"
+  },
+  "realRuntimeDescriptorProbe": {
+    "Node": "22.23.3",
+    "Server.emit": "inherited at depth2",
+    "ServerResponse.write": "inherited at depth1",
+    "ServerResponse.end": "inherited at depth1",
+    "Module._compile": "own at depth0"
+  },
+  "modelScope": "Two native-error cases and six instrumentation faults are models; HTTP forwarding and three file Workers executed.",
+  "actualNextOrEdgeJoinProven": false,
+  "actualAccountOrSQLLoaded": false,
+  "original72DiagnosticExecuted": false,
+  "performanceAcceptance": false,
+  "productionAdoption": false
+}
