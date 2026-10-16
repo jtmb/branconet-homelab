@@ -1,0 +1,460 @@
+{
+  "schemaVersion": 1,
+  "scope": "Current exact frontend original A19 hosted-CI source clause; no merge/image/performance/live adoption.",
+  "sourceCommit": "9cb81363f33333ea00d6f5d7f71036c780d88e1c",
+  "qualifiedRuntimeSource": "d901ccdd77d73981ca55708e124ab9699c8d79b4",
+  "frontendTree": "5fcbfdda41d1e0c6d5200824dde51731fa91ccfe",
+  "workflowBlob": "f8b7ec07d69dcd1806ca44f6c566685108639cb3",
+  "ciCommit": "fc17e40dadc88f743e422e95a411ff0b0d281643",
+  "ciParent": "8eba7def1aff7efc29329a3d6ffa4d750e155369",
+  "ciBranch": "codex/bortus-ci-current-nodes-contrast-20261016",
+  "run": {
+    "id": 38862871467,
+    "url": "https://github.com/jtmb/branconet-homelab/actions/runs/38862871467",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "job": 116848947287,
+    "successfulLifecycleSteps": 12,
+    "declaredWorkflowSteps": 9
+  },
+  "unitTests": 352,
+  "HTTPTests": 8,
+  "sensitivityPairs": 8,
+  "sourceCIQualified": true,
+  "originalA19SourceClauseQualified": true,
+  "exactPristineMutantAssertionsAndRestorationVerified": true,
+  "tapMatrices": {
+    "4": {
+      "tests": [
+        352
+      ],
+      "pass": [
+        352
+      ],
+      "fail": [
+        0
+      ],
+      "skipped": [
+        0
+      ],
+      "cancelled": [
+        0
+      ],
+      "todo": [
+        0
+      ]
+    },
+    "5": {
+      "tests": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "pass": [
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "fail": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "skipped": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelled": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "todo": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "6": {
+      "tests": [
+        5,
+        5,
+        11,
+        11
+      ],
+      "pass": [
+        5,
+        3,
+        11,
+        4
+      ],
+      "fail": [
+        0,
+        2,
+        0,
+        7
+      ],
+      "skipped": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "cancelled": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "todo": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "7": {
+      "tests": [
+        1,
+        1
+      ],
+      "pass": [
+        1,
+        0
+      ],
+      "fail": [
+        0,
+        1
+      ],
+      "skipped": [
+        0,
+        0
+      ],
+      "cancelled": [
+        0,
+        0
+      ],
+      "todo": [
+        0,
+        0
+      ]
+    },
+    "8": {
+      "tests": [
+        8
+      ],
+      "pass": [
+        8
+      ],
+      "fail": [
+        0
+      ],
+      "skipped": [
+        0
+      ],
+      "cancelled": [
+        0
+      ],
+      "todo": [
+        0
+      ]
+    }
+  },
+  "processSQLiteProofs": [
+    {
+      "phase": "pristine",
+      "actualExit": 0,
+      "lockProof": {
+        "schema": 1,
+        "acquired": false,
+        "busyCode": 5,
+        "firstCount": 2,
+        "secondCount": null,
+        "countCalls": [
+          1,
+          0
+        ],
+        "outcomes": [
+          {
+            "success": true,
+            "status": null
+          },
+          {
+            "success": false,
+            "status": 403
+          }
+        ],
+        "writers": 1,
+        "administrators": 1,
+        "distinctParticipantProcesses": true,
+        "participantExits": [
+          0,
+          0
+        ]
+      },
+      "cleanupProof": {
+        "failures": [],
+        "twoParticipants": true,
+        "bothReportedExit": true
+      }
+    },
+    {
+      "phase": "mutant",
+      "actualExit": 1,
+      "lockProof": {
+        "schema": 1,
+        "acquired": true,
+        "busyCode": null,
+        "firstCount": 2,
+        "secondCount": 2,
+        "countCalls": [
+          1,
+          1
+        ],
+        "outcomes": [
+          {
+            "success": true,
+            "status": null
+          },
+          {
+            "success": true,
+            "status": null
+          }
+        ],
+        "writers": 0,
+        "administrators": 0,
+        "distinctParticipantProcesses": true,
+        "participantExits": [
+          0,
+          0
+        ]
+      },
+      "cleanupProof": {
+        "failures": [],
+        "twoParticipants": true,
+        "bothReportedExit": true
+      }
+    }
+  ],
+  "browserSmoke": {
+    "browserSmoke": "passed",
+    "realPodGETStatus": 200,
+    "wireRows": 208,
+    "initialPageRows": 100,
+    "filteredRows": 3,
+    "nonAgeColumnsVerified": 8,
+    "exactLinks": 3,
+    "noMutationsAttempted": true,
+    "ATQualified": false,
+    "performanceQualified": false
+  },
+  "browserCleanup": {
+    "browserCICleanupFailed": false,
+    "confirmedCIDCount": 2,
+    "exactNameQueryCount": 3,
+    "exactNamesAbsent": true,
+    "uncertainCreate": false
+  },
+  "completeFrontendRawBlobs": 393,
+  "workflowRawBlobs": 1,
+  "mainOutsideFrontendWorkflowExact": true,
+  "directMainParentNoDevelopmentHistory": true,
+  "publicEnvExampleOnly": true,
+  "mainUnchanged": "8eba7def1aff7efc29329a3d6ffa4d750e155369",
+  "sourceScan": {
+    "actualTool": "8b0df6/0",
+    "literalExit": 0,
+    "findings": 0,
+    "files": 394,
+    "scannerBirthNoLive": true
+  },
+  "hostedEvidenceScan": {
+    "actualTool": "f61024/0",
+    "literalExit": 0,
+    "findings": 0,
+    "files": 18,
+    "scannerBirthNoLive": true,
+    "currentBytesUnchanged": true,
+    "scanPointerSHA256": "cce266bc834d1a6acc64497ab6c5326d1022135bdbc232ed86386da72678d60a"
+  },
+  "retainedFailedRun": {
+    "id": 38861922778,
+    "conclusion": "failure",
+    "scope": "Transitive DB-manifest hash preflight; A01 children/HTTP/browser not accepted.",
+    "parsedResultSHA256": "77f6dd3525cccb40e7ace068e0c1f058a0f254e9e0b1d4a3504a26d4fe941557",
+    "noRerun": true
+  },
+  "qualifiedResult": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\parsed-result.json",
+    "bytes": 17231,
+    "sha256": "8cbc04455109c381bc6bc98f5306272c9327d89e2cf21d3c903c5d6fa0edd73d"
+  },
+  "sourcePushProof": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a19-current-hosted-ci-push-20261016-v2.json",
+    "sha256": "e55b9db97b0dfa6695762f8e6b34b3887dc5200b7351c3b329b3025fdf79c7aa"
+  },
+  "tools": {
+    "discovery": "4c537a/0",
+    "watch": "45f009/0",
+    "fetch": "b88b2c/0",
+    "strictParser": "0d5981/0",
+    "defaultLogScan": "f61024/0"
+  },
+  "savedEvidence": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\run.json",
+      "bytes": 12608,
+      "sha256": "6af4b22bb86ef33e9e3d5227ff1ce68862512cc731c1ea234da4d934750c3050"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\jobs.json",
+      "bytes": 3281,
+      "sha256": "0cf8af77435bac223c988938e3ce3ab5ab31974cf1ec139805b46e13fa3703b2"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\main.json",
+      "bytes": 342,
+      "sha256": "705bd70cb725068f83d06f9e1c56d0404c8d8537397d38724732b2d3c0b9d09d"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\parsed-result.json",
+      "bytes": 17231,
+      "sha256": "8cbc04455109c381bc6bc98f5306272c9327d89e2cf21d3c903c5d6fa0edd73d"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\0_quality.txt",
+      "bytes": 263896,
+      "sha256": "bc158920f50bc8b160ff60869b670e50477d4e61f89d51cc3842aa7af9cd8305"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\10_Finite compiled Pods browser smoke.txt",
+      "bytes": 1921,
+      "sha256": "3b22ac035fc3d38c3f61fe01a9a091b887da66ec6a9ae96fdcdf530429ebad36"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\1_Set up job.txt",
+      "bytes": 1939,
+      "sha256": "87413cf6624fee54850462c9971a9cc4ab4cd9ad143fe35eaf4e328e1bd92d13"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\20_Post Run actions_checkout@11d5960a326750d5838078e36cf38b85af677262.txt",
+      "bytes": 1729,
+      "sha256": "b15c5c3f475f9b37dc409d3b9a570804cb1126f40e311a6dad4e3241f17b08b8"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\21_Complete job.txt",
+      "bytes": 386,
+      "sha256": "e6b81a53c18e499034b6f44395bcfadcc9ec0f882939b79b9ffd397512307b71"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\2_Run actions_checkout@11d5960a326750d5838078e36cf38b85af677262.txt",
+      "bytes": 6721,
+      "sha256": "929a67d7d7bb2d3892131786a7a09aa0c28d7fd894eb33be2d23f8482cb761e3"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\3_Locked install and native_standalone build in pinned compiler image.txt",
+      "bytes": 24993,
+      "sha256": "3e6d9e3d80fe6edeb32db99fd239bd4071f7ad8572ebada2f6a7ca2eabdb6624"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\4_Original lint, type and unit checks with isolated runtime network.txt",
+      "bytes": 159664,
+      "sha256": "a088fc5a5f68bf6e811a661d85ae43e44cea35c3f202063a261cef60472136d5"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\5_Five source regression sensitivity checks (A04_A05_A06_action_cache).txt",
+      "bytes": 19952,
+      "sha256": "b6a6c194398db0a831b10b9bbf2a9ff202079faffef6360d95b2045e61643782"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\6_Deleted-account and bootstrap DB regression sensitivity checks.txt",
+      "bytes": 29184,
+      "sha256": "a52ab0787db1563a93f21f852b55bd1d6e6f6d7690cc66af80a805a27e3c392d"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\7_Separate-process SQL writer-lock regression sensitivity.txt",
+      "bytes": 7629,
+      "sha256": "6c9afee3aaef33b93347678ac423d633375434b82fb0404aa237d967c812d5e8"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\8_Original strict integration and process controls.txt",
+      "bytes": 8158,
+      "sha256": "340aad762b7aca51bab7e418be1e81527695499d56e12ef9f4206e34351df37e"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\9_Acquire locked browser CI tools (no app dependency change).txt",
+      "bytes": 1653,
+      "sha256": "9c48ce93926501dcf52e2164a2954774fdf62cdedd19f07e840f909462811aba"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a19-current-hosted-ci-actual-20261016-v2\\logs\\quality\\system.txt",
+      "bytes": 628,
+      "sha256": "ecaf2a0c18a870dc5d04aea223085886e30736235ee5cf9b43890a66df725aa9"
+    }
+  ],
+  "ROOTPublicationPending": false,
+  "performanceQualified": false,
+  "actualATQualified": false,
+  "imageSecurityQualified": false,
+  "merged": false,
+  "deployed": false,
+  "productionAdopted": false,
+  "rootIndependent": {
+    "publishedAt": "2026-10-16T06:53:43.873524+00:00",
+    "agentReceiptSHA256": "73c5763b38eda51484bb72266ad8252bb20d98acb95f9def1a54352af197acef",
+    "savedEvidenceFilesCurrent": 18,
+    "rawLogFilesCurrent": 14,
+    "literalTAPMatricesRecomputed": true,
+    "allThreeSensitivityGroupsJSONExactFromRawLogs": true,
+    "sixteenPristineMutantExitsMatched": true,
+    "browserAndCleanupJSONExactFromRawLog": true,
+    "GitFrontendSourceAndCITreeExact": true,
+    "directMainParentAndAllowedPathsVerified": true,
+    "remoteMainAndValidationBranchFreshExact": true,
+    "noBusinessOrBenchmarkReplay": true
+  }
+}
