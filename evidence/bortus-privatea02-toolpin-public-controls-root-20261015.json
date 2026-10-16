@@ -1,0 +1,61 @@
+{
+  "scope": "Public extracted ToolPin.check real-filesystem controls only",
+  "tool": "df90de",
+  "actualExit": 0,
+  "tests": 6,
+  "failed": 0,
+  "skipped": 0,
+  "sourceScanTool": "126396",
+  "sourceScanExit": 0,
+  "sourceScanFindings": 0,
+  "sourceScanFiles": 5,
+  "proposalSHA256": "419ee30f93542baa74133fafe193050c0326295dc8c93c939c5911024436e0cd",
+  "publicSourceManifestSHA256": "f8280fb6f5183e05a45c71bb91046982d9a1cf0fd3e0926f4ebe8b88e9955bf3",
+  "currentPublicFiles": [
+    {
+      "path": "fp.py",
+      "bytes": 104,
+      "sha256": "6ba93c10bb9f7ae8329e491d8ac5e181787ede304999405dc55c1716a4761057"
+    },
+    {
+      "path": "controls.py",
+      "bytes": 3709,
+      "sha256": "d52d2d6668bd96caa5aba2bbeeb50623f6f972c5276df34c9ddf37c302ca7b04"
+    },
+    {
+      "path": "original.py",
+      "bytes": 290,
+      "sha256": "d300853ad8f9a4fadfad759ffc42537e3f6c46b19169d247cc4b0801bbd5150d"
+    },
+    {
+      "path": "candidate.py",
+      "bytes": 438,
+      "sha256": "0c936fea86b23d599459c40230cc7d5bd395cd237675df625d8dc8398e9fb045"
+    }
+  ],
+  "cases": [
+    "normal metadata and actual per-anchor call counts",
+    "fresh next-call directory mode refusal",
+    "replaced path refuses before closed FD access",
+    "wrong held FD refuses",
+    "executable full fingerprint remains fresh",
+    "missing path error is not suppressed"
+  ],
+  "actualSuccessfulAnchorStatCalls": {
+    "original": 8,
+    "candidate": 2
+  },
+  "elapsedSpeedupMeasured": false,
+  "metadataPreparationRefusal": {
+    "tool": "64735a",
+    "beforeStageOrTests": true,
+    "reason": "Method AST hash compared to reference bytes including one trailing newline",
+    "correction": "Exact one-newline removal for AST hash only; staged reference bytes unchanged"
+  },
+  "runtimeIntegration": false,
+  "privateMaterialConsumed": false,
+  "privateRecoveryExecuted": false,
+  "privateFailureExplained": false,
+  "original600SecondFailureFixed": false,
+  "productionChanged": false
+}
