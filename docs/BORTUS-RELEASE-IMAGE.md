@@ -1,7 +1,11 @@
 # Immutable BORTUS release image builder
 
 
-## Current qualification checkpoint: 2026-10-15
+## Current qualification checkpoint: 2026-10-16
+
+The [current isolated application composition](../evidence/bortus-parent-stat-a15-functional-composite-root-20261016.json) qualifies source6b254b2 with the actual bc10 compiled output:352 units and eight HTTP checks pass after correcting only the legacy Modal test model. The earlier350/352 failure remains recorded. This candidate has no current compiled-account, browser, performance, hosted-CI or delivered-image qualification yet.
+
+The [bundled-zlib Node compilation attempt](../evidence/bortus-node22-bundled-zlib-compile-timeout-root-20261016.json) stops at the unchanged7,200-second compilation deadline: overall1/build-15. Independent checks retain14 runtime inputs,15 absent recorded host identities and absent exact container ID/name. The worker's `original_cache_unchanged:false` remains literal; it is not independent proof of cache drift because the success-path check did not run. No new binary, default4,706 tests, canary or version check completed. The earlier Node-suite pass remains tied to its original binary. No automatic retry or production adoption follows this result.
 
 The [current hosted CI receipt](../evidence/bortus-json-response-hosted-ci-qualified-root-20261015.json) qualifies original A19 source CI for frontend47f85279: clean native/standalone build, lint/types,352 units,eight HTTP checks,all eight pristine0/mutant1 sensitivity pairs and compiled Pods smoke pass. The earlier frontend4658deef result remains a historical source qualification. The [A12 source composite](../evidence/bortus-a12-source-composite-root-20261015.json) now includes the actual deleted-account browser flow and the enabled Run. These are source qualifications; the older dated sections below preserve their historical open states.
 
