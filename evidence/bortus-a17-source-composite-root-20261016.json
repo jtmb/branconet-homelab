@@ -1,0 +1,178 @@
+{
+  "scope": "Original A17 five-clause source composition; retained actual synthetic TLS/browser evidence plus reviewed dependency changes and current functional qualification",
+  "source": "6b254b2c042d86177ab64686623f23a3077532f0",
+  "frontendTree": "7a0b7142ef5f437502bc992ce199598648974751",
+  "compiledSource": "bc10aa971a61bdc49cb2d5190cb565025bb34324",
+  "sourceReviewSHA256": "2ea8fbb249ac1e4470bb6f153caf416cdd56d32289b9b8992ff3c7c57665a088",
+  "functionalCompositeSHA256": "16607419b441544dcfa560f9b23626d2cef36a3eed3a8b7d0d0fb6e9123537b9",
+  "originalValidation": "Metadata-only selection cannot silently overwrite; explicit empty create/update works; clear-display never changes Kubernetes by itself; cancelled deletion sends no request; stale versions fail. Use the mock TLS native API and inspect redacted assertions only.",
+  "clauses": [
+    {
+      "clause": "Metadata-only selection cannot silently overwrite",
+      "receipt": "secret-intent.json/browserAssertions/0,1; secret-tables.json/browserFixture/intent",
+      "actual": "No automatic reveal/write; Save disabled after selection and reveal; later table stage confirms0value requests during metadata selection and0native writes for its whole browser run",
+      "source": "Unchanged intent states/canSave,select reset,save admission; table selection/focus itself subsequently browser-observed"
+    },
+    {
+      "clause": "Explicit empty create/update works",
+      "receipt": "secret-intent.json/browserAssertions/3 and finalBuildSmoke",
+      "actual": "Both deliberate empty create and update succeeded; success clears draft/intent and disables Save",
+      "source": "A17 commit save/intent state and API handlers/store write/CAS suffix exact; no broadened history/adoption requirement"
+    },
+    {
+      "clause": "Clear-display never changes Kubernetes by itself",
+      "receipt": "secret-intent.json/browserAssertions/2,6 and finalBuildSmoke/lateRevealDropped",
+      "actual": "Clear resets replacement/empty intent without write; delayed reveal remains empty afterward",
+      "source": "clearValue and request epoch fence exact; mutation ownership changed only as described below"
+    },
+    {
+      "clause": "Cancelled deletion sends no request",
+      "receipt": "secret-intent.json/browserAssertions/4 and finalBuildSmoke/apiSecretDeletes=0",
+      "actual": "Blank/wrong exact target remains unarmed; cancel sends no DELETE",
+      "source": "Exact ConfirmDialog/delete callbacks and MutationTask unchanged; default enabled=true wrapper path reviewed separately"
+    },
+    {
+      "clause": "Stale versions fail",
+      "receipt": "secret-intent.json/browserAssertions/7",
+      "actual": "External native resourceVersion change produces visible conflict, retained entered draft and no automatic retry",
+      "source": "SecretStore read/write/delete suffix and server handlers exact; request transport create/replace still use actual native CAS; no full-transport-identity claim"
+    }
+  ],
+  "retainedPins": [
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\docs\\implementation-evidence\\secret-intent.json",
+      "bytes": 4311,
+      "sha256": "36394f407ced958ebcf67a95ccfcd2f6e660373633555ebe06f7dfd3dc5a459d"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\docs\\implementation-evidence\\secret-tables.json",
+      "bytes": 6096,
+      "sha256": "58bb783e634ceb60880072b25ec47b73ba1f03f6ae7b6c4c6c146e1a98e3a049"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\docs\\implementation-evidence\\combined-c29fc8c\\qualification.json",
+      "bytes": 4586,
+      "sha256": "c2ee2f911ec3185b06b0b488a83c387f16ed1bbd8c112577148f0261d39798cd"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\docs\\implementation-evidence\\workbench-lifecycle-browser.json",
+      "bytes": 9552,
+      "sha256": "94cc323b9943e16f8d817a2f36efb64e966c74926e4334819a7b0a912e895361"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\docs\\implementation-evidence\\kv-identity-browser.json",
+      "bytes": 2811,
+      "sha256": "e23f5a36693cdb254e43f06680a5ab72b576c21cf67c3c10f5d5e3d922339edf"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\docs\\implementation-evidence\\kv-workflows-browser.json",
+      "bytes": 8069,
+      "sha256": "7e91bf5bf375f9803ff434efaf7bcb9bda4163787d6b007d1388937714dbcb39"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-final-qualified-working-source\\k8s-rewrite\\front-end\\src\\app\\(dashboard)\\secrets\\secrets-editor.tsx",
+      "bytes": 19221,
+      "sha256": "98cd646e8b211e1f3a29b7e7114cd4700301e49df10906649b4019e72a998ea2"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\k8s-rewrite\\front-end\\src\\app\\(dashboard)\\secrets\\secrets-editor.tsx",
+      "bytes": 19221,
+      "sha256": "98cd646e8b211e1f3a29b7e7114cd4700301e49df10906649b4019e72a998ea2"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-final-qualified-working-source\\k8s-rewrite\\front-end\\src\\app\\api\\secrets\\route.ts",
+      "bytes": 412,
+      "sha256": "acca36cedf096c721cdf0100f29377d7f710178f037f1c2f562cc3b437de082e"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\k8s-rewrite\\front-end\\src\\app\\api\\secrets\\route.ts",
+      "bytes": 412,
+      "sha256": "acca36cedf096c721cdf0100f29377d7f710178f037f1c2f562cc3b437de082e"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-final-qualified-working-source\\k8s-rewrite\\front-end\\src\\lib\\secrets-api.ts",
+      "bytes": 2658,
+      "sha256": "290baaeb44a902f6628fee28edc105bae5baf05632cd267ca13b4fe4d9a0428d"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\k8s-rewrite\\front-end\\src\\lib\\secrets-api.ts",
+      "bytes": 2658,
+      "sha256": "290baaeb44a902f6628fee28edc105bae5baf05632cd267ca13b4fe4d9a0428d"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-final-qualified-working-source\\k8s-rewrite\\front-end\\src\\lib\\secret-http.ts",
+      "bytes": 879,
+      "sha256": "b6d5df26b924310dbf1e3da75cadba31ae69fdc5dce1de7b86b1fb296fe0328a"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\k8s-rewrite\\front-end\\src\\lib\\secret-http.ts",
+      "bytes": 879,
+      "sha256": "b6d5df26b924310dbf1e3da75cadba31ae69fdc5dce1de7b86b1fb296fe0328a"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-final-qualified-working-source\\k8s-rewrite\\front-end\\src\\lib\\cluster-secrets.ts",
+      "bytes": 11362,
+      "sha256": "f88e64b9c6d9649eeed70f0e6f35a0f72790d96421aaf52b9913f380b464368a"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\k8s-rewrite\\front-end\\src\\lib\\cluster-secrets.ts",
+      "bytes": 13299,
+      "sha256": "699e56a2d3b1884309ea27f0f5d00426aaf9a51ef3ddfdb8568ce2c12067a070"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-final-qualified-working-source\\k8s-rewrite\\front-end\\src\\lib\\secret-client.ts",
+      "bytes": 24645,
+      "sha256": "490099e1dd60383d4e3dba29d7b38a9180322ec214bcc6b1cfcb815950965e8f"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\k8s-rewrite\\front-end\\src\\lib\\secret-client.ts",
+      "bytes": 32061,
+      "sha256": "6d8facd580a14428289110a8f4b72a0cfe1116760488e65f4aed21fd30a31033"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-final-qualified-working-source\\k8s-rewrite\\front-end\\src\\lib\\mutation-task.ts",
+      "bytes": 2314,
+      "sha256": "d0eac5c8adf86ac686ad5c00d6582ff3b14f7f0f0f33f3cb223e03988c9f1ef7"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\k8s-rewrite\\front-end\\src\\lib\\mutation-task.ts",
+      "bytes": 2314,
+      "sha256": "d0eac5c8adf86ac686ad5c00d6582ff3b14f7f0f0f33f3cb223e03988c9f1ef7"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-final-qualified-working-source\\k8s-rewrite\\front-end\\src\\lib\\use-mutation.ts",
+      "bytes": 555,
+      "sha256": "695d044c9aa62baf63f67c070ee27cde1b069eb1e3279e162dbf1becb37fb3f4"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\k8s-rewrite\\front-end\\src\\lib\\use-mutation.ts",
+      "bytes": 1234,
+      "sha256": "764a11a66761a11c4833ecc7c7671ab8d7bd87972bcfb3331cd9c225828510cc"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\terminal-final-qualified-working-source\\k8s-rewrite\\front-end\\src\\lib\\use-query.ts",
+      "bytes": 3950,
+      "sha256": "92bd1bdf32e8b64f7622da449a0bafafd696f7d84493d3e28aadd4585eed4938"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-parent-stat-a15-evaluation\\kubernetes migration\\k8s-rewrite\\front-end\\src\\lib\\use-query.ts",
+      "bytes": 4473,
+      "sha256": "3cf6a05a4166f62677d9261594ca1a30031750c4b6465809ad4c014a1824f3f0"
+    }
+  ],
+  "originalReceiptSourceLimit": "Original intent receipt describes a tested working tree before its commit and has no per-file raw hash manifest. The next deliberate-intent commit6f6808e and preserved later qualified source bridge are compared explicitly; no missing raw initial capture is fabricated.",
+  "sharedChangedDependencies": {
+    "useMutation": "Historical wrapper differs. Current flat editor still invokes useMutation() with default enabled=true, a stable owner identity: guarded state.value/run callback and effect activation/dispose retain original enabled path; MutationTask exact. No claim wrapper whole-file equal or new browser replay.",
+    "requestJson": "Changed since retained snapshot: malformed success rejected and error bodies guarded; validJSON/native error object path remains, with204 compatibility. configurationList decoder runs only for /api/vars. No automatic retries introduced. Flat Secrets have no Config decoder.",
+    "nativeTransport": "Full file differs for limits/concurrency/bounded metadata list parsing/offthread selector/settlement. Exact TLS-required/skipTLSVerify refusal and rejectUnauthorized=true remain, and native create/replace entrypoints unchanged. Store mutations/CAS and redacted handlers are exact; do not claim all transport bytes unchanged.",
+    "currentAuthority": "Current ROOT composition166074 qualifies corrected6b254352+8 with bc10 compiled/native and current source/worker/dependency binding; no fresh browser claim."
+  },
+  "originalSourceClauseQualified": true,
+  "newBrowserExecuted": false,
+  "newPrivateRecoveryRequired": false,
+  "deliveredAcceptancePassed": false,
+  "actualATQualified": false,
+  "performanceAccepted": false,
+  "productionAdopted": false,
+  "historicalFalseFlagsPreserved": true
+}

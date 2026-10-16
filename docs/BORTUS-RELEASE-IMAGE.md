@@ -3,7 +3,7 @@
 
 ## Current qualification checkpoint: 2026-10-16
 
-The [current isolated application composition](../evidence/bortus-parent-stat-a15-functional-composite-root-20261016.json) qualifies source6b254b2 with the actual bc10 compiled output:352 units and eight HTTP checks pass after correcting only the legacy Modal test model. The earlier350/352 failure remains recorded. This candidate has no current compiled-account, browser, performance, hosted-CI or delivered-image qualification yet.
+The [current isolated application composition](../evidence/bortus-parent-stat-a15-functional-composite-root-20261016.json) qualifies source6b254b2 with the actual bc10 compiled output:352 units and eight HTTP checks pass after correcting only the legacy Modal test model. The earlier350/352 failure remains recorded. The [current compiled-account qualification](../evidence/bortus-parent-stat-a15-compiled-account-root-20261016.json) also passes10 HTTP/12 fresh SQL/13 join oracles with independent closure. Current browser, performance, hosted-CI and delivered-image qualification remain open.
 
 The [bundled-zlib Node compilation attempt](../evidence/bortus-node22-bundled-zlib-compile-timeout-root-20261016.json) stops at the unchanged7,200-second compilation deadline: overall1/build-15. Independent checks retain14 runtime inputs,15 absent recorded host identities and absent exact container ID/name. The worker's `original_cache_unchanged:false` remains literal; it is not independent proof of cache drift because the success-path check did not run. No new binary, default4,706 tests, canary or version check completed. The earlier Node-suite pass remains tied to its original binary. No automatic retry or production adoption follows this result.
 
