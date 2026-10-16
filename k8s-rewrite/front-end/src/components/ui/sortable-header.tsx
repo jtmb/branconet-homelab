@@ -6,20 +6,12 @@ import { ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 export type SortDir = "asc" | "desc";
 
 export function useSort<K extends string>(defaultKey: K) {
-  const [sortKey, setSortKeyRaw] = useState<string>(defaultKey);
-  const [sortDir, setSortDirRaw] = useState<SortDir>("asc");
+  const [sort, setSort] = useState<{ key: string; dir: SortDir }>({ key: defaultKey, dir: "asc" });
   return {
-    sortKey,
-    sortDir,
+    sortKey: sort.key,
+    sortDir: sort.dir,
     toggle(key: string) {
-      setSortKeyRaw((prev) => {
-        if (prev === key) {
-          setSortDirRaw((d) => (d === "asc" ? "desc" : "asc"));
-          return prev;
-        }
-        setSortDirRaw("asc");
-        return key;
-      });
+      setSort(previous => ({ key, dir: previous.key === key && previous.dir === "asc" ? "desc" : "asc" }));
     },
   };
 }
@@ -58,6 +50,7 @@ export function SortHeader({
   return (
     <button
       onClick={onClick}
+      aria-label={`Sort by ${label}${active ? `, currently ${dir === "asc" ? "ascending" : "descending"}` : ""}`}
       className={`flex items-center gap-1 text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors group ${className}`}
     >
       {iconFirst ? icon : label}
@@ -80,6 +73,7 @@ export function SortHeaderRight({
   return (
     <button
       onClick={onClick}
+      aria-label={`Sort by ${label}${active ? `, currently ${dir === "asc" ? "ascending" : "descending"}` : ""}`}
       className="text-xs font-medium text-zinc-400 hover:text-zinc-200 transition-colors group text-right w-full pl-4 relative"
     >
       {label}

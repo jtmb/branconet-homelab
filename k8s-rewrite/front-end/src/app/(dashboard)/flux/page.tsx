@@ -1,608 +1,208 @@
 "use client";
 
-import { GitBranch, Loader2, Plus, RefreshCw, Trash2, XCircle, Globe, Key, Lock, X, ChevronDown, CheckCircle2, AlertTriangle, Search } from "lucide-react";
+import { GitBranch, Loader2, Plus, RefreshCw } from "lucide-react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import ViewportWrapper from "../viewport-wrapper";
-import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import ConfirmDialog from "../confirm-dialog";
 import FluxTreeRow from "./tree-row";
-import { SortHeader, SortHeaderRight, useSort } from "@/components/ui/sortable-header";
-import type { FluxTreeNode } from "@/lib/flux";
+import { Modal } from "@/components/ui/modal";
+import { SortHeader, useSort } from "@/components/ui/sortable-header";
+import { useQuery, useSession } from "@/lib/use-query";
+import { useMutation } from "@/lib/use-mutation";
+import { compareValues } from "@/lib/table-sort";
+import type { QuerySnapshot } from "@/lib/query-store";
+import type { DeleteProgress, FluxTreeNode } from "@/lib/flux";
 
-interface DeleteStep {
-  step: string;
-  status: "pending" | "running" | "done" | "error";
-  detail: string;
+const inputClass = "mt-1 block w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2";
+const buttonClass = "rounded-lg bg-zinc-800 px-3 py-2 text-sm disabled:opacity-50";
+interface RemovalMonitor { id: string; startedAt: number; name: string; accepted: boolean }
+interface FluxScreenProps {
+  canWrite: boolean; monitor: RemovalMonitor | null; setMonitor: (monitor: RemovalMonitor | null) => void;
+  completed: DeleteProgress | null; setCompleted: (progress: DeleteProgress | null) => void;
 }
 
-interface DeleteProgress {
-  deleteId: string;
-  repoName: string;
-  namespace: string;
-  steps: DeleteStep[];
-  done: boolean;
-  error?: string;
-}
-
-/** Recursively filter tree nodes: keep a node if its name matches OR any descendant matches */
-function filterTree(nodes: FluxTreeNode[], q: string): FluxTreeNode[] {
-  const lower = q.toLowerCase();
-  return nodes
-    .map((n) => {
-      const nameMatch = n.name.toLowerCase().includes(lower);
-      const filteredChildren = filterTree(n.children, q);
-      if (nameMatch || filteredChildren.length > 0) {
-        return { ...n, children: filteredChildren.length ? filteredChildren : n.children };
-      }
-      return null;
-    })
-    .filter(Boolean) as FluxTreeNode[];
-}
-
-/** Count all root GitRepositories (depth-0 nodes of kind GitRepository) */
-function countRoots(trees: FluxTreeNode[]): number {
-  return trees.filter((n) => n.kind === "GitRepository").length;
-}
-
-export default function FluxPage() {
-  const [trees, setTrees] = useState<FluxTreeNode[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [syncing, setSyncing] = useState<string | null>(null);
-  const [deleting, setDeleting] = useState<string | null>(null);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
-  const [showConfirm, setShowConfirm] = useState<{ id: string; name: string; namespace: string } | null>(null);
-  const [deleteProgress, setDeleteProgress] = useState<DeleteProgress | null>(null);
-  const [adding, setAdding] = useState(false);
-  const [addError, setAddError] = useState<string | null>(null);
-  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const [form, setForm] = useState({
-    name: "",
-    url: "",
-    branch: "main",
-    path: "./",
-    authMethod: "none" as "none" | "ssh" | "https",
-    authData: "",
+function filterTree(nodes: FluxTreeNode[], query: string): FluxTreeNode[] {
+  const lower = query.toLowerCase();
+  return nodes.flatMap(node => {
+    const children = filterTree(node.children, query);
+    return node.name.toLowerCase().includes(lower) || children.length
+      ? [{ ...node, children: children.length ? children : node.children }] : [];
   });
+}
 
-  const fetchHierarchy = useCallback(async () => {
-    try {
-      const res = await fetch("/api/flux/hierarchy");
-      if (!res.ok) return;
-      const data = await res.json();
-      setTrees(data.trees || []);
-    } catch {
-      // ignore
-    } finally {
-      setLoading(false);
-    }
+/** Dispose private forms and mutation owners on permission, account or visibility loss. */
+export default function FluxPage() {
+  const session = useSession();
+  const [visible, setVisible] = useState(true);
+  const [ended, setEnded] = useState(false);
+  const [monitor, setMonitor] = useState<RemovalMonitor | null>(null);
+  const [completed, setCompleted] = useState<DeleteProgress | null>(null);
+  useEffect(() => {
+    const visibility = () => setVisible(document.visibilityState !== "hidden");
+    const end = () => setEnded(true);
+    visibility();
+    document.addEventListener("visibilitychange", visibility);
+    window.addEventListener("bortus-session-ended", end);
+    return () => { document.removeEventListener("visibilitychange", visibility); window.removeEventListener("bortus-session-ended", end); };
   }, []);
+  if (ended) return <p role="alert" className="p-6">Session ended. Sign in again to manage Flux.</p>;
+  if (!visible) return null;
+  return <FluxHierarchy privateKey={`${session.data?.username ?? "anonymous"}:${session.canWrite}`} canWrite={session.canWrite}
+    monitor={monitor} setMonitor={setMonitor} completed={completed} setCompleted={setCompleted} />;
+}
 
+/** Public read ownership persists while only the private mutation/form owner changes. */
+function FluxHierarchy({ privateKey, ...props }: FluxScreenProps & { privateKey: string }) {
+  const hierarchy = useQuery<{ trees: FluxTreeNode[] }>("/api/flux/hierarchy");
+  return <FluxScreen key={privateKey} {...props} hierarchy={hierarchy} />;
+}
+
+function FluxScreen({ canWrite, monitor, setMonitor, completed, setCompleted, hierarchy }: FluxScreenProps & {
+  hierarchy: QuerySnapshot<{ trees: FluxTreeNode[] }> & { refetch: () => void };
+}) {
+  const mutation = useMutation();
+  const [adding, setAdding] = useState(false);
+  const [confirmation, setConfirmation] = useState<FluxTreeNode | null>(null);
+  const [syncing, setSyncing] = useState<string | null>(null);
+  const [notice, setNotice] = useState("");
   const [search, setSearch] = useState("");
-  const { sortKey, sortDir, toggle: toggleSort } = useSort<"name" | "revision" | "lastSync">("name");
-
-  const filteredTrees = useMemo(() => {
-    let result = search.trim() ? filterTree(trees, search) : trees;
-    // Sort root repos (only depth-0 GitRepositories)
-    const mul = sortDir === "asc" ? 1 : -1;
-    return [...result].sort((a, b) => {
-      let va = "";
-      let vb = "";
-      switch (sortKey) {
-        case "name":
-          va = a.name.toLowerCase();
-          vb = b.name.toLowerCase();
-          break;
-        case "revision":
-          va = a.revision || "";
-          vb = b.revision || "";
-          break;
-        case "lastSync":
-          va = a.lastSync || "";
-          vb = b.lastSync || "";
-          break;
-      }
-      if (va < vb) return -1 * mul;
-      if (va > vb) return 1 * mul;
-      return 0;
+  const [page, setPage] = useState(0);
+  const { sortKey, sortDir, toggle } = useSort<"name" | "revision" | "lastSync">("name");
+  const searchRef = useRef<HTMLInputElement>(null);
+  const removalOwner = useRef<symbol | null>(null);
+  const trees = useMemo(() => hierarchy.data?.trees ?? [], [hierarchy.data]);
+  const filtered = useMemo(() => {
+    const result = search.trim() ? filterTree(trees, search.trim()) : trees;
+    return [...result].sort((left, right) => {
+      const sortValue = (node: FluxTreeNode) => sortKey === "lastSync" ? node.lastSync : sortKey === "revision" ? node.revision : node.name;
+      const compare = compareValues(sortValue(left), sortValue(right), sortKey === "lastSync" ? "date" : "text", sortDir);
+      return compare || compareValues(left.name, right.name) || compareValues(left.id, right.id);
     });
   }, [trees, search, sortKey, sortDir]);
-
-  useEffect(() => {
-    fetchHierarchy();
-    const interval = setInterval(fetchHierarchy, 10000);
-    return () => clearInterval(interval);
-  }, [fetchHierarchy]);
-
-  async function addRepo() {
-    if (!form.name || !form.url) return;
-    setAddError(null);
-
-    try {
-      const res = await fetch("/api/flux/repos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.name,
-          url: form.url,
-          branch: form.branch,
-          path: form.path,
-          authMethod: form.authMethod,
-          authData: form.authData || undefined,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        setAddError(data.error || "Failed to add repo");
-        return;
-      }
-
-      setForm({ name: "", url: "", branch: "main", path: "./", authMethod: "none", authData: "" });
-      setAdding(false);
-      setAddError(null);
-      fetchHierarchy();
-    } catch (err) {
-      setAddError(String(err));
-    }
+  const pageCount = Math.max(1, Math.ceil(filtered.length / 100));
+  const currentPage = Math.min(page, pageCount - 1);
+  const busy = mutation.busy || monitor !== null;
+  const refetch = hierarchy.refetch;
+  const finish = useCallback((progress: DeleteProgress) => {
+    removalOwner.current = null;
+    setMonitor(null); setCompleted(progress); refetch();
+  }, [refetch, setMonitor, setCompleted]);
+  function dismissProgress() {
+    removalOwner.current = null;
+    if (monitor) setNotice("Progress monitoring dismissed. The server operation may still be running; refresh and check its result before retrying.");
+    setMonitor(null); setCompleted(null);
   }
-
-  // Cleanup poll interval on unmount
-  useEffect(() => {
-    return () => {
-      if (pollRef.current) clearInterval(pollRef.current);
-    };
-  }, []);
-
-  async function deleteRepo(id: string, name: string, namespace: string) {
-    setShowConfirm(null);
-    setDeleteError(null);
-    setDeleting(id);
-
-    try {
-      // 1. Kick off cascade delete
-      const params = new URLSearchParams({ name, namespace });
-      const res = await fetch(`/api/flux/repos/${encodeURIComponent(id)}?${params}`, { method: "DELETE" });
-      const data = await res.json();
-      if (!res.ok || !data.deleteId) {
-        setDeleteError(data.error || "Failed to start deletion");
-        setDeleting(null);
-        return;
-      }
-
-      // 2. Start polling progress
-      const deleteId = data.deleteId;
-      const poll = async () => {
-        try {
-          const pr = await fetch(`/api/flux/repos/${deleteId}/delete-progress`);
-          if (!pr.ok) return;
-          const progress: DeleteProgress = await pr.json();
-          setDeleteProgress(progress);
-
-          if (progress.done) {
-            if (pollRef.current) clearInterval(pollRef.current);
-            pollRef.current = null;
-            setDeleting(null);
-            fetchHierarchy();
-            // Auto-dismiss after 2s
-            setTimeout(() => setDeleteProgress(null), 2000);
-          }
-        } catch {
-          // Keep polling
-        }
-      };
-
-      pollRef.current = setInterval(poll, 1500);
-      poll(); // Immediate first poll
-    } catch {
-      setDeleting(null);
-    }
+  function sync(node: FluxTreeNode) {
+    if (!canWrite || busy) return;
+    setSyncing(node.id); setNotice("");
+    const parameters = new URLSearchParams({ name: node.name, namespace: node.namespace });
+    void mutation.mutate(`/api/flux/repos/${encodeURIComponent(node.id)}/sync?${parameters}`, { method: "POST" }, () => {
+      setNotice(`Reconciliation requested for ${node.name}. Controller readiness is shown separately.`); refetch();
+    });
   }
-
-  function cancelDelete() {
-    if (pollRef.current) clearInterval(pollRef.current);
-    pollRef.current = null;
-    setDeleteProgress(null);
-    setDeleteError(null);
-    setDeleting(null);
+  function remove() {
+    if (!canWrite || busy || !confirmation) return;
+    const node = confirmation;
+    const parameters = new URLSearchParams({ name: node.name, namespace: node.namespace });
+    setNotice("");
+    setConfirmation(null);
+    // Public operation references survive hidden pages/permission loss; never retain a request body.
+    const startedAt = Date.now();
+    const owner = Symbol("removal");
+    removalOwner.current = owner;
+    setMonitor({ id: node.id.startsWith("gr-") ? `gr-${node.name}` : node.id, name: node.name, startedAt, accepted: false });
+    void mutation.mutate<{ deleteId?: string }>(`/api/flux/repos/${encodeURIComponent(node.id)}?${parameters}`, { method: "DELETE" }, result => {
+      if (removalOwner.current !== owner) return;
+      if (!result.deleteId) throw new Error("Deletion response is incomplete. Refresh to check the result before retrying.");
+      setMonitor({ id: result.deleteId, name: node.name, startedAt, accepted: true });
+    });
   }
-
-  async function triggerSync(id: string) {
-    setSyncing(id);
-    try {
-      await fetch(`/api/flux/repos/${id}/sync`, { method: "POST" });
-      setTimeout(fetchHierarchy, 2000);
-    } catch {
-      // ignore
-    } finally {
-      setSyncing(null);
-    }
-  }
-
-  return (
-    <div className="flex flex-col min-h-0">
-
-      <ViewportWrapper>
-      <main className="px-3 sm:px-4 lg:px-6 py-6">
-        <div className="flex items-center gap-3 mb-6">
-          <GitBranch className="page-header-icon text-emerald-400" />
-          <h1 className="page-header-title">Flux</h1>
-          <span className="text-sm text-zinc-500 ml-auto">{countRoots(trees)} repos</span>
-        </div>
-        <div className="flex items-center gap-3 mb-6">
-          <div className="relative flex-1 max-w-xs">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-            <input
-              type="text"
-              placeholder="Search…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              style={{
-                width: '100%',
-                background: 'rgb(39,39,42)',
-                border: 'none',
-                outline: 'none',
-                boxShadow: 'none',
-                padding: '0.5rem 0.75rem 0.5rem 2.25rem',
-                fontSize: '0.875rem',
-                lineHeight: '1.25rem',
-                color: '#e4e4e7',
-                borderRadius: '0.5rem',
-                WebkitAppearance: 'none',
-                MozAppearance: 'none',
-                appearance: 'none',
-              }}
-            />
-          </div>
-          <div className="ml-auto">
-            {!adding ? (
-              <button
-                onClick={() => setAdding(true)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-colors whitespace-nowrap"
-              >
-                <Plus className="w-4 h-4" />
-                Add Repository
-              </button>
-            ) : null}
-          </div>
-        </div>
-
-        {/* Add Repo Modal */}
-        {adding && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="bg-zinc-900 border border-zinc-700/60 rounded-2xl w-full max-w-lg mx-4 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-              {/* Modal header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                    <GitBranch className="w-5 h-5 text-emerald-400" />
-                  </div>
-                  <div>
-                    <h2 className="text-base font-semibold text-zinc-100">Add Git Repository</h2>
-                    <p className="text-xs text-zinc-500">FluxCD will auto-deploy resources at the given path</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => { setAdding(false); setAddError(null); }}
-                  className="p-1.5 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* Modal body */}
-              <div className="px-6 py-5 space-y-5">
-                {addError && (
-                  <div className="flex items-start gap-2.5 p-3 rounded-lg bg-red-500/10 border border-red-500/20">
-                    <XCircle className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                    <p className="text-sm text-red-400">{addError}</p>
-                  </div>
-                )}
-
-                {/* Name + URL row */}
-                <div className="grid grid-cols-5 gap-3">
-                  <div className="col-span-2">
-                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
-                      Name
-                    </label>
-                    <input
-                      value={form.name}
-                      onChange={e => setForm({ ...form, name: e.target.value })}
-                      placeholder="my-app"
-                      autoFocus
-                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
-                    />
-                  </div>
-                  <div className="col-span-3">
-                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
-                      Git URL
-                    </label>
-                    <input
-                      value={form.url}
-                      onChange={e => setForm({ ...form, url: e.target.value })}
-                      placeholder="https://github.com/user/repo.git"
-                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                {/* Branch + Path row */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
-                      Branch
-                    </label>
-                    <div className="relative">
-                      <input
-                        value={form.branch}
-                        onChange={e => setForm({ ...form, branch: e.target.value })}
-                        className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg pl-3 pr-8 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
-                      />
-                      <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-zinc-600 pointer-events-none" />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
-                      Kustomize Path
-                    </label>
-                    <input
-                      value={form.path}
-                      onChange={e => setForm({ ...form, path: e.target.value })}
-                      placeholder="./"
-                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                {/* Auth section */}
-                <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-2">
-                    Authentication
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {([
-                      { key: "none" as const, icon: Globe, label: "Public", desc: "No auth" },
-                      { key: "ssh" as const, icon: Key, label: "SSH Key", desc: "Deploy key" },
-                      { key: "https" as const, icon: Lock, label: "HTTPS", desc: "Token" },
-                    ]).map(({ key, icon: Icon, label, desc }) => (
-                      <button
-                        key={key}
-                        onClick={() => setForm({ ...form, authMethod: key, authData: "" })}
-                        className={`flex items-center gap-2.5 p-3 rounded-lg border text-left transition-all ${
-                          form.authMethod === key
-                            ? "border-indigo-500/50 bg-indigo-500/10 text-indigo-300"
-                            : "border-zinc-700/50 bg-zinc-800/30 text-zinc-500 hover:border-zinc-600/50 hover:text-zinc-400"
-                        }`}
-                      >
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
-                          form.authMethod === key ? "bg-indigo-500/20" : "bg-zinc-700/30"
-                        }`}>
-                          <Icon className={`w-4 h-4`} />
-                        </div>
-                        <div>
-                          <div className="text-sm font-medium">{label}</div>
-                          <div className="text-[10px] opacity-70">{desc}</div>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Auth credential input */}
-                {form.authMethod !== "none" && (
-                  <div>
-                    <label className="block text-xs font-medium text-zinc-400 mb-1.5">
-                      {form.authMethod === "ssh" ? "SSH Deploy Key" : "Personal Access Token"}
-                    </label>
-                    <textarea
-                      value={form.authData}
-                      onChange={e => setForm({ ...form, authData: e.target.value })}
-                      placeholder={
-                        form.authMethod === "ssh"
-                          ? "-----BEGIN OPENSSH PRIVATE KEY-----\n...\n-----END OPENSSH PRIVATE KEY-----"
-                          : "ghp_xxxxxxxxxxxxxxxxxxxx"
-                      }
-                      rows={form.authMethod === "ssh" ? 4 : 1}
-                      className="w-full bg-zinc-800/60 border border-zinc-700/60 rounded-lg px-3 py-2 text-sm text-zinc-200 font-mono placeholder:text-zinc-600 outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-colors resize-none"
-                    />
-                    <p className="text-[10px] text-zinc-600 mt-1.5">
-                      {form.authMethod === "ssh"
-                        ? "Paste the deploy key. Stored in a native Kubernetes Secret."
-                        : "Create a fine-grained token with read-only repo access."}
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Modal footer */}
-              <div className="flex items-center justify-end gap-2.5 px-6 py-4 border-t border-zinc-800 bg-zinc-900/50 rounded-b-2xl">
-                <button
-                  onClick={() => { setAdding(false); setAddError(null); }}
-                  className="px-4 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={addRepo}
-                  disabled={!form.name || !form.url}
-                  className="flex items-center gap-2 px-5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <GitBranch className="w-4 h-4" />
-                  Add Repository
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tree View */}
-        {loading && trees.length === 0 ? (
-          <div className="flex items-center justify-center min-h-[calc(100vh-16rem)]">
-            <Loader2 className="w-8 h-8 animate-spin text-indigo-400" />
-          </div>
-        ) : trees.length === 0 ? (
-          <div className="glass-card p-8 rounded-xl text-center">
-            <GitBranch className="w-12 h-12 text-zinc-600 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-zinc-300 mb-2">No Git Repositories</h3>
-            <p className="text-sm text-zinc-500">
-              Add a Git repository above. FluxCD will automatically deploy the kustomize/Helm resources found at the path.
-            </p>
-          </div>
-        ) : (
-          <div className="glass-card rounded-xl overflow-hidden">
-            {/* Column headers */}
-            <div className="flex items-center gap-2 py-2.5 px-3 border-b border-zinc-800/60 whitespace-nowrap">
-              <div className="w-4 flex-shrink-0" /> {/* kind icon */}
-              <div className="min-w-0 flex-1">
-                <SortHeader label="Name" active={sortKey === "name"} dir={sortDir} onClick={() => toggleSort("name")} />
-              </div>
-              <div className="flex items-center gap-4 flex-shrink-0">
-                <span className="w-4" /> {/* status dot */}
-                <span className="w-12 hidden sm:inline">
-                  <SortHeaderRight label="Rev" active={sortKey === "revision"} dir={sortDir} onClick={() => toggleSort("revision")} />
-                </span>
-                <span className="w-28 hidden md:inline">
-                  <SortHeaderRight label="Last Sync" active={sortKey === "lastSync"} dir={sortDir} onClick={() => toggleSort("lastSync")} />
-                </span>
-                <span className="w-16" /> {/* actions */}
-              </div>
-            </div>
-            {filteredTrees.map((node) => (
-              <FluxTreeRow
-                key={node.id}
-                node={node}
-                onSync={(id) => triggerSync(id)}
-                onDelete={(id, name) => setShowConfirm({ id, name, namespace: node.namespace })}
-                syncingId={syncing}
-                deletingId={deleting}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Delete Error */}
-        {deleteError && (
-          <div className="mt-3 p-3 rounded-lg bg-red-500/5 border border-red-500/10 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
-              <span className="text-sm text-red-300">{deleteError}</span>
-            </div>
-            <button
-              onClick={() => setDeleteError(null)}
-              className="text-zinc-500 hover:text-zinc-300 ml-4 flex-shrink-0"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
-        )}
-
-        {/* Delete Confirmation */}
-        {showConfirm && (
-          <div className="mt-3 p-3 rounded-lg bg-red-500/5 border border-red-500/10 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <XCircle className="w-4 h-4 text-red-400" />
-              <span className="text-sm text-zinc-300">
-                Delete &quot;{showConfirm.name}&quot; and ALL resources in the <code className="text-xs bg-zinc-800 px-1 py-0.5 rounded">{showConfirm.namespace}</code> namespace?
-              </span>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => setShowConfirm(null)}
-                className="px-3 py-1.5 rounded border border-zinc-700 text-zinc-400 hover:text-zinc-200 text-xs transition-colors"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => deleteRepo(showConfirm.id, showConfirm.name, showConfirm.namespace)}
-                className="px-3 py-1.5 rounded bg-red-600 hover:bg-red-700 text-white text-xs font-medium transition-colors"
-              >
-                Remove
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Delete Progress Modal */}
-        {deleteProgress && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-            <div className="bg-zinc-900 border border-zinc-700/60 rounded-2xl w-full max-w-md mx-4 shadow-2xl overflow-hidden">
-              {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-red-500/10 flex items-center justify-center">
-                    <Trash2 className="w-5 h-5 text-red-400" />
-                  </div>
-                  <div>
-                    <h2 className="text-base font-semibold text-zinc-100">Deleting {deleteProgress.repoName}</h2>
-                    <p className="text-xs text-zinc-500">Namespace: {deleteProgress.namespace}</p>
-                  </div>
-                </div>
-                {deleteProgress.done && (
-                  <button
-                    onClick={() => setDeleteProgress(null)}
-                    className="p-1.5 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-zinc-300 transition-colors"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
-              </div>
-
-              {/* Steps */}
-              <div className="px-6 py-5 space-y-4">
-                {deleteProgress.steps.map((step, i) => (
-                  <div key={step.step} className="flex items-start gap-3">
-                    {/* Status icon */}
-                    <div className="flex-shrink-0 mt-0.5">
-                      {step.status === "pending" && (
-                        <div className="w-5 h-5 rounded-full border-2 border-zinc-600" />
-                      )}
-                      {step.status === "running" && (
-                        <Loader2 className="w-5 h-5 text-indigo-400 animate-spin" />
-                      )}
-                      {step.status === "done" && (
-                        <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                      )}
-                      {step.status === "error" && (
-                        <AlertTriangle className="w-5 h-5 text-amber-400" />
-                      )}
-                    </div>
-                    {/* Step detail */}
-                    <div className="min-w-0">
-                      <p className={`text-sm ${
-                        step.status === "done" ? "text-zinc-500" :
-                        step.status === "error" ? "text-amber-300" :
-                        "text-zinc-200"
-                      }`}>
-                        {step.detail}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Footer */}
-              <div className="flex items-center justify-end gap-2.5 px-6 py-4 border-t border-zinc-800 bg-zinc-900/50 rounded-b-2xl">
-                {deleteProgress.error && (
-                  <p className="text-xs text-red-400 mr-auto">{deleteProgress.error}</p>
-                )}
-                {!deleteProgress.done ? (
-                  <button
-                    onClick={cancelDelete}
-                    className="px-4 py-2 rounded-lg text-sm text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
-                  >
-                    Dismiss
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setDeleteProgress(null)}
-                    className="px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-sm font-medium transition-colors"
-                  >
-                    Close
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-      </main>
-      </ViewportWrapper>
+  return <ViewportWrapper><main className="px-3 py-6 sm:px-4 lg:px-6">
+    <div className="mb-6 flex flex-wrap items-center gap-3">
+      <GitBranch className="page-header-icon text-emerald-400" /><h1 className="page-header-title">Flux</h1>
+      <span className="text-sm text-zinc-400">{hierarchy.data ? `${trees.length} repositories` : "Repository count unavailable"}</span>
+      <button onClick={refetch} disabled={hierarchy.refreshing} className={`${buttonClass} ml-auto`} aria-label="Refresh Flux hierarchy"><RefreshCw className="h-4 w-4" /></button>
+      {canWrite && <button disabled={busy} onClick={() => setAdding(true)} className="flex items-center gap-2 rounded-lg bg-indigo-600 px-3 py-2 text-sm disabled:opacity-50"><Plus className="h-4 w-4" />Add Repository</button>}
     </div>
-  );
+    <label className="mb-4 block max-w-md text-sm">Search repositories and descendants
+      <input ref={searchRef} value={search} onChange={event => { setSearch(event.target.value); setPage(0); }} className={inputClass} type="search" />
+    </label>
+    {(hierarchy.error || hierarchy.stale) && <p role="alert" className="mb-4 rounded border border-amber-800 p-3 text-amber-200">
+      {hierarchy.error ?? "Flux metadata is stale."} {hierarchy.data ? "Showing the last successful snapshot." : "Flux hierarchy unavailable."}
+      <button onClick={refetch} className={`${buttonClass} ml-2`}>Retry</button>
+    </p>}
+    {mutation.error && !confirmation && <p role="alert" className="mb-4 text-red-300">{mutation.error}</p>}
+    {notice && <p role="status" className="mb-4 text-sm text-zinc-300">{notice}</p>}
+    {hierarchy.loading && !hierarchy.data ? <p role="status" className="flex items-center gap-2"><Loader2 className="h-5 w-5 animate-spin" />Loading Flux hierarchy</p>
+      : hierarchy.data && trees.length === 0 ? <p className="rounded-xl border border-zinc-800 p-6">No Git repositories in the current successful snapshot.</p>
+      : hierarchy.data && <div className="rounded-xl border border-zinc-800">
+        <div className="flex flex-wrap gap-4 border-b border-zinc-800 p-3">
+          <SortHeader label="Name" active={sortKey === "name"} dir={sortDir} onClick={() => { toggle("name"); setPage(0); }} />
+          <SortHeader label="Revision" active={sortKey === "revision"} dir={sortDir} onClick={() => { toggle("revision"); setPage(0); }} />
+          <SortHeader label="Last Sync" active={sortKey === "lastSync"} dir={sortDir} onClick={() => { toggle("lastSync"); setPage(0); }} />
+        </div>
+        {filtered.slice(currentPage * 100, (currentPage + 1) * 100).map(node => <FluxTreeRow key={node.id} node={node}
+          onSync={canWrite ? () => sync(node) : undefined} onDelete={canWrite ? () => { mutation.clear(); setConfirmation(node); } : undefined}
+          syncingId={mutation.busy ? syncing : null} deletingId={monitor?.id} disabled={busy} />)}
+        {!filtered.length && <p className="p-4">No matching repositories.</p>}
+        <nav aria-label="Repository pages" className="flex flex-wrap items-center gap-3 border-t border-zinc-800 p-3">
+          <button className={buttonClass} disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>Previous</button>
+          <span className="text-sm">Page {currentPage + 1} of {pageCount}; {filtered.length} matches</span>
+          <button className={buttonClass} disabled={currentPage + 1 >= pageCount} onClick={() => setPage(currentPage + 1)}>Next</button>
+        </nav>
+      </div>}
+    {adding && canWrite && <AddRepository onClose={() => setAdding(false)} onAdded={() => { setAdding(false); refetch(); }} returnFocus={() => searchRef.current?.focus()} />}
+    {confirmation && canWrite && <ConfirmDialog open onClose={() => setConfirmation(null)} onConfirm={remove} title={`Remove ${confirmation.name}`} confirmName={confirmation.name} confirmLabel="Remove repository" danger loading={mutation.busy} error={mutation.error}
+      message={`Remove this repository and its discovered children. For supported application namespaces, cascade removal also deletes the namespace and cleans up bound volumes after confirmed absence. Protected namespaces are retained. Native repository credentials remain for explicit cleanup. Selected namespace: ${confirmation.namespace}.`} returnFocus={() => searchRef.current?.focus()} />}
+    {monitor && <DeleteMonitor id={monitor.id} name={monitor.name} startedAt={monitor.startedAt} accepted={monitor.accepted} mutationError={mutation.error} onComplete={finish} onClose={dismissProgress} returnFocus={() => searchRef.current?.focus()} />}
+    {completed && <DeleteDialog progress={completed} onClose={dismissProgress} returnFocus={() => searchRef.current?.focus()} />}
+  </main></ViewportWrapper>;
+}
+
+function AddRepository({ onClose, onAdded, returnFocus }: { onClose: () => void; onAdded: () => void; returnFocus: () => void }) {
+  const mutation = useMutation();
+  const authenticationId = useId();
+  const [form, setForm] = useState({ name: "", url: "", branch: "main", path: "./", authMethod: "none", authData: "" });
+  function add(event: React.FormEvent) {
+    event.preventDefault();
+    if (mutation.busy || !form.name || !form.url) return;
+    void mutation.mutate("/api/flux/repos", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, authData: form.authData || undefined }) }, onAdded);
+  }
+  return <Modal open onClose={onClose} title="Add Git Repository" description="Flux will reconcile the selected repository path. Private authentication goes directly to a native Kubernetes Secret." returnFocus={returnFocus}>
+    <form onSubmit={add} className="space-y-4">
+      {mutation.error && <p role="alert" className="text-red-300">{mutation.error}</p>}
+      <fieldset disabled={mutation.busy} className="space-y-4 disabled:opacity-60">
+        {([['name', 'Name'], ['url', 'Git URL'], ['branch', 'Branch'], ['path', 'Kustomize Path']] as const).map(([key, label]) => <label key={key} className="block text-sm">{label}<input autoComplete="off" required value={form[key]} onChange={event => setForm(current => ({ ...current, [key]: event.target.value }))} className={inputClass} /></label>)}
+        <div className="text-sm"><label htmlFor={authenticationId}>Authentication</label><select id={authenticationId} value={form.authMethod} onChange={event => setForm(current => ({ ...current, authMethod: event.target.value, authData: "" }))} className={inputClass}><option value="none">Public</option><option value="ssh">SSH deploy key</option><option value="https">HTTPS token</option></select></div>
+        {form.authMethod !== "none" && <label className="block text-sm">{form.authMethod === "ssh" ? "SSH Deploy Key" : "Personal Access Token"}
+          {form.authMethod === "ssh" ? <textarea required autoComplete="off" spellCheck={false} rows={5} value={form.authData} onChange={event => setForm(current => ({ ...current, authData: event.target.value }))} className={inputClass} />
+            : <input required type="password" autoComplete="new-password" value={form.authData} onChange={event => setForm(current => ({ ...current, authData: event.target.value }))} className={inputClass} />}
+        </label>}
+      </fieldset>
+      <p className="text-xs text-zinc-400">Closing this form aborts the client request and clears the draft. An already accepted server operation can continue; refresh to check the result before retrying.</p>
+      <div className="flex justify-end gap-3"><button type="button" onClick={onClose} className={buttonClass}>Cancel</button><button disabled={mutation.busy || !form.name || !form.url} className="rounded-lg bg-indigo-600 px-4 py-2 disabled:opacity-50">{mutation.busy ? "Adding repository" : "Add Repository"}</button></div>
+    </form>
+  </Modal>;
+}
+
+function DeleteMonitor({ id, name, startedAt, accepted, mutationError, onComplete, onClose, returnFocus }: { id: string; name: string; startedAt: number; accepted: boolean; mutationError?: string; onComplete: (progress: DeleteProgress) => void; onClose: () => void; returnFocus: () => void }) {
+  const query = useQuery<DeleteProgress>(`/api/flux/repos/${encodeURIComponent(id)}/delete-progress`, 1500);
+  const progress = query.updatedAt > startedAt ? query.data : undefined;
+  useEffect(() => { if (progress?.done && !query.error) onComplete(progress); }, [progress, query.error, onComplete]);
+  return <DeleteDialog progress={progress} name={name} onClose={onClose} returnFocus={returnFocus} error={query.error ?? mutationError} stale={query.stale} retry={query.refetch}
+    recovery={!accepted && !progress ? "Request acceptance is unconfirmed. Checking the public operation reference; do not submit again until its result is established. Completed progress expires during cleanup and server restart loses progress; missing progress does not establish that removal failed." : undefined} />;
+}
+
+function DeleteDialog({ progress, name, onClose, returnFocus, error, stale, retry, recovery }: { progress?: DeleteProgress; name?: string; onClose: () => void; returnFocus: () => void; error?: string; stale?: boolean; retry?: () => void; recovery?: string }) {
+  return <Modal open onClose={onClose} returnFocus={returnFocus} title={`Repository removal: ${progress?.repoName ?? name ?? "progress"}`} description="Dismiss closes monitoring; it does not cancel the server operation.">
+    <div aria-live="polite" className="space-y-3">
+      {!progress && <p>Waiting for deletion progress.</p>}
+      {recovery && <p className="text-amber-200">{recovery}</p>}
+      {(error || stale) && <p role="alert" className="text-amber-200">{error ?? "Progress is stale."} {progress && "Showing the last successful progress snapshot."} {retry && <button className={buttonClass} onClick={retry}>Retry progress</button>}</p>}
+      {progress?.steps.map(step => <p key={step.step} className={step.status === "error" ? "text-amber-200" : "text-zinc-300"}><span className="font-medium">{step.status}: </span>{step.detail}</p>)}
+      {progress?.error && <p role="alert" className="text-red-300">{progress.error} Inspect the retained resources and inventory before retrying.</p>}
+      {progress?.done && !progress.error && <p>Server removal completed. Review the hierarchy and retained native credentials.</p>}
+    </div>
+    <div className="mt-4 flex justify-end"><button onClick={onClose} className={buttonClass}>{progress?.done ? "Close" : "Dismiss monitoring"}</button></div>
+  </Modal>;
 }
