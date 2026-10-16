@@ -2084,3 +2084,17 @@ This candidate caches only an exact-file lexical path plan and reduces per-check
 The [custom dash runtime compatibility check](../evidence/bortus-dash-fnmatch-runtime-root-20261016.json) passes the unchanged public fixture against the qualified current base image. An owned 0755 copy is mounted read-only at `/usr/bin/dash`; the original artifact and image remain unchanged. All 12 checks pass, including the original entrypoint, Prisma migration/client queries, native loading, registration/login/session, readonly/write permissions and fresh permission revocation. No production credentials or Kubernetes client traffic are used.
 
 Independent exact/fresh/one-final checks pass with 120 finite records, 26 prior process births absent and two retained CID/name queries. The base image's earlier runtime, filesystem and OCI proofs are retained; their artifact graphs and archive are not requalified. This qualifies component compatibility only. New image, fixed-package, UTF-8, security, performance and production adoption claims remain false. The earlier component reader failure remains preserved.
+
+
+## 2026-10-16: allocation candidate original comparison fails warm gate
+
+The [new allocation candidate comparison](../evidence/bortus-account-snapshot-paired-root-20261016.json) completes all six observations in the original B1/C1/C2/B2/B3/C3 order, each with all six profiles. Actor/runner/supervisor exit 0 establishes completed business checks; the original performance gate still fails. Eight of ten warm median p95 comparisons improve. Two **sequential twelve-request Pod** comparisons regress:
+
+| Profile | Baseline p95 median | Candidate p95 median | Change |
+|---|---:|---:|---:|
+| 200 records | 6.267322 ms | 6.368112 ms | +1.608% |
+| 1000 records | 8.427829 ms | 24.133183 ms | +186.351% |
+
+All three 1000-record candidate samples are slower. Whole-fixture CPU median falls from 34.292826 to 28.936958 seconds; peak-memory median rises from 357.777344 to 432.144531 MiB, with no observed OOM. These are separate accounting scopes, not allocation-only causal results or a performance pass. No samples, tolerances, warmups, fixtures or original bounds change, and no unchanged comparison is replayed.
+
+Independent original-summary recomputation, exact/fresh checks and one finite final check pass: 452 exported source files, 66 inputs, 57 final records and 20 prior process births absent. Eight exact-name queries are retained; the historical dispatcher retained no CIDs, so no CID-query claim is added. The final adds no graph walk or query. The literal final source scan 1 for two exact public Git identifiers and both preparation refusals remain preserved. Source `169107f` remains isolated; A07, image/security, actual assistive technology, private recovery and production adoption remain open.
