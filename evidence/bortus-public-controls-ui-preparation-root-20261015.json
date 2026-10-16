@@ -1,0 +1,72 @@
+{
+  "scope": "Public recovery diagnostic controls and unexecuted UI preparation only",
+  "recoveryDiagnostic": {
+    "tool": "ae1c87",
+    "actualExit": 0,
+    "tests": 3,
+    "skips": 0,
+    "controlCases": [
+      "original gate exception identity and one unchanged action call",
+      "diagnostic clock failure preserves the gate exception",
+      "numeric schema and seven-row cap"
+    ],
+    "sourceManifestSHA256": "5e3961a9a4503ad9b88c80cbea6f8cfb3cf05543f34f4e8917e48ab52d5a2f1d",
+    "currentFiles": [
+      {
+        "path": "CALLER.diff",
+        "bytes": 7252,
+        "sha256": "246b0059eacc32d7e43b0c47aec5b42a7579981d03aed1c85006ef669de765f1"
+      },
+      {
+        "path": "caller.proposed.py.reference",
+        "bytes": 80142,
+        "sha256": "7c347f65815b978cbefcf88f41db3e9ca592f688b3eb4d5473ecdafb3cbdd787"
+      },
+      {
+        "path": "PROPOSAL.md",
+        "bytes": 2182,
+        "sha256": "0e2176fb7510bb32b38e67b7af4be57dc56f2495e38df1a044e415f8151dc815"
+      },
+      {
+        "path": "require-timing-functions.py",
+        "bytes": 1011,
+        "sha256": "9da83ba74885f8c42ade58c7b099bb282a916a7123e161d75128caa377af2dc0"
+      },
+      {
+        "path": "test_require_timing.py",
+        "bytes": 2837,
+        "sha256": "2851ebf4e6f8b5145dd26ec3b096de37fd3de54c6c5d7a07a7d488e40f2d3183"
+      }
+    ],
+    "originalRequireCallsStillFive": true,
+    "privateRecoveryRan": false,
+    "privateMaterialConsumed": false,
+    "privateCallerIntegration": false,
+    "recoveryAcceptance": false,
+    "limits": "Public local unittest only; no independent host-process lifecycle or private authority claim"
+  },
+  "a22": {
+    "sourceReviewTool": "f8669a",
+    "sourceReviewExit": 0,
+    "scanTool": "bc87d8",
+    "scanExit": 0,
+    "findings": 0,
+    "scannedFiles": 73,
+    "stageTool": "6019bf",
+    "stageExit": 0,
+    "stagedFiles": 65,
+    "sourceHandoffSHA256": "56d75f01b5ff1a4843ffc1b15a7f1df94297c476ecd3b95c9f58070d85fc0fcc",
+    "frontendTree": "47f852795803906703ce937df356eff8368a26b3",
+    "observationsPlanned": 36,
+    "runtimeDispatched": false,
+    "browserRan": false,
+    "measurementsAvailable": false,
+    "quietWindowHeldUntilNodeBuildCloses": true,
+    "sharedSeconds": 480,
+    "closureReserveSeconds": 60
+  },
+  "goalActive": true,
+  "userActionPending": false,
+  "productionChanged": false,
+  "originalDataRetained": true
+}
