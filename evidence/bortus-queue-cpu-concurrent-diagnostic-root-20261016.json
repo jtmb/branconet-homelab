@@ -1,0 +1,132 @@
+{
+  "qualifiedScope": "One instrumented candidate concurrent3 diagnostic; not a benchmark, optimization, current-image or adoption qualification",
+  "compiledCandidate": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+  "lineage": "Original successful V2 retained51e8-vs-3d fixture lineage; not current9cb/d901 image",
+  "command": [
+    "node",
+    "/producer/run-remaining-lane.cjs"
+  ],
+  "businessRequests": 22,
+  "warmRequests": 20,
+  "queueEvents": 66,
+  "sourceHandoff": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\account-queue-cpu-concurrent22-preparation-20261016-v1-2\\handoff.json",
+    "bytes": 5728,
+    "sha256": "9d9b80e4e589b7db37d8a31a3be065190e8c11e117bad84e7bd8adb48b7ac13c"
+  },
+  "exactReader": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-queue-cpu-concurrent22-postcheck-20261016-v1\\legacy-review-result.json",
+    "bytes": 642,
+    "sha256": "7e62945c9c01ec0048ff45fdea65b54495d3f2fc91430d9f5080de91c294d1fd"
+  },
+  "freshReader": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-queue-cpu-concurrent22-postcheck-20261016-v1\\fresh-result.json",
+    "bytes": 3441,
+    "sha256": "87f2e1699bbc22870f2066b63878ac59b219418806ce51fbf3be613976517784"
+  },
+  "oneFiniteFinal": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-queue-cpu-concurrent22-final-current-20261016-v1.json",
+    "bytes": 54553,
+    "sha256": "65b0b592073a06407a8a19ec2e8baa886923ba9d7277190f8e3da43e0438bb71"
+  },
+  "numericJoins": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\account-queue-cpu-concurrent22-20261016-v1-2\\output\\candidate-concurrent3\\numeric-joins.json",
+    "bytes": 290953,
+    "sha256": "826d5a16a691bdb6c7f354f392979d2d66246fcedbca953f68e311e39fc66c18"
+  },
+  "actorTool": "afa514",
+  "actorLiteralExit": 0,
+  "controls": {
+    "actualExit": 0,
+    "aggregateWindowControls": 7,
+    "compiledVariants": 2,
+    "inverseExact": true,
+    "throwingObserversPreserveOriginalCalls": true,
+    "businessHTTP": 0
+  },
+  "independentExactTool": "fa7675",
+  "independentFreshTool": "46fdd3",
+  "oneFinalTool": "90e8b8",
+  "rootIndependentNumericRead": "2b1bb7",
+  "rootIndependentClosureReceiptRead": "ed932d",
+  "observations": {
+    "medianWarmQueueResidenceBracketUs": [
+      47551.0,
+      47558.0
+    ],
+    "medianDequeueToPostPreparationUs": 5.0,
+    "mainHTTPWarmWindow": {
+      "elapsedBracketUs": [
+        85633,
+        85757
+      ],
+      "userUs": 64153,
+      "systemUs": 5185,
+      "eluIdleMs": 0,
+      "eluActiveMs": 85.65593299269676,
+      "eluUtilization": 1,
+      "threadCPUOnly": true,
+      "instrumentationIncluded": true
+    },
+    "workerOperationWarmWindow": {
+      "elapsedBracketUs": [
+        77501,
+        77609
+      ],
+      "userUs": 6988,
+      "systemUs": 1570,
+      "eluIdleMs": 68.71518900000001,
+      "eluActiveMs": 8.809297005306234,
+      "eluUtilization": 0.1136324464596034,
+      "threadCPUOnly": true,
+      "instrumentationIncluded": true
+    }
+  },
+  "closure": {
+    "currentPins": 129,
+    "priorRecordedBirthsAbsent": 24,
+    "retainedExactCIDNameAbsenceQueries": 2,
+    "noNewGraphOrDockerQueryOrReaderChain": true
+  },
+  "bounds": {
+    "controllerSeconds": 300,
+    "reserveSeconds": 60,
+    "phaseSeconds": 180,
+    "driverSeconds": 150,
+    "controlSeconds": 10,
+    "cpu": 2,
+    "memoryBytes": 1073741824,
+    "swapBytes": 0,
+    "pids": 256,
+    "network": "none",
+    "rootFilesystem": "readonly",
+    "uid": 1000,
+    "accountActive": 1,
+    "accountQueued": 64,
+    "accountDeadlineSeconds": 5,
+    "realYields": 2
+  },
+  "literalSourceScan": {
+    "wrapperExit": 0,
+    "scannerExit": 1,
+    "findings": 2,
+    "classification": "Only exact current public nextApiSHA256 code-hash fields; no suppression or rescan."
+  },
+  "preparationFailuresRetained": [
+    "V1 malformed dynamic control snippet was corrected before execution; V1 and V1-1 source-only/unrun.",
+    "V1-1 aggregate-counter exceptions could replace forwarding; V1-2 catches observer failures and refuses publication.",
+    "Original stager047940 expected selected08; refused before native effects. Distinct selected09 classifier derivative retained same scan/report/source."
+  ],
+  "limits": [
+    "Main HTTP and worker operation windows have different endpoints; compare independently.",
+    "Thread CPU includes instrumentation and other work on each thread; no exclusive request CPU or observer subtraction.",
+    "ELU-active elapsed time is not CPU and cannot distinguish synchronous blocking from OS descheduling.",
+    "Overlapping queue/request spans are not additive.",
+    "This diagnostic does not resolve the two failing original warm benchmark cases or establish allocation wrappers as their cause."
+  ],
+  "canonicalOneReaderUnchanged": true,
+  "originalBenchmarkReplayed": false,
+  "historicalFailuresRetained": true,
+  "performanceAccepted": false,
+  "productionChanged": false
+}
