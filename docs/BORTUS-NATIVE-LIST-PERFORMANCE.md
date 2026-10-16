@@ -1,5 +1,7 @@
 # Bounded native metadata listing optimization
 
+Combined parent-stat/A15 evaluation is SOURCE ONLY and unrun. It retains the two reviewed A15 modal/label/focus changes from `71fbfec` and exactly the two reviewed parent-stat source files from `987020c`; all other 388 selected frontend files, tests, package/lock and workflow are unchanged from `f4cef`. The [parent-stat focused qualification](implementation-evidence/parent-stat-focused-controls-root-20261015.json) passes 83 controls/25 worker cases; its [fresh full qualification](implementation-evidence/parent-stat-full-functional-root-20261015.json) passes 352 units/eight HTTP checks on that original isolated source. Those results do not qualify this combined source. The combined build, finite A15 keyboard/geometry checks and actual AT remain pending. Any later unchanged A07 benchmark evaluates the combined candidate, not a causal attribution to parent-stat alone. No primary, main, image or production adoption follows. [Combined source record](implementation-evidence/parent-stat-a15-source-20261015.json).
+
 The recorded fccc7c06 A19 CI and A02 composite source clauses remain qualified at their stated source; see [Fresh source CI qualification](implementation-evidence/provisioning-hosted-ci-qualified-root-20261015.json) and [A02 composite qualification](implementation-evidence/a02-composite-boundary-qualification-root-20261015.json). Delivered, AT, performance, image, recovery and live acceptance remain separate.
 
 ## Historical finite A19 sensitivity qualification

@@ -1,5 +1,5 @@
 import path from "node:path";
-import { constants, lstatSync, accessSync, type BigIntStats } from "node:fs";
+import { constants, lstatSync, accessSync, type BigIntStats, type Stats } from "node:fs";
 import type { DatabaseSync, StatementSync } from "node:sqlite";
 
 export type SessionRow = { id: string; username: string; sessionVersion: number };
@@ -107,9 +107,9 @@ export class DirectAccountReader {
       current = path.join(current, component); parts.push(current);
     }
     // Complete every fresh check, including after earlier faults.
-    const checks: Array<PromiseSettledResult<BigIntStats | undefined>> = [];
+    const checks: Array<PromiseSettledResult<Stats | BigIntStats | undefined>> = [];
     for (const part of parts) {
-      try { checks.push({ status: "fulfilled", value: lstatSync(part, { bigint: true }) }); }
+      try { checks.push({ status: "fulfilled", value: lstatSync(part, { bigint: part === file }) }); }
       catch { checks.push({ status: "rejected", reason: undefined }); }
     }
     try { accessSync(file, constants.R_OK); checks.push({ status: "fulfilled", value: undefined }); }
@@ -123,7 +123,9 @@ export class DirectAccountReader {
       return check.value;
     });
     if (stats.some((stat, index) => stat.isSymbolicLink() || (index === stats.length - 1 ? !stat.isFile() : !stat.isDirectory()))) throw unavailable();
-    const leaf = stats[stats.length - 1]; return { dev: leaf.dev, ino: leaf.ino };
+    const leaf = stats[stats.length - 1];
+    if (typeof leaf.dev !== "bigint" || typeof leaf.ino !== "bigint") throw unavailable();
+    return { dev: leaf.dev, ino: leaf.ino };
   }
   private discard() {
     const connection = this.connection;

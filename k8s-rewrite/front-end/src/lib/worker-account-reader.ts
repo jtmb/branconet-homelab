@@ -21,11 +21,12 @@ function identity(file: string) {
   for (const component of file.slice(current.length).split(path.sep).filter(Boolean)) {
     current = path.join(current, component); parts.push(current);
   }
-  const checks = parts.map(part => { try { return lstatSync(part, { bigint: true }); } catch { return undefined; } });
+  const checks = parts.map(part => { try { return lstatSync(part, { bigint: part === file }); } catch { return undefined; } });
   let readable = false; try { accessSync(file, constants.R_OK); readable = true; } catch { /* Fixed refusal below. */ }
   if (!readable || checks.some((stat, index) => !stat || stat.isSymbolicLink() ||
     (index === checks.length - 1 ? !stat.isFile() : !stat.isDirectory()))) throw unavailable();
   const leaf = checks[checks.length - 1]!;
+  if (typeof leaf.dev !== "bigint" || typeof leaf.ino !== "bigint") throw unavailable();
   return { dev: leaf.dev, ino: leaf.ino };
 }
 
