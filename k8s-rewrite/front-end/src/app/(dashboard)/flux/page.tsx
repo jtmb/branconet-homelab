@@ -154,8 +154,8 @@ function FluxScreen({ canWrite, monitor, setMonitor, completed, setCompleted, hi
     {adding && canWrite && <AddRepository onClose={() => setAdding(false)} onAdded={() => { setAdding(false); refetch(); }} returnFocus={() => searchRef.current?.focus()} />}
     {confirmation && canWrite && <ConfirmDialog open onClose={() => setConfirmation(null)} onConfirm={remove} title={`Remove ${confirmation.name}`} confirmName={confirmation.name} confirmLabel="Remove repository" danger loading={mutation.busy} error={mutation.error}
       message={`Remove this repository and its discovered children. For supported application namespaces, cascade removal also deletes the namespace and cleans up bound volumes after confirmed absence. Protected namespaces are retained. Native repository credentials remain for explicit cleanup. Selected namespace: ${confirmation.namespace}.`} returnFocus={() => searchRef.current?.focus()} />}
-    {monitor && <DeleteMonitor id={monitor.id} name={monitor.name} startedAt={monitor.startedAt} accepted={monitor.accepted} mutationError={mutation.error} onComplete={finish} onClose={dismissProgress} />}
-    {completed && <DeleteDialog progress={completed} onClose={dismissProgress} />}
+    {monitor && <DeleteMonitor id={monitor.id} name={monitor.name} startedAt={monitor.startedAt} accepted={monitor.accepted} mutationError={mutation.error} onComplete={finish} onClose={dismissProgress} returnFocus={() => searchRef.current?.focus()} />}
+    {completed && <DeleteDialog progress={completed} onClose={dismissProgress} returnFocus={() => searchRef.current?.focus()} />}
   </main></ViewportWrapper>;
 }
 
@@ -185,16 +185,16 @@ function AddRepository({ onClose, onAdded, returnFocus }: { onClose: () => void;
   </Modal>;
 }
 
-function DeleteMonitor({ id, name, startedAt, accepted, mutationError, onComplete, onClose }: { id: string; name: string; startedAt: number; accepted: boolean; mutationError?: string; onComplete: (progress: DeleteProgress) => void; onClose: () => void }) {
+function DeleteMonitor({ id, name, startedAt, accepted, mutationError, onComplete, onClose, returnFocus }: { id: string; name: string; startedAt: number; accepted: boolean; mutationError?: string; onComplete: (progress: DeleteProgress) => void; onClose: () => void; returnFocus: () => void }) {
   const query = useQuery<DeleteProgress>(`/api/flux/repos/${encodeURIComponent(id)}/delete-progress`, 1500);
   const progress = query.updatedAt > startedAt ? query.data : undefined;
   useEffect(() => { if (progress?.done && !query.error) onComplete(progress); }, [progress, query.error, onComplete]);
-  return <DeleteDialog progress={progress} name={name} onClose={onClose} error={query.error ?? mutationError} stale={query.stale} retry={query.refetch}
+  return <DeleteDialog progress={progress} name={name} onClose={onClose} returnFocus={returnFocus} error={query.error ?? mutationError} stale={query.stale} retry={query.refetch}
     recovery={!accepted && !progress ? "Request acceptance is unconfirmed. Checking the public operation reference; do not submit again until its result is established. Completed progress expires during cleanup and server restart loses progress; missing progress does not establish that removal failed." : undefined} />;
 }
 
-function DeleteDialog({ progress, name, onClose, error, stale, retry, recovery }: { progress?: DeleteProgress; name?: string; onClose: () => void; error?: string; stale?: boolean; retry?: () => void; recovery?: string }) {
-  return <Modal open onClose={onClose} title={`Repository removal: ${progress?.repoName ?? name ?? "progress"}`} description="Dismiss closes monitoring; it does not cancel the server operation.">
+function DeleteDialog({ progress, name, onClose, returnFocus, error, stale, retry, recovery }: { progress?: DeleteProgress; name?: string; onClose: () => void; returnFocus: () => void; error?: string; stale?: boolean; retry?: () => void; recovery?: string }) {
+  return <Modal open onClose={onClose} returnFocus={returnFocus} title={`Repository removal: ${progress?.repoName ?? name ?? "progress"}`} description="Dismiss closes monitoring; it does not cancel the server operation.">
     <div aria-live="polite" className="space-y-3">
       {!progress && <p>Waiting for deletion progress.</p>}
       {recovery && <p className="text-amber-200">{recovery}</p>}
