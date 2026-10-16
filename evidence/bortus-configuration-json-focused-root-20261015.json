@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "owningCommit": "f4cef8a1473c41768b36affe867208b0230f38fb",
+  "frontendTree": "47f852795803906703ce937df356eff8368a26b3",
+  "owningWorktree": "C:\\Users\\james\\.codex\\worktrees\\bortus-json-response-contract\\kubernetes migration",
+  "sourceScope": "Malformed successful JSON and configuration list/save/delete acknowledgments; isolated candidate only",
+  "receipt": {
+    "path": "docs/implementation-evidence/configuration-json-response-focused-20261015.json",
+    "sha256": "4a99151c90ef03510a8c05025bc0b867f97d6986013af52bb09367cc8a6a0368"
+  },
+  "qualifiedResult": {
+    "path": "docs/implementation-evidence/configuration-json-focused-results-20261015/qualification.json",
+    "sha256": "5eeada3f85b857eed9835fbccfab7a18c8357d53581c2eafe679cb59e9a5c225"
+  },
+  "actualTools": {
+    "sourceReview": "513d7e/0",
+    "dispatch": "8b0b5b/session5543",
+    "terminal": "8f13a7/0",
+    "qualifier": "cae903/0",
+    "publicationScan": "bda431/0"
+  },
+  "sourceAndPacketCurrentBindings": 16,
+  "canonicalGitVerifiedWithOnlyCRLFNormalization": [
+    "k8s-rewrite/front-end/package.json",
+    "k8s-rewrite/front-end/package-lock.json",
+    "k8s-rewrite/front-end/tsconfig.json",
+    "k8s-rewrite/front-end/src/lib/use-query.ts",
+    "k8s-rewrite/front-end/src/lib/query-store.ts",
+    "k8s-rewrite/front-end/src/lib/mutation-task.ts",
+    "k8s-rewrite/front-end/src/lib/metadata-query.ts",
+    "k8s-rewrite/front-end/src/lib/kv-metadata-query.ts",
+    "k8s-rewrite/front-end/src/app/(dashboard)/configuration/page.tsx",
+    "docs/implementation-evidence/configuration-json-focused-preparation/manifest.json",
+    "docs/implementation-evidence/configuration-json-focused-preparation/mutations.json",
+    "docs/implementation-evidence/configuration-json-focused-preparation/expectations.json"
+  ],
+  "retainedCurrentRecords": 51,
+  "cases": [
+    {
+      "mode": "pristine",
+      "actualOuterExit": 0,
+      "actualChildExit": 0,
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "failureWitnesses": [],
+      "completeSourceRestoration": true,
+      "cid": "198a2d0a00bcb439de3eb98d0eadec83ebe0c28c56e010fec2700dafde65f18d",
+      "name": "bortus-configuration-json-focused-20261015-v1-pristine",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    },
+    {
+      "mode": "old-parse",
+      "actualOuterExit": 0,
+      "actualChildExit": 1,
+      "tests": 5,
+      "passed": 4,
+      "failed": 1,
+      "failureWitnesses": [
+        {
+          "name": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
+          "operator": "rejects",
+          "line": 39
+        }
+      ],
+      "completeSourceRestoration": true,
+      "cid": "249766ab72cb21174a966df7ddec7032bb92fd48b367f7975b304cb06607d827",
+      "name": "bortus-configuration-json-focused-20261015-v1-old-parse",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    },
+    {
+      "mode": "save-noop",
+      "actualOuterExit": 0,
+      "actualChildExit": 1,
+      "tests": 5,
+      "passed": 3,
+      "failed": 2,
+      "failureWitnesses": [
+        {
+          "name": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
+          "operator": "throws",
+          "line": 48
+        },
+        {
+          "name": "real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds",
+          "operator": "strictEqual",
+          "line": 143
+        }
+      ],
+      "completeSourceRestoration": true,
+      "cid": "d352564dc6f869c7c2b84db8521c0715f1643e3af45fcd7ae3ffb4b03f944ef8",
+      "name": "bortus-configuration-json-focused-20261015-v1-save-noop",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    },
+    {
+      "mode": "remove-noop",
+      "actualOuterExit": 0,
+      "actualChildExit": 1,
+      "tests": 5,
+      "passed": 4,
+      "failed": 1,
+      "failureWitnesses": [
+        {
+          "name": "real HTTP configuration DELETE needs a true acknowledgment before closing confirmation",
+          "operator": "strictEqual",
+          "line": 91
+        }
+      ],
+      "completeSourceRestoration": true,
+      "cid": "c0a2459bb0907a606a5f1f1b0465c215dcb53c3647b49622e73b073791f54bbe",
+      "name": "bortus-configuration-json-focused-20261015-v1-remove-noop",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    }
+  ],
+  "originalTestsReplayed": false,
+  "fullBuildQualified": false,
+  "browserQualified": false,
+  "A21Qualified": false,
+  "performanceQualified": false,
+  "productionAdopted": false,
+  "hostPIDOrAllBirthClosureClaimed": false
+}
