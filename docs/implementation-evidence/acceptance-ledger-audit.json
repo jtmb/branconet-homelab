@@ -558,8 +558,8 @@
       "id": "A15",
       "finding": "accessibility",
       "originalValidation": "Keyboard-only navigation through collapsed sidebar, tables and every modal; inspect accessible names/dialog roles, focus return and screen-reader announcements. Run an automated accessibility scan, then manually review findings rather than treating a score as acceptance.",
-      "localCompletedScope": "Named semantic controls, dialog roles, focus return and recorded keyboard paths pass; scoped pinned axe/AX scans and manual incomplete review retained.32 forward/reverse Tab steps and attempted background focus remain trapped; terminal Restore/Switch are keyboard-qualified buttons.",
-      "stillRequired": "The retained3d full352/eight-HTTP build is qualified. ROOT reports the six remaining dialogs plus separate menu passed; matched closure is pending. This new four-label foreground source awaits its narrow rendered contrast/axe check on a fresh coherent build. Classify remaining scan findings and verify actual screen-reader announcements. Preserve all prior scoped keyboard results and historical failures; no cross-product or AX-as-AT substitution.",
+      "localCompletedScope": "Current reviewed3d keyboard composition independently qualifies25 full dialog cases, one history-entry subset and menu focus; all original actor failures retained. Actual AT and manual findings remain separate.",
+      "stillRequired": "No missing keyboard corpus remains. Render/inspect only the four30f866 Edit Node labels on a fresh coherent build; manually classify remaining axe/contrast/incomplete findings and verify actual screen-reader announcements. Do not replay25 rings or replace AT with AX.",
       "sourcePaths": [
         "k8s-rewrite/front-end/src/components/secrets/kv-administration.tsx",
         "k8s-rewrite/front-end/src/app/(dashboard)/sidebar.tsx",
@@ -592,6 +592,33 @@
         "historicalPreparationOnly": true
       },
       "currentEditLabelContrastFollowup": {
+        "sourceCommit": "30f866fdb0b1da47f8db542fa2523f8a2544a9ce",
+        "retainedQualifiedSource": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+        "newLabelRenderedContrastPending": true,
+        "matchedKeyboardClosureQualified": true,
+        "keyboardEvidence": "a15-keyboard-composition-root-20261016.json",
+        "actualATQualified": false,
+        "manualFindingsQualified": false,
+        "performanceAccepted": false,
+        "productionAdopted": false
+      },
+      "currentKeyboardComposition": {
+        "evidence": "a15-keyboard-composition-root-20261016.json",
+        "sha256": "fae9cee86c5a8408e8c277dc43105259041d0f3accd56fbf75518c687cfd429d",
+        "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+        "frontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60",
+        "keyboardFiniteQualified": true,
+        "fullDialogCases": 25,
+        "scopedHistoryEntrySubsets": 1,
+        "menuObservation": true,
+        "finalPins": 573,
+        "LinuxBirthsAbsent": 159,
+        "WindowsBirthsBound": 58,
+        "retainedCIDNameQueries": 8,
+        "actualATQualified": false,
+        "manualFindingsQualified": false
+      },
+      "historicalEditLabelContrastPreparation20261016": {
         "evidence": "a15-edit-label-contrast-source-20261016.json",
         "scope": "Four label foreground classes only; source-only, no new build/browser acceptance.",
         "priorSource": "3d55985",
@@ -764,8 +791,8 @@
       "id": "A21",
       "finding": "lists/probes/forms",
       "originalValidation": "200/1k/10k metadata/config entries, slow/failing independent sources, repeated save clicks, dropped network and malformed responses. Measure render time, response bytes, probe request count/deadline and peak memory. Validate readiness still rejects an inaccessible namespace and respects TLS.",
-      "localCompletedScope": "Resource/admin/Secret/KV/Flux100-row DOM pages,201/205/334/603 inventories,complete10kPods; bounded alias/readiness four-worker deadlines/TLS refusal; complete10,000x253 admin acknowledgments and strict other route limits pass. Latest isolatedd69 original comparison has complete six-profile inventories and independent closure, but two warm p95 gates regress and peak whole-fixture RSS rises.",
-      "stillRequired": "OPEN latency/RSS gate: bounded wire/DOM bytes do not prove peak memory. Exact final server large config/metadata200/1k/10k render/RSS/repeated-save/drop/malformed permutations and image readiness inaccessible namespace/TLS remain; existing native no-regression still fails. Latest bookkeeping evaluation is FAILED/OPEN (2/10warm); focused83/build-only/compiled10HTTP12SQL13joins do not satisfy full delivery/performance.",
+      "localCompletedScope": "All19 finite original200/1k/10k/configuration/error/save/readiness observations independently qualified on3d; complete finite deadline503 and TLS/access checks retained. Node lifetime RSS/HWM and sampled renderer heap are separate measurements, not whole-fixture or browser-Job peaks.",
+      "stillRequired": "Whole A21 remains open for the original peak-memory scope: browser-Job and whole-fixture peaks are unobserved. The19 finite business/permutation/probe cases are complete; do not add them again as pending or import A07 no-warm-regression as a new A21 source requirement. Image/live delivery remains separate.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/metadata-bounds.test.ts",
         "k8s-rewrite/front-end/tests/http.integration.ts",
@@ -802,14 +829,27 @@
         "compiledConfigurationBrowserPending": true,
         "productionAdopted": false,
         "performanceAccepted": false
+      },
+      "currentFiniteObservations": {
+        "evidence": "a21-nineteen-finite-root-20261016.json",
+        "sha256": "158b11ef95def12e434e5a0b1782fa1fab7e5230b767c589282f3109907b3538",
+        "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+        "frontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60",
+        "accepted": 19,
+        "total": 19,
+        "finiteQualified": true,
+        "wholeA21Qualified": false,
+        "browserJobPeakObserved": false,
+        "wholeFixturePeakObserved": false,
+        "performanceAccepted": false
       }
     },
     {
       "id": "A22",
       "finding": "lazy code",
       "originalValidation": "Compare gzip/Brotli transfer, initial JS, parse/execute time, LCP and first modal/terminal interaction under a fixed mobile profile. Check loading/error/focus behavior and keep browser cold/warm measurements separate.",
-      "localCompletedScope": "Twelve /deploy,/pods modal and six terminal fixed390 mobile cold/warm samples bind production assets, actual wire/mixed disk-or-memory warm zero-wire, offline gzip/Brotli, initial/deferred JS/renderer task/compile/LCP/click-frame; loading refusal/focus and genuine2x pass.",
-      "stillRequired": "OPEN finite current-build measurement: actual Brotli response delivery and terminal compile/parse trace are unobserved; gzip/Brotli offline exact-asset sizes and renderer execution/LCP/interaction observations remain valid historical records. Menu/YAML payloads changed after those measurements, so historical asset timings are not relabelled current. No source-before/after, real-runner or global speed gate is added to original A22; A07/A21/image/live/AT remain separate.",
+      "localCompletedScope": "Original A22 source clause qualified on3d by36 actual fixed-mobile gzip/Brotli cold/warm observations, initial/deferred JS, initial+interaction compile/evaluation traces includingterminal, LCP, modal/terminal first interaction and loading/error/focus behavior; current artifact/closure proofs pass.",
+      "stillRequired": "No missing original A22 source requirement remains. Keep A07, A21 peak-memory, image/live/AT and30f866 label rendering as separate scopes; no source-before/after or Run-specific gate is added.",
       "sourcePaths": [
         "k8s-rewrite/front-end/src/app/(dashboard)/deploy/page.tsx",
         "k8s-rewrite/front-end/src/app/(dashboard)/pods/page.tsx",
@@ -823,6 +863,29 @@
       ],
       "overallDeliveredAcceptancePassed": false,
       "currentRetainedMetricReconciliation": {
+        "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+        "observations": 36,
+        "actualGzipBrotliDeliveryObserved": true,
+        "terminalCompileEvaluationTraceObserved": true,
+        "initialJSAndLCPAndFirstInteractionObserved": true,
+        "coldWarmSeparate": true,
+        "originalA22SourceClauseQualified": true,
+        "evidence": "a22-current-encoding-root-20261016.json",
+        "prior18ObservationsRemainHistorical": true
+      },
+      "originalSourceClauseQualified": true,
+      "currentA22SourceQualification": {
+        "evidence": "a22-current-encoding-root-20261016.json",
+        "sha256": "eb66681b216096ffe5f04b35d81a6b9284159f19d1a84532be4d3e1c07010c93",
+        "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+        "frontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60",
+        "originalSourceClauseQualified": true,
+        "observations": 36,
+        "coldWarmGroups": 12,
+        "sourceBeforeAfterRequired": false,
+        "productionAdopted": false
+      },
+      "historicalRetainedMetricReconciliationBeforeCurrent36": {
         "modalSamples": 12,
         "terminalSamples": 6,
         "profile": {
@@ -1940,6 +2003,49 @@
     "actualATQualified": false
   },
   "currentA15EditLabelContrastSource20261016": {
+    "evidence": "a15-edit-label-contrast-source-20261016.json",
+    "sourceCommit": "30f866fdb0b1da47f8db542fa2523f8a2544a9ce",
+    "scope": "Four label classes only; unrendered owning source. Actual3d keyboard/full proof retained separately.",
+    "retainedQualifiedSource": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+    "keyboardCompositionEvidence": "a15-keyboard-composition-root-20261016.json",
+    "keyboardCompositionQualified": true,
+    "newLabelRenderedContrastPending": true,
+    "manualFindingsQualified": false,
+    "actualATQualified": false,
+    "performanceAccepted": false,
+    "productionAdopted": false
+  },
+  "currentReviewedBrowserCheckpoint20261016": {
+    "qualifiedRenderedSource": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+    "qualifiedRenderedFrontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60",
+    "owningSource": "30f866fdb0b1da47f8db542fa2523f8a2544a9ce",
+    "owningLabelChangeRendered": false,
+    "A15Keyboard": {
+      "evidence": "a15-keyboard-composition-root-20261016.json",
+      "sha256": "fae9cee86c5a8408e8c277dc43105259041d0f3accd56fbf75518c687cfd429d",
+      "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+      "frontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60"
+    },
+    "A21Finite": {
+      "evidence": "a21-nineteen-finite-root-20261016.json",
+      "sha256": "158b11ef95def12e434e5a0b1782fa1fab7e5230b767c589282f3109907b3538",
+      "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+      "frontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60"
+    },
+    "A22Source": {
+      "evidence": "a22-current-encoding-root-20261016.json",
+      "sha256": "eb66681b216096ffe5f04b35d81a6b9284159f19d1a84532be4d3e1c07010c93",
+      "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+      "frontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60"
+    },
+    "wholeA15Qualified": false,
+    "wholeA21Qualified": false,
+    "A22OriginalSourceClauseQualified": true,
+    "actualATQualified": false,
+    "performanceAccepted": false,
+    "imageLiveAdoptionAccepted": false
+  },
+  "historicalA15EditLabelContrastPreparation20261016": {
     "evidence": "a15-edit-label-contrast-source-20261016.json",
     "scope": "Four label foreground classes only; source-only, no new build/browser acceptance.",
     "priorSource": "3d55985",
