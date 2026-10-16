@@ -51,7 +51,7 @@
       "id": "A02",
       "finding": "revocation",
       "originalValidation": "With an already-issued cookie, delete its account and assert session is unauthenticated and all protected pages/ordinary APIs reject it. Retest demotion, native metadata/value permissions, expiry and logout. Password-reset revocation is currently a source-level follow-up, not a reproduced finding.",
-      "localCompletedScope": "Exact6e compiled loginâ†’sameunexpiredcookie exactaccountdeletion passes sessionfalse,124 ordinary API401 and32 protected page307 responses in160 calls, with independent/final closure. Current demotion/native/expiry tests and packaged native permission controls plus historical logout/applied-cookie checks satisfy the distinct contracts;17 auth/test files remain rawGit exact6eâ†’3e9474e and logout remains exactab8â†’current. The historical supplement remains actor1 after17 completed checks before unrelated A05 failure.",
+      "localCompletedScope": "Exact6e compiled login\u00e2\u2020\u2019sameunexpiredcookie exactaccountdeletion passes sessionfalse,124 ordinary API401 and32 protected page307 responses in160 calls, with independent/final closure. Current demotion/native/expiry tests and packaged native permission controls plus historical logout/applied-cookie checks satisfy the distinct contracts;17 auth/test files remain rawGit exact6e\u00e2\u2020\u20193e9474e and logout remains exactab8\u00e2\u2020\u2019current. The historical supplement remains actor1 after17 completed checks before unrelated A05 failure.",
       "stillRequired": "No remaining original A02 source-clause gate after ROOT composite qualification. Delivered/live acceptance stays separate; neither global logout token revocation nor reuse of a copied JWT is required or claimed. Authorized mutation success/failure breadth belongs to A05.",
       "sourcePaths": [
         "k8s-rewrite/front-end/tests/accounts.test.ts",
@@ -558,8 +558,8 @@
       "id": "A15",
       "finding": "accessibility",
       "originalValidation": "Keyboard-only navigation through collapsed sidebar, tables and every modal; inspect accessible names/dialog roles, focus return and screen-reader announcements. Run an automated accessibility scan, then manually review findings rather than treating a score as acceptance.",
-      "localCompletedScope": "Current3d keyboard25+history/menu remains qualified. Source30f full352/eight and actual four-label contrast6.912758604 pass by separate evidence; both observer actor1 outcomes retained. New Nodes count/Age classes are source-only.",
-      "stillRequired": "Fresh full and narrow active-page check of the two Nodes count/Age foreground changes; manual axe/incomplete review and actual screen-reader announcements remain. No25-ring or four-label replay is required.",
+      "localCompletedScope": "Retained3d keyboard25+history/menu remains qualified. Current d901 fresh352/eight and one six-text view are independently closed; ROOT reviewed the actual screenshots and selected contrast findings. Four labels6.912758604, Nodes count7.762805694 and actual Age axe7.29 pass; saved collector Age-inconclusive, scoped-label-inapplicable and open-dialog incomplete records remain literal. Both prior observer actor1 outcomes remain historical.",
+      "stillRequired": "Actual screen-reader announcements remain unqualified. No exact manual glass-ratio gate, broader keyboard replay or unrelated image/performance condition is added to original A15.",
       "sourcePaths": [
         "k8s-rewrite/front-end/src/components/secrets/kv-administration.tsx",
         "k8s-rewrite/front-end/src/app/(dashboard)/sidebar.tsx",
@@ -647,6 +647,43 @@
         "productionAdopted": false
       },
       "currentNodeTextContrastFollowup": {
+        "source": "d901ccdd77d73981ca55708e124ab9699c8d79b4",
+        "frontendTree": "25aff52d3b2e0beb3ed0c4515fc5433b5380805a",
+        "scope": "Fresh full352+8 and one scoped six-element Edit Node/active Nodes view, independently closed; no broader corpus transfer.",
+        "fullEvidence": "a15-node-text-contrast-full-functional-root-20261016.json",
+        "fullRootWorkingSHA256": "882c90341f6aa05eb661b47db06d61a11fcbd0b6d9b0553f021e703ab6c5d036",
+        "renderEvidence": "a15-six-text-render-root-20261016.json",
+        "renderRootWorkingSHA256": "cb2844262141d26fdbce427a954c2bc10c90c4bb030939240e3cd80a341bfc32",
+        "fullFunctionalQualified": true,
+        "scopedRenderQualified": true,
+        "scopedManualScreenshotReviewByROOT": true,
+        "fourLabelRatios": [
+          6.912758604004126,
+          6.912758604004126,
+          6.912758604004126,
+          6.912758604004126
+        ],
+        "nodeCountRatio": 7.762805693682826,
+        "AgeManualCollector": "inconclusive: opacity/image/backdrop",
+        "AgeAxePassRatio": 7.29,
+        "scopedLabelColorContrastInapplicable": true,
+        "activePageGlobalAxeViolations": 0,
+        "activePageGlobalAxeIncomplete": 0,
+        "openDialogAriaHiddenFocusIncompleteTargets": 3,
+        "producerManualReviewRequiredFlagRetained": true,
+        "exactManualGlassRatioNotAnOriginalGate": true,
+        "newTwoClassBuildPending": false,
+        "newTwoClassRenderPending": false,
+        "keyboardCorpusReplayed": false,
+        "priorWholeObserverActorExits": [
+          1,
+          1
+        ],
+        "actualATQualified": false,
+        "performanceAccepted": false,
+        "productionAdopted": false
+      },
+      "historicalNodeTextFollowupPreparation20261016": {
         "evidence": "a15-node-text-contrast-source-20261016.json",
         "sourceParent": "4146bf55cc52264bf839a5246c85d81d17068b10",
         "qualifiedFourLabelSource": "30f866fdb0b1da47f8db542fa2523f8a2544a9ce",
@@ -2082,9 +2119,9 @@
     }
   },
   "currentReviewedBrowserCheckpoint20261016": {
-    "qualifiedRenderedSource": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
-    "qualifiedRenderedFrontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60",
-    "owningSource": "30f866fdb0b1da47f8db542fa2523f8a2544a9ce",
+    "qualifiedRenderedSource": "d901ccdd77d73981ca55708e124ab9699c8d79b4",
+    "qualifiedRenderedFrontendTree": "25aff52d3b2e0beb3ed0c4515fc5433b5380805a",
+    "owningSource": "d901ccdd77d73981ca55708e124ab9699c8d79b4",
     "owningLabelChangeRendered": true,
     "A15Keyboard": {
       "evidence": "a15-keyboard-composition-root-20261016.json",
@@ -2110,9 +2147,47 @@
     "actualATQualified": false,
     "performanceAccepted": false,
     "imageLiveAdoptionAccepted": false,
-    "latestFullQualifiedSource": "30f866fdb0b1da47f8db542fa2523f8a2544a9ce",
+    "latestFullQualifiedSource": "d901ccdd77d73981ca55708e124ab9699c8d79b4",
     "latestFourLabelContrastsMeasured": true,
-    "newNodeTextSourceBuildRenderPending": true
+    "newNodeTextSourceBuildRenderPending": false,
+    "qualifiedRenderedScope": "One six-text Nodes view only; retained3d corpus bindings below remain explicit.",
+    "currentScopedSixText": {
+      "source": "d901ccdd77d73981ca55708e124ab9699c8d79b4",
+      "frontendTree": "25aff52d3b2e0beb3ed0c4515fc5433b5380805a",
+      "scope": "Fresh full352+8 and one scoped six-element Edit Node/active Nodes view, independently closed; no broader corpus transfer.",
+      "fullEvidence": "a15-node-text-contrast-full-functional-root-20261016.json",
+      "fullRootWorkingSHA256": "882c90341f6aa05eb661b47db06d61a11fcbd0b6d9b0553f021e703ab6c5d036",
+      "renderEvidence": "a15-six-text-render-root-20261016.json",
+      "renderRootWorkingSHA256": "cb2844262141d26fdbce427a954c2bc10c90c4bb030939240e3cd80a341bfc32",
+      "fullFunctionalQualified": true,
+      "scopedRenderQualified": true,
+      "scopedManualScreenshotReviewByROOT": true,
+      "fourLabelRatios": [
+        6.912758604004126,
+        6.912758604004126,
+        6.912758604004126,
+        6.912758604004126
+      ],
+      "nodeCountRatio": 7.762805693682826,
+      "AgeManualCollector": "inconclusive: opacity/image/backdrop",
+      "AgeAxePassRatio": 7.29,
+      "scopedLabelColorContrastInapplicable": true,
+      "activePageGlobalAxeViolations": 0,
+      "activePageGlobalAxeIncomplete": 0,
+      "openDialogAriaHiddenFocusIncompleteTargets": 3,
+      "producerManualReviewRequiredFlagRetained": true,
+      "exactManualGlassRatioNotAnOriginalGate": true,
+      "newTwoClassBuildPending": false,
+      "newTwoClassRenderPending": false,
+      "keyboardCorpusReplayed": false,
+      "priorWholeObserverActorExits": [
+        1,
+        1
+      ],
+      "actualATQualified": false,
+      "performanceAccepted": false,
+      "productionAdopted": false
+    }
   },
   "historicalA15EditLabelContrastPreparation20261016": {
     "evidence": "a15-edit-label-contrast-source-20261016.json",
@@ -2130,27 +2205,38 @@
     "productionAdopted": false
   },
   "currentA15NodeTextContrastSource20261016": {
-    "evidence": "a15-node-text-contrast-source-20261016.json",
-    "sourceParent": "4146bf55cc52264bf839a5246c85d81d17068b10",
-    "qualifiedFourLabelSource": "30f866fdb0b1da47f8db542fa2523f8a2544a9ce",
-    "scope": "Exactly Nodes count/Age foreground classes; actual active-page violations retained; new source build/render pending.",
-    "full30fEvidence": "a15-label-contrast-full-functional-root-20261016.json",
-    "full30fWorkingSHA256": "4b72b88ed114a37205c8b9b62339e19658d3908c2f0a87bfdab6c014f2ed3cab",
-    "fourLabelActualRatios": [
+    "source": "d901ccdd77d73981ca55708e124ab9699c8d79b4",
+    "frontendTree": "25aff52d3b2e0beb3ed0c4515fc5433b5380805a",
+    "scope": "Fresh full352+8 and one scoped six-element Edit Node/active Nodes view, independently closed; no broader corpus transfer.",
+    "fullEvidence": "a15-node-text-contrast-full-functional-root-20261016.json",
+    "fullRootWorkingSHA256": "882c90341f6aa05eb661b47db06d61a11fcbd0b6d9b0553f021e703ab6c5d036",
+    "renderEvidence": "a15-six-text-render-root-20261016.json",
+    "renderRootWorkingSHA256": "cb2844262141d26fdbce427a954c2bc10c90c4bb030939240e3cd80a341bfc32",
+    "fullFunctionalQualified": true,
+    "scopedRenderQualified": true,
+    "scopedManualScreenshotReviewByROOT": true,
+    "fourLabelRatios": [
       6.912758604004126,
       6.912758604004126,
       6.912758604004126,
       6.912758604004126
     ],
-    "fourLabelScopedAxeInapplicable": true,
-    "priorWholeActorExits": [
+    "nodeCountRatio": 7.762805693682826,
+    "AgeManualCollector": "inconclusive: opacity/image/backdrop",
+    "AgeAxePassRatio": 7.29,
+    "scopedLabelColorContrastInapplicable": true,
+    "activePageGlobalAxeViolations": 0,
+    "activePageGlobalAxeIncomplete": 0,
+    "openDialogAriaHiddenFocusIncompleteTargets": 3,
+    "producerManualReviewRequiredFlagRetained": true,
+    "exactManualGlassRatioNotAnOriginalGate": true,
+    "newTwoClassBuildPending": false,
+    "newTwoClassRenderPending": false,
+    "keyboardCorpusReplayed": false,
+    "priorWholeObserverActorExits": [
       1,
       1
     ],
-    "newTwoClassBuildPending": true,
-    "newTwoClassRenderPending": true,
-    "keyboardCorpusReplayed": false,
-    "manualFindingsQualified": false,
     "actualATQualified": false,
     "performanceAccepted": false,
     "productionAdopted": false
@@ -2197,5 +2283,64 @@
     "actualATQualified": false,
     "performanceAccepted": false,
     "imageLiveAdoptionAccepted": false
+  },
+  "historicalCurrentA15NodeTextContrastSource20261016BeforeSixTextQualification20261016": {
+    "evidence": "a15-node-text-contrast-source-20261016.json",
+    "sourceParent": "4146bf55cc52264bf839a5246c85d81d17068b10",
+    "qualifiedFourLabelSource": "30f866fdb0b1da47f8db542fa2523f8a2544a9ce",
+    "scope": "Exactly Nodes count/Age foreground classes; actual active-page violations retained; new source build/render pending.",
+    "full30fEvidence": "a15-label-contrast-full-functional-root-20261016.json",
+    "full30fWorkingSHA256": "4b72b88ed114a37205c8b9b62339e19658d3908c2f0a87bfdab6c014f2ed3cab",
+    "fourLabelActualRatios": [
+      6.912758604004126,
+      6.912758604004126,
+      6.912758604004126,
+      6.912758604004126
+    ],
+    "fourLabelScopedAxeInapplicable": true,
+    "priorWholeActorExits": [
+      1,
+      1
+    ],
+    "newTwoClassBuildPending": true,
+    "newTwoClassRenderPending": true,
+    "keyboardCorpusReplayed": false,
+    "manualFindingsQualified": false,
+    "actualATQualified": false,
+    "performanceAccepted": false,
+    "productionAdopted": false
+  },
+  "historicalCurrentReviewedBrowserCheckpoint20261016BeforeSixTextQualification20261016": {
+    "qualifiedRenderedSource": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+    "qualifiedRenderedFrontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60",
+    "owningSource": "30f866fdb0b1da47f8db542fa2523f8a2544a9ce",
+    "owningLabelChangeRendered": true,
+    "A15Keyboard": {
+      "evidence": "a15-keyboard-composition-root-20261016.json",
+      "sha256": "fae9cee86c5a8408e8c277dc43105259041d0f3accd56fbf75518c687cfd429d",
+      "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+      "frontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60"
+    },
+    "A21Finite": {
+      "evidence": "a21-nineteen-finite-root-20261016.json",
+      "sha256": "158b11ef95def12e434e5a0b1782fa1fab7e5230b767c589282f3109907b3538",
+      "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+      "frontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60"
+    },
+    "A22Source": {
+      "evidence": "a22-current-encoding-root-20261016.json",
+      "sha256": "eb66681b216096ffe5f04b35d81a6b9284159f19d1a84532be4d3e1c07010c93",
+      "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+      "frontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60"
+    },
+    "wholeA15Qualified": false,
+    "wholeA21Qualified": false,
+    "A22OriginalSourceClauseQualified": true,
+    "actualATQualified": false,
+    "performanceAccepted": false,
+    "imageLiveAdoptionAccepted": false,
+    "latestFullQualifiedSource": "30f866fdb0b1da47f8db542fa2523f8a2544a9ce",
+    "latestFourLabelContrastsMeasured": true,
+    "newNodeTextSourceBuildRenderPending": true
   }
 }
