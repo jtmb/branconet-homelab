@@ -1,6 +1,6 @@
 # BORTUS Secrets Engine
 
-Current source A19 CI and A02 composite clauses are qualified; see [Fresh source CI qualification](implementation-evidence/provisioning-hosted-ci-qualified-root-20261015.json) and [A02 composite qualification](implementation-evidence/a02-composite-boundary-qualification-root-20261015.json). Delivered, AT, performance, image, recovery and live acceptance remain separate.
+The recorded fccc7c06 A19 CI and A02 composite source clauses remain qualified at their stated source; see [Fresh source CI qualification](implementation-evidence/provisioning-hosted-ci-qualified-root-20261015.json) and [A02 composite qualification](implementation-evidence/a02-composite-boundary-qualification-root-20261015.json). Delivered, AT, performance, image, recovery and live acceptance remain separate.
 
 ## Historical finite A19 sensitivity qualification
 
