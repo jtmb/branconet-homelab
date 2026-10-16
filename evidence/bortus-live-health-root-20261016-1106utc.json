@@ -1,0 +1,51 @@
+{
+  "observedUTC": "2026-10-16T11:05:50.779510+00:00",
+  "resources": [
+    {
+      "kind": "nodes",
+      "total": 3,
+      "healthy": 3,
+      "metadataSHA256": "65b890327cb7b3c8fe37bb4ad836d95af3cf201756b540c67b0e56d443a7f6c4",
+      "rows": null
+    },
+    {
+      "kind": "pvc",
+      "total": 54,
+      "healthy": 54,
+      "metadataSHA256": "916ebee986c1ae2510f4206361a534253dfc8ea2a0170ac803c1cc450f6a138b",
+      "rows": null
+    },
+    {
+      "kind": "helmreleases",
+      "total": 34,
+      "healthy": 34,
+      "metadataSHA256": "57747f2d1e22a3c671e080346f5ccad455f2687f9d31e7814a29cfb9fc13c675",
+      "rows": null
+    },
+    {
+      "kind": "gitrepositories",
+      "total": 2,
+      "healthy": 2,
+      "metadataSHA256": "31fb12666222acb4eea893f6fe13d5931fde7867b04197e778d1fefd3f87f7fa",
+      "rows": [
+        {
+          "name": "branconet-charts",
+          "namespace": "flux-system",
+          "healthy": true,
+          "revision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621"
+        },
+        {
+          "name": "migration-validated",
+          "namespace": "flux-system",
+          "healthy": true,
+          "revision": "codex/kubernetes-validated@sha1:373a1e513e1bfb8b13ed5212ccc1b0f57a5ff301"
+        }
+      ]
+    }
+  ],
+  "readOnly": true,
+  "noSecretValuesRead": true,
+  "scope": "Read-only cluster health snapshot, not migrated-app acceptance or restore proof",
+  "productionChanged": false,
+  "sourceCandidatesAdopted": false
+}
