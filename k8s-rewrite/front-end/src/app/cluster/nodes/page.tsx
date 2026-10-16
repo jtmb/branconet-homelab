@@ -387,7 +387,7 @@ export default function NodesPage() {
                 {inventoryError && <p role="status" className="text-sm text-amber-300">{inventoryError}<button onClick={fetchDbNodes} className="ml-2 underline">Refresh inventory</button></p>}
                 {mutation.error && <p role="alert" className="text-sm text-red-300">{mutation.error} Refresh inventory to check the result before retrying.<button onClick={fetchDbNodes} className="ml-2 underline">Refresh inventory</button></p>}
                 <div>
-                  <label htmlFor="inventory-edit-name" className="text-xs text-zinc-500 mb-1 block">Name</label>
+                  <label htmlFor="inventory-edit-name" className="text-xs text-zinc-400 mb-1 block">Name</label>
                   <input
                     id="inventory-edit-name"
                     value={editName}
@@ -398,7 +398,7 @@ export default function NodesPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="inventory-edit-hostname" className="text-xs text-zinc-500 mb-1 block">Hostname</label>
+                  <label htmlFor="inventory-edit-hostname" className="text-xs text-zinc-400 mb-1 block">Hostname</label>
                   <input
                     id="inventory-edit-hostname"
                     value={editHost}
@@ -408,7 +408,7 @@ export default function NodesPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="inventory-edit-ip" className="text-xs text-zinc-500 mb-1 block">IP Address</label>
+                  <label htmlFor="inventory-edit-ip" className="text-xs text-zinc-400 mb-1 block">IP Address</label>
                   <input
                     id="inventory-edit-ip"
                     value={editIp}
@@ -418,7 +418,7 @@ export default function NodesPage() {
                   />
                 </div>
                 <div>
-                  <label htmlFor="inventory-edit-role" className="text-xs text-zinc-500 mb-1 block">Role</label>
+                  <label htmlFor="inventory-edit-role" className="text-xs text-zinc-400 mb-1 block">Role</label>
                   <select
                     id="inventory-edit-role"
                     value={editRole}
