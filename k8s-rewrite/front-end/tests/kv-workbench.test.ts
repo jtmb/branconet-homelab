@@ -84,3 +84,22 @@ test("failed value responses are sanitized, use no-store and make no blind retry
     assert.equal(calls, 1);
   } finally { globalThis.fetch = original; }
 });
+
+
+test("denial status survives invalid bodies so the workbench can withdraw sensitive state", async () => {
+  const original = globalThis.fetch;
+  try {
+    for (const status of [401, 403]) {
+      for (const body of ["", "null", "<html>synthetic private proxy failure</html>"]) {
+        let calls = 0;
+        globalThis.fetch = async () => { calls++; return new Response(body, { status }); };
+        await assert.rejects(workbenchRequest("/api/kv/paths/path/data", {}),
+          error => error instanceof WorkbenchFailure && error.status === status && !error.message.includes("proxy"));
+        assert.equal(calls, 1);
+      }
+    }
+    globalThis.fetch = async () => new Response("null", { status: 409 });
+    await assert.rejects(workbenchRequest("/api/kv/paths/path/data", {}),
+      error => error instanceof WorkbenchFailure && error.status === 409 && error.operationId === undefined);
+  } finally { globalThis.fetch = original; }
+});

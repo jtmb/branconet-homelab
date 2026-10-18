@@ -437,3 +437,27 @@ test("stale/revoked mutations are sent once, fixed errors omit private bodies an
   );
   assert.equal(mutations, 1);
 });
+
+
+test("authorization denial clears private administration state before consuming its body", async () => {
+  for (const status of [401, 403]) {
+    for (const body of ["", "null", "<html>synthetic private proxy failure</html>"]) {
+      let calls = 0, privateDraft = "synthetic draft", lost = 0;
+      const client = new AdministrationClient((async () => {
+        calls++;
+        return calls === 1 ? json(admin) : new Response(body, { status });
+      }) as typeof fetch, () => { privateDraft = ""; lost++; });
+      await assert.rejects(client.run(request => request("/api/kv/policies", "POST", {})),
+        error => error instanceof AdminFailure && error.status === status && !error.message.includes("proxy"));
+      assert.equal(privateDraft, "");
+      assert.equal(lost, 1);
+      assert.equal(calls, 2, "denied request must not retry or request a final session");
+    }
+    let lost = 0;
+    const unreadable = new Response(new ReadableStream({ start(controller) { controller.error(new Error("synthetic private body")); } }), { status });
+    const client = new AdministrationClient((async () => unreadable) as typeof fetch, () => lost++);
+    await assert.rejects(client.run(async () => assert.fail("must not release a result")),
+      error => error instanceof AdminFailure && error.status === status);
+    assert.equal(lost, 1);
+  }
+});

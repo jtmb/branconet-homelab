@@ -111,9 +111,13 @@ export async function workbenchRequest<T>(url: string, init: RequestInit): Promi
   const response = await fetch(url, { ...init, cache: "no-store", credentials: "same-origin" });
   // Never reflect arbitrary response error text: it may contain native data or input.
   if (!response.ok) {
-    const body = await response.json().catch(() => ({}));
+    // Do not let denial-body parsing hide a fresh authorization failure from
+    // the workbench's sensitive-state clearing path.
+    if (response.status === 401 || response.status === 403) throw new WorkbenchFailure(response.status);
+    const parsed: unknown = await response.json().catch(() => undefined);
+    const body = parsed && typeof parsed === "object" ? parsed as Record<string, unknown> : {};
     const operationId = typeof body.operationId === "string" && /^[0-9a-f-]{36}$/.test(body.operationId) ? body.operationId : undefined;
-    const outcome = ["pending", "committed", "conflict", "ambiguous", "recovery-required"].includes(body.outcome) ? body.outcome : undefined;
+    const outcome = typeof body.outcome === "string" && ["pending", "committed", "conflict", "ambiguous", "recovery-required"].includes(body.outcome) ? body.outcome : undefined;
     throw new WorkbenchFailure(response.status, operationId, outcome);
   }
   return response.json() as Promise<T>;

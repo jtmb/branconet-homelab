@@ -457,6 +457,12 @@ export class AdministrationClient {
         body: body === undefined ? undefined : JSON.stringify(body),
       });
       check();
+      // Authorization withdrawal must clear private UI state even when a proxy
+      // returns an empty, malformed or unreadable denial body.
+      if (response.status === 401 || response.status === 403) {
+        this.authorizationLost();
+        throw new AdminFailure(response.status);
+      }
       const reader = response.body?.getReader(),
         chunks: Uint8Array[] = [];
       let bytes = 0;
@@ -494,8 +500,6 @@ export class AdministrationClient {
       }
       check();
       if (!response.ok) {
-        if (response.status === 401 || response.status === 403)
-          this.authorizationLost();
         throw new AdminFailure(
           response.status,
           typeof data.operationId === "string" && isUuid(data.operationId)

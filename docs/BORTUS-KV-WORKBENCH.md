@@ -1,5 +1,9 @@
 # BORTUS native KV workbench integration
 
+## Authorization withdrawal fix (2026-10-18)
+
+HTTP 401/403 is handled before parsing a response body, so a malformed, empty or unreadable intermediary error still triggers the existing value/draft withdrawal. Non-authentication error bodies such as JSON null retain their sanitized HTTP status. No error-body value is displayed and no automatic retry is added.
+
 Root integration update: the component is wired from /secrets/kv behind Values and versions using a conditional dynamic import. Exact mapping/fresh capability props and metadata-only callbacks are connected; close returns to the entry control. The human pathRevision prerequisite was fixed in 7a56ff4. [Combined Node22 evidence](implementation-evidence/kv-workbench-integrated.json) records 127 units, lint/build/typecheck, three HTTP suites and production-route loopback browser checks. Retain the separate standalone Node24 evidence below; final image/live acceptance remains open.
 
 Native loopback integration reached adoption, grouped edit, no-read replacement, stale native refusal, rollback, soft-delete and restore, preserving binary/empty/unrelated/type/metadata and refusing stale writes without value reads. It exposed unknown post-mutation status being treated as unadopted. Corrected-source browser checks now verify explicit unavailable state, initialization only from known status or a proved 404, and adoption only with a known source. Stale save clears the prior committed-operation label and draft without writes. Actual empty initialization succeeds with absent/head-zero/path-revision capture. The earlier phase remains separately recorded, including its status failure.
