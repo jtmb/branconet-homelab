@@ -1,0 +1,49 @@
+{
+  "observedUTC": "2026-10-18T17:15:59.632906+00:00",
+  "status": "blocked",
+  "resumedConsecutiveGoalTurns": [
+    "01a14fef-576b-78c3-937e-8a3a12166902",
+    "01a14ff2-20af-7a13-b1cd-62c13b206da7",
+    "01a15000-a142-75f0-931e-84c7694397a4"
+  ],
+  "sameBlockingCondition": "Required private recovery and security-disposition actions remain platform-rejected; no subsequent external resolution or authorization was received. They were not retried.",
+  "browserBlock": {
+    "evidence": "bortus-final-browser-initialization-block-root-20261018.json",
+    "failure": "Missing kernel assets/path, os error3, including one reset/retry",
+    "retryLimitExhausted": true,
+    "finalUIOrATQualified": false
+  },
+  "lastConcreteProgress": {
+    "sourceCommit": "f5836dba92f1ec653e7fabf26b4f27346e19e3fc",
+    "normalPushSucceeded": true,
+    "sourceCI": 39148443030,
+    "sourceCIConclusion": "success",
+    "bootstrapUsesPrivateChartsValidatedSourceAndRestoredCredential": true
+  },
+  "liveMetadata": {
+    "observedUTC": "2026-10-18T17:14:28.414704+00:00",
+    "image": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+    "readyReplicas": 1,
+    "helmSuspended": true,
+    "fluxReady": true,
+    "fluxRevision": "validated@sha1:37dd61a242b488dabbdcec9277cb1ee84580f0e2"
+  },
+  "unchangedDrafts": {
+    "applicationPR28Head": "5aba82c28d5cad1d571416ea9c06f5d2d61260b3",
+    "chartsPR5Head": "1d78f7b37cb6bf648ad281e237e073433eee2f0b",
+    "bothDraft": true,
+    "bothUnmerged": true
+  },
+  "completionAudit": {
+    "nativeKVProductionAdopted": false,
+    "guardedSchemaRBACAdmissionCutoverProven": false,
+    "independentCompatibleRecoveryProven": false,
+    "finalPerformanceAcceptanceProven": false,
+    "runtimeSecurityAccepted": false,
+    "finalComputerUseAndATProven": false,
+    "fullObjectiveComplete": false
+  },
+  "noSourceTestsOrBenchmarksReplayedThisAudit": true,
+  "noClusterMutationOrDataRetirement": true,
+  "needsExternalChange": true
+}
