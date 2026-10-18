@@ -1,0 +1,432 @@
+{
+  "observedUTC": "2026-10-18T17:09:53.443437+00:00",
+  "scope": "Migration source publication and separate-charts recovery-bootstrap integration only",
+  "localParent": "72d4f28ed7861d26c85c60d602472132e29e6626",
+  "remoteParent": "f0d3d9d06dbb89d79d6bc25fdf2d4a997b426940",
+  "normalPushInitialRefusal": "non-fast-forward; no force used",
+  "unpublishedHistoryScan": {
+    "base": "f0d3d9d06dbb89d79d6bc25fdf2d4a997b426940",
+    "head": "72d4f28ed7861d26c85c60d602472132e29e6626",
+    "actualExit": 1,
+    "findings": 22,
+    "rules": [
+      "generic-api-key",
+      "private-key",
+      "sourcegraph-access-token"
+    ],
+    "headAndWorktreeUnchanged": true,
+    "elapsedSeconds": 1.5,
+    "reportSHA256": "47865e74f26f43a136e00dddae7ffe8eb32cc8cbf6222a38f7acc0b345c90229",
+    "defaultRulesNoLocalIgnoreOrAllowComments": true,
+    "secretsPrinted": false,
+    "classification": {
+      "sourceScanExit": 1,
+      "findingCount": 22,
+      "allClassified": true,
+      "credentialValuesIdentified": 0,
+      "suppressionUsed": false,
+      "rows": [
+        {
+          "fingerprint": "6c36bd9d0887b4996a0db9f5730582a86616acd9:evidence/bortus-a15-flux-focus-full-functional-root-20261016.json:sourcegraph-access-token:4",
+          "rule": "sourcegraph-access-token",
+          "file": "evidence/bortus-a15-flux-focus-full-functional-root-20261016.json",
+          "commit": "6c36bd9d0887b4996a0db9f5730582a86616acd9",
+          "startLine": 4,
+          "endLine": 4,
+          "classification": "public_git_object_id",
+          "details": {
+            "field": "source",
+            "objectType": "commit"
+          },
+          "rawGitBlobSHA256": "34ba3c2e034cbf3bcd39a1636dcdb212fbadb76ae33c1387f95682ca9310848b"
+        },
+        {
+          "fingerprint": "6c36bd9d0887b4996a0db9f5730582a86616acd9:evidence/bortus-a15-flux-focus-full-functional-root-20261016.json:sourcegraph-access-token:5",
+          "rule": "sourcegraph-access-token",
+          "file": "evidence/bortus-a15-flux-focus-full-functional-root-20261016.json",
+          "commit": "6c36bd9d0887b4996a0db9f5730582a86616acd9",
+          "startLine": 5,
+          "endLine": 5,
+          "classification": "public_git_object_id",
+          "details": {
+            "field": "frontendTree",
+            "objectType": "tree"
+          },
+          "rawGitBlobSHA256": "34ba3c2e034cbf3bcd39a1636dcdb212fbadb76ae33c1387f95682ca9310848b"
+        },
+        {
+          "fingerprint": "d52113bfd39c7975625ab8d15726c79e128e0bb1:evidence/bortus-a15-publication-public-commit-classification-root-20261016.json:sourcegraph-access-token:8",
+          "rule": "sourcegraph-access-token",
+          "file": "evidence/bortus-a15-publication-public-commit-classification-root-20261016.json",
+          "commit": "d52113bfd39c7975625ab8d15726c79e128e0bb1",
+          "startLine": 8,
+          "endLine": 8,
+          "classification": "public_git_object_id",
+          "details": {
+            "field": "publicGitCommit",
+            "objectType": "commit"
+          },
+          "rawGitBlobSHA256": "a1a6e1cb8e0d8ad4ab43c482acc3aa54b22cb2e7fcd963a8e34f9bf37eeab25b"
+        },
+        {
+          "fingerprint": "38e730feaf0e79f24ccf4adde8549ef92a7aa235:evidence/bortus-configuration-json-full-functional-root-20261015.json:sourcegraph-access-token:3",
+          "rule": "sourcegraph-access-token",
+          "file": "evidence/bortus-configuration-json-full-functional-root-20261015.json",
+          "commit": "38e730feaf0e79f24ccf4adde8549ef92a7aa235",
+          "startLine": 3,
+          "endLine": 3,
+          "classification": "public_git_object_id",
+          "details": {
+            "field": "source",
+            "objectType": "commit"
+          },
+          "rawGitBlobSHA256": "5dd63a120fd7641416dbb4477d3ea9907250e0cbdde06ca20d5f9a5f013e888c"
+        },
+        {
+          "fingerprint": "38e730feaf0e79f24ccf4adde8549ef92a7aa235:evidence/bortus-configuration-json-full-functional-root-20261015.json:sourcegraph-access-token:4",
+          "rule": "sourcegraph-access-token",
+          "file": "evidence/bortus-configuration-json-full-functional-root-20261015.json",
+          "commit": "38e730feaf0e79f24ccf4adde8549ef92a7aa235",
+          "startLine": 4,
+          "endLine": 4,
+          "classification": "public_git_object_id",
+          "details": {
+            "field": "frontendTree",
+            "objectType": "tree"
+          },
+          "rawGitBlobSHA256": "5dd63a120fd7641416dbb4477d3ea9907250e0cbdde06ca20d5f9a5f013e888c"
+        },
+        {
+          "fingerprint": "c2508235e6494cd8e1d75822b59c002163ae1d81:evidence/bortus-a04-control-plane-images-root-20261015.json:generic-api-key:35",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-a04-control-plane-images-root-20261015.json",
+          "commit": "c2508235e6494cd8e1d75822b59c002163ae1d81",
+          "startLine": 35,
+          "endLine": 35,
+          "classification": "ordinary_prose",
+          "details": {
+            "containsCredentialValue": false
+          },
+          "rawGitBlobSHA256": "ddf0a0f3f0ed12040fe3f452b43fda126ccaefd34f0420030d13f89efba17063"
+        },
+        {
+          "fingerprint": "e6b66a5d3c8d61ffc9ccdd1d05102b26c6349250:evidence/bortus-smallserial-profile-v2-root-20261015.json:generic-api-key:281",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-smallserial-profile-v2-root-20261015.json",
+          "commit": "e6b66a5d3c8d61ffc9ccdd1d05102b26c6349250",
+          "startLine": 281,
+          "endLine": 281,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "measuredBaselineAuthSHA256"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "e7d7852d0ea315550fa3838cabe7cbda9cabc785c0a6d9eb25970a0ec9f528ec"
+        },
+        {
+          "fingerprint": "e6b66a5d3c8d61ffc9ccdd1d05102b26c6349250:evidence/bortus-smallserial-profile-v2-root-20261015.json:generic-api-key:282",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-smallserial-profile-v2-root-20261015.json",
+          "commit": "e6b66a5d3c8d61ffc9ccdd1d05102b26c6349250",
+          "startLine": 282,
+          "endLine": 282,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "measuredCandidateAuthSHA256"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "e7d7852d0ea315550fa3838cabe7cbda9cabc785c0a6d9eb25970a0ec9f528ec"
+        },
+        {
+          "fingerprint": "a18342b823ac7ec1e4d8f186d1b4fbdcdfd53be9:MIGRATION_STATUS.md:generic-api-key:15",
+          "rule": "generic-api-key",
+          "file": "MIGRATION_STATUS.md",
+          "commit": "a18342b823ac7ec1e4d8f186d1b4fbdcdfd53be9",
+          "startLine": 15,
+          "endLine": 16,
+          "classification": "ordinary_prose",
+          "details": {
+            "containsCredentialValue": false
+          },
+          "rawGitBlobSHA256": "80c05266f5dfb9c1d08f2c937df1f06ca2872186b0087e0f5327cf7d443b8221"
+        },
+        {
+          "fingerprint": "d42deb56148f85d09abb23428bcfc2d956dda0d8:evidence/bortus-quiescent-root-integration-20261011.json:generic-api-key:132",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-quiescent-root-integration-20261011.json",
+          "commit": "d42deb56148f85d09abb23428bcfc2d956dda0d8",
+          "startLine": 132,
+          "endLine": 132,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "scripts/migration/import-secrets.py"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "ab9a4552a27510c4b3dbc03cfea24eecc6170429fe567f8f8a5e3f52f56a66b1"
+        },
+        {
+          "fingerprint": "d42deb56148f85d09abb23428bcfc2d956dda0d8:evidence/bortus-quiescent-root-integration-20261011.json:generic-api-key:164",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-quiescent-root-integration-20261011.json",
+          "commit": "d42deb56148f85d09abb23428bcfc2d956dda0d8",
+          "startLine": 164,
+          "endLine": 164,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "scripts/migration/qbittorrent-api-proof.py"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "ab9a4552a27510c4b3dbc03cfea24eecc6170429fe567f8f8a5e3f52f56a66b1"
+        },
+        {
+          "fingerprint": "d42deb56148f85d09abb23428bcfc2d956dda0d8:evidence/bortus-quiescent-root-integration-20261011.json:generic-api-key:171",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-quiescent-root-integration-20261011.json",
+          "commit": "d42deb56148f85d09abb23428bcfc2d956dda0d8",
+          "startLine": 171,
+          "endLine": 171,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "scripts/migration/review-qbittorrent-credentials.py"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "ab9a4552a27510c4b3dbc03cfea24eecc6170429fe567f8f8a5e3f52f56a66b1"
+        },
+        {
+          "fingerprint": "d42deb56148f85d09abb23428bcfc2d956dda0d8:evidence/bortus-quiescent-root-integration-20261011.json:generic-api-key:190",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-quiescent-root-integration-20261011.json",
+          "commit": "d42deb56148f85d09abb23428bcfc2d956dda0d8",
+          "startLine": 190,
+          "endLine": 190,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "scripts/migration/verify-secret-encryption.py"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "ab9a4552a27510c4b3dbc03cfea24eecc6170429fe567f8f8a5e3f52f56a66b1"
+        },
+        {
+          "fingerprint": "ea4e702d12cc7ea45668f8a3c9219800cf32ba20:evidence/bortus-cold-journal-durability-qualification-20261011.json:generic-api-key:60",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-cold-journal-durability-qualification-20261011.json",
+          "commit": "ea4e702d12cc7ea45668f8a3c9219800cf32ba20",
+          "startLine": 60,
+          "endLine": 60,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "kubernetes-v1.34-api-concepts.html"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "bd43be5ce39e9aa33ce7d0be2331547f25418926c6f996f71e9177ffc81514a0"
+        },
+        {
+          "fingerprint": "4eaf6b5a4aca5fec841bc68ccf77ed62d1da8c6c:evidence/bortus-cold-runtime-anchor-qualification-20261011.json:generic-api-key:33",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-cold-runtime-anchor-qualification-20261011.json",
+          "commit": "4eaf6b5a4aca5fec841bc68ccf77ed62d1da8c6c",
+          "startLine": 33,
+          "endLine": 33,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "docs/ANSIBLE-2-API-INTERACTION.md"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "8cad5c03a10090b9f9a6e8d50745e05e52ae2b2b0f378e6229fb8ef0553efcaa"
+        },
+        {
+          "fingerprint": "4eaf6b5a4aca5fec841bc68ccf77ed62d1da8c6c:evidence/bortus-cold-runtime-anchor-qualification-20261011.json:generic-api-key:34",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-cold-runtime-anchor-qualification-20261011.json",
+          "commit": "4eaf6b5a4aca5fec841bc68ccf77ed62d1da8c6c",
+          "startLine": 34,
+          "endLine": 34,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "docs/API-USAGE.md"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "8cad5c03a10090b9f9a6e8d50745e05e52ae2b2b0f378e6229fb8ef0553efcaa"
+        },
+        {
+          "fingerprint": "4eaf6b5a4aca5fec841bc68ccf77ed62d1da8c6c:evidence/bortus-cold-runtime-anchor-qualification-20261011.json:generic-api-key:42",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-cold-runtime-anchor-qualification-20261011.json",
+          "commit": "4eaf6b5a4aca5fec841bc68ccf77ed62d1da8c6c",
+          "startLine": 42,
+          "endLine": 42,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "docs/SECRETS-ENGINE.md"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "8cad5c03a10090b9f9a6e8d50745e05e52ae2b2b0f378e6229fb8ef0553efcaa"
+        },
+        {
+          "fingerprint": "af4a161d1fb6c84013515a0a5e1d15518b2abe07:evidence/bortus-restore-transition-integration-qualification-20261011.json:generic-api-key:61",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-restore-transition-integration-qualification-20261011.json",
+          "commit": "af4a161d1fb6c84013515a0a5e1d15518b2abe07",
+          "startLine": 61,
+          "endLine": 61,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "ANSIBLE-2-API-INTERACTION.md"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "1509d3b85343d31f057522e11e23189e8f01a3f76e59decf6cf853c53c632ac6"
+        },
+        {
+          "fingerprint": "af4a161d1fb6c84013515a0a5e1d15518b2abe07:evidence/bortus-restore-transition-integration-qualification-20261011.json:generic-api-key:62",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-restore-transition-integration-qualification-20261011.json",
+          "commit": "af4a161d1fb6c84013515a0a5e1d15518b2abe07",
+          "startLine": 62,
+          "endLine": 62,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "API-USAGE.md"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "1509d3b85343d31f057522e11e23189e8f01a3f76e59decf6cf853c53c632ac6"
+        },
+        {
+          "fingerprint": "af4a161d1fb6c84013515a0a5e1d15518b2abe07:evidence/bortus-restore-transition-integration-qualification-20261011.json:generic-api-key:70",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-restore-transition-integration-qualification-20261011.json",
+          "commit": "af4a161d1fb6c84013515a0a5e1d15518b2abe07",
+          "startLine": 70,
+          "endLine": 70,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "SECRETS-ENGINE.md"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "1509d3b85343d31f057522e11e23189e8f01a3f76e59decf6cf853c53c632ac6"
+        },
+        {
+          "fingerprint": "10c30c6ab28b5bfd41a057fb7a5ae41a8b64d558:evidence/bortus-native-settlement-qualification-20261011.json:generic-api-key:5",
+          "rule": "generic-api-key",
+          "file": "evidence/bortus-native-settlement-qualification-20261011.json",
+          "commit": "10c30c6ab28b5bfd41a057fb7a5ae41a8b64d558",
+          "startLine": 5,
+          "endLine": 5,
+          "classification": "sha256_provenance_field",
+          "details": {
+            "fields": [
+              "k8s-rewrite/front-end/src/lib/secret-client.ts"
+            ],
+            "hexLength": 64
+          },
+          "rawGitBlobSHA256": "a49a2ba580b86990f47973574ab2d98920266774e0decead1b9d95dc813cb1cd"
+        },
+        {
+          "fingerprint": "8c5936f55d3e4d9346a61a988c2d62ab25082965:scripts/migration/tests/test_bortus_operator_mtls.py:private-key:213",
+          "rule": "private-key",
+          "file": "scripts/migration/tests/test_bortus_operator_mtls.py",
+          "commit": "8c5936f55d3e4d9346a61a988c2d62ab25082965",
+          "startLine": 213,
+          "endLine": 245,
+          "classification": "malformed_public_pem_rejection_fixtures",
+          "details": {
+            "fixtures": [
+              {
+                "test": "test_bad_base64_encrypted_key_and_bad_certificates_refuse",
+                "literalRejectionMarker": true,
+                "markerCharacters": 4,
+                "decodedBytes": 3,
+                "usableDERPrivateKey": false,
+                "envelopeBytes": 58
+              },
+              {
+                "test": "test_bad_base64_encrypted_key_and_bad_certificates_refuse",
+                "literalRejectionMarker": true,
+                "markerCharacters": 4,
+                "decodedBytes": 3,
+                "usableDERPrivateKey": false,
+                "envelopeBytes": 78
+              },
+              {
+                "test": "test_wrong_client_key_tls_error_is_fixed_and_descriptors_closed",
+                "literalRejectionMarker": true,
+                "markerCharacters": 4,
+                "decodedBytes": 3,
+                "usableDERPrivateKey": false,
+                "envelopeBytes": 59
+              }
+            ],
+            "usablePrivateKey": false
+          },
+          "rawGitBlobSHA256": "6c6d82262631c5602a685bf1cdfe3c5f54734163562f0fdab97d2b4f62b3aa19"
+        }
+      ],
+      "reportSHA256": "47865e74f26f43a136e00dddae7ffe8eb32cc8cbf6222a38f7acc0b345c90229",
+      "initialClassifierAssertionRetained": "Expected two PRIVATE markers; actual AST contains three four-character rejection markers. No scanner replay or source change."
+    }
+  },
+  "integration": {
+    "preservesCurrentPlanAndRetiredPublisher": true,
+    "source": "ssh://git@github.com/jtmb/branconet-charts.git",
+    "branch": "validated",
+    "path": "./flux/releases",
+    "sourceName": "branconet-charts",
+    "nativeGitCredential": "flux-system/branconet-charts-readonly",
+    "prune": false,
+    "force": false,
+    "requiredSourceCredentialBeforeActivation": true,
+    "recoveryBootstrapActivationDisabled": true,
+    "sourceSHA256": {
+      "k8s-rewrite/ansible-playbook/group_vars/all.yml": "e82f405309675e7ea1a4c2f20057af6804a0ba41d3e656380ed0751be0fedadc",
+      "k8s-rewrite/ansible-playbook/roles/gitops/defaults/main.yml": "bf3c54605c97f9cc97426ccab7492dc4750ac42b9e33294234fbea682064c39e",
+      "k8s-rewrite/ansible-playbook/roles/gitops/tasks/main.yml": "dbce2396cb297cf18e14df0aecf8361949eff074d9cb531ec7c9dc502ff5e766",
+      "k8s-rewrite/ansible-playbook/roles/gitops/templates/gotk-sync.yaml.j2": "96d7efcb0183f03749ef6970c9f1167072d12cea849e447e7778ae15e22c51b1"
+    },
+    "sameMountedWSLSourceVerified": true
+  },
+  "checks": {
+    "ansibleSyntax": {
+      "actualExit": 0,
+      "tool": "a2ffe4",
+      "command": "run-ansible.py --syntax-check --tags gitops --recovery-bootstrap",
+      "stdout": "playbook: playbooks/site.yml"
+    },
+    "boundedYAMLJinja": {
+      "actualExit": 0,
+      "tool": "e97af2",
+      "inlineAndTemplateEquivalent": true,
+      "sourceCredentialPrerequisiteOrdered": true,
+      "activationGuardsPreserved": true,
+      "targetRequests": 0
+    }
+  },
+  "appSourceAndImmutableImageChanged": false,
+  "clusterRequestsOrApply": false,
+  "privateRecoveryOrSecurityDispositionRetried": false,
+  "finalCutoverAccepted": false
+}

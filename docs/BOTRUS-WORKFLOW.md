@@ -75,6 +75,11 @@ Do not deploy the legacy raw `test-stack`/`media-stack` root or restore the reti
 
 For status, inspect the `/flux` dashboard, `kubectl get helmreleases -n flux-system`, and source/applied revisions. Manual reconciliation of the existing owner is an operator mutation, not a CI bypass. See [FLUX-GITOPS.md](FLUX-GITOPS.md) for the current pipeline, commands and historical boundaries.
 
+The active deployment tree is `jtmb/branconet-charts`: `charts/<name>/`,
+`flux/releases/` and `flux/source.yaml`. The recovery GitOps role uses the same
+`validated` branch and independently restored native read-only source credential.
+See [charts separation](CHARTS-SEPARATION.md) for the historical cutover.
+
 ## Managing Variables
 
 Nonsecret configuration lives in SQLite; native Secrets are authoritative for values.
@@ -188,16 +193,7 @@ k8s-rewrite/
 │   │   └── db.ts                   # Prisma client
 │   ├── prisma/schema.prisma        # Variable, Node, Job models
 │   └── seed-db.sh                  # Retired helper; use authenticated configuration/Secrets UI
-└── charts/                          # FluxCD-managed apps (dual stack)
-    ├── kustomization.yaml           # Root: references ./test-stack, ./media-stack
-    ├── test-stack/
-    │   ├── kustomization.yaml
-    │   ├── http-echo/
-    │   ├── nginx-hello/
-    │   └── whoami/
-    └── media-stack/
-        ├── kustomization.yaml
-        └── plex/
+└── charts/                          # Retained migration checkpoint; active charts moved
 ```
 
 ## 2026-10-14: remaining five-column sort attempt fails at fixture resource lookup

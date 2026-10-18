@@ -4,23 +4,28 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: GitRepository
 metadata:
-  name: flux-system
+  name: {{ flux_git_source_name }}
   namespace: {{ flx_namespace }}
 spec:
-  interval: 5m
-  url: {{ flx_git_url }}
+  interval: 1m
+  url: {{ flux_git_url }}
   ref:
-    branch: {{ flx_git_branch }}
+    branch: {{ flux_git_branch }}
+  secretRef:
+    name: {{ flux_git_secret_name }}
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: flux-system
+  name: migration-releases
   namespace: {{ flx_namespace }}
 spec:
-  interval: 5m
-  path: {{ flx_git_path }}
-  prune: true
+  interval: 1m
+  path: {{ flux_git_path }}
+  prune: false
+  force: false
+  wait: true
+  timeout: 10m
   sourceRef:
     kind: GitRepository
-    name: flux-system
+    name: {{ flux_git_source_name }}

@@ -25,9 +25,11 @@ snapshot_controller_version: v8.6.0
 longhorn_default_storage_class: longhorn
 longhorn_data_path: /var/lib/longhorn
 flux_version: v2.9.6
-flux_git_url: https://github.com/jtmb/branconet-homelab.git
-flux_git_branch: codex/kubernetes-validated
-flux_git_path: ./k8s-rewrite/flux/migration-releases
+flux_git_url: ssh://git@github.com/jtmb/branconet-charts.git
+flux_git_branch: validated
+flux_git_path: ./flux/releases
+flux_git_source_name: branconet-charts
+flux_git_secret_name: branconet-charts-readonly
 helm_version: v4.3.0
 helm_sha256: 86584a54def73570558f66f5111cc53dfed56689637ae32c1201205d494f54fb
 smb_csi_version: v1.20.3

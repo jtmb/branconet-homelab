@@ -26,6 +26,15 @@ The [exact API image metadata receipt](../evidence/bortus-a04-file-capability-me
 
 Integration contract for the migration coordinator. Cluster provisioning, Secret import, charts and live acceptance belong to the migration chat. This change never imports or pushes old SQLite values.
 
+The live application chart is now maintained in the separate private
+`jtmb/branconet-charts` repository at `charts/bortus`, with release overrides in
+`flux/releases/bortus.yaml`. The CI-validated Flux source is `branconet-charts`
+and the existing owner is `migration-releases`. The original chart-separation
+checkpoint used `bortus:migration-1438b27` with pull policy Never. Current release
+image and suspension evidence are tracked in [migration operations](MIGRATION-OPERATIONS.md);
+that historical tag is not a forward-schema recovery image. App source pushes
+alone do not replace the deployed image; see [image release procedure](FLUX-GITOPS.md).
+
 ## Image and storage contract
 
 Build from repo root: `docker build -t bortus:local k8s-rewrite/front-end`. Override `--build-arg KUBECTL_VERSION=<cluster-compatible-version>` for dashboard CLI operations (default v1.34.1); native Secret API has no kubectl dependency. Docker build excludes env/SQLite/kubeconfig files. Runtime entrypoint runs Prisma migrate deploy and requires signing/lookup env before starting the standalone server. Missing DB schema on existing installations requires a consistent backup and baseline/migration assessment before deploy; never reset production DB.

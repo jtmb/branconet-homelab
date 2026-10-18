@@ -1,9 +1,11 @@
 # GitOps — Flux CD defaults
-flx_git_url: https://github.com/jtmb/branconet-homelab.git
-flx_git_branch: k8s-rewrite
-flx_git_path: ./k8s-rewrite/charts
+flux_git_url: ssh://git@github.com/jtmb/branconet-charts.git
+flux_git_branch: validated
+flux_git_path: ./flux/releases
+flux_git_source_name: branconet-charts
+flux_git_secret_name: branconet-charts-readonly
 flx_namespace: flux-system
-flx_version: "2.4.0"
+flx_version: "v2.9.6"
 flx_components:
   - source-controller
   - kustomize-controller

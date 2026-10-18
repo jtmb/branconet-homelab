@@ -78,6 +78,21 @@ remain required; the recorded name does not establish ongoing writer placement.
 
 The acceptance contract and architecture are in [PLAN.md](../PLAN.md); current evidence is in [MIGRATION_STATUS.md](../MIGRATION_STATUS.md). BORTUS application and native-transport development are handled by two scoped sub-agents in separate worktrees. Together with the migration coordinator, these are the three execution agents; former execution chats are archived. Cluster operations remain with the migration owner.
 
+## Charts recovery contract integrated — 2026-10-18
+
+The retained separate-charts commit restores the missing bootstrap implementation:
+Ansible uses `ssh://git@github.com/jtmb/branconet-charts.git`, branch `validated`,
+GitRepository `branconet-charts`, path `./flux/releases` and the same
+`migration-releases` owner with pruning/force disabled. Activation first requires
+the independently restored native `flux-system/branconet-charts-readonly` Secret.
+Restore its repository-only read-only key separately; never place it in Ansible
+or Git. Recovery bootstrap keeps activation disabled. These source changes do
+not apply Ansible, reconcile Flux, resume BORTUS or authorize schema rollback.
+Current forward-schema image, checkpoint, principal and admission gates still
+apply. The old publisher remains retired; only archival validation remains.
+[Original separation evidence](CHARTS-SEPARATION.md) and `scripts/charts/` are
+historical records, not permission to rerun their cutover/acceptance writers.
+
 ## Current operation and recovery
 
 The checked-in Ansible defaults describe native ingress on 80/443, Pi-hole on 53 TCP/UDP and 8079, conditional LAN DNS, Flux activation and the existing NAS CIFS backup target. DNS/ingress/gitops tags were applied successfully against all three hosts. Application delivery now uses the separate private `jtmb/branconet-charts` repository: main Ã¢â€ â€™ successful current-main CI Ã¢â€ â€™ `validated` Ã¢â€ â€™ `branconet-charts` GitRepository Ã¢â€ â€™ existing `migration-releases` Kustomization. Each chart retains its own values. The old migration source/publisher is retained as a suspended historical checkpoint, not an active delivery path. Raw legacy manifests in chart folders are reference material; only Helm templates are reconciled.

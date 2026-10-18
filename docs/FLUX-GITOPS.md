@@ -28,6 +28,24 @@ Global Kustomization pruning and force are disabled during migration. Namespaces
 
 Native application Secret values stay outside Git. Charts contain existing Secret references only. Preserve service identities, existing claims, mount paths and storage settings when editing a release. Do not enable an unaccepted application or replace a claim merely because the chart renders successfully. Private staging excludes external routing and does not establish application acceptance.
 
+## Recovery bootstrap contract
+
+The Ansible GitOps defaults and activation manifest use the same private
+`ssh://git@github.com/jtmb/branconet-charts.git` source, branch `validated`, source
+name `branconet-charts`, and composition `./flux/releases`. Before activation the
+role requires the independently restored native
+`flux-system/branconet-charts-readonly` Secret, referenced by `secretRef`; no key
+material belongs in Ansible or Git. `--recovery-bootstrap` keeps activation off.
+The existing `migration-releases` owner retains `prune:false` and `force:false`.
+
+[Charts-separation evidence](CHARTS-SEPARATION.md) records the original cutover.
+The imported `scripts/charts/` helpers retain that historical extraction/canary/
+finish procedure and its old paths; they are not a current release or recovery
+entrypoint. In particular, do not replay their mutating phases or regenerate
+current acceptance documents from their historical templates. Current BORTUS
+forward-schema recovery must retain compatible images, guarded principals and
+current data as required by [migration operations](MIGRATION-OPERATIONS.md).
+
 ## Retired migration layout
 
 The raw manifests under this repository's `k8s-rewrite/charts/`, the old `test-stack`/`media-stack` workflow and the migration `codex/kubernetes-validated` branch are historical reference. The migration source is suspended and its publisher was removed. `.github/workflows/kubernetes-migration.yml` performs read-only archive validation. Do not restore that publisher, reconcile the raw-chart root, or bootstrap `branconet-homelab` alongside the active private chart owner. Legacy RBAC from this checkout must not be reapplied during the guarded BORTUS release.
