@@ -1,5 +1,7 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+Current release build (2026-10-18): `Dockerfile.release` builds locked current application source with the pinned C4 builder and replaces only `/app` on a required qualified runtime image. It retains the maintained system components, UID/GID 1000, entrypoint/forward migrations, production dependencies and port 4000. The original Trixie Dockerfile remains unchanged. See [exact local build instructions](BORTUS-DEPLOYMENT.md#building-current-application-source-on-the-maintained-runtime); this new application image still needs its actual integrated build/startup result and is not production adoption.
+
 ## Current KV client fix (2026-10-18)
 
 Unused denial streams are cancelled without awaiting cancellation; private-state withdrawal and the typed denial do not wait for a hostile or stalled body.

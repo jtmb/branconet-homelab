@@ -1,5 +1,32 @@
 # BORTUS application deployment
 
+## Building current application source on the maintained runtime
+
+`k8s-rewrite/front-end/Dockerfile.release` builds the current locked application with the pinned Node 22.23.3 C4 builder, then replaces only `/app` in a required operator-supplied runtime image. It does not upgrade packages or rebuild Node, libc, PCRE, zlib or dash. The original `Dockerfile` remains available for its prior Trixie-based build. A missing `BORTUS_RUNTIME_IMAGE` has no default and prevents the release build.
+
+The release keeps the supplied runtime providers, kubectl, shell and licenses. It copies fresh standalone output (including the source-bound native selector and account worker), static/public assets, all Prisma migrations and complete production-pruned dependencies. The old application directory is removed inside the image before copying, so removed routes/assets/modules cannot survive an overlay. The unchanged entrypoint runs every forward migration before starting; runtime UID/GID is 1000, port is 4000, SQLite remains `/data/bortus.db`, and the liveness, environment and shell-directory contracts below are retained. Back up existing databases consistently before rollout.
+
+Run from a clean owning checkout, using the already qualified local runtime. These commands tag the exact local image and label the result with the application commit; they do not publish or deploy it:
+
+```sh
+set -eu
+runtime_id=sha256:4a84c0b5fe1f2ca74ca6a0a812f943b2d739b9bf651c4cb13c4e005d9a332d67
+runtime_tag=bortus-runtime:qualified-4a84c0b5
+source_revision=$(git rev-parse HEAD)
+test -z "$(git status --porcelain)"
+test "$(docker image inspect --format '{{.Id}}' "$runtime_id")" = "$runtime_id"
+docker tag "$runtime_id" "$runtime_tag"
+test "$(docker image inspect --format '{{.Id}}' "$runtime_tag")" = "$runtime_id"
+docker build --pull=false --platform linux/amd64 \
+  --file k8s-rewrite/front-end/Dockerfile.release \
+  --build-arg BORTUS_RUNTIME_IMAGE="$runtime_tag" \
+  --build-arg BORTUS_SOURCE_REVISION="$source_revision" \
+  --tag "bortus-app:source-$source_revision" k8s-rewrite/front-end
+```
+
+The base's [direct runtime qualification](implementation-evidence/dash-copy-image-runtime-root-20261016.json) remains bound to that earlier application. New application-image build and startup results must be recorded for the resulting image; the recipe alone grants no security, performance, registry, live-deployment or production-adoption acceptance. The retained base scan has 12 Medium findings and zero secrets, not a clean security scan. Docker still requires the locked npm packages during the builder stage; no runtime package manager or external kubectl build context is needed for this release recipe.
+
+
 Current actual-reader follow-up (2026-10-16, V2): the fresh local NTFS profile reached BORTUS `/configuration` on the qualified `9cb81363`/`d901ccdd` subject. Supported `get_window({id})` returned the exact fresh Chrome app/id, but `get_window_state` rejected that same owner; the one permitted inventory refresh and explicit-app recovery failed likewise. [Exact calls and failed-attempt cleanup](implementation-evidence/a15-current-at-owner-binding-blocked-20261016.json) retain this supported-tool blocker. ROOT stopped before native input or `START-READER`; no NVDA or announcements occurred. Windows/native controllers both exited1. Original Windows Job cleanup confirms18 captured births noLive/empty/reaped, and native cleanup confirms53 CLI children and the container closed. The headed terminal was not published, so reaching the page is not a completed-browser pass. Actual AT remains unqualified and blocked on supported window-state access; no further unchanged recovery, alternate protocol or relaunch is scheduled. Earlier profile/cleanup failures remain historical.
 
 
