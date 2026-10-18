@@ -77,12 +77,22 @@ class StageTests(unittest.TestCase):
         self.contents = {self.root_digest: self.root_raw, self.selected_digest: self.manifest_raw, self.config_id: self.config_raw}
 
     def fake_export(self, run, stage, command, timeout, archive=None):
-        self.exports.append(stage); self.assertEqual(s.b.SSH, command[:len(s.b.SSH)])
+        self.exports.append(stage)
+        if run.record.get('builder_transport') == 'local':
+            self.assertEqual(['docker', 'image'], command[:2])
+        else:
+            self.assertEqual(s.b.SSH, command[:len(s.b.SSH)])
         if stage == 'save':
             self.assertEqual('pending', json.loads((run.directory / 'record.json').read_bytes())['phase'])
-            self.assertIn('docker image save ' + self.tag, command[-1]); archive.write(self.archive_bytes)
+            if run.record.get('builder_transport') == 'local':
+                self.assertEqual(['docker', 'image', 'save', self.tag], command)
+                self.assertNotIn('config_image_id', run.record)
+            else:
+                self.assertIn('docker image save ' + self.tag, command[-1])
+            archive.write(self.archive_bytes)
         else:
-            result = {'config_image_id': self.config_id, 'labels': self.labels}
+            key = 'local_image_id' if run.record.get('builder_transport') == 'local' else 'config_image_id'
+            result = {key: getattr(self, 'local_id', self.config_id), 'labels': self.labels}
             if self.inspect_mutation: self.inspect_mutation(result, stage)
             fd = run.create(stage + '.stdout')
             with os.fdopen(fd, 'wb') as out: out.write(json.dumps(result).encode())
@@ -91,7 +101,8 @@ class StageTests(unittest.TestCase):
         return self.save_code if stage == 'save' else 0
 
     def export(self):
-        self.exported = s.export_image(self.receipt_path, self.receipt_sha, self.commit, self.config_id, self.runtime, self.fake_export)
+        self.exported = s.export_image(self.receipt_path, self.receipt_sha, self.commit,
+                                      getattr(self, 'local_id', self.config_id), self.runtime, self.fake_export)
         self.export_receipt = self.runtime / ('bortus-export-' + self.commit) / 'record.json'
         self.export_sha = s.b.digest(self.export_receipt.read_bytes()); return self.exported
 
@@ -152,6 +163,90 @@ class StageTests(unittest.TestCase):
         self.export(); result = self.preload()
         self.assertNotEqual(self.root_digest, self.selected_digest)
         self.assertEqual(self.selected_digest, result['nodes'][0]['selected_manifest_digest'])
+
+    def release_receipt(self, wrong_attestation=False):
+        self.labels[s.b.BASE_LABEL] = 'fixture-runtime:qualified'
+        self.archive_bytes = self.archive(); self.prepare_receipt(); self.graph()
+        files = {}
+        with tarfile.open(fileobj=io.BytesIO(self.archive_bytes)) as archive:
+            for member in archive: files[member.name] = archive.extractfile(member).read()
+        def add(value):
+            raw = json.dumps(value).encode(); digest = 'sha256:' + s.b.digest(raw)
+            files['blobs/sha256/' + digest[7:]] = raw
+            return {'digest': digest, 'size': len(raw), 'mediaType': 'application/vnd.oci.image.manifest.v1+json'}
+        leaf = {'schemaVersion': 2, 'mediaType': 'application/vnd.oci.image.manifest.v1+json',
+                'config': {'digest': self.config_id, 'size': len(self.config_raw),
+                           'mediaType': 'application/vnd.oci.image.config.v1+json'},
+                'layers': [{'digest': self.layer_digest, 'size': len(self.layer_raw),
+                            'mediaType': 'application/vnd.oci.image.layer.v1.tar'}]}
+        runtime = add(leaf); self.selected_digest = runtime['digest']
+        runtime['platform'] = {'architecture': 'amd64', 'os': 'linux'}
+        empty = add({}); empty['mediaType'] = 'application/vnd.oci.image.config.v1+json'
+        statement = add({'public': 'attestation fixture'}); statement['mediaType'] = 'application/vnd.in-toto+json'
+        attestation = add({'schemaVersion': 2, 'mediaType': 'application/vnd.oci.image.manifest.v1+json',
+                           'config': empty, 'layers': [statement]})
+        attestation.update(platform={'architecture': 'unknown', 'os': 'unknown'},
+                           annotations={'vnd.docker.reference.digest': 'sha256:' + '0' * 64 if wrong_attestation else self.selected_digest,
+                                        'vnd.docker.reference.type': 'attestation-manifest'})
+        root = {'schemaVersion': 2, 'mediaType': 'application/vnd.oci.image.index.v1+json',
+                'manifests': [runtime, attestation]}
+        rootdesc = add(root); rootdesc['mediaType'] = root['mediaType']; self.local_id = rootdesc['digest']
+        files['index.json'] = json.dumps({'schemaVersion': 2, 'mediaType': root['mediaType'], 'manifests': [rootdesc]}).encode()
+        out = io.BytesIO()
+        with tarfile.open(fileobj=out, mode='w') as archive:
+            for name, raw in files.items():
+                item = tarfile.TarInfo(name); item.size = len(raw); item.mode = 0o644
+                archive.addfile(item, io.BytesIO(raw))
+        self.archive_bytes = out.getvalue()
+        self.root_digest = self.local_id
+        self.contents = {self.root_digest: files['blobs/sha256/' + self.root_digest[7:]],
+                         self.selected_digest: files['blobs/sha256/' + self.selected_digest[7:]], self.config_id: self.config_raw}
+        value = json.loads(self.receipt_path.read_bytes())
+        value.pop('config_image_id'); value['local_image_id'] = self.local_id
+        value.update(build_recipe='release-v2', builder_transport='local', dockerfile='Dockerfile.release',
+                     dockerfile_sha256='7' * 64, runtime_image='fixture-runtime:qualified',
+                     runtime_image_id='sha256:' + '8' * 64,
+                     **{'runtime-before_exit_code': 0, 'runtime-after_exit_code': 0})
+        self.receipt_path.write_bytes(json.dumps(value).encode())
+        self.receipt_sha = s.b.digest(self.receipt_path.read_bytes())
+
+    def test_release_v2_local_export_preserves_all_six_labels_through_three_nodes(self):
+        self.release_receipt()
+        exported = self.export(); result = self.preload()
+        self.assertEqual('local', exported['builder_transport'])
+        self.assertEqual('release-v2', exported['build_recipe'])
+        self.assertEqual(self.labels, exported['labels'])
+        self.assertEqual(list(s.HOSTS), self.imports)
+        self.assertTrue(all(node['labels'] == self.labels for node in result['nodes']))
+        self.assertFalse(result['runtime_qualified']); self.assertFalse(result['deployed'])
+        self.assertNotEqual(exported['local_image_id'], exported['config_image_id'])
+        self.assertEqual(self.selected_digest, exported['selected_manifest_digest'])
+
+    def test_release_v2_missing_base_identity_or_downgraded_recipe_refuses_before_export(self):
+        self.release_receipt()
+        original = self.receipt_path.read_bytes()
+        for change in (lambda r: r.pop('runtime_image_id'), lambda r: r.pop('build_recipe'),
+                       lambda r: r.update(builder_transport='ssh'),
+                       lambda r: r.update(**{'runtime-after_exit_code': True}),
+                       lambda r: r['labels'].update({s.b.BASE_LABEL: 'different-runtime:qualified'})):
+            value = json.loads(original); change(value)
+            self.receipt_path.write_bytes(json.dumps(value).encode())
+            self.receipt_sha = s.b.digest(self.receipt_path.read_bytes())
+            self.runtime = self.path/('release-refusal-' + str(len(list(self.path.iterdir()))))
+            self.runtime.mkdir(mode=0o755)
+            with self.assertRaises(s.b.BuildRefused): self.export()
+            self.assertEqual([], self.exports)
+
+    def test_release_v2_wrong_local_index_and_authenticated_attestation_reference_refuse(self):
+        self.release_receipt()
+        path = self.path/'public-oci.tar'; path.write_bytes(self.archive_bytes)
+        with path.open('rb') as stream, self.assertRaises(s.b.BuildRefused):
+            s.release_archive_identity(stream, self.tag, self.config_id, self.labels)
+        self.release_receipt(wrong_attestation=True)
+        path.write_bytes(self.archive_bytes)
+        with path.open('rb') as stream, self.assertRaises(s.b.BuildRefused):
+            s.release_archive_identity(stream, self.tag, self.local_id, self.labels)
+        self.assertEqual([], self.imports)
 
     def test_build_receipt_hash_scope_and_source_label_fail_before_save(self):
         for change in (lambda r: r.update(phase='pending'), lambda r: r.update(config_image_id='sha256:' + '0' * 64),

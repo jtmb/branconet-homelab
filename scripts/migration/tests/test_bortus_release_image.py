@@ -125,6 +125,63 @@ class ReleaseImageTests(unittest.TestCase):
                     record['context_sha256'], m.digest(fixture.evidence.read_bytes())))
         finally: fixture.doCleanups()
 
+    def release_fake(self, run, stage, command, timeout, stdin=None):
+        self.calls.append(stage)
+        self.assertNotEqual(m.SSH, command[:len(m.SSH)])
+        if stage == 'build':
+            self.assertEqual(['/bin/sh', '-c'], command[:2])
+            self.assertIn('--file Dockerfile.release', command[-1])
+            self.assertIn('--pull=false --platform linux/amd64', command[-1])
+            self.assertIn('BORTUS_SOURCE_REVISION=' + self.commit, command[-1])
+            self.assertIn('BORTUS_RUNTIME_IMAGE=fixture-runtime:qualified', command[-1])
+            self.assertNotIn('KUBECTL_VERSION', command[-1])
+            self.assertIn('test -z "$existing" || exit 73', command[-1])
+            self.assertEqual(self.context.read_bytes(), stdin.read()); stdin.seek(0)
+            self.assertEqual('pending', json.loads((run.directory/'record.json').read_bytes())['phase'])
+        value = (json.dumps('sha256:' + ('9' if getattr(self, 'changed_runtime', False) and stage == 'runtime-after' else '8') * 64).encode()
+                 if stage.startswith('runtime-') else b'' if stage == 'tag-check' else
+                 json.dumps({'local_image_id': 'sha256:' + '3' * 64, 'image_bytes': 12345,
+                             'labels': run.record['labels']}).encode())
+        def child(*args, **kwargs):
+            kwargs['stdout'].write(value)
+            return types.SimpleNamespace(returncode=0)
+        with mock.patch.object(m.subprocess, 'run', side_effect=child):
+            return m.execute(run, stage, command, timeout, stdin)
+
+    def release_build(self):
+        return self.build(invoke=self.release_fake, recipe='release',
+                          runtime_image='fixture-runtime:qualified', runtime_image_id='sha256:' + '8' * 64)
+
+    def test_release_recipe_binds_context_base_labels_and_local_transport(self):
+        self.payloads['Dockerfile.release'] = b'PUBLIC RELEASE DOCKERFILE\n'; self.prepare()
+        result = self.release_build()
+        self.assertEqual(['runtime-before', 'tag-check', 'build', 'runtime-after', 'inspect'], self.calls)
+        self.assertEqual('release-v2', result['build_recipe'])
+        self.assertEqual('local', result['builder_transport'])
+        self.assertEqual(m.digest(self.payloads['Dockerfile.release']), result['dockerfile_sha256'])
+        self.assertEqual('fixture-runtime:qualified', result['labels'][m.BASE_LABEL])
+        self.assertEqual(6, len(result['labels']))
+        self.assertFalse(result['runtime_accepted'])
+
+    def test_release_recipe_missing_dockerfile_refuses_before_docker(self):
+        with self.assertRaisesRegex(m.BuildRefused, 'release_dockerfile'): self.release_build()
+        self.assertEqual([], self.calls)
+
+    def test_release_recipe_runtime_drift_preserves_failed_build_ownership(self):
+        self.payloads['Dockerfile.release'] = b'PUBLIC RELEASE DOCKERFILE\n'; self.prepare()
+        self.changed_runtime = True
+        with self.assertRaisesRegex(m.BuildRefused, 'runtime_image_identity'): self.release_build()
+        self.assertNotIn('inspect', self.calls)
+        self.assertEqual('uncertain', self.record()['phase'])
+        self.assertEqual(0, self.record()['build_exit_code'])
+
+    def test_release_runtime_arguments_cannot_change_legacy_contract(self):
+        for arguments in ({'runtime_image': 'fixture-runtime:qualified'},
+                          {'recipe': 'release', 'runtime_image': 'bad ref', 'runtime_image_id': 'sha256:' + '8' * 64},
+                          {'recipe': 'release', 'runtime_image': 'fixture-runtime:qualified', 'runtime_image_id': 'mutable'}):
+            with self.subTest(arguments=arguments), self.assertRaises(m.BuildRefused): self.build(**arguments)
+        self.assertEqual([], list(self.parent.iterdir()))
+
     def test_long_non_ascii_pax_path_is_supported(self):
         self.payloads['src/' + 'long-public-name-' * 12 + '\u00e9.ts'] = b'PUBLIC PAX SOURCE\n'
         self.prepare(); self.assertEqual('completed', self.build()['phase'])

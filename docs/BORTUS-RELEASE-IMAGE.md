@@ -1,5 +1,50 @@
 # Immutable BORTUS release image builder
 
+## Current-source release recipe
+
+The existing raw-Git context producer includes `Dockerfile.release` from the exact
+selected application commit without changing its closed manifest format. Use a
+new producer output, not a plain `git archive` tar or a hand-labelled earlier
+build. The builder's opt-in `--recipe release` runs on the operator's local Docker
+daemon and selects that exact manifest-listed Dockerfile. It supplies
+`BORTUS_SOURCE_REVISION` and `BORTUS_RUNTIME_IMAGE`, not the legacy
+`KUBECTL_VERSION` argument. The original default legacy recipe still builds on
+the fixed SSH builder with its original arguments and five-label contract.
+
+For the release recipe, additionally supply `--runtime-image <existing-local-ref>`
+and `--runtime-image-id sha256:<independently-qualified-local-image-id>`. Before and
+after the build, the local reference must inspect to that exact ID. The base must
+already exist; the recipe uses `--pull=false --platform linux/amd64`. These checks
+bind the supplied identity; they do not establish that its providers are qualified.
+Keep exclusive control of both base and output references throughout the build.
+
+Use the normal producer command and its exact archive/manifest hashes, then:
+
+```sh
+python3 scripts/migration/build-bortus-release-image.py \
+  --context /approved/runtime/release-input/context.tar.gz \
+  --manifest /approved/runtime/release-input/context.json \
+  --source-commit <exact-application-commit> \
+  --context-sha256 <producer-archive-sha256> \
+  --manifest-sha256 <producer-manifest-sha256> \
+  --runtime-parent /home/brajam/.local/share/branconet-migration \
+  --recipe release --runtime-image <qualified-local-runtime-reference> \
+  --runtime-image-id sha256:<qualified-runtime-local-image-id>
+```
+
+All original source/archive, exclusive-run, pre-dispatch tag checks, protected
+logs, 2,400-second build/30-second metadata bounds and no-replay behavior remain.
+A completed new receipt explicitly records `build_recipe: release-v2`, local
+transport, selected Dockerfile SHA, runtime reference/inspect ID and new local
+image ID. Docker inspect IDs on the current daemon identify OCI indexes, not raw
+config objects. The new build receipt does not label that ID `config_image_id`. Its
+image must have all five original source/context/owner labels plus the exact
+`org.opencontainers.image.base.name` reference. The existing exporter/preloader
+accepts this distinct contract and verifies all six labels through the saved
+archive and each node. It still treats config ID, OCI manifest and runtime
+acceptance as separate identities/scopes. No previous two-label build is adopted
+or relabelled as an original five-label build receipt.
+
 
 ## Current qualification checkpoint: 2026-10-18
 

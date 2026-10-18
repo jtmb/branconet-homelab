@@ -1,5 +1,28 @@
 # Immutable image export and sequential preload
 
+The opt-in `release-v2` builder receipt is now supported alongside the original
+five-label SSH build. Its source-verified `Dockerfile.release`, exact supplied
+runtime reference/local inspect ID and before/after runtime checks stay in the pinned
+build receipt. Only this explicit local-transport contract exports from the
+operator's local Docker daemon; original receipts still use the fixed SSH host.
+All five original source/context/owner labels plus the exact base-name label are
+verified in both source inspections, the complete saved archive and every node's
+actual content. Preload remains sequential on the same three fixed nodes with
+unchanged authorization, content/platform/digest checks and no runtime/deployment
+acceptance. Other or incomplete label/recipe shapes refuse. An earlier ad-hoc
+two-label image cannot be adopted as either completed build contract.
+
+For v2 export, use `--local-image-id` instead of `--config-image-id`. The saved
+`index.json` must identify that exact OCI root; its authenticated descriptors must
+select one Linux/amd64 manifest and its linked attestation. The actual selected
+config and ordered layers must match Docker's saved manifest, and the original
+complete archive verifier still checks their bytes, labels and diff IDs. The
+export receipt records local index, selected manifest and raw config separately;
+attestation bytes/references do not qualify attestation semantics. Preload then
+uses `--config-image-id` with that resolved raw config, rechecks the saved chain
+and sends that raw identity to the unchanged per-node content checks. No layer,
+platform, label, source or node check is replaced by a Docker inspect ID.
+
 `stage-bortus-release-image.py` consumes the completed receipt from the
 [immutable builder](BORTUS-RELEASE-IMAGE.md), pinned by its SHA-256, exact full
 source commit and exact `sha256:` config image ID. Pending/failed receipts,

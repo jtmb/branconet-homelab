@@ -7,6 +7,7 @@ import importlib.util
 import json
 import os
 import pathlib
+import re
 import shlex
 import stat
 import subprocess
@@ -62,7 +63,7 @@ def receipt(run, path, expected_sha, commit, config_id):
         record = json.loads(source.read(), object_pairs_hook=b.unique)
     require(type(record) is dict and record.get('scope') == 'Immutable BORTUS image build only; no runtime/deployment acceptance' and
         record.get('phase') == 'completed' and record.get('source_commit') == commit and
-        record.get('image_tag') == run.record['image_tag'] and record.get('config_image_id') == config_id and
+        record.get('image_tag') == run.record['image_tag'] and
         all(type(record.get(k)) is int and record[k] == 0 for k in ('build_exit_code', 'inspect_exit_code', 'tag-check_exit_code')) and
         type(record.get('image_bytes')) is int and 0 < record['image_bytes'] <= MAX_ARCHIVE and
         b.hexid(record.get('application_tree'), 40) and all(b.hexid(record.get(k), 64) for k in ('context_sha256', 'manifest_sha256')) and
@@ -72,9 +73,112 @@ def receipt(run, path, expected_sha, commit, config_id):
     except (ValueError, TypeError, AttributeError): owner = None
     require(owner is not None and owner == record['owner'], 'build_owner')
     labels = dict(zip(b.LABEL_KEYS, [commit, record['application_tree'], record['context_sha256'], record['manifest_sha256'], owner]))
+    if record.get('build_recipe') == 'release-v2':
+        require(record.get('builder_transport') == 'local' and record.get('dockerfile') == 'Dockerfile.release' and
+                b.hexid(record.get('dockerfile_sha256'), 64) and type(record.get('runtime_image')) is str and
+                re.fullmatch(r'[a-z0-9][a-z0-9._/:@-]{0,252}', record['runtime_image']) and
+                type(record.get('runtime_image_id')) is str and
+                re.fullmatch(r'sha256:[0-9a-f]{64}', record['runtime_image_id']) and
+                all(type(record.get(k)) is int and record[k] == 0 for k in
+                    ('runtime-before_exit_code', 'runtime-after_exit_code')) and
+                type(record.get('local_image_id')) is str and re.fullmatch(r'sha256:[0-9a-f]{64}', record['local_image_id']) and
+                'config_image_id' not in record and
+                (run.record['purpose'] != 'export' or record['local_image_id'] == config_id), 'release_build_receipt')
+        labels[b.BASE_LABEL] = record['runtime_image']
+        run.record.update(build_recipe='release-v2', builder_transport='local',
+                          runtime_image=record['runtime_image'], runtime_image_id=record['runtime_image_id'],
+                          dockerfile_sha256=record['dockerfile_sha256'], local_image_id=record['local_image_id'])
+    else:
+        require('build_recipe' not in record and 'builder_transport' not in record and
+                record.get('config_image_id') == config_id, 'build_recipe')
     require(record.get('labels') == labels, 'source_labels')
-    run.record.update(config_image_id=config_id, labels=labels, build_receipt_sha256=expected_sha)
+    run.record.update(labels=labels, build_receipt_sha256=expected_sha)
+    if record.get('build_recipe') != 'release-v2' or run.record['purpose'] == 'preload':
+        run.record['config_image_id'] = config_id
     return record
+
+
+def release_archive_identity(stream, tag, local_id, labels):
+    """Resolve the saved Docker OCI index; retain the original archive verifier below."""
+    stream.seek(0); members = {}; names = set(); total = 0
+    with tarfile.open(fileobj=stream, mode='r|', tarinfo=ImageTarInfo) as archive:
+        for member in archive:
+            path_ok(member.name); canonical = member.name.rstrip('/')
+            require(canonical not in names and len(names) < MAX_MEMBERS and not member.linkname and
+                    set(member.pax_headers) <= {'path'}, 'release_archive_member')
+            names.add(canonical)
+            if member.isdir(): require(member.size == 0, 'image_directory'); continue
+            require(member.isfile(), 'image_archive_regular'); total += member.size
+            require(total <= MAX_ARCHIVE, 'image_archive_total')
+            members[member.name] = (member.offset_data, member.size)
+        while True:
+            raw = archive.fileobj.read(65536)
+            if not raw: break
+            require(not any(raw), 'image_archive_trailing')
+    def blob(name, digest=None, size=None):
+        require(name in members, 'release_blob_missing')
+        offset, count = members[name]
+        require(count <= MAX_METADATA and (size is None or type(size) is int and size == count), 'release_blob_size')
+        stream.seek(offset); raw = stream.read(count)
+        require(len(raw) == count and (digest is None or b.digest(raw) == digest[7:]), 'release_blob_hash')
+        return json.loads(raw, object_pairs_hook=b.unique)
+    def descriptor(value, media):
+        require(type(value) is dict and set(value) <= {'digest', 'size', 'mediaType', 'platform', 'annotations'} and
+                type(value.get('digest')) is str and re.fullmatch(r'sha256:[0-9a-f]{64}', value['digest']) and
+                type(value.get('size')) is int and value['size'] >= 0 and type(value.get('mediaType')) is str and
+                value['mediaType'] == media, 'release_descriptor')
+        return blob('blobs/sha256/' + value['digest'][7:], value['digest'], value['size'])
+    index_media = 'application/vnd.oci.image.index.v1+json'
+    manifest_media = 'application/vnd.oci.image.manifest.v1+json'
+    top = blob('index.json')
+    require(type(top) is dict and set(top) == {'schemaVersion', 'mediaType', 'manifests'} and
+            type(top['schemaVersion']) is int and top['schemaVersion'] == 2 and top['mediaType'] == index_media and
+            type(top['manifests']) is list and len(top['manifests']) == 1 and
+            top['manifests'][0].get('digest') == local_id, 'release_local_index')
+    index = descriptor(top['manifests'][0], index_media)
+    require(type(index) is dict and set(index) == {'schemaVersion', 'mediaType', 'manifests'} and
+            type(index['schemaVersion']) is int and index['schemaVersion'] == 2 and index['mediaType'] == index_media and
+            type(index['manifests']) is list and len(index['manifests']) == 2, 'release_index')
+    runtime, attestation = index['manifests']
+    require(runtime.get('platform') == {'architecture': 'amd64', 'os': 'linux'} and
+            'annotations' not in runtime, 'release_platform')
+    leaf = descriptor(runtime, manifest_media)
+    require(type(leaf) is dict and set(leaf) == {'schemaVersion', 'mediaType', 'config', 'layers'} and
+            type(leaf['schemaVersion']) is int and leaf['schemaVersion'] == 2 and leaf['mediaType'] == manifest_media,
+            'release_manifest')
+    require(attestation.get('platform') == {'architecture': 'unknown', 'os': 'unknown'} and
+            attestation.get('annotations') == {'vnd.docker.reference.digest': runtime['digest'],
+                                              'vnd.docker.reference.type': 'attestation-manifest'}, 'release_attestation_reference')
+    attest = descriptor(attestation, manifest_media)
+    require(type(attest) is dict and type(attest.get('schemaVersion')) is int and attest['schemaVersion'] == 2 and
+            attest.get('mediaType') == manifest_media and type(attest.get('config')) is dict and
+            type(attest.get('layers')) is list and 1 <= len(attest['layers']) <= 8, 'release_attestation')
+    for item in [attest['config'], *attest['layers']]:
+        descriptor(item, item.get('mediaType'))
+    config = descriptor(leaf['config'], 'application/vnd.oci.image.config.v1+json')
+    config_id = leaf['config']['digest']
+    docker_manifest = blob('manifest.json')
+    require(type(leaf['layers']) is list and 1 <= len(leaf['layers']) <= 1024 and
+            type(docker_manifest) is list and len(docker_manifest) == 1, 'release_layers')
+    layer_paths = []
+    for item in leaf['layers']:
+        require(type(item) is dict and set(item) == {'mediaType', 'digest', 'size'} and
+                type(item['digest']) is str and re.fullmatch(r'sha256:[0-9a-f]{64}', item['digest']) and
+                type(item['size']) is int and item['size'] >= 0 and item['mediaType'] in {
+                    'application/vnd.oci.image.layer.v1.tar', 'application/vnd.oci.image.layer.v1.tar+gzip',
+                    'application/vnd.docker.image.rootfs.diff.tar', 'application/vnd.docker.image.rootfs.diff.tar.gzip'}, 'release_layer')
+        name = 'blobs/sha256/' + item['digest'][7:]
+        require(name in members and members[name][1] == item['size'], 'release_layer_size')
+        stream.seek(members[name][0]); prefix = stream.read(min(2, item['size']))
+        require((item['mediaType'].endswith(('+gzip', '.gzip'))) == (prefix == b'\x1f\x8b'), 'release_layer_media')
+        layer_paths.append(name)
+    require(docker_manifest[0].get('Config') == 'blobs/sha256/' + config_id[7:] and
+            docker_manifest[0].get('RepoTags') == [tag] and docker_manifest[0].get('Layers') == layer_paths, 'release_docker_manifest')
+    verified = archive_identity(stream, tag, config_id, labels)
+    require(verified['layer_blob_digests'] == [d['digest'] for d in leaf['layers']] and
+            config.get('rootfs') == {'type': 'layers', 'diff_ids': verified['ordered_diff_ids']}, 'release_layer_identity')
+    return dict(verified, local_image_id=local_id, selected_manifest_digest=runtime['digest'],
+                attestation_reference_checked=True, attestation_semantics_qualified=False)
 
 
 def path_ok(name):
@@ -161,18 +265,22 @@ def archive_identity(stream, tag, config_id, labels):
             'layer_blob_digests': blob_ids, 'ordered_diff_ids': ordered}
 
 
-def inspect_command(tag):
-    template = '{"config_image_id":{{json .Id}},"labels":{' + ','.join(
-        json.dumps(k) + ':{{json (index .Config.Labels ' + json.dumps(k) + ')}}' for k in b.LABEL_KEYS) + '}}'
-    return b.remote(['docker', 'image', 'inspect', '--format', template, tag])
+def inspect_command(tag, labels=None, local=False):
+    template = '{' + json.dumps('local_image_id' if local else 'config_image_id') + ':{{json .Id}},"labels":{' + ','.join(
+        json.dumps(k) + ':{{json (index .Config.Labels ' + json.dumps(k) + ')}}' for k in (labels or b.LABEL_KEYS)) + '}}'
+    argv = ['docker', 'image', 'inspect', '--format', template, tag]
+    return argv if local else b.remote(argv)
 
 
 def inspect(run, stage, invoke):
-    code = invoke(run, stage, inspect_command(run.record['image_tag']), 30)
+    code = invoke(run, stage, inspect_command(run.record['image_tag'], run.record['labels'],
+                  run.record.get('builder_transport') == 'local'), 30)
     path = run.directory / (stage + '.stdout'); require(code == 0 and path.stat().st_size <= MAX_METADATA, 'source_inspect')
     result = json.loads(path.read_bytes(), object_pairs_hook=b.unique)
-    require(type(result) is dict and set(result) == {'config_image_id', 'labels'} and
-        result['config_image_id'] == run.record['config_image_id'] and result['labels'] == run.record['labels'], 'source_identity')
+    image_key = 'local_image_id' if run.record.get('builder_transport') == 'local' else 'config_image_id'
+    require(type(result) is dict and set(result) == {image_key, 'labels'} and
+        result[image_key] == run.record[image_key] and
+        result['labels'] == run.record['labels'], 'source_identity')
 
 
 def export_image(build_receipt, receipt_sha, commit, config_id, runtime_parent, invoke=None):
@@ -185,11 +293,16 @@ def export_image(build_receipt, receipt_sha, commit, config_id, runtime_parent, 
         fd = run.create('image.tar')
         with os.fdopen(fd, 'w+b') as archive:
             dispatched = True
-            code = invoke(run, 'save', b.remote(['docker', 'image', 'save', run.record['image_tag']]), 1200, archive=archive)
+            argv = ['docker', 'image', 'save', run.record['image_tag']]
+            code = invoke(run, 'save', argv if run.record.get('builder_transport') == 'local' else b.remote(argv),
+                          1200, archive=archive)
             run.record['save_exit_code'] = code
             archive.flush(); os.fsync(archive.fileno()); os.fsync(run.fd)
             require(code == 0, 'image_save')
-            run.record.update(archive_identity(archive, run.record['image_tag'], config_id, run.record['labels']))
+            verified = (release_archive_identity(archive, run.record['image_tag'], run.record['local_image_id'], run.record['labels'])
+                        if run.record.get('build_recipe') == 'release-v2' else
+                        archive_identity(archive, run.record['image_tag'], config_id, run.record['labels']))
+            run.record.update(verified)
             run.inputs['image.tar'] = b.input_identity(os.fstat(archive.fileno()))
             run.check_input('image.tar', archive.fileno())
         inspect(run, 'source-after', invoke)
@@ -282,10 +395,16 @@ def preload(build_receipt, receipt_sha, export_receipt, export_sha, commit, conf
             exported.get('labels') == run.record['labels'] and exported.get('image_tag') == run.record['image_tag'] and
             exported.get('build_receipt_sha256') == receipt_sha and b.hexid(exported.get('archive_sha256'), 64) and
             type(exported.get('archive_bytes')) is int and 0 < exported['archive_bytes'] <= MAX_ARCHIVE, 'export_receipt')
+        if run.record.get('build_recipe') == 'release-v2':
+            require(exported.get('local_image_id') == run.record['local_image_id'] and
+                    exported.get('build_recipe') == 'release-v2', 'export_local_identity')
         run.copy_input(exported['archive_path'], 'image.tar', MAX_ARCHIVE)
         with run.open_input('image.tar', exported['archive_sha256']) as stream:
-            verified = archive_identity(stream, run.record['image_tag'], config_id, run.record['labels'])
-        require(verified['archive_bytes'] == exported['archive_bytes'], 'export_archive'); run.record.update(verified)
+            verified = (release_archive_identity(stream, run.record['image_tag'], run.record['local_image_id'], run.record['labels'])
+                        if run.record.get('build_recipe') == 'release-v2' else
+                        archive_identity(stream, run.record['image_tag'], config_id, run.record['labels']))
+        require(verified['archive_bytes'] == exported['archive_bytes'] and verified['config_image_id'] == config_id,
+                'export_archive'); run.record.update(verified)
         expected_manifest = None
         for host in HOSTS:
             node = {'host': host, 'phase': 'pending', 'pending_at_utc': b.now()}
@@ -325,11 +444,15 @@ def preload(build_receipt, receipt_sha, export_receipt, export_sha, commit, conf
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('operation', choices=('export', 'preload'))
-    for name in ('build-receipt', 'receipt-sha256', 'source-commit', 'config-image-id', 'runtime-parent'):
+    for name in ('build-receipt', 'receipt-sha256', 'source-commit', 'runtime-parent'):
         parser.add_argument('--' + name, required=True)
+    parser.add_argument('--config-image-id'); parser.add_argument('--local-image-id')
     parser.add_argument('--export-receipt'); parser.add_argument('--export-sha256'); parser.add_argument('--attempt-id'); args = parser.parse_args()
     try:
-        values = [args.build_receipt, args.receipt_sha256, args.source_commit, args.config_image_id, args.runtime_parent]
+        require((args.config_image_id is None) != (args.local_image_id is None), 'image_identity_argument')
+        require(args.operation == 'export' or args.local_image_id is None, 'preload_config_identity')
+        values = [args.build_receipt, args.receipt_sha256, args.source_commit,
+                  args.config_image_id or args.local_image_id, args.runtime_parent]
         require(args.operation == 'preload' or args.attempt_id is None, 'attempt')
         if args.operation == 'export': result = export_image(*values, invoke=export_execute)
         else:

@@ -194,9 +194,15 @@ def receive(request, source, home, invoke=command, authorize=None):
         type(request['source_commit']) is str and re.fullmatch(r'[0-9a-f]{40}', request['source_commit']) and
         sha(request['config_image_id']) and type(request['archive_bytes']) is int and 0 < request['archive_bytes'] <= MAX_ARCHIVE and
         type(request['archive_sha256']) is str and re.fullmatch(r'[0-9a-f]{64}', request['archive_sha256']) and
-        type(request['labels']) is dict and set(request['labels']) == {'org.opencontainers.image.revision',
+        type(request['labels']) is dict and set(request['labels']) in ({'org.opencontainers.image.revision',
             'io.branconet.bortus.source-tree', 'io.branconet.bortus.context-sha256',
-            'io.branconet.bortus.manifest-sha256', 'io.branconet.bortus.build-owner'} and
+            'io.branconet.bortus.manifest-sha256', 'io.branconet.bortus.build-owner'},
+            {'org.opencontainers.image.revision', 'io.branconet.bortus.source-tree',
+             'io.branconet.bortus.context-sha256', 'io.branconet.bortus.manifest-sha256',
+             'io.branconet.bortus.build-owner', 'org.opencontainers.image.base.name'}) and
+        ('org.opencontainers.image.base.name' not in request['labels'] or
+            (type(request['labels']['org.opencontainers.image.base.name']) is str and
+             re.fullmatch(r'[a-z0-9][a-z0-9._/:@-]{0,252}', request['labels']['org.opencontainers.image.base.name']))) and
         request['labels']['org.opencontainers.image.revision'] == request['source_commit'] and
         type(request['labels']['io.branconet.bortus.source-tree']) is str and
         re.fullmatch(r'[0-9a-f]{40}', request['labels']['io.branconet.bortus.source-tree']) and

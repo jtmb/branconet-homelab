@@ -25,6 +25,7 @@ SSH = ['ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 'F
 LABEL_KEYS = ['org.opencontainers.image.revision', 'io.branconet.bortus.source-tree',
               'io.branconet.bortus.context-sha256', 'io.branconet.bortus.manifest-sha256',
               'io.branconet.bortus.build-owner']
+BASE_LABEL = 'org.opencontainers.image.base.name'
 
 
 class BuildRefused(RuntimeError):
@@ -249,7 +250,7 @@ class Run:
 
 
 def execute(run, stage, command, timeout, stdin=None):
-    """Only owned SSH child; complete separate logs, actual exit and no automatic retry."""
+    """Owned build/metadata child; separate logs, actual exit and no automatic retry."""
     run.owned(); out_fd = run.create(stage + '.stdout')
     try: err_fd = run.create(stage + '.stderr')
     except Exception: os.close(out_fd); raise
@@ -273,8 +274,15 @@ def execute(run, stage, command, timeout, stdin=None):
 def remote(argv): return SSH + [shlex.join(argv)]
 
 
-def build(context, manifest, commit, context_sha, manifest_sha, runtime_parent, invoke=execute):
+def build(context, manifest, commit, context_sha, manifest_sha, runtime_parent, invoke=execute,
+          *, recipe='legacy', runtime_image=None, runtime_image_id=None):
     require(hexid(commit, 40) and hexid(context_sha, 64) and hexid(manifest_sha, 64), 'exact_input')
+    require(recipe in ('legacy', 'release'), 'build_recipe')
+    if recipe == 'release':
+        require(type(runtime_image) is str and re.fullmatch(r'[a-z0-9][a-z0-9._/:@-]{0,252}', runtime_image) and
+                type(runtime_image_id) is str and re.fullmatch(r'sha256:[0-9a-f]{64}', runtime_image_id), 'runtime_image')
+    else:
+        require(runtime_image is None and runtime_image_id is None, 'legacy_runtime_arguments')
     run = Run(runtime_parent, commit)
     dispatched = False; build_exit = None; failure_code = None
     try:
@@ -283,13 +291,31 @@ def build(context, manifest, commit, context_sha, manifest_sha, runtime_parent, 
         with run.open_input('manifest.json', manifest_sha) as manifest_stream, run.open_input('context.tar.gz', context_sha) as archive:
             m = verify(archive, manifest_stream.read(), commit, context_sha, manifest_sha)
         labels = dict(zip(LABEL_KEYS, [commit, m['application_tree'], context_sha, manifest_sha, run.record['owner']]))
+        if recipe == 'release':
+            selected = next((e for e in m['files'] if e['path'] == 'Dockerfile.release'), None)
+            require(selected is not None, 'release_dockerfile')
+            labels[BASE_LABEL] = runtime_image
+            run.record.update(build_recipe='release-v2', builder_transport='local',
+                              dockerfile='Dockerfile.release', dockerfile_sha256=selected['sha256'],
+                              runtime_image=runtime_image, runtime_image_id=runtime_image_id)
         run.record.update(context_sha256=context_sha, manifest_sha256=manifest_sha, application_tree=m['application_tree'],
                           labels=labels, included_files=m['included_files'], phase='validated'); run.save()
-        query = remote(['docker', 'image', 'ls', '--quiet', '--filter', 'reference=' + run.record['image_tag']])
+        command = (lambda argv: argv) if recipe == 'release' else remote
+        def runtime_guard(stage):
+            code = invoke(run, stage, ['docker', 'image', 'inspect', '--format', '{{json .Id}}', runtime_image], 30)
+            path = run.directory / (stage + '.stdout')
+            require(code == 0 and path.stat().st_size <= 1024 and
+                    json.loads(path.read_bytes()) == runtime_image_id, 'runtime_image_identity')
+        if recipe == 'release': runtime_guard('runtime-before')
+        query = command(['docker', 'image', 'ls', '--quiet', '--filter', 'reference=' + run.record['image_tag']])
         code = invoke(run, 'tag-check', query, 30)
         require(code == 0, 'tag_query'); require((run.directory / 'tag-check.stdout').stat().st_size == 0, 'tag_exists')
         run.record.update(phase='pending', pending_at_utc=now()); run.save()  # Durable before any build dispatch.
-        args = ['docker', 'build', '--build-arg', 'KUBECTL_VERSION=v1.37.1', '-t', run.record['image_tag']]
+        args = (['docker', 'build', '--pull=false', '--platform', 'linux/amd64', '--file', 'Dockerfile.release',
+                 '--build-arg', 'BORTUS_RUNTIME_IMAGE=' + runtime_image,
+                 '--build-arg', 'BORTUS_SOURCE_REVISION=' + commit] if recipe == 'release' else
+                ['docker', 'build', '--build-arg', 'KUBECTL_VERSION=v1.37.1'])
+        args += ['-t', run.record['image_tag']]
         for key, value in labels.items(): args += ['--label', key + '=' + value]
         args += ['-']
         # Second tag absence check immediately before exec; Docker itself offers no tag CAS.
@@ -297,17 +323,21 @@ def build(context, manifest, commit, context_sha, manifest_sha, runtime_parent, 
             ['docker', 'image', 'ls', '--quiet', '--filter', 'reference=' + run.record['image_tag']]) + \
             '); test -z "$existing" || exit 73; exec ' + shlex.join(args)
         with run.open_input('manifest.json', manifest_sha), run.open_input('context.tar.gz', context_sha) as stream:
-            dispatched = True; code = invoke(run, 'build', SSH + [shell], 2400, stdin=stream); build_exit = code
+            dispatched = True
+            code = invoke(run, 'build', ['/bin/sh', '-c', shell] if recipe == 'release' else SSH + [shell], 2400, stdin=stream)
+            build_exit = code
             run.check_input('context.tar.gz', stream.fileno())
         run.record.update(build_exit_code=code, phase='uncertain' if code in (0, 255) else 'failed', completed_at_utc=now()); run.save()
         require(code == 0, 'build_exit')
-        projection = '{"config_image_id":{{json .Id}},"image_bytes":{{json .Size}},"labels":{' + ','.join(
-            json.dumps(key) + ':{{json (index .Config.Labels ' + json.dumps(key) + ')}}' for key in LABEL_KEYS) + '}}'
-        code = invoke(run, 'inspect', remote(['docker', 'image', 'inspect', '--format', projection, run.record['image_tag']]), 30)
+        if recipe == 'release': runtime_guard('runtime-after')
+        image_key = 'local_image_id' if recipe == 'release' else 'config_image_id'
+        projection = '{' + json.dumps(image_key) + ':{{json .Id}},"image_bytes":{{json .Size}},"labels":{' + ','.join(
+            json.dumps(key) + ':{{json (index .Config.Labels ' + json.dumps(key) + ')}}' for key in labels) + '}}'
+        code = invoke(run, 'inspect', command(['docker', 'image', 'inspect', '--format', projection, run.record['image_tag']]), 30)
         require(code == 0 and (run.directory / 'inspect.stdout').stat().st_size <= 65536, 'image_inspect')
         image = json.loads((run.directory / 'inspect.stdout').read_bytes(), object_pairs_hook=unique)
-        require(type(image) is dict and set(image) == {'config_image_id', 'image_bytes', 'labels'} and
-            type(image['config_image_id']) is str and re.fullmatch(r'sha256:[0-9a-f]{64}', image['config_image_id']) and
+        require(type(image) is dict and set(image) == {image_key, 'image_bytes', 'labels'} and
+            type(image[image_key]) is str and re.fullmatch(r'sha256:[0-9a-f]{64}', image[image_key]) and
             type(image['image_bytes']) is int and image['image_bytes'] > 0 and image['labels'] == labels, 'image_identity')
         run.record.update(image, phase='completed', completed_at_utc=now(), image_manifest_digest=None,
                           runtime_digest_qualified=False); run.save()
@@ -328,12 +358,17 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for name in ('context', 'manifest', 'source-commit', 'context-sha256', 'manifest-sha256', 'runtime-parent'):
         parser.add_argument('--' + name, required=True)
+    parser.add_argument('--recipe', choices=('legacy', 'release'), default='legacy')
+    parser.add_argument('--runtime-image')
+    parser.add_argument('--runtime-image-id')
     args = parser.parse_args()
     try:
         result = build(args.context, args.manifest, args.source_commit, args.context_sha256,
-                       args.manifest_sha256, args.runtime_parent)
+                       args.manifest_sha256, args.runtime_parent, recipe=args.recipe,
+                       runtime_image=args.runtime_image, runtime_image_id=args.runtime_image_id)
         print(json.dumps({key: result[key] for key in ('phase', 'source_commit', 'image_tag',
-            'config_image_id', 'image_bytes', 'deployed', 'runtime_accepted')})); return 0
+            'local_image_id' if args.recipe == 'release' else 'config_image_id',
+            'image_bytes', 'deployed', 'runtime_accepted')})); return 0
     except Exception:
         print('Release image operation failed; inspect the retained protected run without replay.', file=__import__('sys').stderr)
         return 1
