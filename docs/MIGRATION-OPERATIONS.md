@@ -1,5 +1,17 @@
 # Approved cluster migration operations
 
+## Final source image staged — 2026-10-18
+
+Current app source `5aba82c` builds through release-v2 over the explicitly pinned maintained runtime. The exact saved image and its ordered layers are verified, and all three supplied nodes import the same runtime index `sha256:bfc78b697373727aebccf50c70ef1944c76691cc435da0ad3bcc4e44670ff211`. A separate operator cache correction adds the absent exact `docker.io/library/bortus@sha256:…` alias without force or changing the release tag; source and alias targets agree on every node. This operator step is recorded separately and is not attributed to the preload helper. Its exact executed source is retained in [bortus-5aba-cache-alias.py](../scripts/migration/operations/bortus-5aba-cache-alias.py); it is specific to this source/image/preload receipt, consumes sudo authorization only through stdin and never forces replacement of an existing alias.
+
+All12 existing isolated public runtime checks pass. The original wrapper exit1 from capitalization of Docker's absent-object message remains recorded; separate exact-ID/name absence checks prove cleanup without rerunning the application. Fresh default Trivy reports12 Medium findings and zero secrets, with no suppression or accepted residual. The first export refusal led to a v2-only repeated-layer fix: duplicate tar members remain forbidden, all22 ordered references/21 unique blobs and diff IDs are checked, and every position counts toward expansion bounds. The build was not repeated. Current [release evidence](../evidence/bortus-current-release-staging-root-20261018.json) and [post-staging cluster health](../evidence/bortus-post-staging-health-root-20261018.json) record the actual scope. No production image, schema, credentials, PVC or adoption setting was changed. Private recovery/security policy blocks and the retained performance/AT/live gates remain unresolved.
+
+
+## Current delivery checkpoint — 2026-10-18
+
+Application source `5aba82c` has passing hosted CI in PR28. Separate charts PR4 is merged: current-main CI passed and live Flux is Ready at `validated@sha1:37dd61a242b488dabbdcec9277cb1ee84580f0e2`. The new `nativeKv` profile is opt-in and remains disabled; BORTUS still uses its retained production image and PVC. The current application is packaged using [release-v2](BORTUS-RELEASE-IMAGE.md) and its [OCI export/preload path](BORTUS-RELEASE-STAGING.md). Local image ID, selected manifest and raw config are recorded separately. This is implementation/delivery progress, not schema/adoption, security, performance, recovery or final UI acceptance. The current status and preserved historical outcomes are in [PLAN.md](../PLAN.md).
+
+
 ## 2026-10-16: current hosted CI qualifies; patched Node continuation starts
 
 The [current hosted CI receipt](../evidence/bortus-current-hosted-ci-qualified-root-20261016.json) qualifies source9cb81363/FE5fcbfdda through actual run38862871467 on validation commitfc17e40d: clean pinned build,lint/types,352 unit tests,eight HTTP checks,all eight pristine0/mutant1 sensitivity pairs and compiled Pods smoke pass. ROOT independently recomputes the five TAP matrices from14 saved raw logs and matches all three sensitivity groups,browser and cleanup JSON;all18 evidence files and fresh remote source/main refs match. The source and log default scans report0/zero. The earlier run38861922778 remains failed at a stale transitive manifest hash before the process test;the correction changes only that checksum. Main,charts and production are unchanged.

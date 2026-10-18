@@ -1,5 +1,12 @@
 # Immutable BORTUS release image builder
 
+## Final source image staged — 2026-10-18
+
+Current app source `5aba82c` builds through release-v2 over the explicitly pinned maintained runtime. The exact saved image and its ordered layers are verified, and all three supplied nodes import the same runtime index `sha256:bfc78b697373727aebccf50c70ef1944c76691cc435da0ad3bcc4e44670ff211`. A separate operator cache correction adds the absent exact `docker.io/library/bortus@sha256:…` alias without force or changing the release tag; source and alias targets agree on every node. This operator step is recorded separately and is not attributed to the preload helper.
+
+All12 existing isolated public runtime checks pass. The original wrapper exit1 from capitalization of Docker's absent-object message remains recorded; separate exact-ID/name absence checks prove cleanup without rerunning the application. Fresh default Trivy reports12 Medium findings and zero secrets, with no suppression or accepted residual. The first export refusal led to a v2-only repeated-layer fix: duplicate tar members remain forbidden, all22 ordered references/21 unique blobs and diff IDs are checked, and every position counts toward expansion bounds. The build was not repeated. Current [release evidence](../evidence/bortus-current-release-staging-root-20261018.json) and [post-staging cluster health](../evidence/bortus-post-staging-health-root-20261018.json) record the actual scope. No production image, schema, credentials, PVC or adoption setting was changed. Private recovery/security policy blocks and the retained performance/AT/live gates remain unresolved.
+
+
 ## Current-source release recipe
 
 The existing raw-Git context producer includes `Dockerfile.release` from the exact
@@ -52,7 +59,7 @@ uniqueness rule or permit duplicate tar members; see the staging contract.
 
 ## Current qualification checkpoint: 2026-10-18
 
-### Current result
+### Earlier maintained-runtime result
 
 Exact isolated candidate `4a84c0b5` has qualified saved-image chain,31,800-entry filesystem,original public startup/auth/permission checks and public SDK/Node TLS4. Its unchanged default scan remains literal1 with12 Medium findings and zero secrets. Production is still on `3b076fb9`, confirmed by the October18 read-only snapshot below. The allocation candidate169107f remains isolated because the original three-pair benchmark fails two warm cases. Actual assistive technology,private SecretTransport/recovery,complete image-security disposition and guarded live acceptance remain open. No new image has been deployed and no original data retired.
 
