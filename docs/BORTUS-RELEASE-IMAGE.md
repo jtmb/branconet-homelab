@@ -45,6 +45,10 @@ archive and each node. It still treats config ID, OCI manifest and runtime
 acceptance as separate identities/scopes. No previous two-label build is adopted
 or relabelled as an original five-label build receipt.
 
+The release exporter validates the full ordered OCI chain even when an immutable
+layer occurs more than once. That v2-only case does not change the original v1
+uniqueness rule or permit duplicate tar members; see the staging contract.
+
 
 ## Current qualification checkpoint: 2026-10-18
 

@@ -174,7 +174,7 @@ def release_archive_identity(stream, tag, local_id, labels):
         layer_paths.append(name)
     require(docker_manifest[0].get('Config') == 'blobs/sha256/' + config_id[7:] and
             docker_manifest[0].get('RepoTags') == [tag] and docker_manifest[0].get('Layers') == layer_paths, 'release_docker_manifest')
-    verified = archive_identity(stream, tag, config_id, labels)
+    verified = archive_identity(stream, tag, config_id, labels, allow_repeated_layers=True)
     require(verified['layer_blob_digests'] == [d['digest'] for d in leaf['layers']] and
             config.get('rootfs') == {'type': 'layers', 'diff_ids': verified['ordered_diff_ids']}, 'release_layer_identity')
     return dict(verified, local_image_id=local_id, selected_manifest_digest=runtime['digest'],
@@ -202,7 +202,7 @@ class MemberSlice:
         raw = self.stream.read(amount); self.remaining -= len(raw); return raw
 
 
-def archive_identity(stream, tag, config_id, labels):
+def archive_identity(stream, tag, config_id, labels, *, allow_repeated_layers=False):
     """Bounded complete inventory; decode only manifest/config, never layer values."""
     size = os.fstat(stream.fileno()).st_size; require(0 < size <= MAX_ARCHIVE, 'image_archive_bound')
     stream.seek(0); digest = b.stream_hash(stream); stream.seek(0)
@@ -240,7 +240,8 @@ def archive_identity(stream, tag, config_id, labels):
         set(manifest[0]) <= {'Config', 'RepoTags', 'Layers', 'LayerSources'} and
         all(k in manifest[0] for k in ('Config', 'RepoTags', 'Layers')), 'image_manifest')
     item = manifest[0]; require(item['RepoTags'] == [tag] and type(item['Layers']) is list and
-        len(item['Layers']) <= 1024 and len(set(item['Layers'])) == len(item['Layers']), 'image_inventory')
+        len(item['Layers']) <= 1024 and
+        (allow_repeated_layers or len(set(item['Layers'])) == len(item['Layers'])), 'image_inventory')
     path_ok(item['Config']); require(files.get(item['Config']) == config_id[7:] and item['Config'] in metadata, 'image_config_id')
     config = json.loads(metadata[item['Config']], object_pairs_hook=b.unique)
     require(type(config) is dict and config.get('os') == 'linux' and config.get('architecture') == 'amd64' and

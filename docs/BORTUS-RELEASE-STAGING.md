@@ -23,6 +23,15 @@ uses `--config-image-id` with that resolved raw config, rechecks the saved chain
 and sends that raw identity to the unchanged per-node content checks. No layer,
 platform, label, source or node check is replaced by a Docker inspect ID.
 
+The v2 chain permits repeated references to the same content-addressed layer:
+every ordered descriptor, size, blob digest and expanded diff ID must still match
+the selected manifest and config, including repeated positions. Duplicate outer
+archive members remain forbidden and every position counts against the existing
+layer/expanded-byte bounds. The legacy v1 verifier retains its original unique
+layer-reference requirement. The first strict Oct18 export saved successfully but
+refused this legitimate 22-position/21-blob composition; its failed record is
+retained. A corrected export uses a fresh owned parent, not an adopted old run.
+
 `stage-bortus-release-image.py` consumes the completed receipt from the
 [immutable builder](BORTUS-RELEASE-IMAGE.md), pinned by its SHA-256, exact full
 source commit and exact `sha256:` config image ID. Pending/failed receipts,

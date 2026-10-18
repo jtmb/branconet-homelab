@@ -164,9 +164,10 @@ class StageTests(unittest.TestCase):
         self.assertNotEqual(self.root_digest, self.selected_digest)
         self.assertEqual(self.selected_digest, result['nodes'][0]['selected_manifest_digest'])
 
-    def release_receipt(self, wrong_attestation=False):
+    def release_receipt(self, wrong_attestation=False, repeated_layer=False):
         self.labels[s.b.BASE_LABEL] = 'fixture-runtime:qualified'
-        self.archive_bytes = self.archive(); self.prepare_receipt(); self.graph()
+        change = (lambda cfg: cfg['rootfs']['diff_ids'].append('sha256:' + s.b.digest(self.layer))) if repeated_layer else None
+        self.archive_bytes = self.archive(config_change=change); self.prepare_receipt(); self.graph()
         files = {}
         with tarfile.open(fileobj=io.BytesIO(self.archive_bytes)) as archive:
             for member in archive: files[member.name] = archive.extractfile(member).read()
@@ -179,6 +180,10 @@ class StageTests(unittest.TestCase):
                            'mediaType': 'application/vnd.oci.image.config.v1+json'},
                 'layers': [{'digest': self.layer_digest, 'size': len(self.layer_raw),
                             'mediaType': 'application/vnd.oci.image.layer.v1.tar'}]}
+        if repeated_layer:
+            leaf['layers'].append(copy.deepcopy(leaf['layers'][0]))
+            dm = json.loads(files['manifest.json']); dm[0]['Layers'].append(dm[0]['Layers'][0])
+            files['manifest.json'] = json.dumps(dm).encode()
         runtime = add(leaf); self.selected_digest = runtime['digest']
         runtime['platform'] = {'architecture': 'amd64', 'os': 'linux'}
         empty = add({}); empty['mediaType'] = 'application/vnd.oci.image.config.v1+json'
@@ -247,6 +252,17 @@ class StageTests(unittest.TestCase):
         with path.open('rb') as stream, self.assertRaises(s.b.BuildRefused):
             s.release_archive_identity(stream, self.tag, self.local_id, self.labels)
         self.assertEqual([], self.imports)
+
+    def test_release_v2_retains_repeated_ordered_layer_while_v1_still_refuses(self):
+        self.release_receipt(repeated_layer=True)
+        path = self.path/'public-repeated-layer.tar'; path.write_bytes(self.archive_bytes)
+        with path.open('rb') as stream, self.assertRaisesRegex(s.b.BuildRefused, 'image_inventory'):
+            s.archive_identity(stream, self.tag, self.config_id, self.labels)
+        exported = self.export(); result = self.preload()
+        self.assertEqual(2, len(exported['layer_blob_digests']))
+        self.assertEqual(exported['layer_blob_digests'][0], exported['layer_blob_digests'][1])
+        self.assertEqual(2, len(exported['ordered_diff_ids']))
+        self.assertEqual('completed', result['phase'])
 
     def test_build_receipt_hash_scope_and_source_label_fail_before_save(self):
         for change in (lambda r: r.update(phase='pending'), lambda r: r.update(config_image_id='sha256:' + '0' * 64),
