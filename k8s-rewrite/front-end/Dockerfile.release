@@ -7,7 +7,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 ARG BORTUS_SOURCE_REVISION
-ENV NEXT_TELEMETRY_DISABLED=1 DATABASE_URL=file:/data/bortus.db
+ENV NEXT_TELEMETRY_DISABLED=1 DATABASE_URL=file:/data/bortus.db CIRCLE_NODE_TOTAL=4
 RUN test -n "${BORTUS_SOURCE_REVISION}" \
  && npm run build \
  && npm prune --omit=dev \
