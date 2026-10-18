@@ -1,5 +1,9 @@
 # BORTUS application deployment
 
+## Final UI tooling check after goal resume
+
+The [official browser initialization attempt](../evidence/bortus-final-browser-initialization-block-root-20261018.json) failed before inventory with missing kernel assets/path (`os error 3`), including one reset/retry. No preview container, network, account or browser input was created. Final UI/actual AT acceptance remains open; production, data and rejected operations are unchanged.
+
 ## Final source image staged — 2026-10-18
 
 Current app source `5aba82c` builds through release-v2 over the explicitly pinned maintained runtime. The exact saved image and its ordered layers are verified, and all three supplied nodes import the same runtime index `sha256:bfc78b697373727aebccf50c70ef1944c76691cc435da0ad3bcc4e44670ff211`. A separate operator cache correction adds the absent exact `docker.io/library/bortus@sha256:…` alias without force or changing the release tag; source and alias targets agree on every node. This operator step is recorded separately and is not attributed to the preload helper.
