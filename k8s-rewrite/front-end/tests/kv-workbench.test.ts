@@ -98,6 +98,14 @@ test("denial status survives invalid bodies so the workbench can withdraw sensit
         assert.equal(calls, 1);
       }
     }
+    let cancelled = false;
+    globalThis.fetch = async () => new Response(new ReadableStream({ cancel() {
+      cancelled = true;
+      return new Promise<void>(() => {});
+    } }), { status: 403 });
+    await assert.rejects(workbenchRequest("/api/kv/paths/path/data", {}),
+      error => error instanceof WorkbenchFailure && error.status === 403);
+    assert.equal(cancelled, true, "cancel an unused denial stream without waiting for cancellation");
     globalThis.fetch = async () => new Response("null", { status: 409 });
     await assert.rejects(workbenchRequest("/api/kv/paths/path/data", {}),
       error => error instanceof WorkbenchFailure && error.status === 409 && error.operationId === undefined);

@@ -453,6 +453,16 @@ test("authorization denial clears private administration state before consuming 
       assert.equal(lost, 1);
       assert.equal(calls, 2, "denied request must not retry or request a final session");
     }
+    let cancelled = false, cleared = false;
+    const streaming = new Response(new ReadableStream({ cancel() {
+      assert.equal(cleared, true, "clear private state before cancelling the unused body");
+      cancelled = true;
+      return new Promise<void>(() => {});
+    } }), { status });
+    const streamingClient = new AdministrationClient((async () => streaming) as typeof fetch, () => { cleared = true; });
+    await assert.rejects(streamingClient.run(async () => assert.fail("must not release a result")),
+      error => error instanceof AdminFailure && error.status === status);
+    assert.equal(cancelled, true, "cancel an unused denial stream without waiting for cancellation");
     let lost = 0;
     const unreadable = new Response(new ReadableStream({ start(controller) { controller.error(new Error("synthetic private body")); } }), { status });
     const client = new AdministrationClient((async () => unreadable) as typeof fetch, () => lost++);

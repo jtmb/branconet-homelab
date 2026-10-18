@@ -2,6 +2,8 @@
 
 ## KV browser revocation handling (2026-10-18)
 
+Unused denial streams are cancelled without awaiting cancellation; private-state withdrawal and the typed denial do not wait for a hostile or stalled body.
+
 KV workbench and administration now handle HTTP 401/403 before reading or parsing the response body. A proxy's empty, malformed, oversized or unreadable denial therefore cannot bypass the existing value/draft/one-time-token withdrawal path. Other failed workbench responses preserve their status even when their JSON is `null`; arbitrary error bodies remain undisplayed. No native policy, token authority, CAS, recovery rule, request limit or retry behavior changes.
 
 The recorded fccc7c06 A19 CI and A02 composite source clauses remain qualified at their stated source; see [Fresh source CI qualification](implementation-evidence/provisioning-hosted-ci-qualified-root-20261015.json) and [A02 composite qualification](implementation-evidence/a02-composite-boundary-qualification-root-20261015.json). Delivered, AT, performance, image, recovery and live acceptance remain separate.

@@ -461,6 +461,7 @@ export class AdministrationClient {
       // returns an empty, malformed or unreadable denial body.
       if (response.status === 401 || response.status === 403) {
         this.authorizationLost();
+        void response.body?.cancel().catch(() => {});
         throw new AdminFailure(response.status);
       }
       const reader = response.body?.getReader(),

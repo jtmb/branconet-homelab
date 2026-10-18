@@ -2,6 +2,8 @@
 
 ## KV client withdrawal on failed authorization (2026-10-18)
 
+Unused denial streams are cancelled without awaiting cancellation; private-state withdrawal and the typed denial do not wait for a hostile or stalled body.
+
 The KV administration client invokes its authorization-loss cleanup immediately on HTTP 401/403, before response-body consumption. The KV workbench preserves the same typed denial status for its existing sensitive-state cleanup. Empty, malformed or unreadable proxy error bodies cannot turn a revoked session into a generic transport error that leaves private drafts or issued tokens visible. Server-side fresh authorization and scoped-policy checks remain unchanged.
 
 Combined reviewed development source `6b254b2` is now functionally qualified by composition: retained `bc10aa9` build/native-load exits0 plus corrected lint, nonincremental types, all352 units and8 HTTP checks at exits0. Independent exact/current and closure checks bind392 source files,458 inputs,5388 compiled objects,40635 dependencies and129 recorded births/four exact CID/name queries. No Next rebuild occurred. The original full350/352 failure and passing eleven-test element-model correction remain retained; this is not Radix/keyboard/AT proof. Current compiled ownership, finite A15 browser/geometry, hosted CI and performance/image/live adoption remain separate. [Functional composition](implementation-evidence/parent-stat-a15-functional-composite-root-20261016.json).

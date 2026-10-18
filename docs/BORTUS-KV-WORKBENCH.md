@@ -2,6 +2,8 @@
 
 ## Authorization withdrawal fix (2026-10-18)
 
+Unused denial streams are cancelled without awaiting cancellation; private-state withdrawal and the typed denial do not wait for a hostile or stalled body.
+
 HTTP 401/403 is handled before parsing a response body, so a malformed, empty or unreadable intermediary error still triggers the existing value/draft withdrawal. Non-authentication error bodies such as JSON null retain their sanitized HTTP status. No error-body value is displayed and no automatic retry is added.
 
 Root integration update: the component is wired from /secrets/kv behind Values and versions using a conditional dynamic import. Exact mapping/fresh capability props and metadata-only callbacks are connected; close returns to the entry control. The human pathRevision prerequisite was fixed in 7a56ff4. [Combined Node22 evidence](implementation-evidence/kv-workbench-integrated.json) records 127 units, lint/build/typecheck, three HTTP suites and production-route loopback browser checks. Retain the separate standalone Node24 evidence below; final image/live acceptance remains open.

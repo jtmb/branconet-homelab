@@ -113,7 +113,10 @@ export async function workbenchRequest<T>(url: string, init: RequestInit): Promi
   if (!response.ok) {
     // Do not let denial-body parsing hide a fresh authorization failure from
     // the workbench's sensitive-state clearing path.
-    if (response.status === 401 || response.status === 403) throw new WorkbenchFailure(response.status);
+    if (response.status === 401 || response.status === 403) {
+      void response.body?.cancel().catch(() => {});
+      throw new WorkbenchFailure(response.status);
+    }
     const parsed: unknown = await response.json().catch(() => undefined);
     const body = parsed && typeof parsed === "object" ? parsed as Record<string, unknown> : {};
     const operationId = typeof body.operationId === "string" && /^[0-9a-f-]{36}$/.test(body.operationId) ? body.operationId : undefined;
