@@ -1,5 +1,17 @@
 # BORTUS User Permissions
 
+## Login refusal presentation - reviewed development source
+
+Application `0b9d244b6479dd559ebd1270af3e3c3e60569c20` renders only a string `error`
+from a nonarray JSON object after an unsuccessful login HTTP response. Unreadable
+or malformed bodies use `Login failed`; transport failures keep the network-error
+message. Loading recovery, entered fields, form behavior and successful `push("/")`
+remain unchanged. Fresh server authentication is unchanged. The same actual-page
+TSX/VM test passes 10/fails 6 on old source and passes all 16 on the correction;
+these are client-model results. See the [bounded evidence](../evidence/bortus-login-errors-root-20261019.json)
+for compiled/UI/CI evidence and its limits; no new release image or live acceptance
+follows from source qualification.
+
 The [original A02 account/auth clause](../evidence/bortus-a02-composite-boundary-root-20261015.json) is qualified for reviewed source through the existing issued-cookie160-call deletion matrix and distinct demotion,native permission,expiry and logout checks. Root verifies17 current auth/test source files unchanged from their qualified source and seven evidence bindings. The earlier17-check supplement retains its later A05 failure; its completed expiry/logout assertions are scoped evidence. Logout qualifies cookie removal, with no global copied-JWT revocation claim. Delivered/live acceptance remains separate.
 
 The BORTUS K8s dashboard uses a **two-role permission system** with cookie-based JWT authentication. Roles are enforced at three layers: middleware (auth gate), API routes (write gating), and client UI (conditional rendering).

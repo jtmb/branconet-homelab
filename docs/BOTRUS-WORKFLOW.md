@@ -1,5 +1,17 @@
 # BORTUS K8s — Workflow Guide
 
+## Login refusal presentation - reviewed development source
+
+Application `0b9d244b6479dd559ebd1270af3e3c3e60569c20` renders only a string `error`
+from a nonarray JSON object after an unsuccessful login HTTP response. Unreadable
+or malformed bodies use `Login failed`; transport failures keep the network-error
+message. Loading recovery, entered fields, form behavior and successful `push("/")`
+remain unchanged. Fresh server authentication is unchanged. The same actual-page
+TSX/VM test passes 10/fails 6 on old source and passes all 16 on the correction;
+these are client-model results. See the [bounded evidence](../evidence/bortus-login-errors-root-20261019.json)
+for compiled/UI/CI evidence and its limits; no new release image or live acceptance
+follows from source qualification.
+
 ## Welcome capability copy - 2026-10-18 (Toronto)
 
 Application source `b0802b9` describes native Secret management, external cluster access, configured Flux resources and independent provisioning. Packaged provisioning is disabled; an optional local runner needs separately supplied Ansible/playbooks. Sync explicitly writes lookup references/inventory rather than native Secret values. The page scopes shell access to permissions/runtime configuration and replaces unverified usage counts and license claims. Retained screenshots are illustrative. Session/navigation behavior and layout remain; the broken license target now links to project information. See [the source receipt](../evidence/bortus-truthful-welcome-root-20261019.json). Existing images and UI evidence retain their prior source identities until new packaging/qualification.
