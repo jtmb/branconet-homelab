@@ -47,6 +47,16 @@ An unsuccessful HTTP response, malformed session or network/JSON failure goes
 to login. A failed session lookup does not indicate an empty installation;
 server registration and authorization checks still decide access independently.
 
+While one or more explicit Get Started session lookups are pending, including
+reading successful-response JSON, all three buttons report `aria-busy`. One
+always-mounted, screen-reader-only status outside the buttons contains `Checking
+session…` until the last lookup settles, then empties. Buttons stay enabled with
+the existing labels: overlapping clicks each make a fresh request and keep their
+existing completion-order navigation, including login fallback on failure.
+Initial page checking and visible content are unchanged. Source presentation
+models cover these transitions; actual assistive-technology acceptance remains
+open.
+
 The `/welcome` page describes native Kubernetes Secret management, externally
 supplied cluster access and configured Flux resource status. Its provisioning
 section distinguishes the disabled container runner from optional local Ansible

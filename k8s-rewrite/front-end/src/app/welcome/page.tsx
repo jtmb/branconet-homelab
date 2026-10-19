@@ -26,12 +26,14 @@ import {
 export default function WelcomePage() {
   const router = useRouter();
   const [checking, setChecking] = useState(true);
+  const [pendingRequests, setPendingRequests] = useState(0);
 
   useEffect(() => {
     setChecking(false);
   }, []);
 
   async function handleGetStarted() {
+    setPendingRequests((count) => count + 1);
     try {
       const res = await fetch("/api/auth/session");
       if (!res.ok) throw new Error("Session unavailable");
@@ -50,6 +52,8 @@ export default function WelcomePage() {
       }
     } catch {
       router.push("/auth/login");
+    } finally {
+      setPendingRequests((count) => count - 1);
     }
   }
 
@@ -63,6 +67,7 @@ export default function WelcomePage() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
+      <p className="sr-only" role="status">{pendingRequests > 0 ? "Checking session…" : ""}</p>
       {/* ===== 1. Header ===== */}
       <header className="border-b border-zinc-800 bg-zinc-900/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -89,6 +94,7 @@ export default function WelcomePage() {
               </a>
               <button
                 onClick={handleGetStarted}
+                aria-busy={pendingRequests > 0}
                 className="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors"
               >
                 Get Started
@@ -128,6 +134,7 @@ export default function WelcomePage() {
               <div className="flex flex-wrap gap-4">
                 <button
                   onClick={handleGetStarted}
+                  aria-busy={pendingRequests > 0}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors"
                 >
                   Get Started
@@ -397,6 +404,7 @@ export default function WelcomePage() {
           <div className="flex flex-wrap justify-center gap-4 mb-6">
             <button
               onClick={handleGetStarted}
+              aria-busy={pendingRequests > 0}
               className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium transition-colors"
             >
               Get Started
