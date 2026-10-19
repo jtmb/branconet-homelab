@@ -9,6 +9,17 @@ cluster requirement, not a guarantee supplied by the dashboard. See
 
 ## KV browser revocation handling (2026-10-18)
 
+The administration History task clears only the entered retention limit, exact
+retention confirmation and prior status message on its direct authorization
+loss and existing lifecycle cleanup. Ordinary failures retain limit/status with
+the existing confirmation invalidation and finished capture. Captured revision,
+metadata-only PATCH and other workflow state remain unchanged, apart from that
+shared status message. See
+[retention draft withdrawal](BORTUS-KV-ADMINISTRATION-UI.md#retention-metadata-draft-withdrawal-2026-10-19)
+for the bounded synthetic source scope: final baseline22 had18 failures, while
+the corrected source passed130 focused checks and a fresh build/lint/full
+typecheck. Backend/browser/AT/live acceptance remains separate.
+
 The static-rotation declaration and independent metadata-list clients clear the
 mapped field, consumer kind/name, exact prepare confirmation and prior status
 on their own authorization loss. Ordinary errors retain those declaration

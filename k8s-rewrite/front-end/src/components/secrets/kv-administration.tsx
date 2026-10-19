@@ -1658,8 +1658,7 @@ function History({
   snapshot: PathSnapshot;
   changed: Changed;
 }) {
-  const task = useTask(),
-    [retention, setRetention] = useState(String(snapshot.path.retention)),
+  const [retention, setRetention] = useState(String(snapshot.path.retention)),
     [retentionConfirm, setRetentionConfirm] = useState(""),
     [selected, setSelected] = useState<number[]>([]),
     [destroyConfirm, setDestroyConfirm] = useState("");
@@ -1672,6 +1671,11 @@ function History({
   const [operationId, setOperationId] = useState(""),
     [operationConfirm, setOperationConfirm] = useState(""),
     [operation, setOperation] = useState<Operation | null>(null);
+  const task = useTask(() => {
+    setRetention("");
+    setRetentionConfirm("");
+    setMessage("");
+  });
   useEffect(() => {
     if (task.error) {
       setFinished(true);

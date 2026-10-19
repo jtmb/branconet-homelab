@@ -1,5 +1,32 @@
 # BORTUS KV administration component
 
+## Retention metadata draft withdrawal (2026-10-19)
+
+History's existing operation client now clears the entered retention limit,
+exact retention confirmation and prior status message on its own authorization
+loss, without waiting for shared session polling. Its existing lifecycle reset
+uses the same callback. Selected histories and other workflow state remain outside
+this retention-only reset, apart from that shared status message. Ordinary
+409/503 failures retain the entered limit and prior status message; the existing
+error effect clears the retention confirmation and marks the
+capture finished, requiring fresh metadata before another action.
+
+The exact captured path revision/limit confirmation and metadata-only PATCH are
+unchanged. Focused source qualification selects actual hooks/client, the History
+state prefix and only the first retention JSX box. All adjacent workflow callbacks
+and remaining JSX are omitted before evaluation. Synthetic session and retention
+PATCH metadata only; no initial capture/native reads, backend, database, React DOM,
+browser, AT or live acceptance.
+
+The unchanged 22 regressions produced 18 baseline failures and four passes;
+the corrected source passed them with the unchanged 108 declaration/legacy/
+audit/policy/identity checks: 130 passes, no failures, skips or cancellations.
+A fresh isolated production build, focused zero-warning lint and full
+nonincremental typecheck passed with 303 source/test/control inputs and 37,428
+pinned dependencies checked before/after. The build did not repeat these tests.
+Adjacent selection preservation is explicitly tested; other workflow source is
+unchanged, without an all-state runtime or concurrent-client acceptance claim.
+
 ## Static-rotation declaration withdrawal (2026-10-19)
 
 The rotation declaration operation and independent metadata-list clients now

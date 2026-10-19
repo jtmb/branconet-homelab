@@ -1,5 +1,15 @@
 # BORTUS user permissions
 
+The History administration client's existing direct authorization-loss callback
+now clears the retention draft, exact confirmation and prior status message.
+Page hiding/session-ended cleanup uses the same retention-only reset; other
+workflow state remains outside it, apart from that shared status message.
+Ordinary 409/503 errors retain limit/status
+while the existing error effect invalidates confirmations and finishes the
+capture. No fresh-session, role, capability, revision or server gate changes.
+[Bounded source scope](BORTUS-KV-ADMINISTRATION-UI.md#retention-metadata-draft-withdrawal-2026-10-19)
+keeps backend/browser/AT/live acceptance separate.
+
 KV administration's History cleanup summary gives its existing complete/partial
 metadata outcome `role="status"`, separately from the per-history table. Existing
 pending status/error alerts, fresh authorization, controls and request handling
