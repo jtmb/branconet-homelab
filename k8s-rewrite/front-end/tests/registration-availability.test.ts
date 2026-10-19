@@ -12,7 +12,7 @@ type Reply = { ok: boolean; status?: number; body?: unknown; networkFailure?: bo
 function fixture(reply: Reply, hold = false) {
   const states: unknown[] = [], effects: (() => void)[] = [], routes: string[] = [];
   const requests: { url: string; init?: { method?: string; body?: string } }[] = [];
-  let cursor = 0, mounted = false, jsonReads = 0;
+  let cursor = 0, mounted = false, jsonReads = 0, holdSubmit = false;
   let release!: () => void;
   const pending = new Promise<void>(resolve => { release = resolve; });
   let submitReply: Reply = { ok: true, status: 201 };
@@ -42,6 +42,7 @@ function fixture(reply: Reply, hold = false) {
       requests.push({ url, init: init ? JSON.parse(JSON.stringify(init)) : undefined });
       assert(["/api/auth/session", "/api/auth/register"].includes(url), url);
       if (url === "/api/auth/session" && hold) await pending;
+      if (url === "/api/auth/register" && holdSubmit) await pending;
       const current = url === "/api/auth/session" ? reply : submitReply;
       if (current.networkFailure) throw new Error("Synthetic network failure");
       return { ok: current.ok, status: current.status, json: async () => {
@@ -71,7 +72,15 @@ function fixture(reply: Reply, hold = false) {
   };
   return { first, render, elements, text: () => text(render()), firstElements: walk(first), settle, release,
     requests, routes, fill, submit, jsonReads: () => jsonReads,
-    replyToSubmit: (next: Reply) => { submitReply = next; } };
+    replyToSubmit: (next: Reply) => { submitReply = next; }, holdSubmit: () => { holdSubmit = true; } };
+}
+function assertErrorAnnouncement(f: ReturnType<typeof fixture>, message: string) {
+  const alerts = f.elements().filter(element => element.props.role === "alert");
+  assert.equal(alerts.length, message ? 1 : 0, "Only current nonempty feedback is an alert");
+  if (message) {
+    assert.equal(alerts[0].props.children, message);
+    assert.equal(alerts[0].props.tabIndex, undefined, "Feedback must not introduce a focus target");
+  }
 }
 function assertUnknown(f: ReturnType<typeof fixture>) {
   assert(!f.elements().some(element => element.type === "form"), "Unknown availability must not offer account creation");
@@ -102,6 +111,7 @@ test("explicit successful registration availability preserves open and administr
 test("open registration describes account setup without promising a role from session hints", async () => {
   for (const hint of [{ hasUsers: true }, { hasUsers: false }, {}]) {
     const f = fixture({ ok: true, body: { registrationOpen: true, ...hint } }); await f.settle();
+    assertErrorAnnouncement(f, "");
     assert(f.elements().some(element => element.type === "form"));
     assert.match(f.text(), /Set up your Botrus account/);
     assert.doesNotMatch(f.text(), /administrator account|write access|readonly/i);
@@ -110,6 +120,7 @@ test("open registration describes account setup without promising a role from se
     assert.equal(f.requests[1]?.url, "/api/auth/register");
     assert.deepEqual(JSON.parse(f.requests[1]?.init?.body ?? "null"), { username: "synthetic-user", password: "abcdefgh" });
     assert.deepEqual(f.routes, ["/"]);
+    assertErrorAnnouncement(f, "");
   }
 });
 
@@ -137,13 +148,16 @@ test("confirmed-open registration retains validation and successful POST/navigat
   const f = fixture({ ok: true, body: { registrationOpen: true } }); await f.settle();
   f.fill("username", "synthetic-user"); f.fill("password", "abcdefgh"); f.fill("confirm", "different");
   await f.submit(); assert.match(f.text(), /Passwords do not match/); assert.equal(f.requests.length, 1);
+  assertErrorAnnouncement(f, "Passwords do not match");
   f.fill("password", "short"); f.fill("confirm", "short");
   await f.submit(); assert.match(f.text(), /Password must be at least 8 characters/); assert.equal(f.requests.length, 1);
+  assertErrorAnnouncement(f, "Password must be at least 8 characters");
   f.fill("password", "abcdefgh"); f.fill("confirm", "abcdefgh"); await f.submit();
   assert.deepEqual(f.requests[1], { url: "/api/auth/register", init: {
     method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username: "synthetic-user", password: "abcdefgh" }),
   } });
   assert.deepEqual(f.routes, ["/"]);
+  assertErrorAnnouncement(f, "");
 });
 
 test("confirmed-open form retains fresh server refusal, lock and transport-error outcomes", async () => {
@@ -157,6 +171,8 @@ test("confirmed-open form retains fresh server refusal, lock and transport-error
     f.fill("username", "synthetic-user"); f.fill("password", "abcdefgh"); f.fill("confirm", "abcdefgh");
     f.replyToSubmit(reply); await f.submit();
     assert.match(f.text(), message); assert.equal(f.elements().some(element => element.type === "form"), !locked);
+    assertErrorAnnouncement(f, locked ? "" : "networkFailure" in reply ? "Network error — please try again"
+      : "body" in reply && "error" in reply.body ? reply.body.error : "Registration failed");
     assert.deepEqual(f.routes, []); assert.equal(f.requests.length, 2);
     assert(!f.elements().some(element => element.type === "button" && element.props.disabled === true));
   }
@@ -179,9 +195,24 @@ for (const status of [403, 500]) {
       f.replyToSubmit({ ok: false, status, ...reply }); await f.submit();
       assert.equal(f.elements().some(element => element.type === "form"), status !== 403);
       assert.match(f.text(), status === 403 ? /Registration Locked/ : /Registration failed/);
+      assertErrorAnnouncement(f, status === 403 ? "" : "Registration failed");
       assert.doesNotMatch(f.text(), /Network error|Synthetic proxy failure/);
       assert.deepEqual(f.routes, []); assert.equal(f.requests.length, 2);
       assert(!f.elements().some(element => element.type === "button" && element.props.disabled === true));
     });
   }
 }
+
+test("registration clears the validation alert during a pending explicit retry", async () => {
+  const f = fixture({ ok: true, body: { registrationOpen: true } }); await f.settle();
+  f.fill("username", "synthetic-user"); f.fill("password", "abcdefgh"); f.fill("confirm", "different");
+  await f.submit(); assertErrorAnnouncement(f, "Passwords do not match");
+  f.fill("confirm", "abcdefgh"); f.holdSubmit();
+  const pending = f.submit();
+  assertErrorAnnouncement(f, "");
+  assert(f.elements().some(element => element.type === "button" && element.props.disabled === true));
+  assert.deepEqual(f.routes, []);
+  f.release(); await pending;
+  assertErrorAnnouncement(f, ""); assert.deepEqual(f.routes, ["/"]);
+  assert(!f.elements().some(element => element.type === "button" && element.props.disabled === true));
+});

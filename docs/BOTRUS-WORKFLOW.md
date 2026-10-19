@@ -11,6 +11,13 @@ a JSON object or `Registration failed`; network failures retain the network-erro
 message. Correcting form input or a readable server error does not bypass fresh
 server registration or role checks.
 
+Login and open-registration validation/submission errors expose the existing
+feedback as an alert without moving focus. Feedback still clears on the next
+explicit submit; registration HTTP 403 retains its separate lock screen. This
+source-level announcement semantics change and its presentation-model tests do
+not establish an actual screen-reader pass; assistive-technology acceptance
+remains pending.
+
 ## Public welcome-page capabilities (2026-10-18)
 
 Each Get Started click reads the current session. A successful response with

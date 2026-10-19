@@ -85,6 +85,15 @@ function assertRetainedForm(f: ReturnType<typeof fixture>) {
   assert.equal(f.prevented(), f.requests.length);
 }
 
+function assertErrorAnnouncement(f: ReturnType<typeof fixture>, message: string) {
+  const alerts = f.elements().filter(element => element.props.role === "alert");
+  assert.equal(alerts.length, message ? 1 : 0, "Only current nonempty feedback is an alert");
+  if (message) {
+    assert.equal(alerts[0].props.children, message);
+    assert.equal(alerts[0].props.tabIndex, undefined, "Feedback must not introduce a focus target");
+  }
+}
+
 for (const [label, reply] of [
   ["unreadable JSON", { parseFailure: true }],
   ["null body", { body: null }],
@@ -102,6 +111,7 @@ for (const [label, reply] of [
   test(`login HTTP refusal with ${label} shows the fixed fallback`, async () => {
     const f = ready({ ok: false, ...reply }); await f.submit();
     assert.match(f.text(), /Login failed/);
+    assertErrorAnnouncement(f, "Login failed");
     assert.doesNotMatch(f.text(), /Network error|Synthetic proxy failure/);
     assert.deepEqual(f.routes, []); assert.equal(f.requests.length, 1); assert.equal(f.jsonReads(), 1);
     assertRetainedForm(f);
@@ -112,6 +122,7 @@ test("login preserves normal JSON string feedback and intentional empty strings"
   for (const error of ["Invalid credentials", "Account unavailable", ""]) {
     const f = ready({ ok: false, body: { error } }); await f.submit();
     if (error) assert(f.text().includes(error));
+    assertErrorAnnouncement(f, error);
     assert.doesNotMatch(f.text(), /Login failed|Network error/);
     assert.deepEqual(f.routes, []); assertRetainedForm(f);
   }
@@ -120,6 +131,7 @@ test("login preserves normal JSON string feedback and intentional empty strings"
 test("login transport failure retains network feedback and recovers loading", async () => {
   const f = ready({ ok: false, networkFailure: true }); await f.submit();
   assert.match(f.text(), /Network error — please try again/);
+  assertErrorAnnouncement(f, "Network error — please try again");
   assert.doesNotMatch(f.text(), /Login failed/); assert.equal(f.jsonReads(), 0);
   assert.deepEqual(f.routes, []); assertRetainedForm(f);
 });
@@ -132,15 +144,19 @@ test("login success posts entered credentials and navigates without decoding the
   } }]);
   assert.deepEqual(f.routes, ["/"]); assert.equal(f.jsonReads(), 0);
   assert.doesNotMatch(f.text(), /Login failed|Network error/); assertRetainedForm(f);
+  assertErrorAnnouncement(f, "");
 });
 
 test("login disables a pending submit and clears prior feedback on an explicit retry", async () => {
   const f = ready({ ok: false, body: { error: "Invalid credentials" } }, true);
+  assertErrorAnnouncement(f, "");
   const pending = f.submit();
   assert(f.elements().some(element => element.type === "button" && element.props.disabled === true));
   assert.deepEqual(f.routes, []); f.release(); await pending;
   assert.match(f.text(), /Invalid credentials/); assertRetainedForm(f);
+  assertErrorAnnouncement(f, "Invalid credentials");
   f.replyWith({ ok: true }); await f.submit();
   assert.doesNotMatch(f.text(), /Invalid credentials|Login failed|Network error/);
   assert.deepEqual(f.routes, ["/"]); assert.equal(f.requests.length, 2); assertRetainedForm(f);
+  assertErrorAnnouncement(f, "");
 });

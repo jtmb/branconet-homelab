@@ -6,6 +6,14 @@ never rendered. Failed network requests retain the network-error message; the
 form recovers from loading and successful login still navigates to `/`. These
 client messages do not change fresh server authentication or authorization.
 
+The existing conditional login and open-registration submission feedback uses
+`role="alert"`, including client validation and HTTP/network errors. It adds no
+focus target or focus movement; messages, clearing on explicit submit, loading
+recovery and navigation are unchanged. Registration availability keeps its
+separate status/alert states, and HTTP 403 still replaces the form with the lock
+notice. Actual-source presentation tests cover these semantics; they do not prove
+screen-reader announcements. Actual assistive-technology acceptance remains open.
+
 The registration page waits for a successful session response with an explicit
 boolean `registrationOpen`: true shows the existing form and false shows the
 administrator-lock notice. HTTP, network, JSON and malformed-response failures
