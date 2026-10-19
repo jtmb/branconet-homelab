@@ -1,5 +1,16 @@
 # Approved cluster migration operations
 
+## Browser and recovery clearance - 2026-10-19 UTC
+
+The integrated Codex browser works and the corrected image's same-origin login flow is exercised. No browser reset, native Computer Use skill, new extension or user browser action is required. This does not qualify a real screen reader or live native KV operations.
+
+The private recovery worker reported `This content was flagged for possible cybersecurity risk`, linking [Status and access](https://platform.openai.com/settings/organization/status-and-access). A local evidence/docs write was separately rejected `blocked by policy` on October18 at14:38 UTC. Do not retry/rephrase/reassign those rejected actions or present sudo/ownership authorization as clearance.
+
+To request clearance, open that Status and access page in the same account and follow any displayed review/appeal instructions. If no restriction or review control appears, use Codex `/feedback` or [OpenAI Support](https://help.openai.com/) with the exact error strings, timestamp, originating chat `01a12045-bf7e-73b3-8557-752d17c72ffd` and intended private recovery-validation scope. Ask which restriction applies and how to obtain review. No documented local Kubernetes/password change clears this flag; account/API review does not guarantee Codex clearance. No support report has been sent for the operator. Resume rejected work only after an applicable resolution.
+
+Historical host NAS backup paths are no longer mounted after approved cleanup; an existing directory is not NAS access. Any later authorized recovery requires protected NAS access and the original independent recovery/data-preservation contract. Retained cold legacy archive checks do not prove a new-engine restore or compatible rollback.
+
+
 ## Legacy Gluster/Swarm retirement and SMB cleanup - 2026-10-19 UTC
 
 The user explicitly directed Gluster/SMB retirement and confirmed **keep NAS media; remove legacy host mounts**. BORTUS/native Kubernetes Secrets are authoritative; Vault is retired legacy infrastructure. [Current retirement evidence](../evidence/legacy-storage-retirement-20261019.json) records actual completed operations, fresh verification and limits.

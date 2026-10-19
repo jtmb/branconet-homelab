@@ -1,0 +1,92 @@
+{
+  "sourceCommit": "d6382450ba9064c79f7bbcac23c1d27c9c179610",
+  "applicationTree": "52293311f1001327cc9651c013317c575bef7cef",
+  "runtimeIndex": "sha256:7b03b4b8d40fc3014822212aa9db4c24dfcc4a5781b9b5e5632cbc33fb9ff276",
+  "selectedManifest": "sha256:43994206dc2264057ee097f6e3213f9a9d9938f95d02cfc7fe82b26a1e1bd69a",
+  "rawConfig": "sha256:2a94b471bffd2ab28d2f1f65aac239776a7e7895e29e63f6c2265eae29d87806",
+  "archiveSHA256": "b1d736a1419e81a168dd0a7910224c0333125c17f0c88381f70ef2211964ae33",
+  "archiveBytes": 478087168,
+  "buildExit": 0,
+  "exportExit": 0,
+  "receiptSHA256": {
+    "build": "c3ba26d8737ddce72b84304b8b58de44b2924435b24a9f2d26f93609846ec8e6",
+    "export": "34261ee4586e220cd8f5cb4f8b5f44e178014d8fea99a5ec371a23cdd37ef56c",
+    "publicRuntime": "cfcebd373ccfa348e7f26cb725ff7c6e55174fc869ad020a02ed7b1a5d431820",
+    "publicIndependentCleanup": "869b4a4bdf37cfad59d89635a4e36069f1e2656d0ba40c87cfa754bcd26b5766",
+    "defaultScan": "8e4d5969eb0d2ba3c4303c9fe3df71edf0b6ca05c2b1fd671454615c7c8341c4",
+    "defaultScanReport": "8f57c98145505765bfb14bb82585aa525cc5e988da32ef28b89ed84bf0b4682c",
+    "browserClosure": "afdb6e0fed9257edd4014e3542445d484349560a326307ef7b6ae2691949928a"
+  },
+  "publicChecksPassed": 12,
+  "publicContainerExit": 0,
+  "publicWrapperExit": 1,
+  "publicCleanupClosed": true,
+  "scan": {
+    "wrapperExit": 1,
+    "scannerExit": 1,
+    "vulnerabilitiesBySeverity": {
+      "MEDIUM": 12
+    },
+    "secretRows": 0,
+    "accepted": false
+  },
+  "browserPreviewClosed": true,
+  "rootIndependentlyVerified": true,
+  "observedUTC": "2026-10-19T03:22:26.781451+00:00",
+  "scope": "Page-origin corrected immutable image; isolated integrated-browser evidence; original acceptance gates retained",
+  "sourceCI": {
+    "id": 39192452213,
+    "conclusion": "success"
+  },
+  "charts": {
+    "branch": "codex/bortus-native-kv-release",
+    "commit": "835dabebd97a7691311b2c6748fd3cfa4db17f44",
+    "ci": 39194242639,
+    "ciConclusion": "success",
+    "tests": 29,
+    "charts": 33,
+    "helmReleases": 34,
+    "composedResources": 71,
+    "merged": false,
+    "helmSuspended": true,
+    "guardedAdoption": false
+  },
+  "integratedBrowser": {
+    "provider": "Codex in-app browser only",
+    "newImageVerified": true,
+    "origin": "http://127.0.0.1:4401",
+    "observations": [
+      "Unauthenticated root reaches same-origin /welcome, without localhost:4000 redirect",
+      "Get Started opens same-origin /auth/login; owner signs in to same-origin /",
+      "Dashboard renders truthful unavailable cluster/native metadata in isolated network-none preview",
+      "Secrets and KV metadata pages render through visible navigation",
+      "Sign out returns to same-origin /auth/login",
+      "Readonly signs in to dashboard without operator terminal; Configuration has no mutation controls"
+    ],
+    "syntheticStateOnly": true,
+    "liveKubernetesTraffic": false,
+    "closed": true
+  },
+  "newImagePreloaded": false,
+  "productionChanged": false,
+  "overallAcceptance": false,
+  "remaining": [
+    "Original A07 warm gate fails 3 of 10 comparisons; see paired performance receipt",
+    "Default security scan exits 1 with 12 Medium findings; no accepted residual",
+    "Independent compatible full-row/native recovery remains unqualified and platform-flagged work is not retried",
+    "Actual assistive technology, mobile/200 percent zoom and live native value/history/CAS/rotation/adoption remain unqualified",
+    "Welcome page still advertises AES-256-GCM for all sensitive data and auto-sync wording; source-only follow-up needed before accepting those claims"
+  ],
+  "screenshots": [
+    {
+      "path": "evidence/bortus-integrated-ui-20261019/corrected-image-overview.jpg",
+      "sha256": "ebc6ec80756270ca5a7170abb0e32724bfb1ed5264728acd0c16073a03fa630d",
+      "bytes": 63688
+    },
+    {
+      "path": "evidence/bortus-integrated-ui-20261019/corrected-image-readonly.jpg",
+      "sha256": "35913f733349f8e43d68080f4f07ae1fea30d49657d13c18306bdbb55fd0ff26",
+      "bytes": 63560
+    }
+  ]
+}

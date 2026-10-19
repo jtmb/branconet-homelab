@@ -1,0 +1,63 @@
+{
+  "observedUTC": "2026-10-19T02:55:05Z",
+  "scope": "Actual integrated Codex browser against the retained final image with disposable synthetic state",
+  "sourceCommit": "5aba82c28d5cad1d571416ea9c06f5d2d61260b3",
+  "applicationTree": "aa403b2bd7fa1000d130109a4124e5afe9bbe403",
+  "localImage": "sha256:bfc78b697373727aebccf50c70ef1944c76691cc435da0ad3bcc4e44670ff211",
+  "browser": "Integrated in-app browser through cua_repl; no native Computer Use skill",
+  "environment": {
+    "database": "Fresh disposable tmpfs SQLite",
+    "accounts": "Synthetic operator and readonly accounts",
+    "containerNetworking": "none",
+    "containerRootFilesystem": "read-only",
+    "productionDataOrCredentials": false,
+    "kubernetesTraffic": false,
+    "applicationOrDependencyOverlay": false,
+    "originalImageEntrypoint": true,
+    "cpu": 2,
+    "memoryBytes": 1073741824,
+    "swapBytes": 0,
+    "pidsLimit": 256
+  },
+  "observations": [
+    "Operator login reaches the actual dashboard; invalid readonly login gives Invalid username or password; valid readonly login succeeds; operator logout returns to login",
+    "All sidebar destinations plus Settings and KV workbench render through actual integrated-browser navigation",
+    "Overview and cluster/Flux/native lists state unavailable explicitly; independent metadata is not reported as a healthy empty cluster",
+    "Provisioning displays its disabled-runtime explanation and no Run provisioning action",
+    "Operator creates one nonsecret configuration row; deletion confirmation starts disabled; Cancel retains the row and returns focus to its Delete button",
+    "Operator creates acceptance-preview mount limited to default and registers apps/preview mapping username to exact native key login_name",
+    "Path registration reports metadata-only success and preserves separate native initialization/adoption",
+    "Open path shows exact target, revision, retention, field mapping, native mutations disabled and required external admission/RBAC verification",
+    "Values and versions opens a named workbench with explicit native-unavailable state and no reveal/save action; Escape closes it and returns focus to Values and versions",
+    "Readonly configuration shows the saved nonsecret row without Add/Edit/Delete controls",
+    "Collapsed navigation retains named destinations",
+    "Readonly native Secrets omits value/editor controls; readonly KV omits mount/path writes; Administration exposes Audit only with redacted path-register metadata",
+    "Readonly Users shows the two synthetic users without mutation controls; Settings omits registration/storage mutations"
+  ],
+  "defect": {
+    "request": "Unauthenticated GET / through the loopback relay",
+    "actualStatus": 307,
+    "actualLocation": "http://localhost:4000/welcome",
+    "effect": "Browser follows the internal origin and fails to connect",
+    "directLoginPageStatus": 200,
+    "sourceFixAndNewImageRequired": true
+  },
+  "screenshots": [
+    {"file": "bortus-integrated-ui-20261019/overview-integrated.jpg", "bytes": 63688, "sha256": "ebc6ec80756270ca5a7170abb0e32724bfb1ed5264728acd0c16073a03fa630d"},
+    {"file": "bortus-integrated-ui-20261019/kv-unavailable-integrated.jpg", "bytes": 45206, "sha256": "c8f8e32958e4dee654106c26bb831d8e3d3f513d5ce92ca5507fda40a198352f"},
+    {"file": "bortus-integrated-ui-20261019/readonly-integrated.jpg", "bytes": 33555, "sha256": "7f8f0db5816375af00dcae0d2bf14a79a99232f72611ea38d86c837d9c08a273"}
+  ],
+  "closure": {
+    "workerVerifiedSameSupervisorBirthAbsent": true,
+    "exactContainerInspectExit": 1,
+    "exactNameQueryExit": 0,
+    "exactNameAbsent": true,
+    "linuxAndWindowsListenerAbsent": true,
+    "retainedFilesAndImagesPreserved": true
+  },
+  "actualAssistiveTechnology": false,
+  "actual200PercentZoomOrMobileGeometryQualified": false,
+  "successfulNativeValueVersionCASRotationFlowsQualified": false,
+  "performanceSecurityRecoveryOrLiveAdoptionQualified": false,
+  "overallAcceptance": false
+}

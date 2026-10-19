@@ -1,0 +1,68 @@
+{
+  "observedUTC": "2026-10-19T03:11:36Z",
+  "scope": "Original frozen A07 acceptance comparison for the changed page-origin candidate; failed acceptance retained",
+  "candidate": "d6382450ba9064c79f7bbcac23c1d27c9c179610",
+  "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "sourceCI": {"id": 39192452213, "conclusion": "success"},
+  "originalRunner": {
+    "frozenCommit": "7c2bbca7c8cf3ed3f1419f7444b7498a9df7f2eb",
+    "runSHA256": "cd79ae39c61d68c8d3fb2b2a93d6c9ba5ef1c6b0a190ba714210808acc3691a8",
+    "harnessSHA256": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b",
+    "summarySHA256": "94983e4f9d5d5a167ff6435098daa4bfbe9f618995af7dec8b0a742c92f238a6",
+    "exporterCommit": "a82a6cb9e244b0ec05489bc7251f3e29411c64dc",
+    "exporterSHA256": "5bcdb86fd8a795d72f195dbf5163a46ad09de79b54d0ead4dbba0eadb0743470",
+    "bytesOrAcceptanceChanged": false,
+    "runtimeImageBothSources": "sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
+    "runtimeLimits": {"cpu": 2, "memoryBytes": 1073741824, "swapBytes": 0, "pids": 256, "network": "none"},
+    "buildLimits": {"cpu": 4, "memoryBytes": 4294967296, "swapBytes": 0, "pids": 256, "nextWorkers": 4},
+    "buildPhaseSeconds": 900,
+    "measurementPhaseSeconds": 600,
+    "originalSupervisorSeconds": 5430
+  },
+  "execution": {
+    "order": ["baseline1", "candidate1", "candidate2", "baseline2", "baseline3", "candidate3"],
+    "observations": 6,
+    "profilesPerObservation": 6,
+    "allObservationExits": 0,
+    "originalInventoryAssertionsPassed": true,
+    "actualRunnerExit": 0,
+    "actualSupervisorExit": 0,
+    "runtimeReplayed": false,
+    "extraWarmupTrimmingOrTolerance": false
+  },
+  "verification": {
+    "workerIndependentDistributions": 1386,
+    "rootOriginalSummaryRecomputationMatchesEveryField": true,
+    "rootRecomputedDistributions": 1386,
+    "workerVerifiedFrozenInputs": 145,
+    "workerVerifiedCurrentAndRawGitSourceFiles": 453,
+    "baselineArchiveMatchesRetainedOriginal": true,
+    "candidateArchiveMatchesIndependentReleaseContext": true,
+    "recordedBirthIdentitiesAbsent": 10,
+    "exactNameQueriesExitZeroAndEmpty": 8,
+    "originalRunnerDidNotRetainContainerIDs": true,
+    "containerIDAbsenceClaimed": false
+  },
+  "warmComparableCases": 10,
+  "warmImprovedCases": 7,
+  "warmRegressions": [
+    {"fixture": "audit-small", "phase": "warm-pods-12", "baselineP95MedianMS": 19.279977000000144, "candidateP95MedianMS": 20.965273000000252},
+    {"fixture": "metadata-200", "phase": "warm-pods-concurrent-20", "baselineP95MedianMS": 64.60767499999929, "candidateP95MedianMS": 65.6667550000002},
+    {"fixture": "kv-sized-native-25", "phase": "warm-pods-12", "baselineP95MedianMS": 7.976707999998325, "candidateP95MedianMS": 8.500355999996827}
+  ],
+  "wholeFixtureObservations": {
+    "cpuSecondsMedian": {"baseline": 38.491745, "candidate": 32.377975},
+    "peakMemoryMiBMedian": {"baseline": 360.00390625, "candidate": 432.71875},
+    "isolatedApplicationOrNormalizationCostClaimed": false
+  },
+  "retainedArtifacts": {
+    "rawReport": {"bytes": 860891, "sha256": "c36afc48308e7abca3302399c1db8839750ca4a00d8697e82bf1f67e44dc8577"},
+    "summary": {"bytes": 222363, "sha256": "44791e00ca888853cd42cea2b062483a1e861ce8273bbfb5060f1cf70ed97ebf"},
+    "terminal": {"bytes": 3051, "sha256": "225425c261742f29b9a330b187bb934d5e3036ca7d04ddb56f904dc99da35d92"},
+    "workerIndependentReview": {"bytes": 61081, "sha256": "5d9ea2ed51fc718c1afdcee83dc2c5a0e3ff7f1897f169049e8fb326b4eb4743"}
+  },
+  "originalNoWarmRegressionClausePassed": false,
+  "historicalFailuresRetained": true,
+  "productionChanged": false,
+  "overallAcceptance": false
+}

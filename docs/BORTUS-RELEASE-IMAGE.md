@@ -1,5 +1,13 @@
 # Immutable BORTUS release image builder
 
+## Corrected image verified with the integrated browser - 2026-10-19 UTC
+
+Source `d6382450ba9064c79f7bbcac23c1d27c9c179610` fixes the internal-origin redirect using supported Next configuration; CI39192452213 passes. New runtime index `sha256:7b03b4b8d40fc3014822212aa9db4c24dfcc4a5781b9b5e5632cbc33fb9ff276` builds/exports successfully. All12 public startup checks pass/container0; original wrapper cleanup exit1 remains retained with separate exact-container absence proof. [Current evidence](../evidence/bortus-corrected-image-root-20261019.json) records independently checked identities, archive/receipt hashes and two new screenshots.
+
+Actual integrated Codex browser verifies same-origin root/welcome/sign-in, owner login, Secrets/KV navigation, logout, readonly login and absent readonly configuration mutations. The disposable preview is closed; both platform listeners are absent. No native Computer Use skill is needed. [Earlier broader UI evidence](../evidence/bortus-integrated-browser-ui-root-20261019.json) remains bound to the previous image. Welcome still contains stale AES-256-GCM/auto-sync claims, requiring source follow-up.
+
+The [original paired performance gate](../evidence/bortus-page-origin-performance-root-20261019.json) fails three of ten warm comparisons; seven improve. Root recomputes all1386 distributions from retained raw measurements. Fresh default scan exits1 with12 Medium findings and zero secrets, without dispositions or acceptance. Assistive technology, live native value/history/CAS/rotation, independent compatible recovery and guarded adoption remain open. New image is locally exported, not preloaded or deployed. Draft charts PR5 at `835dabebd97a7691311b2c6748fd3cfa4db17f44` joins the release and three allowlists to that index;29 tests,33-chart/34-release/71-resource validation and CI39194242639 pass. It stays unmerged, Helm suspended and adoption false. Policy reconciliation is independent of Helm suspension.
+
 ## Final source image staged — 2026-10-18
 
 Current app source `5aba82c` builds through release-v2 over the explicitly pinned maintained runtime. The exact saved image and its ordered layers are verified, and all three supplied nodes import the same runtime index `sha256:bfc78b697373727aebccf50c70ef1944c76691cc435da0ad3bcc4e44670ff211`. A separate operator cache correction adds the absent exact `docker.io/library/bortus@sha256:…` alias without force or changing the release tag; source and alias targets agree on every node. This operator step is recorded separately and is not attributed to the preload helper.
