@@ -1,5 +1,11 @@
 # BORTUS workflow guide
 
+Registration submission keeps an HTTP 403 refusal locked even if the server or
+proxy error body cannot be parsed. Other HTTP refusals show a string error from
+a JSON object or `Registration failed`; network failures retain the network-error
+message. Correcting form input or a readable server error does not bypass fresh
+server registration or role checks.
+
 ## Public welcome-page capabilities (2026-10-18)
 
 Each Get Started click reads the current session. A successful response with

@@ -57,9 +57,10 @@ export default function RegisterPage() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        setError(data.error ?? "Registration failed");
         if (res.status === 403) setLocked(true);
+        const data: unknown = await res.json().catch(() => null);
+        setError(data && typeof data === "object" && !Array.isArray(data) && "error" in data && typeof data.error === "string"
+          ? data.error : "Registration failed");
         return;
       }
 

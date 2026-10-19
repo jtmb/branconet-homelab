@@ -14,6 +14,13 @@ existing-user registration. Session `hasUsers` hints do not promise a role or
 add role fields to the submission. The serialized server transaction assigns
 write to the first user and readonly to subsequent users from fresh state.
 
+Submission HTTP 403 locks the form before reading the response body, including
+when that body is empty, malformed or unreadable. Other unsuccessful HTTP
+responses show a string `error` from a JSON object or the fixed `Registration
+failed` fallback; nonstring errors are never rendered. A failed network request
+retains the existing network-error message. Successful submission still navigates
+to `/`; server registration and role checks remain authoritative.
+
 The public welcome page requests a fresh `/api/auth/session` response for each
 Get Started click. Only a successful HTTP response containing an object with
 boolean `authenticated` and `hasUsers` flags selects a session destination:

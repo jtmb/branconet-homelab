@@ -161,3 +161,27 @@ test("confirmed-open form retains fresh server refusal, lock and transport-error
     assert(!f.elements().some(element => element.type === "button" && element.props.disabled === true));
   }
 });
+
+for (const status of [403, 500]) {
+  for (const [label, reply] of [
+    ["unreadable JSON", { parseFailure: true }],
+    ["null body", { body: null }],
+    ["array body", { body: [] }],
+    ["string body", { body: "Synthetic proxy failure" }],
+    ["object error", { body: { error: { message: "Synthetic proxy failure" } } }],
+    ["array error", { body: { error: ["Synthetic proxy failure"] } }],
+    ["boolean error", { body: { error: true } }],
+    ["numeric error", { body: { error: 42 } }],
+  ] as const) {
+    test(`registration HTTP ${status} with ${label} retains refusal presentation`, async () => {
+      const f = fixture({ ok: true, body: { registrationOpen: true } }); await f.settle();
+      f.fill("username", "synthetic-user"); f.fill("password", "abcdefgh"); f.fill("confirm", "abcdefgh");
+      f.replyToSubmit({ ok: false, status, ...reply }); await f.submit();
+      assert.equal(f.elements().some(element => element.type === "form"), status !== 403);
+      assert.match(f.text(), status === 403 ? /Registration Locked/ : /Registration failed/);
+      assert.doesNotMatch(f.text(), /Network error|Synthetic proxy failure/);
+      assert.deepEqual(f.routes, []); assert.equal(f.requests.length, 2);
+      assert(!f.elements().some(element => element.type === "button" && element.props.disabled === true));
+    });
+  }
+}
