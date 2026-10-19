@@ -1,5 +1,11 @@
 # Approved cluster migration operations
 
+## Bounded warm Pods review decision - 2026-10-19 (Toronto)
+
+The [finite source review](../evidence/bortus-warm-pods-source-review-root-20261019.json) concludes no justified patch. One middleware account read, required core pre/post-yield checks and refusal drain, later parent delivery validation and the existing resource-only/memoized Pods response remain unchanged. The source decision neither diagnoses the five failed warm comparisons nor permits another unchanged benchmark. No runtime or production operation occurs.
+
+The [next separate feature](operations/handoffs/2026-10-19-bortus-warm-pods-review-successor.md) verifies the truthful welcome in an exactly source-bound compiled preview through the integrated Codex browser, with owned isolation/lifetime/closure. It grants no image/release acceptance, deployment, actual AT claim or native Computer Use permission. Prior image7b03 remains tied to d6382450 and its old welcome text. Original performance/security/recovery/live gates and the rejected-action boundaries below remain unchanged.
+
 ## Successful-settlement performance qualification - 2026-10-19 (Toronto)
 
 The [single original changed-candidate A07 comparison](../evidence/bortus-account-settlement-performance-root-20261019.json) finishes its fresh builds and six observations, but five of ten warm p95 cases regress. Root and worker independently match every saved summary field/all1386 distributions and verify145 frozen inputs/453 source payloads. Original resource limits, profiles, alternating pairs, warmups and the no-warm-regression clause remain unchanged. All raw failures and preparation/reader errors are retained; corrected readers do not rerun measurements.

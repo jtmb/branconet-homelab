@@ -1,5 +1,11 @@
 # Migration acceptance evidence
 
+## Warm Pods source review: no justified patch - 2026-10-19 (Toronto)
+
+The bounded [account-delivery/response review](evidence/bortus-warm-pods-source-review-root-20261019.json) finds no demonstrated removable redundancy within the required semantics. Root, the separate application owner and independent acceptance reviewer trace the sole middleware session read, both real core identity yields, refusal draining, the later parent delivery fence and the already memoized redacted Pods projection/JSON. No source, tests, dependencies, runners, fixtures, thresholds or bounds change; no runtime, diagnostics or benchmark is replayed. This is a scoped source decision, not proof that every optimization is impossible or an explanation of the measured regressions.
+
+A07 still fails five of ten original warm cases; the candidate stays isolated and unadopted. Retained raw/summary hashes and unchanged frontend tree remain bound to the prior actual comparison. Security, actual AT, compatible independent recovery and guarded live adoption remain open. No image, deployment, node/Secret/schema/RBAC/admission/storage operation follows. The next separate feature is actual integrated-browser verification of the changed truthful welcome from an exactly bound compiled-source preview; old image7b03 evidence still belongs to d6382450. [Continuing handoff](docs/operations/handoffs/2026-10-19-bortus-warm-pods-review-successor.md) carries the full goal and existing boundaries forward.
+
 ## Successful-settlement original A07 comparison fails - 2026-10-19 (Toronto)
 
 The one original frozen `d6867ba` versus `51e8cd66` comparison completes fresh builds, all six observations and runner/supervisor at exit0, but **fails five of ten comparable warm p95 cases**. Regressions are small concurrent47.136963 to47.795010ms,200 serial6.965956 to7.103251ms,1k serial9.121095 to10.051732ms,1k concurrent73.687660 to80.455993ms and maximum-flat serial6.139878 to6.740142ms. Root and worker independently reconstruct the complete summary/all1386 distributions,145 frozen inputs and453 source payloads. [Numeric evidence](evidence/bortus-account-settlement-performance-root-20261019.json) retains original artifacts and caveats.

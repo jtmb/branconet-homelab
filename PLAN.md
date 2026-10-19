@@ -1,5 +1,11 @@
 # Kubernetes migration plan and acceptance contract
 
+## Warm Pods source review: no justified patch - 2026-10-19 (Toronto)
+
+The bounded [account-delivery/response review](evidence/bortus-warm-pods-source-review-root-20261019.json) finds no demonstrated removable redundancy within the required semantics. Root, the separate application owner and independent acceptance reviewer trace the sole middleware session read, both real core identity yields, refusal draining, the later parent delivery fence and the already memoized redacted Pods projection/JSON. No source, tests, dependencies, runners, fixtures, thresholds or bounds change; no runtime, diagnostics or benchmark is replayed. This is a scoped source decision, not proof that every optimization is impossible or an explanation of the measured regressions.
+
+A07 still fails five of ten original warm cases; the candidate stays isolated and unadopted. Retained raw/summary hashes and unchanged frontend tree remain bound to the prior actual comparison. Security, actual AT, compatible independent recovery and guarded live adoption remain open. No image, deployment, node/Secret/schema/RBAC/admission/storage operation follows. The next separate feature is actual integrated-browser verification of the changed truthful welcome from an exactly bound compiled-source preview; old image7b03 evidence still belongs to d6382450. [Continuing handoff](docs/operations/handoffs/2026-10-19-bortus-warm-pods-review-successor.md) carries the full goal and existing boundaries forward.
+
 ## Successful-settlement original A07 comparison fails - 2026-10-19 (Toronto)
 
 The single original comparison of changed application `d6867ba1990e3e025c6eb3c9a169db1e75362993` against baseline `51e8cd66379c1f40a95ea02f4da7c8aed848f2a4` completes both fresh builds and all six observations at exit0. **A07 remains failed: five of ten comparable warm p95 cases regress.** Root and acceptance worker independently reconstruct every saved summary field and all1386 distributions, verify145 frozen inputs and453 exported source payloads, and preserve the original profiles, three alternating pairs, bounds, warmups and no-regression clause. [Current performance receipt](evidence/bortus-account-settlement-performance-root-20261019.json) records the five cases and exact original artifact hashes.
