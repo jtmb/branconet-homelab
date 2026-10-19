@@ -2012,10 +2012,19 @@ function Rotations({
   snapshot: PathSnapshot;
   changed: Changed;
 }) {
+  const clearDeclaration = () => {
+    setField("");
+    setKind("Deployment");
+    setConsumer("");
+    setPrepareConfirm("");
+    setMessage("");
+  };
   const list = usePage<Rotation>(
       `/api/kv/rotations?pathId=${snapshot.path.id}`,
+      true,
+      clearDeclaration,
     ),
-    task = useTask();
+    task = useTask(clearDeclaration);
   const [field, setField] = useState(""),
     [kind, setKind] = useState("Deployment"),
     [consumer, setConsumer] = useState(""),

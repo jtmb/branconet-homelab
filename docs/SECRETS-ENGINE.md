@@ -9,6 +9,13 @@ cluster requirement, not a guarantee supplied by the dashboard. See
 
 ## KV browser revocation handling (2026-10-18)
 
+The static-rotation declaration and independent metadata-list clients clear the
+mapped field, consumer kind/name, exact prepare confirmation and prior status
+on their own authorization loss. Ordinary errors retain those declaration
+drafts; selected rotation and other workflow state remain outside this reset.
+The [bounded declaration source checks](BORTUS-KV-ADMINISTRATION-UI.md#static-rotation-declaration-withdrawal-2026-10-19)
+exclude generation, consumer actions, recovery and backend/browser acceptance.
+
 Legacy operation and independent grant-list tasks share an editor reset on their
 own authorization loss: principal/alias, captured change and expected text,
 impact/complete alias set, acknowledgments, entered confirmation and prior

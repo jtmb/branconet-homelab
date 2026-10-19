@@ -104,6 +104,14 @@ Unauthenticated or revoked page requests retain the browser origin when redirect
 
 ## KV client withdrawal on failed authorization (2026-10-18)
 
+Both static-rotation declaration and independent list clients clear the entered
+field, consumer kind/name, prepare confirmation and prior status on direct
+authorization loss. Ordinary errors retain those declaration drafts; selected
+rotation and other workflow state, server gates and existing task-error behavior
+are unchanged. [Declaration source checks](BORTUS-KV-ADMINISTRATION-UI.md#static-rotation-declaration-withdrawal-2026-10-19)
+use only synthetic session/list/declaration metadata, excluding backend,
+generation, consumer actions, recovery, browser and AT acceptance.
+
 Legacy principal-operation and independent grant-list tasks clear the full
 local principal, entered alias, captured change/expected text, impact and alias
 set, acknowledgments, entered confirmation and prior success on their own

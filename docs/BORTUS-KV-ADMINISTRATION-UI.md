@@ -1,5 +1,35 @@
 # BORTUS KV administration component
 
+## Static-rotation declaration withdrawal (2026-10-19)
+
+The rotation declaration operation and independent metadata-list clients now
+share a declaration reset on their own authorization loss. It clears the mapped
+field, restores consumer kind to Deployment, clears consumer name and exact
+prepare confirmation, and clears the prior status message. Existing preflight,
+request and postflight checks invoke it without waiting for shared session polling.
+Page hiding and session-ended cleanup use the same reset and existing reply fence.
+
+Ordinary operation and list errors retain these declaration drafts and prior
+status. The existing operation-error effect and finished-state behavior are
+unchanged. The selected rotation row and other workflow state are preserved by
+this reset; it does not invalidate a sibling client's epoch. Preparation still
+sends only the captured path ID/revision, field and declared same-namespace
+consumer. There is no automatic retry or change to transport, authority or CAS.
+
+The focused fixture selects actual hooks, client and declaration/list JSX only,
+with asserted boundaries omitting the shared action function and row workflow
+JSX. Synthetic session, list and declaration metadata establish local state and
+request settlement only. Generation, consumer reload/acknowledgment, recovery,
+backend, React DOM, browser, AT and live acceptance are outside this check.
+
+The unchanged 28 declaration regressions produced 21 expected baseline failures
+and seven passes, then passed with the unchanged legacy/audit/policy/identity
+regressions: 108 passes, no failures, skips or cancellations. A fresh isolated
+production build, focused zero-warning lint and full nonincremental typecheck
+passed with 302 source/test/control inputs and 37,428 pinned dependencies checked
+before/after. The build did not repeat these tests. These results do not establish
+all cross-client concurrent cases or acceptance of the omitted workflow branches.
+
 ## Legacy editor authorization withdrawal (2026-10-19)
 
 Legacy principal operations and the independent grant-list task now share an
