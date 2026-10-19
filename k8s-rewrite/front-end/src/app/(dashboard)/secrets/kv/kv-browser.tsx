@@ -31,7 +31,7 @@ export default function KvBrowser() {
     <div className="flex flex-wrap gap-3"><Link href="/secrets" prefetch={false} className={button}>Native objects and aliases</Link><button className={button} onClick={() => { setAdministrationRefresh(value => value + 1); refetchKvMetadata(); }}>Refresh KV metadata</button>
       <button ref={administrationTrigger} className={button} disabled={!session.data?.authenticated || !fresh(session)} aria-expanded={administrationOpen} aria-controls="kv-administration-panel" onClick={() => { if (administrationOpen) closeAdministration(); else setAdministrationOpen(true); }}>Administration and audit</button></div></header>
     {administrationOpen && <section id="kv-administration-panel"><KvAdministration initialOpen selectedPathId={selected ?? null} refreshKey={administrationRefresh} onClose={closeAdministration} onMetadataChange={refetchKvMetadata} /></section>}
-    {message && <p role="status" className="text-emerald-300">{message}</p>}
+    {message && <div className="flex flex-wrap items-center gap-3"><p role="status" className="text-emerald-300">{message}</p><button type="button" className={button} onClick={() => { setMessage(""); (formTrigger.current?.isConnected ? formTrigger.current : searchInput.current)?.focus(); }}>Dismiss success message</button></div>}
     <section aria-labelledby="kv-mounts" className={surface}><div className="flex flex-wrap items-center gap-3"><h2 id="kv-mounts" className="font-semibold">Mounts</h2>
       {session.canWrite && <button className={button} onClick={event => { formTrigger.current = event.currentTarget; setRegistration(undefined); setMountEditor("new"); }}>Create mount</button>}</div>
       <QueryState query={mounts} label="mounts" retry={mounts.refetch} />
