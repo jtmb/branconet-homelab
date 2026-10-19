@@ -1,5 +1,12 @@
 # BORTUS user permissions
 
+KV administration's History cleanup summary gives its existing complete/partial
+metadata outcome `role="status"`, separately from the per-history table. Existing
+pending status/error alerts, fresh authorization, controls and request handling
+are unchanged. Actual-source TSX/JSX presentation models do not establish screen-reader
+announcements; actual assistive-technology acceptance remains open. See
+[administration status semantics](BORTUS-KV-ADMINISTRATION-UI.md#cleanup-outcome-status-semantics-2026-10-19).
+
 Login HTTP refusals show a string `error` from a JSON object or the fixed `Login
 failed` fallback when the body is unreadable or malformed. Nonstring errors are
 never rendered. Failed network requests retain the network-error message; the

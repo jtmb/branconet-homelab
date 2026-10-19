@@ -1,5 +1,21 @@
 # BORTUS KV administration component
 
+## Cleanup outcome status semantics (2026-10-19)
+
+The History cleanup result summary uses `role="status"` for its existing complete
+or partial outcome text. Destroy and aged-GC callbacks display that summary outside
+the separate `TaskState` polite region. Only the concise summary has the status
+role; the per-history outcome table remains outside it. Pending requests retain
+their existing status, errors retain their alert, and retention success retains
+its separate status. No message, handler, state transition, focus behavior,
+request, authorization or data contract changes.
+
+Actual-source TSX/JSX presentation models evaluate complete/partial cleanup
+metadata and the existing idle/pending/error/recovery messages with a scoped JSX
+receiver, without React DOM, browser rendering or requests.
+These checks establish source semantics only. Browser, accessibility-tree and
+actual assistive-technology announcement acceptance remain separate and open.
+
 ## Authorization withdrawal fix (2026-10-18)
 
 Unused denial streams are cancelled without awaiting cancellation; private-state withdrawal and the typed denial do not wait for a hostile or stalled body.

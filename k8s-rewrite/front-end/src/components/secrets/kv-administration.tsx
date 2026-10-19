@@ -1537,7 +1537,7 @@ function PathIdentity({ snapshot }: { snapshot: PathSnapshot }) {
 function Cleanup({ result }: { result: CleanupResult }) {
   return (
     <div className="space-y-2">
-      <p className="break-all text-sm text-amber-200">
+      <p role="status" className="break-all text-sm text-amber-200">
         Reference operation {result.operationId}: {result.outcome}. History
         cleanup{" "}
         {result.cleanupComplete
