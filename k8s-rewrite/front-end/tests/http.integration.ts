@@ -153,6 +153,27 @@ test(
         await new Promise((resolve) => setTimeout(resolve, 100));
       }
       assert.ok(started, "production server did not start");
+      phase = "same-origin-page-redirects";
+      const redirectHeaders: HeadersInit[] = [
+        {},
+        { host: "dashboard.example.test:8443", "x-forwarded-host": "dashboard.example.test:8443", "x-forwarded-proto": "https" },
+        { host: "untrusted.example.test:9443", "x-forwarded-host": "other.example.test:7443", "x-forwarded-proto": "http", forwarded: "host=third.example.test:6443;proto=https" },
+      ];
+      for (const headers of redirectHeaders) {
+        for (const route of ["/", "/pods", "/pods/synthetic%20name?returnTo=https%3A%2F%2Funtrusted.example.test"]) {
+          const response = await fetch(`${base}${route}`, { headers, redirect: "manual" });
+          assert.equal(response.status, 307);
+          assert.equal(response.headers.get("location"), "/welcome", "page rejection must retain the browser origin and omit input query/host");
+        }
+      }
+      const welcome = await fetch(`${base}/`, { redirect: "follow" });
+      assert.equal(welcome.status, 200);
+      assert.equal(welcome.url, `${base}/welcome`);
+      phase = "exact-public-paths";
+      for (const route of ["/api/vars/lookup-extra", "/api/vars/%6cookup", "/api/health/live-extra", "/api/health/%6cive", "/api/health/ready-extra", "/api/kv/automation-extra"]) {
+        assert.equal((await fetch(`${base}${route}`, { redirect: "manual" })).status, 401);
+      }
+      assert.equal((await fetch(`${base}/api/health/live?probe=1`)).status, 200);
       phase = "unauthenticated-secrets";
       assert.equal((await fetch(`${base}/api/secrets`)).status, 401);
       phase = "unauthenticated-lookup";
@@ -692,7 +713,7 @@ test(
       assert.equal((await (await request("/api/auth/session", "GET", undefined, newCookie)).json()).authenticated, false);
       const revokedPage = await fetch(`${base}/pods`, { headers: { cookie: newCookie }, redirect: "manual" });
       assert.equal(revokedPage.status, 307);
-      assert.ok(revokedPage.headers.get("location")?.endsWith("/welcome"));
+      assert.equal(revokedPage.headers.get("location"), "/welcome");
       await db.user.update({
         where: { username: "testwriter" },
         data: { role: "readonly" },

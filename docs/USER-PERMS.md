@@ -1,5 +1,7 @@
 # BORTUS user permissions
 
+Unauthenticated or revoked page requests retain the browser origin when redirected to `/welcome`, including behind an ingress or port relay. `skipMiddlewareUrlNormalize: true` preserves the server's internal request origin so pinned Next 15 can emit a relative `Location: /welcome` instead of normalizing a loopback host to `localhost` and exposing its internal port. Authentication still uses `request.nextUrl.pathname` and fresh account/session-version checks; Host and forwarding headers are not used to select a redirect destination, and `trustHostHeader` remains disabled. Protected APIs keep their existing 401/503 responses and exact public-path rules. A fresh pinned Next 15.5.27 build and [focused production HTTP qualification](implementation-evidence/page-origin-redirect-qualification-20261019.json) pass root/nested/encoded/query redirects, external/forged host headers, exact public-path lookalikes and deleted-cookie rejection. Final image/browser qualification remains required; the previous image is unchanged.
+
 ## KV client withdrawal on failed authorization (2026-10-18)
 
 Unused denial streams are cancelled without awaiting cancellation; private-state withdrawal and the typed denial do not wait for a hostile or stalled body.

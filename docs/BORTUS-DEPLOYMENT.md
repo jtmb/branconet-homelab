@@ -1,5 +1,7 @@
 # BORTUS application deployment
 
+Page authentication redirects use the browser's existing origin through a relative `/welcome` destination. The Next configuration enables the supported `skipMiddlewareUrlNormalize` option so loopback normalization cannot expose `localhost:4000` through ingress or a port relay. Keep `trustHostHeader` disabled; no public-origin reconstruction from caller Host/Forwarded headers is required. [Focused pinned-Next build and authentication HTTP checks](implementation-evidence/page-origin-redirect-qualification-20261019.json) pass. Rebuild and qualify the application image after this source change; retained images keep their prior redirect behavior.
+
 ## Building current application source on the maintained runtime
 
 `k8s-rewrite/front-end/Dockerfile.release` builds the current locked application with the pinned Node 22.23.3 C4 builder, then replaces only `/app` in a required operator-supplied runtime image. It does not upgrade packages or rebuild Node, libc, PCRE, zlib or dash. The original `Dockerfile` remains available for its prior Trixie-based build. A missing `BORTUS_RUNTIME_IMAGE` has no default and prevents the release build.
