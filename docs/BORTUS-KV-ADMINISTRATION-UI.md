@@ -1,5 +1,12 @@
 # BORTUS KV administration component
 
+## Standalone mount and registration pending presentation (2026-10-19)
+
+The standalone MountForm displays Saving mount metadata… with role="status" while its existing mutation.busy flag is true and the deletion dialog is closed. RegisterForm similarly displays Registering path metadata… while busy. Existing error alerts and ordinary failure drafts remain intact. Mount deletion continues through its existing confirmation dialog without the save-only status. Explicit mount IDs, captured revisions, namespace scopes, field/native-key mappings, registration retention defaults and bounds, disabled controls, fresh administrator/scoped-writer distinctions, saved callbacks and polling are unchanged. These two paragraphs add no request or authorization behavior. Browser and actual assistive-technology announcements remain unverified.
+
+The identical final frozen31 new actual-declaration/MutationTask synthetic checks plus128 prior client/session/metadata controls give baseline153pass/6expected missing-status failures and changed159pass/0fail/skip/cancel. Hook slots and held metadata transport cover selected callbacks/JSX, exact create/edit/register requests, duplicate submission, ordinary401/403/409/503 draft/error retention, success and disposed-task fencing; deletion uses inert dialog props without invoking its destructive callback. This is not mounted React effects, useMutation lifecycle, DOM, HTTP/backend/native or actual assistive-technology acceptance. Fresh BuildID l5LfTwgN2SsAr6uODYlpv, focused zero-warning lint and full nonincremental types pass on315 source/test/control inputs and37428 pinned dependencies. Root checks bind current Windows/build inputs and one41723-record compiled/dependency graph traversal; no independent-review claim. The earlier failed automatic PR39335907142 remains unresolved with cause unestablished, and overall CI qualification remains false.
+
+
 
 ## Standalone retention pending presentation (2026-10-19)
 
