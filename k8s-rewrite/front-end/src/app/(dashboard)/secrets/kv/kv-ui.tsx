@@ -15,7 +15,7 @@ export const surface = "min-w-0 space-y-3 rounded-lg border border-zinc-800 p-4"
 export function usable<T>(query: QuerySnapshot<T>) { return query.status === 401 || query.status === 403 ? undefined : query.data; }
 export function fresh(query: QuerySnapshot) { return !!query.data && !query.error && !query.stale && Date.now() - query.updatedAt < 15000; }
 export function QueryState({ query, label, retry }: { query: QuerySnapshot; label: string; retry: () => void }) {
-  return <>{query.loading && <p role="status">Loading {label}…</p>}{!query.loading && query.refreshing && <p role="status">Refreshing {label}…</p>}{query.error && <p role="alert" className="text-amber-300">{label} unavailable: {query.error}{!!usable(query) && " Previously loaded metadata is shown."} <button className={button} onClick={retry}>Retry {label}</button></p>}</>;
+  return <>{query.loading && <p role="status">Loading {label}…</p>}{!query.loading && query.refreshing && <p role="status">Refreshing {label}…</p>}{!!usable(query) && query.stale && <p role="status" className="text-amber-300">Previously loaded {label} metadata is stale.</p>}{query.error && <p role="alert" className="text-amber-300">{label} unavailable: {query.error}{!!usable(query) && " Previously loaded metadata is shown."} <button className={button} onClick={retry}>Retry {label}</button></p>}</>;
 }
 export function CursorControls({ label, cursors, next, disabled, move }: { label: string; cursors: string[]; next?: string | null; disabled: boolean; move: (cursors: string[]) => void }) {
   return <nav aria-label={`${label} API pages`} className="flex flex-wrap items-center gap-3 text-sm"><span>API page {cursors.length + 1} · up to 100 records · sort/search this page</span>

@@ -1,5 +1,14 @@
 # Native BORTUS KV engine implementation contract
 
+## Standalone retained metadata stale presentation (2026-10-19)
+
+The shared standalone QueryState displays one amber role="status" paragraph, `Previously loaded {label} metadata is stale.`, exactly when `!!usable(query) && query.stale`. The existing QueryStore stale flag comes from the original successful-read age; this message supplies no independent freshness authority or timestamp. Retained ordinary-error alerts and their actionable Retry controls remain visible alongside it when both conditions hold. HTTP401/403 and absent data suppress this stale-metadata sentence through the existing usable helper. Loading, Refreshing, error and Retry text/callbacks, polling, metadata/drafts, permitted pages, filters/cursors, selection/mappings and scoped-writer/request/status/error contracts remain unchanged.
+
+The additive final frozen14-case actual QueryState/QueryStore synthetic model plus75 prior client/session/metadata checks gives baseline81pass/8missing-stale-status failures. The identical frozen test bytes on changed source pass89/89 with zero failures, skips or cancellations. The selected mounts/paths model excludes effects, forms, selected detail, DOM, requests and backend/native execution; the generic helper also serves PathDetail, without establishing selected-detail or concurrent-form acceptance. Browser/actual AT, security, performance, recovery, image, deployment and live verification remain separate, and every original gate remains.
+
+Fresh isolated BuildIDqZ_-sXEUeRlm4qZDAOXsU, focused zero-warning lint and full nonincremental typecheck pass on312 source/test/control inputs,37428 dependencies bound before/after and41723 compiled graph records. Explicit Next pre/post packaging uses an inert absent-parent DATABASE_URL without Prisma CLI, server, database or native-handler execution. Test isolation remains2CPU/1GiB/60s; build4CPU/4GiB/900s; both use no extra swap, PID256, no network and a read-only root. These are source/model/build results, not browser/actual assistive-technology announcements or backend/security/performance/recovery/image/live acceptance.
+
+
 ## Standalone metadata refresh presentation (2026-10-19)
 
 The shared standalone QueryState now displays one role="status" Refreshing message when refreshing is true and loading is false. Initial loading keeps its existing single Loading status. Existing retained error alerts and exact actionable Retry text/callbacks remain; Explicit Retry keeps its existing invalidation and replacement of the current metadata request owner. Automatic polling, ordinary retained metadata/drafts, denial suppression, permitted-page limits, filtering, cursors, selection, mappings and scoped-writer/request/status/error contracts are unchanged. This is a public source presentation correction; browser/actual AT, backend, security, performance, recovery, image and live acceptance remain separate.
