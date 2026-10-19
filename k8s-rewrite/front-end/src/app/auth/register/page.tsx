@@ -14,15 +14,22 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [locked, setLocked] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [availabilityError, setAvailabilityError] = useState(false);
 
   // Check if registration is available
   useEffect(() => {
     fetch("/api/auth/session")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("Registration availability request failed");
+        return r.json();
+      })
       .then((data) => {
+        if (!data || typeof data !== "object" || Array.isArray(data) || typeof data.registrationOpen !== "boolean") {
+          throw new Error("Invalid registration availability response");
+        }
         if (!data.registrationOpen) setLocked(true);
       })
-      .catch(() => {})
+      .catch(() => setAvailabilityError(true))
       .finally(() => setChecking(false));
   }, []);
 
@@ -66,8 +73,25 @@ export default function RegisterPage() {
 
   if (checking) {
     return (
-      <div className="glass-card rounded-2xl p-6 sm:p-8 flex items-center justify-center py-12">
+      <div role="status" aria-label="Checking registration availability" className="glass-card rounded-2xl p-6 sm:p-8 flex items-center justify-center py-12">
         <Loader2 className="w-6 h-6 animate-spin text-zinc-500" />
+      </div>
+    );
+  }
+
+  if (availabilityError) {
+    return (
+      <div className="glass-card rounded-2xl p-6 sm:p-8">
+        <h1 className="text-lg font-bold text-zinc-100 mb-2">Registration availability unknown</h1>
+        <p role="alert" className="text-sm text-zinc-400 mb-6">
+          Unable to check registration availability. Reload this page to try again.
+        </p>
+        <Link
+          href="/auth/login"
+          className="block w-full py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-center transition-colors"
+        >
+          Go to sign in
+        </Link>
       </div>
     );
   }

@@ -31,6 +31,16 @@ layout and runtime behavior are unchanged. Existing source/image/browser/perform
 qualifications retain their original identities; a later packaged image needs its
 own qualification.
 
+## Registration availability
+
+Opening `/auth/register` checks availability before showing the form. A successful
+session response must contain boolean `registrationOpen`: true opens the form;
+false displays the administrator-lock notice. If the check fails or its response
+is invalid, the page reports unknown availability and offers sign-in plus reload
+guidance. Reload the page to check again; there is no automatic registration retry.
+Submission validation, server refusal feedback and successful navigation retain
+their existing behavior. The server rechecks registration at submission time.
+
 Current release build (2026-10-18): `Dockerfile.release` builds locked current application source with the pinned C4 builder and replaces only `/app` on a required qualified runtime image. It retains the maintained system components, UID/GID 1000, entrypoint/forward migrations, production dependencies and port 4000. The original Trixie Dockerfile remains unchanged. See [exact local build instructions](BORTUS-DEPLOYMENT.md#building-current-application-source-on-the-maintained-runtime); this new application image still needs its actual integrated build/startup result and is not production adoption.
 
 Original A13 source validation is now composite-qualified: the actual canonical Pods browser compares0/2/7/12 in both directions, with a distinct raw omitted restart count normalized0 by the real API. Genuine missing Node CPU/RAM and PV capacity stay last in both directions; every observed name/href/immutable-cell tuple remains attached to its original row. Eight count, two raw-date, five further-column and three Settings/PVC cases total18 finite cases/36 directions. Thirteen relevant source blobs remain exact through reviewed `fccc7c06`. [A13 original source composition](implementation-evidence/a13-source-composite-root-20261015.json). This does not assert every table/date-kind cross-product or physical DOM-object reuse; historical false fields and failures remain unchanged, with AT/performance/image/live acceptance separate.

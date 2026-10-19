@@ -1,5 +1,14 @@
 # BORTUS user permissions
 
+The registration page waits for a successful session response with an explicit
+boolean `registrationOpen`: true shows the existing form and false shows the
+administrator-lock notice. HTTP, network, JSON and malformed-response failures
+show unknown availability with reload guidance and a sign-in link, without an
+account-creation form or a claim that an administrator disabled registration.
+The pending check has a status label. This presentation does not authorize
+registration: the unchanged POST and serialized account transaction still check
+fresh registration state and account identity.
+
 The public welcome page requests a fresh `/api/auth/session` response for each
 Get Started click. Only a successful HTTP response containing an object with
 boolean `authenticated` and `hasUsers` flags selects a session destination:
