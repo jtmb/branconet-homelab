@@ -1,5 +1,14 @@
 # BORTUS user permissions
 
+The public welcome page requests a fresh `/api/auth/session` response for each
+Get Started click. Only a successful HTTP response containing an object with
+boolean `authenticated` and `hasUsers` flags selects a session destination:
+authenticated users go to `/`, explicitly unauthenticated/no-user installations
+go to `/auth/register`, and existing-user installations go to `/auth/login`.
+Failed HTTP, malformed payloads and network/JSON failures fall back to login;
+missing or non-boolean flags never imply bootstrap permission. This is navigation
+only: registration and protected requests retain their fresh server checks.
+
 ## Bounded warm Pods authority review (2026-10-19)
 
 The [source decision](implementation-evidence/warm-pods-source-review-20261019.json) finds no additional justified patch. Protected Pods metadata uses one fresh middleware session projection and no duplicate handler account read. The core's pre/post-SQL yields/checks and the parent's later IPC-delivery path/configuration/deadline checks protect separate boundaries; refusal/timeout/cancellation must still drain before acknowledgement. Success-only idle-wait removal is already present. Source/tests/workflow/oracles remain unchanged at frontend tree `21eb2b17035822532129240b6180fdf971bc6d9d`; this source review ran no runtime or acceptance workload and does not change the failed A07 result or authorize adoption.

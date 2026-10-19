@@ -93,6 +93,13 @@ Keep the cookie file protected. Examples below use placeholder names and nonsecr
 | PATCH /api/users/[id] | Engine administration for peer role/password/engineAdmin changes; scoped write users may change only their own password |
 | DELETE /api/users/[id] | Effective engine administration; delete user |
 
+`GET /api/auth/session` failures return HTTP500 with
+`{ "authenticated": false, "error": "Internal server error" }`; this error body
+does not report `hasUsers` or grant bootstrap access. Welcome-page navigation
+requires a successful response and explicit boolean `authenticated`/`hasUsers`
+flags. HTTP failures, malformed payloads and network/JSON failures select login.
+Each click performs a new request; client navigation does not authorize registration.
+
 Registration closes after the first user unless `ALLOW_REGISTRATION=true` or AppSetting `allow_registration` is true. Registration/account changes serialize the final check and mutation in SQLite; actor/session/role are rechecked inside the transaction. Self-role changes/deletion and removal of the last writer are refused. Password-only self-reset is allowed for write users and revokes their prior cookies. Duplicate usernames return 409; retryable account contention may return 503. See [permissions](USER-PERMS.md).
 
 ## Native Secrets and aliases

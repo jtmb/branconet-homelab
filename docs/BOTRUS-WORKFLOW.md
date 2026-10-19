@@ -2,6 +2,13 @@
 
 ## Public welcome-page capabilities (2026-10-18)
 
+Each Get Started click reads the current session. A successful response with
+explicit boolean flags sends authenticated users to `/`, unauthenticated users
+with `hasUsers: false` to registration, and existing-user installations to login.
+An unsuccessful HTTP response, malformed session or network/JSON failure goes
+to login. A failed session lookup does not indicate an empty installation;
+server registration and authorization checks still decide access independently.
+
 The `/welcome` page describes native Kubernetes Secret management, externally
 supplied cluster access and configured Flux resource status. Its provisioning
 section distinguishes the disabled container runner from optional local Ansible

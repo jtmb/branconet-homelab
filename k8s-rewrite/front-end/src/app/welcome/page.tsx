@@ -34,11 +34,16 @@ export default function WelcomePage() {
   async function handleGetStarted() {
     try {
       const res = await fetch("/api/auth/session");
+      if (!res.ok) throw new Error("Session unavailable");
       const session = await res.json();
+      if (
+        !session || typeof session !== "object" || Array.isArray(session) ||
+        typeof session.authenticated !== "boolean" || typeof session.hasUsers !== "boolean"
+      ) throw new Error("Invalid session response");
 
-      if (session.authenticated) {
+      if (session.authenticated === true) {
         router.push("/");
-      } else if (!session.hasUsers) {
+      } else if (session.hasUsers === false) {
         router.push("/auth/register");
       } else {
         router.push("/auth/login");
