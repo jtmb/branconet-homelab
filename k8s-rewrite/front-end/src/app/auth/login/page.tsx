@@ -25,8 +25,9 @@ export default function LoginPage() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        setError(data.error ?? "Login failed");
+        const data: unknown = await res.json().catch(() => null);
+        setError(data && typeof data === "object" && !Array.isArray(data) && "error" in data && typeof data.error === "string"
+          ? data.error : "Login failed");
         return;
       }
 

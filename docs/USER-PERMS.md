@@ -1,5 +1,11 @@
 # BORTUS user permissions
 
+Login HTTP refusals show a string `error` from a JSON object or the fixed `Login
+failed` fallback when the body is unreadable or malformed. Nonstring errors are
+never rendered. Failed network requests retain the network-error message; the
+form recovers from loading and successful login still navigates to `/`. These
+client messages do not change fresh server authentication or authorization.
+
 The registration page waits for a successful session response with an explicit
 boolean `registrationOpen`: true shows the existing form and false shows the
 administrator-lock notice. HTTP, network, JSON and malformed-response failures

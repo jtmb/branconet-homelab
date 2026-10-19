@@ -1,5 +1,10 @@
 # BORTUS workflow guide
 
+Sign-in HTTP refusals show the server's JSON string error or `Login failed` if
+the body is unreadable or malformed. The form remains available for an explicit
+retry. Network failures retain their network-error feedback, and successful
+sign-in still navigates to `/`; the server independently authenticates each login.
+
 Registration submission keeps an HTTP 403 refusal locked even if the server or
 proxy error body cannot be parsed. Other HTTP refusals show a string error from
 a JSON object or `Registration failed`; network failures retain the network-error
