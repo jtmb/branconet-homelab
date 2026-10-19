@@ -292,8 +292,8 @@ function TaskState({ task }: { task: Task }) {
     </div>
   );
 }
-function usePage<T>(base: string, admin = true) {
-  const task = useTask(),
+function usePage<T>(base: string, admin = true, clearSensitive?: () => void) {
+  const task = useTask(clearSensitive),
     [page, setPage] = useState<Page<T> | null>(null),
     [cursor, setCursor] = useState<string | null>(null),
     [previous, setPrevious] = useState<(string | null)[]>([]);
@@ -471,8 +471,6 @@ function Impact({
 }
 
 function Policies({ changed }: { changed: Changed }) {
-  const list = usePage<Policy>("/api/kv/policies"),
-    task = useTask();
   const [editing, setEditing] = useState<Policy | null>(null),
     [mode, setMode] = useState<"create" | "update" | "delete">("create");
   const [fields, setFields] = useState<PolicyFields>({
@@ -487,6 +485,27 @@ function Policies({ changed }: { changed: Changed }) {
     [configAck, setConfigAck] = useState(false),
     [confirm, setConfirm] = useState(""),
     [result, setResult] = useState("");
+  const clear = () => {
+    setImpact(null);
+    setAliasAck(false);
+    setConfigAck(false);
+    setConfirm("");
+    setResult("");
+  };
+  const clearAuthorization = () => {
+    clear();
+    setEditing(null);
+    setMode("create");
+    setFields({
+      principal: "",
+      mountId: null,
+      prefix: "",
+      effect: "allow",
+      actions: ["list"],
+    });
+  };
+  const list = usePage<Policy>("/api/kv/policies", true, clearAuthorization),
+    task = useTask(clearAuthorization);
   useEffect(() => {
     if (task.error) {
       setImpact(null);
@@ -495,13 +514,6 @@ function Policies({ changed }: { changed: Changed }) {
       setConfirm("");
     }
   }, [task.error]);
-  const clear = () => {
-    setImpact(null);
-    setAliasAck(false);
-    setConfigAck(false);
-    setConfirm("");
-    setResult("");
-  };
   const update = (value: Partial<PolicyFields>) => {
     setFields({ ...fields, ...value });
     clear();

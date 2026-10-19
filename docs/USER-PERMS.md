@@ -104,6 +104,14 @@ Unauthenticated or revoked page requests retain the browser origin when redirect
 
 ## KV client withdrawal on failed authorization (2026-10-18)
 
+Policy operation and metadata-list tasks both invoke the full policy-editor
+reset on their own authorization loss. Captured rules, entered fields, edit mode,
+preview/acknowledgments, exact confirmation and prior success text clear before
+the shared session poll. Conflicts (409) retain drafts/selections but clear
+preview/confirmation state and require fresh metadata/re-selection, with no
+automatic retry. [Actual-source hook/state checks](BORTUS-KV-ADMINISTRATION-UI.md#policy-editor-authorization-withdrawal-2026-10-19)
+do not establish browser, assistive-technology, server or live acceptance.
+
 Unused denial streams are cancelled without awaiting cancellation; private-state withdrawal and the typed denial do not wait for a hostile or stalled body.
 
 The KV administration client invokes its authorization-loss cleanup immediately on HTTP 401/403, before response-body consumption. The KV workbench preserves the same typed denial status for its existing sensitive-state cleanup. Empty, malformed or unreadable proxy error bodies cannot turn a revoked session into a generic transport error that leaves private drafts or issued tokens visible. Server-side fresh authorization and scoped-policy checks remain unchanged.

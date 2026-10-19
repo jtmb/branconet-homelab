@@ -1,5 +1,23 @@
 # BORTUS KV administration component
 
+## Policy editor authorization withdrawal (2026-10-19)
+
+Both the policy operation task and its independent metadata-list task now clear
+the captured policy, edit/delete mode, entered fields, impact preview, alias and
+configuration acknowledgments, exact confirmation and prior success display
+when their existing client reports authorization loss. This happens during the
+preflight, operation or postflight check, including HTTP 401/403 with malformed
+or stalled denial bodies; it does not wait for the shared session poll. Other
+panels and the transport, revision, complete-alias acknowledgment and server
+authorization contracts are unchanged.
+
+A 409 still retains the policy draft and captured selection while invalidating
+the preview and acknowledgments. Refresh metadata and deliberately reselect the
+current policy revision before another preview/confirmation; no automatic retry
+is sent. Actual-source hook/state regressions use synthetic metadata responses
+without React DOM, a browser, server or database. They establish local state and
+request settlement semantics, not browser, AT, backend or live acceptance.
+
 ## Cleanup outcome status semantics (2026-10-19)
 
 The History cleanup result summary uses `role="status"` for its existing complete

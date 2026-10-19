@@ -9,6 +9,15 @@ cluster requirement, not a guarantee supplied by the dashboard. See
 
 ## KV browser revocation handling (2026-10-18)
 
+The policy editor now supplies its full authorization-loss reset to both its
+operation and metadata-list tasks. Captured policy/fields/mode, preview,
+acknowledgments, exact confirmation and prior success display clear directly
+on denial, without waiting for shared session polling. A 409 retains the draft
+and selection but invalidates preview/confirmations, requiring fresh metadata
+and deliberate re-selection. See [policy withdrawal](BORTUS-KV-ADMINISTRATION-UI.md#policy-editor-authorization-withdrawal-2026-10-19)
+for the source-model verification scope; browser/backend/live acceptance remains
+separate.
+
 Unused denial streams are cancelled without awaiting cancellation; private-state withdrawal and the typed denial do not wait for a hostile or stalled body.
 
 KV workbench and administration now handle HTTP 401/403 before reading or parsing the response body. A proxy's empty, malformed, oversized or unreadable denial therefore cannot bypass the existing value/draft/one-time-token withdrawal path. Other failed workbench responses preserve their status even when their JSON is `null`; arbitrary error bodies remain undisplayed. No native policy, token authority, CAS, recovery rule, request limit or retry behavior changes.
