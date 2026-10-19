@@ -13,10 +13,12 @@ server registration or role checks.
 
 Login and open-registration validation/submission errors expose the existing
 feedback as an alert without moving focus. Feedback still clears on the next
-explicit submit; registration HTTP 403 retains its separate lock screen. This
-source-level announcement semantics change and its presentation-model tests do
-not establish an actual screen-reader pass; assistive-technology acceptance
-remains pending.
+explicit submit. The separate registration lock screen exposes its existing
+heading and explanation together as one alert; the sign-in link remains outside
+it, without moving focus. Confirmed-closed availability and HTTP 403 use the same
+notice, and the refusal locks before its response body is read. Source semantics
+and actual-page presentation-model tests do not establish an actual screen-reader
+pass; assistive-technology acceptance remains pending.
 
 ## Public welcome-page capabilities (2026-10-18)
 

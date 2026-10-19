@@ -10,9 +10,12 @@ The existing conditional login and open-registration submission feedback uses
 `role="alert"`, including client validation and HTTP/network errors. It adds no
 focus target or focus movement; messages, clearing on explicit submit, loading
 recovery and navigation are unchanged. Registration availability keeps its
-separate status/alert states, and HTTP 403 still replaces the form with the lock
-notice. Actual-source presentation tests cover these semantics; they do not prove
-screen-reader announcements. Actual assistive-technology acceptance remains open.
+separate status/alert states. The lock notice groups its existing heading and
+explanation in one `role="alert"`, with the sign-in link outside the alert and no
+focus target or movement. This applies after confirmed-closed availability and
+when HTTP 403 replaces the form, before reading its body. Actual-source
+presentation tests cover these semantics; they do not prove screen-reader
+announcements. Actual assistive-technology acceptance remains open.
 
 The registration page waits for a successful session response with an explicit
 boolean `registrationOpen`: true shows the existing form and false shows the

@@ -104,7 +104,7 @@ export default function RegisterPage() {
           <div className="w-11 h-11 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
             <ShieldAlert className="w-6 h-6 text-amber-400" />
           </div>
-          <div>
+          <div role="alert">
             <h1 className="text-lg font-bold text-zinc-100">Registration Locked</h1>
             <p className="text-sm text-zinc-400">Account creation has been disabled by the administrator.</p>
           </div>
