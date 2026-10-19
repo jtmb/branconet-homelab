@@ -292,8 +292,13 @@ function TaskState({ task }: { task: Task }) {
     </div>
   );
 }
-function usePage<T>(base: string, admin = true, clearSensitive?: () => void) {
-  const task = useTask(clearSensitive),
+function usePage<T>(base: string | null, admin = true, clearSensitive?: () => void) {
+  const task = useTask(() => {
+      setPage(null);
+      setCursor(null);
+      setPrevious([]);
+      clearSensitive?.();
+    }),
     [page, setPage] = useState<Page<T> | null>(null),
     [cursor, setCursor] = useState<string | null>(null),
     [previous, setPrevious] = useState<(string | null)[]>([]);
@@ -301,6 +306,7 @@ function usePage<T>(base: string, admin = true, clearSensitive?: () => void) {
   const load = useCallback(
     (next: string | null = null) => {
       setPage(null);
+      if (base === null) return;
       void run(
         (request) =>
           request<Page<T>>(
@@ -321,6 +327,8 @@ function usePage<T>(base: string, admin = true, clearSensitive?: () => void) {
     [base, admin, run],
   );
   useEffect(() => {
+    setPrevious([]);
+    setCursor(null);
     load();
   }, [load]);
   return {
@@ -333,7 +341,7 @@ function usePage<T>(base: string, admin = true, clearSensitive?: () => void) {
     controls: (
       <div className="flex flex-wrap gap-2">
         <Button
-          disabled={task.busy || !previous.length}
+          disabled={base === null || task.busy || !previous.length}
           onClick={() => {
             const stack = [...previous],
               next = stack.pop() ?? null;
@@ -344,7 +352,7 @@ function usePage<T>(base: string, admin = true, clearSensitive?: () => void) {
           Previous page
         </Button>
         <Button
-          disabled={task.busy || !page?.nextCursor}
+          disabled={base === null || task.busy || !page?.nextCursor}
           onClick={() => {
             setPrevious([...previous.slice(-99), cursor]);
             load(page!.nextCursor);
@@ -353,7 +361,7 @@ function usePage<T>(base: string, admin = true, clearSensitive?: () => void) {
           Next page
         </Button>
         <Button
-          disabled={task.busy}
+          disabled={base === null || task.busy}
           onClick={() => {
             setPrevious([]);
             load();
@@ -1115,11 +1123,21 @@ function Identities({ changed }: { changed: Changed }) {
 function AuditView({ pathId }: { pathId: string | null }) {
   const [pathFilter, setPathFilter] = useState(pathId ?? ""),
     [operationFilter, setOperationFilter] = useState(""),
-    [filters, setFilters] = useState(
+    [filters, setFilters] = useState<string | null>(
       pathId ? `?pathId=${encodeURIComponent(pathId)}` : "",
-    );
-  const list = usePage<Audit>("/api/kv/audit" + filters, false),
+    ),
     [validation, setValidation] = useState("");
+  const clearAudit = useCallback(() => {
+    setPathFilter("");
+    setOperationFilter("");
+    setFilters(null);
+    setValidation("");
+  }, []);
+  const list = usePage<Audit>(
+    filters === null ? null : "/api/kv/audit" + filters,
+    false,
+    clearAudit,
+  );
   return (
     <div className="space-y-4">
       <p className="text-sm text-zinc-400">

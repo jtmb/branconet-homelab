@@ -9,6 +9,15 @@ cluster requirement, not a guarantee supplied by the dashboard. See
 
 ## KV browser revocation handling (2026-10-18)
 
+Audit administration now clears entered/applied filters, validation, metadata
+and cursor history on direct authorization loss, and waits for deliberate Apply
+before requesting metadata again. Applying different filters resets cursor
+history; empty filtered pages remain forward-reachable. Ordinary errors retain
+filters. [Audit withdrawal source checks](BORTUS-KV-ADMINISTRATION-UI.md#audit-filters-pagination-and-authorization-withdrawal-2026-10-19)
+have baseline sensitivity and pass with policy/identity regressions (56 total),
+plus a fresh build, focused lint and full typecheck. No API, policy or native
+contract changes, and no browser/backend/live acceptance is inferred.
+
 Automation identity operation and independent metadata-list tasks now clear the
 full entered draft, captured revocation, local credential display, acknowledgments
 and prior success on their own authorization loss. Ordinary failures retain

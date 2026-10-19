@@ -104,6 +104,15 @@ Unauthenticated or revoked page requests retain the browser origin when redirect
 
 ## KV client withdrawal on failed authorization (2026-10-18)
 
+The audit task clears entered/applied filters, validation, displayed metadata
+and pagination history on direct authorization loss. It suspends metadata
+requests until deliberate Apply, retaining the existing fresh pre/post session
+checks. Scoped/readonly metadata access and ordinary-error filter retention are
+unchanged. [Audit source checks](BORTUS-KV-ADMINISTRATION-UI.md#audit-filters-pagination-and-authorization-withdrawal-2026-10-19)
+show baseline sensitivity and 56 passing audit/policy/identity regressions, plus
+a fresh build, focused lint and full typecheck. Browser, AT, backend and live
+acceptance remain separate.
+
 The identity editor supplies one full reset to its operation and independent
 metadata-list tasks. Their direct authorization loss clears the entered
 owner/name/expiry/scopes, captured revocation, credential display/issued ID,

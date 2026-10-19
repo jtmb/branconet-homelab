@@ -1,5 +1,33 @@
 # BORTUS KV administration component
 
+## Audit filters, pagination and authorization withdrawal (2026-10-19)
+
+Applying a different audit path/operation filter clears the previous query's
+cursor history and starts at the first page. Empty filtered pages still allow
+forward navigation when the server supplies a next cursor; at most 100 previous
+cursors are retained.
+
+The audit task now clears entered and applied filters, validation, displayed
+metadata and cursor history on its own authorization loss. The audit query
+becomes inactive, its pagination/refresh controls are disabled, and no automatic
+unfiltered request is sent. Deliberately applying valid or empty filters resumes
+the existing fresh-session preflight/request/postflight checks. Ordinary errors
+retain entered and applied filters. Page hiding and session-ended cleanup use
+the same state withdrawal and late-reply fence.
+
+The shared administration pagination hook clears its local page and cursor
+history during cleanup and starts a new cursor history when its base changes.
+No route, authorization, transport, policy, metadata shape or retry contract
+changes. Actual-source hook/JSX regressions use synthetic session/audit metadata
+only. The same 16 audit regressions produced 11 expected failures and five passes
+on baseline source, then passed with the unchanged policy/identity regressions:
+56 passes, no failures, skips or cancellations. A fresh isolated production
+build, focused zero-warning lint and full nonincremental typecheck passed with
+all 300 selected inputs and 37,428 dependency bindings checked. An initial fixture
+attempt failed at a missing read-only mountpoint before any test started; that
+failure remains separate. These checks do not establish React DOM, browser,
+assistive-technology, backend or live acceptance.
+
 ## Automation identity editor authorization withdrawal (2026-10-19)
 
 Both identity operation and independent metadata-list tasks now clear the local
