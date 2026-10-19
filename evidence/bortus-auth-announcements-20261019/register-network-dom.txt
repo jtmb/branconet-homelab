@@ -1,0 +1,23 @@
+- heading "Create your account" [level=1]
+- paragraph: Set up your Botrus account
+- alert: Network error — please try again
+- generic: Username
+- textbox "Username":
+  - /placeholder: Choose a username
+  - text: <redacted>
+- generic: Password
+- textbox "Password":
+  - /placeholder: At least 8 characters
+  - text: <redacted>
+- generic: Confirm password
+- textbox "Confirm password":
+  - /placeholder: Re-enter your password
+  - text: <redacted>
+- button "Create account"
+- link "Back":
+  - /url: /welcome
+- paragraph:
+  - text: Already have an account?
+  - link "Sign in":
+    - /url: /auth/login
+- alert
