@@ -1,5 +1,14 @@
 # Flux GitOps Guide
 
+## Immutable chart and guarded-adoption source review - 2026-10-19 (Toronto)
+
+The [bounded source receipt](../evidence/bortus-charts-immutable-source-root-20261019.json) selects no concrete supported correction. Charts remain `835dabeb` and application `a912ab02`; all29 selected chart/workflow/Flux/policy/validator/test/contract files match raw Git bytes and modes. The effective native profile selects the single tagless7b03 digest, dedicated history namespace,20/100 retention and guardedAdoptionfalse with Helm suspended. All three Fail/Deny policy lists select that same image/protected references. Source preserves18 current Secret Roles without delete,37 exact binding-subject substitutions and history-only deletion; this is declared wiring, not installed effective authorization.
+
+The existing workflow validates before promoting the exact successful current-main commit atomically to validated/commit tag. Its remote-main check does not lock later main changes. Flux retains the single branconet-charts/migration-releases source/owner, ./flux/releases, prunefalse/forcefalse. Policies reconcile independently of Helm suspension: fresh backup/compatible recovery/security/performance approval and legacy-writer quiescence remain prerequisites before merge. The7b03 draft belongs to historicald638 source, not the current app. Existing test source is reviewed without execution; no new render/test/build/fixture/chart scan/workflow dispatch, image/release publication, merge/deploy or operator/live action occurs. Independent review is separate private evidence.
+
+All44 original clauses, A07five-of-ten warm failures and security/actualAT/compatible recovery/schema/effectiveRBAC/admission/live-data gates remain. The prior seven-file root publication scan1/1finding remains unresolved and is not diagnosed or rescanned by this feature; each new documentation packet has its own publication record. Full delivery remains incomplete. The independent reviewer already read the app configuration parser and entrypoint shell; those reads are retained. The next separate feature traces deeper startup/consumer configuration validation, namespace isolation, readiness and errors beyond those two reads; that deeper trace and any next patch/test/fixture have not begun.
+
+
 ## Active chart delivery
 
 Application charts live in the separate private [jtmb/branconet-charts](https://github.com/jtmb/branconet-charts) repository. BORTUS application source remains in `branconet-homelab`. Edit each application's `charts/<name>/values.yaml` or templates and its effective overrides in `flux/releases/<name>.yaml`; each application keeps its own chart and values.
