@@ -104,6 +104,16 @@ Unauthenticated or revoked page requests retain the browser origin when redirect
 
 ## KV client withdrawal on failed authorization (2026-10-18)
 
+The identity editor supplies one full reset to its operation and independent
+metadata-list tasks. Their direct authorization loss clears the entered
+owner/name/expiry/scopes, captured revocation, credential display/issued ID,
+acknowledgments, exact confirmation and prior success before shared session
+polling. Other failures preserve draft/selection and keep their existing
+display/confirmation clearing. No identity CAS or server authorization change
+is introduced. [Actual-source identity checks](BORTUS-KV-ADMINISTRATION-UI.md#automation-identity-editor-authorization-withdrawal-2026-10-19)
+use synthetic session/list/revoke metadata without token issuance and do not
+establish browser, AT, backend or live acceptance.
+
 Policy operation and metadata-list tasks both invoke the full policy-editor
 reset on their own authorization loss. Captured rules, entered fields, edit mode,
 preview/acknowledgments, exact confirmation and prior success text clear before

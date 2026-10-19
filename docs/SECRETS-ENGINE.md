@@ -9,6 +9,15 @@ cluster requirement, not a guarantee supplied by the dashboard. See
 
 ## KV browser revocation handling (2026-10-18)
 
+Automation identity operation and independent metadata-list tasks now clear the
+full entered draft, captured revocation, local credential display, acknowledgments
+and prior success on their own authorization loss. Ordinary failures retain
+draft/selection and invalidate display/confirmation as before. Exact captured
+ID/owner/expiry revocation and the absence of identity CAS are unchanged. See
+[identity editor withdrawal](BORTUS-KV-ADMINISTRATION-UI.md#automation-identity-editor-authorization-withdrawal-2026-10-19)
+for actual-source synthetic metadata-only scope; no issuance, backend or live
+acceptance is inferred.
+
 The policy editor now supplies its full authorization-loss reset to both its
 operation and metadata-list tasks. Captured policy/fields/mode, preview,
 acknowledgments, exact confirmation and prior success display clear directly

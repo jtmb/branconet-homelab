@@ -1,5 +1,27 @@
 # BORTUS KV administration component
 
+## Automation identity editor authorization withdrawal (2026-10-19)
+
+Both identity operation and independent metadata-list tasks now clear the local
+credential display/issued ID, entered owner/name/expiry/scopes, captured revoke
+selection, issuance acknowledgment, exact confirmation and prior success display
+on their own authorization loss. The existing client invokes this reset at
+preflight, operation or postflight, including HTTP 401/403 with malformed or
+stalled denial bodies, without waiting for the shared session poll.
+
+Ordinary failures retain the draft and captured selection, while the existing
+error effect clears the credential display and acknowledgments/confirmation.
+Revocation still requires the exact captured identity ID, owner and expiry;
+pending actions freeze controls, and success clears the selection and refreshes
+metadata. Cancellation and late-reply fencing use the existing behavior. No
+automatic retry or identity revision/CAS contract is added.
+
+Actual-source hook/JSX regressions use synthetic session/list/revoke metadata
+only and refuse issuance requests. A local noncredential state sentinel tests
+display withdrawal without issuing or revealing a token. These establish local
+state, captured confirmation and request settlement semantics; React DOM,
+browser, AT, backend and live acceptance remain separate.
+
 ## Policy editor authorization withdrawal (2026-10-19)
 
 Both the policy operation task and its independent metadata-list task now clear

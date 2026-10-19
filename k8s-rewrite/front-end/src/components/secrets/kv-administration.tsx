@@ -760,11 +760,6 @@ function Policies({ changed }: { changed: Changed }) {
 function Identities({ changed }: { changed: Changed }) {
   const [credential, setCredential] = useState<string | null>(null),
     [issuedId, setIssuedId] = useState("");
-  const list = usePage<Identity>("/api/kv/identities"),
-    task = useTask(() => {
-      setCredential(null);
-      setIssuedId("");
-    });
   const [owner, setOwner] = useState(""),
     [name, setName] = useState(""),
     [expiry, setExpiry] = useState(""),
@@ -775,6 +770,20 @@ function Identities({ changed }: { changed: Changed }) {
     [confirm, setConfirm] = useState(""),
     [issueAck, setIssueAck] = useState(false),
     [result, setResult] = useState("");
+  const clearAuthorization = () => {
+    setCredential(null);
+    setIssuedId("");
+    setOwner("");
+    setName("");
+    setExpiry("");
+    setScopes([{ mountId: "", prefix: "", actions: ["list"] }]);
+    setSelected(null);
+    setConfirm("");
+    setIssueAck(false);
+    setResult("");
+  };
+  const list = usePage<Identity>("/api/kv/identities", true, clearAuthorization),
+    task = useTask(clearAuthorization);
   useEffect(() => {
     if (task.error || list.task.error) {
       setCredential(null);
