@@ -1,5 +1,11 @@
 # Migration acceptance evidence
 
+## Account-worker successful settlement source checkpoint - 2026-10-18 (Toronto)
+
+Application checkpoint `d6867ba1990e3e025c6eb3c9a169db1e75362993` has the exact tested frontend tree of `be5585d3`. Successful row/null settlement skips the idle await; refusals retain actual ownership draining. [Root source receipt](evidence/bortus-account-settlement-root-20261019.json) records independent review,43 focused passes and complete hosted CI39196459270/PR39196463144: clean build, lint/types,355 units,eight integrations, all original sensitivities and compiled Pods smoke. Three provenance-only digest repairs preserve every other manifest field and original oracle. Initial failed CI39195995995/39196001212 remains separate and failed.
+
+No performance benefit, new image/render or deployment is claimed. Prior A07 fails3/10, security/actual AT/compatible independent recovery/live adoption remain open, and charts stay draft/unmerged/suspended/adoption false. The [successor handoff](docs/operations/handoffs/2026-10-19-bortus-account-settlement-successor.md) carries the full goal and one original comparison for the changed candidate. All44 acceptance clauses, identities, storage and originals remain preserved.
+
 ## Truthful welcome source checkpoint - 2026-10-18 (Toronto)
 
 Application source `b0802b9944c94cbca77c2550ed73d46dc8c5f879` corrects the welcome page's unsupported capability, usage and license claims, with workflow/Secrets documentation and unchanged session flow/layout. [Root source receipt](evidence/bortus-truthful-welcome-root-20261019.json) records reviewed files and hosted CI. No local build, new image/render, benchmark or production change is claimed; existing7b03 image/UI evidence remains tied to d6382450. Charts PR5 remains draft/unmerged, suspended and unadopted. Failed A07, security, actual AT, compatible independent recovery and guarded live acceptance remain open. [The full-goal successor handoff](docs/operations/handoffs/2026-10-19-bortus-truthful-welcome-successor.md) scopes the next account-worker settlement feature.
