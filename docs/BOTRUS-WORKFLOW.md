@@ -1,5 +1,12 @@
 # BORTUS K8s — Workflow Guide
 
+## Registration pending submission status - reviewed development source
+
+Application `170de4e5295b465d633e92c11ebd4c417ac5785d` adds an always-mounted, screen-reader-only `role="status"` outside the open registration form, loading-derived `aria-busy`, and `aria-hidden="true"` on its decorative spinner. The status contains `Creating account…` only while the existing loading state is true. Removing that paragraph and two attributes restores the entire prior page. Availability, validation, retained fields, disabled submit, explicit retry, feedback alerts, neutral wording, navigation and fresh server authority are unchanged. HTTP403 still replaces form and pending status with its lock alert before reading the body.
+
+The [finite receipt](../evidence/bortus-registration-pending-root-20261019.json) records same-final-tests old42pass/19fail then61/61,lint0,fresh compiled source,11 sequential synthetic IAB states and two successful source CI runs. Held fetch/500-body states expose busy/status semantics;settlement restores feedback;held403,closed and unknown retain no form/status. Four deliberate clicks produce3interceptedPOSTs;validation sends none,no bodies retained,zeroaccounts. Two early stale frames and a capture binding error remain private;current frames are captured without resubmitting. All11 selected screenshots are visually checked. Exact password equality and actual screen-reader announcements remain unproved. No release image or production operation follows.
+
+
 ## Login pending submission status - reviewed development source
 
 Application `29036ff9548d67374354d40be2c042dc59a902ce` adds an always-mounted, screen-reader-only `role="status"` outside the login form, `aria-busy` from the existing loading state, and `aria-hidden="true"` on the decorative spinner. The status contains `Signing in…` only while loading, including reading an unsuccessful response body. Removing that paragraph and two attributes restores the entire prior page; handlers, fields, validation, feedback alerts, navigation and fresh server authority are unchanged.
