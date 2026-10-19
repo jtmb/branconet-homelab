@@ -1,5 +1,14 @@
 # BORTUS K8s — API Usage
 
+## Compiled policy editor presentation - 2026-10-19 (Toronto)
+
+The [bounded presentation receipt](../evidence/bortus-policy-editor-presentation-root-20261019.json) qualifies actual compiled policy-editor paging and settlement on unchanged app `0cb1f24`/BuildID `zp1Pgq5N8AEeZQjpQwdpU`. Two 100+1 synthetic impact pages block acknowledgment/commit until complete; exact captured confirmation enables one synthetic success with all 101 aliases. Direct list 403 clears prior success/fields; stale 409 retains draft/selection while clearing preview/confirmations; direct operation 401 resets captured state. The shared synthetic admin session stays unchanged. Six explicit clears, three entries and seven planned mutation-shaped transactions are retained separately from 16 full AX states, six DOM records and five independently inspected JPEG viewport fragments. No actual AT or backend permission/CAS proof follows.
+
+All 71 browser API transactions (64 GET, five POST, two PATCH) are intercepted, with zero forwarding. Existing approved disposable tmpfs schema/signing/human shell and original 2 CPU/1 GiB/no-extra-swap/PID256/network-none/read-only/1800-second/32-connection isolation remain. The owned tab, three recorded Linux births, container ID/name and Linux/Windows listener close. Fresh 298-input and 19 selected compiled/native/worker checks preserve the known final-test-only composition; no full graph rewalk or new build is claimed. Reused synthetic principal revision/fingerprint across phases does not prove real cross-operation metadata evolution. Fixture preparation refusals and the prelaunch semaphore-name correction remain.
+
+Root docs remain LOCAL. Four new, prior 32 and earlier one findings remain UNRESOLVED without inspection/classification/diagnosis/rescan/suppression/disposition/security acceptance; no root push or new publication scan occurs. All 44 original clauses, frozen failures, A07 five-of-ten warm failures and original security/performance/actual-AT/compatible-independent-recovery/backup/quiescence/schema/effective-RBAC/admission/data gates remain. The full goal stays active: deploy BORTUS to PRD and verify it as the FINAL delivery phase after those preceding gates pass. No product source, app docs, workflow, chart, image or live state changes.
+
+
 ## User-authorized app CI, local docs and PRD-final goal - 2026-10-19 (Toronto)
 
 The user authorized publishing application `0cb1f24` and its unchanged synthetic CI. Both automatic push CI 39288354619 and PR CI 39288375010 pass all 12 steps: 481 units, eight original pristine/mutant sensitivity pairs, eight integration/process checks and the finite compiled Pods smoke. [Saved exact-head CI evidence](../evidence/bortus-policy-editor-hosted-ci-root-20261019.json) keeps raw-log bindings and source/runtime acceptance separate; no manual dispatch or replay occurred.
