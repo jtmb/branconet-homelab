@@ -1,5 +1,10 @@
 # BORTUS User Permissions
 
+## Registration lock alerts - reviewed development source
+
+Application `ac15e9cdd537c0be2d92b418bc30c85e7371cb43` adds one `role="alert"` to the existing locked heading/explanation group. The sign-in link stays outside and no focus target/movement is added. Confirmed-closed availability and HTTP403 replace the form with this notice;403 still locks before body parsing. Availability, submission behavior and fresh server authority remain unchanged. The [finite receipt](../evidence/bortus-registration-lock-root-20261019.json) records same-tests old31pass/14fail then45/45, lint0, fresh compiled source, seven synthetic IAB states and exact-source pushCI success. Its separate PR registry502 failure/7validation skips remain preserved. Four lock states each expose one application alert;unknown/open/validation and sign-in navigation remain intact. Source/model/DOM observations do not establish actual screen-reader announcements or live acceptance. No new image or production action follows.
+
+
 ## Authentication submission alerts - reviewed development source
 
 Application `7b852b021e604f3c1190dbfad8b1a58f3a906286` adds `role="alert"` to the two existing conditional login/registration error containers. Submission, validation, feedback strings, loading, fields, availability,403 lock, success navigation and fresh server authority remain unchanged. The [finite receipt](../evidence/bortus-auth-announcements-root-20261019.json) records same-test old15pass/26fail then41/41, lint0, fresh compiled source, eight synthetic IAB cases and exact-source CI. Seven feedback cases expose content-scoped alerts; the403 case preserves its existing lock screen. These source/DOM observations do not prove actual screen-reader announcements or live acceptance. Exact password equality is unobserved because DOM values are redacted; screenshots retain visible synthetic username and masked nonempty fields. No new image or production action follows.
