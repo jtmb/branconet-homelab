@@ -1,0 +1,215 @@
+{
+  "observedUTC": "2026-10-19T04:09:04.729085+00:00",
+  "scope": "Single original frozen A07 qualification of the changed successful-settlement candidate; acceptance failed",
+  "candidate": "d6867ba1990e3e025c6eb3c9a169db1e75362993",
+  "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "testedFrontendTree": "21eb2b17035822532129240b6180fdf971bc6d9d",
+  "sourceCI": {
+    "id": 39196459270,
+    "conclusion": "success"
+  },
+  "originalRunner": {
+    "frozenCommit": "7c2bbca7c8cf3ed3f1419f7444b7498a9df7f2eb",
+    "runSHA256": "cd79ae39c61d68c8d3fb2b2a93d6c9ba5ef1c6b0a190ba714210808acc3691a8",
+    "harnessSHA256": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b",
+    "summarySHA256": "94983e4f9d5d5a167ff6435098daa4bfbe9f618995af7dec8b0a742c92f238a6",
+    "exporterCommit": "a82a6cb9e244b0ec05489bc7251f3e29411c64dc",
+    "exporterSHA256": "5bcdb86fd8a795d72f195dbf5163a46ad09de79b54d0ead4dbba0eadb0743470",
+    "bytesOrAcceptanceChanged": false,
+    "runtimeImageBothSources": "sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
+    "runtimeLimits": {
+      "cpu": 2,
+      "memoryBytes": 1073741824,
+      "swapBytes": 0,
+      "pids": 256,
+      "network": "none"
+    },
+    "buildLimits": {
+      "cpu": 4,
+      "memoryBytes": 4294967296,
+      "swapBytes": 0,
+      "pids": 256,
+      "nextWorkers": 4
+    },
+    "buildPhaseSeconds": 900,
+    "measurementPhaseSeconds": 600,
+    "originalSupervisorSeconds": 5430
+  },
+  "execution": {
+    "order": [
+      "baseline1",
+      "candidate1",
+      "candidate2",
+      "baseline2",
+      "baseline3",
+      "candidate3"
+    ],
+    "observations": 6,
+    "profilesPerObservation": 6,
+    "actualRunnerExit": 0,
+    "actualSupervisorExit": 0,
+    "allOriginalBuildAndObservationStepsExitZero": true,
+    "freshActualCommittedSourceBuilds": true,
+    "oldCompiledGraphsOrImagesReused": false,
+    "runtimeReplayed": false,
+    "extraWarmupTrimmingOrTolerance": false
+  },
+  "verification": {
+    "rootAndWorkerCompleteSavedSummaryMatchesEveryField": true,
+    "rootRecomputedDistributions": 1386,
+    "workerRecomputedDistributions": 1386,
+    "frozenInputPins": 145,
+    "rootAndWorkerRawGitArchiveCurrentSourcePayloads": 453,
+    "baselineFiles": 157,
+    "candidateFiles": 296,
+    "gitModesMatchBothArchives": true,
+    "standaloneEntrypointsMatchActualBuildReceipts": true,
+    "sourceAndFrozenInputsUnchangedAfterRuntime": true,
+    "rootVerifiedAbsentRecordedActorAndClosureQueryBirths": 26,
+    "exactContainerNamesAbsent": 8,
+    "capturedFullContainerIDsAbsent": 7,
+    "baseline1ContainerIDNotRetained": true,
+    "dispatcherBirthNotCapturedPIDOnly": true,
+    "sevenActualBuildMeasurementInspectionsVerifyOriginalLimits": true
+  },
+  "warmComparableCases": 10,
+  "warmImprovedCases": 5,
+  "warmRegressions": [
+    {
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95MedianMS": 47.13696300000038,
+      "candidateP95MedianMS": 47.79500999999982,
+      "fixture": "audit-small"
+    },
+    {
+      "phase": "warm-pods-12",
+      "baselineP95MedianMS": 6.965956000000006,
+      "candidateP95MedianMS": 7.103251000000455,
+      "fixture": "metadata-200"
+    },
+    {
+      "phase": "warm-pods-12",
+      "baselineP95MedianMS": 9.121095000000423,
+      "candidateP95MedianMS": 10.05173200000172,
+      "fixture": "metadata-1000"
+    },
+    {
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95MedianMS": 73.68766000000142,
+      "candidateP95MedianMS": 80.4559930000014,
+      "fixture": "metadata-1000"
+    },
+    {
+      "phase": "warm-pods-12",
+      "baselineP95MedianMS": 6.139877999998134,
+      "candidateP95MedianMS": 6.740142000002379,
+      "fixture": "maximum-flat-native-3"
+    }
+  ],
+  "wholeFixtureObservations": {
+    "cpuSecondsMedian": {
+      "baseline": 34.043722,
+      "candidate": 30.520007
+    },
+    "peakMemoryMiBMedian": {
+      "baseline": 360.609375,
+      "candidate": 437.2890625
+    },
+    "isolatedApplicationCostOrGeneralSpeedupClaimed": false
+  },
+  "retainedArtifacts": {
+    "raw-report.json": {
+      "bytes": 861040,
+      "sha256": "c6b4b2974233d095678b2ca03458693f1deb738abd3d7e598cf0033d3509ecdd"
+    },
+    "summary.json": {
+      "bytes": 222488,
+      "sha256": "f7caa10ad82d234f08e66d9fc11591a0990cb28f86843adc1288049c8b797479"
+    },
+    "terminal.json": {
+      "bytes": 3077,
+      "sha256": "b4bb2ae6b94dfdab2cb7840c3d75a2319ce564e87f2664bd37a94784555f797f"
+    },
+    "worker-independent-review.json": {
+      "bytes": 121687,
+      "sha256": "59d4fe629f6562588cb7a116bfed5d234a1551db616c6a248a58508be0cdcffb"
+    },
+    "worker-fresh-closure.json": {
+      "bytes": 14528,
+      "sha256": "0c830db4bca7670208d0a3e7770c9fd780dbd8e7214cf3f286ed26de97adb9d5"
+    },
+    "worker-final-artifacts.json": {
+      "bytes": 11328,
+      "sha256": "fbb55371a5b32ed2b43e907f9e48746af435e0701af263f9f7dbe9c98f38b6ac"
+    },
+    "root-fresh-closure.json": {
+      "bytes": 1936,
+      "sha256": "16cfd49250c2f5838374e73dc6fb73bed4c0601c5cb6df9a4f10214f051f162c"
+    },
+    "runner.stdout": {
+      "bytes": 1778,
+      "sha256": "20a9a0a72a6b192eb95bb271cfaea13050f5a269056a394e257db3cb3c4d926d"
+    },
+    "runner.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "settlement-a07-root-recompute.py": {
+      "bytes": 6590,
+      "sha256": "47bee7683f5344c00301a00442c2f4b4cf6a33b9a40e47a57ae82c9d66b7b310"
+    },
+    "settlement-a07-root-summary-review.json": {
+      "bytes": 11021,
+      "sha256": "ba435edfd31d7dfa1b2b97f05e9ea46e396195512933c6464455d2c5b76e14b1"
+    },
+    "settlement-a07-root-input-proof.json": {
+      "bytes": 1829,
+      "sha256": "7a70c9d901d4797c6003ad097590b7f954b16b829ff872124a9bcca4e9a466c9"
+    },
+    "settlement-a07-root-source-proof.json": {
+      "bytes": 486,
+      "sha256": "2823f190baeddb1bc35f9cd8ab7078600df9951402f1a607f7d0ffd6bf1ffdc1"
+    },
+    "settlement-a07-root-build-bounds.json": {
+      "bytes": 966,
+      "sha256": "dd93449b06105bed341ddeb304aecadda1b39b601d657e32daedbadec7ceb467"
+    }
+  },
+  "retainedPreparationAndReaderFailures": [
+    "Windows helper absent from stale WSL /mnt/c view before dispatch",
+    "Bare-SHA source-bundle refusal before dispatch",
+    "Inherited preflight scannerAuthority key absent; corrected intent before dispatch",
+    "Root reader attempted historical manifest at frozen runner commit; historical manifest separately verified unchanged",
+    "Root reader used wrong candidate inspection filename; corrected exact retained filename",
+    "Root closure reader used actualContainerLimits key instead of actualResources; corrected reader only"
+  ],
+  "allOriginalFailuresRetained": true,
+  "all44OriginalAcceptanceClausesPreserved": true,
+  "originalAuditBlob": "33471d6ec5491d480467a620146e231716a9ecb3",
+  "originalNoWarmRegressionClausePassed": false,
+  "candidatePreservedIsolatedAndUnadopted": true,
+  "productionChanged": false,
+  "newImmutableImageBuilt": false,
+  "newWelcomeOrSettlementImageEvidence": false,
+  "priorImageSource": "d6382450ba9064c79f7bbcac23c1d27c9c179610",
+  "priorImage": "sha256:7b03b4b8d40fc3014822212aa9db4c24dfcc4a5781b9b5e5632cbc33fb9ff276",
+  "charts": {
+    "commit": "835dabebd97a7691311b2c6748fd3cfa4db17f44",
+    "changed": false,
+    "draft": true,
+    "merged": false,
+    "helmSuspended": true,
+    "guardedAdoption": false
+  },
+  "rejectedSecurityOrRecoveryActionsRetried": false,
+  "overallAcceptance": false,
+  "remaining": [
+    "A07 original no-warm-regression gate",
+    "Security acceptance; prior default scan1/12Medium/zero secrets",
+    "Actual assistive technology",
+    "Compatible independent full-row/native recovery and rollback",
+    "Fresh backup/quiescence/effective RBAC/admission/schema/data preservation",
+    "Live native values/history/CAS/rotation and guarded adoption"
+  ],
+  "nextFeature": "Bounded source review of the warm Pods account-delivery/response path using retained evidence; implement only a concrete semantics-preserving redundancy, otherwise retain source and report no supported patch; no new diagnostic campaign or unchanged benchmark"
+}

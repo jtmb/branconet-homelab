@@ -1,5 +1,11 @@
 # Migration acceptance evidence
 
+## Successful-settlement original A07 comparison fails - 2026-10-19 (Toronto)
+
+The one original frozen `d6867ba` versus `51e8cd66` comparison completes fresh builds, all six observations and runner/supervisor at exit0, but **fails five of ten comparable warm p95 cases**. Regressions are small concurrent47.136963 to47.795010ms,200 serial6.965956 to7.103251ms,1k serial9.121095 to10.051732ms,1k concurrent73.687660 to80.455993ms and maximum-flat serial6.139878 to6.740142ms. Root and worker independently reconstruct the complete summary/all1386 distributions,145 frozen inputs and453 source payloads. [Numeric evidence](evidence/bortus-account-settlement-performance-root-20261019.json) retains original artifacts and caveats.
+
+Closure verifies26 recorded actor/closure-query births, all eight exact container names and seven retained full IDs absent; baseline1 ID and dispatcher birth were not captured. Whole-fixture CPU and peak memory remain separate from application attribution. All preparation/reader failures and prior failed comparisons remain retained. No replay, threshold change, source adoption, image/render or deployment occurs. A07, security, actual AT, compatible independent recovery and guarded live acceptance remain open. The candidate stays isolated, charts stay draft/unmerged/suspended/adoption false, and all44 clauses/data remain. [Successor scope](docs/operations/handoffs/2026-10-19-bortus-settlement-performance-successor.md) is bounded source review using retained evidence, without a new diagnostic campaign or unchanged benchmark.
+
 ## Account-worker successful settlement source checkpoint - 2026-10-18 (Toronto)
 
 Application checkpoint `d6867ba1990e3e025c6eb3c9a169db1e75362993` has the exact tested frontend tree of `be5585d3`. Successful row/null settlement skips the idle await; refusals retain actual ownership draining. [Root source receipt](evidence/bortus-account-settlement-root-20261019.json) records independent review,43 focused passes and complete hosted CI39196459270/PR39196463144: clean build, lint/types,355 units,eight integrations, all original sensitivities and compiled Pods smoke. Three provenance-only digest repairs preserve every other manifest field and original oracle. Initial failed CI39195995995/39196001212 remains separate and failed.

@@ -1,5 +1,11 @@
 # Approved cluster migration operations
 
+## Successful-settlement performance qualification - 2026-10-19 (Toronto)
+
+The [single original changed-candidate A07 comparison](../evidence/bortus-account-settlement-performance-root-20261019.json) finishes its fresh builds and six observations, but five of ten warm p95 cases regress. Root and worker independently match every saved summary field/all1386 distributions and verify145 frozen inputs/453 source payloads. Original resource limits, profiles, alternating pairs, warmups and the no-warm-regression clause remain unchanged. All raw failures and preparation/reader errors are retained; corrected readers do not rerun measurements.
+
+Recorded actor/closure-query births, eight exact container names and seven captured IDs are absent. Baseline1 ID and dispatcher birth were not captured. The candidate remains isolated/unadopted; no new image, node, Secret, schema, RBAC/admission, storage or production operation occurs. Earlier7b03 image/UI evidence remains tied to d6382450. Original security/AT/recovery/live gates remain open and charts stay draft/unmerged/suspended/adoption false. The [next bounded source review](operations/handoffs/2026-10-19-bortus-settlement-performance-successor.md) uses retained evidence and permits no unchanged benchmark or diagnostic expansion. The rejected operations and their clearance steps below remain unchanged.
+
 ## Welcome source correction - 2026-10-18 (Toronto)
 
 Application source `b0802b9` corrects public capability claims, with [source review/CI evidence](../evidence/bortus-truthful-welcome-root-20261019.json). This source-only feature performs no node/Secret/schema/admission operation, image assembly/preload or deployment. Existing image7b03/UI evidence remains tied to d638; production retains its prior image. Packaging awaits a justified release boundary. The next account-worker settlement review preserves refusal/cancellation ownership and all original performance/security/AT/recovery/live gates. Rejected operations below remain stopped.
