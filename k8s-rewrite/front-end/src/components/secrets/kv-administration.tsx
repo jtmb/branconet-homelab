@@ -1251,8 +1251,6 @@ function Legacy({
   pathId: string | null;
   changed: Changed;
 }) {
-  const list = usePage<Grant>("/api/kv/legacy/grants"),
-    task = useTask();
   const [principal, setPrincipal] = useState<LegacyPrincipal | null>(null),
     [alias, setAlias] = useState(""),
     [change, setChange] = useState<Record<string, unknown> | null>(null);
@@ -1262,14 +1260,6 @@ function Legacy({
     [confirm, setConfirm] = useState(""),
     [expected, setExpected] = useState(""),
     [result, setResult] = useState("");
-  useEffect(() => {
-    if (task.error) {
-      setImpact(null);
-      setAliasAck(false);
-      setConfigAck(false);
-      setConfirm("");
-    }
-  }, [task.error]);
   const clear = () => {
     setChange(null);
     setImpact(null);
@@ -1278,6 +1268,22 @@ function Legacy({
     setConfirm("");
     setExpected("");
   };
+  const clearAuthorization = () => {
+    clear();
+    setPrincipal(null);
+    setAlias("");
+    setResult("");
+  };
+  const list = usePage<Grant>("/api/kv/legacy/grants", true, clearAuthorization),
+    task = useTask(clearAuthorization);
+  useEffect(() => {
+    if (task.error) {
+      setImpact(null);
+      setAliasAck(false);
+      setConfigAck(false);
+      setConfirm("");
+    }
+  }, [task.error]);
   const { run } = task;
   const load = useCallback(() => {
     setPrincipal(null);

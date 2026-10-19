@@ -104,6 +104,19 @@ Unauthenticated or revoked page requests retain the browser origin when redirect
 
 ## KV client withdrawal on failed authorization (2026-10-18)
 
+Legacy principal-operation and independent grant-list tasks clear the full
+local principal, entered alias, captured change/expected text, impact and alias
+set, acknowledgments, entered confirmation and prior success on their own
+authorization loss. The existing client handles preflight/request/postflight
+denial before parsing denial bodies. Ordinary operation 409/503 failures retain drafts
+and captures while the operation-error effect invalidates preview/confirmation.
+No server permission, revision or complete-alias acknowledgment change occurs.
+[Legacy source checks](BORTUS-KV-ADMINISTRATION-UI.md#legacy-editor-authorization-withdrawal-2026-10-19)
+use synthetic metadata: the final baseline 24 cases had 20 expected failures,
+then changed legacy/audit/policy/identity tests passed all 80 and a fresh isolated
+build/lint/full typecheck passed. The earlier test-library typecheck failure is
+retained; browser, AT, backend and live acceptance remain separate.
+
 The audit task clears entered/applied filters, validation, displayed metadata
 and pagination history on direct authorization loss. It suspends metadata
 requests until deliberate Apply, retaining the existing fresh pre/post session

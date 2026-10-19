@@ -1,5 +1,38 @@
 # BORTUS KV administration component
 
+## Legacy editor authorization withdrawal (2026-10-19)
+
+Legacy principal operations and the independent grant-list task now share an
+editor reset on their own authorization loss. It clears principal metadata,
+the entered alias, captured change, impact pages and complete alias set,
+acknowledgments, exact confirmation and prior success display. The existing
+client invokes this at preflight, request or postflight, including malformed
+or stalled HTTP 401/403 bodies, without waiting for the shared session poll.
+Page hiding and session-ended cleanup use the same reset and existing reply fence.
+
+Ordinary operation 409/503 failures retain the entered alias, principal and captured
+change/expected confirmation while the existing operation-error effect clears
+the impact and acknowledgments/entered confirmation. Refresh metadata and
+capture a new preview before another commit; no automatic retry is added.
+Grant rows already clear when their own loading begins; the shared editor reset
+does not invalidate another task's request epoch or independently held list page.
+Complete impact pagination, principal/path revisions, exact alias/configuration acknowledgment, routes and
+transport remain unchanged. Focused actual-source hook/JSX regressions use only
+synthetic legacy/session/path metadata; no handler, server or database runs.
+Browser, React DOM, AT, backend and live acceptance remain separate.
+
+The final 24 legacy regressions produced 20 expected failures and four passes
+against baseline source, then passed with the unchanged audit/policy/identity
+regressions: 80 passes, no failures, skips or cancellations. A fresh isolated
+production build, focused zero-warning lint and full nonincremental typecheck
+passed with 301 source/test/control bindings and 37,428 pinned dependencies
+checked before/after. An earlier build completed Next compilation/packaging
+and lint but failed full typecheck because the new test used `findLast` outside
+the existing TypeScript library contract. The equivalent `filter(...).at(-1)`
+assertion passed the final baseline/green/build sequence; that failure remains
+retained. These 24 cases do not establish positive grant/revoke commit bodies
+or concurrent cross-task authorization-loss behavior.
+
 ## Audit filters, pagination and authorization withdrawal (2026-10-19)
 
 Applying a different audit path/operation filter clears the previous query's

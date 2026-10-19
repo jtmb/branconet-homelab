@@ -9,6 +9,18 @@ cluster requirement, not a guarantee supplied by the dashboard. See
 
 ## KV browser revocation handling (2026-10-18)
 
+Legacy operation and independent grant-list tasks share an editor reset on their
+own authorization loss: principal/alias, captured change and expected text,
+impact/complete alias set, acknowledgments, entered confirmation and prior
+success display clear before shared session polling. Ordinary operation 409/503 failures
+retain the draft and captured target while the operation-error effect clears
+preview/acknowledgments/entered confirmation. No complete-impact, revision,
+transport or native contract changes. See [legacy editor withdrawal](BORTUS-KV-ADMINISTRATION-UI.md#legacy-editor-authorization-withdrawal-2026-10-19)
+for the synthetic source-hook scope: final baseline 24 cases had 20 expected
+failures, while the changed source passed all 80 legacy/audit/policy/identity
+regressions and a fresh build/lint/full typecheck. The earlier test-library
+typecheck failure remains retained. Browser/backend/live acceptance is separate.
+
 Audit administration now clears entered/applied filters, validation, metadata
 and cursor history on direct authorization loss, and waits for deliberate Apply
 before requesting metadata again. Applying different filters resets cursor
