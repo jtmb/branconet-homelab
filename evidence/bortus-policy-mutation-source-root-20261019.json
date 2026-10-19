@@ -1,0 +1,420 @@
+{
+  "observedUTC": "2026-10-19T09:50:59.195846+00:00",
+  "scope": "Bounded public KV policy mutation source review only; application/charts unchanged",
+  "rootStartingCommit": "07a7a339a1d870d57b6eba527f1ad98fb92f20e2",
+  "applicationCommit": "a912ab02d13a52c87fc81198d20e607ac3e6aeab",
+  "chartsCommit": "835dabebd97a7691311b2c6748fd3cfa4db17f44",
+  "applicationBindings": [
+    {
+      "path": "k8s-rewrite/AGENTS.md",
+      "gitMode": "100644",
+      "gitBlob": "822ca7215115cc0ead10c371b4d8b02e61b45135",
+      "bytes": 3036,
+      "sha256": "a4900df4b495873e318cdffd635c9bec8af6d35c904f31711d48be42455036e7",
+      "workingSHA256": "a3220931165bf881a9b663ed0f501412446b715efc14fe15b5a12695aa478a7e",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "full instructions"
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "gitMode": "100644",
+      "gitBlob": "6dbda0d0d0f855b5935ddd8620804f193ed83cee",
+      "bytes": 42187,
+      "sha256": "adeba48ae9e29aab600e83c4e7f375c11a5e9e6ffc37d4b7ebcc31be22bd03cf",
+      "workingSHA256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "67-87 policy, legacy preview and release limits"
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "gitMode": "100644",
+      "gitBlob": "1177d27122f69e42e5bd134360ffa78632179ecb",
+      "bytes": 90388,
+      "sha256": "4d103fe5307b29ca7c9d6ded60fe44d63c09bdd3a0e0acb0f97af90e3f35e3c2",
+      "workingSHA256": "4d103fe5307b29ca7c9d6ded60fe44d63c09bdd3a0e0acb0f97af90e3f35e3c2",
+      "workingRelation": "exact",
+      "reviewedScope": "115-138 current policy and legacy delivery contract"
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "gitMode": "100644",
+      "gitBlob": "18691f7cb2c8942e84a8a8772082c023617ac66b",
+      "bytes": 106949,
+      "sha256": "251942b2d7226414c49fe6a01f4c2c4504b08631340fb1fcb8794fc9db2d1395",
+      "workingSHA256": "51d2a4e9fcf61babfea3d880e77e97b7c1c20203b6b91e235a7e10bbe1bbc25e",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "159,179,221,225,231 fresh roles, administration, legacy acknowledgement and body contract"
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "gitMode": "100644",
+      "gitBlob": "e44388e21a1e3d6a0945b29c4592f0ace30b644d",
+      "bytes": 158044,
+      "sha256": "a2a6d05b5ec8b88028a2a9ba0d885b7f4fb574ddc88cead8fbfbba6cb2f541d6",
+      "workingSHA256": "c06f08d4f2305face0d089ec62e870c7fc75e91cd5d5b8f0df92d97124c3bf4b",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "325-358 legacy/policy API, pagination, fingerprint and body contract; other searches were discovery only"
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "gitMode": "100644",
+      "gitBlob": "05417e9fde168868ff70e0c2e1e4690b2273ce50",
+      "bytes": 126098,
+      "sha256": "700b689304a14b605ddf292f852c6eb16fb789c3a3710e1f4f4771deb5a3c8ce",
+      "workingSHA256": "700b689304a14b605ddf292f852c6eb16fb789c3a3710e1f4f4771deb5a3c8ce",
+      "workingRelation": "exact",
+      "reviewedScope": "96,114-139,216-218 metadata schema/deployment boundaries; headings inventory only elsewhere"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/kv/policies/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "603986b41ab5c8a73c330b5103c7b03719a8d934",
+      "bytes": 586,
+      "sha256": "e0614a9f5cf98a09820f0b4a6525315be44ba4e57df499aa80fd6c035de08264",
+      "workingSHA256": "5e63d4736b99df8fd7c8df5cdee4ea39d3b2aa4633815d1fa4bddf4eb7c039bc",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "full"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/kv/policies/[id]/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "2096aca0100c5cf318097fd1066f72be8603f7ca",
+      "bytes": 674,
+      "sha256": "99de496bf0415581d7710725d5d1dc7e72b8241c2961b572892befbd675d6bb9",
+      "workingSHA256": "426a918b53a9a693c3d2113d220040ab1fbb8ef9b837b6cc23dba442b0e7da70",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "full"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/kv/policies/preview/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "60a09ef15a7b7a4e42b9801c0cb3e675542243b5",
+      "bytes": 690,
+      "sha256": "a3b338a30bd795a4ed251f49192155ac249e440c3c11dcc451fac2cb16879e46",
+      "workingSHA256": "a3d35d69ad9651fe5cdf94edbc5a956853d273c0aa83423ca25cb8d9b2ca403f",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "full"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/kv-http.ts",
+      "gitMode": "100644",
+      "gitBlob": "73b4c1f0f83865e561a71021f9bb1bea43bf011c",
+      "bytes": 4216,
+      "sha256": "7cfa480cb3cbed300f290e44fec30692d13a6e8f58d2cb9cd575f43b4cae59c3",
+      "workingSHA256": "0404d3db7254cd095eed98e340434adb71f4af0810747c7ffae88f803169a743",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "full"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/kv-schemas.ts",
+      "gitMode": "100644",
+      "gitBlob": "f015485e03b42e0be8225dc94bd798a10b0ca219",
+      "bytes": 6372,
+      "sha256": "6cdf60e68290ee161409de326d14f08b386975c5f6ad5b176a63843e506d779a",
+      "workingSHA256": "11638687d2208fe4eb7b1f9040439241aaaf632028cf57ac010a21167117be9c",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "full, policy definitions primary; other schemas dependencies only"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/kv-registry.ts",
+      "gitMode": "100644",
+      "gitBlob": "fba6ffc6069e58078a2bc24fe9b24b0a08373e88",
+      "bytes": 25037,
+      "sha256": "93645d9d35b9a2e402d31bf7492aff909062ca49d5f41824c7d096e2fb26030a",
+      "workingSHA256": "9cc5b1bcf1d41f1ef68e429b26e9e35a9da9db3a13602be3d137b7531a642559",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "18-74,126-134,227-291 policy and scope semantics; 76-110 and208-225 read as dependencies, not complete audit/retention review"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/kv-legacy-access.ts",
+      "gitMode": "100644",
+      "gitBlob": "6d8462194c12bfdf9f31097d061c7e04861252b8",
+      "bytes": 16323,
+      "sha256": "57162185717fee349f58be3dc7df50c50cf799c63f52d39adb665b39f02431b0",
+      "workingSHA256": "a6a14f2d0a3d990f04385be8f0f930d32d500aa41d2f0f90b296254a119f5c12",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "1-139 deep policy impact trace;141-169 adjacent principal/grant implementation dependency only"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/kv-contract.ts",
+      "gitMode": "100644",
+      "gitBlob": "1ef31afb8ca1e013e20691a64bfeab389b55a162",
+      "bytes": 5469,
+      "sha256": "7cbd65c81eafda98df791c3029d65757b91c9ed5278756e7ba16e1966e744199",
+      "workingSHA256": "639f670f70d56842e5aa00b0b311a2040a6a11631de931e9812d53703416f1f4",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "1-82 actions/path/deny/body/revision; configuration dependency only"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/secret-http.ts",
+      "gitMode": "100644",
+      "gitBlob": "7f680588cf74095d17b4d07a4b14fe8b753e756a",
+      "bytes": 855,
+      "sha256": "7c8d4d4fc911b607bbdf2f3d3ba3cd2d652f89df24307add14238d368ac292b6",
+      "workingSHA256": "b6d5df26b924310dbf1e3da75cadba31ae69fdc5dce1de7b86b1fb296fe0328a",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "full response privacy/error dependency"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/secret-aliases.ts",
+      "gitMode": "100644",
+      "gitBlob": "58060b4d380fde18daf3f6b50291dc99ad66d88c",
+      "bytes": 1103,
+      "sha256": "be986bcc3943de19ff973c89f38bcd2fe4960858f586459d619584a8dc03a33a",
+      "workingSHA256": "2cb7ab41a581addbb3cee36dc704c401c85fead9ee49e84831cb9b32a5019162",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "full alias spelling/merge dependency"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/alias-catalog.ts",
+      "gitMode": "100644",
+      "gitBlob": "7883eb8d7065dd59bb1d16a14b9c55834508ea4b",
+      "bytes": 3356,
+      "sha256": "455637ce0a8aecdff11203bc7813aae94e4a85c91a2cbf9a69f83865fa887cae",
+      "workingSHA256": "3ed3fa9e750e86752d918dc92ff96b4c1685a114017c5488dae8869db6c4197a",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "full text read; readAliasFile/MAX_ALIASES primary, cache implementation not independently qualified"
+    },
+    {
+      "path": "k8s-rewrite/front-end/prisma/schema.prisma",
+      "gitMode": "100644",
+      "gitBlob": "f4fcc8433f8ce6df525fe4bb39f398dce0728381",
+      "bytes": 8448,
+      "sha256": "06abf29e554e101a7b048c7334c9a3eae12c6e78c7f399f709ee2e7b14ecc409",
+      "workingSHA256": "5ec4107f36f6de04af824229633e082f76756bb099d64b6656db81a813ee70d2",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "84-108 mapping uniqueness and policy revision; source only"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/kv-legacy-access.test.ts",
+      "gitMode": "100644",
+      "gitBlob": "ab27bd9381b09add65375adf4f9c7c103f0da8a2",
+      "bytes": 21129,
+      "sha256": "a373785fcd3663cc9a33476e6dec85b023a63b7362e9af971f941224755ab8c4",
+      "workingSHA256": "9833f1940db8728b50dcd281d356a77476cc9b8c07af96aa8d137f64db0503b0",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "65-126,156-174 selected existing assertions; not executed"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/kv-metadata-body.test.ts",
+      "gitMode": "100644",
+      "gitBlob": "4b8ce76a44d8f697afbd28e2a772f374b2e8bebc",
+      "bytes": 3626,
+      "sha256": "b12fa87d59993ff815383156489c8f1f7b5d957e2119582b2451541f3097b26d",
+      "workingSHA256": "a388e467c06981b7c7c1b4dfb5f7251044721650682c52af53a9e5758760ad87",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "full existing three cases; not executed"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/kv-foundation.test.ts",
+      "gitMode": "100644",
+      "gitBlob": "1ae59fcfb98ea5b25d8d98b79d1b1120c353c9f3",
+      "bytes": 22297,
+      "sha256": "4c3e40e204424fe17d58884a4f5d5923ab0f9127e41a50365381a42358f26a49",
+      "workingSHA256": "7c0e07cec0dbffae091c175c822cc9662fd0529ac21e6592963d201954b5fc75",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "selected discovery lines28-31 existing deny/segment/corrupt-actions assertions only; not executed"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/kv-administration.integration.ts",
+      "gitMode": "100644",
+      "gitBlob": "6defe7120ad2818d82b717b211088cbe7cbbb705",
+      "bytes": 8502,
+      "sha256": "dc7006bc4dbad9642ff3b840d832ba0590e0891aa99edcbeea53973be51b28e7",
+      "workingSHA256": "e62c11112e33e23430ce5a79b9bb9c5ec8fa8a196f9d5604f9f7f1b9d0934feb",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "23-78 selected existing policy stale-CAS and update assertions; not executed"
+    },
+    {
+      "path": "docs/implementation-evidence/kv-legacy-access.json",
+      "gitMode": "100644",
+      "gitBlob": "e4919b29e1c2a28f8502d0a31340b7912f44c36a",
+      "bytes": 6625,
+      "sha256": "717d58c083df3831b2a0874109c437c12a089d2d28ca8a211a59c5887d612bdd",
+      "workingSHA256": "53a5cc7c13752a4033feaeb3cd52b1a7b79deab9efbdd6433269e0f3b609a765",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "1-48 historical scope/claims/corrections; not current runtime proof"
+    },
+    {
+      "path": "docs/implementation-evidence/metadata-body-qualification.json",
+      "gitMode": "100644",
+      "gitBlob": "94879dda7919df4560d5e59573c5104178a07291",
+      "bytes": 3887,
+      "sha256": "80e83931d629d289249c9630678e831d9690c0464b00aa068ed579de46db3473",
+      "workingSHA256": "a480f3dcede3589750b3909c216ebed09aceecd82c1fa75d26b1486f283bf136",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "1-30 historical scope/maximum body/corrections; not current runtime proof"
+    }
+  ],
+  "historicalBindings": [
+    {
+      "path": "docs/operations/handoffs/2026-10-19-bortus-automation-identity-source-successor.md",
+      "gitMode": "100644",
+      "gitBlob": "7c089d50243b389bf341a0fdfb62b421a4cbc9d5",
+      "bytes": 10444,
+      "sha256": "381c41492b1188eabd13dae6ef9a6b3e13e703d2de6ec29ca8336161d39174c9",
+      "workingSHA256": "381c41492b1188eabd13dae6ef9a6b3e13e703d2de6ec29ca8336161d39174c9",
+      "workingRelation": "exact",
+      "reviewedScope": "full immediate handoff"
+    },
+    {
+      "path": "evidence/bortus-automation-identity-source-root-20261019.json",
+      "gitMode": "100644",
+      "gitBlob": "e781a8c6695dfa86350159c41805a1da667dd3a0",
+      "bytes": 25875,
+      "sha256": "f03b2187e8b42add798a57ffef0e1ca9408586822d7c205a3e2964924d35d6ad",
+      "workingSHA256": "f03b2187e8b42add798a57ffef0e1ca9408586822d7c205a3e2964924d35d6ad",
+      "workingRelation": "exact",
+      "reviewedScope": "selected scope/decision/observations/limits/errors/nextFeature"
+    },
+    {
+      "path": "docs/operations/handoffs/2026-10-19-bortus-app-schema-source-successor.md",
+      "gitMode": "100644",
+      "gitBlob": "96986b00d9b0c6cb9cba423ed4f69abc723f15fe",
+      "bytes": 10064,
+      "sha256": "9e5e3b0532c016c61b71d77f8332ecb795a70308c4f3632c8f540e8f3888558b",
+      "workingSHA256": "9e5e3b0532c016c61b71d77f8332ecb795a70308c4f3632c8f540e8f3888558b",
+      "workingRelation": "exact",
+      "reviewedScope": "full"
+    },
+    {
+      "path": "docs/operations/handoffs/2026-10-19-bortus-app-startup-config-source-successor.md",
+      "gitMode": "100644",
+      "gitBlob": "9405791793330242522d967ab1c90f187e08670c",
+      "bytes": 10308,
+      "sha256": "5ff8fa13273cdac71f9d4045ed8eac89550bbf325bcc9da3cac113ae23b736d9",
+      "workingSHA256": "d78f3fbb60b8f693306447b0e9c1bd5583fc579ba9304e5d1d0fc310cc8c26d1",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "selected required first27 lines and durable evidence summaries"
+    },
+    {
+      "path": "docs/operations/handoffs/2026-10-19-bortus-charts-immutable-source-successor.md",
+      "gitMode": "100644",
+      "gitBlob": "6240345873906309f6234bf59e23677d6389e5b4",
+      "bytes": 9708,
+      "sha256": "049222fccec443395be773e1b3510dba6268994cedb611ae47cc9fb7cc09b984",
+      "workingSHA256": "049222fccec443395be773e1b3510dba6268994cedb611ae47cc9fb7cc09b984",
+      "workingRelation": "exact",
+      "reviewedScope": "selected required first30 lines"
+    },
+    {
+      "path": "docs/operations/handoffs/2026-10-19-bortus-kv-cleanup-presentation-successor.md",
+      "gitMode": "100644",
+      "gitBlob": "ba8dc8d00c5168ce37a013f287ce6a126eb6e557",
+      "bytes": 8449,
+      "sha256": "dc109c36951e35f3e27dc3a27019c8b9558936a39dab380d979313735de8c964",
+      "workingSHA256": "00dbb1c27944b583468ccb93e072f1f85f304c68a1c0505eec770fa0d1363c04",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "selected first24 lines"
+    },
+    {
+      "path": "docs/operations/handoffs/2026-10-19-bortus-kv-cleanup-status-successor.md",
+      "gitMode": "100644",
+      "gitBlob": "7011f020f0090c1b25f4446d9d66b42b9876a3c2",
+      "bytes": 9145,
+      "sha256": "90d088a09f763c2c38d04fe69fc6c0e025c6e30dd94a83a0ce7d8067bc5ea0b9",
+      "workingSHA256": "12376a9b3947f1f1335406ccecfb0a2fec7b2e916a0bf8a2572057edc9b12e04",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "selected first23 lines"
+    },
+    {
+      "path": "docs/operations/handoffs/2026-10-19-bortus-a07-history-review-successor.md",
+      "gitMode": "100644",
+      "gitBlob": "8b0d6cec3155c1abe8d1fce325f64e811429b208",
+      "bytes": 8975,
+      "sha256": "a99fdd959d41436f95fbeaf764ca52d85932e9b60ba771d6a905a679016e099c",
+      "workingSHA256": "a99fdd959d41436f95fbeaf764ca52d85932e9b60ba771d6a905a679016e099c",
+      "workingRelation": "exact",
+      "reviewedScope": "selected first38 lines"
+    },
+    {
+      "path": "evidence/bortus-account-settlement-performance-root-20261019.json",
+      "gitMode": "100644",
+      "gitBlob": "818c8add220a7800a275524965f05a47ed914f08",
+      "bytes": 8149,
+      "sha256": "b1ad80b3f434504e24593de904396007ca8e93f3e71497a53f355cb6b88c87ae",
+      "workingSHA256": "3ef59c6ba875bfd36201afa974f21ec8102ce2d60422f4c3ddc14740fc7ecf93",
+      "workingRelation": "CRLF to Git LF",
+      "reviewedScope": "selected original scope/overallAcceptance; failed result retained, not full distribution reconstruction"
+    }
+  ],
+  "decision": "No concrete supported correction selected; retain application and charts source",
+  "observations": [
+    {
+      "topic": "Routes and body authorization",
+      "result": "Human wrapper resolves authenticated actor and current account. Policy POST/PATCH/DELETE use fresh human engine-administrator check before their 3 MiB metadata body; preview retains generic 512 KiB. Strict full replacement policy schemas reject extra/value fields. Body deadline20s,4096chunks,10000aliases of max253 characters remain.",
+      "source": "policy routes;kv-http.ts:22-68;kv-schemas.ts:3-17;kv-contract.ts:12-15"
+    },
+    {
+      "topic": "Policy validation and metadata CAS",
+      "result": "validPolicy validates normalized segment prefix, unique supported actions/effect, existing mount and principal, legacy list/read audience and 256-rule cap. Serialized accountLock transaction rechecks fresh administration. Existing policy preview/update/delete requires positive safe expected revision; missing428, invalid400, stale409 after existing-record/validation ordering. Update increments revision. Human-only create needs no legacy preview. Policy schema revision is optional to preserve deliberate registry428 enforcement, not an authorization bypass.",
+      "source": "kv-registry.ts:18-73,227-285;kv-contract.ts:79-82;schema.prisma:95-105"
+    },
+    {
+      "topic": "Legacy transitions",
+      "result": "Either new or previous principal legacy-lookup triggers recomputed impact, including moving away, and delete uses prior rule. Affected set unions old/new read scopes with complete-segment prefix matching. Same effective before/after result still belongs to affected scope; list-only rules can require a valid fingerprint and empty exact set. Legacy principal revision and metadata audit are written inside the same transaction as policy mutation.",
+      "source": "kv-registry.ts:243-285;kv-legacy-access.ts:38-40,86-119"
+    },
+    {
+      "topic": "Fingerprint and pages",
+      "result": "Fresh bounded alias file plus exact metadata references are validated and sorted. Snapshot includes normalized intended fields/action order, prior policy metadata, current principal/legacy rules, exact alias target rows, bindings/path and mount revisions/normalized scopes, grants and before/after authorization. Preview returns max100 rows/cursor; all pages repeat the same fingerprint only while metadata remains unchanged. No native value/digest/head request in this impact helper.",
+      "source": "kv-legacy-access.ts:19-139;secret-aliases.ts;alias-catalog.ts:7-27"
+    },
+    {
+      "topic": "Acknowledgement",
+      "result": "Missing acknowledgement428; malformed confirmations/duplicates400; changed fingerprint or nonexact unique alias set409. Complete sorted alias equality is checked inside serialized mutation, not merely cursor page length. This proves request metadata comparison in source, not that a person read every row. External alias-file changes cannot join the SQLite transaction; documented limitation remains.",
+      "source": "kv-legacy-access.ts:122-139;docs/BORTUS-KV-DESIGN.md:81;docs/API-USAGE.md:350-358"
+    },
+    {
+      "topic": "Existing assertions and evidence",
+      "result": "Read selected source assertions for603aliases,7pages,no native preview calls,missing/truncated/duplicate acknowledgement,alias/path/principal/mount revision/scope changes,legacy-to-human move,stale policy update and max10000x253 metadata reader bounds. Historical legacy/metadata-body receipts retain their original failed attempts and qualification scope. No tests/build/fixtures executed and no current runtime pass inferred.",
+      "source": "selected kv-legacy-access.test.ts,kv-metadata-body.test.ts,kv-administration.integration.ts;historical implementation evidence"
+    }
+  ],
+  "sourceReviewLimits": [
+    "Whole-file bindings establish byte identity, not complete semantic review; explicit ranges retained.",
+    "No fresh test, independent runtime/race/audit rollback proof; metadata transaction source is not native atomicity.",
+    "Acknowledgement validates exact submitted metadata, not actual human reading. External alias file is independently controlled and cannot be atomic with SQLite.",
+    "No native head/key/availability, values/history/CAS/rotation/recovery/live proof.",
+    "Prior identity demotion/re-promotion and pending identity DELETE CAS semantics remain unchanged."
+  ],
+  "sourceChanged": false,
+  "applicationDocsChanged": false,
+  "testsRun": false,
+  "buildRun": false,
+  "fixtureStarted": false,
+  "credentialIssuedOrRevealed": false,
+  "databaseOpened": false,
+  "prismaMigrationOrSQLExecuted": false,
+  "nativeApiBackendBrowserOperatorRecoverySecurityRetryOrLiveOperations": false,
+  "independentReview": {
+    "decision": "retain source; no concrete supported correction found",
+    "reviewedBindings": 23,
+    "privateReportSHA256": "81e7abc8d5f486238635b7a476613d722be848cdc55b63d5e2cb35fbdf6180ee",
+    "noRuntimeOwned": true
+  },
+  "documentationInventory": {
+    "rootMarkdownIncludingPlanAndStatus": 62,
+    "applicationMarkdown": 22,
+    "scope": "bytes/hashes/headings inventory and selected relevant semantic sections; not complete corpus semantic review"
+  },
+  "rootDocumentationAdditions": [
+    "PLAN.md",
+    "MIGRATION_STATUS.md",
+    "docs/API-USAGE.md",
+    "docs/BORTUS-DEPLOYMENT.md",
+    "docs/MIGRATION-OPERATIONS.md",
+    "docs/SECRETS-ENGINE.md",
+    "docs/USER-PERMS.md"
+  ],
+  "retainedReaderErrors": [
+    "Root broad combined documentation/source searches and multi-document reads truncated; discovery output and whole-file hashes are not full semantic review. Subsequent bounded actual-range reads ground the decision.",
+    "Independent broad output truncations remain in its report; bounded rereads ground its conclusions."
+  ],
+  "priorPublicationFindings": "Saved seven-file32 and earlier seven-file1 findings remain UNRESOLVED; no inspection/classification/diagnosis/rescan/suppression/disposition/security acceptance. New checkpoint publication packet is separate.",
+  "all44OriginalAcceptanceClausesPreserved": true,
+  "originalA07WarmFailuresRetained": true,
+  "noOwnedApplicationOrFixtureRuntimeLaunched": true,
+  "overallAcceptance": false,
+  "nextFeature": "Bounded public source review of KV policy editor preview, complete-alias confirmation and stale-revision/authorization-loss settlement against the existing administration contract; implement only a concrete supported correction, without tokens, databases, native backend operations, recovery, browser or live work."
+}
