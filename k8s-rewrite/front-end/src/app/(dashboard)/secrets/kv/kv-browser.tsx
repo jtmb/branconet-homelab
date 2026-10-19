@@ -41,7 +41,7 @@ export default function KvBrowser() {
         actions={row => { const item = mountData.items.find(mount => mount.id === row.id)!; return <div className="flex flex-wrap gap-2"><button className={button} onClick={() => { setMountId(item.id); setPathCursors([]); setSelected(undefined); setSearch(""); }}>Browse {item.name}</button>
           {session.canWrite && <button className={button} disabled={!fresh(mounts)} onClick={event => { formTrigger.current = event.currentTarget; setRegistration(undefined); setMountEditor(item); }}>Edit {item.name}</button>}
           {session.canKvWrite && <button className={button} disabled={!fresh(mounts)} onClick={event => { formTrigger.current = event.currentTarget; setMountEditor(undefined); setRegistration(item); }}>Register path in {item.name}</button>}</div>; }} />
-        {!mountData.items.some(item => [item.name, ...item.namespaces].some(text => text.toLowerCase().includes(mountSearch.toLowerCase()))) && !mounts.error && <p>{mountSearch ? "No matching permitted mounts in this API page." : "No permitted mounts in this API page."}</p>}
+        {!mountData.items.some(item => [item.name, ...item.namespaces].some(text => text.toLowerCase().includes(mountSearch.toLowerCase()))) && !mounts.error && <p role="status">{mountSearch ? "No matching permitted mounts in this API page." : "No permitted mounts in this API page."}</p>}
         <CursorControls label="mounts" cursors={mountCursors} next={mountData.nextCursor} disabled={mounts.refreshing || !!mounts.error} move={cursors => { setMountCursors(cursors); setMountSearch(""); }} /></>}
     </section>
     {session.canWrite && mountEditor && <MountForm key={typeof mountEditor === "string" ? mountEditor : mountEditor.id} original={mountEditor === "new" ? undefined : mountEditor} close={closeForms} saved={text => { setMessage(text); closeForms(); refetchKvMetadata(); }} />}
@@ -52,7 +52,7 @@ export default function KvBrowser() {
       <QueryState query={paths} label="paths" retry={paths.refetch} />
       {pathData && <><MetadataTable label="KV paths" rows={rows} columns={[{ key: "path", label: "Logical path" }, { key: "namespace", label: "Namespace" }, { key: "name", label: "Secret" }, { key: "fieldCount", label: "Fields", sort: "number" }, { key: "retention", label: "Retention", sort: "number" }]}
         actions={row => <button className={button} aria-label={`Open KV path ${row.path}`} onClick={event => { trigger.current = event.currentTarget; setSelected(row.id); heading.current?.focus(); }}>Open path</button>} />
-        {!rows.length && !paths.error && <p>{search ? "No matching permitted paths in this API page." : "No permitted paths in this API page."}</p>}
+        {!rows.length && !paths.error && <p role="status">{search ? "No matching permitted paths in this API page." : "No permitted paths in this API page."}</p>}
         <CursorControls label="paths" cursors={pathCursors} next={pathData.nextCursor} disabled={paths.refreshing || !!paths.error} move={cursors => { setPathCursors(cursors); setSearch(""); }} /></>}
     </section>
     {selected && <PathDetail key={selected} id={selected} heading={heading} close={closeDetail} />}

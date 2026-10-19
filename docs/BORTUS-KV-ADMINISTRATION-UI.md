@@ -1,5 +1,9 @@
 # BORTUS KV administration component
 
+## Standalone metadata empty-result qualification (2026-10-19)
+
+Only the two existing standalone mount/path empty-result paragraphs gain role="status". Their current-permitted-page text, filtering, error suppression, cursors, selection/forms, denial handling and explicit Retry callbacks remain. Loading already uses status; errors retain alerts. The same final frozen14-case public-presentation fixture plus49 prior client/session/metadata controls gives baseline59pass/4missing-status failures, then63pass/0fail/skip/cancel. Actual selected declarations use inert hooks and synthetic metadata; effects/forms/selected detail/administration/workbench/DOM/requests are excluded. Error cases cover retained empty pages at409/503 and suppressed retained pages at401/403, not all populated-error/filter combinations. Fresh BuildID1dUHyH95EO171mhY7Zvpz, focused zero-warning lint and full nonincremental types pass on310 selected inputs;37428 pinned dependencies match before/after and compiled graph has41723 records. Explicit Next pre/post packaging uses an inert absent-parent DATABASE_URL without Prisma CLI/server/database/native-handler execution. Source/model/build qualification does not establish browser/backend/security/performance/actualAT/recovery/image/live acceptance.
+
 ## Shared metadata owner notification fences (2026-10-19)
 
 Shared metadata now fences old-owner401/403 notifications and authenticated:false session effects with its existing outer QueryStore cancellation signal. A late ignored-abort response after invalidation, hiding or clearing cannot withdraw a newer metadata/session generation. Current-owner denial handling and scoped403 session-only revalidation remain unchanged; no form lifecycle or capability rule changes. This is a client/session/metadata correction only, with browser and actual assistive-technology acceptance separate.
