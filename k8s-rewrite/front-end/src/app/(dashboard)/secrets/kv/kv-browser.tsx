@@ -68,7 +68,7 @@ function PathDetail({ id, heading, close }: { id: string; heading: MutableRefObj
   const freshCapabilities = fresh(capabilities) && caps?.pathId === id && caps.revision === path?.revision ? caps : null;
   const focusHeading = useCallback((element: HTMLHeadingElement | null) => { heading.current = element; element?.focus(); }, [heading]);
   return <section className={surface}><div className="flex flex-wrap items-center gap-3"><h2 ref={focusHeading} tabIndex={-1} className="break-all font-semibold">KV path {path?.path ?? id}</h2><button className={button} onClick={close}>Close path</button></div>
-    <QueryState query={pathQuery} label="path metadata" retry={pathQuery.refetch} /><QueryState query={capabilities} label="path capabilities" retry={capabilities.refetch} />
+    <QueryState query={{ ...pathQuery, data: path }} label="path metadata" retry={pathQuery.refetch} /><QueryState query={capabilities} label="path capabilities" retry={capabilities.refetch} />
     {path && <><p className="break-all">Native target: {path.namespace}/{path.name} · metadata revision {path.revision} · retention {path.retention}</p>
       <button ref={workbenchTrigger} className={button} disabled={!fresh(pathQuery) || !freshCapabilities} onClick={() => setWorkbenchOpen(true)}>Values and versions</button>
       <MetadataTable label="KV field mappings" rows={path.fields.map(item => ({ id: item.field, field: item.field, key: item.key }))} columns={[{ key: "field", label: "Logical field" }, { key: "key", label: "Exact native key" }]} />
