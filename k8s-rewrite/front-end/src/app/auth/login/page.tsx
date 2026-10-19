@@ -59,8 +59,10 @@ export default function LoginPage() {
         </div>
       )}
 
+      <p role="status" className="sr-only">{loading ? "Signing in…" : ""}</p>
+
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-3">
+      <form onSubmit={handleSubmit} aria-busy={loading} className="space-y-3">
         <div>
           <label htmlFor="username" className="block text-sm font-medium text-zinc-300 mb-1.5">
             Username
@@ -98,7 +100,7 @@ export default function LoginPage() {
           disabled={loading}
           className="w-full py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium transition-colors flex items-center justify-center gap-2"
         >
-          {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+          {loading && <Loader2 aria-hidden="true" className="w-4 h-4 animate-spin" />}
           Sign in
         </button>
       </form>

@@ -6,6 +6,15 @@ never rendered. Failed network requests retain the network-error message; the
 form recovers from loading and successful login still navigates to `/`. These
 client messages do not change fresh server authentication or authorization.
 
+Login keeps an empty, screen-reader-only `role="status"` container mounted outside
+the form. During the existing loading state it contains `Signing in…`, the form
+sets `aria-busy="true"`, and the spinner is decorative (`aria-hidden="true"`).
+This includes waiting for an unsuccessful response body, not only the initial
+request. Settlement clears the status and busy state; the existing disabled
+submit button, fields, explicit retry, feedback alerts and navigation remain.
+Actual-source presentation tests cover held request/body and settled outcomes;
+they do not establish actual screen-reader announcements or close AT acceptance.
+
 The existing conditional login and open-registration submission feedback uses
 `role="alert"`, including client validation and HTTP/network errors. It adds no
 focus target or focus movement; messages, clearing on explicit submit, loading

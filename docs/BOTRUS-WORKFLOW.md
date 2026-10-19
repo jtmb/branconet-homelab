@@ -5,6 +5,14 @@ the body is unreadable or malformed. The form remains available for an explicit
 retry. Network failures retain their network-error feedback, and successful
 sign-in still navigates to `/`; the server independently authenticates each login.
 
+While an explicit sign-in submission is pending, including reading an unsuccessful
+response body, the form reports its existing loading state through `aria-busy`.
+An always-mounted, screen-reader-only status outside the form contains `Signing
+in…` only while loading; the visual spinner is decorative. On settlement the
+status empties and busy state clears. Field values and the disabled submit
+behavior are unchanged. Held-request/body presentation-model checks are source
+evidence; actual assistive-technology announcements remain unqualified.
+
 Registration submission keeps an HTTP 403 refusal locked even if the server or
 proxy error body cannot be parsed. Other HTTP refusals show a string error from
 a JSON object or `Registration failed`; network failures retain the network-error
