@@ -1,5 +1,11 @@
 # Controlled whole-server performance qualification
 
+## Bounded warm Pods source review (2026-10-19)
+
+The [account-delivery and response review](implementation-evidence/warm-pods-source-review-20261019.json) found no demonstrated semantics-preserving redundancy in the inspected current path. Warm Pods already has one middleware session read, a resource-only snapshot and reusable redacted rows/JSON; successful worker settlement already omits the idle wait. Both identity yields, refusal draining and the later parent delivery fence retain distinct ownership/freshness purposes. Application source, tests, workflow and frozen oracles remain unchanged at frontend tree `21eb2b17035822532129240b6180fdf971bc6d9d`.
+
+The retained raw report/full summary digests were rechecked and source controls read; no runtime, diagnostic, test/build/CI dispatch or unchanged benchmark occurred. This bounded decision identifies neither a performance cause nor a general absence of possible optimizations. A07 remains failed in five of ten warm cases; the candidate stays isolated and unadopted, with every original release/live/recovery gate intact.
+
 The successful-settlement candidate's [three-digest source provenance correction](USER-PERMS.md#account-worker-successful-settlement-candidate-2026-10-19) retains the first hosted preflight failure and all frozen sensitivity/performance oracles. Separate complete source CI39196459270 on `be5585d3` passes. The single original comparison of changed checkpoint `d6867ba` has now completed: **A07's no-warm-regression gate fails in five of ten comparable warm cases**. [Exact numeric result and bindings](implementation-evidence/account-settlement-paired-evaluation-20261019.json).
 
 The [account-worker successful settlement candidate](USER-PERMS.md#account-worker-successful-settlement-candidate-2026-10-19) omits the idle await after the core has released successful ownership, while retaining refusal drains and both real identity yields. Source-linked generation, all43 focused direct/worker tests and affected lint passed; complete source CI passes as recorded above. Existing failed distributions remain retained. This candidate remains isolated and unadopted; the comparison establishes no latency cause or general speedup.
