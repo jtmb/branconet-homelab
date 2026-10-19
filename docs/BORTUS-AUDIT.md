@@ -1,5 +1,9 @@
 # BORTUS K8s performance, correctness and UI audit
 
+## Shared metadata owner notification fences (2026-10-19)
+
+The source-supported stale-owner gap preceded the existing QueryStore success/error/finally publication fences: an old fetch401/403 or false-session body could affect the replacement store before its old result was rejected. The final frozen16-control fixture plus33 prior controls produced49 baseline checks:42 passes and seven expected stale-owner failures, with no skips or cancellations. A narrow client helper now fences only those metadata-owned notifications with the existing outer owner signal. The changed source passed all49 frozen checks with no failures, skips or cancellations. A fresh isolated production build, focused zero-warning lint and full nonincremental typecheck passed with309 selected source/test/control inputs,37,428 dependencies and41,723 compiled graph records; no browser, backend, security, performance, AT, recovery, image or live acceptance is assigned.
+
 ## Shared metadata denial notification ordering (2026-10-19)
 
 The bounded shared-client correction moves only existing HTTP401/403 notifications ahead of response-body parsing. Frozen synthetic client/session/metadata regressions reproduced ten baseline failures with23 passes; changed source passed all33 checks with zero failures, skips or cancellations. A fresh isolated production build, focused zero-warning lint and full nonincremental typecheck passed with308 selected source/test/control inputs and37,428 dependencies bound before/after. Build qualification did not repeat the tests. This is no browser, backend, security, performance, AT, recovery or live acceptance claim; historical evidence and unresolved findings remain unchanged.

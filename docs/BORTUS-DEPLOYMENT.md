@@ -1,5 +1,9 @@
 # BORTUS application deployment
 
+## Shared metadata owner notification fences (2026-10-19)
+
+A source-only helper boundary now fences obsolete shared metadata401/403 and false-session effects with the existing outer QueryStore cancellation signal. Current-owner denial notifications, the independent inner20-second timeout and direct requestJson behavior remain intact. Fresh isolated production build Na_o0KOtkaLFH2s7X9saZ, selected zero-warning lint and full nonincremental typecheck passed with309 selected inputs,37,428 dependencies and41,723 graph records. All49 focused client/session/metadata regressions passed; the preceding build remains historical. No image, registry publication, deployment, production verification or adoption is qualified by this source change.
+
 ## Shared metadata denial notification ordering (2026-10-19)
 
 The shared metadata client source now publishes existing401/403 session effects before denial-body parsing. Fresh isolated production build, focused zero-warning lint and full nonincremental typecheck passed for these bytes (build `C4zNNlyPHzMbxw0ZIVzQm`,308 selected source/test/control inputs,37,428 dependencies,41,723 graph records); this source change does not qualify an image, registry publication, deployment, production verification or adoption. The bounded regression uses synthetic client/session/metadata only and executes no database, server or native handler.

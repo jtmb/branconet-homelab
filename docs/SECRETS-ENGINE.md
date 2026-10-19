@@ -1,5 +1,9 @@
 # BORTUS Secrets Engine
 
+## Shared metadata owner notification fences (2026-10-19)
+
+The shared metadata helper now checks its existing outer QueryStore cancellation signal before401/403 notifications and before false-session withdrawal. An obsolete metadata owner cannot affect a newer store generation even if fetch or body decoding ignores abort. Current-owner notifications, direct requestJson denial behavior and the independent inner20-second timeout are preserved. Private operation clients, native values/history, policies, identities, CAS and recovery are unchanged.
+
 ## Shared metadata denial notification ordering (2026-10-19)
 
 The shared metadata `requestJson` client now publishes its existing401 clear/session-ended event and403 session-only invalidation before reading a denial body. This is separate from the private operation clients described below. It does not change native Secret handling, values/history, policy authority, tokens, CAS or recovery. The request still awaits body settlement; existing cancellation can select its generic status fallback.

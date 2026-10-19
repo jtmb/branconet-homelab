@@ -1,5 +1,9 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## Shared metadata owner notification fences (2026-10-19)
+
+Shared metadata notification effects now use the existing outer QueryStore cancellation signal, so an ignored-abort old401/403 response or false-session body cannot clear or revalidate a newer store generation. The existing QueryStore publication, cache, polling and retry algorithms are unchanged. Direct requestJson keeps its exported contract and current denials retain their before-body ordering, independently of the inner20-second timeout. The final frozen49-check baseline has42 passes and seven expected stale-owner failures. All49 changed-source frozen checks passed without failures, skips or cancellations. Fresh isolated production build Na_o0KOtkaLFH2s7X9saZ, focused zero-warning lint and full nonincremental typecheck passed for309 selected inputs and37,428 bound dependencies; full delivery and all original gates remain open.
+
 ## Shared metadata denial notification ordering (2026-10-19)
 
 The existing shared `requestJson`401 clear/session-ended event and403 session revalidation now precede denial-body parsing. Body settlement, ordinary error/status/data handling, success validation and the existing generation fences remain intact. The frozen focused suite has23 baseline passes and ten expected failures; changed source passed all33 checks without failures, skips or cancellations. Fresh isolated production build, focused zero-warning lint and full nonincremental typecheck passed with308 selected source/test/control inputs and37,428 dependencies bound before/after; the build did not repeat tests. No form-hook, handler, database, private workflow or runtime acceptance is added.

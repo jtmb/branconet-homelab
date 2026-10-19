@@ -1,5 +1,9 @@
 # BORTUS API usage
 
+## Shared metadata owner notification fences (2026-10-19)
+
+Metadata-owned401/403 notifications now check the existing outer QueryStore cancellation signal before clearing or revalidating the current store. An obsolete ignored-abort fetch cannot publish session effects into a replacement generation; a cancelled old session body with authenticated:false is fenced at the same boundary. Exported requestJson keeps its signature and direct-request denial behavior, including a cancelled direct request. Current denials still notify before body parsing, and the inner20-second transport timeout does not cancel the outer owner. Status/error/data decoding,204, malformed-success502, ordinary409/503 failures and metadata allowlists are unchanged.
+
 ## Shared metadata denial notification ordering (2026-10-19)
 
 Shared `requestJson` now publishes its existing HTTP401 cache clear/session-ended event and HTTP403 session-only invalidation before reading the denial body. The request still awaits body settlement and retains its status/error/data decoding, malformed-success502 and empty204 behavior. Existing cancellation may abort a body and use the existing status fallback. Ordinary409/503 behavior, request options, metadata allowlists and server authorization are unchanged.

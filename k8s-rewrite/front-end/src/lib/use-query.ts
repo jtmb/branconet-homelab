@@ -6,9 +6,9 @@ import { isKvMetadataQuery } from "./kv-metadata-query";
 import { isSharedMetadataQuery } from "./metadata-query";
 import { configurationList } from "./configuration-response";
 
-export async function requestJson<T = Record<string, unknown>>(url: string, init?: RequestInit): Promise<T> {
+async function requestJsonForOwner<T>(url: string, init?: RequestInit, ownerSignal?: AbortSignal): Promise<T> {
   const response = await fetch(url, { ...init, cache: "no-store" });
-  if (!response.ok) {
+  if (!response.ok && !ownerSignal?.aborted) {
     if (response.status === 401) {
       browserQueries.clear();
       window.dispatchEvent(new Event("bortus-session-ended"));
@@ -28,6 +28,9 @@ export async function requestJson<T = Record<string, unknown>>(url: string, init
   }
   return data as T;
 }
+export async function requestJson<T = Record<string, unknown>>(url: string, init?: RequestInit): Promise<T> {
+  return requestJsonForOwner<T>(url, init);
+}
 const browserQueries = new QueryStore({
   load: async (url, signal) => {
     const controller = new AbortController();
@@ -36,9 +39,9 @@ const browserQueries = new QueryStore({
     signal.addEventListener("abort", abort, { once: true });
     if (signal.aborted) controller.abort();
     try {
-      const data = await requestJson<{ authenticated?: boolean }>(url, { signal: controller.signal });
+      const data = await requestJsonForOwner<{ authenticated?: boolean }>(url, { signal: controller.signal }, signal);
       if (url === "/api/vars") return configurationList(data);
-      if (url === "/api/auth/session" && data.authenticated === false) {
+      if (url === "/api/auth/session" && data.authenticated === false && !signal.aborted) {
         browserQueries.clear(key => key !== url);
         window.dispatchEvent(new Event("bortus-session-ended"));
       }

@@ -1,5 +1,9 @@
 # BORTUS user permissions
 
+## Shared metadata owner notification fences (2026-10-19)
+
+Shared metadata401/403 notifications and false-session withdrawal now check the existing outer QueryStore cancellation signal. Obsolete responses cannot end or revalidate a newer session generation. Current-owner denials retain their immediate before-body effects;403 still revalidates only the session and does not directly revoke a scoped writer. Exported direct requestJson behavior remains unchanged even for a cancelled direct request, and the inner20-second transport timeout does not retire a current metadata owner. No role, capability, session authority or server permission change occurs.
+
 ## Shared metadata denial notification ordering (2026-10-19)
 
 The shared metadata helper now publishes its existing401 cache clear and session-ended event, or403 session-only invalidation, as soon as fetch supplies the denial status and before body parsing. It still awaits body settlement. HTTP403 does not directly revoke a scoped writer; fresh session/path-capability checks determine effective authority. Existing cancellation may abort body decoding, preserving the existing generic status fallback. Ordinary errors and permission checks are unchanged.

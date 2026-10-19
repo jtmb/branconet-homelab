@@ -1,5 +1,9 @@
 # BORTUS technology stack
 
+## Shared metadata owner notification fences (2026-10-19)
+
+The client-only shared request path now uses a private helper boundary to gate metadata-owned session notifications on the existing outer QueryStore cancellation signal. The exported requestJson signature and direct-request semantics remain unchanged. No dependency, framework, transport policy, timeout, cache admission or server architecture changes. Current-owner denials still notify before body parsing; an inner transport timeout alone does not retire the QueryStore owner.
+
 ## Shared metadata denial notification ordering (2026-10-19)
 
 The existing client-only `requestJson` helper now handles its existing401 cache clear/session-ended event and403 session-only revalidation before parsing a denial body. No dependency, framework, transport, timeout, cache admission or server architecture changes. Focused synthetic regression and fresh compile/typecheck qualification remain distinct from browser/backend and production acceptance.

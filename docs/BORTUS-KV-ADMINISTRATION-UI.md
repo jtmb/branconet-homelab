@@ -1,5 +1,9 @@
 # BORTUS KV administration component
 
+## Shared metadata owner notification fences (2026-10-19)
+
+Shared metadata now fences old-owner401/403 notifications and authenticated:false session effects with its existing outer QueryStore cancellation signal. A late ignored-abort response after invalidation, hiding or clearing cannot withdraw a newer metadata/session generation. Current-owner denial handling and scoped403 session-only revalidation remain unchanged; no form lifecycle or capability rule changes. This is a client/session/metadata correction only, with browser and actual assistive-technology acceptance separate.
+
 ## Shared metadata denial notification ordering (2026-10-19)
 
 Shared `requestJson`401 clearing/session-ended notification and403 session revalidation now occur before denial-body parsing. A held body therefore does not delay those existing signals. HTTP403 remains session revalidation: a scoped path-policy refusal can leave a valid writer session intact, so immediate standalone RetentionForm removal is not established. Body settlement and existing component/path-capability withdrawal gates remain unchanged; no form-hook redesign or browser acceptance is implied.
