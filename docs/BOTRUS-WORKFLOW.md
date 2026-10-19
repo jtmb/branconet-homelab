@@ -1,5 +1,11 @@
 # BORTUS K8s — Workflow Guide
 
+## Welcome pending session status - reviewed source and bounded UI
+
+Application `5d25f7ffc488dcf1d28209e196d171a8b3e907db` adds only an in-flight counter, one persistent sr-only `Checking session…` status outside the three Get Started buttons and their shared busy attributes. Buttons stay enabled; every explicit click obtains a fresh session. Existing guards, three destinations and all failure fallbacks remain unchanged. Removing eight lines restores the entire prior page. Same-final actual-source tests old5/41 then46/46 and lint0 pass; the earlier guessed-microtask observer failures remain retained after an explicit JSON-entry barrier correction.
+
+The [finite receipt](../evidence/bortus-welcome-pending-root-20261019.json) binds a fresh production build and synthetic IAB states. All7held states expose status/busy semantics; all3destinations, HTTP500, invalidJSON and malformed flags are observed. The root destination is a synthetic navigation marker. One destroyed-connection attempt unexpectedly reaches registration after two synthetic-safe responses; its timed-out sign-in wait and cleared-field image remain private, with no cause, browser-network-fallback pass or replay claimed. The source catch remains byte-identical and model-tested. Seven explicit Get Started clicks send zero form submissions; all16PNGs inspected,15public,fields cleared before captures,zeroaccounts. Captures are sequential and actual screen-reader announcements remain unproved. Build/preview/listeners are closed. No image or production operation follows.
+
 ## Registration pending submission status - reviewed development source
 
 Application `170de4e5295b465d633e92c11ebd4c417ac5785d` adds an always-mounted, screen-reader-only `role="status"` outside the open registration form, loading-derived `aria-busy`, and `aria-hidden="true"` on its decorative spinner. The status contains `Creating account…` only while the existing loading state is true. Removing that paragraph and two attributes restores the entire prior page. Availability, validation, retained fields, disabled submit, explicit retry, feedback alerts, neutral wording, navigation and fresh server authority are unchanged. HTTP403 still replaces form and pending status with its lock alert before reading the body.
