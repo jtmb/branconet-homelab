@@ -1,5 +1,9 @@
 # Migration acceptance evidence
 
+## Truthful welcome source checkpoint - 2026-10-18 (Toronto)
+
+Application source `b0802b9944c94cbca77c2550ed73d46dc8c5f879` corrects the welcome page's unsupported capability, usage and license claims, with workflow/Secrets documentation and unchanged session flow/layout. [Root source receipt](evidence/bortus-truthful-welcome-root-20261019.json) records reviewed files and hosted CI. No local build, new image/render, benchmark or production change is claimed; existing7b03 image/UI evidence remains tied to d6382450. Charts PR5 remains draft/unmerged, suspended and unadopted. Failed A07, security, actual AT, compatible independent recovery and guarded live acceptance remain open. [The full-goal successor handoff](docs/operations/handoffs/2026-10-19-bortus-truthful-welcome-successor.md) scopes the next account-worker settlement feature.
+
 ## Corrected image verified with the integrated browser - 2026-10-19 UTC
 
 Source `d6382450ba9064c79f7bbcac23c1d27c9c179610` fixes the internal-origin redirect using supported Next configuration; CI39192452213 passes. New runtime index `sha256:7b03b4b8d40fc3014822212aa9db4c24dfcc4a5781b9b5e5632cbc33fb9ff276` builds/exports successfully. All12 public startup checks pass/container0; original wrapper cleanup exit1 remains retained with separate exact-container absence proof. [Current evidence](./evidence/bortus-corrected-image-root-20261019.json) records independently checked identities, archive/receipt hashes and two new screenshots.

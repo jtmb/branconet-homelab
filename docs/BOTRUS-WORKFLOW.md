@@ -1,5 +1,9 @@
 # BORTUS K8s — Workflow Guide
 
+## Welcome capability copy - 2026-10-18 (Toronto)
+
+Application source `b0802b9` describes native Secret management, external cluster access, configured Flux resources and independent provisioning. Packaged provisioning is disabled; an optional local runner needs separately supplied Ansible/playbooks. Sync explicitly writes lookup references/inventory rather than native Secret values. The page scopes shell access to permissions/runtime configuration and replaces unverified usage counts and license claims. Retained screenshots are illustrative. Session/navigation behavior and layout remain; the broken license target now links to project information. See [the source receipt](../evidence/bortus-truthful-welcome-root-20261019.json). Existing images and UI evidence retain their prior source identities until new packaging/qualification.
+
 End-to-end workflows for managing a Kubernetes cluster with the BORTUS dashboard.
 
 ## Current migration bootstrap

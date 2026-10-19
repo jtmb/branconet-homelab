@@ -1,5 +1,9 @@
 # Approved cluster migration operations
 
+## Welcome source correction - 2026-10-18 (Toronto)
+
+Application source `b0802b9` corrects public capability claims, with [source review/CI evidence](../evidence/bortus-truthful-welcome-root-20261019.json). This source-only feature performs no node/Secret/schema/admission operation, image assembly/preload or deployment. Existing image7b03/UI evidence remains tied to d638; production retains its prior image. Packaging awaits a justified release boundary. The next account-worker settlement review preserves refusal/cancellation ownership and all original performance/security/AT/recovery/live gates. Rejected operations below remain stopped.
+
 ## Browser and recovery clearance - 2026-10-19 UTC
 
 The integrated Codex browser works and the corrected image's same-origin login flow is exercised. No browser reset, native Computer Use skill, new extension or user browser action is required. This does not qualify a real screen reader or live native KV operations.

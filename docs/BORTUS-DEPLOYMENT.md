@@ -1,5 +1,9 @@
 # BORTUS application deployment
 
+## Welcome source correction - 2026-10-18 (Toronto)
+
+Source `b0802b9` corrects public capability claims without changing runtime behavior, environment, routes or deployment. It states disabled packaged provisioning, native Secret authority, operator-managed storage encryption and explicit reference-only sync. [Source qualification](../evidence/bortus-truthful-welcome-root-20261019.json) is separate from the prior d638/7b03 image/UI evidence. No image preload, production change or acceptance waiver follows; the retained production image and guarded release boundaries remain.
+
 ## Final UI tooling check after goal resume
 
 The [official browser initialization attempt](../evidence/bortus-final-browser-initialization-block-root-20261018.json) failed before inventory with missing kernel assets/path (`os error 3`), including one reset/retry. No preview container, network, account or browser input was created. Final UI/actual AT acceptance remains open; production, data and rejected operations are unchanged.

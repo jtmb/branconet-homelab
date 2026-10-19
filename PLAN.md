@@ -1,5 +1,11 @@
 # Kubernetes migration plan and acceptance contract
 
+## Truthful welcome source checkpoint - 2026-10-18 (Toronto)
+
+Application source `b0802b9944c94cbca77c2550ed73d46dc8c5f879` corrects unsupported welcome-page claims about encryption, automatic sync, packaged provisioning, Flux ownership, shell availability, usage counts and licensing. The workflow and Secrets docs accompany the copy change. Root independently verifies unchanged layout classes, click handlers, image sources and session/navigation flow. [Source qualification](evidence/bortus-truthful-welcome-root-20261019.json) records exact CI and review evidence. Push CI39194946460 passes the clean build, lint/types,354 unit tests,eight integrations, original sensitivity checks and compiled Pods browser smoke; PR CI39194950418 also passes.
+
+No new image, render, performance measurement or deployment follows this source-only feature. Image7b03/browser evidence still belongs to d6382450 and its old welcome copy. Packaging waits for a justified release boundary. The next bounded source feature reviews successful account-worker settlement while retaining refusal/cancellation draining; no A07 improvement is assumed. Original security/performance/AT/recovery/adoption gates and all44 clauses remain. [Continuing handoff](docs/operations/handoffs/2026-10-19-bortus-truthful-welcome-successor.md).
+
 ## Corrected image verified with the integrated browser - 2026-10-19 UTC
 
 Source `d6382450ba9064c79f7bbcac23c1d27c9c179610` fixes the internal-origin redirect using supported Next configuration; CI39192452213 passes. New runtime index `sha256:7b03b4b8d40fc3014822212aa9db4c24dfcc4a5781b9b5e5632cbc33fb9ff276` builds/exports successfully. All12 public startup checks pass/container0; original wrapper cleanup exit1 remains retained with separate exact-container absence proof. [Current evidence](./evidence/bortus-corrected-image-root-20261019.json) records independently checked identities, archive/receipt hashes and two new screenshots.

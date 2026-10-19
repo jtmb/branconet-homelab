@@ -1,5 +1,7 @@
 # BORTUS Secrets Engine
 
+The welcome copy at application source `b0802b9` describes native Secret authority and explicit reference-only Ansible sync. It removes the unsupported AES-256-GCM-for-all-data claim: native API access uses TLS verification, while Kubernetes Secret storage encryption is an operator-managed cluster requirement. This source correction supplies no new storage/encryption guarantee or image/live qualification. See [workflow capability copy](BOTRUS-WORKFLOW.md#welcome-capability-copy---2026-10-18-toronto) and [the source receipt](../evidence/bortus-truthful-welcome-root-20261019.json).
+
 Kubernetes native Secrets are the authoritative value store. BORTUS uses a TLS-verified Kubernetes client; SQLite stores identities, nonsecret configuration and explicit `SecretReference` metadata. Legacy sensitive DB rows are ignored, never pushed at startup/CRUD and never used as outage fallback.
 
 ## Mapping and API

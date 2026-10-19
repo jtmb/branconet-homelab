@@ -1,5 +1,9 @@
 # Immutable BORTUS release image builder
 
+## Welcome source copy supersedes image copy - 2026-10-18 (Toronto)
+
+Application source `b0802b9` corrects the unsupported welcome claims, with [separate source qualification](../evidence/bortus-truthful-welcome-root-20261019.json). No new release image is assembled for this copy-only feature. The7b03 image and its browser observations below remain bound to d6382450, including the stale welcome copy. Package at the next justified source release boundary and qualify that exact image; do not transfer prior image/UI/performance evidence to changed source. All original release gates remain open.
+
 ## Corrected image verified with the integrated browser - 2026-10-19 UTC
 
 Source `d6382450ba9064c79f7bbcac23c1d27c9c179610` fixes the internal-origin redirect using supported Next configuration; CI39192452213 passes. New runtime index `sha256:7b03b4b8d40fc3014822212aa9db4c24dfcc4a5781b9b5e5632cbc33fb9ff276` builds/exports successfully. All12 public startup checks pass/container0; original wrapper cleanup exit1 remains retained with separate exact-container absence proof. [Current evidence](../evidence/bortus-corrected-image-root-20261019.json) records independently checked identities, archive/receipt hashes and two new screenshots.
