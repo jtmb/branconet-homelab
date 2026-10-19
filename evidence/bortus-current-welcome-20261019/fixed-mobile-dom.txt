@@ -1,0 +1,101 @@
+- alert: BORTUS K8s
+- banner:
+  - heading "Botrus K8s" [level=1]
+  - paragraph: Kubernetes Cluster Manager
+  - button "Get Started"
+- text: Homelab Dashboard
+- heading "Kubernetes Cluster Management Made Simple" [level=2]:
+  - text: Kubernetes Cluster
+  - text: Management Made Simple
+- paragraph: Inspect cluster resources, manage native Kubernetes Secrets, and view FluxCD status from one dashboard. Built for bare-metal homelabs.
+- button "Get Started":
+  - text: Get Started
+- link "View on GitHub":
+  - /url: https://github.com/jtmb/branconet-homelab
+  - text: View on GitHub
+- generic: About the Project
+- heading "What is Botrus?" [level=2]
+- paragraph: Botrus is a Kubernetes cluster management platform designed for bare-metal homelab environments. Its dashboard uses externally supplied Kubernetes access, native Secrets, and FluxCD resource views. Cluster provisioning runs separately in an independent operator environment.
+- generic: Native Secrets
+- generic: Operator Managed
+- generic: Built for Homelabs
+- heading "Key Features" [level=2]
+- heading "Independent Cluster Provisioning" [level=3]
+- paragraph: Provision and recover your cluster from an independent operator environment. Provisioning is disabled in the packaged dashboard; the optional local runner requires separately supplied Ansible and playbooks.
+- list:
+  - generic: ✓
+  - text: Keep bootstrap credentials available outside the target cluster
+  - generic: ✓
+  - text: Optional local runs report playbook progress
+  - generic: ✓
+  - text: Dashboard inventory records do not provision or join machines
+- img "Example optional local provisioning view"
+- img "FluxCD GitOps dashboard showing repository status"
+- heading "GitOps with FluxCD" [level=3]
+- paragraph: Inspect configured GitRepositories, Kustomizations, and HelmReleases. FluxCD reconciles resources owned by its configured sources when reconciliation is enabled. Credentials remain in native Kubernetes Secrets.
+- list:
+  - generic: ✓
+  - text: View configured sources and Kustomization relationships
+  - generic: ✓
+  - text: Inspect readiness and suspended reconciliation status
+  - generic: ✓
+  - text: View hierarchy tree with live readiness status per resource
+- heading "Cluster Management Dashboard" [level=3]
+- paragraph: View nodes, pods, deployments, services, ingresses, and storage using externally supplied Kubernetes access. Cached snapshots show freshness and availability; actions depend on current permissions and runtime settings.
+- list:
+  - generic: ✓
+  - text: Hierarchical tree view of configured FluxCD resources
+  - generic: ✓
+  - text: Pod logs and optional pod shell for authorized operators
+  - generic: ✓
+  - text: Longhorn distributed storage visibility with PVC/PV tracking
+- img "Cluster management dashboard overview"
+- img "Native Kubernetes Secrets interface"
+- heading "Native Kubernetes Secrets" [level=3]
+- paragraph: Credentials are managed through a TLS-verified Kubernetes API client; nonsecret configuration stays in SQLite. Protect Secret storage with cluster-level encryption and access controls configured by your operator.
+- list:
+  - generic: ✓
+  - text: Explicit alias, namespace, Secret, and key mappings
+  - generic: ✓
+  - text: Bearer-authenticated lookup for a separately supplied Ansible plugin
+  - generic: ✓
+  - text: Explicit Ansible sync writes lookup references and inventory, not Secret values
+- generic: Native
+- generic: Kubernetes Secrets
+- generic: Scoped
+- generic: Access Controls
+- generic: FluxCD
+- generic: Resource Status
+- generic: External
+- generic: Cluster Provisioning
+- heading "Built With" [level=2]
+- generic: Kubernetes
+- generic: FluxCD
+- generic: Ansible
+- generic: Longhorn
+- generic: Next.js 15
+- generic: xterm.js
+- generic: Prisma
+- generic: Tailwind CSS
+- heading "Ready to get started?" [level=2]
+- paragraph: Connect to your cluster, inspect resources, and manage your homelab configuration.
+- button "Get Started":
+  - text: Get Started
+- link "View on GitHub":
+  - /url: https://github.com/jtmb/branconet-homelab
+  - text: View on GitHub
+- paragraph: Built for bare-metal homelabs.
+- contentinfo:
+  - generic: Botrus K8s
+  - paragraph: Kubernetes cluster management for bare-metal homelabs. Inspect resources, manage native Secrets, and view FluxCD status.
+  - heading "Links" [level=4]
+  - list:
+    - link "GitHub":
+      - /url: https://github.com/jtmb/branconet-homelab
+      - text: GitHub
+    - link "Project Information":
+      - /url: https://github.com/jtmb/branconet-homelab
+      - text: Project Information
+  - heading "Community" [level=4]
+  - paragraph: Built for the homelab community. Contributions, issues, and feature requests are welcome on GitHub.
+  - generic: © 2026 Botrus Homelab.
