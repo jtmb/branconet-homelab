@@ -1,5 +1,12 @@
 # Kubernetes migration plan and acceptance contract
 
+## User-authorized app CI, local docs and PRD-final goal - 2026-10-19 (Toronto)
+
+The user authorized publishing application `0cb1f24` and its unchanged synthetic CI. Both automatic push CI 39288354619 and PR CI 39288375010 pass all 12 steps: 481 units, eight original pristine/mutant sensitivity pairs, eight integration/process checks and the finite compiled Pods smoke. [Saved exact-head CI evidence](evidence/bortus-policy-editor-hosted-ci-root-20261019.json) keeps raw-log bindings and source/runtime acceptance separate; no manual dispatch or replay occurred.
+
+The user also requested an active full-delivery goal, a fresh successor chat and **BORTUS deployment to PRD as the final delivery phase**, including verification of that deployment after all original preceding gates pass. This feature does not complete that goal. Root documents remain LOCAL as explicitly directed. Frozen checkpoint c9ffc91 retains its exact nine scanned blobs and literal exit 1 and four UNRESOLVED findings; prior 32 and one findings also remain. No finding inspection/classification/diagnosis/rescan/suppression/disposition/acceptance occurs. This new local continuation record is not a new scanned publication packet. All 44 clauses, A07 five-of-ten warm failures, data/identity/backup protections and existing security/AT/recovery/schema/effective-permission/live gates remain.
+
+
 ## Policy editor authorization withdrawal - 2026-10-19 (Toronto)
 
 Policy operation and independent list requests now use the same full policy-editor reset on authorization loss: captured rule/mode/fields, preview, acknowledgments, exact confirmation and prior success text clear without waiting for shared session polling. The existing 409 flow retains draft/selection and invalidates preview/confirmations. Preview paging, complete aliases, captured revisions, transport, server authority and retry contracts remain unchanged.

@@ -1,5 +1,12 @@
 # BORTUS K8s — API Usage
 
+## User-authorized app CI, local docs and PRD-final goal - 2026-10-19 (Toronto)
+
+The user authorized publishing application `0cb1f24` and its unchanged synthetic CI. Both automatic push CI 39288354619 and PR CI 39288375010 pass all 12 steps: 481 units, eight original pristine/mutant sensitivity pairs, eight integration/process checks and the finite compiled Pods smoke. [Saved exact-head CI evidence](../evidence/bortus-policy-editor-hosted-ci-root-20261019.json) keeps raw-log bindings and source/runtime acceptance separate; no manual dispatch or replay occurred.
+
+The user also requested an active full-delivery goal, a fresh successor chat and **BORTUS deployment to PRD as the final delivery phase**, including verification of that deployment after all original preceding gates pass. This feature does not complete that goal. Root documents remain LOCAL as explicitly directed. Frozen checkpoint c9ffc91 retains its exact nine scanned blobs and literal exit 1 and four UNRESOLVED findings; prior 32 and one findings also remain. No finding inspection/classification/diagnosis/rescan/suppression/disposition/acceptance occurs. This new local continuation record is not a new scanned publication packet. All 44 clauses, A07 five-of-ten warm failures, data/identity/backup protections and existing security/AT/recovery/schema/effective-permission/live gates remain.
+
+
 ## Policy editor authorization withdrawal - 2026-10-19 (Toronto)
 
 The policy editor's operation and independent list tasks now clear captured policy drafts, previews, acknowledgments, confirmations and success text directly on authorization loss. Existing 409 draft/selection retention, complete-alias/revision contracts and server behavior remain unchanged. [Source-model/build evidence](../evidence/bortus-policy-editor-withdrawal-root-20261019.json) records 15 final passing cases, production-current build plus final test-only lint/types composition, independent review and retained failures. Local app `0cb1f24c91ac231480d1542404f19a3681340f35` remains unpushed: its automatic Prisma/database/HTTP/browser CI exceeds this feature's explicit source-only boundary, so publication/transfer awaits clarification. Original acceptance and unresolved findings remain open.

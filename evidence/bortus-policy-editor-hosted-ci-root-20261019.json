@@ -1,0 +1,191 @@
+{
+  "observedUTC": "2026-10-19T16:54:05.942581+00:00",
+  "scope": "User-authorized app push and unchanged synthetic hosted CI; root documents intentionally local",
+  "applicationCommit": "0cb1f24c91ac231480d1542404f19a3681340f35",
+  "applicationBranch": "codex/bortus-parent-stat-a15-evaluation",
+  "applicationPushedAndLiveVerified": true,
+  "userAuthorization": "Push app commit and allow existing synthetic CI; keep root docs local with four findings unresolved; continue full goal, create goal, handoff new chat; deploy BORTUS to PRD as final delivery phase",
+  "goalActiveAndFullDeliveryIncomplete": true,
+  "finalDeliveryPhase": "Deploy BORTUS to PRD and verify the deployment after original preceding acceptance gates pass",
+  "CI": [
+    {
+      "run": 39288375010,
+      "event": "pull_request",
+      "commit": "0cb1f24c91ac231480d1542404f19a3681340f35",
+      "conclusion": "success",
+      "allStepsSuccess": true,
+      "stepCount": 12,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked install and native/standalone build in pinned compiler image",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original lint, type and unit checks with isolated runtime network",
+          "conclusion": "success"
+        },
+        {
+          "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+          "conclusion": "success"
+        },
+        {
+          "name": "Separate-process SQL writer-lock regression sensitivity",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original strict integration and process controls",
+          "conclusion": "success"
+        },
+        {
+          "name": "Acquire locked browser CI tools (no app dependency change)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Finite compiled Pods browser smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "rawLogBytes": 629992,
+      "rawLogSHA256": "5a43bc7569c77cc0e742da926fa4d66d523eece7d5e6506a3f2f8e807c4fc948",
+      "metadataSHA256": "a611586dadac3b8a1cf56c20df83bfc74df3645c7192aabf3693dd1f54046855",
+      "unitTests": 481,
+      "integrations": 8,
+      "originalSensitivityPairs": [
+        "A04-name-admission",
+        "A05-failed-stdout",
+        "A06-outage-empty",
+        "deployment-action-coercion",
+        "private-kv-cache-admission",
+        "A02-deleted-account",
+        "A03-bootstrap-writer",
+        "A01-SQL-writer-lock"
+      ],
+      "rawLogIndependentlyParsed": true,
+      "podsSmoke": {
+        "browserSmoke": "passed",
+        "wireRows": 208,
+        "initialPageRows": 100,
+        "filteredRows": 3,
+        "nonAgeColumnsVerified": 8,
+        "exactLinks": 3,
+        "noMutationsAttempted": true
+      }
+    },
+    {
+      "run": 39288354619,
+      "event": "push",
+      "commit": "0cb1f24c91ac231480d1542404f19a3681340f35",
+      "conclusion": "success",
+      "allStepsSuccess": true,
+      "stepCount": 12,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked install and native/standalone build in pinned compiler image",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original lint, type and unit checks with isolated runtime network",
+          "conclusion": "success"
+        },
+        {
+          "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+          "conclusion": "success"
+        },
+        {
+          "name": "Separate-process SQL writer-lock regression sensitivity",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original strict integration and process controls",
+          "conclusion": "success"
+        },
+        {
+          "name": "Acquire locked browser CI tools (no app dependency change)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Finite compiled Pods browser smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "rawLogBytes": 628165,
+      "rawLogSHA256": "f0419bf2d563ca6a26043be26b88608d036b50872f1558f4a3b19fc411d7af1b",
+      "metadataSHA256": "fbe625cfbbe93bbb1ad210aa1afeb7b82809ce8e9405c5af023ca605314c0e0f",
+      "unitTests": 481,
+      "integrations": 8,
+      "originalSensitivityPairs": [
+        "A04-name-admission",
+        "A05-failed-stdout",
+        "A06-outage-empty",
+        "deployment-action-coercion",
+        "private-kv-cache-admission",
+        "A02-deleted-account",
+        "A03-bootstrap-writer",
+        "A01-SQL-writer-lock"
+      ],
+      "rawLogIndependentlyParsed": true,
+      "podsSmoke": {
+        "browserSmoke": "passed",
+        "wireRows": 208,
+        "initialPageRows": 100,
+        "filteredRows": 3,
+        "nonAgeColumnsVerified": 8,
+        "exactLinks": 3,
+        "noMutationsAttempted": true
+      }
+    }
+  ],
+  "CIWorkflowDispatchedOrReplayed": false,
+  "automaticSyntheticTestsAreNotProductionAcceptance": true,
+  "rootFrozenScannedCheckpoint": "c9ffc9187536834a552293b82187967a537b4d2c",
+  "rootRemoteRetained": "412e563086d80ec2b03c6dea219655a967766e8d",
+  "rootPublicationForbiddenByCurrentUserInstruction": true,
+  "newRootFourFindings": "UNRESOLVED; exact original nine-file packet/result retained; no inspection/classification/diagnosis/rescan/suppression/disposition/security acceptance",
+  "prior32AndEarlierOneFindings": "UNRESOLVED; unchanged",
+  "newLocalContinuationRecordsPublicationScanRun": false,
+  "all44OriginalClausesFrozenFixturesAndFailuresPreserved": true,
+  "A07FiveOfTenWarmFailuresRemain": true,
+  "securityActualATIndependentCompatibleRecoveryBackupQuiescenceSchemaEffectiveRBACAdmissionLiveDataGates": "Remain as inherited; CI does not close them",
+  "noNewImageMergeReleaseDeploymentOrLiveOperation": true,
+  "overallAcceptance": false
+}
