@@ -1,5 +1,14 @@
 # Approved cluster migration operations
 
+## Policy editor authorization withdrawal - 2026-10-19 (Toronto)
+
+Policy operation and independent list requests now use the same full policy-editor reset on authorization loss: captured rule/mode/fields, preview, acknowledgments, exact confirmation and prior success text clear without waiting for shared session polling. The existing 409 flow retains draft/selection and invalidates preview/confirmations. Preview paging, complete aliases, captured revisions, transport, server authority and retry contracts remain unchanged.
+
+The [bounded evidence](../evidence/bortus-policy-editor-withdrawal-root-20261019.json) records final exact-test 1-pass/14-fail before versus 15-pass/zero-fail after, current-production Next build and separate final test-only lint/nonincremental types. The successful build's only later input difference is a three-reference test-local variable rename; no all-final-input fresh rebuild or browser/AT/backend acceptance is claimed. Independent source/artifact review accepts this composition; all ten owned container IDs/names are absent. Setup/lint/observer failures remain retained.
+
+Application local commit `0cb1f24c91ac231480d1542404f19a3681340f35` is reviewed and unpushed; tracking/live remain `a912ab02`. App push automatically runs Prisma/database/HTTP/browser CI, conflicting with this feature's explicit source-only restrictions. Publication and successor transfer await clarification for that known consequence; no workflow was altered, skipped or dispatched. All original 44 clauses, A07 five-of-ten warm failures, saved 32-plus-one unresolved publication findings and security/AT/recovery/schema/effective-permission/live gates remain. Full delivery is incomplete.
+
+
 ## Policy mutation and legacy acknowledgement source review - 2026-10-19 (Toronto)
 
 No concrete supported correction is selected by the [bounded source review](../evidence/bortus-policy-mutation-source-root-20261019.json). Application `a912ab02` and charts `835dabeb` remain unchanged. Root binds 24 selected application files and nine historical records; independent review binds 23 public files. Whole-file identity is distinct from selected semantic read scope.

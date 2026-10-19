@@ -1,5 +1,10 @@
 # BORTUS K8s — API Usage
 
+## Policy editor authorization withdrawal - 2026-10-19 (Toronto)
+
+The policy editor's operation and independent list tasks now clear captured policy drafts, previews, acknowledgments, confirmations and success text directly on authorization loss. Existing 409 draft/selection retention, complete-alias/revision contracts and server behavior remain unchanged. [Source-model/build evidence](../evidence/bortus-policy-editor-withdrawal-root-20261019.json) records 15 final passing cases, production-current build plus final test-only lint/types composition, independent review and retained failures. Local app `0cb1f24c91ac231480d1542404f19a3681340f35` remains unpushed: its automatic Prisma/database/HTTP/browser CI exceeds this feature's explicit source-only boundary, so publication/transfer awaits clarification. Original acceptance and unresolved findings remain open.
+
+
 ## Automation identity authority source review - 2026-10-19 (Toronto)
 
 The [bounded source receipt](../evidence/bortus-automation-identity-source-root-20261019.json) selects no concrete supported correction. Application `a912ab02` and charts `835dabeb` remain unchanged. Root binds24 selected application files and8 historical records to raw Git blobs/modes, with explicit partial-read scopes; independent review binds26 public files. A full-file hash is a currentness binding, not a claim of complete semantic review. This feature traces issuance, distinct credential audience, authentication, current owner/identity checks and selected native authorization boundaries from public source only.

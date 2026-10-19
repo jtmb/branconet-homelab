@@ -1,5 +1,10 @@
 # BORTUS application deployment
 
+## Policy editor authorization withdrawal - 2026-10-19 (Toronto)
+
+The policy editor's operation and independent list tasks now clear captured policy drafts, previews, acknowledgments, confirmations and success text directly on authorization loss. Existing 409 draft/selection retention, complete-alias/revision contracts and server behavior remain unchanged. [Source-model/build evidence](../evidence/bortus-policy-editor-withdrawal-root-20261019.json) records 15 final passing cases, production-current build plus final test-only lint/types composition, independent review and retained failures. Local app `0cb1f24c91ac231480d1542404f19a3681340f35` remains unpushed: its automatic Prisma/database/HTTP/browser CI exceeds this feature's explicit source-only boundary, so publication/transfer awaits clarification. Original acceptance and unresolved findings remain open.
+
+
 ## Policy mutation and legacy acknowledgement source review - 2026-10-19 (Toronto)
 
 No concrete supported correction is selected by the [bounded source review](../evidence/bortus-policy-mutation-source-root-20261019.json). Application `a912ab02` and charts `835dabeb` remain unchanged. Root binds 24 selected application files and nine historical records; independent review binds 23 public files. Whole-file identity is distinct from selected semantic read scope.
