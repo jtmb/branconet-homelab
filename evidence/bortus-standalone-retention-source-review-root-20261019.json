@@ -1,0 +1,57 @@
+{
+  "observedUTC": "2026-10-19T19:47:26.136798+00:00",
+  "scope": "Standalone retention metadata public source review only",
+  "applicationCommit": "48e3648ae9065e2bf9880760c39c94614717e67b",
+  "chartsCommit": "835dabebd97a7691311b2c6748fd3cfa4db17f44",
+  "rootStartingLOCALCommit": "c97acd23ec10edf7a7f6a08ecf15c4a2b0979a37",
+  "rootTrackingAndLiveCommit": "412e563086d80ec2b03c6dea219655a967766e8d",
+  "decision": "Retain production source; no concrete supported form-only correction",
+  "findings": [
+    "RetentionForm captures original path snapshot and revision independently of current metadata. New revision marks stale and disables save; explicit Reload replaces snapshot/draft and clears feedback.",
+    "Positive integer retention1..100 and changed-value checks; exact metadata PATCH body uses captured revision and entered retention.",
+    "Pending mutation disables input/reload/save; success replaces captured metadata/draft and invalidates KV metadata. Ordinary409/503 preserve draft and snapshot.",
+    "PathDetail is keyed by exact selected path ID; its retained role/update-capability gate unmounts the form on authority loss, while editable additionally controls freshness/revision agreement.",
+    "Shared useMutation exposes busy/error text, no status or denial callback. MutationTask owns cancellation and success fence on disposal; QueryFailure status is not available to the form.",
+    "requestJson401 clears shared queries and dispatches session-ended;403 invalidates shared session, both after response body parsing. Direct denial draft cleanup is not a form callback contract. No immediate cleanup or hostile-body guarantee inferred.",
+    "Passing editable to useMutation would conflate ordinary metadata freshness with authority and is not an established correction; matching error text is unsupported. No administration-only fresh-session gate transplanted, preserving scoped writers."
+  ],
+  "sourceLimits": [
+    "Direct mutation403 invalidates only auth session query. A still-write account whose path update policy was removed can retain its form/draft until capabilities/path metadata observes withdrawal; immediate form-specific direct-denial cleanup is not proven.",
+    "requestJson awaits response.json before401 query clear/session-ended dispatch and403 session invalidation. Unreadable or unsettled error body can delay those notifications; no deeper trace or runtime test performed.",
+    "Parent unmount behavior and generic mutation disposal are source observations, not fresh ReactDOM/browser/backend/AT acceptance. Historical docs qualification is not reassigned to this review.",
+    "No tests, builds, benchmarks, scans, browser, live/operator requests, API/native handlers, DB/Prisma/SQL/migrations, tokens, destruction/GC, value/version/operation/recovery investigation or fixture changes occurred."
+  ],
+  "rootCurrentBindings": 29,
+  "rawExact": 9,
+  "explicitCRLFtoLF": 20,
+  "independentPublicReadPins": 15,
+  "appDocsInventory": 22,
+  "appDocsChanged": false,
+  "sourceChanged": false,
+  "testsBuildRuntimeExecuted": false,
+  "previousEvidenceReassigned": false,
+  "rootDocsBefore": 71,
+  "sourceScope": "Selected RetentionForm export/caller retention predicates/generic mutation hook and lifecycle/requestJson-session/QueryFailure shape; no deeper adjacent native workflow evaluation",
+  "privateReceiptSHA256": {
+    "standalone-retention-source-owner-20261019.json": "09db42aeb7a072c728a13080afc85460bec60a21c3fa2010dfcf6707f2c82548",
+    "standalone-retention-independent-20261019.json": "591f714d1e9ef525fa18b72303a1d62f457945e718788777278a2f0bf534ece0",
+    "standalone-retention-root-source-review-20261019.json": "7fa4ed0bc29299034704930cba10ce3d9f7a50d8c0b1a6c92dc7e60a2f378a6f"
+  },
+  "rootDocsLocal": true,
+  "unresolvedFindings": "four new plus prior32 plus earlierone remain unresolved",
+  "fullGoalActive": true,
+  "PRDDeploymentAndActualVerificationFinalRequired": true,
+  "remainingGates": [
+    "Original security",
+    "A07 performance no-warm-regression",
+    "Actual assistive technology",
+    "Compatible independent full-row/native recovery and rollback",
+    "Fresh backup and quiescence",
+    "Schema and data preservation",
+    "Effective RBAC/admission",
+    "Live native values/history/CAS/rotation and final PRD deployment verification"
+  ],
+  "retainedErrors": "Owner/independent/root preparation and oversized read failures preserved in private receipts and original tool returns; no invented separate stdout/stderr captures",
+  "noUniversalHelperOrRootSelfAbsenceClaim": true,
+  "nextFeature": "Bounded public source review of shared metadata requestJson HTTP 401/403 notification ordering and response-body settlement against its existing session-withdrawal contract; implement only a concrete supported correction. Preserve scoped writers, request/status/error/cache contracts and ordinary failures. Exclude form-hook redesign, databases, tokens, API/native handlers, destruction/GC, values/versions, operation resolution, recovery, browser and live work."
+}
