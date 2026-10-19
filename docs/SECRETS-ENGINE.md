@@ -1,5 +1,12 @@
 # BORTUS Secrets Engine
 
+The public `/welcome` page describes native Secret authority and explicit
+reference-only Ansible sync. It does not promise AES-256-GCM for all sensitive
+data or automatic database-to-Secret synchronization. BORTUS uses TLS for native
+API access; encryption of Kubernetes Secret storage is an operator-managed
+cluster requirement, not a guarantee supplied by the dashboard. See
+[workflow capabilities](BOTRUS-WORKFLOW.md#public-welcome-page-capabilities-2026-10-18).
+
 ## KV browser revocation handling (2026-10-18)
 
 Unused denial streams are cancelled without awaiting cancellation; private-state withdrawal and the typed denial do not wait for a hostile or stalled body.

@@ -19,7 +19,6 @@ import {
   Play,
   Server,
   Shield,
-  Star,
   Terminal,
   Users,
 } from "lucide-react";
@@ -109,8 +108,8 @@ export default function WelcomePage() {
             {/* Left — text */}
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-medium mb-6">
-                <Star className="w-3.5 h-3.5" />
-                Open Source
+                <Server className="w-3.5 h-3.5" />
+                Homelab Dashboard
               </div>
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-zinc-100 leading-tight mb-6">
                 Kubernetes Cluster
@@ -118,8 +117,8 @@ export default function WelcomePage() {
                 <span className="text-indigo-400">Management</span> Made Simple
               </h2>
               <p className="text-lg text-zinc-400 max-w-lg mb-8 leading-relaxed">
-                Provision, configure, and manage your bare-metal Kubernetes cluster from a
-                single dashboard. Built for homelabs — powerful enough for production.
+                Inspect cluster resources, manage native Kubernetes Secrets, and view
+                FluxCD status from one dashboard. Built for bare-metal homelabs.
               </p>
               <div className="flex flex-wrap gap-4">
                 <button
@@ -143,7 +142,7 @@ export default function WelcomePage() {
 
             {/* Right — screenshot */}
             <div className="hidden lg:block">
-              <Screenshot src="/images/screenshots/deploy.webp" alt="Ansible playbook provisioning in the Botrus dashboard" priority />
+              <Screenshot src="/images/screenshots/deploy.webp" alt="Example optional Ansible runner view; container provisioning is disabled" priority />
             </div>
           </div>
         </div>
@@ -159,17 +158,17 @@ export default function WelcomePage() {
             What is Botrus?
           </h2>
           <p className="text-lg text-zinc-400 leading-relaxed mb-8">
-            Botrus is an open-source Kubernetes cluster management platform designed for
-            bare-metal homelab environments. It combines Ansible-powered provisioning,
-            FluxCD-driven GitOps, and a purpose-built web dashboard into a single cohesive
-            experience — no cloud dependencies, no vendor lock-in.
+            Botrus is a Kubernetes cluster management platform designed for
+            bare-metal homelab environments. Its dashboard uses externally supplied
+            Kubernetes access, native Secrets, and FluxCD resource views. Cluster
+            provisioning runs separately in an independent operator environment.
           </p>
           <div className="flex flex-wrap justify-center gap-3">
             <span className="px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium">
-              Open Source
+              Native Secrets
             </span>
             <span className="px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium">
-              MIT Licensed
+              Operator Managed
             </span>
             <span className="px-3 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-medium">
               Built for Homelabs
@@ -189,37 +188,37 @@ export default function WelcomePage() {
             </h2>
           </div>
 
-          {/* Feature A — Ansible Provisioning */}
+          {/* Feature A — Independent Provisioning */}
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div className="order-1 lg:order-1">
               <div className="w-14 h-14 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-5">
                 <Play className="w-7 h-7 text-emerald-400" />
               </div>
               <h3 className="text-2xl font-bold text-zinc-100 mb-4">
-                Ansible-Powered Provisioning
+                Independent Cluster Provisioning
               </h3>
               <p className="text-zinc-400 leading-relaxed mb-4">
-                Bring bare-metal machines to a fully operational Kubernetes cluster with a
-                single playbook. The integrated Ansible runner streams live output to your
-                dashboard — no SSH terminal needed.
+                Provision and recover your cluster from an independent operator
+                environment. Provisioning is disabled in the packaged dashboard; the
+                optional local runner requires separately supplied Ansible and playbooks.
               </p>
               <ul className="space-y-2 text-sm text-zinc-400">
                 <li className="flex items-start gap-2">
                   <span className="text-emerald-400 mt-0.5">&#x2713;</span>
-                  Role-based playbook selection — run all or pick specific roles
+                  Keep bootstrap credentials available outside the target cluster
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-emerald-400 mt-0.5">&#x2713;</span>
-                  Real-time xterm.js terminal with live streaming output
+                  Optional local runs report playbook progress
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-emerald-400 mt-0.5">&#x2713;</span>
-                  Bootstrap, networking, Kubernetes, storage, ingress, DNS — all automated
+                  Dashboard inventory records do not provision or join machines
                 </li>
               </ul>
             </div>
             <div className="order-2 lg:order-2 flex justify-center">
-              <Screenshot src="/images/screenshots/deploy.webp" alt="Ansible-powered provisioning dashboard" />
+              <Screenshot src="/images/screenshots/deploy.webp" alt="Example optional local provisioning view" />
             </div>
           </div>
 
@@ -236,18 +235,18 @@ export default function WelcomePage() {
                 GitOps with FluxCD
               </h3>
               <p className="text-zinc-400 leading-relaxed mb-4">
-                Every application and configuration lives in Git. FluxCD watches your
-                repository and automatically reconciles the cluster — no manual kubectl
-                apply needed.
+                Inspect configured GitRepositories, Kustomizations, and HelmReleases.
+                FluxCD reconciles resources owned by its configured sources when
+                reconciliation is enabled. Credentials remain in native Kubernetes Secrets.
               </p>
               <ul className="space-y-2 text-sm text-zinc-400">
                 <li className="flex items-start gap-2">
                   <span className="text-cyan-400 mt-0.5">&#x2713;</span>
-                  Organized into stack-based Kustomizations for clean separation
+                  View configured sources and Kustomization relationships
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-cyan-400 mt-0.5">&#x2713;</span>
-                  Automatic drift detection — manual edits get reverted
+                  Inspect readiness and suspended reconciliation status
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-cyan-400 mt-0.5">&#x2713;</span>
@@ -267,18 +266,18 @@ export default function WelcomePage() {
                 Cluster Management Dashboard
               </h3>
               <p className="text-zinc-400 leading-relaxed mb-4">
-                Monitor and manage every aspect of your cluster from a single interface.
-                View nodes, pods, deployments, services, ingresses, and storage — all with
-                live kubectl data.
+                View nodes, pods, deployments, services, ingresses, and storage using
+                externally supplied Kubernetes access. Cached snapshots show freshness
+                and availability; actions depend on current permissions and runtime settings.
               </p>
               <ul className="space-y-2 text-sm text-zinc-400">
                 <li className="flex items-start gap-2">
                   <span className="text-indigo-400 mt-0.5">&#x2713;</span>
-                  Hierarchical tree view of all FluxCD resources with expand/collapse
+                  Hierarchical tree view of configured FluxCD resources
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-indigo-400 mt-0.5">&#x2713;</span>
-                  Interactive pod shell and log viewer in the browser
+                  Pod logs and optional pod shell for authorized operators
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-indigo-400 mt-0.5">&#x2713;</span>
@@ -294,32 +293,32 @@ export default function WelcomePage() {
           {/* Feature D — Secrets Engine */}
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             <div className="order-2 lg:order-1 flex justify-center">
-              <Screenshot src="/images/screenshots/secrets.webp" alt="Encrypted secrets engine interface" />
+              <Screenshot src="/images/screenshots/secrets.webp" alt="Native Kubernetes Secrets interface" />
             </div>
             <div className="order-1 lg:order-2">
               <div className="w-14 h-14 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-5">
                 <Key className="w-7 h-7 text-purple-400" />
               </div>
               <h3 className="text-2xl font-bold text-zinc-100 mb-4">
-                Encrypted Secrets Engine
+                Native Kubernetes Secrets
               </h3>
               <p className="text-zinc-400 leading-relaxed mb-4">
-                Credentials are managed in native Kubernetes Secrets; nonsecret configuration stays in SQLite. An
-                Ansible lookup plugin resolves secrets at playbook runtime — values never
-                touch the filesystem.
+                Credentials are managed through a TLS-verified Kubernetes API client;
+                nonsecret configuration stays in SQLite. Protect Secret storage with
+                cluster-level encryption and access controls configured by your operator.
               </p>
               <ul className="space-y-2 text-sm text-zinc-400">
                 <li className="flex items-start gap-2">
                   <span className="text-purple-400 mt-0.5">&#x2713;</span>
-                  AES-256-GCM encryption for all sensitive data
+                  Explicit alias, namespace, Secret, and key mappings
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-purple-400 mt-0.5">&#x2713;</span>
-                  Bearer-token authenticated lookup API for Ansible integration
+                  Bearer-authenticated lookup for a separately supplied Ansible plugin
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-purple-400 mt-0.5">&#x2713;</span>
-                  Auto-sync to group_vars/all.yml and Ansible inventory
+                  Explicit Ansible sync writes lookup references and inventory, not Secret values
                 </li>
               </ul>
             </div>
@@ -327,16 +326,16 @@ export default function WelcomePage() {
         </div>
       </section>
 
-      {/* ===== 5. Stats Bar ===== */}
+      {/* ===== 5. Capabilities Bar ===== */}
       <section className="py-16 border-t border-zinc-800/50">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl p-8 md:p-10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {[
-                { icon: Star, value: "125+", label: "GitHub Stars", color: "text-amber-400" },
-                { icon: Users, value: "8", label: "Contributors", color: "text-indigo-400" },
-                { icon: Box, value: "12+", label: "Deployments Managed", color: "text-emerald-400" },
-                { icon: Cpu, value: "3", label: "Cluster Nodes", color: "text-cyan-400" },
+                { icon: Key, value: "Native", label: "Kubernetes Secrets", color: "text-amber-400" },
+                { icon: Users, value: "Scoped", label: "Access Controls", color: "text-indigo-400" },
+                { icon: Box, value: "FluxCD", label: "Resource Status", color: "text-emerald-400" },
+                { icon: Cpu, value: "External", label: "Cluster Provisioning", color: "text-cyan-400" },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <stat.icon className={`w-8 h-8 ${stat.color} mx-auto mb-3`} />
@@ -388,7 +387,7 @@ export default function WelcomePage() {
             Ready to get started?
           </h2>
           <p className="text-lg text-zinc-400 mb-8">
-            Provision your cluster, deploy your apps, and take control of your homelab.
+            Connect to your cluster, inspect resources, and manage your homelab configuration.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-6">
             <button
@@ -409,7 +408,7 @@ export default function WelcomePage() {
             </a>
           </div>
           <p className="text-sm text-zinc-600">
-            Free and open source. MIT Licensed.
+            Built for bare-metal homelabs.
           </p>
         </div>
       </section>
@@ -427,8 +426,8 @@ export default function WelcomePage() {
                 <span className="font-bold text-zinc-100">Botrus K8s</span>
               </div>
               <p className="text-sm text-zinc-500 leading-relaxed">
-                Open-source Kubernetes cluster management for bare-metal homelabs.
-                Provision, deploy, and manage — all from one dashboard.
+                Kubernetes cluster management for bare-metal homelabs.
+                Inspect resources, manage native Secrets, and view FluxCD status.
               </p>
             </div>
 
@@ -451,13 +450,13 @@ export default function WelcomePage() {
                 </li>
                 <li>
                   <a
-                    href="https://github.com/jtmb/branconet-homelab/blob/k8s-rewrite/LICENSE"
+                    href="https://github.com/jtmb/branconet-homelab"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors inline-flex items-center gap-1.5"
                   >
                     <Shield className="w-3.5 h-3.5" />
-                    MIT License
+                    Project Information
                   </a>
                 </li>
               </ul>
@@ -476,7 +475,7 @@ export default function WelcomePage() {
           </div>
 
           <div className="mt-10 pt-6 border-t border-zinc-800/50 text-center text-xs text-zinc-600">
-            &copy; {new Date().getFullYear()} Botrus Homelab. MIT Licensed.
+            &copy; {new Date().getFullYear()} Botrus Homelab.
           </div>
         </div>
       </footer>
