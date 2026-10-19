@@ -1,5 +1,14 @@
 # Migration acceptance evidence
 
+## Standalone metadata forms source decision - 2026-10-19 (Toronto)
+
+Application17401664 and charts835dabeb remain unchanged. The [bounded source receipt](evidence/bortus-standalone-metadata-forms-source-review-root-20261019.json) records parent fresh-session gates: mount editing requires engineAdmin canWrite, while registration preserves scoped canKvWrite. Fresh mount metadata gates opening existing mount/registration forms; captured mount props and revisions remain explicit. Ordinary mutation errors preserve drafts. Parent removal disposes the existing mutation owner and fences late success/state.
+
+No concrete supported form-only correction was selected. These forms have no independent session/capability preflight or direct authorization-loss callback. Shared401 clears session metadata;403 only revalidates it, so immediate scoped403 registration removal is not established. No local hidden/pagehide reset or universal same-ID mount/revision remount policy is claimed. A new preflight/reset model exceeds this review and could change preserved-draft behavior.
+
+Root11 selected instruction/source/test bindings and the independent source/doc bindings were checked. All22 app docs have inventory/per-document no-impact dispositions; semantics cover eight selected current domains, not the historical corpus. No source/test/appdoc/dependency/workflow/chart changes or test/build/lint/types/request/CI dispatch/replay/browser/DB/API/native/security/performance/recovery/image/live work occurred. Prior build/CI remains historical. The independent reviewer is complete and stopped; no persistent runtime started, with no universal/self-absence claim. Rootdocs LOCAL; four+32+one findings UNRESOLVED; all44 clauses/frozen failures/A07 five-of-ten warm failures retained. Full goal ACTIVE; PRD deployment AND actual verification remain FINAL after every original preceding gate. Next: bounded metadata list filtering/cursor navigation and selected-form state source review; it has not begun.
+
+
 ## Workbench parent metadata source decision - 2026-10-19 (Toronto)
 
 Application17401664 and charts835dabeb remain unchanged. The [bounded source receipt](evidence/bortus-workbench-session-source-review-root-20261019.json) records matching parent path/capability metadata, independent fresh scoped-writer gating and existing withdrawal wiring. No concrete supported correction was selected. Ordinary failed metadata retention and permission-equivalent draft preservation remain. The key excludes logical path/mountId/revision; selected source does not establish legal same-ID reassignment or a universal revision-remount policy. This limitation remains open without a speculative patch.
