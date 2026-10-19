@@ -1,0 +1,373 @@
+{
+  "scope": "Bounded login pending-submit status semantics;full BORTUS objective incomplete",
+  "applicationCommit": "29036ff9548d67374354d40be2c042dc59a902ce",
+  "frontendTree": "cbfe129d62acaeb5e11981c696ab23f36fcff319",
+  "sourceChange": "Persistent sr-only status outside form;aria-busy derived from existing loading;decorative spinner aria-hidden",
+  "entirePriorPageRestoredByReversingParagraphAndTwoAttributes": true,
+  "handlerStateAndRegistrationByteIdentical": true,
+  "sourceReview": {
+    "observedUnix": 1792391903.1340969,
+    "rootReviewed": true,
+    "base": "ac15e9cdd537c0be2d92b418bc30c85e7371cb43",
+    "commit": "29036ff9548d67374354d40be2c042dc59a902ce",
+    "frontendTree": "cbfe129d62acaeb5e11981c696ab23f36fcff319",
+    "handlerAndStateByteIdentical": true,
+    "registrationByteIdentical": true,
+    "changedFiles": [
+      "docs/BOTRUS-WORKFLOW.md",
+      "docs/USER-PERMS.md",
+      "k8s-rewrite/front-end/src/app/auth/login/page.tsx",
+      "k8s-rewrite/front-end/tests/login-submit.test.ts"
+    ],
+    "sameFinalTests": {
+      "tests/registration-availability.test.ts": "090246d3ba1622877f4a029aa898daefe73b0d5539ab7c8b1c2c6e7ada7fa1df",
+      "tests/login-submit.test.ts": "5dd0bb56f370a3630763352c2689e33ed1169f2015d6fb7f1ff7618578fbcef3"
+    },
+    "beforeExit": 1,
+    "afterExit": 0,
+    "lintExit": 0,
+    "actualAT": false,
+    "testScope": "Actual source TSX VM models;not DOM/auth/AT",
+    "guides": [
+      "https://nextjs.org/docs/15/app/getting-started/server-and-client-components",
+      "https://nextjs.org/docs/15/architecture/accessibility",
+      "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA22",
+      "https://www.w3.org/TR/wai-aria-1.2/#aria-busy"
+    ]
+  },
+  "focusedPageRawGitBinding": {
+    "focusedAfterSHA256": "eccf7d9c819303e37ce03aa4dd93b776b050dcce1529ffc88bbc1f987653fb37",
+    "rawGitAfterSHA256": "09f5d6e27d96147eddd4fe112c63344bf2670255c5c3028d2e66499052b6da25",
+    "focusedBeforeSHA256": "5225bcb0ef603266d331abd05a7de6b6c273c5f5de6e8703db67d3db2588db46",
+    "rawGitBeforeSHA256": "03d954acab02bf91904aae30bea2c376654a8e94494d6e6581964e6295061cae",
+    "onlyUTF8CRLFtoLF": true,
+    "sameFinalTestsRawGitExact": true
+  },
+  "applicationFilesChanged": 4,
+  "applicationDocsChecked": 22,
+  "existingRootMarkdownDocsChecked": 47,
+  "newHandoff": "docs/operations/handoffs/2026-10-19-bortus-login-pending-successor.md",
+  "tests": {
+    "before": {
+      "tests": 53,
+      "pass": 29,
+      "fail": 24,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "after": {
+      "tests": 53,
+      "pass": 53,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "sameFinalLoginTestSHA256": "5dd0bb56f370a3630763352c2689e33ed1169f2015d6fb7f1ff7618578fbcef3",
+    "unchangedRegistrationTestSHA256": "090246d3ba1622877f4a029aa898daefe73b0d5539ab7c8b1c2c6e7ada7fa1df",
+    "beforeExit": 1,
+    "afterExit": 0,
+    "onlyChangedSameFinalRegressionInput": "src/app/auth/login/page.tsx",
+    "interpretation": "Actual page TSX transpilation/VM scoped React/router/HTTP presentation model, not DOM/browser/AT or server authorization proof"
+  },
+  "lint": {
+    "exit": 0,
+    "warnings": 0,
+    "files": 4
+  },
+  "ci": [
+    {
+      "run": 39211076615,
+      "event": "push",
+      "commit": "29036ff9548d67374354d40be2c042dc59a902ce",
+      "conclusion": "success",
+      "allStepsSuccess": true,
+      "stepCount": 12,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked install and native/standalone build in pinned compiler image",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original lint, type and unit checks with isolated runtime network",
+          "conclusion": "success"
+        },
+        {
+          "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+          "conclusion": "success"
+        },
+        {
+          "name": "Separate-process SQL writer-lock regression sensitivity",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original strict integration and process controls",
+          "conclusion": "success"
+        },
+        {
+          "name": "Acquire locked browser CI tools (no app dependency change)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Finite compiled Pods browser smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "rawLogBytes": 573050,
+      "rawLogSHA256": "265abf57734c650f36cd48cf43c7e3e4e2356e9f92d7435c41d0efac45587e50",
+      "metadataSHA256": "18ce8ac8999c62211bc773ceeacbef81f1b54c91ccdc71d3ca4537aa9f2f8491",
+      "skippedSteps": 0
+    },
+    {
+      "run": 39211082219,
+      "event": "pull_request",
+      "commit": "29036ff9548d67374354d40be2c042dc59a902ce",
+      "conclusion": "success",
+      "allStepsSuccess": true,
+      "stepCount": 12,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked install and native/standalone build in pinned compiler image",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original lint, type and unit checks with isolated runtime network",
+          "conclusion": "success"
+        },
+        {
+          "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+          "conclusion": "success"
+        },
+        {
+          "name": "Separate-process SQL writer-lock regression sensitivity",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original strict integration and process controls",
+          "conclusion": "success"
+        },
+        {
+          "name": "Acquire locked browser CI tools (no app dependency change)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Finite compiled Pods browser smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "rawLogBytes": 574749,
+      "rawLogSHA256": "f6137c1ad10e5fe4066c4513749e6d37cd41b856fdd9e5f1857daa9630cf7726",
+      "metadataSHA256": "ba710d6bc08ac8bd24255e1c97e5f3d147ba60068fca5eebb7762c2bc6433d22",
+      "skippedSteps": 0
+    }
+  ],
+  "rootIndependentlyCheckedCIMetadataAllStepsAndRawLogs": true,
+  "unitTests": 414,
+  "originalSensitivityPairs": 8,
+  "integrations": 8,
+  "compiledPodsSmoke": true,
+  "build": {
+    "graphSHA256": "5a0831c4162c7fe5b7676683ef4f674de7b673e3aacd0ea133b2ebf31e34888e",
+    "buildLogSHA256": "8d37855fea42a78a4157b8b83792c1c810a3b169599cc198b2815fcc20a07dec",
+    "workerBindingsVerified": true,
+    "sourceUnchanged": true,
+    "exporterSHA256": "5bcdb86fd8a795d72f195dbf5163a46ad09de79b54d0ead4dbba0eadb0743470",
+    "graphRecords": 41723,
+    "sourceFiles": 296,
+    "passed": true,
+    "buildId": "oD-98L2UhsU7h8PbDkPMC",
+    "limits": {
+      "cpu": 4,
+      "memory": 4294967296,
+      "swap": 0,
+      "pids": 256,
+      "deadlineSeconds": 900
+    }
+  },
+  "prelaunch": {
+    "sourceRecords": 296,
+    "compiledDependencyRecords": 41723,
+    "allCurrent": true,
+    "nativeBindings": true,
+    "workerBindings": true,
+    "graphSHA256": "5a0831c4162c7fe5b7676683ef4f674de7b673e3aacd0ea133b2ebf31e34888e",
+    "frontendTree": "cbfe129d62acaeb5e11981c696ab23f36fcff319",
+    "observedUnix": 1792392058.875706,
+    "readonlyMountsRequired": true
+  },
+  "ui": {
+    "accountsCreated": 0,
+    "explicitSyntheticClicksAfterClearing": 2,
+    "allRequestBodiesRetained": false,
+    "initialImageQuarantined": true,
+    "actualAT": false,
+    "publicPNGs": 5,
+    "publicAXTexts": 6,
+    "publicObservationRecords": 6,
+    "exactPasswordEqualityUnobserved": true,
+    "initialDOMBlankButLaterAutofill": true,
+    "allForwarded": false,
+    "allSettledByFile": true,
+    "totalClicks": 3,
+    "fieldsCleared": true,
+    "observerEvents": 6,
+    "cases": [
+      {
+        "name": "01-initial.observation",
+        "fieldValuesRedacted": false,
+        "pending": false,
+        "applicationAlerts": [],
+        "fields": 2
+      },
+      {
+        "name": "02-held-fetch.observation",
+        "fieldValuesRedacted": true,
+        "pending": true,
+        "applicationAlerts": [],
+        "fields": 2
+      },
+      {
+        "name": "03-string-settled.observation",
+        "fieldValuesRedacted": true,
+        "pending": false,
+        "applicationAlerts": [
+          "Fixture invalid username or password"
+        ],
+        "fields": 2
+      },
+      {
+        "name": "04-held-error-body.observation",
+        "fieldValuesRedacted": true,
+        "pending": true,
+        "applicationAlerts": [],
+        "fields": 2
+      },
+      {
+        "name": "05-fallback-settled.observation",
+        "fieldValuesRedacted": true,
+        "pending": false,
+        "applicationAlerts": [
+          "Login failed"
+        ],
+        "fields": 2
+      },
+      {
+        "name": "06-cleared.observation",
+        "fieldValuesRedacted": false,
+        "pending": false,
+        "applicationAlerts": [
+          "Login failed"
+        ],
+        "fields": 2
+      }
+    ],
+    "windows4401Absent": true,
+    "browserValidationProved": false,
+    "interceptedPOSTs": 3,
+    "publicDOMs": 6,
+    "tabClosed": true,
+    "misnamedValidationPrivate": true
+  },
+  "closure": {
+    "observedUnix": 1792392190.8068802,
+    "cleanupClosed": true,
+    "exactPreviewContainerIdAndNameAbsent": true,
+    "exactBuildContainerIdAndNameAbsent": true,
+    "supervisorBirthAbsent": true,
+    "linuxLoopback4401Absent": true,
+    "rawSourceFilesUnchanged": true,
+    "sourceRecords": 296,
+    "runtimeReadonlyGraphReliedOn": true,
+    "graphNotRewalked": true,
+    "actualNetworkNone": true,
+    "actualReadonlyRootfs": true,
+    "actualOnlySocketBindWritable": true,
+    "noRecursiveReaderChain": true
+  },
+  "windows4401Absent": true,
+  "publicationScan": {
+    "commit": "29036ff9548d67374354d40be2c042dc59a902ce",
+    "exactRawGitBlobs": true,
+    "files": 4,
+    "exit": 0,
+    "findings": 0,
+    "scannerSHA256": "88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+    "noSuppression": true,
+    "notImageSecurityAcceptance": true
+  },
+  "applicationOwnerReceiptSHA256": "5e3cd556ffcd95c225914ab7094bb81ff89bb2f3abf43c915f625dc5b5056bbc",
+  "retainedFailures": [
+    "Readonly source/node_modules mountpoint startup refusal;private helper correction only",
+    "Linux Git cannot resolve Windows-managed worktree preparation;explicit Windows Git inventory correction only",
+    "Initial final-source52/53 model failure: guessed retry microtask;per-reply body-entry observer correction;initial29/24old and52/1new preserved separately",
+    "Initial intended validation click races browser autofill;intercepted held request,not validation evidence",
+    "Independent reviewer finds populated initialPNG while earlierDOM/AXblank;image quarantined privately,no simultaneous initialblank claim"
+  ],
+  "guardedRelease": {
+    "originalClausesPreserved": 44,
+    "compatibleIndependentRecovery": "Open",
+    "liveAcceptance": "Open",
+    "guardedAdoption": false,
+    "helmSuspended": true,
+    "A07": "Failed5/10originalwarmcases;no replay",
+    "productionChanged": false,
+    "security": "Open;default image scan1/12Medium/zeroSecrets;no suppression/disposition/residual acceptance",
+    "actualAT": "Open",
+    "newImage": false,
+    "rejectedActionsRemainStopped": true,
+    "chartsDraftUnmerged": true,
+    "chartsChanged": false
+  },
+  "nextFeature": "Bounded registration pending-submit status semantics review; preserve registration availability/refusal behavior and actual assistive-technology acceptance gate",
+  "nextFinding": "Unchanged registration loading disables button and conditionally mounts unnamed spinner;existing availability status is separate;no pending-specific tests/patch/compiledheldrequest/actualAT begun",
+  "fullGoalComplete": false,
+  "independentAcceptance": {
+    "manifestSHA256": "ca91fee9d9f5d0f3575c58cb9e3957e9d6edcbe2766bbed24c69571e0c4653c9",
+    "receiptSHA256": "44cd62dfc1d4f34bb61ef512b7b25809cf697c0506f06308c3c726e0a4ffe9ef",
+    "accepted": true,
+    "scope": "Bounded login pending-submit semantics source/model/compiledUI only",
+    "excludes": "Later rootpublication/rootCI;no full41723object rehash/newclosurequeries",
+    "activeFindings": 0,
+    "resolvedFinding": "Initial screenshot autofill discrepancy;private quarantine,no initial simultaneousblank claim",
+    "finitePins": 121
+  }
+}

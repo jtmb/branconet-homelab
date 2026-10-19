@@ -1,5 +1,11 @@
 # BORTUS User Permissions
 
+## Login pending submission status - reviewed development source
+
+Application `29036ff9548d67374354d40be2c042dc59a902ce` adds an always-mounted, screen-reader-only `role="status"` outside the login form, `aria-busy` from the existing loading state, and `aria-hidden="true"` on the decorative spinner. The status contains `Signing in…` only while loading, including reading an unsuccessful response body. Removing that paragraph and two attributes restores the entire prior page; handlers, fields, validation, feedback alerts, navigation and fresh server authority are unchanged.
+
+The [finite receipt](../evidence/bortus-login-pending-root-20261019.json) records same-final-tests old29pass/24fail then53/53, lint0, fresh compiled source and six sequential synthetic IAB states (five public images). Held-request and held-body states expose busy/status semantics; string and malformed-body settlements restore the form and existing alerts. An initial autofill race and a mismatched initial screenshot remain private; no browser-validation or simultaneous-initial-blank claim follows. All three attempts were intercepted, no bodies retained and zero accounts created. Exact password equality and actual screen-reader announcements remain unproved. Source CI passes; no release image or production operation follows.
+
 ## Registration lock alerts - reviewed development source
 
 Application `ac15e9cdd537c0be2d92b418bc30c85e7371cb43` adds one `role="alert"` to the existing locked heading/explanation group. The sign-in link stays outside and no focus target/movement is added. Confirmed-closed availability and HTTP403 replace the form with this notice;403 still locks before body parsing. Availability, submission behavior and fresh server authority remain unchanged. The [finite receipt](../evidence/bortus-registration-lock-root-20261019.json) records same-tests old31pass/14fail then45/45, lint0, fresh compiled source, seven synthetic IAB states and exact-source pushCI success. Its separate PR registry502 failure/7validation skips remain preserved. Four lock states each expose one application alert;unknown/open/validation and sign-in navigation remain intact. Source/model/DOM observations do not establish actual screen-reader announcements or live acceptance. No new image or production action follows.

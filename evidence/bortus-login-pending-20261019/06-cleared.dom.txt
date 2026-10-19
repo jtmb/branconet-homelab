@@ -1,0 +1,18 @@
+- heading "Sign in to Botrus" [level=1]
+- paragraph: Kubernetes cluster manager
+- alert: Login failed
+- status
+- generic: Username
+- textbox "Username":
+  - /placeholder: Enter your username
+- generic: Password
+- textbox "Password" [active]:
+  - /placeholder: Enter your password
+- button "Sign in"
+- link "Back":
+  - /url: /welcome
+- paragraph:
+  - text: Don't have an account?
+  - link "Create one":
+    - /url: /auth/register
+- alert
