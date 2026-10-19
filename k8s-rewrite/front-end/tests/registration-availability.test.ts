@@ -15,6 +15,8 @@ function fixture(reply: Reply, hold = false) {
   let cursor = 0, mounted = false, jsonReads = 0, submitJsonReads = 0, holdSubmit = false, holdSubmitBody = false;
   let release!: () => void;
   const pending = new Promise<void>(resolve => { release = resolve; });
+  let bodyEntered!: () => void;
+  let bodyStarted = new Promise<void>(resolve => { bodyEntered = resolve; });
   let submitReply: Reply = { ok: true, status: 201 };
   const jsx = (type: unknown, props: Element["props"]) => ({ type, props });
   const modules: Record<string, unknown> = {
@@ -49,6 +51,7 @@ function fixture(reply: Reply, hold = false) {
         if (url === "/api/auth/session") jsonReads++;
         if (url === "/api/auth/register") {
           submitJsonReads++;
+          bodyEntered();
           if (holdSubmitBody) await pending;
         }
         if (current.parseFailure) throw new Error("Synthetic JSON failure");
@@ -75,9 +78,39 @@ function fixture(reply: Reply, hold = false) {
     await (form.props.onSubmit as (event: unknown) => Promise<void>)({ preventDefault: () => {} });
   };
   return { first, render, elements, text: () => text(render()), firstElements: walk(first), settle, release,
-    requests, routes, fill, submit, jsonReads: () => jsonReads, submitJsonReads: () => submitJsonReads, textOf: text,
-    replyToSubmit: (next: Reply) => { submitReply = next; }, holdSubmit: () => { holdSubmit = true; },
+    requests, routes, fill, submit, descendants: walk, get bodyStarted() { return bodyStarted; },
+    jsonReads: () => jsonReads, submitJsonReads: () => submitJsonReads, textOf: text,
+    replyToSubmit: (next: Reply) => { submitReply = next; bodyStarted = new Promise<void>(resolve => { bodyEntered = resolve; }); }, holdSubmit: () => { holdSubmit = true; },
     holdSubmitBody: () => { holdSubmitBody = true; } };
+}
+function assertPendingStatus(f: ReturnType<typeof fixture>, pending: boolean) {
+  const elements = f.elements();
+  const statuses = elements.filter(element => element.props.role === "status");
+  assert.equal(statuses.length, 1, "An open form has a status container before, during and after submission");
+  assert.equal(statuses[0].props.children, pending ? "Creating account…" : "");
+  assert.match(String(statuses[0].props.className), /\bsr-only\b/);
+  assert.equal(statuses[0].props.tabIndex, undefined, "Pending feedback must not introduce a focus target");
+  const form = elements.find(element => element.type === "form"); assert(form);
+  assert.equal(form.props["aria-busy"], pending, "Form busy state follows the existing loading state");
+  assert(!f.descendants(form).some(element => element.props.role === "status"), "Status stays outside the busy subtree");
+  const button = elements.find(element => element.type === "button" && element.props.type === "submit"); assert(button);
+  assert.equal(button.props.disabled, pending);
+  assert.equal(f.textOf(button).trim(), "Create account", "The visible action name stays unchanged");
+  const spinners = elements.filter(element => element.type === "Loader2");
+  assert.equal(spinners.length, pending ? 1 : 0);
+  if (pending) assert.equal(spinners[0].props["aria-hidden"], "true", "The submit spinner is decorative beside the status");
+}
+function assertRetainedForm(f: ReturnType<typeof fixture>) {
+  assertPendingStatus(f, false);
+  const inputs = f.elements().filter(element => element.type === "input");
+  assert.deepEqual(inputs.map(input => [input.props.id, input.props.value, input.props.required, input.props.autoComplete,
+    input.props.minLength, input.props.maxLength, input.props.pattern]), [
+    ["username", "synthetic-user", true, "username", 3, 30, "^[a-zA-Z0-9_-]+$"],
+    ["password", "abcdefgh", true, "new-password", 8, undefined, undefined],
+    ["confirm", "abcdefgh", true, "new-password", 8, undefined, undefined],
+  ]);
+  assert.deepEqual(f.elements().filter(element => element.type === "Link").map(element => element.props.href),
+    ["/welcome", "/auth/login"]);
 }
 function assertLockAnnouncement(f: ReturnType<typeof fixture>) {
   const alerts = f.elements().filter(element => element.props.role === "alert");
@@ -85,6 +118,7 @@ function assertLockAnnouncement(f: ReturnType<typeof fixture>) {
   assert.equal(f.textOf(alerts[0]), "Registration Locked Account creation has been disabled by the administrator.");
   assert.equal(alerts[0].props.tabIndex, undefined, "The lock notice must not introduce a focus target");
   assert(!f.elements().some(element => element.type === "form"));
+  assert.equal(f.elements().filter(element => element.props.role === "status").length, 0, "Lock replaces pending submission status");
   const link = f.elements().find(element => element.type === "Link"); assert(link);
   assert.equal(link.props.href, "/auth/login");
   assert.equal(link.props.children, "Go to sign in");
@@ -129,6 +163,7 @@ test("open registration describes account setup without promising a role from se
   for (const hint of [{ hasUsers: true }, { hasUsers: false }, {}]) {
     const f = fixture({ ok: true, body: { registrationOpen: true, ...hint } }); await f.settle();
     assertErrorAnnouncement(f, "");
+    assertPendingStatus(f, false);
     assert(f.elements().some(element => element.type === "form"));
     assert.match(f.text(), /Set up your Botrus account/);
     assert.doesNotMatch(f.text(), /administrator account|write access|readonly/i);
@@ -166,15 +201,18 @@ test("confirmed-open registration retains validation and successful POST/navigat
   f.fill("username", "synthetic-user"); f.fill("password", "abcdefgh"); f.fill("confirm", "different");
   await f.submit(); assert.match(f.text(), /Passwords do not match/); assert.equal(f.requests.length, 1);
   assertErrorAnnouncement(f, "Passwords do not match");
+  assertPendingStatus(f, false);
   f.fill("password", "short"); f.fill("confirm", "short");
   await f.submit(); assert.match(f.text(), /Password must be at least 8 characters/); assert.equal(f.requests.length, 1);
   assertErrorAnnouncement(f, "Password must be at least 8 characters");
+  assertPendingStatus(f, false);
   f.fill("password", "abcdefgh"); f.fill("confirm", "abcdefgh"); await f.submit();
   assert.deepEqual(f.requests[1], { url: "/api/auth/register", init: {
     method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ username: "synthetic-user", password: "abcdefgh" }),
   } });
   assert.deepEqual(f.routes, ["/"]);
   assertErrorAnnouncement(f, "");
+  assertRetainedForm(f);
 });
 
 test("confirmed-open form retains fresh server refusal, lock and transport-error outcomes", async () => {
@@ -215,6 +253,7 @@ for (const status of [403, 500]) {
       assert.match(f.text(), status === 403 ? /Registration Locked/ : /Registration failed/);
       if (status === 403) assertLockAnnouncement(f);
       else assertErrorAnnouncement(f, "Registration failed");
+      if (status !== 403) assertRetainedForm(f);
       assert.doesNotMatch(f.text(), /Network error|Synthetic proxy failure/);
       assert.deepEqual(f.routes, []); assert.equal(f.requests.length, 2);
       assert(!f.elements().some(element => element.type === "button" && element.props.disabled === true));
@@ -265,9 +304,69 @@ test("registration clears the validation alert during a pending explicit retry",
   f.fill("confirm", "abcdefgh"); f.holdSubmit();
   const pending = f.submit();
   assertErrorAnnouncement(f, "");
+  assertPendingStatus(f, true);
   assert(f.elements().some(element => element.type === "button" && element.props.disabled === true));
   assert.deepEqual(f.routes, []);
   f.release(); await pending;
   assertErrorAnnouncement(f, ""); assert.deepEqual(f.routes, ["/"]);
+  assertRetainedForm(f);
   assert(!f.elements().some(element => element.type === "button" && element.props.disabled === true));
 });
+
+test("open registration starts with an empty submission status and no account-creation intent", async () => {
+  const f = fixture({ ok: true, body: { registrationOpen: true } }); await f.settle();
+  assertPendingStatus(f, false); assertErrorAnnouncement(f, "");
+  assert.deepEqual(f.requests.map(request => request.url), ["/api/auth/session"]);
+  assert.equal(f.submitJsonReads(), 0); assert.deepEqual(f.routes, []);
+});
+
+for (const [label, reply, expected] of [
+  ["string error", { body: { error: "Synthetic registration refusal" } }, "Synthetic registration refusal"],
+  ["unreadable JSON", { parseFailure: true }, "Registration failed"],
+  ["nonstring error", { body: { error: { message: "Synthetic proxy failure" } } }, "Registration failed"],
+  ["empty string", { body: { error: "" } }, ""],
+] as const) {
+  test(`registration remains pending while an HTTP500 ${label} body is held`, async () => {
+    const f = fixture({ ok: true, body: { registrationOpen: true } }); await f.settle();
+    f.fill("username", "synthetic-user"); f.fill("password", "abcdefgh"); f.fill("confirm", "abcdefgh");
+    f.replyToSubmit({ ok: false, status: 500, ...reply }); f.holdSubmitBody();
+    const pending = f.submit(); await f.bodyStarted;
+    assertPendingStatus(f, true); assertErrorAnnouncement(f, "");
+    assert.equal(f.requests.length, 2); assert.equal(f.submitJsonReads(), 1); assert.deepEqual(f.routes, []);
+    f.release(); await pending;
+    assertErrorAnnouncement(f, expected); assertRetainedForm(f);
+    assert.equal(f.requests.length, 2); assert.deepEqual(f.routes, []);
+    assert.doesNotMatch(f.text(), /Creating account|Network error|Synthetic proxy failure/);
+  });
+}
+
+test("registration clears prior server feedback while an explicit retry body is held", async () => {
+  const f = fixture({ ok: true, body: { registrationOpen: true } }); await f.settle();
+  f.fill("username", "synthetic-user"); f.fill("password", "abcdefgh"); f.fill("confirm", "abcdefgh");
+  f.replyToSubmit({ ok: false, status: 409, body: { error: "Username already exists" } });
+  await f.submit(); assertErrorAnnouncement(f, "Username already exists"); assertRetainedForm(f);
+  f.replyToSubmit({ ok: false, status: 500, parseFailure: true }); f.holdSubmitBody();
+  const pending = f.submit(); await f.bodyStarted;
+  assertPendingStatus(f, true); assertErrorAnnouncement(f, "");
+  assert.equal(f.submitJsonReads(), 2); assert.doesNotMatch(f.text(), /Username already exists|Registration failed|Network error/);
+  f.release(); await pending;
+  assertErrorAnnouncement(f, "Registration failed"); assertRetainedForm(f);
+  assert.equal(f.requests.length, 3); assert.deepEqual(f.routes, []);
+});
+
+for (const [label, reply] of [
+  ["success", { ok: true, parseFailure: true }],
+  ["transport failure", { ok: false, networkFailure: true }],
+] as const) {
+  test(`registration pending request settles on ${label} without reading a body`, async () => {
+    const f = fixture({ ok: true, body: { registrationOpen: true } }); await f.settle();
+    f.fill("username", "synthetic-user"); f.fill("password", "abcdefgh"); f.fill("confirm", "abcdefgh");
+    f.replyToSubmit(reply); f.holdSubmit(); const pending = f.submit();
+    assertPendingStatus(f, true); assertErrorAnnouncement(f, "");
+    assert.equal(f.submitJsonReads(), 0); assert.deepEqual(f.routes, []);
+    f.release(); await pending; assertRetainedForm(f);
+    assert.equal(f.requests.length, 2); assert.equal(f.submitJsonReads(), 0);
+    assert.deepEqual(f.routes, reply.ok ? ["/"] : []);
+    assertErrorAnnouncement(f, reply.ok ? "" : "Network error — please try again");
+  });
+}

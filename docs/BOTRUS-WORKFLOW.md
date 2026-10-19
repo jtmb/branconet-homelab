@@ -13,6 +13,16 @@ status empties and busy state clears. Field values and the disabled submit
 behavior are unchanged. Held-request/body presentation-model checks are source
 evidence; actual assistive-technology announcements remain unqualified.
 
+An explicit open-registration submission similarly sets form `aria-busy` and
+fills its always-mounted, screen-reader-only status outside the form with
+`Creating account…`. The submit spinner is decorative. Status and busy state
+clear when the existing loading state settles, including after a refused response
+body is read. The separate availability check is unchanged; HTTP 403 still
+replaces the form and submit status with the lock alert before reading its body.
+Validation, field retention, disabled submit, feedback clearing, explicit retry
+and successful navigation retain their existing behavior. Actual-page source
+models cover these transitions; actual screen-reader acceptance remains open.
+
 Registration submission keeps an HTTP 403 refusal locked even if the server or
 proxy error body cannot be parsed. Other HTTP refusals show a string error from
 a JSON object or `Registration failed`; network failures retain the network-error

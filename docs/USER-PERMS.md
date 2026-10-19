@@ -15,6 +15,17 @@ submit button, fields, explicit retry, feedback alerts and navigation remain.
 Actual-source presentation tests cover held request/body and settled outcomes;
 they do not establish actual screen-reader announcements or close AT acceptance.
 
+Open registration likewise keeps an empty, screen-reader-only `role="status"`
+container mounted outside its form. It contains `Creating account…` only during
+the existing submit loading state, including an unsuccessful response-body wait;
+the form's `aria-busy` follows that state and its spinner is decorative. Settlement
+empties the status and clears busy state. Availability checking remains a separate
+status; unknown/closed availability and an HTTP 403 refusal replace the form and
+its submit status with their existing notices. Validation, retained fields,
+disabled submit, explicit retry, alerts, neutral copy and navigation are unchanged.
+Actual-source presentation models do not establish actual assistive-technology
+announcements; that acceptance gate remains open.
+
 The existing conditional login and open-registration submission feedback uses
 `role="alert"`, including client validation and HTTP/network errors. It adds no
 focus target or focus movement; messages, clearing on explicit submit, loading
