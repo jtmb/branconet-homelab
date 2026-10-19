@@ -1,5 +1,9 @@
 # BORTUS user permissions
 
+## Shared metadata denial notification ordering (2026-10-19)
+
+The shared metadata helper now publishes its existing401 cache clear and session-ended event, or403 session-only invalidation, as soon as fetch supplies the denial status and before body parsing. It still awaits body settlement. HTTP403 does not directly revoke a scoped writer; fresh session/path-capability checks determine effective authority. Existing cancellation may abort body decoding, preserving the existing generic status fallback. Ordinary errors and permission checks are unchanged.
+
 The History administration client's existing direct authorization-loss callback
 now clears the retention draft, exact confirmation and prior status message.
 Page hiding/session-ended cleanup uses the same retention-only reset; other

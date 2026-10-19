@@ -1,5 +1,9 @@
 # BORTUS Secrets Engine
 
+## Shared metadata denial notification ordering (2026-10-19)
+
+The shared metadata `requestJson` client now publishes its existing401 clear/session-ended event and403 session-only invalidation before reading a denial body. This is separate from the private operation clients described below. It does not change native Secret handling, values/history, policy authority, tokens, CAS or recovery. The request still awaits body settlement; existing cancellation can select its generic status fallback.
+
 The public `/welcome` page describes native Secret authority and explicit
 reference-only Ansible sync. It does not promise AES-256-GCM for all sensitive
 data or automatic database-to-Secret synchronization. BORTUS uses TLS for native

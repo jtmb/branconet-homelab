@@ -1,5 +1,9 @@
 # BORTUS KV administration component
 
+## Shared metadata denial notification ordering (2026-10-19)
+
+Shared `requestJson`401 clearing/session-ended notification and403 session revalidation now occur before denial-body parsing. A held body therefore does not delay those existing signals. HTTP403 remains session revalidation: a scoped path-policy refusal can leave a valid writer session intact, so immediate standalone RetentionForm removal is not established. Body settlement and existing component/path-capability withdrawal gates remain unchanged; no form-hook redesign or browser acceptance is implied.
+
 ## Retention metadata draft withdrawal (2026-10-19)
 
 History's existing operation client now clears the entered retention limit,

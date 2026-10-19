@@ -8,6 +8,13 @@ import { configurationList } from "./configuration-response";
 
 export async function requestJson<T = Record<string, unknown>>(url: string, init?: RequestInit): Promise<T> {
   const response = await fetch(url, { ...init, cache: "no-store" });
+  if (!response.ok) {
+    if (response.status === 401) {
+      browserQueries.clear();
+      window.dispatchEvent(new Event("bortus-session-ended"));
+    }
+    if (response.status === 403) browserQueries.invalidate(key => key === "/api/auth/session");
+  }
   let data: unknown;
   if (response.status !== 204) {
     try { data = await response.json(); }
@@ -16,11 +23,6 @@ export async function requestJson<T = Record<string, unknown>>(url: string, init
     }
   }
   if (!response.ok) {
-    if (response.status === 401) {
-      browserQueries.clear();
-      window.dispatchEvent(new Event("bortus-session-ended"));
-    }
-    if (response.status === 403) browserQueries.invalidate(key => key === "/api/auth/session");
     const error = data && typeof data === "object" && "error" in data ? data.error : undefined;
     throw new QueryFailure(typeof error === "string" ? error : `Request failed (${response.status})`, response.status, data);
   }

@@ -1,5 +1,9 @@
 # BORTUS API usage
 
+## Shared metadata denial notification ordering (2026-10-19)
+
+Shared `requestJson` now publishes its existing HTTP401 cache clear/session-ended event and HTTP403 session-only invalidation before reading the denial body. The request still awaits body settlement and retains its status/error/data decoding, malformed-success502 and empty204 behavior. Existing cancellation may abort a body and use the existing status fallback. Ordinary409/503 behavior, request options, metadata allowlists and server authorization are unchanged.
+
 Static public welcome assets are limited to the four exact paths `/images/screenshots/deploy.webp`, `/images/screenshots/flux.webp`, `/images/screenshots/dashboard.webp` and `/images/screenshots/secrets.webp`; they are illustrations, not API or native Secret responses. Other image paths remain authenticated. API authentication, Bearer audiences and protected response contracts are unchanged; see [middleware permissions](USER-PERMS.md).
 
 The recorded fccc7c06 A19 CI and A02 composite source clauses remain qualified at their stated source; see [Fresh source CI qualification](implementation-evidence/provisioning-hosted-ci-qualified-root-20261015.json) and [A02 composite qualification](implementation-evidence/a02-composite-boundary-qualification-root-20261015.json). Delivered, AT, performance, image, recovery and live acceptance remain separate.

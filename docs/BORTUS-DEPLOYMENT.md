@@ -1,5 +1,9 @@
 # BORTUS application deployment
 
+## Shared metadata denial notification ordering (2026-10-19)
+
+The shared metadata client source now publishes existing401/403 session effects before denial-body parsing. Fresh isolated production build, focused zero-warning lint and full nonincremental typecheck passed for these bytes (build `C4zNNlyPHzMbxw0ZIVzQm`,308 selected source/test/control inputs,37,428 dependencies,41,723 graph records); this source change does not qualify an image, registry publication, deployment, production verification or adoption. The bounded regression uses synthetic client/session/metadata only and executes no database, server or native handler.
+
 Page authentication redirects use the browser's existing origin through a relative `/welcome` destination. The Next configuration enables the supported `skipMiddlewareUrlNormalize` option so loopback normalization cannot expose `localhost:4000` through ingress or a port relay. Keep `trustHostHeader` disabled; no public-origin reconstruction from caller Host/Forwarded headers is required. [Focused pinned-Next build and authentication HTTP checks](implementation-evidence/page-origin-redirect-qualification-20261019.json) pass. Rebuild and qualify the application image after this source change; retained images keep their prior redirect behavior.
 
 ## Building current application source on the maintained runtime

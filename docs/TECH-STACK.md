@@ -1,5 +1,9 @@
 # BORTUS technology stack
 
+## Shared metadata denial notification ordering (2026-10-19)
+
+The existing client-only `requestJson` helper now handles its existing401 cache clear/session-ended event and403 session-only revalidation before parsing a denial body. No dependency, framework, transport, timeout, cache admission or server architecture changes. Focused synthetic regression and fresh compile/typecheck qualification remain distinct from browser/backend and production acceptance.
+
 The successful-settlement candidate's first hosted build/check stages passed before its DB manifest refused stale worker provenance. The [three-digest provenance correction](USER-PERMS.md#account-worker-successful-settlement-candidate-2026-10-19) retains that failure and changes no dependency, runner, test, mutant, assertion or limit; the separate complete hosted run39196459270 on `be5585d3` passes.
 
 The [account-worker successful settlement candidate](USER-PERMS.md#account-worker-successful-settlement-candidate-2026-10-19) removes only the redundant successful-core idle await. Refusals retain actual drain ownership; both scheduled identity yields and every fresh authorization check remain. Source-linked generation, all43 focused direct/worker tests and affected lint passed on pinned Node22.23.3 Linux; complete source CI passes as recorded above. Its [original paired A07 result](BORTUS-CONTROLLED-PERFORMANCE.md#successful-settlement-original-paired-result-2026-10-19) on `d6867ba` fails five of ten warm cases despite successful fresh builds and six completed observations. Runtime dependencies, pinned measurement runtime and original acceptance bounds are unchanged; no performance acceptance or adoption follows.
