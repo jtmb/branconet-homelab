@@ -9,6 +9,11 @@ The pending check has a status label. This presentation does not authorize
 registration: the unchanged POST and serialized account transaction still check
 fresh registration state and account identity.
 
+The open form uses role-neutral account setup wording for both bootstrap and
+existing-user registration. Session `hasUsers` hints do not promise a role or
+add role fields to the submission. The serialized server transaction assigns
+write to the first user and readonly to subsequent users from fresh state.
+
 The public welcome page requests a fresh `/api/auth/session` response for each
 Get Started click. Only a successful HTTP response containing an object with
 boolean `authenticated` and `hasUsers` flags selects a session destination:

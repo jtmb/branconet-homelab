@@ -40,6 +40,9 @@ is invalid, the page reports unknown availability and offers sign-in plus reload
 guidance. Reload the page to check again; there is no automatic registration retry.
 Submission validation, server refusal feedback and successful navigation retain
 their existing behavior. The server rechecks registration at submission time.
+The open form says "Set up your Botrus account" for both first and subsequent
+users. Role assignment remains with the fresh server transaction: the first user
+receives write and later users receive readonly; session hints do not grant access.
 
 Current release build (2026-10-18): `Dockerfile.release` builds locked current application source with the pinned C4 builder and replaces only `/app` on a required qualified runtime image. It retains the maintained system components, UID/GID 1000, entrypoint/forward migrations, production dependencies and port 4000. The original Trixie Dockerfile remains unchanged. See [exact local build instructions](BORTUS-DEPLOYMENT.md#building-current-application-source-on-the-maintained-runtime); this new application image still needs its actual integrated build/startup result and is not production adoption.
 

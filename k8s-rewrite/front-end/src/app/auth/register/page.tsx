@@ -127,7 +127,7 @@ export default function RegisterPage() {
         </div>
         <div>
           <h1 className="text-lg font-bold text-zinc-100">Create your account</h1>
-          <p className="text-sm text-zinc-400">Set up your Botrus administrator account</p>
+          <p className="text-sm text-zinc-400">Set up your Botrus account</p>
         </div>
       </div>
 

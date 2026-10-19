@@ -99,6 +99,20 @@ test("explicit successful registration availability preserves open and administr
   }
 });
 
+test("open registration describes account setup without promising a role from session hints", async () => {
+  for (const hint of [{ hasUsers: true }, { hasUsers: false }, {}]) {
+    const f = fixture({ ok: true, body: { registrationOpen: true, ...hint } }); await f.settle();
+    assert(f.elements().some(element => element.type === "form"));
+    assert.match(f.text(), /Set up your Botrus account/);
+    assert.doesNotMatch(f.text(), /administrator account|write access|readonly/i);
+    f.fill("username", "synthetic-user"); f.fill("password", "abcdefgh"); f.fill("confirm", "abcdefgh");
+    await f.submit();
+    assert.equal(f.requests[1]?.url, "/api/auth/register");
+    assert.deepEqual(JSON.parse(f.requests[1]?.init?.body ?? "null"), { username: "synthetic-user", password: "abcdefgh" });
+    assert.deepEqual(f.routes, ["/"]);
+  }
+});
+
 test("failed HTTP availability is unknown even when its body claims open or closed", async () => {
   for (const body of [{ error: "Internal server error" }, { registrationOpen: true }, { registrationOpen: false }]) {
     const f = fixture({ ok: false, status: 500, body }); await f.settle();
