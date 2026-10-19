@@ -1,0 +1,115 @@
+{
+  "scope": "Independent finite review of frozen welcome overlap evidence; no broader acceptance",
+  "acceptedBounded": true,
+  "findings": [],
+  "sourceCommit": "5d25f7ffc488dcf1d28209e196d171a8b3e907db",
+  "frontendTree": "60a7af22a37e8e584bed073be61534fcded282fd",
+  "manifestSHA256": "ed7e06240e8f20860bd593e3de7fe7573a1c480e3df12c6a143ecc0adc9a1259",
+  "privateAcceptanceSHA256": "2e9eeb13fd8874b68c2be6b3d1b665617727a8991b3b1f5dd119673635c8931b",
+  "pins": {
+    "count": 99,
+    "verified": 99,
+    "mismatches": 0,
+    "method": "Current byte length and SHA256 of every pinned file via actual Windows/WSL UNC paths",
+    "compiledObjectsRehashed": false
+  },
+  "review": {
+    "DOMCaptures": 7,
+    "AXCaptures": 7,
+    "attributeObservations": 7,
+    "actionRecords": 3,
+    "originalBoundaryLogs": true,
+    "sessionAndNavigationFinalLogs": true,
+    "actualSource": true,
+    "fixtureAndLauncher": true,
+    "savedIsolationAndClosureProofs": true,
+    "currentAppHeadAndCleanStatus": true,
+    "rootDocumentationDiffsAndHandoff": true,
+    "AXScopeAmendmentVerifiedInAll6Docs": true
+  },
+  "PNGReview": [
+    {
+      "name": "03-both-held.png",
+      "inspected": true,
+      "result": "Visible welcome page and enabled header action; hidden checking status not visually established"
+    },
+    {
+      "name": "04-second-settled-first-held.png",
+      "inspected": true,
+      "result": "Same visible welcome render; checking/busy established by DOM and attribute projections"
+    },
+    {
+      "name": "05-all-session-lookups-settled.png",
+      "inspected": true,
+      "result": "Same visible welcome render; status clearing and busy=false established by DOM and attribute projections"
+    },
+    {
+      "name": "07-registration-cleared.png",
+      "inspected": true,
+      "result": "Actual registration view; three empty fields and visible confirm-password focus; no captured credential values"
+    }
+  ],
+  "boundedResult": {
+    "welcomeClickAttempts": 2,
+    "distinctOverlappingSessionLookups": 2,
+    "sessionCompletionOrder": [
+      2,
+      1
+    ],
+    "pendingAfterSecondCompleted": true,
+    "pendingClearedAfterFirstCompleted": true,
+    "GETDestinationRequestOrder": [
+      "/auth/login",
+      "/auth/register"
+    ],
+    "navigationReleaseOrder": [
+      "/auth/register",
+      "/auth/login"
+    ],
+    "finalActualDestination": "/auth/register",
+    "registrationMountSessionRequests": 1,
+    "fieldsEmptyBeforeAndAfterHygiene": true,
+    "fieldClears": 3,
+    "formSubmissions": 0,
+    "forwardedMutations": 0,
+    "allHoldsFileReleased": true,
+    "noSourcePatchWarranted": true
+  },
+  "limitations": [
+    "GET destination responses held to retain welcome mount; no visible first login arrival claim",
+    "Action, DOM, AX and images captured separately",
+    "Only one two-request reverse-completion overlap; other combinations not replayed",
+    "No actual assistive-technology or live authentication claim",
+    "Server response hold180s is only a ceiling; unchanged relay inactivity cutoff60s applies",
+    "Global fixture timer expansion also covers unused authentication hold modes; no authentication submission exercised",
+    "Navigation log close events do not establish cancellation or page-arrival order",
+    "No third welcome activation; third session lookup is the actual registration mount using synthetic session-safe",
+    "AX captures01-05 are incremental/no-change outputs without a persisted full welcome base; no standalone full-AX reconstruction is claimed. Full DOM snapshots and read-only attribute projections support status/busy.",
+    "Lifecycle and prelaunch compiled verification reviewed as saved pinned proofs; reviewer launched no workloads and did not rehash 41723 compiled objects",
+    "Later publication scanning, root commit/push and CI excluded from this manifest and review",
+    "No release/adoption, live data, security, A07 performance, actual AT, native values/history/CAS/rotation or recovery gate closed"
+  ],
+  "actualAT": false,
+  "fullGoalComplete": false,
+  "rootRechecked99PinsBeforeCommit": true,
+  "publicationAndCIOutsideIndependent99Pins": true,
+  "publicationScan": {
+    "files": 40,
+    "rawIndexBlobsVerified": true,
+    "firstRevisionExit": 0,
+    "firstRevisionFindings": 0,
+    "finalAXScopeRevisionExit": 1,
+    "finalAXScopeRevisionFindings": 1,
+    "rule": "sourcegraph-access-token",
+    "location": "PLAN.md historical owning-commit field",
+    "gitObject": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+    "objectTypeVerified": "commit",
+    "noCauseForDifferentDefaultResultEstablished": true,
+    "scannerAndArgumentsUnchanged": true,
+    "suppression": false,
+    "disposition": false,
+    "securityAccepted": false,
+    "noFurtherScanOrDiagnostic": true,
+    "thisLaterSummaryOutsideScanned40Files": true
+  }
+}
