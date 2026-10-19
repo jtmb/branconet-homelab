@@ -1,0 +1,47 @@
+# BORTUS delivery successor - full goal retained
+
+The user explicitly requested immediate handoff. The predecessor stays open for migration artifact/node cleanup and MUST NOT be archived. This is an early rotation, not completion. The successor owns completing delivery, application remediation coordination and acceptance; coordinate any node/artifact cleanup with the predecessor before touching retained inputs.
+
+## Full objective
+
+Complete the BORTUS K8s audit remediation (A01-A22), including performance, UI, correctness, permissions and documentation; deliver a Vault-style KV secrets engine backed by native Kubernetes Secrets with paths, grouped keys, immutable version history, CAS updates, rollback, scoped policies and revocable automation identities, redacted audit, import/export, static rotation and retention/recovery controls. Keep BORTUS application development separate from cluster migration. Establish and verify the separate private jtmb/branconet-charts repository and its single CI-validated Flux delivery pipeline so chart pushes reconcile deployed releases. Finish immutable source/image delivery, guarded schema/RBAC/admission migration, live acceptance and rollback verification, preserving existing users, credentials, Secret aliases, workload identities, PVCs, Longhorn/SMB storage and all accepted data. Maintain acceptance ledgers/docs with verified progress; distinguish local tests from live evidence. Do not claim dynamic credential issuers, PKI/transit or full Vault API parity. Preserve Gluster, Vault/Consul originals and backups until explicit final retirement approval. Complete the actual objective, not just this checkpoint.
+
+## Checkpoint and first actions
+
+The successor prompt provides the exact new checkpoint SHA on `codex/kubernetes-migration`, remote `origin` (jtmb/branconet-homelab). Before edits, verify local branch/HEAD and `git ls-remote origin refs/heads/codex/kubernetes-migration`; verify expected user-owned dirty files against the private companion. Do not reset or include those files in commits. Read AGENTS.md, PLAN.md, MIGRATION_STATUS.md, relevant docs and the feature-handoff skill. Write the requested acceptance receipt only after verification, then continue autonomously. Preserve all historical failures and all 44 original validation clauses.
+
+The next concrete task is to resolve the actual remaining release gates, starting with supported Computer Use initialization/final-image dashboard validation. Diagnose the missing runtime asset/path before another unchanged tool retry. Browser validation is for dashboard behavior, never a prerequisite for independent SSH/Flux work. Do not expand standalone benchmarks; implement concrete fixes and use focused existing validation. Application source changes belong with a focused application subagent/owner, not cluster migration edits.
+
+## Verified delivery (historical observations, refresh before mutation)
+
+- Root source/bootstrap integration: f5836dba92f1ec653e7fabf26b4f27346e19e3fc; migration CI 39148443030 passed. Four Ansible files use separate private charts `validated`, `./flux/releases`, externally restored native read-only source credential, recovery activation false, prune/force false.
+- App PR28 https://github.com/jtmb/branconet-homelab/pull/28: draft/unmerged source 5aba82c28d5cad1d571416ea9c06f5d2d61260b3; CI 39139100514 passed. Native KV requested workflows implemented; denial-response bug fixed. Passing source CI does not establish live adoption or remaining gates.
+- Separate charts PR4 merged at 37dd61a242b488dabbdcec9277cb1ee84580f0e2, CI 39139397916 passed; live Flux Ready at that validated revision on October18 17:14 UTC. Opt-in nativeKv profile disabled.
+- Draft charts PR5 https://github.com/jtmb/branconet-charts/pull/5 at 1d78f7b37cb6bf648ad281e237e073433eee2f0b, CI 39141489304 passed. Exact forward image, nativeKv true, guardedAdoption false, Helm suspended, three allowlists remove legacy/inert image. DO NOT merge until fresh checkpoint, independent compatible recovery and legacy-writer quiescence: admission still reconciles while Helm is suspended.
+- Final image runtime index sha256:bfc78b697373727aebccf50c70ef1944c76691cc435da0ad3bcc4e44670ff211, selected manifest sha256:4074fda82871abc7f6591762e188f467a9264965156f18dc3f5e75b5bfe17813, raw config sha256:909abcf99fa7ea4f6b44d176629556a9c70964af963d990815b0a249b40680ff. Built/exported/preloaded on all three nodes; tagless aliases verified. Archive SHA256 97bf962ff6a54aca49b032c24b500d3031edd8cf426550b13466d1472bb1bd21. Existing 12 isolated public runtime checks pass, not native live adoption.
+- Retained production image 3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879: Ready1, Helm suspended on last observation. No forward schema/RBAC/adoption cutover performed.
+- Last cluster snapshot: three Ready nodes, 54 Bound PVCs, 34 Ready Helm releases. These are health observations, not restore/integrity proof.
+
+## Exact rejection correction and remaining gates
+
+Earlier summaries overstated a blanket migration policy block. Actual original local command rejection at October18 14:38 UTC was a Python evidence/docs write: copy two vulnerability reviews, create `evidence/bortus-a20-newimage-dispositions-root-20261018.json`, update PLAN.md and docs/BORTUS-RELEASE-IMAGE.md plus docs/MIGRATION-OPERATIONS.md. It would record scoped CVE decisions with overall security acceptance still false. Rejected before execution with only `blocked by policy`. It was not a cluster apply, deletion or Secret-access command. Do not replay/repackage that rejected action in this new chat.
+
+The private native/recovery subagent separately errored with `This content was flagged for possible cybersecurity risk`, pointing to https://platform.openai.com/settings/organization/status-and-access. No particular Kubernetes command was identified. Do not retry, rephrase, decrypt private agent messages, or reassign its rejected work to another agent as a workaround. Ownership/SSH/sudo authorization is established; more credentials are not the missing authorization. No external resolution is known.
+
+Independent outstanding gates remain real: compatible independent restore/full-row/native recovery, guarded backup/quiescence/admission/schema/RBAC adoption, security acceptance (fresh final scan exit1/12 Medium/zero secrets, no accepted residual), original performance warm regressions, actual assistive technology and final-image/live UI. Computer Use initialization failed with missing kernel assets/path os error3; one reset/retry also failed. That is a tooling failure, not policy. Prior Windows helper also failed controlled ChromeTesting owner binding; no actual screen reader ran.
+
+Canonical parent-stat benchmark improved eight of ten warm comparisons but two regress. Isolated two-reader candidate169107f also fails two warm comparisons and remains UNADOPTED. Canonical account concurrency1+64 queued/5s/two actual yields and native8 requests/16MiB metadata pages/4MiB generic pages/32MiB aggregate/10k items remain. Do not silently adopt evaluation-only candidates or weaken acceptance, tests, limits, permissions or redaction.
+
+## Durable constraints and completion
+
+- Native Kubernetes Secrets authoritative, no secrets Git repository. Never put values in SQLite, argv, Git, errors/logs/reports. Explicit alias/namespace/name/key; RV mutations preserve unrelated data and metadata; readonly metadata, fresh write role for values/CRUD.
+- Preserve all users, credentials, aliases, identities, PVCs, Longhorn/SMB/media and originals. No data/node cleanup or retirement merely to make validation pass. User explicitly leaves this predecessor chat responsible for cleanup; coordinate before deleting any build/recovery artifact the successor needs.
+- No new game servers. Respect repository chart/individual values and single private-chart CI-to-Flux publisher. No production changes based on local fixtures alone.
+- User wants implementation completed, focused checks, Computer Use only after implementation, no endless diagnostic/test expansion. Use subagents for bounded work, normal three-agent total; separate application ownership.
+- Update docs alongside behavior; read installed Next docs or official versioned fallback when absent.
+- The full goal is complete only after current authoritative requirement-by-requirement evidence proves A01-A22, native KV, delivery, guarded live adoption, data preservation and compatible recovery/rollback, with remaining limitations reported. Do not call a handoff, build, green CI or healthy Pods complete.
+- Use feature-handoff after subsequent features; carry full objective. Exception for this predecessor: user says KEEP IT OPEN, do not archive it.
+
+## Evidence entrypoints
+
+Read PLAN.md and MIGRATION_STATUS.md for contract and all historical evidence; docs/BORTUS-DEPLOYMENT.md, SECRETS-ENGINE.md, FLUX-GITOPS.md, BORTUS-RELEASE-IMAGE.md, BORTUS-RELEASE-STAGING.md and MIGRATION-OPERATIONS.md for implementation/operations. Key current receipts: evidence/bortus-current-release-staging-root-20261018.json, bortus-current-delivery-root-20261018.json, bortus-final-browser-initialization-block-root-20261018.json, bortus-resumed-cutover-block-root-20261018.json. The latter is historical and its broad policy description is corrected above. No live processes or active subagent writers are handed over; latest agent inventory lists root only. Revalidate runtime handles before treating any prior process as running.

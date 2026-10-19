@@ -1,5 +1,10 @@
 # Kubernetes migration plan and acceptance contract
 
+## Immediate delivery handoff - 2026-10-18 (Toronto)
+
+At the user's explicit request, the full unfinished BORTUS delivery/remediation goal moves to a fresh successor chat. This predecessor remains open solely for migration artifact and node cleanup; it must not be archived. [The portable handoff](docs/operations/handoffs/2026-10-18-bortus-delivery-successor.md) preserves the complete objective, source/image/chart identities, original acceptance requirements, exact rejection scope and remaining gates. Its correction supersedes earlier blanket descriptions of migration being policy-blocked: the rejected local vulnerability-disposition write and the errored private recovery subagent are distinct from technical UI/performance failures. Rejected actions remain stopped. No production change, data cleanup, retirement or acceptance waiver follows this handoff. Live observations below retain their original timestamps and are not refreshed by this note.
+
+
 Approved by the user on 2026-10-09. Execution target: under six hours from execution approval. Data-preservation and acceptance gates remain mandatory.
 
 ## Work ownership

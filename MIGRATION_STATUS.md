@@ -1,5 +1,10 @@
 # Migration acceptance evidence
 
+## Immediate delivery handoff - 2026-10-18 (Toronto)
+
+At the user's explicit request, the full unfinished BORTUS delivery/remediation goal moves to a fresh successor chat. This predecessor remains open solely for migration artifact and node cleanup; it must not be archived. [The portable handoff](docs/operations/handoffs/2026-10-18-bortus-delivery-successor.md) preserves the complete objective, source/image/chart identities, original acceptance requirements, exact rejection scope and remaining gates. Its correction supersedes earlier blanket descriptions of migration being policy-blocked: the rejected local vulnerability-disposition write and the errored private recovery subagent are distinct from technical UI/performance failures. Rejected actions remain stopped. No production change, data cleanup, retirement or acceptance waiver follows this handoff. Live observations below retain their original timestamps and are not refreshed by this note.
+
+
 Contract: [PLAN.md](PLAN.md). Goal active since 2026-10-09 14:30 UTC; original migration execution target before 20:30 UTC. Cluster migration and live deployment/acceptance are owned by this coordinator. The original application chat delivered commit 1438b278cdf21e98429b4836c018636b01b982a3; current work uses this coordinator plus application and acceptance sub-agents, following the user's instruction to use three active agents and archive old execution chats.
 
 ## Recovery bootstrap source integration — 2026-10-18
