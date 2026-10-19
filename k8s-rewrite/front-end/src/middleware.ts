@@ -3,7 +3,14 @@ import type { NextRequest } from "next/server";
 import { getSessionFromHeaders } from "@/lib/auth";
 
 // Routes that don't require authentication
-const PUBLIC_PATHS = ["/welcome", "/auth/login", "/auth/register", "/api/vars/lookup", "/api/kv/automation", "/api/health/live", "/api/health/ready", "/api/cluster/info", "/favicon.ico"];
+const PUBLIC_PATHS = [
+  "/welcome", "/auth/login", "/auth/register", "/api/vars/lookup", "/api/kv/automation", "/api/health/live", "/api/health/ready", "/api/cluster/info", "/favicon.ico",
+  // Public welcome illustrations; keep other image paths authenticated.
+  "/images/screenshots/deploy.webp",
+  "/images/screenshots/flux.webp",
+  "/images/screenshots/dashboard.webp",
+  "/images/screenshots/secrets.webp",
+];
 const PUBLIC_PREFIXES = ["/api/auth/", "/_next/"];
 const AUTH_FAILURE_HEADERS = { "Cache-Control": "no-store, private", Pragma: "no-cache" };
 

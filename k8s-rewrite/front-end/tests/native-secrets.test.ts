@@ -350,6 +350,34 @@ test("middleware permits exact Bearer/probe paths but protects similar paths", a
   ])
     { const response=await middleware(new NextRequest(`https://bortus${pathname}`));assert.equal(response.status,401);assert.match(response.headers.get("cache-control")||"",/no-store/); }
 });
+test("middleware permits only exact public welcome illustrations", async () => {
+  for (const name of ["deploy", "flux", "dashboard", "secrets"]) {
+    const pathname = `/images/screenshots/${name}.webp`;
+    for (const suffix of ["", "?v=public-preview"]) {
+      const response = await middleware(new NextRequest(`https://bortus${pathname}${suffix}`));
+      assert.ok(response.headers.has("x-middleware-next"), pathname + suffix);
+    }
+    for (const suffix of ["/other", "-private", ".bak"]) {
+      const response = await middleware(new NextRequest(`https://bortus${pathname}${suffix}`));
+      assert.equal(response.status, 307, pathname + suffix);
+      assert.equal(new URL(response.headers.get("location")!).pathname, "/welcome");
+      assert.ok(!response.headers.has("x-middleware-next"));
+    }
+  }
+  for (const pathname of [
+    "/images", "/images/screenshots", "/images/screenshots/unlisted.webp",
+    "/images/private.webp", "/images/screenshots/Secrets.webp", "/secrets",
+  ]) {
+    const response = await middleware(new NextRequest(`https://bortus${pathname}`));
+    assert.equal(response.status, 307, pathname);
+    assert.equal(new URL(response.headers.get("location")!).pathname, "/welcome");
+    assert.ok(!response.headers.has("x-middleware-next"));
+  }
+  const api = await middleware(new NextRequest("https://bortus/api/secrets"));
+  assert.equal(api.status, 401);
+  assert.match(api.headers.get("cache-control") || "", /no-store/);
+});
+
 test("transport rejects HTTP and insecure TLS kubeconfig without API access", async () => {
   const dir = await mkdtemp(path.join(tmpdir(), "bortus-transport-test-"));
   const previous = process.env.KUBECONFIG;

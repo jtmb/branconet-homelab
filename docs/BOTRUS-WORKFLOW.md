@@ -7,6 +7,10 @@ supplied cluster access and configured Flux resource status. Its provisioning
 section distinguishes the disabled container runner from optional local Ansible
 integration and independent operator bootstrap/recovery. The retained runner
 screenshots are illustrative, not evidence that container provisioning is enabled.
+The four bundled welcome illustrations (`deploy.webp`, `flux.webp`,
+`dashboard.webp`, `secrets.webp`) under `/images/screenshots/` are exact public
+middleware exceptions so anonymous visitors and the image optimizer can load
+them. Other image paths remain authenticated.
 Ansible sync is explicit and writes lookup references/inventory, never native
 Secret values. The page makes no application-level encryption-at-rest guarantee;
 operators configure Kubernetes storage encryption and access controls. Its four
