@@ -1,0 +1,535 @@
+{
+  "storageRetirement": {
+    "startedUTC": "2026-10-19T02:49:14.104502+00:00",
+    "userAuthorizedLegacyRetirement": true,
+    "userSMBScope": "Keep NAS media; remove legacy host mounts; keep Kubernetes CSI",
+    "phase": "completed",
+    "steps": [
+      {
+        "stage": "native-dependency-check",
+        "legacyNativeDependencies": 0,
+        "objectsInspected": 212
+      },
+      {
+        "stage": "encrypted-configuration-preserved",
+        "host": "192.168.0.4",
+        "archive": "/mnt/container-backups/k8s-migration-20261009/legacy-config-192.168.0.4-20261019T024914Z.json.age",
+        "bytes": 209591,
+        "ciphertextSHA256": "95f932863f65ca272389e7ef81625e5a0cea70db60ce0b5850cd33fbffc2d77b",
+        "fileCount": 41,
+        "serviceCount": 32,
+        "authenticatedDecryptionVerified": true
+      },
+      {
+        "stage": "encrypted-configuration-preserved",
+        "host": "192.168.0.5",
+        "archive": "/mnt/container-backups/k8s-migration-20261009/legacy-config-192.168.0.5-20261019T024914Z.json.age",
+        "bytes": 292577,
+        "ciphertextSHA256": "f48521cc9201cd27fe8b9fba5f7011911e13492779e9d84245ae9ac2761664b7",
+        "fileCount": 61,
+        "serviceCount": 32,
+        "authenticatedDecryptionVerified": true
+      },
+      {
+        "stage": "encrypted-configuration-preserved",
+        "host": "192.168.0.6",
+        "archive": "/mnt/container-backups/k8s-migration-20261009/legacy-config-192.168.0.6-20261019T024914Z.json.age",
+        "bytes": 217623,
+        "ciphertextSHA256": "fb21d7a10a2c8274507962889c6f11d33ecf35800dfa4770700cd7bb3e5d0235",
+        "fileCount": 41,
+        "serviceCount": 32,
+        "authenticatedDecryptionVerified": true
+      },
+      {
+        "stage": "legacy-writers-scaled-zero",
+        "services": [
+          "cicd_vault",
+          "cicd_server-bootstrap",
+          "portainer_portainer"
+        ],
+        "desiredReplicas": 0
+      },
+      {
+        "stage": "legacy-writers-quiescent",
+        "remainingLegacyWriters": 0
+      },
+      {
+        "stage": "cold-active-state-backup",
+        "ok": true,
+        "host": "192.168.0.5",
+        "kind": "retirement-active-state",
+        "archive": "/mnt/container-backups/k8s-migration-20261009/retirement-active-state-192.168.0.5-20261019T024914Z.tar.gz.age",
+        "source_paths": [
+          "/mnt/container-program-files/portainer",
+          "/mnt/container-program-files/server-bootstrap"
+        ],
+        "excluded_paths": [],
+        "encrypted_bytes": 3782294,
+        "ciphertext_sha256": "7b6c965d06d328b269ac5cbb35d15531c35d2d878204bbc5261722150b04bd87",
+        "elapsed_seconds": 5,
+        "authenticated_decryption_verified": true,
+        "tar_entries": 92,
+        "uncompressed_file_bytes": 62010619
+      },
+      {
+        "stage": "native-dependency-recheck",
+        "legacyNativeDependencies": 0,
+        "objectsInspected": 212
+      },
+      {
+        "stage": "gluster-client-unmounted",
+        "host": "192.168.0.4",
+        "glusterMountsUnmounted": [
+          "/mnt/container-program-files"
+        ],
+        "brickDirectoryRetained": true
+      },
+      {
+        "stage": "gluster-client-unmounted",
+        "host": "192.168.0.5",
+        "glusterMountsUnmounted": [
+          "/mnt/container-program-files",
+          "/mnt/migration-gluster-read"
+        ],
+        "brickDirectoryRetained": true
+      },
+      {
+        "stage": "gluster-client-unmounted",
+        "host": "192.168.0.6",
+        "glusterMountsUnmounted": [
+          "/mnt/container-program-files"
+        ],
+        "brickDirectoryRetained": true
+      },
+      {
+        "stage": "gluster-volume-stopped",
+        "volume": "staging-gfs",
+        "stopped": true,
+        "deleted": false
+      },
+      {
+        "stage": "gluster-daemon-disabled",
+        "host": "192.168.0.4",
+        "active": "inactive",
+        "enabled": "disabled"
+      },
+      {
+        "stage": "gluster-daemon-disabled",
+        "host": "192.168.0.5",
+        "active": "inactive",
+        "enabled": "disabled"
+      },
+      {
+        "stage": "gluster-daemon-disabled",
+        "host": "192.168.0.6",
+        "active": "inactive",
+        "enabled": "disabled"
+      },
+      {
+        "stage": "cold-raw-brick-backup",
+        "ok": true,
+        "host": "192.168.0.4",
+        "kind": "retirement-gluster-brick",
+        "archive": "/mnt/container-backups/k8s-migration-20261009/retirement-gluster-brick-192.168.0.4-20261019T024914Z.tar.gz.age",
+        "source_paths": [
+          "/gluster/volumes"
+        ],
+        "excluded_paths": [],
+        "encrypted_bytes": 892623628,
+        "ciphertext_sha256": "f944b34ff7ce79eeeff6506467ae8f8e8b764417f1dba94e10ac06ad934b793d",
+        "elapsed_seconds": 146,
+        "authenticated_decryption_verified": true,
+        "tar_entries": 81644,
+        "uncompressed_file_bytes": 2076619591
+      },
+      {
+        "stage": "cold-raw-brick-backup",
+        "ok": true,
+        "host": "192.168.0.5",
+        "kind": "retirement-gluster-brick",
+        "archive": "/mnt/container-backups/k8s-migration-20261009/retirement-gluster-brick-192.168.0.5-20261019T024914Z.tar.gz.age",
+        "source_paths": [
+          "/gluster/volumes"
+        ],
+        "excluded_paths": [],
+        "encrypted_bytes": 893106792,
+        "ciphertext_sha256": "2288b74196eb275429bb41a32a6673368da20f49e3b2a984ad17d2182c1d21aa",
+        "elapsed_seconds": 113,
+        "authenticated_decryption_verified": true,
+        "tar_entries": 81532,
+        "uncompressed_file_bytes": 2076738414
+      },
+      {
+        "stage": "cold-raw-brick-backup",
+        "ok": true,
+        "host": "192.168.0.6",
+        "kind": "retirement-gluster-brick",
+        "archive": "/mnt/container-backups/k8s-migration-20261009/retirement-gluster-brick-192.168.0.6-20261019T024914Z.tar.gz.age",
+        "source_paths": [
+          "/gluster/volumes"
+        ],
+        "excluded_paths": [],
+        "encrypted_bytes": 892116655,
+        "ciphertext_sha256": "cde1ffa1c9af1038963bbd80122fa94e28b54cd7208eaa8f3fee28b8143946b8",
+        "elapsed_seconds": 103,
+        "authenticated_decryption_verified": true,
+        "tar_entries": 81539,
+        "uncompressed_file_bytes": 2076616037
+      },
+      {
+        "stage": "legacy-mounts-retired",
+        "host": "192.168.0.4",
+        "legacySMBUnmounted": [
+          "/mnt/container-backups",
+          "/mnt/plex_smb_share"
+        ],
+        "fstabEntriesDisabled": [
+          {
+            "target": "/mnt/plex_smb_share",
+            "type": "cifs"
+          },
+          {
+            "target": "/mnt/container-program-files",
+            "type": "glusterfs"
+          },
+          {
+            "target": "/mnt/container-backups",
+            "type": "cifs"
+          }
+        ],
+        "remainingKubeletCSIMounts": 23,
+        "legacyGlusterAndSMBMountsRemaining": 0,
+        "brickDirectoryRetained": true
+      },
+      {
+        "stage": "legacy-mounts-retired",
+        "host": "192.168.0.5",
+        "legacySMBUnmounted": [
+          "/mnt/plex_smb_share",
+          "/mnt/backups",
+          "/mnt/container-backups"
+        ],
+        "fstabEntriesDisabled": [
+          {
+            "target": "/mnt/plex_smb_share",
+            "type": "cifs"
+          },
+          {
+            "target": "/mnt/backups",
+            "type": "cifs"
+          },
+          {
+            "target": "/mnt/container-program-files",
+            "type": "glusterfs"
+          },
+          {
+            "target": "/mnt/container-backups",
+            "type": "cifs"
+          }
+        ],
+        "remainingKubeletCSIMounts": 10,
+        "legacyGlusterAndSMBMountsRemaining": 0,
+        "brickDirectoryRetained": true
+      },
+      {
+        "stage": "legacy-mounts-retired",
+        "host": "192.168.0.6",
+        "legacySMBUnmounted": [
+          "/mnt/plex_smb_share",
+          "/mnt/backups",
+          "/mnt/container-backups"
+        ],
+        "fstabEntriesDisabled": [
+          {
+            "target": "/mnt/container-program-files",
+            "type": "glusterfs"
+          },
+          {
+            "target": "/mnt/plex_smb_share",
+            "type": "cifs"
+          },
+          {
+            "target": "/mnt/backups",
+            "type": "cifs"
+          },
+          {
+            "target": "/mnt/container-backups",
+            "type": "cifs"
+          }
+        ],
+        "remainingKubeletCSIMounts": 5,
+        "legacyGlusterAndSMBMountsRemaining": 0,
+        "brickDirectoryRetained": true
+      },
+      {
+        "stage": "native-dependency-final-check",
+        "legacyNativeDependencies": 0,
+        "objectsInspected": 212
+      }
+    ],
+    "completedUTC": "2026-10-19T02:52:41.786101+00:00",
+    "dataOrBrickDirectoriesDeleted": false
+  },
+  "dockerRetirement": {
+    "observedUTC": "2026-10-19T02:53:46.174520+00:00",
+    "scope": "Disable obsolete Docker/Swarm; preserve independent Kubernetes runtime and all data",
+    "nodes": [
+      {
+        "host": "192.168.0.4",
+        "kubeletRuntime": "unix:///run/containerd-k8s/containerd.sock",
+        "units": {
+          "docker.service": {
+            "active": "inactive",
+            "enabled": "disabled"
+          },
+          "docker.socket": {
+            "active": "inactive",
+            "enabled": "disabled"
+          },
+          "containerd-k8s": {
+            "active": "active",
+            "enabled": "enabled"
+          },
+          "kubelet": {
+            "active": "active",
+            "enabled": "enabled"
+          },
+          "glusterd": {
+            "active": "inactive",
+            "enabled": "disabled"
+          }
+        },
+        "legacyStorageMountsRemaining": 0,
+        "glusterBrickDirectoryRetained": true,
+        "dockerStateRetained": true,
+        "kubeletCSIMounts": 23
+      },
+      {
+        "host": "192.168.0.5",
+        "kubeletRuntime": "unix:///run/containerd-k8s/containerd.sock",
+        "units": {
+          "docker.service": {
+            "active": "inactive",
+            "enabled": "disabled"
+          },
+          "docker.socket": {
+            "active": "inactive",
+            "enabled": "disabled"
+          },
+          "containerd-k8s": {
+            "active": "active",
+            "enabled": "enabled"
+          },
+          "kubelet": {
+            "active": "active",
+            "enabled": "enabled"
+          },
+          "glusterd": {
+            "active": "inactive",
+            "enabled": "disabled"
+          }
+        },
+        "legacyStorageMountsRemaining": 0,
+        "glusterBrickDirectoryRetained": true,
+        "dockerStateRetained": true,
+        "kubeletCSIMounts": 10
+      },
+      {
+        "host": "192.168.0.6",
+        "kubeletRuntime": "unix:///run/containerd-k8s/containerd.sock",
+        "units": {
+          "docker.service": {
+            "active": "inactive",
+            "enabled": "disabled"
+          },
+          "docker.socket": {
+            "active": "inactive",
+            "enabled": "disabled"
+          },
+          "containerd-k8s": {
+            "active": "active",
+            "enabled": "enabled"
+          },
+          "kubelet": {
+            "active": "active",
+            "enabled": "enabled"
+          },
+          "glusterd": {
+            "active": "inactive",
+            "enabled": "disabled"
+          }
+        },
+        "legacyStorageMountsRemaining": 0,
+        "glusterBrickDirectoryRetained": true,
+        "dockerStateRetained": true,
+        "kubeletCSIMounts": 5
+      }
+    ],
+    "phase": "completed"
+  },
+  "postRetirementHealth": {
+    "observedUTC": "2026-10-19T02:54:44.885907+00:00",
+    "nodes": [
+      {
+        "name": "masternode",
+        "ready": true
+      },
+      {
+        "name": "workernode1",
+        "ready": true
+      },
+      {
+        "name": "workernode2",
+        "ready": true
+      }
+    ],
+    "pvcPhases": {
+      "Bound": 54
+    },
+    "pvDrivers": {
+      "smb.csi.k8s.io": 14,
+      "driver.longhorn.io": 40
+    },
+    "podPhases": {
+      "Running": 91,
+      "Succeeded": 6
+    },
+    "notReadyReleases": [],
+    "helmReleaseCount": 34,
+    "longhornBackupTargets": [
+      {
+        "name": "default",
+        "available": true,
+        "lastSyncedAt": "2026-10-19T02:53:57Z"
+      }
+    ],
+    "plexMediaReadAsApplicationUserExit": 21,
+    "plexMediaReadDiagnosticBytes": 37,
+    "httpProbes": [
+      {
+        "node": "192.168.0.4",
+        "path": "/auth/login",
+        "exit": 0,
+        "httpStatus": "200"
+      },
+      {
+        "node": "192.168.0.4",
+        "path": "/api/health/ready",
+        "exit": 0,
+        "httpStatus": "200"
+      },
+      {
+        "node": "192.168.0.5",
+        "path": "/auth/login",
+        "exit": 0,
+        "httpStatus": "200"
+      },
+      {
+        "node": "192.168.0.5",
+        "path": "/api/health/ready",
+        "exit": 0,
+        "httpStatus": "200"
+      },
+      {
+        "node": "192.168.0.6",
+        "path": "/auth/login",
+        "exit": 0,
+        "httpStatus": "200"
+      },
+      {
+        "node": "192.168.0.6",
+        "path": "/api/health/ready",
+        "exit": 0,
+        "httpStatus": "200"
+      }
+    ],
+    "httpProbeTLSLimit": "Existing default LAN certificate accepted with curl --insecure; no certificate-trust claim"
+  },
+  "mediaRead": {
+    "observedUTC": "2026-10-19T02:55:33.215859+00:00",
+    "directories": [
+      {
+        "path": "/movies",
+        "directoryReadableExit": 0
+      },
+      {
+        "path": "/tv",
+        "directoryReadableExit": 0
+      },
+      {
+        "path": "/pvr",
+        "directoryReadableExit": 0
+      }
+    ],
+    "applicationUser": "abc",
+    "uid": 1000,
+    "gid": 1000,
+    "actualMovieReadBytes": 65536,
+    "actualMovieReadExit": 0,
+    "mediaFilenameOrBytesPublished": false,
+    "priorShellProbeExit": 21,
+    "priorShellProbeRetained": true,
+    "playbackOrWriteClaim": false
+  },
+  "artifactCleanup": {
+    "completedUTC": "2026-10-19T02:39:09.624129+00:00",
+    "nodes": [
+      {
+        "host": "192.168.0.4",
+        "filesDeleted": 2,
+        "bytesUnlinked": 2300649472,
+        "freeBytesAfter": 22371655680
+      },
+      {
+        "host": "192.168.0.5",
+        "filesDeleted": 2,
+        "bytesUnlinked": 2300649472,
+        "freeBytesAfter": 26353041408
+      },
+      {
+        "host": "192.168.0.6",
+        "filesDeleted": 2,
+        "bytesUnlinked": 2300649472,
+        "freeBytesAfter": 43275173888
+      }
+    ],
+    "filesDeleted": 6,
+    "bytesUnlinked": 6901948416,
+    "retainedArchivesUnchanged": true,
+    "importedImagesAndCurrentReleaseUntouched": true,
+    "noPVCVolumeServiceOrOriginalDataMutation": true
+  },
+  "scopeAuthorization": {
+    "userDirectedGlusterAndSMBFix": true,
+    "secretsOwner": "BORTUS and native Kubernetes Secrets; Vault retired",
+    "SMBDecision": "Keep NAS media; remove legacy mounts",
+    "originalDataDeletionAuthorized": false
+  },
+  "operatorSources": [
+    {
+      "name": "retire-legacy-storage-20261019-linux.py",
+      "sha256": "c4b16588947c2a954ef459057481256a304076638c46914e89c416ef66492940"
+    },
+    {
+      "name": "legacy-docker-retirement-20261019.py",
+      "sha256": "a40a02e1cb34a243a1ec923952772e8a59d1aec958cbfdbc340ab15d831fe20a"
+    },
+    {
+      "name": "node-upload-cleanup-20261019.py",
+      "sha256": "99f62ee7ef201c28707379e2762518c5875f635245b6dcf894581f3c183b079b"
+    },
+    {
+      "name": "node-upload-cleanup-20261019-remove.py",
+      "sha256": "e53c32a73477170cf5432937b572e1982c80f0f24f57e5797afa294afef22b0a"
+    }
+  ],
+  "limits": {
+    "bortusNewEngineReleaseAdoptedByThisOperation": false,
+    "fullA01A22GoalComplete": false,
+    "fullColdThreeNodeDisasterRestorePerformed": false,
+    "newMediaPlaybackOrWriteProven": false,
+    "originalRejectionRetried": false,
+    "kubernetesMutationsIssuedByCleanup": false,
+    "NFSHostMountsNotInApprovedSMBScope": "Retained; no NFS unmount or data deletion performed"
+  }
+}

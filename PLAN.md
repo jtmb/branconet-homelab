@@ -1,5 +1,19 @@
 # Kubernetes migration plan and acceptance contract
 
+## Legacy Gluster/Swarm retirement and SMB cleanup - 2026-10-19 UTC
+
+The user explicitly directed Gluster/SMB retirement and confirmed **keep NAS media; remove legacy host mounts**. BORTUS/native Kubernetes Secrets are authoritative; Vault is retired legacy infrastructure. [Current retirement evidence](evidence/legacy-storage-retirement-20261019.json) records actual completed operations, fresh verification and limits.
+
+- All three nodes: Gluster clients unmounted, `staging-gfs` stopped (not deleted), `glusterd` inactive/disabled. Original brick directories remain intact.
+- Legacy Vault, Consul and Portainer writers scaled to zero. Obsolete Docker service/socket inactive/disabled on every node; independent `containerd-k8s` and kubelet remain active.
+- Old host CIFS mounts at the approved `/mnt` paths removed; eleven legacy Gluster/CIFS fstab entries disabled. All fourteen Kubernetes SMB CSI PVs and forty Longhorn PVs remain. NFS mounts were outside the approved SMB cleanup scope and were not altered.
+- Fresh encrypted NAS backups preserve all three legacy host/service configurations, cold Portainer/Consul state and all three stopped bricks. Every archive passes authenticated decryption; each brick archive's tar stream is read completely. These are cold backup checks, not a newly exercised full three-node disaster rebuild. Original datasets and prior backups are retained.
+- Post-retirement: three Ready nodes,54 Bound claims,91 Running/six Succeeded Pods,34 Ready Helm releases. BORTUS login/readiness HTTP200 through all three nodes (existing untrusted LAN certificate; certificate validation not claimed). Longhorn's CIFS backup target is available with a fresh sync. Direct-argument checks as Plex UID1000 verify all three media directories and read65,536 bytes from an existing movie; the initial shell probe exit21 is retained, and no new playback/write proof is claimed.
+- Six superseded image-upload archives removed after exact matches to retained operator copies, reclaiming6,901,948,416bytes total. Current release uploads, imported images, metadata/journals and retained recovery inputs are untouched by that cleanup.
+
+This closes the legacy Gluster/Swarm and host-SMB retirement work. BORTUS's newer audit/KV release, performance/security/accessibility/recovery qualification and guarded adoption remain owned by the successor chat and are not marked complete here. The NAS media remains served by SMB CSI by the user's explicit choice; no media relocation into Longhorn was requested after that clarification.
+
+
 ## Successor verification and remaining release gates — 2026-10-18 (Toronto)
 
 The successor accepted the exact pushed checkpoint and all three protected user-owned file hashes. Fresh metadata still shows three Ready nodes, BORTUS Ready1 on the retained production image, its HelmRelease suspended in `flux-system`, and the charts source/applied revision at `37dd61a`. Application PR28 and charts PR5 remain open drafts at their expected heads. A focused application review found no concrete defect that justifies a performance patch; the two original warm regressions remain failed and no benchmark was replayed.
@@ -152,7 +166,7 @@ Charts are delivered from the separate private `jtmb/branconet-charts` repositor
 
 The existing playbook topology is one control plane and two workers. Longhorn replicates application storage. Document control-plane recovery separately because one control plane does not provide control-plane high availability.
 
-The repository currently uses Longhorn for Plex configuration and SMB CSI for Plex media, both mounted by the application pod. The user's requested Longhorn/media integration is an explicit implementation and acceptance check. Existing files do not establish that connector; demonstrate the wiring before cutover while preserving the share and files. Do not silently change the requested storage architecture or relocate NAS media.
+The user clarified the final storage scope on 2026-10-19 UTC: keep NAS media and remove legacy host mounts. Application configuration/state uses Longhorn PVCs; existing NAS media uses Kubernetes SMB CSI PVCs mounted by application pods. The current cluster has forty Longhorn and fourteen SMB CSI PVs. Legacy host CIFS mounts are retired, while media files, paths and native SMB credentials remain intact. Longhorn also uses its native CIFS backup target. This supersedes the earlier unresolved Longhorn/media connector question; no bulk media relocation into Longhorn is required.
 
 ## Repository work before deployment
 

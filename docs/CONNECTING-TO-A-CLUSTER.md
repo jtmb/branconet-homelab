@@ -1,5 +1,10 @@
 # Connecting to the migration cluster
 
+## Current storage/runtime - 2026-10-19 UTC
+
+Gluster and the obsolete Docker/Swarm service/socket are stopped and disabled on all three nodes. Kubernetes uses the independent `containerd-k8s` runtime/socket shown below. Keep original brick/Docker state directories and encrypted NAS recovery archives. Legacy host CIFS mounts under `/mnt` and their boot entries are retired; those directories no longer provide NAS access. Kubernetes SMB CSI media mounts and Longhorn's native CIFS backup target remain active. NAS media stays in place under the user's confirmed scope. See [retirement operations](MIGRATION-OPERATIONS.md) and [actual evidence](../evidence/legacy-storage-retirement-20261019.json).
+
+
 The current acceptance state is recorded in [MIGRATION_STATUS.md](../MIGRATION_STATUS.md). Target hosts are masternode 192.168.0.4, workernode2 192.168.0.5 and workernode1 192.168.0.6, with SSH user james and port 2002. Preserve hostnames and the existing WSL ~/.ssh/id_ed25519 identity.
 
 ```bash
@@ -35,7 +40,7 @@ systemctl status containerd-k8s kubelet
 | TCP 179 and IP protocol 4 | Between nodes | Calico BGP and IP-in-IP |
 | TCP 30080 / 30443 | LAN to nodes | Temporary HTTP/HTTPS ingress |
 | TCP 445 | Nodes to 192.168.0.8 | Existing SMB share |
-| TCP 80 / 443 | Existing routing | Swarm ingress until routing cutover |
+| TCP 80 / 443 | LAN to cluster ingress | Kubernetes application routes |
 
 Pod CIDR is 10.244.0.0/16; service CIDR is 10.96.0.0/12. Calico does not use Swarm's UDP 4789 VXLAN socket. Existing resolver configuration is preserved; kubelet uses /run/systemd/resolve/resolv.conf. Validate application URLs with their actual Host headers through temporary ingress before production routing changes.
 

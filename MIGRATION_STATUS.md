@@ -1,5 +1,19 @@
 # Migration acceptance evidence
 
+## Legacy Gluster/Swarm retirement and SMB cleanup - 2026-10-19 UTC
+
+The user explicitly directed Gluster/SMB retirement and confirmed **keep NAS media; remove legacy host mounts**. BORTUS/native Kubernetes Secrets are authoritative; Vault is retired legacy infrastructure. [Current retirement evidence](evidence/legacy-storage-retirement-20261019.json) records actual completed operations, fresh verification and limits.
+
+- All three nodes: Gluster clients unmounted, `staging-gfs` stopped (not deleted), `glusterd` inactive/disabled. Original brick directories remain intact.
+- Legacy Vault, Consul and Portainer writers scaled to zero. Obsolete Docker service/socket inactive/disabled on every node; independent `containerd-k8s` and kubelet remain active.
+- Old host CIFS mounts at the approved `/mnt` paths removed; eleven legacy Gluster/CIFS fstab entries disabled. All fourteen Kubernetes SMB CSI PVs and forty Longhorn PVs remain. NFS mounts were outside the approved SMB cleanup scope and were not altered.
+- Fresh encrypted NAS backups preserve all three legacy host/service configurations, cold Portainer/Consul state and all three stopped bricks. Every archive passes authenticated decryption; each brick archive's tar stream is read completely. These are cold backup checks, not a newly exercised full three-node disaster rebuild. Original datasets and prior backups are retained.
+- Post-retirement: three Ready nodes,54 Bound claims,91 Running/six Succeeded Pods,34 Ready Helm releases. BORTUS login/readiness HTTP200 through all three nodes (existing untrusted LAN certificate; certificate validation not claimed). Longhorn's CIFS backup target is available with a fresh sync. Direct-argument checks as Plex UID1000 verify all three media directories and read65,536 bytes from an existing movie; the initial shell probe exit21 is retained, and no new playback/write proof is claimed.
+- Six superseded image-upload archives removed after exact matches to retained operator copies, reclaiming6,901,948,416bytes total. Current release uploads, imported images, metadata/journals and retained recovery inputs are untouched by that cleanup.
+
+This closes the legacy Gluster/Swarm and host-SMB retirement work. BORTUS's newer audit/KV release, performance/security/accessibility/recovery qualification and guarded adoption remain owned by the successor chat and are not marked complete here. The NAS media remains served by SMB CSI by the user's explicit choice; no media relocation into Longhorn was requested after that clarification.
+
+
 ## Successor verification and stopped UI preparation — 2026-10-18 (Toronto)
 
 The successor verifies the pushed checkpoint and protected local hashes before accepting ownership. Fresh metadata confirms the retained production image Ready1, three Ready nodes, suspended BORTUS HelmRelease, charts source/applied revision `37dd61a`, and both expected draft PR heads. The focused application owner identifies no supported minimal performance correction, leaves source unchanged and preserves the original two failed warm comparisons.
@@ -516,7 +530,7 @@ At 23:47:08 UTC, production Sonarr automatically imported the licensed Blender S
 | AC8 Data preservation | Verified copies with explicit disposable exceptions | Source archives/cold copies and actual etcd/NAS BORTUS restores passed. Original Redis state is unrecovered and explicitly accepted as disposable by the user; retained source datasets remain protected |
 | AC9 One Plex service | Passed | One active native Plex; all old instances stopped and configs retained; master identity/library counts, real media read, relocation and actual FFmpeg client playback passed |
 | AC10 Reproducibility/docs | Updated to verified runtime | Plan, operations guide and 42-entry evidence register maintained; 3e286e3 CI 38006367280/Flux convergence verified at 23:51; exact deployed image and 349-record etcd recovery verified; complete three-host disaster rebuild not exercised |
-| AC11 Retirement approval | Pending | Actual remaining consumers inventoried in evidence/retirement-readiness.json; six retained Docker containers; requires completed evidence, a fresh no-consumer check and user confirmation |
+| AC11 Legacy retirement | Completed on explicit user direction, originals retained | Current evidence/legacy-storage-retirement-20261019.json: no native legacy dependencies; cold encrypted configuration/state/three-brick backups verified; Gluster stopped/disabled, Docker/Swarm stopped/disabled, approved legacy host CIFS mounts/fstab entries retired;14 SMB CSI and40 Longhorn PVs retained |
 
 ## Inputs needed to close acceptance
 

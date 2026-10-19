@@ -1,5 +1,23 @@
 # Approved cluster migration operations
 
+## Legacy Gluster/Swarm retirement and SMB cleanup - 2026-10-19 UTC
+
+The user explicitly directed Gluster/SMB retirement and confirmed **keep NAS media; remove legacy host mounts**. BORTUS/native Kubernetes Secrets are authoritative; Vault is retired legacy infrastructure. [Current retirement evidence](../evidence/legacy-storage-retirement-20261019.json) records actual completed operations, fresh verification and limits.
+
+- All three nodes: Gluster clients unmounted, `staging-gfs` stopped (not deleted), `glusterd` inactive/disabled. Original brick directories remain intact.
+- Legacy Vault, Consul and Portainer writers scaled to zero. Obsolete Docker service/socket inactive/disabled on every node; independent `containerd-k8s` and kubelet remain active.
+- Old host CIFS mounts at the approved `/mnt` paths removed; eleven legacy Gluster/CIFS fstab entries disabled. All fourteen Kubernetes SMB CSI PVs and forty Longhorn PVs remain. NFS mounts were outside the approved SMB cleanup scope and were not altered.
+- Fresh encrypted NAS backups preserve all three legacy host/service configurations, cold Portainer/Consul state and all three stopped bricks. Every archive passes authenticated decryption; each brick archive's tar stream is read completely. These are cold backup checks, not a newly exercised full three-node disaster rebuild. Original datasets and prior backups are retained.
+- Post-retirement: three Ready nodes,54 Bound claims,91 Running/six Succeeded Pods,34 Ready Helm releases. BORTUS login/readiness HTTP200 through all three nodes (existing untrusted LAN certificate; certificate validation not claimed). Longhorn's CIFS backup target is available with a fresh sync. Direct-argument checks as Plex UID1000 verify all three media directories and read65,536 bytes from an existing movie; the initial shell probe exit21 is retained, and no new playback/write proof is claimed.
+- Six superseded image-upload archives removed after exact matches to retained operator copies, reclaiming6,901,948,416bytes total. Current release uploads, imported images, metadata/journals and retained recovery inputs are untouched by that cleanup.
+
+This closes the legacy Gluster/Swarm and host-SMB retirement work. BORTUS's newer audit/KV release, performance/security/accessibility/recovery qualification and guarded adoption remain owned by the successor chat and are not marked complete here. The NAS media remains served by SMB CSI by the user's explicit choice; no media relocation into Longhorn was requested after that clarification.
+
+The legacy `backup-config.py` and `backup-data.py` NAS paths also require an actual protected CIFS mount before any future use; an existing directory alone is insufficient. Do not run these historical manual helpers against the now-unmounted host paths. Active Longhorn backups use the native CIFS backup target independently.
+
+Recovery is explicit maintenance, not automatic rollback: retain the existing brick directories and encrypted NAS archives. To investigate legacy recovery, first access the NAS from a separate protected operator mount or approved recovery pod; the old host CIFS mount points are now ordinary empty directories. The encrypted configuration archives contain prior fstab/Gluster metadata and Swarm service definitions. Restore the reviewed Gluster configuration/mount entries before starting legacy writers. Do not restart the old Docker/Swarm managers while Kubernetes replacements can write the same data. A reviewed legacy reactivation would start the saved Gluster volume and clients first, restore only required replicas, and repeat data-ownership and port-exclusivity checks. No restore or write-conflict test is implied by retention.
+
+
 ## Final source image staged — 2026-10-18
 
 Current app source `5aba82c` builds through release-v2 over the explicitly pinned maintained runtime. The exact saved image and its ordered layers are verified, and all three supplied nodes import the same runtime index `sha256:bfc78b697373727aebccf50c70ef1944c76691cc435da0ad3bcc4e44670ff211`. A separate operator cache correction adds the absent exact `docker.io/library/bortus@sha256:…` alias without force or changing the release tag; source and alias targets agree on every node. This operator step is recorded separately and is not attributed to the preload helper. Its exact executed source is retained in [bortus-5aba-cache-alias.py](../scripts/migration/operations/bortus-5aba-cache-alias.py); it is specific to this source/image/preload receipt, consumes sudo authorization only through stdin and never forces replacement of an existing alias.

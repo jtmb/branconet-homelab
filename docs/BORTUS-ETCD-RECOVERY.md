@@ -1,5 +1,10 @@
 # Fresh etcd/native Secret recovery checkpoint
 
+## Legacy host NAS mounts retired - 2026-10-19 UTC
+
+The user kept NAS media/native CSI and retired legacy host CIFS mounts, including `/mnt/container-backups`, on all three nodes. The factories and historical receipts below require their exact mounted-CIFS/identity guards; those prerequisites are now absent until explicitly restored for maintenance. Do not treat the now-unmounted local directory as NAS storage, silently substitute a path, or waive mount/FD/mode/identity checks. A future authorized recovery must first establish its protected NAS access and current input identities. Existing encrypted NAS archives and original bricks remain retained. This cleanup does not qualify the unfinished new-engine recovery or authorize replay of rejected work. See [current retirement operations](MIGRATION-OPERATIONS.md) and [actual evidence](../evidence/legacy-storage-retirement-20261019.json).
+
+
 Current scope: the [fresh raw checkpoint and complete encrypted Secret-registry restore](../evidence/bortus-etcd-actual-recovery-root-20261012.json) are accepted. API plaintext decryption, Longhorn/LUKS restore and full control-plane disaster recovery remain open. Earlier local and failed-run sections below are retained historical evidence.
 
 The separate [isolated API recovery preparation](BORTUS-ETCD-API-PROOF.md) supplies
