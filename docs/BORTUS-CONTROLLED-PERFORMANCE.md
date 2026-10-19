@@ -1,8 +1,26 @@
 # Controlled whole-server performance qualification
 
-The successful-settlement candidate's [three-digest source provenance correction](USER-PERMS.md#account-worker-successful-settlement-candidate-2026-10-19) retains the first hosted preflight failure and all frozen sensitivity/performance oracles. No new benchmark or changed threshold follows; separate complete source CI39196459270 on `be5585d3` now passes; performance remains unmeasured.
+The successful-settlement candidate's [three-digest source provenance correction](USER-PERMS.md#account-worker-successful-settlement-candidate-2026-10-19) retains the first hosted preflight failure and all frozen sensitivity/performance oracles. Separate complete source CI39196459270 on `be5585d3` passes. The single original comparison of changed checkpoint `d6867ba` has now completed: **A07's no-warm-regression gate fails in five of ten comparable warm cases**. [Exact numeric result and bindings](implementation-evidence/account-settlement-paired-evaluation-20261019.json).
 
-The [account-worker successful settlement candidate](USER-PERMS.md#account-worker-successful-settlement-candidate-2026-10-19) is an unmeasured source lead. It omits the idle await after the core has released successful ownership, while retaining refusal drains and both real identity yields. Existing failed A07/A21 distributions, frozen workloads, warmups and thresholds remain unchanged. Source-linked generation, all43 focused direct/worker tests and affected lint passed; complete source CI passes as recorded above. This edit establishes no latency cause or speedup.
+The [account-worker successful settlement candidate](USER-PERMS.md#account-worker-successful-settlement-candidate-2026-10-19) omits the idle await after the core has released successful ownership, while retaining refusal drains and both real identity yields. Source-linked generation, all43 focused direct/worker tests and affected lint passed; complete source CI passes as recorded above. Existing failed distributions remain retained. This candidate remains isolated and unadopted; the comparison establishes no latency cause or general speedup.
+
+## Successful-settlement original paired result (2026-10-19)
+
+Actual committed candidate `d6867ba1990e3e025c6eb3c9a169db1e75362993` (frontend tree `21eb2b17035822532129240b6180fdf971bc6d9d`) was freshly built against original baseline `51e8cd66379c1f40a95ea02f4da7c8aed848f2a4` using the original frozen runner and exporter. Both builds and all six observations completed at exit0 in three alternating pairs, each covering the original six profiles; runner and supervisor also exited0. These exits establish completion of the original assertions, not performance acceptance. Five warm cases improved and five regressed; no warm-regression acceptance, replay, extra warmup, trimming, tolerance or threshold change occurred.
+
+| Regressing warm Pod case | Baseline median p95 (ms) | Candidate median p95 (ms) |
+| --- | ---: | ---: |
+| Audit-small, 20 concurrent | 47.13696300000038 | 47.79500999999982 |
+| Metadata-200, 12 serial | 6.965956000000006 | 7.103251000000455 |
+| Metadata-1,000, 12 serial | 9.121095000000423 | 10.05173200000172 |
+| Metadata-1,000, 20 concurrent | 73.68766000000142 | 80.4559930000014 |
+| Maximum flat native (3 objects), 12 serial Pods | 6.139877999998134 | 6.740142000002379 |
+
+Whole-fixture median CPU changed from 34.043722 to 30.520007 seconds and peak memory from 360.609375 to 437.2890625 MiB. These totals include the driver, synthetic API, CLI and server; they are not isolated application cost or proof that settlement scheduling caused a change. Large-native profile names still describe repeated Pod reads, not repeated native metadata reads. The original incomplete-baseline10kPod and Services-after-Pods comparison caveats remain.
+
+Root and the focused acceptance worker independently recomputed all 1,386 distributions and every field of the complete saved summary. They verified 145 frozen input pins and 453 raw Git/archive/current source payloads (157 baseline/296 candidate), including modes and actual standalone build bindings. Original build bounds (4 CPU/4 GiB/no swap/PID256/900s), measurement bounds (2 CPU/1 GiB/no extra swap/PID256/network none/600s) and supervisor bound (5430s) remained unchanged. Fresh closure proved ten recorded actor births plus sixteen closure/query births absent, eight exact container names and seven captured full container IDs absent. The first baseline container ID was not retained; the dispatcher has PID-only evidence. Earlier preparation and reader failures remain retained separately. No source adoption, immutable release image, welcome-image evidence or deployment follows; the full delivery objective remains incomplete.
+
+## Retained qualification records
 
 Reviewed source `d901ccdd` passed a fresh four-phase352-unit/eight-HTTP build and one six-text rendered followup. The four Edit Node labels measured6.912758604:1 and the Nodes count7.762805694:1; active-page axe passed the Age text at7.29:1 with no active-page violations or incomplete findings. The collector's glass/backdrop Age calculation remains inconclusive and scoped label color-contrast remains inapplicable; ROOT reviewed both screenshots and the scoped findings without inventing an exact glass-ratio gate. The two prior observer exit1 outcomes remain historical. Broader keyboard/19-observation/36-measurement qualifications remain bound to reviewed `3d559850`; actual screen-reader announcements, original warm-performance acceptance and image/live adoption remain separate.
 
