@@ -1,11 +1,26 @@
 'use strict';
 // Public fixture instrumentation only; no values, SQL text, arguments or errors are recorded.
-const { workerData } = require('node:worker_threads');
+const { workerData, parentPort } = require('node:worker_threads');
 const { DatabaseSync, StatementSync } = require('node:sqlite');
 const counts = new Int32Array(workerData.publicCounts);
 const clocks = new BigInt64Array(workerData.publicCounts, 64, 2);
 Atomics.store(clocks, 0, process.hrtime.bigint()); Atomics.store(counts, 8, 1);
 const { DirectAccountReader } = require(require('node:path').join(process.cwd(), 'runtime/direct-account-core.cjs'));
+const idle = DirectAccountReader.prototype.whenIdle, settlement = DirectAccountReader.prototype.settlementIdentity;
+DirectAccountReader.prototype.whenIdle = function (...args) {
+  Atomics.add(counts, 9, 1); Atomics.add(counts, 10, this.activity().active);
+  return Reflect.apply(idle, this, args);
+};
+DirectAccountReader.prototype.settlementIdentity = function (...args) {
+  Atomics.add(counts, 13, 1); Atomics.add(counts, 15, this.activity().active);
+  return Reflect.apply(settlement, this, args);
+};
+const post = parentPort.postMessage;
+parentPort.postMessage = function (...args) {
+  if (args[0]?.kind === 'settled') Atomics.add(counts, 11, 1);
+  if (args[0]?.kind === 'closed' || args[0]?.kind === 'discarded') Atomics.add(counts, 12, 1);
+  return Reflect.apply(post, this, args);
+};
 const identity = DirectAccountReader.prototype.identity, schedule = global.setImmediate;
 let identityDepth = 0, currentIdentity = 0;
 DirectAccountReader.prototype.identity = function (...args) {

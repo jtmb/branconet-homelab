@@ -165,15 +165,41 @@ test("worker reader preserves real fresh SQL and transport ownership", async t =
     await t.test("25 real held-yield deadline refuses queued work without SQL and retains actual active ownership", async () => {
       const r = reader(); await r.readSession("public");
       const before = Atomics.load(counts, 0), target = Atomics.load(counts, 2) + 1;
+      const idle = Atomics.load(counts, 9), activeIdle = Atomics.load(counts, 10), settled = Atomics.load(counts, 11),
+        closed = Atomics.load(counts, 12), identities = Atomics.load(counts, 13);
       Atomics.store(counts, 4, target); Atomics.store(counts, 5, 0); Atomics.store(counts, 6, 0);
       const first = r.readSession("public"), next = r.readSession("public");
       const outcomes = Promise.all([assert.rejects(first, /^Error: Account authorization unavailable$/), assert.rejects(next, /^Error: Account authorization unavailable$/)]);
+      let closing: Promise<void> | undefined;
       try {
         await waiting(6, target); await outcomes;
+        await waiting(9, idle + 1);
         assert.equal(r.activity().active, 1); assert.equal(r.activity().queued, 0);
+        assert.equal(Atomics.load(counts, 10), activeIdle + 1);
+        closing = r.close();
+        assert.equal(Atomics.load(counts, 11), settled);
+        assert.equal(Atomics.load(counts, 12), closed);
+        assert.equal(Atomics.load(counts, 13), identities);
         assert.equal(Atomics.load(counts, 0), before);
-      } finally { Atomics.store(counts, 5, 1); await r.close(); Atomics.store(counts, 4, 0); }
+      } finally { Atomics.store(counts, 5, 1); await (closing ?? r.close()); Atomics.store(counts, 4, 0); }
       assert.equal(Atomics.load(counts, 0), before);
+      assert.equal(Atomics.load(counts, 11), settled + 1);
+      assert.equal(Atomics.load(counts, 12), closed + 2);
+      assert.equal(Atomics.load(counts, 13), identities + 1);
+      assert.equal(Atomics.load(counts, 15), 0);
+    });
+    await t.test("26 real successful row and null settle after both yields without entering the refusal drain", async () => {
+      const r = reader(), idle = Atomics.load(counts, 9), identities = Atomics.load(counts, 13),
+        settled = Atomics.load(counts, 11), callbacks = Atomics.load(counts, 3), forwards = Atomics.load(counts, 7);
+      assert.deepEqual(await r.readSession("public"), { id: "public", username: "public", sessionVersion: 0 });
+      assert.equal(await r.readAccount("absent"), null);
+      assert.equal(Atomics.load(counts, 9), idle);
+      assert.equal(Atomics.load(counts, 13), identities + 2);
+      assert.equal(Atomics.load(counts, 11), settled + 2);
+      assert.equal(Atomics.load(counts, 3), callbacks + 4);
+      assert.equal(Atomics.load(counts, 7), forwards + 4);
+      assert.equal(Atomics.load(counts, 15), 0);
+      assert.equal(r.activity().active, 0); await r.close();
     });
   } finally {
     writer.close(); for (const r of readers) await r.close();

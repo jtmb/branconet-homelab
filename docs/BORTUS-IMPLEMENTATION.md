@@ -1,5 +1,7 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+The [account-worker successful settlement candidate](USER-PERMS.md#account-worker-successful-settlement-candidate-2026-10-19) changes only success-path settlement scheduling and adds actual-worker ownership regressions. Refusal/cancellation draining, parent delivery, native envelopes and all original gates remain. Source-linked generation, all43 focused direct/worker tests and affected lint passed; exact-source full build/CI is pending. No image, performance, live/recovery or full-objective completion follows.
+
 Current release build (2026-10-18): `Dockerfile.release` builds locked current application source with the pinned C4 builder and replaces only `/app` on a required qualified runtime image. It retains the maintained system components, UID/GID 1000, entrypoint/forward migrations, production dependencies and port 4000. The original Trixie Dockerfile remains unchanged. See [exact local build instructions](BORTUS-DEPLOYMENT.md#building-current-application-source-on-the-maintained-runtime); this new application image still needs its actual integrated build/startup result and is not production adoption.
 
 ## Current KV client fix (2026-10-18)

@@ -43,7 +43,9 @@ parentPort.on('message', async message => {
       config: message.config, file: message.file, deadline: message.deadline, revoked: () => Atomics.load(fence, 0) !== 0 });
     refused = false;
   } catch { /* Fixed refusal only; error messages and rows never enter diagnostics. */ }
-  await core?.whenIdle();
+  // pump clears core ownership before resolving success, and this worker admits one read.
+  // Refusal can reject during an active yield; drain it before identity/close/settled acknowledgement.
+  if (refused) await core?.whenIdle();
   const identity = core?.settlementIdentity();
   const closeFailed = core?.activity().closeFailed ?? false;
   active = false;
