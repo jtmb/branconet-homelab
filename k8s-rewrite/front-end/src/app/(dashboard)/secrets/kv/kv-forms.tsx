@@ -59,10 +59,13 @@ export function RegisterForm({ mount, close, saved }: { mount: Mount; close: () 
 export function RetentionForm({ path, editable }: { path: Path; editable: boolean }) {
   const mutation = useMutation(), [snapshot, setSnapshot] = useState(path), [retention, setRetention] = useState(String(path.retention)), [saved, setSaved] = useState(false);
   const stale = snapshot.revision !== path.revision;
-  const valid = editable && !stale && /^[1-9][0-9]*$/.test(retention) && Number(retention) <= 100 && Number(retention) !== snapshot.retention;
+  const validRetention = /^[1-9][0-9]*$/.test(retention) && Number(retention) <= 100;
+  const valid = editable && !stale && validRetention && Number(retention) !== snapshot.retention;
+  const guidance = !mutation.busy && editable && !stale && (!validRetention || Number(retention) === snapshot.retention);
   return <form className="space-y-2" onSubmit={event => { event.preventDefault(); if (valid) void mutation.mutate<Path>("/api/kv/paths/" + path.id, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ revision: snapshot.revision, retention: Number(retention) }) }, data => { setSnapshot(data); setRetention(String(data.retention)); setSaved(true); refetchKvMetadata(); }); }}>
-    <label className="block max-w-xs">Path retention<input className={input} value={retention} disabled={mutation.busy} onChange={event => { setRetention(event.target.value); setSaved(false); }} inputMode="numeric" /></label>
+    <label className="block max-w-xs">Path retention<input className={input} value={retention} disabled={mutation.busy} onChange={event => { setRetention(event.target.value); setSaved(false); }} inputMode="numeric" aria-describedby={guidance ? "kv-retention-save-guidance" : undefined} /></label>
+    {guidance && <p id="kv-retention-save-guidance" className="text-sm text-zinc-400">{validRetention ? "Change retention to enable Save retention." : "Retention must be a whole number from 1 to 100. The server enforces the operator-configured maximum."}</p>}
     {stale && <p role="alert" className="text-amber-300">Metadata revision changed. Reload retention to discard this draft and use the new revision. <button type="button" className={button} disabled={mutation.busy || !editable} onClick={() => { setSnapshot(path); setRetention(String(path.retention)); mutation.clear(); setSaved(false); }}>Reload retention</button></p>}
-    <button className={button} disabled={!valid || mutation.busy}>Save retention</button>{mutation.busy && <p role="status">Saving retention metadata…</p>}{saved && <p role="status">Retention metadata saved.</p>}{mutation.error && <p role="alert" className="text-red-300">{mutation.error}</p>}
+    <button className={button} disabled={!valid || mutation.busy} aria-describedby={guidance ? "kv-retention-save-guidance" : undefined}>Save retention</button>{mutation.busy && <p role="status">Saving retention metadata…</p>}{saved && <p role="status">Retention metadata saved.</p>}{mutation.error && <p role="alert" className="text-red-300">{mutation.error}</p>}
   </form>;
 }
