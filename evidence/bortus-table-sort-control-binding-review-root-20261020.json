@@ -1,0 +1,76 @@
+{
+  "scope": "Literal public MetadataTable SortHeader native button attributes and exact column-key/callback prop binding; targeted saved public synthetic metadata-test source only",
+  "applicationCommit": "b4c71f446a7cecfceefbe50b4291f0e9bb5265fc",
+  "chartsCommit": "835dabebd97a7691311b2c6748fd3cfa4db17f44",
+  "productionRetained": true,
+  "sourceReviewSHA256": "d4f2a1ebaa2d813c8e51a915232a01cc44fa96cc39d2ae8c4b08cb016027ffb4",
+  "literalSourceObservations": 31,
+  "testSourcesReadNotExecuted": [
+    {
+      "path": "tests/kv-metadata-announcements.test.ts",
+      "sha256": "69ba3ea1bfcbe4f81be378c8e32659cfdf0eed66060c18a62ae593a2a5c90c4d",
+      "lines": 108,
+      "readInFullNotExecuted": false,
+      "targetedReadNotExecuted": true,
+      "executed": false,
+      "coverage": "Targeted declaration selection, table substitutions and synthetic table-role/aria-live assertions only; no real sort control, callback or test execution."
+    },
+    {
+      "path": "tests/kv-metadata-success.test.ts",
+      "sha256": "6a8a0b5e106112cb2287b6658da0237f94ca6c9ad1dbb047a05ac62bd69c5288",
+      "lines": 102,
+      "readInFullNotExecuted": false,
+      "targetedReadNotExecuted": true,
+      "executed": false,
+      "coverage": "Targeted declaration selection, table substitutions and synthetic table-role/aria-live assertions only; no real sort control, callback or test execution."
+    }
+  ],
+  "all333CurrentInputsAnd22OwnerDocsFreshlyHashMatched": true,
+  "newCandidateSuiteWorkloadBuildLintTypesGraphAppCommitPushCI": false,
+  "sourceSpecificPriorBuildId": "p1bLLgS38NiOt1_HfYyPM",
+  "priorFocused662passRetainedNotRerun": true,
+  "retainedCurrentAutomaticCI": {
+    "head": "b4c71f446a7cecfceefbe50b4291f0e9bb5265fc",
+    "runs": [
+      {
+        "id": 39397653304,
+        "event": "pull_request",
+        "conclusion": "success",
+        "steps": 12,
+        "units": 1242
+      },
+      {
+        "id": 39397643969,
+        "event": "push",
+        "conclusion": "success",
+        "steps": 12,
+        "units": 1242
+      }
+    ],
+    "verifiedSHA256": "40c165e3194396a8d3401b0593cec34944d773efed639400f6bd173c42227566",
+    "retainedNotRerun": true
+  },
+  "overallCIQualified": false,
+  "currentAllSuccessful": true,
+  "currentAllSuccessfulScope": "Only RETAINED exact-head PR39397653304/push39397643969",
+  "priorFinite146BirthClosureNotRefreshed": true,
+  "noNewProcessOrContainerClosureQualification": true,
+  "priorRejectedRetentionCandidateAndFiveOriginalFailuresRetained": true,
+  "prior331BuildNeverExecuted": true,
+  "prior424PreparationHistoricalUnexecuted": true,
+  "noMountedReactBrowserBackendNativeActualATSecurityPerformanceRecoveryImageLiveAcceptance": true,
+  "rootDocsLocal": true,
+  "fourFindingsUnresolved": true,
+  "prior32AndEarlierOneUnresolved": true,
+  "newPRCIFailureRetained": true,
+  "currentPR39376493085FailureRetained": true,
+  "currentPR39376493085Unresolved": true,
+  "priorPR39335907142Unresolved": true,
+  "currentPush39345339490FailureRetained": true,
+  "priorPush39345339490Unresolved": true,
+  "all44ClausesAndFailedA07Preserved": true,
+  "fullGoalActive": true,
+  "PRDDeploymentAndActualVerificationFinalRequired": true,
+  "observedUTC": "2026-10-20T11:49:00.7651649Z",
+  "sourceDecision": "Retain production. MetadataTable imports SortHeader/useSort, initializes sorting with columns[0].key and maps the exact item.key into onClick={() => toggle(item.key)}. SortHeader receives label={item.label}, active={sortKey === item.key} and dir={sortDir}; its onClick parameter is declared () => void and passed directly as onClick={onClick} to a literal native button. The complete opening button tag declares onClick, aria-label and className; it declares no type, disabled, role, tabIndex, aria-pressed or custom keyboard event attribute. No browser defaults, form submission, focus or keyboard/announcement/AT behavior is qualified by these declarations. The label remains Sort by column label with the current ascending/descending suffix only when active. No callback, hook, comparator, sort or render is invoked. Targeted saved metadata-announcements and metadata-success declaration selections omit MetadataTable/SortHeader and substitute a props-only metadata-table or string placeholder. Selected saved role/aria-live assertions concern synthetic table props; they do not qualify real sort-control attributes or events. No concrete supported correction compatible with frozen expectations was established."
+}

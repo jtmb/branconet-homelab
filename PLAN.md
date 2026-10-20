@@ -1,6 +1,21 @@
 # Kubernetes migration plan and acceptance contract
 
 
+## Public table sort-control binding source review - 2026-10-20 (Toronto)
+
+Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. MetadataTable binds each exact item.key through onClick={() => toggle(item.key)}. SortHeader passes the supplied callback directly to its literal native button. Its complete opening tag declares onClick, aria-label and className; no type, disabled, role, tabIndex, aria-pressed or custom keyboard event attribute is declared. The column label/current-direction naming remains unchanged. These source declarations do not qualify browser defaults, form submission, focus, keyboard, announcements or actual AT. No concrete supported correction compatible with frozen expectations was established.
+
+Targeted saved metadata-announcements/success declaration selections omit the real table and sort header; they substitute a props-only metadata-table or string placeholder. Selected role/aria-live assertions concern synthetic table props. No callback, hook, comparator, sort, render or test was invoked. Adjacent icon/right-header declarations and unrelated success/navigation/retry matches were incidental and unevaluated.
+
+All333 accepted inputs/22 owner documents freshly match at receipt and preparation. Exact544 retained plus19 preceding current proofs freshly rehashed (563 total). Only binding/evidence/doc preparation scripts adapted after actual selected scripts/schema reads. No candidate/new suite/test/workload/build/lint/types/graph/application commit/push/newCI, source/dependency copies, persistent runtime or worker. No AST/transpile/VM/model/QueryStore/React/hooks/effects/useMutation/DOM/focus/browser/HTTP/backend/native/actualAT/security/performance/recovery/image/live evaluation. Prior finite146 recorded-birth closure historical, not refreshed; no universal/exhaustive/unrecorded-preparation/Windows/helper/observer-self absence claim. Truncated combined output was narrowed; omitted/null fields are not evidence. One preparation command failed PowerShell parsing before execution or writes and was corrected. Introductory private-workbench withdrawal text and historical public validation documentation were incidental and unevaluated; no finding inspection/classification/diagnosis/disposition.
+
+Prior BuildIDp1bLLgS38NiOt1_HfYyPM/662focusedpasses/333inputs/37428dependencies/41723graph/EXACTLY ONE prior ROOT fullgraphcomparison retained, not rerun. currentAllSuccessful applies ONLY to RETAINED exact-head PR39397653304/push39397643969, each12steps/1242units; overallCIQualified=false. PR39376493085/PR39335907142/push39345339490 failures unresolved/causeUNESTABLISHED. Rejected retention-stale candidate/five ORIGINAL frozen failures remain private/rejected; separate331build NEVER executed; earlier424preparation historical/unexecuted. No native-fixture diagnosis/replay/manualdispatch/workflowchange.
+
+RootdocsLOCAL; four new/prior32/earlier one findings UNRESOLVED. All44originalclauses/frozenfixtures/failures/A07five-of-tenwarmfailures and durable boundaries remain. FullgoalACTIVE; PRDdeployment AND actualverification FINAL after ALL original preceding gates. Next separate bounded public source/saved metadata-test review: shared sort-control icon glyph selection and explicit decorative/ARIA declarations. No next-feature evaluation began here.
+
+[Bounded source-inspection receipt](evidence/bortus-table-sort-control-binding-review-root-20261020.json).
+
+
 ## Public collection empty-result status source review - 2026-10-20 (Toronto)
 
 Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. Both mount/path empty-result paragraphs already declare role="status"; neither paragraph declares aria-live. Each exact alternative describes permitted mounts/paths in this API page, with matching text selected by truthy search. Mount text requires guarded usable data, no saved name/namespace-member match and no mounts.error. Path text requires guarded usable data, zero filtered rows and no paths.error. Existing usable excludes401/403. No new stale/refreshing/loading gate or native-state/authority claim is introduced. No concrete supported correction compatible with frozen expectations was established.
