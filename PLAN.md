@@ -1,6 +1,22 @@
 # Kubernetes migration plan and acceptance contract
 
 
+## Public numeric-result comparison declaration source review - 2026-10-20 (Toronto)
+
+Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. compareValues binds two scalar results, returns its null-result conditional before the order binding, declares subtraction when both results have numeric typeof, then returns order for exact ascending and -order otherwise. These are literal declarations, not evaluated values, subtraction precision, equality/stability or runtime ordering. No concrete supported correction compatible with frozen expectations was established.
+
+Seven literal production observations bind the complete seven-line comparator declaration; adjacent array/text alternatives are context only. Five targeted saved selections from accepted193-line tests/query-store.test.ts bind the real-helper import, enclosing test, numeric array-sort assertion, explicit-null descending number assertion and closing. Read never executed; no current test result or exhaustive operands/directions/absence/precision coverage. No helper/comparator/callback/hook/sorting/render/test/AST/model invocation. All333 accepted inputs/22 owner docs freshly match receipt/preparation. Exact696 retained plus19 preceding current proofs freshly rehashed (715 total).
+
+Only binding/evidence/doc preparation scripts adapted after actual selected scripts/schema reads. No candidate/new suite/test/workload/build/lint/types/graph/app commit/push/newCI/source-dependency copies/persistent runtime/worker. No React/DOM/browser/backend/native/actualAT/security/performance/recovery/image/live evaluation. Prior finite146 closure historical, not refreshed; no universal/exhaustive/unrecorded-preparation/Windows/helper/observer-self absence claim. Truncated combined read-only outputs were narrowed; omitted/null fields are not evidence. Historical public validation/private-workbench introductory text and adjacent elapsedAge/date/clock declarations were incidental and unevaluated. No scalar parsing or collation re-evaluation. No finding body inspection/classification/diagnosis/disposition.
+
+Prior BuildIDp1bLLgS38NiOt1_HfYyPM/662focusedpasses/333inputs/37428dependencies/41723graph/EXACTLY ONE prior ROOT fullgraphcomparison retained, not rerun. currentAllSuccessful applies ONLY to RETAINED exact-head PR39397653304/push39397643969, each12steps/1242units; overallCIQualified=false. PR39376493085/PR39335907142/push39345339490 failures unresolved/causeUNESTABLISHED. Rejected retention-stale candidate/five ORIGINAL frozen failures remain private/rejected; separate331build NEVER executed; earlier424preparation historical/unexecuted. No native-fixture diagnosis/replay/manualdispatch/workflowchange.
+
+RootdocsLOCAL; four new/prior32/earlier one findings UNRESOLVED. All44originalclauses/frozenfixtures/failures/A07five-of-tenwarmfailures and durable boundaries remain. FullgoalACTIVE; PRDdeployment AND actualverification FINAL after ALL original preceding gates. Next separate bounded feature: consolidate retained public metadata sorting declarations and coverage into an acceptance-gap map, avoiding repeated granular reviews. No next-feature evaluation began here.
+
+
+[Bounded source-inspection receipt](evidence/bortus-numeric-comparison-declaration-review-root-20261020.json).
+
+
 ## Public number-conversion declaration source review - 2026-10-20 (Toronto)
 
 Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. The scalar number branch declares const result = Number(value), then return Number.isFinite(result) ? result : null, after the existing absence precheck. These are literal declarations, not executed conversion/guard results, coercion values, exception behavior, precision or runtime ordering. No concrete supported correction compatible with frozen expectations was established.
