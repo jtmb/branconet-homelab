@@ -1,5 +1,14 @@
 # Approved cluster migration operations
 
+## Exact-image public browser assessment reviewed - 2026-10-20 (Toronto)
+
+The [finite exact-image assessment](../evidence/bortus-exact-image-public-browser-root-20261020.json) is complete and reviewed on unchanged application7940e9e1/BuildID6L__Bb3L8GTj93JRhod5U, image73aecec9 and separate configd19974d6. The first run reaches welcome, login keyboard order and invalid-login feedback, then fails with ChunkLoadError because the bridge excludes parentheses in actual dashboard static paths. Its screenshot/log/failed result remain literal. A separately frozen continuation uses170 exact retained static paths, passes12 route controls and completes the remaining selected flow. No compiled graph walk, rebuild, dependency install or source change occurs.
+
+Saved-evidence review passes154 checks across26 DOM/AX captures, eight inspected screenshots and19 exact static-byte transactions. Writer/readonly account metadata and visible mutation controls, dialog labels/disabled submission, keyboard focus/trap/return and both sign-outs are verified. The original I11 oracle expected protected navigation to login; actual post-sign-out /users redirects to /welcome, matching current middleware. The oracle remains unchanged and mismatched. Continuation producer passed means task completion only; there is no uninterrupted all-expected-states pass. Four explicit503 API scope refusals and five502 page-prefetch refusals remain unforwarded; they are bridge evidence, not application responses or native acceptance. The continued browser warn/error capture is empty. A closed-tab observer refusal is retained without browser replay.
+
+Both fresh synthetic tmpfs runtimes use the unchanged normal entrypoint/11 migrations and original2CPU/1GiB/no-extra-swap/PID256/network-none/read-only/1800s maximum, with the original total phase deadline retained. Runtime durations66.8s and93.4s, actor/tool exits0; both exact container IDs/names, four sampled runtime births and recorded tool/supervisor births are independently absent. Linux/Windows4401 is absent. Closure is finite. No operatorDB, private/native/recovery handler forwarding, old corpus/benchmark replay, scan/newCI/workflow, preload or production action. ActualAT/truezoom/fullbrowser/security/performance and every original delivery gate remain open. RootdocsLOCAL; fournew/prior32/earlierone findings and all44clauses/failures remain. Three successful CI scopes stay separate; overallCIQualified=false. Full goal ACTIVE/no budget; PRD deployment AND actual verification FINAL.
+
+
 ## Current-source image assembled and public HTTP qualified - 2026-10-20 (Toronto)
 
 The current-source image is assembled and locally exported with a distinct
