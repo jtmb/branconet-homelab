@@ -1,5 +1,80 @@
 # Immutable image export and sequential preload
 
+## Read-only compiled-overlay execution-receipt auditor qualified - 2026-10-20 (Toronto)
+
+`scripts/migration/bortus-compiled-overlay-receipt-audit.py` adds separate closed
+formats `bortus-compiled-overlay-receipt-selection/v1` and
+`bortus-compiled-overlay-receipt-audit/v1`. Independent contract/selection and
+per-record SHA256 pins bind exporter, controller and three persisted node records.
+The exact contract a47ea88d, saved archive27bc0016/991697920bytes, direct manifest
+73aecec9, separate rawconfigd19974d6, source7940e9e1, reviewed module-source pins,
+unique owners and fixed hosts/ordinals must agree. Packaging records, planned
+envelopes, old protocols and source qualification results cannot replace receipts.
+Duplicate keys, extra/missing fields, type confusion, bad exit codes, altered
+recipe/contract/layers/labels and pin/host/order/scope drift refuse validation.
+
+Missing, validating, pending, refused and uncertain records remain incomplete;
+controller/node disagreements remain visible, including a completed node whose
+controller reply was lost. Final-persistence failures carrying completed fields
+remain uncertain. No historical record is written, repaired, upgraded or adopted.
+The auditor never opens an archive path from a receipt. POSIX file reads are
+bounded, regular/current-owner/single-link, nofollow, with ancestor and descriptor
+identity checks. There is no transport, subprocess, credential or runtime API.
+
+Evidence class is an unauthenticated external caller claim, separately matched
+to the pinned selection: public-synthetic inputs cannot satisfy a request labeled
+externally-observed. Fabricated bytes with a matching externally supplied claim
+cannot be authenticated by JSON or hashes. Even completed-content-consistent
+means content consistency only: actual_transport_proven, provenance_authenticated,
+current_node_state_proven, archive_bytes_reverified, execution_authorized,
+runtime_qualified and deployed always remain false. Original A01-A22 acceptance
+stays unchanged; all44clauses and21 separately named delivery gates remain.
+
+First36 frozen PUBLIC controls pass0.251s. Root source review adds explicit
+final-persistence uncertainty handling and three controls; all39 final frozen
+controls pass0.258s, no skips, under60s wall/30CPU-seconds/512MiB address space.
+Saved-evidence review passes2989 checks and rehashes1936 retained selected proofs.
+Its initial blanket AST guard rejected harmless string replace in CLI option
+normalization; that checker/refusal is preserved. Corrected checker only passes;
+source/tests unchanged and no controls replayed during saved review.
+Initial passing source/tests remain frozen. Tests use hand-built public receipt
+fixtures and protected POSIX temporary files; subprocess/network calls are blocked.
+No old suite, archive parser, adapter CLI export/preload, Docker/SSH/sudo/ctr,
+application runtime, graph walk, operatorDB, private-native/recovery, scan/CI,
+publication or production execution occurs. Root review is not independent-person
+or runtime acceptance. [Evidence](../evidence/bortus-compiled-overlay-receipt-audit-root-20261020.json) records the finite source scope.
+
+All190 existing docs/evidence files were read for impact; four operational docs
+and PLAN/status are updated with exact original-byte inverses retained. RootdocsLOCAL;
+four new/prior32/earlierone findings, all original failures and preceding security,
+performance/actualAT/native/recovery/backup/quiescence/schema/effectiveRBAC/admission/
+data gates remain unresolved. OverallCIQualified=false; the three retained successful
+CI scopes remain distinct. Full goal ACTIVE/no budget. PRDdeployment AND actual
+verification remain FINAL REQUIRED after all original preceding gates.
+
+### Auditor input and exit contract
+
+The API accepts contract bytes/pin, selection bytes/pin, a fixed five-slot bytes
+map (`export`, `preload`, `node-1`, `node-2`, `node-3`) and the independent expected
+evidence class. The selection has exactly `format`, `evidence_class`,
+`contract_sha256`, `export_sha256`, `preload_sha256`, `nodes`,
+`runtime_qualified:false`, `deployed:false`. `nodes` is exactly the three fixed
+hosts in order with integer ordinals1/2/3 and `sha256`. A null pin selects a missing
+slot; supplying bytes for it refuses. A selected pin requires matching supplied
+bytes. All receipt and selection JSON reject duplicate keys and nonfinite numbers.
+No arbitrary path, credential, raw config Env or command belongs in a selection.
+
+The read-only CLI requires `--contract`, `--contract-sha256`, `--selection`,
+`--selection-sha256`, and `--evidence-class public-synthetic|externally-observed`.
+Supply only the separately selected files with `--export`, `--preload`,
+`--node-1`, `--node-2`, `--node-3`. Use protected POSIX paths for input files and
+reviewed tooling. Receipt files are read once with stability checks; this is no
+continuous custody or atomic multi-file snapshot claim. Exit0 means completed
+content consistency only, exit2 emits a valid incomplete report, exit1 emits a
+fixed redacted refusal. Argparse usage errors also exit2 without a report.
+Only stdout contains the report; the auditor has no receipt-output writer.
+No actual observed receipt bundle was audited during source qualification.
+
 ## Compiled-overlay staging adapters source qualified - 2026-10-20 (Toronto)
 
 Separate `stage-bortus-compiled-overlay.py`, `bortus-compiled-overlay-node.py`
