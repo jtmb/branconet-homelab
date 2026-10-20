@@ -1,5 +1,12 @@
 # BORTUS application deployment
 
+## Standalone mount edit captured snapshot (2026-10-20)
+
+MountForm explains the exact mount metadata revision captured when editing opened. Refreshing the mount list keeps the open edit form and its name/namespace drafts; cancel and reopen selects refreshed metadata. The server checks the submitted revision and current permissions. This edit-only presentation preserves the original mount ID/revision, metadata PATCH, ordinary errors, busy/captured requests, administrator gate, callbacks, focus return and polling. Create-mount presentation has no captured-edit claim. No backend, native, private workbench, deletion or authority change is included.
+
+The identical FINALFROZEN 15 new plus 307 prior synthetic client/session/metadata checks give baseline 310 passes and 12 expected missing-explanation failures, then 322 passes with zero failures, skips or cancellations. Five copies bind fd405adfc4c6fce4e79c3f539a41c840318bd80ed383d6514b0aeb20f5291cea. Fresh isolated BuildID N0B5FtQw4VwJunmGSsns0 passes focused zero-warning lint and full nonincremental types. All 323 raw Windows/build inputs, 37,428 pinned dependencies and 41,723 compiled/dependency records match; exactly one ROOT graph traversal, 25 selected artifacts, three worker bindings and five standalone copies. Tests retain 2CPU/1GiB/60s and build 4CPU/4GiB/900s, no extra swap/PID256/network-none/read-only-root/explicit Next pre-post packaging/inert absent-parent DATABASE_URL/no Prisma CLI. Synthetic selected declarations/hook slots/inert parent children/held public metadata MutationTask do not mount React, execute useMutation lifecycle or establish DOM/browser/HTTP/backend/native/actual assistive-technology acceptance. All original delivery gates remain; prior PR39335907142 and push39345339490 stay unresolved and overall CI qualification is false.
+
+
 ## Standalone registration captured mount snapshot (2026-10-20)
 
 RegisterForm now displays the exact captured mount metadata revision and explains that refreshing the mount list does not update the open form. It directs the user to cancel and reopen registration to use refreshed metadata, while retaining current server scope/create-policy checks. This is a presentation addition: the parent retains its selected mount object, exact ID/scopes, namespace and other drafts, stable mapping identities, consumed add/remove focus, mapping limits, optional retention, ordinary errors, busy/captured requests, callbacks and polling. It introduces no freshness or current-authorization assertion.
