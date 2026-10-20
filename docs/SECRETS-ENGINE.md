@@ -1,6 +1,23 @@
 # BORTUS Secrets Engine
 
 
+## Public text-collation declaration source review - 2026-10-20 (Toronto)
+
+Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. The shared natural binding declares new Intl.Collator(undefined, { numeric: true, sensitivity: "base" }); scalar ends with String(value), and compareValues declares text/ascending defaults and natural.compare(String(first), String(second)) in its non-array/non-numeric alternative. These are literal construction/call/default declarations, not an executed collator, resolved locale/default options, coercion values, equality/stability, accent/case/punctuation behavior or runtime order. No concrete supported correction compatible with frozen expectations was established.
+
+Eleven literal production observations bind SortKind, collator construction, scalar signature/fallback and comparator declaration context. Four targeted saved selections from accepted193-line tests/query-store.test.ts bind the real-helper import, enclosing test and compareValues("pod-2","pod-12","text")<0 assertion. Read never executed; no current test result or exhaustive locale/direction/coercion coverage. No collator/helper/comparator/callback/hook/sorting/render/test/AST/model invocation. All333 accepted inputs/22 owner docs freshly match receipt/preparation. Exact658 retained plus19 preceding current proofs freshly rehashed (677 total).
+
+Only binding/evidence/doc preparation scripts adapted after actual selected scripts/schema reads. No candidate/new suite/test/workload/build/lint/types/graph/app commit/push/newCI/source-dependency copies/persistent runtime/worker. No React/DOM/browser/backend/native/actualAT/security/performance/recovery/image/live evaluation. Prior finite146 closure historical, not refreshed; no universal/exhaustive/unrecorded-preparation/Windows/helper/observer-self absence claim. Repeated truncated combined read-only outputs were narrowed; omitted/null fields are not evidence. Historical public validation, introductory private-workbench text, adjacent decimal/null-result/elapsedAge/date/clock declarations and prior number/quantity/age test assertions were incidental and unevaluated. An unavailable btoa preparation attempt failed before its shell call; goal JSON was subsequently saved by apply_patch. No finding body inspection/classification/diagnosis/disposition.
+
+Prior BuildIDp1bLLgS38NiOt1_HfYyPM/662focusedpasses/333inputs/37428dependencies/41723graph/EXACTLY ONE prior ROOT fullgraphcomparison retained, not rerun. currentAllSuccessful applies ONLY to RETAINED exact-head PR39397653304/push39397643969, each12steps/1242units; overallCIQualified=false. PR39376493085/PR39335907142/push39345339490 failures unresolved/causeUNESTABLISHED. Rejected retention-stale candidate/five ORIGINAL frozen failures remain private/rejected; separate331build NEVER executed; earlier424preparation historical/unexecuted. No native-fixture diagnosis/replay/manualdispatch/workflowchange.
+
+RootdocsLOCAL; four new/prior32/earlier one findings UNRESOLVED. All44originalclauses/frozenfixtures/failures/A07five-of-tenwarmfailures and durable boundaries remain. FullgoalACTIVE; PRDdeployment AND actualverification FINAL after ALL original preceding gates. Next separate bounded public source/saved synthetic-source review: scalar number conversion declarations. No next-feature evaluation began here.
+
+
+
+[Bounded source-inspection receipt](../evidence/bortus-text-collation-declaration-review-root-20261020.json).
+
+
 ## Public count-pair declaration source review - 2026-10-20 (Toronto)
 
 Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. The scalar count branch declares String(value) with an anchored pattern with two digit captures separated by a slash, then [Number(match[1]),Number(match[2])] or null. The existing null/undefined/empty/"-"/"unknown" precheck precedes kind handling. No trim/normalization, finite-number or safe-integer guard is declared in this branch. These declarations do not qualify evaluated matching/coercion, precision, overflow, pair values or runtime ordering. No concrete supported correction compatible with frozen expectations was established.
