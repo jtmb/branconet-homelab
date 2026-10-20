@@ -1,6 +1,22 @@
 # BORTUS Secrets Engine
 
 
+## Public collection container containment source review - 2026-10-20 (Toronto)
+
+Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. The standalone public KvBrowser main declares min-w-0 space-y-6 p-3 sm:p-6. Both Mounts and Paths sections use the imported surface constant, declared min-w-0 space-y-3 rounded-lg border border-zinc-800 p-4. Their conditional MetadataTable call sites sit in fragments inside those sections; the shared table declares an overflow-x-auto rounded-lg border border-zinc-800 div around its w-full text-sm table. These are literal source declarations, not computed container sizing, flex/grid shrink behavior, viewport containment, scrolling, clipping, wrapping, zoom or accessibility evidence. Saved public metadata harnesses substitute surface with the literal string surface and replace the real table; they cannot qualify the actual containment composition. No concrete supported correction compatible with all frozen expectations was established.
+
+Targeted saved metadata-announcements and metadata-success declaration/stub/assertion matches were read, not executed. Both substitute the surface constant with the literal string surface and omit the real table. The former uses a props-only metadata-table stub; the latter a string placeholder. These sources cannot qualify actual containment classes, viewport layout or assistive technology. Current review is targeted, not full-file/exhaustive coverage; combined output truncations were narrowed. Adjacent form/action, selected-path/native lines, workbench introductory text and audit headings were incidentally visible without private/native/form evaluation or finding inspection/classification/diagnosis/disposition.
+
+All333 accepted inputs/22 owner documents freshly match at receipt and preparation. Exact449 retained plus19 preceding current proofs freshly rehashed (468 total). Only binding/evidence/doc preparation scripts adapted after selected script/schema reads; no prior app runner/build/review/monitor executed. No candidate/new suite/test/workload/build/lint/types/graph/application commit/push/newCI, source/dependency copies, persistent runtime or worker. No AST/transpile/VM/model/QueryStore/React/hooks/effects/useMutation/DOM/focus/browser/HTTP/backend/native/actualAT/security/performance/recovery/image/live evaluation. Prior finite146 recorded-birth closure historical, not refreshed; no universal/exhaustive/unrecorded-preparation/Windows/helper/observer-self absence claim.
+
+Prior BuildIDp1bLLgS38NiOt1_HfYyPM/662focusedpasses/333inputs/37428dependencies/41723graph/EXACTLY ONE prior ROOT fullgraphcomparison retained, not rerun. currentAllSuccessful applies ONLY to RETAINED exact-head PR39397653304/push39397643969, each12steps/1242units; overallCIQualified=false. PR39376493085/PR39335907142/push39345339490 failures unresolved/causeUNESTABLISHED. Rejected retention-stale candidate/five ORIGINAL frozen failures remain private/rejected; separate331build NEVER executed; earlier424preparation historical/unexecuted. No native-fixture diagnosis/replay/manualdispatch/workflowchange.
+
+RootdocsLOCAL; four new/prior32/earlier one findings UNRESOLVED. All44originalclauses/frozenfixtures/failures/A07five-of-tenwarmfailures and durable boundaries remain. FullgoalACTIVE; PRDdeployment AND actualverification FINAL after ALL original preceding gates. Next separate bounded public source/saved metadata-test review: MetadataTable horizontal-scroll wrapper focusability and accessible naming declarations. No next-feature evaluation began here.
+
+
+[Bounded source-inspection receipt](../evidence/bortus-collection-containment-review-root-20261020.json).
+
+
 ## MetadataTable overflow and long metadata declarations source review - 2026-10-20 (Toronto)
 
 Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Literal standalone public MetadataTable declares an overflow-x-auto rounded-lg border border-zinc-800 outer div and a w-full text-sm table. Column headers declare whitespace-nowrap px-3 py-3 text-left. Ordered metadata cells declare max-w-md break-all px-3 py-2 and retain the exact row[item.key] direct child. Conditional action cells declare px-3 py-2 without the metadata width/break classes. These source class strings do not prove computed dimensions, working scroll containment, clipping, long-string wrapping, zoom or accessibility. No concrete supported correction compatible with frozen expectations was established; production is retained.
