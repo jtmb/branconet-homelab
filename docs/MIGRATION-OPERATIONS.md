@@ -1,5 +1,15 @@
 # Approved cluster migration operations
 
+## Public sorting finite qualification design - 2026-10-20 (Toronto)
+
+Production remains unchanged at b4c71f446a7cecfceefbe50b4291f0e9bb5265fc. The finite design specifies ten public source-composition control families and eight independent sensitivity pairs. The original approved selected-JSX runner can host that synthetic mechanism within unchanged limits, but its existing table substitutions cannot qualify the real table/header/hook/comparator composition. A new frozen suite and explicit runner/manifest change need separate execution authorization; none was created, adapted or run. Mounted React, browser/layout/keyboard/AX/lucide defaults/actual AT and backend/native/security/performance/recovery/live authority remain separate.
+
+Three actual repository snapshots, three protected hashes and both charts alias identities matched before edits. EXACT734 enumerated retained plus19 current proofs were freshly rehashed(753 total);333 accepted inputs and22 owner docs matched. Selected public harnesses/configuration and retained run/build/review/monitor scripts were read as text only. No helper/hook/callback/sort/render/AST/test/model/workload/build/newCI/source-dependency copy/application or charts change occurred. Combined read-only output truncation was narrowed; omitted/null output is not evidence. Selected form harnesses and historical private-workbench intro text were incidental, not sorting/private-handler evaluation.
+
+Prior BuildIDp1bLLgS38NiOt1_HfYyPM/662passes/one ROOT41723-record graph comparison and exact-head PR39397653304/push39397643969 each12steps/1242units remain RETAINED, not rerun. currentAllSuccessful applies ONLY to those two runs; overallCIQualified=false. Earlier CI failures/rejected candidate/five original failures/A07five-of-tenwarm failures and all44originalclauses remain. RootdocsLOCAL/fournew/prior32/earlierone findings UNRESOLVED. FullgoalACTIVE with no token budget; PRDdeployment AND actualverification FINAL after every original preceding gate. Next action: explicit authorization decision for this exact finite synthetic workload; absent authority, preserve the design without executing or inventing another granular review.
+[Finite design evidence](../evidence/bortus-public-sort-qualification-specification-root-20261020.json).
+
+
 
 ## Public sorting acceptance-gap consolidation - 2026-10-20 (Toronto)
 
