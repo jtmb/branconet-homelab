@@ -4,6 +4,7 @@ import { hashMatches, issueCredential, presentedCredential } from "./kv-credenti
 import { validateTarget } from "./cluster-secrets";
 import { acknowledgeLegacyImpact, legacyImpact, legacyImpactPage, readLegacyAliases, type LegacyAcknowledgement } from "./kv-legacy-access";
 import type { SecretAlias } from "./secret-aliases";
+import { identityRevision, expectedIdentityRevision } from "./kv-identity-revision";
 
 type Client = Prisma.TransactionClient;
 const identityMetadata = { id: true, ownerId: true, name: true, expiresAt: true, revokedAt: true, createdAt: true } as const;
@@ -308,7 +309,7 @@ export class KvRegistry {
         await tx.kvPolicy.create({ data });
       }
       await tx.kvAudit.create({ data: { actorId: actor.id, action: "identity-issue", outcome: "committed" } });
-      return { ...identity, credential: issued.credential };
+      return { ...identity, revision: identityRevision(identity), credential: issued.credential };
     });
   }
 
@@ -326,15 +327,23 @@ export class KvRegistry {
     const user = await this.current(actor);
     if (actor.identityId) throw new KvError(403, "Automation cannot manage identities");
     const rows = await this.db.kvIdentity.findMany({ where: { ...(user.role === "write" && user.engineAdmin ? {} : { ownerId: actor.id }), ...(cursor ? { id: { gt: cursor } } : {}) }, select: identityMetadata, orderBy: { id: "asc" }, take: 101 });
-    return { items: rows.slice(0, 100), nextCursor: rows.length > 100 ? rows[99].id : null };
+    return { items: rows.slice(0, 100).map(identity => ({ ...identity, revision: identityRevision(identity) })), nextCursor: rows.length > 100 ? rows[99].id : null };
   }
 
-  revokeIdentity(actor: KvActor, id: string) {
+  revokeIdentity(actor: KvActor, id: string, revision?: unknown) {
     return this.serialized(async tx => {
       const user = await this.current(actor, tx), identity = await tx.kvIdentity.findUnique({ where: { id } });
       if (!identity) throw new KvError(404, "KV identity not found");
       if (actor.identityId || user.role !== "write" || (identity.ownerId !== user.id && !user.engineAdmin)) throw new KvError(403, "Identity revocation requires its owner or engine administration");
-      await tx.kvIdentity.update({ where: { id }, data: { revokedAt: new Date() } });
+      const expected = expectedIdentityRevision(revision);
+      if (identityRevision(identity) !== expected || identity.revokedAt)
+        throw new KvError(409, "KV identity changed or is already revoked; refresh before revoking");
+      // Bind the write as well as the read. A lost conditional update never audits success.
+      const changed = await tx.kvIdentity.updateMany({ where: {
+        id, ownerId: identity.ownerId, ownerSessionVersion: identity.ownerSessionVersion,
+        name: identity.name, expiresAt: identity.expiresAt, createdAt: identity.createdAt, revokedAt: null,
+      }, data: { revokedAt: new Date() } });
+      if (changed.count !== 1) throw new KvError(409, "KV identity changed; refresh before revoking");
       await tx.kvAudit.create({ data: { actorId: actor.id, action: "identity-revoke", outcome: "committed" } });
     });
   }

@@ -278,7 +278,7 @@ test(
       const identities = await request("/api/kv/identities", "GET", undefined, scopedCookie);
       const identityText = await identities.text(); assert(!identityText.includes(issuedIdentity.credential) && !identityText.includes("credentialHash"));
       assert.equal((await fetch(`${base}/api/vars/lookup?key=k8s_version`, { headers: { authorization: "Bearer " + issuedIdentity.credential } })).status, 401);
-      assert.equal((await request(`/api/kv/identities/${issuedIdentity.id}`, "DELETE", undefined, scopedCookie)).status, 200);
+      assert.equal((await request(`/api/kv/identities/${issuedIdentity.id}`, "DELETE", { revision: issuedIdentity.revision }, scopedCookie)).status, 200);
       const callCount = (await fixture.calls()).length;
       const invalidStorage = await request("/api/cluster/volumes?kind=wrong", "GET", undefined, writer);
       assert.equal(invalidStorage.status, 400);

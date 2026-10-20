@@ -30,6 +30,8 @@ export type Policy = {
 };
 export type PolicyFields = Omit<Policy, "id" | "revision">;
 export type Identity = {
+  // Older metadata remains displayable, but cannot authorize a revocation request.
+  revision?: string;
   id: string;
   ownerId: string;
   name: string;
@@ -228,8 +230,15 @@ export const policyConfirmation = (policy: Policy | PolicyFields) =>
   "id" in policy
     ? `policy ${policy.id} revision=${policy.revision}`
     : `create ${policy.principal} ${policy.mountId ?? "all-mounts"}/${policy.prefix || "(root)"} ${policy.effect} ${policy.actions.join(",")}`;
+export const canRevokeIdentity = (identity: Identity) =>
+  typeof identity.revision === "string" && /^[a-f0-9]{64}$/.test(identity.revision) && !identity.revokedAt;
+export const identityRevokeBody = (identity: Identity) => {
+  if (!canRevokeIdentity(identity))
+    throw new AdminInputError("Refresh identity metadata and select an unrevoked identity with a captured revision.");
+  return { revision: identity.revision! };
+};
 export const identityConfirmation = (identity: Identity) =>
-  `revoke ${identity.id} owner=${identity.ownerId} expires=${identity.expiresAt}`;
+  `revoke ${identity.id} owner=${identity.ownerId} expires=${identity.expiresAt} revision=${identity.revision ?? "unavailable"}`;
 export const historyConfirmation = (row: HistoryCandidate) =>
   `${row.name} uid=${row.uid} rv=${row.resourceVersion}`;
 

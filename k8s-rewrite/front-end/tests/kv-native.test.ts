@@ -274,7 +274,7 @@ test("native grouped KV CAS, history isolation, drift, ambiguity and metadata au
       const historical=await runAutomation(engine,token,{operation:"read",pathId:p.id,version:1});assert("fields" in historical);assert.equal(historical.fields.length,0);
       const tokenAudit=await registry.listAudit(token,{pathId:p.id});assert(tokenAudit.items.some(row=>row.actorId===identity.id));
       assert(!JSON.stringify(tokenAudit).includes(identity.credential));assert(!JSON.stringify(tokenAudit).includes(initial.__proto__));
-      await registry.revokeIdentity(actor,identity.id);const before=native.reads;
+      await registry.revokeIdentity(actor,identity.id,identity.revision);const before=native.reads;
       await assert.rejects(runAutomation(engine,token,{operation:"read",pathId:p.id}),denied(401));assert.equal(native.reads,before);
     });
     await t.test("protected transfers round-trip binary/empty fields with explicit overwrite, partial outcomes and bounded metadata-only preview", async () => {

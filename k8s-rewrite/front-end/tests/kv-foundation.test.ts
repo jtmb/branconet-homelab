@@ -191,7 +191,7 @@ test("KV metadata ownership, serialized administration and scoped token lifecycl
       const listing = await registry.listIdentities(scopedActor);
       assert(!JSON.stringify(listing).includes(issued.credential)); assert(!JSON.stringify(listing).includes(row.credentialHash));
       const audit = await db.kvAudit.findMany(); assert(!JSON.stringify(audit).includes(issued.credential) && !JSON.stringify(audit).includes(row.credentialHash));
-      await registry.revokeIdentity(scopedActor, issued.id);
+      await registry.revokeIdentity(scopedActor, issued.id, issued.revision);
       await assert.rejects(registry.authenticateIdentity("Bearer " + issued.credential), denied(401));
       const expired = await issue(); await db.kvIdentity.update({ where: { id: expired.id }, data: { expiresAt: new Date(0) } });
       await assert.rejects(registry.authenticateIdentity("Bearer " + expired.credential), denied(401));

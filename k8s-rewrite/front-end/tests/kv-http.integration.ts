@@ -114,7 +114,7 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     const tokenHistory=await checked(await automate({...tokenRead,version:1},identity.credential));assert.equal(tokenHistory.fields.find((f:any)=>f.field==="binary").value,binary);
     await db.kvIdentity.update({where:{id:identity.id},data:{expiresAt:new Date(0)}});await checked(await automate(tokenRead,identity.credential),401);
     await db.kvIdentity.update({where:{id:identity.id},data:{expiresAt:new Date(Date.now()+3600000)}});
-    await checked(await request("/api/kv/identities/"+identity.id,"DELETE",undefined,scoped));await checked(await automate(tokenRead,identity.credential),401);
+    await checked(await request("/api/kv/identities/"+identity.id,"DELETE",{revision:(await checked(await request("/api/kv/identities","GET",undefined,scoped))).items.find((row:any)=>row.id===identity.id).revision},scoped));await checked(await automate(tokenRead,identity.credential),401);
     const audit=await checked(await request("/api/kv/audit?pathId="+registry.id,"GET",undefined,scoped));assert(audit.items.some((row:any)=>row.actorId===identity.id));assert(audit.items.length<=100);assert(!JSON.stringify(audit).includes(binary));assert(!JSON.stringify(audit).includes(identity.credential));
     await checked(await request("/api/kv/audit?pathId=invalid","GET",undefined,scoped),400);
     const readerCapabilities=await checked(await request(route+"/capabilities","GET",undefined,reader));assert.equal(readerCapabilities.permissions.read,false);
@@ -163,7 +163,7 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     await checked(await automate({operation:"gc",pathId:roundtripId},cleanupIdentity.credential),400);
     const tokenVersions=await checked(await request(cleanupRoute+"/versions","GET",undefined,admin));
     const tokenDestroy=await checked(await automate({...captureDestroy(tokenVersions,[4]),operation:"destroy",pathId:roundtripId,versions:[4],resourceVersion:nextAgain.resourceVersion,expectedHead:5,confirmPath:cleanupPath},cleanupIdentity.credential));assert.equal(tokenDestroy.cleanupComplete,true);assert.equal(tokenDestroy.head,5);
-    await checked(await request("/api/kv/identities/"+cleanupIdentity.id,"DELETE",undefined,admin));await checked(await automate({operation:"status",pathId:roundtripId},cleanupIdentity.credential),401);
+    await checked(await request("/api/kv/identities/"+cleanupIdentity.id,"DELETE",{revision:cleanupIdentity.revision},admin));await checked(await automate({operation:"status",pathId:roundtripId},cleanupIdentity.credential),401);
     await checked(await request(createdRoute,"PATCH",{revision:createdPath.revision,retention:1},admin));
     const oldCreated=native.objects.get("apps/created-empty")!,createdHistory=JSON.parse(oldCreated.metadata!.annotations!["bortus.io/kv-state"]).paths[0].versions[0];
     await checked(await request(createdRoute+"/data","PUT",{resourceVersion:created.resourceVersion,expectedHead:1,fields:[]},admin));
@@ -254,7 +254,7 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     const tokenIntent=await checked(await automate({operation:"rotationPrepare",...prepareRotation},rotationToken.credential));
     await checked(await automate({operation:"rotationGenerate",rotationId:tokenIntent.id,revision:tokenIntent.revision,pathRevision:rotationPath.revision,confirmPath:rotationPath.path,resourceVersion:generated.resourceVersion,expectedHead:2},rotationToken.credential));
     await checked(await automate({operation:"read",pathId:rotationPath.id},rotationToken.credential),403);
-    await checked(await request("/api/kv/identities/"+rotationToken.id,"DELETE",undefined,scoped));await checked(await automate({operation:"rotationResolve",rotationId:tokenIntent.id},rotationToken.credential),401);
+    await checked(await request("/api/kv/identities/"+rotationToken.id,"DELETE",{revision:rotationToken.revision},scoped));await checked(await automate({operation:"rotationResolve",rotationId:tokenIntent.id},rotationToken.credential),401);
     const beforeProbe=native.calls.length;
     const readiness=await Promise.all(Array.from({length:20},()=>request("/api/health/ready")));assert(readiness.every(r=>r.status===200));
     const probeCalls=native.calls.slice(beforeProbe);assert.equal(probeCalls.length,2);assert(probeCalls.every(c=>c.method==="GET"&&c.metadata));
@@ -317,7 +317,7 @@ test("production native KV routes use verified TLS, exact binary history, fresh 
     await checked(await request("/api/kv/import","POST",{padding:"x".repeat(1200*1024)},admin),413);
     const bodyIdentity=await checked(await request("/api/kv/identities","POST",{ownerId:account.id,name:"body-limit-probe",expiresAt:new Date(Date.now()+3600000).toISOString(),scopes:[{mountId:mount.id,prefix:registry.path,actions:["list"]}]},admin),201);
     await checked(await automate({operation:"status",pathId:registry.id,...boundedBody},bodyIdentity.credential),413);
-    await checked(await request("/api/kv/identities/"+bodyIdentity.id,"DELETE",undefined,admin));
+    await checked(await request("/api/kv/identities/"+bodyIdentity.id,"DELETE",{revision:bodyIdentity.revision},admin));
     const bodyScopePolicies=await db.kvPolicy.findMany({where:{principal:"identity:"+bodyIdentity.id},select:{id:true,revision:true}});
     assert.equal(bodyScopePolicies.length,1);
     for(const policy of bodyScopePolicies)await checked(await request("/api/kv/policies/"+policy.id,"DELETE",{revision:policy.revision},admin));

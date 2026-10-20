@@ -22,6 +22,8 @@ import {
   gcBody,
   historyConfirmation,
   identityConfirmation,
+  canRevokeIdentity,
+  identityRevokeBody,
   impactAcknowledgement,
   isUuid,
   pathConfirmation,
@@ -858,7 +860,7 @@ function Identities({ changed }: { changed: Changed }) {
           throw new AdminInputError(
             "Confirm the exact captured identity and expiry.",
           );
-        return request(`/api/kv/identities/${selected.id}`, "DELETE");
+        return request(`/api/kv/identities/${encodeURIComponent(selected.id)}`, "DELETE", identityRevokeBody(selected));
       },
       () => {
         setSelected(null);
@@ -910,7 +912,7 @@ function Identities({ changed }: { changed: Changed }) {
               <td>
                 <Button
                   danger
-                  disabled={task.busy || !!identity.revokedAt}
+                  disabled={task.busy || !canRevokeIdentity(identity)}
                   onClick={() => {
                     setCredential(null);
                     setSelected(identity);
@@ -927,8 +929,9 @@ function Identities({ changed }: { changed: Changed }) {
       {selected && (
         <div className={boxClass}>
           <p className="text-xs text-zinc-400">
-            This API has no identity revision/CAS parameter. Revocation targets
-            the exact immutable identity ID with fresh server authorization.
+            Revocation uses the exact captured identity revision with fresh server
+            authorization. Refreshing the list does not replace this capture.
+            After a conflict, cancel, refresh metadata and select again.
           </p>
           <Exact
             expected={identityConfirmation(selected)}
@@ -937,7 +940,7 @@ function Identities({ changed }: { changed: Changed }) {
           />
           <Button
             danger
-            disabled={task.busy || confirm !== identityConfirmation(selected)}
+            disabled={task.busy || !canRevokeIdentity(selected) || confirm !== identityConfirmation(selected)}
             onClick={revoke}
           >
             Confirm revocation

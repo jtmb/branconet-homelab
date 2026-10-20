@@ -21,6 +21,7 @@ export const legacyRevoke = z.object({ revision, legacyImpact: legacyAcknowledge
 export const legacyPreview = z.discriminatedUnion("kind", [legacyPrincipal.omit({ legacyImpact: true }).extend({ kind: z.literal("principal"), cursor: legacyCursor }).strict(),
   legacyGrant.omit({ legacyImpact: true }).extend({ kind: z.literal("grant"), cursor: legacyCursor }).strict(),
   legacyRevoke.omit({ legacyImpact: true }).extend({ kind: z.literal("revoke"), grantId: z.string().uuid(), cursor: legacyCursor }).strict()]);
+export const identityRevoke = z.object({ revision: z.string().regex(/^[a-f0-9]{64}$/).optional() }).strict();
 export const identityCreate = z.object({ ownerId: z.string().max(128), name: z.string(), expiresAt: z.string().datetime(), scopes: z.array(z.object({ mountId: z.string().uuid(), prefix: z.string(), actions: z.array(z.enum(KV_ACTIONS)).min(1).max(10) }).strict()).min(1).max(32) }).strict();
 export const nativePrerequisites = { resourceVersion: z.string().max(128).optional(), expectedHead: z.number().int().nonnegative().optional(), pathRevision: z.number().int().positive().safe().optional() };
 export const encodedField = z.object({ field: z.string(), encoding: z.enum(["utf8", "base64"]), value: z.string() }).strict();

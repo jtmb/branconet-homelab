@@ -144,7 +144,7 @@ test(
         });
       assert.equal((await automate()).status, 200);
       await client.run((request) =>
-        request(`/api/kv/identities/${identity.id}`, "DELETE"),
+        request(`/api/kv/identities/${identity.id}`, "DELETE", { revision: identity.revision }),
       );
       assert.equal((await automate()).status, 401);
       const source = await fixture.checked(

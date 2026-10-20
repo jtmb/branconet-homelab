@@ -58,7 +58,7 @@ type State = {
 };
 const admin = { authenticated: true, username: "synthetic-admin", role: "write", engineAdmin: true };
 const identity: model.Identity = {
-  id: "synthetic-identity", ownerId: "synthetic-owner", name: "synthetic-name",
+  revision: "a".repeat(64), id: "synthetic-identity", ownerId: "synthetic-owner", name: "synthetic-name",
   expiresAt: "2099-01-01T00:00:00.000Z", revokedAt: null, createdAt: "2026-01-01T00:00:00.000Z",
 };
 const draftScope: model.IdentityScope = { mountId: "synthetic-mount", prefix: "synthetic/path", actions: ["read"] };
@@ -239,7 +239,7 @@ test("captured exact ID/owner/expiry confirmation blocks incomplete revocation",
   }
 });
 
-test("pending exact captured revoke sends once without body, freezes controls, then refreshes metadata", async () => {
+test("pending exact captured revoke sends one revision body, freezes controls, then refreshes metadata", async () => {
   const ui = harness(); const before = await ui.ready(); const start = ui.calls.length;
   let release!: (response: Response) => void;
   ui.respond(async (url, init) => url === "/api/auth/session" ? json(admin)
@@ -254,7 +254,7 @@ test("pending exact captured revoke sends once without body, freezes controls, t
   assert.equal(button(pending, "Cancel revocation").disabled, true);
   assert.deepEqual(copy(pending.selected), identity);
   assert.equal(ui.calls.length - start, 2);
-  assert.equal(ui.calls.at(-1)!.method, "DELETE"); assert.equal(ui.calls.at(-1)!.body, undefined);
+  assert.equal(ui.calls.at(-1)!.method, "DELETE"); assert.deepEqual(JSON.parse(ui.calls.at(-1)!.body as string), { revision: identity.revision });
   release(json({ revoked: true })); const after = await ui.settle();
   assert.equal(after.task.busy, false); assert.equal(after.selected, null); assert.equal(after.confirm, "");
   assert.match(after.result, /is revoked/); assert.equal(ui.notifications, 1);

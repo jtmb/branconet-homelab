@@ -1,5 +1,52 @@
 # BORTUS user permissions
 
+## Identity revocation DELETE CAS source contract (2026-10-20)
+
+Identity issue/list metadata now includes an opaque 64-lowercase-hex `revision`.
+It is SHA256 of the versioned public metadata tuple (ID, owner ID, name, expiry,
+revocation time and creation time), excluding credentials, credential hashes and
+owner session versions. It is a content capture, not a persisted counter or an
+authorization grant. There is no identity edit/unrevoke API or schema migration.
+
+`DELETE /api/kv/identities/[id]` requires a bounded strict JSON body
+`{"revision":"<captured revision>"}`. A missing revision in a JSON object is428;
+malformed/unknown fields are400; a stale capture, already-revoked identity or
+lost conditional write is409. Existing JSON content-type/body/size limits apply.
+Within the existing account-lock transaction, fresh actor/session/role and
+owner-or-effective-admin authorization precede revision comparison. The update
+matches the captured identity metadata and owner session version with
+`revokedAt:null`; exactly one row and the redacted audit commit together.
+Failures do not overwrite the first revocation timestamp or append success audit.
+Token scope/owner-policy intersection remains checked on each token use.
+
+The administration client confirms and sends its selected revision, retaining
+the capture across list refreshes. After409 it retains the selection/draft and
+clears confirmation; cancel, refresh and deliberately select again to use a new
+capture. Metadata without a valid revision remains displayable with revocation
+disabled. There is no automatic retry. Existing authorization-loss withdrawal,
+pending control fences and one-time token handling remain. Role-only demotion
+denies while readonly; it does not stamp revocation or increment sessionVersion.
+Re-promotion can restore an otherwise valid identity subject to current policy.
+
+All57 new frozen PUBLIC synthetic controls pass on Windows Node24.18.0
+with no skips/cancellations. A single type-only nonnull annotation correction
+has identical emitted JavaScript; the controls were not replayed. Focused
+semantic checking of the new suite and client model passes. The attempted
+whole-source local check exhausted its640MiB heap, and the first focused check
+found the annotation error; both failures remain retained. Source/saved review
+passes3096 checks, including1987 retained proofs,335 curated inputs,22 owner
+docs and the separate original334 baseline. Five compatibility caller files
+outside the curated335 only add captured revision bodies; original copies stay
+retained. All2413 pre-existing owner/root docs/evidence files were read for impact.
+Root review is not independent-person or ORM/runtime acceptance.
+
+No old control/native/recovery suite, operator DB, application packaging/build/
+runtime or production operation was run locally. The existing unchanged
+AUTOMATIC CI remains separate; no manual dispatch/replay/workflow change.
+No populated schema, native, actual AT, security, performance or independent
+recovery acceptance is inferred. All original gates/failures remain; final PRD
+deployment AND its actual verification remain required after preceding gates.
+
 ## Resource pagination boundary focus (2026-10-20)
 
 The shared ResourceTable resets paging on every search/filter/sort key change,
@@ -65,7 +112,7 @@ form recovers from loading and successful login still navigates to `/`. These
 client messages do not change fresh server authentication or authorization.
 
 Login keeps an empty, screen-reader-only `role="status"` container mounted outside
-the form. During the existing loading state it contains `Signing in…`, the form
+the form. During the existing loading state it contains `Signing inâ€¦`, the form
 sets `aria-busy="true"`, and the spinner is decorative (`aria-hidden="true"`).
 This includes waiting for an unsuccessful response body, not only the initial
 request. Settlement clears the status and busy state; the existing disabled
@@ -74,7 +121,7 @@ Actual-source presentation tests cover held request/body and settled outcomes;
 they do not establish actual screen-reader announcements or close AT acceptance.
 
 Open registration likewise keeps an empty, screen-reader-only `role="status"`
-container mounted outside its form. It contains `Creating account…` only during
+container mounted outside its form. It contains `Creating accountâ€¦` only during
 the existing submit loading state, including an unsuccessful response-body wait;
 the form's `aria-busy` follows that state and its spinner is decorative. Settlement
 empties the status and clears busy state. Availability checking remains a separate
@@ -128,7 +175,7 @@ only: registration and protected requests retain their fresh server checks.
 After initial page checking, welcome keeps one empty, screen-reader-only
 `role="status"` mounted outside the three Get Started buttons. Each explicit click
 adds an in-flight session lookup; while any request or JSON body is pending the
-status contains `Checking session…` and all three buttons report `aria-busy`.
+status contains `Checking sessionâ€¦` and all three buttons report `aria-busy`.
 Buttons remain enabled with their existing labels. Every click, including
 overlapping clicks on the same button, still requests fresh session state and
 retains its existing completion-order navigation. A functional counter clears
@@ -215,7 +262,7 @@ Historical standalone A15 source preparation (not runtime-qualified): legacy `/c
 
 Historical JSON-source checkpoint: reviewed development source `f4cef8a` (frontend `47f85279`) passes the fresh four-phase build/native-load/lint/types qualification, all 352 unit tests and 8 HTTP checks, with independent current-artifact and owned-process/container closure. [Full qualification](implementation-evidence/configuration-json-full-functional-root-20261015.json). The [current A12 composition](implementation-evidence/a12-json-current-source-composite-root-20261015.json) retains its actual browser proofs: 12 of 13 source bindings are identical, and the changed JSON helper preserves the authorization/session effects verified by five focused HTTP tests and three inverse failures. The unchanged browser corpus was not replayed. Hosted run `38829551936` now passes all 12 steps on the exact frontend `47f85279`: locked build/lint/types, 352 units, 8 HTTP checks, all eight pristine/intended-mutant pairs and the compiled Pods smoke. Default source and retained-log/result scans report 0/zero. [Historical JSON-source hosted CI qualification](implementation-evidence/json-response-hosted-ci-qualified-root-20261015.json). Earlier source-bound runs remain historical. Configuration browser checks, A21/A22 measurements, actual AT, performance, image/live delivery and production adoption remain separate.
 
-Hosted run `38819528566` qualifies the original A19 source CI clause for reviewed source `fccc7c06e9063aa16967631b2fda2b397147d2b0` (frontend `4658deeff3bc5d952307c11503832b96b44dfe27`, unchanged workflow `f8b7ec07d69dcd1806ca44f6c566685108639cb3`). Its exact lean validation commit `76e4bfba75b3434df0b2b5efe62e356d6ffc546a` passes all12 steps: clean locked build, lint/types,347 units,8 HTTP integrations, all8 pristine/intended-mutant pairs and the208-row Pods browser smoke. Source restoration, two container/three-name cleanup and default unsuppressed retained log/result scanning pass. [Fresh source CI qualification](implementation-evidence/provisioning-hosted-ci-qualified-root-20261015.json). The [earlier342-unit qualification](implementation-evidence/a19-original-ci-clause-qualification-root-20261015.json) remains historical and source-bound. Delivered/live, actual AT, the two warm performance regressions, image/security and recovery remain separate. A02’s original distinct source contracts are composite-qualified from the exact160-call deletion matrix and retained demotion/native/expiry/logout proofs; [A02 composite qualification](implementation-evidence/a02-composite-boundary-qualification-root-20261015.json) preserves each source boundary and the historical partial failure.
+Hosted run `38819528566` qualifies the original A19 source CI clause for reviewed source `fccc7c06e9063aa16967631b2fda2b397147d2b0` (frontend `4658deeff3bc5d952307c11503832b96b44dfe27`, unchanged workflow `f8b7ec07d69dcd1806ca44f6c566685108639cb3`). Its exact lean validation commit `76e4bfba75b3434df0b2b5efe62e356d6ffc546a` passes all12 steps: clean locked build, lint/types,347 units,8 HTTP integrations, all8 pristine/intended-mutant pairs and the208-row Pods browser smoke. Source restoration, two container/three-name cleanup and default unsuppressed retained log/result scanning pass. [Fresh source CI qualification](implementation-evidence/provisioning-hosted-ci-qualified-root-20261015.json). The [earlier342-unit qualification](implementation-evidence/a19-original-ci-clause-qualification-root-20261015.json) remains historical and source-bound. Delivered/live, actual AT, the two warm performance regressions, image/security and recovery remain separate. A02â€™s original distinct source contracts are composite-qualified from the exact160-call deletion matrix and retained demotion/native/expiry/logout proofs; [A02 composite qualification](implementation-evidence/a02-composite-boundary-qualification-root-20261015.json) preserves each source boundary and the historical partial failure.
 
 The [original A12 source clause](implementation-evidence/a12-source-composite-root-20261015.json) is composite-qualified for reviewed source `fccc7c06`: retained readonly/write/demotion and provisioning-disabled proofs, the separately qualified enabled synthetic Run, and one actual deleted-account browser flow. A keeper performs real DELETE200 while the subject has a typed mutation draft; existing fresh-session handling withdraws the dialog/draft/controls and redirects to login. The unchanged subject cookie then receives GET/POST401, with keeper/other rows preserved. [Finite deletion proof](implementation-evidence/a12-deleted-browser-qualified-root-20261015.json). Historical failures and false delivery flags remain unchanged; no real host or deployed-image acceptance follows.
 
@@ -277,7 +324,7 @@ Middleware at `src/middleware.ts` uses the Next 15.5 Node runtime and verifies c
 
 Server-side `requireOperator()` enforces fresh write plus engineAdmin for infrastructure/configuration operations. `requireWrite()` remains on the account route, whose serialized store checks peer administration and scoped self-password access. KV routes enforce fresh role and deny-aware policy. Flat Secret values require effective administration. Deleted accounts and stale session versions are rejected on ordinary reads/pages as well. Password resets atomically increment sessionVersion, revoking existing cookies, including the resetting user's own cookie for a self-reset. Migrated accounts and legacy JWTs default to version zero, avoiding blanket sign-out on migration. Login signs the current version; the session API no longer treats absent accounts as readonly.
 
-Resource actions, provisioning and user administration use the shared polled session. Unknown/readonly/failed sessions do not receive mutations or exec controls; user editors close and erase their password input when write access ends. Server gates remain authoritative. User creation requires a valid 3Ã¢â‚¬â€œ30-character username and at least eight password characters; unchanged/invalid edits and duplicate saving are disabled. Passwords are submitted exactly, including intentional whitespace. User dialogs trap focus, close on Escape and return focus; deletion requires the exact username. User metadata uses the shared completion-based query lifecycle and a sortable 100-row page, with explicit unavailable/retry state. Remaining client views are being converted under A12.
+Resource actions, provisioning and user administration use the shared polled session. Unknown/readonly/failed sessions do not receive mutations or exec controls; user editors close and erase their password input when write access ends. Server gates remain authoritative. User creation requires a valid 3ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“30-character username and at least eight password characters; unchanged/invalid edits and duplicate saving are disabled. Passwords are submitted exactly, including intentional whitespace. User dialogs trap focus, close on Escape and return focus; deletion requires the exact username. User metadata uses the shared completion-based query lifecycle and a sortable 100-row page, with explicit unavailable/retry state. Remaining client views are being converted under A12.
 
 | Operation | readonly | scoped write | write + engineAdmin |
 |---|---|---|---|
@@ -303,7 +350,7 @@ Middleware authentication failures return private/no-store 401 or 503 responses,
 
 Adopted native keys now additionally pass KV read policy on flat reveal. Flat edits/deletions require the versioned endpoint (409), and history cannot be reached through flat/alias routes. Every lookup, including nonsecret configuration, checks the fresh enabled legacy service principal; adopted aliases additionally require exact compatibility grants and deny-aware policy. Unadopted alias behavior remains unchanged. These bridge checks passed local unit and production HTTP/TLS qualification.
 
-Desired-replica editing is a labelled explicit form with integer bounds 0Ã¢â‚¬â€œ10000, a disabled unchanged/invalid/save state and fixed API errors. Readonly sessions see the desired count. It does not submit on blur or parse fractional input as an integer.
+Desired-replica editing is a labelled explicit form with integer bounds 0ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“10000, a disabled unchanged/invalid/save state and fixed API errors. Readonly sessions see the desired count. It does not submit on blur or parse fractional input as an integer.
 
 Top navigation, shell containers, provisioning, users, settings and configuration share the session subscription. Write controls pause after session failure/staleness; host terminal and provisioning visibility also require runtime capability. Logout, revoked role and ended-session events clear terminal instances/metadata and shared queries. The top refresh control checks the server result before refetching active resource queries. Administration mutations have a 20-second deadline, prevent duplicate submissions and abort/drop callbacks on unmount; failures require explicit retry after checking the actual state. Job output streams recheck effective administration/account/sessionVersion during reads and close on revocation. Job metadata remains readable to authenticated readers; explicit output and streams require administration.
 
