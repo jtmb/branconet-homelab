@@ -23,11 +23,11 @@ export function SortIcon({
   active: boolean;
   dir: SortDir;
 }) {
-  if (!active) return <ArrowUpDown className="w-3 h-3 text-zinc-600" />;
+  if (!active) return <ArrowUpDown aria-hidden="true" focusable="false" className="w-3 h-3 text-zinc-600" />;
   return dir === "asc" ? (
-    <ArrowUp className="w-3 h-3 text-indigo-400" />
+    <ArrowUp aria-hidden="true" focusable="false" className="w-3 h-3 text-indigo-400" />
   ) : (
-    <ArrowDown className="w-3 h-3 text-indigo-400" />
+    <ArrowDown aria-hidden="true" focusable="false" className="w-3 h-3 text-indigo-400" />
   );
 }
 
