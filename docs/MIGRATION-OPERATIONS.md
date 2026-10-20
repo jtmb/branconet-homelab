@@ -1,6 +1,22 @@
 # Approved cluster migration operations
 
 
+## Public quantity-parsing declaration source review - 2026-10-20 (Toronto)
+
+Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. quantityNumber declares finite-number passthrough/non-string refusal, an anchored signed decimal/unit pattern, empty-suffix fallback and bare/exponent/binary/decimal factor branches, followed by multiplication and a finite-result check. decimal declares n/u/m/k/K/M/G/T/P/E factors. scalar retains its absent/empty/sentinel precheck before quantity delegation. No trim/normalization call is declared here. These declarations do not qualify evaluated parsing values, precision, unit compatibility or runtime ordering. No concrete supported correction compatible with frozen expectations was established.
+
+Fifteen literal production observations bind SortKind, decimal, complete quantityNumber and scalar signature/precheck/quantity delegation. Eight targeted saved selections from the accepted193-line tests/query-store.test.ts bind the real-helper import and quantity sorting/direct-helper assertions:2Gi/512Mi/1Gi,250m,1.5e3,broken,1Ei. Assertions were read, never executed; they are no current test result or exhaustive grammar coverage. No helper/comparator/callback/hook/sorting/render/test/AST/model invocation. All333 accepted inputs/22 owner docs freshly match receipt/preparation. Exact620 retained plus19 preceding current proofs freshly rehashed (639 total).
+
+Only binding/evidence/doc preparation scripts adapted after actual selected scripts/schema reads. No candidate/new suite/test/workload/build/lint/types/graph/app commit/push/newCI/source-dependency copies/persistent runtime/worker. No React/DOM/browser/backend/native/actualAT/security/performance/recovery/image/live evaluation. Prior finite146 closure historical, not refreshed; no universal/exhaustive/unrecorded-preparation/Windows/helper/observer-self absence claim. Truncated combined read-only outputs were narrowed; omitted/null text is not evidence. Initial exact owner-section searches had no matches. Filtered headings incidentally exposed two audit finding titles without body inspection/classification/diagnosis/disposition. Historical public validation, introductory/private-workbench text, adjacent date/coercion declarations and non-quantity sorting assertions were incidental and unevaluated.
+
+Prior BuildIDp1bLLgS38NiOt1_HfYyPM/662focusedpasses/333inputs/37428dependencies/41723graph/EXACTLY ONE prior ROOT fullgraphcomparison retained, not rerun. currentAllSuccessful applies ONLY to RETAINED exact-head PR39397653304/push39397643969, each12steps/1242units; overallCIQualified=false. PR39376493085/PR39335907142/push39345339490 failures unresolved/causeUNESTABLISHED. Rejected retention-stale candidate/five ORIGINAL frozen failures remain private/rejected; separate331build NEVER executed; earlier424preparation historical/unexecuted. No native-fixture diagnosis/replay/manualdispatch/workflowchange.
+
+RootdocsLOCAL; four new/prior32/earlier one findings UNRESOLVED. All44originalclauses/frozenfixtures/failures/A07five-of-tenwarmfailures and durable boundaries remain. FullgoalACTIVE; PRDdeployment AND actualverification FINAL after ALL original preceding gates. Next separate bounded public source/saved synthetic-source review: scalar count-pair declarations. No next-feature evaluation began here.
+
+
+[Bounded source-inspection receipt](../evidence/bortus-quantity-parsing-declaration-review-root-20261020.json).
+
+
 ## Public table column-sort declaration source review - 2026-10-20 (Toronto)
 
 Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. The three public literal caller arrays are nonempty: mounts name/namespaces/revision; paths path/namespace/name/fieldCount/retention; selected field mappings field/key. Only revision, fieldCount and retention explicitly declare number sorting; the other columns omit sort. Exact labels, keys and row projections/IDs remain. MetadataTable reads columns[0].key and finds the selected column by exact key; its ordinary array type does not enforce nonemptiness. useSort declares defaultKey/ascending initial state; compareValues declares text/ascending defaults and receives column?.sort/sortDir. These are source declarations, not hook/default-argument execution, runtime values/order, remount/changing-column behavior, browser/actual AT, security or performance qualification. No concrete supported correction compatible with frozen expectations was established.
