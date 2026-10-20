@@ -1,5 +1,21 @@
 # BORTUS K8s — API Usage
 
+## Public collection empty-result status source review - 2026-10-20 (Toronto)
+
+Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. Both mount/path empty-result paragraphs already declare role="status"; neither paragraph declares aria-live. Each exact alternative describes permitted mounts/paths in this API page, with matching text selected by truthy search. Mount text requires guarded usable data, no saved name/namespace-member match and no mounts.error. Path text requires guarded usable data, zero filtered rows and no paths.error. Existing usable excludes401/403. No new stale/refreshing/loading gate or native-state/authority claim is introduced. No concrete supported correction compatible with frozen expectations was established.
+
+Targeted saved metadata-announcements source asserts the exact paragraph text/status role for four empty/filtered cases, suppresses empty success in eight empty-page error cases at401/403/409/503, and separately asserts initial loading and matching populated metadata. It substitutes inert effects, forbidden private/form components and a props-only table. Source/assertion reads are not test/callback execution, actual announcements, mounted timing or AT. Saved metadata-success role matches, adjacent effects/actions, dynamic loading/success messages and fresh helper were incidental and unevaluated.
+
+All333 accepted inputs/22 owner documents freshly match at receipt and preparation. Exact525 retained plus19 preceding current proofs freshly rehashed (544 total). Only binding/evidence/doc preparation scripts adapted after actual selected scripts/schema reads. No candidate/new suite/test/workload/build/lint/types/graph/application commit/push/newCI, source/dependency copies, persistent runtime or worker. No AST/transpile/VM/model/QueryStore/React/hooks/effects/useMutation/DOM/focus/browser/HTTP/backend/native/actualAT/security/performance/recovery/image/live evaluation. Prior finite146 recorded-birth closure historical, not refreshed; no universal/exhaustive/unrecorded-preparation/Windows/helper/observer-self absence claim. Oversized outputs narrowed; omitted/null fields are not evidence. Public workbench introduction, historical API validation and audit public validation excerpts were incidental; no finding inspection/classification/diagnosis/disposition.
+
+Prior BuildIDp1bLLgS38NiOt1_HfYyPM/662focusedpasses/333inputs/37428dependencies/41723graph/EXACTLY ONE prior ROOT fullgraphcomparison retained, not rerun. currentAllSuccessful applies ONLY to RETAINED exact-head PR39397653304/push39397643969, each12steps/1242units; overallCIQualified=false. PR39376493085/PR39335907142/push39345339490 failures unresolved/causeUNESTABLISHED. Rejected retention-stale candidate/five ORIGINAL frozen failures remain private/rejected; separate331build NEVER executed; earlier424preparation historical/unexecuted. No native-fixture diagnosis/replay/manualdispatch/workflowchange.
+
+RootdocsLOCAL; four new/prior32/earlier one findings UNRESOLVED. All44originalclauses/frozenfixtures/failures/A07five-of-tenwarmfailures and durable boundaries remain. FullgoalACTIVE; PRDdeployment AND actualverification FINAL after ALL original preceding gates. Next separate bounded public source/saved metadata-test review: shared MetadataTable sort-control native button attributes and exact click-handler binding. No next-feature evaluation began here.
+
+
+[Bounded source-inspection receipt](../evidence/bortus-collection-empty-status-semantics-review-root-20261020.json).
+
+
 ## Public QueryState metadata age/timestamp source review - 2026-10-20 (Toronto)
 
 Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. The complete shared QueryState function has no updatedAt reference, age calculation, timestamp formatting or age/timestamp display branch. It renders existing loading, refreshing, stale and error/retry messages under its existing snapshot conditions. The incoming age/timestamp presentation premise is absent; no timestamp feature or freshness correction is established. Adjacent fresh() references Date.now()/updatedAt but is a separate helper, incidentally visible and unevaluated.
