@@ -1,0 +1,76 @@
+{
+  "scope": "Literal public shared SortIcon glyph-selection branches and explicit decorative/ARIA call-site declarations, plus SortHeader inclusion/order; targeted saved public synthetic metadata-test source only",
+  "applicationCommit": "b4c71f446a7cecfceefbe50b4291f0e9bb5265fc",
+  "chartsCommit": "835dabebd97a7691311b2c6748fd3cfa4db17f44",
+  "productionRetained": true,
+  "sourceReviewSHA256": "05dda629828628aa22734f4383bfc6cd78843c76272582219dc9ac836dbb0cf1",
+  "literalSourceObservations": 22,
+  "testSourcesReadNotExecuted": [
+    {
+      "path": "tests/kv-metadata-announcements.test.ts",
+      "sha256": "69ba3ea1bfcbe4f81be378c8e32659cfdf0eed66060c18a62ae593a2a5c90c4d",
+      "lines": 108,
+      "readInFullNotExecuted": false,
+      "targetedReadNotExecuted": true,
+      "executed": false,
+      "coverage": "Targeted declaration selection, table substitutions and synthetic role/aria-live assertions only; no real icon/header/table invocation."
+    },
+    {
+      "path": "tests/kv-metadata-success.test.ts",
+      "sha256": "6a8a0b5e106112cb2287b6658da0237f94ca6c9ad1dbb047a05ac62bd69c5288",
+      "lines": 102,
+      "readInFullNotExecuted": false,
+      "targetedReadNotExecuted": true,
+      "executed": false,
+      "coverage": "Targeted declaration selection and string MetadataTable substitution only; no real icon/header/table invocation."
+    }
+  ],
+  "all333CurrentInputsAnd22OwnerDocsFreshlyHashMatched": true,
+  "newCandidateSuiteWorkloadBuildLintTypesGraphAppCommitPushCI": false,
+  "sourceSpecificPriorBuildId": "p1bLLgS38NiOt1_HfYyPM",
+  "priorFocused662passRetainedNotRerun": true,
+  "retainedCurrentAutomaticCI": {
+    "head": "b4c71f446a7cecfceefbe50b4291f0e9bb5265fc",
+    "runs": [
+      {
+        "id": 39397653304,
+        "event": "pull_request",
+        "conclusion": "success",
+        "steps": 12,
+        "units": 1242
+      },
+      {
+        "id": 39397643969,
+        "event": "push",
+        "conclusion": "success",
+        "steps": 12,
+        "units": 1242
+      }
+    ],
+    "verifiedSHA256": "40c165e3194396a8d3401b0593cec34944d773efed639400f6bd173c42227566",
+    "retainedNotRerun": true
+  },
+  "overallCIQualified": false,
+  "currentAllSuccessful": true,
+  "currentAllSuccessfulScope": "Only RETAINED exact-head PR39397653304/push39397643969",
+  "priorFinite146BirthClosureNotRefreshed": true,
+  "noNewProcessOrContainerClosureQualification": true,
+  "priorRejectedRetentionCandidateAndFiveOriginalFailuresRetained": true,
+  "prior331BuildNeverExecuted": true,
+  "prior424PreparationHistoricalUnexecuted": true,
+  "noMountedReactBrowserBackendNativeActualATSecurityPerformanceRecoveryImageLiveAcceptance": true,
+  "rootDocsLocal": true,
+  "fourFindingsUnresolved": true,
+  "prior32AndEarlierOneUnresolved": true,
+  "newPRCIFailureRetained": true,
+  "currentPR39376493085FailureRetained": true,
+  "currentPR39376493085Unresolved": true,
+  "priorPR39335907142Unresolved": true,
+  "currentPush39345339490FailureRetained": true,
+  "priorPush39345339490Unresolved": true,
+  "all44ClausesAndFailedA07Preserved": true,
+  "fullGoalActive": true,
+  "PRDDeploymentAndActualVerificationFinalRequired": true,
+  "observedUTC": "2026-10-20T11:58:13.2972625Z",
+  "sourceDecision": "Retain production. SortIcon imports ArrowUpDown/ArrowUp/ArrowDown from lucide-react. Its declared inactive branch returns ArrowUpDown with className=\"w-3 h-3 text-zinc-600\"; its active dir === \"asc\" branch selects ArrowUp, otherwise ArrowDown, both with className=\"w-3 h-3 text-indigo-400\". Each literal icon call supplies only className: no explicit aria-hidden, aria-label, aria-labelledby, role, focusable, tabIndex or title prop, and no JSX spread is declared there. This is a call-site declaration observation, not a statement about lucide implementation/defaults, rendered SVG attributes, decorative semantics, computed accessible names, color contrast, focus, keyboard, announcements or actual AT. SortHeader constructs SortIcon with exact active/dir props, defaults iconFirst=false, and places label then icon in that default source branch; iconFirst reverses their declared order. The existing native-button aria-label names the column and current direction when active; no label/click/sort change is made. The saved metadata-announcements and metadata-success declaration selections omit MetadataTable/SortHeader/SortIcon, substituting a props-only table or string placeholder. Their selected role/aria-live assertions concern synthetic table props only. No icon, callback, hook, render or test is invoked. No concrete supported correction compatible with frozen expectations was established."
+}

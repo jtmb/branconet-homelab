@@ -1,6 +1,21 @@
 # BORTUS application deployment
 
 
+## Public sort-icon declaration source review - 2026-10-20 (Toronto)
+
+Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. SortIcon declares ArrowUpDown when inactive; active ascending selects ArrowUp, otherwise ArrowDown. Each icon call supplies only className: neutral text-zinc-600 versus active text-indigo-400, with w-3 h-3. No explicit aria-hidden/ARIA name/role/focusable/tabIndex/title or spread is declared at those call sites. SortHeader passes active/dir directly; default iconFirst=false declares label then icon, reversed when true. Existing column/current-direction button naming and exact click binding remain. These declarations do not qualify library defaults, rendered SVG/decorative semantics, computed names/tree, contrast, focus, keyboard, announcements or actual AT. No concrete supported correction compatible with frozen expectations was established.
+
+The22 literal observations bind the import/type, complete14-line SortIcon and selected SortHeader inclusion/order/name declarations. Targeted saved108/102-line public metadata sources omit real table/header/icon, substituting props-only table or string. Selected role/aria-live assertions apply synthetic table props only; no callback/icon/hook/render/test/AST/model executed. All333 accepted inputs/22 owner docs freshly match receipt/preparation. Exact563 retained plus19 preceding current proofs freshly rehashed (582 total).
+
+Only binding/evidence/doc preparation scripts adapted after actual selected scripts/schema reads. No candidate/new suite/test/workload/build/lint/types/graph/app commit/push/newCI/source-dependency copies/persistent runtime/worker. No React/DOM/browser/backend/native/actualAT/security/performance/recovery/image/live evaluation. Prior finite146 closure historical, not refreshed; no universal/exhaustive/unrecorded-preparation/Windows/helper/observer-self absence claim. Combined output truncation was narrowed; omitted/null fields are not evidence. Broad doc headings incidentally exposed audit finding titles, without body inspection/classification/diagnosis/disposition; workbench introductory text and historical validation incidental/unevaluated. One read-only preparation command failed PowerShell parsing before execution/writes and was corrected.
+
+Prior BuildIDp1bLLgS38NiOt1_HfYyPM/662focusedpasses/333inputs/37428dependencies/41723graph/EXACTLY ONE prior ROOT fullgraphcomparison retained, not rerun. currentAllSuccessful applies ONLY to RETAINED exact-head PR39397653304/push39397643969, each12steps/1242units; overallCIQualified=false. PR39376493085/PR39335907142/push39345339490 failures unresolved/causeUNESTABLISHED. Rejected retention-stale candidate/five ORIGINAL frozen failures remain private/rejected; separate331build NEVER executed; earlier424preparation historical/unexecuted. No native-fixture diagnosis/replay/manualdispatch/workflowchange.
+
+RootdocsLOCAL; four new/prior32/earlier one findings UNRESOLVED. All44originalclauses/frozenfixtures/failures/A07five-of-tenwarmfailures and durable boundaries remain. FullgoalACTIVE; PRDdeployment AND actualverification FINAL after ALL original preceding gates. Next separate bounded public source/saved metadata-test review: shared compareValues coercion/absent-empty inputs/direction declarations. No next-feature evaluation began here.
+
+[Bounded source-inspection receipt](../evidence/bortus-sort-icon-declaration-review-root-20261020.json).
+
+
 ## Public table sort-control binding source review - 2026-10-20 (Toronto)
 
 Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. MetadataTable binds each exact item.key through onClick={() => toggle(item.key)}. SortHeader passes the supplied callback directly to its literal native button. Its complete opening tag declares onClick, aria-label and className; no type, disabled, role, tabIndex, aria-pressed or custom keyboard event attribute is declared. The column label/current-direction naming remains unchanged. These source declarations do not qualify browser defaults, form submission, focus, keyboard, announcements or actual AT. No concrete supported correction compatible with frozen expectations was established.
