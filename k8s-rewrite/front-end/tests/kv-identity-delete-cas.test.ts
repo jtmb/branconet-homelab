@@ -26,9 +26,9 @@ class SecretError extends Error {
 const forbidden = () => { throw new Error("Outside public source-control scope"); };
 const cluster = { SecretError, validateTarget: forbidden };
 function evaluate(text: string, filename: string, dependencies: Row, globals: Row = {}) {
-  const module = { exports: {} as any };
+  const compiledModule = { exports: {} as any };
   runInNewContext(transpile(text, filename), {
-    module, exports: module.exports,
+    module: compiledModule, exports: compiledModule.exports,
     require: (name: string) => {
       assert(Object.hasOwn(dependencies, name), `Unselected dependency: ${name}`);
       return dependencies[name];
@@ -36,7 +36,7 @@ function evaluate(text: string, filename: string, dependencies: Row, globals: Ro
     Buffer, Date, JSON, TextDecoder, Uint8Array, URL, setTimeout, clearTimeout,
     process: { env: {} }, ...globals,
   }, { filename, timeout: 5000 });
-  return module.exports;
+  return compiledModule.exports;
 }
 const contract = evaluate(source("src/lib/kv-contract.ts"), "kv-contract.ts", { "./cluster-secrets": cluster });
 const revisionModule = evaluate(source("src/lib/kv-identity-revision.ts"), "kv-identity-revision.ts", {

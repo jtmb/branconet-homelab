@@ -29,8 +29,12 @@ denies while readonly; it does not stamp revocation or increment sessionVersion.
 Re-promotion can restore an otherwise valid identity subject to current policy.
 
 All57 new frozen PUBLIC synthetic controls pass on Windows Node24.18.0
-with no skips/cancellations. A single type-only nonnull annotation correction
-has identical emitted JavaScript; the controls were not replayed. Focused
+with no skips/cancellations. The initial type-only nonnull correction has
+identical emitted JavaScript. Automatic CI then built successfully and refused
+the test helper's local module variable under the unchanged Next lint rule.
+Its local variable is now renamed; canonical alpha-renaming matches the prior
+frozen suite exactly. Both initial CI failures remain. No local controls were
+replayed after these corrections. Production source is unchanged. Focused
 semantic checking of the new suite and client model passes. The attempted
 whole-source local check exhausted its640MiB heap, and the first focused check
 found the annotation error; both failures remain retained. Source/saved review
