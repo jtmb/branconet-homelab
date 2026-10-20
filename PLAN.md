@@ -1,6 +1,22 @@
 # Kubernetes migration plan and acceptance contract
 
 
+## Selected-path QueryState caller review — 2026-10-20 (Toronto)
+
+Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. PathDetail binds path metadata to pathQuery.refetch and path capabilities to capabilities.refetch. The former spreads the original path snapshot and replaces only data with the existing capability-gated path; the latter passes capabilities directly. Ordinary retained metadata keeps its qualification. Path or capability401/403 suppresses the path body and its retained-body/stale claims; the capability message applies usable to its own snapshot. These public messages establish no current permission or native-state authority.
+
+The shared stale template literally produces Previously loaded path metadata metadata is stale. The frozen selected-path test explicitly expects that text; it remains unchanged. No supported behavior correction, candidate or fixture/oracle change was made. Exact selected IDs/query keys, labels/Retry callbacks, all session/freshness/capability/action gates, mappings, captured drafts, polling, cursors/page bounds, search, selection and navigation remain unchanged.
+
+The89-line21-case selected-path-presentation test and109-line22-case empty-mappings test source were read in full, not executed. The former selects only the path-metadata caller and asserts projection/query/Retry identity using synthetic snapshots/JSX; its callback counter is a local test callback. It does not select the capability QueryState caller. The latter selects mapping/table paragraphs with a string placeholder. No model execution, mounted React/hooks/effects/useMutation, DOM/focus/browser/HTTP/backend/native/actual AT/security/performance/recovery/image/live qualification occurred. All333 accepted inputs and22 owner documents freshly match at receipt and preparation.
+
+Only binding/evidence/doc artifacts were prepared; no application source, candidate/new suite/workload/test/build/lint/types/graph/application commit/push/newCI. Evidence/doc preparation scripts were read in full before adaptation; no prior application runner/build/review/monitor was adapted or executed. Oversized outputs were narrowed and a Windows wildcard-search error corrected. Adjacent declarations/audit headings/search matches were incidentally visible without private/native evaluation or finding inspection/disposition. Prior finite146 recorded-birth closure remains historical, without new closure/universal/exhaustive/unrecorded-helper/observer-self absence claims.
+
+Accepted BuildIDp1bLLgS38NiOt1_HfYyPM/662focusedpasses/333inputs/37428dependencies/41723graph and exactly one prior ROOT fullgraphcomparison remain prior source-specific evidence, not rerun. Retained exact-head PR39397653304/push39397643969 each succeeded12steps/1242units; currentAllSuccessful ONLY those retained runs, overallCIQualifiedFALSE. PR39376493085/PR39335907142/push39345339490 remain unresolved/causeUNESTABLISHED. Rejected retention-stale candidate/five ORIGINAL frozen failures remain private/rejected; separate331build NEVER executed, earlier424 preparation historical/unexecuted. No native-fixture diagnosis/replay/manualdispatch/workflowchange.
+
+RootdocsLOCAL/fournew+prior32+earlierone findings UNRESOLVED. All44originalclauses/frozenfixtures/failures/A07five-of-tenwarmfailures and durable boundaries remain. FullgoalACTIVE; PRDdeployment AND actualverification FINAL after ALL original preceding gates. Next separate bounded public source/saved-test review: shared QueryState message co-presence, status/alert declarations and Retry visibility. Its declarations were incidentally visible; no deeper composition review began here.
+[Bounded source-inspection receipt](evidence/bortus-selected-path-query-messages-review-root-20261020.json).
+
+
 ## Selected-path field-mapping table source review — 2026-10-20 (Toronto)
 
 Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. PathDetail names its table KV field mappings and supplies Logical field and Exact native key columns. It directly maps saved item.field to row id/field and item.key to key, without normalization, joining or reconstruction. Caller projection retains source array order; the shared table sorts a copied array by its selected column, initially field ascending, then ascending ID tie breaker, and renders at most100 rows. No actions prop is supplied. No concrete supported presentation correction was found.
