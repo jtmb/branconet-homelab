@@ -1,5 +1,26 @@
 # BORTUS workflow guide
 
+## Resource-list page resets and boundary focus (2026-10-20)
+
+Changing a shared ResourceTable search/filter or sort resets its page to one,
+including clearing an empty or one-row search back to an earlier filter. The
+table records each key transition so a previous page number cannot reappear.
+Sorting and the 100-row page size remain unchanged. When Previous or Next reaches
+its boundary and becomes disabled, focus moves to the named pagination region,
+which is programmatically focusable without adding a Tab stop. Focus remains on
+the search field and sort buttons during their normal interactions.
+
+The initial compiled Pods fixture reproduced stale page two after clearing
+empty and one-row searches, and body focus at two Next boundaries. Those saved
+failures remain retained. The corrected fresh production build, focused zero-warning lint and full
+nonincremental types pass. Affected compiled Codex IAB checks pass all 5410
+saved-evidence checks across 25 full DOM/accessibility captures and 24 actions,
+including first/last boundaries and Tab continuation. The original 22 row/link/
+page oracles remain exact; only the two boundary focus targets change to the
+named pagination region, with three additional boundary/Tab states. Two actual
+screenshots were inspected. Actual assistive technology, true zoom and all
+original delivery gates remain open.
+
 Sign-in HTTP refusals show the server's JSON string error or `Login failed` if
 the body is unreadable or malformed. The form remains available for an explicit
 retry. Network failures retain their network-error feedback, and successful

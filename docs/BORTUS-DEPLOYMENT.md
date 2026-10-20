@@ -1,5 +1,25 @@
 # BORTUS application deployment
 
+## Public resource pagination correction (2026-10-20)
+
+The shared ResourceTable now records each search/filter/sort key transition,
+preventing a saved page from reappearing when a search is cleared. Boundary
+paging events move focus to the existing named pagination region before their
+button becomes disabled. Page size, data projections, links, sort semantics,
+queries, authorization, schema, native Secrets and deployment contracts are
+unchanged. The first 208-row compiled Pods fixture exposed stale page two after
+clearing empty/one-row searches and body focus on two final-page transitions.
+Its original captures and failures are retained. Fresh isolated production build, focused zero-warning lint and full
+nonincremental types pass on 333 current inputs with 37428 unchanged dependencies.
+BuildID 6L__Bb3L8GTj93JRhod5U has 41723 compiled/dependency records and verified
+native/worker packaging. One fresh prelaunch comparison precedes the corrected
+IAB run: 5410 checks, 25 DOM/accessibility captures, 24 actions, two inspected
+images, 14 synthetic API transactions, zero forwarding/refusals/warnings/errors.
+Runtime retains 2CPU/1GiB/no-extra-swap/PID256/network-none/read-only/1800s;
+build retains 4CPU/4GiB/900s. Exact build/runtime containers and sampled births
+close normally. The initial failing run remains separate. No actual AT, true
+zoom, security, performance, recovery or production acceptance follows.
+
 ## Selected-path empty field-mapping explanation (2026-10-20)
 
 The public PathDetail adds one ordinary paragraph when its existing visible path metadata has no field mappings: No field mappings are recorded in this path metadata snapshot. This does not establish whether native data exists. The paragraph describes the displayed snapshot, including ordinary retained metadata; it makes no current native-state or authorization claim. Nonempty mappings retain exact field/native-key rows, order and column labels without the paragraph. Missing or capability-denied path metadata has no orphan explanation. The original selected IDs, query/session/freshness/capability/action gates, retained metadata/captured drafts, forms, polling, selection, navigation and private workbench remain unchanged.

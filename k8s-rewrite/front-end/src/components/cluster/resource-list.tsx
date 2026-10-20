@@ -79,6 +79,9 @@ export function ResourceTable({ rows, columns: fields, detail, type, resetKey, r
   const column = fields.find(field => field.key === sortKey);
   const sorted = useMemo(() => [...rows].sort((a, b) => compareValues(a[sortKey], b[sortKey], column?.sort, sortDir)
     || compareValues(a.name, b.name) || compareValues(a.namespace, b.namespace)), [rows, sortKey, sortDir, column?.sort]);
+  // Remember every key transition, including searches with no matching rows.
+  // Otherwise returning to an earlier key can resurrect its old page number.
+  if (paging.key !== key) setPaging({ page: 1, key });
   if (!rows.length) return <p className="rounded-lg border border-zinc-800 p-6 text-zinc-400">No matching {label ? label.toLowerCase() : "resources"} in this snapshot.</p>;
   return <>
     <div className="overflow-x-auto rounded-lg border border-zinc-800"><table aria-label={label} className="w-full text-sm"><thead><tr>
@@ -93,10 +96,10 @@ export function ResourceTable({ rows, columns: fields, detail, type, resetKey, r
       })}
       {(type || renderActions) && <td className="px-2">{type ? <ResourceActionsMenu resourceType={type} resource={row} /> : renderActions?.(row)}</td>}
     </tr>)}</tbody></table></div>
-    <nav aria-label={label ? `${label} pagination` : "Table pagination"} className="mt-3 flex flex-wrap items-center gap-3 text-sm">
+    <nav aria-label={label ? `${label} pagination` : "Table pagination"} tabIndex={-1} className="mt-3 flex flex-wrap items-center gap-3 text-sm">
       <span>{rows.length} resources · Page {page} of {totalPages}</span>
-      <button disabled={page <= 1} onClick={() => setPaging({ key, page: page - 1 })} className="rounded bg-zinc-800 px-3 py-1 disabled:opacity-40">Previous</button>
-      <button disabled={page >= totalPages} onClick={() => setPaging({ key, page: page + 1 })} className="rounded bg-zinc-800 px-3 py-1 disabled:opacity-40">Next</button>
+      <button disabled={page <= 1} onClick={event => { if (page === 2) event.currentTarget.parentElement?.focus(); setPaging({ key, page: page - 1 }); }} className="rounded bg-zinc-800 px-3 py-1 disabled:opacity-40">Previous</button>
+      <button disabled={page >= totalPages} onClick={event => { if (page === totalPages - 1) event.currentTarget.parentElement?.focus(); setPaging({ key, page: page + 1 }); }} className="rounded bg-zinc-800 px-3 py-1 disabled:opacity-40">Next</button>
     </nav>
   </>;
 }

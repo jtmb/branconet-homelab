@@ -1,5 +1,19 @@
 # BORTUS user permissions
 
+## Resource pagination boundary focus (2026-10-20)
+
+The shared ResourceTable resets paging on every search/filter/sort key change,
+including returning to an earlier key after empty results. When a paging button
+reaches its disabled boundary, its event moves focus to the named pagination
+region with tabIndex=-1. Ordinary Tab order gains no extra stop. The existing
+sort names, aria-sort, decorative glyphs, public readonly metadata, links and
+permission gates remain unchanged. Fresh production build, focused zero-warning lint and full nonincremental
+types pass. The affected compiled Pods fixture passes 5410 checks across 25
+DOM/accessibility captures and 24 actions, including boundary-region focus,
+Tab continuation, search focus and Enter/Space sorting. The first run's
+stale-page and body-focus failures remain retained. Actual assistive-technology
+acceptance remains open.
+
 ## Decorative shared sort indicators (2026-10-20)
 
 The shared SortIcon renders its inactive, ascending and descending SVG indicators with explicit aria-hidden=true and focusable=false. SortHeader and SortHeaderRight retain their button names and callbacks; table aria-sort, ordering, focus, layout, data and authorization gates retain their existing behavior. This corrects unnamed image descendants observed in the public metadata tables. Fresh isolated BuildID CYo68bMT0TvaJO2pbvXKj passes the production compile, focused zero-warning lint and full nonincremental types. Focused compiled Codex IAB validation passes 715 checks across 13 saved DOM/accessibility snapshots and 12 actions: inactive/up/down glyphs carry both attributes and have no image descendants in the accessibility snapshots, while names, aria-sort, exact mount/path/mapping row orders, Enter/Space, Tab/Shift+Tab and selected-path focus return remain correct. Two actual screenshots were inspected; no browser warnings/errors were captured. The maximum mounted set includes 15 sort glyphs. This is finite public metadata-only evidence; actual assistive technology, true browser zoom and full browser acceptance remain unqualified. The original 789-test source qualification is retained without replay. Build4CPU/4GiB/900s and runtime2CPU/1GiB/1800s maximum retain no extra swap, PID256, network-none and read-only root. All333 candidate inputs,37428 dependencies and41723 graph records are bound; one prelaunch graph walk passes. Exact build/runtime containers,25 sampled build births,2 sampled runtime births and the runtime supervisor are absent; closure is finite, with no universal helper or observer-self claim. No production, native backend CRUD, schema, query, security or recovery change follows; all original gates and failures remain.
