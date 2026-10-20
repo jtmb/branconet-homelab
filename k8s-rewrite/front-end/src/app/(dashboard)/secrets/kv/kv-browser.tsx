@@ -66,6 +66,7 @@ function PathDetail({ id, heading, close }: { id: string; heading: MutableRefObj
   const canUpdate = session.canKvWrite && fresh(pathQuery) && fresh(capabilities) && caps?.revision === path?.revision && caps?.permissions.update;
   const [workbenchOpen, setWorkbenchOpen] = useState(false), workbenchTrigger = useRef<HTMLButtonElement>(null);
   const freshCapabilities = fresh(capabilities) && caps?.pathId === id && caps.revision === path?.revision ? caps : null;
+  const summaryCapabilities = fresh(pathQuery) ? freshCapabilities : null;
   const focusHeading = useCallback((element: HTMLHeadingElement | null) => { heading.current = element; element?.focus(); }, [heading]);
   return <section className={surface}><div className="flex flex-wrap items-center gap-3"><h2 ref={focusHeading} tabIndex={-1} className="break-all font-semibold">KV path {path?.path ?? id}</h2><button className={button} onClick={close}>Close path</button></div>
     <QueryState query={{ ...pathQuery, data: path }} label="path metadata" retry={pathQuery.refetch} /><QueryState query={capabilities} label="path capabilities" retry={capabilities.refetch} />
@@ -73,8 +74,9 @@ function PathDetail({ id, heading, close }: { id: string; heading: MutableRefObj
       <button ref={workbenchTrigger} className={button} disabled={!fresh(pathQuery) || !freshCapabilities} onClick={() => setWorkbenchOpen(true)}>Values and versions</button>
       <MetadataTable label="KV field mappings" rows={path.fields.map(item => ({ id: item.field, field: item.field, key: item.key }))} columns={[{ key: "field", label: "Logical field" }, { key: "key", label: "Exact native key" }]} />
       {session.canKvWrite && caps?.permissions.update && <RetentionForm path={path} editable={!!canUpdate} />}</>}
-    {caps && <><p className="text-sm text-zinc-400">Allowed actions: {Object.entries(caps.permissions).filter(([, allowed]) => allowed).map(([action]) => action).join(", ") || "none"}.</p>
-      <p className="text-sm text-amber-300">Native value mutations {caps.nativeMutationEnabled ? "enabled by operator assertion" : "disabled"}. External admission/RBAC verification is still required.</p></>}
+    {summaryCapabilities ? <><p className="text-sm text-zinc-400">Allowed actions: {Object.entries(summaryCapabilities.permissions).filter(([, allowed]) => allowed).map(([action]) => action).join(", ") || "none"}.</p>
+      <p className="text-sm text-amber-300">Native value mutations {summaryCapabilities.nativeMutationEnabled ? "enabled by operator assertion" : "disabled"}. External admission/RBAC verification is still required.</p></> :
+      <p className="text-sm text-amber-300">Current allowed actions and native mutation status are unavailable. Refresh path metadata and capabilities for this selection. External admission/RBAC verification is still required.</p>}
     <QueryState query={status} label="native status" retry={status.refetch} />{state && <p className="break-all">Native {state.adopted ? "adopted" : "unadopted"} · head {state.head} · {state.tombstone ? "tombstoned" : "not tombstoned"} · UID {state.uid} · resourceVersion {state.resourceVersion}</p>}
     <QueryState query={versions} label="version metadata" retry={versions.refetch} />{history && <><MetadataTable label="KV version metadata" rows={history.items.map(item => ({ id: String(item.version), version: item.version, name: item.name, uid: item.uid, createdAt: item.createdAt, tombstone: item.tombstone ? "Yes" : "No" }))} columns={[{ key: "version", label: "Version", sort: "number" }, { key: "name", label: "History Secret" }, { key: "uid", label: "History UID" }, { key: "createdAt", label: "Created", sort: "date" }, { key: "tombstone", label: "Tombstone" }]} />
       {!history.items.length && !versions.error && <p>No committed versions in this native snapshot.</p>}</>}
