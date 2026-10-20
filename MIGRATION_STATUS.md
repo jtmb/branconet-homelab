@@ -1,5 +1,51 @@
 # Migration acceptance evidence
 
+## Distinct compiled-overlay source compatibility contract - 2026-10-20 (Toronto)
+
+`scripts/migration/bortus-compiled-overlay-contract.py` is a separate read-only
+contract validator. Its version is `bortus-compiled-overlay-staging/v1`, recipe
+`compiled-overlay-v1`. The exact public contract is
+`scripts/migration/contracts/compiled-overlay-7940e9e1-v1.json`. An independent
+SHA256 pin is required to load a contract. It binds source7940e9e1/BuildID
+6L__Bb3L8GTj93JRhod5U, manifest/local image73aecec9, distinct raw configd19974d6,
+actual saved archive27bc0016/991697920bytes, all20 ordered layer descriptors and
+diff IDs, all eight labels, retained base4a84c0b5 and eight separate authority
+hashes. Raw-Git296, current-source333 and compiled/dependency41723 authorities
+remain separate; checking authority file bytes does not rewalk the graph.
+
+The Python API validates saved archive bytes using the original bounded archive
+primitives plus this recipe's direct OCI manifest/index and exact eight-label
+contract. It verifies export-record identities, constructs credential-free planned
+preload envelopes for the three fixed hosts in order, and checks supplied node
+inventory/manifest/config bytes against the exact image. Constructing an expected
+export record or envelope is not proof that an export or import happened. Config
+Env fields are never returned. The open regular-file identity must remain stable
+through archive verification; acquisition/transport ownership remains external.
+The only CLI operation validates a contract file;
+there is no Docker/SSH/sudo/import/export/transfer/publication/deployment dispatch.
+Future transport integration and actual execution require their own reviewed scope.
+Legacy v1/release-v2 exporter and per-node source/protocol are unchanged and keep
+refusing this recipe. The new protocol cannot be sent to the legacy node helper.
+
+The source contract is complete and reviewed. Twenty initial frozen public
+controls pass; after a stable-file review correction, all22 final controls pass
+in0.774s under the60s wrapper. The original passing source/test snapshots remain.
+A saved-evidence review passes223 checks; its initial Windows path-separator
+refusal is preserved and corrected without repeating the controls. One read-only
+verification of the exact retained991697920-byte archive passes in3.722s under
+30CPU-seconds/512MiB address-space/60s wall limits, including all20 ordered blob
+and expanded diff IDs, exact OCI/index/config metadata and stable file identity.
+No Docker/SSH/sudo/import/export transport or application runtime is invoked.
+[Reviewed evidence](evidence/bortus-compiled-overlay-contract-root-20261020.json) records the finite scope. The contract-only
+CLI requires the exact contract-file SHA256
+`a47ea88d868bc99e0007ca78af7f393a616db4cbbfd03fd59f62c69c4c397ca1`.
+
+No actual export/preload was run for this tooling task. RootdocsLOCAL;
+four new/prior32/earlierone findings, all original44clauses/failures and all security,
+performance/actualAT/compatible independent recovery/fresh backup/quiescence/schema/
+effectiveRBAC/admission/data gates remain unresolved. No acceptance is inferred
+from a packaging contract. PRD deployment AND actual verification remain FINAL.
+
 ## Exact-image public browser assessment reviewed - 2026-10-20 (Toronto)
 
 The [finite exact-image assessment](evidence/bortus-exact-image-public-browser-root-20261020.json) is complete and reviewed on unchanged application7940e9e1/BuildID6L__Bb3L8GTj93JRhod5U, image73aecec9 and separate configd19974d6. The first run reaches welcome, login keyboard order and invalid-login feedback, then fails with ChunkLoadError because the bridge excludes parentheses in actual dashboard static paths. Its screenshot/log/failed result remain literal. A separately frozen continuation uses170 exact retained static paths, passes12 route controls and completes the remaining selected flow. No compiled graph walk, rebuild, dependency install or source change occurs.
