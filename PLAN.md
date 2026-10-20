@@ -1,5 +1,63 @@
 # Kubernetes migration plan and acceptance contract
 
+## Compiled-overlay staging adapters source qualified - 2026-10-20 (Toronto)
+
+Separate `stage-bortus-compiled-overlay.py`, `bortus-compiled-overlay-node.py`
+and `bortus-compiled-overlay-io.py` implement the distinct
+`bortus-compiled-overlay-adapter/v1` execution protocol, consuming the exact
+compiled-overlay compatibility contract SHA256
+`a47ea88d868bc99e0007ca78af7f393a616db4cbbfd03fd59f62c69c4c397ca1`.
+The read-only validator, exact contract and legacy v1/release-v2 files are unchanged.
+Expected packaging records and planned envelopes cannot satisfy the separate
+completed export execution receipt. Manifest/local73aecec9 and rawconfigd19974d6
+remain different identities; exact saved archive27bc0016/991697920bytes remains
+required. Source and node identity checks do not adopt old execution receipts.
+
+Export inspects the exact local Docker tag before/after its bounded save, checks
+the entire archive and records a distinct execution outcome. Preload verifies a
+pinned completed export, copies protected inputs and calls ONLY the fixed three
+SSH targets in order, port2002/strict host keys/no agent forwarding. The fixed
+launcher injects reviewed copied source modules in memory; credentials and image
+bytes enter stdin only. The exact contract pin is checked independently on each
+node, before authorization. The separate node protocol refuses legacy envelopes,
+checks both tag spellings absent before receipt and immediately before import,
+verifies the entire exact archive hash/size, then queries the direct OCI manifest
+and separate config after import. Config Env is never persisted or returned.
+Both exporter and node recheck retained archive stability after final metadata.
+
+Exclusive deterministic0700 runs and0600 files, nofollow non-writable ancestor
+and regular/single-link input checks, descriptor identity fences, and fsynced
+pending records precede dispatch. Lost/invalid replies or failures after dispatch
+remain uncertain; later nodes stop, earlier completed nodes remain. No resume,
+adoption, rollback, automatic replay or automatic retry exists. Any future
+execution needs protected Linux tooling/input locations and separate authority.
+External exclusive source/tag/import ownership is required; tag operations are
+not atomic CAS. Child stdout is bounded, raw stderr discarded, failures fixed
+and redacted, and only the owned child PID is killed/waited on timeout. Remote
+operations may outlive lost SSH replies; no remote cancellation is attempted.
+Python cannot promise password zeroization or power-loss durability.
+
+The first31 frozen public controls pass in2.932s. Review adds final archive
+stability fences and two concurrent-write controls; all33 final frozen controls
+pass in3.001s under60s wall/30CPU-seconds/512MiB address space. Initial passing
+source/test snapshots remain frozen. Controls use public synthetic archives,
+protected POSIX fixture files, fake child processes and mocked transports only;
+the existing public archive generator is reused, without running its old suite.
+No actual adapter CLI export/preload, Docker/SSH/sudo/ctr command, runtime,
+publication or production operation occurred. This is source qualification only.
+[Reviewed evidence](evidence/bortus-compiled-overlay-adapter-root-20261020.json) records the scope and retained failures.
+
+All189 existing docs/evidence files were read for documentation impact; four
+operational docs plus plan/status are updated with original suffixes preserved.
+RootdocsLOCAL; four new/prior32/earlierone findings, all44originalclauses/failures,
+and original security/performance/actualAT/compatible independentrecovery/fresh
+backup/quiescence/schema/effectiveRBAC/admission/data gates remain unresolved.
+Three successful CI scopes stay separate; overallCIQualified=false. No new scan,
+manualCI/workflow, app source/build/install/download, graph/oldcorpus/benchmark,
+operatorDB/private-native/recovery replay, remote mutation or promotion. Fullgoal
+ACTIVE/no budget; PRDdeployment AND actualverification remain FINAL REQUIRED.
+
+
 ## Distinct compiled-overlay source compatibility contract - 2026-10-20 (Toronto)
 
 `scripts/migration/bortus-compiled-overlay-contract.py` is a separate read-only
