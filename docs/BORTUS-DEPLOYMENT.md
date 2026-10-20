@@ -1,6 +1,24 @@
 # BORTUS application deployment
 
 
+## Public number-conversion declaration source review - 2026-10-20 (Toronto)
+
+Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. The scalar number branch declares const result = Number(value), then return Number.isFinite(result) ? result : null, after the existing absence precheck. These are literal declarations, not executed conversion/guard results, coercion values, exception behavior, precision or runtime ordering. No concrete supported correction compatible with frozen expectations was established.
+
+Three literal production observations bind the scalar signature, absence precheck and complete number branch. Five targeted saved selections from accepted193-line tests/query-store.test.ts bind the real-helper import, enclosing test, numeric array-sort assertion and explicit-null descending number assertion, and closing. Read never executed; no current test result or exhaustive coercion/absence/precision/direction coverage. No Number/helper/comparator/callback/hook/sorting/render/test/AST/model invocation. All333 accepted inputs/22 owner docs freshly match receipt/preparation. Exact677 retained plus19 preceding current proofs freshly rehashed (696 total).
+
+Only binding/evidence/doc preparation scripts adapted after actual selected scripts/schema reads. No candidate/new suite/test/workload/build/lint/types/graph/app commit/push/newCI/source-dependency copies/persistent runtime/worker. No React/DOM/browser/backend/native/actualAT/security/performance/recovery/image/live evaluation. Prior finite146 closure historical, not refreshed; no universal/exhaustive/unrecorded-preparation/Windows/helper/observer-self absence claim. A combined read-only owner-document search output was truncated and narrowed; omitted/null fields are not evidence. Historical public validation/private-workbench introductory text and adjacent quantity/date/elapsedAge declarations and quantity/count/age/date/text assertions were incidental and unevaluated. No finding body inspection/classification/diagnosis/disposition.
+
+Prior BuildIDp1bLLgS38NiOt1_HfYyPM/662focusedpasses/333inputs/37428dependencies/41723graph/EXACTLY ONE prior ROOT fullgraphcomparison retained, not rerun. currentAllSuccessful applies ONLY to RETAINED exact-head PR39397653304/push39397643969, each12steps/1242units; overallCIQualified=false. PR39376493085/PR39335907142/push39345339490 failures unresolved/causeUNESTABLISHED. Rejected retention-stale candidate/five ORIGINAL frozen failures remain private/rejected; separate331build NEVER executed; earlier424preparation historical/unexecuted. No native-fixture diagnosis/replay/manualdispatch/workflowchange.
+
+RootdocsLOCAL; four new/prior32/earlier one findings UNRESOLVED. All44originalclauses/frozenfixtures/failures/A07five-of-tenwarmfailures and durable boundaries remain. FullgoalACTIVE; PRDdeployment AND actualverification FINAL after ALL original preceding gates. Next separate bounded public source/saved synthetic-source review: numeric-result comparison declarations. No next-feature evaluation began here.
+
+
+
+
+[Bounded source-inspection receipt](../evidence/bortus-number-conversion-declaration-review-root-20261020.json).
+
+
 ## Public text-collation declaration source review - 2026-10-20 (Toronto)
 
 Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. The shared natural binding declares new Intl.Collator(undefined, { numeric: true, sensitivity: "base" }); scalar ends with String(value), and compareValues declares text/ascending defaults and natural.compare(String(first), String(second)) in its non-array/non-numeric alternative. These are literal construction/call/default declarations, not an executed collator, resolved locale/default options, coercion values, equality/stability, accent/case/punctuation behavior or runtime order. No concrete supported correction compatible with frozen expectations was established.
