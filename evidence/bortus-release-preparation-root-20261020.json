@@ -1,0 +1,92 @@
+{
+  "scope": "Approved deployment-plan implementation: release preparation only",
+  "concreteNamespacesTaskComplete": false,
+  "fullGoalComplete": false,
+  "sourceCommit": "7940e9e1f9000422efd03a03de69d407d9043428",
+  "chartsCommit": "835dabebd97a7691311b2c6748fd3cfa4db17f44",
+  "nodesReady": 3,
+  "observedUTC": "2026-10-20T21:50:56.626467+00:00",
+  "liveImage": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+  "readyReplicas": 1,
+  "boundPVCs": 2,
+  "helmReleaseSuspended": true,
+  "fluxRevision": "validated@sha1:37dd61a242b488dabbdcec9277cb1ee84580f0e2",
+  "rawGitContextFiles": 296,
+  "contextSHA256": "fcccbd22fcd968d82117b2ca3ae805d426d2d224def962ad5a3cfec1a14614e9",
+  "contextManifestSHA256": "9f45b0145f52b4797448e5621a04b15932ba32fdb15aa1de18041bb676254ae0",
+  "currentSourceInputsVerified": 333,
+  "currentOwnerDocsVerified": 22,
+  "helmLintStrict": true,
+  "renderedObjects": 83,
+  "stagedImageMustBeReplaced": true,
+  "newQualifiedImageSelected": false,
+  "currentRBACMatchingBindings": 42,
+  "proposedRBACMatchingBindings": 5,
+  "authorizationObservations": [
+    {
+      "principal": "system:serviceaccount:bortus:bortus",
+      "verb": "get",
+      "resource": "secrets",
+      "namespace": "bortus",
+      "allowed": true
+    },
+    {
+      "principal": "system:serviceaccount:bortus:bortus-kv",
+      "verb": "get",
+      "resource": "secrets",
+      "namespace": "bortus-secrets",
+      "allowed": false
+    },
+    {
+      "principal": "system:serviceaccount:bortus:bortus-kv",
+      "verb": "update",
+      "resource": "secrets",
+      "namespace": "bortus-secrets",
+      "allowed": false
+    },
+    {
+      "principal": "system:serviceaccount:bortus:bortus-kv",
+      "verb": "get",
+      "resource": "secrets",
+      "namespace": "bortus-history",
+      "allowed": false
+    },
+    {
+      "principal": "system:serviceaccount:bortus:bortus-kv",
+      "verb": "create",
+      "resource": "secrets",
+      "namespace": "bortus-history",
+      "allowed": false
+    },
+    {
+      "principal": "system:serviceaccount:bortus:bortus-kv",
+      "verb": "delete",
+      "resource": "secrets",
+      "namespace": "bortus-history",
+      "allowed": false
+    }
+  ],
+  "admissionExercised": false,
+  "nativeValuesRead": false,
+  "operatorDatabaseOpened": false,
+  "migrationsRun": false,
+  "imageBuilt": false,
+  "imageImported": false,
+  "productionMutation": false,
+  "namespacesFixtureFrozenAndUnchanged": true,
+  "namespacesRuntimeLaunched": false,
+  "namespacesPrelaunchWalks": 0,
+  "IABInitializationError": "failed to write kernel assets: The system cannot find the path specified. (os error 3)",
+  "actualAT": false,
+  "trueZoom": false,
+  "fullBrowserAcceptance": false,
+  "overallCIQualified": false,
+  "originalAcceptanceGatesPreserved": true,
+  "fourFindingsUnresolved": true,
+  "prior32AndEarlierOneUnresolved": true,
+  "rootDocsLocal": true,
+  "fullGoalActive": true,
+  "noTokenBudget": true,
+  "noHandoff": true,
+  "PRDDeploymentAndActualVerificationFinalRequired": true
+}
