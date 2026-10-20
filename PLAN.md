@@ -1,5 +1,52 @@
 # Kubernetes migration plan and acceptance contract
 
+## Current-source image assembled and public HTTP qualified - 2026-10-20 (Toronto)
+
+The current-source image is assembled and locally exported with a distinct
+`compiled-overlay-v1` recipe. [Saved evidence](evidence/bortus-current-source-compiled-image-root-20261020.json) binds application
+7940e9e1 and BuildID `6L__Bb3L8GTj93JRhod5U` to manifest/local ID
+`sha256:73aecec9018cfc0634828a1def4a78c58410054a5fa51f7aa340493e2bef804c`
+and separate raw config `d19974d641cec360ca457abf0f82810947642e8c5686559cadae2851e7ce3053`.
+The actual Docker export is991697920bytes/SHA256
+`27bc001603e397ad5c9c14d82ceb8c62a17ab23459cf9ab745aed3076bdde337`.
+All20 ordered layers,183 installed production packages and28258 application
+payload entries verify. Actual inert Docker exports prove all933 entries outside
+`/app` unchanged and the complete new payload exact, with stale application
+entries absent. Both inert containers are removed. No application rebuild,
+dependency install/download or native/private recovery replay occurred.
+
+The296 raw-Git context,333 current raw inputs and41723 compiled/dependency records
+remain separate authorities. ONE new-lane graph comparison completed before the
+first invalid LF/CRLF equality assertion;284 raw source files differ from Git only
+by CRLF. That pre-Docker failure is retained; the reviewed continuation does not
+repeat the graph walk. Actual assembly uses4CPU/4GiB/no-extra-swap/PID256,
+network-none/read-only-root and900s; Docker daemon operations are separately
+bounded, without a daemon-wide resource-cap claim. Worker exit0 is separate from
+controller exit1 at post-load tag lookup. The exact generated digest was then
+verified and the absent canonical local alias created in a separate operator
+step. Assembly/load were not replayed; both original failures remain literal.
+
+Twenty-one synthetic packaging controls and25 saved-evidence review checks pass.
+One focused actual-image public runtime passes12 semantic groups/26 HTTP requests:
+normal entrypoint applies11 migrations to a fresh synthetic tmpfs DB; liveness,
+public pages/redirect/static bytes, bootstrap/login/session, readonly permissions,
+logout cookie and tampered-signature checks pass. Readiness correctly503 without
+Kubernetes access. Runtime retains2CPU/1GiB/no-extra-swap/PID256/network-none,
+read-only-root and1800s maximum. Runtime/tool exit0, exact CID/name and two sampled
+runtime births are absent; nine runtime/tool/supervisor and12 assembly-tool births
+are independently absent. Closure is finite. Both SQLite experimental warnings
+remain recorded. No populated-data preservation/schema-compatibility claim follows.
+
+This completes only the bounded assembly/export/public-HTTP task. No image browser,
+actualAT/truezoom, security/performance, native values/history/CAS/rotation/recovery,
+effective RBAC/admission or production acceptance is added. Original v1/release-v2
+exporter/preloader contracts remain unchanged and REFUSE this new recipe; source
+contract compatibility remains a separate prerequisite before any future preload.
+No scan/newCI/workflow/preload/merge/promotion/production change. RootdocsLOCAL;
+four new/prior32/earlierone findings, A07five-of-ten warm failures, all44clauses and
+original failures remain. Three CI scopes remain distinct; overallCIQualified=false.
+Full objective ACTIVE/no budget; PRD deployment AND actual verification remain FINAL.
+
 ## Public Namespaces elapsed-age sorting qualified - 2026-10-20 (Toronto)
 
 The [focused Namespaces qualification](evidence/bortus-public-namespaces-age-sort-root-20261020.json) passes796 saved-evidence checks across seven complete DOM/accessibility captures, six actions and two inspected screenshots. Twenty-one synthetic readonly public rows exercise Age ordering in both directions across s/m/h/d/y, equivalent elapsed units, natural numeric-name ties and absent/null/unknown/invalid/empty/dash values last. All three original data cells/titles, exact namespace detail links, action triggers and original pagination remain exact. Enter/Space, Tab to the first namespace link, Shift+Tab focus return, accessible names/aria-sort and three decorative/nonfocusable sort SVGs pass; indexed AX sort buttons have no image descendants. No captured browser warning/error.

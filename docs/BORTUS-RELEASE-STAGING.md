@@ -1,5 +1,82 @@
 # Immutable image export and sequential preload
 
+## Current-source image assembled and public HTTP qualified - 2026-10-20 (Toronto)
+
+The current-source image is assembled and locally exported with a distinct
+`compiled-overlay-v1` recipe. [Saved evidence](../evidence/bortus-current-source-compiled-image-root-20261020.json) binds application
+7940e9e1 and BuildID `6L__Bb3L8GTj93JRhod5U` to manifest/local ID
+`sha256:73aecec9018cfc0634828a1def4a78c58410054a5fa51f7aa340493e2bef804c`
+and separate raw config `d19974d641cec360ca457abf0f82810947642e8c5686559cadae2851e7ce3053`.
+The actual Docker export is991697920bytes/SHA256
+`27bc001603e397ad5c9c14d82ceb8c62a17ab23459cf9ab745aed3076bdde337`.
+All20 ordered layers,183 installed production packages and28258 application
+payload entries verify. Actual inert Docker exports prove all933 entries outside
+`/app` unchanged and the complete new payload exact, with stale application
+entries absent. Both inert containers are removed. No application rebuild,
+dependency install/download or native/private recovery replay occurred.
+
+The296 raw-Git context,333 current raw inputs and41723 compiled/dependency records
+remain separate authorities. ONE new-lane graph comparison completed before the
+first invalid LF/CRLF equality assertion;284 raw source files differ from Git only
+by CRLF. That pre-Docker failure is retained; the reviewed continuation does not
+repeat the graph walk. Actual assembly uses4CPU/4GiB/no-extra-swap/PID256,
+network-none/read-only-root and900s; Docker daemon operations are separately
+bounded, without a daemon-wide resource-cap claim. Worker exit0 is separate from
+controller exit1 at post-load tag lookup. The exact generated digest was then
+verified and the absent canonical local alias created in a separate operator
+step. Assembly/load were not replayed; both original failures remain literal.
+
+Twenty-one synthetic packaging controls and25 saved-evidence review checks pass.
+One focused actual-image public runtime passes12 semantic groups/26 HTTP requests:
+normal entrypoint applies11 migrations to a fresh synthetic tmpfs DB; liveness,
+public pages/redirect/static bytes, bootstrap/login/session, readonly permissions,
+logout cookie and tampered-signature checks pass. Readiness correctly503 without
+Kubernetes access. Runtime retains2CPU/1GiB/no-extra-swap/PID256/network-none,
+read-only-root and1800s maximum. Runtime/tool exit0, exact CID/name and two sampled
+runtime births are absent; nine runtime/tool/supervisor and12 assembly-tool births
+are independently absent. Closure is finite. Both SQLite experimental warnings
+remain recorded. No populated-data preservation/schema-compatibility claim follows.
+
+This completes only the bounded assembly/export/public-HTTP task. No image browser,
+actualAT/truezoom, security/performance, native values/history/CAS/rotation/recovery,
+effective RBAC/admission or production acceptance is added. Original v1/release-v2
+exporter/preloader contracts remain unchanged and REFUSE this new recipe; source
+contract compatibility remains a separate prerequisite before any future preload.
+No scan/newCI/workflow/preload/merge/promotion/production change. RootdocsLOCAL;
+four new/prior32/earlierone findings, A07five-of-ten warm failures, all44clauses and
+original failures remain. Three CI scopes remain distinct; overallCIQualified=false.
+Full objective ACTIVE/no budget; PRD deployment AND actual verification remain FINAL.
+
+## Current-source compiled overlay assembly preparation - 2026-10-20 (Toronto)
+
+A distinct `compiled-overlay-v1` lane is being prepared in
+`scripts/migration/assemble-bortus-compiled-release.py`. It packages the existing
+7940e9e1 compiled BuildID `6L__Bb3L8GTj93JRhod5U`; it does not run npm, install,
+recompile, or execute migrations. The 296-file raw-Git context, 333 current source
+inputs, 41723 compiled/dependency records, native/worker packaging and qualified
+runtime base remain separate authorities. The exact lock selects installed
+production packages, including the Prisma CLI absent from standalone output.
+Public/static files, schema/migrations, native selector and account worker are
+preserved. Only the copied entrypoint receives the existing CRLF-to-LF treatment.
+
+The proposed OCI layer makes `/app` opaque, replacing stale application assets
+while retaining the base layers and runtime configuration. Packaging is intended
+for a read-only container with 4CPU/4GiB/no-extra-swap/PID256/network-none and a
+900-second maximum. Docker save/load metadata operations are separate daemon
+operations; those container limits do not assert a daemon-wide CPU/memory cap.
+Input review/freeze, one NEW integrity comparison, actual constrained assembly,
+independent archive/filesystem review, exact local image inspection and focused
+public startup/auth/permission qualification remain pending. Original
+`release-v2` builder/exporter/preload contracts and all receipts remain unchanged;
+they refuse this new recipe. No preload authority is established by its archive.
+
+No image has yet been assembled in this lane. No new scan, CI replay/workflow,
+private native/recovery replay, production mutation or publication is authorized.
+Root documentation stays LOCAL; four new/prior32/earlierone findings and all
+original performance/security/actualAT/recovery/schema/RBAC/admission/data gates
+remain unresolved. Full objective ACTIVE/no budget; PRD deployment AND actual
+verification remain FINAL after the original preceding gates.
+
 ## Final source image staged — 2026-10-18
 
 Current app source `5aba82c` builds through release-v2 over the explicitly pinned maintained runtime. The exact saved image and its ordered layers are verified, and all three supplied nodes import the same runtime index `sha256:bfc78b697373727aebccf50c70ef1944c76691cc435da0ad3bcc4e44670ff211`. A separate operator cache correction adds the absent exact `docker.io/library/bortus@sha256:…` alias without force or changing the release tag; source and alias targets agree on every node. This operator step is recorded separately and is not attributed to the preload helper. Its exact executed source is retained in [bortus-5aba-cache-alias.py](../scripts/migration/operations/bortus-5aba-cache-alias.py); it is specific to this source/image/preload receipt, consumes sudo authorization only through stdin and never forces replacement of an existing alias.
@@ -677,3 +754,18 @@ The [master import](../evidence/bortus-retained-master-import-root-20261012.json
 ## 2026-10-14: saved current6e/newa7 image independently resolved
 
 The [saved-image qualification](../evidence/bortus-current6e-image-export-qualified-root-20261014.json) records one export/save at exit zero and an independent zero recomputation of the complete archive and descriptor chain. The 277117952-byte archive has SHA-256 2737b45f; local index 270b1b49 resolves to Linux/amd64 manifest 04d53895 and config 41bb5099, with thirteen ordered layers checked against their blob hashes and expanded diff IDs. Exact source labels, seven public config environment entries and attestation reference bytes are checked; attestation semantics and registry publication are not qualified. Nineteen original metadata files and two exporter sources remain current, four original process births and the independent reader are absent, and the later archive hash matches. Default seven-file exporter and combined five-file independent-source scans pass. No image is resaved, imported, pushed or run. Full filesystem comparison, fresh image security scan, application/native/TLS behavior, performance and guarded live acceptance remain pending.
+
+The first controller preflight stopped at an invalid raw-byte equality between
+raw-Git LF and compiled-workspace CRLF inputs, before any Docker command.
+All296 source bindings differ only by CRLF in284 files; no other delta was
+observed. The original333/41723 comparison is retained and is not repeated;
+a distinct reviewed continuation uses that exact comparison and validates the
+line-ending relationship separately. Original failure and controller remain.
+
+
+The single constrained assembly completed and its20-layer archive verified.
+Local Docker load returned0, but the following tag-name inspection refused.
+Read-only lookup by the exact generated manifest found the image and original
+tag. The controller failure is retained; its exact container was removed.
+A separate digest verification/local canonical-alias correction and export are
+being prepared, without rebuilding, reloading or replaying the assembly.

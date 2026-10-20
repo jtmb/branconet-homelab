@@ -1,5 +1,82 @@
 # Immutable BORTUS release image builder
 
+## Current-source image assembled and public HTTP qualified - 2026-10-20 (Toronto)
+
+The current-source image is assembled and locally exported with a distinct
+`compiled-overlay-v1` recipe. [Saved evidence](../evidence/bortus-current-source-compiled-image-root-20261020.json) binds application
+7940e9e1 and BuildID `6L__Bb3L8GTj93JRhod5U` to manifest/local ID
+`sha256:73aecec9018cfc0634828a1def4a78c58410054a5fa51f7aa340493e2bef804c`
+and separate raw config `d19974d641cec360ca457abf0f82810947642e8c5686559cadae2851e7ce3053`.
+The actual Docker export is991697920bytes/SHA256
+`27bc001603e397ad5c9c14d82ceb8c62a17ab23459cf9ab745aed3076bdde337`.
+All20 ordered layers,183 installed production packages and28258 application
+payload entries verify. Actual inert Docker exports prove all933 entries outside
+`/app` unchanged and the complete new payload exact, with stale application
+entries absent. Both inert containers are removed. No application rebuild,
+dependency install/download or native/private recovery replay occurred.
+
+The296 raw-Git context,333 current raw inputs and41723 compiled/dependency records
+remain separate authorities. ONE new-lane graph comparison completed before the
+first invalid LF/CRLF equality assertion;284 raw source files differ from Git only
+by CRLF. That pre-Docker failure is retained; the reviewed continuation does not
+repeat the graph walk. Actual assembly uses4CPU/4GiB/no-extra-swap/PID256,
+network-none/read-only-root and900s; Docker daemon operations are separately
+bounded, without a daemon-wide resource-cap claim. Worker exit0 is separate from
+controller exit1 at post-load tag lookup. The exact generated digest was then
+verified and the absent canonical local alias created in a separate operator
+step. Assembly/load were not replayed; both original failures remain literal.
+
+Twenty-one synthetic packaging controls and25 saved-evidence review checks pass.
+One focused actual-image public runtime passes12 semantic groups/26 HTTP requests:
+normal entrypoint applies11 migrations to a fresh synthetic tmpfs DB; liveness,
+public pages/redirect/static bytes, bootstrap/login/session, readonly permissions,
+logout cookie and tampered-signature checks pass. Readiness correctly503 without
+Kubernetes access. Runtime retains2CPU/1GiB/no-extra-swap/PID256/network-none,
+read-only-root and1800s maximum. Runtime/tool exit0, exact CID/name and two sampled
+runtime births are absent; nine runtime/tool/supervisor and12 assembly-tool births
+are independently absent. Closure is finite. Both SQLite experimental warnings
+remain recorded. No populated-data preservation/schema-compatibility claim follows.
+
+This completes only the bounded assembly/export/public-HTTP task. No image browser,
+actualAT/truezoom, security/performance, native values/history/CAS/rotation/recovery,
+effective RBAC/admission or production acceptance is added. Original v1/release-v2
+exporter/preloader contracts remain unchanged and REFUSE this new recipe; source
+contract compatibility remains a separate prerequisite before any future preload.
+No scan/newCI/workflow/preload/merge/promotion/production change. RootdocsLOCAL;
+four new/prior32/earlierone findings, A07five-of-ten warm failures, all44clauses and
+original failures remain. Three CI scopes remain distinct; overallCIQualified=false.
+Full objective ACTIVE/no budget; PRD deployment AND actual verification remain FINAL.
+
+## Current-source compiled overlay assembly preparation - 2026-10-20 (Toronto)
+
+A distinct `compiled-overlay-v1` lane is being prepared in
+`scripts/migration/assemble-bortus-compiled-release.py`. It packages the existing
+7940e9e1 compiled BuildID `6L__Bb3L8GTj93JRhod5U`; it does not run npm, install,
+recompile, or execute migrations. The 296-file raw-Git context, 333 current source
+inputs, 41723 compiled/dependency records, native/worker packaging and qualified
+runtime base remain separate authorities. The exact lock selects installed
+production packages, including the Prisma CLI absent from standalone output.
+Public/static files, schema/migrations, native selector and account worker are
+preserved. Only the copied entrypoint receives the existing CRLF-to-LF treatment.
+
+The proposed OCI layer makes `/app` opaque, replacing stale application assets
+while retaining the base layers and runtime configuration. Packaging is intended
+for a read-only container with 4CPU/4GiB/no-extra-swap/PID256/network-none and a
+900-second maximum. Docker save/load metadata operations are separate daemon
+operations; those container limits do not assert a daemon-wide CPU/memory cap.
+Input review/freeze, one NEW integrity comparison, actual constrained assembly,
+independent archive/filesystem review, exact local image inspection and focused
+public startup/auth/permission qualification remain pending. Original
+`release-v2` builder/exporter/preload contracts and all receipts remain unchanged;
+they refuse this new recipe. No preload authority is established by its archive.
+
+No image has yet been assembled in this lane. No new scan, CI replay/workflow,
+private native/recovery replay, production mutation or publication is authorized.
+Root documentation stays LOCAL; four new/prior32/earlierone findings and all
+original performance/security/actualAT/recovery/schema/RBAC/admission/data gates
+remain unresolved. Full objective ACTIVE/no budget; PRD deployment AND actual
+verification remain FINAL after the original preceding gates.
+
 ## Welcome source copy supersedes image copy - 2026-10-18 (Toronto)
 
 Application source `b0802b9` corrects the unsupported welcome claims, with [separate source qualification](../evidence/bortus-truthful-welcome-root-20261019.json). No new release image is assembled for this copy-only feature. The7b03 image and its browser observations below remain bound to d6382450, including the stale welcome copy. Package at the next justified source release boundary and qualify that exact image; do not transfer prior image/UI/performance evidence to changed source. All original release gates remain open.
@@ -1161,3 +1238,18 @@ The [generic Chrome helper probe](../evidence/bortus-a15-supported-helper-probe-
 The [actual attempt](../evidence/bortus-a15-current-at-owner-blocked-root-20261018.json) fails before START-READER. `get_window({id:17370190})` returns the exact selected ChromeTesting Window, then state capture refuses: `window id 17370190 no longer belongs to Chrome; current owner is Chrome`. Fresh selection and the single explicit-app recovery produce the same refusal. ROOT stops; no NVDA, fixture input or speech observation occurs. Both controllers return1. Original closure records show65 native CLI children closed, exact owned container removed,17 Windows births non-live, empty Job and closed handles. Two signaled Chrome objects remain queryable; no all-births-absent claim follows. The headed terminal is missing, as in the earlier failed attempt. Its ready record is pending1, not a browser pass.
 
 ROOT independently verifies15 finite record pins and retained source/input checks; peer review matches all65 CLI output hashes. No added process graph, Docker query, historical-boot reassignment or reader-absence chain follows. Initial ROOT READY-reader mistakes are retained in the receipt and corrected from the actual schema without restarting the fixture or changing bounds. Actual A15 announcements remain unproved and blocked on official helper access. No further unchanged AT retry, source adoption, production change or original-data retirement is scheduled.
+
+The first controller preflight stopped at an invalid raw-byte equality between
+raw-Git LF and compiled-workspace CRLF inputs, before any Docker command.
+All296 source bindings differ only by CRLF in284 files; no other delta was
+observed. The original333/41723 comparison is retained and is not repeated;
+a distinct reviewed continuation uses that exact comparison and validates the
+line-ending relationship separately. Original failure and controller remain.
+
+
+The single constrained assembly completed and its20-layer archive verified.
+Local Docker load returned0, but the following tag-name inspection refused.
+Read-only lookup by the exact generated manifest found the image and original
+tag. The controller failure is retained; its exact container was removed.
+A separate digest verification/local canonical-alias correction and export are
+being prepared, without rebuilding, reloading or replaying the assembly.
