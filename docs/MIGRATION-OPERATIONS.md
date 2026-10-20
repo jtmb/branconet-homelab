@@ -1,6 +1,15 @@
 # Approved cluster migration operations
 
 
+## Public sorting acceptance-gap consolidation - 2026-10-20 (Toronto)
+
+Production remains unchanged at b4c71f446a7cecfceefbe50b4291f0e9bb5265fc. Eight mapped evidence areas distinguish retained declarations, saved assertion source, historical synthetic results and missing real-component/browser/actual AT evidence. No supported compatible sorting correction is established. The concrete gap is source-bound finite qualification of the real MetadataTable/SortHeader/useSort/comparator composition: the saved metadata presentation harnesses replace that composition. Helper assertion source and historical662-pass presentation checks do not fill that gap.
+
+Exact715 retained plus19 current proofs freshly rehashed (734);333 accepted inputs/22 owner docs matched. No application runner/helper/hook/sort/render/test/AST/model execution, candidate/new suite/workload/build/lint/types/graph/app commit/push/newCI/source-dependency copies/persistent runtime/worker. Prior BuildIDp1bLLgS38NiOt1_HfYyPM/662passes/one ROOT41723-record graph comparison and exact-head PR39397653304/push39397643969 each12steps/1242units remain historical/retained, not rerun; currentAllSuccessful covers only those two runs, overallCIQualified=false. Prior CI failures/rejected candidate/five original failures/A07five-of-tenwarm failures remain unresolved; rootdocsLOCAL/fournew/prior32/earlierone findings and all44originalclauses remain. PRD deployment AND actual verification remain FINAL after every original preceding gate. Full goal ACTIVE. Next bounded work is a read-only finite qualification specification and original-harness compatibility/authority decision; no new execution authority is implied.
+
+[Sorting acceptance-gap evidence](../evidence/bortus-public-sort-acceptance-gap-map-root-20261020.json).
+
+
 ## Public numeric-result comparison declaration source review - 2026-10-20 (Toronto)
 
 Application b4c71f446a7cecfceefbe50b4291f0e9bb5265fc remains unchanged. Retain production. compareValues binds two scalar results, returns its null-result conditional before the order binding, declares subtraction when both results have numeric typeof, then returns order for exact ascending and -order otherwise. These are literal declarations, not evaluated values, subtraction precision, equality/stability or runtime ordering. No concrete supported correction compatible with frozen expectations was established.
