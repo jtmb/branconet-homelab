@@ -1,5 +1,66 @@
 # Native BORTUS KV engine implementation contract
 
+## Human policy-preview POST source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass100Node including99leaf, zero failures/skips/
+cancellations. Only the exact async human policy-preview POST callback executes;
+real imports, kvBody and policyPreview remain inert. Unbound body delegation
+preserves request/schema identity; await fences branch inspection. Delete captures
+previewPolicy before id/revision/cursor reads. Create/update destructure and copy
+own enumerable rest before receiver-bound method capture. Exact five arguments,
+create id/revision retention, update exclusions, property/getter/proxy/inherited/
+noncallable/refusal order, unread identities, fresh/same-callback reentrant and
+interleaved calls, and async plain/pending/thenable adoption pass. Injected unknown
+actions use the update branch; no actual schema evaluation or acceptance follows.
+No production defect/change is established.
+
+Focused types pass two roots/zero diagnostics; focused lint two files/zero errors/
+warnings. Source0.906s/82939904peak bytes;types7.922s/605265920peak;
+lint26.031s/282488832peak. Exact9280declaration contents/1359snapshot reads/
+fallback0 and37428DIRECTLinux dependency hashes match before/after. All three main
+handles signalled; activeBeforeDrain0/0/0; explicit termination/drain0 every Job.
+TotalProcesses2 cause unestablished; one ACTIVE cap unchanged. WindowsNode24.18.0
+Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/one ACTIVE/kill-on-close. Module-type
+and dependency-only React-resolution notices remain separate. No OS-network-
+isolation/universal-descendant/performance/independent-person/runtime acceptance.
+
+No actual body/schema/credentials/HTTP/authentication/registry/legacy/native/SQL/
+ORM/operatorDB/backend/build/server/recovery/production/grants/CAS or frozen replay.
+GitHub Actions PROHIBITED;historical CI historical;overallCIQualified=false.
+All44clauses/21gates/fixtures/failures persist. Root docs LOCAL;4+32+1findings
+unresolved;fullgoal ACTIVE/no budget. FINAL PRD deployment AND verification follow
+all original preceding acceptance gates. Incoming V1 ref/V2 indentation and parent
+V2 schema-location failures remain frozen; distinct corrections passed. All earlier
+path-status verifier/lint/post-push failures remain through the accepted chain.
+See [source evidence](implementation-evidence/kv-policy-preview-route-source-20261021.json).
+
+
+## Human policy-preview POST source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only the exact async policy-preview POST
+callback. Both real imports, kvBody and policyPreview remain inert. Injected body
+delegation is unbound with original request/schema; awaiting precedes branch reads.
+Delete captures the receiver-bound previewPolicy before id/revision/cursor argument
+reads. Create/update perform binding and own-enumerable rest before method capture;
+create retains id/revision in fields, update excludes them. Controls cover exact
+five arguments, property/getter/proxy/inherited/noncallable/refusal order, opaque
+identity/request/schema, fresh/reentrant/interleaved calls and async adoption.
+Unexpected injected actions follow the update branch; actual schema never runs.
+No production defect/change is established. Source/types/lint remain UNEXECUTED
+at preparation. NEW sequential Windows Node24.18.0 Jobs retain60swall/30userCPU/
+1GiBcommit/twoCPU/one ACTIVE/kill-on-close and explicit termination/drain.
+No OS-network-isolation/universal-descendant/performance/runtime or independent-
+person acceptance follows. No actual body/schema/credentials/HTTP/authentication/
+registry/legacy/native/SQL/ORM/operatorDB/backend/build/server/recovery/production/
+grants/CAS or frozen workload replay. GitHub Actions PROHIBITED;historical CI
+historical;overallCIQualified=false. All44clauses/21gates/fixtures/failures persist.
+Root docs LOCAL;4+32+1findings unresolved;fullgoal ACTIVE/no budget. FINAL PRD
+deployment AND verification follow all original preceding acceptance gates.
+Incoming verifier V1 capture mismatch/V2 indentation and predecessor V2 matcher
+schema-location failure remain frozen; distinct corrections passed. Earlier
+path-status verifier/lint/post-push failures remain through the accepted chain.
+
+
 ## Human audit GET source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass60Node including59leaf, zero failures/skips/
