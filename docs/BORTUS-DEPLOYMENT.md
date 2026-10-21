@@ -1,5 +1,41 @@
 # BORTUS application deployment
 
+## Parameter parser source qualification (2026-10-21)
+
+Exact `historyVersion` accepts canonical positive ASCII decimal strings up to the
+safe-integer maximum9007199254740991 and refuses zero, leading zeros, signs,
+fractions/exponents, whitespace/line endings, non-ASCII digits and unsafe numbers.
+Exact `metadataCursor` returns undefined for a missing model value, preserves
+allowed ASCII letters/digits/underscore/hyphen at lengths1-128, and refuses empty,
+129-character, punctuation, whitespace/control and non-ASCII model values.
+NEW frozen PUBLIC `tests/kv-parameter-source.test.ts` passes83leaf controls
+(Node85including two parents; zero fail/skip/cancel). Repeated calls retrieve
+fresh model values; request URL/constructor/searchParams/get failures propagate
+unchanged and stop later model access. No defect or production patch is established.
+
+URL/request/error implementations are plain models; all imports stay inert.
+These controls do not exercise URL decoding, actual HTTP Request/transport,
+authentication, registry authority, response serialization, schema validation,
+SQL/ORM/operatorDB, backend/native, build/server, recovery, performance or production.
+The source type contract is string input, not arbitrary runtime object coercion.
+Both finite expiry gates, deny-aware policies, kvHuman ordering, the qualified
+kvBody overflow cancellation correction and every original assertion remain.
+
+Focused types2rootfiles/lint2files report0diagnostics. Sequential WindowsNode24.18.0
+source/types/lint finish3.157s/25.515s/29.141s; peaks193077248/639643648/400502784bytes. Original handles signal.
+Each NEW Job retains60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess.
+Freeze545Windows/132DIRECTLinux preceded execution; lint adapts dependency resolution
+only and retains its React notice. No performance, OS-network-isolation or universal
+descendant-absence claim follows. All2229prior owner/210root docs were checked;
+six additive inserts per owner preserve earlier raw bytes via exact inverses.
+No earlier frozen helper/control was replayed. GitHub Actions remains prohibited;
+historical CI is historical/overallCIQualifiedfalse. Root docs LOCAL;4+32+1 findings
+unresolved. FullgoalACTIVE/no budget. All44clauses/21gates/failures and FINAL PRD
+deployment AND actual verification after all original preceding gates remain.
+See [source evidence](implementation-evidence/kv-parameter-source-20261021.json).
+
+
+
 ## Human wrapper source qualification (2026-10-21)
 
 Exact `kvHuman` already awaits `getSession()` and then `registry.current(actor)`
