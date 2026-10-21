@@ -1,5 +1,31 @@
 # BORTUS API usage
 
+## Identity metadata-list release authority (2026-10-20)
+
+`GET /api/kv/identities` now rechecks the current account and session after its
+awaited metadata query. An absent account or changed session refuses401. If the
+query used effective administration (write plus engineAdmin), loss of either
+permission before release refuses403, including an empty page. A query captured
+as owner-only stays owner-only even if administration is granted while pending.
+Readonly owners retain their existing metadata access; role-only demotion does
+not stamp identity revocation or increment sessionVersion. Later re-promotion
+can restore otherwise valid administration on a new request.
+
+The existing explicit six-field metadata projection plus public revision,
+ascending ID cursor,101-row fetch/100-row response, automation denial and lack of
+automatic retry remain. No policy, token, schema, credential, native or mutation
+contract changes. All31 new frozen PUBLIC deferred-account/list controls pass. The exact prior
+source passes3 and fails28 as frozen in advance; no controls are skipped or
+cancelled. A test-only Promise annotation corrects two implicit-any diagnostics
+with identical emitted JavaScript; focused semantic checking passes without
+replaying the controls. Initial diagnostics and baseline failures remain.
+Automatic hosted qualification is recorded separately after the source checkpoint.
+This source result establishes no ORM/runtime/native/actual AT/security/performance/
+recovery or delivery acceptance.
+All original failures and gates remain; PRD deployment and actual verification
+remain the final required delivery phase. See [permissions](USER-PERMS.md).
+
+
 ## Identity revocation DELETE CAS source contract (2026-10-20)
 
 Identity issue/list metadata now includes an opaque 64-lowercase-hex `revision`.

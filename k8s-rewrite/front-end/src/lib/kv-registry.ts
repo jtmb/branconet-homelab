@@ -326,7 +326,10 @@ export class KvRegistry {
   async listIdentities(actor: KvActor, cursor?: string) {
     const user = await this.current(actor);
     if (actor.identityId) throw new KvError(403, "Automation cannot manage identities");
-    const rows = await this.db.kvIdentity.findMany({ where: { ...(user.role === "write" && user.engineAdmin ? {} : { ownerId: actor.id }), ...(cursor ? { id: { gt: cursor } } : {}) }, select: identityMetadata, orderBy: { id: "asc" }, take: 101 });
+    const admin = user.role === "write" && user.engineAdmin;
+    const rows = await this.db.kvIdentity.findMany({ where: { ...(admin ? {} : { ownerId: actor.id }), ...(cursor ? { id: { gt: cursor } } : {}) }, select: identityMetadata, orderBy: { id: "asc" }, take: 101 });
+    const latest = await this.current(actor);
+    if (admin && (latest.role !== "write" || !latest.engineAdmin)) throw new KvError(403, "Engine administration revoked");
     return { items: rows.slice(0, 100).map(identity => ({ ...identity, revision: identityRevision(identity) })), nextCursor: rows.length > 100 ? rows[99].id : null };
   }
 
