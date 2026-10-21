@@ -1,5 +1,52 @@
 # BORTUS K8s — API Usage
 
+## Path capability metadata release authority source checkpoint - 2026-10-20 (Toronto)
+
+Applicationd9688d25 refuses403 before returning capability metadata when its final
+owner/identity policy intersection no longer permits list. Existing current
+account/session and identity checks already refuse401 and remain; role/engineAdmin
+changes across the captured authorization remain409. Human readonly permitted
+metadata and later restored authority remain possible without stamped revocation
+or sessionVersion increments. Explicit denies, whole-segment prefixes and no
+administration bypass remain. The permitted response keeps exact path ID/revision,
+action map, supported actions, guarded assertion and create/write/admin/human
+initialization rules. Registry automation controls do not add an HTTP route.
+No cache/retry/schema/token/native/mutation change occurs.
+
+All107 new frozen PUBLIC synthetic controls pass. Exact priorb382 passes86/fails21
+as frozen before execution; zero skips/cancellations. Focused semantics pass with
+zero diagnostics first. Windows Node24.18.0 uses60s wall/30 userCPU seconds/1GiB
+Job commit/twoCPUs/one active process; baseline1.094/candidate1.078s and original
+handles signalled. No OS network-isolation/Linux/ORM/universal descendant-absence
+claim. Source/saved review passes5010 checks, rehashes4261 retained proofs, current
+340inputs/22owner docs, separate compatibility5/original334. Five domain inserts
+preserve original bytes; all2222 owner docs checked. One loaded dependency matches
+its retained binding without graph rewalk. Frozen copies retain340+22 inputs.
+
+AUTOMATIC PR39526873375/push39526865972 both pass all12steps: pinned Linux locked
+build, unchanged lint/whole-source types,1623units including all107 new controls,
+eight original pristine/mutant pairs, eight integration/process controls and the
+finite compiled Pods smoke. Tool-decoded logs/exact steps are saved and reviewed;
+no raw archive download/manualdispatch/replay/workflowchange. Workflowf8b7ec07
+unchanged. All EIGHT older successful CI scopes and historical failures/cancelled
+runs remain distinct; overallCIQualified=false. Current concrete source task is
+COMPLETE/REVIEWED; root review is not independent-person acceptance. The initial
+Git credential-helper path conversion failure was corrected for the same push;
+source and controls unchanged. Reader/path/web fallback errors remain retained.
+Parent confirmation5059 and top-level-historical-flags reader refusal are retained
+separately from earlier4608/4176; equivalent retained receipt mapping accepted
+without receipt/proof/source mutation or workload replay.
+
+No oldsuite/operatorDB/private-native/recovery/packaging/localbuild/server/graphwalk/
+scan/image/preload/promotion/production execution. Hosted fixtures grant no new
+local authority or native/actualAT/security/performance/schema/effectiveRBAC/
+admission/recovery/data acceptance. RootdocsLOCAL; four new/prior32/earlierone
+findings, all44clauses/failures and every delivery gate remain. Full goal ACTIVE/
+no budget. PRDdeployment AND actual verification remain FINAL REQUIRED after all
+original preceding gates. Next feature has no source/tests/execution begun.
+
+
+
 ## Path metadata-list release authority source checkpoint - 2026-10-20 (Toronto)
 
 Applicationb382470e rechecks current account/session and automation identity after
