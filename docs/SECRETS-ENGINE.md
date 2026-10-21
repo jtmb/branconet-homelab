@@ -1,5 +1,45 @@
 # BORTUS Secrets Engine
 
+## Human adoption GET/POST source qualification (2026-10-21)
+
+The exact adoption GET/POST callbacks pass NEW frozen PUBLIC
+`tests/kv-adopt-route-source.test.ts`:90 leaf controls,91 Node tests including
+one parent, zero failures/skips/cancellations. Every dependency is an inert model;
+actual kvHuman/kvBody/nativeAdopt schema/registry/engine implementations never
+execute. No defect or production change is established. Nodejs/force-dynamic
+exports and both exact default-status wrappers pass. Both callbacks destructure
+id before kvEngine(original registry), capture adoptionPreview/adopt and preserve
+the engine receiver. GET passes exactly actor/id without request/body/schema
+reads. POST captures adopt before body delegation/await, passes exactly
+request/nativeAdopt then exactly actor/id/resolved input. Getter/refusal ordering,
+inherited/nullish/noncallable cases, held/fresh/interleaved inputs/results and
+adopted resolved identities pass. No raw promise identity claim.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations3.203/28.203/36.093s; Job peak commitments
+220631040/687505408/430809088bytes. All original process handles signalled. Each NEW Job retains60swall/
+30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze770Windows/132DIRECTLinux precedes
+execution; the90source controls never replayed. All2242prior owner/225root docs
+were checked. Prior raw bytes and seventeen prepared execution snapshots remain
+verifiable through raw doc inverses and both historical suite type inverses.
+Review is not independent-person acceptance. No OS-network-isolation,
+universal-descendant or performance claim follows. Lint adapts dependency
+resolution only and retains its React notice. The inherited runner scope label
+says POST; the frozen suite and exact source select both GET and POST callbacks.
+
+SOURCE qualification establishes no actual values/parsing/schema validation/HTTP/
+authentication/credentials/registry authority/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/performance/production/atomic delivery. All qualified routes/
+parsers/kvHuman ordering, both finite expiry gates, deny-aware policies and kvBody
+overflow correction remain. All44clauses/21gates/failures remain. GitHub Actions
+PROHIBITED; historical CI historical;overallCIQualifiedfalse. Root docs LOCAL;
+4+32+1findings unresolved. Fullgoal ACTIVE/no token budget. FINAL PRD deployment
+AND actual verification follow all original preceding security/performance/
+actualAT/compatible independent recovery/fresh backup after quiescence/schema/
+effective RBAC/admission/data gates. No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-adopt-route-source-20261021.json).
+
+
 ## Human destroy POST source qualification (2026-10-21)
 
 The exact destroy POST callback passes NEW frozen PUBLIC
