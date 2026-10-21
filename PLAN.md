@@ -1,5 +1,53 @@
 # Kubernetes migration plan and acceptance contract
 
+## Selected-path coherent policy intersection source checkpoint - 2026-10-20 (Toronto)
+
+Application1928a46e replaces the automation-only final owner-policy reread with
+ONE bounded query selecting owner and token principals together. Both list
+policies now use the same returned statement snapshot, closing the cross-policy
+sequential-read window without another reread chain. Limit513overall/256each;
+missing/denied scopes403, malformed/oversized503, unavailable fail closed. The
+existing final current(actor), human readonly metadata, role-only demotion/
+restoration, captured ID/revision/mappings, namespace checks, default authorize,
+human HTTP wrapper and PATCH remain. The shared validator body is unchanged.
+No transaction/lock/write/cache/retry/schema/native change or new automation route.
+Withdrawal AFTER the statement snapshot may affect a later request; this does
+not establish an atomic policy/response-delivery or account/identity snapshot.
+
+NEW frozen96 PUBLIC source controls: exact159144 baseline72pass/24 predicted
+token-withdrawal failures; candidate96pass/zero skip/cancel. Focused semantics
+cover2production+3testfiles with0diagnostics before execution. Windows Node24.18.0
+retains60swall/30userCPU/1GiBJobcommit/twoCPU/oneactiveprocess; baseline1.125s/
+candidate1.078s and original handles signalled. No OSnetwork-isolation/Linux/ORM/
+HTTPwrapper/runtime/universaldescendantabsence claim. All original96/122 frozen
+bytes retained; live query adapters and exact read counts change only, every
+behavioral assertion byte-exact after inverse. No local old-suite replay.
+
+Source/saved review8032checks rehashes5584retainedproofs/current343inputs/22owner
+docs, separatecompatibility5/original334 (334direct atreceipt), one loadeddependency
+without graphrewalk. All2222ownerdocs read/checked; five additive inserts preserve
+originalbyte inverses. Among prior342 onlyGET/registry/old96/old122tests differ;
+new96suite is343rd. Initial filtered-ref reader refusal is retained; separatev2
+unfiltered reader verifies stash/tags and actual extra Codex object types without
+ref/proof/receipt mutation. Parent6827 independently confirms accepted receipt.
+An interim saved-log reader's implicit cp1252 decoding refusal is retained;
+the separate explicitUTF8 reader inspects saved data only, with no workload replay.
+
+AUTOMATIC PR39531840388/push39531835305 both pass12steps/1937units, including
+all96new+prior96+prior122, eightpristine-mutantpairs/eightintegrationcontrols and
+the finite compiled Pods smoke. Saved tool-decoded logs/steps review1011checks.
+Workflowf8b7ec07unchanged; no rawarchive/manualdispatch/replay/workflowchange.
+All ELEVEN prior successful CI scopes and historical failures/cancellations
+remain separate. OverallCIQualifiedfalse. Concrete task COMPLETE/REVIEWED;
+review is not independent-person acceptance. Fullgoal ACTIVE/no budget.
+No new actualAT/security/performance/native/history/CAS/rotation/recovery/schema/
+effectiveRBAC/admission/data acceptance. Hosted fixtures grant no new local
+operatorDB/backend/native/recovery/finalimage authority. RootdocsLOCAL;
+four new/prior32/earlierone findings and all44clauses remain unresolved.
+PRDdeployment AND actualverification FINALREQUIRED after all original gates.
+Next source/tests/execution NOTbegun.
+
+
 ## Selected-path owner-policy reread source checkpoint - 2026-10-20 (Toronto)
 
 Application1591440d adds one automation-owner list-policy reread after existing
