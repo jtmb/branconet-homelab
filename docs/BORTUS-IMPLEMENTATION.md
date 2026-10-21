@@ -1,5 +1,52 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## Human legacy-grant-revoke DELETE source qualification (2026-10-21)
+
+The exact human legacy-grant-revoke DELETE callback passes NEW frozen PUBLIC
+source controls:207Node tests including206unique leaf controls, zero failures,
+skips or cancellations on the originalV1 suite. Only selected DELETE executes;
+actual kvHuman, kvAdminMetadataBody, legacyRevoke schema and KvLegacyAccess
+constructor/instance/commit implementations remain inert. No production defect
+or change established. Exact nodejs/default-status wrapper and absent dynamic
+export pass. Entry id precedes body/schema capture and await; revision then
+legacyImpact precede constructor/instance commit capture. Original arguments,
+constructed receiver and fresh kind-revoke/grantId/revision objects preserve
+refusal/getter/inherited/nullish/noncallable order, unread identities, fresh/
+reentrant/interleaved calls and adopted results. No actual grants/CAS.
+
+First types failed four test-model diagnostics. Two explicit type annotations
+corrected the constructor field and recursive proxy; V2focused types2rootfiles
+passed. V2lint passed the production route and rejected only the test VM holder
+named module under the existing Next rule. V3renames only that local holder to
+sandboxModule, preserving the VM module key. NEW one-test-file types/lint pass
+with zero diagnostics. The current full PUBLIC suite retains all207 cases;
+qualification composes original source passes with exact raw type and identifier
+inverses and subsequent types/lint. Completed207source and passed production-route
+checks never replay. No current full-suite rerun, JavaScript parity or uninterrupted
+qualification/preparation claim. Original failed type/lint results, unexecuted
+V1/V2finalizers and V2reviewer remain frozen. Initial acceptance-reader manifest-
+field and freezer static-substring failures plus distinct continuations remain.
+
+Each sequential NEW Windows Node24.18.0 Job retains60swall/30userCPU/1GiBcommit/
+twoCPU/oneactiveprocess. All original handles signalled, including failed Jobs.
+All frozen snapshots, both older type inverses, all three assertion inverses and
+composed terminal-CR correction remain. Source review preserves all prior doc raw
+bytes through exact additive inverses. No independent-person acceptance, OS-network-
+isolation, universal-descendant or performance claim. Lint dependency-resolution-
+only React notice remains separate from lint diagnostics.
+
+No actual values/parsing/schema/credentials/HTTP/authentication/legacy registry/
+native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/production
+qualification. Qualified source, both finite expiry gates, deny-aware policies,
+kvBody overflow correction and all original44clauses/21gates/fixtures/failures
+remain. GitHub Actions PROHIBITED; historical CI historical;overallCIQualified=false.
+Root docs LOCAL;4+32+1findings unresolved; fullgoal ACTIVE/no budget. FINAL PRD
+deployment AND verification follow ALL original preceding security/performance/
+actualAT/compatible independent recovery/fresh backup AFTER quiescence/schema/
+effectiveRBAC/admission/data gates. No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-legacy-grant-revoke-route-source-20261021.json).
+
+
 ## Human legacy-grant POST source qualification (2026-10-21)
 
 The human legacy-grant POST callback is SOURCE composite-qualified across170
