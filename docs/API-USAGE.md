@@ -1,5 +1,81 @@
 # BORTUS API usage
 
+## KV registry factory source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass149 Node tests including148 leaf; zero
+failures/skips/cancellations. Exact exported synchronous kvRegistry alone runs
+with inert real imports/Prisma/registry/namespaces/configuration/credentials/native
+services. Constructor/prisma capture precedes namespaces then configuration;
+construction receives exact identities/newTarget. Refusals stop later stages;
+fresh/reentrant calls, prototype lookup, ordinary construction returns and
+untouched promises/thenables pass. No production defect/change established.
+
+v1 focused types failed four7022/7023 inference errors in test-local proxies.
+Four explicit type annotations in distinctv2 give identical erased JavaScript;
+v1 source controls remain frozen and were NOT replayed. v1 lint is unexecuted.
+Corrected focused types2 roots/zero diagnostics and first lint2 files/zero errors/
+warnings pass. Exact9280 declaration contents/1359 snapshot reads/fallback0 and
+37428 DIRECT Linux dependencies match before/after. Preparation stopped before
+tests on a virtual WSL output path; a distinct packaged-alias continuation passed.
+Original child stderr is UNRETAINED; no exact original child exception claimed.
+
+Source0.906s/81231872 peak bytes; corrected types7.531s/576827392; lint28.359s/
+297742336. All four main handles (including failed types) signalled, active before
+drain0 and explicit termination/drain0. TotalProcesses2 cause UNESTABLISHED;
+one ACTIVE cap retained. Sequential Windows Node24.18.0 Jobs retain60s wall/30s
+user CPU/1GiB commit/two CPUs/kill-on-close. Module-type and dependency-only React
+notices stay separate. No OS network isolation/universal descendant/performance/
+independent-person claim. No actual values/body/schema/credentials/HTTP/auth/legacy/
+native/SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/CAS replay.
+GitHub Actions PROHIBITED;historical CI only;overallCIQualified=false. Root docs
+LOCAL;4+32+1 findings unresolved;full goal ACTIVE/no budget. All44 clauses/21 gates,
+fixtures/failures persist; FINAL PRD deployment AND verification follow all gates.
+Incoming acceptance FIRST13256; parentV1 goal-schema failure retained, distinctV2
+FIRST13438. Startup read failures remain retained. See implementation-evidence/
+kv-registry-source-20261021.json in the application owner for bounded evidence.
+
+
+## KV registry test type correction (2026-10-21)
+
+The frozen v1 source controls pass149 Node tests (148 leaf), zero failures/skips/
+cancellations. Its focused type run fails four7022/7023 inference diagnostics in
+two test-local constructor proxies; original artifacts remain frozen. The distinct
+v2 correction adds only two Call annotations and two object return annotations.
+An erased-JavaScript comparison is required before accepting v2 types/lint.
+No source-control replay or production change follows; v1 lint is unexecuted.
+v2 focused types/lint are UNEXECUTED here. The original preparation failure remains
+retained: WSL output used a nonexistent virtual Windows path; a distinct
+continuation used the verified packaged alias. Original child stderr was not
+retained, so no exact original child exception is claimed. All source/import/
+native/runtime, resource, Actions, findings and final-delivery gates remain.
+
+
+## KV registry factory source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact synchronous exported
+kvRegistry in src/lib/kv-http.ts. Constructor and prisma bindings are captured
+before the zero-argument unbound namespace call; configuration is resolved next,
+then construction receives the three exact identities. Constructor validation
+follows argument evaluation. Exceptions stop later stages without fallback.
+Ordinary instance/object/primitive returns, untouched promises/thenables,
+prototype lookup, captured versus later bindings, fresh and reentrant calls are
+covered. All real imports/Prisma/registry/namespace/configuration/credentials/native
+services remain inert. No production defect/change established. SOURCE/types/lint
+are UNEXECUTED; new controls freeze before each distinct one-run local check.
+
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s user CPU/1GiB commit/two
+CPUs/one ACTIVE process/kill-on-close, main-handle observation and explicit drain.
+No OS network isolation/universal descendant/performance/independent-person claim.
+No actual values/body/schema/credentials/HTTP/authentication/legacy/native/SQL/ORM/
+operatorDB/backend/build/server/recovery/production/grants/CAS or frozen replay.
+GitHub Actions PROHIBITED; historical CI only; overallCIQualified=false. Root docs
+LOCAL;4+32+1 findings unresolved;full goal ACTIVE/no budget. All44 clauses/21 gates,
+fixtures/failures persist; FINAL PRD deployment AND verification follow all gates.
+Incoming acceptance FIRST13256; parentV1 goal metadata-schema failure retained,
+distinctV2 FIRST13438. Startup null indexing, oversized/truncated reads and one
+default-codepage read failure are retained; UTF8/focused reads resolved them.
+
+
 ## KV error response source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass182Node including181leaf;zero failures,
