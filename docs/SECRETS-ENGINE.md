@@ -1,5 +1,46 @@
 # BORTUS Secrets Engine
 
+## Human metadata list route source qualification (2026-10-21)
+
+Exact mount-list GET and path-list GET pass NEW frozen PUBLIC
+`tests/kv-list-route-source.test.ts`:61leaf controls,63Node tests including two
+parents, zero fail/skip/cancel. No defect or production change is established.
+Both export exact default-status GET wrappers/nodejs/force-dynamic and register
+an inert POST wrapper with201. POST operations, body and schemas never execute.
+GET returns the exact registry method result, including raw promise identity;
+registry receiver and actor/cursor identities are retained. Method retrieval
+precedes cursor delegation. Path-list reads request.url, constructs its URL
+model, gets searchParams.get("mountId"), normalizes missing/empty mountId to
+undefined, then delegates metadataCursor and invokes listPaths with exactly
+actor/mountId/cursor. Mount-list invokes listMounts with exactly actor/cursor
+and delegates the request only to metadataCursor. Neither reads context params,
+body or signal. Exact getter/ordinary/rejected errors, held results, frozen/raw
+identities, fresh calls and interleaved captured arguments pass.
+
+All request/URL/searchParams, actor, wrapper, cursor, registry and schema
+implementations are inert models. These source controls establish neither URL
+decoding/HTTP transport nor authentication/registry authority, schema validation,
+serialization, credentials, SQL/ORM/operatorDB/backend/native, build/server,
+recovery, performance or production. Ordering is not commit authority or atomic
+delivery. Qualified native-status/history-list/historical-value routes, parsers,
+kvHuman ordering, both finite expiry gates, deny-aware policies and qualified
+kvBody overflow correction remain, with every original assertion and gate.
+
+Focused types3rootfiles/lint3files report0diagnostics. Sequential WindowsNode24.18.0
+source/types/lint finish3.500s/29.219s/56.078s; peaks204374016/682913792/367497216bytes.
+Original handles signal. Each NEW Job retains60swall/30userCPU/1GiBcommit/twoCPU/
+oneactiveprocess. Freeze598Windows/132DIRECTLinux preceded execution; lint adapts
+dependency resolution only and retains its React notice. No performance,
+OS-network-isolation or universal-descendant claim follows. All2232prior owner/
+213root docs were checked; twelve additive raw inverses preserve prior bytes.
+All earlier frozen workloads/helpers remain frozen; none was replayed. GitHub
+Actions remains prohibited; historical CI stays historical, overallCIQualifiedfalse.
+Root docs LOCAL;4+32+1 findings unresolved. Fullgoal ACTIVE/no budget;44clauses/
+21gates/failures and FINAL PRD deployment AND verification after all original
+preceding security/performance/actualAT/recovery/schema/RBAC/admission/data gates remain.
+See [source evidence](implementation-evidence/kv-list-route-source-20261021.json).
+
+
 ## Human native metadata route source qualification (2026-10-21)
 
 The exact native-status GET and history-list GET routes pass NEW frozen PUBLIC
