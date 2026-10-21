@@ -143,7 +143,13 @@ export class KvRegistry {
       ...(cursor ? { id: { gt: cursor } } : {}),
       ...(allowed && !allowed.some(r => r.mountId === null) ? { id: { ...(cursor ? { gt: cursor } : {}), in: allowed.map(r => r.mountId!).filter(Boolean) } } : {}),
     }, orderBy: { id: "asc" }, take: 101 });
-    const page = rows.slice(0, 100).filter(m => !allowed || !rules.some(r => r.effect === "deny" && r.prefix === "" && (r.mountId === null || r.mountId === m.id) && parseActions(r.actions).includes("list")));
+    const latest = await this.current(actor);
+    if (!allowed && (latest.role !== "write" || !latest.engineAdmin)) throw new KvError(403, "Engine administration revoked");
+    const freshRules = allowed ? await this.rules(`user:${actor.id}`) : null;
+    if (freshRules) await this.current(actor);
+    const freshAllowed = freshRules?.filter(r => r.effect === "allow" && parseActions(r.actions).includes("list"));
+    const page = rows.slice(0, 100).filter(m => !allowed || freshAllowed!.some(r => r.mountId === null || r.mountId === m.id) &&
+      !freshRules!.some(r => r.effect === "deny" && r.prefix === "" && (r.mountId === null || r.mountId === m.id) && parseActions(r.actions).includes("list")));
     return { items: page.map(m => ({ ...m, namespaces: JSON.parse(m.namespaces) as string[] })), nextCursor: rows.length > 100 ? rows[99].id : null };
   }
 

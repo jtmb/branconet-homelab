@@ -1,5 +1,32 @@
 # BORTUS application deployment
 
+## Mount metadata-list release authority (2026-10-20)
+
+GET /api/kv/mounts rechecks the current human account/session after its awaited
+metadata query. Missing/deleted accounts or changed sessions refuse401, including
+empty pages. A query captured with effective administration refuses403 if write
+or engineAdmin is withdrawn. A captured scoped query stays scoped through
+promotion and re-reads list grants/denials before releasing metadata, then checks
+the account/session again after that policy read. Withdrawn grants and new
+mount-wide denials filter the captured page. Prefix-scoped list grants retain
+their existing mount visibility; nonempty-prefix denials do not hide the mount.
+
+Human-only enumeration, namespace JSON parsing, ascending ID cursor,101-row
+fetch/100-row response and cursor based on the captured unfiltered page remain.
+Readonly scoped metadata access remains; role-only demotion does not stamp
+revocation or increment sessionVersion. Later restored administration/policies
+may permit another request. No cache, retry, schema, token, mutation or native
+contract changes. All57 new frozen PUBLIC controls pass; exact priorcf5b passes28/fails29, as
+corrected in metadata before execution without changing the frozen suite. The
+initial count58/pass30/fail28 metadata remains retained. Focused semantics pass
+with zero diagnostics before controls. Both runs use60s wall/30 userCPU seconds/
+1GiB Windows Job commit/twoCPUs/one active process; original process handles
+signalled. No old-suite replay, OS network-isolation or Linux/ORM claim.
+No operator DB, ORM/runtime/native/actual AT/security/performance/recovery or
+deployment acceptance follows. Original failures and all delivery gates remain;
+PRD deployment AND actual verification remain the final required phase.
+
+
 ## Policy metadata-list release authority (2026-10-20)
 
 `GET /api/kv/policies` rechecks fresh human engine administration after the
