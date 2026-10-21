@@ -1,5 +1,44 @@
 # BORTUS user permissions
 
+## Human current-value GET source qualification (2026-10-21)
+
+The exact data-route GET callback passes NEW frozen PUBLIC
+`tests/kv-current-value-get-route-source.test.ts`:44leaf controls,45Node tests
+including one parent, zero failures/skips/cancellations. No defect or production
+change is established. Four exact wrapper results register inertly: GET/PUT/DELETE
+default status and POST201, with nodejs/force-dynamic exports. Only GET executes;
+POST/PUT/DELETE operations and body/schema implementations never execute. GET
+destructures id before kvEngine, passes the exact registry to that model, retrieves
+read and invokes it with its original engine receiver and exactly actor/id.
+Request/registry/actor/unrelated parameter properties remain untouched. Exact
+getter/refusal ordering, inherited properties, nullish/noncallable refusal timing,
+held/fresh/interleaved results and resolved identities pass. Async adoption never
+claims raw result-promise identity or actual value access.
+
+All imported implementations are inert models. These controls establish no actual
+values/body parsing/schema validation/HTTP/authentication/registry authority,
+credentials/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/
+production or atomic delivery. Qualified routes/parsers/kvHuman ordering, both
+finite expiry gates, deny-aware policies and kvBody overflow correction remain.
+No prior frozen helper/control is replayed. GitHub Actions remains PROHIBITED;
+historical CI stays historical and overallCIQualifiedfalse.
+
+Focused types2rootfiles and lint2files report zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint finish3.390s/27.843s/35.422s;
+peak Job commitments are209690624/692363264/423604224bytes.
+Original handles signal. Each NEW Job retains60swall/30userCPU/1GiBcommit/twoCPU/
+oneactiveprocess. Freeze679Windows/132DIRECTLinux precedes execution; lint adapts
+dependency resolution only and retains its React notice. No OS-network-isolation,
+universal-descendant or performance claim follows. All2236prior owner/217root docs
+were checked; twelve raw prepared/final doc inverses preserve prior bytes. Review
+is not independent person acceptance. Root docs LOCAL;4+32+1 findings unresolved.
+Fullgoal ACTIVE/no token budget;44clauses/21gates/failures remain. FINAL PRD
+deployment AND actual verification follow every original preceding security/
+performance/actualAT/compatible independent recovery/fresh backup after quiescence/
+schema/effective RBAC/admission/data gate. No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-current-value-get-route-source-20261021.json).
+
+
 ## Human mount DELETE source qualification (2026-10-21)
 
 The exact human mount-metadata DELETE callback passes NEW frozen PUBLIC
