@@ -1,5 +1,51 @@
 # BORTUS application deployment
 
+## Selected-path account/identity statement snapshot source checkpoint - 2026-10-20 (Toronto)
+
+Application65429f8b adds currentSelectedPath(actor) only at the final selected-path
+GET release gate. Human callers delegate to unchanged current(); automation uses
+ONE parameterized bounded SELECT joining the account and selected identity.
+The returned statement snapshot checks account/session, identity owner/session,
+revocation/expiry/write role and closes the mixed sequential account/identity
+window. Ordinary current()/authorize(), policy intersection, namespace validation,
+readonly metadata, captured ID/revision/fields, HTTP wrapper and PATCH remain.
+Role-only demotion/restoration does not stamp revocation or increment sessions.
+No explicit transaction/lock/write/cache/retry/schema/native/new automation route.
+Policy and authority statements are separate; post-snapshot withdrawal may affect
+a later request. No policy/response-delivery atomicity or actual SQL claim.
+
+NEW frozen70 PUBLIC source controls: exact1928 baseline64pass/six predicted
+failures (account deletion/session/role during final identity wait, both admin
+states); candidate70pass/zero skip/cancel. Focused semantics2production+4tests
+zero diagnostics before controls. WindowsNode24.18.0/60swall/30userCPU/1GiBJob/
+twoCPU/oneactiveprocess; both1.078s, originalhandles signalled. No OSnetwork-
+isolation/Linux/ORM/SQL/HTTPwrapper/runtime/universaldescendantabsence claim.
+SuiteSHAa2d010298091a4001f25a9e34ad0c879799c1fe7a05ea6543d449640d84d238f.
+Original96/122/96 frozen bytes and every behavioral assertion remain; live
+adapters only add the exact SQL-model query shape/bindings and finite snapshot.
+No old-suite local replay. Source/saved review11228checks rehash5680 retained
+proofs/current344inputs/22ownerdocs, separatecompatibility5/original334 directly
+WSL; one loadeddependency without graphrewalk. All2222ownerdocs checked with
+five exact additive inverses. A doc-reader CRLF/LF metadata refusal is retained;
+separatev2 fixes only text reading, before mutation, without source/control replay.
+Parent6930 independently matched receipt; its redundant commit-field and parent-
+history-field reader refusals remain frozen, with accepted equivalent metadata.
+
+AUTOMATIC PR39533629547/push39533624327 both pass12steps/2007units, all70new plus
+prior96/122/96, eightpristine-mutantpairs/eightintegrationcontrols and finite
+compiled Pods smoke. Saved decoded logs/exactsteps review1187checks.
+Workflowf8b7ec07unchanged; no rawarchive/manualdispatch/replay/workflowchange.
+All TWELVE prior successful CI scopes and historical failures/cancellations
+remain distinct. OverallCIQualifiedfalse. Concrete task COMPLETE/REVIEWED;
+review is not independent-person acceptance. Fullgoal ACTIVE/no budget.
+No new actualAT/security/performance/native/history/CAS/rotation/recovery/schema/
+effectiveRBAC/admission/data acceptance. Hosted fixtures grant no new local
+operatorDB/backend/native/recovery/finalimage authority. RootdocsLOCAL;
+four new/prior32/earlierone findings and all44clauses remain unresolved.
+PRDdeployment AND actualverification FINALREQUIRED after all original gates.
+Next source/tests/execution NOTbegun.
+
+
 ## Selected-path coherent policy intersection source checkpoint - 2026-10-20 (Toronto)
 
 Application1928a46e replaces the automation-only final owner-policy reread with
