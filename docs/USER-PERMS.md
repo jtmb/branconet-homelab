@@ -1,5 +1,79 @@
 # BORTUS user permissions
 
+## Human path-status GET source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass263Node including262leaf, with zero
+failures/skips/cancellations. Only the exact async human path-status GET callback
+executes; actual imports stay inert. Fourth-argument id binding precedes captured
+unbound kvEngine(registry), synchronous factory-result status capture and its
+receiver-bound two-argument call with original actor/id. No factory await is added.
+Binding/refusal order, getter/inherited/proxy/noncallable boundaries, unread
+identities/request/unrelated parameters, fresh/reentrant/interleaved calls and
+async promise/thenable result adoption are covered. No production defect/change.
+
+V1 focused types pass two roots/zero diagnostics. V1 lint retains one
+no-assign-module-variable test-helper error. NEW V2 renames only the local module
+binding/reference to inertModule; exact raw inverse recovers V1. V2 lint passes
+two files/zero errors/warnings. Passed source/types never replayed. No single
+full-current-suite or uninterrupted source/type/lint/preparation pass is claimed.
+Source0.969s/87228416peak bytes;types7.547s/591175680peak;failed V1lint27.063s/
+284549120peak;V2lint26.531s/287158272peak. All original failures retained.
+
+Exact9280declaration contents/1360snapshot reads/fallback0 and37428DIRECTLinux
+dependency hashes before/after match. All four main handles signalled; sampled
+activeBeforeDrain1/1/0/0, explicit termination/drain0 every Job. TotalProcesses2
+cause unestablished; one ACTIVE cap unchanged. Sequential WindowsNode24.18.0
+Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/one ACTIVE/kill-on-close.
+Node module-type and dependency-only React resolution notices remain separate.
+No OS-network-isolation/universal-descendant/performance/independent-person or
+actual runtime/acceptance qualification follows.
+
+No actual values/parsing/schema/credentials/HTTP/authentication/legacy/native/SQL/
+ORM/operatorDB/backend/build/server/recovery/production/grants/CAS or frozen replay.
+GitHub Actions PROHIBITED;historical CI historical;overallCIQualified=false.
+All44clauses/21gates/fixtures/failures persist. Root docs LOCAL;4+32+1findings
+unresolved;fullgoal ACTIVE/no budget. FINAL PRD deployment AND verification follow
+all original security/performance/actual AT/compatible independent recovery/fresh
+backup AFTER quiescence/schema/effective RBAC/admission/data gates.
+See [source evidence](implementation-evidence/kv-path-status-route-source.json).
+
+
+## Human path-status lint-only preparation correction (2026-10-21)
+
+V1 source passed263Node/262leaf and focused types passed two roots/zero diagnostics.
+V1 lint retains one no-assign-module-variable error in the NEW inert test module
+binding. NEW V2 renames only that local binding and its reference to inertModule;
+exact raw inverse recovers V1. No runtime logic, production source or type behavior
+changes. Passed source/types are never replayed. V2 lint remains UNEXECUTED at
+preparation. The original failure, source/dependency notices, resource bounds,
+scope and all delivery gates persist. No uninterrupted full-current-suite or
+source/type/lint/preparation pass is claimed.
+
+
+## Human path-status GET source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only the exact async GET callback in
+api/kv/paths/[id]/status/route.ts. Actual imports stay inert. Fourth-argument id
+binding precedes the captured unbound kvEngine(registry) call. Its synchronous
+return supplies the status receiver; original actor/id are passed exactly once.
+No factory-result await is inserted. Controls cover native binding/refusal order,
+getters/inheritance/proxies/noncallable boundaries, unread request/identity internals,
+fresh/reentrant/interleaved calls and async promise/thenable result adoption.
+No production defect/change is established.
+
+Source/types/lint are UNEXECUTED at preparation. NEW sequential Windows
+Node24.18.0 Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/one ACTIVE,
+kill-on-close and explicit post-main termination/drain. No OS-network-isolation,
+universal-descendant/performance/runtime/independent-person acceptance follows.
+No actual values/parsing/schema/credentials/HTTP/authentication/legacy/native/SQL/
+ORM/operatorDB/backend/build/server/recovery/production/grants/CAS or frozen replay.
+GitHub Actions PROHIBITED; historical CI historical;overallCIQualified=false.
+All44clauses/21gates/fixtures/failures persist. Root docs LOCAL;4+32+1findings
+unresolved;fullgoal ACTIVE/no budget. FINAL PRD deployment AND verification
+follow all original security/performance/actual AT/compatible independent recovery/
+fresh backup AFTER quiescence/schema/effective RBAC/admission/data gates.
+
+
 ## Human path-capabilities GET source qualification (2026-10-21)
 
 The exact async human path-capabilities GET is supported by retained NEW V1
