@@ -1,5 +1,69 @@
 # BORTUS Secrets Engine
 
+## Human history-GC commit POST source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass93Node including92leaf, zero failures/skips/
+cancellations. Only the exact async human history-GC commit POST initializer runs;
+real imports, kvHuman, kvBody, historyGc schema, registry and engine services stay
+inert. Exact wrapper/default arguments and unbound request/schema delegation pass.
+Await fences engine access. Unbound kvEngine receives exactly registry; gc method
+is captured BEFORE input.pathId and request.signal. Its engine receiver and exact
+four arguments actor/pathId/originalInput/originalSignal pass. Opaque identities,
+own/inherited/proxy/missing/primitive properties, nullish/noncallable refusal
+prefixes and argument-before-callability refusal order pass. Fresh selectors,
+same-callback interleaving, six reentrancy stages and async body/result adoption
+pass. Synthetic inputs do not prove schema acceptance/native cleanup safety.
+No production defect or change is established.
+
+Focused types2roots/zero diagnostics;lint2files/zero errors/warnings. Source0.890s/
+79794176peak bytes;types7.641s/605380608peak;lint26.297s/281108480peak. Exact9280
+declaration contents/1359snapshot reads/fallback0 and37428DIRECTLinux dependencies
+match before/after. All three main handles signalled;activeBeforeDrain source0/
+types0/lint1, explicit termination/drain0everyJob. Lint's remaining active process
+and TotalProcesses2 cause UNESTABLISHED; one ACTIVE cap unchanged. WindowsNode
+24.18.0 sequential Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/one ACTIVE/
+kill-on-close. Module-type/dependency-only React notices stay separate. No OS-
+network-isolation/universal-descendant/performance/independent-person claim.
+
+No actual values/body parsing/schema/credentials/HTTP/authentication/registry/
+legacy/native/SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/
+CAS or frozen replay. GitHubActionsPROHIBITED;historicalCIhistorical;
+overallCIQualified=false. RootdocsLOCAL;4+32+1findings unresolved;fullgoalACTIVE/
+no budget. All44clauses/21gates/fixtures/failures persist;PRDdeploymentANDverification
+is FINAL after all original preceding acceptance gates. New incoming-verifier V1
+baseline/current assertion failed;distinctV2 passed without workload replay.
+Earlier source-review/count/UTF8/truncated-output failures remain frozen.
+
+
+## Human history-GC commit POST source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only the exact async POST initializer in
+api/kv/history/gc. All real imports, kvHuman, body/schema validation, registry and
+native engine services remain inert. Source-derived controls cover exact wrapper
+and unbound body/schema delegation, await fence, unbound registry-to-engine call,
+gc method capture before input.pathId and request.signal, the original input as
+third argument, exact four arguments with engine receiver, opaque identities,
+inherited/proxy/missing/primitive properties, refusal order, async adoption, fresh
+calls and same-callback interleaving/reentrancy at six stages. Synthetic values do
+not prove actual schema acceptance or native cleanup safety. No defect/production
+change is established. SOURCE/types/lint remain UNEXECUTED at preparation.
+
+New sequential Windows Node24.18.0 Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/
+one ACTIVE/kill-on-close, main-handle observation and explicit termination/drain.
+No OS-network-isolation/universal-descendant/performance/independent-person claim.
+No actual values/body parsing/schema/credentials/HTTP/authentication/registry/
+legacy/native/SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/
+CAS or frozen workload replay. GitHub Actions PROHIBITED;historical CI historical;
+overallCIQualified=false. All44clauses/21gates/frozenfixtures/failures remain.
+Root docs LOCAL;4+32+1findings unresolved;fullgoal ACTIVE/no budget. FINAL PRD
+deployment AND verification follow all original preceding acceptance gates.
+Incoming acceptance V1 wrongly equated separate original334 with current source;
+V2 separates baseline/current and passes. Both helpers are frozen; no uninterrupted
+incoming-verifier pass. Earlier source-review/count/UTF8/truncated-output failures
+and all previous histories remain. Startup selected doc metadata/text output in
+this chat was truncated; targeted source/helper reads were subsequently complete.
+
+
 ## Human history-GC-preview POST source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass54Node including53leaf, zero failures/skips/
