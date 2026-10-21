@@ -1,5 +1,39 @@
 # BORTUS K8s performance, correctness and UI audit
 
+## Administrator metadata body source qualification (2026-10-21)
+
+Exact `kvAdminMetadataBody` already awaits `registry.admin(actor)` before request
+headers, body acquisition or schema delegation, then delegates to `kvBody` with
+the3MiB metadata maximum. No defect or production patch is established. NEW frozen
+PUBLIC `tests/kv-admin-metadata-source.test.ts` passes34leaf controls (Node35with
+parent; zero fail/skip/cancel). Pending/refused/throwing administrator models touch
+no request properties. Exact actor/schema-result identity,3MiB versus512KiB
+delegation, declared/streamed overflow, malformed input/schema refusals, held reads,
+deadline/error propagation, repeated fresh gate calls and independent concurrent
+models pass. Delegated pending/rejected cancellation preserves qualified fixed413.
+
+The administrator, actor, request, reader and schema are plain models; all imported
+implementations are inert and timers controlled. These controls do not exercise
+actual registry administration, fresh SQL, authentication, policy or schema
+validation. They qualify wrapper ordering/delegation only; a gate before reading
+does not establish authority at commit or remove existing serialized rechecks.
+
+Focused types2rootfiles and lint2files report0diagnostics. Sequential Windows
+Node24.18.0 source/types/lint finish3.328s/27.484s/32.484s, with original process handles signalled. Each NEW Job retains60swall/
+30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Inputs532Windows+132DIRECTLinux were
+frozen before execution. Lint adapts dependency resolution only; its React notice
+is retained. No performance,OS-network-isolation or universal-descendant claim.
+
+No actual HTTP Request/transport,credential,SQL/ORM/operatorDB,backend/native,
+build/server,recovery,performance or production ran; no prior frozen helper/control
+was replayed. Both finite expiry gates,deny-aware policies,all44clauses/21gates and
+failures remain. GitHub Actions is prohibited; historical CI is historical and
+overallCIQualifiedfalse. Root docs LOCAL;4+32+1 findings unresolved. Fullgoal ACTIVE/
+no budget. FINAL PRD deployment AND actual verification remain required after all
+preceding security/performance/actualAT/recovery/schema/RBAC/admission/data gates.
+See [source evidence](implementation-evidence/kv-admin-metadata-source-20261021.json).
+
+
 ## KV body overflow source correction (2026-10-21)
 
 `kvBody` previously awaited reader cancellation before its fixed413 overflow
