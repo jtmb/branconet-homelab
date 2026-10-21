@@ -198,7 +198,10 @@ export class KvRegistry {
         OR: grants.map(r => ({ ...(r.mountId ? { mountId: r.mountId } : {}), ...(r.prefix ? { OR: [{ path: r.prefix }, { path: { startsWith: r.prefix + "/" } }] } : {}) })),
       } : {}),
     }, include: { fields: true }, orderBy: { id: "asc" }, take: 101 }) : [];
-    const page = rows.slice(0, 100).filter(p => policyAllows(ownerRules, p, "list") && (!identityRules || policyAllows(identityRules, p, "list")));
+    await this.current(actor);
+    const freshOwnerRules = await this.rules(`user:${actor.id}`), freshIdentityRules = identityRules ? await this.rules(`identity:${actor.identityId}`) : null;
+    await this.current(actor);
+    const page = rows.slice(0, 100).filter(p => policyAllows(freshOwnerRules, p, "list") && (!freshIdentityRules || policyAllows(freshIdentityRules, p, "list")));
     return { items: page, nextCursor: rows.length > 100 ? rows[99].id : null };
   }
 

@@ -1,5 +1,35 @@
 # BORTUS API usage
 
+## Path metadata-list release authority (2026-10-20)
+
+GET /api/kv/paths rechecks the current account/session and automation identity
+after the awaited metadata query, reloads owner and (when applicable) identity
+policies, and checks account/session/identity again after those policy reads.
+Deleted accounts, changed sessions and revoked, expired, mismatched or missing
+identities refuse401, including empty pages. Automation still requires a current
+write owner. Human readonly access remains permitted by list policy; role-only
+demotion stamps no revocation or sessionVersion change, and later repromotion
+can restore otherwise valid automation authority on a new request.
+
+Fresh owner and identity list policies intersect, with explicit denies and whole
+path-segment prefixes retained. Engine administration does not bypass path policy.
+The query keeps its captured owner-grant SQL scope, mount/cursor filters, fields
+metadata, ascending ID order and101-fetch/100-response limits. New grants do not
+broaden that captured SQL scope. The cursor still follows the unfiltered captured
+page. No cache, retry, schema, token, native-value or mutation changes occur.
+
+All102 new frozen PUBLIC synthetic deferred source controls pass. Exact prior
+c345 source passes35/fails67, as frozen before execution. Focused semantics pass
+with zero diagnostics. Windows Node24.18.0 runs use60s wall/30 userCPU seconds/
+1GiB Job commit/twoCPUs/one active process; original process handles signalled.
+Source/saved review passes4243 checks. No old-suite replay, OS network-isolation,
+Linux/ORM or whole-goal acceptance claim. Automatic hosted CI is separately due.
+No operator DB/server/native/recovery/packaging execution or actual AT/security/
+performance acceptance follows. All original delivery gates remain open; PRD
+deployment AND actual verification remain the final required phase.
+
+
+
 ## Mount metadata-list release authority (2026-10-20)
 
 GET /api/kv/mounts rechecks the current human account/session after its awaited
