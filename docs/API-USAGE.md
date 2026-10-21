@@ -1,5 +1,37 @@
 # BORTUS API usage
 
+## Selected-path account/identity statement snapshot (2026-10-20)
+
+The final selected-path release gate now uses currentSelectedPath(actor).
+Human callers retain current(actor); automation uses ONE parameterized bounded
+SELECT joining the selected account and identity. Account existence/session,
+owner/session binding, revocation, expiry and write role are evaluated from
+that returned statement snapshot. This closes the mixed sequential account/
+identity read window without another reread chain. Ordinary current(), default
+authorize(), the policy-intersection statement snapshot, namespace validation,
+human readonly metadata, exact captured path/revision/fields and PATCH remain.
+Role-only demotion denies while readonly and may restore on repromotion without
+stamped revocation/session-version increments. No explicit transaction, lock,
+write, cache, retry, schema, native or automation HTTP route is introduced.
+The policy and authority snapshots remain separate. Withdrawal AFTER either
+snapshot may affect a later request; response-delivery atomicity is not claimed.
+
+NEW frozen70 finite PUBLIC source controls: exact1928 baseline64pass/six
+predicted failures; candidate70pass/zero skip/cancel. Focused semantics across
+two production/four test files have zero diagnostics. Windows Node24.18.0
+retains60s wall/30userCPU/1GiB Jobcommit/twoCPUs/one active process; both runs
+1.078s and original handles signalled. No OS network-isolation or universal
+descendant-absence claim. SuiteSHA256
+a2d010298091a4001f25a9e34ad0c879799c1fe7a05ea6543d449640d84d238f. Existing96/122/
+96 behavioral assertions remain byte-exact with additive SQL-model adapters.
+These controls model a statement snapshot and do not execute ORM/SQL/HTTP/native
+or prove populated-schema compatibility, security, performance, actual AT,
+recovery, image or live acceptance. Hosted automatic CI remains separately pending.
+Earlier checkpoint sections describe their historical source. All original
+failures/clauses/gates remain; PRD deployment AND verification are final required.
+
+
+
 ## Selected-path coherent policy intersection (2026-10-20)
 
 The selected-path GET callback replaces the automation-only final owner reread

@@ -68,6 +68,16 @@ function fixture(c: Row) {
   };
   const pause = async () => { entered(); await gate; };
   const db = {
+    $queryRaw: async (strings: TemplateStringsArray, ...values: unknown[]) => {
+      assert.equal(strings.join("?").replace(/\s+/g, " ").trim(), "SELECT u.\"id\", u.\"sessionVersion\", u.\"role\", i.\"id\" AS \"identityId\", i.\"ownerId\", i.\"ownerSessionVersion\", i.\"revokedAt\", i.\"expiresAt\" FROM \"users\" AS u LEFT JOIN \"kv_identities\" AS i ON i.\"id\" = ? WHERE u.\"id\" = ? LIMIT 1");
+      assert.deepEqual(plain(values), [tokenActor.identityId, actor.id]);
+      reads.account++; reads.identity++;
+      if (c.phase === "account") await pause();
+      return account ? [{ id: account.id, sessionVersion: account.sessionVersion, role: account.role,
+        identityId: credential?.id ?? null, ownerId: credential?.ownerId ?? null,
+        ownerSessionVersion: credential?.ownerSessionVersion ?? null, revokedAt: credential?.revokedAt ?? null,
+        expiresAt: credential?.expiresAt ?? null }] : [];
+    },
     user: { findUnique: async () => { reads.account++; if (c.phase === "account" && reads.account === 2) await pause(); return account && {...account}; } },
     kvIdentity: { findUnique: async () => { reads.identity++; return credential && {...credential}; } },
     kvPolicy: { findMany: async (query: Row) => {

@@ -47,6 +47,22 @@ export class KvRegistry {
     return user;
   }
 
+  // Selected-path release only: one statement reads account and identity together.
+  async currentSelectedPath(actor: KvActor) {
+    if (!actor.identityId) { await this.current(actor); return; }
+    const rows = await this.db.$queryRaw<{ id: string; sessionVersion: number; role: string; identityId: string | null;
+      ownerId: string | null; ownerSessionVersion: number | null; revokedAt: Date | null; expiresAt: Date | null }[]>`
+      SELECT u."id", u."sessionVersion", u."role", i."id" AS "identityId",
+        i."ownerId", i."ownerSessionVersion", i."revokedAt", i."expiresAt"
+      FROM "users" AS u LEFT JOIN "kv_identities" AS i ON i."id" = ${actor.identityId}
+      WHERE u."id" = ${actor.id} LIMIT 1`;
+    const row = rows[0];
+    if (!row || row.id !== actor.id || row.sessionVersion !== actor.sessionVersion) throw new KvError(401, "Authentication required");
+    if (row.identityId !== actor.identityId || row.ownerId !== row.id || row.ownerSessionVersion !== row.sessionVersion ||
+      row.revokedAt || !row.expiresAt || row.expiresAt.getTime() <= Date.now() || row.role !== "write")
+      throw new KvError(401, "KV identity revoked or expired");
+  }
+
   async admin(actor: KvActor, client: Client = this.db) {
     const user = await this.current(actor, client);
     if (actor.identityId || user.role !== "write" || !user.engineAdmin) throw new KvError(403, "Engine administration required");
