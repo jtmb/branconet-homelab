@@ -1,5 +1,45 @@
 # BORTUS Secrets Engine
 
+## Human current-value DELETE source qualification (2026-10-21)
+
+The exact data-route DELETE callback passes NEW frozen PUBLIC
+`tests/kv-current-value-delete-route-source.test.ts`:89leaf controls,90Node tests
+including one parent, zero failures/skips/cancellations. No defect or production
+change is established. Four inert wrapper results retain POST201/default peers and
+nodejs/force-dynamic exports. Only DELETE executes; GET/POST/PUT operations and
+actual body/schema implementations never run. The callback destructures id before
+body delegation, passes exactly request/nativeDelete, awaits body before registry
+path lookup/call with its original receiver/id, awaits path before reading exactly
+input.confirmPath then path.path, and rejects strict mismatch with fixed KvError400
+before engine delegation. Matching calls pass the original registry to kvEngine
+and invoke change with its original engine receiver and exactly actor/id/resolved
+input/delete literal. Getter/refusal ordering, inherited properties, nullish and
+noncallable refusal timing, held/fresh/interleaved bodies/paths/results and adopted
+resolved identities pass. Async adoption never claims raw promise identity.
+
+All imports are inert models. SOURCE controls establish no actual values, parsing/
+schema validation/HTTP/authentication/registry authority/credentials/native/SQL/
+ORM/operatorDB/backend/build/server/recovery/performance/production or atomic
+delivery. Qualified routes/parsers/kvHuman ordering, both finite expiry gates,
+deny-aware policies and kvBody overflow correction remain. No prior frozen helper/
+control replay. GitHub Actions PROHIBITED; historical CI historical;
+overallCIQualifiedfalse.
+
+Focused types2rootfiles and lint2files report zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint finish3.656/28.297/34.140s; peak Job commitments are218673152/688107520/428621824bytes.
+Original handles signal. Each NEW Job retains60swall/30userCPU/1GiBcommit/twoCPU/
+oneactiveprocess. Freeze705Windows/132DIRECTLinux precedes execution; lint adapts
+dependency resolution only and retains its React notice. No OS-network-isolation,
+universal-descendant or performance claim follows. All2238prior owner/221root docs
+were checked; twelve raw prepared/final doc inverses preserve prior bytes. Review
+is not independent person acceptance. Root docs LOCAL;4+32+1 findings unresolved.
+Fullgoal ACTIVE/no token budget;44clauses/21gates/failures remain. FINAL PRD
+deployment AND actual verification follow every original preceding security/
+performance/actualAT/compatible independent recovery/fresh backup after quiescence/
+schema/effective RBAC/admission/data gate. No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-current-value-delete-route-source-20261021.json).
+
+
 ## Human current-value POST/PUT source qualification (2026-10-21)
 
 The exact data-route POST and PUT callbacks pass NEW frozen PUBLIC
