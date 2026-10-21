@@ -41,7 +41,7 @@ const { KvRegistry } = evaluate("src/lib/kv-registry.ts", {
 });
 const route = evaluate("src/app/api/kv/paths/[id]/route.ts", {
   "@/lib/kv-http": { kvHuman: (callback: unknown) => callback, kvBody: forbidden },
-  "@/lib/kv-schemas": { pathUpdate: {} },
+  "@/lib/kv-schemas": { pathUpdate: {} }, "@/lib/kv-contract": contract,
 });
 assert.equal(route.runtime, "nodejs");
 const actions = ["list", "read", "create", "update", "delete", "rollback", "reconcile", "destroy", "export", "rotate"];
@@ -705,7 +705,10 @@ for (const [index, c] of cases.entries()) test("public selected path " + index +
   else if (status) { assert.equal(result.value, null); assert(denied(status)(result.error)); }
   else { assert.equal(result.error, null); assert.deepEqual(plain(result.value), expected()); }
   assert.deepEqual(f.queries, [{ where: { id: "public-path" }, include: { fields: true, mount: true } }]);
-  assert(f.reads.owner <= 1); assert(f.reads.token <= 1);
+  const earlyAccountRefusal = f.phase === "path" && ["account", "identity", "automationDemotion"].includes(c.kind);
+  const policyRefusal = ["policy", "malformed", "outage"].includes(c.kind);
+  assert.equal(f.reads.owner, earlyAccountRefusal ? 0 : c.automation && !policyRefusal ? 2 : 1);
+  assert.equal(f.reads.token, !c.automation || earlyAccountRefusal || (f.phase === "owner" && policyRefusal) ? 0 : 1);
   if (c.kind === "repromotion") {
     f.setUser(user()); assert.deepEqual(plain(await f.run()), expected());
     assert.equal(identity().revokedAt, null); assert.equal(user().sessionVersion, 7);

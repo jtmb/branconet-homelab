@@ -1,5 +1,36 @@
 # BORTUS API usage
 
+## Selected-path owner-policy reread (2026-10-20)
+
+The selected-path GET callback now rereads the automation owner's list policy
+after the existing owner/token authorization finishes, before its retained final
+account/session/identity check. Owner-policy removal, explicit list deny or loss
+of matching mount/whole-segment prefix during the token-policy wait refuses403;
+malformed/oversized owner policy refuses503 and unavailable reads fail closed.
+This adds one owner-policy query only for automation in this callback. Human
+readonly metadata, exact captured ID/revision/field mappings, namespace checks,
+role-only demotion/restoration and default registry authorization remain unchanged.
+No token reread, transactional policy snapshot, retry/cache/schema/native/mutation
+change or new automation HTTP route is introduced. The policy reads remain
+sequential; this finite correction makes no atomic policy-release guarantee.
+
+All122 new frozen PUBLIC source controls pass; exact eb332 baseline gives
+98pass/24predicted failures, with zero skips/cancellations. Focused semantics
+have zero diagnostics. Windows Node24.18.0 uses60s wall/30userCPU seconds/1GiB
+Job commit/twoCPUs/one active process; baseline1.078s/candidate1.109s, original
+handles signalled. No OS network-isolation/Linux/ORM/runtime/universal
+descendant-absence claim.
+The previous96 frozen controls remain byte-exact in retained evidence; their live
+suite keeps every behavioral assertion and replaces single-read upper bounds
+with exact expected owner/token counts for the added automation owner query.
+Automatic hosted CI is separately pending. All5142 retained proofs and342
+current inputs/22owner docs, separate compatibility5/original334 are verified;
+one loaded dependency matches without graph rewalk. No
+operator DB, HTTP wrapper/server, native/recovery, build/image, security,
+performance, actual AT, effective RBAC/admission or production acceptance follows.
+All original gates remain, with PRD deployment AND verification the final phase.
+
+
 ## Selected-path GET release authority (2026-10-20)
 
 GET /api/kv/paths/[id] now repeats the current account/session and automation
