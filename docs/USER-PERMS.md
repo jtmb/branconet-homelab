@@ -1,5 +1,40 @@
 # BORTUS user permissions
 
+## Automation entry route source qualification (2026-10-20)
+
+Exact POST /api/kv/automation already awaits authenticateIdentity before engine
+construction, body parsing or runAutomation dispatch. No defect or production
+patch is established. NEW frozen PUBLIC tests/kv-automation-entry.test.ts passes
+all16leaf controls (Node17including parent, zero fail/skip/cancel). Pending and
+refused authentication reach no downstream stub. Header/registry errors, absent
+header forwarding, successful actor/input/result identity, pending/rejected body,
+engine/dispatch/response errors and error-responder propagation are covered.
+JavaScript retains engine construction before body parsing after authentication.
+
+Every imported route dependency is inert; the request is a plain object. No actual
+Request/HTTP, credential parsing/hash, SQL/ORM, native client, build/server,
+recovery, performance or production execution occurs. Both finite expiry gates,
+deny-aware policies and every prior assertion retain their source. These controls
+qualify caller ordering only, without atomicity or response-delivery guarantees.
+
+Focused TypeScript2rootfiles/lint2files report0diagnostics. Lint changes dependency
+resolution only and retains its React-detection environment notice. WindowsNode
+24.18.0 source/types/lint finish1.172s/24.422s/29.375s with peak Job commit
+186245120/647602176/377425920bytes. Each Job retains60swall/30userCPU/1GiBcommit/
+twoCPU/oneactiveprocess; original handles signal after exit. Type and lint Jobs
+partly overlap; timings are not sequential performance evidence. No universal
+descendant-absence or OS network-isolation claim. All2224prior owner docs and204
+root docs were checked; six owner doc changes preserve prior raw bytes by inverse.
+
+No current image, native/history/CAS/rotation, populated schema, security,
+performance, actual AT, independent recovery/rollback, effective RBAC/admission,
+data or live acceptance follows. GitHub Actions is prohibited; historical CI is
+historical and overallCIQualifiedfalse. Root4+32+1 findings/all44clauses/21gates/
+frozen failures remain unresolved. Fullgoal ACTIVE/no budget. FINAL PRD deployment
+AND actual verification remain required after all preceding gates.
+See [source evidence](implementation-evidence/automation-entry-source-20261020.json).
+
+
 ## Ordinary authentication caller-source qualification (2026-10-20)
 
 `KvRegistry.authenticateIdentity(header)` already awaits ordinary `current(actor)`
