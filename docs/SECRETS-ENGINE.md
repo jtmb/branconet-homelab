@@ -1,5 +1,76 @@
 # BORTUS Secrets Engine
 
+## KV engine factory source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass128 Node tests including127 leaf; zero
+failures/skips/cancellations. Only exact exported synchronous kvEngine runs with
+inert real imports/registry/native engine/transport/aliases/credentials/services.
+The captured constructor receives original registry, unbound zero-argument
+transport result and later alias binding without alias invocation. Original
+newTarget, refusal prefixes, nonconstructor precedence, prototype lookup, fresh/
+reentrant calls, ordinary returns and untouched promises/thenables pass.
+No production defect/change established.
+
+Focused types2 roots/zero diagnostics and first lint2 files/zero errors/warnings
+pass. Exact9280 raw declaration contents/1359 snapshot reads/fallback0, with37428
+DIRECT Linux dependency hashes matching before/after. The first preparer failed
+before controls because39 CRLF declarations were text-normalized; raw-byte checks
+confirmed the cause. A DISTINCT raw-byte continuation passed. The failed helper
+and outputs remain frozen, never rerun. No completed source controls were replayed.
+
+Source0.890s/79286272 peak bytes; types7.625s/576606208; lint28.469s/294760448.
+All three main handles signalled. Active before drain source0/types0/lint1; explicit
+termination/drain gives0 ALL. TotalProcesses2 cause UNESTABLISHED; one ACTIVE cap
+retained. Sequential Windows Node24.18.0 Jobs retain60s wall/30s user CPU/1GiB
+commit/two CPUs/kill-on-close. Module-type and dependency-only React notices stay
+separate. No OS network isolation/universal descendant/performance/independent-
+person claim. No actual values/body/schema/credentials/HTTP/auth/legacy/native/
+SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/CAS replay.
+GitHub Actions PROHIBITED;historical CI only;overallCIQualified=false. Root docs
+LOCAL;4+32+1 findings unresolved;full goal ACTIVE/no budget. All44 clauses/21 gates,
+fixtures/failures and FINAL PRD deployment AND verification after all gates persist.
+Incoming acceptance FIRST14226 and predecessor independent match FIRST14314 passed.
+Startup truncated/wrong-path/metadata reads remain separately recorded. See the
+application owner implementation-evidence/kv-engine-source-20261021.json.
+
+
+## KV engine declaration preparation correction (2026-10-21)
+
+The first preparer stopped before controls:39 declaration strings used universal
+newline normalization and did not match their raw hashes. Direct WSL raw reads
+confirmed every mismatch was CRLF normalization;37428 dependencies remain exact.
+The failed helper/outputs are frozen and never rerun. A DISTINCT continuation
+reads raw bytes before UTF8 decoding and verifies exact content hashes. New
+SOURCE/types/lint remain UNEXECUTED; no test/runtime result follows from preparation.
+All prior failures, scope, resource, Actions and final-delivery gates persist.
+
+
+## KV engine factory source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported synchronous kvEngine
+in src/lib/kv-http.ts. The engine constructor and original registry are captured
+before the unbound zero-argument transport call; the alias binding is captured
+after transport returns and passed without invocation. Construction receives
+exact registry/transport/alias identities and newTarget. Argument refusals precede
+constructor validation; prototype failures stop the body. Fresh/reentrant calls,
+ordinary construction and untouched promises/thenables are covered. Real imports,
+registry/native engine/transport/aliases/credentials/services remain inert.
+No production defect/change established. SOURCE/types/lint are UNEXECUTED; controls
+freeze before distinct one-run local execution.
+
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s user CPU/1GiB commit/two
+CPUs/one ACTIVE process/kill-on-close, main-handle observation and explicit drain.
+No OS network isolation/universal descendant/performance/independent-person claim.
+No actual values/body/schema/credentials/HTTP/authentication/legacy/native/SQL/ORM/
+operatorDB/backend/build/server/recovery/production/grants/CAS or frozen replay.
+GitHub Actions PROHIBITED;historical CI only;overallCIQualified=false. Root docs
+LOCAL;4+32+1 findings unresolved;full goal ACTIVE/no budget. All44 clauses/21 gates,
+fixtures/failures and final PRD deployment AND verification after all gates persist.
+Incoming acceptance FIRST14226 and predecessor independent match FIRST14314 passed.
+Startup oversized/truncated reads, absent wrong-path docs and the focused matcher
+source lookup remain recorded; no uninterrupted read chain is claimed.
+
+
 ## KV registry factory source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass149 Node tests including148 leaf; zero
