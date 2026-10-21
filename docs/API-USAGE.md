@@ -1,5 +1,39 @@
 # BORTUS API usage
 
+## Selected-path coherent policy intersection (2026-10-20)
+
+The selected-path GET callback replaces the automation-only final owner reread
+with one bounded kvPolicy query for both owner and token principals. Both list
+policies are evaluated from the same returned statement snapshot. This removes
+the cross-policy sequential-read window without another reread chain. The limit
+is 513 rows overall and 256 per principal; malformed/oversized metadata refuses
+503, missing grants or matching explicit denies refuse403, and outages fail closed.
+The unchanged final current(actor) still checks account/session/identity authority.
+Human readonly metadata, role-only demotion/restoration, captured ID/revision/
+mappings, namespace checks, default authorize(), human HTTP wrapper and PATCH
+remain unchanged. No transaction/lock/write/cache/retry/schema/native change is
+added. This snapshot does not atomically couple policy withdrawal to response
+delivery: a withdrawal after the statement snapshot may affect a later request.
+
+All96 NEW frozen PUBLIC controls pass; exact159144 baseline has72pass/24
+predicted token-withdrawal failures, zero skips/cancellations. Focused semantics
+cover the two production sources and three test files with zero diagnostics.
+Windows Node24.18.0 retains60s wall/30userCPU/1GiB Jobcommit/twoCPUs/one active
+process; baseline1.125s/candidate1.078s and original handles signalled.
+No OS network-isolation or universal descendant-absence claim is made.
+All5584 retained proofs/current343inputs/22owner docs, separate compatibility5
+and original334 (directly rehashed at receipt) remain verified; no graph rewalk.
+The single-query source inference follows SQLite read-statement isolation
+([SQLite transactions](https://www.sqlite.org/lang_transaction.html)); the local
+controls model a statement snapshot, without actual ORM/SQL execution.
+Automatic hosted CI qualification is separately pending. The original96 and122
+frozen suites remain intact; live adapters accept the combined query and account
+for its exact per-principal reads while retaining every behavioral assertion.
+These source models do not invoke ORM/HTTP/server/native/recovery or establish
+security/performance/actual AT/schema/RBAC/admission/data/image/live acceptance.
+All original failures and gates remain; PRD deployment AND verification are final.
+
+
 ## Selected-path owner-policy reread (2026-10-20)
 
 The selected-path GET callback now rereads the automation owner's list policy

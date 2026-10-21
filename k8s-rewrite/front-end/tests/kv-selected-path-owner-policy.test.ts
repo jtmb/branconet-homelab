@@ -69,6 +69,12 @@ function fixture(c: Row) {
     user: { findUnique: async ({ where }: Row) => { assert.deepEqual(plain(where), { id: actor.id }); reads.account++; return account && { ...account }; } },
     kvIdentity: { findUnique: async ({ where }: Row) => { assert.deepEqual(plain(where), { id: tokenActor.identityId }); reads.identity++; return credential && { ...credential }; } },
     kvPolicy: { findMany: async (query: Row) => {
+      if (typeof query.where.principal === "object") {
+        assert.deepEqual(plain(query), { where: { principal: { in: ["user:" + actor.id, "identity:" + tokenActor.identityId] } }, take: 513 });
+        reads.owner++; reads.token++;
+        await hold("owner"); await hold("token");
+        return [...ownerRules.map(rule => ({ ...rule, principal: "user:" + actor.id })), ...tokenRules.map(rule => ({ ...rule, principal: "identity:" + tokenActor.identityId }))].slice(0, 513);
+      }
       const kind = query.where.principal === "user:" + actor.id ? "owner" : "token";
       assert.deepEqual(plain(query), { where: { principal: kind === "owner" ? "user:" + actor.id : "identity:" + tokenActor.identityId }, take: 257 });
       reads[kind]++; await hold(kind); return (kind === "owner" ? ownerRules : tokenRules).map(rule => ({ ...rule }));
@@ -1017,7 +1023,7 @@ for (const [index, c] of cases.entries()) test("public selected-path owner polic
   if (outage) { assert.equal(result.value,null); assert.match(result.error?.message || "", /PUBLIC .* UNAVAILABLE/); }
   else if (status) { assert.equal(result.value,null); assert(denied(status)(result.error)); }
   else { assert.equal(result.error,null); assert.deepEqual(plain(result.value),expected()); }
-  assert.equal(f.reads.path,1); assert.equal(f.reads.token,c.automation ? 1 : 0);
+  assert.equal(f.reads.path,1); assert.equal(f.reads.token,c.automation ? c.kind === "tokenPolicy" || c.kind === "tokenOutage" ? 1 : 2 : 0);
   assert.deepEqual(f.queries,[{where:{id:"public-path"},include:{fields:true,mount:true}}]);
   if (c.kind === "repromoted") {
     f.setUser(user("write",c.admin)); assert.deepEqual(plain(await f.run()),expected());

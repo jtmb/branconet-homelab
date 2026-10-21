@@ -54,7 +54,10 @@ export class KvRegistry {
   }
 
   async rules(principal: string, client: Client = this.db): Promise<KvRule[]> {
-    const rules = await client.kvPolicy.findMany({ where: { principal }, take: 257 });
+    return this.validateRules(await client.kvPolicy.findMany({ where: { principal }, take: 257 }));
+  }
+
+  private validateRules(rules: KvRule[]): KvRule[] {
     if (rules.length > 256) throw new KvError(503, "KV policy metadata limit exceeded");
     for (const rule of rules) {
       try {
@@ -63,6 +66,18 @@ export class KvRegistry {
       } catch { throw new KvError(503, "KV policy metadata unavailable"); }
     }
     return rules;
+  }
+
+  // One statement captures both policy sets; the caller still checks the current account/identity.
+  async authorizePolicyIntersection(actor: KvActor, scope: KvScope, action: KvAction) {
+    const owner = `user:${actor.id}`, identity = actor.identityId ? `identity:${actor.identityId}` : null;
+    const principals = identity ? [owner, identity] : [owner];
+    const rows = await this.db.kvPolicy.findMany({ where: { principal: { in: principals } }, take: principals.length * 256 + 1 });
+    if (rows.length > principals.length * 256) throw new KvError(503, "KV policy metadata limit exceeded");
+    const ownerRules = this.validateRules(rows.filter(rule => rule.principal === owner));
+    const identityRules = identity ? this.validateRules(rows.filter(rule => rule.principal === identity)) : null;
+    if (!policyAllows(ownerRules, scope, action) || (identityRules && !policyAllows(identityRules, scope, action)))
+      throw new KvError(403, "KV policy denies this action");
   }
 
   async authorize(actor: KvActor, scope: KvScope, action: KvAction, client: Client = this.db) {

@@ -69,6 +69,12 @@ function fixture(c: Row) {
     user: { findUnique: async ({ where }: Row) => { assert.deepEqual(plain(where), { id: actor.id }); reads.account++; return account && { ...account }; } },
     kvIdentity: { findUnique: async ({ where }: Row) => { assert.deepEqual(plain(where), { id: tokenActor.identityId }); reads.identity++; return credential && { ...credential }; } },
     kvPolicy: { findMany: async (query: Row) => {
+      if (typeof query.where.principal === "object") {
+        assert.deepEqual(plain(query), { where: { principal: { in: ["user:" + actor.id, "identity:" + tokenActor.identityId] } }, take: 513 });
+        reads.owner++; reads.token++;
+        await hold("owner"); await hold("token");
+        return [...ownerRules.map(rule => ({ ...rule, principal: "user:" + actor.id })), ...tokenRules.map(rule => ({ ...rule, principal: "identity:" + tokenActor.identityId }))].slice(0, 513);
+      }
       const kind = query.where.principal === "user:" + actor.id ? "owner" : "token";
       assert.deepEqual(plain(query), { where: { principal: kind === "owner" ? "user:" + actor.id : "identity:" + tokenActor.identityId }, take: 257 });
       reads[kind]++; await hold(kind); return (kind === "owner" ? ownerRules : tokenRules).map(rule => ({ ...rule }));
@@ -708,7 +714,7 @@ for (const [index, c] of cases.entries()) test("public selected path " + index +
   const earlyAccountRefusal = f.phase === "path" && ["account", "identity", "automationDemotion"].includes(c.kind);
   const policyRefusal = ["policy", "malformed", "outage"].includes(c.kind);
   assert.equal(f.reads.owner, earlyAccountRefusal ? 0 : c.automation && !policyRefusal ? 2 : 1);
-  assert.equal(f.reads.token, !c.automation || earlyAccountRefusal || (f.phase === "owner" && policyRefusal) ? 0 : 1);
+  assert.equal(f.reads.token, !c.automation || earlyAccountRefusal || (f.phase === "owner" && policyRefusal) ? 0 : policyRefusal ? 1 : 2);
   if (c.kind === "repromotion") {
     f.setUser(user()); assert.deepEqual(plain(await f.run()), expected());
     assert.equal(identity().revokedAt, null); assert.equal(user().sessionVersion, 7);
