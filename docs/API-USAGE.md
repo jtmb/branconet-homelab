@@ -1,5 +1,51 @@
 # BORTUS API usage
 
+## Human rotation metadata GET source qualification (2026-10-21)
+
+The exact rotation metadata GET callback is composite SOURCE-qualified:126
+passing leaf controls from the original127-leaf frozen run plus one NEW focused
+VM global URL-getter control. The original run retains128 Node tests,126pass,
+one failed leaf and its failed parent; the focused run passes2/2 including its
+parent. No completed control was replayed. Node VM translates a throwing
+modeled global URL getter to exact ReferenceError: URL is not defined. Only
+that test assertion was corrected in `tests/kv-rotation-list-route-source.test.ts`;
+the raw suite inverse is retained, with no emitted-JavaScript parity claim.
+Production is unchanged. All imported implementations, actual URL/schema
+parsing and sibling POST/PATCH callbacks remain inert. Nodejs/force-dynamic,
+default GET wrapper and inert POST201 pass. Original request.url goes to
+modeled URL/searchParams/get(pathId); finite key iteration precedes allowed-name
+and strict getAll-length checks, UUID success and exact400/message refusal.
+Accepted model filters capture KvRotations before kvEngine(original registry),
+construct with exactly engine, capture list before metadataCursor(request),
+then call with original receiver and actor/captured pathId/cursor. Getter/
+construction/refusal ordering, inherited/nullish/noncallable cases, fresh and
+interleaved calls/results and adopted resolved identities pass.
+
+Focused types2rootfiles and lint2files have zero diagnostics. WindowsNode24.18.0
+focused-source/types/lint durations3.093/24.484/28.562s; Job peak commitments216297472/722657280/437862400bytes.
+The original source run used3.204s/234606592bytes. Original handles signalled;
+each NEW Job retains60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess.
+Original865Windows and corrected878Windows freezes plus132DIRECTLinux precede
+execution. All2248prior owner/231root docs were checked. All24prepared
+snapshots and raw doc inverses remain; historical two suite type inverses are
+distinct from the current assertion inverse. Review is not independent-person
+acceptance; no OS-network-isolation/universal-descendant/performance claim.
+Lint adapts dependency resolution only and retains its React notice.
+
+No actual values/parsing/schema validation/rotation generation/credentials/
+import bundles/export bundles/HTTP/authentication/registry/native/SQL/ORM/
+operatorDB/backend/build/server/recovery/performance/production qualification.
+All qualified routes/parsers/kvHuman ordering, both finite expiry gates,
+deny-aware policies, kvBody overflow correction and all44clauses/21gates/failures
+remain. GitHub Actions PROHIBITED; historical CI historical;overallCIQualifiedfalse.
+Root docs LOCAL;4+32+1findings unresolved. Fullgoal ACTIVE/no token budget.
+FINAL PRD deployment AND actual verification follow all original preceding
+security/performance/actualAT/compatible independent recovery/fresh backup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates. No current image/runtime
+qualification.
+See [source evidence](implementation-evidence/kv-rotation-list-route-source-20261021.json).
+
+
 ## Human rotation preparation POST source qualification (2026-10-21)
 
 The exact rotation preparation POST callback passes NEW frozen PUBLIC
