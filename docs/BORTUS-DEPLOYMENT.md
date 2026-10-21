@@ -1,5 +1,78 @@
 # BORTUS application deployment
 
+## Prefix matcher source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass39/39 tests with zero failures/skips/
+cancellations. Only exact synchronous prefixMatches runs with synthetic prefix/
+path strings and inert immediate logicalPath/builtin/error bindings. Both
+validations precede every return; empty prefix, exact equality and slash
+descendants match while sibling-prefix collisions do not. Validation return
+values are ignored; synchronous refusals propagate; builtin lookup/call short
+circuiting and fresh calls pass. Real logicalPath and all neighboring exports,
+configuration/engine/credentials/native services remain inert. No supported
+production defect or production change is established.
+
+FIRST SOURCE/types/lint pass in DISTINCT V2: types2roots/0diagnostics;lint2files/
+0errors/warnings. Fresh9280 raw declarations/1021snapshotReads/fallback0;
+37428 DIRECT Linux dependency hashes match before/after;511 new and507 prior
+frozen execution files unchanged. Source0.203s/49295360peakbytes;types6.453s/
+492695552;lint35.094s/279318528. All main handles signalled;activeBeforeDrain
+[0,0,0],explicitdrain0ALL. TotalProcesses2 cause UNESTABLISHED. Sequential
+Windows Node24.18.0 Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/
+kill-on-close. Module-type and lint React notices remain separate. No OSnetwork
+isolation/universaldescendant/performance/independentperson claim. No HTTP/auth/
+native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/production/
+grants/CAS or frozen replay.
+
+V1 preparation stopped before repository edits or control execution because its
+declaration collector selected7588/9280 entries. V1 helper/artifacts remain frozen,
+never rerun; DISTINCT V2 corrected only the declaration collection scope. Startup
+incoming18007 finished BEFOREcurrent525=18532 unique orderedproofs;current404/
+selected81/compat5/separateOriginal334/same80root8/24orderedinverses/2531otherdocs
+passed. Independent predecessor V3 matcher FIRST18751 passed. Separate stopped
+capture preflights/direct reconciliation, all historical ref sets/read exceptions/
+failures remain frozen. GitHub Actions PROHIBITED;historicalCIonly;overallCIQualified
+=false. Root docs LOCAL;4+32+1findings unresolved. Fullgoal ACTIVE/no budget;
+all44clauses/21gates/fixtures/failures and FINAL PRD deployment AND verification
+after ALL original preceding gates remain. See application
+implementation-evidence/kv-prefix-matches-source-20261021.json.
+
+
+## Prefix matcher source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported prefixMatches.
+Source order was recorded before controls: inert logicalPath(prefix,true), then
+logicalPath(path), then empty prefix, exact equality, and slash-descendant
+startsWith. Both validations precede every return; their results are ignored.
+Synthetic prefix/path strings and inert immediate validator/builtin/error
+bindings only. Real logicalPath and all neighboring exports, configuration,
+engine, credentials and native services remain inert. No supported production
+defect or correction is established. NEW source/types/lint are UNEXECUTED and
+freeze before first execution. No HTTP/auth/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/performance/production/grants/CAS or frozen replay.
+
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/two
+CPUs/one ACTIVE/kill-on-close, main-handle observation and explicit drain. No
+OSnetworkisolation/universaldescendant/performance/independentperson claim.
+Startup incoming18007 finished BEFOREcurrent525=18532 unique orderedproofs;
+current404/selected81/compat5/separateOriginal334/same80root8/24orderedinverses/
+2531otherdocs passed. Independent predecessor V3 matcher FIRST18751 passed.
+Stopped capture preflights and DISTINCT direct reconciliation remain separate;
+both tree objects present, persistent refs/metadata unchanged, cause UNESTABLISHED.
+All historical ref inventories, read exceptions and failed/completed/unexecuted
+helpers remain frozen. No ref/object recreation. GitHub Actions PROHIBITED;
+historical CI only;overallCIQualified=false. Root docs LOCAL;4+32+1findings
+unresolved. Fullgoal ACTIVE/no budget;all44clauses/21gates/fixtures/failures and
+FINAL PRD deployment AND verification after ALL original preceding gates remain.
+
+V1 preparation stopped before repository edits or source/types/lint execution:
+the declaration collector selected7588 instead of9280 entries. Its helper and
+artifacts remain frozen, never rerun. DISTINCT V2 collects d.ts/d.mts/d.cts and
+all JSON declarations directly from the unchanged37428-file Linux dependency
+inventory. The current snapshot suffix metadata was read to resolve this narrow
+selection mismatch; no original helper or control was executed.
+
+
 ## Action parser source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass60/60 tests with zero failures/skips/
