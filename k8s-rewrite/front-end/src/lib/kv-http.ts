@@ -45,7 +45,7 @@ export async function kvBody<T>(request: Request, schema: z.ZodType<T>, maximum 
     while (true) {
       const next = await Promise.race([reader.read(), deadline]); if (next.done) break;
       bytes += next.value.byteLength;
-      if (bytes > maximum || chunks.length >= 4096) { await reader.cancel(); throw new KvError(413, "KV request exceeds the body limit"); }
+      if (bytes > maximum || chunks.length >= 4096) { void reader.cancel().catch(() => {}); throw new KvError(413, "KV request exceeds the body limit"); }
       chunks.push(next.value);
     }
     let value: unknown;

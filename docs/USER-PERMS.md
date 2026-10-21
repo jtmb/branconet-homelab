@@ -1,5 +1,42 @@
 # BORTUS user permissions
 
+## KV body overflow source correction (2026-10-21)
+
+`kvBody` previously awaited reader cancellation before its fixed413 overflow
+refusal. Pending cancellation postponed that refusal; rejected cancellation
+replaced it. The one-line correction starts cancellation without awaiting it,
+catches cancellation rejection and preserves fixed413 plus existing finally
+timer-clear/releaseLock. Default512KiB/custom byte limits,4096chunks,fatal UTF-8,
+JSON/schema delegation and20-second read deadline retain their source behavior.
+
+NEW frozen PUBLIC `tests/kv-body-source.test.ts` covers58leaf controls. The
+unchanged baseline passes56leaf and fails the2overflow controls (Node59 including
+parent:56pass/3fail). Corrected source passes all59Node tests. Focused types first
+refused13test-only never-array narrowing diagnostics; separate v2 adds only the
+string-array return annotation, retaining every assertion. V2 source59pass,
+types2rootfiles0diagnostics and lint2files0errors/warnings pass. Original suite,
+failed results and preparation refusals remain frozen. The newline-carrier doc
+preparer and subsequent absent-snapshot freeze refusals occurred before candidate
+execution; separate corrected preparer/freeze preserved original doc bytes.
+
+Sequential WindowsNode24.18.0 v2 source/types/lint finish3.766s/31.172s/45.485s,
+peaks212615168/639021056/397594624bytes. Each Job retains60swall/30userCPU/1GiB
+commit/twoCPU/oneactiveprocess; original process handles signal. Lint adapts only
+dependency resolution and retains its React-detection notice. No performance,
+OS-network-isolation or universal-descendant-absence claim follows.
+
+These qualify exact source using plain request/reader models, controlled timers,
+inert schema and imported authentication/registry/engine/native dependencies. No
+actual HTTP Request/transport,credentials,SQL/ORM,backend/native,build/server,
+recovery,performance or production ran; actual schema validation/stream cleanup
+is not inferred. No earlier frozen workload/helper/control was replayed. Both
+finite expiry gates,deny-aware policies,all44clauses/21gates/failures remain.
+GitHub Actions is prohibited; historical CI is historical,overallCIQualifiedfalse.
+Root docs LOCAL;4+32+1 findings unresolved. Fullgoal ACTIVE/no budget. FINAL PRD
+deployment AND actual verification remain required after all preceding gates.
+See [source evidence](implementation-evidence/kv-body-source-20261021.json).
+
+
 ## Automation dispatcher source qualification (2026-10-21)
 
 Exact runAutomation already refuses a missing/empty identity before engine,
