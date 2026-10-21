@@ -1,5 +1,45 @@
 # BORTUS application deployment
 
+## Human history GC preview/commit source qualification (2026-10-21)
+
+The exact history GC preview/commit POST callbacks pass NEW frozen PUBLIC
+`tests/kv-gc-routes-source.test.ts`:119 leaf controls,120 Node tests including
+one parent, zero failures/skips/cancellations. All dependencies are inert models;
+actual kvHuman/kvBody/historyGcPreview/historyGc schema/registry/engine
+implementations never execute. No defect or production change is established.
+Both nodejs exports and exact default-status wrappers pass. Both callbacks await
+exact request/schema delegation BEFORE kvEngine(original registry), capture
+gcPreview/gc before reading resolved input.pathId and preserve the original engine
+receiver. Preview passes exactly actor/pathId without request property reads;
+commit passes exactly actor/pathId/resolved input/original request.signal.
+Getter/refusal ordering, inherited/nullish/noncallable cases, held/fresh/interleaved
+bodies/results/signals and adopted resolved identities pass. No raw promise
+identity claim.
+
+Focused types3rootfiles and lint3files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations3.266/24.593/29.640s; Job peak commitments
+225861632/692400128/434479104bytes. All original process handles signalled. Each NEW Job retains60swall/
+30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze786Windows/132DIRECTLinux precedes
+execution; the119source controls never replayed. All2243prior owner/226root docs
+were checked. Prior raw bytes and eighteen prepared execution snapshots remain
+verifiable through raw doc inverses and both historical suite type inverses.
+Review is not independent-person acceptance. No OS-network-isolation,
+universal-descendant or performance claim follows. Lint adapts dependency
+resolution only and retains its React notice.
+
+SOURCE qualification establishes no actual values/parsing/schema validation/HTTP/
+authentication/credentials/registry authority/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/performance/production/atomic delivery. All qualified routes/
+parsers/kvHuman ordering, both finite expiry gates, deny-aware policies and kvBody
+overflow correction remain. All44clauses/21gates/failures remain. GitHub Actions
+PROHIBITED; historical CI historical;overallCIQualifiedfalse. Root docs LOCAL;
+4+32+1findings unresolved. Fullgoal ACTIVE/no token budget. FINAL PRD deployment
+AND actual verification follow all original preceding security/performance/
+actualAT/compatible independent recovery/fresh backup after quiescence/schema/
+effective RBAC/admission/data gates. No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-gc-routes-source-20261021.json).
+
+
 ## Human adoption GET/POST source qualification (2026-10-21)
 
 The exact adoption GET/POST callbacks pass NEW frozen PUBLIC
