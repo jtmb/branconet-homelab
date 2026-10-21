@@ -1,5 +1,68 @@
 # BORTUS application deployment
 
+## Policy allowance source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass63/63,zero failures/skips/cancellations.
+Only exact synchronous policyAllows executes with synthetic rule/scope/action
+metadata. All neighboring exports, configuration, engine, credentials and native
+services remain inert; logicalPath/parseActions/prefixMatches are immediate stubs.
+Requested-path and per-rule effect/actions/prefix validation order, exact/global
+mount selection, prefix/action shortcircuiting, allow accumulation and deny priority,
+fresh calls/fixed errors, direct constructor refusal and iterator closure pass.
+Synthetic getters/iterators/builtin faults characterize source JavaScript only.
+No supported production defect or production change is established.
+
+FIRST SOURCE/types/lint pass:types2roots/0diagnostics;lint2files/0errors/warnings.
+Fresh9280 raw declarations/1022snapshotReads/fallback0;37428 DIRECT Linux dependency
+hashes match before/after.413new+1840prior execution bindings unchanged=2252unique
+(Node shared). Source1.141s/81027072peakbytes;types6.313s/474447872;lint37.890s/
+283836416. Main handles signalled;activeBeforeDrain[1,0,0],explicitdrain0ALL.
+TotalProcesses2 cause UNESTABLISHED. Sequential Windows Node24.18.0 Jobs retain
+60swall/30userCPU/1GiBcommit/twoCPUs/oneACTIVE/kill-on-close. Module-type/lint React
+notices separate. No OSnetworkisolation/universaldescendant/performance/
+independentperson claim. No HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/
+recovery/performance/production/grants/CAS or frozen replay.
+
+Startup FIRST45011:incoming19565 FINISHED BEFOREcurrent1148=20713UNIQUE;
+406/83/compat5/separateOriginal334/same82root8/24orderedinverses/2535otherdocs.
+Independent predecessor DISTINCT V2 FIRST20944 passed; its V1 projection KeyError
+before proof rehash stays frozen separately. Immutable receipt and proofs unchanged.
+All earlier failures/read exceptions remain separate; original helpers never rerun.
+Rootdocs LOCAL;4+32+1findings unresolved. GitHub Actions PROHIBITED;historicalCIonly;
+overallCIQualified=false. FullgoalACTIVE/no budget;all44clauses/21gates/fixtures/
+failures and FINAL PRDdeployment AND verification after ALLoriginalgates remain.
+See application implementation-evidence/kv-policy-allows-source-20261021.json.
+
+
+## Policy allowance source preparation (2026-10-21)
+
+NEW finite frozen PUBLIC SOURCE controls select only exact exported policyAllows.
+Source order was recorded before controls: requested-path validation; initial
+false accumulator; per-rule effect/parsed-actions/prefix validation before mount
+selection; global-null or exact mount, inert prefix match, then action membership;
+matching deny returns false immediately, otherwise accumulate allow until exhaustion.
+LogicalPath, parseActions and prefixMatches are inert immediate bindings; actual
+neighboring exports/configuration/engine/credentials/native services never execute.
+Synthetic rules/scope/action metadata only. Getter/iterator/builtin/refusal controls
+characterize source JavaScript, not supported payload defects. No production defect
+or change established. NEW source/types/lint UNEXECUTED; freeze before first execution.
+No HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/
+production/grants/CAS or frozen replay. Windows Node24.18.0 Jobs retain60swall/
+30userCPU/1GiBcommit/twoCPUs/oneACTIVE/kill-on-close and explicit drain. No OSnetwork
+isolation/universaldescendant/performance/independentperson claim.
+
+Startup FIRST45011 passed:incoming19565 FINISHED BEFOREcurrent1148=20713UNIQUE;
+406/83/compat5/separateOriginal334/same82root8/24orderedinverses/2535otherdocs.
+Independent predecessor DISTINCT V2 FIRST20944 passed; V1 reader projection
+KeyError before proof rehash remains frozen separately. Immutable receipt unchanged.
+Actual280/280/21 includes one new chat capture and zero missing/changed existingrefs;
+frozenFINAL279 and all older inventories/histories remain separate. Metadata/doc
+display truncations and bounded follow-up reads are explicit read exceptions.
+GitHub Actions PROHIBITED;historicalCIonly;overallCIQualified=false. Rootdocs LOCAL;
+4+32+1findings unresolved. FULLgoalACTIVE/no budget;all44clauses/21gates/fixtures/
+failures preserved. FINAL PRDdeployment AND verification only after ALLoriginalgates.
+
+
 ## Logical path source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass72/72 with zero failures/skips/cancellations
