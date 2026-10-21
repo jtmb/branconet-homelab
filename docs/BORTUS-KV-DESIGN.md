@@ -1,5 +1,97 @@
 # Native BORTUS KV engine implementation contract
 
+## Human legacy-principal PATCH source qualification (2026-10-21)
+
+The exact async human legacy-principal PATCH callback passes NEW frozen PUBLIC
+V2source controls:280Node including279leaf, zero failures/skips/cancellations.
+Original V1retains280Node/0pass/280fail: its wrapper/body stubs incorrectly
+expected a module-object receiver for unbound named-import calls. V2corrects ONLY
+those two expectations to undefined; exact raw inverse recovers V1. All279leaf
+controls had failed; no passed controls replay. V1types/lint remain unexecuted.
+No production defect/change or uninterrupted source/preparation pass is claimed.
+
+Only selected PATCH executes. Actual kvHuman, kvAdminMetadataBody, legacyPrincipal,
+KvLegacyAccess constructor/instance/commit and sibling GET implementations remain
+inert. Exact nodejs/force-dynamic/default-status wrappers pass. The body function
+is captured before schema lookup and unbound call; await precedes legacyImpact
+read and own enumerable rest capture. Constructor lookup/construct/commit lookup
+then call preserve original registry/actor/request/schema/impact identities,
+constructed receiver and fresh principal-kind spread objects. Getter/inherited/
+symbol/own __proto__, nullish/noncallable/constructor-return and refusal order,
+unread identities and fresh/reentrant/interleaved calls pass. Synthetic kind
+override is literal spread precedence only; real strict schema is not executed.
+Async results adopt promises/thenables, preserve rejection reasons and settle
+once in selected controls. No actual principal access, commit or grants/CAS.
+
+Original V1source1.203s/143360000peak bytes; V2source1.079s/122634240peak,
+types2rootfiles zero diagnostics5.407s/638459904peak and lint2files zero diagnostics
+27.015s/296554496peak. Exact9280declaration/metadata contents match frozen
+dependencies;1368snapshot reads/fallbackReads0. This is tool input materialization,
+not a production runtime/filesystem cache. All37428dependencies match before/after.
+Every main handle signalled; active1 sampled after each source, active0 after types/
+lint, then explicit termination/drain0 for every Job. AllJob totals2 cause remains
+unestablished; configured one ACTIVE cap unchanged. Sequential Windows Node24.18.0
+Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/one ACTIVE and kill-on-close.
+No OS-network-isolation, universal-descendant or performance qualification.
+React dependency-resolution-only lint notice and Node module-type notice remain
+separate from diagnostics. One summary-print Unicode encoding error was followed
+by an ASCII JSON read, without workload replay. Original failures/helpers frozen.
+
+No actual values/parsing/schema/credentials/HTTP/authentication/legacy registry/
+native/SQL/ORM/operatorDB/backend/build/server/recovery/production qualification.
+All original44clauses/21gates/fixtures/failures remain. GitHub Actions PROHIBITED;
+historical CI historical;overallCIQualified=false. Root docs LOCAL;4+32+1findings
+unresolved; fullgoal ACTIVE/no budget. FINAL PRD deployment AND verification follow
+all original preceding security/performance/actual AT/compatible independent
+recovery/fresh backup AFTER quiescence/schema/effective RBAC/admission/data gates.
+No current image/runtime or independent-person acceptance follows.
+See [source evidence](implementation-evidence/kv-legacy-principal-patch-route-source-20261021.json).
+
+
+## Human legacy-principal PATCH original harness refusal (2026-10-21)
+
+Original NEW V1source:280Node/0pass/280fail, zero skipped/cancelled. The wrapper
+stub incorrectly required the module object as this; ECMAScript named-import
+calls are unbound (the CJS transform emits (0, imported.function)(...)). The body
+stub had the same unbound-call assertion. A NEW V2changes only those two test
+expectations to undefined and retains getter receivers, all279leaf controls and
+exact raw inverse to V1. No passed source controls replay; V1types/lint stay unrun.
+At this correction preparation V2source/types/lint are not executed. No production
+change or defect is established. V1source1.203s/143360000peak, main signalled,
+active1 sampled then explicit termination/drain0. TotalJobProcesses2 cause remains
+unestablished; configured one ACTIVE limit is unchanged. No uninterrupted source/
+preparation pass or universal descendant qualification. Existing scope/gates remain.
+
+
+## Human legacy-principal PATCH source preparation (2026-10-21)
+
+At preparation, NEW finite PUBLIC SOURCE controls select only the exact async
+PATCH callback in api/kv/legacy/route.ts. Real imports and sibling GET remain
+inert. The source captures the body function before schema lookup/call, awaits
+its result, reads legacyImpact, captures own enumerable rest fields, constructs
+KvLegacyAccess, captures commit and calls it with actor, a fresh principal-kind
+spread object, and the captured impact. Async results adopt promises/thenables.
+Synthetic kind override demonstrates literal spread precedence only; the real
+strict schema is never executed and no production defect is established.
+
+The planned controls cover ordering, exact receivers/arguments, refusal stops,
+nullish/noncallable/constructor-return paths, inherited/getter fields, symbols,
+own __proto__, unread identities, fresh/reentrant/interleaved calls and result
+adoption. Source/types/lint are not yet executed at this preparation checkpoint.
+Each NEW sequential Windows Node24.18.0 Job retains60swall/30userCPU/1GiBcommit/
+twoCPU/one ACTIVE process, kill-on-close and explicit post-main termination/drain.
+No OS-network-isolation, universal-descendant, performance or actual native claim.
+
+No actual values/parsing/schema/credentials/HTTP/authentication/legacy registry/
+native/SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/CAS or
+frozen workload replay. GitHub Actions PROHIBITED; historical CI historical;
+overallCIQualified=false. All original44clauses/21gates/fixtures/failures remain.
+Root docs LOCAL;4+32+1findings unresolved; fullgoal ACTIVE/no budget. FINAL PRD
+deployment AND verification follow all original preceding security/performance/
+actual AT/compatible independent recovery/fresh backup AFTER quiescence/schema/
+effective RBAC/admission/data gates. No current image/runtime qualification.
+
+
 ## Human legacy-principal GET source qualification (2026-10-21)
 
 The exact synchronous human legacy-principal GET callback is SOURCE composite-
