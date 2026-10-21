@@ -1,5 +1,51 @@
 # BORTUS application deployment
 
+## Identity DELETE captured-revision CAS source checkpoint - 2026-10-20 (Toronto)
+
+Application55df015f adds an opaque public-metadata revision to identity issue/list
+and requires its captured strict JSON body for DELETE. Fresh actor/session/role
+and owner-or-effective-admin checks remain inside the account-lock transaction.
+Stale/already-revoked captures and lost conditional updates refuse409; absent
+revision in a JSON object428, malformed/unknown fields400. Exactly one matching
+unrevoked row and redacted audit commit together. Existing timestamps survive
+repeated/raced requests. Client capture survives list refresh; conflict requires
+deliberate cancel/refresh/reselection. Legacy metadata cannot enable revocation.
+No schema change or role-only demotion/sessionVersion semantics change occurs.
+
+All57 new frozen PUBLIC synthetic source controls pass on Windows Node24.18.0,
+no skips/cancellations. The type-only null assertion emits identical JavaScript;
+the later test-receiver rename canonicalizes exactly to that frozen suite. No
+local controls replay occurs. Focused new-suite/client-model semantics pass;
+the whole-source local640MiB heap failure and first annotation error remain.
+Saved source review passes3096 checks and rehashes1987 retained proofs,335
+curated inputs,22 owner docs and separate original334. Five compatibility callers
+outside335 only add explicit revision captures; originals remain. All2413 existing
+owner/root docs/evidence files were read. A documentation encoding mistake is
+retained and corrected by exact byte inverses; earlier punctuation is preserved.
+
+App source/checkpoint pushes use the existing draft PR28 branch. Initiala188 PR
+39517874831/push39517859201 both build successfully then fail the unchanged Next
+lint rule for the test helper's local module variable. Those failures remain;
+the variable is renamed without changing production source or lint policy.
+The docs-onlyb83 intermediate has identical frontend tree to a188. Current55df AUTOMATIC
+PR39518283847/push39518277151 both pass all12 steps:1299 units including all57
+new CAS controls, eight original pristine/mutant pairs, eight integration/process
+controls and the finite compiled Pods smoke. Saved decoded-log/step review passes
+500 checks; raw archives were not downloaded. No manual dispatch/replay/workflow
+change occurs. The cancelled docs-onlyb83 PR39518146473 also remains retained.
+Earlier three successful CI scopes and all historical failures stay separate;
+overallCIQualified=false. No current runtime/image/native/AT/security/performance/
+schema/effectiveRBAC/admission/recovery/data acceptance follows.
+
+No local oldsuite/native/recovery/operatorDB, app packaging/build/server, graph
+walk, scan, image/preload, promotion or production operation occurs. RootdocsLOCAL;
+four new/prior32/earlierone findings and all44 original clauses/failures remain.
+Full goal ACTIVE/no budget. PRD deployment AND actual verification remain FINAL
+REQUIRED after every original preceding gate. This concrete source task and
+its automatic qualification are COMPLETE/REVIEWED. The full goal remains ACTIVE;
+the next bounded feature investigates fresh identity-list scope at response release.
+
+
 ## Read-only compiled-overlay execution-receipt auditor qualified - 2026-10-20 (Toronto)
 
 `scripts/migration/bortus-compiled-overlay-receipt-audit.py` adds separate closed
@@ -1388,7 +1434,7 @@ The [bounded source receipt](../evidence/bortus-automation-identity-source-root-
 
 A fresh human writer can issue for themself; issuing for another current writer requires effective engine administration. The serialized issuance transaction captures the owner's sessionVersion and stores a credential hash, explicit scopes and bounded future expiry. The credential helper uses UUID4 plus32 random bytes; exact Bearer grammar and hash comparison separate automation from human JWTs and legacy lookup. The handler authenticates before body parsing/dispatch; list projection excludes credential/hash and replies are private/no-store. Current owner existence, matching actor/recorded owner sessionVersion, identity ownership, expiry, revokedAt and write role are checked afresh; effective rights intersect current deny-aware owner and identity policies. Automation cannot administer identities or become an engine administrator.
 
-Explicit revocation atomically records revokedAt and metadata audit. Password reset increments owner sessionVersion; owner deletion fails the fresh owner lookup without a claimed cascade. Demotion denies while the current role is readonly; role-only changes do not increment sessionVersion or stamp revokedAt, so later re-promotion may restore a still-valid identity subject to current policies. This review does not claim permanent invalidation on demotion or change that current-privilege contract. Identity DELETE has no revision/CAS field; the already documented pending CAS work remains pending, without inventing a new acceptance requirement. Selected value reads reauthorize in their audit transaction before release; selected changes recheck before canonical replacement. These checks do not make authorization atomic across an external native request or qualify every dispatch branch.
+Explicit revocation atomically records revokedAt and metadata audit. Password reset increments owner sessionVersion; owner deletion fails the fresh owner lookup without a claimed cascade. Demotion denies while the current role is readonly; role-only changes do not increment sessionVersion or stamp revokedAt, so later re-promotion may restore a still-valid identity subject to current policies. This review does not claim permanent invalidation on demotion or change that current-privilege contract. At that historical source revision Identity DELETE had no revision/CAS field. The current source contract implements the capture; runtime acceptance remains unresolved. Selected value reads reauthorize in their audit transaction before release; selected changes recheck before canonical replacement. These checks do not make authorization atomic across an external native request or qualify every dispatch branch.
 
 Existing foundation/HTTP/administration test assertions were read, including audience/projection, policy intersection, expiry/revoke/reset/current demotion/deletion and selected scope refusals. No tests, fixtures, build, credential issuance/reveal, database opening, Prisma/SQL/migration, native/API/backend/browser/operator/recovery/security retry or live operation occurs. Root documentation/evidence only; no app source/docs/dependency/workflow/chart/image/runtime change. All44 original clauses, A07five-of-ten warm failures and security/actualAT/independent compatible recovery/fresh backup/quiescence/schema/effectiveRBAC/admission/live-data gates remain. Saved32 and earlier1 publication findings remain unresolved without inspection/classification/diagnosis/rescan/suppression/disposition/security acceptance. Full delivery is incomplete; the next separate feature reviews public policy mutation/acknowledgement source. Its deeper trace and any next patch/test/fixture have not begun.
 
