@@ -1,5 +1,44 @@
 # BORTUS User Permissions
 
+## Latest human direction: local testing; no GitHub Actions (2026-10-20 Toronto)
+
+James directed: "please make sure no repos are using github actions", "and instead
+use local testing", and "then communicate to my codex chats that are affected
+regarding this change". The desktop coordination chat relayed this direction and
+is disabling repository-level Actions for all jtmb repositories, including private
+repositories, and cancelling queued/running Actions. This chat has not changed
+repository Actions settings and does not claim that remote disablement is verified.
+
+Effective immediately, do not dispatch, rerun, re-enable, rely on, or deliberately
+trigger GitHub Actions. Preserve workflow definitions as references. Historical CI
+results below remain historical evidence only; every earlier instruction for future
+hosted CI, automatic GitHub validation or an Actions-dependent publisher is
+superseded. Use equivalent LOCAL checks within existing authorization, and report
+exact commands, revision, outcomes and blockers. Existing resource, execution,
+acceptance and frozen-proof boundaries still apply. This direction grants no new
+database/native/production/deployment/merge/branch-protection/security-permission
+or broader test execution authority. No manual dispatch/replay/workflow change.
+
+The completed application checkpoint65429f8b and immutable receipt/companion remain
+unchanged. Their successful Actions runs are historical. The proposed next SQL
+transport tests previously had hosted-only scope. James subsequently gave the
+successor the direct authorization: "Authorize isolated local synthetic SQL controls".
+This specifically permits NEW finite, frozen PUBLIC Prisma/SQLite transport controls
+in an isolated temporary database under the existing resource limits. Prepare,
+review and freeze those controls before local execution; no repeated permission
+request is needed for this scope. The general local-testing direction alone does
+not grant this authority; the separate newer direct instruction does. No operator
+DB/native/backend/production or broader replay authority follows. No success or
+populated-schema compatibility claim substitutes for unrun checks.
+
+The full BORTUS goal stays ACTIVE/no budget. The private charts-to-Flux delivery
+design must use local validation in place of GitHub Actions while preserving one
+publisher and every original gate. Root documentation stays LOCAL. All findings,
+failed performance/security/actual AT/recovery/schema/RBAC/admission/data gates,
+rejected-action boundaries and final PRD deployment AND verification remain.
+See the additive [local-testing handoff supplement](operations/handoffs/2026-10-20-bortus-local-testing-direction-supplement.md).
+
+
 ## Selected-path account/identity statement snapshot source checkpoint - 2026-10-20 (Toronto)
 
 Application65429f8b adds currentSelectedPath(actor) only at the final selected-path
