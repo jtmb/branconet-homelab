@@ -1,5 +1,37 @@
 # BORTUS K8s performance, correctness and UI audit
 
+## Ordinary current finite-expiry source qualification (2026-10-20)
+
+Ordinary `KvRegistry.current(actor)` now rejects non-finite identity expiry
+before comparing it with the clock. Only that predicate changes. The selected-path
+SQL/bindings and final gate, ordinary authorization and both policy sets retain
+their prior source. No transaction, lock, write, cache, retry, schema or route is
+added; sequential reads remain sequential and do not establish atomicity.
+
+NEW frozen PUBLIC `tests/kv-current-expiry.test.ts` has39leaf controls. Exact
+eb7f77d1 baseline passes35leaf and fails exactly4 predicted invalid-Date/positive-
+Infinity current/authorize assertions (Node40total/35pass/5fail including parent).
+Candidate passes39leaf (Node40pass/zero fail/skip/cancel). Expiry equality/past,
+owner/session/revocation refusals, human readonly behavior, explicit client,
+role-only restoration without stamped revocation/session changes, fresh later
+withdrawal and both deny-aware policy sets pass. Invalid Date/Infinity are
+source-row models, never ORM/SQL decoding evidence. Database, native, credential
+and unrelated dependencies remain inert refusals. No actual HTTP transport ran.
+
+Focused TypeScript2rootfiles and lint2files have0diagnostics. Lint adapts dependency
+resolution to the existing pinned cache; React detection emits an environment
+notice. Each NEW WindowsNode24.18.0 check uses60swall/30userCPU/1GiBJobcommit/
+twoCPU/oneactiveprocess. Baseline/candidate take1.328s/1.250s; original process
+handles signal after exit. No universal descendant absence or OS network isolation
+is claimed. All frozen inputs remain unchanged and no old suite/helper is replayed.
+
+This finite source result does not qualify SQL/ORM, populated schema, native,
+security, performance, actual AT, independent recovery, an image or live adoption.
+GitHub Actions remains prohibited; previous CI evidence is historical only.
+Every original assertion/clause/failure/gate and all unresolved findings remain.
+FINAL PRD deployment AND actual verification remain required after preceding gates.
+See [source evidence](implementation-evidence/ordinary-current-expiry-source-20261020.json).
+
 ## Selected-path local Prisma/SQLite transport (2026-10-20)
 
 The selected-path final account/identity gate now rejects non-finite expiry

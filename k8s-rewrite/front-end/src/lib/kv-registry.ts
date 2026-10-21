@@ -41,7 +41,7 @@ export class KvRegistry {
     if (actor.identityId) {
       const identity = await client.kvIdentity.findUnique({ where: { id: actor.identityId } });
       if (!identity || identity.ownerId !== user.id || identity.ownerSessionVersion !== user.sessionVersion ||
-        identity.revokedAt || identity.expiresAt.getTime() <= Date.now() || user.role !== "write")
+        identity.revokedAt || !Number.isFinite(identity.expiresAt.getTime()) || identity.expiresAt.getTime() <= Date.now() || user.role !== "write")
         throw new KvError(401, "KV identity revoked or expired");
     }
     return user;
