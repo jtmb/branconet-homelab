@@ -1,5 +1,53 @@
 # BORTUS User Permissions
 
+## Path metadata-list release authority source checkpoint - 2026-10-20 (Toronto)
+
+Applicationb382470e rechecks current account/session and automation identity after
+the awaited path metadata query, reloads current owner and identity policies,
+and checks account/session/identity again after those policy reads. Missing or
+deleted accounts, changed sessions and missing/revoked/expired/mismatched
+identities refuse401, including empty pages. Automation requires a current write
+owner. Human readonly permitted metadata remains; role-only demotion stamps no
+revocation/sessionVersion change. Later repromotion may permit a new request.
+Fresh owner/identity policies intersect with explicit denies and whole-segment
+prefix boundaries. Captured owner-grant SQL scope, mount/cursor filters, field
+metadata, ascending order,101-fetch/100-response and unfiltered-page cursor remain.
+Administration gives no path-policy bypass. No cache/retry/schema/token/native/
+mutation change occurs.
+
+All102 new frozen PUBLIC synthetic controls pass. Exact priorc345 passes35/fails67
+as frozen before execution, with zero skips/cancellations. Focused semantics pass
+with zero diagnostics first. Windows Node24.18.0 runs use60s wall/30 userCPU seconds/
+1GiB Job commit/twoCPUs/one active process; baseline1.141/candidate1.079s and original
+process handles signalled. No OS network-isolation/Linux/ORM/universal descendant-
+absence claim. Source/saved review passes4243 checks, rehashing3835 retained proofs,
+current339 inputs/22 owner docs and separate compatibility5; original334 remains
+separate and was freshly verified at receipt. Five owner-doc inserts preserve
+original bytes. One loaded dependency matches the prior binding without graph
+rewalk. All2222 owner docs checked for impact; frozen copies retain339+22 inputs.
+
+Existing AUTOMATIC PR39525314473/push39525307649 both pass all12steps: locked pinned
+Linux build, unchanged lint, whole-source types,1516units including all102 new
+controls, eight original pristine/mutant pairs, eight integration/process controls
+and finite compiled Pods smoke. Decoded logs/exact steps are saved and reviewed;
+no raw log archive download. Workflowf8b7ec07 unchanged; no manualdispatch/replay/
+workflow change. All SEVEN older CI scopes and all historical failures/cancelled
+runs remain distinct; overallCIQualified=false. The current concrete source task
+is COMPLETE/REVIEWED; root review is not independent-person acceptance. Preparation
+reader errors and the parent relative-protected-path metadata refusal remain;
+equivalent corrected reader accepted without receipt/proof/source mutation or
+workload replay. Parent confirmation4608 is retained separately from earlier4176.
+
+No oldsuite/operatorDB/private-native/recovery/packaging/localbuild/server/graphwalk/
+scan/image/preload/promotion/production execution occurred. Hosted fixtures grant
+no new local authority or native/actualAT/security/performance/schema/effectiveRBAC/
+admission/recovery/data acceptance. RootdocsLOCAL; four new/prior32/earlierone findings,
+all44 clauses/failures and every original delivery gate remain. Full goal ACTIVE/
+no budget. PRD deployment AND actual verification remain FINAL REQUIRED after all
+preceding gates. No next-feature source/tests/execution has begun.
+
+
+
 ## Mount metadata-list release authority source checkpoint - 2026-10-20 (Toronto)
 
 Applicationc345ce29 rechecks current human account/session after the awaited
