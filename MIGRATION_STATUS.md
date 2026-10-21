@@ -1,5 +1,49 @@
 # Migration acceptance evidence
 
+## Identity metadata-list release authority source checkpoint - 2026-10-20 (Toronto)
+
+Application8a35d493 rechecks current account/session after the deferred identity
+metadata query. Absent account or changed session refuses401. A page captured
+with effective administration refuses403 if write or engineAdmin is withdrawn,
+including empty pages. Owner-only queries retain their original scope through
+promotion; readonly owners retain metadata access. Explicit six-field projection
+plus revision,101-row fetch/100-row response, ascending cursor and automation
+denial remain. No policy/token/schema/mutation or role-only demotion change occurs.
+
+All31 new frozen PUBLIC synthetic controls pass on Windows Node24.18.0 under
+60s wall/30 userCPU seconds/1GiB Windows Job commit/two CPUs/one active process.
+Exact prior55df passes3/fails28 as frozen beforehand; zero skips/cancellations.
+First baseline/candidate runs took1.579/1.578s. Original process handles signalled;
+no OS network-isolation, Linux/ORM/runtime or universal descendant-absence claim.
+Two test-only implicit-any diagnostics are corrected with a Promise annotation;
+emitted JavaScript remains identical and focused semantics pass without replay.
+Saved review passes3631 checks, rehashing2512 selected retained proofs, current336/
+22 owner docs, separate unchanged compatibility5 and original334. Only registry
+changes in old335; the new suite is the336th input. One loaded dependency matches
+the retained graph without rewalking it. All2222 owner docs and1444 root docs/
+evidence were read. Five owner domain docs preserve original bytes by insertion.
+Initial saved reviewer used Windows default log decoding; refusal/checker remain,
+explicit UTF-8 corrected the reviewer only. Initial staged-set join-precedence
+refusal is retained; an explicit comparison confirms the exact seven staged files.
+
+Existing AUTOMATIC PR39520841062/push39520833622 both pass all12 steps: pinned
+Linux locked build, unchanged lint, whole-source types,1330 units including all31
+new controls, eight original pristine/mutant pairs, eight integration/process
+controls and the finite compiled Pods smoke. Tool-decoded logs and exact steps
+are saved and reviewed; no raw log archive download is claimed. Workflow blob
+f8b7ec07 is unchanged. No manual dispatch/replay/workflow change occurs. All FOUR
+older successful CI scopes and historical failures/cancellation remain separate;
+overallCIQualified=false. This concrete source task is COMPLETE/REVIEWED.
+
+No local oldsuite/private-native/recovery/operatorDB, packaging/build/server,
+graphwalk/scan/image/preload, promotion or production operation occurs. Hosted
+synthetic qualification grants no new local execution or actual native/AT/
+security/performance/schema/effectiveRBAC/admission/recovery/data acceptance.
+RootdocsLOCAL; four new/prior32/earlierone findings, all44 clauses/failures and
+all original delivery gates remain. Full goal ACTIVE/no budget. PRD deployment
+AND actual verification remain FINAL REQUIRED after every preceding gate.
+
+
 ## Identity DELETE captured-revision CAS source checkpoint - 2026-10-20 (Toronto)
 
 Application55df015f adds an opaque public-metadata revision to identity issue/list
