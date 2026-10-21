@@ -1,5 +1,70 @@
 # BORTUS application deployment
 
+## Human history-GC-preview POST source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass54Node including53leaf, zero failures/skips/
+cancellations. Only the exact async human history-GC-preview POST callback executes;
+all real imports, kvHuman, kvBody, schema, registry and engine services stay inert.
+Wrapper/default arguments, unbound original request/schema delegation and await
+fence pass. Engine delegation receives exactly the original registry unbound;
+gcPreview is captured before input.pathId and receives exactly actor/pathId with
+the original engine receiver. Opaque identities, inherited/proxy/missing/primitive
+properties, exact refusal stops, fresh calls, same-callback interleaving and five
+reentrancy stages, and async body/result adoption pass. Synthetic input does not
+establish actual schema acceptance. No production defect/change is established.
+
+Focused types pass two roots/zero diagnostics; lint two files/zero errors/warnings.
+Source0.859s/79708160peak bytes;types7.672s/601653248peak;lint25.547s/279056384peak.
+Exact9280declaration contents/1359snapshot reads/fallback0 and37428DIRECTLinux
+dependency hashes match before/after. All three main handles signalled;
+activeBeforeDrain0/0/0 and explicit termination/drain0 every Job. TotalProcesses2
+cause unestablished; one ACTIVE cap unchanged. WindowsNode24.18.0 sequential Jobs
+retain60swall/30userCPU/1GiBcommit/twoCPU/one ACTIVE/kill-on-close. Module-type and
+dependency-only React notices remain separate. No OS-network-isolation/universal-
+descendant/performance/runtime or independent-person acceptance follows.
+
+No actual body parsing/schema/credentials/HTTP/authentication/registry/legacy/native/
+SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/CAS or frozen
+replay. GitHub Actions PROHIBITED;historical CI historical;overallCIQualified=false.
+All44clauses/21gates/fixtures/failures remain. Root docs LOCAL;4+32+1findings
+unresolved;fullgoal ACTIVE/no budget. FINAL PRD deployment AND verification follow
+all original preceding acceptance gates. Current incoming verification/parent match
+passed first attempt. Startup UTF8-output refusal and broad truncated doc/metadata
+reads remain recorded, along with all earlier frozen failures through the chain.
+Initial source-review V1 used prior other-doc count2509; exact current count is
+2511 (2521 files minus10 mutated docs; PLAN/status are outside docs). V1 is frozen;
+distinct V2 corrects that review assertion without source/type/lint replay.
+See [source evidence](implementation-evidence/kv-history-gc-preview-route-source-20261021.json).
+
+
+
+## Human history-GC-preview POST source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only the exact async POST callback in
+api/kv/history/gc/preview. Real imports, kvHuman, kvBody, schema and engine services
+remain inert. Source-derived controls cover wrapper identity/default arguments,
+unbound exact request/schema delegation, the await fence, unbound registry-to-engine
+delegation, method capture before pathId, receiver-bound actor/pathId arguments,
+opaque identities, inherited/proxy/missing/primitive properties, refusals, fresh
+and same-callback interleaved/reentrant calls, and async result adoption. Injected
+values do not establish actual schema acceptance. No production defect or change
+is established. Source/types/lint remain UNEXECUTED at preparation.
+
+NEW sequential Windows Node24.18.0 Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/
+one ACTIVE/kill-on-close and explicit termination/drain. No OS-network-isolation,
+universal-descendant, performance, runtime or independent-person claim follows.
+No actual values/body parsing/schema/credentials/HTTP/authentication/registry/
+legacy/native/SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/
+CAS or frozen workload replay. GitHub Actions PROHIBITED;historical CI historical;
+overallCIQualified=false. All44clauses/21gates/fixtures/failures remain. Root docs
+LOCAL;4+32+1findings unresolved;fullgoal ACTIVE/no budget. FINAL PRD deployment AND
+verification follow all original preceding acceptance gates. Prior verifier,
+matcher, lint, metadata and source-review failures remain frozen through the chain.
+Current incoming verification and predecessor independent match passed; startup's
+UTF8-output refusal and broad truncated documentation/metadata reads are retained.
+
+
+
 ## Human policy-preview POST source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass100Node including99leaf, zero failures/skips/
