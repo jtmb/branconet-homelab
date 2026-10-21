@@ -1,5 +1,52 @@
 # BORTUS user permissions
 
+## Human rotation consumer reload POST source qualification (2026-10-21)
+
+The exact consumer reload POST callback passes NEW frozen PUBLIC
+`tests/kv-rotation-consumer-reload-route-source.test.ts`:164 leaf controls,
+165 Node tests including one parent, zero failures/skips/cancellations. Only
+selected POST executes; actual imported wrapper/body/schema/error/registry/
+engine/rotation/consumer/kubectl implementations and sibling GET remain inert.
+No defect or production change is established. Nodejs/force-dynamic and exact
+default-status POST/inert GET wrappers pass. Capture kvBody before rotationReload;
+delegate exactly original request/schema/literal4096 and await input before
+target checks or construction. Compare input.rotationId strictly with the first
+params.id read; mismatch constructs KvError with exactly400 and literal
+Rotation target must match the route and throws the returned instance. On match
+capture KvRotations before kvEngine(original registry), consumer ctor before
+kubectlJSON, construct consumer with exactly that function and rotations with
+exactly engine/consumer. Capture reload before the second fresh params.id read
+and request.signal; invoke with original rotation receiver and exactly actor/
+second captured id/whole original input/captured signal. Both distinct id reads,
+getter/construction/refusal order, inherited/nullish/noncallable cases and
+held/fresh/interleaved inputs/results pass. Async result identities are adopted;
+no raw promise identity or HTTP/API acceptance claim follows.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations3.344/25.219/28.250s; Job peak commitments
+242290688/739753984/443736064bytes. All original handles signalled. Each NEW Job retains
+60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze946Windows/132DIRECTLinux
+precedes execution. All2251prior owner/234root docs were checked.
+All28 prepared snapshots and raw doc inverses remain, including both historical
+type inverses and both raw assertion inverses/failures. No completed control or
+frozen helper was replayed. Review is not independent-person acceptance.
+No OS-network-isolation/universal-descendant/performance claim. Lint adapts
+dependency resolution only and retains its React notice.
+
+No actual values/parsing/schema validation/generation/consumer operations/
+credentials/import bundles/export bundles/HTTP/authentication/registry/native/
+SQL/ORM/operatorDB/backend/build/server/recovery/performance/production
+qualification. All qualified routes/parsers/kvHuman ordering, both finite expiry
+gates, deny-aware policies, kvBody overflow correction and all44clauses/21gates/
+failures remain. GitHub Actions PROHIBITED; historical CI historical;
+overallCIQualifiedfalse. Root docs LOCAL;4+32+1findings unresolved. Fullgoal ACTIVE/
+no token budget. FINAL PRD deployment AND actual verification follow all original
+preceding security/performance/actualAT/compatible independent recovery/fresh
+backup AFTER quiescence/schema/effectiveRBAC/admission/data gates.
+No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-rotation-consumer-reload-route-source-20261021.json).
+
+
 ## Human rotation consumer-preview GET source qualification (2026-10-21)
 
 The exact consumer-preview GET callback is composite SOURCE-qualified:132
