@@ -1,5 +1,46 @@
 # BORTUS user permissions
 
+## Human rotation preparation POST source qualification (2026-10-21)
+
+The exact rotation preparation POST callback passes NEW frozen PUBLIC
+`tests/kv-rotation-prepare-route-source.test.ts`:87 leaf controls,88 Node tests
+including one parent, zero failures/skips/cancellations. All imported
+implementations and sibling GET/PATCH callbacks remain inert. No defect or
+production change is established. The nodejs/force-dynamic exports and exact
+POST wrapper status201 pass. The callback captures KvRotations before
+kvEngine(original registry), constructs with exactly that engine and no signal
+or consumer, captures prepare before kvBody/rotationPrepare, awaits exactly
+original request/schema/literal4096 delegation, then invokes captured prepare
+with the original rotation receiver and exactly actor/resolved input. No input
+properties, request properties or params are read. Getter/construction/refusal
+order, inherited/nullish/noncallable cases, held/fresh/interleaved inputs/results
+and adopted resolved identities pass; no raw promise identity claim.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations3.328/26.328/30.907s; Job peak commitments
+230940672/712364032/439349248bytes. All original process handles signalled. Each NEW Job retains60swall/
+30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze850Windows/132DIRECTLinux precedes
+execution; the87source controls never replayed. All2247prior owner/230root docs
+were checked. Prior raw bytes and twenty-two prepared execution snapshots remain
+verifiable through raw doc inverses and both historical suite type inverses.
+Review is not independent-person acceptance. No OS-network-isolation,
+universal-descendant or performance claim follows. Lint adapts dependency
+resolution only and retains its React notice.
+
+SOURCE qualification establishes no actual values/parsing/schema validation/
+rotation generation/credentials/import bundles/export bundles/HTTP/authentication/
+registry authority/native/SQL/ORM/operatorDB/backend/build/server/recovery/
+performance/production/atomic delivery. All qualified routes/parsers/kvHuman
+ordering, both finite expiry gates, deny-aware policies and kvBody overflow
+correction remain. All44clauses/21gates/failures remain. GitHub Actions PROHIBITED;
+historical CI historical;overallCIQualifiedfalse. Root docs LOCAL;4+32+1findings
+unresolved. Fullgoal ACTIVE/no token budget. FINAL PRD deployment AND actual
+verification follow all original preceding security/performance/actualAT/
+compatible independent recovery/fresh backup after quiescence/schema/effective
+RBAC/admission/data gates. No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-rotation-prepare-route-source-20261021.json).
+
+
 ## Human import commit POST source qualification (2026-10-21)
 
 The exact import commit POST callback passes NEW frozen PUBLIC
