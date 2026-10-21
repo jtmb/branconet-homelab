@@ -1,5 +1,49 @@
 # BORTUS API usage
 
+## Human mount DELETE source qualification (2026-10-21)
+
+The exact human mount-metadata DELETE callback passes NEW frozen PUBLIC
+`tests/kv-delete-mount-route-source.test.ts`:48leaf controls,49Node tests including
+one parent, zero failures/skips/cancellations. PATCH registers inertly and its
+operation never executes. Both exact default-status wrappers/nodejs exports pass.
+DELETE destructures id, captures changeMount, delegates the exact request and
+removeMetadata schema, awaits the body, reads revision once and invokes the
+captured method with exactly actor/id/revision/null and the original receiver.
+Getter/refusal ordering, nullish body and noncallable method refusal timing,
+held/fresh/interleaved bodies/results, captured identities, inherited revision
+without unrelated property reads and adopted result identities pass. These
+models establish no actual parsing/schema validation, HTTP/authentication,
+registry authority, credentials, SQL/ORM/operatorDB/backend/native/build/server,
+recovery/performance/production or atomic delivery. No defect or production
+change is established. Qualified routes/parsers/kvHuman ordering, both finite
+expiry gates, deny-aware policies and kvBody overflow correction remain.
+
+The first focused type run exits1 with three TS2345 harness diagnostics after
+the empty-call assertion narrowed the returned array to never[]. Its original
+suite/freeze/outputs remain. A single type-only assertion annotation preserves
+exact emitted JavaScript; NEW focused types2rootfiles and lint2files report zero
+diagnostics. The successful49 source controls are not replayed. Sequential
+Windows Node24.18.0 source/failedtypes/freshtypes/lint finish
+3.844s/29.156s/27.828s/34.984s;
+peak Job commitments are 205922304/687251456/661876736/418131968bytes.
+Original handles signal. Each NEW Job retains60swall/30userCPU/1GiBcommit/twoCPU/
+oneactiveprocess. Source freeze643Windows/132DIRECTLinux and type continuation
+freeze659Windows/132DIRECTLinux precede their executions. Lint adapts dependency
+resolution only and retains its React notice. No OS-network-isolation,
+universal-descendant or performance claim follows. All2235prior owner/216root
+docs were checked; raw prepared/final doc inverses and the type-only suite inverse
+preserve prior bytes. Review is not independent person acceptance.
+
+No prior frozen helper/control is executed. GitHub Actions remains PROHIBITED;
+historical CI stays historical, overallCIQualifiedfalse. Root docs LOCAL;
+4+32+1 findings unresolved. Fullgoal ACTIVE/no token budget. All44clauses/21gates/
+failures remain; FINAL PRD deployment AND actual verification follow every
+original preceding security/performance/actualAT/compatible independent recovery/
+fresh backup after quiescence/schema/effective RBAC/admission/data gate. This
+checkpoint never qualifies a current image/runtime.
+See [source evidence](implementation-evidence/kv-delete-mount-route-source-20261021.json).
+
+
 ## Human mount-update and path-retention source qualification (2026-10-21)
 
 The exact mount-update PATCH and path-retention PATCH callbacks pass NEW frozen
