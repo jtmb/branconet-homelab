@@ -1,5 +1,42 @@
 # BORTUS Secrets Engine
 
+## Human reconcile POST source qualification (2026-10-21)
+
+The exact reconcile POST callback passes NEW frozen PUBLIC
+`tests/kv-reconcile-route-source.test.ts`:54 leaf controls,55 Node tests including
+one parent, zero failures/skips/cancellations. All imports are inert models;
+actual wrapper/body/nativeReconcile schema/registry/engine implementations never
+execute. No defect or production change is established. The nodejs export and one
+default-status wrapper retain exact identity. The callback destructures id before
+kvEngine(original registry), captures change before body delegation/await, passes
+exactly request/nativeReconcile and invokes the captured method with its original
+engine receiver and exactly actor/id/resolved input/reconcile literal. Getter and
+refusal ordering, inherited/nullish/noncallable cases, held/fresh/interleaved
+bodies/results and adopted resolved identities pass. No raw promise identity claim.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations3.484/27.141/32.407s; Job peak commitments
+215486464/698445824/422187008bytes. All original handles signalled. Each NEW Job retains60swall/
+30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze740Windows/132DIRECTLinux precedes
+execution. The54source controls never replayed. All2240prior owner/223root docs
+were checked; fifteen raw execution freezes are preserved through prepared/final
+doc inverses and both historical suite type inverses. Review is not independent
+person acceptance. No OS-network-isolation, universal-descendant or performance
+claim follows. Lint adapts dependency resolution only and retains its React notice.
+
+SOURCE qualification establishes no actual values/parsing/schema validation/HTTP/
+authentication/credentials/registry authority/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/performance/production/atomic delivery. All qualified routes/
+parsers/kvHuman ordering, both finite expiry gates, deny-aware policies and kvBody
+overflow correction remain. All44clauses/21gates/failures remain. GitHub Actions
+PROHIBITED; historical CI historical;overallCIQualifiedfalse. Root docs LOCAL;
+4+32+1findings unresolved. Fullgoal ACTIVE/no token budget. FINAL PRD deployment
+AND actual verification follow all original preceding security/performance/
+actualAT/compatible independent recovery/fresh backup after quiescence/schema/
+effective RBAC/admission/data gates. No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-reconcile-route-source-20261021.json).
+
+
 ## Human rollback POST source qualification (2026-10-21)
 
 The exact rollback POST callback passes NEW frozen PUBLIC
