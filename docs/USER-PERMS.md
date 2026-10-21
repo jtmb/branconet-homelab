@@ -1,5 +1,54 @@
 # BORTUS User Permissions
 
+## Selected-path GET account release authority source checkpoint - 2026-10-20 (Toronto)
+
+Applicationeb3328e6 adds ONE final current(actor) after the selected-path GET
+callback completes list authorization, before releasing captured metadata. The
+original authorization checked the account before awaited owner/token policy
+reads; deletion/session-version withdrawal or owner/automation identity withdrawal
+during those reads could still release metadata. The new final check refuses401
+for those modeled cases. Human readonly permitted metadata and role-only owner
+demotion/restoration remain; no stamped revocation/sessionVersion increment.
+Namespace/mapping validation, exact owner/token policy allow/deny and whole-segment
+intersections, captured ID/revision/fields, human wrapper and PATCH are unchanged.
+Automation controls exercise the lower-level callback/registry only, adding no
+HTTP route. This does not add a policy reread or transactional policy snapshot.
+No cache/retry/schema/token/native/mutation change occurs.
+
+All96 new frozen PUBLIC synthetic controls pass; exact d968 original route gives
+77pass/19fail as frozen before execution, with zero skips/cancellations. Focused
+semantics have zero diagnostics. Windows Node24.18.0 uses60s wall/30userCPU seconds/
+1GiB Job commit/twoCPUs/oneactiveprocess; baseline1.078/candidate1.063s, original
+handles signalled. No OS network-isolation/Linux/ORM/runtime/universal descendant
+absence claim. Source/saved review passes5473 checks; all4699 retained proofs,
+341current inputs/22owner docs, separate compatibility5/original334 and one loaded
+dependency verified without graph rewalk. Five owner doc inserts preserve all
+original bytes; all2222 owner docs checked. Only the selected GET route changes
+among340; the new suite is341st.
+
+AUTOMATIC PR39528505793/push39528501707 both pass all12steps: locked pinned Linux
+build, unchanged lint/whole-source types,1719units including all96 new controls,
+eight original pristine/mutantpairs, eight integration/processcontrols and the
+finite compiled Pods smoke. Tool-decoded logs/exact steps are saved and reviewed
+with571 checks, no raw archive/manualdispatch/replay/workflowchange.
+Workflowf8b7ec07 unchanged. All NINE older successful CI scopes and all historical
+failures/cancelled runs stay distinct; overallCIQualified=false. Current concrete
+source task is COMPLETE/REVIEWED; root review is not independent-person acceptance.
+Source/controls remain unchanged after firstfreeze. Preparation/discovery reader
+errors retained without source/proof/receipt mutation or workload replay.
+Parent5501 confirmation and metadata-only ref/alias checker refusals retained
+separately from5059/4608/4176, including accepted equivalent metadata spellings.
+
+No oldsuite/operatorDB/private-native/recovery/packaging/localbuild/server/graphwalk/
+scan/image/preload/promotion/production execution. Hosted fixtures grant no new
+local authority or native/actualAT/security/performance/schema/effectiveRBAC/
+admission/recovery/data acceptance. RootdocsLOCAL; four new/prior32/earlierone
+findings, all44clauses/failures and every delivery gate remain. Full goal ACTIVE/
+no budget. PRDdeployment AND actual verification remain FINAL REQUIRED after all
+original preceding gates. Next feature has no source/tests/execution begun.
+
+
+
 ## Path capability metadata release authority source checkpoint - 2026-10-20 (Toronto)
 
 Applicationd9688d25 refuses403 before returning capability metadata when its final
