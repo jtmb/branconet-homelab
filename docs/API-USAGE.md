@@ -1,5 +1,49 @@
 # BORTUS API usage
 
+## Human legacy-grant-list GET source qualification (2026-10-21)
+
+The exact synchronous human legacy-grant-list GET callback passes NEW frozen PUBLIC
+`tests/kv-legacy-grant-list-route-source.test.ts`: 122 leaf controls, 123 Node tests
+including one parent, zero failures/skips/cancellations. Only selected GET executes;
+actual imported kvHuman, KvLegacyAccess constructor/instance/grants, metadataCursor,
+sibling POST/schema/body remain inert. No defect or production change established.
+Exact nodejs/force-dynamic/default GET and inert POST201 wrappers pass. Construct
+with exactly original registry, capture constructed grants before cursor lookup
+and call, delegate exactly original request, then call captured grants with original
+constructed receiver/actor/captured cursor. Constructor returns, inherited getters,
+refusals, nullish/noncallable inputs and fresh/reentrant/interleaved calls preserve
+evaluation order. Raw synchronous results including promises/thenables retain exact
+identity without adoption; unselected identities stay unread. No actual grants/CAS.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations 3.406/25.563/28.313s; Job peak commitments
+213532672/708939776/452071424bytes. All original handles signalled. Each NEW Job retains
+60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze1128Windows/
+132DIRECTLinux precedes execution. All2260prior owner/241root docs checked,
+plus root PLAN.md and MIGRATION_STATUS.md through their exact raw inverses.
+All37 raw prepared/final snapshots, both historical type inverses and both raw
+assertion inverses/failures remain. No completed helper/control replay. Review is
+not independent-person acceptance. No OS-network-isolation/universal-descendant/
+performance claim; lint dependency-resolution-only React notice retained.
+
+The original finalizer failed its summary match before documentation/evidence edits:
+a Windows default-text decode corrupted the reporter symbol during helper generation.
+Original helper/failure remain frozen. A distinct v2 uses the exact reporter pattern
+to record existing results; no controls replay or uninterrupted finalization claim.
+
+No actual values/parsing/schema/credentials/import/export/HTTP/authentication/
+registry/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/
+production qualification. All qualified routes/parsers/kvHuman ordering, both
+finite expiry gates, deny-aware policies, kvBody overflow correction and original
+44clauses/21gates/failures remain. GitHub Actions PROHIBITED; historical CI
+historical;overallCIQualified=false. Root docs LOCAL;4+32+1findings unresolved.
+Fullgoal ACTIVE/no token budget. FINAL PRD deployment AND actual verification
+follow all original preceding security/performance/actualAT/compatible independent
+recovery/fresh backup AFTER quiescence/schema/effectiveRBAC/admission/data gates.
+No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-legacy-grant-list-route-source-20261021.json).
+
+
 ## Human identity-revoke DELETE source qualification (2026-10-21)
 
 The exact asynchronous identity-revoke DELETE callback passes NEW frozen PUBLIC
