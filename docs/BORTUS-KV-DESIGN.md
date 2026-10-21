@@ -1,5 +1,48 @@
 # Native BORTUS KV engine implementation contract
 
+## Human policy-create POST source qualification (2026-10-21)
+
+The exact asynchronous policy-create POST callback passes NEW frozen PUBLIC
+`tests/kv-policy-create-route-source.test.ts`:129 leaf controls,130 Node tests
+including one parent, zero failures/skips/cancellations. Only selected POST
+executes; actual imported kvHuman/kvAdminMetadataBody/policyCreateRequest/schema/
+registry/savePolicy implementations and sibling GET remain inert. No defect or
+production change is established. Nodejs/force-dynamic, POST201 and inert
+default-status GET wrappers pass. Capture kvAdminMetadataBody before schema
+lookup; call exactly original registry/actor/request/captured schema. Await its
+input before destructuring legacyImpact and rest input or accessing savePolicy.
+Rest copies own enumerable string/symbol fields into a fresh object, excludes
+legacyImpact, preserves value identities and does not retain source accessors.
+Nullish resolved input refuses before savePolicy lookup. Capture savePolicy
+after destructuring and invoke with original registry receiver and exactly
+actor/new rest input/undefined/undefined/captured legacyImpact. Inherited/getter/
+refusal ordering, primitive/nullish/noncallable cases, fresh/interleaved calls
+and adopted resolved identities pass. No raw promise identity or HTTP/API claim.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations3.328/25.156/28.641s; Job peak commitments
+243281920/705556480/457617408bytes. All original handles signalled. Each NEW Job retains
+60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze1000Windows/132DIRECTLinux
+precedes execution. All2254prior owner/237root docs were checked.
+All31 prepared snapshots and raw doc inverses remain, including both historical
+type inverses and both raw assertion inverses/failures. No completed control or
+frozen helper was replayed. Review is not independent-person acceptance.
+No OS-network-isolation/universal-descendant/performance claim. Lint adapts
+dependency resolution only and retains its React notice.
+
+No actual values/parsing/schema/credentials/import/export/HTTP/authentication/
+registry/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/
+production qualification. All qualified routes/parsers/kvHuman ordering, both
+finite expiry gates, deny-aware policies, kvBody overflow correction and all
+44clauses/21gates/failures remain. GitHub Actions PROHIBITED; historical CI
+historical;overallCIQualifiedfalse. Root docs LOCAL;4+32+1findings unresolved.
+Fullgoal ACTIVE/no token budget. FINAL PRD deployment AND actual verification
+follow all original preceding security/performance/actualAT/compatible independent
+recovery/fresh backup AFTER quiescence/schema/effectiveRBAC/admission/data gates.
+No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-policy-create-route-source-20261021.json).
+
+
 ## Human policy-list GET source qualification (2026-10-21)
 
 The exact synchronous policy-list GET callback passes NEW frozen PUBLIC
