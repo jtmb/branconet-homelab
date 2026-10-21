@@ -1,5 +1,45 @@
 # Native BORTUS KV engine implementation contract
 
+## Human mount-update and path-retention source qualification (2026-10-21)
+
+The exact mount-update PATCH and path-retention PATCH callbacks pass NEW frozen
+PUBLIC `tests/kv-update-route-source.test.ts`:92leaf controls,94Node tests including
+two parents, zero failures/skips/cancellations. No defect or production change is
+established. Both exact default-status PATCH wrappers and their GET/DELETE peers
+register inertly; only PATCH callbacks execute. Both export nodejs runtime and
+neither exports dynamic. Each destructures id before exact request/schema body
+delegation and awaits the body before registry access. Mount-update extracts
+revision and copies rest own enumerable string/symbol properties before retrieving
+changeMount; retention retrieves changeRetention before reading revision then
+retention. Captured actor/id, original registry receiver, rest exclusions/data
+descriptors/__proto__ ownership, exact getter/refusal ordering, fresh method lookup
+after held bodies, interleaved arguments and adopted result identities pass.
+Async callbacks adopt results; raw result-promise identity is not claimed.
+
+All wrapper/body/schema/registry/request implementations are inert models. These
+SOURCE controls establish no actual body parsing/schema validation, HTTP/auth,
+credentials, registry authority, SQL/ORM/operatorDB/backend/native/build/server,
+recovery/performance/production or atomic delivery. Qualified POST/GET/history
+routes/parsers/kvHuman ordering, both finite expiry gates, deny-aware policies and
+kvBody overflow correction remain. No prior frozen helper/control is replayed.
+GitHub Actions stays PROHIBITED; historical CI is historical, overallCIQualifiedfalse.
+
+Focused types3rootfiles and lint3files report0diagnostics. Sequential Windows
+Node24.18.0 source/types/lint finish3.313s/28.234s/34.844s; peak Job commitment is
+214380544/678866944/419086336bytes. Original process handles signal. Each NEW Job
+retains60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze625Windows and
+132DIRECTLinux precedes execution; lint adapts dependency resolution only and
+retains its React notice. No performance, OS-network-isolation or universal
+descendant claim follows. All2234prior owner/215root docs were checked; twelve
+raw prepared/final inverses preserve prior bytes. Root docs LOCAL;4+32+1 findings
+unresolved. Fullgoal ACTIVE/no token budget. All44clauses/21gates/failures remain;
+FINAL PRD deployment AND actual verification follow every original preceding
+security/performance/actualAT/compatible independent recovery/fresh backup after
+quiescence/schema/effective RBAC/admission/data gate. Review is not independent
+person acceptance; this checkpoint never qualifies a current image/runtime.
+See [source evidence](implementation-evidence/kv-update-route-source-20261021.json).
+
+
 ## Human mount-create and path-register source qualification (2026-10-21)
 
 The exact mount-create POST and path-register POST callbacks pass NEW frozen
