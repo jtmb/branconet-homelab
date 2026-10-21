@@ -1,5 +1,54 @@
 # BORTUS API usage
 
+## Human rotation action PATCH source qualification (2026-10-21)
+
+The exact rotation action PATCH callback passes NEW frozen PUBLIC
+`tests/kv-rotation-action-route-source.test.ts`:226 leaf controls,227 Node tests
+including one parent, zero failures/skips/cancellations. Only selected PATCH
+executes; actual imported wrapper/body/schema/registry/engine/rotation/consumer/
+kubectl implementations and sibling GET/POST remain inert. No defect or
+production change is established. Nodejs/force-dynamic, default PATCH wrapper
+and inert POST201 pass. kvBody is captured before rotationAction and delegates
+exactly original request/schema/literal4096. Resolved input precedes all
+construction: capture KvRotations before kvEngine(original registry), consumer
+constructor before kubectlJSON, construct consumer with exactly that function,
+then rotations with exactly engine/consumer. Read action only afterward.
+Generate/acknowledge capture the matching method and original receiver before
+actor/input.rotationId/whole original input; cancel receives actor/rotationId/
+revision/confirmPath in order; resolve receives actor/rotationId. Unknown
+modeled actions return undefined without method calls; actual schema validation
+is inert. Getter/refusal/construction order, inherited/nullish/noncallable cases,
+held/fresh/interleaved inputs/results and adopted resolved identities pass.
+No raw promise identity or HTTP/API acceptance claim follows.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations3.344/24.360/28.032s; Job peak commitments
+241012736/716161024/443912192bytes. All original process handles signalled. Each NEW Job retains
+60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze894Windows/132DIRECTLinux
+precedes execution. All2249prior owner/232root docs were checked.
+The first freezer stopped on an incorrect new runner filename before workload
+execution or freeze creation; original refusal/helper remain frozen, with a
+separate corrected freezer. Source controls ran once. Raw prepared/final doc
+inverses preserve every prior byte and all25 execution snapshots, including both
+historical type inverses and the prior metadata-GET assertion inverse/failure.
+Review is not independent-person acceptance. No OS-network-isolation,
+universal-descendant or performance claim follows. Lint adapts dependency
+resolution only and retains its React notice.
+
+No actual values/parsing/schema validation/rotation generation/credentials/
+import bundles/export bundles/HTTP/authentication/registry/native/SQL/ORM/
+operatorDB/backend/build/server/recovery/performance/production qualification.
+Qualified routes/parsers/kvHuman ordering, both finite expiry gates, deny-aware
+policies, kvBody overflow correction and all44clauses/21gates/failures remain.
+GitHub Actions PROHIBITED; historical CI historical;overallCIQualifiedfalse.
+Root docs LOCAL;4+32+1findings unresolved. Fullgoal ACTIVE/no token budget.
+FINAL PRD deployment AND actual verification follow all original preceding
+security/performance/actualAT/compatible independent recovery/fresh backup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates. No current image/runtime
+qualification.
+See [source evidence](implementation-evidence/kv-rotation-action-route-source-20261021.json).
+
+
 ## Human rotation metadata GET source qualification (2026-10-21)
 
 The exact rotation metadata GET callback is composite SOURCE-qualified:126
