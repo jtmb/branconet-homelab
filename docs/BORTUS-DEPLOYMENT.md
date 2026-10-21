@@ -1,5 +1,35 @@
 # BORTUS application deployment
 
+## Path capability metadata release authority (2026-10-20)
+
+The selected-path capabilities registry refuses403 when its final owner/identity
+policy intersection no longer permits list, before releasing path ID/revision,
+permissions or initialization metadata. The human capabilities GET uses this
+registry; the registry automation model retains token/owner intersection without
+adding an automation HTTP route. Explicit denies and whole-segment prefixes
+remain. Existing current account/session and automation identity checks refuse401;
+the existing role/engineAdmin change conflict remains409. Human readonly list
+metadata and later restored authority remain possible without sessionVersion
+increments or stamped revocation. Administration supplies no path-policy bypass.
+
+The exact action map, captured path ID/revision, supported actions, guarded native
+mutation assertion and create/write/admin/human initialization requirements are
+unchanged for permitted requests. No cache/retry/schema/token/native mutation
+change occurs. All107 new frozen PUBLIC synthetic deferred source controls pass. Exact prior
+b382 source passes86/fails21 as frozen before execution. Focused semantics have
+zero diagnostics. Windows Node24.18.0 uses60s wall/30 userCPU seconds/1GiB Job
+commit/twoCPUs/one active process; original process handles signalled. Saved
+source review passes5010 checks, rehashes4261 retained proofs and verifies340
+current inputs/22 owner docs, separate compatibility5 and original334. Only
+registry changes among prior339; the new suite is340th. Five domain insertions
+preserve all original bytes; all2222 owner docs checked. One loaded dependency
+matches its retained binding without graph rewalk. No local replay or OS network
+isolation/Linux/ORM/runtime claim. Automatic hosted CI remains separately due.
+No operator DB/native/recovery/server/packaging/build or production execution.
+Original security/performance/actual AT/recovery and all delivery gates remain.
+
+
+
 ## Path metadata-list release authority (2026-10-20)
 
 GET /api/kv/paths rechecks the current account/session and automation identity

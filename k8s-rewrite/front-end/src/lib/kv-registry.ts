@@ -81,6 +81,7 @@ export class KvRegistry {
     if (latest.role !== user.role || latest.engineAdmin !== user.engineAdmin) throw new KvError(409, "KV permissions changed; refresh capabilities");
     const permissions = Object.fromEntries(KV_ACTIONS.map(action => [action,
       (action === "list" || user.role === "write") && policyAllows(owner, path, action) && (!identity || policyAllows(identity, path, action))]));
+    if (!permissions.list) throw new KvError(403, "KV policy denies this action");
     return { pathId: id, revision: path.revision, permissions,
       nativeMutationEnabled: this.config.guardedAdoption,
       initializationAllowed: !!permissions.create && this.config.guardedAdoption && user.role === "write" && user.engineAdmin && !actor.identityId,
