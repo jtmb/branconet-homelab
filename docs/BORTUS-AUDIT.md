@@ -1,5 +1,42 @@
 # BORTUS K8s performance, correctness and UI audit
 
+## Human wrapper source qualification (2026-10-21)
+
+Exact `kvHuman` already awaits `getSession()` and then `registry.current(actor)`
+before resolving context parameters or invoking the operation. No defect or
+production patch is established. NEW frozen PUBLIC `tests/kv-human-source.test.ts`
+passes53leaf controls (Node54including parent; zero fail/skip/cancel). Held,
+missing, rejected and throwing session/current models prevent later access;
+setup faults, deferred/getter parameter errors, exact arguments/results/status,
+nullish defaults, mutation/ordinary errors and mapper failures delegate as expected.
+Repeated invocations refresh the model session/registry/current calls; concurrent
+models retain their captured actors and cannot release another held/refused call.
+
+Request/context/actors and authentication/registry/response/error implementations
+are plain models; schema/engine/native dependencies remain inert. No actual
+authentication, registry authority, response serialization or schema validation
+is exercised. Ordering before the operation does not establish authority at commit
+or atomic delivery; all existing serialized and later fresh checks remain.
+
+Focused types2rootfiles and lint2files report0diagnostics. Sequential Windows
+Node24.18.0 source/types/lint finish 3.188s/24.562s/29.781s, peaks 191549440/640073728/405602304bytes;
+original process handles signal. Each NEW Job retains60swall/30userCPU/1GiBcommit/
+twoCPU/oneactiveprocess. Freeze533Windows/132DIRECTLinux precedes execution.
+Lint adapts dependency resolution only and retains its React notice. No
+performance, OS-network-isolation or universal descendant-absence claim follows.
+
+All2228prior owner docs and209root docs were checked for affected content; six
+additive inserts per owner preserve prior raw bytes through exact inverses.
+No actual HTTP Request/transport, credential, SQL/ORM/operatorDB, backend/native,
+build/server, recovery, performance or production ran; no earlier frozen helper
+or control was replayed. Both finite expiry gates, deny-aware policies, all44clauses/
+21gates/failures remain. GitHub Actions is prohibited; historical CI is historical,
+overallCIQualifiedfalse. Root docs LOCAL;4+32+1 findings unresolved. FullgoalACTIVE/
+no budget. FINAL PRD deployment AND actual verification follow every preceding
+security/performance/actualAT/recovery/schema/effectiveRBAC/admission/data gate.
+See [source evidence](implementation-evidence/kv-human-source-20261021.json).
+
+
 ## Administrator metadata body source qualification (2026-10-21)
 
 Exact `kvAdminMetadataBody` already awaits `registry.admin(actor)` before request
