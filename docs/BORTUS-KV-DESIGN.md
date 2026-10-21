@@ -1,5 +1,41 @@
 # Native BORTUS KV engine implementation contract
 
+## Human native metadata route source qualification (2026-10-21)
+
+The exact native-status GET and history-list GET routes pass NEW frozen PUBLIC
+`tests/kv-metadata-route-source.test.ts`:38leaf controls,40Node tests including
+two parents, zero fail/skip/cancel. No defect or production change is established.
+Each registers one default-status kvHuman wrapper and exports its exact result,
+nodejs runtime and force-dynamic setting. Destructuring reads id before engine
+construction, selected-method retrieval and invocation. Registry/actor/id and
+method receiver are preserved; the method receives exactly actor and id.
+Neither route reads the request, enumerates other parameters nor invokes
+metadataCursor, historyVersion or kvBody. There is no route cursor contract.
+Exact synchronous/getter/rejected refusals, held fulfillment/rejection, fresh
+repeated and interleaved calls, captured ids and raw result identities pass.
+
+All imports, registry, engine, actor, wrapper and request are inert models.
+These source controls establish neither authentication/registry authority nor
+schema validation, response serialization, HTTP transport, credentials, SQL/ORM/
+operatorDB/backend/native, build/server/recovery/performance/production behavior.
+Ordering is not commit authority or atomic delivery. Qualified historical routes,
+parameter parsers, kvHuman ordering, both finite expiry gates, deny-aware policies,
+kvBody overflow correction and every original assertion remain.
+
+Focused types3rootfiles/lint3files report0diagnostics. Sequential WindowsNode24.18.0
+source/types/lint finish3.125s/25.766s/31.687s; peaks198782976/655040512/410996736bytes.
+Original handles signal. Every NEW Job retains60swall/30userCPU/1GiBcommit/twoCPU/
+oneactiveprocess. Freeze579Windows/132DIRECTLinux preceded execution. Lint adapts
+dependency resolution only and retains its React notice. No performance,
+OS-network-isolation or universal-descendant claim follows. All2231prior owner/
+212root docs were checked; twelve additive raw inverses preserve prior bytes.
+No prior frozen control/helper was replayed. GitHub Actions remains prohibited;
+historical CI stays historical, overallCIQualifiedfalse. Root docs LOCAL;4+32+1
+findings unresolved. Fullgoal ACTIVE/no budget; all44clauses/21gates/failures and
+FINAL PRD deployment AND verification after all preceding gates remain required.
+See [source evidence](implementation-evidence/kv-metadata-route-source-20261021.json).
+
+
 ## Historical human route source qualification (2026-10-21)
 
 The exact historical-value GET and single-version DELETE routes pass NEW frozen
