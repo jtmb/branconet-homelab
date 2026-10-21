@@ -1,5 +1,79 @@
 # BORTUS user permissions
 
+## Field mapping source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass69 Node tests including68 leaf; zero
+failures/skips/cancellations. Only exact synchronous fieldMapping runs with
+synthetic arguments and inert validation/error/builtin bindings. Array/length,
+item type/ASCII bounds, validation-before-uniqueness, exact namespace/name/key,
+ordered reads/sets/projections, target/getter/map faults, no coercion/promise
+consumption, fresh/reentrant calls pass. Custom map/sparse arrays characterize
+source JavaScript only. Actual target validation/config/engine/credentials/native
+services and neighboring exports remain inert. No production defect/change.
+
+V1 SOURCE stopped before controls because strip-only Node rejects a fixture
+parameter property:1file test/0pass/1fail. V1 snapshots/results/helpers frozen
+NEVERrerun; V1 types/lint UNEXECUTED. DISTINCT V2 uses ordinary property syntax;
+FIRST source/types/lint pass. Focused types2roots/0diagnostics;lint2files/0errors/
+warnings. Exact9280 raw declarations/1022snapshotReads/fallback0;37428 DIRECT
+Linux dependency hashes match before/after. Source1.093s/90710016peak bytes;
+types6.313s/490627072;lint33.437s/283750400. All main handles signalled;
+activeBeforeDrain[0,0,1], explicit drain0 ALL. TotalProcesses2 cause UNESTABLISHED;
+one ACTIVE cap unchanged. Sequential Windows Node24.18.0 Jobs retain60s wall/
+30s userCPU/1GiB commit/twoCPUs/kill-on-close. Module-type/dependency React notices
+remain separate. No OSnetworkisolation/universaldescendant/performance/
+independentperson claim. No HTTP/auth/native/SQL/ORM/operatorDB/backend/build/
+server/recovery/production/grants/CAS/frozen replay.
+
+Startup17064proofs/current402/79/compat5/separateOriginal334/same78root8/
+36inverses passed; independent predecessor match17309 passed. All startup read
+exceptions and the distinct incoming-before-current rehash correction remain;
+immutable receipt/proofs unchanged. GitHub Actions PROHIBITED; historical CI
+only;overallCIQualified=false. Root docs LOCAL;4+32+1findings unresolved. Fullgoal
+ACTIVE/no budget;all44clauses/21gates/fixtures/failures and FINAL PRD deployment
+AND verification after all original preceding gates remain. See application
+implementation-evidence/kv-field-mapping-source-20261021.json.
+
+
+## Field mapping strip-only test syntax correction (2026-10-21)
+
+V1 SOURCE stopped before controls: Node strip-only mode rejects a test fixture
+constructor parameter property (ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX). The file-level
+result is1test/0pass/1fail; no fieldMapping control executed. V1 snapshots,
+results and helpers remain frozen NEVERrerun; V1 types/lint UNEXECUTED. DISTINCT
+V2 uses an ordinary status property declaration and constructor assignment.
+Production source, assertions, target binding, finite dependencies and resource
+limits are unchanged. New V2 source/types/lint freeze before first execution and
+remain UNEXECUTED. All original boundaries, failures and final delivery gates remain.
+
+
+## Field mapping source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported fieldMapping.
+The recorded source order is array/length guards, distinct field/key sets,
+per-item type/ASCII field regex checks, inert validateTarget call, field-then-key
+uniqueness short-circuit, ordered additions and fresh field/key projection.
+Bounds are one to64 entries and one to253 ASCII field characters. Synthetic
+getter/custom-map/sparse-array behavior characterizes JavaScript source only;
+it does not establish supported HTTP payloads or a production defect. Actual
+target validation/configuration/engine/credentials/native services/neighboring
+exports remain inert. No production correction is established. New source,
+focused types and lint remain UNEXECUTED and freeze before first execution.
+
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/two
+CPUs/one ACTIVE/kill-on-close, main-handle observation and explicit drain. No OS
+network isolation/universal descendant/performance/independent-person claim.
+No actual HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/
+production/grants/CAS/frozen replay. Startup rehashed17064 selected proofs and
+verified402inputs/79docs/compat5/separateOriginal334/same78root8/36inverses;
+independent predecessor match passed17309. Read exceptions and the distinct
+incoming-before-current rehash correction remain separate, with unchanged
+immutable receipt. GitHub Actions PROHIBITED; historical CI only;
+overallCIQualified=false. Root docs LOCAL;4+32+1findings unresolved. Full goal
+ACTIVE/no budget;all44clauses/21gates/fixtures/failures and FINAL PRD deployment
+AND verification only after all original preceding gates remain.
+
+
 ## Metadata revision source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass65 Node tests including64 leaf; zero
