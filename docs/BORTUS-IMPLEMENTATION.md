@@ -1,5 +1,59 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## Human legacy-principal GET source qualification (2026-10-21)
+
+The exact synchronous human legacy-principal GET callback is SOURCE composite-
+qualified across126leaf controls: original V1passed121leaf; five VM argument-array
+assertions and the failed parent remain. Three assertions now compare exact
+argument count/identity across VM boundaries. NEW frozen V2selects ONLY those
+five corrected cases:6Node/5leaf pass, zero skips/cancellations. Completed121+5
+controls never replay. Full PUBLIC suite retains126leaf cases; exact raw assertion/
+selection and subsequent type-annotation inverses preserve the original source.
+No production defect/change, JavaScript parity/current full-suite rerun or
+uninterrupted qualification/preparation/resource-wrapper pass claim.
+
+Only selected GET executes; actual kvHuman, KvLegacyAccess constructor/instance/
+state, sibling PATCH/body/schema stay inert. Exact nodejs/force-dynamic/default-
+status wrappers pass. Constructor lookup/construct/state lookup/call order,
+original registry/actor and constructed receiver, inherited/getter/refusal/
+nullish/noncallable/constructor-return paths, unread identities and fresh/
+reentrant/interleaved calls pass. Raw synchronous results, including promises/
+thenables, retain exact identity without adoption. No actual principal access.
+
+Original V1source127Node/121pass/6fail:0.969s/99532800byte peak commitment;
+V2source6pass:0.844s/71946240. Main handles signalled; active0/1 were sampled
+respectively. Both Job totals2 cause unestablished; one ACTIVE cap configured.
+V2wrapper passedfalse remains and kill-on-close was invoked; no universal
+descendant/handle or uninterrupted cleanup qualification follows. V3types timed
+out at60s:9.0userCPU/261853184peak, exit124/main signalled, explicit cleanup0.
+V4types2rootfiles pass zero diagnostics:12.812s/626294784peak, cleanup0. Exact9280
+declaration/metadata contents are bound to frozen dependencies; one annotation
+matches Node TestFn. No production runtime/filesystem cache. V4lint stopped before
+analysis on raw config mismatch:4.687s/39063552peak. Configs differ ONLY CRLF/LF;
+exact normalized rules match. NEW V5lint2files pass zero diagnostics:
+35.718s/283750400peak, main signalled/explicit cleanup0. Source/types never replay.
+All sequential Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/one ACTIVE process.
+No OS-network-isolation/universal-descendant/performance claim. Dependency-only
+React resolution notice and Node module-type notice stay separate from diagnostics.
+
+The failed full tool copy ran out of disk; only19782new manifest-listed copies
+were removed. The initial text-mode snapshot hash failed before writing; distinct
+binary reads preserve exact bytes. Original failures/helpers remain frozen;
+V1/V2types/lint and V3lint never executed. Receipt dirt formatting failure, original
+receipt and distinct V2correction/155872parent match remain. No uninterrupted
+receipt/match or preparation claim.
+
+No actual values/parsing/schema/credentials/HTTP/authentication/legacy registry/
+native/SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/CAS
+qualification. All original44clauses/21gates/fixtures/failures remain. GitHub
+Actions PROHIBITED; historical CI historical;overallCIQualified=false. Root docs
+LOCAL;4+32+1findings unresolved; fullgoal ACTIVE/no budget. Final PRD deployment
+AND verification follow all original preceding security/performance/actual AT/
+compatible independent recovery/fresh backup AFTER quiescence/schema/effective
+RBAC/admission/data gates. No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-legacy-principal-get-route-source-20261021.json).
+
+
 ## Human legacy-grant-revoke DELETE source qualification (2026-10-21)
 
 The exact human legacy-grant-revoke DELETE callback passes NEW frozen PUBLIC
