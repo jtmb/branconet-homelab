@@ -30,7 +30,7 @@ Root4+32+1 findings/all44clauses/21gates/frozen failures remain unresolved. No n
 image/security/performance/actualAT/native/history/CAS/rotation/populatedschema/
 effectiveRBAC/admission/data/compatibleindependentrecovery/rollback acceptance.
 FINAL PRD deployment AND actual verification remain REQUIRED after preceding gates.
-See [source evidence](evidence/bortus-ordinary-authentication-source-root-20261020.json).
+See [source evidence](../evidence/bortus-ordinary-authentication-source-root-20261020.json).
 
 
 ## Ordinary current finite-expiry source checkpoint - 2026-10-20 (Toronto)
