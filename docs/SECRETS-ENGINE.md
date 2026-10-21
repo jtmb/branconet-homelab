@@ -1,5 +1,40 @@
 # BORTUS Secrets Engine
 
+## Selected-path local Prisma/SQLite transport (2026-10-20)
+
+The selected-path final account/identity gate now rejects non-finite expiry
+before comparing it with the current time. Ordinary current()/authorize(), the
+joined SQL text/bindings, policy-intersection gate, route/PATCH and captured
+metadata remain unchanged. Role-only demotion/restoration stamps no revocation
+or session-version increment. Policy and authority statements remain separate;
+no response-delivery atomicity is claimed.
+
+NEW frozen32 PUBLIC leaf controls use Prisma6.19.3 and SQLite in two new temporary
+synthetic tables. Exact65429 baseline:28leaf passes/four predicted non-finite
+source failures (Node33total/28pass/5fail including the parent). Candidate:32leaf
+passes (Node33total/33pass/zero fail/skip/cancel). Mapped names, bound quote-like
+IDs, DateTime/null decoding, account/session/role and identity owner/session/
+revocation/expiry refusals, human readonly delegation and role-only restoration
+pass. Malformed SQL DateTime fails closed; invalidDate/Infinity are separate
+source models, not observed SQL decoding. The selected callback keeps exact
+metadata/order while other route gates stay inert; no actual HTTP/native runs.
+SuiteSHA256 5e475f1e63d50bc324563ead10e6bd4b914b7a97bc1dd97dbd9079b0482d4a5a.
+
+James specifically authorized isolated local synthetic SQL under existing limits.
+LinuxNode24.18.0 runs retain2CPU/1GiB/no swap/60swall/30CPU seconds/256tasks;
+seccomp allows only thread clones and blocks fork/vfork plus IPv4/IPv6 sockets.
+Baseline/candidate services finish3.811s/3.969s with264.5/266.6MiB peaks; owned
+temporary DB directories are removed. Focused TypeScript3files0diagnostics and
+lint2files0diagnostics pass; lint dependency resolution is adapted to the pinned
+cache and React detection emits an environment notice. Initial cgroup-resource
+reader and lint-resolution refusals are retained with separate corrected readers;
+no SQL/control replay follows those reader corrections. Generated schema raw
+bytes differ only in whitespace tokens. No generation/migration/build/server,
+operatorDB, broader suite replay, native, populated schema, actual AT/security/
+performance/recovery/image/live acceptance. GitHub Actions is prohibited;
+previous CI evidence stays historical. Every original clause/failure/gate and
+FINAL PRD deployment AND actual verification remain required.
+
 ## Selected-path account/identity statement snapshot (2026-10-20)
 
 The final selected-path release gate now uses currentSelectedPath(actor).

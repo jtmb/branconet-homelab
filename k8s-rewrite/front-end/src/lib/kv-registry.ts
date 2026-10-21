@@ -59,7 +59,7 @@ export class KvRegistry {
     const row = rows[0];
     if (!row || row.id !== actor.id || row.sessionVersion !== actor.sessionVersion) throw new KvError(401, "Authentication required");
     if (row.identityId !== actor.identityId || row.ownerId !== row.id || row.ownerSessionVersion !== row.sessionVersion ||
-      row.revokedAt || !row.expiresAt || row.expiresAt.getTime() <= Date.now() || row.role !== "write")
+      row.revokedAt || !row.expiresAt || !Number.isFinite(row.expiresAt.getTime()) || row.expiresAt.getTime() <= Date.now() || row.role !== "write")
       throw new KvError(401, "KV identity revoked or expired");
   }
 
