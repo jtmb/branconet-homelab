@@ -1,5 +1,52 @@
 # BORTUS Secrets Engine
 
+## Mount metadata-list release authority source checkpoint - 2026-10-20 (Toronto)
+
+Applicationc345ce29 rechecks current human account/session after the awaited
+mount metadata query; missing/deleted account or changed session refuses401,
+including empty pages. A query captured with effective administration refuses403
+if write or engineAdmin is withdrawn. Scoped queries retain captured scope,
+reload current grants/denials and recheck account/session after that policy read.
+Withdrawn grants and new mount-wide denials filter the captured page. Prefix
+list grants and nonempty-prefix denial behavior, human-only enumeration,
+namespace JSON parsing, ascending ID cursor and101-fetch/100-response remain.
+Role-only demotion retains permitted scoped metadata and stamps no revocation
+or sessionVersion change; later restored authority can permit a new request.
+No cache/retry/schema/token/native/mutation change occurs.
+
+All57 new frozen PUBLIC synthetic controls pass. Exact priorcf5b passes28/fails29,
+as corrected in count-only metadata BEFORE execution with suite bytes unchanged;
+original count58/pass30/fail28 metadata remains. Focused semantics passed with
+zero diagnostics first. Windows Node24.18.0 runs used60s wall/30 userCPU seconds/
+1GiB Windows Job commit/twoCPUs/one active process,1.469/1.453s; original process
+handles signalled. No OS network-isolation/Linux/ORM/universal descendant-absence
+claim. Source/saved review passes4512 checks: rehashed3388 selected proofs,
+current338/22 owner docs, separate compatibility5 and original334 unchanged.
+One loaded dependency matches retained graph without rewalk; only registry
+changes among prior337 and the new suite is338th. All2222 owner docs and1448
+root docs/evidence were read. Five owner domain inserts preserve original bytes.
+
+Existing AUTOMATIC PR39523701284/push39523694811 both pass all12steps: pinned
+Linux locked build, unchanged lint, whole-source types,1414units including all57
+new controls, eight original pristine/mutant pairs, eight integration/process
+controls and finite compiled Pods smoke. Decoded logs/exact steps saved and
+reviewed; no raw log archive download. Workflowf8b7ec07 unchanged; no manual
+dispatch/replay/workflow change. All SIX older successful CI scopes and every
+historical failure/cancellation remain separate; overallCIQualified=false.
+This concrete source task is COMPLETE/REVIEWED; root review is not independent-
+person acceptance. Initial preparation-reader syntax/path errors are retained.
+Prior parent confirmation4176 and both metadata checker refusals are retained
+without receipt/proof/source mutation or workload replay.
+
+No oldsuite/operatorDB/private-native/recovery/packaging/localbuild/server/
+graphwalk/scan/image/preload/promotion/production execution occurred. Hosted
+synthetic fixtures grant no new local authority or actual native/AT/security/
+performance/schema/effectiveRBAC/admission/recovery/data acceptance. RootdocsLOCAL;
+four new/prior32/earlierone findings, all44 clauses/failures and every original
+delivery gate remain. Full goal ACTIVE/no budget. PRD deployment AND actual
+verification remain FINAL REQUIRED after every preceding gate.
+
+
 ## Policy metadata-list release authority source checkpoint - 2026-10-20 (Toronto)
 
 Applicationcf5ba5f9 repeats its existing fresh human administrator check after
