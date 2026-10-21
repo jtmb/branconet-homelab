@@ -1,5 +1,53 @@
 # BORTUS user permissions
 
+## Human rotation consumer-preview GET source qualification (2026-10-21)
+
+The exact consumer-preview GET callback is composite SOURCE-qualified:132
+passing leaves from the original133-leaf frozen run plus one NEW focused
+result-adoption control. The original run retains134 Node tests,132pass,
+one failed leaf and its failed parent; the focused run passes2/2 including its
+parent. No completed control was replayed. The modeled result proxy receives
+exactly two then reads across the VM/host async boundary; only that assertion
+was corrected in `tests/kv-rotation-consumer-preview-route-source.test.ts`.
+The raw suite inverse is retained; no emitted-JavaScript parity or uninterrupted
+134/134 pass is claimed. Production is unchanged. Only selected GET executes;
+actual imported wrapper/body/schema/registry/engine/rotation/consumer/kubectl
+implementations and sibling POST remain inert. Nodejs/force-dynamic and exact
+default-status GET/inert POST wrappers pass. Capture KvRotations before
+kvEngine(original registry), consumer constructor before kubectlJSON, construct
+consumer with exactly that function, then rotations with exactly engine/consumer.
+Capture consumerPreview before params.id; invoke with original rotation receiver
+and exactly actor/captured id. Request is unread; no body/schema call. Getter/
+construction/refusal ordering, inherited/nullish/noncallable cases, fresh and
+interleaved calls/results and adopted resolved identities pass. No raw promise
+identity or HTTP/API acceptance claim follows.
+
+Focused types2rootfiles and lint2files have zero diagnostics. WindowsNode24.18.0
+focused-source/types/lint durations3.125/24.922/28.219s; Job peak commitments
+220311552/700375040/443420672bytes. The original source run used3.328s/
+242225152bytes. All original handles signalled. Each NEW Job retains
+60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Original909Windows and
+corrected927Windows freezes plus132DIRECTLinux precede execution. All
+2250prior owner/233root docs were checked. All27 prepared snapshots
+and raw doc inverses remain. Two historical type inverses and both prior/current
+raw assertion inverses/failures remain distinct. Review is not independent-person
+acceptance. No OS-network-isolation/universal-descendant/performance claim.
+Lint adapts dependency resolution only and retains its React notice.
+
+No actual values/parsing/schema validation/generation/consumer operations/
+credentials/import bundles/export bundles/HTTP/authentication/registry/native/
+SQL/ORM/operatorDB/backend/build/server/recovery/performance/production
+qualification. All qualified routes/parsers/kvHuman ordering, both finite expiry
+gates, deny-aware policies, kvBody overflow correction and all44clauses/21gates/
+failures remain. GitHub Actions PROHIBITED; historical CI historical;
+overallCIQualifiedfalse. Root docs LOCAL;4+32+1findings unresolved. Fullgoal ACTIVE/
+no token budget. FINAL PRD deployment AND actual verification follow all original
+preceding security/performance/actualAT/compatible independent recovery/fresh
+backup AFTER quiescence/schema/effectiveRBAC/admission/data gates.
+No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-rotation-consumer-preview-route-source-20261021.json).
+
+
 ## Human rotation action PATCH source qualification (2026-10-21)
 
 The exact rotation action PATCH callback passes NEW frozen PUBLIC
