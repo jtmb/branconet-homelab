@@ -1,5 +1,68 @@
 # BORTUS API usage
 
+## Human legacy-preview POST source qualification (2026-10-21)
+
+The exact async human legacy-preview POST callback passes NEW frozen PUBLIC
+SOURCE controls:274Node including273leaf, zero failures/skips/cancellations.
+Only selected POST executes. Actual kvHuman/kvBody/legacyPreview/KvLegacyAccess
+implementations stay inert. The exact nodejs/default-status wrapper, captured
+body function before schema lookup, unbound two-argument call and await before
+cursor/rest capture pass. Constructor capture/construct/preview lookup/call
+preserve original identities, constructed receiver and fresh change objects.
+Refusal stops, inherited/getter fields, symbols/own __proto__, no discriminator
+injection, noncallable boundaries, constructor returns, unread arguments,
+fresh/reentrant/interleaved calls and promise/thenable adoption pass. Synthetic
+schema inputs prove source forwarding only. No production defect/change.
+
+Source1.125s/121225216peak bytes; focused types2files zero diagnostics5.188s/
+641032192peak; lint2files zero diagnostics25.813s/282935296peak. Exact9280
+declaration/metadata contents,1368snapshot reads/fallbackReads0 and37428direct
+Linux dependency hashes before/after pass. This materializes tool inputs only.
+All main handles signalled; activeBeforeDrain source0/types1/lint0; explicit
+termination/drain0 every Job. TotalProcesses2 every Job cause unestablished;
+one ACTIVE cap unchanged. Sequential Windows Node24.18.0 Jobs retained60swall/
+30userCPU/1GiBcommit/twoCPU/one ACTIVE/kill-on-close. No OS-network-isolation,
+universal-descendant or performance claim. Node module-type and dependency-only
+React resolution notices stay separate. No workload failure or replay occurred.
+
+No actual values/parsing/schema/credentials/HTTP/authentication/legacy/native/
+SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/CAS qualify.
+GitHub Actions PROHIBITED; historical CI historical;overallCIQualified=false.
+All original44clauses/21gates/fixtures/failures remain. Root docs LOCAL;4+32+1
+findings unresolved; fullgoal ACTIVE/no budget. FINAL PRD deployment AND
+verification follow all original preceding security/performance/actual AT/
+compatible independent recovery/fresh backup AFTER quiescence/schema/effective
+RBAC/admission/data gates. No current image/runtime or independent-person pass.
+See [source evidence](implementation-evidence/kv-legacy-preview-route-source-20261021.json).
+
+
+## Human legacy-preview POST source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only the exact async POST callback in
+api/kv/legacy/preview/route.ts. Actual imports stay inert. The body function is
+captured before schema lookup and called unbound with request/schema. Await
+precedes cursor lookup and own enumerable rest capture; constructor lookup,
+construction, preview capture and its receiver-bound call follow. Original
+registry/actor/request/schema/cursor identities and fresh change objects are
+checked alongside refusal stops, symbols/own __proto__, native destructuring,
+constructor returns, reentrant/interleaved calls and promise/thenable adoption.
+No actual parsing/schema or legacy/native operation executes. Synthetic kind
+fields show forwarding only; no schema or production defect is established.
+
+At preparation source/types/lint are UNEXECUTED. Each planned NEW sequential
+Windows Node24.18.0 Job retains60swall/30userCPU/1GiBcommit/twoCPU/one ACTIVE,
+kill-on-close and explicit post-main termination/drain. No OS-network-isolation,
+universal-descendant, performance, runtime or independent-person claim follows.
+No actual values/credentials/HTTP/authentication/legacy/native/SQL/ORM/operatorDB/
+backend/build/server/recovery/production/grants/CAS or frozen workload replay.
+GitHub Actions PROHIBITED; historical CI historical;overallCIQualified=false.
+All original44clauses/21gates/fixtures/failures remain. Root docs LOCAL;4+32+1
+findings unresolved; fullgoal ACTIVE/no budget. FINAL PRD deployment AND
+verification follow all original preceding security/performance/actual AT/
+compatible independent recovery/fresh backup AFTER quiescence/schema/effective
+RBAC/admission/data gates. No current image or production qualification.
+
+
 ## Human legacy-principal PATCH source qualification (2026-10-21)
 
 The exact async human legacy-principal PATCH callback passes NEW frozen PUBLIC
