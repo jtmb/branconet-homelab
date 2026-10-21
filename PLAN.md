@@ -1,5 +1,50 @@
 # Kubernetes migration plan and acceptance contract
 
+## Selected-path owner-policy reread source checkpoint - 2026-10-20 (Toronto)
+
+Application1591440d adds one automation-owner list-policy reread after existing
+selected-path GET owner/token authorization and before its retained final current
+account/session/identity check. Owner withdrawal during the token-policy wait now
+refuses403, invalid/oversized policy503 and unavailable policy fails closed.
+Human readonly metadata, exact captured ID/revision/fields, namespace/mapping
+validation, explicit denies, whole-segment prefixes and role-only demotion/
+restoration remain. Default registry authorization and human HTTP wrapper/PATCH
+are unchanged; automation controls model the lower-level callback only. There is
+no new HTTP route, token reread, transactional snapshot, cache/retry/schema/native/
+mutation change or atomic policy-release guarantee.
+
+All122 NEW frozen PUBLIC controls pass; exact eb332 baseline passes98/fails24
+as predicted before execution, zero skip/cancel. Focused semantics0diagnostics.
+Windows Node24.18.0 retains60s wall/30userCPU/1GiB Jobcommit/twoCPUs/one active
+process; baseline1.078/candidate1.109s, original handles signalled. No OS network
+isolation/Linux/ORM/runtime/universal descendant-absence claim. All original96
+frozen bytes remain; the live prior suite retains every behavioral assertion and
+uses exact owner/token counts for the added query. Its new route contract mock
+binding was corrected before execution; initial freeze/preparations preserved.
+
+Source/saved review passes7597checks and rehashes all5142 retained proofs,
+342current inputs/22owner docs, separate compatibility5/original334 (original334
+directly rehashed at receipt). One loaded dependency matches without graph rewalk.
+All2222 owner docs checked; five additive inserts preserve all original bytes.
+Among prior341, only GET and its prior96 test instrumentation change; new122 suite
+is342nd. Initial successor capture-object type refusal is metadata-only: separate
+corrected reader verifies actual Git objects without changing refs/proofs/receipt.
+Parent5955 match confirms this receipt, retaining earlier5501/5059/4608/4176.
+
+AUTOMATIC PR39530164147/push39530158602 both pass all12steps,1841units including
+all122 new controls and prior96, eight pristine/mutantpairs, eight integration/
+processcontrols and the finite compiled Pods smoke. Tool-decoded logs/exact steps
+are saved and reviewed with817checks. Workflowf8b7ec07 unchanged;
+no raw archive/manualdispatch/replay/workflowchange. All TEN prior successful CI
+scopes and historical failures/cancellations remain separate; overallCIQualified
+false. Current concrete task COMPLETE/REVIEWED; review is not independent-person
+acceptance. No new local operatorDB/native/recovery/build/server/image/production
+authority, security/performance/actualAT/schema/effectiveRBAC/admission/data pass.
+RootdocsLOCAL; four new/prior32/earlierone findings and all44clauses remain open.
+Full goal ACTIVE/no budget. PRDdeployment AND verification remain FINAL REQUIRED
+after all original preceding gates. Next feature has not begun.
+
+
 ## Selected-path GET account release authority source checkpoint - 2026-10-20 (Toronto)
 
 Applicationeb3328e6 adds ONE final current(actor) after the selected-path GET
