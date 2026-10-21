@@ -1,5 +1,61 @@
 # BORTUS user permissions
 
+## Human audit GET source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass60Node including59leaf, zero failures/skips/
+cancellations. Only the exact async human audit GET callback executes; all real
+imports and the strict Zod declaration stay inert. Unknown/duplicate query keys
+refuse before the injected parser. Parser receiver and exact optional-field
+projection, listAudit capture before parsed-data spread/cursor, original actor/
+request/registry identity, exact two-argument list call and cursor overwrite are
+covered. Getter/proxy/inherited/noncallable/refusal boundaries, unread identity/
+request internals, fresh/reentrant/interleaved calls and async result/thenable
+adoption pass. No production defect/change is established.
+
+Focused types pass two roots/zero diagnostics; focused lint passes two files/
+zero errors/warnings. Source0.891s/81952768peak bytes;types7.407s/572870656peak;
+lint26.735s/282284032peak. Exact9280declaration contents/1359snapshot reads/
+fallback0 and37428DIRECTLinux dependency hashes match before/after. All three
+main handles signalled; activeBeforeDrain0/0/0 and explicit termination/drain0.
+TotalProcesses2 cause unestablished; one ACTIVE cap unchanged. WindowsNode24.18.0
+Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/one ACTIVE/kill-on-close. Module-type
+and dependency-only React-resolution notices remain separate. No OS-network-
+isolation/universal-descendant/performance/independent-person/runtime acceptance.
+
+No actual Zod/metadataCursor/authentication/registry/native/SQL/ORM/operatorDB/
+backend/build/server/recovery/production/grants/CAS or frozen workload replay.
+GitHub Actions PROHIBITED;historical CI historical;overallCIQualified=false.
+All44clauses/21gates/fixtures/failures persist. Root docs LOCAL;4+32+1findings
+unresolved;fullgoal ACTIVE/no budget. FINAL PRD deployment AND verification follow
+all preceding security/performance/actual AT/compatible independent recovery/fresh
+backup AFTER quiescence/schema/effective RBAC/admission/data gates.
+Prior path-status verifier/lint/post-push failures remain frozen and separate.
+See [source evidence](implementation-evidence/kv-audit-route-source-20261021.json).
+
+
+## Human audit GET source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only the exact async audit GET callback.
+The three real imports and strict Zod schema remain inert. Controls cover allowed
+query projection, unknown/duplicate refusals, injected parser success/refusal,
+receiver and argument identity, method capture before data spread/cursor, native
+getter/proxy/inherited/noncallable boundaries, unread identity/request internals,
+fresh/reentrant/interleaved calls and async result/thenable adoption.
+No production defect/change is established. Source/types/lint remain UNEXECUTED
+at preparation. NEW sequential Windows Node24.18.0 Jobs retain60swall/30userCPU/
+1GiBcommit/twoCPU/one ACTIVE/kill-on-close and explicit termination/drain.
+No OS-network-isolation/universal-descendant/performance/runtime or independent-
+person acceptance follows. No actual Zod/metadataCursor/authentication/registry/
+native/SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/CAS or
+frozen workload replay. GitHub Actions PROHIBITED;historical CI historical;
+overallCIQualified=false. All44clauses/21gates/fixtures/failures persist. Root docs
+LOCAL;4+32+1findings unresolved;fullgoal ACTIVE/no budget. FINAL PRD deployment AND
+verification follow all preceding security/performance/actual AT/compatible
+independent recovery/fresh backup AFTER quiescence/schema/effective RBAC/admission/
+data gates. Prior V1 lint, incoming-verifier and immediate post-push metadata
+failures remain retained; no uninterrupted prior helper pass is claimed.
+
+
 ## Human path-status GET source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass263Node including262leaf, with zero
