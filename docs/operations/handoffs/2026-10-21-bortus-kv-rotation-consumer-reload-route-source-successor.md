@@ -117,7 +117,7 @@ Rehash EXACT7176 retained receipt ARRAY plus ONLY CURRENT
 completedKvRotationConsumerReloadRouteSourceScope.proofs OBJECT properties.
 Exact new count and selected total are in current companion. Older groups already
 occur in7176; never add twice. Literal dotted/slashed keys; no case-only duplicates.
-Refused JSON hash-only. Current375/51 pluscompatibility5 and separate original334;
+Refused JSON hash-only. Current375/52 pluscompatibility5 and separate original334;
 older inputs/docs historical. Root mutable8pins checked BEFORE edits, never
 immutable proof arrays. Preserve all28freezes with raw prepared/final docs,
 two historical type inverses and both raw suite-assertion inverses. No replay.
