@@ -58,7 +58,7 @@ No current image/runtime qualification.
 See [source evidence](../../../evidence/bortus-kv-legacy-grant-list-route-source-root-20261021.json).
 
 Source review passed 134026 checks FIRST attempt: retained7600,
-current384/60, compatibility5 and separateoriginal334. All37 raw prepared/final
+current384/61, compatibility5 and separateoriginal334. All37 raw prepared/final
 snapshots verified separately; current1128Windows/132DIRECTLinux plus inherited36
 snapshots and both historical type inverses718/643, raw assertion inverses909/865
 and all original failures remain. Reverse legacyGrantListGETV1 finalAddition
@@ -116,7 +116,7 @@ Rehash EXACT7600 retained accepted receipt ARRAY plus ONLY
 completedKvLegacyGrantListRouteSourceScope.proofs OBJECT properties: 45NEW,
 7645UNIQUE selected proofs. Older groups already in7600; NEVER double-add.
 Literal dotted/slashed keys; no case-only duplicates. Refused JSON/readers HASHONLY.
-Current384/60, compatibility5, separateoriginal334 and original333delta unchanged.
+Current384/61, compatibility5, separateoriginal334 and original333delta unchanged.
 Root mutable8pins verify BEFORE edits; never immutable proofarrays. Preserve EACH
 of37 raw prepared/final snapshots/type/assertion inverses/original failures.
 
