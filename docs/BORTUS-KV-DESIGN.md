@@ -1,5 +1,86 @@
 # Native BORTUS KV engine implementation contract
 
+## Metadata revision source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass65 Node tests including64 leaf; zero
+failures/skips/cancellations. Only exact exported synchronous metadataRevision
+runs with synthetic arguments, inert error construction and builtin bindings.
+Strict missing428, safe-integer short-circuit, nonpositive400, two positive
+conversions, receiver/fault identities/newTarget, no coercion/promise consumption
+and fresh/reentrant calls pass. Synthetic builtin perturbations characterize
+source order only. Actual config/engine/credentials/native services/neighboring
+exports remain inert. No production defect/change established.
+
+V1 SOURCE failed one cross-realm array prototype assertion:65 tests63pass/2fail
+including parent. V1 snapshots/results/helpers stay frozen NEVERrerun; V1 types/
+lint UNEXECUTED. DISTINCT V2 asserts exact constructor argument count/elements and
+newTarget, preserving runtime expectations; FIRST source/types/lint pass. Focused
+types2 roots/zero diagnostics; lint2 files/zero errors/warnings. Exact9280 RAW
+declarations/1021 snapshot reads/fallback0;37428 DIRECT Linux dependency hashes
+match before/after. Source0.250s/60289024 peak bytes; types6.172s/428691456;
+lint33.390s/277479424. All V2 main handles signalled, activeBeforeDrain0 ALL,
+explicitDrain0 ALL. V1 failed run had activeBeforeDrain1 then explicitDrain0.
+TotalProcesses2 cause UNESTABLISHED; one ACTIVE cap unchanged. Sequential Windows
+Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/twoCPUs/kill-on-close.
+Module-type/experimental-strip/dependency React notices remain separate. No OS
+network isolation/universal descendant/performance/independent-person claim.
+
+Input collector V1 omitted177 JSON declaration inputs and stopped at9103 before
+writing snapshots; helper frozen, distinct corrected collectors select9280 from
+the same37428 unchanged paths. Startup FIRST19763 proof/owner checks passed but
+receipt omitted nine retained final bindings; separate supplement plus immutable
+receipt passed DISTINCT predecessor V2 FIRST16363. Failed V1 matcher and admitted
+filtered matcher-source read remain separate. No uninterrupted reader chain or
+universal hash-only claim. No HTTP/auth/native/SQL/ORM/operatorDB/backend/build/
+server/recovery/production/grants/CAS/frozen replay. GitHub Actions PROHIBITED;
+historical CI only;overallCIQualified=false. Root docs LOCAL;4+32+1 findings
+unresolved;full goal ACTIVE/no budget;all44 clauses/21 gates, fixtures/failures and
+FINAL PRD deployment AND verification after all original gates remain. See app
+implementation-evidence/kv-metadata-revision-source-20261021.json.
+
+
+## Metadata revision constructor assertion correction (2026-10-21)
+
+V1 SOURCE passed63 leaf controls and failed one constructor assertion because
+a VM-created argument array has a different prototype from the host expected
+array. Total65 Node tests report63pass/2fail including the parent. V1 snapshot,
+results/helpers remain frozen NEVERrerun; V1 types/lint remain UNEXECUTED. DISTINCT
+V2 checks exact argument count, individual values and newTarget identity without
+changing the production function or runtime expectation. V2 source/types/lint
+are UNEXECUTED and freeze before first run. The earlier input collector omitted
+177 existing JSON declaration inputs; that failed helper is frozen, and a distinct
+corrected collector selected the same9280 raw declarations from37428 unchanged
+dependency paths. No resource/dependency expansion or production defect/change.
+All acceptance/publication/failure boundaries remain.
+
+
+## Metadata revision source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact synchronous exported
+metadataRevision(value: unknown): number. Source-derived order is strict missing
+revision428, Number.isSafeInteger short-circuit, first Number conversion and
+positive comparison, then second Number conversion/return; invalid revisions
+receive fixed400. Controls use synthetic arguments, inert error construction and
+builtin bindings only. Primitive positive safe integers are accepted; strings,
+boxed numbers, bigint, symbols and objects refuse without coercion. Synthetic
+builtin faults characterize source order only. No production defect/change is
+established. NEW source/types/lint remain UNEXECUTED and freeze before first run.
+Actual config/engine/credentials/native services and neighboring exports inert.
+
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/two
+CPUs/one ACTIVE/kill-on-close, main-handle observation and explicit drain. No OS
+network isolation/universal descendant/performance/independent-person claim.
+No HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/production/
+grants/CAS/frozen replay. GitHub Actions PROHIBITED; historical CI only;
+overallCIQualified=false. Root docs LOCAL;4+32+1 findings unresolved; full goal
+ACTIVE/no budget. All44 clauses/21 gates, fixtures/failures and FINAL PRD deployment
+AND verification after all original gates remain. Startup FIRST19763 proof/owner
+checks passed; original receipt omitted nine retained final bindings. Immutable
+receipt plus separate nine-binding supplement passed DISTINCT predecessor V2
+FIRST16363; failed V1 matcher and source-read exception remain separate/frozen.
+No uninterrupted reader chain or universal hash-only claim.
+
+
 ## Guarded requirement source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass58 Node tests including57 leaf; zero
