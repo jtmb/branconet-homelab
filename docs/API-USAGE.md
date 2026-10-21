@@ -1,5 +1,64 @@
 # BORTUS API usage
 
+## KV error response source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass182Node including181leaf;zero failures,
+skips or cancellations. Only the exact exported synchronous kvErrorResponse
+declaration runs. Real imports/error classes/response/credentials/registry/native
+services remain inert. Classification precedes callee capture;message,operationId,
+outcome and then status are read from the original receiver. Payload objects are
+fresh;the false branch passes the original error unchanged. Delegates are unbound,
+receive exact arguments and return synchronously without promise/thenable adoption.
+Getter/proxy/inherited/missing fields,truthiness,opaque/primitive identities,
+exact refusal prefixes,captured callee,fresh calls and seven reentrancy stages
+pass. Exceptions propagate unchanged without fallback. No production defect/change.
+
+Focused types2roots/zero diagnostics;lint2files/zero errors/warnings. Source0.907s/
+81149952peak bytes;types7.594s/574410752peak;lint26.578s/283709440peak. Exact9280
+declaration contents/1359snapshot reads/fallback0 and37428DIRECTLinux dependencies
+match before/after. All3main handles signalled;activeBeforeDrain0all;explicit
+termination/drain0all. TotalProcesses2 causeUNESTABLISHED;one ACTIVE cap unchanged.
+WindowsNode24.18.0 sequential Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/one
+ACTIVE/kill-on-close. Module-type/dependency-only React notices remain separate.
+No OS-network-isolation/universal-descendant/performance/independent-person claim.
+No actual values/body/schema/credentials/HTTP/authentication/legacy/native/SQL/ORM/
+operatorDB/backend/build/server/recovery/production/grants/CAS or frozen replay.
+GitHubActionsPROHIBITED;historicalCIhistorical;overallCIQualified=false. Rootdocs
+LOCAL;4+32+1findings unresolved;fullgoalACTIVE/no budget. All44clauses/21gates/
+fixtures/failures persist;PRDdeploymentANDverification is FINAL after preceding
+gates. Incoming acceptance FIRST12792;parentV1 alias-schema failure retained,
+distinct parentV2 FIRST12883. Prior failed readers/helpers and truncated reads stay
+retained. See implementation-evidence/kv-error-response-source-20261021.json in
+the application owner for this bounded source evidence.
+
+
+## KV error response source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only the exact exported synchronous
+kvErrorResponse declaration in src/lib/kv-http.ts. All real imports, error classes,
+response services, credentials, registry and native services stay inert. The
+source evaluates instanceof first; its truthy branch captures secretResponse
+before reading message, operationId, outcome and then status from the original
+error. The false branch passes the original error unchanged to the unbound
+secretErrorResponse. Payload objects are fresh. Both delegates return synchronously
+without awaiting/coercing their result; exceptions propagate without fallback.
+Controls cover original identities/receivers, truthiness, getters/proxies/inherited
+and missing fields, exact refusal prefixes, captured callees, fresh and reentrant
+calls and untouched thenables/promises. No production defect/change is established.
+SOURCE/types/lint UNEXECUTED; controls are frozen before their distinct local runs.
+
+Sequential WindowsNode24.18.0 Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/one
+ACTIVE/kill-on-close with main-handle observation and explicit termination/drain.
+No OS-network-isolation/universal-descendant/performance/independent-person claim.
+No actual values/body/schema/credentials/HTTP/authentication/legacy/native/SQL/ORM/
+operatorDB/backend/build/server/recovery/production/grants/CAS or frozen replay.
+GitHubActionsPROHIBITED;historicalCIhistorical;overallCIQualified=false. All44clauses/
+21gates/fixtures/failures persist. RootdocsLOCAL;4+32+1findings unresolved;fullgoal
+ACTIVE/no budget. FINAL PRDdeploymentANDverification require all preceding gates.
+Incoming acceptance passed12792 first execution;parentV1 stopped on alias schema,
+distinctV2 passed12883. Original failures and truncated reads remain retained.
+
+
 ## Automation POST source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass162Node including161leaf; zero failures,
