@@ -1,5 +1,46 @@
 # BORTUS API usage
 
+## Human identity-create POST source qualification (2026-10-21)
+
+The exact asynchronous identity-create POST callback passes NEW frozen PUBLIC
+`tests/kv-identity-create-route-source.test.ts`: 147 leaf controls, 148 Node tests
+including one parent, zero failures/skips/cancellations. Only selected POST executes;
+actual imported kvHuman/kvBody/identityCreate/schema/registry/issueIdentity, real
+Date parsing and sibling GET remain inert. No defect or production change is
+established. Exact nodejs/force-dynamic exports, default GET and POST201 wrappers
+pass. Capture kvBody before schema lookup and await exact request/schema input
+before issueIdentity lookup. Capture that method before own enumerable string/
+symbol spread; retain field identities and fresh data properties, then capture
+modeled Date before the second input.expiresAt read. Construct with exactly that
+value and override only fresh output.expiresAt. Invoke captured issueIdentity with
+original registry receiver and exactly original actor/fresh output. Inherited/
+getter/refusal/nullish/noncallable/fresh/interleaved cases retain evaluation order;
+asynchronous results adopt exact resolved identity. No real date or API claim.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations 3.531/24.797/28.953s; Job peak commitments
+244518912/740048896/452550656bytes. All original handles signalled. Each NEW Job retains
+60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze1081Windows/
+132DIRECTLinux precedes execution. All2258prior owner/239root docs checked,
+plus root PLAN.md and MIGRATION_STATUS.md through their exact raw inverses.
+All35 raw prepared/final snapshots, both historical type inverses and both raw
+assertion inverses/failures remain. No completed helper/control replay. Review is
+not independent-person acceptance. No OS-network-isolation/universal-descendant/
+performance claim; lint dependency-resolution-only React notice retained.
+
+No actual values/parsing/schema/credentials/import/export/HTTP/authentication/
+registry/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/
+production qualification. All qualified routes/parsers/kvHuman ordering, both
+finite expiry gates, deny-aware policies, kvBody overflow correction and original
+44clauses/21gates/failures remain. GitHub Actions PROHIBITED; historical CI
+historical;overallCIQualified=false. Root docs LOCAL;4+32+1findings unresolved.
+Fullgoal ACTIVE/no token budget. FINAL PRD deployment AND actual verification
+follow all original preceding security/performance/actualAT/compatible independent
+recovery/fresh backup AFTER quiescence/schema/effectiveRBAC/admission/data gates.
+No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-identity-create-route-source-20261021.json).
+
+
 ## Human identity-list GET source qualification (2026-10-21)
 
 The exact synchronous identity-list GET callback passes NEW frozen PUBLIC
