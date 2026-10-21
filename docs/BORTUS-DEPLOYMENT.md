@@ -1,5 +1,43 @@
 # BORTUS application deployment
 
+## Selected-path local SQL transport checkpoint - 2026-10-20 (Toronto)
+
+Applicationeb7f77d1 qualifies the selected account/identity statement using NEW
+frozen32 PUBLIC leaf controls and actual Prisma6.19.3/SQLite in two new temporary
+synthetic tables. Exact65429 baseline28leaf passes/four predicted non-finite
+expiry source failures (Node33total/28pass/5fail including parent); candidate
+32leaf passes (Node33total/33pass/zero fail/skip/cancel). Malformed SQL DateTime
+already refuses. The only production change adds Number.isFinite at the final
+selected-path expiry gate. Ordinary current()/authorize(), SQL/bindings, policy
+intersection, captured metadata, human wrapper and PATCH remain. Four non-finite
+source controls are separate from actual SQL decoding. Other callback gates
+stay inert; no actual HTTP/native or populated-schema qualification. No policy/
+response atomicity claim. Role-only restoration preserves session/revocation.
+
+Direct human isolated local synthetic SQL authorization supersedes the old
+hosted-only scope. GitHub Actions is PROHIBITED;13 old successful scopes are
+historical only. Both repository Actions settings read disabled BEFORE push.
+No dispatch/rerun/enable/deliberate triggering/workflowchange. Local source/
+saved review8719checks rehashes5756 retained proofs/current345/22, compatibility5
+and original334; all2222owner docs checked/six exact additive inverses. Focused
+TypeScript3files0diagnostics and lint2files0diagnostics pass. Initial cgroup
+reader and lint module-resolution refusals retained with separate corrections.
+LinuxNode24.18.0:2CPU/1GiB/no swap/60swall/30CPU seconds/256tasks/thread-only
+clones/no fork/vfork/IPv4/IPv6 sockets. Baseline/candidate3.811s/3.969s,264.5/
+266.6MiB peaks, temporary DBs removed and all5checkunitsMainPID0. No broader
+suite replay, generation/migration/build/server/operatorDB/native/recovery.
+
+Concrete task COMPLETE/REVIEWED; review is not independent-person acceptance.
+Fullgoal ACTIVE/no budget. RootdocsLOCAL; four new/prior32/earlierone findings
+and all44clauses/frozenfixtures/failures/gates remain. OverallCIQualifiedfalse.
+No actualAT/security/performance/native/history/CAS/rotation/compatible recovery/
+populatedschema/effectiveRBAC/admission/data acceptance. AppPR28/chartsPR5draft/
+unmerged; no charts/publisher/visibility/promotion/production change.
+FINAL PRD deployment AND actual verification remain REQUIRED after all original
+preceding gates. Future local checks remain scoped; current SQL grant does not
+authorize operator DB or broader SQL replay. Next feature not begun.
+
+
 ## Latest human direction: local testing; no GitHub Actions (2026-10-20 Toronto)
 
 James directed: "please make sure no repos are using github actions", "and instead
