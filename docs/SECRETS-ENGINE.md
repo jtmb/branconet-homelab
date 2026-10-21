@@ -1,5 +1,50 @@
 # BORTUS Secrets Engine
 
+## Human identity-revoke DELETE source qualification (2026-10-21)
+
+The exact asynchronous identity-revoke DELETE callback passes NEW frozen PUBLIC
+`tests/kv-identity-revoke-route-source.test.ts`: 151 leaf controls, 152 Node tests
+including one parent, zero failures/skips/cancellations. Only selected DELETE
+executes; actual imported kvHuman/kvBody/identityRevoke/schema/registry/revokeIdentity
+remain inert. No defect or production change is established. Exact nodejs and
+default-status wrapper pass; dynamic export is absent. Capture fourth-argument id
+at entry before body lookup. Capture kvBody before schema lookup, delegate exactly
+original request/schema and await input before revokeIdentity lookup. Capture
+that method before input.revision, then invoke with original registry receiver
+and exactly original actor/captured id/captured revision. Inherited/getter/refusal/
+nullish/noncallable/fresh/interleaved cases retain evaluation order; unselected
+identities remain unread and asynchronous results adopt exact resolved identity.
+No actual identity CAS or API claim.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations 3.360/25.156/28.203s; Job peak commitments
+253526016/706707456/447246336bytes. All original handles signalled. Each NEW Job retains
+60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze1106Windows/
+132DIRECTLinux precedes execution. All2259prior owner/240root docs checked,
+plus root PLAN.md and MIGRATION_STATUS.md through their exact raw inverses.
+All36 raw prepared/final snapshots, both historical type inverses and both raw
+assertion inverses/failures remain. No completed helper/control replay. Review is
+not independent-person acceptance. No OS-network-isolation/universal-descendant/
+performance claim; lint dependency-resolution-only React notice retained.
+
+A private static helper-construction lookup failed before source/doc edits or
+workload execution. Its original helper and failure record remain frozen; a
+distinct continuation constructed remaining helpers once. No failed workload or
+uninterrupted preparation-pass claim is made.
+
+No actual values/parsing/schema/credentials/import/export/HTTP/authentication/
+registry/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/
+production qualification. All qualified routes/parsers/kvHuman ordering, both
+finite expiry gates, deny-aware policies, kvBody overflow correction and original
+44clauses/21gates/failures remain. GitHub Actions PROHIBITED; historical CI
+historical;overallCIQualified=false. Root docs LOCAL;4+32+1findings unresolved.
+Fullgoal ACTIVE/no token budget. FINAL PRD deployment AND actual verification
+follow all original preceding security/performance/actualAT/compatible independent
+recovery/fresh backup AFTER quiescence/schema/effectiveRBAC/admission/data gates.
+No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-identity-revoke-route-source-20261021.json).
+
+
 ## Human identity-create POST source qualification (2026-10-21)
 
 The exact asynchronous identity-create POST callback passes NEW frozen PUBLIC
