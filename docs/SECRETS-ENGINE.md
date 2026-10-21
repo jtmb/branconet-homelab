@@ -1,5 +1,56 @@
 # BORTUS Secrets Engine
 
+## Human legacy-grant POST source qualification (2026-10-21)
+
+The human legacy-grant POST callback is SOURCE composite-qualified across170
+unique leaf cases: original frozen v1 passed165leaf; five explicit-undefined
+assertion-helper failures and the failed parent remain. Default expected parameters
+incorrectly replaced explicit undefined. The sole raw helper correction uses
+argument presence; no production defect/change established. NEW frozen v2 selects
+ONLY those five corrected cases:6Node/5leaf allpass. Completed165 passing controls
+are never replayed. No JavaScript parity or uninterrupted source pass claim.
+The corrected PUBLIC `tests/kv-legacy-grant-route-source.test.ts` retains all cases;
+its165 earlier passes are source-continuity evidence from v1, not a new full run.
+Only selected POST executes; actual imported kvHuman, kvAdminMetadataBody,
+legacyGrant schema, KvLegacyAccess constructor/instance/commit and sibling GET
+remain inert. Exact nodejs/force-dynamic/default GET and POST201 wrappers pass.
+Capture body before schema, await original registry/actor/request/schema, extract
+legacyImpact then copy own enumerable string/symbol rest. Capture constructor and
+constructed commit before fresh kind-grant spread, preserving override semantics,
+exact receiver/actor/change/impact, constructor returns/inherited/getter/refusal/
+nullish/noncallable/fresh/reentrant/interleaved order and adopted resolved identity.
+No actual grants/CAS.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 correction-only source/types/lint durations 3.250/24.656/28.579s; Job peak commitments
+185516032/709898240/450953216bytes. All original handles signalled. Each NEW Job retains
+60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze1170Windows/
+132DIRECTLinux precedes execution. All2261prior owner/242root docs checked,
+plus root PLAN.md and MIGRATION_STATUS.md through their exact raw inverses.
+All39 raw prepared/final snapshots, both historical type inverses and both raw
+assertion inverses/failures remain. No completed helper/control replay. Review is
+not independent-person acceptance. No OS-network-isolation/universal-descendant/
+performance claim; lint dependency-resolution-only React notice retained.
+
+Original v1 source171Node/165pass/6fail (five leaf plus parent),3.500s,
+221036544bytes peak commitment and signalled original handle are preserved;
+no type/lint run occurred on v1. Distinct v2 correction-only source and focused
+types/lint each ran once under the same limits. Earlier finalizer failures remain
+frozen. No workload replay or uninterrupted source qualification is claimed.
+
+No actual values/parsing/schema/credentials/import/export/HTTP/authentication/
+registry/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/
+production qualification. All qualified routes/parsers/kvHuman ordering, both
+finite expiry gates, deny-aware policies, kvBody overflow correction and original
+44clauses/21gates/failures remain. GitHub Actions PROHIBITED; historical CI
+historical;overallCIQualified=false. Root docs LOCAL;4+32+1findings unresolved.
+Fullgoal ACTIVE/no token budget. FINAL PRD deployment AND actual verification
+follow all original preceding security/performance/actualAT/compatible independent
+recovery/fresh backup AFTER quiescence/schema/effectiveRBAC/admission/data gates.
+No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-legacy-grant-route-source-20261021.json).
+
+
 ## Human legacy-grant-list GET source qualification (2026-10-21)
 
 The exact synchronous human legacy-grant-list GET callback passes NEW frozen PUBLIC
