@@ -1,5 +1,45 @@
 # BORTUS Secrets Engine
 
+## Human mount-create and path-register source qualification (2026-10-21)
+
+The exact mount-create POST and path-register POST callbacks pass NEW frozen
+PUBLIC `tests/kv-create-route-source.test.ts`:68leaf controls,70Node tests including
+two parents, zero failures/skips/cancellations. No defect or production change is
+established. Default-status GET and201 POST wrappers register inertly and export
+their exact results, nodejs runtime and force-dynamic setting. GET operations
+never execute. Each POST retrieves its registry method before body delegation,
+passes exactly request and the selected schema to the body model, awaits the
+body, then invokes the captured method with the original registry receiver and
+exact actor/resolved body. It does not inspect request/context/actor/schema.
+Async callbacks adopt results; resolved values/refusals retain identity, without
+a raw promise identity claim. Exact getter/call/rejected refusals, held bodies and
+results, fresh calls and interleaved captured arguments pass without retries.
+
+Every import and body/schema/registry/wrapper/request implementation is an inert
+model. These controls establish no actual body parsing/schema validation, HTTP
+transport/authentication/registry authority, credentials, SQL/ORM/operatorDB/
+backend/native/build/server/recovery/performance/production or atomic delivery.
+All qualified GET/history routes, parsers, kvHuman ordering, both finite expiry
+gates, deny-aware policies, kvBody overflow correction and original assertions
+remain. No earlier frozen workload/helper is replayed. GitHub Actions remains
+prohibited; historical CI stays historical and overallCIQualifiedfalse.
+
+Focused types3rootfiles and lint3files report0diagnostics. Sequential Windows
+Node24.18.0 source/types/lint finish3.468s/29.625s/31.828s; peak Job commitment is
+206786560/676528128/417247232bytes. Original process handles signal. Each NEW Job
+retains60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze610Windows and
+132DIRECTLinux preceded execution; lint adapts dependency resolution only and
+retains its React notice. No performance, OS-network-isolation or universal
+descendant claim follows. All2233prior owner/214root docs were checked; twelve
+additive raw prepared/final inverses preserve prior bytes. Root docs LOCAL;
+4+32+1 findings unresolved. Fullgoal ACTIVE/no budget. All44clauses/21gates/failures
+and FINAL PRD deployment AND verification remain after every original preceding
+security/performance/actualAT/compatible independent recovery/fresh backup/
+quiescence/schema/effective RBAC/admission/data gate. Review is not independent
+person acceptance; this source checkpoint never qualifies a current image/runtime.
+See [source evidence](implementation-evidence/kv-create-route-source-20261021.json).
+
+
 ## Human metadata list route source qualification (2026-10-21)
 
 Exact mount-list GET and path-list GET pass NEW frozen PUBLIC
