@@ -1,5 +1,84 @@
 # BORTUS application deployment
 
+## Logical path source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass72/72 with zero failures/skips/cancellations
+in DISTINCT V3. Only exact synchronous logicalPath executes with synthetic primitive
+inputs and inert immediate builtin/error bindings. Type/512 UTF-16-unit bound,
+NFC, forbidden percent/backslash/C0-through-space/DEL, UTF-8 roundtrip, root,
+32-segment/128-unit bounds, empty/dot/dotdot rejection and unchanged valid return
+pass. Shortcircuit order, builtin refusals, fresh calls/fixed error instances and
+constructor refusals pass. All neighboring exports/configuration/engine/credentials/
+native services remain inert. No supported production defect/change is established.
+
+V3 SOURCE/types/lint pass:types2roots/0diagnostics;lint2files/0errors/warnings.
+Raw9280declarations/1022snapshotReads/fallback0;37428 DIRECT Linux dependency
+hashes match before/after;412new+1429prior execution bindings unchanged (1840
+unique union shares Node). Source1.078s/92774400peakbytes;types6.093s/457793536;
+lint33.328s/278577152. Main handles signalled;activeBeforeDrain[0,0,1],explicit
+drain0ALL. TotalProcesses2 cause UNESTABLISHED. Sequential Windows Node24.18.0
+Jobs retain60swall/30userCPU/1GiBcommit/twoCPUs/oneACTIVE/kill-on-close. Module
+type and lint React notices separate. No OSnetworkisolation/universaldescendant/
+performance/independentperson claim. No HTTP/auth/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/performance/production/grants/CAS or frozen replay.
+
+V1 preparation stopped before repository edits/controls on its511-versus1018 prior
+binding assertion. V2 SOURCE71pass/1fail remains frozen:throwing sandbox global
+KvError getter surfaced ReferenceError instead of injected sentinel;V2types/lint
+unexecuted. V3 direct inert lexical error binding fixes that harness seam;global
+getter fault injection remains unqualified. All earlier helpers/artifacts/failures
+and read exceptions stay separate,unchanged,NEVERrerun. No production correction
+or original gate weakening. Startup19565 proof rehash and independent parent
+FIRST19804 remain bound;all prior ref histories preserved. GitHub Actions PROHIBITED;
+historicalCIonly;overallCIQualified=false. Rootdocs LOCAL;4+32+1findings unresolved.
+Fullgoal ACTIVE/no budget;all44clauses/21gates/fixtures/failures and FINAL PRD
+deployment AND verification after ALLoriginalgates remain. See application
+implementation-evidence/kv-logical-path-source-20261021.json.
+
+
+## Logical path source preparation (2026-10-21)
+
+NEW finite frozen PUBLIC SOURCE controls select only exact exported logicalPath.
+The source order was recorded before controls: type/512 UTF-16-unit total bound,
+NFC equality, forbidden percent/backslash/C0-through-space/DEL characters, UTF-8
+round trip, empty-root permission, slash split, 32-segment bound, then nonempty/
+not-dot/not-dotdot/128-unit segment rules. Valid strings return unchanged.
+Synthetic primitive inputs and inert immediate builtin/error bindings only; all
+neighboring exports/configuration/engine/credentials/native services remain inert.
+No supported production defect/change is established. New source/types/lint are
+UNEXECUTED and freeze before first execution. No HTTP/auth/native/SQL/ORM/operatorDB/
+backend/build/server/recovery/performance/production/grants/CAS or frozen replay.
+
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/twoCPUs/
+oneACTIVE/kill-on-close, main-handle observation and explicit drain. No OSnetwork
+isolation/universaldescendant/performance/independentperson claim. Startup incoming
+18532 finished BEFOREcurrent1033=19565 unique proofs;405/82/compat5/separate334/
+same81root8/24orderedinverses/2533otherdocs passed. Parent independent matcher
+FIRST19804 passed. Actual279/279/21 has one new chat capture, no missing/changed
+existing refs; all prior original sets/read exceptions/failures stay separate.
+GitHub Actions PROHIBITED;historicalCIonly;overallCIQualified=false. Rootdocs LOCAL;
+4+32+1findings unresolved. Fullgoal ACTIVE/no budget;all44clauses/21gates/fixtures/
+failures and FINAL PRDdeployment AND verification after ALLoriginalgates remain.
+
+
+V1 preparation STOPPED before repository edits or source/types/lint execution:
+it asserted511 prior execution bindings, while the current guard contains1018
+(511 current plus507 older). Original helper/artifacts remain frozen NEVERrerun.
+DISTINCT V2 corrects only that count assertion;fresh37428 Linux dependency hashes
+and9280 declarations match. Current guard/config METADATA reads are explicit
+preparation exceptions;no original helper/control executes.
+
+
+The frozen V2 SOURCE run retained71pass/1fail/0skip/cancel. Its throwing sandbox
+global KvError getter produced ReferenceError instead of the injected sentinel;
+this does not establish a production defect. Main handle signalled,activeBeforeDrain1
+and explicitdrain0;TotalProcesses2 cause UNESTABLISHED. V2 types/lint unexecuted.
+DISTINCT V3 uses a direct inert lexical error binding and tests fresh fixed errors
+and constructor refusal. Global-getter fault injection remains unqualified;its
+failed oracle/artifacts are unchanged. All primitive path, builtin ordering,
+shortcircuit and refusal controls remain. No gate/resource/production change.
+
+
 ## Prefix matcher source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass39/39 tests with zero failures/skips/
