@@ -1,5 +1,69 @@
 # BORTUS Secrets Engine
 
+## Action parser source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass60/60 tests with zero failures/skips/
+cancellations. Only exact synchronous parseActions runs with synthetic raw
+strings and inert immediate builtin/allowlist/error bindings. Supported JSON
+arrays enforce nonempty/max10/allowlist/uniqueness and preserve action order.
+Malformed JSON returns fixed503; source order/short-circuiting, parsed identity,
+fresh calls and inert postparse builtin/getter faults are characterized. Sparse
+inert-parser arrays characterize JavaScript only. Actual configuration/engine/
+credentials/native services and neighboring exports remain inert. No supported
+production defect or production change is established.
+
+FIRST source/types/lint pass: types2roots/0diagnostics;lint2files/0errors/warnings.
+Fresh9280 raw declarations/1022snapshotReads/fallback0;37428 DIRECT Linux hashes
+match before/after;507 frozen execution files unchanged. Source1.031s/88190976
+peak bytes;types6.094s/491290624;lint32.203s/281702400. Main handles signalled;
+activeBeforeDrain[0,0,0],explicitdrain0ALL. TotalProcesses2 cause UNESTABLISHED;
+one ACTIVE cap unchanged. Sequential Windows Node24.18.0 Jobs retain60s wall/
+30s userCPU/1GiB commit/twoCPUs/kill-on-close. Node module-type and lint React
+notices remain separate. No OSnetworkisolation/universaldescendant/performance/
+independentperson claim. No HTTP/auth/native/SQL/ORM/operatorDB/backend/build/
+server/recovery/performance/production/grants/CAS/frozen workload replay.
+
+Startup18007 orderedproofs/current403/selected80/compat5/separateOriginal334/
+same80root8 for NEW snapshots, prior79root8/36inverses/2529otherdocs passed.
+Independent predecessor V2 matcher FIRST18221 passed using immutable receipt
+and separate intentional-root-local supplement. Original V1matcher remained
+PREPAREDUNEXECUTED, never a failed strict run. All prior exceptions/failures stay
+separate and frozen. GitHub Actions PROHIBITED;historical CI only;overallCIQualified
+=false. Root docs LOCAL;4+32+1findings unresolved. Fullgoal ACTIVE/no budget;
+all44clauses/21gates/fixtures/failures and FINAL PRD deployment AND verification
+after ALL original preceding gates remain. See application
+implementation-evidence/kv-parse-actions-source-20261021.json.
+
+
+## Action parser source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported parseActions.
+Source order was recorded before controls: JSON.parse within its fixed503 catch;
+array check; nonempty and maximum10 length guards; ordered allowlist checks;
+then Set cardinality/duplicate check; return the same parsed array. The static
+allowlist remains list/read/create/update/delete/rollback/reconcile/destroy/
+export/rotate. Synthetic raw strings and inert immediate builtin/allowlist/error
+bindings only. Actual configuration/engine/credentials/native services and
+neighboring exports remain inert. No supported production defect or correction
+is established. NEW source/types/lint controls are UNEXECUTED and freeze before
+first execution. No HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/
+recovery/performance/production/grants/CAS or frozen workload replay.
+
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/two
+CPUs/one ACTIVE/kill-on-close, main-handle observation and explicit drain. No OS
+network isolation/universal descendant/performance/independent-person claim.
+Startup freshly rehashed incoming17064 BEFOREcurrent943=18007 unique proofs;
+current403/selected80/compat5/separateOriginal334/same raw79root8/36ordered
+inverses and2529otherdocs passed. Independent predecessor matcher V2 FIRST18221
+passed with immutable receipt plus separate intentional-root-local supplement;
+original V1matcher was PREPAREDUNEXECUTED, never a failed strict execution.
+All prior failures/read exceptions remain separate and frozen. GitHub Actions
+PROHIBITED; historical CI only;overallCIQualified=false. Root docs LOCAL;
+4+32+1findings unresolved. Fullgoal ACTIVE/no budget;all44clauses/21gates/
+fixtures/failures and FINAL PRD deployment AND verification after ALL original
+preceding gates remain. No production source change.
+
+
 ## Field mapping source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass69 Node tests including68 leaf; zero
