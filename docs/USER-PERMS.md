@@ -1,5 +1,46 @@
 # BORTUS user permissions
 
+## Human rollback POST source qualification (2026-10-21)
+
+The exact rollback POST callback passes NEW frozen PUBLIC
+`tests/kv-rollback-route-source.test.ts`:54leaf/55Node tests including one parent,
+zero failures/skips/cancellations. All imports are inert models; actual wrapper,
+body/nativeRollback schema/registry/engine implementations never execute. No
+production defect or behavior change is established. The nodejs export and one
+default-status wrapper retain exact identity. The callback destructures id before
+kvEngine(original registry), captures change before body delegation/await, passes
+exactly request/nativeRollback and invokes the captured method with its original
+engine receiver and exactly actor/id/resolved input/rollback literal. Getter and
+refusal ordering, inherited/nullish/noncallable cases, held/fresh/interleaved
+bodies/results and adopted resolved identities pass. No raw promise identity claim.
+
+First focused types remains exit1 with one test-only TS2345: assertion narrowing
+of trace to never[]. A sole erased string[] annotation corrects that test; exact
+emitted-JavaScript SHA parity83f881ff0441f10e44c4c858693d44f3af2d132f8c659664ec1deb0326092e32
+passes. The54source controls NEVER replayed. Corrected focused types2rootfiles
+and first lint2files have zero diagnostics. Windows Node24.18.0 successful source/
+corrected-types/first-lint durations3.703/27.375/33.218s; Job peak commitments
+214450176/684183552/427065344bytes. All original handles signalled. Each NEW Job retains60swall/
+30userCPU/1GiBcommit/twoCPU/oneactiveprocess. New v1freeze718 and v2freeze728
+Windows/132DIRECTLinux precede their executions. V1/v2 have separate prepared
+doc snapshots with the same original bytes and a sole suite type inverse.
+All2239priorowner/222root docs were checked; fourteen raw execution freezes
+are retained through prepared/final inverses. Review is not independent person
+acceptance. No OS-network-isolation, universal-descendant or performance claim.
+
+SOURCE qualification establishes no actual values/parsing/schema validation/HTTP/
+authentication/credentials/registry authority/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/performance/production/atomic delivery. Every qualified route/
+parser/kvHuman ordering, both finite expiry gates, deny-aware policies and kvBody
+overflow correction remain. All44clauses/21gates/failures remain. GitHub Actions
+PROHIBITED; historical CI historical;overallCIQualifiedfalse. Root docs LOCAL;
+4+32+1findings unresolved. Fullgoal ACTIVE/no token budget. FINAL PRD deployment
+AND actual verification follow every original preceding security/performance/
+actualAT/compatible independent recovery/fresh backup after quiescence/schema/
+effective RBAC/admission/data gate. No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-rollback-route-source-20261021.json).
+
+
 ## Human current-value DELETE source qualification (2026-10-21)
 
 The exact data-route DELETE callback passes NEW frozen PUBLIC
