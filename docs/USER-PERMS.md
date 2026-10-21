@@ -1,5 +1,49 @@
 # BORTUS User Permissions
 
+## Policy metadata-list release authority source checkpoint - 2026-10-20 (Toronto)
+
+Applicationcf5ba5f9 repeats its existing fresh human administrator check after
+the deferred policy metadata query, before returning any page. Absent/deleted
+account or changed session refuses401; withdrawal of write or engineAdmin
+refuses403, including empty pages. Initial administration/automation denial,
+ascending ID cursor,101-row fetch/100-row response, metadata and parsed actions
+remain. No policy authorization, token, schema, mutation, cache/retry or permanent
+role-only demotion revocation change occurs. A later request can use restored
+administration without changing sessionVersion or stamping revocation.
+
+All27 new frozen PUBLIC synthetic controls pass on Windows Node24.18.0 under
+60s wall/30 userCPU seconds/1GiB Windows Job commit/two CPUs/one active process.
+Exact prior8a35 passes15/fails12 as frozen beforehand; zero skips/cancellations.
+Baseline/candidate took1.437/1.438s; original process handles signalled. Focused
+semantics pass with zero diagnostics before the controls. No OS network-isolation,
+Linux/ORM/runtime or universal descendant-absence claim. Saved source review
+passes4078 checks: freshly rehashed2956 selected proofs, current337/22 owner docs,
+separate unchanged compatibility5 and original334. Only registry changes among
+prior336; the new suite is337th input. One loaded dependency matches the retained
+graph without rewalk. All2222 owner docs and1446 root docs/evidence were read.
+Five owner domain docs preserve their original bytes by insertion.
+
+Existing AUTOMATIC PR39522234363/push39522226944 both pass all12 steps: pinned
+Linux locked build, unchanged lint, whole-source types,1357 units including all27
+new controls, eight original pristine/mutant pairs, eight integration/process
+controls and finite compiled Pods smoke. Tool-decoded logs and exact steps are
+saved/reviewed; no raw log archive download is claimed. Workflow f8b7ec07 is
+unchanged. No manualdispatch/replay/workflowchange. All FIVE older successful CI
+scopes and historical failures/cancellation remain separate; overallCIQualified
+staysfalse. Initial compact saved-log inspection hit Windows default decoder
+refusal; explicit UTF-8 corrected only that reader. Refusal retained, without
+source/log/control mutation or workload replay. The saved CI reviewer already
+uses explicit UTF-8. This concrete source task is COMPLETE/REVIEWED.
+
+No local oldsuite/private-native/recovery/operatorDB, packaging/build/server,
+graphwalk/scan/image/preload, promotion or production operation occurs. Hosted
+synthetic qualification grants no new local execution or actual native/AT/
+security/performance/schema/effectiveRBAC/admission/recovery/data acceptance.
+RootdocsLOCAL; four new/prior32/earlierone findings, all44 clauses/failures and
+all original delivery gates remain. Full goal ACTIVE/no budget. PRD deployment
+AND actual verification remain FINAL REQUIRED after every preceding gate.
+
+
 ## Identity metadata-list release authority source checkpoint - 2026-10-20 (Toronto)
 
 Application8a35d493 rechecks current account/session after the deferred identity
