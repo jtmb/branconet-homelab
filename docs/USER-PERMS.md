@@ -1,5 +1,41 @@
 # BORTUS user permissions
 
+## Historical human route source qualification (2026-10-21)
+
+The exact historical-value GET and single-version DELETE routes pass NEW frozen
+PUBLIC `tests/kv-history-route-source.test.ts`:41leaf controls,43Node tests with
+two parents, zero fail/skip/cancel. No defect or production change is established.
+GET forwards exact actor/path/parsed version and raw results without request
+access. DELETE delegates `nativeDestroy.omit({versions:true})` and the exact
+request to kvBody, spreads the returned model without mutating it, then replaces
+versions with the parsed route version and forwards the captured signal.
+GET constructs its engine model before parsing. DELETE constructs its engine
+model before schema/body delegation, waits for body fulfillment before parsing
+and signal access, and captures route parameters before that wait. Held results,
+fresh repeated calls, getter/ordinary/rejected failures and refusal ordering pass.
+
+Wrapper, body, parser, schema, engine, registry, actor and request are inert models.
+This checks delegation only: no actual authentication/registry authority, schema
+validation, response serialization, HTTP Request/transport, credentials, SQL/ORM/
+operatorDB/backend/native, build/server/recovery/performance/production ran.
+Source ordering does not establish authority at commit or atomic delivery.
+Both finite expiry gates, deny-aware policies, qualified parameter parsers,
+kvHuman ordering, kvBody overflow correction and every original gate remain.
+
+Focused types3rootfiles/lint3files report0diagnostics. Sequential WindowsNode24.18.0
+source/types/lint finish3.297s/25.797s/29.515s; peaks198402048/693260288/411590656bytes.
+Original handles signal. Every NEW Job retains60swall/30userCPU/1GiBcommit/twoCPU/
+oneactiveprocess. Freeze559Windows/132DIRECTLinux preceded execution. Lint adapts
+dependency resolution only and retains its React notice. No performance,
+OS-network-isolation or universal-descendant claim follows. All2230prior owner/
+211root docs were checked; twelve raw additive inserts preserve prior bytes.
+No prior frozen workload was replayed. GitHub Actions remains prohibited;
+historical CI is historical, overallCIQualifiedfalse. Root docs LOCAL;4+32+1
+findings unresolved. FullgoalACTIVE/no budget;44clauses/21gates/failures and FINAL
+PRD deployment AND verification after every original preceding gate remain.
+See [source evidence](implementation-evidence/kv-history-route-source-20261021.json).
+
+
 ## Parameter parser source qualification (2026-10-21)
 
 Exact `historyVersion` accepts canonical positive ASCII decimal strings up to the
