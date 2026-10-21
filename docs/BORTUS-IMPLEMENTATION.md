@@ -1,5 +1,66 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## Automation POST source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass162Node including161leaf; zero failures,
+skips or cancellations. Only the exact exported async automation POST function
+runs. Real imports/authentication/headers/body/schema/registry/engine/response
+services remain inert. Exact method capture, receivers, arguments and authentication
+await fence pass. Response/automation callees are captured before engine/body
+evaluation. Engine construction precedes awaited body/schema delegation. Original
+engine/actor/body identities reach automation; its awaited result reaches response.
+The function never reads request.signal. Exact refusal prefixes, opaque/primitive
+identities, inherited/proxy/missing properties, fresh selectors, same-handler
+interleaving and ten reentrancy stages pass. Synchronous/awaited failures reach
+the unbound error delegate once; returned response promise rejections bypass catch.
+Synthetic headers establish no actual authentication. No production defect/change.
+
+Focused types2roots/zero diagnostics;lint2files/zero errors/warnings. Source0.922s/
+81182720peak bytes;types7.828s/616730624peak;lint31.375s/284647424peak. Exact9280
+declaration contents/1359snapshot reads/fallback0 and37428DIRECTLinux dependencies
+match before/after. All3main handles signalled;activeBeforeDrain0all; explicit
+termination/drain0all. TotalProcesses2 cause UNESTABLISHED;one ACTIVE cap unchanged.
+WindowsNode24.18.0 sequential Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/one
+ACTIVE/kill-on-close. Module-type/dependency-only React notices remain separate.
+No OS-network-isolation/universal-descendant/performance/independent-person claim.
+No actual values/body parsing/schema/credentials/HTTP/authentication/registry/
+legacy/native/SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/
+CAS or frozen replay. GitHubActionsPROHIBITED;historicalCIhistorical;
+overallCIQualified=false. RootdocsLOCAL;4+32+1findings unresolved;fullgoalACTIVE/
+no budget. All44clauses/21gates/fixtures/failures persist;PRDdeploymentANDverification
+is FINAL after all original preceding gates. New incoming acceptance and parent
+match passed first execution; earlier failures/read truncations stay retained.
+
+
+## Automation POST source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only the exact exported async POST in
+api/kv/automation. Imports and all actual services remain inert. The source first
+creates a registry and captures receiver-bound authenticateIdentity before reading
+request.headers.get("authorization") with its headers receiver. Authentication is
+awaited before engine construction. The outer response and automation callees are
+captured before engine construction and the awaited body/schema delegate; exact
+engine/actor/body identities reach runAutomation. No request.signal is read here.
+Synchronous/awaited failures reach the unbound error delegate; returned response
+promise rejections bypass that catch. Controls cover refusal prefixes, opaque and
+primitive identities, inherited/proxy properties, fresh calls, interleaving and
+ten reentrancy stages. Synthetic headers do not authenticate real credentials.
+No production defect/change is established. SOURCE/types/lint UNEXECUTED.
+
+New sequential Windows Node24.18.0 Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/
+one ACTIVE/kill-on-close, main-handle observation and explicit termination/drain.
+No OS-network-isolation/universal-descendant/performance/independent-person claim.
+No actual values/body parsing/schema/credentials/HTTP/authentication/registry/
+legacy/native/SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/
+CAS or frozen replay. GitHub Actions PROHIBITED;historical CI historical;
+overallCIQualified=false. All44clauses/21gates/fixtures/failures remain. Root docs
+LOCAL;4+32+1findings unresolved;fullgoal ACTIVE/no budget. FINAL PRD deployment
+AND verification require all original preceding gates. New incoming acceptance
+passed first execution12187;independent parent match12411. Prior failures persist.
+Startup metadata/doc output truncation and missing root KV-design stat retained;
+actual owner domain/source/helper reads are distinct. All old helpers stay frozen.
+
+
 ## Human history-GC commit POST source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass93Node including92leaf, zero failures/skips/
