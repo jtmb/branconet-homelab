@@ -1,5 +1,34 @@
 # BORTUS Secrets Engine
 
+## Ordinary current finite-expiry source checkpoint - 2026-10-20 (Toronto)
+
+Applicationa2b2668a adds only a finite-expiry predicate to ordinary current(actor).
+NEW frozen39 PUBLIC source controls pass39leaf/Node40; exacteb7f baseline passes
+35leaf and fails exactly4 predicted invalid-Date/positive-Infinity assertions
+(Node35pass/5fail including parent). Human readonly behavior, role-only restoration
+without session/revocation stamping, explicit client and both deny-aware policy
+sets remain. Source inverse removes only the predicate; selected SQL/bindings,
+selected final gate, authorize/policy/route source and schema remain unchanged.
+Sequential reads are still sequential. No atomicity or ORM decoding claim follows.
+
+Focused TypeScript2rootfiles/lint2files report0diagnostics. WindowsNode24.18.0
+checks retain60swall/30userCPU/1GiBJobcommit/twoCPU/oneactiveprocess. Baseline/
+candidate1.328s/1.250s; original handles signalled. No universal descendant or
+OS network isolation claim. Saved review10792checks rehashes5830retained proofs,
+363Windows/132directLinux execution pins and2222owner docs/six additive inverses.
+One UTF8-only doc-reader refusal remains; separate BOM-aware review changes no
+source/proof/receipt or workload. App checkpoint pushed with Actions disabled;
+tracking/live equal local. Charts unchanged, draft PRs unmerged, rootdocsLOCAL.
+
+Concrete task COMPLETE/REVIEWED; review is not independent-person acceptance.
+Fullgoal ACTIVE/no budget. GitHub Actions PROHIBITED;13successful CI scopes remain
+historical only. No new SQL/ORM/operatorDB/HTTP/native/build/server/recovery/
+performance/security/actualAT/populatedschema/effectiveRBAC/admission/data/image
+or production acceptance. Rootfour/prior32/earlierone findings and all44clauses/
+21gates/frozenfixtures/failures remain. FINAL PRD deployment AND actual verification
+remain REQUIRED after all preceding gates. Next caller-source feature not begun.
+
+
 ## Selected-path local SQL transport checkpoint - 2026-10-20 (Toronto)
 
 Applicationeb7f77d1 qualifies the selected account/identity statement using NEW
