@@ -1,5 +1,46 @@
 # BORTUS application deployment
 
+## Human current-value POST/PUT source qualification (2026-10-21)
+
+The exact data-route POST and PUT callbacks pass NEW frozen PUBLIC
+`tests/kv-current-value-write-route-source.test.ts`:112leaf controls,114Node tests
+including two parents, zero failures/skips/cancellations. No defect or production
+change is established. Four exact inert wrapper results retain GET/PUT/DELETE
+default status, POST201 and nodejs/force-dynamic exports. Only POST/PUT callbacks
+execute. GET/DELETE operations and actual body/schema implementations never run.
+Each callback destructures id before kvEngine, passes the exact original registry,
+captures create/change before body delegation/awaiting, passes exactly request and
+dataChange to the body model, and calls the captured method with its original
+engine receiver and exactly actor/id/resolved body. Getter/refusal ordering,
+nullish/noncallable refusal timing, inherited properties, held/fresh/interleaved
+bodies/results and resolved identities pass. Async adoption never claims raw
+promise identity. Request/registry/actor/schema/value properties remain untouched
+apart from the modeled body/result Promise protocol.
+
+All imports are inert models. These SOURCE controls establish no actual values,
+body parsing/schema validation/HTTP/authentication/registry authority/credentials/
+native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/production or
+atomic delivery. All qualified routes/parsers/kvHuman ordering, both finite expiry
+gates, deny-aware policies and kvBody overflow correction remain. No prior frozen
+helper/control is replayed. GitHub Actions PROHIBITED; historical CI historical;
+overallCIQualifiedfalse.
+
+Focused types2rootfiles and lint2files report zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint finish3.906/29.250/34.735s;
+peak Job commitments are223825920/695783424/423178240bytes.
+Original handles signal. Each NEW Job retains60swall/30userCPU/1GiBcommit/twoCPU/
+oneactiveprocess. Freeze692Windows/132DIRECTLinux precedes execution; lint adapts
+dependency resolution only and retains its React notice. No OS-network-isolation,
+universal-descendant or performance claim follows. All2237prior owner/220root docs
+were checked; twelve raw prepared/final doc inverses preserve prior bytes. Review
+is not independent person acceptance. Root docs LOCAL;4+32+1 findings unresolved.
+Fullgoal ACTIVE/no token budget;44clauses/21gates/failures remain. FINAL PRD
+deployment AND actual verification follow every original preceding security/
+performance/actualAT/compatible independent recovery/fresh backup after quiescence/
+schema/effective RBAC/admission/data gate. No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-current-value-write-route-source-20261021.json).
+
+
 ## Human current-value GET source qualification (2026-10-21)
 
 The exact data-route GET callback passes NEW frozen PUBLIC
