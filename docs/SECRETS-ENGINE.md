@@ -1,5 +1,74 @@
 # BORTUS Secrets Engine
 
+## Guarded requirement source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass58 Node tests including57 leaf; zero
+failures/skips/cancellations. Only exact exported synchronous requireGuarded runs
+with synthetic configuration and an inert error constructor. One guardedAdoption
+property read precedes Boolean conversion, fixed403 refusal or undefined return.
+Exact receiver/traps, refusal identities/newTarget, no coercion/promise consumption,
+fresh and reentrant calls pass. Out-of-contract truthy inputs characterize JS only;
+actual config/engine/credentials/native services remain inert. No defect or
+production change established; flag success is not external RBAC/admission proof.
+
+V1 source passed58 but FIRST types failed TS2378 at a test-only throwing getter.
+V1 results/helpers remain frozen, never rerun; V1 lint UNEXECUTED. DISTINCT V2 adds
+an explicit return before assert.fail and passes FIRST source/types/lint. Focused
+types2 roots/zero diagnostics; lint2 files/zero errors/warnings. Exact9280 RAW
+declaration contents/1022 snapshot reads/fallback0;37428 DIRECT Linux dependency
+hashes match before/after. Source1.000s/79581184 peak bytes; types6.047s/490688512;
+lint41.313s/285175808. All main handles signalled; activeBeforeDrain0 ALL and
+explicitDrain0 ALL. TotalProcesses2 cause UNESTABLISHED. Sequential Windows
+Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/twoCPUs/one ACTIVE/kill-on-close.
+Module-type/dependency React notices remain separate. No OS network isolation/
+universal descendant/performance/independent-person claim. No HTTP/auth/native/
+SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/CAS/frozen replay.
+
+GitHub Actions PROHIBITED; historical CI only;overallCIQualified=false. Root docs
+LOCAL;4+32+1 findings unresolved;full goal ACTIVE/no budget. All44 clauses/21 gates,
+fixtures/failures and FINAL PRD deployment AND verification after all original gates
+remain. Incoming FIRST16249 and independent predecessor FIRST16108 passed; immutable
+receipt unchanged; startup exceptions and prior histories remain separate. See
+application owner implementation-evidence/kv-require-guarded-source-20261021.json.
+
+
+## Guarded requirement test type correction (2026-10-21)
+
+V1 SOURCE passed58 Node tests including57 leaf, but FIRST focused types failed
+TS2378 at the test-only throwing inherited getter: assert.fail needed an explicit
+return expression. The complete V1 snapshot/results/helpers stay frozen, never
+rerun; V1 lint stays UNEXECUTED. DISTINCT V2 adds return before that assert.fail,
+without changing the runtime expectation or production source. Its NEW source/
+types/lint controls are UNEXECUTED and freeze before first execution. No production
+defect/change or actual configuration/engine/native/HTTP/SQL/ORM/runtime/recovery/
+performance qualification follows. All original boundaries and failures remain.
+
+
+## Guarded requirement source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported synchronous
+requireGuarded(config: KvConfig) in src/lib/kv-contract.ts. Source-derived order
+is one flag property read, ordinary Boolean conversion, then fixed403 error
+construction/throw on falsey or undefined return on truthy. Synthetic arguments
+and an inert error constructor cover refusal/return, exact read/receiver/traps,
+thrown identities, fresh/reentrant calls and absent coercion/promise consumption.
+Out-of-contract truthy values characterize JavaScript only; actual configuration
+validation and external guarded-mode prerequisites are not qualified. No defect
+or production change established. NEW SOURCE/types/lint are UNEXECUTED and freeze
+before one-run execution. Actual config/engine/credentials/native services inert.
+
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/two
+CPUs/one ACTIVE/kill-on-close, main-handle observation and explicit drain. No OS
+network isolation/universal descendant/performance/independent-person claim.
+No HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/production/
+grants/CAS/frozen replay. GitHub Actions PROHIBITED; historical CI only;
+overallCIQualified=false. Root docs LOCAL;4+32+1 findings unresolved; full goal
+ACTIVE/no budget. All44 clauses/21 gates, fixtures/failures and FINAL PRD deployment
+AND verification after all original gates remain. Incoming FIRST16249, independent
+predecessor FIRST16108; immutable receipt unchanged; all startup read exceptions
+and prior failures retained separately. No uninterrupted reader chain claimed.
+
+
 ## KV configuration source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass230 Node tests including229 leaf; zero
