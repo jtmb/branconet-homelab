@@ -1,5 +1,46 @@
 # BORTUS user permissions
 
+## Human operation-resolution GET source qualification (2026-10-21)
+
+The exact operation-resolution GET callback passes NEW frozen PUBLIC
+`tests/kv-operation-route-source.test.ts`:93 leaf controls,94 Node tests
+including one parent, zero failures/skips/cancellations. Only selected GET
+executes; actual imported kvHuman/kvEngine/registry/engine/resolve implementations
+remain inert. No defect or production change is established. Nodejs/force-dynamic
+and exact default-status GET wrapper pass. Destructure the fourth argument id
+at callback entry before any kvEngine lookup or call; inherited/getter/missing-id
+behavior remains and nullish fourth arguments refuse before engine access.
+Capture kvEngine and invoke it with exactly original registry; capture resolve
+from the returned engine and invoke it with original engine receiver and exactly
+actor/captured id. Request remains unread; no body/schema/constructor/consumer
+call. Getter/refusal order, inherited/nullish/noncallable cases, fresh/interleaved
+calls/results and adopted resolved identities pass. Async adoption does not
+establish raw promise identity or HTTP/API acceptance.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations3.234/24.297/28.656s; Job peak commitments
+236560384/683462656/447881216bytes. All original handles signalled. Each NEW Job retains
+60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze964Windows/132DIRECTLinux
+precedes execution. All2252prior owner/235root docs were checked.
+All29 prepared snapshots and raw doc inverses remain, including both historical
+type inverses and both raw assertion inverses/failures. No completed control or
+frozen helper was replayed. Review is not independent-person acceptance.
+No OS-network-isolation/universal-descendant/performance claim. Lint adapts
+dependency resolution only and retains its React notice.
+
+No actual values/parsing/schema/credentials/import/export/HTTP/authentication/
+registry/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/
+production qualification. All qualified routes/parsers/kvHuman ordering, both
+finite expiry gates, deny-aware policies, kvBody overflow correction and all
+44clauses/21gates/failures remain. GitHub Actions PROHIBITED; historical CI
+historical;overallCIQualifiedfalse. Root docs LOCAL;4+32+1findings unresolved.
+Fullgoal ACTIVE/no token budget. FINAL PRD deployment AND actual verification
+follow all original preceding security/performance/actualAT/compatible independent
+recovery/fresh backup AFTER quiescence/schema/effectiveRBAC/admission/data gates.
+No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-operation-route-source-20261021.json).
+
+
 ## Human rotation consumer reload POST source qualification (2026-10-21)
 
 The exact consumer reload POST callback passes NEW frozen PUBLIC
