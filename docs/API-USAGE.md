@@ -1,5 +1,74 @@
 # BORTUS API usage
 
+## Shared metadata-query classifier source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass107/107,zero fail/skip/cancel. Only exact
+isSharedMetadataQuery executes with synthetic URL metadata and inert immediate
+builtin/dependency bindings. KV classification is an inert stub; neighboring
+exports/configuration/engine/credentials/native services never execute. Source-
+derived raw prefix/construction/caught decoding/KV delegation/route allowlist/
+private segment/exact key exclusions pass. Encoded paths, URL normalization,
+case/segment boundaries, query/fragment classification and fresh delegation pass.
+Classification is not authorization or server-side validation; constructor and
+other faults outside the decode catch characterize JavaScript only. No supported
+production defect/change established. Current feature TESTS/DOCS ONLY.
+
+FIRST V2 source/types/lint pass:2 roots/0 diagnostics;2 files/0 errors or warnings.
+Fresh9280 compiler inputs/191 snapshot reads/fallback0;37428 DIRECT Linux dependency
+hashes match before/after;415 new execution bindings unchanged. Source1.031s/
+96866304 peak bytes;types4.718s/426979328;lint38.297s/277868544. All main handles
+signalled;activeBeforeDrain[1,0,0],explicit drain0 ALL. TotalProcesses2 cause
+UNESTABLISHED. Source module-type and lint React notices remain visible. FIRST V1
+preparation exited1 before any helper/control execution: snapshot filter omitted
+JSON metadata. First payload not persisted;no exact first-count claim. Distinct V2
+corrects that filter;source/test bytes same. Failed V1 preparer/snapshots frozen.
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s user CPU/1GiB commit/two CPUs/
+one ACTIVE/kill-on-close. No OS network isolation/universal descendant/performance/
+independent-person claim. No HTTP/auth/native/SQL/ORM/operatorDB/backend/build/
+server/recovery/performance/production/grants/CAS or frozen replay.
+
+Startup FIRST25907 passed22300 ordered proofs,408/85/compat5/separateOriginal334,
+same84root8/36 inverses/2539 otherdocs. Parent schema-first FIRST22373 plus86 direct
+binding checks passed;receipt unchanged before edits. FrozenFINAL281/ref histories,
+all failures and explicit read/display exceptions remain separate. GitHub Actions
+PROHIBITED;historical CI only;overallCIQualified=false. Root docs LOCAL;4+32+1
+findings unresolved. Full goal ACTIVE/no budget;all44 clauses/21 gates/fixtures/
+failures and FINAL PRD deployment AND verification after ALL gates remain.
+See implementation-evidence/shared-metadata-query-source-20261021.json.
+
+
+## Shared metadata-query classifier source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only isSharedMetadataQuery from
+src/lib/metadata-query.ts. Source order was recorded before controls: raw prefix,
+URL construction, caught pathname decoding, immediate inert KV delegation,
+cluster/Flux prefixes or exact route list, private segment regex, then exact
+Secret key/deployment jobId exclusions. Synthetic URL metadata and immediate
+builtin/dependency faults only; no application module or neighboring export runs.
+Classification is not authorization or server-side parameter validation. No
+supported production defect/change established. New source/types/lint UNEXECUTED.
+FIRST V1 preparation exited1 before helper/control execution: its declaration-only
+filter omitted JSON metadata required by the9280-entry compiler input snapshot.
+Its first payload was not persisted; no exact first-count claim. Separate direct
+metadata confirmed37428files and current9280input schema includes declarations
+and JSON. Distinct V2 corrects that preparation filter only;source/test bytes same.
+Failed V1 preparer/snapshots and all historical helpers remain frozen;no replay.
+
+Startup FIRST25907 verified22300 ordered proofs:21245 incoming finished before1055
+current,408/85/compat5/separateOriginal334,same84root8/36 inverses/2539 otherdocs.
+Parent schema-first matcher FIRST22373 passed plus86 direct binding checks. Receipt
+immutable before edits. Fresh282/282/21 refs retain exact frozenFINAL281 sets and
+one new chat capture separately;zero missing/changed existing refs. Display/read
+exceptions remain explicit; no full-read or uninterrupted-chain claim.
+Windows Node24.18.0 Jobs retain60s wall/30s user CPU/1GiB commit/two CPUs/one active/
+kill-on-close and explicit drain. No OS network isolation/universal descendant/
+performance/independent-person claim. No HTTP/auth/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/performance/production/grants/CAS or frozen replay.
+GitHub Actions PROHIBITED; historical CI only;overallCIQualified=false. Root docs
+LOCAL;4+32+1 findings unresolved. Full goal ACTIVE/no budget;all44 clauses/21 gates/
+fixtures/failures and FINAL PRD deployment AND verification after ALL gates remain.
+
+
 ## KV metadata-query classifier source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass92/92 with zero failures/skips/cancellations.
