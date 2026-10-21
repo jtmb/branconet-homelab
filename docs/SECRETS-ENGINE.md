@@ -1,5 +1,48 @@
 # BORTUS Secrets Engine
 
+## Human import preview POST source qualification (2026-10-21)
+
+The exact import preview POST callback passes NEW frozen PUBLIC
+`tests/kv-import-preview-route-source.test.ts`:122 leaf controls,123 Node tests including
+one parent, zero failures/skips/cancellations. All dependencies are inert models;
+actual kvHuman/kvBody/importPreviewSchema/KvTransfer/registry/engine implementations
+never execute. No defect or production change is established. The nodejs export
+and exact default-status wrapper pass. The callback captures KvTransfer before
+kvEngine(original registry), reads original request.signal before constructing
+with exactly engine/signal, captures preview from the constructed result before
+body delegation, then reads kvBody/importPreviewSchema/KV_TRANSFER_BYTES in order,
+computes exactly KV_TRANSFER_BYTES+65536 and awaits exact request/schema/limit
+delegation. It then reads resolved input.bundle and invokes captured preview with
+the original transfer receiver and exactly actor/bundle. Getter/construction/arithmetic/bundle/
+refusal order, inherited/nullish/noncallable cases, held/fresh/interleaved inputs/
+results/signals and adopted resolved identities pass. No raw promise identity
+claim.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations11.969/28.610/39.125s; Job peak commitments
+232857600/699678720/434728960bytes. All original process handles signalled. Each NEW Job retains60swall/
+30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze818Windows/132DIRECTLinux precedes
+execution; the122source controls never replayed. All2245prior owner/228root docs
+were checked. Prior raw bytes and twenty prepared execution snapshots remain
+verifiable through raw doc inverses and both historical suite type inverses.
+Review is not independent-person acceptance. No OS-network-isolation,
+universal-descendant or performance claim follows. Lint adapts dependency
+resolution only and retains its React notice.
+
+SOURCE qualification establishes no actual values/parsing/schema validation/
+import bundles/export bundles/HTTP/authentication/credentials/registry authority/native/SQL/ORM/
+operatorDB/backend/build/server/recovery/performance/production/atomic delivery.
+All qualified routes/parsers/kvHuman ordering, both finite expiry gates,
+deny-aware policies and kvBody overflow correction remain. All44clauses/21gates/
+failures remain. GitHub Actions PROHIBITED; historical CI historical;
+overallCIQualifiedfalse. Root docs LOCAL;4+32+1findings unresolved. Fullgoal
+ACTIVE/no token budget. FINAL PRD deployment AND actual verification follow all
+original preceding security/performance/actualAT/compatible independent recovery/
+fresh backup after quiescence/schema/effective RBAC/admission/data gates.
+No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-import-preview-route-source-20261021.json).
+
+
 ## Human export POST source qualification (2026-10-21)
 
 The exact export POST callback passes NEW frozen PUBLIC
