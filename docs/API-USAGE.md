@@ -1,5 +1,41 @@
 # BORTUS API usage
 
+## Automation dispatcher source qualification (2026-10-21)
+
+Exact runAutomation already refuses a missing/empty identity before engine,
+registry or rotation calls and forwards each of its15 accepted operations to
+the intended method with exact actor/input/reference arguments. No defect or
+production patch is established. NEW frozen PUBLIC tests/kv-automation-dispatcher.test.ts
+passes52leaf controls (Node53including parent, zero fail/skip/cancel). It covers
+identity refusal for every operation, exact argument/result identity including
+omitted read version, pending/rejected downstream results, and delete lookup
+pending/match/mismatch/rejection/throw ordering. These are dispatcher-source
+controls; schema, error, registry, engine and rotation implementations are inert.
+They do not qualify authentication, schema validation or native operations.
+
+Focused types2rootfiles and lint2files report0diagnostics. Lint adapts dependency
+resolution only and retains its React-detection environment notice. Sequential
+WindowsNode24.18.0 source/types/lint finish1.828s/24.453s/29.797s, with peak Job
+commit239747072/645599232/383746048bytes. Each new Job retains60swall/30userCPU/
+1GiBcommit/twoCPU/oneactiveprocess; original process handles signal. These are
+finite check timings, without performance, universal descendant-absence or OS
+network-isolation claims. A freeze preparer first refused a wrong manifest field;
+its bytes/failure remain frozen and a separate corrected version froze inputs
+before workload execution. No previous suite or helper was replayed.
+
+All2225prior owner docs and206root docs were checked for affected content; six
+owner and six root additions preserve prior raw bytes by exact inverse. No actual
+HTTP/credential/SQL/ORM/native/build/server/recovery/performance/production ran.
+Both finite expiry gates, deny-aware policies, prior assertions and all44clauses/
+21gates/frozen failures remain. Root4+32+1 findings remain unresolved. GitHub
+Actions is prohibited; historical CI is historical and overallCIQualifiedfalse.
+No current image/security/actual AT/populated schema/effective RBAC/admission/
+data/compatible independent recovery/rollback or live acceptance follows.
+Fullgoal ACTIVE/no budget. FINAL PRD deployment AND actual verification remain
+required after all preceding gates.
+See [source evidence](implementation-evidence/automation-dispatcher-source-20261021.json).
+
+
 ## Automation entry route source qualification (2026-10-20)
 
 Exact POST /api/kv/automation already awaits authenticateIdentity before engine
