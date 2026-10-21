@@ -289,6 +289,7 @@ export class KvRegistry {
   async listPolicies(actor: KvActor, cursor?: string) {
     await this.admin(actor);
     const rows = await this.db.kvPolicy.findMany({ where: cursor ? { id: { gt: cursor } } : {}, orderBy: { id: "asc" }, take: 101 });
+    await this.admin(actor);
     return { items: rows.slice(0, 100).map(p => ({ ...p, actions: parseActions(p.actions) })), nextCursor: rows.length > 100 ? rows[99].id : null };
   }
 

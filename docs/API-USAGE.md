@@ -1,5 +1,27 @@
 # BORTUS API usage
 
+## Policy metadata-list release authority (2026-10-20)
+
+`GET /api/kv/policies` rechecks fresh human engine administration after the
+awaited policy query and before returning metadata, including empty pages.
+An absent/deleted account or changed session refuses401; withdrawal of write
+role or engineAdmin refuses403. The initial administrator check and automation
+denial remain. Role-only demotion does not stamp revocation or increment
+sessionVersion; restored administration can permit a later request.
+
+The existing ascending ID cursor,101-row fetch/100-row response, policy metadata
+and parsed actions remain unchanged. No policy authorization, mutation, schema,
+token or cache/retry change is introduced. All27 new frozen PUBLIC synthetic deferred source controls pass; exact prior8a35
+passes15/fails12 as frozen before execution. Focused semantics have zero diagnostics.
+Both control runs used60s wall/30 userCPU seconds/1GiB Windows Job commit/twoCPUs/
+one active process; original process handles signalled. No old-suite replay or
+OS network-isolation/Linux/ORM claim. Automatic hosted CI remains separately due.
+No ORM/runtime/native/security/
+performance/actual AT/recovery or deployment acceptance is established here.
+All original failures and delivery gates remain. PRD deployment and actual
+verification remain the final required phase.
+
+
 ## Identity metadata-list release authority (2026-10-20)
 
 `GET /api/kv/identities` now rechecks the current account and session after its
