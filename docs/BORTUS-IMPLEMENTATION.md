@@ -1,5 +1,83 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## KV metadata-query classifier source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass92/92 with zero failures/skips/cancellations.
+Only exact synchronous isKvMetadataQuery executes, with synthetic URL metadata and
+immediate builtin bindings. No application module import or configuration/engine/
+credential/native/neighbor execution. Source-derived prefix/construction/path/hash/
+collection/detail order and shortcircuits pass. Named query keys must occur once;
+UUID detail/status/capabilities/versions routes accept no query entries. Normalized
+alternate paths, private operations/value routes and unknown query keys refuse.
+Empty query/fragment delimiters and arbitrary allowed parameter text are classifier
+behavior only. This does not establish authorization or server-side validation.
+Synthetic getter/iterator/builtin faults characterize JavaScript only. No supported
+production defect or production change established. Current feature TESTS/DOCS ONLY.
+
+Distinct V2 FIRST source/types/lint pass:2 roots/0 diagnostics;2 files/0 errors or
+warnings. Fresh9280 declarations/191 snapshot reads/fallback0;37428 DIRECT Linux
+dependency hashes match before/after;3282 frozen execution bindings unchanged.
+Source1.172s/92930048 peak bytes;types5.500s/428097536;lint35.094s/279736320.
+Main handles signalled;activeBeforeDrain[0,0,1],explicit drain0 ALL. TotalProcesses2
+cause UNESTABLISHED. Module-type/experimental-strip/lint React notices stay visible.
+V1 launcher exit1 used a nonexistent doubled-prefix filename before any control;
+failed helper/logs and V1 unexecuted types/lint remain frozen. V2 corrects only that
+command filename; production/test/assertion bytes identical. No completed-control
+replay. Sequential Windows Node24.18.0 Jobs retain60s wall/30s user CPU/1GiB commit/
+two CPUs/one ACTIVE/kill-on-close. No OS network isolation/universal descendant/
+performance/independent-person claim. No HTTP/auth/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/performance/production/grants/CAS or frozen replay.
+
+Startup FIRST24799 passed21245 ordered proofs,407/84/compat5/separateOriginal334,
+same83root8/24 ordered inverses/2537 other docs. Independent predecessor FIRST42747
+passed after schema inspection; immutable receipt unchanged. All historical failures,
+inventories and explicit display/read exceptions remain separate. Root docs LOCAL;
+4+32+1 findings unresolved. GitHub Actions PROHIBITED;historicalCIonly;
+overallCIQualified=false. Full goal ACTIVE/no budget;all44 clauses/21 gates/fixtures/
+failures and FINAL PRD deployment AND verification after ALL original gates remain.
+See application implementation-evidence/kv-metadata-query-source-20261021.json.
+
+
+## KV metadata-query launcher preparation correction (2026-10-21)
+
+The FIRST V1 source launcher exited1 before test execution because its copied
+command named nonexistent kv-kv-metadata-query-source.test.ts. Main handle signalled,
+explicit Job drain0;0 controls ran. The failed helper/log/result and its unexecuted
+types/lint stay frozen. A DISTINCT V2 launcher corrects only that filename; selected
+production and test/assertion bytes are identical. V2 source/types/lint UNEXECUTED
+and frozen before execution. No production defect/change or replay of completed
+controls. All existing scope, resource, publication and final-delivery gates remain.
+
+
+## KV metadata-query classifier source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exported isKvMetadataQuery from
+src/lib/kv-metadata-query.ts. Source order was recorded before controls: prefix,
+URL construction with fixed inert base, exact raw/resolved pathname comparison,
+fragment refusal, named collection key iteration and per-key uniqueness, otherwise
+exact UUID detail/status/capabilities/versions matching and no query entries.
+Synthetic URL metadata and inert immediate builtin bindings only; no application
+module import or configuration/engine/credentials/native/neighbor execution.
+Getter/iterator faults characterize JavaScript only. No supported production defect
+or production change established. New source/types/lint frozen before execution;
+currently UNEXECUTED. Empty query/fragment delimiters and arbitrary cursor text are
+classification behavior, not authorization or server-side parameter validation.
+
+Startup FIRST24799 passed: incoming20713 completed before current532=21245 unique;
+407/84/compat5/separateOriginal334/same83root8/24 ordered inverses/2537 other docs.
+Independent predecessor FIRST42747 passed after schema inspection; receipt unchanged.
+Actual281/281/21 includes one new chat capture, zero missing/changed existing refs;
+frozen FINAL280 and all historical inventories/failures stay separate. Explicit
+metadata/doc display truncations have bounded follow-up selections; no full-read claim.
+Windows Node24.18.0 Jobs retain60s wall/30s user CPU/1GiB commit/two CPUs/one active/
+kill-on-close and explicit drain. No OS network isolation/universal descendant/
+performance/independent-person claim. No HTTP/auth/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/performance/production/grants/CAS or frozen replay.
+GitHub Actions PROHIBITED; historical CI only; overallCIQualified=false. Root docs
+LOCAL;4+32+1 findings unresolved. Full goal ACTIVE/no budget; all44 clauses/21 gates/
+fixtures/failures and FINAL PRD deployment AND verification after ALL gates remain.
+
+
 ## Policy allowance source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass63/63,zero failures/skips/cancellations.
