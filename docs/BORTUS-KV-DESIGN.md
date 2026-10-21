@@ -1,5 +1,42 @@
 # Native BORTUS KV engine implementation contract
 
+## Ordinary authentication caller-source qualification (2026-10-20)
+
+`KvRegistry.authenticateIdentity(header)` already awaits ordinary `current(actor)`
+after credential-hash verification and before returning actor identifiers. Review
+and NEW frozen PUBLIC `tests/kv-authenticate-current.test.ts` confirm this caller
+delegation on unchanged production source a2b2668a. No caller defect was confirmed;
+no production patch, SQL/binding/schema/route change, transaction, lock, write,
+cache or retry was added. Sequential reads remain sequential, without atomicity
+or response-delivery guarantees.
+
+All36 new leaf controls pass (Node37 including parent, zero fail/skip/cancel).
+They cover inert presenter/hash refusals, finite/invalid-Date/Infinity/past/equal
+expiry models, fresh owner/session/identity/revocation/readonly refusals, role-only
+restoration without stamped session/revocation changes, later withdrawals without
+caching, and both deny-aware owner/token policy sets. The fixture uses no actual
+credential parser/hash or ORM/SQL/HTTP/native client. Source-row models do not
+establish database decoding, credential security or transport acceptance.
+
+Focused TypeScript2rootfiles and lint2files report zero diagnostics; lint adapts
+dependency resolution only and retains the React-detection environment notice.
+WindowsNode24.18.0 runs retain60swall/30userCPU/1GiBJobcommit/twoCPU/oneactiveprocess.
+Source/types/lint take2.485s/15.594s/27.765s, with329527296/545275904/387297280
+peak Job commit bytes; original process handles signal after exit. No universal
+descendant absence or OS network-isolation claim. All prior controls/helpers
+remain frozen and were not replayed; production source and prior assertions
+remain byte-exact. The complete2223-file owner-doc inventory was checked.
+
+This source qualification establishes no current image, SQL/ORM, native/history/
+CAS/rotation, populated-schema preservation, security, performance, actual AT,
+independent recovery/rollback, effective RBAC/admission, data or live acceptance.
+GitHub Actions is prohibited; historical CI remains historical and overall CI
+qualification is false. Root4+32+1 findings and all44clauses/21gates/frozen failures
+remain unresolved. Fullgoal ACTIVE/no budget. FINAL PRD deployment AND actual
+verification remain required after every preceding gate.
+See [source evidence](implementation-evidence/ordinary-authentication-source-20261020.json).
+
+
 ## Ordinary current finite-expiry source qualification (2026-10-20)
 
 Ordinary `KvRegistry.current(actor)` now rejects non-finite identity expiry
