@@ -1,5 +1,122 @@
 # BORTUS Secrets Engine
 
+## Human path-capabilities GET source qualification (2026-10-21)
+
+The exact async human path-capabilities GET is supported by retained NEW V1
+147passedleaf plus NEW V2 two correctedleaf pass (3Node including parent).
+V1 retains150Node/147pass/3fail:149leaf, two failures from nested hostile proxy
+targets refusing during JavaScript descriptor invariant checks. V2 corrects
+only those targets and selects only those two failed leaves;147passes are not
+replayed. Exact raw inverse recovers V1. Current public suite retains149leaf.
+No single full-current-suite or uninterrupted source/preparation pass is claimed.
+
+Only selected GET executes; actual imports stay inert. Exact nodejs/force-dynamic/
+default-status wrapper, id binding before capabilities capture, registry receiver,
+two actor/id identities, unread request/identity internals/unrelated parameters,
+refusal/getter/inheritance/proxy/noncallable semantics and fresh/reentrant/
+interleaved/adopted results are covered. No production defect/change is established.
+
+V2 types retain60diagnostics from missing host package mapping and test getter
+return syntax. V3 adds exact finite dependency mapping and explicit return of
+assert.fail in the still-unread throwing getter:two roots/zero diagnostics,
+7.563s/588128256peak bytes. V3 lint retains one undefined-rule-disable error.
+V4 removes only that comment and passes two files/zero errors/warnings,
+25.000s/282308608peak. Exact inverses recover prior suites; no passed source/type
+replay. V1 source0.891s/80826368peak; V2 source0.843s/75522048peak. V1 types/lint
+and V2 lint stay unexecuted/frozen. No uninterrupted type/lint/helper pass claim.
+
+Exact9280declaration contents/1360snapshot reads/fallback0 and37428DIRECTLinux
+dependency hashes before/after match. All six main handles signalled; sampled
+activeBeforeDrain0/0/0/1/0/0, then explicit termination/drain0 every Job.
+TotalProcesses2 cause unestablished; original one ACTIVE cap unchanged.
+WindowsNode24.18.0 sequential Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/
+one ACTIVE/kill-on-close. Node module-type and dependency-only React resolution
+notices retained separately. No OS-network-isolation/universal-descendant/
+performance/independent-person or actual runtime/acceptance qualification.
+
+No actual schema/values/credentials/HTTP/authentication/legacy/native/SQL/ORM/
+operatorDB/backend/build/server/recovery/production/grants/CAS or frozen workload
+replay. GitHub Actions PROHIBITED; historical CI historical;overallCIQualified=false.
+All original44clauses/21gates/fixtures/failures remain. Root docs LOCAL;4+32+1
+findings unresolved; fullgoal ACTIVE/no budget. FINAL PRD deployment AND verification
+follow all original preceding security/performance/actual AT/compatible independent
+recovery/fresh backup AFTER quiescence/schema/effective RBAC/admission/data gates.
+See [source evidence](implementation-evidence/kv-path-capabilities-route-source-20261021.json).
+
+
+## Human path-capabilities lint-only preparation correction (2026-10-21)
+
+V3 focused types passed zero diagnostics. V3 lint retained one error: the test
+header disabled an undefined no-explicit-any rule. NEW V4 removes only that
+comment; exact raw inverse recovers V3 and runtime/type tokens are unchanged.
+Only NEW lint will run. Passed source/type controls are not replayed. V4 lint
+is UNEXECUTED at preparation. V3 dependency-only React resolution notice remains
+separate. All original failures, limits, scope and delivery gates persist.
+
+
+## Human path-capabilities focused-type preparation correction (2026-10-21)
+
+V2 focused types retain60diagnostics: the new compiler host did not map bare
+package imports into its finite frozen dependency root; one test throwing getter
+also needed an explicit return of assert.fail for TypeScript. NEW V3 corrects
+only the host package mapping and that getter statement; the getter still throws
+if reached and remains unread in the selected controls. Exact raw inverse
+recovers V2. No production change or passed source-leaf replay occurs.
+V2 source retains3Node/two correctedleaf pass; V1 retains147passedleaf and
+two fixture failures. V1/V2 helpers and unexecuted checks stay frozen. V3
+types/lint are UNEXECUTED at preparation; all prior limits and original gates
+remain. No uninterrupted source/type/preparation qualification is claimed.
+
+
+## Human path-capabilities GET corrected proxy-source preparation (2026-10-21)
+
+Original NEW V1 source run retains150Node/147pass/3fail, including149leaf with
+147pass/two failures. The two proxy fixtures nested a hostile target proxy;
+JavaScript invariant descriptor checks on that target caused the refusals.
+This is a fixture defect, with no production defect/change established.
+V1 source/helpers are frozen; V1 types/lint remain UNEXECUTED.
+
+NEW V2 controls change only those two proxy targets to plain empty objects and
+add an explicit two-leaf selection. Exact raw inverse recovers the original
+V1 suite. Only the two failed leaves will execute; the147 passed leaves remain
+retained, never replayed. At V2 preparation source/types/lint are UNEXECUTED.
+The published suite retains all149leaf declarations with the corrected targets.
+All actual imports remain inert. Existing60swall/30userCPU/1GiB/twoCPU/one ACTIVE
+Job limits, kill-on-close/explicit drain and source-only scope remain unchanged.
+No actual schema/values/credentials/HTTP/authentication/native/SQL/ORM/operatorDB/
+backend/build/server/recovery/performance/production/grants/CAS or frozen replay.
+GitHub Actions PROHIBITED; historical CI historical;overallCIQualified=false.
+Root docs LOCAL;4+32+1 findings unresolved; fullgoal ACTIVE/no budget and all
+original44clauses/21gates/fixtures/failures retained. FINAL PRD deployment AND
+verification follow all original preceding acceptance/data/recovery gates.
+No uninterrupted source/preparation pass is claimed.
+
+
+## Human path-capabilities GET source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only the exact async GET callback in
+api/kv/paths/[id]/capabilities/route.ts. Actual imports stay inert. Fourth-argument
+id destructuring precedes registry.capabilities capture and its receiver-bound
+two-argument call with the original actor/id. Request, unrelated parameters and
+identity internals remain unread. Controls cover native parameter binding,
+refusal stops, getters/inheritance/proxies/noncallable boundaries, exact identities,
+fresh/reentrant/interleaved calls and async promise/thenable result adoption.
+No actual registry, schema, values, authentication or native operation executes.
+No production defect/change is established.
+
+At preparation source/types/lint are UNEXECUTED. NEW sequential Windows
+Node24.18.0 Jobs retain60swall/30userCPU/1GiBcommit/twoCPU/one ACTIVE,
+kill-on-close and explicit post-main termination/drain. No OS-network-isolation,
+universal-descendant, performance, runtime or independent-person claim follows.
+No actual credentials/HTTP/legacy/native/SQL/ORM/operatorDB/backend/build/server/
+recovery/production/grants/CAS or frozen workload replay. GitHub Actions remain
+PROHIBITED; historical CI historical;overallCIQualified=false. All original
+44clauses/21gates/fixtures/failures remain. Root docs LOCAL;4+32+1 findings
+unresolved; fullgoal ACTIVE/no budget. FINAL PRD deployment AND verification
+follow all original security/performance/actual AT/compatible independent recovery/
+fresh backup AFTER quiescence/schema/effective RBAC/admission/data gates.
+
+
 ## Human legacy-preview POST source qualification (2026-10-21)
 
 The exact async human legacy-preview POST callback passes NEW frozen PUBLIC

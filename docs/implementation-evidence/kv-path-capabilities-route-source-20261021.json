@@ -1,0 +1,208 @@
+{
+  "feature": "Human path-capabilities GET source",
+  "sourceBaseCommit": "358c44013bd6bc85cc2220bdcfbd73a19f56a08e",
+  "selectedFile": "k8s-rewrite/front-end/src/app/api/kv/paths/[id]/capabilities/route.ts",
+  "selectedExport": "GET",
+  "productionChanged": false,
+  "actualImportsRemainInert": true,
+  "originalV1": {
+    "nodeTests": 150,
+    "leafControls": 149,
+    "passedLeafControls": 147,
+    "failedLeafControls": 2,
+    "totalFailedIncludingParent": 3,
+    "fixtureFailure": "Nested hostile proxy targets refused during JavaScript descriptor invariant checks"
+  },
+  "correctedV2": {
+    "nodeTests": 3,
+    "leafControls": 2,
+    "passCount": 3,
+    "failCount": 0,
+    "onlyPreviouslyFailedLeavesExecuted": true,
+    "prior147PassedLeavesNeverReplayed": true
+  },
+  "currentPublicSuiteLeafDeclarations": 149,
+  "noSingleFullCurrentSuitePassClaim": true,
+  "rawInverses": {
+    "V2ToV1": "two proxy targets plus explicit failed-leaf selection",
+    "V3ToV2": "explicit return of assert.fail in still-unread throwing getter",
+    "V4ToV3": "remove undefined-rule disable comment only",
+    "allExact": true
+  },
+  "focusedTypes": {
+    "variant": 3,
+    "rootFiles": 2,
+    "diagnostics": 0,
+    "declarationContents": 9280,
+    "snapshotReads": 1360,
+    "fallbackReads": 0,
+    "priorV2Diagnostics": 60,
+    "priorV2Failure": "Missing bare-package compiler host mapping plus getter return syntax"
+  },
+  "focusedLint": {
+    "variant": 4,
+    "rootFiles": 2,
+    "errors": 0,
+    "warnings": 0,
+    "priorV3Errors": 1,
+    "priorV3Failure": "Header disabled a rule absent from this lint configuration"
+  },
+  "sourceSemantics": [
+    "unbound one-argument kvHuman wrapper; nodejs/force-dynamic",
+    "four-argument async callback; id destructuring before method capture",
+    "registry.capabilities receiver; exactly actor/id identities",
+    "refusal stops, nullish/noncallable/inherited/getter/primitive boundaries",
+    "unread request/actor/id internals/unrelated parameters",
+    "fresh/reentrant/interleaved calls and async promise/thenable adoption"
+  ],
+  "jobs": [
+    {
+      "variant": 1,
+      "mode": "source",
+      "exitCode": 1,
+      "mainHandleSignalled": true,
+      "wallSeconds": 0.8910000000032596,
+      "userCPUSeconds": 0.359375,
+      "peakJobMemoryBytes": 80826368,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 0,
+      "activeAfterDrain": 0,
+      "explicitTermination": true,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    },
+    {
+      "variant": 2,
+      "mode": "source",
+      "exitCode": 0,
+      "mainHandleSignalled": true,
+      "wallSeconds": 0.8429999999934807,
+      "userCPUSeconds": 0.3125,
+      "peakJobMemoryBytes": 75522048,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 0,
+      "activeAfterDrain": 0,
+      "explicitTermination": true,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    },
+    {
+      "variant": 2,
+      "mode": "types",
+      "exitCode": 1,
+      "mainHandleSignalled": true,
+      "wallSeconds": 3.952999999979511,
+      "userCPUSeconds": 2.90625,
+      "peakJobMemoryBytes": 429449216,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 0,
+      "activeAfterDrain": 0,
+      "explicitTermination": true,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    },
+    {
+      "variant": 3,
+      "mode": "types",
+      "exitCode": 0,
+      "mainHandleSignalled": true,
+      "wallSeconds": 7.563000000023749,
+      "userCPUSeconds": 5.65625,
+      "peakJobMemoryBytes": 588128256,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 1,
+      "activeAfterDrain": 0,
+      "explicitTermination": true,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    },
+    {
+      "variant": 3,
+      "mode": "lint",
+      "exitCode": 1,
+      "mainHandleSignalled": true,
+      "wallSeconds": 26.25,
+      "userCPUSeconds": 2.5,
+      "peakJobMemoryBytes": 284585984,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 0,
+      "activeAfterDrain": 0,
+      "explicitTermination": true,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    },
+    {
+      "variant": 4,
+      "mode": "lint",
+      "exitCode": 0,
+      "mainHandleSignalled": true,
+      "wallSeconds": 25.0,
+      "userCPUSeconds": 2.96875,
+      "peakJobMemoryBytes": 282308608,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 0,
+      "activeAfterDrain": 0,
+      "explicitTermination": true,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    }
+  ],
+  "nodeProductVersion": "24.18.0",
+  "jobTotalProcesses2Cause": "unestablished; configured one ACTIVE cap unchanged",
+  "dependencyFilesBeforeAfter": 37428,
+  "dependencyHashesDirectLinux": true,
+  "allOriginalFailuresRetained": true,
+  "noUninterruptedSourceTypeLintPreparationPassClaim": true,
+  "noOSNetworkIsolationUniversalDescendantPerformanceOrActualAcceptanceClaim": true,
+  "actualSQLORMNativeHTTPAuthenticationBackendBuildServerRecoveryProductionNotExecuted": true,
+  "GitHubActionsProhibited": true,
+  "overallCIQualified": false,
+  "historicalCIEvidenceOnly": true,
+  "rootDocumentationLocal": true,
+  "findingsUnresolved": "4+32+1",
+  "fullGoalActive": true,
+  "noTokenBudget": true,
+  "finalPRDDeploymentAndVerificationStillRequired": true
+}
