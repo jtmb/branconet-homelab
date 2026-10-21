@@ -1,5 +1,38 @@
 # Migration acceptance evidence
 
+## Ordinary authentication caller-source checkpoint - 2026-10-20 (Toronto)
+
+Applicationdb07fbd3 adds NEW frozen PUBLIC caller-source controls on unchanged
+production source a2b2668a. Ordinary authenticateIdentity(header) already awaits
+current(actor) after credential-hash verification and before returning identifiers;
+no caller defect or production patch is established. All36leaf/Node37 controls
+pass with zero fail/skip/cancel: inert presenter/hash refusals, expiry/invalid-
+Date/Infinity/equality, fresh owner/session/revocation/readonly, role-only
+restoration without stamping, later withdrawals and both deny-aware policy sets.
+Credentials/database/native dependencies remain inert source stubs; no actual
+credential parser/hash/SQL/ORM/HTTP/native runs. Sequential reads remain sequential.
+
+Focused TypeScript2rootfiles and lint2files report zero diagnostics; dependency-
+resolution-only lint adaptation and React-detection notice remain. WindowsNode
+24.18.0 source/types/lint complete2.485s/15.594s/27.765s under60swall/30userCPU/
+1GiBJobcommit/twoCPU/oneactiveprocess; original handles signal after exit. No
+universal descendant absence or OS network-isolation claim. Saved review8990
+checks rehashes5881retained proofs/current347/compatibility5,383Windows/132direct
+Linux freeze pins and all2223prior owner docs plus new evidence; six raw additive
+doc inverses preserve historical bytes. No old helper/control replay. Review is
+not independent-person acceptance. App checkpoint local/tracking/live agree;
+both Actions settings read disabled BEFORE push. Charts unchanged; PR28/PR5
+draft/open/unmerged. Root documentation remains LOCAL.
+
+Concrete task COMPLETE/REVIEWED. Fullgoal ACTIVE/no budget. GitHub Actions remains
+PROHIBITED and13successful CI scopes historical only; overallCIQualifiedfalse.
+Root4+32+1 findings/all44clauses/21gates/frozen failures remain unresolved. No new
+image/security/performance/actualAT/native/history/CAS/rotation/populatedschema/
+effectiveRBAC/admission/data/compatibleindependentrecovery/rollback acceptance.
+FINAL PRD deployment AND actual verification remain REQUIRED after preceding gates.
+See [source evidence](evidence/bortus-ordinary-authentication-source-root-20261020.json).
+
+
 ## Ordinary current finite-expiry source checkpoint - 2026-10-20 (Toronto)
 
 Applicationa2b2668a adds only a finite-expiry predicate to ordinary current(actor).
