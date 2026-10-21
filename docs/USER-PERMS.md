@@ -1,5 +1,73 @@
 # BORTUS user permissions
 
+## KV configuration source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass230 Node tests including229 leaf; zero
+failures/skips/cancellations. Exact exported synchronous kvConfig alone executes
+with synthetic environment/default process binding, inert validator/errors and
+untouched actual configuration/credentials/native services/neighboring exports.
+Namespace/default forwarding, retention then maximum parsing, pair refusal before
+adoption, strict repeated reads, refusal identities/coercion, fresh/reentrant
+calls and no enumeration/writes pass. Omitted adoption reads twice; defined valid
+adoption three times. No production defect/change established.
+
+V1 remains frozen UNEXECUTED: static review found a strip-only unsupported test
+parameter property. DISTINCT V2 uses ordinary fields/assignments and passes its
+FIRST source/types/lint runs. Focused types2 roots/zero diagnostics; lint2 files/
+zero errors/warnings. Exact9280 raw declaration contents/1021 snapshot reads/
+fallback0;37428 DIRECT Linux dependencies match before/after.
+Source1.218s/85385216 peak bytes; types6.063s/494960640; lint37.046s/284979200.
+All main handles signalled; active before drain0 ALL; explicit drain0 ALL.
+TotalProcesses2 cause UNESTABLISHED. Sequential Windows Node24.18.0 Jobs retain
+60s wall/30s userCPU/1GiB commit/twoCPUs/one ACTIVE/kill-on-close. Module-type and
+dependency-only React notices remain separate. No OS network isolation/universal
+descendant/performance/independent-person claim. No actual env/config/values/
+credentials/HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/
+production/grants/CAS or frozen replay. GitHub Actions PROHIBITED; historical CI
+only;overallCIQualified=false. Root docs LOCAL;4+32+1 findings unresolved; full goal
+ACTIVE/no budget. All44 clauses/21 gates, fixtures/failures and FINAL PRD deployment
+AND verification after all original gates remain. See application owner evidence
+implementation-evidence/kv-config-source-20261021.json. Incoming acceptance FIRST
+15250; parent V2 FIRST15240. V1 parent schema failure/unchanged receipt and startup
+read exceptions remain separate; no uninterrupted reader chain is claimed.
+
+
+## KV configuration strip-types preparation correction (2026-10-21)
+
+Static pre-execution review found a test-local TypeScript parameter property,
+which Node strip-only execution does not support. V1 controls/helpers stay frozen
+and UNEXECUTED. DISTINCT V2 spells the same inert error fields as ordinary class
+fields plus assignments; production source is unchanged. V2 SOURCE/types/lint
+remain UNEXECUTED and freeze before one-run checks. No runtime failure or success
+is inferred from this preparation correction. All prior boundaries/gates persist.
+
+
+## KV configuration source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported synchronous kvConfig
+in src/lib/kv-contract.ts. Synthetic environment/default process binding, inert
+target validation and inert error constructors preserve actual configuration,
+credentials, native services and neighboring exports. Source-derived controls
+cover namespace/default forwarding, ordered retention/max parsing and refusal,
+strict repeated adoption reads, thrown identities, numeric coercion, fresh and
+reentrant calls. Default adoption is read twice; defined valid adoption three
+times. No production defect/change established. SOURCE/types/lint UNEXECUTED;
+new controls freeze before distinct one-run local execution.
+
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/two
+CPUs/one ACTIVE/kill-on-close, main-handle observation and explicit drain. No OS
+network isolation/universal descendant/performance/independent-person claim.
+No actual environment/configuration/values/credentials/HTTP/auth/native/SQL/ORM/
+operatorDB/backend/build/server/recovery/production/grants/CAS or frozen replay.
+GitHub Actions PROHIBITED;historical CI only;overallCIQualified=false. Root docs
+LOCAL;4+32+1 findings unresolved;full goal ACTIVE/no budget. All44 clauses/21 gates,
+fixtures/failures and FINAL PRD deployment AND verification after all gates persist.
+Incoming acceptance FIRST15250; independent predecessor V2 match FIRST15240. V1
+parent matcher alias-field schema failure remains separately frozen; receipt
+unchanged. Startup truncated/wrong-path reads and unexecuted pre-freeze regex
+hypothesis correction remain recorded; no uninterrupted reader chain claimed.
+
+
 ## KV engine factory source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass128 Node tests including127 leaf; zero
