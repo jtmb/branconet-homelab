@@ -1,5 +1,43 @@
 # BORTUS API usage
 
+## Human destroy POST source qualification (2026-10-21)
+
+The exact destroy POST callback passes NEW frozen PUBLIC
+`tests/kv-destroy-route-source.test.ts`:74 leaf controls,75 Node tests including
+one parent, zero failures/skips/cancellations. All imports are inert models;
+actual wrapper/body/nativeDestroy schema/registry/engine implementations never
+execute. No defect or production change is established. The nodejs export and one
+default-status wrapper retain exact identity. The callback destructures id before
+kvEngine(original registry), captures destroy before body delegation/await, passes
+exactly request/nativeDestroy, reads request.signal only after the body resolves,
+and invokes the captured method with its original engine receiver and exactly
+actor/id/resolved input/original signal. Getter and
+refusal ordering, inherited/nullish/noncallable cases, held/fresh/interleaved
+bodies/results/signals and adopted resolved identities pass. No raw promise identity claim.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations3.344/26.484/32.359s; Job peak commitments
+216236032/686243840/431992832bytes. All original handles signalled. Each NEW Job retains60swall/
+30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze755Windows/132DIRECTLinux precedes
+execution. The74source controls never replayed. All2241prior owner/224root docs
+were checked; sixteen raw execution freezes are preserved through prepared/final
+doc inverses and both historical suite type inverses. Review is not independent
+person acceptance. No OS-network-isolation, universal-descendant or performance
+claim follows. Lint adapts dependency resolution only and retains its React notice.
+
+SOURCE qualification establishes no actual values/parsing/schema validation/HTTP/
+authentication/credentials/registry authority/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/performance/production/atomic delivery. All qualified routes/
+parsers/kvHuman ordering, both finite expiry gates, deny-aware policies and kvBody
+overflow correction remain. All44clauses/21gates/failures remain. GitHub Actions
+PROHIBITED; historical CI historical;overallCIQualifiedfalse. Root docs LOCAL;
+4+32+1findings unresolved. Fullgoal ACTIVE/no token budget. FINAL PRD deployment
+AND actual verification follow all original preceding security/performance/
+actualAT/compatible independent recovery/fresh backup after quiescence/schema/
+effective RBAC/admission/data gates. No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-destroy-route-source-20261021.json).
+
+
 ## Human reconcile POST source qualification (2026-10-21)
 
 The exact reconcile POST callback passes NEW frozen PUBLIC
