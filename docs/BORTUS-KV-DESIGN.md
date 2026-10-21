@@ -1,5 +1,36 @@
 # Native BORTUS KV engine implementation contract
 
+## Selected-path GET release authority (2026-10-20)
+
+GET /api/kv/paths/[id] now repeats the current account/session and automation
+identity check after path list authorization completes and before returning its
+captured metadata. Account deletion/session-version withdrawal and invalid,
+expired, revoked or owner-mismatched automation identities refuse401. The human
+HTTP wrapper is unchanged; automation controls exercise only the lower-level GET
+callback/registry model and add no automation HTTP route. Human readonly remains
+permitted list metadata; role-only owner demotion denies automation while readonly
+and can permit a later request after repromotion without stamped revocation or a
+sessionVersion increment. Existing namespace/mapping validation, owner/token
+allow/deny and whole-segment prefix intersections, exact captured ID/revision and
+field mappings remain. There is no administration bypass, cache, retry, schema,
+token, native access or mutation change. This final check does not introduce a
+transactional policy snapshot or a new policy reread.
+
+All96 new frozen PUBLIC synthetic deferred controls pass, with no skips or
+cancellations. Exact d968 baseline passes77/fails19 as frozen before execution.
+Focused semantics have zero diagnostics. Windows Node24.18.0 uses60s wall/30
+userCPU seconds/1GiB Job commit/twoCPUs/one active process; baseline1.078s and
+candidate1.063s, with original process handles signalled. No OS network-isolation,
+Linux/ORM/runtime or universal descendant-absence claim. All4699 retained proofs,
+341 current inputs/22 owner docs, separate compatibility5/original334 and one
+loaded dependency match without graph rewalk. Automatic hosted CI is separately
+pending. Five documentation inserts preserve all original bytes. No ORM/HTTP server/operator DB/native/recovery/packaging/
+local build or production execution follows. Source models do not establish
+actual AT/security/performance/native/recovery/schema/effective RBAC/admission/data
+acceptance. All original gates remain; PRD deployment AND actual verification are
+the final required phase after the preceding original gates pass.
+
+
 ## Path capability metadata release authority (2026-10-20)
 
 The selected-path capabilities registry refuses403 when its final owner/identity
