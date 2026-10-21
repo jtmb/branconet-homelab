@@ -1,5 +1,46 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## Human policy-list GET source qualification (2026-10-21)
+
+The exact synchronous policy-list GET callback passes NEW frozen PUBLIC
+`tests/kv-policy-list-route-source.test.ts`:94 leaf controls,95 Node tests
+including one parent, zero failures/skips/cancellations. Only selected GET
+executes; actual imported kvHuman/metadataCursor/schema/registry/listPolicies
+implementations and sibling POST remain inert. No defect or production change
+is established. Nodejs/force-dynamic, default-status GET and inert POST201
+wrappers pass. Capture registry.listPolicies before metadataCursor lookup/call;
+invoke cursor with exactly original request, then captured listPolicies with
+original registry receiver and exactly actor/captured cursor. The callback
+leaves request unread and calls no body/schema/constructor/consumer. Nullish
+registry refuses before cursor lookup; noncallable listPolicies still evaluates
+cursor before invocation refuses. Inherited/getter/refusal order, nullish/
+noncallable cases, fresh/reentrant/interleaved calls and exact RAW result identity
+pass at this synchronous callback boundary only; downstream wrapper stays inert.
+
+Focused types2rootfiles and lint2files have zero diagnostics. Sequential Windows
+Node24.18.0 source/types/lint durations3.282/26.109/28.954s; Job peak commitments
+242659328/706490368/448425984bytes. All original handles signalled. Each NEW Job retains
+60swall/30userCPU/1GiBcommit/twoCPU/oneactiveprocess. Freeze982Windows/132DIRECTLinux
+precedes execution. All2253prior owner/236root docs were checked.
+All30 prepared snapshots and raw doc inverses remain, including both historical
+type inverses and both raw assertion inverses/failures. No completed control or
+frozen helper was replayed. Review is not independent-person acceptance.
+No OS-network-isolation/universal-descendant/performance claim. Lint adapts
+dependency resolution only and retains its React notice.
+
+No actual values/parsing/schema/credentials/import/export/HTTP/authentication/
+registry/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/
+production qualification. All qualified routes/parsers/kvHuman ordering, both
+finite expiry gates, deny-aware policies, kvBody overflow correction and all
+44clauses/21gates/failures remain. GitHub Actions PROHIBITED; historical CI
+historical;overallCIQualifiedfalse. Root docs LOCAL;4+32+1findings unresolved.
+Fullgoal ACTIVE/no token budget. FINAL PRD deployment AND actual verification
+follow all original preceding security/performance/actualAT/compatible independent
+recovery/fresh backup AFTER quiescence/schema/effectiveRBAC/admission/data gates.
+No current image/runtime qualification.
+See [source evidence](implementation-evidence/kv-policy-list-route-source-20261021.json).
+
+
 ## Human operation-resolution GET source qualification (2026-10-21)
 
 The exact operation-resolution GET callback passes NEW frozen PUBLIC
