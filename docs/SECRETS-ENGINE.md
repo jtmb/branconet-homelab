@@ -1,5 +1,81 @@
 # BORTUS Secrets Engine
 
+## Ansible selection pre-stage ref reconciliation (2026-10-21)
+
+FIRST pre-stage metadata V1 stopped on one missing capture TREE435c3 and one new
+checkpoint TREE7a6ab, identically in BOTHsharedinventories;zero changedrefs. Original
+stopped helper/output remain frozen. A DISTINCT DIRECT reconciliation FIRST passed
+the exact same missing/additional sets, all persistent refs/local/explicit/live/
+upstream metadata and expected dirt, with charts unchanged. CauseUNESTABLISHED;
+no ref mutation/object recreation or source/types/lint failure/replay. Accepted
+reconciled counts289/289/21 preserve FINAL288/startup289/stopped histories separately.
+Current inverse order ref-lifecycleV1FIRST/qualificationV1SECOND/preparationV1THIRD:
+39inverses/13pairs against SAMEraw94owner/root8;2558otherbaseline docs unchanged.
+Staging resumes only after this direct confirmation. All original gates,
+rootLOCAL/4+32+1unresolved/ActionsPROHIBITED/fullgoalACTIVE/no budget remain.
+
+
+## Ansible selection source qualification (2026-10-21)
+
+FIRST frozen PUBLIC SOURCE controls pass105/105,zero failures/skips/cancellations.
+Only exact exported ansibleSelection executes with synthetic PUBLIC playbook/role
+metadata and immediate Array/Set/error bindings. Supported singleton/full/reversed/
+frozen arrays, exact playbook/role spellings, duplicate/oversize refusals, default
+and result freshness, original array identity, source-derived short-circuits/read
+order and immediate failures pass. Sparse/custom/proxy/getter/coercion cases are
+JavaScript characterization only. No supported production defect/change; current
+feature TESTS/DOCS ONLY. Actual module initializers/Ansible/configuration/files/
+operator inputs/neighbors/engine/credentials/native services remain inert.
+
+FIRST types2roots/0diagnostics and lint2files/0errors/warnings pass. Fresh211
+compiler inputs only TypeScript lib/Node/undici declarations+package metadata;
+191snapshotReads/fallback0. All37428 DIRECT Linux before/after hashes and427frozen
+execution bindings match. Source1.062s/81399808peakbytes;types4.766s/288563200;
+lint35.594s/281378816. AllmainhandlesSIGNALLED;activeBeforeDrain[0,1,0],explicitdrain0
+ALL;TotalProcesses2each/causeUNESTABLISHED. Source module-format notice and lint
+React-detection notice retained separately;types stderr empty. Postexecution863
+metadata checks pass. Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close
+unchanged;noOSnetworkisolation/universaldescendant/performance/independent-person
+claim. All2569baseline docs checked;13inserts affect11docs+PLAN/status,2558otherdocs
+unchanged. QualificationV1FIRST/preparationV1SECOND restore26inverses/13pairs to
+same raw94owner/root8. Prior raw93 and earlier snapshots/inverses stay frozen.
+
+No actualHTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/provisioning/
+recovery/performance/production/grants/CAS/frozenreplay. ActionsPROHIBITED,
+historicalCIonly/overallCIfalse;rootLOCAL/4+32+1findings unresolved. FULLgoalACTIVE/
+no budget;all44clauses/21gates/fixtures/failures/rejectedactions remain. FINAL PRD
+deployment ANDverification AFTER ALL original preceding gates.
+
+
+## Ansible selection source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported ansibleSelection.
+Source order was recorded BEFORE controls: playbook equality, Array.isArray,
+roles length then supported-role length, some/type/includes, Set construction/size,
+second roles length, then immediate error or fresh result retaining the role array.
+Synthetic PUBLIC metadata and immediate Array/Set/error bindings only; module
+initializers and actual Ansible/configuration/files/operator inputs/neighbors/
+engine/credentials/native services remain inert. The105 planned controls separate
+supported inputs from malformed/proxy/sparse/builtin JavaScript characterization.
+No supported production defect established; current feature TESTS/DOCS ONLY.
+Source/types/lint UNEXECUTED pending immutable freeze and preparation review.
+
+Startup FIRST24436 ordered hashes passed24292incoming BEFORE144current;
+417inputs/94selected docs/compat5/separateOriginal334/protected3/chartsaliases/root8
+verified. Ref-lifecycle/qualification/preparation inverses36 restore12pairs against
+same raw93owner/root8;2557otherdocs match. Immutable receipt preceded owner edits.
+Parent FIRST50756 match and separate DIRECT1247 passed and released hold. Both
+startup snapshots289/289/21 preserve FINAL288 plus the same sole capture addition,
+zero missing/changedrefs and exact metadata/dirt. Earlier histories stay separate.
+
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close/explicitdrain remain.
+No actualHTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/provisioning/
+recovery/performance/production/grants/CAS/frozenreplay. ActionsPROHIBITED,
+historicalCIonly/overallCIfalse;rootLOCAL/4+32+1findings unresolved. FULLgoalACTIVE/
+no budget;all44clauses/21gates/fixtures/failures/rejectedactions remain. FINAL PRD
+deployment ANDverification AFTER ALL original preceding gates.
+
+
 ## Runtime capabilities pre-stage ref reconciliation (2026-10-21)
 
 FIRST pre-stage metadata V1 stopped on one missing capture TREE5b072 and one new
