@@ -1,5 +1,95 @@
 # BORTUS Secrets Engine
 
+## Deployment state source qualification (2026-10-21)
+
+FIRST frozen PUBLIC SOURCE controls pass102/102,zero failures/skips/cancellations.
+Only exact exported deploymentState executes with synthetic Deployment metadata/
+spec/status and inert count. Source-derived count/read order, condition callback
+short circuits, deletion/failure/pause/generation/replica priorities, captured
+outputs and template conversion pass. Actual count,neighbors,configuration,engine,
+credentials/native services remain inert. Malformed/getter/builtin/coercion cases
+characterize JavaScript only. No supported production defect/change established;
+current feature TESTS/DOCS ONLY.
+
+V1 focused types retains two TS2378 getter diagnostics. Two explicit return
+statements before the same throwing assert.fail calls correct test typing only;
+exact byte continuity is retained, with no case/expectation/production change or
+source-control replay. DISTINCT V2 first types/lint pass:2 roots/0diagnostics;
+2files/0errors/warnings. Fresh9280 compiler inputs/192snapshot reads/fallback0;
+37428 DIRECT Linux dependency hashes match before/after. V1/V2 frozen115/10bindings
+(124unique) unchanged. Source1.125s/96382976peakbytes; failed V1types5.063s/
+424685568; V2types5.016s/424067072; V2lint32.563s/284565504. Allmainhandles signalled;
+activeBeforeDrain[1,1,1,1]/explicitdrain0ALL;TotalProcesses2each/causeUNESTABLISHED.
+Experimentalstrip/React-detection/Pages notices retained. Sequential Jobs retain
+60s wall/30s userCPU/1GiB commit/twoCPU/oneACTIVE/kill-on-close. No OS network
+isolation/universal descendant/performance/independent-person claim.
+
+Startup23868orderedproofs/413inputs/90docs/compat5/separate334/protected3/root8/
+charts aliases passed. Qualification FIRST/preparation SECOND24inverses restored
+same raw89/root8;2549 other docs unchanged. Immutable receipt before edits;
+independent parent FIRST24095+684direct checks passed. Startup286/286/21 preserves
+exact FINAL285 originals and sole newchatcapture separately. Own metadata V1
+timeout/empty exact-process snapshot, distinct V2 pass and all read/failure/ref
+histories remain separate/frozen. No full/uninterrupted-read claim. No actual
+HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/
+production/grants/CAS/frozen replay. Actions PROHIBITED;historicalCIonly;overallCI
+false. Root docsLOCAL/4+32+1unresolved;all44clauses/21gates/fixtures/failures/rejected
+actions remain. FULLgoalACTIVE/no budget;FINAL PRDdeployment ANDverification
+only AFTER ALL original preceding gates.
+
+
+## Deployment state test getter type correction (2026-10-21)
+
+FIRST frozen PUBLIC SOURCE controls pass102/102 with no failures/skips/cancellations.
+The subsequent focused type gate fails with two TS2378 diagnostics: two test-only
+poison reason getters call assert.fail without an explicit return. Both now return
+the same assert.fail call, which still throws immediately. No assertion, case,
+scope or production source changes. Exact old/new byte replacement is retained.
+V1 controls, helper, failure and all snapshots remain frozen; no source controls
+are replayed. A DISTINCT V2 frozen types/lint-only packet is prepared UNEXECUTED.
+Source V1 main handle signalled,1.125s/96382976peakbytes; types V1 exits1,main
+signalled,5.063s/424685568peakbytes. Both show activeBeforeDrain1 and explicit
+drain0;TotalProcesses2/causeUNESTABLISHED. Resource caps and all original boundaries
+remain. No universal descendant, OS network isolation, performance or runtime claim.
+FULLgoalACTIVE/no budget;root docsLOCAL/4+32+1unresolved;ActionsPROHIBITED. All44
+clauses/21gates/fixtures/failures/rejected actions and FINAL PRDdeployment AND
+verification AFTER ALL original gates remain.
+
+
+## Deployment state source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported deploymentState in
+src/lib/deployment-state.ts. Source order was recorded BEFORE controls: seven
+ordered inert count calls; fresh status/metadata/spec reads; captured conditions
+and short-circuit some callback; deletion/failure/pause/generation/replica priority;
+captured output fields and ordered ready/desired template conversion. Count and
+all neighboring exports, configuration, engine, credentials/native services remain
+inert. Synthetic malformed/getter/builtin/coercion faults characterize JavaScript
+only. No supported production defect/change established; TESTS/DOCS ONLY. New
+controls/helpers UNEXECUTED; freeze before first execution. Old helpers stay frozen.
+
+Startup23868 unique hashes passed:23738 incoming BEFORE130 current;413 inputs,
+90 selected docs/compat5/separate334/protected3/currentroot8/charts aliases verified.
+Qualification FIRST/preparation SECOND24 inverses restored same raw89/root8;
+2549 other docs unchanged. Receipt immutable before edits; independent parent
+FIRST24095 and684 direct checks passed. Startup286/286/21 retains exact FINAL285
+originals and sole new-chat capture separately. All older ref/failure/read histories
+remain separate. Own metadata rehash V1 timed out before incoming completion; its
+exact-process snapshot found none remaining. DISTINCT direct Windows/Linux V2
+passed; no old helper/control replay. Bounded/truncated/absent-path reads retained;
+no full/uninterrupted-read claim. Fresh DIRECT Linux snapshot:37428 dependency
+files/9280 compiler inputs. Raw owner90/root8 and2561 current doc bindings saved.
+
+Sequential Windows Jobs retain60s wall/30s userCPU/1GiB commit/twoCPU/oneACTIVE/
+kill-on-close/explicit drain. No OS network isolation/universal descendant/
+performance/independent-person claim. No actual HTTP/auth/native/SQL/ORM/operatorDB/
+backend/build/server/recovery/performance/production/grants/CAS/frozen replay.
+GitHub Actions PROHIBITED;historicalCIonly;overallCIQualified=false. Root docs LOCAL;
+4+32+1 findings unresolved;all44clauses/21gates/fixtures/failures/rejected actions
+preserved. FULLgoalACTIVE/no budget. FINAL PRDdeployment ANDverification only
+after ALL original preceding gates.
+
+
 ## Pod restarts source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass64/64,zero failures/skips/cancellations.
