@@ -1,5 +1,51 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## Auth logout POST source qualification (2026-10-22)
+
+All30 NEW finite PUBLIC SOURCE controls passed ONCE, zero fail/skip/cancel/todo.
+Exact unchanged POST covers success/cookie argument and receiver order, strict
+production comparison, immediate faults, ignored setter results, response identity
+and async return assimilation. Callee implementations and imported initializers
+remain OUTSIDE this declaration qualification. No supported production correction.
+Focused types2roots/0diagnostics; fresh191 compiler inputs/191snapshotReads/
+fallback0 DIRECTLinux/UNC match. Lint2files/0errors/warnings retains the React
+autodetection notice.37428 dependencies including37in-tree nondangling symlink
+files match before/after. All main handles SIGNALLED; activeBeforeDrain[0,1,0],
+explicit drain[0,0,0];TotalProcesses2each/causeUNESTABLISHED. Source1.000s/types4.843s/
+lint38.953s under unchanged60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close.
+No OS-network-isolation, universal-descendant, independent-person or performance
+claim. Executed/owner/committed test bytes must match. Tests/docs only; Windows
+raw declaration only. Actual HTTP/auth/JWT/cookies/password/Prisma/SQL/ORM/native/
+backend/build/server/recovery/performance/production stay INERT. No whole-module/
+project/Linux-checkout/runtime/security/actualAT/recovery acceptance. Frozen runs
+must not replay. See implementation-evidence/auth-logout-post-source-20261022.json
+in the application docs. Logout cookie clearing does not claim global revocation.
+All44clauses/21gates/failures/rejectedactions remain. RootLOCAL;4+32+1findings
+UNRESOLVED;ActionsPROHIBITED/historicalCIOnly/overallCIfalse;fullgoalACTIVE/no budget.
+FINAL PRD deployment AND verification follow ALL original security/performance/
+actualAT/compatible independent recovery/fresh backup AFTERquiescence/schema/
+effectiveRBAC/admission/data gates. This source checkpoint replaces none.
+
+
+## Auth logout POST source preparation (2026-10-22)
+
+Source order was recorded BEFORE new controls: create the success response,
+read its cookies/set members, evaluate the cookie name, empty value and options
+including strict NODE_ENV production comparison, call set with its receiver,
+then return the original response. There is no await/catch; setter results are
+ignored and async response-return assimilation follows the cookie call.
+NEW finite PUBLIC SOURCE controls and two synthetic type/lint roots remain
+UNEXECUTED pending review/freeze. Immediate callee implementations, imported
+module initializers, actual HTTP/auth/JWT/cookies/password/Prisma/SQL/ORM/native/
+backend/build/server/recovery/performance/production stay INERT. No supported
+production defect or correction is established. Windows raw declaration only.
+All44clauses/21gates/frozen failures/rejected actions and resource limits remain.
+Actions PROHIBITED; root LOCAL;4+32+1 findings UNRESOLVED; full goal ACTIVE/no budget.
+FINAL PRD deployment AND verification follow ALL original security/performance/
+actual AT/compatible independent recovery/fresh backup AFTER quiescence/schema/
+effective RBAC/admission/data gates. This source checkpoint replaces none.
+
+
 ## Auth session test packaging correction qualified (2026-10-22)
 
 The original86/86 SOURCE pass remains FROZEN. DISTINCT reviewed V3 passes ONLY
