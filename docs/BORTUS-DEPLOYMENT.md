@@ -1,5 +1,67 @@
 # BORTUS application deployment
 
+## getSessionFromHeaders source qualification (2026-10-22)
+
+All65 NEW finite PUBLIC SOURCE controls passed ONCE with zero failure/skip/cancel/
+todo. Only the exact async declaration and injected immediate metadata bindings
+execute. Its first exact-name capture, start/semicolon boundaries, empty-first
+duplicate refusal, unchanged capture spelling, awaited verifier, falsy-result
+refusal, payload identity forwarding and adopted current-session result/fault are
+qualified with inert metadata. Fresh decisions and concurrent-call independence
+are covered. This does not validate a real cookie/token or current account. No
+supported production defect or correction is established. Actual headers/cookies/
+tokens/signing material/credentials/keygen/crypto/sign/verify/accounts/auth/JWT/
+passwords/DB/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/
+production remain INERT; no original module/import/initializer/neighbour/transaction
+runs. Fresh focused types2roots/0diagnostics use7588declaration/package.json contents
+in76parts,191inputs/191snapshotReads/fallback0, DIRECTLinux+UNC exact via stdin.
+Lint2files/0errors/warnings retains React-autodetection/pages-path notices. All37428
+dependency records and37in-tree nondangling file symlinks are exact before/after.
+Source0.922s/types4.093s/lint34.281s; mainhandles SIGNALLED,activeBeforeDrain[0,0,1],
+drain[0,0,0],TotalProcesses2each/causeUNESTABLISHED. ExistingWindowsNode24.18.0,
+60s wall/30s userCPU/1GiB commit/twoCPU/oneACTIVE/kill-on-close remain. The logical
+output-path refusal and first metadata-reference correction failure remain separately
+retained; the distinct physical-path continuation verified output BEFORE WSL writes.
+All current and inherited helpers/workloads are now FROZEN, never replay. No OS
+network-isolation/universal-descendant/independent-person/performance/security/
+actualAT/recovery claim. Exact executed/owner/staged/committed LF test identity is
+a checkpoint gate. See implementation-evidence/get-session-from-headers-source-20261022.json.
+All44clauses/21gates/fixtures/failures/resources/rejectedactions remain; rootLOCAL/
+no push,4+32+1findings UNRESOLVED,ActionsPROHIBITED/historicalCIOnly/overallCIfalse,
+fullgoalACTIVE/no budget. FINAL PRD deployment AND verification follow ALL original
+preceding security/performance/actualAT/compatible independent recovery/fresh backup
+AFTER quiescence/schema/effectiveRBAC/admission/data gates. This replaces none.
+
+
+## getSessionFromHeaders source preparation (2026-10-22)
+
+After verified owner release, the exact declaration and immediate AUTH_COOKIE
+metadata binding were read and source order recorded BEFORE65 NEW finite PUBLIC
+SOURCE controls. Only that declaration executes in an inert shell. It extracts the
+first exact cookie-name capture, refuses falsy header/capture/verifier metadata,
+awaits the injected verifier, then forwards truthy payload identity to the injected
+current-session lookup and adopts its result. Parser spellings, empty-first duplicate
+refusal, fresh decisions, Promise ordering and fault identity are finite control
+intents, not real token or current-account qualification. No supported production
+defect or production correction is established. Actual headers/cookies/tokens,
+signing material/credentials/keygen/crypto/sign/verify/accounts/auth/JWT/passwords,
+DB/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/production
+remain INERT; no original import/module/initializer/neighbour/transaction runs.
+Source/types/lint remain UNEXECUTED until review and freeze. NEW helper sources and
+fresh declarations retain WindowsNode24.18.0,60s wall/30s userCPU/1GiB commit/twoCPU/
+oneACTIVE/kill-on-close. Physical Windows output is verified before WSL writes.
+The initial logical-path probe refused before WSL writes or app execution; a
+distinct physical-path preparation retains that failure. Its first correction
+also refused before writes because its report referenced an uncreated mapping;
+the distinct continuation corrects only that metadata reference. No workload replay.
+Every inherited helper/workload remains FROZEN. All44clauses/21gates/fixtures/
+failures/resources/rejectedactions remain; rootLOCAL/no push,4+32+1findings
+UNRESOLVED,ActionsPROHIBITED/historicalCIOnly/overallCIfalse,fullgoalACTIVE/no budget.
+FINAL PRD deployment AND verification follow ALL original security/performance/
+actualAT/compatible independent recovery/fresh backup AFTER quiescence/schema/
+effectiveRBAC/admission/data gates. Preparation closes none of those gates.
+
+
 ## ensureJwtSecret source qualification (2026-10-22)
 
 The DISTINCT scalar-argument assertion candidate passed all36 finite PUBLIC SOURCE
