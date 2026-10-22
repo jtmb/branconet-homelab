@@ -1,5 +1,44 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## Deploy history DELETE source qualification (2026-10-22)
+
+The exact unchanged exported DELETE has composite66 PUBLIC SOURCE coverage.
+V1 passed65/66; one synthetic existence Proxy rejected Promise assimilation's
+then lookup in its inert immediate binding, producing503 before the intended
+row-inspection check. DISTINCT V2 permits only that protocol lookup and passes
+ONLY the corrected1/1 control. The65 passing controls were NOT replayed. An exact
+inverse restores the complete V1 test including all65 callbacks and loader bytes.
+This is not a fresh whole-suite66/66 pass; original failure and unused V1 type/lint
+helpers stay frozen. No supported production defect/correction. TESTS/DOCS ONLY.
+
+Controls cover authorization before request access, identical denial, member/
+call/receiver/argument order, validator refusal, exact completed-only deleteMany
+predicate, one count read/truthiness, conditional findUnique existence selection,
+fixed400/404/409/503, await fences, response identity, outside-try propagation,
+inside-try synchronous/awaited faults and unawaited response-Promise rejection.
+Immediate authorization/validator/Prisma/NextResponse and middleware behavior are
+OUTSIDE declaration qualification. Actual services, module initializers and
+neighbours remain INERT. Exact executed/owner/committed test bytes must match;
+source qualification is Windows raw only, not Linux checkout or whole module.
+
+Focused types2synthetic roots/0diagnostics, fresh191compiler inputs/191snapshot
+reads/fallback0 equal DIRECTLinux and UNC. Lint2files/0errors/warnings retains
+one React-autodetection setup notice.37428DIRECTLinux dependency hashes match
+before/after, including37 in-tree nondangling symlink files. Every main handle
+SIGNALLED and explicit Job drain0; activeBeforeDrain[0,0,1,1] across sourceV1,
+sourceV2,types,lint. TotalProcesses2each/causeUNESTABLISHED. Caps60swall/30userCPU/
+1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged. No runtime/security/performance/
+actualAT/recovery, OS-network-isolation, universal-descendant or independent-person
+qualification follows.
+
+All44clauses/21gates/fixtures/failures/rejectedactions remain. RootLOCAL and
+4+32+1 findings UNRESOLVED; ActionsPROHIBITED/historicalCIOnly/overallCIfalse.
+FULLgoalACTIVE/no budget. FINAL PRD deployment AND verification only AFTER ALL
+original preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackup AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+See application implementation-evidence/deploy-history-delete-source-20261022.json.
+
+
 ## Deploy history GET source qualification (2026-10-22)
 
 The exact unchanged exported GET has composite PUBLIC SOURCE coverage: V1 passed
