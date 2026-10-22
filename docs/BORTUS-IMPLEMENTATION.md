@@ -1,5 +1,58 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## Auth login POST source qualification (2026-10-22)
+
+All76 NEW finite PUBLIC SOURCE controls passed ONCE with zero fail/skip/cancel/todo.
+Exact unchanged POST covers signing-init/body/schema/lookup/compare/sign/response/
+cookie order, immediate receivers/arguments, branch stopping, strict production
+comparison, immediate faults/awaited rejection, ignored setter/logger returns and
+response assimilation outside catch. Callee implementations, imports and schema
+initialization remain OUTSIDE qualification. No supported production correction.
+Original executed test SHA b289783f3ef0f39dbb334d27c645cb49bc1893732d4d5b79429c23718f875bbf.
+Packaging review found its hash assertion accepted only Windows CRLF; Git stores LF.
+Published/owner test SHA 892f245cdea69d2349970f3219a941fe4223ba12fbede9330fb7859a01ad5062
+changes ONLY that assertion to exact canonical LF identity. All76 callbacks, harness
+and other loader bytes remain exact. A separate NEW metadata fixture failed one
+incorrect CRLF-negative oracle; DISTINCT V2 accepts that permitted EOL form and
+rejects a bare interior CR, passing1/1. Both frozen fixtures/results remain. This
+is76 source controls plus separate metadata1, never77 source controls; no replay.
+Focused types2roots/0diagnostics with fresh191inputs/191snapshotReads/fallback0
+and lint2files/0errors/warnings qualify the ORIGINAL executed test/synthetic root.
+The React autodetection setup notice remains. No fresh final-test types/lint or
+final-test76 execution is claimed after the metadata-qualified assertion change.
+37428 dependencies including37in-tree nondangling symlinks match before/after.
+Source1.031s/types4.797s/lint40.797s; mainhandlesSIGNALLED,activeBeforeDrain[0,1,0],
+drain[0,0,0],TotalProcesses2each/causeUNESTABLISHED. Both metadata handles SIGNALLED
+and drained. Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged.
+WindowsNode24.18.0 only; no OS-network-isolation/universal-descendant/independent-
+person/performance claim. Tests/docs only. Actual credentials/auth/JWT/cookies/
+password hashing/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/
+production remain INERT. No Linux-checkout/wholemodule/project/runtime/security/
+actualAT/recovery acceptance. See application implementation-evidence/auth-login-
+post-source-20261022.json. All44clauses/21gates/failures/rejectedactions remain;
+RootLOCAL;4+32+1findingsUNRESOLVED;ActionsPROHIBITED/historicalCIOnly/overallCIfalse;
+fullgoalACTIVE/no budget. FINAL PRD deployment AND verification follow ALL original
+security/performance/actualAT/compatible independent recovery/fresh backup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates. This checkpoint replaces none.
+
+
+## Auth login POST source preparation (2026-10-22)
+
+The exact exported login POST has a new order record made before finite PUBLIC
+SOURCE controls. Immediate signing, schema, lookup, comparison, response, cookie,
+environment and logger bindings are inert synthetic metadata. Imported modules,
+schema initialization and every callee implementation remain outside qualification.
+Controls are prepared, not yet run. No supported production defect or correction
+is established. Actual credentials/auth/JWT/password hashing/Prisma/SQL/ORM/HTTP/
+native/backend/build/server/recovery/performance/production remain INERT.
+Source/types/lint run once only after freeze under unchanged 60s wall/30s user CPU/
+1GiB commit/two CPU/one ACTIVE process/kill-on-close caps; Windows Node24.18.0 only.
+No install, new runtime or frozen workload replay. Full goal ACTIVE/no budget;
+all44 clauses/21 gates and failures/rejected actions remain. RootLOCAL/no push;
+4+32+1 findings unresolved; ActionsPROHIBITED/historicalCIOnly/overallCIfalse.
+FINAL PRD deployment AND verification follow all original preceding gates.
+
+
 ## Auth logout POST source qualification (2026-10-22)
 
 All30 NEW finite PUBLIC SOURCE controls passed ONCE, zero fail/skip/cancel/todo.
