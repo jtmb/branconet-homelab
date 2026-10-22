@@ -1,5 +1,42 @@
 # BORTUS application deployment
 
+## currentSession source qualification (2026-10-22)
+
+All57 NEW finite frozen PUBLIC SOURCE controls passed ONCE, with zero failure,
+skip, cancellation or todo. Only the exact async declaration executes with inert
+payload and injected current-account identity metadata. Source order was recorded
+after ownership release and before controls: capture readSession before payload.sub,
+call once with the reader receiver, await, refuse a falsy account, compare the two
+versions with strict inequality, then construct a new id/username/sessionVersion
+object in that order. Projection reads the current account version again. Tests
+cover getter/member/receiver/argument order, short-circuiting, strict comparison,
+exact fault propagation, await/thenable fences and fresh/concurrent independence.
+This validates neither a real identity nor the account-reader implementation.
+No supported production defect or production correction is established.
+
+Fresh focused types pass2roots/0diagnostics, with7588 declaration/package.json
+contents in76parts and191inputs/191snapshotReads/fallback0. Direct Linux and UNC
+compiler bindings match. Lint2files has0errors/0warnings; React-detection and
+pages-path setup notices remain. All37428 dependency records and37 in-tree
+nondangling symlink targets match before/after. Source1.329s/types5.031s/lint37.094s;
+mainhandles SIGNALLED, activeBeforeDrain[1,1,1], explicit drain0ALL, TotalProcesses2
+each/causeUNESTABLISHED. Existing WindowsNode24.18.0 and60s wall/30s userCPU/1GiB
+commit/twoCPU/oneACTIVE/kill-on-close remain. All current/inherited helpers and
+workloads are FROZEN, never replay. Exact executed/owner/staged/committed LF test
+identity is required. No OS-network-isolation, universal-descendant, independent-
+person, performance, security, actualAT or recovery qualification is inferred.
+
+Original imports/module/initializers/neighbours/transactions and actual cookies,
+headers, tokens, signing material, credentials, key generation, crypto/sign/verify,
+accounts/auth/JWT/passwords/DB/Prisma/SQL/ORM/HTTP/native/backend/build/server/
+recovery/performance/production remain INERT. All44clauses/21gates/fixtures/failures/
+resources/rejected actions remain. Root LOCAL/no push;4+32+1findings UNRESOLVED;
+Actions PROHIBITED/historicalCIOnly/overallCIfalse; fullgoal ACTIVE/no budget.
+FINAL PRD deployment AND verification follow ALL original preceding security,
+performance, actualAT, compatible independent recovery, fresh backup AFTER
+quiescence, schema, effectiveRBAC/admission and data gates. This replaces none.
+
+
 ## getSession source qualification (2026-10-22)
 
 All74 NEW finite PUBLIC SOURCE controls passed ONCE, zero fail/skip/cancel/todo.
