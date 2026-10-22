@@ -1,5 +1,109 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## AccountError exact-LF packaging qualification (2026-10-22)
+
+The DISTINCT LF candidate passed the same45 controls ONCE, zero fail/skip/cancel/
+todo; these are45 unique controls, not90. The first CRLF45/types/lint success and
+exact-byte staging refusal remain separate immutable evidence. Only CRLF-to-LF
+packaging changed; no assertion, fixture, source declaration or limit changed.
+Current executed/owner/LF bytes match; staged/committed equality is still required.
+New focused types2roots/0diagnostics used fresh7588declaration/package.json contents
+in76parts,191inputs/191snapshotReads/fallback0, DIRECTLinux+UNC exact. New lint2files/
+0errors/warnings retains setup notices.37428dependencies/37in-tree nondangling
+symlink files exact before/after. Source0.922s/types4.312s/lint29.594s; all mainhandles
+SIGNALLED,activeBeforeDrain[1,1,1],drain[0,0,0],TotalProcesses2each/causeUNESTABLISHED.
+Unchanged60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close; existing
+WindowsNode24.18.0 only. New physical output identity preceded WSL writes; fresh
+compiler bindings used stdin. All V1/V2/inherited helpers/workloads are now FROZEN,
+never replay. Selected ES2022 AccountError projection only: real Error implementation,
+imports/initializers/neighbours/AccountStore/Prisma/SQL/ORM/original transactions and
+actual credentials/auth/JWT/cookies/passwords/HTTP/native/backend/build/server/
+recovery/performance/production stay OUTSIDE and INERT. No production correction,
+OS-network-isolation/universal-descendant/independent-person/performance or original
+runtime/security/actualAT/recovery qualification. All44clauses/21gates/fixtures/
+failures/rejectedactions remain; RootLOCAL/no push;4+32+1findingsUNRESOLVED;
+ActionsPROHIBITED/historicalCIOnly/overallCIfalse;fullgoalACTIVE/no budget. FINAL PRD
+deployment AND verification follow ALL original preceding security/performance/
+actualAT/compatible independent recovery/fresh backup AFTER quiescence/schema/
+effectiveRBAC/admission/data gates. This checkpoint replaces none.
+
+
+## AccountError test packaging refusal (2026-10-22)
+
+The first45 selected-source controls/types/lint passed, but pre-commit review
+REFUSED the exact test-byte gate: executed/owner CRLF test bytes normalize to
+LF in Git staging. No commit/push occurred; both byte identities, staged diff,
+passing results and refusal remain separate. A DISTINCT LF-only candidate keeps
+all45 assertions unchanged; NEW helpers/fresh declarations will qualify that
+packaging under the same caps. V1 helpers/workloads are FROZEN and never replayed.
+No application production correction, broader SQL/ORM or original transaction
+qualification follows. LF candidate checks are UNEXECUTED; exact executed/owner/
+staged/committed identity remains required. All44clauses/21gates/failures/resources/
+rejectedactions and FINAL PRD after ALL original gates remain. RootLOCAL/no push,
+4+32+1findingsUNRESOLVED,ActionsPROHIBITED,fullgoalACTIVE/no budget.
+
+
+## AccountError source qualification (2026-10-22)
+
+All45 NEW finite PUBLIC SOURCE controls passed ONCE, zero fail/skip/cancel/todo.
+The exact unchanged selected AccountError class covers inert superclass/prototype
+capture, one exact super(message)/new.target call before native status definition
+and unchanged parameter-property assignment, writable/enumerable/configurable
+runtime status despite readonly typing, exact metadata/returned-object identity,
+inheritance and unchanged synchronous definition/super/field/assignment faults.
+No catch/retry/await/coercion/thenable assimilation is added. Only the declaration's
+ES2022 native-field projection is evaluated. Imports, initializers, neighbours,
+AccountStore, real Error implementation, Prisma/SQL/ORM and original account
+transactions remain OUTSIDE; actual credentials/auth/JWT/cookies/passwords/HTTP/
+native/backend/build/server/recovery/performance/production remain INERT. No
+supported production defect/correction. Executed/owner/committed test bytes must
+match; canonical LF identity accepts only Git LF/Windows CRLF. Focused types2roots/
+0diagnostics; fresh7588declaration/package.json contents in76parts,191inputs/
+191snapshotReads/fallback0 DIRECTLinux+UNC exact. Lint2files/0errors/warnings retains
+the React-autodetection setup notice.37428dependencies/37in-tree nondangling symlink
+files exact before/after. Source1.031s/types4.609s/lint40.906s; all mainhandles
+SIGNALLED,activeBeforeDrain[1,0,1],drain[0,0,0],TotalProcesses2each/causeUNESTABLISHED.
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged; existing
+WindowsNode24.18.0 only, no install/newruntime. Physical output identity was verified
+before WSL writes; fresh compiler bindings used stdin. All helpers/workloads are
+FROZEN, never replay. No OS-network-isolation/universal-descendant/independent-person/
+performance claim. No Linux-checkout/wholemodule/project/runtime/security/actualAT/
+recovery/original transaction acceptance. See application implementation-evidence/
+account-error-source-20261022.json. All44clauses/21gates/fixtures/failures/rejected
+actions remain; RootLOCAL/no push;4+32+1findingsUNRESOLVED;ActionsPROHIBITED/
+historicalCIOnly/overallCIfalse;fullgoalACTIVE/no budget. FINAL PRD deployment AND
+verification follow ALL original security/performance/actualAT/compatible independent
+recovery/fresh backup AFTER quiescence/schema/effectiveRBAC/admission/data gates.
+This selected-source checkpoint replaces none.
+
+
+## AccountError source preparation (2026-10-22)
+
+The exact exported AccountError class order was recorded FROM source BEFORE45
+NEW finite PUBLIC SOURCE controls. The selected ES2022 native-field projection
+captures its inert synthetic superclass/prototype at declaration; construction
+calls super(message) once, then defines status and assigns the unchanged status
+parameter. readonly is type-only. Exact message/new.target/results, field/assignment
+order and synchronous faults are covered without catch/retry/await or coercion.
+Only the selected declaration is evaluated; imports, initializers, neighbours,
+AccountStore, real Error implementation, Prisma/SQL/ORM and original account
+transactions remain OUTSIDE. Actual credentials/auth/JWT/cookies/passwords/HTTP/
+native/backend/build/server/recovery/performance/production stay INERT. No supported
+production defect/correction is established. Controls/types/lint are UNEXECUTED
+pending review/freeze. Canonical LF identity permits only Git LF/Windows CRLF.
+Existing WindowsNode24.18.0 only; unchanged60swall/30userCPU/1GiBcommit/twoCPU/
+oneACTIVE/kill-on-close. Fresh declaration contents are required for new focused
+types; no install/newruntime or frozen workload replay. Startup passed all30443
+ordered proofs and retained whole maps; one added captureTREE was reconciled by
+distinct DIRECT metadata checks without ref reset/object recreation. Owner release
+was hash-verified before class body/order/controls/owner edits. All44clauses/21gates/
+fixtures/failures/rejectedactions remain; RootLOCAL/no push;4+32+1findingsUNRESOLVED;
+ActionsPROHIBITED/historicalCIOnly/overallCIfalse;fullgoalACTIVE/no budget. FINAL PRD
+deployment AND verification follow ALL original security/performance/actualAT/
+compatible independent recovery/fresh backup AFTER quiescence/schema/effective
+RBAC/admission/data gates. This preparation replaces none.
+
+
 ## Auth login POST source qualification (2026-10-22)
 
 All76 NEW finite PUBLIC SOURCE controls passed ONCE with zero fail/skip/cancel/todo.
