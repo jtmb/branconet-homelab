@@ -1,5 +1,88 @@
 # BORTUS API usage
 
+## AccountStore constructor source qualification (2026-10-22)
+
+The DISTINCT callback-void candidate passed all30 finite PUBLIC SOURCE controls
+ONCE; zero fail/skip/cancel/todo. These are30 unique controls, not60. V1 source30
+success, two2769 type errors and UNEXECUTED lint remain separate FROZEN evidence.
+Only two test callback returns changed to void; assertions/fixtures/constructor/
+limits are identical. No supported production defect or production correction.
+The exact empty constructor's ES2022 synthetic base-class projection covers own
+db field/unchanged identity assignment, type-only private/readonly, inert metadata
+hooks, ordinary prototypes/subclass field order/newTarget and synchronous faults.
+No original module/import/initializer/neighbour/method/query/Prisma/SQL/ORM/original
+transaction executes; actual accounts/credentials/auth/JWT/cookies/passwords/HTTP/
+native/backend/build/server/recovery/performance/production remain OUTSIDE and INERT.
+Fresh focused types2roots/0diagnostics used7588declaration/package.json contents
+in76parts,191inputs/191snapshotReads/fallback0; DIRECTLinux+UNC exact, bindings via
+stdin. Lint2files/0errors/warnings retains React-autodetection/pages-path notices.
+37428dependencies/37 in-tree nondangling symlink files exact before/after BOTH
+candidates. V2 source0.907s/types4.250s/lint35.750s, all mainhandles SIGNALLED,
+activeBeforeDrain[0,0,1],drain[0,0,0],TotalProcesses2each/causeUNESTABLISHED. Caps
+60s wall/30s userCPU/1GiB commit/twoCPU/oneACTIVE/kill-on-close unchanged. Existing
+WindowsNode24.18.0 only; physical output identity verified BEFORE WSL writes; all
+V1/V2/inherited helpers/workloads now FROZEN, never replay. No OS-network-isolation,
+universal-descendant, independent-person, performance or original transaction/
+runtime/security/actualAT/recovery acceptance claim. Exact executed/owner/staged/
+committed LF test equality remains a checkpoint gate. See application evidence
+implementation-evidence/account-store-constructor-source-20261022.json.
+All44clauses/21gates/fixtures/failures/resources/rejectedactions remain; root LOCAL/
+no push,4+32+1findings UNRESOLVED,Actions PROHIBITED/historicalCIOnly/overallCIfalse,
+fullgoal ACTIVE/no budget. FINAL PRD deployment AND verification follow ALL original
+security/performance/actualAT/compatible independent recovery/fresh backup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates. This checkpoint replaces none.
+
+
+
+## AccountStore constructor callback-type refusal and correction preparation (2026-10-22)
+
+The first candidate passed30 selected-source controls ONCE, but its fresh focused
+types failed with two2769 diagnostics: two test callbacks returned the fixture
+object instead of void. This is a test-authoring error; no production defect or
+correction. V1 source success, failed types, raw logs and UNEXECUTED lint remain
+separate and FROZEN, never replay. Dependencies37428/37 in-tree symlink files are
+unchanged before/after;191 fresh compiler inputs match DIRECTLinux and UNC.
+A DISTINCT candidate changes only the two callback returns to void; every assertion,
+fixture, selected constructor and resource cap is unchanged. NEW helpers and fresh
+declarations qualify that candidate ONCE; V2 source/types/lint are UNEXECUTED until
+review/freeze. These remain30 unique finite controls, not60. Only the exact empty
+constructor's synthetic base-class projection executes with PUBLIC identity metadata.
+Prisma/SQL/ORM/methods/queries/imports/initializers/neighbours/original transactions
+and actual credentials/auth/JWT/cookies/passwords/HTTP/native/backend/build/server/
+recovery/performance/production remain OUTSIDE and INERT. All44clauses/21gates/
+failures/resources/rejectedactions stay; root LOCAL/no push,4+32+1findings UNRESOLVED,
+Actions PROHIBITED,historicalCIOnly/overallCIfalse,fullgoal ACTIVE/no budget. FINAL
+PRD deployment AND verification follow ALL original security/performance/actualAT/
+compatible independent recovery/fresh backup AFTER quiescence/schema/effective
+RBAC/admission/data gates. No gate closes from this preparation.
+
+
+
+## AccountStore constructor source preparation (2026-10-22)
+
+The exact constructor declaration and empty body were read after verified owner
+release, and its order was recorded BEFORE NEW finite PUBLIC SOURCE controls.
+Only `constructor(private readonly db: PrismaClient) {}` is lifted into an inert
+base-class shell. Its ES2022 native-field projection defines own db before the
+unchanged parameter assignment; private/readonly/type annotation are compile-time
+only. DB binding is synthetic PUBLIC identity metadata; no real Prisma binding,
+method body, query, import, initializer, neighbour or original transaction runs.
+Metadata members/coercion/thenables stay inert. Ordinary synthetic instance/field/
+prototype behavior is distinct from database/auth/runtime acceptance. No supported
+production defect or correction is established. Source/types/lint are UNEXECUTED;
+NEW helpers and fresh declarations must be reviewed/frozen before execution.
+Existing WindowsNode24.18.0 only; unchanged60s wall/30s userCPU/1GiB commit/twoCPU/
+oneACTIVE/kill-on-close. All older helpers/workloads remain FROZEN. Initial physical
+path assertion and distinct wslpath backslash-argument refusal occurred before any
+WSL write or workload; separate forward-slash read-only identity check passed.
+All44clauses/21gates/failures/resources/rejectedactions remain; root LOCAL/no push;
+4+32+1findings UNRESOLVED; Actions PROHIBITED/historicalCIOnly/overallCIfalse;
+fullgoal ACTIVE/no budget. FINAL PRD deployment AND verification follow ALL original
+security/performance/actualAT/compatible independent recovery/fresh backup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates. This feature replaces none.
+
+
+
 ## AccountError exact-LF packaging qualification (2026-10-22)
 
 The DISTINCT LF candidate passed the same45 controls ONCE, zero fail/skip/cancel/
