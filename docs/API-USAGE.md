@@ -1,5 +1,70 @@
 # BORTUS API usage
 
+## Deployment Pods pre-stage ref reconciliation (2026-10-21)
+
+FIRST pre-stage metadata STOPPED BEFOREstaging: one older deployment-state capture
+ref was absent and a new checkpoint tree ref present in BOTHsharedinventories.
+Separate DIRECT reconciliation PASSED286/286/21: fresh refs EXACTstoppedsnapshot,
+all other refs/metadata/liveheads/intendeddirt/index unchanged and BOTHoriginal
+objects stilltrees. CauseUNESTABLISHED;no refs/objects recreated or mutated.
+OriginalFINAL286/startup286/stopped286/acceptedreconciled286 contents remain DISTINCT
+with all missing/additional/changed histories separate. Source controls/types/lint
+remain completed/frozen;no workload replay. Immutable receipt/proofs unchanged.
+FULLgoalACTIVE/no budget;ActionsPROHIBITED;root docsLOCAL/4+32+1unresolved. All44
+clauses/21gates/fixtures/failures/rejected actions and FINALPRDdeployment AND
+verification AFTER ALL original preceding gates remain.
+
+
+## Deployment Pods source qualification (2026-10-21)
+
+FIRST frozen PUBLIC SOURCE controls pass65/65,zero failures/skips/cancellations.
+Only exact exported deploymentPods executes with synthetic Deployment/Pod/
+ReplicaSet public metadata and arrays. Ownership/controller/namespace isolation,
+identity/order/duplicates, source-derived fresh read/short-circuit/mapping order
+and immediate failures pass. Actual neighbors/count/configuration/engine/
+credentials/native services stay inert. Malformed/getter/builtin cases characterize
+JavaScript only. No supported production defect/change established; TESTS/DOCS ONLY.
+FIRST focused types:2roots/0diagnostics;FIRST lint:2files/0errors/warnings. Fresh7588
+compiler inputs/192snapshot reads/fallback0;37428 DIRECT Linux before/after hashes
+match;116frozen bindings unchanged. Source1.063s/79847424peakbytes;types5.125s/
+376705024;lint37.609s/282255360. MainhandlesSIGNALLED;activeBeforeDrain[1,1,0];
+explicitdrain0ALL;TotalProcesses2each/causeUNESTABLISHED. Experimentalstrip/React/
+Pages notices retained. Caps60s wall/30s userCPU/1GiB commit/twoCPU/oneACTIVE/
+kill-on-close. No OS network isolation/universal descendant/performance/independent
+person claim. No actual HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/
+recovery/performance/production/grants/CAS/frozen replay. Startup receipt and
+FIRST50490+557 predecessor checks remain immutable;all ref/read/failure histories
+remain separate. All docs checked;only the10declared docs+PLAN/status updated.
+ActionsPROHIBITED;historicalCIonly;overallCIfalse;root docsLOCAL/4+32+1unresolved.
+FULLgoalACTIVE/no budget;all44clauses/21gates/fixtures/failures/rejected actions
+remain. FINAL PRDdeployment ANDverification only AFTER ALL original preceding gates.
+
+
+## Deployment Pods source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported deploymentPods.
+Source order was recorded BEFORE controls: captured namespace/UID and falsy-UID
+early exit; ReplicaSet filter/owner short circuits, fresh mapped UID and Set
+construction; then Pod namespace/owner/controller/membership filtering. Identity,
+order, duplicates, namespace isolation and immediate faults are in scope. Actual
+neighbors/count/configuration/engine/credentials/native services stay inert.
+No supported production defect/change established; current candidate TESTS/DOCS
+ONLY. Controls and new helpers are UNEXECUTED and must freeze before execution.
+Startup passed24018ordered proofs (23868incoming BEFORE150current),414inputs,
+91selecteddocs,compat5,separate334,protected3,root8 and charts aliases. The36
+inverses restore12pairs against the same raw90/root8;2551otherdocs match. Immutable
+receipt preceded edits; independent predecessor FIRST50490 and557direct checks
+passed. Both startup snapshots286/286/21 match FINAL286,zero missing/changed/added
+refs; all historical inventories remain separate. Bounded/truncated and absent
+path reads are retained; no full/uninterrupted-read claim. No old helper replay.
+Caps remain60s wall/30s userCPU/1GiB commit/twoCPU/oneACTIVE/kill-on-close and explicit
+drain. No actual HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/
+performance/production/grants/CAS or frozen replay. Actions PROHIBITED;historical
+CIonly;overallCIfalse. Root docsLOCAL/4+32+1findings unresolved. All44clauses/21gates/
+fixtures/failures/rejected actions remain. FULLgoalACTIVE/no budget;FINAL PRD
+deployment ANDverification only AFTER ALL original preceding gates.
+
+
 ## Deployment state source qualification (2026-10-21)
 
 FIRST frozen PUBLIC SOURCE controls pass102/102,zero failures/skips/cancellations.
