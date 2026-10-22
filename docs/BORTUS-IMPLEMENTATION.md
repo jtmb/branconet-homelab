@@ -1,5 +1,44 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## getSessionAccountFromHeaders source qualification (2026-10-22)
+
+All 75 new frozen PUBLIC SOURCE controls passed once, with zero failures, skips,
+cancellations or todos. Only the exact declaration runs in a strict inert shell.
+Source order was recorded after owner release and before controls: falsy-header
+refusal, capture match before constructing the exact cookie-name regex, invoke
+with the original receiver, optional index 1 read, falsy-label refusal, verifier
+await, then payload truthiness and direct current-account result return. Errors
+propagate without a catch. First-match spelling, no decoding, getter/fault order,
+await/return adoption, unchanged payload/result identities and fresh/concurrent
+decisions are covered. Injected callbacks establish no real token/account/auth
+validity. No supported production defect or production correction was established.
+
+Focused types pass 2 roots with 0 diagnostics: 7,588 fresh declaration/package
+contents in 76 parts; 191 compiler inputs/191 snapshot reads, fallback 0, DIRECT
+Linux and UNC hashes exact via stdin. Lint passes 2 files with 0 errors/warnings;
+React-detection and missing-pages setup notices remain. All 37,428 dependency
+records and 37 in-tree nondangling symlinks match before/after. Source 0.906s,
+types 3.860s, lint 33.281s; all main handles signalled, active-before-drain [1,0,0],
+explicit drain 0 for all. TotalProcesses is 2 each, cause UNESTABLISHED. Existing
+Windows Node 24.18.0, 60s wall/30s user CPU/1GiB Job commit/two CPUs/one ACTIVE/
+kill-on-close limits remain. The prior failed-control-only filter was removed
+from the new runner before freeze. No old helper/config/workload was executed.
+Exact executed/owner/staged/committed test identity is required; all current and
+inherited workloads are now frozen and must never be replayed.
+
+Original modules/imports/initializers/neighbours/transactions and actual cookies,
+headers/tokens/signing material/credentials/keygen/crypto/sign/verify/accounts/auth/
+JWT/passwords/DB/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/
+production remain inert. No whole-project/Linux-checkout/runtime/security/
+performance/actual AT/recovery, OS-network-isolation, universal-descendant or
+independent-person qualification follows. Root docs LOCAL/no push; 4+32+1 findings
+UNRESOLVED; Actions PROHIBITED/historical CI only/overall CI false. Full goal ACTIVE
+with no token budget; all 44 clauses/21 gates/fixtures/failures/rejected actions
+remain. FINAL PRD deployment AND verification follow every original preceding
+gate, including compatible independent recovery and fresh backup AFTER quiescence.
+
+
+
 ## currentAccount source qualification (2026-10-22)
 
 The exact declaration qualifies60 unique finite PUBLIC SOURCE controls with inert
