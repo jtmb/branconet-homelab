@@ -1,5 +1,90 @@
 # BORTUS application deployment
 
+## Job slice pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stageV1 stopped BEFORE staging on missing capture TREE68a233 and new
+checkpoint TREE375442,zero changedrefs. DISTINCT DIRECTV1 FIRSTpasses BOTH
+inventories292/292/21 with exact stopped sets/all persistentmetadata/refs/live/dirt.
+CauseUNESTABLISHED;no refmutation/objectrecreation/source-types-lint replay. Separate
+WSLgh metadata verifies ActionsdisabledBOTH and PR28/5draft/open/unmerged. Original
+stopped and reconciled histories retained separately. RefLifecycleV1FIRST/
+qualificationV1SECOND/preparationV1THIRD restore39inverses/13pairs SAMEraw97owner/
+root8;2564otherbaseline docs unchanged. Current421/98 includes test/evidence ONCE.
+RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/
+21gates/fixtures/failures/rejectedactions/FINALPRDAFTERALL gates remain.
+
+
+## Job slice source qualification (2026-10-22)
+
+FIRST158/158 frozen PUBLIC SOURCE controls pass,zero failures/skips/cancellations.
+Only exact exported readJobSlice executes with synthetic PUBLIC job-ID/cursor/
+row-result metadata and inert immediate tagged-query/default-client/builtin/error
+bindings. Query receiver/template/substitution order, immediate await/first-row
+truthiness, Unicode code points including supplementary/lone-surrogate metadata,
+output read twice, conversion/status order, default resolution, fresh result and
+per-site template identity, immediate faults and no retry are covered. Nonfinite/
+fractional/negative cursor and large-bigint conversion are characterization only.
+No supported production defect/change; TESTS/DOCS ONLY. Prisma/db/job-stream module
+initializers and neighbours stay inert; no actual SQL/ORM/operatorDB/job output.
+
+FIRSTtypes2ISOLATED-SELECTEDroots/0diagnostics and lint2files/0errors/warnings pass.
+Fresh211compiler inputs:TypeScript declarations/Node/undici declarations plus package
+metadata;191snapshotReads/fallback0. All37428DIRECTLinux before/after hashes including
+37in-tree non-dangling symlinks and430frozen execution bindings match. Source1.047s/
+108511232peakbytes;types4.329s/285896704;lint28.125s/292745216. Main handles ALLSIGNALLED;
+activeBeforeDrain source0/types1/lint0,explicitdrain0ALL. TotalProcesses2each/cause
+UNESTABLISHED. Source ANDtypes stderr EMPTY. Lint TWOsetup notices:React detection
+and absent Pages directory. NoOSnetworkisolation/universaldescendant/performance/
+independent-person claim. No source/types/lint failure or replay.
+
+InfrastructureprepV1 stopped BEFORE infrastructure outputs or controls on37391 vs
+37428 after excluding37symlinks. DISTINCT DIRECT metadata confirms all37 in-tree/
+non-dangling;DISTINCT V2 FIRSTpasses. Initial docs discovery2542 omitted33ignored
+files;DISTINCT complete discovery uses no-ignore/hidden and reads2575docs. Both
+original records retained;no workload replay. Startup parentV1 proof-wrapper mismatch
+and additive exact-object/parentV2 reconciliation remain separate and immutable.
+Raw97owner/root8 and all original root preedit pins remain separate from fresh pins.
+
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close remain. No actualHTTP/
+auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/production/
+grants/CAS/provisioning/frozenreplay. ActionsPROHIBITED,historicalCIonly/overallCIfalse;
+rootLOCAL/4+32+1findings unresolved;all44clauses/21gates/fixtures/failures/rejectedactions
+remain. FULLgoalACTIVE/no budget;FINAL PRDdeployment ANDverification AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup/
+quiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job slice source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only exact exported readJobSlice from
+src/lib/job-output.ts. Its order was recorded FROM source BEFORE controls:
+default-client resolution; tagged-query lookup and cursor+1/chunk/id substitution;
+await; first-row truthiness; output, Unicode code-point offset, Number total, status.
+Synthetic PUBLIC job-ID/cursor/row-result metadata and inert immediate tagged-query/
+default-client/builtin/error bindings only. Prisma/db/job-stream module initializers
+and neighbours remain inert. No actual SQL/ORM/operator database or output is read.
+No supported defect established; current feature TESTS/DOCS ONLY. Source/types/lint
+UNEXECUTED pending immutable freeze and preparation review.
+
+Startup FIRST25331 ordered hashes passed25100incoming BEFORE231current;420inputs/
+97docs/compat5/separate334/protected3/root8/chartsaliases and39inverses/13pairs to
+SAMEraw96owner/root8 with2562otherdocs verified. Immutable receipt dd49 is unchanged.
+Parent V1 stopped BEFORE hash phase on five omitted wrapper fields, with all ordered
+path+sha and full DIRECT metadata retained. DISTINCT additive exact-object supplement
+and parent V2 FIRST27519, DIRECT3662 and extra69 passed; no oracle/gate relaxation.
+Both fresh startup inventories292/292/21 retain FINAL291 separately with sole capture,
+zero missing/changed refs; source hold released after independent match. Read/output
+truncation and metadata path-lookup errors are retained without workload replay.
+
+Actual job/output/filesystem/database/configuration/operator inputs/neighbours/engine/
+credentials/native services remain inert. No actualHTTP/auth/native/SQL/ORM/operatorDB/
+backend/build/server/recovery/performance/production/grants/CAS/provisioning/frozenreplay.
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close remain. ActionsPROHIBITED,
+historicalCIonly/overallCIfalse;rootLOCAL/4+32+1findings unresolved;all44clauses/21gates/
+fixtures/failures/rejectedactions remain. FULLgoalACTIVE/no budget;FINAL PRDdeployment
+ANDverification AFTER ALL original preceding gates.
+
+
 ## Job ID validator pre-stage ref reconciliation (2026-10-22)
 
 FIRST pre-stage V1 stopped BEFORE staging on missing capture TREE8cd87 and new
