@@ -1,5 +1,63 @@
 # BORTUS user permissions
 
+## Auth register POST source qualification (2026-10-22)
+
+All78 NEW finite PUBLIC SOURCE controls passed ONCE, zero fail/skip/cancel/todo.
+Exact unchanged POST covers signing-init/gate/body/parse/hash/register/sign/response/
+cookie order, immediate receivers/arguments, locked403 before body, invalid400,
+cost12, status201, strict production equality, faults/awaited rejections delegated
+to accountFailure, ignored setter return and return assimilation outside catch.
+Imports, schema initialization, every callee implementation and original A03
+transaction behavior remain OUTSIDE qualification. No supported production correction.
+Executed/owner/committed test bytes must match; its canonical LF route hash accepts
+Git LF and Windows CRLF while pinning every other byte. Focused types2roots/
+0diagnostics; fresh7588 declarations in76 bounded parts,191compilerinputs/
+191snapshotReads/fallback0 DIRECTLinux+UNC exact. Lint2files/0errors/warnings retains
+the React-autodetection setup notice.37428 dependencies including37in-tree
+nondangling symlink files match before/after. Source1.234s/types5.594s/lint40.953s;
+all mainhandlesSIGNALLED,activeBeforeDrain[1,1,1],explicitdrain[0,0,0];TotalProcesses2
+each/causeUNESTABLISHED. Unchanged60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/
+kill-on-close; WindowsNode24.18.0 only. No OS-network-isolation/universal-descendant/
+independent-person/performance claim. Preparation V1 refused an oversized compressed
+declaration snapshot BEFORE controls/types/lint; DISTINCT V2 splits the complete
+fresh snapshot under the unchanged2MB/file ceiling. Original failure/capture stay
+retained; no workload replay. Tests/docs only; actual credentials/auth/JWT/cookies/
+password hashing/accounts/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/
+performance/production remain INERT. No Linux-checkout/wholemodule/project/runtime/
+security/actualAT/recovery acceptance. See application implementation-evidence/
+auth-register-post-source-20261022.json. All helpers/workloads now FROZEN.
+All44clauses/21gates/failures/rejectedactions remain. RootLOCAL/no push;
+4+32+1findingsUNRESOLVED;ActionsPROHIBITED/historicalCIOnly/overallCIfalse;
+fullgoalACTIVE/no budget. FINAL PRD deployment AND verification follow ALL original
+security/performance/actualAT/compatible independent recovery/fresh backup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates. This source checkpoint replaces none.
+
+
+## Auth register POST source preparation (2026-10-22)
+
+The exact exported POST order was recorded FROM source BEFORE new finite PUBLIC
+SOURCE controls: signing support/await; registrationOpen/await and locked403
+before body; body/await; synchronous parse and invalid400; destructure; hash with
+cost12/await; register/await; sign/await; response201; cookie options/set; return.
+Immediate try faults and awaited rejections delegate the exact error identity to
+accountFailure. Its implementation and returned-response assimilation are outside
+the try/catch qualification. All imports, schema initialization and real callees
+remain OUTSIDE. NEW controls use inert immediate bindings and synthetic PUBLIC
+registration/response metadata only. Controls/types/lint remain UNEXECUTED pending
+review/freeze. No supported production defect/correction established; tests/docs only.
+Actual credentials/auth/JWT/cookies/password hashing/accounts/Prisma/SQL/ORM/HTTP/
+native/backend/build/server/recovery/performance/production stay INERT. This source
+declaration qualification does not retest account transactions or original A03.
+Windows Node24.18.0 only; unchanged60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/
+kill-on-close. No install/newruntime/frozen-workload replay. Canonical LF source
+identity accepts Git LF/Windows CRLF while pinning every other source byte.
+All44clauses/21gates/failures/rejectedactions remain. RootLOCAL/no push;
+4+32+1findingsUNRESOLVED;ActionsPROHIBITED/historicalCIOnly/overallCIfalse;
+fullgoalACTIVE/no budget. FINAL PRD deployment AND verification follow ALL original
+security/performance/actualAT/compatible independent recovery/fresh backup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates. This source checkpoint replaces none.
+
+
 ## Auth login POST source qualification (2026-10-22)
 
 All76 NEW finite PUBLIC SOURCE controls passed ONCE with zero fail/skip/cancel/todo.
