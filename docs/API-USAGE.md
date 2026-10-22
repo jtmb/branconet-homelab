@@ -1,5 +1,99 @@
 # BORTUS API usage
 
+## Ansible observer pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage V1 stopped BEFORE staging on missing capture TREE7a6ab and new
+checkpoint TREE8cd87,zero changedrefs. Its helper/failure remain frozen. Distinct
+DIRECT V1 passed the repository assertions but failed launching absent Windows gh
+before writing a completed report; no reconciliation pass is credited to V1.
+Distinct pure DIRECT V2 FIRST passed BOTH inventories290/290/21 with the exact same
+missing/additional sets and all persistent metadata/refs/live/dirt;charts unchanged.
+CauseUNESTABLISHED;no ref mutation/object recreation or source/types/lint replay.
+Separate WSL gh read-only metadata FIRST confirms Actions disabled on BOTHrepos
+and PR28/5draft/open/unmerged. Original/stopped/reconciled/final histories remain
+separate. RefLifecycleV1FIRST/noticeClarificationV1SECOND/qualificationV1THIRD/
+preparationV1FOURTH:52inverses/13pairs restore SAMEraw95owner/root8,2560otherdocs.
+Staging resumes only after direct confirmation. RootLOCAL/4+32+1unresolved/
+ActionsPROHIBITED/fullgoalACTIVE/no budget and every original delivery gate remain.
+
+
+## Ansible observer notice clarification (2026-10-22)
+
+Direct saved-log review corrects the qualification paragraph below: BOTH source
+and types stderr are EMPTY; there is no source module-format notice in this run.
+Lint stderr retains TWO setup notices: React version detection and the absent
+Pages directory in the isolated source tree. Its structured result still records
+two files and zero lint errors/warnings. Earlier log assertions are retained as
+history, not credited to this run. No source/types/lint replay or correction ran.
+Current inverse order noticeClarificationV1 FIRST, qualificationV1 SECOND,
+preparationV1 THIRD restores39inverses/13pairs to SAMEraw95owner/root8;
+2560otherbaseline docs unchanged. All original gates and full ACTIVE goal remain.
+
+
+## Ansible process observer source qualification (2026-10-22)
+
+FIRST frozen PUBLIC SOURCE controls pass208/208,zero failures/skips/cancellations.
+Only exact exported observeAnsibleProcess executes with synthetic PUBLIC process/
+event/signal/byte metadata and inert immediate builtin/error bindings. Exact LF/
+CRLF and every two-chunk split, eleven role transitions, framing bounds, warning-
+once redaction, strict success/failure/abort decisions, optional streams, ordered
+cleanup/close/callback, observer isolation and immediate faults pass. Injected
+constructor/getter/listener/Map/Buffer faults characterize JavaScript only; no OS
+failure or cleanup-after-exception guarantee is claimed. No supported production
+defect/change; current feature TESTS/DOCS ONLY. Actual child processes/signals/
+OS timers/kill/Ansible/configuration/operator inputs/neighbors/credentials/native
+services remain inert. No timer exists in the selected source declaration.
+
+FIRST types2roots/0diagnostics and lint2files/0errors/warnings pass. Fresh211
+compiler inputs only TypeScript lib/Node/undici declarations+package metadata;
+191snapshotReads/fallback0. All37428 DIRECT Linux before/after hashes and429frozen
+execution bindings match. Source1.125s/139796480peakbytes;types4.234s/297132032;
+lint27.828s/290906112. AllmainhandlesSIGNALLED;activeBeforeDrain0ALL/explicitdrain0
+ALL;TotalProcesses2each/causeUNESTABLISHED. Source module-format notice and lint
+React-detection notice remain separately retained;types stderr empty.
+Postexecution37883metadata checks pass. Caps60swall/30userCPU/1GiBcommit/twoCPU/
+oneACTIVE/kill-on-close unchanged;noOSnetworkisolation/universaldescendant/
+performance/independent-person claim. All2571baseline docs checked;13inserts affect
+11docs+PLAN/status,2560otherdocs unchanged. QualificationV1FIRST/preparationV1SECOND
+restore26inverses/13pairs to same raw95owner/root8. All older snapshots stay frozen.
+
+No actualHTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/provisioning/
+recovery/performance/production/grants/CAS/frozenreplay. ActionsPROHIBITED,
+historicalCIonly/overallCIfalse;rootLOCAL/4+32+1findings unresolved. FULLgoalACTIVE/
+no budget;all44clauses/21gates/fixtures/failures/rejectedactions remain. FINAL PRD
+deployment ANDverification AFTER ALL original preceding gates.
+
+
+## Ansible process observer source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only exact exported observeAnsibleProcess.
+Source order was recorded BEFORE controls: EventEmitter/Map construction, optional
+stream then process/signal listener registration, exact byte-framed protocol,
+warning-once redaction, strict closure predicate, ordered role projection, cleanup,
+public close then callback. Synthetic PUBLIC process/event/signal/byte metadata and
+inert immediate builtin/error bindings only. No timer exists in the declaration;
+no actual child process/signal/OS timer/kill/Ansible/configuration/operator input/
+neighbor/credential/native service executes. Synchronous injected faults document
+JavaScript propagation only, including no cleanup guarantee after listener faults.
+No supported production defect established; current feature TESTS/DOCS ONLY.
+Source/types/lint UNEXECUTED pending immutable freeze and preparation review.
+
+Startup FIRST24589 ordered hashes passed24436incoming BEFORE153current. Current
+418inputs/95selected docs/compat5/separateOriginal334/protected3/root8/chartsaliases
+verify. Incoming39inverses/13pairs restore same raw94owner/root8;2558otherdocs match.
+Immutable accepted receipt preceded edits. Parent FIRST49509 match, separate DIRECT
+1293 and retained-record25 passed and released hold. Both startup inventories
+290/290/21 retain FINAL289 originals plus same sole capture addition, no missing/
+changed refs and exact metadata/dirt. All older failure/ref/read histories retained.
+
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close/explicitdrain remain.
+No actualHTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/provisioning/
+recovery/performance/production/grants/CAS/frozenreplay. ActionsPROHIBITED,
+historicalCIonly/overallCIfalse;rootLOCAL/4+32+1findings unresolved. FULLgoalACTIVE/
+no budget;all44clauses/21gates/fixtures/failures/rejectedactions remain. FINAL PRD
+deployment ANDverification AFTER ALL original preceding gates.
+
+
 ## Ansible selection pre-stage ref reconciliation (2026-10-21)
 
 FIRST pre-stage metadata V1 stopped on one missing capture TREE435c3 and one new
