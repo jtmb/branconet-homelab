@@ -1,5 +1,67 @@
 # BORTUS application deployment
 
+## Pod label-predicate source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass92/92,zero failures/skips/cancellations.
+Only exact labelPredicate executes with synthetic selector/label metadata and inert
+immediate selectorError/validKey/validValue bindings. Source-derived limits,parsing,
+key-before-operator validation,set/value shortcircuits,own-key membership,ordered
+conjunction and fresh label reads pass. Prototype/getter/dependency faults characterize
+JavaScript only. Actual key/value validators and neighboring exports do not execute;
+these checks do not establish Kubernetes validation,authorization or native behavior.
+No supported production defect/change established. Current feature TESTS/DOCS ONLY.
+
+FIRST source/types/lint pass:2 focused roots/0 diagnostics;2 files/0 errors/warnings.
+Fresh9280 compiler inputs/191 snapshot reads/fallback0;37428 DIRECT Linux dependency
+hashes match before/after;110 frozen execution bindings unchanged. Source0.250s/
+65966080peakbytes;types4.829s/421150720;lint33.031s/277733376. Main handles signalled;
+activeBeforeDrain[1,1,0],explicit drain0 ALL;TotalProcesses2 causeUNESTABLISHED.
+Experimental stripTypeScriptTypes and lint React/pages notices retained separately.
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/twoCPUs/
+oneACTIVE/kill-on-close. No OS network isolation/universal descendant/performance/
+independent-person claim. No actual HTTP/auth/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/production/grants/CAS or frozen replay.
+
+Startup23346 proofs/409inputs/86docs/compat5/separate334/raw85/root8/24 inverses/
+2541 otherdocs passed. Parent FIRST23918 matcher plus581 direct checks passed;
+receipt unchanged. Startup282/282/21 zero differences;all frozen ref/failure/read
+histories preserved separately. Two own metadata-verifier bookkeeping failures
+remain frozen;distinct V3 passed. Explicit broad/truncated read exceptions remain.
+GitHub Actions PROHIBITED and disabled on both repositories before checkpoint;
+historicalCIonly;overallCIQualified=false. Root docs LOCAL;4+32+1findings unresolved.
+All44clauses/21gates/fixtures/failures remain;FULLgoalACTIVE/no budget. FINAL PRD
+deployment AND verification only after ALL original preceding gates.
+See implementation-evidence/label-predicate-source-20261021.json.
+
+
+## Pod label-predicate source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only labelPredicate from src/lib/pod-query.ts.
+Source order was recorded before controls: null/empty bypass,2048-character limit,
+parenthesis-aware comma split and20 requirements,syntax/key validation,absence/operator
+refusal,set size1..64 and value validation,then own-key predicates and ordered every.
+Synthetic selectors/labels and inert immediate selectorError/validKey/validValue
+bindings only; neighboring exports/configuration/credentials/native services inert.
+These controls characterize the selected parser/predicate,not real key/value validators,
+authorization or Kubernetes acceptance. No supported production defect/change found.
+New source/types/lint controls are UNEXECUTED and will be frozen before execution.
+
+Startup verified23346 ordered proofs:22300 incoming finished before1046 current;
+409 inputs/86 ownerdocs/5 compatibility callers/separate334 baseline;raw85/root8
+with24 qualification-then-preparation inverses and2541 otherdocs unchanged. Parent
+FIRST23918 matcher and581 direct checks passed;receipt immutable before edits.
+Independent and own snapshots282/282/21 match,zero missing/changed/additional refs.
+Two new metadata-verifier bookkeeping failures remain frozen;distinct V3 passed.
+Explicit broad/truncated reads and absent wrapper-child read remain exceptions.
+No full-read or uninterrupted-chain claim. Windows Node24.18.0 Jobs retain60s wall/
+30s user CPU/1GiB commit/two CPUs/one ACTIVE/kill-on-close and explicit drain.
+No OS network isolation/universal descendant/performance/independent-person claim.
+No actual HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/production/
+grants/CAS or frozen replay. GitHub Actions PROHIBITED;historicalCIonly;overallCIfalse.
+Root docs LOCAL;4+32+1findings unresolved;all44clauses/21gates/fixtures/failures remain.
+Full goal ACTIVE/no budget;FINAL PRD deployment AND verification after ALL gates.
+
+
 ## Shared metadata-query classifier source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass107/107,zero fail/skip/cancel. Only exact
