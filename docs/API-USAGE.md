@@ -1,5 +1,88 @@
 # BORTUS API usage
 
+## Job ID validator pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage V1 stopped BEFORE staging on missing capture TREE8cd87 and new
+checkpoint TREE68a233,zero changedrefs. DISTINCT DIRECT V1 FIRST passes BOTH
+inventories291/291/21 with exact stopped missing/additional sets and all persistent
+metadata/refs/live/dirt;charts unchanged. CauseUNESTABLISHED;no ref mutation/object
+recreation/source-types-lint replay. Stopped and reconciled histories stay separate.
+Separate WSLgh metadata confirms Actions disabled BOTH and PR28/5draft/open/unmerged.
+RefLifecycleV1FIRST/qualificationV1SECOND/preparationV1THIRD:39inverses/13pairs
+restore SAMEraw96owner/root8;2562otherbaseline docs unchanged. Current420/97 include
+test/evidence ONCE;allolder histories remain. RootLOCAL/4+32+1unresolved/Actions
+PROHIBITED/fullgoalACTIVE/no budget/alloriginal gates remain.
+
+
+## Job ID validator source qualification (2026-10-22)
+
+FIRST255/255 frozen PUBLIC SOURCE controls pass,zero failures/skips/cancellations.
+Only exact exported jobIdValid executes with synthetic PUBLIC identifier/string/
+null and inert immediate builtin/error bindings. All128 ASCII singletons, length
+boundaries, excluded Unicode/control/separator fragments at three positions, null
+short-circuit, original input/regex receiver/lookup-call order, literal freshness
+and immediate faults/return pass-through are checked. Fault/builtin replacement
+characterization is separate from ordinary membership. No supported defect/change;
+TESTS/DOCS ONLY. Actual jobs/output/filesystem/database/configuration/operator
+inputs/neighbours/engine/credentials/native services and module initializers inert.
+
+FIRSTtypes2isolated-selected roots/0diagnostics and lint2files/0errors/warnings pass.
+Fresh211compiler inputs only TypeScript lib/Node/undici declarations+package
+metadata;191snapshotReads/fallback0. All37428DIRECTLinux before/after hashes and
+429frozen execution bindings match. Source0.937s/83693568peakbytes;types4.016s/
+291684352;lint28.110s/202039296. AllmainhandlesSIGNALLED;activeBeforeDrain0ALL/
+explicitdrain0ALL;TotalProcesses2each/causeUNESTABLISHED. Source ANDtypes stderr
+EMPTY. Lint retains TWOsetup notices:React detection and absent Pages directory.
+NoOSnetworkisolation/universaldescendant/performance/independent-person claim.
+
+Infrastructure preparation V1 stopped BEFORE owner edits on214vs211 selected
+inputs;three backward TS5.6 compatibility declarations were identified by DIRECT
+metadata. DISTINCT V2 selects211current inputs;original helper/failure frozen.
+No source/types/lint failure/replay. All2573baseline docs checked;13inserts affect
+11docs+PLAN/status;2562otherdocs unchanged. QualificationV1FIRST/preparationV1SECOND
+restore26inverses/13pairs to SAMEraw96owner/root8. Prior raw95/earlier stay frozen.
+Current420inputs/97selected docs include the new test/evidence ONCE;separate334/
+compat5/protected3/chartsaliases remain. Production delta froma2b2668a remains
+EXACT1addition/1deletion kv-http overflow cancellation. No runtime qualification.
+
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close retained. No actual
+HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/
+production/grants/CAS/provisioning/frozenreplay. ActionsPROHIBITED,historicalCIonly/
+overallCIfalse;rootLOCAL/4+32+1findings unresolved. FULLgoalACTIVE/no budget;all44
+clauses/21gates/fixtures/failures/rejectedactions remain. FINAL PRDdeployment AND
+verification AFTER ALL original preceding gates.
+
+
+## Job ID validator source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only exact exported jobIdValid from
+src/lib/job-output.ts. Source order was recorded BEFORE controls: typeof string
+gate, short-circuit, unflagged anchored ASCII regex literal, test lookup/call,
+direct result. Synthetic PUBLIC identifier/string/null and inert immediate builtin/
+error bindings only; no application module initializer or neighbour executes.
+Character/length membership, exact input/receiver/order and injected fault/return
+characterization remain distinct. No supported defect established; TESTS/DOCS ONLY.
+Source/types/lint UNEXECUTED pending immutable freeze and preparation review.
+
+Startup25100 ordered hashes passed24589incoming BEFORE511current;419inputs/96docs/
+compat5/separateOriginal334/protected3/root8/chartsaliases verified. Startup V1
+then failed on an erroneous absent LIVE public-sort test path; frozen baseline
+remains separate. DISTINCT metadata continuation passes52inverses/13pairs to
+SAMEraw95owner/root8;2560otherdocs. Original helper/failure retained, no workload
+replay. Immutable receipt preceded edits. Parent FIRST25701 match, DIRECT1128
+and retained-record52 pass released hold. Both startup inventories291/291/21
+retain FINAL290 originals plus same sole capture;zero missing/changed refs.
+
+Actual job/output/filesystem/database/configuration/operator inputs/neighbours/
+engine/credentials/native services inert. No actualHTTP/auth/native/SQL/ORM/
+operatorDB/backend/build/server/recovery/performance/production/grants/CAS/
+provisioning/frozenreplay. Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/
+kill-on-close remain. ActionsPROHIBITED,historicalCIonly/overallCIfalse;rootLOCAL/
+4+32+1findings unresolved;all44clauses/21gates/fixtures/failures/rejectedactions
+remain. FULLgoalACTIVE/no budget;FINAL PRDdeployment ANDverification AFTER ALL
+original preceding gates.
+
+
 ## Ansible observer pre-stage ref reconciliation (2026-10-22)
 
 FIRST pre-stage V1 stopped BEFORE staging on missing capture TREE7a6ab and new
