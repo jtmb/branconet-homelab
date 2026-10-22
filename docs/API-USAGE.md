@@ -1,5 +1,45 @@
 # BORTUS API usage
 
+
+## verifyJWT source qualification (2026-10-22)
+
+All 100 NEW frozen PUBLIC SOURCE controls passed once with no failures, skips,
+cancellations or todos. Only the exact declaration runs in a strict inert shell;
+the original module, signing-key runner and verifier implementations never run.
+Order was recorded after owner release before controls: capture runner member,
+invoke its callback with injected key metadata, capture Promise.resolve before
+the injected verifier call, await runner output, then read payload/version.
+Nullish versions default to zero; subject must be nonempty string, username must
+be string, and version must be a nonnegative safe integer (-0 is preserved).
+Repeated subject/username reads and the new named-field projection retain exact
+source semantics. Getter/fault/receiver/argument/identity, short-circuit, await,
+fresh and concurrent decisions qualify inert JavaScript behavior only. No real
+JWT/authentication validity or supported production defect/correction is established.
+
+Focused types pass 2 roots with 0 diagnostics: 7,588 fresh declaration/package
+contents in 76 parts, 191 compiler inputs/191 snapshot reads, fallback 0, DIRECT
+Linux and UNC exact via stdin. Lint passes 2 files with 0 errors/warnings; React
+detection and missing-pages notices remain. All 37,428 dependencies and 37 in-tree
+nondangling symlinks match before/after. Source 0.984s/types 3.812s/lint 31.703s;
+main handles signalled, active-before-drain [0,0,0], explicit drain 0 for all.
+TotalProcesses is 2 each, cause UNESTABLISHED. Existing Windows Node 24.18.0,
+60s wall/30s user CPU/1GiB Job commit/two CPUs/one ACTIVE/kill-on-close limits
+remain. The inherited corrected-control filter was removed before freeze.
+Exact executed/owner/staged/committed LF test identity is required. All current
+and inherited helpers/configs/workloads are frozen, never replayed.
+
+Actual cookies/headers/tokens/signing material/credentials/keygen/crypto/sign/
+verify/accounts/auth/JWT/passwords/DB/Prisma/SQL/ORM/HTTP/native/backend/build/
+server/recovery/performance/production/original transactions/module/import/
+initializers/neighbours remain inert. No whole-project/Linux-checkout/runtime/
+security/performance/actual AT/recovery, OS-network-isolation, universal-descendant
+or independent-person qualification follows. Root docs LOCAL/no push; 4+32+1
+findings UNRESOLVED; Actions PROHIBITED/historical CI only/overall CI false.
+Full goal ACTIVE/no token budget; all 44 clauses/21 gates/fixtures/failures/
+rejected actions remain. FINAL PRD deployment AND verification follow every
+original preceding gate, including compatible independent recovery and a fresh
+backup AFTER quiescence.
+
 ## getSessionAccount source qualification (2026-10-22)
 
 The exact declaration qualifies 85 unique finite PUBLIC SOURCE controls with an
