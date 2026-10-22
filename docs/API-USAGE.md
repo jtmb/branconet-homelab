@@ -1,5 +1,65 @@
 # BORTUS API usage
 
+## getSession source qualification (2026-10-22)
+
+All74 NEW finite PUBLIC SOURCE controls passed ONCE, zero fail/skip/cancel/todo.
+Only the exact async declaration executes with an inert synthetic cookies namespace,
+store, verifier and account metadata. Dynamic import, cookies, verifier and current
+await fences, exact store receiver/name/value order, falsy token/payload refusal,
+caught synchronous/awaited faults, unchanged fulfilled results, fresh decisions and
+concurrent independence pass. Forbidden callees are recorded outside the catch.
+The synthetic initializer only exports one injected binding. Actual next/headers,
+original module/import/initializer/neighbours and real cookie/token/account/auth
+validity remain OUTSIDE. No supported production defect/correction is established.
+Actual cookies/headers/tokens/signing material/credentials/keygen/crypto/sign/verify/
+accounts/auth/JWT/passwords/DB/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/
+performance/production and original transactions remain INERT. Focused types2roots/
+0diagnostics use7588 fresh declaration/package.json contents in76parts,460inputs/
+460snapshotReads/fallback0, DIRECTLinux+UNC exact via stdin. Lint2files/0errors/
+warnings retains React-detection/pages-path notices. All37428 dependency records/
+37in-tree nondangling symlink targets are exact before/after. Source1.031s/types5.375s/
+lint35.750s; all mainhandles SIGNALLED, activeBeforeDrain[0,0,1], drain[0,0,0],
+TotalProcesses2each/causeUNESTABLISHED. WindowsNode24.18.0 only, synthetic import hook
+uses --experimental-vm-modules; its experimental notice is retained. Existing60s wall/
+30s userCPU/1GiB commit/twoCPU/oneACTIVE/kill-on-close limits remain. All current and
+inherited helpers/workloads are FROZEN, never replay. No OS-network-isolation/
+universal-descendant/independent-person/performance/security/actualAT/recovery claim.
+Exact executed/owner/staged/committed LF test identity is required. See implementation-evidence/get-session-source-20261022.json.
+All44clauses/21gates/fixtures/failures/resources/rejected actions remain. Root LOCAL/
+no push,4+32+1findings UNRESOLVED,Actions PROHIBITED,historicalCIOnly/overallCIfalse,
+fullgoal ACTIVE/no budget. FINAL PRD deployment AND verification follow ALL original
+preceding security/performance/actualAT/compatible independent recovery/fresh backup
+AFTER quiescence/schema/effectiveRBAC/admission/data gates. This replaces none.
+
+
+## getSession source preparation (2026-10-22)
+
+After verified predecessor ownership release, source order was recorded BEFORE
+NEW finite PUBLIC SOURCE controls. Only the exact async getSession declaration
+is lifted. Its dynamic import is intercepted by a Node VM hook supplying a synthetic
+namespace with one inert cookies binding; no actual next/headers or original
+module/import/initializer/neighbour executes. The synthetic initializer only
+exports that injected metadata. The declaration awaits import, cookies, verifier
+and current-session results inside one try/catch. It calls store.get with the exact
+cookie name and store receiver, reads optional value, refuses falsy token/payload
+metadata and returns null on synchronous faults or awaited rejections. Current
+fulfilled results retain identity. These are source-control intents; no real cookie,
+token, account, authentication or revocation behavior is qualified. No supported
+production defect/correction is established. All actual cookies/headers/tokens/
+signing material/credentials/keygen/crypto/sign/verify/accounts/auth/JWT/passwords/
+DB/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/production
+and original transactions remain INERT. Controls/types/lint remain UNEXECUTED
+pending review/freeze. Existing Windows Node24.18.0 only; the synthetic import hook
+uses --experimental-vm-modules. No install/new runtime. Existing60s wall/30s userCPU/
+1GiB commit/twoCPU/oneACTIVE/kill-on-close limits remain. Fresh declaration snapshots
+and distinct helpers are required; all inherited helpers/workloads remain FROZEN.
+All44clauses/21gates/fixtures/failures/resources/rejected actions remain. Root LOCAL/
+no push,4+32+1findings UNRESOLVED,Actions PROHIBITED,fullgoal ACTIVE/no budget.
+FINAL PRD deployment AND verification follow ALL original preceding security/
+performance/actualAT/compatible independent recovery/fresh backup AFTER quiescence/
+schema/effectiveRBAC/admission/data gates. Preparation replaces none.
+
+
 ## getSessionFromHeaders source qualification (2026-10-22)
 
 All65 NEW finite PUBLIC SOURCE controls passed ONCE with zero failure/skip/cancel/
