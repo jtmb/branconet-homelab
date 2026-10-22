@@ -1,5 +1,71 @@
 # BORTUS user permissions
 
+## Account failure source qualification (2026-10-22)
+
+All55 NEW finite PUBLIC SOURCE controls passed ONCE, zero fail/skip/cancel/todo.
+Exact unchanged synchronous accountFailure covers instanceof hook ordering and
+truthiness, selected json member before arguments, message then status forwarding,
+fixed unavailable503 without input reads, immediate receivers/arguments/results,
+unchanged synchronous fault propagation, captured-method/getter/object ordering
+and unassimilated thenables. Imports, singleton initialization, real AccountError/
+AccountStore/Prisma/NextResponse and original transaction behavior are OUTSIDE.
+No supported production defect/correction. Executed/owner/committed test bytes must
+match; canonical LF source identity accepts Git LF/Windows CRLF only. Focused types
+2roots/0diagnostics, fresh7588 d.ts/package.json contents in76parts,191inputs/
+191snapshotReads/fallback0 DIRECTLinux+UNC exact. Lint2files/0errors/warnings retains
+React-autodetection setup notice.37428dependencies/37in-tree nondangling symlink
+files exact before/after. Source1.032s/types4.797s/lint38.843s; all mainhandles
+SIGNALLED,activeBeforeDrain[1,0,1],drain[0,0,0],TotalProcesses2each/causeUNESTABLISHED.
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged; existing
+WindowsNode24.18.0 only. No OS-network-isolation/universal-descendant/independent-
+person/performance claim. Preparation first refused a virtual Windows/WSL path;
+distinct V2 captured9103 contents then refused the7588 expected count. Complete
+92part raw capture remains; DISTINCT V3 selects reviewed6592d.ts+996package.json
+contents in76bounded parts. Both failures occurred BEFORE controls/types/lint.
+Post-run metadata reviewer refused Windows argv206 before launching its child;
+DISTINCT stdin reviewer passed. Failed originals and all checks stay FROZEN; no
+workload replay. Startup reader/matcher failures and distinct successful corrections
+remain separate. Actual credentials/auth/JWT/cookies/passwords/SQL/ORM/HTTP/native/
+backend/build/server/recovery/performance/production stay INERT. No Linux-checkout/
+wholemodule/project/runtime/security/actualAT/recovery or original transaction
+acceptance. See application implementation-evidence/account-failure-source-20261022.json.
+All44clauses/21gates/failures/rejectedactions remain. RootLOCAL/no push;
+4+32+1findingsUNRESOLVED;ActionsPROHIBITED/historicalCIOnly/overallCIfalse;
+fullgoalACTIVE/no budget. FINAL PRD deployment AND verification follow ALL original
+security/performance/actualAT/compatible independent recovery/fresh backup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates. This source checkpoint replaces none.
+
+
+
+## Account failure source preparation (2026-10-22)
+
+The exact exported synchronous accountFailure declaration order was recorded FROM
+source BEFORE55 NEW finite PUBLIC SOURCE controls. It evaluates instanceof first,
+then captures the selected NextResponse.json member before arguments; the true
+branch reads message then status, while the false branch uses fixed unavailable/
+503 without input property reads. One immediate call returns its exact result;
+synchronous faults propagate without catch/retry/await/thenable assimilation.
+Bindings are inert synthetic PUBLIC error/response metadata. Imports, accounts
+singleton initialization, real AccountError/AccountStore/Prisma/NextResponse and
+all actual credentials/auth/JWT/cookies/passwords/SQL/ORM/HTTP/native/backend/
+build/server/recovery/performance/production remain OUTSIDE and INERT. No supported
+production defect/correction is established. Controls/types/lint remain UNEXECUTED
+pending review/freeze. Canonical LF identity accepts only Git LF/Windows CRLF.
+Existing WindowsNode24.18.0 only; unchanged60swall/30userCPU/1GiBcommit/twoCPU/
+oneACTIVE/kill-on-close. Fresh split declaration snapshots for new type checking;
+no install/newruntime/frozen-workload replay. Source startup retained a failed
+metadata reader (absent older optional field) and DISTINCT full V2 pass; predecessor
+retained its separate fsutil-argument matcher failure and DISTINCT exact-pair V2.
+Both failed originals remain immutable. Ownership release SHA was verified before
+this declaration body/order/controls/owner work. No original transaction gate is
+requalified. All44clauses/21gates/failures/rejectedactions remain; RootLOCAL/no push;
+4+32+1findingsUNRESOLVED;ActionsPROHIBITED/historicalCIOnly/overallCIfalse;
+fullgoalACTIVE/no budget. FINAL PRD deployment AND verification follow ALL original
+security/performance/actualAT/compatible independent recovery/fresh backup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates. This preparation replaces none.
+
+
+
 ## Auth register POST source qualification (2026-10-22)
 
 All78 NEW finite PUBLIC SOURCE controls passed ONCE, zero fail/skip/cancel/todo.
