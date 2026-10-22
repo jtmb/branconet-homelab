@@ -1,5 +1,70 @@
 # BORTUS API usage
 
+## Resource base source qualification (2026-10-21)
+
+FIRST frozen PUBLIC SOURCE controls pass115/115,zero failures/skips/cancellations.
+Only exact exported resourceBase executes with synthetic public resource type/
+namespace/name and inert immediate registry/builtin/error bindings. The actual
+registry initializer and all neighbors/configuration/engine/credentials/native
+services remain inert. Exact string construction/encoding, conditional namespace
+branch, source-derived collection coercion/read order, fresh encoder reads and
+immediate failures pass. Malformed/proxy/getter/coercion cases characterize
+JavaScript only; no registry initialization, HTTP routing or authorization proof.
+No supported production defect/change established; TESTS/DOCS ONLY.
+
+FIRST types2roots/0diagnostics and FIRST lint2files/0errors/warnings pass. Fresh7588
+compiler inputs/192snapshot reads/fallback0;37428 DIRECT Linux before/after hashes
+match;423 frozen execution bindings unchanged. Source1.000s/89841664peakbytes;
+types4.531s/433717248;lint30.453s/201093120. AllmainhandlesSIGNALLED;
+activeBeforeDrain[0,1,1],explicitdrain0ALL;TotalProcesses2each/causeUNESTABLISHED.
+Module-type/experimentalstrip/lintReact notices retained. Caps60swall/30userCPU/
+1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged. NoOSnetworkisolation/universal
+descendant/performance/independentpersonclaim. FIRST metadata review3455 passed.
+All2565baseline docs checked;12 additive inserts affect10docs+PLAN/status and keep
+2555otherdocs unchanged. Prior receipt, failed/successful metadata matchers and
+all historical proofs remain frozen; no controls replayed. No actualHTTP/auth/
+native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/production/
+grants/CAS. ActionsPROHIBITED/historicalCIonly/overallCIfalse. RootdocsLOCAL/4+32+1
+findings unresolved. FULLgoalACTIVE/no budget;all44clauses/21gates/fixtures/failures/
+rejectedactions remain. FINAL PRDdeployment ANDverification AFTER ALL preceding gates.
+
+
+## Resource base source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported resourceBase from
+src/lib/resource-capabilities.ts. Source order recorded BEFORE controls: one
+synthetic registry lookup/captured capability; collection read/coercion before
+namespaced truthiness; conditional namespace encoder/read/result coercion before
+the fresh name encoder/read/result coercion. The actual registry initializer and
+all neighbors/configuration/engine/credentials/native services remain inert.
+The115 planned controls use synthetic public metadata and inert immediate
+registry/builtin/error bindings. Malformed/getter/proxy/coercion cases characterize
+JavaScript only; no HTTP routing, registry initialization or authorization proof.
+No supported production defect/change established; current feature TESTS/DOCS ONLY.
+Source/types/lint and NEW helpers remain UNEXECUTED, pending immutable freeze.
+
+Startup FIRST24157 ordered proofs pass24018incoming BEFORE139current; current415/
+92docs/compat5/separate334/protected3/root8/chartsaliases verified. The36 inverses
+restore12pairs against SAMEraw91/root8;2553otherdocs unchanged. Immutable receipt
+preceded edits; predecessor DISTINCT V4 FIRST50919 plus DIRECT888 passed. Its
+failed V1/V2/V3 metadata matchers and all three additive supplements remain frozen;
+missing active field and inherited naming/path-spelling histories stay separate.
+Both startup snapshots287/287/21 preserve FINAL286 originals and the same sole
+additional capture tree; no missing/changedrefs; allmetadata/dirt exact. Own
+current root8 pins are separate from inherited original pins. Read truncations/
+absent-path attempts remain; no full/uninterrupted-read claim or frozen replay.
+
+Fresh DIRECT Linux37428-file metadata snapshot retains7588 selected d.ts/package
+compiler inputs;9103 initial metadata entries and1515 excluded alternate declarations
+remain separate. Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close and
+explicit drain unchanged. No OS network isolation/universal descendant/performance
+claim. No actual HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/
+performance/production/grants/CAS/frozenreplay. GitHub Actions PROHIBITED;
+historicalCIonly/overallCIfalse. Root docsLOCAL/4+32+1findings unresolved. All44
+clauses/21gates/fixtures/failures/rejectedactions remain. FULLgoalACTIVE/no budget;
+FINAL PRDdeployment ANDverification AFTER ALL original preceding gates.
+
+
 ## Deployment Pods pre-stage ref reconciliation (2026-10-21)
 
 FIRST pre-stage metadata STOPPED BEFOREstaging: one older deployment-state capture
