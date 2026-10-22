@@ -1,5 +1,39 @@
 # BORTUS user permissions
 
+## currentAccount source qualification (2026-10-22)
+
+The exact declaration qualifies60 unique finite PUBLIC SOURCE controls with inert
+payload/account metadata. V1 retains59pass/1observation failure; V2 corrects only
+the host cross-realm Promise observation and executes that ONE callback through
+an exact-name filter (1pass/0fail/0skip). The other59 passed callbacks are unchanged
+and never replayed. V1 types/lint remain unexecuted and frozen. Capture readAccount
+before payload.sub, exact receiver/argument, await/falsy/strict-version refusal,
+unchanged account identity, no role/admin reads, fresh/concurrent decisions and
+return adoption are covered. This does not qualify the reader or authentication.
+No supported production defect/correction is established; production is unchanged.
+
+V2 focused types2roots/0diagnostics use7588 fresh declaration/package contents in
+76parts,191compilerinputs/191snapshotReads/fallback0, DIRECTLinux+UNC exact. Lint
+2files/0errors/warnings retains React/pages-path setup notices.37428dependency
+records/37in-tree nondangling symlinks match before/after. V2 source0.844s/types3.875s/
+lint32.891s; mainhandles SIGNALLED,activeBeforeDrain0,explicitdrain0 ALL. Each reports
+TotalProcesses2/causeUNESTABLISHED. WindowsNode24.18.0;60swall/30userCPU/1GiBcommit/
+twoCPU/oneACTIVE/kill-on-close unchanged. Original59 callbacks plus the corrected
+callback are byte-matched; exact V2 executed/owner/staged/committed file identity
+is required. All current/inherited helpers/workloads FROZEN, never replay.
+
+Original module/import/initializers/neighbours/transactions and actual credentials/
+cookies/headers/tokens/signing/keygen/crypto/auth/accounts/JWT/passwords/DB/Prisma/
+SQL/ORM/HTTP/native/backend/build/server/recovery/performance/production stay INERT.
+No wholemodule/project/Linuxcheckout/runtime/security/performance/actualAT/recovery,
+OSnetworkisolation/universaldescendant/independentperson claim. All44clauses/21gates/
+fixtures/failures/rejectedactions remain; rootLOCAL/no push,4+32+1UNRESOLVED,
+ActionsPROHIBITED/historicalCIOnly/overallCIfalse/fullgoalACTIVE/no budget. FINAL PRD
+deployment AND verification follow ALL original preceding gates, including fresh
+backup AFTER quiescence and compatible independent recovery. This replaces none.
+
+
+
 ## currentSession source qualification (2026-10-22)
 
 All57 NEW finite frozen PUBLIC SOURCE controls passed ONCE, with zero failure,
