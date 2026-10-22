@@ -1,6 +1,47 @@
 # BORTUS API usage
 
 
+## signJWT source qualification (2026-10-22)
+
+All 82 NEW frozen PUBLIC SOURCE controls passed once, zero failures, skips,
+cancellations or todos. Only the exact declaration executes in a strict inert
+shell; original runner, constructor and signing implementations remain inert.
+Order was recorded after owner release before controls: capture runner member
+and receiver, pass one synchronous arrow; within it resolve constructor before
+payload spread, copy own enumerable string/symbol properties, reread version
+and default nullish only to zero, then construct with the new metadata object.
+The header/issued-at/expiry/sign chain preserves each returned receiver, exact
+arguments, fresh HS256 header and literal 7d expiry. Intermediate values are not
+awaited; the callback directly returns sign metadata and the outer async return
+adopts the runner result. Getter/proxy/fault identity, short-circuit, repeated
+version reads, fresh and concurrent decisions characterize JavaScript only.
+Malformed synthetic metadata establishes no input validity or signing/auth claim.
+No supported production defect or production correction was established.
+
+Focused types pass 2 roots/0 diagnostics: 7,588 fresh declaration/package contents
+in 76 parts; 191 compiler inputs/191 snapshot reads/fallback 0, DIRECT Linux and
+UNC exact via stdin. Lint passes 2 files/0 errors/warnings; React-detection and
+missing-pages setup notices remain. All 37,428 dependencies and 37 in-tree
+nondangling symlinks match before/after. Source 0.922s/types 3.890s/lint 30.922s;
+main handles signalled, active-before-drain [0,0,0], explicit drain 0 for all.
+TotalProcesses is 2 each, cause UNESTABLISHED. Existing Windows Node 24.18.0,
+60s wall/30s user CPU/1GiB Job commit/two CPUs/one ACTIVE/kill-on-close limits
+remain. Exact executed/owner/staged/committed LF test identity is required.
+All current and inherited helpers/configs/workloads are frozen, never replayed.
+
+Actual cookies/headers/tokens/signing material/credentials/keygen/crypto/sign/
+verify/accounts/auth/JWT/passwords/DB/Prisma/SQL/ORM/HTTP/native/backend/build/
+server/recovery/performance/production/original transactions/module/import/
+initializers/neighbours remain inert. No whole-project/Linux-checkout/runtime/
+security/performance/actual AT/recovery, OS-network-isolation, universal-descendant
+or independent-person qualification follows. Root docs LOCAL/no push; 4+32+1
+findings UNRESOLVED; Actions PROHIBITED/historical CI only/overall CI false.
+Full goal ACTIVE/no token budget; all 44 clauses/21 gates/fixtures/failures/
+rejected actions remain. FINAL PRD deployment AND verification follow every
+original preceding gate, including compatible independent recovery and a fresh
+backup AFTER quiescence. See application implementation-evidence/sign-jwt-source-20261022.json.
+
+
 ## verifyJWT source qualification (2026-10-22)
 
 All 100 NEW frozen PUBLIC SOURCE controls passed once with no failures, skips,
