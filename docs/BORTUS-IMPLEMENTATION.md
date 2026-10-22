@@ -1,5 +1,49 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## getSessionAccount source qualification (2026-10-22)
+
+The exact declaration qualifies 85 unique finite PUBLIC SOURCE controls with an
+inert synthetic cookies namespace, verifier and current-account metadata. V1
+retains 84 passes and one VM observation failure: a contextified global accessor
+fault surfaced as ReferenceError rather than the injected payload. V2 corrects
+only that observation and runs only the failed callback (1 pass, 0 failures or
+skips); the other 84 passed callbacks are unchanged, excluded and never replayed.
+V1 types/lint remain unexecuted and frozen. No supported production defect or
+production correction is established.
+
+Source order was recorded after owner release before controls. Import, detached
+zero-argument cookies call, awaited store, get member/name/receiver, optional value,
+falsy label and awaited verifier remain inside try/catch. Their faults return null.
+The get result itself is not awaited. Payload truthiness and the direct
+current-account call/return occur outside catch, so its synchronous/rejected/
+thenable faults propagate. Getter order, exact arguments/identities, short-circuit,
+await/return adoption, no projection and fresh/concurrent calls are covered.
+Injected metadata establishes no real cookie, token, account or auth validity.
+
+V2 focused types pass 2 roots with 0 diagnostics: 7,588 fresh declaration/package
+contents in 76 parts; 460 compiler inputs/460 snapshot reads, fallback 0, DIRECT
+Linux and UNC exact via stdin. Lint passes 2 files with 0 errors/warnings; VM
+Modules, React-detection and missing-pages notices remain. All 37,428 dependency
+records and 37 in-tree nondangling symlinks match before/after. V2 source 0.875s,
+types 5.515s, lint 32.532s; main handles signalled, active-before-drain [0,1,1],
+explicit drain 0 for all. TotalProcesses is 2 each, cause UNESTABLISHED. Existing
+Windows Node 24.18.0, 60s wall/30s user CPU/1GiB Job commit/two CPUs/one ACTIVE/
+kill-on-close limits remain. Exact executed/owner/staged/committed LF test identity
+is required. All V1/V2 and inherited helpers/workloads are frozen, never replay.
+
+Original modules/imports/initializers/neighbours/transactions and actual cookies,
+headers/tokens/signing material/credentials/keygen/crypto/sign/verify/accounts/auth/
+JWT/passwords/DB/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/
+production remain inert. No whole-project/Linux-checkout/runtime/security/
+performance/actual AT/recovery, OS-network-isolation, universal-descendant or
+independent-person qualification follows. Root docs LOCAL/no push; 4+32+1 findings
+UNRESOLVED; Actions PROHIBITED/historical CI only/overall CI false. Full goal ACTIVE
+with no token budget; all 44 clauses/21 gates/fixtures/failures/rejected actions
+remain. FINAL PRD deployment AND verification follow every original preceding
+gate, including compatible independent recovery and fresh backup AFTER quiescence.
+
+
+
 ## getSessionAccountFromHeaders source qualification (2026-10-22)
 
 All 75 new frozen PUBLIC SOURCE controls passed once, with zero failures, skips,
