@@ -1,5 +1,84 @@
 # BORTUS API usage
 
+## ensureJwtSecret source qualification (2026-10-22)
+
+The DISTINCT scalar-argument assertion candidate passed all36 finite PUBLIC SOURCE
+controls ONCE, zero fail/skip/cancel/todo. V1 source35pass/1cross-realm array assertion
+failure and UNEXECUTED types/lint remain separate FROZEN evidence. Only that fixture
+assertion changes to exact call count, argument count and fixed message; the36
+intents, selected declaration, metadata fixtures and resource limits remain.
+The unchanged selected async declaration reads env then BOTRUS_JWT_SECRET once,
+rejects falsy public metadata with the fixed operator message and fulfills undefined
+otherwise. Truthy metadata stays opaque; getter/construction faults reject with
+identical thrown values. Fresh reads and Promise behavior are qualified. Actual
+signing material validity is OUTSIDE; no production defect or correction established.
+Actual application environment/credentials/keygen/sign/verify/auth/JWT/cookies/
+passwords/DB/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/
+production remain INERT. No original module/import/initializer/neighbour/transaction
+executes. Fresh focused types2roots/0diagnostics use7588declaration/package.json
+contents in76parts;191inputs/191snapshotReads/fallback0, DIRECTLinux+UNC exact via
+stdin. Lint2files/0errors/warnings retains React-autodetection/pages-path notices.
+37428dependencies/37in-tree nondangling symlink files exact before/after BOTH
+candidates. V2 source0.938s/types4.547s/lint36.609s; all mainhandles SIGNALLED,
+activeBeforeDrain[0,1,1],drain[0,0,0],TotalProcesses2each/causeUNESTABLISHED. Caps
+60s wall/30s userCPU/1GiB commit/twoCPU/oneACTIVE/kill-on-close unchanged. Existing
+WindowsNode24.18.0 only; physical output verified BEFORE WSL writes. All V1/V2 and
+inherited helpers/workloads are FROZEN, never replay. No OS-network-isolation,
+universal-descendant/independent-person/performance/original-runtime/security/
+actualAT/recovery claim. Exact executed/owner/staged/committed LF identity remains
+a checkpoint gate. See implementation-evidence/ensure-jwt-secret-source-20261022.json.
+All44clauses/21gates/failures/resources/rejectedactions remain; rootLOCAL/no push,
+4+32+1findings UNRESOLVED,ActionsPROHIBITED/historicalCIOnly/overallCIfalse,
+fullgoalACTIVE/no budget. FINAL PRD deployment AND verification follow ALL original
+preceding security/performance/actualAT/compatible independent recovery/fresh backup
+AFTER quiescence/schema/effectiveRBAC/admission/data gates. This replaces none.
+
+
+## ensureJwtSecret source assertion refusal and correction preparation (2026-10-22)
+
+The first36-control candidate completed35 passes and one failure: the test compared
+a VM-created constructor-argument array with a host array using deepStrictEqual,
+whose prototype check rejects this cross-realm fixture. The exact fixed message
+and constructed rejection identity were already observed. This is a test assertion
+error; no production defect or correction. V1 source failure/raw logs and UNEXECUTED
+types/lint remain separate FROZEN evidence, never replay. All37428dependency records
+and37in-tree nondangling symlink files remain unchanged. A DISTINCT candidate changes
+only this cross-realm assertion to exact call count, argument count and message
+scalar checks. All36 finite intents, fixtures, selected declaration and limits stay.
+NEW helpers/fresh declarations must be reviewed/frozen before its once-only run.
+Actual environment/signing material/credentials/keygen/sign/verify/auth/JWT/cookies/
+passwords/DB/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/
+production remain INERT; no original module/import/initializer/neighbour executes.
+All44clauses/21gates/failures/resources/rejectedactions remain; rootLOCAL/no push,
+4+32+1findings UNRESOLVED,ActionsPROHIBITED,fullgoalACTIVE/no budget. FINAL PRD
+deployment AND verification follow ALL original preceding security/performance/
+actualAT/compatible independent recovery/fresh backup AFTER quiescence/schema/
+effectiveRBAC/admission/data gates. No gate closes from this refusal/preparation.
+
+
+## ensureJwtSecret source preparation (2026-10-22)
+
+The exact async declaration was read after verified owner release and its source
+order recorded BEFORE36 NEW finite PUBLIC SOURCE controls. Only the declaration
+is lifted into an inert shell with injected process/environment and Error bindings.
+It reads env then BOTRUS_JWT_SECRET once, rejects falsy inputs with a fixed operator
+message, and otherwise fulfills undefined. Getter/construction faults reject the
+same thrown value. These controls use public metadata; they do not validate actual
+signing material. Actual application environment, credentials, key generation,
+sign/verify/auth/JWT/cookies/passwords/DB/Prisma/SQL/ORM/HTTP/native/backend/build/
+server/recovery/performance/production remain INERT. No original module/import/
+initializer/neighbour/transaction executes. No supported defect or production
+correction is established. Source/types/lint remain UNEXECUTED until review/freeze.
+NEW helpers/fresh declarations retain existing WindowsNode24.18.0,60s wall/30s user
+CPU/1GiB commit/twoCPU/oneACTIVE/kill-on-close; physical output precedes WSL writes.
+All inherited workloads remain FROZEN. All44clauses/21gates/fixtures/failures/
+resources/rejectedactions remain; rootLOCAL/no push,4+32+1findings UNRESOLVED,
+ActionsPROHIBITED/historicalCIOnly/overallCIfalse,fullgoalACTIVE/no budget. FINAL
+PRD deployment AND verification follow ALL original security/performance/actualAT/
+compatible independent recovery/fresh backup AFTER quiescence/schema/effective
+RBAC/admission/data gates. This preparation replaces none.
+
+
 ## AccountStore constructor source qualification (2026-10-22)
 
 The DISTINCT callback-void candidate passed all30 finite PUBLIC SOURCE controls
