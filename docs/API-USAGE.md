@@ -1,5 +1,133 @@
 # BORTUS API usage
 
+## Deploy stop POST pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage STOPPED BEFORE staging on one missing historical capture
+TREEca98d5 and one new checkpoint TREEf7e4f2,zerochanged. DISTINCT pure DIRECT
+FIRST verifies exact stoppedsets/allpersistentmetadata/live/dirt and BOTH298/
+298/21 inventories. BOTHobjects retained;causeUNESTABLISHED;no refmutation/object
+recreation/replay. Separate DIRECT WSLgh metadata confirms ActionsdisabledBOTH/
+PR28+5draftopenunmerged. Stopped and reconciled histories remain separate.
+RefLifecycle FIRST,qualification SECOND,scaffold-correction THIRD,preparation-
+correction FOURTH,preparation FIFTH restore65inverses/13pairs SAMEraw103owner/
+root8 content with documented newline transport;2576other2587completeBOTHbaseline
+docs unchanged. Current427/104 retains all stream/startGET/startPOST/stopPOST tests
+and newevidence ONCE. RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/
+no budget/all44clauses/21gates/fixtures/failures/rejectedactions/FINALPRDAFTERALL
+originalgates remain. No source/types/lint workload replay or production patch.
+
+
+## Deploy stop POST source qualification (2026-10-22)
+
+DISTINCT V2 SOURCE passes63/63,zero fail/skip/cancel/todo,for the exact unchanged
+exported POST with inert synthetic immediate bindings. Member/call/receiver/
+argument and nullish-selection order, authorization/lookup await fences, fixed
+400/404/409/503 refusals, discarded abort return, response Promise adoption and
+outside-try/catch propagation are covered. Actual authorization/validation/ORM/
+registry/abort/NextResponse implementations and real cancellation completion are
+OUTSIDE this declaration qualification. TESTS/DOCS ONLY; no supported production
+defect/correction. Actual HTTP/auth/database/ORM/operatorDB/native/backend/build/
+server/recovery/performance/production/grants/CAS/provisioning/moduleinitializers/
+neighbours/jobs/output/streams/timers/eventproducers/engine/credentials/services INERT.
+
+V1 loader FAILED before callbacks on a synthetic parameter property; DISTINCT V2
+uses explicit fields/assignments only. V2 TYPES FAILED2339 in its narrower JSON
+scaffold; DISTINCT V3 uses web Request['json'] with SAME executed V2 test bytes.
+V3 runner rejects SOURCE; passing controls were NOT replayed. All failures,
+prepared unused helpers and old inputs remain FROZEN. V3 TYPES2roots/0diagnostics
+covers exact POST plus synthetic scaffold/test only,not wholemodule/project.
+Lint2files/0errors/warnings. Fresh191compilerinputs/191snapshotReads/fallback0
+match DIRECTLinux;37428DIRECTLinux dependency hashes before/after,including37
+in-tree nondangling symlink files,match across all candidates.426existing source
+inputs unchanged;newtest/evidence ONCE gives current427/104. Executed/owner test
+bytes are EXACT; no EOF correction. The test pins exact Windows raw source bytes;
+Linux checkout and whole-project/runtime qualification remain separate.
+
+Source0.859s/79167488peakbytes,types3.985s/287621120,lint29.406s/284270592;
+metadataV3 4.406s/262823936. ALL final mainhandlesSIGNALLED and explicitdrain0;
+activeBeforeDrain0ALL. TotalProcesses2each/causeUNESTABLISHED. Source/typesstderr
+EMPTY;lintONEReact-autodetection setupnotice. Caps60swall/30userCPU/1GiBcommit/
+twoCPU/oneACTIVE/kill-on-close unchanged. NoOSnetwork isolation/universaldescendant/
+performance/independent-person claim. Source63 passed ONCE; no workload replay.
+
+Qualification FIRST,scaffold-correction SECOND,preparation-correction THIRD,
+preparation FOURTH restore52inverses/13pairs to SAMEraw103owner/root8 content with
+documented affected-doc newline transport;2576other2587completeBOTHbaseline docs
+unchanged. Older39/13/raw102+8/2585,older2583 and2301baselines/inverses stay separate.
+All44clauses/21gates/failures/fixtures/rejectedactions remain. ActionsPROHIBITED/
+historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED/FULLgoalACTIVE/no budget.
+FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding security/
+performance/actualAT/compatibleindependentrecovery/freshbackup AFTERquiescence/
+schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy stop POST synthetic type-scaffold correction (2026-10-22)
+
+DISTINCT V2 SOURCE passes63/63,zero fail/skip/cancel/todo,using the exact unchanged
+exported POST and synthetic immediate bindings ONLY. V2 TYPES then FAILS with
+one2339 diagnostic in the synthetic scaffold: its narrower JSON return type
+does not describe the web Request.json signature used by NextRequest. V2 SOURCE
+is FROZEN and will NOT rerun. V2 type result and unused lint remain FROZEN.
+
+DISTINCT V3 changes ONLY the scaffold json member to Request['json']; it retains
+the exact production declaration and EXACT V2-executed test bytes. Its new runner
+rejects SOURCE mode and allows only fresh metadata/TYPES/LINT under original caps.
+These checks remain UNEXECUTED pending freeze/review. This corrects the synthetic
+type contract, not production behavior or an acceptance gate. Actual HTTP/auth/
+database/ORM/native/cancellation/jobs/streams/services remain INERT. All original
+clauses/gates/failures/rejectedactions,ActionsPROHIBITED,rootLOCAL,4+32+1UNRESOLVED,
+FULLgoalACTIVE/no budget and FINALPRD AFTER ALLoriginal preceding gates remain.
+
+
+## Deploy stop POST source preparation correction (2026-10-22)
+
+The first bounded SOURCE module load FAILED before any of the63 control callbacks:
+Node strip-only mode rejects the synthetic response class parameter property.
+The module TAP records0pass/1fail; this is no source-control qualification.
+MainhandleSIGNALLED,explicitdrain0,0.141s/42356736peakbytes; source stderrEMPTY.
+V1 inputs/helpers and unused TYPES/LINT remain FROZEN. A DISTINCT V2 uses explicit
+class fields/assignments only; SAME63 still-unexecuted controls, original source,
+synthetic bindings, limits and acceptance gates remain. No workload/control replay,
+production correction, real cancellation, database or service execution occurred.
+V2 SOURCE/TYPES/LINT remain UNEXECUTED pending new metadata/freeze/review.
+
+All44clauses/21gates/failures/fixtures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/rootLOCAL/4+32+1UNRESOLVED/FULLgoalACTIVE/no budget.
+FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding gates.
+
+
+## Deploy stop POST source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select ONLY the exact exported POST in
+src/app/api/deploy/stop/route.ts. Order was derived FROM source BEFORE controls:
+await operator authorization outside try; inside try select query jobId with
+nullish JSON/catch fallback, validate with an inert immediate binding, await a
+synthetic selected job lookup, check running status and process ownership, call
+an inert abort binding WITHOUT awaiting its return, then construct202 metadata.
+Invalid/missing/completed/unowned paths return fixed400/404/409; caught faults
+return fixed503. Outside-try faults and returned response rejection propagate.
+Real cancellation completion and callee implementations are OUTSIDE this scope.
+No supported production defect/correction; production remains unchanged.
+
+The63 drafted controls are UNEXECUTED pending distinct freeze/review. All bindings
+are synthetic PUBLIC metadata. Actual HTTP/auth/database/ORM/operatorDB/native/
+backend/build/server/recovery/performance/production/grants/CAS/provisioning AND
+moduleinitializers/neighbours/jobs/output/streams/timers/eventproducers/engine/
+credentials/services remain INERT. No real AbortController, runner or DB executes.
+Startup26447 FIRST then233 current yields26680 exact proofs;426/103/compat5/
+separate334 and39inverses/13pairs/raw102+8/2574other2585docs pass. Independent
+predecessor matcher27991/late8/direct1024/extra2201/closure passed BEFORE release.
+New raw103owner/root8 and2587 complete BOTH-repository baseline remain separate.
+New inverse-offset and default-encoding reader refusals are retained; distinct
+corrections read metadata only with no owner mutation or workload replay.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
 ## Deploy start POST pre-stage ref reconciliation (2026-10-22)
 
 FIRST pre-stage STOPPED BEFORE staging on one missing historical capture
