@@ -1,5 +1,104 @@
 # BORTUS application deployment
 
+## Deploy stream GET final test-file whitespace (2026-10-22)
+
+The staged whitespace check found one extra terminal blank line in the new test.
+Exactly one final LF was removed; every other test byte/control/assertion is
+identical to the retained executed snapshot. The original failed staging helper
+and snapshot remain frozen. A separate byte equality review confirms this
+transport-only correction;no source/types/lint replay or production change.
+Final424 bindings reflect this test delimiter;the prior execution424 bindings stay
+distinct. Final whitespace inverses FIRST,refLifecycle SECOND,qualification THIRD,
+preparation FOURTH restore52inverses/13pairs SAMEraw100owner/root8. All original
+scope/resource/gates/failures and FULLgoalACTIVE/no budget/FINALPRDAFTERALL remain.
+
+
+## Deploy stream GET pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage stopped BEFORE staging on missing historical capture TREE94fb59
+and new checkpoint TREE8c8303,zero changed refs. DISTINCT pure DIRECT FIRSTpasses
+BOTH295/295/21 inventories,exact stopped sets/all persistentmetadata/live/dirt.
+Both tree objects retained;causeUNESTABLISHED;no refmutation/recreation/replay.
+Separate WSLgh metadata verifies ActionsdisabledBOTH and PR28/5draft/open/unmerged.
+Stopped and reconciled histories remain separate. RefLifecycle FIRST,qualification
+SECOND,preparation THIRD restore39inverses/13pairs SAMEraw100owner/root8;
+2570other2581baseline docs unchanged. Current424/101 includes newtest/evidence ONCE.
+RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/
+21gates/fixtures/failures/rejectedactions/FINALPRDAFTERALL original gates remain.
+
+
+## Deploy stream GET source qualification (2026-10-22)
+
+NEW FIRST70/70 PUBLIC SOURCE controls pass,zero failures/skips/cancellations/todo.
+Only exact exported GET executes with synthetic PUBLIC request/session/job/cursor/
+row/response metadata and inert immediate auth/database/stream/callback/builtin
+bindings. Source-derived authorization/read/validation order, header nullish
+precedence/defaults, shortcircuits, fixed400/403/404/503 responses, exact ID-only
+query, await fences, lazy fresh callbacks and exact fault behavior pass. Actual
+HTTP/auth/Prisma/SQL/job/output/stream/timer/native services and application module
+initializers/neighbors remain inert. No supported production defect/change;
+TESTS/DOCS ONLY. No source/types/lint replay.
+
+FIRST types2roots/0diagnostics covers exact unchanged GET in an explicit synthetic
+immediate-binding scaffold plus the new test; it does not qualify the full module
+or project. Lint2files/0errors/warnings. Fresh192 compilerinputs/192snapshotReads/
+fallback0 and37428DIRECTLinux hashes before/after,including37in-tree/nondangling
+symlinks,match;424sourceinputs unchanged. Source0.907s/92864512peakbytes;types3.750s/
+293224448;lint25.312s/291414016. MainhandlesSIGNALLED;activeBeforeDrain0ALL and
+explicitdrain0ALL. TotalProcesses2each/causeUNESTABLISHED. Source/types stderrEMPTY;
+lint ONE React-autodetection setup notice. NoOSnetworkisolation/universaldescendant/
+performance/independent-person claim.
+
+V1 preparation stopped before compiler/controls on CRLF text normalization;V2
+stopped before compiler/controls because Linux node was unavailable,after DIRECT
+dependency hashing. DISTINCT V3 uses authorized Windows Node for compiler metadata
+then DIRECTLinux rereads of exactly those inputs;same70/exactoracle/production
+declaration. Both failed preparers and partial artifacts remain FROZEN. V1 result
+reader expected an old two-notice lint pattern and stopped;distinct V2 verifies the
+actual ONE notice and reuses immutable after-hash metadata without workload replay.
+
+Startup26010 original objects/all1007fields817DIRECT retained;independent parent
+schema/matcher26274/direct/history2740/closure passed before release. Raw100owner/
+root8 and2581completebaseline remain;2570otherdocs unchanged. Current424/101 includes
+new test/evidence ONCE;publicsort baseline and original334 remain separate.
+RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/historicalCIonly/overallCIfalse remain.
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps preserved.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification ONLYAFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy stream GET source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only exact exported GET in
+src/app/api/deploy/stream/route.ts. Order was recorded FROM source BEFORE controls:
+initial operator await/response identity, job ID then header/query/default cursor,
+shortcircuit validation, cookie/current operator await, exact ID-only row query,
+and lazy stream callbacks before fixed SSE response headers. The try block maps
+failures to fixed503; earlier authorization/query/validation faults propagate.
+Synthetic PUBLIC request/session/job/cursor/row/response/lifecycle metadata and
+inert immediate auth/database/stream/callback/builtin bindings only. No application
+module initializer, actual HTTP/auth/SQL/ORM/job/output/stream/timer/native service
+executes. No supported production defect or production correction is established.
+New SOURCE/TYPES/LINT remain UNEXECUTED pending freeze and review.
+
+FIRST startup26010 passed25783incoming BEFORE227current, with exact full original
+objects retained.423inputs/100docs/compat5/separate334,52inverses13pairs to SAME
+raw99owner/root8 and2568otherdocs pass. Independent parent schemaFIRST/matcher26274/
+direct/history2740/closure passed before explicit release. FINAL294 originals and
+fresh295/295/21 refs stay separate;zero missing/changed. V1 receipt writer stopped
+before creation on a case-only key collision;distinct V2 preserves that failure,
+preparations and immutable accepted receipt. New raw100owner/root8 and complete
+2581-doc baseline remain;current root8 pins are separate from inherited originals.
+Read truncations/absent guessed wrapper paths are retained without full-read claim.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIonly/overallCIfalse;rootLOCAL/4+32+1UNRESOLVED.
+Full goal ACTIVE/no budget. FINAL PRDdeployment ANDverification only AFTER ALL
+original preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackupAFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
 ## Job stream pre-stage ref reconciliation (2026-10-22)
 
 FIRST pre-stageV1 stopped BEFORE staging on missing historical capture TREEe0ee14
