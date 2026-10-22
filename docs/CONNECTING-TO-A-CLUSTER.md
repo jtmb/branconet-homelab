@@ -1,5 +1,88 @@
 # Connecting BORTUS to a cluster
 
+## Deploy start GET pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage STOPPED BEFORE staging on missing historical capture TREE8c8303
+and new checkpoint TREEecb2cb,zerochanged. DISTINCT pure DIRECT FIRST verifies
+exact stoppedsets/allpersistentmetadata/live/dirt and BOTH296/296/21 inventories.
+Bothobjects retained;causeUNESTABLISHED;no refmutation/objectrecreation/replay.
+Separate metadata confirms ActionsdisabledBOTH/PR28+5draftopenunmerged. Stopped
+and reconciledhistories remain separate. RefLifecycle FIRST,qualification SECOND,
+preparation THIRD restore39inverses13pairs SAMEraw101owner/root8;2572other2583baseline
+docs unchanged. Current425/102 retains each newtest/evidence ONCE. RootLOCAL/
+4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/21gates/
+fixtures/failures/rejectedactions/FINALPRDAFTERALL original gates remain.
+
+
+## Deploy start GET source qualification (2026-10-22)
+
+FIRST28/28 NEW finite PUBLIC SOURCE controls pass,zero fail/skip/cancel/todo.
+Exact unchanged exported GET alone executes with inert synthetic immediate
+bindings. Member/call/iterator order, receivers, one-argument response metadata,
+fresh ID snapshots, Promise adoption and exact fault propagation are covered.
+This GET has no internal authorization/capability check; actual middleware/auth
+are outside this SOURCE qualification. Actual imports/moduleinitializers/
+neighbours/HTTP/auth/database/ORM/operatorDB/native/backend/build/server/jobs/
+output/streams/timers/eventproducers/engine/credentials/services remain inert.
+No supported production defect/correction; TESTS/DOCS ONLY.
+
+FIRSTtypes2roots/0diagnostics covers the exact unchanged GET in explicit synthetic
+immediate-binding scaffold plus newtest,not wholemodule/project. Lint2files/0errors/
+warnings. Fresh191compilerinputs/191snapshotReads/fallback0 verified DIRECTLinux
+equal to Windows compiler metadata;37428DIRECTLinux dependencyhashes before/after
+including37in-tree/nondanglingsymlinkfiles match.425sourceinputs unchanged;old
+deploy-stream test and newdeploy-start test each included ONCE. Source0.859s/
+75010048peakbytes,types3.891s/303767552,lint30.329s/281997312. Metadata4.656s/261611520.
+ALLmainhandlesSIGNALLED and explicitdrain0;source/types/lint activeBeforeDrain0,
+metadata activeBeforeDrain1 before explicitdrain0. TotalProcesses2each/cause
+UNESTABLISHED. Source/typesstderrEMPTY;lintONEReact-autodetection setupnotice.
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged. NoOSnetwork
+isolation/universaldescendant/performance/independent-person claim. No replay.
+
+Qualification inverses FIRST,preparation SECOND restore26inverses/13pairs to SAME
+raw101owner/root8;2572other2583completebaseline docs stay unchanged. First2301owner-
+only metadata baseline is separate and retained. Startupreceipt retains26237
+exact orderedobjects/all1116fields901DIRECT;V1directcount/V2casecollision writers/
+preparations frozen,distinctV3accepted;independent parent27353/extra1793/direct/
+closure passed before release. All incoming histories and52/raw100/older inverses
+remain frozen. RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/historicalCIonly/overallCI
+false/fullgoalACTIVE/no budget. All44clauses/21gates/fixtures/failures/rejectedactions
+remain. FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding
+security/performance/actualAT/compatibleindependentrecovery/freshbackup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy start GET source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only the exact exported zero-argument
+GET in src/app/api/deploy/start/route.ts. Order was recorded FROM source BEFORE
+controls: NextResponse.json member, Array.from member, activeJobs.keys member and
+call, finite iterator exhaustion, then one json call with activeJobIds metadata.
+The async return adopts its result; uncaught faults reject unchanged. This exact
+GET contains no authorization or runtime-capability check. Actual middleware and
+authorization remain outside this isolated declaration's qualification. No
+supported production defect or correction is established; production is unchanged.
+
+Only synthetic PUBLIC IDs/response/authorization/capability metadata and inert
+immediate bindings are used. Actual HTTP/auth/database/ORM/operatorDB/native/
+backend/build/server/jobs/output/streams/timers/eventproducers/engine/credentials/
+services and moduleinitializers/neighbours remain inert. SOURCE/TYPES/LINT are
+UNEXECUTED pending new freeze/review. Existing controls/helpers are frozen and
+never replayed. Startup rehashed26010incoming BEFORE227current,26237 exact original
+objects;424/101/compat5/separate334,52inverses13pairs SAMEraw100owner/root8 and
+2570otherdocs pass. Independent parent schema/matcher27353/direct/extra1793/closure
+passed before explicit release. Both receipt-writer failures and preparations
+remain frozen; the immutable acceptedreceipt is distinct. New raw101owner/root8
+and2583 complete both-repository docs baseline are retained; first2301 owner-only
+metadata preview is separate. New currentroot8 pins preserve inherited originals.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIonly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
 ## Deploy stream GET final test-file whitespace (2026-10-22)
 
 The staged whitespace check found one extra terminal blank line in the new test.
