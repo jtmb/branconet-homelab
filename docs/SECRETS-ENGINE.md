@@ -1,5 +1,107 @@
 # BORTUS Secrets Engine
 
+## Job stream pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stageV1 stopped BEFORE staging on missing historical capture TREEe0ee14
+and new checkpoint TREE94fb59,zero changed refs. DISTINCT pure DIRECTV1 FIRSTpasses
+BOTH294/294/21 inventories,exact stopped sets/all persistentmetadata/live/dirt.
+Both tree objects remain;causeUNESTABLISHED;no refmutation/objectrecreation/replay.
+Separate WSLgh metadata verifies ActionsdisabledBOTH and PR28/5draft/open/unmerged.
+Original stopped and reconciled histories remain separate. RefLifecycleV1 FIRST,
+qualificationV1 SECOND,harnessCorrectionV1 THIRD,preparationV1 FOURTH restore
+52inverses/13pairs SAMEraw99owner/root8;2568other2579baseline docs unchanged.
+Current423/100 includes new test/evidence ONCE. RootLOCAL/4+32+1UNRESOLVED/
+ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/21gates/fixtures/failures/
+rejectedactions/FINALPRDAFTERALL original preceding gates remain.
+
+
+## Job stream source qualification (2026-10-22)
+
+DISTINCT V2 FIRST92/92 PUBLIC SOURCE controls pass,zero failures/skips/cancellations.
+Only exact exported createJobStream executes with synthetic PUBLIC option/row/event/
+lifecycle metadata and inert immediate controller/callback/timer/default/builtin/
+error bindings. Setup/default selection, connection/deadline, fresh authorization
+before load, post-await closure fences, reset/codepoint/offset/frame bounds, terminal
+publication, poll waiter, abort/cancel/idempotent cleanup and exact fault behavior
+pass. No actual stream I/O,timer,event/job producer,Prisma/DB/module initializer,
+operator/filesystem/configuration/engine/credential/native service executes.
+No supported production defect or production correction; TESTS/DOCS ONLY.
+
+V1 FIRSTsource92/92 passes; FIRSTtypes retains two TS2378 test-accessor diagnostics.
+All V1 helpers/controls/freeze/logs/results FROZEN NEVERrerun;V1lint UNEXECUTED/FROZEN.
+DISTINCT V2 adds return to two assert.fail getters;SAME92/exact-error oracle remain.
+FIRST V2types2selectedroots/0diagnostics and lint2files/0errors/warnings pass.
+Fresh211 compilerinputs/190snapshotReads/fallback0;37428DIRECTLinux before/after,
+including37in-tree/non-dangling symlinks and423inputs match. Source0.891s/81526784
+peakbytes;types3.984s/288559104;lint27.063s/286720000. ALLmainhandlesSIGNALLED;
+activeBeforeDrain source0/types1/lint1;explicitdrain0ALL. TotalProcesses2each/
+causeUNESTABLISHED. Source/types stderrEMPTY;lint TWOsetup notices React detection/
+absent Pagesdirectory. NoOSnetworkisolation/universaldescendant/performance/
+independent-person claim. No V1 or V2 source/types/lint replay.
+
+Incoming immutable receipt,all25783 original full proofobjects and all877fields/
+709DIRECTbindings remain. ParentFIRST26563/direct/closure and explicit release
+preceded source work. Newraw99owner/root8,2579completebaseline and2568otherdocs
+remain;current423inputs/100docs include the new test/evidence ONCE. Production
+delta froma2b2668a remains EXACT1addition/1deletion kv-http overflowcancel from
+prior work. All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIonly/overallCIfalse;rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget;FINAL PRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job stream retained type-harness failure and distinct preparation (2026-10-22)
+
+V1 FIRST SOURCE92/92 passes with zero failures/skips/cancellations/stderr. V1 TYPES
+FIRST exits1 with two TS2378 diagnostics: nonreturning assert.fail accessors need
+explicit returns. Main handles signalled; explicit drains reach0. V1 helpers,
+controls/freeze/logs/results are FROZEN NEVERrerun; V1lint UNEXECUTED/FROZEN.
+DISTINCT V2 adds return to those two assert.fail getter bodies; same92 controls
+and exact-error oracle, unchanged selected production declaration. No supported
+production defect, oracle relaxation or production correction. V2 SOURCE/TYPES/
+LINT remain UNEXECUTED pending distinct fresh preparation/freeze/review.
+
+The first TAP log reader failed under the Windows default encoding; a distinct
+explicit UTF8 read confirms all92pass/zero fail/skip/cancel/todo and empty stderr.
+No workload replay followed that reader failure. Read truncations and the absent
+wrapper implementation-ledger path are retained separately without full-read claims.
+All44clauses/21gates/fixtures/failures/resourcecaps/rejectedactions/ActionsPROHIBITED/
+rootLOCAL/4+32+1UNRESOLVED remain. FULLgoalACTIVE/no budget;FINAL PRDdeployment AND
+verification only AFTER ALLoriginal preceding security/performance/actualAT/
+compatibleindependentrecovery/freshbackupAFTERquiescence/schema/effectiveRBAC/
+admission/data gates.
+
+
+## Job stream source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only exact exported createJobStream from
+src/lib/job-stream.ts. Evaluation order was derived FROM source BEFORE controls:
+nullish timer defaults, encoder/cursor setup, inert stream construction, start,
+fresh authorization before load, post-await closed fences, reset/Unicode offset
+validation, terminal publication, poll waiter and deadline/abort/cancel cleanup.
+Callbacks/controllers/timers/builtins are inert synthetic bindings; no real stream,
+timer, job, output source, Prisma/DB/module initializer or native service executes.
+No supported production defect is established; TESTS/DOCS ONLY. SOURCE/TYPES/LINT
+remain UNEXECUTED pending distinct infrastructure snapshot, freeze and review.
+
+FIRST startup25783 hashes passed25535incoming BEFORE248current with exact original
+metadata objects.422inputs/99docs/compat5/separate334 and52inverses/13pairs to SAME
+raw98owner/root8 plus2566otherdocs pass. FINAL293 originals and fresh294/294/21
+typed refs stay separate,zero missing/changed. Independent parent matcherFIRST26563,
+DIRECT audit and closure passed BEFORE explicit hold release. No frozen replay or
+immutable receipt/proof mutation. New raw99owner/root8 and complete2579-doc baseline
+are retained; new current root8 pins are separate from inherited originals.
+
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close remain. No actualHTTP/
+auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/production/
+grants/CAS/provisioning/frozenreplay. ActionsPROHIBITED/historicalCIonly/overallCIfalse;
+rootLOCAL/4+32+1findings UNRESOLVED;all44clauses/21gates/fixtures/failures/rejectedactions
+retained. FULLgoalACTIVE/no budget. FINAL PRDdeployment ANDverification only AFTER
+ALLoriginal preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackupAFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
 ## Job tail pre-stage ref reconciliation (2026-10-22)
 
 FIRST pre-stageV1 stopped BEFORE staging on missing historical capture TREE375442
