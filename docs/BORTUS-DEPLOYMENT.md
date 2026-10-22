@@ -1,5 +1,86 @@
 # BORTUS application deployment
 
+## Runtime capabilities pre-stage ref reconciliation (2026-10-21)
+
+FIRST pre-stage metadata V1 stopped on one missing capture TREE5b072 and one new
+checkpoint TREE435c3; no changed refs. Original failed helper/output remain frozen.
+A DISTINCT DIRECT reconciliation confirms the same missing/additional sets in BOTH
+shared inventories, all persistent heads/local/explicit/live/upstream metadata and
+expected dirt, and unchanged charts. CauseUNESTABLISHED; no ref mutation/object
+recreation, source/type/lint failure or control replay. Accepted reconciled counts
+288/288/21 retain original FINAL287/startup288/stopped histories separately.
+Staging resumes only after that direct confirmation. Current inverse order is
+ref-lifecycleV1FIRST/qualificationV1SECOND/preparationV1THIRD:36inverses/12pairs
+against SAMEraw93owner/root8;2557otherbaseline docs unchanged. All original gates,
+rootLOCAL/4+32+1unresolved/ActionsPROHIBITED/fullgoalACTIVE/no budget remain.
+
+
+## Runtime capabilities source qualification (2026-10-21)
+
+FIRST frozen PUBLIC SOURCE controls pass89/89,zero failures/skips/cancellations.
+Only exact exported runtimeCapabilities executes with synthetic PUBLIC env/platform
+metadata and immediate process/builtin/error bindings. Actual process.env/platform
+and all neighbors/configuration/engine/credentials/native services remain inert.
+Default env-before-platform binding, provisioning/host then operator-shell then
+pod-exec order, short-circuits, fresh results/reads and immediate failures pass.
+Supported flags compare exactly to lowercase true; nonempty host metadata disables
+provisioning and win32 disables operator shell. Malformed/proxy/getter/coercion
+cases characterize JavaScript only, not supported configuration or authorization.
+No supported production defect/change established; TESTS/DOCS ONLY.
+
+FIRST types2roots/0diagnostics and FIRST lint2files/0errors/warnings pass. Fresh210
+compiler inputs from only TypeScript lib/Node/undici declarations and package
+metadata;189snapshotReads/fallback0. Initial9103 dependency metadata entries remain
+separate. All37428 DIRECT Linux dependency hashes match before/after;426frozen
+execution bindings unchanged. Source1.078s/97275904peakbytes;types4.672s/307265536;
+lint35.844s/281276416. AllmainhandlesSIGNALLED;activeBeforeDrain[1,0,0],explicitdrain0
+ALL;TotalProcesses2each/causeUNESTABLISHED. Lint React-detection/missing-pages notices
+are retained separately from ESLint error/warning counts; source/types stderr empty.
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged. NoOSnetwork
+isolation/universaldescendant/performance/independent-personclaim. Metadata review447
+passed. All2567baseline docs checked;12additive inserts affect10docs+PLAN/status and
+keep2557otherdocs unchanged. Same raw93owner/root8 preserved; prior raw92 and earlier
+snapshots/inverses stay frozen. No controls/helpers replayed. No actualHTTP/auth/
+native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/production/grants/
+CAS. ActionsPROHIBITED/historicalCIonly/overallCIfalse. RootdocsLOCAL/4+32+1findings
+unresolved. FULLgoalACTIVE/no budget;all44clauses/21gates/fixtures/failures/rejected
+actions remain. FINAL PRDdeployment ANDverification AFTER ALL preceding gates.
+
+
+## Runtime capabilities source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported runtimeCapabilities
+from src/lib/runtime-capabilities.ts. Source order recorded BEFORE controls:
+synthetic env default, then synthetic platform default; provisioning flag strict
+comparison and conditional host truthiness; platform strict comparison and
+conditional operator-shell flag; pod-exec flag; fresh result object. Actual
+process.env/process.platform and all neighbors/configuration/engine/credentials/
+native services remain inert. The89 planned controls cover the supported flag
+truth table, exact spellings/platforms/defaults and immediate order/failures.
+Malformed/getter/proxy/coercion controls characterize JavaScript only; they do not
+establish supported operator configuration, HTTP/auth or runtime qualification.
+No supported production defect/change established; current feature TESTS/DOCS ONLY.
+Source/types/lint are UNEXECUTED pending immutable freeze of NEW helpers/controls.
+
+Startup FIRST24292 ordered proof hashes pass24157incoming BEFORE135current;
+416inputs/93selected docs/compat5/separateOriginal334/protected3/charts aliases/
+current root8 verified. QualificationV1 then preparationV1 inverses24 restore12
+pairs against SAMEraw92/root8;2555otherdocs unchanged. Immutable receipt preceded
+edits; predecessor DISTINCT V2 FIRST49828 plus DIRECT867 passed and released hold.
+Both independent startup snapshots288/288/21 retain FINAL287 originals and the
+same sole additional capture tree, zero missing/changedrefs, exact metadata/dirt.
+Own current root8 pins remain separate from inherited original pins. All older
+histories/helpers/failures and explicit read exceptions stay frozen/separate.
+
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close and explicit drain
+remain. No OS network isolation/universal descendant/performance/independent-person
+claim. No actual HTTP/auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/
+performance/production/grants/CAS/frozenreplay. ActionsPROHIBITED/historicalCIonly/
+overallCIfalse. RootdocsLOCAL/4+32+1findings unresolved. FULLgoalACTIVE/no budget;
+all44clauses/21gates/fixtures/failures/rejectedactions remain. FINAL PRDdeployment
+ANDverification AFTER ALL original preceding gates.
+
+
 ## Resource base source qualification (2026-10-21)
 
 FIRST frozen PUBLIC SOURCE controls pass115/115,zero failures/skips/cancellations.
