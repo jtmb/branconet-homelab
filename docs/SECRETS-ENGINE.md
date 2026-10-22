@@ -1,5 +1,92 @@
 # BORTUS Secrets Engine
 
+## Deploy start POST pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage STOPPED BEFORE staging on one missing historical capture
+TREEecb2cb and one new checkpoint TREEca98d5,zerochanged. DISTINCT pure DIRECT
+FIRST verifies exact stoppedsets/allpersistentmetadata/live/dirt and BOTH297/
+297/21 inventories. BOTHobjects retained;causeUNESTABLISHED;no refmutation/object
+recreation/replay. Separate DIRECT WSLgh metadata confirms ActionsdisabledBOTH/
+PR28+5draftopenunmerged. Stopped and reconciled histories remain separate.
+RefLifecycle FIRST,qualification SECOND,preparation THIRD restore39inverses/
+13pairs SAMEraw102owner/root8;2574other2585completeBOTHbaseline docs unchanged.
+Current426/103 retains streamGET/startGET/startPOST tests and newevidence ONCE.
+RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/
+21gates/fixtures/failures/rejectedactions/FINALPRDAFTERALLoriginalgates remain.
+
+
+## Deploy start POST source qualification (2026-10-22)
+
+FIRST61/61 NEW finite PUBLIC SOURCE controls pass,zero fail/skip/cancel/todo.
+Exact unchanged exported POST alone executes with inert synthetic immediate
+bindings. Controls cover source member/call/receiver/argument and await order,
+operator-denial/capability refusal, nullish selection defaults, fixed caught
+selection400/other500, inert registration, discarded immediate runner result,
+response Promise adoption and exact outside-try/catch fault propagation.
+Actual authorization/selection validation/preparation/ORM/runner behavior remains
+OUTSIDE this declaration's qualification. No supported production defect or
+correction; TESTS/DOCS ONLY. Actual HTTP/auth/database/ORM/operatorDB/native/backend/
+build/server/recovery/performance/production/grants/CAS/provisioning/moduleinitializers/
+neighbours/jobs/output/streams/timers/eventproducers/engine/credentials/services INERT.
+
+FIRSTtypes2roots/0diagnostics covers exact unchanged POST in explicit synthetic
+immediate-binding scaffold plus newtest,not wholemodule/project. Lint2files/0errors/
+warnings. Fresh191compilerinputs/191snapshotReads/fallback0 verified DIRECTLinux
+equal to Windows metadata;37428DIRECTLinux dependencyhashes before/after including
+37in-tree/nondanglingsymlinkfiles match.425existinginputs unchanged;newtest/evidence
+included ONCE gives current426/103. Source0.875s/79466496peakbytes,types3.829s/275795968,
+lint26.172s/282902528,metadata4.375s/259637248. AllmainhandlesSIGNALLED;types
+activeBeforeDrain1,others0;explicitdrain0ALL. TotalProcesses2each/causeUNESTABLISHED.
+Source/typesstderrEMPTY;lintONEReact-autodetection setupnotice. Firstresultsreader
+refused different expectednotice wording BEFOREdependencyafterread;distinctV2
+corrects only expectation/outputname and reviews savedresults,NOworkloadreplay.
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged. NoOSnetwork
+isolation/universaldescendant/performance/independent-person claim.
+
+Qualification inverses FIRST,preparation SECOND restore26inverses/13pairs SAMEraw102
+owner/root8;2574other2585completeBOTHbaseline docs unchanged. Older39/13/raw101+8/
+2583complete and2301owner-only baselines/inverses/failures remain FROZEN separately.
+Immutable startupreceipt retains26447exactorderedobjects/all1213fields976DIRECT;
+independent predecessor27700/direct873/extra1958/closure passed before release.
+All44clauses/21gates/fixtures/failures/rejectedactions remain. ActionsPROHIBITED/
+historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED/FULLgoalACTIVE/no budget.
+FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding security/
+performance/actualAT/compatibleindependentrecovery/freshbackup AFTERquiescence/
+schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy start POST source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select ONLY the exact exported POST in
+src/app/api/deploy/start/route.ts. Order was derived FROM source BEFORE controls:
+await operator authorization and check provisioning capability outside try;
+inside try await request JSON, select playbook/roles, await vars/nodes/inventory
+in sequence, create synthetic job metadata, register inert cancellation metadata,
+call an inert immediate runner binding without awaiting, then return response.
+Selection-class faults return400; other caught faults return fixed500. Outside-
+try faults and returned response Promise rejection propagate separately.
+No supported production defect/correction is established; production is unchanged.
+
+Only PUBLIC request/authorization/capability/selection/preparation/job-ID/response
+metadata and inert immediate bindings are used. Actual HTTP/auth/database/ORM/
+operatorDB/native/backend/build/server/recovery/performance/production/grants/CAS/
+provisioning AND moduleinitializers/neighbours/jobs/output/streams/timers/event-
+producers/engine/credentials/services remain INERT. SOURCE/TYPES/LINT UNEXECUTED
+pending new freeze/review. All older helpers/controls/failures remain FROZEN;
+no workload replay. Independent predecessor matcher27700/direct873/extra1958/
+closure passed before explicit release. Startup rehashed26237 BEFORE210 current,
+26447 exact objects;425/102/compat5/separate334 and39 inverses/13pairs restoring
+same raw101owner/root8 plus2572 other2583 baseline docs passed. New current raw102/
+root8 and2585 complete BOTH-repository baseline are separate from older baselines.
+Immutable receipt and all inherited objects/metadata/histories remain unchanged.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
 ## Deploy start GET pre-stage ref reconciliation (2026-10-22)
 
 FIRST pre-stage STOPPED BEFORE staging on missing historical capture TREE8c8303
