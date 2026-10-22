@@ -1,5 +1,41 @@
 # BORTUS application deployment
 
+## Deploy history GET source qualification (2026-10-22)
+
+The exact unchanged exported GET has composite PUBLIC SOURCE coverage: V1 passed
+79 of80 controls and retained one incorrect newline oracle; DISTINCT V2 ran ONLY
+the corrected newline control and passed1/1. The literal regex rejects final
+newline with fixed400. No completed control was replayed. The documented inverse
+restores the complete V1 test, including unchanged79 callback and loader bytes.
+This is composite80 coverage, not a fresh whole-suite80/80 pass. Exact V2-executed,
+owner and committed test bytes must match; the source pin is Windows raw only.
+
+Controls cover strict null-ID selection, metadata-only findMany50/five fields,
+explicit-ID authorization before tail access, Number-before-validator order,
+nullish default65536, validation shortcircuits, await fences, identical denial,
+fixed400/404/503, unchanged response identity, private/no-store metadata and
+unawaited response-Promise/catch propagation. Immediate callee implementations,
+middleware authorization and actual output/ORM/HTTP are OUTSIDE qualification.
+No supported production defect/correction. TESTS/DOCS ONLY; actual services,
+module initializers and neighbours remain INERT. All failures and prepared unused
+helpers stay frozen. The Linux path pre-execution refusal is retained separately.
+
+Focused types2synthetic roots/0diagnostics; lint2files/0errors/warnings with one
+React-autodetection setup notice. Fresh191 compiler inputs/snapshotReads/fallback0
+match DIRECTLinux;37428 dependency hashes including37 in-tree nondangling symlink
+files match before/after. Every main handle signalled and explicit Job drain0;
+TotalProcesses2each/causeUNESTABLISHED. Caps60swall/30userCPU/1GiB/twoCPU/oneACTIVE/
+kill-on-close unchanged. No whole-module/project/Linux-checkout, runtime, security,
+performance, actualAT or independent recovery qualification follows.
+
+All44clauses/21gates/fixtures/failures/rejectedactions remain. RootLOCAL and
+4+32+1 findings UNRESOLVED; ActionsPROHIBITED/historicalCIOnly/overallCIfalse.
+FULLgoalACTIVE/no budget. FINAL PRD deployment AND verification only AFTER ALL
+original preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackup AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+See application implementation-evidence/deploy-history-get-source-20261022.json.
+
+
 ## Deploy stop POST pre-stage ref reconciliation (2026-10-22)
 
 FIRST pre-stage STOPPED BEFORE staging on one missing historical capture
