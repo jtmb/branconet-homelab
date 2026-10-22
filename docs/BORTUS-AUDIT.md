@@ -1,5 +1,107 @@
 # BORTUS K8s performance, correctness and UI audit
 
+## Auth session test packaging correction qualified (2026-10-22)
+
+The original86/86 SOURCE pass remains FROZEN. DISTINCT reviewed V3 passes ONLY
+the ONE new packaging metadata inverse control,1/1; no completed86 callback
+replayed and no fresh87-source-suite pass is claimed. The exact inverse restores
+the complete original V1 test, including all86 callbacks and loader bytes.
+The pre-stage extra-blank-EOF whitespace refusal and unused V2 marker draft remain
+retained separately; V2 never executed. Current V3 executed/owner/committed bytes
+must match. The original source evidence remains separately bound to V1 bytes.
+
+V3 focused types2synthetic roots/0diagnostics, fresh191compilerinputs/snapshotReads/
+fallback0 DIRECTLinux/UNC exact; lint2files/0errors/warnings with the retained
+React-autodetection notice.37428DIRECTLinux dependencies including37in-tree
+nondangling symlink files match before/after AND V1. All mainhandlesSIGNALLED,
+explicitdrain0; activeBeforeDrain[1,1,1],TotalProcesses2each/causeUNESTABLISHED.
+Metadata1.125s/types4.922s/lint33.015s; unchanged60swall/30userCPU/1GiBcommit/twoCPU/
+oneACTIVE/kill-on-close caps. No production correction, callee/runtime/security/
+performance/actualAT/recovery or whole-module/project/Linux-checkout qualification.
+
+All44clauses/21gates/fixtures/failures/rejectedactions remain. RootLOCAL and
+4+32+1findingsUNRESOLVED;ActionsPROHIBITED/historicalCIOnly/overallCIfalse.
+FULLgoalACTIVE/no budget. FINAL PRD deployment AND verification only AFTER ALL
+original preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackup AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+See application implementation-evidence/auth-session-get-packaging-source-20261022.json.
+
+
+## Auth session test packaging correction preparation (2026-10-22)
+
+The86 original SOURCE controls, V1 types and lint PASSED and remain FROZEN.
+Pre-stage whitespace checking then refused one extra blank line at the new test
+EOF. DISTINCT packaging V3 retains every original loader/callback byte through
+an exact inverse and adds ONE separately named metadata-only inverse control.
+Only that new control may execute; no86 source-control replay or fresh87-source
+pass is claimed. An unused V2 draft's inverse marker was corrected in review
+BEFORE freeze/execution; its complete prepared bytes stay separately retained.
+V3 new metadata control/types/lint remain UNEXECUTED pending freeze/review.
+No production correction, actual service, runtime, resource or acceptance change.
+All original44clauses/21gates/failures/rejectedactions/ActionsPROHIBITED/rootLOCAL/
+4+32+1UNRESOLVED/fullgoalACTIVE/no budget/FINALPRDAFTERALLoriginal gates remain.
+
+
+## Auth session GET source qualification (2026-10-22)
+
+FIRST86/86 NEW finite PUBLIC SOURCE controls pass, zero fail/skip/cancel/todo.
+Only the exact unchanged exported GET declaration executes with inert synthetic
+immediate bindings. Controls cover signing/account/count/setting await fences;
+member/call/receiver/argument and repeated role-field order; strict zero count,
+environment-string and optional-setting registration short-circuits; anonymous/
+authenticated fields, raw engineAdmin conjunction and capability identity;
+fixed500 failures, response identity and returned success/catch Promise behavior.
+Immediate callee implementations remain OUTSIDE declaration qualification.
+No supported production defect/correction. TESTS/DOCS ONLY. Actual HTTP/auth/JWT/
+cookies/password/Prisma/SQL/ORM/operatorDB/native/backend/build/server/recovery/
+performance/production/grants/CAS/provisioning/moduleinitializers/neighbours/
+engine/credentials/services remain INERT. All completed workloads are frozen.
+
+Focused types2synthetic roots/0diagnostics; fresh191compiler inputs/191snapshot
+reads/fallback0 match DIRECTLinux and UNC. Lint2files/0errors/warnings retains
+one React-autodetection setup notice.37428DIRECTLinux dependency hashes match
+before/after, including37in-tree nondangling symlink files. All main handles
+SIGNALLED and explicit Job drain0; activeBeforeDrain[0,0,1],TotalProcesses2each/
+causeUNESTABLISHED. Source0.984s/types4.422s/lint39.687s under unchanged60swall/
+30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close caps. No OS-network-isolation,
+universal-descendant, independent-person or performance claim. Exact executed/
+owner/committed test bytes must match. Windows raw source pin only; Linux checkout
+and whole-module/project/runtime qualification remain separate.
+
+All44clauses/21gates/fixtures/failures/rejectedactions remain. RootLOCAL and
+4+32+1 findingsUNRESOLVED;ActionsPROHIBITED/historicalCIOnly/overallCIfalse.
+FULLgoalACTIVE/no budget. FINAL PRD deployment AND verification only AFTER ALL
+original preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackup AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+See application implementation-evidence/auth-session-get-source-20261022.json.
+
+
+## Auth session GET source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select ONLY the exact exported GET in
+src/app/api/auth/session/route.ts. Source order was recorded BEFORE controls:
+await signing readiness, current account and user count in sequence; strict zero
+count/environment-string registration short-circuits; optional setting lookup;
+then authenticated/anonymous metadata and synchronous capability construction.
+Account role is read separately for response role and engineAdmin conjunction.
+Caught synchronous/awaited failures produce fixed500; returned response-Promise
+rejection and catch-response faults propagate. No supported production correction.
+
+Controls and focused synthetic type/lint roots remain UNEXECUTED pending freeze
+and review. Actual HTTP/auth/JWT/cookies/password/Prisma/SQL/ORM/operatorDB/native/
+backend/build/server/recovery/performance/production/grants/CAS/provisioning and
+all module initializers/neighbours/engine/credentials/services remain INERT.
+Immediate callee implementations remain OUTSIDE declaration qualification.
+No completed controls or frozen workloads will replay. Exact Windows raw source
+pin only; no Linux checkout, whole module/project or runtime qualification.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget. FINAL PRD deployment AND verification only AFTER ALL
+original preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackup AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
 ## Human wrapper source qualification (2026-10-21)
 
 Exact `kvHuman` already awaits `getSession()` and then `registry.current(actor)`
