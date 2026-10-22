@@ -1,5 +1,74 @@
 # BORTUS API usage
 
+## Pod summary source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass84/84,zero failures/skips/cancellations.
+Only exact exported podSummary executes with synthetic Pod metadata/status/spec and
+an inert immediate podRestarts binding. Source-derived captured namespace/name,
+statuses/containers,ordered id/status/readiness/dependency/image/IP/node/created/labels,
+falsey defaults,fresh reads,reference preservation and fault shortcircuits pass.
+Malformed/getter/prototype/dependency faults characterize JavaScript only. Actual
+podRestarts,neighboring exports,configuration,engine,credentials/native services inert.
+No supported production defect/change established. Current feature TESTS/DOCS ONLY.
+
+FIRST source/types/lint pass:2 focused roots/0 diagnostics;2 files/0 errors/warnings.
+Fresh9280 compiler inputs/191 snapshot reads/fallback0;37428 DIRECT Linux dependency
+hashes match before/after;113 frozen execution bindings unchanged. Source0.937s/
+77815808peakbytes;types4.688s/493572096;lint31.218s/279781376. Allmainhandles signalled;
+activeBeforeDrain[0,1,1],explicit drain0ALL;TotalProcesses2causeUNESTABLISHED.
+Experimental stripTypeScriptTypes and lint React detection notices retained.
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/twoCPUs/
+oneACTIVE/kill-on-close. No OS network isolation/universal descendant/performance/
+independent-person claim. No actual HTTP/auth/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/production/grants/CAS or frozen replay. No fixture correction
+or source patch after success. Historical helpers/controls stay frozen.
+
+Startup23607proofs/411inputs/88docs/compat5/separate334/raw87/root8/24inverses/
+2545otherdocs passed. Parent FIRST24373 matcher plus602 direct checks passed;
+receipt unchanged. Parent V1 SyntaxError before anychecks remains frozen;distinct V2
+correction passed. Own/parent startup284/284/21,no missing/changedexistingrefs;
+newchatcapture separate from exact FINAL283 originals. Allolder ref/failure/read
+histories remain separate. Broad/truncated/missing-helper read exceptions retained;
+no full/uninterrupted-read claim. GitHub Actions PROHIBITED;historicalCIonly;
+overallCIQualified=false. Root docs LOCAL;4+32+1findings unresolved. All44clauses/
+21gates/fixtures/failures remain;FULLgoalACTIVE/no budget. FINAL PRDdeployment AND
+verification only after ALL original preceding gates.
+See implementation-evidence/pod-summary-source-20261021.json.
+
+
+## Pod summary source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exact exported podSummary from
+src/lib/pod-query.ts. Source order recorded BEFORE controls: captured namespace/name,
+statuses/containers, then ordered id/status/readiness, inert podRestarts call, image,
+fresh IP/node/creation/labels projections. Synthetic Pod metadata/status/spec and
+inert immediate dependency only; neighboring exports, actual configuration, engine,
+credentials and native services remain inert. Getter/prototype/malformed shape faults
+characterize JavaScript only. No supported production defect/change established.
+Current feature TESTS/DOCS ONLY. New controls/helpers UNEXECUTED; freeze before first
+execution. All completed/failed/unexecuted historical helpers remain frozen.
+
+Startup FIRST23607 ordered hashes passed:23477 incoming finished before130 current;
+411 inputs/88 selected owner docs/compat5/separateOriginal334/protected3 verified.
+Qualification then preparation24 inverses restore same raw87/root8 over12pairs;
+2545 other docs unchanged. Retained production delta exact1 addition/1 deletion in
+kv-http.ts. Immutable receipt before edits; parent FIRST24373 matcher plus602 direct
+checks passed. Parent V1 unmatched-parenthesis SyntaxError before any checks remains
+frozen; distinct V2 correction passed without source/control/proof mutation or replay.
+Own and parent startup284/284/21,zero missing/changedexistingrefs; exact original
+FINAL283 retained separately from one additional newchat capture. Older histories,
+read/display/absent-helper exceptions and mutable-root preedit pins remain separate.
+
+Fresh direct Linux metadata:37428 dependency files/9280 compiler inputs. New source,
+focused types and lint controls retain sequential60s wall/30s userCPU/1GiB commit/
+twoCPU/oneACTIVE/kill-on-close Jobs and explicit drain. No OS network isolation,
+universal-descendant,performance or independent-person claim. No actual HTTP/auth/
+native/SQL/ORM/operatorDB/backend/build/server/recovery/production/grants/CAS/replay.
+GitHub Actions PROHIBITED;historicalCIonly;overallCIQualified=false. Root docs LOCAL;
+4+32+1findings unresolved;all44clauses/21gates/fixtures/failures retained. FULLgoalACTIVE/
+no budget. FINAL PRDdeployment ANDverification only after ALL original preceding gates.
+
+
 ## Pod filter source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass76/76,zero failures/skips/cancellations.
