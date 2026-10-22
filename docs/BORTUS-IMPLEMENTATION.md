@@ -1,5 +1,49 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## getCurrentRole source qualification (2026-10-22)
+
+The exact declaration qualifies 99 unique finite PUBLIC SOURCE controls with inert
+dependency/account metadata. V1 passes all 99 once, then focused types fails with
+three TS2378 accessor-return diagnostics; V1 lint remains unexecuted and frozen.
+Distinct V2 adds only return before assert.fail in three test accessors, affecting
+five callbacks. Only those five corrected callbacks execute (5 pass, zero fail,
+skip/cancel/todo); the other 94 remain unchanged, excluded and never replayed.
+This is 99 unique controls, not 104. No supported production defect or correction.
+
+Order was recorded after owner release before controls: detached zero-argument
+session call, await and falsy shortcircuit; capture prisma.user/findUnique before
+fresh where/select construction and one unchanged session.id read; one method
+call with its original receiver, then await. Strict readonly comparison can skip
+the separate write comparison; success rereads role again without revalidating
+that final synthetic value. Getter/fault/receiver/argument identity, shortcircuit,
+await, freshness and concurrency characterize JavaScript only. Malformed or
+changing synthetic metadata establishes no supported account/auth defect.
+
+V2 focused types passes 2 roots/0 diagnostics: 7,588 fresh declaration/package
+contents in 76 parts, 191 snapshot reads/fallback 0. V1 failed and V2 corrected
+compiler bindings remain separate; both DIRECT Linux/UNC checks use stdin.
+Lint passes 2 files/0 errors/warnings; React-detection/missing-pages notices remain.
+All 37,428 dependencies and 37 in-tree nondangling symlinks match before/after.
+V1 source29.094s/failed types7.218s; V2 source8.094s/types4.813s/lint36.984s.
+All main handles signalled, explicit drains zero. Active-before V1[1,1], V2[0,1,0];
+TotalProcesses2 each, cause UNESTABLISHED. Windows Node24.18.0, 60s wall/30s user
+CPU/1GiB Job commit/two CPUs/one ACTIVE/kill-on-close limits remain unchanged.
+
+Only the exact declaration executes in a strict inert shell. Original modules,
+imports, initializers/neighbours and actual sessions/accounts/auth/cookies/tokens/
+credentials/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/production/
+original transactions remain inert. No whole-project/Linux-checkout/runtime/
+security/performance/actual AT/recovery, OS-network-isolation, universal-descendant
+or independent-person qualification follows. All helpers/configs/workloads frozen,
+never replayed. Root docs LOCAL/no push; 4+32+1 findings UNRESOLVED; Actions
+PROHIBITED/historical CI only/overall CI false. Full goal ACTIVE/no budget;
+all44 clauses/21 gates/fixtures/failures/rejected actions remain. FINAL PRD
+deployment AND verification follow every original preceding gate, including
+compatible independent recovery and a fresh backup AFTER quiescence.
+See application implementation-evidence/get-current-role-source-20261022.json.
+
+
+
 
 ## signJWT source qualification (2026-10-22)
 
