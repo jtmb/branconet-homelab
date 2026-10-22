@@ -1,5 +1,72 @@
 # BORTUS application deployment
 
+## Pod filter source qualification (2026-10-21)
+
+NEW frozen PUBLIC SOURCE controls pass76/76,zero failures/skips/cancellations.
+Only exact exported podFilter executes with synthetic URLSearchParams/Pod metadata
+and inert immediate error/namespace-validator/label-predicate/system-set bindings.
+Source-derived default/query/refusal/construction order,override classification,
+type/namespace/labels shortcircuits,captured queries and fresh metadata reads pass.
+Getter/prototype/dependency faults characterize JavaScript only. Actual validators,
+label parser,neighbors,configuration,engine,credentials/native services remain inert.
+No supported production defect/change established. Current feature TESTS/DOCS ONLY.
+
+FIRST source/types/lint pass:2 focused roots/0 diagnostics;2 files/0 errors/warnings.
+Fresh9280 compiler inputs/191 snapshot reads/fallback0;37428 DIRECT Linux dependency
+hashes match before/after;112 frozen execution bindings unchanged. Source0.281s/
+64315392peakbytes;types4.672s/490434560;lint29.610s/281845760. Allmainhandles signalled;
+activeBeforeDrain[1,0,1],explicit drain0ALL;TotalProcesses2causeUNESTABLISHED.
+Experimental stripTypeScriptTypes and lint React/pages notices retained separately.
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/twoCPUs/
+oneACTIVE/kill-on-close. No OS network isolation/universal descendant/performance/
+independent-person claim. No actual HTTP/auth/native/SQL/ORM/operatorDB/backend/
+build/server/recovery/production/grants/CAS or frozen replay.
+
+Startup23477proofs/410inputs/87docs/compat5/separate334/raw86/root8/24inverses/
+2543otherdocs passed. Parent FIRST47212 plus separate576 and59directchecks passed;
+receipt unchanged. Own/parent startup283/283/21,no missing/changedexistingrefs;
+newchatcapture separate from exact FINAL282 originals. All older ref/failure/read
+histories remain separate. One test-fixture correction BEFORE freeze made explicit
+undefined labels exercise the falsey branch;no control failure/replay or source patch.
+Explicit broad/truncated/absent-dependency read exceptions remain,nofullreadclaim.
+GitHub Actions PROHIBITED;both repositories disabled at precheckpoint read;
+historicalCIonly;overallCIQualified=false. Root docs LOCAL;4+32+1findings unresolved.
+All44clauses/21gates/fixtures/failures remain;FULLgoalACTIVE/no budget. FINAL PRD
+deployment AND verification only after ALL original preceding gates.
+See implementation-evidence/pod-filter-source-20261021.json.
+
+
+## Pod filter source preparation (2026-10-21)
+
+NEW finite PUBLIC SOURCE controls select only exported podFilter from src/lib/pod-query.ts.
+Source order recorded BEFORE controls: type/namespace reads and default, invalid type
+refusal, nonnull namespace validation, label-selector construction, fresh Pod metadata
+reads, override-or-namespace classification, then type/namespace/labels shortcircuits.
+Synthetic URLSearchParams/Pod metadata and inert immediate error/namespace-validator/
+label-predicate/system-set bindings only. Actual validators, neighboring exports,
+configuration, engine, credentials and native services remain inert. Getter/prototype
+faults characterize JavaScript only. No supported production defect/change established.
+Current feature TESTS/DOCS ONLY. New source/types/lint controls are UNEXECUTED and
+will be frozen before first execution; all old controls/helpers remain frozen.
+
+Startup FIRST23477 ordered proofs passed:23346 incoming finished before131 current;
+410 inputs/87 owner docs/compat5/separateOriginal334/raw86/root8/24 ordered inverses/
+2543 other docs verified. Immutable receipt before edits; parent FIRST47212 matcher,
+separate576 direct checks and59 supplemental metadata checks passed. Own and parent
+startup283/283/21 retain exact original FINAL282 sets, with one new chat capture
+separate and no missing/changed existing refs. New root mutable8 snapshots pinned.
+Read/display exceptions and absent local TypeScript path read are retained separately;
+no full/uninterrupted-read claim. No installs/downloads/limit expansion.
+
+Sequential Windows Node24.18.0 Jobs retain60s wall/30s userCPU/1GiB commit/twoCPUs/
+oneACTIVE/kill-on-close and explicit drain. No OS network isolation/universal descendant/
+performance/independent-person claim. No actual HTTP/auth/native/SQL/ORM/operatorDB/
+backend/build/server/recovery/production/grants/CAS or frozen replay. GitHub Actions
+PROHIBITED;historicalCIonly;overallCIQualified=false. Root docs LOCAL;4+32+1findings
+unresolved;all44clauses/21gates/fixtures/failures remain. FULLgoalACTIVE/no budget.
+FINAL PRD deployment AND verification only after ALL original preceding gates.
+
+
 ## Pod label-predicate source qualification (2026-10-21)
 
 NEW frozen PUBLIC SOURCE controls pass92/92,zero failures/skips/cancellations.
