@@ -1,5 +1,47 @@
 # BORTUS application deployment
 
+## requireWrite source qualification (2026-10-22)
+
+The exact unchanged synchronous wrapper qualifies 53 unique PUBLIC SOURCE controls.
+V1 passes all original 52 once, plus focused types/lint, then staging refuses an
+extra blank EOF in the test. DISTINCT V2 removes that trailing blank and adds one
+public file-integrity callback. ONLY the new callback executes: 1 pass, zero fail,
+skip/cancel/todo. The other52 bodies/assertions are unchanged, excluded and never
+replayed. Both exact tests/helpers/freezes/results and staging refusal remain.
+
+Order was recorded after release before controls: evaluate requireAccess, call it
+detached with exactly one literal false, return its immediate result unchanged.
+Caller receivers/arguments are not forwarded. Result/fault identity, callable and
+revoked proxies, no result/then-property access, fresh calls, reentrancy and synthetic
+Promise identity characterize JavaScript only. Real authorization/account/response
+implementations stay inert. No supported production defect or correction.
+
+Each version passes focused types: 2 roots/0 diagnostics, 7,588 freshly captured
+declaration/package contents in76parts,191snapshotReads/fallback0; separate DIRECT
+Linux+UNC/stdin bindings retained. Each lint passes2files/0errors/warnings with
+React-detection/missing-pages notices. All37428dependencies/37in-tree nondangling
+symlinks match before/after BOTH. V1source/types/lint1.219s/4.719s/36.812s;
+V2source/types/lint0.922s/4.516s/28.171s. Mainhandles ALLSIGNALLED;
+activeBeforeV1[0,1,0],V2[0,1,1],explicit drains0ALL,TotalProcesses2each/cause
+UNESTABLISHED. WindowsNode24.18.0/60swall/30userCPU/1GiBJob/twoCPU/oneACTIVE/
+kill-on-close limits unchanged. Completed prior five-callback filter was removed
+before V1freeze; V2 has ONLY its newly added packaging-integrity callback filter.
+
+Only the exact declaration executes in a strict inert shell. Original modules/
+imports/initializers/neighbours and actual sessions/accounts/auth/cookies/headers/
+tokens/credentials/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/
+production/original transactions stay inert. All helpers/configs/workloads frozen,
+never replayed. No whole-project/Linux-checkout/runtime/security/performance/actual
+AT/recovery/OS-network-isolation/universal-descendant/independent-person claim.
+RootLOCAL/no push;4+32+1findingsUNRESOLVED;ActionsPROHIBITED/historicalCIOnly/
+overallCIfalse;all44clauses/21gates/fixtures/failures/rejectedactions remain.
+FullgoalACTIVE/no budget. FINAL PRDdeployment ANDverification only AFTER ALL original
+security/performance/actualAT/compatible independent recovery/fresh backup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates. See application
+implementation-evidence/require-write-source-20261022.json.
+
+
+
 ## getCurrentRole source qualification (2026-10-22)
 
 The exact declaration qualifies 99 unique finite PUBLIC SOURCE controls with inert
