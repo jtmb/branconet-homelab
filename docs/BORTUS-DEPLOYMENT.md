@@ -331,6 +331,52 @@ backup AFTER quiescence and compatible independent recovery. This replaces none.
 
 
 
+## requireOperator source qualification (2026-10-22)
+
+The unchanged synchronous wrapper qualifies52 unique finite PUBLIC SOURCE controls.
+V1 passes51 and retains one VM-global-accessor observation failure. DISTINCT V2
+corrects ONLY that observer: one pass, zero fail/skip/cancel/todo; the other51
+bodies/assertions stay unchanged, excluded and never replayed. V1 types/lint remain
+unexecuted and frozen. No supported production defect or correction was established.
+
+Order was recorded AFTER release BEFORE controls: resolve requireAccess, call it
+detached with exactly the literal true, then return its immediate identical result.
+Caller receiver/arguments are unused; no await, result/then inspection, catch,
+retry or cache. Only the selected declaration executes in a strict inert shell.
+Actual authorization/account/response/session/credential/crypto/SQL/ORM/HTTP/native/
+backend/build/server/recovery/performance/production/original module/import/
+initializer/neighbour implementations remain inert. Malformed synthetic metadata
+characterizes JavaScript, not a supported production account/auth contract.
+
+V2 focused types passes2roots/0diagnostics:7588 fresh declaration/package contents
+in76parts,192snapshotReads/fallback0,192DIRECTLinux+UNC compiler bindings via stdin.
+V2 lint refuses at60.016s; a DISTINCT alternate-tool-UNC-alias continuation V3b
+also refuses at60.047s. Both lack a lint report and have empty stdout/stderr;
+259 is their pre-termination STILL_ACTIVE observation, not final child exit.
+Causes remain UNESTABLISHED. Preparatory V3 symlink-path and V4 root-bin-predicate
+refusals ran no lint; all37 bin links, including six nested entries, stay exact.
+DISTINCT V4b adds only Node's public --preserve-symlinks loader flag to lint:
+2files/0errors/warnings in23.281s, with identical texts/virtual paths/rules/caps.
+No causal speed/performance explanation or uninterrupted all-stage pass is claimed.
+Passing source/types are never replayed. All37428 dependency bytes and37 in-tree
+nondangling symlink records match before/between/after; both literal tool aliases
+retain directory identity, and every alternate-alias file/target byte was verified.
+
+V1source2.313s; V2corrected-source1.922s/types7.609s. Passing mainhandles signal;
+active-before source1/source2/types/lint2/lint3b/lint4b [0,0,0,2,2,1]; explicit Job
+drains0ALL. TotalProcesses2each/causeUNESTABLISHED. WindowsNode24.18.0/60swall/
+30suserCPU/1GiBJob/twoCPU/oneACTIVE/kill-on-close limits remain unchanged.
+All current/inherited helpers/configs/workloads are frozen, never replayed.
+
+This is focused composed source/type/lint evidence, not whole-project/Linux/
+runtime/security/performance/actualAT/recovery/image/live acceptance. All44clauses/
+21gates/fixtures/failures/rejected actions remain; rootLOCAL/no push,4+32+1findings
+UNRESOLVED,ActionsPROHIBITED/historicalCIonly/overallCIfalse. FullgoalACTIVE/no
+budget. FINAL PRDdeployment ANDverification follow ALL original preceding gates,
+including compatible independent recovery and fresh backup AFTERquiescence.
+See application implementation-evidence/require-operator-source-20261022.json.
+
+
 ## currentSession source qualification (2026-10-22)
 
 All57 NEW finite frozen PUBLIC SOURCE controls passed ONCE, with zero failure,
