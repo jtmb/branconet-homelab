@@ -1,5 +1,67 @@
 # BORTUS user permissions
 
+## getOperatorRole source qualification (2026-10-23)
+
+The unchanged exact async declaration passes 36 new finite frozen PUBLIC SOURCE
+controls on its first execution, with zero failures, skips, cancellations or todo.
+Its source order was recorded after verified owner release and before controls:
+call the inert getSessionAccount provider once with zero arguments and await it;
+return null for a falsy account; compare role strictly with write; read engineAdmin
+only for that role; return primitive write or readonly from the Boolean decision.
+Supported database engineAdmin metadata is Boolean. Malformed synthetic values
+and thenables characterize JavaScript only. No supported production defect or
+production correction was established.
+
+The controls cover supported administrator/readonly decisions, the await fence,
+fresh and concurrent provider decisions, exact failure propagation, short-circuit
+property reads and unused caller/account/module bindings. Only the selected
+declaration executes in a strict inert shell. Original modules, imports,
+initializers, neighbours and actual authentication, sessions, accounts,
+credentials, crypto, SQL/ORM/DB, HTTP/native/backend/build/server/recovery,
+performance and production remain inert.
+
+Focused types passes two isolated selected roots with zero diagnostics:
+7,588 fresh declaration/package contents in 76 parts, 192 snapshot reads,
+zero fallback reads and 192 direct Linux plus UNC bindings through stdin.
+Lint passes two files with zero errors/warnings, retaining React auto-detection
+and missing-pages setup notices. It uses the reviewed public preserve-symlinks
+flag only for lint, the same lintText rules and the separate literal dependency
+alias. All 37,428 dependencies and 37 in-tree nondangling symlinks match fresh
+before/after hashes; literal alias directory identities also match the retained
+full alias proof. No new separate every-alias-file byte claim follows.
+
+Observed source/types/lint wall times are 1.250/6.266/45.859 seconds. All main
+handles signalled, active-before-drain counts are 1/1/1 and explicit drains finish
+at zero. TotalProcesses is two in each run; its cause remains unestablished.
+Windows Node 24.18.0 source-harness limits remain 60 seconds wall, 30 seconds user
+CPU, 1 GiB Job memory, two CPUs with affinity 3, one ACTIVE process and kill-on-close.
+These observations establish no performance comparison. All current/inherited
+completed, failed and prepared helpers, configs and workloads remain frozen and
+must never be replayed.
+
+A pre-integration ref mismatch stopped owner edits. A distinct DIRECT full
+metadata reconciliation passes 320/320/21 typed unfiltered refs, complete
+314/314/16 object unions and all 22 historical trees. One added and two removed
+refs all point to the already-retained same tree; existing refs did not change.
+The cause is unestablished. No refs were reset, no objects recreated and no
+source/types/lint workload replayed. All 2,636 baseline documents were checked;
+the new evidence and later portable handoff are separately bound.
+
+Runtime, security, performance, actual assistive technology, compatible recovery,
+image and live acceptance remain open. Root documentation stays local with no
+push; four new, prior 32 and earlier one findings remain unresolved without new
+inspection or disposition. Actions remain prohibited, historical CI remains
+historical and overall CI acceptance remains false. All 44 original clauses,
+21 gates, fixtures, failures, rejected actions and publication boundaries remain.
+The full goal remains ACTIVE with no token budget. FINAL PRD deployment AND its
+verification follow every original preceding security/performance/actual-AT/
+compatible-independent-recovery/fresh-backup-after-quiescence/schema/effective
+RBAC/admission/data gate.
+
+Application evidence: docs/implementation-evidence/get-operator-role-source-20261023.json in the application checkout.
+
+
+
 ## isOperatorFromHeaders source qualification (2026-10-23)
 
 The unchanged exact async predicate passes92 NEW finite frozen PUBLIC SOURCE
