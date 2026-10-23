@@ -1,5 +1,61 @@
 # BORTUS user permissions
 
+## isOperatorFromHeaders source qualification (2026-10-23)
+
+The unchanged exact async predicate passes92 NEW finite frozen PUBLIC SOURCE
+controls once, zero fail/skip/cancel/todo. Order was recorded AFTER owner release
+BEFORE controls: call getSessionFromHeaders detached with exactly the cookie
+parameter and await; falsy session returns false before Prisma access; capture
+user.findUnique and its receiver before fresh where/session.id/select arguments,
+then one call/await; falsy user, strict version equality, strict write role, then
+return engineAdmin. Supported database engineAdmin is Boolean; arbitrary inert
+values, accessors, faults and thenables characterize JavaScript ONLY. Actual
+header/session/account/authentication implementations remain inert. No supported
+production defect or production correction was established.
+
+Preparation V1 metadata capture timed out at its unchanged120s bound before a
+freeze; exact owned-process observation found none remaining. V2 fresh metadata
+passed, then its source loader rejected one missing fixture object-closing brace
+BEFORE any92 callback executed: one file-wrapper failure, not one failed control.
+V2 types/lint remain unexecuted/frozen. DISTINCT V3 corrects ONLY that brace, with
+assertions and production source unchanged. Its first callback execution passes
+all92, followed once by focused types/lint. All failed, prepared and completed
+helpers/configs/workloads remain frozen and must never be replayed.
+
+V3 focused types passes2roots/0diagnostics, with7,588 freshly captured declaration/
+package contents in76parts,192snapshotReads/fallback0 and192 DIRECT Linux plus UNC
+bindings through stdin. Lint passes2files/0errors/warnings using the preferred
+public --preserve-symlinks flag ONLY for lint, identical lintText/rules and the
+separate verified literal dependency alias. React-detection/missing-pages setup
+notices remain. All37,428dependencies/37in-tree nondangling symlinks match before
+V2, before V3 and after V3. Literal alias directory identities match the retained
+full alias proof; no fresh separate every-alias-file byte claim is added.
+
+Observed source/types/lint wall7.235s/14.750s/55.250s; mainhandles ALLSIGNALLED,
+activeBeforeDrain[1,1,0],explicit drains0ALL,TotalProcesses2each/causeUNESTABLISHED.
+WindowsNode24.18.0/60swall/30userCPU/1GiBJob/twoCPU/oneACTIVE/kill-on-close limits
+are unchanged. Timings are observations, not a performance comparison. A separate
+preintegration ref mismatch STOPPED edits; DISTINCT DIRECT full metadata checks
+passed319/319/21refs, complete311/311/16objectunion and ALL21historicaltrees,
+retaining both removed-ref tree targets. CauseUNESTABLISHED; no refs reset or
+objects recreated. Executed/owner/committed LF test bytes must match exactly.
+
+Only the selected declaration executes in a strict inert shell. Original module/
+imports/initializers/neighbours and actual sessions/accounts/auth/cookies/headers/
+tokens/credentials/crypto/SQL/ORM/HTTP/native/backend/build/server/recovery/
+performance/production/original transactions stay inert. No whole-project,
+Linux-checkout, runtime, security, performance, actualAT, recovery, OS-network-
+isolation, universal-descendant or independent-person acceptance claim follows.
+RootLOCAL/no push;4+32+1findingsUNRESOLVED;ActionsPROHIBITED/historicalCIonly/
+overallCIfalse;all44clauses/21gates/fixtures/failures/rejectedactions remain.
+FullgoalACTIVE/no budget. FINAL PRD deployment ANDverification follow ALL original
+preceding security/performance/actualAT/compatible independent recovery/fresh
+backup AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+See [source qualification evidence](implementation-evidence/is-operator-from-headers-source-20261023.json).
+
+
+
 ## requireAccess source qualification (2026-10-22)
 
 The exact unchanged async declaration passes104 NEW finite frozen PUBLIC SOURCE
