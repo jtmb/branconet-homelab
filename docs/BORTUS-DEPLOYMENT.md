@@ -1,5 +1,52 @@
 # BORTUS application deployment
 
+## requireAccess source qualification (2026-10-22)
+
+The exact unchanged async declaration passes104 NEW finite frozen PUBLIC SOURCE
+controls once: zero fail/skip/cancel/todo. Source-derived order was recorded AFTER
+release BEFORE controls: detached session call/await and falsy401; capture lookup
+member/receiver before fresh where/session.id/select construction and one await;
+falsy-user, strict version, strict write-role, then operator/admin shortcircuit.
+Refusals capture the response method before fresh body/options construction, with
+exact401/403 messages; success returns the original awaited session. Async returns
+adopt immediate results; no catch/retry/cache. Getter/fault/receiver/argument order,
+await fences, fresh/concurrent decisions and synthetic malformed metadata qualify
+JavaScript only. Real session/account/auth/response implementations remain inert.
+No supported production defect or correction was established.
+
+V1 focused types passes2roots/0diagnostics:7,588 fresh declaration/package contents
+in76parts,191snapshotReads/fallback0,DIRECTLinux+UNC/stdin bindings exact. V1 lint
+hits the unchanged60s wall limit before a report,mainhandle not signalled,259 is
+the pre-termination STILL_ACTIVE observation,supervisor1; stdout/stderr empty.
+Its explicit Job drain is zero; cause UNESTABLISHED. DISTINCT V2 runs ONLY lint,
+using sequential lintText for identical bytes/filePath and unchanged rules:
+2files/0errors/warnings; React-detection/missing-pages setup notices retained.
+The passing104 SOURCE callbacks and types are unchanged, excluded and NEVER
+replayed. This is composed evidence, not an uninterrupted all-stage success.
+
+All37428dependencies/37in-tree nondangling symlinks match before/after BOTH.
+Passing source/types/lint2.219s/7.562s/54.235s; failed V1lint60.015s retained.
+Passing mainhandles signalled; active-before source/types/failedlint/V2lint
+[1,1,2,1],explicit drains0ALL,TotalProcesses2each/causeUNESTABLISHED. Existing
+WindowsNode24.18.0/60swall/30userCPU/1GiBJob/twoCPU/oneACTIVE/kill-on-close caps
+remain. All current/inherited helpers/configs/workloads frozen,never replayed.
+Completed ONE packaging callback filter was removed BEFORE the new freeze.
+
+Only the exact declaration runs in a strict inert shell; original module/import/
+initializer/neighbours and actual sessions/accounts/auth/cookies/headers/tokens/
+credentials/crypto/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/
+production/original transactions stay inert. No whole-project/Linux-checkout/
+runtime/security/performance/actualAT/recovery/OSnetworkisolation/universal-
+descendant/independent-person claim follows. RootLOCAL/no push;4+32+1findings
+UNRESOLVED;ActionsPROHIBITED/historicalCIonly/overallCIfalse;all44clauses/21gates/
+fixtures/failures/rejectedactions remain. FullgoalACTIVE/no budget. FINAL PRD
+deployment ANDverification follow ALL original preceding security/performance/
+actualAT/compatible independent recovery/fresh backup AFTERquiescence/schema/
+effectiveRBAC/admission/data gates. See application
+implementation-evidence/require-access-source-20261022.json.
+
+
+
 ## requireWrite source qualification (2026-10-22)
 
 The exact unchanged synchronous wrapper qualifies 53 unique PUBLIC SOURCE controls.
