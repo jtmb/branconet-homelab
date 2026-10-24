@@ -1,5 +1,770 @@
 # BORTUS workflow guide
 
+## Deploy stop POST pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage STOPPED BEFORE staging on one missing historical capture
+TREEca98d5 and one new checkpoint TREEf7e4f2,zerochanged. DISTINCT pure DIRECT
+FIRST verifies exact stoppedsets/allpersistentmetadata/live/dirt and BOTH298/
+298/21 inventories. BOTHobjects retained;causeUNESTABLISHED;no refmutation/object
+recreation/replay. Separate DIRECT WSLgh metadata confirms ActionsdisabledBOTH/
+PR28+5draftopenunmerged. Stopped and reconciled histories remain separate.
+RefLifecycle FIRST,qualification SECOND,scaffold-correction THIRD,preparation-
+correction FOURTH,preparation FIFTH restore65inverses/13pairs SAMEraw103owner/
+root8 content with documented newline transport;2576other2587completeBOTHbaseline
+docs unchanged. Current427/104 retains all stream/startGET/startPOST/stopPOST tests
+and newevidence ONCE. RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/
+no budget/all44clauses/21gates/fixtures/failures/rejectedactions/FINALPRDAFTERALL
+originalgates remain. No source/types/lint workload replay or production patch.
+
+
+## Deploy stop POST source qualification (2026-10-22)
+
+DISTINCT V2 SOURCE passes63/63,zero fail/skip/cancel/todo,for the exact unchanged
+exported POST with inert synthetic immediate bindings. Member/call/receiver/
+argument and nullish-selection order, authorization/lookup await fences, fixed
+400/404/409/503 refusals, discarded abort return, response Promise adoption and
+outside-try/catch propagation are covered. Actual authorization/validation/ORM/
+registry/abort/NextResponse implementations and real cancellation completion are
+OUTSIDE this declaration qualification. TESTS/DOCS ONLY; no supported production
+defect/correction. Actual HTTP/auth/database/ORM/operatorDB/native/backend/build/
+server/recovery/performance/production/grants/CAS/provisioning/moduleinitializers/
+neighbours/jobs/output/streams/timers/eventproducers/engine/credentials/services INERT.
+
+V1 loader FAILED before callbacks on a synthetic parameter property; DISTINCT V2
+uses explicit fields/assignments only. V2 TYPES FAILED2339 in its narrower JSON
+scaffold; DISTINCT V3 uses web Request['json'] with SAME executed V2 test bytes.
+V3 runner rejects SOURCE; passing controls were NOT replayed. All failures,
+prepared unused helpers and old inputs remain FROZEN. V3 TYPES2roots/0diagnostics
+covers exact POST plus synthetic scaffold/test only,not wholemodule/project.
+Lint2files/0errors/warnings. Fresh191compilerinputs/191snapshotReads/fallback0
+match DIRECTLinux;37428DIRECTLinux dependency hashes before/after,including37
+in-tree nondangling symlink files,match across all candidates.426existing source
+inputs unchanged;newtest/evidence ONCE gives current427/104. Executed/owner test
+bytes are EXACT; no EOF correction. The test pins exact Windows raw source bytes;
+Linux checkout and whole-project/runtime qualification remain separate.
+
+Source0.859s/79167488peakbytes,types3.985s/287621120,lint29.406s/284270592;
+metadataV3 4.406s/262823936. ALL final mainhandlesSIGNALLED and explicitdrain0;
+activeBeforeDrain0ALL. TotalProcesses2each/causeUNESTABLISHED. Source/typesstderr
+EMPTY;lintONEReact-autodetection setupnotice. Caps60swall/30userCPU/1GiBcommit/
+twoCPU/oneACTIVE/kill-on-close unchanged. NoOSnetwork isolation/universaldescendant/
+performance/independent-person claim. Source63 passed ONCE; no workload replay.
+
+Qualification FIRST,scaffold-correction SECOND,preparation-correction THIRD,
+preparation FOURTH restore52inverses/13pairs to SAMEraw103owner/root8 content with
+documented affected-doc newline transport;2576other2587completeBOTHbaseline docs
+unchanged. Older39/13/raw102+8/2585,older2583 and2301baselines/inverses stay separate.
+All44clauses/21gates/failures/fixtures/rejectedactions remain. ActionsPROHIBITED/
+historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED/FULLgoalACTIVE/no budget.
+FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding security/
+performance/actualAT/compatibleindependentrecovery/freshbackup AFTERquiescence/
+schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy stop POST synthetic type-scaffold correction (2026-10-22)
+
+DISTINCT V2 SOURCE passes63/63,zero fail/skip/cancel/todo,using the exact unchanged
+exported POST and synthetic immediate bindings ONLY. V2 TYPES then FAILS with
+one2339 diagnostic in the synthetic scaffold: its narrower JSON return type
+does not describe the web Request.json signature used by NextRequest. V2 SOURCE
+is FROZEN and will NOT rerun. V2 type result and unused lint remain FROZEN.
+
+DISTINCT V3 changes ONLY the scaffold json member to Request['json']; it retains
+the exact production declaration and EXACT V2-executed test bytes. Its new runner
+rejects SOURCE mode and allows only fresh metadata/TYPES/LINT under original caps.
+These checks remain UNEXECUTED pending freeze/review. This corrects the synthetic
+type contract, not production behavior or an acceptance gate. Actual HTTP/auth/
+database/ORM/native/cancellation/jobs/streams/services remain INERT. All original
+clauses/gates/failures/rejectedactions,ActionsPROHIBITED,rootLOCAL,4+32+1UNRESOLVED,
+FULLgoalACTIVE/no budget and FINALPRD AFTER ALLoriginal preceding gates remain.
+
+
+## Deploy stop POST source preparation correction (2026-10-22)
+
+The first bounded SOURCE module load FAILED before any of the63 control callbacks:
+Node strip-only mode rejects the synthetic response class parameter property.
+The module TAP records0pass/1fail; this is no source-control qualification.
+MainhandleSIGNALLED,explicitdrain0,0.141s/42356736peakbytes; source stderrEMPTY.
+V1 inputs/helpers and unused TYPES/LINT remain FROZEN. A DISTINCT V2 uses explicit
+class fields/assignments only; SAME63 still-unexecuted controls, original source,
+synthetic bindings, limits and acceptance gates remain. No workload/control replay,
+production correction, real cancellation, database or service execution occurred.
+V2 SOURCE/TYPES/LINT remain UNEXECUTED pending new metadata/freeze/review.
+
+All44clauses/21gates/failures/fixtures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/rootLOCAL/4+32+1UNRESOLVED/FULLgoalACTIVE/no budget.
+FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding gates.
+
+
+## Deploy stop POST source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select ONLY the exact exported POST in
+src/app/api/deploy/stop/route.ts. Order was derived FROM source BEFORE controls:
+await operator authorization outside try; inside try select query jobId with
+nullish JSON/catch fallback, validate with an inert immediate binding, await a
+synthetic selected job lookup, check running status and process ownership, call
+an inert abort binding WITHOUT awaiting its return, then construct202 metadata.
+Invalid/missing/completed/unowned paths return fixed400/404/409; caught faults
+return fixed503. Outside-try faults and returned response rejection propagate.
+Real cancellation completion and callee implementations are OUTSIDE this scope.
+No supported production defect/correction; production remains unchanged.
+
+The63 drafted controls are UNEXECUTED pending distinct freeze/review. All bindings
+are synthetic PUBLIC metadata. Actual HTTP/auth/database/ORM/operatorDB/native/
+backend/build/server/recovery/performance/production/grants/CAS/provisioning AND
+moduleinitializers/neighbours/jobs/output/streams/timers/eventproducers/engine/
+credentials/services remain INERT. No real AbortController, runner or DB executes.
+Startup26447 FIRST then233 current yields26680 exact proofs;426/103/compat5/
+separate334 and39inverses/13pairs/raw102+8/2574other2585docs pass. Independent
+predecessor matcher27991/late8/direct1024/extra2201/closure passed BEFORE release.
+New raw103owner/root8 and2587 complete BOTH-repository baseline remain separate.
+New inverse-offset and default-encoding reader refusals are retained; distinct
+corrections read metadata only with no owner mutation or workload replay.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy start POST pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage STOPPED BEFORE staging on one missing historical capture
+TREEecb2cb and one new checkpoint TREEca98d5,zerochanged. DISTINCT pure DIRECT
+FIRST verifies exact stoppedsets/allpersistentmetadata/live/dirt and BOTH297/
+297/21 inventories. BOTHobjects retained;causeUNESTABLISHED;no refmutation/object
+recreation/replay. Separate DIRECT WSLgh metadata confirms ActionsdisabledBOTH/
+PR28+5draftopenunmerged. Stopped and reconciled histories remain separate.
+RefLifecycle FIRST,qualification SECOND,preparation THIRD restore39inverses/
+13pairs SAMEraw102owner/root8;2574other2585completeBOTHbaseline docs unchanged.
+Current426/103 retains streamGET/startGET/startPOST tests and newevidence ONCE.
+RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/
+21gates/fixtures/failures/rejectedactions/FINALPRDAFTERALLoriginalgates remain.
+
+
+## Deploy start POST source qualification (2026-10-22)
+
+FIRST61/61 NEW finite PUBLIC SOURCE controls pass,zero fail/skip/cancel/todo.
+Exact unchanged exported POST alone executes with inert synthetic immediate
+bindings. Controls cover source member/call/receiver/argument and await order,
+operator-denial/capability refusal, nullish selection defaults, fixed caught
+selection400/other500, inert registration, discarded immediate runner result,
+response Promise adoption and exact outside-try/catch fault propagation.
+Actual authorization/selection validation/preparation/ORM/runner behavior remains
+OUTSIDE this declaration's qualification. No supported production defect or
+correction; TESTS/DOCS ONLY. Actual HTTP/auth/database/ORM/operatorDB/native/backend/
+build/server/recovery/performance/production/grants/CAS/provisioning/moduleinitializers/
+neighbours/jobs/output/streams/timers/eventproducers/engine/credentials/services INERT.
+
+FIRSTtypes2roots/0diagnostics covers exact unchanged POST in explicit synthetic
+immediate-binding scaffold plus newtest,not wholemodule/project. Lint2files/0errors/
+warnings. Fresh191compilerinputs/191snapshotReads/fallback0 verified DIRECTLinux
+equal to Windows metadata;37428DIRECTLinux dependencyhashes before/after including
+37in-tree/nondanglingsymlinkfiles match.425existinginputs unchanged;newtest/evidence
+included ONCE gives current426/103. Source0.875s/79466496peakbytes,types3.829s/275795968,
+lint26.172s/282902528,metadata4.375s/259637248. AllmainhandlesSIGNALLED;types
+activeBeforeDrain1,others0;explicitdrain0ALL. TotalProcesses2each/causeUNESTABLISHED.
+Source/typesstderrEMPTY;lintONEReact-autodetection setupnotice. Firstresultsreader
+refused different expectednotice wording BEFOREdependencyafterread;distinctV2
+corrects only expectation/outputname and reviews savedresults,NOworkloadreplay.
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged. NoOSnetwork
+isolation/universaldescendant/performance/independent-person claim.
+
+Qualification inverses FIRST,preparation SECOND restore26inverses/13pairs SAMEraw102
+owner/root8;2574other2585completeBOTHbaseline docs unchanged. Older39/13/raw101+8/
+2583complete and2301owner-only baselines/inverses/failures remain FROZEN separately.
+Immutable startupreceipt retains26447exactorderedobjects/all1213fields976DIRECT;
+independent predecessor27700/direct873/extra1958/closure passed before release.
+All44clauses/21gates/fixtures/failures/rejectedactions remain. ActionsPROHIBITED/
+historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED/FULLgoalACTIVE/no budget.
+FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding security/
+performance/actualAT/compatibleindependentrecovery/freshbackup AFTERquiescence/
+schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy start POST source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select ONLY the exact exported POST in
+src/app/api/deploy/start/route.ts. Order was derived FROM source BEFORE controls:
+await operator authorization and check provisioning capability outside try;
+inside try await request JSON, select playbook/roles, await vars/nodes/inventory
+in sequence, create synthetic job metadata, register inert cancellation metadata,
+call an inert immediate runner binding without awaiting, then return response.
+Selection-class faults return400; other caught faults return fixed500. Outside-
+try faults and returned response Promise rejection propagate separately.
+No supported production defect/correction is established; production is unchanged.
+
+Only PUBLIC request/authorization/capability/selection/preparation/job-ID/response
+metadata and inert immediate bindings are used. Actual HTTP/auth/database/ORM/
+operatorDB/native/backend/build/server/recovery/performance/production/grants/CAS/
+provisioning AND moduleinitializers/neighbours/jobs/output/streams/timers/event-
+producers/engine/credentials/services remain INERT. SOURCE/TYPES/LINT UNEXECUTED
+pending new freeze/review. All older helpers/controls/failures remain FROZEN;
+no workload replay. Independent predecessor matcher27700/direct873/extra1958/
+closure passed before explicit release. Startup rehashed26237 BEFORE210 current,
+26447 exact objects;425/102/compat5/separate334 and39 inverses/13pairs restoring
+same raw101owner/root8 plus2572 other2583 baseline docs passed. New current raw102/
+root8 and2585 complete BOTH-repository baseline are separate from older baselines.
+Immutable receipt and all inherited objects/metadata/histories remain unchanged.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy start GET pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage STOPPED BEFORE staging on missing historical capture TREE8c8303
+and new checkpoint TREEecb2cb,zerochanged. DISTINCT pure DIRECT FIRST verifies
+exact stoppedsets/allpersistentmetadata/live/dirt and BOTH296/296/21 inventories.
+Bothobjects retained;causeUNESTABLISHED;no refmutation/objectrecreation/replay.
+Separate metadata confirms ActionsdisabledBOTH/PR28+5draftopenunmerged. Stopped
+and reconciledhistories remain separate. RefLifecycle FIRST,qualification SECOND,
+preparation THIRD restore39inverses13pairs SAMEraw101owner/root8;2572other2583baseline
+docs unchanged. Current425/102 retains each newtest/evidence ONCE. RootLOCAL/
+4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/21gates/
+fixtures/failures/rejectedactions/FINALPRDAFTERALL original gates remain.
+
+
+## Deploy start GET source qualification (2026-10-22)
+
+FIRST28/28 NEW finite PUBLIC SOURCE controls pass,zero fail/skip/cancel/todo.
+Exact unchanged exported GET alone executes with inert synthetic immediate
+bindings. Member/call/iterator order, receivers, one-argument response metadata,
+fresh ID snapshots, Promise adoption and exact fault propagation are covered.
+This GET has no internal authorization/capability check; actual middleware/auth
+are outside this SOURCE qualification. Actual imports/moduleinitializers/
+neighbours/HTTP/auth/database/ORM/operatorDB/native/backend/build/server/jobs/
+output/streams/timers/eventproducers/engine/credentials/services remain inert.
+No supported production defect/correction; TESTS/DOCS ONLY.
+
+FIRSTtypes2roots/0diagnostics covers the exact unchanged GET in explicit synthetic
+immediate-binding scaffold plus newtest,not wholemodule/project. Lint2files/0errors/
+warnings. Fresh191compilerinputs/191snapshotReads/fallback0 verified DIRECTLinux
+equal to Windows compiler metadata;37428DIRECTLinux dependencyhashes before/after
+including37in-tree/nondanglingsymlinkfiles match.425sourceinputs unchanged;old
+deploy-stream test and newdeploy-start test each included ONCE. Source0.859s/
+75010048peakbytes,types3.891s/303767552,lint30.329s/281997312. Metadata4.656s/261611520.
+ALLmainhandlesSIGNALLED and explicitdrain0;source/types/lint activeBeforeDrain0,
+metadata activeBeforeDrain1 before explicitdrain0. TotalProcesses2each/cause
+UNESTABLISHED. Source/typesstderrEMPTY;lintONEReact-autodetection setupnotice.
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged. NoOSnetwork
+isolation/universaldescendant/performance/independent-person claim. No replay.
+
+Qualification inverses FIRST,preparation SECOND restore26inverses/13pairs to SAME
+raw101owner/root8;2572other2583completebaseline docs stay unchanged. First2301owner-
+only metadata baseline is separate and retained. Startupreceipt retains26237
+exact orderedobjects/all1116fields901DIRECT;V1directcount/V2casecollision writers/
+preparations frozen,distinctV3accepted;independent parent27353/extra1793/direct/
+closure passed before release. All incoming histories and52/raw100/older inverses
+remain frozen. RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/historicalCIonly/overallCI
+false/fullgoalACTIVE/no budget. All44clauses/21gates/fixtures/failures/rejectedactions
+remain. FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding
+security/performance/actualAT/compatibleindependentrecovery/freshbackup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy start GET source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only the exact exported zero-argument
+GET in src/app/api/deploy/start/route.ts. Order was recorded FROM source BEFORE
+controls: NextResponse.json member, Array.from member, activeJobs.keys member and
+call, finite iterator exhaustion, then one json call with activeJobIds metadata.
+The async return adopts its result; uncaught faults reject unchanged. This exact
+GET contains no authorization or runtime-capability check. Actual middleware and
+authorization remain outside this isolated declaration's qualification. No
+supported production defect or correction is established; production is unchanged.
+
+Only synthetic PUBLIC IDs/response/authorization/capability metadata and inert
+immediate bindings are used. Actual HTTP/auth/database/ORM/operatorDB/native/
+backend/build/server/jobs/output/streams/timers/eventproducers/engine/credentials/
+services and moduleinitializers/neighbours remain inert. SOURCE/TYPES/LINT are
+UNEXECUTED pending new freeze/review. Existing controls/helpers are frozen and
+never replayed. Startup rehashed26010incoming BEFORE227current,26237 exact original
+objects;424/101/compat5/separate334,52inverses13pairs SAMEraw100owner/root8 and
+2570otherdocs pass. Independent parent schema/matcher27353/direct/extra1793/closure
+passed before explicit release. Both receipt-writer failures and preparations
+remain frozen; the immutable acceptedreceipt is distinct. New raw101owner/root8
+and2583 complete both-repository docs baseline are retained; first2301 owner-only
+metadata preview is separate. New currentroot8 pins preserve inherited originals.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIonly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy stream GET final test-file whitespace (2026-10-22)
+
+The staged whitespace check found one extra terminal blank line in the new test.
+Exactly one final LF was removed; every other test byte/control/assertion is
+identical to the retained executed snapshot. The original failed staging helper
+and snapshot remain frozen. A separate byte equality review confirms this
+transport-only correction;no source/types/lint replay or production change.
+Final424 bindings reflect this test delimiter;the prior execution424 bindings stay
+distinct. Final whitespace inverses FIRST,refLifecycle SECOND,qualification THIRD,
+preparation FOURTH restore52inverses/13pairs SAMEraw100owner/root8. All original
+scope/resource/gates/failures and FULLgoalACTIVE/no budget/FINALPRDAFTERALL remain.
+
+
+## Deploy stream GET pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage stopped BEFORE staging on missing historical capture TREE94fb59
+and new checkpoint TREE8c8303,zero changed refs. DISTINCT pure DIRECT FIRSTpasses
+BOTH295/295/21 inventories,exact stopped sets/all persistentmetadata/live/dirt.
+Both tree objects retained;causeUNESTABLISHED;no refmutation/recreation/replay.
+Separate WSLgh metadata verifies ActionsdisabledBOTH and PR28/5draft/open/unmerged.
+Stopped and reconciled histories remain separate. RefLifecycle FIRST,qualification
+SECOND,preparation THIRD restore39inverses/13pairs SAMEraw100owner/root8;
+2570other2581baseline docs unchanged. Current424/101 includes newtest/evidence ONCE.
+RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/
+21gates/fixtures/failures/rejectedactions/FINALPRDAFTERALL original gates remain.
+
+
+## Deploy stream GET source qualification (2026-10-22)
+
+NEW FIRST70/70 PUBLIC SOURCE controls pass,zero failures/skips/cancellations/todo.
+Only exact exported GET executes with synthetic PUBLIC request/session/job/cursor/
+row/response metadata and inert immediate auth/database/stream/callback/builtin
+bindings. Source-derived authorization/read/validation order, header nullish
+precedence/defaults, shortcircuits, fixed400/403/404/503 responses, exact ID-only
+query, await fences, lazy fresh callbacks and exact fault behavior pass. Actual
+HTTP/auth/Prisma/SQL/job/output/stream/timer/native services and application module
+initializers/neighbors remain inert. No supported production defect/change;
+TESTS/DOCS ONLY. No source/types/lint replay.
+
+FIRST types2roots/0diagnostics covers exact unchanged GET in an explicit synthetic
+immediate-binding scaffold plus the new test; it does not qualify the full module
+or project. Lint2files/0errors/warnings. Fresh192 compilerinputs/192snapshotReads/
+fallback0 and37428DIRECTLinux hashes before/after,including37in-tree/nondangling
+symlinks,match;424sourceinputs unchanged. Source0.907s/92864512peakbytes;types3.750s/
+293224448;lint25.312s/291414016. MainhandlesSIGNALLED;activeBeforeDrain0ALL and
+explicitdrain0ALL. TotalProcesses2each/causeUNESTABLISHED. Source/types stderrEMPTY;
+lint ONE React-autodetection setup notice. NoOSnetworkisolation/universaldescendant/
+performance/independent-person claim.
+
+V1 preparation stopped before compiler/controls on CRLF text normalization;V2
+stopped before compiler/controls because Linux node was unavailable,after DIRECT
+dependency hashing. DISTINCT V3 uses authorized Windows Node for compiler metadata
+then DIRECTLinux rereads of exactly those inputs;same70/exactoracle/production
+declaration. Both failed preparers and partial artifacts remain FROZEN. V1 result
+reader expected an old two-notice lint pattern and stopped;distinct V2 verifies the
+actual ONE notice and reuses immutable after-hash metadata without workload replay.
+
+Startup26010 original objects/all1007fields817DIRECT retained;independent parent
+schema/matcher26274/direct/history2740/closure passed before release. Raw100owner/
+root8 and2581completebaseline remain;2570otherdocs unchanged. Current424/101 includes
+new test/evidence ONCE;publicsort baseline and original334 remain separate.
+RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/historicalCIonly/overallCIfalse remain.
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps preserved.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification ONLYAFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy stream GET source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only exact exported GET in
+src/app/api/deploy/stream/route.ts. Order was recorded FROM source BEFORE controls:
+initial operator await/response identity, job ID then header/query/default cursor,
+shortcircuit validation, cookie/current operator await, exact ID-only row query,
+and lazy stream callbacks before fixed SSE response headers. The try block maps
+failures to fixed503; earlier authorization/query/validation faults propagate.
+Synthetic PUBLIC request/session/job/cursor/row/response/lifecycle metadata and
+inert immediate auth/database/stream/callback/builtin bindings only. No application
+module initializer, actual HTTP/auth/SQL/ORM/job/output/stream/timer/native service
+executes. No supported production defect or production correction is established.
+New SOURCE/TYPES/LINT remain UNEXECUTED pending freeze and review.
+
+FIRST startup26010 passed25783incoming BEFORE227current, with exact full original
+objects retained.423inputs/100docs/compat5/separate334,52inverses13pairs to SAME
+raw99owner/root8 and2568otherdocs pass. Independent parent schemaFIRST/matcher26274/
+direct/history2740/closure passed before explicit release. FINAL294 originals and
+fresh295/295/21 refs stay separate;zero missing/changed. V1 receipt writer stopped
+before creation on a case-only key collision;distinct V2 preserves that failure,
+preparations and immutable accepted receipt. New raw100owner/root8 and complete
+2581-doc baseline remain;current root8 pins are separate from inherited originals.
+Read truncations/absent guessed wrapper paths are retained without full-read claim.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIonly/overallCIfalse;rootLOCAL/4+32+1UNRESOLVED.
+Full goal ACTIVE/no budget. FINAL PRDdeployment ANDverification only AFTER ALL
+original preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackupAFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job stream pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stageV1 stopped BEFORE staging on missing historical capture TREEe0ee14
+and new checkpoint TREE94fb59,zero changed refs. DISTINCT pure DIRECTV1 FIRSTpasses
+BOTH294/294/21 inventories,exact stopped sets/all persistentmetadata/live/dirt.
+Both tree objects remain;causeUNESTABLISHED;no refmutation/objectrecreation/replay.
+Separate WSLgh metadata verifies ActionsdisabledBOTH and PR28/5draft/open/unmerged.
+Original stopped and reconciled histories remain separate. RefLifecycleV1 FIRST,
+qualificationV1 SECOND,harnessCorrectionV1 THIRD,preparationV1 FOURTH restore
+52inverses/13pairs SAMEraw99owner/root8;2568other2579baseline docs unchanged.
+Current423/100 includes new test/evidence ONCE. RootLOCAL/4+32+1UNRESOLVED/
+ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/21gates/fixtures/failures/
+rejectedactions/FINALPRDAFTERALL original preceding gates remain.
+
+
+## Job stream source qualification (2026-10-22)
+
+DISTINCT V2 FIRST92/92 PUBLIC SOURCE controls pass,zero failures/skips/cancellations.
+Only exact exported createJobStream executes with synthetic PUBLIC option/row/event/
+lifecycle metadata and inert immediate controller/callback/timer/default/builtin/
+error bindings. Setup/default selection, connection/deadline, fresh authorization
+before load, post-await closure fences, reset/codepoint/offset/frame bounds, terminal
+publication, poll waiter, abort/cancel/idempotent cleanup and exact fault behavior
+pass. No actual stream I/O,timer,event/job producer,Prisma/DB/module initializer,
+operator/filesystem/configuration/engine/credential/native service executes.
+No supported production defect or production correction; TESTS/DOCS ONLY.
+
+V1 FIRSTsource92/92 passes; FIRSTtypes retains two TS2378 test-accessor diagnostics.
+All V1 helpers/controls/freeze/logs/results FROZEN NEVERrerun;V1lint UNEXECUTED/FROZEN.
+DISTINCT V2 adds return to two assert.fail getters;SAME92/exact-error oracle remain.
+FIRST V2types2selectedroots/0diagnostics and lint2files/0errors/warnings pass.
+Fresh211 compilerinputs/190snapshotReads/fallback0;37428DIRECTLinux before/after,
+including37in-tree/non-dangling symlinks and423inputs match. Source0.891s/81526784
+peakbytes;types3.984s/288559104;lint27.063s/286720000. ALLmainhandlesSIGNALLED;
+activeBeforeDrain source0/types1/lint1;explicitdrain0ALL. TotalProcesses2each/
+causeUNESTABLISHED. Source/types stderrEMPTY;lint TWOsetup notices React detection/
+absent Pagesdirectory. NoOSnetworkisolation/universaldescendant/performance/
+independent-person claim. No V1 or V2 source/types/lint replay.
+
+Incoming immutable receipt,all25783 original full proofobjects and all877fields/
+709DIRECTbindings remain. ParentFIRST26563/direct/closure and explicit release
+preceded source work. Newraw99owner/root8,2579completebaseline and2568otherdocs
+remain;current423inputs/100docs include the new test/evidence ONCE. Production
+delta froma2b2668a remains EXACT1addition/1deletion kv-http overflowcancel from
+prior work. All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIonly/overallCIfalse;rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget;FINAL PRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job stream retained type-harness failure and distinct preparation (2026-10-22)
+
+V1 FIRST SOURCE92/92 passes with zero failures/skips/cancellations/stderr. V1 TYPES
+FIRST exits1 with two TS2378 diagnostics: nonreturning assert.fail accessors need
+explicit returns. Main handles signalled; explicit drains reach0. V1 helpers,
+controls/freeze/logs/results are FROZEN NEVERrerun; V1lint UNEXECUTED/FROZEN.
+DISTINCT V2 adds return to those two assert.fail getter bodies; same92 controls
+and exact-error oracle, unchanged selected production declaration. No supported
+production defect, oracle relaxation or production correction. V2 SOURCE/TYPES/
+LINT remain UNEXECUTED pending distinct fresh preparation/freeze/review.
+
+The first TAP log reader failed under the Windows default encoding; a distinct
+explicit UTF8 read confirms all92pass/zero fail/skip/cancel/todo and empty stderr.
+No workload replay followed that reader failure. Read truncations and the absent
+wrapper implementation-ledger path are retained separately without full-read claims.
+All44clauses/21gates/fixtures/failures/resourcecaps/rejectedactions/ActionsPROHIBITED/
+rootLOCAL/4+32+1UNRESOLVED remain. FULLgoalACTIVE/no budget;FINAL PRDdeployment AND
+verification only AFTER ALLoriginal preceding security/performance/actualAT/
+compatibleindependentrecovery/freshbackupAFTERquiescence/schema/effectiveRBAC/
+admission/data gates.
+
+
+## Job stream source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only exact exported createJobStream from
+src/lib/job-stream.ts. Evaluation order was derived FROM source BEFORE controls:
+nullish timer defaults, encoder/cursor setup, inert stream construction, start,
+fresh authorization before load, post-await closed fences, reset/Unicode offset
+validation, terminal publication, poll waiter and deadline/abort/cancel cleanup.
+Callbacks/controllers/timers/builtins are inert synthetic bindings; no real stream,
+timer, job, output source, Prisma/DB/module initializer or native service executes.
+No supported production defect is established; TESTS/DOCS ONLY. SOURCE/TYPES/LINT
+remain UNEXECUTED pending distinct infrastructure snapshot, freeze and review.
+
+FIRST startup25783 hashes passed25535incoming BEFORE248current with exact original
+metadata objects.422inputs/99docs/compat5/separate334 and52inverses/13pairs to SAME
+raw98owner/root8 plus2566otherdocs pass. FINAL293 originals and fresh294/294/21
+typed refs stay separate,zero missing/changed. Independent parent matcherFIRST26563,
+DIRECT audit and closure passed BEFORE explicit hold release. No frozen replay or
+immutable receipt/proof mutation. New raw99owner/root8 and complete2579-doc baseline
+are retained; new current root8 pins are separate from inherited originals.
+
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close remain. No actualHTTP/
+auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/production/
+grants/CAS/provisioning/frozenreplay. ActionsPROHIBITED/historicalCIonly/overallCIfalse;
+rootLOCAL/4+32+1findings UNRESOLVED;all44clauses/21gates/fixtures/failures/rejectedactions
+retained. FULLgoalACTIVE/no budget. FINAL PRDdeployment ANDverification only AFTER
+ALLoriginal preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackupAFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job tail pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stageV1 stopped BEFORE staging on missing historical capture TREE375442
+and new checkpoint TREEe0ee14,zero changed refs. DISTINCT pure DIRECTV1 FIRSTpasses
+BOTH293/293/21 inventories,exact stopped sets/all persistentmetadata/live/dirt.
+Both tree objects remain;causeUNESTABLISHED;no refmutation/objectrecreation/replay.
+Separate WSLgh metadata verifies ActionsdisabledBOTH and PR28/5draft/open/unmerged.
+Original stopped and reconciled histories remain separate. RefLifecycleV1 FIRST,
+qualificationV1 SECOND,harnessCorrectionV1 THIRD,preparationV1 FOURTH restore
+52inverses/13pairs SAMEraw98owner/root8;2566other2577baseline docs unchanged.
+Current422/99 includes new test/evidence ONCE. RootLOCAL/4+32+1UNRESOLVED/
+ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/21gates/fixtures/failures/
+rejectedactions/FINALPRDAFTERALL original preceding gates remain.
+
+
+## Job tail source qualification (2026-10-22)
+
+DISTINCT V2 FIRST94/94 PUBLIC SOURCE controls pass,zero failures/skips/cancellations.
+Only exact exported readJobTail executes with synthetic PUBLIC job-ID/count/row
+metadata and inert immediate tagged-query/default-client/builtin/error bindings.
+Unchanged chars/id substitutions, literal SQL minus, receiver/template identity,
+await/then assimilation, row-zero truthiness, total conversion, single output read,
+fresh results and comparison order pass. Nonfinite/fractional counts and large-bigint
+conversion are characterization only. No SQL semantics, supported production defect
+or production correction; TESTS/DOCS ONLY. Prisma/db/job-stream initializers and all
+neighbours/actual jobs/output/filesystem/database/configuration/operator/engine/
+credential/native inputs stay inert. See implementation-evidence/read-job-tail-source.json.
+
+V1 FIRST93/94 default-getter witness-identity failure remains FROZEN with helper,
+controls/freeze/logs/result;V1types/lint UNEXECUTED. DISTINCT V2 ordinary lexical
+object binding corrects the harness;the same94controls/exact-error oracle remain.
+FIRST V2types2ISOLATED-SELECTEDroots/0diagnostics and lint2files/0errors/warnings pass.
+Fresh211 compiler inputs/191snapshotReads/fallback0;37428DIRECTLinux before/after
+hashes including37in-tree/non-dangling symlinks and422inputs/204retainedproofs match.
+Source0.906s/94978048peakbytes;types4.062s/294772736;lint30.407s/281931776.
+ALLmainhandlesSIGNALLED;activeBeforeDrain source0/types1/lint0;explicitdrain0ALL.
+TotalProcesses2each/causeUNESTABLISHED. Source/types stderrEMPTY. Lint TWOsetup
+notices React detection/absent Pagesdirectory. NoOSnetworkisolation/universal
+descendant/performance/independent-person claim. No V2 source/types/lint replay.
+
+InfrastructureprepV1 stopped BEFORE outputs/controls on214vs211;DIRECT metadata
+isolates exactly three Node ts5.6 alternate declarations. DISTINCT corrected V2
+and fresh V3 preparation pass exact retained211 paths;original failure is frozen.
+Startup parentV1 remained prepared/unexecuted;V2/3678direct/83extra acceptance stays
+distinct. Raw98owner/root8,2577completebaseline and2566otherdocs remain;current
+422inputs/99docs include the new test/evidence ONCE. Production delta froma2b2668a
+remains EXACT1addition/1deletion kv-http overflowcancel from prior work.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain unchanged.
+ActionsPROHIBITED/historicalCIonly/overallCIfalse;rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget;FINAL PRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job tail retained harness failure and distinct preparation (2026-10-22)
+
+FIRST V1 source run passed93/94,one failed default-binding fault identity control,
+zero skips/cancellations. A throwing contextified VM global getter surfaced as
+ReferenceError: prisma is not defined instead of the exact witness error. Original
+V1 controls/helper/freeze/logs/result remain FROZEN,never rerun;types/lint UNEXECUTED.
+Main handle signalled,explicit drain reached0;no production defect/change established.
+DISTINCT V2 uses an ordinary lexical object binding around the unchanged selected
+declaration. The exact-error-identity oracle and all94controls stay unchanged; no
+gate relaxation or production correction. V2 SOURCE/TYPES/LINT UNEXECUTED pending
+distinct freeze/review. No SQL/ORM/native/backend/operator/output/module initializer.
+
+InfrastructureprepV1 stopped BEFORE outputs/controls on214vs211 compiler inputs.
+Distinct DIRECT metadata identifies exactly three Node ts5.6 alternate declarations;
+V2 infrastructure preparation matches the retained211-path set with37428 DIRECTLinux
+files and37in-tree/non-dangling symlinks. Original stopped attempt remains frozen.
+All original44clauses/21gates/fixtures/failures/rejectedactions/ActionsPROHIBITED/
+rootLOCAL/4+32+1UNRESOLVED retained. FULLgoalACTIVE/no budget;FINAL PRDdeployment AND
+verification only AFTER ALL original preceding acceptance/security/performance/
+actualAT/recovery/backupAFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job tail source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only exact exported readJobTail from
+src/lib/job-output.ts. Evaluation order was recorded FROM source BEFORE controls:
+default client; tagged-query receiver and unchanged chars/id substitutions; await;
+first-row truthiness; Number(total); one output read; total/cursor projection and
+total > chars comparison. The SQL minus sign is literal template text. Immediate
+await/then assimilation and synthetic getter/conversion faults remain JavaScript
+characterization. No SQL semantics or supported production defect is established.
+Current feature TESTS/DOCS ONLY; source/types/lint UNEXECUTED pending freeze/review.
+Actual jobs/output/filesystem/database/configuration/operator inputs/neighbours/
+engine/credentials/native services AND Prisma/db/job-stream initializers inert.
+
+FIRST startup25535 hashes passed25331incoming BEFORE204current, preserving all
+original proof objects including five restored metadata wrappers via accepted
+additive supplement. Current421/98/compat5/separate334 and39inverses/13pairs to
+SAMEraw97owner/root8 plus2564otherdocs verified. FINAL292 originals and fresh293
+typed refs stay separate,zero missing/changed. ParentV1 remained PREPARED/UNEXECUTED;
+distinct V2 FIRST26893, DIRECT3678 and retained-record83 pass before hold release.
+No immutable receipt/proof mutation, gate relaxation or frozen workload replay.
+New raw98owner/root8 and complete no-ignore/hidden2577-doc baseline retained.
+Original root preedit pins remain unchanged; current fresh pins are separate.
+
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close remain. No actualHTTP/
+auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/production/
+grants/CAS/provisioning/frozenreplay. ActionsPROHIBITED/historicalCIonly/overallCIfalse;
+rootLOCAL/4+32+1findings UNRESOLVED;all44clauses/21gates/fixtures/failures/rejectedactions
+retained. FULLgoalACTIVE/no budget. FINAL PRDdeployment ANDverification only AFTER
+ALLoriginal preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackupAFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Resource-list page resets and boundary focus (2026-10-20)
+
+Changing a shared ResourceTable search/filter or sort resets its page to one,
+including clearing an empty or one-row search back to an earlier filter. The
+table records each key transition so a previous page number cannot reappear.
+Sorting and the 100-row page size remain unchanged. When Previous or Next reaches
+its boundary and becomes disabled, focus moves to the named pagination region,
+which is programmatically focusable without adding a Tab stop. Focus remains on
+the search field and sort buttons during their normal interactions.
+
+The initial compiled Pods fixture reproduced stale page two after clearing
+empty and one-row searches, and body focus at two Next boundaries. Those saved
+failures remain retained. The corrected fresh production build, focused zero-warning lint and full
+nonincremental types pass. Affected compiled Codex IAB checks pass all 5410
+saved-evidence checks across 25 full DOM/accessibility captures and 24 actions,
+including first/last boundaries and Tab continuation. The original 22 row/link/
+page oracles remain exact; only the two boundary focus targets change to the
+named pagination region, with three additional boundary/Tab states. Two actual
+screenshots were inspected. Actual assistive technology, true zoom and all
+original delivery gates remain open.
+
+Sign-in HTTP refusals show the server's JSON string error or `Login failed` if
+the body is unreadable or malformed. The form remains available for an explicit
+retry. Network failures retain their network-error feedback, and successful
+sign-in still navigates to `/`; the server independently authenticates each login.
+
+While an explicit sign-in submission is pending, including reading an unsuccessful
+response body, the form reports its existing loading state through `aria-busy`.
+An always-mounted, screen-reader-only status outside the form contains `Signing
+in…` only while loading; the visual spinner is decorative. On settlement the
+status empties and busy state clears. Field values and the disabled submit
+behavior are unchanged. Held-request/body presentation-model checks are source
+evidence; actual assistive-technology announcements remain unqualified.
+
+An explicit open-registration submission similarly sets form `aria-busy` and
+fills its always-mounted, screen-reader-only status outside the form with
+`Creating account…`. The submit spinner is decorative. Status and busy state
+clear when the existing loading state settles, including after a refused response
+body is read. The separate availability check is unchanged; HTTP 403 still
+replaces the form and submit status with the lock alert before reading its body.
+Validation, field retention, disabled submit, feedback clearing, explicit retry
+and successful navigation retain their existing behavior. Actual-page source
+models cover these transitions; actual screen-reader acceptance remains open.
+
+Registration submission keeps an HTTP 403 refusal locked even if the server or
+proxy error body cannot be parsed. Other HTTP refusals show a string error from
+a JSON object or `Registration failed`; network failures retain the network-error
+message. Correcting form input or a readable server error does not bypass fresh
+server registration or role checks.
+
+Login and open-registration validation/submission errors expose the existing
+feedback as an alert without moving focus. Feedback still clears on the next
+explicit submit. The separate registration lock screen exposes its existing
+heading and explanation together as one alert; the sign-in link remains outside
+it, without moving focus. Confirmed-closed availability and HTTP 403 use the same
+notice, and the refusal locks before its response body is read. Source semantics
+and actual-page presentation-model tests do not establish an actual screen-reader
+pass; assistive-technology acceptance remains pending.
+
+## Public welcome-page capabilities (2026-10-18)
+
+Each Get Started click reads the current session. A successful response with
+explicit boolean flags sends authenticated users to `/`, unauthenticated users
+with `hasUsers: false` to registration, and existing-user installations to login.
+An unsuccessful HTTP response, malformed session or network/JSON failure goes
+to login. A failed session lookup does not indicate an empty installation;
+server registration and authorization checks still decide access independently.
+
+While one or more explicit Get Started session lookups are pending, including
+reading successful-response JSON, all three buttons report `aria-busy`. One
+always-mounted, screen-reader-only status outside the buttons contains `Checking
+session…` until the last lookup settles, then empties. Buttons stay enabled with
+the existing labels: overlapping clicks each make a fresh request and keep their
+existing completion-order navigation, including login fallback on failure.
+Initial page checking and visible content are unchanged. Source presentation
+models cover these transitions; actual assistive-technology acceptance remains
+open.
+
+The `/welcome` page describes native Kubernetes Secret management, externally
+supplied cluster access and configured Flux resource status. Its provisioning
+section distinguishes the disabled container runner from optional local Ansible
+integration and independent operator bootstrap/recovery. The retained runner
+screenshots are illustrative, not evidence that container provisioning is enabled.
+The four bundled welcome illustrations (`deploy.webp`, `flux.webp`,
+`dashboard.webp`, `secrets.webp`) under `/images/screenshots/` are exact public
+middleware exceptions so anonymous visitors and the image optimizer can load
+them. Other image paths remain authenticated.
+Ansible sync is explicit and writes lookup references/inventory, never native
+Secret values. The page makes no application-level encryption-at-rest guarantee;
+operators configure Kubernetes storage encryption and access controls. Its four
+capability tiles replace unverified repository/cluster usage counts. Pod shell
+availability remains subject to operator authorization and runtime settings.
+
+Unsupported open-source/MIT labels are removed because this source tree includes
+no license file. The former license link now points to project information in the
+existing repository. Get Started/session navigation, GitHub repository access,
+layout and runtime behavior are unchanged. Existing source/image/browser/performance
+qualifications retain their original identities; a later packaged image needs its
+own qualification.
+
+## Registration availability
+
+Opening `/auth/register` checks availability before showing the form. A successful
+session response must contain boolean `registrationOpen`: true opens the form;
+false displays the administrator-lock notice. If the check fails or its response
+is invalid, the page reports unknown availability and offers sign-in plus reload
+guidance. Reload the page to check again; there is no automatic registration retry.
+Submission validation, server refusal feedback and successful navigation retain
+their existing behavior. The server rechecks registration at submission time.
+The open form says "Set up your Botrus account" for both first and subsequent
+users. Role assignment remains with the fresh server transaction: the first user
+receives write and later users receive readonly; session hints do not grant access.
+
+Current release build (2026-10-18): `Dockerfile.release` builds locked current application source with the pinned C4 builder and replaces only `/app` on a required qualified runtime image. It retains the maintained system components, UID/GID 1000, entrypoint/forward migrations, production dependencies and port 4000. The original Trixie Dockerfile remains unchanged. See [exact local build instructions](BORTUS-DEPLOYMENT.md#building-current-application-source-on-the-maintained-runtime); this new application image still needs its actual integrated build/startup result and is not production adoption.
+
+Original A13 source validation is now composite-qualified: the actual canonical Pods browser compares0/2/7/12 in both directions, with a distinct raw omitted restart count normalized0 by the real API. Genuine missing Node CPU/RAM and PV capacity stay last in both directions; every observed name/href/immutable-cell tuple remains attached to its original row. Eight count, two raw-date, five further-column and three Settings/PVC cases total18 finite cases/36 directions. Thirteen relevant source blobs remain exact through reviewed `fccc7c06`. [A13 original source composition](implementation-evidence/a13-source-composite-root-20261015.json). This does not assert every table/date-kind cross-product or physical DOM-object reuse; historical false fields and failures remain unchanged, with AT/performance/image/live acceptance separate.
+
+Hosted run `38819528566` qualifies the original A19 source CI clause for reviewed source `fccc7c06e9063aa16967631b2fda2b397147d2b0` (frontend `4658deeff3bc5d952307c11503832b96b44dfe27`, unchanged workflow `f8b7ec07d69dcd1806ca44f6c566685108639cb3`). Its exact lean validation commit `76e4bfba75b3434df0b2b5efe62e356d6ffc546a` passes all12 steps: clean locked build, lint/types,347 units,8 HTTP integrations, all8 pristine/intended-mutant pairs and the208-row Pods browser smoke. Source restoration, two container/three-name cleanup and default unsuppressed retained log/result scanning pass. [Fresh source CI qualification](implementation-evidence/provisioning-hosted-ci-qualified-root-20261015.json). The [earlier342-unit qualification](implementation-evidence/a19-original-ci-clause-qualification-root-20261015.json) remains historical and source-bound. Delivered/live, actual AT, the two warm performance regressions, image/security and recovery remain separate. A02’s original distinct source contracts are composite-qualified from the exact160-call deletion matrix and retained demotion/native/expiry/logout proofs; [A02 composite qualification](implementation-evidence/a02-composite-boundary-qualification-root-20261015.json) preserves each source boundary and the historical partial failure.
+
+The three Flux list calls now use `get <resource> --all-namespaces`. On committed `ab7c6867f20af434aed704d1644e8b08267eda0a` (frontend `da4ed3bd2282424c1f40009678db8374b83ac73d`), a fresh original four-phase Linux build passes342 unit tests and eight HTTP integrations, including the three strengthened assertions in the existing Flux parent. The separate real matching Kubernetes v1.37.1/patched-kubectl fixture passes45 additional finite cases with44 exact app argv records, covering the corrected hierarchy without replaying the earlier44 cases. The existing strengthened unit assertions cover both cascade discovery orderings. All327 public actor records/four source files,384 raw files/5383 compiled objects/40635 installed objects,57 original plus11 observer/query host identities and all five container IDs/names are independently closed/current; own/fresh checks pass. ROOT qualifies the original A04 command boundary by the reviewed43-route/50-method family enumeration plus existing instrumented unit/HTTP coverage and both real-API fixtures; this is not50 new real handler tests or an exhaustive cascade-branch claim. The original validation text and historical failed attempts/false runtime acceptance flags remain unchanged. This qualifies the reviewed source boundary, with delivered/live acceptance, Flux controller reconciliation, positive kubelet services and deployment separate. See [ROOT composite qualification](implementation-evidence/a04-command-boundary-composite-root-20261015.json) and [fresh functional qualification](implementation-evidence/flux-fixed-functional-root-20261015.json).
+
+## Historical finite A19 sensitivity qualification
+
+Historical seven-case qualification on run `38770022640` remains immutable in [its source-bound receipt](implementation-evidence/a19-seven-regression-sensitivity-qualification.json). It is superseded for current CI status by the eight-case hosted qualification; it does not alter the separate AT/performance/image/recovery/live limits.
+
+Historical fixture failure: run `38781205292` recorded Pods HTTP503 from disposable app `/tmp` noexec/fake-CLI EACCES; its unchanged [source-only correction record](implementation-evidence/a19-browser-ci-app-tmp-exec-source.json) describes that preparation stage. The corrected hosted browser smoke and later eight sensitivity pairs have since passed; [current original A19 CI qualification](implementation-evidence/a19-original-ci-clause-qualification-root-20261015.json) supersedes the old unrun status. Actual AT, performance and adoption remain separate.
+
+Historical five-case qualification on run `38764208687` remains immutable in [its source-bound receipt](implementation-evidence/a19-five-regression-sensitivity-qualification.json). Current original-clause CI status uses the later eight-case run.
+
+The one-prop overview correction at `ea628d2411238a6776acf3cf742adb03cbe5d6af` (frontend `2d47cae1abf1ed2d969ee552e41104fd29791713`) now has a fresh local build/native-load/342-unit/8-HTTP pass and independent current/process closure. Hosted clean CI run `38750289826` passed the unchanged342+8 checks on lean validation commit `2f4d84f2e9c0c6cc86810f8119b707909145f01a`, whose complete frontend bytes/modes equal that payload. Four finite actual-browser cases also passed: terminal success200 and failed-command502/redaction, then real inventory DELETE500 with six-table rollback and retained dialog/input/in-dialog error, followed by one explicit retry200 after removing the synthetic abort trigger. The premature-launch workflow remains failed and preserved; it created no business browser job. Independent exact/Linux/Windows/final closure passed for the fresh four-case owner. These results do not transfer historical6e receipts to new source or close whole A05/A19, actual AT, performance, image, live or adoption acceptance.
+
+The prior qualified three-case `npm run test:regression-sensitivity` command runs in a separate read-only CI step for three disposable mutations only: A04 permissive name admission, A05 failed subprocess stdout treated as success, and A06 outage treated as an empty list. Each runs its unchanged named test on a pristine copy and then its single mutant; success requires exactly the pinned assertion location, operator, ERR_ASSERTION and expected witness, not an arbitrary exit1. Nine LF input files and unique replacements/mutant hashes are pinned; the copies resolve installed dependencies through a node_modules link to the read-only checkout. Only this filtered step uses Node22.23.3 `--experimental-test-isolation=none` so the selected test runs inside each directly awaited child OS process; normal342+8 flags stay unchanged. TSX may use threads in the same process. Timeout, spawn error, signal, output overflow or unexpected stderr refuse, and a child return is not a universal descendant-absence proof. The six sequential children each have a30-second limit and1MiB per-stream cap, within a240-second runner deadline with20 seconds reserved and a five-minute CI step; the isolated container retains2CPU/1GiB/no swap/PID256/networknone. Every copy is restored/verified even on failure and removed; original selected bytes are checked. Complete bounded synthetic TAP/status records are printed to hosted logs; temp records last only for the container lifetime. Hosted run `38760696046` now passed this exact committed step on validation commit `8f0c0e30cf5cd204d87622eb8b32a60c14988af0`, with the complete frontend tree `8cc04e769bed874ddf513590aaaa69c9a1723cb2` equal to owning commit `e9274f89630157daa4a922a45fada713b48b2ed5` and unchanged workflow blob `1f6ea96c11f125b0457c140cf6c66d23a90570fb`. All three pristine children exited0 and all three mutants exited1 at their exact named assertion; there were no skipped/cancelled tests, stderr, spawn errors or signals. All restore/original-input checks passed. The six controls took1775ms in this observation, within the fixed bounds. Locked build/lint/types and the original342+8 tests also passed. The retained416155-byte hosted log and numeric result passed a default unsuppressed two-file scanner0/zero with current bytes and scanner noLive verified. This is a hosted finite sensitivity pass; no local replay was performed. The historical source-only preparation record stays unchanged. [Hosted three-regression qualification](implementation-evidence/a19-three-regression-sensitivity-qualification.json) records the exact cases and limits. The original342-unit/8-HTTP bodies and steps are unchanged; deliberate sensitivity for remaining source regressions is still open, and manual acceptance clauses are not replaced by these tests.
+
+Fresh public-lock audits retain literal full exit1 with nine development-dependency rows (seven high/two moderate from two advisories) and omit-dev exit0/zero. The coordinator accepted only trusted-source controlled build use through `2026-10-22T23:59:59Z`, with re-review on dependency/input/boundary changes and expiry. Final pruned image package/bundle inspection remains required. No dependency update, clean full-audit claim or image-system waiver follows. Root checkpoint `40e351859c0e295315a2143b346f4b79f4706321` binds these receipts. The original two warm regressions, ten MEDIUM image findings and recovery/other original acceptance gaps remain open.
+
+## Clear dashboard inventory feedback
+
+Three further A13 cases passed against unchanged `6e2efbda` compiled source: Settings PV Capacity/Created and Storage PVC Capacity, with six exact ascending/descending observations and three actual-wire/display preconditions. Public values0/2/7/12, equivalent2Gi/2048Mi ties, distinct/equal/missing ISO dates and reachable missing values retained name-ascending ties and missing-last ordering. PVC status capacity, request fallback and defensive missing capacity were checked through actual normalization. Complete name/link/action-label and displayed-cell mappings stayed unchanged; this does not prove physical DOM object identity. Both actors and independent exact/Linux/Windows/later checks exited0, with five GET200 events,374 raw source files plus four generated artifacts,40 inputs,5383 compiled objects and40635 dependencies.58 recorded Linux births and the exact container ID/name were absent;11 Windows births were noLive, with three later Linux reader/query births absent and the Windows reader noLive. Two preceding server/browser workflows remain literal exit1 with Settings-only partial2cases/4directions and no whole-matrix acceptance. The second also retained launcher image-query WinError31 and a separate Windows fresh-reader AccessDenied5; that reader remains exit1. Supplemental closure separately bound eleven direct noLive observations and one recorded PID whose CIM creation time differed, without fabricating a direct API result or waiving access errors. The fresh browser used an initial PV-wire/render precondition and a unique Resource combobox role selector with exact options; historical selector/hydration causation remains an inference because the prior DOM was not captured. The fixture, six business oracles, resource limits and product bytes were unchanged. [Scoped Settings/PVC evidence](implementation-evidence/a13-settings-pvc-browser-qualification.json) supplements earlier A13 subsets without replaying them. Universal table/date, physical DOM, actual assistive technology, mobile, performance, image/live delivery and adoption acceptance remain separate; A07/A21 remain failed/open.
+
+Five further A13 columns passed against the unchanged current `6e2efbda` compiled UI/API: Deployment Restarts, Node Pods and Node/Namespace/Ingress Age, with ten exact directions and five durable actual-wire/display preconditions. Public counts0/2/7/12 and ties retained production zero-normalization; formatted ages2h/2d/7d/12d and reachable missing values used stable name ties and missing-last ordering. Complete name/link/all displayed-cell mappings were preserved, with eight GET200 events. Both actors and independent exact/Linux/Windows/later checks exited0, binding374 raw source files plus four generated artifacts,39 inputs,5383 compiled objects and40635 dependencies.33 recorded Linux births and the exact container ID/name were absent;10 Windows births were independently noLive, with three later Linux reader/query births and the Windows reader closed. The first attempt remains failed after four checkpoints/eight directions: the fixture wrote plural `ingresses.json` while actual source/compiled argv selected singular `ingress.json`. SourceV4 corrected only that dataset key and its comment; browser and all ten expected observations stayed byte-identical. The failed HTTP body count was not separately captured. A retained root staging-mode/order refusal was corrected before independent fresh closure without changing content or replaying the actor. [Five-column evidence](implementation-evidence/a13-five-column-browser-qualification.json) qualifies only this finite subset; prior eight-count/two-raw-date cases were not replayed or reassigned. Other unrecorded table/date cases, physical DOM identity, actual assistive technology, performance, final image, live deployment and adoption remain separate. A07/A21 remain failed/open.
+
+Legacy Nodes has an isolated, locally evaluated correction for inventory management. Fresh effective engine administrators can add inventory records, edit only an exact hostname-associated record by its inventory ID, or delete that inventory record; live Kubernetes nodes are not changed. Live-only rows expose no inventory edit/delete action, and Manage all inventory records opens canonical `/nodes` for records outside the live-first table. A failed write keeps the draft and displays an explicit inventory-refresh action before retry; no automatic retry occurs. Pending operations disable mutation controls. Inventory-read errors also block inventory mutations until explicit refresh succeeds while readable metadata remains. Edit errors are visible inside the modal, and Save inventory node names the Add save action. Losing authority closes/clears drafts and aborts/fences their client owner, but cancellation cannot undo server acceptance. Fresh server permissions remain authoritative. Eleven modeled actual-page/mutation-owner regressions, fresh semantic types and affected lint passed. A separate fresh build/native-load/342-unit/8-HTTP qualification passed. The finite compiled role/identity/failure/withdrawal browser outcome against that new output is recorded below; the completed legacy sorting checkpoint stays source-specific. The first nine-case browser workflow exited1 after three completed checkpoints and remains failed. It stopped at a global alert-count assertion after a visible modal error; its actual global DOM counts were not retained. Installed Next source supports framework/app ownership conflation as an inference only. The fresh corrected observer separates the pinned Next route announcer from app-owned errors without changing the nine business oracles, fixture or application. Its server and browser both exited0. All nine cases completed: readonly/scoped mutation refusal; named Add and exact inventory association; exact-ID PUT; genuine409 modal feedback with retained draft; fixture gateway inventory503/recovery200; exact-ID DELETE preserving live nodes; fresh role withdrawal; held accepted-write/admin withdrawal with late client settlement fenced; and fresh session-version revocation401. The synthetic gateway503 is not a real database-outage claim, and client cancellation does not undo server acceptance. Two durable numeric snapshots recorded global/app/modal/framework alert counts2/1/1/1 during the failed edit and1/0/0/1 after pending withdrawal, with no app error outside the modal and exactly one visible modal error only at the first checkpoint. These observed counts belong to the corrected run, not the failed first attempt. Independent exact/current checks and Linux/Windows/later closure passed:374 source files,39 prepared inputs,5383 compiled objects and40635 dependencies stayed bound;40 recorded Linux host births and the exact container ID/name were absent,10 recorded Windows births were independently noLive, and three later Linux reader/query births plus the Windows reader were closed. Windows noLive denotes process liveness, not unqueryable kernel-object absence. This qualifies these nine finite local browser cases only. No complete A12, actual assistive-technology, mobile, performance, final-image, live deployment or adoption acceptance follows. A07/A21 remain failed/open.
+
+Separate current `6e2efbda` compiled authorization qualification passed with the unchanged ten complete HTTP status/body cases, twelve fresh SQL row reads (five session and seven account projections) and thirteen dispatch/settlement/worker-operation joins. The selected compiled middleware/handler fixture observed one worker, one database connection and two prepared-statement owners, with stable numeric reports through actual server exit; this is observed fixture ownership, not universal realm coverage. Role demotion, session-version revocation, account deletion and schema-outage outcomes remained exact. Independent checks bound374 raw source files plus four separately generated artifacts,35 prepared inputs,5383 compiled objects and40635 installed objects. Nineteen recorded host births and the exact container ID/name were absent; three later reader/query births and the prior metadata-verifier births were independently closed. The first preparer exited1 before workspace creation on Windows UNC receipt paths, with no actor dispatched; that failure is retained. A distinct owner corrected only those Linux authority paths and owner bindings. Its default source scan exited1 on one generic-api-key finding in public container-name/prior-attempt metadata; the exact source was reviewed as noncredential metadata without suppression or replay, and no zero-findings source-scan pass is claimed. No fixture, observer, collector, gate, authentication/freshness bound, build or passed-control replay was introduced. This is local compiled ownership qualification, not a warm-Pod latency remedy or performance/security/image/live/adoption acceptance; A07/A21 remain failed/open.
+
+The current Flux UI source presents failed reads as unavailable/Retry and labels retained snapshots. Repository removal requires typing its exact name and explains namespace/volume effects and retained native credentials. Dismiss stops only progress monitoring; inspect server results before retrying. Private repository drafts clear on close, account/fresh permission loss, session end and page hiding. Detail/inventory tables expose searchable 100-row pages, typed sorting and keyboard links, without speculative destination fetches. Local combined and actual-route browser qualification passed.
+
+For a selected KV path, choose Values and versions to open the workbench explicitly. It begins with metadata, requires separate reveal/adoption/edit actions and returns focus to its entry on close. Drafts remain local to the dialog. The recorded combined Node22/native-browser subset passed; integrated transfer/reconcile remains pending. Administration and audit opens a separate panel in one action for policies, scoped identities, audit, legacy, history/recovery and static rotation. Readonly/scoped users see audit only. Combined administration unit/API/browser subset passed, including exact issue/revoke, selected history context and fresh withdrawal. Refresh KV metadata clears local confirmations/tokens; confirmed metadata-change callbacks refresh other views without clearing a newly issued token. Wider interaction, image/recovery and live acceptance remain open.
+
+After a native action, refresh metadata before opening the next action. Unavailable status is labelled explicitly and does not imply a new/unadopted target. A not-found response enables separate explicit initialization under fresh permissions; existing originals require adoption. A new attempt replaces the preceding operation label, while native outcome inspection remains explicit.
+
+KV mount/path search and sorting apply to the loaded cursor page, not to every server record. Page navigation clears its corresponding search. Registration leaves Save disabled for invalid logical-path spelling, duplicate field/key mappings or invalid native names; the server independently enforces normalization, policy, scope and retention limits.
+
+KV metadata UI passed local qualification. From Secrets choose KV mounts and paths. Browse one cursor page, choose an explicit mount, then register a logical path with exact namespace/Secret and field/key mappings. Registration changes metadata only. Effective administrators manage mount scopes; scoped writers require create policy. Opening a path shows its mapping, fresh permissions and independent native status/version metadata; permitted writers edit retention using the displayed metadata revision. A changed revision keeps the draft but disables Save until explicit Reload retention discards it. Unavailable reads show error/Retry with retained metadata labelled; they do not imply an empty list. Full value/adoption/recovery and administrative workflow UI remain open.
+
+For an unadopted native key on Secrets, select metadata, optionally reveal, then enter a replacement or choose Intentionally save an empty value. Save remains disabled for untouched selection/reveal. Clear display and draft erases the local editor without a native request. Delete selected key opens an exact namespace/Secret/key confirmation; cancelling sends no delete. Stale versions fail and require refresh/reselection before an explicit retry. Adopted keys still require versioned KV mutations. These editor changes passed local TLS/browser qualification; see [editor evidence](implementation-evidence/secret-intent.json).
+
 The application lives at `k8s-rewrite/front-end/`; its documentation lives at repo-root `docs/`. This main-branch publication includes the dashboard and application runtime. Existing Swarm sources remain in place. Kubernetes charts, provisioning roles and Flux source changes are separate deployment work.
 
 ## Local setup
@@ -7,14 +772,34 @@ The application lives at `k8s-rewrite/front-end/`; its documentation lives at re
 1. Enter `k8s-rewrite/front-end` and run `npm ci`.
 2. Configure an untracked `.env` from `.env.example` using independently supplied signing/lookup credentials and a SQLite `DATABASE_URL`. Keep signing material stable across restarts.
 3. Supply operator `KUBECONFIG` or `~/.kube/config`, `BORTUS_SECRET_NAMESPACES` and optional metadata-only aliases via `BORTUS_SECRET_ALIASES_FILE`.
-4. Run `npm run db:deploy`, then `npm run dev`. Open `http://localhost:4000` and register the first user, which receives the `write` role.
+4. Run `npm run db:deploy`, then `npm run dev`. Open `http://localhost:4000` and register the first user, which receives write role, engine administration and the initial KV grant.
 5. Check cluster resources and native Secret metadata. Import native values externally before enabling their consumers. See [deployment contract](BORTUS-DEPLOYMENT.md).
 
 For an existing database, make a consistent backup and assess migration history before deployment. Never reset a production database to make migrations pass.
 
 ## Configuration and Secrets
 
-Use **Configuration** (`/configuration`) for nonsecret SQLite settings. Use **Secrets** (`/secrets`) for native Secret metadata and, as a write user, explicit reveal and key CRUD. Create refuses existing keys; update/delete require the current resourceVersion. Unrelated keys, type and metadata are preserved. Deleting the last Opaque key retains an empty Secret object.
+Static rotation APIs and actual integrated prepare/generate-once, captured UID/RV reload, separate operator consumption acknowledgment and eligible cancellation passed local qualification; final image/live and real consumer receipt remain pending. Prepare one exact existing field and a same-namespace Deployment/StatefulSet/DaemonSet; generate once with displayed native head/RV and metadata revision. Changing the stored string does not rotate an external credential or prove a consumer used it. Inspect ambiguous operations before further action. Consumer acknowledgement records an explicit assertion; optional named reload is administrator-only and may reconcile back under Flux. No automatic workload restart occurs.
+
+Use Previous aliases / Next aliases on the Secrets screen to browse all references. Native and alias metadata load independently; refresh failures are shown beside the affected source. Alias page navigation does not reload the native Secret list. This browser behavior passed local readonly/mobile checks with 603 synthetic aliases and an unavailable native endpoint.
+
+Alias metadata bounds passed local unit and production HTTP/TLS qualification. Follow nextCursor to inspect all 100-reference pages; current-namespace metadata excludes history. Register strict four-field mappings through the API for immediate cache invalidation, or update the bounded metadata file and allow up to ten seconds for refresh. Readiness coalesces metadata-only dependency probes and does not establish write/admission acceptance.
+
+History cleanup APIs passed local unit and production HTTP/TLS qualification. Select committed versions and confirm the exact path; first tombstone any active head being destroyed. Inspect reference-commit and per-history cleanup outcomes separately. For orphan GC, an administrator previews one path, reviews candidates older than 24 hours, and submits the current source head/RV/path revision plus candidate UID/RV. Changed ownership/references or unavailable sources retain history; no background sweep runs.
+
+The v1 import/export API workflow passed local unit and production HTTP/TLS qualification. Choose explicit paths/versions and acknowledge that export contains credential values. Review metadata-only import plans, then submit the same bounded bundle with current path revision/head/RV and explicit overwrite choices; inspect every per-path outcome before retrying. New native initialization needs an administrator, while already-imported native objects require explicit adoption first. No group destination is inferred from an alias. Full transfer UI remains pending.
+
+Flux repository removal keeps its native authentication Secret. The progress view reports retained credentials; inspect exact references/consumers before explicit native key or KV version cleanup. Repository names never establish Secret ownership, and cascade removal does not require a canonical Secret delete permission.
+
+Use **Configuration** (`/configuration`) for nonsecret SQLite settings. Use **Secrets** (`/secrets`) for native Secret metadata and, as an effective engine administrator, explicit reveal and key CRUD. Create refuses existing keys; update/delete require the current resourceVersion. Unrelated keys, type and metadata are preserved. Deleting the last Opaque key retains an empty Secret object.
+
+User, configuration and settings screens share metadata/session queries with explicit failed-read states and Retry. User/configuration tables render at most 100 rows per page with typed date/text sorting and keyboard actions. Editors are labelled focus-trapped dialogs; deletion requires an exact username or configuration key. Fresh engine administration, valid/changed input and one pending request gate saves. Mutation requests have a 20-second deadline, abort on unmount and never automatically retry an ambiguous outcome. Passwords retain intentional whitespace and leave the UI when an editor closes or write access ends. Configuration edits preserve the existing key/ID.
+
+The configuration-response correction checks list rows and save/delete acknowledgments before showing success. An unverified response keeps the editor or delete confirmation open and asks you to refresh because the server may already have applied the change. A manual retry remains explicit. Empty nonsecret values, submitted category whitespace and extra metadata remain supported; no row-key migration is introduced. Five real loopback HTTP helper/decoder/mutation tests and three exact sensitivity controls are [locally qualified](implementation-evidence/configuration-json-response-focused-20261015.json); Fresh raw-Git build/native-load/lint/types/352-unit/8-HTTP qualification now passes; compiled-browser configuration qualification remains pending.
+
+Settings distinguishes effective registration status from the persisted application switch: ALLOW_REGISTRATION=true can keep it open when the switch is off. PV policy editing applies one explicit Retain/Delete choice after exact-volume confirmation; failures remain visible. The former default-policy Save was a delay without persistence or a consuming creation flow and has been removed. New PV defaults come from StorageClass configuration; no successful save is simulated. Viewport width is a browser preference available to both roles.
+
+Flux cascade deletion now stops on command/discovery errors and retains its DB inventory record until cleanup succeeds. A namespace that remains after 60 seconds requires manual finalizer investigation; the dashboard does not automatically strip finalizers. See [Flux integration](FLUX-GITOPS.md).
 
 Register exact alias/namespace/name/key mappings using `/api/secret-references` or the alias JSON file. Underscores and path-style aliases are not parsed into destinations. Bearer lookup returns mapped native values or nonsecret configuration; legacy sensitive SQLite rows are excluded, including during outages.
 
@@ -24,18 +809,91 @@ See [API usage](API-USAGE.md), [Secrets engine](SECRETS-ENGINE.md) and [permissi
 
 Container provisioning is disabled. Provision or recover a cluster from an independent operator environment with independently available credentials. The optional local dashboard runner expects Ansible and a separately supplied sibling tree at `k8s-rewrite/ansible-playbook/`, including `playbooks/` and `inventory/production.ini`. That Kubernetes provisioning tree is not supplied by this application-only merge.
 
-`POST /api/vars/sync` generates lookup expressions and inventory for that optional tree. It never generates Secret values. Local runner inputs are `ANSIBLE_BECOME_PASSWORD`, `ANSIBLE_PRIVATE_KEY_FILE`, `ANSIBLE_REMOTE_USER`, `BOTRUS_API_URL` and `BOTRUS_SECRETS_KEY`. Bootstrap must work while the target cluster is unavailable. Use sensitive task `no_log` handling in the external playbooks.
+`POST /api/vars/sync` generates lookup expressions and inventory for that optional tree. It never generates Secret values. Local runner inputs are `ANSIBLE_BECOME_PASSWORD`, `ANSIBLE_PRIVATE_KEY_FILE`, `ANSIBLE_REMOTE_USER`, `BOTRUS_API_URL` and `BOTRUS_SECRETS_KEY`. Bootstrap must work while the target cluster is unavailable. Use sensitive task `no_log` handling in the external playbooks. Dashboard runs accept only site.yml and the supported role selection. New job output keeps a stable fixed preparation prefix through incremental progress and terminal/could-not-start snapshots, with appends to the mapped `jobs` table so existing stream cursors do not shift. Both focused actual-route/SQLite/producer/stream regressions pass, and disposable historical wrong-table and omitted-prefix variants fail their exact assertions. [Focused qualification](implementation-evidence/provisioning-output-cursor-focused-20261015.json) records source restoration and owned container absence. The new fccc7c06 full build/native-load/lint/types and347 unit/8 HTTP checks pass with independent current/closure checks; [fresh functional qualification](implementation-evidence/provisioning-output-full-functional-root-20261015.json). The [one synthetic enabled-Run browser case](implementation-evidence/a12-enabled-run-qualified-root-20261015.json) now passes with independent closure and both fixed output messages. The [deleted-account browser case](implementation-evidence/a12-deleted-browser-qualified-root-20261015.json) now verifies real keeper deletion, draft/control withdrawal, redirect and old-cookie401 with independent closure. The [original A12 source clause](implementation-evidence/a12-source-composite-root-20261015.json) is composite-qualified; real host provisioning and whole delivery acceptance remain separate. New job output uses a fixed stdout callback and retains only lifecycle/role status; ordinary stdout/stderr, task labels, module results and exception text are withheld. Missing callback completion fails explicitly, including on a zero process exit. Local producer/production storage/stream qualification passed; full deployed Linux runner/image acceptance remains separate and historical output is unchanged.
 
 ## Cluster and Flux operations
 
+Overview counts now distinguish native Secret object metadata from SQLite nonsecret configuration. Failed independent sources show unavailable counts, not zeros. Clearing dashboard inventory requires effective engine administration and exact confirmation, describes the SQLite records removed and refetches live data; it does not describe live resource removal or a cluster being undeployed.
+
+Nodes displays live cluster state and SQLite inventory in separate sections. Inventory remains accessible during cluster outages and is not promoted to live status. Inventory changes validate names/IPs/roles, expose saving/errors and require confirmation for deletion. Editing by record ID avoids creating a second record when its hostname changes.
+
+Pods, Deployments, Namespaces, Services, Ingresses and Storage now use shared metadata queries and paginated tables (100 rows/page). Search/sort/filter changes reset the page. Pod type/namespace/label filters are applied by the server; labels submit explicitly. Storage distinguishes persistent volumes from actual PVCs and offers exact claim detail links. Typed sorting was separately checked in the current compiled browser for Pod Restarts/Ready, Deployment Ready/Up to date/Available, Node CPU/Memory and Storage Capacity, in both directions with complete name/link/cell mappings preserved. Reachable null/unknown values remain last; omitted Pod counters normalize to zero. [Exact eight-column scope](implementation-evidence/a13-count-browser-qualification.json) does not imply every date or application table is qualified. Empty results are shown only for a successful snapshot; failed requests retain and label previous data or show unavailable state.
+
 The dashboard lists nodes, namespaces, pods, deployments, services, ingresses and storage using externally supplied Kubernetes credentials. Database node records describe inventory; creating a record does not provision a machine or join it to Kubernetes.
+
+New Flux repository locations must be credential-free HTTPS/SSH URLs or SSH SCP spelling; enter private authentication separately. Userinfo/passwords, query strings and fragments are rejected before side effects. Existing unsafe locations are withheld from the dashboard without rewriting stored resources. Detail views explain that controller messages and annotations are withheld, preserve structured readiness, and link only safe HTTPS URLs. Inspect raw controller diagnostics in the independent operator environment.
+
+Cluster APIs now expose per-resource availability and labelled retained snapshots, fail unavailable primary reads with 503, and keep node inventory separate from live status. Browser availability presentation is being updated under A06/A11; see the implementation ledger for current acceptance.
 
 The **Flux** view reflects installed Flux resources. The production source is the separate private `jtmb/branconet-charts` repository: main pushes pass validation before CI promotes their exact SHA to validated. The existing migration-releases Kustomization uses source branconet-charts and path ./flux/releases. BORTUS's package is charts/bortus, with release overrides in flux/releases/bortus.yaml. Application source pushes do not rebuild or redeploy the running image. See [Flux guide](FLUX-GITOPS.md), its reviewed image-release procedure and [connection guide](CONNECTING-TO-A-CLUSTER.md).
 
-The write-role terminal executes shell commands with the application's operating-system permissions as well as its Kubernetes permissions. Treat write accounts as operators with application-host access.
+The engine-administrator terminal executes shell commands with the application's operating-system permissions as well as its Kubernetes permissions. Treat effective engine administrators as trusted operators with application-host access; scoped writers have no terminal/infrastructure authority.
+
+The separate pod-exec handler runs scripts inside the selected pod/container via structured kubectl argv. Runtime session capabilities expose provisioning/operator-shell/pod-exec gates; Windows has no operator host shell, and both shell modes can be disabled by their documented environment flags. The resource menu hides exec and mutations for unknown/readonly/scoped-writer sessions and offers only implemented operations. Node drain and resource deletion require exact-name confirmation. Drain respects PDB/local-data/unmanaged-pod refusal, and a timeout may leave partial effects that must be inspected. Successful mutations refetch subscribed cluster metadata; YAML/log dialogs load only when opened.
 
 ## Validation
+
+Provisioning uses the shared fresh session/runtime capability and metadata-only job history. Container/unsupported runtimes show independent-operator guidance instead of Run controls. Only effective engine administrators can read captured provisioning output; other accounts see job metadata. Authorized job output is loaded explicitly into a bounded text tail, with cursor-based streaming, hidden-page close/resume, explicit error/retry and unmount cleanup. Completed job deletion and provisioning/cancellation use accessible confirmations with failures inside the focused dialog. Cancellation reports a request rather than claiming completion, and refuses an unowned process. Local unit/HTTP/browser completion/unmount/role/mobile checks passed; browser visibility transitions and real runner/image performance remain separately bounded acceptance.
+
+Keyboard focus is visible on interactive controls. Resource menus use keyboard-aware dropdowns; dialogs expose titles/descriptions, trap focus and return it to their trigger. Logs render as a bounded text snapshot, and YAML syntax tooling is removed from initial route imports. Resource keyboard/mobile/browser and observed-script comparisons passed locally; see [evidence and limits](implementation-evidence/README.md). Other screens, actual zoom and screen-reader/performance checks remain pending.
+
+Deployment details now show desired/observed controller state, including paused/reconciling/scaled-down state and generation. Pod membership follows controller UIDs. Desired replicas use an explicit bounded form; runtime edits may be reconciled back by Flux.
+
+Resource detail pages subscribe to the same metadata query lifecycle. A failed read shows unavailable state rather than claiming the resource was deleted; only a fresh 404 is shown as Not Found. Retained/partial/stale responses remain labelled, and menu mutations invalidate active detail/list subscriptions.
+
+Small viewports use a 56-pixel navigation rail with named resource links; desktop navigation can expand/collapse. Comfortable content width applies only on large viewports. Resource screens fit 320/390/768 CSS-width checks, with local table scrolling; remaining-screen and actual zoom acceptance is pending.
+
+YAML, log and resource confirmation dialogs use accessible modal primitives. YAML sessions reset for each resource/mode; readOnly remains authoritative, Save requires an available callback and changed content, and closing a dirty editor requires an explicit discard. Editor drafts are not persisted. Keyboard dirty/discard/read-only reopening and focus trap/return passed in the synthetic browser fixture.
+
+A separate finite current-build check passed failed-save draft retention followed by discard/reopen, and fresh-version View/Edit reopening after the public fixture changed resourceVersion. It recorded five GET 200 responses and one PUT 502 through the actual routes. This adds two cases; four earlier failed workflows remain preserved. See [A16 qualification scope and closure](implementation-evidence/a16-current-browser-qualification.json). It does not establish mobile, screen-reader, performance or delivered-image acceptance.
+
+ROOT qualifies the original A16 source clause by composing the retained failed-save/discard/reopen and changed-fetched-version browser cases with five unchanged YAML/menu/modal/backend/route files through the current qualified ab7 build. No test was replayed; historical failures and delivery/mobile/AT/performance limits remain unchanged. [A16 source composition](implementation-evidence/a16-source-composite-qualification-root-20261015.json).
 
 Run `npm test`, `npm run typecheck`, `npm run build`, then `npm run test:integration`. The HTTP integration suite requires the production build and uses temporary SQLite, fake credentials and a loopback unavailable Kubernetes endpoint. It does not access the operator database or live cluster.
 
 Image and live-cluster evidence are separate from those local checks. See [recorded evidence and runtime contract](BORTUS-DEPLOYMENT.md).
+
+The [2026-10-10 performance/correctness/UI audit](BORTUS-AUDIT.md) records the main-source baseline, reproduced account/CLI/UI bugs, local cache measurements and a staged implementation plan. Its [evidence bundle](audit-evidence/README.md) includes a disposable Windows fixture and screenshots. These checks do not establish deployed-image performance. The current lint command uses checked-in flat configuration and direct ESLint with warnings treated as failures; the app-only Node 22 quality workflow runs install/lint/build/type/unit/HTTP checks without deployment credentials. See the implementation ledger for current acceptance rather than treating a workflow definition as a successful CI run.
+
+Follow the [implementation ledger](BORTUS-IMPLEMENTATION.md) for remediation status; the audit remains historical evidence. The account migration is forward-only and needs a consistent DB backup before deployment. Password reset invalidates the user's cookies; self-reset requires signing in again. Flux-owned workload screens will show source/ownership/reconciliation status as implementation progresses. Ad-hoc runtime edits must not be described as persistent Git desired-state changes; charts-repository integration is coordinated separately.
+
+Legacy access changes require fresh engine administration, an exact paginated alias-impact preview and acknowledgement before commit. Re-preview after a changed alias/mapping/grant/policy/principal/path/mount revision or mount namespace scope. Principal disable blocks nonsecret legacy configuration lookup too; bootstrap credentials must stay independent. Exact grant revocation does not change native values or the external lookup key. These APIs passed [local unit and production HTTP/TLS qualification](implementation-evidence/kv-legacy-access.json); the full KV interface/final image/live acceptance is pending.
+
+Search/sort and page through Secret object metadata, choose View keys for an exact namespace/name, then search/sort and page through its keys. Both tables show at most 100 rows per page. Focus moves to the key panel; closing returns to its trigger or object search. Opening a key list retains metadata-only access and does not reveal values or prepare a replacement. Select key explicitly to load its target/resourceVersion and focus the editor; deliberate replacement/empty intent and explicit reveal remain separate. [Local qualification](implementation-evidence/secret-tables.json) covers paging, focus, intent and readonly/scoped metadata browsing; full KV workflows remain under development.
+
+
+The next A22 harness tests the unchanged production build with the existing disposable UI fixture: three cold/warm pairs each for /deploy completed-job confirmation and /pods actions/YAML, fixed390x844 CSS viewport,4x renderer CPU throttle,150ms latency/200,000-byte/s download/93,750-byte/s upload. It records actual script response/cache bytes and exact public chunk hashes, separate offline gzip/Brotli estimates, renderer Script/Task duration, bounded compile/evaluate trace summaries without event arguments, buffered LCP and click-to-visible-frame timing distinct from locator wall time. Initial versus explicitly opened chunk inventories must remain disjoint; geometry/focus and zero mutation remain assertions. Container provisioning stays disabled and real runner/image remains separate. Results are pending; no source speed improvement is inferred. The implementation follows official [Next15 conditional lazy-loading guidance](https://nextjs.org/docs/15/app/guides/lazy-loading) and public [Chrome DevTools protocol](https://chromedevtools.github.io/devtools-protocol/) measurement methods; browser emulation is not realzoom or field Core Web Vitals.
+
+
+The first A22 browser run completed all12 samples/fit/focus/zero-mutation assertions and normal cleanup. Its existing UI gateway served assets directly without production cache headers, so cache-preserved reloads retransferred all scripts; that run is retained as attempt1 and is not warm-cache proof. The new opt-in BORTUS_UI_PRODUCTION_ASSETS_FIXTURE copies exact current .next/static to standalone and forwards assets to actual Next, preserving its cache/encoding headers; default existing fixtures remain unchanged. The repeated profile requires immutable production headers and observed disk-cache/zero-wire warm scripts. Exact original harness/fixture/report and launcher/source/CLI are retained, and final measurements remain pending.
+
+
+A22 attempt2 confirmed actual production immutable cache headers and gzip in its cold sample, then failed the disk-cache-only warm oracle. Its original failed report/source/CLI/normal cleanup are retained; warm rows were not captured before that assertion, so their cause is not inferred. The next diagnostic persists pending initial rows and records the public Network.requestServedFromCache event as well as fromDiskCache. Genuine warm acceptance still requires observed browser-cache serving and zero encoded wire bytes for every script; no threshold, profile or application behavior is changed.
+
+
+Current A22 characterization passed12 actual mobile samples: three cold/warm pairs each for /deploy confirmation and /pods actions/YAML at390x844,4xCPU,150ms/200,000down/93,750up. Actual production immutable/gzip assets were forwarded; all warm scripts had zero encoded wire bytes with observed browser-cache serving (39 memory-cache event rows and42 disk-cache rows across initial and optional phases; mixed cache proof). Deferred confirmation adds one7,271-byte raw chunk (2,885gzip/2,572Brotli estimate); Pods actions/YAML add two chunks totaling17,716raw (6,978gzip/6,220Brotli). Cold initial actual encoded script bytes were164,448deploy and161,058Pods, with0warm; cold optional encoded bytes3,281 and7,770, with0warm. Local median buffered LCP cold/warm was1696/628msdeploy and592/328msPods; renderer ScriptDuration medians79.238/79.181ms and320.379/218.038ms. These are fixed-profile current-source observations, not source-before/after improvement, field CoreWebVitals or total host CPU claims. Click-to-visible-frame and overlapping compile/evaluate summaries remain in the raw reports; locator wall times are separate. Fit/focus/return/zero mutation and stream cleanup passed. Lint/types passed separately; production/build unchanged, so no new unit/build/HTTP pass is invented. Both original cache fixture/oracle attempts remain retained. See [measurement qualification](implementation-evidence/optional-code-qualification.json). First-terminal loading/accessibility, wider actualzoom/AT, final image/runner, A07 and live acceptance remain open.
+
+### Terminal dock contract and qualification history
+The terminal is a named nonmodal region anchored to the viewport's current content width, including sidebar resize. Restore and switch use buttons; height is adjustable with ArrowUp/ArrowDown and Home/End on its named separator. The active command input receives focus and uses xterm5.3 screenReaderMode supporting DOM. Closing the last user-opened pod terminal returns focus to its originating Actions button when still connected. Minimize disposes the private terminal and input/history; its bar exposes Restore/Maximize/Close and no misleading Clear. Active Clear resets buffer and input/history, rewrites the public welcome/prompt and focuses input. Hidden/pagehide/navigation and fresh permission/runtime withdrawal close terminals; command ownership aborts and late replies remain fenced by unmount. Initialization owns its animation frame and terminal disposer independently of a detached DOM ref. A loading status covers the deferred chunk. At that draft point, these changes had not yet passed fresh build/browser qualification and do not establish real AT or image acceptance. See https://xtermjs.org/docs/api/terminal/interfaces/iterminaloptions/ and https://xtermjs.org/docs/api/terminal/classes/terminal/.
+
+
+The short actual current-build Tab diagnostic reproduced a keyboard trap (input retained focus after Tab; normal owned cleanup). The one-shot runner now explicitly leaves Tab/Shift+Tab to the browser using xterm attachCustomKeyEventHandler; it has no tab completion. Final browser checks require leaving input and reaching Close with reverse Tab, public welcome contrast>=4.5, and actual refused deferred JS fixed feedback/Close/origin focus return. Qualified actualAT and image evidence remain open.
+
+### Qualified local terminal checkpoint
+The final fresh production build/lint/typecheck passed (terminal-quality3), followed by11 actual-route checks and six fixed390x844/4xCPU/150ms cold/warm samples. The viewport dock fits320/390/768/1280 on the long Pods page. Keyboard restore/switch, Tab escape and reverse-Tab Close, height adjustment, active input clearing, private disposal, origin focus return, genuine hidden zero11s polling, navigation and fresh admin withdrawal passed. Actual deferred-JS refusal produced fixed local feedback with Close/focus return. No shell command was submitted. Pinned axe4.14 reported22 passes, zero violations and one color-contrast incomplete; public rendered welcome spans measured at least13.46:1, while xterm supporting-DOM review remains distinct from actual AT. Accessible API names/supporting DOM were observed. The mobile screenshot confirms bounded controls/input, not complete banner or arbitrary command-output readability. Original label failure,3.943 welcome contrast review and Tab-trap diagnostic are retained. Current renderer/LCP/chunk observations are contribution measurements, not source speed improvement. Wider genuine zoom/loading/manual AT, coherent full QA, final frozen A07/A21 and image/live gates remain open. See [terminal qualification](implementation-evidence/terminal-qualification.json).
+
+
+### Narrow terminal instructions and wider zoom continuation
+The fixed-width decorative welcome box is replaced by short public one-shot command instructions, word-wrapped to the immediately fitted terminal columns. Native namespace/pod identities remain complete across lines; no fixed-width truncation is applied. Clear still erases local input/history. Ctrl+C stops client ownership only, so the instructions explicitly require inspecting server state before retrying. Fresh coherent build/unit/lint/types/HTTP and affected browser/zoom qualification are pending for this source delta; prior4bea checkpoint remains separately bound.
+
+### Coherent local terminal and real-zoom source checkpoint
+The revised public instructions preserve the complete pod identity and wrap at the immediately fitted terminal width. Fresh production build,196 units, zero-warning lint and types passed. The first four-HTTP group passed three suites but retained one initial unauthenticated-fetch connection failure; its exact original fixture is preserved, and the cause did not reproduce. A test-only fixed diagnostic retained401/no retries; affected HTTP passed, then the complete current four-suite group passed unchanged production, including complete10kPod inventory,10,000-alias maximum bodies and154/154 owner-correlated delayed body-finalization checks. No backend workaround is introduced.
+Eleven affected actual terminal checks and six fixed-mobile contribution samples passed, including complete public390px instructions/identity, keyboard controls, Clear, genuine hidden zero11s polling, fresh withdrawal and deferred-JS refusal. Genuine tabs.setZoom/getZoom2.0 with unchanged1000x900 window passed four wider checks for provisioning confirmation, KV metadata workbench and held-terminal loading/keyboard/focus/complete instructions. Exact fractional visualViewport bounds are used; the integer374 versus fractional374.5 failed oracle is retained. Public four-corner preflight verified full984x749 capture. A later manual review found origin-clipped scrolled modal images uniformly dark; paired original/actual-layout-offset captures prove that cause (origin1pixelclass vs721/703), and corrected full-surface dialog images were manually viewed. The terminal screenshot also shows all instructions at keyboard80% height. All owned browser/fixture processes exited0; launcher records are terminal.
+These are bounded synthetic local checks. Scoped axe/AX supporting DOM and keyboard review do not establish an actual screen-reader pass. Current LCP/renderer/chunk measurements remain contribution observations, with warm disk or memory cache, not a before/after speed claim. A07/A21 unchanged final controlled comparison, final Linux OCI/runtime/runner/package review and guarded live recovery/adoption remain open. Historical whole-evidence scanner two unmatched checksum provenance findings remain distinct from root's earlier263-file source-only0/0 scan. See [exact final local qualification](implementation-evidence/terminal-final-qualification.json).
+
+### Additional finite metadata-error and date-sort checks
+
+The current compiled browser separately checked the Pods and Deployments raw-timestamp Age columns in both directions, with missing values last and duplicate-date name ties; [date evidence](implementation-evidence/a13-date-browser-qualification.json) is limited to those two columns. When a ready list-row log action loses its backing target, fresh missing404 and stale-absent503 show actionable feedback with no selector or log read; [two error cases](implementation-evidence/a08-metadata-browser-qualification.json) preserve the earlier failed attempts. This does not qualify all resource actions, cold wholly-unavailable503, all tables or actual assistive technology. Performance/image/live gates remain separate.
+
+### Legacy cluster-route sorting candidate
+The separately reachable `/cluster/pods`, `/cluster/deployments`, `/cluster/nodes`, `/cluster/storage`, `/cluster/services`, `/cluster/ingresses` and `/cluster/name-spaces` compatibility pages retain their current filters, API calls, inventory actions and detail navigation. The source candidate uses typed numeric/count/quantity/elapsed-age/raw-date comparison with missing values last and name/namespace ties. RAM sorts the rendered memory value; Deployment Age sorts its raw timestamp without changing its displayed age label. Eight focused adapter cases, fresh nonincremental types and affected-file zero-warning lint passed in the pinned Node22/Linux runner. A separate fresh build/native-load/330-unit/8-HTTP qualification passed on committed source `fb960307`; independent current-graph and owned-closure checks passed. The affected legacy browser exited1 after six columns/twelve directions, so the complete matrix remains unaccepted. A shared IP caused the old combined lookup to select another node before the exact hostname; the new source prefers hostname and preserves IP fallback/missing-live behavior, with a regression test. The correction committed as `6718193` passed a separate fresh build/native-load/331-unit/8-HTTP run and independent current-graph/owned-closure checks. Its new-build browser completed ten columns/twenty directions and exited0, while the server stage exited1 on four incorrectly encoded expected missing CPU/RAM cells. No complete workflow is accepted from that attempt. A fresh owner corrected only those four expected values to the existing U+2014. Both final server and browser exited0, and independent current-graph/Linux/Windows/later closure checks passed for all ten columns/twenty directions. The duplicate-IP fixture, browser assertions and validator were unchanged. This finite result preserves complete row/name/link mappings and current filters/actions; it does not establish every table/date kind, assistive technology, performance, image or live adoption acceptance. The older330-unit/8-HTTP pass and failed partial browser remain `fb960307` evidence. Previously qualified canonical routes remain separate evidence.

@@ -1,0 +1,98 @@
+{
+  "referenceCommit": "4e70ac9aafce379d9e9d4f1271dfa798ce8562ea",
+  "sourceUnchanged": true,
+  "actualExitCode": 0,
+  "controls": 35,
+  "originals": [
+    {
+      "path": "analysis.json",
+      "bytes": 2395,
+      "sha256": "65ea2c2794d1df73af4456dbab64c479b878d20bf28e3a59e2a39fba1f9450cf"
+    },
+    {
+      "path": "child.json",
+      "bytes": 49,
+      "sha256": "071e1be860b5855398e8ae154afdf128106192afa98131b32b26e2852194d70d"
+    },
+    {
+      "path": "handle.json",
+      "bytes": 1215,
+      "sha256": "04c7f6e00be26fa09843eeb69ade08d4f3125d8535dcedb8f1e228fa72226a6c"
+    },
+    {
+      "path": "input-manifest.json",
+      "bytes": 185,
+      "sha256": "18239a83cd256c2fe161f7bfe0bdd8b7dca0dada5afb9a00bc4c9e6a4220866b"
+    },
+    {
+      "path": "launcher.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "launcher.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "output/literal-pod-generator.txt",
+      "bytes": 717,
+      "sha256": "527b3d89981edd8f3e190a46f80ebe607777b400bbf8a6fa1d853c43c4931048"
+    },
+    {
+      "path": "output/preencoded-prototype.ts",
+      "bytes": 1804,
+      "sha256": "c6230d2858cc1b29b49876db1c11c7cb63aa6a4150df6ab9631ef98e87786f28"
+    },
+    {
+      "path": "output/result.json",
+      "bytes": 12069,
+      "sha256": "f789c499f434a8e88fb1b5ac209ce88bdb466648aee6afeaf455d4522ec0d201"
+    },
+    {
+      "path": "pod-ascii-cost.cjs",
+      "bytes": 5043,
+      "sha256": "c0fc16de76b5c719a9f7d59c660da2bb4a092ef2cfbe374ab673df50c64a0591"
+    },
+    {
+      "path": "stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "supervisor.py",
+      "bytes": 2535,
+      "sha256": "14772c19799cccfff1cd88a7f5b8ba1c3d2ac3ff4153cd73a771f43751e3ce4c"
+    },
+    {
+      "path": "terminal.json",
+      "bytes": 205,
+      "sha256": "a6fea242f08c7becb7f5746e27c3f02f791c48aa4c1667796ea0540ebee87233"
+    },
+    {
+      "path": "whole-server.mjs",
+      "bytes": 27863,
+      "sha256": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b"
+    }
+  ],
+  "originalZipSHA256": "fe90388eea5a8bb2da9ee63a737838c6aaf4347ad7a93e8547c8638e7fcb3f7e",
+  "prefixAndMultibytePriorReceipt": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\prefix-pod-cost-qualified-v1\\qualification.json",
+  "priorReceiptSHA256": "03da152605bd5f7d83c90dde1173b68f8c6d9aca880ac86eb20726bfd577bb53",
+  "preparationTranscriptSHA256": "ff52f23694f8a452c1b238020b2ff293e80595cf8a063a29f437dd93d35dc9e5",
+  "decision": "Reject global preencoded responses: exact frozen ASCII3/200 rows regress;1k saving0.193ms does not close original gate. No production adoption or full pair.",
+  "limits": "Same pinned fullNode22.23.3 c4d image,2CPU1GiB/networknone/readonly source/60s global owner deadline.",
+  "limitations": [
+    "Literal original Pod generator is extracted byte-for-byte from unchanged frozen driver; no driver execution or change.",
+    "This is cached same-process Response construction+body consumption, not HTTP latency/DB/native/controller performance.",
+    "Nine alternating batches have every observation retained; per-call figures are batch means, not population tail measurements.",
+    "Body-equivalence preflight initializes both independent redacted projection caches before timing.",
+    "Production8-request cap/body/item/deadline/auth contracts and original performance oracles remain unchanged.",
+    "Preparation failures above are tool-output transcriptions; actual runtime originals are separately hash-bound."
+  ],
+  "ownershipClosed": true
+}

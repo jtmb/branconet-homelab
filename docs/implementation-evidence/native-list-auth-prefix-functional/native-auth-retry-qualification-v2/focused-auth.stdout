@@ -1,0 +1,205 @@
+TAP version 13
+# Subtest: fresh native handler account snapshots retain independent middleware and revocation fences
+    # Subtest: absent invalid expired cookies make no account/native calls
+    ok 1 - absent invalid expired cookies make no account/native calls
+      ---
+      duration_ms: 111.739
+      type: 'test'
+      ...
+    # Subtest: one query supplies exactly the fresh handler account fields
+    not ok 2 - one query supplies exactly the fresh handler account fields
+      ---
+      duration_ms: 41.7377
+      type: 'test'
+      location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-native-evidence\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\native-auth-snapshot.test.ts:60:13'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        null !== 'write'
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 'write'
+      actual: ~
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:63:14)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:60:5)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+      ...
+    # Subtest: deletion and session reset revoke previously valid cookies
+    not ok 3 - deletion and session reset revoke previously valid cookies
+      ---
+      duration_ms: 12.5815
+      type: 'test'
+      location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-native-evidence\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\native-auth-snapshot.test.ts:68:13'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        null !== 'write'
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 'write'
+      actual: ~
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:71:16)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:68:5)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+      ...
+    # Subtest: role and engine-admin withdrawal forbid values and body consumption but preserve metadata
+    not ok 4 - role and engine-admin withdrawal forbid values and body consumption but preserve metadata
+      ---
+      duration_ms: 21.9635
+      type: 'test'
+      location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-native-evidence\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\native-auth-snapshot.test.ts:77:13'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        null !== 'readonly'
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 'readonly'
+      actual: ~
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:81:16)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:77:5)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+      ...
+    # Subtest: middleware success cannot authorize a subsequently revoked or downgraded handler
+    not ok 5 - middleware success cannot authorize a subsequently revoked or downgraded handler
+      ---
+      duration_ms: 33.0908
+      type: 'test'
+      location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-native-evidence\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\native-auth-snapshot.test.ts:89:13'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        1 !== 2
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 2
+      actual: 1
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:98:16)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:89:5)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+      ...
+    # Subtest: repeated/interleaved principals cannot reuse account authorization
+    not ok 6 - repeated/interleaved principals cannot reuse account authorization
+      ---
+      duration_ms: 21.0731
+      type: 'test'
+      location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-native-evidence\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\native-auth-snapshot.test.ts:101:13'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly deep-equal:
+        + actual - expected
+        
+          [
+        +   null,
+        +   null
+        -   'write',
+        -   'write'
+          ]
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+        0: 'write'
+        1: 'write'
+      actual:
+        0: ~
+        1: ~
+      operator: 'deepStrictEqual'
+      stack: |-
+        TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:103:14)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:101:5)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+      ...
+    # Subtest: legacy versionless JWT is accepted only at account version zero
+    not ok 7 - legacy versionless JWT is accepted only at account version zero
+      ---
+      duration_ms: 11.7071
+      type: 'test'
+      location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-native-evidence\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\native-auth-snapshot.test.ts:109:13'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        null !== 'write'
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 'write'
+      actual: ~
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:113:14)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:109:5)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+      ...
+    # Subtest: database outage fails closed with a fixed private 503 before native access
+    not ok 8 - database outage fails closed with a fixed private 503 before native access
+      ---
+      duration_ms: 15.0356
+      type: 'test'
+      location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-native-evidence\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\native-auth-snapshot.test.ts:118:13'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        401 !== 503
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 503
+      actual: 401
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:121:57)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-native-evidence\kubernetes migration\k8s-rewrite\front-end\tests\native-auth-snapshot.test.ts:118:5)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+      ...
+    1..8
+not ok 1 - fresh native handler account snapshots retain independent middleware and revocation fences
+  ---
+  duration_ms: 12457.2801
+  type: 'test'
+  location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-native-evidence\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\native-auth-snapshot.test.ts:12:1'
+  failureType: 'subtestsFailed'
+  error: '7 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 9
+# suites 0
+# pass 1
+# fail 8
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14137.7483

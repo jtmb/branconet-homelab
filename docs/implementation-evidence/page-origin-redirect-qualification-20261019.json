@@ -1,0 +1,151 @@
+{
+  "scope": "Fresh Next15 configuration redirect fix build and focused authentication qualification; not final image/browser/live/performance acceptance",
+  "sourceBase": "5aba82c28d5cad1d571416ea9c06f5d2d61260b3",
+  "sourceOverlays": [
+    "next.config.ts",
+    "tests/http.integration.ts"
+  ],
+  "nextVersion": "15.5.27",
+  "supportedOption": "skipMiddlewareUrlNormalize: true",
+  "trustHostHeaderEnabled": false,
+  "frameworkPatchAdded": false,
+  "buildExit": 0,
+  "focusedPublicPathTests": {
+    "exit": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "productionHttpTests": {
+    "exit": 0,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "serverExit": 0
+  },
+  "redirectCases": {
+    "unauthenticatedRootNestedEncodedQueryAcrossThreeHostForwardedSets": 9,
+    "requiredStatus": 307,
+    "requiredLocation": "/welcome",
+    "followStaysOnOriginalLoopbackOrigin": true,
+    "publicPathLookalikesAndEncodedSpellingsRefused401": 6,
+    "exactLiveProbeWithQuery200": true,
+    "deletedCookieRelativeRedirect": true,
+    "existingBootstrapLoginRevocationNativeAssertionsPassed": true
+  },
+  "originalPerformanceBenchmarkReplayed": false,
+  "originalPerformanceAcceptanceChanged": false,
+  "newRuntimeImageBuilt": false,
+  "oldImageChanged": false,
+  "browserQualificationForNewSource": false,
+  "productionChanged": false,
+  "qualificationRoot": "/home/brajam/.cache/bortus-redirect-fix-20261019-v2",
+  "artifacts": {
+    "build-result.json": {
+      "bytes": 857,
+      "sha256": "7657a8de52aeef63efb84aefb2cbfbbb9687ca9d693e35f73137abcb8be8e2b5"
+    },
+    "build.stdout": {
+      "bytes": 12796,
+      "sha256": "f09209bff9ed0cae87e2e7371ae44a0d46199d8fb7bf9eea6c949c60e9b5dac9"
+    },
+    "build.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "public-path-unit-result.json": {
+      "bytes": 1031,
+      "sha256": "b30c75c35657ffa27617a4514760abbaa3009353f946981147972b97ac8d15b0"
+    },
+    "public-path-unit.stdout": {
+      "bytes": 330,
+      "sha256": "5c9913d55e4632d65f3ff0d1b6b4ab604d195d132355353e6c6d19027b05cb45"
+    },
+    "public-path-unit.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "auth-http-result.json": {
+      "bytes": 955,
+      "sha256": "821c7139860019bf3a4c24a3bd2775c4e0dbc38f6e5855fb92d0fd7a700ef510"
+    },
+    "auth-http.stdout": {
+      "bytes": 1663,
+      "sha256": "b185160b2038d65311035638ae767869985b26602c00cb39a1d68f016d44cb29"
+    },
+    "auth-http.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source/next.config.ts": {
+      "bytes": 884,
+      "sha256": "3aef71ef015ddbb65f1e72309995953570b8e696f9b89b19920c597079cec69f"
+    },
+    "source/tests/http.integration.ts": {
+      "bytes": 50131,
+      "sha256": "70428329944f5072a15a2890e3db5f609bd9120c680bffb43d13ccc8b8cb2101"
+    }
+  },
+  "closure": {
+    "scope": "Fresh exact-name container query closure; no claim of recorded container IDs or universal descendant absence",
+    "observedUtc": "2026-10-19T02:57:50.879495+00:00",
+    "queries": [
+      {
+        "name": "bortus-redirect-fix-build-v2",
+        "command": [
+          "docker",
+          "ps",
+          "-a",
+          "--filter",
+          "name=^/bortus-redirect-fix-build-v2$",
+          "--format",
+          "{{.ID}}"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "",
+        "absent": true
+      },
+      {
+        "name": "bortus-redirect-fix-public-path-v2",
+        "command": [
+          "docker",
+          "ps",
+          "-a",
+          "--filter",
+          "name=^/bortus-redirect-fix-public-path-v2$",
+          "--format",
+          "{{.ID}}"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "",
+        "absent": true
+      },
+      {
+        "name": "bortus-redirect-fix-auth-http-v2",
+        "command": [
+          "docker",
+          "ps",
+          "-a",
+          "--filter",
+          "name=^/bortus-redirect-fix-auth-http-v2$",
+          "--format",
+          "{{.ID}}"
+        ],
+        "exit": 0,
+        "stdout": "",
+        "stderr": "",
+        "absent": true
+      }
+    ],
+    "previousLiteralQualificationUnchanged": true
+  },
+  "literalInitialQualificationRetained": {
+    "path": "/home/brajam/.cache/bortus-redirect-fix-20261019-v2/qualification.json",
+    "exactNamedContainerAbsenceInitiallyFalse": "Case-sensitive parser expected uppercase No such object; actual lower-case Docker stderr retained. Later exact-name ps queries are separate evidence."
+  },
+  "preparationRefusal": "v1 lock raw-byte equality; normalized lockfiles later verified identical; no dependency/source original mutation"
+}

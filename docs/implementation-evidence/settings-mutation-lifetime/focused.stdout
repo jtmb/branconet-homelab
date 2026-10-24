@@ -1,0 +1,75 @@
+TAP version 13
+# Subtest: held Settings mutations cannot notify/refetch after fresh write withdrawal
+not ok 1 - held Settings mutations cannot notify/refetch after fresh write withdrawal
+  ---
+  duration_ms: 434.0001
+  type: 'test'
+  location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-app-recovered\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\settings-mutation-lifecycle.test.ts:2:5460'
+  failureType: 'testCodeFailure'
+  error: 'T is not defined'
+  code: 'ERR_TEST_FAILURE'
+  name: 'ReferenceError'
+  stack: |-
+    useMutation (evalmachine.<anonymous>:24:41)
+    SettingsPage (evalmachine.<anonymous>:19:53)
+    render (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\settings-mutation-lifecycle.test.ts:36:117)
+    fixture (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\settings-mutation-lifecycle.test.ts:39:3)
+    TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\settings-mutation-lifecycle.test.ts:54:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: Settings permission ABA before passive cleanup cannot revive a held owner
+not ok 2 - Settings permission ABA before passive cleanup cannot revive a held owner
+  ---
+  duration_ms: 94.0361
+  type: 'test'
+  location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-app-recovered\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\settings-mutation-lifecycle.test.ts:2:6222'
+  failureType: 'testCodeFailure'
+  error: 'T is not defined'
+  code: 'ERR_TEST_FAILURE'
+  name: 'ReferenceError'
+  stack: |-
+    useMutation (evalmachine.<anonymous>:24:41)
+    SettingsPage (evalmachine.<anonymous>:19:53)
+    render (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\settings-mutation-lifecycle.test.ts:36:117)
+    fixture (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\settings-mutation-lifecycle.test.ts:39:3)
+    TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\settings-mutation-lifecycle.test.ts:65:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+# Subtest: owned Settings true success still refreshes; current refusal remains actionable
+not ok 3 - owned Settings true success still refreshes; current refusal remains actionable
+  ---
+  duration_ms: 87.4661
+  type: 'test'
+  location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-app-recovered\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\settings-mutation-lifecycle.test.ts:2:6656'
+  failureType: 'testCodeFailure'
+  error: 'T is not defined'
+  code: 'ERR_TEST_FAILURE'
+  name: 'ReferenceError'
+  stack: |-
+    useMutation (evalmachine.<anonymous>:24:41)
+    SettingsPage (evalmachine.<anonymous>:19:53)
+    render (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\settings-mutation-lifecycle.test.ts:36:117)
+    fixture (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\settings-mutation-lifecycle.test.ts:39:3)
+    TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\settings-mutation-lifecycle.test.ts:72:15)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 0
+# fail 3
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3043.4879

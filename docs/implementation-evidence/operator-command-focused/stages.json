@@ -1,0 +1,52 @@
+{
+  "startedUtc": "2026-10-11T14:45:08.239Z",
+  "pid": 1,
+  "node": "v22.23.3",
+  "stages": [
+    {
+      "name": "operator-child-controls",
+      "pid": 13,
+      "args": [
+        "/qa/source/node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/operator-command.test.ts",
+        "tests/kubectl.test.ts"
+      ],
+      "startedUtc": "2026-10-11T14:45:08.248Z",
+      "actualExit": 0,
+      "signal": null,
+      "completedUtc": "2026-10-11T14:45:09.078Z"
+    },
+    {
+      "name": "types",
+      "pid": 140,
+      "args": [
+        "/qa/source/node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "startedUtc": "2026-10-11T14:45:09.080Z",
+      "actualExit": 0,
+      "signal": null,
+      "completedUtc": "2026-10-11T14:45:21.799Z"
+    },
+    {
+      "name": "lint",
+      "pid": 147,
+      "args": [
+        "/qa/source/node_modules/eslint/bin/eslint.js",
+        ".",
+        "--max-warnings=0"
+      ],
+      "startedUtc": "2026-10-11T14:45:21.800Z",
+      "actualExit": 0,
+      "signal": null,
+      "completedUtc": "2026-10-11T14:45:28.758Z"
+    }
+  ],
+  "performanceAcceptance": false,
+  "terminal": true,
+  "actualExit": 0,
+  "completedUtc": "2026-10-11T14:45:28.758Z"
+}

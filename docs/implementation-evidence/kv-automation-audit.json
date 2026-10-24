@@ -1,0 +1,36 @@
+{
+  "scope": "scoped token entrypoint, audit/capabilities and metadata/native CAS races",
+  "date": "2026-10-10",
+  "sourceBase": "6ab95f227a8b08d276cfcbee4d68d0266267b95b",
+  "runtime": "Node 22.23.3 Windows x64",
+  "fullUnitTests": { "passed": 73, "failed": 0, "skipped": 0 },
+  "middlewareFollowupTests": { "passed": 11, "failed": 0, "skipped": 0 },
+  "lint": "zero warnings",
+  "typecheck": "passed",
+  "productionBuild": "passed",
+  "productionHttp": { "passed": 2, "failed": 0, "skipped": 0, "existingSeconds": 28.04, "nativeTokenSeconds": 23.91, "overallSeconds": 28.27 },
+  "checks": [
+    "exact automation path bypasses cookie middleware; neighboring paths remain protected",
+    "legacy token, session JWT and human-cookie-only automation calls return 401 before native access",
+    "automation token as human cookie returns private/no-store 401",
+    "scoped current/historic binary reads and head/RV update; out-of-scope read 403, absent prerequisites 428",
+    "unknown fields and initial adoption/creation/shell/admin operations excluded from strict token operation schema",
+    "owner/token policy intersection, fresh expiry and explicit owner revocation; token policy cannot confer engine administration",
+    "read-only capability view denies value/write permissions; initialization is false for token identities",
+    "205 synthetic audit records paginate at 100 rows without duplicates; prefix/deny/token filtering and unscoped event exclusion",
+    "administrator privilege loss during audit query fails before response; token/current native values absent from audit/app output",
+    "concurrent retention change after immutable candidate creation returns 409 before canonical CAS; candidate retained"
+  ],
+  "correctionsAndNonpassingRuns": [
+    "Audit SQL root-grant prefilter initially produced an empty token view; explicit global-root handling fixed it",
+    "Scoped audit fixture initially retained its intentionally broad bootstrap metadata grant; fixture now explicitly replaces that grant with its prefix scope",
+    "First concurrent HTTP run timed out on synthetic registration; isolated rerun reached token/cookie checks and exposed missing middleware failure no-store headers",
+    "Middleware failure headers were corrected; focused tests, fresh build/type/lint and both HTTP suites passed together"
+  ],
+  "limitations": [
+    "Disposable synthetic SQLite/verified HTTPS mock API; no real cluster or operator credentials",
+    "No Linux KV image, production RBAC/admission/PVC/runtime-Secret guard or live mutation evidence",
+    "Import/export, rotation, destroy/GC, full KV UI and remaining audit UI/performance acceptance pending",
+    "Host timings are observations, not performance thresholds"
+  ]
+}

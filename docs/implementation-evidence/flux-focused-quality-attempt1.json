@@ -1,0 +1,19 @@
+{
+  "source": "15786222 plus Flux draft",
+  "startedAt": "2026-10-11T02:44:18.5735438Z",
+  "pid": 42208,
+  "checks": [
+    {
+      "command": "node node_modules/tsx/dist/cli.mjs --test tests/flux-credentials.test.ts tests/flux-list-completeness.test.ts tests/mutation-task.test.ts tests/query-store.test.ts tests/table-sort.test.ts",
+      "exitCode": 0,
+      "completedAt": "2026-10-11T02:44:24.5116624Z"
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "exitCode": 2,
+      "completedAt": "2026-10-11T02:44:29.4565633Z"
+    }
+  ],
+  "terminal": true,
+  "exitCode": 2
+}

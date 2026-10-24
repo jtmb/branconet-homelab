@@ -1,0 +1,73 @@
+TAP version 13
+# Subtest: real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible
+not ok 1 - real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible
+  ---
+  duration_ms: 71.569379
+  type: 'test'
+  location: '/tmp/configuration-json-0rZhm6/tests/request-json-response.test.ts:2:2671'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected exception (invalid).'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: [Function: invalid]
+  operator: 'throws'
+  stack: |-
+    <anonymous> (/tmp/configuration-json-0rZhm6/tests/request-json-response.test.ts:48:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async fixture (/tmp/configuration-json-0rZhm6/tests/request-json-response.test.ts:26:9)
+    async TestContext.<anonymous> (/tmp/configuration-json-0rZhm6/tests/request-json-response.test.ts:36:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: real HTTP malformed/null/primitive errors preserve401 clearing and403 session invalidation
+ok 2 - real HTTP malformed/null/primitive errors preserve401 clearing and403 session invalidation
+  ---
+  duration_ms: 17.163925
+  type: 'test'
+  ...
+# Subtest: real HTTP configuration DELETE needs a true acknowledgment before closing confirmation
+ok 3 - real HTTP configuration DELETE needs a true acknowledgment before closing confirmation
+  ---
+  duration_ms: 25.994997
+  type: 'test'
+  ...
+# Subtest: real HTTP wrong-shape configuration reads retain prior metadata and expose a fixed error
+ok 4 - real HTTP wrong-shape configuration reads retain prior metadata and expose a fixed error
+  ---
+  duration_ms: 42.836642
+  type: 'test'
+  ...
+# Subtest: real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds
+not ok 5 - real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds
+  ---
+  duration_ms: 6.799408
+  type: 'test'
+  location: '/tmp/configuration-json-0rZhm6/tests/request-json-response.test.ts:2:8036'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    <anonymous> (/tmp/configuration-json-0rZhm6/tests/request-json-response.test.ts:143:14)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async fixture (/tmp/configuration-json-0rZhm6/tests/request-json-response.test.ts:26:9)
+    async TestContext.<anonymous> (/tmp/configuration-json-0rZhm6/tests/request-json-response.test.ts:124:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 3
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 354.987051

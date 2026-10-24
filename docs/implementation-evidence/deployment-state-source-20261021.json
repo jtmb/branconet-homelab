@@ -1,0 +1,217 @@
+{
+  "scope": "PUBLIC SOURCE only: exact exported deploymentState",
+  "sourcePath": "src/lib/deployment-state.ts",
+  "sourceSHA256": "eb25470584dd1c24ebf032bbb75d2d825e5f59b6e77e287eb6ace8e04a7a71f6",
+  "sourceUnchanged": true,
+  "incomingApplicationRevision": "68c27f15a286afb94089d938e0d3fed792ba3145",
+  "productionDefectEstablished": false,
+  "currentFeatureTestsDocsOnly": true,
+  "sourceOrderDerivedBeforeControls": true,
+  "sourceControls": {
+    "tests": 102,
+    "pass": 102,
+    "fail": 0,
+    "skip": 0,
+    "cancelled": 0
+  },
+  "sourceControlsRevisionTestSHA256": "a956ff92607b14806c0d44fe4e394ec26fa623b68c91d9531627f827653b3d66",
+  "currentTestSHA256": "5fe287db3c2ce490f4511364c7634330919a06a2b1c3cb368451b72406207d9f",
+  "typeOnlyContinuity": {
+    "oldTestSHA256": "a956ff92607b14806c0d44fe4e394ec26fa623b68c91d9531627f827653b3d66",
+    "newTestSHA256": "5fe287db3c2ce490f4511364c7634330919a06a2b1c3cb368451b72406207d9f",
+    "exactReplacement": {
+      "before": "get reason(){assert.fail(\"reason\");}",
+      "after": "get reason(){return assert.fail(\"reason\");}",
+      "count": 2
+    },
+    "bothAccessorsStillThrowSameAssertFail": true,
+    "noExpectationOrCaseOrProductionChanges": true,
+    "sourceControlsV1Pass": 102,
+    "sourceControlsNotReplayed": true,
+    "v1TypesFailed": {
+      "diagnostic": 2378,
+      "count": 2
+    },
+    "v2TypesLintOnly": true
+  },
+  "sourceControlsNotReplayed": true,
+  "typesV1FailureRetained": {
+    "count": 2,
+    "code": 2378
+  },
+  "typesV2": {
+    "roots": 2,
+    "diagnostics": 0,
+    "snapshotInputs": 9280,
+    "snapshotReads": 192,
+    "fallbackReads": 0
+  },
+  "lintV2": {
+    "files": 2,
+    "errors": 0,
+    "warnings": 0
+  },
+  "directLinuxDependenciesBeforeAfter": 37428,
+  "frozenExecutionBindings": {
+    "V1": 115,
+    "V2": 10,
+    "unique": 124
+  },
+  "commands": [
+    {
+      "helper": "v1/run-deployment-state-bounded.py source",
+      "exit": 0
+    },
+    {
+      "helper": "v1/run-deployment-state-bounded.py types",
+      "exit": 1
+    },
+    {
+      "helper": "v2/run-deployment-state-types-lint-bounded.py types",
+      "exit": 0
+    },
+    {
+      "helper": "v2/run-deployment-state-types-lint-bounded.py lint",
+      "exit": 0
+    }
+  ],
+  "observations": [
+    {
+      "mode": "source",
+      "exitCode": 0,
+      "mainHandleSignalled": true,
+      "wallSeconds": 1.125,
+      "userCPUSeconds": 0.40625,
+      "kernelCPUSeconds": 0.171875,
+      "peakJobMemoryBytes": 96382976,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 1,
+      "explicitTermination": true,
+      "activeAfterDrain": 0,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    },
+    {
+      "mode": "types",
+      "exitCode": 1,
+      "mainHandleSignalled": true,
+      "wallSeconds": 5.062999999965541,
+      "userCPUSeconds": 2.421875,
+      "kernelCPUSeconds": 0.859375,
+      "peakJobMemoryBytes": 424685568,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 1,
+      "explicitTermination": true,
+      "activeAfterDrain": 0,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    },
+    {
+      "mode": "types",
+      "exitCode": 0,
+      "mainHandleSignalled": true,
+      "wallSeconds": 5.01600000000326,
+      "userCPUSeconds": 2.109375,
+      "kernelCPUSeconds": 0.765625,
+      "peakJobMemoryBytes": 424067072,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 1,
+      "explicitTermination": true,
+      "activeAfterDrain": 0,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    },
+    {
+      "mode": "lint",
+      "exitCode": 0,
+      "mainHandleSignalled": true,
+      "wallSeconds": 32.56299999996554,
+      "userCPUSeconds": 3.609375,
+      "kernelCPUSeconds": 1.0625,
+      "peakJobMemoryBytes": 284565504,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 1,
+      "explicitTermination": true,
+      "activeAfterDrain": 0,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    }
+  ],
+  "processAccountingCause": "UNESTABLISHED",
+  "noticesRetained": [
+    "Experimental stripTypeScriptTypes",
+    "React detection assumes latest; React not installed in isolated lint directory",
+    "Missing Pages directory in isolated lint directory"
+  ],
+  "startup": {
+    "orderedProofs": 23868,
+    "incomingBeforeCurrent": [
+      23738,
+      130
+    ],
+    "currentInputs": 413,
+    "selectedDocs": 90,
+    "compatibilityCallers": 5,
+    "separateOriginalBaseline": 334,
+    "inverses": 24,
+    "rawOwnerDocs": 89,
+    "rawRootFiles": 8,
+    "otherDocsUnchanged": 2549,
+    "parentFirstChecks": 24095,
+    "parentDirectChecks": 684,
+    "refCounts": [
+      286,
+      286,
+      21
+    ],
+    "originalFinalRefCounts": [
+      285,
+      285,
+      21
+    ],
+    "newChatCaptureRetainedSeparately": true,
+    "metadataV1TimeoutRetained": true,
+    "distinctV2Passed": true
+  },
+  "noActualCountNeighborsConfigurationEngineCredentialsOrNativeServices": true,
+  "noActualHttpAuthNativeSqlOrmOperatorDbBackendBuildServerRecoveryPerformanceProductionGrantsCasOrFrozenReplay": true,
+  "noOSNetworkIsolationUniversalDescendantPerformanceOrIndependentPersonClaim": true,
+  "GitHubActionsProhibited": true,
+  "historicalCIEvidenceOnly": true,
+  "overallCIQualified": false,
+  "intentionalRootDocsLocal": true,
+  "fourFindingsUnresolved": true,
+  "prior32AndEarlierOneUnresolved": true,
+  "all44Clauses21GatesFixturesFailuresRejectedActionsPreserved": true,
+  "fullGoalActive": true,
+  "noTokenBudget": true,
+  "finalPRDDeploymentAndVerificationRequiredAfterAllOriginalGates": true
+}

@@ -1,0 +1,70 @@
+TAP version 13
+# Subtest: held mutations cannot notify/refetch after withdrawal or unmount, including confirmations and YAML saves
+ok 1 - held mutations cannot notify/refetch after withdrawal or unmount, including confirmations and YAML saves
+  ---
+  duration_ms: 667.9598
+  type: 'test'
+  ...
+# Subtest: deployment form fences held success/error across withdrawal and unmount
+ok 2 - deployment form fences held success/error across withdrawal and unmount
+  ---
+  duration_ms: 40.078
+  type: 'test'
+  ...
+# Subtest: owned action success refreshes; refusal retains confirmation and stale callbacks cannot submit
+ok 3 - owned action success refreshes; refusal retains confirmation and stale callbacks cannot submit
+  ---
+  duration_ms: 25.1148
+  type: 'test'
+  ...
+# Subtest: YAML dialog save settlement cannot close or alter a replacement/unmounted dialog
+ok 4 - YAML dialog save settlement cannot close or alter a replacement/unmounted dialog
+  ---
+  duration_ms: 9.5262
+  type: 'test'
+  ...
+# Subtest: fresh permission withdrawal erases held logs; public action trigger stays available and restore requires another read
+ok 5 - fresh permission withdrawal erases held logs; public action trigger stays available and restore requires another read
+  ---
+  duration_ms: 23.9823
+  type: 'test'
+  ...
+# Subtest: multiple containers require a choice; switching clears previous content and fences the first reply
+ok 6 - multiple containers require a choice; switching clears previous content and fences the first reply
+  ---
+  duration_ms: 39.4003
+  type: 'test'
+  ...
+# Subtest: list action resolves public Pod names once; absent metadata never triggers an unselected log read
+ok 7 - list action resolves public Pod names once; absent metadata never triggers an unselected log read
+  ---
+  duration_ms: 63.2531
+  type: 'test'
+  ...
+# Subtest: held private read is aborted on withdrawal and cannot repopulate after session restoration
+ok 8 - held private read is aborted on withdrawal and cannot repopulate after session restoration
+  ---
+  duration_ms: 25.1073
+  type: 'test'
+  ...
+# Subtest: held YAML viewer/editor and confirmations are erased; stale YAML completion is fenced
+ok 9 - held YAML viewer/editor and confirmations are erased; stale YAML completion is fenced
+  ---
+  duration_ms: 39.0719
+  type: 'test'
+  ...
+# Subtest: log dialog permits explicit same-container refresh and provides a named container choice
+ok 10 - log dialog permits explicit same-container refresh and provides a named container choice
+  ---
+  duration_ms: 11.1899
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1597.2779

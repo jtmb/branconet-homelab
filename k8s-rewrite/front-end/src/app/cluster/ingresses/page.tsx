@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ViewportWrapper from "@/app/(dashboard)/viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
+import { sortLegacyClusterRows } from "@/lib/legacy-cluster-sort";
 
 interface IngressData {
   name: string;
@@ -43,11 +44,7 @@ export default function IngressesPage() {
         (ing) => ing.name.toLowerCase().includes(q) || ing.namespace.toLowerCase().includes(q)
       );
     }
-    return [...result].sort((a, b) => {
-      const va = String((a as any)[sortKey] ?? "").toLowerCase();
-      const vb = String((b as any)[sortKey] ?? "").toLowerCase();
-      return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
-    });
+    return sortLegacyClusterRows(result, "ingresses", sortKey, sortDir);
   }, [ingresses, search, sortKey, sortDir]);
 
   useEffect(() => {

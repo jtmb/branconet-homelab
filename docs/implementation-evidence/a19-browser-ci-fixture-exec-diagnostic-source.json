@@ -1,0 +1,289 @@
+{
+  "scope": "SOURCE ONLY wrapper mount/fake-CLI diagnostics after observed real Pods503; no oracle/product/mount fix",
+  "sourceParent": "dadcca0ee891a641de47673deb79982af1184c61",
+  "failedHostedRun": 38778394877,
+  "runURL": "https://github.com/jtmb/branconet-homelab/actions/runs/38778394877",
+  "validationCommit": "55aed470ab67faec0007cf13c7effb8b80a7b381",
+  "qualifiedBrowserSmoke": false,
+  "rootFetchFile": {
+    "name": "root-hosted-ci-38778394877-fetch.json",
+    "sha256": "efbbd41fb1e16ccca7ad950f8ae3c71a2003255d67962916416459cef47536fc"
+  },
+  "rootRetainedPrivateLog": {
+    "bytes": 498424,
+    "sha256": "e03ee12bc539564e78257ff5793cfe55247cc04f94d579dce50fafc357962ff9",
+    "copiedIntoRepository": false
+  },
+  "actualHostedStepConclusions": [
+    {
+      "conclusion": "success",
+      "name": "Set up job",
+      "number": 1,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "number": 2,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Locked install and native/standalone build in pinned compiler image",
+      "number": 3,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Original lint, type and unit checks with isolated runtime network",
+      "number": 4,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+      "number": 5,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+      "number": 6,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Original strict integration and process controls",
+      "number": 7,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Acquire locked browser CI tools (no app dependency change)",
+      "number": 8,
+      "status": "completed"
+    },
+    {
+      "conclusion": "failure",
+      "name": "Finite compiled Pods browser smoke",
+      "number": 9,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "number": 18,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Complete job",
+      "number": 19,
+      "status": "completed"
+    }
+  ],
+  "actualSafeEmittedObservations": [
+    {
+      "browserSmoke": "refused",
+      "errorType": "AssertionError",
+      "diagnostic": {
+        "stage": 4,
+        "wireStatus": 503
+      }
+    },
+    {
+      "orderlyStopRequested": true,
+      "fixtureStdoutBytes": 165,
+      "fixtureStderrBytes": 0,
+      "browserFixtureClosed": true
+    },
+    {
+      "uncertainCreate": false,
+      "exactNameQueryCount": 3,
+      "confirmedCIDCount": 2,
+      "browserCICleanupFailed": false,
+      "exactNamesAbsent": true
+    }
+  ],
+  "initialHostedFailure": {
+    "run": 38775576367,
+    "assertionStageKnown": false,
+    "causeProven": false,
+    "cleanupProven": false
+  },
+  "currentCauseKnown": false,
+  "noexecOrSpawnFailureObserved": false,
+  "diagnostic": {
+    "mount": "Only /tmp exact mount entry count/noexec Boolean",
+    "executable": "Original fixture-ready directory/fake-bin/kubectl, regular-file/executable-mode Booleans only",
+    "fixedArguments": [
+      "get",
+      "pods",
+      "-A",
+      "-o",
+      "json"
+    ],
+    "calls": 1,
+    "maximumMilliseconds": 5000,
+    "deadline": "min(5000, original ready deadline minus now); no extension",
+    "maximumCapturedBytesPerStream": 1048576,
+    "emittedValueKinds": [
+      "fixed enum",
+      "bounded errno",
+      "bounded exit",
+      "signal enum",
+      "byte counts",
+      "Booleans"
+    ],
+    "spawnErrorEnum": {
+      "0": "none",
+      "1": "EACCES",
+      "2": "ENOENT",
+      "3": "EPERM",
+      "4": "ENOEXEC",
+      "5": "ETIMEDOUT",
+      "6": "ENOBUFS",
+      "7": "other"
+    },
+    "outputBodiesErrorsPathsOrCredentialsPrinted": false,
+    "failureReplacesOriginalRefusal": false,
+    "changesFakeCallLogByOnePublicGet": true
+  },
+  "unchanged": [
+    "all browser assertions and selectors",
+    "original ui fixture and fake CLI",
+    "shell ownership/cleanup/query count",
+    "mount options",
+    "workflow and tool pins",
+    "production source/tests/package/lock",
+    "seven sensitivity sources/manifests",
+    "resources/deadlines"
+  ],
+  "historicalSourceOnlyReceiptsUnchanged": [
+    "a19-browser-ci-smoke-source.json",
+    "a19-browser-ci-smoke-diagnostic-source.json"
+  ],
+  "all22DocsChecked": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "beforeCheckoutSHA256": "6041d0990fcf78b263d2cc53f9aa8afa3cc3baed8939382a6a9ec7e5bfdb2c1d",
+      "charactersRead": 6335
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "beforeCheckoutSHA256": "54e6b6efeb6ffadafea0f3e7c52e9cfaee22977fbb51f84656a68b8266100659",
+      "charactersRead": 156545
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "beforeCheckoutSHA256": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670",
+      "charactersRead": 4458
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "beforeCheckoutSHA256": "7e217fb84cf29956a4069db6c14aa7b00de3ae2772c9cd34a26fa7986dedbada",
+      "charactersRead": 59446
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "beforeCheckoutSHA256": "b4c09a03ca12a16f9dbf23bc2d294398b1c1ccfda7cd58e941d9620d72d9e20f",
+      "charactersRead": 115973
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "beforeCheckoutSHA256": "523b5ad5b68a1a91ba7d1bffc16efd2d1195e46c6d78ab07b5310ca028180864",
+      "charactersRead": 115532
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "beforeCheckoutSHA256": "6738ae98297363005554228920af9e3e45b4cd6a03eca9cbba008ea7055b33a0",
+      "charactersRead": 248112
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "beforeCheckoutSHA256": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b",
+      "charactersRead": 21744
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "beforeCheckoutSHA256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412",
+      "charactersRead": 42183
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "beforeCheckoutSHA256": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8",
+      "charactersRead": 22129
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "beforeCheckoutSHA256": "85710ee2f5178bf8a8e659503beb67af5a327eb2cd02afbb6163b75c4510f76f",
+      "charactersRead": 100982
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "beforeCheckoutSHA256": "512bebf97a9b5bd33f6732993e7afc0e9d0bad0e60e6f8379041c640c4c6aeea",
+      "charactersRead": 55567
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "beforeCheckoutSHA256": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038",
+      "charactersRead": 3604
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "beforeCheckoutSHA256": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb",
+      "charactersRead": 2582
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "beforeCheckoutSHA256": "cb35a994799df82886f9577555e1f53c8057d512d831e54acb3144927fe7a58a",
+      "charactersRead": 16756
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "beforeCheckoutSHA256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "charactersRead": 5310
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "beforeCheckoutSHA256": "822a7e1f40834dc8c4d35acd45f82fbe4f7af069ed2a3826820eb53c6c6db244",
+      "charactersRead": 86810
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "beforeCheckoutSHA256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0",
+      "charactersRead": 11460
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "beforeCheckoutSHA256": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92",
+      "charactersRead": 1780
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "beforeCheckoutSHA256": "40f86ae044cdfc1006471d962e9acb7cfc6ba78c67b69a9727d4991c61612c62",
+      "charactersRead": 94171
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "beforeCheckoutSHA256": "f718d383940615cb5328c48ddbb9b3f62e5b12b1efd5851a9b5470a4118998ce",
+      "charactersRead": 130784
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "beforeCheckoutSHA256": "957c0d8c16f029aeccb296a481b05e4e64db8b14756740c4ee2705f6a4c0d28c",
+      "charactersRead": 92418
+    }
+  ],
+  "all44OriginalValidationClausesUnchanged": true,
+  "sourceCandidateExecuted": false,
+  "testsRun": false,
+  "browserRunByThisCandidate": false,
+  "newToolAcquisition": false,
+  "sourceCommitted": false,
+  "A01SensitivityImplemented": false,
+  "wholeA19Accepted": false,
+  "actualATQualified": false,
+  "performanceAccepted": false,
+  "productionAdoption": false
+}

@@ -1,0 +1,36 @@
+{
+  "startedUtc": "2026-10-11T12:27:59.489Z",
+  "pid": 39984,
+  "node": "v22.23.3",
+  "scope": "One public-only off-thread mechanism diagnostic; exact parser and budget, modeled four held namespace/request slots, no TLS/auth/production changes",
+  "caps": {
+    "activeHeldRequests": 4,
+    "aggregateBodyBytes": 33554432,
+    "pageBytes": 4194304,
+    "acceptedItems": 10000,
+    "operationDeadlineMs": 15000,
+    "globalNodeDeadlineMs": 55000,
+    "cpuAffinityMask": 3,
+    "parserWorkers": 1,
+    "producerWorkers": 1
+  },
+  "source": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+  "profileManifest": [],
+  "cold": [],
+  "timings": [],
+  "differential": {
+    "cases": 0,
+    "refusals": 0
+  },
+  "controls": [],
+  "failures": [],
+  "workers": [],
+  "performanceAcceptance": false,
+  "limitations": [
+    "Timer-only producer runs on a distinct worker so inline endpoint blocking cannot delay the producer itself; IPC body delivery is common to both modes. No actual TLS, SDK authentication, API, KubeConfig, native retries or HTTP serialization is modeled.",
+    "One parser worker and one producer worker share the same two-CPU affinity. No production process pool, source modification, credential/value cache or changed frozen benchmark.",
+    "Full exact metadata is cloned back from parser worker, including long public annotation strings; no DTO/unknown-field loss. Body bytes charged once before buffering; copying can transiently duplicate memory and is not a32MiB RSS promise.",
+    "Namespace jobs hold four slots through full parse and post-parse deadline checks; callbacks, samples, IPC and producer instrumentation add overhead. No result establishes A07/A21 or explains the full34ms endpoint gap.",
+    "Cancellation/deadline controls model parse ownership and late reply refusal; they do not replace real SDK/socket cancellation or final integrated HTTP tests."
+  ]
+}

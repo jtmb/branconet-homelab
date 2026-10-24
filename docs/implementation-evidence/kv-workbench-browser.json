@@ -1,0 +1,46 @@
+{
+  "fixture": "Synthetic standalone real component with intercepted API responses; no native/backend acceptance",
+  "port": 62124,
+  "node": "v24.18.0",
+  "checks": [
+    "Browse triggers only status/capabilities, no value or adoption access",
+    "Explicit adoption preserves original binary/empty/text bytes and exact aliases",
+    "Untouched save disabled; explicit empty intent; grouped update preserves binary/empty siblings",
+    "409 clears failed edit, preserves current data and suppresses arbitrary API error text without retry",
+    "History is metadata-only; rollback creates a new immutable head",
+    "Soft-delete retains history; explicit restore creates a new value version",
+    "Clear cancels/fences delayed reveal",
+    "Native export requires exact path/credential acknowledgement; ephemeral download removed after fixture check",
+    "Metadata-only import preview, per-document overwrite/new-version acknowledgement and partial outcomes",
+    "Inline cancellation returns keyboard focus to stable metadata control",
+    "History metadata renders at most 20 versions per page and supports forward/back navigation",
+    "320/390/768 layouts retain overflow within table container",
+    "Fresh role withdrawal clears values/drafts and hides writer actions",
+    "Escape closes dialog and restores selection trigger focus",
+    "Close/reopen does not restore prior sensitive state",
+    "Fresh capability denial clears revealed values even while human role remains write",
+    "Write-without-read complete mapped replacement succeeds with zero value/history reads and explicit replacement/CAS confirmation",
+    "Write-without-read stale CAS fails without retry or value prefetch",
+    "Fresh permission withdrawal discards a confirmed write-without-read replacement and prevents submission",
+    "Session-ended event fences pending reveal and clears all sensitive forms",
+    "Explicit path switch unmounts/fences prior value state"
+  ],
+  "viewports": [
+    {
+      "width": 320,
+      "documentOverflow": false
+    },
+    {
+      "width": 390,
+      "documentOverflow": false
+    },
+    {
+      "width": 768,
+      "documentOverflow": false
+    }
+  ],
+  "failures": [],
+  "valueRequests": 9,
+  "adoptionRequests": 1,
+  "mutationRequests": 7
+}

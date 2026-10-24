@@ -1,0 +1,953 @@
+npm warn deprecated xterm@5.3.0: This package is now deprecated. Move to @xterm/xterm instead.
+npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+
+added 501 packages, and audited 502 packages in 1m
+
+160 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (2 moderate, 7 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+> botrus-k8s-manager@1.0.0 db:generate
+> prisma generate
+
+Prisma schema loaded from prisma/schema.prisma
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.3 -> 8.0.0-rc.22                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+
+✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 414ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+
+
+> botrus-k8s-manager@1.0.0 lint
+> eslint . --max-warnings=0
+
+
+> botrus-k8s-manager@1.0.0 build
+> prisma generate && next build
+
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 228ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+
+   ▲ Next.js 15.5.27
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 24.8s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/60) ...
+   Generating static pages (15/60)
+   Generating static pages (30/60)
+   Generating static pages (45/60)
+ ✓ Generating static pages (60/60)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                Size  First Load JS
+┌ ○ /                                                   6.94 kB         126 kB
+├ ○ /_not-found                                           996 B         104 kB
+├ ƒ /api/auth/login                                       362 B         104 kB
+├ ƒ /api/auth/logout                                      362 B         104 kB
+├ ƒ /api/auth/register                                    362 B         104 kB
+├ ƒ /api/auth/session                                     362 B         104 kB
+├ ƒ /api/cluster/deployments                              362 B         104 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]           362 B         104 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/action    362 B         104 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/delete    362 B         104 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/scale     362 B         104 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/yaml      362 B         104 kB
+├ ƒ /api/cluster/diagnostics                              362 B         104 kB
+├ ƒ /api/cluster/info                                     362 B         104 kB
+├ ƒ /api/cluster/ingresses                                362 B         104 kB
+├ ƒ /api/cluster/ingresses/[namespace]/[name]             362 B         104 kB
+├ ƒ /api/cluster/ingresses/[namespace]/[name]/delete      362 B         104 kB
+├ ƒ /api/cluster/ingresses/[namespace]/[name]/yaml        362 B         104 kB
+├ ƒ /api/cluster/kubectl                                  362 B         104 kB
+├ ƒ /api/cluster/namespaces                               362 B         104 kB
+├ ƒ /api/cluster/namespaces/[name]                        362 B         104 kB
+├ ƒ /api/cluster/namespaces/[name]/delete                 362 B         104 kB
+├ ƒ /api/cluster/namespaces/[name]/yaml                   362 B         104 kB
+├ ƒ /api/cluster/nodes                                    362 B         104 kB
+├ ƒ /api/cluster/nodes/[hostname]                         362 B         104 kB
+├ ƒ /api/cluster/nodes/[hostname]/action                  362 B         104 kB
+├ ƒ /api/cluster/nodes/[hostname]/yaml                    362 B         104 kB
+├ ƒ /api/cluster/pods                                     362 B         104 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]                  362 B         104 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]/delete           362 B         104 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]/exec             362 B         104 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]/logs             362 B         104 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]/yaml             362 B         104 kB
+├ ƒ /api/cluster/refresh                                  362 B         104 kB
+├ ƒ /api/cluster/remove                                   362 B         104 kB
+├ ƒ /api/cluster/services                                 362 B         104 kB
+├ ƒ /api/cluster/services/[namespace]/[name]              362 B         104 kB
+├ ƒ /api/cluster/services/[namespace]/[name]/yaml         362 B         104 kB
+├ ƒ /api/cluster/volumes                                  362 B         104 kB
+├ ƒ /api/cluster/volumes/[namespace]/[name]               362 B         104 kB
+├ ƒ /api/cluster/volumes/[namespace]/[name]/yaml          362 B         104 kB
+├ ƒ /api/cluster/volumes/reclaim                          362 B         104 kB
+├ ƒ /api/deploy/history                                   362 B         104 kB
+├ ƒ /api/deploy/start                                     362 B         104 kB
+├ ƒ /api/deploy/stop                                      362 B         104 kB
+├ ƒ /api/deploy/stream                                    362 B         104 kB
+├ ƒ /api/flux/hierarchy                                   362 B         104 kB
+├ ƒ /api/flux/kustomizations/[name]                       362 B         104 kB
+├ ƒ /api/flux/repos                                       362 B         104 kB
+├ ƒ /api/flux/repos/[id]                                  362 B         104 kB
+├ ƒ /api/flux/repos/[id]/delete-progress                  362 B         104 kB
+├ ƒ /api/flux/repos/[id]/detail                           362 B         104 kB
+├ ƒ /api/flux/repos/[id]/sync                             362 B         104 kB
+├ ƒ /api/health/live                                      362 B         104 kB
+├ ƒ /api/health/ready                                     362 B         104 kB
+├ ƒ /api/kv/audit                                         362 B         104 kB
+├ ƒ /api/kv/automation                                    362 B         104 kB
+├ ƒ /api/kv/export                                        362 B         104 kB
+├ ƒ /api/kv/history/gc                                    362 B         104 kB
+├ ƒ /api/kv/history/gc/preview                            362 B         104 kB
+├ ƒ /api/kv/identities                                    362 B         104 kB
+├ ƒ /api/kv/identities/[id]                               362 B         104 kB
+├ ƒ /api/kv/import                                        362 B         104 kB
+├ ƒ /api/kv/import/preview                                362 B         104 kB
+├ ƒ /api/kv/legacy                                        362 B         104 kB
+├ ƒ /api/kv/legacy/grants                                 362 B         104 kB
+├ ƒ /api/kv/legacy/grants/[id]                            362 B         104 kB
+├ ƒ /api/kv/legacy/preview                                362 B         104 kB
+├ ƒ /api/kv/mounts                                        362 B         104 kB
+├ ƒ /api/kv/mounts/[id]                                   362 B         104 kB
+├ ƒ /api/kv/operations/[id]                               362 B         104 kB
+├ ƒ /api/kv/paths                                         362 B         104 kB
+├ ƒ /api/kv/paths/[id]                                    362 B         104 kB
+├ ƒ /api/kv/paths/[id]/adopt                              362 B         104 kB
+├ ƒ /api/kv/paths/[id]/capabilities                       362 B         104 kB
+├ ƒ /api/kv/paths/[id]/data                               362 B         104 kB
+├ ƒ /api/kv/paths/[id]/destroy                            362 B         104 kB
+├ ƒ /api/kv/paths/[id]/reconcile                          362 B         104 kB
+├ ƒ /api/kv/paths/[id]/rollback                           362 B         104 kB
+├ ƒ /api/kv/paths/[id]/status                             362 B         104 kB
+├ ƒ /api/kv/paths/[id]/versions                           362 B         104 kB
+├ ƒ /api/kv/paths/[id]/versions/[version]                 362 B         104 kB
+├ ƒ /api/kv/paths/[id]/versions/[version]/data            362 B         104 kB
+├ ƒ /api/kv/policies                                      362 B         104 kB
+├ ƒ /api/kv/policies/[id]                                 362 B         104 kB
+├ ƒ /api/kv/policies/preview                              362 B         104 kB
+├ ƒ /api/kv/rotations                                     362 B         104 kB
+├ ƒ /api/kv/rotations/[id]/consumer                       362 B         104 kB
+├ ƒ /api/nodes                                            362 B         104 kB
+├ ƒ /api/nodes/[id]                                       362 B         104 kB
+├ ƒ /api/secret-references                                362 B         104 kB
+├ ƒ /api/secrets                                          362 B         104 kB
+├ ƒ /api/settings                                         362 B         104 kB
+├ ƒ /api/users                                            362 B         104 kB
+├ ƒ /api/users/[id]                                       362 B         104 kB
+├ ƒ /api/vars                                             362 B         104 kB
+├ ƒ /api/vars/[id]                                        362 B         104 kB
+├ ƒ /api/vars/lookup                                      362 B         104 kB
+├ ƒ /api/vars/sync                                        362 B         104 kB
+├ ○ /auth/login                                         1.58 kB         109 kB
+├ ○ /auth/register                                      2.09 kB         109 kB
+├ ○ /cluster/deployments                                3.51 kB         107 kB
+├ ○ /cluster/ingresses                                  3.22 kB         107 kB
+├ ○ /cluster/name-spaces                                 3.2 kB         107 kB
+├ ○ /cluster/nodes                                      4.61 kB         112 kB
+├ ○ /cluster/pods                                        3.6 kB         107 kB
+├ ○ /cluster/services                                   3.21 kB         107 kB
+├ ○ /cluster/storage                                    3.74 kB         107 kB
+├ ○ /configuration                                      2.43 kB         117 kB
+├ ƒ /deploy                                             3.56 kB         119 kB
+├ ○ /deployments                                          181 B         115 kB
+├ ƒ /deployments/[namespace]/[name]                     7.84 kB         115 kB
+├ ○ /flux                                               8.48 kB         116 kB
+├ ƒ /flux/[repoName]                                    3.63 kB         111 kB
+├ ƒ /flux/[repoName]/[bundleName]                        3.7 kB         111 kB
+├ ○ /ingresses                                            181 B         115 kB
+├ ƒ /ingresses/[namespace]/[name]                       5.96 kB         113 kB
+├ ○ /name-spaces                                          181 B         115 kB
+├ ƒ /name-spaces/[name]                                 5.97 kB         113 kB
+├ ○ /nodes                                               2.1 kB         117 kB
+├ ƒ /nodes/[hostname]                                    7.7 kB         115 kB
+├ ○ /pods                                                 181 B         115 kB
+├ ƒ /pods/[namespace]/[name]                            6.87 kB         114 kB
+├ ƒ /secrets                                            4.59 kB         120 kB
+├ ○ /services                                             181 B         115 kB
+├ ƒ /services/[namespace]/[name]                        5.94 kB         113 kB
+├ ○ /settings                                           2.83 kB         118 kB
+├ ○ /storage                                              181 B         115 kB
+├ ƒ /storage/[namespace]/[name]                         5.55 kB         113 kB
+├ ○ /users                                              3.01 kB         118 kB
+├ ○ /welcome                                            11.8 kB         115 kB
+└ ○ /workloads                                          2.26 kB         106 kB
++ First Load JS shared by all                            103 kB
+  ├ chunks/1255-5cd2fe06309409a0.js                     46.5 kB
+  ├ chunks/4bd1b696-f785427dddbba9fb.js                 54.2 kB
+  └ other shared chunks (total)                         2.64 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+> botrus-k8s-manager@1.0.0 typecheck
+> tsc --noEmit
+
+
+> botrus-k8s-manager@1.0.0 test
+> tsx --test tests/*.test.ts
+
+TAP version 13
+# Subtest: SQLite account invariants and session revocation across independent clients
+    # Subtest: exactly one bootstrap claim when registration is closed
+    ok 1 - exactly one bootstrap claim when registration is closed
+      ---
+      duration_ms: 5124.500899
+      type: 'test'
+      ...
+    # Subtest: open registration still has exactly one initial writer; uniqueness is 409
+    ok 2 - open registration still has exactly one initial writer; uniqueness is 409
+      ---
+      duration_ms: 5272.291415
+      type: 'test'
+      ...
+    # Subtest: cross-demotion, cross-deletion and mixed changes preserve a writer
+    ok 3 - cross-demotion, cross-deletion and mixed changes preserve a writer
+      ---
+      duration_ms: 1484.07506
+      type: 'test'
+      ...
+    # Subtest: session existence, reset revocation, role recheck and self protection
+    ok 4 - session existence, reset revocation, role recheck and self protection
+      ---
+      duration_ms: 160.39496
+      type: 'test'
+      ...
+    1..4
+ok 1 - SQLite account invariants and session revocation across independent clients
+  ---
+  duration_ms: 17801.545686
+  type: 'test'
+  ...
+# Subtest: provisioning selection is fixed public metadata and rejects paths/options/private role values
+ok 2 - provisioning selection is fixed public metadata and rejects paths/options/private role values
+  ---
+  duration_ms: 1.852176
+  type: 'test'
+  ...
+# Subtest: only exact producer records survive split chunks, malformed frames and arbitrary stdout/stderr
+ok 3 - only exact producer records survive split chunks, malformed frames and arbitrary stdout/stderr
+  ---
+  duration_ms: 34.579352
+  type: 'test'
+  ...
+# Subtest: unsupported/raw-only zero exit fails closed and valid progress cannot override failed process/role state
+ok 4 - unsupported/raw-only zero exit fails closed and valid progress cannot override failed process/role state
+  ---
+  duration_ms: 0.999378
+  type: 'test'
+  ...
+# Subtest: LF and CRLF accept the same exact records; embedded controls and private suffixes never become progress
+ok 5 - LF and CRLF accept the same exact records; embedded controls and private suffixes never become progress
+  ---
+  duration_ms: 0.349979
+  type: 'test'
+  ...
+# Subtest: spawn errors never echo exception text; cancellation stays pending until child closes and cleanup is singular
+ok 6 - spawn errors never echo exception text; cancellation stays pending until child closes and cleanup is singular
+  ---
+  duration_ms: 0.577999
+  type: 'test'
+  ...
+# Subtest: repository locations allow credential-free HTTPS/SSH and reject embedded authentication without echo
+ok 7 - repository locations allow credential-free HTTPS/SSH and reject embedded authentication without echo
+  ---
+  duration_ms: 2.064204
+  type: 'test'
+  ...
+# Subtest: Flux conditions preserve structured readiness and withhold arbitrary controller values
+ok 8 - Flux conditions preserve structured readiness and withhold arbitrary controller values
+  ---
+  duration_ms: 0.438729
+  type: 'test'
+  ...
+# Subtest: private Flux credentials use verified native bodies, never SQLite/argv/errors; imported auth is retained
+ok 9 - private Flux credentials use verified native bodies, never SQLite/argv/errors; imported auth is retained
+  ---
+  duration_ms: 11119.990845
+  type: 'test'
+  ...
+# Subtest: SQLite returns bounded Unicode slices/tails from a two-MiB captured job without loading the full field
+ok 10 - SQLite returns bounded Unicode slices/tails from a two-MiB captured job without loading the full field
+  ---
+  duration_ms: 6180.343128
+  type: 'test'
+  ...
+# {"capturedAt":"2026-10-10T22:56:41.726Z","node":"v22.23.3","platform":"linux","sourceBytes":2100000,"sourceCodePoints":1050000,"returnedFirstBytes":8194,"returnedLastBytes":8191,"firstMs":4.320348000000195,"nearEndMs":4.92353600000024,"limitations":["Disposable SQLite/synthetic Unicode log, no real runner/image","Single uncontrolled observations, not latency/CPU/RSS acceptance","No content/values recorded"]}
+# Subtest: already-aborted requests do no reads; completion during the first pending read starts no poll timer
+ok 11 - already-aborted requests do no reads; completion during the first pending read starts no poll timer
+  ---
+  duration_ms: 7.163392
+  type: 'test'
+  ...
+# Subtest: completed startup drains bounded Unicode output with backpressure and no polling leak
+ok 12 - completed startup drains bounded Unicode output with backpressure and no polling leak
+  ---
+  duration_ms: 4.729158
+  type: 'test'
+  ...
+# Subtest: slow reads never overlap; poll follows completion and fresh authorization revokes before the next DB read
+ok 13 - slow reads never overlap; poll follows completion and fresh authorization revokes before the next DB read
+  ---
+  duration_ms: 5.517366
+  type: 'test'
+  ...
+# Subtest: reader cancel and request abort clean timers, unsubscribe and discard late DB results
+ok 14 - reader cancel and request abort clean timers, unsubscribe and discard late DB results
+  ---
+  duration_ms: 2.189394
+  type: 'test'
+  ...
+# Subtest: resume/reset, missing/error/deadline close with fixed errors and clear every timer
+ok 15 - resume/reset, missing/error/deadline close with fixed errors and clear every timer
+  ---
+  duration_ms: 2.073765
+  type: 'test'
+  ...
+# Subtest: log rendering retains a bounded valid-Unicode text tail and strips ANSI without per-event DOM growth
+ok 16 - log rendering retains a bounded valid-Unicode text tail and strips ANSI without per-event DOM growth
+  ---
+  duration_ms: 4.609959
+  type: 'test'
+  ...
+# Subtest: structured kubectl preserves argument boundaries, patches and file paths
+ok 17 - structured kubectl preserves argument boundaries, patches and file paths
+  ---
+  duration_ms: 1.689787
+  type: 'test'
+  ...
+# Subtest: resource boundaries reject option and path injection before execution
+ok 18 - resource boundaries reject option and path injection before execution
+  ---
+  duration_ms: 0.963337
+  type: 'test'
+  ...
+# Subtest: failed subprocess output never becomes a successful mutation or public error
+ok 19 - failed subprocess output never becomes a successful mutation or public error
+  ---
+  duration_ms: 5.5839
+  type: 'test'
+  ...
+# Subtest: process pool bounds concurrency, queue capacity and queue deadlines
+ok 20 - process pool bounds concurrency, queue capacity and queue deadlines
+  ---
+  duration_ms: 58.878678
+  type: 'test'
+  ...
+# Subtest: JSON reads reject invalid output instead of producing null success
+ok 21 - JSON reads reject invalid output instead of producing null success
+  ---
+  duration_ms: 0.702158
+  type: 'test'
+  ...
+# Subtest: real child output and timeout bounds produce fixed errors
+ok 22 - real child output and timeout bounds produce fixed errors
+  ---
+  duration_ms: 152.899656
+  type: 'test'
+  ...
+# Subtest: resource metadata cannot reveal value-bearing annotations or workload env/arguments
+ok 23 - resource metadata cannot reveal value-bearing annotations or workload env/arguments
+  ---
+  duration_ms: 0.971738
+  type: 'test'
+  ...
+# Subtest: canonical paths, complete prefix segments, deny override and guarded configuration
+ok 24 - canonical paths, complete prefix segments, deny override and guarded configuration
+  ---
+  duration_ms: 3.062782
+  type: 'test'
+  ...
+# Subtest: forward KV migration preserves existing users and native references without value ingestion
+ok 25 - forward KV migration preserves existing users and native references without value ingestion
+  ---
+  duration_ms: 6535.638725
+  type: 'test'
+  ...
+# Subtest: KV metadata ownership, serialized administration and scoped token lifecycle
+    # Subtest: scoped writers cannot reset, promote, create or delete peer identities regardless of flag
+    ok 1 - scoped writers cannot reset, promote, create or delete peer identities regardless of flag
+      ---
+      duration_ms: 24.403134
+      type: 'test'
+      ...
+    # Subtest: mount scopes, metadata CAS and concurrent selected-key ownership
+    ok 2 - mount scopes, metadata CAS and concurrent selected-key ownership
+      ---
+      duration_ms: 149.379933
+      type: 'test'
+      ...
+    # Subtest: readonly has metadata only even when a policy mistakenly grants values
+    ok 3 - readonly has metadata only even when a policy mistakenly grants values
+      ---
+      duration_ms: 21.058857
+      type: 'test'
+      ...
+    # Subtest: deny overrides user/admin allow and applies to complete path segments
+    ok 4 - deny overrides user/admin allow and applies to complete path segments
+      ---
+      duration_ms: 125.698637
+      type: 'test'
+      ...
+    # Subtest: audit pages and capabilities obey fresh scoped/readonly policy and administrator revocation
+    ok 5 - audit pages and capabilities obey fresh scoped/readonly policy and administrator revocation
+      ---
+      duration_ms: 264.709908
+      type: 'test'
+      ...
+    # Subtest: one-time token/hash projection, distinct audience and owner-policy intersection
+    ok 6 - one-time token/hash projection, distinct audience and owner-policy intersection
+      ---
+      duration_ms: 352.746401
+      type: 'test'
+      ...
+    # Subtest: concurrent flag removal preserves the last effective admin while a nonadmin writer remains
+    ok 7 - concurrent flag removal preserves the last effective admin while a nonadmin writer remains
+      ---
+      duration_ms: 104.504937
+      type: 'test'
+      ...
+    1..7
+ok 26 - KV metadata ownership, serialized administration and scoped token lifecycle
+  ---
+  duration_ms: 5399.748724
+  type: 'test'
+  ...
+# Subtest: legacy audit migration preserves old rows, accounts and exact grants without value ingestion
+ok 27 - legacy audit migration preserves old rows, accounts and exact grants without value ingestion
+  ---
+  duration_ms: 5459.638367
+  type: 'test'
+  ...
+# Subtest: legacy administration acknowledges all 603 exact aliases across 12 namespaces and fences fresh metadata
+    # Subtest: seven bounded pages list the complete impact with no native requests or values
+    ok 1 - seven bounded pages list the complete impact with no native requests or values
+      ---
+      duration_ms: 404.547407
+      type: 'test'
+      ...
+    # Subtest: external alias and path/principal revisions invalidate old acknowledgements
+    ok 2 - external alias and path/principal revisions invalidate old acknowledgements
+      ---
+      duration_ms: 708.851262
+      type: 'test'
+      ...
+    # Subtest: mount metadata revision changes invalidate the earlier impact fingerprint
+    ok 3 - mount metadata revision changes invalidate the earlier impact fingerprint
+      ---
+      duration_ms: 398.990005
+      type: 'test'
+      ...
+    # Subtest: fresh mount scopes enter the fingerprint and exclude removed namespaces
+    ok 4 - fresh mount scopes enter the fingerprint and exclude removed namespaces
+      ---
+      duration_ms: 423.045784
+      type: 'test'
+      ...
+    # Subtest: policy commits require exact acknowledgement; removal has its own fresh preview
+    ok 5 - policy commits require exact acknowledgement; removal has its own fresh preview
+      ---
+      duration_ms: 275.302225
+      type: 'test'
+      ...
+    # Subtest: moving a legacy deny to a human principal still requires its alias-impact acknowledgement
+    ok 6 - moving a legacy deny to a human principal still requires its alias-impact acknowledgement
+      ---
+      duration_ms: 273.598899
+      type: 'test'
+      ...
+    # Subtest: exact grant revocation and restore retain native objects and audit alias/key
+    ok 7 - exact grant revocation and restore retain native objects and audit alias/key
+      ---
+      duration_ms: 298.185306
+      type: 'test'
+      ...
+    # Subtest: principal CAS acknowledges nonsecret configuration and invalidates earlier previews
+    ok 8 - principal CAS acknowledges nonsecret configuration and invalidates earlier previews
+      ---
+      duration_ms: 246.237607
+      type: 'test'
+      ...
+    # Subtest: concurrent principal changes have one winner and preserve revision CAS
+    ok 9 - concurrent principal changes have one winner and preserve revision CAS
+      ---
+      duration_ms: 214.588554
+      type: 'test'
+      ...
+    # Subtest: fresh administrator withdrawal and unavailable aliases deny metadata changes
+    ok 10 - fresh administrator withdrawal and unavailable aliases deny metadata changes
+      ---
+      duration_ms: 108.979817
+      type: 'test'
+      ...
+    # Subtest: audit failure rolls the grant and principal revision back atomically
+    ok 11 - audit failure rolls the grant and principal revision back atomically
+      ---
+      duration_ms: 98.487306
+      type: 'test'
+      ...
+    1..11
+ok 28 - legacy administration acknowledges all 603 exact aliases across 12 namespaces and fences fresh metadata
+  ---
+  duration_ms: 11269.746591
+  type: 'test'
+  ...
+# Subtest: native grouped KV CAS, history isolation, drift, ambiguity and metadata audit recovery
+    # Subtest: guard and initial administrator approval fail before native mutation
+    ok 1 - guard and initial administrator approval fail before native mutation
+      ---
+      duration_ms: 70.980394
+      type: 'test'
+      ...
+    # Subtest: adoption snapshot preserves exact binary/special keys, 603 aliases and unrelated native metadata
+    ok 2 - adoption snapshot preserves exact binary/special keys, 603 aliases and unrelated native metadata
+      ---
+      duration_ms: 544.049721
+      type: 'test'
+      ...
+    # Subtest: static rotation links intent before generation, preserves grouped values and requires explicit current-head acknowledgement
+    ok 3 - static rotation links intent before generation, preserves grouped values and requires explicit current-head acknowledgement
+      ---
+      duration_ms: 1794.453556
+      type: 'test'
+      ...
+    # Subtest: flat/legacy bridges cannot bypass adopted policies, exact alias grants or history isolation
+    ok 4 - flat/legacy bridges cannot bypass adopted policies, exact alias grants or history isolation
+      ---
+      duration_ms: 16772.260474
+      type: 'test'
+      ...
+    # Subtest: missing/stale prerequisites and concurrent writers cannot overwrite a new head
+    ok 5 - missing/stale prerequisites and concurrent writers cannot overwrite a new head
+      ---
+      duration_ms: 111.240874
+      type: 'test'
+      ...
+    # Subtest: automation has a distinct scoped audience, native CAS and fresh revocation without initialization authority
+    ok 6 - automation has a distinct scoped audience, native CAS and fresh revocation without initialization authority
+      ---
+      duration_ms: 343.926197
+      type: 'test'
+      ...
+    # Subtest: protected transfers round-trip binary/empty fields with explicit overwrite, partial outcomes and bounded metadata-only preview
+    ok 7 - protected transfers round-trip binary/empty fields with explicit overwrite, partial outcomes and bounded metadata-only preview
+      ---
+      duration_ms: 557.897462
+      type: 'test'
+      ...
+    # Subtest: confirmed destruction CAS-removes references, retains canonical data and keeps monotonic versions
+    ok 8 - confirmed destruction CAS-removes references, retains canonical data and keeps monotonic versions
+      ---
+      duration_ms: 482.36256
+      type: 'test'
+      ...
+    # Subtest: destruction audit failures and source replacement retain recoverable history with explicit partial outcomes
+    ok 9 - destruction audit failures and source replacement retain recoverable history with explicit partial outcomes
+      ---
+      duration_ms: 519.604234
+      type: 'test'
+      ...
+    # Subtest: maximum-size owned histories remain operable through metadata-only GC preview and UID/RV-fenced cleanup
+    ok 10 - maximum-size owned histories remain operable through metadata-only GC preview and UID/RV-fenced cleanup
+      ---
+      duration_ms: 2006.274217
+      type: 'test'
+      ...
+    # Subtest: explicit administrator GC checks age/references/identity, fences stale CAS and records timeout read-back
+    ok 11 - explicit administrator GC checks age/references/identity, fences stale CAS and records timeout read-back
+      ---
+      duration_ms: 552.700552
+      type: 'test'
+      ...
+    # Subtest: external selected-key drift requires reconcile; rollback creates a new immutable version
+    ok 12 - external selected-key drift requires reconcile; rollback creates a new immutable version
+      ---
+      duration_ms: 149.22941
+      type: 'test'
+      ...
+    # Subtest: positive read-back resolves create/replace timeouts; negative or unavailable read-back stays ambiguous
+    ok 13 - positive read-back resolves create/replace timeouts; negative or unavailable read-back stays ambiguous
+      ---
+      duration_ms: 184.703722
+      type: 'test'
+      ...
+    # Subtest: audit failure blocks native writes; post-commit failure retains a resolvable native marker
+    ok 14 - audit failure blocks native writes; post-commit failure retains a resolvable native marker
+      ---
+      duration_ms: 150.562798
+      type: 'test'
+      ...
+    # Subtest: concurrent retention metadata changes refuse canonical CAS and retain candidate history for recovery
+    ok 15 - concurrent retention metadata changes refuse canonical CAS and retain candidate history for recovery
+      ---
+      duration_ms: 143.610013
+      type: 'test'
+      ...
+    # Subtest: tombstone retains object/unrelated values; retention is bounded without deleting last copies
+    ok 16 - tombstone retains object/unrelated values; retention is bounded without deleting last copies
+      ---
+      duration_ms: 385.174557
+      type: 'test'
+      ...
+    # Subtest: new creation establishes an owned source UID, keeps empty documents and refuses imported collisions
+    ok 17 - new creation establishes an owned source UID, keeps empty documents and refuses imported collisions
+      ---
+      duration_ms: 108.665761
+      type: 'test'
+      ...
+    # Subtest: binary encoding, typed/immutable constraints and forged metadata fail without value leakage
+    ok 18 - binary encoding, typed/immutable constraints and forged metadata fail without value leakage
+      ---
+      duration_ms: 217.339492
+      type: 'test'
+      ...
+    1..18
+ok 29 - native grouped KV CAS, history isolation, drift, ambiguity and metadata audit recovery
+  ---
+  duration_ms: 30154.830199
+  type: 'test'
+  ...
+# Subtest: consumer adapter returns selected metadata and UID/RV JSON-patches only one exact template marker
+ok 30 - consumer adapter returns selected metadata and UID/RV JSON-patches only one exact template marker
+  ---
+  duration_ms: 1.675676
+  type: 'test'
+  ...
+# Subtest: consumer replacement, stale RV and invalid identity refuse patch; matching owned marker is idempotent
+ok 31 - consumer replacement, stale RV and invalid identity refuse patch; matching owned marker is idempotent
+  ---
+  duration_ms: 0.616938
+  type: 'test'
+  ...
+# Subtest: alias catalog coalesces 603 mappings, indexes exact spelling, isolates callers and invalidates mutations
+ok 32 - alias catalog coalesces 603 mappings, indexes exact spelling, isolates callers and invalidates mutations
+  ---
+  duration_ms: 5.025496
+  type: 'test'
+  ...
+# Subtest: alias metadata rejects malformed/conflicting/over-limit sources and never serves an expired failed snapshot
+ok 33 - alias metadata rejects malformed/conflicting/over-limit sources and never serves an expired failed snapshot
+  ---
+  duration_ms: 18.072584
+  type: 'test'
+  ...
+# Subtest: metadata invalidation drops in-flight state and deadline workers retain their slot until settled
+ok 34 - metadata invalidation drops in-flight state and deadline workers retain their slot until settled
+  ---
+  duration_ms: 20.62202
+  type: 'test'
+  ...
+# Subtest: alias file reads enforce size, row count, fatal UTF-8 and named-field projection
+ok 35 - alias file reads enforce size, row count, fatal UTF-8 and named-field projection
+  ---
+  duration_ms: 24.15148
+  type: 'test'
+  ...
+# Subtest: readiness scope probing caps active workers at four and propagates a single whole-native deadline
+ok 36 - readiness scope probing caps active workers at four and propagates a single whole-native deadline
+  ---
+  duration_ms: 0.929487
+  type: 'test'
+  ...
+# Subtest: failed readiness stops further scopes and keeps outstanding probes attached until settled
+ok 37 - failed readiness stops further scopes and keeps outstanding probes attached until settled
+  ---
+  duration_ms: 0.782608
+  type: 'test'
+  ...
+# Subtest: one pending mutation prevents duplicate submission; failure stays actionable and explicit retry succeeds
+ok 38 - one pending mutation prevents duplicate submission; failure stays actionable and explicit retry succeeds
+  ---
+  duration_ms: 1.508366
+  type: 'test'
+  ...
+# Subtest: unmount aborts and drops stale completion even after reactivation; a timed out result is never reported saved
+ok 39 - unmount aborts and drops stale completion even after reactivation; a timed out result is never reported saved
+  ---
+  duration_ms: 0.470259
+  type: 'test'
+  ...
+# Subtest: partial failure reported by a successful HTTP response does not produce a saved state
+ok 40 - partial failure reported by a successful HTTP response does not produce a saved state
+  ---
+  duration_ms: 0.1873
+  type: 'test'
+  ...
+# Subtest: read imported values; list is metadata only; restart reads native store
+ok 41 - read imported values; list is metadata only; restart reads native store
+  ---
+  duration_ms: 2.201365
+  type: 'test'
+  ...
+# Subtest: public Secret projections exclude annotations and managed fields containing another key's value
+ok 42 - public Secret projections exclude annotations and managed fields containing another key's value
+  ---
+  duration_ms: 1.162207
+  type: 'test'
+  ...
+# Subtest: create, update, key deletion preserve unrelated data/type/all metadata
+ok 43 - create, update, key deletion preserve unrelated data/type/all metadata
+  ---
+  duration_ms: 0.964017
+  type: 'test'
+  ...
+# Subtest: create collisions, stale updates, races and immutable objects never retry
+ok 44 - create collisions, stale updates, races and immutable objects never retry
+  ---
+  duration_ms: 0.828268
+  type: 'test'
+  ...
+# Subtest: unavailable/read denied/invalid errors are fixed and cannot leak API bodies
+ok 45 - unavailable/read denied/invalid errors are fixed and cannot leak API bodies
+  ---
+  duration_ms: 0.638459
+  type: 'test'
+  ...
+# Subtest: explicit aliases preserve underscored keys, duplicate targets and reject alias collisions
+ok 46 - explicit aliases preserve underscored keys, duplicate targets and reject alias collisions
+  ---
+  duration_ms: 0.401259
+  type: 'test'
+  ...
+# Subtest: sensitive legacy DB rows are excluded while nonsecret config remains
+ok 47 - sensitive legacy DB rows are excluded while nonsecret config remains
+  ---
+  duration_ms: 0.334849
+  type: 'test'
+  ...
+# Subtest: Secret handler authentication/read/write boundaries are checked before backend access
+ok 48 - Secret handler authentication/read/write boundaries are checked before backend access
+  ---
+  duration_ms: 6.964538
+  type: 'test'
+  ...
+# Subtest: Bearer lookup requires token, keeps response contract and redacts failures
+ok 49 - Bearer lookup requires token, keeps response contract and redacts failures
+  ---
+  duration_ms: 2.190554
+  type: 'test'
+  ...
+# Subtest: middleware permits exact Bearer/probe paths but protects similar paths
+ok 50 - middleware permits exact Bearer/probe paths but protects similar paths
+  ---
+  duration_ms: 3.332471
+  type: 'test'
+  ...
+# Subtest: transport rejects HTTP and insecure TLS kubeconfig without API access
+ok 51 - transport rejects HTTP and insecure TLS kubeconfig without API access
+  ---
+  duration_ms: 50.828418
+  type: 'test'
+  ...
+# Subtest: Prisma 6 config loading, validation and forward deploy work with the scoped merger override
+ok 52 - Prisma 6 config loading, validation and forward deploy work with the scoped merger override
+  ---
+  duration_ms: 7793.880671
+  type: 'test'
+  ...
+# Subtest: shared subscriptions never overlap polling; hidden/unmounted requests abort and late results cannot replace new state
+ok 53 - shared subscriptions never overlap polling; hidden/unmounted requests abort and late results cannot replace new state
+  ---
+  duration_ms: 1.919896
+  type: 'test'
+  ...
+# Subtest: outage keeps labelled prior data, exponential retries recover, invalidation and sign-out clear pending state
+ok 54 - outage keeps labelled prior data, exponential retries recover, invalidation and sign-out clear pending state
+  ---
+  duration_ms: 0.648238
+  type: 'test'
+  ...
+# Subtest: 401 discards prior data and metadata query inactivity is bounded
+ok 55 - 401 discards prior data and metadata query inactivity is bounded
+  ---
+  duration_ms: 1.648026
+  type: 'test'
+  ...
+# Subtest: numeric, Kubernetes quantities, count pairs and chronological sorts preserve unknown values last
+ok 56 - numeric, Kubernetes quantities, count pairs and chronological sorts preserve unknown values last
+  ---
+  duration_ms: 5.187942
+  type: 'test'
+  ...
+# Subtest: default timers retain the browser global receiver
+ok 57 - default timers retain the browser global receiver
+  ---
+  duration_ms: 0.441919
+  type: 'test'
+  ...
+# Subtest: concurrent requested resources coalesce without unrelated cold fanout
+ok 58 - concurrent requested resources coalesce without unrelated cold fanout
+  ---
+  duration_ms: 2.323405
+  type: 'test'
+  ...
+# Subtest: failure backoff preserves labelled bounded stale data and never invents empty success
+ok 59 - failure backoff preserves labelled bounded stale data and never invents empty success
+  ---
+  duration_ms: 4.595258
+  type: 'test'
+  ...
+# Subtest: optional missing API, partial fields and true empty resources remain distinct
+ok 60 - optional missing API, partial fields and true empty resources remain distinct
+  ---
+  duration_ms: 0.930208
+  type: 'test'
+  ...
+# Subtest: mutation invalidation prevents an older in-flight snapshot from repopulating cache
+ok 61 - mutation invalidation prevents an older in-flight snapshot from repopulating cache
+  ---
+  duration_ms: 0.310219
+  type: 'test'
+  ...
+# Subtest: invalid and oversized lists fail without truncation
+ok 62 - invalid and oversized lists fail without truncation
+  ---
+  duration_ms: 0.36619
+  type: 'test'
+  ...
+# Subtest: every declared resource read/edit/delete/action capability has a matching handler
+ok 63 - every declared resource read/edit/delete/action capability has a matching handler
+  ---
+  duration_ms: 0.890138
+  type: 'test'
+  ...
+# Subtest: resource YAML cannot switch identity/kind, apply a list, or bypass resourceVersion
+ok 64 - resource YAML cannot switch identity/kind, apply a list, or bypass resourceVersion
+  ---
+  duration_ms: 5.004918
+  type: 'test'
+  ...
+# Subtest: runtime capability flags match provisioning and shell server boundaries
+ok 65 - runtime capability flags match provisioning and shell server boundaries
+  ---
+  duration_ms: 0.412329
+  type: 'test'
+  ...
+# Subtest: deployment ownership follows controller UIDs across ambiguous names and labels
+ok 66 - deployment ownership follows controller UIDs across ambiguous names and labels
+  ---
+  duration_ms: 1.940404
+  type: 'test'
+  ...
+# Subtest: desired replicas, observed generation, zero and paused/failure states are distinct
+ok 67 - desired replicas, observed generation, zero and paused/failure states are distinct
+  ---
+  duration_ms: 0.471289
+  type: 'test'
+  ...
+# Subtest: pod type overrides, namespaces and label expressions are actually enforced
+ok 68 - pod type overrides, namespaces and label expressions are actually enforced
+  ---
+  duration_ms: 3.616441
+  type: 'test'
+  ...
+# Subtest: complete 100-namespace scope shares item/deadline limits and serial projection, with no value/annotation results
+ok 69 - complete 100-namespace scope shares item/deadline limits and serial projection, with no value/annotation results
+  ---
+  duration_ms: 54.082826
+  type: 'test'
+  ...
+# Subtest: aggregate bytes cannot reset between namespaces; expired/invalid budgets fail closed
+ok 70 - aggregate bytes cannot reset between namespaces; expired/invalid budgets fail closed
+  ---
+  duration_ms: 125.651455
+  type: 'test'
+  ...
+# Subtest: verified TLS lists keep maximum-size history enumeration metadata-only and large flat objects operable
+ok 71 - verified TLS lists keep maximum-size history enumeration metadata-only and large flat objects operable
+  ---
+  duration_ms: 1956.461221
+  type: 'test'
+  ...
+# Subtest: adaptive GET retries keep the cursor, charge rejected bytes and support the flat maximum record
+ok 72 - adaptive GET retries keep the cursor, charge rejected bytes and support the flat maximum record
+  ---
+  duration_ms: 745.664631
+  type: 'test'
+  ...
+# {"fixture":"Three one-MiB decoded flat records; verified loopback TLS","requests":5,"receivedWireBytes":16780173,"elapsedMs":146.98431299999993}
+# Subtest: 334-object/18-namespace fixture restores batching and preserves the shared deadline
+ok 73 - 334-object/18-namespace fixture restores batching and preserves the shared deadline
+  ---
+  duration_ms: 459.972054
+  type: 'test'
+  ...
+# {"fixture":"334 small synthetic Secrets across 18 namespaces, verified loopback TLS, fixed 12ms producer delay","objects":334,"namespaces":18,"requests":18,"wireBytes":79342,"elapsedMs":285.019808,"previousOneObjectRequests":334,"previousOneObjectFocusedElapsedMs":9132.1211,"limitations":["Earlier run used the same synthetic producer delay and shape; host timing is uncontrolled","Separate controlled Linux RSS qualification is required","Higher-latency APIs can exceed the unchanged shared 15-second deadline"]}
+# Subtest: real TLS client sends value bodies to a mock Kubernetes API and preserves CAS updates
+ok 74 - real TLS client sends value bodies to a mock Kubernetes API and preserves CAS updates
+  ---
+  duration_ms: 385.665169
+  type: 'test'
+  ...
+1..74
+# tests 114
+# suites 0
+# pass 114
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 49007.650694
+
+> botrus-k8s-manager@1.0.0 test:integration
+> tsx --test tests/*.integration.ts
+
+TAP version 13
+# Subtest: production local jobs persist/stream fixed progress, reject selection before effects and preserve operator gates
+ok 1 - production local jobs persist/stream fixed progress, reject selection before effects and preserve operator gates
+  ---
+  duration_ms: 18413.280491
+  type: 'test'
+  ...
+# Subtest: production HTTP auth, metadata migration, quarantined DB rows and unavailable native lookup
+ok 2 - production HTTP auth, metadata migration, quarantined DB rows and unavailable native lookup
+  ---
+  duration_ms: 21939.677946
+  type: 'test'
+  ...
+# Cache fixture evidence: {"capturedAt":"2026-10-10T22:57:42.239Z","node":"v22.23.3","platform":"linux","fixture":"disposable production HTTP + 50ms metadata-only fake CLI; no real cluster/image acceptance","source":"current working tree","coldPods":{"ms":91.09219200000007,"cliCalls":1},"warmPods":{"samples":12,"ms":{"p50":5.249397999999928,"p95":9.849774999998772},"cliCalls":0},"concurrentWarmPods":{"requests":20,"cliCalls":0},"concurrentColdPods":{"requests":20,"cliCalls":1,"ms":{"p50":128.45963200000187,"p95":128.60969100000148}},"outageServices":{"requests":12,"status":503,"ms":{"p50":6.1802630000020145,"p95":9.358947000000626},"additionalCliCalls":0},"pool":{"active":0,"queued":0,"maxConcurrent":4,"maxQueued":64},"limitations":["Synthetic metadata/fake CLI on linux/v22.23.3; no deployed Node22/Linux image","no real API/RBAC or cold-container memory/peak-process measurement","timings observational with no controlled host CPU isolation"]}
+# Subtest: production native KV routes use verified TLS, exact binary history, fresh policy and legacy isolation
+ok 3 - production native KV routes use verified TLS, exact binary history, fresh policy and legacy isolation
+  ---
+  duration_ms: 24002.140462
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 3
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 24394.171539

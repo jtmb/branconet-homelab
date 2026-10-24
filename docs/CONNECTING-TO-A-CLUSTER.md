@@ -1,5 +1,613 @@
 # Connecting BORTUS to a cluster
 
+## Deploy stop POST pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage STOPPED BEFORE staging on one missing historical capture
+TREEca98d5 and one new checkpoint TREEf7e4f2,zerochanged. DISTINCT pure DIRECT
+FIRST verifies exact stoppedsets/allpersistentmetadata/live/dirt and BOTH298/
+298/21 inventories. BOTHobjects retained;causeUNESTABLISHED;no refmutation/object
+recreation/replay. Separate DIRECT WSLgh metadata confirms ActionsdisabledBOTH/
+PR28+5draftopenunmerged. Stopped and reconciled histories remain separate.
+RefLifecycle FIRST,qualification SECOND,scaffold-correction THIRD,preparation-
+correction FOURTH,preparation FIFTH restore65inverses/13pairs SAMEraw103owner/
+root8 content with documented newline transport;2576other2587completeBOTHbaseline
+docs unchanged. Current427/104 retains all stream/startGET/startPOST/stopPOST tests
+and newevidence ONCE. RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/
+no budget/all44clauses/21gates/fixtures/failures/rejectedactions/FINALPRDAFTERALL
+originalgates remain. No source/types/lint workload replay or production patch.
+
+
+## Deploy stop POST source qualification (2026-10-22)
+
+DISTINCT V2 SOURCE passes63/63,zero fail/skip/cancel/todo,for the exact unchanged
+exported POST with inert synthetic immediate bindings. Member/call/receiver/
+argument and nullish-selection order, authorization/lookup await fences, fixed
+400/404/409/503 refusals, discarded abort return, response Promise adoption and
+outside-try/catch propagation are covered. Actual authorization/validation/ORM/
+registry/abort/NextResponse implementations and real cancellation completion are
+OUTSIDE this declaration qualification. TESTS/DOCS ONLY; no supported production
+defect/correction. Actual HTTP/auth/database/ORM/operatorDB/native/backend/build/
+server/recovery/performance/production/grants/CAS/provisioning/moduleinitializers/
+neighbours/jobs/output/streams/timers/eventproducers/engine/credentials/services INERT.
+
+V1 loader FAILED before callbacks on a synthetic parameter property; DISTINCT V2
+uses explicit fields/assignments only. V2 TYPES FAILED2339 in its narrower JSON
+scaffold; DISTINCT V3 uses web Request['json'] with SAME executed V2 test bytes.
+V3 runner rejects SOURCE; passing controls were NOT replayed. All failures,
+prepared unused helpers and old inputs remain FROZEN. V3 TYPES2roots/0diagnostics
+covers exact POST plus synthetic scaffold/test only,not wholemodule/project.
+Lint2files/0errors/warnings. Fresh191compilerinputs/191snapshotReads/fallback0
+match DIRECTLinux;37428DIRECTLinux dependency hashes before/after,including37
+in-tree nondangling symlink files,match across all candidates.426existing source
+inputs unchanged;newtest/evidence ONCE gives current427/104. Executed/owner test
+bytes are EXACT; no EOF correction. The test pins exact Windows raw source bytes;
+Linux checkout and whole-project/runtime qualification remain separate.
+
+Source0.859s/79167488peakbytes,types3.985s/287621120,lint29.406s/284270592;
+metadataV3 4.406s/262823936. ALL final mainhandlesSIGNALLED and explicitdrain0;
+activeBeforeDrain0ALL. TotalProcesses2each/causeUNESTABLISHED. Source/typesstderr
+EMPTY;lintONEReact-autodetection setupnotice. Caps60swall/30userCPU/1GiBcommit/
+twoCPU/oneACTIVE/kill-on-close unchanged. NoOSnetwork isolation/universaldescendant/
+performance/independent-person claim. Source63 passed ONCE; no workload replay.
+
+Qualification FIRST,scaffold-correction SECOND,preparation-correction THIRD,
+preparation FOURTH restore52inverses/13pairs to SAMEraw103owner/root8 content with
+documented affected-doc newline transport;2576other2587completeBOTHbaseline docs
+unchanged. Older39/13/raw102+8/2585,older2583 and2301baselines/inverses stay separate.
+All44clauses/21gates/failures/fixtures/rejectedactions remain. ActionsPROHIBITED/
+historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED/FULLgoalACTIVE/no budget.
+FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding security/
+performance/actualAT/compatibleindependentrecovery/freshbackup AFTERquiescence/
+schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy stop POST synthetic type-scaffold correction (2026-10-22)
+
+DISTINCT V2 SOURCE passes63/63,zero fail/skip/cancel/todo,using the exact unchanged
+exported POST and synthetic immediate bindings ONLY. V2 TYPES then FAILS with
+one2339 diagnostic in the synthetic scaffold: its narrower JSON return type
+does not describe the web Request.json signature used by NextRequest. V2 SOURCE
+is FROZEN and will NOT rerun. V2 type result and unused lint remain FROZEN.
+
+DISTINCT V3 changes ONLY the scaffold json member to Request['json']; it retains
+the exact production declaration and EXACT V2-executed test bytes. Its new runner
+rejects SOURCE mode and allows only fresh metadata/TYPES/LINT under original caps.
+These checks remain UNEXECUTED pending freeze/review. This corrects the synthetic
+type contract, not production behavior or an acceptance gate. Actual HTTP/auth/
+database/ORM/native/cancellation/jobs/streams/services remain INERT. All original
+clauses/gates/failures/rejectedactions,ActionsPROHIBITED,rootLOCAL,4+32+1UNRESOLVED,
+FULLgoalACTIVE/no budget and FINALPRD AFTER ALLoriginal preceding gates remain.
+
+
+## Deploy stop POST source preparation correction (2026-10-22)
+
+The first bounded SOURCE module load FAILED before any of the63 control callbacks:
+Node strip-only mode rejects the synthetic response class parameter property.
+The module TAP records0pass/1fail; this is no source-control qualification.
+MainhandleSIGNALLED,explicitdrain0,0.141s/42356736peakbytes; source stderrEMPTY.
+V1 inputs/helpers and unused TYPES/LINT remain FROZEN. A DISTINCT V2 uses explicit
+class fields/assignments only; SAME63 still-unexecuted controls, original source,
+synthetic bindings, limits and acceptance gates remain. No workload/control replay,
+production correction, real cancellation, database or service execution occurred.
+V2 SOURCE/TYPES/LINT remain UNEXECUTED pending new metadata/freeze/review.
+
+All44clauses/21gates/failures/fixtures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/rootLOCAL/4+32+1UNRESOLVED/FULLgoalACTIVE/no budget.
+FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding gates.
+
+
+## Deploy stop POST source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select ONLY the exact exported POST in
+src/app/api/deploy/stop/route.ts. Order was derived FROM source BEFORE controls:
+await operator authorization outside try; inside try select query jobId with
+nullish JSON/catch fallback, validate with an inert immediate binding, await a
+synthetic selected job lookup, check running status and process ownership, call
+an inert abort binding WITHOUT awaiting its return, then construct202 metadata.
+Invalid/missing/completed/unowned paths return fixed400/404/409; caught faults
+return fixed503. Outside-try faults and returned response rejection propagate.
+Real cancellation completion and callee implementations are OUTSIDE this scope.
+No supported production defect/correction; production remains unchanged.
+
+The63 drafted controls are UNEXECUTED pending distinct freeze/review. All bindings
+are synthetic PUBLIC metadata. Actual HTTP/auth/database/ORM/operatorDB/native/
+backend/build/server/recovery/performance/production/grants/CAS/provisioning AND
+moduleinitializers/neighbours/jobs/output/streams/timers/eventproducers/engine/
+credentials/services remain INERT. No real AbortController, runner or DB executes.
+Startup26447 FIRST then233 current yields26680 exact proofs;426/103/compat5/
+separate334 and39inverses/13pairs/raw102+8/2574other2585docs pass. Independent
+predecessor matcher27991/late8/direct1024/extra2201/closure passed BEFORE release.
+New raw103owner/root8 and2587 complete BOTH-repository baseline remain separate.
+New inverse-offset and default-encoding reader refusals are retained; distinct
+corrections read metadata only with no owner mutation or workload replay.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy start POST pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage STOPPED BEFORE staging on one missing historical capture
+TREEecb2cb and one new checkpoint TREEca98d5,zerochanged. DISTINCT pure DIRECT
+FIRST verifies exact stoppedsets/allpersistentmetadata/live/dirt and BOTH297/
+297/21 inventories. BOTHobjects retained;causeUNESTABLISHED;no refmutation/object
+recreation/replay. Separate DIRECT WSLgh metadata confirms ActionsdisabledBOTH/
+PR28+5draftopenunmerged. Stopped and reconciled histories remain separate.
+RefLifecycle FIRST,qualification SECOND,preparation THIRD restore39inverses/
+13pairs SAMEraw102owner/root8;2574other2585completeBOTHbaseline docs unchanged.
+Current426/103 retains streamGET/startGET/startPOST tests and newevidence ONCE.
+RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/
+21gates/fixtures/failures/rejectedactions/FINALPRDAFTERALLoriginalgates remain.
+
+
+## Deploy start POST source qualification (2026-10-22)
+
+FIRST61/61 NEW finite PUBLIC SOURCE controls pass,zero fail/skip/cancel/todo.
+Exact unchanged exported POST alone executes with inert synthetic immediate
+bindings. Controls cover source member/call/receiver/argument and await order,
+operator-denial/capability refusal, nullish selection defaults, fixed caught
+selection400/other500, inert registration, discarded immediate runner result,
+response Promise adoption and exact outside-try/catch fault propagation.
+Actual authorization/selection validation/preparation/ORM/runner behavior remains
+OUTSIDE this declaration's qualification. No supported production defect or
+correction; TESTS/DOCS ONLY. Actual HTTP/auth/database/ORM/operatorDB/native/backend/
+build/server/recovery/performance/production/grants/CAS/provisioning/moduleinitializers/
+neighbours/jobs/output/streams/timers/eventproducers/engine/credentials/services INERT.
+
+FIRSTtypes2roots/0diagnostics covers exact unchanged POST in explicit synthetic
+immediate-binding scaffold plus newtest,not wholemodule/project. Lint2files/0errors/
+warnings. Fresh191compilerinputs/191snapshotReads/fallback0 verified DIRECTLinux
+equal to Windows metadata;37428DIRECTLinux dependencyhashes before/after including
+37in-tree/nondanglingsymlinkfiles match.425existinginputs unchanged;newtest/evidence
+included ONCE gives current426/103. Source0.875s/79466496peakbytes,types3.829s/275795968,
+lint26.172s/282902528,metadata4.375s/259637248. AllmainhandlesSIGNALLED;types
+activeBeforeDrain1,others0;explicitdrain0ALL. TotalProcesses2each/causeUNESTABLISHED.
+Source/typesstderrEMPTY;lintONEReact-autodetection setupnotice. Firstresultsreader
+refused different expectednotice wording BEFOREdependencyafterread;distinctV2
+corrects only expectation/outputname and reviews savedresults,NOworkloadreplay.
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged. NoOSnetwork
+isolation/universaldescendant/performance/independent-person claim.
+
+Qualification inverses FIRST,preparation SECOND restore26inverses/13pairs SAMEraw102
+owner/root8;2574other2585completeBOTHbaseline docs unchanged. Older39/13/raw101+8/
+2583complete and2301owner-only baselines/inverses/failures remain FROZEN separately.
+Immutable startupreceipt retains26447exactorderedobjects/all1213fields976DIRECT;
+independent predecessor27700/direct873/extra1958/closure passed before release.
+All44clauses/21gates/fixtures/failures/rejectedactions remain. ActionsPROHIBITED/
+historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED/FULLgoalACTIVE/no budget.
+FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding security/
+performance/actualAT/compatibleindependentrecovery/freshbackup AFTERquiescence/
+schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy start POST source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select ONLY the exact exported POST in
+src/app/api/deploy/start/route.ts. Order was derived FROM source BEFORE controls:
+await operator authorization and check provisioning capability outside try;
+inside try await request JSON, select playbook/roles, await vars/nodes/inventory
+in sequence, create synthetic job metadata, register inert cancellation metadata,
+call an inert immediate runner binding without awaiting, then return response.
+Selection-class faults return400; other caught faults return fixed500. Outside-
+try faults and returned response Promise rejection propagate separately.
+No supported production defect/correction is established; production is unchanged.
+
+Only PUBLIC request/authorization/capability/selection/preparation/job-ID/response
+metadata and inert immediate bindings are used. Actual HTTP/auth/database/ORM/
+operatorDB/native/backend/build/server/recovery/performance/production/grants/CAS/
+provisioning AND moduleinitializers/neighbours/jobs/output/streams/timers/event-
+producers/engine/credentials/services remain INERT. SOURCE/TYPES/LINT UNEXECUTED
+pending new freeze/review. All older helpers/controls/failures remain FROZEN;
+no workload replay. Independent predecessor matcher27700/direct873/extra1958/
+closure passed before explicit release. Startup rehashed26237 BEFORE210 current,
+26447 exact objects;425/102/compat5/separate334 and39 inverses/13pairs restoring
+same raw101owner/root8 plus2572 other2583 baseline docs passed. New current raw102/
+root8 and2585 complete BOTH-repository baseline are separate from older baselines.
+Immutable receipt and all inherited objects/metadata/histories remain unchanged.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIOnly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy start GET pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage STOPPED BEFORE staging on missing historical capture TREE8c8303
+and new checkpoint TREEecb2cb,zerochanged. DISTINCT pure DIRECT FIRST verifies
+exact stoppedsets/allpersistentmetadata/live/dirt and BOTH296/296/21 inventories.
+Bothobjects retained;causeUNESTABLISHED;no refmutation/objectrecreation/replay.
+Separate metadata confirms ActionsdisabledBOTH/PR28+5draftopenunmerged. Stopped
+and reconciledhistories remain separate. RefLifecycle FIRST,qualification SECOND,
+preparation THIRD restore39inverses13pairs SAMEraw101owner/root8;2572other2583baseline
+docs unchanged. Current425/102 retains each newtest/evidence ONCE. RootLOCAL/
+4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/21gates/
+fixtures/failures/rejectedactions/FINALPRDAFTERALL original gates remain.
+
+
+## Deploy start GET source qualification (2026-10-22)
+
+FIRST28/28 NEW finite PUBLIC SOURCE controls pass,zero fail/skip/cancel/todo.
+Exact unchanged exported GET alone executes with inert synthetic immediate
+bindings. Member/call/iterator order, receivers, one-argument response metadata,
+fresh ID snapshots, Promise adoption and exact fault propagation are covered.
+This GET has no internal authorization/capability check; actual middleware/auth
+are outside this SOURCE qualification. Actual imports/moduleinitializers/
+neighbours/HTTP/auth/database/ORM/operatorDB/native/backend/build/server/jobs/
+output/streams/timers/eventproducers/engine/credentials/services remain inert.
+No supported production defect/correction; TESTS/DOCS ONLY.
+
+FIRSTtypes2roots/0diagnostics covers the exact unchanged GET in explicit synthetic
+immediate-binding scaffold plus newtest,not wholemodule/project. Lint2files/0errors/
+warnings. Fresh191compilerinputs/191snapshotReads/fallback0 verified DIRECTLinux
+equal to Windows compiler metadata;37428DIRECTLinux dependencyhashes before/after
+including37in-tree/nondanglingsymlinkfiles match.425sourceinputs unchanged;old
+deploy-stream test and newdeploy-start test each included ONCE. Source0.859s/
+75010048peakbytes,types3.891s/303767552,lint30.329s/281997312. Metadata4.656s/261611520.
+ALLmainhandlesSIGNALLED and explicitdrain0;source/types/lint activeBeforeDrain0,
+metadata activeBeforeDrain1 before explicitdrain0. TotalProcesses2each/cause
+UNESTABLISHED. Source/typesstderrEMPTY;lintONEReact-autodetection setupnotice.
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close unchanged. NoOSnetwork
+isolation/universaldescendant/performance/independent-person claim. No replay.
+
+Qualification inverses FIRST,preparation SECOND restore26inverses/13pairs to SAME
+raw101owner/root8;2572other2583completebaseline docs stay unchanged. First2301owner-
+only metadata baseline is separate and retained. Startupreceipt retains26237
+exact orderedobjects/all1116fields901DIRECT;V1directcount/V2casecollision writers/
+preparations frozen,distinctV3accepted;independent parent27353/extra1793/direct/
+closure passed before release. All incoming histories and52/raw100/older inverses
+remain frozen. RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/historicalCIonly/overallCI
+false/fullgoalACTIVE/no budget. All44clauses/21gates/fixtures/failures/rejectedactions
+remain. FINALPRDdeployment ANDverification only AFTER ALLoriginal preceding
+security/performance/actualAT/compatibleindependentrecovery/freshbackup AFTER
+quiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy start GET source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only the exact exported zero-argument
+GET in src/app/api/deploy/start/route.ts. Order was recorded FROM source BEFORE
+controls: NextResponse.json member, Array.from member, activeJobs.keys member and
+call, finite iterator exhaustion, then one json call with activeJobIds metadata.
+The async return adopts its result; uncaught faults reject unchanged. This exact
+GET contains no authorization or runtime-capability check. Actual middleware and
+authorization remain outside this isolated declaration's qualification. No
+supported production defect or correction is established; production is unchanged.
+
+Only synthetic PUBLIC IDs/response/authorization/capability metadata and inert
+immediate bindings are used. Actual HTTP/auth/database/ORM/operatorDB/native/
+backend/build/server/jobs/output/streams/timers/eventproducers/engine/credentials/
+services and moduleinitializers/neighbours remain inert. SOURCE/TYPES/LINT are
+UNEXECUTED pending new freeze/review. Existing controls/helpers are frozen and
+never replayed. Startup rehashed26010incoming BEFORE227current,26237 exact original
+objects;424/101/compat5/separate334,52inverses13pairs SAMEraw100owner/root8 and
+2570otherdocs pass. Independent parent schema/matcher27353/direct/extra1793/closure
+passed before explicit release. Both receipt-writer failures and preparations
+remain frozen; the immutable acceptedreceipt is distinct. New raw101owner/root8
+and2583 complete both-repository docs baseline are retained; first2301 owner-only
+metadata preview is separate. New currentroot8 pins preserve inherited originals.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIonly/overallCIfalse/rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy stream GET final test-file whitespace (2026-10-22)
+
+The staged whitespace check found one extra terminal blank line in the new test.
+Exactly one final LF was removed; every other test byte/control/assertion is
+identical to the retained executed snapshot. The original failed staging helper
+and snapshot remain frozen. A separate byte equality review confirms this
+transport-only correction;no source/types/lint replay or production change.
+Final424 bindings reflect this test delimiter;the prior execution424 bindings stay
+distinct. Final whitespace inverses FIRST,refLifecycle SECOND,qualification THIRD,
+preparation FOURTH restore52inverses/13pairs SAMEraw100owner/root8. All original
+scope/resource/gates/failures and FULLgoalACTIVE/no budget/FINALPRDAFTERALL remain.
+
+
+## Deploy stream GET pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stage stopped BEFORE staging on missing historical capture TREE94fb59
+and new checkpoint TREE8c8303,zero changed refs. DISTINCT pure DIRECT FIRSTpasses
+BOTH295/295/21 inventories,exact stopped sets/all persistentmetadata/live/dirt.
+Both tree objects retained;causeUNESTABLISHED;no refmutation/recreation/replay.
+Separate WSLgh metadata verifies ActionsdisabledBOTH and PR28/5draft/open/unmerged.
+Stopped and reconciled histories remain separate. RefLifecycle FIRST,qualification
+SECOND,preparation THIRD restore39inverses/13pairs SAMEraw100owner/root8;
+2570other2581baseline docs unchanged. Current424/101 includes newtest/evidence ONCE.
+RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/
+21gates/fixtures/failures/rejectedactions/FINALPRDAFTERALL original gates remain.
+
+
+## Deploy stream GET source qualification (2026-10-22)
+
+NEW FIRST70/70 PUBLIC SOURCE controls pass,zero failures/skips/cancellations/todo.
+Only exact exported GET executes with synthetic PUBLIC request/session/job/cursor/
+row/response metadata and inert immediate auth/database/stream/callback/builtin
+bindings. Source-derived authorization/read/validation order, header nullish
+precedence/defaults, shortcircuits, fixed400/403/404/503 responses, exact ID-only
+query, await fences, lazy fresh callbacks and exact fault behavior pass. Actual
+HTTP/auth/Prisma/SQL/job/output/stream/timer/native services and application module
+initializers/neighbors remain inert. No supported production defect/change;
+TESTS/DOCS ONLY. No source/types/lint replay.
+
+FIRST types2roots/0diagnostics covers exact unchanged GET in an explicit synthetic
+immediate-binding scaffold plus the new test; it does not qualify the full module
+or project. Lint2files/0errors/warnings. Fresh192 compilerinputs/192snapshotReads/
+fallback0 and37428DIRECTLinux hashes before/after,including37in-tree/nondangling
+symlinks,match;424sourceinputs unchanged. Source0.907s/92864512peakbytes;types3.750s/
+293224448;lint25.312s/291414016. MainhandlesSIGNALLED;activeBeforeDrain0ALL and
+explicitdrain0ALL. TotalProcesses2each/causeUNESTABLISHED. Source/types stderrEMPTY;
+lint ONE React-autodetection setup notice. NoOSnetworkisolation/universaldescendant/
+performance/independent-person claim.
+
+V1 preparation stopped before compiler/controls on CRLF text normalization;V2
+stopped before compiler/controls because Linux node was unavailable,after DIRECT
+dependency hashing. DISTINCT V3 uses authorized Windows Node for compiler metadata
+then DIRECTLinux rereads of exactly those inputs;same70/exactoracle/production
+declaration. Both failed preparers and partial artifacts remain FROZEN. V1 result
+reader expected an old two-notice lint pattern and stopped;distinct V2 verifies the
+actual ONE notice and reuses immutable after-hash metadata without workload replay.
+
+Startup26010 original objects/all1007fields817DIRECT retained;independent parent
+schema/matcher26274/direct/history2740/closure passed before release. Raw100owner/
+root8 and2581completebaseline remain;2570otherdocs unchanged. Current424/101 includes
+new test/evidence ONCE;publicsort baseline and original334 remain separate.
+RootLOCAL/4+32+1UNRESOLVED/ActionsPROHIBITED/historicalCIonly/overallCIfalse remain.
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps preserved.
+FULLgoalACTIVE/no budget. FINALPRDdeployment ANDverification ONLYAFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Deploy stream GET source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only exact exported GET in
+src/app/api/deploy/stream/route.ts. Order was recorded FROM source BEFORE controls:
+initial operator await/response identity, job ID then header/query/default cursor,
+shortcircuit validation, cookie/current operator await, exact ID-only row query,
+and lazy stream callbacks before fixed SSE response headers. The try block maps
+failures to fixed503; earlier authorization/query/validation faults propagate.
+Synthetic PUBLIC request/session/job/cursor/row/response/lifecycle metadata and
+inert immediate auth/database/stream/callback/builtin bindings only. No application
+module initializer, actual HTTP/auth/SQL/ORM/job/output/stream/timer/native service
+executes. No supported production defect or production correction is established.
+New SOURCE/TYPES/LINT remain UNEXECUTED pending freeze and review.
+
+FIRST startup26010 passed25783incoming BEFORE227current, with exact full original
+objects retained.423inputs/100docs/compat5/separate334,52inverses13pairs to SAME
+raw99owner/root8 and2568otherdocs pass. Independent parent schemaFIRST/matcher26274/
+direct/history2740/closure passed before explicit release. FINAL294 originals and
+fresh295/295/21 refs stay separate;zero missing/changed. V1 receipt writer stopped
+before creation on a case-only key collision;distinct V2 preserves that failure,
+preparations and immutable accepted receipt. New raw100owner/root8 and complete
+2581-doc baseline remain;current root8 pins are separate from inherited originals.
+Read truncations/absent guessed wrapper paths are retained without full-read claim.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIonly/overallCIfalse;rootLOCAL/4+32+1UNRESOLVED.
+Full goal ACTIVE/no budget. FINAL PRDdeployment ANDverification only AFTER ALL
+original preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackupAFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job stream pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stageV1 stopped BEFORE staging on missing historical capture TREEe0ee14
+and new checkpoint TREE94fb59,zero changed refs. DISTINCT pure DIRECTV1 FIRSTpasses
+BOTH294/294/21 inventories,exact stopped sets/all persistentmetadata/live/dirt.
+Both tree objects remain;causeUNESTABLISHED;no refmutation/objectrecreation/replay.
+Separate WSLgh metadata verifies ActionsdisabledBOTH and PR28/5draft/open/unmerged.
+Original stopped and reconciled histories remain separate. RefLifecycleV1 FIRST,
+qualificationV1 SECOND,harnessCorrectionV1 THIRD,preparationV1 FOURTH restore
+52inverses/13pairs SAMEraw99owner/root8;2568other2579baseline docs unchanged.
+Current423/100 includes new test/evidence ONCE. RootLOCAL/4+32+1UNRESOLVED/
+ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/21gates/fixtures/failures/
+rejectedactions/FINALPRDAFTERALL original preceding gates remain.
+
+
+## Job stream source qualification (2026-10-22)
+
+DISTINCT V2 FIRST92/92 PUBLIC SOURCE controls pass,zero failures/skips/cancellations.
+Only exact exported createJobStream executes with synthetic PUBLIC option/row/event/
+lifecycle metadata and inert immediate controller/callback/timer/default/builtin/
+error bindings. Setup/default selection, connection/deadline, fresh authorization
+before load, post-await closure fences, reset/codepoint/offset/frame bounds, terminal
+publication, poll waiter, abort/cancel/idempotent cleanup and exact fault behavior
+pass. No actual stream I/O,timer,event/job producer,Prisma/DB/module initializer,
+operator/filesystem/configuration/engine/credential/native service executes.
+No supported production defect or production correction; TESTS/DOCS ONLY.
+
+V1 FIRSTsource92/92 passes; FIRSTtypes retains two TS2378 test-accessor diagnostics.
+All V1 helpers/controls/freeze/logs/results FROZEN NEVERrerun;V1lint UNEXECUTED/FROZEN.
+DISTINCT V2 adds return to two assert.fail getters;SAME92/exact-error oracle remain.
+FIRST V2types2selectedroots/0diagnostics and lint2files/0errors/warnings pass.
+Fresh211 compilerinputs/190snapshotReads/fallback0;37428DIRECTLinux before/after,
+including37in-tree/non-dangling symlinks and423inputs match. Source0.891s/81526784
+peakbytes;types3.984s/288559104;lint27.063s/286720000. ALLmainhandlesSIGNALLED;
+activeBeforeDrain source0/types1/lint1;explicitdrain0ALL. TotalProcesses2each/
+causeUNESTABLISHED. Source/types stderrEMPTY;lint TWOsetup notices React detection/
+absent Pagesdirectory. NoOSnetworkisolation/universaldescendant/performance/
+independent-person claim. No V1 or V2 source/types/lint replay.
+
+Incoming immutable receipt,all25783 original full proofobjects and all877fields/
+709DIRECTbindings remain. ParentFIRST26563/direct/closure and explicit release
+preceded source work. Newraw99owner/root8,2579completebaseline and2568otherdocs
+remain;current423inputs/100docs include the new test/evidence ONCE. Production
+delta froma2b2668a remains EXACT1addition/1deletion kv-http overflowcancel from
+prior work. All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain.
+ActionsPROHIBITED/historicalCIonly/overallCIfalse;rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget;FINAL PRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job stream retained type-harness failure and distinct preparation (2026-10-22)
+
+V1 FIRST SOURCE92/92 passes with zero failures/skips/cancellations/stderr. V1 TYPES
+FIRST exits1 with two TS2378 diagnostics: nonreturning assert.fail accessors need
+explicit returns. Main handles signalled; explicit drains reach0. V1 helpers,
+controls/freeze/logs/results are FROZEN NEVERrerun; V1lint UNEXECUTED/FROZEN.
+DISTINCT V2 adds return to those two assert.fail getter bodies; same92 controls
+and exact-error oracle, unchanged selected production declaration. No supported
+production defect, oracle relaxation or production correction. V2 SOURCE/TYPES/
+LINT remain UNEXECUTED pending distinct fresh preparation/freeze/review.
+
+The first TAP log reader failed under the Windows default encoding; a distinct
+explicit UTF8 read confirms all92pass/zero fail/skip/cancel/todo and empty stderr.
+No workload replay followed that reader failure. Read truncations and the absent
+wrapper implementation-ledger path are retained separately without full-read claims.
+All44clauses/21gates/fixtures/failures/resourcecaps/rejectedactions/ActionsPROHIBITED/
+rootLOCAL/4+32+1UNRESOLVED remain. FULLgoalACTIVE/no budget;FINAL PRDdeployment AND
+verification only AFTER ALLoriginal preceding security/performance/actualAT/
+compatibleindependentrecovery/freshbackupAFTERquiescence/schema/effectiveRBAC/
+admission/data gates.
+
+
+## Job stream source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only exact exported createJobStream from
+src/lib/job-stream.ts. Evaluation order was derived FROM source BEFORE controls:
+nullish timer defaults, encoder/cursor setup, inert stream construction, start,
+fresh authorization before load, post-await closed fences, reset/Unicode offset
+validation, terminal publication, poll waiter and deadline/abort/cancel cleanup.
+Callbacks/controllers/timers/builtins are inert synthetic bindings; no real stream,
+timer, job, output source, Prisma/DB/module initializer or native service executes.
+No supported production defect is established; TESTS/DOCS ONLY. SOURCE/TYPES/LINT
+remain UNEXECUTED pending distinct infrastructure snapshot, freeze and review.
+
+FIRST startup25783 hashes passed25535incoming BEFORE248current with exact original
+metadata objects.422inputs/99docs/compat5/separate334 and52inverses/13pairs to SAME
+raw98owner/root8 plus2566otherdocs pass. FINAL293 originals and fresh294/294/21
+typed refs stay separate,zero missing/changed. Independent parent matcherFIRST26563,
+DIRECT audit and closure passed BEFORE explicit hold release. No frozen replay or
+immutable receipt/proof mutation. New raw99owner/root8 and complete2579-doc baseline
+are retained; new current root8 pins are separate from inherited originals.
+
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close remain. No actualHTTP/
+auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/production/
+grants/CAS/provisioning/frozenreplay. ActionsPROHIBITED/historicalCIonly/overallCIfalse;
+rootLOCAL/4+32+1findings UNRESOLVED;all44clauses/21gates/fixtures/failures/rejectedactions
+retained. FULLgoalACTIVE/no budget. FINAL PRDdeployment ANDverification only AFTER
+ALLoriginal preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackupAFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job tail pre-stage ref reconciliation (2026-10-22)
+
+FIRST pre-stageV1 stopped BEFORE staging on missing historical capture TREE375442
+and new checkpoint TREEe0ee14,zero changed refs. DISTINCT pure DIRECTV1 FIRSTpasses
+BOTH293/293/21 inventories,exact stopped sets/all persistentmetadata/live/dirt.
+Both tree objects remain;causeUNESTABLISHED;no refmutation/objectrecreation/replay.
+Separate WSLgh metadata verifies ActionsdisabledBOTH and PR28/5draft/open/unmerged.
+Original stopped and reconciled histories remain separate. RefLifecycleV1 FIRST,
+qualificationV1 SECOND,harnessCorrectionV1 THIRD,preparationV1 FOURTH restore
+52inverses/13pairs SAMEraw98owner/root8;2566other2577baseline docs unchanged.
+Current422/99 includes new test/evidence ONCE. RootLOCAL/4+32+1UNRESOLVED/
+ActionsPROHIBITED/fullgoalACTIVE/no budget/all44clauses/21gates/fixtures/failures/
+rejectedactions/FINALPRDAFTERALL original preceding gates remain.
+
+
+## Job tail source qualification (2026-10-22)
+
+DISTINCT V2 FIRST94/94 PUBLIC SOURCE controls pass,zero failures/skips/cancellations.
+Only exact exported readJobTail executes with synthetic PUBLIC job-ID/count/row
+metadata and inert immediate tagged-query/default-client/builtin/error bindings.
+Unchanged chars/id substitutions, literal SQL minus, receiver/template identity,
+await/then assimilation, row-zero truthiness, total conversion, single output read,
+fresh results and comparison order pass. Nonfinite/fractional counts and large-bigint
+conversion are characterization only. No SQL semantics, supported production defect
+or production correction; TESTS/DOCS ONLY. Prisma/db/job-stream initializers and all
+neighbours/actual jobs/output/filesystem/database/configuration/operator/engine/
+credential/native inputs stay inert. See implementation-evidence/read-job-tail-source.json.
+
+V1 FIRST93/94 default-getter witness-identity failure remains FROZEN with helper,
+controls/freeze/logs/result;V1types/lint UNEXECUTED. DISTINCT V2 ordinary lexical
+object binding corrects the harness;the same94controls/exact-error oracle remain.
+FIRST V2types2ISOLATED-SELECTEDroots/0diagnostics and lint2files/0errors/warnings pass.
+Fresh211 compiler inputs/191snapshotReads/fallback0;37428DIRECTLinux before/after
+hashes including37in-tree/non-dangling symlinks and422inputs/204retainedproofs match.
+Source0.906s/94978048peakbytes;types4.062s/294772736;lint30.407s/281931776.
+ALLmainhandlesSIGNALLED;activeBeforeDrain source0/types1/lint0;explicitdrain0ALL.
+TotalProcesses2each/causeUNESTABLISHED. Source/types stderrEMPTY. Lint TWOsetup
+notices React detection/absent Pagesdirectory. NoOSnetworkisolation/universal
+descendant/performance/independent-person claim. No V2 source/types/lint replay.
+
+InfrastructureprepV1 stopped BEFORE outputs/controls on214vs211;DIRECT metadata
+isolates exactly three Node ts5.6 alternate declarations. DISTINCT corrected V2
+and fresh V3 preparation pass exact retained211 paths;original failure is frozen.
+Startup parentV1 remained prepared/unexecuted;V2/3678direct/83extra acceptance stays
+distinct. Raw98owner/root8,2577completebaseline and2566otherdocs remain;current
+422inputs/99docs include the new test/evidence ONCE. Production delta froma2b2668a
+remains EXACT1addition/1deletion kv-http overflowcancel from prior work.
+
+All44clauses/21gates/fixtures/failures/rejectedactions/resourcecaps remain unchanged.
+ActionsPROHIBITED/historicalCIonly/overallCIfalse;rootLOCAL/4+32+1UNRESOLVED.
+FULLgoalACTIVE/no budget;FINAL PRDdeployment ANDverification only AFTER ALLoriginal
+preceding security/performance/actualAT/compatibleindependentrecovery/freshbackup
+AFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job tail retained harness failure and distinct preparation (2026-10-22)
+
+FIRST V1 source run passed93/94,one failed default-binding fault identity control,
+zero skips/cancellations. A throwing contextified VM global getter surfaced as
+ReferenceError: prisma is not defined instead of the exact witness error. Original
+V1 controls/helper/freeze/logs/result remain FROZEN,never rerun;types/lint UNEXECUTED.
+Main handle signalled,explicit drain reached0;no production defect/change established.
+DISTINCT V2 uses an ordinary lexical object binding around the unchanged selected
+declaration. The exact-error-identity oracle and all94controls stay unchanged; no
+gate relaxation or production correction. V2 SOURCE/TYPES/LINT UNEXECUTED pending
+distinct freeze/review. No SQL/ORM/native/backend/operator/output/module initializer.
+
+InfrastructureprepV1 stopped BEFORE outputs/controls on214vs211 compiler inputs.
+Distinct DIRECT metadata identifies exactly three Node ts5.6 alternate declarations;
+V2 infrastructure preparation matches the retained211-path set with37428 DIRECTLinux
+files and37in-tree/non-dangling symlinks. Original stopped attempt remains frozen.
+All original44clauses/21gates/fixtures/failures/rejectedactions/ActionsPROHIBITED/
+rootLOCAL/4+32+1UNRESOLVED retained. FULLgoalACTIVE/no budget;FINAL PRDdeployment AND
+verification only AFTER ALL original preceding acceptance/security/performance/
+actualAT/recovery/backupAFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
+## Job tail source preparation (2026-10-22)
+
+NEW finite PUBLIC SOURCE controls select only exact exported readJobTail from
+src/lib/job-output.ts. Evaluation order was recorded FROM source BEFORE controls:
+default client; tagged-query receiver and unchanged chars/id substitutions; await;
+first-row truthiness; Number(total); one output read; total/cursor projection and
+total > chars comparison. The SQL minus sign is literal template text. Immediate
+await/then assimilation and synthetic getter/conversion faults remain JavaScript
+characterization. No SQL semantics or supported production defect is established.
+Current feature TESTS/DOCS ONLY; source/types/lint UNEXECUTED pending freeze/review.
+Actual jobs/output/filesystem/database/configuration/operator inputs/neighbours/
+engine/credentials/native services AND Prisma/db/job-stream initializers inert.
+
+FIRST startup25535 hashes passed25331incoming BEFORE204current, preserving all
+original proof objects including five restored metadata wrappers via accepted
+additive supplement. Current421/98/compat5/separate334 and39inverses/13pairs to
+SAMEraw97owner/root8 plus2564otherdocs verified. FINAL292 originals and fresh293
+typed refs stay separate,zero missing/changed. ParentV1 remained PREPARED/UNEXECUTED;
+distinct V2 FIRST26893, DIRECT3678 and retained-record83 pass before hold release.
+No immutable receipt/proof mutation, gate relaxation or frozen workload replay.
+New raw98owner/root8 and complete no-ignore/hidden2577-doc baseline retained.
+Original root preedit pins remain unchanged; current fresh pins are separate.
+
+Caps60swall/30userCPU/1GiBcommit/twoCPU/oneACTIVE/kill-on-close remain. No actualHTTP/
+auth/native/SQL/ORM/operatorDB/backend/build/server/recovery/performance/production/
+grants/CAS/provisioning/frozenreplay. ActionsPROHIBITED/historicalCIonly/overallCIfalse;
+rootLOCAL/4+32+1findings UNRESOLVED;all44clauses/21gates/fixtures/failures/rejectedactions
+retained. FULLgoalACTIVE/no budget. FINAL PRDdeployment ANDverification only AFTER
+ALLoriginal preceding security/performance/actualAT/compatibleindependentrecovery/
+freshbackupAFTERquiescence/schema/effectiveRBAC/admission/data gates.
+
+
 BORTUS requires externally supplied Kubernetes credentials. It does not bootstrap credentials from SQLite or fetch them over SSH at startup.
 
 ## Operator mode
@@ -21,6 +629,8 @@ Mount the ServiceAccount token and CA using the deployment's normal Kubernetes c
 See [deployment contract](BORTUS-DEPLOYMENT.md) for RBAC, runtime Secret references, aliases, probes, storage and network inputs. Resource browsing, Flux and the operator shell require their own appropriate Kubernetes permissions.
 
 ## Dashboard access and diagnostics
+
+Readiness bounds passed local unit and production HTTP/TLS qualification: limit-one metadata-only Secret negotiation in each current namespace, plus history when guarded mode is enabled, with ten-second coalescing and a nine-second dependency deadline. Unsupported metadata negotiation fails 503 rather than fetching values. Use at least a ten-second probe timeout; write RBAC/admission remain separate operator checks.
 
 Use the configured TLS ingress for deployed instances; loopback development uses `http://localhost:4000`. DNS names, node addresses, ingress implementation and firewall rules are deployment inputs. This application merge does not define the live cluster topology.
 

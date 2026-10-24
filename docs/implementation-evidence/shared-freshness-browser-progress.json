@@ -1,0 +1,84 @@
+{
+  "fixture": "Actual built /secrets/kv route; disposable SQLite and CA-verified native TLS API",
+  "node": "v22.23.3",
+  "checks": [
+    {
+      "name": "Parent and workbench share capability GET; opening fetches no values",
+      "capabilityReadsBefore": 1,
+      "capabilityReadsAfter": 1
+    },
+    {
+      "name": "Equivalent refresh preserves unsaved draft and frozen capture; one shared poll",
+      "capabilityPolls": 1
+    },
+    {
+      "name": "Held capability refresh expires at original fifteen-second deadline and clears draft",
+      "elapsedFromCompletedResponseMs": 15100,
+      "pendingAtExpiry": true
+    },
+    {
+      "name": "Real hidden visibility clears private state, stops shared polling and fences held reply",
+      "pollsWhileHidden": 0,
+      "heldReadAdded": 1
+    },
+    {
+      "name": "Fresh scoped update withdrawal discards draft and removes mutation control without write"
+    },
+    {
+      "name": "Metadata-only final screenshot fits390pixels and has no private textarea"
+    }
+  ],
+  "failures": [],
+  "source": "da84f0f archive plus exact recovered six handoff source files; no application behavior changes",
+  "limitations": [
+    "Local synthetic browser evidence; no live API/RBAC/admission/image acceptance",
+    "Not a controlled latency or CPU benchmark"
+  ],
+  "cleanup": {},
+  "visibilityBeforeDraftCheck": {
+    "state": "visible",
+    "events": []
+  },
+  "metadataScreenshot": "shared-freshness-browser-mobile.png",
+  "mobileBounds": {
+    "client": 390,
+    "scroll": 390,
+    "privateEditors": 0
+  },
+  "counts": {
+    "requests": {
+      "GET /secrets/kv": 2,
+      "GET /_next/static/css/4e25289b42ae1fc0.css": 2,
+      "GET /_next/static/chunks/webpack-c4654c0402d2a26b.js": 2,
+      "GET /_next/static/chunks/4bd1b696-f785427dddbba9fb.js": 2,
+      "GET /_next/static/chunks/1255-5cd2fe06309409a0.js": 2,
+      "GET /_next/static/chunks/main-app-33cdf12d12e2e84a.js": 2,
+      "GET /_next/static/chunks/297-7295b248ad97a1e5.js": 2,
+      "GET /_next/static/chunks/4053-30e55f0d19c53bef.js": 2,
+      "GET /_next/static/chunks/1329-b5408eb27fea13c5.js": 2,
+      "GET /_next/static/chunks/7079-a18d7d4efb3fa77d.js": 2,
+      "GET /_next/static/chunks/app/(dashboard)/layout-d14753374a94e9cd.js": 2,
+      "GET /_next/static/chunks/8517-e4124beb46cc68ec.js": 2,
+      "GET /_next/static/chunks/app/(dashboard)/secrets/kv/page-bfae8b6b07358343.js": 2,
+      "GET /api/auth/session": 8,
+      "GET /api/kv/mounts": 10,
+      "GET /api/kv/paths": 10,
+      "GET /favicon.ico": 2,
+      "GET /api/kv/paths/20000000-0000-4000-8000-000000000000": 10,
+      "GET /api/kv/paths/20000000-0000-4000-8000-000000000000/capabilities": 10,
+      "GET /api/kv/paths/20000000-0000-4000-8000-000000000000/status": 13,
+      "GET /api/kv/paths/20000000-0000-4000-8000-000000000000/versions": 10,
+      "GET /_next/static/chunks/6950.0fc2b277b9ae1798.js": 2,
+      "GET /api/kv/paths/20000000-0000-4000-8000-000000000000/adopt": 1,
+      "POST /api/kv/paths/20000000-0000-4000-8000-000000000000/adopt": 1,
+      "GET /api/kv/paths/20000000-0000-4000-8000-000000000000/data": 3
+    },
+    "activeStreams": 0,
+    "valueRequests": 3,
+    "nativeObjects": 207,
+    "pendingKvStatus": false,
+    "pendingKvCapabilities": false
+  },
+  "terminal": false,
+  "checkpointAt": "2026-10-11T02:05:43.294Z"
+}

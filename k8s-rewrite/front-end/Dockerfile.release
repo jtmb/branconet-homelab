@@ -1,0 +1,45 @@
+# Required: the operator must supply the qualified runtime image (no fallback).
+ARG BORTUS_RUNTIME_IMAGE
+
+FROM node:22.23.3-bookworm@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d AS builder
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+ARG BORTUS_SOURCE_REVISION
+ENV NEXT_TELEMETRY_DISABLED=1 DATABASE_URL=file:/data/bortus.db CIRCLE_NODE_TOTAL=4
+RUN test -n "${BORTUS_SOURCE_REVISION}" \
+ && npm run build \
+ && npm prune --omit=dev \
+ && mkdir /release \
+ && cp -a .next/standalone/. /release/ \
+ && rm -rf /release/node_modules \
+ && cp -a node_modules /release/node_modules \
+ && mkdir -p /release/.next/static /release/public /release/prisma \
+ && cp -a .next/static/. /release/.next/static/ \
+ && cp -a public/. /release/public/ \
+ && cp -a prisma/. /release/prisma/ \
+ && cp docker-entrypoint.sh /release/docker-entrypoint.sh \
+ && sed -i 's/\r$//' /release/docker-entrypoint.sh \
+ && chmod 755 /release/docker-entrypoint.sh
+
+FROM ${BORTUS_RUNTIME_IMAGE} AS runtime
+ARG BORTUS_SOURCE_REVISION
+ARG BORTUS_RUNTIME_IMAGE
+LABEL org.opencontainers.image.revision="${BORTUS_SOURCE_REVISION}" \
+      org.opencontainers.image.base.name="${BORTUS_RUNTIME_IMAGE}"
+# Remove the previous application inside the image, including stale static assets.
+# Retain the supplied Node, native providers, kubectl, shell and license files.
+USER 0:0
+WORKDIR /
+RUN rm -rf /app \
+ && mkdir -p /app /data /home/shell \
+ && chown 1000:1000 /app /data /home/shell
+WORKDIR /app
+COPY --from=builder --chown=1000:1000 /release/ ./
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1 PORT=4000 HOSTNAME=0.0.0.0 \
+    DATABASE_URL=file:/data/bortus.db BORTUS_DISABLE_PROVISIONING=true
+USER 1000:1000
+EXPOSE 4000
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s CMD node -e "fetch('http://127.0.0.1:4000/api/health/live').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+ENTRYPOINT ["./docker-entrypoint.sh"]

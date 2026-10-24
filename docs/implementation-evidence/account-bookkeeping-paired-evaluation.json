@@ -1,0 +1,145 @@
+{
+  "capturedAt": "2026-10-15T05:07:03.661110+00:00",
+  "scope": "Isolated evaluation only; A07/A21 original warm gate FAILED, no adoption.",
+  "productSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+  "productFrontendTree": "2c4023aff26848e39890ed0fef51339d27c90680",
+  "candidateCommit": "d69f116057f51f5ef18d6f625528d702486d2027",
+  "candidateParent": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+  "overlay": {
+    "relative": "src/lib/direct-account-core.ts",
+    "sha256": "c046d7f47868d6672837fb854c00e4dc0441bc50f8f5377ee37ecbdc01a72774",
+    "changedSourceRows": 1,
+    "otherRawSourceRowsUnchanged": 373
+  },
+  "candidateSourceRows": 374,
+  "candidateGitSnapshotOnly": true,
+  "owningIndexHEADUnchanged": true,
+  "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "runtime": {
+    "image": "sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
+    "node": "22.23.3",
+    "nodeSHA256": "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48",
+    "newA7RuntimeNotSubstituted": true
+  },
+  "qualifiedPrerequisites": {
+    "focusedTests": 83,
+    "workerCases": 25,
+    "semanticTypes": true,
+    "lint": true,
+    "freshCanonicalBuildOnly": true,
+    "full342And8Rerun": false,
+    "compiledObjects": 5383,
+    "installedObjects": 40635,
+    "unchangedCompiledHTTP": 10,
+    "freshSQL": 12,
+    "projectionColumns": [
+      5,
+      7
+    ],
+    "workerDispatchSettlementJoins": 13
+  },
+  "comparison": {
+    "rootDispatch": "231d74/session90815",
+    "rootFinal": "184dfc/0",
+    "sourceInputs": 66,
+    "exportedSourceFiles": {
+      "candidate": 282,
+      "baseline": 157,
+      "total": 439
+    },
+    "alternatingPairs": 3,
+    "observations": 6,
+    "profilesPerObservation": 6,
+    "driverFixtureExporterSummaryOraclesUnchanged": true,
+    "extraWarmup": false,
+    "trimming": false,
+    "toleranceChanged": false,
+    "measurementWindowExclusive": true
+  },
+  "rawSHA256": "7b45a43d312bb8acb1e68002267d154ceb7ce9bf361522d43403b57f2ebefea7",
+  "summarySHA256": "2830b31fdb049a705888d9473d9230ea9a71382d8eb90c0d67559dd3a185ba32",
+  "result": {
+    "functionalRunnerExit": 0,
+    "performanceAccepted": false,
+    "warmComparableCases": 10,
+    "warmRegressions": 2,
+    "warmImprovements": 8,
+    "regressions": [
+      {
+        "profile": "audit-small",
+        "phase": "warm-pods-12",
+        "metric": "median of three original warm nearest-rank p95 milliseconds",
+        "baseline": 10.937845,
+        "candidate": 14.668675,
+        "increasePercent": 34.109
+      },
+      {
+        "profile": "metadata-1000",
+        "phase": "warm-pods-concurrent-20",
+        "metric": "median of three original warm nearest-rank p95 milliseconds",
+        "baseline": 67.699072,
+        "candidate": 71.921427,
+        "increasePercent": 6.237
+      }
+    ],
+    "wholeFixtureCPUSeconds": {
+      "baseline": 32.41264,
+      "candidate": 28.173989
+    },
+    "wholeFixturePeakMiB": {
+      "baseline": 363.066,
+      "candidate": 424.125
+    },
+    "cpuAndRSSAreWholeFixtureNotIsolatedApplicationMechanism": true,
+    "noOOMOrThrottleReported": true
+  },
+  "closure": {
+    "exact": "2ec7cd/0",
+    "fresh": "b4e7c3/0",
+    "later": "a909c2/0",
+    "own": "66a4f0/0",
+    "originalBirthsAbsent": 11,
+    "exactContainerNamesAbsent": 8,
+    "retainedContainerIDs": 0,
+    "dispatcherPIDOnly": true,
+    "dispatcherStartNotCaptured": true,
+    "postAndQueryBirthsAbsent": 9,
+    "currentLaterPins": 81,
+    "laterReaderAbsent": true
+  },
+  "proofs": [
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/app-account-bookkeeping-paired-postcheck-20261015-v1/paired-review-result.json",
+      "bytes": 950,
+      "sha256": "c0350658d75f005f795b3ee5142558bf4e174068ccf2ff4a305a63b2dd85ac1c"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/app-account-bookkeeping-paired-postcheck-20261015-v1/fresh-result.json",
+      "bytes": 4873,
+      "sha256": "65610d59e5e36229d4d1398d006e769f945334b14651229da35710b04b2093c1"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/app-account-bookkeeping-paired-postcheck-20261015-v1/later-result.json",
+      "bytes": 22722,
+      "sha256": "98511bbc1f28214aa5332bfb9002e042cbfd7d5703a95df388c73ff7c84f6cca"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/root-account-bookkeeping-paired-later-own-absent-20261015-v1.json",
+      "bytes": 369,
+      "sha256": "8c441284112760f73e836ac9e010127086e694151754ac33d7ab2ea2c82a9b1b"
+    }
+  ],
+  "priorRefusalsPreserved": [
+    "Build post V1 6f55e3/1 required nonexistent packaged provenance JSON; corrected post verified actual two-row standalone native layout without rebuild.",
+    "Paired post V1 was source-only/unrun: new reader identity variable would be shadowed by original query loop; V1-1 renamed only that added variable before first execution.",
+    "All earlier failed performance candidates/verifiers and unused preparations stay distinct; none is retroactively accepted."
+  ],
+  "limits": [
+    "Original one active/64 queued/5000ms/two real yields/fresh path/account/schema/permissions unchanged.",
+    "No row/session/role/authority cache, extra concurrency, relaxed deadline or threshold-specific payload change.",
+    "No full342+8 claim for isolated overlay; focused/build-only/compiled subsets stay finite.",
+    "A07/A21 remain FAILED/OPEN; final source/image/security/actual AT/live rollout stay separate."
+  ],
+  "productAdopted": false,
+  "performanceAccepted": false
+}

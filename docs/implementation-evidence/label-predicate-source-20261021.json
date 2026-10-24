@@ -1,0 +1,89 @@
+{
+  "passed": true,
+  "sourceTests": 92,
+  "pass": 92,
+  "fail": 0,
+  "skip": 0,
+  "cancel": 0,
+  "typeRoots": 2,
+  "typeDiagnostics": 0,
+  "lintFiles": 2,
+  "lintErrorsWarnings": 0,
+  "compilerInputs": 9280,
+  "snapshotReads": 191,
+  "fallbackReads": 0,
+  "directLinuxDependencies": 37428,
+  "directLinuxBeforeAfterMatch": true,
+  "executionBindings": 110,
+  "executionBindingsUnchanged": true,
+  "TotalProcesses2Cause": "UNESTABLISHED",
+  "productionDefectEstablished": false,
+  "productionChanged": false,
+  "noRuntimeOrIndependentPersonOrPerformanceClaim": true,
+  "overallCIQualified": false,
+  "GitHubActionsProhibited": true,
+  "all44Clauses21GatesFixturesFailuresPreserved": true,
+  "fullGoalActive": true,
+  "noTokenBudget": true,
+  "source": "src/lib/pod-query.ts",
+  "export": "labelPredicate",
+  "sourceSHA256": "c87f35da94c38cc60cbd08627b7950c61b2610e834444f0d86a039268d159ae0",
+  "test": "tests/label-predicate-source.test.ts",
+  "testSHA256": "a3bfdf850df0f0f532555023d322c4fcce4c81b869c956f1070adc0827b94ad6",
+  "commands": [
+    {
+      "phase": "source",
+      "command": "Windows Node24.18.0 --experimental-strip-types --test --test-isolation=none --test-reporter=tap <frozen-source>/tests/label-predicate-source.test.ts",
+      "wallSeconds": 0.25,
+      "peakJobMemoryBytes": 65966080,
+      "mainHandleSignalled": true,
+      "activeBeforeDrain": 1,
+      "activeAfterDrain": 0
+    },
+    {
+      "phase": "types",
+      "command": "Windows Node24.18.0 <frozen-helper>/focused-types.cjs",
+      "wallSeconds": 4.829000000027008,
+      "peakJobMemoryBytes": 421150720,
+      "mainHandleSignalled": true,
+      "activeBeforeDrain": 1,
+      "activeAfterDrain": 0
+    },
+    {
+      "phase": "lint",
+      "command": "Windows Node24.18.0 <frozen-helper>/focused-lint.cjs",
+      "wallSeconds": 33.03099999995902,
+      "peakJobMemoryBytes": 277733376,
+      "mainHandleSignalled": true,
+      "activeBeforeDrain": 0,
+      "activeAfterDrain": 0
+    }
+  ],
+  "exactPrivateCommandsRetainedSeparately": true,
+  "syntheticValidatorsNotRealValidation": true,
+  "startup": {
+    "orderedProofs": 23346,
+    "currentInputs": 409,
+    "ownerDocs": 86,
+    "compatibilityCallers": 5,
+    "originalBaseline": 334,
+    "orderedInverses": 24,
+    "otherDocs": 2541,
+    "parentMatcherChecks": 23918,
+    "parentDirectChecks": 581,
+    "refCounts": [
+      282,
+      282,
+      21
+    ]
+  },
+  "rootDocsLocal": true,
+  "fourFindingsUnresolved": true,
+  "prior32AndEarlierOneUnresolved": true,
+  "finalPRDDeploymentAndVerificationRequiredAfterAllGates": true,
+  "notices": [
+    "Experimental stripTypeScriptTypes",
+    "lint React version fallback",
+    "lint isolated source lacks pages directory"
+  ]
+}

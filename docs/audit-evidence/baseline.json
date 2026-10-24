@@ -1,0 +1,177 @@
+{
+  "base": "c2e22caeea096836a8b3992f86c63b11c9eb8dbe",
+  "node": "v24.18.0",
+  "platform": "win32",
+  "cliDelayMs": 50,
+  "firstRegistration": {
+    "statuses": [
+      201,
+      201
+    ],
+    "writeUsers": 2
+  },
+  "deletedSession": {
+    "nodesStatus": 200,
+    "session": {
+      "authenticated": true,
+      "username": "audit_deleted",
+      "role": "readonly",
+      "hasUsers": true,
+      "registrationOpen": false
+    },
+    "nativeSecretsStatus": 401
+  },
+  "cacheRoutes": [
+    {
+      "route": "/api/cluster/pods",
+      "status": 200,
+      "ms": 184.86,
+      "cliCalls": 10
+    },
+    {
+      "route": "/api/cluster/services",
+      "status": 200,
+      "ms": 10.1,
+      "cliCalls": 0
+    },
+    {
+      "route": "/api/cluster/deployments",
+      "status": 200,
+      "ms": 15.75,
+      "cliCalls": 0
+    }
+  ],
+  "warmConcurrent": {
+    "requests": 20,
+    "cliCalls": 0,
+    "minMs": 17.54,
+    "maxMs": 47.51
+  },
+  "warmLatency": {
+    "n": 12,
+    "p50Ms": 15.24,
+    "p95Ms": 16.23
+  },
+  "deploymentRestartMapping": [
+    {
+      "name": "api",
+      "restarts": 7
+    },
+    {
+      "name": "api-worker",
+      "restarts": 0
+    }
+  ],
+  "podTypeFilter": {
+    "sameResponse": true,
+    "appCount": 3,
+    "systemCount": 3
+  },
+  "missingRoutes": [
+    {
+      "route": "/api/cluster/pods/apps/api-worker-rs-0/logs",
+      "status": 404
+    },
+    {
+      "route": "/api/cluster/nodes/audit-node/yaml",
+      "status": 404
+    },
+    {
+      "route": "/api/cluster/ingresses/apps/audit/yaml",
+      "status": 404
+    }
+  ],
+  "failedScale": {
+    "status": 200,
+    "response": {
+      "success": true
+    }
+  },
+  "flagInjection": {
+    "status": 200,
+    "acceptedRawOption": true
+  },
+  "lastWriteRace": {
+    "statuses": [
+      200,
+      200
+    ],
+    "remainingWriters": 0
+  },
+  "outage": {
+    "status": 200,
+    "response": {
+      "pods": []
+    },
+    "secondStatus": 200,
+    "cliCalls": 20
+  },
+  "coldConcurrent": {
+    "requests": 20,
+    "cliCalls": 10,
+    "statuses": [
+      200
+    ],
+    "minMs": 154.69,
+    "maxMs": 186.4
+  },
+  "memorySnapshot": {
+    "workingSetMiB": 174.27,
+    "privateMiB": 175.26,
+    "scope": "single post-test Windows sample, not peak capacity"
+  },
+  "uiEvidence": {
+    "numericAscending": [
+      12,
+      2,
+      7
+    ],
+    "mobileViewport": {
+      "width": 390,
+      "height": 844,
+      "sidebarWidth": 224
+    },
+    "collapsedUnnamedNavLinks": 13,
+    "readonlyPodActions": [
+      "Execute Shell",
+      "Edit YAML",
+      "Delete"
+    ],
+    "yamlViewRetainsEditableState": true
+  },
+  "checks": {
+    "unit": {
+      "passed": 11,
+      "skipped": 0,
+      "runnerMs": 3021.8857
+    },
+    "build": {
+      "passed": true,
+      "commandMs": 47028,
+      "cached": true
+    },
+    "integration": {
+      "passed": 1,
+      "runnerMs": 28620.0908
+    },
+    "typecheck": {
+      "passed": true
+    },
+    "lint": {
+      "configured": false,
+      "interactivePrompt": true
+    },
+    "audit": {
+      "all": {
+        "high": 12,
+        "moderate": 4,
+        "total": 16
+      },
+      "omitDev": {
+        "high": 6,
+        "moderate": 1,
+        "total": 7
+      }
+    }
+  }
+}

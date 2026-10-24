@@ -1,0 +1,74 @@
+{
+  "scope": "Protected source-derived native diagnostic, no tracked application or frozen harness edits",
+  "commit": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "mode": "baseline",
+  "diagnostic_only": true,
+  "original_source_sha256": {
+    "src/lib/secret-client.ts": "10bf67c28406ac46bdefeae767eb6e6a1591d98d18896ed3bb1e052fa80a4ce2",
+    "src/lib/cluster-secrets.ts": "63a4abdb43ae4b7343340a8bc022f83dd55019399e034d9b4ebb6548910363ee",
+    "src/lib/auth.ts": "34c796d6fb3d1fe9e795dc7316c652b4825dec9da01b8b10bf5aff8bfd0b9aa3",
+    "src/middleware.ts": "ff4e539eb46a96cde9defd1e9358dff9fa0e74dc27bab39bed9c7d2beeb44ea3",
+    "src/lib/permissions.ts": "130a21e82f2c6f22a67248bf9e10092d466f9b0f536c9b312a6be14ecb42cbe2",
+    "src/lib/secrets-api.ts": "ed9beeb21b2f6c727be6afa82339c7d5a7f027a28141847c5e465001a8a7ae35",
+    "src/lib/secret-http.ts": "7c8d4d4fc911b607bbdf2f3d3ba3cd2d652f89df24307add14238d368ac292b6",
+    "frozen/whole-server.mjs": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b",
+    "frozen/run.py": "cd79ae39c61d68c8d3fb2b2a93d6c9ba5ef1c6b0a190ba714210808acc3691a8",
+    "frozen/summarize.py": "94983e4f9d5d5a167ff6435098daa4bfbe9f618995af7dec8b0a742c92f238a6"
+  },
+  "instrumented_source_sha256": {
+    "src/lib/secret-client.ts": "cd2b5a5be96a4b9fce4d432ae0bc9dcdd2de1c0380f35eead776b5eb12182941",
+    "src/lib/cluster-secrets.ts": "0e0a8ca2f73c645cb755a167e8c1e2a475c1ce7040d6552c01f69fcc4d901f35",
+    "src/lib/auth.ts": "0758a9957bd725269a6552918e852f50bb9c379ac44b8b77fb4a43a8b660d73c",
+    "src/middleware.ts": "4a5a86278ef11f8e8ab6a7a138335bc5d806164a9216a2b7ff11f798a768a812",
+    "src/lib/permissions.ts": "b6be3e7da03dadfeecb81c51b529db69ed010d38e081cff8a39238f1f21e8c9e",
+    "src/lib/secrets-api.ts": "983afd554f24981ced28a713e939067cde24e9f13367d064224c84f34e255f0c",
+    "src/lib/secret-http.ts": "7191a3119dafa55cd7ab209d140fd6080b8e962fb6e2b9aea0dfddfe7eb57079"
+  },
+  "hooks": {
+    "src/lib/secret-client.ts": {
+      "native.factory": 1,
+      "config.decorate": 1,
+      "native.fetchHeaders": 1,
+      "native.bodyText": 1,
+      "native.attempt": 1,
+      "native.storeFactory": 1
+    },
+    "src/lib/cluster-secrets.ts": {
+      "native.summary": 1,
+      "native.list": 1
+    },
+    "src/lib/auth.ts": {
+      "auth.jwt": 1,
+      "auth.session": 1,
+      "auth.headerSession": 1
+    },
+    "src/middleware.ts": {
+      "auth.middleware": 1
+    },
+    "src/lib/permissions.ts": {
+      "auth.accountSQL": 2,
+      "auth.role": 1
+    },
+    "src/lib/secrets-api.ts": {
+      "auth.authorize": 1,
+      "route.secrets": 1
+    },
+    "src/lib/secret-http.ts": {
+      "response.envelope": 1
+    }
+  },
+  "frozen_source_commit": "15786222e4b01b0692ad9aebab99b8734b505c7b",
+  "unobserved_edge_scope": {
+    "policy": "Absent Node hook in Edge middleware/auth passes through the exact operation without instrumentation",
+    "files": [
+      "src/middleware.ts",
+      "src/lib/auth.ts"
+    ],
+    "stages": [
+      "auth.middleware",
+      "auth.headerSession",
+      "auth.jwt in Edge middleware"
+    ],
+    "timings": "unobserved, never zero latency; no Node/Edge causal attribution"
+  }
+}

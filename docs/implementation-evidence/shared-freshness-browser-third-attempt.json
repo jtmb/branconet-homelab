@@ -1,0 +1,24 @@
+{
+  "fixture": "Actual built /secrets/kv route; disposable SQLite and CA-verified native TLS API",
+  "node": "v22.23.3",
+  "checks": [
+    {
+      "name": "Parent and workbench share capability GET; opening fetches no values",
+      "capabilityReadsBefore": 1,
+      "capabilityReadsAfter": 1
+    }
+  ],
+  "failures": [
+    "locator.inputValue: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('Value for __proto__', { exact: true })\u001b[22m\n"
+  ],
+  "source": "da84f0f archive plus exact recovered six handoff source files; no application behavior changes",
+  "limitations": [
+    "Local synthetic browser evidence; no live API/RBAC/admission/image acceptance",
+    "Not a controlled latency or CPU benchmark"
+  ],
+  "cleanup": {
+    "browserClosed": true,
+    "chromeExitCode": 0,
+    "fixtureExitCode": 0
+  }
+}

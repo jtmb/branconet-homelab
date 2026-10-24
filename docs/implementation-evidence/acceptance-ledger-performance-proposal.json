@@ -1,0 +1,42 @@
+{
+  "scope": "Design proposal only; no runtime or source edits authorized by this ledger audit",
+  "sourceCommit": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+  "mechanism": "Bounded parser-only worker execution of the exact complete Secret summary parser; retain up-to-four request slots until each parse/validation settles",
+  "evidence": [
+    "native-phase-comparison-7e30/qualification.json",
+    "lexical-metadata-diagnostic/qualification.json"
+  ],
+  "criticalPath": "Retained1k first-start/last-end native window59.518ms baseline versus97.680ms candidate; eighteen requests, four candidate TLS sockets, five required12ms waves. Synchronous end-listener combined intervals total23.580ms versus1.537ms; overlapping capture13.254/skip10.185 cannot be added. Typical lexical56/16KiB saving only0.104ms, long metadata regresses; rejected.",
+  "sourcePointers": [
+    {
+      "path": "k8s-rewrite/front-end/src/lib/secret-client.ts",
+      "line": 321,
+      "behavior": "response.end performs complete parse synchronously before resolution and slot release in finally"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/cluster-secrets.ts",
+      "line": 152,
+      "behavior": "namespace worker awaits fully parsed/visited page before next scope"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/secret-summary-json.ts",
+      "line": 123,
+      "behavior": "capture validates original grammar/depth then fatal-decodes and JSON.parses exact selected metadata"
+    }
+  ],
+  "hypothesis": "Move substantial complete grammar/metadata parse off the endpoint event loop while other owned TLS sockets/read callbacks progress. Parser output/byte/depth/deadline/duplicate/unknown-field semantics remain identical; no fewer namespace reads or more sockets. This can reduce callback serialization, but measured combined end intervals include instrumentation and are not isolated parse CPU.",
+  "proposedBoundaries": [
+    "Separate typed summary API only; existing full-value reads/writes/visitors unchanged",
+    "At most one or two parser workers selected from measured fixed2CPU runtime; global native request cap4 and64queue unchanged, request slot held until validated result",
+    "Bounded pending raw buffers charged before transfer; no parsed values/auth/KubeConfig/credentials passed to workers; no cache/log/storage; clear job ownership on success/failure/abort",
+    "Current4MiB/page,32MiB operation,10000items,16384chunks,8srequest/15soperation and depth32 including overwritten duplicates unchanged",
+    "Fresh per-request SDK authorization/TLS options on main owner; cancellation/late response fence/fail-closed/native cursor completeness retained",
+    "Exact parser module packaging/source hash and error equivalence required; worker crash and cancellation cannot release owned slots prematurely"
+  ],
+  "notEstablished": [
+    "Worker cold startup and message-transfer/structured-clone cost may outweigh small/empty-page benefit; needs bounded before/after public diagnostic before production adoption",
+    "Worker preparation must be ordinary source/module initialization, no added benchmark warmup or changed readiness assumptions",
+    "Moving work cannot remove total CPU or mandatory four-cap wave floor; no claim of34ms closure or no-regression",
+    "No profiling evidence yet measures isolated worker parse/IPC cost; do not launch another unchanged pair"
+  ]
+}
