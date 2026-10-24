@@ -1,0 +1,149 @@
+{
+  "indexSHA256": "a4323bc09b27e265e269d79421ed3eb795083ef988bb84788eba89e5738c8005",
+  "amd64ManifestSHA256": "7a7de616c6e62e5bcdb74325a20f9e6c9744b5d737a98d078ba1450abd068b1f",
+  "configSHA256": "1dfe0413a7049e55dc397478fd34decd3ce8d2ef7f3405fc8ae0ef01304c9b40",
+  "layers": [
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:26c307b5e35a59ce911f5fde5b9458120ec8734e831ea2da5649a9ad14abfd3d",
+      "size": 29780765
+    },
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:f5ea60e5d57e62f66284f9d9d3d6531b3e213ae0317ac34ac1bc89d0aea60e50",
+      "size": 1293272
+    },
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:c915bfca5450ca312ac59414e14f2889a3461e4fb3a5267b4b7eab95a83fbdc0",
+      "size": 11907466
+    },
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:31a024bb115af91f13f0a42f2e1bf3766c5aad8a2e9984729f9e0b1c38c1378f",
+      "size": 249
+    },
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:87a6a66a242e380125e225d56e5b9797df1ea967f70f30cd71ac433221911f91",
+      "size": 143
+    },
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:9915b07d8e297a9eac23fc9e3c158ca4f7a06acfa047a23e8a319b8bdf302620",
+      "size": 15406696
+    },
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:809c9a7338b1cd90399cd5fd54eb6b6152c9d07bfd3d3d267227e2672a6f8df1",
+      "size": 93
+    },
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:c6b48c397b0cac0b858a4f17bf126375157f1c0c44add6479475bada00c70806",
+      "size": 14710241
+    },
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:e99c372c8d9e83481a0470364518f679cb3a9c7a7112dc31cd745fdb0675839d",
+      "size": 1296
+    },
+    {
+      "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+      "digest": "sha256:65e6ed87a794ac1eef2966a78beda311b0e0af6048c769743f97fc23d88d7bda",
+      "size": 128
+    }
+  ],
+  "downloadedBytes": 73100349,
+  "runtime": {
+    "ExposedPorts": {
+      "8181/tcp": {}
+    },
+    "Entrypoint": [
+      "./start.sh"
+    ],
+    "Cmd": [
+      "python",
+      "Tautulli.py",
+      "--datadir",
+      "/config"
+    ],
+    "Volumes": {
+      "/config": {}
+    },
+    "WorkingDir": "/app",
+    "Labels": {
+      "maintainer": "Tautulli",
+      "org.opencontainers.image.created": "2026-09-28T22:05:55.382Z",
+      "org.opencontainers.image.description": "A Python based monitoring and tracking tool for Plex Media Server.",
+      "org.opencontainers.image.licenses": "GPL-3.0",
+      "org.opencontainers.image.revision": "9484667bc1f2d159368a999320b8f495bbfbd00a",
+      "org.opencontainers.image.source": "https://github.com/Tautulli/Tautulli",
+      "org.opencontainers.image.title": "Tautulli",
+      "org.opencontainers.image.url": "https://github.com/Tautulli/Tautulli",
+      "org.opencontainers.image.version": "master"
+    },
+    "ArgsEscaped": true,
+    "Healthcheck": {
+      "Test": [
+        "CMD-SHELL",
+        "curl -ILfks https://localhost:8181/status > /dev/null || curl -ILfs http://localhost:8181/status > /dev/null || exit 1"
+      ],
+      "StartPeriod": 90000000000
+    },
+    "EnvExcludingPublicSigningKey": [
+      "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "PYTHON_VERSION=3.13.15",
+      "PYTHON_SHA256=1e66a7945a48390ee4c2a4268a0e4185884059a13c4aab6d148aa208deea4a76",
+      "TAUTULLI_DOCKER=True",
+      "TZ=UTC"
+    ],
+    "publicPythonSigningKeyFingerprint": "7169 605F 62C7 5135 6D05 4A26 A821 E680 E5FA 6305"
+  },
+  "primaryRegistry": "https://ghcr.io",
+  "applicationVersion": "2.18.2",
+  "sourceCommit": "9484667bc1f2d159368a999320b8f495bbfbd00a",
+  "reviewBoundary": "Primary OCI index/manifest/config and every layer hash verified; source preparation only; no build/scan/runtime/deploy.",
+  "preparedInterpreterSource": {
+    "image": "docker.io/library/python:3.13.17-slim-trixie@sha256:fe14fd57a4c0361110eaa0c284112b189750bcb43fb04bb5d1ee7b7744027ccf",
+    "indexSHA256": "fe14fd57a4c0361110eaa0c284112b189750bcb43fb04bb5d1ee7b7744027ccf",
+    "amd64ManifestSHA256": "d879ed88565a7a3c614b980b369d4a5025a9d057b71f93d09fc6d0b2ca823a18",
+    "configSHA256": "72036a705a7cff38924efd674e60654666cb283faf7b3fad160b34007f7395bd",
+    "layers": [
+      {
+        "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+        "digest": "sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034",
+        "size": 29843579
+      },
+      {
+        "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+        "digest": "sha256:bec94cf691b4dddfccfba1394c83bd789bbed4a1f7c336a67d42e2e4d38b8930",
+        "size": 1291237
+      },
+      {
+        "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+        "digest": "sha256:e1f7d490169d660949e28a29d1d513760a431ac5cda9c666f3be44a4b7a42469",
+        "size": 11922462
+      },
+      {
+        "mediaType": "application/vnd.oci.image.layer.v1.tar+gzip",
+        "digest": "sha256:1972997cb12722025e38722a7ac2d1f2526e93b32650511f0da9153772c4fa86",
+        "size": 250
+      }
+    ],
+    "downloadedBytes": 43057528,
+    "runtime": {
+      "Cmd": [
+        "python3"
+      ],
+      "EnvExcludingPublicSigningKey": [
+        "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "PYTHON_VERSION=3.13.17",
+        "PYTHON_SHA256=6020bd10aff3bf4821be16f088ebb1591beb7b811dcd8fab1da8f7c22a7b27e7"
+      ],
+      "publicPythonSigningKeyFingerprint": "7169 605F 62C7 5135 6D05 4A26 A821 E680 E5FA 6305"
+    }
+  },
+  "interpreterSourceReviewBoundary": "Same16ABI fields and CONFIG_ARGS, complete primary-file manifest,82ELF static NEEDED references reviewed; no donor binary/build/runtime execution during preparation.",
+  "publicMetadataProjectionNote": "EnvExcludingPublicSigningKey retains every other Env entry verbatim; the public GPG_KEY value is represented separately using standard grouped OpenPGP fingerprint notation. Full primary image config remains SHA-bound; runtime image configuration is not changed."
+}

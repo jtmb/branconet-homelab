@@ -20,7 +20,7 @@ REPOSITORY = 'jtmb/branconet-charts'
 WORKFLOW = '.github/workflows/build-security-images.yml'
 LOCK_SHA = '9665b245267e7c864210bdf85f1098c0891f30946c64b3781f44077fff0b7811'
 GIB = 1024 ** 3
-SERVICES = ('seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden')
+SERVICES = ('seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli')
 SELECTED_COMMON = {'result.json', 'preflight.json', 'builder-host-limits.json', 'builder-limits.json',
                    'runtime-inputs-sha256.json'}
 CAPS_COMMON = {name: 4 * 1024 ** 2 for name in ['result.json', 'preflight.json', 'builder-host-limits.json',

@@ -218,7 +218,8 @@
     "status": "active",
     "thread_id": "01a12045-bf7e-73b3-8557-752d17c72ffd",
     "includes_full_data_preservation_and_final_validation": true,
-    "bortus_app_development_excluded": true
+    "bortus_app_development_excluded": true,
+    "verified_active_at": "2026-10-24T05:37:09Z"
   },
   "seerr_image_qualified": {
     "ci_run": 40048938336,
@@ -358,7 +359,7 @@
       "unknown": 1
     },
     "fixableCriticalHighRows": 0,
-    "deployed": false
+    "deployed": true
   },
   "derived_oci_materialization_retirement": {
     "runID": "a7e942b7f3d1",
@@ -369,5 +370,107 @@
     "successfulDerivedLayouts": 7,
     "originalArchivesAndReportsPreserved": true,
     "applicationDataTouched": false
+  },
+  "cert_manager_security_adoption": {
+    "chartCommit": "09a8d9f158eb4ce780915c3a4f33863afc03a2a2",
+    "validationRunID": 40063040565,
+    "version": "1.21.3",
+    "officialChartDigest": "sha256:e482675aec32862d323a9218293ff7de81192337998615e4378c56498473f240",
+    "scanAttempt": "7a0e48b9c421",
+    "scanReceiptSHA256": "de5b8557141ae2e2ef3ed8c29ae5da1068e8d8eb4f227a40a93eb7dd8c60f2a0",
+    "allFiveImagesCriticalHighRows": 0,
+    "unfixedUnknownRows": 4,
+    "unfixedUnknownAdvisory": "GO-2026-5932",
+    "adoptionReceiptSHA256": "17dbb82fbb54e6905ae4d623da7a8ee743201a86dcb1329a336194d6fadbd276",
+    "runtimeBindingSHA256": "db82f9c70eded7b22864db35920ec806ac2ac7bbb8d1fbae93ef7ceec83f9407",
+    "sameSixCRDUIDsAndStoredVersions": true,
+    "specsPreservedExceptReviewedCertIDAddition": true,
+    "originalCertificateIssuerAndWebhookUIDsPreserved": true,
+    "sameTLSCertificateAllThreeNodes": true,
+    "serverDryRunAdmissionPassed": true,
+    "threeControllersReady": true
+  },
+  "maintenance_source_publication": {
+    "commit": "c0c191239876ca5297e5279235ded45930103d3c",
+    "draftPR": "https://github.com/jtmb/branconet-homelab/pull/29",
+    "optInPlaybooks": 15,
+    "stagedFiles": 146,
+    "exactStagedCredentialScanPassed": true,
+    "allPlaybookSyntaxPassed": true,
+    "applicationReleaseIncluded": false,
+    "actionsEnabled": false,
+    "fullGoalComplete": false
+  },
+  "vaultwarden_state_and_restart": {
+    "version": "1.37.4",
+    "coldArchiveBytes": 348452,
+    "coldArchiveSHA256": "a42716a80dc4c92bb463d7746e18d606c66edcdfafb273dabb3571b68f0c0160",
+    "coldReceiptSHA256": "6b727e030a217d520a8a624a4230d31159d35984793831289c7cf9c614eef51c",
+    "initialStateReceiptSHA256": "f9034449c76c5cc128d80735efda53aeb8c44959a8f1d55ede886170ce7571e5",
+    "restartStateReceiptSHA256": "997ab1c8964281cfb482d51b1f5e75e75b11cf1ab0d32b07951e929b8be12c5b",
+    "restartChecksReceiptSHA256": "a57d84b0398d63c16c9ec80e03e4458b06605928ac3efc3b402d56121b369549",
+    "restartPodUID": "44437422-5689-497d-bdf5-52b500c7601b",
+    "allOriginalSQLAndNonDatabaseStatePreserved": true,
+    "originalTableCount": 28,
+    "vaultItems": 24,
+    "accounts": 1,
+    "devices": 4,
+    "exactAdditiveMigrations": 4,
+    "sameDeploymentHelmReleasePVC": true,
+    "nativeSecretReferencesAndResourcesPreserved": true,
+    "loginOrClientSyncAccepted": false,
+    "publicRoutingAccepted": true,
+    "fullApplicationAccepted": false,
+    "routeRestorationCommit": "05e1c8a1debe35bf318b544f7808847d5fb0ba59",
+    "priorRouteCommit": "1598dfc5a111f45aeaaadbcad06cbc233094b0d9",
+    "priorRouteCI": 40066978472,
+    "priorRouteCIResult": "refused public fingerprint prose false positive; no deployment or scanner bypass",
+    "routeValidationRunID": 40067096633,
+    "routeValidationConclusion": "success",
+    "routeReceiptSHA256": "7623ca34e37eb583c71d61dbfdc9607b8b416819a47e6a83bf90c67adc0945ec",
+    "allThreeNodesHTTPChecks": 24,
+    "tlsVerified": false,
+    "helmReleaseGeneration": 8
+  },
+  "core_patch_candidate_scan": {
+    "sourceKind": "upstream-registry",
+    "attempt": "fc40e27815d6",
+    "state": "complete",
+    "startedUTC": "2026-10-24T05:45:03.877003+00:00",
+    "endedUTC": "2026-10-24T05:45:18.315858+00:00",
+    "sourceIdentity": "446fff3f21d38879e11a66d709ab0eee95f44949413547c531552d80f9a65680",
+    "receiptSHA256": "7c8e8a2a3a37db4f6b9f63e5c177022e71740cef76941ba0db44fdb52a902a10",
+    "existingPublicInputsReused": true,
+    "etcd": {
+      "version": "3.7.3-0",
+      "critical": 0,
+      "high": 0,
+      "unknown": 5,
+      "resultsSHA256": "dd149147a218e80a41c666ce0375b352f061a8a4be16865c23b7b629d150b64e",
+      "adopted": false
+    },
+    "coredns": {
+      "version": "1.14.7",
+      "critical": 0,
+      "high": 22,
+      "medium": 22,
+      "low": 1,
+      "unknown": 3,
+      "fixableHighRowsBeforeAttributionReview": 22,
+      "resultsSHA256": "83ecff1f5329aebef11e024567922c8ea07ee1a0f79f7070519c4272cd6b103c",
+      "adopted": false
+    },
+    "securityAcceptance": false
+  },
+  "tautulli_security_build": {
+    "firstSource": "1b471df3bb08b69806ed76658102fd9a26f7eb85",
+    "firstRunID": 40067387878,
+    "firstArtifactID": 12550470260,
+    "firstArtifactZIPBytes": 627447,
+    "firstArtifactZIPSHA256": "87a6f8df62e5c7d2e2650634a35d9601955eea524a18027839b4bd3226933b30",
+    "firstResult": "failed-no-adoption: ldd applied to exact official ET_REL SDK link object",
+    "correctedSource": "cea9327b74c30fd4e138cca54856befb8a63dcc3",
+    "correctedBuildDispatched": true,
+    "deployed": false
   }
 }

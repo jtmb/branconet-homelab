@@ -6,7 +6,7 @@
       - inventory_hostname in ['masternode', 'workernode2', 'workernode1']
       - containerd_socket == 'unix:///run/containerd-k8s/containerd.sock'
       - application_image_preload_artifacts | length > 0
-    fail_msg: Only explicit Seerr/YTPTube/Jackett/Pi-hole/FlareSolverr/Vaultwarden cache imports through the independent runtime are supported.
+    fail_msg: Only explicit Seerr/YTPTube/Jackett/Pi-hole/FlareSolverr/Vaultwarden/Tautulli cache imports through the independent runtime are supported.
 
 - name: Optionally stage each exact public artifact from the protected controller
   ansible.builtin.include_tasks: stage.yml

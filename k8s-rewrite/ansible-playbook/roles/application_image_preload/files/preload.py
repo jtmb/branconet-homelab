@@ -16,7 +16,8 @@ NAMES = {'seerr': 'docker.io/library/seerr-security-20261023',
          'jackett': 'docker.io/library/jackett-security-20261023',
          'pihole': 'docker.io/library/pihole-security-20261023',
          'flaresolverr': 'docker.io/library/flaresolverr-security-20261023',
-         'vaultwarden': 'docker.io/library/vaultwarden-security-20261023'}
+         'vaultwarden': 'docker.io/library/vaultwarden-security-20261023',
+         'tautulli': 'docker.io/library/tautulli-security-20261023'}
 MEDIA = {'application/vnd.oci.image.manifest.v1+json', 'application/vnd.oci.image.index.v1+json',
          'application/vnd.docker.distribution.manifest.v2+json', 'application/vnd.docker.distribution.manifest.list.v2+json'}
 

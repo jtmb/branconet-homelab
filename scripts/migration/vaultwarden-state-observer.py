@@ -15,6 +15,9 @@ MAX_VALUE = 1024 ** 2
 MAX_ENCODED = 32 * 1024 ** 2
 MAX_ROWS = 250000
 NEW_VERSIONS = {'20260309005927', '20260425120000', '20260505120000', '20260902120000'}
+# Diesel splits the upstream 2024-03-13_170000_sso_userscascade directory at
+# its first underscore, so its retained version is the opaque ID 20240313.
+LEGACY_VERSIONS = {'20240313'}
 NEW_COLUMNS = {'sso_auth': ['binding_hash', 'code_response_error'], 'users': ['key_id']}
 DATABASE_FILES = {'db.sqlite3', 'db.sqlite3-wal', 'db.sqlite3-shm'}
 
@@ -99,7 +102,8 @@ def fingerprint(path, key, domain, selected=None, live=False):
         tables = {}
         encoded = total_rows = 0
         versions = [r[0] for r in connection.execute('SELECT version FROM __diesel_schema_migrations ORDER BY version')]
-        check(all(isinstance(v, str) and v.isdecimal() and len(v) == 14 for v in versions))
+        check(all(isinstance(v, str) and v.isdecimal()
+                  and (len(v) == 14 or v in LEGACY_VERSIONS) for v in versions))
         if selected is None:
             check(not set(versions) & NEW_VERSIONS)
         else:

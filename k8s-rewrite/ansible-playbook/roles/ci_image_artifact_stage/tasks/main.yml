@@ -14,7 +14,7 @@
           - ansible_host == '192.168.0.6'
           - ansible_user == 'james'
           - ansible_port | int == 2002
-          - ci_image_artifact_stage_service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden']
+          - ci_image_artifact_stage_service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli']
           - ci_image_artifact_stage_run_id | string is match('^[1-9][0-9]{0,18}$')
           - ci_image_artifact_stage_artifact_id | string is match('^[1-9][0-9]{0,18}$')
           - ci_image_artifact_stage_run_id | int < 9223372036854775808

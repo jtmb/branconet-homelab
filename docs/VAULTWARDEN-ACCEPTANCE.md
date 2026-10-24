@@ -70,6 +70,15 @@ from the comparison. Only the exact new schema above is admitted: new fields on
 original rows must be NULL, archives empty, and exactly four new migration
 records present while every old migration record remains byte-equivalent.
 
+The actual cold preflight exposed the legitimate eight-digit legacy migration ID
+`20240313`. Upstream names its directory
+[`2024-03-13_170000_sso_userscascade`](https://github.com/dani-garcia/vaultwarden/tree/1.35.4/migrations/sqlite/2024-03-13_170000_sso_userscascade),
+which Diesel splits at the first underscore. The observer admits this exact
+opaque legacy ID alongside the normal fourteen-digit IDs. It still fingerprints
+every original migration row and requires exactly the four new versions; no
+migration record, table, column or value is ignored. The failed preflight receipt
+and its original source remain preserved.
+
 Every original table is ordered by all its original selected columns. Typed
 NULL/integer/float/text/binary cells feed key-bound whole-row and per-column
 HMACs; original counts and full table fingerprints must match. No raw user IDs,
@@ -146,3 +155,22 @@ older `bw send receive` client compatibility from the application update
 runbook before rollout. A schema rollback must restore the **complete original
 state and image together**; never run the old app against a forward-migrated DB.
 Archive authentication is distinct from an independent restore demonstration.
+
+## Recorded production checkpoint, October24
+
+The complete encrypted cold archive authenticated successfully. The corrected
+original-schema preflight, initial1.37.4 writer and subsequent new-Pod restart
+all passed their applicable strict comparisons. All28original tables,24vault
+items, oneaccount/fourdevice records and the original RSA file remain; only the
+four source-reviewed additive migrations differ. Existing2FA/org/Sends counts
+are zero. The original Deployment, HelmRelease and PVC identities remain.
+
+The initial preservation receipt has SHA256
+`f9034449c76c5cc128d80735efda53aeb8c44959a8f1d55ede886170ce7571e5`;
+the restart receipt has SHA256
+`997ab1c8964281cfb482d51b1f5e75e75b11cf1ab0d32b07951e929b8be12c5b`.
+Binary version1.37.4, alive/config/web-root200 and anonymous sync/profile401
+passed on the new Pod. Observation fingerprint (SHA256):
+`a57d84b0398d63c16c9ec80e03e4458b06605928ac3efc3b402d56121b369549`.
+Personal login/client-sync and final browser acceptance remain unverified.
+The complete maintenance goal remains active.

@@ -13,7 +13,7 @@ import sys
 
 CONTROLLER = Path('/home/brajam/.local/share/branconet-migration/ci-image-artifacts-20261024')
 NODE = Path('/home/james/.local/share/branconet-migration/ci-image-artifacts-20261024')
-SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden']
+SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli']
 
 
 class StageRefused(ValueError):

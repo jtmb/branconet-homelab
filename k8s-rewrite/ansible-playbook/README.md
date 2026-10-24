@@ -1,6 +1,6 @@
 # Existing-cluster maintenance
 
-This directory contains **15 opt-in maintenance playbooks for the existing
+This directory contains **16 opt-in maintenance playbooks for the existing
 Branconet cluster**. It does not contain a cluster installer, reset playbook,
 legacy `site.yml`, application variable lookup plugin, or BORTUS application code.
 Use this runbook with [the active plan](../../PLAN.md),
@@ -17,7 +17,7 @@ Python, OpenSSH and known host keys. The three Ubuntu nodes are already installe
 runtime is `containerd-k8s`; do not start retired Docker/Swarm or Gluster.
 
 The source closure is in this repository: role task/default/file/template
-inputs, controller launchers, paired qualification observers and the six public
+inputs, controller launchers, paired qualification observers and the seven public
 image recipes. There are no imports from the BORTUS recovery framework and no
 required private source files. Source availability does **not** provide operator
 credentials, encrypted archives, scan databases, binaries or prior receipts.
@@ -78,6 +78,7 @@ Do not execute live operations using example/placeholder identities or hashes.
 | `metube-state-backup.yml` | `run-metube-state-backup.py`: old ytdl PVC archive and legacy-file reobservation |
 | `filesystem-growth.yml` | `run-filesystem-growth.py`: pinned worker1 ext4 filesystem growth, no partition/LV changes |
 | `retired-build-offload.yml` | `run-retired-build-offload.py`: bounded original artifact archival; explicit reviewed selected-cache clearing only |
+| `derived-oci-retirement.yml` | `run-derived-oci-retirement.py`: retire only proven reproducible scan materializations, keeping original artifacts/results |
 | `seerr-image-build.yml` | `run-seerr-image-build.py`: retained bounded master-only Seerr build path |
 | `ytptube-image-build.yml` | `run-ytptube-image-build.py`: separate retained bounded master-only YTPTube build path |
 | `worker1-image-build.yml` | `run-worker1-image-build.py`: isolated public security image source/attempt |
@@ -85,6 +86,7 @@ Do not execute live operations using example/placeholder identities or hashes.
 | `ci-image-artifact-stage.yml` | Ansible with protected nonsecret settings: provenance-bound CI files to worker1 |
 | `application-image-preload.yml` | Ansible with protected nonsecret settings: exact reviewed OCI cache import only |
 | `vendor-cert-manager-scan.yml` | `run-vendor-cert-manager-scan.py`: only five fixed official1.21.3 public registry images; no deployment |
+| `vendor-core-scan.yml` | `run-vendor-core-scan.py`: exact official etcd3.7.3/CoreDNS1.14.7 scans using the existing verified public inputs; no deployment |
 
 Controller helpers live at repository `scripts/migration/`. Their `--help` and
 corresponding docs define their accepted settings. Sudo is supplied through a

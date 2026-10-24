@@ -82,7 +82,7 @@ clean-cluster verdict or proof of absence of unknown zero-days. Remaining work:
 |---|---|
 | FlareSolverr 3.5.2 | Patched derivative adopted through Flux; exact scan and native browser/version/route checks passed, with 4 critical/193 high unfixed residual rows |
 | Tautulli 2.18.2 candidate | 68 recorded fixable critical/high rows; Debian/Python attribution patch, complete cold config/SQLite backup and history/account/notifier compatibility |
-| Vaultwarden 1.37.4 candidate | Seven available OS fixes; whole `/data` backup, forward schema migration, credentials/2FA/org/sends and client-sync checks |
+| Vaultwarden 1.37.4 | Seven available OS fixes adopted; whole cold backup and complete SQL/file preservation passed before and after restart. Public route restoration in progress; personal login/client sync remain unverified. Existing2FA/org/Sends counts are zero. |
 | Unpackerr 0.16.1 candidate | Five linked Go findings: reviewed same-source Go 1.27.3/x/net 0.60.0 rebuild and extraction-policy compatibility |
 | Pi-hole | Prepared same-app OS derivative; DNS-critical config backup and UDP/TCP DNS/API/metrics checks before adoption |
 | Plex | Resolve actual app/bootstrap/channel versus immutable image; 15 recorded OS high rows and machine-identity/library/transcoding preservation |
@@ -142,3 +142,69 @@ page contents are retained. Receipt SHA256:
 `ddc96a6f0efe73e246ef2b07f02698aa95bc7d782c3113958dfdd1c625c3cf0f`.
 The 4 critical/193 high residual rows remain explicitly unfixed in the retained
 database; application acceptance is not a clean-cluster verdict.
+
+
+## Cert-manager1.21.3 adopted through Flux
+
+Charts commit `09a8d9f158eb4ce780915c3a4f33863afc03a2a2`, successful validation
+`40063040565`, selected the reviewed official chart and five image pins. The
+actual full scan batch completed with no critical/high findings and four
+unfixed unknown `GO-2026-5932` rows; its earlier partial attempt is preserved.
+All three controllers are Ready with exact runtime digest bindings.
+
+All six original CRD UIDs/stored versions and all original CRD specs remain,
+except the single reviewed additive Certificate ARI certID field. Certificate
+and ClusterIssuer UIDs/specs/readiness remain; webhook UIDs/CA bundles match.
+Server-side dry-run admission and unchanged verified HTTPS certificates across
+all three nodes passed. Adoption receipt fingerprint (SHA256)
+
+`17dbb82fbb54e6905ae4d623da7a8ee743201a86dcb1329a336194d6fadbd276`.
+
+The maintenance source is now published as draft PR29 at commit `c0c19123`,
+with all15 playbook syntax checks and the exact146-file credential scan passed.
+It is source only; application Actions remain disabled and the separate BORTUS
+release is excluded. This checkpoint does not complete the full goal.
+
+## Goal tracking and Vaultwarden restart, 05:37 UTC
+
+The tracker is active for the full Seerr/downloader/security/Ansible/Flux scope,
+including final implementation and browser acceptance. No duplicate goal was
+created and no checkpoint was marked complete.
+
+Vaultwarden1.37.4 now runs the scanned immutable derivative. Its authenticated
+whole cold archive is retained. Both initial-start and new-Pod restart comparisons
+preserved all28original tables,24vault items, oneaccount/fourdevice records and
+the original RSA file, permitting only four reviewed additive vendor migrations.
+Restart receipt SHA256:
+`997ab1c8964281cfb482d51b1f5e75e75b11cf1ab0d32b07951e929b8be12c5b`.
+
+The new Pod also passed version1.37.4, alive/config/web-root200 and anonymous
+sync/profile401 checks. Observation fingerprint (SHA256):
+`a57d84b0398d63c16c9ec80e03e4458b06605928ac3efc3b402d56121b369549`.
+Personal account login and client sync remain unverified; no account or key was
+reset. Public route restoration passed private charts validation40067096633 at
+commit `05e1c8a1debe35bf318b544f7808847d5fb0ba59` and reconciled through Flux.
+All24HTTP checks (existing ingress and published service through each node)
+passed, including the401 boundary. Route observation fingerprint (SHA256):
+`7623ca34e37eb583c71d61dbfdc9607b8b416819a47e6a83bf90c67adc0945ec`.
+These are HTTP checks; verified LAN TLS is not claimed. The original Deployment,
+HelmRelease, PVC, native references and resources remain. The first documentation
+wording caused a public receipt fingerprint to match the credential scanner;
+that CI attempt refused safely. The wording was corrected without an exclusion
+or change to the scanner, and the subsequent complete pipeline passed.
+
+## Exact core scans and Tautulli image work, 05:50 UTC
+
+The separate16th opt-in playbook completed exact official etcd3.7.3/CoreDNS1.14.7
+scans using the already verified public input snapshot. Etcd has0critical/high
+and5unknown rows; CoreDNS has22high,22medium,1low and3unknown. Available compiled
+Go/module fixes and pseudo-version attribution require further CoreDNS work.
+Neither live component has been changed. See[core scan evidence](docs/CORE-PATCH-SCANS.md).
+
+The Tautulli build selector/receiver/stager/scanner/preloader now support the
+seventh service without changing resource or publication bounds. The first
+private build retained its original failure artifact: runtime linkage checking
+incorrectly included the official ET_REL SDK link object. Its exact primary
+digest/header were independently verified; the corrected source still checks
+all81runtimeELFs and retains all82objects. A new build is running at source
+`cea9327b74c30fd4e138cca54856befb8a63dcc3`; no Tautulli rollout is claimed.

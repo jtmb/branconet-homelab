@@ -23,7 +23,7 @@ checkpoint; publication does not mean the goal is complete or authorize a rerun.
 - Patch available compatible node/application vulnerabilities with actual exact
   artifact scans and live checks. Record unfixed findings and migration gates;
   do not claim absence of unknown zero-days or a clean cluster from partial work.
-- Repeatable work uses the 15 included opt-in maintenance playbooks and paired
+- Repeatable work uses the 16 included opt-in maintenance playbooks and paired
   controller/qualification helpers. No destructive reset/bootstrap or broad
   filesystem cleanup belongs to this maintenance deliverable.
 
@@ -58,7 +58,8 @@ flowchart LR
    193 high, zero available critical/high fixes in the retained database. Preserve
    all original and failed attempts. Actual Flux rollout, nonroot startup, matched
    browser/driver, real browser request and all-node routes passed at03:53UTC.
-   Continue Tautulli/Vaultwarden cold-backup/compatible updates, Unpackerr's Go
+   Finish Vaultwarden route/client checks; continue Tautulli's compatible update,
+   Unpackerr's Go
    rebuild, Pi-hole same-app OS patch, Plex runtime/bootstrap resolution and
    the remaining exact inventory's derivative/major-version evaluations.
 4. Every changed artifact needs preserved source/CI identity, an unsuppressed
@@ -88,8 +89,17 @@ See [maintenance runbook](k8s-rewrite/ansible-playbook/README.md),
 [public checkpoint evidence](evidence/cluster-maintenance-20261023.json).
 
 
-The newly published cert-manager1.21.3 security patch is a concrete compatible
-in-train update. First run the separately reviewed exact five-image official
-registry scans; only then review a digest-pinned change under the existing Flux
-HelmRelease/OCIRepository. Preserve CRD/certificate/issuer identities and verify
-webhook/readiness/TLS afterward. Scanner source preparation does not close it.
+The cert-manager1.21.3 in-train patch is now adopted through the existing Flux
+owner after all five exact official images were scanned. Three controllers,
+all six CRD identities/specs (except the reviewed additive field), certificate,
+issuer and webhook identities, admission and unchanged verified TLS passed.
+Four unfixed unknown-severity rows remain; the rest of the full goal stays open.
+
+The goal tracker was checked on October24 and remains active for the full
+maintenance scope above. Vaultwarden's private1.37.4 rollout and controlled
+restart preserved every original SQL table/row/field and non-database file
+against its authenticated cold archive. Version/API checks passed twice.
+Its public routes were restored through the private charts pipeline and all24
+HTTP checks across three nodes passed; personal account login/client-sync and
+the remaining whole-cluster work stay
+open. Native Secret references, original PVC and resource requests are unchanged.

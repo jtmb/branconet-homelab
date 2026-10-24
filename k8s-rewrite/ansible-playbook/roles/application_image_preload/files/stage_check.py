@@ -9,7 +9,7 @@ import pwd
 import re
 import stat
 
-NAMES = {'seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden'}
+NAMES = {'seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli'}
 CONTROLLER = Path('/home/brajam/.local/share/branconet-migration/application-artifacts-20261023')
 NODE = Path('/home/james/.local/share/branconet-migration/application-artifacts-20261023')
 MAX_ARCHIVE = 4 * 1024**3

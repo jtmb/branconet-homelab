@@ -86,7 +86,7 @@
     - name: Require exact service archive and fresh attempt identity before scanning
       ansible.builtin.assert:
         that:
-          - worker1_oci_scan_service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden']
+          - worker1_oci_scan_service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli']
           - worker1_oci_scan_attempt is match('^[0-9a-f]{12}$')
           - worker1_oci_scan_build_attempt is match('^(initial|r[1-9][0-9]{0,2})$')
           - worker1_oci_scan_archive_sha256 is match('^[0-9a-f]{64}$')

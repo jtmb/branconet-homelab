@@ -22,8 +22,8 @@ provenance document, scanner arguments, Git or output.
 ### Existing-ZIP Windows receiver
 
 Prepared source `scripts/migration/receive-ci-image.py` accepts exactly Seerr,
-YTPTube, Jackett, Pi-hole, FlareSolverr and Vaultwarden artifacts from this existing workflow.
-The fixed identifiers are `seerr`, `ytptube`, `jackett`, `pihole`, `flaresolverr` and `vaultwarden`.
+YTPTube, Jackett, Pi-hole, FlareSolverr, Vaultwarden and Tautulli artifacts from this existing workflow.
+The fixed identifiers are `seerr`, `ytptube`, `jackett`, `pihole`, `flaresolverr`, `vaultwarden` and `tautulli`.
 `--service` defaults to `seerr` for compatibility; select another explicitly.
 It does not download
 the artifact again. Root supplies the
@@ -57,7 +57,7 @@ actual OCI index and result, and its config digest must be well formed. Config
 blob/layer verification still belongs to the exact-artifact scanner. This
 metadata is retained with its original hash rather than executed or rewritten.
 Seerr's exact frozen-lock SHA and 561,754-byte size remain mandatory in the
-uploaded lock, result and runtime-input manifest. The four non-Seerr services instead
+uploaded lock, result and runtime-input manifest. The six non-Seerr services instead
 require the original result's `frozen_lock_sha256` to be null and refuse a
 Seerr/pnpm lock file or runtime-input lock claim; no fake lock is synthesized.
 
@@ -91,7 +91,7 @@ source correction; the original ZIP and failed-attempt evidence remain retained.
 
 The new private `provenance.json` contains actual API objects, complete outer ZIP
 identity and exactly the selected scanner inputs under `files`: seven for Seerr,
-or six for YTPTube/Jackett/Pi-hole/FlareSolverr/Vaultwarden, which have no pnpm lock.
+or six for YTPTube/Jackett/Pi-hole/FlareSolverr/Vaultwarden/Tautulli, which have no pnpm lock.
 `retainedFiles` separately binds other original uploaded files without widening
 the scanner's input allowlist. Root still must review and stage only the selected
 files plus provenance into the root-owned worker1 location below. Reception
@@ -178,7 +178,7 @@ The playbook uses the existing inventory, strict SSH key/host checks and sudo
 credential supplied only through `BRANCONET_MIGRATION_SUDO_PASSWORD` by the
 operator's protected stdin wrapper. No credential belongs in extra-vars, argv,
 provenance or logs. Service defaults to `seerr`; the fixed allowlist also permits
-`ytptube`, `jackett`, `pihole`, `flaresolverr` and `vaultwarden` with their exact verified artifact contracts.
+`ytptube`, `jackett`, `pihole`, `flaresolverr`, `vaultwarden` and `tautulli` with their exact verified artifact contracts.
 Stage success is separate from fresh scanner setup, exact scan review, preload
 and deployment acceptance.
 
@@ -378,3 +378,64 @@ certificate/issuer identities and Secret references. Require three Ready
 Deployments, webhook admission, existing Certificate/ClusterIssuer readiness and
 verified application TLS routes after any actual upgrade. Do not force renewals,
 delete/recreate CRDs or grant the scanner deployment authority.
+
+
+## Prepared seventh Tautulli service
+
+The exact `tautulli` identifier is included in the artifact-only build selector,
+protected receiver/staging/offline-scan contracts and cache-only preload allowlist.
+Its fixed immutable alias is `docker.io/library/tautulli-security-20261023@sha256:<digest>`.
+Only that identifier/alias was added: Seerr's exact frozen lock, source-kind
+contracts, hashes, sizes, path/overwrite checks, capacity floors, cgroups,
+deadlines and publication controls remain unchanged. This source change dispatches
+no build, scan or rollout and changes no chart values.
+
+The [Tautulli recipe](../images/tautulli/README.md) preserves vendor startup,
+patches the attributed Debian packages and actual `/app/lib` dependencies, and
+removes complete unused pip/ensurepip code without suppressing metadata/analyzers.
+It still needs an exact build/unsuppressed scan and production proof that no
+custom startup/package configuration or external notification script needs the
+removed installer. Full cold state, history/users/API/Plex/notifier configuration,
+routes and restart checks remain required before adopting the application update.
+
+The immutable base's CPython3.13.15 is superseded. Official
+[3.13.16 release notes](https://www.python.org/downloads/release/python-31316/)
+list eight security fixes not supplied by an OS or vendored-library update:
+CVE-2026-19445, CVE-2026-19553, CVE-2026-82049, CVE-2026-15310,
+CVE-2026-19672, CVE-2026-15806, CVE-2026-17084 and CVE-2026-87910.
+[3.13.17](https://www.python.org/downloads/release/python-31317/) is the current
+3.13 security release (October21); its additional change updates embedded pip's
+certifi. Installer removal addresses that installer exposure but cannot substitute
+for the core security fixes. The recipe now prepares a separate exact official
+3.13.17 core phase; actual build/runtime/scan evidence is still required before
+adoption. Do not adopt an image retaining3.13.15 as fully patched.
+
+
+### Prepared official CPython core phase
+
+The Tautulli recipe exports only the inspected CPython3.13.17 core from immutable
+official `python:3.13.17-slim-trixie` index
+`sha256:fe14fd57a4c0361110eaa0c284112b189750bcb43fb04bb5d1ee7b7744027ccf`,
+amd64 manifest `sha256:d879ed88565a7a3c614b980b369d4a5025a9d057b71f93d09fc6d0b2ca823a18`.
+Four public layer hashes were verified. The old/donor Debian13 images match all
+16 inspected ABI fields and complete CONFIG_ARGS. A retained primary-file
+manifest binds1,154 new core entries;162 obsolete old core/bytecode paths are
+retired during replacement. Donor site-packages/pip/ensurepip are never copied.
+All existing application/noncore/site-package files, including cffi-gen-src,
+remain frozen until the separately bounded runtime-vendor/installer phase.
+Before/export/after interpreter receipts preserve the original OS receipt hashes.
+Only source PYTHON_VERSION/PYTHON_SHA256 ENV fields change to match the actual
+new binary. This source preparation is not an actual interpreter/runtime result.
+
+All82 core ELF objects remain SHA-bound. The81 runtime ELF objects require an
+actual ldd check. The exact official SDK python.o is ET_REL without program
+headers and is classified separately; ldd is inapplicable to that one object. The sole explicit
+root-reviewed exception preserves the inherited optional `_tkinter` absence of
+exactly libtk8.6.so/libtcl8.6.so, independently present in old and official-donor
+evidence; full official `_tkinter` code stays in the payload and remains scanned.
+No other unresolved dependency/new missing SONAME is accepted. This does not
+claim all ELF dependencies resolve. Actual Python3.13.17, SSL/ctypes/SQLite and
+Expat>=2.8.5, plus all real Requests/PlexAPI/cffi/cryptography/OpenSSL/new-vendor
+imports must pass as root and UID1000 before the candidate can be qualified.
+No build, scan, deployment, application state or resource/publication bound
+changed during source preparation. See the recipe README for exact boundaries.

@@ -15,7 +15,7 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--apply', action='store_true')
     p.add_argument('--phase', choices=['setup', 'helper', 'scan', 'status'], default='status')
-    p.add_argument('--service', choices=['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden'])
+    p.add_argument('--service', choices=['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli'])
     p.add_argument('--attempt', default='')
     p.add_argument('--build-attempt', default='initial')
     p.add_argument('--source-kind', choices=['worker1', 'github-actions'], default='worker1')
