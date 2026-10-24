@@ -1,5 +1,78 @@
 # BORTUS audit remediation and native Secrets engine delivery
 
+## registrationOpen focused source checkpoint completed (2026-10-23)
+
+The existing43 PUBLIC SOURCE controls and focused types remain frozen and were
+not replayed. A separately authorized fresh Windows-local lint attempt now passes
+both unchanged files with zero errors/warnings, after confirming the TypeScript
+parser and all52 effective rules, including exhaustive-deps at error severity.
+All37,428 copied public dependency files match their recorded bytes before/after;
+the37 original symlink target contents were materialized as data. No installer,
+original application module, constructor, source/type callback, DB or runtime ran.
+The historical two60s UNC timeouts remain failed with cause UNESTABLISHED.
+The first Windows attempt refused both ignored files; an intermediate broken
+junction preparation/absent-freeze refusal ran no lint. The passing fresh candidate
+uses the source config base, the same dependency plugin root and unchanged rules.
+
+Passing lint:1.406s wall/1.046875s user CPU/261160960bytes peak; main handle
+signalled and explicit drain zero. The human exception permits two ACTIVE processes
+for this fresh lint only;60s wall/30s user CPU/1GiB/two CPUs/affinity3/kill-on-close
+remain. Existing source/type results retain their original one-ACTIVE observations.
+Missing-pages setup notice is retained separately from the zero lint warnings.
+The synthetic undefined-fixture limitation remains; no new production defect or
+correction is established. This completes only the finite source/types/lint slice.
+
+Publication is pending a fresh boundary review: application Actions are disabled,
+but private charts Actions are currently enabled. No workflow was changed or run,
+and no push/merge/deploy occurred for this checkpoint. All44 original clauses,
+21 gates, findings, failures, actual AT/performance/image/compatible recovery and
+FINAL PRD boundaries remain. The full goal is ACTIVE and incomplete. Earlier
+sections below are historical evidence, not the current lint status. See
+[finite evidence](implementation-evidence/registration-open-source-20261023.json).
+
+## registrationOpen source controls; lint unresolved (2026-10-23)
+
+The unchanged exact `AccountStore.registrationOpen` method passes 43 new finite
+frozen PUBLIC SOURCE controls on its first execution, with zero failures,
+skips, cancellations or todo. Source order was recorded before controls: default
+client selection; count call/await and strict numeric zero; exact environment
+string; settings lookup/await; optional value and exact string comparison.
+Only the selected method runs in a strict inert receiver. Original constructor,
+class/module/imports/initializers/neighbours and actual account/auth/settings,
+Prisma/SQL/DB, HTTP/native/backend/build/server/recovery/performance/production
+implementations remain inert. Malformed metadata characterizes JavaScript only.
+No supported production defect or production correction was established.
+
+Fixture review limits the synthetic groups: their undefined count/setting entries
+are replaced by helper defaults (1/null), so undefined count and setting results
+are not separately qualified. Supported Prisma number and setting-or-null shapes
+are unaffected. The 43 frozen callback results remain unchanged and unreplayed.
+
+Focused types passes two selected roots with zero diagnostics: 7,588 freshly
+captured declaration/package contents in 76 parts, 192 snapshot reads, no fallback,
+and 192 direct Linux plus UNC compiler bindings supplied through stdin. All 37,428
+dependency files and 37 in-tree nondangling symlinks match before both attempts
+and after; literal alias directory identities match. No new every-alias-file
+claim follows.
+
+Lint is unresolved. V1 and a distinct V2 using physical Windows cwd/filePath
+both reach the unchanged 60-second wall bound without a report. Each observed
+259 before termination, had an unsignalled main handle and explicitly drained
+to zero. The cause remains unestablished. V2 retains identical file bytes, rules,
+the separate literal lint dependency alias and public lint-only preserve-symlinks
+flag, and refuses source/types modes. Passing source/types were never replayed.
+Both failures and all completed/prepared helpers/configs/workloads remain frozen.
+The feature is incomplete; no reviewed/pushed feature checkpoint or handoff is
+claimed. Existing Node 24.18.0, 30-second user CPU, 1 GiB Job, two CPU/affinity 3,
+one ACTIVE and kill-on-close limits remain alongside the 60-second wall bound.
+
+All original runtime/security/performance/actual-AT/compatible recovery/image/live
+gates, 44 clauses, 21 gates, findings, failures and rejected-action boundaries
+remain. Root documentation stays local, Actions remain prohibited, and FINAL PRD
+deployment AND verification follow every original preceding gate. The full objective
+remains incomplete. See [finite evidence](implementation-evidence/registration-open-source-20261023.json).
+
+
 ## getOperatorRole source qualification (2026-10-23)
 
 The unchanged exact async declaration passes 36 new finite frozen PUBLIC SOURCE
