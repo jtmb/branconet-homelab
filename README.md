@@ -7,6 +7,13 @@ repository. Chart pushes to main pass validation before automatic Flux deploymen
 see [the Flux contract](docs/FLUX-GITOPS.md) and [verified setup](docs/CHARTS-SEPARATION.md).
 The legacy Swarm/Gluster sources below remain retained recovery material.
 
+Current existing-cluster security maintenance, Seerr migration and YTPTube
+replacement are tracked in [PLAN.md](PLAN.md) and
+[MIGRATION_STATUS.md](MIGRATION_STATUS.md). The isolated opt-in
+[maintenance playbooks](k8s-rewrite/ansible-playbook/README.md) contain no reset or
+cluster installer. The legacy commands/version notes below describe retained
+Swarm sources, not the active Kubernetes maintenance workflow.
+
 My personal highly avilable, customizable homelab as code deployment & pipeline which features:
 
 - Ansible

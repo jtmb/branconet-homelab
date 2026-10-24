@@ -1,0 +1,8 @@
+---
+- name: Retire only verified reproducible completed-scan OCI materializations
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  roles: [derived_oci_retirement]

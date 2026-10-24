@@ -1,0 +1,82 @@
+---
+- name: Fully verify all installed immutable scanner inputs before copying a helper
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -c
+      - "{{ lookup('ansible.builtin.file', role_path ~ '/files/verify_installed.py', rstrip=false) }}"
+      - "{{ lookup('ansible.builtin.file', role_path ~ '/files/scan_oci.py', rstrip=false) | length | string }}"
+  changed_when: false
+
+- name: Inspect only the existing helper parent and selected version directory
+  ansible.builtin.stat:
+    path: "{{ item }}"
+    follow: false
+  loop: ["{{ worker1_oci_scan_root }}/helpers", "{{ worker1_oci_scan_helper_root }}"]
+  register: worker1_oci_scan_refresh_directories
+
+- name: Refuse conflicting helper directory identity without repairing it
+  ansible.builtin.assert:
+    that:
+      - not item.stat.exists or (item.stat.isdir and not item.stat.islnk and item.stat.uid == 0 and item.stat.gid == 0 and item.stat.mode == '0700')
+  loop: "{{ worker1_oci_scan_refresh_directories.results }}"
+
+- name: Inspect existing selected helper and seal before any helper writes
+  ansible.builtin.stat:
+    path: "{{ worker1_oci_scan_helper_root }}/{{ item }}"
+    follow: false
+    checksum_algorithm: sha256
+  loop: [scan_oci.py, inputs.json]
+  register: worker1_oci_scan_refresh_files
+
+- name: Refuse replaced or incorrectly owned existing selected helper files
+  ansible.builtin.assert:
+    that:
+      - not item.stat.exists or (item.stat.isreg and not item.stat.islnk and item.stat.uid == 0 and item.stat.gid == 0 and item.stat.nlink == 1)
+      - not item.stat.exists or item.stat.mode == ('0500' if item.item == 'scan_oci.py' else '0400')
+      - not item.stat.exists or item.item != 'scan_oci.py' or item.stat.checksum == worker1_oci_scan_helper_sha256
+      - not item.stat.exists or item.stat.size <= (262144 if item.item == 'scan_oci.py' else 65536)
+  loop: "{{ worker1_oci_scan_refresh_files.results }}"
+
+- name: Create only the selected private root-owned content-addressed helper directory
+  ansible.builtin.file:
+    path: "{{ worker1_oci_scan_helper_root }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  when: not worker1_oci_scan_refresh_directories.results[1].stat.exists
+
+- name: Copy only the missing selected helper without touching installed scanner inputs
+  ansible.builtin.copy:
+    src: scan_oci.py
+    dest: "{{ worker1_oci_scan_helper_root }}/scan_oci.py"
+    owner: root
+    group: root
+    mode: '0500'
+    force: false
+  when: not worker1_oci_scan_refresh_files.results[0].stat.exists
+
+- name: Inspect the selected staged helper before self-sealing
+  ansible.builtin.stat:
+    path: "{{ worker1_oci_scan_helper_root }}/scan_oci.py"
+    follow: false
+    checksum_algorithm: sha256
+  register: worker1_oci_scan_refreshed_helper
+
+- name: Require the exact protected content-addressed helper before executing its setup proof
+  ansible.builtin.assert:
+    that:
+      - worker1_oci_scan_refreshed_helper.stat.isreg
+      - not worker1_oci_scan_refreshed_helper.stat.islnk
+      - worker1_oci_scan_refreshed_helper.stat.uid == 0
+      - worker1_oci_scan_refreshed_helper.stat.gid == 0
+      - worker1_oci_scan_refreshed_helper.stat.mode == '0500'
+      - worker1_oci_scan_refreshed_helper.stat.nlink == 1
+      - worker1_oci_scan_refreshed_helper.stat.size == (lookup('ansible.builtin.file', role_path ~ '/files/scan_oci.py', rstrip=false) | length)
+      - worker1_oci_scan_refreshed_helper.stat.checksum == worker1_oci_scan_helper_sha256
+
+- name: Seal the new helper through its unchanged full inputs proof without scanning
+  ansible.builtin.command:
+    argv: [/usr/bin/python3, "{{ worker1_oci_scan_helper_root }}/scan_oci.py", setup]
+  changed_when: false

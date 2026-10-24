@@ -1,0 +1,142 @@
+---
+- name: Report disabled or check-mode scope without staging
+  ansible.builtin.debug:
+    msg: Explicit apply is required; check mode and the default transfer no files.
+  when: not ci_image_artifact_stage_apply | bool or ansible_check_mode
+
+- name: Stage only fixed verified CI artifact files
+  when: ci_image_artifact_stage_apply | bool and not ansible_check_mode
+  block:
+    - name: Require the exact worker1 target and reviewed artifact identity
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'workernode1'
+          - ansible_host == '192.168.0.6'
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - ci_image_artifact_stage_service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden']
+          - ci_image_artifact_stage_run_id | string is match('^[1-9][0-9]{0,18}$')
+          - ci_image_artifact_stage_artifact_id | string is match('^[1-9][0-9]{0,18}$')
+          - ci_image_artifact_stage_run_id | int < 9223372036854775808
+          - ci_image_artifact_stage_artifact_id | int < 9223372036854775808
+          - ci_image_artifact_stage_provenance_sha256 is match('^[0-9a-f]{64}$')
+
+    - name: Verify every selected controller file against the SHA-bound provenance
+      ansible.builtin.command:
+        argv:
+          - /home/brajam/.local/share/branconet-migration/venv/bin/python
+          - -c
+          - "{{ lookup('ansible.builtin.file', role_path ~ '/files/check_stage.py', rstrip=false) }}"
+          - controller
+          - --service
+          - "{{ ci_image_artifact_stage_service }}"
+          - --run-id
+          - "{{ ci_image_artifact_stage_run_id }}"
+          - --artifact-id
+          - "{{ ci_image_artifact_stage_artifact_id }}"
+          - --provenance-sha256
+          - "{{ ci_image_artifact_stage_provenance_sha256 }}"
+      delegate_to: localhost
+      become: false
+      changed_when: false
+      register: ci_image_artifact_stage_controller_before
+
+    - name: Refuse destination conflicts and require staging plus scanner capacity
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -c
+          - "{{ lookup('ansible.builtin.file', role_path ~ '/files/check_stage.py', rstrip=false) }}"
+          - node-before
+          - --service
+          - "{{ ci_image_artifact_stage_service }}"
+          - --run-id
+          - "{{ ci_image_artifact_stage_run_id }}"
+          - --artifact-id
+          - "{{ ci_image_artifact_stage_artifact_id }}"
+          - --provenance-sha256
+          - "{{ ci_image_artifact_stage_provenance_sha256 }}"
+        stdin: "{{ ci_image_artifact_stage_controller_before.stdout }}"
+      changed_when: false
+      register: ci_image_artifact_stage_node_before
+
+    - name: Create only the missing fixed CI base directory
+      ansible.builtin.file:
+        path: /home/james/.local/share/branconet-migration/ci-image-artifacts-20261024
+        state: directory
+        owner: root
+        group: root
+        mode: '0700'
+      when: not (ci_image_artifact_stage_node_before.stdout | from_json).baseExists
+
+    - name: Create only the missing fixed run and artifact directory
+      ansible.builtin.file:
+        path: "/home/james/.local/share/branconet-migration/ci-image-artifacts-20261024/{{ ci_image_artifact_stage_run_id }}-{{ ci_image_artifact_stage_artifact_id }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0700'
+      when: not (ci_image_artifact_stage_node_before.stdout | from_json).rootExists
+
+    - name: Copy only missing selected files without replacement
+      ansible.builtin.copy:
+        src: "/home/brajam/.local/share/branconet-migration/ci-image-artifacts-20261024/{{ ci_image_artifact_stage_run_id }}-{{ ci_image_artifact_stage_artifact_id }}/{{ item }}"
+        dest: "/home/james/.local/share/branconet-migration/ci-image-artifacts-20261024/{{ ci_image_artifact_stage_run_id }}-{{ ci_image_artifact_stage_artifact_id }}/{{ item }}"
+        owner: root
+        group: root
+        mode: '0400'
+        force: false
+        follow: false
+      loop: "{{ (ci_image_artifact_stage_controller_before.stdout | from_json).files.keys() | list }}"
+      loop_control:
+        label: "{{ item }}"
+      when: item in (ci_image_artifact_stage_node_before.stdout | from_json).missingFiles
+
+    - name: Verify full worker copy bytes and protected ownership
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -c
+          - "{{ lookup('ansible.builtin.file', role_path ~ '/files/check_stage.py', rstrip=false) }}"
+          - node-after
+          - --service
+          - "{{ ci_image_artifact_stage_service }}"
+          - --run-id
+          - "{{ ci_image_artifact_stage_run_id }}"
+          - --artifact-id
+          - "{{ ci_image_artifact_stage_artifact_id }}"
+          - --provenance-sha256
+          - "{{ ci_image_artifact_stage_provenance_sha256 }}"
+        stdin: "{{ ci_image_artifact_stage_controller_before.stdout }}"
+      changed_when: false
+      register: ci_image_artifact_stage_node_after
+
+    - name: Rehash the original controller inputs after transfer
+      ansible.builtin.command:
+        argv:
+          - /home/brajam/.local/share/branconet-migration/venv/bin/python
+          - -c
+          - "{{ lookup('ansible.builtin.file', role_path ~ '/files/check_stage.py', rstrip=false) }}"
+          - controller
+          - --service
+          - "{{ ci_image_artifact_stage_service }}"
+          - --run-id
+          - "{{ ci_image_artifact_stage_run_id }}"
+          - --artifact-id
+          - "{{ ci_image_artifact_stage_artifact_id }}"
+          - --provenance-sha256
+          - "{{ ci_image_artifact_stage_provenance_sha256 }}"
+      delegate_to: localhost
+      become: false
+      changed_when: false
+      register: ci_image_artifact_stage_controller_after
+
+    - name: Require unchanged controller files and a complete protected worker copy
+      ansible.builtin.assert:
+        that:
+          - (ci_image_artifact_stage_controller_before.stdout | from_json) == (ci_image_artifact_stage_controller_after.stdout | from_json)
+          - (ci_image_artifact_stage_node_after.stdout | from_json).missingFiles | length == 0
+
+    - name: Report verified staging metadata without application execution
+      ansible.builtin.debug:
+        msg: "{{ ci_image_artifact_stage_node_after.stdout | from_json }}"

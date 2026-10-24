@@ -1,0 +1,8 @@
+---
+- name: Prepare or run one separately bounded worker1 security image build
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  roles: [worker1_image_build]

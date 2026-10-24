@@ -1,0 +1,373 @@
+{
+  "scope": "User-requested cluster security maintenance, Seerr migration and downloader replacement",
+  "checkpoint_at": "2026-10-23T22:44:11.324131Z",
+  "overall_complete": false,
+  "bortus_application_goal_resumed": false,
+  "hosts": {
+    "masternode": {
+      "kernel": "5.15.0-198-generic",
+      "cri": "v2.4.2",
+      "nvidia_toolkit": "1.20.1-1",
+      "play_exit": 2,
+      "recovery": "Independent host verification, uncordon and frozen resource recovery passed after transient post-reboot API Forbidden"
+    },
+    "workernode1": {
+      "kernel": "5.15.0-198-generic",
+      "cri": "v2.4.2",
+      "play_exit": 0
+    },
+    "workernode2": {
+      "kernel": "5.15.0-198-generic",
+      "cri": "v2.4.2",
+      "recovery": "Independent verification after version-format assertion failure; full resource recovery subsequently passed"
+    }
+  },
+  "frozen_recovery": {
+    "passed": true,
+    "original_active_volume_uids_healthy": 30,
+    "deployment_uids_ready": 54,
+    "daemonset_uids_ready": 7,
+    "nodes_ready_uncordoned_without_pressure": 3,
+    "receipt_sha256": "0f3b79aa3e26fec0f820f1aac322a9c35a338d3b145602292e94a646bee985ec",
+    "longhorn_thresholds_changed": false,
+    "replica_failure_metadata_changed": false
+  },
+  "backups": {
+    "online_longhorn_checkpoint_sha256": "5ae6003286e814e77b5cb60b5e78660291addef2b198f9e3d353e2e943bcccc6",
+    "control_plane_encrypted_archive_sha256": "947454bb68e348ea8f0846c0c1496b6638d73305892d4ea179f4a3befe4ecc36",
+    "control_plane_authenticated_archive_verified": true,
+    "independent_restore_verified": false
+  },
+  "worker1_filesystem_growth": {
+    "completed_at": "2026-10-23T22:28:14Z",
+    "filesystem_uuid": "5f1fd363-f7b7-44db-ace5-ad81a25a2926",
+    "filesystem_bytes_before": 105089261568,
+    "filesystem_bytes_after": 249322430464,
+    "partition_or_lv_changed": false
+  },
+  "ci": {
+    "private_charts_actions_and_image_builds_approved_enabled": true,
+    "bortus_application_actions_enabled": false,
+    "verified_flux_revision": "validated@sha1:11bb4f842fec801d5cd7b2786bf7f9ef15e41f94",
+    "first_valid_image_job": 40034238700,
+    "image_job_outcome": "Refused insufficient disk reserve before any build",
+    "stateless_patch_published_commit": "8b98d7371b447086a4db12fd9ec091df79bdd248",
+    "stateless_patch_rollout_verified": true,
+    "stateless_patch_validation_run": 40035639012,
+    "traefik": {
+      "version": "2.11.60",
+      "ready_updated_replicas": 2,
+      "pod_ping_verified": true,
+      "media_tls_route_verified_all_three_nodes": true
+    },
+    "flaresolverr": {
+      "version": "3.5.2",
+      "ready_updated_replicas": 1,
+      "browser_request_get_example_com_http_200": true
+    },
+    "whoami_patch_commit": "45dcb4b1f84ebc19d2ced666f4718a2714ab2b8e",
+    "whoami_validation_run": 40047022638,
+    "whoami": {
+      "version": "1.12.0",
+      "immutable_index": "sha256:c4717a8d1f0134a7444e24f881160e033991f23027c6c5a9a3f8fd22e70d1d44",
+      "verified_at": "2026-10-24T00:54:02.609116Z",
+      "same_deployment_uid": true,
+      "all_three_http_routes_200_host_echo": true,
+      "critical_high_residual_rows": [
+        0,
+        16
+      ]
+    },
+    "hosted_sdk_reclamation": {
+      "available_before": 14094016512,
+      "available_after": 32099065856,
+      "removed_only_fresh_hosted_android_dotnet_sdks": true,
+      "workspace_docker_cluster_strata_untouched": true,
+      "initial_reserve_unchanged_bytes": 19327352832
+    }
+  },
+  "applications": {
+    "seerr_migrated": false,
+    "overseerr_cold_backup_verified": false,
+    "ytptube_deployed": false,
+    "real_youtube_download_verified": false,
+    "ytptube_native_auth_secret_created_without_value_disclosure": true,
+    "seerr_initial_worker_build": "Failed packaging: production prune ran development Husky prepare after removing Husky; exact owned unit stopped with evidence retained, no OOM",
+    "seerr_corrected_recipe": "pnpm prune --prod --ignore-scripts; distinct attempt, same frozen dependency lock",
+    "ytptube_worker_build": {
+      "completed_at": "2026-10-23T23:34:07Z",
+      "exit_code": 0,
+      "archive_sha256": "738ae189d79deef24c71e727ae4e4ad0edbb687187593185070e33be88891f5e",
+      "runtime_manifest": "sha256:07147c99dddf852366a3794a87fd223d7ec156d4e6e547a235adc5eda6001c3c",
+      "accepted": false
+    },
+    "seerr_r2_build": "Failed at TypeScript email-template/Nodemailer declaration incompatibility, 2026-10-23T23:53:56Z; no OOM; source app unchanged",
+    "ytptube_exact_scan": {
+      "completed_at": "2026-10-24T00:00:10Z",
+      "critical_rows": 1,
+      "high_rows": 72,
+      "fixable_high_rows": 4,
+      "fixable_medium_rows": 3,
+      "unfixed_critical_high_rows": 69,
+      "result_sha256": "a879abaaf1e4b35b61508442f871cc0d1a0eb758d11af90ff6cae3390b9c8e58b",
+      "app_runtime_verified": false
+    },
+    "radarr": {
+      "cold_archive_verified": true,
+      "backup_completed_at": "2026-10-24T00:55:06.654175Z",
+      "archive_sha256": "9bb2f636d27e3fd52c3be529be14b8e5847b0ea3df347366fae2760c11551897",
+      "archive_bytes": 519059380,
+      "file_count": 1197,
+      "reader_deleted": true,
+      "baseline_movie_count": 180,
+      "baseline_history_count": 593,
+      "update_commit": "3a8ba1d",
+      "rollout_accepted": false,
+      "version": "6.4.4.10685",
+      "api_original_movie_history_config_fingerprints_preserved": true,
+      "restart_persistence_verified": true,
+      "existing_three_node_routes_authenticated_200": true,
+      "sql_integrity_verified": true,
+      "original_user_count": 1,
+      "all_six_user_columns_preserved": true,
+      "full_ui_acceptance": false
+    },
+    "seerr_r3": {
+      "setup_dispatched": true,
+      "new_frozen_lock_sha256": "9665b245267e7c864210bdf85f1098c0891f30946c64b3781f44077fff0b7811",
+      "full_build_accepted": false
+    },
+    "ytptube_r2": {
+      "runtime_dispatched_at": "2026-10-24T00:52:32Z",
+      "fixes": [
+        "msgpack",
+        "setuptools",
+        "urllib3",
+        "provider ip-address"
+      ],
+      "accepted": false
+    },
+    "jackett_os_image": {
+      "build_completed_at": "2026-10-24T00:47:31Z",
+      "archive_sha256": "2e46638a827b3875635624f6f3d24f69db3da4c9e7d246ead5797a1a52a39bec",
+      "scan_completed_at": "2026-10-24T00:52:38.246496Z",
+      "critical_rows": 2,
+      "high_rows": 29,
+      "fixed_critical_high_rows": 31,
+      "residual": "Bundled .NET9.0.14 requires additional same-application runtime work",
+      "deployed": false
+    },
+    "sonarr": {
+      "version": "4.0.20.3014",
+      "cold_archive_sha256": "12610fd7909d2e7022874635cd10dc63d1db646cc3c18e2b5c927e957094362f",
+      "archive_bytes": 461496532,
+      "file_count": 1639,
+      "archive_verified_and_reader_deleted": true,
+      "series_preserved": 155,
+      "episodes_preserved": 14728,
+      "episode_files_preserved": 5319,
+      "history_preserved": 13099,
+      "all_config_api_fingerprints_preserved": true,
+      "sql_integrity_verified": true,
+      "original_user_count": 1,
+      "all_six_user_columns_preserved": true,
+      "restart_and_route_checks_pending": true
+    },
+    "bazarr": {
+      "baseline_sql_quick_check_passed": true,
+      "baseline_shows": 155,
+      "baseline_episodes": 5319,
+      "baseline_movies": 237,
+      "baseline_subtitle_count": 0,
+      "baseline_history_count": 0,
+      "baseline_config_and_auth_hmac_captured": true,
+      "cold_backup_complete": false,
+      "upgrade_accepted": false
+    },
+    "seerr_ci": {
+      "run": 40048938336,
+      "source_commit": "e970316ce8ba23d4b1f61f7f0a8b2126de6d3fb6",
+      "build_success": true,
+      "outer_zip_sha256": "8c8a9be03b78ee342a1d40581b98168370b1f066d69e00b4cee4be57d1c9ca31",
+      "artifact_id": 12542054969,
+      "oci_archive_sha256": "d3fa13eee47afd2a6c83e5fc49796a02143c441513c36fd06aa9b21dff64b174",
+      "oci_bytes": 319832064,
+      "runtime_descriptor": "sha256:7bf03e8c4433460c0d93f789da56db457e3484412c448997102885af185db93c",
+      "frozen_lock_sha256": "9665b245267e7c864210bdf85f1098c0891f30946c64b3781f44077fff0b7811",
+      "exact_image_scan_pending": true,
+      "native_runtime_pending": true,
+      "application_migration_pending": true
+    }
+  },
+  "security": {
+    "snapshot_image_digests_scanned": 67,
+    "undisclosed_zero_days_absent_claim": false,
+    "residual_findings_remain": true,
+    "jammy_kernel_cve_2026_98260_fixed": false,
+    "bortus_production_image_patched": false
+  },
+  "latest_health": {
+    "at": "2026-10-24T00:47:46.853054Z",
+    "ready_nodes": 3,
+    "pressure_nodes": 0,
+    "attached_volumes": 30,
+    "unhealthy_attached_volumes": 0
+  },
+  "maintenance_progress_at": "2026-10-24T02:46:45.685374+00:00",
+  "goal_tracking": {
+    "status": "active",
+    "thread_id": "01a12045-bf7e-73b3-8557-752d17c72ffd",
+    "includes_full_data_preservation_and_final_validation": true,
+    "bortus_app_development_excluded": true
+  },
+  "seerr_image_qualified": {
+    "ci_run": 40048938336,
+    "image": "docker.io/library/seerr-security-20261023@sha256:7bf03e8c4433460c0d93f789da56db457e3484412c448997102885af185db93c",
+    "critical": 0,
+    "high_unfixed": 1,
+    "cached_nodes": 3,
+    "preload_exit": 0,
+    "native_checks_passed": true,
+    "native_receipt_sha256": "6f7ad4a814099f759c2190f27c372a42476f05d30c14e60fae07128f29227bf9",
+    "production_data_cutover_complete": true
+  },
+  "bazarr_after_qualification": {
+    "passed": true,
+    "receipt_sha256": "104eb734919d26ca753a1b057f8ac161b55f89a201a437dde4db334e76b6916e",
+    "default_cleanup_proof_sha256": "51819b03f0cd14ddebfc4d186d5cbe186ab90181671980a3f434b87534f4b22a",
+    "upstream_default_scoring_behavior_changed": true,
+    "strict_post_acceptance_restart_pending": false,
+    "restart_sha256": "14c7a42da272935a7e214422a7fdea61cec3254d3cfdab765cebd0ec9127f332"
+  },
+  "bazarr_sonarr_routes": {
+    "authenticated_http_passed": 6,
+    "https_untrusted_self_signed": 6,
+    "tls_verification_disabled": false,
+    "receipt_sha256": "6616fc20ca9d8c073c10577eef9cab2425836308d457d3e6ea59088254e86a8e"
+  },
+  "ytptube_current_ci": {
+    "run": 40052586445,
+    "head": "3959595f3a6b1136472edca816e93cfe2eb7edfb",
+    "build_success": true,
+    "artifact_scan_and_live_download_acceptance_pending": false
+  },
+  "seerr_backend_acceptance": {
+    "all_six_original_accounts_credential_permission_fields_preserved": true,
+    "all_eight_history_tables_preserved": true,
+    "all_original_settings_initially_literal_matched": true,
+    "reviewed_runtime_scan_clock_advances": 2,
+    "after_sha256": "f101f1357799b315e7a3950b4d59540f9112bf5234e0b8958898817740e17146",
+    "restart_sha256": "dd427a21312153443ed1dcd157cadf89d3837224ee8a56265f9e3734d1fc6375",
+    "arr_tag_proof_sha256": "7c7caa6586b8bf49c90e0a7c12afade8e2877fbea2385fe5826300a3e0fd4ab4",
+    "browser_validation_complete": false
+  },
+  "ytptube_backend_acceptance": {
+    "real_youtube_clip_verified": true,
+    "seconds": 5.0,
+    "bytes": 110645,
+    "video_codec": "h264",
+    "audio_codec": "aac",
+    "height": 144,
+    "sample_receipt_sha256": "4ef85843a9368beda9442d98616c969a2cc816b9da19900e9192601915f5bb70",
+    "media_sha256": "7e05e92ad9b008d22990cfdc69f18f7023f7fc9bc6e0583739ead1f7b6adc457",
+    "new_pod_restart_persistence_passed": true,
+    "legacy_files_unchanged": 7,
+    "legacy_file_bytes": 618241982,
+    "legacy_reobservation_sha256": "3dd6c77cdc5a5573e98f1ae3e9c758114e2893affcdd7e1cc428bacbe4e2036d",
+    "browser_validation_complete": false,
+    "restart_receipt_sha256": "13fd97d6f485f7c98abdbdaf3580ecc63d2da8c14d481336582a2bddf2d5320d"
+  },
+  "app_route_checks": {
+    "restored_chart_commit": "22dd5a2c816c37cc73fb17508bb2ae98720cceb7",
+    "ci_run": 40055143704,
+    "passed_routes": 12,
+    "three_nodes_passed": true,
+    "media_https_certificate_verified": true,
+    "tls_verification_disabled": false,
+    "receipt_sha256": "8d2e02f891098298ed86c92e524fe0a7552f45b10958aa32e0069e943e9fe38d"
+  },
+  "post_application_cluster_health": {
+    "ready_uncordoned_nodes_without_pressure": 3,
+    "attached_healthy_longhorn_volumes": 30,
+    "unhealthy_attached_volumes": 0,
+    "unavailable_deployments": 0,
+    "unavailable_daemonsets": 0
+  },
+  "flaresolverr_python_oci_scan": {
+    "observedUTC": "2026-10-24T03:44:56.838495+00:00",
+    "runID": 40058492329,
+    "artifactID": 12546303370,
+    "sourceCommit": "5968b8f9c2ae0b45495fde6539f976fbc71a5bc3",
+    "archiveSHA256": "db6315339f46a96d02d80bac4687de6929b1b900b640d1c9a146e54570209a7e",
+    "manifestDigest": "sha256:29a981aec497ec47ccc25d67309c404593992a465501632e115010282ef61ec7",
+    "attempt": "flaresolverr-f85f4bc513b5",
+    "counts": {
+      "critical": 4,
+      "high": 193,
+      "medium": 300,
+      "low": 373,
+      "unknown": 6
+    },
+    "fixableCriticalHighRows": 0,
+    "resultSHA256": "1f1895c34b93774573fb598dc69ee6419f375551ed9c4f41a3f456e523902492",
+    "scanReceiptSHA256": "ce701291dc019a872733e0c2e900a2a95a38ed2906b7617d4d1ea8558dccb5495",
+    "cachePreloadAllThreeNodes": true,
+    "liveRolloutAccepted": true,
+    "fullGoalComplete": false
+  },
+  "flaresolverr_live_acceptance": {
+    "observedUTC": "2026-10-24T03:53:09.961888+00:00",
+    "chartCommit": "e7aad9893d9823aae489483e8fdba0dc94418c65",
+    "validationRunID": 40059981764,
+    "deploymentUID": "7a6239d9-8a48-40ec-9480-dd4e8667f695",
+    "helmReleaseUID": "b556d097-1352-49b5-9253-d70657d70330",
+    "podUID": "910adb88-cce7-4101-a864-386d73c1b091",
+    "helperSHA256": "2f47b91bc25cf50820e6fc0882830a97c6a90a649e70c0f8eef311c72c535977",
+    "receiptSHA256": "ddc96a6f0efe73e246ef2b07f02698aa95bc7d782c3113958dfdd1c625c3cf0f",
+    "browserDriverVersion": "156.0.8078.47",
+    "allThreeNodeRoutesPassed": true,
+    "realBrowserGETPassed": true,
+    "fullGoalComplete": false
+  },
+  "post_flare_health": {
+    "observedUTC": "2026-10-24T04:00:11.987228+00:00",
+    "receiptSHA256": "34dda315d53331b04e20e8d32d913f1a9e24ff82f33dba8d24fc78cf91e3ebe0",
+    "readyUncordonedPressureFreeNodes": 3,
+    "deploymentCount": 54,
+    "daemonSetCount": 7,
+    "totalLonghornVolumes": 40,
+    "healthyAttachedLonghornVolumes": 30,
+    "unavailableDeployments": [],
+    "unavailableDaemonSets": [],
+    "notReadyRunningPods": [],
+    "unreadyHelmReleases": []
+  },
+  "vaultwarden_derivative_scan": {
+    "observedUTC": "2026-10-24T04:22:52.858427+00:00",
+    "sourceCommit": "e7aad9893d9823aae489483e8fdba0dc94418c65",
+    "runID": 40060033423,
+    "artifactID": 12546559116,
+    "archiveSHA256": "ad0c9750afb40816382c33b669e7250c294adf7cda841566f94abbe19036c949",
+    "manifestDigest": "sha256:c6a9b959228bf484038fe502bc0697e5ca5d2d10a515de47969c2611d36cdb0d",
+    "resultsSHA256": "8d0293d8ca7bf6cd56b3cb2591cbb819efa36279e366348c1fee2df826034f6f",
+    "counts": {
+      "critical": 8,
+      "high": 66,
+      "medium": 115,
+      "low": 146,
+      "unknown": 1
+    },
+    "fixableCriticalHighRows": 0,
+    "deployed": false
+  },
+  "derived_oci_materialization_retirement": {
+    "runID": "a7e942b7f3d1",
+    "state": "retired",
+    "observedUTC": "2026-10-24T04:25:09.975342+00:00",
+    "removedLogicalBytes": 2770338348,
+    "removedFiles": 179,
+    "successfulDerivedLayouts": 7,
+    "originalArchivesAndReportsPreserved": true,
+    "applicationDataTouched": false
+  }
+}

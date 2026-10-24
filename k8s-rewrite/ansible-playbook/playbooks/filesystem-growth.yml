@@ -1,0 +1,12 @@
+---
+# Existing-device capacity recovery only; never a provision/shrink/LV operation.
+- name: Inspect or explicitly grow the pinned worker1 root ext4 filesystem
+  hosts: workernode1
+  gather_facts: false
+  serial: 1
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+  roles:
+    - filesystem_growth
