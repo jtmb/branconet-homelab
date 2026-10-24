@@ -1,0 +1,342 @@
+---
+- name: Require explicit maintenance and reviewed recovery evidence
+  ansible.builtin.assert:
+    that:
+      - security_maintenance_apply | bool
+      - security_maintenance_backup_verified | bool
+      - security_maintenance_backup_reference | length > 0
+      - security_maintenance_recovery_receipt_dir is match('^/[^\r\n]+$')
+      - ansible_facts['distribution'] == 'Ubuntu'
+      - ansible_facts['distribution_release'] == 'jammy'
+      - ansible_facts['architecture'] == 'x86_64'
+      - containerd_socket == 'unix:///run/containerd-k8s/containerd.sock'
+      - containerd_version == 'v2.4.2'
+      - containerd_sha256 == 'da656542e754c699a0f438eab925e6ffdbd6346a4428e659f83dc058f04dcffe'
+      - security_maintenance_expected_kernel is match('^[0-9][0-9A-Za-z.+-]+$')
+    fail_msg: Supply explicit apply and verified backup settings; this playbook only qualifies the reviewed Jammy and containerd 2.4.2 path.
+
+- name: Reject broad or legacy-runtime package mutations
+  ansible.builtin.assert:
+    that:
+      - item is match('^[a-z0-9][a-z0-9+.-]*(:amd64)?$')
+      - item is not match('^(docker|containerd|runc|gluster)')
+    fail_msg: Ubuntu package selection must be explicit and must preserve retired runtimes and Gluster.
+  loop: "{{ security_maintenance_ubuntu_packages }}"
+
+- name: Require exact optional package versions and protect legacy services
+  ansible.builtin.assert:
+    that:
+      - item is match('^[a-z0-9][a-z0-9+.-]*(:amd64)?=[0-9A-Za-z:.+~_-]+$')
+      - item is not match('^(docker|containerd|runc|gluster)')
+  loop: "{{ security_maintenance_extra_packages }}"
+
+- name: Read cluster state through the existing operator kubeconfig
+  ansible.builtin.command:
+    argv: [kubectl, get, nodes, -o, json]
+  become: false
+  delegate_to: "{{ groups['master'][0] }}"
+  register: maintenance_nodes
+  changed_when: false
+  check_mode: false
+
+- name: Require all three nodes Ready without pressure and preserve existing cordons
+  ansible.builtin.assert:
+    that:
+      - (maintenance_nodes.stdout | from_json)[ 'items' ] | length == 3
+      - (maintenance_nodes.stdout | from_json)[ 'items' ] | map(attribute='metadata.name') | sort == groups['k8s_nodes'] | sort
+      - item.status.conditions | selectattr('type', 'equalto', 'Ready') | selectattr('status', 'equalto', 'True') | list | length == 1
+      - item.status.conditions | selectattr('type', 'in', ['MemoryPressure', 'DiskPressure', 'PIDPressure', 'NetworkUnavailable']) | selectattr('status', 'equalto', 'True') | list | length == 0
+      - not (item.spec.unschedulable | default(false))
+    fail_msg: All three expected nodes must be Ready and uncordoned with no active memory, disk, PID or network pressure condition before each maintenance step.
+  loop: "{{ (maintenance_nodes.stdout | from_json)[ 'items' ] }}"
+  loop_control:
+    label: "{{ item.metadata.name }}"
+
+- name: Read Longhorn volumes and protected drain policy
+  ansible.builtin.command:
+    argv: "{{ item }}"
+  become: false
+  delegate_to: "{{ groups['master'][0] }}"
+  register: maintenance_longhorn
+  changed_when: false
+  check_mode: false
+  loop:
+    - [kubectl, -n, longhorn-system, get, volumes.longhorn.io, -o, json]
+    - [kubectl, -n, longhorn-system, get, settings.longhorn.io, node-drain-policy, -o, 'jsonpath={.value}']
+
+- name: Preserve Longhorn's last-replica protection
+  ansible.builtin.assert:
+    that:
+      - maintenance_longhorn.results[1].stdout == 'block-if-contains-last-replica'
+      - (maintenance_longhorn.results[0].stdout | from_json)[ 'items' ] | length > 0
+    fail_msg: Reinventoried Longhorn volumes and the protected drain policy are required.
+
+- name: Read original checkpoint volume identities from the controller receipt
+  ansible.builtin.set_fact:
+    maintenance_checkpoint_volumes: "{{ (lookup('ansible.builtin.file', security_maintenance_backup_reference) | from_json).volumes }}"
+
+- name: Require the complete original thirty-volume checkpoint identity set
+  ansible.builtin.assert:
+    that:
+      - maintenance_checkpoint_volumes | length == 30
+      - maintenance_checkpoint_volumes | map(attribute='volume') | unique | list | length == 30
+      - maintenance_checkpoint_volumes | map(attribute='volume_uid') | unique | list | length == 30
+    fail_msg: The reviewed checkpoint must retain all thirty distinct original volume names and UIDs.
+
+- name: Require every original checkpoint volume still attached and healthy
+  ansible.builtin.assert:
+    that:
+      - maintenance_checkpoint_live_matches | length == 1
+      - (maintenance_checkpoint_live_matches | first).metadata.uid == item.volume_uid
+      - (maintenance_checkpoint_live_matches | first).status.state == 'attached'
+      - (maintenance_checkpoint_live_matches | first).status.robustness == 'healthy'
+    fail_msg: An original checkpoint volume is missing, replaced, detached or unhealthy; recover it before any further node maintenance.
+  vars:
+    maintenance_checkpoint_live_matches: "{{ (maintenance_longhorn.results[0].stdout | from_json)['items'] | selectattr('metadata.name', 'equalto', item.volume) | list }}"
+  loop: "{{ maintenance_checkpoint_volumes }}"
+  loop_control:
+    label: "{{ item.volume }}"
+
+- name: Require attached volumes healthy before touching a node
+  ansible.builtin.assert:
+    that:
+      - item.status.state == 'detached' or item.status.robustness == 'healthy'
+    fail_msg: Attached Longhorn volume is not healthy; repair storage before maintenance.
+  loop: "{{ (maintenance_longhorn.results[0].stdout | from_json)[ 'items' ] }}"
+  loop_control:
+    label: "{{ item.metadata.name }}"
+
+- name: Record independent configuration identity
+  ansible.builtin.stat:
+    path: /etc/containerd-k8s/config.toml
+    checksum_algorithm: sha256
+  register: maintenance_config_before
+
+- name: Gather current service state
+  ansible.builtin.service_facts:
+
+- name: Require the independent runtime and retired legacy services
+  ansible.builtin.assert:
+    that:
+      - maintenance_config_before.stat.isreg | default(false)
+      - ansible_facts.services['containerd-k8s.service'].state == 'running'
+      - ansible_facts.services['docker.service'].state in ['stopped', 'inactive']
+      - ansible_facts.services['glusterd.service'].state in ['stopped', 'inactive']
+    fail_msg: Runtime or approved retirement state changed; stop and reinventory.
+
+- name: Read installed independent runtime version
+  ansible.builtin.command: /opt/containerd-k8s/bin/containerd --version
+  register: maintenance_runtime_before
+  changed_when: false
+  check_mode: false
+
+- name: Require the reviewed same-minor patch path
+  ansible.builtin.assert:
+    that:
+      - maintenance_runtime_before.stdout.split()[2] in ['v2.4.1', 'v2.4.2']
+    fail_msg: Only the reviewed containerd 2.4.1 to 2.4.2 patch or an idempotent rerun is supported.
+
+- name: Refuse retirement if the stock runtime has any actual running tasks
+  ansible.builtin.command:
+    argv: [python3, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/legacy_runtime_guard.py') }}"]
+  changed_when: false
+  check_mode: false
+  when: security_maintenance_retire_unused_containerd | bool
+
+- name: Drain and patch this node
+  when: not ansible_check_mode
+  block:
+    - name: Freeze original attached volumes and active controller readiness before cordoning
+      ansible.builtin.command:
+        argv: [python3, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/recovery_guard.py') }}", freeze]
+      become: false
+      delegate_to: "{{ groups['master'][0] }}"
+      register: maintenance_recovery_before
+      changed_when: false
+
+    - name: Protect the controller recovery receipt directory
+      ansible.builtin.file:
+        path: "{{ security_maintenance_recovery_receipt_dir }}"
+        state: directory
+        mode: '0700'
+      become: false
+      delegate_to: localhost
+
+    - name: Allocate a unique durable controller receipt before cordoning
+      ansible.builtin.tempfile:
+        state: file
+        path: "{{ security_maintenance_recovery_receipt_dir }}"
+        prefix: "{{ inventory_hostname }}-"
+        suffix: .json
+      become: false
+      delegate_to: localhost
+      register: maintenance_recovery_receipt
+
+    - name: Persist exact original resource identities before cordoning
+      ansible.builtin.copy:
+        content: "{{ {'schema_version': 1, 'node': inventory_hostname, 'captured_at': now(utc=true, fmt='%Y-%m-%dT%H:%M:%SZ'), 'frozen': (maintenance_recovery_before.stdout | from_json).frozen} | to_nice_json }}\n"
+        dest: "{{ maintenance_recovery_receipt.path }}"
+        mode: '0600'
+      become: false
+      delegate_to: localhost
+
+    - name: Refuse predictable drain blockers before cordoning
+      ansible.builtin.command:
+        argv: [python3, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/pod_guard.py') }}", "{{ inventory_hostname }}", "{{ (security_maintenance_allow_reviewed_emptydir | bool) | ternary('true', 'false') }}", "{{ security_maintenance_emptydir_allowlist | to_json }}"]
+      become: false
+      delegate_to: "{{ groups['master'][0] }}"
+      changed_when: false
+
+    - name: Cordon this node
+      ansible.builtin.command:
+        argv: [kubectl, cordon, "{{ inventory_hostname }}"]
+      become: false
+      delegate_to: "{{ groups['master'][0] }}"
+      changed_when: true
+
+    - name: Recheck exact disposable mount identities after cordoning
+      ansible.builtin.command:
+        argv: [python3, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/pod_guard.py') }}", "{{ inventory_hostname }}", "{{ (security_maintenance_allow_reviewed_emptydir | bool) | ternary('true', 'false') }}", "{{ security_maintenance_emptydir_allowlist | to_json }}"]
+      become: false
+      delegate_to: "{{ groups['master'][0] }}"
+      changed_when: false
+
+    - name: Drain with eviction and every existing PDB enforced
+      ansible.builtin.command:
+        argv: "{{ ['kubectl', 'drain', inventory_hostname, '--ignore-daemonsets', '--timeout=' + security_maintenance_drain_timeout] + ((security_maintenance_allow_reviewed_emptydir | bool) | ternary(['--delete-emptydir-data'], [])) }}"
+      become: false
+      delegate_to: "{{ groups['master'][0] }}"
+      changed_when: true
+
+    - name: Update only selected packages from Ubuntu's security pocket
+      ansible.builtin.apt:
+        name: "{{ security_maintenance_ubuntu_packages }}"
+        state: latest
+        default_release: jammy-security
+        update_cache: true
+        cache_valid_time: 3600
+        fail_on_autoremove: true
+        policy_rc_d: 101
+      when: security_maintenance_ubuntu_packages | length > 0
+
+    - name: Recheck the stock socket is unused immediately before retirement
+      ansible.builtin.command:
+        argv: [python3, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/legacy_runtime_guard.py') }}"]
+      changed_when: false
+      when: security_maintenance_retire_unused_containerd | bool
+
+    - name: Stop and disable only the verified unused stock runtime
+      ansible.builtin.systemd_service:
+        name: containerd.service
+        state: stopped
+        enabled: false
+      when: security_maintenance_retire_unused_containerd | bool
+
+    - name: Apply separately reviewed exact optional package versions
+      ansible.builtin.apt:
+        name: "{{ security_maintenance_extra_packages }}"
+        state: present
+        fail_on_autoremove: true
+        policy_rc_d: 101
+      when: security_maintenance_extra_packages | length > 0
+
+    - name: Install the independent same-minor runtime patch
+      ansible.builtin.include_tasks: runtime.yml
+      when: maintenance_runtime_before.stdout.split()[2] != containerd_version
+
+    - name: Verify configuration bytes are unchanged
+      ansible.builtin.stat:
+        path: /etc/containerd-k8s/config.toml
+        checksum_algorithm: sha256
+      register: maintenance_config_after
+
+    - name: Require the exact retained independent configuration
+      ansible.builtin.assert:
+        that:
+          - maintenance_config_after.stat.checksum == maintenance_config_before.stat.checksum
+
+    - name: Read the kernel before considering a reboot
+      ansible.builtin.command: uname -r
+      register: maintenance_kernel_before_reboot
+      changed_when: false
+
+    - name: Check whether installed updates require a reboot
+      ansible.builtin.stat:
+        path: /var/run/reboot-required
+      register: maintenance_reboot_required
+
+    - name: Reboot only when selected and required
+      ansible.builtin.reboot:
+        reboot_timeout: 900
+        post_reboot_delay: 20
+      when:
+        - security_maintenance_reboot | bool
+        - maintenance_reboot_required.stat.exists or maintenance_kernel_before_reboot.stdout != security_maintenance_expected_kernel
+
+    - name: Read the actually running kernel
+      ansible.builtin.command: uname -r
+      register: maintenance_running_kernel
+      changed_when: false
+
+    - name: Verify the selected kernel was actually booted
+      ansible.builtin.assert:
+        that:
+          - maintenance_running_kernel.stdout == security_maintenance_expected_kernel
+      when: security_maintenance_reboot | bool
+
+    - name: Verify the daemon through the authoritative CRI socket
+      ansible.builtin.command:
+        argv: [/opt/containerd-k8s/bin/crictl, --runtime-endpoint, "{{ containerd_socket }}", version]
+      register: maintenance_cri_version
+      changed_when: false
+
+    - name: Require the running patched daemon
+      ansible.builtin.assert:
+        that:
+          - maintenance_cri_version.stdout is search('(?m)^RuntimeVersion:\s+v?' + (containerd_version | regex_replace('^v', '') | regex_escape) + '\s*$')
+
+    - name: Wait for this node to become Ready
+      ansible.builtin.command:
+        argv: [kubectl, wait, "node/{{ inventory_hostname }}", --for=condition=Ready, "--timeout={{ security_maintenance_ready_timeout }}", "--request-timeout={{ security_maintenance_ready_timeout }}"]
+      become: false
+      delegate_to: "{{ groups['master'][0] }}"
+      changed_when: false
+      register: maintenance_node_ready
+      until: maintenance_node_ready.rc == 0
+      retries: 40
+      delay: 5
+
+    - name: Verify retired services remain stopped
+      ansible.builtin.service_facts:
+
+    - name: Preserve Docker and Gluster retirement after package changes or reboot
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['docker.service'].state in ['stopped', 'inactive']
+          - ansible_facts.services['glusterd.service'].state in ['stopped', 'inactive']
+
+    - name: Uncordon after successful host checks
+      ansible.builtin.command:
+        argv: [kubectl, uncordon, "{{ inventory_hostname }}"]
+      become: false
+      delegate_to: "{{ groups['master'][0] }}"
+      changed_when: true
+
+    - name: Require every original volume and active controller recovered before the next node
+      ansible.builtin.command:
+        argv: [python3, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/recovery_guard.py') }}", check, "{{ (maintenance_recovery_before.stdout | from_json).frozen | to_json }}"]
+      become: false
+      delegate_to: "{{ groups['master'][0] }}"
+      register: maintenance_recovered_resources
+      changed_when: false
+      until: maintenance_recovered_resources.rc == 0 and (maintenance_recovered_resources.stdout | from_json).ready | bool
+      retries: 60
+      delay: 10
+
+    - name: Report residual kernel exposure honestly
+      ansible.builtin.debug:
+        msg: "Running kernel {{ maintenance_running_kernel.stdout }}. CVE-2026-98260 remains unpatched in Jammy GA/HWE as of 2026-10-23; this task is not a clean security verdict. Reboot requested: {{ security_maintenance_reboot | bool }}."
+  rescue:
+    - name: Stop the rollout and preserve failure isolation
+      ansible.builtin.fail:
+        msg: "Maintenance failed on {{ inventory_hostname }}. No automatic rollback, force eviction or uncordon is attempted. Inspect the node's current cordon, storage and failed task before recovery; previous changes are retained."

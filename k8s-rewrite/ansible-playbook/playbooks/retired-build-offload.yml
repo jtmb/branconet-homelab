@@ -1,0 +1,8 @@
+---
+- name: Inspect or archive only two exact retired public master build trees
+  hosts: master
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  roles: [retired_build_offload]

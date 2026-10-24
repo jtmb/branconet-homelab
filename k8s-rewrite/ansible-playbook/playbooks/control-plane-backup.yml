@@ -1,0 +1,7 @@
+---
+- name: Separate encrypted control-plane checkpoint before master maintenance
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - control_plane_backup

@@ -1,0 +1,169 @@
+---
+- name: Report the disabled exact vendor scope
+  ansible.builtin.debug:
+    msg: Explicit apply is required; this separate path scans no other image and never deploys.
+  when: not vendor_core_scan_apply | bool or ansible_check_mode
+
+- name: Operate only the separately owned two-image upstream-registry scanner
+  when: vendor_core_scan_apply | bool and not ansible_check_mode
+  block:
+    - name: Require the exact reviewed worker and operation
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'workernode1'
+          - ansible_host == '192.168.0.6'
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - vendor_core_scan_phase in ['setup', 'scan', 'status']
+          - vendor_core_scan_phase == 'setup' or vendor_core_scan_attempt is match('^[0-9a-f]{12}$')
+
+    - name: Derive fixed scanner and content-addressed source paths
+      ansible.builtin.set_fact:
+        vendor_core_scan_root: /home/james/.local/share/branconet-migration/vendor-core-scan-20261024
+        vendor_core_scan_helper_sha256: "{{ lookup('ansible.builtin.file', role_path ~ '/files/scan_vendor.py', rstrip=false) | hash('sha256') }}"
+
+    - name: Derive the single immutable helper and attempt path
+      ansible.builtin.set_fact:
+        vendor_core_scan_helper: "{{ vendor_core_scan_root }}/helpers/{{ vendor_core_scan_helper_sha256 }}/scan_vendor.py"
+        vendor_core_scan_attempt_root: "{{ vendor_core_scan_root }}/attempts/{{ vendor_core_scan_attempt }}"
+
+    - name: Refuse symlinked ancestors or conflicting retained scanner directories
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -c
+          - |
+            from pathlib import Path
+            import os,pwd,re,stat,sys
+            base=Path('/home/james/.local/share/branconet-migration')
+            assert base.resolve()==base and base.is_dir()
+            assert not base.stat().st_mode & 0o002
+            owner=pwd.getpwnam('james')
+            assert base.stat().st_uid==owner.pw_uid and base.stat().st_gid==owner.pw_gid
+            root=base/'vendor-core-scan-20261024'
+            assert re.fullmatch('[0-9a-f]{64}',sys.argv[1])
+            for path in [root,root/'helpers',root/'attempts',root/'helpers'/sys.argv[1]]:
+                if os.path.lexists(path):
+                    info=path.lstat()
+                    assert stat.S_ISDIR(info.st_mode) and path.resolve()==path
+                    assert info.st_uid==0 and info.st_gid==owner.pw_gid
+                    assert stat.S_IMODE(info.st_mode)==0o750
+          - "{{ vendor_core_scan_helper_sha256 }}"
+      changed_when: false
+
+    - name: Create only this new public-input scanner's directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: james
+        mode: '0750'
+      loop:
+        - "{{ vendor_core_scan_root }}"
+        - "{{ vendor_core_scan_root }}/helpers"
+        - "{{ vendor_core_scan_root }}/helpers/{{ vendor_core_scan_helper_sha256 }}"
+        - "{{ vendor_core_scan_root }}/attempts"
+      when: vendor_core_scan_phase == 'setup'
+
+    - name: Retain the new helper without replacing any previous version
+      ansible.builtin.copy:
+        src: scan_vendor.py
+        dest: "{{ vendor_core_scan_helper }}"
+        owner: root
+        group: james
+        mode: '0440'
+        force: false
+        follow: false
+      when: vendor_core_scan_phase == 'setup'
+
+    - name: Verify exact helper identity before any operation
+      ansible.builtin.stat:
+        path: "{{ vendor_core_scan_helper }}"
+        follow: false
+        checksum_algorithm: sha256
+      register: vendor_core_scan_source
+
+    - name: Refuse absent or changed operational source
+      ansible.builtin.assert:
+        that:
+          - vendor_core_scan_source.stat.isreg | default(false)
+          - not vendor_core_scan_source.stat.islnk | default(false)
+          - vendor_core_scan_source.stat.uid == 0
+          - vendor_core_scan_source.stat.checksum == vendor_core_scan_helper_sha256
+
+    - name: Verify the existing read-only public input snapshot without copying or changing it
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, "{{ vendor_core_scan_helper }}", setup]
+      changed_when: false
+      when: vendor_core_scan_phase == 'setup'
+
+    - name: Exclusively prepare one new batch before its unit starts
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, "{{ vendor_core_scan_helper }}", prepare, --attempt, "{{ vendor_core_scan_attempt }}"]
+      changed_when: true
+      when: vendor_core_scan_phase == 'scan'
+
+    - name: Launch only the separately bounded nonroot public-registry batch
+      ansible.builtin.command:
+        argv:
+          - systemd-run
+          - "--unit=branconet-vendor-core-scan-{{ vendor_core_scan_attempt }}"
+          - --property=Type=exec
+          - --property=User=james
+          - --property=Group=james
+          - --property=MemoryMax=1073741824
+          - --property=MemorySwapMax=0
+          - --property=CPUQuota=200%
+          - --property=TasksMax=128
+          - --property=Nice=10
+          - --property=UMask=0077
+          - --property=RuntimeMaxSec=900
+          - --property=TimeoutStopSec=30
+          - --property=KillMode=control-group
+          - --property=LimitFSIZE=268435456
+          - --property=PrivateNetwork=no
+          - --property=PrivateDevices=yes
+          - --property=PrivateTmp=yes
+          - --property=NoNewPrivileges=yes
+          - --property=CapabilityBoundingSet=
+          - --property=ProtectSystem=strict
+          - --property=ProtectHome=tmpfs
+          - --property=ProtectKernelTunables=yes
+          - --property=ProtectKernelModules=yes
+          - --property=ProtectKernelLogs=yes
+          - --property=ProtectControlGroups=yes
+          - "--property=BindReadOnlyPaths={{ vendor_core_scan_root }} /home/james/.local/share/branconet-migration/vendor-cert-manager-scan-20261024/inputs"
+          - "--property=BindPaths={{ vendor_core_scan_attempt_root }}"
+          - "--property=ReadWritePaths={{ vendor_core_scan_attempt_root }}"
+          - "--property=NoExecPaths={{ vendor_core_scan_attempt_root }}"
+          - "--property=InaccessiblePaths=-/etc/kubernetes -/etc/rancher -/var/lib/kubelet -/var/lib/longhorn -/run/containerd-k8s -/run/containerd -/run/docker.sock -/var/run/docker.sock -/var/run/secrets"
+          - "--property=StandardOutput=append:{{ vendor_core_scan_attempt_root }}/unit-metadata.log"
+          - "--property=StandardError=append:{{ vendor_core_scan_attempt_root }}/unit-metadata.log"
+          - --
+          - /usr/bin/env
+          - -i
+          - PATH=/usr/bin:/bin
+          - GOMAXPROCS=2
+          - GOMEMLIMIT=512MiB
+          - LANG=C
+          - LC_ALL=C
+          - /usr/bin/python3
+          - -B
+          - "{{ vendor_core_scan_helper }}"
+          - run
+          - --attempt
+          - "{{ vendor_core_scan_attempt }}"
+      changed_when: true
+      when: vendor_core_scan_phase == 'scan'
+
+    - name: Return existing batch status without replaying acquisition or scanning
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, "{{ vendor_core_scan_helper }}", status, --attempt, "{{ vendor_core_scan_attempt }}"]
+      changed_when: false
+      register: vendor_core_scan_status
+      when: vendor_core_scan_phase == 'status'
+
+    - name: Report only fixed-scope metadata
+      ansible.builtin.debug:
+        msg: "{{ vendor_core_scan_status.stdout | from_json }}"
+      when: vendor_core_scan_phase == 'status'

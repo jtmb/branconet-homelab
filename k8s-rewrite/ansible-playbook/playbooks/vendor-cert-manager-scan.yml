@@ -1,0 +1,8 @@
+---
+- name: Inspect only the fixed official cert-manager patch images
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  roles: [vendor_cert_manager_scan]

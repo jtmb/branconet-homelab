@@ -1,0 +1,95 @@
+---
+- name: Require the exact worker1-only opt-in scope
+  ansible.builtin.assert:
+    that:
+      - worker1_image_build_apply | bool
+      - inventory_hostname == 'workernode1'
+      - ansible_host == '192.168.0.6'
+      - ansible_user == 'james'
+      - ansible_port | int == 2002
+      - worker1_image_build_phase in ['setup', 'runtime', 'status', 'stop']
+      - worker1_image_build_service in ['seerr', 'ytptube', 'jackett', 'pihole']
+      - worker1_image_build_attempt is match('^(initial|r[1-9][0-9]{0,2})$')
+      - worker1_image_build_bin_dir == '/home/brajam/.local/share/branconet-migration/seerr-image-20261023/bin'
+      - worker1_image_build_archive_sha256 == 'a59539daf547fe0958efe2d07e41c0a6944e1112a66d7e519ec1cf5b673ef15b'
+    fail_msg: Only explicit reviewed worker1 application builds are supported; default apply is false.
+
+- name: Derive fresh service-specific identities independently of inventory overrides
+  ansible.builtin.set_fact:
+    worker1_image_build_root: "/home/james/.local/share/branconet-migration/worker1-image-build-20261023/{{ worker1_image_build_service }}{{ '' if worker1_image_build_attempt == 'initial' else '-' + worker1_image_build_attempt }}"
+    worker1_image_build_unit_prefix: "bortus-worker1-{{ worker1_image_build_service }}-build-20261023{{ '' if worker1_image_build_attempt == 'initial' else '-' + worker1_image_build_attempt }}"
+
+- name: Reject any higher-precedence override of the exact fresh identities
+  ansible.builtin.assert:
+    that:
+      - worker1_image_build_root == '/home/james/.local/share/branconet-migration/worker1-image-build-20261023/' + worker1_image_build_service + ('' if worker1_image_build_attempt == 'initial' else '-' + worker1_image_build_attempt)
+      - worker1_image_build_unit_prefix == 'bortus-worker1-' + worker1_image_build_service + '-build-20261023' + ('' if worker1_image_build_attempt == 'initial' else '-' + worker1_image_build_attempt)
+
+- name: Inspect the separate worker1 input seal
+  ansible.builtin.stat:
+    path: "{{ worker1_image_build_root }}/build-inputs.json"
+  register: worker1_image_build_seal
+
+- name: Stage fresh independently sealed inputs only
+  ansible.builtin.include_tasks: setup.yml
+  when: worker1_image_build_phase == 'setup'
+
+- name: Require sealed setup before operational phases
+  ansible.builtin.assert:
+    that: [worker1_image_build_seal.stat.exists]
+    fail_msg: Complete and review this fresh worker1 setup before runtime/status/stop.
+  when: worker1_image_build_phase != 'setup'
+
+- name: Verify sealed inputs without running an application
+  ansible.builtin.command:
+    argv: [/usr/bin/python3, "{{ worker1_image_build_root }}/build_phase.py", status, "{{ worker1_image_build_root }}", "{{ worker1_image_build_unit_prefix }}", "{{ worker1_image_build_service }}"]
+  changed_when: false
+
+- name: Launch only the fresh bounded runtime unit
+  ansible.builtin.command:
+    argv:
+      - systemd-run
+      - "--unit={{ worker1_image_build_unit_prefix }}-runtime"
+      - --property=Type=exec
+      - --property=MemoryMax=3221225472
+      - --property=MemorySwapMax=0
+      - --property=CPUQuota=150%
+      - --property=AllowedCPUs=0-1
+      - --property=TasksMax=512
+      - --property=Delegate=yes
+      - --property=KillMode=control-group
+      - --property=TimeoutStopSec=45
+      - --property=RuntimeMaxSec=7200
+      - --property=UMask=0077
+      - "--property=StandardOutput=append:{{ worker1_image_build_root }}/runtime-unit.log"
+      - "--property=StandardError=append:{{ worker1_image_build_root }}/runtime-unit.log"
+      - --
+      - /usr/bin/python3
+      - "{{ worker1_image_build_root }}/build_phase.py"
+      - runtime
+      - "{{ worker1_image_build_root }}"
+      - "{{ worker1_image_build_unit_prefix }}"
+      - "{{ worker1_image_build_service }}"
+  changed_when: true
+  when: worker1_image_build_phase == 'runtime'
+
+- name: Inspect or stop only the exact owned runtime unit
+  ansible.builtin.command:
+    argv: [/usr/bin/python3, "{{ worker1_image_build_root }}/build_phase.py", "{{ 'stop' if worker1_image_build_phase == 'stop' else 'status' }}", "{{ worker1_image_build_root }}", "{{ worker1_image_build_unit_prefix }}", "{{ worker1_image_build_service }}"]
+  changed_when: worker1_image_build_phase == 'stop'
+  register: worker1_image_build_status
+
+- name: Report retained metadata only
+  ansible.builtin.debug:
+    msg: "{{ worker1_image_build_status.stdout | from_json }}"
+
+- name: Tighten only completed owned public build output modes
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -c
+      - "import pathlib,os,stat,sys; r=pathlib.Path(sys.argv[1]); p=[r/(sys.argv[2]+'-security-20261023.oci.tar'),r/'runtime-build-metadata.json']; assert all(not x.is_symlink() and x.resolve().parent==r and stat.S_ISREG(x.stat().st_mode) and x.stat().st_uid==0 for x in p); [os.chmod(x,0o600) for x in p]"
+      - "{{ worker1_image_build_root }}"
+      - "{{ worker1_image_build_service }}"
+  when: ((worker1_image_build_status.stdout | from_json).receipts.runtime.exit_code | default(1)) == 0
+  changed_when: true

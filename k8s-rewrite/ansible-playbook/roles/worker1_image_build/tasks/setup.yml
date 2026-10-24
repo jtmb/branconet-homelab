@@ -1,0 +1,116 @@
+---
+- name: Require an explicit controller recipe and frozen Seerr lock where applicable
+  ansible.builtin.assert:
+    that:
+      - worker1_image_build_context_dir is match('^/[^\n]+$')
+      - worker1_image_build_service != 'seerr' or worker1_image_build_seerr_lock_path is match('^/[^\n]+$')
+
+- name: Define the fixed recipe allowlist
+  ansible.builtin.set_fact:
+    worker1_image_build_recipe_files: "{{ {'seerr': ['Dockerfile', 'apply-overrides.cjs', 'security-overrides.json'], 'ytptube': ['Dockerfile', 'patch-provider.py', 'verify-python.py'], 'jackett': ['Dockerfile'], 'pihole': ['Dockerfile']}[worker1_image_build_service] }}"
+    worker1_image_build_copy_inputs:
+      - {path: "{{ worker1_image_build_bin_dir }}/buildkitd", relative: bin/buildkitd}
+      - {path: "{{ worker1_image_build_bin_dir }}/buildctl", relative: bin/buildctl}
+      - {path: "{{ worker1_image_build_bin_dir }}/buildkit-runc", relative: bin/buildkit-runc}
+      - {path: "{{ role_path }}/files/build_phase.py", relative: build_phase.py}
+
+- name: Add only the selected recipe files
+  ansible.builtin.set_fact:
+    worker1_image_build_copy_inputs: "{{ worker1_image_build_copy_inputs + [{'path': worker1_image_build_context_dir + '/' + item, 'relative': 'context/' + item}] }}"
+  loop: "{{ worker1_image_build_recipe_files }}"
+
+- name: Include only the exact separately exported Seerr lock
+  ansible.builtin.set_fact:
+    worker1_image_build_copy_inputs: "{{ worker1_image_build_copy_inputs + [{'path': worker1_image_build_seerr_lock_path, 'relative': 'context/pnpm-lock.yaml'}] }}"
+  when: worker1_image_build_service == 'seerr'
+
+- name: Hash the controller's public inputs without privilege escalation
+  ansible.builtin.stat:
+    path: "{{ item.path }}"
+    checksum_algorithm: sha256
+  delegate_to: localhost
+  become: false
+  loop: "{{ worker1_image_build_copy_inputs }}"
+  loop_control:
+    label: "{{ item.relative }}"
+  register: worker1_image_build_input_stats
+
+- name: Require regular source files and the reviewed Seerr lock identity
+  ansible.builtin.assert:
+    that:
+      - item.stat.isreg | default(false)
+      - not (item.stat.islnk | default(false))
+      - item.item.relative != 'context/pnpm-lock.yaml' or item.stat.checksum == '9665b245267e7c864210bdf85f1098c0891f30946c64b3781f44077fff0b7811'
+  loop: "{{ worker1_image_build_input_stats.results }}"
+  loop_control:
+    label: "{{ item.item.relative }}"
+
+- name: Bind the copied files to the independently staged controller bytes
+  ansible.builtin.set_fact:
+    worker1_image_build_manifest: {}
+
+- name: Populate immutable input hashes
+  ansible.builtin.set_fact:
+    worker1_image_build_manifest: "{{ worker1_image_build_manifest | combine({item.item.relative: item.stat.checksum}) }}"
+  loop: "{{ worker1_image_build_input_stats.results }}"
+  loop_control:
+    label: "{{ item.item.relative }}"
+
+- name: Inspect this fresh service root
+  ansible.builtin.stat:
+    path: "{{ worker1_image_build_root }}"
+  register: worker1_image_build_directory
+
+- name: Read the actual worker root filesystem identity for the new seal
+  ansible.builtin.command:
+    argv: [/usr/bin/findmnt, --json, --target, /, --output, "UUID,SOURCE,FSTYPE"]
+  changed_when: false
+  register: worker1_image_build_filesystem
+
+- name: Require an actual UUID-bearing ext4 root filesystem
+  ansible.builtin.assert:
+    that:
+      - (worker1_image_build_filesystem.stdout | from_json).filesystems | length == 1
+      - (worker1_image_build_filesystem.stdout | from_json).filesystems[0].uuid is match('^[0-9a-fA-F-]{36}$')
+      - (worker1_image_build_filesystem.stdout | from_json).filesystems[0].fstype == 'ext4'
+
+- name: Preserve all prior complete or incomplete attempts
+  ansible.builtin.assert:
+    that: [not worker1_image_build_directory.stat.exists]
+    fail_msg: This service attempt already exists; setup never overwrites, replays or cleans it.
+
+- name: Create only the new worker1 protected directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  loop:
+    - /home/james/.local/share/branconet-migration/worker1-image-build-20261023
+    - "{{ worker1_image_build_root }}"
+    - "{{ worker1_image_build_root }}/bin"
+    - "{{ worker1_image_build_root }}/context"
+    - "{{ worker1_image_build_root }}/empty-home"
+    - "{{ worker1_image_build_root }}/empty-home/.docker"
+
+- name: Copy only the selected public recipe, own helper and verified tools
+  ansible.builtin.copy:
+    src: "{{ item.item.path }}"
+    dest: "{{ worker1_image_build_root }}/{{ item.item.relative }}"
+    owner: root
+    group: root
+    mode: "{{ '0700' if item.item.relative is match('^bin/') else '0600' }}"
+    force: false
+  loop: "{{ worker1_image_build_input_stats.results }}"
+  loop_control:
+    label: "{{ item.item.relative }}"
+
+- name: Seal this worker1-only public input context
+  ansible.builtin.copy:
+    dest: "{{ worker1_image_build_root }}/build-inputs.json"
+    owner: root
+    group: root
+    mode: '0600'
+    force: false
+    content: "{{ {'buildkit_version': 'v0.34.1', 'buildkit_archive_sha256': worker1_image_build_archive_sha256, 'files': worker1_image_build_manifest, 'root': worker1_image_build_root, 'unit_prefix': worker1_image_build_unit_prefix, 'service': worker1_image_build_service, 'attempt': worker1_image_build_attempt, 'root_filesystem': (worker1_image_build_filesystem.stdout | from_json).filesystems[0]} | to_nice_json }}\n"
