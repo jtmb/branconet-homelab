@@ -47,3 +47,9 @@ Use supported Node 22 from `front-end/`:
 The QA harness is loopback-only with disposable public test credentials. Send `stop` on interactive stdin to close its server and remove its temporary fixture. No fixture credential is packaged into the application.
 
 Source integration requires the coordinated current public checkpoint, final conflict review and normal protections. Broader release PR #28, private root docs, existing release gates and production remain separate. No Actions enablement, image publication or production deployment accompanies this feature.
+
+## Public owner checkpoint integration
+
+Public checkpoint `15fd0087897d6ce5435b6994be0c3da980846e9b` adds only four Ansible-selection runner/test files. Its changed paths have no intersection with the feature. It was merged into the isolated feature branch without conflicts; those four files match the public owner commit exactly, and application/scanner/build source remains byte-identical to qualified feature commit `17f6feefc4872d4e72963917548fadef79c87f88`.
+
+After integration, runner/planner syntax and default discovery pass, both new TypeScript test files remain selected, and the focused group passes 18/18. Earlier full lint/types/build/production HTTP/rendered/scanner evidence retains its stated scope; no full inherited-suite replay or blanket acceptance claim follows this owner-only test integration. Fresh Actions permissions remain disabled. The draft PR still requires the coordinator's current-head/merge-window protocol and normal protections.
