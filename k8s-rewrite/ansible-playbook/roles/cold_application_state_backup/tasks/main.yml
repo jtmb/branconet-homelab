@@ -4,7 +4,8 @@
     that:
       - cold_application_state_apply | bool
       - inventory_hostname == 'masternode'
-      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025']
+      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025']
+      - cold_application_state_generation != 'upstream-unpackerr-20261025' or cold_application_state_app == 'unpackerr'
       - cold_application_state_generation not in ['media-security-20261025', 'upstream-media-20261025'] or cold_application_state_app in ['bazarr', 'radarr', 'sonarr']
       - (cold_application_state_app == 'seerr') == (cold_application_state_generation == 'upstream-seerr-20261025')
       - cold_application_state_app in ['seerr', 'radarr', 'sonarr', 'bazarr', 'tautulli', 'vaultwarden', 'wordpress-redis', 'wordpress', 'jackett', 'plex', 'unpackerr', 'qbittorrent', 'homepage', 'qbit-monitor', 'ruckus-db', 'mealie', 'xteve', 'xteve-config']
