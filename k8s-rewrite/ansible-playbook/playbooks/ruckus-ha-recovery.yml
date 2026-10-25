@@ -1,0 +1,8 @@
+---
+- name: Invoke the opt-in same-image Ruckus HA recovery controller
+  hosts: master
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  roles:
+    - ruckus_ha_recovery
