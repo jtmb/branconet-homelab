@@ -4,11 +4,26 @@
     that:
       - cold_application_state_apply | bool
       - inventory_hostname == 'masternode'
-      - cold_application_state_app in ['radarr', 'sonarr', 'bazarr', 'tautulli', 'vaultwarden']
+      - cold_application_state_app in ['radarr', 'sonarr', 'bazarr', 'tautulli', 'vaultwarden', 'wordpress-redis', 'wordpress', 'jackett', 'plex']
       - cold_application_state_output_dir is match('^/home/brajam/[^\r\n]+$')
       - cold_application_state_node in ['workernode1', 'workernode2']
-      - cold_application_state_reader_uid | int in [0, 1000]
+      - cold_application_state_reader_uid | int in [0, 33, 999, 1000]
       - cold_application_state_reader_gid | int == cold_application_state_reader_uid | int
+
+- name: Capture WordPress transactional database before its complete file archive
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - "{{ playbook_dir }}/../../../scripts/migration/backup-wordpress-database.py"
+      - --apply
+      - --output-dir
+      - "{{ cold_application_state_output_dir }}/database"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when:
+    - not ansible_check_mode
+    - cold_application_state_app == 'wordpress'
 
 - name: Run the one-app helper on the native WSL controller
   ansible.builtin.command:

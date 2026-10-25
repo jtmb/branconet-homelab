@@ -1,0 +1,7 @@
+---
+- name: Preserve both explicitly scoped cold Pi-hole state claims
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - cold_pihole_state_backup

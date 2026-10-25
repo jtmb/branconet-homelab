@@ -1,0 +1,45 @@
+---
+- name: Report disabled local scan without preparing files or starting a unit
+  ansible.builtin.debug:
+    msg: Explicit apply is required; default and check mode perform no setup or scan.
+  when: not local_oci_scan_apply | bool or ansible_check_mode
+
+- name: Dispatch only the explicitly selected local operator phase
+  when: local_oci_scan_apply | bool and not ansible_check_mode
+  block:
+    - name: Require the local connection and exact supported operation
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'localhost'
+          - ansible_connection == 'local'
+          - local_oci_scan_phase in ['setup', 'scan', 'status']
+          - local_oci_scan_source_kind in ['github-actions', 'local-operator']
+          - local_oci_scan_service == '' or local_oci_scan_service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo']
+          - local_oci_scan_storage_profile in ['legacy', 'offloaded']
+          - local_oci_scan_storage_profile != 'offloaded' or (local_oci_scan_service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo'] and local_oci_scan_source_kind == 'local-operator') or (local_oci_scan_service == 'jackett' and local_oci_scan_source_kind == 'github-actions')
+          - local_oci_scan_attempt == '' or local_oci_scan_attempt is match('^[0-9a-f]{12}$')
+
+    - name: Invoke the reviewed local controller with structured public identity arguments
+      ansible.builtin.command:
+        argv: >-
+          {{ ['/usr/bin/python3', '-I', '-B', role_path ~ '/../../../../scripts/migration/run-local-oci-scan.py',
+              '--apply', '--phase', local_oci_scan_phase,
+              '--storage-profile', local_oci_scan_storage_profile,
+              '--source-kind', local_oci_scan_source_kind,
+              '--attempt', local_oci_scan_attempt,
+              '--ci-run-id', local_oci_scan_ci_run_id | string,
+              '--ci-artifact-id', local_oci_scan_ci_artifact_id | string,
+              '--ci-provenance-sha256', local_oci_scan_ci_provenance_sha256,
+              '--local-run-id', local_oci_scan_local_run_id,
+              '--local-provenance-sha256', local_oci_scan_local_provenance_sha256,
+              '--archive-sha256', local_oci_scan_archive_sha256,
+              '--root-descriptor', local_oci_scan_root_descriptor]
+             + (['--service', local_oci_scan_service] if local_oci_scan_service else []) }}
+      delegate_to: localhost
+      become: false
+      changed_when: local_oci_scan_phase in ['setup', 'scan']
+      register: local_oci_scan_dispatch
+
+    - name: Report only the local controller's selected metadata
+      ansible.builtin.debug:
+        msg: "{{ local_oci_scan_dispatch.stdout | from_json }}"

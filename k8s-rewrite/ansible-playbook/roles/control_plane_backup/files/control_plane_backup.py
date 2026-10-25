@@ -19,6 +19,14 @@ MAX_SNAPSHOT = 512 * 1024 * 1024
 MAX_CONFIG = 64 * 1024 * 1024
 MAX_ARCHIVE = MAX_SNAPSHOT + MAX_CONFIG + 4 * 1024 * 1024
 AGE_SHA256 = 'eb7dd1b518f0a307c99cd97782623c5321da049154b04acd2d98d21aa7bc9b2c'
+ETCD_SOURCES = {
+    'registry.k8s.io/etcd:3.7.0-0': ('3.7.0', {
+        'registry.k8s.io/etcd@sha256:6ecefbe2510c4a30573a62a4d6dd175acf881ca67003fcd91849a16df7a724d5'}),
+    'registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910': ('3.7.3', {
+        'registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910',
+        'registry.k8s.io/etcd@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910',
+        'registry.k8s.io/etcd@sha256:b4a41c6864baf573f5213dce18b2a95e1002ec6c5a1a26ad900c2ea166ac6d0b'}),
+}
 REQUIRED = {
     'etc/kubernetes/encryption-config.json', 'etc/kubernetes/longhorn-crypto-key',
     *('etc/kubernetes/' + name + '.conf' for name in ['admin', 'kubelet', 'controller-manager', 'scheduler']),
@@ -181,6 +189,9 @@ def main():
     parser.add_argument('--etcd-image', required=True)
     parser.add_argument('--etcd-digest', required=True)
     args = parser.parse_args()
+    need(args.etcd_image in ETCD_SOURCES)
+    expected_version, accepted_runtime_ids = ETCD_SOURCES[args.etcd_image]
+    need(args.etcd_digest in accepted_runtime_ids)
     os.umask(0o077)
     password = os.environ.pop('BRANCONET_MIGRATION_SUDO_PASSWORD', '')
     need(isinstance(password, str) and 0 < len(password) <= 256 and not any(c in password for c in '\r\n\x00'))
@@ -243,7 +254,7 @@ def main():
         prefix = ['kubectl', '-n', 'kube-system', 'exec', 'etcd-masternode', '-c', 'etcd', '--']
         for tool in ['etcdctl', 'etcdutl']:
             version = ssh(prefix + [tool, 'version']).decode()
-            need(tool + ' version: 3.7.0\n' in version)
+            need(tool + ' version: ' + expected_version + '\n' in version)
         receipt['source'] = original
         receipt['phase'] = 'snapshot'; save()
         prepared = json.loads(ssh(['prepare'], privileged=True))

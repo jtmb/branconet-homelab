@@ -164,8 +164,16 @@ def after_os():
 def installer_roots():
     scripts = [Path('/usr/local/bin') / name for name in ['pip', 'pip3', 'pip3.13']]
     need(sorted(Path('/usr/local/bin').glob('pip*')) == sorted(scripts), 'Unexpected installer console scripts')
-    for path in scripts:
+    # The exact vendor image has pip -> pip3. Never follow a replacement link.
+    link = Path('/usr/local/bin/pip')
+    info = link.lstat()
+    need(stat.S_ISLNK(info.st_mode) and info.st_uid == 0 and info.st_gid == 0
+         and os.readlink(link) == 'pip3' and link.resolve() == Path('/usr/local/bin/pip3'),
+         'Unexpected original installer console link')
+    for path in scripts[1:]:
         regular(path)
+        need(sha(path) == '33bb4cb56b66f09b314e6082d3d0132569367bfd760348bef710bd3ea8faed79',
+             'Original installer console content differs')
     for path in [PIP, PIP_METADATA, BOOTSTRAP]:
         need(path.resolve() == path and path.is_dir(), 'Unexpected installer/bootstrap root')
     return [PIP, PIP_METADATA, BOOTSTRAP, *scripts]
@@ -285,6 +293,11 @@ def python_phase():
                     os.chmod(directory, previous['mode'] if previous else 0o755)
                     os.chown(directory, info.st_uid, info.st_gid)
     for path in roots:
+        if path == Path('/usr/local/bin/pip'):
+            need(path.is_symlink() and os.readlink(path) == 'pip3'
+                 and path.parent.resolve() == Path('/usr/local/bin'), 'Installer console link changed')
+            path.unlink()  # Remove only the original link, never its target.
+            continue
         need(path.resolve() == path, 'Installer removal path changed')
         if path.is_dir():
             shutil.rmtree(path)

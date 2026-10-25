@@ -1,0 +1,10 @@
+---
+- name: Prepare only the dedicated F drive build filesystem
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  # Run this local-only playbook through `wsl --user root`; server credentials
+  # are unrelated to the WSL account. The helper checks its actual UID.
+  become: false
+  roles:
+    - local_build_storage

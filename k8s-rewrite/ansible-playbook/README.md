@@ -1,6 +1,6 @@
 # Existing-cluster maintenance
 
-This directory contains **16 opt-in maintenance playbooks for the existing
+This directory contains **21 opt-in maintenance playbooks for the existing
 Branconet cluster**. It does not contain a cluster installer, reset playbook,
 legacy `site.yml`, application variable lookup plugin, or BORTUS application code.
 Use this runbook with [the active plan](../../PLAN.md),
@@ -87,6 +87,11 @@ Do not execute live operations using example/placeholder identities or hashes.
 | `application-image-preload.yml` | Ansible with protected nonsecret settings: exact reviewed OCI cache import only |
 | `vendor-cert-manager-scan.yml` | `run-vendor-cert-manager-scan.py`: only five fixed official1.21.3 public registry images; no deployment |
 | `vendor-core-scan.yml` | `run-vendor-core-scan.py`: exact official etcd3.7.3/CoreDNS1.14.7 scans using the existing verified public inputs; no deployment |
+| `etcd-static-patch.yml` | `run-etcd-static-patch.py`: reviewed singleton3.7.0 to3.7.3 image/config patch, fresh authenticated backup and frozen-revision preservation |
+| `cold-pihole-state-backup.yml` | Full authenticated encrypted Pi-hole config/query/gravity backup after Flux quiescence |
+| `local-oci-scan.yml` | Exact local OCI validation/scanning with explicit legacy or dedicated native F storage |
+| `coredns-patch.yml` | Reviewed CoreDNS image only; original deployment, Corefile, Service and live DNS checks |
+| `local-build-storage.yml` | Create/mount only the dedicated private F-drive ext4 build file; local root, opt-in |
 
 Controller helpers live at repository `scripts/migration/`. Their `--help` and
 corresponding docs define their accepted settings. Sudo is supplied through a

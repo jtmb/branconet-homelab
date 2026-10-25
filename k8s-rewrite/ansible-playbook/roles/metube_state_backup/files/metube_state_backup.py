@@ -54,17 +54,18 @@ def protected(path, private=False):
     return (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
 
 
-def verify_archive(stream):
+def verify_archive(stream, max_entries=4096, max_data=MAX_DATA, max_metadata=MAX_METADATA):
     """Read every archived byte in bounded chunks without extracting plaintext."""
+    need((max_entries, max_data, max_metadata) in [(4096, MAX_DATA, MAX_METADATA), (8192, MAX_DATA, MAX_METADATA), (131072, 16 * 1024**3, 64 * 1024**2)])
     seen = set(); manifest = None; total = 0
     with tarfile.open(fileobj=stream, mode='r|') as archive:
         for member in archive:
             name = member.name.rstrip('/')
             need(name not in seen and not name.startswith('/') and '..' not in pathlib.PurePosixPath(name).parts)
-            seen.add(name); need(len(seen) <= 4097)
+            seen.add(name); need(len(seen) <= max_entries + 1)
             source = archive.extractfile(member) if member.isfile() else None
             if name == 'manifest.json':
-                need(len(seen) == 1 and member.isfile() and member.size <= MAX_METADATA)
+                need(len(seen) == 1 and member.isfile() and member.size <= max_metadata)
                 manifest = json.loads(source.read()); need(manifest.get('schema_version') == 1 and not manifest.get('excluded_new_paths'))
                 continue
             need(manifest is not None and name in manifest['entries'] and name.split('/')[0] in ['data-0', 'data-1'])
@@ -76,7 +77,7 @@ def verify_archive(stream):
                 need(member.issym() and member.linkname == row['link'])
             else:
                 need(row['kind'] == 'file' and member.isfile() and member.size == row['bytes'])
-                total += member.size; need(total <= MAX_DATA)
+                total += member.size; need(total <= max_data)
                 digest = hashlib.sha256(); count = 0
                 for block in iter(lambda: source.read(CHUNK), b''):
                     digest.update(block); count += len(block)

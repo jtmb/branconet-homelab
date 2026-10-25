@@ -19,6 +19,10 @@ spec.loader.exec_module(shared)
 need, canonical, file_hash = shared.need, shared.canonical, shared.file_hash
 # Exact identities from metadata-only strict SSH discovery, 2026-10-23.
 TARGETS = {
+    'plex': ('plex', '62dbb208-e8a8-487c-8264-788cd90e3f9d', '66bf6326-157d-4875-b4c5-1a4d03636f5e', 'f1f3f7d0-4706-43ff-871d-e7b6f7bfe7f2', 'lscr.io/linuxserver/plex@sha256:a3a3a850a64fb747c59f85dbc19b157781c3b9c921a83799127894b0ebdf3a68'),
+    'jackett': ('plex', '8ff38b3e-d114-4a03-adfd-2078d359530c', 'cc166e8b-d45a-4e77-bdfe-e874240cfb4d', '7d4e8aea-5715-4ee3-8e56-352b7b1e99f0', 'linuxserver/jackett:latest@sha256:cdea5d3209a6ab1fb8eb954ec0b8169b7d54274617f42bf5c74f22a92075755f'),
+    'wordpress': ('wordpress', 'c5b60268-c0d4-43f8-8014-4c04e427a122', '65ca0d62-fc47-4063-81a5-4ed59767e907', '90b7695b-3cbf-41d9-b6d1-1f9ee3fd5e2f', 'wordpress:latest@sha256:ee74dc0ebbe7ec43b7f473c0fb4f1dfb6b211d7785f0a95bcdfa10e628c2e67f'),
+    'wordpress-redis': ('wordpress', '5af2864b-476a-427f-97a5-acebc3ffa27f', '7ecea459-5e34-499f-8ab3-c073bc050ae0', 'e44745fc-6fb4-4f4e-b8f8-8968441260ee', 'redis:alpine@sha256:2afba59292f25f5d1af200496db41bea2c6c816b059f57ae74703a50a03a27d0'),
     'radarr': ('plex', '3e2719e0-f7f5-4cf5-8ba9-9d94a68302f0', 'bbd87da8-8746-4e3e-8c11-d8ae3a5d1504', '7f07da4f-a34e-4bd0-a4a0-90b94f5a0fec', 'linuxserver/radarr:latest@sha256:ca43905eaf2dd11425efdcfe184892e43806b1ae0a830440c825cecbc2629cfb'),
     'sonarr': ('plex', '30d19648-2af7-48cd-9d72-e9d41f4ecb20', '8568f6b9-f6a8-4ed2-9720-ce84c3a592e0', 'ff5158b3-cecf-46f9-b85e-ad8566cb9068', 'linuxserver/sonarr:latest@sha256:76414c033f290d3c9f1f9dfad71150abe71d92592369a3377a5903d579e6e2b2'),
     'bazarr': ('plex', '2bfbbb63-e949-4a5d-afd3-a923e2d02472', 'fc21743f-4473-4ac2-9cd6-be84edf2a4f4', '5bddaab4-1974-4211-bcae-8392d1006804', 'ghcr.io/hotio/bazarr:latest@sha256:004b1072983d1af766fc11d048121ded9d296fdd64ea304762afa9dfcaf51edb'),
@@ -32,11 +36,16 @@ def main():
     parser.add_argument('application', choices=sorted(TARGETS))
     parser.add_argument('--output-dir', required=True, type=pathlib.Path)
     parser.add_argument('--node', choices=['workernode1', 'workernode2'], default='workernode2')
-    parser.add_argument('--reader-uid', type=int, choices=[0, 1000], required=True)
-    parser.add_argument('--reader-gid', type=int, choices=[0, 1000], required=True)
+    parser.add_argument('--reader-uid', type=int, choices=[0, 33, 999, 1000], required=True)
+    parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
     args = parser.parse_args()
     need(args.apply and os.name == 'posix' and args.reader_uid == args.reader_gid)
+    need(args.reader_uid == 33 if args.application == 'wordpress' else args.reader_uid == 999 if args.application == 'wordpress-redis' else args.reader_uid in [0, 1000])
+    need(args.application != 'plex' or args.reader_uid == 1000)
+    max_entries = 131072 if args.application == 'plex' else 8192 if args.application == 'wordpress' else 4096
+    max_data = 16 * 1024**3 if args.application == 'plex' else shared.MAX_DATA
+    max_metadata = 64 * 1024**2 if args.application == 'plex' else shared.MAX_METADATA
     os.umask(0o077)
     os.environ.pop('BRANCONET_MIGRATION_SUDO_PASSWORD', None)
     pins = [(p, shared.protected(p, p == shared.IDENTITY)) for p in [shared.AGE, shared.RECIPIENT, shared.IDENTITY]]
@@ -45,10 +54,15 @@ def main():
     need(output.is_absolute() and str(output).startswith('/home/brajam/') and output.resolve() == output and output != REPO and REPO not in output.parents)
     output.mkdir(mode=0o700, parents=True, exist_ok=True)
     info = output.lstat(); need(stat.S_ISDIR(info.st_mode) and info.st_uid == os.getuid() and not info.st_mode & 0o077)
+    if args.application == 'plex':
+        mount = pathlib.Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025')
+        need(mount.is_mount() and mount in output.parents and output.stat().st_dev == mount.stat().st_dev)
+        fs = os.statvfs(output); need(fs.f_bavail * fs.f_frsize >= max_data + 8 * 1024**3)
     run_id = uuid.uuid4().hex
     run = output / (args.application + '-cold-' + run_id); run.mkdir(mode=0o700)
     namespace, deployment_uid, release_uid, claim_uid, original_image = TARGETS[args.application]
-    claim = args.application + '-data-0'
+    claim = 'wordpress-redis-data' if args.application == 'wordpress-redis' else args.application + '-data-0'
+    mount_alias = 'data' if args.application == 'wordpress-redis' else 'data-0'
     receipt = {'schema_version': 1, 'application': args.application, 'status': 'started', 'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'reader_uid': args.reader_uid, 'reader_gid': args.reader_gid, 'restore_verified': False, 'writer_scaled_by_helper': False, 'nas_mounted_or_walked': False, 'temporary_pod_deleted': False}
     children = []; reader = None
 
@@ -65,7 +79,7 @@ def main():
             if body: child.stdin.write(body)
             child.stdin.close(); return child
         data, _ = child.communicate(body, timeout=timeout)
-        need(child.returncode == 0 and len(data) <= shared.MAX_METADATA)
+        need(child.returncode == 0 and len(data) <= max_metadata)
         return data
 
     def kube(*argv, ns=namespace, body=None, timeout=90):
@@ -80,9 +94,9 @@ def main():
         need(dep['metadata']['uid'] == deployment_uid and not dep['metadata'].get('deletionTimestamp') and dep['status'].get('observedGeneration', 0) >= dep['metadata']['generation'])
         need(dep['spec'].get('replicas', 1) == 0 and all(dep['status'].get(k, 0) == 0 for k in ['replicas', 'readyReplicas', 'availableReplicas', 'updatedReplicas']))
         containers = dep['spec']['template']['spec']['containers']; need(len(containers) == 1 and containers[0]['name'] == args.application and containers[0]['image'] == original_image)
-        state_mount = next(m for m in containers[0]['volumeMounts'] if m['name'] == 'data-0')
-        need(state_mount['mountPath'] == ('/data' if args.application == 'vaultwarden' else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
-        need(any(v['name'] == 'data-0' and v.get('persistentVolumeClaim', {}).get('claimName') == claim for v in dep['spec']['template']['spec']['volumes']))
+        state_mount = next(m for m in containers[0]['volumeMounts'] if m['name'] == mount_alias)
+        need(state_mount['mountPath'] == ('/var/www/html' if args.application == 'wordpress' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
+        need(any(v['name'] == mount_alias and v.get('persistentVolumeClaim', {}).get('claimName') == claim for v in dep['spec']['template']['spec']['volumes']))
         need(release['metadata']['uid'] == release_uid and not release['metadata'].get('deletionTimestamp') and release['spec'].get('releaseName') == args.application and release['spec'].get('targetNamespace') == namespace and release['spec'].get('values', {}).get('replicaCount') == 0 and not release['spec'].get('suspend', False))
         need(release['status'].get('observedGeneration', 0) >= release['metadata']['generation'] and any(c['type'] == 'Ready' and c['status'] == 'True' for c in release['status'].get('conditions', [])))
         for pod in get('pods')['items']:
@@ -91,6 +105,8 @@ def main():
             running = any('running' in c.get('state', {}) for key in ['containerStatuses', 'initContainerStatuses', 'ephemeralContainerStatuses'] for c in pod['status'].get(key, []))
             need(pod['status'].get('phase') in ['Failed', 'Succeeded'] and not running)
         node = get('node', args.node)
+        if args.application in ['wordpress-redis', 'wordpress', 'plex']:
+            need(node['status'].get('features', {}).get('supplementalGroupsPolicy') is True)
         need(not node['spec'].get('unschedulable', False) and any(c['type'] == 'Ready' and c['status'] == 'True' for c in node['status']['conditions']))
         need(not any(c['type'] in ['DiskPressure', 'MemoryPressure', 'PIDPressure', 'NetworkUnavailable'] and c['status'] == 'True' for c in node['status']['conditions']))
         return {'namespace': namespace, 'deployment_uid': deployment_uid, 'deployment_generation': dep['metadata']['generation'], 'helmrelease_uid': release_uid, 'helmrelease_generation': release['metadata']['generation'], 'original_image': original_image, 'claim': claim, 'claim_uid': claim_uid, 'volume': pvc['spec']['volumeName'], 'reader_node': args.node}
@@ -120,13 +136,20 @@ def main():
         receipt.update(shared_reader_sha256=file_hash(SHARED / 'pod_reader.py'), shared_controller_sha256=file_hash(SHARED / 'metube_state_backup.py'), controller_sha256=file_hash(pathlib.Path(__file__)))
         name = 'cold-' + args.application + '-' + run_id[:12]
         pod = {'apiVersion': 'v1', 'kind': 'Pod', 'metadata': {'name': name, 'namespace': namespace, 'labels': {'preservation-run': run_id, 'migration-task': 'cold-application-state'}}, 'spec': {'nodeName': args.node, 'restartPolicy': 'Never', 'activeDeadlineSeconds': 1800, 'automountServiceAccountToken': False, 'securityContext': {'runAsUser': args.reader_uid, 'runAsGroup': args.reader_gid, 'runAsNonRoot': args.reader_uid != 0, 'seccompProfile': {'type': 'RuntimeDefault'}}, 'containers': [{'name': 'reader', 'image': shared.OLD, 'imagePullPolicy': 'IfNotPresent', 'command': ['python3', '-B', '-c', 'import time;time.sleep(1800)'], 'resources': {'requests': {'cpu': '10m', 'memory': '32Mi'}, 'limits': {'cpu': '500m', 'memory': '256Mi'}}, 'securityContext': {'allowPrivilegeEscalation': False, 'readOnlyRootFilesystem': True, 'capabilities': {'drop': ['ALL']}}, 'volumeMounts': [{'name': 'state', 'mountPath': '/source', 'readOnly': True}]}], 'volumes': [{'name': 'state', 'persistentVolumeClaim': {'claimName': claim, 'readOnly': True}}]}}
+        if args.application == 'plex':
+            program = program.replace('raw=sys.stdin.buffer.read(8*1024*1024+1); need(len(raw)<=8*1024*1024)', 'raw=sys.stdin.buffer.read(64*1024*1024+1); need(len(raw)<=64*1024*1024)')
+            program = program.replace("EXCLUDED = set()\n", "EXCLUDED = set()\nMAX_BYTES = " + str(max_data) + "\nMAX_MANIFEST_BYTES = " + str(max_metadata) + "\n")
+            pod['spec']['containers'][0]['resources']['limits']['memory'] = '768Mi'
+        if args.application in ['wordpress-redis', 'wordpress', 'plex']:
+            pod['spec']['securityContext']['supplementalGroupsPolicy'] = 'Strict'
+            program = program.replace("EXCLUDED = set()\n", "EXCLUDED = set()\nMAX_ENTRIES = " + str(max_entries) + "\nneed(os.geteuid() == " + str(args.reader_uid) + " and os.getegid() == " + str(args.reader_gid) + " and set(os.getgroups()) <= {" + str(args.reader_gid) + "})\n")
         receipt['operation'] = 'create_owned_readonly_reader'; save()
         created = json.loads(kube('create', '-f', '-', '-o', 'json', body=canonical(pod)))
         reader = {'name': name, 'uid': created['metadata']['uid']}; receipt['temporary_pod'] = reader; save()
         kube('wait', 'pod/' + name, '--for=condition=Ready', '--timeout=180s', timeout=200)
         receipt['operation'] = 'full_config_file_hashes'; save()
         manifest = json.loads(execute('inventory')); need(manifest['schema_version'] == 1 and not manifest['excluded_new_paths'])
-        need(manifest['total_file_bytes'] <= shared.MAX_DATA and len(manifest['entries']) <= 4096)
+        need(manifest['total_file_bytes'] <= max_data and len(manifest['entries']) <= max_entries)
         cipher = run / (args.application + '-complete-config.tar.age')
         receipt['operation'] = 'stream_complete_encrypted_config'; save()
         producer = execute('archive', canonical(manifest), True)
@@ -137,7 +160,7 @@ def main():
             target.flush(); os.fsync(target.fileno())
         receipt['operation'] = 'authenticate_entire_archive'; save()
         decryptor = subprocess.Popen([str(shared.AGE), '-d', '-i', str(shared.IDENTITY), str(cipher)], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL); children.append(decryptor)
-        recovered = shared.verify_archive(decryptor.stdout)
+        recovered = shared.verify_archive(decryptor.stdout, max_entries=max_entries, max_data=max_data, max_metadata=max_metadata)
         trailing = 0
         for block in iter(lambda: decryptor.stdout.read(65536), b''):
             trailing += len(block); need(trailing <= 1024 * 1024 and not any(block))

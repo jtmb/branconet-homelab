@@ -12,6 +12,7 @@ ROOTS = {'data-0': '/state', 'data-1': '/tmp_dir'}
 EXCLUDED = {'data-0/ytptube-config', 'data-1/ytptube-deno', 'data-1/ytptube-cache'}
 MAX_BYTES = 4 * 1024**3
 MAX_ENTRIES = 4096
+MAX_MANIFEST_BYTES = 8 * 1024 * 1024
 CHUNK = 1024 * 1024
 
 
@@ -83,7 +84,7 @@ def archive(expected):
     need(expected['schema_version'] == 1 and not expected['excluded_new_paths'])
     need(inventory(False, False) == without_hashes(expected))
     raw = json.dumps(expected, sort_keys=True, separators=(',', ':')).encode()
-    need(len(raw) <= 8 * 1024 * 1024)
+    need(len(raw) <= MAX_MANIFEST_BYTES)
     with tarfile.open(fileobj=sys.stdout.buffer, mode='w|', format=tarfile.PAX_FORMAT) as output:
         info = tarfile.TarInfo('manifest.json'); info.mode = 0o600; info.size = len(raw)
         output.addfile(info, io.BytesIO(raw))

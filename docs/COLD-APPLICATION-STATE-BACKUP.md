@@ -7,9 +7,10 @@ Its backup completed at 00:55:06 UTC: 1,197 files, 517,549,996 plaintext data by
 519,059,380 encrypted bytes; SHA256
 `9bb2f636d27e3fd52c3be529be14b8e5847b0ea3df347366fae2760c11551897`.
 Full authenticated archive verification and exact temporary Pod deletion passed.
-Other applications remain prepared, with no backup claimed.
+Later application-specific acceptance receipts record the other completed
+backups; this dated Radarr paragraph is not their current execution status.
 `scripts/migration/cold-application-state-backup.py` handles exactly one of Radarr,
-Sonarr, Bazarr, Tautulli or Vaultwarden per invocation. It reuses the new
+Sonarr, Bazarr, Tautulli, Vaultwarden, WordPress, WordPress Redis, Jackett or Plex per invocation. It reuses the new
 [MeTube preservation](METUBE-STATE-BACKUP.md) reader and archive verification
 primitives; it does not import or replay the separate frozen BORTUS recovery
 framework. The older `backup-native-volumes.py` scales unrelated workloads and
@@ -24,6 +25,22 @@ Metadata-only strict SSH discovery verified these original identities:
 | bazarr / plex | 2bfbbb63-e949-4a5d-afd3-a923e2d02472 | 5bddaab4-1974-4211-bcae-8392d1006804 | /config |
 | tautulli / plex | 9db52ebb-23c8-47c6-82c8-ebde3b0a2775 | 97eb095e-37ec-4185-80ed-4d8f3c19f486 | /config |
 | vaultwarden / vaultwarden | 668bb3cd-e382-48b0-910f-7440351bc7d1 | 0fb0e918-ea61-43f5-af95-662c12f8ffe8 | /data |
+| wordpress-redis / wordpress | 5af2864b-476a-427f-97a5-acebc3ffa27f | e44745fc-6fb4-4f4e-b8f8-8968441260ee (`wordpress-redis-data`) | /data |
+| jackett / plex | 8ff38b3e-d114-4a03-adfd-2078d359530c | 7d4e8aea-5715-4ee3-8e56-352b7b1e99f0 | /config |
+| plex / plex | 62dbb208-e8a8-487c-8264-788cd90e3f9d | f1f3f7d0-4706-43ff-871d-e7b6f7bfe7f2 | /config |
+
+The Redis scope uses its exact existing `data` volume alias and explicit999:999
+reader identity with Strict groups. Its original8.6.1 writer is first stopped by
+Flux; Redis's configured SIGTERM save completes before the zero-writer capture.
+It never issues SHUTDOWN NOSAVE, flushes keys or changes persistence settings.
+The October25 complete encrypted archive authenticated successfully; receipt
+SHA256 `3f8487965b09173e69219b957e54b1a90bf40fce8e81c501df10b33c12f71719`.
+The patched8.6.7 writer retains the original PVC and exact original RDB checksum,
+verified by `qualify-wordpress-redis.py` without reading/writing cache values.
+Its receipt SHA256 is
+`82dacf42422e5c34c8976f2a3803d0fb4c53c8529faebfa0e8069795c2c000bb`.
+This cache checkpoint does not imply immutable live cache values or a whole-goal
+completion. Redis's normal TTLs and application cache writes remain enabled.
 
 The source pins each exact original HelmRelease UID and image digest too. It
 requires each config claim Bound to its original Longhorn PV. Media/download
@@ -239,3 +256,11 @@ For Vaultwarden, follow the mandatory original-schema preflight and complete
 SQL/file comparison in [Vaultwarden acceptance](VAULTWARDEN-ACCEPTANCE.md) before
 allowing the new writer. Whole archive authentication alone does not establish
 that its forward migrations preserve every original record.
+
+Plex's measured full config requires a finite larger profile: 131,072 entries,
+16 GiB data, 64 MiB metadata and a 768 MiB temporary read-only reader. It writes
+to the verified dedicated native F mount, preserving 16+8 GiB free at admission.
+Other application profiles retain their limits. The October25 complete capture
+and authentication passed; see [Plex evidence](PLEX-SECURITY-PATCH.md). Jackett's
+same-UID1000 backup and restart/data proof are in
+[Jackett acceptance](JACKETT-ACCEPTANCE.md). Neither operation mounts NAS media.

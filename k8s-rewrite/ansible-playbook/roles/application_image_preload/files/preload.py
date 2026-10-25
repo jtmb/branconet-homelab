@@ -17,7 +17,15 @@ NAMES = {'seerr': 'docker.io/library/seerr-security-20261023',
          'pihole': 'docker.io/library/pihole-security-20261023',
          'flaresolverr': 'docker.io/library/flaresolverr-security-20261023',
          'vaultwarden': 'docker.io/library/vaultwarden-security-20261023',
-         'tautulli': 'docker.io/library/tautulli-security-20261023'}
+         'tautulli': 'docker.io/library/tautulli-security-20261023',
+         'wordpress': 'docker.io/library/wordpress-security-20261023',
+         'nginx': 'docker.io/library/nginx-security-20261023',
+         'phpmyadmin': 'docker.io/library/phpmyadmin-security-20261023',
+         'coredns': 'docker.io/library/coredns-security-20261023',
+         'plex': 'docker.io/library/plex-security-20261023',
+         'unpackerr': 'docker.io/library/unpackerr-security-20261023',
+         'homepage': 'docker.io/library/homepage-security-20261023',
+         'http-echo': 'docker.io/library/http-echo-security-20261023'}
 MEDIA = {'application/vnd.oci.image.manifest.v1+json', 'application/vnd.oci.image.index.v1+json',
          'application/vnd.docker.distribution.manifest.v2+json', 'application/vnd.docker.distribution.manifest.list.v2+json'}
 

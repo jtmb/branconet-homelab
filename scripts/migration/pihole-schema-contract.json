@@ -1,0 +1,2891 @@
+{
+  "databases": {
+    "gravity.db": {
+      "new": {
+        "schema": [
+          {
+            "name": "idx_adlist_by_group_gid",
+            "sql": "CREATE INDEX idx_adlist_by_group_gid ON adlist_by_group (group_id, adlist_id)",
+            "tbl_name": "adlist_by_group",
+            "type": "index"
+          },
+          {
+            "name": "idx_domainlist_by_group_gid",
+            "sql": "CREATE INDEX idx_domainlist_by_group_gid ON domainlist_by_group (group_id, domainlist_id)",
+            "tbl_name": "domainlist_by_group",
+            "type": "index"
+          },
+          {
+            "name": "idx_gravity",
+            "sql": "CREATE INDEX idx_gravity ON gravity (domain, adlist_id)",
+            "tbl_name": "gravity",
+            "type": "index"
+          },
+          {
+            "name": "adlist",
+            "sql": "CREATE TABLE adlist ( id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT NOT NULL, enabled BOOLEAN NOT NULL DEFAULT 1, date_added INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), date_modified INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), comment TEXT, date_updated INTEGER, number INTEGER NOT NULL DEFAULT 0, invalid_domains INTEGER NOT NULL DEFAULT 0, status INTEGER NOT NULL DEFAULT 0, abp_entries INTEGER NOT NULL DEFAULT 0, type INTEGER NOT NULL DEFAULT 0, UNIQUE(address, type) )",
+            "tbl_name": "adlist",
+            "type": "table"
+          },
+          {
+            "name": "adlist_by_group",
+            "sql": "CREATE TABLE adlist_by_group ( adlist_id INTEGER NOT NULL REFERENCES adlist (id) ON DELETE CASCADE, group_id INTEGER NOT NULL REFERENCES \"group\" (id) ON DELETE CASCADE, PRIMARY KEY (adlist_id, group_id) ) WITHOUT ROWID",
+            "tbl_name": "adlist_by_group",
+            "type": "table"
+          },
+          {
+            "name": "antigravity",
+            "sql": "CREATE TABLE antigravity ( domain TEXT NOT NULL, adlist_id INTEGER NOT NULL REFERENCES adlist (id) )",
+            "tbl_name": "antigravity",
+            "type": "table"
+          },
+          {
+            "name": "client",
+            "sql": "CREATE TABLE client ( id INTEGER PRIMARY KEY AUTOINCREMENT, ip TEXT NOT NULL UNIQUE, date_added INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), date_modified INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), comment TEXT )",
+            "tbl_name": "client",
+            "type": "table"
+          },
+          {
+            "name": "client_by_group",
+            "sql": "CREATE TABLE client_by_group ( client_id INTEGER NOT NULL REFERENCES client (id) ON DELETE CASCADE, group_id INTEGER NOT NULL REFERENCES \"group\" (id) ON DELETE CASCADE, PRIMARY KEY (client_id, group_id) ) WITHOUT ROWID",
+            "tbl_name": "client_by_group",
+            "type": "table"
+          },
+          {
+            "name": "domainlist",
+            "sql": "CREATE TABLE domainlist ( id INTEGER PRIMARY KEY AUTOINCREMENT, type INTEGER NOT NULL DEFAULT 0, domain TEXT NOT NULL, enabled BOOLEAN NOT NULL DEFAULT 1, date_added INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), date_modified INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), comment TEXT, UNIQUE(domain, type) )",
+            "tbl_name": "domainlist",
+            "type": "table"
+          },
+          {
+            "name": "domainlist_by_group",
+            "sql": "CREATE TABLE domainlist_by_group ( domainlist_id INTEGER NOT NULL REFERENCES domainlist (id) ON DELETE CASCADE, group_id INTEGER NOT NULL REFERENCES \"group\" (id) ON DELETE CASCADE, PRIMARY KEY (domainlist_id, group_id) ) WITHOUT ROWID",
+            "tbl_name": "domainlist_by_group",
+            "type": "table"
+          },
+          {
+            "name": "gravity",
+            "sql": "CREATE TABLE gravity ( domain TEXT NOT NULL, adlist_id INTEGER NOT NULL REFERENCES adlist (id) )",
+            "tbl_name": "gravity",
+            "type": "table"
+          },
+          {
+            "name": "group",
+            "sql": "CREATE TABLE \"group\" ( id INTEGER PRIMARY KEY AUTOINCREMENT, enabled BOOLEAN NOT NULL DEFAULT 1, name TEXT UNIQUE NOT NULL, date_added INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), date_modified INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), description TEXT )",
+            "tbl_name": "group",
+            "type": "table"
+          },
+          {
+            "name": "info",
+            "sql": "CREATE TABLE info ( property TEXT PRIMARY KEY, value TEXT NOT NULL ) WITHOUT ROWID",
+            "tbl_name": "info",
+            "type": "table"
+          },
+          {
+            "name": "sqlite_sequence",
+            "sql": "CREATE TABLE sqlite_sequence(name,seq)",
+            "tbl_name": "sqlite_sequence",
+            "type": "table"
+          },
+          {
+            "name": "sqlite_stat1",
+            "sql": "CREATE TABLE sqlite_stat1(tbl,idx,stat)",
+            "tbl_name": "sqlite_stat1",
+            "type": "table"
+          },
+          {
+            "name": "tr_adlist_add",
+            "sql": "CREATE TRIGGER tr_adlist_add AFTER INSERT ON adlist BEGIN INSERT INTO adlist_by_group (adlist_id, group_id) VALUES (NEW.id, 0); END",
+            "tbl_name": "adlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_adlist_delete",
+            "sql": "CREATE TRIGGER tr_adlist_delete AFTER DELETE ON adlist BEGIN DELETE FROM adlist_by_group WHERE adlist_id = OLD.id; END",
+            "tbl_name": "adlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_adlist_update",
+            "sql": "CREATE TRIGGER tr_adlist_update AFTER UPDATE OF address,enabled,comment ON adlist BEGIN UPDATE adlist SET date_modified = (cast(strftime('%s', 'now') as int)) WHERE id = NEW.id; END",
+            "tbl_name": "adlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_client_add",
+            "sql": "CREATE TRIGGER tr_client_add AFTER INSERT ON client BEGIN INSERT INTO client_by_group (client_id, group_id) VALUES (NEW.id, 0); END",
+            "tbl_name": "client",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_client_delete",
+            "sql": "CREATE TRIGGER tr_client_delete AFTER DELETE ON client BEGIN DELETE FROM client_by_group WHERE client_id = OLD.id; END",
+            "tbl_name": "client",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_client_update",
+            "sql": "CREATE TRIGGER tr_client_update AFTER UPDATE ON client BEGIN UPDATE client SET date_modified = (cast(strftime('%s', 'now') as int)) WHERE id = NEW.id; END",
+            "tbl_name": "client",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_domainlist_add",
+            "sql": "CREATE TRIGGER tr_domainlist_add AFTER INSERT ON domainlist BEGIN INSERT INTO domainlist_by_group (domainlist_id, group_id) VALUES (NEW.id, 0); END",
+            "tbl_name": "domainlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_domainlist_delete",
+            "sql": "CREATE TRIGGER tr_domainlist_delete AFTER DELETE ON domainlist BEGIN DELETE FROM domainlist_by_group WHERE domainlist_id = OLD.id; END",
+            "tbl_name": "domainlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_domainlist_update",
+            "sql": "CREATE TRIGGER tr_domainlist_update AFTER UPDATE ON domainlist BEGIN UPDATE domainlist SET date_modified = (cast(strftime('%s', 'now') as int)) WHERE id = NEW.id; END",
+            "tbl_name": "domainlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_group_update",
+            "sql": "CREATE TRIGGER tr_group_update AFTER UPDATE ON \"group\" BEGIN UPDATE \"group\" SET date_modified = (cast(strftime('%s', 'now') as int)) WHERE id = NEW.id; END",
+            "tbl_name": "group",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_group_zero",
+            "sql": "CREATE TRIGGER tr_group_zero AFTER DELETE ON \"group\" BEGIN INSERT OR IGNORE INTO \"group\" (id,enabled,name) VALUES (0,1,'Default'); END",
+            "tbl_name": "group",
+            "type": "trigger"
+          },
+          {
+            "name": "vw_adlist",
+            "sql": "CREATE VIEW vw_adlist AS SELECT DISTINCT address, id, type FROM adlist WHERE enabled = 1 ORDER BY id",
+            "tbl_name": "vw_adlist",
+            "type": "view"
+          },
+          {
+            "name": "vw_allowlist",
+            "sql": "CREATE VIEW vw_allowlist AS SELECT domain, domainlist.id AS id, domainlist_by_group.group_id AS group_id FROM domainlist LEFT JOIN domainlist_by_group ON domainlist_by_group.domainlist_id = domainlist.id LEFT JOIN \"group\" ON \"group\".id = domainlist_by_group.group_id WHERE domainlist.enabled = 1 AND (domainlist_by_group.group_id IS NULL OR \"group\".enabled = 1) AND domainlist.type = 0",
+            "tbl_name": "vw_allowlist",
+            "type": "view"
+          },
+          {
+            "name": "vw_antigravity",
+            "sql": "CREATE VIEW vw_antigravity AS SELECT domain, adlist.id AS adlist_id, adlist_by_group.group_id AS group_id FROM antigravity LEFT JOIN adlist_by_group ON adlist_by_group.adlist_id = antigravity.adlist_id LEFT JOIN adlist ON adlist.id = antigravity.adlist_id LEFT JOIN \"group\" ON \"group\".id = adlist_by_group.group_id WHERE adlist.enabled = 1 AND (adlist_by_group.group_id IS NULL OR \"group\".enabled = 1) AND adlist.type = 1",
+            "tbl_name": "vw_antigravity",
+            "type": "view"
+          },
+          {
+            "name": "vw_denylist",
+            "sql": "CREATE VIEW vw_denylist AS SELECT domain, domainlist.id AS id, domainlist_by_group.group_id AS group_id FROM domainlist LEFT JOIN domainlist_by_group ON domainlist_by_group.domainlist_id = domainlist.id LEFT JOIN \"group\" ON \"group\".id = domainlist_by_group.group_id WHERE domainlist.enabled = 1 AND (domainlist_by_group.group_id IS NULL OR \"group\".enabled = 1) AND domainlist.type = 1",
+            "tbl_name": "vw_denylist",
+            "type": "view"
+          },
+          {
+            "name": "vw_gravity",
+            "sql": "CREATE VIEW vw_gravity AS SELECT domain, adlist.id AS adlist_id, adlist_by_group.group_id AS group_id FROM gravity LEFT JOIN adlist_by_group ON adlist_by_group.adlist_id = gravity.adlist_id LEFT JOIN adlist ON adlist.id = gravity.adlist_id LEFT JOIN \"group\" ON \"group\".id = adlist_by_group.group_id WHERE adlist.enabled = 1 AND (adlist_by_group.group_id IS NULL OR \"group\".enabled = 1)",
+            "tbl_name": "vw_gravity",
+            "type": "view"
+          },
+          {
+            "name": "vw_regex_allowlist",
+            "sql": "CREATE VIEW vw_regex_allowlist AS SELECT domain, domainlist.id AS id, domainlist_by_group.group_id AS group_id FROM domainlist LEFT JOIN domainlist_by_group ON domainlist_by_group.domainlist_id = domainlist.id LEFT JOIN \"group\" ON \"group\".id = domainlist_by_group.group_id WHERE domainlist.enabled = 1 AND (domainlist_by_group.group_id IS NULL OR \"group\".enabled = 1) AND domainlist.type = 2",
+            "tbl_name": "vw_regex_allowlist",
+            "type": "view"
+          },
+          {
+            "name": "vw_regex_denylist",
+            "sql": "CREATE VIEW vw_regex_denylist AS SELECT domain, domainlist.id AS id, domainlist_by_group.group_id AS group_id FROM domainlist LEFT JOIN domainlist_by_group ON domainlist_by_group.domainlist_id = domainlist.id LEFT JOIN \"group\" ON \"group\".id = domainlist_by_group.group_id WHERE domainlist.enabled = 1 AND (domainlist_by_group.group_id IS NULL OR \"group\".enabled = 1) AND domainlist.type = 3",
+            "tbl_name": "vw_regex_denylist",
+            "type": "view"
+          }
+        ],
+        "table_xinfo": {
+          "adlist": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "address",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": "1",
+              "hidden": 0,
+              "name": "enabled",
+              "notnull": 1,
+              "pk": 0,
+              "type": "BOOLEAN"
+            },
+            {
+              "cid": 3,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_added",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 4,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_modified",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "comment",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "date_updated",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 7,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "number",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 8,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "invalid_domains",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 9,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "status",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 10,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "abp_entries",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 11,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "type",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "adlist_by_group": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "adlist_id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "group_id",
+              "notnull": 1,
+              "pk": 2,
+              "type": "INTEGER"
+            }
+          ],
+          "antigravity": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domain",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "adlist_id",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "client": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "ip",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_added",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 3,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_modified",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "comment",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "client_by_group": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "client_id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "group_id",
+              "notnull": 1,
+              "pk": 2,
+              "type": "INTEGER"
+            }
+          ],
+          "domainlist": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "type",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domain",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 3,
+              "dflt_value": "1",
+              "hidden": 0,
+              "name": "enabled",
+              "notnull": 1,
+              "pk": 0,
+              "type": "BOOLEAN"
+            },
+            {
+              "cid": 4,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_added",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 5,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_modified",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "comment",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "domainlist_by_group": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domainlist_id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "group_id",
+              "notnull": 1,
+              "pk": 2,
+              "type": "INTEGER"
+            }
+          ],
+          "gravity": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domain",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "adlist_id",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "group": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": "1",
+              "hidden": 0,
+              "name": "enabled",
+              "notnull": 1,
+              "pk": 0,
+              "type": "BOOLEAN"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 3,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_added",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 4,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_modified",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "description",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "info": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "property",
+              "notnull": 1,
+              "pk": 1,
+              "type": "TEXT"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "value",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "sqlite_sequence": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "seq",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            }
+          ],
+          "sqlite_stat1": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "tbl",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "idx",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "stat",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            }
+          ]
+        }
+      },
+      "new_version": 21,
+      "old": {
+        "schema": [
+          {
+            "name": "idx_gravity",
+            "sql": "CREATE INDEX idx_gravity ON gravity (domain, adlist_id)",
+            "tbl_name": "gravity",
+            "type": "index"
+          },
+          {
+            "name": "adlist",
+            "sql": "CREATE TABLE adlist ( id INTEGER PRIMARY KEY AUTOINCREMENT, address TEXT NOT NULL, enabled BOOLEAN NOT NULL DEFAULT 1, date_added INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), date_modified INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), comment TEXT, date_updated INTEGER, number INTEGER NOT NULL DEFAULT 0, invalid_domains INTEGER NOT NULL DEFAULT 0, status INTEGER NOT NULL DEFAULT 0, abp_entries INTEGER NOT NULL DEFAULT 0, type INTEGER NOT NULL DEFAULT 0, UNIQUE(address, type) )",
+            "tbl_name": "adlist",
+            "type": "table"
+          },
+          {
+            "name": "adlist_by_group",
+            "sql": "CREATE TABLE adlist_by_group ( adlist_id INTEGER NOT NULL REFERENCES adlist (id) ON DELETE CASCADE, group_id INTEGER NOT NULL REFERENCES \"group\" (id) ON DELETE CASCADE, PRIMARY KEY (adlist_id, group_id) )",
+            "tbl_name": "adlist_by_group",
+            "type": "table"
+          },
+          {
+            "name": "antigravity",
+            "sql": "CREATE TABLE antigravity ( domain TEXT NOT NULL, adlist_id INTEGER NOT NULL REFERENCES adlist (id) )",
+            "tbl_name": "antigravity",
+            "type": "table"
+          },
+          {
+            "name": "client",
+            "sql": "CREATE TABLE client ( id INTEGER PRIMARY KEY AUTOINCREMENT, ip TEXT NOT NULL UNIQUE, date_added INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), date_modified INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), comment TEXT )",
+            "tbl_name": "client",
+            "type": "table"
+          },
+          {
+            "name": "client_by_group",
+            "sql": "CREATE TABLE client_by_group ( client_id INTEGER NOT NULL REFERENCES client (id) ON DELETE CASCADE, group_id INTEGER NOT NULL REFERENCES \"group\" (id) ON DELETE CASCADE, PRIMARY KEY (client_id, group_id) )",
+            "tbl_name": "client_by_group",
+            "type": "table"
+          },
+          {
+            "name": "domainlist",
+            "sql": "CREATE TABLE domainlist ( id INTEGER PRIMARY KEY AUTOINCREMENT, type INTEGER NOT NULL DEFAULT 0, domain TEXT NOT NULL, enabled BOOLEAN NOT NULL DEFAULT 1, date_added INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), date_modified INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), comment TEXT, UNIQUE(domain, type) )",
+            "tbl_name": "domainlist",
+            "type": "table"
+          },
+          {
+            "name": "domainlist_by_group",
+            "sql": "CREATE TABLE domainlist_by_group ( domainlist_id INTEGER NOT NULL REFERENCES domainlist (id) ON DELETE CASCADE, group_id INTEGER NOT NULL REFERENCES \"group\" (id) ON DELETE CASCADE, PRIMARY KEY (domainlist_id, group_id) )",
+            "tbl_name": "domainlist_by_group",
+            "type": "table"
+          },
+          {
+            "name": "gravity",
+            "sql": "CREATE TABLE gravity ( domain TEXT NOT NULL, adlist_id INTEGER NOT NULL REFERENCES adlist (id) )",
+            "tbl_name": "gravity",
+            "type": "table"
+          },
+          {
+            "name": "group",
+            "sql": "CREATE TABLE \"group\" ( id INTEGER PRIMARY KEY AUTOINCREMENT, enabled BOOLEAN NOT NULL DEFAULT 1, name TEXT UNIQUE NOT NULL, date_added INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), date_modified INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), description TEXT )",
+            "tbl_name": "group",
+            "type": "table"
+          },
+          {
+            "name": "info",
+            "sql": "CREATE TABLE info ( property TEXT PRIMARY KEY, value TEXT NOT NULL )",
+            "tbl_name": "info",
+            "type": "table"
+          },
+          {
+            "name": "sqlite_sequence",
+            "sql": "CREATE TABLE sqlite_sequence(name,seq)",
+            "tbl_name": "sqlite_sequence",
+            "type": "table"
+          },
+          {
+            "name": "sqlite_stat1",
+            "sql": "CREATE TABLE sqlite_stat1(tbl,idx,stat)",
+            "tbl_name": "sqlite_stat1",
+            "type": "table"
+          },
+          {
+            "name": "tr_adlist_add",
+            "sql": "CREATE TRIGGER tr_adlist_add AFTER INSERT ON adlist BEGIN INSERT INTO adlist_by_group (adlist_id, group_id) VALUES (NEW.id, 0); END",
+            "tbl_name": "adlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_adlist_delete",
+            "sql": "CREATE TRIGGER tr_adlist_delete AFTER DELETE ON adlist BEGIN DELETE FROM adlist_by_group WHERE adlist_id = OLD.id; END",
+            "tbl_name": "adlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_adlist_update",
+            "sql": "CREATE TRIGGER tr_adlist_update AFTER UPDATE OF address,enabled,comment ON adlist BEGIN UPDATE adlist SET date_modified = (cast(strftime('%s', 'now') as int)) WHERE id = NEW.id; END",
+            "tbl_name": "adlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_client_add",
+            "sql": "CREATE TRIGGER tr_client_add AFTER INSERT ON client BEGIN INSERT INTO client_by_group (client_id, group_id) VALUES (NEW.id, 0); END",
+            "tbl_name": "client",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_client_delete",
+            "sql": "CREATE TRIGGER tr_client_delete AFTER DELETE ON client BEGIN DELETE FROM client_by_group WHERE client_id = OLD.id; END",
+            "tbl_name": "client",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_client_update",
+            "sql": "CREATE TRIGGER tr_client_update AFTER UPDATE ON client BEGIN UPDATE client SET date_modified = (cast(strftime('%s', 'now') as int)) WHERE ip = NEW.ip; END",
+            "tbl_name": "client",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_domainlist_add",
+            "sql": "CREATE TRIGGER tr_domainlist_add AFTER INSERT ON domainlist BEGIN INSERT INTO domainlist_by_group (domainlist_id, group_id) VALUES (NEW.id, 0); END",
+            "tbl_name": "domainlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_domainlist_delete",
+            "sql": "CREATE TRIGGER tr_domainlist_delete AFTER DELETE ON domainlist BEGIN DELETE FROM domainlist_by_group WHERE domainlist_id = OLD.id; END",
+            "tbl_name": "domainlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_domainlist_update",
+            "sql": "CREATE TRIGGER tr_domainlist_update AFTER UPDATE ON domainlist BEGIN UPDATE domainlist SET date_modified = (cast(strftime('%s', 'now') as int)) WHERE domain = NEW.domain; END",
+            "tbl_name": "domainlist",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_group_update",
+            "sql": "CREATE TRIGGER tr_group_update AFTER UPDATE ON \"group\" BEGIN UPDATE \"group\" SET date_modified = (cast(strftime('%s', 'now') as int)) WHERE id = NEW.id; END",
+            "tbl_name": "group",
+            "type": "trigger"
+          },
+          {
+            "name": "tr_group_zero",
+            "sql": "CREATE TRIGGER tr_group_zero AFTER DELETE ON \"group\" BEGIN INSERT OR IGNORE INTO \"group\" (id,enabled,name) VALUES (0,1,'Default'); END",
+            "tbl_name": "group",
+            "type": "trigger"
+          },
+          {
+            "name": "vw_adlist",
+            "sql": "CREATE VIEW vw_adlist AS SELECT DISTINCT address, id, type FROM adlist WHERE enabled = 1 ORDER BY id",
+            "tbl_name": "vw_adlist",
+            "type": "view"
+          },
+          {
+            "name": "vw_allowlist",
+            "sql": "CREATE VIEW vw_allowlist AS SELECT domain, domainlist.id AS id, domainlist_by_group.group_id AS group_id FROM domainlist LEFT JOIN domainlist_by_group ON domainlist_by_group.domainlist_id = domainlist.id LEFT JOIN \"group\" ON \"group\".id = domainlist_by_group.group_id WHERE domainlist.enabled = 1 AND (domainlist_by_group.group_id IS NULL OR \"group\".enabled = 1) AND domainlist.type = 0 ORDER BY domainlist.id",
+            "tbl_name": "vw_allowlist",
+            "type": "view"
+          },
+          {
+            "name": "vw_antigravity",
+            "sql": "CREATE VIEW vw_antigravity AS SELECT domain, adlist.id AS adlist_id, adlist_by_group.group_id AS group_id FROM antigravity LEFT JOIN adlist_by_group ON adlist_by_group.adlist_id = antigravity.adlist_id LEFT JOIN adlist ON adlist.id = antigravity.adlist_id LEFT JOIN \"group\" ON \"group\".id = adlist_by_group.group_id WHERE adlist.enabled = 1 AND (adlist_by_group.group_id IS NULL OR \"group\".enabled = 1) AND adlist.type = 1",
+            "tbl_name": "vw_antigravity",
+            "type": "view"
+          },
+          {
+            "name": "vw_denylist",
+            "sql": "CREATE VIEW vw_denylist AS SELECT domain, domainlist.id AS id, domainlist_by_group.group_id AS group_id FROM domainlist LEFT JOIN domainlist_by_group ON domainlist_by_group.domainlist_id = domainlist.id LEFT JOIN \"group\" ON \"group\".id = domainlist_by_group.group_id WHERE domainlist.enabled = 1 AND (domainlist_by_group.group_id IS NULL OR \"group\".enabled = 1) AND domainlist.type = 1 ORDER BY domainlist.id",
+            "tbl_name": "vw_denylist",
+            "type": "view"
+          },
+          {
+            "name": "vw_gravity",
+            "sql": "CREATE VIEW vw_gravity AS SELECT domain, adlist.id AS adlist_id, adlist_by_group.group_id AS group_id FROM gravity LEFT JOIN adlist_by_group ON adlist_by_group.adlist_id = gravity.adlist_id LEFT JOIN adlist ON adlist.id = gravity.adlist_id LEFT JOIN \"group\" ON \"group\".id = adlist_by_group.group_id WHERE adlist.enabled = 1 AND (adlist_by_group.group_id IS NULL OR \"group\".enabled = 1)",
+            "tbl_name": "vw_gravity",
+            "type": "view"
+          },
+          {
+            "name": "vw_regex_allowlist",
+            "sql": "CREATE VIEW vw_regex_allowlist AS SELECT domain, domainlist.id AS id, domainlist_by_group.group_id AS group_id FROM domainlist LEFT JOIN domainlist_by_group ON domainlist_by_group.domainlist_id = domainlist.id LEFT JOIN \"group\" ON \"group\".id = domainlist_by_group.group_id WHERE domainlist.enabled = 1 AND (domainlist_by_group.group_id IS NULL OR \"group\".enabled = 1) AND domainlist.type = 2 ORDER BY domainlist.id",
+            "tbl_name": "vw_regex_allowlist",
+            "type": "view"
+          },
+          {
+            "name": "vw_regex_denylist",
+            "sql": "CREATE VIEW vw_regex_denylist AS SELECT domain, domainlist.id AS id, domainlist_by_group.group_id AS group_id FROM domainlist LEFT JOIN domainlist_by_group ON domainlist_by_group.domainlist_id = domainlist.id LEFT JOIN \"group\" ON \"group\".id = domainlist_by_group.group_id WHERE domainlist.enabled = 1 AND (domainlist_by_group.group_id IS NULL OR \"group\".enabled = 1) AND domainlist.type = 3 ORDER BY domainlist.id",
+            "tbl_name": "vw_regex_denylist",
+            "type": "view"
+          }
+        ],
+        "table_xinfo": {
+          "adlist": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "address",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": "1",
+              "hidden": 0,
+              "name": "enabled",
+              "notnull": 1,
+              "pk": 0,
+              "type": "BOOLEAN"
+            },
+            {
+              "cid": 3,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_added",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 4,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_modified",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "comment",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "date_updated",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 7,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "number",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 8,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "invalid_domains",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 9,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "status",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 10,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "abp_entries",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 11,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "type",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "adlist_by_group": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "adlist_id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "group_id",
+              "notnull": 1,
+              "pk": 2,
+              "type": "INTEGER"
+            }
+          ],
+          "antigravity": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domain",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "adlist_id",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "client": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "ip",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_added",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 3,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_modified",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "comment",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "client_by_group": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "client_id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "group_id",
+              "notnull": 1,
+              "pk": 2,
+              "type": "INTEGER"
+            }
+          ],
+          "domainlist": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": "0",
+              "hidden": 0,
+              "name": "type",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domain",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 3,
+              "dflt_value": "1",
+              "hidden": 0,
+              "name": "enabled",
+              "notnull": 1,
+              "pk": 0,
+              "type": "BOOLEAN"
+            },
+            {
+              "cid": 4,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_added",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 5,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_modified",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "comment",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "domainlist_by_group": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domainlist_id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "group_id",
+              "notnull": 1,
+              "pk": 2,
+              "type": "INTEGER"
+            }
+          ],
+          "gravity": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domain",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "adlist_id",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "group": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": "1",
+              "hidden": 0,
+              "name": "enabled",
+              "notnull": 1,
+              "pk": 0,
+              "type": "BOOLEAN"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 3,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_added",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 4,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "date_modified",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "description",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "info": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "property",
+              "notnull": 0,
+              "pk": 1,
+              "type": "TEXT"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "value",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "sqlite_sequence": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "seq",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            }
+          ],
+          "sqlite_stat1": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "tbl",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "idx",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "stat",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            }
+          ]
+        }
+      },
+      "old_version": 20
+    },
+    "pihole-FTL.db": {
+      "new": {
+        "schema": [
+          {
+            "name": "addinfo_by_id_idx",
+            "sql": "CREATE UNIQUE INDEX addinfo_by_id_idx ON addinfo_by_id(type,content)",
+            "tbl_name": "addinfo_by_id",
+            "type": "index"
+          },
+          {
+            "name": "client_by_id_client_idx",
+            "sql": "CREATE UNIQUE INDEX client_by_id_client_idx ON client_by_id(ip,name)",
+            "tbl_name": "client_by_id",
+            "type": "index"
+          },
+          {
+            "name": "domain_by_id_domain_idx",
+            "sql": "CREATE UNIQUE INDEX domain_by_id_domain_idx ON domain_by_id(domain)",
+            "tbl_name": "domain_by_id",
+            "type": "index"
+          },
+          {
+            "name": "forward_by_id_forward_idx",
+            "sql": "CREATE UNIQUE INDEX forward_by_id_forward_idx ON forward_by_id(forward)",
+            "tbl_name": "forward_by_id",
+            "type": "index"
+          },
+          {
+            "name": "idx_queries_timestamp",
+            "sql": "CREATE INDEX idx_queries_timestamp ON \"query_storage\" (timestamp)",
+            "tbl_name": "query_storage",
+            "type": "index"
+          },
+          {
+            "name": "network_addresses_network_id_index",
+            "sql": "CREATE INDEX network_addresses_network_id_index ON network_addresses (network_id)",
+            "tbl_name": "network_addresses",
+            "type": "index"
+          },
+          {
+            "name": "addinfo_by_id",
+            "sql": "CREATE TABLE addinfo_by_id (id INTEGER PRIMARY KEY, type INTEGER NOT NULL, content NOT NULL)",
+            "tbl_name": "addinfo_by_id",
+            "type": "table"
+          },
+          {
+            "name": "aliasclient",
+            "sql": "CREATE TABLE aliasclient (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, comment TEXT)",
+            "tbl_name": "aliasclient",
+            "type": "table"
+          },
+          {
+            "name": "client_by_id",
+            "sql": "CREATE TABLE client_by_id (id INTEGER PRIMARY KEY, ip TEXT NOT NULL, name TEXT)",
+            "tbl_name": "client_by_id",
+            "type": "table"
+          },
+          {
+            "name": "counters",
+            "sql": "CREATE TABLE counters ( id INTEGER PRIMARY KEY NOT NULL, value INTEGER NOT NULL )",
+            "tbl_name": "counters",
+            "type": "table"
+          },
+          {
+            "name": "domain_by_id",
+            "sql": "CREATE TABLE domain_by_id (id INTEGER PRIMARY KEY, domain TEXT NOT NULL)",
+            "tbl_name": "domain_by_id",
+            "type": "table"
+          },
+          {
+            "name": "forward_by_id",
+            "sql": "CREATE TABLE forward_by_id (id INTEGER PRIMARY KEY, forward TEXT NOT NULL)",
+            "tbl_name": "forward_by_id",
+            "type": "table"
+          },
+          {
+            "name": "ftl",
+            "sql": "CREATE TABLE ftl ( id INTEGER PRIMARY KEY NOT NULL, value BLOB NOT NULL , description TEXT)",
+            "tbl_name": "ftl",
+            "type": "table"
+          },
+          {
+            "name": "message",
+            "sql": "CREATE TABLE message ( id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp INTEGER NOT NULL, type TEXT NOT NULL, message TEXT NOT NULL, blob1 BLOB, blob2 BLOB, blob3 BLOB, blob4 BLOB, blob5 BLOB )",
+            "tbl_name": "message",
+            "type": "table"
+          },
+          {
+            "name": "network",
+            "sql": "CREATE TABLE \"network\" ( id INTEGER PRIMARY KEY NOT NULL, hwaddr TEXT UNIQUE NOT NULL, interface TEXT NOT NULL, firstSeen INTEGER NOT NULL, lastQuery INTEGER NOT NULL, numQueries INTEGER NOT NULL, macVendor TEXT, aliasclient_id INTEGER)",
+            "tbl_name": "network",
+            "type": "table"
+          },
+          {
+            "name": "network_addresses",
+            "sql": "CREATE TABLE \"network_addresses\" ( network_id INTEGER NOT NULL, ip TEXT UNIQUE NOT NULL, lastSeen INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), name TEXT, nameUpdated INTEGER, FOREIGN KEY(network_id) REFERENCES network(id))",
+            "tbl_name": "network_addresses",
+            "type": "table"
+          },
+          {
+            "name": "query_storage",
+            "sql": "CREATE TABLE \"query_storage\" (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp INTEGER NOT NULL, type INTEGER NOT NULL, status INTEGER NOT NULL, domain INTEGER NOT NULL, client INTEGER NOT NULL, forward INTEGER, additional_info INTEGER, reply_type INTEGER, reply_time REAL, dnssec INTEGER, list_id INTEGER, ede INTEGER)",
+            "tbl_name": "query_storage",
+            "type": "table"
+          },
+          {
+            "name": "session",
+            "sql": "CREATE TABLE session (id INTEGER PRIMARY KEY, login_at TIMESTAMP NOT NULL, valid_until TIMESTAMP NOT NULL, remote_addr TEXT NOT NULL, user_agent TEXT, sid TEXT NOT NULL, csrf TEXT NOT NULL, tls_login BOOL, tls_mixed BOOL, app BOOL, cli BOOL, x_forwarded_for TEXT)",
+            "tbl_name": "session",
+            "type": "table"
+          },
+          {
+            "name": "sqlite_sequence",
+            "sql": "CREATE TABLE sqlite_sequence(name,seq)",
+            "tbl_name": "sqlite_sequence",
+            "type": "table"
+          },
+          {
+            "name": "sqlite_stat1",
+            "sql": "CREATE TABLE sqlite_stat1(tbl,idx,stat)",
+            "tbl_name": "sqlite_stat1",
+            "type": "table"
+          },
+          {
+            "name": "queries",
+            "sql": "CREATE VIEW queries AS SELECT q.id, q.timestamp, q.type, q.status, COALESCE(d.domain, q.domain) AS domain, COALESCE(c.ip, q.client) AS client, COALESCE(f.forward, q.forward) AS forward, COALESCE(a.content, q.additional_info) AS additional_info, q.reply_type, q.reply_time, q.dnssec, q.list_id, q.ede FROM query_storage q LEFT JOIN domain_by_id d ON q.domain = d.id LEFT JOIN client_by_id c ON q.client = c.id LEFT JOIN forward_by_id f ON q.forward = f.id LEFT JOIN addinfo_by_id a ON q.additional_info = a.id",
+            "tbl_name": "queries",
+            "type": "view"
+          }
+        ],
+        "table_xinfo": {
+          "addinfo_by_id": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "type",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "content",
+              "notnull": 1,
+              "pk": 0,
+              "type": ""
+            }
+          ],
+          "aliasclient": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "comment",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "client_by_id": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "ip",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "counters": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "value",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "domain_by_id": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domain",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "forward_by_id": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "forward",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "ftl": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "value",
+              "notnull": 1,
+              "pk": 0,
+              "type": "BLOB"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "description",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "message": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "timestamp",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "type",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 3,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "message",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "blob1",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BLOB"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "blob2",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BLOB"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "blob3",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BLOB"
+            },
+            {
+              "cid": 7,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "blob4",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BLOB"
+            },
+            {
+              "cid": 8,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "blob5",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BLOB"
+            }
+          ],
+          "network": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "hwaddr",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "interface",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 3,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "firstSeen",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "lastQuery",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "numQueries",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "macVendor",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 7,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "aliasclient_id",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "network_addresses": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "network_id",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "ip",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "lastSeen",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 3,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "nameUpdated",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "query_storage": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "timestamp",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "type",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 3,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "status",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domain",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "client",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "forward",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 7,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "additional_info",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 8,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "reply_type",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 9,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "reply_time",
+              "notnull": 0,
+              "pk": 0,
+              "type": "REAL"
+            },
+            {
+              "cid": 10,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "dnssec",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 11,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "list_id",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 12,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "ede",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "session": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "login_at",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TIMESTAMP"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "valid_until",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TIMESTAMP"
+            },
+            {
+              "cid": 3,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "remote_addr",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "user_agent",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "sid",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "csrf",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 7,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "tls_login",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BOOL"
+            },
+            {
+              "cid": 8,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "tls_mixed",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BOOL"
+            },
+            {
+              "cid": 9,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "app",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BOOL"
+            },
+            {
+              "cid": 10,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "cli",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BOOL"
+            },
+            {
+              "cid": 11,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "x_forwarded_for",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "sqlite_sequence": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "seq",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            }
+          ],
+          "sqlite_stat1": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "tbl",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "idx",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "stat",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            }
+          ]
+        }
+      },
+      "new_version": 22,
+      "old": {
+        "schema": [
+          {
+            "name": "addinfo_by_id_idx",
+            "sql": "CREATE UNIQUE INDEX addinfo_by_id_idx ON addinfo_by_id(type,content)",
+            "tbl_name": "addinfo_by_id",
+            "type": "index"
+          },
+          {
+            "name": "client_by_id_client_idx",
+            "sql": "CREATE UNIQUE INDEX client_by_id_client_idx ON client_by_id(ip,name)",
+            "tbl_name": "client_by_id",
+            "type": "index"
+          },
+          {
+            "name": "domain_by_id_domain_idx",
+            "sql": "CREATE UNIQUE INDEX domain_by_id_domain_idx ON domain_by_id(domain)",
+            "tbl_name": "domain_by_id",
+            "type": "index"
+          },
+          {
+            "name": "forward_by_id_forward_idx",
+            "sql": "CREATE UNIQUE INDEX forward_by_id_forward_idx ON forward_by_id(forward)",
+            "tbl_name": "forward_by_id",
+            "type": "index"
+          },
+          {
+            "name": "idx_queries_timestamp",
+            "sql": "CREATE INDEX idx_queries_timestamp ON \"query_storage\" (timestamp)",
+            "tbl_name": "query_storage",
+            "type": "index"
+          },
+          {
+            "name": "network_addresses_network_id_index",
+            "sql": "CREATE INDEX network_addresses_network_id_index ON network_addresses (network_id)",
+            "tbl_name": "network_addresses",
+            "type": "index"
+          },
+          {
+            "name": "addinfo_by_id",
+            "sql": "CREATE TABLE addinfo_by_id (id INTEGER PRIMARY KEY, type INTEGER NOT NULL, content NOT NULL)",
+            "tbl_name": "addinfo_by_id",
+            "type": "table"
+          },
+          {
+            "name": "aliasclient",
+            "sql": "CREATE TABLE aliasclient (id INTEGER PRIMARY KEY NOT NULL, name TEXT NOT NULL, comment TEXT)",
+            "tbl_name": "aliasclient",
+            "type": "table"
+          },
+          {
+            "name": "client_by_id",
+            "sql": "CREATE TABLE client_by_id (id INTEGER PRIMARY KEY, ip TEXT NOT NULL, name TEXT)",
+            "tbl_name": "client_by_id",
+            "type": "table"
+          },
+          {
+            "name": "counters",
+            "sql": "CREATE TABLE counters ( id INTEGER PRIMARY KEY NOT NULL, value INTEGER NOT NULL )",
+            "tbl_name": "counters",
+            "type": "table"
+          },
+          {
+            "name": "domain_by_id",
+            "sql": "CREATE TABLE domain_by_id (id INTEGER PRIMARY KEY, domain TEXT NOT NULL)",
+            "tbl_name": "domain_by_id",
+            "type": "table"
+          },
+          {
+            "name": "forward_by_id",
+            "sql": "CREATE TABLE forward_by_id (id INTEGER PRIMARY KEY, forward TEXT NOT NULL)",
+            "tbl_name": "forward_by_id",
+            "type": "table"
+          },
+          {
+            "name": "ftl",
+            "sql": "CREATE TABLE ftl ( id INTEGER PRIMARY KEY NOT NULL, value BLOB NOT NULL , description TEXT)",
+            "tbl_name": "ftl",
+            "type": "table"
+          },
+          {
+            "name": "message",
+            "sql": "CREATE TABLE message ( id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp INTEGER NOT NULL, type TEXT NOT NULL, message TEXT NOT NULL, blob1 BLOB, blob2 BLOB, blob3 BLOB, blob4 BLOB, blob5 BLOB )",
+            "tbl_name": "message",
+            "type": "table"
+          },
+          {
+            "name": "network",
+            "sql": "CREATE TABLE \"network\" ( id INTEGER PRIMARY KEY NOT NULL, hwaddr TEXT UNIQUE NOT NULL, interface TEXT NOT NULL, firstSeen INTEGER NOT NULL, lastQuery INTEGER NOT NULL, numQueries INTEGER NOT NULL, macVendor TEXT, aliasclient_id INTEGER)",
+            "tbl_name": "network",
+            "type": "table"
+          },
+          {
+            "name": "network_addresses",
+            "sql": "CREATE TABLE \"network_addresses\" ( network_id INTEGER NOT NULL, ip TEXT UNIQUE NOT NULL, lastSeen INTEGER NOT NULL DEFAULT (cast(strftime('%s', 'now') as int)), name TEXT, nameUpdated INTEGER, FOREIGN KEY(network_id) REFERENCES network(id))",
+            "tbl_name": "network_addresses",
+            "type": "table"
+          },
+          {
+            "name": "query_storage",
+            "sql": "CREATE TABLE \"query_storage\" (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp INTEGER NOT NULL, type INTEGER NOT NULL, status INTEGER NOT NULL, domain INTEGER NOT NULL, client INTEGER NOT NULL, forward INTEGER, additional_info INTEGER, reply_type INTEGER, reply_time REAL, dnssec INTEGER, list_id INTEGER, ede INTEGER)",
+            "tbl_name": "query_storage",
+            "type": "table"
+          },
+          {
+            "name": "session",
+            "sql": "CREATE TABLE session (id INTEGER PRIMARY KEY, login_at TIMESTAMP NOT NULL, valid_until TIMESTAMP NOT NULL, remote_addr TEXT NOT NULL, user_agent TEXT, sid TEXT NOT NULL, csrf TEXT NOT NULL, tls_login BOOL, tls_mixed BOOL, app BOOL, cli BOOL, x_forwarded_for TEXT)",
+            "tbl_name": "session",
+            "type": "table"
+          },
+          {
+            "name": "sqlite_sequence",
+            "sql": "CREATE TABLE sqlite_sequence(name,seq)",
+            "tbl_name": "sqlite_sequence",
+            "type": "table"
+          },
+          {
+            "name": "sqlite_stat1",
+            "sql": "CREATE TABLE sqlite_stat1(tbl,idx,stat)",
+            "tbl_name": "sqlite_stat1",
+            "type": "table"
+          },
+          {
+            "name": "queries",
+            "sql": "CREATE VIEW queries AS SELECT id, timestamp, type, status, CASE typeof(domain) WHEN 'integer' THEN (SELECT domain FROM domain_by_id d WHERE d.id = q.domain) ELSE domain END domain,CASE typeof(client) WHEN 'integer' THEN (SELECT ip FROM client_by_id c WHERE c.id = q.client) ELSE client END client,CASE typeof(forward) WHEN 'integer' THEN (SELECT forward FROM forward_by_id f WHERE f.id = q.forward) ELSE forward END forward,CASE typeof(additional_info) WHEN 'integer' THEN (SELECT content FROM addinfo_by_id a WHERE a.id = q.additional_info) ELSE additional_info END additional_info, reply_type, reply_time, dnssec, list_id, ede FROM query_storage q",
+            "tbl_name": "queries",
+            "type": "view"
+          }
+        ],
+        "table_xinfo": {
+          "addinfo_by_id": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "type",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "content",
+              "notnull": 1,
+              "pk": 0,
+              "type": ""
+            }
+          ],
+          "aliasclient": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "comment",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "client_by_id": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "ip",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "counters": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "value",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "domain_by_id": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domain",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "forward_by_id": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "forward",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "ftl": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "value",
+              "notnull": 1,
+              "pk": 0,
+              "type": "BLOB"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "description",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "message": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "timestamp",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "type",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 3,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "message",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "blob1",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BLOB"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "blob2",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BLOB"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "blob3",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BLOB"
+            },
+            {
+              "cid": 7,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "blob4",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BLOB"
+            },
+            {
+              "cid": 8,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "blob5",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BLOB"
+            }
+          ],
+          "network": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 1,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "hwaddr",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "interface",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 3,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "firstSeen",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "lastQuery",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "numQueries",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "macVendor",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 7,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "aliasclient_id",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "network_addresses": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "network_id",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "ip",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 2,
+              "dflt_value": "cast(strftime('%s', 'now') as int)",
+              "hidden": 0,
+              "name": "lastSeen",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 3,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "nameUpdated",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "query_storage": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "timestamp",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "type",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 3,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "status",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "domain",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "client",
+              "notnull": 1,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "forward",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 7,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "additional_info",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 8,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "reply_type",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 9,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "reply_time",
+              "notnull": 0,
+              "pk": 0,
+              "type": "REAL"
+            },
+            {
+              "cid": 10,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "dnssec",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 11,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "list_id",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 12,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "ede",
+              "notnull": 0,
+              "pk": 0,
+              "type": "INTEGER"
+            }
+          ],
+          "session": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "id",
+              "notnull": 0,
+              "pk": 1,
+              "type": "INTEGER"
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "login_at",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TIMESTAMP"
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "valid_until",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TIMESTAMP"
+            },
+            {
+              "cid": 3,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "remote_addr",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 4,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "user_agent",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 5,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "sid",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 6,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "csrf",
+              "notnull": 1,
+              "pk": 0,
+              "type": "TEXT"
+            },
+            {
+              "cid": 7,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "tls_login",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BOOL"
+            },
+            {
+              "cid": 8,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "tls_mixed",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BOOL"
+            },
+            {
+              "cid": 9,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "app",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BOOL"
+            },
+            {
+              "cid": 10,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "cli",
+              "notnull": 0,
+              "pk": 0,
+              "type": "BOOL"
+            },
+            {
+              "cid": 11,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "x_forwarded_for",
+              "notnull": 0,
+              "pk": 0,
+              "type": "TEXT"
+            }
+          ],
+          "sqlite_sequence": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "name",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "seq",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            }
+          ],
+          "sqlite_stat1": [
+            {
+              "cid": 0,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "tbl",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 1,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "idx",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            },
+            {
+              "cid": 2,
+              "dflt_value": null,
+              "hidden": 0,
+              "name": "stat",
+              "notnull": 0,
+              "pk": 0,
+              "type": ""
+            }
+          ]
+        }
+      },
+      "old_version": 21
+    }
+  },
+  "new_core": "v6.5",
+  "new_ftl": "v6.8",
+  "old_ftl": "v6.5",
+  "schemaVersion": 1,
+  "sources": {
+    "core_commit": "f503a65d3a07cb71fd931389f1d3babf718249aa",
+    "ftl_commit": "29c8b13f4bba0c4f4f47598e45a65cbf1cedac88",
+    "gravity_migration_sha256": "014dd3678b2136f86c0dde741b150c15ea51d83d9c869a0929561f56ded58ba6"
+  }
+}

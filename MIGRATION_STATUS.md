@@ -5,8 +5,8 @@ application development. Facts below come from the retained public maintenance
 receipt, latest recorded progress `2026-10-24T02:46:45.685374+00:00` and its later
 acceptance blocks. Historical failed/pre-cutover fields in that chronological
 receipt remain preserved; the accepted checkpoints below take precedence.
-No new live checks were performed while assembling this branch. Root separately
-reported the corrected Flare CI attempt below; its exact scan remains pending.
+Later root-executed live checks are recorded in the dated acceptance blocks.
+Early pending/failed entries remain historical and do not supersede those blocks.
 
 ## Verified checkpoints
 
@@ -208,3 +208,92 @@ incorrectly included the official ET_REL SDK link object. Its exact primary
 digest/header were independently verified; the corrected source still checks
 all81runtimeELFs and retains all82objects. A new build is running at source
 `cea9327b74c30fd4e138cca54856befb8a63dcc3`; no Tautulli rollout is claimed.
+
+## Local delivery replaces GitHub Actions
+
+The user explicitly instructed “stop using github actions” and “stop asking
+questions. finish the goal.” Private charts Actions was disabled and verified
+`enabled:false` on October24. New builds and chart validation/promotion move to
+the local workflow, preserving immutable artifacts, existing resource limits,
+all validation checks and Flux deployment. Completed historical CI artifacts and
+their original evidence remain valid and retained. No further billing action or
+question is needed from the user. This supersedes earlier Actions instructions.
+
+
+## Etcd3.7.3: live patch and post-backup accepted
+
+The exact official digest, membership/frozen revision HashKV, original data
+folders and original workload/PVC/PV/Longhorn identities passed the protected
+patch receipt. A new encrypted snapshot plus all46 configuration files was fully
+authenticated off-node at23:14UTC. All3 nodes,54 Deployments,7 DaemonSets and
+attached Longhorn volumes were healthy in the fresh observation. Details and
+receipt fingerprints are in [ETCD-STATIC-PATCH.md](docs/ETCD-STATIC-PATCH.md).
+No independent restore or full-goal completion is claimed. The remaining
+application work continues through local validation -> validated -> Flux;
+GitHub Actions is disabled by the user's current instruction.
+
+## October25: local delivery and application acceptance
+
+The dedicated Windows local validation service is installed and running. Exact
+new main commits have automatically passed all29 existing controls and the
+unchanged33-chart/34-release validator, atomically advanced validated plus the
+immutable commit tag, and reconciled through Flux. No new Actions requests are
+used. The independent clean service clone preserves the dirty operator checkout.
+
+Tautulli2.18.2/Python3.13.17 passed complete cold authentication, initial and
+independent controlled-restart data preservation, eleven authenticated API/Plex
+checks on both writers, and all six actual public HTTP routes. All16 users and
+2,878 history/media/metadata rows remain. Its fresh scan reports0critical/48high,
+with0available critical/high fixes. Exact receipts and narrow source-proven
+avatar/log/cache changes are in [Tautulli acceptance](docs/TAUTULLI-ACCEPTANCE.md).
+Final browser acceptance remains open.
+
+Pi-hole's original two claims are fully archived off-cluster:84files,
+1,082,838,955 plaintext bytes; encrypted archive SHA256
+`ee490a2b19a2a8a302d72f82cde05fd7c3fad288159168c54a36ba49c48e1289`.
+Original SQL baseline includes9,982,551 query rows and1,339,185 gravity rows.
+The new official FTL6.8/Core6.5/Web6.6.1-based signed-OS-patched artifact passed
+the fresh unsuppressed image scan with no findings and separate upstream advisory
+review. It is preloaded on all3nodes; the older FTL6.5 derivative was never adopted.
+Initial live schema/config/history preservation and six authenticated API reads
+plus internal UDP/TCP DNS passed. Controlled-restart preservation and authenticated API checks passed. All three
+external nodes passed UDP/TCP DNS and HTTP route checks. Only final browser
+acceptance remains pending for this application.
+Retention remains91days and the existing password hash is preserved.
+
+Redis was patched within8.6 to8.6.7 after a complete authenticated cold RDB/PVC
+archive. The same Longhorn claim and the exact original RDB SHA passed on the
+new Ready writer, with PONG, actual8.6.7 and healthy persistence. Its exact image
+scan has no reported findings. Normal cache expiration/writes are not claimed
+as immutable cache-value equivalence. Public routing is restored through the same local validator and Flux; all three
+external nodes returned PONG.
+
+The signed Debian13/PHP8.3.36 WordPress and phpMyAdmin derivatives are adopted.
+WordPress preserved its account, all12 tables,55 posts,227 comments and4,951
+files; complete encrypted SQL and file backups were authenticated first. The
+first empty SQL dump was rejected and corrected before deployment. phpMyAdmin
+retains all58 production dependencies, MFA/PDF and database connectivity. Four
+static sites passed complete per-file content, ownership, mode and file-timestamp
+comparison after nginx patching. Directory mtimes are excluded from equality,
+with individual private manifests retained. All45 HTTP/Redis route checks passed;
+WordPress preserves its existing canonical HTTPS admin redirect. These artifacts
+have no available fixes in the recorded scan; unfixed rows remain visible.
+The full goal and whole-inventory residual review remain active.
+
+CoreDNS now runs the reviewed1.14.7 security build on both original replicas.
+The fresh exact scan has no Critical/High/Medium/Low findings (three Unknown
+rows retained). All18 UDP/TCP DNS queries and four Pod health checks passed;
+only the image changed. Original Corefile/Service/deployment identities remain.
+See [CoreDNS evidence](docs/COREDNS-SECURITY-PATCH.md). Dedicated native F-drive
+build storage was installed through Ansible without changing existing cluster
+disks, old build guards or Strata. Jackett and Plex cutovers remain in progress;
+this checkpoint does not complete the goal.
+
+Jackett's complete cold archive, six-indexer/API/credential comparison, controlled
+restart and six external routes now pass; see [acceptance](docs/JACKETT-ACCEPTANCE.md).
+Plex's complete encrypted cold config is authenticated and its same-beta OS patch
+is Ready through Flux. The first hot-baseline section-table mismatch is retained;
+a whole-archive comparison proved every cold section row/column equals live, with
+no excluded field. The corrected full qualifier passed; routes are being restored.
+Unpackerr's pinned Go1.27.3/current signed-Alpine rebuild succeeded and exact scan
+is running; Homepage's patched build is running. Neither is adopted yet.

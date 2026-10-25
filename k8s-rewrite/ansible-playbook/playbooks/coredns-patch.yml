@@ -1,0 +1,7 @@
+---
+- name: Preserve the existing DNS configuration while applying the reviewed official patch
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - coredns_patch
