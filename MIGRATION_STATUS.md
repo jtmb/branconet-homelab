@@ -1,19 +1,28 @@
 # Migration and maintenance status
 
-**October 25 20:55 UTC:** Whoami and Seerr now consume official upstream images
-through private chart changes and local validation → validated → Flux. Live source
-is `08392b8d6d9b3a682442cd734b484e27550f9249`. Seerr's fresh full-state/account/
-history/settings/integration and new-Pod restart checks passed; normal public
-HTTPS APIs passed with verified TLS. [Seerr evidence](docs/SEERR-ACCEPTANCE.md).
-All three nodes are Ready without pressure, all55 PVCs Bound, all desired
-Deployments/DaemonSets available, all34 HelmReleases and Kustomizations Ready,
-and all attached Longhorn volumes healthy. Two historical failed diagnostic Pods
-remain intentionally preserved. No full-goal or final UI acceptance is claimed.
-The [current all-image ownership matrix](evidence/image-ownership-current-20261025.json)
-covers68 distinct running main/init/ephemeral references,33 app charts and their
-controller owners;24 third-party derivative chart transitions remain. Four owned
-application charts need their repository/publication ownership path, with BORTUS
-implementation kept with its separate owner. Earlier inventory remains dated evidence.
+**October 25 22:00 UTC:** Whoami, Seerr and YTPTube now use official upstream
+images through private charts and local validation → validated → Flux. Current
+source is `4db7673bcc1a8989a674c4f1dc26926420165b92`. YTPTube's original account,
+nine presets, original history and all seven legacy files passed preservation.
+A distinct 105,333-byte H.264/AAC sample, its history and active runtime passed
+new-Pod restart checks; two history records remain. Native-account login and
+page/API access passed through the normal LAN route. The first repeated-video
+test replaced the original history row; a guarded quiescent repair restored that
+row exactly, preserving every other table, all media and encrypted pre-repair
+evidence. Both full snapshots and companion metadata have authenticated NAS
+read-back proof. [Exact YTPTube acceptance](evidence/ytptube-upstream-adoption-20261025.json).
+
+At 21:58 UTC all three nodes were Ready without pressure, all 55 PVCs Bound, all
+desired Deployments/DaemonSets available, all 34 HelmReleases and Kustomizations
+Ready, and all attached Longhorn volumes healthy. Two historical failed
+diagnostic Pods remain intentionally preserved; temporary readers/repair Pods
+were deleted. The [current ownership matrix](evidence/image-ownership-current-20261025.json)
+covers 68 distinct running main/init/ephemeral image references, 33 app charts and
+controller owners. There are 23 third-party derivative chart transitions left.
+Four owned application charts still need their repository/publication ownership
+path; BORTUS implementation stays with its separate owner. Earlier snapshots,
+failed attempts and recovery sources remain retained. Final IAB acceptance and
+remaining security work are open; the full goal is not complete.
 
 **October 25 scope correction:** use maintained upstream releases for third-party
 services; no further bespoke derivative image maintenance. Owned image changes

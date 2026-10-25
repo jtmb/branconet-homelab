@@ -1,5 +1,23 @@
 # YTPTube operator acceptance preparation
 
+## October25 22:00 UTC execution — backend accepted
+
+Official v2.7.5 is live through Flux revision
+`4db7673bcc1a8989a674c4f1dc26926420165b92`. Native login, the original account,
+nine presets, original history and all seven legacy files passed preservation.
+A distinct Blender video produced a 105,333-byte, 5.067-second H.264/AAC sample;
+the media, history, active runtime and original data passed on a new Pod. Two
+history rows remain. Original claims, Deployment and native Secret identities
+are preserved. Normal LAN page/API access with native authentication passed.
+Both full snapshots and companion metadata passed complete authenticated NAS
+read-back, with source originals retained. All temporary backup, legacy and
+repair Pods were UID-deleted. The failed first repeated-video check and its
+restoration are documented below rather than discarded.
+
+[Exact sanitized receipt, archive hashes, runtime and live identities](../evidence/ytptube-upstream-adoption-20261025.json).
+Final IAB acceptance remains pending until implementation is finished. No fresh
+zero-CVE claim or full-goal-completion claim is made.
+
 ## Official upstream transition profile — October25
 
 The user superseded bespoke third-party derivative maintenance. The explicit

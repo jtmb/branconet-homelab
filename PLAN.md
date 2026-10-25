@@ -7,13 +7,21 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
-October25 20:55 UTC execution: Whoami and Seerr upstream adoption passed;
-Seerr's fresh backup, full current data/accounts/settings/provider checks and
-controlled restart passed. Normal public API routes passed verified TLS.
-Current charts main/validated/live Flux is `08392b8d6d9b3a682442cd734b484e27550f9249`.
-Continue with YTPTube and the remaining upstream transition list;24 third-party
-derivative charts remain in the current ownership matrix. Final IAB acceptance
-is still reserved until implementation is complete. The full goal remains active.
+October25 22:00 UTC execution: Whoami, Seerr and YTPTube upstream backend
+adoption passed. YTPTube preserves the original account, nine presets, original
+history and all seven legacy files. A distinct five-second H.264/AAC YouTube
+sample and its history/runtime persisted on a new Pod. Its original history row
+was restored exactly after the first repeated-video verification replaced it;
+the failed check, both full encrypted backups, verification record and all media
+remain recoverable. Both archives and companion metadata passed authenticated
+SMB read-back. [Exact YTPTube receipt](evidence/ytptube-upstream-adoption-20261025.json).
+Current private charts main/validated/live Flux is
+`4db7673bcc1a8989a674c4f1dc26926420165b92`. All three nodes are Ready, all 55 PVCs
+Bound, all desired workloads and all 34 HelmReleases available/Ready, with all
+attached Longhorn volumes healthy at the 21:58 UTC check. The refreshed ownership
+matrix has 23 third-party derivative chart transitions remaining. Continue those
+transitions and current catalog remediation; final IAB acceptance remains after
+implementation. The full goal remains active and incomplete.
 
 ## Bounded finish plan — October 25, 20:24 UTC
 

@@ -175,9 +175,11 @@ def main():
             need(owner['kind'] == 'ReplicaSet'); rs = obj('get', 'replicaset', owner['name']); need(rs['metadata']['uid'] == owner['uid'])
             need(any(x.get('controller') and x['kind'] == 'Deployment' and x['uid'] == DEPLOYMENT_UID for x in rs['metadata'].get('ownerReferences', [])))
             container = next(c for c in pod['spec']['containers'] if c['name'] == 'ytdl'); status = next(c for c in pod['status']['containerStatuses'] if c['name'] == 'ytdl')
-            need(container['image'] == args.expected_writer_image and status.get('imageID') == args.expected_writer_image and status['ready'])
+            # CRI omits the tag from an official tag@digest reference. Require
+            # the exact requested spec and immutable runtime digest together.
+            need(container['image'] == args.expected_writer_image and status.get('imageID', '').endswith('@' + args.expected_writer_image.split('@', 1)[1]) and status['ready'])
             node = pod['spec']['nodeName']
-            writer_identity = {'pod': pod['metadata']['name'], 'uid': pod['metadata']['uid'], 'image': args.expected_writer_image}
+            writer_identity = {'pod': pod['metadata']['name'], 'uid': pod['metadata']['uid'], 'image': args.expected_writer_image, 'imageID': status['imageID']}
         node_object = obj('get', 'node', node)
         need(not node_object['spec'].get('unschedulable', False))
         need(any(c['type'] == 'Ready' and c['status'] == 'True' for c in node_object['status']['conditions']))
