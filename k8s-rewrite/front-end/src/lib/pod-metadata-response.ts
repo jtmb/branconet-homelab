@@ -10,19 +10,21 @@ const BODY_CHUNK_BYTES = 64 * 1024;
 function ownedBody(bytes: Uint8Array, suffix: Uint8Array): ReadableStream<Uint8Array> {
   let prefix: Uint8Array | undefined = bytes;
   let footer: Uint8Array | undefined = suffix;
+  const prefixLength = bytes.byteLength;
+  const length = prefixLength + suffix.byteLength;
   let offset = 0;
   return new ReadableStream<Uint8Array>({
     pull(controller) {
-      if (prefix && offset < prefix.byteLength) {
-        const end = Math.min(offset + BODY_CHUNK_BYTES, prefix.byteLength);
-        controller.enqueue(prefix.slice(offset, end));
-        offset = end;
-        if (offset === prefix.byteLength) prefix = undefined;
-      } else {
-        if (footer) controller.enqueue(footer);
-        footer = undefined;
-        controller.close();
-      }
+      const end = Math.min(offset + BODY_CHUNK_BYTES, length);
+      const chunk = new Uint8Array(end - offset);
+      const prefixEnd = Math.min(end, prefixLength);
+      if (prefix && offset < prefixEnd) chunk.set(prefix.subarray(offset, prefixEnd));
+      if (footer && end > prefixLength)
+        chunk.set(footer.subarray(Math.max(0, offset - prefixLength), end - prefixLength), Math.max(0, prefixLength - offset));
+      offset = end;
+      if (offset >= prefixLength) prefix = undefined;
+      controller.enqueue(chunk);
+      if (offset === length) { footer = undefined; controller.close(); }
     },
     cancel() { prefix = undefined; footer = undefined; },
   }, { highWaterMark: 0 });
