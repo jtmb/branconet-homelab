@@ -103,10 +103,10 @@ No sudo password or production credential is required.
 
 ## Dedicated native F profile
 
-CoreDNS, Jackett, Plex, Unpackerr, Homepage and http-echo accept the explicit offloaded storage profile
+CoreDNS, Jackett, Plex, Unpackerr, Homepage, http-echo, qbittorrent-current and pihole-exporter accept the explicit offloaded storage profile
 for local-operator artifacts; Jackett also retains its historical offline CI
 proof path. All previous frozen helpers and C-backed originals remain unchanged.
-New Unpackerr/Homepage/http-echo receivers stay on native F; previous services retain their
+New Unpackerr/Homepage/http-echo/qbittorrent-current/pihole-exporter receivers stay on native F; previous services retain their
 original sealed paths. The profile preserves the exact size/source checks,
 1 GiB/no-swap/two-CPU/128-task bounds, 24-hour DB age and scanner deadlines.
 

@@ -9,7 +9,7 @@ import pwd
 import re
 import stat
 
-NAMES = {'seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo'}
+NAMES = {'seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter'}
 CONTROLLER = Path('/home/brajam/.local/share/branconet-migration/application-artifacts-20261023')
 NODE = Path('/home/james/.local/share/branconet-migration/application-artifacts-20261023')
 MAX_ARCHIVE = 4 * 1024**3
@@ -75,7 +75,7 @@ def main():
     owner = pwd.getpwnam('brajam' if controller else 'james').pw_uid
     need(os.geteuid() == owner)
     parent = CONTROLLER if controller else NODE
-    if controller and args.service in ['plex', 'unpackerr', 'homepage', 'http-echo']:
+    if controller and args.service in ['plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter']:
         mount = CONTROLLER.parent / 'local-image-build-offload-20261025'
         need(mount.is_mount() and mount.resolve() == mount and mount.stat().st_uid == owner
              and mount.stat().st_dev != os.stat('/').st_dev)

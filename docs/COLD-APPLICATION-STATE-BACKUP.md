@@ -10,7 +10,7 @@ Full authenticated archive verification and exact temporary Pod deletion passed.
 Later application-specific acceptance receipts record the other completed
 backups; this dated Radarr paragraph is not their current execution status.
 `scripts/migration/cold-application-state-backup.py` handles exactly one of Radarr,
-Sonarr, Bazarr, Tautulli, Vaultwarden, WordPress, WordPress Redis, Jackett or Plex per invocation. It reuses the new
+Sonarr, Bazarr, Tautulli, Vaultwarden, WordPress, WordPress Redis, Jackett, Plex or Unpackerr per invocation. It reuses the new
 [MeTube preservation](METUBE-STATE-BACKUP.md) reader and archive verification
 primitives; it does not import or replay the separate frozen BORTUS recovery
 framework. The older `backup-native-volumes.py` scales unrelated workloads and
@@ -264,3 +264,8 @@ Other application profiles retain their limits. The October25 complete capture
 and authentication passed; see [Plex evidence](PLEX-SECURITY-PATCH.md). Jackett's
 same-UID1000 backup and restart/data proof are in
 [Jackett acceptance](JACKETT-ACCEPTANCE.md). Neither operation mounts NAS media.
+
+Unpackerr selects its original data-1 config claim, not its data-0 SMB downloads
+claim. The measured directory owner requires reader1000:1000 with no extra
+capabilities; the complete config backup and exact reader deletion passed.
+See [Unpackerr acceptance](UNPACKERR-ACCEPTANCE.md).

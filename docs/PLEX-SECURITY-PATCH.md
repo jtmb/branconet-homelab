@@ -36,5 +36,8 @@ is excluded. The native library API, claimed server/account identity, original
 Secret/PVC bindings and actual NAS prefix read passed. Functional receipt SHA256:
 `8af69f6a59417c812021b2cc41c363e1c6b0d1ab0359c3d075f6940ee8129aa5`.
 Cold-section proof: `1068c787acb6b6966a0fe2bee903e3ed5b79bdc8719b66501fcfdf3b169fe400`.
-Routes are being restored through Flux. Final external routes and browser
-acceptance still need recording.
+Flux restored the existing public Service. All three nodes passed both the
+claimed-server identity and web page checks (six HTTP checks), receipt SHA256
+`8e0a820427308a21b8cd4ebc900ed3d79bfc00141d581918ae46ae0884ab7eb6`.
+This app has no live Ingress; its existing32400 route is preserved. Final browser
+acceptance remains pending.

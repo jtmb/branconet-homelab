@@ -135,3 +135,14 @@ config archive is authenticated and its temporary reader is deleted; same-beta
 patched-image Flux cutover is in progress, with acceptance still pending.
 [Local storage](docs/LOCAL-BUILD-STORAGE.md) now includes the actual F-backed CI
 publisher and existing-only startup mount. No GitHub Actions runs are used.
+
+Plex's six external identity/web checks now pass. Unpackerr's complete cold
+config backup, real isolated ZIP/mock-import cleanup and live native bindings/
+config/startup checks passed. http-echo's unchanged-source rebuild has zero scan
+findings and identical Service/ingress replies and retained claim/spec. See
+[Unpackerr](docs/UNPACKERR-ACCEPTANCE.md) and [http-echo](docs/HTTP-ECHO-SECURITY-PATCH.md).
+Homepage's first complete image scan found remaining fixable transitive packages;
+that candidate is retained and not adopted. qBittorrent's current profile is231
+paired Legacy bencoded resumes, not SQLite; its supported LT2.0 candidate still
+needs cold-copy/API/VPN qualification. Final browser and whole-inventory
+acceptance remain open; this checkpoint does not finish the tracked goal.

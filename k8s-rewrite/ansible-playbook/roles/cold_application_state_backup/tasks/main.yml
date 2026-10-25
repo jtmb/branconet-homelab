@@ -4,7 +4,7 @@
     that:
       - cold_application_state_apply | bool
       - inventory_hostname == 'masternode'
-      - cold_application_state_app in ['radarr', 'sonarr', 'bazarr', 'tautulli', 'vaultwarden', 'wordpress-redis', 'wordpress', 'jackett', 'plex']
+      - cold_application_state_app in ['radarr', 'sonarr', 'bazarr', 'tautulli', 'vaultwarden', 'wordpress-redis', 'wordpress', 'jackett', 'plex', 'unpackerr']
       - cold_application_state_output_dir is match('^/home/brajam/[^\r\n]+$')
       - cold_application_state_node in ['workernode1', 'workernode2']
       - cold_application_state_reader_uid | int in [0, 33, 999, 1000]

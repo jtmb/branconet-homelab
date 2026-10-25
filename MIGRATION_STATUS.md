@@ -297,3 +297,14 @@ a whole-archive comparison proved every cold section row/column equals live, wit
 no excluded field. The corrected full qualifier passed; routes are being restored.
 Unpackerr's pinned Go1.27.3/current signed-Alpine rebuild succeeded and exact scan
 is running; Homepage's patched build is running. Neither is adopted yet.
+
+Plex's six external identity/web checks now pass. Unpackerr's complete cold
+config backup, real isolated ZIP/mock-import cleanup and live native bindings/
+config/startup checks passed. http-echo's unchanged-source rebuild has zero scan
+findings and identical Service/ingress replies and retained claim/spec. See
+[Unpackerr](docs/UNPACKERR-ACCEPTANCE.md) and [http-echo](docs/HTTP-ECHO-SECURITY-PATCH.md).
+Homepage's first complete image scan found remaining fixable transitive packages;
+that candidate is retained and not adopted. qBittorrent's current profile is231
+paired Legacy bencoded resumes, not SQLite; its supported LT2.0 candidate still
+needs cold-copy/API/VPN qualification. Final browser and whole-inventory
+acceptance remain open; this checkpoint does not finish the tracked goal.

@@ -11,7 +11,7 @@ import subprocess
 import uuid
 
 ROOT = Path('/home/brajam/.local/share/branconet-migration/local-oci-scan-20261024')
-SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo']
+SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter']
 
 
 def need(ok, reason):
@@ -37,7 +37,7 @@ def main():
     p.add_argument('--storage-profile', choices=['legacy', 'offloaded'], default='legacy')
     a = p.parse_args()
     if a.storage_profile == 'offloaded':
-        need((a.service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo'] and a.source_kind == 'local-operator')
+        need((a.service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter'] and a.source_kind == 'local-operator')
              or (a.service == 'jackett' and a.source_kind == 'github-actions'), 'finite_offloaded_scan_scope')
         mount = Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025')
         need(mount.is_mount(), 'dedicated_storage_mounted')

@@ -29,7 +29,7 @@ SEAL = HELPER_ROOT / 'inputs.json'
 BUILDS = BASE / 'worker1-image-build-20261023'
 CI_ARTIFACTS = BASE / 'ci-image-artifacts-20261024'
 LOCAL_ARTIFACTS = BASE / 'local-image-artifacts-20261024'
-SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo']
+SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter']
 SEERR_CI_LOCK_SHA = '9665b245267e7c864210bdf85f1098c0891f30946c64b3781f44077fff0b7811'
 TOOL_SHA = 'd1dfca6ae10a1ad4540bb94e64f0510077c47008920a9b554986b39dca573d83'
 DB_FILES = {
@@ -572,7 +572,7 @@ def local_verify(root, service, run_id, proof_sha, owner, mode=0o400,
         'reserve_bytes': 2 * LOCAL_GIB, 'max_oci_bytes': 4 * LOCAL_GIB,
         'observation_seconds': 6300, 'whole_seconds': 7200}
     measured_profile = result.get('resource_contract', {})
-    offloaded = service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo'] and result.get('storage_contract') == OFFLOAD_STORAGE
+    offloaded = service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter'] and result.get('storage_contract') == OFFLOAD_STORAGE
     local_need(not result.get('storage_contract') or offloaded, 'finite_offloaded_storage_scope')
     local_need(service != 'coredns' or offloaded, 'coredns_requires_dedicated_storage_proof')
     if service in ['wordpress', 'nginx', 'phpmyadmin'] and measured_profile.get('build_budget_bytes') == 4 * LOCAL_GIB:
@@ -666,8 +666,8 @@ def local_root(args):
     require(re.fullmatch('[0-9a-f]{32}', args.local_run_id) and re.fullmatch('[0-9a-f]{64}', args.local_provenance_sha256), 'local_operator_identity')
     require(args.ci_run_id == args.ci_artifact_id == 0 and not args.ci_provenance_sha256 and args.build_attempt == 'initial', 'local_operator_has_no_ci_or_worker_identity')
     parent = (BASE / 'local-image-build-offload-20261025/local-image-artifacts-20261025'
-              if args.service in ['unpackerr', 'homepage', 'http-echo'] else LOCAL_ARTIFACTS)
-    if args.service in ['unpackerr', 'homepage', 'http-echo']:
+              if args.service in ['unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter'] else LOCAL_ARTIFACTS)
+    if args.service in ['unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter']:
         require(OFFLOADED_SCAN and parent.parent.is_mount(), 'dedicated_receiver_mount')
     return parent / (args.service + '-' + args.local_run_id)
 
@@ -866,7 +866,7 @@ def main():
     elif args.phase == 'run':
         require(args.apply, 'explicit_scan_required')
         require(args.service in SERVICES, 'service_required')
-        require(not OFFLOADED_SCAN or (args.service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo'] and args.source_kind == 'local-operator')
+        require(not OFFLOADED_SCAN or (args.service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter'] and args.source_kind == 'local-operator')
                 or (args.service == 'jackett' and args.source_kind == 'github-actions'), 'finite_offloaded_scan_scope')
         require(args.source_kind == 'local-operator' or not (args.local_run_id or args.local_provenance_sha256), 'nonlocal_source_has_no_local_identity')
         protected(SEAL)

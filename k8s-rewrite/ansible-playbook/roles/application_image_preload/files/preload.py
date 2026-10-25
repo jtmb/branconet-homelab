@@ -25,7 +25,9 @@ NAMES = {'seerr': 'docker.io/library/seerr-security-20261023',
          'plex': 'docker.io/library/plex-security-20261023',
          'unpackerr': 'docker.io/library/unpackerr-security-20261023',
          'homepage': 'docker.io/library/homepage-security-20261023',
-         'http-echo': 'docker.io/library/http-echo-security-20261023'}
+         'http-echo': 'docker.io/library/http-echo-security-20261023',
+         'qbittorrent-current': 'docker.io/library/qbittorrent-current-security-20261023',
+         'pihole-exporter': 'docker.io/library/pihole-exporter-security-20261023'}
 MEDIA = {'application/vnd.oci.image.manifest.v1+json', 'application/vnd.oci.image.index.v1+json',
          'application/vnd.docker.distribution.manifest.v2+json', 'application/vnd.docker.distribution.manifest.list.v2+json'}
 

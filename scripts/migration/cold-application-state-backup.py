@@ -19,6 +19,7 @@ spec.loader.exec_module(shared)
 need, canonical, file_hash = shared.need, shared.canonical, shared.file_hash
 # Exact identities from metadata-only strict SSH discovery, 2026-10-23.
 TARGETS = {
+    'unpackerr': ('plex', '176fa046-630c-41df-9a53-5c4f5f5d6024', 'c7af079e-7de5-4e8d-a4ca-1c7d763e023b', '4644e693-b613-465d-a7ff-a5a9d3e1ffc1', 'golift/unpackerr:latest@sha256:4ec141eeb0cb2f971d7c92f21cc40b0d2d50d7920eb7a0557443cca52270c0b0'),
     'plex': ('plex', '62dbb208-e8a8-487c-8264-788cd90e3f9d', '66bf6326-157d-4875-b4c5-1a4d03636f5e', 'f1f3f7d0-4706-43ff-871d-e7b6f7bfe7f2', 'lscr.io/linuxserver/plex@sha256:a3a3a850a64fb747c59f85dbc19b157781c3b9c921a83799127894b0ebdf3a68'),
     'jackett': ('plex', '8ff38b3e-d114-4a03-adfd-2078d359530c', 'cc166e8b-d45a-4e77-bdfe-e874240cfb4d', '7d4e8aea-5715-4ee3-8e56-352b7b1e99f0', 'linuxserver/jackett:latest@sha256:cdea5d3209a6ab1fb8eb954ec0b8169b7d54274617f42bf5c74f22a92075755f'),
     'wordpress': ('wordpress', 'c5b60268-c0d4-43f8-8014-4c04e427a122', '65ca0d62-fc47-4063-81a5-4ed59767e907', '90b7695b-3cbf-41d9-b6d1-1f9ee3fd5e2f', 'wordpress:latest@sha256:ee74dc0ebbe7ec43b7f473c0fb4f1dfb6b211d7785f0a95bcdfa10e628c2e67f'),
@@ -61,8 +62,9 @@ def main():
     run_id = uuid.uuid4().hex
     run = output / (args.application + '-cold-' + run_id); run.mkdir(mode=0o700)
     namespace, deployment_uid, release_uid, claim_uid, original_image = TARGETS[args.application]
-    claim = 'wordpress-redis-data' if args.application == 'wordpress-redis' else args.application + '-data-0'
-    mount_alias = 'data' if args.application == 'wordpress-redis' else 'data-0'
+    claim = ('wordpress-redis-data' if args.application == 'wordpress-redis' else
+             'unpackerr-data-1' if args.application == 'unpackerr' else args.application + '-data-0')
+    mount_alias = 'data' if args.application == 'wordpress-redis' else 'data-1' if args.application == 'unpackerr' else 'data-0'
     receipt = {'schema_version': 1, 'application': args.application, 'status': 'started', 'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'reader_uid': args.reader_uid, 'reader_gid': args.reader_gid, 'restore_verified': False, 'writer_scaled_by_helper': False, 'nas_mounted_or_walked': False, 'temporary_pod_deleted': False}
     children = []; reader = None
 

@@ -670,7 +670,7 @@
       "browserAccepted": false
     },
     "plex": {
-      "state": "backend-accepted-flux-routing-restore-in-progress",
+      "state": "backend-and-external-routes-accepted-browser-pending",
       "image": "docker.io/library/plex-security-20261023@sha256:1b3470b85eb38360c5b242f7cfbc7d45accc429704f725a8610137861db00397",
       "sameProductionVersion": "1.43.5.11079-b3b13e506",
       "coldReceiptSHA256": "81f22d8e3a683f1ec43eb8360d92d805ea3ad19473c5ea1fac265108625c397b",
@@ -698,7 +698,53 @@
       "completeOriginalAccountMediaWatchStateTablesCompared": 20,
       "completeLibrarySectionColumnsComparedAgainstColdArchive": 23,
       "fieldsExcludedFromLibrarySectionEquality": [],
-      "firstHotBaselineMismatchRetained": true
+      "firstHotBaselineMismatchRetained": true,
+      "routingRestored": true,
+      "externalHTTPChecks": 6,
+      "routesReceiptSHA256": "8e0a820427308a21b8cd4ebc900ed3d79bfc00141d581918ae46ae0884ab7eb6",
+      "existingIngressPresent": false
+    },
+    "unpackerr": {
+      "backendAccepted": true,
+      "image": "docker.io/library/unpackerr-security-20261023@sha256:6342be9c7797b126633a56948b4dab131fde45fde3b8b173a3c84a8f4efc6213",
+      "version": "0.16.1",
+      "goVersion": "1.27.3",
+      "originalConfigSHA256": "b6fad28f30114d44f919bf94fff26f58451f5c5c96aa4a0c46eb0e875e7f7698",
+      "originalConfigBytes": 17148,
+      "completeColdReceiptSHA256": "d09e1317d89564d1a1df7a9a83f5ba557137cf70dc2d5d40077fa38758c7e353",
+      "wholeArchiveAuthenticated": true,
+      "readerDeleted": true,
+      "configBytesNativeSecretBothClaimsAndResourcesMatched": true,
+      "functionalReceiptSHA256": "2fb5d104202e0841adafd3d8a552dd1893c00c2c8bd85f55dfe6fa7e48980a29",
+      "disposableRealZIPAndMockImportCleanupPassed": true,
+      "fixtureEvidenceDirectory": "local-image-build-offload-20261025/unpackerr-fixture-z6loq8s8",
+      "fixtureSourceSHA256": "e37aa881ea956513bae0fcbad64a723ade83a92b4fb449c8d9dce314d7f75aae",
+      "firstFixtureUmaskMismatchRetained": true,
+      "firstUID0ReaderPermissionFailureRetained": true,
+      "productionUmask": "0022",
+      "sonarrAndRadarrPollingLogMentions": true,
+      "noAuthOrFatalErrorsObserved": true,
+      "actualProductionDownloadOrNASDeletionClaimed": false,
+      "scanSeverityCounts": {
+        "UNKNOWN": 1
+      },
+      "scanStatusSHA256": "9b16e186904ea6122b483871ff2634a6dcda9c1406870bdfefeb7e9fcbffd140",
+      "scanResultsSHA256": "96c33c827f91a10909791b31eb5229b9cfe2929ccd6018c9cefc3c081548f757",
+      "unfixedFinding": "GO-2026-5932",
+      "upstream016SecurityLimitsRetained": true
+    },
+    "httpEcho": {
+      "backendAccepted": true,
+      "image": "docker.io/library/http-echo-security-20261023@sha256:451c628e3f7587cfa4469131c7429e7b960bb1131b63a4d72e7622cc9284372a",
+      "sameApplicationVersion": "1.0.0",
+      "originalSourceUnchanged": true,
+      "goVersion": "1.26.10",
+      "originalClaimAndNativeSpecServiceIngressRepliesPreserved": true,
+      "scanFindings": 0,
+      "scanStatusSHA256": "13f9b1b9e4425edeb0a9b2d78ef761f0f9530f03ca21f8a2724165f195417928",
+      "scanResultsSHA256": "93668caabd5657db9c45a588b46986f3bad748d4d9d2eb0aea59dc522142295c",
+      "functionalReceiptSHA256": "8891bd05470301179c94a6dcb05e7d78fdbeae71eba5f89bf6150137ac3353cc",
+      "browserAccepted": false
     }
   }
 }

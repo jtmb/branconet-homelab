@@ -18,7 +18,7 @@ file identity and zero header were checked before the explicit guarded resume
 with `mkfs.ext4 -E nodiscard`. Both attempts are retained.
 
 The private charts repository's separate offloaded builder admits CoreDNS,
-Jackett, Plex, Unpackerr, Homepage and http-echo only. It keeps the existing 3 GiB memory, no-swap, 1.5 CPU,
+Jackett, Plex, Unpackerr, Homepage, http-echo, qbittorrent-current and pihole-exporter only. It keeps the existing 3 GiB memory, no-swap, 1.5 CPU,
 512-task, 8 GiB cache, 12 GiB fresh allocation and 4 GiB OCI bounds. The original
 global build lock prevents overlapping builders. It checks both the dedicated
 F filesystem/physical drive and the shared Docker bootstrap on C; Docker's new
