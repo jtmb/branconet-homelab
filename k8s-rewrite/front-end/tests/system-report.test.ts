@@ -129,9 +129,13 @@ test("deadline aborts scanner and releases registry; stale/unavailable/oversize 
   await assert.rejects(new SystemReportJobs(async () => inventory(), scanner(), new Map(), () => now, { ...REPORT_LIMITS, images: 0 }).start(), { status: 422 });
 });
 test("report byte ceiling preserves failure state and does not retain oversized results", async () => {
-  const jobs = new SystemReportJobs(async () => inventory(), scanner(), new Map(), () => now, { ...REPORT_LIMITS, resultBytes: 1 });
-  await jobs.start(); await jobs.settled(); const image = (await jobs.report()).images[0];
+  const inv = inventory(); inv.images.push({ ...inv.images[0], key: "other", digest: "sha256:" + "b".repeat(64), reference: "registry.example/other@sha256:" + "b".repeat(64) });
+  let calls = 0;
+  const jobs = new SystemReportJobs(async () => inv, scanner(async () => { calls++; return complete(); }), new Map(), () => now, { ...REPORT_LIMITS, resultBytes: 1 });
+  await jobs.start(); await jobs.settled(); const report = await jobs.report(), image = report.images[0];
   assert.equal(image.state, "error"); assert.equal(image.findings.length, 0); assert.match(image.message!, /size limit/);
+  assert.equal(report.job!.state, "error"); assert.equal(calls, 1, "budget exhaustion stops later scans");
+  assert.equal(report.images[1].state, "error"); assert.match(report.images[1].message!, /size limit.*unscanned/);
 });
 test("failed scanner result is not cached and consumers reconcile against latest inventory", async () => {
   let calls = 0; let inv = inventory();

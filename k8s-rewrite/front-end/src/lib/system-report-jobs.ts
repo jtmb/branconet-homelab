@@ -55,13 +55,13 @@ export class SystemReportJobs {
   async settled() { await this.drain; }
 
   private async run(inventory: Inventory, databaseKey: string, controller: AbortController, id: string) {
-    let deadline = false, bytes = 0;
+    let deadline = false, sizeLimit = false, bytes = 0;
     const timer = setTimeout(() => { deadline = true; controller.abort(); }, this.limits.deadlineMs);
     try {
       for (const image of inventory.images) {
         if (!image.reference) continue;
         if (controller.signal.aborted) {
-          this.results.set(image.key, { state: "cancelled", findings: [], message: deadline ? "Job deadline reached; image unscanned." : "Scan cancelled; image unscanned." });
+          this.results.set(image.key, { state: deadline || sizeLimit ? "error" : "cancelled", findings: [], message: sizeLimit ? "Report size limit reached; image unscanned." : deadline ? "Job deadline reached; image unscanned." : "Scan cancelled; image unscanned." });
           continue;
         }
         const cacheKey = `${databaseKey}:${image.digest}`;
@@ -72,12 +72,13 @@ export class SystemReportJobs {
         const size = Buffer.byteLength(JSON.stringify(result));
         if (bytes + size > this.limits.resultBytes) {
           result = { state: "error", findings: [], message: "Report size limit reached. Coverage is incomplete." };
+          sizeLimit = true;
           controller.abort();
         } else bytes += size;
         this.results.set(image.key, result);
         if (result.state === "complete" && result !== cached?.result) this.put(cacheKey, result, size);
       }
-      if (this.job?.id === id) this.job.state = controller.signal.aborted ? (deadline ? "error" : "cancelled") : "complete";
+      if (this.job?.id === id) this.job.state = controller.signal.aborted ? (deadline || sizeLimit ? "error" : "cancelled") : "complete";
     } catch {
       for (const [key, value] of this.results) if (["scanning", "queued"].includes(value.state))
         this.results.set(key, { state: "error", findings: [], message: "Scan job failed; coverage incomplete." });
