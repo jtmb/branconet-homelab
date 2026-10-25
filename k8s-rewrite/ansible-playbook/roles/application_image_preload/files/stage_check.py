@@ -8,8 +8,9 @@ from pathlib import Path
 import pwd
 import re
 import stat
+import subprocess
 
-NAMES = {'seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve'}
+NAMES = {'seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb'}
 CONTROLLER = Path('/home/brajam/.local/share/branconet-migration/application-artifacts-20261023')
 NODE = Path('/home/james/.local/share/branconet-migration/application-artifacts-20261023')
 MAX_ARCHIVE = 4 * 1024**3
@@ -72,10 +73,18 @@ def main():
     need(re.fullmatch(r'(initial|r[1-9][0-9]{0,2}|ci[1-9][0-9]{0,14})', args.generation))
     need(re.fullmatch('[0-9a-f]{64}', args.sha256) and 0 < args.uncompressed_layer_bytes <= 16 * 1024**3)
     controller = args.phase == 'controller'
+    if controller:
+        # Check before any new large controller-to-node transfer; no existing
+        # service, build or copy is stopped to enforce this launch guard.
+        probe = subprocess.run(['/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe',
+            '-NoLogo', '-NoProfile', '-NonInteractive', '-Command',
+            "[IO.DriveInfo]::new('C:\\').AvailableFreeSpace"], capture_output=True, text=True, timeout=20)
+        need(probe.returncode == 0 and probe.stdout.strip().isdigit() and
+             int(probe.stdout.strip()) >= 15*1024**3)
     owner = pwd.getpwnam('brajam' if controller else 'james').pw_uid
     need(os.geteuid() == owner)
     parent = CONTROLLER if controller else NODE
-    if controller and args.service in ['plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve']:
+    if controller and args.service in ['plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb']:
         mount = CONTROLLER.parent / 'local-image-build-offload-20261025'
         need(mount.is_mount() and mount.resolve() == mount and mount.stat().st_uid == owner
              and mount.stat().st_dev != os.stat('/').st_dev)
@@ -99,7 +108,7 @@ def main():
         need(args.archive_bytes is not None and 0 < args.archive_bytes <= MAX_ARCHIVE)
         fs = os.statvfs(parent if parent_exists else parent.parent)
         total = fs.f_blocks * fs.f_frsize; available = fs.f_bavail * fs.f_frsize
-        floor = (15 * total + 99) // 100 + 1024**3
+        floor = max((15 * total + 99) // 100 + 1024**3, 15*1024**3)
         required = floor + 2 * args.archive_bytes + args.uncompressed_layer_bytes
         result.update(filesystem_total_bytes=total, filesystem_available_bytes=available, reserve_bytes=floor, required_pre_copy_bytes=required, uncompressed_layer_bytes=args.uncompressed_layer_bytes)
         if args.phase == 'node-before':

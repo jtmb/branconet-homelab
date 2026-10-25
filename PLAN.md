@@ -147,9 +147,11 @@ Native Secret bindings, original PVC/spec and internal HTTP checks passed.
 qBittorrent5.3.0/LT2.0.15 retained all231 Legacy torrents and454 file identities,
 original credentials, paths, priorities and progress after full cold backup and
 source-proven settings compatibility fixes. Its exact image has zero findings.
-The shell monitor's204/cookie incompatibility is being repaired through the same
-private local-validation/Flux owner; its zero-finding artifact and complete
-notification-state backup are verified. Pi-hole exporter's same-source patch
+The shell monitor's204/cookie repair is now deployed through the same private
+local-validation/Flux owner. Six real queue cycles, original notification-state
+preservation, authentication and automatic VPN-port reconciliation passed; the
+full231-torrent/454-file comparison passed again. All15 Homepage/qBittorrent
+external route checks passed. Pi-hole exporter's same-source patch
 and three real scrapes passed with zero findings. See
 [Homepage](docs/HOMEPAGE-SECURITY-PATCH.md),
 [qBittorrent](docs/QBITTORRENT-SECURITY-PATCH.md) and

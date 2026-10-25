@@ -769,7 +769,7 @@
       "cold_receipt_sha256": "ceb6763ab0535b9c69d742b2ee2dbc8ce679cc6962f4d482eaf3765d3842ec2b",
       "live_receipt_sha256": "5d1bc84c51a61cff805f58e96bc28f59a16e0832b122faef6a14bd7a3b8c432e",
       "compatibility_playbook_ran": true,
-      "monitor_runtime_pending": true
+      "monitor_runtime_pending": false
     },
     "qbit_monitor": {
       "scan_findings": 0,
@@ -777,13 +777,67 @@
       "cold_receipt_sha256": "67f7be2fb4f0cc102d88c451252e10368db4d1dc9edf4380d370390ea5aff493",
       "notification_state_bytes": 12461,
       "original_claim_retained": true,
-      "cutover_in_progress": true
+      "cutover_in_progress": false,
+      "backend_accepted": true,
+      "actual_queue_cycles": 6,
+      "forwarded_port_readback_matches": true,
+      "original_notification_state_preserved": true,
+      "original_torrent_and_file_comparison_passed": true,
+      "original_native_bindings_preserved": true,
+      "additional_test_notification_sent": false,
+      "discord_delivery_independently_retested": false,
+      "live_receipt_sha256": "b70e7ca0091d3665cbf02d0a269c44d36b6378dfd9c468724a223ab03d4ec5f7",
+      "image_digest": "sha256:ff2141541ec06f04df3acd145a8a94c33f6bb9e327615ff314994efeb199c4fe"
     },
     "pihole_exporter": {
       "scan_findings": 0,
       "actual_scrapes_passed": 3,
       "after_receipt_sha256": "962556d9a03cf428309915fa904cb7e046b6d149e97c52765f8e17699f073a1a"
     },
-    "whole_inventory_and_browser_complete": false
+    "whole_inventory_and_browser_complete": false,
+    "external_routes": {
+      "passed": 15,
+      "receipt_sha256": "a9dc8894641fb4c837e60540eaa35d4c77b67d0954fd78aee3a2168136057c02",
+      "certificate_chain_validation_claimed": false
+    }
+  },
+  "health_20261025T0919": {
+    "passed": true,
+    "receipt_sha256": "82e720b75f62f4937ef5a9b053d613c78cd4ae285828da66c6687a5fce0d880b",
+    "nodes_ready_uncordoned_no_pressure": 3,
+    "deployments_ready": 54,
+    "daemonsets_ready": 7,
+    "attached_longhorn_volumes_healthy": 30,
+    "helmrelease_failures": 0,
+    "final_goal_acceptance": false
+  },
+  "storage_launch_policy_20261025": {
+    "minimum_windows_c_free_bytes": 16106127360,
+    "minimum_retained_destination_free_bytes": 16106127360,
+    "c_wsl_generated_budget_bytes": 21474836480,
+    "approved_external_output_root": "local-image-build-offload-20261025",
+    "new_build_estimate_bytes_including_oci": 12884901888,
+    "older_cache_inactivity_minimum_hours": 72,
+    "recent_cache_bytes_retained": 9399203744,
+    "bytes_removed": 0,
+    "existing_only_remount_receipt_sha256": "d18bc2bf327c1ad2e7acaa487d781c460d341986a4093509f3410800903ee163",
+    "existing_container_image_key_and_filesystem_identity_restoration_verified": true,
+    "ubuntu_compaction_separately_approved": true,
+    "ubuntu_compaction_status": "running_or_waiting_exclusive_access",
+    "remote_cluster_stopped": false,
+    "other_distribution_shutdown_requested": false
+  },
+  "ruckus_backup_source_20261025": {
+    "source_prepared_only": true,
+    "executed": false,
+    "requires_original_db_and_bot_flux_releases_quiesced": true,
+    "original_db_deployment_uid": "cf0b7d3c-6d8f-48cb-a55f-0ccd39f610d2",
+    "original_db_claim_uid": "2f604004-b45f-4061-bdc4-43f5ca2f7fd8",
+    "original_bot_deployment_uid": "dfd27794-a610-445e-b279-6e0933cf1153",
+    "full_physical_datadir_no_exclusions": true,
+    "reader_uid": 999,
+    "reader_gid": 999,
+    "strict_supplementary_groups_required": true,
+    "password_reset": false
   }
 }

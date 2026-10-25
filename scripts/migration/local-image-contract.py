@@ -109,7 +109,7 @@ def local_verify(root, service, run_id, proof_sha, owner, mode=0o400,
         'reserve_bytes': 2 * LOCAL_GIB, 'max_oci_bytes': 4 * LOCAL_GIB,
         'observation_seconds': 6300, 'whole_seconds': 7200}
     measured_profile = result.get('resource_contract', {})
-    offloaded = service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve'] and result.get('storage_contract') == OFFLOAD_STORAGE
+    offloaded = service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb'] and result.get('storage_contract') == OFFLOAD_STORAGE
     local_need(not result.get('storage_contract') or offloaded, 'finite_offloaded_storage_scope')
     local_need(service != 'coredns' or offloaded, 'coredns_requires_dedicated_storage_proof')
     if service in ['wordpress', 'nginx', 'phpmyadmin'] and measured_profile.get('build_budget_bytes') == 4 * LOCAL_GIB:

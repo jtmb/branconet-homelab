@@ -19,6 +19,7 @@ spec.loader.exec_module(shared)
 need, canonical, file_hash = shared.need, shared.canonical, shared.file_hash
 # Exact identities from metadata-only strict SSH discovery, 2026-10-23.
 TARGETS = {
+    'ruckus-db': ('ruckus', 'cf0b7d3c-6d8f-48cb-a55f-0ccd39f610d2', 'ea951a7f-02cf-47ba-afb9-44e915c6b8f0', '2f604004-b45f-4061-bdc4-43f5ca2f7fd8', 'mysql:5.7.41@sha256:bf18020f32cc5d8f5e2add516d52fbf3afc3de431457076340e938596c528171'),
     'qbit-monitor': ('plex', '8ea48d58-186d-4c3d-a90a-d6bda3414246', '09945782-cfa0-4dee-ba5f-19b5788d947c', '29f9332d-c2a6-4f24-a83f-210620046cd2', 'jtmb92/qbit-monitor@sha256:b1ba462564843f9f328b287a34e8a7dc4cd1f218e085862a77f42aaa1703ffec'),
     'homepage': ('homepage', '67484b9d-4971-4840-9385-5478fb0b6b32', '0abccce8-85f7-49df-baea-7825262a258e', 'f1eb8c61-46dc-4743-b5e4-b7ce75110189', 'ghcr.io/gethomepage/homepage:latest@sha256:b129cb0f674bd6d204e215bde2c2fc3f11d6ad0e82f6d20007cf80f74e1acbb1'),
     'qbittorrent': ('plex', '404fad04-5e8b-460b-aa29-dbc7450e4a54', 'd5fd0644-d2b2-4fe0-925f-9ed9a27a83da', '999128b4-0ae2-4396-a8e4-eebace5d26f0', 'lscr.io/linuxserver/qbittorrent@sha256:570aeb63bdedcb5f9dd2500bd8f0a75581ba07c518c05cabbef0cfeb15451b3f'),
@@ -45,7 +46,8 @@ def main():
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
     args = parser.parse_args()
     need(args.apply and os.name == 'posix' and args.reader_uid == args.reader_gid)
-    need(args.reader_uid == 33 if args.application == 'wordpress' else args.reader_uid == 999 if args.application == 'wordpress-redis' else args.reader_uid in [0, 1000])
+    need(args.reader_uid == 33 if args.application == 'wordpress' else args.reader_uid == 999 if args.application in ['wordpress-redis', 'ruckus-db'] else args.reader_uid in [0, 1000])
+    need(args.application != 'ruckus-db' or args.node == 'workernode2')
     need(args.application != 'plex' or args.reader_uid == 1000)
     need(args.application != 'homepage' or (args.reader_uid == 1000 and args.node == 'workernode1'))
     need(args.application != 'qbit-monitor' or args.reader_uid == 1000)
@@ -53,6 +55,12 @@ def main():
     max_entries = 131072 if args.application == 'plex' else 8192 if args.application == 'wordpress' else 4096
     max_data = 16 * 1024**3 if args.application == 'plex' else shared.MAX_DATA
     max_metadata = 64 * 1024**2 if args.application == 'plex' else shared.MAX_METADATA
+    # The cold archive is a new transfer stage. Measure C and the destination
+    # before starting it; existing archives and running work are left intact.
+    c_free = subprocess.check_output([
+        '/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe',
+        '-NoProfile', '-NonInteractive', '-Command', '(Get-PSDrive C).Free'], timeout=30)
+    need(int(c_free.decode().strip()) >= 15 * 1024**3)
     os.umask(0o077)
     os.environ.pop('BRANCONET_MIGRATION_SUDO_PASSWORD', None)
     pins = [(p, shared.protected(p, p == shared.IDENTITY)) for p in [shared.AGE, shared.RECIPIENT, shared.IDENTITY]]
@@ -61,6 +69,8 @@ def main():
     need(output.is_absolute() and str(output).startswith('/home/brajam/') and output.resolve() == output and output != REPO and REPO not in output.parents)
     output.mkdir(mode=0o700, parents=True, exist_ok=True)
     info = output.lstat(); need(stat.S_ISDIR(info.st_mode) and info.st_uid == os.getuid() and not info.st_mode & 0o077)
+    fs = os.statvfs(output)
+    need(fs.f_bavail * fs.f_frsize >= max_data + 15 * 1024**3)
     if args.application == 'plex':
         mount = pathlib.Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025')
         need(mount.is_mount() and mount in output.parents and output.stat().st_dev == mount.stat().st_dev)
@@ -105,21 +115,39 @@ def main():
         need(dep['spec'].get('replicas', 1) == 0 and all(dep['status'].get(k, 0) == 0 for k in ['replicas', 'readyReplicas', 'availableReplicas', 'updatedReplicas']))
         containers = dep['spec']['template']['spec']['containers']; need(len(containers) == 1 and containers[0]['name'] == args.application and containers[0]['image'] == original_image)
         state_mount = next(m for m in containers[0]['volumeMounts'] if m['name'] == mount_alias)
-        need(state_mount['mountPath'] == ('/var/www/html' if args.application == 'wordpress' else '/app/config' if args.application == 'homepage' else '/app/state' if args.application == 'qbit-monitor' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
+        need(state_mount['mountPath'] == ('/var/lib/mysql' if args.application == 'ruckus-db' else '/var/www/html' if args.application == 'wordpress' else '/app/config' if args.application == 'homepage' else '/app/state' if args.application == 'qbit-monitor' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
         need(any(v['name'] == mount_alias and v.get('persistentVolumeClaim', {}).get('claimName') == claim for v in dep['spec']['template']['spec']['volumes']))
         need(release['metadata']['uid'] == release_uid and not release['metadata'].get('deletionTimestamp') and release['spec'].get('releaseName') == args.application and release['spec'].get('targetNamespace') == namespace and release['spec'].get('values', {}).get('replicaCount') == 0 and not release['spec'].get('suspend', False))
         need(release['status'].get('observedGeneration', 0) >= release['metadata']['generation'] and any(c['type'] == 'Ready' and c['status'] == 'True' for c in release['status'].get('conditions', [])))
-        for pod in get('pods')['items']:
+        pods = get('pods')['items']
+        writer_identity = {}
+        if args.application == 'ruckus-db':
+            bot = get('deployment', 'ruckus-bot')
+            bot_release = get('helmrelease', 'ruckus-bot', 'flux-system')
+            need(bot['metadata']['uid'] == 'dfd27794-a610-445e-b279-6e0933cf1153' and not bot['metadata'].get('deletionTimestamp'))
+            need(bot['status'].get('observedGeneration', 0) >= bot['metadata']['generation'] and bot['spec'].get('replicas', 1) == 0)
+            need(all(bot['status'].get(k, 0) == 0 for k in ['replicas', 'readyReplicas', 'availableReplicas', 'updatedReplicas']))
+            need(bot_release['metadata']['uid'] == '790c3088-67d8-47cf-ac00-9d2e1f8c6937' and not bot_release['metadata'].get('deletionTimestamp'))
+            need(bot_release['spec'].get('releaseName') == 'ruckus-bot' and bot_release['spec'].get('targetNamespace') == namespace and bot_release['spec'].get('values', {}).get('replicaCount') == 0 and not bot_release['spec'].get('suspend', False))
+            need(bot_release['status'].get('observedGeneration', 0) >= bot_release['metadata']['generation'] and any(c['type'] == 'Ready' and c['status'] == 'True' for c in bot_release['status'].get('conditions', [])))
+            selector = bot['spec']['selector']
+            need(selector.get('matchLabels') and not selector.get('matchExpressions'))
+            for candidate in pods:
+                if all(candidate['metadata'].get('labels', {}).get(k) == v for k, v in selector['matchLabels'].items()):
+                    running = any('running' in c.get('state', {}) for key in ['containerStatuses', 'initContainerStatuses', 'ephemeralContainerStatuses'] for c in candidate['status'].get(key, []))
+                    need(candidate['status'].get('phase') in ['Failed', 'Succeeded'] and not running)
+            writer_identity = {'client_deployment_uid': bot['metadata']['uid'], 'client_generation': bot['metadata']['generation'], 'client_release_uid': bot_release['metadata']['uid'], 'client_release_generation': bot_release['metadata']['generation']}
+        for pod in pods:
             if reader and pod['metadata']['uid'] == reader['uid']: continue
             if not any(v.get('persistentVolumeClaim', {}).get('claimName') == claim for v in pod['spec'].get('volumes', [])): continue
             running = any('running' in c.get('state', {}) for key in ['containerStatuses', 'initContainerStatuses', 'ephemeralContainerStatuses'] for c in pod['status'].get(key, []))
             need(pod['status'].get('phase') in ['Failed', 'Succeeded'] and not running)
         node = get('node', args.node)
-        if args.application in ['wordpress-redis', 'wordpress', 'plex']:
+        if args.application in ['wordpress-redis', 'wordpress', 'plex', 'ruckus-db']:
             need(node['status'].get('features', {}).get('supplementalGroupsPolicy') is True)
         need(not node['spec'].get('unschedulable', False) and any(c['type'] == 'Ready' and c['status'] == 'True' for c in node['status']['conditions']))
         need(not any(c['type'] in ['DiskPressure', 'MemoryPressure', 'PIDPressure', 'NetworkUnavailable'] and c['status'] == 'True' for c in node['status']['conditions']))
-        return {'namespace': namespace, 'deployment_uid': deployment_uid, 'deployment_generation': dep['metadata']['generation'], 'helmrelease_uid': release_uid, 'helmrelease_generation': release['metadata']['generation'], 'original_image': original_image, 'claim': claim, 'claim_uid': claim_uid, 'volume': pvc['spec']['volumeName'], 'reader_node': args.node}
+        return {'namespace': namespace, 'deployment_uid': deployment_uid, 'deployment_generation': dep['metadata']['generation'], 'helmrelease_uid': release_uid, 'helmrelease_generation': release['metadata']['generation'], 'original_image': original_image, 'claim': claim, 'claim_uid': claim_uid, 'volume': pvc['spec']['volumeName'], 'reader_node': args.node, **writer_identity}
 
     def check_reader():
         current = get('pod', reader['name'])
@@ -150,7 +178,7 @@ def main():
             program = program.replace('raw=sys.stdin.buffer.read(8*1024*1024+1); need(len(raw)<=8*1024*1024)', 'raw=sys.stdin.buffer.read(64*1024*1024+1); need(len(raw)<=64*1024*1024)')
             program = program.replace("EXCLUDED = set()\n", "EXCLUDED = set()\nMAX_BYTES = " + str(max_data) + "\nMAX_MANIFEST_BYTES = " + str(max_metadata) + "\n")
             pod['spec']['containers'][0]['resources']['limits']['memory'] = '768Mi'
-        if args.application in ['wordpress-redis', 'wordpress', 'plex']:
+        if args.application in ['wordpress-redis', 'wordpress', 'plex', 'ruckus-db']:
             pod['spec']['securityContext']['supplementalGroupsPolicy'] = 'Strict'
             program = program.replace("EXCLUDED = set()\n", "EXCLUDED = set()\nMAX_ENTRIES = " + str(max_entries) + "\nneed(os.geteuid() == " + str(args.reader_uid) + " and os.getegid() == " + str(args.reader_gid) + " and set(os.getgroups()) <= {" + str(args.reader_gid) + "})\n")
         receipt['operation'] = 'create_owned_readonly_reader'; save()

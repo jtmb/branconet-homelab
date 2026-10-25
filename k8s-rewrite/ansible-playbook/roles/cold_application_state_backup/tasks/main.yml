@@ -4,7 +4,8 @@
     that:
       - cold_application_state_apply | bool
       - inventory_hostname == 'masternode'
-      - cold_application_state_app in ['radarr', 'sonarr', 'bazarr', 'tautulli', 'vaultwarden', 'wordpress-redis', 'wordpress', 'jackett', 'plex', 'unpackerr', 'qbittorrent', 'homepage', 'qbit-monitor']
+      - cold_application_state_app in ['radarr', 'sonarr', 'bazarr', 'tautulli', 'vaultwarden', 'wordpress-redis', 'wordpress', 'jackett', 'plex', 'unpackerr', 'qbittorrent', 'homepage', 'qbit-monitor', 'ruckus-db']
+      - cold_application_state_app != 'ruckus-db' or (cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 999)
       - cold_application_state_output_dir is match('^/home/brajam/[^\r\n]+$')
       - (cold_application_state_app in ['qbittorrent', 'qbit-monitor'] and cold_application_state_node == 'masternode') or (cold_application_state_app not in ['qbittorrent', 'qbit-monitor'] and cold_application_state_node in ['workernode1', 'workernode2'])
       - cold_application_state_reader_uid | int in [0, 33, 999, 1000]
@@ -47,4 +48,4 @@
 
 - name: State the independent backup boundary
   ansible.builtin.debug:
-    msg: "Inspect private receipts under {{ cold_application_state_output_dir }}. One app only; root must first quiesce its Flux writer. Check mode creates no Pod and captures no archive. Full archive authentication is not independent restoration."
+    msg: "Inspect private receipts under {{ cold_application_state_output_dir }}. One app only; root must first quiesce its Flux writer. Ruckus requires both original DB and bot releases fully quiesced. Check mode creates no Pod and captures no archive. Full archive authentication is not independent restoration."

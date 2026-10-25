@@ -1,7 +1,7 @@
 ---
 - name: State the dedicated storage boundary
   ansible.builtin.debug:
-    msg: Only the new F drive regular file may be formatted. No existing block device, partition, filesystem, process or cluster node is changed.
+    msg: Only the new F drive regular file may be formatted. Verify direct I/O on its exact dedicated loop; no existing data is reformatted and no cluster disk, partition or process is changed.
 
 - name: Create or verify only the exact protected build filesystem
   ansible.builtin.command:
@@ -11,7 +11,8 @@
   changed_when: >-
     (local_build_storage_result.stdout | from_json).created or
     (local_build_storage_result.stdout | from_json).initialized or
-    (local_build_storage_result.stdout | from_json).mounted
+    (local_build_storage_result.stdout | from_json).mounted or
+    (local_build_storage_result.stdout | from_json).directIOChanged
 
 - name: Report the verified dedicated storage metadata
   ansible.builtin.debug:

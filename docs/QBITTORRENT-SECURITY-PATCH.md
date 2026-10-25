@@ -48,12 +48,29 @@ Primary source: [exact5.3 upgrade implementation](https://github.com/qbittorrent
 [authentication](https://github.com/qbittorrent/qBittorrent/blob/9213075dd5f7b352208361c6a84c1c115efc898e/src/webui/api/authcontroller.cpp),
 and [category representation](https://github.com/qbittorrent/qBittorrent/blob/9213075dd5f7b352208361c6a84c1c115efc898e/src/base/bittorrent/categoryoptions.cpp).
 
-## Remaining acceptance
+## Monitor integration
 
-The original shell monitor rejects204 and the renamed cookie. Its compatible
-repair preserves notifications and state, removes credential-value error dumps,
-uses pipe FDs for credentials and verified tmpfs for session files. The exact
-patched artifact has zero findings, but cold-state cutover and actual automatic
-queue/port/alert operation remain pending at this checkpoint. Normal browser
-acceptance and the whole-cluster goal remain open. Preserve all failed checks and
-the old image/complete cold profile together for recovery.
+The compatible monitor repair is deployed at digest
+`ff2141541ec06f04df3acd145a8a94c33f6bb9e327615ff314994efeb199c4fe`.
+It preserves the original notification modules and persisted state, removes
+credential-value error dumps, uses pipe FDs for credentials and verified tmpfs
+for session files, and accepts both old and new authentication responses.
+Its exact artifact has zero scan findings; complete encrypted cold state is
+fully authenticated (receipt SHA256
+`67f7be2fb4f0cc102d88c451252e10368db4d1dc9edf4380d370390ea5aff493`).
+
+The read-only integration observer verified six real queue cycles, authenticated
+requests and the automatic VPN-port write/readback performed by the running
+monitor. All12,461 original notification-state bytes remain with their original
+permissions. The full original231-torrent/454-file comparison passed again, along
+with native credential, PVC and deployment bindings. Acceptance receipt SHA256:
+`b70e7ca0091d3665cbf02d0a269c44d36b6378dfd9c468724a223ab03d4ec5f7`.
+Existing production alerts remain configured; no additional test notification
+was sent during this check, so it does not independently prove Discord delivery.
+
+Homepage and qBittorrent passed all15 external HTTP/HTTPS/direct-port checks
+across the three nodes (receipt SHA256
+`a9dc8894641fb4c837e60540eaa35d4c77b67d0954fd78aee3a2168136057c02`).
+These route checks do not claim certificate-chain validation. Final browser
+acceptance and the whole-cluster goal remain open. Failed checks and original
+images/complete cold archives are retained for recovery.

@@ -17,7 +17,7 @@ spec = importlib.util.spec_from_file_location('reviewed_local_contract', HERE / 
 contract = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(contract)
 BASE = Path('/home/brajam/.local/share/branconet-migration')
-SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve']
+SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb']
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
          re.fullmatch('[0-9a-f]{64}', a.provenance_sha256), 'explicit_receiver_scope')
     os.umask(0o077)
     root = a.build_root
-    expected_parent = BASE / ('local-image-build-offload-20261025' if root.parent.name == 'local-image-build-offload-20261025' and a.service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve'] else 'local-image-build-20261024')
+    expected_parent = BASE / ('local-image-build-offload-20261025' if root.parent.name == 'local-image-build-offload-20261025' and a.service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb'] else 'local-image-build-20261024')
     need(root.parent == expected_parent and
          re.fullmatch(a.service + '-[0-9a-f]{12}-' + a.run_id[:12], root.name) and
          root.resolve() == root and not root.is_symlink(), 'fixed_build_root')
@@ -60,7 +60,7 @@ def main():
         need(contract.local_identity(path.stat()) == identities[name], 'original_changed_during_hash')
     need(files[original.name]['sha256'] == a.provenance_sha256, 'original_provenance_changed')
     base = BASE / 'local-image-artifacts-20261024'
-    offloaded_receiver = a.service in ['unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve']
+    offloaded_receiver = a.service in ['unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb']
     if offloaded_receiver:
         mount = BASE / 'local-image-build-offload-20261025'
         need(mount.is_mount() and mount.resolve() == mount and mount.stat().st_uid == 1000
@@ -78,10 +78,18 @@ def main():
     v = os.statvfs(base); total = sum(row['bytes'] for row in files.values())
     def physical_capacity(pending=0):
         drive = 'F:\\' if offloaded_receiver else 'C:\\'
-        probe = subprocess.run(['/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', "[IO.DriveInfo]::new('" + drive + "').AvailableFreeSpace"], capture_output=True, text=True, timeout=20)
-        need(probe.returncode == 0 and probe.stdout.strip().isdigit() and int(probe.stdout.strip()) >= pending + 2*1024**3, 'physical_backing_reserve')
+        script = "[pscustomobject]@{cFreeBytes=[IO.DriveInfo]::new('C:\\').AvailableFreeSpace;destinationFreeBytes=[IO.DriveInfo]::new('" + drive + "').AvailableFreeSpace}|ConvertTo-Json -Compress"
+        probe = subprocess.run(['/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoLogo', '-NoProfile', '-NonInteractive', '-Command', script], capture_output=True, text=True, timeout=20)
+        need(probe.returncode == 0, 'physical_capacity_probe')
+        observed = json.loads(probe.stdout)
+        # Launch-only15GiB check. Existing copies retain their original lower
+        # emergency reserve; do not interrupt running work for the new guard.
+        floor = (15 if pending else 2)*1024**3
+        if pending:
+            need(observed['cFreeBytes'] >= 15*1024**3, 'agent_launch_windows_c_below_15GiB')
+        need(observed['destinationFreeBytes'] >= pending + floor, 'physical_backing_reserve')
         local = os.statvfs(base)
-        need(local.f_bavail*local.f_frsize >= pending + 2*1024**3, 'native_receiver_reserve')
+        need(local.f_bavail*local.f_frsize >= pending + floor, 'native_receiver_reserve')
     physical_capacity(total)
     need(v.f_bavail * v.f_frsize >= total + 2 * 1024 ** 3 and v.f_favail >= v.f_files // 10,
          'receiver_capacity')

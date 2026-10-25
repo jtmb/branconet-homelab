@@ -40,7 +40,18 @@ def main():
     os.umask(0o077)
     need(PARENT.is_dir() and PARENT.resolve() == PARENT and BASE.is_dir() and BASE.resolve() == BASE, 'exact_existing_parents')
     v = os.statvfs(PARENT)
-    need(v.f_bavail * v.f_frsize >= SIZE + 2 * 1024 ** 3, 'charge_complete_possible_backing_file')
+    # Remounting our already allocated file consumes no second 96 GiB image.
+    # Keep the creation estimate separate from the existing-only startup path.
+    retained_reserve = 15 * 1024 ** 3
+    new_file = not IMAGE.exists()
+    estimated_allocation = SIZE if new_file else 0
+    need(v.f_bavail * v.f_frsize >= estimated_allocation + retained_reserve,
+         'backing_creation_or_existing_mount_retained_reserve')
+    if new_file:
+        c_free = int(run(['/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe',
+                          '-NoProfile', '-NonInteractive', '-Command',
+                          '(Get-PSDrive C).Free']).decode().strip())
+        need(c_free >= retained_reserve, 'new_allocation_windows_c_minimum_15_gib')
     if MOUNT.exists():
         need(MOUNT.resolve() == MOUNT and MOUNT.is_dir(), 'owned_mountpoint_no_alias')
     else:
@@ -85,8 +96,19 @@ def main():
     live = json.loads(run(['findmnt', '--json', '--mountpoint', str(MOUNT), '--output', 'TARGET,SOURCE,FSTYPE,UUID,OPTIONS']))['filesystems']
     need(len(live) == 1 and live[0]['fstype'] == 'ext4' and live[0]['uuid'] == UUID
          and live[0]['source'].startswith('/dev/loop') and {'rw', 'nodev', 'nosuid'} <= set(live[0]['options'].split(',')), 'actual_dedicated_mount')
-    loop = json.loads(run(['losetup', '--json', '--list', '--output', 'NAME,BACK-FILE', live[0]['source']]))['loopdevices']
+    loop = json.loads(run(['losetup', '--json', '--list', '--output', 'NAME,BACK-FILE,DIO,LOG-SEC', live[0]['source']]))['loopdevices']
     need(len(loop) == 1 and loop[0]['back-file'] == str(IMAGE), 'actual_loop_backing_file')
+    previous_dio = loop[0]['dio']
+    need(type(previous_dio) is bool and loop[0]['log-sec'] == 512, 'exact_loop_io_geometry')
+    if not previous_dio:
+        # Reconfigure only this verified loop, without detaching/unmounting or
+        # changing sectors/filesystem/data. The kernel quiesces the I/O queue;
+        # unsupported backing files fail instead of weakening capacity guards.
+        run(['losetup', '--direct-io=on', live[0]['source']])
+    verified_loop = json.loads(run(['losetup', '--json', '--list', '--output', 'NAME,BACK-FILE,DIO,LOG-SEC', live[0]['source']]))['loopdevices']
+    need(len(verified_loop) == 1 and verified_loop[0]['back-file'] == str(IMAGE)
+         and verified_loop[0]['dio'] is True and verified_loop[0]['log-sec'] == 512,
+         'verified_direct_io_mode')
     os.chown(MOUNT, 1000, 1000)
     os.chmod(MOUNT, 0o700)
     out = BASE / 'local-build-storage-20261025'
@@ -96,7 +118,7 @@ def main():
               'backingFile': str(IMAGE), 'backingFileBytes': SIZE, 'backingDevice': info.st_dev, 'backingInode': info.st_ino,
               'filesystemUUID': UUID, 'mount': live[0], 'clusterNodesChanged': False, 'existingProcessesStopped': False,
               'sourceSHA256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
-    record.update(initialized=initialize, mounted=not already)
+    record.update(initialized=initialize, mounted=not already, directIO=True, directIOChanged=not previous_dio)
     p = out / ('storage-' + uuid.uuid4().hex + '.json')
     p.write_text(json.dumps(record, sort_keys=True, indent=2) + '\n')
     os.chown(p, 1000, 1000)
