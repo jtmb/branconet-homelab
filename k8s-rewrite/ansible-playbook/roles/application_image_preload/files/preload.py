@@ -33,7 +33,12 @@ NAMES = {'seerr': 'docker.io/library/seerr-security-20261023',
          'xteve': 'docker.io/library/xteve-security-20261023',
          'ruckusdb': 'docker.io/library/ruckusdb-security-20261023',
          'jtmb-dev': 'docker.io/library/jtmb-dev-security-20261023',
-         'ruckus-bot': 'docker.io/library/ruckus-bot-security-20261023'}
+         'ruckus-bot': 'docker.io/library/ruckus-bot-security-20261023',
+         'bazarr': 'docker.io/library/bazarr-security-20261023',
+         'radarr': 'docker.io/library/radarr-security-20261023',
+         'sonarr': 'docker.io/library/sonarr-security-20261023',
+         'whoami': 'docker.io/library/whoami-security-20261023',
+         'traefik': 'docker.io/library/traefik-security-20261023'}
 MEDIA = {'application/vnd.oci.image.manifest.v1+json', 'application/vnd.oci.image.index.v1+json',
          'application/vnd.docker.distribution.manifest.v2+json', 'application/vnd.docker.distribution.manifest.list.v2+json'}
 

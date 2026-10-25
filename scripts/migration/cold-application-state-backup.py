@@ -9,6 +9,7 @@ import pathlib
 import shlex
 import stat
 import subprocess
+import traceback
 import uuid
 
 REPO = pathlib.Path(__file__).resolve().parents[2]
@@ -19,6 +20,9 @@ spec.loader.exec_module(shared)
 need, canonical, file_hash = shared.need, shared.canonical, shared.file_hash
 # Exact identities from metadata-only strict SSH discovery, 2026-10-23.
 TARGETS = {
+    'xteve': ('plex', '52adec00-5c42-4cd2-8fb0-9428828ca368', 'ace99a34-343b-40cd-b1b3-6ef2f324a8b0', 'd40f1490-7254-4599-be82-2fad35abb88b', 'alturismo/xteve:latest@sha256:7885f2759c0da3c5f2c72b2e45ba4b602bdd7d6f04cc6abba201091f11c93a95'),
+    'xteve-config': ('plex', '52adec00-5c42-4cd2-8fb0-9428828ca368', 'ace99a34-343b-40cd-b1b3-6ef2f324a8b0', 'b7207fe9-3768-4ad5-9ca0-ee4429137b33', 'alturismo/xteve:latest@sha256:7885f2759c0da3c5f2c72b2e45ba4b602bdd7d6f04cc6abba201091f11c93a95'),
+    'mealie': ('mealie', 'f0dddcf0-0d07-4b56-a3ec-0cd59d484b93', '2d878107-ff9f-46f6-9260-2e8f3a94e38c', 'd015a16d-5098-4253-ade1-72d80af87f18', 'ghcr.io/mealie-recipes/mealie:v1.0.0-RC1.1@sha256:6df1e795f17af43f082146e471113315487b5f0882f2ee7553d469034d929af1'),
     'ruckus-db': ('ruckus', 'cf0b7d3c-6d8f-48cb-a55f-0ccd39f610d2', 'ea951a7f-02cf-47ba-afb9-44e915c6b8f0', '2f604004-b45f-4061-bdc4-43f5ca2f7fd8', 'mysql:5.7.41@sha256:bf18020f32cc5d8f5e2add516d52fbf3afc3de431457076340e938596c528171'),
     'qbit-monitor': ('plex', '8ea48d58-186d-4c3d-a90a-d6bda3414246', '09945782-cfa0-4dee-ba5f-19b5788d947c', '29f9332d-c2a6-4f24-a83f-210620046cd2', 'jtmb92/qbit-monitor@sha256:b1ba462564843f9f328b287a34e8a7dc4cd1f218e085862a77f42aaa1703ffec'),
     'homepage': ('homepage', '67484b9d-4971-4840-9385-5478fb0b6b32', '0abccce8-85f7-49df-baea-7825262a258e', 'f1eb8c61-46dc-4743-b5e4-b7ce75110189', 'ghcr.io/gethomepage/homepage:latest@sha256:b129cb0f674bd6d204e215bde2c2fc3f11d6ad0e82f6d20007cf80f74e1acbb1'),
@@ -44,6 +48,7 @@ def main():
     parser.add_argument('--reader-uid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
+    parser.add_argument('--generation', choices=['original', 'media-security-20261025'], default='original')
     args = parser.parse_args()
     need(args.apply and os.name == 'posix' and args.reader_uid == args.reader_gid)
     need(args.reader_uid == 33 if args.application == 'wordpress' else args.reader_uid == 999 if args.application in ['wordpress-redis', 'ruckus-db'] else args.reader_uid in [0, 1000])
@@ -51,6 +56,8 @@ def main():
     need(args.application != 'plex' or args.reader_uid == 1000)
     need(args.application != 'homepage' or (args.reader_uid == 1000 and args.node == 'workernode1'))
     need(args.application != 'qbit-monitor' or args.reader_uid == 1000)
+    need(args.application != 'mealie' or (args.reader_uid == 1000 and args.node == 'workernode1'))
+    need(args.application not in ['xteve', 'xteve-config'] or (args.reader_uid == 0 and args.node == 'workernode2'))
     need(args.node == 'masternode' if args.application in ['qbittorrent', 'qbit-monitor'] else args.node in ['workernode1', 'workernode2'])
     max_entries = 131072 if args.application == 'plex' else 8192 if args.application == 'wordpress' else 4096
     max_data = 16 * 1024**3 if args.application == 'plex' else shared.MAX_DATA
@@ -78,12 +85,22 @@ def main():
     run_id = uuid.uuid4().hex
     run = output / (args.application + '-cold-' + run_id); run.mkdir(mode=0o700)
     namespace, deployment_uid, release_uid, claim_uid, original_image = TARGETS[args.application]
-    claim = ('qbit-monitor-state' if args.application == 'qbit-monitor' else
+    if args.generation == 'media-security-20261025':
+        current = {
+            'bazarr': 'ghcr.io/hotio/bazarr:latest@sha256:c63aa057947400abded2583f7027d6ac1f8d70a8130401c36d5a244ef5999466',
+            'radarr': 'docker.io/linuxserver/radarr:latest@sha256:fc0ae3c50f8128b97e84381903ec8d6845c3a569641cb7117c124376cccb57c1',
+            'sonarr': 'docker.io/linuxserver/sonarr:latest@sha256:889dcc58c6aea859033985894b519b2e6b1e55d92527ed123f9f52e42ae7c97b',
+        }
+        need(args.application in current)
+        original_image = current[args.application]
+    workload = 'xteve' if args.application in ['xteve', 'xteve-config'] else args.application
+    claim = ('xteve-data-1' if args.application == 'xteve-config' else
+             'qbit-monitor-state' if args.application == 'qbit-monitor' else
              'qbittorrent-data-0-retry1' if args.application == 'qbittorrent' else
              'wordpress-redis-data' if args.application == 'wordpress-redis' else
              args.application + '-data-1' if args.application in ['unpackerr', 'homepage'] else args.application + '-data-0')
-    mount_alias = 'monitor-state' if args.application == 'qbit-monitor' else 'data' if args.application == 'wordpress-redis' else 'data-1' if args.application in ['unpackerr', 'homepage'] else 'data-0'
-    receipt = {'schema_version': 1, 'application': args.application, 'status': 'started', 'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'reader_uid': args.reader_uid, 'reader_gid': args.reader_gid, 'restore_verified': False, 'writer_scaled_by_helper': False, 'nas_mounted_or_walked': False, 'temporary_pod_deleted': False}
+    mount_alias = 'monitor-state' if args.application == 'qbit-monitor' else 'data' if args.application == 'wordpress-redis' else 'data-1' if args.application in ['unpackerr', 'homepage', 'xteve-config'] else 'data-0'
+    receipt = {'schema_version': 1, 'application': args.application, 'generation': args.generation, 'status': 'started', 'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'reader_uid': args.reader_uid, 'reader_gid': args.reader_gid, 'restore_verified': False, 'writer_scaled_by_helper': False, 'nas_mounted_or_walked': False, 'temporary_pod_deleted': False}
     children = []; reader = None
 
     def save():
@@ -109,18 +126,45 @@ def main():
         return json.loads(kube('get', kind, *([name] if name else []), '-o', 'json', ns=ns))
 
     def guard():
-        pvc = get('pvc', claim); dep = get('deployment', args.application); release = get('helmrelease', args.application, 'flux-system')
+        pvc = get('pvc', claim); dep = get('deployment', workload); release = get('helmrelease', workload, 'flux-system')
         need(pvc['metadata']['uid'] == claim_uid and not pvc['metadata'].get('deletionTimestamp') and pvc['status']['phase'] == 'Bound' and pvc['spec'].get('storageClassName') == 'longhorn' and pvc['spec']['volumeName'] == 'pvc-' + claim_uid)
         need(dep['metadata']['uid'] == deployment_uid and not dep['metadata'].get('deletionTimestamp') and dep['status'].get('observedGeneration', 0) >= dep['metadata']['generation'])
         need(dep['spec'].get('replicas', 1) == 0 and all(dep['status'].get(k, 0) == 0 for k in ['replicas', 'readyReplicas', 'availableReplicas', 'updatedReplicas']))
-        containers = dep['spec']['template']['spec']['containers']; need(len(containers) == 1 and containers[0]['name'] == args.application and containers[0]['image'] == original_image)
+        containers = dep['spec']['template']['spec']['containers']; need(len(containers) == 1 and containers[0]['name'] == workload and containers[0]['image'] == original_image)
         state_mount = next(m for m in containers[0]['volumeMounts'] if m['name'] == mount_alias)
-        need(state_mount['mountPath'] == ('/var/lib/mysql' if args.application == 'ruckus-db' else '/var/www/html' if args.application == 'wordpress' else '/app/config' if args.application == 'homepage' else '/app/state' if args.application == 'qbit-monitor' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
+        need(state_mount['mountPath'] == ('/root/.xteve' if args.application == 'xteve' else '/app/data' if args.application == 'mealie' else '/var/lib/mysql' if args.application == 'ruckus-db' else '/var/www/html' if args.application == 'wordpress' else '/app/config' if args.application == 'homepage' else '/app/state' if args.application == 'qbit-monitor' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
         need(any(v['name'] == mount_alias and v.get('persistentVolumeClaim', {}).get('claimName') == claim for v in dep['spec']['template']['spec']['volumes']))
-        need(release['metadata']['uid'] == release_uid and not release['metadata'].get('deletionTimestamp') and release['spec'].get('releaseName') == args.application and release['spec'].get('targetNamespace') == namespace and release['spec'].get('values', {}).get('replicaCount') == 0 and not release['spec'].get('suspend', False))
+        need(release['metadata']['uid'] == release_uid and not release['metadata'].get('deletionTimestamp') and release['spec'].get('releaseName') == workload and release['spec'].get('targetNamespace') == namespace and release['spec'].get('values', {}).get('replicaCount') == 0 and not release['spec'].get('suspend', False))
         need(release['status'].get('observedGeneration', 0) >= release['metadata']['generation'] and any(c['type'] == 'Ready' and c['status'] == 'True' for c in release['status'].get('conditions', [])))
         pods = get('pods')['items']
         writer_identity = {}
+        watched_claims = {claim}
+        if args.application in ['xteve', 'xteve-config']:
+            # Both finite local-state scopes share one writer. Preserve the SMB
+            # binding by metadata only; never mount or traverse NAS content.
+            expected_volumes = [
+                {'name': 'data-0', 'persistentVolumeClaim': {'claimName': 'xteve-data-0'}},
+                {'name': 'data-1', 'persistentVolumeClaim': {'claimName': 'xteve-data-1'}},
+                {'name': 'data-2', 'emptyDir': {'medium': 'Memory'}},
+                {'name': 'data-3', 'persistentVolumeClaim': {'claimName': 'xteve-data-3'}},
+            ]
+            expected_mounts = [{'name': 'data-0', 'mountPath': '/root/.xteve'}, {'name': 'data-1', 'mountPath': '/config'},
+                               {'name': 'data-2', 'mountPath': '/tmp/xteve'}, {'name': 'data-3', 'mountPath': '/iptv'}]
+            need(sorted(dep['spec']['template']['spec']['volumes'], key=lambda v: v['name']) == expected_volumes)
+            need(sorted(containers[0]['volumeMounts'], key=lambda v: v['name']) == expected_mounts)
+            for claim_name, cuid, puid, volume, driver in [
+                ('xteve-data-0', 'd40f1490-7254-4599-be82-2fad35abb88b', '0ab90957-d5ce-496d-9ddc-658299729a15', 'pvc-d40f1490-7254-4599-be82-2fad35abb88b', 'driver.longhorn.io'),
+                ('xteve-data-1', 'b7207fe9-3768-4ad5-9ca0-ee4429137b33', '8be538e5-bcca-490e-b075-7556d1c0aa31', 'pvc-b7207fe9-3768-4ad5-9ca0-ee4429137b33', 'driver.longhorn.io'),
+                ('xteve-data-3', '93527524-e3c1-4e2e-a9c4-1a844743d8b1', '548595f5-a4ea-4b8d-a225-1f15d7b3c09e', 'plex-xteve-data-3', 'smb.csi.k8s.io'),
+            ]:
+                other = get('pvc', claim_name); pv = get('pv', volume)
+                need(other['metadata']['uid'] == cuid and not other['metadata'].get('deletionTimestamp') and other['status']['phase'] == 'Bound' and other['spec']['volumeName'] == volume)
+                need(pv['metadata']['uid'] == puid and not pv['metadata'].get('deletionTimestamp') and pv['spec']['claimRef']['uid'] == cuid and pv['spec']['csi']['driver'] == driver)
+                if driver == 'driver.longhorn.io':
+                    need(other['spec'].get('storageClassName') == 'longhorn' and pv['spec']['csi']['volumeHandle'] == volume)
+            watched_claims = {'xteve-data-0', 'xteve-data-1'}
+            writer_identity = {'workload': workload, 'state_mount_alias': mount_alias, 'source_mount': state_mount['mountPath'],
+                               'archive_root_alias': 'data-0', 'preserved_smb_claim_uid': '93527524-e3c1-4e2e-a9c4-1a844743d8b1'}
         if args.application == 'ruckus-db':
             bot = get('deployment', 'ruckus-bot')
             bot_release = get('helmrelease', 'ruckus-bot', 'flux-system')
@@ -139,11 +183,18 @@ def main():
             writer_identity = {'client_deployment_uid': bot['metadata']['uid'], 'client_generation': bot['metadata']['generation'], 'client_release_uid': bot_release['metadata']['uid'], 'client_release_generation': bot_release['metadata']['generation']}
         for pod in pods:
             if reader and pod['metadata']['uid'] == reader['uid']: continue
-            if not any(v.get('persistentVolumeClaim', {}).get('claimName') == claim for v in pod['spec'].get('volumes', [])): continue
+            if not any(v.get('persistentVolumeClaim', {}).get('claimName') in watched_claims for v in pod['spec'].get('volumes', [])): continue
             running = any('running' in c.get('state', {}) for key in ['containerStatuses', 'initContainerStatuses', 'ephemeralContainerStatuses'] for c in pod['status'].get(key, []))
             need(pod['status'].get('phase') in ['Failed', 'Succeeded'] and not running)
         node = get('node', args.node)
-        if args.application in ['wordpress-redis', 'wordpress', 'plex', 'ruckus-db']:
+        if args.application in ['xteve', 'xteve-config']:
+            need(node['metadata']['uid'] == 'eda66e65-f388-4b97-b64f-a709cda81894')
+        if args.application == 'mealie':
+            need(node['metadata']['uid'] == 'e8d4555f-7cea-445f-b84f-6416964045a9')
+            pv = get('pv', pvc['spec']['volumeName'])
+            need(pv['metadata']['uid'] == '402d45ec-840b-4a57-9c7e-0cede840539d' and pv['spec']['claimRef']['uid'] == claim_uid)
+            need(pv['spec']['csi']['driver'] == 'driver.longhorn.io' and pv['spec']['csi']['volumeHandle'] == 'pvc-' + claim_uid)
+        if args.application in ['wordpress-redis', 'wordpress', 'plex', 'ruckus-db', 'mealie', 'xteve', 'xteve-config']:
             need(node['status'].get('features', {}).get('supplementalGroupsPolicy') is True)
         need(not node['spec'].get('unschedulable', False) and any(c['type'] == 'Ready' and c['status'] == 'True' for c in node['status']['conditions']))
         need(not any(c['type'] in ['DiskPressure', 'MemoryPressure', 'PIDPressure', 'NetworkUnavailable'] and c['status'] == 'True' for c in node['status']['conditions']))
@@ -178,9 +229,12 @@ def main():
             program = program.replace('raw=sys.stdin.buffer.read(8*1024*1024+1); need(len(raw)<=8*1024*1024)', 'raw=sys.stdin.buffer.read(64*1024*1024+1); need(len(raw)<=64*1024*1024)')
             program = program.replace("EXCLUDED = set()\n", "EXCLUDED = set()\nMAX_BYTES = " + str(max_data) + "\nMAX_MANIFEST_BYTES = " + str(max_metadata) + "\n")
             pod['spec']['containers'][0]['resources']['limits']['memory'] = '768Mi'
-        if args.application in ['wordpress-redis', 'wordpress', 'plex', 'ruckus-db']:
+        if args.application in ['wordpress-redis', 'wordpress', 'plex', 'ruckus-db', 'mealie', 'xteve', 'xteve-config']:
             pod['spec']['securityContext']['supplementalGroupsPolicy'] = 'Strict'
             program = program.replace("EXCLUDED = set()\n", "EXCLUDED = set()\nMAX_ENTRIES = " + str(max_entries) + "\nneed(os.geteuid() == " + str(args.reader_uid) + " and os.getegid() == " + str(args.reader_gid) + " and set(os.getgroups()) <= {" + str(args.reader_gid) + "})\n")
+        if args.application in ['mealie', 'xteve', 'xteve-config']:
+            root_mode = 0o1750 if args.application == 'mealie' else 0o755
+            program = program.replace("EXCLUDED = set()\n", "EXCLUDED = set()\nroot_info = pathlib.Path('/source').lstat()\nneed(stat.S_ISDIR(root_info.st_mode) and root_info.st_uid == 1000 and root_info.st_gid == 65534 and stat.S_IMODE(root_info.st_mode) == " + str(root_mode) + ")\n")
         receipt['operation'] = 'create_owned_readonly_reader'; save()
         created = json.loads(kube('create', '-f', '-', '-o', 'json', body=canonical(pod)))
         reader = {'name': name, 'uid': created['metadata']['uid']}; receipt['temporary_pod'] = reader; save()
@@ -214,6 +268,7 @@ def main():
         receipt.update(status='completed', operation='completed', temporary_pod_deleted=True, completed_at=datetime.datetime.now(datetime.timezone.utc).isoformat()); save()
         print(json.dumps({'status': 'completed', 'application': args.application, 'receipt': str(run / 'receipt.json')})); return 0
     except Exception as error:
+        receipt['error_source_lines'] = [frame.lineno for frame in traceback.extract_tb(error.__traceback__) if frame.filename == __file__]
         receipt.update(status='failed', error_type=type(error).__name__, completed_at=datetime.datetime.now(datetime.timezone.utc).isoformat()); save()
         print(json.dumps({'status': 'failed', 'receipt': str(run / 'receipt.json'), 'operation': receipt.get('operation'), 'error_type': type(error).__name__})); return 1
     finally:

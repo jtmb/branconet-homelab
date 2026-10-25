@@ -268,7 +268,7 @@ def observe_application(mode, key, target):
 
 
 def main():
-    need(len(sys.argv) == 3 and sys.argv[1] in ['baseline', 'after', 'restart'], 'observer_mode')
+    need(len(sys.argv) in [3, 4] and sys.argv[1] in ['baseline', 'after', 'restart'] and (len(sys.argv) == 3 or sys.argv[3] == 'security-patch'), 'observer_mode')
     raw = sys.stdin.buffer.read(66)
     need(re.fullmatch(b'[0-9a-f]{64}\n?', raw) is not None, 'stdin_key_shape')
     def expired(_signum, _frame):
@@ -277,8 +277,12 @@ def main():
     signal.alarm(MAX_SECONDS)
     try:
         key = bytes.fromhex(raw.decode().strip())
-        observation = observe(sys.argv[1], key)
-        observation['application'] = observe_application(sys.argv[1], key, sys.argv[2])
+        # Security overlay is1.6.2 on BOTH sides, so it never normalizes the old
+        #1.5.6 schema/defaults. Keep the captured operation label unchanged.
+        semantic_mode = 'after' if len(sys.argv) == 4 else sys.argv[1]
+        observation = observe(semantic_mode, key)
+        observation['application'] = observe_application(semantic_mode, key, sys.argv[2])
+        observation['mode'] = sys.argv[1]
         print(json.dumps(observation, sort_keys=True))
     finally:
         signal.alarm(0)

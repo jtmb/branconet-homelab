@@ -17,7 +17,7 @@ import uuid
 BASE = Path('/home/brajam/.local/share/branconet-migration')
 ROOT = BASE / 'upstream-patch-scans-20261025'
 INPUT = BASE / 'local-oci-scan-20261024'
-INPUT_SHA = 'bb09fc12f7a1c488e7a53c6020bfc84cd5b44a80a608876ba76ed420c06e6ef6'
+INPUT_SHA = '8ecbc62be76d9aa3c5cfb34b9e96747c02ca1e11a6afb3db05082219402a2664'
 IMAGES = {
     'phpmyadmin': 'docker.io/library/phpmyadmin:5.2.3-apache@sha256:62a50b1419fe55b9b4c3cd6f5aed03a18f8f5b4a236f24735d76400bea75a5ff',
     'wordpress': 'docker.io/library/wordpress:7.1.3-php8.3-apache@sha256:d42f63cb89ad0eab272c4b393164e63830d0df270009907919f7dcce52b1a20b',
@@ -25,6 +25,13 @@ IMAGES = {
     'nginx': 'docker.io/library/nginx:1.30.6@sha256:a7675fcee220f59b4a99f7098c06a0d5d999c2c0ee37c0211efb780536e5cb20',
     'coredns': 'registry.k8s.io/coredns/coredns:v1.14.7@sha256:7efd3c635b03efd68c4e8398fc45f0d993d0e9ab016f72c1cefb0fd6d01aa286',
     'plex': 'ghcr.io/linuxserver/plex:1.43.5.11029-6bf8af3f0-ls329@sha256:8f655bad7dcbc5398a78f70a5af12600b4ed3424f901566ed1eaa6710e9e2334',
+    'current-bortus': 'docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879',
+    'current-radarr': 'docker.io/linuxserver/radarr@sha256:fc0ae3c50f8128b97e84381903ec8d6845c3a569641cb7117c124376cccb57c1',
+    'current-sonarr': 'docker.io/linuxserver/sonarr@sha256:889dcc58c6aea859033985894b519b2e6b1e55d92527ed123f9f52e42ae7c97b',
+    'current-whoami': 'docker.io/traefik/whoami@sha256:c4717a8d1f0134a7444e24f881160e033991f23027c6c5a9a3f8fd22e70d1d44',
+    'current-bazarr': 'ghcr.io/hotio/bazarr@sha256:c63aa057947400abded2583f7027d6ac1f8d70a8130401c36d5a244ef5999466',
+    'current-calico-third-party-cni': 'quay.io/calico/third-party-cni-plugins@sha256:0f32f48279484c0d6f0e0d0e767b2d0e1a6c6ca34cb3421a61b989d992f3df41',
+    'current-traefik': 'docker.io/library/traefik@sha256:9d21c49aab4a76eada128ab057dc2976a4e797aae4d3f5d33a23847adc9f99cf',
 }
 
 
@@ -43,6 +50,24 @@ def sha(path):
 
 def utc():
     return datetime.datetime.now(datetime.timezone.utc).isoformat()
+
+
+def launch_storage():
+    """Additional launch floors; the retained scanner reserve remains mandatory."""
+    estimate = 2 * 1024 ** 3  # existing hard maximum for one complete attempt
+    c = os.statvfs('/mnt/c')
+    d = os.statvfs(ROOT)
+    cfree, dfree = c.f_bavail * c.f_frsize, d.f_bavail * d.f_frsize
+    need(cfree >= 15 * 1024 ** 3 + estimate, 'windows_C_15GiB_after_attempt_estimate')
+    need(dfree >= 15 * 1024 ** 3 + estimate, 'destination_15GiB_after_attempt_estimate')
+    # Reuse this one output root and the existing immutable scanner inputs.
+    # Count all existing attempts; no age-based deletion or cache pruning.
+    allocated = sum(p.lstat().st_blocks * 512 for root in [ROOT, INPUT]
+                    for p in root.rglob('*') if p.is_file() and not p.is_symlink())
+    need(allocated + estimate <= 20 * 1024 ** 3, 'shared_C_disposable_20GiB_budget')
+    return {'physicalCAvailableBytes': cfree, 'destinationAvailableBytes': dfree,
+            'launchReserveBytes': 15 * 1024 ** 3, 'estimatedAttemptBytes': estimate,
+            'existingAllocatedBytes': allocated, 'taskBudgetBytes': 20 * 1024 ** 3}
 
 
 def save(path, record):
@@ -94,7 +119,8 @@ def run(service, attempt, unit):
         spec.loader.exec_module(inputs)
         with (INPUT / 'scan.lock').open('rb') as lock:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            record.update(resourceBefore=measured(unit), inputProof=inputs.inputs(), filesystemBefore=inputs.reserve())
+            record.update(resourceBefore=measured(unit), inputProof=inputs.inputs(),
+                          filesystemBefore=inputs.reserve(2 * 1024 ** 3), launchStorage=launch_storage())
             need(0 <= inputs.age_hours(record['inputProof']['vulnerabilityDB']) <= 24, 'fresh_vulnerability_database')
             cache = path / 'cache'
             for name in ['db', 'java-db']:
@@ -170,6 +196,7 @@ def main():
         return run(a.service, a.run_attempt, a.unit)
     ROOT.mkdir(mode=0o700, exist_ok=True)
     need(ROOT.resolve() == ROOT and ROOT.stat().st_uid == 1000 and ROOT.stat().st_mode & 0o077 == 0, 'private_native_root')
+    launch_storage()
     attempt = uuid.uuid4().hex
     path = ROOT / attempt
     path.mkdir(mode=0o700)
@@ -188,7 +215,7 @@ def main():
            '--property=TimeoutStopSec=30', '--property=KillMode=control-group', '--property=LimitFSIZE=4294967296',
            '--property=PrivateUsers=yes', '--property=PrivateNetwork=no', '--property=PrivateDevices=yes',
            '--property=NoNewPrivileges=yes', '--property=ProtectSystem=strict', '--property=ProtectHome=tmpfs',
-           '--property=BindReadOnlyPaths=' + str(INPUT.parent if a.storage_profile == 'offloaded' else INPUT) + ' /run/user/1000/bus /run/user/1000/systemd/private', '--property=BindPaths=' + str(path),
+           '--property=BindReadOnlyPaths=' + str(INPUT.parent if a.storage_profile == 'offloaded' else INPUT) + ' ' + str(ROOT) + ' /run/user/1000/bus /run/user/1000/systemd/private', '--property=BindPaths=' + str(path),
            '--property=ReadWritePaths=' + str(path),
            '--property=InaccessiblePaths=-/root -/mnt/c/Users -/run/docker.sock -/var/run/docker.sock -/run/containerd -/run/containerd-k8s',
            '--property=NoExecPaths=' + str(path / 'cache') + ' ' + str(path / 'tmp'),

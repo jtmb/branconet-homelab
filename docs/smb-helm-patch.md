@@ -163,3 +163,25 @@ implicit config discovery on a Windows world-writable mount). Controller and
 embedded master Python AST checks passed. The existing protected HMAC key is
 `FBASE/acceptance-smb-20261025/hmac-key.hex`; reuse it, never print it. Actual
 upgrade and post-upgrade qualification remain the coordinating operator's work.
+
+## October 25 deployed result
+
+The existing release upgraded once to chart1.20.4/revision2 and is deployed.
+Controller1/1, Linux node DaemonSet3/3 and retained Windows DaemonSet0/0 passed.
+All12 original release-object UIDs,14 SMB PVs,14 PVCs, one native credential,
+original Helm revision-1 Secret and all remaining specs were preserved. Existing
+mount-root stat checks passed on both nodes with active SMB consumers. NAS media
+was neither copied, traversed nor removed.
+
+`apply-01.json` is retained as a failed postcheck: Kubernetes automatically
+incremented `deprecated.daemonset.template.generation` from1 to2 on the two node
+DaemonSets. The read-only `verify-applied-01.json` reconstructs ONLY those exact
+annotation values and then demands the ORIGINAL complete object HMACs. It also
+rechecks the reviewed rendered manifest, revision2, exact stored image overrides,
+storage/credential fingerprints, workload readiness and mount coverage. It passed
+without repeating the upgrade. SHA256:
+`4bfc366644a80adb7e3c9c424daefcd0f61d494edd235b9f3c00a9ea45b7fd19`.
+
+The opt-in role now exposes `smb_helm_patch_verify_attempt` and
+`smb_helm_patch_verify_sha256` for this read-only reconciliation. Apply and verify
+are mutually exclusive. A failed first receipt is not overwritten or relabelled.

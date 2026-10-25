@@ -320,3 +320,70 @@ and three real scrapes passed with zero findings. See
 [exporter](docs/PIHOLE-EXPORTER-SECURITY-PATCH.md). Mealie/xTeVe/Ruckus and the
 remaining exact inventory continue; final browser and whole-inventory acceptance
 remain open. This checkpoint does not finish the tracked goal.
+
+October25 latest execution: Mealie, xTeVe and jtmb-dev after/restart checks passed.
+Their images are respectively a3fc64d6…,0ab77160… and6432c718…. Mealie preserved
+53 tables/847 rows,3 users and33 recipes; xTeVe preserved accounts/credentials,
+provider identities,108 mappings/29 active mappings and all claims, including
+untouched SMB. xTeVe source-proven provider refresh/backup rotation is verified
+explicitly; its configured FFmpeg media fixture passed, while failed VLC tests
+remain recorded. The website preserved23 files and11 routes. Personal login and
+final browser validation are not implied by these receipts.
+
+Existing SMB release is now chart1.20.4/revision2, preserving all12 original
+resource UIDs,14 PVs/14 PVCs and native credential fingerprints. A first postcheck
+flagged only the two generated DaemonSet revision annotations; read-only exact
+original-HMAC reconstruction passed without repeating the upgrade. Linux3/3,
+controller1/1 and existing mount-root samples passed. NAS media remains on NAS.
+
+Ruckus is deliberately paused through Flux for its complete encrypted cold
+backup and isolated MySQL patch qualification. The authenticated cold archive
+covers216,491,611 bytes; the original PVC and all user/system data remain intact.
+The first isolated restore rejected the original external mysql.sock symlink
+before any server start; only those recorded tmpfs fixture resources are being
+retired, with failed receipts retained. The correction preserves that exact
+socket-link metadata while using a separate private socket for cloned servers.
+Bazarr's compatible security artifact is built and undergoing exact-image scan;
+Radarr/Sonarr and remaining Go image fixes are source preparation, not adoption.
+The tracked goal remains active and final inventory/browser acceptance is open.
+
+Ruckus database cutover and declared restart now pass on the new retained-data
+lineage, preserving all3,962 application rows/account/native Secret and original
+source PVC. Bot384c86b restores one normal instance after bcrypt/Node22 checks;
+readiness alone is not final dashboard/connection acceptance. Both workers'
+USN8555 security37.2 package transactions passed strict package/runtime/kernel/
+node continuity checks with zero failures. See
+[database lineage](docs/RUCKUS-DATABASE-SECURITY-PATCH.md) and
+[worker patch](docs/UBUNTU-PRO-SECURITY-PATCH-20261025.md).
+Four exact security artifacts are ready for the remaining application cutovers;
+raw scans and ImageSharp's per-advisory3.2 backport attribution remain separate.
+Final inventory/browser gates are still open; this checkpoint is not completion.
+
+October25 18:15 UTC checkpoint: Radarr, Sonarr, Bazarr and Whoami now run the
+qualified exact security images through private local validation and Flux.
+Fresh full cold backups and after/restart checks passed; Radarr/Sonarr's full
+original Users rows and credentials passed again. External media HTTPS/browser
+acceptance remains open. See [media receipts](scripts/migration/media-security-acceptance-20261025.md).
+The cached live BORTUS image was fully audited:17 reachable blobs verified,
+5C/99H/160M/154L/3U. Findings were handed to its separate owner; this chat did not
+change its application. See [exact audit](docs/bortus-cached-runtime-audit.md).
+
+Ruckus's current fresh DB claim is degraded with one healthy replica because two
+nodes are below Longhorn's disk scheduling floor. SQL acceptance does not prove
+storage redundancy. Read-only inspection reattached the retained original claim
+with both existing replicas RW/healthy; every original file byte/metadata matches
+the cold archive, with only top-level directory mtime drift recorded. A proposed
+fresh-current-data sibling-directory recovery is source preparation only: no
+original file is overwritten, no current data is replaced by the older archive,
+and replica/space thresholds are not weakened. Do not describe HA recovery as done.
+
+The four accepted services'12 redundant node transfer files were removed by
+Ansible, recovering1,322,184,704 allocated Linux bytes while retaining complete
+controller copies. A stopped successful Ruckus builder's reproducible state alone
+was removed after source/artifact/reference checks, recovering2,384,879,616 Linux
+bytes on F; its image, logs, recipe and all source/locks remain. Windows/VHDX
+recovery is not inferred. Traefik's metadata cache is being completed under the
+same bounded attempts; no incomplete build was adopted. Calico and Longhorn
+compatible remediation proposals are concrete but remain unimplemented. Full
+cluster security, HA recovery, final inventory/routes and final IAB remain open;
+the tracked goal is active. This checkpoint is not completion.

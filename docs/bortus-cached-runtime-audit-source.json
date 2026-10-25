@@ -1,0 +1,104 @@
+{
+  "preparedUTC": "2026-10-25T16:43:21.475189+00:00",
+  "state": "F_only_stdin_consumed_before_subprocess_source_revision",
+  "sourceKind": "existing-node-containerd-runtime-cache",
+  "image": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+  "node": "workernode2",
+  "podUID": "b802cc5f-ca3f-49b2-a3f5-2cd95d2a97bc",
+  "cacheCompleteness": "unknown_until_privileged_probe",
+  "masterDBAvailable": false,
+  "masterFreeBytesObserved": 20548390912,
+  "worker2FreeBytesObserved": 21764087808,
+  "validation": {
+    "pythonAST": true,
+    "ansibleSyntaxCheckExitCode": 0,
+    "noRuntimeOrScanExecution": true,
+    "storageRevisionAnsibleSyntaxCheck": "not_rerun_unchanged_playbook",
+    "activeAuditOrTrivyAtSourceReview": false,
+    "controllerProbePreNodeFailure": "JSONDecodeError; no node phase launched; failed source and diagnostic preserved"
+  },
+  "files": {
+    "scripts/migration/export-bortus-cached-runtime.py": {
+      "bytes": 10058,
+      "sha256": "123fefe74afa045c04d5b69d675271b7e8d842dde2444a088007eb47a542790f"
+    },
+    "scripts/migration/run-bortus-cached-runtime-audit.py": {
+      "bytes": 28654,
+      "sha256": "21a20e514d4be6eb97aaa7de073a06e765d818e7a9d9325450f0675b26507f1a"
+    },
+    "k8s-rewrite/ansible-playbook/playbooks/bortus-cached-runtime-audit.yml": {
+      "bytes": 7146,
+      "sha256": "87e74963180701c2cbc841a8c0b5a33a0fabfaa76bd58c6359f4929333edb644"
+    },
+    "docs/bortus-cached-runtime-audit.md": {
+      "bytes": 16354,
+      "sha256": "aa32c24b882f3f03499f2e93e833166bf2eee986b48812227c988a5e110fe0ee",
+      "historicalSourceSnapshot": true
+    },
+    "docs/imagesharp-per-advisory-attribution.json": {
+      "bytes": 21639,
+      "sha256": "f120e84b7f07f7e5b46f3c842392e7661ef7d2b51b82f6bf66842a236143a0c2"
+    },
+    "docs/imagesharp-per-advisory-attribution.md": {
+      "bytes": 4761,
+      "sha256": "994b53fdd39376557323d779ba35286bb125be69aecd68c55fd868fa135bd5c2"
+    },
+    "docs/selected-runtime-attribution.json": {
+      "bytes": 2652,
+      "sha256": "9fc721fcc9fc39babaed58a56acfc23b259d418e2fa5bb608fccceb8aaeefed0"
+    }
+  },
+  "storageRevision": {
+    "writableRoot": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/bortus-cached-runtime-audit-20261025",
+    "aggregateCapBytes": 8589934592,
+    "launchNativeAndPhysicalFFreeBytes": 24696061952,
+    "retainedNativeAndPhysicalFFreeBytes": 16106127360,
+    "windowsCLaunchFloorBytes": 16106127360,
+    "oldPolicyReplacedForThisWrapperOnly": "CROOT aggregate8GiB and native25percent-plus8GiB reserve",
+    "immutableDependencySHA256": "ee456fd2be0fefcd0108e782771cc54b79ca9692ffaf7c4e57b6f29608094a06",
+    "dependencyAndSharedScannerUnchanged": true,
+    "nativeFFreeObserved": 43062050816,
+    "physicalFFreeObserved": 31230808064,
+    "sshControlSocketPolicy": "disabled_for_finite_audit_no_tmp_fallback"
+  },
+  "sourcePreflight": {
+    "requiredExporterSHA256": "123fefe74afa045c04d5b69d675271b7e8d842dde2444a088007eb47a542790f",
+    "requiredPlaybookSHA256": "87e74963180701c2cbc841a8c0b5a33a0fabfaa76bd58c6359f4929333edb644",
+    "beforeCredentialReadOrSubprocess": true,
+    "diagnosticFields": [
+      "status",
+      "code",
+      "file"
+    ],
+    "executedNodeAudit": false
+  },
+  "rpcPathCorrection": {
+    "observedTMPDIRBytes": 160,
+    "defaultSocketBytes": 192,
+    "minimumDefaultSocketUnderFBASEBytes": 112,
+    "maximumSocketPathBytes": 107,
+    "shortDirectoryPattern": "r[0-9a-f]{7}",
+    "installedAnsibleRPCSourceSHA256": "dbec8b6a29b05111911cfbf97a953415f71645514f042ed7f4308c17e41eee08",
+    "bootstrapAST": true,
+    "ansibleAndNodePhaseExecuted": false,
+    "installedPackagesChanged": false
+  },
+  "execution": {
+    "state": "completed_exact_cached_runtime_inventory_findings_open",
+    "frozenSourceManifestSHA256": "60ef8329991372763f537d24e6664dd4ff3f6bdb2c271cd96019cad4e32ee167",
+    "reachableBlobsVerified": 17,
+    "cacheCompleteness": "all17_root_reachable_blobs_verified",
+    "archiveBytes": 1149327360,
+    "archiveSHA256": "fa7df63ec2a22c2eedff17a16e5d1e7b555d6b93802b5c470aafdccad90731d4",
+    "resultsSHA256": "a1801bae5afa75f326bb3084e2f9e5684339262eecac56c036c053ad7c85f51e",
+    "findings": {
+      "CRITICAL": 5,
+      "HIGH": 99,
+      "MEDIUM": 160,
+      "LOW": 154,
+      "UNKNOWN": 3
+    },
+    "applicationChanged": false,
+    "remediationOwner": "separate_existing_BORTUS_owner_chat"
+  }
+}

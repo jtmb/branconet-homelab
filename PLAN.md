@@ -158,3 +158,57 @@ and three real scrapes passed with zero findings. See
 [exporter](docs/PIHOLE-EXPORTER-SECURITY-PATCH.md). Mealie/xTeVe/Ruckus and the
 remaining exact inventory continue; final browser and whole-inventory acceptance
 remain open. This checkpoint does not finish the tracked goal.
+
+October25: Mealie, xTeVe and jtmb-dev are deployed through local validation and
+Flux, with complete data/site comparisons and controlled restart checks passed.
+Mealie retains all3 users/33 recipes/53 tables; xTeVe retains native credentials,
+provider identities and108 mappings, with only the explicitly disabled updater
+and source-proven normal startup refresh/backup rotation differences. The
+configured FFmpeg fixture passed; failed VLC experiments remain visible.
+SMB's existing Helm release is patched to1.20.4 with exact preservation checks
+passed, retaining all14 NAS PV/PVC bindings and native credentials. See
+[SMB](docs/smb-helm-patch.md), [Mealie](docs/MEALIE-COLD-STATE-ACCEPTANCE.md) and
+[xTeVe](docs/XTEVE-STATE-ACCEPTANCE.md). Ruckus's full216,491,611-byte encrypted
+cold archive is authenticated; its original PVC is preserved while isolated
+copy/upgrade qualification proceeds. No final browser/full-goal acceptance yet.
+
+October25: Ruckus now uses the fully qualified5.7.44 copy on a fresh Longhorn
+claim, with the original claim retained untouched for rollback. All3,962 original
+application rows, schemas/account/native Secret passed normal-auth after and
+real restart checks. The single bot is restored through Flux after its native
+bcrypt/runtime module checks. See[exact lineage](docs/RUCKUS-DATABASE-SECURITY-PATCH.md).
+Both workers also completed the pinned Ubuntu Pro37.2 security update through
+Ansible, with original kernel, runtime PID/start/config, boot and node identities
+preserved. No node drain/reboot or unrelated package change occurred.
+Radarr/Sonarr/Whoami/Bazarr security artifacts are built, sealed and scanned;
+application adoption and final route/browser acceptance remain pending. The
+tracked goal remains active; unsupported/unfixed rows remain explicit.
+
+October25 18:15 UTC checkpoint: Radarr, Sonarr, Bazarr and Whoami now run the
+qualified exact security images through private local validation and Flux.
+Fresh full cold backups and after/restart checks passed; Radarr/Sonarr's full
+original Users rows and credentials passed again. External media HTTPS/browser
+acceptance remains open. See [media receipts](scripts/migration/media-security-acceptance-20261025.md).
+The cached live BORTUS image was fully audited:17 reachable blobs verified,
+5C/99H/160M/154L/3U. Findings were handed to its separate owner; this chat did not
+change its application. See [exact audit](docs/bortus-cached-runtime-audit.md).
+
+Ruckus's current fresh DB claim is degraded with one healthy replica because two
+nodes are below Longhorn's disk scheduling floor. SQL acceptance does not prove
+storage redundancy. Read-only inspection reattached the retained original claim
+with both existing replicas RW/healthy; every original file byte/metadata matches
+the cold archive, with only top-level directory mtime drift recorded. A proposed
+fresh-current-data sibling-directory recovery is source preparation only: no
+original file is overwritten, no current data is replaced by the older archive,
+and replica/space thresholds are not weakened. Do not describe HA recovery as done.
+
+The four accepted services'12 redundant node transfer files were removed by
+Ansible, recovering1,322,184,704 allocated Linux bytes while retaining complete
+controller copies. A stopped successful Ruckus builder's reproducible state alone
+was removed after source/artifact/reference checks, recovering2,384,879,616 Linux
+bytes on F; its image, logs, recipe and all source/locks remain. Windows/VHDX
+recovery is not inferred. Traefik's metadata cache is being completed under the
+same bounded attempts; no incomplete build was adopted. Calico and Longhorn
+compatible remediation proposals are concrete but remain unimplemented. Full
+cluster security, HA recovery, final inventory/routes and final IAB remain open;
+the tracked goal is active. This checkpoint is not completion.

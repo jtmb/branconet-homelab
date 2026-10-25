@@ -81,6 +81,12 @@ def clean(o,images=False):
  m=o['metadata']
  for k in ['resourceVersion','managedFields','generation','creationTimestamp']:m.pop(k,None)
  m.get('annotations',{}).pop('deployment.kubernetes.io/revision',None)
+ if req['action']=='verify-applied' and o['kind']=='DaemonSet':
+  need(m['name'] in ['csi-smb-node','csi-smb-node-win'],'exact_daemonset')
+  need(m.get('annotations',{}).get('deprecated.daemonset.template.generation')=='2','daemonset_generated_annotation')
+  # Reconstruct the original live generation, then demand its ORIGINAL HMAC.
+  # No spec/identity/data field is excluded from the preservation comparison.
+  m['annotations']['deprecated.daemonset.template.generation']='1'
  for md in [m,o.get('spec',{}).get('template',{}).get('metadata',{})]:
   for k in LABEL_KEYS:
    value=md.get('labels',{}).get(k)
@@ -238,6 +244,19 @@ try:
  chart=compatibility_chart(chart)
  fd=os.memfd_create('public-smb-chart',0);os.write(fd,chart);os.lseek(fd,0,0)
  command=[HELM,'upgrade',RELEASE,'/proc/self/fd/'+str(fd),'-n',NS,'--reuse-values','--set-string','image.smb.tag='+SMB.split(':',1)[1],'--set-string','image.csiResizer.tag='+RESIZER.split(':',1)[1]]
+ if req['action']=='verify-applied':
+  prior=req['prior'];need(prior['helper_sha256']=='833704ef0255544ebf6399404c86311506d5fd2043a1fa7a748508aebecc8d2e' and prior['key_id']==receipt['key_id'] and prior['upgrade_attempted'] is True and prior['error']=='native_identity_spec_data_or_resource_changed','exact_original_attempt')
+  metadata=json.loads(helm('get','metadata',RELEASE,'-n',NS,'-o','json'))
+  need(metadata['revision']==2 and metadata['version']=='1.20.4' and metadata['status']=='deployed','deployed_upgrade_revision')
+  new=documents(helm('get','manifest',RELEASE,'-n',NS))
+  need(mac('new-manifest',new)==prior['baseline']['new_manifest_hmac'],'reviewed_manifest_after_upgrade')
+  after,workloads,mounts=observe(new,expected_new=True)
+  need(after==prior['baseline']['state'],'original_identity_spec_data_changed')
+  actual_values=json.loads(helm('get','values',RELEASE,'-n',NS,'-o','json'))
+  need(actual_values=={'image':{'smb':{'tag':SMB.split(':',1)[1]},'csiResizer':{'tag':RESIZER.split(':',1)[1]}}},'exact_stored_values')
+  need(mounts['coverage_nodes']>=prior['mount_roots_before']['coverage_nodes'],'mount_coverage')
+  receipt.update(status='passed',after=after,workloads_after=workloads,mount_roots_after=mounts,original_receipt_sha256=req['prior_sha256'],generated_annotation_delta={'before':'1','after':'2','resources':['csi-smb-node','csi-smb-node-win']},upgrade_repeated=False)
+  print(json.dumps(receipt,sort_keys=True));sys.exit(0)
  baseline,old,new,stored_values=preflight()
  if req['action']=='apply':
   approved=req['approval'];need(approved['status']=='passed' and approved['action']=='preflight' and approved['helper_sha256']==req['helper_sha256'] and approved['key_id']==receipt['key_id'] and approved['baseline']==baseline,'approved_preflight_changed')
@@ -268,6 +287,8 @@ def main():
     ap.add_argument('--apply', action='store_true')
     ap.add_argument('--approved-preflight', type=Path)
     ap.add_argument('--approved-sha256')
+    ap.add_argument('--verify-applied', type=Path, help='Read-only verification of the exact recorded upgrade attempt')
+    ap.add_argument('--attempt-sha256')
     args = ap.parse_args()
     os.umask(0o077)
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
@@ -279,9 +300,16 @@ def main():
     chart = args.chart.read_bytes()
     if hashlib.sha256(chart).hexdigest() != CHART_SHA or len(chart) != 6899:
         raise SystemExit('Public chart hash/size mismatch.')
-    req = {'action': 'apply' if args.apply else 'preflight', 'key': key,
+    if args.apply and args.verify_applied:
+        raise SystemExit('Apply and read-only verification are mutually exclusive.')
+    req = {'action': 'verify-applied' if args.verify_applied else 'apply' if args.apply else 'preflight', 'key': key,
            'helper_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
            'chart': base64.b64encode(chart).decode(), 'chart_sha256': CHART_SHA}
+    if args.verify_applied:
+        raw=args.verify_applied.read_bytes()
+        if hashlib.sha256(raw).hexdigest()!=args.attempt_sha256:
+            raise SystemExit('Original attempt receipt hash mismatch.')
+        req.update(prior=json.loads(raw),prior_sha256=args.attempt_sha256)
     if args.apply:
         if not args.approved_preflight or not args.approved_sha256:
             raise SystemExit('Apply requires the exact reviewed preflight receipt and SHA256.')

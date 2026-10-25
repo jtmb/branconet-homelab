@@ -1,0 +1,112 @@
+# Remaining live image inventory — ROOT review draft, 2026-10-25
+
+This records an initial read-only inventory, followed by an explicitly authorized bounded scan-coverage closure. It is not a deployment plan or a clean-cluster verdict. Pod metadata was captured at **2026-10-25T13:07:49Z**: **126 container/init entries, 68 requested-image/runtime pairs, 66 distinct runtime digests, seven DaemonSets**. A subsequent controller query covered54 Deployments/StatefulSets; Ruckus bot had already reached zero desired replicas. Do not interpret its earlier pod entry as proof it is still running. The follow-up made seven serial scan attempts using the existing authenticated controller scanner; six completed and one failed registry acquisition. No builds, application writes, Git operations, deployments or restarts were performed here.
+
+[Selected nonsecret evidence](remaining-image-inventory-20261025.json) records exact image IDs, source URLs, release metadata hashes, chart-pin hashes, scan paths/results hashes and coverage per digest. Existing private charts have32 charts containing direct immutable image pins; every recorded pin occurs in the pod snapshot. That comparison establishes image alignment, not service acceptance. The original “69-image audit” aggregate now actually contains70 image rows, dated October23. Failed/obsolete attempts remain distinct.
+
+## Highest-value remaining compatible work
+
+| Scope | Current evidence | Concrete next candidate / boundary |
+|---|---|---|
+| SMB CSI | v1.20.3 exact old audit:70 fixable C/H rows; resizer2.2.0:37 | **Official1.20.4** is an available same-branch security release. Its changelog includes Go1.26.10/CVE-2026-111943 and multiple backported CVE fixes; it also selects resizer2.2.1. Pin/scan the exact artifacts and qualify existing SMB mounts/credentials, node registration and non-destructive volume operations. No need to wait for a major driver release. |
+| Jackett | Current custom08f115... exact scan:12H,3M; scanner reports fixed reference versions | **Runtime applicability evidence already exists.** [Jackett acceptance](JACKETT-ACCEPTANCE.md) binds both application/updater to .NET9.0.21 and the named patched DLL hashes; legacy4.3.0 nodes select no runtime/native assets. Retain all12H/3M unsuppressed, but do not classify those patched runtime DLLs as unfixed solely from reference-lock metadata. The published4.3.x package updates are graph-maintenance options, not evidence that runtime replacement is still required. |
+| Mealie | Currenta3fc64... exact scan:9C157H193M225L2U;50 fixable C/H | Preserve these rows. Existing source review identifies bounded followups: source backports for additional Starlette authority/path/method-dispatch advisories, and complete hash-bound replacements of setuptools-vendored jaraco.context/wheel rather than top-level packages. Python3.10/Pillow/filelock interpreter constraints are real; no blind major upgrades. Some urllib3/msgpack/setuptools rows are SBOM-attributed despite newer installed distributions, so trace attribution rather than calling them fixed or deleting metadata. |
+| Gluetun | Current46407f... exact old audit:63 fixable C/H | Official3.41.3 is available at a different immutable digest, with a port-forwarding deadlock fix over3.41.2. Treat as a VPN sidecar candidate: exact current-version/config compatibility and scan still needed; preserve firewall isolation, provider/account settings, forwarding and monitor behavior. Do not change it as an incidental qBittorrent dependency. |
+| Ruckus + WordPress MySQL | Original current DB5.7 digests retain111 and106 fixable C/H respectively; Ruckus bot original227 | Ruckus candidate/backup work is already owned by ROOT. WordPress DB remains separate unfinished work. Same-source distro rebuilds can address compatible OS components, but MySQL5.7 does not become supported through an OS patch. A supported database migration needs full schema/authentication/data/restore qualification. Do not infer all scanner-fixed-version suggestions are drop-in database upgrades. |
+
+Primary sources: [SMB1.20.4 release](https://github.com/kubernetes-csi/csi-driver-smb/releases/tag/v1.20.4), [resizer2.2.1](https://github.com/kubernetes-csi/external-resizer/releases/tag/v2.2.1), [System.Net.Http4.3.4](https://www.nuget.org/packages/System.Net.Http/4.3.4), [System.Private.Uri4.3.2](https://www.nuget.org/packages/System.Private.Uri/4.3.2), [System.Text.RegularExpressions4.3.1](https://www.nuget.org/packages/System.Text.RegularExpressions/4.3.1), [Gluetun3.41.3](https://github.com/qdm12/gluetun/releases/tag/v3.41.3). Mealie review-file hashes and advisory/package links are bound in the evidence JSON; its current scan rows are not suppressed.
+
+Available registry metadata, observed without fetching image layers:
+
+- SMB1.20.4 index`sha256:74e049de9d3203b4a968f26c8b73d4b3b15b9c4705688330cfa7281ae5f7b727`; Linuxamd64`sha256:9b7d5a166ede4b97ccc499e3c89dea47044570bf9529fab9e7d5d23ebd9af476`.
+- Resizer2.2.1 index`sha256:ea1d25e23479000c7e8eeb92d827df66258df4e482ca054c5e7ce3fc0f5c41a5`; Linuxamd64`sha256:da560f720351d2c5ed1d3f85ad5a03d3935967a0586810eb2c1ea4d3109493fa`.
+- Gluetun3.41.3 index`sha256:fa19cc76b2af13d57a8d3dc3066f2ada061b1c761b8aecf989b3877c0486e027`; Linuxamd64`sha256:1baa76576dea1dfbafbd62bb635daf40fd87171f63273c2fdfe630418783011e`.
+
+## SMB owner and exact update surface
+
+Live metadata identifies **Helm release `csi-driver-smb` in `kube-system`**, with manager `helm`, on both the controller Deployment and node DaemonSet. No matching Flux HelmRelease exists. Their UIDs are retained in the evidence. No SMB declaration was located in this maintenance checkout or private charts. Preserve that existing Helm ownership; ROOT can orchestrate the bounded Helm upgrade through Ansible rather than introducing a competing Flux owner. This is a recommendation, not proof that an existing Ansible role owns the release.
+
+The [official 1.20.4 chart](https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts/v1.20.4/csi-driver-smb-1.20.4.tgz) is 6,899 bytes, SHA256 `27116d0a703d9b7dee87ae65a0ffc95d47dfa4092b0191f1bb7e7cab79abb7f0`. It was inspected in RAM; no install or render was run. Set `image.smb.tag` to `v1.20.4@sha256:74e049de9d3203b4a968f26c8b73d4b3b15b9c4705688330cfa7281ae5f7b727` and `image.csiResizer.tag` to `v2.2.1@sha256:ea1d25e23479000c7e8eeb92d827df66258df4e482ca054c5e7ce3fc0f5c41a5`, preserving their official repositories. The chart retains provisioner6.3.0, registrar2.17.0 and liveness2.19.0. Its `linux.krb5AutoConfig` defaults false. Preserve existing nondefault values, disabled Windows components where applicable, NAS/PV/PVC identities, Secret references, mounts and registration paths; do not blindly reset to chart defaults. Current values were not exported or any Helm Secret read by this audit.
+
+## Infrastructure: available dependencies versus released bundles
+
+- **Flux:** live versions match the latest published Flux2.9.6 distributable. However, October24 brought real new controller releases: helm1.7.0; source/kustomize/notification1.10.0; image-reflector/image-automation1.3.0; source-watcher2.3.0. They are **not unavailable**. Their exact changelogs retire the object-workload-identity feature gate, alter TokenRequest RBAC, change artifact storage defaults and introduce notificationv1 conversion that drops deprecated fields. Review existing CRDs/RBAC/notifications as a coordinated minor upgrade. The latest flux2 release endpoint still reports2.9.6. Existing controller digests have11–16 fixable C/H rows each; dependency fixes exist even where a matching maintenance image is unpublished. A same-source Go/module rebuild is a separate possible route, not a completed candidate. [Flux2.9.6](https://github.com/fluxcd/flux2/releases/tag/v2.9.6), [new notification changelog](https://github.com/fluxcd/notification-controller/blob/v1.10.0/CHANGELOG.md), [new source changelog](https://github.com/fluxcd/source-controller/blob/v1.10.0/CHANGELOG.md).
+- **Kubernetes1.37.1 and Calico3.33.0:** current official stable versions; K8s1.37.2 is listed as next, not released. Original exact reports still show K8s13–18 fixable C/H rows per component and Calico10/18. Available dependency versions are not evidence of a released fully patched vendor binary. Track upstream maintenance releases or separately qualify same-source rebuilds; never replace just one control-plane/CNI component opportunistically. [K8s patch schedule](https://kubernetes.io/releases/patch-releases/), [Calico releases](https://github.com/projectcalico/calico/releases).
+- **Longhorn:**1.12.1 is deployed.1.12.2-rc1 is prerelease;1.13.0 is published stable.1.13 introduces a global manager and provisioning changes; it requires K8s≥1.34 (cluster meets this). V2 live upgrade from1.12.1 is explicitly unsupported: detach V2 volumes or follow supported prerequisites. This is coordinated storage work, not an unqualified image swap. Its pinned CSI sidecars also retain available Go/module fixes. New upstream sidecars exist—attacher4.13, registrar2.18, liveness2.20, resizer2.3, provisioner6.4, snapshotter/controller8.7—but vendor integration/CRDs/defaults must be checked. Snapshot8.7 enables VolumeGroupSnapshot by default; Longhorn provisioner5.3→6.x crosses a major version. [Longhorn1.13](https://github.com/longhorn/longhorn/releases/tag/v1.13.0), [snapshot8.7](https://github.com/kubernetes-csi/external-snapshotter/releases/tag/v8.7.0).
+- **Traefik2.11.60, cert-manager1.21.3, etcd3.7.3:** latest checked versions on their current branches. Traefik3.7.16 is a major migration, not a prerequisite to a nonexistent newer2.11 patch. Cert-manager and etcd exact retained scans have no C/H findings; their Unknown rows remain. The new exact Traefik scan retains one High Go stdlib finding and one Unknown row; see the closure below. [Traefik releases](https://github.com/traefik/traefik/releases), [cert-manager](https://github.com/cert-manager/cert-manager/releases), [etcd](https://github.com/etcd-io/etcd/releases).
+- **Metrics:** no metrics-server pod or Deployment/StatefulSet was observed; `v1beta1.metrics.k8s.io` APIService was absent. This is an inventory gap/absent service, not a clean metrics-server scan or a successful metrics test. Pi-hole exporter is separately covered by its exact current zero-row scan. No monitoring stack was installed by this task.
+
+## SSDP Python and coverage gaps
+
+The xTeVe gateway currently reports **Python3.12.15** from a read-only `python --version` invocation. Its stdlib-only source uses urllib/XML/socket APIs.3.12 remains in security support through October2028; the October1 official3.12.15 release is current in the reviewed release information. The exact existing imagea6e34... has173 old-audit rows:44H63M62L4U, with **zero fixable C/H**; one ca-certificates update is an Unknown finding. Do not label it an obsolete interpreter merely because the image is not custom rebuilt. [Python release announcement](https://blog.python.org/2026/10/python-31022-31117/).
+
+A refreshed official same-version`3.12.15-slim-trixie` tag exists at index`sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704`, amd64`sha256:e8a38829209aea82774882e5157e1f7c3e8c8393ff53a697b3580896e57f345c`. It is an **unscanned maintenance candidate**, not proven to fix those44H. The old full-image findings remain visible; do not claim clean from interpreter version alone.
+
+## Authorized exact scan closure
+
+**65/66 runtime digests from the13:07 inventory now have retained exact scan coverage.** This is coverage, not a clean verdict, and does not describe images ROOT may deploy after that snapshot. The six new successes used the same pinned Trivy0.76.1 and vulnerability database updated October24 at19:09UTC, with no ignores and Results-only serialization. They retained1GiB RAM, no swap,2CPU,128PIDs,900-second whole-unit deadline,480-second observer deadline and the existing stricter7-minute Trivy timeout. Every new result SHA matched its receipt. Each launch recorded C:/destination headroom with a2GiB stage estimate,15GiB floors and20GiB combined scanner/output budget; the original25%+8GiB destination reserve remains mandatory.
+
+| Exact inventory image | Scan attempt | Critical / High / Medium / Low / Unknown | Fixable C/H rows |
+|---|---|---|---:|
+| Traefik9d21c4... | `8ddd6eb48a8b4379a8cec382bcb53fba` | 0 / 1 / 0 / 0 / 1 | 1 |
+| Whoamic4717a... | `b94e3c814df246d9934c422430438729` | 0 / 16 / 14 / 1 / 0 | 16 |
+| Calico third-party CNI0f32f4... | `822a73b0488944088473ed9b3a2f7a03` | 0 / 24 / 54 / 6 / 4 | 24 |
+| Radarrfc0ae3... | `89ba81d69b4c4615b77987cc5654269a` | 10 / 137 / 54 / 0 / 2 | 147 |
+| Sonarr889dcc... | `1aa176f26c174ce484efb05852c309bc` | 0 / 32 / 31 / 0 / 2 | 32 |
+| Bazarrc63aa0... | `7e7b5b90d9aa42e8bc35d5e165f28004` | 1 / 4 / 7 / 0 / 0 | 4 |
+
+All are under `/home/brajam/.local/share/branconet-migration/upstream-patch-scans-20261025/<attempt>/receipt.json`, with adjacent exact `results.json`. Finite helper source SHA is `9be2897dd0a9bf628435596b68a6cf36ea4d09571491c9b999813cfbeb727945`; it imports authenticated input verifier`8ecbc62be76d9aa3c5cfb34b9e96747c02ca1e11a6afb3db05082219402a2664`. No retry was needed for these six.
+
+### Fixed-version C/H package breakdown
+
+These are **scanner rows**, not unique vulnerabilities or proof of runtime reachability. Repeated Radarr/Sonarr `.deps.json` targets account for many rows. Complete target paths and all reported fixed-version alternatives are in `coverage_closure_fixable_package_summary` in the evidence JSON.
+
+| Image | Package: observed → bounded fixed candidate | C/H rows | Classification |
+|---|---|---:|---|
+| Traefik | Go stdlib1.26.9→1.26.10 | 1H | Same application/toolchain rebuild candidate; latest vendor2.11.60 still includes the older toolchain. |
+| Calico third-party CNI | Go stdlib1.27.1→1.27.3 | 24H | Six actual Go executables, including installer and five plugins. Coordinate the original Calico/CNI bundle; no unbundled component swap. |
+| Whoami | Go stdlib1.26.5→1.26.10 | 12H | Same application source/toolchain candidate. |
+| Whoami | x/net0.57→0.60; x/text0.40→0.41 | 1H + 1H | Published module fixes; preserve actual HTTP/gRPC behavior in graph qualification. |
+| Whoami | gRPC1.82.1→1.83.2 | 2H |1.82.2 fixes only one reported range;1.83.2 satisfies both. This is a module minor upgrade, not merely a toolchain rebuild. |
+| Radarr | ASP.NET runtime8.0.27→8.0.32 | 10C + 25H | Same runtime train available; verify actual selected files before source rebuild. |
+| Radarr | .NET runtime8.0.27→8.0.32 | 88H | Repeated manifests; same runtime train available. |
+| Radarr | Pkcs8.0.1→8.0.2 | 5H | Same package train; actual asset selection still needs attribution. |
+| Radarr | ImageSharp3.1.12→4.1.2 | 18H | Major API transition, requires bounded caller/source review. |
+| Radarr | brotli-libs1.2.0-r1→1.2.1-r0 | 1H | Published in the same Alpine3.24 main repository. |
+| Sonarr | ASP.NET runtime6.0.13→6.0.27 for two rows; other row lists8.0.14/9.0.3 | 3H | No single supported6.0 patch covers every listed row; establish actual selected runtime and migrate coherently if necessary. |
+| Sonarr | .NET runtime6.0.13→6.0.32 | 3H | Maintenance fixes exist, but6.0 is EOL. No unsupported-runtime closure claim. |
+| Sonarr | System.Text.Json6.0.9→6.0.10 | 1H | Same package patch, from RuntimePatches deps target; attribute actual loaded asset first. |
+| Sonarr | Pkcs8.0.1→8.0.2 | 6H | Same package train; manifests repeat the row. |
+| Sonarr | ImageSharp3.1.12→4.1.2 | 18H | Major API transition, separate compatibility work. |
+| Sonarr | brotli-libs1.2.0-r1→1.2.1-r0 | 1H | Published in the same Alpine3.24 main repository. |
+| Bazarr | certifi2026.6.17→2026.10.19 | 1C | **Application-vendored** `app/bin/libs/certifi-2026.6.17.dist-info/METADATA`; update complete matching distribution/RECORD, not global pip. |
+| Bazarr | urllib3 2.7.0→2.8.0 | 2H | **Application-vendored** `app/bin/libs/urllib3-2.7.0.dist-info/METADATA`; same major, preserve bundled import priority and provider/network behavior. |
+| Bazarr | brotli-libs1.2.0-r0→1.2.1-r0 | 1H | **OS library**, published in same Alpine3.23 main repository; signed package update candidate. |
+
+Totals are Radarr**147**, Sonarr**32**, Bazarr**4**, Whoami**16**, Calico init**24**, Traefik**1** fixable C/H rows. Bazarr also has one **unfixed High Js2Py0.74** row under`app/bin/libs`; this is distinct from its four available fixes. Its actual APK inventory reports Python3.12.15-r0, meeting certifi's≥3.7 and urllib3's≥3.10 requirements. The new package API/provider compatibility and complete vendored-file integrity still require qualification. Official PyPI and both signed-repository metadata snapshots are hashed in the evidence; metadata observation does not itself perform APK signature verification.
+
+### Exact image/report binding
+
+- **bazarr**: `ghcr.io/hotio/bazarr@sha256:c63aa057947400abded2583f7027d6ac1f8d70a8130401c36d5a244ef5999466`; Results SHA256 `37645eee38c49378f5690231cb97042b76165c499d35a6cf53b5f33e1a05cee8`.
+- **calico-third-party-cni**: `quay.io/calico/third-party-cni-plugins@sha256:0f32f48279484c0d6f0e0d0e767b2d0e1a6c6ca34cb3421a61b989d992f3df41`; Results SHA256 `200eb39b383acea46dade986a97f0faf30fd050fdbf9731c692c6df136f54875`.
+- **radarr**: `docker.io/linuxserver/radarr@sha256:fc0ae3c50f8128b97e84381903ec8d6845c3a569641cb7117c124376cccb57c1`; Results SHA256 `01003a435a90b8c1abccc849b4a5d2e2ddbe1b69250b35ce9b2c94ee648dc984`.
+- **sonarr**: `docker.io/linuxserver/sonarr@sha256:889dcc58c6aea859033985894b519b2e6b1e55d92527ed123f9f52e42ae7c97b`; Results SHA256 `7df54e91812080dae192cb1ad9cf35e4cde890a7c79d89e3f751c3c8cebfca97`.
+- **traefik**: `docker.io/library/traefik@sha256:9d21c49aab4a76eada128ab057dc2976a4e797aae4d3f5d33a23847adc9f99cf`; Results SHA256 `0024ade1e8fabcdc68db98ba1c6b478a22015289fa93f82f3e85aec4da4da817`.
+- **whoami**: `docker.io/traefik/whoami@sha256:c4717a8d1f0134a7444e24f881160e033991f23027c6c5a9a3f8fd22e70d1d44`; Results SHA256 `e590142668232640801149412805e0de2a66605a8fe3e994568ecf4df55660cd`.
+
+Concrete follow-up distinctions from those new bytes:
+
+- Traefik2.11.60 includes Go1.26.9; CVE-2026-111943 is fixed in1.26.10/1.27.3. Same application source with the1.26.10 toolchain is a bounded rebuild candidate; a Traefik3 migration is not needed solely for this fix. [Official Go releases](https://go.dev/doc/devel/release#go1.26.10).
+- Calico's separate init image contains Go1.27.1 binaries; its24 High rows have1.27.2/1.27.3 fixes. Preserve all original CNI tools and installation behavior in any same-source rebuild; upgrading the node container alone would miss these init binaries.
+- Whoami1.12.0's actual Go1.26.5, x/net0.57, x/text0.40 and gRPC1.82.1 have published fixes. Review an unchanged-application Go1.26.10 plus compatible module graph; latest application tag alone has not removed these findings. [Exact upstream graph](https://github.com/traefik/whoami/blob/v1.12.0/go.mod).
+- Radarr's report identifies .NET8.0.27→8.0.32, Pkcs8.0.1→8.0.2 and Alpine brotli1.2.0-r1→1.2.1-r0 candidates. ImageSharp3.1.12→4.1.2 crosses a major API boundary. These are fresh exact scanner observations, not yet an assembly-loading/rebuild compatibility proof. [Microsoft current patch/support table](https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core).
+- Sonarr retains .NET6.0.13 and System.Text.Json6.0.9 references plus Pkcs8.0.1 and brotli. Some6.0 maintenance fixes are published, but .NET6 is unsupported and not all listed fixes stay on6.0. Follow Jackett's example: establish selected runtime assets and actual DLL hashes before deciding whether old references represent executable old code. ImageSharp4 is separately bounded work.
+- Bazarr's available fixes include certifi2026.6.17→2026.10.19, urllib3 2.7→2.8 and brotli1.2.0→1.2.1. Js2Py0.74 has a High row without a published fixed version in this DB. Do not call that one fixed by updating Python or the OS. [certifi release metadata](https://pypi.org/pypi/certifi/2026.10.19/json) declares Python≥3.7; [urllib3 release metadata](https://pypi.org/pypi/urllib3/2.8.0/json) requires Python≥3.10. The [official Js2Py index](https://pypi.org/pypi/Js2Py/json) still reports0.74.
+
+**One acquisition gap remains:** BORTUS`sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879`. Attempt`a8a818ad34d24ac5800c9bb3c76a041e` failed anonymous Docker Hub acquisition with401; receipt says`failed_not_clean`, and no completed result exists. The607-byte original diagnostic is retained, SHA`290466fca400d95c9a5228703630e7d67e83e54954ba2d2d3a7af80f24db03d8`; only its sanitized category is in the evidence JSON. No registry credentials were accessed and no blind retry was made. The current remote-only workflow cannot acquire this locally named/private image. An exact retained OCI with appropriate bounded provenance, or an explicitly reviewed read-only acquisition path, is still required. **BORTUS's unfinished application release remains with its separate owner, outside this chat.**
+
+Jackett correction: current attribution receipt`/home/brajam/.local/share/branconet-migration/jackett-runtime-lock-review-20261025.json`, SHA`d0bb93cb07c1c7a8db36a1449545734ae86ea3b81f8c67f0441e1e7a4137ae1f`, references the exact08f115... scan-status SHA`8e2b82d1d5d48f65e2c599efffb44c53fd3a2ee7b126966ee1e27c22c49f127a`. Its three DLL hashes match the prior reviewed9.0.21 PE assemblies, and its old library nodes contribute no runtime/native assets. The draft's earlier recommendation to replace those actual runtime DLLs solely from12 legacy reference findings was incorrect; all findings remain unsuppressed with this applicability evidence.
+
+All existing receipts, failed scans, original application images and source remain intact. No accepted service behavior checks were repeated. This snapshot is evidence for ROOT's next bounded work; it neither revokes prior data-preservation acceptance nor equates that acceptance with vulnerability closure.
+
+Completion storage observation at13:39UTC: the seven new attempt directories occupy6,017,024 allocated bytes, with140,199,284,736 bytes free on Windows C: and648,942,731,264 bytes available in the native destination filesystem. No scan unit remains running. All unique source/result/receipt/failure evidence is retained; no paths were removed and no storage compaction occurred.

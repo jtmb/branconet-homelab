@@ -19,11 +19,13 @@ PVC_UID = '5bddaab4-1974-4211-bcae-8392d1006804'
 OLD = 'ghcr.io/hotio/bazarr:latest@sha256:004b1072983d1af766fc11d048121ded9d296fdd64ea304762afa9dfcaf51edb'
 NEW = 'ghcr.io/hotio/bazarr:latest@sha256:c63aa057947400abded2583f7027d6ac1f8d70a8130401c36d5a244ef5999466'
 NEW_RUNTIME = 'sha256:df6257b02f48a5470692f066d83dfaa1844e43bc5ebb691d529bf0d44ad1801d'
+SECURITY_BASELINE_RUNTIME = NEW_RUNTIME
 HOST = 'bazarr.branconet.lan'
 MAX_REPLY = 64 * 1024 ** 2
 MAX_TOTAL = 64 * 1024 ** 2
 MAX_RECORDS = 50000
 NORMALIZATION_PROOF_SHA256 = '51819b03f0cd14ddebfc4d186d5cbe186ab90181671980a3f434b87534f4b22a'
+SECURITY_PATCH = False
 # Exact old Validator defaults, AST-read from pinned v1.5.6 app/config.py.
 # These numbers are legacy config defaults, not v1.6.2's effective score weights.
 OLD_SCORE_DEFAULTS = {
@@ -107,6 +109,8 @@ def identity(mode):
     need(re.fullmatch(r'sha256:[0-9a-f]{64}', runtime), 'runtime_digest_missing')
     if mode != 'baseline':
         need(runtime in [NEW_RUNTIME, NEW.rsplit('@', 1)[1]], 'runtime_digest')
+    elif SECURITY_PATCH:
+        need(runtime in [SECURITY_BASELINE_RUNTIME, OLD.rsplit('@', 1)[1]], 'security_baseline_runtime_digest')
     service = obj('get', 'service', 'bazarr')
     need(service['spec'].get('selector', {}).get('app') == 'bazarr', 'service_selector')
     ip = ipaddress.ip_address(service['spec']['clusterIP'])
@@ -129,7 +133,7 @@ def observe_pod(state, mode, raw_key):
     digest = hashlib.sha256(source).hexdigest()
     child = subprocess.run(['kubectl', '--request-timeout=150s', '-n', NS, 'exec', '-i',
                             state['pod_name'], '-c', 'bazarr', '--', '/usr/bin/python3', '-B', '-c',
-                            source.decode(), mode, state['cluster_ip']],
+                            source.decode(), mode, state['cluster_ip']] + (['security-patch'] if SECURITY_PATCH else []),
                            input=raw_key, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=150)
     need(len(child.stdout) <= MAX_REPLY, 'observer_response_limit')
     if child.returncode:
@@ -252,13 +256,20 @@ def write_new(path, value):
 
 
 def main():
+    global OLD, NEW, NEW_RUNTIME, SECURITY_PATCH
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=['baseline', 'after', 'restart'])
     parser.add_argument('--baseline', type=Path)
     parser.add_argument('--prior-receipt', type=Path)
     parser.add_argument('--vendor-normalization-proof', type=Path)
     parser.add_argument('--receipt', required=True, type=Path)
+    parser.add_argument('--security-patch', action='store_true', help='Same1.6.2 app; exact reviewed local dependency/OS overlay, no vendor normalization')
     args = parser.parse_args()
+    SECURITY_PATCH = args.security_patch
+    if args.security_patch:
+        OLD = NEW
+        NEW = 'docker.io/library/bazarr-security-20261023@sha256:bcf9a782f3381b4182bed0985e0d38df79da0218ead2ca47c577595e9dafe21b'
+        NEW_RUNTIME = NEW.rsplit('@', 1)[1]
     os.umask(0o077)
     # Exactly one existing operator HMAC key; never create or persist key material here.
     raw = sys.stdin.buffer.read(66)
@@ -266,7 +277,7 @@ def main():
     key = bytes.fromhex(raw.decode().strip())
     need((args.mode == 'baseline') == (args.baseline is None), 'baseline_argument')
     need((args.mode == 'restart') == (args.prior_receipt is not None), 'restart_argument')
-    need((args.mode == 'baseline') == (args.vendor_normalization_proof is None), 'normalization_proof_argument')
+    need(args.vendor_normalization_proof is None if args.security_patch else (args.mode == 'baseline') == (args.vendor_normalization_proof is None), 'normalization_proof_argument')
     start = identity(args.mode)
     observation = observe_pod(start, args.mode, raw)
     finish = identity(args.mode)
@@ -279,19 +290,27 @@ def main():
         need(prior.get('mode') == 'baseline' and prior.get('schema_version') == 1, 'baseline_shape')
         need(prior['identity']['claims'] == start['claims'] and prior['identity']['service_uid'] == start['service_uid'], 'original_claim_or_service_changed')
         baseline_sha = hashlib.sha256(args.baseline.read_bytes()).hexdigest()
-        config_exceptions, notifier_exceptions, normalization = vendor_normalization(
-            prior['observation'], observation, key, baseline_sha, args.vendor_normalization_proof)
+        need(prior.get('security_patch', False) == args.security_patch, 'same_qualification_scope')
+        if args.security_patch:
+            need(prior['identity']['image'] == OLD and prior['identity']['runtime_digest'] in [SECURITY_BASELINE_RUNTIME, OLD.rsplit('@', 1)[1]], 'security_baseline_image')
+            need(prior['observation']['application']['version'] == '1.6.2', 'security_baseline_version')
+        config_exceptions, notifier_exceptions = set(), set()
+        if not args.security_patch:
+            config_exceptions, notifier_exceptions, normalization = vendor_normalization(
+                prior['observation'], observation, key, baseline_sha, args.vendor_normalization_proof)
         checks = compare(prior['observation'], observation, config_exceptions, notifier_exceptions)
     if args.prior_receipt:
         prior = protected_file(args.prior_receipt)
         need(prior.get('mode') == 'after' and prior.get('schema_version') == 1 and prior.get('baseline_sha256') == baseline_sha, 'prior_receipt_shape')
-        need(prior.get('vendor_normalization', {}).get('proof_sha256') == NORMALIZATION_PROOF_SHA256, 'prior_normalization_proof_binding')
+        need(prior.get('security_patch', False) == args.security_patch, 'same_restart_scope')
+        if not args.security_patch:
+            need(prior.get('vendor_normalization', {}).get('proof_sha256') == NORMALIZATION_PROOF_SHA256, 'prior_normalization_proof_binding')
         need(prior['identity']['claims'] == start['claims'] and prior['identity']['image'] == start['image'], 'restart_identity')
         need(prior['identity']['pod_uid'] != start['pod_uid'] or prior['identity']['restart_count'] < start['restart_count'], 'restart_not_observed')
         compare(prior['observation'], observation)
     # Private runtime names/IPs are used in memory but omitted from durable receipts.
     safe_identity = {k: v for k, v in start.items() if k not in ['pod_name', 'cluster_ip']}
-    receipt = {'schema_version': 1, 'mode': args.mode, 'captured_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    receipt = {'schema_version': 1, 'mode': args.mode, 'security_patch': args.security_patch, 'captured_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                'identity': safe_identity, 'observation': observation, 'comparison_mismatches': checks,
                'baseline_sha256': baseline_sha, 'vendor_normalization': normalization,
                'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),

@@ -29,7 +29,7 @@ SEAL = HELPER_ROOT / 'inputs.json'
 BUILDS = BASE / 'worker1-image-build-20261023'
 CI_ARTIFACTS = BASE / 'ci-image-artifacts-20261024'
 LOCAL_ARTIFACTS = BASE / 'local-image-artifacts-20261024'
-SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot']
+SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot', 'bazarr', 'radarr', 'sonarr', 'whoami', 'traefik']
 SEERR_CI_LOCK_SHA = '9665b245267e7c864210bdf85f1098c0891f30946c64b3781f44077fff0b7811'
 TOOL_SHA = 'd1dfca6ae10a1ad4540bb94e64f0510077c47008920a9b554986b39dca573d83'
 DB_FILES = {
@@ -110,18 +110,25 @@ def save(path, data):
         os.close(fd)
 
 
-def reserve(extra=0):
+def reserve(extra=0, launch=False):
     v = os.statvfs(ROOT)
     capacity = v.f_frsize * v.f_blocks
     available = v.f_frsize * v.f_bavail
-    floor = capacity // 4 + 8 * 1024 ** 3
-    require(available >= floor + extra, 'filesystem_reserve_below_25percent_plus_8GiB')
+    require(0 <= extra <= 8*1024**3, 'bounded_pending_bytes')
+    floor = 15*1024**3 if OFFLOADED_SCAN else capacity // 4 + 8*1024**3
+    pending = 8*1024**3 if OFFLOADED_SCAN and launch else extra
+    require(available >= floor + pending, 'native_filesystem_retained_reserve')
     require(v.f_favail >= max(250000, v.f_files // 10), 'inode_reserve')
     physical = os.statvfs('/mnt/f' if OFFLOADED_SCAN else '/mnt/c')
     physical_free = physical.f_bavail*physical.f_frsize
-    require(physical_free >= 8*1024**3 + extra, 'physical_backing_drive_scanner_reserve')
+    physical_floor = 15*1024**3 if OFFLOADED_SCAN else 8*1024**3
+    require(physical_free >= physical_floor + pending, 'physical_backing_drive_scanner_reserve')
     allocated = 0
     for folder, dirs, files in os.walk(ROOT):
+        for name in dirs:
+            child = Path(folder)/name
+            require(not child.is_symlink() and child.resolve() == child and
+                    child.stat().st_dev == ROOT.stat().st_dev, 'owned_scanner_directory_device')
         for name in files:
             st = (Path(folder)/name).lstat()
             require(stat.S_ISREG(st.st_mode) and st.st_nlink == 1, 'owned_scanner_special_file')
@@ -129,10 +136,13 @@ def reserve(extra=0):
     require(allocated <= 8*1024**3, 'fresh_local_scanner_8GiB_working_budget')
     if OFFLOADED_SCAN:
         mount = ROOT.parent
-        require(mount.is_mount() and (mount / 'local-oci-scan').stat().st_dev == mount.stat().st_dev
+        require(mount.resolve() == mount and ROOT.resolve() == ROOT and mount.is_mount() and (mount / 'local-oci-scan').stat().st_dev == mount.stat().st_dev
                 and mount.stat().st_dev != os.stat('/').st_dev, 'dedicated_scan_mount')
-        return {'capacityBytes': capacity, 'nonrootAvailableBytes': available, 'requiredAvailableBytes': floor,
-                'physicalFAvailableBytes': physical_free, 'physicalFReserveBytes': 8*1024**3,
+        return {'capacityBytes': capacity, 'nonrootAvailableBytes': available, 'requiredAvailableBytes': floor + pending,
+                'physicalFAvailableBytes': physical_free, 'physicalFReserveBytes': physical_floor + pending,
+                'storagePolicy': 'native-and-physical-F-15GiB-retained-plus-pending; launch-adds-full8GiB-cap',
+                'previousOffloadedPolicy': 'native25percent-plus8GiB; physical8GiB',
+                'aggregateCapBytes': 8*1024**3, 'pendingBytes': pending,
                 'freshAllocatedBytes': allocated, 'freeInodes': v.f_favail, 'storageProfile': 'offloaded'}
     return {'capacityBytes': capacity, 'nonrootAvailableBytes': available,
             'requiredAvailableBytes': floor, 'physicalCAvailableBytes': physical_free,
@@ -173,19 +183,20 @@ def setup_cache():
     # whenever a new content-addressed helper uses this same immutable cache.
     if all(p.exists() for p in sources) and all((ROOT/n).exists() for n in ['no-ignore', 'trivy-empty.yaml', 'results.tpl']):
         return
-    reserve(2*sum(row[1] for row in sources.values()))
+    reserve(sum(row[1] for target,row in sources.items() if not target.exists()))
     for target,(source,size,expected,mode) in sources.items():
-        protected(source)
-        require(source.stat().st_size == size and digest(source) == expected, 'fresh_source_DB_or_tool_identity')
         if target.exists():
             protected(target)
             require(target.stat().st_size == size and digest(target) == expected, 'preserve_conflicting_local_input')
-        else:
+            continue  # Reuse exact F bytes; no duplicate DB and no original reread.
+        protected(source)
+        require(source.stat().st_size == size and digest(source) == expected, 'fresh_source_DB_or_tool_identity')
+        if not target.exists():
             with source.open('rb') as old, target.open('xb') as new:
                 total=0;last=time.monotonic()
                 for block in iter(lambda:old.read(1024**2),b''):
                     total+=len(block);require(total<=size,'source_changed_during_copy');new.write(block)
-                    if time.monotonic()-last>2:reserve();last=time.monotonic()
+                    if time.monotonic()-last>2:reserve(size-total);last=time.monotonic()
                 new.flush();os.fsync(new.fileno())
             os.chmod(target,mode)
             require(total==size and digest(target)==expected,'fresh_input_copy_SHA256')
@@ -294,15 +305,21 @@ def selected_layout(archive, root_digest, output):
         for name, data in [('oci-layout', b'{"imageLayoutVersion":"1.0.0"}'),
                            ('index.json', json.dumps(index, separators=(',', ':')).encode())]:
             path = output / name
+            reserve(len(data))
             with path.open('xb') as destination:
                 destination.write(data)
             publish(path)
         for d in sorted(keep):
             member = bundle.getmember('blobs/sha256/' + d[7:])
             path = output / member.name
+            reserve(member.size)
+            copied = 0; last_reserve = time.monotonic()
             with bundle.extractfile(member) as source, path.open('xb') as destination:
                 for chunk in iter(lambda: source.read(1024 * 1024), b''):
                     destination.write(chunk)
+                    copied += len(chunk)
+                    if time.monotonic() - last_reserve > 2:
+                        reserve(member.size - copied); last_reserve = time.monotonic()
             publish(path)
             require(path.stat().st_size == member.size and 'sha256:' + digest(path) == d, 'materialized_blob_identity')
         return {'originalRootDescriptor': {k: roots[0][k] for k in ['mediaType', 'digest', 'size']}, 'selectedRuntimeManifest': clean_desc,
@@ -479,9 +496,10 @@ OFFLOAD_STORAGE = {'kind': 'dedicated-f-drive-ext4-loop',
                    'docker_mutable_budget_bytes': 64 * 1024 ** 2,
                    'docker_physical_reserve_bytes': 2 * LOCAL_GIB}
 # Historical receipts retain the size actually used by their build.
-# Only these two reviewed generations share the pinned file/UUID and bounds.
+# Only these three reviewed generations share the pinned file/UUID and bounds.
 OFFLOAD_STORAGE_GROWN = {**OFFLOAD_STORAGE, 'backing_file_bytes': 128 * LOCAL_GIB}
-OFFLOAD_STORAGE_PROFILES = (OFFLOAD_STORAGE, OFFLOAD_STORAGE_GROWN)
+OFFLOAD_STORAGE_GROWN_144 = {**OFFLOAD_STORAGE, 'backing_file_bytes': 144 * LOCAL_GIB}
+OFFLOAD_STORAGE_PROFILES = (OFFLOAD_STORAGE, OFFLOAD_STORAGE_GROWN, OFFLOAD_STORAGE_GROWN_144)
 LOCAL_CAPS = {
     'local-operator-provenance.json': 16 * 1024 ** 2,
     'source-export.json': 4 * 1024 ** 2,
@@ -576,7 +594,7 @@ def local_verify(root, service, run_id, proof_sha, owner, mode=0o400,
         'reserve_bytes': 2 * LOCAL_GIB, 'max_oci_bytes': 4 * LOCAL_GIB,
         'observation_seconds': 6300, 'whole_seconds': 7200}
     measured_profile = result.get('resource_contract', {})
-    offloaded = service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot'] and result.get('storage_contract') in OFFLOAD_STORAGE_PROFILES
+    offloaded = service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot', 'bazarr', 'radarr', 'sonarr', 'whoami', 'traefik'] and result.get('storage_contract') in OFFLOAD_STORAGE_PROFILES
     local_need(not result.get('storage_contract') or offloaded, 'finite_offloaded_storage_scope')
     local_need(service != 'coredns' or offloaded, 'coredns_requires_dedicated_storage_proof')
     if service in ['wordpress', 'nginx', 'phpmyadmin'] and measured_profile.get('build_budget_bytes') == 4 * LOCAL_GIB:
@@ -585,12 +603,21 @@ def local_verify(root, service, run_id, proof_sha, owner, mode=0o400,
     host = {'Memory': 3 * LOCAL_GIB, 'MemorySwap': 3 * LOCAL_GIB, 'CpuPeriod': 100000,
             'CpuQuota': 150000, 'CpusetCpus': '0-1', 'PidsLimit': 512,
             'CgroupnsMode': 'private', 'Privileged': True}
+    host_profiles = [host, dict(host, ReadonlyRootfs=True)] if offloaded else [host]
+    if offloaded:
+        host_profiles.append(dict(host, ReadonlyRootfs=True, NetworkMode='branconet-maintenance-build-20261025'))
     samples = result['cgroup_samples']
     local_need(isinstance(samples, list) and 2 <= len(samples) <= 4000, 'cgroup_sample_count')
     container = samples[0]['container_id']
     local_need(re.fullmatch('[0-9a-f]{64}', container), 'builder_id')
     for sample in samples:
-        local_need(sample.get('expected') == host and sample.get('effective_cgroup_v2') ==
+        if sample.get('expected', {}).get('NetworkMode'):
+            network = result.get('build_network', {})
+            local_need(network.get('Name') == 'branconet-maintenance-build-20261025' and
+                       network.get('Driver') == 'bridge' and network.get('Scope') == 'local' and network.get('Internal') is False and
+                       network.get('Labels') == {'branconet.owner':'cluster-maintenance','branconet.task-id':'01a12045-bf7e-73b3-8557-752d17c72ffd'} and
+                       re.fullmatch('[0-9a-f]{64}', network.get('Id','')), 'owned_build_network_scope')
+        local_need(sample.get('expected') in host_profiles and sample.get('effective_cgroup_v2') ==
                    ['3221225472', '0', '150000 100000', '0-1', '512'] and
                    sample.get('container_id') == container and sample.get('image_id') == result['builder_image_config_digest'] and
                    sample.get('ancestor') == '/system.slice/docker-' + container + '.scope' and
@@ -670,9 +697,16 @@ def local_root(args):
     require(re.fullmatch('[0-9a-f]{32}', args.local_run_id) and re.fullmatch('[0-9a-f]{64}', args.local_provenance_sha256), 'local_operator_identity')
     require(args.ci_run_id == args.ci_artifact_id == 0 and not args.ci_provenance_sha256 and args.build_attempt == 'initial', 'local_operator_has_no_ci_or_worker_identity')
     parent = (BASE / 'local-image-build-offload-20261025/local-image-artifacts-20261025'
-              if args.service in ['unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot'] else LOCAL_ARTIFACTS)
-    if args.service in ['unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot']:
-        require(OFFLOADED_SCAN and parent.parent.is_mount(), 'dedicated_receiver_mount')
+              if args.service in ['unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot', 'bazarr', 'radarr', 'sonarr', 'whoami', 'traefik'] else LOCAL_ARTIFACTS)
+    if args.service in ['unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot', 'bazarr', 'radarr', 'sonarr', 'whoami', 'traefik']:
+        # Read-only sealed inputs need not share the scanner's working device.
+        # Keep the exact F filesystem and immutable provenance checks even when
+        # the existing controller-native scanner supplies the bounded scratch.
+        require(parent.parent.is_mount(), 'dedicated_receiver_mount')
+        mounted = subprocess.run(['findmnt', '-n', '-o', 'UUID,FSTYPE', '--target', str(parent.parent)],
+                                 capture_output=True, text=True, timeout=10)
+        require(mounted.returncode == 0 and mounted.stdout.split() ==
+                [OFFLOAD_STORAGE['filesystem_uuid'], 'ext4'], 'dedicated_receiver_filesystem')
     return parent / (args.service + '-' + args.local_run_id)
 
 
@@ -763,7 +797,9 @@ def run(args):
                    '--quiet', '--no-progress', '--format', 'template', '--template', '@' + str(ROOT / 'results.tpl'),
                    '--output', str(output)]
             env = {'PATH': '/usr/bin:/bin', 'HOME': str(ROOT / 'home'), 'DOCKER_CONFIG': str(ROOT / 'docker-config'),
-                   'TMPDIR': str(ROOT / 'tmp'), 'XDG_CACHE_HOME': str(ROOT / 'cache'),
+                   'TMPDIR': str(ROOT / 'tmp'), 'TEMP': str(ROOT / 'tmp'), 'TMP': str(ROOT / 'tmp'),
+                   'XDG_CONFIG_HOME': str(ROOT / 'home/.config'), 'XDG_DATA_HOME': str(ROOT / 'home/.local/share'),
+                   'XDG_CACHE_HOME': str(ROOT / 'cache'),
                    'GOMAXPROCS': '2', 'GOMEMLIMIT': '512MiB', 'LANG': 'C', 'LC_ALL': 'C'}
             with stderr.open('xb') as errors:
                 scanner = subprocess.Popen(cmd, cwd=ROOT, env=env, stdin=subprocess.DEVNULL,
@@ -835,8 +871,10 @@ def run(args):
 
 
 def main():
+    global ROOT, HELPER_ROOT, SEAL, OFFLOADED_SCAN
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('phase', choices=['setup', 'run', 'status'])
+    p.add_argument('--storage-profile', choices=['legacy', 'offloaded'])
     p.add_argument('--apply', action='store_true')
     p.add_argument('--unit', default='')
     p.add_argument('--service', choices=SERVICES)
@@ -853,11 +891,29 @@ def main():
     args = p.parse_args()
     require(os.geteuid() == OWNER.pw_uid == 1000 and 'microsoft' in Path('/proc/sys/kernel/osrelease').read_text().lower(), 'native_WSL_operator_only')
     os.umask(0o077)
+    if args.storage_profile:
+        require(args.phase == 'status', 'storage_override_readonly_status_only')
+        OFFLOADED_SCAN = args.storage_profile == 'offloaded'
+        ROOT = OFFLOAD_SCAN_ROOT if OFFLOADED_SCAN else BASE/'local-oci-scan-20261024'
+        HELPER_ROOT = ROOT/'helpers'/digest(Path(__file__))
+        SEAL = HELPER_ROOT/'inputs.json'
+    # Applies before systemctl/findmnt/Trivy subprocesses, including legacy status.
+    runtime = OFFLOAD_SCAN_ROOT
+    os.environ.update(HOME=str(runtime/'home'), TMPDIR=str(runtime/'tmp'), TEMP=str(runtime/'tmp'), TMP=str(runtime/'tmp'),
+                      XDG_CACHE_HOME=str(runtime/'cache'), XDG_CONFIG_HOME=str(runtime/'home/.config'),
+                      XDG_DATA_HOME=str(runtime/'home/.local/share'))
+    if args.phase != 'status':
+        require(OFFLOADED_SCAN and ROOT == OFFLOAD_SCAN_ROOT, 'new_work_requires_native_F')
+        windows_c = os.statvfs('/mnt/c')
+        require(windows_c.f_bavail*windows_c.f_frsize >= 15*1024**3, 'windows_C_launch_15GiB_floor')
+        reserve(launch=True)
     if args.phase == 'setup':
         require(args.apply and re.fullmatch('branconet-local-oci-setup-[0-9a-f]{12}[.]service', args.unit), 'explicit_setup_unit')
         limits(args.unit)
-        setup_cache()
-        seal = inputs()
+        with (ROOT/'scan.lock').open('a') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            setup_cache()
+            seal = inputs()
         destination = SEAL
         if destination.exists():
             protected(destination)
@@ -870,7 +926,7 @@ def main():
     elif args.phase == 'run':
         require(args.apply, 'explicit_scan_required')
         require(args.service in SERVICES, 'service_required')
-        require(not OFFLOADED_SCAN or (args.service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot'] and args.source_kind == 'local-operator')
+        require(not OFFLOADED_SCAN or (args.service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot', 'bazarr', 'radarr', 'sonarr', 'whoami', 'traefik'] and args.source_kind == 'local-operator')
                 or (args.service == 'jackett' and args.source_kind == 'github-actions'), 'finite_offloaded_scan_scope')
         require(args.source_kind == 'local-operator' or not (args.local_run_id or args.local_provenance_sha256), 'nonlocal_source_has_no_local_identity')
         protected(SEAL)

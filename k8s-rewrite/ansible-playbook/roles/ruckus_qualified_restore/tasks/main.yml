@@ -1,0 +1,37 @@
+---
+- name: State the disabled default and preserved source volume
+  ansible.builtin.debug:
+    msg: Qualified Ruckus restore is opt-in. Plan is read-only; restore targets only the separately chart-owned fresh claim. Resource creation and UID-bound cleanup remain explicit coordinator operations.
+  when: not ruckus_qualified_restore_enabled | bool or ansible_check_mode
+
+- name: Invoke only the reviewed finite controller workflow
+  when: ruckus_qualified_restore_enabled | bool and not ansible_check_mode
+  block:
+    - ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'masternode'
+          - ruckus_qualified_restore_action in ['plan', 'restore']
+          - ruckus_qualified_restore_archive_receipt is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/ruckus-upgraded-cold-20261025/archive-[0-9a-f]{32}/receipt.json$')
+          - ruckus_qualified_restore_archive_sha256 is match('^[0-9a-f]{64}$')
+          - ruckus_qualified_restore_claim_uid is match('^[0-9a-f-]{36}$')
+          - ruckus_qualified_restore_run_id is match('^[0-9a-f]{12}$')
+          - ruckus_qualified_restore_action != 'restore' or ruckus_qualified_restore_pod_uid is match('^[0-9a-f-]{36}$')
+          - ruckus_qualified_restore_action != 'restore' or ruckus_qualified_restore_policy_uid is match('^[0-9a-f-]{36}$')
+          - ruckus_qualified_restore_action != 'plan' or ruckus_qualified_restore_plan_path is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/acceptance-ruckus-[0-9]+/[A-Za-z0-9_-]+.json$')
+    - name: Run the hash-bound full archive and source-preservation helper
+      ansible.builtin.command:
+        argv: "{{ ['/home/brajam/.local/share/branconet-migration/venv/bin/python', playbook_dir + '/../../../scripts/migration/restore-ruckusdb-qualified-copy.py', ruckus_qualified_restore_action, '--archive-receipt', ruckus_qualified_restore_archive_receipt, '--archive-receipt-sha256', ruckus_qualified_restore_archive_sha256, '--claim', 'ruckus-db-data-0-security-20261025', '--claim-uid', ruckus_qualified_restore_claim_uid, '--run-id', ruckus_qualified_restore_run_id] + (['--pod-uid', ruckus_qualified_restore_pod_uid, '--policy-uid', ruckus_qualified_restore_policy_uid] if ruckus_qualified_restore_action == 'restore' else []) }}"
+      delegate_to: localhost
+      become: false
+      register: ruckus_qualified_restore_result
+      changed_when: ruckus_qualified_restore_action == 'restore'
+      no_log: true
+    - name: Save only the reviewed noncredential resource plan
+      ansible.builtin.copy:
+        content: '{{ ruckus_qualified_restore_result.stdout }}'
+        dest: '{{ ruckus_qualified_restore_plan_path }}'
+        mode: '0600'
+        force: false
+      delegate_to: localhost
+      become: false
+      when: ruckus_qualified_restore_action == 'plan'

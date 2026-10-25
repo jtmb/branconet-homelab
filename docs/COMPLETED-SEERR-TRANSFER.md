@@ -26,3 +26,72 @@ can be restaged with `application_image_preload`, service`seerr`, generation
 
 Private receipt log: `FBASE/control-logs/completed-seerr-transfer-master-20261025-r2.log`.
 `FBASE` is the mounted task root documented in [local build storage](LOCAL-BUILD-STORAGE.md).
+
+## October25 additional finite completed transfers
+
+Master YTPTube's completed duplicate was removed after the same controller and
+active-reference checks: basename`ytptube-security-20261023-ci40052586445.oci.tar`,
+SHA`c1d4130b64aa71629e5ead6ac0c37d17194dff2cf644ae5e4f8115f5559de5c3`,
+461,156,352 logical/461,160,448 allocated bytes;34 cached blobs were rehashed.
+Its full controller archive remains.
+
+Workernode2's kubelet had already garbage-collected unused Seerr/YTPTube aliases.
+The initial strict cached-alias attempts refused and removed nothing. The finite
+role now permits an absent alias while retaining the full controller archive
+before AND after, exact archive SHA/size/owner/mode/inode, no process/mount/loop
+reference and single-file unlink checks. Existing aliases still require their
+entire original content graph to pass hashes. No runtime image is recreated or
+pruned to remove a transfer duplicate. Regeneration copies the exact retained
+controller archive; source recipes/lockfiles and deployment images remain.
+
+The explicit worker plan removed these basenames only under the same node
+`application-artifacts-20261023` directory (allocated bytes):
+
+| Exact basename | Allocated bytes |
+| --- | ---: |
+| seerr-security-20261023-ci40048938336.oci.tar |319836160|
+| ytptube-security-20261023-ci40052586445.oci.tar |461160448|
+| flaresolverr-security-20261023-ci40058492329.oci.tar |478855168|
+| wordpress-security-20261023.oci.tar |278257664|
+| phpmyadmin-security-20261023.oci.tar |198549504|
+| tautulli-security-20261023-ci40068021890.oci.tar |108433408|
+| vaultwarden-security-20261023-ci40060033423.oci.tar |92905472|
+| coredns-security-20261023.oci.tar |70000640|
+| nginx-security-20261023.oci.tar |65982464|
+
+Total worker recovery2,073,980,928 allocated bytes. Exact hashes, before/after
+free space and per-file checks are in retained private log
+`FBASE/control-logs/retire-worker2-completed-transfers-20261025.log`, which passed
+72 tasks/9 exact unlinks. This restored room for normal guarded Ruckus image
+preload on all three nodes. No compiler cache, backup, volume, media, source,
+lockfile or image was deleted. Windows recovery remains zero.
+
+
+## Four accepted media services, October25 18:10 UTC
+
+Radarr, Sonarr, Bazarr and Whoami passed their data/resource and controlled
+restart checks before this finite cleanup. The same Ansible role removed exactly
+these12 transfer files, retaining full SHA256-verified controller archives
+before and after, source/locks and all runtime images/volumes. No prune occurred.
+
+| Node | Exact removed basename | Allocated bytes |
+| --- | --- | ---: |
+| masternode | `radarr-security-20261023-r1.oci.tar` | 141434880 |
+| workernode2 | `radarr-security-20261023-r1.oci.tar` | 141434880 |
+| workernode1 | `radarr-security-20261023-r1.oci.tar` | 141430784 |
+| masternode | `sonarr-security-20261023-r1.oci.tar` | 134139904 |
+| workernode2 | `sonarr-security-20261023-r1.oci.tar` | 134139904 |
+| workernode1 | `sonarr-security-20261023-r1.oci.tar` | 134139904 |
+| masternode | `bazarr-security-20261023-r2.oci.tar` | 154902528 |
+| workernode2 | `bazarr-security-20261023-r2.oci.tar` | 154902528 |
+| workernode1 | `bazarr-security-20261023-r2.oci.tar` | 154902528 |
+| masternode | `whoami-security-20261023-r1.oci.tar` | 10252288 |
+| workernode2 | `whoami-security-20261023-r1.oci.tar` | 10252288 |
+| workernode1 | `whoami-security-20261023-r1.oci.tar` | 10252288 |
+
+All paths are under `/home/james/.local/share/branconet-migration/application-artifacts-20261023/`.
+Total allocated bytes: 1322184704. These are remote Linux recoveries; Windows recovery is zero.
+Exact per-file hashes, active-reference/content checks and live before/after free
+bytes are retained in `FBASE/control-logs/retired-accepted-media-transfer-summary-20261025.json`
+and the source operator log. Each node passed32 tasks/four changes/zero failures.
+This partial recovery does not clear the recorded Longhorn disk pressure.

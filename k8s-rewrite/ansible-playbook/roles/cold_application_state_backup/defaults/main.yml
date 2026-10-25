@@ -1,8 +1,12 @@
 ---
 cold_application_state_apply: false
 cold_application_state_app: ""
+cold_application_state_generation: original
 cold_application_state_output_dir: ""
 cold_application_state_node: workernode2
+# Mealie requires an explicit workernode1 override and reader1000:1000.
+# xteve and xteve-config each require workernode2 and explicit reader0:0.
+# Both xTeVe invocations retain the same quiescent writer; NAS is never mounted.
 # Original apps use0/1000; wordpress-redis and ruckus-db require999:999.
 cold_application_state_reader_uid: 1000
 cold_application_state_reader_gid: 1000

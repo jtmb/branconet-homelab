@@ -13,7 +13,7 @@ and no image environment/config/history in the structured report.
 
 ## Fresh public inputs
 
-`refresh-trivy-databases.py` fetches a new exclusive native generation from pinned
+Historical `refresh-trivy-databases.py` fetched a new exclusive native generation from pinned
 public `mirror.gcr.io/aquasec/trivy-db` and `trivy-java-db` manifests. It verifies
 each complete compressed blob and extracted database/metadata SHA, schema,
 bounded archive members and gzip footer. It preserves all old generations and
@@ -25,20 +25,20 @@ The current reviewed generation is
 `trivy-db-generation-20261024-e06eced058164f38a7a36670fd89e986`.
 Its vulnerability database UpdatedAt is `2026-10-24T19:09:13.779511838Z`; its Java
 index UpdatedAt is `2026-10-24T01:07:32.115560183Z`. All source bytes are pinned in
-`scan-local-oci.py`. The scanner preserves the existing 24-hour vulnerability
+`scan-local-oci.py`. This adaptation does not execute or authorize a database download; the historical refresh path is not a new-work instruction. The scanner preserves the existing 24-hour vulnerability
 database age bound. Expired input requires a newly reviewed generation.
 
 ## Setup and scan
 
 Run an immutable reviewed native copy of both adjacent scanner/controller files
 as the existing WSL operator. The explicit setup copies the verified Trivy binary
-and fresh databases into its own private native cache without replacing old or
-conflicting files. Source/helper hashes bind a new immutable input seal.
+and pinned databases into the private native F cache only when missing, without replacing old or
+conflicting files. Existing exact F inputs are reused and fully verified; no new duplicate DB generation is made. Source/helper hashes bind a new immutable input seal.
 
 ```sh
-python3 scripts/migration/run-local-oci-scan.py --apply --phase setup
-python3 scripts/migration/run-local-oci-scan.py --apply --phase scan \
-  --service pihole --source-kind local-operator --local-run-id RUN_32HEX \
+python3 -B scripts/migration/run-local-oci-scan.py --apply --storage-profile offloaded --phase setup
+python3 -B scripts/migration/run-local-oci-scan.py --apply --storage-profile offloaded --phase scan \
+  --service traefik --source-kind local-operator --local-run-id RUN_32HEX \
   --local-provenance-sha256 SEALED_LOCAL_PROVENANCE_SHA256 \
   --archive-sha256 OCI_ARCHIVE_SHA256 --root-descriptor sha256:ROOT_HEX
 ```
@@ -58,10 +58,14 @@ users/devices, no-new-privileges, read-only system/home, protected database file
 and inaccessible SSH, Windows user files and runtime sockets isolate the task.
 The outer deadline stays 900 seconds and Trivy's observation stays 480 seconds.
 
-The native filesystem retains 25% plus 8 GiB free, including existing scan input
-reserve; actual physical C: retains a separate 8 GiB reserve plus pending work.
-The private scanner tree stays below 8 GiB allocated. Capacity, source and input
-checks continue through each run. Strata and shared Docker state remain intact.
+All new setup/scan work uses `local-image-build-offload-20261025/local-oci-scan`.
+The offloaded profile replaces its former native 25%-plus-8-GiB and physical
+8-GiB reserve with **both native F and physical F >=23 GiB at launch**, and
+**both >=15 GiB plus pending bytes during writes**. C must have >=15 GiB at
+launch but receives no new output. The private scanner tree retains its full
+8-GiB aggregate cap, including existing inputs, attempts and failures; the inode
+reserve remains max(250000, 10%). No reserve change applies to historical helpers.
+Capacity, source and input checks continue through each run, including OCI materialization. Strata and shared Docker state remain intact.
 
 Observe the returned unit/PID and attempt receipt to a terminal state; an
 observation timeout never permits a duplicate run. Scan success is evidence for
@@ -103,7 +107,7 @@ No sudo password or production credential is required.
 
 ## Dedicated native F profile
 
-CoreDNS, Jackett, Plex, Unpackerr, Homepage, http-echo, qbittorrent-current and pihole-exporter accept the explicit offloaded storage profile
+The existing finite service list (CoreDNS through Traefik in the controller) accepts the offloaded storage profile
 for local-operator artifacts; Jackett also retains its historical offline CI
 proof path. All previous frozen helpers and C-backed originals remain unchanged.
 New Unpackerr/Homepage/http-echo/qbittorrent-current/pihole-exporter receivers stay on native F; previous services retain their
@@ -118,3 +122,53 @@ to avoid caching both loop filesystem and backing file under the same 1 GiB
 cgroup. Archive and source/provenance verification remain complete. The sealed
 receipt records this policy. This optimization does not suppress any analyzer,
 package metadata or vulnerability finding.
+
+## F-only source revision and invocation boundary
+
+`offloaded` is now the controller and role default. `legacy` is accepted only
+for read-only status; an explicit legacy setup/run refuses before creating a
+helper, log, lock or receipt. For an existing C receipt use:
+
+```sh
+python3 -B scripts/migration/run-local-oci-scan.py --phase status \
+  --storage-profile legacy --service SERVICE --attempt EXISTING_12HEX
+```
+
+New controller and worker processes set HOME, TMPDIR, TEMP, TMP,
+XDG_CACHE_HOME, XDG_CONFIG_HOME and XDG_DATA_HOME to native F before their first
+subprocess. Worker /tmp and /var/tmp are inaccessible. The owner systemd bus
+remains the existing /run/user/1000 IPC endpoint; it is not a scratch fallback.
+Setup and scans share the existing F scan lock. Setup reuses exact installed
+F inputs, verifies conflicts without overwriting them, and copies only missing
+pinned bytes from read-only historical sources. No network acquisition occurs.
+Original C helpers, seals, locks and receipts are not modified. Status reads the
+selected existing receipt even if this new helper hash has never been installed.
+
+For the Ansible entry point, use already prepared/verified private scanner
+subdirectories and export these values **before starting ansible-playbook**:
+
+```sh
+SCAN=/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan
+export HOME="$SCAN/home" TMPDIR="$SCAN/tmp" TEMP="$SCAN/tmp" TMP="$SCAN/tmp"
+export XDG_CACHE_HOME="$SCAN/cache" XDG_CONFIG_HOME="$SCAN/home/.config"
+export XDG_DATA_HOME="$SCAN/home/.local/share" ANSIBLE_HOME="$SCAN/home/.ansible"
+export ANSIBLE_LOCAL_TEMP="$SCAN/tmp/ansible-local" ANSIBLE_REMOTE_TEMP="$SCAN/tmp/ansible-remote"
+```
+
+The role verifies the controller environment before new work and binds local
+module temp to F. It does not retroactively repair a caller that started Ansible
+with C-backed temporary directories. First-time setup can use the direct frozen
+Python launcher, which prepares only the bounded F directories after admission.
+No setup, scan, image run, build, network acquisition or deployment was executed
+for this source revision. The immutable OCI/source/provenance/DB identities,
+finite readonly-daemon host profiles, 1-GiB/no-swap/two-CPU/128-task limits,
+900/480-second deadlines, DB freshness, empty ignores, Results-only redaction
+and image non-execution checks remain in force. A stale DB or full retained
+8-GiB scanner tree is a refusal, not permission to refresh, remove or expand it.
+
+Ansible-specific execution boundary: this role's F-only environment does not
+solve ansible-core's known deep-TMPDIR AF_UNIX RPC listener path. The already
+observed controller requires its reviewed short F socket bootstrap; no new
+Ansible qualification is claimed here. Use the direct frozen Python launcher
+for this scanner revision unless the controller already supplies that bootstrap.
+Do not fall back to C or /tmp to work around socket length.

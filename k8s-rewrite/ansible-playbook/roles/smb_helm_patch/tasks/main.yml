@@ -15,6 +15,8 @@
           - smb_helm_patch_hmac_key_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/acceptance-smb-[0-9]+/[A-Za-z0-9_.-]+$')
           - not smb_helm_patch_apply | bool or smb_helm_patch_approved_sha256 is match('^[0-9a-f]{64}$')
           - not smb_helm_patch_apply | bool or smb_helm_patch_approved_preflight | length > 0
+          - not smb_helm_patch_apply | bool or smb_helm_patch_verify_attempt | length == 0
+          - smb_helm_patch_verify_attempt | length == 0 or smb_helm_patch_verify_sha256 is match('^[0-9a-f]{64}$')
 
     - name: Check the existing private HMAC key without exporting its value
       ansible.builtin.stat:
@@ -33,7 +35,7 @@
 
     - name: Invoke the bounded master-RAM helper with key only on stdin
       ansible.builtin.command:
-        argv: "{{ ['/usr/bin/python3', playbook_dir + '/../../../scripts/migration/patch-smb-helm.py', '--chart', smb_helm_patch_chart, '--receipt', smb_helm_patch_receipt] + (['--apply', '--approved-preflight', smb_helm_patch_approved_preflight, '--approved-sha256', smb_helm_patch_approved_sha256] if smb_helm_patch_apply | bool else []) }}"
+        argv: "{{ ['/usr/bin/python3', playbook_dir + '/../../../scripts/migration/patch-smb-helm.py', '--chart', smb_helm_patch_chart, '--receipt', smb_helm_patch_receipt] + (['--apply', '--approved-preflight', smb_helm_patch_approved_preflight, '--approved-sha256', smb_helm_patch_approved_sha256] if smb_helm_patch_apply | bool else []) + (['--verify-applied', smb_helm_patch_verify_attempt, '--attempt-sha256', smb_helm_patch_verify_sha256] if smb_helm_patch_verify_attempt | length > 0 else []) }}"
         stdin: "{{ lookup('ansible.builtin.file', smb_helm_patch_hmac_key_file) }}"
       delegate_to: localhost
       become: false

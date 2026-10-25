@@ -1,4 +1,11 @@
 ---
+- name: Require a finite existing-file growth request
+  ansible.builtin.assert:
+    that:
+      - local_build_storage_grow_existing_gib | int in [0, 128, 144]
+      - local_build_storage_grow_existing_gib | int == 0 or local_build_storage_grow_existing_inode | int == 115123265474727363
+      - local_build_storage_grow_existing_gib | int == 0 or local_build_storage_resume_empty_inode | int == 0
+
 - name: State the dedicated storage boundary
   ansible.builtin.debug:
     msg: Only the new F drive regular file may be formatted. Verify direct I/O on its exact dedicated loop; no existing data is reformatted and no cluster disk, partition or process is changed.
@@ -21,6 +28,18 @@
     msg: "{{ local_build_storage_result.stdout | from_json }}"
   when: local_build_storage_apply | bool and not ansible_check_mode
 
+- name: Configure only the labelled controller-side builder network
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -B
+      - "{{ role_path }}/files/configure-build-network.py"
+      - --apply
+  become: false
+  register: local_build_storage_network_result
+  changed_when: (local_build_storage_network_result.stdout | from_json).created
+  when: local_build_storage_apply | bool and local_build_storage_configure_build_network | bool and not ansible_check_mode
+
 - name: Install the root-owned existing-only mount helper for CI startup
   when: local_build_storage_apply | bool and local_build_storage_configure_ci | bool and not ansible_check_mode
   block:
@@ -41,6 +60,11 @@
         mode: '0700'
 
     - name: Configure only the existing idle current-user publisher task
+      ansible.builtin.assert:
+        that:
+          - local_build_storage_ci_storage_profile in ['offloaded', 'controller']
+
+    - name: Apply the reviewed publisher storage and lifetime configuration
       ansible.builtin.command:
         argv:
           - /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe
@@ -48,6 +72,6 @@
           - -NoProfile
           - -NonInteractive
           - -EncodedCommand
-          - "{{ lookup('ansible.builtin.file', role_path + '/files/configure-local-ci.ps1') | b64encode(encoding='utf-16-le') }}"
+          - "{{ lookup('ansible.builtin.file', role_path + '/files/configure-local-ci.ps1') | replace('__PUBLISHER_STORAGE_PROFILE__', local_build_storage_ci_storage_profile) | b64encode(encoding='utf-16-le') }}"
       register: local_build_storage_ci_result
       changed_when: (local_build_storage_ci_result.stdout | from_json).changed

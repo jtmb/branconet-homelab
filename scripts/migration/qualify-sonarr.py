@@ -24,6 +24,8 @@ PVC_UID = 'ff5158b3-cecf-46f9-b85e-ad8566cb9068'
 OLD = 'linuxserver/sonarr:latest@sha256:76414c033f290d3c9f1f9dfad71150abe71d92592369a3377a5903d579e6e2b2'
 NEW = 'docker.io/linuxserver/sonarr:latest@sha256:889dcc58c6aea859033985894b519b2e6b1e55d92527ed123f9f52e42ae7c97b'
 NEW_RUNTIME = 'sha256:c5a8178dc6d1f2e2c34b5e254716230d9769af34b4090e61cc116dc055a3083f'
+SECURITY_BASELINE_RUNTIME = NEW_RUNTIME
+SECURITY_PATCH = False
 HOST = 'sonarr.branconet.lan'
 MAX_REPLY = 16 * 1024 ** 2
 MAX_TOTAL = 128 * 1024 ** 2
@@ -104,6 +106,8 @@ def identity(mode):
     need(re.fullmatch(r'sha256:[0-9a-f]{64}', runtime), 'runtime_digest_missing')
     if mode != 'baseline':
         need(runtime in [NEW_RUNTIME, NEW.rsplit('@', 1)[1]], 'runtime_digest')
+    elif SECURITY_PATCH:
+        need(runtime in [SECURITY_BASELINE_RUNTIME, OLD.rsplit('@', 1)[1]], 'security_baseline_runtime_digest')
     service = obj('get', 'service', 'sonarr')
     need(service['spec'].get('selector', {}).get('app') == 'sonarr', 'service_selector')
     ip = ipaddress.ip_address(service['spec']['clusterIP'])
@@ -233,7 +237,7 @@ def capture(api, key, mode):
     status = api.get('/api/v3/system/status')
     need(isinstance(status, dict) and status.get('appName') == 'Sonarr', 'app_identity')
     version = status.get('version')
-    expected = '4.0.17.2952' if mode == 'baseline' else '4.0.20.3014'
+    expected = '4.0.17.2952' if mode == 'baseline' and not SECURITY_PATCH else '4.0.20.3014'
     need(version == expected, 'application_version')
     series = api.get('/api/v3/series')
     need(isinstance(series, list) and len(series) <= MAX_SERIES, 'series_count_limit')
@@ -263,7 +267,8 @@ def capture(api, key, mode):
     schema_mappings = []
     for endpoint in ['downloadclient', 'indexer', 'qualityprofile', 'tag', 'remotepathmapping', 'customformat']:
         values = api.get('/api/v3/' + endpoint)
-        if endpoint == 'downloadclient' and mode != 'baseline':
+        # The same-app profile applies the existing modern projection on both sides.
+        if endpoint == 'downloadclient' and (SECURITY_PATCH or mode != 'baseline'):
             values, schema_mappings = project_qbittorrent_v4020(values)
         result[endpoint] = records(values)
     roots = api.get('/api/v3/rootfolder')
@@ -311,12 +316,19 @@ def write_new(path, value):
 
 
 def main():
+    global OLD, NEW, NEW_RUNTIME, SECURITY_PATCH
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=['baseline', 'after', 'restart'])
     parser.add_argument('--baseline', type=Path)
     parser.add_argument('--prior-receipt', type=Path)
     parser.add_argument('--receipt', required=True, type=Path)
+    parser.add_argument('--security-patch', action='store_true', help='Same 4.0.20.3014 app; finite vendor-to-local security overlay')
     args = parser.parse_args()
+    SECURITY_PATCH = args.security_patch
+    if args.security_patch:
+        OLD = NEW
+        NEW = 'docker.io/library/sonarr-security-20261023@sha256:7d297bbadfd74dd2c346b48d32530d6fa632bc902739d4f7aaadbd898375f593'
+        NEW_RUNTIME = NEW.rsplit('@', 1)[1]
     need(os.name == 'posix', 'master_linux_operator_required')
     os.umask(0o077)
     # Exactly one existing operator HMAC key; never create or persist key material here.
@@ -344,18 +356,23 @@ def main():
     if args.baseline:
         prior = protected_file(args.baseline)
         need(prior.get('mode') == 'baseline' and prior.get('schema_version') == 1, 'baseline_shape')
+        need(prior.get('security_patch', False) == args.security_patch, 'same_qualification_scope')
+        if args.security_patch:
+            need(prior['identity']['image'] == OLD and prior['identity']['runtime_digest'] in [SECURITY_BASELINE_RUNTIME, OLD.rsplit('@', 1)[1]], 'security_baseline_image')
+            need(prior['observation']['version'] == '4.0.20.3014', 'security_baseline_version')
         need(prior['identity']['claims'] == start['claims'] and prior['identity']['service_uid'] == start['service_uid'], 'original_claim_or_service_changed')
         checks = compare(prior['observation'], observation)
         baseline_sha = hashlib.sha256(args.baseline.read_bytes()).hexdigest()
     if args.prior_receipt:
         prior = protected_file(args.prior_receipt)
         need(prior.get('mode') == 'after' and prior.get('schema_version') == 1 and prior.get('baseline_sha256') == baseline_sha, 'prior_receipt_shape')
+        need(prior.get('security_patch', False) == args.security_patch, 'same_restart_scope')
         need(prior['identity']['claims'] == start['claims'] and prior['identity']['image'] == start['image'], 'restart_identity')
         need(prior['identity']['pod_uid'] != start['pod_uid'] or prior['identity']['restart_count'] < start['restart_count'], 'restart_not_observed')
         compare(prior['observation'], observation)
     # Private runtime names/IPs are used in memory but omitted from durable receipts.
     safe_identity = {k: v for k, v in start.items() if k not in ['pod_name', 'cluster_ip']}
-    receipt = {'schema_version': 1, 'mode': args.mode, 'captured_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    receipt = {'schema_version': 1, 'mode': args.mode, 'security_patch': args.security_patch, 'captured_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                'identity': safe_identity, 'observation': observation, 'comparison_mismatches': checks,
                'baseline_sha256': baseline_sha, 'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                'get_only': True, 'api_preservation_passed': args.mode != 'baseline',

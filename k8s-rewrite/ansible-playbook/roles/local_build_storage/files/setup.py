@@ -34,15 +34,29 @@ def main():
     a.add_argument('--apply', action='store_true')
     a.add_argument('--mount-existing', action='store_true')
     a.add_argument('--resume-empty-inode', type=int, default=0)
-    a.add_argument('--grow-existing-gib', type=int, choices=[128])
+    a.add_argument('--grow-existing-gib', type=int, choices=[128, 144])
     a.add_argument('--grow-existing-inode', type=int, default=0)
+    a.add_argument('--offline-lock-fd', type=int, help='Inherited exact host-build lock held by the offline wrapper')
     args = a.parse_args()
+    need(args.offline_lock_fd is None or args.grow_existing_gib is not None, 'inherited_lock_growth_only')
     need(not args.grow_existing_gib or (IMAGE.exists() and args.resume_empty_inode == 0
          and args.grow_existing_inode > 0), 'explicit_existing_only_growth_identity')
     need(not args.mount_existing or (IMAGE.exists() and args.resume_empty_inode == 0), 'existing_only_mount_never_creates_or_formats')
     need(args.apply and os.getuid() == 0 and 'microsoft' in Path('/proc/sys/kernel/osrelease').read_text().lower(), 'explicit_wsl_storage_scope')
     os.environ.pop('BRANCONET_MIGRATION_SUDO_PASSWORD', None)
     os.umask(0o077)
+    # A CI startup/remount must not race an offline growth operation. Keep this
+    # descriptor open until process exit; the growth wrapper owns the same lock.
+    if IMAGE.exists() and not args.grow_existing_gib:
+        mount_lock_path = BASE / 'local-image-build-20261024/host-build.lock'
+        mount_lock_info = mount_lock_path.lstat()
+        need(mount_lock_path.resolve() == mount_lock_path and stat.S_ISREG(mount_lock_info.st_mode)
+             and mount_lock_info.st_uid == 1000 and mount_lock_info.st_nlink == 1,
+             'existing_operator_mount_lock')
+        mount_lock_fd = os.open(mount_lock_path, os.O_RDWR | os.O_NOFOLLOW)
+        need((os.fstat(mount_lock_fd).st_dev, os.fstat(mount_lock_fd).st_ino)
+             == (mount_lock_info.st_dev, mount_lock_info.st_ino), 'held_mount_lock')
+        fcntl.flock(mount_lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
     need(PARENT.is_dir() and PARENT.resolve() == PARENT and BASE.is_dir() and BASE.resolve() == BASE, 'exact_existing_parents')
     v = os.statvfs(PARENT)
     # Remounting our already allocated file consumes no second 96 GiB image.
@@ -92,7 +106,7 @@ def main():
         run(['mkfs.ext4', '-F', '-q', '-E', 'nodiscard', '-m', '0', '-U', UUID, '-L', 'branconet-build', str(IMAGE)])
     info = IMAGE.lstat()
     need(IMAGE.resolve() == IMAGE and stat.S_ISREG(info.st_mode) and info.st_nlink == 1
-         and info.st_size in [SIZE, 128 * 1024**3], 'exact_existing_backing_regular_file')
+         and info.st_size in [SIZE, 128 * 1024**3, 144 * 1024**3], 'exact_existing_backing_regular_file')
     fs = run(['blkid', '-p', '-o', 'export', str(IMAGE)]).decode()
     fields = dict(line.split('=', 1) for line in fs.splitlines() if '=' in line)
     need(fields.get('UUID') == UUID and fields.get('TYPE') == 'ext4', 'exact_ext4_backing_identity')
@@ -117,7 +131,11 @@ def main():
             need(lock_path.resolve() == lock_path and stat.S_ISREG(lock_info.st_mode)
                  and lock_info.st_uid == 1000 and lock_info.st_nlink == 1,
                  'existing_operator_build_lock')
-            lock_fd = os.open(lock_path, os.O_RDWR | os.O_NOFOLLOW)
+            lock_fd = (os.dup(args.offline_lock_fd) if args.offline_lock_fd is not None
+                       else os.open(lock_path, os.O_RDWR | os.O_NOFOLLOW))
+            held_lock = os.fstat(lock_fd)
+            need((held_lock.st_dev, held_lock.st_ino) == (lock_info.st_dev, lock_info.st_ino),
+                 'same_inherited_build_lock')
             try:
                 fcntl.flock(lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
                 growth = target_size - info.st_size

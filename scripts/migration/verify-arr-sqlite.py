@@ -41,6 +41,13 @@ TARGETS = {
     },
 }
 
+# Closed security overlays retain every original resource UID and the Users code.
+# Cold source is the already-adopted vendor image; final target is one exact local image.
+SECURITY_IMAGES = {
+    'radarr': 'docker.io/library/radarr-security-20261023@sha256:b79e4e0e3bec790e4f8a48cca83fd5b34e1267f672e27496cf1b95e732fed83c',
+    'sonarr': 'docker.io/library/sonarr-security-20261023@sha256:7d297bbadfd74dd2c346b48d32530d6fa632bc902739d4f7aaadbd898375f593',
+}
+
 # Identical fingerprint code runs on tmpfs cold files and in the RO reader.
 # It never logs values. Only the live path uses the SQLite backup API, into RAM.
 SQLITE_SOURCE = r'''
@@ -150,6 +157,7 @@ def main():
     parser.add_argument('--cold-receipt-sha256', required=True)
     parser.add_argument('--output-dir', type=Path, required=True)
     parser.add_argument('--apply', action='store_true')
+    parser.add_argument('--security-patch', action='store_true', help='Finite same-app local image profile; requires media-security-20261025 cold receipt')
     args = parser.parse_args()
     need(args.apply and os.name == 'posix')
     os.umask(0o077)
@@ -159,7 +167,12 @@ def main():
     protected(args.cold_receipt)
     need(shared.file_hash(args.cold_receipt) == args.cold_receipt_sha256 and args.cold_receipt.stat().st_size <= 65536)
     cold = json.loads(args.cold_receipt.read_bytes())
-    target = TARGETS[args.application]
+    target = dict(TARGETS[args.application])
+    if args.security_patch:
+        target['old'] = target['new']
+        target['new'] = SECURITY_IMAGES[args.application]
+        target['runtime'] = target['new'].rsplit('@', 1)[1]
+        need(cold.get('generation') == 'media-security-20261025')
     claim = args.application + '-data-0'
     need(cold['status'] == 'completed' and cold['application'] == args.application and cold['cold_archive_verified'] is True)
     for name in ('deployment_uid', 'claim_uid', 'helmrelease_uid', 'original_image'):
@@ -178,7 +191,7 @@ def main():
     info = output.lstat(); need(stat.S_ISDIR(info.st_mode) and info.st_uid == os.getuid() and not info.st_mode & 0o077)
     run_id = uuid.uuid4().hex
     run = output / (args.application + '-sqlite-' + run_id); run.mkdir(mode=0o700)
-    receipt = {'schema_version': 1, 'application': args.application, 'status': 'started',
+    receipt = {'schema_version': 1, 'application': args.application, 'security_patch': args.security_patch, 'status': 'started',
                'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                'cold_receipt_sha256': args.cold_receipt_sha256, 'archive_sha256': cold['archive_sha256'],
                'writer_scaled': False, 'nas_or_secrets_mounted': False, 'temporary_pod_deleted': False,
@@ -326,6 +339,9 @@ except Exception: raise SystemExit(1)
                                body=shared.canonical({'key': base64.b64encode(key).decode(), 'application': args.application, 'domain': domain, 'columns': baseline['columns']}), timeout=120))
         for field in ['quick_check', 'table', 'columns', 'ids', 'count', 'key_binding', 'all_rows_hmac', 'per_column', 'per_row_fields']:
             need(live[field] == baseline[field])
+        if args.security_patch:
+            # Same application version: no legacy schema-addition allowance is needed.
+            need(live['all_current_columns'] == baseline['all_current_columns'])
         check_reader(); need(fence() == before)
         need(shared.protected(archive, True) == archive_identity and shared.file_hash(archive) == cold['archive_sha256'])
         need(shared.file_hash(args.cold_receipt) == args.cold_receipt_sha256)

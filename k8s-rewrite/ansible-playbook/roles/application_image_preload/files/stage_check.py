@@ -10,7 +10,7 @@ import re
 import stat
 import subprocess
 
-NAMES = {'seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot'}
+NAMES = {'seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot', 'bazarr', 'radarr', 'sonarr', 'whoami', 'traefik'}
 CONTROLLER = Path('/home/brajam/.local/share/branconet-migration/application-artifacts-20261023')
 NODE = Path('/home/james/.local/share/branconet-migration/application-artifacts-20261023')
 MAX_ARCHIVE = 4 * 1024**3
@@ -84,7 +84,7 @@ def main():
     owner = pwd.getpwnam('brajam' if controller else 'james').pw_uid
     need(os.geteuid() == owner)
     parent = CONTROLLER if controller else NODE
-    if controller and args.service in ['plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot']:
+    if controller and args.service in ['plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot', 'bazarr', 'radarr', 'sonarr', 'whoami', 'traefik']:
         mount = CONTROLLER.parent / 'local-image-build-offload-20261025'
         need(mount.is_mount() and mount.resolve() == mount and mount.stat().st_uid == owner
              and mount.stat().st_dev != os.stat('/').st_dev)

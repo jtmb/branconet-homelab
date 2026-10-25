@@ -1,9 +1,10 @@
 ---
-- name: Require the completed Seerr transfer scope
+- name: Require one completed transfer scope
   ansible.builtin.assert:
     that:
       - completed_seerr_transfer_apply | bool
-      - inventory_hostname == 'masternode'
+      - inventory_hostname in ['masternode', 'workernode2', 'workernode1']
+      - completed_seerr_transfer_service in ['seerr', 'ytptube', 'flaresolverr', 'wordpress', 'phpmyadmin', 'tautulli', 'vaultwarden', 'coredns', 'nginx', 'mealie', 'xteve', 'jtmb-dev', 'plex', 'qbittorrent-current', 'radarr', 'sonarr', 'bazarr', 'whoami']
 
 - name: Verify the complete retained controller copy
   ansible.builtin.command:
@@ -13,6 +14,8 @@
       - -c
       - "{{ lookup('ansible.builtin.file', role_path + '/files/retire.py') }}"
       - controller
+      - --service
+      - '{{ completed_seerr_transfer_service }}'
   delegate_to: localhost
   become: false
   changed_when: false
@@ -25,6 +28,8 @@
       - -c
       - "{{ lookup('ansible.builtin.file', role_path + '/files/retire.py') }}"
       - inventory
+      - --service
+      - '{{ completed_seerr_transfer_service }}'
   become: true
   changed_when: false
   register: completed_seerr_transfer_inventory
@@ -41,6 +46,8 @@
       - -c
       - "{{ lookup('ansible.builtin.file', role_path + '/files/retire.py') }}"
       - retire
+      - --service
+      - '{{ completed_seerr_transfer_service }}'
   become: true
   register: completed_seerr_transfer_result
   changed_when: (completed_seerr_transfer_result.stdout | from_json).changed
@@ -54,6 +61,8 @@
       - -c
       - "{{ lookup('ansible.builtin.file', role_path + '/files/retire.py') }}"
       - controller
+      - --service
+      - '{{ completed_seerr_transfer_service }}'
   delegate_to: localhost
   become: false
   changed_when: false

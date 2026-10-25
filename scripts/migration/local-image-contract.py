@@ -16,9 +16,10 @@ OFFLOAD_STORAGE = {'kind': 'dedicated-f-drive-ext4-loop',
                    'docker_mutable_budget_bytes': 64 * 1024 ** 2,
                    'docker_physical_reserve_bytes': 2 * LOCAL_GIB}
 # Historical receipts retain the size actually used by their build.
-# Only these two reviewed generations share the pinned file/UUID and bounds.
+# Only these three reviewed generations share the pinned file/UUID and bounds.
 OFFLOAD_STORAGE_GROWN = {**OFFLOAD_STORAGE, 'backing_file_bytes': 128 * LOCAL_GIB}
-OFFLOAD_STORAGE_PROFILES = (OFFLOAD_STORAGE, OFFLOAD_STORAGE_GROWN)
+OFFLOAD_STORAGE_GROWN_144 = {**OFFLOAD_STORAGE, 'backing_file_bytes': 144 * LOCAL_GIB}
+OFFLOAD_STORAGE_PROFILES = (OFFLOAD_STORAGE, OFFLOAD_STORAGE_GROWN, OFFLOAD_STORAGE_GROWN_144)
 LOCAL_CAPS = {
     'local-operator-provenance.json': 16 * 1024 ** 2,
     'source-export.json': 4 * 1024 ** 2,
@@ -113,7 +114,7 @@ def local_verify(root, service, run_id, proof_sha, owner, mode=0o400,
         'reserve_bytes': 2 * LOCAL_GIB, 'max_oci_bytes': 4 * LOCAL_GIB,
         'observation_seconds': 6300, 'whole_seconds': 7200}
     measured_profile = result.get('resource_contract', {})
-    offloaded = service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot'] and result.get('storage_contract') in OFFLOAD_STORAGE_PROFILES
+    offloaded = service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot', 'bazarr', 'radarr', 'sonarr', 'whoami', 'traefik'] and result.get('storage_contract') in OFFLOAD_STORAGE_PROFILES
     local_need(not result.get('storage_contract') or offloaded, 'finite_offloaded_storage_scope')
     local_need(service != 'coredns' or offloaded, 'coredns_requires_dedicated_storage_proof')
     if service in ['wordpress', 'nginx', 'phpmyadmin'] and measured_profile.get('build_budget_bytes') == 4 * LOCAL_GIB:
@@ -122,12 +123,21 @@ def local_verify(root, service, run_id, proof_sha, owner, mode=0o400,
     host = {'Memory': 3 * LOCAL_GIB, 'MemorySwap': 3 * LOCAL_GIB, 'CpuPeriod': 100000,
             'CpuQuota': 150000, 'CpusetCpus': '0-1', 'PidsLimit': 512,
             'CgroupnsMode': 'private', 'Privileged': True}
+    host_profiles = [host, dict(host, ReadonlyRootfs=True)] if offloaded else [host]
+    if offloaded:
+        host_profiles.append(dict(host, ReadonlyRootfs=True, NetworkMode='branconet-maintenance-build-20261025'))
     samples = result['cgroup_samples']
     local_need(isinstance(samples, list) and 2 <= len(samples) <= 4000, 'cgroup_sample_count')
     container = samples[0]['container_id']
     local_need(re.fullmatch('[0-9a-f]{64}', container), 'builder_id')
     for sample in samples:
-        local_need(sample.get('expected') == host and sample.get('effective_cgroup_v2') ==
+        if sample.get('expected', {}).get('NetworkMode'):
+            network = result.get('build_network', {})
+            local_need(network.get('Name') == 'branconet-maintenance-build-20261025' and
+                       network.get('Driver') == 'bridge' and network.get('Scope') == 'local' and network.get('Internal') is False and
+                       network.get('Labels') == {'branconet.owner':'cluster-maintenance','branconet.task-id':'01a12045-bf7e-73b3-8557-752d17c72ffd'} and
+                       re.fullmatch('[0-9a-f]{64}', network.get('Id','')), 'owned_build_network_scope')
+        local_need(sample.get('expected') in host_profiles and sample.get('effective_cgroup_v2') ==
                    ['3221225472', '0', '150000 100000', '0-1', '512'] and
                    sample.get('container_id') == container and sample.get('image_id') == result['builder_image_config_digest'] and
                    sample.get('ancestor') == '/system.slice/docker-' + container + '.scope' and

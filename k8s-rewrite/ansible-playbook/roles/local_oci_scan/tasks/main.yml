@@ -14,10 +14,19 @@
           - ansible_connection == 'local'
           - local_oci_scan_phase in ['setup', 'scan', 'status']
           - local_oci_scan_source_kind in ['github-actions', 'local-operator']
-          - local_oci_scan_service == '' or local_oci_scan_service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot']
+          - local_oci_scan_service == '' or local_oci_scan_service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot', 'bazarr', 'radarr', 'sonarr', 'whoami', 'traefik']
           - local_oci_scan_storage_profile in ['legacy', 'offloaded']
-          - local_oci_scan_storage_profile != 'offloaded' or (local_oci_scan_service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot'] and local_oci_scan_source_kind == 'local-operator') or (local_oci_scan_service == 'jackett' and local_oci_scan_source_kind == 'github-actions')
+          - local_oci_scan_phase == 'status' or local_oci_scan_storage_profile == 'offloaded'
+          - local_oci_scan_phase != 'scan' or local_oci_scan_storage_profile != 'offloaded' or (local_oci_scan_service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot', 'bazarr', 'radarr', 'sonarr', 'whoami', 'traefik'] and local_oci_scan_source_kind == 'local-operator') or (local_oci_scan_service == 'jackett' and local_oci_scan_source_kind == 'github-actions')
           - local_oci_scan_attempt == '' or local_oci_scan_attempt is match('^[0-9a-f]{12}$')
+
+    - name: Require F-only Ansible controller temporary state before dispatch
+      ansible.builtin.assert:
+        that:
+          - lookup('env', item) is match('^/home/brajam/[.]local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan/')
+        fail_msg: Start Ansible with the documented private native F environment; no controller scratch fallback is permitted.
+      loop: [HOME, TMPDIR, TEMP, TMP, XDG_CACHE_HOME, ANSIBLE_HOME, ANSIBLE_LOCAL_TEMP]
+      when: local_oci_scan_phase != 'status'
 
     - name: Invoke the reviewed local controller with structured public identity arguments
       ansible.builtin.command:
@@ -35,6 +44,16 @@
               '--archive-sha256', local_oci_scan_archive_sha256,
               '--root-descriptor', local_oci_scan_root_descriptor]
              + (['--service', local_oci_scan_service] if local_oci_scan_service else []) }}
+      vars:
+        ansible_remote_tmp: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan/tmp/ansible-remote
+      environment:
+        HOME: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan/home
+        TMPDIR: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan/tmp
+        TEMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan/tmp
+        TMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan/tmp
+        XDG_CACHE_HOME: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan/cache
+        XDG_CONFIG_HOME: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan/home/.config
+        XDG_DATA_HOME: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan/home/.local/share
       delegate_to: localhost
       become: false
       changed_when: local_oci_scan_phase in ['setup', 'scan']
