@@ -21,7 +21,7 @@ ext4 root. Existing application/source repositories, Kubernetes runtime data,
 NAS media, encrypted backups and rollback archives remain protected.
 
 The private, current hierarchical inventory is
-`operator-control/storage-inventory-current.json`. It enumerates all 215 existing
+`operator-control/storage-inventory-current.json`. It enumerates current
 top-level paths and retains descendants with an explicit owner/reason or failed
 safety check. BORTUS application work belongs to its separate owner. Source and
 execution snapshots without an established regeneration manifest, unreadable
@@ -113,3 +113,45 @@ remain. Exact proof is `operator-control/media-scratch-reconciliation.json`.
 Recreate the configured empty paths explicitly before a future Ansible stage.
 The current private inventory includes the new protected media acceptance/
 backup subtree; every earlier retained exception keeps its documented reason.
+
+## Unpackerr checkpoint reconciliation, 23:54 UTC
+
+All paths below are relative to the declared F:-backed ext4 root. Exact proof:
+`operator-control/unpackerr-scratch-reconciliation.json`. After source/hash,
+ownership, inode and complete process/map/mount checks, these current-stage
+reproducible binary/payload files and empty scratch directories were removed.
+No build or dependency cache was created.
+
+| Removed path | Allocated bytes |
+| --- | ---: |
+| `upstream-unpackerr-20261025/vendor-unpackerr` | 19034112 |
+| `unpackerr-fixture-y0n8j8as/unpackerr` | 19034112 |
+| `unpackerr-fixture-y0n8j8as/downloads/Branconet.Unpackerr.Disposable.Fixture/fixture.zip` | 8192 |
+| `unpackerr-fixture-y0n8j8as/downloads/Branconet.Unpackerr.Disposable.Fixture/original-download.nfo` | 4096 |
+| `unpackerr-fixture-y0n8j8as/outside-sentinel.txt` | 4096 |
+| `unpackerr-fixture-y0n8j8as/mock-library/Subs/fixture.srt` | 4096 |
+| `unpackerr-fixture-y0n8j8as/mock-library/movie.mkv` | 4096 |
+| `unpackerr-fixture-y0n8j8as/mock-library/Subs` | 4096 |
+| `operator-control/tmp/ansible-home` | 4096 |
+| `unpackerr-fixture-y0n8j8as/downloads/Branconet.Unpackerr.Disposable.Fixture` | 4096 |
+| `operator-control/tmp/ansible-local` | 4096 |
+| `operator-control/tmp` | 4096 |
+| `unpackerr-fixture-y0n8j8as/mock-library` | 4096 |
+| `unpackerr-fixture-y0n8j8as/tmp` | 4096 |
+| `unpackerr-fixture-y0n8j8as/downloads` | 4096 |
+
+Total: **38,125,568 allocated Linux bytes**. No Windows disk recovery is claimed.
+The exact source/command and required failed-fixture binary survive for
+regeneration; use the command in the private reconciliation receipt under the
+same bounded isolated user scope. Config/source manifests, keys, all encrypted
+archives, NAS copies and unique observations/logs remain protected.
+
+Retained current-stage exceptions:
+
+- `unpackerr-fixture-7zb5sjyf`: Preserve the complete failed toolchain-guard fixture and its exact binary input; no failed-state cleanup authorized.
+- `unpackerr-fixture-y0n8j8as`: Unique passing result, execution logs and exact runtime fixture config retained; reproducible binary/payload copies removed.
+- `upstream-unpackerr-20261025`: Required configuration backup, native verification key, before/after/restart receipts and distinct failure evidence retained.
+
+All previous retained exceptions remain unchanged. No older artifacts, runtime
+images/volumes, NAS media, source repositories or other owners were pruned.
+Explicitly recreate configured operator scratch before a future Ansible stage.

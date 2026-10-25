@@ -78,10 +78,13 @@ def main():
     pod = pods[0]
     containers = pod['spec']['containers']
     statuses = pod['status']['containerStatuses']
+    # containerd may report the immutable index or its resolved platform child.
+    # Both are pinned by the reviewed registry metadata; arbitrary digests fail.
+    allowed_runtime = {OLD.rsplit('@', 1)[1]} if a.mode == 'baseline' else {NEW.rsplit('@', 1)[1], RUNTIME}
     need(not pod['metadata'].get('deletionTimestamp') and pod['status']['phase'] == 'Running'
          and len(containers) == len(statuses) == 1 and statuses[0]['ready']
          and containers[0]['name'] == 'unpackerr' and containers[0]['image'] == image
-         and statuses[0]['imageID'].endswith('@' + (OLD.rsplit('@', 1)[1] if a.mode == 'baseline' else RUNTIME)), 'exact_ready_runtime')
+         and statuses[0]['imageID'].rsplit('@', 1)[-1] in allowed_runtime, 'exact_ready_runtime')
     claims = {}
     for name, uid, driver in [
         ('unpackerr-data-0', 'fe693679-9877-49cd-b146-75c30ec18a89', 'smb.csi.k8s.io'),

@@ -51,19 +51,20 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
-October25 23:28 UTC: Radarr, Sonarr and Bazarr are on the reviewed official
-same-version vendor rebuilds. Private charts main/validated/live Flux is
-`c195c3b67d4fa5886947ca90f36c1c46090c7229`. Fresh API/library/config baselines,
-complete encrypted cold backups, NAS read-back authentication, post-adoption
-checks and different-Pod restart checks passed. Radarr/Sonarr's complete account
-and credential rows matched both times. [Exact acceptance and receipt pointers](docs/UPSTREAM-MEDIA-ADOPTION-20261025.md).
-All three nodes, 55 PVCs, 34 HelmReleases and desired workloads passed the 23:22
-health check; attached Longhorn volumes are healthy. The current ownership
-matrix has 17 third-party derivative image transitions remaining. Radarr retains
-an indexer-status warning; the baseline already had one warning category.
-Current vendor CVE review and final IAB acceptance stay open, and the full goal
-remains active. No image build ran. All three backup readers and four SQL readers
-were removed, and three empty Ansible scratch directories were reconciled.
+October 25, 23:54 UTC: Unpackerr now runs the official 0.16.1 image. Original
+configuration, native Secret, Longhorn/SMB storage and Arr polling matched after
+adoption and a different-Pod restart; the isolated ZIP/mock-import check passed.
+Complete encrypted config and recovery metadata passed NAS full read-back and
+decryption. [Exact acceptance and limitations](docs/UPSTREAM-UNPACKERR-ADOPTION-20261025.md).
+Private charts main/validated/live Flux is
+`2a4adb51e107700028eb7792381044037cf7f235`. All 3 nodes, 55 PVCs, 34 HelmReleases
+and desired workloads passed the 23:52 health check; attached Longhorn volumes
+are healthy. There are 16 third-party derivative transitions remaining. Vendor
+Unpackerr uses Go 1.27.0 rather than the previous custom 1.27.3; current CVE review
+and final IAB remain open. Radarr's existing indexer warning remains visible.
+No image build ran. Exact current-stage scratch cleanup reclaimed 38,125,568
+allocated Linux bytes, retaining failure evidence and all recovery originals.
+This checkpoint leaves the full goal active.
 
 ## Bounded finish plan — October 25, 20:24 UTC
 

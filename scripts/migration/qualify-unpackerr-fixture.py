@@ -5,6 +5,10 @@ Run in WSL/Linux with an extracted, reviewed binary and its expected SHA256:
   python3 scripts/migration/qualify-unpackerr-fixture.py \
     --binary /absolute/path/unpackerr --sha256 EXACT_BINARY_SHA256
 
+Use --expected-go-version 1.27.0 for the reviewed official 0.16.1 binary;
+the legacy custom-image profile defaults to 1.27.3. This is an identity check,
+not a statement that either toolchain is free of vulnerabilities.
+
 Requires Python 3.11+, util-linux unshare, and unprivileged user/network namespaces.
 Refuses missing isolation; never falls back to the host network. All evidence is
 retained under the dedicated native build mount. No Docker, NAS, credentials,
@@ -76,7 +80,7 @@ def limits():
 def isolated(args):
     work = args.run_dir
     result = {'status': 'failed', 'fixture': 'zip-radarr-postimport-cleanup',
-              'binarySHA256': args.sha256, 'milestones': [], 'limitations': [
+              'binarySHA256': args.sha256, 'expectedGoVersion': args.expected_go_version, 'milestones': [], 'limitations': [
                   'Mock queue disappearance simulates import; no real Radarr importer.',
                   'ZIP only; no encrypted/multipart archive or security-limit qualification.',
                   'Ownership is the invoking Linux UID/GID through a user namespace, not NAS ACLs.',
@@ -107,7 +111,9 @@ def isolated(args):
         (work / 'tmp').mkdir()
         version = subprocess.check_output([str(args.binary), '--version'], env=env, cwd=work,
                                           timeout=10, preexec_fn=limits).decode()
-        need('0.16.1' in version and 'go1.27.3' in version, 'unexpected application/toolchain version')
+        need(re.search(r'unpackerr, version 0\.16\.1(?:\s|$)', version) is not None
+             and re.search(r'\bgo' + re.escape(args.expected_go_version) + r'\b', version) is not None,
+             'unexpected application/toolchain version')
         result['version'] = version.strip()
         downloads = work / 'downloads'
         item = downloads / TITLE
@@ -252,6 +258,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--binary', required=True, type=Path)
     parser.add_argument('--sha256', required=True)
+    parser.add_argument('--expected-go-version', choices=['1.27.3', '1.27.0'], default='1.27.3',
+                        help='Explicit legacy custom or official vendor toolchain; never a security-fix claim')
     parser.add_argument('--run-dir', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--parent-netns', type=int, help=argparse.SUPPRESS)
     args = parser.parse_args()
@@ -272,6 +280,7 @@ def main():
     copy.chmod(0o700)
     command = [unshare, '--user', '--map-root-user', '--net', '--fork', '--kill-child=SIGKILL',
                sys.executable, str(Path(__file__).resolve()), '--binary', str(copy), '--sha256', args.sha256,
+               '--expected-go-version', args.expected_go_version,
                '--run-dir', str(work), '--parent-netns', str(os.stat('/proc/self/ns/net').st_ino)]
     with (work / 'isolation.log').open('xb') as output:
         child = subprocess.Popen(command, env={'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8'},
