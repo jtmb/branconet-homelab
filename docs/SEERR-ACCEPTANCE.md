@@ -1,5 +1,48 @@
 # Seerr post-cutover verification
 
+## Official upstream image accepted October 25
+
+The current image is official upstream
+`ghcr.io/seerr-team/seerr:v3.5.1@sha256:d8fab675b55ad293ded98fd71efcfd46054cbad9746534ae1cc4794a88c0b3be`.
+It identifies the same application source revision used by the preceding
+derivative. The user has superseded bespoke third-party image maintenance.
+The older derivative and every original backup remain retained for recovery.
+
+Fresh complete cold backup: 119 files / 7,777,919 file bytes, ciphertext
+7,917,652 bytes, SHA256
+`b70eb9a319fda964a445fb4e8d11a9b38abacf7fd8e46a0ca28f95310e19cdce`.
+Full authentication and exact archive/manifest comparison passed. A copy on the
+dedicated SMB recovery share passed full checksum read-back and age authentication;
+encrypted companion metadata was also copied and verified. The readonly reader
+was deleted with its UID guard and observed gone. The initial mount guard refused
+an API-omitted default false field before creating a reader; its failed receipt
+and original source remain. The corrected guard normalizes that false default only.
+
+The explicit modern cold-baseline mode verified SQLite in private RAM and
+fingerprinted all six accounts, 654 requests, 1,099 media records, 1,405 seasons,
+634 season requests, three issues, four comments, three user settings and zero
+push subscriptions, plus 199 current settings leaves. No legacy Overseerr
+transformation was applied to this already-migrated snapshot. Full data,
+credentials/permissions, Plex and Arr integration checks passed after upstream
+adoption and again after the chart-driven restart. An early observation was
+refused during the changing rollout; a later stable Pod passed. No false cause
+or successful result is attributed to the early refusal.
+
+After receipt SHA256:
+`fbc4bf6cb51e4054a9bab9ff09d76f0681d777e61dfed40a31613d81f40f07b1`.
+Restart receipt SHA256:
+`4e488c108b4f67fb964addfacaa5a7dd6438892a9d2b7947993b16793eaef631`.
+The restart Pod UID is `b0f4624f-813e-4eb7-917e-c87c44e244f4`.
+Charts main/validated/live Flux reached
+`08392b8d6d9b3a682442cd734b484e27550f9249`; release revision151 is Ready.
+Both normal `https://media.jtmb.cc` public API routes returned200 with verified
+TLS and expected initialized/version state. This proves external route/backend
+acceptance, not interactive login or final UI workflows. Those remain open until
+implementation is finished. No fresh zero-CVE scan claim is made for the vendor
+image. [Public adoption receipt](../evidence/seerr-upstream-adoption-20261025.json).
+
+## Earlier migration and derivative evidence
+
 Current checkpoints and unresolved gates are summarized in [MIGRATION_STATUS.md](../MIGRATION_STATUS.md). This document retains operational contracts and dated attempt history.
 
 `scripts/migration/qualify-seerr.py` and its sibling `qualify-seerr.cjs` actually

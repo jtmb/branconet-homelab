@@ -7,6 +7,14 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
+October25 20:55 UTC execution: Whoami and Seerr upstream adoption passed;
+Seerr's fresh backup, full current data/accounts/settings/provider checks and
+controlled restart passed. Normal public API routes passed verified TLS.
+Current charts main/validated/live Flux is `08392b8d6d9b3a682442cd734b484e27550f9249`.
+Continue with YTPTube and the remaining upstream transition list;24 third-party
+derivative charts remain in the current ownership matrix. Final IAB acceptance
+is still reserved until implementation is complete. The full goal remains active.
+
 ## Bounded finish plan — October 25, 20:24 UTC
 
 This section controls the remaining sequence. Earlier chronological proposals

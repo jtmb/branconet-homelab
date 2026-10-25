@@ -1,5 +1,13 @@
 # Repository-backed image transition
 
+October25 20:55 UTC update: official Whoami and Seerr adoption are accepted at
+charts main/validated/live Flux `08392b8d6d9b3a682442cd734b484e27550f9249`.
+The dedicated publisher is on its own main branch; the authoring checkout's old
+local main remains preserved and unused. [Current full image/controller matrix](../evidence/image-ownership-current-20261025.json)
+contains68 main/init/ephemeral references and33 application charts. Twenty-four
+third-party derivative chart transitions remain. [Seerr's fresh data/restart and
+HTTPS evidence](SEERR-ACCEPTANCE.md) supersedes its preparation-only section below.
+
 The controlling objective is [the revised active goal](REVISED-GOAL-20261025.md).
 Earlier derivative recipes and scans remain historical, not an execution plan.
 

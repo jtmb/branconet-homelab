@@ -1,5 +1,20 @@
 # Migration and maintenance status
 
+**October 25 20:55 UTC:** Whoami and Seerr now consume official upstream images
+through private chart changes and local validation → validated → Flux. Live source
+is `08392b8d6d9b3a682442cd734b484e27550f9249`. Seerr's fresh full-state/account/
+history/settings/integration and new-Pod restart checks passed; normal public
+HTTPS APIs passed with verified TLS. [Seerr evidence](docs/SEERR-ACCEPTANCE.md).
+All three nodes are Ready without pressure, all55 PVCs Bound, all desired
+Deployments/DaemonSets available, all34 HelmReleases and Kustomizations Ready,
+and all attached Longhorn volumes healthy. Two historical failed diagnostic Pods
+remain intentionally preserved. No full-goal or final UI acceptance is claimed.
+The [current all-image ownership matrix](evidence/image-ownership-current-20261025.json)
+covers68 distinct running main/init/ephemeral references,33 app charts and their
+controller owners;24 third-party derivative chart transitions remain. Four owned
+application charts need their repository/publication ownership path, with BORTUS
+implementation kept with its separate owner. Earlier inventory remains dated evidence.
+
 **October 25 scope correction:** use maintained upstream releases for third-party
 services; no further bespoke derivative image maintenance. Owned image changes
 require repository-backed provenance and an approved publication path. Existing
