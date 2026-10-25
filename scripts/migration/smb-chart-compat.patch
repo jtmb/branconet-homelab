@@ -1,0 +1,38 @@
+--- a/csi-driver-smb/templates/csi-smb-node-windows-hostprocess.yaml
++++ b/csi-driver-smb/templates/csi-smb-node-windows-hostprocess.yaml
+@@ -44,9 +44,9 @@
+       initContainers:
+         - name: init
+ {{- if hasPrefix "/" .Values.image.smb.repository }}
+-          image: "{{ .Values.image.baseRepo }}{{ .Values.image.smb.repository }}:{{ .Values.image.smb.tag }}-windows-hp"
++          image: "{{ .Values.image.baseRepo }}{{ .Values.image.smb.repository }}:v1.20.4-windows-hp@sha256:5b8202d29540c6a93f31de8fe881fa7628f0375e86b13bb8077c349c58fc5499"
+ {{- else }}
+-          image: "{{ .Values.image.smb.repository }}:{{ .Values.image.smb.tag }}-windows-hp"
++          image: "{{ .Values.image.smb.repository }}:v1.20.4-windows-hp@sha256:5b8202d29540c6a93f31de8fe881fa7628f0375e86b13bb8077c349c58fc5499"
+ {{- end }}
+           imagePullPolicy: {{ .Values.image.smb.pullPolicy }}
+           command:
+@@ -90,9 +90,9 @@
+               - ALL
+         - name: smb
+ {{- if hasPrefix "/" .Values.image.smb.repository }}
+-          image: "{{ .Values.image.baseRepo }}{{ .Values.image.smb.repository }}:{{ .Values.image.smb.tag }}-windows-hp"
++          image: "{{ .Values.image.baseRepo }}{{ .Values.image.smb.repository }}:v1.20.4-windows-hp@sha256:5b8202d29540c6a93f31de8fe881fa7628f0375e86b13bb8077c349c58fc5499"
+ {{- else }}
+-          image: "{{ .Values.image.smb.repository }}:{{ .Values.image.smb.tag }}-windows-hp"
++          image: "{{ .Values.image.smb.repository }}:v1.20.4-windows-hp@sha256:5b8202d29540c6a93f31de8fe881fa7628f0375e86b13bb8077c349c58fc5499"
+ {{- end }}
+           imagePullPolicy: {{ .Values.image.smb.pullPolicy }}
+           command:
+@@ -105,11 +105,6 @@
+             - "--enable-get-volume-stats={{ .Values.feature.enableGetVolumeStats }}"
+             - "--remove-smb-mapping-during-unmount={{ .Values.windows.removeSMBMappingDuringUnmount }}"
+             - "--enable-windows-host-process=true"
+-{{- if hasKey .Values.windows "requirePrivacyForGlobalMapping" }}
+-            - "--require-privacy-for-global-mapping={{ .Values.windows.requirePrivacyForGlobalMapping }}"
+-{{- else }}
+-            - "--require-privacy-for-global-mapping=true"
+-{{- end }}
+           env:
+             - name: CSI_ENDPOINT
+               value: unix://{{ .Values.windows.kubelet }}\plugins\{{ .Values.driver.name }}\csi.sock

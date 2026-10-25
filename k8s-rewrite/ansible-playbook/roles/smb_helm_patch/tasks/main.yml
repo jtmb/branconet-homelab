@@ -1,0 +1,45 @@
+---
+- name: Explain the disabled default and existing release ownership
+  ansible.builtin.debug:
+    msg: This opt-in role retains the existing Helm release. Enabled preflight is read-only; apply additionally requires an exact reviewed receipt. Check mode never runs it.
+  when: not smb_helm_patch_enabled | bool or ansible_check_mode
+
+- name: Run only the explicitly enabled SMB review or upgrade
+  when: smb_helm_patch_enabled | bool and not ansible_check_mode
+  block:
+    - name: Require original master and protected task paths
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'masternode'
+          - smb_helm_patch_receipt is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/acceptance-smb-[0-9]+/[A-Za-z0-9_.-]+\.json$')
+          - smb_helm_patch_hmac_key_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/acceptance-smb-[0-9]+/[A-Za-z0-9_.-]+$')
+          - not smb_helm_patch_apply | bool or smb_helm_patch_approved_sha256 is match('^[0-9a-f]{64}$')
+          - not smb_helm_patch_apply | bool or smb_helm_patch_approved_preflight | length > 0
+
+    - name: Check the existing private HMAC key without exporting its value
+      ansible.builtin.stat:
+        path: "{{ smb_helm_patch_hmac_key_file }}"
+        get_checksum: false
+      delegate_to: localhost
+      register: smb_helm_key_stat
+      no_log: true
+
+    - name: Require a regular owner-only key file
+      ansible.builtin.assert:
+        that:
+          - smb_helm_key_stat.stat.isreg | default(false)
+          - smb_helm_key_stat.stat.mode == '0600'
+      no_log: true
+
+    - name: Invoke the bounded master-RAM helper with key only on stdin
+      ansible.builtin.command:
+        argv: "{{ ['/usr/bin/python3', playbook_dir + '/../../../scripts/migration/patch-smb-helm.py', '--chart', smb_helm_patch_chart, '--receipt', smb_helm_patch_receipt] + (['--apply', '--approved-preflight', smb_helm_patch_approved_preflight, '--approved-sha256', smb_helm_patch_approved_sha256] if smb_helm_patch_apply | bool else []) }}"
+        stdin: "{{ lookup('ansible.builtin.file', smb_helm_patch_hmac_key_file) }}"
+      delegate_to: localhost
+      become: false
+      no_log: true
+      changed_when: smb_helm_patch_apply | bool
+
+    - name: Report only the protected receipt path
+      ansible.builtin.debug:
+        msg: "SMB qualification receipt: {{ smb_helm_patch_receipt }}"
