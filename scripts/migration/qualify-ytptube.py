@@ -20,6 +20,8 @@ NAMESPACE = 'plex'
 SECRET = 'ytdl-ytptube-auth'
 VIDEO = 'YE7VzlLtp-4'
 SOURCE_COMMIT = 'c8a42e08ded27280573d7ebe6312dd109b2bb161'
+UPSTREAM_IMAGE = 'ghcr.io/arabcoders/ytptube:v2.7.5@sha256:3ba09ac58f0b541aa7182feb9198b44d3c62158a7749ec00d26de1abad7ca8d7'
+DERIVATIVE_IMAGE = 'docker.io/library/ytptube-security-20261023@sha256:7c637f7e9cadf6f7def2243b517ff6101354287e17f9aebed8b0aa386fd1b754'
 PREFIX = '.branconet-acceptance/ytptube-20261023-'
 LIMIT = 20 * 1024 ** 2
 CLI = ('--no-playlist --download-sections "*0-5" --force-keyframes-at-cuts '
@@ -195,15 +197,26 @@ import hashlib,importlib.metadata as m,importlib.util as u,json,os,pathlib,re,su
 data=json.load(sys.stdin)
 if os.getuid()!=1000: raise RuntimeError('expected application UID1000')
 if data['action']=='runtime':
-    if os.environ.get('YTP_YTDLP_AUTO_UPDATE','').lower()!='false': raise RuntimeError('extractor must be immutable')
+    official=data.get('runtime_profile')=='official-pinned-updater'
+    expected_update='true' if official else 'false'
+    if os.environ.get('YTP_YTDLP_AUTO_UPDATE','').lower()!=expected_update: raise RuntimeError('unexpected extractor update policy')
+    if official:
+        if os.environ.get('YTP_YTDLP_VERSION')!='2026.10.21': raise RuntimeError('upstream extractor version must be repository-pinned')
+        user_site=pathlib.Path('/config')/('python'+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'-packages')
+        if not user_site.is_dir() or user_site.is_symlink(): raise RuntimeError('missing upstream-managed package directory')
+        sys.path.insert(0,str(user_site))
     if os.environ.get('YTP_PIP_PACKAGES','').strip(): raise RuntimeError('runtime package installation must be empty')
     pip_file=pathlib.Path('/config/pip.txt')
     if pip_file.exists() and (pip_file.is_symlink() or not pip_file.is_file() or pip_file.stat().st_size>65536): raise RuntimeError('unexpected runtime package request file')
     if pip_file.exists() and any(line.strip() and not line.lstrip().startswith('#') for line in pip_file.read_text().splitlines()): raise RuntimeError('runtime package installation unavailable')
-    if any(u.find_spec(name) is not None for name in ('pip','setuptools','pkg_resources','_distutils_hack','ensurepip')): raise RuntimeError('install-only code remains importable')
+    if not official and any(u.find_spec(name) is not None for name in ('pip','setuptools','pkg_resources','_distutils_hack','ensurepip')): raise RuntimeError('install-only code remains importable')
     if pathlib.Path(os.environ.get('YTP_APPRISE_CONFIG','/config/apprise.yml')).exists(): raise RuntimeError('notification config present')
     versions={k:m.version(k) for k in ('yt-dlp','yt-dlp-ejs','certifi')}
-    if versions['yt-dlp']!='2026.10.21' or versions['yt-dlp-ejs']!='0.8.0' or versions['certifi']!='2026.10.19': raise RuntimeError('unexpected extractor packages')
+    if versions['yt-dlp']!='2026.10.21' or versions['yt-dlp-ejs']!='0.8.0' or (not official and versions['certifi']!='2026.10.19'): raise RuntimeError('unexpected extractor packages')
+    if official:
+        import yt_dlp.version as active_version
+        if active_version.__version__!='2026.10.21' or not pathlib.Path(active_version.__file__).resolve().is_relative_to(user_site.resolve()): raise RuntimeError('upstream-managed active extractor mismatch')
+        versions['active_ytdlp_version_source_sha256']=hashlib.sha256(pathlib.Path(active_version.__file__).read_bytes()).hexdigest()
     versions['deno']=subprocess.check_output(['/usr/bin/deno','--version'],text=True).splitlines()[0]
     versions['ffmpeg']=subprocess.check_output(['/usr/bin/ffmpeg','-version'],text=True).splitlines()[0]
     versions['ffprobe']=subprocess.check_output(['/usr/bin/ffprobe','-version'],text=True).splitlines()[0]
@@ -213,7 +226,9 @@ if data['action']=='runtime':
     with opener.open('http://127.0.0.1:4416/ping',timeout=10) as response: provider=json.load(response)
     if not provider.get('version') or provider.get('server_uptime',-1)<0: raise RuntimeError('provider heartbeat invalid')
     versions['provider']=str(provider['version'])
-    print(json.dumps({'versions':versions,'provider_heartbeat':True,'runtime_installers_absent':True}))
+    report={'versions':versions,'provider_heartbeat':True,'runtime_installers_absent':not official}
+    if official: report['repository_pinned_vendor_updater']=True
+    print(json.dumps(report))
 else:
     folder=data['folder']
     if not re.fullmatch(r'[.]branconet-acceptance/ytptube-20261023-[0-9a-f]{12}',folder): raise RuntimeError('foreign test folder')
@@ -252,7 +267,7 @@ else:
 
 def remote(state, action, folder=None, timeout=40):
     return json.loads(kubectl('exec', '-i', state['pod'], '-c', 'ytdl', '--', '/opt/python/bin/python', '-c', REMOTE,
-                             body=json.dumps({'action': action, 'folder': folder}).encode(), timeout=timeout))
+                             body=json.dumps({'action': action, 'folder': folder, 'runtime_profile': state.get('runtime_profile', 'immutable-derivative')}).encode(), timeout=timeout))
 
 
 def preflight(session, state):
@@ -363,11 +378,12 @@ def download_error_category(message):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('mode', choices=('bootstrap-secret', 'download', 'check-after-restart'))
+    parser.add_argument('mode', choices=('bootstrap-secret', 'download', 'check-after-restart', 'check-adoption'))
     parser.add_argument('--receipt', required=True, type=Path)
     parser.add_argument('--baseline', type=Path)
     parser.add_argument('--preservation-baseline', type=Path)
     parser.add_argument('--expected-image')
+    parser.add_argument('--runtime-profile', choices=('immutable-derivative', 'official-pinned-updater'), default='immutable-derivative')
     args = parser.parse_args()
     if args.receipt.exists():
         raise Refused('receipt_already_exists_no_replay')
@@ -378,6 +394,12 @@ def main():
         if not re.fullmatch(r'[A-Za-z0-9./:_-]+@sha256:[0-9a-f]{64}', args.expected_image or ''):
             raise Refused('accepted_immutable_image_required')
         state = writer(args.expected_image)
+        if args.runtime_profile == 'official-pinned-updater':
+            if args.expected_image != UPSTREAM_IMAGE:
+                raise Refused('upstream_profile_requires_exact_official_image')
+            state['runtime_profile'] = args.runtime_profile
+        elif args.mode == 'check-adoption':
+            raise Refused('adoption_requires_official_profile')
         retained = preservation(args.preservation_baseline, state)
         session = Session()
         try:
@@ -401,9 +423,11 @@ def main():
                     raise Refused('no_actual_restart_observed')
                 item = session.request('/api/history/' + baseline['history_id'])
                 media = remote(state, 'media', baseline['folder'])
-                if item.get('status') != 'finished' or item.get('filename') != media['filename'] or media != baseline['media'] or runtime != baseline['runtime']:
+                if args.mode == 'check-adoption' and (baseline['writer']['image'] != DERIVATIVE_IMAGE or baseline.get('api_source_commit') != SOURCE_COMMIT):
+                    raise Refused('adoption_requires_accepted_original_derivative_sample')
+                if item.get('status') != 'finished' or item.get('filename') != media['filename'] or media != baseline['media'] or (args.mode != 'check-adoption' and runtime != baseline['runtime']):
                     raise Refused('history_media_or_runtime_did_not_persist')
-                result = {'state': 'sample-and-restart-persistence-verified', 'history_id': baseline['history_id'],
+                result = {'state': 'upstream-adoption-sample-preserved' if args.mode == 'check-adoption' else 'sample-and-restart-persistence-verified', 'history_id': baseline['history_id'],
                           'folder': baseline['folder'], 'media': media, 'runtime': runtime, 'writer': state,
                           'baseline_sha256': hashlib.sha256(args.baseline.read_bytes()).hexdigest()}
             result['preservation'] = retained

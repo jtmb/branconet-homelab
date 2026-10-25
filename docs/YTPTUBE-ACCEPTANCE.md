@@ -1,5 +1,47 @@
 # YTPTube operator acceptance preparation
 
+## Official upstream transition profile — October25
+
+The user superseded bespoke third-party derivative maintenance. The explicit
+`--runtime-profile official-pinned-updater` accepts only official upstream
+v2.7.5 index `3ba09ac58f0b541aa7182feb9198b44d3c62158a7749ec00d26de1abad7ca8d7`.
+An isolated read-only inspection of this exact image found yt-dlp2026.8.19,
+EJS0.8.0, Deno2.9.5 and bundled provider2.0.2; the inspection Pod had no claims,
+Secrets or token and was UID-deleted. Registry `latest` resolves to the same
+v2.7.5 image, not a newer rebuild. No custom image is built or published.
+
+Use upstream's existing `YTP_YTDLP_AUTO_UPDATE=true` startup feature with
+`YTP_YTDLP_VERSION=2026.10.21` managed in chart values. That exact stable yt-dlp
+release was verified against its upstream release API. The pinned
+[upgrader](https://github.com/arabcoders/ytptube/blob/c8a42e08ded27280573d7ebe6312dd109b2bb161/app/upgrader.py)
+and [installer](https://github.com/arabcoders/ytptube/blob/c8a42e08ded27280573d7ebe6312dd109b2bb161/app/library/PackageInstaller.py)
+install upstream yt-dlp/default dependencies into the app-owned package directory
+under `/config`; they are not local image patches. Preserve that directory on
+the original config claim, record active runtime versions and require the same
+versions after restart. The vendor installer resolves transitive dependencies;
+this is not represented as a fully hash-locked package environment.
+`YTP_PIP_PACKAGES` stays empty, ignore-custom-update stays enabled, and active
+pip.txt requests still refuse qualification. The earlier install-only-module
+absence requirement applies to the historical derivative profile; the official
+vendor profile truthfully records its supported installer instead of claiming
+that the vendor image has been stripped. Existing legacy profile checks remain.
+
+`check-adoption` may compare the accepted derivative's original sample to the
+exact official-image profile, preserving its media/history bytes while recording
+the explicit runtime change. A new real five-second sample and its new-Pod
+restart check remain required. No automatic replay follows a download failure.
+
+`qualify-ytptube-state.py` independently reads SQLite in query-only/readonly
+mode. It compares complete users, password hashes, API keys, configuration and
+task rows, and every prior history row, allowing additional history records.
+Ephemeral login/logout sessions are explicitly excluded. Fingerprints use a
+domain-separated HMAC derived in RAM from the existing native auth credential;
+no key or raw account/config value is written or emitted. It pins the original
+Deployment and all three claim UIDs, and preserves the native Secret UID.
+A full fresh encrypted cold archive and a separate seven-file legacy check
+still protect data beyond this SQL projection. This section records prepared
+scope; adoption is not claimed until dated execution evidence is added.
+
 Current checkpoints and unresolved gates are summarized in [MIGRATION_STATUS.md](../MIGRATION_STATUS.md). This document retains operational contracts and dated attempt history.
 
 `scripts/migration/qualify-ytptube.py` created the absent native authentication
