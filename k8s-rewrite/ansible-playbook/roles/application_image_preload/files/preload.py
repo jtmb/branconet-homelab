@@ -31,7 +31,9 @@ NAMES = {'seerr': 'docker.io/library/seerr-security-20261023',
          'mealie': 'docker.io/library/mealie-security-20261023',
          'qbit-monitor': 'docker.io/library/qbit-monitor-security-20261023',
          'xteve': 'docker.io/library/xteve-security-20261023',
-         'ruckusdb': 'docker.io/library/ruckusdb-security-20261023'}
+         'ruckusdb': 'docker.io/library/ruckusdb-security-20261023',
+         'jtmb-dev': 'docker.io/library/jtmb-dev-security-20261023',
+         'ruckus-bot': 'docker.io/library/ruckus-bot-security-20261023'}
 MEDIA = {'application/vnd.oci.image.manifest.v1+json', 'application/vnd.oci.image.index.v1+json',
          'application/vnd.docker.distribution.manifest.v2+json', 'application/vnd.docker.distribution.manifest.list.v2+json'}
 
