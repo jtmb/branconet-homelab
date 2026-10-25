@@ -1,0 +1,13 @@
+{
+  "goal": {
+    "threadId": "01a12045-bf7e-73b3-8557-752d17c72ffd",
+    "objective": "Finish the Kubernetes migration under PLAN.md and docs/REVISED-GOAL-20261025.md. Milestone 1: complete authorized artifact cleanup and verified SMB recovery handling; retain exact removed paths/bytes, authenticated backup receipts, source repositories, failed evidence, rollback artifacts, running services and PVC data, and verify cluster health. Milestone 2: finish normal Seerr and YTPTube UI/route acceptance, preserving all original accounts, permissions, requests/history, downloads and restart persistence; verify Flux revision and deployed resource/image identities. Milestone 3: inventory every running image and its repository/controller ownership, identify current derivative-image deviations, and define safe repository-managed transitions. Maintain only images/repositories James owns. Third-party services must consume maintained upstream releases with repository-managed version/digest changes and appropriate state/integration validation; do not maintain, patch or rebuild third-party images as bespoke forks. Owned-image changes, dependencies, build definitions and update mechanisms must live in the owned repository with reproducible provenance and an already approved publication path. Inspect existing approved build/publish routes before claiming a blocker. Do not use ad hoc locally saved images/tars as maintained deployment sources, enable GitHub Actions, invent a registry or publish externally without approval. Milestone 4: apply compatible available upstream security updates through private branconet-charts local validation -> validated -> Flux, record unsupported/unfixed findings honestly, and put repeatable host changes in Ansible. Preserve existing data, native Kubernetes Secrets managed through BORTUS, resource limits, running Strata, dirty checkouts and recovery/rollback sources. Keep BORTUS application development and its unfinished release in its separate owner chat. Milestone 5: reconcile final exact-image/data/route/restart evidence and documentation; perform Codex IAB validation after implementation and explicitly separate migration readiness from remaining security exceptions. Cleanup is the first gate; proceed afterward only within this revised authorized scope. Complete the goal only when all required acceptance checks are met and no required work remains; partial builds, scans, checkpoints or source-only proposals are not completion.",
+    "status": "active",
+    "tokensUsed": 0,
+    "timeUsedSeconds": 0,
+    "createdAt": 1792959856,
+    "updatedAt": 1792959856
+  },
+  "remainingTokens": null,
+  "completionBudgetReport": null
+}

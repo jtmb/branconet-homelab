@@ -4,9 +4,11 @@
     that:
       - cold_application_state_apply | bool
       - inventory_hostname == 'masternode'
-      - cold_application_state_generation in ['original', 'media-security-20261025']
-      - cold_application_state_generation == 'original' or cold_application_state_app in ['bazarr', 'radarr', 'sonarr']
-      - cold_application_state_app in ['radarr', 'sonarr', 'bazarr', 'tautulli', 'vaultwarden', 'wordpress-redis', 'wordpress', 'jackett', 'plex', 'unpackerr', 'qbittorrent', 'homepage', 'qbit-monitor', 'ruckus-db', 'mealie', 'xteve', 'xteve-config']
+      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-seerr-20261025']
+      - cold_application_state_generation != 'media-security-20261025' or cold_application_state_app in ['bazarr', 'radarr', 'sonarr']
+      - (cold_application_state_app == 'seerr') == (cold_application_state_generation == 'upstream-seerr-20261025')
+      - cold_application_state_app in ['seerr', 'radarr', 'sonarr', 'bazarr', 'tautulli', 'vaultwarden', 'wordpress-redis', 'wordpress', 'jackett', 'plex', 'unpackerr', 'qbittorrent', 'homepage', 'qbit-monitor', 'ruckus-db', 'mealie', 'xteve', 'xteve-config']
+      - cold_application_state_app != 'seerr' or (cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 0 and cold_application_state_reader_gid | int == 0)
       - cold_application_state_app != 'ruckus-db' or (cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 999)
       - cold_application_state_app != 'mealie' or (cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 1000 and cold_application_state_reader_gid | int == 1000)
       - cold_application_state_app not in ['xteve', 'xteve-config'] or (cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 0 and cold_application_state_reader_gid | int == 0)

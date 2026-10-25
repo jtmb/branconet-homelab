@@ -80,6 +80,7 @@ def cold_baseline(argv):
     ap.add_argument('--age', type=Path, required=True)
     ap.add_argument('--identity', type=Path, required=True)
     ap.add_argument('--output', type=Path, required=True)
+    ap.add_argument('--already-seerr', action='store_true', help='Fresh full cold snapshot of the already-migrated Seerr instance; no legacy data transformations')
     args = ap.parse_args(argv)
     output = protected_output(args.output)
     if os.name != 'posix' or not Path('/dev/shm').is_dir() or not any(line.split()[1:3] == ['/dev/shm', 'tmpfs'] for line in Path('/proc/mounts').read_text().splitlines()):
@@ -87,9 +88,15 @@ def cold_baseline(argv):
     key = stdin_key().encode('utf-8')
     digest = lambda value: hmac.new(key, compact(value), hashlib.sha256).hexdigest()
     receipt = json.loads(args.verified_receipt.read_bytes())
-    if not all(receipt.get(k) is True for k in ['authenticatedDecryption', 'completeArchiveRead']) or receipt.get('sqliteQuickCheck') != 'ok':
-        raise ValueError('archive-receipt')
-    if args.archive.stat().st_size > MAX_ARCHIVE or hashlib.sha256(args.archive.read_bytes()).hexdigest() != receipt['archiveSHA256']:
+    if args.already_seerr:
+        if not (receipt.get('status') == 'completed' and receipt.get('application') == 'seerr' and receipt.get('generation') == 'upstream-seerr-20261025' and receipt.get('cold_archive_verified') is True and receipt.get('temporary_pod_deleted') is True):
+            raise ValueError('archive-receipt')
+        archive_sha = receipt['archive_sha256']
+    else:
+        if not all(receipt.get(k) is True for k in ['authenticatedDecryption', 'completeArchiveRead']) or receipt.get('sqliteQuickCheck') != 'ok':
+            raise ValueError('archive-receipt')
+        archive_sha = receipt['archiveSHA256']
+    if args.archive.stat().st_size > MAX_ARCHIVE or hashlib.sha256(args.archive.read_bytes()).hexdigest() != archive_sha:
         raise ValueError('archive-binding')
     process = subprocess.Popen([str(args.age), '-d', '-i', str(args.identity), str(args.archive)], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     try:
@@ -105,9 +112,11 @@ def cold_baseline(argv):
             process.wait()
     files = {}
     total = 0
-    with tarfile.open(fileobj=io.BytesIO(blob), mode='r:gz') as archive:
+    with tarfile.open(fileobj=io.BytesIO(blob), mode='r:' if args.already_seerr else 'r:gz') as archive:
         for member in archive:
             path = member.name.removeprefix('./')
+            if args.already_seerr:
+                path = path.removeprefix('data-0/')
             if member.name.startswith('/') or '..' in Path(path).parts or member.size < 0:
                 raise ValueError('archive-path')
             total += member.size
@@ -120,7 +129,7 @@ def cold_baseline(argv):
     if 'settings.json' not in files or 'db/db.sqlite3' not in files:
         raise ValueError('archive-members-missing')
     result = {'format': 1, 'upstreamSource': '564bfb08b54caa374bddaf820abfd226e5e69151',
-              'archiveSHA256': receipt['archiveSHA256'], 'sqliteQuickCheck': 'ok', 'counts': {},
+              'archiveSHA256': archive_sha, 'sqliteQuickCheck': 'ok', 'counts': {},
               'historyPreservation': {}, 'settingsPreservation': {}, 'settingsAbsent': [],
               'transformations': [], 'archiveDerived': True}
     def ident(name):
@@ -153,7 +162,7 @@ def cold_baseline(argv):
                     result['userPreservation'] = {'columns': USER_COLUMNS, 'count': len(users), 'ids': [r['id'] for r in users], 'hmacSHA256': digest(users), 'perColumn': {c: digest([r[c] for r in users]) for c in USER_COLUMNS}}
                     continue
                 # Exact vendor transformations only. Never infer from new state.
-                if table in ['media', 'season']:
+                if not args.already_seerr and table in ['media', 'season']:
                     for c in ['status', 'status4k']:
                         changed = 0
                         for r in rows:
@@ -161,7 +170,7 @@ def cold_baseline(argv):
                                 r[c] = 7
                                 changed += 1
                         result['transformations'].append({'table': table, 'column': c, 'from': 6, 'to': 7, 'rows': changed})
-                if table == 'user_settings':
+                if not args.already_seerr and table == 'user_settings':
                     if 'region' in columns:
                         if any(r['region'] not in (None, '') for r in rows):
                             raise ValueError('populated-dropped-user-region')
@@ -183,36 +192,41 @@ def cold_baseline(argv):
         finally:
             connection.close()
     settings = json.loads(files['settings.json'])
-    main = settings['main']
-    if main.get('mediaServerType'):
-        raise ValueError('not-overseerr-baseline')
-    main['mediaServerType'] = 1
-    if main.get('applicationTitle') == 'Overseerr':
-        main['applicationTitle'] = 'Seerr'
-    email_options = settings['notifications']['agents']['email']['options']
-    if email_options.get('senderName') == 'Overseerr':
-        email_options['senderName'] = 'Seerr'
-    if not ('discoverRegion' in main and 'streamingRegion' in main):
-        region = main.pop('region', None)
-        main['discoverRegion'] = region if region else ''
-        main['streamingRegion'] = region if region else 'US'
-        result['settingsAbsent'].append('/main/region')
-    if 'network' not in settings:
-        settings['network'] = {k: main.pop(k, default) for k, default in [('csrfProtection', False), ('trustProxy', False), ('forceIpv4First', False), ('proxy', {'enabled': False, 'hostname': '', 'port': 8080, 'useSsl': False, 'user': '', 'password': '', 'bypassFilter': '', 'bypassLocalAddresses': True})]}
-        result['settingsAbsent'].extend('/main/' + k for k in ['csrfProtection', 'trustProxy', 'forceIpv4First', 'proxy'])
-    agents = settings['notifications']['agents']
-    if 'lunasea' in agents:
-        if agents['lunasea'].get('enabled'):
-            raise ValueError('enabled-removed-lunasea')
-        result['removedLunaSeaHMAC'] = digest(agents.pop('lunasea'))
-        result['settingsAbsent'].append('/notifications/agents/lunasea')
-    for old, new in [('hideBlacklisted', 'hideBlocklisted'), ('blacklistedTags', 'blocklistedTags'), ('blacklistedTagsLimit', 'blocklistedTagsLimit')]:
-        if old in main:
-            main[new] = main.pop(old)
-            result['settingsAbsent'].append('/main/' + old)
-    if 'process-blacklisted-tags' in settings.get('jobs', {}):
-        settings['jobs']['process-blocklisted-tags'] = settings['jobs'].pop('process-blacklisted-tags')
-        result['settingsAbsent'].append('/jobs/process-blacklisted-tags')
+    if args.already_seerr:
+        if settings.get('main', {}).get('mediaServerType') != 1 or settings.get('public', {}).get('initialized') is not True:
+            raise ValueError('not-initialized-seerr-baseline')
+        result['alreadySeerrBaseline'] = True
+    else:
+        main = settings['main']
+        if main.get('mediaServerType'):
+            raise ValueError('not-overseerr-baseline')
+        main['mediaServerType'] = 1
+        if main.get('applicationTitle') == 'Overseerr':
+            main['applicationTitle'] = 'Seerr'
+        email_options = settings['notifications']['agents']['email']['options']
+        if email_options.get('senderName') == 'Overseerr':
+            email_options['senderName'] = 'Seerr'
+        if not ('discoverRegion' in main and 'streamingRegion' in main):
+            region = main.pop('region', None)
+            main['discoverRegion'] = region if region else ''
+            main['streamingRegion'] = region if region else 'US'
+            result['settingsAbsent'].append('/main/region')
+        if 'network' not in settings:
+            settings['network'] = {k: main.pop(k, default) for k, default in [('csrfProtection', False), ('trustProxy', False), ('forceIpv4First', False), ('proxy', {'enabled': False, 'hostname': '', 'port': 8080, 'useSsl': False, 'user': '', 'password': '', 'bypassFilter': '', 'bypassLocalAddresses': True})]}
+            result['settingsAbsent'].extend('/main/' + k for k in ['csrfProtection', 'trustProxy', 'forceIpv4First', 'proxy'])
+        agents = settings['notifications']['agents']
+        if 'lunasea' in agents:
+            if agents['lunasea'].get('enabled'):
+                raise ValueError('enabled-removed-lunasea')
+            result['removedLunaSeaHMAC'] = digest(agents.pop('lunasea'))
+            result['settingsAbsent'].append('/notifications/agents/lunasea')
+        for old, new in [('hideBlacklisted', 'hideBlocklisted'), ('blacklistedTags', 'blocklistedTags'), ('blacklistedTagsLimit', 'blocklistedTagsLimit')]:
+            if old in main:
+                main[new] = main.pop(old)
+                result['settingsAbsent'].append('/main/' + old)
+        if 'process-blacklisted-tags' in settings.get('jobs', {}):
+            settings['jobs']['process-blocklisted-tags'] = settings['jobs'].pop('process-blacklisted-tags')
+            result['settingsAbsent'].append('/jobs/process-blacklisted-tags')
     def leaves(value, pointer=''):
         if isinstance(value, dict) and value:
             for name, item in value.items():

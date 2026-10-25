@@ -1,6 +1,16 @@
 # Migration and maintenance status
 
-**The full goal remains active.** This source checkpoint is isolated from BORTUS
+**October 25 scope correction:** use maintained upstream releases for third-party
+services; no further bespoke derivative image maintenance. Owned image changes
+require repository-backed provenance and an approved publication path. Existing
+derivative deployments and archives remain preserved for safe transition and
+recovery. Actions stays off. The owned-image publication path is unresolved.
+[Revised objective and supported goal readback](docs/REVISED-GOAL-20261025.md).
+
+**The revised full goal is saved and active.** Cleanup and verified SMB handling
+passed the October 25 20:23 UTC health gate. The goal is not done.
+[Supported tracker readback](evidence/revised-goal-readback-20261025.json).
+This source checkpoint is isolated from BORTUS
 application development. Facts below come from the retained public maintenance
 receipt, latest recorded progress `2026-10-24T02:46:45.685374+00:00` and its later
 acceptance blocks. Historical failed/pre-cutover fields in that chronological
@@ -9,6 +19,18 @@ Later root-executed live checks are recorded in the dated acceptance blocks.
 Early pending/failed entries remain historical and do not supersede those blocks.
 
 ## Verified checkpoints
+
+- October 25: Ruckus same-image HA recovery passed fresh full-state, SQL,
+  after/restart and existing two-replica checks. The bot is resumed through Flux
+  `758ba4c`; both claims and all failed evidence remain. The newer bot candidate
+  is undeployed. [Exact execution ledger](docs/RUCKUS-HA-RECOVERY.md).
+- October 25 artifact cleanup: 47 controller-verified node OCI transfer copies
+  removed, reclaiming 6,303,870,976 allocated bytes. All controller originals
+  remain. Twenty-six recovery archives (11,155,870,024 bytes) now have full
+  checksum/read-back/age-authentication proof on the dedicated SMB backup folder;
+  encrypted companion metadata is also copied and verified. No NAS media or
+  Kubernetes SMB CSI volume was removed. Further generated-state cleanup is
+  recorded separately when complete.
 
 - All three nodes recovered Ready/uncordoned without pressure, running kernel
   `5.15.0-198-generic` and independent containerd `2.4.2`. Original frozen recovery

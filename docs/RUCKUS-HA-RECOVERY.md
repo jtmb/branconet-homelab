@@ -1,4 +1,39 @@
-# Ruckus same-image HA recovery candidate
+# Ruckus same-image HA recovery
+
+## Accepted October 25 result
+
+Flux commit `758ba4cfa8c88bf4d73e0eec8e49b0d9830ce399` resumes the bot against
+the current MySQL data restored into the new sibling
+`security-data-20261025/data-0` on the original claim `ruckus-db-data-0`
+(UID `2f604004-b45f-4061-bdc4-43f5ca2f7fd8`). Both existing replicas were RW and
+healthy for after/restart acceptance. The former single-replica current claim
+`ruckus-db-data-0-security-20261025` (UID
+`0bf707c8-628e-4284-9aa0-35b711c8749b`) remains retained and detached.
+Every pre-existing original descendant remains preserved; the new sibling and
+the explicitly recorded filesystem-root timestamp changes are not hidden.
+
+Fresh baseline contained 3,966 rows across two tables. The complete cold archive
+covered 213,330,203 file bytes and 298 entries. Accepted receipt SHA256 values:
+
+| Phase | SHA256 |
+| --- | --- |
+| Baseline | `63ced125ab7f5e61c88f9df3d1d2cbf3af8244c48a5a19a6d662640e9bc1f345` |
+| Cold | `e105666f1119f350212f73a5c4e4107e185e2f1894d45448bb535796ceb6f321` |
+| Restore, including separate two-mode completion | `60e1904c10310e94b1df7ecac25eb7316f247567854480ceae037ecc35b4f6e3` |
+| After | `2db0b0205a846cd6a3f0f327b133641ee72141e9407f635204fa3e88a73d74c3` |
+| New-Pod restart | `b637ecf3856398e0753044578edf62c2f1cbb9e851ec34b46cc06116f2a9a467` |
+
+All failed receipts remain beside these private receipts under
+`FBASE/ruckus-ha-recovery-20261025`. Owned reader Pods were deleted with UID
+guards and their deletion observed. The bot's accepted earlier image
+`sha256:5da497fc6680b06cc26f7ee94aa2d46cccfdddfbfe26ce71676be518a182262a`
+is running: API, bot and dashboard Supervisor processes were RUNNING, an actual
+bot database connection was present, dashboard returned 200, restart count was
+zero. No Discord test or personal-login acceptance is implied. The newer bot
+dependency candidate is still undeployed. This completes this storage recovery
+checkpoint, not the full maintenance goal.
+
+## Historical candidate and execution contract
 
 The initial candidate was prepared without executing a phase, reader, archive,
 SQL query, restore, rollout or restart. Execution checkpoints are recorded below. Root owns review, freeze, Flux changes,

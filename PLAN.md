@@ -1,13 +1,102 @@
 # Cluster maintenance and application migration plan
 
-The active goal is to finish the data-preserving Overseerr-to-Seerr migration,
+**Current tracker:** the revised five-milestone goal is saved and **active** in
+this chat. [Exact supported readback](evidence/revised-goal-readback-20261025.json).
+This supersedes the historical goal-control limitation below. Cleanup and SMB
+verification passed the October 25 20:23 UTC cluster health check; preserved
+failed-state/rollback exclusions remain intentional. Subsequent work follows
+the revised image-ownership scope, never the earlier derivative-build approach.
+
+## Bounded finish plan — October 25, 20:24 UTC
+
+This section controls the remaining sequence. Earlier chronological proposals
+below are history. [Revised objective and actual goal-control readback](docs/REVISED-GOAL-20261025.md).
+
+**Already verified:** Seerr preserves six accounts and existing request/history
+relationships; YTPTube downloaded real media and preserved it through restart;
+original NAS/PVC data remains; Ruckus fresh SQL/full-state/restart and both
+existing replicas passed. Exact evidence: [Seerr](docs/SEERR-ACCEPTANCE.md),
+[YTPTube](docs/YTPTUBE-ACCEPTANCE.md), [Ruckus](docs/RUCKUS-HA-RECOVERY.md),
+[current status](MIGRATION_STATUS.md). Backend checks do not imply final UI acceptance.
+
+| Order | Remaining work | Objective done check |
+| --- | --- | --- |
+| 1 — current gate | Finish artifact cleanup, verified SMB recovery copies and post-cleanup health | Exact removed paths/bytes retained; backup checksums/full authenticated read-back pass; source/recovery/runtime data preserved; all three nodes Ready, workloads/PVCs checked; explain retained safety exclusions |
+| 2 — migration acceptance | Check normal Seerr and YTPTube routes/UI using migrated accounts/data; confirm current Flux revision and desired resources | Login/requests/history and downloader/history/storage work through normal ingress; no service-data regressions; exact image/revision evidence saved |
+| 3 — correct image ownership | Inventory every running image/controller and chart; classify owned versus third-party and find compatible maintained upstream releases | Repository-managed version/digest transition list with exact residual findings and data/rollback requirements; no further third-party derivative builds |
+| 4 — bounded remediation | Apply compatible upstream security updates one service at a time through charts → local validation → validated → Flux; retain unsupported/unfixed findings | Exact deployed digest, state/integration/route/restart checks pass for each change; repeatable host fixes in Ansible; no source-only candidate counted as deployed |
+| 5 — close delivery | Reconcile final inventory, acceptance contract, recovery pointers and remaining exceptions | Documentation matches live state; migration acceptance and security exceptions explicit; only then assess whether the full goal is complete |
+
+**Concrete delays:** bespoke rebuilds consumed time and are now superseded;
+Windows memory-floor failures stopped Traefik compilation; node build state used
+space needed for safe operations. No more derivative build retries are planned.
+Cleanup has reclaimed 55,587,958,784 allocated node bytes so far. Third-party
+upstream compatibility and registry availability are the remaining per-service
+dependencies. Owned-image publication is an exact unresolved decision: Actions
+is off, local-only saved deployment images are excluded, and no replacement
+publication route is approved. Do not block third-party upstream inventory or
+migration UI checks on that owned-image decision.
+
+**Effort estimate, not a deadline:** cleanup health/documentation plus migration
+UI/revision acceptance should take about 1–2 hours hands-on, 1–3 hours elapsed if
+the running apps authenticate normally. Inventory/triage should take another
+30–60 minutes. A fleet transition involving roughly two dozen stateful upstream
+services is a separate 6–12 hours hands-on / 8–24 hours elapsed estimate, depending
+on compatible releases, pulls and storage rollouts; that estimate is provisional
+until milestone 3. A six-hour guarantee for the full security transition would
+be unsupported. Work in bounded service batches, preserving a working cluster.
+
+**Deferred or outside this chat:** BORTUS application development/release,
+unrelated UI features, hypothetical zero-day eradication, unsupported major-version
+data migrations, and new publication infrastructure. Existing unsupported/unfixed
+security findings remain reported in the overall goal; they are not silently
+discarded or treated as migration failures when no compatible fix exists. Extra
+benchmarks and bespoke third-party image optimization are not finish prerequisites.
+The tracked goal is still paused with its earlier objective because available
+goal controls cannot edit or resume it; the supported limitation is recorded,
+not bypassed through raw session edits or a false completion.
+
+## Controlling scope correction — October 25, 20:19 UTC
+
+[The revised objective and exact goal-control limitation](docs/REVISED-GOAL-20261025.md)
+supersede earlier derivative-rebuild assumptions below. Maintain owned images
+and repositories only. Third-party services consume maintained upstream releases
+through repository-managed version/digest updates and appropriate state/runtime
+validation; do not continue bespoke dependency/runtime image forks. Owned-image
+build definitions, changes, provenance and update mechanisms belong in the owned
+repository, with an already approved publication path. Local saved OCI archives
+are recovery evidence, not the maintained deployment source. GitHub Actions stays
+OFF. An approved replacement owned-image build/publication path is not established
+here; do not invent a registry or silently substitute local-only deployment builds.
+
+Finish safe artifact cleanup and verified SMB recovery copies first. Then audit
+current derivative deployments, select compatible maintained upstream images,
+record digests in charts, and migrate one service at a time through the existing
+local validation → validated → Flux path. Preserve working services, source,
+data, PVCs, resource limits, rollback artifacts and all prior approval boundaries.
+Earlier rebuild candidates, recipes and evidence remain historical; their
+presence is not authorization to execute them. The actual tracked objective
+remains unchanged/paused because the goal tool exposes no objective-edit control.
+
+The delivery goal is to finish the data-preserving Overseerr-to-Seerr migration,
 replace broken MeTube with a working YouTube downloader, audit the entire existing
 Kubernetes cluster for published security advisories, apply compatible fixes, and
 codify repeatable maintenance in Ansible. BORTUS application development and its
 unfinished release belong to a separate owner. This branch is a reviewable source
 checkpoint; publication does not mean the goal is complete or authorize a rerun.
 
+The October 25 accepted Ruckus HA recovery supersedes earlier candidate-only
+entries below: fresh data, after/restart preservation and both original replicas
+passed; see [the execution ledger](docs/RUCKUS-HA-RECOVERY.md).
+
 ## Acceptance contract
+
+October 25 cleanup interruption: the user explicitly stopped builds and rollouts
+to clean task artifacts from the nodes. The goal is paused while that cleanup
+runs. Repositories, live workloads, PVCs, rollback images and unique evidence
+remain preserved. The user subsequently authorized resuming the existing goal
+after cleanup is complete and safe. Recovery backups may be stored in the
+dedicated NAS folder. See [image ownership and hardening](docs/IMAGE-PATCHING-AND-HARDENING.md).
 
 - Preserve original account IDs, credentials/Plex identities, permissions,
   settings, request/history relationships and data through Seerr migration.
@@ -35,10 +124,9 @@ checkpoint; publication does not mean the goal is complete or authorize a rerun.
 flowchart LR
   Inventory[Exact inventory and advisory evidence] --> Backup[Cold state and recovery evidence]
   Backup --> Nodes[Serial node maintenance]
-  Backup --> Build[Bounded private OCI artifacts]
-  Build --> Scan[Exact scan and residual review]
-  Scan --> Cache[Digest-bound cache preload]
-  Cache --> Charts[Private charts main]
+  Backup --> Select[Maintained upstream release / owned repository artifact]
+  Select --> Scan[Exact scan and residual review]
+  Scan --> Charts[Repository-managed version and digest]
   Charts --> Validate[CI validation]
   Validate --> Flux[Validated branch and Flux]
   Flux --> Apps[Seerr / YTPTube / patched apps]
