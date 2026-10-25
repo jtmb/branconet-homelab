@@ -5,14 +5,16 @@
 
 - name: Create or verify only the exact protected build filesystem
   ansible.builtin.command:
-    argv: "{{ ['/usr/bin/python3', '-B', role_path ~ '/files/setup.py', '--apply'] + (['--resume-empty-inode', local_build_storage_resume_empty_inode | string] if local_build_storage_resume_empty_inode | int > 0 else []) }}"
+    argv: "{{ ['/usr/bin/python3', '-B', role_path ~ '/files/setup.py', '--apply'] + (['--resume-empty-inode', local_build_storage_resume_empty_inode | string] if local_build_storage_resume_empty_inode | int > 0 else []) + (['--grow-existing-gib', local_build_storage_grow_existing_gib | string, '--grow-existing-inode', local_build_storage_grow_existing_inode | string] if local_build_storage_grow_existing_gib | int > 0 else []) }}"
   register: local_build_storage_result
   when: local_build_storage_apply | bool and not ansible_check_mode
   changed_when: >-
+    local_build_storage_result.rc == 0 and (
     (local_build_storage_result.stdout | from_json).created or
     (local_build_storage_result.stdout | from_json).initialized or
     (local_build_storage_result.stdout | from_json).mounted or
-    (local_build_storage_result.stdout | from_json).directIOChanged
+    (local_build_storage_result.stdout | from_json).directIOChanged or
+    (local_build_storage_result.stdout | from_json).expanded)
 
 - name: Report the verified dedicated storage metadata
   ansible.builtin.debug:

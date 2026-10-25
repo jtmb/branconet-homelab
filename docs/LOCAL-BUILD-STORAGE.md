@@ -2,7 +2,7 @@
 
 The existing cluster disks remain unchanged. New build stages must satisfy the
 15 GiB C-drive launch minimum described below. A separate
-96 GiB native ext4 filesystem was created in
+96 GiB native ext4 filesystem was initially created in
 `F:\branconet-build-storage\native-build-20261025.ext4`, UUID
 `3c792469-ea0e-4a2c-98e8-1185b141607b`, and mounted at the operator runtime's
 `local-image-build-offload-20261025`. Strata and other projects were left running.
@@ -99,3 +99,50 @@ WSL distributions to stop naturally and still requires exclusive access; it
 expires rather than stopping them. Private recovery receipts are retained in the
 maintenance-storage directory named above. New builds remain gated until C:
 actually reaches15 GiB free.
+
+## Completed compaction and controller recovery
+
+The separately approved Ubuntu-only compaction completed at09:57:44UTC on
+October25. VHDX length fell from582,790,152,192 to433,029,382,144 bytes, a reduction
+of149,760,770,048 bytes. Windows C: reported157,805,809,664 bytes free at completion.
+No Linux files were deleted as part of compaction; Windows recovery is reported
+separately from filesystem capacity. Recorded Ingenium container/image and SSH
+identity were retained; the existing workloads were started again. The OpenCode
+router already showed a restart condition before the final interruption; starting
+its unit does not establish application health. Cluster nodes were not stopped.
+
+The dedicated build filesystem subsequently reached the publisher's unchanged
+reserve. Its existing backing file was extended to128 GiB. During the first
+online growth attempt, the controller's lifetime was not secured and it stopped
+before the operation was fully recorded. The unmounted filesystem then refused
+to mount because its final new group descriptors were incomplete. This was a
+controller build-storage fault, not a Kubernetes disk operation.
+
+Recovery preserved the original prefix, backup descriptors, complete512 MiB
+journal and per-block undo files outside the image. Official e2fsprogs replayed
+only committed journal transactions; all descriptor pointers became valid. The
+read-only filesystem then matched19 recorded file checksums, including the6.6 GB
+Plex encrypted cold archive and new xTeVe OCI artifact. A full offline safe-preen
+check completed with exit1 and no unreviewed manual repair; its optimization
+suggestion was ignored. Failed attempts and their logs remain. No reformatting,
+image/volume pruning or cache deletion was used.
+
+The final Ansible mount/install run verified128 GiB, the original backing inode
+115123265474727363, original filesystem UUID, direct I/O and62,786,265,088 free
+native bytes. Receipt SHA256:
+`516ad3670bcf5f65f9885607d87add97399eec1d395e1b2082a90d3df1d0f109`.
+A further post-check archive comparison is retained separately. The root-owned
+startup helper now recognizes only the96/128 GiB generations. Future growth is
+explicit and **offline only**, requires the original inode and exclusive build
+lock, preserves a filesystem undo file, and never kills a metadata write because
+an observation deadline expires. Normal mount/startup never formats or resizes.
+
+The existing Windows CI task now owns one Ubuntu keepalive for its watcher's
+lifetime. It still has one serial publisher, the same account and interval, and
+uses the existing-only mount prelude. The wrapper exits if its keeper exits and
+cleans up only its own processes. This prevents WSL's idle lifecycle from losing
+the build mount between polling attempts. The temporary maintenance keeper was
+removed after the managed keeper and single watcher were confirmed live.
+Historical96 GiB artifact receipts remain validated against their actual recorded
+capacity; new builders pin128 GiB. Other resource bounds and the15 GiB launch
+minimum are unchanged.

@@ -14,9 +14,9 @@
           - ansible_connection == 'local'
           - local_oci_scan_phase in ['setup', 'scan', 'status']
           - local_oci_scan_source_kind in ['github-actions', 'local-operator']
-          - local_oci_scan_service == '' or local_oci_scan_service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter']
+          - local_oci_scan_service == '' or local_oci_scan_service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot']
           - local_oci_scan_storage_profile in ['legacy', 'offloaded']
-          - local_oci_scan_storage_profile != 'offloaded' or (local_oci_scan_service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter'] and local_oci_scan_source_kind == 'local-operator') or (local_oci_scan_service == 'jackett' and local_oci_scan_source_kind == 'github-actions')
+          - local_oci_scan_storage_profile != 'offloaded' or (local_oci_scan_service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot'] and local_oci_scan_source_kind == 'local-operator') or (local_oci_scan_service == 'jackett' and local_oci_scan_source_kind == 'github-actions')
           - local_oci_scan_attempt == '' or local_oci_scan_attempt is match('^[0-9a-f]{12}$')
 
     - name: Invoke the reviewed local controller with structured public identity arguments

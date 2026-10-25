@@ -15,6 +15,10 @@ OFFLOAD_STORAGE = {'kind': 'dedicated-f-drive-ext4-loop',
                    'docker_root_filesystem_uuid': 'de6eee3d-80cf-41dc-bf4c-91ee606d02da',
                    'docker_mutable_budget_bytes': 64 * 1024 ** 2,
                    'docker_physical_reserve_bytes': 2 * LOCAL_GIB}
+# Historical receipts retain the size actually used by their build.
+# Only these two reviewed generations share the pinned file/UUID and bounds.
+OFFLOAD_STORAGE_GROWN = {**OFFLOAD_STORAGE, 'backing_file_bytes': 128 * LOCAL_GIB}
+OFFLOAD_STORAGE_PROFILES = (OFFLOAD_STORAGE, OFFLOAD_STORAGE_GROWN)
 LOCAL_CAPS = {
     'local-operator-provenance.json': 16 * 1024 ** 2,
     'source-export.json': 4 * 1024 ** 2,
@@ -109,7 +113,7 @@ def local_verify(root, service, run_id, proof_sha, owner, mode=0o400,
         'reserve_bytes': 2 * LOCAL_GIB, 'max_oci_bytes': 4 * LOCAL_GIB,
         'observation_seconds': 6300, 'whole_seconds': 7200}
     measured_profile = result.get('resource_contract', {})
-    offloaded = service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot'] and result.get('storage_contract') == OFFLOAD_STORAGE
+    offloaded = service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot'] and result.get('storage_contract') in OFFLOAD_STORAGE_PROFILES
     local_need(not result.get('storage_contract') or offloaded, 'finite_offloaded_storage_scope')
     local_need(service != 'coredns' or offloaded, 'coredns_requires_dedicated_storage_proof')
     if service in ['wordpress', 'nginx', 'phpmyadmin'] and measured_profile.get('build_budget_bytes') == 4 * LOCAL_GIB:
@@ -138,7 +142,7 @@ def local_verify(root, service, run_id, proof_sha, owner, mode=0o400,
         logical_uuid = OFFLOAD_STORAGE['filesystem_uuid'] if offloaded else 'de6eee3d-80cf-41dc-bf4c-91ee606d02da'
         physical_identity = (physical.get('backing_drive') == 'F:\\'
                              and physical.get('backing_file_path') == OFFLOAD_STORAGE['backing_file']
-                             and physical.get('backing_file_bytes') == OFFLOAD_STORAGE['backing_file_bytes']) if offloaded else (
+                             and physical.get('backing_file_bytes') == result['storage_contract']['backing_file_bytes']) if offloaded else (
                                  physical.get('backing_drive') == 'C:\\' and re.fullmatch(r'C:\\Users\\james\\AppData\\Local\\wsl\\\{bcb924f4-59dd-4c02-9b01-9541c545b756\}\\ext4\.vhdx', physical.get('vhd_path', ''), re.I))
         local_need(fs.get('uuid') == logical_uuid and
                    fs.get('filesystem') == 'ext4' and fs.get('available_bytes', 0) >= floor and
