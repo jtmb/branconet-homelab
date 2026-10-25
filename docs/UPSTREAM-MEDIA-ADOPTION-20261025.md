@@ -70,9 +70,36 @@ existing PowerShell session without changing execution policy. Its exact source
 hash and copy receipts remain in `operator-control/media-smb-execution.json` and
 `operator-control/smb-media-upstream-copy-status.json`.
 
-Private adoption commit `ea28be5` resumes the existing writers with those exact
-vendor images and `IfNotPresent` pulls. Post-adoption API, complete Users and
-new-Pod restart checks are still required; this preparation/cold-backup record
-does not claim their completion. Final browser acceptance remains after all
-implementation work. Keep complete backups, failed observations and rollback
-images; do not import or rebuild the historical derivative recipes.
+## Completed backend checks, October25 23:28 UTC
+
+Private adoption commit `ea28be56fb91b4f9693318f8ec55c4a3cfbbdc52` resumed the
+writers with the exact vendor images. Controlled restart commit
+`c195c3b67d4fa5886947ca90f36c1c46090c7229` reconciled successfully through local
+validation, validated and Flux. Every API/config/library comparison passed after
+adoption and on a different Pod after restart. Counts remained 180 Radarr movies;
+155 Sonarr series, 14,730 episodes and 5,319 episode files; Bazarr 155 shows and 237
+movies. Radarr/Sonarr each preserved the one original Users row and all six
+columns/credential fields, with SQLite integrity and no additional columns.
+All four SQL readers were UID-deleted. Media-root accessibility checks passed.
+
+Across all three nodes, Radarr/Sonarr returned their expected application login
+redirects and Bazarr returned its page. These pre-authentication HTTP checks are
+separate from final IAB acceptance. Sonarr health checks are clear. Radarr's
+current warning source is IndexerLongTermStatusCheck; its baseline also recorded
+one warning category. The provider issue remains visible for follow-up rather
+than being disabled or described as fixed.
+
+The three complete archives and a 119,478,964-byte encrypted recovery-metadata
+archive passed full NAS read-back checksums and age authentication. The metadata
+includes only this batch's distinct sources, baselines/observations and required
+verification keys, encrypted together; it does not sweep prior ancestor records.
+Metadata archive SHA256 is
+`a3ed5ae39a57dce83e79acf73875d1906971c627f781f41e1db977661005e4fb`.
+Originals, rollback images, recipes and failures remain preserved.
+
+All raw execution receipts stay under the existing F: root. The concise current
+receipt is `operator-control/media-upstream-adoption.json`; per-app API and SQL
+receipts are in `upstream-media-20261025/<app>`. It binds every archive and
+observation hash and both Pod identities. Native account/config values are not
+written into repository evidence. Final IAB and current vendor CVE review remain
+open; this is not a zero-CVE or whole-goal-completion claim.

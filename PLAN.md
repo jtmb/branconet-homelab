@@ -1,5 +1,49 @@
 # Cluster maintenance and application migration plan
 
+## Mandatory execution and completion rules — user instruction October 25
+
+These rules apply to every remaining milestone of the existing active goal;
+they add completion requirements without replacing its migration/security scope.
+
+- Work directly by default. Delegate only bounded asynchronous work while the
+  coordinator continues identified useful independent work. Do not spawn,
+  resume or delegate to GPT-6.1 Sol subagents at any level.
+- Keep all new generated outputs in the existing authorized F:-backed ext4
+  root recorded in [the output inventory](docs/TASK-OUTPUT-INVENTORY.md).
+  Windows and WSL must resolve to that same physical storage. Record ownership,
+  exact paths, regeneration commands and protected source/evidence before a
+  stage; preserve existing authorized roots and never silently fall back to
+  C:, D: or another drive. D: is the default only for new tasks.
+- Set compiler output, caches and TEMP/TMP/TMPDIR inside that root before work.
+  Keep Cargo home separate from compiler targets. Before npm starts, set
+  process-scoped NPM_CONFIG_CACHE, NPM_CONFIG_LOGS_DIR and build-only
+  APPDATA/LOCALAPPDATA there, preserving user runtime settings and existing data.
+- Before every local build or large download, measure Windows C: and the
+  destination: C: must have at least 15 GiB free and the destination must retain
+  15 GiB after the estimated stage. Existing authorized C:/WSL task artifacts
+  have a 20 GiB total ceiling. A failed guard does not authorize stopping or
+  moving workloads, spreading outputs, or deleting user/runtime data.
+- Reuse compatible lockfile-keyed dependencies; do not duplicate node_modules,
+  .next, target or build-cache trees into snapshots, evidence or successor roots.
+  Preserve required deployable runtime artifacts for their retention period.
+- Cleanup is required at every checkpoint and completion, using try/finally
+  reconciliation for interrupted or failed stages. Before deletion, verify the
+  resolved target is inside the owned root, source/lockfiles survive, no tracked
+  files or unique evidence are included, no process/container/mount uses it,
+  and an exact regeneration command exists. Names such as cache or temp are
+  insufficient. Retain failed safety checks and policy-rejected targets; do not
+  retry rejected deletion through another tool or path.
+- Older agent-owned copies require an explicit inventory/cleanup plan, at least
+  72 hours of inactivity and the same checks. Do not blanket-prune images,
+  volumes, models, original chats, quarantines, failed evidence or unique
+  artifacts. Remove empty owned scratch directories after reconciliation and
+  retain minimal durable receipts without duplicating ancestor records.
+- Every checkpoint must report exact removed paths and measured bytes, and
+  every retained exception with its concrete failed check or retention reason.
+  Report Linux filesystem recovery separately from Windows free space. WSL
+  shutdown or VHDX compaction requires separate disruption approval; a Linux
+  measurement never proves Windows disk recovery.
+
 **Current tracker:** the revised five-milestone goal is saved and **active** in
 this chat. [Exact supported readback](evidence/revised-goal-readback-20261025.json).
 This supersedes the historical goal-control limitation below. Cleanup and SMB
@@ -7,27 +51,19 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
-October25 22:35 UTC: Pi-hole exporter v1.2.0 is adopted through private
-charts main/validated/live Flux `25d6ec1b67d37c4881386b58a3fa02b9e31ef6bf`.
-Paired checks passed for all 20 Pi-hole metric families, positive authenticated
-query statistics, readiness/liveness and metrics through all three node
-addresses. The complete Deployment specification changed only its image;
-Service and native Secret metadata stayed exact. [Exact evidence](evidence/pihole-exporter-upstream-adoption-20261025.json).
-The 22:34 cluster check found all three nodes Ready without pressure, all 55
-PVCs Bound, all desired workloads and 34 HelmReleases/Kustomizations Ready,
-and all attached Longhorn volumes healthy. There are 20 third-party derivative
-transitions remaining. This is upstream ownership adoption; vendor dependency
-findings, final browser acceptance and the full goal remain open.
-
-The next stateful batch has newly resolved official vendor rebuilds for Radarr
-6.4.4.10685, Sonarr 4.0.20.3014 and Bazarr 1.6.2. Their application versions match
-the current installations; vendor image revisions are newer than the earlier
-baseline. [Immutable candidates](evidence/media-upstream-candidates-20261025.json).
-Before adoption, extend the finite preservation profiles, capture fresh current
-API/config/SQL baselines and authenticated cold backups, then verify data and
-new-Pod restart persistence. No stateful cutover is claimed by this inventory.
-No local build or new dependency/compiler/cache tree was created in this
-checkpoint; new operator receipts remain inside the established F: root.
+October25 23:28 UTC: Radarr, Sonarr and Bazarr are on the reviewed official
+same-version vendor rebuilds. Private charts main/validated/live Flux is
+`c195c3b67d4fa5886947ca90f36c1c46090c7229`. Fresh API/library/config baselines,
+complete encrypted cold backups, NAS read-back authentication, post-adoption
+checks and different-Pod restart checks passed. Radarr/Sonarr's complete account
+and credential rows matched both times. [Exact acceptance and receipt pointers](docs/UPSTREAM-MEDIA-ADOPTION-20261025.md).
+All three nodes, 55 PVCs, 34 HelmReleases and desired workloads passed the 23:22
+health check; attached Longhorn volumes are healthy. The current ownership
+matrix has 17 third-party derivative image transitions remaining. Radarr retains
+an indexer-status warning; the baseline already had one warning category.
+Current vendor CVE review and final IAB acceptance stay open, and the full goal
+remains active. No image build ran. All three backup readers and four SQL readers
+were removed, and three empty Ansible scratch directories were reconciled.
 
 ## Bounded finish plan — October 25, 20:24 UTC
 

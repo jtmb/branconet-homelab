@@ -1,5 +1,19 @@
 # Revised delivery objective — user correction October 25
 
+## Additional mandatory goal requirements — October 25
+
+The user's latest AGENTS.md instructions are mandatory execution and acceptance
+requirements for every remaining milestone. Their maintained contract is
+[Mandatory execution and completion rules](../PLAN.md#mandatory-execution-and-completion-rules--user-instruction-october-25),
+with exact owned storage and reconciliation in
+[the output inventory](TASK-OUTPUT-INVENTORY.md). This adds the direct-work and
+delegation restrictions, single-root storage and capacity guards, protected
+source/runtime retention, and verified checkpoint cleanup/reporting requirements.
+The existing five-milestone migration/security goal remains active and incomplete.
+Current supported goal tools expose status changes but no objective-edit field;
+these additional requirements are saved here and in PLAN.md rather than
+claiming that the tracker objective was edited or creating a duplicate goal.
+
 **Resolved:** following the user's direct request to set this as the goal,
 `create_goal` successfully persisted the revised five-milestone objective in this
 same chat. A subsequent `get_goal` readback confirms **active**, thread

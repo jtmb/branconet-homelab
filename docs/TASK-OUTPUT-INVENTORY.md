@@ -91,3 +91,25 @@ authorize new third-party derivative builds. All other existing root paths
 remain classified in the current private inventory, with retained evidence or
 concrete unfulfilled safety/ownership checks. No data, runtime image, source
 repository, encrypted backup or recovery artifact was pruned.
+
+## Media checkpoint scratch reconciliation, 23:27 UTC
+
+No compiler or dependency caches were created. Backup archives, their distinct
+API/SQL observations, frozen sources, keys and encrypted NAS metadata remain
+required recovery/acceptance evidence under the declared root. Raw new receipts
+are retained there; repository documentation records concise results/pointers.
+After the Ansible syntax check and all copy/observation processes finished, the
+empty generated scratch tree passed complete process/map/mount and inode checks:
+
+| Removed path relative to declared root | Allocated bytes |
+| --- | ---: |
+| `operator-control/tmp/ansible-home` | 4096 |
+| `operator-control/tmp/ansible-local` | 4096 |
+| `operator-control/tmp` | 4096 |
+
+This new lifecycle removed **12,288 allocated Linux bytes**, with no Windows
+recovery claim. The original sources, all archives and prior cleanup receipts
+remain. Exact proof is `operator-control/media-scratch-reconciliation.json`.
+Recreate the configured empty paths explicitly before a future Ansible stage.
+The current private inventory includes the new protected media acceptance/
+backup subtree; every earlier retained exception keeps its documented reason.
