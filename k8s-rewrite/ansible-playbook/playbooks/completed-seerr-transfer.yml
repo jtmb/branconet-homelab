@@ -1,0 +1,10 @@
+---
+- name: Retire one completed Seerr transfer duplicate
+  hosts: masternode
+  gather_facts: false
+  become: false
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+  roles:
+    - role: completed_seerr_transfer
+      when: completed_seerr_transfer_apply | default(false) | bool
