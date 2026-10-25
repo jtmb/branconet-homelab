@@ -17,11 +17,17 @@ function ownedBody(bytes: Uint8Array, suffix: Uint8Array): ReadableStream<Uint8A
   return new ReadableStream<Uint8Array>({
     pull(controller) {
       const end = Math.min(offset + BODY_CHUNK_BYTES, length);
-      const chunk = new Uint8Array(end - offset);
-      const prefixEnd = Math.min(end, prefixLength);
-      if (prefix && offset < prefixEnd) chunk.set(prefix.subarray(offset, prefixEnd));
-      if (footer && end > prefixLength)
-        chunk.set(footer.subarray(Math.max(0, offset - prefixLength), end - prefixLength), Math.max(0, prefixLength - offset));
+      let chunk: Uint8Array;
+      if (prefix && end <= prefixLength) {
+        chunk = prefix.slice(offset, end);
+      } else {
+        chunk = new Uint8Array(end - offset);
+        if (prefix && offset < prefixLength) chunk.set(offset === 0 ? prefix : prefix.subarray(offset));
+        if (footer && end > prefixLength) {
+          const start = Math.max(0, offset - prefixLength), stop = end - prefixLength;
+          chunk.set(start === 0 && stop === footer.byteLength ? footer : footer.subarray(start, stop), Math.max(0, prefixLength - offset));
+        }
+      }
       offset = end;
       if (offset >= prefixLength) prefix = undefined;
       controller.enqueue(chunk);
