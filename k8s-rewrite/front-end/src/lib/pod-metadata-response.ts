@@ -3,11 +3,8 @@ import { clusterAvailability, clusterUnavailable } from "./cluster-response";
 import { publicClusterMetadata } from "./cluster-metadata";
 import { podSummary } from "./pod-query";
 
-type Prefix = { body: string | Uint8Array; byteLength: number };
+type Prefix = { body: Uint8Array; byteLength: number };
 const encoder = new TextEncoder();
-// Bound retained text and avoid a manual stream for small immutable entities.
-// Larger encoded prefixes stay private and are copied into each owned body.
-const INLINE_PREFIX_BYTES = 16 * 1024;
 // Copy private bytes only when consumed, without an entity-sized allocation.
 const BODY_CHUNK_BYTES = 64 * 1024;
 function ownedBody(bytes: Uint8Array, suffix: Uint8Array): ReadableStream<Uint8Array> {
@@ -32,7 +29,7 @@ function ownedBody(bytes: Uint8Array, suffix: Uint8Array): ReadableStream<Uint8A
 }
 function encodePrefix(text: string): Prefix {
   const bytes = encoder.encode(text);
-  return { body: bytes.byteLength <= INLINE_PREFIX_BYTES ? text : bytes, byteLength: bytes.byteLength };
+  return { body: bytes, byteLength: bytes.byteLength };
 }
 const projections = new WeakMap<CachedData["pods"], { rows: unknown[]; prefix: Prefix }>();
 
@@ -51,13 +48,7 @@ export function podMetadataResponse(data: Pick<CachedData, "pods" | "availabilit
   const suffixText = `,"availability":${JSON.stringify(clusterAvailability(data))},"privateFieldsOmitted":true}`;
   const suffix = encoder.encode(suffixText);
   const length = prefix.byteLength + suffix.byteLength;
-  let responseBody: string | ReadableStream<Uint8Array>;
-  if (typeof prefix.body === "string") {
-    responseBody = prefix.body + suffixText;
-  } else {
-    responseBody = ownedBody(prefix.body, suffix);
-  }
-  return new Response(responseBody, {
+  return new Response(ownedBody(prefix.body, suffix), {
     headers: { "Content-Type": "application/json", "Cache-Control": "no-store", Vary: "Accept-Encoding", "Content-Length": String(length),
       ...(data.availability.pods?.state === "stale" ? { Warning: '110 - "Stale cluster snapshot"' } : {}) },
   });
