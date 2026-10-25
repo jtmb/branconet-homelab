@@ -6,11 +6,12 @@ import { useState } from "react";
 import {
   Server, HardDrive, GitBranch, Terminal,
   PanelLeftClose, PanelLeft, LayoutDashboard, Key,
-  Container, FolderTree, Rocket, Network, Globe, UsersRound,
+  Container, FolderTree, Rocket, Network, Globe, UsersRound, ShieldCheck,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { href: "/", label: "Overview", icon: LayoutDashboard, color: "text-indigo-400" },
+  { href: "/system-report", label: "System Report", icon: ShieldCheck, color: "text-violet-400" },
   { href: "/nodes", label: "Nodes", icon: Server, color: "text-blue-400" },
   { href: "/pods", label: "Pods", icon: Container, color: "text-cyan-400" },
   { href: "/name-spaces", label: "Namespaces", icon: FolderTree, color: "text-violet-400" },
