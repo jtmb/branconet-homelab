@@ -1,5 +1,27 @@
 # Migration and maintenance status
 
+October25 22:35 UTC: Pi-hole exporter v1.2.0 is adopted through private
+charts main/validated/live Flux `25d6ec1b67d37c4881386b58a3fa02b9e31ef6bf`.
+Paired checks passed for all 20 Pi-hole metric families, positive authenticated
+query statistics, readiness/liveness and metrics through all three node
+addresses. The complete Deployment specification changed only its image;
+Service and native Secret metadata stayed exact. [Exact evidence](evidence/pihole-exporter-upstream-adoption-20261025.json).
+The 22:34 cluster check found all three nodes Ready without pressure, all 55
+PVCs Bound, all desired workloads and 34 HelmReleases/Kustomizations Ready,
+and all attached Longhorn volumes healthy. There are 20 third-party derivative
+transitions remaining. This is upstream ownership adoption; vendor dependency
+findings, final browser acceptance and the full goal remain open.
+
+The next stateful batch has newly resolved official vendor rebuilds for Radarr
+6.4.4.10685, Sonarr 4.0.20.3014 and Bazarr 1.6.2. Their application versions match
+the current installations; vendor image revisions are newer than the earlier
+baseline. [Immutable candidates](evidence/media-upstream-candidates-20261025.json).
+Before adoption, extend the finite preservation profiles, capture fresh current
+API/config/SQL baselines and authenticated cold backups, then verify data and
+new-Pod restart persistence. No stateful cutover is claimed by this inventory.
+No local build or new dependency/compiler/cache tree was created in this
+checkpoint; new operator receipts remain inside the established F: root.
+
 **October25 22:24 UTC:** FlareSolverr and http-echo joined Whoami, Seerr and
 YTPTube on official upstream images. Latest private source is
 `5cfa97c446035d403f3486a9786b53f71cb62872`. Paired live checks proved unchanged

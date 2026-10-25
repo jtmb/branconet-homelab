@@ -1,0 +1,143 @@
+{
+  "UTC": "2026-10-25T22:36:02.604740+00:00",
+  "backendAccepted": true,
+  "upstream": {
+    "UTC": "2026-10-25T22:28:41.709716+00:00",
+    "sourceRepository": "https://github.com/eko/pihole-exporter",
+    "release": {
+      "tag_name": "v1.2.0",
+      "published_at": "2025-07-29T19:15:37Z",
+      "target_commitish": "061ba332c5461943b235d7c1c6c2871bdfd86e4e",
+      "html_url": "https://github.com/eko/pihole-exporter/releases/tag/v1.2.0"
+    },
+    "image": {
+      "reference": "docker.io/ekofr/pihole-exporter:v1.2.0@sha256:242c53ef3c24b88fcbe8184390b456d05604bd50de5732ca3fd3eb24395585b3",
+      "rootDigest": "sha256:242c53ef3c24b88fcbe8184390b456d05604bd50de5732ca3fd3eb24395585b3",
+      "amd64Manifest": "sha256:f76c914b256d0f1d9ab6278cb98853b19d670f2d8ba1e47658e4621624df540b",
+      "configDigest": "sha256:b5302519deefa103f96d495e7eebfc51b756c2f9f8b19ff3cf4e4f899da691d6",
+      "compressedLayerBytes": 3685040,
+      "runtime": {
+        "User": null,
+        "Entrypoint": null,
+        "Cmd": [
+          "./pihole-exporter"
+        ],
+        "WorkingDir": "/root/",
+        "Labels": {
+          "name": "pihole-exporter"
+        }
+      },
+      "created": "2025-07-29T19:17:07.585130328Z"
+    },
+    "unavailableTags": []
+  },
+  "fluxRevision": "validated@sha1:25d6ec1b67d37c4881386b58a3fa02b9e31ef6bf",
+  "helmRevision": "0.1.0+25d6ec1b67d3",
+  "image": "docker.io/ekofr/pihole-exporter:v1.2.0@sha256:242c53ef3c24b88fcbe8184390b456d05604bd50de5732ca3fd3eb24395585b3",
+  "imageID": "docker.io/ekofr/pihole-exporter@sha256:242c53ef3c24b88fcbe8184390b456d05604bd50de5732ca3fd3eb24395585b3",
+  "podUIDBefore": "ba3ac365-1c29-4f82-9778-e465f5d07400",
+  "podUIDAfter": "ac7fa156-7f25-4b7e-be2e-6c35216fd00c",
+  "deploymentUID": "0ca05971-3620-42e2-8f0d-fb04478626a5",
+  "nativeSecretUID": "3549d4ff-f8f2-4e2f-bd34-30db6fd0583f",
+  "completeSpecComparisonExceptImagePassed": true,
+  "nativeSecretAndServiceMetadataPreserved": true,
+  "persistentVolumeConsumers": false,
+  "metricFamiliesPreserved": true,
+  "piholeMetricFamilies": [
+    "pihole_ads_blocked_today",
+    "pihole_ads_percentage_today",
+    "pihole_clients_ever_seen",
+    "pihole_dns_queries_all_types",
+    "pihole_dns_queries_today",
+    "pihole_domains_being_blocked",
+    "pihole_forward_destinations",
+    "pihole_forward_destinations_responsetime",
+    "pihole_forward_destinations_responsevariance",
+    "pihole_queries_cached",
+    "pihole_queries_forwarded",
+    "pihole_querytypes",
+    "pihole_reply",
+    "pihole_request_rate",
+    "pihole_status",
+    "pihole_top_ads",
+    "pihole_top_queries",
+    "pihole_top_sources",
+    "pihole_unique_clients",
+    "pihole_unique_domains"
+  ],
+  "authenticatedQueryStatisticsPositive": true,
+  "healthChecks": {
+    "/readiness": {
+      "status": 200,
+      "bytes": 0
+    },
+    "/liveness": {
+      "status": 200,
+      "bytes": 0
+    }
+  },
+  "publishedRoutes": [
+    {
+      "node": "192.168.0.4",
+      "status": 200,
+      "piholeMetricsPresent": true
+    },
+    {
+      "node": "192.168.0.5",
+      "status": 200,
+      "piholeMetricsPresent": true
+    },
+    {
+      "node": "192.168.0.6",
+      "status": 200,
+      "piholeMetricsPresent": true
+    }
+  ],
+  "sourceSHA256": "32a87c1c68840dba7cbe118dca391c35e9560166a028ec5f6e813d842a9294ec",
+  "beforeReceiptSHA256": "acf34480a1cc58b217f064c88b7fb0daeec75f75488198627bf1c0f343e35370",
+  "afterReceiptSHA256": "0d0edaa6f860bd4fa138164cc8988e6ee2c3169938dd0e6ca1f986cc6aeff97e",
+  "clusterHealth": {
+    "UTC": "2026-10-25T22:34:44.149428+00:00",
+    "nodes": [
+      {
+        "name": "masternode",
+        "uid": "f2df6169-4592-4544-b62c-74d89f598648",
+        "ready": true,
+        "pressure": []
+      },
+      {
+        "name": "workernode1",
+        "uid": "e8d4555f-7cea-445f-b84f-6416964045a9",
+        "ready": true,
+        "pressure": []
+      },
+      {
+        "name": "workernode2",
+        "uid": "eda66e65-f388-4b97-b64f-a709cda81894",
+        "ready": true,
+        "pressure": []
+      }
+    ],
+    "pvcCount": 55,
+    "unboundPVCs": [],
+    "unavailableDeployments": [],
+    "unavailableDaemonSets": [],
+    "notReadyHelmReleases": [],
+    "notReadyKustomizations": [],
+    "nonRunningPods": [
+      {
+        "name": "plex/seerr-image-native-20261024",
+        "phase": "Failed"
+      },
+      {
+        "name": "plex/seerr-image-native-20261024-diagnostic",
+        "phase": "Failed"
+      }
+    ]
+  },
+  "attachedLonghornHealthy": true,
+  "imagesBuilt": false,
+  "actionsUsed": false,
+  "securityStatus": "Official published release adoption; current vendor dependency findings and final catalog review remain open. No zero-CVE claim.",
+  "goalComplete": false
+}
