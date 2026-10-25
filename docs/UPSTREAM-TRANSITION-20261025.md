@@ -22,25 +22,6 @@ new-Pod restart persistence. No stateful cutover is claimed by this inventory.
 No local build or new dependency/compiler/cache tree was created in this
 checkpoint; new operator receipts remain inside the established F: root.
 
-October25 22:24 UTC update: official Whoami, Seerr, YTPTube, FlareSolverr
-and http-echo adoption are accepted for backend behavior at private
-main/validated/live Flux `5cfa97c446035d403f3486a9786b53f71cb62872`.
-The [current image/controller matrix](../evidence/image-ownership-current-20261025.json)
-contains 68 main/init/ephemeral references and 33 app charts; 21 third-party
-derivative transitions remain. Final browser acceptance stays after implementation.
-
-FlareSolverr v3.5.2 and http-echo 1.0.0 retain their exact upstream application
-versions. Only their image and FlareSolverr pull policy changed. Complete
-Deployment specification comparisons, Service/ingress/claim/Secret metadata,
-real HTTP GET/POST/health requests, three-node ingress and FlareSolverr browser
-retrieval passed. The latter created no persistent session. Its vendor browser
-advertises 152 versus the previous custom 156; vendor findings remain open. The
-October23 scan of this exact FlareSolverr base recorded 32 critical/1091 high
-package-advisory rows; that dated evidence is not represented as a fresh scan.
-HashiCorp's latest official release is still 1.0.0 from 2023, with known Go
-advisories. These transitions satisfy upstream ownership, not security closure.
-[Exact paired identities and checks](../evidence/stateless-upstream-adoption-20261025.json).
-
 The controlling objective is [the revised active goal](REVISED-GOAL-20261025.md).
 Earlier derivative recipes and scans remain historical, not an execution plan.
 

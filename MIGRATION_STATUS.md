@@ -22,30 +22,6 @@ new-Pod restart persistence. No stateful cutover is claimed by this inventory.
 No local build or new dependency/compiler/cache tree was created in this
 checkpoint; new operator receipts remain inside the established F: root.
 
-**October25 22:24 UTC:** FlareSolverr and http-echo joined Whoami, Seerr and
-YTPTube on official upstream images. Latest private source is
-`5cfa97c446035d403f3486a9786b53f71cb62872`. Paired live checks proved unchanged
-configuration, resources, Service/ingress/PVC/native Secret metadata, correct
-new Pod digests, echo responses through all three nodes and FlareSolverr browser
-retrieval/session cleanup. [Exact evidence](evidence/stateless-upstream-adoption-20261025.json).
-Official FlareSolverr advertises Chromium 152 versus the former custom 156;
-vendor findings remain unresolved. No new zero-CVE claim is made.
-
-All three nodes were Ready without pressure at 22:16 UTC; all 55 PVCs were Bound,
-all desired workloads and all 34 HelmReleases/Kustomizations Ready, and attached
-Longhorn volumes healthy. Only the two intentionally preserved failed Seerr
-diagnostic Pods remain outside Running/Succeeded. The current ownership matrix
-covers 68 main/init/ephemeral image references and 33 app charts; 21 third-party
-derivative chart transitions remain. Four owned app charts still require their
-approved repository/publication ownership path, with BORTUS kept separate.
-
-Controller cleanup removed 2,903,916,544 allocated Linux bytes after complete
-source/OCI/process/mount checks. All archives, recipes, logs, runtime images and
-unique evidence survive. [Exact paths and retained exceptions](docs/TASK-OUTPUT-INVENTORY.md).
-Earlier encrypted NAS backups and migration/restart evidence remain valid.
-Final IAB acceptance and remaining security/image work stay open; the goal is
-active and incomplete.
-
 **October 25 scope correction:** use maintained upstream releases for third-party
 services; no further bespoke derivative image maintenance. Owned image changes
 require repository-backed provenance and an approved publication path. Existing
