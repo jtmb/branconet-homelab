@@ -136,7 +136,7 @@ def main():
         containers = dep['spec']['template']['spec']['containers']; need(len(containers) == 1 and containers[0]['name'] == workload and containers[0]['image'] == original_image)
         state_mount = next(m for m in containers[0]['volumeMounts'] if m['name'] == mount_alias)
         if args.application == 'seerr':
-            mounts = containers[0]['volumeMounts']
+            mounts = [{**m, 'readOnly': m.get('readOnly', False)} for m in containers[0]['volumeMounts']]
             need(mounts == [{'name': 'data-0', 'mountPath': '/config', 'readOnly': True}, {'name': 'data-0', 'mountPath': '/app/config', 'readOnly': False}])
         need(state_mount['mountPath'] == ('/root/.xteve' if args.application == 'xteve' else '/app/data' if args.application == 'mealie' else '/var/lib/mysql' if args.application == 'ruckus-db' else '/var/www/html' if args.application == 'wordpress' else '/app/config' if args.application == 'homepage' else '/app/state' if args.application == 'qbit-monitor' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
         need(any(v['name'] == mount_alias and v.get('persistentVolumeClaim', {}).get('claimName') == claim for v in dep['spec']['template']['spec']['volumes']))
