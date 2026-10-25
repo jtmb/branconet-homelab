@@ -4,7 +4,7 @@ The application is in `front-end/`; shared application documentation is in repo-
 
 ## Next.js
 
-Read the relevant guide in `front-end/node_modules/next/dist/docs/` before writing code. The installed Next 15.5.27 package lacks that directory; when absent, use official versioned Next 15 documentation and heed deprecations. Route params are Promises and must be awaited.
+Read the relevant guide in `front-end/node_modules/next/dist/docs/` before writing code. The installed Next 15.5.28 package lacks that directory; when absent, use official versioned Next 15 documentation and heed deprecations. Route params are Promises and must be awaited.
 
 ## Documentation is part of every change
 

@@ -1,6 +1,14 @@
-export class KubernetesCommandError extends Error {
+class KubernetesCommandErrorImplementation extends Error {
   constructor(public readonly status: number, message: string) { super(message); }
 }
+
+// Next route bundles share the process-wide kubectl client. Its errors must use
+// the same constructor as each route's instanceof gate, including after reload.
+const errorGlobals = globalThis as typeof globalThis & {
+  __bortusKubernetesCommandError?: typeof KubernetesCommandErrorImplementation;
+};
+export const KubernetesCommandError = errorGlobals.__bortusKubernetesCommandError ??= KubernetesCommandErrorImplementation;
+export type KubernetesCommandError = KubernetesCommandErrorImplementation;
 
 /** Host-shell failures never return captured output or dynamic error text. */
 export function operatorCommandFailure(error: unknown): KubernetesCommandError {
