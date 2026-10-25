@@ -22,7 +22,7 @@ def main():
     if not args.settings_file or args.settings_file.stat().st_size > 65536:
         raise ValueError()
     settings = json.loads(args.settings_file.read_text())
-    allowed = {'metube_state_apply', 'metube_state_phase', 'metube_state_output_dir', 'metube_state_baseline_receipt', 'metube_state_baseline_sha256', 'metube_state_expected_writer_image', 'metube_state_backup_node'}
+    allowed = {'metube_state_apply', 'metube_state_phase', 'metube_state_snapshot_profile', 'metube_state_output_dir', 'metube_state_baseline_receipt', 'metube_state_baseline_sha256', 'metube_state_expected_writer_image', 'metube_state_backup_node'}
     if not isinstance(settings, dict) or set(settings) - allowed or settings.get('metube_state_apply') is not True:
         raise ValueError()
     output = pathlib.Path(settings.get('metube_state_output_dir', ''))

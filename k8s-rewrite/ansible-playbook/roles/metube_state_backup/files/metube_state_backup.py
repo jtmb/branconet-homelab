@@ -99,7 +99,10 @@ def main():
     parser.add_argument('--baseline-receipt', default='')
     parser.add_argument('--baseline-sha256', default='')
     parser.add_argument('--expected-writer-image', default='')
+    parser.add_argument('--snapshot-profile', choices=['original-metube', 'current-ytptube'], default='original-metube')
     args = parser.parse_args(); os.umask(0o077)
+    if args.snapshot_profile == 'current-ytptube':
+        need(args.phase == 'backup' and args.expected_writer_image in ['docker.io/library/ytptube-security-20261023@sha256:7c637f7e9cadf6f7def2243b517ff6101354287e17f9aebed8b0aa386fd1b754', 'ghcr.io/arabcoders/ytptube:v2.7.5@sha256:3ba09ac58f0b541aa7182feb9198b44d3c62158a7749ec00d26de1abad7ca8d7'])
     # No sudo or application credential is required or forwarded to subprocesses.
     os.environ.pop('BRANCONET_MIGRATION_SUDO_PASSWORD', None)
     pins = [(p, protected(p, p == IDENTITY)) for p in [AGE, RECIPIENT, IDENTITY]]
@@ -111,6 +114,8 @@ def main():
     run_id = uuid.uuid4().hex; run = output / ('metube-' + args.phase + '-' + run_id); run.mkdir(mode=0o700)
     receipt_path = run / 'receipt.json'; children = []; reader = None
     receipt = {'schema_version': 1, 'phase': args.phase, 'status': 'started', 'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'restore_verified': False, 'nas_mounted_or_walked': False, 'legacy_reobserved': False, 'writer_scaled_by_helper': False, 'temporary_pod_deleted': False}
+
+    receipt['snapshot_profile'] = args.snapshot_profile
 
     def save():
         path = run / ('receipt-' + uuid.uuid4().hex + '.tmp')
@@ -157,6 +162,9 @@ def main():
                 active.append(pod)
         if args.phase == 'backup':
             need(dep['spec'].get('replicas', 1) == 0 and all(dep['status'].get(k, 0) == 0 for k in ['replicas', 'readyReplicas', 'availableReplicas']) and not active)
+            if args.snapshot_profile == 'current-ytptube':
+                containers = dep['spec']['template']['spec']['containers']
+                need(len(containers) == 1 and containers[0]['image'] == args.expected_writer_image)
             node = args.backup_node
             writer_identity = None
         else:
@@ -221,7 +229,8 @@ def main():
         manifest = json.loads(execute('inventory' if args.phase == 'backup' else 'reobserve'))
         need(manifest['schema_version'] == 1 and manifest['total_file_bytes'] <= MAX_DATA and len(manifest['entries']) <= 4096)
         if args.phase == 'backup':
-            need(not any(name == base or name.startswith(base + '/') for name in manifest['entries'] for base in EXCLUDED))
+            if args.snapshot_profile == 'original-metube':
+                need(not any(name == base or name.startswith(base + '/') for name in manifest['entries'] for base in EXCLUDED))
             cipher = run / 'metube-complete-state.tar.age'
             receipt['operation'] = 'stream_complete_archive'; save()
             producer = execute('archive', canonical(manifest), True)
@@ -232,13 +241,13 @@ def main():
                 target.flush(); os.fsync(target.fileno())
             receipt['operation'] = 'authenticate_complete_archive'; save()
             recovered = decrypt(cipher); need(recovered == manifest)
-            metadata = {'claims': before['claims'], 'algorithm': 'sha256', 'legacy_state_files': {name: row['sha256'] for name, row in manifest['entries'].items() if row['kind'] == 'file'}, 'excluded_new_paths': EXCLUDED}
-            metadata_path = run / 'cold-legacy-metadata.json'
+            metadata = {'claims': before['claims'], 'algorithm': 'sha256', 'legacy_state_files': {name: row['sha256'] for name, row in manifest['entries'].items() if row['kind'] == 'file'}, 'excluded_new_paths': [] if args.snapshot_profile == 'current-ytptube' else EXCLUDED}
+            metadata_path = run / ('current-state-metadata.json' if args.snapshot_profile == 'current-ytptube' else 'cold-legacy-metadata.json')
             with metadata_path.open('x') as stream:json.dump(metadata, stream, sort_keys=True, indent=2); stream.flush(); os.fsync(stream.fileno())
-            receipt.update(cold_archive_verified=True, archive_path=str(cipher), archive_sha256=file_hash(cipher), archive_bytes=cipher.stat().st_size, manifest_sha256=hashlib.sha256(canonical(manifest)).hexdigest(), preservation_baseline=str(metadata_path), preservation_baseline_sha256=file_hash(metadata_path), file_count=len(metadata['legacy_state_files']), file_bytes=manifest['total_file_bytes'], excluded_new_paths=EXCLUDED)
+            receipt.update(cold_archive_verified=True, archive_path=str(cipher), archive_sha256=file_hash(cipher), archive_bytes=cipher.stat().st_size, manifest_sha256=hashlib.sha256(canonical(manifest)).hexdigest(), preservation_baseline=str(metadata_path), preservation_baseline_sha256=file_hash(metadata_path), file_count=len(metadata['legacy_state_files']), file_bytes=manifest['total_file_bytes'], excluded_new_paths=[] if args.snapshot_profile == 'current-ytptube' else EXCLUDED)
         else:
             need(manifest['excluded_new_paths'] == sorted(EXCLUDED))
-            observed = {'claims': before['claims'], 'algorithm': 'sha256', 'legacy_state_files': {name: row['sha256'] for name, row in manifest['entries'].items() if row['kind'] == 'file'}, 'excluded_new_paths': EXCLUDED}
+            observed = {'claims': before['claims'], 'algorithm': 'sha256', 'legacy_state_files': {name: row['sha256'] for name, row in manifest['entries'].items() if row['kind'] == 'file'}, 'excluded_new_paths': [] if args.snapshot_profile == 'current-ytptube' else EXCLUDED}
             observed_path = run / 'legacy-observed-metadata.json'
             with observed_path.open('x') as stream:json.dump(observed, stream, sort_keys=True, indent=2); stream.flush(); os.fsync(stream.fileno())
             expected_view = legacy_view(original_manifest); actual_view = legacy_view(manifest)
@@ -248,7 +257,7 @@ def main():
                 with (run / 'legacy-mismatches.json').open('x') as stream:json.dump({'paths': different}, stream, indent=2)
                 save()
             need(not different)
-            receipt.update(legacy_reobserved=True, baseline_receipt=str(path), baseline_receipt_sha256=args.baseline_sha256, expected_writer_image=args.expected_writer_image, manifest_sha256=hashlib.sha256(canonical(manifest)).hexdigest(), file_count=sum(row['kind'] == 'file' for row in manifest['entries'].values()), file_bytes=manifest['total_file_bytes'], excluded_new_paths=EXCLUDED)
+            receipt.update(legacy_reobserved=True, baseline_receipt=str(path), baseline_receipt_sha256=args.baseline_sha256, expected_writer_image=args.expected_writer_image, manifest_sha256=hashlib.sha256(canonical(manifest)).hexdigest(), file_count=sum(row['kind'] == 'file' for row in manifest['entries'].values()), file_bytes=manifest['total_file_bytes'], excluded_new_paths=[] if args.snapshot_profile == 'current-ytptube' else EXCLUDED)
         need(source_guard(reader['uid']) == before); check_reader()
         for path, identity in pins:need(protected(path, path == IDENTITY) == identity)
         receipt['operation'] = 'delete_only_verified_reader'; save()

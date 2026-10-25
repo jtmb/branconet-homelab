@@ -320,6 +320,13 @@ def qualify(session, state, runtime, folder, receipt):
         raise Refused('test_folder_already_exists')
     if session.request('/api/history/?type=queue&per_page=1')['pagination']['total'] != 0:
         raise Refused('existing_queue_must_be_idle_and_empty')
+    # YTPTube's unique history URL replaces an earlier entry on re-download.
+    # A verification sample must never reuse an existing video's history.
+    history = session.request('/api/history/?type=done&per_page=100&order=DESC')
+    if history['pagination']['total'] > 100:
+        raise Refused('history_exceeds_bounded_duplicate_preflight')
+    if any(item.get('id') == VIDEO for item in history['items']):
+        raise Refused('test_video_already_has_history_no_overwrite')
     nonce = folder.rsplit('-', 1)[1]
     item_id = None
     completed = False
@@ -377,6 +384,7 @@ def download_error_category(message):
 
 
 def main():
+    global VIDEO
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=('bootstrap-secret', 'download', 'check-after-restart', 'check-adoption'))
     parser.add_argument('--receipt', required=True, type=Path)
@@ -384,7 +392,9 @@ def main():
     parser.add_argument('--preservation-baseline', type=Path)
     parser.add_argument('--expected-image')
     parser.add_argument('--runtime-profile', choices=('immutable-derivative', 'official-pinned-updater'), default='immutable-derivative')
+    parser.add_argument('--video-id', choices=('YE7VzlLtp-4', 'aqz-KE-bpKQ'), default=VIDEO)
     args = parser.parse_args()
+    VIDEO = args.video_id
     if args.receipt.exists():
         raise Refused('receipt_already_exists_no_replay')
     prepare_receipt(args.receipt)

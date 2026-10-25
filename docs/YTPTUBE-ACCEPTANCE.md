@@ -42,6 +42,26 @@ A full fresh encrypted cold archive and a separate seven-file legacy check
 still protect data beyond this SQL projection. This section records prepared
 scope; adoption is not claimed until dated execution evidence is added.
 
+The backup role now has an explicit `metube_state_snapshot_profile:
+current-ytptube` option for a quiescent, already-migrated writer. It includes the
+new configuration and package-cache directories, with no exclusions, while
+preserving the original 4 GiB/4096-entry bounds and exact image/claim identities.
+The default `original-metube` profile and original seven-file comparison remain
+unchanged. The current-state profile cannot be used as a replacement legacy
+baseline. Ansible syntax validation passed for the updated role and launcher.
+
+The October25 first upstream sample reused the original video's URL. YTPTube's
+unique `history_url` index replaced the earlier row; the full SQL comparison
+correctly refused restart acceptance. Both media files remained. After a fresh
+full encrypted snapshot of that state, a quiescent transaction restored the
+original row exactly from the authenticated pre-transition archive, replacing
+only the owned verification row and proving every other table unchanged.
+The repair Pod was UID-deleted. Both complete snapshots passed NAS read-back
+checksums and full age authentication; originals remain. The original failed
+check and recovery evidence are retained. Downloader qualification now refuses
+an existing video's history before queuing a sample, and supports a second,
+explicitly selected public Blender sample rather than overwriting prior history.
+
 Current checkpoints and unresolved gates are summarized in [MIGRATION_STATUS.md](../MIGRATION_STATUS.md). This document retains operational contracts and dated attempt history.
 
 `scripts/migration/qualify-ytptube.py` created the absent native authentication
