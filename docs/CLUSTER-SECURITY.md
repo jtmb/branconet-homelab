@@ -778,3 +778,13 @@ archives table, so the original must be proven absent. Only four exact additive
 migrations may differ; all original users, credential/2FA fields, encrypted
 items, organizations, devices, files and metadata must survive. No login, 2FA or
 client-sync result is implied by prepared source or a package scan.
+
+## October25 configuration-preserving application updates
+
+[Homepage](HOMEPAGE-SECURITY-PATCH.md), [qBittorrent](QBITTORRENT-SECURITY-PATCH.md)
+and [Pi-hole exporter](PIHOLE-EXPORTER-SECURITY-PATCH.md) now have exact zero-finding
+artifact scans and live identity/data/API evidence. The monitor repair and its
+complete state backup are verified, with automatic-runtime acceptance pending.
+Mealie and xTeVe candidates remain unadopted; their concrete findings/compatibility
+gates remain part of the active full-cluster goal. No undisclosed-zero-day
+absence, independent restore or final browser acceptance is inferred.

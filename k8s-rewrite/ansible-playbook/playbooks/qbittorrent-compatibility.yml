@@ -1,0 +1,7 @@
+---
+- name: Preserve source-proven qBittorrent defaults after the reviewed update
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - qbittorrent_compatibility

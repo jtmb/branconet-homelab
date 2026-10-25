@@ -74,7 +74,8 @@ Do not execute live operations using example/placeholder identities or hashes.
 | `security-maintenance.yml` | `run-security-maintenance.py`: workers first, then single control plane; kernel/package/containerd patching |
 | `storage-checkpoint.yml` | `run-security-maintenance.py --playbook storage-checkpoint`: fresh online Longhorn snapshot/off-node backup |
 | `control-plane-backup.yml` | `run-control-plane-backup.py`: encrypted configuration/etcd capture and authentication |
-| `cold-application-state-backup.yml` | `cold-application-state-backup.py`: one already-quiesced Arr/Tautulli/Vaultwarden app |
+| `cold-application-state-backup.yml` | One exact allowlisted, already-quiesced application profile, including Homepage, Legacy qBittorrent and monitor notification state; no NAS traversal |
+| `qbittorrent-compatibility.yml` | Restore only original-HMAC-proven5.1 defaults after exact5.3 adoption and synchronize its current VPN port; no Secret/torrent/auth/alert changes |
 | `metube-state-backup.yml` | `run-metube-state-backup.py`: old ytdl PVC archive and legacy-file reobservation |
 | `filesystem-growth.yml` | `run-filesystem-growth.py`: pinned worker1 ext4 filesystem growth, no partition/LV changes |
 | `retired-build-offload.yml` | `run-retired-build-offload.py`: bounded original artifact archival; explicit reviewed selected-cache clearing only |
@@ -265,3 +266,8 @@ Owned maintenance scripts, image recipes and Ansible inputs use LF through
 root `.gitattributes`, preserving executable shell input and reproducible
 content-addressed helper/lock bytes across Windows and WSL checkouts. The policy
 does not alter unrelated application or legacy paths.
+
+The dedicated F-drive build/receiver/scanner/cache profiles also allow only the
+reviewed Mealie, qbit-monitor and xTeVe services. CPU/RAM, queue, disk reserve,
+archive and deadline guards are unchanged. A profile allowlist is not artifact
+adoption. See the exact application evidence and remaining gates in PLAN.md.

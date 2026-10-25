@@ -25,7 +25,7 @@ checkpoint; publication does not mean the goal is complete or authorize a rerun.
 - Patch available compatible node/application vulnerabilities with actual exact
   artifact scans and live checks. Record unfixed findings and migration gates;
   do not claim absence of unknown zero-days or a clean cluster from partial work.
-- Repeatable work uses the 19 included opt-in maintenance playbooks and paired
+- Repeatable work uses the 20 included opt-in maintenance playbooks and paired
   controller/qualification helpers. No destructive reset/bootstrap or broad
   filesystem cleanup belongs to this maintenance deliverable.
 
@@ -141,8 +141,18 @@ config backup, real isolated ZIP/mock-import cleanup and live native bindings/
 config/startup checks passed. http-echo's unchanged-source rebuild has zero scan
 findings and identical Service/ingress replies and retained claim/spec. See
 [Unpackerr](docs/UNPACKERR-ACCEPTANCE.md) and [http-echo](docs/HTTP-ECHO-SECURITY-PATCH.md).
-Homepage's first complete image scan found remaining fixable transitive packages;
-that candidate is retained and not adopted. qBittorrent's current profile is231
-paired Legacy bencoded resumes, not SQLite; its supported LT2.0 candidate still
-needs cold-copy/API/VPN qualification. Final browser and whole-inventory
-acceptance remain open; this checkpoint does not finish the tracked goal.
+Homepage1.13.2 now runs the exact patched runtime with zero scan findings. Its
+complete cold archive is authenticated; all nine active configuration files,
+Native Secret bindings, original PVC/spec and internal HTTP checks passed.
+qBittorrent5.3.0/LT2.0.15 retained all231 Legacy torrents and454 file identities,
+original credentials, paths, priorities and progress after full cold backup and
+source-proven settings compatibility fixes. Its exact image has zero findings.
+The shell monitor's204/cookie incompatibility is being repaired through the same
+private local-validation/Flux owner; its zero-finding artifact and complete
+notification-state backup are verified. Pi-hole exporter's same-source patch
+and three real scrapes passed with zero findings. See
+[Homepage](docs/HOMEPAGE-SECURITY-PATCH.md),
+[qBittorrent](docs/QBITTORRENT-SECURITY-PATCH.md) and
+[exporter](docs/PIHOLE-EXPORTER-SECURITY-PATCH.md). Mealie/xTeVe/Ruckus and the
+remaining exact inventory continue; final browser and whole-inventory acceptance
+remain open. This checkpoint does not finish the tracked goal.

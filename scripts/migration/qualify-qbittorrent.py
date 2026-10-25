@@ -53,6 +53,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
+import urllib.error
 
 NS = 'plex'
 DEP_UID = '404fad04-5e8b-460b-aa29-dbc7450e4a54'
@@ -230,7 +231,15 @@ try:
  cp=configparser.ConfigParser(interpolation=None,strict=True);cp.optionxform=str;cp.read(conf)
  mode=cp.get('BitTorrent','Session\\ResumeDataStorageType',fallback='Legacy')
  assert mode == 'Legacy'
- auth={k:v for section in cp.sections() for k,v in cp[section].items() if k.startswith('WebUI\\') and any(s in k.lower() for s in ['password','username','auth','whitelist','hostheader','csrf','address','port','https','ssl'])}
+ auth={}
+ for section in cp.sections():
+  for k,v in cp[section].items():
+   # qBittorrent5.3 writes WebUI as its own INI section. Compare all original
+   # effective auth keys/values under the same canonical namespace; omit none.
+   name='WebUI\\'+k if section=='WebUI' else k
+   if name.startswith('WebUI\\') and any(s in name.lower() for s in ['password','username','auth','whitelist','hostheader','csrf','address','port','https','ssl']):
+    assert name not in auth or auth[name]==v
+    auth[name]=v
  assert any('Username' in k for k in auth) and any('Password_PBKDF2' in k for k in auth)
  folder=p/'BT_backup'; entries=list(folder.iterdir());assert len(entries)<=10000
  resumes={f.stem:f for f in entries if f.suffix=='.fastresume'};torrents={f.stem:f for f in entries if f.suffix=='.torrent'}
@@ -277,8 +286,24 @@ class API:
         self.cookies = http.cookiejar.CookieJar()
         self.client = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect(),
                                                   urllib.request.HTTPCookieProcessor(self.cookies))
+        # A fresh unauthenticated request must be denied. A successful login
+        # response alone can also mean upstream created an authentication-bypass
+        # session; it is not sufficient evidence of password verification.
+        denied = False
+        try:
+            self.request('app/preferences')
+        except urllib.error.HTTPError as error:
+            denied = error.code in (401, 403)
+            error.close()
+        need(denied and not list(self.cookies), 'api_authentication_bypass_or_unexpected_preflight')
         payload = urllib.parse.urlencode({'username': user, 'password': password}).encode()
-        need(self.request('auth/login', payload) == b'Ok.' and any(c.name == 'SID' and c.value for c in self.cookies), 'native_credentials_not_authenticated')
+        reply = self.request('auth/login', payload)
+        port = urllib.parse.urlsplit(base).port
+        cookie_name = 'SID' if self.last_status == 200 else 'QBT_SID_' + str(port)
+        need(((self.last_status == 200 and reply == b'Ok.') or
+              (self.last_status == 204 and reply == b'')) and
+             any(c.name == cookie_name and c.value and c.path == '/' for c in self.cookies),
+             'native_credentials_not_authenticated')
 
     def request(self, path, data=None):
         bounded()
@@ -293,7 +318,10 @@ class API:
         with self.client.open(req, timeout=10) as response:
             raw = response.read(MAX_REPLY + 1)
             self.bytes += len(raw)
-            need(response.status == 200 and len(raw) <= MAX_REPLY and self.bytes <= MAX_TOTAL, 'api_response_bound')
+            self.last_status = response.status
+            need((response.status == 200 or (path == 'auth/login' and data is not None and
+                                             response.status == 204 and raw == b'')) and
+                 len(raw) <= MAX_REPLY and self.bytes <= MAX_TOTAL, 'api_response_bound')
             return raw
 
     def get(self, path):
@@ -338,6 +366,39 @@ def capture(api, mac, expected_version):
     categories = api.get('torrents/categories')
     tags = api.get('torrents/tags')
     need(isinstance(categories, dict) and isinstance(tags, list) and all(isinstance(t, str) for t in tags), 'category_tag_shape')
+    comparison_prefs = dict(prefs)
+    comparison_categories = categories
+    compatibility = {}
+    if expected_version == '5.3.0':
+        # Exact upstream5.3 migrations, not arbitrary missing-field exceptions.
+        # Preserve fingerprints of the complete new responses as well.
+        for old, enabled, directory in (
+            ('export_dir', 'torrent_files_backup_enabled', 'torrent_files_backup_dir'),
+            ('export_dir_fin', 'torrent_files_finished_backup_dir_enabled', 'torrent_files_finished_backup_dir')):
+            need(type(prefs.get(enabled)) is bool and isinstance(prefs.get(directory), str), 'backup_preference_shape')
+            comparison_prefs[old] = prefs[directory] if prefs[enabled] else ''
+        encryption = prefs.get('mail_notification_encryption_type')
+        need(encryption in ('None', 'SMTPS'), 'smtp_mode_has_no_legacy_equivalent')
+        comparison_prefs['mail_notification_ssl_enabled'] = encryption == 'SMTPS'
+        #5.3 removes the switch and always expands categories. This is true,
+        # never a fabricated false fallback; an old false flag still fails.
+        comparison_prefs['use_subcategories'] = True
+        comparison_categories = {}
+        inherited = {'ratio_limit': -2, 'seeding_time_limit': -2,
+                     'inactive_seeding_time_limit': -2, 'share_limit_action': 'Default',
+                     'share_limits_mode': 'Default'}
+        for name, category in categories.items():
+            need(isinstance(category, dict) and
+                 {k: category.get(k) for k in inherited} == inherited and
+                 set(category) <= set(inherited) | {'name', 'savePath', 'download_path'},
+                 'new_category_policy_not_inherited')
+            #5.1 omitted an unset download_path (QJson Undefined);5.3 emits Null.
+            comparison_categories[name] = {k: v for k, v in category.items()
+                if k in ('name', 'savePath', 'download_path') and not (k == 'download_path' and v is None)}
+        compatibility = {'upstream_commit': '9213075dd5f7b352208361c6a84c1c115efc898e',
+                         'complete_preferences_hmac': mac(prefs), 'complete_categories_hmac': mac(categories),
+                         'removed_subcategory_switch_now_always_enabled': True,
+                         'new_category_policies_inherited': True}
     rows, ids = torrent_rows(api.get('torrents/info'), mac)
     total_files = 0
     for ident, tid in ids.items():
@@ -357,8 +418,9 @@ def capture(api, mac, expected_version):
         rows[ident]['progress'] = end[ident]['progress']
     need(api.get('app/preferences') == prefs and api.get('torrents/categories') == categories and sorted(api.get('torrents/tags')) == sorted(tags), 'settings_changed_during_observation')
     return {'version': version, 'libtorrent': build['libtorrent'], 'native_credentials_authenticated': True,
-            'preferences': {k: mac(v) for k, v in prefs.items() if k != 'listen_port'},
-            'listen_port': prefs['listen_port'], 'categories_hmac': mac(categories), 'tags_hmac': mac(sorted(tags)),
+            'preferences': {k: mac(v) for k, v in comparison_prefs.items() if k != 'listen_port'},
+            'listen_port': prefs['listen_port'], 'categories_hmac': mac(comparison_categories), 'tags_hmac': mac(sorted(tags)),
+            'upstream_compatibility': compatibility,
             'torrents': rows, 'torrent_count': len(rows), 'file_count': total_files,
             'api_calls': api.calls, 'api_bytes': api.bytes}
 
@@ -381,6 +443,8 @@ def compare(before, after, approved):
     need(before.get('schema') == 1 and before.get('mode') == 'baseline' and before.get('passed'), 'baseline_shape')
     need(before['key_binding'] == after['key_binding'], 'hmac_key_changed')
     fail = []
+    if not after['forwarded_port_matches']:
+        fail.append('forwarded_listen_port_mismatch_or_changed')
     for k in ('identity', 'credential_binding', 'launch', 'auth_hmac'):
         if before[k] != after[k]:
             fail.append(k + '_changed')
@@ -462,7 +526,9 @@ def main():
     api = API(base, username, password)
     del username, password
     observation = capture(api, mac, '5.1.4' if args.mode == 'baseline' else '5.3.0')
-    need(observation['listen_port'] == port == forwarded_port(pod), 'forwarded_listen_port_mismatch_or_changed')
+    port_matches = observation['listen_port'] == port == forwarded_port(pod)
+    if args.mode == 'baseline':
+        need(port_matches, 'forwarded_listen_port_mismatch_or_changed')
     # Resume filenames are infohashes; this binds the disk inventory to authenticated API IDs.
     need(set(prof['pair_ids']) == set(observation['torrents']), 'resume_api_inventory_mismatch')
     if args.mode == 'baseline': need(observation['torrent_count'] == 231, 'expected_231_baseline_torrents')
@@ -473,7 +539,7 @@ def main():
     receipt = {'schema': 1, 'mode': args.mode, 'captured_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                'key_binding': mac('qbittorrent-observer-v1'), 'identity': stable, 'runtime': runtime,
                'credential_binding': credential_binding, 'launch': launch_flags, 'auth_hmac': prof['auth_hmac'],
-               'profile': prof, 'observation': observation, 'forwarded_port_matches': True,
+               'profile': prof, 'observation': observation, 'forwarded_port_matches': port_matches,
                'legacy_resume_retained': True, 'comparison': None, 'passed': True,
                'baseline_sha256': hashlib.sha256(args.baseline.read_bytes()).hexdigest() if args.baseline else None,
                'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
@@ -488,7 +554,7 @@ def main():
     print(json.dumps({'status': 'passed' if receipt['passed'] else 'comparison_failed', 'mode': args.mode,
                       'torrent_count': observation['torrent_count'], 'file_count': observation['file_count'],
                       'native_credentials_authenticated': True, 'legacy_resume_retained': True,
-                      'launch': launch_flags, 'forwarded_port_matches': True,
+                      'launch': launch_flags, 'forwarded_port_matches': port_matches,
                       'failures': receipt['comparison']['failures'] if prior else [], 'full_acceptance_complete': False}))
     return 0 if receipt['passed'] else 1
 

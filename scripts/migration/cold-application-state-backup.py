@@ -19,6 +19,9 @@ spec.loader.exec_module(shared)
 need, canonical, file_hash = shared.need, shared.canonical, shared.file_hash
 # Exact identities from metadata-only strict SSH discovery, 2026-10-23.
 TARGETS = {
+    'qbit-monitor': ('plex', '8ea48d58-186d-4c3d-a90a-d6bda3414246', '09945782-cfa0-4dee-ba5f-19b5788d947c', '29f9332d-c2a6-4f24-a83f-210620046cd2', 'jtmb92/qbit-monitor@sha256:b1ba462564843f9f328b287a34e8a7dc4cd1f218e085862a77f42aaa1703ffec'),
+    'homepage': ('homepage', '67484b9d-4971-4840-9385-5478fb0b6b32', '0abccce8-85f7-49df-baea-7825262a258e', 'f1eb8c61-46dc-4743-b5e4-b7ce75110189', 'ghcr.io/gethomepage/homepage:latest@sha256:b129cb0f674bd6d204e215bde2c2fc3f11d6ad0e82f6d20007cf80f74e1acbb1'),
+    'qbittorrent': ('plex', '404fad04-5e8b-460b-aa29-dbc7450e4a54', 'd5fd0644-d2b2-4fe0-925f-9ed9a27a83da', '999128b4-0ae2-4396-a8e4-eebace5d26f0', 'lscr.io/linuxserver/qbittorrent@sha256:570aeb63bdedcb5f9dd2500bd8f0a75581ba07c518c05cabbef0cfeb15451b3f'),
     'unpackerr': ('plex', '176fa046-630c-41df-9a53-5c4f5f5d6024', 'c7af079e-7de5-4e8d-a4ca-1c7d763e023b', '4644e693-b613-465d-a7ff-a5a9d3e1ffc1', 'golift/unpackerr:latest@sha256:4ec141eeb0cb2f971d7c92f21cc40b0d2d50d7920eb7a0557443cca52270c0b0'),
     'plex': ('plex', '62dbb208-e8a8-487c-8264-788cd90e3f9d', '66bf6326-157d-4875-b4c5-1a4d03636f5e', 'f1f3f7d0-4706-43ff-871d-e7b6f7bfe7f2', 'lscr.io/linuxserver/plex@sha256:a3a3a850a64fb747c59f85dbc19b157781c3b9c921a83799127894b0ebdf3a68'),
     'jackett': ('plex', '8ff38b3e-d114-4a03-adfd-2078d359530c', 'cc166e8b-d45a-4e77-bdfe-e874240cfb4d', '7d4e8aea-5715-4ee3-8e56-352b7b1e99f0', 'linuxserver/jackett:latest@sha256:cdea5d3209a6ab1fb8eb954ec0b8169b7d54274617f42bf5c74f22a92075755f'),
@@ -36,7 +39,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('application', choices=sorted(TARGETS))
     parser.add_argument('--output-dir', required=True, type=pathlib.Path)
-    parser.add_argument('--node', choices=['workernode1', 'workernode2'], default='workernode2')
+    parser.add_argument('--node', choices=['masternode', 'workernode1', 'workernode2'], default='workernode2')
     parser.add_argument('--reader-uid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
@@ -44,6 +47,9 @@ def main():
     need(args.apply and os.name == 'posix' and args.reader_uid == args.reader_gid)
     need(args.reader_uid == 33 if args.application == 'wordpress' else args.reader_uid == 999 if args.application == 'wordpress-redis' else args.reader_uid in [0, 1000])
     need(args.application != 'plex' or args.reader_uid == 1000)
+    need(args.application != 'homepage' or (args.reader_uid == 1000 and args.node == 'workernode1'))
+    need(args.application != 'qbit-monitor' or args.reader_uid == 1000)
+    need(args.node == 'masternode' if args.application in ['qbittorrent', 'qbit-monitor'] else args.node in ['workernode1', 'workernode2'])
     max_entries = 131072 if args.application == 'plex' else 8192 if args.application == 'wordpress' else 4096
     max_data = 16 * 1024**3 if args.application == 'plex' else shared.MAX_DATA
     max_metadata = 64 * 1024**2 if args.application == 'plex' else shared.MAX_METADATA
@@ -62,9 +68,11 @@ def main():
     run_id = uuid.uuid4().hex
     run = output / (args.application + '-cold-' + run_id); run.mkdir(mode=0o700)
     namespace, deployment_uid, release_uid, claim_uid, original_image = TARGETS[args.application]
-    claim = ('wordpress-redis-data' if args.application == 'wordpress-redis' else
-             'unpackerr-data-1' if args.application == 'unpackerr' else args.application + '-data-0')
-    mount_alias = 'data' if args.application == 'wordpress-redis' else 'data-1' if args.application == 'unpackerr' else 'data-0'
+    claim = ('qbit-monitor-state' if args.application == 'qbit-monitor' else
+             'qbittorrent-data-0-retry1' if args.application == 'qbittorrent' else
+             'wordpress-redis-data' if args.application == 'wordpress-redis' else
+             args.application + '-data-1' if args.application in ['unpackerr', 'homepage'] else args.application + '-data-0')
+    mount_alias = 'monitor-state' if args.application == 'qbit-monitor' else 'data' if args.application == 'wordpress-redis' else 'data-1' if args.application in ['unpackerr', 'homepage'] else 'data-0'
     receipt = {'schema_version': 1, 'application': args.application, 'status': 'started', 'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'reader_uid': args.reader_uid, 'reader_gid': args.reader_gid, 'restore_verified': False, 'writer_scaled_by_helper': False, 'nas_mounted_or_walked': False, 'temporary_pod_deleted': False}
     children = []; reader = None
 
@@ -97,7 +105,7 @@ def main():
         need(dep['spec'].get('replicas', 1) == 0 and all(dep['status'].get(k, 0) == 0 for k in ['replicas', 'readyReplicas', 'availableReplicas', 'updatedReplicas']))
         containers = dep['spec']['template']['spec']['containers']; need(len(containers) == 1 and containers[0]['name'] == args.application and containers[0]['image'] == original_image)
         state_mount = next(m for m in containers[0]['volumeMounts'] if m['name'] == mount_alias)
-        need(state_mount['mountPath'] == ('/var/www/html' if args.application == 'wordpress' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
+        need(state_mount['mountPath'] == ('/var/www/html' if args.application == 'wordpress' else '/app/config' if args.application == 'homepage' else '/app/state' if args.application == 'qbit-monitor' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
         need(any(v['name'] == mount_alias and v.get('persistentVolumeClaim', {}).get('claimName') == claim for v in dep['spec']['template']['spec']['volumes']))
         need(release['metadata']['uid'] == release_uid and not release['metadata'].get('deletionTimestamp') and release['spec'].get('releaseName') == args.application and release['spec'].get('targetNamespace') == namespace and release['spec'].get('values', {}).get('replicaCount') == 0 and not release['spec'].get('suspend', False))
         need(release['status'].get('observedGeneration', 0) >= release['metadata']['generation'] and any(c['type'] == 'Ready' and c['status'] == 'True' for c in release['status'].get('conditions', [])))

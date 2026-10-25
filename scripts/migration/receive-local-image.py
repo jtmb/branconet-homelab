@@ -17,7 +17,7 @@ spec = importlib.util.spec_from_file_location('reviewed_local_contract', HERE / 
 contract = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(contract)
 BASE = Path('/home/brajam/.local/share/branconet-migration')
-SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter']
+SERVICES = ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve']
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
          re.fullmatch('[0-9a-f]{64}', a.provenance_sha256), 'explicit_receiver_scope')
     os.umask(0o077)
     root = a.build_root
-    expected_parent = BASE / ('local-image-build-offload-20261025' if root.parent.name == 'local-image-build-offload-20261025' and a.service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter'] else 'local-image-build-20261024')
+    expected_parent = BASE / ('local-image-build-offload-20261025' if root.parent.name == 'local-image-build-offload-20261025' and a.service in ['coredns', 'jackett', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve'] else 'local-image-build-20261024')
     need(root.parent == expected_parent and
          re.fullmatch(a.service + '-[0-9a-f]{12}-' + a.run_id[:12], root.name) and
          root.resolve() == root and not root.is_symlink(), 'fixed_build_root')
@@ -60,7 +60,7 @@ def main():
         need(contract.local_identity(path.stat()) == identities[name], 'original_changed_during_hash')
     need(files[original.name]['sha256'] == a.provenance_sha256, 'original_provenance_changed')
     base = BASE / 'local-image-artifacts-20261024'
-    offloaded_receiver = a.service in ['unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter']
+    offloaded_receiver = a.service in ['unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve']
     if offloaded_receiver:
         mount = BASE / 'local-image-build-offload-20261025'
         need(mount.is_mount() and mount.resolve() == mount and mount.stat().st_uid == 1000
