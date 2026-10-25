@@ -84,6 +84,11 @@ export class ClusterResourceCache {
     return { value: usable && !entry.unsupported ? entry.value : undefined, availability };
   }
 
+  /** Read one resource through the same freshness, coalescing and failure path. */
+  readResource(resource: ClusterResource) {
+    return this.readOne(resource);
+  }
+
   async read(resources: readonly ClusterResource[]) {
     const unique = [...new Set(resources)];
     const pairs = await Promise.all(unique.map(async resource => [resource, await this.readOne(resource)] as const));

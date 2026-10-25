@@ -265,8 +265,7 @@ export async function getCachedClusterData(resources: readonly ClusterResource[]
 }
 /** Resource-only snapshot: no overview counters or unrelated projections are constructed. */
 export async function getCachedClusterResource(resource: ClusterResource) {
-  const snapshots = await resourcesCache.read([resource]);
-  return snapshots[resource]!;
+  return resourcesCache.readResource(resource);
 }
 export function invalidateCache(): void { resourcesCache.invalidate(); }
 export function clusterDiagnostics() { return resourcesCache.diagnostics(); }

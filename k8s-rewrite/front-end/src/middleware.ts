@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getSessionFromHeaders } from "@/lib/auth";
+import { GET as getPodMetadata } from "@/app/api/cluster/pods/route";
 
 // Routes that don't require authentication
 const PUBLIC_PATHS = [
@@ -31,7 +32,14 @@ export async function middleware(request: NextRequest) {
   catch { return NextResponse.json({ error: "Authentication service unavailable" }, { status: 503, headers: AUTH_FAILURE_HEADERS }); }
 
   if (session) {
-    // Authenticated — allow through
+    // Invoke the existing metadata GET only after this request's fresh admission.
+    if (request.method === "GET" && pathname === "/api/cluster/pods") {
+      const response = await getPodMetadata(request);
+      // Keep private metadata uncached and avoid a second response transform.
+      response.headers.set("Cache-Control", request.headers.get("accept-encoding")?.includes(";")
+        ? "no-store" : "no-store, no-transform");
+      return response;
+    }
     return NextResponse.next();
   }
 
