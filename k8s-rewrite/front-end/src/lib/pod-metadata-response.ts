@@ -5,6 +5,7 @@ import { podSummary } from "./pod-query";
 
 type Prefix = { body: Uint8Array; byteLength: number };
 const encoder = new TextEncoder();
+const decoder = new TextDecoder();
 // Copy private bytes only when consumed, without an entity-sized allocation.
 const BODY_CHUNK_BYTES = 64 * 1024;
 function ownedBody(bytes: Uint8Array, suffix: Uint8Array): ReadableStream<Uint8Array> {
@@ -33,7 +34,7 @@ function encodePrefix(text: string): Prefix {
   const bytes = encoder.encode(text);
   return { body: bytes, byteLength: bytes.byteLength };
 }
-const projections = new WeakMap<CachedData["pods"], { rows: unknown[]; prefix: Prefix }>();
+const projections = new WeakMap<CachedData["pods"], Prefix>();
 
 export function podMetadataResponse(data: Pick<CachedData, "pods" | "availability">, predicate: (pod: any) => boolean, filtered: boolean): Response {
   const failure = clusterUnavailable(data, "pods");
@@ -41,12 +42,14 @@ export function podMetadataResponse(data: Pick<CachedData, "pods" | "availabilit
   let projection = projections.get(data.pods);
   if (!projection) {
     const rows = publicClusterMetadata(data.pods.map(podSummary)) as unknown[];
-    projection = { rows, prefix: encodePrefix(`{"pods":${JSON.stringify(rows)}`) };
+    projection = encodePrefix(`{"pods":${JSON.stringify(rows)}`);
     projections.set(data.pods, projection);
   }
+  // Keep only immutable encoded metadata between requests. Filtering recovers
+  // the exact original projection, rather than reprojecting mutable raw rows.
   const prefix = filtered
-    ? encodePrefix(`{"pods":${JSON.stringify(projection.rows.filter((_, index) => predicate(data.pods[index])))}`)
-    : projection.prefix;
+    ? encodePrefix(`{"pods":${JSON.stringify((JSON.parse(decoder.decode(projection.body) + "}").pods as unknown[]).filter((_, index) => predicate(data.pods[index])))}`)
+    : projection;
   const suffixText = `,"availability":${JSON.stringify(clusterAvailability(data))},"privateFieldsOmitted":true}`;
   const suffix = encoder.encode(suffixText);
   const length = prefix.byteLength + suffix.byteLength;
