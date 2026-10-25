@@ -8,6 +8,28 @@ const encoder = new TextEncoder();
 // Bound retained text and avoid a manual stream for small immutable entities.
 // Larger encoded prefixes stay private and are copied into each owned body.
 const INLINE_PREFIX_BYTES = 16 * 1024;
+// Copy private bytes only when consumed, without an entity-sized allocation.
+const BODY_CHUNK_BYTES = 64 * 1024;
+function ownedBody(bytes: Uint8Array, suffix: Uint8Array): ReadableStream<Uint8Array> {
+  let prefix: Uint8Array | undefined = bytes;
+  let footer: Uint8Array | undefined = suffix;
+  let offset = 0;
+  return new ReadableStream<Uint8Array>({
+    pull(controller) {
+      if (prefix && offset < prefix.byteLength) {
+        const end = Math.min(offset + BODY_CHUNK_BYTES, prefix.byteLength);
+        controller.enqueue(prefix.slice(offset, end));
+        offset = end;
+        if (offset === prefix.byteLength) prefix = undefined;
+      } else {
+        if (footer) controller.enqueue(footer);
+        footer = undefined;
+        controller.close();
+      }
+    },
+    cancel() { prefix = undefined; footer = undefined; },
+  }, { highWaterMark: 0 });
+}
 function encodePrefix(text: string): Prefix {
   const bytes = encoder.encode(text);
   return { body: bytes.byteLength <= INLINE_PREFIX_BYTES ? text : bytes, byteLength: bytes.byteLength };
@@ -33,16 +55,7 @@ export function podMetadataResponse(data: Pick<CachedData, "pods" | "availabilit
   if (typeof prefix.body === "string") {
     responseBody = prefix.body + suffixText;
   } else {
-    const body = new Uint8Array(length);
-    body.set(prefix.body);
-    body.set(suffix, prefix.byteLength);
-    // Response retains this fresh owned stream without a BufferSource copy.
-    responseBody = new ReadableStream<Uint8Array>({
-      start(controller) {
-        controller.enqueue(body);
-        controller.close();
-      },
-    });
+    responseBody = ownedBody(prefix.body, suffix);
   }
   return new Response(responseBody, {
     headers: { "Content-Type": "application/json", "Cache-Control": "no-store", Vary: "Accept-Encoding", "Content-Length": String(length),
