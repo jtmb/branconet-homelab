@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import shlex
 import stat
+import struct
 import subprocess
 import sys
 import tarfile
@@ -48,6 +49,60 @@ SECURITY_IMAGES = {
     'sonarr': 'docker.io/library/sonarr-security-20261023@sha256:7d297bbadfd74dd2c346b48d32530d6fa632bc902739d4f7aaadbd898375f593',
 }
 
+
+def memory_database_from_wal(database, wal):
+    """Recover a committed cold snapshot in RAM; never mutate the archive/files.
+
+    SQLite's documented WAL format/checksum: https://sqlite.org/fileformat2.html#walformat
+    Refuse incomplete frames/transactions or invalid checksums rather than guessing.
+    """
+    need(isinstance(database, bytearray) and 100 <= len(database) <= MAX_SQLITE)
+    need(database[:16] == b'SQLite format 3\x00')
+    page_size = int.from_bytes(database[16:18], 'big')
+    page_size = 65536 if page_size == 1 else page_size
+    need(512 <= page_size <= 65536 and page_size & (page_size - 1) == 0 and len(database) % page_size == 0)
+    if not wal:
+        return database, {'walFrames': 0, 'walChecksumsVerified': True}
+    need(len(database) + len(wal) <= MAX_SQLITE and len(wal) >= 32)
+    magic, version, size, _, salt0, salt1, sum0, sum1 = struct.unpack('>8I', wal[:32])
+    need(magic in [0x377f0682, 0x377f0683] and version == 3007000 and size == page_size)
+    endian = '<' if magic == 0x377f0682 else '>'
+
+    def checksum(data, seed=(0, 0)):
+        need(len(data) % 8 == 0)
+        s0, s1 = seed
+        for x0, x1 in struct.iter_unpack(endian + 'II', data):
+            s0 = (s0 + x0 + s1) & 0xffffffff
+            s1 = (s1 + x1 + s0) & 0xffffffff
+        return s0, s1
+
+    need(checksum(wal[:24]) == (sum0, sum1))
+    frame_size = page_size + 24
+    need((len(wal) - 32) % frame_size == 0)
+    frames = []
+    seed = (sum0, sum1)
+    for offset in range(32, len(wal), frame_size):
+        page, commit_pages, s0, s1, c0, c1 = struct.unpack('>6I', wal[offset:offset + 24])
+        need(0 < page <= MAX_SQLITE // page_size and (s0, s1) == (salt0, salt1))
+        seed = checksum(wal[offset:offset + 8], seed)
+        seed = checksum(wal[offset + 24:offset + frame_size], seed)
+        need(seed == (c0, c1))
+        frames.append((page, commit_pages, offset + 24))
+    if not frames:
+        return database, {'walFrames': 0, 'walChecksumsVerified': True}
+    pages = frames[-1][1]
+    need(0 < pages <= MAX_SQLITE // page_size)  # Last frame must commit; no pending tail.
+    final_size = pages * page_size
+    if final_size > len(database):
+        database.extend(b'\x00' * (final_size - len(database)))
+    else:
+        del database[final_size:]
+    for page, _, offset in frames:
+        if page <= pages:
+            start = (page - 1) * page_size
+            database[start:start + page_size] = wal[offset:offset + page_size]
+    return database, {'walFrames': len(frames), 'walChecksumsVerified': True, 'committedPages': pages}
+
 # Identical fingerprint code runs on tmpfs cold files and in the RO reader.
 # It never logs values. Only the live path uses the SQLite backup API, into RAM.
 SQLITE_SOURCE = r'''
@@ -70,7 +125,14 @@ def cell(value):
     raise ValueError('sqlite-value-domain')
 def fingerprint(path,key,domain,selected=None,live=False):
     deadline=time.monotonic()+90
-    source=sqlite3.connect(Path(path).as_uri()+'?mode=ro',uri=True,timeout=5,isolation_level=None)
+    if isinstance(path,(bytes,bytearray)):
+        check(len(path)<=128*1024*1024 and path[:16]==b'SQLite format 3\x00')
+        view=path if isinstance(path,bytearray) else bytearray(path);check(view[18:20] in [b'\x01\x01',b'\x02\x02'])
+        # Only the RAM query view changes journal-mode header bytes. Archive is immutable.
+        view[18:20]=b'\x01\x01';source=sqlite3.connect(':memory:',isolation_level=None)
+        source.deserialize(view);view=None
+    else:
+        source=sqlite3.connect(Path(path).as_uri()+'?mode=ro',uri=True,timeout=5,isolation_level=None)
     memory=None
     try:
         source.execute('PRAGMA query_only=ON')
@@ -158,12 +220,15 @@ def main():
     parser.add_argument('--output-dir', type=Path, required=True)
     parser.add_argument('--apply', action='store_true')
     parser.add_argument('--security-patch', action='store_true', help='Finite same-app local image profile; requires media-security-20261025 cold receipt')
+    parser.add_argument('--upstream-adoption', action='store_true', help='Finite same-app vendor target; process-memory cold SQL, no temporary database files')
     args = parser.parse_args()
+    need(not args.upstream_adoption or args.security_patch)
     need(args.apply and os.name == 'posix')
     os.umask(0o077)
     key = sys.stdin.buffer.read(4097).rstrip(b'\r\n')
     need(32 <= len(key) <= 4096 and b'\n' not in key and b'\r' not in key)
-    need(any(line.split()[1:3] == ['/dev/shm', 'tmpfs'] for line in Path('/proc/mounts').read_text().splitlines()))
+    if not args.upstream_adoption:
+        need(any(line.split()[1:3] == ['/dev/shm', 'tmpfs'] for line in Path('/proc/mounts').read_text().splitlines()))
     protected(args.cold_receipt)
     need(shared.file_hash(args.cold_receipt) == args.cold_receipt_sha256 and args.cold_receipt.stat().st_size <= 65536)
     cold = json.loads(args.cold_receipt.read_bytes())
@@ -172,7 +237,11 @@ def main():
         target['old'] = target['new']
         target['new'] = SECURITY_IMAGES[args.application]
         target['runtime'] = target['new'].rsplit('@', 1)[1]
-        need(cold.get('generation') == 'media-security-20261025')
+        need(cold.get('generation') == ('upstream-media-20261025' if args.upstream_adoption else 'media-security-20261025'))
+    if args.upstream_adoption:
+        target['old'] = SECURITY_IMAGES[args.application]
+        upstream = {'radarr': {'new': 'docker.io/linuxserver/radarr:latest@sha256:084b3b2ab1d0ef930660727259546a241f2bdf67c9ed085d54bf1486a6887c9b', 'runtime': 'sha256:41fdc1672209c2ef31c5260015ec8b96e3c75513e60a667eb052e1ff54b4cfa9'}, 'sonarr': {'new': 'docker.io/linuxserver/sonarr:latest@sha256:48e36b608b461273b9dae857725cd0561a127f2c694b687318f6d0c5ce63e5c9', 'runtime': 'sha256:a674ae620ca7ce1246b377bcac13a7500567196cf2207059e68146fa4dc169f7'}}
+        target.update(upstream[args.application])
     claim = args.application + '-data-0'
     need(cold['status'] == 'completed' and cold['application'] == args.application and cold['cold_archive_verified'] is True)
     for name in ('deployment_uid', 'claim_uid', 'helmrelease_uid', 'original_image'):
@@ -191,7 +260,7 @@ def main():
     info = output.lstat(); need(stat.S_ISDIR(info.st_mode) and info.st_uid == os.getuid() and not info.st_mode & 0o077)
     run_id = uuid.uuid4().hex
     run = output / (args.application + '-sqlite-' + run_id); run.mkdir(mode=0o700)
-    receipt = {'schema_version': 1, 'application': args.application, 'security_patch': args.security_patch, 'status': 'started',
+    receipt = {'schema_version': 1, 'application': args.application, 'security_patch': args.security_patch, 'upstream_adoption': args.upstream_adoption, 'status': 'started',
                'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                'cold_receipt_sha256': args.cold_receipt_sha256, 'archive_sha256': cold['archive_sha256'],
                'writer_scaled': False, 'nas_or_secrets_mounted': False, 'temporary_pod_deleted': False,
@@ -273,31 +342,55 @@ def main():
         selected = {name: row for name, row in manifest['entries'].items() if name in names}
         need('data-0/' + args.application + '.db' in selected and all(row['kind'] == 'file' for row in selected.values()))
         need(sum(row['bytes'] for row in selected.values()) <= MAX_SQLITE)
-        need(os.statvfs('/dev/shm').f_bavail * os.statvfs('/dev/shm').f_frsize >= MAX_SQLITE + 16 * 1024 ** 2)
         namespace = {}; exec(SQLITE_SOURCE, namespace)
         domain = {'application': args.application, 'deployment_uid': target['deployment_uid'], 'pvc_uid': target['claim_uid']}
-        receipt['operation'] = 'cold_sqlite_tmpfs_observation'; save()
-        with tempfile.TemporaryDirectory(prefix=args.application + '-sqlite-', dir='/dev/shm') as folder:
-            folder = Path(folder); folder.chmod(0o700)
-            child = decrypt(archive, children); seen = set(); total = 0
+        if args.upstream_adoption:
+            receipt['operation'] = 'cold_sqlite_process_memory_observation'; save()
+            child = decrypt(archive, children); seen=set(); database=None; wal=bytearray()
             with tarfile.open(fileobj=child.stdout, mode='r|') as bundle:
                 for member in bundle:
-                    name = member.name.rstrip('/')
+                    name=member.name.rstrip('/')
                     if name not in selected:
                         if member.isfile():
-                            source = bundle.extractfile(member)
-                            for block in iter(lambda: source.read(shared.CHUNK), b''): pass
+                            stream=bundle.extractfile(member)
+                            for block in iter(lambda: stream.read(shared.CHUNK), b''): pass
                         continue
-                    need(name not in seen and member.isfile() and member.size == selected[name]['bytes'])
-                    seen.add(name); total += member.size; need(total <= MAX_SQLITE)
-                    destination = folder / Path(name).name; digest = hashlib.sha256()
-                    source = bundle.extractfile(member)
-                    with destination.open('xb') as out:
-                        for block in iter(lambda: source.read(shared.CHUNK), b''):
-                            out.write(block); digest.update(block)
-                    need(digest.hexdigest() == selected[name]['sha256'])
-            finish_decrypt(child); need(seen == set(selected))
-            baseline = namespace['fingerprint'](folder / (args.application + '.db'), key, domain)
+                    need(name not in seen and member.isfile() and member.size==selected[name]['bytes'])
+                    seen.add(name);stream=bundle.extractfile(member);digest=hashlib.sha256();payload=bytearray()
+                    for block in iter(lambda: stream.read(shared.CHUNK), b''):
+                        digest.update(block)
+                        if name.endswith(('.db','-wal')):payload.extend(block)
+                    need(digest.hexdigest()==selected[name]['sha256'])
+                    if name.endswith('.db'):database=payload
+                    elif name.endswith('-wal'):wal=payload
+            finish_decrypt(child);need(seen==set(selected) and database is not None)
+            database, wal_proof = memory_database_from_wal(database, wal)
+            receipt['cold_memory_wal_recovery'] = wal_proof
+            baseline=namespace['fingerprint'](database,key,domain);database=wal=payload=None
+        else:
+            need(os.statvfs('/dev/shm').f_bavail * os.statvfs('/dev/shm').f_frsize >= MAX_SQLITE + 16 * 1024 ** 2)
+            receipt['operation'] = 'cold_sqlite_tmpfs_observation'; save()
+            with tempfile.TemporaryDirectory(prefix=args.application + '-sqlite-', dir='/dev/shm') as folder:
+                folder = Path(folder); folder.chmod(0o700)
+                child = decrypt(archive, children); seen = set(); total = 0
+                with tarfile.open(fileobj=child.stdout, mode='r|') as bundle:
+                    for member in bundle:
+                        name = member.name.rstrip('/')
+                        if name not in selected:
+                            if member.isfile():
+                                source = bundle.extractfile(member)
+                                for block in iter(lambda: source.read(shared.CHUNK), b''): pass
+                            continue
+                        need(name not in seen and member.isfile() and member.size == selected[name]['bytes'])
+                        seen.add(name); total += member.size; need(total <= MAX_SQLITE)
+                        destination = folder / Path(name).name; digest = hashlib.sha256()
+                        source = bundle.extractfile(member)
+                        with destination.open('xb') as out:
+                            for block in iter(lambda: source.read(shared.CHUNK), b''):
+                                out.write(block); digest.update(block)
+                        need(digest.hexdigest() == selected[name]['sha256'])
+                finish_decrypt(child); need(seen == set(selected))
+                baseline = namespace['fingerprint'](folder / (args.application + '.db'), key, domain)
         receipt['cold'] = baseline
         receipt['operation'] = 'ready_writer_identity_fence'; save()
         before = fence(); receipt['writer'] = before

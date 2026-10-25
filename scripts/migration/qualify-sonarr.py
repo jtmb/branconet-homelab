@@ -316,19 +316,26 @@ def write_new(path, value):
 
 
 def main():
-    global OLD, NEW, NEW_RUNTIME, SECURITY_PATCH
+    global OLD, NEW, NEW_RUNTIME, SECURITY_PATCH, SECURITY_BASELINE_RUNTIME
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=['baseline', 'after', 'restart'])
     parser.add_argument('--baseline', type=Path)
     parser.add_argument('--prior-receipt', type=Path)
     parser.add_argument('--receipt', required=True, type=Path)
     parser.add_argument('--security-patch', action='store_true', help='Same 4.0.20.3014 app; finite vendor-to-local security overlay')
+    parser.add_argument('--upstream-adoption', action='store_true', help='Finite current-local to vendor same-app profile; requires --security-patch preservation rules')
     args = parser.parse_args()
+    need(not args.upstream_adoption or args.security_patch, 'modern_same_app_profile_required')
     SECURITY_PATCH = args.security_patch
     if args.security_patch:
         OLD = NEW
         NEW = 'docker.io/library/sonarr-security-20261023@sha256:7d297bbadfd74dd2c346b48d32530d6fa632bc902739d4f7aaadbd898375f593'
         NEW_RUNTIME = NEW.rsplit('@', 1)[1]
+    if args.upstream_adoption:
+        OLD = 'docker.io/library/sonarr-security-20261023@sha256:7d297bbadfd74dd2c346b48d32530d6fa632bc902739d4f7aaadbd898375f593'
+        NEW = 'docker.io/linuxserver/sonarr:latest@sha256:48e36b608b461273b9dae857725cd0561a127f2c694b687318f6d0c5ce63e5c9'
+        SECURITY_BASELINE_RUNTIME = OLD.rsplit('@', 1)[1]
+        NEW_RUNTIME = 'sha256:a674ae620ca7ce1246b377bcac13a7500567196cf2207059e68146fa4dc169f7'
     need(os.name == 'posix', 'master_linux_operator_required')
     os.umask(0o077)
     # Exactly one existing operator HMAC key; never create or persist key material here.
@@ -357,6 +364,7 @@ def main():
         prior = protected_file(args.baseline)
         need(prior.get('mode') == 'baseline' and prior.get('schema_version') == 1, 'baseline_shape')
         need(prior.get('security_patch', False) == args.security_patch, 'same_qualification_scope')
+        need(prior.get('upstream_adoption', False) == args.upstream_adoption, 'upstream_profile_scope')
         if args.security_patch:
             need(prior['identity']['image'] == OLD and prior['identity']['runtime_digest'] in [SECURITY_BASELINE_RUNTIME, OLD.rsplit('@', 1)[1]], 'security_baseline_image')
             need(prior['observation']['version'] == '4.0.20.3014', 'security_baseline_version')
@@ -367,12 +375,13 @@ def main():
         prior = protected_file(args.prior_receipt)
         need(prior.get('mode') == 'after' and prior.get('schema_version') == 1 and prior.get('baseline_sha256') == baseline_sha, 'prior_receipt_shape')
         need(prior.get('security_patch', False) == args.security_patch, 'same_restart_scope')
+        need(prior.get('upstream_adoption', False) == args.upstream_adoption, 'upstream_profile_scope')
         need(prior['identity']['claims'] == start['claims'] and prior['identity']['image'] == start['image'], 'restart_identity')
         need(prior['identity']['pod_uid'] != start['pod_uid'] or prior['identity']['restart_count'] < start['restart_count'], 'restart_not_observed')
         compare(prior['observation'], observation)
     # Private runtime names/IPs are used in memory but omitted from durable receipts.
     safe_identity = {k: v for k, v in start.items() if k not in ['pod_name', 'cluster_ip']}
-    receipt = {'schema_version': 1, 'mode': args.mode, 'security_patch': args.security_patch, 'captured_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    receipt = {'schema_version': 1, 'mode': args.mode, 'security_patch': args.security_patch, 'upstream_adoption': args.upstream_adoption, 'captured_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                'identity': safe_identity, 'observation': observation, 'comparison_mismatches': checks,
                'baseline_sha256': baseline_sha, 'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                'get_only': True, 'api_preservation_passed': args.mode != 'baseline',

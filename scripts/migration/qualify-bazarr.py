@@ -256,7 +256,7 @@ def write_new(path, value):
 
 
 def main():
-    global OLD, NEW, NEW_RUNTIME, SECURITY_PATCH
+    global OLD, NEW, NEW_RUNTIME, SECURITY_PATCH, SECURITY_BASELINE_RUNTIME
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=['baseline', 'after', 'restart'])
     parser.add_argument('--baseline', type=Path)
@@ -264,12 +264,19 @@ def main():
     parser.add_argument('--vendor-normalization-proof', type=Path)
     parser.add_argument('--receipt', required=True, type=Path)
     parser.add_argument('--security-patch', action='store_true', help='Same1.6.2 app; exact reviewed local dependency/OS overlay, no vendor normalization')
+    parser.add_argument('--upstream-adoption', action='store_true', help='Finite current-local to vendor same-app profile; requires --security-patch preservation rules')
     args = parser.parse_args()
+    need(not args.upstream_adoption or args.security_patch, 'modern_same_app_profile_required')
     SECURITY_PATCH = args.security_patch
     if args.security_patch:
         OLD = NEW
         NEW = 'docker.io/library/bazarr-security-20261023@sha256:bcf9a782f3381b4182bed0985e0d38df79da0218ead2ca47c577595e9dafe21b'
         NEW_RUNTIME = NEW.rsplit('@', 1)[1]
+    if args.upstream_adoption:
+        OLD = 'docker.io/library/bazarr-security-20261023@sha256:bcf9a782f3381b4182bed0985e0d38df79da0218ead2ca47c577595e9dafe21b'
+        NEW = 'ghcr.io/hotio/bazarr:latest@sha256:32204ef90d4dcb54ad5fb019810f4ef805ced9c54853ae552cf09a41c056b14b'
+        SECURITY_BASELINE_RUNTIME = OLD.rsplit('@', 1)[1]
+        NEW_RUNTIME = 'sha256:8696d2b429f88dcb8049357be3d24c12e6c79a3aaa9c063ac7107d59914434e5'
     os.umask(0o077)
     # Exactly one existing operator HMAC key; never create or persist key material here.
     raw = sys.stdin.buffer.read(66)
@@ -291,6 +298,7 @@ def main():
         need(prior['identity']['claims'] == start['claims'] and prior['identity']['service_uid'] == start['service_uid'], 'original_claim_or_service_changed')
         baseline_sha = hashlib.sha256(args.baseline.read_bytes()).hexdigest()
         need(prior.get('security_patch', False) == args.security_patch, 'same_qualification_scope')
+        need(prior.get('upstream_adoption', False) == args.upstream_adoption, 'upstream_profile_scope')
         if args.security_patch:
             need(prior['identity']['image'] == OLD and prior['identity']['runtime_digest'] in [SECURITY_BASELINE_RUNTIME, OLD.rsplit('@', 1)[1]], 'security_baseline_image')
             need(prior['observation']['application']['version'] == '1.6.2', 'security_baseline_version')
@@ -303,6 +311,7 @@ def main():
         prior = protected_file(args.prior_receipt)
         need(prior.get('mode') == 'after' and prior.get('schema_version') == 1 and prior.get('baseline_sha256') == baseline_sha, 'prior_receipt_shape')
         need(prior.get('security_patch', False) == args.security_patch, 'same_restart_scope')
+        need(prior.get('upstream_adoption', False) == args.upstream_adoption, 'upstream_profile_scope')
         if not args.security_patch:
             need(prior.get('vendor_normalization', {}).get('proof_sha256') == NORMALIZATION_PROOF_SHA256, 'prior_normalization_proof_binding')
         need(prior['identity']['claims'] == start['claims'] and prior['identity']['image'] == start['image'], 'restart_identity')
@@ -310,7 +319,7 @@ def main():
         compare(prior['observation'], observation)
     # Private runtime names/IPs are used in memory but omitted from durable receipts.
     safe_identity = {k: v for k, v in start.items() if k not in ['pod_name', 'cluster_ip']}
-    receipt = {'schema_version': 1, 'mode': args.mode, 'security_patch': args.security_patch, 'captured_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    receipt = {'schema_version': 1, 'mode': args.mode, 'security_patch': args.security_patch, 'upstream_adoption': args.upstream_adoption, 'captured_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
                'identity': safe_identity, 'observation': observation, 'comparison_mismatches': checks,
                'baseline_sha256': baseline_sha, 'vendor_normalization': normalization,
                'script_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),

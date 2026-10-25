@@ -49,7 +49,7 @@ def main():
     parser.add_argument('--reader-uid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
-    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-seerr-20261025'], default='original')
+    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025'], default='original')
     args = parser.parse_args()
     need(args.apply and os.name == 'posix' and args.reader_uid == args.reader_gid)
     need((args.application == 'seerr') == (args.generation == 'upstream-seerr-20261025'))
@@ -94,6 +94,10 @@ def main():
             'radarr': 'docker.io/linuxserver/radarr:latest@sha256:fc0ae3c50f8128b97e84381903ec8d6845c3a569641cb7117c124376cccb57c1',
             'sonarr': 'docker.io/linuxserver/sonarr:latest@sha256:889dcc58c6aea859033985894b519b2e6b1e55d92527ed123f9f52e42ae7c97b',
         }
+        need(args.application in current)
+        original_image = current[args.application]
+    if args.generation == 'upstream-media-20261025':
+        current = {'radarr': 'docker.io/library/radarr-security-20261023@sha256:b79e4e0e3bec790e4f8a48cca83fd5b34e1267f672e27496cf1b95e732fed83c', 'sonarr': 'docker.io/library/sonarr-security-20261023@sha256:7d297bbadfd74dd2c346b48d32530d6fa632bc902739d4f7aaadbd898375f593', 'bazarr': 'docker.io/library/bazarr-security-20261023@sha256:bcf9a782f3381b4182bed0985e0d38df79da0218ead2ca47c577595e9dafe21b'}
         need(args.application in current)
         original_image = current[args.application]
     workload = 'overseerr' if args.application == 'seerr' else 'xteve' if args.application in ['xteve', 'xteve-config'] else args.application
