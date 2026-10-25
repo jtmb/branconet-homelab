@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { unitTestPlan, executionFor } from './current-session-unit-plan.mjs';
+import { unitTestPlan, executionFor } from './deploy-history-delete-unit-plan.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const args = process.argv.slice(2);
