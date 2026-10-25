@@ -10,14 +10,15 @@ rebuild or promotion is authorized. [Full correction and goal-control receipt](R
 
 Recorded October 25, 2026. This is an account of maintenance already performed
 and remaining work, not a claim that the cluster is free of vulnerabilities.
-The main goal is paused during the explicitly requested artifact cleanup.
+The revised full goal is active; the authorized cleanup gate has passed.
 GitHub Actions remains disabled; local validation promotes reviewed charts to
 `validated`, which Flux reconciles. No image build deploys itself.
 
 ## Who maintains the images
 
-Most services are upstream applications. We maintain reviewed derivative recipes
-in the private charts repository rather than claiming ownership of those apps.
+Most services are upstream applications. Earlier work prepared derivative recipes
+in the private charts repository; this is historical and superseded by the
+upstream-only correction above.
 Those recipes pin inputs, update available OS/runtime/compiler dependencies, and
 retain the application's existing data/configuration contract. A compatible
 upstream application release can replace an older release after state and

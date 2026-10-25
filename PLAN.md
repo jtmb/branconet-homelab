@@ -7,21 +7,24 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
-October25 22:00 UTC execution: Whoami, Seerr and YTPTube upstream backend
-adoption passed. YTPTube preserves the original account, nine presets, original
-history and all seven legacy files. A distinct five-second H.264/AAC YouTube
-sample and its history/runtime persisted on a new Pod. Its original history row
-was restored exactly after the first repeated-video verification replaced it;
-the failed check, both full encrypted backups, verification record and all media
-remain recoverable. Both archives and companion metadata passed authenticated
-SMB read-back. [Exact YTPTube receipt](evidence/ytptube-upstream-adoption-20261025.json).
-Current private charts main/validated/live Flux is
-`4db7673bcc1a8989a674c4f1dc26926420165b92`. All three nodes are Ready, all 55 PVCs
-Bound, all desired workloads and all 34 HelmReleases available/Ready, with all
-attached Longhorn volumes healthy at the 21:58 UTC check. The refreshed ownership
-matrix has 23 third-party derivative chart transitions remaining. Continue those
-transitions and current catalog remediation; final IAB acceptance remains after
-implementation. The full goal remains active and incomplete.
+October25 22:24 UTC execution: official Whoami, Seerr, YTPTube,
+FlareSolverr and http-echo adoption has passed backend verification. Latest
+private charts/main/validated/live Flux is
+`5cfa97c446035d403f3486a9786b53f71cb62872`. The two stateless transitions passed
+full configuration and identity comparisons, real Service/three-node ingress
+checks, and FlareSolverr browser retrieval with temporary-session cleanup.
+[Exact paired evidence](evidence/stateless-upstream-adoption-20261025.json).
+FlareSolverr's official browser advertises 152 instead of the earlier custom 156;
+vendor dependency findings remain open. This is policy adoption, not a claim
+that those CVEs were fixed. All three nodes, 55 PVCs, 34 HelmReleases and desired
+workloads passed health checks; all attached Longhorn volumes are healthy.
+There are 21 third-party derivative chart transitions left in the current matrix.
+An additional 2,903,916,544 allocated controller Linux bytes were removed after
+cache/empty-directory safety checks, preserving complete sources, logs and OCI
+archives. [Exact cleanup and retained exceptions](docs/TASK-OUTPUT-INVENTORY.md).
+Continue upstream transitions and current vulnerability triage. Final IAB
+acceptance and the full goal remain open; existing migration data/restart
+evidence is preserved, including [YTPTube](evidence/ytptube-upstream-adoption-20261025.json).
 
 ## Bounded finish plan — October 25, 20:24 UTC
 

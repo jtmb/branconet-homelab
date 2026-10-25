@@ -1,12 +1,23 @@
 # Repository-backed image transition
 
-October25 20:55 UTC update: official Whoami and Seerr adoption are accepted at
-charts main/validated/live Flux `08392b8d6d9b3a682442cd734b484e27550f9249`.
-The dedicated publisher is on its own main branch; the authoring checkout's old
-local main remains preserved and unused. [Current full image/controller matrix](../evidence/image-ownership-current-20261025.json)
-contains68 main/init/ephemeral references and33 application charts. Twenty-four
-third-party derivative chart transitions remain. [Seerr's fresh data/restart and
-HTTPS evidence](SEERR-ACCEPTANCE.md) supersedes its preparation-only section below.
+October25 22:24 UTC update: official Whoami, Seerr, YTPTube, FlareSolverr
+and http-echo adoption are accepted for backend behavior at private
+main/validated/live Flux `5cfa97c446035d403f3486a9786b53f71cb62872`.
+The [current image/controller matrix](../evidence/image-ownership-current-20261025.json)
+contains 68 main/init/ephemeral references and 33 app charts; 21 third-party
+derivative transitions remain. Final browser acceptance stays after implementation.
+
+FlareSolverr v3.5.2 and http-echo 1.0.0 retain their exact upstream application
+versions. Only their image and FlareSolverr pull policy changed. Complete
+Deployment specification comparisons, Service/ingress/claim/Secret metadata,
+real HTTP GET/POST/health requests, three-node ingress and FlareSolverr browser
+retrieval passed. The latter created no persistent session. Its vendor browser
+advertises 152 versus the previous custom 156; vendor findings remain open. The
+October23 scan of this exact FlareSolverr base recorded 32 critical/1091 high
+package-advisory rows; that dated evidence is not represented as a fresh scan.
+HashiCorp's latest official release is still 1.0.0 from 2023, with known Go
+advisories. These transitions satisfy upstream ownership, not security closure.
+[Exact paired identities and checks](../evidence/stateless-upstream-adoption-20261025.json).
 
 The controlling objective is [the revised active goal](REVISED-GOAL-20261025.md).
 Earlier derivative recipes and scans remain historical, not an execution plan.
@@ -64,7 +75,7 @@ dockerconfigjson Secret. No secret was printed or new publication attempted.
 Those observations do not prove that no credential exists elsewhere. Existing
 services are retained while this exact route/credential gap is resolved.
 
-## Seerr next, with fresh current-state protection
+## Historical Seerr preparation, since executed
 
 Upstream official v3.5.1 index
 `d8fab675b55ad293ded98fd71efcfd46054cbad9746534ae1cc4794a88c0b3be`
