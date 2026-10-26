@@ -1,6 +1,25 @@
 # Migration and maintenance status
 
-**Latest checkpoint — October 26, 05:00 UTC:** official Mealie 3.29.0 passed
+**Latest checkpoint — October 26, 13:16 UTC:** maintained Tautulli 2.18.2-ls249
+passed data/API/routes and a distinct Flux restart at private main/validated/live
+revision `be08b5035e5861320a98aea0a420711378baafa5`. All 16 accounts and every
+original history/media/metadata row remain. A real playback completion added one
+history record, which persists through restart; original custom choices and all
+canonical configuration/credential values passed the declared source mappings.
+Native Secrets, original storage/resource identities, Plex connectivity and 27
+route checks passed. Both recovery archives passed full NAS read-back and
+authentication. Current health has 3 Ready nodes, 55 Bound PVCs, 34 Ready releases
+and 41 healthy attached Longhorn volumes; two old diagnostic failures are retained.
+Cleanup removed 534061056 allocated Linux bytes; source, rollback, recovery and
+unique failure evidence remain. Managed-command sentinels stay under the same
+root because their exact regeneration and inactive-handle checks are unresolved.
+[Acceptance and remaining findings](docs/UPSTREAM-TAUTULLI-ADOPTION-20261026.md),
+[cleanup paths and exceptions](docs/TASK-OUTPUT-INVENTORY.md#tautulli-checkpoint-reconciliation-october-26-1313-utc).
+Seven application derivative transitions remain. Tautulli still has 7 High vendor
+findings; full fleet/platform security, owned publication and final IAB are open.
+The complete goal is active. GitHub Actions is disabled; delivery remains local/Flux.
+
+**Previous checkpoint — October 26, 05:00 UTC:** official Mealie 3.29.0 passed
 backend/state/restart verification at private main/validated/live Flux
 `271bfc5f40c7c8761f75c730eba3ea0732894185`. All original files/ownership, three
 users and credential rows, 33 recipes, 330 ingredients, ratings, cookbook filters

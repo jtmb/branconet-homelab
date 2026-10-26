@@ -1,6 +1,22 @@
 # Repository-backed image transition
 
-Latest accepted backend/state/restart revision, October 26 05:00 UTC:
+Latest accepted backend/state/restart revision, October 26 13:16 UTC:
+`be08b5035e5861320a98aea0a420711378baafa5`, private main/validated/live Flux.
+Tautulli now consumes maintained LinuxServer 2.18.2-ls249. All original accounts,
+history/media/metadata rows, canonical configuration, native identities, API/Plex
+reads and 27 routes passed on a distinct restart Pod. The playback active during
+migration completed normally and its new history record persists. Exact source
+mappings cover refreshed avatars, optimizer statistics, version/cache metadata
+and native log rotation; original files remain in the authenticated cold archive.
+Both recovery archives passed NAS verification. [Exact acceptance](UPSTREAM-TAUTULLI-ADOPTION-20261026.md).
+The fresh inventory contains 91 Running Pods, 292 controllers, 68 main/init/
+ephemeral image references, 34 releases and 33 charts. Seven application chart
+transitions remain: pihole, plex, qbittorrent, ruckus-db, vaultwarden, wordpress
+and xteve. Platform/fleet security, owned publication and final IAB remain open.
+Tautulli has 7 High findings with fixes absent from this maintained artifact;
+no third-party rebuild is introduced. [Cleanup and retained exceptions](TASK-OUTPUT-INVENTORY.md#tautulli-checkpoint-reconciliation-october-26-1313-utc).
+
+Previous accepted backend/state/restart revision, October 26 05:00 UTC:
 `271bfc5f40c7c8761f75c730eba3ea0732894185`, private main/validated/live Flux.
 Official Mealie 3.29.0 preserves all original files/ownership, three credentialed
 accounts, 33 recipes and complete related data through exact vendor mappings;

@@ -2,6 +2,16 @@
 
 Current checkpoints and unresolved gates are summarized in [MIGRATION_STATUS.md](../MIGRATION_STATUS.md). This document retains operational contracts and dated attempt history.
 
+The dated `upstream-tautulli-20261026` generation captures the original 2.18.2
+derivative before its [maintained vendor transition](UPSTREAM-TAUTULLI-ADOPTION-20261026.md).
+It is exposed by the existing Ansible role and controller, binds the original
+Deployment/release/claim identities, uses UID/GID 1000 on workernode1, retains the
+complete four-GiB/4096-entry bound and refuses other writer images. Root first
+quiesces only that release through Flux; the backup helper never scales it.
+The complete archive and distinct recovery metadata passed authenticated NAS
+read-back. This profile is a fixed historical cutover scope, not permission to
+back up a different current image without reviewing a new generation.
+
 Radarr executed this path on October 24 after Flux stopped its original writer.
 Its backup completed at 00:55:06 UTC: 1,197 files, 517,549,996 plaintext data bytes,
 519,059,380 encrypted bytes; SHA256

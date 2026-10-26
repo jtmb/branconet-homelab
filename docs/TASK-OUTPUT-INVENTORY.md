@@ -1,5 +1,86 @@
 # Maintenance output ownership and reconciliation
 
+## Tautulli checkpoint reconciliation, October 26 13:13 UTC
+
+Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. This stage reused the existing
+F:-backed ext4 root
+`/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,
+UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`, backing file
+`F:\branconet-build-storage\native-build-20261025.ext4`. No image build,
+dependency installation, second disposable-output root, compaction or WSL
+shutdown ran. [Exact acceptance and recovery](UPSTREAM-TAUTULLI-ADOPTION-20261026.md).
+
+Cleanup removed **534061056 allocated Linux bytes**: 532926464 from the three
+completed current publisher stages and 1134592 from named scan/render/scratch
+outputs. All stages passed prepare/check/publish; exclusive operation locks,
+ownership/inode/containment, complete process/FD/map/mount and regeneration
+checks passed. Original Git commits and every exported blob were independently
+verified reachable in the existing publisher repository before removing copies.
+No tracked original source or lockfile was deleted. Original pinned validator
+binaries and the active watcher remain. All 12 unique stage receipt/validation
+files matched their hashes afterward; the data/key/recovery protected hashes
+also matched. Historical publications were never replayed.
+
+The following paths are relative to `local-charts-publisher/`. Source totals
+include generated Git exports, copied tools and emptied descendant directories;
+`source` itself and its unique `.validation/validation.json` remain. Exact 2337
+removed paths, allocated sizes and inode checks are in
+`operator-control/tautulli-publisher-scratch-reconciliation.json` and its plan.
+
+| Completed stage | Removed source exports/tools | Removed `home` | Removed `tmp` |
+| --- | ---: | ---: | ---: |
+| `local-charts-publish-c90f64d507714f2b896f75992f5b5072` | 177639424 | 4096 | 4096 |
+| `local-charts-publish-71d90673cd7143e78c9bda312d985f31` | 177631232 | 4096 | 4096 |
+| `local-charts-publish-e40ec5d1ae2d4da8ab50f391924402ab` | 177631232 | 4096 | 4096 |
+
+Other removed paths relative to the declared root:
+
+| Exact path | Allocated bytes |
+| --- | ---: |
+| `security-review-20261026/cache/fanal/fanal.db` | 1105920 |
+| `upstream-tautulli-20261026/tmp/effective-release-values.json` | 4096 |
+| `security-review-20261026/cache/fanal` | 4096 |
+| `security-review-20261026/tmp` | 4096 |
+| `security-review-20261026/home` | 4096 |
+| `upstream-tautulli-20261026/tmp` | 4096 |
+| `operator-control/tmp/ansible-home` | 4096 |
+| `operator-control/tmp/ansible-local` | 4096 |
+
+Their exact plan/receipt is `operator-control/tautulli-scratch-reconciliation.json`.
+The public analysis cache is reproducible from the immutable image, pinned tool,
+unchanged verified feeds and bounded argv in its retained scan receipt; select a
+new report filename to preserve existing reports. Recreate configured empty
+scratch before its consumers. The render-values JSON exactly matches the
+reviewed release values. Exported source is reproducible with the exact preserved
+Git commit/archive and original publisher exporter; copy only the retained
+SHA-pinned tools, preserve unique validation reports, and never replay publication.
+
+Retained exceptions:
+
+- `operator-control/tmp/system-commandline-sentinel-files`: creator/regeneration
+  and complete inactive Windows-handle proof remain unestablished. No deletion
+  was attempted. Its nonempty parent `operator-control/tmp` is therefore retained.
+- `upstream-tautulli-20261026`: original complete archive, verification key,
+  authenticated cold SQL/runtime inputs, unique current/restart SQL snapshots,
+  native/file/API/route/mapped checks and all distinct failed diagnostics.
+- `control-source/upstream-tautulli-20261026`: frozen original and accepted source
+  generations, shared reader/controller inputs and exact source manifests.
+- `operator-control/tautulli-recovery-metadata.tar.age`: required encrypted
+  acceptance/recovery evidence with authenticated NAS read-back. The ancestor
+  complete cold archive and public advisory DB binaries were not duplicated.
+- The three publisher stage roots: immutable prepare/check/publish receipts,
+  original Git manifests and unique validation reports remain. Primary Git source
+  and the existing original `.tools` are required publisher runtime inputs.
+- `security-review-20261026`: verified current advisory/Java inputs, both complete
+  vendor comparison reports and original integrity/failure evidence remain.
+- Every earlier owner, failure, rollback, runtime and failed-safety exception
+  remains. No older artifact, PVC, NAS media, image, volume, model or chat was pruned.
+
+At 13:13 UTC, native free space was **22763294720 bytes**. Separately measured
+Windows C: free space was **97827590144 bytes**, and F: was **22610788352 bytes**.
+Linux cleanup does not establish Windows recovery; none is claimed. Raw space
+evidence is `operator-control/tautulli-final-space.json`.
+
 ## Mealie checkpoint reconciliation, October 26 05:30 UTC
 
 This stage reused the same declared F:-backed root and physical ext4 UUID.

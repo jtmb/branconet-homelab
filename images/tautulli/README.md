@@ -1,5 +1,10 @@
 # Tautulli 2.18.2 maintenance candidate
 
+**Superseded historical recipe.** Production now consumes the maintained
+LinuxServer artifact documented in [the vendor acceptance record](../../docs/UPSTREAM-TAUTULLI-ADOPTION-20261026.md).
+Keep this source and its old artifacts for recovery. Do not rebuild or promote
+this derivative under the current image-ownership policy.
+
 This recipe derives from the exact inspected vendor candidate:
 
 `ghcr.io/tautulli/tautulli@sha256:a4323bc09b27e265e269d79421ed3eb795083ef988bb84788eba89e5738c8005`

@@ -1,80 +1,142 @@
-# Tautulli maintained vendor transition
+# Tautulli maintained vendor acceptance
 
-Owner: cluster maintenance chat `01a12045-bf7e-73b3-8557-752d17c72ffd`.
-Status: preparation; production still uses the prior derivative. No vendor
-adoption or final security/browser acceptance is claimed here.
+Accepted backend/data/API/routes and independent restart on October 26. Private
+charts main, validated and live Flux are
+`be08b5035e5861320a98aea0a420711378baafa5`. The 13:15 UTC health check found all
+3 nodes Ready without pressure, all 55 PVCs Bound, 34 HelmReleases Ready, no
+unavailable desired workloads and 41 healthy attached Longhorn volumes. Two old
+failed Seerr diagnostic Pods remain protected evidence. Final browser acceptance
+and the full migration/security goal remain open.
 
-The [official 2.18.2 release](https://github.com/Tautulli/Tautulli/releases/tag/v2.18.2)
-is the latest stable release at inspection. It matches the currently running
-application commit `9484667bc1f2d159368a999320b8f495bbfbd00a`. Select the explicit
-version tag rather than inferring that `latest` is identical: their image
-manifests differ despite the same application source revision.
+## Deployed artifact and preserved identities
 
-The original publisher's explicit 2.18.2 digest was evaluated and scanned, not
-deployed: it still contains 4 Critical / 113 High findings against the current
-feed. The [maintained LinuxServer distribution](https://docs.linuxserver.io/images/docker-tautulli/)
-ships the same application release with a newer base. Its selected image is
-`ghcr.io/linuxserver/tautulli:v2.18.2-ls249@sha256:c6a48416d16b26f254b000133d2d844c1905ee58ed0f44aad9bda66598d39988`;
-amd64 manifest
+Production consumes the [maintained LinuxServer distribution](https://docs.linuxserver.io/images/docker-tautulli/):
+`ghcr.io/linuxserver/tautulli:v2.18.2-ls249@sha256:c6a48416d16b26f254b000133d2d844c1905ee58ed0f44aad9bda66598d39988`.
+Its amd64 manifest is
 `sha256:88cb2fd7ab5b356e58b73a07b2ed1e44819e933e4982b7de4096e52406853823`.
-The October 23 build reports no Critical, 7 High, 4 Medium, 45 Low and 2 Unknown
-finding rows; seven High rows have package fixes absent from this artifact.
-Both reports use the same pinned current advisory feed, no suppression and
-complete before/after input hash checks. Neither has a CISA KEV intersection.
-No third-party image is built, patched or republished.
+The running app is 2.18.2, Python 3.14.8. Pinned application-source checks match
+[the official 2.18.2 commit](https://github.com/Tautulli/Tautulli/releases/tag/v2.18.2),
+`9484667bc1f2d159368a999320b8f495bbfbd00a`. No third-party image was built,
+patched, imported from a local tar or republished.
 
-Keep the original `plex/tautulli` Deployment UID
-`9db52ebb-23c8-47c6-82c8-ebde3b0a2775`, release UID
-`e5aa088f-22a3-4f47-b7c4-094be5354bf4`, Longhorn claim UID
-`97eb095e-37ec-4185-80ed-4d8f3c19f486`, native Secret, resource requests and routes.
-Before image adoption, pause only Tautulli through the private charts publisher
-and Flux, take a complete authenticated encrypted cold backup, verify its NAS
-read-back and bind its SQL state to the observed baseline. Preserve every
-account, history record, configuration value and original file metadata. Check
-native API authentication, Plex identity/libraries and notifier configuration
-without sending notifications. Repeat data/API/routes on a distinct restart Pod.
-Any data-changing rollback must preserve the new state before restoring the
-authenticated original; an image rollback alone is not data recovery.
+| Binding | Preserved identity |
+| --- | --- |
+| Deployment `plex/tautulli` | `9db52ebb-23c8-47c6-82c8-ebde3b0a2775` |
+| HelmRelease `flux-system/tautulli` | `e5aa088f-22a3-4f47-b7c4-094be5354bf4` |
+| Longhorn claim `plex/tautulli-data-0` | `97eb095e-37ec-4185-80ed-4d8f3c19f486` |
+| Adopted Pod | `c90f77c3-ebe6-4b6e-8d76-c6f442bd25c9` |
+| Distinct restart Pod | `baff648a-79d3-4014-a354-a879fe729bf1` |
 
-The existing F:-backed output root and ext4 UUID remain authoritative. New
-protected observations, key and cold archive use `upstream-tautulli-20261026`;
-frozen executed source uses `control-source/upstream-tautulli-20261026`; metadata,
-scan reports and control receipts use the existing `operator-control` and
-`security-review-20261026`. All output belongs to this chat on the same physical
-volume. Preserve current source repositories, native secrets, all failed
-evidence, the complete original archive and existing rollback image. Public
-scan caches and empty scratch are reproducible only from the exact pinned
-image/tool/feed commands and require normal ownership/reference checks before
-removal. Capacity guards apply before downloads or archive stages.
+Complete normalized workload/PVC/PV/Service/Ingress specifications, native Secret
+UID/resourceVersion/type/content and resource requests (25m CPU / 64Mi memory)
+matched. The original UID/GID 1000 and file ownership/modes remain. The maintained
+entrypoint's ownership setup uses those same identities. Only the image, pause/
+resume replica override and the independent restart annotation changed.
 
-The original live baseline passed 802 filesystem entries, all 24 tables / 11365
-rows, 16 users and 2878 history records, authenticated API/Plex/configuration
-reads and 27 status/login/redirect route checks. It verifies every original
-entry has UID/GID 1000 before allowing the maintained image's ownership setup.
-These are pre-cutover results, not vendor deployment acceptance.
+## Data and runtime acceptance
 
-The complete original claim is now authenticated and verified on NAS:
-159475924 encrypted bytes, SHA-256
-`a5b76de5260cbab8a7b5a592bb61cc023d6c19e6895c8db72ab8daea8cfcd0de`.
-All 23 non-session tables match the earlier live snapshot exactly. One existing
-active-session row advanced while the original app was still running; the cold
-SQL copy is the authoritative pre-adoption state. Every column of that row is
-fingerprinted. Only `stopped`, `state` and `view_offset` may subsequently advance,
-as implemented by the exact vendor `ActivityHandler.set_session_state` source.
-Require all other cells and session identity to match, and verify those three
-runtime values against the actual authenticated activity API and a fresh
-heartbeat. Do not omit the whole sessions table or relax account/history checks.
-Both the initial strict online-to-cold mismatch and the corrected cold-reference
-receipt remain. The original archive, verification key and protected sources
-stay intact. No account, credential or history record has been changed by the
-controller.
+Every original account and permanent row/cell passed complete SQL comparison,
+not count-only checks. All 16 accounts, credential/permission fields, original
+2878 history records and their complete media/metadata rows remain. Canonical
+configuration, including API/JWT/Plex credentials and user choices, is unchanged.
+The source-derived avatar refresh for one account was checked against two real
+Plex HTTPS endpoints; an original custom avatar choice could not be reset.
 
-The versioned cold-backup profile is exposed by the existing Ansible role and
-controller, with the complete four-GiB/4096-entry bound and UID/GID 1000 reader
-on workernode1. It never scales the application itself. The reviewed LinuxServer
-init script applies the configured `abc` ownership to `/config`; its service
-runs the published Python program at `/app/tautulli/Tautulli.py` as that user.
-Preserve the actual entire claim's ownership/modes against the existing native
-PUID/PGID and repeat every state/API check after launch and restart.
+The session active before cutover finished normally while the app was running.
+Its new history/media/metadata rows preserve 110 shared original fields, with
+only the pinned source's raw-stream transcode-dimension projection and live
+stop/offset changes. Its continuation timestamp matches that completed history.
+The resulting 2879 history records persist through restart. Every old permanent
+row remains; newly appended legitimate records are permitted. Sequence counters
+are monotonic. Optimizer statistics match the exact source `analysis_limit=400`
+and `ANALYZE` statements replayed on a separate RAM copy, never the production DB.
+Accordingly, the after snapshot has 11368 total rows and restart has 11367: the
+one-row optimizer-statistics difference is expected, not lost application data.
+Both retain the same complete schema of 24 tables.
 
-Final fleet security and Codex IAB acceptance remain separate goal gates.
+All original cold files are checked, with narrow source-owned runtime changes:
+
+- `version.lock` moves from the commit string to the equivalent `v2.18.2` vendor
+  version marker. The actual pinned application source and release remain fixed.
+- The version cache preserves its complete GitHub data while its timestamp
+  advances. The refreshed commit-comparison cache matches the complete real
+  immutable GitHub HTTPS comparison response, not an arbitrary replacement.
+- The completed session's metadata cache is removed by the pinned vendor
+  completion path. Its complete original content remains in the cold archive.
+- SQLite WAL/SHM presence is transient; complete committed SQL is verified from
+  authenticated cold/current snapshots instead of requiring stale sidecar files.
+- One websocket-log rotation passed the pinned five-backup, 5000000-byte logger
+  behavior: active prefix and shifted retained backups match. Other logs append
+  normally. Every original log remains in the authenticated cold archive.
+
+The final file observation contains 801 entries. There is no blanket config,
+cache, log or sessions-table exclusion. Full private SQL snapshots, keyed file/
+field observations, source mappings and original failed checks remain protected.
+
+Authenticated API checks prove unauthenticated rejection, application version,
+configured and actual Plex identity, user/library views, active Plex library
+statistics, history access and notifier configuration reads. No test notification
+or login/refresh mutation was sent. Across all three nodes, the published 9119
+port and HTTP/HTTPS ingress passed 27 status/redirect/login-page checks on both
+adopted and restart Pods. The existing self-signed Traefik certificate remains
+explicitly untrusted; personal login and browser acceptance are not claimed.
+
+## Recovery and rollback
+
+Both archives passed complete local authentication and NAS read-back/authentication
+on the existing `TRUENAS/plex_smb_share/Branconet-Recovery-Backups/2026-10-25` target.
+Original sources and ciphertexts remain. The existing recovery-key copy is bound
+to the Windows CurrentUser DPAPI profile; it is not claimed portable to another
+profile. The original WSL identity remains intact.
+
+| Artifact | Encrypted bytes | SHA-256 |
+| --- | ---: | --- |
+| Complete original claim: 793 files / 158565158 data bytes | 159475924 | `a5b76de5260cbab8a7b5a592bb61cc023d6c19e6895c8db72ab8daea8cfcd0de` |
+| Distinct current/restart SQL, verification key, exact sources, proofs and failures | 41318452 | `b137026f98ce407137f5fc31bfe416ec659a0606ebf41fd2cede2e939bd0d15c` |
+
+The dated Ansible/controller generation `upstream-tautulli-20261026` captured
+only the zero-writer original claim with a UID/GID 1000 reader on workernode1,
+the complete four-GiB/4096-entry bound and exact original resource/image guards.
+Its helper Pod was verified deleted. The controller never scaled another app.
+
+```mermaid
+flowchart LR
+    A[Original data and native Secrets] --> B[Flux pauses only Tautulli]
+    B --> C[Complete authenticated original archive and NAS proof]
+    C --> D[Maintained vendor artifact on the same claim]
+    D --> E[Full row and source-mapped runtime checks]
+    E --> F[Independent Flux restart and repeated acceptance]
+    F --> G[Authenticated recovery metadata and guarded cleanup]
+```
+
+Pause revision was `f0431dfbe9fb8315e919344372cfe005a0ad7444`; adoption was
+`533f6f6a2d2dfdd5b3776cd3912dd51fa4bfd440`. Rollback reference before the pause is
+`271bfc5f40c7c8761f75c730eba3ea0732894185` and the retained original immutable
+Tautulli derivative. Preserve/authenticate newer complete state before any
+rollback or restore; do not discard new history or restore over a running writer.
+Complete archive authentication is not a claim of an independent blank-cluster
+restoration drill.
+
+## Remaining findings and delivery boundaries
+
+The original publisher's current official 2.18.2 image was evaluated, not deployed:
+4 Critical / 113 High findings. The selected newer LinuxServer artifact reports
+**0 Critical / 7 High / 4 Medium / 45 Low / 2 Unknown** rows against the same
+current pinned advisory feed. The seven High rows have package fixes absent from
+this maintained artifact: brotli, curl/libcurl, msgpack, setuptools and urllib3.
+Neither scan intersects the pinned CISA KEV catalog used for those scans. This is not a security
+clearance or assurance about unknown vulnerabilities. Suppression and custom
+third-party rebuilds were not used. Both complete reports and verified inputs remain.
+
+GitHub Actions is directly verified disabled; publication uses the established
+private charts local validation -> validated -> Flux path. Seven application
+chart transitions, remaining platform/fleet security, owned publication and final
+Codex IAB acceptance remain open. BORTUS app development remains with its separate
+owner. Native Kubernetes Secrets managed through BORTUS remain authoritative.
+
+Owner: chat `01a12045-bf7e-73b3-8557-752d17c72ffd`. All generated controller work
+reused the same F:-backed ext4 root and UUID in [the output inventory](TASK-OUTPUT-INVENTORY.md).
+Cleanup removed **534061056 allocated Linux bytes**, preserving required data,
+source, failure and recovery evidence. One unresolved managed-command sentinel
+directory remains; exact paths, checks, regeneration and exceptions are recorded
+in [the checkpoint reconciliation](TASK-OUTPUT-INVENTORY.md#tautulli-checkpoint-reconciliation-october-26-1313-utc).

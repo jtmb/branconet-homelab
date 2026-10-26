@@ -51,7 +51,26 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
-**Latest checkpoint — October 26, 05:00 UTC:** Mealie now runs official 3.29.0
+**Latest checkpoint — October 26, 13:16 UTC:** Tautulli runs maintained
+LinuxServer 2.18.2-ls249 through private main/validated/live Flux
+`be08b5035e5861320a98aea0a420711378baafa5`. A distinct restart Pod passed all
+16 accounts, every original history/media/metadata row, complete canonical
+configuration, native Secret/storage/resource identities, API/Plex connectivity
+and 27 route checks. The session active during migration completed normally,
+adding one preserved history record; source-derived avatar, optimizer, cache and
+log changes were checked explicitly. Both recovery archives passed NAS read-back
+and authentication. Current health: 3 Ready nodes, 55 Bound PVCs, 34 Ready releases
+and 41 healthy attached Longhorn volumes. Two earlier failed diagnostic Pods remain
+protected. Seven application derivative transitions remain, alongside platform/
+fleet security, owned publication and final IAB gates. Tautulli's selected vendor
+image still has 7 High / 4 Medium / 45 Low / 2 Unknown finding rows; no security
+clearance is claimed. Cleanup removed 534061056 allocated Linux bytes, with one
+unresolved managed-command sentinel directory retained under the existing root.
+[Exact acceptance and recovery](docs/UPSTREAM-TAUTULLI-ADOPTION-20261026.md),
+[exact cleanup and exceptions](docs/TASK-OUTPUT-INVENTORY.md#tautulli-checkpoint-reconciliation-october-26-1313-utc).
+The full five-milestone goal stays active and incomplete; Actions remains off.
+
+**Previous checkpoint — October 26, 05:00 UTC:** Mealie now runs official 3.29.0
 at private main/validated/live Flux
 `271bfc5f40c7c8761f75c730eba3ea0732894185`. Complete original files and ownership,
 all three users/credential rows, 33 recipes, 330 ingredients, ratings, cookbook

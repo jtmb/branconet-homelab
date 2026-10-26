@@ -1,5 +1,11 @@
 # Tautulli 2.16.1 to 2.18.2 preservation contract
 
+**Current deployment:** the subsequent [maintained vendor transition](UPSTREAM-TAUTULLI-ADOPTION-20261026.md)
+passed data/API/routes and independent restart on October 26. It supersedes the
+derivative image below, retains every original account/history record and records
+the remaining vendor findings. The dated evidence below remains historical;
+personal browser acceptance and the full migration/security goal are still open.
+
 Initial and independent controlled-restart preservation and functional checks
 passed on October25, and public routes were restored. The receipts below
 distinguish observed backend acceptance from final browser and whole-goal gates.

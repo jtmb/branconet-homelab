@@ -1,5 +1,12 @@
 # Offline scanning of private CI image artifacts
 
+**Historical derivative-build provenance.** The [current ownership policy](REVISED-GOAL-20261025.md)
+requires maintained vendor artifacts for third-party services, keeps GitHub
+Actions disabled and requires repository-backed provenance plus an already
+approved publication route for owned images. Retain the older recipes, archives
+and receipts below for recovery; they do not authorize rebuilding or promoting
+third-party derivatives under the current goal.
+
 Current checkpoints and unresolved gates are summarized in [MIGRATION_STATUS.md](../MIGRATION_STATUS.md). This document retains operational contracts and dated attempt history.
 
 The existing worker1 scanner now has two explicit source kinds. Its default

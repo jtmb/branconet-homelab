@@ -9,10 +9,12 @@ import http.client
 import json
 import os
 from pathlib import Path
+import re
 import shlex
 import socket
 import ssl
 import subprocess
+import uuid
 
 ROOT = Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025')
 OUT = ROOT / 'upstream-tautulli-20261026'
@@ -63,7 +65,7 @@ def sql_state(path,key):
 '''
 
 OBSERVER = r'''
-import sys,os,stat,configparser,resource,urllib.request,urllib.parse
+import sys,os,stat,configparser,resource,urllib.request,urllib.parse,re
 resource.setrlimit(resource.RLIMIT_CORE,(0,0));resource.setrlimit(resource.RLIMIT_AS,(512*1024**2,512*1024**2))
 if os.geteuid()==0:os.setgroups([]);os.setgid(1000);os.setuid(1000)
 assert os.geteuid()==os.getegid()==1000 and not os.getgroups()
@@ -94,8 +96,37 @@ for parent,dirs,files in os.walk(root,followlinks=False):
      r.update(bytes=copied,hmac=mac(key,['file',n,digest.hexdigest()]))
     finally:os.close(fd)
   entries[n]=r
-prefix={}
-for n,anchor in request.get('logAnchors',{}).items():
+prefix={};rotations={};anchors=request.get('logAnchors',{});rotating=set()
+def log_matches(candidate,original,anchor,append=False):
+ p=root/candidate
+ if not p.exists()or p.is_symlink():return False
+ s=p.lstat()
+ if not stat.S_ISREG(s.st_mode)or[s.st_uid,s.st_gid,stat.S_IMODE(s.st_mode)]!=[anchor[k]for k in ['uid','gid','mode']]:return False
+ if append:
+  if not anchor['bytes']<=s.st_size<=anchor['bytes']+16*1024**2:return False
+ elif s.st_size!=anchor['bytes']:return False
+ with p.open('rb')as f:
+  digest=hashlib.sha256();remaining=anchor['bytes']
+  while remaining:
+   b=f.read(min(remaining,1024*1024))
+   if not b:return False
+   remaining-=len(b);digest.update(b)
+ return mac(key,['file',original,digest.hexdigest()])==anchor['hmac']
+for base in ['logs/plex_websocket.log','logs/tautulli.log','logs/tautulli_api.log']:
+ if base not in anchors:continue
+ family=[base]+[base+'.'+str(i)for i in range(1,6)];rotating.update(family)
+ logger=Path(request['applicationDir'])/'plexpy/logger.py'
+ assert hashlib.sha256(logger.read_bytes()).hexdigest()=='d021055900d76a04c8855760f7e741c2f4f9fafab3af46a754624d3fbbaa3555'
+ count=None
+ for number in range(6):
+  if not log_matches(family[number],base,anchors[base],True):continue
+  if any(not log_matches(family[i+number],family[i],anchors[family[i]])for i in range(1,6-number)if family[i]in anchors):continue
+  if any(entries[family[i]]['bytes']>5000000 for i in range(number)if family[i]in entries):continue
+  count=number;break
+ assert count is not None,'source-verified-log-rotation:'+base
+ rotations[base]={'rotations':count,'backupsReplacedByNativeRetention':count,'allOriginalLogsInAuthenticatedColdArchive':True,'loggerSHA256':'d021055900d76a04c8855760f7e741c2f4f9fafab3af46a754624d3fbbaa3555'}
+for n,anchor in anchors.items():
+ if n in rotating:continue
  assert n.startswith('logs/') and '..' not in Path(n).parts
  p=root/n;s=p.lstat();assert stat.S_ISREG(s.st_mode) and not p.is_symlink()
  assert [s.st_uid,s.st_gid,stat.S_IMODE(s.st_mode)]==[anchor[k]for k in ['uid','gid','mode']]
@@ -126,7 +157,7 @@ if request.get('verifyLivePlayback'):
   assert abs(int(live['view_offset'])-int(row['view_offset']))<=10000 and 0<=int(row['view_offset'])<=int(row['duration'])
   assert 0<=time.time()-int(row['stopped'])<=300
   runtime.append({'sessionIdentityHMAC':mac(key,['runtime-identity',[row[k]for k in ['session_key','rating_key','user_id']]]),'liveStateAndOffsetMatch':True,'heartbeatFresh':True})
-print(json.dumps({'root':root_meta,'entries':entries,'fileCount':len(entries),'observedNonDatabaseBytes':total,'canonicalConfigHMAC':mac(key,['config',config]),'sql':sql,'logPrefixes':prefix,'livePlayback':runtime}))
+print(json.dumps({'root':root_meta,'entries':entries,'fileCount':len(entries),'observedNonDatabaseBytes':total,'canonicalConfigHMAC':mac(key,['config',config]),'sql':sql,'logPrefixes':prefix,'logRotations':rotations,'livePlayback':runtime}))
 '''
 
 
@@ -136,6 +167,14 @@ def mac(key, value):
 
 def call(args, payload=None):
     result = subprocess.run(SSH + [shlex.join(args)], input=payload, capture_output=True, timeout=240)
+    if result.returncode != 0:
+        failure = OUT / ('failed-read-' + uuid.uuid4().hex)
+        if 'exec' in args:
+            for suffix, data in [('stdout', result.stdout), ('stderr', result.stderr)]:
+                with Path(str(failure) + '.' + suffix).open('xb') as stream:stream.write(data)
+        else:
+            with failure.with_suffix('.json').open('x') as stream:
+                json.dump({'exitCode': result.returncode, 'metadataResponseNotPersisted': True}, stream)
     assert result.returncode == 0 and len(result.stdout) <= 8 * 1024**2
     return result.stdout
 
@@ -227,39 +266,49 @@ def main():
     api = 'import sys\n' + api
     functional = json.loads(call(['kubectl', '-n', 'plex', 'exec', before['pod'], '-c', 'tautulli', '--', 'python3', '-B', '-c', api]))
     assert functional['passed'] and functional['configured_and_actual_plex_identity_match']
-    anchors = {n:r for n,r in baseline['observation']['entries'].items() if n.startswith('logs/') and r['kind'] == 'file'} if baseline else {}
-    observation = json.loads(call(['kubectl', '-n', 'plex', 'exec', '-i', before['pod'], '-c', 'tautulli', '--', 'python3', '-B', '-c', SQL + OBSERVER], json.dumps({'key': key.hex(), 'logAnchors': anchors, 'verifyLivePlayback': baseline is not None}).encode()))
+    cold = json.loads((OUT / 'cold-file-reference.json').read_text()) if baseline else None
+    assert not cold or cold['coldArchiveFullyAuthenticated'] and cold['onlineCanonicalConfigurationMatchesCold']
+    anchors = {n:r for n,r in cold['entries'].items() if n.startswith('logs/') and r['kind'] == 'file'} if cold else {}
+    observation = json.loads(call(['kubectl', '-n', 'plex', 'exec', '-i', before['pod'], '-c', 'tautulli', '--', 'python3', '-B', '-c', SQL + OBSERVER], json.dumps({'key': key.hex(), 'logAnchors': anchors, 'verifyLivePlayback': False, 'applicationDir': '/app/tautulli' if image == NEW else '/app'}).encode()))
     observation_path = OUT / (a.phase + '-observation-' + hashlib.sha256(Path(__file__).read_bytes()).hexdigest()[:12] + '.json')
     with observation_path.open('x') as stream:json.dump({'writer': before, 'observation': observation, 'functional': functional}, stream, indent=2)
     assert observation['root']['uid'] == observation['root']['gid'] == 1000
     assert all(r['uid'] == r['gid'] == 1000 for r in observation['entries'].values()), 'vendor-entrypoint-ownership-precondition'
     if baseline:
         assert before['stable'] == baseline['writer']['stable'], 'native-resource-identities-and-complete-specs'
-        original = baseline['observation'];assert observation['root'] == original['root']
+        original = cold;assert observation['root'] == original['root']
         assert observation['canonicalConfigHMAC'] == original['canonicalConfigHMAC'], 'complete-canonical-configuration'
-        reference = json.loads((ROOT / 'operator-control/tautulli-cold-session-state.json').read_text())['sql']
-        actual = observation['sql']
-        assert {k:v for k,v in actual.items() if k not in ['tables', 'sessionFields']} == {k:v for k,v in reference.items() if k not in ['tables', 'sessionFields']}
-        assert set(actual['tables']) == set(reference['tables'])
-        for name, table in reference['tables'].items():
-            if name != 'sessions':assert actual['tables'][name] == table, 'complete-cold-table:' + name
-            else:assert actual['tables'][name]['columns'] == table['columns'] and actual['tables'][name]['rows'] == table['rows']
-        assert set(actual['sessionFields']) == set(reference['sessionFields'])
-        runtime_changes = []
-        for identity, fields in reference['sessionFields'].items():
-            current = actual['sessionFields'][identity];assert set(current) == set(fields)
-            changed = [name for name, value in fields.items() if current[name] != value]
-            runtime_changes.extend(changed)
-        assert set(runtime_changes) <= {'stopped', 'state', 'view_offset'}, 'source-reviewed-live-session-fields:' + ','.join(sorted(set(runtime_changes)))
-        assert len(observation['livePlayback']) == len(reference['sessionFields'])
+        data = json.loads((OUT / (a.phase + '-data-audit.json')).read_text())
+        caches = json.loads((OUT / (a.phase + '-cache-proof.json')).read_text())
+        for proof in [data, caches]:
+            assert proof['passed'] and proof['revision'] == a.revision and proof['writer'] == before
+        assert data['sourceSHA256'] == hashlib.sha256(Path(__file__).with_name('audit-upstream-tautulli-data.py').read_bytes()).hexdigest()
+        assert caches['sourceSHA256'] == hashlib.sha256(Path(__file__).with_name('verify-upstream-tautulli-caches.py').read_bytes()).hexdigest()
+        assert data['databaseCopiesUnchanged'] and data['completeSchemaEqual'] and data['optimizerStatsMatchSourceAnalyze']
+        for name, sha in data['databaseSHA256'].items():
+            assert hashlib.sha256(Path(name).read_bytes()).hexdigest() == sha
+        sql_scope = {};exec(SQL, sql_scope)
+        expected_version_hashes = {sql_scope['mac'](key, ['file', 'version.lock', hashlib.sha256(value).hexdigest()]) for value in [b'v2.18.2', b'v2.18.2\n']}
         left, right = original['entries'], observation['entries']
-        assert set(left) == set(right), 'complete-file-set'
+        sidecars = {'tautulli.db-wal', 'tautulli.db-shm'}
+        assert set(left) - set(right) <= sidecars | set(data['completedSessionCachePaths']), 'original-file-set'
         for name, row in left.items():
+            if name not in right:continue
             current = right[name]
             if name in ['tautulli.db', 'tautulli.db-wal', 'tautulli.db-shm']:
                 assert {k:v for k,v in row.items() if k != 'bytes'} == {k:v for k,v in current.items() if k != 'bytes'}
-            elif name.startswith('logs/') and row['kind'] == 'file':assert observation['logPrefixes'][name] == row['hmac']
+            elif name.startswith('logs/') and row['kind'] == 'file':
+                family = re.sub(r'\.[1-5]$', '', name)
+                if family in observation['logRotations']:
+                    assert all(current[k] == row[k] for k in ['uid', 'gid', 'mode', 'kind'])
+                else:assert observation['logPrefixes'][name] == row['hmac']
             elif name == 'config.ini':assert all(current[k] == row[k] for k in ['uid', 'gid', 'mode', 'kind'])
+            elif name == 'version.lock':
+                assert current['hmac'] in expected_version_hashes
+                assert all(current[k] == row[k] for k in ['uid', 'gid', 'mode', 'kind'])
+            elif name in caches['files']:
+                assert current['hmac'] == caches['files'][name]['hmac'] and caches['files'][name]['completeDataVerified']
+                assert all(current[k] == row[k] for k in ['uid', 'gid', 'mode', 'kind'])
             else:assert current == row, 'original-file:' + name
         if a.phase == 'restart':
             previous = json.loads((OUT / 'after.json').read_text());assert previous['writer']['podUID'] != before['podUID']
