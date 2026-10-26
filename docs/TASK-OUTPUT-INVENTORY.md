@@ -1,5 +1,21 @@
 # Maintenance output ownership and reconciliation
 
+## Cloudflare notice assessment, October26 21:42UTC
+
+The owner and single existing F-backed task root remain unchanged. The new
+`cloudflared-notice-assessment-20261026` directory contains unique read-only
+connector/host/certificate observations, exact inspector source and public
+candidate metadata. [Assessment and coverage limits](CLOUDFLARED-NOTICE-ASSESSMENT-20261026.md).
+Its `output-reconciliation.json` lists every exact evidence path, hash, measured
+allocation and retention reason. Twelve source/evidence files accounted for
+139264allocated Linux bytes, plus that retained reconciliation index itself.
+These are required unique observations; no compiler output, dependency copy,
+cache, temporary transfer, image pull or disposable download was created.
+Removed paths: none. Removed bytes:0. No Windows disk recovery is claimed.
+All earlier exceptions, source/lockfiles, backups, failures, running work,
+native Secrets, PVCs and NAS media remain unchanged. No upgrade/restart or
+certificate/credential/TLS-policy mutation was performed by this assessment.
+
 ## CoreDNS reconciliation, October26 21:30UTC
 
 Owner, physical F-backed root and protected sources are unchanged from the

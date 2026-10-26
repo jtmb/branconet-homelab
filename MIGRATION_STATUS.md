@@ -1,5 +1,17 @@
 # Migration and maintenance status
 
+**Cloudflare notice assessment — October 26, 21:42 UTC:** read-only inspection
+identified no cloudflared connector in Kubernetes, on the three cluster hosts,
+or in inspected Windows/WSL services/processes/Docker containers. Seven declared
+public TLS chains use Let's Encrypt/ISRG; all21 public-host/node handshakes
+verified. The69 LAN/local-host handshakes failed strict verification against
+Traefik's existing self-signed default certificate. No observed chain named
+eMudhra/emSign. Account-wide Tunnel versions/replicas, any NAS connector and
+actual Tunnel-origin mappings remain unknown; local absence does not close that
+assessment. No software, workload, certificate, credential or TLS policy changed.
+
+[Scope, evidence and remaining access gap](docs/CLOUDFLARED-NOTICE-ASSESSMENT-20261026.md).
+
 **Latest checkpoint — October 26, 21:30 UTC:** CoreDNS now runs official
 1.15.0 / Go1.27.3. Both replicas passed TCP/UDP queries through the DNS Service
 and each Pod, including exact Kubernetes and WordPress database Service answers.
