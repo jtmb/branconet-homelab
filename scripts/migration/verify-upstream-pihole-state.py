@@ -399,7 +399,12 @@ exec sleep 1800
         hashes={}
         for path in static:
             need('\n' not in path and path.startswith(('/source/pihole/','/source/dnsmasq/')),'fixed_static_path')
-            value=execute(['sha256sum',path]).decode();need(re.fullmatch('[0-9a-f]{64}',value[:64]),'static_hash')
+        # Preserve the same fixed files, every hash and the full identity fence;
+        # one bounded read avoids repeating all API fences for each filename.
+        values=execute(['sha256sum',*static]).decode().splitlines()
+        need(len(values)==len(static),'complete_static_hash_count')
+        for path,value in zip(static,values):
+            need(re.fullmatch('[0-9a-f]{64}',value[:64]),'static_hash')
             hashes[mac(key,'file-path',path)]=mac(key,['file-bytes',path],value[:64])
         receipt['static_files_hmac']=hashes
         after_files=file_metadata(execute)
