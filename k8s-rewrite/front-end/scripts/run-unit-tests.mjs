@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { unitTestPlan, executionFor, executionBatches } from './read-job-slice-unit-plan.mjs';
+import { unitTestPlan, executionFor, executionBatches } from './read-job-tail-unit-plan.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const args = process.argv.slice(2);
