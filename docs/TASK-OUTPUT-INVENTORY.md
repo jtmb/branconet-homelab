@@ -1,5 +1,67 @@
 # Maintenance output ownership and reconciliation
 
+## Ruckus upstream qualification reconciliation, October 26 18:54 UTC
+
+Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. All new local outputs reused
+`/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,
+ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`, backed by
+`F:\branconet-build-storage\native-build-20261025.ext4`.
+This was historical-copy qualification, not a production database cutover.
+[Exact comparison, recovery and next production steps](UPSTREAM-RUCKUSDB-MIGRATION-20261026.md).
+
+The terminal scan service was inactive/dead with Result success and exit 0.
+Resolved containment, ownership/inode, file hash, protected source survival,
+regeneration and process/FD/map/mount checks passed. Cleanup removed exactly
+**6393856 allocated Linux bytes**:
+
+| Exact path relative to the authorized root | Allocated bytes |
+| --- | ---: |
+| `security-review-20261026/cache/fanal/fanal.db` | 6381568 |
+| `security-review-20261026/cache/fanal` | 4096 |
+| `security-review-20261026/tmp` | 4096 |
+| `security-review-20261026/home` | 4096 |
+
+Exact pre/post hashes, inodes and regeneration are retained in
+`operator-control/ruckusdb-review-scratch-{plan,reconciliation}.json`.
+The cache can be regenerated only with the recorded immutable-image scan,
+unchanged pinned scanner/feed inputs, resource bounds and a new result filename.
+Original results and failures must not be overwritten or rescanned as cleanup.
+
+The dedicated trial namespace `ruckusdb-upstream-6b6dacf17d6c`, its qualifier
+Pod and deny policy were retired with UID preconditions after accepted state/
+account/authentication comparisons and observed clean shutdown. Kubernetes
+teardown removed its RAM-backed copies: **720482304 allocated RAM bytes**, 783
+paths. RAM teardown is separate from Linux disk removal and Windows free space.
+Exact resource UIDs and measurements are in
+`upstream-ruckusdb-20261026/trial-retirement.json`. No production claim was
+mounted in the trial and no production workload was stopped.
+
+Retained exceptions:
+
+- `upstream-ruckusdb-20261026`: unique original/failed/corrected observations,
+  account/grant/data proofs, UID receipts and encrypted complete engine logs.
+- `control-source/upstream-ruckusdb-20261026`: all executed source generations,
+  exact restore and SQL inputs, reviewed Ansible profile and tagged vendor SQL.
+- `security-review-20261026/apps-ruckusdb-current-r3-0`: exact vendor findings,
+  trusted-input verification and scan source; public databases remain intact.
+- `operator-control/ruckusdb-upstream-recovery-metadata.tar.age`: required
+  1813124-byte recovery archive, SHA-256
+  `274d5a34c26436571d8507206632046fcc8a6b5ca35b6d17e117e0e2db23f263`,
+  complete local member verification and authenticated complete NAS read-back.
+- `ruckus-ha-recovery-20261025` and every earlier cold/failed/rollback source:
+  historical authenticated source and original data remain protected in place.
+- `operator-control/tmp/system-commandline-sentinel-files` and its parent:
+  creator/regeneration and complete inactive Windows-handle proof remain
+  unavailable; no deletion attempted. The parent contains this exception.
+- Existing controller evidence on
+  `F:\branconet-migration-artifacts\maintenance-storage-20261025` and all
+  earlier inventory exceptions remain; no cumulative source/cache tree copied.
+
+No build, dependency installation, GitHub Actions, new image publisher,
+filesystem migration, Windows shutdown or VHDX compaction ran. Cached node
+images and runtime PVC/NAS data were not pruned. No Windows disk recovery is
+claimed.
+
 ## Threadfin checkpoint reconciliation, October 26 18:16 UTC
 
 Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. Reused the single authorized

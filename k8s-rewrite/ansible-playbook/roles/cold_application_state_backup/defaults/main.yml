@@ -8,5 +8,7 @@ cold_application_state_node: workernode2
 # xteve and xteve-config each require workernode2 and explicit reader0:0.
 # Both xTeVe invocations retain the same quiescent writer; NAS is never mounted.
 # Original apps use0/1000; wordpress-redis and ruckus-db require999:999.
+# The upstream Ruckus profile reads the full retained claim as0:0 with read/search
+# capability only, and pins its current security-data-20261025/data-0 mount.
 cold_application_state_reader_uid: 1000
 cold_application_state_reader_gid: 1000

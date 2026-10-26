@@ -58,7 +58,7 @@ def main():
     parser.add_argument('--reader-uid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
-    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026'], default='original')
+    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026'], default='original')
     parser.add_argument('--resume-receipt', type=pathlib.Path, help='Static sites only: reverify an existing ciphertext and its still-running original read-only reader')
     parser.add_argument('--resume-sha256', help='Exact original failed receipt SHA256; original receipt is never overwritten')
     args = parser.parse_args()
@@ -70,7 +70,9 @@ def main():
     need(args.application not in STATIC_TARGETS or args.node == 'workernode1')
     need((args.application == 'seerr') == (args.generation == 'upstream-seerr-20261025'))
     need(args.application != 'seerr' or (args.reader_uid == 0 and args.node == 'workernode1'))
-    need(args.reader_uid == 33 if args.application == 'wordpress' else args.reader_uid == 999 if args.application in ['wordpress-redis', 'ruckus-db'] else args.reader_uid in [0, 1000])
+    upstream_ruckus = args.generation == 'upstream-ruckusdb-20261026'
+    need(not upstream_ruckus or (args.application == 'ruckus-db' and args.reader_uid == 0 and args.node == 'workernode2'))
+    need(args.reader_uid == 33 if args.application == 'wordpress' else args.reader_uid == 999 if args.application in ['wordpress-redis', 'ruckus-db'] and not upstream_ruckus else args.reader_uid in [0, 1000])
     need(args.application != 'ruckus-db' or args.node == 'workernode2')
     need(args.application != 'plex' or args.reader_uid == 1000)
     need(args.application != 'homepage' or (args.reader_uid == 1000 and args.node == 'workernode1'))
@@ -127,6 +129,8 @@ def main():
     if args.generation == 'upstream-xteve-20261026':
         need(args.application in ['xteve', 'xteve-config'] and args.reader_uid == 0 and args.node == 'workernode2')
         original_image = 'docker.io/library/xteve-security-20261023@sha256:0ab77160ccccaf9235dcb3864624440551d6dd63c771cfaf97094db869a28656'
+    if upstream_ruckus:
+        original_image = 'docker.io/library/ruckusdb-security-20261023@sha256:2f0c391e6c04501862598bbc5446165f8ebba08025168451f6f6447352316349'
     if args.generation == 'upstream-qbittorrent-20261026':
         need(args.application == 'qbittorrent' and args.reader_uid == 0 and args.node == 'masternode')
         original_image = 'docker.io/library/qbittorrent-current-security-20261023@sha256:9e546e0ac277ef9b241cb383bfa9157e47df3269e62481348a63f4d19b87adf8'
@@ -206,7 +210,8 @@ def main():
         if args.application == 'seerr':
             mounts = [{**m, 'readOnly': m.get('readOnly', False)} for m in containers[0]['volumeMounts']]
             need(mounts == [{'name': 'data-0', 'mountPath': '/config', 'readOnly': True}, {'name': 'data-0', 'mountPath': '/app/config', 'readOnly': False}])
-        need(state_mount['mountPath'] == ('/usr/share/nginx/html' if args.application in STATIC_TARGETS else '/root/.xteve' if args.application == 'xteve' else '/app/data' if args.application == 'mealie' else '/var/lib/mysql' if args.application == 'ruckus-db' else '/var/www/html' if args.application == 'wordpress' else '/app/config' if args.application == 'homepage' else '/app/state' if args.application == 'qbit-monitor' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
+        need(state_mount['mountPath'] == ('/usr/share/nginx/html' if args.application in STATIC_TARGETS else '/root/.xteve' if args.application == 'xteve' else '/app/data' if args.application == 'mealie' else '/var/lib/mysql' if args.application == 'ruckus-db' else '/var/www/html' if args.application == 'wordpress' else '/app/config' if args.application == 'homepage' else '/app/state' if args.application == 'qbit-monitor' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPathExpr'))
+        need(state_mount.get('subPath') == 'security-data-20261025/data-0' if upstream_ruckus else not state_mount.get('subPath'))
         need(any(v['name'] == mount_alias and v.get('persistentVolumeClaim', {}).get('claimName') == claim for v in dep['spec']['template']['spec']['volumes']))
         need(release['metadata']['uid'] == release_uid and not release['metadata'].get('deletionTimestamp') and release['spec'].get('releaseName') == workload and release['spec'].get('targetNamespace') == namespace and release['spec'].get('values', {}).get('replicaCount') == 0 and not release['spec'].get('suspend', False))
         need(release['status'].get('observedGeneration', 0) >= release['metadata']['generation'] and any(c['type'] == 'Ready' and c['status'] == 'True' for c in release['status'].get('conditions', [])))
@@ -261,7 +266,7 @@ def main():
             running = any('running' in c.get('state', {}) for key in ['containerStatuses', 'initContainerStatuses', 'ephemeralContainerStatuses'] for c in pod['status'].get(key, []))
             need(pod['status'].get('phase') in ['Failed', 'Succeeded'] and not running)
         node = get('node', args.node)
-        if args.application == 'seerr' or args.application in STATIC_TARGETS:
+        if args.application == 'seerr' or args.application in STATIC_TARGETS or upstream_ruckus:
             need(node['metadata']['uid'] == 'e8d4555f-7cea-445f-b84f-6416964045a9')
         if args.application in ['xteve', 'xteve-config']:
             need(node['metadata']['uid'] == 'eda66e65-f388-4b97-b64f-a709cda81894')

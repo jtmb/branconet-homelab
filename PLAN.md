@@ -1,5 +1,18 @@
 # Cluster maintenance and application migration plan
 
+**Ruckus preparation — October 26, 18:54 UTC:** the isolated historical-copy
+upgrade 5.7.44 → 8.0.46 → 8.4.13 passed both tables / 3966 rows, all original
+human/application account fields, five other legacy grant tables, time-zone data,
+server UUID and normal positive/negative authentication. Vendor-only locked
+account changes are source-verified. Production remained online and unchanged;
+its fresh backup, actual cutover and restart are still required. The complete
+recovery metadata passed authenticated NAS read-back. The temporary namespace
+and RAM copies were retired; scan cleanup removed 6393856 allocated Linux bytes.
+The target vendor image has two Critical and 33 High rows. This is preparation,
+not acceptance of the production transition; the full goal remains active.
+[Source, proof and production sequence](docs/UPSTREAM-RUCKUSDB-MIGRATION-20261026.md).
+
+
 **Latest checkpoint — October 26, 18:16 UTC:** maintained Threadfin 3.4.0 replaced
 xTeVe through the private local-validation → validated → Flux pipeline. Complete
 comparison passed in production and after a distinct restart: 108 original
