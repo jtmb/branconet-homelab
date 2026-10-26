@@ -6,12 +6,14 @@
       - inventory_hostname == 'masternode'
       - cold_pihole_state_output_dir is match('^/home/brajam/[^\r\n]+$')
       - cold_pihole_state_node in ['workernode1', 'workernode2']
+      - cold_pihole_state_generation | default('original') in ['original', 'upstream-20261026']
+      - cold_pihole_state_generation | default('original') != 'upstream-20261026' or cold_pihole_state_node == 'workernode2'
 
 - name: Archive only the two fixed Pi-hole claims through the native controller
   ansible.builtin.command:
     argv:
       - /home/brajam/.local/share/branconet-migration/venv/bin/python
-      - "{{ playbook_dir }}/../../../scripts/migration/cold-pihole-state-backup.py"
+      - "{{ playbook_dir }}/../../../scripts/migration/{{ 'cold-upstream-pihole-state-backup.py' if cold_pihole_state_generation | default('original') == 'upstream-20261026' else 'cold-pihole-state-backup.py' }}"
       - --apply
       - --node
       - "{{ cold_pihole_state_node }}"
