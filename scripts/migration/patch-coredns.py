@@ -39,7 +39,7 @@ def name_end(raw,at):
   if n==0:return at
  raise ValueError('invalid_dns_name')
 for address in request['addresses']:
- for name in ['kubernetes.default.svc.cluster.local','wordpress-db.wordpress.svc.cluster.local','example.com']:
+ for name in ['kubernetes.default.svc.cluster.local','ruckus-db.ruckus.svc.cluster.local','example.com']:
   question=b''.join(bytes([len(x)])+x.encode() for x in name.split('.'))+b'\0'+struct.pack('!HH',1,1)
   ident=int.from_bytes(os.urandom(2),'big'); packet=struct.pack('!HHHHHH',ident,0x0100,1,0,0,0)+question
   for tcp in [False,True]:
@@ -103,7 +103,7 @@ def observe(image):
     ips = [pod['status']['podIP'] for pod in pods]
     request = {'addresses': [service['spec']['clusterIP']] + ips, 'pods': ips,
                'expectedServiceA': {'kubernetes.default.svc.cluster.local': get('service', 'kubernetes', 'default')['spec']['clusterIP'],
-                                    'wordpress-db.wordpress.svc.cluster.local': get('service', 'wordpress-db', 'wordpress')['spec']['clusterIP']}}
+                                    'ruckus-db.ruckus.svc.cluster.local': get('service', 'ruckus-db', 'ruckus')['spec']['clusterIP']}}
     probes = json.loads(call(['python3', '-B', '-c', DNS_PROBE], json.dumps(request).encode(), timeout=125))
     need(probes['passed'] and len(probes['dnsChecks']) == 18, 'actual_udp_tcp_cluster_and_forwarded_dns')
     return d, cm, service, {'pods': [{'uid': p['metadata']['uid'], 'name': p['metadata']['name'], 'imageID': p['status']['containerStatuses'][0]['imageID']} for p in pods], 'probes': probes}
