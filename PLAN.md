@@ -51,7 +51,23 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
-**Latest checkpoint — October 26, 13:16 UTC:** Tautulli runs maintained
+**Latest checkpoint — October 26, 14:00 UTC:** official Vaultwarden 1.37.4
+Alpine passed complete same-release data/file/native-resource/route acceptance
+and a distinct Flux restart at private main/validated/live revision
+`aee71f041ad69e5bf16fb9e2f6f1c55dbebe6f55`. All 29 tables / 86 rows, the
+existing account, 24 encrypted items, four devices, original RSA material and
+file ownership remain. Both recovery archives passed complete NAS read-back
+and authentication. Three nodes are Ready, 55 PVCs are Bound, all releases are
+Ready and 41 attached Longhorn volumes are healthy. Cleanup removed 534106112
+allocated Linux bytes; exact source, rollback, failures and recovery evidence
+remain. Six application derivative transitions remain, alongside platform/fleet
+security, owned publication and final IAB. The official artifact still has three
+High package findings; personal Vaultwarden login/client sync and trusted TLS
+are not credited. The full goal remains active and GitHub Actions stays disabled.
+[Acceptance and limitations](docs/UPSTREAM-VAULTWARDEN-ADOPTION-20261026.md),
+[exact cleanup paths/exceptions](docs/TASK-OUTPUT-INVENTORY.md#vaultwarden-checkpoint-reconciliation-october-26-1400-utc).
+
+**Previous checkpoint — October 26, 13:16 UTC:** Tautulli runs maintained
 LinuxServer 2.18.2-ls249 through private main/validated/live Flux
 `be08b5035e5861320a98aea0a420711378baafa5`. A distinct restart Pod passed all
 16 accounts, every original history/media/metadata row, complete canonical

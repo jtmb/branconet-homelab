@@ -1,6 +1,22 @@
 # Repository-backed image transition
 
-Latest accepted backend/state/restart revision, October 26 13:16 UTC:
+Latest accepted backend/state/restart revision, October 26 14:00 UTC:
+`aee71f041ad69e5bf16fb9e2f6f1c55dbebe6f55`, private main/validated/live Flux.
+Official Vaultwarden 1.37.4 Alpine preserves the complete 29-table / 86-row vault,
+existing user, 24 encrypted items, four devices, original signing key/files and
+native Secret/storage/resource identities through a distinct Pod restart. All
+45 routes and canonical public configuration matched. Both recovery archives
+passed full NAS authentication/read-back. [Exact acceptance and limitations](UPSTREAM-VAULTWARDEN-ADOPTION-20261026.md).
+The fresh inventory has 91 Running Pods, 294 controllers, 68 main/init/ephemeral
+image references, 34 releases and 33 charts. Six application derivative transitions
+remain: pihole, plex, qbittorrent, ruckus-db, wordpress and xteve. The official
+artifact still has three High package findings. Personal login/client sync,
+trusted TLS, platform/fleet security, owned publication and final IAB remain open.
+Cleanup removed 534106112 allocated Linux bytes; unique sources, receipts,
+rollback and failure/recovery evidence remain. [Exact cleanup and retained exceptions](TASK-OUTPUT-INVENTORY.md#vaultwarden-checkpoint-reconciliation-october-26-1400-utc).
+GitHub Actions is directly verified disabled. The full goal remains active.
+
+Previous accepted backend/state/restart revision, October 26 13:16 UTC:
 `be08b5035e5861320a98aea0a420711378baafa5`, private main/validated/live Flux.
 Tautulli now consumes maintained LinuxServer 2.18.2-ls249. All original accounts,
 history/media/metadata rows, canonical configuration, native identities, API/Plex

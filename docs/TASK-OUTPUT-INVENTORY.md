@@ -1,5 +1,80 @@
 # Maintenance output ownership and reconciliation
 
+## Vaultwarden checkpoint reconciliation, October 26 14:00 UTC
+
+Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. This checkpoint reused only
+`/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,
+physical ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`, backed by
+`F:\branconet-build-storage\native-build-20261025.ext4`. No application image
+build, dependency installation, output-root migration, shutdown or compaction ran.
+[Runtime/data acceptance and recovery](UPSTREAM-VAULTWARDEN-ADOPTION-20261026.md).
+
+Cleanup removed **534106112 allocated Linux bytes**: 532934656 from the three
+successful publisher stages and 1171456 from exact scan/Ansible scratch paths.
+The original private Git commits and every exported blob were verified reachable;
+original validator binaries and the live watcher remain. All 12 unique stage
+receipts/reports and protected recovery/data/key hashes matched afterward.
+Exclusive operation locks and ownership/inode/containment/process/FD/map/mount
+checks passed before deletion. No historical publication was replayed.
+
+Paths below are relative to `local-charts-publisher/`. Source totals include
+reproducible exported Git files, copied tools and empty descendants. The stage
+`source/.validation/validation.json` and immutable prepare/check/publish receipts
+remain. The exact 2337 removed paths/inodes/bytes are recorded in
+`operator-control/vaultwarden-publisher-scratch-reconciliation.json` and its plan.
+
+| Completed stage | Removed source exports/tools | Removed `home` | Removed `tmp` |
+| --- | ---: | ---: | ---: |
+| `local-charts-publish-0a762cf947874cbbb444c1e225ea0458` | 177639424 | 4096 | 4096 |
+| `local-charts-publish-de496125a8b041e09638fa76987500b6` | 177631232 | 4096 | 4096 |
+| `local-charts-publish-e0a824e0395c4cbbb63f2d94d2ef07ab` | 177639424 | 4096 | 4096 |
+
+Other removed paths relative to the declared root:
+
+| Exact path | Allocated bytes |
+| --- | ---: |
+| `security-review-20261026/cache/fanal/fanal.db` | 1150976 |
+| `security-review-20261026/cache/fanal` | 4096 |
+| `security-review-20261026/tmp` | 4096 |
+| `security-review-20261026/home` | 4096 |
+| `operator-control/tmp/ansible-home` | 4096 |
+| `operator-control/tmp/ansible-local` | 4096 |
+
+Exact scratch safety checks and protected hashes are in
+`operator-control/vaultwarden-scratch-reconciliation.json`. Regenerate exports
+from each successful stage's original Git SHA using the retained publisher
+exporter and unchanged original pinned tools; preserve unique validation files.
+Regenerate the public Trivy analysis cache only from the unchanged exact-image
+scan argv, pinned tool/feeds and original bounded credential-hidden execution;
+use a new report filename. Recreate only configured empty Ansible/scratch paths.
+
+Retained exceptions:
+
+- `operator-control/tmp/system-commandline-sentinel-files`: creator/regeneration
+  and complete inactive Windows-handle proof are unresolved. No deletion was
+  attempted; its nonempty parent `operator-control/tmp` remains.
+- `upstream-vaultwarden-20261026`: original authenticated cold archive, original
+  decoded `state/cold-sql` input, verification key and unique complete cold/live/
+  restart SQL/file/native/route observations. They are protected recovery evidence.
+- `control-source/upstream-vaultwarden-20261026`: exact executed controller,
+  observer, shared reader inputs and source manifest.
+- `operator-control/vaultwarden-recovery-metadata.tar.age`: distinct encrypted
+  acceptance/recovery evidence with authenticated NAS read-back. The ancestor
+  cold ciphertext and public feed database binaries were not duplicated.
+- The three publisher roots: unique receipts, original source manifests and
+  validation reports remain; original Git objects and `.tools` are runtime inputs.
+- `security-review-20261026`: current verified advisory/Java inputs, complete
+  unsuppressed Debian/Alpine reports and earlier integrity/failure evidence.
+- All earlier owner, failed-safety, failure, rollback and runtime exceptions
+  remain. No older artifacts, PVCs, NAS media, images, volumes, models or chats
+  were pruned.
+
+At 14:00 UTC native free space was **22755106816 bytes**. Separately measured
+Windows C: free space was **97714040832 bytes** and F: **22606925824 bytes**.
+Linux cleanup does not establish Windows recovery; none is claimed. Exact
+space receipt: `operator-control/vaultwarden-final-space.json`. The current
+storage inventory reconciles this checkpoint and retains all prior exceptions.
+
 ## Tautulli checkpoint reconciliation, October 26 13:13 UTC
 
 Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. This stage reused the existing
