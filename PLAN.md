@@ -51,7 +51,25 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
-**Latest checkpoint — October 26, 14:00 UTC:** official Vaultwarden 1.37.4
+**Latest checkpoint — October 26, 15:03 UTC:** official Pi-hole 2026.10.0 /
+FTL v6.8 passed complete query/configuration/native-resource preservation,
+authenticated API, 16 TCP/UDP DNS probes and 27 web routes through a distinct
+Flux restart. Private main/validated/live revision is
+`78e1d1f902178c0a1e64faa54599610aafd3a671`. All 9069270 original queries and
+the first live checkpoint remain; the restarted database has 9069623 queries.
+All 166 configuration values and original password/static data remain. One
+expired session and one run-scoped RATE_LIMIT warning follow verified native
+startup behavior; full originals remain in the authenticated backup. Both
+recovery archives passed complete NAS read-back/authentication. Three nodes,
+55 PVCs, all releases and 41 attached Longhorn volumes are healthy. Cleanup
+removed 1408999424 allocated Linux bytes with exact paths and retained exceptions.
+Five application derivative transitions remain. Pi-hole still has 13 High vendor
+findings; platform/fleet security, owned publication, trusted TLS and final IAB
+remain open. The full goal is active; GitHub Actions remains disabled.
+[Acceptance and remaining limitations](docs/UPSTREAM-PIHOLE-ADOPTION-20261026.md),
+[exact cleanup and exceptions](docs/TASK-OUTPUT-INVENTORY.md#pi-hole-checkpoint-reconciliation-october-26-1503-utc).
+
+**Previous checkpoint — October 26, 14:00 UTC:** official Vaultwarden 1.37.4
 Alpine passed complete same-release data/file/native-resource/route acceptance
 and a distinct Flux restart at private main/validated/live revision
 `aee71f041ad69e5bf16fb9e2f6f1c55dbebe6f55`. All 29 tables / 86 rows, the

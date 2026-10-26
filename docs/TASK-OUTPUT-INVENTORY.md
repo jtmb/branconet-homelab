@@ -1,5 +1,100 @@
 # Maintenance output ownership and reconciliation
 
+## Pi-hole checkpoint reconciliation, October 26 15:03 UTC
+
+Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. This checkpoint reused only
+`/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,
+physical ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`, backed by
+`F:\branconet-build-storage\native-build-20261025.ext4`. No image build,
+dependency installation, second output root, shutdown or compaction ran.
+[Exact data/DNS/API/restart acceptance and recovery](UPSTREAM-PIHOLE-ADOPTION-20261026.md).
+
+Cleanup removed **1408999424 allocated Linux bytes**: 532934656 from the three
+successful current publisher stages and 876064768 from exact reproduced scan/
+Ansible scratch and the authenticated temporary original DB projection.
+Complete containment, ownership/inode, source/lockfile survival, regeneration,
+exclusive operation-lock and process/FD/map/mount checks passed. Every original
+private Git blob and commit remained reachable, original pinned tool hashes
+matched, and all 12 unique stage receipts/reports matched afterward. The live
+publisher/watcher remained running. No historical publication was replayed.
+
+The following paths are relative to `local-charts-publisher/`. Source totals
+include regenerated Git exports, copied tools and empty descendants. Each stage
+retains `source/.validation/validation.json` and immutable prepare/check/publish
+receipts. Exact 2337 removed paths/inodes/bytes and source manifests are in
+`operator-control/pihole-upstream-publisher-scratch-reconciliation.json` and its plan.
+
+| Completed stage | Removed source exports/tools | Removed `home` | Removed `tmp` |
+| --- | ---: | ---: | ---: |
+| `local-charts-publish-02b099e7ced743279f27ed7aaa7cfbc5` | 177639424 | 4096 | 4096 |
+| `local-charts-publish-c96ed6d418154e6d8e5ec15eaff0cac3` | 177639424 | 4096 | 4096 |
+| `local-charts-publish-6f4bf34e7c334cf2a4c2f0885bf90010` | 177631232 | 4096 | 4096 |
+
+Other removed paths relative to the declared root:
+
+| Exact path | Allocated bytes |
+| --- | ---: |
+| `security-review-20261026/cache/fanal/fanal.db` | 364544 |
+| `upstream-pihole-20261026/cold-runtime-source/pihole-FTL.db` | 875642880 |
+| `upstream-pihole-20261026/cold-runtime-source/pihole-FTL.db-wal` | 0 |
+| `upstream-pihole-20261026/cold-runtime-source/pihole-FTL.db-shm` | 32768 |
+| `security-review-20261026/cache/fanal` | 4096 |
+| `security-review-20261026/tmp` | 4096 |
+| `security-review-20261026/home` | 4096 |
+| `upstream-pihole-20261026/cold-runtime-source` | 4096 |
+| `operator-control/tmp/ansible-home` | 4096 |
+| `operator-control/tmp/ansible-local` | 4096 |
+
+The first scratch check retained all targets because read-only SQLite access had
+created sidecars beside the regenerated input. The exact failed check remains in
+`operator-control/pihole-upstream-scratch-failed-safety-r1.json`. Reconciliation
+then verified an empty WAL, a 32768-byte transient shared index, an unchanged full
+original DB SHA256, authenticated backups and no active references. The bounded
+revised plan removed only those explicitly identified reproduced paths. Exact
+before/after protected hashes and removed bytes are in
+`operator-control/pihole-upstream-scratch-reconciliation.json`.
+
+Regenerate original source input with the source-pinned
+`operator-control/regenerate-pihole-runtime-source.py` after fresh C:/native
+capacity checks. It authenticates the unchanged complete archive, extracts only
+the hash-bound original DB and preserves all original proof receipts. Read-only
+SQLite WAL-mode access regenerates its empty WAL/shared index when needed.
+Recreate scan analysis cache only from the retained exact immutable-image argv,
+pinned tool/feeds and bounded credential-hidden execution, using a new report
+filename. Recreate configured empty Ansible/scratch paths. Recreate publisher
+exports from their exact reachable Git SHAs and original exporter/pinned tools;
+preserve unique reports and never replay historical publication.
+
+Retained exceptions:
+
+- `operator-control/tmp/system-commandline-sentinel-files`: exact creator/
+  regeneration and complete inactive Windows-handle proof remain unresolved.
+  No deletion was attempted; its nonempty parent `operator-control/tmp` remains.
+- `upstream-pihole-20261026`: complete original authenticated archive, encrypted
+  SQL verification key, native observation key, original/after/restart typed
+  data/config/DNS/API/route receipts and every failed observation.
+- `control-source/upstream-pihole-20261026`: all exact executed generations,
+  current/full schema contracts, shared reader inputs and immutable manifests.
+- `operator-control/pihole-upstream-recovery-metadata.tar.age`: distinct encrypted
+  source/acceptance/failure recovery evidence with complete NAS authentication
+  and read-back. Original cold ciphertext/feed binaries/decoded DB were not duplicated.
+- The three publisher roots: unique receipts, manifests and validation reports;
+  primary original Git objects, source and `.tools` remain required runtime inputs.
+- `security-review-20261026`: current advisory/Java inputs, complete unsuppressed
+  vendor report and original integrity/failure evidence.
+- Original failure/safety inventories, vendor source hashes, typed startup-record
+  proofs and bounded failed-reader diagnostics remain. Only owned temporary
+  reader Pods were UID-deleted after evidence capture; no production claim was deleted.
+- All earlier owner, failed-safety, failure, rollback and runtime exceptions
+  remain. No older artifacts, PVCs, NAS media, images, volumes, models or chats
+  were pruned.
+
+At 15:03 UTC native free space was **21665275904 bytes**. Separately measured
+Windows C: free space was **97343467520 bytes** and F: **22599274496 bytes**.
+Linux recovery does not establish Windows recovery; none is claimed. Exact
+space receipt: `operator-control/pihole-upstream-final-space.json`. The current
+228-entry storage inventory records this checkpoint and retains all prior exceptions.
+
 ## Vaultwarden checkpoint reconciliation, October 26 14:00 UTC
 
 Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. This checkpoint reused only

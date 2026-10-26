@@ -1,7 +1,8 @@
 # Pi-hole maintained upstream transition
 
 Owner: migration chat `01a12045-bf7e-73b3-8557-752d17c72ffd`.
-Status: preparation; existing DNS writer remains unchanged.
+Status: maintained upstream data/DNS/API/routes/restart accepted. Final IAB,
+remaining application transitions and broader security/publication gates remain open.
 
 The official current stable Docker release is 2026.10.0, with FTL v6.8, Web
 v6.6.1 and Core v6.5. Fresh live observation also reports FTL v6.8. Evaluate
@@ -95,3 +96,57 @@ F:-backed root. Its SHA256 is
 It is a temporary, reproducible archive projection, excluded from the metadata
 archive to avoid duplicating history. Reconcile it after the restart proof;
 retain the original ciphertext, typed proof, sources and every failed generation.
+
+## Accepted checkpoint, October 26 15:03 UTC
+
+Private main, validated and live Flux are
+`78e1d1f902178c0a1e64faa54599610aafd3a671`. Adoption revision was
+`09faa677106d699b6c505056572487a3bcfe90f5`; the protected pause was
+`0988ef956de33afe78bacee8b886addcbf246689`.
+The adopted writer UID `2d904da6-fc28-4750-8c15-7eeae594dfa8` and distinct restart
+writer UID `9c46d1e9-2406-488c-974d-90fa488cbb74` passed the exact vendor runtime
+digest, original native Secret UID/resourceVersion/type/value fingerprints,
+complete normalized workload/resource/storage/service/ingress bindings, 27 web
+routes, six authenticated API reads with own-session logout and 16 TCP/UDP DNS
+checks across the internal service and all three published node addresses.
+
+Every original query remains. Counts progressed from 9069270 to 9069518 after
+adoption and 9069623 after restart; both the original prefix and initial live
+checkpoint typed digests passed. Gravity/FTL schemas 21/22, all retained user/
+configuration rows, 1337044 gravity entries, nine adlists, canonical configuration
+including the original password hash and 91-day policy, static settings/TLS/
+backup-file hashes and original claims remain. Native counters, network/resolver
+bookkeeping and new query rows advance under the declared source checks. Only
+the exact original expired session and run-scoped warning follow the proven
+native startup retirement above. Their complete originals remain recoverable.
+
+Both the 1083042148-byte cold ciphertext and distinct 2028212-byte recovery
+metadata ciphertext passed complete NAS read-back and age authentication.
+Metadata SHA256:
+`1521a63a29f3f0bd2b1cf4bf282618253f92785038e15daa83e190880bf4cc62`.
+Exact executed source generations, verification keys, complete typed acceptance
+and every failed observation are retained; ancestor cold data/public feed
+binaries were not duplicated into metadata. The regenerated DB input is now
+removed safely. Before rerunning the dated verifier, recreate it with the
+source-pinned `operator-control/regenerate-pihole-runtime-source.py` command;
+the original archive and proof receipts are never overwritten.
+
+At 14:58 UTC all three nodes were Ready without pressure, 55 PVCs were Bound,
+all 34 HelmReleases/Kustomizations were Ready, no Deployment/DaemonSet was
+unavailable, and 41 attached Longhorn volumes were healthy. The two earlier
+failed Seerr diagnostic Pods remain protected. The complete running-image owner
+inventory covers 91 Pods, 296 controllers, 68 main/init/ephemeral references,
+33 charts and 34 releases. Five application derivative transitions remain:
+Plex, qBittorrent, Ruckus database, WordPress and xTeVe.
+
+Cleanup removed **1408999424 allocated Linux bytes**, preserving original Git
+source, pinned runtime tools, all source/failure/recovery evidence and original
+production data. The first scratch safety check retained everything on finding
+SQLite sidecars; reconciliation proved an empty WAL, a transient shared-memory
+index, an unchanged authenticated original DB and no active references before
+removal. The failed check remains recorded. [Exact paths, regeneration and all
+retained exceptions](TASK-OUTPUT-INVENTORY.md#pi-hole-checkpoint-reconciliation-october-26-1503-utc).
+No Windows recovery, shutdown, compaction, blanket pruning, GitHub Actions or
+third-party build/publication is claimed. The root PR remains draft/unmerged.
+The 13 High vendor findings, broader platform/fleet security, owned publication,
+existing untrusted ingress TLS and final IAB remain open. The full goal is active.
