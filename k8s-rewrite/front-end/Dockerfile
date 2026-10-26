@@ -14,10 +14,13 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+RUN node scripts/provision-scanner.mjs /scanner
 ENV NEXT_TELEMETRY_DISABLED=1 DATABASE_URL=file:/data/bortus.db
 RUN npm run build && npm prune --omit=dev
 
 FROM base AS runtime
+COPY --from=builder /scanner /opt/bortus-scanner
+ENV BORTUS_TRIVY_PATH=/opt/bortus-scanner/trivy BORTUS_TRIVY_CACHE_DIR=/opt/bortus-scanner/cache
 # The entrypoint invokes the local Prisma CLI through node. Package managers
 # are build tools; none is required to migrate, start, or operate this image.
 RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack /opt/yarn-v1.22.22 \

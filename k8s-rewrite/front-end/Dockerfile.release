@@ -6,6 +6,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+RUN node scripts/provision-scanner.mjs /scanner
 ARG BORTUS_SOURCE_REVISION
 ENV NEXT_TELEMETRY_DISABLED=1 DATABASE_URL=file:/data/bortus.db CIRCLE_NODE_TOTAL=4
 RUN test -n "${BORTUS_SOURCE_REVISION}" \
@@ -24,6 +25,8 @@ RUN test -n "${BORTUS_SOURCE_REVISION}" \
  && chmod 755 /release/docker-entrypoint.sh
 
 FROM ${BORTUS_RUNTIME_IMAGE} AS runtime
+COPY --from=builder /scanner /opt/bortus-scanner
+ENV BORTUS_TRIVY_PATH=/opt/bortus-scanner/trivy BORTUS_TRIVY_CACHE_DIR=/opt/bortus-scanner/cache
 ARG BORTUS_SOURCE_REVISION
 ARG BORTUS_RUNTIME_IMAGE
 LABEL org.opencontainers.image.revision="${BORTUS_SOURCE_REVISION}" \
