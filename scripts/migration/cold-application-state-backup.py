@@ -41,6 +41,15 @@ TARGETS = {
 }
 
 
+STATIC_TARGETS = {
+    'aplb': ('web-apps', '80efbad9-bd98-4fda-948e-7708b904e7e3', '3c88e364-76d4-4aa0-a0ff-1ed1059fb172', '24b2b0a8-e215-40b2-abe0-7617a7d8ff82', 'docker.io/library/nginx-security-20261023@sha256:77219c72642afd0447f32dcf65487ea4c7b540603ceb938b9317fde2e79287f3'),
+    'lucinda-art-gallery': ('web-apps', '27993cd4-c131-453a-b6d2-d2b00b6e5cd3', '84aefe63-0ed2-49e7-a8d7-7d407f9c54f1', 'bc234dae-ef84-4e43-aae0-a63d8e01d202', 'docker.io/library/nginx-security-20261023@sha256:77219c72642afd0447f32dcf65487ea4c7b540603ceb938b9317fde2e79287f3'),
+    'minecraft-website': ('web-apps', '5f9c89b5-7464-4ce6-b978-4fe9b33403d1', 'b06660bd-608a-42af-b7f0-1fdc6553935f', '418b136b-9358-4795-acf3-552d1839a21e', 'docker.io/library/nginx-security-20261023@sha256:77219c72642afd0447f32dcf65487ea4c7b540603ceb938b9317fde2e79287f3'),
+    'santos-web': ('web-apps', '580a80a1-527c-4e59-81f6-87fea9d45043', '804ad19a-c3c2-4554-8cf4-f57c8817a0a3', 'da43b501-44d0-4f09-8e58-a1e0d643ec2a', 'docker.io/library/nginx-security-20261023@sha256:77219c72642afd0447f32dcf65487ea4c7b540603ceb938b9317fde2e79287f3'),
+}
+TARGETS.update(STATIC_TARGETS)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('application', choices=sorted(TARGETS))
@@ -49,9 +58,12 @@ def main():
     parser.add_argument('--reader-uid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
-    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025'], default='original')
+    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026'], default='original')
     args = parser.parse_args()
     need(args.apply and os.name == 'posix' and args.reader_uid == args.reader_gid)
+    need((args.application in STATIC_TARGETS) == (args.generation == 'upstream-static-sites-20261026'))
+    need(args.application not in STATIC_TARGETS or args.reader_uid == 0)
+    need(args.application not in STATIC_TARGETS or args.node == 'workernode1')
     need((args.application == 'seerr') == (args.generation == 'upstream-seerr-20261025'))
     need(args.application != 'seerr' or (args.reader_uid == 0 and args.node == 'workernode1'))
     need(args.reader_uid == 33 if args.application == 'wordpress' else args.reader_uid == 999 if args.application in ['wordpress-redis', 'ruckus-db'] else args.reader_uid in [0, 1000])
@@ -63,7 +75,9 @@ def main():
     need(args.application not in ['xteve', 'xteve-config'] or (args.reader_uid == 0 and args.node == 'workernode2'))
     need(args.node == 'masternode' if args.application in ['qbittorrent', 'qbit-monitor'] else args.node in ['workernode1', 'workernode2'])
     max_entries = 131072 if args.application == 'plex' else 8192 if args.application == 'wordpress' else 4096
-    max_data = 16 * 1024**3 if args.application == 'plex' else shared.MAX_DATA
+    # Each finite static-site claim is exactly1GiB; capture its entire tree,
+    # with a tighter complete-data bound than the generic4GiB app profile.
+    max_data = 1024**3 if args.application in STATIC_TARGETS else 16 * 1024**3 if args.application == 'plex' else shared.MAX_DATA
     max_metadata = 64 * 1024**2 if args.application == 'plex' else shared.MAX_METADATA
     # The cold archive is a new transfer stage. Measure C and the destination
     # before starting it; existing archives and running work are left intact.
@@ -138,6 +152,7 @@ def main():
     def guard():
         pvc = get('pvc', claim); dep = get('deployment', workload); release = get('helmrelease', workload, 'flux-system')
         need(pvc['metadata']['uid'] == claim_uid and not pvc['metadata'].get('deletionTimestamp') and pvc['status']['phase'] == 'Bound' and pvc['spec'].get('storageClassName') == 'longhorn' and pvc['spec']['volumeName'] == 'pvc-' + claim_uid)
+        need(args.application not in STATIC_TARGETS or pvc['status'].get('capacity', {}).get('storage') == '1Gi')
         need(dep['metadata']['uid'] == deployment_uid and not dep['metadata'].get('deletionTimestamp') and dep['status'].get('observedGeneration', 0) >= dep['metadata']['generation'])
         need(dep['spec'].get('replicas', 1) == 0 and all(dep['status'].get(k, 0) == 0 for k in ['replicas', 'readyReplicas', 'availableReplicas', 'updatedReplicas']))
         containers = dep['spec']['template']['spec']['containers']; need(len(containers) == 1 and containers[0]['name'] == workload and containers[0]['image'] == original_image)
@@ -145,7 +160,7 @@ def main():
         if args.application == 'seerr':
             mounts = [{**m, 'readOnly': m.get('readOnly', False)} for m in containers[0]['volumeMounts']]
             need(mounts == [{'name': 'data-0', 'mountPath': '/config', 'readOnly': True}, {'name': 'data-0', 'mountPath': '/app/config', 'readOnly': False}])
-        need(state_mount['mountPath'] == ('/root/.xteve' if args.application == 'xteve' else '/app/data' if args.application == 'mealie' else '/var/lib/mysql' if args.application == 'ruckus-db' else '/var/www/html' if args.application == 'wordpress' else '/app/config' if args.application == 'homepage' else '/app/state' if args.application == 'qbit-monitor' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
+        need(state_mount['mountPath'] == ('/usr/share/nginx/html' if args.application in STATIC_TARGETS else '/root/.xteve' if args.application == 'xteve' else '/app/data' if args.application == 'mealie' else '/var/lib/mysql' if args.application == 'ruckus-db' else '/var/www/html' if args.application == 'wordpress' else '/app/config' if args.application == 'homepage' else '/app/state' if args.application == 'qbit-monitor' else '/data' if args.application in ['vaultwarden', 'wordpress-redis'] else '/config') and not state_mount.get('subPath') and not state_mount.get('subPathExpr'))
         need(any(v['name'] == mount_alias and v.get('persistentVolumeClaim', {}).get('claimName') == claim for v in dep['spec']['template']['spec']['volumes']))
         need(release['metadata']['uid'] == release_uid and not release['metadata'].get('deletionTimestamp') and release['spec'].get('releaseName') == workload and release['spec'].get('targetNamespace') == namespace and release['spec'].get('values', {}).get('replicaCount') == 0 and not release['spec'].get('suspend', False))
         need(release['status'].get('observedGeneration', 0) >= release['metadata']['generation'] and any(c['type'] == 'Ready' and c['status'] == 'True' for c in release['status'].get('conditions', [])))
@@ -200,7 +215,7 @@ def main():
             running = any('running' in c.get('state', {}) for key in ['containerStatuses', 'initContainerStatuses', 'ephemeralContainerStatuses'] for c in pod['status'].get(key, []))
             need(pod['status'].get('phase') in ['Failed', 'Succeeded'] and not running)
         node = get('node', args.node)
-        if args.application == 'seerr':
+        if args.application == 'seerr' or args.application in STATIC_TARGETS:
             need(node['metadata']['uid'] == 'e8d4555f-7cea-445f-b84f-6416964045a9')
         if args.application in ['xteve', 'xteve-config']:
             need(node['metadata']['uid'] == 'eda66e65-f388-4b97-b64f-a709cda81894')
@@ -240,10 +255,12 @@ def main():
         receipt.update(shared_reader_sha256=file_hash(SHARED / 'pod_reader.py'), shared_controller_sha256=file_hash(SHARED / 'metube_state_backup.py'), controller_sha256=file_hash(pathlib.Path(__file__)))
         name = 'cold-' + args.application + '-' + run_id[:12]
         pod = {'apiVersion': 'v1', 'kind': 'Pod', 'metadata': {'name': name, 'namespace': namespace, 'labels': {'preservation-run': run_id, 'migration-task': 'cold-application-state'}}, 'spec': {'nodeName': args.node, 'restartPolicy': 'Never', 'activeDeadlineSeconds': 1800, 'automountServiceAccountToken': False, 'securityContext': {'runAsUser': args.reader_uid, 'runAsGroup': args.reader_gid, 'runAsNonRoot': args.reader_uid != 0, 'seccompProfile': {'type': 'RuntimeDefault'}}, 'containers': [{'name': 'reader', 'image': shared.OLD, 'imagePullPolicy': 'IfNotPresent', 'command': ['python3', '-B', '-c', 'import time;time.sleep(1800)'], 'resources': {'requests': {'cpu': '10m', 'memory': '32Mi'}, 'limits': {'cpu': '500m', 'memory': '256Mi'}}, 'securityContext': {'allowPrivilegeEscalation': False, 'readOnlyRootFilesystem': True, 'capabilities': {'drop': ['ALL']}}, 'volumeMounts': [{'name': 'state', 'mountPath': '/source', 'readOnly': True}]}], 'volumes': [{'name': 'state', 'persistentVolumeClaim': {'claimName': claim, 'readOnly': True}}]}}
-        if args.application == 'seerr':
+        if args.application == 'seerr' or args.application in STATIC_TARGETS:
             # Read the entire claim, including root-owned lost+found and private
             # app-owned files. This adds read/search only, never write access.
             pod['spec']['containers'][0]['securityContext']['capabilities']['add'] = ['DAC_READ_SEARCH']
+        if args.application in STATIC_TARGETS:
+            program = program.replace("EXCLUDED = set()\n", "EXCLUDED = set()\nMAX_BYTES = " + str(max_data) + "\n")
         if args.application == 'plex':
             program = program.replace('raw=sys.stdin.buffer.read(8*1024*1024+1); need(len(raw)<=8*1024*1024)', 'raw=sys.stdin.buffer.read(64*1024*1024+1); need(len(raw)<=64*1024*1024)')
             program = program.replace("EXCLUDED = set()\n", "EXCLUDED = set()\nMAX_BYTES = " + str(max_data) + "\nMAX_MANIFEST_BYTES = " + str(max_metadata) + "\n")
