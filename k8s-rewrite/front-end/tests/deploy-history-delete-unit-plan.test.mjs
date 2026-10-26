@@ -126,7 +126,7 @@ test('M14 all66 helpers callbacks assertions and ordering retain corrected exist
 });
 
 test('M15 focused runner dispatch preserves its normalized planner import and exact isolated batching contract', () => {
-  const runner = read('scripts/run-unit-tests.mjs');
+  const runner = read('scripts/run-unit-tests.mjs').replaceAll('\r\n', '\n');
   const importPattern = /^import \{ unitTestPlan, executionFor, executionBatches \} from '(\.\/[a-z]+(?:-[a-z]+)*-unit-plan\.mjs)';$/m;
   const binding = runner.match(importPattern); assert.ok(binding);
   const planner = read('scripts/' + binding[1].slice(2));
@@ -162,7 +162,7 @@ test('M16 every frozen prior planner safeguard replacement loader and package co
     "tests/current-account-node22.test.mjs": "565d9f2950caa363009cc1ea5e709458cd4283897fc8669addf7e1e28b7b155f",
     "tests/current-account-unit-plan.test.mjs": "00692a71f4c475ccaab7269588aa2729e12425662156f1f41a09f4b16f555ba8",
     "tests/current-session-node22.test.mjs": "0c4316b29c5f5fe4e67387e7b377a116df7bfa95c29f11f4985e5cd95ba5f640",
-    "tests/current-session-unit-plan.test.mjs": "a17d2740c877dc71acf80b75f5cfdde850cb0c887608209669316d4efdfce892",
+    "tests/current-session-unit-plan.test.mjs": "1ba63a30aac86064602a453e40ef681ebe7a900c945355bcd0c76940997ea673",
     "tests/job-stream-unit-plan.test.mjs": "829585272b526c2997fedf8e96a3a336bce0d1ba03ef8cce4b299645b2b46738",
     "tests/unit-test-loader.test.ts": "131a957bff2ffd4fb7573a38648b71fab0948cd87df6430da0548d32c2f47536",
     "tests/unit-test-plan.test.mjs": "f97b128d6d0b9354a503dfd33bb89d44e71bffe649793df64477c9555564cf95",

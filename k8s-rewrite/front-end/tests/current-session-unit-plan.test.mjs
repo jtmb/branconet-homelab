@@ -124,7 +124,7 @@ test('M14 all57 helper/callback/assertion ordering and forbidden afterEach guard
 });
 
 test('M15 focused runner dispatch preserves its normalized planner import and exact isolated batching contract', () => {
-  const runner = read('scripts/run-unit-tests.mjs');
+  const runner = read('scripts/run-unit-tests.mjs').replaceAll('\r\n', '\n');
   const importPattern = /^import \{ unitTestPlan, executionFor, executionBatches \} from '(\.\/[a-z]+(?:-[a-z]+)*-unit-plan\.mjs)';$/m;
   const binding = runner.match(importPattern); assert.ok(binding);
   const planner = read('scripts/' + binding[1].slice(2));
