@@ -39,9 +39,9 @@ certificate-only reads covered the seven referenced TLS Secrets. Their chains
 are Let's Encrypt YR1/YR2 through ISRG; no eMudhra/emSign issuer or subject was
 observed. Strict hostname/chain TLS handshakes to all three node IPs produced:
 
--21verified connections covering `jtmb.cc`, `mealie.jtmb.cc`, `media.jtmb.cc`,
+- 21 verified connections covering `jtmb.cc`, `mealie.jtmb.cc`, `media.jtmb.cc`,
   `aplb.jtmb.cc`, `lucinda.jtmb.cc`, `mc.jtmb.cc` and `santos.jtmb.cc`.
--69unverified connections for the23LAN/local names. Every reported verification
+- 69 unverified connections for the 23 LAN/local names. Every reported verification
   failure was self-signed-certificate error18; the presented subject was
   `TRAEFIK DEFAULT CERT`. This is the existing trusted-TLS acceptance gap,
   separately from identifying an affected eMudhra chain.
