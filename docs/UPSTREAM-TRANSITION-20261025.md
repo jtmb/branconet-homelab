@@ -1,5 +1,20 @@
 # Repository-backed image transition
 
+Latest accepted revision, October 26 01:41 UTC:
+`0ed2ad27ce0a32055c37c3e2d4d22026535a9b15`, private main/validated/live Flux.
+The four static sites now use official Nginx 1.30.6 Alpine Slim; all complete
+content/configuration, Secret/resource identities, routes and different-Pod
+restart checks passed. Fully authenticated cold archives and final encrypted
+metadata passed NAS read-back. [Exact acceptance](UPSTREAM-STATIC-SITES-ADOPTION-20261026.md).
+The refreshed 91-Running-Pod / 68-main-init-ephemeral-image inventory identifies
+11 remaining third-party derivative chart transitions: homepage, jackett,
+mealie, pihole, plex, qbittorrent, ruckus-db, tautulli, vaultwarden, wordpress and
+xteve. The four owned application repositories remain separately classified;
+their non-Actions publication gap is unresolved. Full security remediation and
+final IAB are still required. The selected Nginx image's fresh zero-finding OS
+scan does not close the fleet's open security findings. Older dated snapshots
+below are historical.
+
 October 26, 00:20 UTC: phpMyAdmin now runs the official 5.2.3 Apache image.
 Native login/logout, all 3 published routes, the configured SQL account/grants
 and all 12 WordPress tables matched before, after and on a different restart Pod.

@@ -1,5 +1,21 @@
 # Migration and maintenance status
 
+**Latest checkpoint — October 26, 01:41 UTC:** the four static sites use official
+Nginx 1.30.6 Alpine Slim at private charts main/validated/live Flux
+`0ed2ad27ce0a32055c37c3e2d4d22026535a9b15`. All 480 files / 413835995 bytes,
+complete configs, native Secrets, storage/resource identities and 70 route/asset
+checks matched before, after and on different restart Pods. All four complete
+cold backups and encrypted recovery metadata passed NAS authentication/read-back.
+All three nodes, 55 PVCs, 34 HelmReleases and desired workloads are healthy;
+attached Longhorn volumes are healthy. The image's fresh 21-OS-package scan had
+no findings; whole-fleet security acceptance remains open. Eleven third-party
+derivative transitions, owned-image publication and final IAB remain required.
+Cleanup removed 954368 allocated Linux bytes; required evidence/data is retained.
+[Exact acceptance and limitations](docs/UPSTREAM-STATIC-SITES-ADOPTION-20261026.md),
+[exact cleanup and exclusions](docs/TASK-OUTPUT-INVENTORY.md#static-site-checkpoint-reconciliation-october-26-0143-utc).
+The existing five-milestone goal is **active and incomplete**. Older dated
+checkpoint states below remain historical, not current revision assertions.
+
 October 26, 00:20 UTC: phpMyAdmin now runs the official 5.2.3 Apache image.
 Native login/logout, all 3 published routes, the configured SQL account/grants
 and all 12 WordPress tables matched before, after and on a different restart Pod.

@@ -1,5 +1,62 @@
 # Maintenance output ownership and reconciliation
 
+## Static-site checkpoint reconciliation, October 26 01:43 UTC
+
+This checkpoint reused the same F:-backed root below. New required children are
+`security-review-20261026`, `upstream-static-sites-20261026` and
+`control-source/upstream-static-sites-20261026`; controls and receipts reuse
+`operator-control`. No build, dependency installation or additional output root
+was introduced. [Exact adoption and authenticated recovery](UPSTREAM-STATIC-SITES-ADOPTION-20261026.md).
+
+The first cleanup check failed closed because Linux Git could not interpret the
+Windows worktree's Git pointer. The second exposed the app-visible charts path's
+Windows redirection. Neither attempt deleted anything. Native Windows Git
+verification established the canonical repositories, tracked sources and lockfile
+hashes; the corrected check verified those same files from WSL. Both original
+failure receipts and all source versions remain. These were local safety-check
+failures, not automatic approval-review rejections.
+
+After all scanner/backup/copy processes were terminal, root-visible process FD,
+map and mount checks, exact ownership/inode/path checks, source/lock preservation
+and protected tool/database/report hashes passed. Only these inactive,
+reproducible current-stage paths were removed, relative to the declared root:
+
+| Exact removed path | Allocated Linux bytes |
+| --- | ---: |
+| `security-review-20261026/cache/fanal/fanal.db` | 929792 |
+| `operator-control/tmp/ansible-home` | 4096 |
+| `operator-control/tmp/ansible-local` | 4096 |
+| `operator-control/tmp` | 4096 |
+| `security-review-20261026/tmp` | 4096 |
+| `security-review-20261026/home` | 4096 |
+| `security-review-20261026/cache/fanal` | 4096 |
+
+Total: **954368 allocated Linux bytes**. This is not a Windows disk-recovery
+claim; no shutdown or compaction ran. The exact receipt and regeneration command
+are `operator-control/static-sites-scratch-reconciliation-r3.json`. Recreating
+the analysis cache uses the recorded immutable-image scanner command and retained
+inputs with a new output report path, preserving the original result. Empty
+private TMP/HOME directories are recreated explicitly only when needed.
+
+Retained exceptions, relative to the same root:
+
+| Exact retained path | Reason |
+| --- | --- |
+| `security-review-20261026/cache/db` | Current immutable advisory DB required for remaining fleet review |
+| `security-review-20261026/cache/java-db` | Current immutable Java identification index required for remaining fleet review |
+| `security-review-20261026/docker-config` | Isolated scanner configuration; exact creation provenance not separately reconciled |
+| `security-review-20261026/nginx-0` | Unique initial scanner failure evidence |
+| `security-review-20261026/java-inputs-receipt.json` | Original bounded pre-download failure evidence |
+| `control-source/upstream-static-sites-20261026` | Original and corrected observers/backup sources, manifests and recovery provenance |
+| `upstream-static-sites-20261026` | Complete original encrypted backups, private key and distinct baseline/adoption/restart/failure observations |
+| `operator-control/static-sites-recovery-metadata.tar.age` | Required fully authenticated recovery metadata, also verified on NAS |
+| `operator-control/static-sites-scratch-reconciliation*.json` and corresponding control sources | Unique initial failed checks and successful cleanup proof |
+
+The refreshed `operator-control/storage-inventory-current.json` classifies all
+222 current top-level paths. All older source/failure/rollback exceptions, other
+owner artifacts and active publisher state below remain preserved. The new
+public DB inputs are required current security-review state, not orphaned copies.
+
 The existing authorized generated-output root is retained:
 
 `/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`

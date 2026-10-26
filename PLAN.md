@@ -51,6 +51,24 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
+**Latest checkpoint — October 26, 01:41 UTC:** all four static sites now run
+official Nginx 1.30.6 Alpine Slim through charts → local validation → validated →
+Flux, revision `0ed2ad27ce0a32055c37c3e2d4d22026535a9b15`.
+All 480 files / 413835995 content bytes, configurations, native Secrets, original
+storage/resource identities and 70 route/asset checks matched before, after and
+on distinct restart Pods. Complete cold backups and encrypted recovery metadata
+passed NAS read-back and authentication. The selected image's fresh scan found
+no vulnerabilities in its 21 detected OS packages; this is not fleet-wide or
+unknown-vulnerability assurance. All three nodes, 55 PVCs, 34 HelmReleases and
+desired workloads passed the health check; attached Longhorn volumes are healthy.
+[Exact rollout, recovery and limitations](docs/UPSTREAM-STATIC-SITES-ADOPTION-20261026.md).
+Eleven third-party derivative chart transitions remain. Full security review,
+owned-image publication and final IAB acceptance remain open; the goal is active.
+Checkpoint cleanup removed 954368 allocated Linux bytes from the exact paths in
+[the output inventory](docs/TASK-OUTPUT-INVENTORY.md#static-site-checkpoint-reconciliation-october-26-0143-utc).
+All required originals, rollback artifacts, source and failure evidence remain.
+The following dated checkpoints are historical.
+
 October 26, 00:20 UTC: phpMyAdmin now runs the official 5.2.3 Apache image.
 Native login/logout, all 3 published routes, the configured SQL account/grants
 and all 12 WordPress tables matched before, after and on a different restart Pod.
