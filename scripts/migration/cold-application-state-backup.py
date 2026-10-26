@@ -58,7 +58,7 @@ def main():
     parser.add_argument('--reader-uid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
-    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026'], default='original')
+    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026'], default='original')
     parser.add_argument('--resume-receipt', type=pathlib.Path, help='Static sites only: reverify an existing ciphertext and its still-running original read-only reader')
     parser.add_argument('--resume-sha256', help='Exact original failed receipt SHA256; original receipt is never overwritten')
     args = parser.parse_args()
@@ -124,6 +124,9 @@ def main():
         run_id = uuid.uuid4().hex
         run = output / (args.application + '-cold-' + run_id); run.mkdir(mode=0o700)
     namespace, deployment_uid, release_uid, claim_uid, original_image = TARGETS[args.application]
+    if args.generation == 'upstream-xteve-20261026':
+        need(args.application in ['xteve', 'xteve-config'] and args.reader_uid == 0 and args.node == 'workernode2')
+        original_image = 'docker.io/library/xteve-security-20261023@sha256:0ab77160ccccaf9235dcb3864624440551d6dd63c771cfaf97094db869a28656'
     if args.generation == 'upstream-qbittorrent-20261026':
         need(args.application == 'qbittorrent' and args.reader_uid == 0 and args.node == 'masternode')
         original_image = 'docker.io/library/qbittorrent-current-security-20261023@sha256:9e546e0ac277ef9b241cb383bfa9157e47df3269e62481348a63f4d19b87adf8'

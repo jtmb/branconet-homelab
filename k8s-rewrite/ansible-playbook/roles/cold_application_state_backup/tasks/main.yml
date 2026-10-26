@@ -4,7 +4,8 @@
     that:
       - cold_application_state_apply | bool
       - inventory_hostname == 'masternode'
-      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026']
+      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026']
+      - cold_application_state_generation != 'upstream-xteve-20261026' or (cold_application_state_app in ['xteve', 'xteve-config'] and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 0)
       - cold_application_state_generation != 'upstream-qbittorrent-20261026' or (cold_application_state_app == 'qbittorrent' and cold_application_state_node == 'masternode' and cold_application_state_reader_uid | int == 0)
       - cold_application_state_generation != 'upstream-vaultwarden-20261026' or (cold_application_state_app == 'vaultwarden' and cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 1000)
       - cold_application_state_generation != 'upstream-tautulli-20261026' or (cold_application_state_app == 'tautulli' and cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 1000)

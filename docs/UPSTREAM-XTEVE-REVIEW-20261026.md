@@ -95,3 +95,36 @@ Sources:
 [original releases](https://github.com/xteve-project/xTeVe/releases),
 [Threadfin releases](https://github.com/Threadfin/Threadfin/releases),
 [Threadfin image and volume contract](https://github.com/Threadfin/Threadfin#docker-image).
+
+## Prepared cutover controls
+
+The selected vendor binary/FFmpeg/VLC paths passed an isolated, credential-free
+runtime preflight on workernode2; its Pod and deny-all NetworkPolicy were deleted
+by recorded UID. The compatibility proxy uses the already qualified official
+Nginx 1.30.6 slim digest, runs as UID/GID101 with dropped capabilities/read-only
+root, and mounts only its ConfigMap and a bounded 16-MiB emptyDir. An initializer
+changes permissions only on that new emptyDir. Its first preflight found default
+FastCGI temporary paths outside the writable mount; all temporary paths now use
+`/tmp`, and the corrected nonroot configuration preflight passed. The first
+failed Pod/ConfigMap/deny-all policy remain as unique evidence; corrected passing
+resources were removed by UID. No original state or native credential was mounted.
+
+The chart change is initially disabled. Activation requires the separately
+verified `threadfin-20261026-<12hex>` directory and preserves original main
+resource settings, native Secret, PVC definitions and SSDP gateway. It redirects
+existing Service port34400 to the same-Pod proxy34401, retaining both original
+XMLTV URLs and forwarding all other traffic. Original `/config` becomes readonly.
+
+The finite cold generation `upstream-xteve-20261026` captures both complete
+current state claims sequentially while Flux has zero writers. The existing
+four-GiB complete-archive and 15-GiB retained-space bounds remain. The guarded
+`prepare-threadfin-state-copy.py` authenticates the cold archive, copies every
+file with original ownership/mode into one new directory on the **same existing
+runtime PVC**, verifies every original file before/after, and adds only
+`ThreadfinAutoUpdate=false` in the copied settings. No original path is deleted
+or replaced. The separate copy is required runtime/migration data, not a build
+cache or another disposable-output root; retain it and the original through
+cutover/rollback. Helpers cannot mount NAS media or native Secrets, use deny-all
+networking, and delete only their recorded successful resource UIDs. Failed
+state/resources are retained. No application restore or full acceptance is
+credited by preparation alone.
