@@ -33,3 +33,28 @@ authenticated application reads, routes and a distinct restart without replacing
 the password or silently changing DNS upstreams. No personal login or final IAB
 acceptance is inferred from a Ready Pod. Cleanup and exact retained exceptions
 are required before this checkpoint is accepted.
+
+The unsuppressed vendor scan completed successfully with 0 Critical / 13 High /
+4 Medium / 44 Low / 2 Unknown findings. All 13 High package rows have fixes
+absent from this published artifact; they remain open vendor findings. The CISA
+KEV intersection is empty, which does not establish absence of unknown flaws.
+No private rebuild or live package patch substitutes for the maintained image.
+
+Fresh original checks passed FTL v6.8, six authenticated read operations, own
+CLI-session logout, 16 TCP/UDP DNS probes (internal and all three published node
+addresses), unchanged native Secret/storage/resource bindings and 27 web routes.
+The actual host is `pi.branconet.lan`; `/admin/` redirects to `/admin/login`,
+and anonymous `/api/groups` access is unauthorized. Initial observer assumptions
+about the root response/hostname were corrected against the actual source/live
+routes; both original frozen sources and failure diagnostics remain.
+
+The first same-release schema check identified a historical contract omission:
+the original gravity database already has
+`CREATE INDEX idx_antigravity ON antigravity (domain, adlist_id)`. Complete live
+schema/column inspection confirms this is the only difference from that older
+contract. Both exact current/new schemas now require that index; no schema-change
+exception is introduced. Original failed source, receipt and reader diagnostics
+remain. Only its UID-bound temporary reader was deleted after capturing evidence;
+the copied SQL executable was tmpfs-only and both source claims stayed read-only.
+The pinned original official SQL CLI remains an isolated diagnostic tool, with
+no app entrypoint, token, credentials or network API and unchanged resource bounds.

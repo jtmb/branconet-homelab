@@ -10,6 +10,12 @@
             "type": "index"
           },
           {
+            "type": "index",
+            "name": "idx_antigravity",
+            "tbl_name": "antigravity",
+            "sql": "CREATE INDEX idx_antigravity ON antigravity (domain, adlist_id)"
+          },
+          {
             "name": "idx_domainlist_by_group_gid",
             "sql": "CREATE INDEX idx_domainlist_by_group_gid ON domainlist_by_group (group_id, domainlist_id)",
             "tbl_name": "domainlist_by_group",
@@ -660,6 +666,12 @@
             "sql": "CREATE INDEX idx_adlist_by_group_gid ON adlist_by_group (group_id, adlist_id)",
             "tbl_name": "adlist_by_group",
             "type": "index"
+          },
+          {
+            "type": "index",
+            "name": "idx_antigravity",
+            "tbl_name": "antigravity",
+            "sql": "CREATE INDEX idx_antigravity ON antigravity (domain, adlist_id)"
           },
           {
             "name": "idx_domainlist_by_group_gid",
