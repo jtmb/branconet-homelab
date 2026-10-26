@@ -105,8 +105,11 @@ def main():
         # Avoid discarding the entire NTFS backing file before formatting.
         run(['mkfs.ext4', '-F', '-q', '-E', 'nodiscard', '-m', '0', '-U', UUID, '-L', 'branconet-build', str(IMAGE)])
     info = IMAGE.lstat()
+    # The same inode was already grown online to152GiB (inventory, Oct26).
+    # Recognize it only for explicit existing-only remount, never creation/growth.
+    retained_152 = args.mount_existing and info.st_ino == 115123265474727363 and info.st_size == 152 * 1024**3
     need(IMAGE.resolve() == IMAGE and stat.S_ISREG(info.st_mode) and info.st_nlink == 1
-         and info.st_size in [SIZE, 128 * 1024**3, 144 * 1024**3], 'exact_existing_backing_regular_file')
+         and (info.st_size in [SIZE, 128 * 1024**3, 144 * 1024**3] or retained_152), 'exact_existing_backing_regular_file')
     fs = run(['blkid', '-p', '-o', 'export', str(IMAGE)]).decode()
     fields = dict(line.split('=', 1) for line in fs.splitlines() if '=' in line)
     need(fields.get('UUID') == UUID and fields.get('TYPE') == 'ext4', 'exact_ext4_backing_identity')
@@ -195,7 +198,7 @@ def main():
          'verified_direct_io_mode')
     os.chown(MOUNT, 1000, 1000)
     os.chmod(MOUNT, 0o700)
-    out = BASE / 'local-build-storage-20261025'
+    out = MOUNT / 'operator-control/local-build-storage' if retained_152 else BASE / 'local-build-storage-20261025'
     out.mkdir(mode=0o700, exist_ok=True)
     os.chown(out, 1000, 1000)
     record = {'created': created, 'passed': True, 'observedUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),

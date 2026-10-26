@@ -1,5 +1,34 @@
 # Dedicated local build storage
 
+## Existing152GiB remount recovery, October26 19:42UTC
+
+The task mount was absent during a later health-script write; that write failed
+instead of falling back into the underlying WSL filesystem. Read-only inspection
+found no associated loop, a clean ext4 filesystem and the original backing-file
+inode `115123265474727363`, UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`,
+size163208757248 bytes. The earlier documented online growth to152GiB had not
+been added to the installed144GiB remount helper.
+
+The Ansible source now recognizes152GiB only for `--mount-existing` on that
+exact original inode. Creation and growth generations are unchanged. The
+installed helper was verified against the prior pinned source, then updated
+from the reviewed role source. It restored the same loop-backed filesystem,
+`rw,nodev,nosuid`, with512-byte sectors and direct I/O. No formatting, growth,
+filesystem repair, shutdown or workload stop ran. The remount receipt is
+`operator-control/local-build-storage/storage-832f553365cf4b12a0839fa845542cc3.json`,
+SHA256 `6fa1fa3b626af002b6ae32380b8b2a86e42727242bce806989bbfd27e061661b`;
+helper source SHA256 is
+`8ba04629d2c349d3291b775a444b6564a2e77d6ec06785a1268f3f81e8e0f220`.
+This existing152GiB path records new receipts inside the same authorized root.
+
+The completed Ruckus encrypted recovery archive still matches its exact hash
+after remount. The existing `Branconet Charts Local CI` scheduled task was
+started after its old process was confirmed absent; its new Windows Python
+process is live. This did not create a new publisher or replay an old revision.
+The19:42UTC cluster check found3Ready nodes,55Bound PVCs, every release Ready,
+no unavailable workloads and41healthy attached Longhorn volumes. All prior
+failed Pods remain retained. No new disk-recovery claim is made.
+
 The existing cluster disks remain unchanged. New build stages must satisfy the
 15 GiB C-drive launch minimum described below. A separate
 96 GiB native ext4 filesystem was initially created in
