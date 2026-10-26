@@ -50,7 +50,7 @@ def save(path, value):
 
 def main():
     os.umask(0o077)
-    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3'], 'finite_scan_generation')
+    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3', 'mealie-current-r3'], 'finite_scan_generation')
     generation = sys.argv[1]
     revalidated = generation != 'homepage-jackett'
     cg = Path('/proc/self/cgroup').read_text().strip().removeprefix('0::')
@@ -79,7 +79,10 @@ def main():
     updated = datetime.datetime.fromisoformat(proof['vulnerabilityDB']['UpdatedAt'].replace('Z', '+00:00'))
     need(0 <= (datetime.datetime.now(datetime.timezone.utc) - updated).total_seconds() <= 86400, 'fresh_database')
     kev = {r['cveID'] for r in json.loads((OUT / ('cisa-kev-r3.json' if revalidated else 'cisa-kev.json')).read_bytes())['vulnerabilities']}
-    if generation == 'jackett-current-r3':
+    if generation == 'mealie-current-r3':
+        candidates = json.loads((OUT / 'mealie-current-candidates.json').read_bytes())['images']
+        need([r['reference'] for r in candidates] == ['ghcr.io/mealie-recipes/mealie:v3.29.0@sha256:78eb28b8776d0bad40c5e605c72b3f4f5976793e491558c7dcbdfc04c835d4bc'], 'finite_current_mealie_target')
+    elif generation == 'jackett-current-r3':
         candidates = json.loads((OUT / 'jackett-current-candidates.json').read_bytes())['images']
         need([r['reference'] for r in candidates] == ['docker.io/linuxserver/jackett:0.24.2910@sha256:19d90927b95397f2d1364e4999e11456abdbbb382b54cd765fc3b3da24d7088b'], 'finite_current_jackett_target')
     else:
