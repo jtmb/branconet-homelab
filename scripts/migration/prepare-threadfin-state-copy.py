@@ -6,6 +6,7 @@ import hashlib
 import importlib.util
 import json
 import os
+import resource
 from pathlib import Path
 import shlex
 import subprocess
@@ -15,10 +16,11 @@ OUT = ROOT / 'upstream-xteve-20261026'
 HELPER = 'docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1'
 
 COPY = r'''
-import json,sys,os,stat,hashlib,shutil
+import json,sys,os,stat,hashlib,shutil,re,resource
 from pathlib import Path,PurePosixPath
+resource.setrlimit(resource.RLIMIT_CORE,(0,0))
 request=json.loads(sys.stdin.buffer.read(8*1024**2+1));manifest=request['manifest'];prefix=request['prefix']
-assert prefix.startswith('threadfin-20261026-')and len(prefix)==30 and prefix[18:].isalnum()
+assert re.fullmatch(r'threadfin-20261026-[a-f0-9]{12}',prefix)
 source=Path('/source');target=Path('/target')/prefix
 assert source.is_dir()and source.resolve()==source and not target.exists()and not target.is_symlink()
 rows={}
@@ -121,6 +123,7 @@ def main():
     p.add_argument('--receipt', type=Path, required=True)
     a = p.parse_args()
     assert a.apply and os.getuid() == 1000 and ROOT.is_mount()
+    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     os.umask(0o077)
     assert a.receipt.parent == OUT and not a.receipt.exists()
     cold = json.loads(a.state_receipt.read_text())
