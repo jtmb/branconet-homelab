@@ -123,11 +123,12 @@ test('M14 all57 helper/callback/assertion ordering and forbidden afterEach guard
   assert.ok(tail.includes('assert.notEqual(first, second)'));
 });
 
-test('M15 runner changes only planner import; narrow group retains serial scheduling and shared loader', () => {
+test('M15 focused runner dispatch preserves its normalized planner import and exact isolated batching contract', () => {
   const runner = read('scripts/run-unit-tests.mjs');
-  const importPattern = /^import \{ unitTestPlan, executionFor \} from '(\.\/[a-z]+(?:-[a-z]+)*-unit-plan\.mjs)';$/m;
+  const importPattern = /^import \{ unitTestPlan, executionFor, executionBatches \} from '(\.\/[a-z]+(?:-[a-z]+)*-unit-plan\.mjs)';$/m;
   const binding = runner.match(importPattern); assert.ok(binding);
-  assert.ok(read('scripts/' + binding[1].slice(2)).includes('export function executionFor'));
-  const canonical = runner.replace(importPattern, "import { unitTestPlan, executionFor } from './current-session-unit-plan.mjs';");
-  assert.equal(canonical, "import assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\nimport { fileURLToPath } from 'node:url';\nimport { unitTestPlan, executionFor } from './current-session-unit-plan.mjs';\n\nconst root = fileURLToPath(new URL('../', import.meta.url));\nconst args = process.argv.slice(2);\nconst plan = unitTestPlan(root);\nconst selected = executionFor(plan, args);\nconsole.log(JSON.stringify({ ...plan, execution: selected }));\nif (args[0] !== '--plan') {\n  const scheduling = args[0] === '--group' ? ['--test-concurrency=1'] : [];\n  const result = spawnSync(process.execPath, ['--import', 'tsx', '--test', ...scheduling, ...selected], { cwd: root, stdio: 'inherit' });\n  if (result.error) throw result.error;\n  assert.equal(result.signal, null, `Unit child terminated by ${result.signal}`);\n  process.exitCode = result.status ?? 1;\n}\n");
+  const planner = read('scripts/' + binding[1].slice(2));
+  for (const name of ['unitTestPlan', 'executionFor', 'executionBatches']) assert.ok(planner.includes(name), name);
+  const canonical = runner.replace(importPattern, "import { unitTestPlan, executionFor, executionBatches } from './get-session-account-unit-plan.mjs';");
+  assert.equal(canonical, "import assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\nimport { fileURLToPath } from 'node:url';\nimport { unitTestPlan, executionFor, executionBatches } from './get-session-account-unit-plan.mjs';\n\nconst root = fileURLToPath(new URL('../', import.meta.url));\nconst args = process.argv.slice(2);\nconst plan = unitTestPlan(root);\nconst selected = executionFor(plan, args);\nconsole.log(JSON.stringify({ ...plan, execution: selected }));\nif (args[0] !== '--plan') {\n  const scheduling = args[0] === '--group' ? ['--test-concurrency=1'] : [];\n  let status = 0;\n  for (const batch of executionBatches(selected)) {\n    const result = spawnSync(process.execPath, [...batch.flags, '--import', 'tsx', '--test', ...scheduling, ...batch.files], { cwd: root, stdio: 'inherit' });\n    if (result.error) throw result.error;\n    assert.equal(result.signal, null, `Unit child terminated by ${result.signal}`);\n    status ||= result.status ?? 1;\n  }\n  process.exitCode = status;\n}\n");
 });

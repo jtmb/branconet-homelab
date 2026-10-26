@@ -125,13 +125,14 @@ test('M14 all66 helpers callbacks assertions and ordering retain corrected exist
     assert.ok(tail.includes(witness));
 });
 
-test('M15 runner changes only planner import; narrow group retains serial scheduling and shared loader', () => {
+test('M15 focused runner dispatch preserves its normalized planner import and exact isolated batching contract', () => {
   const runner = read('scripts/run-unit-tests.mjs');
-  const importPattern = /^import \{ unitTestPlan, executionFor \} from '(\.\/[a-z]+(?:-[a-z]+)*-unit-plan\.mjs)';$/m;
+  const importPattern = /^import \{ unitTestPlan, executionFor, executionBatches \} from '(\.\/[a-z]+(?:-[a-z]+)*-unit-plan\.mjs)';$/m;
   const binding = runner.match(importPattern); assert.ok(binding);
-  assert.ok(read('scripts/' + binding[1].slice(2)).includes('export function executionFor'));
-  const canonical = runner.replace(importPattern, "import { unitTestPlan, executionFor } from './current-session-unit-plan.mjs';");
-  assert.equal(canonical, "import assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\nimport { fileURLToPath } from 'node:url';\nimport { unitTestPlan, executionFor } from './current-session-unit-plan.mjs';\n\nconst root = fileURLToPath(new URL('../', import.meta.url));\nconst args = process.argv.slice(2);\nconst plan = unitTestPlan(root);\nconst selected = executionFor(plan, args);\nconsole.log(JSON.stringify({ ...plan, execution: selected }));\nif (args[0] !== '--plan') {\n  const scheduling = args[0] === '--group' ? ['--test-concurrency=1'] : [];\n  const result = spawnSync(process.execPath, ['--import', 'tsx', '--test', ...scheduling, ...selected], { cwd: root, stdio: 'inherit' });\n  if (result.error) throw result.error;\n  assert.equal(result.signal, null, `Unit child terminated by ${result.signal}`);\n  process.exitCode = result.status ?? 1;\n}\n");
+  const planner = read('scripts/' + binding[1].slice(2));
+  for (const name of ['unitTestPlan', 'executionFor', 'executionBatches']) assert.ok(planner.includes(name), name);
+  const canonical = runner.replace(importPattern, "import { unitTestPlan, executionFor, executionBatches } from './get-session-account-unit-plan.mjs';");
+  assert.equal(canonical, "import assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\nimport { fileURLToPath } from 'node:url';\nimport { unitTestPlan, executionFor, executionBatches } from './get-session-account-unit-plan.mjs';\n\nconst root = fileURLToPath(new URL('../', import.meta.url));\nconst args = process.argv.slice(2);\nconst plan = unitTestPlan(root);\nconst selected = executionFor(plan, args);\nconsole.log(JSON.stringify({ ...plan, execution: selected }));\nif (args[0] !== '--plan') {\n  const scheduling = args[0] === '--group' ? ['--test-concurrency=1'] : [];\n  let status = 0;\n  for (const batch of executionBatches(selected)) {\n    const result = spawnSync(process.execPath, [...batch.flags, '--import', 'tsx', '--test', ...scheduling, ...batch.files], { cwd: root, stdio: 'inherit' });\n    if (result.error) throw result.error;\n    assert.equal(result.signal, null, `Unit child terminated by ${result.signal}`);\n    status ||= result.status ?? 1;\n  }\n  process.exitCode = status;\n}\n");
 });
 
 test('M16 every frozen prior planner safeguard replacement loader and package config retains exact canonical bytes', () => {
@@ -161,7 +162,7 @@ test('M16 every frozen prior planner safeguard replacement loader and package co
     "tests/current-account-node22.test.mjs": "565d9f2950caa363009cc1ea5e709458cd4283897fc8669addf7e1e28b7b155f",
     "tests/current-account-unit-plan.test.mjs": "00692a71f4c475ccaab7269588aa2729e12425662156f1f41a09f4b16f555ba8",
     "tests/current-session-node22.test.mjs": "0c4316b29c5f5fe4e67387e7b377a116df7bfa95c29f11f4985e5cd95ba5f640",
-    "tests/current-session-unit-plan.test.mjs": "4ec77f29b72c6b4ebd12796c29eaf5e1c83bb3113e992c0178bf686a6b55e924",
+    "tests/current-session-unit-plan.test.mjs": "a17d2740c877dc71acf80b75f5cfdde850cb0c887608209669316d4efdfce892",
     "tests/job-stream-unit-plan.test.mjs": "829585272b526c2997fedf8e96a3a336bce0d1ba03ef8cce4b299645b2b46738",
     "tests/unit-test-loader.test.ts": "131a957bff2ffd4fb7573a38648b71fab0948cd87df6430da0548d32c2f47536",
     "tests/unit-test-plan.test.mjs": "f97b128d6d0b9354a503dfd33bb89d44e71bffe649793df64477c9555564cf95",

@@ -1,3 +1,4 @@
+import { assertDiscoveryContract } from '../scripts/unit-test-discovery-contract.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -131,39 +132,40 @@ test('M14 all99 helpers callbacks assertions order and original VM scaffold rema
   assert.ok(tail.includes('use strict'));
 });
 
-test('M15 runner changes only planner import; narrow group retains serial scheduling and shared loader', () => {
+test('M15 focused runner dispatch preserves its normalized planner import and exact isolated batching contract', () => {
   const runner = read('scripts/run-unit-tests.mjs');
-  const importPattern = /^import \{ unitTestPlan, executionFor \} from '(\.\/[a-z]+(?:-[a-z]+)*-unit-plan\.mjs)';$/m;
+  const importPattern = /^import \{ unitTestPlan, executionFor, executionBatches \} from '(\.\/[a-z]+(?:-[a-z]+)*-unit-plan\.mjs)';$/m;
   const binding = runner.match(importPattern); assert.ok(binding);
-  assert.ok(read('scripts/' + binding[1].slice(2)).includes('export function executionFor'));
-  const canonical = runner.replace(importPattern, "import { unitTestPlan, executionFor } from './current-session-unit-plan.mjs';");
-  assert.equal(canonical, "import assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\nimport { fileURLToPath } from 'node:url';\nimport { unitTestPlan, executionFor } from './current-session-unit-plan.mjs';\n\nconst root = fileURLToPath(new URL('../', import.meta.url));\nconst args = process.argv.slice(2);\nconst plan = unitTestPlan(root);\nconst selected = executionFor(plan, args);\nconsole.log(JSON.stringify({ ...plan, execution: selected }));\nif (args[0] !== '--plan') {\n  const scheduling = args[0] === '--group' ? ['--test-concurrency=1'] : [];\n  const result = spawnSync(process.execPath, ['--import', 'tsx', '--test', ...scheduling, ...selected], { cwd: root, stdio: 'inherit' });\n  if (result.error) throw result.error;\n  assert.equal(result.signal, null, `Unit child terminated by ${result.signal}`);\n  process.exitCode = result.status ?? 1;\n}\n");
+  const planner = read('scripts/' + binding[1].slice(2));
+  for (const name of ['unitTestPlan', 'executionFor', 'executionBatches']) assert.ok(planner.includes(name), name);
+  const canonical = runner.replace(importPattern, "import { unitTestPlan, executionFor, executionBatches } from './get-session-account-unit-plan.mjs';");
+  assert.equal(canonical, "import assert from 'node:assert/strict';\nimport { spawnSync } from 'node:child_process';\nimport { fileURLToPath } from 'node:url';\nimport { unitTestPlan, executionFor, executionBatches } from './get-session-account-unit-plan.mjs';\n\nconst root = fileURLToPath(new URL('../', import.meta.url));\nconst args = process.argv.slice(2);\nconst plan = unitTestPlan(root);\nconst selected = executionFor(plan, args);\nconsole.log(JSON.stringify({ ...plan, execution: selected }));\nif (args[0] !== '--plan') {\n  const scheduling = args[0] === '--group' ? ['--test-concurrency=1'] : [];\n  let status = 0;\n  for (const batch of executionBatches(selected)) {\n    const result = spawnSync(process.execPath, [...batch.flags, '--import', 'tsx', '--test', ...scheduling, ...batch.files], { cwd: root, stdio: 'inherit' });\n    if (result.error) throw result.error;\n    assert.equal(result.signal, null, `Unit child terminated by ${result.signal}`);\n    status ||= result.status ?? 1;\n  }\n  process.exitCode = status;\n}\n");
 });
 
 test('M16 every frozen prior planner safeguard replacement loader and package config retains exact canonical bytes', () => {
   const frozen = {
     "scripts/ensure-jwt-secret-unit-plan.mjs": "3af722ee05fd620b68ec422a064a6e898cd1ca597cffca3e942a9e89f365fd9c",
     "tests/ensure-jwt-secret-node22.test.mjs": "9043a250b21cca62778650bd932f195ab6045b8b8ac585f7b3995a5b61219cca",
-    "tests/ensure-jwt-secret-unit-plan.test.mjs": "d266a085547d0223fb7aae4dabbcbe83664aa869768d24454c2822c3a27683e2",
+    "tests/ensure-jwt-secret-unit-plan.test.mjs": "e2818516e6b16879985d7a6af62b8c526219d8d9cd10e42e748e1dbca7256f1c",
     "scripts/deployment-pods-unit-plan.mjs": "e1e5ef45f301e2fb6c43fc7edfd6a7843cb941e201d787001f1134872f19ee48",
     "tests/deployment-pods-node22.test.mjs": "0ad0a4289654ed79e7dd39f3571b3973ceeaebc4b733f1ed5a7970ebf8e9c295",
-    "tests/deployment-pods-unit-plan.test.mjs": "0261c630e6da483057b19783c8e14a320462a580eb0b6ad0d390995b618b4b76",
+    "tests/deployment-pods-unit-plan.test.mjs": "b5b2c3a403f20e8abf5e117e4d0d2c25057d4bae40e2616058889778ace66880",
 
     "scripts/deploy-stream-unit-plan.mjs": "0697f1d6fc85780358bf728c87f0862c69f128998dcf760a762f4e6cf6953739",
     "tests/deploy-stream-node22.test.mjs": "97a0ce3e5ba330564fe0ec2ce78e21f31a420bf82fdc79b08cb64723c67be179",
-    "tests/deploy-stream-unit-plan.test.mjs": "3f3d6d1d3d2812c40df5c09bb0acadc588152a6cef36eaf0b980a8f34fc95172",
+    "tests/deploy-stream-unit-plan.test.mjs": "e5cdeec9eb7fecc7c7df1cf1a6101349bc93c05c81120d2163c01fa6f15265f0",
 
     "scripts/deploy-stop-unit-plan.mjs": "3c8ff5a8cb0a4280004cdb3adc0951c126e424aff6ac1e224aa8a3f6b6f3cfa3",
     "tests/deploy-stop-node22.test.mjs": "0d46811b9f5a5b8af124893fcdaa3e51dae8df2c2e32210cbbec404fd1d53047",
-    "tests/deploy-stop-unit-plan.test.mjs": "1a5e534566b39c773bc92a42c62f480486e138de3e57fa286e557a75c262cd43",
+    "tests/deploy-stop-unit-plan.test.mjs": "3457ff56b5f0703f38cb0e95d0250b09e3d360de0e97a7fd9dd428c764182550",
 
     "scripts/deploy-start-post-unit-plan.mjs": "cc3762862dcaa77fe2644646408ddcab1113641d79692cb874499939ffa9887e",
     "tests/deploy-start-post-node22.test.mjs": "e064c701190e5a456b7651499ac49fe005e740f9506df016acc43665deab2eea",
-    "tests/deploy-start-post-unit-plan.test.mjs": "91cd60d2e384d54b6fab9ec748f84bfb977b9e96a8fcde26754c36baeacb67cc",
+    "tests/deploy-start-post-unit-plan.test.mjs": "fea6840905b0de193a83030715219144d88c78912e767f4387ba7496ab01251a",
 
     "scripts/deploy-start-get-unit-plan.mjs": "f9e7f9427103cacb3c35f0f17f773552788bf8a56e9a26fb667070db3bfa6538",
     "tests/deploy-start-get-node22.test.mjs": "4daa75860c998bf192ed9047b273e4dbda8b02833278a1e3b32f1a35d1a45324",
-    "tests/deploy-start-get-unit-plan.test.mjs": "8af1afbc9322550a01f79bca40480f50c5688b83a32d245aebb468a801e23f29",
+    "tests/deploy-start-get-unit-plan.test.mjs": "11d26caf79c6e6a6ce7513a7472bec6d5442df86f2614f42bb17389a35e3d0bb",
 
     "scripts/account-store-unit-plan.mjs": "cffab0ea41dd0073907bc073b0269b84fae9ad0122ee46b47f218971661941e3",
     "scripts/ansible-selection-unit-plan.mjs": "78b27e551a3f776763395fbff7b26a055dbf811d427c6af84706acd956839b39",
@@ -192,11 +194,11 @@ test('M16 every frozen prior planner safeguard replacement loader and package co
     "tests/current-account-node22.test.mjs": "565d9f2950caa363009cc1ea5e709458cd4283897fc8669addf7e1e28b7b155f",
     "tests/current-account-unit-plan.test.mjs": "00692a71f4c475ccaab7269588aa2729e12425662156f1f41a09f4b16f555ba8",
     "tests/current-session-node22.test.mjs": "0c4316b29c5f5fe4e67387e7b377a116df7bfa95c29f11f4985e5cd95ba5f640",
-    "tests/current-session-unit-plan.test.mjs": "4ec77f29b72c6b4ebd12796c29eaf5e1c83bb3113e992c0178bf686a6b55e924",
+    "tests/current-session-unit-plan.test.mjs": "a17d2740c877dc71acf80b75f5cfdde850cb0c887608209669316d4efdfce892",
     "tests/deploy-history-delete-node22.test.mjs": "b6d79dd1ff603e5450ccb2de667fd1ee013c5e5de98af12666a6d5ace02aecb1",
-    "tests/deploy-history-delete-unit-plan.test.mjs": "e78e74ad654b401b8c3489e60126ce48f586d23c64f869f564092ec9df134c29",
+    "tests/deploy-history-delete-unit-plan.test.mjs": "963ff8cdf55991f00591b726cc2974d34c9390749bccbe623304ea7d6decae45",
     "tests/deploy-history-get-node22.test.mjs": "687bb9986921de855908c2c828412e83d74ca63c906aae23cf4bf3abee35fb86",
-    "tests/deploy-history-get-unit-plan.test.mjs": "921432fbeb12fea1c5b7da1950fc2cbc1773c6fbdc0abbd19c0f92e1463b1c7a",
+    "tests/deploy-history-get-unit-plan.test.mjs": "9f86a4a534bea5f390d16b946015935090c8e1d6cfcfda9e92a03b5c9ead6857",
     "tests/job-stream-unit-plan.test.mjs": "829585272b526c2997fedf8e96a3a336bce0d1ba03ef8cce4b299645b2b46738",
     "tests/unit-test-loader.test.ts": "131a957bff2ffd4fb7573a38648b71fab0948cd87df6430da0548d32c2f47536",
     "tests/unit-test-plan.test.mjs": "f97b128d6d0b9354a503dfd33bb89d44e71bffe649793df64477c9555564cf95",
@@ -283,15 +285,8 @@ test('M21 only exact exported async function is transpiled without importing nei
   for (const name of ['requireAccess(', 'requireOperator(', 'requireWrite(', 'getOperatorRole(', 'isOperatorFromHeaders(', 'getSessionAccount(']) assert.equal(projection.includes(name), false);
 });
 
-test('M22 default retains every unmapped input and all seventeen prior groups', () => {
-  assert.equal(plan.discovered.length, 257); assert.equal(plan.selected.length, 238);
-  assert.equal(plan.retainedUnmapped.length, 219);
-  const metadata = plan.retainedUnmapped.filter(name => name.endsWith('-unit-plan.test.mjs') || name === 'tests/unit-test-plan.test.mjs' || name === 'tests/unit-test-loader.test.ts');
-  assert.equal(metadata.length, 19); assert.equal(plan.retainedUnmapped.length - metadata.length, 200);
-  for (const name of plan.discovered) {
-    const row = plan.replacements.find(row => row.original === name);
-    assert.ok(plan.selected.includes(row?.current ?? name), name);
-  }
+test('M22 current discovery retains every input with separate historical count fixture', () => {
+  assertDiscoveryContract(plan, names, planFromInputs, read, "get-current-role");
 });
 
 test('M23 historical corrected accessors remain present and assertions unchanged', () => {
