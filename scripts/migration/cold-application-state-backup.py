@@ -266,8 +266,11 @@ def main():
             running = any('running' in c.get('state', {}) for key in ['containerStatuses', 'initContainerStatuses', 'ephemeralContainerStatuses'] for c in pod['status'].get(key, []))
             need(pod['status'].get('phase') in ['Failed', 'Succeeded'] and not running)
         node = get('node', args.node)
-        if args.application == 'seerr' or args.application in STATIC_TARGETS or upstream_ruckus:
+        if args.application == 'seerr' or args.application in STATIC_TARGETS:
             need(node['metadata']['uid'] == 'e8d4555f-7cea-445f-b84f-6416964045a9')
+        if upstream_ruckus:
+            need(node['metadata']['uid'] == 'eda66e65-f388-4b97-b64f-a709cda81894')
+            need(pvc['status'].get('capacity', {}).get('storage') == '1Gi')
         if args.application in ['xteve', 'xteve-config']:
             need(node['metadata']['uid'] == 'eda66e65-f388-4b97-b64f-a709cda81894')
         if args.application == 'mealie':
@@ -308,7 +311,7 @@ def main():
         receipt.update(shared_reader_sha256=file_hash(SHARED / 'pod_reader.py'), shared_controller_sha256=file_hash(SHARED / 'metube_state_backup.py'), controller_sha256=file_hash(pathlib.Path(__file__)))
         name = 'cold-' + args.application + '-' + run_id[:12]
         pod = {'apiVersion': 'v1', 'kind': 'Pod', 'metadata': {'name': name, 'namespace': namespace, 'labels': {'preservation-run': run_id, 'migration-task': 'cold-application-state'}}, 'spec': {'nodeName': args.node, 'restartPolicy': 'Never', 'activeDeadlineSeconds': 1800, 'automountServiceAccountToken': False, 'securityContext': {'runAsUser': args.reader_uid, 'runAsGroup': args.reader_gid, 'runAsNonRoot': args.reader_uid != 0, 'seccompProfile': {'type': 'RuntimeDefault'}}, 'containers': [{'name': 'reader', 'image': shared.OLD, 'imagePullPolicy': 'IfNotPresent', 'command': ['python3', '-B', '-c', 'import time;time.sleep(1800)'], 'resources': {'requests': {'cpu': '10m', 'memory': '32Mi'}, 'limits': {'cpu': '500m', 'memory': '256Mi'}}, 'securityContext': {'allowPrivilegeEscalation': False, 'readOnlyRootFilesystem': True, 'capabilities': {'drop': ['ALL']}}, 'volumeMounts': [{'name': 'state', 'mountPath': '/source', 'readOnly': True}]}], 'volumes': [{'name': 'state', 'persistentVolumeClaim': {'claimName': claim, 'readOnly': True}}]}}
-        if args.application == 'seerr' or args.application in STATIC_TARGETS:
+        if args.application == 'seerr' or args.application in STATIC_TARGETS or upstream_ruckus:
             # Read the entire claim, including root-owned lost+found and private
             # app-owned files. This adds read/search only, never write access.
             pod['spec']['containers'][0]['securityContext']['capabilities']['add'] = ['DAC_READ_SEARCH']

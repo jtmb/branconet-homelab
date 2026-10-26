@@ -1,5 +1,78 @@
 # Maintenance output ownership and reconciliation
 
+## Ruckus production reconciliation, October26 20:38UTC
+
+Owner and single authorized root remain
+`01a12045-bf7e-73b3-8557-752d17c72ffd`,
+`/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,
+ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`, backing
+`F:\branconet-build-storage\native-build-20261025.ext4`.
+[Production result and limits](UPSTREAM-RUCKUSDB-MIGRATION-20261026.md).
+
+New cleanup removed **1065930752allocated Linux bytes /4680paths** across six
+terminal successful publisher stages. Exact resolved containment, regular-file/
+no-link, owner/inode/hash, original Git blob/lockfile/tool survival, operation
+locks and process/FD/map/mount checks passed. All24unique phase/validation
+receipts match after cleanup. No live publisher was stopped or old revision
+replayed. Individual paths/inodes/bytes and regeneration are recorded in
+`operator-control/ruckusdb-upstream-publisher-scratch-{plan,reconciliation}.json`.
+
+Paths below are relative to `local-charts-publisher/`. Each stage retains its
+three phase receipts and `source/.validation/validation.json`; source-column
+bytes are only verified generated exports/tools and empty descendants.
+
+| Exact stage | Removed source exports/tools | Removed `home` | Removed `tmp` |
+| --- | ---: | ---: | ---: |
+| `local-charts-publish-f43d88d701794c5a9191c2bb08e0df7e` | 177647616 | 4096 | 4096 |
+| `local-charts-publish-d0a01f34bf3d46a5885452a7805f6f51` | 177647616 | 4096 | 4096 |
+| `local-charts-publish-5c1dfca8ce834e2d973bd39fdc51a0c4` | 177647616 | 4096 | 4096 |
+| `local-charts-publish-5438ee244c224f548b8cd44dae33b0d3` | 177643520 | 4096 | 4096 |
+| `local-charts-publish-057cc938ed074553ba0c701889db7aa9` | 177647616 | 4096 | 4096 |
+| `local-charts-publish-9bd69de4473749a8baa6db4f7c6fdb61` | 177647616 | 4096 | 4096 |
+
+The6393856-byte scan cleanup and720482304-byte RAM trial teardown below were
+already reported in qualification; they are not counted again in this new delta.
+No additional temporary/dependency directories remain from the fresh cutover.
+
+Retained required runtime/recovery/unique evidence:
+
+- Original `ruckus-db-data-0`, earlier recovery claim and new active
+  `ruckus-db-upstream-20261026` Longhorn claim. Original data was never mounted
+  writable in the upgrade helper. New destination files were preserved when
+  the helper Pod/policy were removed with exact UID preconditions.
+- `upstream-ruckusdb-20261026`: full fresh430564180-byte encrypted cold archive,
+  its successful receipt and original pre-reader failure, all copied/account/
+  row/grant/auth proofs, runtime/restart and28-route client observations,
+  encrypted engine logs and retirement records. The cold archive has complete
+  authenticated NAS read-back. No original/failure receipt was overwritten.
+- `control-source/upstream-ruckusdb-20261026`: exact executed sources and
+  distinct reviewed generations, pinned SQL/vendor input and Ansible profile.
+- `operator-control/ruckusdb-upstream-final-recovery-metadata.tar.age`:
+  required6872916-byte archive, SHA256
+  `0d625ad75fab423073619392dd9d1348eef70b2caca467c5322da5623ba8b036`,
+  fully member-verified and authenticated through complete NAS read-back.
+  Parent qualification archive and key-backup evidence remain required inputs;
+  unchanged parent members and the large cold ciphertext were not duplicated.
+- All six publisher stage roots above retain24unique receipts/reports and
+  reachable primary Git source objects. The exact pinned tools remain in the
+  original publisher repository; regeneration is manifest-bound, never a replay.
+- `operator-control/local-build-storage`: unique same-file remount receipts.
+  The verified original152GiB filesystem was restored after its mount vanished;
+  no formatting, resize, shutdown, unrelated process stop or fallback root ran.
+- `operator-control/tmp/system-commandline-sentinel-files` and its parent:
+  creator/regeneration and complete inactive Windows-handle proof remain
+  unavailable; no deletion attempted. The parent contains that exception.
+- Current exact scan findings, earlier controller evidence at
+  `F:\branconet-migration-artifacts\maintenance-storage-20261025`, old cold/
+  failed/source/rollback artifacts, four old failed diagnostic Pods, NAS media,
+  SMB CSI and all other PVCs remain protected by their existing inventories.
+
+The20:30UTC measurement is42Longhorn volumes,30healthy attached and12detached;
+earlier prose that equated total volumes with attached volumes was incorrect.
+Detached retained volumes are expected, not unavailable workloads. Linux file
+removal and RAM teardown are distinct from Windows free space; no Windows
+disk recovery or VHDX compaction is claimed.
+
 ## Ruckus upstream qualification reconciliation, October 26 18:54 UTC
 
 Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. All new local outputs reused

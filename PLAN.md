@@ -1,19 +1,27 @@
 # Cluster maintenance and application migration plan
 
-**Ruckus preparation — October 26, 18:54 UTC:** the isolated historical-copy
-upgrade 5.7.44 → 8.0.46 → 8.4.13 passed both tables / 3966 rows, all original
-human/application account fields, five other legacy grant tables, time-zone data,
-server UUID and normal positive/negative authentication. Vendor-only locked
-account changes are source-verified. Production remained online and unchanged;
-its fresh backup, actual cutover and restart are still required. The complete
-recovery metadata passed authenticated NAS read-back. The temporary namespace
-and RAM copies were retired; scan cleanup removed 6393856 allocated Linux bytes.
-The target vendor image has two Critical and 33 High rows. This is preparation,
-not acceptance of the production transition; the full goal remains active.
+**Latest checkpoint — October 26, 20:38 UTC:** Ruckus now uses official
+MySQL 8.4.13 on a separately restored Longhorn claim. All 3971 original rows,
+original application accounts and native Secrets remain; the bot added one
+normal record. A distinct database restart passed the same complete row check,
+the bot's deployed MySQL client reconnected, and all 28 API/dashboard routes
+passed again. Original and prior recovery claims remain intact. The fresh full
+cold backup and final recovery metadata passed complete authenticated NAS
+read-back. Private main/validated/live is
+`7383784971f0e1a0839631cf0104f8792d62f9f4`.
+
+Three nodes, 56 PVCs and all releases are healthy. There are 42 Longhorn volumes:
+30 attached/healthy and 12 detached; earlier prose incorrectly described the
+total volume count as attached. New publisher cleanup removed **1065930752
+allocated Linux bytes / 4680 paths**, with exact retained exceptions recorded.
+Two application derivative transitions remain: Plex and WordPress. WordPress's
+database, platform/fleet updates, owned publication, trusted TLS and final IAB
+also remain open. The official MySQL image still has two Critical and 33 High
+vendor scan rows; the full goal remains active and GitHub Actions stays off.
 [Source, proof and production sequence](docs/UPSTREAM-RUCKUSDB-MIGRATION-20261026.md).
 
 
-**Latest checkpoint — October 26, 18:16 UTC:** maintained Threadfin 3.4.0 replaced
+**Previous checkpoint — October 26, 18:16 UTC:** maintained Threadfin 3.4.0 replaced
 xTeVe through the private local-validation → validated → Flux pipeline. Complete
 comparison passed in production and after a distinct restart: 108 original
 mappings, 29 active channels, settings, authentication, tuner identity, native
