@@ -1,5 +1,46 @@
 # Maintenance output ownership and reconciliation
 
+## CoreDNS reconciliation, October26 21:30UTC
+
+Owner, physical F-backed root and protected sources are unchanged from the
+WordPress checkpoint below. [CoreDNS outcome and recovery](UPSTREAM-COREDNS-ADOPTION-20261026.md).
+New cleanup removed **278528 allocated Linux bytes /7 paths**. These exact paths
+are relative to the existing declared task root:
+
+| Removed path | Allocated bytes |
+| --- | ---: |
+| `security-review-20261026/cache/fanal/fanal.db` |253952|
+| `security-review-20261026/cache/fanal` |4096|
+| `security-review-20261026/tmp` |4096|
+| `security-review-20261026/home` |4096|
+| `operator-control/tmp/coredns-ansible-home` |4096|
+| `operator-control/tmp/coredns-ansible-local` |4096|
+| `operator-control/tmp/coredns-ansible-remote` |4096|
+
+`operator-control/coredns-{review,ansible}-scratch-{plan,reconciliation}.json`
+contain exact inode/hash/path checks and regeneration recipes. The scan unit
+was inactive/dead, MainPID0, Result success/exit0. The Ansible process had exited
+successfully. Targets had exact ownership/device identities, no active FD/cwd/
+root/maps/mount references, no source/lockfiles, and the directories were empty.
+Protected source/result/log hashes matched before/after. No application image,
+volume, model, native Secret, data, running service or previous failure was pruned.
+
+Required retained exceptions: all CoreDNS original/current deployment/configuration,
+raw scans and immutable public feeds, both Ansible logs and recovery-path proof,
+exact executed source and accepted UID-protected patch receipts remain. The
+409908-byte encrypted metadata archive and its complete authenticated NAS copy
+remain required recovery evidence. Both version probes and their exact policies
+were retired by UID; the original probe's complete failure evidence was first
+authenticated on NAS. Four older failed diagnostic Pods remain untouched.
+The unresolved `operator-control/tmp/system-commandline-sentinel-files` and its
+parent remain because creator/regeneration and complete inactive Windows-handle
+proof are still missing. Every earlier ownership/runtime/recovery exception in
+this inventory remains unchanged; no older agent copy was deleted.
+
+Linux free space after reconciliation was20844605440bytes. No Windows disk
+recovery is claimed, and no WSL shutdown, compaction or workload relocation occurred.
+Cluster health and recovery passed, but the full goal remains active/incomplete.
+
 ## WordPress reconciliation, October26 21:06UTC
 
 The owner remains `01a12045-bf7e-73b3-8557-752d17c72ffd`. The single authorized

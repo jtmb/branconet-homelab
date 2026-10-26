@@ -50,7 +50,7 @@ def save(path, value):
 
 def main():
     os.umask(0o077)
-    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3', 'mealie-current-r3', 'tautulli-current-r3', 'tautulli-linuxserver-current-r3', 'vaultwarden-current-r3', 'pihole-current-r3', 'qbittorrent-current-r3', 'threadfin-current-r3', 'ruckusdb-current-r3', 'wordpress-current-r3'], 'finite_scan_generation')
+    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3', 'mealie-current-r3', 'tautulli-current-r3', 'tautulli-linuxserver-current-r3', 'vaultwarden-current-r3', 'pihole-current-r3', 'qbittorrent-current-r3', 'threadfin-current-r3', 'ruckusdb-current-r3', 'wordpress-current-r3', 'coredns-current-r3'], 'finite_scan_generation')
     generation = sys.argv[1]
     revalidated = generation != 'homepage-jackett'
     cg = Path('/proc/self/cgroup').read_text().strip().removeprefix('0::')
@@ -79,7 +79,10 @@ def main():
     updated = datetime.datetime.fromisoformat(proof['vulnerabilityDB']['UpdatedAt'].replace('Z', '+00:00'))
     need(0 <= (datetime.datetime.now(datetime.timezone.utc) - updated).total_seconds() <= 86400, 'fresh_database')
     kev = {r['cveID'] for r in json.loads((OUT / ('cisa-kev-r3.json' if revalidated else 'cisa-kev.json')).read_bytes())['vulnerabilities']}
-    if generation == 'wordpress-current-r3':
+    if generation == 'coredns-current-r3':
+        candidates = json.loads((OUT / 'coredns-current-candidates.json').read_bytes())['images']
+        need([r['reference'] for r in candidates] == ['docker.io/coredns/coredns:1.15.0@sha256:0a9d8c8ddf34347eb59aad9a8784f0710de88d6d112726d11d271f9bc6daca26'], 'finite_current_coredns_target')
+    elif generation == 'wordpress-current-r3':
         candidates = json.loads((OUT / 'wordpress-current-candidates.json').read_bytes())['images']
         need([r['reference'] for r in candidates] == ['docker.io/library/wordpress:7.1.3-php8.3-apache@sha256:e5a724ec7ad9055f48b2941ac1b674b08e77ed60edb8937a6254fb89ec45ddf7'], 'finite_current_wordpress_target')
     elif generation == 'ruckusdb-current-r3':

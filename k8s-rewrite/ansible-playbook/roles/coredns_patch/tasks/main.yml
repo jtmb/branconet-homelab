@@ -11,10 +11,14 @@
       ansible.builtin.assert:
         that:
           - inventory_hostname == 'masternode'
-          - coredns_patch_scan_receipt is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan/attempts/coredns-[0-9a-f]{12}/status.json$')
+          - coredns_patch_scan_receipt == '/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/security-review-20261026/apps-coredns-current-r3-0/receipt.json'
           - coredns_patch_scan_sha256 is match('^[0-9a-f]{64}$')
 
     - name: Run the fixed controller with the existing strict SSH identity
+      environment:
+        TMPDIR: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+        TEMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+        TMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
       ansible.builtin.command:
         argv:
           - /home/brajam/.local/share/branconet-migration/venv/bin/python

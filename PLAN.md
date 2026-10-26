@@ -1,6 +1,24 @@
 # Cluster maintenance and application migration plan
 
-**Latest checkpoint — October 26, 21:06 UTC:** WordPress now runs the official
+**Latest checkpoint — October 26, 21:30 UTC:** CoreDNS now runs official
+1.15.0 / Go1.27.3. Both replicas passed TCP/UDP queries through the DNS Service
+and each Pod, including exact Kubernetes and WordPress database Service answers.
+The Corefile, Service, Deployment identity and resource settings are unchanged.
+The actual Ansible playbook rerun passed with zero changes. Raw scanner findings
+are retained; eleven old-version High matches were attributed using the actual
+binary, upstream release tag and commit, explicitly as a version inference.
+
+Three nodes, 56 PVCs, all releases and all attached Longhorn volumes are healthy.
+CoreDNS recovery metadata passed full authenticated NAS read-back. Its cleanup
+removed **278528 allocated Linux bytes /7 paths**; owned temporary probes were
+retired after their complete evidence was preserved. App charts remain at
+`4fb19f9ec5620b3605a28c126e07c897004a78a9`; Actions remains disabled.
+Plex, WordPress MySQL/plugin updates, remaining platform/fleet and owned-source
+publication, trusted TLS and final IAB are still open. The full goal is active.
+
+[CoreDNS evidence, inference and recovery](docs/UPSTREAM-COREDNS-ADOPTION-20261026.md).
+
+**Previous checkpoint — October 26, 21:06 UTC:** WordPress now runs the official
 7.1.3 / PHP8.3.36 Apache image. Production and a distinct Flux restart preserved
 all 5662 file entries, all 12 database tables, the existing user/permissions,
 native Secrets, PVC/PV/Service identities and all 12 site/API routes. All 3338

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply the reviewed CoreDNS security build, preserving Corefile and Service."""
+"""Apply the maintained CoreDNS release, preserving its kubeadm-owned identity."""
 import argparse
 import copy
 import datetime
@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shlex
 import subprocess
 import time
@@ -15,9 +16,10 @@ import uuid
 BASE = Path('/home/brajam/.local/share/branconet-migration')
 SSH = ['ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 'ConnectTimeout=10',
        '-i', '/home/brajam/.ssh/id_ed25519', '-p', '2002', 'james@192.168.0.4']
-OLD = 'registry.k8s.io/coredns/coredns:v1.14.6'
-NEW = 'docker.io/library/coredns-security-20261023@sha256:014e9ae348d5dcf3ed5451a5490a29bb6e51477f5b3291e31804c74fe6b557d9'
-CHILD = NEW.rsplit('@', 1)[-1]
+OLD = 'docker.io/library/coredns-security-20261023@sha256:014e9ae348d5dcf3ed5451a5490a29bb6e51477f5b3291e31804c74fe6b557d9'
+NEW = 'docker.io/coredns/coredns:1.15.0@sha256:0a9d8c8ddf34347eb59aad9a8784f0710de88d6d112726d11d271f9bc6daca26'
+CHILD = 'sha256:3429e3bbffb1e839470c4a3541d4d78aca84a1394c75a539d0200c58c63196ac'
+ROOT = BASE / 'local-image-build-offload-20261025'
 UID = 'adee85f5-3155-4be2-bc2f-8a602b15c17d'
 
 DNS_PROBE = r'''import json,os,socket,struct,sys,urllib.request
@@ -29,6 +31,13 @@ def receive(s,n):
  while len(out)<n:
   b=s.recv(n-len(out));need(bool(b));out+=b
  return out
+def name_end(raw,at):
+ for _ in range(128):
+  need(at<len(raw));n=raw[at]
+  if n&192==192:need(at+1<len(raw));return at+2
+  need(n<=63 and at+1+n<=len(raw));at+=1+n
+  if n==0:return at
+ raise ValueError('invalid_dns_name')
 for address in request['addresses']:
  for name in ['kubernetes.default.svc.cluster.local','wordpress-db.wordpress.svc.cluster.local','example.com']:
   question=b''.join(bytes([len(x)])+x.encode() for x in name.split('.'))+b'\0'+struct.pack('!HH',1,1)
@@ -39,7 +48,14 @@ for address in request['addresses']:
     if tcp:s.sendall(struct.pack('!H',len(packet))+packet);raw=receive(s,struct.unpack('!H',receive(s,2))[0])
     else:s.send(packet);raw=s.recv(65535)
    need(len(raw)>=12);got,flags,qd,answers,_,_=struct.unpack('!HHHHHH',raw[:12]);need(got==ident and flags&0x8000 and flags&15==0 and qd==1 and answers>0)
-   checks.append({'address':address,'name':name,'tcp':tcp,'answers':answers})
+   need(answers<=256);at=name_end(raw,12)+4;ips=[]
+   for _ in range(answers):
+    at=name_end(raw,at);need(at+10<=len(raw));kind,cls,ttl,size=struct.unpack('!HHIH',raw[at:at+10]);at+=10;need(at+size<=len(raw))
+    if kind==1 and cls==1:need(size==4);ips.append(socket.inet_ntoa(raw[at:at+4]))
+    at+=size
+   need(bool(ips))
+   if name in request['expectedServiceA']:need(set(ips)=={request['expectedServiceA'][name]})
+   checks.append({'address':address,'name':name,'tcp':tcp,'answers':answers,'IPv4':ips})
 opener=urllib.request.build_opener(urllib.request.ProxyHandler({}))
 for address in request['pods']:
  for port,path in [(8080,'/health'),(8181,'/ready')]:
@@ -59,8 +75,8 @@ def call(args, body=None, timeout=40):
     return p.stdout
 
 
-def get(kind, name):
-    return json.loads(call(['kubectl', '--request-timeout=30s', '-n', 'kube-system', 'get', kind, name, '-o', 'json']))
+def get(kind, name, namespace='kube-system'):
+    return json.loads(call(['kubectl', '--request-timeout=30s', '-n', namespace, 'get', kind, name, '-o', 'json']))
 
 
 def observe(image):
@@ -83,10 +99,11 @@ def observe(image):
     for pod in pods:
         cs = pod['status']['containerStatuses'][0]
         need(not pod['metadata'].get('deletionTimestamp') and cs['ready'] and pod['spec']['containers'][0]['image'] == image, 'ready_exact_dns_pod')
-        if image == NEW:
-            need(cs['imageID'].rsplit('@', 1)[-1] in [NEW.rsplit('@', 1)[-1], CHILD], 'actual_dns_manifest')
+        need(cs['imageID'].rsplit('@', 1)[-1] in [image.rsplit('@', 1)[-1], CHILD if image == NEW else OLD.rsplit('@', 1)[-1]], 'actual_dns_manifest')
     ips = [pod['status']['podIP'] for pod in pods]
-    request = {'addresses': [service['spec']['clusterIP']] + ips, 'pods': ips}
+    request = {'addresses': [service['spec']['clusterIP']] + ips, 'pods': ips,
+               'expectedServiceA': {'kubernetes.default.svc.cluster.local': get('service', 'kubernetes', 'default')['spec']['clusterIP'],
+                                    'wordpress-db.wordpress.svc.cluster.local': get('service', 'wordpress-db', 'wordpress')['spec']['clusterIP']}}
     probes = json.loads(call(['python3', '-B', '-c', DNS_PROBE], json.dumps(request).encode(), timeout=125))
     need(probes['passed'] and len(probes['dnsChecks']) == 18, 'actual_udp_tcp_cluster_and_forwarded_dns')
     return d, cm, service, {'pods': [{'uid': p['metadata']['uid'], 'name': p['metadata']['name'], 'imageID': p['status']['containerStatuses'][0]['imageID']} for p in pods], 'probes': probes}
@@ -101,7 +118,7 @@ def main():
     a = p.parse_args()
     need(a.apply and os.name == 'posix', 'explicit_native_patch')
     os.umask(0o077)
-    need(a.output_dir.is_absolute() and a.output_dir.resolve() == a.output_dir and BASE in a.output_dir.parents, 'private_output_scope')
+    need(ROOT.is_mount() and a.output_dir == ROOT / 'upstream-coredns-20261026', 'private_existing_output_scope')
     a.output_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
     folder = a.output_dir / ('coredns-' + uuid.uuid4().hex)
     folder.mkdir(mode=0o700)
@@ -110,20 +127,39 @@ def main():
     try:
         need(a.scan_receipt.resolve() == a.scan_receipt and not a.scan_receipt.stat().st_mode & 0o077
              and hashlib.sha256(a.scan_receipt.read_bytes()).hexdigest() == a.scan_sha256, 'exact_private_scan_receipt')
+        need(a.scan_receipt == ROOT / 'security-review-20261026/apps-coredns-current-r3-0/receipt.json', 'finite_vendor_scan_scope')
         scan = json.loads(a.scan_receipt.read_bytes())
-        need(scan['state'] == 'scan_complete' and scan['service'] == 'coredns' and scan['sourceKind'] == 'local-operator'
-             and scan['localProvenance']['rootDescriptor'] == CHILD and scan['scannerExitCode'] == 0
-             and hashlib.sha256((a.scan_receipt.parent / 'results.json').read_bytes()).hexdigest() == scan['resultSHA256'], 'complete_unsuppressed_exact_scan')
-        archive = Path(scan['originalArchive'])
-        need(archive.resolve() == archive and not archive.stat().st_mode & 0o077, 'retained_private_original_artifact')
-        digest = hashlib.sha256()
-        with archive.open('rb') as f:
-            for block in iter(lambda: f.read(1024 ** 2), b''):
-                digest.update(block)
-        need(digest.hexdigest() == scan['originalArchiveSHA256'] == scan['localProvenance']['archiveSHA256'], 'same_complete_scanned_archive')
-        updated = datetime.datetime.fromisoformat(scan['inputs']['vulnerabilityDB']['UpdatedAt'].replace('Z', '+00:00'))
-        need(0 <= (datetime.datetime.now(datetime.timezone.utc) - updated).total_seconds() <= 86400
-             and scan['fixedCriticalHighRows'] == 0, 'fresh_scan_without_available_critical_high_fixes')
+        need(scan['scanComplete'] and scan['state'] == 'completed' and scan['image'] == NEW
+             and scan['inputHashesReverifiedAfterScan'] and scan['suppressionUsed'] is False and scan['scannerExitCode'] == 0
+             and hashlib.sha256((a.scan_receipt.parent / 'results.json').read_bytes()).hexdigest() == scan['resultsSHA256'], 'complete_unsuppressed_exact_upstream_scan')
+        vendor = json.loads((a.output_dir / 'vendor-image-inspection.json').read_bytes())['image']
+        need(vendor['reference'] == NEW and vendor['amd64Manifest'] == CHILD, 'exact_upstream_platform_metadata')
+        updated = datetime.datetime.fromisoformat(scan['databaseUpdatedAt'].replace('Z', '+00:00'))
+        need(0 <= (datetime.datetime.now(datetime.timezone.utc) - updated).total_seconds() <= 86400, 'fresh_vendor_scan')
+        version = json.loads((a.output_dir / 'version-probe-retirement.json').read_bytes())
+        need(version['passed'] and version['probeAndPolicyRetiredByUID'] and version['image'] == NEW
+             and version['version'] == '1.15.0' and version['goVersion'] == '1.27.3'
+             and re.fullmatch('[a-f0-9]{40}', version['releaseCommit'])
+             and version['releaseCommit'].startswith('a6fde3fe339c')
+             and version['imageID'].rsplit('@', 1)[-1] in [NEW.rsplit('@', 1)[-1], CHILD], 'actual_released_binary_identity')
+        # Preserve raw scanner rows. The upstream binary identifies itself as
+        # 1.15.0 at the release tag, while its Go module has a v0.0.0 pseudo-
+        # version. Accept only that exact module/commit and older fixed ranges;
+        # any other available Critical/High fix still refuses the rollout.
+        results = json.loads((a.scan_receipt.parent / 'results.json').read_bytes())
+        findings = [v for x in results for v in x.get('Vulnerabilities') or []
+                    if v['Severity'] in ['CRITICAL', 'HIGH'] and v.get('FixedVersion')]
+        attributed = []
+        for finding in findings:
+            need(finding['PkgName'] == 'github.com/coredns/coredns'
+                 and re.fullmatch('v0\\.0\\.0-[0-9]{14}-' + version['releaseCommit'][:12], finding['InstalledVersion'])
+                 and re.fullmatch('[0-9]+\\.[0-9]+\\.[0-9]+', finding['FixedVersion'])
+                 and tuple(map(int, finding['FixedVersion'].split('.'))) <= (1, 15, 0), 'no_unresolved_available_critical_high_fix')
+            attributed.append({'id': finding['VulnerabilityID'], 'rawInstalledVersion': finding['InstalledVersion'],
+                               'fixedVersion': finding['FixedVersion'], 'actualReleasedVersion': version['version']})
+        need(len(attributed) == scan['fixableCriticalHigh'], 'complete_raw_finding_attribution')
+        report['versionAttribution'] = {'inference': 'Exact official binary/tag/commit is newer than these fixed ranges; raw pseudo-version findings remain retained.',
+                                      'rawRows': attributed, 'upstreamVersionProofSHA256': hashlib.sha256((a.output_dir / 'version-probe-retirement.json').read_bytes()).hexdigest()}
         report['scanReceiptSHA256'] = a.scan_sha256
         current = get('deployment', 'coredns')['spec']['template']['spec']['containers'][0]['image']
         need(current in [OLD, NEW], 'original_or_already_patched_image')
@@ -150,9 +186,29 @@ def main():
              and service_after['metadata']['uid'] == service['metadata']['uid'] and service_after['spec'] == service['spec'], 'same_corefile_and_dns_service')
         report.update(passed=True, after=proof_after, corefileSHA256=hashlib.sha256(cm['data']['Corefile'].encode()).hexdigest(),
                       deploymentUID=UID, configmapUID=cm['metadata']['uid'], serviceUID=service['metadata']['uid'],
-                      residualSeverityCounts=scan['severityCounts'], residualFixableCriticalHigh=scan['fixedCriticalHighRows'])
+                      rawSeverityCounts=scan['severityCounts'], rawFixableCriticalHigh=scan['fixableCriticalHigh'],
+                      unresolvedAvailableCriticalHighAfterVersionAttribution=0)
     except Exception as error:
         report['failure'] = str(error) if isinstance(error, ValueError) else type(error).__name__
+        if report.get('imagePatched'):
+            # Roll back only our exact image-only change; never overwrite a
+            # concurrent operator's specification or alter Corefile/Service.
+            try:
+                live = get('deployment', 'coredns')
+                expected = copy.deepcopy(before['spec'])
+                expected['template']['spec']['containers'][0]['image'] = NEW
+                need(live['metadata']['uid'] == UID and live['spec'] == expected, 'unchanged_owned_rollback_target')
+                rollback = [{'op': 'test', 'path': '/metadata/uid', 'value': UID},
+                            {'op': 'test', 'path': '/metadata/resourceVersion', 'value': live['metadata']['resourceVersion']},
+                            {'op': 'test', 'path': '/spec/template/spec/containers/0/image', 'value': NEW},
+                            {'op': 'replace', 'path': '/spec/template/spec/containers/0/image', 'value': OLD}]
+                call(['kubectl', '-n', 'kube-system', 'patch', 'deployment', 'coredns', '--type=json', '--patch', json.dumps(rollback)])
+                call(['kubectl', '-n', 'kube-system', 'rollout', 'status', 'deployment/coredns', '--timeout=240s'], timeout=260)
+                restored, restored_cm, restored_svc, proof = observe(OLD)
+                need(restored['spec'] == before['spec'] and restored_cm['data'] == cm['data'] and restored_svc['spec'] == service['spec'], 'verified_original_dns_restored')
+                report.update(rolledBack=True, rollbackProof=proof)
+            except Exception as rollback_error:
+                report.update(rolledBack=False, rollbackFailureType=type(rollback_error).__name__)
     report['endedUTC'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
     out = folder / 'receipt.json'
     out.write_text(json.dumps(report, sort_keys=True, indent=2) + '\n')
