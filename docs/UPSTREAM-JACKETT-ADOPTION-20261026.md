@@ -70,3 +70,30 @@ baseline, frozen source manifest, current vendor result and C:/native/node free
 space. Cold backup keeps the existing complete 4 GiB / 4096-entry profile, exact
 original workload/release/claim identities and UID/GID 1000 read-only reader on
 the original pinned workernode2. No other app/profile is changed.
+
+The first adoption passed, but the distinct-Pod restart exposed a real deferred
+configuration migration in 1337x. Vendor 0.24.1440 used the saved IDs
+`downloadlink` / `downloadlink(fallback)`; 0.24.2910 uses
+`primarydownloadlink` / `fallbackdownloadlink` and a new iTorrents selector enum.
+The application replaced the old choices with defaults, reversing the original
+torrent-first / magnet-fallback preference. All other files and setting values
+matched; only the already scoped Cloudflare challenge value also rotated.
+The failed restart, field-only comparison and exact old/new vendor definitions
+are retained. This failure has not been accepted as a passing restart.
+
+The native settings request with the application key did not return admin
+configuration. No credential is reset or forged. The explicit dated
+`jackett-config-schema-migration.yml` playbook and `repair-jackett-1337x.py`
+instead require the original Flux writer stopped at an exact reviewed revision,
+original controller/release/claim/node UIDs and no other claim consumers. A
+short-lived non-root, tokenless, resource-limited official Python Pod mounts only
+the existing Indexers subdirectory. Capture and authenticate the changed file,
+verify its NAS copy, then atomically restore only the two new setting values
+derived from the authenticated original complete snapshot. Every other field,
+file owner/group/mode and app credential remains unchanged. The adjacent atomic
+temporary file is part of this scoped runtime configuration update, not a second
+controller output root; retain it on failure rather than sweeping state.
+Delete only the helper's exact Pod UID, resume through Flux and repeat on a new
+application Pod. The observer compares the two declared ID/enum representations
+semantically while still rejecting reversed choices; no baseline is overwritten.
+All frozen observer generations and failed observations remain preserved.

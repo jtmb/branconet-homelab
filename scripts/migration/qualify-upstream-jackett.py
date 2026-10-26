@@ -99,6 +99,21 @@ def config_bytes(name, raw):
              and len({v[0] for v in pairs}) == len(pairs), 'unambiguous_cookie_names')
         need(set(RUNTIME_COOKIES[name]) <= {v[0] for v in pairs}, 'existing_named_challenge_cookies')
         cookie[0]['value'] = '; '.join(k + '=' + ('[runtime-antibot-value]' if k in RUNTIME_COOKIES[name] else v) for k, v in sorted(pairs))
+        if name == 'Jackett/Indexers/1337x.json':
+            # Vendor 0.24.2910 changed the setting IDs and iTorrents selector
+            # enum. Compare the same original primary/fallback choices; a
+            # reversal to the vendor defaults still fails this comparison.
+            ids = {s['id'] for s in settings}
+            old = {'downloadlink', 'downloadlink(fallback)'}
+            new = {'primarydownloadlink', 'fallbackdownloadlink'}
+            need((old <= ids and not new & ids) or (new <= ids and not old & ids), 'one_declared_1337x_schema')
+            legacy = old <= ids
+            aliases = {'downloadlink': 'primarydownloadlink', 'downloadlink(fallback)': 'fallbackdownloadlink'}
+            for setting in settings:
+                if setting['id'] in (old if legacy else new):
+                    need(setting['value'] in ({'http://itorrents.org/', 'magnet:'} if legacy else {'//itorrents.', 'magnet:'}), 'declared_download_link_enum')
+                    setting['id'] = aliases.get(setting['id'], setting['id'])
+                    setting['value'] = '[magnet]' if setting['value'] == 'magnet:' else '[iTorrents]'
         return json.dumps(settings, sort_keys=True, separators=(',', ':')).encode()
     return raw
 
@@ -203,7 +218,10 @@ def main():
     need(os.name == 'posix' and a.output_dir.resolve() == a.output_dir and root in a.output_dir.parents
          and bool(a.baseline) == (a.phase != 'baseline') and a.image == (OLD if a.phase == 'baseline' else NEW), 'private_native_output_and_finite_phase')
     a.output_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
-    report = {'passed': False, 'comparisonVersion': 3, 'phase': a.phase, 'startedUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    report = {'passed': False, 'comparisonVersion': 4, 'phase': a.phase, 'startedUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              'schemaMigration': {'file': 'Jackett/Indexers/1337x.json', 'preservePrimaryAndFallbackChoices': True,
+                  'legacyIDs': ['downloadlink', 'downloadlink(fallback)'], 'vendorIDs': ['primarydownloadlink', 'fallbackdownloadlink'],
+                  'sameVendorOption': {'http://itorrents.org/': '//itorrents.'}},
               'volatilePublicAntiBotCookieValuesExcluded': RUNTIME_COOKIES,
               'sourceSHA256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(), 'externalSearchOrNotificationSent': False}
     try:
