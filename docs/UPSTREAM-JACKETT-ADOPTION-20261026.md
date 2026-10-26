@@ -1,5 +1,45 @@
 # Jackett maintained vendor transition
 
+**Accepted backend/state/restart checkpoint, October 26 03:47 UTC.** Private
+charts main/validated/live Flux reached
+`fd0b167de8923e46aeeccece5a783522e65fef90`. Official Jackett 0.24.2910 is Ready
+on new Pod `d924b2fc-42e6-481f-88bd-bfb8e5f8e73e`. All 27 protected files,
+six configured indexers, authenticated capabilities, nine routes, native Secret
+content/identity, resource settings and original PVC/PV identities passed.
+Original `UpdateDisabled=false` and effective `--NoUpdates` remain unchanged.
+The 1337x torrent-first / magnet-fallback preference now survives startup.
+Final browser acceptance and whole-fleet security acceptance remain open.
+
+| Recovery evidence | Authenticated encrypted bytes | SHA-256 |
+| --- | ---: | --- |
+| Complete original claim, 39 files / 24001474 plaintext bytes | 24049588 | `67e9e213461bfc47ab1ad4d5e29e6ba75cddbe05afbc214130b6e227b7e191f5` |
+| Changed 1337x file captured before repair | 2555 | `da75f26dfe1345687e4e664eb86eb44478604b1a99e981c9f762b2c453d7039e` |
+| Final recovery metadata, frozen sources and failed observations | 655716 | `25b3c0471568de55c55fcd67f11c7935d4982384b6907ba5699d887c8a6c05e0` |
+
+All three archives passed complete NAS read-back and age authentication; source
+originals and recovery identity remain. Final restart receipt SHA-256 is
+`643b7d246edb881ccd302923701d348f1a8ba630d7192dc2a40ac4ffff5e5d6d`.
+The final health check found three Ready nodes without pressure, all 55 PVCs
+Bound, all 34 HelmReleases Ready, no unavailable Deployment/DaemonSet, and all
+41 attached Longhorn volumes healthy. Two pre-existing failed Seerr diagnostic
+Pods remain retained as failure evidence.
+
+The repaired configuration's second comparison failed on vendor display labels
+and option descriptions, rather than choice values. Both pinned definitions and
+actual saved shapes were inspected. Observer generation 5 requires the exact old
+or exact new labels, type and complete option map before canonical comparison;
+it never discards arbitrary attributes. All 27 files and metadata matched, and
+a reversed-choice negative control failed as required. Both earlier failures,
+source generations and original baseline remain. Exact proof is
+`operator-control/jackett-r5-schema-comparison-proof.json`; observer source hash
+is `d618b50ad4cdcb234d4459d8abd944f16780194c05e97d7852e28977b263b6d6`.
+
+Current vendor security exceptions remain 2 High / 2 Medium / 44 Low finding
+rows, including two curl/libcurl rows with an upstream package fix absent from
+the image. No bespoke third-party rebuild or runtime patch was introduced.
+Checkpoint cleanup removed **290816 allocated Linux bytes**, with all protected
+input hashes unchanged. [Exact paths and retained exceptions](TASK-OUTPUT-INVENTORY.md#jackett-checkpoint-reconciliation-october-26-0347-utc).
+
 Owner: maintenance chat `01a12045-bf7e-73b3-8557-752d17c72ffd`. Reuse the same
 F:-backed output root in [the inventory](TASK-OUTPUT-INVENTORY.md). Stage paths:
 `upstream-jackett-20261026` for observations/key/complete cold archive,
@@ -35,7 +75,8 @@ Four named rotating anti-bot cookie values on three public no-login indexers
 retain their existing narrow comparison contract; no account credential is
 omitted. Cold backups include all bytes, including logs/cache and those values.
 
-Preparation only; no Jackett deployment or security acceptance is claimed yet.
+The preparation history below is retained; the accepted deployment checkpoint
+above supersedes its earlier preparation-only state. Security acceptance remains open.
 
 The reviewed baseline passed on the existing custom 0.24.1440 image: six
 configured indexers, 27 configuration/protection files, authenticated Torznab

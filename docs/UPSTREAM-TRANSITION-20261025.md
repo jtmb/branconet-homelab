@@ -1,5 +1,22 @@
 # Repository-backed image transition
 
+Latest accepted backend/state/restart revision, October 26 03:47 UTC:
+`fd0b167de8923e46aeeccece5a783522e65fef90`, private main/validated/live Flux.
+Official Jackett 0.24.2910 preserves all 27 protected files, six configured
+indexers, native Secret/resource/storage identities, authenticated capabilities
+and nine routes on the new Pod. Its original 1337x download preferences survived
+the backed-up, guarded schema migration. All three recovery archives passed
+complete NAS authentication/read-back. [Exact acceptance](UPSTREAM-JACKETT-ADOPTION-20261026.md).
+The fresh inventory contains 91 Running Pods, 68 main/init/ephemeral image
+references, 34 releases and 33 charts. Nine derivative transitions remain:
+mealie, pihole, plex, qbittorrent, ruckus-db, tautulli, vaultwarden, wordpress,
+xteve. Jackett still has 2 High / 2 Medium / 44 Low vendor findings, including
+two fixable High rows. All original failure/source evidence remains. Whole-fleet
+security, owned publication, trusted TLS and final IAB remain open.
+Cleanup removed 290816 allocated Linux bytes after protected hashes passed;
+[exact paths/exceptions](TASK-OUTPUT-INVENTORY.md#jackett-checkpoint-reconciliation-october-26-0347-utc).
+The full existing goal remains active. Older dated snapshots below are historical.
+
 Latest accepted backend/state/restart revision, October 26 02:22 UTC:
 `fc13b77609f8f21ce63c93e5895c86237d8e04d7`, private main/validated/live Flux.
 Homepage runs maintained 2.7.0 with exact original configuration, native Secrets,

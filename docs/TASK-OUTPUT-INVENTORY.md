@@ -1,5 +1,54 @@
 # Maintenance output ownership and reconciliation
 
+## Jackett checkpoint reconciliation, October 26 03:47 UTC
+
+The existing declared F:-backed root, physical UUID and owner remain unchanged.
+All new observations, frozen controls and archives use `upstream-jackett-20261026`,
+`control-source/upstream-jackett-20261026`, `operator-control` and the existing
+`security-review-20261026`. No build, dependency installation or new output root
+was introduced. Regeneration and protected data are recorded in
+[the exact stage contract](UPSTREAM-JACKETT-ADOPTION-20261026.md).
+
+After the helper Pod was deleted by exact UID and all producers/copies/scans
+finished, root-visible ownership, inode, containment, source/lock, process FD/map/
+mount, regeneration and protected-input hash checks passed. Exact reconciliation:
+`operator-control/jackett-scratch-reconciliation.json`.
+
+| Removed path relative to declared root | Allocated Linux bytes |
+| --- | ---: |
+| `security-review-20261026/cache/fanal/fanal.db` | 266240 |
+| `operator-control/tmp/ansible-home` | 4096 |
+| `operator-control/tmp/ansible-local` | 4096 |
+| `operator-control/tmp` | 4096 |
+| `security-review-20261026/tmp` | 4096 |
+| `security-review-20261026/home` | 4096 |
+| `security-review-20261026/cache/fanal` | 4096 |
+
+Total: **290816 allocated Linux bytes**. No Windows disk recovery is claimed.
+Regenerate image-analysis cache with the immutable-image scanner command in the
+receipt, using a new result path to preserve unique reports. Recreate the private
+empty TMP/HOME directories before the recorded Ansible/encryption/scan commands.
+
+Retained exceptions, relative to the same root:
+
+| Exact retained path | Reason |
+| --- | --- |
+| `security-review-20261026/cache/db-integrity-failure-20261026` | Unique original checksum-mismatching DB; cause unestablished; no deletion authorized |
+| `security-review-20261026/cache/db` | Verified advisory DB required for remaining fleet review; full before/after hashes match |
+| `security-review-20261026/cache/java-db` | Verified Java identification index required for remaining fleet review; full before/after hashes match |
+| `security-review-20261026/docker-config` | Isolated scanner configuration; exact creation provenance not separately reconciled |
+| `security-review-20261026/nginx-0` | Unique original scanner failure evidence |
+| `security-review-20261026/apps-jackett-current-r3-0` and `scan-maintained-apps-jackett-current-r3.py` | Exact current vendor findings, execution receipt and frozen scanner source |
+| `control-source/upstream-jackett-20261026` | All frozen backup/observer/repair sources and generations, including failed observations |
+| `upstream-jackett-20261026` | Original complete state backup, private comparison key, before/after/restart observations, failures and captured pre-repair file; required recovery data |
+| `operator-control/jackett-recovery-metadata.tar.age` | Required authenticated recovery metadata, verified on NAS; originals retained |
+| `operator-control/jackett-*`, `operator-control/smb-jackett-*` and exact related control sources | Minimal distinct execution, repair, publication, scan, recovery and cleanup evidence |
+
+All earlier exclusions, active publisher state, other owners' artifacts and
+rollback/source inventories remain retained. No PVC/NAS data, image, volume,
+model, unrelated source or older artifact was pruned. Native Secrets remain
+authoritative and original failed observations were not rewritten as passes.
+
 ## Homepage checkpoint reconciliation, October 26 02:22 UTC
 
 Both cleanup lifecycles used the same declared F:-backed root and exact

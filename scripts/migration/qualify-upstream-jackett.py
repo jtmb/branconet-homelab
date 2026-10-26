@@ -111,9 +111,16 @@ def config_bytes(name, raw):
             aliases = {'downloadlink': 'primarydownloadlink', 'downloadlink(fallback)': 'fallbackdownloadlink'}
             for setting in settings:
                 if setting['id'] in (old if legacy else new):
+                    primary = setting['id'] in {'downloadlink', 'primarydownloadlink'}
+                    expected_name = ('Download link' if primary else 'Download link (fallback)') if legacy else ('Primary Download link' if primary else 'Fallback Download link')
+                    expected_options = {'http://itorrents.org/': 'iTorrents.org', 'magnet:': 'magnet'} if legacy else {'//itorrents.': 'iTorrents', 'magnet:': 'magnet'}
+                    need(setting.get('type') == 'inputselect' and setting.get('name') == expected_name
+                         and setting.get('options') == expected_options, 'exact_declared_download_selector_schema')
                     need(setting['value'] in ({'http://itorrents.org/', 'magnet:'} if legacy else {'//itorrents.', 'magnet:'}), 'declared_download_link_enum')
                     setting['id'] = aliases.get(setting['id'], setting['id'])
                     setting['value'] = '[magnet]' if setting['value'] == 'magnet:' else '[iTorrents]'
+                    setting['name'] = '[primary]' if primary else '[fallback]'
+                    setting['options'] = {'[iTorrents]': 'iTorrents', '[magnet]': 'magnet'}
         return json.dumps(settings, sort_keys=True, separators=(',', ':')).encode()
     return raw
 
@@ -218,7 +225,7 @@ def main():
     need(os.name == 'posix' and a.output_dir.resolve() == a.output_dir and root in a.output_dir.parents
          and bool(a.baseline) == (a.phase != 'baseline') and a.image == (OLD if a.phase == 'baseline' else NEW), 'private_native_output_and_finite_phase')
     a.output_dir.mkdir(mode=0o700, parents=True, exist_ok=True)
-    report = {'passed': False, 'comparisonVersion': 4, 'phase': a.phase, 'startedUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    report = {'passed': False, 'comparisonVersion': 5, 'phase': a.phase, 'startedUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),
               'schemaMigration': {'file': 'Jackett/Indexers/1337x.json', 'preservePrimaryAndFallbackChoices': True,
                   'legacyIDs': ['downloadlink', 'downloadlink(fallback)'], 'vendorIDs': ['primarydownloadlink', 'fallbackdownloadlink'],
                   'sameVendorOption': {'http://itorrents.org/': '//itorrents.'}},

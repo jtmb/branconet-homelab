@@ -1,6 +1,24 @@
 # Migration and maintenance status
 
-**Latest checkpoint — October 26, 02:22 UTC:** Homepage 2.7.0 is accepted for
+**Latest checkpoint — October 26, 03:47 UTC:** official Jackett 0.24.2910 passed
+backend/state/restart verification at private main/validated/live Flux
+`fd0b167de8923e46aeeccece5a783522e65fef90`. All 27 protected files, six indexers,
+authenticated capabilities, nine routes, native Secrets and original storage/
+resource identities passed. The original 1337x download preference survives
+startup after a guarded, authenticated-backup-first repair. Both failed checks
+and all original snapshots remain. Complete state, pre-repair configuration and
+recovery metadata passed NAS read-back/authentication. Three nodes, 55 PVCs,
+34 HelmReleases and 41 attached Longhorn volumes are healthy; the two earlier
+failed Seerr diagnostic Pods remain protected evidence.
+Nine third-party derivative transitions remain. Jackett's current vendor findings
+are 2 High / 2 Medium / 44 Low, including two fixable High rows still in the image.
+Cleanup removed 290816 allocated Linux bytes; no Windows recovery is claimed.
+[Exact acceptance](docs/UPSTREAM-JACKETT-ADOPTION-20261026.md),
+[cleanup and retained exceptions](docs/TASK-OUTPUT-INVENTORY.md#jackett-checkpoint-reconciliation-october-26-0347-utc).
+Owned-image publication, whole-fleet security, trusted TLS and final IAB remain
+open. The full goal and mandatory storage/delegation/cleanup contract are active.
+
+**Previous checkpoint — October 26, 02:22 UTC:** Homepage 2.7.0 is accepted for
 backend/state/restart behavior through private main/validated/live Flux
 `fc13b77609f8f21ce63c93e5895c86237d8e04d7`. Configuration, native Secrets,
 RBAC, original storage/resource identities and services/bookmarks/widgets API

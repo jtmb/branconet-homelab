@@ -51,7 +51,24 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
-**Latest checkpoint — October 26, 02:22 UTC:** Homepage now runs maintained
+**Latest checkpoint — October 26, 03:47 UTC:** Jackett now runs official
+0.24.2910 at private main/validated/live Flux
+`fd0b167de8923e46aeeccece5a783522e65fef90`. All 27 protected files, six indexers,
+authenticated capabilities, nine routes, native Secrets and original storage/
+resource identities passed on the new Pod. Its original 1337x torrent-first /
+magnet-fallback choices were restored through a guarded, backed-up migration;
+both real failure and observer-schema failure remain preserved. Complete state,
+pre-repair state and recovery metadata passed NAS authentication/read-back.
+Three nodes, 55 PVCs, 34 HelmReleases and 41 attached Longhorn volumes are healthy.
+Nine third-party derivative transitions remain. Current Jackett exceptions are
+2 High / 2 Medium / 44 Low; two High rows have fixes absent from the vendor image.
+Cleanup removed 290816 allocated Linux bytes, without Windows recovery claims.
+[Exact acceptance and limitations](docs/UPSTREAM-JACKETT-ADOPTION-20261026.md),
+[exact removed paths and retained exceptions](docs/TASK-OUTPUT-INVENTORY.md#jackett-checkpoint-reconciliation-october-26-0347-utc).
+Whole-fleet security, owned publication, trusted TLS and final IAB remain open;
+the existing five-milestone goal, including all mandatory rules above, is active.
+
+**Previous checkpoint — October 26, 02:22 UTC:** Homepage now runs maintained
 official 2.7.0 through private charts main/validated/live Flux
 `fc13b77609f8f21ce63c93e5895c86237d8e04d7`. Native configuration, Secrets,
 RBAC, original data/resource identities, services/bookmarks/widgets API results
