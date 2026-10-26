@@ -24,16 +24,23 @@ OLD = 'docker.io/library/mealie-security-20261023@sha256:a3fc64d6777e22de915a97d
 NEW = 'ghcr.io/mealie-recipes/mealie:v3.29.0@sha256:78eb28b8776d0bad40c5e605c72b3f4f5976793e491558c7dcbdfc04c835d4bc'
 CHILD = 'sha256:243e33ea66e71b2094cb1f9c9167af24452405a33fc899a1dc7359dc210506f8'
 STATIC = '/opt/mealie/lib/python3.14/site-packages/mealie/frontend'
-CONTEXT = {'runAsUser': 1000, 'runAsGroup': 1000, 'runAsNonRoot': True,
-           'allowPrivilegeEscalation': False, 'capabilities': {'drop': ['ALL']}}
+RUNTIME_PATH = '/opt/mealie/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+CONTEXT = {'runAsUser': 0, 'runAsGroup': 999, 'runAsNonRoot': False,
+           'allowPrivilegeEscalation': False, 'capabilities': {'drop': ['ALL'], 'add': ['DAC_OVERRIDE']}}
 SSH = ['ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 'IdentitiesOnly=yes',
        '-i', '/home/brajam/.ssh/id_ed25519', '-p', '2002', 'james@192.168.0.4']
 OBSERVER = r'''
 import sys,stat,resource
 resource.setrlimit(resource.RLIMIT_CORE,(0,0));resource.setrlimit(resource.RLIMIT_AS,(512*1024**2,512*1024**2))
-if os.geteuid()==0:os.setgroups([]);os.setgid(1000);os.setuid(1000)
-assert os.geteuid()==1000
-request=json.loads(sys.stdin.buffer.read(16384));key=bytes.fromhex(request['key']);root=Path('/app/data');entries={};total=0
+request=json.loads(sys.stdin.buffer.read(16384))
+if request.get('originalOwnerReadOnly'):
+ assert os.geteuid()==0 and os.getegid()==999
+ status=Path('/proc/self/status').read_text().splitlines();fields=dict(x.split(':',1)for x in status if ':'in x)
+ assert int(fields['CapEff'].strip(),16)==2 and fields['NoNewPrivs'].strip()=='1'
+else:
+ if os.geteuid()==0:os.setgroups([]);os.setgid(1000);os.setuid(1000)
+ assert os.geteuid()==1000
+key=bytes.fromhex(request['key']);root=Path('/app/data');entries={};total=0
 def info(p):
  s=p.lstat();return {'uid':s.st_uid,'gid':s.st_gid,'mode':stat.S_IMODE(s.st_mode)}
 for parent,dirs,files in os.walk(root,followlinks=False):
@@ -100,9 +107,12 @@ def fence(image, revision, key):
     assert len(spec['template']['spec']['containers']) == 1 and c['image'] == image
     assert c['envFrom'] == [{'secretRef': {'name': 'mealie-runtime'}}]
     if image == NEW:
-        assert c['env'] == [{'name': 'STATIC_FILES', 'value': STATIC}] and c['securityContext'] == CONTEXT
+        assert c['env'] == [{'name': 'STATIC_FILES', 'value': STATIC}, {'name': 'PATH', 'value': RUNTIME_PATH}] and c['securityContext'] == CONTEXT
+        assert c['command'] == ['/opt/mealie/bin/mealie'] and c['workingDir'] == '/app'
         c['env'] = []
         c.pop('securityContext')
+        c.pop('command')
+        c.pop('workingDir')
     else:
         assert image == OLD and not c.get('env') and not c.get('securityContext')
         c['env'] = []
@@ -187,7 +197,7 @@ def main():
     state_module = {}
     exec(program, state_module)
     baseline = json.loads((work / 'baseline.json').read_text()) if a.phase != 'baseline' else None
-    payload = {'key': key.hex()}
+    payload = {'key': key.hex(), 'originalOwnerReadOnly': image == NEW}
     if baseline and 'mealie.log' in baseline['observation']['files']:
         payload['logAnchor'] = baseline['observation']['files']['mealie.log']
     start = fence(image, a.revision, key)
@@ -231,7 +241,7 @@ def main():
             assert all(live_log[k] == anchor[k] for k in ['uid', 'gid', 'mode', 'kind'])
         if '.session_secret' not in left:
             session = right.pop('.session_secret')
-            assert session['kind'] == 'file' and session['uid'] == session['gid'] == 1000 and session['bytes'] == 64 and session['mode'] in [0o600, 0o644]
+            assert session['kind'] == 'file' and (session['uid'], session['gid']) in [(1000, 1000), (0, 999)] and session['bytes'] == 64 and session['mode'] in [0o600, 0o644]
         assert left == right, 'complete-original-files-and-metadata'
         if a.phase == 'restart':
             previous = json.loads((work / 'after.json').read_text())

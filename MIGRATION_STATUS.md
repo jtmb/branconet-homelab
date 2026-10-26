@@ -1,6 +1,27 @@
 # Migration and maintenance status
 
-**Latest checkpoint — October 26, 03:47 UTC:** official Jackett 0.24.2910 passed
+**Latest checkpoint — October 26, 05:00 UTC:** official Mealie 3.29.0 passed
+backend/state/restart verification at private main/validated/live Flux
+`271bfc5f40c7c8761f75c730eba3ea0732894185`. All original files/ownership, three
+users and credential rows, 33 recipes, 330 ingredients, ratings, cookbook filters
+and last-made history passed the declared vendor transformations. All 69 tables /
+860 rows, native Secrets, storage/resource identities and nine routes matched on
+a different Pod. Cold production state and distinct qualification/recovery
+evidence passed complete NAS read-back/authentication. The legacy UID/GID is
+preserved through direct vendor startup with only the needed file-access
+capability; initial startup/observer failures remain recorded. Three nodes,
+55 PVCs, 34 HelmReleases and 41 attached Longhorn volumes are healthy.
+Eight third-party derivative transitions remain. Selected vendor findings are
+8 Critical / 240 High / 336 Medium / 264 Low / 24 Unknown, including 35 fixable
+Critical/High rows. Whole-fleet security, owned publication, existing TLS
+limitations and final IAB remain open; the full goal is active and incomplete.
+[Exact acceptance and remaining limitations](docs/UPSTREAM-MEALIE-ADOPTION-20261026.md).
+Cleanup removed 2738618368 allocated Linux bytes; original data, source and
+failure/recovery evidence remain. The new production session-signing file passed
+separate authenticated NAS recovery. [Exact paths/exceptions](docs/TASK-OUTPUT-INVENTORY.md#mealie-checkpoint-reconciliation-october-26-0530-utc).
+The private charts repository's Actions setting is directly verified disabled.
+
+**Previous checkpoint — October 26, 03:47 UTC:** official Jackett 0.24.2910 passed
 backend/state/restart verification at private main/validated/live Flux
 `fd0b167de8923e46aeeccece5a783522e65fef90`. All 27 protected files, six indexers,
 authenticated capabilities, nine routes, native Secrets and original storage/

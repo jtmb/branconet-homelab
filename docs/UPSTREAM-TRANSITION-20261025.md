@@ -1,5 +1,21 @@
 # Repository-backed image transition
 
+Latest accepted backend/state/restart revision, October 26 05:00 UTC:
+`271bfc5f40c7c8761f75c730eba3ea0732894185`, private main/validated/live Flux.
+Official Mealie 3.29.0 preserves all original files/ownership, three credentialed
+accounts, 33 recipes and complete related data through exact vendor mappings;
+all 69 tables / 860 rows persist on a different Pod. Native Secrets, original
+claim/resource identities and nine routes passed. Complete cold production state
+and distinct recovery evidence passed NAS authentication/read-back. The current
+direct vendor command preserves the legacy UID/GID and avoids recursive chown.
+[Exact acceptance and failure/recovery history](UPSTREAM-MEALIE-ADOPTION-20261026.md).
+The 91-Running-Pod / 68-image / 34-release / 33-chart inventory now has eight
+remaining derivative transitions: pihole, plex, qbittorrent, ruckus-db, tautulli,
+vaultwarden, wordpress and xteve. Mealie still has 8 Critical / 240 High findings,
+including 35 fixable Critical/High rows absent from the vendor artifact; no custom
+patch or derivative rebuild is introduced. Final fleet security, owned publication,
+TLS limitations and IAB remain open. All older dated snapshots remain historical.
+
 Latest accepted backend/state/restart revision, October 26 03:47 UTC:
 `fd0b167de8923e46aeeccece5a783522e65fef90`, private main/validated/live Flux.
 Official Jackett 0.24.2910 preserves all 27 protected files, six configured

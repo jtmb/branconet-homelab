@@ -51,7 +51,28 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
-**Latest checkpoint — October 26, 03:47 UTC:** Jackett now runs official
+**Latest checkpoint — October 26, 05:00 UTC:** Mealie now runs official 3.29.0
+at private main/validated/live Flux
+`271bfc5f40c7c8761f75c730eba3ea0732894185`. Complete original files and ownership,
+all three users/credential rows, 33 recipes, 330 ingredients, ratings, cookbook
+filters and last-made history passed explicit vendor mappings on a distinct
+restart Pod. All 69 tables / 860 rows, native Secrets, storage/resource identities
+and nine routes passed. Cold production state and complete distinct recovery
+evidence passed NAS read-back/authentication. The corrected direct vendor launch
+retains legacy UID 0/GID 999 with only DAC_OVERRIDE and avoids recursive chown;
+the initial non-root startup failure and all observer failures remain preserved.
+All three nodes, 55 PVCs, 34 releases and 41 attached Longhorn volumes are healthy.
+Eight third-party derivative transitions remain. The vendor image still has
+8 Critical / 240 High / 336 Medium / 264 Low / 24 Unknown finding rows, including
+35 Critical/High rows with fixes absent from the release. Whole-fleet security,
+owned publication, TLS limitations and final IAB remain open. The full goal is active.
+[Exact Mealie acceptance, recovery and limitations](docs/UPSTREAM-MEALIE-ADOPTION-20261026.md).
+Cleanup removed 2738618368 allocated Linux bytes, preserving all required data,
+failure and recovery sources. The new production session-signing value also
+passed encrypted NAS recovery checks. [Exact paths and retained exceptions](docs/TASK-OUTPUT-INVENTORY.md#mealie-checkpoint-reconciliation-october-26-0530-utc).
+Private charts Actions is directly verified disabled; delivery stays local/Flux.
+
+**Previous checkpoint — October 26, 03:47 UTC:** Jackett now runs official
 0.24.2910 at private main/validated/live Flux
 `fd0b167de8923e46aeeccece5a783522e65fef90`. All 27 protected files, six indexers,
 authenticated capabilities, nine routes, native Secrets and original storage/
@@ -137,10 +158,10 @@ existing replicas passed. Exact evidence: [Seerr](docs/SEERR-ACCEPTANCE.md),
 | Order | Remaining work | Objective done check |
 | --- | --- | --- |
 | 1 — current gate | Finish artifact cleanup, verified SMB recovery copies and post-cleanup health | Exact removed paths/bytes retained; backup checksums/full authenticated read-back pass; source/recovery/runtime data preserved; all three nodes Ready, workloads/PVCs checked; explain retained safety exclusions |
-| 2 — migration acceptance | Check normal Seerr and YTPTube routes/UI using migrated accounts/data; confirm current Flux revision and desired resources | Login/requests/history and downloader/history/storage work through normal ingress; no service-data regressions; exact image/revision evidence saved |
+| 2 — migration acceptance prechecks | Preserve Seerr/YTPTube accounts/data and verify native backend/normal ingress routes and current Flux identities; defer browser acceptance to step 5 | Backend requests/history/download persistence and exact deployed-image/revision evidence are verified; final UI/login acceptance stays open until implementation finishes |
 | 3 — correct image ownership | Inventory every running image/controller and chart; classify owned versus third-party and find compatible maintained upstream releases | Repository-managed version/digest transition list with exact residual findings and data/rollback requirements; no further third-party derivative builds |
 | 4 — bounded remediation | Apply compatible upstream security updates one service at a time through charts → local validation → validated → Flux; retain unsupported/unfixed findings | Exact deployed digest, state/integration/route/restart checks pass for each change; repeatable host fixes in Ansible; no source-only candidate counted as deployed |
-| 5 — close delivery | Reconcile final inventory, acceptance contract, recovery pointers and remaining exceptions | Documentation matches live state; migration acceptance and security exceptions explicit; only then assess whether the full goal is complete |
+| 5 — close delivery | After all implementation, perform final Codex IAB login/requests/history/downloader acceptance, then reconcile final inventory, recovery pointers and exceptions | Actual normal UI behavior and documentation match live state; migration acceptance and security exceptions are explicit; only then assess whether the full goal is complete |
 
 **Concrete delays:** bespoke rebuilds consumed time and are now superseded;
 Windows memory-floor failures stopped Traefik compilation; node build state used

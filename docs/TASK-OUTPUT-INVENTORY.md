@@ -1,5 +1,117 @@
 # Maintenance output ownership and reconciliation
 
+## Mealie checkpoint reconciliation, October 26 05:30 UTC
+
+This stage reused the same declared F:-backed root and physical ext4 UUID.
+The official filesystem export was a temporary controller qualification input;
+the cluster consumes the vendor registry digest. No application image was built
+or published, dependency installation performed, or second output root created.
+[Exact migration, recovery and remaining findings](UPSTREAM-MEALIE-ADOPTION-20261026.md).
+
+The first check retained everything because the tar's `.` root header was
+counted as an additional descendant. The inventory comparison found no added
+files and only that separately tracked root header missing from descendants.
+Corrected accounting kept the root's own inode/ownership check and verified all
+31561 descendants against the pinned export, including contents, types, modes,
+hardlinks and symlink targets. This was a local accounting failure, not an
+automatic approval-review rejection. Its original source and zero-deletion
+receipt remain. All subsequent ownership/inode/containment, source/lockfile,
+process FD/map/mount, regeneration, NAS and before/after protected-hash checks
+passed. The 808 symlinks were unlinked by parent descriptor without dereferencing.
+
+| Removed path relative to declared root | Main lifecycle allocated bytes | Session-backup lifecycle allocated bytes |
+| --- | ---: | ---: |
+| `upstream-mealie-20261026/vendor-rootfs` | 1083977728 | — |
+| `upstream-mealie-20261026/vendor-rootfs.tar` | 1025556480 | — |
+| `upstream-mealie-20261026/go-containerregistry-v0.22.1.tar.gz` | 16498688 | — |
+| `upstream-mealie-20261026/crane` | 11874304 | — |
+| `security-review-20261026/cache/fanal/fanal.db` | 1511424 | — |
+| `upstream-mealie-20261026/docker-config/config.json` | 4096 | — |
+| `operator-control/tmp/ansible-home` | 4096 | — |
+| `operator-control/tmp/ansible-local` | 4096 | — |
+| `operator-control/tmp` | 4096 | 4096 |
+| `security-review-20261026/tmp` | 4096 | — |
+| `security-review-20261026/home` | 4096 | — |
+| `security-review-20261026/cache/fanal` | 4096 | — |
+| `upstream-mealie-20261026/tmp` | 4096 | — |
+| `upstream-mealie-20261026/home` | 4096 | — |
+| `upstream-mealie-20261026/docker-config` | 4096 | — |
+| `upstream-mealie-20261026/migration-tmp` | 4096 | — |
+| `upstream-mealie-20261026/session-backup-tmp` | — | 4096 |
+
+Total: **2139471872 allocated Linux bytes** (2139463680 + 8192). The two
+`operator-control/tmp` entries are separately created/deleted lifecycles, not
+duplicate recovery claims. Exact receipts are
+`operator-control/mealie-scratch-reconciliation-r2.json` and
+`operator-control/mealie-session-scratch-reconciliation.json`. No Windows disk
+recovery is claimed. Cleanup required no compaction or WSL shutdown; service
+quiescence belonged to the preceding cold-backup/cutover operation.
+
+The subsequent publisher reconciliation removed **599146496 allocated Linux
+bytes**, bringing this checkpoint's total to **2738618368 bytes**. All four
+prepare/check/publish operations were terminal and successful; the existing
+watcher remained live at PID 25976. Its same-revision idle branch does not reuse
+completed stages. Exclusive operation locks and complete root-visible process,
+FD/map/mount checks passed. Original pinned binaries remain in the publisher
+checkout; all 2612 protected source/lockfile/receipt hashes matched afterward.
+
+Paths below are relative to `local-charts-publisher/`. Each `.tools` directory
+contained only the SHA-verified helm, kubectl and gitleaks copies; `home` and
+`tmp` were empty. Exact per-file paths, allocated sizes and regeneration commands
+are retained in `operator-control/mealie-publisher-scratch-plan*.json` and
+`mealie-publisher-scratch-reconciliation*.json`.
+
+| Exact completed stage | Removed `source/.tools` bytes | Removed `home` bytes | Removed `tmp` bytes |
+| --- | ---: | ---: | ---: |
+| `local-charts-publish-43385e5c3f6d4de78a30bddffcb5942b` | 149778432 | 4096 | 4096 |
+| `local-charts-publish-288f85b5e5754a8986a7c1819de745d8` | 149778432 | 4096 | 4096 |
+| `local-charts-publish-fffe63e236684079a6175db4b53b3e50` | 149778432 | 4096 | 4096 |
+| `local-charts-publish-c968b5b7f0e248378e782d9ddb578bd9` | 149778432 | 4096 | 4096 |
+
+The first publisher reconciliation removed three verified files, then its
+directory timestamp check detected the changes caused by those same unlinks.
+The corrected generation preserves that partial receipt, checks directory
+device/inode/mode/owner and emptiness, and keeps the regular-file size/mtime/hash
+checks unchanged. Both generations survive; this was a local accounting failure,
+not an automatic approval-review rejection. Each stage retains its exact reviewed
+source export, original prepare/check/publish receipts and unique validation
+report. The watcher, its persistent state and original tools remain required
+runtime inputs. No historical publication was replayed or publisher restarted.
+At 05:48 UTC, native free space was 23029043200 bytes; Windows C: free space was
+98167619584 bytes and F: free space was 22607757312 bytes. These are separate
+readings, with no Windows recovery claim.
+
+Regenerate the public runtime inputs from the exact official image and crane
+release/SHAs in `upstream-mealie-20261026/prepare.json`, using the retained
+bounded export/extract commands after fresh capacity checks. Recreate private
+empty TEMP/HOME/config directories before their recorded consumers. Rebuild
+analysis cache using the exact immutable-image command and verified input
+receipts, selecting a new output path to preserve original reports. All
+reconciliation sources and regeneration commands remain under `operator-control`.
+
+Retained exceptions, relative to the same root:
+
+| Exact retained path | Required retention reason |
+| --- | --- |
+| `upstream-mealie-20261026/db-copy` | Original transactional SQL snapshot, authenticated cipher, private comparison key and source observations |
+| `upstream-mealie-20261026/migration-data` | Unique isolated migration state and its runtime keys, including failed-fixture provenance |
+| `upstream-mealie-20261026/cold-sql` | Authenticated original cold SQL used to bind live and isolated baselines |
+| `upstream-mealie-20261026/production` | Unique baseline/after/restart SQL snapshots, complete file observations, mapped audits and diagnostic logs |
+| `upstream-mealie-20261026/cold` | Original complete production archive and receipt, required for data-compatible rollback; NAS authentication passed |
+| Remaining direct files in `upstream-mealie-20261026` | Distinct unit, migration and observer failure/qualification evidence; reproducible public runtime inputs alone were removed |
+| `control-source/upstream-mealie-20261026` | Every executed frozen generation and twelve independently matched vendor mapping sources |
+| `operator-control/mealie-recovery-metadata.tar.age` | Required distinct recovery evidence, fully authenticated on NAS; ancestor cold archive and public DB binaries were not duplicated |
+| `operator-control/mealie-session-secret.age` and its receipts | New production session-signing value, encrypted directly from RAM, matched to restart proof and fully authenticated on NAS |
+| `security-review-20261026/cache/db` and `cache/java-db` | Verified immutable advisory/Java inputs needed for the remaining fleet review; before/after hashes match |
+| `security-review-20261026/cache/db-integrity-failure-20261026` | Unique original checksum-mismatch evidence; cause unestablished; no deletion authorized |
+| `security-review-20261026/docker-config` | Earlier isolated scanner configuration; exact creation provenance not separately reconciled |
+| `security-review-20261026/nginx-0` | Original unique scanner failure evidence |
+| `operator-control/mealie-*`, `smb-mealie-*` and exact related control sources | Minimal distinct rollout, scan, original failure, repair, backup and cleanup receipts/sources |
+
+All earlier ownership/failure/rollback exclusions, active publisher state and
+other owners' artifacts remain protected. No PVC/NAS data, Docker image, volume,
+model, user source, original chat or older artifact was pruned.
+
 ## Jackett checkpoint reconciliation, October 26 03:47 UTC
 
 The existing declared F:-backed root, physical UUID and owner remain unchanged.
