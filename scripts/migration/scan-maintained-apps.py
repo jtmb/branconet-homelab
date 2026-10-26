@@ -50,9 +50,9 @@ def save(path, value):
 
 def main():
     os.umask(0o077)
-    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3'], 'finite_scan_generation')
+    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3'], 'finite_scan_generation')
     generation = sys.argv[1]
-    revalidated = generation == 'homepage-current-r3'
+    revalidated = generation != 'homepage-jackett'
     cg = Path('/proc/self/cgroup').read_text().strip().removeprefix('0::')
     need(cg.endswith('/branconet-apps-review-' + generation + '-20261026.service'), 'owned_user_unit')
     group = Path('/sys/fs/cgroup') / cg.lstrip('/')
@@ -79,10 +79,14 @@ def main():
     updated = datetime.datetime.fromisoformat(proof['vulnerabilityDB']['UpdatedAt'].replace('Z', '+00:00'))
     need(0 <= (datetime.datetime.now(datetime.timezone.utc) - updated).total_seconds() <= 86400, 'fresh_database')
     kev = {r['cveID'] for r in json.loads((OUT / ('cisa-kev-r3.json' if revalidated else 'cisa-kev.json')).read_bytes())['vulnerabilities']}
-    candidates = json.loads((OUT / 'homepage-jackett-candidates.json').read_bytes())['images']
-    need([r['reference'] for r in candidates] == ['ghcr.io/gethomepage/homepage:v2.7.0@sha256:19c5c09184458a41b7b5915e71463a39f36cd33540f41bdbed008791b8182d5f', 'ghcr.io/gethomepage/homepage:v1.13.2@sha256:a0b71c8e757298d02560186bab9fbe3fc2d375c523a62cc1019177b37e48aa28', 'docker.io/linuxserver/jackett:0.24.2900@sha256:d1b82a9c5bbaea44284a550af739bd838749b72f15b10ef61b6c9d9d1b2f1ed7'], 'finite_vendor_targets')
-    if revalidated:
-        candidates = candidates[:1]
+    if generation == 'jackett-current-r3':
+        candidates = json.loads((OUT / 'jackett-current-candidates.json').read_bytes())['images']
+        need([r['reference'] for r in candidates] == ['docker.io/linuxserver/jackett:0.24.2910@sha256:19d90927b95397f2d1364e4999e11456abdbbb382b54cd765fc3b3da24d7088b'], 'finite_current_jackett_target')
+    else:
+        candidates = json.loads((OUT / 'homepage-jackett-candidates.json').read_bytes())['images']
+        need([r['reference'] for r in candidates] == ['ghcr.io/gethomepage/homepage:v2.7.0@sha256:19c5c09184458a41b7b5915e71463a39f36cd33540f41bdbed008791b8182d5f', 'ghcr.io/gethomepage/homepage:v1.13.2@sha256:a0b71c8e757298d02560186bab9fbe3fc2d375c523a62cc1019177b37e48aa28', 'docker.io/linuxserver/jackett:0.24.2900@sha256:d1b82a9c5bbaea44284a550af739bd838749b72f15b10ef61b6c9d9d1b2f1ed7'], 'finite_vendor_targets')
+        if revalidated:
+            candidates = candidates[:1]
     receipts = []
     for n, image in enumerate(candidates):
         path = OUT / ('apps-' + generation + '-' + str(n))
