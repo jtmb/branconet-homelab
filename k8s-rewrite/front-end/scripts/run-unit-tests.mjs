@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { unitTestPlan, executionFor, executionBatches } from './kv-engine-unit-plan.mjs';
+import { unitTestPlan, executionFor, executionBatches } from './kv-error-response-unit-plan.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const args = process.argv.slice(2);
