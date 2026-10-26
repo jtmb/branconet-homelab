@@ -1,5 +1,74 @@
 # Maintenance output ownership and reconciliation
 
+## qBittorrent checkpoint reconciliation, October 26 16:13 UTC
+
+Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. Reused only the existing
+`/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,
+physical ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`, backing file
+`F:\branconet-build-storage\native-build-20261025.ext4`. No image build,
+dependency install, second root, shutdown or compaction ran.
+[Exact deployment, preservation and remaining limits](UPSTREAM-QBITTORRENT-ADOPTION-20261026.md).
+
+Cleanup removed **710959104 allocated Linux bytes** after complete containment,
+ownership/inode, source/lockfile survival, regeneration, exclusive operation-lock
+and process/FD/map/mount checks. The scan service was terminal inactive/dead,
+Result success, exit 0. Four successful current publisher stages account for
+710590464 bytes and 3116 exact removed paths; original Git blobs/commits and
+pinned tools survive, with all 16 unique stage receipts/reports matching after
+cleanup. The running publisher was neither stopped nor replayed.
+
+The table paths are relative to `local-charts-publisher/`. Source totals include
+generated exports, copied tools and empty descendants. Each stage retains its
+`source/.validation/validation.json` and prepare/check/publish receipts. Every
+individual removed path, inode and byte count is preserved in
+`operator-control/qbittorrent-upstream-publisher-scratch-reconciliation.json`;
+the exact regeneration command and full source manifest remain in its plan.
+
+| Completed stage | Removed source exports/tools | Removed `home` | Removed `tmp` |
+| --- | ---: | ---: | ---: |
+| `local-charts-publish-2271f3fcea9b485cb4390fdba1aee9df` | 177639424 | 4096 | 4096 |
+| `local-charts-publish-08dcbc67cd9043e8a58a7ef643aebeb9` | 177639424 | 4096 | 4096 |
+| `local-charts-publish-1148a20aea6a45f480da7c6838b89db5` | 177639424 | 4096 | 4096 |
+| `local-charts-publish-6b9a5e476b8c485f8d54678031ac9ea7` | 177639424 | 4096 | 4096 |
+
+Other removed paths, relative to the declared root; exact protected hashes and
+regeneration are in `operator-control/qbittorrent-upstream-scratch-reconciliation.json`:
+
+| Exact path | Allocated bytes |
+| --- | ---: |
+| `security-review-20261026/cache/fanal/fanal.db` | 348160 |
+| `security-review-20261026/cache/fanal` | 4096 |
+| `security-review-20261026/tmp` | 4096 |
+| `security-review-20261026/home` | 4096 |
+| `operator-control/tmp/ansible-home/local` | 4096 |
+| `operator-control/tmp/ansible-home` | 4096 |
+
+Retained current-stage exceptions:
+
+- `upstream-qbittorrent-20261026`: required complete cold archive, observation
+  key, baseline/after/restart comparisons, default repair and all unique failures.
+- `control-source/upstream-qbittorrent-20261026`: exact executed observer
+  generations, cold controls, repair helper and Ansible sources/manifests.
+- `operator-control/qbittorrent-upstream-recovery-metadata.tar.age`: required
+  distinct encrypted source/verification evidence; complete NAS authentication passed.
+- `security-review-20261026`: verified advisory inputs, exact public image scan
+  results and original integrity-failure evidence; only the reproducible fanal
+  analysis cache and empty scratch were removed.
+- All four publisher stage receipt/report subtrees listed above: unique exact
+  validation/publication evidence, with reachable primary Git source objects.
+- `operator-control/tmp/system-commandline-sentinel-files`: creator/regeneration
+  and complete inactive Windows handle proof remain unresolved. No deletion attempted.
+- `operator-control/tmp`: retained parent contains those unresolved sentinels.
+
+All earlier failures, safety exceptions, rollback/recovery sources and other
+owners remain protected. No images, volumes, NAS media or user data were pruned.
+The current private inventory is `operator-control/storage-inventory-current.json`;
+the compact checkpoint is `operator-control/qbittorrent-upstream-checkpoint-summary.json`.
+At 16:12:53 UTC, C: free was 96949673984 bytes, F: free 21642555392 bytes,
+and native ext4 free 21627191296 bytes. These are separate measurements;
+Linux cleanup does not establish Windows disk recovery. Recreate the explicitly
+configured private scratch paths before the next Ansible/encryption stage.
+
 ## Pi-hole checkpoint reconciliation, October 26 15:03 UTC
 
 Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. This checkpoint reused only

@@ -1,0 +1,7 @@
+---
+- name: Preserve the exact original qBittorrent disk queue during vendor adoption
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - qbittorrent_upstream_defaults

@@ -167,7 +167,8 @@ def identity(args, mac):
     need(any(e.get('name') == 'MIGRATION_COMMAND_0' and e.get('valueFrom', {}).get('secretKeyRef') == {'name': 'qbittorrent-launch', 'key': 'command-0'} for e in cs[0].get('env', [])), 'native_launch_key')
     statuses = {s['name']: s for s in pod['status']['containerStatuses']}
     runtime = statuses['qbittorrent']['imageID'].rsplit('@', 1)[-1]
-    need(runtime == args.expected_runtime, 'runtime_digest')
+    # CRI may report the bound registry index or its exact amd64 child digest.
+    need(runtime in (args.expected_runtime, args.expected_image.rsplit('@', 1)[-1]), 'runtime_digest')
     need(pod['spec']['containers'][0]['image'] == args.expected_image, 'pod_image')
     gs = [c for c in spec.get('initContainers', []) if c['name'] == 'gluetun']
     need(len(gs) == 1 and gs[0].get('restartPolicy') == 'Always' and
@@ -202,9 +203,18 @@ def identity(args, mac):
     slices = json.loads(kube('get', 'endpointslices', '-l', 'kubernetes.io/service-name=qbittorrent', '-o', 'json'))['items']
     endpoints = [e for s in slices for e in s.get('endpoints', []) if e.get('conditions', {}).get('ready')]
     need(endpoints and all(e.get('targetRef', {}).get('uid') == pod['metadata']['uid'] for e in endpoints), 'service_target')
+    monitor_spec = json.loads(json.dumps(monitor['spec']))
+    port_poll = [e for e in monitor_spec['template']['spec']['containers'][0]['env']
+                 if e.get('name') == 'CHECK_INTERVAL_FORWARDED_PORT']
+    need(len(port_poll) == 1 and port_poll[0]['value'] ==
+         ('1h' if args.expected_image.startswith('docker.io/library/qbittorrent-current-security-') else '10s'),
+         'exact_reviewed_forwarded_port_poll_interval')
+    # Reviewed repair: the old hour-long poll allowed stale ports after VPN
+    # reconnects. Normalize only this exact one-hour -> ten-second setting.
+    port_poll[0]['value'] = '1h'
     stable = {'deployment_uid': DEP_UID, 'deployment_spec_hmac': mac(normalized),
               'claims': claim_state, 'secrets': secret_state, 'monitor_uid': MONITOR_UID,
-              'monitor_spec_hmac': mac(monitor['spec']), 'service_uid': service['metadata']['uid'],
+              'monitor_spec_hmac': mac(monitor_spec), 'service_uid': service['metadata']['uid'],
               'service_spec_hmac': mac(service['spec'])}
     observed = {'pod_uid': pod['metadata']['uid'], 'restart_count': statuses['qbittorrent']['restartCount'],
                 'vpn_restart_count': gstatus[0]['restartCount'], 'monitor_pod_uid': mpod['metadata']['uid'],

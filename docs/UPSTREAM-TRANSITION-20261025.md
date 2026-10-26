@@ -1,6 +1,24 @@
 # Repository-backed image transition
 
-Latest accepted backend/state/restart checkpoint, October 26 15:03 UTC: official Pi-hole 2026.10.0 /
+**Latest checkpoint — October 26, 16:13 UTC:** maintained qBittorrent 5.3.0 /
+libtorrent 2.1.2 passed complete 232-torrent / 455-file, preference, native
+identity and authentication comparisons through an independent Flux restart.
+The original disk queue default was restored with a guarded native API helper
+and opt-in Ansible playbook; the monitor now checks forwarded ports every ten
+seconds. All 20 UI/access-control routes passed, the client is connected and
+uploading, and both recovery archives passed full NAS read-back/authentication.
+Private main/validated/live revision is
+`902dae6c51b25ed2f1dd313511ed1841c618c385`. Three nodes, 55 PVCs, all releases
+and 41 attached Longhorn volumes remain healthy. Cleanup removed **710959104
+allocated Linux bytes**, retaining exact source, original/rollback data and all
+unique failures. Four application derivative transitions remain: Plex, ruckus-db,
+WordPress and xTeVe. Two High vendor package rows, platform/fleet security,
+owned publication, trusted TLS and final IAB remain open. The full goal remains
+active and GitHub Actions is disabled.
+[Verification, recovery and limits](UPSTREAM-QBITTORRENT-ADOPTION-20261026.md),
+[exact cleanup and retained exceptions](TASK-OUTPUT-INVENTORY.md#qbittorrent-checkpoint-reconciliation-october-26-1613-utc).
+
+Previous accepted backend/state/restart checkpoint, October 26 15:03 UTC: official Pi-hole 2026.10.0 /
 FTL v6.8 passed complete query/configuration/native-resource preservation,
 authenticated API, 16 TCP/UDP DNS probes and 27 web routes through a distinct
 Flux restart. Private main/validated/live revision is
