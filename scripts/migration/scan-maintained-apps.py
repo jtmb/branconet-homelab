@@ -50,7 +50,7 @@ def save(path, value):
 
 def main():
     os.umask(0o077)
-    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3', 'mealie-current-r3'], 'finite_scan_generation')
+    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3', 'mealie-current-r3', 'tautulli-current-r3', 'tautulli-linuxserver-current-r3'], 'finite_scan_generation')
     generation = sys.argv[1]
     revalidated = generation != 'homepage-jackett'
     cg = Path('/proc/self/cgroup').read_text().strip().removeprefix('0::')
@@ -79,7 +79,13 @@ def main():
     updated = datetime.datetime.fromisoformat(proof['vulnerabilityDB']['UpdatedAt'].replace('Z', '+00:00'))
     need(0 <= (datetime.datetime.now(datetime.timezone.utc) - updated).total_seconds() <= 86400, 'fresh_database')
     kev = {r['cveID'] for r in json.loads((OUT / ('cisa-kev-r3.json' if revalidated else 'cisa-kev.json')).read_bytes())['vulnerabilities']}
-    if generation == 'mealie-current-r3':
+    if generation == 'tautulli-linuxserver-current-r3':
+        candidates = json.loads((OUT / 'tautulli-linuxserver-current-candidates.json').read_bytes())['images']
+        need([r['reference'] for r in candidates] == ['ghcr.io/linuxserver/tautulli:v2.18.2-ls249@sha256:c6a48416d16b26f254b000133d2d844c1905ee58ed0f44aad9bda66598d39988'], 'finite_current_linuxserver_tautulli_target')
+    elif generation == 'tautulli-current-r3':
+        candidates = json.loads((OUT / 'tautulli-current-candidates.json').read_bytes())['images']
+        need([r['reference'] for r in candidates] == ['ghcr.io/tautulli/tautulli:v2.18.2@sha256:1b5875fe3193d450a62e7b438eb6701195c841f14f3dcb962e545eda42d3696f'], 'finite_current_tautulli_target')
+    elif generation == 'mealie-current-r3':
         candidates = json.loads((OUT / 'mealie-current-candidates.json').read_bytes())['images']
         need([r['reference'] for r in candidates] == ['ghcr.io/mealie-recipes/mealie:v3.29.0@sha256:78eb28b8776d0bad40c5e605c72b3f4f5976793e491558c7dcbdfc04c835d4bc'], 'finite_current_mealie_target')
     elif generation == 'jackett-current-r3':
