@@ -48,9 +48,9 @@ for kind,group in settings['files'].items():
    assert ref.get(field,'')=='' and field not in row;row[field]=''
 def signature(row):return(row['url'],row['_file.m3u.id'])
 index={signature(row):row for row in refmap.values()};assert len(index)==len(refmap)==len(oldmap)==108 and len({signature(row)for row in oldmap.values()})==len(oldmap)
-desired=copy.deepcopy(oldmap);derived=['tvg-id','_uuid.key','_values'];changes={}
+desired=copy.deepcopy(oldmap);derived=['tvg-id','_uuid.key','_uuid.value','_values'];changes={}
 for ident,row in desired.items():
- ref=index[signature(row)];assert row.get('_uuid.value')==ref.get('_uuid.value')
+ ref=index[signature(row)]
  for field in derived:
   if field in ref:row[field]=copy.deepcopy(ref[field])
  if row.get('x-xmltv-file')=='xTeVe Dummy':row['x-xmltv-file']='Threadfin Dummy'
@@ -84,7 +84,7 @@ print(json.dumps({'passed':True,'subPath':prefix,'referencePrefix':request['sour
 
 NODE = r'''
 import json,sys,subprocess,uuid,time,resource
-resource.setrlimit(resource.RLIMIT_CORE,(0,0));r=json.loads(sys.stdin.buffer.read(1048576));run=uuid.uuid4().hex;prefix='threadfin-20261026-'+run[:12];name='threadfin-compatible-'+run[:12];created=[];pod=None;out={'passed':False}
+resource.setrlimit(resource.RLIMIT_CORE,(0,0));r=json.loads(sys.stdin.buffer.read(1048576));run=uuid.uuid4().hex;prefix=r.get('resumePrefix')or'threadfin-20261026-'+run[:12];name='threadfin-compatible-'+run[:12];created=[];pod=None;out={'passed':False}
 def call(a,data=None):return subprocess.check_output(['kubectl','--request-timeout=30s','-n','plex',*a],input=data,stderr=subprocess.DEVNULL,timeout=180)
 def get(k,n):return json.loads(call(['get',k,n,'-o','json']))
 def fence():
@@ -100,8 +100,12 @@ def create(obj):
  p=json.loads(call(['create','-f','-','-o','json'],json.dumps(obj).encode()));created.append((p['kind'],p['metadata']['name'],p['metadata']['uid']));return p
 try:
  before=fence();labels={'threadfin-compatible-copy':run};create({'apiVersion':'networking.k8s.io/v1','kind':'NetworkPolicy','metadata':{'name':name,'namespace':'plex'},'spec':{'podSelector':{'matchLabels':labels},'policyTypes':['Ingress','Egress'],'ingress':[],'egress':[]}})
- pod=create({'apiVersion':'v1','kind':'Pod','metadata':{'name':name,'namespace':'plex','labels':labels},'spec':{'nodeName':'workernode2','restartPolicy':'Never','activeDeadlineSeconds':600,'automountServiceAccountToken':False,'securityContext':{'runAsUser':0,'runAsGroup':0,'seccompProfile':{'type':'RuntimeDefault'}},'containers':[{'name':'copy','image':'docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1','imagePullPolicy':'IfNotPresent','command':['python3','-B','-c','import time;time.sleep(600)'],'resources':{'requests':{'cpu':'10m','memory':'32Mi'},'limits':{'cpu':'500m','memory':'256Mi'}},'securityContext':{'allowPrivilegeEscalation':False,'readOnlyRootFilesystem':True,'capabilities':{'drop':['ALL'],'add':['CHOWN','DAC_OVERRIDE','FOWNER']}},'volumeMounts':[{'name':'state','mountPath':'/source','subPath':r['sourcePrefix'],'readOnly':True},{'name':'state','mountPath':'/original','readOnly':True},{'name':'state','mountPath':'/target'}]}],'volumes':[{'name':'state','persistentVolumeClaim':{'claimName':'xteve-data-0'}}]}});call(['wait','pod/'+name,'--for=condition=Ready','--timeout=60s']);assert fence()==before;out.update(json.loads(call(['exec','-i',name,'--','python3','-B','-c',r['copyCode']],json.dumps({'prefix':prefix,'sourcePrefix':r['sourcePrefix'],'key':r['key']}).encode())));assert out['passed']and fence()==before
-except Exception as e:out.update(passed=False,errorType=type(e).__name__,failedCandidatePrefix=prefix)
+ pod=create({'apiVersion':'v1','kind':'Pod','metadata':{'name':name,'namespace':'plex','labels':labels},'spec':{'nodeName':'workernode2','restartPolicy':'Never','activeDeadlineSeconds':600,'automountServiceAccountToken':False,'securityContext':{'runAsUser':0,'runAsGroup':0,'seccompProfile':{'type':'RuntimeDefault'}},'containers':[{'name':'copy','image':'docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1','imagePullPolicy':'IfNotPresent','command':['python3','-B','-c','import time;time.sleep(600)'],'resources':{'requests':{'cpu':'10m','memory':'32Mi'},'limits':{'cpu':'500m','memory':'256Mi'}},'securityContext':{'allowPrivilegeEscalation':False,'readOnlyRootFilesystem':True,'capabilities':{'drop':['ALL'],'add':['CHOWN','DAC_OVERRIDE','FOWNER']}},'volumeMounts':[{'name':'state','mountPath':'/source','subPath':r['sourcePrefix'],'readOnly':True},{'name':'state','mountPath':'/original','readOnly':True},{'name':'state','mountPath':'/target'}]}],'volumes':[{'name':'state','persistentVolumeClaim':{'claimName':'xteve-data-0'}}]}});call(['wait','pod/'+name,'--for=condition=Ready','--timeout=60s']);assert fence()==before;out.update(json.loads(call(['exec','-i',name,'--','python3','-B','-c',r['copyCode']],json.dumps({'prefix':prefix,'sourcePrefix':r['sourcePrefix'],'key':r['key'],'resume':bool(r.get('resumePrefix'))}).encode())));assert out['passed']and fence()==before
+except Exception as e:
+ out.update(passed=False,errorType=type(e).__name__,failedCandidatePrefix=prefix)
+ if isinstance(e,subprocess.CalledProcessError):
+  try:out['innerDiagnostic']=json.loads(e.output)
+  except Exception:pass
 finally:
  out['createdResources']=[{'kind':k,'name':n,'uid':u}for k,n,u in created];out['deletedResources']=[]
  if out['passed']:
@@ -114,10 +118,11 @@ finally:
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--apply', action='store_true')
+    p.add_argument('--resume-verified-copy', action='store_true')
     a = p.parse_args()
     assert a.apply and os.getuid() == 1000 and ROOT.is_mount()
     os.umask(0o077)
-    target = OUT / 'compatible-state-copy.json'
+    target = OUT / ('compatible-state-copy-r2.json' if a.resume_verified_copy else 'compatible-state-copy.json')
     assert not target.exists()
     for scope in ['state', 'config']:
         s = json.loads((ROOT / 'operator-control' / ('smb-xteve-upstream-' + scope + '-copy-status.json')).read_text())
@@ -129,8 +134,22 @@ def main():
     spec.loader.exec_module(base)
     code = base.COPY[:base.COPY.index("settings=target/'settings.json'")]
     code = code.replace("request=json.loads", INVENTORY + '\nrequest=json.loads').replace("manifest=request['manifest']", 'manifest=inventory_source()') + MIGRATE
+    if a.resume_verified_copy:
+        prior = json.loads((OUT / 'compatible-state-copy.json').read_text())
+        diagnosis = json.loads((OUT / 'compatible-copy-readonly-diagnosis.json').read_text())
+        assert not prior['passed'] and prior['errorType'] == 'CalledProcessError'
+        assert diagnosis['passed'] and diagnosis['diagnosis']['readOnly'] and diagnosis['diagnosis']['stage'] == 'channel_correspondence'
+        code = code.replace("and not target.exists()and not target.is_symlink()", "and target.exists()and not target.is_symlink()")
+        start = code.index('target.mkdir(mode=0o700)')
+        finish = code.index('\nimport copy,hmac', start)
+        code = code[:start] + "assert {str(p.relative_to(target))for p in target.rglob('*')}==set(rows)-{''}\nfor rel,row in rows.items():verify(target/rel,row)\n" + code[finish:]
+    ast.parse(code)
+    import textwrap
+    code = 'import json,traceback\ntry:\n' + textwrap.indent(code, ' ') + "\nexcept Exception as e:\n print(json.dumps({'passed':False,'errorType':type(e).__name__,'sourceLines':[f.lineno for f in traceback.extract_tb(e.__traceback__)]}))\n raise SystemExit(1)\n"
     ast.parse(code)
     request = {'copyCode': code, 'sourcePrefix': json.loads((OUT / 'prepared-state-copy.json').read_text())['subPath'], 'key': (ROOT / 'acceptance-xteve-20261025/hmac-key').read_text().strip()}
+    if a.resume_verified_copy:
+        request['resumePrefix'] = prior['failedCandidatePrefix']
     ssh = ['ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-i', '/home/brajam/.ssh/id_ed25519', '-p', '2002', 'james@192.168.0.4']
     child = subprocess.run(ssh + [shlex.join(['python3', '-B', '-c', NODE])], input=json.dumps(request).encode(), capture_output=True, timeout=450)
     try:

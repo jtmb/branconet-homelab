@@ -22,6 +22,9 @@ def mac(v):return hmac.new(key,json.dumps(v,sort_keys=True,separators=(',',':'))
 def call(a):return subprocess.check_output(['kubectl','--request-timeout=30s','-n','plex',*a],stderr=subprocess.DEVNULL,timeout=45)
 def get(k,n,ns='plex'):return json.loads(subprocess.check_output(['kubectl','--request-timeout=30s','-n',ns,'get',k,n,'-o','json'],stderr=subprocess.DEVNULL,timeout=40))
 def fence():
+ if r.get('canary'):
+  record=r['canary'];p=get('pod',record['podName']);assert p['metadata']['uid']==record['podUID']and mac(p['spec'])==record['podSpecHMAC'];assert p['status']['phase']=='Running'and all(s['ready']for s in p['status'].get('containerStatuses',[]));cs={s['name']:s for s in p['status']['containerStatuses']};assert cs['xteve']['imageID'].rsplit('@',1)[-1]in[r['image'].rsplit('@',1)[-1],r['amd64']]
+  return {'canaryUID':p['metadata']['uid'],'podSpecHMAC':record['podSpecHMAC']},{'pod':p['metadata']['name'],'podUID':p['metadata']['uid'],'imageID':cs['xteve']['imageID'],'restartCount':cs['xteve']['restartCount']},p['status']['podIP']
  d=get('deployment','xteve');h=get('helmrelease','xteve','flux-system');assert d['metadata']['uid']=='52adec00-5c42-4cd2-8fb0-9428828ca368'and h['metadata']['uid']=='ace99a34-343b-40cd-b1b3-6ef2f324a8b0'
  assert d['spec']['replicas']==1 and d['status'].get('observedGeneration')==d['metadata']['generation']and all(d['status'].get(k)==1 for k in ['replicas','readyReplicas','availableReplicas','updatedReplicas']);assert h['spec']['values']['replicaCount']==1 and any(c['type']=='Ready'and c['status']=='True'for c in h['status'].get('conditions',[]))
  pods=json.loads(call(['get','pods','-l','app=xteve','-o','json']))['items'];pods=[p for p in pods if not p['metadata'].get('deletionTimestamp')];assert len(pods)==1;p=pods[0];assert p['status']['phase']=='Running'and p['spec']['nodeName']=='workernode2';statuses={s['name']:s for s in p['status']['containerStatuses']};assert all(s['ready']for s in statuses.values());main=d['spec']['template']['spec']['containers'][0];assert main['name']=='xteve'and main['image']==r['image']and main['envFrom']==[{'secretRef':{'name':'xteve-runtime'}}]
@@ -54,19 +57,26 @@ def data(pod):
  for name in ['xteveAutoUpdate','ThreadfinAutoUpdate']:normalized.pop(name,None)
  for group in normalized.get('files',{}).values():
   for provider in group.values():
+   if is_new:
+    assert provider.pop('file.threadfin')==provider['file.xteve']
+    for field in ['http_proxy.ip','http_proxy.port']:assert provider.pop(field)==''
    for field in ['last.update','counter.download','counter.error','provider.availability']:provider.pop(field,None)
    compat=provider.get('compatibility',{});compat.pop('xmltv.channels',None);compat.pop('xmltv.programs',None)
  auth=files['authentication.json'];assert isinstance(auth.get('users'),dict)
  for user in auth['users'].values():user['data'].setdefault('authentication.config',False)
  mappings=files['xepg.json'];assert isinstance(mappings,dict)
- return {'settings':{k:mac(v)for k,v in normalized.items()},'settingsVersion':settings['version'],'authentication':mac(auth),'accountCount':len(auth['users']),'mappings':{mac(k):{field:mac(v)for field,v in row.items()}for k,row in mappings.items()},'activeMappings':sum(v.get('x-active')is True for v in mappings.values()),'mappingCount':len(mappings),'pms':mac(files['pms.json']),'urls':mac(files['urls.json']),'autoUpdateDisabled':True}
-def http(address):
+ urls=files['urls.json']
+ if is_new:
+  for row in urls.values():
+   for field in ['backup_channel_1','backup_channel_2','backup_channel_3']:assert row.pop(field) is None
+ return {'settings':{k:mac(v)for k,v in normalized.items()},'settingsVersion':settings['version'],'authentication':mac(auth),'accountCount':len(auth['users']),'mappings':{mac(k):{field:mac(v)for field,v in row.items()}for k,row in mappings.items()},'activeMappings':sum(v.get('x-active')is True for v in mappings.values()),'mappingCount':len(mappings),'pms':mac(files['pms.json']),'urls':mac(urls),'autoUpdateDisabled':True}
+def http(address,port=34400):
  rows={};client=urllib.request.build_opener(urllib.request.ProxyHandler({}))
  for path in ['/web/','/discover.json','/device.xml','/lineup_status.json','/lineup.json','/xmltv/xteve.xml','/xmltv/xteve.xml.gz','/m3u/xteve.m3u','/api/']:
   start=time.monotonic()
   while True:
    try:
-    try:response=client.open('http://'+address+':34400'+path,timeout=15)
+    try:response=client.open('http://'+address+':'+str(port)+path,timeout=15)
     except urllib.error.HTTPError as e:response=e
     with response:body=response.read(32*1024**2+1);status=response.code
     assert len(body)<=32*1024**2;break
@@ -78,15 +88,19 @@ def http(address):
   rows[path]=row
  return rows
 try:
- before,writer,address=fence();observation=data(writer['pod']);routes=http(address);finish,writer2,address2=fence();assert(before,writer,address)==(finish,writer2,address2);failures=[];details={}
+ before,writer,address=fence();observation=data(writer['pod']);routes=http(address,34401 if r.get('canary')else 34400);finish,writer2,address2=fence();assert(before,writer,address)==(finish,writer2,address2);failures=[];details={}
  if is_new:
-  old=r['baseline'];assert old['passed'];previous=old['observation'];assert before==old['identity'];missing=sorted(set(previous['settings'])-set(observation['settings']));changed=sorted(k for k,v in previous['settings'].items()if observation['settings'].get(k)!=v);added=sorted(set(observation['settings'])-set(previous['settings']));assert not(set(added)-set(r['allowedNewSettings']))
+  old=r['baseline'];assert old['passed'];previous=old['observation'];proof=r['migrationProof'];assert proof['passed']and proof['originalSettings']==previous['settings']and proof['originalMappings']==previous['mappings']and proof['expectedAuthentication']==previous['authentication'];assert set(proof['expectedSettings'])==set(previous['settings'])and all(v==proof['expectedSettings'][k]for k,v in previous['settings'].items()if k!='files')
+  if not r.get('canary'):assert before==old['identity']
+  expected=proof['expectedSettings'];missing=sorted(set(expected)-set(observation['settings']));changed=sorted(k for k,v in expected.items()if observation['settings'].get(k)!=v);added=sorted(set(observation['settings'])-set(expected));assert not(set(added)-set(r['allowedNewSettings']))
   if missing or changed:failures.append('original_settings_changed');details.update(missingSettings=missing,changedSettings=changed,addedSettings=added)
   for k in ['authentication','accountCount','mappingCount','activeMappings','pms','urls']:
    if observation[k]!=previous[k]:failures.append(k+'_changed')
   if set(observation['mappings'])!=set(previous['mappings']):failures.append('mapping_identity_changed')
   differences=[]
-  for ident,row in previous['mappings'].items():
+  assert set(proof['expectedMappings'])==set(previous['mappings'])
+  for ident,row in proof['expectedMappings'].items():
+   original=previous['mappings'][ident];allowed={'tvg-id','_uuid.key','_uuid.value','_values','x-xmltv-file'};assert all(original.get(k)==v or k in allowed for k,v in row.items())and not(set(original)-set(row))
    current=observation['mappings'].get(ident,{})
    if any(current.get(k)!=v for k,v in row.items()):differences.append(ident)
    assert not(set(current)-set(row)-set(r['allowedNewMappingFields']))
@@ -94,7 +108,7 @@ try:
   for path,k in [('/lineup.json','channelIdentity'),('/discover.json','tunerIdentity')]:
    if routes[path][k]!=old['routes'][path][k]:failures.append('published_'+k+'_changed')
   if phase=='restart':assert writer['podUID']!=r['previous']['writer']['podUID']
- result={'passed':not failures,'phase':phase,'UTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'identity':before,'writer':writer,'observation':observation,'routes':routes,'failures':failures,'differences':details,'rawCredentialsProvidersOrAccountsReturned':False,'personalLoginOrProviderStreamClaimed':False,'fullGoalComplete':False}
+ result={'passed':not failures,'phase':phase,'UTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'identity':before,'writer':writer,'observation':observation,'routes':routes,'failures':failures,'differences':details,'rawCredentialsProvidersOrAccountsReturned':False,'personalLoginOrProviderStreamClaimed':False,'productionIdentityChecked':not bool(r.get('canary')),'canaryOnly':bool(r.get('canary')),'fullGoalComplete':False}
 except Exception as e:result={'passed':False,'errorType':type(e).__name__,'rawDetailsSuppressed':True,'phase':phase}
 print(json.dumps(result))
 '''
@@ -107,6 +121,8 @@ def main():
     p.add_argument('--baseline', type=Path)
     p.add_argument('--previous', type=Path)
     p.add_argument('--state-sub-path', default='')
+    p.add_argument('--migration-proof', type=Path)
+    p.add_argument('--canary', type=Path)
     a = p.parse_args()
     assert os.getuid() == 1000 and a.receipt.parent == OUT and not a.receipt.exists()
     os.umask(0o077)
@@ -120,8 +136,13 @@ def main():
                'amd64': OLD.rsplit('@', 1)[-1] if a.phase == 'baseline' else 'sha256:c08ba41338bf9660406e6528e765050c5d3b7484483b7ca34f6edbae1d37c748',
                'allowedNewSettings': re.findall(r'`json:"([^",]+)', settings), 'allowedNewMappingFields': sorted(set(all_fields))}
     if a.phase != 'baseline':
-        assert a.baseline and re.fullmatch('threadfin-20261026-[a-f0-9]{12}', a.state_sub_path)
+        assert a.baseline and a.migration_proof and re.fullmatch('threadfin-20261026-[a-f0-9]{12}', a.state_sub_path)
         request['baseline'] = json.loads(a.baseline.read_text())
+        request['migrationProof'] = json.loads(a.migration_proof.read_text())
+        assert request['migrationProof']['subPath'] == a.state_sub_path
+    if a.canary:
+        assert a.phase == 'after'
+        request['canary'] = json.loads(a.canary.read_text())
     if a.phase == 'restart':
         assert a.previous
         request['previous'] = json.loads(a.previous.read_text())

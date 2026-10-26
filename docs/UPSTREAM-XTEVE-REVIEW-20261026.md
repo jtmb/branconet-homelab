@@ -1,9 +1,11 @@
 # xTeVe maintained-release review
 
 Owner: migration chat `01a12045-bf7e-73b3-8557-752d17c72ffd`.
-Status: current-state and maintained-successor source/security review complete;
-no replacement deployed. Only the previously authorized read GETs and ordinary
-cache behavior were used; no login, provider stream or update requested.
+Status: this historical discovery review led to the completed, separately
+verified [Threadfin production transition](UPSTREAM-THREADFIN-ADOPTION-20261026.md).
+The initial observations below predate that transition and remain evidence;
+they are not the current deployment status. No personal login or real provider
+stream is credited.
 
 Reuse the existing authorized F:-backed root
 `/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,

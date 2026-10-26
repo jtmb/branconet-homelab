@@ -1,5 +1,81 @@
 # Maintenance output ownership and reconciliation
 
+## Threadfin checkpoint reconciliation, October 26 18:16 UTC
+
+Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. Reused the single authorized
+root `/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,
+ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`, backed by
+`F:\branconet-build-storage\native-build-20261025.ext4`. No build, dependency
+installation, second output root, shutdown or compaction ran.
+[Delivery and retained recovery data](UPSTREAM-THREADFIN-ADOPTION-20261026.md).
+
+Removed **1065947136 allocated Linux bytes** across **4683 paths**. Six terminal
+publisher stages account for 1065934848 bytes / 4680 paths. Original reachable
+Git blobs, source/lockfiles and pinned primary tools survived. Every generated
+export matched its immutable manifest; all 24 unique prepare/check/publish and
+validation receipts still match. Exclusive operation locks, resolved containment,
+ownership/inode, regular-file/no-link, regeneration and process/FD/map/mount
+checks passed before deletion. The running publisher was not stopped or replayed.
+
+Paths below are relative to `local-charts-publisher/`. The source column includes
+only verified generated exports, copied tools and empty descendants; each stage
+retains `source/.validation/validation.json` and its three phase receipts.
+Every individual path/inode/byte count and exact regeneration procedure is in
+`operator-control/threadfin-upstream-publisher-scratch-{plan,reconciliation}.json`.
+
+| Exact stage | Removed source exports/tools | Removed `home` | Removed `tmp` |
+| --- | ---: | ---: | ---: |
+| `local-charts-publish-80b94ee99a8a48c38544f89c8a59f82d` | 177647616 | 4096 | 4096 |
+| `local-charts-publish-62022e3b40044edfbf964d72fa3b2b62` | 177647616 | 4096 | 4096 |
+| `local-charts-publish-bfb7393b71f244dd9396e1b8f7408b80` | 177647616 | 4096 | 4096 |
+| `local-charts-publish-22b688cfe0c54889a09ce72f81d20be7` | 177647616 | 4096 | 4096 |
+| `local-charts-publish-35d9582991564314a95ebcefb1024955` | 177647616 | 4096 | 4096 |
+| `local-charts-publish-81736099d0ad48a08109c6bec6792785` | 177647616 | 4096 | 4096 |
+
+Other exact removed paths, relative to the same authorized root, with their
+safety checks and regeneration in `operator-control/threadfin-upstream-scratch-reconciliation.json`:
+
+| Removed empty directory | Allocated bytes |
+| --- | ---: |
+| `operator-control/tmp/ansible-home/local` | 4096 |
+| `operator-control/tmp/ansible-home` | 4096 |
+| `operator-control/tmp/ansible-local` | 4096 |
+
+Retained exceptions, all within the declared root unless explicitly stated:
+
+- `upstream-xteve-20261026`: complete required encrypted cold archives, original
+  and current baselines, copy proofs, canary/production/restart results and all
+  unique failures. Both cold archives have authenticated complete NAS copies.
+- `control-source/upstream-xteve-20261026`: exact observer generations,
+  compatible-state helper, cold-backup controls and pinned vendor sources.
+- `security-review-20261026/apps-threadfin-current-r3-0`: exact vendor scan and
+  verified feed receipts. The earlier review's 1658880-byte cache cleanup remains
+  separately recorded; it is not counted again in this checkpoint total.
+- `operator-control/threadfin-upstream-recovery-metadata.tar.age`: required
+  9751060-byte archive, full local member verification and authenticated complete
+  NAS read-back. Original key-backup evidence remains unchanged.
+- All six stage roots above: unique receipts and validation reports retained.
+- `operator-control/tmp/system-commandline-sentinel-files` and its `tmp` parent:
+  creator/regeneration and complete inactive Windows-handle proof remain
+  unavailable. No deletion was attempted; the parent contains that exception.
+- Existing controller evidence at
+  `F:\branconet-migration-artifacts\maintenance-storage-20261025`: earlier
+  authorized unique execution evidence remains in place, with no copied tree.
+- Original xTeVe PVC root, active corrected prefix
+  `threadfin-20261026-0a4e4fd891c1`, failed prefix
+  `threadfin-20261026-d19cde2b3889`, original config, native Secrets, SMB/NAS media
+  and all prior rollback/failed data remain required runtime or recovery data.
+- Kubernetes failed diagnostic Pods `plex/threadfin-guide-51bd5b564a52` and
+  `plex/threadfin-compatible-0a4e4fd891c1`, with their diagnostic resources, remain
+  unique failure evidence; both have expired and are not running. The two older
+  failed Seerr diagnostic Pods also remain. The successful canary's Pod,
+  ConfigMap and NetworkPolicy were deleted with exact UID preconditions.
+
+The previous inventory and every earlier retained exception survive. Linux
+allocated-byte removal does not establish Windows free-space recovery; no VHDX
+compaction or Windows recovery is claimed. No images, PVCs, models, original
+chats, quarantines or user data were pruned.
+
 ## qBittorrent checkpoint reconciliation, October 26 16:13 UTC
 
 Owner: `01a12045-bf7e-73b3-8557-752d17c72ffd`. Reused only the existing

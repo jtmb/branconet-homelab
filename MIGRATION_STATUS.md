@@ -1,6 +1,26 @@
 # Migration and maintenance status
 
-**Latest checkpoint — October 26, 16:13 UTC:** maintained qBittorrent 5.3.0 /
+**Latest checkpoint — October 26, 18:16 UTC:** maintained Threadfin 3.4.0 replaced
+xTeVe through the private local-validation → validated → Flux pipeline. Complete
+comparison passed in production and after a distinct restart: 108 original
+mappings, 29 active channels, settings, authentication, tuner identity, native
+Secret and existing PVC/PV/Service identities remain. All 27 published node
+routes passed. Original state, both authenticated NAS cold backups and the
+failed first trial remain intact; the corrected state uses a separate directory.
+Private main/validated/live is `0de054992e5938543855d099efc1e484feee72be`.
+Three nodes, 55 PVCs, all releases and 41 attached Longhorn volumes are healthy.
+Cleanup removed **1065947136 allocated Linux bytes** across 4683 paths, preserving
+source, unique failures, required backups and all earlier exceptions. Recovery
+metadata also passed complete NAS read-back/authentication. Three application
+derivative transitions remain: Plex, ruckus-db and WordPress. Eight High vendor
+scan rows, platform/fleet security, owned publication, trusted TLS and final IAB
+remain open. The full goal is active and GitHub Actions is disabled.
+
+[Delivery, preservation and limits](docs/UPSTREAM-THREADFIN-ADOPTION-20261026.md),
+[exact cleanup and retained exceptions](docs/TASK-OUTPUT-INVENTORY.md#threadfin-checkpoint-reconciliation-october-26-1816-utc).
+
+
+**Previous checkpoint — October 26, 16:13 UTC:** maintained qBittorrent 5.3.0 /
 libtorrent 2.1.2 passed complete 232-torrent / 455-file, preference, native
 identity and authentication comparisons through an independent Flux restart.
 The original disk queue default was restored with a guarded native API helper
