@@ -1138,3 +1138,24 @@ Retained current-stage exceptions:
 Existing publisher state and every earlier retained ownership, safety-check,
 failed-state and runtime exception remain unchanged. No PVC/NAS data, source
 repository, model, image, volume, other project or older artifact was pruned.
+
+## WordPress retirement reconciliation, October26 22:29 UTC
+
+The existing F-backed root remains the sole task output root. No build or large
+image download ran. Exact proof is
+`operator-control/wordpress-retirement-publisher-scratch-reconciliation.json`:
+533012480 allocated Linux bytes removed across 2348 paths, including the three
+terminal publisher exports for b462eefa,19c85097 and801f6b87. The receipt lists
+every exact path and byte count, verified Git/blob regeneration source, pinned
+original tools, successful validation/promotion chain and inactive process/FD/
+map/mount checks. Original sources, lockfiles, receipts and reports survive.
+No Windows recovery is claimed.
+
+Retained exceptions: four original/new-unused WordPress claims and all data;
+native Secrets and retained Helm history; required file/SQL backups and
+NAS-authenticated recovery archives; exact canceled preparation source, baseline
+and observation key; all unique retirement/controller/health evidence. The
+existing `operator-control/tmp/system-commandline-sentinel-files` remains because
+creator/regeneration and full Windows-handle inactivity proof are missing.
+All earlier runtime, failed-state, owner and safety exceptions remain unchanged.
+No older copies, images, volumes, models, other owners or NAS media were pruned.

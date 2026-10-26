@@ -1,5 +1,21 @@
 # Migration and maintenance status
 
+**Latest checkpoint - October 26, 22:29 UTC:** WordPress, its database,
+Redis and phpMyAdmin are removed from the live stack and active charts at the
+user's request. All four claims, eleven native Secrets, original data, backups
+and the separately managed public certificate remain. The database/plugin
+upgrade is canceled. Private main/validated/live is
+`801f6b87cbc755454a5942a351c952fad9478155`; Actions stays disabled.
+
+Three nodes, all 57 PVCs, all 30 releases and all attached Longhorn volumes are
+healthy. Cleanup removed 533012480 allocated Linux bytes / 2348 paths. Recovery
+metadata passed full authenticated NAS read-back. Plex, remaining platform/fleet
+security, owned publication, trusted TLS and final IAB remain open; the full
+goal is active. Historical checkpoints below describe their original scope.
+
+[Retirement, preservation and evidence](docs/WORDPRESS-RETIREMENT-20261026.md).
+
+
 **Cloudflare notice assessment — October 26, 21:42 UTC:** read-only inspection
 identified no cloudflared connector in Kubernetes, on the three cluster hosts,
 or in inspected Windows/WSL services/processes/Docker containers. Seven declared
@@ -12,7 +28,7 @@ assessment. No software, workload, certificate, credential or TLS policy changed
 
 [Scope, evidence and remaining access gap](docs/CLOUDFLARED-NOTICE-ASSESSMENT-20261026.md).
 
-**Latest checkpoint — October 26, 21:30 UTC:** CoreDNS now runs official
+**Previous checkpoint — October 26, 21:30 UTC:** CoreDNS now runs official
 1.15.0 / Go1.27.3. Both replicas passed TCP/UDP queries through the DNS Service
 and each Pod, including exact Kubernetes and WordPress database Service answers.
 The Corefile, Service, Deployment identity and resource settings are unchanged.

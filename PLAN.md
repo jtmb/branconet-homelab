@@ -1,14 +1,14 @@
 # Cluster maintenance and application migration plan
 
-**Latest checkpoint — October 26, 22:29 UTC:** WordPress, its database,
+**Latest checkpoint - October 26, 22:29 UTC:** WordPress, its database,
 Redis and phpMyAdmin are removed from the live stack and active charts at the
 user's request. All four claims, eleven native Secrets, original data, backups
 and the separately managed public certificate remain. The database/plugin
 upgrade is canceled. Private main/validated/live is
 `801f6b87cbc755454a5942a351c952fad9478155`; Actions stays disabled.
 
-Three nodes, all57 PVCs, all30 releases and all attached Longhorn volumes are
-healthy. Cleanup removed533012480 allocated Linux bytes /2348 paths. Recovery
+Three nodes, all 57 PVCs, all 30 releases and all attached Longhorn volumes are
+healthy. Cleanup removed 533012480 allocated Linux bytes / 2348 paths. Recovery
 metadata passed full authenticated NAS read-back. Plex, remaining platform/fleet
 security, owned publication, trusted TLS and final IAB remain open; the full
 goal is active. Historical checkpoints below describe their original scope.

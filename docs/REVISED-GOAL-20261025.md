@@ -1,5 +1,14 @@
 # Revised delivery objective — user correction October 25
 
+## Scope correction - October 26
+
+WordPress, wordpress-db, wordpress-redis and phpMyAdmin are retired at the user's
+request. Their original data, four claims, native Secrets and backups remain.
+Database/plugin upgrades for these retired workloads are canceled. Charts and
+Flux are updated; [exact acceptance](WORDPRESS-RETIREMENT-20261026.md).
+The existing five-milestone goal otherwise remains active and unchanged.
+
+
 ## Additional mandatory goal requirements — October 25
 
 The user's latest AGENTS.md instructions are mandatory execution and acceptance
