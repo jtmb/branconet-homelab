@@ -1,10 +1,59 @@
 # Maintenance output ownership and reconciliation
 
+## Homepage checkpoint reconciliation, October 26 02:22 UTC
+
+Both cleanup lifecycles used the same declared F:-backed root and exact
+ownership/inode/path, source/lock preservation, regeneration and root-visible
+process FD/map/mount checks. The first removed the listed analysis/empty scratch
+paths but failed the final protected-DB comparison. The mismatching DB was
+retained, not deleted or re-baselined. After a verified official replacement and
+read-only rescan, the second lifecycle passed all protected file hashes, recording
+the actual before/after digests. No runtime image, user data, source, failed
+evidence or required recovery artifact was pruned.
+
+| Exact path relative to declared root | First lifecycle bytes | Final lifecycle bytes |
+| --- | ---: | ---: |
+| `security-review-20261026/cache/fanal/fanal.db` | 774144 | 335872 |
+| `operator-control/tmp/ansible-home` | 4096 | 0 |
+| `operator-control/tmp/ansible-local` | 4096 | 0 |
+| `operator-control/tmp` | 4096 | 4096 |
+| `security-review-20261026/tmp` | 4096 | 4096 |
+| `security-review-20261026/home` | 4096 | 4096 |
+| `security-review-20261026/cache/fanal` | 4096 | 4096 |
+
+The second column and third column refer to separately recreated lifecycles,
+not duplicate recovery claims. Total removed: **1150976 allocated Linux bytes**
+(798720 + 352256). No Windows disk recovery or compaction is claimed. Exact
+receipts are `operator-control/homepage-scratch-reconciliation.json` and
+`homepage-final-scratch-reconciliation.json`. Recreate only the recorded private
+empty directories when needed. Regenerate image-analysis cache with the exact
+recorded immutable-image command and verified inputs, selecting a new report
+output path so original results survive.
+
+Retained exceptions, relative to the same root:
+
+| Exact retained path | Reason |
+| --- | --- |
+| `security-review-20261026/cache/db-integrity-failure-20261026` | Original checksum-mismatching DB/metadata, identical retained inode/size/SHA after bounded inactive same-root rename; cause unestablished; no deletion authorized |
+| `security-review-20261026/cache/db` | New verified official advisory input, required for remaining fleet review; two stored-file read-backs and post-scan/post-cleanup hashes match |
+| `security-review-20261026/cache/java-db` | Verified immutable Java identification index required for remaining fleet review |
+| `security-review-20261026/docker-config` | Isolated scanner config; exact creation provenance not separately reconciled |
+| `security-review-20261026/nginx-0` and original public/Java input receipts | Original unique failure/historical evidence |
+| `control-source/upstream-homepage-20261026` | Complete frozen backup source and all observer generations/manifests, including failed assumptions |
+| `upstream-homepage-20261026` | Required original encrypted complete state, private HMAC key, separate baseline/adoption/restart observations and diagnostic failures |
+| `operator-control/homepage-recovery-metadata.tar.age` | Fully authenticated parent recovery metadata, also verified on NAS |
+| `operator-control/homepage-audit-supplement.tar.age` | Distinct authenticated integrity/revalidated-scan supplement, also verified on NAS; no ancestor/database duplication |
+| `operator-control/homepage-*-reconciliation.json`, `homepage-protected-input-recheck.json`, `public-db-integrity-preservation.json` and their control sources | Exact initial failure, preservation and final successful cleanup evidence |
+
+All earlier exclusions, other owners' artifacts, active publisher state and
+rollback/source inventories remain retained. No old copy was removed by name or
+age inference. [Deployment, recovery and security limitations](UPSTREAM-HOMEPAGE-ADOPTION-20261026.md).
+
 ## Same-root capacity extension, October 26 01:46 UTC
 
 The same owned raw ext4 backing file grew online from 144 GiB to 152 GiB;
 UUID, mount point, loop device and backing-file inode remain unchanged. Before
-the additive 8 GiB operation, C: had 103071891456 bytes available and F: passed
+the additive 8 GiB operation, C: had 103071784960 bytes available and F: passed
 the 15 GiB retained-space floor after the full growth estimate. Exact physical
 measurements and commands are in `operator-control/native-filesystem-grow-8g-`
 `{preflight,receipt}.json`. Native available space changed from 17824870400 to

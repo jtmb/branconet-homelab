@@ -1,6 +1,21 @@
 # Repository-backed image transition
 
-Latest accepted revision, October 26 01:41 UTC:
+Latest accepted backend/state/restart revision, October 26 02:22 UTC:
+`fc13b77609f8f21ce63c93e5895c86237d8e04d7`, private main/validated/live Flux.
+Homepage runs maintained 2.7.0 with exact original configuration, native Secrets,
+RBAC, storage/resource identities, API data, routes and different-Pod persistence.
+Complete recovery archives and distinct metadata supplements passed NAS checks.
+[Exact acceptance and remaining security findings](UPSTREAM-HOMEPAGE-ADOPTION-20261026.md).
+There are ten remaining third-party derivative chart transitions: jackett,
+mealie, pihole, plex, qbittorrent, ruckus-db, tautulli, vaultwarden, wordpress and
+xteve. Current upstream Homepage still has six High findings and its existing
+generated certificate is untrusted. Full fleet security, final IAB and the owned
+publication gap remain open. The failed local advisory input is preserved; the
+verified new feed was used for a read-only rescan with full post-scan hashes.
+For subsequent scans use `public-inputs-r3-receipt.json`, not the historical
+primary input receipt. All dated older checkpoints below remain historical.
+
+Previous accepted revision, October 26 01:41 UTC:
 `0ed2ad27ce0a32055c37c3e2d4d22026535a9b15`, private main/validated/live Flux.
 The four static sites now use official Nginx 1.30.6 Alpine Slim; all complete
 content/configuration, Secret/resource identities, routes and different-Pod
@@ -87,6 +102,15 @@ an absent Desktop credential-helper executable, and the cluster has no
 dockerconfigjson Secret. No secret was printed or new publication attempted.
 Those observations do not prove that no credential exists elsewhere. Existing
 services are retained while this exact route/credential gap is resolved.
+
+October 26 metadata/key-name-only native Secret inspection returned only
+`homepage/homepage-rendered-config` with key `docker.yaml` and
+`plex/tautulli-runtime` with key `TAUTULLI_DOCKER`, both application settings,
+not verified publishing credentials. No Secret values were returned, no
+credential was used and no publication was attempted. Exact private receipt:
+`operator-control/owned-publication-native-secret-key-inspection.json`.
+This additional inspection does not establish an approved publisher or prove
+that a suitable credential cannot exist under a different name or location.
 
 ## Historical Seerr preparation, since executed
 

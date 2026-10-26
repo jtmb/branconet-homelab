@@ -51,7 +51,26 @@ verification passed the October 25 20:23 UTC cluster health check; preserved
 failed-state/rollback exclusions remain intentional. Subsequent work follows
 the revised image-ownership scope, never the earlier derivative-build approach.
 
-**Latest checkpoint — October 26, 01:41 UTC:** all four static sites now run
+**Latest checkpoint — October 26, 02:22 UTC:** Homepage now runs maintained
+official 2.7.0 through private charts main/validated/live Flux
+`fc13b77609f8f21ce63c93e5895c86237d8e04d7`. Native configuration, Secrets,
+RBAC, original data/resource identities, services/bookmarks/widgets API results
+and all node routes matched before, after and on a different restart Pod.
+Its complete cold archive, recovery metadata and distinct audit supplement all
+passed NAS read-back/authentication. All three nodes, 55 PVCs, 34 HelmReleases
+and desired workloads passed final health checks. Ten third-party derivative
+transitions remain. Revalidated current vendor findings remain 6 High, including
+five with package fixes absent from the release; generated self-signed TLS,
+owned-image publication, whole-fleet review and final IAB remain open.
+A protected-input check found a mismatching local advisory DB; the original was
+preserved, a new official feed passed two stored-file checks, and the deployed
+digest was rescanned with read-only DB mounts and full post-scan hashes.
+Checkpoint cleanup removed 1150976 allocated Linux bytes; all failed evidence
+and required recovery originals remain. [Exact acceptance and limitations](docs/UPSTREAM-HOMEPAGE-ADOPTION-20261026.md),
+[exact cleanup/exclusions](docs/TASK-OUTPUT-INVENTORY.md#homepage-checkpoint-reconciliation-october-26-0222-utc).
+The full five-milestone goal remains active and incomplete.
+
+**Previous checkpoint — October 26, 01:41 UTC:** all four static sites now run
 official Nginx 1.30.6 Alpine Slim through charts → local validation → validated →
 Flux, revision `0ed2ad27ce0a32055c37c3e2d4d22026535a9b15`.
 All 480 files / 413835995 content bytes, configurations, native Secrets, original

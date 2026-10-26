@@ -1,6 +1,22 @@
 # Migration and maintenance status
 
-**Latest checkpoint — October 26, 01:41 UTC:** the four static sites use official
+**Latest checkpoint — October 26, 02:22 UTC:** Homepage 2.7.0 is accepted for
+backend/state/restart behavior through private main/validated/live Flux
+`fc13b77609f8f21ce63c93e5895c86237d8e04d7`. Configuration, native Secrets,
+RBAC, original storage/resource identities and services/bookmarks/widgets API
+results matched before/after/on a different Pod. Complete state and metadata
+backups passed NAS authentication/read-back. Final checks found all three nodes,
+55 PVCs, 34 HelmReleases and desired workloads healthy. Ten third-party derivative
+transitions remain. Current revalidated scan: 6 High / 11 Medium / 1 Low,
+five High package fixes absent from the vendor image. The original mismatching
+advisory input is preserved; its verified replacement and final full hashes pass.
+Existing generated self-signed TLS, owned-image publication, whole-fleet review
+and final IAB remain open. Cleanup removed 1150976 allocated Linux bytes.
+[Exact checkpoint](docs/UPSTREAM-HOMEPAGE-ADOPTION-20261026.md),
+[removed paths and retained exceptions](docs/TASK-OUTPUT-INVENTORY.md#homepage-checkpoint-reconciliation-october-26-0222-utc).
+The full goal remains **active and incomplete**.
+
+**Previous checkpoint — October 26, 01:41 UTC:** the four static sites use official
 Nginx 1.30.6 Alpine Slim at private charts main/validated/live Flux
 `0ed2ad27ce0a32055c37c3e2d4d22026535a9b15`. All 480 files / 413835995 bytes,
 complete configs, native Secrets, storage/resource identities and 70 route/asset

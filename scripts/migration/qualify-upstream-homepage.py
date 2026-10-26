@@ -46,10 +46,10 @@ process.stdout.write(JSON.stringify({entries,bytes,nodeVersion:process.version,
 
 # Executed on the existing master; no remote files, keys or receipts are written.
 REMOTE_HTTP = r'''
-import sys,json,urllib.request,http.client,ssl,hashlib,hmac
+import sys,json,urllib.request,http.client,ssl,hashlib,hmac,subprocess
 p=json.loads(sys.stdin.buffer.read(1048576));key=bytes.fromhex(p['key']);assert len(key)==32
 def mac(v):return hmac.new(key,json.dumps(v,sort_keys=True,separators=(',',':')).encode(),hashlib.sha256).hexdigest()
-rows={};apis={};certs={};client=urllib.request.build_opener(urllib.request.ProxyHandler({}))
+rows={};apis={};certs={};subjects={};client=urllib.request.build_opener(urllib.request.ProxyHandler({}))
 for name in ['services','bookmarks','widgets']:
  with client.open(urllib.request.Request('http://'+p['serviceIP']+':3000/api/'+name,headers={'Host':'homepage.branconet.lan'}),timeout=20)as r:
   b=r.read(2097153);assert r.status==200 and len(b)<=2097152;v=json.loads(b);assert isinstance(v,list)and v
@@ -63,12 +63,22 @@ for ip in ['192.168.0.4','192.168.0.5','192.168.0.6']:
     if secure:
      try:c.connect();c.sock=ssl.create_default_context().wrap_socket(c.sock,server_hostname=host);trusted=True
      except ssl.SSLCertVerificationError as e:
+      assert p['generatedDefaultRoute']and e.verify_code==18
+      if p.get('baselineCertificates'):
+       assert p['baselineCertificates'][ip+':'+host]['trustedHostnameAndChain']is False
       error=e.verify_code;c.close();c=http.client.HTTPConnection(ip,port,timeout=20);c.connect()
       context=ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT);context.check_hostname=False;context.verify_mode=ssl.CERT_NONE
       c.sock=context.wrap_socket(c.sock,server_hostname=host);trusted=False
-     fingerprint=hashlib.sha256(c.sock.getpeercert(binary_form=True)).hexdigest()
+     der=c.sock.getpeercert(binary_form=True);fingerprint=hashlib.sha256(der).hexdigest()
+     if not trusted:
+      proof=subprocess.run(['openssl','x509','-inform','DER','-noout','-subject','-issuer'],input=der,capture_output=True,timeout=10)
+      assert proof.returncode==0
+      names=proof.stdout.decode().strip().splitlines()
+      assert names==['subject=CN = TRAEFIK DEFAULT CERT','issuer=CN = TRAEFIK DEFAULT CERT']
+      subjects[ip+':'+host]=names
      identity=ip+':'+host;certs[identity]={'sha256':fingerprint,'trustedHostnameAndChain':trusted,'verificationErrorCode':error}
-     if p.get('baselineCertificates'):assert certs[identity]==p['baselineCertificates'][identity]
+     if p.get('baselineCertificates'):
+      assert all(certs[identity][k]==p['baselineCertificates'][identity][k]for k in ['trustedHostnameAndChain','verificationErrorCode'])
     for path in ['/','/api/healthcheck']:
      c.request('GET',path,headers={'Host':host,'Accept-Encoding':'identity'});r=c.getresponse();b=r.read(2097153)
      assert r.status==200 and len(b)<=2097152
@@ -76,7 +86,7 @@ for ip in ['192.168.0.4','192.168.0.5','192.168.0.6']:
      else:assert b==b'up'
      rows[ip+':'+str(port)+':'+host+path]={'status':r.status,'bytes':len(b),'htmlApp':path=='/'}
    finally:c.close()
-print(json.dumps({'routes':rows,'api':apis,'certificates':certs}))
+print(json.dumps({'routes':rows,'api':apis,'certificates':certs,'defaultCertificateSubjects':subjects}))
 '''
 
 
@@ -171,14 +181,23 @@ def main():
     if a.phase != 'baseline':
         baseline_certificates = json.loads((a.output_dir / 'baseline.json').read_bytes())['stable']['certificates']
     observed = json.loads(call(['python3', '-c', REMOTE_HTTP], json.dumps({'key': key.hex(), 'serviceIP': service['spec']['clusterIP'],
-        'hosts': hosts, 'tlsHosts': tls_hosts, 'baselineCertificates': baseline_certificates}).encode()))
+        'hosts': hosts, 'tlsHosts': tls_hosts, 'baselineCertificates': baseline_certificates,
+        'generatedDefaultRoute': all(not t.get('secretName') for i in ingresses for t in i['spec'].get('tls', []))}).encode()))
     stable['api'] = observed['api']
     stable['certificates'] = observed['certificates']
     mismatches = []
     if a.phase != 'baseline':
         before = json.loads((a.output_dir / 'baseline.json').read_bytes())
         need(before['passed'] and before['keyBinding'] == mac('homepage-upstream-v1'), 'exact_original_baseline')
-        mismatches = [k for k, v in before['stable'].items() if stable.get(k) != v]
+        # The original route has no named TLS Secret and serves Traefik's
+        # generated self-signed fallback. Its fingerprints are observations,
+        # not application credentials; preserve trust/error status and require
+        # the exact generated subject/issuer before any untrusted route request.
+        # This does not satisfy the separate authenticated-TLS security gate.
+        def comparison(name, value):
+            return {host: {k: row[k] for k in ['trustedHostnameAndChain', 'verificationErrorCode']}
+                    for host, row in value.items()} if name == 'certificates' else value
+        mismatches = [k for k, v in before['stable'].items() if comparison(k, stable.get(k)) != comparison(k, v)]
         need(pod['metadata']['uid'] != before['podUID'], 'new_adoption_pod')
         if a.phase == 'restart':
             prior = json.loads((a.output_dir / 'after.json').read_bytes())
@@ -188,6 +207,8 @@ def main():
               'keyBinding': mac('homepage-upstream-v1'), 'podUID': pod['metadata']['uid'], 'image': image,
               'imageID': cs['imageID'], 'restartCount': cs['restartCount'], 'configBytes': config['bytes'],
               'configEntries': len(config['entries']), 'nodeVersion': config['nodeVersion'], 'routes': observed['routes'],
+              'defaultCertificateSubjects': observed['defaultCertificateSubjects'],
+              'authenticatedTLSAccepted': all(r['trustedHostnameAndChain'] for r in observed['certificates'].values()),
               'fluxRevision': source['status']['artifact']['revision'], 'browserAccepted': False,
               'sourceSHA256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               'UTC': datetime.datetime.now(datetime.timezone.utc).isoformat()}

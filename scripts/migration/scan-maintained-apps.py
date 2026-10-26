@@ -50,32 +50,39 @@ def save(path, value):
 
 def main():
     os.umask(0o077)
-    need(len(sys.argv) == 2 and sys.argv[1] == 'homepage-jackett', 'finite_scan_generation')
+    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3'], 'finite_scan_generation')
     generation = sys.argv[1]
+    revalidated = generation == 'homepage-current-r3'
     cg = Path('/proc/self/cgroup').read_text().strip().removeprefix('0::')
     need(cg.endswith('/branconet-apps-review-' + generation + '-20261026.service'), 'owned_user_unit')
     group = Path('/sys/fs/cgroup') / cg.lstrip('/')
     need((group / 'memory.max').read_text().strip() == str(1024**3) and (group / 'memory.swap.max').read_text().strip() == '0'
          and (group / 'pids.max').read_text().strip() == '128' and os.getpriority(os.PRIO_PROCESS, 0) == 10, 'resource_bounds')
     need(not Path('/home/brajam/.ssh').exists() and not os.access('/mnt/c/Users', os.R_OK | os.X_OK), 'credentials_hidden')
-    proof = json.loads((OUT / 'public-inputs-receipt.json').read_bytes())
+    proof = json.loads((OUT / ('public-inputs-r3-receipt.json' if revalidated else 'public-inputs-receipt.json')).read_bytes())
     need(proof['complete'] and sha(TOOL) == TOOL_SHA, 'trusted_tool_and_inputs')
     pins = {TOOL: identity(TOOL)}
+    hashes = {TOOL: TOOL_SHA}
     for row in proof['files'].values():
         p = Path(row['path'])
         need(p.resolve() == p and p.stat().st_size == row['bytes'] and sha(p) == row['sha256'], 'complete_fresh_database_digest')
+        need(not revalidated or row.get('readBackSHA256') == [row['sha256']] * 2, 'verified_download_readback')
         pins[p] = identity(p)
+        hashes[p] = row['sha256']
     java = json.loads((OUT / 'java-inputs-r2-receipt.json').read_bytes())
     need(java['complete'], 'explicit_java_identity_index')
     for row in java['files'].values():
         p = Path(row['path'])
         need(p.resolve() == p and p.stat().st_size == row['bytes'] and sha(p) == row['sha256'], 'complete_java_identity_index_digest')
         pins[p] = identity(p)
+        hashes[p] = row['sha256']
     updated = datetime.datetime.fromisoformat(proof['vulnerabilityDB']['UpdatedAt'].replace('Z', '+00:00'))
     need(0 <= (datetime.datetime.now(datetime.timezone.utc) - updated).total_seconds() <= 86400, 'fresh_database')
-    kev = {r['cveID'] for r in json.loads((OUT / 'cisa-kev.json').read_bytes())['vulnerabilities']}
+    kev = {r['cveID'] for r in json.loads((OUT / ('cisa-kev-r3.json' if revalidated else 'cisa-kev.json')).read_bytes())['vulnerabilities']}
     candidates = json.loads((OUT / 'homepage-jackett-candidates.json').read_bytes())['images']
     need([r['reference'] for r in candidates] == ['ghcr.io/gethomepage/homepage:v2.7.0@sha256:19c5c09184458a41b7b5915e71463a39f36cd33540f41bdbed008791b8182d5f', 'ghcr.io/gethomepage/homepage:v1.13.2@sha256:a0b71c8e757298d02560186bab9fbe3fc2d375c523a62cc1019177b37e48aa28', 'docker.io/linuxserver/jackett:0.24.2900@sha256:d1b82a9c5bbaea44284a550af739bd838749b72f15b10ef61b6c9d9d1b2f1ed7'], 'finite_vendor_targets')
+    if revalidated:
+        candidates = candidates[:1]
     receipts = []
     for n, image in enumerate(candidates):
         path = OUT / ('apps-' + generation + '-' + str(n))
@@ -116,8 +123,10 @@ def main():
             results = json.loads(output.read_bytes())
             need(isinstance(results, list) and results and all(isinstance(x, dict) for x in results), 'results_only_shape')
             need(all(identity(p) == ident for p, ident in pins.items()), 'immutable_scanner_inputs')
+            need(all(sha(p) == digest for p, digest in hashes.items()), 'complete_input_hashes_after_scan')
             rows = [v for x in results for v in x.get('Vulnerabilities') or []]
             r.update(scanComplete=True, state='completed', scannerExitCode=child.returncode, resultsSHA256=sha(output),
+                     inputHashesReverifiedAfterScan=True,
                      severityCounts=dict(collections.Counter(v['Severity'] for v in rows)),
                      fixableCriticalHigh=sum(v['Severity'] in ['CRITICAL', 'HIGH'] and bool(v.get('FixedVersion')) for v in rows),
                      knownExploitedCVEs=sorted({v['VulnerabilityID'] for v in rows} & kev),
