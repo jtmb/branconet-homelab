@@ -132,7 +132,7 @@ source-pinned `operator-control/regenerate-pihole-runtime-source.py` command;
 the original archive and proof receipts are never overwritten.
 
 At 14:58 UTC all three nodes were Ready without pressure, 55 PVCs were Bound,
-all 34 HelmReleases/Kustomizations were Ready, no Deployment/DaemonSet was
+all 34 HelmReleases and all Kustomizations were Ready, no Deployment/DaemonSet was
 unavailable, and 41 attached Longhorn volumes were healthy. The two earlier
 failed Seerr diagnostic Pods remain protected. The complete running-image owner
 inventory covers 91 Pods, 296 controllers, 68 main/init/ephemeral references,
