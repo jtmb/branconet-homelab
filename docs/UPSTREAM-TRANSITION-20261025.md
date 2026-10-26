@@ -1,19 +1,21 @@
 # Repository-backed image transition
 
-October 25, 23:54 UTC: Unpackerr now runs the official 0.16.1 image. Original
-configuration, native Secret, Longhorn/SMB storage and Arr polling matched after
-adoption and a different-Pod restart; the isolated ZIP/mock-import check passed.
-Complete encrypted config and recovery metadata passed NAS full read-back and
-decryption. [Exact acceptance and limitations](UPSTREAM-UNPACKERR-ADOPTION-20261025.md).
+October 26, 00:20 UTC: phpMyAdmin now runs the official 5.2.3 Apache image.
+Native login/logout, all 3 published routes, the configured SQL account/grants
+and all 12 WordPress tables matched before, after and on a different restart Pod.
+The original MySQL Pod, credentials and data claim were unchanged. Encrypted
+recovery metadata passed NAS full read-back and authentication.
+[Exact acceptance and unresolved vendor findings](UPSTREAM-PHPMYADMIN-ADOPTION-20261025.md).
 Private charts main/validated/live Flux is
-`2a4adb51e107700028eb7792381044037cf7f235`. All 3 nodes, 55 PVCs, 34 HelmReleases
-and desired workloads passed the 23:52 health check; attached Longhorn volumes
-are healthy. There are 16 third-party derivative transitions remaining. Vendor
-Unpackerr uses Go 1.27.0 rather than the previous custom 1.27.3; current CVE review
-and final IAB remain open. Radarr's existing indexer warning remains visible.
-No image build ran. Exact current-stage scratch cleanup reclaimed 38,125,568
-allocated Linux bytes, retaining failure evidence and all recovery originals.
-This checkpoint leaves the full goal active.
+`4e792ea690e2cbda21168510051345f865c47421`. All 3 nodes, 55 PVCs, 34 HelmReleases
+and desired workloads passed the 00:17 health check; attached Longhorn volumes
+are healthy. There are 15 third-party derivative transitions remaining. The exact
+phpMyAdmin vendor digest's prior scan reported 8 Critical/131 High finding rows,
+including 11 with package fixes; its database is older than 24 hours now. This is
+backend/ownership acceptance, not security acceptance. Fresh vendor vulnerability
+review and final IAB remain open; no bespoke third-party patch was rebuilt.
+Cleanup removed 4096 allocated Linux bytes from one empty scratch directory,
+retaining all recovery originals, sources and failure evidence. The goal is active.
 
 The controlling objective is [the revised active goal](REVISED-GOAL-20261025.md).
 Earlier derivative recipes and scans remain historical, not an execution plan.

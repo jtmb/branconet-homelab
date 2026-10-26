@@ -155,3 +155,41 @@ Retained current-stage exceptions:
 All previous retained exceptions remain unchanged. No older artifacts, runtime
 images/volumes, NAS media, source repositories or other owners were pruned.
 Explicitly recreate configured operator scratch before a future Ansible stage.
+
+## phpMyAdmin checkpoint reconciliation, October26 00:20 UTC
+
+No build, dependency install, source-tree dependency copy or local image export
+ran. All new controls, private observations and distinct recovery archives are
+inside the declared F:-backed ext4 root. The SQL/HTTP checks kept account data,
+credentials, cookies and response bodies in memory. Exact current receipt:
+`operator-control/phpmyadmin-upstream-adoption.json`.
+
+After every producer and NAS copy completed, the empty scratch directory passed
+ownership, inode, process/FD/map/mount and root containment checks:
+
+| Removed path relative to declared root | Allocated bytes |
+| --- | ---: |
+| `operator-control/tmp` | 4096 |
+
+Exact proof: `operator-control/phpmyadmin-scratch-reconciliation.json`.
+This is **4096 allocated Linux bytes**, with no Windows disk recovery claim.
+Regenerate by explicitly creating the private operator-control/tmp directory
+before the recorded metadata encryption/copy commands.
+
+Retained current-stage exceptions:
+
+- `upstream-phpmyadmin-20261025`: required verification key and unique original,
+  after/restart SQL/login observations, including failed verification evidence.
+- `control-source/upstream-phpmyadmin-20261025`: exact executed source versions
+  needed to reproduce both the failed checks and accepted behavior.
+- `operator-control/phpmyadmin-before-recovery-metadata.tar.age` and
+  `operator-control/phpmyadmin-final-recovery-metadata.tar.age`: required distinct
+  authenticated recovery evidence with verified NAS copies; final archive does
+  not duplicate the baseline/key/source ancestor bundle.
+- `operator-control/phpmyadmin-existing-vendor-findings.json`: required exact
+  package/advisory rows and original prior-scan bindings; current security review
+  is incomplete. Original scanner inputs/reports and rollback images survive.
+
+Existing publisher state and every earlier retained ownership, safety-check,
+failed-state and runtime exception remain unchanged. No PVC/NAS data, source
+repository, model, image, volume, other project or older artifact was pruned.
