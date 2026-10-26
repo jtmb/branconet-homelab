@@ -28,9 +28,10 @@ def fence():
  runtime=statuses['xteve']['imageID'].rsplit('@',1)[-1];assert runtime in [r['image'].rsplit('@',1)[-1],r['amd64']]
  spec=copy.deepcopy(d['spec']);c=spec['template']['spec']['containers'][0];c['image']='<reviewed-maintained-image>';spec['template']['metadata'].get('annotations',{}).pop('maintenance.branconet.lan/restart-proof',None)
  if is_new:
-  assert c['env']==[{'name':'THREADFIN_CONF','value':'/root/.xteve'}];c['env']=[];assert c['volumeMounts'][0]['subPath']==r['subPath'];del c['volumeMounts'][0]['subPath'];assert c['volumeMounts'][1]['readOnly']is True;del c['volumeMounts'][1]['readOnly'];assert len(spec['template']['spec']['containers'])==2 and len(spec['template']['spec']['initContainers'])==1
+  assert c['env']==[{'name':'THREADFIN_CONF','value':'/root/.xteve'}];c['env']=[];assert c['volumeMounts'][0]['subPath']==r['subPath'];del c['volumeMounts'][0]['subPath'];assert c['volumeMounts'][1]['readOnly']is True;del c['volumeMounts'][1]['readOnly'];assert len(spec['template']['spec']['containers'])==2 and len(spec['template']['spec']['initContainers'])==2
   assert spec['template']['spec']['containers'][1]['name']=='legacy-guide-routes';spec['template']['spec']['containers']=spec['template']['spec']['containers'][:1];del spec['template']['spec']['initContainers'];extra=spec['template']['spec']['volumes'][-2:];assert [v['name']for v in extra]==['guide-gateway-config','guide-gateway-temp'];spec['template']['spec']['volumes']=spec['template']['spec']['volumes'][:-2]
  else:assert len(spec['template']['spec']['containers'])==1 and not spec['template']['spec'].get('initContainers')
+ if not c.get('env'):c.pop('env',None)
  storage={}
  for n,uid in [('xteve-data-0','d40f1490-7254-4599-be82-2fad35abb88b'),('xteve-data-1','b7207fe9-3768-4ad5-9ca0-ee4429137b33'),('xteve-data-3','93527524-e3c1-4e2e-a9c4-1a844743d8b1')]:
   claim=get('pvc',n);assert claim['metadata']['uid']==uid and claim['status']['phase']=='Bound';pv=get('pv',claim['spec']['volumeName']);assert pv['spec']['claimRef']['uid']==uid;storage[n]={'uid':uid,'pvUID':pv['metadata']['uid'],'spec':mac(claim['spec']),'pvSpec':mac(pv['spec'])}
@@ -48,6 +49,8 @@ def data(pod):
    assert member.isfile()and member.size<=16*1024**2 and member.name not in files;files[member.name]=json.loads(archive.extractfile(member).read())
  assert set(files)=={'settings.json','authentication.json','xepg.json','pms.json','urls.json'};settings=files['settings.json'];assert settings.get('ThreadfinAutoUpdate'if is_new else'xteveAutoUpdate')is False
  normalized=copy.deepcopy(settings)
+ assert settings['version']==('0.5.0'if is_new else'2.1.0')
+ normalized['version']='2.1.0'  # The vendor loader renumbers this same schema to its DBVersion.
  for name in ['xteveAutoUpdate','ThreadfinAutoUpdate']:normalized.pop(name,None)
  for group in normalized.get('files',{}).values():
   for provider in group.values():
