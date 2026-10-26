@@ -1,5 +1,15 @@
 # Revised delivery objective — user correction October 25
 
+## Existing publication route verified - October 26, 22:47 UTC
+
+Windows Credential Manager holds valid existing Docker Hub credentials for
+jtmb92. In-memory authentication confirmed repository pull/push grants for
+qbit-monitor, ruckus-bot, ruckus_bot and jtmb-dev. No credential changed or image
+was published. This resolves the older route-availability assumption below;
+repository-backed local publication implementation and actual deployment
+acceptance remain required. Keep Actions off and reuse the existing namespace.
+
+
 ## Scope correction - October 26
 
 WordPress, wordpress-db, wordpress-redis and phpMyAdmin are retired at the user's

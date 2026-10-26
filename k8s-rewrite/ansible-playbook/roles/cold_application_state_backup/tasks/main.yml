@@ -4,7 +4,10 @@
     that:
       - cold_application_state_apply | bool
       - inventory_hostname == 'masternode'
-      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026', 'upstream-wordpress-20261026']
+      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026', 'upstream-wordpress-20261026', 'upstream-plex-20261026']
+      - cold_application_state_archive_transport in ['local', 'windows-nas']
+      - cold_application_state_archive_transport != 'windows-nas' or cold_application_state_generation == 'upstream-plex-20261026'
+      - cold_application_state_generation != 'upstream-plex-20261026' or (cold_application_state_app == 'plex' and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 1000)
       - cold_application_state_generation != 'upstream-wordpress-20261026' or (cold_application_state_app == 'wordpress' and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 0)
       - cold_application_state_app != 'wordpress' or cold_application_state_reader_uid | int == (0 if cold_application_state_generation == 'upstream-wordpress-20261026' else 33)
       - cold_application_state_generation != 'upstream-ruckusdb-20261026' or (cold_application_state_app == 'ruckus-db' and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 0)
@@ -51,6 +54,8 @@
       - /home/brajam/.local/share/branconet-migration/venv/bin/python
       - "{{ playbook_dir }}/../../../scripts/migration/cold-application-state-backup.py"
       - "{{ cold_application_state_app }}"
+      - --archive-transport
+      - "{{ cold_application_state_archive_transport }}"
       - --generation
       - "{{ cold_application_state_generation }}"
       - --apply

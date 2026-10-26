@@ -58,7 +58,8 @@ def main():
     parser.add_argument('--reader-uid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
-    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026', 'upstream-wordpress-20261026'], default='original')
+    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026', 'upstream-wordpress-20261026', 'upstream-plex-20261026'], default='original')
+    parser.add_argument('--archive-transport', choices=['local', 'windows-nas'], default='local')
     parser.add_argument('--resume-receipt', type=pathlib.Path, help='Static sites or upstream WordPress: reverify an existing ciphertext and its still-running original read-only reader')
     parser.add_argument('--resume-sha256', help='Exact original failed receipt SHA256; original receipt is never overwritten')
     args = parser.parse_args()
@@ -70,6 +71,10 @@ def main():
     need(args.application not in STATIC_TARGETS or args.node == 'workernode1')
     need((args.application == 'seerr') == (args.generation == 'upstream-seerr-20261025'))
     need(args.application != 'seerr' or (args.reader_uid == 0 and args.node == 'workernode1'))
+    upstream_plex = args.generation == 'upstream-plex-20261026'
+    nas_transport = args.archive_transport == 'windows-nas'
+    need(not upstream_plex or (args.application == 'plex' and args.node == 'workernode2' and args.reader_uid == 1000))
+    need(not nas_transport or (upstream_plex and not args.resume_receipt))
     upstream_ruckus = args.generation == 'upstream-ruckusdb-20261026'
     upstream_wordpress = args.generation == 'upstream-wordpress-20261026'
     need(not upstream_wordpress or (args.application == 'wordpress' and args.reader_uid == 0 and args.node == 'workernode2'))
@@ -102,11 +107,11 @@ def main():
     output.mkdir(mode=0o700, parents=True, exist_ok=True)
     info = output.lstat(); need(stat.S_ISDIR(info.st_mode) and info.st_uid == os.getuid() and not info.st_mode & 0o077)
     fs = os.statvfs(output)
-    need(fs.f_bavail * fs.f_frsize >= max_data + 15 * 1024**3)
+    need(fs.f_bavail * fs.f_frsize >= (128 * 1024**2 if nas_transport else max_data) + 15 * 1024**3)
     if args.application == 'plex':
         mount = pathlib.Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025')
         need(mount.is_mount() and mount in output.parents and output.stat().st_dev == mount.stat().st_dev)
-        fs = os.statvfs(output); need(fs.f_bavail * fs.f_frsize >= max_data + 8 * 1024**3)
+        fs = os.statvfs(output); need(fs.f_bavail * fs.f_frsize >= (128 * 1024**2 if nas_transport else max_data) + 15 * 1024**3)
     resumed = None
     receipt_name = 'receipt.json'
     if args.resume_receipt:
@@ -128,6 +133,8 @@ def main():
         run_id = uuid.uuid4().hex
         run = output / (args.application + '-cold-' + run_id); run.mkdir(mode=0o700)
     namespace, deployment_uid, release_uid, claim_uid, original_image = TARGETS[args.application]
+    if upstream_plex:
+        original_image = 'docker.io/library/plex-security-20261023@sha256:1b3470b85eb38360c5b242f7cfbc7d45accc429704f725a8610137861db00397'
     if upstream_wordpress:
         original_image = 'docker.io/library/wordpress-security-20261023@sha256:fe0f66b827b865026a5ffcf0ee28b34f8e2d2cc9fb6c85bd3faace75987a9bf0'
     if args.generation == 'upstream-xteve-20261026':
@@ -180,6 +187,18 @@ def main():
         receipt['resumed_failed_receipt'] = {'path': str(args.resume_receipt), 'sha256': args.resume_sha256}
         need(resumed['shared_reader_sha256'] == file_hash(SHARED / 'pod_reader.py'))
     children = []; reader = resumed['temporary_pod'] if resumed else None
+    if nas_transport:
+        mount = pathlib.Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025')
+        transport_source = REPO / 'scripts/migration/plex-nas-ciphertext.py'
+        need(mount in transport_source.parents and transport_source.resolve() == transport_source)
+        transport_sha = file_hash(transport_source)
+        transport_windows = r'\\wsl.localhost\Ubuntu' + str(transport_source).replace('/', '\\')
+        transport_command = ['/mnt/c/Users/james/AppData/Local/Programs/Python/Python312/python.exe', '-I', '-B', transport_windows]
+        preflight = subprocess.run(transport_command + ['preflight', run_id], capture_output=True, timeout=60)
+        need(preflight.returncode == 0 and len(preflight.stdout) <= 4096)
+        receipt['ciphertextTransportPreflight'] = json.loads(preflight.stdout)
+        receipt['ciphertextTransportSourceSHA256'] = transport_sha
+
 
     def save():
         tmp = run / ('receipt-' + uuid.uuid4().hex + '.tmp')
@@ -351,13 +370,33 @@ def main():
         else:
             receipt['operation'] = 'stream_complete_encrypted_config'; save()
             producer = execute('archive', canonical(manifest), True)
-            with cipher.open('xb') as target:
-                encryptor = subprocess.Popen([str(shared.AGE), '-R', str(shared.RECIPIENT)], stdin=producer.stdout, stdout=target, stderr=subprocess.DEVNULL)
-                children.append(encryptor); producer.stdout.close()
+            if nas_transport:
+                need(file_hash(transport_source) == transport_sha)
+                sink = subprocess.Popen(transport_command + ['write', run_id], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                children.append(sink)
+                encryptor = subprocess.Popen([str(shared.AGE), '-R', str(shared.RECIPIENT)], stdin=producer.stdout, stdout=sink.stdin, stderr=subprocess.DEVNULL)
+                children.append(encryptor); producer.stdout.close(); sink.stdin.close()
                 need(encryptor.wait(timeout=900) == 0 and producer.wait(timeout=30) == 0)
-                target.flush(); os.fsync(target.fileno())
+                result = sink.stdout.read(4097); diagnostics = sink.stderr.read(4097)
+                need(sink.wait(timeout=60) == 0 and len(result) <= 4096 and not diagnostics)
+                remote_cipher = json.loads(result)
+                need(remote_cipher['path'] == receipt['ciphertextTransportPreflight']['destination']
+                     and 0 < remote_cipher['bytes'] <= receipt['ciphertextTransportPreflight']['maxCiphertextBytes'])
+                receipt['nasCiphertext'] = remote_cipher; save()
+            else:
+                with cipher.open('xb') as target:
+                    encryptor = subprocess.Popen([str(shared.AGE), '-R', str(shared.RECIPIENT)], stdin=producer.stdout, stdout=target, stderr=subprocess.DEVNULL)
+                    children.append(encryptor); producer.stdout.close()
+                    need(encryptor.wait(timeout=900) == 0 and producer.wait(timeout=30) == 0)
+                    target.flush(); os.fsync(target.fileno())
         receipt['operation'] = 'authenticate_entire_archive'; save()
-        decryptor = subprocess.Popen([str(shared.AGE), '-d', '-i', str(shared.IDENTITY), str(cipher)], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL); children.append(decryptor)
+        if nas_transport:
+            readback = subprocess.Popen(transport_command + ['read', run_id, '--sha256', remote_cipher['sha256'], '--bytes', str(remote_cipher['bytes'])], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            children.append(readback)
+            decryptor = subprocess.Popen([str(shared.AGE), '-d', '-i', str(shared.IDENTITY)], stdin=readback.stdout, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+            readback.stdout.close(); children.append(decryptor)
+        else:
+            decryptor = subprocess.Popen([str(shared.AGE), '-d', '-i', str(shared.IDENTITY), str(cipher)], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL); children.append(decryptor)
         recovered = shared.verify_archive(decryptor.stdout, max_entries=max_entries, max_data=max_data, max_metadata=max_metadata)
         trailing = 0
         for block in iter(lambda: decryptor.stdout.read(65536), b''):
@@ -366,7 +405,12 @@ def main():
         need(guard() == before); check_reader()
         for path, identity in pins: need(shared.protected(path, path == shared.IDENTITY) == identity)
         need(receipt['shared_reader_sha256'] == file_hash(SHARED / 'pod_reader.py') and receipt['shared_controller_sha256'] == file_hash(SHARED / 'metube_state_backup.py') and receipt['controller_sha256'] == file_hash(pathlib.Path(__file__)))
-        receipt.update(cold_archive_verified=True, archive_path=str(cipher), archive_sha256=file_hash(cipher), archive_bytes=cipher.stat().st_size, manifest_sha256=shared.hashlib.sha256(canonical(manifest)).hexdigest(), file_bytes=manifest['total_file_bytes'], file_count=sum(r['kind'] == 'file' for r in manifest['entries'].values()))
+        if nas_transport:
+            need(readback.wait(timeout=60) == 0 and file_hash(transport_source) == transport_sha)
+            archive_identity = {'archive_path': remote_cipher['path'], 'archive_sha256': remote_cipher['sha256'], 'archive_bytes': remote_cipher['bytes'], 'completeNASReadbackAuthenticated': True, 'localArchiveCreated': False}
+        else:
+            archive_identity = {'archive_path': str(cipher), 'archive_sha256': file_hash(cipher), 'archive_bytes': cipher.stat().st_size}
+        receipt.update(cold_archive_verified=True, **archive_identity, manifest_sha256=shared.hashlib.sha256(canonical(manifest)).hexdigest(), file_bytes=manifest['total_file_bytes'], file_count=sum(r['kind'] == 'file' for r in manifest['entries'].values()))
         receipt['operation'] = 'delete_only_verified_reader'; save()
         options = {'apiVersion': 'v1', 'kind': 'DeleteOptions', 'preconditions': {'uid': reader['uid']}, 'propagationPolicy': 'Foreground'}
         kube('delete', '--raw', '/api/v1/namespaces/' + namespace + '/pods/' + name, '-f', '-', body=canonical(options))

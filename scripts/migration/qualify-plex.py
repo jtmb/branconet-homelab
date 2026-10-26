@@ -51,7 +51,7 @@ def fence(image):
     need(not pod['metadata'].get('deletionTimestamp') and cs['ready'] and c['name'] == 'plex' and c['image'] == image
          and c['envFrom'] == [{'secretRef': {'name': 'plex-runtime'}}], 'original_server_launch')
     if image != OLD:
-        need(image.startswith('docker.io/library/plex-security-20261023@sha256:') and cs['imageID'].endswith('@' + image.rsplit('@', 1)[1])
+        need(image in ['docker.io/library/plex-security-20261023@sha256:1b3470b85eb38360c5b242f7cfbc7d45accc429704f725a8610137861db00397', 'docker.io/linuxserver/plex:1.43.5.11079-b3b13e506-ls330@sha256:01a53d9c7adcbb3701fbb0a4230c0a37c85453759b6b05a67356c3c7a09de08d'] and cs['imageID'].endswith('@' + image.rsplit('@', 1)[1])
              and {'name': 'VERSION', 'value': 'docker'} in c.get('env', []), 'exact_baked_server_no_bootstrap_update')
     claims = {}
     for index, path in enumerate(['/config', '/movies', '/pvr', '/tv']):

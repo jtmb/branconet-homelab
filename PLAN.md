@@ -1,6 +1,25 @@
 # Cluster maintenance and application migration plan
 
-**Latest checkpoint - October 26, 22:29 UTC:** WordPress, its database,
+**Latest checkpoint - October 26, 22:54 UTC:** Plex now runs the maintained
+LinuxServer1.43.5.11079-ls330 image at the same application version. Original
+accounts/watch state, all21 checked tables,3libraries, server identity, native
+Secrets and storage passed production and distinct restart comparisons. All6
+published routes passed. Fresh complete encrypted state and metadata passed
+full authenticated NAS read-back. Private main/validated/live is
+`929f182b15a7889ea21ae2382ca1caf2a9f28297`; Actions was not used.
+
+Three nodes,57PVCs and all30releases are healthy. Cleanup removed534413312
+allocated Linux bytes /2362paths. No third-party application derivative
+transition remains;4High vendor Plex findings remain explicitly recorded.
+Existing Docker Hub credentials were verified for the owned repositories,
+resolving the earlier unverified-route assumption. Actual owned-source/image
+publication, remaining platform/fleet security, trusted LAN TLS and final IAB
+are still open. The full goal remains active.
+
+[Exact Plex acceptance, recovery and exceptions](docs/UPSTREAM-PLEX-ADOPTION-20261026.md).
+
+
+**Previous checkpoint - October 26, 22:29 UTC:** WordPress, its database,
 Redis and phpMyAdmin are removed from the live stack and active charts at the
 user's request. All four claims, eleven native Secrets, original data, backups
 and the separately managed public certificate remain. The database/plugin

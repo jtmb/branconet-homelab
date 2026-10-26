@@ -14,3 +14,6 @@ cold_application_state_node: workernode2
 # as0:0 with read/search only; the original33:33 profile remains unchanged.
 cold_application_state_reader_uid: 1000
 cold_application_state_reader_gid: 1000
+
+# Plex upstream cold backup may stream ciphertext to the existing NAS recovery folder.
+cold_application_state_archive_transport: local

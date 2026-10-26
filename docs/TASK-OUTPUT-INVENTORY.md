@@ -1159,3 +1159,38 @@ existing `operator-control/tmp/system-commandline-sentinel-files` remains becaus
 creator/regeneration and full Windows-handle inactivity proof are missing.
 All earlier runtime, failed-state, owner and safety exceptions remain unchanged.
 No older copies, images, volumes, models, other owners or NAS media were pruned.
+
+## Plex upstream reconciliation, October26 22:54 UTC
+
+The same declared F-backed root and existing NAS recovery destination were used.
+The new complete6.6GB ciphertext was written directly to the NAS and fully
+read back/authenticated; no local duplicate was created. Exact source/controller
+and regeneration command are retained in `upstream-plex-20261026` and
+`control-source/upstream-plex-20261026`. The opt-in Ansible transport profile
+preserves the15GiB floors and retains any failed partial rather than deleting it.
+
+`operator-control/plex-upstream-publisher-scratch-reconciliation.json` removed
+533053440 allocated Linux bytes /2358 paths for terminal source revisions
+4ee391fa,337be7fe and929f182b. Exact per-path allocated bytes, Git/blob and tool
+proofs, regeneration and all inactivity checks remain in that receipt.
+`operator-control/plex-upstream-review-scratch-reconciliation.json` removed
+1359872 allocated Linux bytes /4 paths: security-review-20261026/cache/fanal/fanal.db,
+its empty fanal parent, tmp and home. Raw scan and pinned public input evidence
+remain. Total534413312 Linux bytes /2362paths; no Windows recovery claim.
+
+Retained exceptions: original Plex config/SMB claims and native Secrets; original
+and new NAS-authenticated backups and exact recovery metadata; frozen executed
+source, observation key, original/production/restart/data/route/scan evidence;
+existing managed-command sentinels whose creator/regeneration and full Windows
+handle inactivity proof remain missing. All earlier runtime, failed-state,
+owner and safety exceptions remain. No images, volumes, media or other projects
+were pruned.
+
+`owned-application-sources-20261026` contains the three declared source Git
+repositories and metadata-only publication-route evidence. These are protected
+source, not disposable dependency snapshots. No node_modules working tree,
+package install or owned image build ran. A bounded dependency-metadata read was
+stopped after detecting committed dependency trees in Ruckus; existing original
+Git objects and the explicit source inventories remain, and subsequent selection
+excludes dependency/build paths. qbit-monitor source changes are unfinished and
+must be retained for the continuing owned-publication work.
