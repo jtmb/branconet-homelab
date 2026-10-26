@@ -50,7 +50,7 @@ def save(path, value):
 
 def main():
     os.umask(0o077)
-    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3', 'mealie-current-r3', 'tautulli-current-r3', 'tautulli-linuxserver-current-r3', 'vaultwarden-current-r3', 'pihole-current-r3'], 'finite_scan_generation')
+    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3', 'mealie-current-r3', 'tautulli-current-r3', 'tautulli-linuxserver-current-r3', 'vaultwarden-current-r3', 'pihole-current-r3', 'qbittorrent-current-r3'], 'finite_scan_generation')
     generation = sys.argv[1]
     revalidated = generation != 'homepage-jackett'
     cg = Path('/proc/self/cgroup').read_text().strip().removeprefix('0::')
@@ -79,7 +79,10 @@ def main():
     updated = datetime.datetime.fromisoformat(proof['vulnerabilityDB']['UpdatedAt'].replace('Z', '+00:00'))
     need(0 <= (datetime.datetime.now(datetime.timezone.utc) - updated).total_seconds() <= 86400, 'fresh_database')
     kev = {r['cveID'] for r in json.loads((OUT / ('cisa-kev-r3.json' if revalidated else 'cisa-kev.json')).read_bytes())['vulnerabilities']}
-    if generation == 'pihole-current-r3':
+    if generation == 'qbittorrent-current-r3':
+        candidates = json.loads((OUT / 'qbittorrent-current-candidates.json').read_bytes())['images']
+        need([r['reference'] for r in candidates] == ['ghcr.io/linuxserver/qbittorrent:5.3.0_v2.1.2-ls485@sha256:75ecbb1c89ab7b0a21c4bde40b4820e4f1649d2d56d83b91913422155e8d2a5f'], 'finite_current_qbittorrent_target')
+    elif generation == 'pihole-current-r3':
         candidates = json.loads((OUT / 'pihole-current-candidates.json').read_bytes())['images']
         need([r['reference'] for r in candidates] == ['docker.io/pihole/pihole:2026.10.0@sha256:d34134716fc32038b052a8674c7c6879e0ff21f0e6d8af345166fffa2c27c113'], 'finite_current_pihole_target')
     elif generation == 'vaultwarden-current-r3':
