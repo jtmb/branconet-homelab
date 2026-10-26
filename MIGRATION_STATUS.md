@@ -1,6 +1,25 @@
 # Migration and maintenance status
 
-**Latest checkpoint — October 26, 20:38 UTC:** Ruckus now uses official
+**Latest checkpoint — October 26, 21:06 UTC:** WordPress now runs the official
+7.1.3 / PHP8.3.36 Apache image. Production and a distinct Flux restart preserved
+all 5662 file entries, all 12 database tables, the existing user/permissions,
+native Secrets, PVC/PV/Service identities and all 12 site/API routes. All 3338
+checked core files match WordPress's published7.1.3 checksums. Fresh complete
+file and application-SQL backups and recovery metadata passed full authenticated
+NAS read-back. Main/validated/live is
+`4fb19f9ec5620b3605a28c126e07c897004a78a9`.
+
+Three nodes, 56 PVCs and all releases are healthy. Cleanup removed **535019520
+allocated Linux bytes /2346 paths**, retaining originals, required backups,
+unique failures and all prior exceptions. Plex is the remaining application
+derivative transition. WordPress's MySQL5.7 database and plugin updates,
+CoreDNS/platform/fleet work, owned publication, trusted TLS and final IAB remain
+open. The official WordPress image retains2Critical/160High vendor scan rows,
+including one fixable High. The full goal remains active; Actions stays off.
+
+[Exact WordPress acceptance, recovery and limitations](docs/UPSTREAM-WORDPRESS-ADOPTION-20261026.md).
+
+**Previous checkpoint — October 26, 20:38 UTC:** Ruckus now uses official
 MySQL 8.4.13 on a separately restored Longhorn claim. All 3971 original rows,
 original application accounts and native Secrets remain; the bot added one
 normal record. A distinct database restart passed the same complete row check,

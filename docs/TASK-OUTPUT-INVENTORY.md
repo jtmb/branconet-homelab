@@ -1,5 +1,73 @@
 # Maintenance output ownership and reconciliation
 
+## WordPress reconciliation, October26 21:06UTC
+
+The owner remains `01a12045-bf7e-73b3-8557-752d17c72ffd`. The single authorized
+generated-output root is
+`/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,
+ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`, backed by
+`F:\branconet-build-storage\native-build-20261025.ext4`. Source and minimal
+unique evidence remain protected. [Accepted result](UPSTREAM-WORDPRESS-ADOPTION-20261026.md).
+
+New cleanup removed **535019520 allocated Linux bytes /2346 paths**. Paths below
+are relative to that root. For publisher stages, only exact generated source/tool
+copies, emptied source directories and empty `home`/`tmp` were removed; each
+stage and `source/.validation/validation.json` remain.
+
+| Exact stage / removed scope | Paths | Allocated bytes removed |
+| --- | ---: | ---: |
+| `local-charts-publisher/local-charts-publish-053e7f12627a47868432242d4a9104f9` generated copies and empty `home`/`tmp` |780|177655808|
+| `local-charts-publisher/local-charts-publish-1f7965c2c5564a459822900347b9f0d9` generated copies and empty `home`/`tmp` |781|177659904|
+| `local-charts-publisher/local-charts-publish-96a6d395a9744d2986d5cd363c488c10` generated copies and empty `home`/`tmp` |781|177664000|
+| `security-review-20261026/cache/fanal/fanal.db` |1|2027520|
+| `security-review-20261026/cache/fanal` |1|4096|
+| `security-review-20261026/tmp` |1|4096|
+| `security-review-20261026/home` |1|4096|
+
+The complete exact per-path/inode/byte lists and regeneration commands are in
+`operator-control/wordpress-upstream-publisher-scratch-{plan,reconciliation}.json`
+and `operator-control/wordpress-review-scratch-{plan,reconciliation}.json`.
+All three stages had successful prepare/check/publish receipts, exact Git blob
+manifests and pinned primary binaries. Source/lockfiles remain reachable in the
+existing private Git repository. Exclusive stage locks and process FD/cwd/root,
+maps and mount checks passed; protected hashes matched before/after. Twelve
+unique publisher/validation receipts were retained. No publication was replayed.
+The scan unit was verified inactive/dead, MainPID0, Result success/exit0 before
+its reproducible public cache was removed. The exact image/tool/feed/scan reports
+and source remain for regeneration after fresh storage checks.
+
+Retained exceptions and required originals:
+
+- `operator-control/tmp/system-commandline-sentinel-files`: creator/regeneration
+  and complete inactive Windows-handle proof remain unestablished; no deletion
+  attempted. Its nonempty `operator-control/tmp` parent remains.
+- `upstream-wordpress-20261026`: original, production, restart, checksum and
+  route/data identity evidence, native observation key, cold-file ciphertext,
+  application SQL ciphertext and all receipts remain required recovery evidence.
+  The original failed cold-verifier receipt remains beside the accepted guarded
+  recovery receipt; the same encrypted archive was verified and reused.
+- `control-source/upstream-wordpress-20261026`: exact executed sources, original
+  verifier and corrected tighter-profile sources remain unique provenance.
+- `operator-control/wordpress-upstream-recovery-metadata.tar.age` and its receipt:
+  required recovery metadata, completely authenticated on the existing NAS.
+  Original cold ciphertexts and cumulative prior metadata were not duplicated
+  inside it. All three NAS ciphertexts and the existing key backup remain.
+- Existing primary publisher Git/tools, task helper/venv, public scanner/feed
+  inputs, native application Secrets, all original/recovery PVCs and NAS media
+  remain protected. Four old failed diagnostic Pods remain evidence. No image,
+  volume or runtime-data prune occurred; no workload was stopped for cleanup.
+- Every earlier retained exception in this inventory remains unchanged, including
+  unresolved old ownership, other chats' sources/runtime state, and the existing
+  `F:\branconet-migration-artifacts\maintenance-storage-20261025` controller
+  evidence exception. No older copy was deleted under this checkpoint.
+
+Linux free space after reconciliation was20846112768 bytes. This is a filesystem
+observation, not a Windows disk-recovery claim; no WSL shutdown, compaction or
+movement of active work occurred. The cluster has3Ready nodes without pressure,
+56Bound PVCs,34Ready HelmReleases and all Kustomizations Ready. There are
+42Longhorn volumes total and all attached volumes are healthy. The full goal
+remains incomplete; GitHub Actions is freshly verified disabled.
+
 ## Ruckus production reconciliation, October26 20:38UTC
 
 Owner and single authorized root remain

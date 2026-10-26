@@ -4,7 +4,9 @@
     that:
       - cold_application_state_apply | bool
       - inventory_hostname == 'masternode'
-      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026']
+      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026', 'upstream-wordpress-20261026']
+      - cold_application_state_generation != 'upstream-wordpress-20261026' or (cold_application_state_app == 'wordpress' and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 0)
+      - cold_application_state_app != 'wordpress' or cold_application_state_reader_uid | int == (0 if cold_application_state_generation == 'upstream-wordpress-20261026' else 33)
       - cold_application_state_generation != 'upstream-ruckusdb-20261026' or (cold_application_state_app == 'ruckus-db' and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 0)
       - cold_application_state_generation != 'upstream-xteve-20261026' or (cold_application_state_app in ['xteve', 'xteve-config'] and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 0)
       - cold_application_state_generation != 'upstream-qbittorrent-20261026' or (cold_application_state_app == 'qbittorrent' and cold_application_state_node == 'masternode' and cold_application_state_reader_uid | int == 0)

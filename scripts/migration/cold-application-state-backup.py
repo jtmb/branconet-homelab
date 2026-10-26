@@ -58,21 +58,23 @@ def main():
     parser.add_argument('--reader-uid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
-    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026'], default='original')
-    parser.add_argument('--resume-receipt', type=pathlib.Path, help='Static sites only: reverify an existing ciphertext and its still-running original read-only reader')
+    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026', 'upstream-wordpress-20261026'], default='original')
+    parser.add_argument('--resume-receipt', type=pathlib.Path, help='Static sites or upstream WordPress: reverify an existing ciphertext and its still-running original read-only reader')
     parser.add_argument('--resume-sha256', help='Exact original failed receipt SHA256; original receipt is never overwritten')
     args = parser.parse_args()
     need(args.apply and os.name == 'posix' and args.reader_uid == args.reader_gid)
     need(bool(args.resume_receipt) == bool(args.resume_sha256))
-    need(not args.resume_receipt or args.application in STATIC_TARGETS)
+    need(not args.resume_receipt or args.application in STATIC_TARGETS or (args.application == 'wordpress' and args.generation == 'upstream-wordpress-20261026'))
     need((args.application in STATIC_TARGETS) == (args.generation == 'upstream-static-sites-20261026'))
     need(args.application not in STATIC_TARGETS or args.reader_uid == 0)
     need(args.application not in STATIC_TARGETS or args.node == 'workernode1')
     need((args.application == 'seerr') == (args.generation == 'upstream-seerr-20261025'))
     need(args.application != 'seerr' or (args.reader_uid == 0 and args.node == 'workernode1'))
     upstream_ruckus = args.generation == 'upstream-ruckusdb-20261026'
+    upstream_wordpress = args.generation == 'upstream-wordpress-20261026'
+    need(not upstream_wordpress or (args.application == 'wordpress' and args.reader_uid == 0 and args.node == 'workernode2'))
     need(not upstream_ruckus or (args.application == 'ruckus-db' and args.reader_uid == 0 and args.node == 'workernode2'))
-    need(args.reader_uid == 33 if args.application == 'wordpress' else args.reader_uid == 999 if args.application in ['wordpress-redis', 'ruckus-db'] and not upstream_ruckus else args.reader_uid in [0, 1000])
+    need(args.reader_uid == (0 if upstream_wordpress else 33) if args.application == 'wordpress' else args.reader_uid == 999 if args.application in ['wordpress-redis', 'ruckus-db'] and not upstream_ruckus else args.reader_uid in [0, 1000])
     need(args.application != 'ruckus-db' or args.node == 'workernode2')
     need(args.application != 'plex' or args.reader_uid == 1000)
     need(args.application != 'homepage' or (args.reader_uid == 1000 and args.node == 'workernode1'))
@@ -83,7 +85,7 @@ def main():
     max_entries = 131072 if args.application == 'plex' else 8192 if args.application == 'wordpress' else 4096
     # Each finite static-site claim is exactly1GiB; capture its entire tree,
     # with a tighter complete-data bound than the generic4GiB app profile.
-    max_data = 1024**3 if args.application in STATIC_TARGETS else 16 * 1024**3 if args.application == 'plex' else shared.MAX_DATA
+    max_data = 1024**3 if args.application in STATIC_TARGETS or upstream_wordpress else 16 * 1024**3 if args.application == 'plex' else shared.MAX_DATA
     max_metadata = 64 * 1024**2 if args.application == 'plex' else shared.MAX_METADATA
     # The cold archive is a new transfer stage. Measure C and the destination
     # before starting it; existing archives and running work are left intact.
@@ -126,6 +128,8 @@ def main():
         run_id = uuid.uuid4().hex
         run = output / (args.application + '-cold-' + run_id); run.mkdir(mode=0o700)
     namespace, deployment_uid, release_uid, claim_uid, original_image = TARGETS[args.application]
+    if upstream_wordpress:
+        original_image = 'docker.io/library/wordpress-security-20261023@sha256:fe0f66b827b865026a5ffcf0ee28b34f8e2d2cc9fb6c85bd3faace75987a9bf0'
     if args.generation == 'upstream-xteve-20261026':
         need(args.application in ['xteve', 'xteve-config'] and args.reader_uid == 0 and args.node == 'workernode2')
         original_image = 'docker.io/library/xteve-security-20261023@sha256:0ab77160ccccaf9235dcb3864624440551d6dd63c771cfaf97094db869a28656'
@@ -271,6 +275,9 @@ def main():
         if upstream_ruckus:
             need(node['metadata']['uid'] == 'eda66e65-f388-4b97-b64f-a709cda81894')
             need(pvc['status'].get('capacity', {}).get('storage') == '1Gi')
+        if upstream_wordpress:
+            need(node['metadata']['uid'] == 'eda66e65-f388-4b97-b64f-a709cda81894')
+            need(pvc['status'].get('capacity', {}).get('storage') == '1Gi')
         if args.application in ['xteve', 'xteve-config']:
             need(node['metadata']['uid'] == 'eda66e65-f388-4b97-b64f-a709cda81894')
         if args.application == 'mealie':
@@ -311,11 +318,11 @@ def main():
         receipt.update(shared_reader_sha256=file_hash(SHARED / 'pod_reader.py'), shared_controller_sha256=file_hash(SHARED / 'metube_state_backup.py'), controller_sha256=file_hash(pathlib.Path(__file__)))
         name = 'cold-' + args.application + '-' + run_id[:12]
         pod = {'apiVersion': 'v1', 'kind': 'Pod', 'metadata': {'name': name, 'namespace': namespace, 'labels': {'preservation-run': run_id, 'migration-task': 'cold-application-state'}}, 'spec': {'nodeName': args.node, 'restartPolicy': 'Never', 'activeDeadlineSeconds': 1800, 'automountServiceAccountToken': False, 'securityContext': {'runAsUser': args.reader_uid, 'runAsGroup': args.reader_gid, 'runAsNonRoot': args.reader_uid != 0, 'seccompProfile': {'type': 'RuntimeDefault'}}, 'containers': [{'name': 'reader', 'image': shared.OLD, 'imagePullPolicy': 'IfNotPresent', 'command': ['python3', '-B', '-c', 'import time;time.sleep(1800)'], 'resources': {'requests': {'cpu': '10m', 'memory': '32Mi'}, 'limits': {'cpu': '500m', 'memory': '256Mi'}}, 'securityContext': {'allowPrivilegeEscalation': False, 'readOnlyRootFilesystem': True, 'capabilities': {'drop': ['ALL']}}, 'volumeMounts': [{'name': 'state', 'mountPath': '/source', 'readOnly': True}]}], 'volumes': [{'name': 'state', 'persistentVolumeClaim': {'claimName': claim, 'readOnly': True}}]}}
-        if args.application == 'seerr' or args.application in STATIC_TARGETS or upstream_ruckus:
+        if args.application == 'seerr' or args.application in STATIC_TARGETS or upstream_ruckus or upstream_wordpress:
             # Read the entire claim, including root-owned lost+found and private
             # app-owned files. This adds read/search only, never write access.
             pod['spec']['containers'][0]['securityContext']['capabilities']['add'] = ['DAC_READ_SEARCH']
-        if args.application in STATIC_TARGETS:
+        if args.application in STATIC_TARGETS or upstream_wordpress:
             program = program.replace("EXCLUDED = set()\n", "EXCLUDED = set()\nMAX_BYTES = " + str(max_data) + "\n")
         if args.application == 'plex':
             program = program.replace('raw=sys.stdin.buffer.read(8*1024*1024+1); need(len(raw)<=8*1024*1024)', 'raw=sys.stdin.buffer.read(64*1024*1024+1); need(len(raw)<=64*1024*1024)')
