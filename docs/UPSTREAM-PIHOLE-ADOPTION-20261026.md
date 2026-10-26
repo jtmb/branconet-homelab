@@ -58,3 +58,40 @@ remain. Only its UID-bound temporary reader was deleted after capturing evidence
 the copied SQL executable was tmpfs-only and both source claims stayed read-only.
 The pinned original official SQL CLI remains an isolated diagnostic tool, with
 no app entrypoint, token, credentials or network API and unchanged resource bounds.
+
+## Complete original baseline and native startup records
+
+The full two-claim archive contains 85 files / 1082678613 original file bytes.
+Ciphertext: 1083042148 bytes, SHA256
+`b5337c5e925e224349c2e109dd151b0bc9ad37f0077a4fcda1699e5be4bcc877`.
+Complete NAS read-back and age authentication passed; originals remain.
+The exact cold baseline includes gravity schema 21, FTL schema 22,
+9069270 query records, 1337044 gravity entries, nine adlists, the original
+group/domain settings and all 166 canonical configuration entries. The existing
+91-day retention setting remains; preserving old history is not waived.
+
+The first live comparison preserved every original query and all configuration/
+static-file hashes, but correctly refused to equate two native startup records.
+Full authentication of the original archive and a private read-only original DB
+projection established exactly one already-expired API session and one
+`RATE_LIMIT` diagnostic. The complete records remain in the cold archive; no SID,
+CSRF value, address, user-agent or diagnostic payload was printed or replayed.
+
+[FTL v6.8 session restore](https://github.com/pi-hole/FTL/blob/v6.8/src/database/session-table.c)
+prunes expired sessions and clears their disk persistence after restoration.
+[Its message flush](https://github.com/pi-hole/FTL/blob/v6.8/src/database/message-table.c)
+clears run-scoped diagnostics while retaining `TELEPORTER_SKIPPED` messages.
+The new observer admits only these two authenticated original records, pinned
+vendor-source hashes, exact baseline/ciphertext/source identities, original
+counts/IDs and observed expiration. Every other table, original query prefix,
+typed digest, schema/configuration and native identity predicate remains strict.
+No user password/account setting was replaced; diagnostic/session-row equality
+is not claimed. Future unexpected differences still refuse acceptance.
+
+For this investigation, one regenerated 875638784-byte original DB input uses
+`upstream-pihole-20261026/cold-runtime-source/pihole-FTL.db` under the declared
+F:-backed root. Its SHA256 is
+`663b2ba82ce151ff531ab2ff1d761f3e10c1e8ae1626b07f2c3e754bd79c8cd9`.
+It is a temporary, reproducible archive projection, excluded from the metadata
+archive to avoid duplicating history. Reconcile it after the restart proof;
+retain the original ciphertext, typed proof, sources and every failed generation.

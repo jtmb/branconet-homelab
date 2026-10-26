@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 import re
 import shlex
+import sqlite3
 import stat
 import subprocess
 import tomllib
@@ -198,7 +199,39 @@ def protect_digests(snapshot,key,db):
     return walk(snapshot)
 
 
-def compare(old,new,bookkeeping=None,label='baseline'):
+def startup_runtime_records(backup,baseline,baseline_sha,key,clock):
+    """Admit only the two authenticated original, source-proven startup records."""
+    root=RUNTIME/'local-image-build-offload-20261025'
+    source=root/'upstream-pihole-20261026/cold-runtime-source/pihole-FTL.db'
+    proof=root/'operator-control/pihole-cold-runtime-records.json'
+    private(proof);record=json.loads(proof.read_bytes());shared.protected(source,True)
+    need(record['archiveSHA256']==backup['archive_sha256'] and record['baselineReceiptSHA256']==baseline_sha and record['completeAgeAuthentication']
+         and record['coldArchiveUnchanged'] and record['sourceDatabase']==str(source)
+         and source.stat().st_size==record['sourceBytes'] and sha(source)==record['sourceSHA256'],'authenticated_original_runtime_records')
+    sources={'pihole-ftl-v6.8-src-database-message-table.c':'e2f5b9a4e86268186e5f58c1e92037294dc09fbe303a8787a191ecfc3d5c3165',
+             'pihole-ftl-v6.8-src-database-session-table.c':'30b4a14710e3e0e42aed821a92d9169c4dd9ceafb3f7351e06eb64c60ad1582b'}
+    for name,digest in sources.items():need(sha(root/'operator-control'/name)==digest,'pinned_vendor_runtime_source')
+    connection=sqlite3.connect(source.as_uri()+'?mode=ro',uri=True)
+    connection.row_factory=sqlite3.Row
+    try:
+        connection.execute('PRAGMA query_only=ON');connection.execute('PRAGMA temp_store=MEMORY')
+        rows={name:[dict(r)for r in connection.execute('SELECT * FROM "'+name+'" LIMIT 2')]for name in ['message','session']}
+        need(all(len(v)==1 for v in rows.values()),'two_exact_original_runtime_records')
+        need(rows['message'][0]['type']=='RATE_LIMIT','original_warning_is_run_scoped_not_lasting_teleporter')
+        need(rows['session'][0]['valid_until']<datetime.datetime.fromisoformat(clock['observed_utc']).timestamp(),'original_session_expired_before_observation')
+        result={}
+        for name,values in rows.items():
+            old=baseline['snapshots']['pihole-FTL.db']['tables'][name]
+            need(old['count']==old['original_count']==1 and old['cutoff']==values[0]['id'],'exact_original_runtime_record_identity')
+            cells={k:('blob',v.hex())if isinstance(v,bytes)else('null',)if v is None else(type(v).__name__,v)for k,v in values[0].items()}
+            result[name]={'baselineDigest':old['digest'],'originalCount':1,'originalRowHMAC':mac(key,['startup-runtime-record',name],cells),
+                          'reason':'expired-session-pruned-by-native-restore'if name=='session'else'RATE_LIMIT-warning-cleared-by-native-startup'}
+        return {'records':result,'sourceDatabaseSHA256':record['sourceSHA256'],'archiveSHA256':record['archiveSHA256'],
+                'vendorSourceSHA256':sources,'originalCompleteRecordsRetainedInAuthenticatedArchive':True,'userCredentialsChanged':False}
+    finally:connection.close()
+
+
+def compare(old,new,bookkeeping=None,label='baseline',runtime=None):
     changes={}
     for db in old:
         a,b=old[db],new[db]
@@ -206,6 +239,12 @@ def compare(old,new,bookkeeping=None,label='baseline'):
         mutable={'counters','network','network_addresses','sqlite_sequence'} if db=='pihole-FTL.db' else set()
         for name,row in a['tables'].items():
             current=b['tables'][name]
+            if label=='baseline' and db=='pihole-FTL.db' and runtime and name in runtime['records']:
+                proof=runtime['records'][name]
+                need(row['digest']==proof['baselineDigest'] and row['count']==row['original_count']==proof['originalCount']==1,'same_authenticated_runtime_record')
+                if current['original_count']==0:
+                    changes['native_startup_'+name]=proof['reason']
+                    continue
             need(current['original_count']==row['original_count'] if name not in mutable else True,'original_row_count')
             if name not in mutable:need(current['digest']==row['digest'],'original_typed_rows_'+name)
             if name in sql.APPEND and db=='pihole-FTL.db':need(current['count']>=row['count'],'append_only_row_count')
@@ -415,7 +454,9 @@ exec sleep 1800
             need(hashes==baseline['static_files_hmac'],'original_static_settings_tls_backup_files')
             bookkeeping=None
             need({r['id']for r in baseline['snapshots']['pihole-FTL.db']['network_rows']} <= {r['id']for r in snapshots['pihole-FTL.db']['network_rows']},'same_release_original_network_identity')
-            receipt['runtime_changes']=compare(baseline['snapshots'],snapshots,bookkeeping)
+            runtime=startup_runtime_records(backup,baseline,args.baseline_receipt_sha256,key,receipt['clock_start'])
+            receipt['source_verified_startup_records']=runtime
+            receipt['runtime_changes']=compare(baseline['snapshots'],snapshots,bookkeeping,runtime=runtime)
             if previous:receipt['restart_runtime_changes']=compare(previous['snapshots'],snapshots,bookkeeping,'previous')
             receipt.update(baseline_receipt_sha256=args.baseline_receipt_sha256,original_rows_and_configuration_preserved=True)
         else:
