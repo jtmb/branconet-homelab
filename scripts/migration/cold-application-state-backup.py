@@ -58,7 +58,7 @@ def main():
     parser.add_argument('--reader-uid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
-    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026'], default='original')
+    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026'], default='original')
     parser.add_argument('--resume-receipt', type=pathlib.Path, help='Static sites only: reverify an existing ciphertext and its still-running original read-only reader')
     parser.add_argument('--resume-sha256', help='Exact original failed receipt SHA256; original receipt is never overwritten')
     args = parser.parse_args()
@@ -139,6 +139,9 @@ def main():
     if args.generation == 'upstream-unpackerr-20261025':
         need(args.application == 'unpackerr')
         original_image = 'docker.io/library/unpackerr-security-20261023@sha256:6342be9c7797b126633a56948b4dab131fde45fde3b8b173a3c84a8f4efc6213'
+    if args.generation == 'upstream-homepage-20261026':
+        need(args.application == 'homepage')
+        original_image = 'docker.io/library/homepage-security-20261023@sha256:7f91e85fa5d394b4be0f60686e40bf93e28e7ca0074c60754f3f02a1caa66bd4'
     workload = 'overseerr' if args.application == 'seerr' else 'xteve' if args.application in ['xteve', 'xteve-config'] else args.application
     claim = ('overseerr-data-0' if args.application == 'seerr' else 'xteve-data-1' if args.application == 'xteve-config' else
              'qbit-monitor-state' if args.application == 'qbit-monitor' else

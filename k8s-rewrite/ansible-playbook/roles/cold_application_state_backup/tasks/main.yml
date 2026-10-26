@@ -4,7 +4,8 @@
     that:
       - cold_application_state_apply | bool
       - inventory_hostname == 'masternode'
-      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026']
+      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026']
+      - cold_application_state_generation != 'upstream-homepage-20261026' or (cold_application_state_app == 'homepage' and cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 1000)
       - (cold_application_state_app in ['aplb', 'lucinda-art-gallery', 'minecraft-website', 'santos-web']) == (cold_application_state_generation == 'upstream-static-sites-20261026')
       - cold_application_state_app not in ['aplb', 'lucinda-art-gallery', 'minecraft-website', 'santos-web'] or (cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 0)
       - cold_application_state_generation != 'upstream-unpackerr-20261025' or cold_application_state_app == 'unpackerr'

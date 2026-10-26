@@ -1,5 +1,27 @@
 # Maintenance output ownership and reconciliation
 
+## Same-root capacity extension, October 26 01:46 UTC
+
+The same owned raw ext4 backing file grew online from 144 GiB to 152 GiB;
+UUID, mount point, loop device and backing-file inode remain unchanged. Before
+the additive 8 GiB operation, C: had 103071891456 bytes available and F: passed
+the 15 GiB retained-space floor after the full growth estimate. Exact physical
+measurements and commands are in `operator-control/native-filesystem-grow-8g-`
+`{preflight,receipt}.json`. Native available space changed from 17824870400 to
+26280062976 bytes. This is increased Linux capacity, not reclaimed Windows
+space. No VHDX compaction, shutdown, workload stop, output move or extra root
+was involved. The same file `F:\branconet-build-storage\native-build-20261025.ext4`
+continues to own all generated paths below. Source and original recovery data
+were not moved or modified.
+
+The Homepage stage is owned by the same maintenance chat and uses only
+`upstream-homepage-20261026`, `control-source/upstream-homepage-20261026`,
+`operator-control` and the existing `security-review-20261026`. Its exact
+regeneration and preservation contract is recorded in
+[the stage plan](UPSTREAM-HOMEPAGE-ADOPTION-20261026.md). Scanner analysis scratch
+has been recreated for the new finite vendor scans and will be reconciled at
+this checkpoint; prior cleanup receipts describe their earlier lifecycle.
+
 ## Static-site checkpoint reconciliation, October 26 01:43 UTC
 
 This checkpoint reused the same F:-backed root below. New required children are
