@@ -35,6 +35,8 @@ def cell(v):
  if isinstance(v,float):return ['float',v.hex()]
  raise ValueError('unsupported-sql-value')
 def sql_state(path,key):
+ global CURRENT_SESSIONS
+ CURRENT_SESSIONS=[]
  assert path.is_file() and not path.is_symlink() and path.stat().st_size<=128*1024**2
  end=time.monotonic()+90;db=sqlite3.connect(path.as_uri()+'?mode=ro',uri=True,timeout=5,isolation_level=None)
  try:
@@ -45,20 +47,23 @@ def sql_state(path,key):
   schema=db.execute('SELECT type,name,tbl_name,sql FROM sqlite_master ORDER BY type,name').fetchall()
   names=[r[1] for r in schema if r[0]=='table'];assert {'users','session_history','notifiers','version_info'}<=set(names) and len(names)<=128
   assert db.execute("SELECT value FROM version_info WHERE key='version'").fetchall()==[('v2.18.2',)]
-  tables={};count=0;size=0
+  tables={};count=0;size=0;session_fields={}
   for name in names:
    quoted='"'+name.replace('"','""')+'"';columns=db.execute('PRAGMA table_xinfo('+quoted+')').fetchall();rows=[]
    for row in db.execute('SELECT * FROM '+quoted):
     encoded=[cell(v)for v in row];size+=len(compact(encoded));count+=1
     assert count<=250000 and size<=32*1024**2 and time.monotonic()<=end
     rows.append(mac(key,['row',name,encoded]))
+    if name=='sessions':
+     values=dict(zip([c[1]for c in columns],row));identity=str(values['id']);CURRENT_SESSIONS.append(values)
+     session_fields[identity]={column:mac(key,['session-cell',identity,column,cell(value)])for column,value in values.items()}
    tables[name]={'rows':len(rows),'columns':mac(key,['columns',name,columns]),'content':mac(key,['table',name,sorted(rows)])}
-  return {'schema':mac(key,['schema',[[cell(v)for v in r]for r in schema]]),'tables':tables,'totalRows':count,'integrityOK':True,'foreignKeysOK':True,'applicationID':db.execute('PRAGMA application_id').fetchone()[0],'userVersion':db.execute('PRAGMA user_version').fetchone()[0]}
+  return {'schema':mac(key,['schema',[[cell(v)for v in r]for r in schema]]),'tables':tables,'totalRows':count,'integrityOK':True,'foreignKeysOK':True,'applicationID':db.execute('PRAGMA application_id').fetchone()[0],'userVersion':db.execute('PRAGMA user_version').fetchone()[0],'sessionFields':session_fields}
  finally:db.close()
 '''
 
 OBSERVER = r'''
-import sys,os,stat,configparser,resource
+import sys,os,stat,configparser,resource,urllib.request,urllib.parse
 resource.setrlimit(resource.RLIMIT_CORE,(0,0));resource.setrlimit(resource.RLIMIT_AS,(512*1024**2,512*1024**2))
 if os.geteuid()==0:os.setgroups([]);os.setgid(1000);os.setuid(1000)
 assert os.geteuid()==os.getegid()==1000 and not os.getgroups()
@@ -103,7 +108,25 @@ for n,anchor in request.get('logAnchors',{}).items():
 cfg=configparser.ConfigParser(interpolation=None,strict=True,empty_lines_in_values=False)
 cfg.read_string((root/'config.ini').read_text(encoding='utf-8-sig'))
 config={section:{k:v for k,v in cfg.items(section,raw=True)}for section in cfg.sections()}
-print(json.dumps({'root':root_meta,'entries':entries,'fileCount':len(entries),'observedNonDatabaseBytes':total,'canonicalConfigHMAC':mac(key,['config',config]),'sql':sql_state(root/'tautulli.db',key),'logPrefixes':prefix}))
+sql=sql_state(root/'tautulli.db',key);runtime=[]
+if request.get('verifyLivePlayback'):
+ def setting(section,name,default=''):
+  value=cfg.get(section,name,fallback=default).strip()
+  return value[1:-1]if len(value)>=2 and value[0]==value[-1] and value[0]in ['\"',"'"]else value
+ port=int(setting('General','http_port','8181'));api_key=setting('General','api_key');http_root=setting('General','http_root').strip('/')
+ assert 0<port<65536 and len(api_key)==32 and all(c.isalnum()or c in '_/-'for c in http_root)
+ url='http://127.0.0.1:'+str(port)+'/'+(http_root+'/'if http_root else'')+'api/v2?cmd=get_activity&out_type=json'
+ opener=urllib.request.build_opener(urllib.request.ProxyHandler({}))
+ with opener.open(urllib.request.Request(url,headers={'X-Api-Key':api_key}),timeout=30)as response:
+  raw=response.read(4*1024**2+1);assert response.status==200 and len(raw)<=4*1024**2
+ activity=json.loads(raw)['response'];assert activity['result']=='success';streams=activity['data']['sessions']
+ for row in CURRENT_SESSIONS:
+  matches=[s for s in streams if all(str(s.get(k))==str(row[k])for k in ['session_key','rating_key','user_id'])];assert len(matches)==1
+  live=matches[0];assert live['state']==row['state'] and row['state']in ['playing','paused','buffering']
+  assert abs(int(live['view_offset'])-int(row['view_offset']))<=10000 and 0<=int(row['view_offset'])<=int(row['duration'])
+  assert 0<=time.time()-int(row['stopped'])<=300
+  runtime.append({'sessionIdentityHMAC':mac(key,['runtime-identity',[row[k]for k in ['session_key','rating_key','user_id']]]),'liveStateAndOffsetMatch':True,'heartbeatFresh':True})
+print(json.dumps({'root':root_meta,'entries':entries,'fileCount':len(entries),'observedNonDatabaseBytes':total,'canonicalConfigHMAC':mac(key,['config',config]),'sql':sql,'logPrefixes':prefix,'livePlayback':runtime}))
 '''
 
 
@@ -205,14 +228,30 @@ def main():
     functional = json.loads(call(['kubectl', '-n', 'plex', 'exec', before['pod'], '-c', 'tautulli', '--', 'python3', '-B', '-c', api]))
     assert functional['passed'] and functional['configured_and_actual_plex_identity_match']
     anchors = {n:r for n,r in baseline['observation']['entries'].items() if n.startswith('logs/') and r['kind'] == 'file'} if baseline else {}
-    observation = json.loads(call(['kubectl', '-n', 'plex', 'exec', '-i', before['pod'], '-c', 'tautulli', '--', 'python3', '-B', '-c', SQL + OBSERVER], json.dumps({'key': key.hex(), 'logAnchors': anchors}).encode()))
+    observation = json.loads(call(['kubectl', '-n', 'plex', 'exec', '-i', before['pod'], '-c', 'tautulli', '--', 'python3', '-B', '-c', SQL + OBSERVER], json.dumps({'key': key.hex(), 'logAnchors': anchors, 'verifyLivePlayback': baseline is not None}).encode()))
+    observation_path = OUT / (a.phase + '-observation-' + hashlib.sha256(Path(__file__).read_bytes()).hexdigest()[:12] + '.json')
+    with observation_path.open('x') as stream:json.dump({'writer': before, 'observation': observation, 'functional': functional}, stream, indent=2)
     assert observation['root']['uid'] == observation['root']['gid'] == 1000
     assert all(r['uid'] == r['gid'] == 1000 for r in observation['entries'].values()), 'vendor-entrypoint-ownership-precondition'
     if baseline:
         assert before['stable'] == baseline['writer']['stable'], 'native-resource-identities-and-complete-specs'
         original = baseline['observation'];assert observation['root'] == original['root']
         assert observation['canonicalConfigHMAC'] == original['canonicalConfigHMAC'], 'complete-canonical-configuration'
-        assert observation['sql'] == original['sql'], 'every-original-sql-table-column-row'
+        reference = json.loads((ROOT / 'operator-control/tautulli-cold-session-state.json').read_text())['sql']
+        actual = observation['sql']
+        assert {k:v for k,v in actual.items() if k not in ['tables', 'sessionFields']} == {k:v for k,v in reference.items() if k not in ['tables', 'sessionFields']}
+        assert set(actual['tables']) == set(reference['tables'])
+        for name, table in reference['tables'].items():
+            if name != 'sessions':assert actual['tables'][name] == table, 'complete-cold-table:' + name
+            else:assert actual['tables'][name]['columns'] == table['columns'] and actual['tables'][name]['rows'] == table['rows']
+        assert set(actual['sessionFields']) == set(reference['sessionFields'])
+        runtime_changes = []
+        for identity, fields in reference['sessionFields'].items():
+            current = actual['sessionFields'][identity];assert set(current) == set(fields)
+            changed = [name for name, value in fields.items() if current[name] != value]
+            runtime_changes.extend(changed)
+        assert set(runtime_changes) <= {'stopped', 'state', 'view_offset'}, 'source-reviewed-live-session-fields:' + ','.join(sorted(set(runtime_changes)))
+        assert len(observation['livePlayback']) == len(reference['sessionFields'])
         left, right = original['entries'], observation['entries']
         assert set(left) == set(right), 'complete-file-set'
         for name, row in left.items():

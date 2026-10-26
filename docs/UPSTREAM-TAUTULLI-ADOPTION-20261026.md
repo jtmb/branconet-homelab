@@ -53,6 +53,22 @@ reads and 27 status/login/redirect route checks. It verifies every original
 entry has UID/GID 1000 before allowing the maintained image's ownership setup.
 These are pre-cutover results, not vendor deployment acceptance.
 
+The complete original claim is now authenticated and verified on NAS:
+159475924 encrypted bytes, SHA-256
+`a5b76de5260cbab8a7b5a592bb61cc023d6c19e6895c8db72ab8daea8cfcd0de`.
+All 23 non-session tables match the earlier live snapshot exactly. One existing
+active-session row advanced while the original app was still running; the cold
+SQL copy is the authoritative pre-adoption state. Every column of that row is
+fingerprinted. Only `stopped`, `state` and `view_offset` may subsequently advance,
+as implemented by the exact vendor `ActivityHandler.set_session_state` source.
+Require all other cells and session identity to match, and verify those three
+runtime values against the actual authenticated activity API and a fresh
+heartbeat. Do not omit the whole sessions table or relax account/history checks.
+Both the initial strict online-to-cold mismatch and the corrected cold-reference
+receipt remain. The original archive, verification key and protected sources
+stay intact. No account, credential or history record has been changed by the
+controller.
+
 The versioned cold-backup profile is exposed by the existing Ansible role and
 controller, with the complete four-GiB/4096-entry bound and UID/GID 1000 reader
 on workernode1. It never scales the application itself. The reviewed LinuxServer
