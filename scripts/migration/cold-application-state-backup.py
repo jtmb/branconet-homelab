@@ -59,8 +59,12 @@ def main():
     parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
     parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026'], default='original')
+    parser.add_argument('--resume-receipt', type=pathlib.Path, help='Static sites only: reverify an existing ciphertext and its still-running original read-only reader')
+    parser.add_argument('--resume-sha256', help='Exact original failed receipt SHA256; original receipt is never overwritten')
     args = parser.parse_args()
     need(args.apply and os.name == 'posix' and args.reader_uid == args.reader_gid)
+    need(bool(args.resume_receipt) == bool(args.resume_sha256))
+    need(not args.resume_receipt or args.application in STATIC_TARGETS)
     need((args.application in STATIC_TARGETS) == (args.generation == 'upstream-static-sites-20261026'))
     need(args.application not in STATIC_TARGETS or args.reader_uid == 0)
     need(args.application not in STATIC_TARGETS or args.node == 'workernode1')
@@ -99,8 +103,26 @@ def main():
         mount = pathlib.Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025')
         need(mount.is_mount() and mount in output.parents and output.stat().st_dev == mount.stat().st_dev)
         fs = os.statvfs(output); need(fs.f_bavail * fs.f_frsize >= max_data + 8 * 1024**3)
-    run_id = uuid.uuid4().hex
-    run = output / (args.application + '-cold-' + run_id); run.mkdir(mode=0o700)
+    resumed = None
+    receipt_name = 'receipt.json'
+    if args.resume_receipt:
+        path = args.resume_receipt
+        shared.protected(path, True)
+        need(path.name == 'receipt.json' and path.parent.parent == output and path.stat().st_size <= 65536
+             and file_hash(path) == args.resume_sha256)
+        resumed = json.loads(path.read_bytes())
+        need(resumed['application'] == args.application and resumed['generation'] == args.generation
+             and resumed['status'] == 'failed' and resumed['operation'] == 'authenticate_entire_archive'
+             and resumed['error_type'] == 'ValueError' and not resumed['temporary_pod_deleted'])
+        run = path.parent
+        run_id = run.name.removeprefix(args.application + '-cold-')
+        need(uuid.UUID(run_id).hex == run_id)
+        need(resumed['temporary_pod']['name'] == 'cold-' + args.application + '-' + run_id[:12])
+        receipt_name = 'recovery-receipt.json'
+        need(not (run / receipt_name).exists())
+    else:
+        run_id = uuid.uuid4().hex
+        run = output / (args.application + '-cold-' + run_id); run.mkdir(mode=0o700)
     namespace, deployment_uid, release_uid, claim_uid, original_image = TARGETS[args.application]
     if args.generation == 'media-security-20261025':
         current = {
@@ -125,13 +147,16 @@ def main():
              args.application + '-data-1' if args.application in ['unpackerr', 'homepage'] else args.application + '-data-0')
     mount_alias = 'monitor-state' if args.application == 'qbit-monitor' else 'data' if args.application == 'wordpress-redis' else 'data-1' if args.application in ['unpackerr', 'homepage', 'xteve-config'] else 'data-0'
     receipt = {'schema_version': 1, 'application': args.application, 'generation': args.generation, 'status': 'started', 'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'reader_uid': args.reader_uid, 'reader_gid': args.reader_gid, 'restore_verified': False, 'writer_scaled_by_helper': False, 'nas_mounted_or_walked': False, 'temporary_pod_deleted': False}
-    children = []; reader = None
+    if resumed:
+        receipt['resumed_failed_receipt'] = {'path': str(args.resume_receipt), 'sha256': args.resume_sha256}
+        need(resumed['shared_reader_sha256'] == file_hash(SHARED / 'pod_reader.py'))
+    children = []; reader = resumed['temporary_pod'] if resumed else None
 
     def save():
         tmp = run / ('receipt-' + uuid.uuid4().hex + '.tmp')
         with tmp.open('x') as stream:
             json.dump(receipt, stream, sort_keys=True, indent=2); stream.flush(); os.fsync(stream.fileno())
-        os.replace(tmp, run / 'receipt.json')
+        os.replace(tmp, run / receipt_name)
 
     def call(argv, body=None, streaming=False, timeout=90):
         child = subprocess.Popen(shared.SSH + [shlex.join(argv)], stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
@@ -248,6 +273,8 @@ def main():
     try:
         receipt['operation'] = 'cold_identity_preflight'; save()
         before = guard(); receipt.update(before); save()
+        if resumed:
+            need(all(resumed[k] == v for k, v in before.items()))
         # Reuse the new MeTube reader unchanged: suppress its CLI, select one full
         # root, then call its inventory/archive primitives with no exclusions.
         reader_source = (SHARED / 'pod_reader.py').read_text()
@@ -272,20 +299,27 @@ def main():
             root_mode = 0o1750 if args.application == 'mealie' else 0o755
             program = program.replace("EXCLUDED = set()\n", "EXCLUDED = set()\nroot_info = pathlib.Path('/source').lstat()\nneed(stat.S_ISDIR(root_info.st_mode) and root_info.st_uid == 1000 and root_info.st_gid == 65534 and stat.S_IMODE(root_info.st_mode) == " + str(root_mode) + ")\n")
         receipt['operation'] = 'create_owned_readonly_reader'; save()
-        created = json.loads(kube('create', '-f', '-', '-o', 'json', body=canonical(pod)))
-        reader = {'name': name, 'uid': created['metadata']['uid']}; receipt['temporary_pod'] = reader; save()
+        if not resumed:
+            created = json.loads(kube('create', '-f', '-', '-o', 'json', body=canonical(pod)))
+            reader = {'name': name, 'uid': created['metadata']['uid']}
+        receipt['temporary_pod'] = reader; save()
         kube('wait', 'pod/' + name, '--for=condition=Ready', '--timeout=180s', timeout=200)
         receipt['operation'] = 'full_config_file_hashes'; save()
         manifest = json.loads(execute('inventory')); need(manifest['schema_version'] == 1 and not manifest['excluded_new_paths'])
         need(manifest['total_file_bytes'] <= max_data and len(manifest['entries']) <= max_entries)
         cipher = run / (args.application + '-complete-config.tar.age')
-        receipt['operation'] = 'stream_complete_encrypted_config'; save()
-        producer = execute('archive', canonical(manifest), True)
-        with cipher.open('xb') as target:
-            encryptor = subprocess.Popen([str(shared.AGE), '-R', str(shared.RECIPIENT)], stdin=producer.stdout, stdout=target, stderr=subprocess.DEVNULL)
-            children.append(encryptor); producer.stdout.close()
-            need(encryptor.wait(timeout=900) == 0 and producer.wait(timeout=30) == 0)
-            target.flush(); os.fsync(target.fileno())
+        if resumed:
+            shared.protected(cipher, True)
+            need(0 < cipher.stat().st_size <= max_data + 32 * 1024**2)
+            receipt['existing_ciphertext_reused'] = True
+        else:
+            receipt['operation'] = 'stream_complete_encrypted_config'; save()
+            producer = execute('archive', canonical(manifest), True)
+            with cipher.open('xb') as target:
+                encryptor = subprocess.Popen([str(shared.AGE), '-R', str(shared.RECIPIENT)], stdin=producer.stdout, stdout=target, stderr=subprocess.DEVNULL)
+                children.append(encryptor); producer.stdout.close()
+                need(encryptor.wait(timeout=900) == 0 and producer.wait(timeout=30) == 0)
+                target.flush(); os.fsync(target.fileno())
         receipt['operation'] = 'authenticate_entire_archive'; save()
         decryptor = subprocess.Popen([str(shared.AGE), '-d', '-i', str(shared.IDENTITY), str(cipher)], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL); children.append(decryptor)
         recovered = shared.verify_archive(decryptor.stdout, max_entries=max_entries, max_data=max_data, max_metadata=max_metadata)
@@ -302,11 +336,11 @@ def main():
         kube('delete', '--raw', '/api/v1/namespaces/' + namespace + '/pods/' + name, '-f', '-', body=canonical(options))
         kube('wait', 'pod/' + name, '--for=delete', '--timeout=120s', timeout=140)
         receipt.update(status='completed', operation='completed', temporary_pod_deleted=True, completed_at=datetime.datetime.now(datetime.timezone.utc).isoformat()); save()
-        print(json.dumps({'status': 'completed', 'application': args.application, 'receipt': str(run / 'receipt.json')})); return 0
+        print(json.dumps({'status': 'completed', 'application': args.application, 'receipt': str(run / receipt_name)})); return 0
     except Exception as error:
         receipt['error_source_lines'] = [frame.lineno for frame in traceback.extract_tb(error.__traceback__) if frame.filename == __file__]
         receipt.update(status='failed', error_type=type(error).__name__, completed_at=datetime.datetime.now(datetime.timezone.utc).isoformat()); save()
-        print(json.dumps({'status': 'failed', 'receipt': str(run / 'receipt.json'), 'operation': receipt.get('operation'), 'error_type': type(error).__name__})); return 1
+        print(json.dumps({'status': 'failed', 'receipt': str(run / receipt_name), 'operation': receipt.get('operation'), 'error_type': type(error).__name__})); return 1
     finally:
         for child in reversed(children):
             if child.poll() is None:
