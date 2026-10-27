@@ -1,5 +1,38 @@
 # Maintenance output ownership and reconciliation
 
+## Publisher reserve headroom, October27 — completed
+
+Removed exactly12 qualified tool files and4 empty directories:
+**599,113,728 allocated Linux bytes**. Native free space afterward was
+16,969,895,936 bytes, above the unchanged16,374,562,816-byte publisher floor.
+All source exports, primary tools, receipts and the entire failed attempt remain.
+Retain only the frozen source and unique ownership/qualification/Windows-handle/
+removal evidence recorded in [the exact ledger](../evidence/publisher-headroom-reconciliation-20261027.json).
+No new build, download, dependency/cache tree or publisher retry was performed.
+See [verification and regeneration](PUBLISHER-HEADROOM-20261027.md).
+
+Reuse this migration chat's existing F-backed root and `operator-control` for
+the bounded inventory/proof/retirement receipts. Select only the three pinned
+ELF tool copies in `source/.tools` of these terminal successful publisher runs:
+`38436e85d0c34674b0f68f7a3f585e17`, `115d2c88828b4e2ab219f08e3d811b7e`,
+`4eeabacbddb847b39bebabb47e28ef92`, `2ca2d94ab9cb4eff9e18c10bc4dfd5b6`.
+These are primary temporary prepare exports of completed current publication
+operations, not older copied build caches. Keep all source exports, original
+reachable Git commits/blobs, locks, prepare/check/publish/validation receipts,
+original pinned tools and every other file. Preserve the complete failed run
+`f2085e8a5d0f4098896b6be87e5e3797`; do not retry or change the publisher.
+Regenerate tools from the retained publisher `.tools` originals after matching
+their pinned hashes, in a future exclusive stage; do not replay publication.
+
+Before individual file retirement, require complete success/source/receipt
+bindings, original tool hashes, exclusive existing stage locks, canonical paths,
+inode/owner/device checks, full process/FD/map/unit/mount checks, and native
+Windows exclusive read-handle checks. Keep every unique source/failure/recovery
+artifact. Estimated metadata stage is at most16MiB, with C: and the F filesystem
+retaining15GiB. Record exact removed paths/bytes and measured native filesystem
+headroom against the unchanged publisher15GiB+256MiB floor. No image, volume,
+model, dependency, source or backup deletion; no WSL shutdown/compaction.
+
 ## Planned master generated-input qualification, October27
 
 Owner and physical F-backed root remain unchanged. Reserve only
