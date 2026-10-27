@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { boundedArray } from "./bounded-array";
 import { KvError, KvMutationError, fieldMapping, logicalPath, requireGuarded, type KvActor } from "./kv-contract";
 import type { RegisteredPath } from "./kv-registry";
 import type { KvNativeEngine } from "./kv-native-engine";
@@ -9,15 +10,15 @@ import { secretFailure } from "./cluster-secrets";
 export const KV_TRANSFER_BYTES = 1024 * 1024;
 const documentSchema = z.object({
   mountId: z.string().uuid(), path: z.string().max(512), namespace: z.string(), name: z.string(),
-  mappings: z.array(z.object({ field: z.string(), key: z.string() }).strict()).min(1).max(64),
-  fields: z.array(encodedField).max(64), sourceVersion: z.number().int().positive().optional(),
+  mappings: boundedArray(z.array(z.object({ field: z.string(), key: z.string() }).strict()).min(1).max(64)),
+  fields: boundedArray(z.array(encodedField).max(64)), sourceVersion: z.number().int().positive().optional(),
 }).strict();
-export const bundleSchema = z.object({ format: z.literal("bortus-kv"), version: z.literal(1), documents: z.array(documentSchema).min(1).max(100) }).strict();
+export const bundleSchema = z.object({ format: z.literal("bortus-kv"), version: z.literal(1), documents: boundedArray(z.array(documentSchema).min(1).max(100)) }).strict();
 export const importPreviewSchema = z.object({ bundle: bundleSchema }).strict();
 const planSchema = z.object({ documentIndex: z.number().int().nonnegative(), pathId: z.string().uuid().nullable(), revision: z.number().int().positive().nullable(),
   resourceVersion: z.string().max(128).optional(), expectedHead: z.number().int().nonnegative().optional(), overwrite: z.boolean() }).strict();
-export const importSchema = z.object({ bundle: bundleSchema, plans: z.array(planSchema).min(1).max(100), confirmCredentials: z.literal(true) }).strict();
-export const exportSchema = z.object({ selections: z.array(z.object({ pathId: z.string().uuid(), version: z.number().int().positive().optional() }).strict()).min(1).max(100), confirmCredentials: z.literal(true) }).strict();
+export const importSchema = z.object({ bundle: bundleSchema, plans: boundedArray(z.array(planSchema).min(1).max(100)), confirmCredentials: z.literal(true) }).strict();
+export const exportSchema = z.object({ selections: boundedArray(z.array(z.object({ pathId: z.string().uuid(), version: z.number().int().positive().optional() }).strict()).min(1).max(100)), confirmCredentials: z.literal(true) }).strict();
 type Document = z.infer<typeof documentSchema>;
 type Bundle = z.infer<typeof bundleSchema>;
 const mappingsEqual = (a: Document["mappings"], b: RegisteredPath["fields"]) =>
