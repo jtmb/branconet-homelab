@@ -1,11 +1,29 @@
 # Migration and maintenance status
 
 **Current work:** node cleanup delegated by James from the Ingenium chat. Its
-actual runtime/task-artifact audit is in progress; no node recovery yet claimed.
+actual runtime/task-artifact audit removed 904,888,320 bytes of duplicate
+BuildKit tools from worker1 and 3,243,261,952 bytes of generated legacy Plex
+thumbnails from worker2: 4,148,150,272 total node bytes. Source/locks, failed
+build state and original non-cache Plex data are preserved.
 Protect all data, live/rollback runtime, source/locks and unique evidence. No
 blind prune, threshold/replica reduction or BORTUS hold change. Ingenium remains
-owned/developed in its separate chat; latest measured payload is25,888,250,412bytes
-plus its published image and growth/rebuild headroom, with two actual replicas.
+owned/developed in its separate chat. James clarified that its image download is
+1,209,310,265 bytes; earlier checkout/history inventories are not prerequisites
+for pulling it. Actual unpacked node allocation remains a separate measurement;
+persistent application state and sizing remain with the Ingenium owner chat.
+The exact image is already cached on worker1. At 08:05 UTC, available filesystem
+space was 19.13 GB master / 21.94 GB worker2 / 110.05 GB worker1; worker2 rose
+to 25.18 GB after its later cache cleanup. At 08:26 UTC Longhorn reports worker2
+schedulable, 1.48 GB above its unchanged floor. Master still falls short by
+4.49 GB. Worker2 needs another 7.38 GB before the separate 8.86 GB Ingenium state
+fits above that floor, before growth/rebuild margin. All 57 PVCs are Bound and
+all 43 original Longhorn volume UIDs survive. The goal remains active.
+Actual kubelet checks at 08:31 UTC reject treating an 11 GiB claim as physically
+safe: its logical reservation fits worker2, but the measured 9.52 GB transfer
+allocation would put available image space below the live 15% eviction threshold,
+before image/further growth. Longhorn admission and existing replica health are
+separate checks. All settings remain unchanged.
+[Exact cleanup and remaining capacity](docs/NODE-TOOL-CLEANUP-20261027.md).
 
 **October27,06:57UTC acceptance:** Unpackerr1.0 and restart pass original config/
 native Secret/storage/integration checks, with the new web interface disabled.

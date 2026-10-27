@@ -1,0 +1,51 @@
+---
+- name: Require the exact host, reviewed apply plan and owned unique receipt
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'workernode2'
+      - ansible_host == '192.168.0.5'
+      - ansible_user == 'james'
+      - ansible_port | int == 2002
+      - not (legacy_plex_cache_apply | bool) or legacy_plex_cache_plan_sha256 is match('^[0-9a-f]{64}$')
+      - legacy_plex_cache_receipt is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/[a-z0-9-]+[.]json$')
+
+- name: Refuse replacement of an earlier receipt
+  ansible.builtin.stat:
+    path: "{{ legacy_plex_cache_receipt }}"
+  delegate_to: localhost
+  become: false
+  register: legacy_plex_cache_receipt_stat
+
+- name: Preserve earlier evidence
+  ansible.builtin.assert:
+    that: [not legacy_plex_cache_receipt_stat.stat.exists]
+
+- name: Preserve complete outcomes including interrupted or refused operations
+  block:
+    - name: Inspect or clear generated thumbnail entries without remote staging
+      ansible.builtin.raw: >-
+        /usr/bin/python3 -B -c {{ lookup('file', role_path + '/files/retire.py', rstrip=false) | quote }}
+        --safety-source {{ lookup('file', role_path + '/../retired_build_tools/files/retire.py', rstrip=false) | b64encode | quote }}
+        --safety-sha256 {{ lookup('file', role_path + '/../retired_build_tools/files/retire.py', rstrip=false) | hash('sha256') | quote }}
+        {{ ('--apply --expected-plan ' + legacy_plex_cache_plan_sha256) if legacy_plex_cache_apply | bool else '' }}
+      register: legacy_plex_cache_result
+      changed_when: legacy_plex_cache_result.rc == 0 and (legacy_plex_cache_result.stdout | from_json).removedAllocatedBytes | int > 0
+      no_log: true
+  always:
+    - name: Keep the complete private exact-entry outcome in the existing root
+      ansible.builtin.copy:
+        content: "{{ legacy_plex_cache_result | to_nice_json }}"
+        dest: "{{ legacy_plex_cache_receipt }}"
+        mode: '0600'
+        force: false
+      delegate_to: localhost
+      become: false
+      when: legacy_plex_cache_result is defined
+      no_log: true
+
+- name: Report bounded measured results
+  ansible.builtin.debug:
+    msg:
+      plan_sha256: "{{ (legacy_plex_cache_result.stdout | from_json).planSHA256 }}"
+      removed_allocated_bytes: "{{ (legacy_plex_cache_result.stdout | from_json).removedAllocatedBytes }}"
+      receipt: "{{ legacy_plex_cache_receipt }}"

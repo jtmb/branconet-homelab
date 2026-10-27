@@ -18,6 +18,28 @@ create node build/dependency trees. Regenerate read-only metadata from the
 retained audit source with fresh strict SSH identities. Cluster/runtime sources
 and all previous encrypted recovery remain protected.
 
+Executed October27: worker1 tool retirement removed 21 exact hash-pinned files
+and seven empty directories, **904,888,320 node allocated bytes**. Worker2 legacy
+Plex thumbnail retirement removed 10,658 confirmed generated image files,
+**3,243,261,952 node allocated bytes**; it retains all directories and 8,947
+unqualified entries /188,932,096 bytes. Total **4,148,150,272 node bytes**.
+[Exact roots, per-file tool paths, private thumbnail manifest hash, source,
+regeneration and retained exceptions](NODE-TOOL-CLEANUP-20261027.md).
+All 56,854 non-cache Plex identities, original databases, settings, metadata,
+source/locks, OCI archives and failed build state are preserved. Runtime images,
+Longhorn/PVC/NAS media, original Gluster/MySQL and active swap were not pruned.
+
+Controller metadata/unique evidence is retained under this same F-backed root:
+`node-cleanup-20261027` plus the exact audit, inspection/apply and frozen sources
+in `operator-control`. There are no new dependency trees, compiler outputs or
+download copies to reconcile. Each of the three syntax-check attempts removed
+its three empty owned scratch directories `ansible-syntax-owned/local`,
+`ansible-syntax-owned/home`, `ansible-syntax-owned`; their allocation was not
+captured and is excluded from byte claims. Results, including the initial failed
+automatic configuration lookup, survive outside those scratch directories.
+The initial whole-cache format refusal and all unidentified entries are retained.
+This is Linux node recovery, not Windows C:/F: recovery or VHDX compaction.
+
 ## Snapshot-controller upstream operation, October27
 
 Unpackerr1.0 checkpoint reconciliation completed:579,760,128allocated controller

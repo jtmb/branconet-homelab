@@ -1,0 +1,7 @@
+---
+- name: Retire only seven fixed inactive worker1 BuildKit tool copies
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  roles: [retired_build_tools]

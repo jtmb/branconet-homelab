@@ -4,10 +4,16 @@
 this migration chat. Audit the actual containerd-k8s store and task artifacts;
 reclaim only proved unused material while preserving all data, source, required
 rollback/runtime and unique evidence. Report exact removals, measured filesystem
-space and Longhorn placement/payload headroom for the measured25,888,250,412-byte Ingenium
-data. No blind prune, threshold/replica reduction or BORTUS hold change. Ingenium
-application/image/deployment remains in its owner chat. Node audit is underway;
-no node-space recovery is yet claimed.
+space and actual image allocation. James clarified that the image download is
+1,209,310,265 bytes; development checkout/history inventories are not an image
+pull prerequisite. Persistent application state and its sizing belong to the
+Ingenium owner chat. No blind prune, threshold/replica reduction or BORTUS hold change. Ingenium
+application/image/deployment remains in its owner chat. Worker1 tool cleanup
+recovered 904,888,320 bytes; the image is already cached there. Worker2 thumbnail
+cleanup recovered 3,243,261,952 bytes and restored Longhorn schedulability.
+Master still falls below its unchanged floor; worker2 requires another 7.38 GB
+before the separately measured 8.86 GB state fits above that floor, before growth
+and rebuild margin. [Cleanup proof and remaining capacity](docs/NODE-TOOL-CLEANUP-20261027.md).
 
 **Latest accepted checkpoint — October27,06:57UTC:** official Unpackerr1.0 and
 its controlled restart preserve the original config, native Secret and storage.

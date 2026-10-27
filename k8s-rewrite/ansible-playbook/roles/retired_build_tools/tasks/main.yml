@@ -1,0 +1,23 @@
+---
+- name: Require the exact original worker and SSH target
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'workernode1'
+      - ansible_host == '192.168.0.6'
+      - ansible_user == 'james'
+      - ansible_port | int == 2002
+
+- name: Inspect or retire exact hash-pinned copies without remote staging
+  ansible.builtin.raw: >-
+    /usr/bin/python3 -B -c {{ lookup('file', role_path + '/files/retire.py') | quote }}
+    {{ '--apply' if retired_build_tools_apply | bool else '' }}
+  changed_when: (retired_build_tools_result.stdout | from_json).removedAllocatedBytes | int > 0
+  register: retired_build_tools_result
+
+- name: Report measured recovery only
+  ansible.builtin.debug:
+    msg:
+      applied: "{{ (retired_build_tools_result.stdout | from_json).applied }}"
+      removed_allocated_bytes: "{{ (retired_build_tools_result.stdout | from_json).removedAllocatedBytes }}"
+      removed_paths: "{{ (retired_build_tools_result.stdout | from_json).removed | map(attribute='path') | list }}"
+      available_after_bytes: "{{ (retired_build_tools_result.stdout | from_json).availableAfterBytes }}"
