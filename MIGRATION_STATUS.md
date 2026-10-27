@@ -1,5 +1,33 @@
 # Migration and maintenance status
 
+**October 27, 22:05 UTC:** physical/source/UID checks proved the preserved unused
+WordPress destination has no initialized payload. No attach, mount, data copy,
+Secret read or deletion occurred. Its metadata remains recoverable; WordPress
+stays retired. Two current-writer recovery gates remain: Ruckus and Ingenium.
+Three missing native Backup CRs include this unused claim; no backup is falsely
+claimed. [Exact lineage](docs/UNUSED-WORDPRESS-VOLUME-LINEAGE-20261027.md).
+The production Longhorn upgrade and final fleet/security/IAB checks remain.
+Full goal stays active.
+
+**October 27, 22:03 UTC:** retained Ruckus recovery passed: original replica
+preserved, existing desired two replicas restored by the normal manager, full
+native NAS backup and independent 166-block encrypted raw restore, normal detach
+and original Volume spec restored. Nine datasets total 542 verified blocks;
+recovery scratch cleanup totals 1,886,146,560 allocated Linux bytes. Three native-
+backup gaps remain. All 58 claim bindings/44 volume UIDs, three nodes, workloads
+and unsuspended Flux survive. New HA data uses node space; refresh capacity
+before platform pulls. [Exact proof](docs/DETACHED-VOLUME-NATIVE-RECOVERY-20261027.md).
+The full goal remains active.
+
+**October 27 native qualification:** actual unpacking passed for all thirteen
+consumed official Longhorn candidate images using the exact production
+containerd 2.4.2 binaries in an isolated controller instance. Every layer hash
+and committed snapshot chain passed; no containers started or cluster resources
+changed. The daemon exited normally and all 4,402,479,104 allocated scratch bytes
+were removed. [Exact result, regeneration and limits](docs/LONGHORN-NATIVE-UNPACK-20261027.md).
+Fresh production node capacity/cache/placement, remaining recovery and guarded
+upgrade remain required. The full goal stays active.
+
 **October 27, 21:47 UTC:** completed bounded controller cleanup recovered
 27,804,061,696 allocated Linux bytes: 64 terminal publisher tool sets and six
 stopped worker caches. Original source, recipes, OCI artifacts, failure receipts

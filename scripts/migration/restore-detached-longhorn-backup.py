@@ -31,6 +31,7 @@ ALLOWED = {
     'pihole-old-1': 'pvc-bd9d5442-8665-4328-9a62-53d03d704ca7',
     'gluetun-old': 'pvc-2d2591cd-8809-4957-b56a-2f4d405bd9e2',
     'qbittorrent-old': 'pvc-6aa3aaa5-f609-4f74-88f0-b5c15e846703',
+    'ruckus-old': 'pvc-0bf707c8-628e-4284-9aa0-35b711c8749b',
 }
 CONTEXT = None
 POD = 'instance-manager-0f44e66d715a28714766cec73f9ec067'

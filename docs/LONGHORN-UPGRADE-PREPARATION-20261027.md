@@ -1,5 +1,14 @@
 # Existing-owner Longhorn upgrade preparation
 
+**Later October 27 qualification:** all thirteen consumed pinned candidate images
+passed actual native unpacking using the production node's exact containerd
+2.4.2 binaries in a separate controller instance. Every layer hash and committed
+snapshot chain passed. No containers started or production runtime changed.
+All 4,402,479,104 allocated scratch bytes were removed after daemon exit and
+full reference checks. This does not replace fresh production node cache,
+placement, recovery or guarded upgrade gates.
+[Exact measurement and cleanup](LONGHORN-NATIVE-UNPACK-20261027.md).
+
 Completed October 27, 19:02 UTC. The new opt-in Ansible preparation role rendered
 a pinned candidate and passed server dry-run for **61 resources**, without forced
 conflicts. Actual Ansible execution passed: two tasks OK, zero changed/failed.

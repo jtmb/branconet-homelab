@@ -1,4 +1,27 @@
-# Eight retained volumes backed up and independently restored
+# Nine retained volumes backed up and independently restored
+
+## Retained Ruckus source, October 27, 22:03 UTC
+
+`ruckus/ruckus-db-data-0-security-20261025` now has a completed full native NAS
+backup and independent stock-engine encrypted raw restore. All **166 blocks**,
+zero regions, LUKS header and the complete 1,090,519,040-byte backend passed.
+The original sole replica UID is preserved. The existing desired replica count
+was already two: a normal frontend-disabled attachment let the existing manager
+rebuild its missing second replica on a distinct node. No count reduction or
+manual replica creation/deletion occurred. Both actual RW replicas were healthy
+before the snapshot; the exact new UID is recorded. Normal detach restored the
+complete original Volume specification. The current Ruckus writer is separate.
+[Exact backup, repair, restore and health proof](../evidence/ruckus-retained-native-recovery-20261027.json).
+
+All nine datasets total **542 verified blocks**. Another **624,541,696 allocated
+controller Linux bytes** of restore/Ansible scratch were removed after native
+Windows exclusive handles, original NAS readback and full reference checks.
+Recovery scratch cleanup now totals **1,886,146,560 bytes**. No Windows disk
+recovery is inferred. Three Ready nodes, all 58 claim bindings/44 volume UIDs,
+workloads and unsuspended Flux survive. The new retained HA replica occupies
+node storage; earlier master free-space projections must be refreshed before
+any image pull or upgrade. Two current writers and the unused WordPress claim
+remain the three native-backup gaps. The following records remain dated proof.
 
 ## Additional Pi-hole claim, October 27, 21:24 UTC
 

@@ -1,0 +1,150 @@
+{
+  "status": "all_thirteen_native_unpacks_verified",
+  "sourceBinding": {
+    "measurementSHA256": "4924eb49b231349e26dc0754af5e427028c277f7d16b8a4ee00c6e58292a3a1d",
+    "operatorSHA256": "c9159b82372cfc15f05c7ca0456b751297a5a94e56ffe8205874da0cf51d0bfb"
+  },
+  "exports": {
+    "containerd": {
+      "originalNode": "192.168.0.4",
+      "source": "/opt/containerd-k8s/bin/containerd",
+      "sha256": "4c8ea02ec7b01b1763910c82343e7b5fc39da4f356eb97645ec1baf3367a7fe2",
+      "bytes": 40710352,
+      "version": "containerd github.com/containerd/containerd/v2 v2.4.2 b7a25261e029d68978bbf290df0a62fc819b3c51"
+    },
+    "ctr": {
+      "originalNode": "192.168.0.4",
+      "source": "/opt/containerd-k8s/bin/ctr",
+      "sha256": "bcf0357ed9f17b8851ccde2486321c8fa2d0bcfb0ea71c267da6a1155c7f4743",
+      "bytes": 23597216,
+      "version": "ctr github.com/containerd/containerd/v2 v2.4.2"
+    }
+  },
+  "resourceBudget": {
+    "CPUQuotaPerSecUSec": "1s",
+    "MemoryMax": "536870912",
+    "MemorySwapMax": "0",
+    "TasksMax": "96"
+  },
+  "allThirteenConsumedImages": [
+    {
+      "reference": "docker.io/longhornio/backing-image-manager:v1.13.0@sha256:49779b9a8ab535f1e86d224f8e2eb5c2c3713b8f1783403fe00612a75de2b3b8",
+      "verifiedLayers": 8,
+      "allocatedPrivateFilesystemBytesAfterImage": 656269312,
+      "amd64ManifestDigest": "sha256:3f18ad2cced12e8749cf7f4075fd3ea9321370e0985679b454afea94c37e8047"
+    },
+    {
+      "reference": "docker.io/longhornio/longhorn-engine:v1.13.0@sha256:b0cc5090889d57705acd69c5106492992e84560170ac3bec4a1cc8dd3fe83ca6",
+      "verifiedLayers": 10,
+      "allocatedPrivateFilesystemBytesAfterImage": 1087565824,
+      "amd64ManifestDigest": "sha256:f54790f824bdb855b1226c1376b61393795e89df1522565e54f269da774b2239"
+    },
+    {
+      "reference": "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3",
+      "verifiedLayers": 25,
+      "allocatedPrivateFilesystemBytesAfterImage": 2864578560,
+      "amd64ManifestDigest": "sha256:399e06a93e3cf6754aab6642fe5a2afa2e1b10bb7975a0e4a412c6e36085bc6e"
+    },
+    {
+      "reference": "docker.io/longhornio/longhorn-manager:v1.13.0@sha256:7372f3c59239e9a67c0017b3af32fabdf08c4dcc0631140161da9a47e3b142f0",
+      "verifiedLayers": 6,
+      "allocatedPrivateFilesystemBytesAfterImage": 3170095104,
+      "amd64ManifestDigest": "sha256:dfe39d0ce270c68b333d8b32bec41ee540b7a099ccc598ea312337a85c20fd89"
+    },
+    {
+      "reference": "docker.io/longhornio/longhorn-share-manager:v1.13.0@sha256:53950f78b7af38b8a943c298cd3020622191a4661a13036f69d83c154cc8690d",
+      "verifiedLayers": 15,
+      "allocatedPrivateFilesystemBytesAfterImage": 3435663360,
+      "amd64ManifestDigest": "sha256:fd8cc366d70e9f236f197a6f188905268b06995a2414e2a09f0ff8e97ddbf714"
+    },
+    {
+      "reference": "docker.io/longhornio/longhorn-ui:v1.13.0@sha256:f22fb0254ae50195c1635ce428dfae26375956b3d7bd39640fae8fe33a236023",
+      "verifiedLayers": 9,
+      "allocatedPrivateFilesystemBytesAfterImage": 3578208256,
+      "amd64ManifestDigest": "sha256:82e648c240280696de3120710f5a07198788bad16631375f64d299e6bc85ec87"
+    },
+    {
+      "reference": "docker.io/longhornio/csi-attacher:v4.13.0@sha256:fef34c2d823b78da7d6c29fdf0f80d236293b0ac06944d14e8c366add880a4c8",
+      "verifiedLayers": 14,
+      "allocatedPrivateFilesystemBytesAfterImage": 3728715776,
+      "amd64ManifestDigest": "sha256:3998c70f02511068e879b2222d7d4943db86fe044dd311f7bbb90812f778ad82"
+    },
+    {
+      "reference": "docker.io/longhornio/csi-provisioner:v6.3.0@sha256:2d2694540109d2e8887f62a0bc711aca8d3033e52dddf1c39bb5c65600d9c5af",
+      "verifiedLayers": 14,
+      "allocatedPrivateFilesystemBytesAfterImage": 3874430976,
+      "amd64ManifestDigest": "sha256:54de28a6565647405647b34d092eefb4a51c7be14f29bdafc721773a5ec0600c"
+    },
+    {
+      "reference": "docker.io/longhornio/csi-resizer:v2.2.1@sha256:63d0aef25114d4a682b25afa6d9623a3cfcc19aca910269124408476bbe2c6fd",
+      "verifiedLayers": 14,
+      "allocatedPrivateFilesystemBytesAfterImage": 4005236736,
+      "amd64ManifestDigest": "sha256:da560f720351d2c5ed1d3f85ad5a03d3935967a0586810eb2c1ea4d3109493fa"
+    },
+    {
+      "reference": "docker.io/longhornio/csi-snapshotter:v8.6.0@sha256:2bca9ac55170efa61dc50e5cc8d9550373db2e3e5161d82d3fdaac5c25150360",
+      "verifiedLayers": 14,
+      "allocatedPrivateFilesystemBytesAfterImage": 4137852928,
+      "amd64ManifestDigest": "sha256:87a9712e10c3a70b9070ada79611aff48174ce2f4b60f447503481d1d467be70"
+    },
+    {
+      "reference": "docker.io/longhornio/csi-node-driver-registrar:v2.18.0@sha256:085f63e62fea391734f5668d9cbb20ac8788a8e7faea83ce2c994f0cc1834fce",
+      "verifiedLayers": 14,
+      "allocatedPrivateFilesystemBytesAfterImage": 4180013056,
+      "amd64ManifestDigest": "sha256:692a30d9f27d32a25ea2784d01251b73e189e9d1156dd43c58f87ad2b70ec1e6"
+    },
+    {
+      "reference": "docker.io/longhornio/livenessprobe:v2.20.0@sha256:d1199b77452bfc11cfc62feb8a266758fe8d72953e97faac8065941e3767f1a3",
+      "verifiedLayers": 14,
+      "allocatedPrivateFilesystemBytesAfterImage": 4222631936,
+      "amd64ManifestDigest": "sha256:c3dc967a4d8b18655e14bab5553017f850fda96221b8b0d2abfd9f6213c30f35"
+    },
+    {
+      "reference": "docker.io/longhornio/support-bundle-kit:v0.0.98@sha256:e64a01db35396f967175adcfd0177d2a50e75765c51efe86e55f13f49095d1ae",
+      "verifiedLayers": 13,
+      "allocatedPrivateFilesystemBytesAfterImage": 4402479104,
+      "amd64ManifestDigest": "sha256:10fc200310543af2043d46fe4122eb5d998d662e28a490fb0c42b2eaf17f7613"
+    }
+  ],
+  "actualAllocatedBytes": 4402479104,
+  "containersStarted": false,
+  "clusterChanged": false,
+  "directProductionNodeUnpackClaimed": false,
+  "privateDaemonExitCode": 0,
+  "scratchReconciliation": {
+    "status": "completed",
+    "removedPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/native-unpack-20261027/scratch",
+    "removedAllocatedLinuxBytes": 4402479104,
+    "availableBeforeBytes": 40392794112,
+    "availableAfterBytes": 44795273216,
+    "sourceBindingUnchanged": true,
+    "WindowsRecoveryClaimed": false,
+    "regeneration": "Read-only export the hash-bound node containerd/ctr; use this frozen operator and original pinned public image manifests",
+    "remainingConsumer": null,
+    "productionImagesPruned": false
+  },
+  "fullResultPath": "\\\\?\\UNC\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\local-image-build-offload-20261025\\platform-upstream-review-20261027\\longhorn-capacity-budget\\native-unpack-20261027\\native-result.json",
+  "fullResultSHA256": "dc852b1a9f1f8c3ab600e257b8ad7d67ec8d265ec78b49d9b23345067836f268",
+  "ownership": {
+    "owner": "01a12045-bf7e-73b3-8557-752d17c72ffd",
+    "root": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025",
+    "physicalFilesystemUUID": "3c792469-ea0e-4a2c-98e8-1185b141607b",
+    "sourceBinding": {
+      "measurementSHA256": "4924eb49b231349e26dc0754af5e427028c277f7d16b8a4ee00c6e58292a3a1d",
+      "operatorSHA256": "c9159b82372cfc15f05c7ca0456b751297a5a94e56ffe8205874da0cf51d0bfb"
+    },
+    "peakDisposableBytes": 8589934592,
+    "generatedPaths": [
+      "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/native-unpack-20261027/scratch",
+      "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/native-unpack-20261027/*.json",
+      "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/native-unpack-20261027/*.log",
+      "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/native-unpack-20261027/native-config.toml"
+    ],
+    "availableCBeforeBytes": 61389164544,
+    "availableDestinationBeforeBytes": 44796416000,
+    "protected": "all original inputs, source, deployed runtimes, workload data, recovery archives and failures",
+    "lastConsumer": "one exact native image-unpack observation",
+    "endCondition": "worker and private daemon exit; full reference/source checks; remove all generated tools/content/snapshots",
+    "regeneration": "this frozen operator, read-only hash-bound installed node binaries and the original thirteen pinned upstream manifests"
+  }
+}

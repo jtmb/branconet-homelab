@@ -1,5 +1,21 @@
 # Current Longhorn recovery coverage
 
+**22:05 UTC update:** original cancellation/retirement lineage, unchanged claim
+spec/UID chain, unstarted engine/never-healthy replicas, no consumers/tickets and
+read-only physical absence of both configured replica directories establish
+that the unused WordPress destination has no initialized payload. Its preserved
+metadata is covered by control-plane recovery. No artificial initialization or
+native backup was performed. **Two current-writer recovery gates remain**:
+Ruckus and Ingenium. Three missing native Backup CRs include this unused claim;
+these are distinct counts. [Exact physical/source proof](UNUSED-WORDPRESS-VOLUME-LINEAGE-20261027.md).
+
+**22:03 UTC update:** retained old Ruckus now has a completed native NAS backup,
+independent all-block encrypted raw restore and normal detach. The original
+replica survived; normal manager reconciliation restored its existing desired
+two-replica configuration before the backup. Nine datasets total 542 verified
+blocks. Three native-backup gaps remain: current Ruckus and Ingenium writers,
+and the unused WordPress claim. [Exact newer proof and capacity caveat](DETACHED-VOLUME-NATIVE-RECOVERY-20261027.md).
+
 **21:24 UTC update:** retained `pihole/pihole-data-1` also passed completed native
 NAS backup, normal detach and independent raw restore: 73 additional blocks.
 Eight retained datasets now total 376 verified blocks. Four native-backup gaps

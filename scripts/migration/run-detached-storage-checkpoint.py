@@ -23,7 +23,7 @@ def main():
                         'ruckus-old', 'wordpress-unused'], required=True)
     args = parser.parse_args()
     assert os.geteuid() == 1000 and F.is_mount() and R.resolve() == R
-    bindings = json.loads((R / 'source-binding-v2.json').read_text())
+    bindings = json.loads((R / 'source-binding-v3.json').read_text())
     assert all(hashlib.sha256(Path(p).read_bytes()).hexdigest() == h for p, h in bindings['sources'].items())
     for path in (F, Path('/mnt/c')):
         s = os.statvfs(path)

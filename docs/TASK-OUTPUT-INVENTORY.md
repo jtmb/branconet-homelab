@@ -1,5 +1,39 @@
 # Maintenance output ownership and reconciliation
 
+## Unused WordPress lineage — completed October 27, 22:05 UTC
+
+Same F root; only ownership/result JSON in
+`platform-upstream-review-20261027/unused-wordpress-lineage-20261027`.
+Read-only original source/UID/spec and two physical worker-directory checks
+proved no initialized payload. No tool, dependency, cache, mount or scratch
+was created, no data changed and no byte recovery is claimed. Retain the small
+unique proof; original claims/volumes and data archives stay protected.
+[Exact checks and regeneration](UNUSED-WORDPRESS-VOLUME-LINEAGE-20261027.md).
+
+## Retained Ruckus native recovery — completed October 27, 22:03 UTC
+
+Same F root and detached recovery operation. Removed 624,541,696 allocated
+controller Linux bytes of Ruckus NAS staging, encrypted raw restore and Ansible
+scratch after full reference, Windows-handle, original NAS readback and source
+checks. All 212 protected files matched. Retain only unique source/bindings,
+normal-rebuild/backup/detach/restore/health/removal receipts plus original NAS
+backup; no recovered raw image remains. Original source replica and new healthy
+HA replica remain required retained data. Native tools still serve the remaining
+current-writer recovery gates; retire after those consumers finish.
+[Exact result and ledger reference](../evidence/ruckus-retained-native-recovery-20261027.json).
+
+## Native image-unpack qualification — completed October 27
+
+Same F root, operation `platform-upstream-review-20261027/longhorn-capacity-budget/native-unpack-20261027`.
+Ownership and full 8 GiB peak were recorded before output. All thirteen consumed
+official candidate images passed actual native containerd 2.4.2 unpack checks.
+The private daemon exited normally; original sources and full reference guards
+passed. Removed **4,402,479,104 allocated Linux bytes** of generated binary,
+content, metadata, snapshot, socket and temporary scratch. No runtime or payload
+copy remains. Small unique source/configuration/ownership/results/log/removal
+receipts remain; no Windows recovery claim.
+[Exact path, regeneration and limitations](LONGHORN-NATIVE-UNPACK-20261027.md).
+
 ## Continuing-task cleanup, October 27, 21:47 UTC — completed
 
 Retired 64 terminal publisher tool sets and six completed private-worker caches:

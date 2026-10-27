@@ -147,8 +147,12 @@ def bound_state(profile):
          and volume['spec']['dataEngine'] == 'v1' and not volume['spec'].get('migrationNodeID')
          and not volume['status'].get('restoreRequired'), 'unchanged_original_v1_volume')
     replicas = [r for r in items('replicas.longhorn.io') if r['spec']['volumeName'] == volume['metadata']['name']]
+    missing_original = profile.get('allowOriginalMissingReplica', False)
+    need(not missing_original or (volume['metadata']['name'] == VOLUMES['ruckus-old']
+         and len(profile['replicas']) == 1), 'only_exact_retained_ruckus_missing_replica')
     need({r['metadata']['uid'] for r in replicas} == {r['metadata']['uid'] for r in profile['replicas']}
-         and len(replicas) == 2 and not any(r['spec'].get('failedAt') for r in replicas), 'original_two_replicas_without_failure')
+         and len(replicas) == (1 if missing_original else 2)
+         and not any(r['spec'].get('failedAt') for r in replicas), 'exact_prepared_replicas_without_failure')
     return volume, replicas
 
 
@@ -179,8 +183,15 @@ def prepare(run, name):
     claim = next(c for c in items('pvc', namespace=None, all_ns=True) if c['spec'].get('volumeName') == name)
     pv = get('pv', name, namespace=None)
     replicas = [r for r in items('replicas.longhorn.io') if r['spec']['volumeName'] == name]
-    need(len(replicas) == 2 and all(r['status']['currentState'] == 'stopped'
+    repair_missing = name == VOLUMES['ruckus-old'] and len(replicas) == 1
+    need((len(replicas) == 2 or repair_missing) and all(r['status']['currentState'] == 'stopped'
          and not r['spec'].get('failedAt') and r['spec'].get('healthyAt') for r in replicas), 'two_previously_healthy_stopped_replicas_required')
+    if repair_missing:
+        need(volume['spec']['numberOfReplicas'] == 2, 'existing_two_replica_intent_never_reduced')
+        nodes = items('nodes.longhorn.io')
+        need(len(nodes) == 3 and all(d['storageAvailable'] > d['storageMaximum'] // 4
+             + int(volume['spec']['size']) + 512 * 1024**2
+             for n in nodes for d in n['status']['diskStatus'].values()), 'all_possible_rebuild_nodes_keep_floor_full_volume_and_margin')
     backup_node = 'workernode2' if name == VOLUMES['pihole-old-1'] else 'workernode1'
     need(backup_node in {r['spec']['nodeID'] for r in replicas}, 'existing_selected_replica_node_required')
     node = get('nodes.longhorn.io', backup_node)
@@ -196,6 +207,7 @@ def prepare(run, name):
          and get('settings.longhorn.io', 'default-engine-image')['value'] == IMAGE, 'installed_engine_generation_unchanged')
     token = 'migration-preserve-' + uuid.uuid4().hex[:12]
     profile = {'volume': volume, 'claim': claim, 'pv': pv, 'replicas': replicas,
+               'allowOriginalMissingReplica': repair_missing,
                'attachment': get('volumeattachments.longhorn.io', name), 'target': target, 'node': meta(node),
                'token': token, 'sourceSHA256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                'ticket': {'id': token, 'generation': 0, 'type': 'longhorn-api', 'nodeID': backup_node,
@@ -220,6 +232,19 @@ def apply(run, profile, observe=False):
               'token': token, 'snapshot': token, 'backup': token + '-backup', 'forceDetach': False,
               'sourceSHA256': profile['sourceSHA256'], 'independentRestoreVerified': False}
     backup_done = False
+    original_replica_uids = {r['metadata']['uid'] for r in profile['replicas']}
+    def adopt_repaired_replicas(proof):
+        need(proof['token'] == token and proof['sourceSHA256'] == profile['sourceSHA256']
+             and proof['originalProfileSHA256'] == hashlib.sha256((run / 'profile.json').read_bytes()).hexdigest()
+             and set(proof['originalReplicaUIDs']) == original_replica_uids
+             and len(proof['replicas']) == 2
+             and original_replica_uids < {r['metadata']['uid'] for r in proof['replicas']}, 'exact_owned_normal_rebuild_proof')
+        profile['replicas'] = proof['replicas']
+        profile['allowOriginalMissingReplica'] = False
+        result['normalRebuildCreatedReplicaUIDs'] = sorted({r['metadata']['uid'] for r in proof['replicas']} - original_replica_uids)
+        result['desiredReplicaCountChanged'] = False
+    if profile.get('allowOriginalMissingReplica') and observe and (run / 'normal-rebuild-proof.json').exists():
+        adopt_repaired_replicas(json.loads((run / 'normal-rebuild-proof.json').read_text()))
     def event(phase, **values):
         with (run / 'events.jsonl').open('a') as out:
             out.write(json.dumps({'UTC': timestamp(), 'phase': phase, **values}) + '\n')
@@ -244,6 +269,21 @@ def apply(run, profile, observe=False):
             call(ticket_patch(profile))
             event('wait_original_engine_and_two_rw_replicas')
             wait('volumes.longhorn.io', name, lambda v: v['status']['state'] == 'attached' and v['status']['robustness'] == 'healthy' and v['status']['frontendDisabled'], 180)
+            if profile.get('allowOriginalMissingReplica'):
+                repaired = [r for r in items('replicas.longhorn.io') if r['spec']['volumeName'] == name]
+                need(len(repaired) == 2 and original_replica_uids < {r['metadata']['uid'] for r in repaired}
+                     and len({r['spec']['nodeID'] for r in repaired}) == 2
+                     and all(r['status']['currentState'] == 'running' and r['spec'].get('healthyAt')
+                             and not r['spec'].get('failedAt') for r in repaired), 'normal_manager_rebuild_two_healthy_distinct_nodes')
+                for replica in repaired:
+                    if replica['metadata']['uid'] not in original_replica_uids:
+                        need(any(o['uid'] == profile['volume']['metadata']['uid'] for o in replica['metadata'].get('ownerReferences', [])), 'new_replica_owned_by_original_volume')
+                proof = {'token': token, 'sourceSHA256': profile['sourceSHA256'],
+                         'originalProfileSHA256': hashlib.sha256((run / 'profile.json').read_bytes()).hexdigest(),
+                         'originalReplicaUIDs': sorted(original_replica_uids), 'replicas': repaired,
+                         'createdByExistingManagerDesiredReplicaReconciliation': True}
+                save(run, 'normal-rebuild-proof.json', proof)
+                adopt_repaired_replicas(proof)
             volume, replicas = bound_state(profile)
             engines = [e for e in items('engines.longhorn.io') if e['spec']['volumeName'] == name]
             need(len(engines) == 1 and engines[0]['status']['currentState'] == 'running'

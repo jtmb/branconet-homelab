@@ -1,5 +1,34 @@
 # Cluster maintenance and application migration plan
 
+**October 27, 22:05 UTC lineage:** the unused retired WordPress destination's
+original source/spec/UID chain and physical absence of both configured replica
+directories prove no initialized payload. No mount, initialization or backup was
+manufactured. Its preserved metadata is covered by control-plane recovery.
+Two current-writer recovery gates remain (Ruckus and Ingenium); three missing
+native Backup CRs include this unused claim. [Exact distinction and proof](docs/UNUSED-WORDPRESS-VOLUME-LINEAGE-20261027.md).
+Longhorn production capacity/placement/upgrade and final fleet/security/IAB
+acceptance remain; the full goal is active.
+
+**October 27, 22:03 UTC recovery:** the retained Ruckus source passed normal
+manager reconstruction of its missing second replica without changing desired
+count or losing the original, full native NAS backup, normal detach and an
+independent 166-block encrypted restore. Nine retained datasets total 542 blocks;
+all recovery scratch removed totals 1,886,146,560 allocated controller Linux bytes.
+All claim/volume identities and node/workload/Flux health survive. Three native-
+backup gaps remain: two current writers and unused WordPress. New retained HA
+data consumes node space; earlier capacity projections are dated and require
+refresh before production pulls. [Exact recovery](docs/DETACHED-VOLUME-NATIVE-RECOVERY-20261027.md).
+Full goal remains active.
+
+**October 27 native qualification:** all thirteen consumed official Longhorn
+candidate images passed actual containerd 2.4.2 unpacking in a separate
+controller instance, with every layer hash and committed snapshot chain checked.
+No containers started or production runtime changed. Removed all 4,402,479,104
+allocated scratch bytes after daemon exit/reference checks; only minimal unique
+configuration/source/results/log receipts remain. This does not replace fresh
+production cache/placement, recovery or guarded upgrade gates.
+[Exact native result and cleanup](docs/LONGHORN-NATIVE-UNPACK-20261027.md).
+
 **October 27, 21:47 UTC cleanup:** removed 27,804,061,696 allocated controller
 Linux bytes from 64 qualified terminal publisher stages and six stopped worker
 caches. All source/recipe/OCI/failure/primary files remain verified. Exact failed
