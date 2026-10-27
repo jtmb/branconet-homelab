@@ -8,6 +8,8 @@ Run in WSL/Linux with an extracted, reviewed binary and its expected SHA256:
 Use --expected-go-version 1.27.0 for the reviewed official 0.16.1 binary;
 the legacy custom-image profile defaults to 1.27.3. This is an identity check,
 not a statement that either toolchain is free of vulnerabilities.
+The reviewed v1 profile uses --expected-version 1.0.0 --expected-go-version 1.27.1
+and requires its empty HTTP listen-address override and unchanged config file.
 
 Requires Python 3.11+, util-linux unshare, and unprivileged user/network namespaces.
 Refuses missing isolation; never falls back to the host network. All evidence is
@@ -80,7 +82,8 @@ def limits():
 def isolated(args):
     work = args.run_dir
     result = {'status': 'failed', 'fixture': 'zip-radarr-postimport-cleanup',
-              'binarySHA256': args.sha256, 'expectedGoVersion': args.expected_go_version, 'milestones': [], 'limitations': [
+              'binarySHA256': args.sha256, 'expectedGoVersion': args.expected_go_version,
+              'expectedVersion': args.expected_version, 'milestones': [], 'limitations': [
                   'Mock queue disappearance simulates import; no real Radarr importer.',
                   'ZIP only; no encrypted/multipart archive or security-limit qualification.',
                   'Ownership is the invoking Linux UID/GID through a user namespace, not NAS ACLs.',
@@ -108,10 +111,13 @@ def isolated(args):
         need(sha(args.binary) == args.sha256, 'copied binary checksum mismatch')
         env = {'PATH': '/usr/bin:/bin', 'HOME': str(work), 'TMPDIR': str(work / 'tmp'),
                'LANG': 'C.UTF-8', 'TZ': 'UTC', 'GOMAXPROCS': '1', 'GOMEMLIMIT': '256MiB'}
+        if args.expected_version == '1.0.0':
+            # Match the intended headless chart override, including its empty value.
+            env['UN_WEBSERVER_LISTEN_ADDR'] = ''
         (work / 'tmp').mkdir()
         version = subprocess.check_output([str(args.binary), '--version'], env=env, cwd=work,
                                           timeout=10, preexec_fn=limits).decode()
-        need(re.search(r'unpackerr, version 0\.16\.1(?:\s|$)', version) is not None
+        need(re.search(r'unpackerr, version ' + re.escape(args.expected_version) + r'(?:\s|$)', version) is not None
              and re.search(r'\bgo' + re.escape(args.expected_go_version) + r'\b', version) is not None,
              'unexpected application/toolchain version')
         result['version'] = version.strip()
@@ -174,12 +180,13 @@ def isolated(args):
                           'delete_delay = "2s"\nretry_delay = "1m"\nmax_retries = 2\n'
                           'parallel = 1\nfile_mode = "0644"\ndir_mode = "0755"\n'
                           'remnant_action = "rename"\nlog_file = ""\n'
-                          '[webserver]\nmetrics = false\n[[radarr]]\n'
+                          '[webserver]\nmetrics = false\nlisten_addr = "0.0.0.0:5656"\n[[radarr]]\n'
                           f'url = "http://127.0.0.1:{server.server_port}"\n'
                           'api_key = "00000000000000000000000000000000"\n'
                           f'paths = [{json.dumps(str(downloads))}]\n'
                           'protocols = "torrent"\ndelete_orig = false\ndelete_delay = "2s"\n')
         config.chmod(0o600)
+        config_before = snapshot(config)
         log = work / 'unpackerr.log'
         with log.open('xb') as stream:
             process = subprocess.Popen([str(args.binary), '--config', str(config)], cwd=work,
@@ -235,7 +242,15 @@ def isolated(args):
                       imported={name: snapshot(library / name) for name in PAYLOADS},
                       mockRequests=state['requests'], cleanupDeletedOnlyExtractedPayloads=True)
         result['milestones'].append('post-import cleanup removed extracted files; original/archive/library retained')
+        need(snapshot(config) == config_before, 'fixture config unexpectedly rewritten')
+        if args.expected_version == '1.0.0':
+            with socket.socket() as probe:
+                probe.settimeout(1)
+                need(probe.connect_ex(('127.0.0.1', 5656)) != 0, 'headless override did not disable HTTP')
+            result['headlessOverrideAccepted'] = True
+        result['configurationPreserved'] = True
     except Exception as error:
+        result['status'] = 'failed'
         result['error'] = type(error).__name__ + ': ' + str(error)
     finally:
         if process is not None and process.poll() is None:
@@ -258,8 +273,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--binary', required=True, type=Path)
     parser.add_argument('--sha256', required=True)
-    parser.add_argument('--expected-go-version', choices=['1.27.3', '1.27.0'], default='1.27.3',
+    parser.add_argument('--expected-go-version', choices=['1.27.3', '1.27.0', '1.27.1'], default='1.27.3',
                         help='Explicit legacy custom or official vendor toolchain; never a security-fix claim')
+    parser.add_argument('--expected-version', choices=['0.16.1', '1.0.0'], default='0.16.1')
     parser.add_argument('--run-dir', type=Path, help=argparse.SUPPRESS)
     parser.add_argument('--parent-netns', type=int, help=argparse.SUPPRESS)
     args = parser.parse_args()
@@ -281,6 +297,7 @@ def main():
     command = [unshare, '--user', '--map-root-user', '--net', '--fork', '--kill-child=SIGKILL',
                sys.executable, str(Path(__file__).resolve()), '--binary', str(copy), '--sha256', args.sha256,
                '--expected-go-version', args.expected_go_version,
+               '--expected-version', args.expected_version,
                '--run-dir', str(work), '--parent-netns', str(os.stat('/proc/self/ns/net').st_ino)]
     with (work / 'isolation.log').open('xb') as output:
         child = subprocess.Popen(command, env={'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8'},

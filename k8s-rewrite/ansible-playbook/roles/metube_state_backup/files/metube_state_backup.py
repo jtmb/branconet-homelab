@@ -56,7 +56,7 @@ def protected(path, private=False):
 
 def verify_archive(stream, max_entries=4096, max_data=MAX_DATA, max_metadata=MAX_METADATA):
     """Read every archived byte in bounded chunks without extracting plaintext."""
-    need((max_entries, max_data, max_metadata) in [(4096, 1024**3, MAX_METADATA), (4096, MAX_DATA, MAX_METADATA), (8192, 1024**3, MAX_METADATA), (8192, MAX_DATA, MAX_METADATA), (131072, 16 * 1024**3, 64 * 1024**2)])
+    need((max_entries, max_data, max_metadata) in [(4096, 64 * 1024**2, MAX_METADATA), (4096, 1024**3, MAX_METADATA), (4096, MAX_DATA, MAX_METADATA), (8192, 1024**3, MAX_METADATA), (8192, MAX_DATA, MAX_METADATA), (131072, 16 * 1024**3, 64 * 1024**2)])
     seen = set(); manifest = None; total = 0
     with tarfile.open(fileobj=stream, mode='r|') as archive:
         for member in archive:

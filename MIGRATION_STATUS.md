@@ -1,5 +1,23 @@
 # Migration and maintenance status
 
+**Current work:** node cleanup delegated by James from the Ingenium chat. Its
+actual runtime/task-artifact audit is in progress; no node recovery yet claimed.
+Protect all data, live/rollback runtime, source/locks and unique evidence. No
+blind prune, threshold/replica reduction or BORTUS hold change. Ingenium remains
+owned/developed in its separate chat; latest measured payload is25,888,250,412bytes
+plus its published image and growth/rebuild headroom, with two actual replicas.
+
+**October27,06:57UTC acceptance:** Unpackerr1.0 and restart pass original config/
+native Secret/storage/integration checks, with the new web interface disabled.
+Delivery's relay/account-drop fix is saved and applied. Charts main/validated/
+live is `5b894f2491d0ca080d8e63cdb2a73050eb551878`; all33tests,30charts and31releases
+pass.63/63runtime digests are audited; FlareSolverr's KEV and vendor/host exceptions
+remain. All3nodes/57claims/31releases are healthy,27attached Longhorn volumes
+have two RW replicas and16remain detached. Capacity/recovery/Longhorn upgrade and
+final IAB are still open.579,760,128controller Linux bytes removed; cold backup
+and4,220,116-byte metadata packet authenticated on NAS. No node/Windows recovery
+is inferred. [Exact checkpoint](docs/UNPACKERR-V1-AND-DELIVERY-20261027.md).
+
 **Latest checkpoint — October27,06:04UTC:** snapshot-controller8.7.0 is deployed
 and verified, preserving all existing snapshots, storage, native Secrets and
 unrelated workload/Flux/node identities. Two exact-digest replicas are Ready

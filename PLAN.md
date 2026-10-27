@@ -1,5 +1,26 @@
 # Cluster maintenance and application migration plan
 
+**Current priority — October27:** James delegated node cleanup for Ingenium to
+this migration chat. Audit the actual containerd-k8s store and task artifacts;
+reclaim only proved unused material while preserving all data, source, required
+rollback/runtime and unique evidence. Report exact removals, measured filesystem
+space and Longhorn placement/payload headroom for the measured25,888,250,412-byte Ingenium
+data. No blind prune, threshold/replica reduction or BORTUS hold change. Ingenium
+application/image/deployment remains in its owner chat. Node audit is underway;
+no node-space recovery is yet claimed.
+
+**Latest accepted checkpoint — October27,06:57UTC:** official Unpackerr1.0 and
+its controlled restart preserve the original config, native Secret and storage.
+Its new web interface stays disabled. The delivery relay fix is maintained in
+charts source and existing Ansible configuration; main/validated/live is
+`5b894f2491d0ca080d8e63cdb2a73050eb551878`. All33tests/30charts/31releases pass.
+Fresh fleet coverage remains63/63digests; raw vendor/host findings remain open.
+Cleanup removed579,760,128controller Linux bytes; cold backup and4,220,116-byte
+evidence packet passed full authenticated NAS readback. This is not node or
+Windows disk recovery. Longhorn capacity/recovery/upgrade and final IAB/whole-
+goal acceptance remain open. Goal stays active.
+[Exact acceptance and remaining work](docs/UNPACKERR-V1-AND-DELIVERY-20261027.md).
+
 **Latest checkpoint — October27,06:04UTC:** snapshot-controller8.7.0 is deployed
 and separately verified: two exact-digest Ready/zero-restart replicas, unchanged
 original snapshots/claims/native Secrets/Flux/other workloads. Three official

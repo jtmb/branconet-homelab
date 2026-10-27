@@ -1,6 +1,70 @@
 # Maintenance output ownership and reconciliation
 
+## Node cleanup ownership, October27
+
+James delegated the node cleanup from the Ingenium chat to this migration chat.
+Reuse the same existing F-backed root/UUID below; new metadata only uses
+`node-cleanup-20261027` and retained operator source. Initial audit writes nothing
+on a node: privilege input stays in non-echoing terminal/RAM/SSH stdin; inspect
+the actual containerd-k8s socket/root, every runtime namespace, live/stopped
+container and snapshot references, filesystem allocations and protected original
+data. No model, live workload, PVC/Longhorn/NAS data, required rollback image,
+original MySQL volume, source or unique failure evidence is disposable.
+No blind prune or floor/replica reduction. Select actual bounded candidates only
+after the audit; record their source/regenerator, age/inactivity, exact identity,
+references, review and preservation plan before mutation. Node evidence and
+subsequent exact removed paths/bytes stay here; do not move active workloads or
+create node build/dependency trees. Regenerate read-only metadata from the
+retained audit source with fresh strict SSH identities. Cluster/runtime sources
+and all previous encrypted recovery remain protected.
+
 ## Snapshot-controller upstream operation, October27
+
+Unpackerr1.0 checkpoint reconciliation completed:579,760,128allocated controller
+Linux bytes removed, comprising46,493,696B of proven reproducible fixture copies
+and533,266,432B/2397paths from three terminal successful publisher exports/tools.
+Exact absolute targets/bytes and source/regenerator/inode/process/mount/lock
+proofs: `operator-control/unpackerr-v1-{fixture,publisher}-scratch-`
+`{plan,reconciliation}.json`. Primary source/locks/Git objects, runtime, raw scans,
+native/data/recovery, unique failures and minimal receipts remain. Retain failed
+publisher stages060844f1d0244cd684c31394bcecfb6b/f20435bfaa7d4f0688a8180c16ff2860
+in full; preserve the existing sentinel files/parent for their stated provenance/
+Windows-handle proof gap. The isolated Git worktree is retained as required source.
+No node/Windows disk recovery or image/volume prune occurred.
+
+New evidence-only packet:4,220,116bytes, SHA256
+`374a1b84a7978c9c55251d544d227742aa5fbdcfbeb4410a8fa853ab964d8914`;
+every member and full age/NAS readback passed. Receipts use the
+`unpackerr-v1-metadata` prefix. Its separate20,692-byte cold ciphertext is already
+NAS-authenticated and is referenced, not duplicated inside it. No previous
+metadata packet/scanner DB/payload copy is included.
+[Exact accepted release and reconciliation](UNPACKERR-V1-AND-DELIVERY-20261027.md).
+
+The subsequent Unpackerr1.0 qualification reuses this same root/physical F drive.
+Its exact source snapshot uses `control-source/unpackerr-v1-20261027` (five
+small scripts, no dependency copies); actual observations/cold recovery use
+`platform-upstream-review-20261027/unpackerr-v1-upgrade`. Preserve all original
+PVC/native Secret/data, the accepted0.16image and fresh encrypted recovery before
+any Flux adoption. Regenerate read-only observations with the frozen explicit
+`official-1.0` profile; never repeat a cold/apply phase blindly.
+
+The charts remote advanced during read-only preflight. Its source checkout is
+preserved; an isolated Git source worktree uses
+`control-source/unpackerr-v1-charts` on this same F filesystem, with no build,
+dependencies or generated runtime. Keep it as required source until its branch/
+remote/acceptance are reconciled. Preserve Ingenium's existing preparation and
+publisher changes. The cold profile is tightened to64MiB for this exact original
+17,148-byte configuration; all other app/generation limits stay unchanged.
+Declared child `platform-upstream-review-20261027/unpackerr-v1-qualification`
+holds one exact public-image binary extracted from its digest-verified final
+registry layer (no whole image/layer saved), source-bound fixture metadata and
+logs. The existing fixture's generated `unpackerr-fixture-*` child stays under
+this same root. No app config, credentials, downloads or NAS data enter it.
+Regenerate from the recorded immutable registry descriptor and source-bound
+fixture command. Preserve unique failed/acceptance evidence; remove inactive
+reproducible binary/fixture scratch after full safety checks. Before download,
+record Windows C and native/physical F space and a128MiB total stage estimate,
+retaining15GiB floors. No build/dependency/cache tree or second root is created.
 
 Completed reconciliation:1,679,360allocated Linux bytes removed from the exact
 inactive scanner fanal DB(1,646,592B), its three empty directories(12,288B) and

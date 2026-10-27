@@ -35,7 +35,7 @@ $env:TEMP = $stateRoot + '/tmp'
 $env:TMP = $env:TEMP
 New-Item -ItemType Directory -Path $env:TEMP -Force | Out-Null
 $run = [Guid]::NewGuid().ToString('N')
-$keeper = Start-Process -FilePath wsl.exe -ArgumentList '-d Ubuntu -u brajam -- /usr/bin/sleep infinity' -WindowStyle Hidden -PassThru
+$keeper = Start-Process -FilePath wsl.exe -ArgumentList '-d Ubuntu -u root --exec /usr/sbin/runuser -u brajam -- /usr/bin/sleep infinity' -WindowStyle Hidden -PassThru
 $watcher = $null
 $result = 1
 try {

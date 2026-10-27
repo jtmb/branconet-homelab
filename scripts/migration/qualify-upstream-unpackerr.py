@@ -4,6 +4,8 @@
 Run in WSL with --mode baseline|after|restart and --output-dir under the existing
 native task root. Secret/configuration values are HMACed in process memory; raw
 logs and configuration are never written. Does not scale, download or delete.
+Use --profile official-1.0 for the pinned 0.16.1 to 1.0.0 transition and its
+empty listen-address override; the default preserves the earlier 0.16 profile.
 """
 import argparse
 import datetime
@@ -46,7 +48,13 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--mode', choices=['baseline', 'after', 'restart'], required=True)
     p.add_argument('--output-dir', type=Path, required=True)
+    p.add_argument('--profile', choices=['official-0.16', 'official-1.0'], default='official-0.16')
     a = p.parse_args()
+    old_image, new_image, child_digest = OLD, NEW, RUNTIME
+    if a.profile == 'official-1.0':
+        old_image = NEW
+        new_image = 'ghcr.io/unpackerr/unpackerr:1.0.0@sha256:21c6bfa4f4c86ab2dd0232da0dfb3ed4c5d929e42e09894e7b4d2154d0c144f6'
+        child_digest = 'sha256:4a3bba3267fd83da7ff8871c73feddcc6ec00ee4de303043ed63c2d38f8b0a4c'
     os.umask(0o077)
     need(os.name == 'posix' and ROOT.is_mount() and ROOT in a.output_dir.parents
          and a.output_dir.resolve() == a.output_dir, 'canonical_native_output')
@@ -72,7 +80,7 @@ def main():
          and all(dep['status'].get(k) == 1 for k in ['replicas', 'readyReplicas', 'availableReplicas', 'updatedReplicas'])
          and hr['status'].get('observedGeneration') == hr['metadata']['generation']
          and any(c['type'] == 'Ready' and c['status'] == 'True' for c in hr['status'].get('conditions', [])), 'ready_reconciled_writer')
-    image = OLD if a.mode == 'baseline' else NEW
+    image = old_image if a.mode == 'baseline' else new_image
     pods = json.loads(call(['kubectl', '-n', 'plex', 'get', 'pods', '-l', 'app=unpackerr', '-o', 'json']))['items']
     need(len(pods) == 1, 'one_owned_pod')
     pod = pods[0]
@@ -80,7 +88,7 @@ def main():
     statuses = pod['status']['containerStatuses']
     # containerd may report the immutable index or its resolved platform child.
     # Both are pinned by the reviewed registry metadata; arbitrary digests fail.
-    allowed_runtime = {OLD.rsplit('@', 1)[1]} if a.mode == 'baseline' else {NEW.rsplit('@', 1)[1], RUNTIME}
+    allowed_runtime = {old_image.rsplit('@', 1)[1]} if a.mode == 'baseline' else {new_image.rsplit('@', 1)[1], child_digest}
     need(not pod['metadata'].get('deletionTimestamp') and pod['status']['phase'] == 'Running'
          and len(containers) == len(statuses) == 1 and statuses[0]['ready']
          and containers[0]['name'] == 'unpackerr' and containers[0]['image'] == image
@@ -117,7 +125,8 @@ def main():
     raw = body = None
     need(0 < len(files) <= 32 and any(n.endswith('.conf') for n in files), 'original_configuration_present')
     version_text = call(['kubectl', '-n', 'plex', 'exec', podname, '--', '/unpackerr', '--version']).decode()
-    version = re.search(r'unpackerr, version (0\.16\.1)\s', version_text)
+    expected_version = '1.0.0' if a.profile == 'official-1.0' and a.mode != 'baseline' else '0.16.1'
+    version = re.search(r'unpackerr, version (' + re.escape(expected_version) + r')\s', version_text)
     go_version = re.search(r'go version:\s+go([0-9.]+)', version_text)
     logs = call(['kubectl', '-n', 'plex', 'logs', podname, '--since=3m', '--tail=1000'], limit=2 * 1024**2).decode()
     integration = {'radarrMention': bool(re.search('radarr', logs, re.I)),
@@ -131,6 +140,26 @@ def main():
     logs = None
     normalized = json.loads(json.dumps(dep['spec']))
     normalized['template']['spec']['containers'][0]['image'] = '<reviewed-image>'
+    extra_files = {}
+    if a.profile == 'official-1.0':
+        env = normalized['template']['spec']['containers'][0].get('env', [])
+        # Kubernetes omits an explicitly empty string from its JSON response.
+        need(env == [] if a.mode == 'baseline' else len(env) == 1
+             and set(env[0]) <= {'name', 'value'}
+             and env[0].get('name') == 'UN_WEBSERVER_LISTEN_ADDR'
+             and env[0].get('value', '') == '', 'only_reviewed_headless_override')
+        normalized['template']['spec']['containers'][0]['env'] = []
+        need(go_version is not None and go_version[1] == ('1.27.0' if a.mode == 'baseline' else '1.27.1'),
+             'reviewed_vendor_toolchain')
+        if a.mode != 'baseline':
+            old_files = json.loads((a.output_dir / 'baseline.json').read_bytes())['stable']['files']
+            extra_files = {k: v for k, v in files.items() if k not in old_files}
+            need(set(extra_files) <= {'unpackerr.history.jsonl'}, 'unreviewed_new_config_file')
+            files = {k: v for k, v in files.items() if k in old_files}
+            listeners = call(['kubectl', '-n', 'plex', 'exec', podname, '--', 'cat', '/proc/net/tcp', '/proc/net/tcp6']).decode()
+            need(not any(len(parts := line.split()) >= 4 and parts[3] == '0A'
+                         and int(parts[1].rsplit(':', 1)[-1], 16) == 5656 for line in listeners.splitlines()),
+                 'headless_http_listener_present')
     annotations = normalized['template']['metadata'].get('annotations', {})
     annotations.pop('branconet.lan/security-restart', None)
     if not annotations:
@@ -150,6 +179,7 @@ def main():
               'keyBinding': mac('unpackerr-upstream-v1'), 'image': image, 'imageID': statuses[0]['imageID'],
               'podUID': pod['metadata']['uid'], 'restarts': statuses[0]['restartCount'],
               'appVersion': version[1], 'goVersion': go_version[1] if go_version else None, 'integrationLogChecks': integration,
+              'profile': a.profile, 'reviewedAdditionalFiles': extra_files,
               'observedUTC': datetime.datetime.now(datetime.timezone.utc).isoformat(),
               'sourceSHA256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               'limitations': ['Log integration checks do not prove a real Arr import or NAS archive extraction.'],

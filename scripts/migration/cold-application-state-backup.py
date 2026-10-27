@@ -58,14 +58,14 @@ def main():
     parser.add_argument('--reader-uid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--reader-gid', type=int, choices=[0, 33, 999, 1000], required=True)
     parser.add_argument('--apply', action='store_true', help='Explicit execution; no implicit dry-run mutation')
-    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026', 'upstream-wordpress-20261026', 'upstream-plex-20261026'], default='original')
+    parser.add_argument('--generation', choices=['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'unpackerr-v1-20261027', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026', 'upstream-wordpress-20261026', 'upstream-plex-20261026'], default='original')
     parser.add_argument('--archive-transport', choices=['local', 'windows-nas'], default='local')
-    parser.add_argument('--resume-receipt', type=pathlib.Path, help='Static sites or upstream WordPress: reverify an existing ciphertext and its still-running original read-only reader')
+    parser.add_argument('--resume-receipt', type=pathlib.Path, help='Reviewed static-site, WordPress or Unpackerr v1 profile: reverify the same ciphertext and original read-only reader')
     parser.add_argument('--resume-sha256', help='Exact original failed receipt SHA256; original receipt is never overwritten')
     args = parser.parse_args()
     need(args.apply and os.name == 'posix' and args.reader_uid == args.reader_gid)
     need(bool(args.resume_receipt) == bool(args.resume_sha256))
-    need(not args.resume_receipt or args.application in STATIC_TARGETS or (args.application == 'wordpress' and args.generation == 'upstream-wordpress-20261026'))
+    need(not args.resume_receipt or args.application in STATIC_TARGETS or (args.application == 'wordpress' and args.generation == 'upstream-wordpress-20261026') or (args.application == 'unpackerr' and args.generation == 'unpackerr-v1-20261027'))
     need((args.application in STATIC_TARGETS) == (args.generation == 'upstream-static-sites-20261026'))
     need(args.application not in STATIC_TARGETS or args.reader_uid == 0)
     need(args.application not in STATIC_TARGETS or args.node == 'workernode1')
@@ -90,7 +90,7 @@ def main():
     max_entries = 131072 if args.application == 'plex' else 8192 if args.application == 'wordpress' else 4096
     # Each finite static-site claim is exactly1GiB; capture its entire tree,
     # with a tighter complete-data bound than the generic4GiB app profile.
-    max_data = 1024**3 if args.application in STATIC_TARGETS or upstream_wordpress else 16 * 1024**3 if args.application == 'plex' else shared.MAX_DATA
+    max_data = 64 * 1024**2 if args.generation == 'unpackerr-v1-20261027' else 1024**3 if args.application in STATIC_TARGETS or upstream_wordpress else 16 * 1024**3 if args.application == 'plex' else shared.MAX_DATA
     max_metadata = 64 * 1024**2 if args.application == 'plex' else shared.MAX_METADATA
     # The cold archive is a new transfer stage. Measure C and the destination
     # before starting it; existing archives and running work are left intact.
@@ -169,6 +169,9 @@ def main():
     if args.generation == 'upstream-unpackerr-20261025':
         need(args.application == 'unpackerr')
         original_image = 'docker.io/library/unpackerr-security-20261023@sha256:6342be9c7797b126633a56948b4dab131fde45fde3b8b173a3c84a8f4efc6213'
+    if args.generation == 'unpackerr-v1-20261027':
+        need(args.application == 'unpackerr' and args.node == 'workernode2' and args.reader_uid == 1000)
+        original_image = 'ghcr.io/unpackerr/unpackerr:0.16.1@sha256:406586865431b40b29353d899fb75a788f5384743f7f381444db5fe55d206914'
     if args.generation == 'upstream-homepage-20261026':
         need(args.application == 'homepage')
         original_image = 'docker.io/library/homepage-security-20261023@sha256:7f91e85fa5d394b4be0f60686e40bf93e28e7ca0074c60754f3f02a1caa66bd4'
