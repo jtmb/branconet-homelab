@@ -1,5 +1,24 @@
 # Migration and maintenance status
 
+**October27 capacity audit:** complete authentication passed for all 14 reviewed
+Longhorn images and 97 distinct layers. No payload was staged or imported.
+Native cache/snapshot chains were read on all three nodes. The workers fit the
+complete calculated image projection; master needs 2,529,797,121 more bytes for
+core components or 4,033,524,737 for the complete set, preserving its existing
+floors/reserve and margin. No upgrade, placement change or node deletion occurred.
+One empty controller directory was reference-qualified and removed (4,096 Linux
+bytes); 143 minimal source/input/failure/measurement paths remain. No Windows
+recovery claim. [Exact audit](docs/LONGHORN-CAPACITY-AUDIT-20261027.md).
+
+The next authorized step is qualification of exact old master SDK/module-cache
+copies, not entire `_output` or source trees. Observed candidates total
+1,834,442,752 allocated bytes; their complete provenance/reference/retention checks
+and Ansible retirement have not run. Protected archives, historical binaries and
+all runtime data remain. [Selection and safety contract](docs/MASTER-GENERATED-INPUT-CLEANUP-20261027.md).
+Ingenium verification still holds driver and unrelated image/placement changes.
+The full goal remains active; recovery coverage, upgrade implementation, vendor/
+host exceptions and final Seerr/YTPTube IAB/fleet acceptance remain open.
+
 **October27,13:04UTC:** recovered **10,936,221,696 allocated worker2 Linux bytes**
 by retiring only two inactive legacy Plex trees after all 126,757 entries passed
 independent restore/metadata checks and full NAS age authentication. The archive

@@ -1,5 +1,51 @@
 # Maintenance output ownership and reconciliation
 
+## Planned master generated-input qualification, October27
+
+Owner and physical F-backed root remain unchanged. Reserve only
+`node-cleanup-20261027/master-generated-cleanup` for its frozen operators, exact
+inventory, source/archive bindings and retirement/cleanup receipts. The planned
+128 MiB metadata-only stage requires C: and the actual destination retain 15 GiB
+after it. No source/dependency/SDK tree, image or payload archive may be copied
+into it. Protect original node sources/locks, SDK and source archives, failed
+evidence and old executables. Regeneration and exact targets are in
+[the bounded selection](MASTER-GENERATED-INPUT-CLEANUP-20261027.md).
+No inventory/apply has run and no deletion eligibility is credited yet. Keep
+failed evidence; reconcile owned scratch after each actual phase.
+
+## Longhorn image capacity measurement, October27
+
+Owner remains this migration chat and the single existing F-backed task root,
+ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`, backed by
+`F:\branconet-build-storage\native-build-20261025.ext4`. Reuse
+`platform-upstream-review-20261027/longhorn-capacity-budget` for its frozen
+measurement source, source/input bindings, progress and per-layer receipts.
+Protect the existing candidate metadata, vendor manifest, scans, recovery
+archives, node data and dirty repositories. No local image archive, dependency,
+compiler output or blob cache is created. Public compressed layers pass through
+bounded RAM readers; record complete compressed and uncompressed hashes, byte
+counts and TAR allocation projections. These projections are calculated bounds,
+not a claim of native containerd unpacking. This operation has no cluster
+mutation mode. Regenerate measurements from the same pinned public digests using
+`scripts/migration/measure-longhorn-upgrade-images.py`; retain completed and
+failed source/receipts rather than replaying into existing results. Configure
+all temporary paths within its `tmp` child. Require C: and the actual task
+filesystem to retain 15 GiB after the bounded 8 MiB metadata stage. Reconcile
+owned empty temporary directories after the measured job is terminal; retain
+source, input bindings, public measurement receipts and unique failure evidence.
+
+Completed measurement: 14 images / 97 distinct layers fully authenticated,
+1,164,833,698 distinct compressed bytes read, zero image payload files saved.
+Exact three-node cache and committed chain metadata collected without mutation.
+The original unsupported-CLI attempt and corrected successful source/receipts
+remain. After the actual job was terminal/collected, full reference, namespace,
+source and input checks qualified only the empty `tmp` directory: 4,096 allocated
+controller Linux bytes removed. `output-inventory.json` records 143 retained
+source/provenance/measurement/failure paths and exact hashes/reasons; no temporary
+path remains. Retained logical bytes excluding that inventory: 686,830. No new
+dependency, compiler, blob cache or extracted image tree. No node/Windows recovery
+is inferred. [Exact dated budget and limits](LONGHORN-CAPACITY-AUDIT-20261027.md).
+
 ## Legacy Plex preservation, October27
 
 Owner/root/physical UUID remain unchanged. Use only

@@ -1,5 +1,23 @@
 # Cluster maintenance and application migration plan
 
+**Latest read-only capacity checkpoint — October27:** all 14 reviewed Longhorn
+images and 97 distinct layers authenticated in a bounded RAM stream. Exact native
+cache/committed snapshot chains were checked on all three nodes. Both workers fit
+the full calculated image projection; master still needs 2,529,797,121 additional
+bytes for core-node components, or 4,033,524,737 for the complete set. Global floors,
+reserves, images, volumes and placements are unchanged. The owner verification
+hold remains; no upgrade or node deletion occurred in this checkpoint.
+[Exact method and evidence](docs/LONGHORN-CAPACITY-AUDIT-20261027.md).
+
+Next: qualify only the two original master SDK copies and two old Go module-cache
+trees, preserving sources, locks, archives and old executables. The read-only
+selection measures 1,834,442,752 allocated bytes; no deletion eligibility is
+inferred from its names. The full reference/identity/archive/72-hour checks and
+Ansible retirement remain to execute under
+[the bounded cleanup plan](docs/MASTER-GENERATED-INPUT-CLEANUP-20261027.md).
+The full goal remains active with recovery, platform, vendor/host and final IAB/
+fleet acceptance gates intact.
+
 **Latest checkpoint — October27,13:04UTC:** the two inactive worker2 Plex trees
 are preserved on NAS and retired after independent restoration of every file,
 directory and symlink. Recovered **10,936,221,696 allocated node Linux bytes**;

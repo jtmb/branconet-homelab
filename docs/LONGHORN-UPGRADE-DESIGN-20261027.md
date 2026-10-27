@@ -1,5 +1,14 @@
 # Longhorn upgrade design: held, not implemented
 
+**13:39UTC capacity calculation:** all 14 candidate images and 97 distinct layers
+passed complete compressed/uncompressed authentication without staging payloads.
+Exact native cache/snapshot chains were checked on all three nodes. Both workers
+fit the complete candidate projection. Master remains 2,529,797,121 bytes short
+for core-node components and 4,033,524,737 bytes short for the full set, after
+unchanged floors and margin. This is a calculated allocation projection, not
+native unpacking. [Method, exact budgets and cleanup candidates](LONGHORN-CAPACITY-AUDIT-20261027.md).
+No driver/placement/image import was performed during Ingenium verification.
+
 **13:04UTC:** qualified Plex retirement clears worker2's scheduling floor; all
 three disks are schedulable. This is not a pull/unpack/coexistence budget. The
 native configuration SystemBackup and offline control-plane recovery below have
