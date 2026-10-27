@@ -1,0 +1,79 @@
+{
+  "UTC": "2026-10-27T10:47:09.194191+00:00",
+  "originalVolumeUIDsPreserved": 43,
+  "currentVolumeCount": 44,
+  "boundPVCCount": 58,
+  "nodesReady": true,
+  "unavailableDeployments": [],
+  "unavailableDaemonSets": [],
+  "unboundClaims": [],
+  "storageConvention": {
+    "nodes": [
+      {
+        "name": "masternode",
+        "tags": []
+      },
+      {
+        "name": "workernode1",
+        "tags": []
+      },
+      {
+        "name": "workernode2",
+        "tags": []
+      }
+    ],
+    "allowEmptyNodeSelectorVolume": "true",
+    "defaultClass": {
+      "uid": "48c9bbe8-16b9-4780-bc9d-ae51f2513c7c",
+      "parameters": {
+        "backupTargetName": "default",
+        "csi.storage.k8s.io/node-expand-secret-name": "longhorn-crypto",
+        "csi.storage.k8s.io/node-expand-secret-namespace": "longhorn-system",
+        "csi.storage.k8s.io/node-publish-secret-name": "longhorn-crypto",
+        "csi.storage.k8s.io/node-publish-secret-namespace": "longhorn-system",
+        "csi.storage.k8s.io/node-stage-secret-name": "longhorn-crypto",
+        "csi.storage.k8s.io/node-stage-secret-namespace": "longhorn-system",
+        "csi.storage.k8s.io/provisioner-secret-name": "longhorn-crypto",
+        "csi.storage.k8s.io/provisioner-secret-namespace": "longhorn-system",
+        "dataEngine": "v1",
+        "dataLocality": "disabled",
+        "disableRevisionCounter": "true",
+        "encrypted": "true",
+        "fromBackup": "",
+        "fsType": "ext4",
+        "numberOfReplicas": "2",
+        "staleReplicaTimeout": "30",
+        "unmapMarkSnapChainRemoved": "ignored"
+      },
+      "volumeBindingMode": "Immediate"
+    },
+    "newVolume": {
+      "name": "pvc-1005b62c-b731-4c76-a68c-f635ef74c378",
+      "uid": "aeb47952-61f5-4bc4-a8f6-bfa274eacf86",
+      "state": "detached",
+      "nodeSelector": [],
+      "replicasDesired": 2,
+      "replicas": [
+        {
+          "name": "pvc-1005b62c-b731-4c76-a68c-f635ef74c378-r-0847819c",
+          "node": "workernode1",
+          "state": "stopped"
+        },
+        {
+          "name": "pvc-1005b62c-b731-4c76-a68c-f635ef74c378-r-abf8ba99",
+          "node": "masternode",
+          "state": "stopped"
+        }
+      ]
+    }
+  },
+  "totalNodeRecoveryAllocatedBytes": 11884933120,
+  "postRetirementMetadataNAS": {
+    "bytes": 297236,
+    "sha256": "9fa00f5d92356716be0c9c826f85c7a59d63e198c2c965ce58e321c7d012e77d",
+    "fullReadbackAuthentication": true
+  },
+  "windowsRootThumbprint": "D49EB5F0E6510D6420FA305F8C11BF163361D9F2",
+  "runtimeImagesPruned": false,
+  "globalStorageSettingsChanged": false
+}

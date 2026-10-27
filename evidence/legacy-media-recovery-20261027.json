@@ -1,0 +1,124 @@
+{
+  "owner": "01a12045-bf7e-73b3-8557-752d17c72ffd",
+  "UTC": "2026-10-27T09:13:28.372344+00:00",
+  "mediaFileBytes": 5639537729,
+  "masterRemovedAllocatedBytes": 5639553024,
+  "totalNodeRecoveryAllocatedBytes": 9787703296,
+  "originalNonselectedDataPreserved": true,
+  "sourceDirectoryRemoved": false,
+  "mediaNASFullSHA256ReadbacksPassed": true,
+  "nasDenyWriteAndDeleteHandlesHeldThroughRetirement": true,
+  "recoveryMetadataCipherBytes": 61652,
+  "recoveryMetadataCipherSHA256": "a4dcf9aa883463add42f9d426158e78d2e2e503c27e2509af1c4db790ab6192a",
+  "recoveryMetadataNASAuthenticated": true,
+  "privateExactPathReceiptRelativeToTaskRoot": "node-cleanup-20261027\\legacy-media-recovery-d69c6e4627d049108d65185fd828de56\\retirement-result-38dd2ba11b0c48b7af77f75a9f00906d.json",
+  "privateExactPathReceiptSHA256": "75360ddd7be9f60e8a860ae91ac73901d689cb83962b5ad77a8d7cd4798e81dd",
+  "liveDownloaderPodNASRead": {
+    "uid": 1000,
+    "files": [
+      {
+        "bytes": 3447044670,
+        "headerMatched": true
+      },
+      {
+        "bytes": 2192493059,
+        "headerMatched": true
+      }
+    ]
+  },
+  "liveDownloaderPVCUID": "7c3e8710-a79d-408f-b8fb-df3b87bdb0de",
+  "liveDownloaderPVUID": "923ba238-3d01-4421-9980-d9cda9747e0b",
+  "allOriginalLonghornVolumeUIDsPreserved": 43,
+  "boundPVCs": 57,
+  "longhornDisks": [
+    {
+      "node": "masternode",
+      "nodeUID": "d20b1b17-5500-4e61-830d-851814b0714c",
+      "disk": "default-disk-1c47bedee02d7301",
+      "diskUUID": "52e160c1-db49-43f9-bef3-6b5bab572b42",
+      "maximum": 115702075392,
+      "available": 29989273600,
+      "scheduled": 7516192768,
+      "floorShortfallBytes": 0,
+      "conditions": [
+        {
+          "type": "Ready",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "Schedulable",
+          "status": "True",
+          "reason": ""
+        }
+      ]
+    },
+    {
+      "node": "workernode1",
+      "nodeUID": "bc7e9714-a70c-483a-94a4-43c0cb21ad81",
+      "disk": "default-disk-e27efaf3fd6ded55",
+      "diskUUID": "ec68ff17-a66d-41f4-b600-fa0b6bb44005",
+      "maximum": 249322430464,
+      "available": 121215385600,
+      "scheduled": 68719476736,
+      "floorShortfallBytes": 0,
+      "conditions": [
+        {
+          "type": "Ready",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "Schedulable",
+          "status": "True",
+          "reason": ""
+        }
+      ]
+    },
+    {
+      "node": "workernode2",
+      "nodeUID": "2d560ca1-46b3-4a41-b875-39614e3d7ae1",
+      "disk": "default-disk-7119ce24364c6cfd",
+      "diskUUID": "3e98444f-4c34-438d-a0d3-5181c9c80a15",
+      "maximum": 115702075392,
+      "available": 30408704000,
+      "scheduled": 68719476736,
+      "floorShortfallBytes": 0,
+      "conditions": [
+        {
+          "type": "Ready",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "Schedulable",
+          "status": "True",
+          "reason": ""
+        }
+      ]
+    }
+  ],
+  "capacityScenario": {
+    "payloadAllocationBytesReportedByOwner": 7519682560,
+    "filesystemOverheadBudgetBytes": 536870912,
+    "operatingMarginAboveEvictionBytes": 1073741824,
+    "imageOnWorkernode1Only": true,
+    "nodes": {
+      "masternode": {
+        "observedAvailableBytes": 24758341632,
+        "imagefsEvictionFloorBytes": 17355311309,
+        "additionalBytesNeededForScenario": 1727264973
+      },
+      "workernode1": {
+        "observedAvailableBytes": 110005731328,
+        "imagefsEvictionFloorBytes": 37398364570,
+        "additionalBytesNeededForScenario": 0
+      },
+      "workernode2": {
+        "observedAvailableBytes": 25140260864,
+        "imagefsEvictionFloorBytes": 17355311309,
+        "additionalBytesNeededForScenario": 1345345741
+      }
+    }
+  }
+}

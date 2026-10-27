@@ -1,19 +1,48 @@
 # Cluster maintenance and application migration plan
 
-**Current priority — October27:** James delegated node cleanup for Ingenium to
-this migration chat. Audit the actual containerd-k8s store and task artifacts;
-reclaim only proved unused material while preserving all data, source, required
-rollback/runtime and unique evidence. Report exact removals, measured filesystem
-space and actual image allocation. James clarified that the image download is
-1,209,310,265 bytes; development checkout/history inventories are not an image
-pull prerequisite. Persistent application state and its sizing belong to the
-Ingenium owner chat. No blind prune, threshold/replica reduction or BORTUS hold change. Ingenium
-application/image/deployment remains in its owner chat. Worker1 tool cleanup
-recovered 904,888,320 bytes; the image is already cached there. Worker2 thumbnail
-cleanup recovered 3,243,261,952 bytes and restored Longhorn schedulability.
-Master still falls below its unchanged floor; worker2 requires another 7.38 GB
-before the separately measured 8.86 GB state fits above that floor, before growth
-and rebuild margin. [Cleanup proof and remaining capacity](docs/NODE-TOOL-CLEANUP-20261027.md).
+**Current checkpoint — October27,10:21UTC:** delegated node cleanup recovered
+**11,884,933,120 allocated Linux bytes**: worker1 duplicate tools 904,888,320;
+worker2 generated Plex thumbnails 3,243,261,952; master verified media duplicates
+5,639,553,024; worker2 independently restored closed journals 2,097,229,824.
+All three Longhorn disks are schedulable; all 57 claims remain bound and the
+43 original Longhorn volume identities survive. No images, volumes, models,
+active journals, original Gluster/MySQL or unrelated data were pruned. Required
+NAS media and authenticated recovery artifacts remain.
+[Media proof](docs/LEGACY-MEDIA-RECOVERY-20261027.md),
+[journal proof](docs/ARCHIVED-JOURNAL-OFFLOAD-20261027.md),
+[earlier tool/cache proof](docs/NODE-TOOL-CLEANUP-20261027.md).
+
+Ingenium application/image/deployment remains with its owner chat. Its exact
+image is already cached on worker1; source-tree sizes are not image-pull needs.
+The owner's latest payload is 7,519,682,560 allocated bytes. With 512 MiB
+filesystem overhead and 1 GiB operating margin, worker1 plus worker2 clear the
+current measured 15% kubelet eviction floor for initial staging. Worker2 has
+27,218,767,872 bytes available and 733,161,267 bytes left beyond this complete
+budget. Master does not qualify for that payload. This is an observed budget,
+not an enforced reservation or full-volume growth guarantee; actual placement
+and actual consumption must be checked before any source cutover. Preserve this
+headroom during staging: no competing image pulls or platform upgrade writes.
+No global floors, reservations or replica counts were changed. Native Kubernetes
+Secrets remain authoritative and BORTUS's separate application hold remains.
+
+The matching Windows public root is confirmed in CurrentUser/Root after the
+user approved its certificate prompt. Longhorn recovery/upgrade, unresolved
+vendor/host findings and final normal Seerr/YTPTube IAB acceptance remain open;
+the full five-milestone goal stays active.
+
+**10:47UTC verification:** all original 43 volume UIDs survive; Ingenium's owner
+added one new empty 11 GiB claim, giving 44 Longhorn volumes and 58 bound claims.
+The new detached volume currently has stopped replicas assigned to master and
+worker1, with an empty per-volume selector. This is not the qualified worker1/
+worker2 pair; do not infer that data copying is safe from Bound status. No new
+application pods exist yet. Existing deployments/daemonsets remain available.
+All Longhorn node tags are empty and `allow-empty-node-selector-volume=true`.
+There is no established tagged-pair convention; a scoped selector must be
+prepared by the application owner without changing global defaults. Added tags
+alone do not relocate existing replicas.
+[Longhorn storage tags](https://longhorn.io/docs/1.13.0/nodes-and-volumes/nodes/storage-tags/).
+Cleanup metadata packet (297,236 bytes) passed authenticated NAS readback;
+SHA-256 `9fa00f5d92356716be0c9c826f85c7a59d63e198c2c965ce58e321c7d012e77d`.
 
 **Latest accepted checkpoint — October27,06:57UTC:** official Unpackerr1.0 and
 its controlled restart preserve the original config, native Secret and storage.

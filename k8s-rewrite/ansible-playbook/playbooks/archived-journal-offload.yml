@@ -1,0 +1,7 @@
+---
+- name: Inspect or retire only NAS-backed closed worker2 journal files
+  hosts: workernode2
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  roles: [archived_journal_offload]

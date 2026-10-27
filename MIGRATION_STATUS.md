@@ -1,29 +1,45 @@
 # Migration and maintenance status
 
-**Current work:** node cleanup delegated by James from the Ingenium chat. Its
-actual runtime/task-artifact audit removed 904,888,320 bytes of duplicate
-BuildKit tools from worker1 and 3,243,261,952 bytes of generated legacy Plex
-thumbnails from worker2: 4,148,150,272 total node bytes. Source/locks, failed
-build state and original non-cache Plex data are preserved.
-Protect all data, live/rollback runtime, source/locks and unique evidence. No
-blind prune, threshold/replica reduction or BORTUS hold change. Ingenium remains
-owned/developed in its separate chat. James clarified that its image download is
-1,209,310,265 bytes; earlier checkout/history inventories are not prerequisites
-for pulling it. Actual unpacked node allocation remains a separate measurement;
-persistent application state and sizing remain with the Ingenium owner chat.
-The exact image is already cached on worker1. At 08:05 UTC, available filesystem
-space was 19.13 GB master / 21.94 GB worker2 / 110.05 GB worker1; worker2 rose
-to 25.18 GB after its later cache cleanup. At 08:26 UTC Longhorn reports worker2
-schedulable, 1.48 GB above its unchanged floor. Master still falls short by
-4.49 GB. Worker2 needs another 7.38 GB before the separate 8.86 GB Ingenium state
-fits above that floor, before growth/rebuild margin. All 57 PVCs are Bound and
-all 43 original Longhorn volume UIDs survive. The goal remains active.
-Actual kubelet checks at 08:31 UTC reject treating an 11 GiB claim as physically
-safe: its logical reservation fits worker2, but the measured 9.52 GB transfer
-allocation would put available image space below the live 15% eviction threshold,
-before image/further growth. Longhorn admission and existing replica health are
-separate checks. All settings remain unchanged.
-[Exact cleanup and remaining capacity](docs/NODE-TOOL-CLEANUP-20261027.md).
+**October27,10:21UTC checkpoint:** node cleanup is complete for the qualified
+selection, recovering **11,884,933,120 allocated Linux node bytes** across four
+operations. Tools/cache: 4,148,150,272 bytes; verified master media duplicates:
+5,639,553,024 bytes; authenticated and independently restored worker2 closed
+journals: 2,097,229,824 bytes. Required media now resides in the existing NAS
+downloads path and was read by the unchanged live downloader pod. No images,
+volumes, models, active journals, original Gluster/MySQL, other Plex data or
+unique failure evidence were removed. No global floor/reservation/replica change.
+[Exact media retirement](docs/LEGACY-MEDIA-RECOVERY-20261027.md),
+[exact journal retirement](docs/ARCHIVED-JOURNAL-OFFLOAD-20261027.md),
+[earlier tools/cache](docs/NODE-TOOL-CLEANUP-20261027.md).
+
+All 3 nodes are Ready without pressure; all 57 claims are bound. All 43 original
+Longhorn volume UIDs survive; the 27 attached volumes are healthy with two RW
+replicas and 16 retained volumes remain detached. All 3 Longhorn disks now report
+schedulable. Available kubelet filesystem bytes: master 24,755,986,432; worker1
+109,987,729,408; worker2 27,218,767,872. Ingenium's owner corrected its measured
+payload to 7,519,682,560 allocated bytes. Worker1 and worker2 clear that payload
+plus 512 MiB filesystem overhead and 1 GiB operating margin above the unchanged
+15% eviction floor; worker2's surplus beyond this budget is 733,161,267 bytes.
+Master still does not qualify for this payload. Earlier larger payload estimates
+are superseded. This is initial staging capacity, not a full-growth guarantee or
+cluster-enforced reservation. Hold competing pulls/upgrade writes while its owner
+checks actual two-node replica placement and consumption. Ingenium deployment
+and application remain in their owner chat; BORTUS's hold is unchanged.
+
+The matching Windows public root is installed in CurrentUser/Root following the
+user's approval; no private key was imported. Full goal remains active:
+Longhorn recovery/upgrade, final Seerr/YTPTube browser acceptance and final
+security/source/data reconciliation remain. Known vendor/host exceptions persist.
+
+**10:47UTC refresh:** Ingenium's owner has provisioned one new empty, detached
+11 GiB volume. All original 43 volume UIDs remain, now 44 total and 58 bound
+claims. Its stopped replicas are assigned to master and worker1, not the
+qualified worker pair, and no application pod exists yet. The application owner
+must verify corrected actual placement before copying; this chat changed no
+volume, scheduling setting or application. All existing deployments/daemonsets
+are available; 4 old failed diagnostic pods remain as evidence. The final
+297,236-byte cleanup metadata packet passed full authenticated NAS readback
+(SHA-256 `9fa00f5d92356716be0c9c826f85c7a59d63e198c2c965ce58e321c7d012e77d`).
 
 **October27,06:57UTC acceptance:** Unpackerr1.0 and restart pass original config/
 native Secret/storage/integration checks, with the new web interface disabled.

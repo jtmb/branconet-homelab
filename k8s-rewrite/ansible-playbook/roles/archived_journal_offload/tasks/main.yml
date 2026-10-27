@@ -1,0 +1,59 @@
+---
+- name: Require the original worker and bounded controller-owned evidence
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'workernode2'
+      - ansible_host == '192.168.0.5'
+      - ansible_user == 'james'
+      - ansible_port | int == 2002
+      - archived_journal_offload_mode in ['inventory', 'retire']
+      - archived_journal_offload_result_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-journal-offload-20261027/[a-z0-9-]+[.]json$')
+      - archived_journal_offload_mode != 'retire' or archived_journal_offload_operator_holds_nas_lock | bool
+
+- name: Require exact private inputs for the selected phase
+  ansible.builtin.assert:
+    that:
+      - archived_journal_offload_mode != 'inventory' or archived_journal_offload_selection_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-journal-offload-20261027/selection[.]json$')
+      - archived_journal_offload_mode != 'retire' or archived_journal_offload_profile_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-journal-offload-20261027/profile[.]json$')
+      - archived_journal_offload_mode != 'retire' or archived_journal_offload_proof_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-journal-offload-20261027/nas-retirement-proof-[0-9a-f]{32}[.]json$')
+
+- name: Preserve earlier outcomes
+  ansible.builtin.stat:
+    path: "{{ archived_journal_offload_result_file }}"
+  delegate_to: localhost
+  become: false
+  register: archived_journal_offload_prior
+
+- name: Reject receipt replacement
+  ansible.builtin.assert:
+    that: [not archived_journal_offload_prior.stat.exists]
+
+- name: Keep complete outcomes including refusals
+  block:
+    - name: Inspect or retire only the exact verified journal list
+      ansible.builtin.raw: >-
+        /usr/bin/python3 -B -c {{ lookup('file', role_path + '/files/journal.py', rstrip=false) | quote }}
+        --mode {{ archived_journal_offload_mode | quote }}
+        --safety-source {{ lookup('file', role_path + '/../retired_build_tools/files/retire.py', rstrip=false) | b64encode | quote }}
+        --safety-sha256 {{ lookup('file', role_path + '/../retired_build_tools/files/retire.py', rstrip=false) | hash('sha256') | quote }}
+        {% if archived_journal_offload_mode == 'inventory' %}
+        --selection-base64 {{ lookup('file', archived_journal_offload_selection_file, rstrip=false) | b64encode | quote }}
+        {% else %}
+        --profile-base64 {{ lookup('file', archived_journal_offload_profile_file, rstrip=false) | b64encode | quote }}
+        --backup-proof {{ lookup('file', archived_journal_offload_proof_file, rstrip=false) | b64encode | quote }}
+        {{ '--apply' if archived_journal_offload_apply | bool else '' }}
+        {% endif %}
+      register: archived_journal_offload_result
+      changed_when: (archived_journal_offload_result.rc | default(1)) == 0 and archived_journal_offload_mode == 'retire' and (archived_journal_offload_result.stdout | from_json).removedAllocatedBytes | int > 0
+      no_log: true
+  always:
+    - name: Save private outcome without replacing prior evidence
+      ansible.builtin.copy:
+        content: "{{ archived_journal_offload_result | to_nice_json }}"
+        dest: "{{ archived_journal_offload_result_file }}"
+        force: false
+        mode: '0600'
+      delegate_to: localhost
+      become: false
+      when: archived_journal_offload_result is defined
+      no_log: true

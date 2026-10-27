@@ -32,13 +32,69 @@ Longhorn/PVC/NAS media, original Gluster/MySQL and active swap were not pruned.
 Controller metadata/unique evidence is retained under this same F-backed root:
 `node-cleanup-20261027` plus the exact audit, inspection/apply and frozen sources
 in `operator-control`. There are no new dependency trees, compiler outputs or
-download copies to reconcile. Each of the three syntax-check attempts removed
+download copies to reconcile. Each syntax-check attempt removed
 its three empty owned scratch directories `ansible-syntax-owned/local`,
 `ansible-syntax-owned/home`, `ansible-syntax-owned`; their allocation was not
 captured and is excluded from byte claims. Results, including the initial failed
 automatic configuration lookup, survive outside those scratch directories.
 The initial whole-cache format refusal and all unidentified entries are retained.
 This is Linux node recovery, not Windows C:/F: recovery or VHDX compaction.
+
+The completed preservation action copied exactly two legacy `.mkv` files (5,639,537,729
+file bytes) from the master's unmounted legacy downloads directory into their
+intended existing NAS downloads location. No source deletion is performed by
+`scripts/migration/recover-legacy-downloads-to-nas.py`. Control, ownership and
+byte/metadata receipts use `node-cleanup-20261027/legacy-media-recovery-<runid>`
+under the same declared F-backed root. The only large outputs are the intended
+NAS media files, streamed directly over existing strict SSH and Windows SMB;
+there is no local media staging or dependency/build output. Each uniquely named
+NAS transfer partial is recorded before creation and becomes its final media
+file only after the source stream is verified; full NAS read-back follows.
+Failure retains the original and named partial, with its exact state recorded.
+Original `.metube` state and every other media file remain outside this selection.
+
+Subsequent qualified retirement recovered **5,639,553,024 master node allocated
+bytes** from those two exact duplicates; private path identities and full hashes
+remain in the media run, with the sanitized receipt in
+`evidence/legacy-media-recovery-20261027.json`. The only early native-handle
+failure occurred before its child started; failed source and evidence remain.
+The 61,652-byte encrypted metadata packet, SHA-256
+`a4dcf9aa883463add42f9d426158e78d2e2e503c27e2509af1c4db790ab6192a`, is retained
+locally and in the approved NAS ciphertext store after full authentication.
+
+Worker2 closed-journal preservation and retirement recovered **2,097,229,824
+node allocated bytes** from 23 exact files. Required NAS ciphertext is
+`sha256-9b3629f07ffaa9330462ce42e06baa95b56b1a64895a0c191c259b4577142600.age`
+(2,097,725,652 bytes). It passed full readback/authentication and independent
+restoration of every file's bytes, metadata and extended attributes, followed by
+`journalctl --verify`. Run `node-cleanup-20261027/worker2-journal-offload-20261027`
+retains profile, restore/backup/retirement receipts and exact selected paths.
+Its `restore-scratch` directory was removed after complete inactive checks;
+2,097,156,096 allocated scratch bytes were transiently created and reconciled,
+not net controller recovery. No plaintext archive or duplicate ciphertext was
+staged locally. Sources/regeneration: `backup-archived-journals-to-nas.py` and
+`roles/archived_journal_offload/files/journal.py`, using the recorded profile.
+
+Total completed recovery from the four node operations is **11,884,933,120
+allocated Linux node bytes**. No runtime images, volumes, models, original
+Gluster/MySQL data, nonselected Plex data, active swap or unique failure evidence
+were pruned. Exact retained exceptions remain in NODE-TOOL-CLEANUP-20261027.md
+and the private node audit. Controller metadata is retained as unique recovery
+evidence in the existing F-backed root; Windows free space is measured separately.
+
+Post-retirement metadata packet is retained as required recovery evidence:
+`operator-control/node-retirement-recovery-metadata.tar.age` (297,236 bytes),
+SHA-256 `9fa00f5d92356716be0c9c826f85c7a59d63e198c2c965ce58e321c7d012e77d`.
+The same content-addressed NAS ciphertext passed complete readback and age
+authentication. Every local archive member was independently checked; unchanged
+members of the earlier media packet are referenced rather than duplicated.
+No media or journal payload is included in this metadata packet. Retain its
+manifest, copy plan/status and frozen operator source in `operator-control`.
+The final read-only reconciliation is
+`node-cleanup-20261027/cleanup-final-reconciliation.json`; it creates no build,
+cache, dependency tree or restore scratch. The two small local metadata
+ciphertexts remain required recovery artifacts. The journal payload ciphertext
+exists only at its final approved NAS path.
 
 ## Snapshot-controller upstream operation, October27
 
