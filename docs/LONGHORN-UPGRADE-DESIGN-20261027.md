@@ -1,5 +1,15 @@
 # Longhorn upgrade design: held, not implemented
 
+**19:02 UTC:** preparation is now implemented and actually passed server dry-run
+through opt-in Ansible for 61 resources, preserving all 51 existing identities
+and configurations. The separately owned namespace is excluded; no force conflict
+or production apply occurred. The actual manager DaemonSet's share-manager
+pre-pull adds a mandatory image to the older five-image lower envelope; its
+dated projection still lacks 196,805,633 master bytes.
+[Prepared source, exact results and remaining execution gates](LONGHORN-UPGRADE-PREPARATION-20261027.md).
+Manager/engine application remains unimplemented and unapplied; dry-run is not
+deployment or backup acceptance. Older design/capacity figures below are dated.
+
 **18:32 UTC refresh:** the current 44 volume identities and 58 claim bindings
 match the morning preflight; all attached volumes have two actual RW replicas.
 The 12 native-backup gaps are explicitly mapped to current writers, retained

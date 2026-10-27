@@ -1,5 +1,18 @@
 # Migration and maintenance status
 
+**19:02 UTC:** the pinned Longhorn candidate passed Ansible and server dry-run
+for 61 applicable resources with current `kubectl` ownership, no forced conflicts,
+and all 51 existing UIDs/configurations unchanged. Encryption, two replicas,
+`Retain`, resource settings and placement are preserved; namespace excluded.
+No production upgrade occurred. [Evidence and remaining gates](docs/LONGHORN-UPGRADE-PREPARATION-20261027.md).
+
+Including the mandatory share-manager pre-pull, the V1-node image projection
+still lacks 196,805,633 master bytes. Full capacity/recovery and actual manager/
+engine upgrade remain. Removed 12,288 controller scratch bytes and 299,556,864
+bytes from two current successful publisher stages; cumulative publisher cleanup
+is 2,096,898,048 bytes. All source/failure/data and older-copy exceptions remain.
+The full goal remains active; final IAB/fleet acceptance is still required.
+
 **18:47 UTC:** recovered another 561,950,720 allocated master Linux bytes after
 NAS preservation and independent journal restore, plus full qualification of one
 old public scanner duplicate. Cumulative qualified node cleanup is

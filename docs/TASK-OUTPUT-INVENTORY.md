@@ -1948,6 +1948,33 @@ ciphertext copied inside the checkpoint. Source/root observer manifests remain
 under `control-source/owned-jtmb-20261027` and the acceptance evidence root.
 # October 27 fresh control-plane recovery and current publisher cleanup
 
+## Later Longhorn preparation and current publisher reconciliation
+
+Same owner and F-backed root/UUID. Owner/source/output/regeneration records
+preceded the operations. [Exact preparation ledger](../evidence/longhorn-upgrade-preparation-20261027.json)
+and [publisher paths/bytes](../evidence/publisher-ingenium-current-release-20261027.json).
+Removed 12,288 allocated Linux bytes from exact empty
+`platform-upstream-review-20261027/longhorn-prepare-ansible-scratch/{local,remote}`
+and its parent, after complete reference/identity checks. Late framework module
+cleanup is unmeasured/not credited. No candidate/source/input/failure was removed.
+
+Retain 27 current source/review/server-dry-run/diagnostic/cleanup files,
+2,917,121 logical bytes excluding index, enumerated and hashed by
+`platform-upstream-review-20261027/longhorn-prepared-v1.13.0/checkpoint-inventory.json`.
+This includes both owner reads, the first explicitly missing managed-field proof,
+actual prepared/server-returned resources and the read-only native backup schema.
+No dependency/compiler/cache payload, local archive or raw restore tree exists
+from this checkpoint. Previous operational recovery-tool and ownership/handle
+exceptions remain. No native unpack, resize, shutdown or alternate output root.
+
+Two current primary terminal publisher exports released 299,556,864 controller
+Linux bytes; only six tools and two empty `.tools` directories. Keep all source/
+manifest/report/receipt/primary/failure records and the four unique
+`operator-control/publisher-headroom-28498051ea9cecfc-*-20261027.json` records.
+Older retained copies remain under their existing age/provenance boundaries.
+No image, volume, model, active workload or original runtime data was pruned.
+No Windows disk recovery is inferred from these controller measurements.
+
 ## Later 18:47 master journal/audit checkpoint
 
 Same owner, F-backed root and physical UUID. Ownership/source/regeneration were

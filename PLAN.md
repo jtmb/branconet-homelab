@@ -1,5 +1,19 @@
 # Cluster maintenance and application migration plan
 
+**19:02 UTC preparation:** opt-in Ansible rendered digest-pinned upgrade resources
+and passed server dry-run for 61 objects under existing field manager `kubectl`,
+without forced conflicts. All 51 existing UIDs/configurations are unchanged.
+Encrypted/two-replica/`Retain` storage, resource budgets and placement are preserved;
+the separately owned namespace is excluded. No production upgrade occurred.
+[Exact preparation and remaining execution gates](docs/LONGHORN-UPGRADE-PREPARATION-20261027.md).
+
+The actual manager DaemonSet also pre-pulls share-manager. The resulting V1-node
+projection still lacks 196,805,633 master bytes; the earlier five-image profile
+alone is insufficient. Actual cache/unpack, recovery and supported upgrade remain.
+Prepare scratch is reconciled: 12,288 controller Linux bytes removed. Two current
+terminal publisher stages released another 299,556,864 controller bytes; cumulative
+publisher cleanup is 2,096,898,048 bytes. Older retained copies remain. Goal active.
+
 **18:47 UTC checkpoint:** independently restored NAS copies qualified five old
 master journals for retirement; a separately qualified duplicate public scanner
 was retired with all 311 other audit entries preserved. Recovered 561,950,720

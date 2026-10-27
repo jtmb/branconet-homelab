@@ -1,5 +1,19 @@
 # Publisher reserve recovery, October 27
 
+## Current Ingenium terminal stages, 19:13 UTC
+
+Two current successful stages, `ce898679b47f4c419ecb0755b7f768cf` and
+`ba11aa51142840cd96d4a224225f52e5`, passed the existing complete source/blob,
+receipt/lock/Linux-reference checks, six native Windows exclusive handles and
+final identities/hashes. Removed only six temporary public tool exports and two
+empty directories: **299,556,864 allocated controller Linux bytes**. Cumulative
+publisher cleanup is **2,096,898,048 bytes**, fourteen stages. Native available
+bytes changed from 16,884,326,400 to 17,183,883,264 during this operation.
+[Exact paths and immutable source bindings](../evidence/publisher-ingenium-current-release-20261027.json).
+Source exports, manifests, reports, receipts, primary tools and the complete
+failed run remain. Older retained copies were untouched; no publisher was
+retried. No Windows recovery, image deletion or node-space gain is claimed.
+
 ## Five current-day stages, 17:32 UTC
 
 Five additional terminal successful runs passed full source/receipt bindings,
