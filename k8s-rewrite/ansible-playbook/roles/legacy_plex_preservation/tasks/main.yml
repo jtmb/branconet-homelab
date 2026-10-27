@@ -1,0 +1,35 @@
+---
+- name: Require the exact original host and explicit data-preservation phase
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'workernode2'
+      - ansible_host == '192.168.0.5'
+      - ansible_user == 'james'
+      - ansible_port | int == 2002
+      - legacy_plex_preservation_apply | bool
+      - legacy_plex_preservation_mode in ['inventory', 'backup']
+    fail_msg: This opt-in operation preserves the fixed legacy trees; it does not authorize source retirement.
+
+- name: Run the scoped controller operator with existing identities and NAS transport
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -B
+      - "{{ role_path }}/files/controller.py"
+      - "{{ legacy_plex_preservation_mode }}"
+      - --repository
+      - "{{ role_path }}/../../../.."
+  delegate_to: localhost
+  become: false
+  environment:
+    TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    TEMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    TMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    PYTHONDONTWRITEBYTECODE: '1'
+  no_log: true
+  changed_when: false
+  when: not ansible_check_mode
+
+- name: Report the preservation boundary
+  ansible.builtin.debug:
+    msg: Original trees remain. Inspect the owned inventory/backup/restore receipts; source retirement requires separate verified NAS locking and complete live references/identity checks.

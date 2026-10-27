@@ -1,0 +1,187 @@
+{
+  "schema": 1,
+  "UTC": "2026-10-27T13:07:19.270839+00:00",
+  "owner": "01a12045-bf7e-73b3-8557-752d17c72ffd",
+  "status": "legacy_plex_preservation_and_retirement_completed",
+  "node": "workernode2",
+  "rootFilesystemUUID": "960bc2c7-2a7e-4bc2-b2c5-dbb6d71207f4",
+  "retiredRoots": [
+    "/var/plex-stack/plex2/config",
+    "/var/plex-stack/plex2/config.old"
+  ],
+  "counts": {
+    "file": 65880,
+    "directory": 60875,
+    "symlink": 2
+  },
+  "fileBytes": 10537887785,
+  "removedAllocatedNodeLinuxBytes": 10936221696,
+  "nodeAvailableBeforeBytes": 19341955072,
+  "nodeAvailableAfterBytes": 30223949824,
+  "outsideTreeIdentitiesPreserved": true,
+  "archive": {
+    "bytes": 10806237156,
+    "SHA256": "69f759e6a7cf9311cb850ce31d71412433169f8ee9e144570f418c0ba7fd952d",
+    "completeAgeAuthentication": true,
+    "everyEntryIndependentlyRestored": true,
+    "liveDenyWriteDeleteNASHandlesHeldDuringRetirement": true
+  },
+  "metadataPacket": {
+    "bytes": 47474196,
+    "SHA256": "0ea7be14812c9a03f4631834fe91c4623901d1074173a13a888cc67fe4982a96",
+    "members": 61,
+    "everyMemberVerified": true,
+    "completeNASReadbackAuthenticated": true
+  },
+  "cluster": {
+    "UTC": "2026-10-27T12:58:42.316863+00:00",
+    "readyNodes": 3,
+    "boundClaims": 58,
+    "longhornVolumes": 44,
+    "allLonghornVolumeUIDsPreserved": true,
+    "healthyAttachedVolumes": 28,
+    "everyAttachedEngineTwoRWReplicas": true,
+    "unavailableDeployments": [],
+    "unavailableDaemonSets": [],
+    "notReadyFluxReleases": [],
+    "notReadyFluxKustomizations": [],
+    "longhornDisks": [
+      {
+        "node": "masternode",
+        "nodeUID": "d20b1b17-5500-4e61-830d-851814b0714c",
+        "disk": "default-disk-1c47bedee02d7301",
+        "diskUUID": "52e160c1-db49-43f9-bef3-6b5bab572b42",
+        "maximum": 115702075392,
+        "available": 29989273600,
+        "scheduled": 7516192768,
+        "floorShortfallBytes": 0,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": ""
+          },
+          {
+            "type": "Schedulable",
+            "status": "True",
+            "reason": ""
+          }
+        ]
+      },
+      {
+        "node": "workernode1",
+        "nodeUID": "bc7e9714-a70c-483a-94a4-43c0cb21ad81",
+        "disk": "default-disk-e27efaf3fd6ded55",
+        "diskUUID": "ec68ff17-a66d-41f4-b600-fa0b6bb44005",
+        "maximum": 249322430464,
+        "available": 113246208000,
+        "scheduled": 80530636800,
+        "floorShortfallBytes": 0,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": ""
+          },
+          {
+            "type": "Schedulable",
+            "status": "True",
+            "reason": ""
+          }
+        ]
+      },
+      {
+        "node": "workernode2",
+        "nodeUID": "2d560ca1-46b3-4a41-b875-39614e3d7ae1",
+        "disk": "default-disk-7119ce24364c6cfd",
+        "diskUUID": "3e98444f-4c34-438d-a0d3-5181c9c80a15",
+        "maximum": 115702075392,
+        "available": 35546726400,
+        "scheduled": 80530636800,
+        "floorShortfallBytes": 0,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": ""
+          },
+          {
+            "type": "Schedulable",
+            "status": "True",
+            "reason": ""
+          }
+        ]
+      }
+    ]
+  },
+  "cleanup": {
+    "failedRestoreScratchRemovedAllocatedBytes": 473235456,
+    "completedRestoreScratchRemovedAllocatedBytes": 10932195328,
+    "retirementStaleIPCRemovedAllocatedBytes": 8192,
+    "currentRestoreOrRetirementScratchRetained": false,
+    "originalCleanupWarningPreserved": true,
+    "correctedNonmutatingWorkerCheckPassed": true,
+    "windowsDiskRecoveryClaimed": false
+  },
+  "preserved": [
+    "NAS media and recovery ciphertexts",
+    "original Gluster/MySQL and Docker state",
+    "live Kubernetes data and claims",
+    "images and models",
+    "all original and failed recovery evidence",
+    "native Kubernetes Secrets/BORTUS authority"
+  ],
+  "privateEvidence": {
+    "profile.json": {
+      "sha256": "a231f8c2a44c2eee41ab6bca93c7102560e918b2bb6228a4c3bc0ce2a70fc8c1",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-legacy-plex-preservation/profile.json"
+    },
+    "backup-receipt.json": {
+      "sha256": "cd4e2dd39979eb5ba1cacf7e5df683c9f4375169f4d0b070dab14830b07d1aba",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-legacy-plex-preservation/backup-receipt.json"
+    },
+    "restore-receipt.json": {
+      "sha256": "7da45b386807e34ae5ef4f5dccdd53fceea3712a2c8c45765ed980bdd1985bee",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-legacy-plex-preservation/restore-receipt.json"
+    },
+    "retirement-result.json": {
+      "sha256": "75aba0f7ea480b2390dfb267a810afd496658f10206fc689b955ec54a30fd8fa",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-legacy-plex-preservation/retirement-result.json"
+    },
+    "retirement-operator-result.json": {
+      "sha256": "9f1f1bf072d7f63b0a5910b1d571fb65a6605532a968784147af0daaf1a84e7b",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-legacy-plex-preservation/retirement-operator-result.json"
+    },
+    "retirement-scratch-reconciliation.json": {
+      "sha256": "b2f4ed5d9967e48921d65a2af57b0e1a49556e4b8b0b0b4325305939bc61f3df",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-legacy-plex-preservation/retirement-scratch-reconciliation.json"
+    },
+    "retirement-check-result.json": {
+      "sha256": "09850e6cca35519b4117facae40117910e8e7c28df3065a3fbe7a0f85963cf5a",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-legacy-plex-preservation/retirement-check-result.json"
+    },
+    "cluster-after-plex-retirement.json": {
+      "sha256": "ca279dd2c058c5533dda446083144eb4a2f76373d8496f3942dc34262097b8a4",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-legacy-plex-preservation/cluster-after-plex-retirement.json"
+    },
+    "smb-metadata-copy-status.json": {
+      "sha256": "da5f31bf7eb9b1380534e8bc8d4cee8dac928f7d7be0b2b2199afe04a02378ff",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-legacy-plex-preservation/smb-metadata-copy-status.json"
+    }
+  },
+  "wholeGoalComplete": false,
+  "remaining": [
+    "fresh pre-upgrade and application/detached dataset recovery mapping",
+    "per-node pull/unpack/coexistence budget and supported Longhorn upgrade",
+    "vendor and host exceptions",
+    "final normal Seerr/YTPTube IAB acceptance and fleet reconciliation"
+  ],
+  "outputInventory": {
+    "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-legacy-plex-preservation/checkpoint-output-inventory.json",
+    "SHA256": "910b4fc5f7b322ab7b64268853ec11f1cf4e311e638d9f26de6a3d4b86f59bc5",
+    "retainedPaths": 69,
+    "retainedLogicalBytes": 153967826,
+    "temporaryPathsRemaining": [],
+    "retention": "original inventory, required encrypted recovery mirror, unique source/failure/receipt evidence"
+  }
+}

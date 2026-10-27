@@ -1,0 +1,7 @@
+---
+- name: Preserve fixed inactive Plex state on the existing NAS before retirement
+  hosts: workernode2
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  roles: [legacy_plex_preservation]

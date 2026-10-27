@@ -1,5 +1,27 @@
 # Cluster maintenance and application migration plan
 
+**Latest checkpoint — October27,13:04UTC:** the two inactive worker2 Plex trees
+are preserved on NAS and retired after independent restoration of every file,
+directory and symlink. Recovered **10,936,221,696 allocated node Linux bytes**;
+the four previous qualified cleanup operations plus this one total
+**22,821,154,816 bytes**. Live data, images, models, volumes, original Gluster/MySQL,
+NAS media, sources and failed evidence survive. All restore/Ansible scratch is
+reconciled. The 61-member recovery packet passed complete authenticated NAS
+readback. [Exact recovery, retirement and cleanup](docs/LEGACY-PLEX-PRESERVATION-20261027.md).
+
+All three nodes are Ready without pressure; all three Longhorn disks are now
+schedulable. All 58 claims are Bound and all 44 volume UIDs survive; attached
+volumes are healthy with two RW replicas. Deployments, daemonsets and Flux are
+Ready. Worker2 Longhorn availability is 35,546,726,400 bytes. This clears its
+scheduling floor; it does not qualify per-node upgrade pull/unpack/coexistence
+or recovery needs. The matching public Windows root is installed.
+
+Still required: fresh pre-upgrade/application/detached-data recovery mapping,
+per-node capacity budget and the supported Longhorn upgrade, honest vendor/host
+security exceptions, final Seerr/YTPTube normal IAB acceptance, and final fleet
+and delivery reconciliation. Ingenium/BORTUS app development stays with its
+owner. No new image pull or driver change was made here. Full goal stays active.
+
 **Latest recovery checkpoint — October27,11:31UTC:** one native Longhorn
 configuration-only SystemBackup is Ready on the existing NAS target. Its 79,255-
 byte ZIP passed two full readbacks, native checksum, CRC and all 20 YAML parses;

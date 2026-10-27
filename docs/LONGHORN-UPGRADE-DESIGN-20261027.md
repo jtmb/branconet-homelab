@@ -1,5 +1,11 @@
 # Longhorn upgrade design: held, not implemented
 
+**13:04UTC:** qualified Plex retirement clears worker2's scheduling floor; all
+three disks are schedulable. This is not a pull/unpack/coexistence budget. The
+native configuration SystemBackup and offline control-plane recovery below have
+since been qualified; fresh application/detached-data coverage remains to map.
+[Current cleanup/capacity evidence](LEGACY-PLEX-PRESERVATION-20261027.md).
+
 ## Live preflight implemented, October27,10:52UTC
 
 `playbooks/longhorn-upgrade-preflight.yml` now maintains the read-only collection
@@ -31,7 +37,8 @@ mapped to the exact datasets and recovery requirements.
 | migration-system/migration-nas-bortus-restore | detached |
 | ingenium/ingenium-state | attached; separate deployment owner |
 
-No SystemBackup CR exists. The original online checkpoint remains explicitly
+At this 10:52 preflight no SystemBackup CR existed; the later qualified native
+backup is recorded in the recovery section below. The original online checkpoint remains explicitly
 crash-consistent, attached-only and without independent restore proof; its
 historical 30-volume guard remains unchanged. Completing a system backup does
 not establish workload consistency or general application recovery. Retained

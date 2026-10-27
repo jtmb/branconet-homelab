@@ -37,6 +37,7 @@ def main():
     p.add_argument('--remote-helper', type=Path, required=True)
     p.add_argument('--safety-source', type=Path, required=True)
     p.add_argument('--journal-profile', type=Path)
+    p.add_argument('--tree-profile', type=Path)
     p.add_argument('--apply', action='store_true')
     a = p.parse_args()
     need(os.name == 'nt', 'windows_only')
@@ -45,7 +46,30 @@ def main():
     need(shutil.disk_usage('C:\\').free >= 15 * 1024**3 and shutil.disk_usage(F).free >= 15 * 1024**3 + 128 * 1024**2, 'controller_space')
     os.environ.update(TEMP=str(F / 'operator-control/tmp'), TMP=str(F / 'operator-control/tmp'))
     copy = json.loads(a.copy_receipt.read_text())
-    if a.journal_profile:
+    need(not (a.journal_profile and a.tree_profile), 'one_archive_profile_kind')
+    if a.tree_profile:
+        run_expected = F / 'node-cleanup-20261027/worker2-legacy-plex-preservation'
+        need(a.tree_profile == run_expected / 'profile.json' and a.copy_receipt == run_expected / 'backup-receipt.json', 'fixed_legacy_tree_inputs')
+        need(copy['status'] == 'completed' and copy['completeNASReadbackAuthenticated']
+             and copy['everyEntryIndependentlyRestored'] and not copy['sourceOriginalsDeleted'], 'complete_tree_backup')
+        need(hashlib.sha256(a.tree_profile.read_bytes()).hexdigest() == copy['profileSHA256'], 'tree_profile_unchanged')
+        profile = json.loads(a.tree_profile.read_text())
+        restored = run_expected / 'restore-receipt.json'
+        need(hashlib.sha256(restored.read_bytes()).hexdigest() == copy['restoreReceiptSHA256'], 'tree_restore_receipt_unchanged')
+        if copy.get('resumedExistingCiphertext'):
+            need(hashlib.sha256((run_expected / 'verify-resume-frozen.py').read_bytes()).hexdigest()
+                 == copy['verifierSHA256'], 'reviewed_resume_verifier_unchanged')
+        restore = json.loads(restored.read_text())
+        need(restore['status'] == 'completed' and restore['everyEntryIndependentlyRestored']
+             and restore['scratchReconciled'] and restore['counts'] == profile['counts'] == copy['counts']
+             and restore['sourceProfileSHA256'] == copy['sourceCanonicalProfileSHA256']
+             and not (run_expected / 'restore-batch').exists(), 'every_tree_entry_recovered_and_scratch_reconciled')
+        archive = Path(copy['archive'])
+        need(archive.name == 'sha256-' + copy['archiveSHA256'] + '.age', 'content_addressed_tree_archive')
+        nas_base = Path(r'\\TRUENAS\plex_smb_share\Branconet-Recovery-Backups\2026-10-25\ciphertexts')
+        files = [{'source': {'name': archive.name, 'sha256': copy['archiveSHA256']}, 'nasPath': str(archive),
+                  'nasBytes': copy['archiveBytes'], 'nasSHA256': copy['archiveSHA256']}]
+    elif a.journal_profile:
         need(a.journal_profile.resolve().is_relative_to(F.resolve()) and a.journal_profile.is_file(), 'owned_journal_profile')
         need(copy['status'] == 'completed' and copy['completeNASReadbackAuthenticated'] and copy['everyJournalIndependentlyRestored'], 'complete_journal_backup')
         need(hashlib.sha256(a.journal_profile.read_bytes()).hexdigest() == copy['profileSHA256'], 'journal_profile_changed')
@@ -131,6 +155,9 @@ def main():
         if a.journal_profile:
             proof.update(journalCanonicalProfileSHA256=hashlib.sha256(json.dumps(profile, sort_keys=True, separators=(',', ':')).encode()).hexdigest(),
                          journalBackup=copy, independentRestoreVerified=True)
+        if a.tree_profile:
+            proof.update(treeCanonicalProfileSHA256=hashlib.sha256(json.dumps(profile, sort_keys=True, separators=(',', ':')).encode()).hexdigest(),
+                         treeBackup=copy, independentRestoreVerified=True)
         with proofpath.open('x', encoding='utf8') as out:
             json.dump(proof, out, indent=2)
             out.write('\n')
@@ -143,6 +170,8 @@ def main():
             command.append('--apply')
         if a.journal_profile:
             command.extend(['--journal-profile', linux(a.journal_profile)])
+        if a.tree_profile:
+            command.extend(['--tree-profile', linux(a.tree_profile)])
         event('reviewed_child_started', apply=a.apply, nativePID=os.getpid(), proof=str(proofpath))
         child = subprocess.Popen(command)
         status = child.wait()

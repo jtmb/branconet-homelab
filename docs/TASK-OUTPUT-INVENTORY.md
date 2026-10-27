@@ -1,5 +1,53 @@
 # Maintenance output ownership and reconciliation
 
+## Legacy Plex preservation, October27
+
+Owner/root/physical UUID remain unchanged. Use only
+`node-cleanup-20261027/worker2-legacy-plex-preservation` for its exact profile,
+archive/restore/retirement receipts and `restore-batch` scratch; frozen operators
+remain in `operator-control`. The final encrypted payload belongs only in the
+already approved NAS recovery ciphertext store. Never stage the complete
+10.53 GB payload locally. Regeneration, protected source paths, original data,
+metadata requirements, guards and bounded restore layout are recorded in
+[the preservation contract](LEGACY-PLEX-PRESERVATION-20261027.md). This declaration
+does not qualify any original for deletion. Inventory/backup/restore must prove
+the exact source and all entries first. No runtime, model, image or volume prune.
+
+The first restore stopped at its space guard. Its frozen source, failed receipts,
+and the cross-platform path-check failure remain unique evidence in this same
+root. Qualified reconciliation removed exactly 58,810 inactive reproducible
+scratch entries / 473,235,456 allocated controller Linux bytes. The exact paths,
+original identities, reference checks and archive regeneration binding remain in
+`failed-restore-scratch-reconciliation.json`. The existing NAS ciphertext is the
+regenerator; source data was not deleted. The resumed verifier and its native
+transport use `verify-resume-frozen.py`, `verify-native-frozen.py`,
+`restore-resume-{process.json,log}` and the same `restore-batch` scratch. Retain
+the original inventory, archive helper and recovery/failure receipts.
+
+The opt-in retirement uses `retirement-controller-frozen.py`, `retire-frozen.py`,
+`nas-lock-frozen.py`, fresh live NAS proof/events, and `retirement-*-result.json`.
+Its single `retirement-ansible-scratch` tree and syntax-only sibling contain all
+Ansible home, IPC and temporary state. Only empty owned directories are removed
+automatically at exit; nonempty exceptions are retained for reference checks.
+The short inherited-descriptor alias resolves to this same F-backed storage.
+
+Completed: all 126,757 payload entries restored, metadata-verified and reconciled.
+The node retirement removed 10,936,221,696 allocated bytes from the two exact
+legacy roots. No temporary restore or Ansible directory remains. A stale worker
+listener and its two directories were independently reference-qualified and
+removed (8,192 controller Linux bytes); the original warning/source and a passing
+nonmutating worker teardown check remain. All temporary lifecycle removals are
+itemized in the owned restore/operator/reconciliation receipts.
+
+Retain `profile.json`, executed/failing frozen sources, execution logs and private
+receipts as unique recovery evidence. Retain `recovery-metadata.tar.age`
+(47,474,196 bytes) as the required encrypted recovery mirror; its 61 members and
+complete NAS copy authenticated. It includes no ancestor ciphertext or payload
+duplicate. All remaining files in this selection are source, failure/provenance,
+minimal durable evidence or required encrypted recovery data, with no dependency,
+compiler or cache tree introduced. Exact path/hash/retention reconciliation is
+recorded in `checkpoint-output-inventory.json`. No Windows recovery is claimed.
+
 ## Offline control-plane recovery qualification, October27
 
 Owner remains this migration chat. Use only

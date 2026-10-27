@@ -1,5 +1,27 @@
 # Migration and maintenance status
 
+**October27,13:04UTC:** recovered **10,936,221,696 allocated worker2 Linux bytes**
+by retiring only two inactive legacy Plex trees after all 126,757 entries passed
+independent restore/metadata checks and full NAS age authentication. The archive
+was locked against writes/deletion throughout retirement. All unselected data,
+original sources/failures, live claims, images, volumes, models and NAS media
+remain. Restore and Ansible scratch is reconciled, including a qualified stale
+listener cleanup; its original warning and corrected worker check remain.
+Incremental 61-member recovery evidence passed complete authenticated NAS
+readback. [Exact evidence and retained exceptions](docs/LEGACY-PLEX-PRESERVATION-20261027.md).
+
+All 3 nodes are Ready without pressure, all 3 Longhorn disks schedulable, all 58
+claims Bound and all 44 volume UIDs preserved. Attached engines have two RW
+replicas. All deployments, daemonsets and Flux releases/kustomizations are Ready;
+Ingenium is available under its separate owner. Worker2 Longhorn availability
+is 35,546,726,400 bytes, with the 25% minimum unchanged. Total qualified node
+cleanup is **22,821,154,816 allocated bytes**. No Windows recovery is inferred.
+
+Windows public-root trust is confirmed. Longhorn remains 1.12.1. Fresh pre-upgrade
+and application/detached-data recovery mapping, measured per-node image/unpack/
+coexistence capacity, supported upgrade, vendor/host exceptions, final normal
+Seerr/YTPTube IAB and final fleet reconciliation remain. Full goal stays active.
+
 **October27,11:31UTC recovery checkpoint:** native Longhorn configuration backup
 is Ready on the original NAS target. All 44 volume/PV/PVC chains are included;
 complete readbacks/checksums/CRC and 20 parsed YAML documents pass. The dated
