@@ -1,5 +1,19 @@
 # Cluster maintenance and application migration plan
 
+**Latest checkpoint — October 27, 18:15 UTC:** fresh encrypted control-plane
+backup, full NAS ciphertext readback and actual independent offline etcd restore
+passed. All 2,801 keys and revision 10,442,118 retained the logical key-history
+hash. Both maintained Ansible roles passed live execution. Removed 213,725,184
+allocated controller Linux bytes of raw restore/Ansible scratch; original
+ciphertexts, sources and failures remain. One pinned recovery tool remains for
+the final pre-upgrade gate. [Evidence and limits](docs/FRESH-CONTROL-PLANE-RECOVERY-20261027.md).
+
+Five more successful publisher stages released 748,892,160 controller Linux
+bytes; cumulative publisher cleanup is 1,797,341,184 bytes. Only temporary tools
+and empty tool directories were removed. Application/detached-data coverage,
+remaining master capacity, supported Longhorn upgrade, security exceptions and
+final Seerr/YTPTube IAB/fleet acceptance remain. Full goal active.
+
 **Latest checkpoint — October27,16:51UTC:** original master BuildKit copies are
 retired after complete source/hash/age/lock/reference checks through opt-in
 Ansible. Recovered258,555,904 allocated node Linux bytes; cumulative qualified

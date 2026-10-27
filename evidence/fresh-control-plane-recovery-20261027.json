@@ -1,0 +1,460 @@
+{
+  "restore-result.json": {
+    "status": "completed",
+    "sourceArchiveSHA256": "ea57aacc08d41a98a88689003915e14d96d15865b1b263a8b54440f963ac4a3a",
+    "productionMutation": false,
+    "secretConfigurationExtractedToDisk": false,
+    "networkListenerStarted": false,
+    "wholeClusterRestoreExecuted": false,
+    "completedUTC": "2026-10-27T14:15:41.560639-04:00",
+    "completeAgeAuthentication": true,
+    "verifiedConfigurationFiles": 46,
+    "nativeSecretEncryptionConfigurationPresent": true,
+    "volumeEncryptionKeyPresent": true,
+    "snapshotBefore": {
+      "hash": 1105404988,
+      "revision": 10442118,
+      "totalKey": 2801,
+      "totalSize": 74838016,
+      "version": "3.7.0"
+    },
+    "restoredDatabaseAfter": {
+      "hash": 3859442444,
+      "revision": 10442118,
+      "totalKey": 2801,
+      "totalSize": 74838016,
+      "version": "3.7.0"
+    },
+    "logicalHistoryBefore": {
+      "hash": 3191081841,
+      "hashRevision": 10442118,
+      "compactRevision": 10439071
+    },
+    "logicalHistoryAfter": {
+      "hash": 3191081841,
+      "hashRevision": 10442118,
+      "compactRevision": 10439071
+    },
+    "keyValueHistoryHashUnchanged": true,
+    "offlineSnapshotRestoreExecuted": true,
+    "existingOfflineRestoreQualified": false,
+    "authenticatedSnapshotSHA256BeforeTool": "6ed89e0e7184239925b6a4993475dcf859de5f0594f696f27cb2d220a072679c",
+    "keyHashToolMayUpdateDisposableDatabaseMetadata": true,
+    "previousAttemptReceiptSHA256": null,
+    "previousExecutedSourceSHA256": null,
+    "restoreDiagnosticsSHA256": "70796eac690ab9bbdccbf5df7f5f9e3c5c1bb68922d2f3409733494af2f93886",
+    "sourceFilesRetained": true,
+    "scratchRequiresInactiveCleanup": true
+  },
+  "operator-result.json": {
+    "owner": "01a12045-bf7e-73b3-8557-752d17c72ffd",
+    "startedUTC": "2026-10-27T14:15:37.159412-04:00",
+    "status": "completed",
+    "sourceSHA256": "3e96635d7603a2e84038ab1ec54040ded65c9dbdd94c4b2ca2927ce70868f764",
+    "sourceUnchanged": true,
+    "removedEmptyDirectories": [
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-ansible-scratch/remote",
+        "allocatedBytes": 4096
+      }
+    ],
+    "retained": [
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-ansible-scratch/local/ansible-local-186043pqqil_ga/ansiballz_cache",
+        "reason": "nonempty packaging requires post-interpreter reconciliation"
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-ansible-scratch/local/ansible-local-186043pqqil_ga",
+        "reason": "nonempty packaging requires post-interpreter reconciliation"
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-ansible-scratch/local",
+        "reason": "nonempty packaging requires post-interpreter reconciliation"
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-ansible-scratch",
+        "reason": "nonempty packaging requires post-interpreter reconciliation"
+      }
+    ],
+    "exitCode": 0
+  },
+  "cleanup-reconciliation.json": {
+    "status": "completed",
+    "removed": [
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/snapshot.db",
+        "allocatedBytes": 74842112
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member/wal/0000000000000000-0000000000000000.wal",
+        "allocatedBytes": 64000000
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member/snap/db",
+        "allocatedBytes": 74838016
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member/snap/0000000000000001-0000000000000001.snap",
+        "allocatedBytes": 8192
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member/wal",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member/snap",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-ansible-scratch/local",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/flux-control-plane-backup/fresh-backup-ansible-scratch-20261027/local",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-ansible-scratch",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/flux-control-plane-backup/fresh-backup-ansible-scratch-20261027",
+        "allocatedBytes": 4096
+      }
+    ],
+    "availableBeforeBytes": 16852250624,
+    "requiredRecoveryToolRetained": true,
+    "allOriginalCipherSourceFailureAndEvidenceIdentitiesAndHashesPreserved": true,
+    "removedAllocatedBytes": 213725184,
+    "availableAfterBytes": 17065975808,
+    "sourcePlanSHA256": "0c6d1a816b1eee900847466be24397ad43dd9aacd252560f0327c52f8700a92c",
+    "windowsRecoveryClaimed": false
+  },
+  "tool-provenance.json": {
+    "UTC": "2026-10-27T14:12:10.036148-04:00",
+    "source": "read-only export of public program from existing pinned running etcd container",
+    "sourcePod": {
+      "name": "etcd-masternode",
+      "uid": "4057f122-69a2-48a9-9783-e55ee5c6775e",
+      "image": "registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910",
+      "image_id": "registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910",
+      "containerID": "containerd://52868ab0bf4c2ad8e3ada4481ab3f39db482c362ffe1b7a3c2a27b6a9a6142b5"
+    },
+    "binary": {
+      "bytes": 16601250,
+      "sha256": "e3bd459308395080493488003f8cd4498db7ad4237584881b00f948a47950d2f",
+      "archivePath": "usr/local/bin/etcdutl"
+    },
+    "noExternalDownload": true,
+    "runtimeBinding": "exact live containerID from unchanged pinned etcd Pod matched against native ctr task table",
+    "noClusterMutation": true,
+    "noNewToolExecution": true,
+    "sourceVerifiedBeforeAndAfter": true,
+    "previousPublicProvenanceSHA256": "c287b261f0542a52fa5a3a8a2f9c37795c8d22a14c0afe42927976471cf63ab3"
+  },
+  "nas-proof.json": {
+    "UTC": "2026-10-27T14:12:10.036148-04:00",
+    "source": "\\\\TRUENAS\\plex_smb_share\\Branconet-Recovery-Backups\\2026-10-25\\ciphertexts\\sha256-ea57aacc08d41a98a88689003915e14d96d15865b1b263a8b54440f963ac4a3a.age",
+    "sha256": "ea57aacc08d41a98a88689003915e14d96d15865b1b263a8b54440f963ac4a3a",
+    "bytes": 76921380,
+    "fullNASReadback": true,
+    "sourceReceiptSHA256": "4ab510a3c71e084305473767a3ee7eebe7c45da470b88e7bdb042c3f57ac1c28",
+    "ordinaryNetworkNamespace": "net:[4026531840]",
+    "freshNASCopyProofSHA256": "8413ce78fe37910cfaa93021b39d1f7a37b155aec019288cf58ea504a7cac17d"
+  },
+  "producer": {
+    "age_binary_sha256": "eb7dd1b518f0a307c99cd97782623c5321da049154b04acd2d98d21aa7bc9b2c",
+    "age_version": "v1.3.2",
+    "application_quiesced": false,
+    "archive_bytes": 76921380,
+    "archive_path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/flux-control-plane-backup/control-plane-e90319b39ff741ab9dbc9f7d09cc6187/control-plane.tar.age",
+    "archive_sha256": "ea57aacc08d41a98a88689003915e14d96d15865b1b263a8b54440f963ac4a3a",
+    "authenticated_archive_verified": true,
+    "bortus_recovery_accepted": false,
+    "completed_at": "2026-10-27T13:21:24.654266-04:00",
+    "config_file_count": 46,
+    "nas_copy_verified": false,
+    "off_node_operator_copy": true,
+    "phase": "completed",
+    "remote_plaintext_retained": false,
+    "remote_snapshot_path": "/var/lib/etcd/cluster-maintenance-e90319b39ff741ab9dbc9f7d09cc6187/snapshot.db",
+    "restore_verified": false,
+    "run_id": "e90319b39ff741ab9dbc9f7d09cc6187",
+    "schema_version": 1,
+    "scope": "cluster-maintenance-control-plane",
+    "snapshot_footer_verified": true,
+    "snapshot_sha256": "6ed89e0e7184239925b6a4993475dcf859de5f0594f696f27cb2d220a072679c",
+    "snapshot_status": {
+      "hash": 1105404988,
+      "revision": 10442118,
+      "totalKey": 2801,
+      "totalSize": 74838016
+    },
+    "snapshot_status_verified": true,
+    "source": {
+      "image": "registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910",
+      "image_id": "registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910",
+      "name": "etcd-masternode",
+      "uid": "4057f122-69a2-48a9-9783-e55ee5c6775e"
+    },
+    "started_at": "2026-10-27T13:21:15.436629-04:00",
+    "status": "completed"
+  },
+  "NASCopy": {
+    "UTC": "2026-10-27T13:34:11.920046-04:00",
+    "status": "completed",
+    "source": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\local-image-build-offload-20261025\\platform-upstream-review-20261027\\flux-control-plane-backup\\control-plane-e90319b39ff741ab9dbc9f7d09cc6187\\control-plane.tar.age",
+    "destination": "\\\\TRUENAS\\plex_smb_share\\Branconet-Recovery-Backups\\2026-10-25\\ciphertexts\\sha256-ea57aacc08d41a98a88689003915e14d96d15865b1b263a8b54440f963ac4a3a.age",
+    "bytes": 76921380,
+    "sha256": "ea57aacc08d41a98a88689003915e14d96d15865b1b263a8b54440f963ac4a3a",
+    "plaintextCopied": false,
+    "sourceReceiptSHA256": "4ab510a3c71e084305473767a3ee7eebe7c45da470b88e7bdb042c3f57ac1c28",
+    "sourceAlreadyFullyAgeAuthenticated": true,
+    "retainedTemporary": null,
+    "fullNASReadback": true,
+    "bitIdenticalToAuthenticatedSource": true,
+    "sourcePreserved": true,
+    "temporaryRenamedWithoutOverwrite": true
+  },
+  "cleanupTargets": [
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch",
+      "kind": "directory",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437916,
+        "mode": 16832,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 3,
+        "size": 4096,
+        "mtime_ns": 1793124940415278426,
+        "ctime_ns": 1793124940415278426,
+        "blocks": 8
+      }
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/snapshot.db",
+      "kind": "file",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437917,
+        "mode": 33152,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "size": 74838048,
+        "mtime_ns": 1793124941419278361,
+        "ctime_ns": 1793124941419278361,
+        "blocks": 146176
+      },
+      "sha256": "c96fb3e12ca2b9ad281693c1715d76558fd7a400522705253f67557cf04189e8"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored",
+      "kind": "directory",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437918,
+        "mode": 16832,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 3,
+        "size": 4096,
+        "mtime_ns": 1793124940415278426,
+        "ctime_ns": 1793124940415278426,
+        "blocks": 8
+      }
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member",
+      "kind": "directory",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437919,
+        "mode": 16832,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 4,
+        "size": 4096,
+        "mtime_ns": 1793124941271278371,
+        "ctime_ns": 1793124941271278371,
+        "blocks": 8
+      }
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member/wal",
+      "kind": "directory",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437923,
+        "mode": 16832,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 2,
+        "size": 4096,
+        "mtime_ns": 1793124941279278369,
+        "ctime_ns": 1793124941279278369,
+        "blocks": 8
+      }
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member/wal/0000000000000000-0000000000000000.wal",
+      "kind": "file",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437924,
+        "mode": 33152,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "size": 64000000,
+        "mtime_ns": 1793124941279278369,
+        "ctime_ns": 1793124941279278369,
+        "blocks": 125000
+      },
+      "sha256": "8b8f6692f505227be4e53c73a53023550cf911faedd2d12e184adbbf4a7b8e89"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member/snap",
+      "kind": "directory",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437920,
+        "mode": 16832,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 2,
+        "size": 4096,
+        "mtime_ns": 1793124941275278373,
+        "ctime_ns": 1793124941275278373,
+        "blocks": 8
+      }
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member/snap/db",
+      "kind": "file",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437921,
+        "mode": 33152,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "size": 74838016,
+        "mtime_ns": 1793124941487278356,
+        "ctime_ns": 1793124941487278356,
+        "blocks": 146168
+      },
+      "sha256": "4b6d3bd6bcc1d9281cd3428b28a67356fadfc6eb40a9210ba362036450060115"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-scratch/restored/member/snap/0000000000000001-0000000000000001.snap",
+      "kind": "file",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437925,
+        "mode": 33152,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 1,
+        "size": 6488,
+        "mtime_ns": 1793124941275278373,
+        "ctime_ns": 1793124941275278373,
+        "blocks": 16
+      },
+      "sha256": "dec8b056e48268c856b95520736a58dc9bcb4ac9504fe17223770c0cd7022d31"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-ansible-scratch",
+      "kind": "directory",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437902,
+        "mode": 16832,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 3,
+        "size": 4096,
+        "mtime_ns": 1793124941935278327,
+        "ctime_ns": 1793124941935278327,
+        "blocks": 8
+      }
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-ansible-scratch/local",
+      "kind": "directory",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437903,
+        "mode": 16832,
+        "uid": 0,
+        "gid": 0,
+        "nlink": 2,
+        "size": 4096,
+        "mtime_ns": 1793124941943278327,
+        "ctime_ns": 1793124941943278327,
+        "blocks": 8
+      }
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/flux-control-plane-backup/fresh-backup-ansible-scratch-20261027",
+      "kind": "directory",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437875,
+        "mode": 16832,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 3,
+        "size": 4096,
+        "mtime_ns": 1793121190359594182,
+        "ctime_ns": 1793121190359594182,
+        "blocks": 8
+      }
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/flux-control-plane-backup/fresh-backup-ansible-scratch-20261027/local",
+      "kind": "directory",
+      "identity": {
+        "dev": 1792,
+        "ino": 9437876,
+        "mode": 16832,
+        "uid": 1000,
+        "gid": 1000,
+        "nlink": 2,
+        "size": 4096,
+        "mtime_ns": 1793121190367594182,
+        "ctime_ns": 1793121190367594182,
+        "blocks": 8
+      }
+    }
+  ],
+  "retainedRuntimeTool": {
+    "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/tools/etcdutl",
+    "bytes": 16601250,
+    "allocatedBytes": 16605184,
+    "reason": "single verified operational recovery tool reused for the remaining fresh pre-upgrade backup/restore gate; retain until that gate is finished, then reconcile",
+    "sha256": "e3bd459308395080493488003f8cd4498db7ad4237584881b00f948a47950d2f"
+  },
+  "referenceCheck": {
+    "processes": 102,
+    "mountNamespaces": 6,
+    "units": 247,
+    "unitInventorySHA256": "fd898d68b29efbadc55e315c53416764379ee915dc550c0334d2fc88c86f0a6f"
+  },
+  "protectedFileCount": 47,
+  "scope": "Authenticated ciphertext and independent private-network etcd restore, not production or application-volume restore"
+}

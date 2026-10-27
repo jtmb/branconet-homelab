@@ -1,5 +1,22 @@
 # Publisher reserve recovery, October 27
 
+## Five current-day stages, 17:32 UTC
+
+Five additional terminal successful runs passed full source/receipt bindings,
+locks, Linux references, all 15 native Windows exclusive file-handle checks and
+final identities/hashes. Removed only their 15 temporary public tool exports and
+five empty `.tools` directories: **748,892,160 allocated controller Linux bytes**.
+Cumulative publisher cleanup is **1,797,341,184 bytes**, 12 successful stages.
+[Exact paths, ownership, native checks and reconciliation](../evidence/publisher-headroom-five-stages-20261027.json).
+
+Native available space increased from 16,511,737,856 to 17,260,630,016 bytes at
+that observation. Concurrent owner work can consume this space; it is neither a
+reservation nor a Windows recovery claim. Source exports, manifests, receipts,
+primary tools and the complete failed run remain. No publication was replayed.
+Four unique ownership/qualification/native-handle/removal receipts remain under
+`operator-control/publisher-headroom-ba9f3754481c73cc-*-20261027.json`; the
+maintained bounded operators and existing source bindings provide regeneration.
+
 ## Current release follow-up, 16:31–16:51 UTC
 
 Three more terminal successful stages passed the same original-source,

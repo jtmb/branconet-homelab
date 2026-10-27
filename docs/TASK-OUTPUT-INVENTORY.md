@@ -1946,3 +1946,36 @@ backup reuse receipts: `operator-control/owned-jtmb-metadata-receipt.json` and
 `smb-owned-jtmb-metadata-copy-status.json`. No original was deleted or prior cold
 ciphertext copied inside the checkpoint. Source/root observer manifests remain
 under `control-source/owned-jtmb-20261027` and the acceptance evidence root.
+# October 27 fresh control-plane recovery and current publisher cleanup
+
+Owner `01a12045-bf7e-73b3-8557-752d17c72ffd`; existing output root
+`/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,
+physical F: ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`. No new output drive.
+Ownership and capacity/regeneration checks preceded backup, native tool reuse
+and restore. Exact paths and bytes: [recovery ledger](../evidence/fresh-control-plane-recovery-20261027.json)
+and [publisher ledger](../evidence/publisher-headroom-five-stages-20261027.json).
+
+- Removed 213,725,184 allocated Linux bytes under
+  `platform-upstream-review-20261027/etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-{scratch,ansible-scratch}`
+  and `flux-control-plane-backup/fresh-backup-ansible-scratch-20261027`.
+  The second backup scratch root was already absent. Late framework cleanup is
+  unmeasured and not credited. Original source/ciphertext/failures are unchanged.
+- Retain one required operational `etcd-restore-qualification/tools/etcdutl`,
+  16,601,250 logical / 16,605,184 allocated bytes, for the final pre-upgrade gate.
+  Reconcile afterward. Full hash/provenance and regeneration are in the ledger.
+- Retain authenticated local/NAS ciphertext, 76,921,380 bytes each, as required
+  recovery artifacts; original receipts and encryption keys remain protected.
+- Retain 26 unique current checkpoint source/evidence files, 138,246 logical
+  bytes excluding index, enumerated/hash-bound by
+  `etcd-restore-qualification/cp-e90319b39ff741ab9dbc9f7d09cc6187-checkpoint-inventory.json`.
+  No raw recovered database remains. Earlier failures are preserved.
+- Removed 748,892,160 allocated Linux bytes from exactly five completed
+  publisher stages' tool exports and empty tool directories. Keep source exports,
+  reports, primary tools, the complete failed run and four new qualification/
+  native-handle/reconciliation receipts. Cumulative publisher cleanup is
+  1,797,341,184 bytes. No other cache, image, volume, model or data was removed.
+
+These controller bytes are separate from cumulative node cleanup
+24,914,153,472 bytes. No Windows physical recovery is inferred. The older
+`operator-control/tmp/system-commandline-sentinel-files` exception remains:
+creator/regeneration and complete Windows handle proof are missing; retain it.

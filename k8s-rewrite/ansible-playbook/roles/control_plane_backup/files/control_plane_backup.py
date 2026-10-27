@@ -13,6 +13,7 @@ import stat
 import subprocess
 import sys
 import tarfile
+import termios
 import uuid
 
 MAX_SNAPSHOT = 512 * 1024 * 1024
@@ -40,7 +41,7 @@ REQUIRED = {
         'etcd/peer.crt', 'etcd/peer.key', 'etcd/server.crt', 'etcd/server.key',
     ]),
 }
-SSH = ['/usr/bin/ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 'IdentitiesOnly=yes', '-o', 'ForwardAgent=no', '-o', 'ConnectTimeout=15', '-i', '/home/brajam/.ssh/id_ed25519', '-p', '2002', 'james@192.168.0.4']
+SSH = ['/usr/bin/ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 'UserKnownHostsFile=/home/brajam/.ssh/known_hosts', '-o', 'IdentitiesOnly=yes', '-o', 'ForwardAgent=no', '-o', 'ConnectTimeout=15', '-i', '/home/brajam/.ssh/id_ed25519', '-p', '2002', 'james@192.168.0.4']
 
 # This fixed privileged program reads only /etc/kubernetes and its own new snapshot.
 # Its archive stdout is piped directly to age, never to an Ansible/tool log.
@@ -182,6 +183,31 @@ def verify_archive(stream, expected_snapshot):
     return config_count
 
 
+def privilege_input():
+    fd = os.open('/dev/tty', os.O_RDWR | os.O_NOCTTY)
+    previous = termios.tcgetattr(fd)
+    hidden = previous[:]
+    hidden[3] &= ~termios.ECHO
+    try:
+        termios.tcsetattr(fd, termios.TCSAFLUSH, hidden)
+        need(not termios.tcgetattr(fd)[3] & termios.ECHO)
+        os.write(fd, b'Existing authorized privilege input (terminal echo disabled): ')
+        raw = bytearray()
+        while True:
+            value = os.read(fd, 1)
+            if value in (b'\n', b'\r'):
+                break
+            need(value and len(raw) < 128)
+            raw.extend(value)
+        need(bool(raw))
+        result = bytes(raw)
+        raw[:] = b'\0' * len(raw)
+        return result
+    finally:
+        termios.tcsetattr(fd, termios.TCSAFLUSH, previous)
+        os.write(fd, b'\n')
+        os.close(fd)
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     for flag in ['output-dir', 'recipient-file', 'identity-file', 'age-binary']:
@@ -193,10 +219,17 @@ def main():
     expected_version, accepted_runtime_ids = ETCD_SOURCES[args.etcd_image]
     need(args.etcd_digest in accepted_runtime_ids)
     os.umask(0o077)
-    password = os.environ.pop('BRANCONET_MIGRATION_SUDO_PASSWORD', '')
-    need(isinstance(password, str) and 0 < len(password) <= 256 and not any(c in password for c in '\r\n\x00'))
-    password_bytes = (password + '\n').encode()
-    password = None
+    # Operator authorization is entered only through the protected controlling
+    # terminal and sent through SSH stdin. Never accept a credential environment.
+    need('BRANCONET_MIGRATION_SUDO_PASSWORD' not in os.environ)
+    supplied = globals().pop('_CONTROL_PLANE_PRIVILEGE_BYTES', None)
+    if supplied is None:
+        supplied = privilege_input()
+    need(type(supplied) is bytes and 0 < len(supplied) <= 256
+         and not any(value in supplied for value in (b'\x00', b'\r', b'\n')))
+    password_bytes = supplied + b'\n'
+    supplied = None
+    need(b'\x00' not in password_bytes)
     pins = [(p, protected_file(p, private=p == args.identity_file, executable=p == args.age_binary)) for p in [args.recipient_file, args.identity_file, args.age_binary]]
     need(digest_file(args.age_binary) == AGE_SHA256)
     need(args.identity_file == pathlib.Path('/home/brajam/.ssh/id_ed25519') and args.recipient_file == pathlib.Path('/home/brajam/.ssh/id_ed25519.pub'))

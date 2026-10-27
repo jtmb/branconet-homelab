@@ -10,6 +10,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import tarfile
@@ -38,20 +39,39 @@ def run(args):
 
 
 def main():
+    global B, EXPECTED
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--verify-existing', action='store_true')
+    parser.add_argument('--backup-id')
+    parser.add_argument('--archive-sha256')
     args = parser.parse_args()
+    need(bool(args.backup_id) == bool(args.archive_sha256), 'complete_explicit_backup_selection')
+    prefix = ''
+    if args.backup_id:
+        need(re.fullmatch('[0-9a-f]{32}', args.backup_id)
+             and re.fullmatch('[0-9a-f]{64}', args.archive_sha256)
+             and not args.verify_existing, 'bounded_fresh_backup_selection')
+        B = F / 'platform-upstream-review-20261027/flux-control-plane-backup' / ('control-plane-' + args.backup_id)
+        EXPECTED = args.archive_sha256
+        prefix = 'cp-' + args.backup_id + '-'
+    proof_path = R / (prefix + 'nas-proof.json')
+    work = R / (prefix + 'scratch')
+    regular_result = R / (prefix + 'restore-result.json')
     need(F.is_mount() and R.resolve() == R and os.geteuid() == 1000, 'owned_unprivileged_local_job')
-    need(os.readlink('/proc/self/ns/net') != json.loads((R / 'nas-proof.json').read_text())['ordinaryNetworkNamespace'],
+    need(os.readlink('/proc/self/ns/net') != json.loads(proof_path.read_text())['ordinaryNetworkNamespace'],
          'private_network_namespace_required')
     original = json.loads((B / 'receipt.json').read_text())
-    proof = json.loads((R / 'nas-proof.json').read_text())
+    proof = json.loads(proof_path.read_text())
     need(proof['sha256'] == EXPECTED == original['archive_sha256'] and proof['fullNASReadback'], 'exact_nas_source')
+    if args.backup_id:
+        need(original['status'] == 'completed' and original['run_id'] == args.backup_id
+             and original['authenticated_archive_verified'] and original['snapshot_footer_verified']
+             and proof['sourceReceiptSHA256'] == sha(B / 'receipt.json'), 'exact_completed_backup_producer')
     source = B / 'control-plane.tar.age'
     need(source.resolve() == source and source.stat().st_size == original['archive_bytes'] and sha(source) == EXPECTED,
          'local_cipher_identical_to_nas')
     tool = R / 'tools/etcdutl'
-    provenance = json.loads((R / 'tool-provenance.json').read_text())
+    provenance = json.loads((R / (prefix + 'tool-provenance.json')).read_text())
     need(tool.resolve() == tool and sha(tool) == provenance['binary']['sha256'], 'pinned_public_restore_tool')
     age = Path('/home/brajam/.local/share/branconet-migration/bin/age')
     need(sha(age) == AGE_SHA, 'pinned_age')
@@ -61,13 +81,12 @@ def main():
         need(previous['status'] == 'failed' and previous['errorCategory'] == 'restored_keyspace_hash_revision_count'
              and (R / 'scratch/restored/member/snap/db').is_file(), 'only_reviewed_existing_restore')
     else:
-        need(not (R / 'scratch').exists() and not (R / 'restore-result.json').exists(), 'prior_scratch_and_result_preserved')
-    output = R / ('restore-result-verified.json' if args.verify_existing else 'restore-result.json')
+        need(not work.exists() and not regular_result.exists(), 'prior_scratch_and_result_preserved')
+    output = R / 'restore-result-verified.json' if args.verify_existing else regular_result
     need(not output.exists(), 'prior_qualification_receipt_preserved')
     space = os.statvfs(F)
     need(space.f_bavail * space.f_frsize >= 15 * 1024**3 + 512 * 1024**2, 'restore_capacity_floor')
     os.umask(0o077)
-    work = R / 'scratch'
     if not args.verify_existing:
         work.mkdir(mode=0o700)
     os.environ.update(TMPDIR=str(work), TMP=str(work), TEMP=str(work), GOMAXPROCS='1', GOMEMLIMIT='128MiB')

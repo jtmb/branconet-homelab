@@ -17,24 +17,17 @@
     fail_msg: Explicit reviewed maintenance backup settings for this existing control plane are required.
 
 - name: Capture and authenticate a separate encrypted control-plane backup
-  ansible.builtin.command:
-    argv:
-      - /home/brajam/.local/share/branconet-migration/venv/bin/python
-      - "{{ role_path }}/files/control_plane_backup.py"
-      - --output-dir
-      - "{{ control_plane_backup_output_dir }}"
-      - --recipient-file
-      - "{{ control_plane_backup_recipient_file }}"
-      - --identity-file
-      - "{{ control_plane_backup_identity_file }}"
-      - --age-binary
-      - "{{ control_plane_backup_age_binary }}"
-      - --etcd-image
-      - "{{ control_plane_backup_etcd_image }}"
-      - --etcd-digest
-      - "{{ control_plane_backup_etcd_digest }}"
-  # Inherit the launcher's private child environment. Rendering an Ansible
-  # environment assignment here could put the password in a shell argument.
+  control_plane_backup_inline:
+    helper: "{{ role_path }}/files/control_plane_backup.py"
+    helper_sha256: "{{ lookup('file', role_path + '/files/control_plane_backup.py', rstrip=False) | hash('sha256') }}"
+    output_dir: "{{ control_plane_backup_output_dir }}"
+    recipient_file: "{{ control_plane_backup_recipient_file }}"
+    identity_file: "{{ control_plane_backup_identity_file }}"
+    age_binary: "{{ control_plane_backup_age_binary }}"
+    etcd_image: "{{ control_plane_backup_etcd_image }}"
+    etcd_digest: "{{ control_plane_backup_etcd_digest }}"
+  # The launcher reads the controlling TTY before worker creation. The action
+  # consumes Ansible's existing RAM-only become credential, never task data.
   delegate_to: localhost
   become: false
   no_log: true

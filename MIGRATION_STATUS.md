@@ -1,5 +1,20 @@
 # Migration and maintenance status
 
+**October 27, 18:15 UTC:** fresh encrypted backup, authenticated NAS copy and
+actual independent offline etcd restore passed. All 2,801 keys and revision
+10,442,118 retained the same logical key-history hash. Removed 213,725,184
+allocated controller Linux bytes of raw recovery/Ansible scratch; retained
+ciphertexts, source/failure evidence and one operational recovery tool.
+[Exact evidence and limits](docs/FRESH-CONTROL-PLANE-RECOVERY-20261027.md).
+Five more successful publisher stages released 748,892,160 controller Linux
+bytes; cumulative publisher cleanup is 1,797,341,184 bytes. No Windows recovery
+or node-space gain follows from these controller measurements.
+
+Still required: application/detached-data coverage, master capacity and supported
+Longhorn upgrade, security exceptions, final Seerr/YTPTube IAB and fleet
+acceptance. No driver, image pull, placement or workload-limit change occurred
+here. The full goal remains active.
+
 **October27,16:51UTC checkpoint:** qualified master BuildKit retirement recovered
 **258,555,904 allocated node Linux bytes**. All original contexts, locks, state,
 logs, seals and failure evidence remain. All3 nodes,58 claim bindings and44
