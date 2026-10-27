@@ -1,5 +1,20 @@
 # Migration and maintenance status
 
+**Latest checkpoint — October27,06:04UTC:** snapshot-controller8.7.0 is deployed
+and verified, preserving all existing snapshots, storage, native Secrets and
+unrelated workload/Flux/node identities. Two exact-digest replicas are Ready
+with zero restarts;1Critical/46High→0Critical/2High on the unchanged feed.
+Fresh read-only BORTUS coverage completes63/63runtime digest reports without
+changing its held application. Windows public-root installation and idempotence
+pass;60OS-store HTTPS checks pass in explicit request-only missing-CRL mode.
+Default strict Schannel revocation still fails; final browser acceptance is open.
+
+Cleanup removed1,679,360allocated Linux bytes with all unique/source/data/rollback
+evidence retained. The3,861,620-byte encrypted checkpoint passed complete NAS
+read-back authentication. Remaining: Longhorn capacity/recovery/upgrade,
+Unpackerr1.0 compatibility, vendor/host exceptions and final reconciliation/IAB.
+Goal remains active. [Exact checkpoint](docs/SNAPSHOT-AND-CLIENT-TRUST-20261027.md).
+
 **Latest checkpoint — October27,04:43UTC:** the SMB sidecar patch is deployed
 and separately verified. All14NAS bindings/credentials and12Helm resource UIDs
 remain; seven new sidecars are Ready with exact IDs and zero restarts. Global

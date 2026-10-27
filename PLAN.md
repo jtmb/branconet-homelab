@@ -1,5 +1,24 @@
 # Cluster maintenance and application migration plan
 
+**Latest checkpoint — October27,06:04UTC:** snapshot-controller8.7.0 is deployed
+and separately verified: two exact-digest Ready/zero-restart replicas, unchanged
+original snapshots/claims/native Secrets/Flux/other workloads. Three official
+group-snapshot CRDs were added before rollout; existing owners and UIDs survive.
+Its same-feed findings improve1Critical/46High→0Critical/2High.
+The fresh BORTUS read-only OCI scan closes coverage:63/63runtime image digests
+now have complete same-feed reports; its application hold remains unchanged.
+
+Windows CurrentUser root installation and zero-change rerun pass. All60LAN
+checks pass OS-store chain/hostname validation with request-scoped missing-CRL
+best effort; strict default Schannel failure and final IAB remain explicit.
+Cleanup removed1,679,360Linux bytes; full encrypted NAS evidence authentication
+passed. No node data/image prune, Windows policy change or Actions use occurred.
+
+Remaining: Longhorn capacity/recovery/upgrade; Unpackerr1.0 compatibility and any
+justified chart update; vendor/host exceptions; final reconciliation and IAB.
+The full tracked goal remains active.
+[Exact acceptance, limits and remaining work](docs/SNAPSHOT-AND-CLIENT-TRUST-20261027.md).
+
 **Latest checkpoint — October27,04:43UTC:** SMB's existing Helm owner now runs
 pinned registrar2.18.0/livenessprobe2.20.0. Four image fields only; all12resource
 UIDs,14NAS PV/PVC bindings and credentials survive. Seven live sidecars match

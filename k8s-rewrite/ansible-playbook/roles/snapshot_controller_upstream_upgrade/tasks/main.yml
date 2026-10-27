@@ -1,0 +1,24 @@
+---
+- name: Require the original cluster and an explicit reviewed phase
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - snapshot_controller_upstream_upgrade_mode in ['prepare', 'apply', 'verify']
+      - snapshot_controller_upstream_upgrade_mode != 'apply' or snapshot_controller_upstream_upgrade_approved_sha256 is match('^[0-9a-f]{64}$')
+  when: snapshot_controller_upstream_upgrade_enabled | bool
+
+- name: Run the protected snapshot-controller upgrade
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+      - "{{ role_path }}/files/upgrade.py"
+      - "{{ snapshot_controller_upstream_upgrade_mode }}"
+      - --output-dir
+      - "{{ snapshot_controller_upstream_upgrade_output_dir }}"
+      - --approved-sha256
+      - "{{ snapshot_controller_upstream_upgrade_approved_sha256 }}"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  changed_when: snapshot_controller_upstream_upgrade_mode == 'apply'
+  when: snapshot_controller_upstream_upgrade_enabled | bool and not ansible_check_mode

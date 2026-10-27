@@ -69,7 +69,7 @@ artifacts remain; it is not a before/after count of exploitable paths. The known
 FlareSolverr Chromium/CISA match remains explicitly unresolved.
 
 The snapshot-controller8.7.0 candidate was also fully scanned:2High/4Medium/
-2Unknown, versus47High in the current8.5 runtime. **It is not applied.** Its
+2Unknown, versus1Critical/46High in the then-current8.5 runtime. **It was not yet applied at this checkpoint.** Its
 new group-snapshot GA behavior needs a coordinated CRD/RBAC review. Current
 snapshot/controller/class UIDs, existing Ready snapshot/content and original
 schemas remain unchanged. Official source file URLs/Git blob hashes and the
@@ -91,7 +91,10 @@ less than the master's current shortfall. Moving the other volumes to worker1
 would colocate existing copies. No eviction, replica reduction, anti-affinity
 change, volume attachment or data move was attempted to manufacture capacity.
 
-Remaining: snapshot-controller schema/RBAC-compatible adoption; Longhorn safe
+The later [snapshot/client checkpoint](SNAPSHOT-AND-CLIENT-TRUST-20261027.md)
+records actual8.7adoption, fresh63/63scan coverage and Windows trust installation.
+
+Remaining at this checkpoint: snapshot-controller schema/RBAC-compatible adoption; Longhorn safe
 capacity/recovery prerequisites and upgrade; vendor/host-entitlement security
 exception reconciliation; Windows LAN client trust; final Seerr/YTPTube IAB and
 whole-fleet acceptance. BORTUS application development/adoption remains separate.

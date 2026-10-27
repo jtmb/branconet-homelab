@@ -1,5 +1,62 @@
 # Maintenance output ownership and reconciliation
 
+## Snapshot-controller upstream operation, October27
+
+Completed reconciliation:1,679,360allocated Linux bytes removed from the exact
+inactive scanner fanal DB(1,646,592B), its three empty directories(12,288B) and
+the five reused empty Ansible scratch directories(20,480B). Absolute targets,
+creator/regenerator/source/inode/process/mount and preservation proofs are in
+`operator-control/snapshot-review-scratch-{plan,reconciliation}.json`.
+Originals, required runtime, failures, raw scans and recovery remain. The older
+managed-command sentinels/parent remain for their recorded creator/regeneration/
+Windows-handle proof gap. No node prune or Windows recovery claim.
+
+Evidence-only recovery:3,861,620bytes, SHA256
+`bb9b153689b460d90378236f182cab71579624d81ca09a2693379adb249c0b30`.
+Every member and full age/NAS read-back authentication passed; no prior metadata
+archive, scanner DB or BORTUS image payload is duplicated inside it. Exact local/
+NAS receipts use `snapshot-review-metadata` under `operator-control`.
+[Acceptance and precise retained exceptions](SNAPSHOT-AND-CLIENT-TRUST-20261027.md).
+
+Two newly discovered maintained Jackett/Unpackerr releases use the same existing
+F root and shared hash-compatible r4 scanner inputs/cache, with unique outputs
+`security-review-20261026/apps-maintained-app-refresh-current-r4-*` and small
+registry/release metadata under the existing platform review directory.
+Regenerate only from the retained immutable references and exact scanner argv;
+retain scan/compatibility failures and source. A newer release alone does not
+authorize adoption or imply a security fix. Reconcile the shared analysis cache
+after these finite scans stop. No derivative build, archive extraction or second
+output root is introduced.
+
+The fresh fleet follow-up also reads the already verified BORTUS selected OCI
+layout directly, at `bortus-cached-runtime-audit-20261025/scan-attempts/
+bortus-cached-3da0b68becea/selected-oci`. It is mounted read-only and is never
+copied or extracted again. This does not invoke or change the old export/audit
+wrapper, its8GiB profile or its23GiB launch guard. The current direct-layout
+reader uses the fleet scanner's existing1GiB/zero-swap/2CPU/128task limits, adds
+network isolation and a2GiB fresh-analysis allocation ceiling, and retains15GiB
+on both native/physical F plus the Windows C launch guard. New paths only:
+`security-review-20261026/apps-bortus-layout-current-r4-0`, reused scanner
+`cache-r4/fanal`, `tmp`, `home` and unique source/binding/status receipts.
+Regenerate from the exact read-only17-blob layout, pinned tool/feed and
+`scripts/migration/scan-cached-bortus-layout.py`, after fresh runtime binding.
+Preserve the old archive/layout, source, failures and all raw results; no app
+execution, source development, native value export or BORTUS adoption is allowed.
+
+Same owner/chat and single authorized F-backed root/UUID below. New durable source
+inputs are the eight small public manifests under
+`platform-upstream-review-20261027/snapshot-v8.7-public-inputs`, independently
+matched to the GitHub file Git-blob hashes and SHA256 pinned in Ansible source.
+`snapshot-upgrade` holds single-use encrypted originals and prepare/apply/verify
+metadata. `control-source/snapshot-upstream-20261027` holds compact exact executed
+source and pins. Reuse `flux-ansible-scratch/{home,local,tmp,cp}` on the same F
+filesystem for all Ansible TEMP/control/local output; no dependency copies/builds.
+Regenerate public files from the committed URLs/Git blob/SHA256 pins; never replay
+an existing apply marker or overwrite old receipts. Recreate only the scoped
+Ansible scratch via `run-snapshot-upstream-ansible.py`; remove it when inactive.
+Preserve every original snapshot/class/content UID, native Secret, PVC/PV, data,
+old runtime/rollback source, existing BORTUS hold and unique failure/recovery proof.
+
 ## CSI upstream follow-up scope, October27
 
 Checkpoint cleanup completed:270,336allocated Linux bytes removed. Exact

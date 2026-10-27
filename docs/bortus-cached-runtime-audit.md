@@ -1,5 +1,14 @@
 # One-image cached-runtime audit (completed inventory; findings remain open)
 
+**October27 fresh-feed follow-up:** the same Pod/image/held-release binding now
+has a successful current r4 offline scan from its existing read-only OCI layout.
+All19files/17blobs are hash/identity-verified before/after, with no second archive
+extraction, registry access, app execution or adoption. Fresh findings remain
+5Critical/99High/160Medium/154Low/3Unknown, no CISA KEV match. This closes the
+later fleet's registry-coverage gap; it does not release the application hold.
+The old export/audit wrapper and its limits were not invoked or changed.
+[Exact fresh source, limits, runtime binding and recovery](SNAPSHOT-AND-CLIENT-TRUST-20261027.md#fresh-security-coverage).
+
 This is vulnerability inventory of the currently running cached image only. It is
 not BORTUS application development, a new release, a local-build provenance claim,
 an application execution, or deployment acceptance. Registry acquisition returned

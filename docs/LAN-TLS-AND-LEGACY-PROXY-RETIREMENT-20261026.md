@@ -1,5 +1,12 @@
 # LAN TLS and legacy proxy retirement
 
+**October27 client follow-up:** the matching public root is now installed in
+CurrentUser/Root; a second apply made zero changes.60OS-store chain/hostname/HTTP
+checks pass in explicit request-only missing-CRL best-effort mode. Default strict
+Schannel rejects the CA's absent revocation service; its failures remain. No
+Windows security setting changed, no private key was imported, and final IAB
+is still open. [Exact client evidence and limits](SNAPSHOT-AND-CLIENT-TRUST-20261027.md#windows-trust-and-precise-client-limitations).
+
 **Server checkpoint: October27, 00:06 UTC. Full client acceptance remains open.**
 
 Twenty active migration-owned LAN hostnames now use cert-manager-issued,
@@ -24,7 +31,7 @@ flowchart LR
     CA --> Leaves[Namespace TLS Secrets]
     Leaves --> Ingress[Existing HTTPS routes]
     Ingress --> Apps[20 active LAN hosts]
-    CA -. public certificate only .-> Trust[Windows user trust: pending]
+    CA -. public certificate only .-> Trust[Windows user root installed; final IAB pending]
     Held[BORTUS suspended release] -. separate owner .-> Exception[Prepared TLS binding]
 ```
 
