@@ -1,6 +1,6 @@
 # Existing-cluster maintenance
 
-This directory contains **21 opt-in maintenance playbooks for the existing
+This directory contains **opt-in maintenance playbooks for the existing
 Branconet cluster**. It does not contain a cluster installer, reset playbook,
 legacy `site.yml`, application variable lookup plugin, or BORTUS application code.
 Use this runbook with [the active plan](../../PLAN.md),
@@ -271,3 +271,25 @@ The dedicated F-drive build/receiver/scanner/cache profiles also allow only the
 reviewed Mealie, qbit-monitor and xTeVe services. CPU/RAM, queue, disk reserve,
 archive and deadline guards are unchanged. A profile allowlist is not artifact
 adoption. See the exact application evidence and remaining gates in PLAN.md.
+
+## Original master build-tool retirement
+
+`playbooks/retired-master-build-tools.yml` and `retired_master_build_tools`
+inspect by default. The dedicated
+[operator](../../scripts/migration/run-master-build-tool-retirement.py) accepts
+`--syntax-only`, `--inventory` or `--apply`, plus the actual repository path.
+Apply requires the completed original inventory and still-matching retained
+controller binaries. Its fixed scope is only the three sealed BuildKit binaries
+in each of the two original October23 master media-build directories. It does
+not resume a build or remove contexts, state, logs, source, OCI data or seals.
+Credentials use the existing protected TTY/RAM/SSH route. Evidence cannot be
+overwritten; preserve original failed accounting and late Ansible cleanup
+observations. [Exact acceptance and scratch reconciliation](../../docs/MASTER-BUILD-TOOLS-RETIREMENT-20261027.md).
+
+The separate controller publisher utility accepts1–8 explicit successful
+`stageUUID:sourceSHA` selections with `--stage`; its Windows handle checker
+accepts the returned `--plan-key`. Root/tool/hash/source/receipt/lock/reference
+guards remain fixed. It removes only the three public tool copies and empty
+`.tools` directory, preserving every export and receipt, all primary tools and
+the complete failed run. It does not modify or retry the publisher.
+[Exact current-release reconciliation](../../docs/PUBLISHER-HEADROOM-20261027.md).

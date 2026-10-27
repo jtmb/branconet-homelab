@@ -1,0 +1,61 @@
+---
+- name: Require the two exact original master-only builders
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - ansible_host == '192.168.0.4'
+      - ansible_user == 'james'
+      - ansible_port | int == 2002
+      - retired_master_build_tools_apply is boolean
+      - retired_master_build_tools_receipt == '/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/master-build-tools-' ~ ('retirement' if retired_master_build_tools_apply else 'inventory') ~ '.json'
+
+- name: Check the owned receipt before any node operation
+  ansible.builtin.stat:
+    path: "{{ retired_master_build_tools_receipt }}"
+  delegate_to: localhost
+  become: false
+  register: retired_master_build_tools_existing_receipt
+
+- name: Preserve existing operation evidence
+  ansible.builtin.assert:
+    that: [not retired_master_build_tools_existing_receipt.stat.exists]
+
+- name: Inspect or retire only sealed inactive public tools without staging
+  ansible.builtin.raw: >-
+    systemd-run --quiet --wait --pipe --collect
+    --unit=branconet-master-build-tools-{{ 'retire' if retired_master_build_tools_apply else 'inspect' }}-20261027
+    --description='Branconet qualified inactive master build tools'
+    --property=MemoryMax=268435456 --property=MemorySwapMax=0
+    --property=CPUQuota=100% --property=TasksMax=64 --property=Nice=15
+    --property=RuntimeMaxSec=300
+    --property=ProtectSystem={{ 'full' if retired_master_build_tools_apply else 'strict' }}
+    --property=ProtectHome={{ 'no' if retired_master_build_tools_apply else 'read-only' }}
+    /usr/bin/env PYTHONDONTWRITEBYTECODE=1
+    /usr/bin/python3 -B -c {{ lookup('file', role_path + '/files/retire.py') | quote }}
+    {{ '--apply' if retired_master_build_tools_apply else '' }}
+  register: retired_master_build_tools_result
+  failed_when: false
+  changed_when: false
+  no_log: true
+
+- name: Preserve the original returned proof or refusal
+  ansible.builtin.copy:
+    dest: "{{ retired_master_build_tools_receipt }}"
+    content: "{{ {'rc': retired_master_build_tools_result.rc, 'stdout': retired_master_build_tools_result.stdout, 'stderr': retired_master_build_tools_result.stderr, 'applied': retired_master_build_tools_apply} | to_nice_json }}"
+    force: false
+    mode: '0600'
+  delegate_to: localhost
+  become: false
+  no_log: true
+
+- name: Require a successful scoped operation
+  ansible.builtin.assert:
+    that: [retired_master_build_tools_result.rc == 0]
+    fail_msg: The node operation refused; retain its original owned receipt and resolve the failed condition.
+
+- name: Report exact removal counts from the returned proof
+  ansible.builtin.debug:
+    msg:
+      applied: "{{ retired_master_build_tools_apply }}"
+      removed_allocated_bytes: "{{ (retired_master_build_tools_result.stdout | from_json).removedAllocatedBytes }}"
+      removed_paths: "{{ (retired_master_build_tools_result.stdout | from_json).removed | map(attribute='path') | list }}"

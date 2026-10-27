@@ -1,10 +1,11 @@
-"""Remove only source-bound tool exports from four completed publisher runs."""
+"""Remove only source-bound tool exports from fixed successful publisher stage profiles."""
 import argparse
 import datetime
 import fcntl
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import stat
 import subprocess
@@ -43,7 +44,24 @@ def write(name, value):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--apply', action='store_true')
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument('--profile', choices=('initial', 'ingenium'), default='initial')
+    selection.add_argument('--stage', action='append', help='Exact terminal stage UUID:source SHA; at most eight')
     args = parser.parse_args()
+    global STAGES
+    prefix = PREFIX
+    if args.profile == 'ingenium':
+        prefix = 'publisher-headroom-ingenium-'
+        STAGES = {'06e055eeb82b4e899bca4ac1d80a183b': 'fa48bcf8032edbe6535fcc55300606243f0a141c',
+                  'd59e47ea0028486da396489f8fdd9b5b': '1ec4ba4935ab46a40266269a995ba667a0c3bd93'}
+    if args.stage:
+        assert 1 <= len(args.stage) <= 8
+        assert all(re.fullmatch(r'[a-f0-9]{32}:[a-f0-9]{40}', value) for value in args.stage)
+        STAGES = dict(value.split(':', 1) for value in args.stage)
+        assert len(STAGES) == len(args.stage)
+        token = hashlib.sha256(json.dumps(STAGES, sort_keys=True, separators=(',', ':')).encode()).hexdigest()[:16]
+        prefix = 'publisher-headroom-' + token + '-'
+        args.profile = 'explicit'
     assert os.geteuid() == 0 and F.is_mount() and P.resolve() == P
     fs = json.loads(subprocess.check_output(['findmnt', '-J', '-T', str(F), '-o', 'UUID,FSTYPE']))['filesystems'][0]
     assert fs['uuid'] == '3c792469-ea0e-4a2c-98e8-1185b141607b'
@@ -112,22 +130,22 @@ def main():
         exec(compile(raw, '<reviewed-reference-checks>', 'exec'), common)
         common.update(BASE=P, ATTEMPTS=tuple('local-charts-publish-' + n + '/source/.tools' for n in STAGES))
         references = common['idle']()
-        plan = {'owner': '01a12045-bf7e-73b3-8557-752d17c72ffd', 'root': str(F), 'filesystem': fs,
+        plan = {'stageProfile': args.profile, 'owner': '01a12045-bf7e-73b3-8557-752d17c72ffd', 'root': str(F), 'filesystem': fs,
                 'targets': targets, 'stages': stages, 'protected': protected,
                 'originalToolsSHA256': EXPECTED, 'references': references,
                 'regeneration': 'Recreate exact temporary source/.tools copies from retained publisher .tools originals after pinned SHA checks in a future exclusive stage; never replay publication',
                 'protectedFailedAttempt': str(failed), 'sourceExportsAndAllReceiptsRetained': True}
-        plan_path = C / 'publisher-headroom-plan-20261027.json'
+        plan_path = C / (prefix + 'plan-20261027.json')
         if not args.apply:
             assert not plan_path.exists()
             write(plan_path.name, plan)
-            print(json.dumps({'status': 'qualified_for_native_handle_check', 'toolFiles': 12,
+            print(json.dumps({'status': 'qualified_for_native_handle_check', 'toolFiles': len(STAGES) * 3, 'receiptKey': prefix.removeprefix('publisher-headroom-').removesuffix('-'),
                               'allocatedTargetBytes': sum(r['identity']['blocks'] * 512 for r in targets)}))
             return
         original = json.loads(plan_path.read_text())
         assert all(plan[k] == original[k] for k in ('targets', 'protected', 'stages', 'originalToolsSHA256'))
-        proof = json.loads((C / 'publisher-headroom-windows-proof-20261027.json').read_text())
-        assert proof['status'] == 'completed' and proof['handlesClosed'] and len(proof['files']) == 12
+        proof = json.loads((C / (prefix + 'windows-proof-20261027.json')).read_text())
+        assert proof['status'] == 'completed' and proof['handlesClosed'] and len(proof['files']) == len(STAGES) * 3
         assert proof['planSHA256'] == sha(plan_path)
         assert {(r['relative'], r['sha256']) for r in proof['files']} == {(r['relative'], r['sha256']) for r in targets if r['kind'] == 'file'}
         common['idle']()
@@ -164,7 +182,7 @@ def main():
             result.update(removedAllocatedBytes=sum(r['allocatedBytes'] for r in result['removed']),
                           availableAfterBytes=space.f_bavail * space.f_frsize,
                           unchangedPublisherFloorBytes=15 * 1024**3 + 256 * 1024**2)
-            write('publisher-headroom-reconciliation-20261027.json', result)
+            write(prefix + 'reconciliation-20261027.json', result)
         print(json.dumps({k: v for k, v in result.items() if k != 'removed'}))
     finally:
         for lock in locks:

@@ -1,9 +1,11 @@
 """Prove exact exported ELF files have no competing Windows read handles."""
+import argparse
 import ctypes
 from ctypes import wintypes
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 
 F = Path(r'\\wsl.localhost\Ubuntu\home\brajam\.local\share\branconet-migration\local-image-build-offload-20261025')
@@ -11,10 +13,25 @@ C = F / 'operator-control'
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    selection = parser.add_mutually_exclusive_group()
+    selection.add_argument('--profile', choices=('initial', 'ingenium'), default='initial')
+    selection.add_argument('--plan-key', help='Exact 16-hex namespace returned by the bounded Linux stage inventory')
+    args = parser.parse_args()
+    assert not args.plan_key or re.fullmatch(r'[0-9a-f]{16}', args.plan_key)
+    prefix = 'publisher-headroom-' + args.plan_key + '-' if args.plan_key else 'publisher-headroom-ingenium-' if args.profile == 'ingenium' else 'publisher-headroom-'
+    expected_count = 6 if args.profile == 'ingenium' else 12
     assert os.name == 'nt'
     os.environ.update(TEMP=str(C / 'tmp'), TMP=str(C / 'tmp'), TMPDIR=str(C / 'tmp'))
-    plan = json.loads((C / 'publisher-headroom-plan-20261027.json').read_text())
-    assert len(plan['targets']) == 16
+    plan = json.loads((C / (prefix + 'plan-20261027.json')).read_text())
+    if args.plan_key:
+        assert plan['stageProfile'] == 'explicit' and 1 <= len(plan['stages']) <= 8
+        stages = {Path(v['stage']).name.removeprefix('local-charts-publish-'): v['sourceSHA'] for v in plan['stages']}
+        token = hashlib.sha256(json.dumps(stages, sort_keys=True, separators=(',', ':')).encode()).hexdigest()[:16]
+        assert token == args.plan_key
+        expected_count = len(stages) * 3
+    assert len(plan['targets']) == expected_count // 3 * 4
+    assert plan['stageProfile'] == ('explicit' if args.plan_key else args.profile)
     kernel = ctypes.WinDLL('kernel32', use_last_error=True)
     kernel.CreateFileW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
                                   wintypes.LPVOID, wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
@@ -47,11 +64,11 @@ def main():
                             'exclusiveWindowsReadSucceeded': True})
         finally:
             kernel.CloseHandle(handle)
-    assert len(records) == 12
+    assert len(records) == expected_count
     result = {'status': 'completed', 'nativePID': os.getpid(),
-              'planSHA256': hashlib.sha256((C / 'publisher-headroom-plan-20261027.json').read_bytes()).hexdigest(),
+              'planSHA256': hashlib.sha256((C / (prefix + 'plan-20261027.json')).read_bytes()).hexdigest(),
               'files': records, 'handlesClosed': True}
-    with (C / 'publisher-headroom-windows-proof-20261027.json').open('x') as out:
+    with (C / (prefix + 'windows-proof-20261027.json')).open('x') as out:
         json.dump(result, out, indent=2)
     print(json.dumps({'status': 'completed', 'exclusiveFilesVerified': len(records)}))
 

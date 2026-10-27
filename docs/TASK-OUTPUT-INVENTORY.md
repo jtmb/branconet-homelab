@@ -1,5 +1,54 @@
 # Maintenance output ownership and reconciliation
 
+## Master original builder tools — completed October27 follow-up
+
+Removed exactly six tools and two empty node directories:258,555,904 allocated
+node Linux bytes. All unselected original identities/hashes and controller
+primary binaries remain. Syntax, inventory and retirement passed. All58 claim
+bindings and44 volume UIDs survive; nodes, workloads and unsuspended Flux are Ready.
+Controller scratch is reconciled:36,864 measured bytes removed. Ansible's late
+module-packaging cleanup is unmeasured and receives no byte credit. Retain24
+unique evidence/source files,196,046 logical bytes excluding the final index.
+Original bookkeeping/refusal sources remain. No scratch tree remains.
+[Exact paths, bytes, retained exceptions and regeneration](MASTER-BUILD-TOOLS-RETIREMENT-20261027.md).
+
+Owner remains migration chat01a12045-bf7e-73b3-8557-752d17c72ffd. Reuse the same
+F-backed root, UUID3c792469-ea0e-4a2c-98e8-1185b141607b, and existing
+`node-cleanup-20261027/master-generated-cleanup` directory. New generated paths
+are recorded in `master-build-tools-ownership.json`: frozen helper/operator,
+controller-primary proof, inventory/retirement receipts and three short-lived
+`build-tools-{syntax,inventory,ansible}-scratch` directories. Allow4MiB additional
+metadata within the existing128MiB ceiling. Keep C: and the native destination
+above15GiB; no build, payload download or dependency copy is involved.
+
+Select only `bin/{buildctl,buildkitd,buildkit-runc}` in the original master
+`seerr-build-20261023` and `ytptube-build-20261023` directories. Verify setup seals,
+exact public hashes,72-hour inactivity, original root filesystem, locks and full
+unit/process/FD/map/mount references before opt-in Ansible removal. Preserve all
+other contexts, sources, logs, locks, setup/failure evidence, build state and OCI
+outputs. Regenerate from the three retained original controller binaries after
+their exact hash checks, in a fresh owned stage; never replay the old builds.
+The original source receipt records the release archive hash; the archive itself
+is absent there, so do not claim current archive verification. No deletion
+eligibility or byte recovery was inferred before the actual returned proof.
+
+## Current-release publisher tools — completed October27 follow-up
+
+Reuse the existing F-backed root and `operator-control`, with the exact selected
+stages/sources/paths declared before each phase in
+`publisher-headroom-ingenium-ownership-20261027.json` and
+`publisher-headroom-e8be875ad8f54399-ownership-20261027.json`. Retired nine copied
+tools and three empty directories:449,335,296 allocated controller Linux bytes.
+All exports, reports, receipts, primary tools and the complete failedf208 stage
+remain unchanged. Retain14 unique source/refusal/plan/native-handle/removal files,
+2,000,917 logical bytes excluding the final index. No generated cache, dependency
+tree or payload was created; no scratch remains. Original failed count-check
+source is preserved. [Exact ledger](../evidence/publisher-current-release-reconciliation-20261027.json).
+No Windows disk recovery is inferred. This is current temporary prepare-export
+cleanup, not removal of older copied source/build caches. Future explicit stage
+selection remains bounded to1–8 terminal successful stages with all existing
+source/lock/reference/hash/native-handle checks; it is not a background prune.
+
 ## Publisher reserve headroom, October27 — completed
 
 Removed exactly 12 qualified tool files and 4 empty directories:

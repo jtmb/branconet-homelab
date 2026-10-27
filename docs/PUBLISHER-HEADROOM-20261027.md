@@ -1,5 +1,35 @@
 # Publisher reserve recovery, October 27
 
+## Current release follow-up, 16:31–16:51 UTC
+
+Three more terminal successful stages passed the same original-source,
+receipt-chain, lock, tool-hash, Linux reference, native Windows handle and final
+identity checks. Removed only their nine tool files and three empty `.tools`
+directories: **449,335,296 allocated controller Linux bytes**. Total publisher
+recovery is now **1,048,449,024 bytes** across seven successful stages. All source
+exports, reports, receipts and primary tools remain; the complete failed
+`f2085e8a5d0f4098896b6be87e5e3797` stage is unchanged. No publisher configuration,
+retry, image, volume or model was changed. [Every path and cohort observation](../evidence/publisher-current-release-reconciliation-20261027.json).
+
+The last measured native available space is **16,769,044,480 bytes**, above the
+unchanged **16,374,562,816-byte** floor. Concurrent release work can consume this
+headroom; this is a dated observation, not a reservation or Windows recovery.
+Retain14 minimal source/refusal/qualification/native-handle/removal files,
+2,000,917 logical bytes excluding the final index, under `operator-control`.
+No payload or dependency tree was copied. The first Windows checker refused
+before deletion because its expected file count shared a variable with the byte
+counter; the original and corrected source remain, and the corrected check passed.
+
+The maintained utility now accepts1–8 explicit `stageUUID:sourceSHA` pairs,
+rejecting arbitrary paths or duplicate IDs. It keeps the same fixed publisher
+root, exact three tools and hashes, complete success/source/receipt bindings,
+primary binaries, per-stage locks, reference exclusions and native handles.
+Receipts use a selection-derived namespace and cannot overwrite older plans.
+The Windows checker verifies that namespace against the exact recorded stages.
+This avoids a code edit for each current release; it adds no automatic sweep.
+
+## Initial cleanup, 15:48 UTC
+
 Completed at 15:48 UTC. Removed only twelve inactive, reproducible ELF tool
 exports and their four empty `.tools` directories from four successful local
 chart-publication runs. Recovered **599,113,728 allocated Linux bytes** on the

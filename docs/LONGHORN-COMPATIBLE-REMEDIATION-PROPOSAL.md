@@ -1,5 +1,20 @@
 # Longhorn compatible remediation proposal — 2026-10-25
 
+**October27 source revalidation:** GitHub's latest stable release remains
+[v1.13.0](https://github.com/longhorn/longhorn/releases/tag/v1.13.0); the newer
+1.12.2-rc1 entry is a prerelease. The published manifest asset still matches
+the retained243,976-byte SHA256d0f99488…0a1f.
+[Exact dated API metadata](../evidence/longhorn-upstream-revalidation-20261027.json).
+The [official V1 guide](https://longhorn.io/docs/1.13.0/deploy/upgrade/longhorn-manager/)
+still supports1.12.x→1.13.0, requires volume backups and calls out schedulability
+for the new global manager. This does not close capacity/recovery or owner-hold
+gates. Counts below are the historical October25 observation, not current state.
+
+The corrected delivery goal supersedes this historical review's bespoke rebuild
+suggestions: consume maintained upstream releases; do not rebuild or maintain
+third-party Longhorn images as private forks. Retain exact unresolved findings
+where the compatible published vendor release does not fix them.
+
 **A supported V1 upgrade path exists from the installed 1.12.1 to stable 1.13.0.**
 The V2 requirement to start from 1.12.2 does not apply to this cluster's actual
 topology. First restore replica health/capacity, preserve backups and review the

@@ -1,5 +1,21 @@
 # Cluster maintenance and application migration plan
 
+**Latest checkpoint — October27,16:51UTC:** original master BuildKit copies are
+retired after complete source/hash/age/lock/reference checks through opt-in
+Ansible. Recovered258,555,904 allocated node Linux bytes; cumulative qualified
+node cleanup is24,914,153,472 bytes. Sources, state and failure evidence remain;
+all58 claim bindings and44 volume identities survive with nodes/workloads Ready.
+Scratch is reconciled. [Acceptance and exact ledger](docs/MASTER-BUILD-TOOLS-RETIREMENT-20261027.md).
+Three more current-release publisher stages released449,335,296 controller Linux
+bytes while retaining all source/report/receipt/failure evidence. [Exact scope](docs/PUBLISHER-HEADROOM-20261027.md).
+
+Fresh capacity against the earlier image projection still lacks432,645,121
+core-image bytes or1,936,372,737 complete-candidate bytes on master. Continue
+qualified recovery/capacity work, preserving the existing floors, replicas,
+placement and owner verification hold. Native unpack, actual recovery coverage,
+supported platform upgrade, vendor/host exceptions and final Seerr/YTPTube IAB/
+fleet acceptance remain required. Full goal active.
+
 **Latest checkpoint — October27,16:05UTC:** the exact old master SDK/module-cache
 selection is retired through opt-in Ansible after full archive/reference/identity
 qualification: **1,834,442,752 allocated node Linux bytes**,112,961 entries. All

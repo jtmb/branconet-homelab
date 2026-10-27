@@ -1,5 +1,22 @@
 # Migration and maintenance status
 
+**October27,16:51UTC checkpoint:** qualified master BuildKit retirement recovered
+**258,555,904 allocated node Linux bytes**. All original contexts, locks, state,
+logs, seals and failure evidence remain. All3 nodes,58 claim bindings and44
+volume identities are healthy/preserved. Total qualified node cleanup is now
+**24,914,153,472 bytes**. Ansible scratch is reconciled; unique source/refusal/
+removal/health evidence remains. [Exact acceptance](docs/MASTER-BUILD-TOOLS-RETIREMENT-20261027.md).
+
+Three additional successful CI stages released **449,335,296 controller Linux
+bytes**, bringing publisher recovery to1,048,449,024 bytes. Source exports,
+receipts, primary tools and the complete failed run remain. [Exact cleanup](docs/PUBLISHER-HEADROOM-20261027.md).
+
+The dated image projection with the16:35 capacity observation still lacks
+432,645,121 core-image bytes or1,936,372,737 complete-candidate bytes on master.
+No driver, image import, floor or placement change occurred. Application/
+detached-data coverage, fresh recovery, supported upgrade and final security/
+Seerr/YTPTube IAB acceptance remain; full goal active.
+
 **October27,16:05UTC cleanup checkpoint:** Ansible retired only the two qualified
 master SDK copies and two old module-cache trees: **1,834,442,752 allocated node
 Linux bytes**,112,961 verified entries. All77,881 protected source/archive/binary
