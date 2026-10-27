@@ -1194,3 +1194,34 @@ stopped after detecting committed dependency trees in Ruckus; existing original
 Git objects and the explicit source inventories remain, and subsequent selection
 excludes dependency/build paths. qbit-monitor source changes are unfinished and
 must be retained for the continuing owned-publication work.
+
+## LAN TLS server/proxy checkpoint reconciliation, October27 00:06 UTC
+
+The existing F-backed root and existing NAS recovery destination remain in use.
+`operator-control/lan-tls-publisher-scratch-reconciliation.json` removed710778880
+allocated Linux bytes /3151paths from four terminal publisher exports:
+0304338,ff445e2,58d6edf,d79ee5f. Original reachable Git commits/blobs, pinned tools,
+validation/publication receipts and reports remain, with exact per-path bytes,
+regeneration and all process/FD/map/mount/inode/owner proofs.
+
+`operator-control/lan-tls-ansible-scratch-reconciliation.json` removed the three
+empty directories `operator-control/tmp/lan-tls-ansible-home`,
+`operator-control/tmp/lan-tls-ansible-local`, and
+`operator-control/tmp/lan-tls-ansible-remote`:4096allocated bytes each. Actual
+Ansible and task-owned Windows helpers had exited before reconciliation. Before
+a future run, explicitly recreate those three private directories from the
+retained ownership/regeneration command. No cache fallback is authorized.
+Total710791168 Linux bytes /3154paths; no Windows recovery claim.
+
+Retained exceptions: native CA and active leaf Secrets; exact encrypted CA/
+retired-generated-leaf recovery and verified NAS copies; required public root
+and chains for pending client trust; original issuance, route and actual Ansible
+trust timeout failures; exact failed/final sources and native read-only probes;
+BORTUS's unused prepared certificate and suspended release for its separate
+owner; final inventories and receipts. The existing managed-command sentinels
+remain because creator/regeneration and full Windows-handle inactivity proof
+are missing. All prior owner/runtime/failure/safety exceptions remain unchanged.
+No user PVC, application Secret, media, source repository, model or image was
+pruned. Removal of10obsolete proxy resources and2new-unused leaf objects was
+UID/version fenced, separately archived and authenticated; it is not disk-space
+recovery and does not delete old Vault/Portainer data.

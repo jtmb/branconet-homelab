@@ -1,0 +1,21 @@
+---
+- name: Require the existing LAN certificate scope and explicit output location
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - lan_tls_output_dir is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/[^\r\n]+$')
+      - not lan_tls_install_windows_trust | bool or (lan_tls_apply | bool and lan_tls_expected_root_sha256 is match('^[a-f0-9]{64}$'))
+
+- name: Verify native certificates and optionally apply pinned current-user trust
+  ansible.builtin.command:
+    argv: "{{ ['/home/brajam/.local/share/branconet-migration/venv/bin/python', '-B', playbook_dir + '/../../../scripts/migration/verify-lan-certificates.py', '--output-dir', lan_tls_output_dir] + (['--apply-root-renewal'] if lan_tls_apply | bool else []) + (['--install-windows-trust', '--expected-root-sha256', lan_tls_expected_root_sha256] if lan_tls_install_windows_trust | bool else []) }}"
+  environment:
+    TMPDIR: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+    TMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+    TEMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+    PYTHONDONTWRITEBYTECODE: "1"
+  delegate_to: localhost
+  become: false
+  register: lan_tls_verification
+  changed_when: (lan_tls_verification.stdout | from_json).changed | bool
+  when: not ansible_check_mode

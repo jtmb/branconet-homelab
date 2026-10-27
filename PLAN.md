@@ -1,6 +1,28 @@
 # Cluster maintenance and application migration plan
 
-**Latest checkpoint - October 26, 22:54 UTC:** Plex now runs the maintained
+**Latest checkpoint - October27, 00:06 UTC:** server TLS now passes for all20
+active migration-owned LAN hosts (60node/hostname checks), with18public checks
+also passing. The stale Vault CICD/Portainer proxies and their unused generated
+leaf certificate were retired by exact UID after verified NAS recovery; all
+original definitions remain. Private main/validated/live is
+`d79ee5f1b3935f87892bcfe5b4090ed3e31c5bbb`. Actions was not used.
+
+Windows client trust remains unaccepted after an actual timeout; read-only
+inspection passes and confirms the root is absent. Final-source Ansible
+certificate verification and its zero-change rerun pass, excluding trust.
+BORTUS's intentional release suspension remains; its prepared TLS binding was
+passed to the separate owner without production authorization or an unsuspend.
+
+Three nodes,57PVCs, all30releases and all Kustomizations are healthy. All attached
+Longhorn volumes are healthy. Cleanup removed710791168 allocated Linux bytes /
+3154paths; encrypted CA/unused-leaf recovery and metadata passed full NAS
+authentication. Owned publication, platform/fleet security, client trust and
+final IAB remain open. The full goal stays active.
+
+[Exact server acceptance, exclusions, recovery and pending client work](docs/LAN-TLS-AND-LEGACY-PROXY-RETIREMENT-20261026.md).
+
+
+**Previous checkpoint - October 26, 22:54 UTC:** Plex now runs the maintained
 LinuxServer1.43.5.11079-ls330 image at the same application version. Original
 accounts/watch state, all21 checked tables,3libraries, server identity, native
 Secrets and storage passed production and distinct restart comparisons. All6
