@@ -1,5 +1,12 @@
 # Migration and maintenance status
 
+**18:32 UTC storage check:** 3 Ready nodes without pressure, all 58 claim bindings
+and 44 volume identities unchanged; all 28 attached volumes have two actual RW
+replicas. Twelve claims still lack completed native Backup records; exact mapping
+now distinguishes live writers, retained original sources and restore fixtures.
+[Coverage and unresolved bindings](docs/LONGHORN-RECOVERY-COVERAGE-20261027.md).
+This was read-only and does not claim completed application-data recovery.
+
 **October 27, 18:15 UTC:** fresh encrypted backup, authenticated NAS copy and
 actual independent offline etcd restore passed. All 2,801 keys and revision
 10,442,118 retained the same logical key-history hash. Removed 213,725,184

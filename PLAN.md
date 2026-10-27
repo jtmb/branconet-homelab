@@ -1,5 +1,13 @@
 # Cluster maintenance and application migration plan
 
+**18:32 UTC read-only recovery mapping:** all 3 nodes Ready; all 58 claim bindings
+and 44 volume identities preserved; all 28 attached volumes have two actual RW
+replicas. The 12 missing native Backup records are mapped to their exact claims,
+current writers, historical sources and fixtures. Independent archives still
+require exact dataset bindings; none are assumed from a service name or zero
+allocation. [Coverage and next gates](docs/LONGHORN-RECOVERY-COVERAGE-20261027.md).
+No volume attachment, backup creation, image pull or production mutation occurred.
+
 **Latest checkpoint — October 27, 18:15 UTC:** fresh encrypted control-plane
 backup, full NAS ciphertext readback and actual independent offline etcd restore
 passed. All 2,801 keys and revision 10,442,118 retained the logical key-history

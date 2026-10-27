@@ -1,0 +1,174 @@
+{
+  "UTC": "2026-10-27T14:32:16.400855-04:00",
+  "mutationPerformed": false,
+  "claims": 58,
+  "volumes": 44,
+  "claimBindingsUnchangedFromMorning": true,
+  "volumeIdentitiesUnchangedFromMorning": true,
+  "nodes": [
+    {
+      "name": "masternode",
+      "uid": "f2df6169-4592-4544-b62c-74d89f598648",
+      "resourceVersion": "10469249",
+      "ready": true,
+      "pressure": []
+    },
+    {
+      "name": "workernode1",
+      "uid": "e8d4555f-7cea-445f-b84f-6416964045a9",
+      "resourceVersion": "10470747",
+      "ready": true,
+      "pressure": []
+    },
+    {
+      "name": "workernode2",
+      "uid": "eda66e65-f388-4b97-b64f-a709cda81894",
+      "resourceVersion": "10470394",
+      "ready": true,
+      "pressure": []
+    }
+  ],
+  "settings": {
+    "current-longhorn-version": "v1.12.1",
+    "default-engine-image": "docker.io/longhornio/longhorn-engine:v1.12.1",
+    "concurrent-automatic-engine-upgrade-per-node-limit": "0",
+    "storage-minimal-available-percentage": "25",
+    "storage-over-provisioning-percentage": "100",
+    "replica-soft-anti-affinity": "false",
+    "allow-empty-node-selector-volume": "true"
+  },
+  "attachedWithoutTwoActualRW": [],
+  "backupTargets": [
+    {
+      "name": "default",
+      "namespace": "longhorn-system",
+      "uid": "999fe7cd-e073-4a52-ba62-87db1857f876",
+      "resourceVersion": "10470653",
+      "available": true,
+      "errorPresent": false
+    }
+  ],
+  "systemBackups": [
+    {
+      "name": "preupgrade-20261027-d9c7f2b7",
+      "namespace": "longhorn-system",
+      "uid": "a080356f-744a-4adf-81d9-d313f19ff8ef",
+      "resourceVersion": "10286999",
+      "state": "Ready",
+      "createdAt": "2026-10-27T11:00:04Z",
+      "errorPresent": false
+    }
+  ],
+  "gaps": [
+    {
+      "claim": "ruckus/ruckus-db-data-0-security-20261025",
+      "claimUID": "0bf707c8-628e-4284-9aa0-35b711c8749b",
+      "volumeUID": "e574f5cc-d66f-4ed8-9379-29ee155ce42f",
+      "volume": "pvc-0bf707c8-628e-4284-9aa0-35b711c8749b",
+      "state": "detached",
+      "observedAllocatedBytes": 311230464,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    },
+    {
+      "claim": "ingenium/ingenium-state",
+      "claimUID": "1005b62c-b731-4c76-a68c-f635ef74c378",
+      "volumeUID": "aeb47952-61f5-4bc4-a8f6-bfa274eacf86",
+      "volume": "pvc-1005b62c-b731-4c76-a68c-f635ef74c378",
+      "state": "attached",
+      "observedAllocatedBytes": 10196578304,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    },
+    {
+      "claim": "pihole/pihole-data-0",
+      "claimUID": "224e40cf-cfd1-488a-bab6-545568c8e4f7",
+      "volumeUID": "83bcf334-dc44-47d1-a114-3d25a3d7158d",
+      "volume": "pvc-224e40cf-cfd1-488a-bab6-545568c8e4f7",
+      "state": "detached",
+      "observedAllocatedBytes": 67792896,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    },
+    {
+      "claim": "plex/gluetun-data-1",
+      "claimUID": "2d2591cd-8809-4957-b56a-2f4d405bd9e2",
+      "volumeUID": "f888bfef-43f0-46a6-aacd-7cf7ea455de4",
+      "volume": "pvc-2d2591cd-8809-4957-b56a-2f4d405bd9e2",
+      "state": "detached",
+      "observedAllocatedBytes": 67801088,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    },
+    {
+      "claim": "ruckus/ruckus-db-upstream-20261026",
+      "claimUID": "3d587252-21b5-4982-b70a-4cfee6ae49bd",
+      "volumeUID": "e4b16836-921f-4d9b-8adc-11326ff4f260",
+      "volume": "pvc-3d587252-21b5-4982-b70a-4cfee6ae49bd",
+      "state": "attached",
+      "observedAllocatedBytes": 809566208,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    },
+    {
+      "claim": "bortus/bortus-restore-b473091bebef",
+      "claimUID": "42bafa5c-bf7a-4751-8fc3-ba3104a76784",
+      "volumeUID": "d9ca7f73-b6c1-4d8b-808e-5a71cbeddd5f",
+      "volume": "pvc-42bafa5c-bf7a-4751-8fc3-ba3104a76784",
+      "state": "detached",
+      "observedAllocatedBytes": 92389376,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    },
+    {
+      "claim": "wordpress/wordpress-db-upstream-20261026",
+      "claimUID": "49df631b-614f-4180-b6e5-f719db4bfe2c",
+      "volumeUID": "4d5c0099-2068-4268-aa7f-98ab37c26001",
+      "volume": "pvc-49df631b-614f-4180-b6e5-f719db4bfe2c",
+      "state": "detached",
+      "observedAllocatedBytes": 0,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    },
+    {
+      "claim": "plex/qbittorrent-data-0",
+      "claimUID": "6aa3aaa5-f609-4f74-88f0-b5c15e846703",
+      "volumeUID": "c401b532-c773-4b5a-b5fa-88a521a172a1",
+      "volume": "pvc-6aa3aaa5-f609-4f74-88f0-b5c15e846703",
+      "state": "detached",
+      "observedAllocatedBytes": 84721664,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    },
+    {
+      "claim": "migration-system/migration-storage-restored",
+      "claimUID": "8e780ab5-6f6d-4c93-8b2b-4410da2e841f",
+      "volumeUID": "a9e1e981-bdcc-42c4-925d-181f9849f6ae",
+      "volume": "pvc-8e780ab5-6f6d-4c93-8b2b-4410da2e841f",
+      "state": "detached",
+      "observedAllocatedBytes": 67805184,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    },
+    {
+      "claim": "migration-system/migration-storage-proof",
+      "claimUID": "9317472a-a68f-4a2b-ad93-5d02e91492b0",
+      "volumeUID": "41c49b3a-6197-4de7-8bd1-cbb07b13fa28",
+      "volume": "pvc-9317472a-a68f-4a2b-ad93-5d02e91492b0",
+      "state": "detached",
+      "observedAllocatedBytes": 67936256,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    },
+    {
+      "claim": "migration-system/migration-nas-bortus-restore",
+      "claimUID": "ba85233b-81d5-4061-9f7b-feff295071e0",
+      "volumeUID": "dbc4934d-81c8-4d8d-8d21-a04f6600734c",
+      "volume": "pvc-ba85233b-81d5-4061-9f7b-feff295071e0",
+      "state": "detached",
+      "observedAllocatedBytes": 90292224,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    },
+    {
+      "claim": "pihole/pihole-data-1",
+      "claimUID": "bd9d5442-8665-4328-9a62-53d03d704ca7",
+      "volumeUID": "45754ef8-cd9e-456d-87eb-284cbf7bdb79",
+      "volume": "pvc-bd9d5442-8665-4328-9a62-53d03d704ca7",
+      "state": "detached",
+      "observedAllocatedBytes": 135958528,
+      "backupCoverage": "No completed native Backup CR; independent recovery not inferred"
+    }
+  ],
+  "sourceSHA256": "2470ad6b5c28a547b47d54c6b011625427bc4a7ea94855e65bf6e640b9231767",
+  "liveSHA256": "ea2e0377ab8da8893cb3edfc8e7c769166353985ec77a457156230c16a82f3e1"
+}

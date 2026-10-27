@@ -1,5 +1,13 @@
 # Longhorn upgrade design: held, not implemented
 
+**18:32 UTC refresh:** the current 44 volume identities and 58 claim bindings
+match the morning preflight; all attached volumes have two actual RW replicas.
+The 12 native-backup gaps are explicitly mapped to current writers, retained
+sources and restore fixtures in [current recovery coverage](LONGHORN-RECOVERY-COVERAGE-20261027.md).
+The fresh encrypted control-plane checkpoint also passed an actual independent
+offline restore; application-volume recovery remains distinct. Older counts
+and capacity observations below are dated evidence, not current upgrade approval.
+
 **13:39UTC capacity calculation:** all 14 candidate images and 97 distinct layers
 passed complete compressed/uncompressed authentication without staging payloads.
 Exact native cache/snapshot chains were checked on all three nodes. Both workers
