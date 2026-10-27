@@ -1,5 +1,24 @@
 # Migration and maintenance status
 
+**Latest checkpoint — October27,02:50UTC:** Ruckus now runs from its owned
+repository and existing Docker Hub route. Production and a distinct Flux restart
+preserved all3,976original rows/accounts/native Secrets/storage and passed28routes
+each,59source/configuration hashes, native bcrypt and real bot startup/SQL checks.
+Private main/validated/live is `3a8de93a4034780519bac191bf4a02b4a4c96f96`.
+All three migration-owned application image transitions are accepted; BORTUS's
+intentional separate-owner production hold remains.
+
+The exact image has0Critical,65High and no available fixed-version findings or
+CISA KEV matches; all raw Debian residuals and the existing unauthenticated Ruckus
+API finding remain explicit. This is not a clean-cluster assurance.
+Cleanup removed3,585,335,296allocated Linux bytes, with exact paths/receipts and
+authenticated NAS recovery retained. Three nodes,57claims, all30releases and all
+Kustomizations are healthy;27Longhorn volumes attached healthy and16detached.
+Remaining: platform security/reconciliation, Windows client trust, final IAB and
+final fleet acceptance. The full goal stays active.
+
+[Exact Ruckus source, security limits, data/restart checks and cleanup](docs/OWNED-RUCKUS-RELEASE-20261027.md).
+
 **Latest checkpoint - October27, 01:15 UTC:** the personal site now runs from
 its owned repository/existing Docker Hub route, on maintained Nginx1.30.6 and
 jQuery4.0.0. Original site content and unrelated runtime/native Secret settings

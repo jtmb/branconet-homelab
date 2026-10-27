@@ -1,5 +1,27 @@
 # Maintenance output ownership and reconciliation
 
+## Ruckus reconciliation, October27,02:50UTC
+
+Owner and the single existing F-backed root/UUID remain unchanged. Removed
+**3,585,335,296allocated Linux bytes** across both exact private build target
+sets, scoped npm scratch, reproducible source packet, failed-preflight empty
+directories, two terminal chart exports/tool copies, scan cache and empty Helm
+directories. [Exact release and reconciliation receipts](OWNED-RUCKUS-RELEASE-20261027.md#cleanup-and-recovery)
+list each target/path/byte total, regeneration instructions and source/creator/
+inode/hash/process/FD/maps/mount/container checks. No Windows recovery is claimed.
+
+Original/default Git branches, source/lockfiles, actual published runtime,
+baseline/live/restart/source/registry/scan/resource/failure receipts, original
+SQL/NAS state and previous recovery sources remain. Current r4 public inputs and
+their minimal cache links remain required for the pending platform/fleet review;
+they must be reconciled at that final checkpoint. The prior unresolved
+`operator-control/tmp/system-commandline-sentinel-files` and parent remain because
+creator/regeneration/complete inactive Windows-handle proof are still missing.
+No policy-rejected target, shared image, older failed cache, PVC or user workload
+was removed. New8,747,300-byte metadata ciphertext passed complete authenticated
+NAS readback; no prior cold ciphertext or metadata archive was duplicated.
+
+
 ## Cloudflare notice assessment, October26 21:42UTC
 
 The owner and single existing F-backed task root remain unchanged. The new

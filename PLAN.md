@@ -1,5 +1,20 @@
 # Cluster maintenance and application migration plan
 
+**Latest checkpoint — October27,02:50UTC:** Ruckus's owned-source release is live
+and accepted through the local validator → validated → Flux path. Every original
+row/account/native Secret/storage identity survived production and a separate
+restart;28routes per rollout and59runtime source/configuration hashes passed.
+Main/validated/live is `3a8de93a4034780519bac191bf4a02b4a4c96f96`.
+All three migration-owned image transitions are accepted. BORTUS remains held
+with its separate owner. Raw residual CVEs and Ruckus's existing unauthenticated
+API are documented; no clean-security or unknown-zero-days claim is made.
+Cleanup removed3,585,335,296allocated Linux bytes; encrypted recovery metadata
+passed complete authenticated NAS readback. Original source/data/rollback remain.
+Platform security/reconciliation, Windows client trust, final IAB and final fleet
+acceptance remain open. The full five-milestone goal stays active.
+
+[Exact acceptance, security limits, cleanup and recovery](docs/OWNED-RUCKUS-RELEASE-20261027.md).
+
 **Latest checkpoint - October27, 01:15 UTC:** the personal site now runs from
 its owned repository/existing Docker Hub route, on maintained Nginx1.30.6 and
 jQuery4.0.0. Original site content and unrelated runtime/native Secret settings
