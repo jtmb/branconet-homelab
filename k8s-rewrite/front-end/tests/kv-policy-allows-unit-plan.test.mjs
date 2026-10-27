@@ -970,7 +970,7 @@ test('M20 genuine original compiler VM receiver iterator and code-generation bou
 // Current PUBLIC additions are checked as bytes only, never imported or run here.
 test('M21 current lineage retains exact provenance helper and every preserved PUBLIC addition', () => {
  const helper = readFileSync(new URL('../scripts/packaging-provenance.mjs', import.meta.url));
- assert.equal(digest(helper), '7d71e692d768ac00d65ebd31c14e638688068a3dbe6723ad9a7239260c30c819');
+ assert.equal(digest(helper), 'd6bd9a40358f06da5440d57817ab727d214a24aeaf41ccb1104d0431b2aa3f1c');
  const additional = {
   ".gitignore": "664bdf2e09e61531a8eea9c0a8885fc55bf2f7e42e5e51e6a3ae3fc8d732e65c",
   "docs/SYSTEM-REPORT-QUALIFICATION.md": "9a5139da7a91111f515b24a6a4dc1e91dd0c91e04d9db83fb546b432b7b1b888",

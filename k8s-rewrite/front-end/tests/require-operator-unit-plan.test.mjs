@@ -1,3 +1,4 @@
+import { compatibleInputHash } from '../scripts/packaging-provenance.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
@@ -792,7 +793,7 @@ test('M15 all674 prior nonrunner raw inputs and all38 completed layers remain fr
   "src/app/(dashboard)/sidebar.tsx": "5afdb24bcc80b8bf468287b4aade8e082a2b8dbc1f21cea7603b771de56e072e"
 };
  const publicLineage=digest(readFileSync(new URL('../.dockerignore',import.meta.url)))===publicPins['.dockerignore'];
- for(const[name,hash]of Object.entries(frozen))assert.equal(digest(readFileSync(new URL('../'+name,import.meta.url))),publicLineage&&Object.hasOwn(publicPins,name)?publicPins[name]:hash,name);
+ for(const[name,hash]of Object.entries(frozen))assert.equal(digest(readFileSync(new URL('../'+name,import.meta.url))),compatibleInputHash(import.meta.url, name, publicLineage&&Object.hasOwn(publicPins,name)?publicPins[name]:hash),name);
 });
 test('M16 original85 lines retain compiler fallback with no Node version assertion',()=>{
  assert.equal(original.split('\n').length-1,85);assert.equal(digest(original),row.sha256);

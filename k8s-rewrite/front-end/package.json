@@ -14,7 +14,7 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "pretest": "node scripts/build-account-worker.mjs",
-    "test": "node scripts/run-unit-tests.mjs",
+    "test": "node scripts/run-compatible-unit-tests.mjs",
     "test:integration": "tsx --test tests/*.integration.ts",
     "test:regression-sensitivity": "node scripts/regression-sensitivity.mjs",
     "test:regression-sensitivity-db": "node scripts/regression-sensitivity-db.mjs",

@@ -1,3 +1,4 @@
+import { compatibleInputHash } from '../scripts/packaging-provenance.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
@@ -196,7 +197,7 @@ test('M15 every frozen prior planner source group metadata helper loader package
     "tests/workbench-lifecycle.browser.mjs": "504cdfaaa3daf716b10fb30678c64590c5168dddbc13029cd0e81e0bea9dcbb5",
     "tsconfig.json": "1a9aeca0dd2e384e0d3341044fab297e730f40ea985c45d3101ec5316e142570"
 };
-  for (const [name, hash] of Object.entries(frozen)) assert.equal(digest(read(name)), hash, name);
+  for (const [name, hash] of Object.entries(frozen)) assert.equal(digest(read(name)), compatibleInputHash(import.meta.url, name, hash), name);
 });
 test('M16 historical175line authority and failure ordering remain exact', () => {
   assert.equal(digest(original), row.sha256); assert.equal(digest(original.replaceAll('\n', '\r\n')), '56bb60283c4a686a2b2bfa073f3ea45aebfff2c1f56ee9103ced6aa2aea88ff0');

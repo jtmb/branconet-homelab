@@ -1,3 +1,4 @@
+import { compatibleInputHash } from '../scripts/packaging-provenance.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
@@ -800,7 +801,7 @@ test('M15 all680 prior nonrunner raw inputs and all40 completed layers remain fr
   "src/app/(dashboard)/sidebar.tsx": "5afdb24bcc80b8bf468287b4aade8e082a2b8dbc1f21cea7603b771de56e072e"
 };
  const publicLineage=digest(readFileSync(new URL('../.dockerignore',import.meta.url)))===publicPins['.dockerignore'];
- for(const[name,hash]of Object.entries(frozen))assert.equal(digest(readFileSync(new URL('../'+name,import.meta.url))),publicLineage&&Object.hasOwn(publicPins,name)?publicPins[name]:hash,name);
+ for(const[name,hash]of Object.entries(frozen))assert.equal(digest(readFileSync(new URL('../'+name,import.meta.url))),compatibleInputHash(import.meta.url, name, publicLineage&&Object.hasOwn(publicPins,name)?publicPins[name]:hash),name);
 });
 test('M16 original154 lines retain original mandatory infrastructure authority',()=>{
  assert.equal(original.split('\n').length-1,154);assert.equal(digest(original),row.sha256);

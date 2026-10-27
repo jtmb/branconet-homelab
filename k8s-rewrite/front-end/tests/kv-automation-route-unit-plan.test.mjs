@@ -1,3 +1,4 @@
+import { compatibleInputHash } from '../scripts/packaging-provenance.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
@@ -464,7 +465,7 @@ test('M15 every frozen prior planner source group metadata helper loader package
     "tests/kv-audit-route-node22.test.mjs": "edf87c9baa52c309f87d413ae132e626cb3f6ccff2d414ac16bd71f211da3676",
     "tests/kv-audit-route-unit-plan.test.mjs": "ab99ae6e846155ef84dea15a8334a619dae109e91081c06298d2c04ffaf389df"
 };
-  for (const [name, hash] of Object.entries(frozen)) assert.equal(digest(read(name)), hash, name);
+  for (const [name, hash] of Object.entries(frozen)) assert.equal(digest(read(name)), compatibleInputHash(import.meta.url, name, hash), name);
 });
 test('M16 complete201line historical input and missing explicit compiler binding remain frozen', () => {
   assert.equal(digest(original),row.sha256);

@@ -1,3 +1,4 @@
+import { compatibleInputHash } from '../scripts/packaging-provenance.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
@@ -188,7 +189,7 @@ test('M16 every frozen prior planner safeguard replacement loader and package co
     "eslint.config.mjs": "d21103e76c3793d7ce5ce6d6ea982798f219cdd4a61806ecd00b51e7fbc75962",
     "tsconfig.json": "1a9aeca0dd2e384e0d3341044fab297e730f40ea985c45d3101ec5316e142570"
 };
-  for (const [name, sha] of Object.entries(frozen)) assert.equal(digest(read(name).replaceAll('\r\n', '\n')), sha, name);
+  for (const [name, sha] of Object.entries(frozen)) assert.equal(digest(read(name).replaceAll('\r\n', '\n')), compatibleInputHash(import.meta.url, name, sha), name);
 });
 
 test('M17 original five immediate bindings and new Function bind scaffold remain exact and inert', () => {

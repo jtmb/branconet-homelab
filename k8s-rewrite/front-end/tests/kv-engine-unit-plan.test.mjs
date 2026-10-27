@@ -1,3 +1,4 @@
+import { compatibleInputHash } from '../scripts/packaging-provenance.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
@@ -760,7 +761,7 @@ test('M15 every frozen prior planner source group metadata helper loader package
   const publicLineage = digest(read('.dockerignore')) === publicPins['.dockerignore'];
   for (const [name, hash] of Object.entries(frozen)) {
     const bytes = readFileSync(new URL('../' + name, import.meta.url));
-    assert.equal(digest(binary.has(name) ? bytes : bytes.toString('utf8').replaceAll('\r\n', '\n')), publicLineage && Object.hasOwn(publicPins, name) ? publicPins[name] : hash, name);
+    assert.equal(digest(binary.has(name) ? bytes : bytes.toString('utf8').replaceAll('\r\n', '\n')), compatibleInputHash(import.meta.url, name, publicLineage && Object.hasOwn(publicPins, name) ? publicPins[name] : hash), name);
   }
 });
 

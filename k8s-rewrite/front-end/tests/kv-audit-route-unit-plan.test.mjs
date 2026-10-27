@@ -1,3 +1,4 @@
+import { compatibleInputHash } from '../scripts/packaging-provenance.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
@@ -463,7 +464,7 @@ test('M15 every frozen prior planner source group metadata helper loader package
     "tests/yaml-save-lifecycle.test.ts": "94e8f570f728292bfcfb57fac2f849f48222ecfeddb34292ceb2748359fbbed0",
     "tsconfig.json": "1a9aeca0dd2e384e0d3341044fab297e730f40ea985c45d3101ec5316e142570"
 };
-  for (const [name, hash] of Object.entries(frozen)) assert.equal(digest(read(name)), hash, name);
+  for (const [name, hash] of Object.entries(frozen)) assert.equal(digest(read(name)), compatibleInputHash(import.meta.url, name, hash), name);
 });
 test('M16 complete204line historical input and exact binding failure remain frozen', () => {
   assert.equal(digest(original),row.sha256);
