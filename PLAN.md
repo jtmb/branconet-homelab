@@ -1,5 +1,23 @@
 # Cluster maintenance and application migration plan
 
+**Latest checkpoint — October27,16:05UTC:** the exact old master SDK/module-cache
+selection is retired through opt-in Ansible after full archive/reference/identity
+qualification: **1,834,442,752 allocated node Linux bytes**,112,961 entries. All
+outside sources, archives, executables and failures survive; all58 claim bindings
+and44 volume UIDs are unchanged and nodes/workloads remain Ready. Controller
+scratch is reconciled; complete module contracts and unique evidence remain.
+[Exact acceptance](docs/MASTER-GENERATED-INPUT-CLEANUP-20261027.md).
+Total qualified node cleanup is24,655,597,568 allocated bytes. Separately,
+599,113,728 controller Linux bytes were recovered from terminal publisher tool
+exports while preserving source/receipt/failure evidence; [ledger](docs/PUBLISHER-HEADROOM-20261027.md).
+
+Master still lacks642,360,321 core-image bytes or2,146,087,937 complete-candidate
+bytes under the earlier dated projection and fresh capacity. Native unpack,
+fresh runtime cache, recovery and placement verification remain distinct gates.
+Continue qualified cleanup and recovery coverage; keep the owner's driver/pull/
+placement hold and existing floors. Full security/platform and final normal
+Seerr/YTPTube IAB/fleet acceptance remain required. Goal active.
+
 **Latest read-only capacity checkpoint — October27:** all 14 reviewed Longhorn
 images and 97 distinct layers authenticated in a bounded RAM stream. Exact native
 cache/committed snapshot chains were checked on all three nodes. Both workers fit

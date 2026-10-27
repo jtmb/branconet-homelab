@@ -1,0 +1,527 @@
+{
+  "owner": "01a12045-bf7e-73b3-8557-752d17c72ffd",
+  "UTC": "2026-10-27T16:07:27.289315+00:00",
+  "status": "completed",
+  "physicalRoot": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025",
+  "physicalBacking": "F:/branconet-build-storage/native-build-20261025.ext4",
+  "masterRemovedAllocatedBytes": 1834442752,
+  "masterRemovedEntries": 112961,
+  "masterRemovedRootPaths": [
+    "/home/james/.local/share/branconet-migration/root-custom-kubectl-build-20261012-b5d6d1/kubectl-security-a4cc69125f81/go",
+    "/home/james/.local/share/branconet-migration/root-custom-kubectl-build-20261012-b5d6d1/kubectl-security-a4cc69125f81/kubernetes/_output/local/go/cache/mod",
+    "/home/james/.local/share/branconet-migration/root-custom-kubectl-build-20261012-f73dc0/kubectl-security-53c90b1e408a/go",
+    "/home/james/.local/share/branconet-migration/root-custom-kubectl-build-20261012-f73dc0/kubectl-security-53c90b1e408a/kubernetes/_output/local/go/cache/mod"
+  ],
+  "protectedOriginalEntriesVerified": 77881,
+  "moduleContractsRetained": 1712,
+  "claims": 58,
+  "allClaimUIDAndVolumeBindingsPreserved": true,
+  "volumeUIDsPreserved": 44,
+  "allNodesAndWorkloadsReady": true,
+  "masterFilesystemBefore": {
+    "availableBytes": 24735690752,
+    "freeBytes": 30052327424
+  },
+  "masterFilesystemAfter": {
+    "availableBytes": 26569883648,
+    "freeBytes": 31886520320
+  },
+  "longhornControls": {
+    "storage-minimal-available-percentage": "25",
+    "concurrent-automatic-engine-upgrade-per-node-limit": "0"
+  },
+  "longhornNodes": [
+    {
+      "namespace": "longhorn-system",
+      "name": "masternode",
+      "uid": "d20b1b17-5500-4e61-830d-851814b0714c",
+      "conditions": [
+        {
+          "type": "Ready",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "Schedulable",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "RequiredPackages",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "Multipathd",
+          "status": "False",
+          "reason": "MultipathdIsRunning"
+        },
+        {
+          "type": "NFSClientInstalled",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "KernelModulesLoaded",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "MountPropagation",
+          "status": "True",
+          "reason": ""
+        }
+      ],
+      "disks": {
+        "default-disk-1c47bedee02d7301": {
+          "storageAvailable": 31876710400,
+          "storageMaximum": 115702075392,
+          "storageScheduled": 7516192768,
+          "diskUUID": "52e160c1-db49-43f9-bef3-6b5bab572b42"
+        }
+      }
+    },
+    {
+      "namespace": "longhorn-system",
+      "name": "workernode1",
+      "uid": "bc7e9714-a70c-483a-94a4-43c0cb21ad81",
+      "conditions": [
+        {
+          "type": "Ready",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "Schedulable",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "RequiredPackages",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "Multipathd",
+          "status": "False",
+          "reason": "MultipathdIsRunning"
+        },
+        {
+          "type": "NFSClientInstalled",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "KernelModulesLoaded",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "MountPropagation",
+          "status": "True",
+          "reason": ""
+        }
+      ],
+      "disks": {
+        "default-disk-e27efaf3fd6ded55": {
+          "storageAvailable": 109261619200,
+          "storageMaximum": 249322430464,
+          "storageScheduled": 80530636800,
+          "diskUUID": "ec68ff17-a66d-41f4-b600-fa0b6bb44005"
+        }
+      }
+    },
+    {
+      "namespace": "longhorn-system",
+      "name": "workernode2",
+      "uid": "2d560ca1-46b3-4a41-b875-39614e3d7ae1",
+      "conditions": [
+        {
+          "type": "Ready",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "Schedulable",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "RequiredPackages",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "Multipathd",
+          "status": "False",
+          "reason": "MultipathdIsRunning"
+        },
+        {
+          "type": "NFSClientInstalled",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "KernelModulesLoaded",
+          "status": "True",
+          "reason": ""
+        },
+        {
+          "type": "MountPropagation",
+          "status": "True",
+          "reason": ""
+        }
+      ],
+      "disks": {
+        "default-disk-7119ce24364c6cfd": {
+          "storageAvailable": 34498150400,
+          "storageMaximum": 115702075392,
+          "storageScheduled": 80530636800,
+          "diskUUID": "3e98444f-4c34-438d-a0d3-5181c9c80a15"
+        }
+      }
+    }
+  ],
+  "controllerScratchRemoved": [
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/retirement-syntax-scratch/local/ansible-local-36765xy5h4l96",
+      "allocatedBytes": 4096
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/retirement-syntax-scratch/local",
+      "allocatedBytes": 4096
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/retirement-syntax-scratch",
+      "allocatedBytes": 4096
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/retirement-ansible-scratch/local/ansible-local-42144hg9w6oao",
+      "allocatedBytes": 4096
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/retirement-ansible-scratch/local",
+      "allocatedBytes": 4096
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/retirement-ansible-scratch",
+      "allocatedBytes": 4096
+    }
+  ],
+  "controllerScratchRemovedAllocatedBytes": 24576,
+  "retained": [
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/archive-diagnosis.json",
+      "logicalBytes": 1917,
+      "sha256": "b5275b14c3a7a0c4511e2f3a2537fc60f4d3e881938a02718cd892eaa7f6b711",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/capture-health-after.py",
+      "logicalBytes": 3461,
+      "sha256": "4fed2a48b0ffd83952a3833ae43f3aeecb355c1bd3dae588f7239f80b7c7f248",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/capture-health.py",
+      "logicalBytes": 2745,
+      "sha256": "7895f01b02287b2f6a781bb43ab1ed46aee3bf0f95c0be449622a1d1b8f5ebc6",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/diagnose-archive-controller.py",
+      "logicalBytes": 2539,
+      "sha256": "1ff0bc53134fbb98a2c697b2f79ac025cf69f1ebe426a60fa7880651d1a9f071",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/diagnose-service-controller-r2.py",
+      "logicalBytes": 2867,
+      "sha256": "827e96a3863fc9f8c4eda0543b3d4cd39d2dbdbdc08a6cb8ba04f8e510ff3f0e",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/diagnose-service-controller.py",
+      "logicalBytes": 2259,
+      "sha256": "47c17c74ceec984e4aa67f386b31dd26130e48ca13133a5ee82eeecfea91daa7",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/diagnose-unit-names.py",
+      "logicalBytes": 1216,
+      "sha256": "6ff2bef829617d307c5cea4f0deecd18e644ddc2b0cc2624784ce19b1116f688",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/health-after.json",
+      "logicalBytes": 49075,
+      "sha256": "0b5ea12ed3261a3ca42a147d069231633a29e679a6ff1992a1361ea21c12fceb",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/health-before.json",
+      "logicalBytes": 45301,
+      "sha256": "3109f487cf15c7ee754fccf8177b42d21a4c51850c67e4dbc29d919f6f93a8b3",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-controller-r2.py",
+      "logicalBytes": 5125,
+      "sha256": "efe526f13ef139828924c7d1e6fff0f3c49552cdc5dad63a3b2b86d2f4728faa",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-controller-r3.py",
+      "logicalBytes": 5126,
+      "sha256": "c7c4e4c490aa7bc1a50e67dad321eaa1b145487c73810f35c59b1f3bb72e5337",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-controller-r4.py",
+      "logicalBytes": 5126,
+      "sha256": "bc3e7bfdeb7ee9c5643e5fde092c7f95ee99c4c257f01cecfc56ebe89d28f545",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-controller.py",
+      "logicalBytes": 5014,
+      "sha256": "09926816dcf721a26addf77da12a86e29ba621ae4e2940a0d22032ffaf1aa986",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-diagnostics-r2.log",
+      "logicalBytes": 58,
+      "sha256": "20d8f21d7af29c1f0cef12cd42b869bf5405bd386924ff95e409cc3aceea2b0e",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-diagnostics-r3.log",
+      "logicalBytes": 60,
+      "sha256": "30dc9bfee1e9c7971f5ca2d50387a839a0fce0c24d9b44bbcdfa2f2f2634c79c",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-diagnostics-r4.log",
+      "logicalBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-diagnostics.log",
+      "logicalBytes": 47,
+      "sha256": "c2657c88cb5d83c64d259927aa858d591b2ad2f06567b40c2e67742975eb87f5",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-process-r2.json",
+      "logicalBytes": 101,
+      "sha256": "a8c2c209d6185ce637de97543f08e8aadc06071881fdd8fafa5fb1e5458ff12b",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-process-r3.json",
+      "logicalBytes": 101,
+      "sha256": "e499a4d35dadd7f74a1b5b85903951906072f8f18efe9a60c8d577bb2d326bc9",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-process-r4.json",
+      "logicalBytes": 101,
+      "sha256": "f74e753d811000f48317e7fc487702d85df41df870f4336375918dc5305c2b54",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-process.json",
+      "logicalBytes": 102,
+      "sha256": "33f37e5bf0886d1f3ff8331da78ee4b55da2a0d88d03219dd6ad53a3e60f4d31",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-receipt-r2.json",
+      "logicalBytes": 1009,
+      "sha256": "c39f6c24d653e2b63a0877dd897ec1102e684087998dabde4c9400039742525b",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-receipt-r3.json",
+      "logicalBytes": 1009,
+      "sha256": "220ff6b729e2f9befe69d5b7373e875c91ffcf59ef03618a1d371b76e442ba9a",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-receipt-r4.json",
+      "logicalBytes": 1189,
+      "sha256": "cbf58947a61c52dfb322a0007abceb73d7f3255ee695c1f0a6299d7f7c81d6fd",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/inventory-receipt.json",
+      "logicalBytes": 1008,
+      "sha256": "f5e615dcffb91abe59d0445014c682961ad0615c8b1fc2a338dbe42920b81723",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/master-inputs-frozen.py",
+      "logicalBytes": 15014,
+      "sha256": "a25355c0f00591a1deb857dccf5c339680880caa1f4c95beae4b6e5242a18088",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/master-inputs-r3.py",
+      "logicalBytes": 15300,
+      "sha256": "da2c14de12b9f7e4401a90ba1073645b99cb5672b02c99f17a5b8e210bab7dca",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/master-inputs-r4.py",
+      "logicalBytes": 16314,
+      "sha256": "d32ccc789e3312d6d4f051e7d5169c7a24b754f531bf46a310dd39e9c45fd474",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/ownership-r2.json",
+      "logicalBytes": 902,
+      "sha256": "b5bbd1c4ccff83b9e6c9863646306ff4ac3673a3acfe09e22dc105b46d33f03d",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/ownership-r3.json",
+      "logicalBytes": 902,
+      "sha256": "9de2418d19533a99f1517dfc2577931f0eb46bb9831155af586b257155f1b77e",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/ownership-r4.json",
+      "logicalBytes": 902,
+      "sha256": "d57ba12a48fd064ef9e75629f8aca751fdaabae00c67078e904ddb61d358c717",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/ownership.json",
+      "logicalBytes": 901,
+      "sha256": "a460855f3c2de37bd4ac5188c255cd04bc4f22a7a852b297507be210e618416e",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/profile-r2.json.incomplete",
+      "logicalBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/profile-r3.json.incomplete",
+      "logicalBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/profile-r4.json",
+      "logicalBytes": 90952022,
+      "sha256": "4da94c92db37bfdca637904bc3e37d0faed2d90feb564fd84b145d893eb7e10c",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/profile.json.incomplete",
+      "logicalBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/reconcile-checkpoint.py",
+      "logicalBytes": 3882,
+      "sha256": "9880d95a5de1bf8ef01eaeb88eb5ef32ab817ddb5a83fdefa0e2b1b86dcb8da5",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/reference-frozen.py",
+      "logicalBytes": 9668,
+      "sha256": "65491a7f5a67b313a527129bc4d7489369ab3f434787f3f366fc28f35e8f6576",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/reference-full-properties.py",
+      "logicalBytes": 3427,
+      "sha256": "3dcde82583df9e8217a4e39ef88d810ff955690d1dbf0a1581000f9984a9df87",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/retirement-ansible-operator.json",
+      "logicalBytes": 865,
+      "sha256": "c4783233f1541991e5894c556c6c22afe4afad3f4d3cf73c0fc39fa698f4988e",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/retirement-result.json",
+      "logicalBytes": 22873831,
+      "sha256": "d5e5570a2bbceade154618beb3cdaddb4cea05d824d6e7e08aaf290f7f172557",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/retirement-syntax-operator.json",
+      "logicalBytes": 862,
+      "sha256": "6db6c426902c50def1e704e2b5207929fbf7a7106e4319b9d798bb2f10a63d86",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/run-master-generated-cleanup.py",
+      "logicalBytes": 4492,
+      "sha256": "001dc0cf34f8966abec506a71428688cbc276b74a8b687f74f0891aaeb14a88f",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/unit-name-diagnosis.json",
+      "logicalBytes": 30,
+      "sha256": "886c3f205e14102b019c903a7832b9633bd8a2285c3888b85ba2db943e1a3334",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/unit-service-diagnosis-r2.json",
+      "logicalBytes": 400,
+      "sha256": "38821a5f2fb1caf09eeaf3f00388f489b22c230f10298f01444e815bc6b005a7",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/unit-service-diagnosis.json",
+      "logicalBytes": 1238,
+      "sha256": "7a0e1a02ba761eb57994bb0aefca35a6d4c9824d744f52e02f6b11c6375e0dfc",
+      "retentionReason": "unique inventory, archived module contracts, original failure/source, exact removal or health proof"
+    }
+  ],
+  "retainedLogicalBytes": 114037508,
+  "metadataCeilingBytes": 134217728,
+  "windowsRecoveryClaimed": false,
+  "cumulativeNodeRemovedAllocatedBytes": 24655597568,
+  "allUnselectedSourceArchiveBinaryIdentitiesAndHashesPreserved": true,
+  "fullGoalComplete": false,
+  "controllerFilesystemAvailableBytes": 16677875712,
+  "fluxUnreadyUnsuspended": [],
+  "attachedUnhealthy": [],
+  "datedProjectionFreshCapacityObservation": {
+    "UTC": "2026-10-27T16:05:40.041181+00:00",
+    "priorProjectionUTC": "2026-10-27T13:39:40.570665+00:00",
+    "nativeUnpackMeasurement": false,
+    "freshRuntimeCacheInventory": false,
+    "longhornAvailableBytes": 31876710400,
+    "nativeAvailableBytes": 26569883648,
+    "unchangedLonghornFloorBytes": 28925518849,
+    "unchangedKubeletFloorBytes": 17355311308,
+    "profiles": {
+      "core_node": {
+        "additionalImageBudgetBytes": 3593551872,
+        "additionalHeadroomNeededBytes": 642360321
+      },
+      "complete_candidate": {
+        "additionalImageBudgetBytes": 5097279488,
+        "additionalHeadroomNeededBytes": 2146087937
+      }
+    }
+  },
+  "fullPrivateRemovalLedger": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\local-image-build-offload-20261025\\node-cleanup-20261027\\master-generated-cleanup\\retirement-result.json",
+    "sha256": "d5e5570a2bbceade154618beb3cdaddb4cea05d824d6e7e08aaf290f7f172557"
+  },
+  "fullPrivateProfile": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\local-image-build-offload-20261025\\node-cleanup-20261027\\master-generated-cleanup\\profile-r4.json",
+    "sha256": "4da94c92db37bfdca637904bc3e37d0faed2d90feb564fd84b145d893eb7e10c"
+  }
+}

@@ -1,0 +1,19 @@
+---
+- name: Retire only four qualified original master SDK and module-cache copies
+  hosts: masternode
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - name: Require the fixed master and explicit qualified retirement
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'masternode'
+          - ansible_host == '192.168.0.4'
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - master_generated_retire_apply | default(false) | bool
+    - name: Recheck complete archive and original identity proof before retirement
+      master_generated_retire:
+        apply: "{{ master_generated_retire_apply | bool }}"
+      no_log: true

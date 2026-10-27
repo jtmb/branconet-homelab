@@ -1,5 +1,25 @@
 # Migration and maintenance status
 
+**October27,16:05UTC cleanup checkpoint:** Ansible retired only the two qualified
+master SDK copies and two old module-cache trees: **1,834,442,752 allocated node
+Linux bytes**,112,961 verified entries. All77,881 protected source/archive/binary
+entries retain original identities/hashes. Total qualified node cleanup is now
+**24,655,597,568 allocated bytes**. All3 nodes,58 claim bindings,44 volume UIDs,
+workload availability and unsuspended Flux readiness pass. Controller Ansible
+scratch is reconciled:24,576 bytes removed; complete inventory, archived module
+contracts and source/failure/removal evidence remain. [Exact checkpoint](docs/MASTER-GENERATED-INPUT-CLEANUP-20261027.md).
+
+Separately, twelve terminal publisher tool exports and four empty directories
+were removed: **599,113,728 allocated controller Linux bytes**. Sources, receipts,
+primary tools and the entire failed publisher run survive; no retry was performed.
+[Exact publisher reconciliation](docs/PUBLISHER-HEADROOM-20261027.md).
+
+With fresh master capacity and the earlier dated image projection, core Longhorn
+headroom still lacks642,360,321 bytes; the complete set lacks2,146,087,937 bytes.
+This is not native unpack proof or a fresh cache inventory. Owner hold, recovery,
+upgrade, vendor/host exceptions and final Seerr/YTPTube IAB/fleet gates remain.
+The full goal remains active. No threshold, workload limit or placement change.
+
 **October27 capacity audit:** complete authentication passed for all 14 reviewed
 Longhorn images and 97 distinct layers. No payload was staged or imported.
 Native cache/snapshot chains were read on all three nodes. The workers fit the

@@ -2,9 +2,9 @@
 
 ## Publisher reserve headroom, October27 — completed
 
-Removed exactly12 qualified tool files and4 empty directories:
+Removed exactly 12 qualified tool files and 4 empty directories:
 **599,113,728 allocated Linux bytes**. Native free space afterward was
-16,969,895,936 bytes, above the unchanged16,374,562,816-byte publisher floor.
+16,969,895,936 bytes, above the unchanged 16,374,562,816-byte publisher floor.
 All source exports, primary tools, receipts and the entire failed attempt remain.
 Retain only the frozen source and unique ownership/qualification/Windows-handle/
 removal evidence recorded in [the exact ledger](../evidence/publisher-headroom-reconciliation-20261027.json).
@@ -29,11 +29,22 @@ bindings, original tool hashes, exclusive existing stage locks, canonical paths,
 inode/owner/device checks, full process/FD/map/unit/mount checks, and native
 Windows exclusive read-handle checks. Keep every unique source/failure/recovery
 artifact. Estimated metadata stage is at most16MiB, with C: and the F filesystem
-retaining15GiB. Record exact removed paths/bytes and measured native filesystem
-headroom against the unchanged publisher15GiB+256MiB floor. No image, volume,
+retaining 15 GiB. Record exact removed paths/bytes and measured native filesystem
+headroom against the unchanged publisher 15 GiB+256MiB floor. No image, volume,
 model, dependency, source or backup deletion; no WSL shutdown/compaction.
 
-## Planned master generated-input qualification, October27
+## Master generated-input qualification, October27 — completed
+
+Retired 112,961 fully qualified entries in the four exact original master roots:
+1,834,442,752 allocated node Linux bytes. Ansible's six empty owned scratch
+directories are removed: 24,576 controller Linux bytes. No scratch remains.
+Retain 46 unique source/failure/complete inventory/removal/health files,
+114,037,508 logical bytes excluding the final index, inside the 128 MiB ceiling.
+Every retained path/hash, exact removed scratch path and full private removal
+receipt is bound in [the checkpoint ledger](../evidence/master-generated-cleanup-20261027.json).
+All 77,881 protected outside entries retain original identities/hashes; all
+selected entries qualified, so there are no unqualified selected leftovers.
+All 58 claim bindings and 44 volume UIDs survive; nodes and workloads remain Ready.
 
 Owner and physical F-backed root remain unchanged. Reserve only
 `node-cleanup-20261027/master-generated-cleanup` for its frozen operators, exact
@@ -43,8 +54,13 @@ after it. No source/dependency/SDK tree, image or payload archive may be copied
 into it. Protect original node sources/locks, SDK and source archives, failed
 evidence and old executables. Regeneration and exact targets are in
 [the bounded selection](MASTER-GENERATED-INPUT-CLEANUP-20261027.md).
-No inventory/apply has run and no deletion eligibility is credited yet. Keep
-failed evidence; reconcile owned scratch after each actual phase.
+Three inventories stopped safely before producing a complete profile or
+deleting anything. Keep their frozen operators, empty incomplete profiles and
+diagnostics as failure evidence. The corrected fourth inventory completed;
+the separate explicit Ansible retirement consumed its exact bound profile and
+rechecked all original bytes, identities and references. Retain 1,712 actual
+archived module version/checksum contracts. This is node Linux recovery, not
+Windows physical disk recovery. Original archives/binaries/source/failures remain.
 
 ## Longhorn image capacity measurement, October27
 
@@ -397,7 +413,7 @@ Regenerate from the recorded immutable registry descriptor and source-bound
 fixture command. Preserve unique failed/acceptance evidence; remove inactive
 reproducible binary/fixture scratch after full safety checks. Before download,
 record Windows C and native/physical F space and a128MiB total stage estimate,
-retaining15GiB floors. No build/dependency/cache tree or second root is created.
+retaining 15 GiB floors. No build/dependency/cache tree or second root is created.
 
 Completed reconciliation:1,679,360allocated Linux bytes removed from the exact
 inactive scanner fanal DB(1,646,592B), its three empty directories(12,288B) and
