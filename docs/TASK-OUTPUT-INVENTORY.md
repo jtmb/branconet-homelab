@@ -1948,6 +1948,14 @@ ciphertext copied inside the checkpoint. Source/root observer manifests remain
 under `control-source/owned-jtmb-20261027` and the acceptance evidence root.
 # October 27 fresh control-plane recovery and current publisher cleanup
 
+Later 18:32 read-only coverage refresh retains five small files: the exact
+executed preflight source and its ownership record under `operator-control`,
+and `live.json`, `receipt.json`, `coverage-summary.json` under
+`platform-upstream-review-20261027/longhorn-preflight-recovery-mapping`.
+All are unique current evidence; no payload, dependency or disposable scratch
+was generated. Exact source and live hashes are in
+[the coverage ledger](../evidence/longhorn-recovery-coverage-20261027.json).
+
 Owner `01a12045-bf7e-73b3-8557-752d17c72ffd`; existing output root
 `/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,
 physical F: ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`. No new output drive.

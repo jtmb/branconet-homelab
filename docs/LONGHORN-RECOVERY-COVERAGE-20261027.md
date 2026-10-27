@@ -29,7 +29,7 @@ and volume-encryption-key recovery are separately covered by the
 [fresh control-plane checkpoint](FRESH-CONTROL-PLANE-RECOVERY-20261027.md);
 that checkpoint contains no application-volume payloads.
 
-The fixed maintained read-only preflight source, source ownership and four small
+The fixed maintained read-only preflight source, source ownership and three small
 live/receipt/coverage metadata files remain under the existing F-backed root:
 `operator-control/fresh-recovery-coverage-preflight-{20261027.py,ownership-20261027.json}`
 and `platform-upstream-review-20261027/longhorn-preflight-recovery-mapping`.
