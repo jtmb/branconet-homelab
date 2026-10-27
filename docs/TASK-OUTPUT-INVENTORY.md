@@ -1,5 +1,25 @@
 # Maintenance output ownership and reconciliation
 
+## Continuing-task cleanup, October 27, 21:47 UTC — completed
+
+Retired 64 terminal publisher tool sets and six completed private-worker caches:
+**27,804,061,696 allocated controller Linux bytes**. Reused the same authorized
+F root; all original source, recipes, OCI artifacts, reports, failures and
+primary tools survive. No payload/dependency/cache output was created. Small
+unique ownership/plan/diagnostic/removal receipts remain in `operator-control`.
+[Exact paths, regeneration, safety exceptions and storage readings](CONTROLLER-CLEANUP-20261027.md).
+Publisher cumulative cleanup is 11,832,397,824 bytes across 79 stages.
+Six incomplete receipt chains, the sole original compiled kubectl witness and
+the sentinel-file ownership/Windows-handle exception remain protected for their
+specific failed checks. No Windows recovery or node-space gain is inferred.
+
+The latest user global cleanup rule supersedes blanket age-based retention for
+this continuing task. Prove final-consumer completion and retire eligible
+reproducible outputs promptly; a successor chat/checkpoint does not restart the
+72-hour wait. Every retained bulk artifact needs a concrete consumer/end
+condition or actual preservation failure. Older unrelated work still requires
+72-hour inactivity. No active workload may be stopped to clear a cleanup guard.
+
 ## Master original builder tools — completed October27 follow-up
 
 Removed exactly six tools and two empty node directories:258,555,904 allocated

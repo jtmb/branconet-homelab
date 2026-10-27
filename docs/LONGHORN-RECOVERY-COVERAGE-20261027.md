@@ -1,5 +1,12 @@
 # Current Longhorn recovery coverage
 
+**21:24 UTC update:** retained `pihole/pihole-data-1` also passed completed native
+NAS backup, normal detach and independent raw restore: 73 additional blocks.
+Eight retained datasets now total 376 verified blocks. Four native-backup gaps
+remain: retained old Ruckus, current Ruckus and Ingenium writers, and the unused
+WordPress claim. The original 58 claim bindings and 44 volume UIDs survive.
+[Eighth dataset and exact limitations](DETACHED-VOLUME-NATIVE-RECOVERY-20261027.md).
+
 **20:08 UTC update:** seven datasets from the historical gap table below now
 have completed full native NAS backups and independently verified encrypted raw
 restores, with scratch reconciled. All 303 blocks passed. The five remaining

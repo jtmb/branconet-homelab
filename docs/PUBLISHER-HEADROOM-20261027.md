@@ -1,5 +1,18 @@
 # Publisher reserve recovery, October 27
 
+## Continuing-task terminal stages, 21:47 UTC
+
+The unchanged qualified operator retired three copied tools and one empty
+directory in each of 64 additional successful stages: **9,585,721,344 allocated
+controller Linux bytes**. Complete source/receipt chains, primary hashes,
+locks, Linux references and native Windows exclusive handles passed. All source,
+receipts, primary tools and failed attempts remain. Six incomplete original
+receipt chains are retained with exact missing paths.
+[Exact removal and exceptions](../evidence/publisher-continuing-task-cleanup-20261027.json).
+Cumulative publisher cleanup is **11,832,397,824 bytes across 79 stages**.
+No publication replay, Actions, image/volume prune or Windows recovery claim.
+[Separate stopped-cache cleanup and current storage](CONTROLLER-CLEANUP-20261027.md).
+
 ## Ingenium 0.1.14 terminal stage, 20:28 UTC
 
 The current successful stage `e292d40fb002482aa67eb4e2d6dc1e8f`, source

@@ -1,5 +1,24 @@
 # Migration and maintenance status
 
+**October 27, 21:47 UTC:** completed bounded controller cleanup recovered
+27,804,061,696 allocated Linux bytes: 64 terminal publisher tool sets and six
+stopped worker caches. Original source, recipes, OCI artifacts, failure receipts
+and primary tools remain unchanged. Publisher cumulative cleanup is now
+11,832,397,824 bytes. Native available space is 44,796,420,096 bytes; no Windows
+recovery or node-space gain is inferred.
+[Exact paths, retained exceptions and remaining work](docs/CONTROLLER-CLEANUP-20261027.md).
+The full goal stays active.
+
+**October 27, 21:24 UTC:** the eighth retained claim (`pihole/pihole-data-1`)
+passed native NAS backup, independent stock-engine raw restore and normal
+detach. All eight total 376 verified blocks; 1,261,604,864 allocated controller
+Linux scratch bytes are reconciled. Four native-backup gaps remain. Three Ready
+nodes, all 58 claim bindings/44 volume UIDs, workloads and unsuspended Flux
+survive. [Exact recovery and limits](docs/DETACHED-VOLUME-NATIVE-RECOVERY-20261027.md).
+No Windows disk recovery or completed platform upgrade is claimed. Full goal
+active; current-writer recovery, supported upgrade and final IAB/fleet/security
+acceptance remain.
+
 **20:28 UTC:** qualified retirement of four old master build duplicates recovered
 233,078,784 node Linux bytes, preserving all77,887 unselected source/failure/primary
 entries plus a fully verified original compiled artifact on F. Cumulative node

@@ -1,4 +1,26 @@
-# Seven retained volumes backed up and independently restored
+# Eight retained volumes backed up and independently restored
+
+## Additional Pi-hole claim, October 27, 21:24 UTC
+
+`pihole/pihole-data-1` now has a completed native NAS backup and an independent
+stock-engine encrypted raw restore. All 73 blocks, unbacked zero regions, LUKS
+header and the complete 3,238,002,688-byte backend passed. The backup used its
+existing workernode2 replica; both original replica UIDs and the original Volume
+specification survived normal detach. Two additional Ansible invocations passed.
+[Exact eighth dataset and cleanup](../evidence/pihole-retained-native-recovery-20261027.json).
+
+The eight datasets total **376 verified blocks**. Removed another **272,887,808
+allocated controller Linux bytes** of restore/Ansible scratch, bringing this
+recovery operation's scratch cleanup to **1,261,604,864 bytes**. No Windows disk
+recovery is inferred. All 58 claim bindings, 44 volume UIDs, three Ready nodes,
+available workloads and unsuspended Flux survived the fresh health check.
+
+Four native-backup gaps remain: the retained single-replica Ruckus source,
+current Ruckus and Ingenium writers, and the unused WordPress claim. Existing
+independent archives require exact dataset bindings; this is not a claim that
+those four datasets have no backup. Native restore tools remain for these
+specific outstanding recovery checks and must be reconciled when their last
+consumer finishes. The following seven-volume record remains dated evidence.
 
 Completed October 27, 20:08 UTC. Seven previously uncovered retained claims now
 have completed full native backups on the existing NAS target. Each backup was

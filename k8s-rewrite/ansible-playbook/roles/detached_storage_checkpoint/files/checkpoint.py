@@ -181,15 +181,16 @@ def prepare(run, name):
     replicas = [r for r in items('replicas.longhorn.io') if r['spec']['volumeName'] == name]
     need(len(replicas) == 2 and all(r['status']['currentState'] == 'stopped'
          and not r['spec'].get('failedAt') and r['spec'].get('healthyAt') for r in replicas), 'two_previously_healthy_stopped_replicas_required')
-    need('workernode1' in {r['spec']['nodeID'] for r in replicas}, 'existing_worker1_replica_required')
-    node = get('nodes.longhorn.io', 'workernode1')
+    backup_node = 'workernode2' if name == VOLUMES['pihole-old-1'] else 'workernode1'
+    need(backup_node in {r['spec']['nodeID'] for r in replicas}, 'existing_selected_replica_node_required')
+    node = get('nodes.longhorn.io', backup_node)
     need(any(c['type'] == 'Ready' and c['status'] == 'True' for c in node['status']['conditions']), 'existing_backup_node_ready')
     disk = next(iter(node['status']['diskStatus'].values()))
     need(disk['storageAvailable'] > disk['storageMaximum'] // 4 + 512 * 1024**2, 'unchanged_node_floor_plus_backup_margin')
     target = get('backuptargets.longhorn.io', 'default')
     need(target['status']['available'] and not target['status'].get('error'), 'existing_available_backup_target')
     images = items('engineimages.longhorn.io')
-    need(any(i['spec']['image'] == IMAGE and i['status']['nodeDeploymentMap'].get('workernode1') for i in images), 'existing_deployed_engine_image')
+    need(any(i['spec']['image'] == IMAGE and i['status']['nodeDeploymentMap'].get(backup_node) for i in images), 'existing_deployed_engine_image')
     need(get('settings.longhorn.io', 'concurrent-automatic-engine-upgrade-per-node-limit')['value'] == '0', 'automatic_engine_upgrade_remains_disabled')
     need(get('settings.longhorn.io', 'current-longhorn-version')['value'] in ('v1.12.1', '1.12.1')
          and get('settings.longhorn.io', 'default-engine-image')['value'] == IMAGE, 'installed_engine_generation_unchanged')
@@ -197,7 +198,7 @@ def prepare(run, name):
     profile = {'volume': volume, 'claim': claim, 'pv': pv, 'replicas': replicas,
                'attachment': get('volumeattachments.longhorn.io', name), 'target': target, 'node': meta(node),
                'token': token, 'sourceSHA256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-               'ticket': {'id': token, 'generation': 0, 'type': 'longhorn-api', 'nodeID': 'workernode1',
+               'ticket': {'id': token, 'generation': 0, 'type': 'longhorn-api', 'nodeID': backup_node,
                           'parameters': {'disableFrontend': 'true', 'lastAttachedBy': token}}}
     bound_state(profile)
     patch = ticket_patch(profile)
@@ -205,7 +206,7 @@ def prepare(run, name):
     dry = call(patch)
     need(dry['spec']['attachmentTickets'][token] == profile['ticket'], 'native_ticket_defaults_match_reviewed_ticket')
     save(run, 'profile.json', profile)
-    save(run, 'prepare-result.json', {'status': 'prepared', 'volume': name, 'frontendWillBeDisabled': True,
+    save(run, 'prepare-result.json', {'status': 'prepared', 'volume': name, 'backupNode': backup_node, 'frontendWillBeDisabled': True,
                                     'attachmentPatchServerDryRunPassed': True, 'clusterMutation': False})
 
 
@@ -215,6 +216,7 @@ def apply(run, profile, observe=False):
     receipt = 'observe-result.json' if observe else 'apply-result.json'
     need(not (run / receipt).exists(), 'earlier_attempt_receipt_preserved')
     result = {'status': 'started', 'volume': name, 'volumeUID': profile['volume']['metadata']['uid'],
+              'backupNode': profile['ticket']['nodeID'],
               'token': token, 'snapshot': token, 'backup': token + '-backup', 'forceDetach': False,
               'sourceSHA256': profile['sourceSHA256'], 'independentRestoreVerified': False}
     backup_done = False

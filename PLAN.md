@@ -1,5 +1,31 @@
 # Cluster maintenance and application migration plan
 
+**October 27, 21:47 UTC cleanup:** removed 27,804,061,696 allocated controller
+Linux bytes from 64 qualified terminal publisher stages and six stopped worker
+caches. All source/recipe/OCI/failure/primary files remain verified. Exact failed
+receipt/ownership/regeneration exceptions are retained. Native available space
+is 44,796,420,096 bytes; no Windows recovery is attributed to Linux deletion.
+[Removal, regeneration and remaining gates](docs/CONTROLLER-CLEANUP-20261027.md).
+Full goal remains active.
+
+**October 27, 21:24 UTC recovery:** the eighth retained dataset,
+`pihole/pihole-data-1`, passed native NAS backup, normal detach and independent
+stock-engine restore. All eight total 376 verified blocks; recovery scratch
+cleanup totals 1,261,604,864 allocated controller Linux bytes. Four native-backup
+gaps remain. All claim/volume identities and cluster/workload/Flux health survive.
+[Exact recovery scope](docs/DETACHED-VOLUME-NATIVE-RECOVERY-20261027.md).
+The full goal remains active; platform upgrade and final fleet/security/IAB
+acceptance remain required.
+
+The latest user AGENTS.md adds mandatory global cleanup: continuing this task in
+another checkpoint/chat does not restart a 72-hour wait. Retire proven
+reproducible inactive outputs after their final consumer, with all ownership,
+source/lockfile, reference and regeneration checks. Before requesting more
+storage, actually retire every eligible obsolete output and remeasure. Every
+large retained artifact needs a concrete remaining consumer and end condition;
+generic evidence/rollback labels are insufficient. Preserve exact safety
+refusals and user data. This supersedes any broader age-based retention below.
+
 **20:28 UTC cleanup:** Ansible retired exactly four qualified old successful-build
 copies on master:233,078,784 allocated node bytes. All77,887 unselected entries
 and the complete failed build remain; the original compiled artifact is preserved

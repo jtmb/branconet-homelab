@@ -1,0 +1,1260 @@
+{
+  "claim": "pihole/pihole-data-1",
+  "volume": "pvc-bd9d5442-8665-4328-9a62-53d03d704ca7",
+  "volumeUID": "45754ef8-cd9e-456d-87eb-284cbf7bdb79",
+  "backup": {
+    "status": "completed_native_backup_and_detach",
+    "volume": "pvc-bd9d5442-8665-4328-9a62-53d03d704ca7",
+    "volumeUID": "45754ef8-cd9e-456d-87eb-284cbf7bdb79",
+    "backupNode": "workernode2",
+    "token": "migration-preserve-541d306d6f97",
+    "snapshot": "migration-preserve-541d306d6f97",
+    "backup": "migration-preserve-541d306d6f97-backup",
+    "forceDetach": false,
+    "sourceSHA256": "d58c841c6fb52342884be941246654189b0e8ca8d21ab902c9f27a4bddeb193f",
+    "independentRestoreVerified": false,
+    "phase": "completed_native_backup_and_normal_detach",
+    "snapshotUID": "aa31d614-dbc7-48d4-ab88-f00e0cdcb4c0",
+    "backupUID": "33ef9e8b-934d-45f3-a50d-cab929a475fc",
+    "backupState": "Completed",
+    "backupURL": "cifs://192.168.0.8/container_backups/k8s-migration-20261009/longhorn?backup=migration-preserve-541d306d6f97-backup&volume=pvc-bd9d5442-8665-4328-9a62-53d03d704ca7",
+    "coldNoFrontendNoConsumer": true,
+    "originalVolumeSpecRestored": true,
+    "originalReplicaUIDsPreserved": true,
+    "detachedAgain": true,
+    "completedUTC": "2026-10-27T20:40:32.153758+00:00"
+  },
+  "restore": {
+    "status": "native_restore_and_all_block_checks_passed",
+    "volume": "pvc-bd9d5442-8665-4328-9a62-53d03d704ca7",
+    "backup": "migration-preserve-541d306d6f97-backup",
+    "productionRestore": false,
+    "decryptedOrMounted": false,
+    "nativeToolExit": 0,
+    "backendBytes": 3238002688,
+    "allocatedBytes": 135942144,
+    "rawSHA256": "6277c0ae1864bca2484391e2ad6556eeaa9b42ef25e295eff6dfa52ac710996d",
+    "verifiedBlocks": 73,
+    "allUnbackedRegionsZero": true,
+    "encryptedHeaderVerified": true,
+    "completedUTC": "2026-10-27T20:43:27.924787+00:00"
+  },
+  "NASReadback": {
+    "status": "complete_locked_NAS_readback",
+    "source": "\\\\?\\UNC\\TRUENAS\\container_backups\\k8s-migration-20261009\\longhorn",
+    "backup": "migration-preserve-541d306d6f97-backup",
+    "volume": "pvc-bd9d5442-8665-4328-9a62-53d03d704ca7",
+    "backendSize": 3238002688,
+    "blockCount": 73,
+    "sourceWrite": false,
+    "workingBudgetBytes": 593494016,
+    "originalUIDs": {
+      "backendBytes": 3238002688,
+      "reportedPayloadBytes": 3221225472,
+      "backupBlockBytes": 153092096,
+      "volumeUID": "45754ef8-cd9e-456d-87eb-284cbf7bdb79",
+      "backupUID": "33ef9e8b-934d-45f3-a50d-cab929a475fc"
+    }
+  },
+  "cleanup": {
+    "status": "completed",
+    "removed": [
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/volume.cfg",
+        "allocatedBytes": 4096,
+        "logicalBytes": 515
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/backups/backup_migration-preserve-541d306d6f97-backup.cfg",
+        "allocatedBytes": 12288,
+        "logicalBytes": 8240
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/94/0b/940b4fa32c4a2624fb61a84238ec0ad81c2e3151a14a4859efa84a47e32d85a1.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/77/eb/77ebc9875175db0248d40c1568e1dd05d3eec7732669cb0d2c17f415ff1c78ac.blk",
+        "allocatedBytes": 16384,
+        "logicalBytes": 13401
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/00/a4/00a48da70bfa00ab1cdc4ba8c800902e2c313a18e96ec71ec4b0359614a0fd01.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/ee/5a/ee5abb83bdf3b2834438fb7e14a5a77a377831d4f3ee5f6fc8289d6165b28170.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/61/dd/61dddf1878570dcaa859bb0fa73e14098c2559cf9c6472f63c844225ffe7b3b7.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/a0/70/a07052d2c8815aa0b3f7b97e89b66cba05a03ce15beb9e66f9897ca09f2e2476.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/11/87/1187779509a1a63a7b1e10d74c46499954c501cb9cd578b995e254c02e9c1cb1.blk",
+        "allocatedBytes": 77824,
+        "logicalBytes": 73785
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/bc/6a/bc6ac8765f4135861299ac13f7b8a2ec41913228b92f7c6d0747e98d88dacc82.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/57/73/57730fa61e30e73df81406e55ec5405c5e1ba1ab9a1c67fb0ade6a9c6ffcc3e6.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/56/58/56589c55cc1e42c4432de8e9df164e6012943dce176ddfbe7e00354f987c794c.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/33/ae/33ae60bc4995d56c86cc7515d66f50d8f2c45dbc41574f69ed4a4f22d4f2542f.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/45/28/4528dbbb02ea3899f295d5426e9c64595c76140acb193c59927a7953835c1be0.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/7e/39/7e39f865a57c3376aa2e65e0633c3028f808c939d62bd16fe5b9a951a2605d12.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/3c/21/3c21a6f0292983e376d9b8e0cf76e7a2261522853153c793014cdf716b93d256.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e3/aa/e3aa20c637c4111ed3dcdb9c02b045cb9afbe75aa542d5a276aa2fda41570560.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/8e/6c/8e6cd7259a745af192dfee548b535c659bac3000b1deb9ca0bc1903b0849f616.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/7d/89/7d89fd1a30a475c4c8a86940da09b6e4103f13fb4d9fdbf0e056bfe22de3ef25.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e7/c4/e7c411767ee0e4af50fd74577fe0009937191fe11923c46d28bf77b10122c9d3.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c3/11/c311e24db54ebd5b20e0cf8d334aedccdd6cd5a7b6dc2b5ef387b941eaa3dfa0.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/7b/87/7b8777d91b15cfdbdd9979cdc63df2fa98aee054e2668043900f9905616e3be9.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/19/0c/190c3ca7a9cbd304aca4ffffeeae3b0c5dc11407ae423e26903a795c68c149a6.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/ed/cf/edcf559c85aada2df5152b5c07397185ab8db0dbae81d3f1df31fb60989b9762.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/fc/29/fc29367dbefe7739a66fda40a7d9057ad435b37b53c858dea3f2d4af1efefb05.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b6/f5/b6f58bb4c2c47750a9ccf33c44ea120f31ab1f17b294af5bfdd0cf126a2aaad4.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d1/e2/d1e226a3d677778fa9786a32a40dda77b502b7d1a151102812e51ee56b6a0803.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/05/f7/05f7e41d9c21ca81c1be6e5cb1dff56048e6c3e05d3c01fb31a90916178389d8.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/8d/b8/8db870e30f4fee5e8655e610805c8eec45314b96a564771f26cd49e823cee75e.blk",
+        "allocatedBytes": 16384,
+        "logicalBytes": 13401
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/4c/66/4c66124e25f4efacc72206644a1d79216d07ce0209eeec6c080892cbb2337883.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/82/dd/82dd6dd5a0ec64b1337232328afa4432369c6685b0d668b5da15a4dc6ddcda79.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d7/a0/d7a008fd09a2679409b4caa4a44d408669e161a92556726e4b7ddda79b7dd349.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d6/da/d6da3ef8f8c66795acf18b6e7cd38059d14d090ed08605d774605db4eef14a1d.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/3b/06/3b0666b4ac1aa9e2f9eaaf31c25486f8b0bb72bccf9b7f82fed7fe06c29faf3e.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/9d/62/9d62dd12a67257260594049caf86a1a46f1814070062056edcde1934698ebbf3.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/17/cc/17cc55600a29dd3426e91e17ca4a3e78823316973be1f2835213f87d5f86ecb2.blk",
+        "allocatedBytes": 16384,
+        "logicalBytes": 12360
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/03/4d/034de0a8af179bf599eb24052ba9ce4dc00ed978ff6e93574690130795215273.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/76/50/7650a97426ff84b1a881fc1c5dcfc1ff94c63ec18b521ae6ccd617d2857aae22.blk",
+        "allocatedBytes": 77824,
+        "logicalBytes": 74098
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b1/ec/b1ec31da04244bb0ae8e227e7d472286f5f14ca9df0f570c0616e467473171ff.blk",
+        "allocatedBytes": 1744896,
+        "logicalBytes": 1740875
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/be/06/be069a47f750a3737119fccd19724bd1d4d516ffc8af8b396941fb1512750abf.blk",
+        "allocatedBytes": 16384,
+        "logicalBytes": 13401
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/be/49/be496fd3c63b3bf5c23b2399115429e25338280c76d075b42618c2d381396309.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/5b/df/5bdf235ea76e6a35baaaff417970a18900c7d1fb00e57c0f2c49de3feb229b08.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/21/bf/21bf33362fe8dba8aea3ff0da5242ef8841e826874c39e48cf8dba36c08985be.blk",
+        "allocatedBytes": 1994752,
+        "logicalBytes": 1990726
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/12/15/1215a916f4649ca866f1a80ed6b75baff94f7650dc3c0d5737abbf5b72a35085.blk",
+        "allocatedBytes": 2076672,
+        "logicalBytes": 2073504
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/18/34/1834551af2f114e226fcd2083565b82ce7e7bd4ef30905e0342196604fae2eac.blk",
+        "allocatedBytes": 2052096,
+        "logicalBytes": 2048067
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/18/54/185467de998ff723e2d6b5b52a3b55564ed71688183fddc14df9ce6785ed6b8f.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b5/b8/b5b8d090787a5fbfbdb1ad2295334fe2c720d2a9020ab5199a54cba01cad6961.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/fe/73/fe73403a2cff7abe7baaa10034a4232e54b0afd6a2a51dde7abbbc91a557a9eb.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c1/1a/c11a5c121f7ed44d385cb6d0503cfc25ad54f3c902c5006e7004b12244de1a74.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b3/f1/b3f163e5cdf440701a9b3a5a1a1f3e227a58ab0e588dd68e7d185a6c553256f6.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e4/0d/e40d1c5b89bff5efa22ab65de556e15dfeaf7cb82e2a87a6a3674344d57b33ec.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e4/d9/e4d99200b6f3e282d9355c08af3a1ba35866b6ce0b833ac87cf34509e058f38e.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c6/14/c614b2300282863c77dbdae3829d231ce4280c06de51fd604dbc0bceeb899f40.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/66/0c/660cf9605d24a28f0cb2ea1401f537832d9be965ea2270d452bbbe4d9e3b504e.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/2a/08/2a08602f16c33400581a323fd67a19b43dc8ea1d2d02ea2dab763569733a157c.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/2a/04/2a048263d5ae4456ac26a98ab218374d63818dc26d6ed36829950cc781aebea3.blk",
+        "allocatedBytes": 16384,
+        "logicalBytes": 13401
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/2a/8a/2a8aeffc76a16ec8e0c345f0d9a78fe5e8aba285bf1259971bf40ee306bead93.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/31/df/31df0c6b10033e1d9b98524f26cea6d4f9ebba147a74699c1fe426bcf2e3f6fc.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/74/0a/740a717bc3b4257fefa64f1527d30c52e8337b378092662fa949841fb28defd0.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/f5/37/f5379376372080aa2fa6158815d65c6d0524530d84aef5aa146eaa43447902ec.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/bd/21/bd214b279237afc623975ae743df682378bcf27e343096d8e4a2dd8e9a01aa69.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/63/32/6332787bbcee50ca773843d860e7749b202f87fc06f9fffb9436f2e591c0e32b.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/4f/ae/4faef85c5982cbef4f91c7b8656184243d588e95d17a927cd68f0c537f900818.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d8/e7/d8e70d68edbf043f72a06552af19728c5189e43838be14b6411e447432e61a6b.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/a6/57/a657fb0d2c83066a63a4d07f968bb7ae851157dc63a9f52ac363352c08e18727.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/9b/07/9b0794068c967e65e4b427a035772b419a1adce13733312b51b71b6156329ea5.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/64/3d/643de7ddf9eaa552cbff51d1330f915434a41e053fe7e75ccad13bc0a34ffccf.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/64/57/6457ca5febb2a2c4566c3f51086a6dd103017bb9d6bc9589ef9d46a2b332a8bc.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c5/51/c55137dd44cdcd9445805bfe1c3dc44dd91829aeaa0b39c14b3bfc9bf8e226e8.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/52/20/5220ac8ba8c9f66056678b19b80d583625154e78aa90d342ac4651259faa097c.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/2b/29/2b29d24f56ce772c25ae4dc0e352fc950b38cd522b9d14c261d34d00e142a2ef.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/0e/1c/0e1c6aab2ec6f8d5f0ad049d06de5d3b6c100d6e6100a7dded514f8dc49ccf92.blk",
+        "allocatedBytes": 16384,
+        "logicalBytes": 13401
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/ba/a9/baa9016b86fabdbfef5b8977b2c102e5b73aeb2143a913dd0facd88f70c0be1b.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e6/83/e683e75849dfa1044b7bd14c9aa4fc023fb05465cf90bd98150677a57f93a490.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e6/b6/e6b61e4718e62f9359cf180e3ce58db08b707fbaaba0851c7554eb4727925a75.blk",
+        "allocatedBytes": 2101248,
+        "logicalBytes": 2097171
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/restore-work/volume.raw",
+        "allocatedBytes": 135942144,
+        "logicalBytes": 3238002688
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e6/83",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e6/b6",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/ba/a9",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/0e/1c",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/2b/29",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/52/20",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c5/51",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/64/3d",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/64/57",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/9b/07",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/a6/57",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d8/e7",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/4f/ae",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/63/32",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/bd/21",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/f5/37",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/74/0a",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/31/df",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/2a/08",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/2a/04",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/2a/8a",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/66/0c",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c6/14",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e4/0d",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e4/d9",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b3/f1",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c1/1a",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/fe/73",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b5/b8",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/18/34",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/18/54",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/12/15",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/21/bf",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/5b/df",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/be/06",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/be/49",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b1/ec",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/76/50",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/03/4d",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/17/cc",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/9d/62",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/3b/06",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d6/da",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d7/a0",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/82/dd",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/4c/66",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/8d/b8",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/05/f7",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d1/e2",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b6/f5",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/fc/29",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/ed/cf",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/19/0c",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/7b/87",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c3/11",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e7/c4",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/7d/89",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/8e/6c",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e3/aa",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/3c/21",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/7e/39",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/45/28",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/33/ae",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/56/58",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/57/73",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/bc/6a",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/11/87",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/a0/70",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/61/dd",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/ee/5a",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/00/a4",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/77/eb",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/94/0b",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e6",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/ba",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/0e",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/2b",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/52",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c5",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/64",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/9b",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/a6",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d8",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/4f",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/63",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/bd",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/f5",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/74",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/31",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/2a",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/66",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c6",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e4",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b3",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c1",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/fe",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b5",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/18",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/12",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/21",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/5b",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/be",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b1",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/76",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/03",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/17",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/9d",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/3b",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d6",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d7",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/82",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/4c",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/8d",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/05",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/d1",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/b6",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/fc",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/ed",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/19",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/7b",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/c3",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e7",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/7d",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/8e",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/e3",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/3c",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/7e",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/45",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/33",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/56",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/57",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/bc",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/11",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/a0",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/61",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/ee",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/00",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/77",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks/94",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/backups",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7/blocks",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26/pvc-bd9d5442-8665-4328-9a62-53d03d704ca7",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c/26",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes/3c",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore/volumes",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage/backupstore",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/nas-stage",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/pihole-old-1/restore-work",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/ansible-pihole-old-1-prepare-scratch/local",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/ansible-pihole-old-1-prepare-scratch/remote",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/ansible-pihole-old-1-apply-scratch/local",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/ansible-pihole-old-1-apply-scratch/remote",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/ansible-pihole-old-1-prepare-scratch",
+        "allocatedBytes": 4096,
+        "directory": true
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/ansible-pihole-old-1-apply-scratch",
+        "allocatedBytes": 4096,
+        "directory": true
+      }
+    ],
+    "removedAllocatedLinuxBytes": 272887808,
+    "beforeBavail": 16749604864,
+    "afterBavail": 17022492672,
+    "protectedFilesUnchanged": 183,
+    "references": {
+      "processes": 105,
+      "mountNamespaces": 7,
+      "units": 247,
+      "unitInventorySHA256": "4294fc91a9ef66945b1e9e2193e252d77500555fa315bfd3a2fdc847a129b89e"
+    },
+    "WindowsRecoveryClaimed": false,
+    "UTC": "2026-10-27T20:44:06.245674+00:00",
+    "retainedOperationalTools": {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/independent-restore-tools",
+      "reason": "installed native recovery programs required for remaining retained-volume backup/restore work; no compiler/cache/dependency copy"
+    }
+  },
+  "sourceBindings": {
+    "version": 2,
+    "scope": "same original encrypted V1 guards; Pi-hole old claim1 uses its existing workernode2 replica",
+    "originalBindingPreserved": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/detached-volume-backups-20261027/source-binding.json",
+    "sources": {
+      "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/k8s-rewrite/ansible-playbook/roles/detached_storage_checkpoint/files/checkpoint.py": "d58c841c6fb52342884be941246654189b0e8ca8d21ab902c9f27a4bddeb193f",
+      "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/k8s-rewrite/ansible-playbook/roles/detached_storage_checkpoint/tasks/main.yml": "2c80f4a77b2a4317d256579b97a5b1c6dacd428cc17e655846437be1ef84cf48",
+      "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/k8s-rewrite/ansible-playbook/roles/detached_storage_checkpoint/defaults/main.yml": "a547e643f0e5137447deda8c1f103554473cff2c57b94d91edd6db5a608488da",
+      "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/k8s-rewrite/ansible-playbook/playbooks/detached-storage-checkpoint.yml": "5ce3ffe12c3f4d6ccb0f9ee9f12f57c981fdddcb6d3c015d1e6e3680215b4770",
+      "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/scripts/migration/run-detached-storage-checkpoint.py": "5770c56de33d7b973db5bcc37e26aa95df87978b7fb3baabf79628111cecdcac"
+    }
+  },
+  "health": {
+    "allClaimUIDBindingsPreserved": true,
+    "allVolumeUIDsPreserved": true,
+    "readyNodes": 3,
+    "unreadyWorkloads": [],
+    "unreadyUnsuspendedFlux": [],
+    "controls": {
+      "storage-minimal-available-percentage": "25",
+      "concurrent-automatic-engine-upgrade-per-node-limit": "0"
+    },
+    "observedUTC": "2026-10-27T21:24:51.766980+00:00"
+  },
+  "eightDatasetNativeBlockChecksTotal": 376,
+  "eightDatasetControllerScratchRemovedTotal": 1261604864,
+  "priorSevenEvidenceSHA256": "9c692299fc48ba94d61bebcf1ebf9285f55d7fb496f0d19df423ae580296ed6a",
+  "originalBindingAndFrozenSourcesPreserved": true,
+  "productionRestore": false,
+  "nativeSecretValuesRead": false
+}

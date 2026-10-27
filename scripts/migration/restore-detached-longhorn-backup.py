@@ -28,6 +28,7 @@ ALLOWED = {
     'nas-bortus-restore': 'pvc-ba85233b-81d5-4061-9f7b-feff295071e0',
     'bortus-restore': 'pvc-42bafa5c-bf7a-4751-8fc3-ba3104a76784',
     'pihole-old-0': 'pvc-224e40cf-cfd1-488a-bab6-545568c8e4f7',
+    'pihole-old-1': 'pvc-bd9d5442-8665-4328-9a62-53d03d704ca7',
     'gluetun-old': 'pvc-2d2591cd-8809-4957-b56a-2f4d405bd9e2',
     'qbittorrent-old': 'pvc-6aa3aaa5-f609-4f74-88f0-b5c15e846703',
 }
