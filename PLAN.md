@@ -1,5 +1,19 @@
 # Cluster maintenance and application migration plan
 
+**20:08 UTC recovery:** seven retained encrypted claims now have completed full
+native NAS backups and independent stock-engine raw restores. All 303 native
+block checksums, complete backend sizes, encrypted headers and unbacked zero
+regions passed. All original Volume specs/replica UIDs survived normal detach.
+Ansible executed all fourteen prepare/apply invocations successfully.
+[Exact recovery and cleanup](docs/DETACHED-VOLUME-NATIVE-RECOVERY-20261027.md).
+
+Removed 988,717,056 controller Linux scratch bytes; original NAS/source/failure
+evidence and required native recovery tools remain. Five native-backup gaps
+remain, down from twelve. All 58 claim bindings/44 volume UIDs survive; nodes,
+workloads and unsuspended Flux are Ready, with two RW replicas on all attached
+volumes. No platform upgrade or final application/fleet acceptance is claimed.
+Windows' approved public LAN root is confirmed in CurrentUser/Root. Goal active.
+
 **19:02 UTC preparation:** opt-in Ansible rendered digest-pinned upgrade resources
 and passed server dry-run for 61 objects under existing field manager `kubectl`,
 without forced conflicts. All 51 existing UIDs/configurations are unchanged.

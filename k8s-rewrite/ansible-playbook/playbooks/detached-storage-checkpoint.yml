@@ -1,0 +1,7 @@
+---
+- name: Preserve one detached retained claim through the installed native backup engine
+  hosts: master
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  roles: [detached_storage_checkpoint]

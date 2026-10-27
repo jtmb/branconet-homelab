@@ -1,0 +1,27 @@
+---
+- name: Require the original cluster and one explicit checkpoint phase
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - ansible_host == '192.168.0.4'
+      - detached_storage_checkpoint_enabled | bool
+      - detached_storage_checkpoint_phase in ['prepare', 'apply', 'observe']
+      - detached_storage_checkpoint_volume in ['storage-proof', 'storage-restored', 'nas-bortus-restore', 'bortus-restore', 'pihole-old-0', 'pihole-old-1', 'gluetun-old', 'qbittorrent-old', 'ruckus-old', 'wordpress-unused']
+    fail_msg: One exact detached claim and its prepared identity chain are required; active application claims are excluded.
+
+- name: Checkpoint one retained claim with its frontend disabled and normal detach
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+      - -B
+      - "{{ role_path }}/files/checkpoint.py"
+      - --phase
+      - "{{ detached_storage_checkpoint_phase }}"
+      - --volume
+      - "{{ detached_storage_checkpoint_volume }}"
+  delegate_to: localhost
+  become: false
+  register: detached_storage_checkpoint_result
+  changed_when: detached_storage_checkpoint_phase != 'prepare'
+  no_log: true
+  when: not ansible_check_mode

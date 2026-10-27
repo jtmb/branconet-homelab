@@ -1,5 +1,20 @@
 # Migration and maintenance status
 
+**20:08 UTC:** seven retained claims now have full native NAS backups plus
+independent stock Longhorn raw restores: all 303 blocks, unbacked zero regions,
+complete encrypted sizes and headers verified. Original Volume specs and replica
+UIDs survived normal detach. Fourteen Ansible prepare/apply invocations passed.
+[Exact verification and limitations](docs/DETACHED-VOLUME-NATIVE-RECOVERY-20261027.md).
+
+Removed 988,717,056 allocated controller Linux scratch bytes; no Windows/node
+recovery inferred. Original NAS backups, source/failure witnesses and required
+native tools remain. Five native-backup gaps remain, down from twelve. Fresh
+health preserves all 58 claim bindings/44 volumes, three Ready nodes, available
+workloads/unsuspended Flux and two actual RW replicas on all attached volumes.
+Approved Windows public LAN root is present in CurrentUser/Root. Supported
+Longhorn upgrade/capacity, remaining recovery and final IAB/fleet/security checks
+are still open; full goal remains active.
+
 **19:02 UTC:** the pinned Longhorn candidate passed Ansible and server dry-run
 for 61 applicable resources with current `kubectl` ownership, no forced conflicts,
 and all 51 existing UIDs/configurations unchanged. Encryption, two replicas,

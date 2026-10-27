@@ -1,5 +1,12 @@
 # Current Longhorn recovery coverage
 
+**20:08 UTC update:** seven datasets from the historical gap table below now
+have completed full native NAS backups and independently verified encrypted raw
+restores, with scratch reconciled. All 303 blocks passed. The five remaining
+native-backup gaps are the two current writers, old Ruckus, old Pi-hole claim 1
+and the unused WordPress claim. [Exact newer evidence and limitations](DETACHED-VOLUME-NATIVE-RECOVERY-20261027.md).
+The table below remains the original 18:32 discovery record.
+
 Read-only observation at October 27, 18:32 UTC. All three nodes are Ready without
 pressure. All 58 original claim UID/binding pairs and 44 Longhorn volume
 UID/name pairs match the morning preflight. All 28 attached volumes are healthy
