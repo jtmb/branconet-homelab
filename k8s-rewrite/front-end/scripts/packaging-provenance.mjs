@@ -173,6 +173,32 @@ const metadataPins = Object.freeze({
   }
 });
 
+
+// Exact manifest maintenance is separate from implementation and packaging lineages.
+// Frozen caller maps retain the accepted baseline literals; mixed/unknown groups refuse.
+const sensitivityPins = Object.freeze({
+  "scripts/regression-sensitivity.json": {
+    "baseline": "e9331ac66c8840a35f304d04f9d1135daaeaa53549df4b6e87478a7c5c9bd32b",
+    "maintained": "fa48492c88b153ba1f49f8c159c1d6b695573ff1b7cb10ffe2d24fd7ee63e3f7"
+  },
+  "scripts/regression-sensitivity-db.json": {
+    "baseline": "e4450949abc11c3c74cce2cada3089fe4188f5f236e1e3c1c206358eeba54f59",
+    "maintained": "47a14c83a55c4bacc9c95c63457f5845a8329df4857e94b207fd8f319af37628"
+  },
+  "scripts/regression-sensitivity-process.json": {
+    "baseline": "38f4e78e65c705d523139285949a8eab78508597084cdf81e9a94d85e3ec386d",
+    "maintained": "f024b8fe1a6fa9e1caafeca43e505489b18b466387f18ab81a6068cff7580b29"
+  }
+});
+
+export function sensitivityRevision(importer, reader = readFileSync) {
+ const observed=Object.fromEntries(Object.keys(sensitivityPins).map(name=>[name,digest(reader(new URL('../'+name,importer)))]));
+ const matches=['baseline','maintained'].filter(revision=>Object.entries(sensitivityPins).every(([name,pins])=>observed[name]===pins[revision]));
+ assert.equal(matches.length,1,'Unknown or mixed sensitivity manifest revision');
+ if(matches[0]==='maintained')assert.equal(compatibilityRevision(importer,reader),'approved','Maintained sensitivity requires approved implementation');
+ return matches[0];
+}
+
 export function compatibilityRevision(importer, reader = readFileSync) {
  const observed = Object.fromEntries(Object.keys(implementationPins).map(name => [name, digest(reader(new URL("../" + name, importer)))]));
  const matches = ["historical", "approved"].filter(revision => Object.entries(implementationPins).every(([name, pins]) => observed[name] === pins[revision]));
@@ -181,6 +207,10 @@ export function compatibilityRevision(importer, reader = readFileSync) {
 }
 
 export function compatibleInputHash(importer, name, historical, reader = readFileSync) {
+ if(Object.hasOwn(sensitivityPins,name)){
+  assert.equal(historical,sensitivityPins[name].baseline,'Historical sensitivity authority: '+name);
+  return sensitivityPins[name][sensitivityRevision(importer,reader)];
+ }
  const implementation=Object.hasOwn(implementationPins,name);
  if(!implementation&&!Object.hasOwn(metadataPins,name))return historical;
  const pins=implementation?implementationPins[name]:metadataPins[name];
@@ -198,7 +228,7 @@ export function assertRawPackagingInputs(importer, frozen, reader = readFileSync
   for (const [name, hash] of Object.entries(frozen)) {
     if (Object.hasOwn(implementationPins, name)) assert.equal(hash, implementationPins[name].historical, 'Historical implementation authority: ' + name);
     if (Object.hasOwn(metadataPins, name)) assert.equal(hash, metadataPins[name].historical, 'Historical metadata authority: ' + name);
-    const expected = Object.hasOwn(pins, name) ? pins[name] : Object.hasOwn(implementationPins, name) ? implementationPins[name][revision] : Object.hasOwn(metadataPins, name) ? metadataPins[name][revision] : hash;
+    const expected = Object.hasOwn(sensitivityPins, name) ? compatibleInputHash(importer,name,hash,reader) : Object.hasOwn(pins, name) ? pins[name] : Object.hasOwn(implementationPins, name) ? implementationPins[name][revision] : Object.hasOwn(metadataPins, name) ? metadataPins[name][revision] : hash;
     assert.equal(digest(reader(new URL('../' + name, importer))), expected, name);
   }
 }
