@@ -3,7 +3,7 @@ import prisma from "@/lib/db";
 import { signJWT, AUTH_COOKIE } from "@/lib/auth";
 import { ensureJwtSecret } from "@/lib/auth-server";
 import bcrypt from "bcryptjs";
-import { z } from "zod";
+import { z } from "zod/v3";
 
 const loginSchema = z.object({
   username: z.string().min(1, "Username is required"),

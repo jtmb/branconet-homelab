@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 import { isIP } from "node:net";
 import { validateResourceName } from "./kubectl-client";
 export const nodeInput = z.object({

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireWrite } from "@/lib/permissions";
 import { accounts, accountFailure } from "@/lib/accounts";
 import bcrypt from "bcryptjs";
-import { z } from "zod";
+import { z } from "zod/v3";
 
 const updateUserSchema = z.object({
   role: z.enum(["readonly", "write"]).optional(),

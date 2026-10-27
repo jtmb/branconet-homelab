@@ -4,8 +4,8 @@ import { createRequire } from "node:module";
 import { pathToFileURL } from "node:url";
 const require = createRequire(import.meta.url);
 const directory = process.env.BORTUS_ZOD_DIRECTORY;
-const cjs = directory ? require(directory + "/index.cjs") : require("zod");
-const esm = await import(directory ? pathToFileURL(directory + "/index.js").href : "zod");
+const cjs = directory ? require(directory + "/v3/index.cjs") : require("zod/v3");
+const esm = await import(directory ? pathToFileURL(directory + "/v3/index.js").href : "zod/v3");
 const entry = ["array-max", "array-exact", "array-zero", "set-max", "set-exact",
   "array-default", "set-default", "map-default"];
 for (const [format, { z }] of [["CJS", cjs], ["ESM", esm]]) {

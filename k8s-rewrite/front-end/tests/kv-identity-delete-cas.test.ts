@@ -5,7 +5,7 @@ import path from "node:path";
 import test from "node:test";
 import { runInNewContext } from "node:vm";
 import ts from "typescript";
-import { z } from "zod";
+import { z } from "zod/v3";
 
 // PUBLIC synthetic source controls only. Actual selected TS/TSX declarations run
 // against transactional/HTTP/hook doubles. No Prisma, native client, server,

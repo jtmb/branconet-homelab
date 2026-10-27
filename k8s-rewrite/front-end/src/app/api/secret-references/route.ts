@@ -10,7 +10,7 @@ import { secretResponse, secretErrorResponse } from "@/lib/secret-http";
 import { KvError, kvConfig } from "@/lib/kv-contract";
 import { kvBody, kvRegistry } from "@/lib/kv-http";
 import { MAX_ALIASES } from "@/lib/alias-catalog";
-import { z } from "zod";
+import { z } from "zod/v3";
 const aliasBody = z.object({ alias: z.string().max(253), namespace: z.string().max(63), name: z.string().max(253), key: z.string().max(253) }).strict();
 export const dynamic = "force-dynamic";
 export async function GET(request: Request) {

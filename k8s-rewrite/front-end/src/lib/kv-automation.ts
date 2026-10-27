@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 import { KvError, type KvActor } from "./kv-contract";
 import type { KvNativeEngine } from "./kv-native-engine";
 import { dataChange, nativeDelete, nativeDestroy, nativeReconcile, nativeRollback, rotationAcknowledge, rotationCancel, rotationGenerate, rotationPrepare, rotationTarget } from "./kv-schemas";

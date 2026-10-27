@@ -16,7 +16,7 @@ for (const format of source ? ["source"] : ["CJS", "ESM"]) {
   const { Doc } = await load("v4/core/doc");
   for (const surface of ["root", "v3", "v4", "v4-mini", "v4/mini", "v4/core"]) {
     const v3 = surface === "root" || surface === "v3", raw = surface === "v4/core";
-    const api = await load(surface === "root" ? "index" : surface + "/index");
+    const api = await load(surface === "root" ? "v3/index" : surface + "/index");
     const number = () => raw ? new core.$ZodNumber({ type: "number", checks: [] }) : api.number();
     const string = () => raw ? new core.$ZodString({ type: "string" }) : api.string();
     const any = () => raw ? new core.$ZodAny({ type: "any" }) : api.any();

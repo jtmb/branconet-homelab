@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 import { boundedArray } from "./bounded-array";
 import { KV_ACTIONS } from "./kv-contract";
 export const revision = z.number().int().positive().optional();

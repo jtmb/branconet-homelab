@@ -18,7 +18,7 @@ import { flatSecretGuard, requireLegacyPrincipal } from "../src/lib/secret-acces
 import { automationRequest, runAutomation } from "../src/lib/kv-automation";
 import { KvTransfer, type bundleSchema } from "../src/lib/kv-transfer";
 import { KvRotations } from "../src/lib/kv-rotation";
-import type { z } from "zod";
+import type { z } from "zod/v3";
 
 const marker = "synthetic-private-other-key";
 const copy = <T>(value: T): T => JSON.parse(JSON.stringify(value));

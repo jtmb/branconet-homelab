@@ -3,7 +3,7 @@ import { accounts, accountFailure } from "@/lib/accounts";
 import { signJWT, AUTH_COOKIE } from "@/lib/auth";
 import { ensureJwtSecret } from "@/lib/auth-server";
 import bcrypt from "bcryptjs";
-import { z } from "zod";
+import { z } from "zod/v3";
 
 const registerSchema = z.object({
   username: z

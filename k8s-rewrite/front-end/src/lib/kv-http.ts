@@ -7,7 +7,7 @@ import { createSecretTransport } from "./secret-client";
 import { listAliases } from "./secret-references";
 import { secretNamespaces } from "./secret-client";
 import { secretErrorResponse, secretResponse } from "./secret-http";
-import type { z } from "zod";
+import type { z } from "zod/v3";
 
 export function kvRegistry() { return new KvRegistry(prisma, secretNamespaces(), kvConfig()); }
 export function kvEngine(registry: KvRegistry) { return new KvNativeEngine(registry, createSecretTransport(), listAliases); }

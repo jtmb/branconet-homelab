@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 import { kvHuman, metadataCursor } from "@/lib/kv-http";
 import { KvError } from "@/lib/kv-contract";
 export const runtime = "nodejs";

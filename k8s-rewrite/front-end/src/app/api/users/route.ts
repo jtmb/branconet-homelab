@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db";
 import { requireOperator } from "@/lib/permissions";
 import bcrypt from "bcryptjs";
-import { z } from "zod";
+import { z } from "zod/v3";
 import { accounts, accountFailure } from "@/lib/accounts";
 
 const createUserSchema = z.object({

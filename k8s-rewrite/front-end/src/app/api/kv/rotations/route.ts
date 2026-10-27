@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 import { KvError } from "@/lib/kv-contract";
 import { kvBody, kvEngine, kvHuman, metadataCursor } from "@/lib/kv-http";
 import { KvRotations } from "@/lib/kv-rotation";

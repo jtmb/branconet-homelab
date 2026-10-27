@@ -12,7 +12,7 @@ for (const format of source ? ["source"] : ["CJS", "ESM"]) {
   const load = name => format === "CJS" ? require(prefix + name + ext) : import(pathToFileURL(prefix + name + ext).href);
   const core = await load("v4/core/index");
   for (const surface of ["root", "v3", "v4", "v4-mini", "v4/mini", "v4/core"]) {
-    const api = await load(surface === "root" ? "index" : surface + "/index");
+    const api = await load(surface === "root" ? "v3/index" : surface + "/index");
     const v3 = surface === "root" || surface === "v3", raw = surface === "v4/core";
     const string = () => raw ? new core.$ZodString({ type: "string" }) : api.string();
     for (const kind of ["tuple-rest", "record-issues", "record-work"]) {

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 
 /** Zod 3 records an upper-bound issue but still parses every array element.
  * Admit the existing bound before parsing; preserve the original schema below it.

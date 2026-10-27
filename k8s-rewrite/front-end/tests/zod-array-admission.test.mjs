@@ -6,7 +6,7 @@ import path from "node:path";
 import Module from "node:module";
 
 const require = createRequire(import.meta.url);
-const { z } = require("zod");
+const { z } = require("zod/v3");
 const { boundedArray } = require("../src/lib/bounded-array.ts");
 const schemas = require("../src/lib/kv-schemas.ts");
 const transfer = require("../src/lib/kv-transfer.ts");
@@ -189,7 +189,7 @@ test("source census refuses unguarded application arrays, sets, maps and alterna
     const text = fs.readFileSync(file, "utf8"), source = ts.createSourceFile(file, text, ts.ScriptTarget.Latest, true);
     function visit(node) {
       if (ts.isImportDeclaration(node) && node.moduleSpecifier.text.startsWith("zod")) {
-        assert.equal(node.moduleSpecifier.text, "zod");
+        assert.equal(node.moduleSpecifier.text, "zod/v3");
         const bindings = node.importClause?.namedBindings;
         assert.ok(bindings && ts.isNamedImports(bindings));
         assert.deepEqual(bindings.elements.map(item => item.name.text), ["z"]);

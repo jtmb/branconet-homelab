@@ -11,7 +11,7 @@ const load = (mode, name) => mode === "CJS" ? require(directory + "/" + name + "
   : import(pathToFileURL(directory + (mode === "source" ? "/src/" : "/") + name + (mode === "source" ? ".ts" : ".js")).href);
 for (const [parentMode, childMode] of pairs) for (const surface of ["root", "v3", "v4", "v4-mini", "v4/mini", "v4/core"]) {
   const v3 = surface === "root" || surface === "v3", raw = surface === "v4/core";
-  const name = surface === "root" ? "index" : surface + "/index";
+  const name = surface === "root" ? "v3/index" : surface + "/index";
   const parent = await load(parentMode, name), child = await load(childMode, name), core = await load(parentMode, "v4/core/index");
   const numbers = api => raw ? new api.$ZodArray({ type: "array", element: new api.$ZodArray({ type: "array", element: new api.$ZodNumber({ type: "number", checks: [] }) }) }) : api.array(api.array(api.number()));
   const schema = raw ? new parent.$ZodObject({ type: "object", shape: { left: numbers(parent), right: numbers(child) } }) : parent.object({ left: numbers(parent), right: numbers(child) });

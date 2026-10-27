@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "zod/v3";
 import { boundedArray } from "./bounded-array";
 import { KvError, KvMutationError, fieldMapping, logicalPath, requireGuarded, type KvActor } from "./kv-contract";
 import type { RegisteredPath } from "./kv-registry";
