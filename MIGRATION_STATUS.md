@@ -41,6 +41,14 @@ are available; 4 old failed diagnostic pods remain as evidence. The final
 297,236-byte cleanup metadata packet passed full authenticated NAS readback
 (SHA-256 `9fa00f5d92356716be0c9c826f85c7a59d63e198c2c965ce58e321c7d012e77d`).
 
+**10:52UTC Longhorn preflight:** maintained Ansible inspection passes with zero
+changes. All 28 attached volumes have two actual RW replicas; 16 volumes remain
+detached. Twelve volumes lack a completed Backup CR in the current inventory,
+ten of them detached, and no SystemBackup CR exists. This is a coverage gap to
+reconcile with actual independent cold/NAS receipts, not proof that those
+datasets were never backed up. No candidate image pulls, volume attachment or
+upgrade mutations occurred. [Dataset map and remaining recovery gates](docs/LONGHORN-UPGRADE-DESIGN-20261027.md).
+
 **October27,06:57UTC acceptance:** Unpackerr1.0 and restart pass original config/
 native Secret/storage/integration checks, with the new web interface disabled.
 Delivery's relay/account-drop fix is saved and applied. Charts main/validated/

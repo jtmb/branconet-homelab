@@ -1,5 +1,65 @@
 # Longhorn upgrade design: held, not implemented
 
+## Live preflight implemented, October27,10:52UTC
+
+`playbooks/longhorn-upgrade-preflight.yml` now maintains the read-only collection
+of actual volume/engine/replica identities, claim/PV ownership, completed backup
+records, system backups, native settings and both kubelet/Longhorn space counters.
+The playbook passed syntax and live execution (`changed=0`, `failed=0`). It reads
+no Secret values and provides no mutation mode. The retained vendor manifest and
+14 pinned candidates are hash-bound before collection; receipts cannot replace
+earlier runs. This implements inspection, not manager or engine upgrade.
+
+Current observation: 44 volumes, 58 claims, 28 attached volumes each with two
+actual RW replicas, and 16 detached volumes. Ingenium's owner added the new claim
+during this inspection. All original 43 volume UIDs survived the earlier cleanup.
+The backup target is available. Twelve volumes have no completed Backup CR in
+this observation, including ten detached retained volumes. This does not prove
+that no other independent backup exists; the existing cold/NAS receipts must be
+mapped to the exact datasets and recovery requirements.
+
+| Dataset without a completed Backup CR | State |
+| --- | --- |
+| ruckus/ruckus-db-data-0-security-20261025 | detached |
+| ruckus/ruckus-db-upstream-20261026 | attached |
+| pihole/pihole-data-0 and pihole-data-1 | detached |
+| plex/gluetun-data-1 and qbittorrent-data-0 | detached |
+| bortus/bortus-restore-b473091bebef | detached |
+| wordpress/wordpress-db-upstream-20261026 | detached |
+| migration-system/migration-storage-restored | detached |
+| migration-system/migration-storage-proof | detached |
+| migration-system/migration-nas-bortus-restore | detached |
+| ingenium/ingenium-state | attached; separate deployment owner |
+
+No SystemBackup CR exists. The original online checkpoint remains explicitly
+crash-consistent, attached-only and without independent restore proof; its
+historical 30-volume guard remains unchanged. Completing a system backup does
+not establish workload consistency or general application recovery. Retained
+WordPress, restoration fixtures and BORTUS datasets are preserved regardless of
+whether they have a current writer. No empty-data assumption follows from the
+Longhorn actual-size counter.
+
+Exact private receipts are under the existing F-backed root,
+`platform-upstream-review-20261027/longhorn-preflight/{live,receipt}.json`.
+The initial Ansible local RPC startup exceeded Unix socket path length before
+any playbook task; its failure receipt and source survive. The rerun used the
+existing inherited-directory-descriptor technique. Its short `/proc/self/fd`
+alias resolves to the same declared F-backed temporary directory; no filesystem
+alias or new storage root was created. Command modules receive the real owned
+temporary path. Both attempts reconciled their empty scratch directories.
+
+Concurrent Ingenium staging retains priority for the qualified headroom; no
+candidate image was pulled and no volume was attached by this preflight.
+The 71,908-byte encrypted preflight metadata packet passed every-member local
+verification and complete NAS readback/authentication. SHA-256:
+`f98edacb7744b58e2c0882ad2958f16e76afa18d3de5420f2fa1053836ba77ae`.
+It includes only this inspection's metadata and launch outcomes/sources;
+earlier recovery packets and application data are not duplicated.
+The [sanitized receipt](../evidence/longhorn-upgrade-preflight-20261027.json)
+preserves exact observed backup gaps and explicitly records `upgradeReady=false`.
+
+## Upgrade design
+
 Read-only review confirms installed1.12.1→pinned1.13.0 is a supported V1 upgrade
 path. No upgrade, new recovery proof or capacity recovery follows from this
 design. The V2-specific1.12.2 prerequisite does not apply to these43V1volumes.

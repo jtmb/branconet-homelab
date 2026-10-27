@@ -44,6 +44,14 @@ alone do not relocate existing replicas.
 Cleanup metadata packet (297,236 bytes) passed authenticated NAS readback;
 SHA-256 `9fa00f5d92356716be0c9c826f85c7a59d63e198c2c965ce58e321c7d012e77d`.
 
+**10:52UTC Longhorn preflight:** the new read-only Ansible playbook passes live
+with zero changes. All 28 attached volumes have two actual RW replicas. Twelve
+volumes have no completed Longhorn Backup CR recorded, including ten detached
+datasets, and no SystemBackup CR exists. Existing independent cold/NAS recovery
+must be mapped rather than assumed absent or complete. No images were pulled,
+no data attached by this check, and no upgrade was attempted. See
+[dataset ownership and remaining recovery gates](docs/LONGHORN-UPGRADE-DESIGN-20261027.md).
+
 **Latest accepted checkpoint — October27,06:57UTC:** official Unpackerr1.0 and
 its controlled restart preserve the original config, native Secret and storage.
 Its new web interface stays disabled. The delivery relay fix is maintained in

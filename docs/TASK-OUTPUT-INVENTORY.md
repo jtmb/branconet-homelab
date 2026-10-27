@@ -1,5 +1,21 @@
 # Maintenance output ownership and reconciliation
 
+## Longhorn read-only preflight, October27
+
+Owner remains this migration chat; physical storage remains the existing
+F-backed ext4 UUID below. The new inspection uses exactly
+`platform-upstream-review-20261027/longhorn-preflight` for immutable metadata
+receipts, plus the reviewed launcher in `operator-control`. Regenerate a fresh
+inspection with `playbooks/longhorn-upgrade-preflight.yml` and a distinct
+`longhorn-preflight-<suffix>` receipt directory under the same review directory;
+existing receipts cannot be overwritten. It reads the retained official manifest
+and 14 digest-bound candidates; these sources, scans, all original data and
+rollback material remain protected. No image download, unpack, remote temporary
+file, attachment, snapshot or backup mutation is performed. Ansible HOME,
+local/connection temporary paths and TEMP/TMP/TMPDIR are scoped to
+`node-cleanup-20261027/longhorn-preflight-ansible-scratch`; reconcile its empty
+directories after child termination. No dependency or compiler outputs are used.
+
 ## Node cleanup ownership, October27
 
 James delegated the node cleanup from the Ingenium chat to this migration chat.
@@ -95,6 +111,26 @@ The final read-only reconciliation is
 cache, dependency tree or restore scratch. The two small local metadata
 ciphertexts remain required recovery artifacts. The journal payload ciphertext
 exists only at its final approved NAS path.
+
+Longhorn preflight reconciliation: the first launcher failed at Ansible's local
+RPC startup before any play task. Its source/result remain unique evidence. The
+successful rerun uses an inherited directory descriptor resolving to the same
+F-backed scratch path, avoiding the Unix socket length limit without another
+storage location. Each launcher removed the exact empty `local`, `home` and
+parent directories beneath `longhorn-preflight-ansible-scratch`; the successful
+run additionally removed its empty `remote` directory. Measured allocations
+reconciled: 12,288 plus 16,384 bytes, all transiently created then removed, not
+net filesystem recovery. No retained scratch exception remains. Preserve both
+launchers, both outcome receipts, and `longhorn-preflight/{live,receipt}.json` as
+unique source/failure/recovery evidence. No dependency tree, image or runtime
+data was created by the operation.
+
+Required preflight metadata archive retained in
+`operator-control/longhorn-preflight-recovery-metadata.tar.age`: 71,908 bytes,
+SHA-256 `f98edacb7744b58e2c0882ad2958f16e76afa18d3de5420f2fa1053836ba77ae`.
+Its content-addressed copy in the approved NAS store passed full readback and
+authentication. Source/manifest/copy receipts remain required recovery evidence;
+neither earlier packet payloads nor application data were copied into it.
 
 ## Snapshot-controller upstream operation, October27
 

@@ -1,0 +1,7 @@
+---
+- name: Inspect Longhorn recovery and upgrade prerequisites without mutations
+  hosts: master
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  roles: [longhorn_upgrade_preflight]
