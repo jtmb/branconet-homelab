@@ -1,5 +1,17 @@
 # Migration and maintenance status
 
+**Platform follow-up — October27,03:06UTC:** all14official Longhorn1.13.0
+components are digest-bound and freshly scanned. Upgrade remains unapplied:
+Longhorn's disk-scheduling floor fails on master and worker2, although all27
+attached volumes remain healthy. Their respective shortfalls are3,969,410,049
+and613,966,849bytes before any upgrade image pulls. No threshold/replica reduction,
+image prune or data/source deletion was performed. Safe capacity recovery is next.
+The candidate retains7Critical/215High package rows, with no CISA KEV matches;
+raw results remain. Cleanup removed15,962,112Linux bytes and recovery metadata
+passed complete authenticated NAS readback. The full goal remains active.
+
+[Exact Longhorn candidate, live capacity constraint and retained evidence](docs/LONGHORN-UPSTREAM-REVIEW-20261027.md).
+
 **Latest checkpoint — October27,02:50UTC:** Ruckus now runs from its owned
 repository and existing Docker Hub route. Production and a distinct Flux restart
 preserved all3,976original rows/accounts/native Secrets/storage and passed28routes

@@ -1,5 +1,16 @@
 # Cluster maintenance and application migration plan
 
+**Platform follow-up — October27,03:06UTC:** the complete official Longhorn1.13.0
+candidate is now digest-bound/scanned. All43volumes are V1;27attached remain healthy.
+Upgrade is held because master and worker2 fail Longhorn's disk-scheduling floor.
+Establish safe eligible artifact capacity recovery before fresh recovery checks
+and an owner-preserving Ansible upgrade. No original/source/data deletion, image
+prune, competing Helm ownership, lower threshold or replica reduction is approved
+by this checkpoint. Current raw candidate CVEs remain explicit. Windows client
+trust, final IAB and final fleet acceptance remain open; the goal stays active.
+
+[Exact findings, capacity and reconciliation](docs/LONGHORN-UPSTREAM-REVIEW-20261027.md).
+
 **Latest checkpoint — October27,02:50UTC:** Ruckus's owned-source release is live
 and accepted through the local validator → validated → Flux path. Every original
 row/account/native Secret/storage identity survived production and a separate

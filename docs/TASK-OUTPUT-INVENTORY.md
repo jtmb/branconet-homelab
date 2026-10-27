@@ -1,5 +1,21 @@
 # Maintenance output ownership and reconciliation
 
+## Longhorn candidate review reconciliation, October27,03:06UTC
+
+Owner/single F-backed root/UUID remain unchanged. Removed15,962,112allocated
+Linux bytes from the inactive Trivy analysis cache, empty scanner home/tmp and
+14reproducible progress files. Exact target paths/bytes/inodes/hashes, full
+process/FD/maps/mount checks and regeneration are in
+`operator-control/longhorn-upstream-review-scratch-{plan,reconciliation}.json`.
+[Candidate and capacity evidence](LONGHORN-UPSTREAM-REVIEW-20261027.md#evidence-and-reconciliation)
+bind all14scans and the unapplied-upgrade guard. Public r4 inputs/cache links,
+unique registry/source/raw scan/capacity evidence and the prior unresolved
+sentinels remain required exceptions. No cluster image, volume or source was
+deleted.12,772,596bytes of minimal encrypted metadata passed authenticated NAS
+readback; old ciphertexts/archives/database bytes were not duplicated. Linux
+allocation recovery is separate from Windows space. Full goal remains active.
+
+
 ## Ruckus reconciliation, October27,02:50UTC
 
 Owner and the single existing F-backed root/UUID remain unchanged. Removed
