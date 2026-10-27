@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/patch-next-body-finalize.mjs && node scripts/build-account-worker.mjs",
-    "prebuild": "node scripts/patch-next-body-finalize.mjs && node scripts/build-secret-flat-native.mjs && node scripts/build-account-worker.mjs",
+    "predev": "node scripts/patch-next-body-finalize.mjs && node scripts/patch-zod-collections.mjs && node scripts/build-account-worker.mjs",
+    "prebuild": "node scripts/patch-next-body-finalize.mjs && node scripts/patch-zod-collections.mjs && node scripts/build-secret-flat-native.mjs && node scripts/build-account-worker.mjs",
     "postbuild": "node scripts/package-secret-flat-native.mjs && node scripts/package-account-worker.mjs",
     "dev": "next dev -p 4000",
     "build": "prisma generate && next build",
@@ -13,13 +13,14 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
-    "pretest": "node scripts/build-account-worker.mjs",
+    "pretest": "node scripts/patch-zod-collections.mjs && node scripts/build-account-worker.mjs",
     "test": "node scripts/run-compatible-unit-tests.mjs",
     "test:integration": "tsx --test tests/*.integration.ts",
     "test:regression-sensitivity": "node scripts/regression-sensitivity.mjs",
     "test:regression-sensitivity-db": "node scripts/regression-sensitivity-db.mjs",
     "typecheck": "tsc --noEmit",
-    "db:deploy": "prisma migrate deploy"
+    "db:deploy": "prisma migrate deploy",
+    "postinstall": "node scripts/patch-zod-collections.mjs"
   },
   "dependencies": {
     "@kubernetes/client-node": "^1.4.0",
@@ -42,7 +43,7 @@
     "react-dom": "^18.3.0",
     "tailwind-merge": "^2.5.0",
     "xterm": "^5.3.0",
-    "zod": "^3.23.0",
+    "zod": "3.25.76",
     "zustand": "^5.0.0"
   },
   "devDependencies": {

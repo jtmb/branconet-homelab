@@ -12,6 +12,7 @@ WORKDIR /app
 FROM node:22.23.3-bookworm@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d AS builder
 WORKDIR /app
 COPY package.json package-lock.json ./
+COPY scripts/patch-zod-collections.mjs ./scripts/patch-zod-collections.mjs
 RUN npm ci
 COPY . .
 RUN node scripts/provision-scanner.mjs /scanner
