@@ -1,5 +1,22 @@
 # Cluster maintenance and application migration plan
 
+**Latest checkpoint — October27,04:12UTC:** Flux2.10.0 is deployed through the
+new opt-in Ansible role. Seven pinned controllers are Ready/zero-restart;
+all43installation objects retain ownership and exact reviewed settings, apart
+from seven proved generated revision counters.63Flux specifications,57claims/PVs,
+50application specifications,184native Secrets and3node/boot identities survived.
+Fresh source/Kustomization/Helm reconciliations passed at private validated
+revision`3a8de93a4034780519bac191bf4a02b4a4c96f96`; BORTUS stays suspended.
+The new encrypted control-plane backup passed complete authenticated NAS readback.
+Cleanup removed30,310,400Linux bytes; unique source/recovery/failure evidence stays.
+
+Fresh current fleet coverage is60/61actual image digests; BORTUS registry failure
+remains unknown. FlareSolverr's current official image retains a known-exploited
+Chromium CVE; both published tags still match that image. Compatible platform/
+sidecar updates, vendor exception reconciliation, Longhorn capacity/recovery/
+upgrade, client trust and final IAB remain. The full goal stays active.
+[Exact rollout, raw security limits and reconciliation](docs/FLUX-UPSTREAM-UPGRADE-20261027.md).
+
 **Platform follow-up — October27,03:06UTC:** the complete official Longhorn1.13.0
 candidate is now digest-bound/scanned. All43volumes are V1;27attached remain healthy.
 Upgrade is held because master and worker2 fail Longhorn's disk-scheduling floor.

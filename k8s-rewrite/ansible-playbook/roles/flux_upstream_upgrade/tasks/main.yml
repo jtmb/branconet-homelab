@@ -1,0 +1,31 @@
+---
+- name: Require the existing cluster and explicit upgrade phase
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - flux_upstream_upgrade_mode in ['prepare', 'apply', 'verify']
+      - flux_upstream_upgrade_output_dir is match('^/home/brajam/[^\r\n]+$')
+
+- name: Run the protected upstream Flux operation on the controller
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+      - "{{ role_path }}/files/upgrade.py"
+      - "{{ flux_upstream_upgrade_mode }}"
+      - --output-dir
+      - "{{ flux_upstream_upgrade_output_dir }}"
+      - --vendor-manifest
+      - "{{ flux_upstream_upgrade_vendor_manifest }}"
+      - --candidates
+      - "{{ flux_upstream_upgrade_candidates }}"
+      - --backup-receipt
+      - "{{ flux_upstream_upgrade_backup_receipt }}"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  changed_when: flux_upstream_upgrade_mode == 'apply'
+  when: not ansible_check_mode
+
+- name: Report the evidence location
+  ansible.builtin.debug:
+    msg: "Inspect {{ flux_upstream_upgrade_output_dir }}. Prepare performs server dry-run only; apply preserves native Secrets, applications, claims and BORTUS suspension. No automatic CRD downgrade or force-conflicts is allowed."

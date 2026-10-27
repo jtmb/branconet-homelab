@@ -1,0 +1,57 @@
+{
+  "release": "v2.10.0",
+  "releaseURL": "https://github.com/fluxcd/flux2/releases/tag/v2.10.0",
+  "manifestURL": "https://github.com/fluxcd/flux2/releases/download/v2.10.0/install.yaml",
+  "manifestSHA256": "a8c838ccd9be5d30eba9df87cd229b7c4eb80c0049fba1bc3b9840829f267f28",
+  "images": [
+    {
+      "name": "helm-controller",
+      "reference": "ghcr.io/fluxcd/helm-controller:v1.7.1@sha256:54526cc6ed1202d71d44c310676448065664f3255ad671d9a69ac26f904e617a",
+      "amd64ManifestDigest": "sha256:cb69af98bf251ef50951bbd01834360977066b85abfcff99a5075c3528eedd13",
+      "configurationDigest": "sha256:2a31e5727f03fc414a6839643a5d4b60dd8971a3428e6da74c99ad4653fd9be8",
+      "compressedLayerBytes": 55291507
+    },
+    {
+      "name": "image-automation-controller",
+      "reference": "ghcr.io/fluxcd/image-automation-controller:v1.3.0@sha256:6ec488320def72fecfd01ab1289cc6c881d76b984fbbcf69b174e1e10886029e",
+      "amd64ManifestDigest": "sha256:26425fc8af8f93dfab689eed4ae8389ff7035e37795751448f899193b40b8c86",
+      "configurationDigest": "sha256:9b165368a23a487962c19523e411f4d6600f3aee1d5909b8dc98456be0fdbbc7",
+      "compressedLayerBytes": 47701283
+    },
+    {
+      "name": "image-reflector-controller",
+      "reference": "ghcr.io/fluxcd/image-reflector-controller:v1.3.0@sha256:b4d2cbdc1b7a046c53786628fe900b72b31a95c4cec219478777e3f97c453635",
+      "amd64ManifestDigest": "sha256:259cef0276a40991281308499627dd7bee6eb48b7a0bc9f4157b7dcc6280bd35",
+      "configurationDigest": "sha256:1e76b83892d77e7e372295cb6fe344c5966e1ca6ae1eaf17a667e5559d3e4cae",
+      "compressedLayerBytes": 45279641
+    },
+    {
+      "name": "kustomize-controller",
+      "reference": "ghcr.io/fluxcd/kustomize-controller:v1.10.1@sha256:37db29b25dae35b881a5e064acedb0cc954442da453a39eaa0eab7a90dbecc4e",
+      "amd64ManifestDigest": "sha256:641ce1625e648f883d44765affbe44bcef8ed7e0c334f03761bcf5c36561eedb",
+      "configurationDigest": "sha256:ff8644229e5831e74152b4f223e9b4f09203c535e393f0045fa2337a6c3ada8a",
+      "compressedLayerBytes": 74945315
+    },
+    {
+      "name": "notification-controller",
+      "reference": "ghcr.io/fluxcd/notification-controller:v1.10.0@sha256:9f58b9532ec9d3ccf539cd3ccdf283477a5dcb7777b922db5477d8bbd4d3767c",
+      "amd64ManifestDigest": "sha256:49a961cf36f842780327540c8fbac93e60e965066d7a204cb56b182c34704bd8",
+      "configurationDigest": "sha256:145f71d5203cad2388bd5786386ee6311675bbfda7bc57c8cb575807aaede35b",
+      "compressedLayerBytes": 54911361
+    },
+    {
+      "name": "source-controller",
+      "reference": "ghcr.io/fluxcd/source-controller:v1.10.1@sha256:611b6bca3eae95bcff471414d1fb14a4ab83d7f14e609cccef2bd389c121f37e",
+      "amd64ManifestDigest": "sha256:0d0012714ea71c4adceb87f21a880801d2a366a426f9bff382491eb1380f2bc3",
+      "configurationDigest": "sha256:56af4cb17fea42cca31a7b76f7b1016f0d5e754b1bdd9224b83e72e1e86956af",
+      "compressedLayerBytes": 72917188
+    },
+    {
+      "name": "source-watcher",
+      "reference": "ghcr.io/fluxcd/source-watcher:v2.3.1@sha256:cb94a51b0f7a433fd5610b5f3cd8eb06ba7d70c656a3594dfe19f656ee996d96",
+      "amd64ManifestDigest": "sha256:c1eb636b11a708733718021710aab679f59da38f5a9c965df1b3064ca764810a",
+      "configurationDigest": "sha256:06fa90d6372d63277faa1c35c8203de8d21ab72231e37b50442f076c65804454",
+      "compressedLayerBytes": 40993502
+    }
+  ]
+}

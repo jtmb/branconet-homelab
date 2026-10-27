@@ -1,0 +1,7 @@
+---
+- name: Upgrade the existing kubectl-owned Flux installation without changing applications
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - flux_upstream_upgrade

@@ -1,5 +1,19 @@
 # Migration and maintenance status
 
+**Latest checkpoint — October27,04:12UTC:** Flux2.10.0 is deployed and accepted.
+Seven controllers are Ready/zero-restart, with exact image IDs; all protected
+application, native Secret, claim/PV, Flux-specification and node identities match.
+Fresh charts/source/Helm reconciliation passed, with BORTUS's hold preserved.
+A fresh encrypted control-plane backup passed full NAS authentication.
+Cleanup removed30,310,400Linux bytes; no Windows recovery is claimed.
+
+The fresh fleet scan covers60of61runtime digests. BORTUS's cached image has
+unknown current coverage; FlareSolverr's latest official image retains one known-
+exploited Chromium CVE. Raw findings are not suppressed. Remaining platform/
+sidecar remediation, vendor exception reconciliation, Longhorn capacity/recovery/
+upgrade, client trust and final browser acceptance keep the full goal active.
+[Exact acceptance and remaining limits](docs/FLUX-UPSTREAM-UPGRADE-20261027.md).
+
 **Platform follow-up — October27,03:06UTC:** all14official Longhorn1.13.0
 components are digest-bound and freshly scanned. Upgrade remains unapplied:
 Longhorn's disk-scheduling floor fails on master and worker2, although all27
