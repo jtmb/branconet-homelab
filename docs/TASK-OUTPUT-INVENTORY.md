@@ -62,6 +62,22 @@ rechecked all original bytes, identities and references. Retain 1,712 actual
 archived module version/checksum contracts. This is node Linux recovery, not
 Windows physical disk recovery. Original archives/binaries/source/failures remain.
 
+The next read-only survey reuses this same owned directory and physical F
+filesystem for `survey-next-caches-controller.py` and `next-cache-survey.json`.
+Allow at most512KiB additional metadata inside the existing128MiB ceiling.
+Regenerate by running that retained read-only controller with existing SSH and
+protected TTY input. Inspect only the five explicit apt/Go/pip cache paths and
+master's root-disk metadata; preserve all contents and active work. A measured
+cache size grants no deletion eligibility. No build, payload download or source
+copy is involved.
+
+That survey completed read-only: the five paths contain only10,371,072 allocated
+bytes in total; both additional Go-cache paths are absent. No file qualified or
+was deleted. Retain its two source/result files (7,175 logical bytes) and final
+reconciliation as unique evidence. The root SSD is120,034,123,776 bytes and the
+existing LV117,880,913,920 bytes; no useful extra physical capacity was observed.
+[Exact dated survey](../evidence/master-next-cache-survey-20261027.json).
+
 ## Longhorn image capacity measurement, October27
 
 Owner remains this migration chat and the single existing F-backed task root,
