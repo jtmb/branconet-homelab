@@ -1,5 +1,19 @@
 # Publisher reserve recovery, October 27
 
+## Ingenium 0.1.14 terminal stage, 20:28 UTC
+
+The current successful stage `e292d40fb002482aa67eb4e2d6dc1e8f`, source
+`f6fc6229665589cfd5a9d90219cfa7bd71ff1ff1`, passed complete source/blob,
+receipt/lock/Linux-reference and three exclusive native Windows-handle checks.
+Removed only its three temporary tool copies and empty `.tools` directory:
+**149,778,432 allocated controller Linux bytes**. Cumulative publisher cleanup
+is **2,246,676,480 bytes**, fifteen stages. Native available space changed from
+16,873,103,360 to17,022,881,792 bytes. [Exact qualified removal](../evidence/publisher-ingenium-014-cleanup-20261027.json).
+
+Source exports, receipts, primary tools, the complete failed stage and older
+retained copies remain. The existing publisher was neither changed nor replayed;
+no GitHub Actions, image/volume prune, node-space gain or Windows recovery claim.
+
 ## Current Ingenium terminal stages, 19:13 UTC
 
 Two current successful stages, `ce898679b47f4c419ecb0755b7f768cf` and

@@ -1,0 +1,29 @@
+---
+- name: Require the original master and fixed preservation root
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - ansible_host == '192.168.0.4'
+      - ansible_user == 'james'
+      - ansible_port | int == 2002
+      - retired_master_duplicate_outputs_root == '/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup'
+
+- name: Require new qualification receipts
+  ansible.builtin.stat:
+    path: "{{ retired_master_duplicate_outputs_root }}/custom-kubectl-duplicate-{{ item }}.json"
+  loop: [inventory, retirement]
+  delegate_to: localhost
+  become: false
+  register: retired_master_duplicate_outputs_prior
+
+- name: Preserve earlier operations
+  ansible.builtin.assert:
+    that: [not item.stat.exists]
+  loop: "{{ retired_master_duplicate_outputs_prior.results }}"
+  no_log: true
+
+- name: Inspect and optionally retire the exact four preserved duplicates
+  ansible.builtin.include_tasks: phase.yml
+  loop: "{{ ['inventory', 'retirement'] if retired_master_duplicate_outputs_apply else ['inventory'] }}"
+  loop_control:
+    loop_var: duplicate_phase

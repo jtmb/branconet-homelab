@@ -1,5 +1,19 @@
 # Cluster maintenance and application migration plan
 
+**20:28 UTC cleanup:** Ansible retired exactly four qualified old successful-build
+copies on master:233,078,784 allocated node bytes. All77,887 unselected entries
+and the complete failed build remain; the original compiled artifact is preserved
+and fully read back on F. Cumulative node cleanup is25,709,182,976 bytes.
+All58 claim bindings/44 volume UIDs and cluster/workload/Flux health survive.
+[Exact removal and current capacity limits](docs/MASTER-DUPLICATE-OUTPUT-RETIREMENT-20261027.md).
+
+Removed20,480 controller scratch bytes and149,778,432 bytes of qualified tools
+from the latest terminal Ingenium CI stage; cumulative publisher cleanup is
+2,246,676,480 bytes. All source/failure/rollback/data exceptions remain.
+The V1-node image projection now clears its floor/margin by12,909,567 bytes;
+complete-profile placement, actual cache/unpack/recovery and supported upgrade
+remain unproved. Five recovery gaps and final security/fleet/IAB remain. Goal active.
+
 **20:08 UTC recovery:** seven retained encrypted claims now have completed full
 native NAS backups and independent stock-engine raw restores. All 303 native
 block checksums, complete backend sizes, encrypted headers and unbacked zero

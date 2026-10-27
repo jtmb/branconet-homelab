@@ -1,0 +1,34 @@
+---
+- name: Qualify the fixed duplicate paths with complete original-source checks
+  ansible.builtin.raw: >-
+    systemd-run --quiet --wait --pipe --collect
+    --unit=branconet-master-kubectl-duplicates-{{ duplicate_phase }}-20261027
+    --description='Branconet exact old compiled outputs and public archive duplicates'
+    --property=MemoryMax=536870912 --property=MemorySwapMax=0
+    --property=CPUQuota=100% --property=TasksMax=64 --property=Nice=15
+    --property=RuntimeMaxSec=600 --property=ProtectSystem={{ 'full' if duplicate_phase == 'retirement' else 'strict' }}
+    --property=ProtectHome={{ 'no' if duplicate_phase == 'retirement' else 'read-only' }}
+    /usr/bin/python3 -B -c {{ lookup('file', role_path + '/files/retire.py', rstrip=false) | quote }}
+    --safety-source {{ lookup('file', role_path + '/../retired_master_build_tools/files/retire.py', rstrip=false) | b64encode | quote }}
+    --safety-sha256 {{ lookup('file', role_path + '/../retired_master_build_tools/files/retire.py', rstrip=false) | hash('sha256') | quote }}
+    --primary-proof {{ lookup('file', retired_master_duplicate_outputs_root + '/custom-kubectl-duplicate-rollback-proof.json', rstrip=false) | b64encode | quote }}
+    {{ '--apply' if duplicate_phase == 'retirement' else '' }}
+  register: retired_master_duplicate_outputs_result
+  failed_when: false
+  changed_when: duplicate_phase == 'retirement' and retired_master_duplicate_outputs_result.rc == 0
+  no_log: true
+
+- name: Preserve this exact qualification or refusal
+  ansible.builtin.copy:
+    dest: "{{ retired_master_duplicate_outputs_root }}/custom-kubectl-duplicate-{{ duplicate_phase }}.json"
+    content: "{{ {'rc': retired_master_duplicate_outputs_result.rc, 'stdout': retired_master_duplicate_outputs_result.stdout, 'stderr': retired_master_duplicate_outputs_result.stderr} | to_nice_json }}"
+    force: false
+    mode: '0600'
+  delegate_to: localhost
+  become: false
+  no_log: true
+
+- name: Require complete source and reference qualification
+  ansible.builtin.assert:
+    that: [retired_master_duplicate_outputs_result.rc == 0]
+    fail_msg: The exact duplicate operation refused; keep its receipt, original source and rollback witness.

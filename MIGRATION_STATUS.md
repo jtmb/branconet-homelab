@@ -1,5 +1,19 @@
 # Migration and maintenance status
 
+**20:28 UTC:** qualified retirement of four old master build duplicates recovered
+233,078,784 node Linux bytes, preserving all77,887 unselected source/failure/primary
+entries plus a fully verified original compiled artifact on F. Cumulative node
+cleanup is25,709,182,976 bytes. All58 claim bindings/44 volume identities, three
+Ready nodes, workloads and unsuspended Flux remain healthy.
+[Exact removal, retention and capacity](docs/MASTER-DUPLICATE-OUTPUT-RETIREMENT-20261027.md).
+
+Ansible scratch is reconciled:20,480 controller Linux bytes removed. The latest
+terminal Ingenium CI stage released149,778,432 further controller bytes; publisher
+total2,246,676,480. No Windows recovery is inferred. The dated V1 image projection
+clears its floor/margin by12,909,567 bytes; complete-profile placement, fresh native
+cache/unpack, remaining recovery, supported upgrade and final security/fleet/IAB
+acceptance remain. Full goal stays active.
+
 **20:08 UTC:** seven retained claims now have full native NAS backups plus
 independent stock Longhorn raw restores: all 303 blocks, unbacked zero regions,
 complete encrypted sizes and headers verified. Original Volume specs and replica
