@@ -1,5 +1,20 @@
 # Cluster maintenance and application migration plan
 
+**Latest checkpoint — October27,04:43UTC:** SMB's existing Helm owner now runs
+pinned registrar2.18.0/livenessprobe2.20.0. Four image fields only; all12resource
+UIDs,14NAS PV/PVC bindings and credentials survive. Seven live sidecars match
+their exact digests and remain Ready/zero-restart; separate verify and mount-root
+samples pass. All unrelated global workload/storage/Secret/Flux/node identities
+match. Cleanup removed270,336Linux bytes, with source/data/rollback retained.
+Fresh fleet scan coverage is62/63runtime digests; BORTUS remains unknown/held.
+
+Next: coordinated snapshot-controller8.7schema/RBAC adoption (scanned, unapplied),
+Longhorn capacity/recovery/upgrade, vendor exceptions, client trust and final IAB.
+Longhorn's master/worker2 shortfalls are now4,493,698,049/1,452,827,649bytes before
+upgrade pulls. Read-only replica relocation inspection cannot cover the deficit;
+no eviction/prune/threshold or replica reduction was performed. Goal stays active.
+[Exact acceptance and remaining work](docs/SMB-SIDECAR-UPSTREAM-PATCH-20261027.md).
+
 **Latest checkpoint — October27,04:12UTC:** Flux2.10.0 is deployed through the
 new opt-in Ansible role. Seven pinned controllers are Ready/zero-restart;
 all43installation objects retain ownership and exact reviewed settings, apart

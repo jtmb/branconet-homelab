@@ -1,5 +1,35 @@
 # Maintenance output ownership and reconciliation
 
+## CSI upstream follow-up scope, October27
+
+Checkpoint cleanup completed:270,336allocated Linux bytes removed. Exact
+targets/protected hashes/inodes/FD/maps/mount checks and retained exceptions:
+`operator-control/csi-upstream-scratch-{plan,reconciliation}.json`.
+[Actual patch and reconciliation](SMB-SIDECAR-UPSTREAM-PATCH-20261027.md#evidence-and-reconciliation).
+Three raw scan reports, exact executed/failed source and receipts, original
+native/data/rollback evidence remain. No node data or images were removed.
+New encrypted metadata:2,233,076bytes,
+SHA256`c7fa2d15b4c2e5a9e98544c993bd930c039d2b3e5c3dc1ec5ad7a931e7571611`.
+All members and full NAS read-back authentication passed; existing archives and
+scanner DBs are referenced, not copied. Exact local/NAS receipts use the
+`csi-upstream-metadata`prefix under`operator-control`.
+
+Same chat owner and single authorized F-backed root/physical UUID below.
+New unique metadata/registry/scan inputs remain in the existing
+`platform-upstream-review-20261027`, `security-review-20261026` and
+`operator-control` directories. Generated paths are
+`apps-platform-csi-upstream-current-r4-*`, scanner `cache-r4/fanal`, `tmp`, `home`,
+`platform-upstream-review-20261027/smb-sidecar-upgrade` receipts, and the reused
+`flux-ansible-scratch/{home,local,tmp,cp}`. The new
+`control-source/csi-upstream-20261027` holds compact source/lock/proof inputs only,
+not dependency/build copies. Scanner scratch regenerates from the retained exact
+three upstream digest/tool/feed scan commands; Ansible scratch regenerates from
+`run-csi-sidecar-ansible.py`. Completed apply receipts/markers must never be replayed.
+Protect original Helm/chart/compatibility source, every native binding and NAS
+dataset, original image/rollback sources, scans/failures and encrypted recovery.
+No node image/cache/data deletion is selected by the read-only capacity inventory.
+Reconcile inactive scratch at the next checkpoint; no build/dependency install.
+
 ## Flux upstream operation ownership, October27
 
 Completed operation reconciliation:30,310,400allocated Linux bytes removed from

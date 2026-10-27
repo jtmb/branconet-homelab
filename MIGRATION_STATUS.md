@@ -1,5 +1,19 @@
 # Migration and maintenance status
 
+**Latest checkpoint — October27,04:43UTC:** the SMB sidecar patch is deployed
+and separately verified. All14NAS bindings/credentials and12Helm resource UIDs
+remain; seven new sidecars are Ready with exact IDs and zero restarts. Global
+native Secrets, PVC/PVs, Flux and unrelated workloads match. Cleanup removed
+270,336Linux bytes, retaining all unique source/data/recovery/failure evidence.
+Fresh exact fleet coverage is62/63digests; BORTUS's held cached-image gap and
+FlareSolverr's known-exploited Chromium finding remain explicit.
+
+Snapshot-controller8.7is scanned but unapplied pending coordinated schemas/RBAC.
+Longhorn still needs safe capacity and recovery prerequisites; replica relocation
+alone cannot cover the measured shortfall. Client trust/final IAB and vendor
+exception reconciliation remain open. The full goal stays active.
+[Exact sidecar acceptance, capacity evidence and remaining work](docs/SMB-SIDECAR-UPSTREAM-PATCH-20261027.md).
+
 **Latest checkpoint — October27,04:12UTC:** Flux2.10.0 is deployed and accepted.
 Seven controllers are Ready/zero-restart, with exact image IDs; all protected
 application, native Secret, claim/PV, Flux-specification and node identities match.
