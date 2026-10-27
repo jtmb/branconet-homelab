@@ -1268,3 +1268,44 @@ passed. Exact source/destination/key-backup reuse receipts:
 `operator-control/owned-qbit-metadata-receipt.json`,
 `smb-owned-qbit-metadata-copy-status.json`. No prior cold ciphertext was duplicated
 inside the archive; original application backups remain protected.
+
+## October27 owned personal-site checkpoint
+
+Owner `01a12045-bf7e-73b3-8557-752d17c72ffd`, same authorized output root and
+physical F: ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`. Stage ownership,
+source/budget/regeneration/protected evidence was recorded before builds in
+`owned-jtmb-dev-release-20261027/stage-ownership.json` and its two pre-build
+source/space receipts. Every source/asset/lock/config/publisher change is in the
+owned jtmb/jtmb-dev repository; its original history remains. No host npm/cache/
+node_modules was created and no user runtime AppData setting changed.
+
+Exact removed paths and measured allocation:
+
+- `jtmb-dev-03fbf34a4bb9-6ec7802cfc1c/{state,context,client,socket}`:31567872B.
+- `jtmb-dev-5989a1491415-eaf4de0de16c/{state,context,client,socket}`:31461376B.
+- Terminal publisher stages `cac3f15c8e474df785adc85e902b5440` and
+  `84373e62cd4442cfaead5f941e548ce7`, only exact generated source/tool/empty scratch
+  copies:355409920B /1580paths. Minimal validation/manifests and primary Git remain.
+- Completed scan's `security-review-20261026/cache/fanal/fanal.db` and empty
+  `cache/fanal`, `tmp`, `home`:184320B /4paths.
+- Total418623488allocated Linux bytes; no Windows recovery inferred. Full
+  ownership/creator/regeneration/source/hash/inode/FD/maps/mount/container
+  reconciliation receipts are `operator-control/owned-jtmb-{03fbf34-build,
+  5989a14-build,publisher,review}-scratch-reconciliation.json`.
+
+First guard retained both builder target sets on observed Nginx UID101 empty
+cache directories/OverlayFS0/0 whiteouts. Exact creator metadata/source and all
+other original safety checks were reconciled before deletion; the failed source
+and `owned-jtmb-build-first-guard-retained.json` remain. No rejected-policy target
+was deleted. All original source/locks, published required runtime, old rollback
+image, superseded candidate source/config/reason and unique receipts remain.
+Unresolved `operator-control/tmp/system-commandline-sentinel-files` and its parent
+remain for the already recorded creator/regeneration/Windows-handle proof gap.
+
+Combined encrypted metadata:3707988B,
+SHA256`036351dace64029cb4c3f2a8374d7fd0639ce2e354fe6bb841d9be33a1f9d53f`;
+every member and full NAS read-back authentication passed. Exact local/NAS/key
+backup reuse receipts: `operator-control/owned-jtmb-metadata-receipt.json` and
+`smb-owned-jtmb-metadata-copy-status.json`. No original was deleted or prior cold
+ciphertext copied inside the checkpoint. Source/root observer manifests remain
+under `control-source/owned-jtmb-20261027` and the acceptance evidence root.

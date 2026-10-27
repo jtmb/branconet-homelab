@@ -36,8 +36,8 @@ snapshots, source hashes and Ansible logs are under
 root. Empty controller home/temp directories were removed after process/FD/map/
 mount checks; source, logs and receipts remain. No node runtime data was deleted.
 Fresh cluster verification at00:39UTC passed three Ready/no-pressure nodes,
-57Bound claims, all30HelmReleases, all Kustomizations and all43attached healthy
-Longhorn volumes. This host checkpoint does not close remaining platform/image,
+57Bound claims, all30HelmReleases, all Kustomizations,27attached healthy
+Longhorn volumes and16detached (43total). This host checkpoint does not close remaining platform/image,
 client-trust or final browser acceptance work.
 
 Combined checkpoint recovery metadata:2540340bytes,

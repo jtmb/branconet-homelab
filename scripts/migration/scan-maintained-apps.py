@@ -50,7 +50,7 @@ def save(path, value):
 
 def main():
     os.umask(0o077)
-    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3', 'mealie-current-r3', 'tautulli-current-r3', 'tautulli-linuxserver-current-r3', 'vaultwarden-current-r3', 'pihole-current-r3', 'qbittorrent-current-r3', 'threadfin-current-r3', 'ruckusdb-current-r3', 'wordpress-current-r3', 'coredns-current-r3', 'plex-current-r3', 'owned-qbit-current-r3'], 'finite_scan_generation')
+    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3', 'mealie-current-r3', 'tautulli-current-r3', 'tautulli-linuxserver-current-r3', 'vaultwarden-current-r3', 'pihole-current-r3', 'qbittorrent-current-r3', 'threadfin-current-r3', 'ruckusdb-current-r3', 'wordpress-current-r3', 'coredns-current-r3', 'plex-current-r3', 'owned-qbit-current-r3', 'owned-jtmb-current-r3'], 'finite_scan_generation')
     generation = sys.argv[1]
     revalidated = generation != 'homepage-jackett'
     cg = Path('/proc/self/cgroup').read_text().strip().removeprefix('0::')
@@ -79,7 +79,10 @@ def main():
     updated = datetime.datetime.fromisoformat(proof['vulnerabilityDB']['UpdatedAt'].replace('Z', '+00:00'))
     need(0 <= (datetime.datetime.now(datetime.timezone.utc) - updated).total_seconds() <= 86400, 'fresh_database')
     kev = {r['cveID'] for r in json.loads((OUT / ('cisa-kev-r3.json' if revalidated else 'cisa-kev.json')).read_bytes())['vulnerabilities']}
-    if generation == 'owned-qbit-current-r3':
+    if generation == 'owned-jtmb-current-r3':
+        candidates = json.loads((OUT / 'owned-jtmb-current-candidates.json').read_bytes())['images']
+        need([r['reference'] for r in candidates] == ['docker.io/jtmb92/jtmb-dev:git-5989a1491415532244ef9c67635e7c72437387ab@sha256:ac5cdc8d7e1bb7d6a5bcea08d4e379ea63f2ec1e7ae93a267258a9c97593d830'], 'finite_owned_source_site_target')
+    elif generation == 'owned-qbit-current-r3':
         candidates = json.loads((OUT / 'owned-qbit-current-candidates.json').read_bytes())['images']
         need([r['reference'] for r in candidates] == ['docker.io/jtmb92/qbit-monitor:git-f365b49bad13eab9d5e7083ecebeb4db2cc9fa69@sha256:397c69f6b04bd0ae328c48c3f492795d73fbbc2e19da10b5ae3a08619914b1fe'], 'finite_owned_source_monitor_target')
     elif generation == 'plex-current-r3':

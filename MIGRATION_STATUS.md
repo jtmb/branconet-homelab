@@ -1,5 +1,25 @@
 # Migration and maintenance status
 
+**Latest checkpoint - October27, 01:15 UTC:** the personal site now runs from
+its owned repository/existing Docker Hub route, on maintained Nginx1.30.6 and
+jQuery4.0.0. Original site content and unrelated runtime/native Secret settings
+are preserved. Production and a distinct Flux restart each passed84three-node
+HTTP/trusted-TLS checks. Its22-package scan reported no CVEs. Private
+main/validated/live is `1b66531bffd2fd7024a46d5e8686505d6ec8f137`.
+
+Three nodes are Ready without pressure;57claims Bound, all30HelmReleases and
+all Kustomizations Ready. There are43Longhorn volumes total:27attached healthy,
+16detached. Earlier wording calling all43attached is corrected against the
+stored snapshots. Four old failed diagnostic Pods remain intentionally preserved.
+
+Cleanup removed418623488 allocated Linux bytes. Source/rollback/failure evidence,
+runtime and minimal receipts remain; recovery metadata passed full authenticated
+NAS read-back. Ruckus's owned release, remaining platform security, Windows client
+trust and final IAB remain open. BORTUS's production hold remains separate.
+The full goal stays active; this checkpoint is not full acceptance.
+
+[Exact source, dependency fixes, runtime acceptance, cleanup and recovery](docs/OWNED-PERSONAL-SITE-20261027.md).
+
 **Latest checkpoint - October27, 00:42 UTC:** the qBittorrent monitor now uses
 its owned repository and existing Docker Hub publication route. Exact source,
 remote digest/labels, all nine accepted script hashes, original native Secrets,
@@ -11,8 +31,8 @@ Worker1's available Brotli security fix is applied through the new finite Ansibl
 role. Actual rerun changed no installed packages or running services. All three
 hosts report five Ubuntu Pro ESM Apps updates pending attachment; those remain
 explicit exceptions. The fresh live cluster has three Ready/no-pressure nodes,
-57Bound claims, all30HelmReleases/Kustomizations Ready and43healthy attached
-Longhorn volumes. Four old failed diagnostic Pods remain preserved.
+57Bound claims, all30HelmReleases/Kustomizations Ready,27healthy attached
+Longhorn volumes and16detached volumes (43total). Four old failed diagnostic Pods remain preserved.
 
 Cleanup removed391942144 allocated Linux bytes; original source, runtime,
 backups/failure evidence and minimal receipts remain. Recovery metadata passed

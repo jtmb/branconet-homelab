@@ -76,8 +76,8 @@ and complete inactive Windows-handle proof remain unresolved. Its parent is not
 empty. No denied target, old failed cache, shared image or volume was pruned.
 
 At00:39UTC all three nodes were Ready without pressure, all57claims Bound,
-all30HelmReleases and all Kustomizations Ready, all43attached Longhorn volumes
-healthy. Four older failed diagnostic Pods remain intentionally preserved.
+all30HelmReleases and all Kustomizations Ready,27attached Longhorn volumes
+healthy and16detached (43total). Four older failed diagnostic Pods remain intentionally preserved.
 Final browser acceptance, remaining owned Ruckus/site releases, remaining platform
 security and Windows client trust remain open. BORTUS production remains held by
 its separate owner; the full goal is active.
