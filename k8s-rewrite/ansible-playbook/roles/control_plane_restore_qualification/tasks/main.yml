@@ -1,0 +1,21 @@
+---
+- name: Require the existing cluster owner and deliberate offline operation
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - ansible_host == '192.168.0.4'
+      - control_plane_restore_qualification_apply | bool
+    fail_msg: This opt-in operation requires the prepared exact NAS proof and public tool; it does not restore production.
+
+- name: Run the offline restore as an unprivileged bounded private-network job
+  ansible.builtin.command:
+    argv: "{{ ['/usr/bin/systemd-run', '--quiet', '--wait', '--pipe', '--collect', '--uid=brajam', '--property=MemoryMax=536870912', '--property=MemorySwapMax=0', '--property=CPUQuota=100%', '--property=TasksMax=64', '--property=UMask=0077', '--property=PrivateNetwork=true', '--property=NoNewPrivileges=true', '--property=ProtectSystem=strict', '--property=ReadWritePaths=/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification', '/usr/bin/env', 'TMPDIR=/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification', 'TMP=/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification', 'TEMP=/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification', '/usr/bin/python3', '-B', role_path + '/files/restore.py'] + (['--verify-existing'] if control_plane_restore_qualification_verify_existing | bool else []) }}"
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  no_log: true
+  when: not ansible_check_mode
+
+- name: Report the limited acceptance scope
+  ansible.builtin.debug:
+    msg: Offline snapshot restoration and key-history verification only. No server, production restore, current Secret-value comparison or application-volume recovery is claimed. Reconcile scratch after terminal job verification.

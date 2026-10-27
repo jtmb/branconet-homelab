@@ -1,5 +1,26 @@
 # Cluster maintenance and application migration plan
 
+**Latest recovery checkpoint — October27,11:31UTC:** one native Longhorn
+configuration-only SystemBackup is Ready on the existing NAS target. Its 79,255-
+byte ZIP passed two full readbacks, native checksum, CRC and all 20 YAML parses;
+all 44 Longhorn volume UIDs and PV/PVC chains are included. The dated protected
+control-plane backup was independently restored offline. Native key-history
+hash, revision and all 2,568 keys match; all 46 configuration files and native/
+volume encryption keys passed authenticated verification without writing key
+files to disk. This is not a whole-cluster or application-volume restoration.
+Reconciled 305,160,192 controller Linux scratch bytes; original archives, source
+and failure evidence remain. New repeatable operations are in Ansible.
+[Exact recovery proof and limits](docs/LONGHORN-RECOVERY-QUALIFICATION-20261027.md).
+
+All 3 nodes are Ready, 58 claims Bound and existing workloads available.
+Ingenium's owner transferred its data to worker1/worker2; worker2's Longhorn disk
+now reports 4,283,982,849 bytes below its unchanged scheduling minimum, while
+Kubernetes has no node pressure and attached volumes remain healthy. Preserve
+the separate eviction/scheduling limits. No driver upgrade, pull or volume
+change during its initial application cutover. Further proven-unused cleanup,
+fresh pre-upgrade/app/detached recovery, Longhorn upgrade, vendor/host exceptions
+and final normal IAB/whole-goal acceptance remain. The full goal stays active.
+
 **Current checkpoint — October27,10:21UTC:** delegated node cleanup recovered
 **11,884,933,120 allocated Linux bytes**: worker1 duplicate tools 904,888,320;
 worker2 generated Plex thumbnails 3,243,261,952; master verified media duplicates

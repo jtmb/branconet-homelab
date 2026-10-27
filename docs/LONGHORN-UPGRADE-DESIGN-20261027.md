@@ -50,13 +50,19 @@ temporary path. Both attempts reconciled their empty scratch directories.
 
 Concurrent Ingenium staging retains priority for the qualified headroom; no
 candidate image was pulled and no volume was attached by this preflight.
-The 71,908-byte encrypted preflight metadata packet passed every-member local
-verification and complete NAS readback/authentication. SHA-256:
-`f98edacb7744b58e2c0882ad2958f16e76afa18d3de5420f2fa1053836ba77ae`.
-It includes only this inspection's metadata and launch outcomes/sources;
-earlier recovery packets and application data are not duplicated.
+Correction at 11:39 UTC: the earlier 71,908-byte packet authenticated but selected
+older media receipts because a newline-sensitive source replacement did not
+match. It is retained as failure evidence and is not preflight recovery proof.
+The corrected 471,364-byte packet explicitly verifies the required preflight,
+native-bundle, offline-restore and cleanup members; all 51 members and full NAS
+authentication passed. SHA-256:
+`2acc290180bad5ecb014147d9c4e60265fc46ffd7dd928a517cf62ca178bfe34`.
+No application payload or parent ciphertext was duplicated into the correction.
 The [sanitized receipt](../evidence/longhorn-upgrade-preflight-20261027.json)
 preserves exact observed backup gaps and explicitly records `upgradeReady=false`.
+
+The later native configuration backup and offline control-plane restore close
+part of those gaps; see [qualified recovery evidence and remaining limits](LONGHORN-RECOVERY-QUALIFICATION-20261027.md).
 
 ## Upgrade design
 

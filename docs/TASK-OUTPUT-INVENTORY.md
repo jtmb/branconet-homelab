@@ -1,5 +1,82 @@
 # Maintenance output ownership and reconciliation
 
+## Offline control-plane recovery qualification, October27
+
+Owner remains this migration chat. Use only
+`platform-upstream-review-20261027/etcd-restore-qualification` under the existing
+F-backed ext4 UUID. Retain the source/manifest/provenance and minimal receipts;
+protected inputs are the existing 76,921,380-byte authenticated NAS control-plane
+ciphertext, its original receipts, current cluster/source/keys and all runtime
+data. No new backup, application writer stop or production data write is implied.
+
+The planned disposable paths are the exact public `tools/etcdutl` binary from
+the already deployed registry.k8s.io/etcd3.7.3 immutable image, `scratch/snapshot.db`
+and `scratch/restored` inside this one directory. The reviewed follow-up uses
+`scratch/authenticated-source.db` for a freshly authenticated probe, retaining
+the first source and failed comparison evidence. Total stage remains bounded to
+512 MiB. Native `hashkv` opens a backend and can update disposable DB metadata;
+never run it against an original protected snapshot. Set all temporary variables
+to its scratch path. Require C: and the destination to retain 15 GiB after a
+bounded 512 MiB stage. Authenticate the complete source ciphertext before any
+restore result is credited. No secret configuration/key file may be extracted
+to disk; validate them in memory only. Restore only the isolated local snapshot
+into the exact new scratch directory, with no network listener or kubeconfig
+change. After the actual offline restore/status checks, reconcile each generated
+path with creator, regeneration, source-preservation and complete inactive
+references before removal. Failed or incomplete qualification retains its exact
+scratch/evidence for review; never stop another workload to force cleanup.
+
+Execution/reconciliation: offline restoration and independent native logical
+history comparison passed. The old whole-DB-hash comparison and subsequent
+probe-metadata mismatch remain as exact failed sources/receipts. All three
+private-network jobs are terminal/collected. The first and independently
+regenerated probe bytes matched exactly after the native hash operation.
+Complete inactive-reference, identity, source/lockfile and regenerator checks
+then qualified 12 generated paths under `etcd-restore-qualification/tools` and
+`etcd-restore-qualification/scratch`; **305,160,192 allocated controller Linux
+bytes removed**, with no retained scratch exception. Exact individual paths,
+allocations and identities are in `cleanup-{plan,reconciliation}.json` there.
+The original NAS/local encrypted control-plane archive and all minimal unique
+failure/source/provenance evidence remain protected outside those targets.
+
+Native configuration backup is required runtime recovery state, not disposable
+scratch: existing NAS `container_backups/k8s-migration-20261009/longhorn/backupstore/
+system-backups/v1.12.1/preupgrade-20261027-d9c7f2b7/{system-backup.zip,system-backup.cfg}`,
+79,255/494 bytes. No local payload copies were created. The controller
+`longhorn-system-backup` directory retains prepare/intent/submission/observation,
+NAS integrity/content and final health receipts. Four Ansible phase runs removed
+their empty `longhorn-system-backup-ansible-scratch/{local,remote,home}` and parent
+directories; exact allocated bytes are in their phase outcomes, and are transient
+created/reconciled allocations, not net recovery. The shared syntax-only check
+removed three empty `recovery-qualification-syntax-scratch` directories; allocation
+was not captured and is excluded from measured byte claims. All required frozen
+operators and initial inspector failures remain in `operator-control`.
+
+## Configuration-only Longhorn system backup, October27
+
+Owner is this migration chat. Reuse the same F-backed root/UUID and existing
+NAS target. New source is `roles/longhorn_system_backup`; controller plan,
+submission and observations use exactly
+`platform-upstream-review-20261027/longhorn-system-backup`. Launcher/settings and
+Ansible phase outcomes remain in `operator-control` / the same review directory.
+Regenerate with `playbooks/longhorn-system-backup.yml`, a new unique backup name,
+and the preserved prepare/create/observe phases; never replay create after its
+intent receipt exists. No local builds, downloads, dependencies or caches occur.
+Use the existing short inherited-F-directory descriptor for Ansible RPC and the
+real scoped path for command modules. Reconcile
+`node-cleanup-20261027/longhorn-system-backup-ansible-scratch` after each phase.
+
+The only native resource created is one SystemBackup with volume backup policy
+`disabled`. Require no backing images, no concurrent system backup, available
+original NAS target, existing V1/two-replica health and 64 MiB metadata budget
+above the measured image filesystem floor before submission. Longhorn's existing
+manager writes its normal temporary configuration directory/archive inside its
+runtime `/tmp/<exact-backup-name>{,.zip}` and cleans those transient files after
+completion. The final NAS bundle is required recovery state. No application
+data, models, volume snapshots, attachments, settings or global scheduling are
+changed. Native Secrets/encryption-key recovery remain a separate protected
+control-plane backup requirement; they are not included in this native bundle.
+
 ## Longhorn read-only preflight, October27
 
 Owner remains this migration chat; physical storage remains the existing
@@ -125,12 +202,27 @@ launchers, both outcome receipts, and `longhorn-preflight/{live,receipt}.json` a
 unique source/failure/recovery evidence. No dependency tree, image or runtime
 data was created by the operation.
 
-Required preflight metadata archive retained in
+Initial preflight metadata archive retained in
 `operator-control/longhorn-preflight-recovery-metadata.tar.age`: 71,908 bytes,
 SHA-256 `f98edacb7744b58e2c0882ad2958f16e76afa18d3de5420f2fa1053836ba77ae`.
-Its content-addressed copy in the approved NAS store passed full readback and
-authentication. Source/manifest/copy receipts remain required recovery evidence;
-neither earlier packet payloads nor application data were copied into it.
+Its content-addressed NAS copy authenticated, but later member inspection found
+that it selected old media receipts rather than preflight records. Do not count
+it as preflight recovery. Preserve the exact archive/manifest/operator as failed
+selection evidence. The later local-only
+`operator-control/longhorn-recovery-qualification-metadata.tar.age` (71,908 bytes,
+SHA-256 `a8a33ea911afcd12c2cee2d6d37e67d3f279b0f02b736be217eedb3a3f61a1b6`)
+has the same selection fault and was not uploaded. Both are retained exceptions
+because they document this packaging failure, not qualified recovery payloads.
+
+Corrected required archive:
+`operator-control/longhorn-recovery-qualified-r2-metadata.tar.age`, 471,364 bytes,
+SHA-256 `2acc290180bad5ecb014147d9c4e60265fc46ffd7dd928a517cf62ca178bfe34`.
+All 51 members and the full NAS readback/authentication passed. Required-member
+guards bind actual `longhorn-preflight/live.json`, native bundle qualification,
+offline restore result and scratch reconciliation. It contains their unique
+source/failure/receipt evidence; no application payload, earlier ciphertext or
+older media payload was included. Retain manifest, corrected source and copy
+status in `operator-control`. This supersedes earlier preflight-packet claims.
 
 ## Snapshot-controller upstream operation, October27
 

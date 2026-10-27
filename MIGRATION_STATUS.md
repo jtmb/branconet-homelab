@@ -1,5 +1,27 @@
 # Migration and maintenance status
 
+**October27,11:31UTC recovery checkpoint:** native Longhorn configuration backup
+is Ready on the original NAS target. All 44 volume/PV/PVC chains are included;
+complete readbacks/checksums/CRC and 20 parsed YAML documents pass. The dated
+control-plane ciphertext also passed fresh NAS readback, full age authentication
+and an actual isolated offline restore. The key-history hash, revision and all
+2,568 keys match; all 46 original configuration files and required encryption
+keys were checked in memory. No production restore, server start or application-
+volume recovery is claimed. Both operations now have opt-in Ansible entry points.
+Generated controller scratch/tool cleanup removed 305,160,192 allocated Linux
+bytes; source, original archives and unique failed evidence remain.
+[Exact acceptance, recovery inputs and limits](docs/LONGHORN-RECOVERY-QUALIFICATION-20261027.md).
+
+Fresh cluster check: 3 Ready nodes without pressure, 58 Bound claims, all existing
+deployments/daemonsets available and attached volumes healthy. Ingenium's owner
+has copied data to the worker pair. Worker2 now reports Longhorn DiskPressure,
+4,283,982,849 bytes below its unchanged scheduling minimum; this differs from
+Kubernetes eviction pressure. No thresholds or replicas were reduced. Further
+qualified cleanup must improve that headroom. Hold driver upgrades, new pulls
+and volume changes during its initial app cutover. Longhorn remains 1.12.1;
+fresh pre-upgrade/app/detached recovery, upgrade work, vendor/host exceptions,
+final Seerr/YTPTube IAB and complete-goal acceptance remain open. Goal active.
+
 **October27,10:21UTC checkpoint:** node cleanup is complete for the qualified
 selection, recovering **11,884,933,120 allocated Linux node bytes** across four
 operations. Tools/cache: 4,148,150,272 bytes; verified master media duplicates:
