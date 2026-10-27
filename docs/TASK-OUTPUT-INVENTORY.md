@@ -1225,3 +1225,46 @@ No user PVC, application Secret, media, source repository, model or image was
 pruned. Removal of10obsolete proxy resources and2new-unused leaf objects was
 UID/version fenced, separately archived and authenticated; it is not disk-space
 recovery and does not delete old Vault/Portainer data.
+
+## October27 owned-monitor and host-security checkpoint
+
+Owner `01a12045-bf7e-73b3-8557-752d17c72ffd`; same authorized output root
+`/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025`,
+F: native ext4 UUID `3c792469-ea0e-4a2c-98e8-1185b141607b`. No new drive/root.
+Pre-build ownership/budget/source/physical-space proof:
+`operator-control/owned-publisher-stage-ownership-20261027.json` and
+`owned-qbit-source-publication-preflight-20261027.json`; actual bounded capacity
+samples remain in the published builder receipt. The build estimate512MiB and
+hard2GiB ceiling preserved15GiB on C: and both F: filesystems; no npm install ran
+on the host. The image was built/published directly through the existing Docker
+Hub route from committed `jtmb/qbit-monitor` source, not a saved-image deployment.
+
+Exact cleanup/regeneration/protected-source/process/inode/receipt inventories:
+`operator-control/owned-qbit-build-scratch-reconciliation.json`,
+`owned-qbit-publisher-scratch-reconciliation.json`,
+`owned-qbit-review-scratch-reconciliation.json`.
+
+- Removed36,343,808allocated Linux bytes: the terminal source-bound builder's
+  `qbit-monitor-f365b49bad13-c7a940d1ed4e/{state,context,client,socket}`.
+- Removed355,409,920bytes /1580paths: exact generated source/tool/empty scratch
+  copies in successful local publisher stages `98dd27237a97438a9b62631993fe62c1`
+  and `d0dd5e444fb84d949b96114bf882de9a`. Validation/manifests/primary Git retained.
+- Removed188,416bytes /6paths: successful public-image scan's regenerable fanal
+  DB and empty scanner/controller Ansible directories.
+- Total391,942,144allocated Linux bytes, not Windows disk recovery. No shared
+  image/volume, old failed cache, source checkout or runtime data was removed.
+- First builder cleanup guard retained all targets on a native-command match;
+  preserved `owned-qbit-build-scratch-first-check-retained.json`. A fresh full
+  same-target check after the launcher exited passed; no workload was stopped.
+- Retain exact source repositories/commits/lockfiles, minimal publication/resource/
+  registry/scan/Ansible receipts, failure evidence and all prior backups/runtime.
+  Retain unresolved `operator-control/tmp/system-commandline-sentinel-files`
+  (creator/regeneration and complete Windows handle proof missing); parent stays.
+
+The minimal combined encrypted recovery archive is2,540,340bytes,
+SHA256`515f5d58d22946cbd1de2087eb6486baa1c8e4053bd17c6d2f96a98c6a4756f0`.
+Local every-member verification and full NAS ciphertext read-back authentication
+passed. Exact source/destination/key-backup reuse receipts:
+`operator-control/owned-qbit-metadata-receipt.json`,
+`smb-owned-qbit-metadata-copy-status.json`. No prior cold ciphertext was duplicated
+inside the archive; original application backups remain protected.

@@ -1,0 +1,11 @@
+---
+- name: Apply the exact available USN-8956-1 worker1 library fix
+  hosts: workernode1
+  serial: 1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+  roles:
+    - host_brotli_security_patch

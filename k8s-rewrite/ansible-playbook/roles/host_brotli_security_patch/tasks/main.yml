@@ -1,0 +1,81 @@
+---
+- name: Explain disabled default
+  ansible.builtin.debug:
+    msg: USN-8956-1 worker1-only Brotli fix is opt-in; no drain reboot or runtime restart.
+  when: not host_brotli_security_patch_enabled | bool or ansible_check_mode
+
+- name: Execute only the finite enabled security patch
+  when: host_brotli_security_patch_enabled | bool and not ansible_check_mode
+  block:
+    - name: Require exact verified host and protected receipt destination
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'workernode1'
+          - ansible_host == '192.168.0.6'
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - host_brotli_security_patch_receipt_dir is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/host-brotli-security-patch-[A-Za-z0-9_-]+$')
+    - name: Verify exact version security origin transaction and runtime identity
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/guard.py') }}", preflight]
+      changed_when: false
+      register: brotli_before
+    - name: Preserve preflight before package mutation
+      ansible.builtin.copy:
+        content: "{{ brotli_before.stdout | from_json | to_nice_json }}\n"
+        dest: "{{ host_brotli_security_patch_receipt_dir }}/{{ host_brotli_security_patch_phase }}-before.json"
+        mode: '0600'
+        force: false
+      delegate_to: localhost
+      become: false
+    - name: Apply only the signed Jammy security package without starting services
+      ansible.builtin.apt:
+        name: libbrotli1=1.0.9-2ubuntu0.1
+        state: present
+        default_release: jammy-security
+        update_cache: false
+        fail_on_autoremove: true
+        allow_unauthenticated: false
+        allow_downgrade: false
+        force: false
+        dpkg_options: force-confold
+        policy_rc_d: 101
+        lock_timeout: 60
+      environment:
+        NEEDRESTART_MODE: l
+        DEBIAN_FRONTEND: noninteractive
+      when: host_brotli_security_patch_apply | bool
+      register: brotli_apt
+    - name: Capture packages and services after the bounded transaction
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/guard.py') }}", snapshot]
+      changed_when: false
+      register: brotli_after
+      when: host_brotli_security_patch_apply | bool
+    - name: Preserve actual after snapshot
+      ansible.builtin.copy:
+        content: "{{ brotli_after.stdout | from_json | to_nice_json }}\n"
+        dest: "{{ host_brotli_security_patch_receipt_dir }}/{{ host_brotli_security_patch_phase }}-after.json"
+        mode: '0600'
+        force: false
+      delegate_to: localhost
+      become: false
+      when: host_brotli_security_patch_apply | bool
+    - name: Require the exact package-only change and service continuity
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/guard.py') }}", verify]
+        stdin: "{{ {'before': brotli_before.stdout | from_json, 'after': brotli_after.stdout | from_json} | to_json }}"
+      delegate_to: localhost
+      become: false
+      changed_when: false
+      register: brotli_verified
+      when: host_brotli_security_patch_apply | bool
+    - name: Preserve acceptance result
+      ansible.builtin.copy:
+        content: "{{ brotli_verified.stdout | from_json | to_nice_json }}\n"
+        dest: "{{ host_brotli_security_patch_receipt_dir }}/{{ host_brotli_security_patch_phase }}-acceptance.json"
+        mode: '0600'
+        force: false
+      delegate_to: localhost
+      become: false
+      when: host_brotli_security_patch_apply | bool

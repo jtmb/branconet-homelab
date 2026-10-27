@@ -1,5 +1,28 @@
 # Cluster maintenance and application migration plan
 
+**Latest checkpoint - October27, 00:42 UTC:** the qBittorrent monitor now uses
+its owned repository and existing Docker Hub publication route. Exact source,
+remote digest/labels, all nine accepted script hashes, original native Secrets,
+storage,12653notification bytes, real queue/VPN checks and a distinct Flux restart
+passed. Its34-package scan reported no CVEs. Private main/validated/live is
+`76d06d618bda73384ccb34e76aaf411db9b53192`; Actions was not used.
+
+Worker1's available Brotli security fix is applied through the new finite Ansible
+role. Actual rerun changed no installed packages or running services. All three
+hosts report five Ubuntu Pro ESM Apps updates pending attachment; those remain
+explicit exceptions. The fresh live cluster has three Ready/no-pressure nodes,
+57Bound claims, all30HelmReleases/Kustomizations Ready and43healthy attached
+Longhorn volumes. Four old failed diagnostic Pods remain preserved.
+
+Cleanup removed391942144 allocated Linux bytes; original source, runtime,
+backups/failure evidence and minimal receipts remain. Recovery metadata passed
+full authenticated NAS read-back. Two owned releases (Ruckus and jtmb-dev),
+remaining platform security, Windows client trust and final IAB remain open.
+BORTUS's production hold remains with its separate owner. The full goal is active.
+
+[Owned monitor, exact acceptance and cleanup](docs/OWNED-QBIT-MONITOR-20261027.md).
+[Applied host fix and entitlement exceptions](docs/HOST-BROTLI-SECURITY-PATCH-20261027.md).
+
 **Latest checkpoint - October27, 00:06 UTC:** server TLS now passes for all20
 active migration-owned LAN hosts (60node/hostname checks), with18public checks
 also passing. The stale Vault CICD/Portainer proxies and their unused generated
