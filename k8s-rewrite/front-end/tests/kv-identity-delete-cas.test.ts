@@ -30,6 +30,8 @@ function evaluate(text: string, filename: string, dependencies: Row, globals: Ro
   runInNewContext(transpile(text, filename), {
     module: compiledModule, exports: compiledModule.exports,
     require: (name: string) => {
+      // Canonical inert dependency name; application uses the supported v3 export.
+      name = name === "zod/v3" ? "zod" : name;
       assert(Object.hasOwn(dependencies, name), `Unselected dependency: ${name}`);
       return dependencies[name];
     },
@@ -43,7 +45,8 @@ const revisionModule = evaluate(source("src/lib/kv-identity-revision.ts"), "kv-i
   "node:crypto": { createHash }, "./kv-contract": contract,
 });
 const model = evaluate(source("src/components/secrets/kv-administration-model.ts"), "kv-administration-model.ts", {}, { AbortController });
-const schemas = evaluate(source("src/lib/kv-schemas.ts"), "kv-schemas.ts", { zod: { z }, "./kv-contract": contract });
+const bounded = evaluate(source("src/lib/bounded-array.ts"), "bounded-array.ts", { zod: { z } });
+const schemas = evaluate(source("src/lib/kv-schemas.ts"), "kv-schemas.ts", { zod: { z }, "./kv-contract": contract, "./bounded-array": bounded });
 const { KvRegistry } = evaluate(source("src/lib/kv-registry.ts"), "kv-registry.ts", {
   "./kv-contract": contract, "./cluster-secrets": cluster, "./kv-identity-revision": revisionModule,
   "./kv-credentials": { issueCredential: () => ({ id: "public-issued", credential: "NONCREDENTIAL-PUBLIC-ISSUE", hash: "PUBLIC-HASH-DOUBLE" }), hashMatches: forbidden, presentedCredential: forbidden },

@@ -49,7 +49,9 @@ function fixture(action: string = "generate") {
     "@/lib/kv-rotation-consumer": { get KubectlRotationConsumer() { step("consumer-ctor-get"); return state.consumerCtor; } },
     "@/lib/k8s": { get kubectlJSON() { step("kubectl-get"); return state.kubectl; } } };
   const m = { exports: {} as Model };
-  runInNewContext(compiled, { module: m, exports: m.exports, require: (id: string) => { assert.ok(Object.hasOwn(imports, id)); return imports[id]; } }, { filename: path, timeout: 5000 });
+  runInNewContext(compiled, { module: m, exports: m.exports, require: (id: string) => {
+      // Canonical inert dependency name; application uses the supported v3 export.
+      id = id === "zod/v3" ? "zod" : id; assert.ok(Object.hasOwn(imports, id)); return imports[id]; } }, { filename: path, timeout: 5000 });
   assert.equal(wrappers.length, 3); assert.deepEqual(trace, [] as string[]);
   const callback = wrappers[2][0];
   return { state, trace, wrappers, markers, engines, bodies, constructions, consumers, calls, registry, actor, request, params, schema, engine, consumer, body, result, fault, methods, rotation, rotationId, revision, confirmPath, Rotations, Consumer, exports: m.exports,

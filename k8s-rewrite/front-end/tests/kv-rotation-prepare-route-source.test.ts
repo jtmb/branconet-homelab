@@ -55,7 +55,9 @@ function fixture() {
   const schemas = { get rotationPrepare() { trace.push("schema"); if (state.schemaHook) state.schemaHook(); if (state.schemaFault) throw state.schemaFault; return schema; }, get rotationAction() { throw fault; } };
   const imports: Model = { "zod": inert, "@/lib/kv-contract": inert, "@/lib/kv-http": http, "@/lib/kv-rotation": rotations, "@/lib/kv-schemas": schemas, "@/lib/kv-rotation-consumer": inert, "@/lib/k8s": inert };
   const m = { exports: {} as Model };
-  runInNewContext(compiled, { module: m, exports: m.exports, require: (id: string) => { assert.ok(Object.hasOwn(imports, id)); return imports[id]; } }, { filename: path, timeout: 5000 });
+  runInNewContext(compiled, { module: m, exports: m.exports, require: (id: string) => {
+      // Canonical inert dependency name; application uses the supported v3 export.
+      id = id === "zod/v3" ? "zod" : id; assert.ok(Object.hasOwn(imports, id)); return imports[id]; } }, { filename: path, timeout: 5000 });
   assert.equal(wrappers.length, 3); assert.deepEqual(trace, [] as string[]);
   const callback = wrappers[1][0];
   return { state, trace, wrappers, markers, engines, bodies, constructions, calls, registry, actor, request, params, schema, engine, body, result, fault, method, rotation, Rotations, exports: m.exports,

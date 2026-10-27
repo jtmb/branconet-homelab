@@ -59,7 +59,9 @@ function fixture() {
     get kvEngine() { stage("engine-get"); return state.engineFn; }, get metadataCursor() { stage("cursor-get"); return state.cursorFn; }, get kvBody() { throw fault; } };
   const imports: Model = { zod: { get z() { stage("z"); return state.z; } }, "@/lib/kv-contract": { get KvError() { stage("error-get"); return state.errorCtor; } }, "@/lib/kv-http": http,
     "@/lib/kv-rotation": { get KvRotations() { stage("ctor-get"); return state.ctor; } }, "@/lib/kv-schemas": inert, "@/lib/kv-rotation-consumer": inert, "@/lib/k8s": inert };
-  const m = { exports: {} as Model }, sandbox = { module: m, exports: m.exports, require: (id: string) => { assert.ok(Object.hasOwn(imports, id)); return imports[id]; } };
+  const m = { exports: {} as Model }, sandbox = { module: m, exports: m.exports, require: (id: string) => {
+      // Canonical inert dependency name; application uses the supported v3 export.
+      id = id === "zod/v3" ? "zod" : id; assert.ok(Object.hasOwn(imports, id)); return imports[id]; } };
   Object.defineProperty(sandbox, "URL", { get() { stage("URL-get"); return state.URL; } });
   runInNewContext(compiled, sandbox, { filename: path, timeout: 5000 });
   assert.equal(wrappers.length, 3); assert.deepEqual(trace, [] as string[]);

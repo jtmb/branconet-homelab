@@ -72,6 +72,8 @@ function fixture() {
   const output = ts.transpileModule(readFileSync(file, "utf8"), { fileName: file,
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
   runInNewContext(output, { module: m, exports: m.exports, require: (name: string) => {
+      // Canonical inert dependency name; application uses the supported v3 export.
+      name = name === "zod/v3" ? "zod" : name;
     assert(Object.hasOwn(dependencies, name), `Unselected dispatcher dependency: ${name}`);
     loaded.push(name); return dependencies[name];
   } }, { filename: file, timeout: 5000 });
