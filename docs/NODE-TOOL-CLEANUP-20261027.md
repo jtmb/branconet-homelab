@@ -176,3 +176,10 @@ calculation based on the observed roughly 4.86 GB image footprint, not a measure
 future pull delta: layers might be shared. Worker1 has sufficient observed space;
 neither worker2 nor master is qualified for the proposed redundant state yet.
 No floor, reserve, admission, garbage-collection or replica setting was changed.
+
+The subsequent kernel/package inventory found only the running `5.15.0-198`
+kernel plus one installed fallback on each node: master `5.15.0-173`, worker2
+`5.15.0-157`, worker1 `5.15.0-160`. These are retained. Most other module-version
+directories are roughly 1.3 MB remnants, not additional full kernels. APT archive
+caches hold only about 10 MB /1 MB /1 MB respectively. No gigabytes of disposable
+kernel packages were identified, and no packages were removed.
