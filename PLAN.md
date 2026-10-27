@@ -1,5 +1,18 @@
 # Cluster maintenance and application migration plan
 
+**18:47 UTC checkpoint:** independently restored NAS copies qualified five old
+master journals for retirement; a separately qualified duplicate public scanner
+was retired with all 311 other audit entries preserved. Recovered 561,950,720
+allocated node bytes; cumulative qualified node cleanup is 25,476,104,192 bytes.
+All nodes, claim/volume identities, workloads and unsuspended Flux remain healthy.
+All temporary restore/Ansible scratch is reconciled. [Exact acceptance](docs/MASTER-JOURNAL-AUDIT-CLEANUP-20261027.md).
+
+The dated core-image projection now fits master's observed Longhorn floor by
+91,642,879 bytes. The complete candidate still lacks 1,412,084,737 bytes; actual
+cache/unpack, component placement, recovery coverage and owner hold remain
+separate gates. No driver, image pull, placement or volume change occurred.
+The full goal remains active with upgrade and final application/fleet acceptance.
+
 **18:32 UTC read-only recovery mapping:** all 3 nodes Ready; all 58 claim bindings
 and 44 volume identities preserved; all 28 attached volumes have two actual RW
 replicas. The 12 missing native Backup records are mapped to their exact claims,

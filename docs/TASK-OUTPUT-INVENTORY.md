@@ -1948,6 +1948,27 @@ ciphertext copied inside the checkpoint. Source/root observer manifests remain
 under `control-source/owned-jtmb-20261027` and the acceptance evidence root.
 # October 27 fresh control-plane recovery and current publisher cleanup
 
+## Later 18:47 master journal/audit checkpoint
+
+Same owner, F-backed root and physical UUID. Ownership/source/regeneration were
+recorded before both operations. [Exact paths and measured bytes](../evidence/master-journal-audit-cleanup-20261027.json):
+385,908,736 node bytes in five old journals and 176,041,984 node bytes in the
+single old public scanner and empty tool directory. All unselected journal/audit
+data, reports, inputs, source and failures remain. Retain the required
+385,988,820-byte authenticated NAS ciphertext and its existing recovery key.
+
+Reconciled 65,536 controller Linux bytes of exact empty Ansible scratch in
+`node-cleanup-20261027/master-journal-offload-20261027/*-ansible-scratch` and
+`node-cleanup-20261027/master-generated-cleanup/audit-tool-*-scratch`.
+Exact enumerated names and per-path allocation are in the ledger. Independent
+journal restore created and removed 385,880,064 scratch bytes separately; this
+is not net recovery. No local archive or raw journal remains. Late framework
+cleanup is unmeasured/not credited. Preserve 35 small source/proof/health/removal
+files, 434,760 logical bytes, under those existing subdirectories, hash-bound by
+`master-journal-offload-20261027/checkpoint-inventory.json`. Do not duplicate old
+cumulative evidence. The prior operational recovery-tool and ownership/handle
+exceptions remain for their stated reasons. No Windows recovery is inferred.
+
 Later 18:32 read-only coverage refresh retains five small files: the exact
 executed preflight source and its ownership record under `operator-control`,
 and `live.json`, `receipt.json`, `coverage-summary.json` under

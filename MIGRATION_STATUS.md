@@ -1,5 +1,19 @@
 # Migration and maintenance status
 
+**18:47 UTC:** recovered another 561,950,720 allocated master Linux bytes after
+NAS preservation and independent journal restore, plus full qualification of one
+old public scanner duplicate. Cumulative qualified node cleanup is
+25,476,104,192 bytes. All 58 claim bindings and 44 volume identities survive;
+nodes/workloads/unsuspended Flux are Ready. Restore and Ansible scratch is
+reconciled; all original source, reports, failures and required NAS archives
+remain. [Exact paths, recovery and limitations](docs/MASTER-JOURNAL-AUDIT-CLEANUP-20261027.md).
+
+The earlier core-image projection clears master's observed Longhorn floor by
+91,642,879 bytes; complete-candidate headroom still lacks 1,412,084,737 bytes.
+No fresh native unpack or platform upgrade is claimed. Recovery coverage,
+component placement/capacity, owner hold, vendor/host exceptions and final normal
+Seerr/YTPTube IAB/fleet acceptance remain. Full goal active.
+
 **18:32 UTC storage check:** 3 Ready nodes without pressure, all 58 claim bindings
 and 44 volume identities unchanged; all 28 attached volumes have two actual RW
 replicas. Twelve claims still lack completed native Backup records; exact mapping

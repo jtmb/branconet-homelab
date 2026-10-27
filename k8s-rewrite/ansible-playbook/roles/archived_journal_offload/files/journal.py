@@ -20,6 +20,10 @@ import time
 F = Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025')
 ROOT = Path('/var') / 'log' / 'journal'
 UUID = '960bc2c7-2a7e-4bc2-b2c5-dbb6d71207f4'
+NODES = {
+    'workernode2': ('192.168.0.5', UUID),
+    'masternode': ('192.168.0.4', '763cda3d-0777-4b03-a882-9d21060466e3'),
+}
 AGE = Path('/home/brajam/.local/share/branconet-migration/bin/age')
 AGE_SHA = 'eb7dd1b518f0a307c99cd97782623c5321da049154b04acd2d98d21aa7bc9b2c'
 FLOOR = 15 * 1024**3
@@ -59,16 +63,25 @@ def checker(a, base, attempts):
     return common
 
 
-def node_scope():
-    need(os.geteuid() == 0 and socket.gethostname() == 'workernode2', 'fixed_worker2_root_scope')
+def profile_node(profile):
+    matches = [node for node, (_, uuid) in NODES.items() if uuid == profile['filesystem']['uuid']]
+    need(len(matches) == 1, 'known_profile_filesystem')
+    node = matches[0]
+    need(profile.get('node', node) == node, 'profile_node_filesystem_binding')
+    return node
+
+
+def node_scope(node, require_root=True):
+    need(node in NODES and (not require_root or os.geteuid() == 0)
+         and socket.gethostname() == node, 'fixed_known_node_root_scope')
     fs = json.loads(subprocess.check_output(['findmnt', '--json', '--target', str(ROOT), '--output', 'UUID,SOURCE,FSTYPE'], timeout=30))['filesystems'][0]
-    need(fs['uuid'] == UUID and fs['fstype'] == 'ext4', 'worker2_root_filesystem')
+    need(fs['uuid'] == NODES[node][1] and fs['fstype'] == 'ext4', 'original_node_root_filesystem')
     need(not any(ROOT.glob('*/fss')), 'sealing_key_requires_separate_recovery')
     return fs
 
 
 def inventory(a):
-    fs = node_scope()
+    fs = node_scope(a.node)
     selected = json.loads(base64.b64decode(a.selection_base64, validate=True))['paths']
     need(1 <= len(selected) <= 32 and len(set(selected)) == len(selected), 'bounded_unique_journals')
     rows = []
@@ -89,7 +102,7 @@ def inventory(a):
     need(sum(r['identity']['size'] for r in rows) <= 3 * 1024**3, 'archive_byte_bound')
     common = checker(a, ROOT, tuple(r['relative'] for r in rows))
     refs = common['idle']()
-    out = {'schema': 1, 'UTC': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'filesystem': fs,
+    out = {'schema': 1, 'node': a.node, 'UTC': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'filesystem': fs,
            'files': rows, 'fileBytes': sum(r['identity']['size'] for r in rows),
            'allocatedBytes': sum(r['identity']['blocks'] * 512 for r in rows), 'references': refs, 'fssKeyPresent': False}
     print(json.dumps(out))
@@ -107,7 +120,7 @@ def header(row):
 
 
 def stream(profile):
-    need(socket.gethostname() == 'workernode2', 'fixed_archive_source')
+    node_scope(profile_node(profile), require_root=False)
     with tarfile.open(fileobj=sys.stdout.buffer, mode='w|', format=tarfile.PAX_FORMAT, encoding='utf8', errors='surrogateescape') as out:
         raw = canonical(profile)
         info = tarfile.TarInfo('manifest.json')
@@ -128,7 +141,8 @@ def encrypt(a, profile):
     args = ['journal', '--mode', 'stream', '--profile-base64', base64.b64encode(canonical(profile)).decode()]
     remote = 'import sys;sys.argv=' + repr(args) + '\n' + own
     ssh = ['ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes', '-o', 'ConnectTimeout=10',
-           '-i', '/home/brajam/.ssh/id_ed25519', '-p', '2002', 'james@192.168.0.5', shlex.join(['python3', '-B', '-c', remote])]
+           '-o', 'UserKnownHostsFile=/home/brajam/.ssh/known_hosts',
+           '-i', '/home/brajam/.ssh/id_ed25519', '-p', '2002', 'james@' + NODES[profile_node(profile)][0], shlex.join(['python3', '-B', '-c', remote])]
     producer = subprocess.Popen(ssh, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     crypt = None
     try:
@@ -224,7 +238,8 @@ def verify(a, profile):
 
 
 def retire(a, profile):
-    fs = node_scope()
+    fs = node_scope(profile_node(profile))
+    need(a.node == profile_node(profile), 'selected_profile_node')
     proof = json.loads(base64.b64decode(a.backup_proof, validate=True))
     need(proof['schema'] == 1 and proof['nasReadLocksHeld'] and proof['independentRestoreVerified'], 'live_verified_archive_guard')
     need(0 <= time.time() - proof['nasVerificationEpoch'] < 1200, 'fresh_nas_guard')
@@ -269,6 +284,7 @@ def retire(a, profile):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument('--mode', choices=['inventory', 'stream', 'encrypt', 'verify', 'retire'], required=True)
+    p.add_argument('--node', choices=sorted(NODES), default='workernode2')
     p.add_argument('--selection-base64')
     p.add_argument('--profile-base64')
     p.add_argument('--profile', type=Path)

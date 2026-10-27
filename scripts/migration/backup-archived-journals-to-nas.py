@@ -38,7 +38,11 @@ def main():
     for path in (a.profile, a.helper, a.safety_source):
         need(path.resolve().is_relative_to(F.resolve()) and path.is_file(), 'owned_sources')
     profile = json.loads(a.profile.read_text())
-    need(profile['schema'] == 1 and profile['filesystem']['uuid'] == '960bc2c7-2a7e-4bc2-b2c5-dbb6d71207f4' and 0 < len(profile['files']) <= 32 and profile['fileBytes'] <= 3 * 1024**3, 'bounded_source_profile')
+    nodes = {'960bc2c7-2a7e-4bc2-b2c5-dbb6d71207f4': 'workernode2',
+             '763cda3d-0777-4b03-a882-9d21060466e3': 'masternode'}
+    node = nodes.get(profile['filesystem']['uuid'])
+    need(profile['schema'] == 1 and node and profile.get('node', node) == node
+         and 0 < len(profile['files']) <= 32 and profile['fileBytes'] <= 3 * 1024**3, 'bounded_source_profile')
     need(shutil.disk_usage('C:\\').free >= FLOOR and shutil.disk_usage(F).free >= FLOOR + 256 * 1024**2, 'controller_space')
     maximum = profile['fileBytes'] + 8 * 1024**2
     need(NAS.is_dir() and shutil.disk_usage(NAS).free >= FLOOR + maximum, 'approved_nas_space')

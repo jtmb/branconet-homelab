@@ -1,21 +1,22 @@
 ---
-- name: Require the original worker and bounded controller-owned evidence
+- name: Require a fixed original node and bounded controller-owned evidence
   ansible.builtin.assert:
     that:
-      - inventory_hostname == 'workernode2'
-      - ansible_host == '192.168.0.5'
+      - archived_journal_offload_node in ['workernode2', 'masternode']
+      - inventory_hostname == archived_journal_offload_node
+      - ansible_host == {'workernode2':'192.168.0.5', 'masternode':'192.168.0.4'}[archived_journal_offload_node]
       - ansible_user == 'james'
       - ansible_port | int == 2002
       - archived_journal_offload_mode in ['inventory', 'retire']
-      - archived_journal_offload_result_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-journal-offload-20261027/[a-z0-9-]+[.]json$')
+      - archived_journal_offload_result_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/' + ('worker2' if archived_journal_offload_node == 'workernode2' else 'master') + '-journal-offload-20261027/[a-z0-9-]+[.]json$')
       - archived_journal_offload_mode != 'retire' or archived_journal_offload_operator_holds_nas_lock | bool
 
 - name: Require exact private inputs for the selected phase
   ansible.builtin.assert:
     that:
-      - archived_journal_offload_mode != 'inventory' or archived_journal_offload_selection_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-journal-offload-20261027/selection[.]json$')
-      - archived_journal_offload_mode != 'retire' or archived_journal_offload_profile_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-journal-offload-20261027/profile[.]json$')
-      - archived_journal_offload_mode != 'retire' or archived_journal_offload_proof_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/worker2-journal-offload-20261027/nas-retirement-proof-[0-9a-f]{32}[.]json$')
+      - archived_journal_offload_mode != 'inventory' or archived_journal_offload_selection_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/' + ('worker2' if archived_journal_offload_node == 'workernode2' else 'master') + '-journal-offload-20261027/selection[.]json$')
+      - archived_journal_offload_mode != 'retire' or archived_journal_offload_profile_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/' + ('worker2' if archived_journal_offload_node == 'workernode2' else 'master') + '-journal-offload-20261027/profile[.]json$')
+      - archived_journal_offload_mode != 'retire' or archived_journal_offload_proof_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/' + ('worker2' if archived_journal_offload_node == 'workernode2' else 'master') + '-journal-offload-20261027/nas-retirement-proof-[0-9a-f]{32}[.]json$')
 
 - name: Preserve earlier outcomes
   ansible.builtin.stat:
@@ -34,8 +35,9 @@
       ansible.builtin.raw: >-
         /usr/bin/python3 -B -c {{ lookup('file', role_path + '/files/journal.py', rstrip=false) | quote }}
         --mode {{ archived_journal_offload_mode | quote }}
-        --safety-source {{ lookup('file', role_path + '/../retired_build_tools/files/retire.py', rstrip=false) | b64encode | quote }}
-        --safety-sha256 {{ lookup('file', role_path + '/../retired_build_tools/files/retire.py', rstrip=false) | hash('sha256') | quote }}
+        --node {{ archived_journal_offload_node | quote }}
+        --safety-source {{ lookup('file', role_path + '/../retired_master_build_tools/files/retire.py', rstrip=false) | b64encode | quote }}
+        --safety-sha256 {{ lookup('file', role_path + '/../retired_master_build_tools/files/retire.py', rstrip=false) | hash('sha256') | quote }}
         {% if archived_journal_offload_mode == 'inventory' %}
         --selection-base64 {{ lookup('file', archived_journal_offload_selection_file, rstrip=false) | b64encode | quote }}
         {% else %}
