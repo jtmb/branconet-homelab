@@ -1,5 +1,16 @@
 # Migration and maintenance status
 
+**October 28 batch restored; storage gate failed:** all 14 applications are
+available on their original images/templates/bindings; 17 volumes have healthy
+two-RW replicas and mounted-data reads on new runtimes. All 58 claims, 14 NAS
+bindings and three Ready nodes survive. Worker2 is about 2.3 GB below the
+unchanged required floor/margin, so the batch remains unaccepted. No application
+data, image, native snapshot or lease was deleted. Another 355,721,216 controller
+Linux scratch bytes were removed with full Linux/Windows reference checks.
+Four old-runtime engines remain; capacity repair, strict acceptance and final
+security/data/browser/cleanup gates keep the goal active.
+[Exact current evidence and failure](docs/LONGHORN-APPLICATION-BATCH-20261028.md).
+
 **October 28 helper runtime accepted:** Homepage and Unpackerr reattached on the
 new instance manager through validated charts/Flux, with identical configuration
 hashes, original images/templates/storage, two actual RW replicas and zero new

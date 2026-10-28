@@ -1,5 +1,23 @@
 # Maintenance output ownership and reconciliation
 
+## Fourteen-application runtime batch and capacity failure - October 28
+
+Same owner, F-backed root and physical filesystem UUID. Ownership/peak/regeneration
+preceded the batch. [Exact current ledger](../evidence/longhorn-application-batch-20261028.json).
+Removed 355,721,216 allocated controller Linux bytes / 1,612 paths from terminal
+consumed stages `4b42355d54874fc68650888a3e29935b` and
+`e4a7636c24c249778bcff695062bcd7f`. Full Linux and 1,612 exclusive Windows handle
+checks passed. Original Git blobs/tools and ten minimal reports/locks survive.
+Per-path bytes: `platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-0782d79da4f052c6/receipt.json`.
+Retain 15 unique plan/native-data/capacity/frozen-source witnesses, 862,155 logical
+bytes excluding inventory index, under `longhorn-application-batch-20261028`.
+No dependency build cache or nonpublisher scratch was created. No node cache,
+image, snapshot, lease, volume or application data was deleted. Worker2 capacity
+still fails; controller cleanup is not node recovery. Required source/recovery
+tools and all earlier protected safety/original rollback exceptions remain.
+Independent Windows free observations: C55,140,528,128 and F193,112,182,784 bytes;
+no Windows/VHDX recovery is inferred from Linux deletion.
+
 ## Homepage and Unpackerr runtime cohort - October 28
 
 Same owner, F-backed root and physical filesystem UUID. Ownership/peak/regeneration

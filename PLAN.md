@@ -1,5 +1,17 @@
 # Cluster maintenance and application migration plan
 
+**October 28 application batch restored, not accepted:** 14 original applications
+now use 17 healthy new Longhorn runtimes, with original images/templates/storage
+identities and mounted-data reads preserved. All desired workloads are available,
+58 claims are Bound, 14 NAS bindings survive and three nodes are Ready. Worker2
+fails the unchanged 25% plus 512 MiB storage guard by about 2.3 GB. Capacity
+repair is required before strict batch acceptance or any next cohort; the prior
+preflight did not budget additional native image storage after Pod placement
+changed. No image/snapshot/lease/data pruning or threshold reduction occurred.
+Four engines remain on old runtimes: Pi-hole two, Ingenium one, held BORTUS one.
+Removed 355,721,216 controller Linux publisher scratch bytes, which does not
+recover node space. [Failure, exact restoration evidence and next gates](docs/LONGHORN-APPLICATION-BATCH-20261028.md).
+
 **October 28 helper runtime cycles accepted:** Homepage and Unpackerr now use the
 pinned v1.13.0 instance manager after validated Flux stop/detach/restore. Original
 configuration hashes, images, templates, storage bindings and replica directories
