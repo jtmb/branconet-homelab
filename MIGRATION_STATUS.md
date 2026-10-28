@@ -1,5 +1,15 @@
 # Migration and maintenance status
 
+**October 28 helper runtime accepted:** Homepage and Unpackerr reattached on the
+new instance manager through validated charts/Flux, with identical configuration
+hashes, original images/templates/storage, two actual RW replicas and zero new
+Pod restarts. Homepage HTTPS and Unpackerr Arr integration passed. All 58 claims,
+14 NAS bindings and three Ready nodes survive; desired workloads are available.
+Another 355,721,216 Linux scratch bytes were removed with full reference and
+1,612 exclusive Windows handle checks. Twenty-one engines across 17 Deployments,
+final security/browser acceptance and remaining cleanup keep the goal active.
+[Exact acceptance and next batch scope](docs/LONGHORN-HELPER-RUNTIME-20261028.md).
+
 **October28 static websites accepted:** APLB, Lucinda, Minecraft website and
 Santos now use the new Longhorn instance manager after validated Flux stop/
 detach/restore cycles. All file hashes, images, templates and storage identities

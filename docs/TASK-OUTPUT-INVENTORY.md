@@ -1,5 +1,23 @@
 # Maintenance output ownership and reconciliation
 
+## Homepage and Unpackerr runtime cohort - October 28
+
+Same owner, F-backed root and physical filesystem UUID. Ownership/peak/regeneration
+preceded execution. [Exact current ledger](../evidence/longhorn-helper-runtime-20261028.json).
+Removed 355,721,216 allocated Linux bytes / 1,612 paths from terminal consumed
+stages `4c0219259d634f658da0a568f4124d75` and `59771b32d7c34b7eb3e770d299a0be69`.
+Full Linux reference exclusion and 1,612 exclusive Windows handles passed;
+original Git blobs/tools and ten protected reports/locks survive. Per-path bytes
+are under `platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-b1f41fb43486faef/receipt.json`.
+Retain 13 unique metadata files, 440,947 logical bytes excluding inventory index,
+under `longhorn-helper-runtime-20261028` for actual data/configuration/runtime/
+integration acceptance and the remaining engine owner map. No dependency build
+cache or nonpublisher scratch was generated. Required tracked charts source and
+operational recovery tools still have remaining stateful-cycle consumers. All
+earlier failed-safety-check/original rollback exceptions remain protected.
+Independent Windows free observations: C56,589,983,744 and F193,644,859,392 bytes;
+Linux deletion does not establish Windows/VHDX recovery.
+
 ## Static website runtime cohort - October28
 
 Same owner, original F-backed root and filesystem UUID; ownership/peak/regeneration

@@ -1,5 +1,16 @@
 # Cluster maintenance and application migration plan
 
+**October 28 helper runtime cycles accepted:** Homepage and Unpackerr now use the
+pinned v1.13.0 instance manager after validated Flux stop/detach/restore. Original
+configuration hashes, images, templates, storage bindings and replica directories
+passed; both volumes have two actual healthy RW replicas and new Pods have zero
+restarts. Homepage HTTPS and Unpackerr Arr queue integration passed. Removed
+355,721,216 Linux publisher scratch bytes after full Linux/Windows checks.
+All 58 claims, 14 NAS bindings and three Ready nodes survive. The remaining 21
+engines map to 17 Deployments: a 14-Deployment/17-engine batch can proceed while
+Pi-hole keeps DNS available; Pi-hole, Ingenium and held BORTUS remain separately
+scoped. [Acceptance, cleanup and unresolved gates](docs/LONGHORN-HELPER-RUNTIME-20261028.md).
+
 **October28 static website cycles accepted:** APLB, Lucinda, Minecraft website
 and Santos now use the pinned v1.13.0 instance manager after real validated Flux
 stop/detach/restore. Original content hashes, images, templates and storage
