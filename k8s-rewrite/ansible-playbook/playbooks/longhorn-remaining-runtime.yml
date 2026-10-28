@@ -1,0 +1,34 @@
+---
+- name: Controlled Pi-hole and Ingenium native runtime maintenance
+  hosts: masternode
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Require explicit opt-in for each bounded phase
+      when: longhorn_remaining_runtime_enabled | default(false) | bool and not ansible_check_mode
+      block:
+        - name: Validate target and finite phase
+          ansible.builtin.assert:
+            that:
+              - ansible_host == '192.168.0.4'
+              - longhorn_remaining_runtime_phase in ['budget', 'preload-qualify', 'preload-apply', 'preload-stage', 'dns-begin', 'prepare', 'stop', 'observe', 'detached', 'resume', 'verify', 'dns-end']
+        - name: Invoke protected operator workflow with original publisher
+          ansible.builtin.command:
+            argv: >-
+              {{ (['/mnt/c/Users/james/AppData/Local/Programs/Python/Python312/python.exe', '-I', '-B',
+              '//wsl.localhost/Ubuntu' + playbook_dir + '/../roles/longhorn_remaining_runtime/files/dns_window.py',
+              longhorn_remaining_runtime_phase.split('-')[1]]
+              if longhorn_remaining_runtime_phase in ['dns-begin', 'dns-end'] else
+              ['/home/brajam/.local/share/branconet-migration/venv/bin/python3.12', '-B',
+              playbook_dir + '/../roles/longhorn_remaining_runtime/files/' +
+              ('budget.py' if longhorn_remaining_runtime_phase == 'budget' else 'preload.py' if longhorn_remaining_runtime_phase.startswith('preload-') else 'cycle.py')]
+              + ([] if longhorn_remaining_runtime_phase == 'budget' else
+              [longhorn_remaining_runtime_phase.split('-')[1] if longhorn_remaining_runtime_phase.startswith('preload-') else longhorn_remaining_runtime_phase])) }}
+          delegate_to: localhost
+          no_log: true
+          changed_when: longhorn_remaining_runtime_phase in ['preload-apply', 'preload-stage', 'dns-begin', 'stop', 'resume', 'dns-end']
+          environment:
+            PYTHONDONTWRITEBYTECODE: '1'
+            TMPDIR: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+            TMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+            TEMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp

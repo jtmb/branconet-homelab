@@ -1,0 +1,180 @@
+{
+  "status": "two_original_apps_on_three_new_native_runtimes",
+  "observedAt": "2026-10-28T09:42:34.518950+00:00",
+  "acceptance": {
+    "status": "two_original_apps_on_three_new_native_runtimes",
+    "observedAt": "2026-10-28T09:37:14.514126+00:00",
+    "applications": [
+      {
+        "identity": {
+          "name": "pihole",
+          "namespace": "pihole",
+          "releaseUID": "db6aabc6-dd2c-46c3-bbfd-b35ddf453078",
+          "deploymentUID": "a00fc6d2-55f3-4182-baf9-5ffc97544f0b",
+          "templateSHA256": "0d68673827dc7cf916edc621bf547f53497d65aa2d952fd29527a90aba6205c5",
+          "claims": [
+            {
+              "name": "pihole-data-0-retry1",
+              "uid": "b06ca45b-e902-4f0c-a2bf-77e9fca960e8",
+              "specSHA256": "6daf22ed6f5793cf5fa2015e1106ba8de16a2ad22ace1b5d6addc976a26f6811",
+              "pv": "pvc-b06ca45b-e902-4f0c-a2bf-77e9fca960e8",
+              "pvUID": "1d95c7d9-93ba-4d7b-93c4-7b97bb17ec79",
+              "pvSpecSHA256": "1d98009d7f7593a58dcc46a9cc843f6ee12a0d218c175decd6738455720b8f7e",
+              "driver": "driver.longhorn.io"
+            },
+            {
+              "name": "pihole-data-1-retry1",
+              "uid": "e19b6e39-6a4f-4c6d-b2fe-be27085e1ea9",
+              "specSHA256": "2dcf6491c75c92eeb4c891a5a7f77d95c5928323c5268f10fa3b3f8207d4ba39",
+              "pv": "pvc-e19b6e39-6a4f-4c6d-b2fe-be27085e1ea9",
+              "pvUID": "93d699db-4039-4836-a733-2573997c4406",
+              "pvSpecSHA256": "d3c2e1fb293dd75b9e81be4d456025aa4fdbb66b7acd05364a3fb4779a9d5bf4",
+              "driver": "driver.longhorn.io"
+            }
+          ]
+        },
+        "podUID": "50ad7fb0-b86e-44e3-8fcf-538948fb1bc7",
+        "images": {
+          "pihole": "docker.io/pihole/pihole@sha256:d34134716fc32038b052a8674c7c6879e0ff21f0e6d8af345166fffa2c27c113"
+        },
+        "allContainersReadyWithZeroRestarts": true
+      },
+      {
+        "identity": {
+          "name": "ingenium",
+          "namespace": "ingenium",
+          "releaseUID": "5e2146c4-8fb1-4548-a380-917adc68d110",
+          "deploymentUID": "399abce7-cf4e-49d5-a743-a3e647390d9c",
+          "templateSHA256": "5d6edc60822bff66a81aa32f11e538d0e3b4a3868019d0c5b92ca922b1c90653",
+          "claims": [
+            {
+              "name": "ingenium-state",
+              "uid": "1005b62c-b731-4c76-a68c-f635ef74c378",
+              "specSHA256": "c16acfac5cf621fd2e98e8b440c9509299235a43b9673043709d795616a38e07",
+              "pv": "pvc-1005b62c-b731-4c76-a68c-f635ef74c378",
+              "pvUID": "01284876-a77f-4680-bf2c-c2f5122a6ca2",
+              "pvSpecSHA256": "827f020391d2605cbcacdb50a0bcc773ac03dc67ec94333fbfbd7d8f19de44aa",
+              "driver": "driver.longhorn.io"
+            }
+          ]
+        },
+        "podUID": "238adab5-2128-41bb-9434-7b39bdf594eb",
+        "images": {
+          "ingenium": "docker.io/jtmb92/ingenium@sha256:712f40a5177079f3d7aab020632ef993ffb0775f2cb17355d77e9e81d7c31a66"
+        },
+        "allContainersReadyWithZeroRestarts": true
+      }
+    ],
+    "volumes": [
+      {
+        "identity": {
+          "name": "pvc-b06ca45b-e902-4f0c-a2bf-77e9fca960e8",
+          "uid": "0c3faa0d-f85e-4654-9349-e2c75b87b483",
+          "dataDirectories": [
+            [
+              "workernode1",
+              "ec68ff17-a66d-41f4-b600-fa0b6bb44005",
+              "pvc-b06ca45b-e902-4f0c-a2bf-77e9fca960e8-0f4fb5d9",
+              "/var/lib/longhorn/"
+            ],
+            [
+              "workernode2",
+              "3e98444f-4c34-438d-a0d3-5181c9c80a15",
+              "pvc-b06ca45b-e902-4f0c-a2bf-77e9fca960e8-dc3e4869",
+              "/var/lib/longhorn/"
+            ]
+          ],
+          "controlsSHA256": "b484bfcd150e41f7bf05f348e331717a039a00e5d5168cc540dba259c05ff487"
+        },
+        "instanceManager": "instance-manager-57ce28e912a9f3b0e9d31db652c752ae",
+        "instanceManagerImage": "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3",
+        "twoActualRWReplicas": true,
+        "mountReadsPassed": true
+      },
+      {
+        "identity": {
+          "name": "pvc-e19b6e39-6a4f-4c6d-b2fe-be27085e1ea9",
+          "uid": "7205c38e-372c-4a76-be72-3c771fc72c4f",
+          "dataDirectories": [
+            [
+              "workernode1",
+              "ec68ff17-a66d-41f4-b600-fa0b6bb44005",
+              "pvc-e19b6e39-6a4f-4c6d-b2fe-be27085e1ea9-3bbc1368",
+              "/var/lib/longhorn/"
+            ],
+            [
+              "workernode2",
+              "3e98444f-4c34-438d-a0d3-5181c9c80a15",
+              "pvc-e19b6e39-6a4f-4c6d-b2fe-be27085e1ea9-1cd56061",
+              "/var/lib/longhorn/"
+            ]
+          ],
+          "controlsSHA256": "4877101195239235ff561f5a02a0617b0f5b7712722df70005946c0c1a63a78f"
+        },
+        "instanceManager": "instance-manager-57ce28e912a9f3b0e9d31db652c752ae",
+        "instanceManagerImage": "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3",
+        "twoActualRWReplicas": true,
+        "mountReadsPassed": true
+      },
+      {
+        "identity": {
+          "name": "pvc-1005b62c-b731-4c76-a68c-f635ef74c378",
+          "uid": "aeb47952-61f5-4bc4-a8f6-bfa274eacf86",
+          "dataDirectories": [
+            [
+              "workernode1",
+              "ec68ff17-a66d-41f4-b600-fa0b6bb44005",
+              "pvc-1005b62c-b731-4c76-a68c-f635ef74c378-a393ee64",
+              "/var/lib/longhorn/"
+            ],
+            [
+              "workernode2",
+              "3e98444f-4c34-438d-a0d3-5181c9c80a15",
+              "pvc-1005b62c-b731-4c76-a68c-f635ef74c378-74f699f6",
+              "/var/lib/longhorn/"
+            ]
+          ],
+          "controlsSHA256": "c7e5fa73806192aa051bc2328a19713bebe096e816bfa8d808f1c2a3f3d40747"
+        },
+        "instanceManager": "instance-manager-215260ef7126669488b183c4381137be",
+        "instanceManagerImage": "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3",
+        "twoActualRWReplicas": true,
+        "mountReadsPassed": true
+      }
+    ],
+    "sourceSHA": "cae6f2ac6e1c12afd4104df751b793db3fa94c62",
+    "dataCopiedOrRewritten": false,
+    "applicationSemanticAndFinalBrowserAcceptance": false,
+    "fullGoalComplete": false
+  },
+  "originalDNSConfigRestored": {
+    "exactOriginalConfigRestored": true,
+    "normalResolverGitVerified": true,
+    "remoteRefs": [
+      "cae6f2ac6e1c12afd4104df751b793db3fa94c62\trefs/heads/main",
+      "cae6f2ac6e1c12afd4104df751b793db3fa94c62\trefs/heads/validated"
+    ],
+    "WindowsOrGlobalDNSChanged": false,
+    "credentialsChanged": false
+  },
+  "routes": [
+    {
+      "url": "https://pi.branconet.lan/admin/",
+      "status": 200,
+      "TLSVerification": true
+    },
+    {
+      "url": "https://ingenium.branconet.lan",
+      "status": 200,
+      "TLSVerification": true
+    }
+  ],
+  "removedAllocatedControllerLinuxBytes": 355721216,
+  "removedPaths": 1612,
+  "perPathCleanupReceipt": "platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-26b8dd5329c557a4/receipt.json",
+  "retainedCurrentMetadataFiles": 30,
+  "retainedCurrentMetadataLogicalBytes": 52559,
+  "evidenceIndex": "platform-upstream-review-20261027/longhorn-remaining-runtime-20261028/checkpoint-inventory.json",
+  "remainingOldRuntimeOwner": "held BORTUS; not modified",
+  "fullGoalComplete": false
+}

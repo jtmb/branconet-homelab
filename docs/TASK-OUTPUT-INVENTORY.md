@@ -1,5 +1,9 @@
 # Maintenance output ownership and reconciliation
 
+## Pi-hole and Ingenium runtime cohort - October 28
+
+Removed 355,721,216 allocated controller Linux bytes / 1,612 paths from the two consumed validated publisher exports after full Linux reference/original Git/tool and 1,612 exclusive Windows handle checks. Ten protected reports/locks remain. Retain 30 unique source/failure/native-budget/submission/data/route metadata files, 52,559 logical bytes, in the same F-backed `longhorn-remaining-runtime-20261028` subdirectory; no other generated scratch. Native Pi-hole caches on all eligible nodes have a production scheduling consumer. Exact paths/bytes and protected exceptions: [runtime ledger](LONGHORN-REMAINING-RUNTIME-20261028.md). No Windows/VHDX recovery claimed.
+
 ## Worker2 capacity recovery - October 28
 
 Recovered 3,154,370,560 allocated worker2 Linux bytes: 71 qualified inactive native image filesystem-cache paths (3,004,600,320) and three obsolete validation binaries (149,770,240). Exact per-path/byte ledger and all failure/refusal history: [capacity recovery](WORKER2-CAPACITY-RECOVERY-20261028.md). All images, original OCI blobs, containers, leases and user data survive. Retain 42 unique metadata/source/operation/failure/data witnesses, 1,443,587 logical bytes, enumerated in the same F-backed batch `cache-recovery-inventory.json`. No controller bulk payload/dependencies were generated. Removed the inactive zero-byte serialization lock after full Linux and exclusive Windows handle checks. Retain worker2's exact old `.tools` directory (4,096 allocated bytes) after `original_manifest_hash` refusal; no retry. Prior protected safety/original rollback exceptions remain. Linux recovery makes no Windows/VHDX recovery claim. Original strict batch acceptance now passes.
