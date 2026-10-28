@@ -32,7 +32,11 @@ def main():
         os.execv(PYTHON, [PYTHON, '-B', *sys.argv])
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repository', type=Path, required=True)
+    parser.add_argument('--generation', choices=['pre-upgrade', 'post-upgrade'], default='pre-upgrade')
     a = parser.parse_args()
+    global Q
+    if a.generation == 'post-upgrade':
+        Q = O / 'post-upgrade-control-plane-checkpoint-20261028'
     repo = a.repository.resolve()
     s = repo / 'k8s-rewrite/ansible-playbook'
     need(os.geteuid() == 1000 and F.is_mount() and not Q.exists(), 'existing_owner_storage_and_unique_operation')
@@ -60,7 +64,7 @@ def main():
          'completePeakBytes': 2 * 1024**3, 'sources': sources,
          'remoteTemporarySnapshot': '/var/lib/etcd/cluster-maintenance-' + run_id + '/snapshot.db',
          'remoteEndCondition': 'Only this producer-owned snapshot is removed after authenticated encrypted archive verification',
-         'retainedConsumer': 'Encrypted checkpoint and independent NAS readback/offline restore before supported Longhorn upgrade',
+         'retainedConsumer': 'Encrypted matching control-plane recovery checkpoint and independent NAS readback/offline restore; generation=' + a.generation,
          'regeneration': 'Same maintained playbook and source pins; a fresh snapshot is a new checkpoint, never overwrite this one',
          'protected': 'Original cluster data, native Secrets and keys, existing backups, source and all other running projects'})
     scratch.mkdir(mode=0o700)

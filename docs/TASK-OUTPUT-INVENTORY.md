@@ -1,5 +1,33 @@
 # Maintenance output ownership and reconciliation
 
+## Official security refresh and matching recovery - October 28
+
+Same owner and F-backed root/UUID. The exact source-bound [acceptance and cleanup
+ledger](../evidence/official-security-refresh-20261028.json) references every
+removal, regenerated-tool proof and retained exception. After the separate
+4,732,964,864-byte node cache checkpoint, removed another 864,673,792 worker2
+allocated Linux bytes from ten unused old MySQL unpack caches, preserving image
+records and original blobs. New official MySQL/YTPTube caches are required live
+runtime artifacts for the deployed replacements and normal scheduling/restarts.
+
+Removed another 586,055,680 allocated controller Linux bytes: two terminal
+publisher exports, successful post-restore scratch, four inactive zero-byte
+serialization locks, the exactly regenerated etcdutl copy and its empty parent.
+Independent full Linux reference and exclusive native Windows handle checks
+passed. Minimal durable recipes/hashes/source/failure/data/browser metadata and
+matching authenticated recovery ciphertexts remain in their original F leaves.
+Three small screenshots are unique browser acceptance witnesses. No image archive,
+dependency tree, build copy or plaintext configuration extraction was generated.
+
+Retain the new exact post-upgrade `restore-ansible-scratch` after native Windows
+GENERIC_READ failed with error 5; no alternate deletion or permission change.
+Retain the 65,241,088-byte original volume restore kit because its exact original
+engine producer path no longer exists and current exact regeneration is unproved;
+its consumer is the 74 preserved Completed native volume backups. Its end
+condition is exact regeneration or a replacement independently qualified against
+those backups. Earlier failed cleanup targets remain protected. Linux recovery
+does not establish Windows/VHDX recovery. [Current detailed reconciliation](OFFICIAL-SECURITY-REFRESH-20261028.md).
+
 ## Pi-hole and Ingenium runtime cohort - October 28
 
 Removed 355,721,216 allocated controller Linux bytes / 1,612 paths from the two consumed validated publisher exports after full Linux reference/original Git/tool and 1,612 exclusive Windows handle checks. Ten protected reports/locks remain. Retain 30 unique source/failure/native-budget/submission/data/route metadata files, 52,559 logical bytes, in the same F-backed `longhorn-remaining-runtime-20261028` subdirectory; no other generated scratch. Native Pi-hole caches on all eligible nodes have a production scheduling consumer. Exact paths/bytes and protected exceptions: [runtime ledger](LONGHORN-REMAINING-RUNTIME-20261028.md). No Windows/VHDX recovery claimed.

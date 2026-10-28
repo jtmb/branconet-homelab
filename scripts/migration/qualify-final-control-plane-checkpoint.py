@@ -34,12 +34,16 @@ def save(path, value):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=['nas', 'restore'])
+    parser.add_argument('--generation', choices=['pre-upgrade', 'post-upgrade'], default='pre-upgrade')
     a = parser.parse_args()
+    global Q
+    leaf = 'post-upgrade-control-plane-checkpoint-20261028' if a.generation == 'post-upgrade' else 'final-control-plane-checkpoint-20261028'
+    Q = O + '/' + leaf
     repo = Path(__file__).resolve().parents[2]
     if a.mode == 'nas':
         need(os.name == 'nt', 'authenticated_native_windows_nas_access_required')
         root = Path(r'\\wsl.localhost\Ubuntu' + BASE.replace('/', '\\'))
-        q = root / 'platform-upstream-review-20261027/final-control-plane-checkpoint-20261028'
+        q = root / 'platform-upstream-review-20261027' / leaf
         e = root / 'platform-upstream-review-20261027/etcd-restore-qualification'
         op = json.loads((q / 'operator.json').read_text())
         need(op['status'] == 'completed' and op['sourcesUnchanged'], 'completed_authenticated_producer')

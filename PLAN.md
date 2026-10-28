@@ -1,5 +1,15 @@
 # Cluster maintenance and application migration plan
 
+**October 28 deployed and verified:** official MySQL security rebuild and YTPTube
+2.7.6 are live through unchanged local CI/validated/Flux at
+`21bd3bf517199e45591ae44e13bd251ee8a04ffe`. Database rows/identity and downloader
+accounts/history/original files persist; YTPTube normal login and completed browser
+playback pass. Matching post-upgrade NAS/offline recovery passes. All current
+64 runtime digests have complete fresh reports; remaining vendor CVEs and BORTUS's
+separate owner hold are explicit exceptions. Authenticated Seerr UI validation is
+pending the original account login requested during the work. The full goal stays
+active. [Current contract, evidence and exact cleanup](docs/OFFICIAL-SECURITY-REFRESH-20261028.md).
+
 **October 28 upstream refresh:** all 65 current image digests have fresh public
 security reports. Two compatible official updates are being staged: MySQL 8.4
 and YTPTube 2.7.6. All hosts have the fixed Brotli library; worker2 was fixed by

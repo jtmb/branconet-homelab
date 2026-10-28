@@ -72,10 +72,14 @@ def remote():
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--remote', action='store_true')
+    parser.add_argument('--generation', choices=['original', 'post-security'], default='original')
     a = parser.parse_args()
     if a.remote:
         remote()
         return
+    global G
+    if a.generation == 'post-security':
+        G = F / 'platform-upstream-review-20261027/final-fleet-post-security-20261028'
     assert F.is_mount() and not G.exists() and os.geteuid() == 1000
     for p in (F, Path('/mnt/c')):
         st = os.statvfs(p)

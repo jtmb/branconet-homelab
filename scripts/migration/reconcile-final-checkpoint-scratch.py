@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import stat
 import sys
+import argparse
 
 BASE = '/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025'
 REL = 'platform-upstream-review-20261027/final-control-plane-checkpoint-20261028'
@@ -22,7 +23,29 @@ def identity(p):
 
 
 def main():
-    mode = sys.argv[1]
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('mode',choices=['inventory','windows','apply','packaging-check'])
+    parser.add_argument('--generation',choices=['pre-upgrade','post-upgrade'],default='pre-upgrade')
+    args=parser.parse_args();mode=args.mode
+    global REL
+    if args.generation=='post-upgrade':REL='platform-upstream-review-20261027/post-upgrade-control-plane-checkpoint-20261028'
+    if mode=='packaging-check':
+        assert os.name=='nt' and args.generation=='post-upgrade'
+        import ctypes
+        from ctypes import wintypes
+        root=Path(r'\\?\UNC\wsl.localhost\Ubuntu'+BASE.replace('/','\\'));q=root/REL
+        op=json.loads((q/'operator.json').read_text());assert op['status']=='completed'
+        restore=root/'platform-upstream-review-20261027/etcd-restore-qualification'/('cp-'+op['runID']+'-restore-result.json')
+        assert json.loads(restore.read_text())['status']=='completed'
+        path=q/'restore-ansible-scratch';k=ctypes.WinDLL('kernel32',use_last_error=True)
+        k.CreateFileW.argtypes=[wintypes.LPCWSTR,wintypes.DWORD,wintypes.DWORD,wintypes.LPVOID,wintypes.DWORD,wintypes.DWORD,wintypes.HANDLE];k.CreateFileW.restype=wintypes.HANDLE
+        k.CloseHandle.argtypes=[wintypes.HANDLE]
+        h=k.CreateFileW(str(path),0x80000000,0,None,3,0x02000000,None)
+        failed=h in (None,ctypes.c_void_p(-1).value);error=ctypes.get_last_error() if failed else 0
+        if not failed:k.CloseHandle(h)
+        result={'path':BASE+'/'+REL+'/restore-ansible-scratch','retained':failed,'failedCheck':'native_windows_exclusive_GENERIC_READ' if failed else None,'windowsError':error,'deletionAttempted':False,'noRetry':failed,'permissionChanged':False}
+        with (q/'cleanup-preservation-exception.json').open('x')as out:json.dump(result,out,indent=2)
+        print(json.dumps(result));return
     if mode == 'windows':
         import ctypes
         from ctypes import wintypes
@@ -81,8 +104,10 @@ def main():
     # subtree. Do not change its permissions, retry its deletion or inspect it
     # through another deletion route. Reconcile the independent eligible roots.
     exception = json.loads((q / 'cleanup-preservation-exception.json').read_text())
-    assert exception['retained'] and exception['path'] == str(q / 'restore-ansible-scratch')
+    assert exception['path'] == str(q / 'restore-ansible-scratch')
+    assert exception['retained'] or args.generation=='post-upgrade'
     targets = [q / 'ansible-scratch', work]
+    if not exception['retained']:targets.append(q/'restore-ansible-scratch')
     assert all(p.exists() and p.resolve() == p and p.is_relative_to(root) for p in targets)
     guard = root / 'node-cleanup-20261027/master-generated-cleanup/reference-full-properties.py'
     assert sha(guard) == '3dcde82583df9e8217a4e39ef88d810ff955690d1dbf0a1581000f9984a9df87'
@@ -140,8 +165,8 @@ def main():
     assert all(sha(root / p) == v for p, v in plan['protected'].items())
     result = {'status': 'completed', 'removed': removed, 'removedAllocatedLinuxBytes': sum(r['allocatedBytes'] for r in removed),
         'protectedFilesUnchanged': len(plan['protected']), 'WindowsRecoveryClaimed': False,
-        'retained': [exception, {'path': str(e / 'tools/etcdutl'), 'remainingConsumer': 'Supported Longhorn upgrade failure recovery window; reconcile when closed'},
-            {'path': str(backup), 'remainingConsumer': 'Final encrypted pre-upgrade recovery checkpoint, with independent NAS copy'}]}
+        'retained': ([exception] if exception['retained'] else []) + [{'path': str(e / 'tools/etcdutl'), 'remainingConsumer': 'Final checkpoint acceptance; reconcile after final recovery checks'},
+            {'path': str(backup), 'remainingConsumer': 'Final encrypted ' + args.generation + ' recovery checkpoint, with independent NAS copy'}]}
     with (q / (PREFIX + 'receipt.json')).open('x') as out:
         json.dump(result, out, indent=2)
     print(json.dumps({k: v for k, v in result.items() if k != 'removed'}))

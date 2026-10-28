@@ -11,6 +11,8 @@ import runpy
 import shlex
 import subprocess
 import sys
+import ssl
+import urllib.request
 
 REPO = Path(__file__).resolve().parents[2]
 F = Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025')
@@ -84,13 +86,40 @@ def ytptube(phase):
     sys.argv=[str(Path(__file__)),'after','--receipt',str(H/name),'--baseline',str(baseline)]
     m.main()
 
+def ytptube_runtime(phase):
+    assert phase == 'after'
+    op=runpy.run_path(str(REPO/'scripts/migration/qualify-ytptube.py'))
+    remote=runpy.run_path(str(REPO/'scripts/migration/verify-final-media-history.py'))['remote']
+    globals_=op['writer'].__globals__
+    globals_['kubectl']=lambda *args,body=None,timeout=30:remote(['kubectl','-n','plex',*args],body)
+    globals_['UPSTREAM_IMAGE']=YTP[1]
+    before=op['writer'](YTP[1]);before['runtime_profile']='official-pinned-updater'
+    baseline=F/'upstream-ytptube-20261025/download-v4-master-receipt.json'
+    old=json.loads(baseline.read_bytes());assert old['state']=='sample-download-verified-restart-pending'
+    assert before['claims']==old['writer']['claims'] and before['deployment_uid']==old['writer']['deployment_uid'] and before['pod_uid']!=old['writer']['pod_uid']
+    session=op['Session']()
+    ca=F/'lan-tls-20261026/branconet-local-root.crt'
+    assert hashlib.sha256(ssl.PEM_cert_to_DER_cert(ca.read_text())).hexdigest()=='79b3cf11aed6c404885e555ceff33819ffa4ca534959f00f80b16e09927e2fab'
+    session.base='https://ytdl.branconet.lan'
+    session.http=urllib.request.build_opener(urllib.request.ProxyHandler({}),op['NoRedirect'](),urllib.request.HTTPCookieProcessor(session.jar),urllib.request.HTTPSHandler(context=ssl.create_default_context(cafile=str(ca))))
+    try:
+        session.login();runtime=op['preflight'](session,before)
+        item=session.request('/api/history/'+old['history_id'])
+        media=op['remote'](before,'media',old['folder'])
+        assert item.get('status')=='finished' and item.get('filename')==media['filename'] and media==old['media']
+    finally:session.close()
+    after=op['writer'](YTP[1]);assert {k:v for k,v in before.items()if k!='runtime_profile'}==after
+    data={'passed':True,'writer':after,'runtime':runtime,'media':media,'nativeAuthentication':True,'originalSamplePreservedAcrossActualRestart':True,'baselineSHA256':hashlib.sha256(baseline.read_bytes()).hexdigest(),'sourceSHA256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),'newDownloads':False}
+    with (H/'ytptube-runtime-after.json').open('x')as out:json.dump(data,out,indent=2)
+    print(json.dumps({'passed':True,'service':'ytptube-runtime','originalSamplePreserved':True}))
+
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('service',choices=['mysql','ytptube']);p.add_argument('phase',choices=['before','after']);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('service',choices=['mysql','ytptube','ytptube-runtime']);p.add_argument('phase',choices=['before','after']);a=p.parse_args()
     assert os.getuid()==1000 and F.is_mount();os.umask(0o077)
     assert all(os.statvfs(x).f_bavail*os.statvfs(x).f_frsize>=15*1024**3+8*1024**2 for x in [F,Path('/mnt/c')])
     H.mkdir(mode=0o700,exist_ok=True)
     if not (H/'ownership.json').exists():
         with (H/'ownership.json').open('x') as f:json.dump({'owner':'01a12045-bf7e-73b3-8557-752d17c72ffd','root':str(F),'volumeUUID':'3c792469-ea0e-4a2c-98e8-1185b141607b','generated':[str(H)],'peakBytes':8*1024**2,'retention':'Minimal unique before/after hash receipts; no files, build caches, extracts or dependencies','regenerate':'Run this read-only observer against a qualified exact image; original observations remain unique'},f,indent=2)
-    (mysql if a.service=='mysql' else ytptube)(a.phase)
+    {'mysql':mysql,'ytptube':ytptube,'ytptube-runtime':ytptube_runtime}[a.service](a.phase)
 
 if __name__=='__main__':main()

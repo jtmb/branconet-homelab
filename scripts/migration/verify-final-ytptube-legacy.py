@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Hash exactly seven original files in the existing pod; no writes or NAS walk."""
 import hashlib
+import argparse
 import json
 from pathlib import Path
 import runpy
@@ -35,8 +36,16 @@ print(json.dumps(out))
 '''
 
 def main():
+    global OUT
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--security-refresh',action='store_true')
+    args=parser.parse_args()
     transport=runpy.run_path(str(SOURCE.with_name('verify-final-media-history.py')))
     op=runpy.run_path(str(SOURCE.with_name('qualify-ytptube.py')))
+    if args.security_refresh:
+        OUT=ROOT/'platform-upstream-review-20261027/upstream-security-refresh-20261028'
+        image='ghcr.io/arabcoders/ytptube:v2.7.6@sha256:a5b648c6c20d877cf90715415b1b31565dda9399020d80f186000fdd76474f86'
+        op['UPSTREAM_IMAGE']=image
     def kube(*args,body=None,timeout=30):
         return transport['remote'](['kubectl','-n','plex',*args],body)
     op['writer'].__globals__['kubectl']=kube
