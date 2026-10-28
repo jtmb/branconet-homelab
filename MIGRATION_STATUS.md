@@ -1,5 +1,12 @@
 # Migration and maintenance status
 
+**October 28 staging implementation:** the opt-in serial production preloader
+now implements fresh per-node capacity/cache fences, exact official image and
+canonical alias checks, actual allocation/runtime verification, and global
+claim/volume/engine/replica/NAS preservation. It has not executed yet.
+[Source, constraints and output ownership](docs/LONGHORN-PRODUCTION-STAGING-20261028.md).
+Manager/engine upgrade and the full goal remain incomplete.
+
 **October 28, 00:34 UTC:** the complete thirteen-image Longhorn candidate now
 passes all three observed node budgets, retaining the measured host payload,
 512 MiB margin and unchanged storage controls. Exact duplicate transfers and

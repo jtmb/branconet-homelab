@@ -1,5 +1,11 @@
 # Cluster maintenance and application migration plan
 
+**October 28 production staging implementation:** the maintained opt-in Ansible
+preloader is ready for actual serial execution with fresh full-budget checks;
+no production execution is claimed yet. Its runtime artifacts are official
+digest-pinned upstream images, with no custom build or new publication route.
+[Detailed source and acceptance](docs/LONGHORN-PRODUCTION-STAGING-20261028.md).
+
 **October 28, 00:34 UTC:** full thirteen-image native capacity gate passes all
 three nodes after exact redundant transfers and inactive analysis-cache cleanup.
 The authenticated host copy is included; 512 MiB margin, existing kubelet floors,
