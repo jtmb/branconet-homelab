@@ -1,5 +1,40 @@
 # Maintenance output ownership and reconciliation
 
+## Current-writer recovery and source exports — completed October 28, 00:08 UTC
+
+Same declared F-backed task root and filesystem UUID. Ingenium's complete native
+RAW backing passed all original 4,869 block/hole/header/hash checks after the
+optional RAW-copy timeout. Its original failed invocation and follow-up refusal
+remain; a separately verified 52-range recipe preserves every partial-output
+byte with zero literal delta bytes. Removed all four exact Ingenium restore/NAS/
+Ansible scratch roots: **27,452,293,120 allocated Linux bytes**, 9,861 paths,
+269 protected files unchanged. Recovery scratch cumulative: **30,962,319,360 bytes**.
+Original NAS backups and minimal unique source, identity, verification, failure
+and removal receipts remain. Shared stock tools (65,241,088 allocated bytes)
+serve the concrete supported platform upgrade recovery window and are due for
+retirement when that consumer closes. No dependency/compiler/cache copy remains
+from these current writer restore invocations.
+[Exact paths, retained proof and limits](CURRENT-WRITER-NATIVE-RECOVERY-20261027.md).
+
+Retired generated uncompressed node source exports after complete preserved-
+archive/delta/mode/link/reference qualification: **749,178,880 master Linux bytes**.
+Original source/lockfiles survive in the complete original archives; all user
+repositories and original failures remain. The unqualified `_output/bin` link
+and its parent directories stay protected. Removed six empty controller Ansible
+scratch directories, **24,576 bytes**, preserving 141 other files. Full original
+qualification and exact per-path retirement ledger remain under the existing
+`node-cleanup-20261027/master-generated-cleanup` operation; no payload copied.
+[Exact eligibility, failure diagnosis and retained exception](MASTER-SOURCE-EXPORT-RETIREMENT-20261027.md).
+
+The successful CoreDNS builder's stopped cache retirement recovered
+**3,590,500,352 controller bytes**; original source/OCI/provenance retained for
+the pending exact-image fleet acceptance. The consumed Ingenium publisher stage
+`e9f4e07e08104334b7780705d6d7d33e` released **149,778,432 bytes** of duplicate
+tools; publisher cumulative is **11,982,176,256 bytes across 80 stages**.
+Its source/receipts survive; failed stage `5bedc869656841a294ee131c40c14c44`
+remains protected. Neither publisher nor failed job was restarted.
+Linux recovery is separate from Windows free space; no VHDX recovery is claimed.
+
 ## Unused WordPress lineage — completed October 27, 22:05 UTC
 
 Same F root; only ownership/result JSON in

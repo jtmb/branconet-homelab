@@ -1,5 +1,26 @@
 # Migration and maintenance status
 
+**October 28, 00:08 UTC:** current Ruckus and Ingenium native backups completed
+without changing writer Pod/image/restart, Volume spec or original replica UIDs.
+Eleven new datasets now have independent RAW verification, totaling 5,831 blocks.
+Ingenium's complete native RAW backing passed every original check after its
+optional RAW-copy timeout; the failed command remains failed and its partial
+output is preserved losslessly by a 52-range recipe. Recovery scratch removal
+totals **30,962,319,360 allocated controller Linux bytes**.
+[Exact acceptance and limits](docs/CURRENT-WRITER-NATIVE-RECOVERY-20261027.md).
+Fresh metadata covers all 43 initialized volumes with Completed native backups;
+the unused WordPress destination remains separately qualified. All 58 original
+claim bindings/44 volume UIDs, three Ready nodes, available workloads and
+unsuspended Flux survive. No Windows disk recovery is inferred.
+
+Ansible also retired 749,178,880 allocated master bytes of generated source
+exports while preserving complete original source/locks/deltas and the unmatched
+link. Cumulative node cleanup is **26,458,361,856 bytes**.
+[Exact source proof and cleanup](docs/MASTER-SOURCE-EXPORT-RETIREMENT-20261027.md).
+The full goal remains active: remaining server headroom, guarded Longhorn
+manager/engine upgrade, final fleet/security exceptions and normal Seerr/YTPTube
+IAB acceptance remain. Fresh cache measurements supersede old capacity assumptions.
+
 **October 27, 22:05 UTC:** physical/source/UID checks proved the preserved unused
 WordPress destination has no initialized payload. No attach, mount, data copy,
 Secret read or deletion occurred. Its metadata remains recoverable; WordPress

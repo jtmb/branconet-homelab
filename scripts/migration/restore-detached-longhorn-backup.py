@@ -32,6 +32,8 @@ ALLOWED = {
     'gluetun-old': 'pvc-2d2591cd-8809-4957-b56a-2f4d405bd9e2',
     'qbittorrent-old': 'pvc-6aa3aaa5-f609-4f74-88f0-b5c15e846703',
     'ruckus-old': 'pvc-0bf707c8-628e-4284-9aa0-35b711c8749b',
+    'ruckus-current': 'pvc-3d587252-21b5-4982-b70a-4cfee6ae49bd',
+    'ingenium-current': 'pvc-1005b62c-b731-4c76-a68c-f635ef74c378',
 }
 CONTEXT = None
 POD = 'instance-manager-0f44e66d715a28714766cec73f9ec067'
@@ -65,9 +67,17 @@ def context(root, alias):
     backup = json.loads((run / 'completed-backup.json').read_text())
     attached = json.loads((run / 'attached-proof.json').read_text())
     need(profile['volume']['metadata']['name'] == ALLOWED[alias] == result['volume'] == backup['status']['volumeName'], 'fixed_completed_dataset')
-    need(result['status'] == 'completed_native_backup_and_detach' and result['originalVolumeSpecRestored']
-         and result['originalReplicaUIDsPreserved'] and result['detachedAgain']
-         and result['coldNoFrontendNoConsumer'] and not result['forceDetach'], 'normal_detached_backup_required')
+    if alias in ('ruckus-current', 'ingenium-current'):
+        need(profile.get('liveWriter') and result['status'] == 'completed_native_live_backup'
+             and result['originalVolumeSpecRestored'] and result['originalReplicaUIDsPreserved']
+             and result['originalWriterPodsImagesAndRestartsPreserved']
+             and result['consistency'] == 'live-native-sync-atomic-snapshot'
+             and not result['filesystemFreezeClaimed'] and not result['databaseQuiescenceClaimed']
+             and not result['attachmentOrWorkloadChanged'], 'exact_live_writer_backup_and_consistency_binding')
+    else:
+        need(result['status'] == 'completed_native_backup_and_detach' and result['originalVolumeSpecRestored']
+             and result['originalReplicaUIDsPreserved'] and result['detachedAgain']
+             and result['coldNoFrontendNoConsumer'] and not result['forceDetach'], 'normal_detached_backup_required')
     need(backup['metadata']['uid'] == result['backupUID'] and backup['metadata']['name'] == result['backup']
          and backup['status']['state'] == 'Completed' and result['volumeUID'] == profile['volume']['metadata']['uid'], 'native_backup_and_original_volume_UID_chain')
     need(profile['volume']['spec']['encrypted'] and profile['volume']['spec']['dataEngine'] == 'v1', 'encrypted_v1_dataset')

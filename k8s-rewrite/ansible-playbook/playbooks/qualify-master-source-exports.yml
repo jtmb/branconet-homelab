@@ -1,0 +1,17 @@
+---
+- name: Read-only exact original master generated source export qualification
+  hosts: master
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - name: Require the fixed master
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'masternode'
+          - ansible_host == '192.168.0.4'
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+    - name: Qualify archived source and exact generated exports without changing them
+      qualify_master_source_exports:
+      no_log: true

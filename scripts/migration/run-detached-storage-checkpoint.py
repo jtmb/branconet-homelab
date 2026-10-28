@@ -20,10 +20,10 @@ def main():
     parser.add_argument('--phase', choices=['prepare', 'apply', 'observe'], required=True)
     parser.add_argument('--volume', choices=['storage-proof', 'storage-restored', 'nas-bortus-restore',
                         'bortus-restore', 'pihole-old-0', 'pihole-old-1', 'gluetun-old', 'qbittorrent-old',
-                        'ruckus-old', 'wordpress-unused'], required=True)
+                        'ruckus-old', 'wordpress-unused', 'ruckus-current', 'ingenium-current'], required=True)
     args = parser.parse_args()
     assert os.geteuid() == 1000 and F.is_mount() and R.resolve() == R
-    bindings = json.loads((R / 'source-binding-v3.json').read_text())
+    bindings = json.loads((R / 'source-binding-v4.json').read_text())
     assert all(hashlib.sha256(Path(p).read_bytes()).hexdigest() == h for p, h in bindings['sources'].items())
     for path in (F, Path('/mnt/c')):
         s = os.statvfs(path)

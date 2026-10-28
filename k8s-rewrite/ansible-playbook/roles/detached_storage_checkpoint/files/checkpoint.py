@@ -29,7 +29,10 @@ VOLUMES = {
     'qbittorrent-old': 'pvc-6aa3aaa5-f609-4f74-88f0-b5c15e846703',
     'ruckus-old': 'pvc-0bf707c8-628e-4284-9aa0-35b711c8749b',
     'wordpress-unused': 'pvc-49df631b-614f-4180-b6e5-f719db4bfe2c',
+    'ruckus-current': 'pvc-3d587252-21b5-4982-b70a-4cfee6ae49bd',
+    'ingenium-current': 'pvc-1005b62c-b731-4c76-a68c-f635ef74c378',
 }
+LIVE = {VOLUMES['ruckus-current'], VOLUMES['ingenium-current']}
 READS = {'volumes.longhorn.io', 'volumeattachments.longhorn.io', 'replicas.longhorn.io',
          'engines.longhorn.io', 'engineimages.longhorn.io', 'instancemanagers.longhorn.io',
          'settings.longhorn.io', 'backuptargets.longhorn.io', 'nodes.longhorn.io',
@@ -132,6 +135,22 @@ def no_consumer(claim):
     return readers
 
 
+def live_consumers(claim):
+    found = []
+    for pod in items('pods', namespace=claim['metadata']['namespace']):
+        if not any(v.get('persistentVolumeClaim', {}).get('claimName') == claim['metadata']['name']
+                   for v in pod['spec'].get('volumes', [])):
+            continue
+        need(pod['status'].get('phase') == 'Running' and not pod['metadata'].get('deletionTimestamp')
+             and pod['status'].get('containerStatuses')
+             and all(c['ready'] for c in pod['status']['containerStatuses']), 'existing_writer_must_stay_running_ready')
+        found.append({'name': pod['metadata']['name'], 'uid': pod['metadata']['uid'],
+                      'imageIDs': [c['imageID'] for c in pod['status']['containerStatuses']],
+                      'restarts': [c['restartCount'] for c in pod['status']['containerStatuses']]})
+    need(len(found) == 1, 'one_exact_existing_live_writer')
+    return found
+
+
 def bound_state(profile):
     volume = get('volumes.longhorn.io', profile['volume']['metadata']['name'])
     claim = get('pvc', profile['claim']['metadata']['name'], profile['claim']['metadata']['namespace'])
@@ -141,7 +160,13 @@ def bound_state(profile):
          and pv['metadata']['uid'] == profile['pv']['metadata']['uid']
          and claim['status']['phase'] == 'Bound' and pv['spec']['csi']['volumeHandle'] == volume['metadata']['name']
          and pv['spec']['claimRef']['uid'] == claim['metadata']['uid'], 'original_claim_pv_volume_chain')
-    no_consumer(claim)
+    if profile.get('liveWriter'):
+        need(volume['metadata']['name'] in LIVE and live_consumers(claim) == profile['liveConsumers']
+             and volume['status']['state'] == 'attached' and volume['status']['robustness'] == 'healthy'
+             and volume['spec']['nodeID'] == profile['volume']['spec']['nodeID']
+             and not volume['status']['frontendDisabled'], 'unchanged_live_writer_frontend_and_placement')
+    else:
+        no_consumer(claim)
     need(volume['spec']['image'] == IMAGE and volume['status']['currentImage'] == IMAGE
          and volume['spec']['numberOfReplicas'] == 2 and volume['spec']['encrypted']
          and volume['spec']['dataEngine'] == 'v1' and not volume['spec'].get('migrationNodeID')
@@ -178,13 +203,15 @@ def prepare(run, name):
     baseline = json.loads((O / 'longhorn-preflight-recovery-mapping/live.json').read_text())
     previous = next(v for v in baseline['volumes'] if v['name'] == name)
     volume = get('volumes.longhorn.io', name)
-    need(volume['metadata']['uid'] == previous['uid'] and volume['status']['state'] == 'detached'
-         and not volume['spec']['nodeID'], 'original_detached_volume_required')
+    live = name in LIVE
+    need(volume['metadata']['uid'] == previous['uid'] and
+         ((live and volume['status']['state'] == 'attached' and volume['spec']['nodeID'])
+          or (not live and volume['status']['state'] == 'detached' and not volume['spec']['nodeID'])), 'original_volume_state_required')
     claim = next(c for c in items('pvc', namespace=None, all_ns=True) if c['spec'].get('volumeName') == name)
     pv = get('pv', name, namespace=None)
     replicas = [r for r in items('replicas.longhorn.io') if r['spec']['volumeName'] == name]
     repair_missing = name == VOLUMES['ruckus-old'] and len(replicas) == 1
-    need((len(replicas) == 2 or repair_missing) and all(r['status']['currentState'] == 'stopped'
+    need((len(replicas) == 2 or repair_missing) and all(r['status']['currentState'] == ('running' if live else 'stopped')
          and not r['spec'].get('failedAt') and r['spec'].get('healthyAt') for r in replicas), 'two_previously_healthy_stopped_replicas_required')
     if repair_missing:
         need(volume['spec']['numberOfReplicas'] == 2, 'existing_two_replica_intent_never_reduced')
@@ -192,8 +219,8 @@ def prepare(run, name):
         need(len(nodes) == 3 and all(d['storageAvailable'] > d['storageMaximum'] // 4
              + int(volume['spec']['size']) + 512 * 1024**2
              for n in nodes for d in n['status']['diskStatus'].values()), 'all_possible_rebuild_nodes_keep_floor_full_volume_and_margin')
-    backup_node = 'workernode2' if name == VOLUMES['pihole-old-1'] else 'workernode1'
-    need(backup_node in {r['spec']['nodeID'] for r in replicas}, 'existing_selected_replica_node_required')
+    backup_node = volume['spec']['nodeID'] if live else ('workernode2' if name == VOLUMES['pihole-old-1'] else 'workernode1')
+    need(live or backup_node in {r['spec']['nodeID'] for r in replicas}, 'existing_selected_replica_node_required')
     node = get('nodes.longhorn.io', backup_node)
     need(any(c['type'] == 'Ready' and c['status'] == 'True' for c in node['status']['conditions']), 'existing_backup_node_ready')
     disk = next(iter(node['status']['diskStatus'].values()))
@@ -207,19 +234,90 @@ def prepare(run, name):
          and get('settings.longhorn.io', 'default-engine-image')['value'] == IMAGE, 'installed_engine_generation_unchanged')
     token = 'migration-preserve-' + uuid.uuid4().hex[:12]
     profile = {'volume': volume, 'claim': claim, 'pv': pv, 'replicas': replicas,
+               'liveWriter': live, 'liveConsumers': live_consumers(claim) if live else [],
                'allowOriginalMissingReplica': repair_missing,
                'attachment': get('volumeattachments.longhorn.io', name), 'target': target, 'node': meta(node),
                'token': token, 'sourceSHA256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                'ticket': {'id': token, 'generation': 0, 'type': 'longhorn-api', 'nodeID': backup_node,
                           'parameters': {'disableFrontend': 'true', 'lastAttachedBy': token}}}
     bound_state(profile)
-    patch = ticket_patch(profile)
-    patch['dryRun'] = True
-    dry = call(patch)
-    need(dry['spec']['attachmentTickets'][token] == profile['ticket'], 'native_ticket_defaults_match_reviewed_ticket')
+    if not live:
+        patch = ticket_patch(profile)
+        patch['dryRun'] = True
+        dry = call(patch)
+        need(dry['spec']['attachmentTickets'][token] == profile['ticket'], 'native_ticket_defaults_match_reviewed_ticket')
     save(run, 'profile.json', profile)
-    save(run, 'prepare-result.json', {'status': 'prepared', 'volume': name, 'backupNode': backup_node, 'frontendWillBeDisabled': True,
-                                    'attachmentPatchServerDryRunPassed': True, 'clusterMutation': False})
+    save(run, 'prepare-result.json', {'status': 'prepared', 'volume': name, 'backupNode': backup_node, 'frontendWillBeDisabled': not live,
+                                    'attachmentPatchServerDryRunPassed': not live, 'liveWriter': live, 'clusterMutation': False})
+
+
+def apply_live(run, profile, observe=False):
+    need(profile.get('liveWriter') and profile['volume']['metadata']['name'] in LIVE
+         and hashlib.sha256(Path(__file__).read_bytes()).hexdigest() == profile['sourceSHA256'], 'exact_live_writer_prepared_source')
+    name, token = profile['volume']['metadata']['name'], profile['token']
+    receipt = 'observe-result.json' if observe else 'apply-result.json'
+    need(not (run / receipt).exists(), 'original_live_attempt_preserved')
+    result = {'status': 'started', 'volume': name, 'volumeUID': profile['volume']['metadata']['uid'],
+              'token': token, 'snapshot': token, 'backup': token + '-backup', 'liveWriter': True,
+              'consistency': 'live-native-sync-atomic-snapshot', 'filesystemFreezeClaimed': False,
+              'databaseQuiescenceClaimed': False, 'sourceSHA256': profile['sourceSHA256'],
+              'independentRestoreVerified': False, 'attachmentOrWorkloadChanged': False}
+    def wait(kind, resource, predicate, seconds):
+        deadline = time.monotonic() + seconds
+        while True:
+            obj = get(kind, resource)
+            need(not obj.get('status', {}).get('error'), 'native_live_backup_error')
+            if predicate(obj):
+                return obj
+            need(time.monotonic() < deadline, 'native_live_backup_deadline')
+            time.sleep(3)
+    def state():
+        volume, replicas = bound_state(profile)
+        need(volume['spec'] == profile['volume']['spec'], 'entire_live_volume_spec_unchanged')
+        engines = [e for e in items('engines.longhorn.io') if e['spec']['volumeName'] == name]
+        need(len(engines) == 1 and engines[0]['status']['currentState'] == 'running'
+             and list(engines[0]['status']['replicaModeMap'].values()).count('RW') == 2
+             and len(engines[0]['status']['replicaModeMap']) == 2, 'live_two_actual_rw_replicas')
+        return {'volume': volume, 'replicas': replicas, 'engine': engines[0]}
+    try:
+        before = state()
+        need(get('settings.longhorn.io', 'current-longhorn-version')['value'] in ('v1.12.1', '1.12.1')
+             and get('backuptargets.longhorn.io', 'default')['status']['available'], 'unchanged_installed_version_available_target')
+        if not observe:
+            save(run, 'apply-intent.json', result)
+            save(run, 'attached-proof.json', before)
+            snapshot = {'apiVersion': 'longhorn.io/v1beta2', 'kind': 'Snapshot',
+                        'metadata': {'name': token, 'namespace': LH, 'labels': {'migration-preservation': token}},
+                        'spec': {'volume': name, 'createSnapshot': True,
+                                 'labels': {'consistency': result['consistency']}}}
+            result['snapshotUID'] = call({'verb': 'create', 'object': snapshot})['metadata']['uid']
+            completed = wait('snapshots.longhorn.io', token, lambda s: s.get('status', {}).get('readyToUse'), 180)
+            need(completed['metadata']['uid'] == result['snapshotUID'] and completed['spec']['volume'] == name, 'exact_live_snapshot_ready')
+            save(run, 'completed-snapshot.json', completed)
+            state()
+            backup = {'apiVersion': 'longhorn.io/v1beta2', 'kind': 'Backup',
+                      'metadata': {'name': token + '-backup', 'namespace': LH,
+                                   'labels': {'backup-target': 'default', 'backup-volume': name, 'migration-preservation': token}},
+                      'spec': {'snapshotName': token, 'backupMode': 'full', 'labels': {'consistency': result['consistency']}}}
+            result['backupUID'] = call({'verb': 'create', 'object': backup})['metadata']['uid']
+        completed = wait('backups.longhorn.io', token + '-backup', lambda b: b.get('status', {}).get('state') == 'Completed', 1800)
+        need(completed['status']['volumeName'] == name and completed['status']['snapshotName'] == token
+             and completed['status']['backupTargetName'] == 'default', 'exact_live_backup_target_snapshot_volume')
+        if not observe:
+            need(completed['metadata']['uid'] == result['backupUID'], 'created_live_backup_uid_preserved')
+        save(run, 'completed-backup-observed.json' if observe else 'completed-backup.json', completed)
+        save(run, 'live-writers-after-observed.json' if observe else 'live-writers-after.json', state())
+        result.update(status='completed_native_live_backup', backupUID=completed['metadata']['uid'], backupState='Completed',
+                      backupURL=completed['status'].get('url'), originalVolumeSpecRestored=True,
+                      originalReplicaUIDsPreserved=True, originalWriterPodsImagesAndRestartsPreserved=True,
+                      completedUTC=timestamp())
+    except Exception as error:
+        result.update(status='failed_preserve_existing_writers_and_objects',
+                      errorCategory=str(error) if isinstance(error, ValueError) else type(error).__name__)
+        raise
+    finally:
+        save(run, receipt, result)
+        print(json.dumps({k: result.get(k) for k in ['status', 'volume', 'backupState', 'errorCategory']}))
 
 
 def apply(run, profile, observe=False):
@@ -375,7 +473,7 @@ def main():
                 raise
         else:
             profile = json.loads((run / 'profile.json').read_text())
-            apply(run, profile, observe=args.phase == 'observe')
+            (apply_live if profile.get('liveWriter') else apply)(run, profile, observe=args.phase == 'observe')
     finally:
         os.close(descriptor)
 

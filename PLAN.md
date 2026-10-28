@@ -1,5 +1,19 @@
 # Cluster maintenance and application migration plan
 
+**October 28, 00:08 UTC checkpoint:** both current-writer native backups are
+complete. All 43 initialized Longhorn volumes have Completed native backup
+coverage; the unused WordPress destination has its separate no-payload proof.
+Eleven newly recovered datasets total 5,831 independently verified RAW blocks.
+Ingenium's original optional RAW-copy timeout is preserved explicitly, with its
+complete native backing verified and partial copy losslessly represented.
+All 30,962,319,360 allocated recovery scratch bytes are reconciled.
+[Exact current-writer acceptance](docs/CURRENT-WRITER-NATIVE-RECOVERY-20261027.md).
+Ansible retired another 749,178,880 node bytes of generated source export copies,
+preserving original source/locks/deltas and the unmatched link; node cumulative
+cleanup is 26,458,361,856 bytes. [Exact proof](docs/MASTER-SOURCE-EXPORT-RETIREMENT-20261027.md).
+The goal stays active. Finish remaining server headroom, guarded Longhorn upgrade,
+exact final fleet/security/route evidence and normal Seerr/YTPTube IAB checks.
+
 **October 27, 22:05 UTC lineage:** the unused retired WordPress destination's
 original source/spec/UID chain and physical absence of both configured replica
 directories prove no initialized payload. No mount, initialization or backup was

@@ -23,6 +23,7 @@ ALLOWED = {
     'homepage-aa157513b991-5314aaaa2d8a', 'homepage-2416f68cc1cb-94943ae43cb2',
     'homepage-0946c373ff28-a5d9b4936405', 'mealie-c692b307681c-540ac3a24c60',
     'mealie-766e20940e51-251e7197fbb8', 'jackett-9090c0aa2ee9-c1da97fb5e55',
+    'coredns-dcde68aca308-3b908220b397',
 }
 GIT = '/usr/bin/git'
 REPO = '/mnt/c/Users/james/.codex/local-ci/branconet-charts-local-ci'
