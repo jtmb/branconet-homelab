@@ -7,8 +7,8 @@ accounts/history/original files persist; YTPTube normal login and completed brow
 playback pass. Matching post-upgrade NAS/offline recovery passes. All current
 64 runtime digests have complete fresh reports; remaining vendor CVEs and BORTUS's
 separate owner hold are explicit exceptions. Authenticated Seerr UI validation is
-pending the original account login requested during the work. The full goal stays
-active. [Current contract, evidence and exact cleanup](docs/OFFICIAL-SECURITY-REFRESH-20261028.md).
+pending the original account login requested during the work. The full goal
+remains incomplete. [Current contract, evidence and exact cleanup](docs/OFFICIAL-SECURITY-REFRESH-20261028.md).
 
 **October 28 upstream refresh:** all 65 current image digests have fresh public
 security reports. Two compatible official updates are being staged: MySQL 8.4
@@ -718,7 +718,7 @@ they add completion requirements without replacing its migration/security scope.
   shutdown or VHDX compaction requires separate disruption approval; a Linux
   measurement never proves Windows disk recovery.
 
-**Current tracker:** the revised five-milestone goal is saved and **active** in
+**Current tracker:** the revised five-milestone goal is saved and incomplete in
 this chat. [Exact supported readback](evidence/revised-goal-readback-20261025.json).
 This supersedes the historical goal-control limitation below. Cleanup and SMB
 verification passed the October 25 20:23 UTC cluster health check; preserved
@@ -933,7 +933,7 @@ data migrations, and new publication infrastructure. Existing unsupported/unfixe
 security findings remain reported in the overall goal; they are not silently
 discarded or treated as migration failures when no compatible fix exists. Extra
 benchmarks and bespoke third-party image optimization are not finish prerequisites.
-The revised five-milestone goal is saved and active. The successful supported
+The revised five-milestone goal is saved and incomplete. The successful supported
 readback supersedes the historical goal-control limitation. An unmet browser
 gate must not be turned into a full completion claim.
 
@@ -958,7 +958,7 @@ local validation → validated → Flux path. Preserve working services, source,
 data, PVCs, resource limits, rollback artifacts and all prior approval boundaries.
 Earlier rebuild candidates, recipes and evidence remain historical; their
 presence is not authorization to execute them. The current tracked objective is
-the saved revised five-milestone goal, active and incomplete pending acceptance.
+the saved revised five-milestone goal, incomplete pending acceptance.
 
 The delivery goal is to finish the data-preserving Overseerr-to-Seerr migration,
 replace broken MeTube with a working YouTube downloader, audit the entire existing

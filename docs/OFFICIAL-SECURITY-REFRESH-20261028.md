@@ -1,10 +1,18 @@
 # October 28 delivered security updates and remaining acceptance
 
 MySQL and YTPTube security updates are deployed and their data checks pass.
-The goal remains active because the authenticated Seerr browser check needs
+The goal remains incomplete because the authenticated Seerr browser check needs
 an original account login. The trusted Seerr sign-in page itself renders normally;
 no original account was reset or replaced. The user was asked for that login
 during the work, while cleanup continued.
+
+The same required login gate was revalidated on three consecutive goal turns:
+the actual IAB page remains at `/login`. A final read-only check of the existing
+`overseerr-runtime` Secret found runtime-environment keys and no account-login
+credential keys. Original users and their credential/permission records remain
+preserved. The prior sign-in request is still pending; an original-account normal
+browser session is required to finish the remaining acceptance check.
+[Exact blocker observation](../evidence/seerr-browser-blocker-20261028.json).
 
 A subsequent [requirement-by-requirement completion audit](../evidence/completion-audit-20261028.json)
 rehashed 19 actual acceptance/recovery/cleanup receipts, verified all three owned

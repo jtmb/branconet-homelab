@@ -91,4 +91,4 @@ owned-image publication path is unresolved must not block or repeat this work.
 Current acceptance is [the October 28 delivery ledger](OFFICIAL-SECURITY-REFRESH-20261028.md).
 Seerr's original-account authenticated browser check remains open. Remaining
 vendor CVEs, host entitlement exclusions and the BORTUS hold remain explicit;
-they are not claims of a vulnerability-free cluster. The full goal stays active.
+they are not claims of a vulnerability-free cluster. The full goal remains incomplete.
