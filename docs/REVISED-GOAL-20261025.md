@@ -46,7 +46,11 @@ active tracker as well as this plan.
 
 Complete the data-preserving Kubernetes maintenance requested in this chat: preserve every account, credential/permission identity and request/history record in the Overseerr-to-Seerr migration; replace failing MeTube with a working YouTube downloader while preserving existing PVCs/NAS downloads and proving a real download plus restart persistence; audit the whole cluster against current disclosed vulnerabilities and remediate compatible available fixes, reporting unsupported and unfixed findings honestly. Maintain only images and repositories James owns. Do not maintain, patch or rebuild third-party upstream service images as bespoke derivative forks; consume maintained upstream releases through repository-managed version/digest updates and appropriate validation. For owned images, maintained changes, build definitions, dependency changes and update mechanisms must be represented in the owned repository. Ad hoc locally built/saved images or tar archives must not be the maintained deployment source. Every deployment artifact requires reproducible repository-backed provenance and an already approved publication path. Keep GitHub Actions OFF and local testing enabled; local validation does not authorize local-only deployment-image maintenance. Do not invent a registry or publication route. Identify existing deviations and plan a safe repository-backed transition; name any missing build/publication decision without silently substituting a route. Preserve working deployments, repositories, dirty source changes, service data, PVCs, required recovery/rollback artifacts, resource limits and running Strata. This scope correction alone authorizes neither destructive migration nor new external publication. Finish authorized artifact cleanup and verified SMB recovery backup handling before resuming this revised delivery scope. Put repeatable host changes in Ansible and publish reviewed charts through the private branconet-charts local validation -> validated -> Flux path, preserving prior compatible deployment, merge and approval boundaries. Native Kubernetes Secrets managed through BORTUS remain authoritative. Keep BORTUS application development and its unfinished release in its separate owner chat. Finish with exact deployed-image/data/route checks and Codex IAB validation after implementation; update PLAN.md, MIGRATION_STATUS.md and acceptance evidence. A build, prepared script, host patch checkpoint or partial security reduction does not complete this goal.
 
-## Goal-control receipt and limitation
+## Historical goal-control receipt before the successful update
+
+The following is the earlier failed-control observation. It does not describe
+the current tracker: the successful update/readback above and the October 28
+active-goal readback supersede it. The objective and acceptance scope are intact.
 
 Supported `get_goal` readback identifies thread
 `01a12045-bf7e-73b3-8557-752d17c72ffd`, status `paused`,
@@ -66,21 +70,25 @@ The exact old objective returned by `get_goal` was:
 
 ## Current deviations and transition
 
-The currently deployed `*-security-20261023` derivative images and undeployed
-third-party rebuild candidates belong to the earlier approach. Their full
-archives, source, scans and failed attempts remain historical/recovery evidence.
-Do not rebuild or promote those candidates under the corrected scope. Working
-deployments stay running until each compatible upstream release is selected,
-represented by version/digest in the charts repository, and qualified against
-existing data and integrations. Rollback artifacts are retained through that
-transition. Source recipes are preserved, not deleted or portrayed as current
-approved maintenance policy.
+October 28 live main/init-container inspection found no remaining running
+`*-security-20261023` references. Those original candidates, source, scans and
+failures are historical/recovery evidence, not instructions to rebuild or deploy
+them. Current vendor images and both latest official security updates are
+represented in private charts and the complete current runtime scan binding.
+Preserve original recovery sources and every recorded failed safety exclusion.
 
-For first-party owned images, repository source/build definitions and provenance
-are required. A replacement approved build-to-publication route has not been
-established here: GitHub Actions is disabled, local-only saved deployment images
-are rejected by the correction, and no new registry/publication is authorized.
-That exact owned-image publication decision remains open. Third-party maintained
-upstream image references can use their established publication paths; they do
-not require us to operate derivative builds. Evaluate registry access and the
-actual compatible upstream release before changing any running image.
+The existing Docker Hub publication route is established, with no new registry
+or Actions. The three remediation releases have repository-owned definitions,
+locks, publication and exact runtime provenance: [qbit-monitor](OWNED-QBIT-MONITOR-20261027.md),
+[personal site](OWNED-PERSONAL-SITE-20261027.md) and
+[Ruckus](OWNED-RUCKUS-RELEASE-20261027.md). Their live immutable images still match
+those receipts. The separately delivered Ingenium image retains its existing
+source/installation/data acceptance and published digest; its runtime cycle
+changed no application source. BORTUS and its unfinished application release
+remain explicitly held with the separate owner. The superseded claim that every
+owned-image publication path is unresolved must not block or repeat this work.
+
+Current acceptance is [the October 28 delivery ledger](OFFICIAL-SECURITY-REFRESH-20261028.md).
+Seerr's original-account authenticated browser check remains open. Remaining
+vendor CVEs, host entitlement exclusions and the BORTUS hold remain explicit;
+they are not claims of a vulnerability-free cluster. The full goal stays active.

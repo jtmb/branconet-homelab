@@ -888,7 +888,7 @@ review and final IAB remain open; no bespoke third-party patch was rebuilt.
 Cleanup removed 4096 allocated Linux bytes from one empty scratch directory,
 retaining all recovery originals, sources and failure evidence. The goal is active.
 
-## Bounded finish plan — October 25, 20:24 UTC
+## Controlling finish sequence — updated October 28
 
 This section controls the remaining sequence. Earlier chronological proposals
 below are history. [Revised objective and actual goal-control readback](docs/REVISED-GOAL-20261025.md).
@@ -908,17 +908,17 @@ existing replicas passed. Exact evidence: [Seerr](docs/SEERR-ACCEPTANCE.md),
 | 4 — bounded remediation | Apply compatible upstream security updates one service at a time through charts → local validation → validated → Flux; retain unsupported/unfixed findings | Exact deployed digest, state/integration/route/restart checks pass for each change; repeatable host fixes in Ansible; no source-only candidate counted as deployed |
 | 5 — close delivery | After all implementation, perform final Codex IAB login/requests/history/downloader acceptance, then reconcile final inventory, recovery pointers and exceptions | Actual normal UI behavior and documentation match live state; migration acceptance and security exceptions are explicit; only then assess whether the full goal is complete |
 
-**Concrete delays:** bespoke rebuilds consumed time and are now superseded;
-Windows memory-floor failures stopped Traefik compilation; node build state used
-space needed for safe operations. No more derivative build retries are planned.
-Cleanup has reclaimed 55,587,958,784 allocated node bytes so far. Third-party
-upstream compatibility and registry availability are the remaining per-service
-dependencies. Owned-image publication is an exact unresolved decision: Actions
-is off, local-only saved deployment images are excluded, and no replacement
-publication route is approved. Do not block third-party upstream inventory or
-migration UI checks on that owned-image decision.
+**Current disposition:** cleanup/recovery and compatible upstream/owned
+transitions have actual delivery evidence in the October 28 ledger. Normal
+YTPTube login, preserved history and complete video playback pass. Seerr's
+original account login is the remaining normal-browser gate. No third-party
+derivative build retry or new registry is required. The existing Docker Hub route
+and repository-backed releases are established in [qbit-monitor](docs/OWNED-QBIT-MONITOR-20261027.md),
+[personal site](docs/OWNED-PERSONAL-SITE-20261027.md) and
+[Ruckus](docs/OWNED-RUCKUS-RELEASE-20261027.md). The unresolved-publication
+assumption is superseded; source-only preparation is still not delivery.
 
-**Effort estimate, not a deadline:** cleanup health/documentation plus migration
+**Historical October 25 estimate, not current remaining work:** cleanup health/documentation plus migration
 UI/revision acceptance should take about 1–2 hours hands-on, 1–3 hours elapsed if
 the running apps authenticate normally. Inventory/triage should take another
 30–60 minutes. A fleet transition involving roughly two dozen stateful upstream
@@ -933,9 +933,9 @@ data migrations, and new publication infrastructure. Existing unsupported/unfixe
 security findings remain reported in the overall goal; they are not silently
 discarded or treated as migration failures when no compatible fix exists. Extra
 benchmarks and bespoke third-party image optimization are not finish prerequisites.
-The tracked goal is still paused with its earlier objective because available
-goal controls cannot edit or resume it; the supported limitation is recorded,
-not bypassed through raw session edits or a false completion.
+The revised five-milestone goal is saved and active. The successful supported
+readback supersedes the historical goal-control limitation. An unmet browser
+gate must not be turned into a full completion claim.
 
 ## Controlling scope correction — October 25, 20:19 UTC
 
@@ -947,8 +947,9 @@ validation; do not continue bespoke dependency/runtime image forks. Owned-image
 build definitions, changes, provenance and update mechanisms belong in the owned
 repository, with an already approved publication path. Local saved OCI archives
 are recovery evidence, not the maintained deployment source. GitHub Actions stays
-OFF. An approved replacement owned-image build/publication path is not established
-here; do not invent a registry or silently substitute local-only deployment builds.
+OFF. The existing Docker Hub route and three repository-backed remediation
+releases are established in the linked owned-release ledgers. Do not invent a
+registry or silently substitute local-only deployment builds.
 
 Finish safe artifact cleanup and verified SMB recovery copies first. Then audit
 current derivative deployments, select compatible maintained upstream images,
@@ -956,8 +957,8 @@ record digests in charts, and migrate one service at a time through the existing
 local validation → validated → Flux path. Preserve working services, source,
 data, PVCs, resource limits, rollback artifacts and all prior approval boundaries.
 Earlier rebuild candidates, recipes and evidence remain historical; their
-presence is not authorization to execute them. The actual tracked objective
-remains unchanged/paused because the goal tool exposes no objective-edit control.
+presence is not authorization to execute them. The current tracked objective is
+the saved revised five-milestone goal, active and incomplete pending acceptance.
 
 The delivery goal is to finish the data-preserving Overseerr-to-Seerr migration,
 replace broken MeTube with a working YouTube downloader, audit the entire existing
@@ -972,12 +973,12 @@ passed; see [the execution ledger](docs/RUCKUS-HA-RECOVERY.md).
 
 ## Acceptance contract
 
-October 25 cleanup interruption: the user explicitly stopped builds and rollouts
-to clean task artifacts from the nodes. The goal is paused while that cleanup
-runs. Repositories, live workloads, PVCs, rollback images and unique evidence
-remain preserved. The user subsequently authorized resuming the existing goal
-after cleanup is complete and safe. Recovery backups may be stored in the
-dedicated NAS folder. See [image ownership and hardening](docs/IMAGE-PATCHING-AND-HARDENING.md).
+The October 25 interruption was a historical cleanup-first gate. The user
+subsequently authorized resuming after safe cleanup. Current cleanup, recovery
+and live delivery receipts are in the October 28 ledger; the tracker is active.
+Repositories, workloads, PVCs, original rollback sources and unique evidence
+remain protected. Recovery backups use the dedicated approved NAS folder.
+See [image ownership and hardening](docs/IMAGE-PATCHING-AND-HARDENING.md).
 
 - Preserve original account IDs, credentials/Plex identities, permissions,
   settings, request/history relationships and data through Seerr migration.
@@ -995,7 +996,7 @@ dedicated NAS folder. See [image ownership and hardening](docs/IMAGE-PATCHING-AN
 - Patch available compatible node/application vulnerabilities with actual exact
   artifact scans and live checks. Record unfixed findings and migration gates;
   do not claim absence of unknown zero-days or a clean cluster from partial work.
-- Repeatable work uses the 20 included opt-in maintenance playbooks and paired
+- Repeatable work uses the original and subsequent opt-in maintenance playbooks and paired
   controller/qualification helpers. No destructive reset/bootstrap or broad
   filesystem cleanup belongs to this maintenance deliverable.
 
@@ -1024,15 +1025,13 @@ flowchart LR
    apps: original login/Plex/permissions/history, normal downloader login and
    playable/retrievable output. Backend preservation/restart/routes have passed;
    those checks do not substitute for this final browser gate.
-3. Finish compatible security image work. FlareSolverr's additive Python/OS
-   derivative built in run 40058492329 and its exact scan completed: four critical,
-   193 high, zero available critical/high fixes in the retained database. Preserve
-   all original and failed attempts. Actual Flux rollout, nonroot startup, matched
-   browser/driver, real browser request and all-node routes passed at03:53UTC.
-   Finish Vaultwarden route/client checks; continue Tautulli's compatible update,
-   Unpackerr's Go
-   rebuild, Pi-hole same-app OS patch, Plex runtime/bootstrap resolution and
-   the remaining exact inventory's derivative/major-version evaluations.
+3. Reconcile completed compatible security work against current image identities.
+   Earlier derivative build instructions are historical and superseded. Current
+   vendor images, repository-backed owned releases, host fixes and both latest
+   official updates have delivery/data/restart evidence in their linked ledgers.
+   Retain residual findings when no compatible vendor fix exists, rather than
+   forking upstream images. BORTUS's unfinished release stays with its separate
+   owner; no hold is lifted by this plan.
 4. Every changed artifact needs preserved source/CI identity, an unsuppressed
    exact scan and compatibility review. Quiesce stateful writers through Flux,
    capture/authenticate the cold state, apply the reviewed digest-only chart

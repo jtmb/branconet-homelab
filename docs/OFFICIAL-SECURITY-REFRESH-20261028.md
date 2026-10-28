@@ -6,6 +6,14 @@ an original account login. The trusted Seerr sign-in page itself renders normall
 no original account was reset or replaced. The user was asked for that login
 during the work, while cleanup continued.
 
+A subsequent [requirement-by-requirement completion audit](../evidence/completion-audit-20261028.json)
+rehashed 19 actual acceptance/recovery/cleanup receipts, verified all three owned
+remediation images against their delivered repository releases, and confirmed
+that the live 64-digest set still matches the complete security bindings. It also
+corrected stale controlling-plan text that incorrectly described completed
+publication work as unresolved or the tracker as paused. The original objective
+and browser gate remain intact; no new fixture test, build or rollout was run.
+
 | Contract | Current evidence |
 | --- | --- |
 | One existing CI/CD path | Private charts main → unchanged local validation → validated → Flux; Actions remained off. |
