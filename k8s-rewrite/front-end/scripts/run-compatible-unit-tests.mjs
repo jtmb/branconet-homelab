@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {readFileSync,writeFileSync,readdirSync,lstatSync,existsSync} from 'node:fs';
 import {join,resolve} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
-import {unitTestPlan,executionFor,executionBatches,artifactStages,assertArtifactState} from './auth-login-current-unit-plan.mjs';
+import {unitTestPlan,executionFor,executionBatches,artifactStages,assertArtifactState} from './auth-register-current-unit-plan.mjs';
 const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
 export function qualificationFingerprint(root,plan){
  const files=[];
