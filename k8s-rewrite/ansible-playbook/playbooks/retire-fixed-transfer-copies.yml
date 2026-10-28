@@ -1,0 +1,19 @@
+---
+- name: Retire three fixed duplicate transfers while preserving exact primaries
+  hosts: masternode:workernode2
+  serial: 1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - name: Require the fixed targets and explicit retirement
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname in ['masternode', 'workernode2']
+          - ansible_host in ['192.168.0.4', '192.168.0.5']
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - fixed_transfer_copies_retire | default(false) | bool
+    - name: Qualify and retire only full-hash-matched duplicate files
+      retire_fixed_transfer_copies:
+      no_log: true

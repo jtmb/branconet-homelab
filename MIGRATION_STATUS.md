@@ -1,5 +1,15 @@
 # Migration and maintenance status
 
+**October 28, 00:34 UTC:** the complete thirteen-image Longhorn candidate now
+passes all three observed node budgets, retaining the measured host payload,
+512 MiB margin and unchanged storage controls. Exact duplicate transfers and
+inactive analysis-cache retirement recovered another 1,298,948,096 node bytes;
+cumulative node cleanup is **27,757,309,952 bytes**. Original primary archives,
+all reports/source and application data remain. Controller scratch is reconciled.
+[Exact methods, paths, capacity and remaining execution](docs/LONGHORN-NATIVE-CAPACITY-GATE-20261028.md).
+Production cache staging and manager/engine upgrades have not run. Full goal
+active; final fleet/security/normal Seerr/YTPTube browser gates remain.
+
 **October 28, 00:08 UTC:** current Ruckus and Ingenium native backups completed
 without changing writer Pod/image/restart, Volume spec or original replica UIDs.
 Eleven new datasets now have independent RAW verification, totaling 5,831 blocks.

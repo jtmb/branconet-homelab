@@ -1,0 +1,137 @@
+{
+  "status": "host_engine_payload_authenticated",
+  "sourceSHA256": "c519a839c812f0d9c78de18685e5d460443c1f6104c2623d85176a84c232a726",
+  "originalReaderSHA256": "6f2af1e8931cf9cd86be7f9dfcfd246fe3b584f71b49ddc6d75916cfcdc963a3",
+  "metadataSHA256": "0ae74c11c7d86df040615504369f51e5ba2063d5d555502e371587f143cc54c2",
+  "officialInstallSource": "https://raw.githubusercontent.com/longhorn/longhorn-manager/v1.13.0/controller/engine_image_controller.go",
+  "officialInstallSourceSHA256": "f0d28d937e52650f4dfc886695d1d75aa9da861050db11285edfb4ab69c961e7",
+  "resourceLimits": {
+    "memory.max": "536870912",
+    "memory.swap.max": "0",
+    "cpu.max": "100000 100000",
+    "pids.max": "64"
+  },
+  "layers": [
+    {
+      "digest": "sha256:8af4fdabeeb48d827aa9a70fddae38d78b86dcfef5656c18787c01e8c89049b6",
+      "diffID": "sha256:f0df7243347a6a5b7c375951819563a7052b65498d67c2a62157d0cafa3f002e",
+      "entries": [
+        {
+          "name": "usr",
+          "bytes": 0,
+          "type": "5"
+        },
+        {
+          "name": "usr/local",
+          "bytes": 0,
+          "type": "5"
+        },
+        {
+          "name": "usr/local/bin",
+          "bytes": 0,
+          "type": "5"
+        },
+        {
+          "name": "usr/local/bin/longhorn",
+          "bytes": 47761336,
+          "type": "0"
+        }
+      ]
+    },
+    {
+      "digest": "sha256:5cd3068ba0920ccd1b2305aea5e3df4199257dff50f94b4f8e78694ce8ee9b4a",
+      "diffID": "sha256:347d0826d868cbd87d44d4c4f243c0867f8841fdd10a7e2b35ab6cc0d80e5aae",
+      "entries": [
+        {
+          "name": "usr",
+          "bytes": 0,
+          "type": "5"
+        },
+        {
+          "name": "usr/local",
+          "bytes": 0,
+          "type": "5"
+        },
+        {
+          "name": "usr/local/bin",
+          "bytes": 0,
+          "type": "5"
+        },
+        {
+          "name": "usr/local/bin/longhorn-instance-manager",
+          "bytes": 82140648,
+          "type": "0"
+        }
+      ]
+    },
+    {
+      "digest": "sha256:e1849606d987ef48e419daab13928fd261cc93b2b09e540d8f75e853b649dba5",
+      "diffID": "sha256:3838414cbbc912a9286e810e1668f2e49039ca975becd443431895841ab867c9",
+      "entries": [
+        {
+          "name": "usr",
+          "bytes": 0,
+          "type": "5"
+        },
+        {
+          "name": "usr/local",
+          "bytes": 0,
+          "type": "5"
+        },
+        {
+          "name": "usr/local/bin",
+          "bytes": 0,
+          "type": "5"
+        },
+        {
+          "name": "usr/local/bin/engine-manager",
+          "bytes": 119,
+          "type": "0"
+        },
+        {
+          "name": "usr/local/bin/launch-simple-file",
+          "bytes": 1163,
+          "type": "0"
+        },
+        {
+          "name": "usr/local/bin/launch-simple-longhorn",
+          "bytes": 1377,
+          "type": "0"
+        }
+      ]
+    },
+    {
+      "digest": "sha256:535376b75c84412fcbf99a8ce19c14e91f8a980d5eb1af34ceba2b3507a23af4",
+      "diffID": "sha256:f5ba333679fde238d0ad161d1326623c9ed4ce9476b582275fa83a057c349c5c",
+      "entries": [
+        {
+          "name": "tini",
+          "bytes": 24064,
+          "type": "0"
+        }
+      ]
+    },
+    {
+      "digest": "sha256:eb2f8229d37517248fc22b3a1fa7f22df0e1f35c02191a8ca61a3856e074fc9a",
+      "diffID": "sha256:969568a5a38ff6aaafcb8777e51d5252c21b29151fc922b59e37109165b2e94f",
+      "entries": [
+        {
+          "name": "tini",
+          "bytes": 24064,
+          "type": "0"
+        }
+      ]
+    }
+  ],
+  "payloadWrittenToDisk": false,
+  "nodesChanged": false,
+  "UTC": "2026-10-28T00:20:13.087645+00:00",
+  "hostEngine": {
+    "pathInImage": "usr/local/bin/longhorn",
+    "bytes": 47761336,
+    "sha256": "7dcd126f14281cbadf81a75e5bbf614112e34f6aab52ca3b805cda1d6c14fe38",
+    "mode": 493
+  },
+  "hostAllocationBudgetBytes": 67108864,
+  "hostBudgetIncludesDirectoryAndAllocationOverhead": true
+}

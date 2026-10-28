@@ -1,5 +1,14 @@
 # Cluster maintenance and application migration plan
 
+**October 28, 00:34 UTC:** full thirteen-image native capacity gate passes all
+three nodes after exact redundant transfers and inactive analysis-cache cleanup.
+The authenticated host copy is included; 512 MiB margin, existing kubelet floors,
+Longhorn25% and automatic engine upgrade zero remain unchanged. Original primary
+archives, all source/reports and user data survive. Node cleanup cumulative is
+27,757,309,952 allocated Linux bytes; controller scratch is reconciled.
+[Actual inputs, per-node budgets and guarded next execution](docs/LONGHORN-NATIVE-CAPACITY-GATE-20261028.md).
+No production pull or upgrade is claimed. The full goal remains active.
+
 **October 28, 00:08 UTC checkpoint:** both current-writer native backups are
 complete. All 43 initialized Longhorn volumes have Completed native backup
 coverage; the unused WordPress destination has its separate no-payload proof.

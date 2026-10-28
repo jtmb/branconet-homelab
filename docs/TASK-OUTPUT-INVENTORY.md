@@ -1,5 +1,26 @@
 # Maintenance output ownership and reconciliation
 
+## Final capacity cleanup and host payload — completed October 28, 00:34 UTC
+
+Same F root and original physical filesystem. Ansible removed three exact node
+transfer duplicates (1,258,487,808 allocated bytes) while preserving original
+SDK/source primaries and the complete private BORTUS offline recovery archive.
+Its current consumer is the held deployed image's recovery until the separate
+owner accepts its replacement/recovery transition. The original analysis cache
+had no active consumer; pinned producer/source/image inventory establish its
+regeneration. Removed that cache plus four empty directories, 40,460,288 bytes,
+preserving all 297 other files. No image prune or application/data change.
+
+Four empty controller Ansible scratch directories were removed: 16,384 bytes.
+All new source, provenance, qualification, failure/false-gate, full per-path
+retirement, native Windows/source and fresh counter receipts are retained under
+`node-cleanup-20261027/master-generated-cleanup` and
+`platform-upstream-review-20261027/longhorn-capacity-budget`. They are bounded
+metadata; no payload/cache/dependency copy was created. Host audit streamed the
+actual public image layers in RAM and retained no executable or layer. All three
+nodes now fit the complete dated native budget; production staging/upgrade is
+still pending. [Exact receipts, regeneration and storage observations](LONGHORN-NATIVE-CAPACITY-GATE-20261028.md).
+
 ## Current-writer recovery and source exports — completed October 28, 00:08 UTC
 
 Same declared F-backed task root and filesystem UUID. Ingenium's complete native
@@ -27,8 +48,10 @@ qualification and exact per-path retirement ledger remain under the existing
 [Exact eligibility, failure diagnosis and retained exception](MASTER-SOURCE-EXPORT-RETIREMENT-20261027.md).
 
 The successful CoreDNS builder's stopped cache retirement recovered
-**3,590,500,352 controller bytes**; original source/OCI/provenance retained for
-the pending exact-image fleet acceptance. The consumed Ingenium publisher stage
+**3,590,500,352 controller bytes**. Its original source/OCI/provenance remain
+preserved originals; this worker-state operation did not establish their
+retirement/regeneration proof and does not claim that primary-artifact
+reconciliation is complete. The consumed Ingenium publisher stage
 `e9f4e07e08104334b7780705d6d7d33e` released **149,778,432 bytes** of duplicate
 tools; publisher cumulative is **11,982,176,256 bytes across 80 stages**.
 Its source/receipts survive; failed stage `5bedc869656841a294ee131c40c14c44`
