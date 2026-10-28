@@ -1,5 +1,17 @@
 # Cluster maintenance and application migration plan
 
+**Final delivery accepted — October 28:** the user explicitly chose
+“Finish with authenticated Seerr UI validation pending.” This is the one accepted
+closure exception: authenticated Seerr browser behavior remains unverified and
+is not reported as passed. Account/data preservation, YTPTube browser playback,
+current Flux/image identity, recovery, security reporting and cleanup evidence
+remain required and verified. Final live checks confirm three healthy nodes,
+58 unchanged Bound claims, 14 SMB volumes, all desired controllers available and
+64 runtime digests matching their complete scan bindings. BORTUS remains held
+with its separate owner. [Accepted closure and final live receipt](evidence/accepted-closure-20261028.json).
+The dated incomplete/blocker entries below are historical checkpoints superseded
+only by this explicit user-approved Seerr UI exception.
+
 **October 28 deployed and verified:** official MySQL security rebuild and YTPTube
 2.7.6 are live through unchanged local CI/validated/Flux at
 `21bd3bf517199e45591ae44e13bd251ee8a04ffe`. Database rows/identity and downloader

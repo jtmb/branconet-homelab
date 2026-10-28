@@ -1,4 +1,20 @@
-# October 28 delivered security updates and remaining acceptance
+# October 28 delivered maintenance acceptance
+
+**Accepted closure with an explicit exception:** the user chose “Finish with
+authenticated Seerr UI validation pending.” The original six-account/credential/
+permission preservation evidence remains verified; authenticated Seerr UI
+behavior remains unverified. This exception closes the previous login dependency
+without changing accounts, fabricating a session or labelling the browser check
+passed. [Final direct instruction and live acceptance](../evidence/accepted-closure-20261028.json).
+
+The final live check confirms three healthy nodes, the unchanged storage floors,
+58 original Bound claim/PV bindings, 14 SMB volumes, no unavailable desired
+controller, 64 current digests matching complete security reports and validated
+charts revision `21bd3bf517199e45591ae44e13bd251ee8a04ffe`. Both updated app images
+remain Ready and BORTUS's separate release remains suspended. All residual
+security findings and exact cleanup/retained exceptions below remain explicit.
+
+## Earlier login dependency and completion audits
 
 MySQL and YTPTube security updates are deployed and their data checks pass.
 The goal remains incomplete because the authenticated Seerr browser check needs

@@ -1,5 +1,19 @@
 # Revised delivery objective — user correction October 25
 
+## Final user-approved closure exception — October 28
+
+The human answered the outstanding Seerr question with “Finish with authenticated
+Seerr UI validation pending.” This supersedes only the requirement to complete
+authenticated Seerr browser validation before closing this delivery. That check
+remains pending and unverified. The rest of the objective, original data/account
+preservation, normal YTPTube behavior, existing CI/Flux route, current exact-image
+security reporting, recovery, cleanup and BORTUS ownership boundaries are intact.
+The [final accepted-closure receipt](../evidence/accepted-closure-20261028.json)
+records the direct instruction and the final live checks. Earlier active/blocked
+readbacks and incomplete audits remain historical evidence, not failed tests
+rewritten as passes. No further sign-in is required from the user to close this
+delivery under the approved exception.
+
 ## Existing publication route verified - October 26, 22:47 UTC
 
 Windows Credential Manager holds valid existing Docker Hub credentials for

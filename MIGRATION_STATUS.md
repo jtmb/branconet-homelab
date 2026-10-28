@@ -1,5 +1,16 @@
 # Migration and maintenance status
 
+**Final delivery accepted — October 28:** the user explicitly approved finishing
+with authenticated Seerr UI validation pending. That check is unverified, not a
+pass. The final live check confirms three healthy nodes, all 58 original claim
+UID/PV bindings still Bound, 14 SMB volumes, all desired controllers available,
+64 scan-covered runtime digests and charts revision
+`21bd3bf517199e45591ae44e13bd251ee8a04ffe`. Data/account/restart, YTPTube normal
+browser playback, recovery and cleanup receipts remain intact. Residual vendor
+CVEs, retained cleanup safety exceptions and the separate BORTUS owner hold remain
+documented. [User-approved exception and final acceptance](evidence/accepted-closure-20261028.json).
+Earlier incomplete and blocked checkpoints below are preserved history.
+
 **October 28 deployed and verified:** official MySQL security rebuild and YTPTube
 2.7.6 are live through unchanged local CI/validated/Flux at
 `21bd3bf517199e45591ae44e13bd251ee8a04ffe`. Database rows/identity and downloader
