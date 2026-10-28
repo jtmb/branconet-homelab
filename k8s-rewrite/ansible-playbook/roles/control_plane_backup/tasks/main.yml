@@ -3,6 +3,7 @@
   ansible.builtin.assert:
     that:
       - control_plane_backup_apply | bool
+      - control_plane_backup_run_id | length == 0 or control_plane_backup_run_id is match('^[0-9a-f]{32}$')
       - inventory_hostname == 'masternode'
       - control_plane_backup_output_dir is match('^/home/brajam/[^\r\n]+$')
       - control_plane_backup_recipient_file == '/home/brajam/.ssh/id_ed25519.pub'
@@ -26,6 +27,7 @@
     age_binary: "{{ control_plane_backup_age_binary }}"
     etcd_image: "{{ control_plane_backup_etcd_image }}"
     etcd_digest: "{{ control_plane_backup_etcd_digest }}"
+    run_id: "{{ control_plane_backup_run_id }}"
   # The launcher reads the controlling TTY before worker creation. The action
   # consumes Ansible's existing RAM-only become credential, never task data.
   delegate_to: localhost

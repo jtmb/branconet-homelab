@@ -31,6 +31,8 @@ class ActionModule(ActionBase):
             sys.argv = [str(helper)]
             for name in ('output_dir', 'recipient_file', 'identity_file', 'age_binary', 'etcd_image', 'etcd_digest'):
                 sys.argv.extend(['--' + name.replace('_', '-'), str(args[name])])
+            if args.get('run_id'):
+                sys.argv.extend(['--run-id', str(args['run_id'])])
             with contextlib.redirect_stdout(captured):
                 module = runpy.run_path(str(helper), run_name='inline_control_plane_backup',
                                         init_globals={'_CONTROL_PLANE_PRIVILEGE_BYTES': credential.encode()})

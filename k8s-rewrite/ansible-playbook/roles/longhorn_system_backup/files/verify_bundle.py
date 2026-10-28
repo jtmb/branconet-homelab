@@ -22,7 +22,8 @@ def main():
     parser.add_argument('--plan', type=Path, required=True)
     a = parser.parse_args()
     root = Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025')
-    need(root.is_mount() and a.plan.resolve() == root / 'platform-upstream-review-20261027/longhorn-system-backup/plan.json',
+    need(root.is_mount() and a.plan.resolve() in [root / 'platform-upstream-review-20261027' / name / 'plan.json'
+         for name in ('longhorn-system-backup', 'longhorn-system-backup-20261028')],
          'owned_original_plan')
     plan = json.loads(a.plan.read_text())
     need(plan['manifest']['metadata']['name'] == a.name, 'same_backup_identity')

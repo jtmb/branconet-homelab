@@ -1,0 +1,30 @@
+---
+- name: Require deliberate serial V1 engine maintenance on the original cluster
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - ansible_host == '192.168.0.4'
+      - longhorn_engine_upgrade_mode in ['prepare', 'prepare-distroless-probe', 'reconcile-rejected-patch', 'apply', 'observe']
+      - longhorn_engine_upgrade_mode != 'apply' or longhorn_engine_upgrade_apply | bool
+      - longhorn_engine_upgrade_limit | int >= 1
+      - longhorn_engine_upgrade_limit | int <= 43
+
+- name: Upgrade or observe the next qualified serial volume without automatic retry
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+      - -B
+      - "{{ role_path }}/files/upgrade.py"
+      - "{{ longhorn_engine_upgrade_mode }}"
+      - --limit
+      - "{{ longhorn_engine_upgrade_limit | string }}"
+  delegate_to: localhost
+  become: false
+  environment:
+    PYTHONDONTWRITEBYTECODE: '1'
+    TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    TMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    TEMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+  changed_when: longhorn_engine_upgrade_mode == 'apply'
+  no_log: true
+  when: not ansible_check_mode

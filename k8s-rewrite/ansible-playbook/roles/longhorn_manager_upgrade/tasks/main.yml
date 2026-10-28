@@ -1,0 +1,26 @@
+---
+- name: Require the existing owner and deliberate reviewed manager operation
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - ansible_host == '192.168.0.4'
+      - longhorn_manager_upgrade_mode in ['prepare', 'apply', 'observe']
+      - longhorn_manager_upgrade_mode != 'apply' or longhorn_manager_upgrade_apply | bool
+
+- name: Run the bounded existing-owner upgrade phase
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+      - -B
+      - "{{ role_path }}/files/upgrade.py"
+      - "{{ longhorn_manager_upgrade_mode }}"
+  delegate_to: localhost
+  become: false
+  environment:
+    PYTHONDONTWRITEBYTECODE: '1'
+    TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    TMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    TEMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+  changed_when: longhorn_manager_upgrade_mode == 'apply'
+  no_log: true
+  when: not ansible_check_mode

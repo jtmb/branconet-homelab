@@ -6,7 +6,7 @@
       - ansible_host == '192.168.0.4'
       - longhorn_system_backup_mode in ['prepare', 'create', 'observe']
       - longhorn_system_backup_mode != 'create' or longhorn_system_backup_apply | bool
-      - longhorn_system_backup_name is match('^preupgrade-20261027-[0-9a-f]{8}$')
+      - longhorn_system_backup_name is match('^preupgrade-2026102[78]-[0-9a-f]{8}$')
 
 - name: Preserve or observe the exact configuration backup
   ansible.builtin.command:

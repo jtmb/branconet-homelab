@@ -1,0 +1,7 @@
+---
+- name: Upgrade the reviewed existing Longhorn manager without automatic engine changes
+  hosts: masternode
+  gather_facts: false
+  become: false
+  roles:
+    - longhorn_manager_upgrade

@@ -1,9 +1,28 @@
 # Cluster maintenance and application migration plan
 
-**October 28 production staging implementation:** the maintained opt-in Ansible
-preloader is ready for actual serial execution with fresh full-budget checks;
-no production execution is claimed yet. Its runtime artifacts are official
-digest-pinned upstream images, with no custom build or new publication route.
+**October 28, 01:56 UTC:** manager and all 43 initialized V1 engines are now
+v1.13.0. All 28 attached volumes have two healthy actual RW replicas, all 15
+retained initialized datasets stayed detached, and every original claim/volume/
+NAS identity survives. Actual app mounted-data reads passed without Pod/image/
+restart changes. Original failed probes/patch and their qualified corrections
+remain. [Exact final engine acceptance](evidence/longhorn-engine-upgrade-20261028.json).
+Three old instance managers still host live upgraded engines; normal controlled
+detach/reattach and the unused volume's old metadata reference remain to retire
+old runtimes. Final fleet/security/browser acceptance remains. The goal is active.
+
+**October 28 manager upgrade:** production Longhorn now runs v1.13.0. The
+reviewed 61-resource apply and manager rollouts passed, retaining all original
+data identities and two actual RW replicas on every attached volume. Fresh
+encrypted NAS/offline control-plane recovery and native configuration backup
+passed; engine upgrades are being performed separately and serially. Removed
+213,721,088 Linux scratch bytes; one 12,288-byte root-owned packaging subtree is
+preserved after a failed Windows handle check. [Exact execution and limits](docs/LONGHORN-UPGRADE-EXECUTION-20261028.md).
+Final engine, fleet/security and normal application/IAB acceptance remain.
+
+**October 28 production staging complete:** all thirteen official pinned images
+are fully verified on all three nodes. Final claim/volume/replica/engine/NAS
+identity and health checks passed. Two empty scratch directories were removed
+(8,192 allocated Linux bytes). Manager/engine upgrade and final acceptance remain.
 [Detailed source and acceptance](docs/LONGHORN-PRODUCTION-STAGING-20261028.md).
 
 **October 28, 00:34 UTC:** full thirteen-image native capacity gate passes all

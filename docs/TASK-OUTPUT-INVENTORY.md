@@ -1,5 +1,43 @@
 # Maintenance output ownership and reconciliation
 
+## Production Longhorn staging and final checkpoint - October 28
+
+All outputs reuse the original F-backed root, filesystem UUID
+`3c792469-ea0e-4a2c-98e8-1185b141607b`. No build/dependency tree, transfer archive
+or second output root was created. The thirteen official images in each existing
+production containerd store are required runtime artifacts for the actual upgrade.
+Their exact per-node runtime/source/cache results remain in
+`platform-upstream-review-20261027/longhorn-production-prestage-20261028`.
+
+Removed that operation's empty `ansible-scratch/local` and `ansible-scratch`:
+4,096 bytes each, **8,192 allocated Linux bytes** total. Fifteen protected files
+remained unchanged after full Linux references and exclusive Windows directory
+handles passed.
+
+Final checkpoint cleanup removed **213,721,088 allocated Linux bytes** from the
+exact producer packaging and `etcd-restore-qualification/cp-a5da7099e3b94e32a92a7ffe3a7e37f7-scratch`
+tree. Full per-path bytes are in
+[the sanitized final-checkpoint receipt](../evidence/longhorn-final-checkpoint-manager-20261028.json).
+Forty-nine protected files remained unchanged; eleven Windows target handles and
+full Linux process/unit/FD/map/mount exclusions passed.
+
+Retained exception: `platform-upstream-review-20261027/final-control-plane-checkpoint-20261028/restore-ansible-scratch`
+with its empty `local` and `remote` children, **12,288 bytes**. Windows denied an
+exclusive handle for the root-owned mode0700 subtree. Original source, failed
+plan and preservation receipt remain; no permission change or alternate deletion
+was attempted. This exact target stays protected. Other eligible scratch was
+removed independently.
+
+Retained runtime/recovery consumers: final encrypted control-plane/NAS checkpoint,
+configuration-only native NAS bundle, stock etcdutl and shared native Longhorn
+restore tools through the actual upgrade/final application acceptance window.
+Reconcile tools after that consumer closes; preserve original encrypted data/key
+recovery and unique failure/source receipts. Manager/engine operation directories
+contain only bounded original metadata/source/intent/results, with no generated
+compiler/cache trees. The fleet capture is likewise metadata only. No Windows
+disk recovery is claimed; latest independent Windows measurements were
+C:58,871,017,472 and F:46,920,151,040 free bytes.
+
 ## Final capacity cleanup and host payload — completed October 28, 00:34 UTC
 
 Same F root and original physical filesystem. Ansible removed three exact node

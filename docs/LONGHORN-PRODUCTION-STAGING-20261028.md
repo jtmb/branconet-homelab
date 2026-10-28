@@ -3,8 +3,19 @@
 The opt-in `longhorn-upgrade-preload.yml` Ansible playbook and maintained
 `run-longhorn-upgrade-preload.py --repository <existing checkout>` launcher now
 implement serial staging of the complete thirteen-image reviewed candidate.
-Execution is pending; source implementation does not prove any production image
-is staged or Longhorn upgraded.
+All thirteen images are now staged and fully verified on all three production
+nodes, from source commit `1a4701b2`. The final comparison preserved all 58 claim
+bindings, 44 volume identities, engine/replica identities and fourteen NAS
+bindings. Every attached volume retains two healthy actual RW replicas.
+Longhorn itself still runs v1.12.1; manager/engine upgrade remains outstanding.
+
+Actual filesystem consumption was 3,838,693,376 bytes on the master,
+3,836,723,200 on worker2 and 3,837,292,544 on worker1. Exact results are in
+[`evidence/longhorn-production-staging-20261028.json`](../evidence/longhorn-production-staging-20261028.json).
+The two empty controller Ansible directories were removed after full Linux
+reference and Windows exclusive-directory-handle checks: 8,192 allocated Linux
+bytes. Fifteen protected receipt/source files remained unchanged. No Windows
+disk recovery is claimed.
 
 Before each node, the action reads its actual Ready/pressure, Longhorn disk,
 kubelet filesystem/eviction counters and manual-upgrade/storage controls.

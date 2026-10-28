@@ -77,8 +77,8 @@ def main():
     parser.add_argument('--output-dir', type=Path, required=True)
     a = parser.parse_args()
     need(ROOT.is_mount() and a.output_dir.resolve() == a.output_dir and a.output_dir.parent == REVIEW
-         and a.output_dir.name == 'longhorn-system-backup', 'declared_output_root')
-    need(re.fullmatch('preupgrade-20261027-[0-9a-f]{8}', a.name), 'bounded_unique_backup_identity')
+         and a.output_dir.name in ('longhorn-system-backup', 'longhorn-system-backup-20261028'), 'declared_output_root')
+    need(re.fullmatch('preupgrade-2026102[78]-[0-9a-f]{8}', a.name), 'bounded_unique_backup_identity')
     os.umask(0o077)
     spec = {'apiVersion': 'longhorn.io/v1beta2', 'kind': 'SystemBackup',
             'metadata': {'name': a.name, 'namespace': 'longhorn-system',

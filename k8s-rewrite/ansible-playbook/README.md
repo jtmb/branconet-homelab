@@ -69,6 +69,20 @@ Do not execute live operations using example/placeholder identities or hashes.
 
 ## Included entrypoints
 
+October28 Longhorn maintenance adds opt-in `longhorn-manager-upgrade.yml` and
+`longhorn-engine-upgrade.yml`. These exact guarded operations preserve the
+existing kubectl field owner, prepared official digest pins, storage/replica
+controls and original claims/data. Prepare and apply are deliberate once-only
+phases; incomplete submitted operations require inspection, never blind replay
+or manifest downgrade. The engine limit defaults to one canary. Existing
+protected TTY/RAM input is required only for the narrowly bound distroless mount
+read; credentials never enter argv/environment/files. Source and actual phased
+worker execution, recovery and limits are recorded in
+[the execution receipt](../../docs/LONGHORN-UPGRADE-EXECUTION-20261028.md).
+`final-fleet-inventory.yml` dispatches the metadata-only existing-cluster image/
+owner/route/data inventory with explicit `final_fleet_inventory_apply: true`.
+All controller temporary state must use the original declared F-backed root.
+
 | Playbook | Dedicated controller helper / scope |
 |---|---|
 | `security-maintenance.yml` | `run-security-maintenance.py`: workers first, then single control plane; kernel/package/containerd patching |

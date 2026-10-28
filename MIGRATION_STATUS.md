@@ -1,9 +1,27 @@
 # Migration and maintenance status
 
-**October 28 staging implementation:** the opt-in serial production preloader
-now implements fresh per-node capacity/cache fences, exact official image and
-canonical alias checks, actual allocation/runtime verification, and global
-claim/volume/engine/replica/NAS preservation. It has not executed yet.
+**October 28, 01:56 UTC:** all 43 initialized V1 volume engines and the manager
+are upgraded to v1.13.0. Every original volume/claim/NAS identity survives, with
+28 healthy attached volumes/two actual RW replicas and 15 retained initialized
+datasets still detached. App mounted-data reads and original Pod/image/restart
+identities passed. Three old instance managers remain because live upgraded
+engines are still hosted there; supported retirement needs controlled detach/
+reattach. The unused WordPress volume keeps its old metadata reference.
+[Acceptance, preserved failures and remaining runtime/security/browser work](docs/LONGHORN-UPGRADE-EXECUTION-20261028.md).
+No full-goal completion or all-old-runtime-retirement claim is made.
+
+**October 28 manager upgrade:** Longhorn manager v1.13.0 is deployed and its
+rollout/identity/redundancy checks passed. Fresh encrypted NAS/offline checkpoint
+and native configuration bundle are qualified. The 43 initialized V1 engines
+have a serial plan; engine execution and final fleet/security/IAB gates remain.
+Removed 213,721,088 allocated Linux scratch bytes; retained the exact 12,288-byte
+root-owned packaging subtree after its Windows handle check failed.
+[Actual execution, recovery and remaining work](docs/LONGHORN-UPGRADE-EXECUTION-20261028.md).
+
+**October 28 staging complete:** all thirteen official pinned images are fully
+verified on all three nodes. Actual runtime and all claim/volume/engine/replica/
+NAS identity and health comparisons passed. Both empty controller scratch
+directories were removed (8,192 allocated Linux bytes).
 [Source, constraints and output ownership](docs/LONGHORN-PRODUCTION-STAGING-20261028.md).
 Manager/engine upgrade and the full goal remain incomplete.
 

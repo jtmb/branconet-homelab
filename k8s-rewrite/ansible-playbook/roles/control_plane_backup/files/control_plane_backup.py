@@ -214,7 +214,9 @@ def main():
         parser.add_argument('--' + flag, type=pathlib.Path, required=True)
     parser.add_argument('--etcd-image', required=True)
     parser.add_argument('--etcd-digest', required=True)
+    parser.add_argument('--run-id', default='')
     args = parser.parse_args()
+    need(not args.run_id or (len(args.run_id) == 32 and all(c in '0123456789abcdef' for c in args.run_id)))
     need(args.etcd_image in ETCD_SOURCES)
     expected_version, accepted_runtime_ids = ETCD_SOURCES[args.etcd_image]
     need(args.etcd_digest in accepted_runtime_ids)
@@ -240,7 +242,7 @@ def main():
     output.mkdir(parents=True, mode=0o700, exist_ok=True)
     mode = output.lstat()
     need(stat.S_ISDIR(mode.st_mode) and mode.st_uid == os.getuid() and not mode.st_mode & 0o077)
-    run_id = uuid.uuid4().hex
+    run_id = args.run_id or uuid.uuid4().hex
     run = output / ('control-plane-' + run_id)
     run.mkdir(mode=0o700)
     receipt = {'schema_version': 1, 'status': 'started', 'run_id': run_id, 'started_at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'scope': 'cluster-maintenance-control-plane', 'age_version': 'v1.3.2', 'age_binary_sha256': AGE_SHA256, 'restore_verified': False, 'bortus_recovery_accepted': False, 'application_quiesced': False, 'remote_plaintext_retained': False}
