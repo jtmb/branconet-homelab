@@ -1,6 +1,6 @@
 # BORTUS technology stack
 
-BORTUS is the Kubernetes management application at `k8s-rewrite/front-end/`. Its source and documentation are included in `main` alongside the existing Swarm homelab. Kubernetes provisioning, charts and live Flux source configuration are maintained separately; this application publication does not replace those systems.
+BORTUS is the Kubernetes management application at `k8s-rewrite/front-end/`. Its source and documentation are included in `main` alongside retained historical Swarm homelab sources. Existing-cluster maintenance playbooks and public security image recipes are documented in the [maintenance runbook](../k8s-rewrite/ansible-playbook/README.md); current node/application checkpoints and remaining gates are in [MIGRATION_STATUS.md](../MIGRATION_STATUS.md). Full cluster provisioning, charts and live Flux source configuration remain separate; this maintenance publication does not bootstrap a cluster or publish BORTUS application changes.
 
 | Component | Declared version | Role |
 |---|---|---|

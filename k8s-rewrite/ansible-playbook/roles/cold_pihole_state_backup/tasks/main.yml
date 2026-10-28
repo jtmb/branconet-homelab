@@ -1,0 +1,29 @@
+---
+- name: Require the explicit two-claim Pi-hole cold backup scope
+  ansible.builtin.assert:
+    that:
+      - cold_pihole_state_apply | bool
+      - inventory_hostname == 'masternode'
+      - cold_pihole_state_output_dir is match('^/home/brajam/[^\r\n]+$')
+      - cold_pihole_state_node in ['workernode1', 'workernode2']
+      - cold_pihole_state_generation | default('original') in ['original', 'upstream-20261026']
+      - cold_pihole_state_generation | default('original') != 'upstream-20261026' or cold_pihole_state_node == 'workernode2'
+
+- name: Archive only the two fixed Pi-hole claims through the native controller
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - "{{ playbook_dir }}/../../../scripts/migration/{{ 'cold-upstream-pihole-state-backup.py' if cold_pihole_state_generation | default('original') == 'upstream-20261026' else 'cold-pihole-state-backup.py' }}"
+      - --apply
+      - --node
+      - "{{ cold_pihole_state_node }}"
+      - --output-dir
+      - "{{ cold_pihole_state_output_dir }}"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when: not ansible_check_mode
+
+- name: State the independent Pi-hole archive boundary
+  ansible.builtin.debug:
+    msg: "Inspect private Pi-hole receipts under {{ cold_pihole_state_output_dir }}. Root first quiesces the original writer through Flux. Both retry1 claims are archived in full, no data/NAS/Secret exclusion. Check mode captures nothing. Authenticated archive is not independent restoration or application acceptance."

@@ -1,0 +1,12 @@
+---
+- name: Apply only the explicitly selected USN-8555-1 worker package patch
+  hosts: worker
+  serial: 1
+  order: inventory
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+  roles:
+    - ubuntu_pro_security_patch

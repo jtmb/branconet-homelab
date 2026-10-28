@@ -1,0 +1,8 @@
+---
+- name: Preserve patched xTeVe binary ownership
+  hosts: masternode
+  gather_facts: false
+  become: false
+  roles:
+    - role: xteve_updater
+      when: xteve_updater_apply | default(false) | bool

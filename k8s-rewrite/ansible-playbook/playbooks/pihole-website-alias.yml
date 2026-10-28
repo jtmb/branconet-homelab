@@ -1,0 +1,30 @@
+---
+- name: Add only the missing existing Minecraft website DNS alias
+  hosts: masternode
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Run the bounded native Pi-hole configuration operation
+      when: pihole_website_alias_apply | default(false) | bool and not ansible_check_mode
+      block:
+        - name: Require the existing cluster and explicit phase
+          ansible.builtin.assert:
+            that:
+              - ansible_host == '192.168.0.4'
+              - pihole_website_alias_mode in ['apply', 'verify']
+        - name: Preserve every original CNAME and append the single missing website alias
+          ansible.builtin.command:
+            argv:
+              - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+              - -B
+              - "{{ playbook_dir }}/../roles/pihole_website_alias/files/alias.py"
+              - "{{ pihole_website_alias_mode }}"
+          delegate_to: localhost
+          become: false
+          no_log: true
+          changed_when: pihole_website_alias_mode == 'apply'
+          environment:
+            PYTHONDONTWRITEBYTECODE: '1'
+            TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+            TMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+            TEMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"

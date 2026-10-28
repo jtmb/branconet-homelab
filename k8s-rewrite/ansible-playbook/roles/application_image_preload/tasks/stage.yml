@@ -1,0 +1,123 @@
+---
+- name: Require one fixed maintenance service and reviewed layer bound
+  ansible.builtin.assert:
+    that:
+      - staged_artifact.service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli', 'wordpress', 'nginx', 'phpmyadmin', 'coredns', 'plex', 'unpackerr', 'homepage', 'http-echo', 'qbittorrent-current', 'pihole-exporter', 'mealie', 'qbit-monitor', 'xteve', 'ruckusdb', 'jtmb-dev', 'ruckus-bot', 'bazarr', 'radarr', 'sonarr', 'whoami', 'traefik']
+      - (staged_artifact.generation | default('initial')) is string
+      - (staged_artifact.generation | default('initial')) is match('^(initial|r[1-9][0-9]{0,2}|ci[1-9][0-9]{0,14})$')
+      - staged_artifact.archive_path == '/home/james/.local/share/branconet-migration/application-artifacts-20261023/' + staged_artifact.service + '-security-20261023' + ('' if (staged_artifact.generation | default('initial')) == 'initial' else '-' + (staged_artifact.generation | default('initial'))) + '.oci.tar'
+      - staged_artifact.archive_sha256 is match('^[0-9a-f]{64}$')
+      - staged_artifact.manifest_digest is match('^sha256:[0-9a-f]{64}$')
+      - staged_artifact.uncompressed_layer_bytes | int > 0
+      - staged_artifact.uncompressed_layer_bytes | int <= 17179869184
+
+- name: Verify the fixed owner-only controller artifact before transfer
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - -c
+      - "{{ lookup('ansible.builtin.file', role_path + '/files/stage_check.py') }}"
+      - controller
+      - --service
+      - "{{ staged_artifact.service }}"
+      - --generation
+      - "{{ staged_artifact.generation | default('initial') }}"
+      - --sha256
+      - "{{ staged_artifact.archive_sha256 }}"
+      - --uncompressed-layer-bytes
+      - "{{ staged_artifact.uncompressed_layer_bytes }}"
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  register: application_image_preload_controller_before
+
+- name: Require protected node path and capacity for copy and future unpack
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -c
+      - "{{ lookup('ansible.builtin.file', role_path + '/files/stage_check.py') }}"
+      - node-before
+      - --service
+      - "{{ staged_artifact.service }}"
+      - --generation
+      - "{{ staged_artifact.generation | default('initial') }}"
+      - --sha256
+      - "{{ staged_artifact.archive_sha256 }}"
+      - --archive-bytes
+      - "{{ (application_image_preload_controller_before.stdout | from_json).archive_bytes }}"
+      - --uncompressed-layer-bytes
+      - "{{ staged_artifact.uncompressed_layer_bytes }}"
+  become: false
+  changed_when: false
+  register: application_image_preload_node_before
+
+- name: Create only the fixed protected James public-artifact directory
+  ansible.builtin.file:
+    path: /home/james/.local/share/branconet-migration/application-artifacts-20261023
+    state: directory
+    mode: '0700'
+  become: false
+  when: not (application_image_preload_node_before.stdout | from_json).parent_exists
+
+- name: Copy the verified public archive without replacing any existing file
+  ansible.builtin.copy:
+    src: "{{ (application_image_preload_controller_before.stdout | from_json).archive }}"
+    dest: "{{ staged_artifact.archive_path }}"
+    mode: '0600'
+    force: false
+    follow: false
+  become: false
+  when: not (application_image_preload_node_before.stdout | from_json).archive_exists
+
+- name: Verify the complete node copy and retain metadata in operator output
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -c
+      - "{{ lookup('ansible.builtin.file', role_path + '/files/stage_check.py') }}"
+      - node-after
+      - --service
+      - "{{ staged_artifact.service }}"
+      - --generation
+      - "{{ staged_artifact.generation | default('initial') }}"
+      - --sha256
+      - "{{ staged_artifact.archive_sha256 }}"
+      - --archive-bytes
+      - "{{ (application_image_preload_controller_before.stdout | from_json).archive_bytes }}"
+      - --uncompressed-layer-bytes
+      - "{{ staged_artifact.uncompressed_layer_bytes }}"
+  become: false
+  changed_when: false
+  register: application_image_preload_node_after
+
+- name: Recheck the retained controller archive after transfer
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - -c
+      - "{{ lookup('ansible.builtin.file', role_path + '/files/stage_check.py') }}"
+      - controller
+      - --service
+      - "{{ staged_artifact.service }}"
+      - --generation
+      - "{{ staged_artifact.generation | default('initial') }}"
+      - --sha256
+      - "{{ staged_artifact.archive_sha256 }}"
+      - --uncompressed-layer-bytes
+      - "{{ staged_artifact.uncompressed_layer_bytes }}"
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  register: application_image_preload_controller_after
+
+- name: Require unchanged controller bytes and file identity
+  ansible.builtin.assert:
+    that:
+      - (application_image_preload_controller_before.stdout | from_json) == (application_image_preload_controller_after.stdout | from_json)
+
+- name: Record public staging identity and exact pre-copy capacity calculation
+  ansible.builtin.debug:
+    msg:
+      before: "{{ application_image_preload_node_before.stdout | from_json }}"
+      after: "{{ application_image_preload_node_after.stdout | from_json }}"

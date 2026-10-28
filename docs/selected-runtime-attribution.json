@@ -1,0 +1,76 @@
+{
+  "radarr": {
+    "actual_fixture": {
+      "checks": [
+        "musl",
+        "native-interop",
+        "ASP.NET-import",
+        "Brotli",
+        "local-PKCS-signature",
+        "PNG",
+        "JPEG",
+        "actual-compiled-app-resizer",
+        "JSON"
+      ],
+      "corePath": "/app/radarr/bin/System.Private.CoreLib.dll",
+      "imageSharp": "/app/radarr/bin/SixLabors.ImageSharp.dll",
+      "imageSharpVersion": "3.2.0.0",
+      "json": "/app/radarr/bin/System.Text.Json.dll",
+      "pkcs": "/app/radarr/bin/System.Security.Cryptography.Pkcs.dll",
+      "pkcsVersion": "8.0.3226.50405",
+      "runtime": "8.0.32",
+      "status": "passed"
+    },
+    "archiveSHA256": "cd2d2f1daab143fbb12db7e55d3c4e00e39d16fbb703724ca3a316fe2eb54cf7",
+    "imagesharp_dll_sha256": "60d345f55451db74bbefb3231950c2524c12fe038173b08dabce4a844f22b179",
+    "pkcs_dll_sha256": "822971b5fbe8c20a6564b72f6ba653e82848c9f132d9171bb78b6c8284b7a53b",
+    "pkcs_old_reference_nodes": [
+      {
+        "native": {},
+        "package": "System.Security.Cryptography.Pkcs/8.0.1",
+        "runtime": {}
+      }
+    ],
+    "pkcs_selected_owners": [
+      {
+        "package": "runtimepack.Microsoft.AspNetCore.App.Runtime.linux-musl-x64/8.0.32",
+        "path": "System.Security.Cryptography.Pkcs.dll"
+      }
+    ],
+    "rootDescriptor": "sha256:b79e4e0e3bec790e4f8a48cca83fd5b34e1267f672e27496cf1b95e732fed83c"
+  },
+  "sonarr": {
+    "actual_fixture": {
+      "checks": [
+        "musl",
+        "native-interop",
+        "ASP.NET-import",
+        "Brotli",
+        "local-PKCS-signature",
+        "PNG",
+        "JPEG",
+        "actual-compiled-app-resizer",
+        "JSON"
+      ],
+      "corePath": "/app/sonarr/bin/System.Private.CoreLib.dll",
+      "imageSharp": "/app/sonarr/bin/SixLabors.ImageSharp.dll",
+      "imageSharpVersion": "3.2.0.0",
+      "json": "/app/sonarr/bin/System.Text.Json.dll",
+      "pkcs": "/app/sonarr/bin/System.Security.Cryptography.Pkcs.dll",
+      "pkcsVersion": "8.0.3226.50405",
+      "runtime": "6.0.36",
+      "status": "passed"
+    },
+    "archiveSHA256": "0799041fc3e9f06811c7fc8d42ebded9aaa9901f04539383a8389533cc2e58b3",
+    "imagesharp_dll_sha256": "60d345f55451db74bbefb3231950c2524c12fe038173b08dabce4a844f22b179",
+    "pkcs_dll_sha256": "9adabedab3e739f8c689c8b3cf688d3d2c0b8ff787e1e7e649e39926353fe878",
+    "pkcs_old_reference_nodes": [],
+    "pkcs_selected_owners": [
+      {
+        "package": "System.Security.Cryptography.Pkcs/8.0.2",
+        "path": "lib/net6.0/System.Security.Cryptography.Pkcs.dll"
+      }
+    ],
+    "rootDescriptor": "sha256:7d297bbadfd74dd2c346b48d32530d6fa632bc902739d4f7aaadbd898375f593"
+  }
+}

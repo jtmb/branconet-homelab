@@ -1,0 +1,8 @@
+---
+- name: Explicit bounded local operator scan without cluster mutations
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  roles:
+    - local_oci_scan

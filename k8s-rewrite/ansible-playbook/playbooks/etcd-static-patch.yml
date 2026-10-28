@@ -1,0 +1,8 @@
+---
+- name: Review or explicitly apply only the exact singleton etcd patch
+  hosts: masternode
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  roles: [etcd_static_patch]

@@ -1,0 +1,198 @@
+{
+  "owner": "01a12045-bf7e-73b3-8557-752d17c72ffd",
+  "manifestPreparation": {
+    "status": "completed_server_dry_run",
+    "sourceSHA256": "71349db67dea8110bdd9e38590b59ff06c484d86495b9dee356d0011d43a3b14",
+    "vendorManifestSHA256": "d0f99488e7b2789312d45b0127ce7388df71a971e6fca2085e88635303cc0a1f",
+    "reviewSHA256": "751dbea16d135306e518a2f05ca0b5f8db1f48448b5437dae0af6d81e61e720f",
+    "candidateSHA256": "4e9e85f106dc5cb11a2283956a2278a482b372e0061daccd6af0f0c9d64a8ac5",
+    "fieldManager": "kubectl",
+    "forceConflicts": false,
+    "serverDryRunOnly": true,
+    "productionApplyExecuted": false,
+    "upgradeQualified": false,
+    "preservedConfigMaps": [
+      "longhorn-default-resource",
+      "longhorn-default-setting",
+      "longhorn-storageclass"
+    ],
+    "reviewedVendorResources": 62,
+    "existingNamespaceExcludedFromApply": true,
+    "preservedWorkloads": [
+      "longhorn-manager",
+      "longhorn-driver-deployer",
+      "longhorn-ui"
+    ],
+    "consumedPinnedReferences": [
+      "docker.io/longhornio/backing-image-manager:v1.13.0@sha256:49779b9a8ab535f1e86d224f8e2eb5c2c3713b8f1783403fe00612a75de2b3b8",
+      "docker.io/longhornio/csi-attacher:v4.13.0@sha256:fef34c2d823b78da7d6c29fdf0f80d236293b0ac06944d14e8c366add880a4c8",
+      "docker.io/longhornio/csi-node-driver-registrar:v2.18.0@sha256:085f63e62fea391734f5668d9cbb20ac8788a8e7faea83ce2c994f0cc1834fce",
+      "docker.io/longhornio/csi-provisioner:v6.3.0@sha256:2d2694540109d2e8887f62a0bc711aca8d3033e52dddf1c39bb5c65600d9c5af",
+      "docker.io/longhornio/csi-resizer:v2.2.1@sha256:63d0aef25114d4a682b25afa6d9623a3cfcc19aca910269124408476bbe2c6fd",
+      "docker.io/longhornio/csi-snapshotter:v8.6.0@sha256:2bca9ac55170efa61dc50e5cc8d9550373db2e3e5161d82d3fdaac5c25150360",
+      "docker.io/longhornio/livenessprobe:v2.20.0@sha256:d1199b77452bfc11cfc62feb8a266758fe8d72953e97faac8065941e3767f1a3",
+      "docker.io/longhornio/longhorn-engine:v1.13.0@sha256:b0cc5090889d57705acd69c5106492992e84560170ac3bec4a1cc8dd3fe83ca6",
+      "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3",
+      "docker.io/longhornio/longhorn-manager:v1.13.0@sha256:7372f3c59239e9a67c0017b3af32fabdf08c4dcc0631140161da9a47e3b142f0",
+      "docker.io/longhornio/longhorn-share-manager:v1.13.0@sha256:53950f78b7af38b8a943c298cd3020622191a4661a13036f69d83c154cc8690d",
+      "docker.io/longhornio/longhorn-ui:v1.13.0@sha256:f22fb0254ae50195c1635ce428dfae26375956b3d7bd39640fae8fe33a236023",
+      "docker.io/longhornio/support-bundle-kit:v0.0.98@sha256:e64a01db35396f967175adcfd0177d2a50e75765c51efe86e55f13f49095d1ae"
+    ],
+    "unusedCandidateReferences": [
+      "docker.io/longhornio/longhorn-cli:v1.13.0@sha256:673e02a7b0e835a6ce78f7ebca2cd8ff92210d5dc74995cea064b56dea7b9579"
+    ],
+    "serverExitCode": 0,
+    "diagnosticsSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "resources": 61,
+    "existingObjectsPreserved": 51,
+    "completedUTC": "2026-10-27T15:02:19.802467-04:00",
+    "allExistingUIDsAndConfigurationUnchanged": true
+  },
+  "ansible": {
+    "status": "completed",
+    "startedUTC": "2026-10-27T15:02:14.562516-04:00",
+    "sources": {
+      "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/k8s-rewrite/ansible-playbook/roles/longhorn_upgrade_prepare/files/prepare.py": "71349db67dea8110bdd9e38590b59ff06c484d86495b9dee356d0011d43a3b14",
+      "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/k8s-rewrite/ansible-playbook/roles/longhorn_upgrade_prepare/tasks/main.yml": "b3f758a836e3614950050651d58f61fe94a1ffcd7ad823ae2db0b71d5ae681d9",
+      "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/k8s-rewrite/ansible-playbook/roles/longhorn_upgrade_prepare/defaults/main.yml": "f2e4812c0f1b9dd61da806d11de0b008fbecb35a5dd5ce974b812c8dc3931a12",
+      "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/k8s-rewrite/ansible-playbook/playbooks/longhorn-upgrade-prepare.yml": "5e70e2101133d75e5f9e71bbf239795e8f375223e0ce53152844497089638823"
+    },
+    "productionApplyExecuted": false,
+    "scratchRequiresIndependentInactiveCleanup": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-prepare-ansible-scratch",
+    "exitCode": 0,
+    "sourceUnchanged": true
+  },
+  "namespace": {
+    "existing": true,
+    "excludedFromApply": true,
+    "originalOwner": "before-first-apply",
+    "uid": "a1c05c6c-af40-45cd-94eb-ed293038c80c"
+  },
+  "ownerReview": {
+    "vendorResources": 62,
+    "existingResources": 51,
+    "fieldManagersExplicitlyCollected": true,
+    "directSensitiveEnvironmentRedactions": [],
+    "newResources": [
+      "v1",
+      "ServiceAccount",
+      "longhorn-system",
+      "longhorn-csi-service-account",
+      "apiextensions.k8s.io/v1",
+      "CustomResourceDefinition",
+      "",
+      "instancemanagerupgradecontrols.longhorn.io",
+      "apiextensions.k8s.io/v1",
+      "CustomResourceDefinition",
+      "",
+      "instancemanagerupgrades.longhorn.io",
+      "apiextensions.k8s.io/v1",
+      "CustomResourceDefinition",
+      "",
+      "snapshotgroups.longhorn.io",
+      "rbac.authorization.k8s.io/v1",
+      "ClusterRole",
+      "",
+      "longhorn-csi-role",
+      "rbac.authorization.k8s.io/v1",
+      "ClusterRole",
+      "",
+      "longhorn-csi-secret-role",
+      "rbac.authorization.k8s.io/v1",
+      "ClusterRoleBinding",
+      "",
+      "longhorn-csi-bind",
+      "rbac.authorization.k8s.io/v1",
+      "ClusterRoleBinding",
+      "",
+      "longhorn-csi-secret-bind",
+      "rbac.authorization.k8s.io/v1",
+      "Role",
+      "longhorn-system",
+      "longhorn-csi-role",
+      "rbac.authorization.k8s.io/v1",
+      "RoleBinding",
+      "longhorn-system",
+      "longhorn-csi-bind",
+      "apps/v1",
+      "Deployment",
+      "longhorn-system",
+      "longhorn-global-manager"
+    ],
+    "reviewSHA256": "751dbea16d135306e518a2f05ca0b5f8db1f48448b5437dae0af6d81e61e720f",
+    "rawObjectsSHA256": "e6e7971a6181bde5fed8a2702cd53d2d296536a1930b6da371915290519788b3"
+  },
+  "nodeImageBudget": {
+    "UTC": "2026-10-27T15:03:32.077056-04:00",
+    "profile": "existing V1 node components plus every official manager DaemonSet container",
+    "derivedFromCandidateSHA256": "4e9e85f106dc5cb11a2283956a2278a482b372e0061daccd6af0f0c9d64a8ac5",
+    "priorMeasuredLayersAndCacheReused": true,
+    "runtimeCacheRemeasured": false,
+    "nativeUnpackExecuted": false,
+    "candidateComponentPlacementChanged": false,
+    "requiredComponents": [
+      "csi-node-driver-registrar",
+      "livenessprobe",
+      "longhorn-engine",
+      "longhorn-instance-manager",
+      "longhorn-manager",
+      "longhorn-share-manager"
+    ],
+    "masterBudget": {
+      "components": [
+        "longhorn-engine",
+        "longhorn-instance-manager",
+        "longhorn-manager",
+        "longhorn-share-manager",
+        "csi-node-driver-registrar",
+        "livenessprobe"
+      ],
+      "missingBlobCount": 46,
+      "missingCompressedAllocatedProjectionBytes": 767328256,
+      "missingSnapshotCount": 52,
+      "missingSnapshotAllocatedProjectionBytes": 2552573952,
+      "metadataAllocatedUpperBoundBytes": 25227264,
+      "operatingMarginBytes": 536870912,
+      "additionalRequiredBytes": 3882000384,
+      "cachedContentAndSnapshotsAreAlreadyInCurrentUsage": true,
+      "noCreditForDeletionOrOldImagePruning": true
+    },
+    "longhornAvailableBytes": 32610713600,
+    "unchangedSchedulingFloorBytes": 28925518849,
+    "masterSurplusAfterProjectionBytes": -196805633,
+    "additionalHeadroomNeededBytes": 196805633,
+    "upgradeQualified": false,
+    "source": "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/scripts/migration/calculate-longhorn-upgrade-budget.py",
+    "regeneration": "same original authenticated measurement/cache plus pinned candidate and dated health; do not pull or upgrade"
+  },
+  "scratch": {
+    "status": "completed",
+    "references": {
+      "processes": 104,
+      "mountNamespaces": 7,
+      "units": 247,
+      "unitInventorySHA256": "071744a4c385be87cfcd8aac543eaaf0abb8ce5a1ca886f0386c691dc69b51a7"
+    },
+    "removed": [
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-prepare-ansible-scratch/local",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-prepare-ansible-scratch/remote",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-prepare-ansible-scratch",
+        "allocatedBytes": 4096
+      }
+    ],
+    "lateAnsibleModuleCleanupUnmeasured": true,
+    "windowsRecoveryClaimed": false,
+    "allCandidateInputSourceAndOriginalEvidenceFilesPreserved": true,
+    "removedAllocatedBytes": 12288
+  },
+  "productionUpgradeExecuted": false,
+  "allApplicationRecoveryCoverageProven": false,
+  "firstOwnerReadOmittedManagedFieldsAndWasNotOwnershipProof": true
+}

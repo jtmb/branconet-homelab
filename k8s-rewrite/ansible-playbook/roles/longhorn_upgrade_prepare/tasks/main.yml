@@ -1,0 +1,20 @@
+---
+- name: Require explicit preparation on the original cluster
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - ansible_host == '192.168.0.4'
+      - longhorn_upgrade_prepare_enabled | bool
+    fail_msg: This role only prepares and server-dry-runs the reviewed manifest; no production apply is provided.
+
+- name: Prepare pinned resources and execute server dry-run with existing ownership
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+      - -B
+      - "{{ role_path }}/files/prepare.py"
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  no_log: true
+  when: not ansible_check_mode

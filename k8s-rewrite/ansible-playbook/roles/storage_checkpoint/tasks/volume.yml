@@ -1,0 +1,73 @@
+---
+- name: Derive unique bounded snapshot and backup names
+  ansible.builtin.set_fact:
+    checkpoint_snapshot_name: "{{ storage_checkpoint_prefix }}-s-{{ (checkpoint_volume.metadata.name | hash('sha256'))[:10] }}"
+    checkpoint_backup_name: "{{ storage_checkpoint_prefix }}-b-{{ (checkpoint_volume.metadata.name | hash('sha256'))[:10] }}"
+
+- name: Recheck this volume is still attached and healthy
+  ansible.builtin.command:
+    argv: [kubectl, -n, longhorn-system, get, volumes.longhorn.io, "{{ checkpoint_volume.metadata.name }}", -o, json]
+  register: checkpoint_current_volume
+  changed_when: false
+
+- name: Refuse a changed attachment instead of attaching retained volumes
+  ansible.builtin.assert:
+    that:
+      - (checkpoint_current_volume.stdout | from_json).metadata.uid == checkpoint_volume.metadata.uid
+      - (checkpoint_current_volume.stdout | from_json).status.state == 'attached'
+      - (checkpoint_current_volume.stdout | from_json).status.robustness == 'healthy'
+
+- name: Create a new online Longhorn snapshot
+  ansible.builtin.command:
+    argv: [kubectl, create, -f, '-']
+    stdin: "{{ {'apiVersion': 'longhorn.io/v1beta2', 'kind': 'Snapshot', 'metadata': {'name': checkpoint_snapshot_name, 'namespace': 'longhorn-system', 'labels': {'security-maintenance-checkpoint': storage_checkpoint_prefix}}, 'spec': {'volume': checkpoint_volume.metadata.name, 'createSnapshot': true, 'labels': {'security-maintenance-checkpoint': storage_checkpoint_prefix, 'consistency': 'crash-consistent-online'}}} | to_json }}"
+  changed_when: true
+
+- name: Wait for snapshot readiness or a terminal snapshot error
+  ansible.builtin.command:
+    argv: [kubectl, -n, longhorn-system, get, snapshots.longhorn.io, "{{ checkpoint_snapshot_name }}", -o, json]
+  register: checkpoint_snapshot
+  changed_when: false
+  until: ((checkpoint_snapshot.stdout | from_json).status.readyToUse | default(false)) or ((checkpoint_snapshot.stdout | from_json).status.error | default('') | length > 0)
+  retries: "{{ storage_checkpoint_poll_retries }}"
+  delay: "{{ storage_checkpoint_poll_delay }}"
+  no_log: true
+
+- name: Require a ready snapshot without an error
+  ansible.builtin.assert:
+    that:
+      - (checkpoint_snapshot.stdout | from_json).status.readyToUse | bool
+      - (checkpoint_snapshot.stdout | from_json).status.error | default('') == ''
+    fail_msg: Snapshot failed; preserve the resources and stop without backup replay or deletion.
+  no_log: true
+
+- name: Create the incremental off-node backup using verified Longhorn label keys
+  ansible.builtin.command:
+    argv: [kubectl, create, -f, '-']
+    stdin: "{{ {'apiVersion': 'longhorn.io/v1beta2', 'kind': 'Backup', 'metadata': {'name': checkpoint_backup_name, 'namespace': 'longhorn-system', 'labels': {'backup-target': storage_checkpoint_backup_target, 'backup-volume': checkpoint_volume.metadata.name, 'security-maintenance-checkpoint': storage_checkpoint_prefix}}, 'spec': {'snapshotName': checkpoint_snapshot_name, 'backupMode': 'incremental', 'labels': {'security-maintenance-checkpoint': storage_checkpoint_prefix, 'consistency': 'crash-consistent-online'}}} | to_json }}"
+  changed_when: true
+
+- name: Wait for backup completion or a terminal failure
+  ansible.builtin.command:
+    argv: [kubectl, -n, longhorn-system, get, backups.longhorn.io, "{{ checkpoint_backup_name }}", -o, json]
+  register: checkpoint_backup
+  changed_when: false
+  until: ((checkpoint_backup.stdout | from_json).status.state | default('')) in ['Completed', 'Error', 'Unknown', 'Deleting'] or ((checkpoint_backup.stdout | from_json).status.error | default('') | length > 0)
+  retries: "{{ storage_checkpoint_poll_retries }}"
+  delay: "{{ storage_checkpoint_poll_delay }}"
+  no_log: true
+
+- name: Require completed off-node backup of the exact snapshot and volume
+  ansible.builtin.assert:
+    that:
+      - (checkpoint_backup.stdout | from_json).status.state == 'Completed'
+      - (checkpoint_backup.stdout | from_json).status.error | default('') == ''
+      - (checkpoint_backup.stdout | from_json).status.volumeName == checkpoint_volume.metadata.name
+      - (checkpoint_backup.stdout | from_json).status.snapshotName == checkpoint_snapshot_name
+      - (checkpoint_backup.stdout | from_json).status.backupTargetName == storage_checkpoint_backup_target
+    fail_msg: Backup did not complete with the required identity. Preserve all snapshots/backups and stop.
+  no_log: true
+
+- name: Retain only nonsecret result metadata in the controller receipt
+  ansible.builtin.set_fact:
+    checkpoint_results: "{{ checkpoint_results + [{'volume': checkpoint_volume.metadata.name, 'volume_uid': checkpoint_volume.metadata.uid, 'snapshot': checkpoint_snapshot_name, 'snapshot_uid': (checkpoint_snapshot.stdout | from_json).metadata.uid, 'backup': checkpoint_backup_name, 'backup_uid': (checkpoint_backup.stdout | from_json).metadata.uid, 'state': 'Completed', 'backup_created_at': (checkpoint_backup.stdout | from_json).status.backupCreatedAt, 'consistency': 'crash-consistent-online'}] }}"

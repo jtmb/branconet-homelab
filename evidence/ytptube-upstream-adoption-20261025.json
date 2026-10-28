@@ -1,0 +1,178 @@
+{
+  "UTC": "2026-10-25T22:00:27.549553+00:00",
+  "backendAccepted": true,
+  "browserAccepted": false,
+  "image": "ghcr.io/arabcoders/ytptube:v2.7.5@sha256:3ba09ac58f0b541aa7182feb9198b44d3c62158a7749ec00d26de1abad7ca8d7",
+  "applicationSourceRevision": "c8a42e08ded27280573d7ebe6312dd109b2bb161",
+  "flux": {
+    "sourceRevision": "validated@sha1:4db7673bcc1a8989a674c4f1dc26926420165b92",
+    "helmRevision": "0.1.0+4db7673bcc1a",
+    "sourceReady": true,
+    "helmReady": true
+  },
+  "receipts": {
+    "adoption": {
+      "sha256": "876cda1b1d9079234a06db33d75c55319963f8d1fbc1c770dfd1356153efaf15",
+      "podUID": "5052bb6a-3482-4d75-84fd-75a53e17096d",
+      "imageID": "ghcr.io/arabcoders/ytptube@sha256:3ba09ac58f0b541aa7182feb9198b44d3c62158a7749ec00d26de1abad7ca8d7"
+    },
+    "download": {
+      "sha256": "0c10684c6c1d1ccdeb18465e0a68cfefb0f80725b8c26741758d97ec9d8ec99b",
+      "podUID": "5052bb6a-3482-4d75-84fd-75a53e17096d",
+      "imageID": "ghcr.io/arabcoders/ytptube@sha256:3ba09ac58f0b541aa7182feb9198b44d3c62158a7749ec00d26de1abad7ca8d7"
+    },
+    "restart": {
+      "sha256": "1ee7dce9934d1d14d861ed550bba8043e9ca22b8ce6dab5ec4241146577e662c",
+      "podUID": "057f0f1c-87e3-4eb5-930b-4a45934f4727",
+      "imageID": "ghcr.io/arabcoders/ytptube@sha256:3ba09ac58f0b541aa7182feb9198b44d3c62158a7749ec00d26de1abad7ca8d7"
+    }
+  },
+  "originalDataPreserved": true,
+  "historyRows": 2,
+  "persistentTableCounts": {
+    "api_keys": 0,
+    "conditions": 0,
+    "dl_fields": 0,
+    "history": 2,
+    "migration_version": 1,
+    "notifications": 0,
+    "presets": 9,
+    "task_definitions": 0,
+    "tasks": 0,
+    "users": 1
+  },
+  "sample": {
+    "bytes": 105333,
+    "sha256": "e39d78a735e8547fd5f3529d2eff6448770924432bdd08c3a519b83b3d7d01cb",
+    "duration": 5.066667,
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "height": 144,
+        "width": 256
+      },
+      {
+        "codec_name": "aac",
+        "codec_type": "audio"
+      }
+    ]
+  },
+  "activeRuntime": {
+    "app_version": "v2.7.5",
+    "provider_heartbeat": true,
+    "repository_pinned_vendor_updater": true,
+    "runtime_installers_absent": false,
+    "versions": {
+      "active_ytdlp_version_source_sha256": "f3d24a43e462084de926488260b3cf259de77329700bd32a6d33cb0cf5758c43",
+      "certifi": "2026.10.23",
+      "deno": "deno 2.9.5 (stable, release, x86_64-unknown-linux-gnu)",
+      "ffmpeg": "ffmpeg version 8.1.3-Jellyfin Copyright (c) 2000-2026 the FFmpeg developers",
+      "ffprobe": "ffprobe version 8.1.3-Jellyfin Copyright (c) 2007-2026 the FFmpeg developers",
+      "provider": "2.0.2",
+      "yt-dlp": "2026.10.21",
+      "yt-dlp-ejs": "0.8.0"
+    }
+  },
+  "archives": [
+    {
+      "phase": "preTransition",
+      "sha256": "a5e7b1ed825a00af1d31d91370a3eea954de60a709edab1c9db12f71dc70dcad",
+      "bytes": 632382404,
+      "files": 24,
+      "fileBytes": 632191138,
+      "fullAgeAuthentication": true,
+      "SMBReadBackVerified": true,
+      "readerDeleted": true
+    },
+    {
+      "phase": "preHistoryRepair",
+      "sha256": "07a081cc096ef24b63dc8e104203bbf9f3d96fdfa7413f129a327ab10b14c4dd",
+      "bytes": 689187300,
+      "files": 3240,
+      "fileBytes": 684992390,
+      "fullAgeAuthentication": true,
+      "SMBReadBackVerified": true,
+      "readerDeleted": true
+    }
+  ],
+  "legacy": {
+    "file_count": 7,
+    "file_bytes": 618241982,
+    "legacy_reobserved": true,
+    "temporary_pod_deleted": true
+  },
+  "historyRepair": {
+    "originalRestoredExactly": true,
+    "otherTablesUnchanged": true,
+    "originalVerificationRecordArchived": true,
+    "originalVerificationMediaRetained": true,
+    "duplicateVideoPreflightAdded": true
+  },
+  "normalIngress": {
+    "UTC": "2026-10-25T21:53:21.621568+00:00",
+    "route": "http://ytdl.branconet.lan",
+    "authenticatedNativeAccount": true,
+    "historyReachable": true,
+    "root": {
+      "status": 200,
+      "bytes": 13154,
+      "sha256": "9ce6dbaff713c7d7e5ed6ebf22e6e9592683a399cef87b1b5b5f3bc413aa1116"
+    },
+    "browserAcceptance": false
+  },
+  "residualSecurity": "Official vendor image and supported pinned yt-dlp updater; no fresh zero-CVE claim. Remaining image transitions and catalog review stay open.",
+  "goalComplete": false,
+  "live": {
+    "podUID": "057f0f1c-87e3-4eb5-930b-4a45934f4727",
+    "imageID": "ghcr.io/arabcoders/ytptube@sha256:3ba09ac58f0b541aa7182feb9198b44d3c62158a7749ec00d26de1abad7ca8d7"
+  },
+  "metadataRecovery": {
+    "sha256": "ad66992519a56614bf92f773592fb95fdba88298c9d25b0fbfbf8e32e80ae151",
+    "bytes": 1137124,
+    "fullAgeAuthentication": true,
+    "allMembersVerified": true,
+    "SMBReadBackVerified": true
+  },
+  "clusterHealth": {
+    "UTC": "2026-10-25T21:58:20.489878+00:00",
+    "nodes": [
+      {
+        "name": "masternode",
+        "uid": "f2df6169-4592-4544-b62c-74d89f598648",
+        "ready": true,
+        "pressure": []
+      },
+      {
+        "name": "workernode1",
+        "uid": "e8d4555f-7cea-445f-b84f-6416964045a9",
+        "ready": true,
+        "pressure": []
+      },
+      {
+        "name": "workernode2",
+        "uid": "eda66e65-f388-4b97-b64f-a709cda81894",
+        "ready": true,
+        "pressure": []
+      }
+    ],
+    "pvcCount": 55,
+    "unavailableDeployments": [],
+    "unavailableDaemonSets": [],
+    "unboundPVCs": [],
+    "notReadyHelmReleases": [],
+    "notReadyKustomizations": [],
+    "nonRunningPods": [
+      {
+        "name": "plex/seerr-image-native-20261024",
+        "phase": "Failed"
+      },
+      {
+        "name": "plex/seerr-image-native-20261024-diagnostic",
+        "phase": "Failed"
+      }
+    ],
+    "attachedLonghornHealthy": true,
+    "longhornVolumeCount": 41
+  }
+}

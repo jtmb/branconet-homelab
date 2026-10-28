@@ -1,0 +1,7 @@
+---
+- name: Inspect or retire only NAS-backed closed journals on the selected original node
+  hosts: "{{ archived_journal_offload_node | default('workernode2') }}"
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  roles: [archived_journal_offload]

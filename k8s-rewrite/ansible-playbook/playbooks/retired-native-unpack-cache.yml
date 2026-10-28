@@ -1,0 +1,32 @@
+---
+- name: Qualify or retire only fixed inactive worker2 image filesystem caches
+  hosts: workernode2
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Require the original node, bounded phase and explicit opt-in
+      when: retired_native_unpack_cache_apply | default(false) | bool and not ansible_check_mode
+      block:
+        - name: Validate phase and original worker identity
+          ansible.builtin.assert:
+            that:
+              - ansible_host == '192.168.0.5'
+              - retired_native_unpack_cache_phase in ['inventory', 'physical', 'qualify', 'retire']
+              - retired_native_unpack_cache_phase != 'retire' or retired_native_unpack_cache_qualification is defined
+        - name: Use the protected operator controller and original native API
+          ansible.builtin.command:
+            argv: >-
+              {{ ['/home/brajam/.local/share/branconet-migration/venv/bin/python3.12', '-B',
+              playbook_dir + '/../roles/retired_native_unpack_cache/files/' +
+              ('retire.py' if retired_native_unpack_cache_phase in ['qualify', 'retire'] else retired_native_unpack_cache_phase + '.py')]
+              + ([retired_native_unpack_cache_phase] if retired_native_unpack_cache_phase in ['qualify', 'retire'] else [])
+              + (['--qualification', retired_native_unpack_cache_qualification] if retired_native_unpack_cache_phase == 'retire' else []) }}
+          delegate_to: localhost
+          become: false
+          no_log: true
+          changed_when: retired_native_unpack_cache_phase == 'retire'
+          environment:
+            PYTHONDONTWRITEBYTECODE: '1'
+            TMPDIR: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+            TMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+            TEMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp

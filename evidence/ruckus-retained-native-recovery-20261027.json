@@ -1,0 +1,96 @@
+{
+  "claim": "ruckus/ruckus-db-data-0-security-20261025",
+  "volume": "pvc-0bf707c8-628e-4284-9aa0-35b711c8749b",
+  "volumeUID": "e574f5cc-d66f-4ed8-9379-29ee155ce42f",
+  "backup": {
+    "status": "completed_native_backup_and_detach",
+    "volume": "pvc-0bf707c8-628e-4284-9aa0-35b711c8749b",
+    "volumeUID": "e574f5cc-d66f-4ed8-9379-29ee155ce42f",
+    "backupNode": "workernode1",
+    "token": "migration-preserve-0206d5e0f0bd",
+    "snapshot": "migration-preserve-0206d5e0f0bd",
+    "backup": "migration-preserve-0206d5e0f0bd-backup",
+    "forceDetach": false,
+    "sourceSHA256": "08bcf4893a89c24331560fef41aec4920ca643252cef6817fb4c73559297748a",
+    "independentRestoreVerified": false,
+    "phase": "completed_native_backup_and_normal_detach",
+    "normalRebuildCreatedReplicaUIDs": [
+      "3bca72b9-e34f-4fcc-befa-5dfdc0ceade9"
+    ],
+    "desiredReplicaCountChanged": false,
+    "snapshotUID": "b666a5c5-3523-4e55-bb16-31fafbb557a6",
+    "backupUID": "13a05608-260a-4fbd-b947-4db6f3a148d7",
+    "backupState": "Completed",
+    "backupURL": "cifs://192.168.0.8/container_backups/k8s-migration-20261009/longhorn?backup=migration-preserve-0206d5e0f0bd-backup&volume=pvc-0bf707c8-628e-4284-9aa0-35b711c8749b",
+    "coldNoFrontendNoConsumer": true,
+    "originalVolumeSpecRestored": true,
+    "originalReplicaUIDsPreserved": true,
+    "detachedAgain": true,
+    "completedUTC": "2026-10-27T18:00:57.295338-04:00"
+  },
+  "restore": {
+    "status": "native_restore_and_all_block_checks_passed",
+    "volume": "pvc-0bf707c8-628e-4284-9aa0-35b711c8749b",
+    "backup": "migration-preserve-0206d5e0f0bd-backup",
+    "productionRestore": false,
+    "decryptedOrMounted": false,
+    "nativeToolExit": 0,
+    "backendBytes": 1090519040,
+    "allocatedBytes": 311214080,
+    "rawSHA256": "0e94aa661bed5e3f6be513c5a36af9d33ab2f515bea845e4114d537efe478d64",
+    "verifiedBlocks": 166,
+    "allUnbackedRegionsZero": true,
+    "encryptedHeaderVerified": true,
+    "completedUTC": "2026-10-27T18:02:29.330623-04:00"
+  },
+  "normalRebuild": {
+    "desiredReplicaCountChanged": false,
+    "replicas": [
+      {
+        "uid": "6c2d02e5-f0a8-4ded-9f19-90047e2d437f",
+        "node": "workernode1",
+        "healthyAt": "2026-10-25T15:10:52Z"
+      },
+      {
+        "uid": "3bca72b9-e34f-4fcc-befa-5dfdc0ceade9",
+        "node": "masternode",
+        "healthyAt": "2026-10-27T22:00:21Z"
+      }
+    ],
+    "createdReplicaUIDs": [
+      "3bca72b9-e34f-4fcc-befa-5dfdc0ceade9"
+    ],
+    "originalReplicaUIDs": [
+      "6c2d02e5-f0a8-4ded-9f19-90047e2d437f"
+    ]
+  },
+  "scratchCleanup": {
+    "status": "completed",
+    "allProtectedFilesUnchanged": 212,
+    "fullReceiptPath": "\\\\?\\UNC\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\local-image-build-offload-20261025\\platform-upstream-review-20261027\\detached-volume-backups-20261027\\ruckus-old\\restore-scratch-reconciliation.json",
+    "removedPaths": 474,
+    "fullReceiptSHA256": "70260b439b3e0961ea6dd0b2ea4a929b9faf38d648b13bf74aa0df7701a20d1b",
+    "removedAllocatedLinuxBytes": 624541696
+  },
+  "health": {
+    "allClaimUIDBindingsPreserved": true,
+    "allVolumeUIDsPreserved": true,
+    "readyNodes": 3,
+    "unreadyWorkloads": [],
+    "unreadyUnsuspendedFlux": [],
+    "controls": {
+      "storage-minimal-available-percentage": "25",
+      "concurrent-automatic-engine-upgrade-per-node-limit": "0"
+    },
+    "masterFilesystem": {
+      "availableBytes": 27285127168,
+      "freeBytes": 32601763840
+    },
+    "observedUTC": "2026-10-27T18:01:50.634066-04:00"
+  },
+  "nineDatasetVerifiedBlocks": 542,
+  "nineDatasetControllerScratchRemovedTotal": 1886146560,
+  "productionRestore": false,
+  "nativeSecretValuesRead": false,
+  "sourceBindingSHA256": "e94831a41658c7efadca03e76ddea3dc914fe6874f620115d7836f44cf71bb76"
+}

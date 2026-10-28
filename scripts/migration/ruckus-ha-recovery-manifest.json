@@ -1,0 +1,51 @@
+{
+  "files": [
+    {
+      "path": "scripts/migration/ruckus-ha-recovery.py",
+      "sha256": "d7c75aecb6c2e2b60de72f7a8c014839ab779230b781f25880f7c803e4ef11d9"
+    },
+    {
+      "path": "scripts/migration/ruckus-ha-recovery-remote.py",
+      "sha256": "8a383106e0e31bef3f59a25fc1f4e886bf8b4110198ff03f08bdb3a5744ace0d"
+    },
+    {
+      "path": "docs/RUCKUS-HA-RECOVERY.md",
+      "sha256": "a45e07b6c54cce9af2d4634b6ad61a9c9a3ada779069ba6aa9f8fc3c50f86474"
+    }
+  ],
+  "inherited_unchanged": [
+    {
+      "path": "k8s-rewrite/ansible-playbook/roles/metube_state_backup/files/metube_state_backup.py",
+      "sha256": "3f78c704a0b6e13b86c233aa79d00b09b8ef4f4937fcc9208427f9442ef8ff1d"
+    },
+    {
+      "path": "k8s-rewrite/ansible-playbook/roles/metube_state_backup/files/pod_reader.py",
+      "sha256": "e01e156492af261f3e8abe9f1ccca4e3ab1ac1d24eacda092fbd17b4ee10cb54"
+    },
+    {
+      "path": "scripts/migration/archive-ruckusdb-qualified-copy.py",
+      "sha256": "b656020f87eb36a32cc194a25052ef8d42047cdb4585e29616779bd513e05c7f"
+    },
+    {
+      "path": "scripts/migration/qualify-ruckusdb-copies.py",
+      "sha256": "74bb2fc2feaf400d211dfc62410c3846c43f3e46f69b06ba8ddff42c3686749c"
+    }
+  ],
+  "not_executed": [
+    "application_rollout",
+    "restart"
+  ],
+  "qualification": [
+    "python_ast_in_memory",
+    "adapted_restore_ast_in_memory",
+    "exact_single_occurrence_restore_preimages",
+    "inherited_source_hashes"
+  ],
+  "schema_version": 1,
+  "source_only": false,
+  "executionEvidence": {
+    "baselineSHA256": "63ced125ab7f5e61c88f9df3d1d2cbf3af8244c48a5a19a6d662640e9bc1f345",
+    "fullCurrentColdSHA256": "e105666f1119f350212f73a5c4e4107e185e2f1894d45448bb535796ceb6f321",
+    "metadataCompletion": "separate_hash_bound_helper_no_restore_replay"
+  }
+}

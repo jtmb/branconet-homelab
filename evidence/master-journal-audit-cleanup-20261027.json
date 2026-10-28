@@ -1,0 +1,341 @@
+{
+  "owner": "01a12045-bf7e-73b3-8557-752d17c72ffd",
+  "physicalVolume": "F: ext4 3c792469-ea0e-4a2c-98e8-1185b141607b",
+  "journalBackup": {
+    "status": "completed",
+    "archive": "\\\\TRUENAS\\plex_smb_share\\Branconet-Recovery-Backups\\2026-10-25\\ciphertexts\\sha256-e20a34a254380bacadb2f887361590d5714a50066f983a6780eb04cb20f6e7d2.age",
+    "bytes": 385988820,
+    "sha256": "e20a34a254380bacadb2f887361590d5714a50066f983a6780eb04cb20f6e7d2",
+    "completeNASReadbackAuthenticated": true,
+    "everyJournalIndependentlyRestored": true,
+    "profileSHA256": "ce563db17431d22c02c8076e72468b2b8aff401a21dea583f91cbc6d97a22e79",
+    "helperSHA256": "a78b8f47b8fc08a3352797caa90bfe0dd95eb71c102885a1990346b8f0026e7f",
+    "localArchiveCreated": false,
+    "maximumPlaintextScratchBytes": 134217728
+  },
+  "journalRestore": {
+    "status": "completed",
+    "restoredFiles": [
+      {
+        "archiveName": "journals/426c0b742db147a4aae81f32cdd89c68/system@9a297d267f0b4fc091613eb1940ccd16-000000000ca1c7e0-00065ccdeaf970f5.journal",
+        "bytes": 134217728,
+        "sha256": "38b8967e4be6ce4095a8f21106ba2f213099ff53e75d1ca1d412351d6e0bf8a3",
+        "numericMetadataVerified": true,
+        "xattrsVerified": true,
+        "journalStructureVerified": true
+      },
+      {
+        "archiveName": "journals/426c0b742db147a4aae81f32cdd89c68/system@9a297d267f0b4fc091613eb1940ccd16-000000000ca43980-00065cce5bfc0cca.journal",
+        "bytes": 109051904,
+        "sha256": "f8fd4960e6caad28c872efbe006f4292683671b7a40c20c18ad7a10c1dccece2",
+        "numericMetadataVerified": true,
+        "xattrsVerified": true,
+        "journalStructureVerified": true
+      },
+      {
+        "archiveName": "journals/426c0b742db147a4aae81f32cdd89c68/system@9a297d267f0b4fc091613eb1940ccd16-000000000ca60140-00065d6fb7afb777.journal",
+        "bytes": 100663296,
+        "sha256": "30fdd2c221debe9746870b372e27fb194c8a4d28cf135ec6b79909490866427a",
+        "numericMetadataVerified": true,
+        "xattrsVerified": true,
+        "journalStructureVerified": true
+      },
+      {
+        "archiveName": "journals/426c0b742db147a4aae81f32cdd89c68/user-1000@faae8c5153c7434bb4d72fcb73d3318b-000000000ca4586c-00065cce6194b27c.journal",
+        "bytes": 16777216,
+        "sha256": "3005084d5d22ef1efd72df943e22c0a531e090efed03ec4765de7fa05e800eda",
+        "numericMetadataVerified": true,
+        "xattrsVerified": true,
+        "journalStructureVerified": true
+      },
+      {
+        "archiveName": "journals/426c0b742db147a4aae81f32cdd89c68/user-1000@faae8c5153c7434bb4d72fcb73d3318b-000000000ca6015e-00065d6fc72be7aa.journal",
+        "bytes": 25165824,
+        "sha256": "3a4f306fa2d0925c1f3b0dfbe74a6c5a0f868179155a1832100abd756bc7b2fc",
+        "numericMetadataVerified": true,
+        "xattrsVerified": true,
+        "journalStructureVerified": true
+      }
+    ],
+    "scratchRemovedAllocatedBytes": 385880064,
+    "sourceOriginalsDeleted": false,
+    "completeAgeAuthentication": true,
+    "everyFileIndependentlyRestored": true,
+    "scratchReconciled": true
+  },
+  "journalRetirement": {
+    "UTC": "2026-10-27T14:41:20.50103-04:00",
+    "filesystem": {
+      "uuid": "763cda3d-0777-4b03-a882-9d21060466e3",
+      "source": "/dev/mapper/ubuntu--vg-ubuntu--lv",
+      "fstype": "ext4"
+    },
+    "references": {
+      "processes": 637,
+      "mountNamespaces": 89,
+      "units": 986,
+      "unitInventorySHA256": "5610979e526dcc9de8ca9944d5b1f994802669e9b194cb863051ea589b01295a"
+    },
+    "applied": true,
+    "removed": [
+      {
+        "path": "/var/log/journal/426c0b742db147a4aae81f32cdd89c68/system@9a297d267f0b4fc091613eb1940ccd16-000000000ca1c7e0-00065ccdeaf970f5.journal",
+        "sha256": "38b8967e4be6ce4095a8f21106ba2f213099ff53e75d1ca1d412351d6e0bf8a3",
+        "allocatedBytes": 134230016
+      },
+      {
+        "path": "/var/log/journal/426c0b742db147a4aae81f32cdd89c68/system@9a297d267f0b4fc091613eb1940ccd16-000000000ca43980-00065cce5bfc0cca.journal",
+        "sha256": "f8fd4960e6caad28c872efbe006f4292683671b7a40c20c18ad7a10c1dccece2",
+        "allocatedBytes": 109060096
+      },
+      {
+        "path": "/var/log/journal/426c0b742db147a4aae81f32cdd89c68/system@9a297d267f0b4fc091613eb1940ccd16-000000000ca60140-00065d6fb7afb777.journal",
+        "sha256": "30fdd2c221debe9746870b372e27fb194c8a4d28cf135ec6b79909490866427a",
+        "allocatedBytes": 100667392
+      },
+      {
+        "path": "/var/log/journal/426c0b742db147a4aae81f32cdd89c68/user-1000@faae8c5153c7434bb4d72fcb73d3318b-000000000ca4586c-00065cce6194b27c.journal",
+        "sha256": "3005084d5d22ef1efd72df943e22c0a531e090efed03ec4765de7fa05e800eda",
+        "allocatedBytes": 16781312
+      },
+      {
+        "path": "/var/log/journal/426c0b742db147a4aae81f32cdd89c68/user-1000@faae8c5153c7434bb4d72fcb73d3318b-000000000ca6015e-00065d6fc72be7aa.journal",
+        "sha256": "3a4f306fa2d0925c1f3b0dfbe74a6c5a0f868179155a1832100abd756bc7b2fc",
+        "allocatedBytes": 25169920
+      }
+    ],
+    "removedAllocatedBytes": 385908736,
+    "activeJournalRemoved": false,
+    "sourceProfileSHA256": "44600d15385607faef62221032a4faec12b8749c9da7d97e36577a9285a0fc42",
+    "archiveSHA256": "e20a34a254380bacadb2f887361590d5714a50066f983a6780eb04cb20f6e7d2",
+    "availableBeforeBytes": 26822918144,
+    "availableAfterBytes": 27208826880
+  },
+  "journalAnsibleScratch": {
+    "status": "completed",
+    "references": {
+      "processes": 106,
+      "mountNamespaces": 6,
+      "units": 247,
+      "unitInventorySHA256": "0885a069ccb24ddec4ab2671972ff88e9e57852aa070d4a22033fad17894b142"
+    },
+    "alreadyAbsent": [],
+    "removed": [
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-journal-offload-20261027/syntax-ansible-scratch/local",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-journal-offload-20261027/inventory-ansible-scratch/local",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-journal-offload-20261027/inventory-ansible-scratch/remote",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-journal-offload-20261027/retirement-f5588a6cac52494589d517bb784641c1-ansible-scratch/local",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-journal-offload-20261027/retirement-f5588a6cac52494589d517bb784641c1-ansible-scratch/remote",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-journal-offload-20261027/syntax-ansible-scratch",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-journal-offload-20261027/inventory-ansible-scratch",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-journal-offload-20261027/retirement-f5588a6cac52494589d517bb784641c1-ansible-scratch",
+        "allocatedBytes": 4096
+      }
+    ],
+    "windowsRecoveryClaimed": false,
+    "frameworkLatePackagingUnmeasured": true,
+    "allOriginalSourceCiphertextProofAndFailureFilesUnchanged": true,
+    "removedAllocatedBytes": 32768
+  },
+  "audit": {
+    "rc": 0,
+    "applied": true,
+    "UTC": "2026-10-27T14:46:11.648593-04:00",
+    "selected": [
+      {
+        "path": "/home/james/.local/share/branconet-migration/audit20261023-20261023T203418Z/bin/trivy",
+        "identity": {
+          "dev": 64768,
+          "ino": 3039735,
+          "mode": 33216,
+          "uid": 1000,
+          "gid": 1000,
+          "nlink": 1,
+          "size": 176029856,
+          "mtime_ns": 1792787664337546000,
+          "ctime_ns": 1792789057619010777,
+          "blocks": 343824
+        }
+      },
+      {
+        "path": "/home/james/.local/share/branconet-migration/audit20261023-20261023T203418Z/bin",
+        "identity": {
+          "dev": 64768,
+          "ino": 3039734,
+          "mode": 16832,
+          "uid": 1000,
+          "gid": 1000,
+          "nlink": 2,
+          "size": 4096,
+          "mtime_ns": 1792789055086966382,
+          "ctime_ns": 1792789055086966382,
+          "blocks": 8
+        }
+      }
+    ],
+    "removed": [
+      {
+        "path": "/home/james/.local/share/branconet-migration/audit20261023-20261023T203418Z/bin/trivy",
+        "allocatedBytes": 176037888
+      },
+      {
+        "path": "/home/james/.local/share/branconet-migration/audit20261023-20261023T203418Z/bin",
+        "allocatedBytes": 4096
+      }
+    ],
+    "removedAllocatedBytes": 176041984,
+    "references": {
+      "processes": 639,
+      "mountNamespaces": 89,
+      "units": 987,
+      "unitInventorySHA256": "2bf48ee953a1974dccf42dceb2dfbbe877d0808834eb2fc78fd114a0e862caae"
+    },
+    "sha256": "d1dfca6ae10a1ad4540bb94e64f0510077c47008920a9b554986b39dca573d83",
+    "protectedEntries": 311,
+    "sourceReportsAndFailuresPreserved": true,
+    "completePrivateReceiptSHA256": "24d91ec405f41a67660ebdf1655f69c9a722ce359a6d10c2db4266606c5d6322",
+    "primaryProof": {
+      "primary": {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-oci-scan/bin/trivy",
+        "bytes": 176029856,
+        "sha256": "d1dfca6ae10a1ad4540bb94e64f0510077c47008920a9b554986b39dca573d83"
+      },
+      "originalProvenance": [
+        {
+          "repo": "aquasecurity/trivy",
+          "tag": "v0.76.1",
+          "published": "2026-10-21T11:18:34Z",
+          "payload": "trivy_0.76.1_Linux-64bit.tar.gz",
+          "payloadDigest": "sha256:c7cbe3137fb8a48a17574bede3dd6beb16742d1e9772929940fc90082c39d9c0",
+          "checksumDigest": "sha256:885debc41b570179e81af560e5f393a66be29b9ff8c52915674f3eb2304c535d",
+          "binarySha256": "d1dfca6ae10a1ad4540bb94e64f0510077c47008920a9b554986b39dca573d83",
+          "officialChecksumMatched": true,
+          "releaseUrl": "https://github.com/aquasecurity/trivy/releases/tag/v0.76.1"
+        },
+        {
+          "repo": "sigstore/cosign",
+          "tag": "v3.1.4",
+          "published": "2026-10-20T18:27:42Z",
+          "payload": "cosign-linux-amd64",
+          "payloadDigest": "sha256:424e2c97d0b45fd7a6b608a87f090f35633f4c23ece5f092d48bba11aaf4bbfa",
+          "checksumDigest": "sha256:e70e59b328d52949b3a9ae3e0d04721ea8f380c4e91c28197aa91df02afbf4c0",
+          "binarySha256": "424e2c97d0b45fd7a6b608a87f090f35633f4c23ece5f092d48bba11aaf4bbfa",
+          "officialChecksumMatched": true,
+          "releaseUrl": "https://github.com/sigstore/cosign/releases/tag/v3.1.4"
+        }
+      ],
+      "sourceOriginalsPreserved": true,
+      "regeneration": "copy this retained identical public program into a fresh owned scanner stage; do not replay audit or deployment"
+    },
+    "regeneration": "copy this retained identical public program into a fresh owned scanner stage; do not replay audit or deployment"
+  },
+  "auditAnsibleScratch": {
+    "status": "completed",
+    "references": {
+      "processes": 102,
+      "mountNamespaces": 6,
+      "units": 247,
+      "unitInventorySHA256": "0885a069ccb24ddec4ab2671972ff88e9e57852aa070d4a22033fad17894b142"
+    },
+    "alreadyAbsent": [],
+    "removed": [
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/audit-tool-syntax-scratch/local",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/audit-tool-inventory-scratch/local",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/audit-tool-inventory-scratch/remote",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/audit-tool-ansible-scratch/local",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/audit-tool-ansible-scratch/remote",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/audit-tool-syntax-scratch",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/audit-tool-inventory-scratch",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/master-generated-cleanup/audit-tool-ansible-scratch",
+        "allocatedBytes": 4096
+      }
+    ],
+    "windowsRecoveryClaimed": false,
+    "frameworkLatePackagingUnmeasured": true,
+    "allOriginalSourceCiphertextProofAndFailureFilesUnchanged": true,
+    "removedAllocatedBytes": 32768
+  },
+  "health": {
+    "UTC": "2026-10-27T14:47:14.227146-04:00",
+    "nodesReady": 3,
+    "claims": 58,
+    "boundClaims": 58,
+    "volumes": 44,
+    "claimBindingsComparedTo1832Unchanged": true,
+    "volumeIdentitiesComparedTo1832Unchanged": true,
+    "unreadyDeploymentsDaemonsets": [],
+    "unreadyUnsuspendedFlux": [],
+    "masterFilesystem": {
+      "availableBytes": 27384635392,
+      "freeBytes": 32701272064
+    },
+    "longhornControls": {
+      "storage-minimal-available-percentage": "25",
+      "concurrent-automatic-engine-upgrade-per-node-limit": "0"
+    },
+    "fullHealthReceiptSHA256": "766b8eb41a1c4a789c5e4b70e5b8d55199cf048c2622f13ff5de04138e4b720e"
+  },
+  "capacity": {
+    "observation": "2026-10-27T14:47:14.227146-04:00",
+    "priorImageProjectionReused": true,
+    "nativeCacheRemeasured": false,
+    "nativeUnpackExecuted": false,
+    "coreProjectionBytes": 3593551872,
+    "completeProjectionBytes": 5097279488,
+    "longhornAvailableBytes": 32610713600,
+    "unchangedSchedulingFloorBytes": 28925518849,
+    "coreSurplusBytes": 91642879,
+    "completeHeadroomMissingBytes": 1412084737,
+    "upgradeQualified": false
+  },
+  "newNodeRemovedAllocatedBytes": 561950720,
+  "cumulativeQualifiedNodeRemovedAllocatedBytes": 25476104192,
+  "newControllerScratchRemovedAllocatedBytes": 65536,
+  "journalRestoreScratchCreatedAndRemovedSeparatelyBytes": 385880064,
+  "windowsRecoveryClaimed": false,
+  "goalComplete": false
+}

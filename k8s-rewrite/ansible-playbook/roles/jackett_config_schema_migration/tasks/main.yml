@@ -1,0 +1,23 @@
+---
+- name: Require the explicit dated quiescent Jackett configuration operation
+  ansible.builtin.assert:
+    that:
+      - jackett_config_schema_apply | default(false) | bool
+      - jackett_config_schema_phase in ['capture', 'apply']
+      - jackett_config_schema_revision is match('^[0-9a-f]{40}$')
+      - inventory_hostname == 'masternode'
+
+- name: Run the guarded one-file migration from the existing controller
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - "{{ playbook_dir }}/../../../scripts/migration/repair-jackett-1337x.py"
+      - --apply
+      - --phase
+      - "{{ jackett_config_schema_phase }}"
+      - --expected-revision
+      - "{{ jackett_config_schema_revision }}"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when: not ansible_check_mode

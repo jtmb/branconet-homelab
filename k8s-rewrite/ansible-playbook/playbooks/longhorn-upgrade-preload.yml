@@ -1,0 +1,19 @@
+---
+- name: Stage the reviewed official Longhorn images without changing workloads
+  hosts: k8s_nodes
+  serial: 1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - name: Require explicit staging on the original cluster
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname in ['masternode', 'workernode2', 'workernode1']
+          - ansible_host in ['192.168.0.4', '192.168.0.5', '192.168.0.6']
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - longhorn_upgrade_preload | default(false) | bool
+    - name: Recompute live capacity then stage and verify all pinned images
+      longhorn_upgrade_preload:
+      no_log: true

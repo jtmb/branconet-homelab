@@ -1,0 +1,153 @@
+---
+- name: Read only the exact running BORTUS cached OCI content
+  hosts: workernode2
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  vars:
+    bortus_cache_apply: false
+    bortus_cache_phase: probe
+    bortus_cache_attempt: ''
+    bortus_cache_probe_sha256: ''
+    bortus_cache_root: /home/james/.local/share/branconet-migration/bortus-cached-runtime-audit-20261025
+    bortus_cache_source: "{{ playbook_dir }}/../../../scripts/migration/export-bortus-cached-runtime.py"
+  tasks:
+    - name: Default to a source-only plan
+      ansible.builtin.debug:
+        msg: Explicit apply reads one cached image; no registry, image execution, Kubernetes mutation or cache deletion.
+      when: not bortus_cache_apply | bool or ansible_check_mode
+
+    - name: Run the finite root content-reader only when explicitly requested
+      when: bortus_cache_apply | bool and not ansible_check_mode
+      block:
+        - name: Validate exact node and operation
+          ansible.builtin.assert:
+            that:
+              - inventory_hostname == 'workernode2'
+              - ansible_host == '192.168.0.5'
+              - ansible_user == 'james'
+              - ansible_port | int == 2002
+              - bortus_cache_phase in ['probe', 'export']
+              - bortus_cache_attempt is match('^[0-9a-f]{12}$')
+              - bortus_cache_phase == 'probe' or bortus_cache_probe_sha256 is match('^[0-9a-f]{64}$')
+
+        - name: Freeze canonical source identity
+          ansible.builtin.set_fact:
+            bortus_cache_source_sha: "{{ lookup('ansible.builtin.file', bortus_cache_source, rstrip=false) | hash('sha256') }}"
+
+        - name: Validate exclusive attempt and root-owned preserved ancestors
+          ansible.builtin.command:
+            argv:
+              - /usr/bin/python3
+              - -c
+              - |
+                import os,pathlib,pwd,stat,sys
+                root=pathlib.Path(sys.argv[1]); attempt=root/'attempts'/sys.argv[2]
+                assert root.parent.resolve()==root.parent and root.parent.is_dir()
+                owner=pwd.getpwnam('james')
+                for p in [root,root/'helpers',root/'helpers'/sys.argv[3],root/'attempts',attempt]:
+                    if os.path.lexists(p):
+                        s=p.lstat();assert p.resolve()==p and stat.S_ISDIR(s.st_mode)
+                        assert s.st_uid==0 and s.st_gid==owner.pw_gid and stat.S_IMODE(s.st_mode)==0o750
+                if sys.argv[4]=='probe': assert not os.path.lexists(attempt)
+                else: assert attempt.is_dir() and not os.path.lexists(attempt/'runtime.oci.tar') and not os.path.lexists(attempt/'export.json')
+                v=os.statvfs(root.parent); assert v.f_bavail*v.f_frsize>=15*1024**3
+              - "{{ bortus_cache_root }}"
+              - "{{ bortus_cache_attempt }}"
+              - "{{ bortus_cache_source_sha }}"
+              - "{{ bortus_cache_phase }}"
+          changed_when: false
+
+        - name: Create only the new owned evidence directories
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: directory
+            owner: root
+            group: james
+            mode: '0750'
+          loop:
+            - "{{ bortus_cache_root }}"
+            - "{{ bortus_cache_root }}/helpers"
+            - "{{ bortus_cache_root }}/helpers/{{ bortus_cache_source_sha }}"
+            - "{{ bortus_cache_root }}/attempts"
+            - "{{ bortus_cache_root }}/attempts/{{ bortus_cache_attempt }}"
+
+        - name: Preserve hash-addressed source without overwriting
+          ansible.builtin.copy:
+            src: "{{ bortus_cache_source }}"
+            dest: "{{ bortus_cache_root }}/helpers/{{ bortus_cache_source_sha }}/export.py"
+            owner: root
+            group: james
+            mode: '0440'
+            force: false
+            follow: false
+
+        - name: Recheck staged source
+          ansible.builtin.stat:
+            path: "{{ bortus_cache_root }}/helpers/{{ bortus_cache_source_sha }}/export.py"
+            checksum_algorithm: sha256
+            follow: false
+          register: bortus_cache_staged
+
+        - name: Require immutable exact reader
+          ansible.builtin.assert:
+            that:
+              - bortus_cache_staged.stat.isreg
+              - not bortus_cache_staged.stat.islnk
+              - bortus_cache_staged.stat.uid == 0
+              - bortus_cache_staged.stat.checksum == bortus_cache_source_sha
+
+        - name: Run one offline cgroup-bounded content inspection or export
+          ansible.builtin.command:
+            argv:
+              - systemd-run
+              - --wait
+              - "--unit=branconet-bortus-cache-{{ bortus_cache_phase }}-{{ bortus_cache_attempt }}"
+              - --property=Type=exec
+              - --property=MemoryMax=1073741824
+              - --property=MemorySwapMax=0
+              - --property=CPUQuota=200%
+              - --property=TasksMax=128
+              - --property=Nice=10
+              - --property=UMask=0077
+              - --property=RuntimeMaxSec=900
+              - --property=TimeoutStopSec=30
+              - --property=KillMode=control-group
+              - --property=LimitFSIZE=2147483648
+              - --property=PrivateNetwork=yes
+              - --property=PrivateDevices=yes
+              - --property=PrivateTmp=yes
+              - --property=NoNewPrivileges=yes
+              - --property=CapabilityBoundingSet=CAP_CHOWN
+              - --property=ProtectSystem=strict
+              - --property=ProtectHome=tmpfs
+              - --property=ProtectKernelTunables=yes
+              - --property=ProtectKernelModules=yes
+              - --property=ProtectKernelLogs=yes
+              - --property=ProtectControlGroups=yes
+              - "--property=BindReadOnlyPaths={{ bortus_cache_root }}"
+              - "--property=BindPaths={{ bortus_cache_root }}/attempts/{{ bortus_cache_attempt }}"
+              - "--property=ReadWritePaths={{ bortus_cache_root }}/attempts/{{ bortus_cache_attempt }}"
+              - "--property=NoExecPaths={{ bortus_cache_root }}/attempts"
+              - --property=InaccessiblePaths=-/etc/kubernetes -/etc/rancher -/var/lib/kubelet -/var/lib/longhorn -/run/docker.sock -/var/run/secrets
+              - "--property=StandardOutput=append:{{ bortus_cache_root }}/attempts/{{ bortus_cache_attempt }}/{{ bortus_cache_phase }}.unit.log"
+              - "--property=StandardError=append:{{ bortus_cache_root }}/attempts/{{ bortus_cache_attempt }}/{{ bortus_cache_phase }}.unit.log"
+              - --
+              - /usr/bin/env
+              - -i
+              - PATH=/usr/bin:/bin
+              - LANG=C
+              - LC_ALL=C
+              - /usr/bin/python3
+              - -I
+              - -B
+              - "{{ bortus_cache_root }}/helpers/{{ bortus_cache_source_sha }}/export.py"
+              - "{{ bortus_cache_phase }}"
+              - --attempt
+              - "{{ bortus_cache_attempt }}"
+              - --probe-sha256
+              - "{{ bortus_cache_probe_sha256 }}"
+          async: 960
+          poll: 5
+          changed_when: bortus_cache_phase == 'export'

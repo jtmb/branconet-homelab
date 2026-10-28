@@ -1,0 +1,154 @@
+{
+  "observedAt": "2026-10-28T07:54:30.787596+00:00",
+  "status": "all_applications_restored_but_original_capacity_gate_failed",
+  "batchAccepted": false,
+  "fullGoalComplete": false,
+  "restoredApplications": 14,
+  "healthyNewRuntimesAndMountedReads": 17,
+  "originalImagesTemplatesBindingsAndReplicaDirectoriesPreserved": true,
+  "fleet": {
+    "observedAt": "2026-10-28T07:52:41.642482+00:00",
+    "claimsBound": 58,
+    "NASBindingsPreserved": 14,
+    "threeReadyNodes": true,
+    "unavailableDesiredControllers": [],
+    "chartsValidatedAndFlux": "a1904230a34495dbd0ea428b8246df1f174e98d7",
+    "remainingOldRuntimes": [
+      {
+        "name": "instance-manager-0f44e66d715a28714766cec73f9ec067",
+        "image": "docker.io/longhornio/longhorn-instance-manager:v1.12.1",
+        "activeEngines": 1
+      },
+      {
+        "name": "instance-manager-29805aeceef9c272b45a4b8ceb79af0e",
+        "image": "docker.io/longhornio/longhorn-instance-manager:v1.12.1",
+        "activeEngines": 1
+      },
+      {
+        "name": "instance-manager-bca6a3d4fbbc05aa77ad5833d42791e1",
+        "image": "docker.io/longhornio/longhorn-instance-manager:v1.12.1",
+        "activeEngines": 2
+      }
+    ],
+    "storageGatePassed": false,
+    "batchAccepted": false,
+    "fullGoalComplete": false
+  },
+  "disks": [
+    {
+      "node": "masternode",
+      "available": 29779558400,
+      "maximum": 115702075392,
+      "requiredAvailable": 29462389761,
+      "passed": true
+    },
+    {
+      "node": "workernode1",
+      "available": 96573849600,
+      "maximum": 249322430464,
+      "requiredAvailable": 62867478529,
+      "passed": true
+    },
+    {
+      "node": "workernode2",
+      "available": 27158118400,
+      "maximum": 115702075392,
+      "requiredAvailable": 29462389761,
+      "passed": false
+    }
+  ],
+  "sourceCommits": {
+    "stop": "6013b3afb9f4d573af6b3294a868398bc860a585",
+    "restore": "a1904230a34495dbd0ea428b8246df1f174e98d7"
+  },
+  "preflightLimitation": "Prepared check enforced 25 percent plus 512 MiB but did not budget additional native image payload/unpack storage after Pod placement changed; future cohorts require explicit per-node native payload budgets",
+  "capacityInspection": {
+    "worker2VGFreeBytes": 0,
+    "nativeImagesMetadataContentSnapshotsLeasesDeleted": false,
+    "selectedDataOrOriginalsDeleted": false,
+    "currentInspectionSource": "scripts/migration/inspect-worker2-runtime-capacity.py",
+    "sourceSHA256": "385fec5d3243e93a52333c87a23869e3a30724158c9fd7d6aec3f9cc946b0d77"
+  },
+  "cleanup": {
+    "status": "completed",
+    "removedAllocatedLinuxBytes": 355721216,
+    "originalGitSourceAndToolsPreserved": true,
+    "protectedFilesUnchanged": 10,
+    "WindowsRecoveryClaimed": false,
+    "retained": [
+      "Each exact stage prepare/check/publish/lock and source/.validation/validation.json",
+      "All unselected/failed stages",
+      "Required active isolated source worktree for remaining runtime maintenance"
+    ]
+  },
+  "exactRemovedPathsAndBytes": {
+    "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-0782d79da4f052c6/receipt.json",
+    "sha256": "777f5a5ff5753ed2c70f5cb70e7dd98d2cc78be337a0c4120058e98ae146119b",
+    "removedPathCount": 1612
+  },
+  "retainedMetadata": {
+    "files": 15,
+    "logicalBytes": 862155,
+    "inventory": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-application-batch-20261028/checkpoint-inventory.json"
+  },
+  "retainedExceptions": "Previous failed-safety-check subtree, incomplete stages, all original source/rollback/backups and operational recovery tools remain protected; active source worktree required for capacity recovery and remaining runtime cycles",
+  "WindowsFreeBytesObservedSeparately": {
+    "C": 55140528128,
+    "F": 193112182784
+  },
+  "receipts": [
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-application-batch-20261028/ownership.json",
+      "sha256": "fe20b93658011acfb337bd7c0131d24379e63d0d230ed018d7fd885316785e32"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-application-batch-20261028/plan.json",
+      "sha256": "f9a01a6b8763c2c7982ba9308354c921bb5916a83150eac4990f707327d3f80a"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-application-batch-20261028/stop-pushed.json",
+      "sha256": "6bdf00e2cca8fe901c078c6b7b6cfec512c93f8fb67acb384cad5923fb81ee01"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-application-batch-20261028/detached.json",
+      "sha256": "c11e195b845a989bc0c97aeb553ef642123b0e494eda3af04d3724c8983839d9"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-application-batch-20261028/resume-pushed.json",
+      "sha256": "0235aa3cebe4fbc5491ae71d052c68a0b74e006a7269b8f07164036f9ebed0ea"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-application-batch-20261028/structural-runtime-observation.json",
+      "sha256": "82f4054cee91e40232c59b4de6118b9affb576c6fcaf33599cac001b9bd8cdd8"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-application-batch-20261028/fleet-after.json",
+      "sha256": "1de090ae0e2aaf6b0b1866a02251e924fd5cbdc4799ef616eb45d79d9177361b"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-application-batch-20261028/fleet-summary.json",
+      "sha256": "38dcffd6ecbf3d3bb8f18cfa3687e839c136df713b72ad06f9fbd046395327c6"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-application-batch-20261028/checkpoint-inventory.json",
+      "sha256": "f292b3b3df04b39b7faa59e4fa39139a8213c29a462b47e1a47955c4c04e1914"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-0782d79da4f052c6/ownership.json",
+      "sha256": "cddc112a28e3686f2f2436a245061f89e9c76d9c67a37e12745c04f595e52878"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-0782d79da4f052c6/plan.json",
+      "sha256": "53d97b19e96a2af59c8fa1c7bb246a9528808710904a8cc4ca00d50f6ba4d000"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-0782d79da4f052c6/windows-proof.json",
+      "sha256": "63469a497255c82df60731f8f473dedc7d8a0f37d7e9b7de1fb4992680d8f7f4"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-0782d79da4f052c6/receipt.json",
+      "sha256": "777f5a5ff5753ed2c70f5cb70e7dd98d2cc78be337a0c4120058e98ae146119b"
+    }
+  ],
+  "remaining": "worker2 capacity recovery and strict batch acceptance; Pi-hole two engines, Ingenium one, held BORTUS one; final exact-image/security/data/route/IAB and cleanup acceptance"
+}

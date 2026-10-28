@@ -1,0 +1,123 @@
+---
+- name: Report the disabled static etcd patch
+  ansible.builtin.debug:
+    msg: Explicit apply is required; default and check mode do not copy helpers or alter configuration.
+  when: not etcd_static_patch_apply | bool or ansible_check_mode
+
+- name: Operate only the reviewed singleton master patch path
+  when: etcd_static_patch_apply | bool and not ansible_check_mode
+  block:
+    - name: Require fixed master scope and a unique reviewed operation
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'masternode'
+          - ansible_host == '192.168.0.4'
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - containerd_socket == 'unix:///run/containerd-k8s/containerd.sock'
+          - etcd_static_patch_phase in ['preload', 'review', 'apply', 'status']
+          - etcd_static_patch_run_id is match('^[0-9a-f]{32}$')
+          - etcd_static_patch_phase != 'apply' or etcd_static_patch_review_id is match('^[0-9a-f]{32}$')
+          - etcd_static_patch_phase != 'apply' or etcd_static_patch_review_sha256 is match('^[0-9a-f]{64}$')
+
+    - name: Bind both public helper sources to immutable content identities
+      ansible.builtin.set_fact:
+        etcd_static_patch_root: /home/james/.local/share/branconet-migration/etcd-static-patch-20261024
+        etcd_static_patch_source_sha: "{{ lookup('ansible.builtin.file', role_path ~ '/files/patch_etcd.py', rstrip=false) | hash('sha256') }}"
+        etcd_static_patch_recovery_sha: "{{ lookup('ansible.builtin.file', role_path ~ '/../security_maintenance/files/recovery_guard.py', rstrip=false) | hash('sha256') }}"
+
+    - name: Derive only the owned versioned helper path
+      ansible.builtin.set_fact:
+        etcd_static_patch_helper_dir: "{{ etcd_static_patch_root }}/helpers/{{ etcd_static_patch_source_sha }}-{{ etcd_static_patch_recovery_sha }}"
+
+    - name: Refuse conflicting or aliased helper ancestors
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -c
+          - |
+            import os,pwd,stat,sys
+            from pathlib import Path
+            base=Path('/home/james/.local/share/branconet-migration')
+            assert base.resolve()==base and base.is_dir() and base.stat().st_uid==pwd.getpwnam('james').pw_uid
+            assert not base.stat().st_mode & 0o002
+            root=base/'etcd-static-patch-20261024'
+            for p in [root,root/'helpers',root/'runs',Path(sys.argv[1])]:
+                if os.path.lexists(p):
+                    s=p.lstat();assert p.resolve()==p and stat.S_ISDIR(s.st_mode) and s.st_uid==0 and s.st_gid==0 and stat.S_IMODE(s.st_mode)==0o700
+          - "{{ etcd_static_patch_helper_dir }}"
+      changed_when: false
+
+    - name: Create only this new operation's protected source and receipt directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0700'
+      loop:
+        - "{{ etcd_static_patch_root }}"
+        - "{{ etcd_static_patch_root }}/helpers"
+        - "{{ etcd_static_patch_root }}/runs"
+        - "{{ etcd_static_patch_helper_dir }}"
+      when: etcd_static_patch_phase != 'status'
+
+    - name: Retain only missing public helper versions without replacement
+      ansible.builtin.copy:
+        src: "{{ item.source }}"
+        dest: "{{ etcd_static_patch_helper_dir }}/{{ item.name }}"
+        owner: root
+        group: root
+        mode: '0400'
+        force: false
+        follow: false
+      loop:
+        - {source: "{{ role_path }}/files/patch_etcd.py", name: patch_etcd.py}
+        - {source: "{{ role_path }}/../security_maintenance/files/recovery_guard.py", name: recovery_contract.py}
+      when: etcd_static_patch_phase != 'status'
+
+    - name: Inspect both exact helper identities before invoking any operation
+      ansible.builtin.stat:
+        path: "{{ etcd_static_patch_helper_dir }}/{{ item.name }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop:
+        - {name: patch_etcd.py, sha: "{{ etcd_static_patch_source_sha }}"}
+        - {name: recovery_contract.py, sha: "{{ etcd_static_patch_recovery_sha }}"}
+      register: etcd_static_patch_sources
+
+    - name: Refuse replaced source, aliases or incorrect ownership
+      ansible.builtin.assert:
+        that:
+          - item.stat.isreg | default(false)
+          - not item.stat.islnk | default(false)
+          - item.stat.uid == 0
+          - item.stat.gid == 0
+          - item.stat.mode == '0400'
+          - item.stat.nlink == 1
+          - item.stat.checksum == item.item.sha
+      loop: "{{ etcd_static_patch_sources.results }}"
+      loop_control:
+        label: "{{ item.item.name }}"
+
+    - name: Invoke only the explicit reviewed operation with private verification metadata through stdin
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -B
+          - "{{ etcd_static_patch_helper_dir }}/patch_etcd.py"
+          - "{{ etcd_static_patch_phase }}"
+          - --run-id
+          - "{{ etcd_static_patch_run_id }}"
+          - --review-id
+          - "{{ etcd_static_patch_review_id }}"
+          - --review-sha256
+          - "{{ etcd_static_patch_review_sha256 }}"
+        stdin: "{{ etcd_static_patch_verification_ticket | to_json }}"
+      no_log: true
+      changed_when: etcd_static_patch_phase == 'apply'
+      register: etcd_static_patch_operation
+
+    - name: Report only the selected public result metadata
+      ansible.builtin.debug:
+        msg: "{{ etcd_static_patch_operation.stdout | from_json }}"

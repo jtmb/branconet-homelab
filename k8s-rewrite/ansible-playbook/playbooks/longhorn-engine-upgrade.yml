@@ -1,0 +1,7 @@
+---
+- name: Upgrade initialized Longhorn V1 engines one at a time preserving data
+  hosts: masternode
+  gather_facts: false
+  become: false
+  roles:
+    - longhorn_engine_upgrade

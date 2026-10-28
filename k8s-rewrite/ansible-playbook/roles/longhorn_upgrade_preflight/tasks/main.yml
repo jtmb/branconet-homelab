@@ -1,0 +1,35 @@
+---
+- name: Require the existing master and declared controller storage
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - ansible_host == '192.168.0.4'
+      - ansible_user == 'james'
+      - ansible_port | int == 2002
+      - longhorn_upgrade_preflight_output_dir is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-preflight[a-z0-9-]*$')
+
+- name: Read live storage and preserve a new metadata-only receipt
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+      - "{{ role_path }}/files/check.py"
+      - --output-dir
+      - "{{ longhorn_upgrade_preflight_output_dir }}"
+      - --vendor-manifest
+      - "{{ longhorn_upgrade_preflight_vendor_manifest }}"
+      - --candidates
+      - "{{ longhorn_upgrade_preflight_candidates }}"
+  delegate_to: localhost
+  become: false
+  environment:
+    TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    TEMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    TMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    PYTHONDONTWRITEBYTECODE: '1'
+  changed_when: false
+  no_log: true
+  when: not ansible_check_mode
+
+- name: Report the inspection boundary
+  ansible.builtin.debug:
+    msg: "Receipt: {{ longhorn_upgrade_preflight_output_dir }}. Read-only collection; no image pulls, attachment, snapshots, backup creation, settings, secrets or upgrade mutations. Backup completion does not establish restore or application consistency."

@@ -1,0 +1,77 @@
+---
+- name: Require one explicit reviewed application backup scope
+  ansible.builtin.assert:
+    that:
+      - cold_application_state_apply | bool
+      - inventory_hostname == 'masternode'
+      - cold_application_state_generation in ['original', 'media-security-20261025', 'upstream-media-20261025', 'upstream-seerr-20261025', 'upstream-unpackerr-20261025', 'upstream-static-sites-20261026', 'upstream-homepage-20261026', 'upstream-jackett-20261026', 'upstream-mealie-20261026', 'upstream-tautulli-20261026', 'upstream-vaultwarden-20261026', 'upstream-qbittorrent-20261026', 'upstream-xteve-20261026', 'upstream-ruckusdb-20261026', 'upstream-wordpress-20261026', 'upstream-plex-20261026']
+      - cold_application_state_archive_transport in ['local', 'windows-nas']
+      - cold_application_state_archive_transport != 'windows-nas' or cold_application_state_generation == 'upstream-plex-20261026'
+      - cold_application_state_generation != 'upstream-plex-20261026' or (cold_application_state_app == 'plex' and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 1000)
+      - cold_application_state_generation != 'upstream-wordpress-20261026' or (cold_application_state_app == 'wordpress' and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 0)
+      - cold_application_state_app != 'wordpress' or cold_application_state_reader_uid | int == (0 if cold_application_state_generation == 'upstream-wordpress-20261026' else 33)
+      - cold_application_state_generation != 'upstream-ruckusdb-20261026' or (cold_application_state_app == 'ruckus-db' and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 0)
+      - cold_application_state_generation != 'upstream-xteve-20261026' or (cold_application_state_app in ['xteve', 'xteve-config'] and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 0)
+      - cold_application_state_generation != 'upstream-qbittorrent-20261026' or (cold_application_state_app == 'qbittorrent' and cold_application_state_node == 'masternode' and cold_application_state_reader_uid | int == 0)
+      - cold_application_state_generation != 'upstream-vaultwarden-20261026' or (cold_application_state_app == 'vaultwarden' and cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 1000)
+      - cold_application_state_generation != 'upstream-tautulli-20261026' or (cold_application_state_app == 'tautulli' and cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 1000)
+      - cold_application_state_generation != 'upstream-mealie-20261026' or (cold_application_state_app == 'mealie' and cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 1000)
+      - cold_application_state_generation != 'upstream-jackett-20261026' or (cold_application_state_app == 'jackett' and cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 1000)
+      - cold_application_state_generation != 'upstream-homepage-20261026' or (cold_application_state_app == 'homepage' and cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 1000)
+      - (cold_application_state_app in ['aplb', 'lucinda-art-gallery', 'minecraft-website', 'santos-web']) == (cold_application_state_generation == 'upstream-static-sites-20261026')
+      - cold_application_state_app not in ['aplb', 'lucinda-art-gallery', 'minecraft-website', 'santos-web'] or (cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 0)
+      - cold_application_state_generation != 'upstream-unpackerr-20261025' or cold_application_state_app == 'unpackerr'
+      - cold_application_state_generation not in ['media-security-20261025', 'upstream-media-20261025'] or cold_application_state_app in ['bazarr', 'radarr', 'sonarr']
+      - (cold_application_state_app == 'seerr') == (cold_application_state_generation == 'upstream-seerr-20261025')
+      - cold_application_state_app in ['seerr', 'radarr', 'sonarr', 'bazarr', 'tautulli', 'vaultwarden', 'wordpress-redis', 'wordpress', 'jackett', 'plex', 'unpackerr', 'qbittorrent', 'homepage', 'qbit-monitor', 'ruckus-db', 'mealie', 'xteve', 'xteve-config', 'aplb', 'lucinda-art-gallery', 'minecraft-website', 'santos-web']
+      - cold_application_state_app != 'seerr' or (cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 0 and cold_application_state_reader_gid | int == 0)
+      - cold_application_state_app != 'ruckus-db' or (cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == (0 if cold_application_state_generation == 'upstream-ruckusdb-20261026' else 999))
+      - cold_application_state_app != 'mealie' or (cold_application_state_node == 'workernode1' and cold_application_state_reader_uid | int == 1000 and cold_application_state_reader_gid | int == 1000)
+      - cold_application_state_app not in ['xteve', 'xteve-config'] or (cold_application_state_node == 'workernode2' and cold_application_state_reader_uid | int == 0 and cold_application_state_reader_gid | int == 0)
+      - cold_application_state_output_dir is match('^/home/brajam/[^\r\n]+$')
+      - (cold_application_state_app in ['qbittorrent', 'qbit-monitor'] and cold_application_state_node == 'masternode') or (cold_application_state_app not in ['qbittorrent', 'qbit-monitor'] and cold_application_state_node in ['workernode1', 'workernode2'])
+      - cold_application_state_reader_uid | int in [0, 33, 999, 1000]
+      - cold_application_state_reader_gid | int == cold_application_state_reader_uid | int
+
+- name: Capture WordPress transactional database before its complete file archive
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - "{{ playbook_dir }}/../../../scripts/migration/backup-wordpress-database.py"
+      - --apply
+      - --output-dir
+      - "{{ cold_application_state_output_dir }}/database"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when:
+    - not ansible_check_mode
+    - cold_application_state_app == 'wordpress'
+
+- name: Run the one-app helper on the native WSL controller
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - "{{ playbook_dir }}/../../../scripts/migration/cold-application-state-backup.py"
+      - "{{ cold_application_state_app }}"
+      - --archive-transport
+      - "{{ cold_application_state_archive_transport }}"
+      - --generation
+      - "{{ cold_application_state_generation }}"
+      - --apply
+      - --reader-uid
+      - "{{ cold_application_state_reader_uid }}"
+      - --reader-gid
+      - "{{ cold_application_state_reader_gid }}"
+      - --node
+      - "{{ cold_application_state_node }}"
+      - --output-dir
+      - "{{ cold_application_state_output_dir }}"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when: not ansible_check_mode
+
+- name: State the independent backup boundary
+  ansible.builtin.debug:
+    msg: "Inspect private receipts under {{ cold_application_state_output_dir }}. One app only; root must first quiesce its Flux writer. Ruckus requires both original DB and bot releases fully quiesced. Check mode creates no Pod and captures no archive. Full archive authentication is not independent restoration."

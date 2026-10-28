@@ -1,0 +1,36 @@
+{
+  "status": "unused_retired_volume_has_no_initialized_payload",
+  "UTC": "2026-10-27T18:05:54.413888-04:00",
+  "sourceSHA256": "e2a4b80399b3a925951ba84f734960cf8bc5dba8890651bce4dfdcd369022265",
+  "historicalSourceHashes": {
+    "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/wordpress-retirement-20261026/before.json": "358c2c35f7dbc45a61ed35799190301f31e1f54fb1ef2c035c9b620fe594b929",
+    "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/wordpress-retirement-20261026/cancelled-database-preparation.json": "ea7aadba1829c5a3f6951d1d945943e5cb30541d472c2f63b74939c41a360db9",
+    "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/wordpress-retirement-20261026/acceptance.json": "68b3d002bc0de118b80c30c8173a9cd7bc02377b76dbb971c0841e8c97e74abb"
+  },
+  "clusterChanged": false,
+  "volumeInitializedOrMounted": false,
+  "nativeSecretValuesRead": false,
+  "claimUID": "49df631b-614f-4180-b6e5-f719db4bfe2c",
+  "pvUID": "341745e7-dcab-4e6b-8fb6-c8049a98d9e6",
+  "volumeUID": "4d5c0099-2068-4268-aa7f-98ab37c26001",
+  "physicalReplicaProofs": [
+    {
+      "path": "/var/lib/longhorn/replicas/pvc-49df631b-614f-4180-b6e5-f719db4bfe2c-9945de0d",
+      "absent": true,
+      "hostname": "workernode2",
+      "replicaUID": "96892852-44b7-43a9-98be-f7311abbd361"
+    },
+    {
+      "path": "/var/lib/longhorn/replicas/pvc-49df631b-614f-4180-b6e5-f719db4bfe2c-c9520521",
+      "absent": true,
+      "hostname": "workernode1",
+      "replicaUID": "92cd7fc2-a456-4a67-8c8d-088584ae1b04"
+    }
+  ],
+  "originalSpecPreserved": true,
+  "originalRetirementProvesNoDataCopy": true,
+  "emptyAllocationIsNotSoleProof": true,
+  "nativePayloadBackupRequired": false,
+  "metadataRecovery": "Preserved original Kubernetes/Longhorn objects; independent encrypted control-plane checkpoint",
+  "claimAndVolumeRetained": true
+}

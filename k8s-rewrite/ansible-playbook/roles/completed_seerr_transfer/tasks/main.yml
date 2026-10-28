@@ -1,0 +1,74 @@
+---
+- name: Require one completed transfer scope
+  ansible.builtin.assert:
+    that:
+      - completed_seerr_transfer_apply | bool
+      - inventory_hostname in ['masternode', 'workernode2', 'workernode1']
+      - completed_seerr_transfer_service in ['seerr', 'ytptube', 'flaresolverr', 'wordpress', 'phpmyadmin', 'tautulli', 'vaultwarden', 'coredns', 'nginx', 'mealie', 'xteve', 'jtmb-dev', 'plex', 'qbittorrent-current', 'radarr', 'sonarr', 'bazarr', 'whoami']
+
+- name: Verify the complete retained controller copy
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -B
+      - -c
+      - "{{ lookup('ansible.builtin.file', role_path + '/files/retire.py') }}"
+      - controller
+      - --service
+      - '{{ completed_seerr_transfer_service }}'
+  delegate_to: localhost
+  become: false
+  changed_when: false
+
+- name: Inventory the single duplicate and verify every cached image blob
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -B
+      - -c
+      - "{{ lookup('ansible.builtin.file', role_path + '/files/retire.py') }}"
+      - inventory
+      - --service
+      - '{{ completed_seerr_transfer_service }}'
+  become: true
+  changed_when: false
+  register: completed_seerr_transfer_inventory
+
+- name: Record the exact completed-transfer cleanup plan
+  ansible.builtin.debug:
+    msg: '{{ completed_seerr_transfer_inventory.stdout | from_json }}'
+
+- name: Remove only the verified redundant transfer file
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -B
+      - -c
+      - "{{ lookup('ansible.builtin.file', role_path + '/files/retire.py') }}"
+      - retire
+      - --service
+      - '{{ completed_seerr_transfer_service }}'
+  become: true
+  register: completed_seerr_transfer_result
+  changed_when: (completed_seerr_transfer_result.stdout | from_json).changed
+  when: not ansible_check_mode
+
+- name: Recheck the retained full controller archive
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -B
+      - -c
+      - "{{ lookup('ansible.builtin.file', role_path + '/files/retire.py') }}"
+      - controller
+      - --service
+      - '{{ completed_seerr_transfer_service }}'
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  when: not ansible_check_mode
+
+- name: Record exact removed bytes separately from Windows storage
+  ansible.builtin.debug:
+    msg: '{{ completed_seerr_transfer_result.stdout | from_json }}'
+  when: not ansible_check_mode

@@ -1,0 +1,27 @@
+title = "Migration source scan: three public Kubernetes resource UIDs"
+
+[extend]
+useDefault = true
+
+# These UUIDs are metadata.uid identities, never Secret data or credentials.
+# Every exception requires BOTH the exact source path and complete literal line.
+[[allowlists]]
+description = "Mealie native Secret resource UID"
+condition = "AND"
+paths = ['''(^|/)scripts/migration/qualify-mealie[.]py$''']
+regexTarget = "line"
+regexes = ['''^    'secret': '8142b20f-d201-44ff-97b8-f72c93d15557',$''']
+
+[[allowlists]]
+description = "Ruckus native Secret resource UID"
+condition = "AND"
+paths = ['''(^|/)scripts/migration/qualify-ruckusdb[.]py$''']
+regexTarget = "line"
+regexes = ['''^       'secret': '9e06e671-28f3-46ae-9e92-ce1c3abdadbc'}$''']
+
+[[allowlists]]
+description = "xTeVe native Secret resource UID"
+condition = "AND"
+paths = ['''(^|/)scripts/migration/qualify-xteve-state[.]py$''']
+regexTarget = "line"
+regexes = ['''^SECRET = '176c57f7-b8bf-4149-87b1-95b747020c78'$''']

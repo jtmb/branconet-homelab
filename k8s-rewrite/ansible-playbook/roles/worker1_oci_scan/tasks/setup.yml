@@ -1,0 +1,138 @@
+---
+- name: Inspect only known controller scanner/DB source bytes
+  ansible.builtin.stat:
+    path: "{{ item.src }}"
+    follow: false
+    checksum_algorithm: sha256
+  loop:
+    - {src: "{{ worker1_oci_scan_controller_tool }}", sha: d1dfca6ae10a1ad4540bb94e64f0510077c47008920a9b554986b39dca573d83}
+    - {src: "{{ worker1_oci_scan_controller_db }}/db/trivy.db", sha: 6fd7f9c44ff3120e0d15d5b5b2234e1ff1c9e7a6b56b4e776041f93faf1f6f17}
+    - {src: "{{ worker1_oci_scan_controller_db }}/db/metadata.json", sha: d2caf386c5ec60a3fc13376aebe5cd9a236f4c20940e3eec361d4c51c544bce9}
+    - {src: "{{ worker1_oci_scan_controller_db }}/java-db/trivy-java.db", sha: 728fa5500d93bb1a592f8477b8a2c9494c712bcfe6b603c9fef5386d5433cc3d}
+    - {src: "{{ worker1_oci_scan_controller_db }}/java-db/metadata.json", sha: 0f5c76eb37d3cee66cb7da09f8238dd5bab2b0d0eb5f05cf37006af7a4234957}
+  delegate_to: localhost
+  become: false
+  register: worker1_oci_scan_controller_inputs
+
+- name: Require every exact existing verified source file
+  ansible.builtin.assert:
+    that:
+      - item.stat.exists
+      - item.stat.isreg
+      - not item.stat.islnk
+      - item.stat.checksum == item.item.sha
+  loop: "{{ worker1_oci_scan_controller_inputs.results }}"
+  loop_control:
+    label: "{{ item.item.src }}"
+
+- name: Inspect the separately owned scanner root
+  ansible.builtin.stat:
+    path: "{{ worker1_oci_scan_root }}"
+    follow: false
+  register: worker1_oci_scan_existing_root
+
+- name: Refuse an unexpected existing scanner root
+  ansible.builtin.assert:
+    that:
+      - not worker1_oci_scan_existing_root.stat.exists or (worker1_oci_scan_existing_root.stat.isdir and not worker1_oci_scan_existing_root.stat.islnk and worker1_oci_scan_existing_root.stat.uid in [0, 1000])
+
+- name: Prepare only private scanner-owned directories on worker1
+  ansible.builtin.file:
+    path: "{{ worker1_oci_scan_root }}{{ item }}"
+    state: directory
+    owner: james
+    group: james
+    mode: '0700'
+  loop: ['', /bin, /cache, /cache/db, /cache/java-db, /tmp, /home, /docker-config, /attempts]
+
+- name: Require filesystem reserve before staging any large scanner inputs
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -c
+      - "import os; v=os.statvfs('/home/james/.local/share/branconet-migration/worker1-oci-scan-20261023'); assert v.f_bavail*v.f_frsize >= v.f_blocks*v.f_frsize//4 + 8*1024**3 + 2*(3189334319+176029856); assert v.f_favail >= max(250000, v.f_files//10)"
+  changed_when: false
+
+- name: Copy existing verified binary and immutable databases without overwriting prior files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ worker1_oci_scan_root }}/{{ item.dest }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+    force: false
+  loop:
+    - {src: "{{ worker1_oci_scan_controller_tool }}", dest: bin/trivy, mode: '0500'}
+    - {src: "{{ worker1_oci_scan_controller_db }}/db/trivy.db", dest: cache/db/trivy.db, mode: '0400'}
+    - {src: "{{ worker1_oci_scan_controller_db }}/db/metadata.json", dest: cache/db/metadata.json, mode: '0400'}
+    - {src: "{{ worker1_oci_scan_controller_db }}/java-db/trivy-java.db", dest: cache/java-db/trivy-java.db, mode: '0400'}
+    - {src: "{{ worker1_oci_scan_controller_db }}/java-db/metadata.json", dest: cache/java-db/metadata.json, mode: '0400'}
+  loop_control:
+    label: "{{ item.dest }}"
+
+- name: Inspect each helper parent before using the content-addressed version
+  ansible.builtin.stat:
+    path: "{{ item }}"
+    follow: false
+  loop: ["{{ worker1_oci_scan_root }}/helpers", "{{ worker1_oci_scan_helper_root }}"]
+  register: worker1_oci_scan_helper_directories
+
+- name: Refuse a replaced or nonroot existing helper directory
+  ansible.builtin.assert:
+    that:
+      - not item.stat.exists or (item.stat.isdir and not item.stat.islnk and item.stat.uid == 0 and item.stat.mode == '0700')
+  loop: "{{ worker1_oci_scan_helper_directories.results }}"
+
+- name: Create only the new private root-owned helper version directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  loop: ["{{ worker1_oci_scan_root }}/helpers", "{{ worker1_oci_scan_helper_root }}"]
+
+- name: Stage new helper version and retained template without replacing prior files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: '0500'
+    force: false
+  loop:
+    - {src: scan_oci.py, dest: "{{ worker1_oci_scan_helper_root }}/scan_oci.py"}
+    - {src: results.tpl, dest: "{{ worker1_oci_scan_root }}/results.tpl"}
+
+- name: Require remote helper/template bytes to match current reviewed source
+  ansible.builtin.stat:
+    path: "{{ worker1_oci_scan_helper_root ~ '/scan_oci.py' if item == 'scan_oci.py' else worker1_oci_scan_root ~ '/results.tpl' }}"
+    follow: false
+    checksum_algorithm: sha256
+  loop: [scan_oci.py, results.tpl]
+  register: worker1_oci_scan_remote_sources
+
+- name: Verify the copied helper/template exactly without altering existing files
+  ansible.builtin.assert:
+    that:
+      - item.stat.isreg
+      - not item.stat.islnk
+      - item.stat.checksum == (lookup('ansible.builtin.file', role_path ~ '/files/' ~ item.item, rstrip=false) | hash('sha256'))
+  loop: "{{ worker1_oci_scan_remote_sources.results }}"
+
+- name: Stage empty explicit configuration and ignore files
+  ansible.builtin.copy:
+    content: "{{ item.content }}"
+    dest: "{{ worker1_oci_scan_root }}/{{ item.name }}"
+    owner: root
+    group: root
+    mode: '0400'
+    force: false
+  loop:
+    - {name: no-ignore, content: ''}
+    - {name: trivy-empty.yaml, content: "{}\n"}
+
+- name: Seal exact worker1 scanner inputs without scanning or downloading
+  ansible.builtin.command:
+    argv: [/usr/bin/python3, "{{ worker1_oci_scan_helper_root }}/scan_oci.py", setup]
+  changed_when: false

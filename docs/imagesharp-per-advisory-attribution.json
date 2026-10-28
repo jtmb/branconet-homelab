@@ -1,0 +1,541 @@
+{
+  "actual_dll_sha256_both_images": "60d345f55451db74bbefb3231950c2524c12fe038173b08dabce4a844f22b179",
+  "backport_patch_sha256": "e3434d20823d51c46e8c05fa2c8222948aa1a52eba4ce7a3a2aedc348959c1b4",
+  "immutable_release_source_files": [
+    {
+      "bytes": 5328,
+      "guard_lines": [
+        {
+          "line": 130,
+          "text": "protected override long GetMaximumEncodedBits(int rowsPerStrip)"
+        }
+      ],
+      "path": "src/ImageSharp/Formats/Tiff/Compression/Compressors/T4BitCompressor.cs",
+      "sha256": "7311be76c540ecb572e080ec7d0e995dad595cc8aaedbcac29d434c9501fd54d",
+      "url": "https://raw.githubusercontent.com/SixLabors/ImageSharp/baa37cd19077b2a2a0c5667535111cf31d48c019/src/ImageSharp/Formats/Tiff/Compression/Compressors/T4BitCompressor.cs"
+    },
+    {
+      "bytes": 7316,
+      "guard_lines": [
+        {
+          "line": 135,
+          "text": "protected override long GetMaximumEncodedBits(int rowsPerStrip)"
+        }
+      ],
+      "path": "src/ImageSharp/Formats/Tiff/Compression/Compressors/T6BitCompressor.cs",
+      "sha256": "0a52aeea3791b195a6da2429478f25c1d98e64504a7e8606ea5165929e92679c",
+      "url": "https://raw.githubusercontent.com/SixLabors/ImageSharp/baa37cd19077b2a2a0c5667535111cf31d48c019/src/ImageSharp/Formats/Tiff/Compression/Compressors/T6BitCompressor.cs"
+    },
+    {
+      "bytes": 18076,
+      "guard_lines": [
+        {
+          "line": 468,
+          "text": "long availableBits = (((long)compressedData.Length - this.bytePosition) * 8) - this.bitPosition;"
+        },
+        {
+          "line": 469,
+          "text": "if (codeLength > availableBits)"
+        },
+        {
+          "line": 474,
+          "text": "while (codeLength > 0)"
+        },
+        {
+          "line": 535,
+          "text": "long maxNeededBits = this.GetMaximumEncodedBits(rowsPerStrip);"
+        },
+        {
+          "line": 536,
+          "text": "ulong maxNeededBytes = (ulong)((maxNeededBits + 7) / 8);"
+        },
+        {
+          "line": 537,
+          "text": "if (maxNeededBytes > int.MaxValue)"
+        },
+        {
+          "line": 539,
+          "text": "InvalidMemoryOperationException.ThrowAllocationOverLimitException(maxNeededBytes, int.MaxValue);"
+        },
+        {
+          "line": 542,
+          "text": "this.compressedDataBuffer = this.Allocator.Allocate<byte>((int)maxNeededBytes);"
+        },
+        {
+          "line": 550,
+          "text": "protected abstract long GetMaximumEncodedBits(int rowsPerStrip);"
+        }
+      ],
+      "path": "src/ImageSharp/Formats/Tiff/Compression/Compressors/TiffCcittCompressor.cs",
+      "sha256": "571f2e4d8454c3d461093c1b58de49498a472e36880974691c591d7d36bcc39c",
+      "url": "https://raw.githubusercontent.com/SixLabors/ImageSharp/baa37cd19077b2a2a0c5667535111cf31d48c019/src/ImageSharp/Formats/Tiff/Compression/Compressors/TiffCcittCompressor.cs"
+    },
+    {
+      "bytes": 7302,
+      "guard_lines": [
+        {
+          "line": 32,
+          "text": "if (float.IsNaN(luminance))"
+        },
+        {
+          "line": 38,
+          "text": "luminance = Math.Clamp(luminance, 0F, 1F);"
+        }
+      ],
+      "path": "src/ImageSharp/Common/Helpers/ColorNumerics.cs",
+      "sha256": "bbfeac13d7c8016c2f17cd8f35d243879d857c0c7566710cb3d6c4140d4bd70c",
+      "url": "https://raw.githubusercontent.com/SixLabors/ImageSharp/baa37cd19077b2a2a0c5667535111cf31d48c019/src/ImageSharp/Common/Helpers/ColorNumerics.cs"
+    },
+    {
+      "bytes": 6794,
+      "guard_lines": [
+        {
+          "line": 79,
+          "text": "int length = this.GetClutLength(inChannelCount, outChannelCount, gridPointCount, 1);"
+        },
+        {
+          "line": 107,
+          "text": "int length = this.GetClutLength(inChannelCount, outChannelCount, gridPointCount, 2);"
+        },
+        {
+          "line": 135,
+          "text": "int length = this.GetClutLength(inChCount, outChCount, gridPointCount, 4);"
+        },
+        {
+          "line": 159,
+          "text": "private int GetClutLength(int inputChannelCount, int outputChannelCount, byte[] gridPointCount, int bytesPerValue)"
+        },
+        {
+          "line": 165,
+          "text": "if (gridPoints == 0 || length > int.MaxValue / gridPoints)"
+        },
+        {
+          "line": 177,
+          "text": "if (valueCount > int.MaxValue || byteCount > this.data.Length - this.currentIndex)"
+        }
+      ],
+      "path": "src/ImageSharp/Metadata/Profiles/ICC/DataReader/IccDataReader.Lut.cs",
+      "sha256": "208bf56509fb4ab59508738e05fcf652c0a8042586e2d58b585930c151f01b24",
+      "url": "https://raw.githubusercontent.com/SixLabors/ImageSharp/baa37cd19077b2a2a0c5667535111cf31d48c019/src/ImageSharp/Metadata/Profiles/ICC/DataReader/IccDataReader.Lut.cs"
+    },
+    {
+      "bytes": 21937,
+      "guard_lines": [
+        {
+          "line": 228,
+          "text": "long remainingDirectoryBytes = this.data.Length - this.data.Position;"
+        },
+        {
+          "line": 229,
+          "text": "if (remainingDirectoryBytes < 8 || count > (ulong)((remainingDirectoryBytes - 8) / 20))"
+        }
+      ],
+      "path": "src/ImageSharp/Metadata/Profiles/Exif/ExifReader.cs",
+      "sha256": "6e9b9c9e4812c7c6109f4f81880b7a665970c239b63d7aeb888efb73781a4b9c",
+      "url": "https://raw.githubusercontent.com/SixLabors/ImageSharp/baa37cd19077b2a2a0c5667535111cf31d48c019/src/ImageSharp/Metadata/Profiles/Exif/ExifReader.cs"
+    }
+  ],
+  "limits": [
+    "No scanner ignore, suppression, package rename or metadata rewrite was applied.",
+    "Upstream security regression code was inspected, not executed here.",
+    "Existing benign actual-app codec fixtures passed; they are not exploit reproduction tests.",
+    "This evidence is scoped to the five listed ImageSharp advisories and does not resolve Sonarr EOL/IdentityModel/JSON or Bazarr findings."
+  ],
+  "nuspec_repository_commit": "baa37cd19077b2a2a0c5667535111cf31d48c019",
+  "official_nupkg_sha256": "31e4f2c76128326cad1395d497e08e97624159016fc95064b46f6283d85bb44d",
+  "package_version": "3.2.0",
+  "per_advisory": {
+    "CVE-2026-106110": {
+      "advisory": {
+        "bytes": 7920,
+        "cve": "CVE-2026-106110",
+        "ghsa": "GHSA-j9gm-c75j-xc9q",
+        "response_sha256": "7dabe99068b61fcfacc6e2d0f8bb14987bb9d7b448917f39c9c3762d42242b6b",
+        "updated_at": "2026-10-09T11:35:28Z",
+        "url": "https://github.com/SixLabors/ImageSharp/security/advisories/GHSA-j9gm-c75j-xc9q",
+        "vulnerabilities": [
+          {
+            "package": {
+              "ecosystem": "nuget",
+              "name": "SixLabors.ImageSharp"
+            },
+            "patched_versions": "3.2.0",
+            "vulnerable_functions": [],
+            "vulnerable_version_range": ">= 2.0.0, < 3.2.0"
+          },
+          {
+            "package": {
+              "ecosystem": "nuget",
+              "name": "SixLabors.ImageSharp"
+            },
+            "patched_versions": "4.1.2",
+            "vulnerable_functions": [],
+            "vulnerable_version_range": ">= 4.0.0, < 4.1.2"
+          }
+        ]
+      },
+      "ancestry": [
+        {
+          "ahead_by": 15,
+          "commit": "cb7c4c1aa41049dcb71c775efceef8a38384556e",
+          "merge_base": "cb7c4c1aa41049dcb71c775efceef8a38384556e",
+          "release": "baa37cd19077b2a2a0c5667535111cf31d48c019",
+          "response_bytes": 120731,
+          "response_sha256": "14f7fe4fd41b07a950d341e35ac23aa2a8121e2c6d93e23d4ae0b7441123587a",
+          "status": "ahead",
+          "url": "https://api.github.com/repos/SixLabors/ImageSharp/compare/cb7c4c1aa41049dcb71c775efceef8a38384556e...baa37cd19077b2a2a0c5667535111cf31d48c019"
+        }
+      ],
+      "assessment": "Explicit maintainer-patched 3.2.0 plus per-advisory fix ancestry and release-source guard inspection; current scan range contradicts this evidence, raw finding retained.",
+      "behavior": "T4 supplies a conservative bit-capacity bound including row/EOL overhead. Shared compressor sizes the output from that bound, rejects excessive allocation, and refuses writes exceeding remaining bits.",
+      "commits": [
+        "cb7c4c1aa41049dcb71c775efceef8a38384556e"
+      ],
+      "rows_per_application": {
+        "radarr": 6,
+        "sonarr": 6
+      },
+      "severity": "HIGH",
+      "source_locations": {
+        "T4BitCompressor.cs": [
+          130,
+          134
+        ],
+        "TiffCcittCompressor.cs": [
+          468,
+          469,
+          535,
+          537,
+          542
+        ]
+      },
+      "upstream_test": "TiffEncoderTests narrow T4 image regression"
+    },
+    "CVE-2026-106113": {
+      "advisory": {
+        "bytes": 11326,
+        "cve": "CVE-2026-106113",
+        "ghsa": "GHSA-j3p4-wp97-rph4",
+        "response_sha256": "333d4f7749d7b5320016a86150b5975ec51c87c4d8cb524d2648eec2d5d59e64",
+        "updated_at": "2026-10-09T11:35:17Z",
+        "url": "https://github.com/SixLabors/ImageSharp/security/advisories/GHSA-j3p4-wp97-rph4",
+        "vulnerabilities": [
+          {
+            "package": {
+              "ecosystem": "nuget",
+              "name": "SixLabors.ImageSharp"
+            },
+            "patched_versions": "3.2.0",
+            "vulnerable_functions": [],
+            "vulnerable_version_range": ">= 2.0.0, < 3.2.0"
+          },
+          {
+            "package": {
+              "ecosystem": "nuget",
+              "name": "SixLabors.ImageSharp"
+            },
+            "patched_versions": "4.1.2",
+            "vulnerable_functions": [],
+            "vulnerable_version_range": ">= 4.0.0, < 4.1.2"
+          }
+        ]
+      },
+      "ancestry": [
+        {
+          "ahead_by": 16,
+          "commit": "1ce37381a8e668a1545328d7fcea25025c9c81e3",
+          "merge_base": "1ce37381a8e668a1545328d7fcea25025c9c81e3",
+          "release": "baa37cd19077b2a2a0c5667535111cf31d48c019",
+          "response_bytes": 128535,
+          "response_sha256": "cd91caa139d3afc17a939b598e8372f2006f39e030e13a8edaed093fe4490c23",
+          "status": "ahead",
+          "url": "https://api.github.com/repos/SixLabors/ImageSharp/compare/1ce37381a8e668a1545328d7fcea25025c9c81e3...baa37cd19077b2a2a0c5667535111cf31d48c019"
+        }
+      ],
+      "assessment": "Explicit maintainer-patched 3.2.0 plus per-advisory fix ancestry and release-source guard inspection; current scan range contradicts this evidence, raw finding retained.",
+      "behavior": "Histogram luminance conversion handles NaN and clamps finite/infinite out-of-range luminance into 0..1 before converting to a histogram index.",
+      "commits": [
+        "1ce37381a8e668a1545328d7fcea25025c9c81e3"
+      ],
+      "rows_per_application": {
+        "radarr": 6,
+        "sonarr": 6
+      },
+      "severity": "HIGH",
+      "source_locations": {
+        "ColorNumerics.cs": [
+          29,
+          32,
+          38,
+          39
+        ]
+      },
+      "upstream_test": "HistogramEqualizationTests floating-point luminance regression"
+    },
+    "CVE-2026-106114": {
+      "advisory": {
+        "bytes": 14277,
+        "cve": "CVE-2026-106114",
+        "ghsa": "GHSA-gwg2-r3hj-4w44",
+        "response_sha256": "5adb3ef12221a5394e2aab6ff856e9077d83b33c9707b5df4fad020e88a42bf4",
+        "updated_at": "2026-10-09T11:34:05Z",
+        "url": "https://github.com/SixLabors/ImageSharp/security/advisories/GHSA-gwg2-r3hj-4w44",
+        "vulnerabilities": [
+          {
+            "package": {
+              "ecosystem": "nuget",
+              "name": "SixLabors.ImageSharp"
+            },
+            "patched_versions": "3.2.0",
+            "vulnerable_functions": [],
+            "vulnerable_version_range": ">= 1.0.0-beta0001, < 3.2.0"
+          },
+          {
+            "package": {
+              "ecosystem": "nuget",
+              "name": "SixLabors.ImageSharp"
+            },
+            "patched_versions": "4.1.2",
+            "vulnerable_functions": [],
+            "vulnerable_version_range": ">= 4.0.0, < 4.1.2"
+          }
+        ]
+      },
+      "ancestry": [
+        {
+          "ahead_by": 19,
+          "commit": "28ade811d37dd3b963c2dc31f2e656c6feddc96e",
+          "merge_base": "28ade811d37dd3b963c2dc31f2e656c6feddc96e",
+          "release": "baa37cd19077b2a2a0c5667535111cf31d48c019",
+          "response_bytes": 150274,
+          "response_sha256": "1ac7ed468fb631de7de6f71e7e1ce0060fd4607e5b342268ccda63e64807e73e",
+          "status": "ahead",
+          "url": "https://api.github.com/repos/SixLabors/ImageSharp/compare/28ade811d37dd3b963c2dc31f2e656c6feddc96e...baa37cd19077b2a2a0c5667535111cf31d48c019"
+        },
+        {
+          "ahead_by": 7,
+          "commit": "6b0c9f6a00c290c66630f327f7d6dfe0b129717b",
+          "merge_base": "6b0c9f6a00c290c66630f327f7d6dfe0b129717b",
+          "release": "baa37cd19077b2a2a0c5667535111cf31d48c019",
+          "response_bytes": 38095,
+          "response_sha256": "6beb38665797d5858022c04d808996718a580df9db44357dc15e2e061162506d",
+          "status": "ahead",
+          "url": "https://api.github.com/repos/SixLabors/ImageSharp/compare/6b0c9f6a00c290c66630f327f7d6dfe0b129717b...baa37cd19077b2a2a0c5667535111cf31d48c019"
+        }
+      ],
+      "assessment": "Explicit maintainer-patched 3.2.0 plus per-advisory fix ancestry and release-source guard inspection; current scan range contradicts this evidence, raw finding retained.",
+      "behavior": "ICC CLUT readers calculate dimension products safely, reject zero/overflowing grids and reject declared sample bytes beyond the remaining input before allocating node arrays. A later backport adds a complete truncated-profile regression.",
+      "commits": [
+        "28ade811d37dd3b963c2dc31f2e656c6feddc96e",
+        "6b0c9f6a00c290c66630f327f7d6dfe0b129717b"
+      ],
+      "rows_per_application": {
+        "radarr": 6,
+        "sonarr": 6
+      },
+      "severity": "MEDIUM",
+      "source_locations": {
+        "IccDataReader.Lut.cs": [
+          79,
+          107,
+          135,
+          159,
+          165,
+          175,
+          177
+        ]
+      },
+      "upstream_test": "IccDataReaderLutTests oversized dimensions and complete truncated CLUT payload"
+    },
+    "CVE-2026-106115": {
+      "advisory": {
+        "bytes": 8045,
+        "cve": "CVE-2026-106115",
+        "ghsa": "GHSA-jjfr-hcj7-qf5w",
+        "response_sha256": "dc71c88e43bb72c7e67020cb99ce2ee729bdb128eb9ecd3ecc46381eb28beb71",
+        "updated_at": "2026-10-09T11:35:24Z",
+        "url": "https://github.com/SixLabors/ImageSharp/security/advisories/GHSA-jjfr-hcj7-qf5w",
+        "vulnerabilities": [
+          {
+            "package": {
+              "ecosystem": "nuget",
+              "name": "SixLabors.ImageSharp"
+            },
+            "patched_versions": "3.2.0",
+            "vulnerable_functions": [],
+            "vulnerable_version_range": ">= 2.1.0, < 3.2.0"
+          },
+          {
+            "package": {
+              "ecosystem": "nuget",
+              "name": "SixLabors.ImageSharp"
+            },
+            "patched_versions": "4.1.2",
+            "vulnerable_functions": [],
+            "vulnerable_version_range": ">= 4.0.0, < 4.1.2"
+          }
+        ]
+      },
+      "ancestry": [
+        {
+          "ahead_by": 15,
+          "commit": "cb7c4c1aa41049dcb71c775efceef8a38384556e",
+          "merge_base": "cb7c4c1aa41049dcb71c775efceef8a38384556e",
+          "release": "baa37cd19077b2a2a0c5667535111cf31d48c019",
+          "response_bytes": 120731,
+          "response_sha256": "14f7fe4fd41b07a950d341e35ac23aa2a8121e2c6d93e23d4ae0b7441123587a",
+          "status": "ahead",
+          "url": "https://api.github.com/repos/SixLabors/ImageSharp/compare/cb7c4c1aa41049dcb71c775efceef8a38384556e...baa37cd19077b2a2a0c5667535111cf31d48c019"
+        },
+        {
+          "ahead_by": 14,
+          "commit": "12cd3cc469f0facd01eab2d677d3a69ec78a1d58",
+          "merge_base": "12cd3cc469f0facd01eab2d677d3a69ec78a1d58",
+          "release": "baa37cd19077b2a2a0c5667535111cf31d48c019",
+          "response_bytes": 111825,
+          "response_sha256": "fe4b8418fd3ed07c2def1f1acc80cd5a7d0decfda4188bf1cb58cb66d7062fbe",
+          "status": "ahead",
+          "url": "https://api.github.com/repos/SixLabors/ImageSharp/compare/12cd3cc469f0facd01eab2d677d3a69ec78a1d58...baa37cd19077b2a2a0c5667535111cf31d48c019"
+        }
+      ],
+      "assessment": "Explicit maintainer-patched 3.2.0 plus per-advisory fix ancestry and release-source guard inspection; current scan range contradicts this evidence, raw finding retained.",
+      "behavior": "T6 adds its own encoded bit-capacity bound including row and end-of-block overhead, using the shared allocation and write bounds; compressors must implement their own capacity bound.",
+      "commits": [
+        "cb7c4c1aa41049dcb71c775efceef8a38384556e",
+        "12cd3cc469f0facd01eab2d677d3a69ec78a1d58"
+      ],
+      "rows_per_application": {
+        "radarr": 6,
+        "sonarr": 6
+      },
+      "severity": "HIGH",
+      "source_locations": {
+        "T6BitCompressor.cs": [
+          135,
+          139
+        ],
+        "TiffCcittCompressor.cs": [
+          468,
+          469,
+          535,
+          550
+        ]
+      },
+      "upstream_test": "TiffEncoderTests T6 narrow/small image regression"
+    },
+    "CVE-2026-106116": {
+      "advisory": {
+        "bytes": 9352,
+        "cve": "CVE-2026-106116",
+        "ghsa": "GHSA-wmxv-xphr-5c9g",
+        "response_sha256": "c8b2896c1917c31625d85dba2ce1789fcc7df8e45f058a1fa7d33fb989697cf5",
+        "updated_at": "2026-10-09T11:35:20Z",
+        "url": "https://github.com/SixLabors/ImageSharp/security/advisories/GHSA-wmxv-xphr-5c9g",
+        "vulnerabilities": [
+          {
+            "package": {
+              "ecosystem": "nuget",
+              "name": "SixLabors.ImageSharp"
+            },
+            "patched_versions": "3.2.0",
+            "vulnerable_functions": [],
+            "vulnerable_version_range": ">= 2.0.0, < 3.2.0"
+          },
+          {
+            "package": {
+              "ecosystem": "nuget",
+              "name": "SixLabors.ImageSharp"
+            },
+            "patched_versions": "4.1.2",
+            "vulnerable_functions": [],
+            "vulnerable_version_range": ">= 4.0.0, < 4.1.2"
+          }
+        ]
+      },
+      "ancestry": [
+        {
+          "ahead_by": 17,
+          "commit": "5d9bf416530b4fcfb28fe17a929da0f19bbb2163",
+          "merge_base": "5d9bf416530b4fcfb28fe17a929da0f19bbb2163",
+          "release": "baa37cd19077b2a2a0c5667535111cf31d48c019",
+          "response_bytes": 136618,
+          "response_sha256": "2868345bb97bd2a2670d56a11e1cbbe78bb08573598a676cbf98858a463bce35",
+          "status": "ahead",
+          "url": "https://api.github.com/repos/SixLabors/ImageSharp/compare/5d9bf416530b4fcfb28fe17a929da0f19bbb2163...baa37cd19077b2a2a0c5667535111cf31d48c019"
+        }
+      ],
+      "assessment": "Explicit maintainer-patched 3.2.0 plus per-advisory fix ancestry and release-source guard inspection; current scan range contradicts this evidence, raw finding retained.",
+      "behavior": "BigTIFF rejects a declared entry count larger than available 20-byte entries after reserving the 8-byte next-IFD offset, before entering the count-driven loop.",
+      "commits": [
+        "5d9bf416530b4fcfb28fe17a929da0f19bbb2163"
+      ],
+      "rows_per_application": {
+        "radarr": 6,
+        "sonarr": 6
+      },
+      "severity": "MEDIUM",
+      "source_locations": {
+        "ExifReader.cs": [
+          225,
+          228,
+          229,
+          231,
+          235
+        ]
+      },
+      "upstream_test": "BigTiffDecoderTests count exceeds available data"
+    }
+  },
+  "scans": {
+    "radarr": {
+      "image_rows": 30,
+      "image_severity_counts": {
+        "HIGH": 18,
+        "MEDIUM": 12
+      },
+      "status": {
+        "errorCategory": null,
+        "fixedCriticalHighRows": 23,
+        "resultSHA256": "7533668e30fda974d44868d71a605b75b7a9a49c11e4e9a0bb46b752e493a555",
+        "service": "radarr",
+        "severityCounts": {
+          "HIGH": 23,
+          "MEDIUM": 17
+        },
+        "state": "scan_complete",
+        "status_path": "/home/brajam/.local/share/branconet-migration/local-oci-scan-20261024/attempts/radarr-2785ae0eeac5/status.json",
+        "status_sha256": "f684106f443510fad9d9502d060c2b30552961dd99f4f2f830a69834aadbacef",
+        "unfixedCriticalHighRows": 0,
+        "vulnerabilityRows": 40
+      },
+      "vulnerabilities_sha256": "c0da4c7e4236657736ee28b7fb53cf767fd2c6009fea3555c617e8b826f68210"
+    },
+    "sonarr": {
+      "image_rows": 30,
+      "image_severity_counts": {
+        "HIGH": 18,
+        "MEDIUM": 12
+      },
+      "status": {
+        "errorCategory": null,
+        "fixedCriticalHighRows": 20,
+        "resultSHA256": "ba76ceb082f39deef3aae94469dc54ca82417013a1938f53e89fc27823250b49",
+        "service": "sonarr",
+        "severityCounts": {
+          "HIGH": 20,
+          "MEDIUM": 24
+        },
+        "state": "scan_complete",
+        "status_path": "/home/brajam/.local/share/branconet-migration/local-oci-scan-20261024/attempts/sonarr-371514d06410/status.json",
+        "status_sha256": "671ece0b445114c992edc3c97a95e4b3a5d806ba2f4702e2c3ba9b39a3d6f234",
+        "unfixedCriticalHighRows": 0,
+        "vulnerabilityRows": 44
+      },
+      "vulnerabilities_sha256": "00558bec9535a1f5cc8fb2bbf9fcce437467ecf54e9fcc48946f569e20e62ece"
+    }
+  },
+  "scope": "five unique ImageSharp advisories in exact Radarr/Sonarr scans",
+  "selected_runtime_proof_sha256": "9fc721fcc9fc39babaed58a56acfc23b259d418e2fa5bb608fccceb8aaeefed0",
+  "unmatched_unique_imagesharp_advisories": [],
+  "upstream_release": "https://github.com/SixLabors/ImageSharp/releases/tag/v3.2.0"
+}

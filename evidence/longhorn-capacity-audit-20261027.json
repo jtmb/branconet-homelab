@@ -1,0 +1,421 @@
+{
+  "schema": 1,
+  "UTC": "2026-10-27T14:21:33.583260+00:00",
+  "owner": "01a12045-bf7e-73b3-8557-752d17c72ffd",
+  "status": "dated_capacity_audit_completed",
+  "candidateImages": 14,
+  "uniqueLayers": 97,
+  "distinctCompressedBytes": 1164833698,
+  "allCompressedAndUncompressedLayerHashesVerified": true,
+  "imagePayloadFilesCreated": 0,
+  "projectionIsNativeUnpackMeasurement": false,
+  "nodes": [
+    {
+      "hostname": "masternode",
+      "address": "192.168.0.4",
+      "filesystemUUID": "763cda3d-0777-4b03-a882-9d21060466e3",
+      "runtimeCacheObservedUTC": "2026-10-27T13:33:14.549736+00:00",
+      "longhornObservedUTC": "2026-10-27T13:27:59.383721+00:00",
+      "kubeletAvailableBytes": 24740937728,
+      "kubeletEvictionFloorBytes": 17355311308,
+      "longhornAvailableBytes": 29989273600,
+      "longhornSchedulingFloorBytes": 28925518849,
+      "longhornSchedulingReserveBytes": 34710622617,
+      "cachedAuthenticatedCandidateBlobs": 35,
+      "cachedCommittedCandidateSnapshots": 31,
+      "profiles": {
+        "core_node": {
+          "components": [
+            "longhorn-engine",
+            "longhorn-instance-manager",
+            "longhorn-manager",
+            "csi-node-driver-registrar",
+            "livenessprobe"
+          ],
+          "missingBlobCount": 33,
+          "missingCompressedAllocatedProjectionBytes": 689389568,
+          "missingSnapshotCount": 39,
+          "missingSnapshotAllocatedProjectionBytes": 2346274816,
+          "metadataAllocatedUpperBoundBytes": 21016576,
+          "operatingMarginBytes": 536870912,
+          "additionalRequiredBytes": 3593551872,
+          "cachedContentAndSnapshotsAreAlreadyInCurrentUsage": true,
+          "noCreditForDeletionOrOldImagePruning": true,
+          "kubeletSurplusAfterProjectionBytes": 3792074548,
+          "longhornSurplusAfterProjectionBytes": -2529797121,
+          "additionalHeadroomNeededBytes": 2529797121,
+          "fitsObservedFloorsAndMargin": false
+        },
+        "complete_candidate": {
+          "components": [
+            "backing-image-manager",
+            "longhorn-engine",
+            "longhorn-instance-manager",
+            "longhorn-manager",
+            "longhorn-share-manager",
+            "longhorn-ui",
+            "longhorn-cli",
+            "csi-attacher",
+            "csi-provisioner",
+            "csi-resizer",
+            "csi-snapshotter",
+            "csi-node-driver-registrar",
+            "livenessprobe",
+            "support-bundle-kit"
+          ],
+          "missingBlobCount": 74,
+          "missingCompressedAllocatedProjectionBytes": 1020116992,
+          "missingSnapshotCount": 83,
+          "missingSnapshotAllocatedProjectionBytes": 3489841152,
+          "metadataAllocatedUpperBoundBytes": 50450432,
+          "operatingMarginBytes": 536870912,
+          "additionalRequiredBytes": 5097279488,
+          "cachedContentAndSnapshotsAreAlreadyInCurrentUsage": true,
+          "noCreditForDeletionOrOldImagePruning": true,
+          "kubeletSurplusAfterProjectionBytes": 2288346932,
+          "longhornSurplusAfterProjectionBytes": -4033524737,
+          "additionalHeadroomNeededBytes": 4033524737,
+          "fitsObservedFloorsAndMargin": false
+        }
+      }
+    },
+    {
+      "hostname": "workernode2",
+      "address": "192.168.0.5",
+      "filesystemUUID": "960bc2c7-2a7e-4bc2-b2c5-dbb6d71207f4",
+      "runtimeCacheObservedUTC": "2026-10-27T13:33:17.275712+00:00",
+      "longhornObservedUTC": "2026-10-27T13:27:59.383721+00:00",
+      "kubeletAvailableBytes": 30251421696,
+      "kubeletEvictionFloorBytes": 17355311308,
+      "longhornAvailableBytes": 35546726400,
+      "longhornSchedulingFloorBytes": 28925518849,
+      "longhornSchedulingReserveBytes": 34710622617,
+      "cachedAuthenticatedCandidateBlobs": 35,
+      "cachedCommittedCandidateSnapshots": 31,
+      "profiles": {
+        "core_node": {
+          "components": [
+            "longhorn-engine",
+            "longhorn-instance-manager",
+            "longhorn-manager",
+            "csi-node-driver-registrar",
+            "livenessprobe"
+          ],
+          "missingBlobCount": 33,
+          "missingCompressedAllocatedProjectionBytes": 689389568,
+          "missingSnapshotCount": 39,
+          "missingSnapshotAllocatedProjectionBytes": 2346274816,
+          "metadataAllocatedUpperBoundBytes": 21016576,
+          "operatingMarginBytes": 536870912,
+          "additionalRequiredBytes": 3593551872,
+          "cachedContentAndSnapshotsAreAlreadyInCurrentUsage": true,
+          "noCreditForDeletionOrOldImagePruning": true,
+          "kubeletSurplusAfterProjectionBytes": 9302558516,
+          "longhornSurplusAfterProjectionBytes": 3027655679,
+          "additionalHeadroomNeededBytes": 0,
+          "fitsObservedFloorsAndMargin": true
+        },
+        "complete_candidate": {
+          "components": [
+            "backing-image-manager",
+            "longhorn-engine",
+            "longhorn-instance-manager",
+            "longhorn-manager",
+            "longhorn-share-manager",
+            "longhorn-ui",
+            "longhorn-cli",
+            "csi-attacher",
+            "csi-provisioner",
+            "csi-resizer",
+            "csi-snapshotter",
+            "csi-node-driver-registrar",
+            "livenessprobe",
+            "support-bundle-kit"
+          ],
+          "missingBlobCount": 74,
+          "missingCompressedAllocatedProjectionBytes": 1020116992,
+          "missingSnapshotCount": 83,
+          "missingSnapshotAllocatedProjectionBytes": 3489841152,
+          "metadataAllocatedUpperBoundBytes": 50450432,
+          "operatingMarginBytes": 536870912,
+          "additionalRequiredBytes": 5097279488,
+          "cachedContentAndSnapshotsAreAlreadyInCurrentUsage": true,
+          "noCreditForDeletionOrOldImagePruning": true,
+          "kubeletSurplusAfterProjectionBytes": 7798830900,
+          "longhornSurplusAfterProjectionBytes": 1523928063,
+          "additionalHeadroomNeededBytes": 0,
+          "fitsObservedFloorsAndMargin": true
+        }
+      }
+    },
+    {
+      "hostname": "workernode1",
+      "address": "192.168.0.6",
+      "filesystemUUID": "5f1fd363-f7b7-44db-ace5-ad81a25a2926",
+      "runtimeCacheObservedUTC": "2026-10-27T13:33:19.512521+00:00",
+      "longhornObservedUTC": "2026-10-27T13:27:59.383721+00:00",
+      "kubeletAvailableBytes": 102039629824,
+      "kubeletEvictionFloorBytes": 37398364569,
+      "longhornAvailableBytes": 113246208000,
+      "longhornSchedulingFloorBytes": 62330607617,
+      "longhornSchedulingReserveBytes": 31526778470,
+      "cachedAuthenticatedCandidateBlobs": 34,
+      "cachedCommittedCandidateSnapshots": 31,
+      "profiles": {
+        "core_node": {
+          "components": [
+            "longhorn-engine",
+            "longhorn-instance-manager",
+            "longhorn-manager",
+            "csi-node-driver-registrar",
+            "livenessprobe"
+          ],
+          "missingBlobCount": 34,
+          "missingCompressedAllocatedProjectionBytes": 689475584,
+          "missingSnapshotCount": 39,
+          "missingSnapshotAllocatedProjectionBytes": 2346274816,
+          "metadataAllocatedUpperBoundBytes": 21016576,
+          "operatingMarginBytes": 536870912,
+          "additionalRequiredBytes": 3593637888,
+          "cachedContentAndSnapshotsAreAlreadyInCurrentUsage": true,
+          "noCreditForDeletionOrOldImagePruning": true,
+          "kubeletSurplusAfterProjectionBytes": 61047627367,
+          "longhornSurplusAfterProjectionBytes": 47321962495,
+          "additionalHeadroomNeededBytes": 0,
+          "fitsObservedFloorsAndMargin": true
+        },
+        "complete_candidate": {
+          "components": [
+            "backing-image-manager",
+            "longhorn-engine",
+            "longhorn-instance-manager",
+            "longhorn-manager",
+            "longhorn-share-manager",
+            "longhorn-ui",
+            "longhorn-cli",
+            "csi-attacher",
+            "csi-provisioner",
+            "csi-resizer",
+            "csi-snapshotter",
+            "csi-node-driver-registrar",
+            "livenessprobe",
+            "support-bundle-kit"
+          ],
+          "missingBlobCount": 75,
+          "missingCompressedAllocatedProjectionBytes": 1020203008,
+          "missingSnapshotCount": 83,
+          "missingSnapshotAllocatedProjectionBytes": 3489841152,
+          "metadataAllocatedUpperBoundBytes": 50450432,
+          "operatingMarginBytes": 536870912,
+          "additionalRequiredBytes": 5097365504,
+          "cachedContentAndSnapshotsAreAlreadyInCurrentUsage": true,
+          "noCreditForDeletionOrOldImagePruning": true,
+          "kubeletSurplusAfterProjectionBytes": 59543899751,
+          "longhornSurplusAfterProjectionBytes": 45818234879,
+          "additionalHeadroomNeededBytes": 0,
+          "fitsObservedFloorsAndMargin": true
+        }
+      }
+    }
+  ],
+  "observedCluster": {
+    "UTC": "2026-10-27T13:27:59.383721+00:00",
+    "readyNodes": 3,
+    "boundClaims": 58,
+    "longhornVolumes": 44,
+    "healthyAttachedWithTwoRW": 28,
+    "nativeSystemBackups": [
+      {
+        "name": "preupgrade-20261027-d9c7f2b7",
+        "namespace": "longhorn-system",
+        "uid": "a080356f-744a-4adf-81d9-d313f19ff8ef",
+        "resourceVersion": "10286999",
+        "state": "Ready",
+        "createdAt": "2026-10-27T11:00:04Z",
+        "errorPresent": false
+      }
+    ],
+    "datasetsWithoutNativeCompletedBackup": [
+      {
+        "claim": "ruckus/ruckus-db-data-0-security-20261025",
+        "claimUID": "0bf707c8-628e-4284-9aa0-35b711c8749b",
+        "volume": "pvc-0bf707c8-628e-4284-9aa0-35b711c8749b",
+        "volumeUID": "e574f5cc-d66f-4ed8-9379-29ee155ce42f",
+        "state": "detached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      },
+      {
+        "claim": "ingenium/ingenium-state",
+        "claimUID": "1005b62c-b731-4c76-a68c-f635ef74c378",
+        "volume": "pvc-1005b62c-b731-4c76-a68c-f635ef74c378",
+        "volumeUID": "aeb47952-61f5-4bc4-a8f6-bfa274eacf86",
+        "state": "attached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      },
+      {
+        "claim": "pihole/pihole-data-0",
+        "claimUID": "224e40cf-cfd1-488a-bab6-545568c8e4f7",
+        "volume": "pvc-224e40cf-cfd1-488a-bab6-545568c8e4f7",
+        "volumeUID": "83bcf334-dc44-47d1-a114-3d25a3d7158d",
+        "state": "detached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      },
+      {
+        "claim": "plex/gluetun-data-1",
+        "claimUID": "2d2591cd-8809-4957-b56a-2f4d405bd9e2",
+        "volume": "pvc-2d2591cd-8809-4957-b56a-2f4d405bd9e2",
+        "volumeUID": "f888bfef-43f0-46a6-aacd-7cf7ea455de4",
+        "state": "detached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      },
+      {
+        "claim": "ruckus/ruckus-db-upstream-20261026",
+        "claimUID": "3d587252-21b5-4982-b70a-4cfee6ae49bd",
+        "volume": "pvc-3d587252-21b5-4982-b70a-4cfee6ae49bd",
+        "volumeUID": "e4b16836-921f-4d9b-8adc-11326ff4f260",
+        "state": "attached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      },
+      {
+        "claim": "bortus/bortus-restore-b473091bebef",
+        "claimUID": "42bafa5c-bf7a-4751-8fc3-ba3104a76784",
+        "volume": "pvc-42bafa5c-bf7a-4751-8fc3-ba3104a76784",
+        "volumeUID": "d9ca7f73-b6c1-4d8b-808e-5a71cbeddd5f",
+        "state": "detached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      },
+      {
+        "claim": "wordpress/wordpress-db-upstream-20261026",
+        "claimUID": "49df631b-614f-4180-b6e5-f719db4bfe2c",
+        "volume": "pvc-49df631b-614f-4180-b6e5-f719db4bfe2c",
+        "volumeUID": "4d5c0099-2068-4268-aa7f-98ab37c26001",
+        "state": "detached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      },
+      {
+        "claim": "plex/qbittorrent-data-0",
+        "claimUID": "6aa3aaa5-f609-4f74-88f0-b5c15e846703",
+        "volume": "pvc-6aa3aaa5-f609-4f74-88f0-b5c15e846703",
+        "volumeUID": "c401b532-c773-4b5a-b5fa-88a521a172a1",
+        "state": "detached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      },
+      {
+        "claim": "migration-system/migration-storage-restored",
+        "claimUID": "8e780ab5-6f6d-4c93-8b2b-4410da2e841f",
+        "volume": "pvc-8e780ab5-6f6d-4c93-8b2b-4410da2e841f",
+        "volumeUID": "a9e1e981-bdcc-42c4-925d-181f9849f6ae",
+        "state": "detached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      },
+      {
+        "claim": "migration-system/migration-storage-proof",
+        "claimUID": "9317472a-a68f-4a2b-ad93-5d02e91492b0",
+        "volume": "pvc-9317472a-a68f-4a2b-ad93-5d02e91492b0",
+        "volumeUID": "41c49b3a-6197-4de7-8bd1-cbb07b13fa28",
+        "state": "detached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      },
+      {
+        "claim": "migration-system/migration-nas-bortus-restore",
+        "claimUID": "ba85233b-81d5-4061-9f7b-feff295071e0",
+        "volume": "pvc-ba85233b-81d5-4061-9f7b-feff295071e0",
+        "volumeUID": "dbc4934d-81c8-4d8d-8d21-a04f6600734c",
+        "state": "detached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      },
+      {
+        "claim": "pihole/pihole-data-1",
+        "claimUID": "bd9d5442-8665-4328-9a62-53d03d704ca7",
+        "volume": "pvc-bd9d5442-8665-4328-9a62-53d03d704ca7",
+        "volumeUID": "45754ef8-cd9e-456d-87eb-284cbf7bdb79",
+        "state": "detached",
+        "nativeCompletedBackupCount": 0,
+        "independentColdNASCoverage": "not established or disproved by this native catalog"
+      }
+    ],
+    "nativeCatalogDoesNotEstablishAbsenceOfIndependentBackup": true
+  },
+  "placementFacts": {
+    "allNodesUntainted": true,
+    "existingControllerNodeSelectorsEmpty": true,
+    "source": {
+      "SHA256": "d2f442dbf6190897641196a4453c90b96bd8032778adb07281e796245242255e",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/component-placement-prerequisites.json"
+    }
+  },
+  "nodeCleanupPerformed": false,
+  "driverUpgradePerformed": false,
+  "thresholdReservationReplicaOrPlacementChange": false,
+  "cleanup": {
+    "removedAllocatedControllerLinuxBytes": 4096,
+    "removedPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/tmp",
+    "temporaryPathsRemaining": [],
+    "retainedEvidencePaths": 143,
+    "retainedLogicalBytesExcludingInventory": 686830,
+    "windowsDiskRecoveryClaimed": false
+  },
+  "privateEvidence": {
+    "measurement-result.json": {
+      "SHA256": "4924eb49b231349e26dc0754af5e427028c277f7d16b8a4ee00c6e58292a3a1d",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/measurement-result.json"
+    },
+    "execution-context.json": {
+      "SHA256": "04520e134c3f64234e4aef4819efa199fd9ba4e7a6afef19cb308abe6a66654b",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/execution-context.json"
+    },
+    "node-cache-inventory.json": {
+      "SHA256": "9812ca09171ed6d33c3da2644afac3300be17adb0460b4fab688f4da80c31e1a",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/node-cache-inventory.json"
+    },
+    "current-live.json": {
+      "SHA256": "0e8b3c01ee8ee2e329b03bd420d10828b6ae13a61b594a52d5257df37bcda00c",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/current-live.json"
+    },
+    "calculated-node-budgets.json": {
+      "SHA256": "ef0a77b0dcb175c0eae5771664499deae2171cf608d9411740ba3afcced44bac",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/calculated-node-budgets.json"
+    },
+    "component-placement-prerequisites.json": {
+      "SHA256": "d2f442dbf6190897641196a4453c90b96bd8032778adb07281e796245242255e",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/component-placement-prerequisites.json"
+    },
+    "master-generated-output-provenance.json": {
+      "SHA256": "236cf267f6dbf0690f96dd9f51e190cd8bdcf79cbc4db673cfc3f1cdf56bbd3b",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/master-generated-output-provenance.json"
+    },
+    "master-source-archive-cache-members.json": {
+      "SHA256": "5e2fcf860027435acb78a48ad40748598af8fa93cc6f4c7fa767f1ba4323ac21",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/master-source-archive-cache-members.json"
+    },
+    "scratch-reconciliation.json": {
+      "SHA256": "cd4e1e2e6fef04aeada744c0a47f46495af81c7d284d6e70aac0092dd372a375",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/scratch-reconciliation.json"
+    },
+    "output-inventory.json": {
+      "SHA256": "88d287cb375703162367aedb3227f9c49c1063f5e8c0e4605d9cc546e65f2919",
+      "controllerPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-capacity-budget/output-inventory.json"
+    }
+  },
+  "nextAction": "Qualify exact original master SDK/module-cache copies under MASTER-GENERATED-INPUT-CLEANUP-20261027.md; preserve all archives, source, locks and historical binaries",
+  "remainingGates": [
+    "Fresh capacity/cache checks immediately before writes",
+    "Exact component placement and any non-image host payload",
+    "Application and detached dataset recovery coverage",
+    "Replica recovery placement/capacity",
+    "Separate Ingenium owner verification hold",
+    "Reviewed existing-owner manifest, server dry-run and guarded Ansible upgrade"
+  ],
+  "wholeGoalComplete": false
+}

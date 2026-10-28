@@ -1,0 +1,63 @@
+{
+  "UTC": "2026-10-28T01:56:30.120659+00:00",
+  "status": "all_initialized_engines_and_original_data_bindings_accepted",
+  "initializedEnginesUpgraded": 43,
+  "liveVolumesHealthyWithTwoActualRW": 28,
+  "retainedDetachedInitializedVolumes": 15,
+  "claimsBound": 58,
+  "NASBindingsPreserved": 14,
+  "all44VolumeUIDsPreserved": true,
+  "allEncryptedV1TwoReplicaControlsPreserved": true,
+  "unusedVolumeUnchanged": true,
+  "remainingOldInstanceManagers": [
+    {
+      "name": "instance-manager-0f44e66d715a28714766cec73f9ec067",
+      "namespace": "longhorn-system",
+      "uid": "215e3640-1268-4796-ab1f-b5fa525e0575",
+      "resourceVersion": "10659994",
+      "image": "docker.io/longhornio/longhorn-instance-manager:v1.12.1",
+      "nodeID": "workernode1",
+      "state": "running"
+    },
+    {
+      "name": "instance-manager-29805aeceef9c272b45a4b8ceb79af0e",
+      "namespace": "longhorn-system",
+      "uid": "a5f2ac02-e96e-4fba-bab9-54dbcdd82e4c",
+      "resourceVersion": "10660018",
+      "image": "docker.io/longhornio/longhorn-instance-manager:v1.12.1",
+      "nodeID": "workernode2",
+      "state": "running"
+    },
+    {
+      "name": "instance-manager-bca6a3d4fbbc05aa77ad5833d42791e1",
+      "namespace": "longhorn-system",
+      "uid": "cc496770-6e95-4b8f-aac0-312d6b9059a2",
+      "resourceVersion": "10659425",
+      "image": "docker.io/longhornio/longhorn-instance-manager:v1.12.1",
+      "nodeID": "masternode",
+      "state": "running"
+    }
+  ],
+  "oldEngineImageReferences": [
+    {
+      "name": "ei-493e04e7",
+      "namespace": "longhorn-system",
+      "uid": "0e9f7913-4990-4969-9ddf-79f401377b0e",
+      "resourceVersion": "10660815",
+      "image": "docker.io/longhornio/longhorn-engine:v1.12.1",
+      "state": "deployed",
+      "nodeDeploymentMap": {
+        "masternode": true,
+        "workernode1": true,
+        "workernode2": true
+      }
+    }
+  ],
+  "automaticEngineUpgradeLimit": 0,
+  "storageMinimumAvailablePercentage": 25,
+  "nativeDataBackupsPresent": 43,
+  "backupsAvailable": true,
+  "fullGoalComplete": false,
+  "finalLiveSHA256": "b669af8e00fc94528f7d6e7ffef0b0e8070c74e270e449faced3609e31c5382b",
+  "acceptanceSHA256": "85795eb9e8e6b49ae4bd2933e1f003fd8299c5fd3b968cc1bdce06c79e9f4a73"
+}

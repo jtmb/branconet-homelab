@@ -1,0 +1,7 @@
+---
+- name: Patch sidecars in the existing SMB Helm release
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - smb_sidecar_upstream_patch

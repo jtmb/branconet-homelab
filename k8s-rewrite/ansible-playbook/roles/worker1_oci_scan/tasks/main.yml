@@ -1,0 +1,195 @@
+---
+- name: Report disabled scanner scope without transfers or scanner launch
+  ansible.builtin.debug:
+    msg: Default apply is false; no database transfer or scan is performed.
+  when: not worker1_oci_scan_apply | bool
+
+- name: Prepare or operate only the separately owned worker1 scanner
+  when: worker1_oci_scan_apply | bool
+  block:
+    - name: Require exact worker1-only nonsecret scanner settings
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'workernode1'
+          - ansible_host == '192.168.0.6'
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - worker1_oci_scan_phase in ['setup', 'helper', 'scan', 'status']
+          - worker1_oci_scan_source_kind in ['worker1', 'github-actions']
+          - not ansible_check_mode
+
+    - name: Derive fixed owned paths without accepting caller overrides
+      ansible.builtin.set_fact:
+        worker1_oci_scan_root: /home/james/.local/share/branconet-migration/worker1-oci-scan-20261023
+        worker1_oci_scan_controller_db: /home/brajam/.local/share/branconet-migration/audit-db-offload-20261023T215011Z
+        worker1_oci_scan_controller_tool: /home/brajam/.local/share/branconet-migration/audit20261023-20261023T203418Z/bin/trivy
+
+    - name: Derive helper version solely from reviewed local source bytes
+      ansible.builtin.set_fact:
+        worker1_oci_scan_helper_sha256: "{{ lookup('ansible.builtin.file', role_path ~ '/files/scan_oci.py', rstrip=false) | hash('sha256') }}"
+
+    - name: Derive content-addressed helper path without a caller override
+      ansible.builtin.set_fact:
+        worker1_oci_scan_helper_root: "{{ worker1_oci_scan_root }}/helpers/{{ worker1_oci_scan_helper_sha256 }}"
+
+    - name: Reject changed content-addressed helper identities
+      ansible.builtin.assert:
+        that:
+          - worker1_oci_scan_helper_sha256 == (lookup('ansible.builtin.file', role_path ~ '/files/scan_oci.py', rstrip=false) | hash('sha256'))
+          - worker1_oci_scan_helper_root == worker1_oci_scan_root ~ '/helpers/' ~ worker1_oci_scan_helper_sha256
+
+    - name: Reject changed fixed scanner identities
+      ansible.builtin.assert:
+        that:
+          - worker1_oci_scan_root == '/home/james/.local/share/branconet-migration/worker1-oci-scan-20261023'
+          - worker1_oci_scan_controller_db == '/home/brajam/.local/share/branconet-migration/audit-db-offload-20261023T215011Z'
+          - worker1_oci_scan_controller_tool == '/home/brajam/.local/share/branconet-migration/audit20261023-20261023T203418Z/bin/trivy'
+
+    - name: Stage only exact existing verified tools and databases
+      ansible.builtin.include_tasks: setup.yml
+      when: worker1_oci_scan_phase == 'setup'
+
+    - name: Refresh only a helper against fully verified existing installed inputs
+      ansible.builtin.include_tasks: helper.yml
+      when: worker1_oci_scan_phase == 'helper'
+
+    - name: Require the independently sealed scanner setup
+      ansible.builtin.stat:
+        path: "{{ worker1_oci_scan_helper_root }}/inputs.json"
+        follow: false
+      register: worker1_oci_scan_seal
+
+    - name: Check the exact reviewed helper and template before every operation
+      ansible.builtin.stat:
+        path: "{{ worker1_oci_scan_helper_root ~ '/scan_oci.py' if item == 'scan_oci.py' else worker1_oci_scan_root ~ '/results.tpl' }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop: [scan_oci.py, results.tpl]
+      register: worker1_oci_scan_operational_sources
+
+    - name: Refuse a differing or replaced operational source
+      ansible.builtin.assert:
+        that:
+          - item.stat.exists
+          - item.stat.isreg
+          - not item.stat.islnk
+          - item.stat.checksum == (lookup('ansible.builtin.file', role_path ~ '/files/' ~ item.item, rstrip=false) | hash('sha256'))
+      loop: "{{ worker1_oci_scan_operational_sources.results }}"
+
+    - name: Refuse operation without sealed setup
+      ansible.builtin.assert:
+        that:
+          - worker1_oci_scan_seal.stat.exists
+          - worker1_oci_scan_seal.stat.isreg
+          - not worker1_oci_scan_seal.stat.islnk
+
+    - name: Require exact service archive and fresh attempt identity before scanning
+      ansible.builtin.assert:
+        that:
+          - worker1_oci_scan_service in ['seerr', 'ytptube', 'jackett', 'pihole', 'flaresolverr', 'vaultwarden', 'tautulli']
+          - worker1_oci_scan_attempt is match('^[0-9a-f]{12}$')
+          - worker1_oci_scan_build_attempt is match('^(initial|r[1-9][0-9]{0,2})$')
+          - worker1_oci_scan_archive_sha256 is match('^[0-9a-f]{64}$')
+          - worker1_oci_scan_root_descriptor is match('^sha256:[0-9a-f]{64}$')
+          - worker1_oci_scan_source_kind != 'github-actions' or (worker1_oci_scan_ci_run_id | string is match('^[1-9][0-9]{0,18}$'))
+          - worker1_oci_scan_source_kind != 'github-actions' or (worker1_oci_scan_ci_artifact_id | string is match('^[1-9][0-9]{0,18}$'))
+          - worker1_oci_scan_source_kind != 'github-actions' or (worker1_oci_scan_ci_run_id | int < 9223372036854775808 and worker1_oci_scan_ci_artifact_id | int < 9223372036854775808)
+          - worker1_oci_scan_source_kind != 'github-actions' or worker1_oci_scan_build_attempt == 'initial'
+          - worker1_oci_scan_source_kind != 'github-actions' or (worker1_oci_scan_ci_provenance_sha256 is match('^[0-9a-f]{64}$'))
+          - worker1_oci_scan_source_kind != 'worker1' or (worker1_oci_scan_ci_run_id | int == 0 and worker1_oci_scan_ci_artifact_id | int == 0 and worker1_oci_scan_ci_provenance_sha256 == '')
+      when: worker1_oci_scan_phase == 'scan'
+
+    - name: Inspect the exact selected source artifact
+      ansible.builtin.stat:
+        path: "{{ '/home/james/.local/share/branconet-migration/ci-image-artifacts-20261024/' ~ worker1_oci_scan_ci_run_id ~ '-' ~ worker1_oci_scan_ci_artifact_id ~ '/' ~ worker1_oci_scan_service ~ '.oci.tar' if worker1_oci_scan_source_kind == 'github-actions' else '/home/james/.local/share/branconet-migration/worker1-image-build-20261023/' ~ worker1_oci_scan_service ~ ('' if worker1_oci_scan_build_attempt == 'initial' else '-' ~ worker1_oci_scan_build_attempt) ~ '/' ~ worker1_oci_scan_service ~ '-security-20261023.oci.tar' }}"
+        follow: false
+        get_checksum: false
+      register: worker1_oci_scan_archive
+      when: worker1_oci_scan_phase == 'scan'
+
+    - name: Refuse scanner launch before the exact artifact exists
+      ansible.builtin.assert:
+        that:
+          - worker1_oci_scan_archive.stat.exists
+          - worker1_oci_scan_archive.stat.isreg
+          - not worker1_oci_scan_archive.stat.islnk
+          - worker1_oci_scan_archive.stat.size > 0
+          - worker1_oci_scan_archive.stat.size <= 4294967296
+      when: worker1_oci_scan_phase == 'scan'
+
+    - name: Launch a single separately bounded no-network scanner attempt
+      ansible.builtin.command:
+        argv:
+          - systemd-run
+          - "--unit=bortus-worker1-oci-scan-{{ worker1_oci_scan_service }}-{{ worker1_oci_scan_attempt }}"
+          - --property=Type=exec
+          - --property=MemoryMax=1073741824
+          - --property=MemorySwapMax=0
+          - --property=CPUQuota=200%
+          - --property=TasksMax=128
+          - --property=Nice=10
+          - --property=UMask=0077
+          - --property=PrivateNetwork=yes
+          - --property=NoNewPrivileges=yes
+          - --property=PrivateDevices=yes
+          - --property=ProtectSystem=strict
+          - --property=ProtectHome=read-only
+          - --property=ProtectKernelTunables=yes
+          - --property=ProtectKernelModules=yes
+          - --property=ProtectControlGroups=yes
+          - "--property=ReadWritePaths={{ worker1_oci_scan_root }}"
+          - "--property=ReadOnlyPaths={{ worker1_oci_scan_root }}/cache/db {{ worker1_oci_scan_root }}/cache/java-db"
+          - "--property=InaccessiblePaths=-/etc/kubernetes -/var/lib/kubelet -/var/lib/longhorn -/run/containerd-k8s -/home/james/.ssh -/root/.ssh"
+          - "--property=NoExecPaths={{ worker1_oci_scan_root }}/tmp {{ worker1_oci_scan_root }}/cache /home/james/.local/share/branconet-migration/worker1-image-build-20261023{{ ' /home/james/.local/share/branconet-migration/ci-image-artifacts-20261024' if worker1_oci_scan_source_kind == 'github-actions' else '' }}"
+          - --property=RuntimeMaxSec=900
+          - --property=TimeoutStopSec=30
+          - --property=KillMode=control-group
+          - "--property=StandardOutput=append:{{ worker1_oci_scan_root }}/unit-metadata.log"
+          - "--property=StandardError=append:{{ worker1_oci_scan_root }}/unit-metadata.log"
+          - --setenv=GOMAXPROCS=2
+          - --setenv=GOMEMLIMIT=512MiB
+          - --
+          - /usr/bin/python3
+          - "{{ worker1_oci_scan_helper_root }}/scan_oci.py"
+          - run
+          - --service
+          - "{{ worker1_oci_scan_service }}"
+          - --attempt
+          - "{{ worker1_oci_scan_attempt }}"
+          - --build-attempt
+          - "{{ worker1_oci_scan_build_attempt }}"
+          - --source-kind
+          - "{{ worker1_oci_scan_source_kind }}"
+          - --ci-run-id
+          - "{{ worker1_oci_scan_ci_run_id }}"
+          - --ci-artifact-id
+          - "{{ worker1_oci_scan_ci_artifact_id }}"
+          - --ci-provenance-sha256
+          - "{{ worker1_oci_scan_ci_provenance_sha256 }}"
+          - --archive-sha256
+          - "{{ worker1_oci_scan_archive_sha256 }}"
+          - --root-descriptor
+          - "{{ worker1_oci_scan_root_descriptor }}"
+      changed_when: true
+      when: worker1_oci_scan_phase == 'scan'
+
+    - name: Return metadata-only setup or existing attempt status
+      ansible.builtin.command:
+        argv: "{{ ['/usr/bin/python3', worker1_oci_scan_helper_root ~ '/scan_oci.py', 'status'] + (['--service', worker1_oci_scan_service, '--attempt', worker1_oci_scan_attempt] if worker1_oci_scan_service and worker1_oci_scan_attempt else []) }}"
+      changed_when: false
+      register: worker1_oci_scan_status
+      when: worker1_oci_scan_phase != 'scan'
+
+    - name: Return only the helper's selected status metadata
+      ansible.builtin.debug:
+        msg: "{{ worker1_oci_scan_status.stdout | from_json }}"
+      when: worker1_oci_scan_phase != 'scan'
+
+    - name: Report only retained receipt locations and asynchronous launch scope
+      ansible.builtin.debug:
+        msg:
+          phase: "{{ worker1_oci_scan_phase }}"
+          root: "{{ worker1_oci_scan_root }}"
+          attempt: "{{ worker1_oci_scan_attempt }}"
+          scan_complete: false
+          application_executed: false

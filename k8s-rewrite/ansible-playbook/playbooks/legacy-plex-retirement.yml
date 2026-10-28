@@ -1,0 +1,25 @@
+---
+- name: Retire only independently recovered inactive legacy Plex copies
+  hosts: workernode2
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - name: Require the fixed node and explicit live NAS proof
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'workernode2'
+          - ansible_host == '192.168.0.5'
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - legacy_plex_live_proof is defined
+          - legacy_plex_retire_helper is defined
+          - legacy_plex_retire_safety is defined
+          - legacy_plex_retire_apply | default(false) | bool
+    - name: Recheck complete recovery and every original before exact retirement
+      legacy_plex_retire:
+        proof: "{{ legacy_plex_live_proof }}"
+        helper: "{{ legacy_plex_retire_helper }}"
+        safety: "{{ legacy_plex_retire_safety }}"
+        apply: "{{ legacy_plex_retire_apply | bool }}"
+      no_log: true

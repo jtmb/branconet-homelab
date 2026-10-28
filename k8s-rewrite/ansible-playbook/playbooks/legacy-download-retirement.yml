@@ -1,0 +1,7 @@
+---
+- name: Retire exact legacy download duplicates under the Windows NAS lock guard
+  hosts: masternode
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  roles: [legacy_download_retirement]

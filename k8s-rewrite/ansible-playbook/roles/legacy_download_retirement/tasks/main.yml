@@ -1,0 +1,46 @@
+---
+- name: Require the exact master and live Windows NAS-lock operator
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - ansible_host == '192.168.0.4'
+      - ansible_user == 'james'
+      - ansible_port | int == 2002
+      - legacy_download_retirement_operator_holds_nas_locks | bool
+      - legacy_download_retirement_proof_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/legacy-media-recovery-[0-9a-f]{32}/nas-retirement-proof-[0-9a-f]{32}[.]json$')
+      - legacy_download_retirement_result_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/node-cleanup-20261027/legacy-media-recovery-[0-9a-f]{32}/ansible-result-[0-9a-f]{32}[.]json$')
+
+- name: Inspect the new private result location
+  ansible.builtin.stat:
+    path: "{{ legacy_download_retirement_result_file }}"
+  delegate_to: localhost
+  become: false
+  register: legacy_download_retirement_prior_result
+
+- name: Preserve previous results
+  ansible.builtin.assert:
+    that: [not legacy_download_retirement_prior_result.stat.exists]
+
+- name: Keep the entire inspected or applied outcome
+  block:
+    - name: Run only the exact two-file duplicate retirement helper
+      ansible.builtin.raw: >-
+        /usr/bin/python3 -B -c {{ lookup('file', role_path + '/files/retire.py', rstrip=false) | quote }}
+        --proof-base64 {{ lookup('file', legacy_download_retirement_proof_file, rstrip=false) | b64encode | quote }}
+        --safety-source {{ lookup('file', role_path + '/../retired_build_tools/files/retire.py', rstrip=false) | b64encode | quote }}
+        --safety-sha256 {{ lookup('file', role_path + '/../retired_build_tools/files/retire.py', rstrip=false) | hash('sha256') | quote }}
+        {{ '--apply' if legacy_download_retirement_apply | bool else '' }}
+      register: legacy_download_retirement_result
+      changed_when: legacy_download_retirement_result.rc == 0 and (legacy_download_retirement_result.stdout | from_json).removedAllocatedBytes | int > 0
+      no_log: true
+  always:
+    - name: Save the complete private outcome without overwriting evidence
+      ansible.builtin.copy:
+        content: "{{ legacy_download_retirement_result | to_nice_json }}"
+        dest: "{{ legacy_download_retirement_result_file }}"
+        mode: '0600'
+        force: false
+      delegate_to: localhost
+      become: false
+      when: legacy_download_retirement_result is defined
+      no_log: true

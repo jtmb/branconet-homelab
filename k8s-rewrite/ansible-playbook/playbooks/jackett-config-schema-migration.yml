@@ -1,0 +1,7 @@
+---
+- name: Preserve original download choices across the dated Jackett schema change
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - jackett_config_schema_migration

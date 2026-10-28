@@ -1,0 +1,28 @@
+---
+- name: Guard existing Longhorn virtual disks against multipath capture
+  hosts: masternode
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Run the deliberate original-node guard phase
+      when: longhorn_multipath_guard_apply | default(false) | bool and not ansible_check_mode
+      ansible.builtin.command:
+        argv:
+          - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+          - -B
+          - "{{ playbook_dir }}/../roles/longhorn_multipath_guard/files/guard.py"
+          - "{{ longhorn_multipath_guard_phase | default('inspect') }}"
+          - --node
+          - "{{ longhorn_multipath_guard_node | default('workernode2') }}"
+      delegate_to: localhost
+      become: false
+      no_log: true
+      register: longhorn_multipath_guard_result
+      changed_when: >-
+        (longhorn_multipath_guard_result.stdout | from_json).configurationCreated | default(false)
+        or ((longhorn_multipath_guard_result.stdout | from_json).mapsReleased | default([]) | length > 0)
+      environment:
+        PYTHONDONTWRITEBYTECODE: '1'
+        TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+        TMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+        TEMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"

@@ -1,0 +1,280 @@
+{
+  "observedAt": "2026-10-28T07:20:17.102363+00:00",
+  "runtimeAcceptance": {
+    "status": "same_Homepage_and_Unpackerr_data_on_new_runtime",
+    "applications": [
+      {
+        "identity": {
+          "name": "homepage",
+          "namespace": "homepage",
+          "releaseUID": "0abccce8-85f7-49df-baea-7825262a258e",
+          "deploymentUID": "67484b9d-4971-4840-9385-5478fb0b6b32",
+          "templateSHA256": "8a14830055ef495705e0f4546053550db4c35d5b35d84e8dc621065f929eebff",
+          "claims": [
+            {
+              "name": "homepage-data-1",
+              "uid": "f1eb8c61-46dc-4743-b5e4-b7ce75110189",
+              "specSHA256": "2ec53f7153c83ced3f4d8c2de95d7bdd04877f97ff3f217a768b2599a6b8ad15",
+              "pv": "pvc-f1eb8c61-46dc-4743-b5e4-b7ce75110189",
+              "pvUID": "a3318e1b-99ee-46fe-b0f6-cb56e6179ea3",
+              "pvSpecSHA256": "0537c69c9d126dff29924f349201f70d209d700246cac65d904d0447a664c750",
+              "driver": "driver.longhorn.io"
+            }
+          ],
+          "volumes": [
+            {
+              "name": "pvc-f1eb8c61-46dc-4743-b5e4-b7ce75110189",
+              "uid": "b6386369-c372-4996-86c7-8ffb928ef802",
+              "dataDirectories": [
+                [
+                  "workernode1",
+                  "ec68ff17-a66d-41f4-b600-fa0b6bb44005",
+                  "pvc-f1eb8c61-46dc-4743-b5e4-b7ce75110189-8feeb962",
+                  "/var/lib/longhorn/"
+                ],
+                [
+                  "workernode2",
+                  "3e98444f-4c34-438d-a0d3-5181c9c80a15",
+                  "pvc-f1eb8c61-46dc-4743-b5e4-b7ce75110189-73463e23",
+                  "/var/lib/longhorn/"
+                ]
+              ]
+            }
+          ]
+        },
+        "configuration": {
+          "manifestSHA256": "ffeb82127e048d020eed322cf67ba870ffdab64fbcfc7dced6752e923b599879",
+          "files": 9,
+          "excluded": "/app/config/logs (native changing runtime logs, retained untouched)"
+        },
+        "podUID": "f4ae118d-3f68-46d7-be8c-b94f012aa053",
+        "imageID": "ghcr.io/gethomepage/homepage@sha256:19c5c09184458a41b7b5915e71463a39f36cd33540f41bdbed008791b8182d5f",
+        "restartCount": 0,
+        "twoActualRWReplicas": true,
+        "instanceManagers": [
+          "instance-manager-a61288f639b7c54044d1fe323f7bfe50"
+        ],
+        "instanceManagerImage": "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3"
+      },
+      {
+        "identity": {
+          "name": "unpackerr",
+          "namespace": "plex",
+          "releaseUID": "c7af079e-7de5-4e8d-a4ca-1c7d763e023b",
+          "deploymentUID": "176fa046-630c-41df-9a53-5c4f5f5d6024",
+          "templateSHA256": "801d6f1701397a81f7dbf35b1e6e06f5dcb03ab668a76e0747c5cd6023066534",
+          "claims": [
+            {
+              "name": "unpackerr-data-0",
+              "uid": "fe693679-9877-49cd-b146-75c30ec18a89",
+              "specSHA256": "b2b9cf1f42e4af7863359ee05da1114229e953ec788b2dd627bb6a6582c8db67",
+              "pv": "plex-unpackerr-data-0",
+              "pvUID": "21bafb57-b532-4192-a3d8-f3b11b674e0c",
+              "pvSpecSHA256": "8b6c46336d84686f80f3abf89ed2792fe35c8765d98e74f8b92a4a70040c4b9a",
+              "driver": "smb.csi.k8s.io"
+            },
+            {
+              "name": "unpackerr-data-1",
+              "uid": "4644e693-b613-465d-a7ff-a5a9d3e1ffc1",
+              "specSHA256": "835e615e9727c484bbe5b24c2bfbf346c995178893b22d6b8c623bddc644120a",
+              "pv": "pvc-4644e693-b613-465d-a7ff-a5a9d3e1ffc1",
+              "pvUID": "afb40af0-1d4d-4d61-bafa-38de5bded748",
+              "pvSpecSHA256": "985a4885c0028cec8e24e8679bb02dfc0dbf8aed7790ffdc41991e289ba5be67",
+              "driver": "driver.longhorn.io"
+            }
+          ],
+          "volumes": [
+            {
+              "name": "pvc-4644e693-b613-465d-a7ff-a5a9d3e1ffc1",
+              "uid": "d0334eac-5fac-4171-849c-29b6ab74cdbd",
+              "dataDirectories": [
+                [
+                  "workernode1",
+                  "ec68ff17-a66d-41f4-b600-fa0b6bb44005",
+                  "pvc-4644e693-b613-465d-a7ff-a5a9d3e1ffc1-e7e07b81",
+                  "/var/lib/longhorn/"
+                ],
+                [
+                  "workernode2",
+                  "3e98444f-4c34-438d-a0d3-5181c9c80a15",
+                  "pvc-4644e693-b613-465d-a7ff-a5a9d3e1ffc1-cb06fd29",
+                  "/var/lib/longhorn/"
+                ]
+              ]
+            }
+          ]
+        },
+        "configuration": {
+          "manifestSHA256": "f91871b43acd2d71f41ee970b728a26d0b34efbe3ec620aa0baa5cefd7826c26",
+          "files": 1,
+          "excluded": null
+        },
+        "podUID": "069d35be-e7fd-4dd4-84e2-9c4f20dc0191",
+        "imageID": "ghcr.io/unpackerr/unpackerr@sha256:21c6bfa4f4c86ab2dd0232da0dfb3ed4c5d929e42e09894e7b4d2154d0c144f6",
+        "restartCount": 0,
+        "twoActualRWReplicas": true,
+        "instanceManagers": [
+          "instance-manager-a61288f639b7c54044d1fe323f7bfe50"
+        ],
+        "instanceManagerImage": "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3"
+      }
+    ],
+    "observedAt": "2026-10-28T07:15:40.264609+00:00",
+    "sourceSHA": "bf739c36dc0676f1d8a0e29fd95f40b78bcdb224",
+    "fullGoalComplete": false
+  },
+  "fleetAcceptance": {
+    "observedAt": "2026-10-28T07:16:40.448694+00:00",
+    "claimsBound": 58,
+    "NASBindingsPreserved": 14,
+    "threeReadyNodes": true,
+    "unavailableDesiredControllers": [],
+    "chartsValidatedAndFlux": "bf739c36dc0676f1d8a0e29fd95f40b78bcdb224",
+    "inventorySourceSHA256": "859ad367f74e10430b6c735b7e0bfac94d4a6abfdc9eb10103d8ddefd61084b0",
+    "SecretObjectsRequested": false,
+    "mutations": false
+  },
+  "HomepageHTTPS": {
+    "observedAt": "2026-10-28T07:16:06.635882+00:00",
+    "sourceSHA256": "e1d6d6581d3cbaa7eff7e568d785ce67364cd3593795d19718a49efd82568840",
+    "runtimeAcceptanceSHA256": "cea4cc457fddeb0798f7996d9403867817fb82b2e9a4cb39eaa578db8db277b1",
+    "clusterMutationPerformed": false,
+    "browserAcceptance": false,
+    "status": "restored_Homepage_default_trust_HTTPS_passed",
+    "URL": "https://homepage.branconet.lan/",
+    "HTTPStatus": 200,
+    "defaultWindowsCertificateTrust": true,
+    "bodyBytes": 36894,
+    "bodySHA256": "a7318dfd2b03e8c5ec6251b4ced71b6a52b74693e4de9123f2bae2b77bce519b"
+  },
+  "UnpackerrIntegration": {
+    "observedAt": "2026-10-28T07:16:06.496866+00:00",
+    "sourceSHA256": "e1d6d6581d3cbaa7eff7e568d785ce67364cd3593795d19718a49efd82568840",
+    "runtimeAcceptanceSHA256": "cea4cc457fddeb0798f7996d9403867817fb82b2e9a4cb39eaa578db8db277b1",
+    "clusterMutationPerformed": false,
+    "browserAcceptance": false,
+    "status": "restored_Unpackerr_Arr_queue_integration_passed",
+    "podUID": "069d35be-e7fd-4dd4-84e2-9c4f20dc0191",
+    "imageID": "ghcr.io/unpackerr/unpackerr@sha256:21c6bfa4f4c86ab2dd0232da0dfb3ed4c5d929e42e09894e7b4d2154d0c144f6",
+    "version": "1.0.0",
+    "integrationChecks": {
+      "radarrMention": true,
+      "sonarrMention": true,
+      "queueRetrievalLines": 2,
+      "authenticationFailure": false,
+      "errorFatalLines": 0
+    },
+    "limitation": "Startup queue retrieval does not prove a new real Arr import or extraction"
+  },
+  "remainingOldRuntimeEngines": 21,
+  "remainingOldRuntimeDeployments": 17,
+  "heldRelease": "bortus",
+  "nextIndependentBatch": {
+    "deployments": 14,
+    "engines": 17,
+    "separatelyScoped": [
+      "pihole",
+      "ingenium",
+      "bortus"
+    ]
+  },
+  "sourceCommits": {
+    "stop": "0cc968b16914b3d09fece1ead79c3e1cacd03f91",
+    "restore": "bf739c36dc0676f1d8a0e29fd95f40b78bcdb224"
+  },
+  "cleanup": {
+    "status": "completed",
+    "removedAllocatedLinuxBytes": 355721216,
+    "originalGitSourceAndToolsPreserved": true,
+    "protectedFilesUnchanged": 10,
+    "WindowsRecoveryClaimed": false,
+    "retained": [
+      "Each exact stage prepare/check/publish/lock and source/.validation/validation.json",
+      "All unselected/failed stages",
+      "Required active isolated source worktree for remaining runtime maintenance"
+    ]
+  },
+  "exactRemovedPathsAndBytesReceipt": {
+    "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-b1f41fb43486faef/receipt.json",
+    "sha256": "a82b904462b36e5ac5c5f82c4c80abaaedefcff150fa3ef396248f59d50fbf61",
+    "removedPathCount": 1612
+  },
+  "retainedMetadata": {
+    "inventoryPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/checkpoint-inventory.json",
+    "files": 13,
+    "logicalBytes": 440947
+  },
+  "retainedExceptions": "Unchanged protected root-owned 12288-byte subtree failed Windows handle permission; incomplete stages and original rollback artifacts stay protected; tracked charts source and operational recovery tools retain concrete remaining runtime-cycle consumers",
+  "WindowsFreeBytesObservedSeparately": {
+    "C": 56589983744,
+    "F": 193644859392
+  },
+  "controllerAvailableLinuxBytes": 47460597760,
+  "receipts": [
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/ownership.json",
+      "sha256": "708cd49e42385990b5d7a9971ce86a18098a93f0155ab71492bff43c03bc981b"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/plan.json",
+      "sha256": "c4abacd9ae007c089601027bb463d2dd55e12caec7d3a39eed10ecedd7230ad8"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/stop-pushed.json",
+      "sha256": "a077c105de1102d7cc68eec57dbaf9d3d39f1fad510a286f692d263ec4f4cb4a"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/detached.json",
+      "sha256": "5cdb5d85194dff84ade2ff63570b4496ffb056be7f0829ab3b2da0ce0e0c5194"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/resume-pushed.json",
+      "sha256": "d55fbd0f414c8f421f7d2a59eb576c0db70696c819b08dfcfeeeff4386797aa5"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/acceptance.json",
+      "sha256": "cea4cc457fddeb0798f7996d9403867817fb82b2e9a4cb39eaa578db8db277b1"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/homepage-https.json",
+      "sha256": "18346be6e7ad2ee101d32a20ccd79d076651550dcbc1948dd3fde9fe8a5b80d0"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/unpackerr-integration.json",
+      "sha256": "f9ff90d459b6a7656e6d41696848d1b86a6f98fce6c972d91510c0c9be78fa19"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/fleet-after.json",
+      "sha256": "5bbc71a883df2575333b824b312fa0d85407308c8ad946c572901317418617fc"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/fleet-summary.json",
+      "sha256": "b2eb131c0f76ce52610ae256ae0e1056c0b9d0821d34a93f3a7e61994c6488df"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/remaining-runtime-owners.json",
+      "sha256": "ad5982affb8e9054e8c5d00a00fb0dce75f1e7d765806536b64776dd778e6867"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-helper-runtime-20261028/checkpoint-inventory.json",
+      "sha256": "641f87a326e52c976d656ec2b9b29879e399e98249a9de52029d19846e5bb267"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-b1f41fb43486faef/ownership.json",
+      "sha256": "78366bc944b4ea9f1cd52bd4167e7dc3fe5958d7c0838c2b17f73494867d7f23"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-b1f41fb43486faef/plan.json",
+      "sha256": "15d5076d1626f56dc7fba49fd9871ddb4460629c541f71d966cb5b460f163601"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-b1f41fb43486faef/windows-proof.json",
+      "sha256": "c36c0f14d58a476185cfff966b6e5801e0bfb8124218ef2d43586529fc10a225"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-b1f41fb43486faef/receipt.json",
+      "sha256": "a82b904462b36e5ac5c5f82c4c80abaaedefcff150fa3ef396248f59d50fbf61"
+    }
+  ],
+  "fullGoalComplete": false
+}

@@ -1,0 +1,24 @@
+---
+- name: Update only the qualified unused retired volume's future engine metadata
+  when: unused_retired_volume_engine_apply | bool and not ansible_check_mode
+  block:
+    - name: Require the original master and maintenance scope
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'masternode'
+          - ansible_host == '192.168.0.4'
+    - name: Run the fixed single-volume physical absence and metadata operation
+      ansible.builtin.command:
+        argv:
+          - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+          - -B
+          - "{{ role_path }}/files/upgrade.py"
+          - --apply
+      delegate_to: localhost
+      become: false
+      no_log: true
+      environment:
+        PYTHONDONTWRITEBYTECODE: '1'
+        TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+        TMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+        TEMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"

@@ -1,0 +1,24 @@
+---
+- name: Require the original owner and explicit sidecar patch phase
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - smb_sidecar_upstream_patch_mode in ['preflight', 'apply', 'verify']
+      - smb_sidecar_upstream_patch_mode != 'apply' or smb_sidecar_upstream_patch_approval_sha256 is match('^[0-9a-f]{64}$')
+  when: smb_sidecar_upstream_patch_enabled | bool
+
+- name: Run the master-RAM Helm patch and native storage comparisons
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+      - "{{ role_path }}/files/patch.py"
+      - "{{ smb_sidecar_upstream_patch_mode }}"
+      - --output-dir
+      - "{{ smb_sidecar_upstream_patch_output_dir }}"
+      - --approved-sha256
+      - "{{ smb_sidecar_upstream_patch_approval_sha256 }}"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  changed_when: smb_sidecar_upstream_patch_mode == 'apply'
+  when: smb_sidecar_upstream_patch_enabled | bool and not ansible_check_mode

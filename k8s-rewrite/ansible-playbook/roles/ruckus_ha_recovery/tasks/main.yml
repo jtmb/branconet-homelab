@@ -1,0 +1,86 @@
+---
+- name: State the disabled or check-mode boundary
+  ansible.builtin.debug:
+    msg: Ruckus HA recovery is opt-in; check mode executes no helper. Flux changes and UID-bound reader lifecycle remain operator owned.
+  when: not ruckus_ha_recovery_enabled | bool or ansible_check_mode
+
+- name: Invoke only the explicitly selected hash-bound controller phase
+  when: ruckus_ha_recovery_enabled | bool and not ansible_check_mode
+  no_log: true
+  vars:
+    ansible_remote_tmp: '{{ ruckus_ha_recovery_controller_dir }}/tmp'
+  environment:
+    HOME: '{{ ruckus_ha_recovery_controller_dir }}/home'
+    TMPDIR: '{{ ruckus_ha_recovery_controller_dir }}/tmp'
+    TEMP: '{{ ruckus_ha_recovery_controller_dir }}/tmp'
+    TMP: '{{ ruckus_ha_recovery_controller_dir }}/tmp'
+    XDG_CACHE_HOME: '{{ ruckus_ha_recovery_controller_dir }}/cache'
+    ANSIBLE_LOCAL_TEMP: "{{ lookup('ansible.builtin.env', 'ANSIBLE_LOCAL_TEMP') }}"
+    PYTHONDONTWRITEBYTECODE: '1'
+  block:
+    - name: Require finite public arguments and preexisting F-only controller temp
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'masternode'
+          - ruckus_ha_recovery_phase in ['baseline', 'plan-cold', 'cold', 'plan-restore', 'restore', 'plan-after', 'after', 'restart']
+          - (ruckus_ha_recovery_execute_new_sibling_restore | bool) == (ruckus_ha_recovery_phase == 'restore')
+          - ruckus_ha_recovery_controller_dir == '/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/ruckus-ha-recovery-controller'
+          - lookup('ansible.builtin.env', 'ANSIBLE_LOCAL_TEMP') is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/[A-Za-z0-9_./-]+$')
+          - ruckus_ha_recovery_phase == 'baseline' or ruckus_ha_recovery_baseline is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/ruckus-ha-recovery-20261025/baseline-[0-9a-f]{32}/receipt[.]json$')
+          - ruckus_ha_recovery_phase == 'baseline' or ruckus_ha_recovery_baseline_sha256 is match('^[0-9a-f]{64}$')
+          - ruckus_ha_recovery_phase not in ['plan-restore', 'restore', 'plan-after', 'after', 'restart'] or ruckus_ha_recovery_cold is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/ruckus-ha-recovery-20261025/cold-[0-9a-f]{32}/receipt[.]json$')
+          - ruckus_ha_recovery_phase not in ['plan-restore', 'restore', 'plan-after', 'after', 'restart'] or ruckus_ha_recovery_cold_sha256 is match('^[0-9a-f]{64}$')
+          - ruckus_ha_recovery_phase not in ['plan-after', 'after', 'restart'] or ruckus_ha_recovery_restored is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/ruckus-ha-recovery-20261025/restore-[0-9a-f]{32}/receipt[.]json$')
+          - ruckus_ha_recovery_phase not in ['plan-after', 'after', 'restart'] or ruckus_ha_recovery_restored_sha256 is match('^[0-9a-f]{64}$')
+          - ruckus_ha_recovery_phase != 'restart' or ruckus_ha_recovery_previous is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/ruckus-ha-recovery-20261025/after-[0-9a-f]{32}/receipt[.]json$')
+          - ruckus_ha_recovery_phase != 'restart' or ruckus_ha_recovery_previous_sha256 is match('^[0-9a-f]{64}$')
+          - ruckus_ha_recovery_phase not in ['cold', 'restore', 'after', 'restart'] or ruckus_ha_recovery_reader_run_id is match('^[0-9a-f]{12}$')
+          - ruckus_ha_recovery_phase not in ['cold', 'restore', 'after', 'restart'] or ruckus_ha_recovery_reader_pod_uid is match('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')
+          - ruckus_ha_recovery_phase not in ['cold', 'restore', 'after', 'restart'] or ruckus_ha_recovery_reader_policy_uid is match('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')
+
+    - name: Read only public controller-directory metadata
+      ansible.builtin.stat:
+        path: '{{ item }}'
+        follow: false
+      loop:
+        - '{{ ruckus_ha_recovery_controller_dir }}'
+        - '{{ ruckus_ha_recovery_controller_dir }}/home'
+        - '{{ ruckus_ha_recovery_controller_dir }}/tmp'
+        - '{{ ruckus_ha_recovery_controller_dir }}/cache'
+        - "{{ lookup('ansible.builtin.env', 'ANSIBLE_LOCAL_TEMP') }}"
+      delegate_to: localhost
+      become: false
+      register: ruckus_ha_recovery_directories
+
+    - name: Refuse directory creation or fallback storage
+      ansible.builtin.assert:
+        that:
+          - item.stat.isdir | default(false)
+          - not item.stat.islnk | default(true)
+          - item.stat.uid == 1000
+          - item.stat.mode == '0700'
+      loop: '{{ ruckus_ha_recovery_directories.results }}'
+
+    - name: Run the local key-in-RAM wrapper with structured public arguments
+      ansible.builtin.command:
+        argv: >-
+          {{ ['/home/brajam/.local/share/branconet-migration/venv/bin/python', '-B',
+              playbook_dir + '/../../../scripts/migration/run-ruckus-ha-recovery.py', ruckus_ha_recovery_phase]
+             + (['--baseline', ruckus_ha_recovery_baseline, '--baseline-sha256', ruckus_ha_recovery_baseline_sha256] if ruckus_ha_recovery_phase != 'baseline' else [])
+             + (['--cold', ruckus_ha_recovery_cold, '--cold-sha256', ruckus_ha_recovery_cold_sha256] if ruckus_ha_recovery_phase in ['plan-restore', 'restore', 'plan-after', 'after', 'restart'] else [])
+             + (['--restored', ruckus_ha_recovery_restored, '--restored-sha256', ruckus_ha_recovery_restored_sha256] if ruckus_ha_recovery_phase in ['plan-after', 'after', 'restart'] else [])
+             + (['--previous', ruckus_ha_recovery_previous, '--previous-sha256', ruckus_ha_recovery_previous_sha256] if ruckus_ha_recovery_phase == 'restart' else [])
+             + (['--reader-run-id', ruckus_ha_recovery_reader_run_id, '--reader-pod-uid', ruckus_ha_recovery_reader_pod_uid, '--reader-policy-uid', ruckus_ha_recovery_reader_policy_uid] if ruckus_ha_recovery_phase in ['cold', 'restore', 'after', 'restart'] else [])
+             + (['--execute-new-sibling-restore'] if ruckus_ha_recovery_execute_new_sibling_restore | bool else []) }}
+      environment:
+        HOME: '{{ ruckus_ha_recovery_controller_dir }}/home'
+        TMPDIR: '{{ ruckus_ha_recovery_controller_dir }}/tmp'
+        TEMP: '{{ ruckus_ha_recovery_controller_dir }}/tmp'
+        TMP: '{{ ruckus_ha_recovery_controller_dir }}/tmp'
+        XDG_CACHE_HOME: '{{ ruckus_ha_recovery_controller_dir }}/cache'
+        ANSIBLE_LOCAL_TEMP: "{{ lookup('ansible.builtin.env', 'ANSIBLE_LOCAL_TEMP') }}"
+        PYTHONDONTWRITEBYTECODE: '1'
+      delegate_to: localhost
+      become: false
+      changed_when: ruckus_ha_recovery_phase == 'restore'
+      no_log: true

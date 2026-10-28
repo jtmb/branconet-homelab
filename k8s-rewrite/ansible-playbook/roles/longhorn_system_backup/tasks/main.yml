@@ -1,0 +1,30 @@
+---
+- name: Require the existing target and an explicit configuration-only phase
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'masternode'
+      - ansible_host == '192.168.0.4'
+      - longhorn_system_backup_mode in ['prepare', 'create', 'observe']
+      - longhorn_system_backup_mode != 'create' or longhorn_system_backup_apply | bool
+      - longhorn_system_backup_name is match('^preupgrade-2026102[78]-[0-9a-f]{8}$')
+
+- name: Preserve or observe the exact configuration backup
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+      - "{{ role_path }}/files/backup.py"
+      - "{{ longhorn_system_backup_mode }}"
+      - --name
+      - "{{ longhorn_system_backup_name }}"
+      - --output-dir
+      - "{{ longhorn_system_backup_output_dir }}"
+  delegate_to: localhost
+  become: false
+  environment:
+    TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    TEMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    TMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+    PYTHONDONTWRITEBYTECODE: '1'
+  changed_when: longhorn_system_backup_mode == 'create'
+  no_log: true
+  when: not ansible_check_mode

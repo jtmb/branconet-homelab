@@ -1,0 +1,7 @@
+---
+- name: Inspect or retire only the qualified original master audit binary
+  hosts: master
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  roles: [retired_master_audit_tool]

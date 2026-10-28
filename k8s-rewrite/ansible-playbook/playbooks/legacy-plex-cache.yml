@@ -1,0 +1,7 @@
+---
+- name: Clear only generated thumbnails in the inactive worker2 legacy config
+  hosts: workernode2
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  roles: [legacy_plex_cache]

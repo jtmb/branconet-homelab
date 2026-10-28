@@ -1,0 +1,21 @@
+---
+- name: Require the explicitly reviewed qBittorrent default preservation scope
+  ansible.builtin.assert:
+    that:
+      - qbittorrent_upstream_defaults_apply | bool
+      - inventory_hostname == 'masternode'
+
+- name: Restore only the fingerprinted original disk queue through the native API
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - "{{ playbook_dir }}/../../../scripts/migration/restore-upstream-qbittorrent-defaults.py"
+      - --apply
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when: not ansible_check_mode
+
+- name: State the fixed preservation boundary
+  ansible.builtin.debug:
+    msg: "The helper proves the exact existing baseline and restores only disk_queue_size=1048576 when the vendor libtorrent default became 104857600. Every other preference and native writer binding must remain unchanged. Check mode makes no API write."

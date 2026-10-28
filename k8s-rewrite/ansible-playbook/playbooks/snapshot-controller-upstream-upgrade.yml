@@ -1,0 +1,7 @@
+---
+- name: Upgrade the existing snapshot controller with compatible schemas
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - snapshot_controller_upstream_upgrade

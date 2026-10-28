@@ -1,0 +1,46 @@
+{
+  "status": "unused_future_engine_updated_without_initialization",
+  "volume": "pvc-49df631b-614f-4180-b6e5-f719db4bfe2c",
+  "volumeUID": "4d5c0099-2068-4268-aa7f-98ab37c26001",
+  "volumeAttachedOrInitialized": false,
+  "applicationOrSecretChanged": false,
+  "sources": {
+    "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/k8s-rewrite/ansible-playbook/roles/unused_retired_volume_engine/files/upgrade.py": "d532d676f8297855bdef8319f0bd902e0553da9457474d8a196d93d0f13846a5",
+    "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/k8s-rewrite/ansible-playbook/roles/longhorn_engine_upgrade/files/upgrade.py": "bfd7123455778985672a46174de8e22807c50c200346da2e73ee5907947d1943",
+    "/mnt/c/Users/james/.codex/worktrees/cluster-maintenance-ansible/kubernetes migration/scripts/migration/verify-unused-retired-volume.py": "e2a4b80399b3a925951ba84f734960cf8bc5dba8890651bce4dfdcd369022265"
+  },
+  "patchExitCode": 0,
+  "diagnosticsSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "UTC": "2026-10-28T02:03:30.700764+00:00",
+  "allOriginalUIDsPreserved": true,
+  "claimAndPVSpecPreserved": true,
+  "physicalDirectoriesAbsentBeforeAndAfter": true,
+  "originalReplicasAndEngineStopped": true,
+  "futureImage": "docker.io/longhornio/longhorn-engine:v1.13.0@sha256:b0cc5090889d57705acd69c5106492992e84560170ac3bec4a1cc8dd3fe83ca6",
+  "oldReferenceRetirementPendingController": true,
+  "sourcesUnchanged": true,
+  "physicalBefore": [
+    {
+      "hostname": "workernode2",
+      "path": "/var/lib/longhorn/replicas/pvc-49df631b-614f-4180-b6e5-f719db4bfe2c-9945de0d",
+      "absent": true
+    },
+    {
+      "hostname": "workernode1",
+      "path": "/var/lib/longhorn/replicas/pvc-49df631b-614f-4180-b6e5-f719db4bfe2c-c9520521",
+      "absent": true
+    }
+  ],
+  "physicalAfter": [
+    {
+      "hostname": "workernode2",
+      "path": "/var/lib/longhorn/replicas/pvc-49df631b-614f-4180-b6e5-f719db4bfe2c-9945de0d",
+      "absent": true
+    },
+    {
+      "hostname": "workernode1",
+      "path": "/var/lib/longhorn/replicas/pvc-49df631b-614f-4180-b6e5-f719db4bfe2c-c9520521",
+      "absent": true
+    }
+  ]
+}

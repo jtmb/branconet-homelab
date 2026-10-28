@@ -1,0 +1,42 @@
+---
+- name: Require the explicit single-master compatibility scope
+  ansible.builtin.assert:
+    that:
+      - qbittorrent_compatibility_apply | bool
+      - inventory_hostname == 'masternode'
+
+- name: Bind the two reviewed application helpers
+  ansible.builtin.set_fact:
+    qbittorrent_compatibility_source_id: "{{ (lookup('ansible.builtin.file', playbook_dir + '/../../../scripts/migration/qualify-qbittorrent.py') + lookup('ansible.builtin.file', playbook_dir + '/../../../scripts/migration/restore-qbittorrent-compatible-settings.py')) | hash('sha256') }}"
+
+- name: Create the private source-specific operator directory
+  ansible.builtin.file:
+    path: "/home/james/.local/share/branconet-migration/qbittorrent-compatibility-playbook-{{ qbittorrent_compatibility_source_id }}"
+    state: directory
+    mode: '0700'
+
+- name: Install only the reviewed nonsecret helper sources
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../../../scripts/migration/{{ item }}"
+    dest: "/home/james/.local/share/branconet-migration/qbittorrent-compatibility-playbook-{{ qbittorrent_compatibility_source_id }}/{{ item }}"
+    mode: '0600'
+  loop:
+    - qualify-qbittorrent.py
+    - restore-qbittorrent-compatible-settings.py
+
+- name: Restore only baseline-proven defaults and the current VPN port
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - "{{ playbook_dir }}/../../../scripts/migration/run-qbittorrent-compatible-settings.py"
+      - --source-id
+      - "{{ qbittorrent_compatibility_source_id }}"
+      - --apply
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when: not ansible_check_mode
+
+- name: State the operation boundary
+  ansible.builtin.debug:
+    msg: "Inspect the private native receipt. No Secret, torrent, authentication or alert settings are changed. The original HMAC baseline/key and exact reviewed image are required; unknown/custom current values refuse execution."

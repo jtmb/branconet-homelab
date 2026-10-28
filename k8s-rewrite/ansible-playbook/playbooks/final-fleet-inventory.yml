@@ -1,0 +1,28 @@
+---
+- name: Capture the existing cluster owner image route and storage identities
+  hosts: masternode
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Capture only the explicit read-only final inventory
+      when: final_fleet_inventory_apply | default(false) | bool and not ansible_check_mode
+      block:
+        - name: Require the original production cluster identity
+          ansible.builtin.assert:
+            that:
+              - ansible_host == '192.168.0.4'
+              - inventory_hostname == 'masternode'
+        - name: Run the maintained metadata-only controller
+          ansible.builtin.command:
+            argv:
+              - /usr/bin/python3
+              - -B
+              - "{{ playbook_dir }}/../../../scripts/migration/capture-final-fleet.py"
+          delegate_to: localhost
+          become: false
+          changed_when: false
+          environment:
+            PYTHONDONTWRITEBYTECODE: '1'
+            TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+            TMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+            TEMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"

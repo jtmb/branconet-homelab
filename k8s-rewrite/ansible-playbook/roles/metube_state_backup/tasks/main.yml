@@ -1,0 +1,39 @@
+---
+- name: Require the explicit MeTube preservation scope
+  ansible.builtin.assert:
+    that:
+      - metube_state_apply | bool
+      - inventory_hostname == 'masternode'
+      - metube_state_phase in ['backup', 'reobserve']
+      - metube_state_snapshot_profile in ['original-metube', 'current-ytptube']
+      - metube_state_snapshot_profile != 'current-ytptube' or (metube_state_phase == 'backup' and metube_state_expected_writer_image in ['docker.io/library/ytptube-security-20261023@sha256:7c637f7e9cadf6f7def2243b517ff6101354287e17f9aebed8b0aa386fd1b754', 'ghcr.io/arabcoders/ytptube:v2.7.5@sha256:3ba09ac58f0b541aa7182feb9198b44d3c62158a7749ec00d26de1abad7ca8d7'])
+      - metube_state_output_dir is match('^/home/brajam/[^\r\n]+$')
+      - metube_state_backup_node in ['workernode1', 'workernode2']
+      - metube_state_phase == 'backup' or (metube_state_baseline_receipt | length > 0 and metube_state_baseline_sha256 is match('^[0-9a-f]{64}$') and metube_state_expected_writer_image is match('^[^@\s]+@sha256:[0-9a-f]{64}$'))
+
+- name: Execute only the selected preserved-state operation
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - "{{ role_path }}/files/metube_state_backup.py"
+      - "{{ metube_state_phase }}"
+      - --snapshot-profile
+      - "{{ metube_state_snapshot_profile }}"
+      - --output-dir
+      - "{{ metube_state_output_dir }}"
+      - --backup-node
+      - "{{ metube_state_backup_node }}"
+      - --baseline-receipt
+      - "{{ metube_state_baseline_receipt }}"
+      - --baseline-sha256
+      - "{{ metube_state_baseline_sha256 }}"
+      - --expected-writer-image
+      - "{{ metube_state_expected_writer_image }}"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when: not ansible_check_mode
+
+- name: State the preservation boundary
+  ansible.builtin.debug:
+    msg: "Inspect private metadata receipts under {{ metube_state_output_dir }}. This helper never scales a writer, mounts the NAS corpus or removes legacy files. Check mode creates no Pod or backup; archive verification is not independent restoration."

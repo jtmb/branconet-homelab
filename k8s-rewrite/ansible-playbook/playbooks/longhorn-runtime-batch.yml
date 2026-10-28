@@ -1,0 +1,30 @@
+---
+- name: Cycle only the reviewed fourteen application batch through validated Flux
+  hosts: masternode
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Run only the explicit fixed application batch phase
+      when: longhorn_runtime_batch_apply | default(false) | bool and not ansible_check_mode
+      block:
+        - name: Require the original target and bounded phase
+          ansible.builtin.assert:
+            that:
+              - ansible_host == '192.168.0.4'
+              - longhorn_runtime_batch_phase in ['prepare', 'stop', 'observe', 'detached', 'resume', 'verify']
+        - name: Use the existing publisher and native data observers
+          ansible.builtin.command:
+            argv:
+              - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+              - -B
+              - "{{ playbook_dir }}/../roles/longhorn_runtime_batch/files/cycle.py"
+              - "{{ longhorn_runtime_batch_phase }}"
+          delegate_to: localhost
+          become: false
+          no_log: true
+          changed_when: longhorn_runtime_batch_phase in ['stop', 'resume']
+          environment:
+            PYTHONDONTWRITEBYTECODE: '1'
+            TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+            TMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+            TEMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"

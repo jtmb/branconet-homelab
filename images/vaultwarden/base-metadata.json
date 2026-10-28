@@ -1,0 +1,53 @@
+{
+  "applicationRoots": [
+    "/vaultwarden",
+    "/web-vault",
+    "/start.sh",
+    "/healthcheck.sh"
+  ],
+  "applicationVersion": "1.37.4",
+  "aptSourcesPath": "/etc/apt/sources.list.d/debian.sources",
+  "aptSourcesSHA256": "f02a6fd0c0a28e5f47d4512c0e5d264138378272850fe41dcb370ec885a3fcba",
+  "cmd": [
+    "/start.sh"
+  ],
+  "configDigest": "sha256:b4312ccf9634e3b5e7044a90ca13169c78b2627c648b81092f0523a5d07fd7f6",
+  "entrypoint": null,
+  "environmentHashFormat": "sha256 of compact sorted-key JSON of OCI config.Env array; values omitted",
+  "environmentSHA256": "ed01ce18ef51161a58803c7623b88fb440d62475d5cb21b64d42ec1459a129f9",
+  "existingPackageVersions": {
+    "curl": "8.14.1-2+deb13u5",
+    "libcurl4t64": "8.14.1-2+deb13u5",
+    "libpcre2-8-0": "10.46-1~deb13u2"
+  },
+  "exposedPorts": {
+    "80/tcp": {}
+  },
+  "healthcheck": {
+    "Interval": 60000000000,
+    "Test": [
+      "CMD",
+      "/healthcheck.sh"
+    ],
+    "Timeout": 10000000000
+  },
+  "image": "docker.io/vaultwarden/server@sha256:efb3cde962015fcc036b2ea625242248611943b27212ebf4392841fb30fad055",
+  "manifestDigest": "sha256:2bb2e0344616c62a6d76ea10558497499f8ed3f731400e143dc7bf17b757b5b9",
+  "minimumFixedPackageVersions": {
+    "curl": "8.14.1-2+deb13u7",
+    "libcurl4t64": "8.14.1-2+deb13u7",
+    "libpcre2-8-0": "10.46-1~deb13u3"
+  },
+  "observedAt": "2026-10-24T03:36:43.022106+00:00",
+  "os": "Debian GNU/Linux 13 (trixie)",
+  "platform": "linux/amd64",
+  "publicationOrBuildClaim": false,
+  "schema": 1,
+  "source": "Docker Hub public registry, SHA-verified OCI descriptors and all five layer blobs",
+  "sourceRevision": "7c188967e7a467b19b2757bc3326f9cf3ccae327",
+  "user": null,
+  "volumes": {
+    "/data": {}
+  },
+  "workingDir": "/"
+}

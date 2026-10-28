@@ -1,0 +1,124 @@
+{
+  "controlPlane": {
+    "runID": "a5da7099e3b94e32a92a7ffe3a7e37f7",
+    "cipherSHA256": "004371fa6145a36c3c6041c57d600c8aa58102f273fb86ff0d3689d44d071555",
+    "bytes": 76921380,
+    "authenticated": true,
+    "configurationFilesVerified": 46,
+    "revision": 10644677,
+    "keyHistoryHash": 2061052818,
+    "offlineRestoreExecuted": true,
+    "keyHistoryUnchanged": true
+  },
+  "nativeConfigurationBackup": {
+    "name": "preupgrade-20261028-3266035b",
+    "uid": "53024899-193b-406e-939a-aa288e851307",
+    "NASReadbacks": 2,
+    "bindingChains": 44,
+    "zipSHA256": "d42bbb7603f2c390df514ce9a92c9fc7b60cdbd152e8438be44ab75dcfd61592"
+  },
+  "cleanup": {
+    "removedAllocatedLinuxBytes": 213721088,
+    "removed": [
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-a5da7099e3b94e32a92a7ffe3a7e37f7-scratch/restored/member/wal/0000000000000000-0000000000000000.wal",
+        "allocatedBytes": 64000000
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-a5da7099e3b94e32a92a7ffe3a7e37f7-scratch/restored/member/snap/db",
+        "allocatedBytes": 74838016
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-a5da7099e3b94e32a92a7ffe3a7e37f7-scratch/restored/member/snap/0000000000000001-0000000000000001.snap",
+        "allocatedBytes": 8192
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-a5da7099e3b94e32a92a7ffe3a7e37f7-scratch/snapshot.db",
+        "allocatedBytes": 74846208
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-a5da7099e3b94e32a92a7ffe3a7e37f7-scratch/restored/member/wal",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-a5da7099e3b94e32a92a7ffe3a7e37f7-scratch/restored/member/snap",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-a5da7099e3b94e32a92a7ffe3a7e37f7-scratch/restored/member",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/final-control-plane-checkpoint-20261028/ansible-scratch/local",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-a5da7099e3b94e32a92a7ffe3a7e37f7-scratch/restored",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/final-control-plane-checkpoint-20261028/ansible-scratch",
+        "allocatedBytes": 4096
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/cp-a5da7099e3b94e32a92a7ffe3a7e37f7-scratch",
+        "allocatedBytes": 4096
+      }
+    ],
+    "retained": [
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/final-control-plane-checkpoint-20261028/restore-ansible-scratch",
+        "failedSafetyCheck": "Native Windows exclusive directory handle returned ERROR_ACCESS_DENIED 5 for root-owned mode0700 packaging directory",
+        "retained": true,
+        "alternateDeletionOrPermissionChangeAttempted": false,
+        "applyAttempt": "Refused because Windows proof absent; no target removed",
+        "remainingConsumer": "Investigate original permission/exclusion failure without retrying deletion of this protected exact target",
+        "eligibleOtherTargets": "Original brajam-owned producer scratch and qualified offline restore scratch"
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/etcd-restore-qualification/tools/etcdutl",
+        "remainingConsumer": "Supported Longhorn upgrade failure recovery window; reconcile when closed"
+      },
+      {
+        "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/flux-control-plane-backup/control-plane-a5da7099e3b94e32a92a7ffe3a7e37f7",
+        "remainingConsumer": "Final encrypted pre-upgrade recovery checkpoint, with independent NAS copy"
+      }
+    ],
+    "WindowsRecoveryClaimed": false
+  },
+  "managerAcceptance": {
+    "status": "manager_rollout_completed",
+    "UTC": "2026-10-28T01:30:43.433132+00:00",
+    "outcomes": [
+      {
+        "resource": "daemonset/longhorn-manager",
+        "exitCode": 0,
+        "diagnosticsSHA256": "151a95b7ac7bcb33969189ef63b442903dd380e15c219c54fd1623739da19459"
+      },
+      {
+        "resource": "deployment/longhorn-driver-deployer",
+        "exitCode": 0,
+        "diagnosticsSHA256": "dd72ae3107655cbfddc0c6c515534ca89a5324a6c4116d3e58de3fb0adf6cd0f"
+      },
+      {
+        "resource": "deployment/longhorn-global-manager",
+        "exitCode": 0,
+        "diagnosticsSHA256": "be2606f4db8558db9deab229e72189b03021d7b022513427490e9787877616e5"
+      },
+      {
+        "resource": "deployment/longhorn-ui",
+        "exitCode": 0,
+        "diagnosticsSHA256": "b212a5cea64e79145290d8d7e90e07a30f26ea6e3e8ce2b07fc3edb727a36e19"
+      }
+    ],
+    "originalDataIdentitiesPreserved": true,
+    "twoActualRWOnEveryAttachedVolume": true,
+    "version": "v1.13.0",
+    "automaticEngineUpgradeLimit": 0,
+    "engineUpgradeExecuted": false,
+    "fullGoalComplete": false,
+    "beforeSHA256": "424e63caa5dd4da26fcb059a1cb3c7ac5ac0873555f2aa30b08a5ef52c74ea97",
+    "afterSHA256": "bdd566559a1b0cc5c55624a71e3aa482d9417f3e81927a48416c95fe8d187f12"
+  },
+  "fullGoalComplete": false
+}

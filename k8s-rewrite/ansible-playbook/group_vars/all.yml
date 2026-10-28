@@ -1,0 +1,6 @@
+---
+# Existing-cluster maintenance pins only. No cluster bootstrap or secret values.
+ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+containerd_version: v2.4.2
+containerd_sha256: da656542e754c699a0f438eab925e6ffdbd6346a4428e659f83dc058f04dcffe
+containerd_socket: unix:///run/containerd-k8s/containerd.sock

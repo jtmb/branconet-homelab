@@ -1,0 +1,30 @@
+---
+- name: Cycle four existing static websites through validated charts and Flux
+  hosts: masternode
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Run only the explicit fixed static cohort phase
+      when: longhorn_static_runtime_apply | default(false) | bool and not ansible_check_mode
+      block:
+        - name: Require the existing target and bounded phase
+          ansible.builtin.assert:
+            that:
+              - ansible_host == '192.168.0.4'
+              - longhorn_static_runtime_phase in ['prepare', 'stop', 'observe', 'detached', 'resume', 'verify']
+        - name: Use the existing Windows Git publisher and native observers
+          ansible.builtin.command:
+            argv:
+              - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+              - -B
+              - "{{ playbook_dir }}/../roles/longhorn_static_runtime/files/cycle.py"
+              - "{{ longhorn_static_runtime_phase }}"
+          delegate_to: localhost
+          become: false
+          no_log: true
+          changed_when: longhorn_static_runtime_phase in ['stop', 'resume']
+          environment:
+            PYTHONDONTWRITEBYTECODE: '1'
+            TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+            TMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"
+            TEMP: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"

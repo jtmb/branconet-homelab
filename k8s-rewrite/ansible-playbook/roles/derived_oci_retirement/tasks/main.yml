@@ -1,0 +1,117 @@
+---
+- name: Report disabled derived-only retirement
+  ansible.builtin.debug:
+    msg: Explicit apply is required; only seven fixed successful derived layouts are eligible.
+  when: not derived_oci_retirement_apply | bool or ansible_check_mode
+
+- name: Operate only the fixed derived OCI retirement scope
+  when: derived_oci_retirement_apply | bool and not ansible_check_mode
+  block:
+    - name: Require the reviewed worker and operation
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'workernode1'
+          - ansible_host == '192.168.0.6'
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - derived_oci_retirement_phase in ['review', 'retire', 'status']
+          - derived_oci_retirement_run_id is match('^[0-9a-f]{12}$')
+
+    - name: Derive only the cleanup and included public scan contract identities
+      ansible.builtin.set_fact:
+        derived_oci_retirement_root: /home/james/.local/share/branconet-migration/derived-oci-retirement-20261024
+        derived_oci_retirement_helper_sha256: "{{ lookup('ansible.builtin.file', role_path ~ '/files/retire.py', rstrip=false) | hash('sha256') }}"
+        derived_oci_retirement_contract_sha256: "{{ lookup('ansible.builtin.file', role_path ~ '/../worker1_oci_scan/files/scan_oci.py', rstrip=false) | hash('sha256') }}"
+
+    - name: Bind the helper pair to one new immutable source directory
+      ansible.builtin.set_fact:
+        derived_oci_retirement_source: "{{ derived_oci_retirement_root }}/helpers/{{ derived_oci_retirement_helper_sha256 }}-{{ derived_oci_retirement_contract_sha256 }}"
+
+    - name: Refuse aliased ancestors and conflicting retained cleanup paths
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -c
+          - |
+            import os,pwd,re,stat,sys
+            from pathlib import Path
+            base=Path('/home/james/.local/share/branconet-migration')
+            owner=pwd.getpwnam('james')
+            assert base.resolve()==base and base.is_dir()
+            assert base.stat().st_uid==owner.pw_uid and not base.stat().st_mode & 0o002
+            assert re.fullmatch('[0-9a-f]{64}-[0-9a-f]{64}',sys.argv[1])
+            root=base/'derived-oci-retirement-20261024'
+            for path in [root,root/'helpers',root/'runs',root/'helpers'/sys.argv[1]]:
+                if os.path.lexists(path):
+                    info=path.lstat()
+                    assert path.resolve()==path and stat.S_ISDIR(info.st_mode)
+                    assert info.st_uid==0 and stat.S_IMODE(info.st_mode)==0o700
+          - "{{ derived_oci_retirement_helper_sha256 }}-{{ derived_oci_retirement_contract_sha256 }}"
+      changed_when: false
+
+    - name: Create only the new protected retirement receipt/source directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: '0700'
+      loop:
+        - "{{ derived_oci_retirement_root }}"
+        - "{{ derived_oci_retirement_root }}/helpers"
+        - "{{ derived_oci_retirement_root }}/runs"
+        - "{{ derived_oci_retirement_source }}"
+      when: derived_oci_retirement_phase != 'status'
+
+    - name: Copy only missing public helper sources without replacing prior versions
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ derived_oci_retirement_source }}/{{ item.name }}"
+        owner: root
+        group: root
+        mode: '0400'
+        force: false
+        follow: false
+      loop:
+        - {src: "{{ role_path }}/files/retire.py", name: retire.py}
+        - {src: "{{ role_path }}/../worker1_oci_scan/files/scan_oci.py", name: scan_contract.py}
+      when: derived_oci_retirement_phase != 'status'
+
+    - name: Check both exact retained source files before any operation
+      ansible.builtin.stat:
+        path: "{{ derived_oci_retirement_source }}/{{ item.name }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop:
+        - {name: retire.py, sha: "{{ derived_oci_retirement_helper_sha256 }}"}
+        - {name: scan_contract.py, sha: "{{ derived_oci_retirement_contract_sha256 }}"}
+      register: derived_oci_retirement_sources
+
+    - name: Refuse missing changed or aliased source
+      ansible.builtin.assert:
+        that:
+          - item.stat.isreg | default(false)
+          - not item.stat.islnk | default(false)
+          - item.stat.uid == 0
+          - item.stat.mode == '0400'
+          - item.stat.nlink == 1
+          - item.stat.checksum == item.item.sha
+      loop: "{{ derived_oci_retirement_sources.results }}"
+      loop_control:
+        label: "{{ item.item.name }}"
+
+    - name: Verify all seven before any optional derived-file removal
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -B
+          - "{{ derived_oci_retirement_source }}/retire.py"
+          - "{{ derived_oci_retirement_phase }}"
+          - --run-id
+          - "{{ derived_oci_retirement_run_id }}"
+      changed_when: derived_oci_retirement_phase == 'retire'
+      register: derived_oci_retirement_result
+
+    - name: Return only fixed-category receipt metadata
+      ansible.builtin.debug:
+        msg: "{{ derived_oci_retirement_result.stdout | from_json }}"

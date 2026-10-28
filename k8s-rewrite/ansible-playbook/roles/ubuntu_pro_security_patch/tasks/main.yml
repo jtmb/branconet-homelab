@@ -1,0 +1,131 @@
+---
+- name: Explain the disabled default and absence of check-mode mutations
+  ansible.builtin.debug:
+    msg: USN-8555-1 worker-only patch is opt-in; no drain, reboot, runtime or Pro account commands. Check mode skips execution.
+  when: not ubuntu_pro_security_patch_enabled | bool or ansible_check_mode
+
+- name: Run only the explicitly enabled finite worker patch
+  when: ubuntu_pro_security_patch_enabled | bool and not ansible_check_mode
+  block:
+    - name: Require the exact worker address and protected controller receipt root
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname in ['workernode2', 'workernode1']
+          - ansible_host == {'workernode2':'192.168.0.5', 'workernode1':'192.168.0.6'}[inventory_hostname]
+          - groups['master'] == ['masternode']
+          - hostvars['masternode'].ansible_host == '192.168.0.4'
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - ubuntu_pro_security_patch_receipt_dir is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/ubuntu-pro-security-patch-[A-Za-z0-9_-]+$')
+
+    - name: Capture exact node identity Ready and pressure state before this worker
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/guard.py') }}", cluster]
+      become: false
+      delegate_to: masternode
+      changed_when: false
+      register: pro_patch_nodes_before
+
+    - name: Validate installed versions trusted security origin and exact simulated transaction
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/guard.py') }}", preflight]
+      changed_when: false
+      register: pro_patch_before
+
+    - name: Create a private controller receipt directory
+      ansible.builtin.file:
+        path: "{{ ubuntu_pro_security_patch_receipt_dir }}"
+        state: directory
+        mode: '0700'
+      delegate_to: localhost
+      become: false
+
+    - name: Allocate a unique preservation receipt before any package mutation
+      ansible.builtin.tempfile:
+        state: file
+        path: "{{ ubuntu_pro_security_patch_receipt_dir }}"
+        prefix: "{{ inventory_hostname }}-"
+        suffix: .before.json
+      delegate_to: localhost
+      become: false
+      register: pro_patch_receipt
+
+    - name: Preserve the complete public package and runtime baseline
+      ansible.builtin.copy:
+        content: "{{ {'schema': 1, 'host': inventory_hostname, 'applyRequested': ubuntu_pro_security_patch_apply | bool, 'before': pro_patch_before.stdout | from_json, 'nodesBefore': pro_patch_nodes_before.stdout | from_json} | to_nice_json }}\n"
+        dest: "{{ pro_patch_receipt.path }}"
+        mode: '0600'
+      delegate_to: localhost
+      become: false
+
+    - name: Apply only the three exact signed security-pocket packages
+      ansible.builtin.apt:
+        name:
+          - ubuntu-advantage-tools=37.2ubuntu~22.04.1
+          - ubuntu-pro-client=37.2ubuntu~22.04.1
+          - ubuntu-pro-client-l10n=37.2ubuntu~22.04.1
+        state: present
+        default_release: jammy-security
+        update_cache: false
+        fail_on_autoremove: true
+        allow_unauthenticated: false
+        allow_downgrade: false
+        force: false
+        dpkg_options: force-confold
+        policy_rc_d: 101
+        lock_timeout: 60
+      environment:
+        NEEDRESTART_MODE: l
+        DEBIAN_FRONTEND: noninteractive
+      when: ubuntu_pro_security_patch_apply | bool
+      register: pro_patch_apt
+
+    - name: Capture exact packages kernel runtime config and service continuity after apply
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/guard.py') }}", snapshot]
+      changed_when: false
+      when: ubuntu_pro_security_patch_apply | bool
+      register: pro_patch_after
+
+    - name: Capture node Ready and no-pressure identities after apply
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/guard.py') }}", cluster]
+      become: false
+      delegate_to: masternode
+      changed_when: false
+      when: ubuntu_pro_security_patch_apply | bool
+      register: pro_patch_nodes_after
+
+    - name: Persist after evidence before interpreting equality
+      ansible.builtin.copy:
+        content: "{{ {'schema': 1, 'host': inventory_hostname, 'beforeReceipt': pro_patch_receipt.path, 'after': pro_patch_after.stdout | from_json, 'nodesAfter': pro_patch_nodes_after.stdout | from_json, 'aptChanged': pro_patch_apt.changed} | to_nice_json }}\n"
+        dest: "{{ pro_patch_receipt.path }}.after.json"
+        mode: '0600'
+        force: false
+      delegate_to: localhost
+      become: false
+      when: ubuntu_pro_security_patch_apply | bool
+
+    - name: Require only approved package changes with no runtime restart reboot or node change
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/guard.py') }}", verify]
+        stdin: "{{ {'before': pro_patch_before.stdout | from_json, 'after': pro_patch_after.stdout | from_json, 'nodesBefore': pro_patch_nodes_before.stdout | from_json, 'nodesAfter': pro_patch_nodes_after.stdout | from_json} | to_json }}"
+      become: false
+      delegate_to: localhost
+      changed_when: false
+      when: ubuntu_pro_security_patch_apply | bool
+      register: pro_patch_verified
+
+    - name: Preserve the finite acceptance result
+      ansible.builtin.copy:
+        content: "{{ pro_patch_verified.stdout }}\n"
+        dest: "{{ pro_patch_receipt.path }}.verified.json"
+        mode: '0600'
+        force: false
+      delegate_to: localhost
+      become: false
+      when: ubuntu_pro_security_patch_apply | bool
+
+    - name: Report only the preservation receipt path and execution mode
+      ansible.builtin.debug:
+        msg: "USN-8555-1 {{ inventory_hostname }} apply={{ ubuntu_pro_security_patch_apply | bool }} receipt={{ pro_patch_receipt.path }}"

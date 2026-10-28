@@ -1,0 +1,233 @@
+{
+  "UTC": "2026-10-25T18:26:01.321652-04:00",
+  "passed": true,
+  "fluxRevision": "validated@sha1:5cfa97c446035d403f3486a9786b53f71cb62872",
+  "controllerSourceSHA256": "d8bfed750a60dc6b9614f89bb9f6f8832637b0951a1341f5e60c08ecf236a6a6",
+  "beforeReceiptSHA256": "37adbedb676aa1f92edd9381ec34e95e6491244ac5e6d78b689938e84a38d8e0",
+  "afterReceiptSHA256": "324870eaaf6543e1dcf9ac4412b0607266bd502fd5f52828a3a33cc79b845182",
+  "imagesBuilt": false,
+  "actionsUsed": false,
+  "services": [
+    {
+      "service": "http-echo",
+      "image": "docker.io/hashicorp/http-echo:1.0.0@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186",
+      "imageID": "docker.io/hashicorp/http-echo@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186",
+      "podUIDBefore": "5d9e3649-6a54-4799-8479-4d8ebafd89d6",
+      "podUIDAfter": "e239f789-f5be-4788-b32d-b03eaceaf0db",
+      "deploymentUID": "77539818-3671-450c-ae58-154a63a41493",
+      "helmRevision": "0.1.0+5cfa97c44603",
+      "fullSpecificationComparisonPassed": true,
+      "serviceIngressPVCAndSecretMetadataPreserved": true,
+      "claims": {
+        "http-echo-data-pvc": {
+          "uid": "9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+          "volume": "pvc-9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+          "spec": {
+            "accessModes": [
+              "ReadWriteOnce"
+            ],
+            "resources": {
+              "requests": {
+                "storage": "1Gi"
+              }
+            },
+            "storageClassName": "longhorn",
+            "volumeMode": "Filesystem",
+            "volumeName": "pvc-9edde4e3-5a0c-4c0c-b317-47b045ee199e"
+          }
+        }
+      },
+      "httpChecks": [
+        {
+          "path": "/",
+          "method": "GET",
+          "status": 200,
+          "bytes": 57,
+          "sha256": "0c099c3c1e2aa705ff0c66e536acc4e8c14d990098b39ed52d50868d14c554eb",
+          "contentType": "text/plain; charset=utf-8"
+        },
+        {
+          "path": "/",
+          "method": "POST",
+          "status": 200,
+          "bytes": 57,
+          "sha256": "0c099c3c1e2aa705ff0c66e536acc4e8c14d990098b39ed52d50868d14c554eb",
+          "contentType": "text/plain; charset=utf-8"
+        },
+        {
+          "path": "/health",
+          "method": "GET",
+          "status": 200,
+          "bytes": 16,
+          "sha256": "6489d6d7a33c5d40e18fc61eeb6c34c341279ee61816394dde5189aa4ad8fae5",
+          "contentType": "text/plain; charset=utf-8"
+        }
+      ],
+      "ingressChecks": [
+        {
+          "node": "192.168.0.4",
+          "status": 200,
+          "expectedBody": true
+        },
+        {
+          "node": "192.168.0.5",
+          "status": 200,
+          "expectedBody": true
+        },
+        {
+          "node": "192.168.0.6",
+          "status": 200,
+          "expectedBody": true
+        }
+      ],
+      "browserRetrieval": null,
+      "browserUserAgentVersionsBefore": null
+    },
+    {
+      "service": "flaresolverr",
+      "image": "ghcr.io/flaresolverr/flaresolverr:v3.5.2@sha256:c80ae007ce2ccdcd217a12426e4f039ef763ff90738c808d38810c3e59323767",
+      "imageID": "ghcr.io/flaresolverr/flaresolverr@sha256:c80ae007ce2ccdcd217a12426e4f039ef763ff90738c808d38810c3e59323767",
+      "podUIDBefore": "910adb88-cce7-4101-a864-386d73c1b091",
+      "podUIDAfter": "14c424e9-189a-46ae-8d5b-4231860662c7",
+      "deploymentUID": "7a6239d9-8a48-40ec-9480-dd4e8667f695",
+      "helmRevision": "0.1.0+5cfa97c44603",
+      "fullSpecificationComparisonPassed": true,
+      "serviceIngressPVCAndSecretMetadataPreserved": true,
+      "claims": {},
+      "httpChecks": null,
+      "ingressChecks": null,
+      "browserRetrieval": {
+        "ownClusterEchoRetrieved": true,
+        "status": 200,
+        "temporarySessionCleaned": true,
+        "browserVersions": [
+          "152.0.0.0"
+        ]
+      },
+      "browserUserAgentVersionsBefore": [
+        "156.0.0.0"
+      ]
+    }
+  ],
+  "clusterHealth": {
+    "UTC": "2026-10-25T18:16:13.936928-04:00",
+    "nodes": [
+      {
+        "name": "masternode",
+        "uid": "f2df6169-4592-4544-b62c-74d89f598648",
+        "ready": true,
+        "pressure": []
+      },
+      {
+        "name": "workernode1",
+        "uid": "e8d4555f-7cea-445f-b84f-6416964045a9",
+        "ready": true,
+        "pressure": []
+      },
+      {
+        "name": "workernode2",
+        "uid": "eda66e65-f388-4b97-b64f-a709cda81894",
+        "ready": true,
+        "pressure": []
+      }
+    ],
+    "pvcCount": 55,
+    "unboundPVCs": [],
+    "unavailableDeployments": [],
+    "unavailableDaemonSets": [],
+    "notReadyHelmReleases": [],
+    "notReadyKustomizations": [],
+    "nonRunningPods": [
+      {
+        "name": "plex/seerr-image-native-20261024",
+        "phase": "Failed"
+      },
+      {
+        "name": "plex/seerr-image-native-20261024-diagnostic",
+        "phase": "Failed"
+      }
+    ]
+  },
+  "attachedLonghornHealthy": true,
+  "securityStatus": "Vendor-only policy adoption, not a CVE-fix claim. FlareSolverr vendor Chromium user agent is 152 instead of prior custom 156. Its October23 exact-base scan recorded 32 critical/1091 high package-advisory rows; this dated observation is not a fresh current scan. http-echo official 1.0.0 remains the 2023 release with known Go advisories. Current catalog/remediation remains open.",
+  "goalComplete": false,
+  "upstreamReleaseEvidence": [
+    {
+      "service": "flaresolverr",
+      "UTC": "2026-10-25T18:05:59.149139-04:00",
+      "sourceRepository": "https://github.com/FlareSolverr/FlareSolverr",
+      "release": {
+        "tag_name": "v3.5.2",
+        "published_at": "2026-09-12T01:23:38Z",
+        "target_commitish": "master",
+        "html_url": "https://github.com/FlareSolverr/FlareSolverr/releases/tag/v3.5.2"
+      },
+      "image": {
+        "reference": "ghcr.io/flaresolverr/flaresolverr:v3.5.2@sha256:c80ae007ce2ccdcd217a12426e4f039ef763ff90738c808d38810c3e59323767",
+        "rootDigest": "sha256:c80ae007ce2ccdcd217a12426e4f039ef763ff90738c808d38810c3e59323767",
+        "amd64Manifest": "sha256:4ad0ed7de64622f9823594bf7bc237149158fca881f875aafbdd8456f6467134",
+        "configDigest": "sha256:cd2872fa4a3e0bb10acee4063771adeba71feb8bf75311dd481a7a1ce3c32d36",
+        "compressedLayerBytes": 292147560,
+        "runtime": {
+          "User": "flaresolverr",
+          "Entrypoint": [
+            "/usr/bin/dumb-init",
+            "--"
+          ],
+          "Cmd": [
+            "/usr/local/bin/python",
+            "-u",
+            "/app/flaresolverr.py"
+          ],
+          "WorkingDir": "/app",
+          "Labels": {
+            "org.opencontainers.image.created": "2026-09-12T01:23:36.813Z",
+            "org.opencontainers.image.description": "Proxy server to bypass Cloudflare protection",
+            "org.opencontainers.image.licenses": "MIT",
+            "org.opencontainers.image.revision": "93125d6ea6956906c8dfa29e169b2dc67d993dc3",
+            "org.opencontainers.image.source": "https://github.com/FlareSolverr/FlareSolverr",
+            "org.opencontainers.image.title": "FlareSolverr",
+            "org.opencontainers.image.url": "https://github.com/FlareSolverr/FlareSolverr",
+            "org.opencontainers.image.version": "v3.5.2"
+          }
+        },
+        "created": "2026-09-12T01:25:17.172725816Z"
+      }
+    },
+    {
+      "service": "http-echo",
+      "UTC": "2026-10-25T18:05:59.917392-04:00",
+      "sourceRepository": "https://github.com/hashicorp/http-echo",
+      "release": {
+        "tag_name": "v1.0.0",
+        "published_at": "2023-10-10T21:37:18Z",
+        "target_commitish": "866d8f8313e92d96f940c2f0cf807abe934ab145",
+        "html_url": "https://github.com/hashicorp/http-echo/releases/tag/v1.0.0"
+      },
+      "image": {
+        "reference": "docker.io/hashicorp/http-echo:1.0.0@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186",
+        "rootDigest": "sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186",
+        "amd64Manifest": "sha256:2c213d6c05a0f68adfe9c7fe1a78a314e5c4fee783e2ee8592d49f10d0c4513f",
+        "configDigest": "sha256:04fa556e62bddac2a783622a3cccc35d6d5c599199eecf75b6b4f2bc76c8c825",
+        "compressedLayerBytes": 4625474,
+        "runtime": {
+          "User": "65532",
+          "Entrypoint": [
+            "/http-echo"
+          ],
+          "Cmd": null,
+          "WorkingDir": "/home/nonroot",
+          "Labels": {
+            "maintainer": "HashiCorp Consul Team <consul@hashicorp.com>",
+            "name": "http-echo",
+            "release": "1.0.0",
+            "summary": "A test webserver that echos a response. You know, for kids.",
+            "vendor": "HashiCorp",
+            "version": "1.0.0"
+          }
+        },
+        "created": "2023-10-10T20:47:10.728020011Z"
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+---
+- name: Retire only the fixed inactive generated Trivy analysis cache
+  hosts: master
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  tasks:
+    - name: Require exact master and explicit cache retirement
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'masternode'
+          - ansible_host == '192.168.0.4'
+          - ansible_user == 'james'
+          - ansible_port | int == 2002
+          - master_analysis_cache_retire | default(false) | bool
+    - name: Preserve all original reports and sources and retire qualified cache
+      retire_master_analysis_cache:
+      no_log: true

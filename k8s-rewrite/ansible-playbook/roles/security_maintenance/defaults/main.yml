@@ -1,0 +1,47 @@
+---
+security_maintenance_apply: false
+security_maintenance_backup_verified: false
+security_maintenance_backup_reference: ""
+# Dedicated launcher supplies a unique private controller directory per run.
+security_maintenance_recovery_receipt_dir: ""
+security_maintenance_reboot: false
+security_maintenance_expected_kernel: 5.15.0-198-generic
+security_maintenance_drain_timeout: 900s
+# Per API attempt; the Ready task retries transient API/RBAC startup errors.
+security_maintenance_ready_timeout: 10s
+# Only these Ubuntu security-pocket packages are considered; no dist-upgrade.
+security_maintenance_ubuntu_packages:
+  - linux-generic
+  - linux-image-generic
+  - linux-headers-generic
+  - openssh-server
+  - openssl
+  - libssl3
+  - libc6
+  - sudo
+  - systemd
+# Optional host-specific packages MUST be exact package=version pairs, for example
+# the four NVIDIA toolkit packages on masternode, after dependency review.
+security_maintenance_extra_packages_by_host: {}
+security_maintenance_extra_packages: "{{ security_maintenance_extra_packages_by_host[inventory_hostname] | default([]) }}"
+security_maintenance_allow_reviewed_emptydir: false
+security_maintenance_retire_unused_containerd: true
+# Reviewed actual mount paths. FlareSolverr runtime state is disposable under
+# the user's explicit decision; xTeve's real configuration remains on PVCs.
+security_maintenance_emptydir_allowlist:
+  - flux-system/Deployment/helm-controller/temp@/tmp
+  - flux-system/Deployment/image-automation-controller/temp@/tmp
+  - flux-system/Deployment/image-reflector-controller/temp@/tmp
+  - flux-system/Deployment/image-reflector-controller/data@/data
+  - flux-system/Deployment/kustomize-controller/temp@/tmp
+  - flux-system/Deployment/notification-controller/temp@/tmp
+  - flux-system/Deployment/source-controller/data@/data
+  - flux-system/Deployment/source-controller/tmp@/tmp
+  - flux-system/Deployment/source-watcher/data@/data
+  - flux-system/Deployment/source-watcher/tmp@/tmp
+  - kube-system/Deployment/csi-smb-controller/socket-dir@/csi
+  - longhorn-system/Deployment/longhorn-ui/nginx-cache@/var/cache/nginx/
+  - longhorn-system/Deployment/longhorn-ui/nginx-config@/var/config/nginx/
+  - longhorn-system/Deployment/longhorn-ui/var-run@/var/run/
+  - plex/Deployment/flaresolverr/data-0@/config
+  - plex/Deployment/xteve/data-2@/tmp/xteve

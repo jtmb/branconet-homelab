@@ -1,0 +1,7 @@
+---
+- name: Review or explicitly patch the existing Helm-owned SMB CSI release
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - smb_helm_patch

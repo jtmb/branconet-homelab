@@ -1,0 +1,7 @@
+---
+- name: Qualify the existing backup in isolated controller storage only
+  hosts: master
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  roles: [control_plane_restore_qualification]

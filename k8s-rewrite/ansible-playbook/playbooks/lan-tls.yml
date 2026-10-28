@@ -1,0 +1,7 @@
+---
+- name: Verify native LAN certificates and pinned local client trust
+  hosts: masternode
+  gather_facts: false
+  become: false
+  roles:
+    - lan_tls

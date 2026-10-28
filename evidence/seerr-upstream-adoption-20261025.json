@@ -1,0 +1,67 @@
+{
+  "UTC": "2026-10-25T20:55:33.820919+00:00",
+  "backendAccepted": true,
+  "restartAccepted": true,
+  "browserAccepted": false,
+  "image": "ghcr.io/seerr-team/seerr:v3.5.1@sha256:d8fab675b55ad293ded98fd71efcfd46054cbad9746534ae1cc4794a88c0b3be",
+  "sourceRevision": "564bfb08b54caa374bddaf820abfd226e5e69151",
+  "chartsRevision": "08392b8d6d9b3a682442cd734b484e27550f9249",
+  "receipts": {
+    "after": {
+      "path": "/home/james/.local/share/branconet-migration/upstream-seerr-acceptance-20261025/after.json",
+      "sha256": "fbc4bf6cb51e4054a9bab9ff09d76f0681d777e61dfed40a31613d81f40f07b1",
+      "podUID": "5ae170c3-8e0c-44af-835b-8b87cdbdd2a3",
+      "imageID": "ghcr.io/seerr-team/seerr@sha256:d8fab675b55ad293ded98fd71efcfd46054cbad9746534ae1cc4794a88c0b3be",
+      "restartObserved": false
+    },
+    "restart": {
+      "path": "/home/james/.local/share/branconet-migration/upstream-seerr-acceptance-20261025/restart.json",
+      "sha256": "4e488c108b4f67fb964addfacaa5a7dd6438892a9d2b7947993b16793eaef631",
+      "podUID": "b0f4624f-813e-4eb7-917e-c87c44e244f4",
+      "imageID": "ghcr.io/seerr-team/seerr@sha256:d8fab675b55ad293ded98fd71efcfd46054cbad9746534ae1cc4794a88c0b3be",
+      "restartObserved": true
+    }
+  },
+  "counts": {
+    "user": 6,
+    "media_request": 654,
+    "media": 1099,
+    "season": 1405,
+    "season_request": 634,
+    "issue": 3,
+    "issue_comment": 4,
+    "user_settings": 3,
+    "user_push_subscription": 0
+  },
+  "settingsLeaves": 199,
+  "freshBaselineSHA256": "120f7ba0d021285a3c019d727a0ea23d6ea58d06cac02027b34fffba126ea4eb",
+  "archive": {
+    "sha256": "b70eb9a319fda964a445fb4e8d11a9b38abacf7fd8e46a0ca28f95310e19cdce",
+    "bytes": 7917652,
+    "fileBytes": 7777919,
+    "files": 119,
+    "fullAuthentication": true,
+    "readerDeleted": true,
+    "SMBReadBackAndAgeAuthentication": true
+  },
+  "publicRoutes": [
+    {
+      "path": "/api/v1/status?checkUpdateAvailable=false",
+      "status": 200,
+      "bytes": 98,
+      "bodySHA256": "95a4fdad2bba6cf8b570361e6cf63ec3207d7a1168cf8ecda11f658b80603394",
+      "tlsVerified": true,
+      "expectedState": true
+    },
+    {
+      "path": "/api/v1/settings/public",
+      "status": 200,
+      "bytes": 767,
+      "bodySHA256": "3d1219634df6029a758bfbd1ac6dc70c2b539590bed40ea4b214d15934f04099",
+      "tlsVerified": true,
+      "expectedState": true
+    }
+  ],
+  "residualScanClaim": "No fresh zero-CVE claim; official latest release retains vendor dependency findings; further current scan/catalog work remains",
+  "goalComplete": false
+}

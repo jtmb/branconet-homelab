@@ -1,0 +1,40 @@
+---
+- name: State the explicit apply boundary
+  ansible.builtin.debug:
+    msg: Default and check mode do not patch DNS. This role preserves the existing Corefile, Service and deployment identity.
+  when: not coredns_patch_apply | bool or ansible_check_mode
+
+- name: Apply only the reviewed DNS image with its exact completed scan
+  when: coredns_patch_apply | bool and not ansible_check_mode
+  block:
+    - name: Require the original master and bounded private receipt
+      ansible.builtin.assert:
+        that:
+          - inventory_hostname == 'masternode'
+          - coredns_patch_scan_receipt == '/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/security-review-20261026/apps-coredns-current-r3-0/receipt.json'
+          - coredns_patch_scan_sha256 is match('^[0-9a-f]{64}$')
+
+    - name: Run the fixed controller with the existing strict SSH identity
+      environment:
+        TMPDIR: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+        TEMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+        TMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+      ansible.builtin.command:
+        argv:
+          - /home/brajam/.local/share/branconet-migration/venv/bin/python
+          - "{{ playbook_dir }}/../../../scripts/migration/patch-coredns.py"
+          - --apply
+          - --scan-receipt
+          - "{{ coredns_patch_scan_receipt }}"
+          - --scan-sha256
+          - "{{ coredns_patch_scan_sha256 }}"
+          - --output-dir
+          - "{{ coredns_patch_output_dir }}"
+      delegate_to: localhost
+      become: false
+      register: coredns_patch_result
+      changed_when: (coredns_patch_result.stdout | from_json).passed and not ((coredns_patch_result.stdout | from_json).alreadyPatched | default(false))
+
+    - name: Report the retained exact patch receipt
+      ansible.builtin.debug:
+        msg: "{{ coredns_patch_result.stdout | from_json }}"

@@ -1,0 +1,31 @@
+---
+- name: Require explicit xTeVe updater maintenance scope
+  ansible.builtin.assert:
+    that:
+      - xteve_updater_apply | bool
+      - inventory_hostname == 'masternode'
+
+- name: Disable only the binary updater against authenticated complete cold copies
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - '{{ playbook_dir }}/../../../scripts/migration/disable-xteve-updater.py'
+      - --apply
+      - --state-receipt
+      - '{{ xteve_updater_state_receipt }}'
+      - --state-receipt-sha256
+      - '{{ xteve_updater_state_receipt_sha256 }}'
+      - --config-receipt
+      - '{{ xteve_updater_config_receipt }}'
+      - --config-receipt-sha256
+      - '{{ xteve_updater_config_receipt_sha256 }}'
+      - --receipt
+      - '{{ xteve_updater_receipt }}'
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when: not ansible_check_mode
+
+- name: State the narrow maintenance boundary
+  ansible.builtin.debug:
+    msg: 'Only xteveAutoUpdate is disabled. Both writers must remain quiesced, both complete archives authenticate, all other setting bytes and ownership remain unchanged. No NAS mount, Secret or application restart is performed.'

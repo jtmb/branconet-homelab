@@ -1,0 +1,7 @@
+---
+- name: Plan or execute the explicitly reviewed Ruckus fresh-claim restore
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - ruckus_qualified_restore

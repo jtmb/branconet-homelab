@@ -1,0 +1,7 @@
+---
+- name: Prepare existing-owner Longhorn upgrade without production mutation
+  hosts: master
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  roles: [longhorn_upgrade_prepare]

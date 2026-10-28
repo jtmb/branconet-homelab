@@ -1,0 +1,40 @@
+---
+- name: Require an explicit reviewed cache-only preload
+  ansible.builtin.assert:
+    that:
+      - application_image_preload_apply | bool
+      - inventory_hostname in ['masternode', 'workernode2', 'workernode1']
+      - containerd_socket == 'unix:///run/containerd-k8s/containerd.sock'
+      - application_image_preload_artifacts | length > 0
+    fail_msg: Only explicit allowlisted application patch cache imports through the independent runtime are supported.
+
+- name: Optionally stage each exact public artifact from the protected controller
+  ansible.builtin.include_tasks: stage.yml
+  loop: "{{ application_image_preload_artifacts }}"
+  loop_control:
+    loop_var: staged_artifact
+    label: "{{ staged_artifact.service }}"
+  when:
+    - application_image_preload_stage_from_controller | bool
+    - not ansible_check_mode
+
+- name: Import and verify each already transferred protected OCI artifact
+  ansible.builtin.command:
+    argv:
+      - /usr/bin/python3
+      - -c
+      - "{{ lookup('ansible.builtin.file', role_path + '/files/preload.py') }}"
+      - --service
+      - "{{ item.service }}"
+      - --archive
+      - "{{ item.archive_path }}"
+      - --archive-sha256
+      - "{{ item.archive_sha256 }}"
+      - --manifest-digest
+      - "{{ item.manifest_digest }}"
+  loop: "{{ application_image_preload_artifacts }}"
+  loop_control:
+    label: "{{ item.service }}"
+  register: application_image_preload_result
+  changed_when: (application_image_preload_result.stdout | from_json).changed | default(false) | bool
+  when: not ansible_check_mode
