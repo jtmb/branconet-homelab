@@ -1,0 +1,34 @@
+---
+- name: Finite worker2 Brotli security controller with terminal-only privilege input
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  vars:
+    worker2_brotli_security_enabled: false
+    worker2_brotli_security_mode: qualify
+    worker2_brotli_security_qualification: ''
+    worker2_brotli_security_privileged_read: false
+    worker2_brotli_security_reviewed_preinstall_refusal: ''
+  tasks:
+    - name: Explain disabled default
+      ansible.builtin.debug:
+        msg: No action. Explicitly enable qualification or reviewed application of only worker2 libbrotli1.
+      when: not worker2_brotli_security_enabled | bool or ansible_check_mode
+    - name: Validate finite opt-in controller mode
+      ansible.builtin.assert:
+        that:
+          - worker2_brotli_security_mode in ['candidate', 'qualify', 'apply', 'observe']
+          - worker2_brotli_security_mode != 'apply' or worker2_brotli_security_qualification | length > 0
+          - worker2_brotli_security_reviewed_preinstall_refusal | length == 0 or worker2_brotli_security_mode == 'apply'
+      when: worker2_brotli_security_enabled | bool and not ansible_check_mode
+    - name: Run identical source controller without an Ansible module temporary file
+      ansible.builtin.raw: >-
+        python3 -B {{ (playbook_dir + '/../roles/worker2_brotli_security/files/controller.py') | quote }}
+        {{ worker2_brotli_security_mode | quote }}
+        {{ '--privileged-read' if worker2_brotli_security_privileged_read | bool else '' }}
+        {{ ('--qualification ' + (worker2_brotli_security_qualification | quote)) if worker2_brotli_security_mode == 'apply' else '' }}
+        {{ ('--reviewed-preinstall-refusal ' + (worker2_brotli_security_reviewed_preinstall_refusal | quote)) if worker2_brotli_security_reviewed_preinstall_refusal | length > 0 else '' }}
+      changed_when: worker2_brotli_security_mode == 'apply'
+      when: worker2_brotli_security_enabled | bool and not ansible_check_mode

@@ -40,3 +40,21 @@ There are no downloaded dependencies, image archives, extracted copies or
 remote scratch directories. Keep unique execution/failure/source receipts and
 all original images/content. Node filesystem recovery is separate from Windows
 free space; no VHDX recovery is claimed.
+
+The maintained `master_*`, `web_*`, `platform_cache.py` and `cache_outcome.py`
+entrypoints use the same qualification and no-retry API protocol for their
+explicitly named scopes. The corresponding opt-in Ansible playbooks are
+`retired-{master,web,platform}-native-unpack-cache.yml`. They preserve each
+cohort's original source, composition, receipts, original OCI graph and failures.
+`cache_outcome.py` is observation only and never submits a removal.
+
+`platform_cache.py --node workernode2 --family mysql qualify` considers only
+the superseded official MySQL root `76f0358884cb92d9a086d24e5671c38048d3fef40f2588703d73eb55392d6b69`.
+It is eligible only after no running/desired workload or native container/lease
+uses it. The new official root and every other image remain protected. Explicit
+retirement requires `retire --qualification <exact-receipt>`, unchanged fresh
+source and the full original physical/reference/payload checks. The separate
+`retired-mysql-cache-<node>-20261028` metadata cohort includes every prior platform,
+web and original derivative journal in its permanently protected attempted keys.
+Ansible uses `retired_platform_native_unpack_cache_family=mysql`; the default
+remains platform. This does not authorize deleting image records or blobs.

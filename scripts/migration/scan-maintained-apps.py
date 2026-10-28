@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import signal
+import stat
 import subprocess
 import sys
 import time
@@ -50,8 +51,11 @@ def save(path, value):
 
 def main():
     os.umask(0o077)
-    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3', 'mealie-current-r3', 'tautulli-current-r3', 'tautulli-linuxserver-current-r3', 'vaultwarden-current-r3', 'pihole-current-r3', 'qbittorrent-current-r3', 'threadfin-current-r3', 'ruckusdb-current-r3', 'wordpress-current-r3', 'coredns-current-r3', 'plex-current-r3', 'owned-qbit-current-r3', 'owned-jtmb-current-r3'], 'finite_scan_generation')
+    need(len(sys.argv) == 2 and sys.argv[1] in ['homepage-jackett', 'homepage-current-r3', 'jackett-current-r3', 'mealie-current-r3', 'tautulli-current-r3', 'tautulli-linuxserver-current-r3', 'vaultwarden-current-r3', 'pihole-current-r3', 'qbittorrent-current-r3', 'threadfin-current-r3', 'ruckusdb-current-r3', 'wordpress-current-r3', 'coredns-current-r3', 'plex-current-r3', 'owned-qbit-current-r3', 'owned-jtmb-current-r3', 'fleet-current-r5', 'vendor-candidates-r5'], 'finite_scan_generation')
     generation = sys.argv[1]
+    vendor = generation == 'vendor-candidates-r5'
+    fleet = generation in ['fleet-current-r5', 'vendor-candidates-r5']
+    runtime = OUT / 'fleet-r5-runtime' if fleet else OUT
     revalidated = generation != 'homepage-jackett'
     cg = Path('/proc/self/cgroup').read_text().strip().removeprefix('0::')
     need(cg.endswith('/branconet-apps-review-' + generation + '-20261026.service'), 'owned_user_unit')
@@ -59,7 +63,7 @@ def main():
     need((group / 'memory.max').read_text().strip() == str(1024**3) and (group / 'memory.swap.max').read_text().strip() == '0'
          and (group / 'pids.max').read_text().strip() == '128' and os.getpriority(os.PRIO_PROCESS, 0) == 10, 'resource_bounds')
     need(not Path('/home/brajam/.ssh').exists() and not os.access('/mnt/c/Users', os.R_OK | os.X_OK), 'credentials_hidden')
-    proof = json.loads((OUT / ('public-inputs-r3-receipt.json' if revalidated else 'public-inputs-receipt.json')).read_bytes())
+    proof = json.loads((OUT / ('public-inputs-r5-receipt.json' if fleet else 'public-inputs-r3-receipt.json' if revalidated else 'public-inputs-receipt.json')).read_bytes())
     need(proof['complete'] and sha(TOOL) == TOOL_SHA, 'trusted_tool_and_inputs')
     pins = {TOOL: identity(TOOL)}
     hashes = {TOOL: TOOL_SHA}
@@ -69,8 +73,10 @@ def main():
         need(not revalidated or row.get('readBackSHA256') == [row['sha256']] * 2, 'verified_download_readback')
         pins[p] = identity(p)
         hashes[p] = row['sha256']
-    java = json.loads((OUT / 'java-inputs-r2-receipt.json').read_bytes())
+    java = json.loads((OUT / ('java-inputs-r3-receipt.json' if fleet else 'java-inputs-r2-receipt.json')).read_bytes())
     need(java['complete'], 'explicit_java_identity_index')
+    if fleet:
+        need(datetime.datetime.now(datetime.timezone.utc) < datetime.datetime.fromisoformat(java['javaIdentificationDB']['NextUpdate'].replace('Z', '+00:00')), 'current_java_index')
     for row in java['files'].values():
         p = Path(row['path'])
         need(p.resolve() == p and p.stat().st_size == row['bytes'] and sha(p) == row['sha256'], 'complete_java_identity_index_digest')
@@ -78,8 +84,32 @@ def main():
         hashes[p] = row['sha256']
     updated = datetime.datetime.fromisoformat(proof['vulnerabilityDB']['UpdatedAt'].replace('Z', '+00:00'))
     need(0 <= (datetime.datetime.now(datetime.timezone.utc) - updated).total_seconds() <= 86400, 'fresh_database')
-    kev = {r['cveID'] for r in json.loads((OUT / ('cisa-kev-r3.json' if revalidated else 'cisa-kev.json')).read_bytes())['vulnerabilities']}
-    if generation == 'owned-jtmb-current-r3':
+    kev_path = OUT / ('cisa-kev-r5.json' if fleet else 'cisa-kev-r3.json' if revalidated else 'cisa-kev.json')
+    if fleet:
+        need(sha(kev_path) == proof['cisa']['sha256'], 'pinned_cisa_catalog')
+        pins[kev_path] = identity(kev_path)
+        hashes[kev_path] = proof['cisa']['sha256']
+    kev = {r['cveID'] for r in json.loads(kev_path.read_bytes())['vulnerabilities']}
+    if fleet:
+        candidate_path = OUT / ('vendor-r5-scan-candidates.json' if vendor else 'fleet-r5-candidates.json')
+        candidate_hash = '813b6922b762af1adaebccf282ed083cd91828ad7c8ce6d2740ded8c8ff7e460' if vendor else '8ffa19129baa4edeb7ad8978b101f571d78409e56fc19e1d477e6563fadd6db9'
+        need(sha(candidate_path) == candidate_hash, 'finite_current_owner_digest_inventory')
+        inventory = json.loads(candidate_path.read_bytes())
+        need(not inventory['unresolved'] and len(inventory['images']) == (2 if vendor else 66), 'complete_runtime_image_bindings')
+        grouped = {}
+        for row in inventory['images']:
+            if row.get('scanKind') == 'existing-readonly-layout':
+                continue  # BORTUS remains exclusively on its verified local closure.
+            repository, digest = row['reference'].split('@sha256:')
+            repository = repository.rsplit(':', 1)[0] if ':' in repository.rsplit('/', 1)[-1] else repository
+            reference = repository + '@sha256:' + digest
+            need(len(digest) == 64 and set(digest) <= set('0123456789abcdef'), 'exact_runtime_digest')
+            grouped.setdefault(reference, {'reference': reference, 'owners': []})['owners'].extend(row['owners'])
+        candidates = list(grouped.values())
+        need(len(candidates) == (2 if vendor else 64), 'finite_remote_runtime_targets')
+        pins[candidate_path] = identity(candidate_path)
+        hashes[candidate_path] = sha(candidate_path)
+    elif generation == 'owned-jtmb-current-r3':
         candidates = json.loads((OUT / 'owned-jtmb-current-candidates.json').read_bytes())['images']
         need([r['reference'] for r in candidates] == ['docker.io/jtmb92/jtmb-dev:git-5989a1491415532244ef9c67635e7c72437387ab@sha256:ac5cdc8d7e1bb7d6a5bcea08d4e379ea63f2ec1e7ae93a267258a9c97593d830'], 'finite_owned_source_site_target')
     elif generation == 'owned-qbit-current-r3':
@@ -127,7 +157,10 @@ def main():
         if revalidated:
             candidates = candidates[:1]
     receipts = []
+    whole_started = time.monotonic()
     for n, image in enumerate(candidates):
+        if fleet and time.monotonic() - whole_started > 3500:
+            break
         path = OUT / ('apps-' + generation + '-' + str(n))
         need(not path.exists(), 'immutable_scan_attempt')
         path.mkdir(mode=0o700)
@@ -137,18 +170,21 @@ def main():
              'toolSHA256': TOOL_SHA, 'databaseUpdatedAt': proof['vulnerabilityDB']['UpdatedAt'],
              'databaseManifestDigest': proof['databaseManifestDigest'], 'suppressionUsed': False, 'containerCreated': False}
         r['javaIdentificationIndex'] = {'manifestDigest': java['databaseManifestDigest'], 'metadata': java['javaIdentificationDB']}
+        if fleet:
+            r['runtimeOwners'] = image['owners']
+            r['inventoryUTC'] = inventory['inventoryUTC']
         child = None
         try:
             fs = os.statvfs(OUT)
             need(fs.f_bavail * fs.f_frsize >= 17 * 1024**3, 'native_capacity_floor')
             output = path / 'results.json'
             cmd = [str(TOOL), 'image', '--image-src', 'remote', '--platform', 'linux/amd64',
-                   '--config', str(OUT / 'empty-config.yaml'), '--cache-dir', str(OUT / 'cache'), '--scanners', 'vuln',
+                   '--config', str(OUT / 'empty-config.yaml'), '--cache-dir', str(runtime / 'cache'), '--scanners', 'vuln',
                    '--offline-scan', '--skip-db-update', '--skip-java-db-update', '--ignorefile', str(OUT / 'no-ignore'),
                    '--timeout', '7m', '--parallel', '2', '--quiet', '--no-progress', '--list-all-pkgs',
                    '--format', 'template', '--template', '@' + str(OUT / 'results.tpl'), '--output', str(output), image['reference']]
-            env = {'PATH': '/usr/bin:/bin', 'HOME': str(OUT / 'home'), 'DOCKER_CONFIG': str(OUT / 'docker-config'),
-                   'TMPDIR': str(OUT / 'tmp'), 'TMP': str(OUT / 'tmp'), 'TEMP': str(OUT / 'tmp'), 'GOMAXPROCS': '2',
+            env = {'PATH': '/usr/bin:/bin', 'HOME': str(runtime / 'home'), 'DOCKER_CONFIG': str(OUT / 'docker-config'),
+                   'TMPDIR': str(runtime / 'tmp'), 'TMP': str(runtime / 'tmp'), 'TEMP': str(runtime / 'tmp'), 'GOMAXPROCS': '2',
                    'GOMEMLIMIT': '512MiB', 'TRIVY_SKIP_VERSION_CHECK': 'true', 'LANG': 'C', 'LC_ALL': 'C'}
             r.update(state='scanning', command=cmd)
             save(receipt, r)
@@ -161,6 +197,19 @@ def main():
                     need(fs.f_bavail * fs.f_frsize >= 15 * 1024**3, 'native_retained_floor')
                     need(not output.exists() or output.stat().st_size <= 64 * 1024**2, 'bounded_results')
                     need((path / 'scanner.stderr').stat().st_size <= 16 * 1024**2, 'bounded_diagnostics')
+                    if fleet:
+                        allocated = 0
+                        for scratch in [runtime / 'tmp', runtime / 'home', runtime / 'cache/fanal']:
+                            for current, directories, files in os.walk(scratch, followlinks=False):
+                                for name in [*directories, *files]:
+                                    p = Path(current) / name
+                                    try:
+                                        s = p.lstat()
+                                    except FileNotFoundError:
+                                        continue
+                                    need(not stat.S_ISLNK(s.st_mode) and s.st_uid == 1000, 'owned_analysis_member')
+                                    allocated += s.st_blocks * 512
+                        need(allocated <= 2 * 1024**3, 'bounded_fresh_analysis')
                     time.sleep(2)
             need(child.returncode == 0 and 0 < output.stat().st_size <= 64 * 1024**2, 'complete_successful_scan')
             results = json.loads(output.read_bytes())
@@ -188,10 +237,12 @@ def main():
             save(receipt, r)
             receipts.append(str(receipt))
             print(json.dumps({k: v for k, v in r.items() if k != 'command'}), flush=True)
-        if not r['scanComplete']:
+        if not r['scanComplete'] and not fleet:
             return 1
-    save(OUT / ('apps-scan-summary-' + generation + '.json'), {'receipts': receipts, 'allComplete': True, 'productionChanged': False})
-    return 0
+    complete = len(receipts) == len(candidates) and all(json.loads(Path(p).read_bytes())['scanComplete'] for p in receipts)
+    save(OUT / ('apps-scan-summary-' + generation + '.json'), {'receipts': receipts, 'allComplete': complete,
+         'targetCount': len(candidates), 'attempted': len(receipts), 'pending': candidates[len(receipts):], 'productionChanged': False})
+    return 0 if complete else 1
 
 
 if __name__ == '__main__':

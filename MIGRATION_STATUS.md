@@ -1,5 +1,13 @@
 # Migration and maintenance status
 
+**October 28 upstream refresh:** all 65 current image digests have fresh public
+security reports. Two compatible official updates are being staged: MySQL 8.4
+and YTPTube 2.7.6. All hosts have the fixed Brotli library; worker2 was fixed by
+its native updater. Another 4,732,964,864 allocated node Linux cache bytes were
+observed absent with original compressed images/data preserved. Original API
+failures remain recorded, without retries. Deployments, final recovery/browser
+acceptance and cleanup are still required. [Exact checkpoint](docs/UPSTREAM-MAINTENANCE-CHECKPOINT-20261028.md).
+
 **October 28 Pi-hole and Ingenium accepted:** both original apps reattached on three current native runtimes with original data/images/templates/bindings and two actual healthy RW replicas. Pi-hole aliases and both normal HTTPS routes pass; the exact original publisher DNS config is restored. Removed 355,721,216 allocated controller Linux bytes. Only held BORTUS remains on an old runtime. Fresh fleet security review and two concrete upstream update candidates, final media/browser acceptance and cleanup keep the goal active. [Exact execution and cleanup](docs/LONGHORN-REMAINING-RUNTIME-20261028.md).
 
 **October 28 capacity recovered; strict batch accepted:** all 14 original applications and 17 volumes now pass the original verifier. Recovered 3,154,370,560 allocated node Linux bytes with original images/content/data preserved; every node passes the unchanged guard. All 58 claims, 14 NAS bindings and desired controllers survive. Four old-runtime engines and final application/security/browser/cleanup gates remain. [Exact evidence and retained safety-check exception](docs/WORKER2-CAPACITY-RECOVERY-20261028.md).

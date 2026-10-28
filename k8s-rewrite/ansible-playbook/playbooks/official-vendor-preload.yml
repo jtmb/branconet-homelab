@@ -1,0 +1,32 @@
+---
+- name: Finite native official MySQL and YTPTube image prestaging
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  vars:
+    official_vendor_preload_enabled: false
+    official_vendor_preload_mode: observe
+    official_vendor_preload_service: mysql
+    official_vendor_preload_node: all
+  tasks:
+    - name: Explain disabled default
+      ansible.builtin.debug:
+        msg: No action. Explicitly enable the finite controller; observe is read-only and stage must be selected.
+      when: not official_vendor_preload_enabled | bool or ansible_check_mode
+    - name: Validate fixed approved scope
+      ansible.builtin.assert:
+        that:
+          - official_vendor_preload_mode in ['observe', 'stage']
+          - official_vendor_preload_service in ['mysql', 'ytptube']
+          - official_vendor_preload_node in ['master', 'worker2', 'worker1', 'all']
+      when: official_vendor_preload_enabled | bool and not ansible_check_mode
+    - name: Invoke the identical TTY controller without remote Ansible module files
+      ansible.builtin.raw: >-
+        python3 -B {{ (playbook_dir + '/../roles/official_vendor_preload/files/controller.py') | quote }}
+        {{ official_vendor_preload_mode | quote }}
+        --service {{ official_vendor_preload_service | quote }}
+        --node {{ official_vendor_preload_node | quote }}
+      changed_when: official_vendor_preload_mode == 'stage'
+      when: official_vendor_preload_enabled | bool and not ansible_check_mode

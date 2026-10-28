@@ -1,0 +1,34 @@
+---
+- name: Qualify or retire only unused superseded platform and retired web image filesystem caches
+  hosts: masternode:workernode2
+  gather_facts: false
+  become: false
+  serial: 1
+  tasks:
+    - name: Require explicit phase and original node opt-in
+      when: retired_platform_native_unpack_cache_enabled | default(false) | bool and not ansible_check_mode
+      block:
+        - name: Verify bounded node and qualification binding
+          ansible.builtin.assert:
+            that:
+              - inventory_hostname in ['masternode', 'workernode2']
+              - ansible_host == {'masternode':'192.168.0.4','workernode2':'192.168.0.5'}[inventory_hostname]
+              - retired_platform_native_unpack_cache_phase in ['qualify', 'retire']
+              - retired_platform_native_unpack_cache_family | default('platform') in ['platform', 'mysql']
+              - retired_platform_native_unpack_cache_phase != 'retire' or retired_platform_native_unpack_cache_qualification is defined
+        - name: Use the protected per-node native cache controller
+          ansible.builtin.command:
+            argv: >-
+              {{ ['/home/brajam/.local/share/branconet-migration/venv/bin/python3.12', '-B',
+              playbook_dir + '/../roles/retired_native_unpack_cache/files/platform_cache.py', '--node', inventory_hostname,
+              '--family', retired_platform_native_unpack_cache_family | default('platform'),
+              retired_platform_native_unpack_cache_phase]
+              + (['--qualification', retired_platform_native_unpack_cache_qualification] if retired_platform_native_unpack_cache_phase == 'retire' else []) }}
+          delegate_to: localhost
+          no_log: true
+          changed_when: retired_platform_native_unpack_cache_phase == 'retire'
+          environment:
+            PYTHONDONTWRITEBYTECODE: '1'
+            TMPDIR: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+            TMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+            TEMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp

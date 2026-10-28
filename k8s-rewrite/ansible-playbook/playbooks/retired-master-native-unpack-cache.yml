@@ -1,0 +1,30 @@
+---
+- name: Qualify or retire only fixed inactive master image filesystem caches
+  hosts: masternode
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Require explicit bounded phase opt-in
+      when: retired_master_native_unpack_cache_enabled | default(false) | bool and not ansible_check_mode
+      block:
+        - name: Verify original node and qualification binding
+          ansible.builtin.assert:
+            that:
+              - ansible_host == '192.168.0.4'
+              - retired_master_native_unpack_cache_phase in ['qualify', 'retire']
+              - retired_master_native_unpack_cache_phase != 'retire' or retired_master_native_unpack_cache_qualification is defined
+        - name: Use the guarded native cache controller
+          ansible.builtin.command:
+            argv: >-
+              {{ ['/home/brajam/.local/share/branconet-migration/venv/bin/python3.12', '-B',
+              playbook_dir + '/../roles/retired_native_unpack_cache/files/master_retire.py',
+              retired_master_native_unpack_cache_phase]
+              + (['--qualification', retired_master_native_unpack_cache_qualification] if retired_master_native_unpack_cache_phase == 'retire' else []) }}
+          delegate_to: localhost
+          no_log: true
+          changed_when: retired_master_native_unpack_cache_phase == 'retire'
+          environment:
+            PYTHONDONTWRITEBYTECODE: '1'
+            TMPDIR: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+            TMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+            TEMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp

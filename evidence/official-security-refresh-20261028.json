@@ -1,0 +1,42 @@
+{
+  "status": "mysql_deployed_and_current_data_preserved_ytptube_pending",
+  "chartsRevision": "7a296bdf3828e61ae69a9c96c851afa26c8e7e03",
+  "localCI": [
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-charts-publisher/local-charts-publish-16d976416b8f473fb35c92d1a80a5afe/check.json",
+      "bytes": 2031,
+      "sha256": "9945c824a7465c4243d56ca83cdc3f77dfa0cfc25177906f8dc1dd6c07fba43a"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-charts-publisher/local-charts-publish-16d976416b8f473fb35c92d1a80a5afe/prepare.json",
+      "bytes": 90134,
+      "sha256": "bee2f013a3c649c1149bbdd9da89d12e20a856aa2375fa426c83e58452b6ca7b"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/local-charts-publisher/local-charts-publish-16d976416b8f473fb35c92d1a80a5afe/publish.json",
+      "bytes": 1335,
+      "sha256": "d6478ba5e092f98f9e30fb4345633f93de2af7fcc6ea768853e0f852f9263ab6"
+    }
+  ],
+  "before": {
+    "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/upstream-security-refresh-20261028/mysql-before.json",
+    "bytes": 329608,
+    "sha256": "b2579a582c232b3b8ce6faaf215213ec0e270f930fc43a27cf07c7838a95406d"
+  },
+  "after": {
+    "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/upstream-security-refresh-20261028/mysql-after.json",
+    "bytes": 329643,
+    "sha256": "28de4fb78f1facf659f2b428a83fd31bec2b98997161ab61ed281eb82e151b6e"
+  },
+  "unchangedVersion": "8.4.13",
+  "allOriginalRowsPreserved": true,
+  "totalRows": 3983,
+  "newPod": {
+    "name": "ruckus-db-7fbfff87bf-hm2dn",
+    "uid": "4f4c7dea-f136-43b4-bcfb-91958b6e6263",
+    "imageID": "docker.io/library/mysql@sha256:a0225d1ea6631c8bc2385dc4c2faba17bbf1834ecf369e1659a9a382bd8d5dd7",
+    "restartCount": 0
+  },
+  "nativeSecretAndTemplateStoragePreserved": true,
+  "historicalPrestageLimitation": "Master initial pull subset check failed with aggregate-only prior inventory; receipt/source preserved and no repull. Both worker pulls and all fresh image/hash/runtime/budget checks passed."
+}

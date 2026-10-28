@@ -13,6 +13,7 @@ from pathlib import Path
 import signal
 import stat
 import subprocess
+import sys
 import time
 
 ROOT = Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025')
@@ -23,6 +24,8 @@ IMAGE = 'docker.io/library/bortus@' + DIGEST
 TOOL = ROOT / 'local-oci-scan/bin/trivy'
 TOOL_SHA = 'd1dfca6ae10a1ad4540bb94e64f0510077c47008920a9b554986b39dca573d83'
 UNIT = 'branconet-apps-review-bortus-layout-current-r4-20261027.service'
+GENERATION = 'r4'
+RUNTIME = OUT
 
 def need(ok, code):
     if not ok:
@@ -72,7 +75,7 @@ def layout_snapshot():
 def allocated_analysis_bytes():
     total = 0
     count = 0
-    for root in [OUT / 'tmp', OUT / 'home', OUT / 'cache-r4/fanal']:
+    for root in [RUNTIME / 'tmp', RUNTIME / 'home', (RUNTIME / 'cache' if GENERATION == 'r5' else OUT / 'cache-r4') / 'fanal']:
         if not root.exists():
             continue
         for current, directories, files in os.walk(root, followlinks=False):
@@ -89,6 +92,12 @@ def allocated_analysis_bytes():
     return total
 
 def main():
+    global UNIT, GENERATION, RUNTIME
+    need(sys.argv[1:] in [[], ['r5']], 'finite_scan_generation')
+    if sys.argv[1:] == ['r5']:
+        GENERATION = 'r5'
+        UNIT = 'branconet-apps-review-bortus-layout-current-r5-20261028.service'
+        RUNTIME = OUT / 'bortus-r5-runtime'
     os.umask(0o077)
     cg = Path('/proc/self/cgroup').read_text().strip().removeprefix('0::')
     need(cg.endswith('/' + UNIT), 'owned_unit')
@@ -96,7 +105,7 @@ def main():
     need((group / 'memory.max').read_text().strip() == str(1024**3) and (group / 'memory.swap.max').read_text().strip() == '0'
          and (group / 'pids.max').read_text().strip() == '128' and os.getpriority(os.PRIO_PROCESS, 0) == 10, 'resource_limits')
     need(not Path('/home/brajam/.ssh').exists() and not os.access('/mnt/c/Users', os.R_OK | os.X_OK), 'credentials_hidden')
-    target = OUT / 'apps-bortus-layout-current-r4-0'
+    target = OUT / ('apps-bortus-layout-current-' + GENERATION + '-0')
     need(not target.exists(), 'single_use_report')
     target.mkdir(mode=0o700)
     receipt = target / 'receipt.json'
@@ -108,8 +117,8 @@ def main():
     def save():
         receipt.write_text(json.dumps(r, indent=2) + '\n')
     try:
-        proof = json.loads((OUT / 'public-inputs-r4-receipt.json').read_bytes())
-        java = json.loads((OUT / 'java-inputs-r2-receipt.json').read_bytes())
+        proof = json.loads((OUT / ('public-inputs-' + GENERATION + '-receipt.json')).read_bytes())
+        java = json.loads((OUT / ('java-inputs-r3-receipt.json' if GENERATION == 'r5' else 'java-inputs-r2-receipt.json')).read_bytes())
         need(proof['complete'] and java['complete'] and sha(TOOL) == TOOL_SHA, 'pinned_tool_and_inputs')
         updated = datetime.datetime.fromisoformat(proof['vulnerabilityDB']['UpdatedAt'].replace('Z', '+00:00'))
         need(0 <= (datetime.datetime.now(datetime.timezone.utc) - updated).total_seconds() <= 86400, 'fresh_core_feed')
@@ -121,8 +130,9 @@ def main():
                 p = Path(row['path'])
                 need(p.resolve() == p and p.stat().st_size == row['bytes'] and sha(p) == row['sha256'], 'complete_pinned_feed')
                 pins[p] = row['sha256']
-        need(sha(OUT / 'cisa-kev-r4.json') == proof['cisa']['sha256'], 'pinned_cisa_catalog')
-        pins[OUT / 'cisa-kev-r4.json'] = proof['cisa']['sha256']
+        kev_path = OUT / ('cisa-kev-' + GENERATION + '.json')
+        need(sha(kev_path) == proof['cisa']['sha256'], 'pinned_cisa_catalog')
+        pins[kev_path] = proof['cisa']['sha256']
         need((OUT / 'empty-config.yaml').read_bytes() == b'{}\n' and (OUT / 'no-ignore').read_bytes() == b''
              and (OUT / 'results.tpl').read_bytes() == b'{{ toJson . }}\n', 'unchanged_empty_controls')
         identities = {p: identity(p) for p in pins}
@@ -131,15 +141,15 @@ def main():
                  databaseUpdatedAt=proof['vulnerabilityDB']['UpdatedAt'], javaIdentificationIndex={'manifestDigest': java['databaseManifestDigest'], 'metadata': java['javaIdentificationDB']})
         result = target / 'results.json'
         command = [str(TOOL), 'image', '--platform', 'linux/amd64', '--input', str(LAYOUT) + '@' + DIGEST,
-                   '--config', str(OUT / 'empty-config.yaml'), '--cache-dir', str(OUT / 'cache-r4'), '--scanners', 'vuln',
+                   '--config', str(OUT / 'empty-config.yaml'), '--cache-dir', str(RUNTIME / 'cache' if GENERATION == 'r5' else OUT / 'cache-r4'), '--scanners', 'vuln',
                    '--offline-scan', '--skip-db-update', '--skip-java-db-update', '--ignorefile', str(OUT / 'no-ignore'),
                    '--timeout', '7m', '--parallel', '2', '--quiet', '--no-progress', '--list-all-pkgs', '--format', 'template',
                    '--template', '@' + str(OUT / 'results.tpl'), '--output', str(result)]
         r.update(command=command, state='scanning')
         save()
-        env = {'PATH': '/usr/bin:/bin', 'LANG': 'C', 'LC_ALL': 'C', 'HOME': str(OUT / 'home'),
-               'DOCKER_CONFIG': str(OUT / 'docker-config'), 'TMPDIR': str(OUT / 'tmp'), 'TMP': str(OUT / 'tmp'),
-               'TEMP': str(OUT / 'tmp'), 'GOMAXPROCS': '2', 'GOMEMLIMIT': '512MiB', 'TRIVY_SKIP_VERSION_CHECK': 'true'}
+        env = {'PATH': '/usr/bin:/bin', 'LANG': 'C', 'LC_ALL': 'C', 'HOME': str(RUNTIME / 'home'),
+               'DOCKER_CONFIG': str(OUT / 'docker-config'), 'TMPDIR': str(RUNTIME / 'tmp'), 'TMP': str(RUNTIME / 'tmp'),
+               'TEMP': str(RUNTIME / 'tmp'), 'GOMAXPROCS': '2', 'GOMEMLIMIT': '512MiB', 'TRIVY_SKIP_VERSION_CHECK': 'true'}
         with (target / 'scanner.stderr').open('xb') as errors:
             child = subprocess.Popen(command, env=env, cwd=OUT, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=errors, start_new_session=True)
             start = time.monotonic()
@@ -154,7 +164,7 @@ def main():
         data = json.loads(result.read_bytes())
         need(isinstance(data, list) and data and all(isinstance(x, dict) for x in data), 'results_only_shape')
         need(layout_snapshot() == before and all(identity(p) == identities[p] and sha(p) == digest for p, digest in pins.items()), 'complete_immutable_inputs_after_scan')
-        kev = {x['cveID'] for x in json.loads((OUT / 'cisa-kev-r4.json').read_bytes())['vulnerabilities']}
+        kev = {x['cveID'] for x in json.loads(kev_path.read_bytes())['vulnerabilities']}
         rows = [v for x in data for v in x.get('Vulnerabilities') or []]
         r.update(scanComplete=True, state='completed', scannerExitCode=0, resultsSHA256=sha(result), inputHashesReverifiedAfterScan=True,
                  severityCounts=dict(collections.Counter(v['Severity'] for v in rows)), knownExploitedCVEs=sorted({v['VulnerabilityID'] for v in rows if v['VulnerabilityID'] in kev}),
