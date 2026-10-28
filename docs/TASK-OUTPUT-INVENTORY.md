@@ -1,5 +1,26 @@
 # Maintenance output ownership and reconciliation
 
+## Runtime canary publisher reconciliation - October28
+
+Removed533,581,824allocated Linux bytes /2,418paths from exact successful stages
+`3f25d38d001e4779aa7a522ceef8e287`, `6e56a50679514827a68d99cd1b2f8de0` and
+`9b1c63898f184df1b4ededf50fb98bdd`, after source/Git/tool/terminal-receipt checks,
+complete Linux reference exclusion and2,418exclusive native Windows handles.
+The exact per-path ledger lives under the same original F-backed root at
+`platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-64d390d67a4d7082/receipt.json`.
+Fifteen source/validation/publication records, original reachable Git blobs and
+pinned original tools survive. No failed/unselected stage was deleted.
+
+Retained required source: `charts-longhorn-maintenance-20261028` in that same
+F root, branch `codex/longhorn-runtime-maintenance-20261028`, for the remaining
+workload runtime cycles. Minimal original failures/source/identity/result
+metadata stays under `platform-upstream-review-20261027/longhorn-runtime-retirement-20261028`.
+The three `/etc/multipath/conf.d/90-branconet-longhorn.conf` node files are
+required persistent runtime configuration; their standard parent directory is
+also retained. Original global config hashes and runtime/boot identities remain.
+All earlier preserved exceptions remain; no Windows/VHDX recovery is claimed.
+[Execution, exact consumers and measured Windows free space](LONGHORN-RUNTIME-RETIREMENT-20261028.md).
+
 ## Production Longhorn staging and final checkpoint - October 28
 
 All outputs reuse the original F-backed root, filesystem UUID

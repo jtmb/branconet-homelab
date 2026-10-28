@@ -1,5 +1,16 @@
 # Migration and maintenance status
 
+**October28 runtime canary accepted:** HTTP Echo is healthy on the new instance
+manager after real Flux detach/reattach, with original data/image/template and
+two actual RW replicas preserved. A targeted Ansible multipath guard repaired
+its mount failure and now protects all three nodes without service restart.
+The failed14,100-second readiness wait remains historical evidence. New validated
+chart0.1.1 restored Ready release/Kustomization state at
+`b5286ec8bf287ca4c248356ee59e860fccb43749`. All58claims,14NASbindings and three
+Ready nodes survive; no desired Deployment/DaemonSet is unavailable. Removed
+533,581,824Linux publisher scratch bytes, retaining original source and failures.
+[Exact proof and remaining runtime/security/browser gates](docs/LONGHORN-RUNTIME-RETIREMENT-20261028.md).
+
 **October 28, 01:56 UTC:** all 43 initialized V1 volume engines and the manager
 are upgraded to v1.13.0. Every original volume/claim/NAS identity survives, with
 28 healthy attached volumes/two actual RW replicas and 15 retained initialized

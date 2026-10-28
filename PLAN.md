@@ -1,5 +1,17 @@
 # Cluster maintenance and application migration plan
 
+**October28 runtime canary accepted:** HTTP Echo completed a Flux-driven detach/
+reattach onto the v1.13.0 instance manager, retaining its data identities, image,
+template and two healthy RW replicas. Its real mount failure exposed multipath
+capture; a targeted persistent Ansible guard is now installed on all three nodes
+without service restarts or changes to original configuration. The earlier
+14,100-second readiness wait/Helm timeout remain recorded. Chart0.1.1 cleared the
+failure through local validation and Flux, now Ready at `b5286ec8bf287ca4c248356ee59e860fccb43749`.
+The unused empty destination's future engine metadata is upgraded without data
+initialization; Longhorn removed the unreferenced old EngineImage normally.
+Removed533,581,824Linux publisher scratch bytes. [Exact execution, cleanup and remaining work](docs/LONGHORN-RUNTIME-RETIREMENT-20261028.md).
+Other old instance-manager workload cycles and final fleet/security/IAB remain.
+
 **October 28, 01:56 UTC:** manager and all 43 initialized V1 engines are now
 v1.13.0. All 28 attached volumes have two healthy actual RW replicas, all 15
 retained initialized datasets stayed detached, and every original claim/volume/

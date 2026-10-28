@@ -69,6 +69,18 @@ Do not execute live operations using example/placeholder identities or hashes.
 
 ## Included entrypoints
 
+`unused-retired-volume-engine.yml` performs only the fixed uninitialized
+destination's future engine update, with fresh physical absence checks and no
+attachment/data initialization. `longhorn-runtime-canary.yml` provides the
+first source-controlled stop/detach/resume/verify sequence through existing
+private local validation and Flux. `longhorn-multipath-guard.yml` inspects or
+applies a targeted IET/VIRTUAL-DISK exclusion only after proving the devices
+belong to Longhorn and every released multipath map is unused. It preserves
+preexisting configuration, running services and keys. Both node and phase are
+explicit; live mutations default off. Protected TTY input stays in RAM/SSH
+stdin. No packages, replacement images or global Git configuration are added.
+See [actual execution and limitations](../../docs/LONGHORN-RUNTIME-RETIREMENT-20261028.md).
+
 October28 Longhorn maintenance adds opt-in `longhorn-manager-upgrade.yml` and
 `longhorn-engine-upgrade.yml`. These exact guarded operations preserve the
 existing kubectl field owner, prepared official digest pins, storage/replica

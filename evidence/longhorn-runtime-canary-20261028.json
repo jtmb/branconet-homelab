@@ -1,0 +1,110 @@
+{
+  "UTC": "2026-10-28T06:28:59.888592+00:00",
+  "canary": {
+    "status": "same_data_and_application_on_new_runtime",
+    "volumeUID": "31b6dec3-db41-4bea-b16c-3aec3e65be36",
+    "deploymentUID": "77539818-3671-450c-ae58-154a63a41493",
+    "claimUID": "9edde4e3-5a0c-4c0c-b317-47b045ee199e",
+    "newMounts": [
+      {
+        "namespace": "http-echo",
+        "pod": "http-echo-7578d76d8-8wlhq",
+        "podUID": "c1c81402-bd04-48b1-9fa0-05fc2b26241d",
+        "container": "http-echo",
+        "path": "/data",
+        "imageID": "docker.io/hashicorp/http-echo@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186",
+        "restartCount": 0
+      }
+    ],
+    "instanceManager": "instance-manager-a61288f639b7c54044d1fe323f7bfe50",
+    "instanceManagerImage": "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3",
+    "originalDataAndTemplatePreserved": true,
+    "mountedDataReadPassed": true,
+    "twoActualRWReplicas": true,
+    "sourceSHA": "35e80a4d06e3a3b4a002aaa0fd1859ebd16a1b68",
+    "fullGoalComplete": false
+  },
+  "claimsBound": 58,
+  "NASBindingsPreserved": 14,
+  "unavailableDesiredControllers": [],
+  "threeReadyNodes": true,
+  "chartsMainValidatedAndFlux": "b5286ec8bf287ca4c248356ee59e860fccb43749",
+  "releaseAndKustomizationReady": true,
+  "multipathPolicies": [
+    {
+      "node": "masternode",
+      "configurationPath": "/etc/multipath/conf.d/90-branconet-longhorn.conf",
+      "configurationSHA256": "dc8177eedba6969b72d47a74ce4fd6f00e639e4517747a1d993e2af5f5d6f8ff",
+      "originalConfigurationHashes": {
+        "/etc/multipath.conf": "fa2defca86d7b96a73344f4cdcf42162c5761f12d661677f2fed33ece607e570"
+      },
+      "runtimePIDPreserved": "1003",
+      "multipathPIDPreserved": "514",
+      "bootIDPreserved": "20e53d08-478c-4861-a59b-657d88f30c3b",
+      "completedReceipts": [
+        {
+          "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/multipath-masternode-apply-ab4ddff7b6914a37a105dc92f618ded8.json",
+          "sha256": "9a6aa7173cbc63469ee59f8c9644a28fa534556635a4ff017a33b3bf76aa5569",
+          "configurationCreated": true,
+          "mapsReleased": []
+        }
+      ]
+    },
+    {
+      "node": "workernode2",
+      "configurationPath": "/etc/multipath/conf.d/90-branconet-longhorn.conf",
+      "configurationSHA256": "dc8177eedba6969b72d47a74ce4fd6f00e639e4517747a1d993e2af5f5d6f8ff",
+      "originalConfigurationHashes": {
+        "/etc/multipath.conf": "fa2defca86d7b96a73344f4cdcf42162c5761f12d661677f2fed33ece607e570"
+      },
+      "runtimePIDPreserved": "892",
+      "multipathPIDPreserved": "504",
+      "bootIDPreserved": "06f54b79-e1a3-4b95-b6a9-4d684b528c5f",
+      "completedReceipts": [
+        {
+          "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/multipath-workernode2-apply-a5397b28adda46378cc8996fcc6a72a9.json",
+          "sha256": "6bf7cf025c68825ab32a6b0cdf57d84841e923821cf6c9bb84180e59261ddf8b",
+          "configurationCreated": true,
+          "mapsReleased": [
+            {
+              "name": "mpatha",
+              "method": "daemon_cleanup_after_reconfigure"
+            }
+          ]
+        },
+        {
+          "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/multipath-workernode2-apply-02a4f7e657fb4ceea10e9294650fd0a0.json",
+          "sha256": "0afe3e028894741abefee795e4953e4336cfd4bdff9e0ce087f59b924ccb65b3",
+          "configurationCreated": false,
+          "mapsReleased": []
+        }
+      ]
+    },
+    {
+      "node": "workernode1",
+      "configurationPath": "/etc/multipath/conf.d/90-branconet-longhorn.conf",
+      "configurationSHA256": "dc8177eedba6969b72d47a74ce4fd6f00e639e4517747a1d993e2af5f5d6f8ff",
+      "originalConfigurationHashes": {
+        "/etc/multipath.conf": "fa2defca86d7b96a73344f4cdcf42162c5761f12d661677f2fed33ece607e570"
+      },
+      "runtimePIDPreserved": "835",
+      "multipathPIDPreserved": "459",
+      "bootIDPreserved": "256c87fc-5d4a-4625-af59-7fcb97660ff6",
+      "completedReceipts": [
+        {
+          "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/multipath-workernode1-apply-4c9b07b54609488a8e4f376ad0254ba6.json",
+          "sha256": "0f40e8671d9ffbd2c24724a938945fa0a7b2b46e720326ce3b1b9a112c86a5e1",
+          "configurationCreated": true,
+          "mapsReleased": []
+        }
+      ]
+    }
+  ],
+  "publisherCleanup": {
+    "receipt": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-64d390d67a4d7082/receipt.json",
+    "removedAllocatedLinuxBytes": 533581824,
+    "WindowsRecoveryClaimed": false
+  },
+  "remaining": "Other live engines still require controlled cycles to release old instance managers; final exact-image security and normal IAB remain",
+  "fullGoalComplete": false
+}

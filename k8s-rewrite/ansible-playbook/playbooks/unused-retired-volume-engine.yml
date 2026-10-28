@@ -1,0 +1,7 @@
+---
+- name: Update an uninitialized retained destination without attaching or creating data
+  hosts: masternode
+  gather_facts: false
+  become: false
+  roles:
+    - unused_retired_volume_engine
