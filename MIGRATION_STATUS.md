@@ -1,5 +1,7 @@
 # Migration and maintenance status
 
+**October 28 capacity recovered; strict batch accepted:** all 14 original applications and 17 volumes now pass the original verifier. Recovered 3,154,370,560 allocated node Linux bytes with original images/content/data preserved; every node passes the unchanged guard. All 58 claims, 14 NAS bindings and desired controllers survive. Four old-runtime engines and final application/security/browser/cleanup gates remain. [Exact evidence and retained safety-check exception](docs/WORKER2-CAPACITY-RECOVERY-20261028.md).
+
 **October 28 batch restored; storage gate failed:** all 14 applications are
 available on their original images/templates/bindings; 17 volumes have healthy
 two-RW replicas and mounted-data reads on new runtimes. All 58 claims, 14 NAS

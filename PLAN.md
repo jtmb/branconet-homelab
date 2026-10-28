@@ -1,5 +1,7 @@
 # Cluster maintenance and application migration plan
 
+**October 28 capacity recovered; original batch accepted:** worker2 now passes the unchanged storage floor after 3,154,370,560 allocated node Linux bytes were reclaimed from qualified inactive native filesystem caches and three obsolete validation binaries. All images, original OCI blobs, workload data and 575 other backend IDs survive. The original strict 14-app/17-volume verifier passed; all 58 claims, 14 NAS bindings and three Ready nodes remain intact. Pi-hole two, Ingenium one and held BORTUS one remain on old runtimes; final security/data/browser/cleanup gates keep the full goal active. [Exact recovery, failure history and protected exception](docs/WORKER2-CAPACITY-RECOVERY-20261028.md).
+
 **October 28 application batch restored, not accepted:** 14 original applications
 now use 17 healthy new Longhorn runtimes, with original images/templates/storage
 identities and mounted-data reads preserved. All desired workloads are available,

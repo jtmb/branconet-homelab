@@ -1,5 +1,9 @@
 # Maintenance output ownership and reconciliation
 
+## Worker2 capacity recovery - October 28
+
+Recovered 3,154,370,560 allocated worker2 Linux bytes: 71 qualified inactive native image filesystem-cache paths (3,004,600,320) and three obsolete validation binaries (149,770,240). Exact per-path/byte ledger and all failure/refusal history: [capacity recovery](WORKER2-CAPACITY-RECOVERY-20261028.md). All images, original OCI blobs, containers, leases and user data survive. Retain 42 unique metadata/source/operation/failure/data witnesses, 1,443,587 logical bytes, enumerated in the same F-backed batch `cache-recovery-inventory.json`. No controller bulk payload/dependencies were generated. Removed the inactive zero-byte serialization lock after full Linux and exclusive Windows handle checks. Retain worker2's exact old `.tools` directory (4,096 allocated bytes) after `original_manifest_hash` refusal; no retry. Prior protected safety/original rollback exceptions remain. Linux recovery makes no Windows/VHDX recovery claim. Original strict batch acceptance now passes.
+
 ## Fourteen-application runtime batch and capacity failure - October 28
 
 Same owner, F-backed root and physical filesystem UUID. Ownership/peak/regeneration

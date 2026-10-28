@@ -1,0 +1,28 @@
+---
+- name: Retire only the three qualified inactive worker2 validation binaries
+  hosts: workernode2
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Require explicit opt-in and the original target identity
+      when: retired_worker2_validation_tools_enabled | default(false) | bool and not ansible_check_mode
+      block:
+        - name: Verify original worker and bounded phase
+          ansible.builtin.assert:
+            that:
+              - ansible_host == '192.168.0.5'
+              - retired_worker2_validation_tools_phase in ['inventory', 'retire']
+        - name: Use the TTY protected controller without replaying an existing receipt
+          ansible.builtin.command:
+            argv: >-
+              {{ ['/home/brajam/.local/share/branconet-migration/venv/bin/python3.12', '-B',
+              playbook_dir + '/../roles/retired_worker2_validation_tools/files/controller.py']
+              + (['--apply'] if retired_worker2_validation_tools_phase == 'retire' else []) }}
+          delegate_to: localhost
+          no_log: true
+          changed_when: retired_worker2_validation_tools_phase == 'retire'
+          environment:
+            PYTHONDONTWRITEBYTECODE: '1'
+            TMPDIR: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+            TMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+            TEMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp

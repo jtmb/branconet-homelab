@@ -1,5 +1,7 @@
 # Application batch restored; capacity gate remains failed
 
+**Subsequent recovery accepted:** the original unchanged strict verifier passed at 08:39 UTC after verified cache/tool retirement restored node capacity. [Exact recovery, original failure preservation and remaining gates](WORKER2-CAPACITY-RECOVERY-20261028.md). The account below records the original failed checkpoint; it is retained as history, not the current acceptance result.
+
 All 14 applications are available again on their original images, templates and
 storage bindings. All 17 volumes have two healthy actual RW replicas and run
 their upgraded engines on the pinned v1.13.0 instance manager. Their original
