@@ -1,5 +1,16 @@
 # Migration and maintenance status
 
+**October28 static websites accepted:** APLB, Lucinda, Minecraft website and
+Santos now use the new Longhorn instance manager after validated Flux stop/
+detach/restore cycles. All file hashes, images, templates and storage identities
+survive; all four default-trust LAN HTTPS routes return200. One missing Minecraft
+website DNS alias was appended through native Pi-hole configuration and its
+Ansible entrypoint, preserving every prior alias and the DNS Pod. Removed another
+355,721,216Linux publisher scratch bytes with1,612exclusive Windows handles and
+full Linux reference checks. All58claims/14NASbindings/three Ready nodes survive;
+23live engines on old instance managers plus final security/browser/cleanup gates
+remain open. [Exact acceptance](docs/LONGHORN-STATIC-RUNTIME-20261028.md).
+
 **October28 runtime canary accepted:** HTTP Echo is healthy on the new instance
 manager after real Flux detach/reattach, with original data/image/template and
 two actual RW replicas preserved. A targeted Ansible multipath guard repaired

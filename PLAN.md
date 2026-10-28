@@ -1,5 +1,16 @@
 # Cluster maintenance and application migration plan
 
+**October28 static website cycles accepted:** APLB, Lucinda, Minecraft website
+and Santos now use the pinned v1.13.0 instance manager after real validated Flux
+stop/detach/restore. Original content hashes, images, templates and storage
+identities passed, with two actual healthy RW replicas each and zero new Pod
+restarts. All four normal Windows HTTPS routes return200 after appending one
+missing native Pi-hole website CNAME, preserving every existing alias. The fix
+and controlled cycle have opt-in Ansible entrypoints. Removed355,721,216Linux
+publisher scratch bytes after complete Linux/Windows checks. All58claims,
+14NASbindings and three Ready nodes survive;23engines still use old instance
+managers. [Acceptance, cleanup and remaining goal gates](docs/LONGHORN-STATIC-RUNTIME-20261028.md).
+
 **October28 runtime canary accepted:** HTTP Echo completed a Flux-driven detach/
 reattach onto the v1.13.0 instance manager, retaining its data identities, image,
 template and two healthy RW replicas. Its real mount failure exposed multipath

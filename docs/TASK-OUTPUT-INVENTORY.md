@@ -1,5 +1,25 @@
 # Maintenance output ownership and reconciliation
 
+## Static website runtime cohort - October28
+
+Same owner, original F-backed root and filesystem UUID; ownership/peak/regeneration
+were recorded before execution. [Exact source/evidence ledger](../evidence/longhorn-static-runtime-20261028.json).
+Removed355,721,216allocated Linux bytes /1,612paths from consumed terminal stages
+`1ce948fe1e9443e5968e6f5befc179b9` and `623dddd55b9449cabf50ede9ae7a51f9`.
+The original Git blobs/tools and ten minimal protected reports/locks survive;
+full Linux reference exclusion and1,612exclusive Windows handles passed. Exact
+paths/bytes are under
+`platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-d1be6b9e1e35c57c/receipt.json`.
+Retain16unique current metadata/source/failure/acceptance files,435,939logical
+bytes excluding index, under `longhorn-static-runtime-20261028`, enumerated in
+its checkpoint inventory. No raw payload, dependency/build cache or nonpublisher
+scratch was generated. Existing tracked charts source and operational recovery
+tools still serve the remaining stateful runtime cycles. The single appended
+Pi-hole CNAME is required production configuration in its original PVC; no
+native Secret changed. Earlier protected failure/ownership/handle exceptions
+remain. Independent Windows free observations: C58,135,957,504 and
+F193,663,725,568bytes; no Windows recovery is inferred from Linux removal.
+
 ## Runtime canary publisher reconciliation - October28
 
 Removed533,581,824allocated Linux bytes /2,418paths from exact successful stages

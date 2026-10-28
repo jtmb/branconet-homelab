@@ -1,0 +1,276 @@
+{
+  "observedAt": "2026-10-28T07:02:52.142018+00:00",
+  "runtimeAcceptance": {
+    "status": "four_original_sites_on_new_runtime_with_identical_file_hashes",
+    "sites": [
+      {
+        "name": "aplb",
+        "volume": "pvc-24b2b0a8-e215-40b2-abe0-7617a7d8ff82",
+        "volumeUID": "19ae3450-e26e-4ee2-b050-221c1004efb6",
+        "claimUID": "24b2b0a8-e215-40b2-abe0-7617a7d8ff82",
+        "podUID": "68b3087c-9ede-440d-bc3a-0ac62f672439",
+        "imageID": "docker.io/library/nginx@sha256:dede8895648b461178c3bc604f7eed4423efe5220b2c4d839f5eb3d34ac3f8f7",
+        "instanceManager": "instance-manager-a61288f639b7c54044d1fe323f7bfe50",
+        "instanceManagerImage": "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3",
+        "contents": {
+          "manifestSHA256": "7bf97c34531e87e9ecda35c4bcc534fa3ec3c76f70554eb3295ad5d2260bfa9c",
+          "manifestLines": 172,
+          "manifestBytes": 16447
+        },
+        "twoActualRWReplicas": true,
+        "originalDataAndTemplatePreserved": true
+      },
+      {
+        "name": "lucinda-art-gallery",
+        "volume": "pvc-bc234dae-ef84-4e43-aae0-a63d8e01d202",
+        "volumeUID": "86d67556-e7aa-4b5b-9a7d-5058a5e040f9",
+        "claimUID": "bc234dae-ef84-4e43-aae0-a63d8e01d202",
+        "podUID": "47e5cf9f-a965-4a74-9c01-b38c31e93c29",
+        "imageID": "docker.io/library/nginx@sha256:dede8895648b461178c3bc604f7eed4423efe5220b2c4d839f5eb3d34ac3f8f7",
+        "instanceManager": "instance-manager-a61288f639b7c54044d1fe323f7bfe50",
+        "instanceManagerImage": "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3",
+        "contents": {
+          "manifestSHA256": "e6a3deff36a0b74ba235d654eeb9633d6f31b5a821cc9eec7931c38476887875",
+          "manifestLines": 198,
+          "manifestBytes": 18443
+        },
+        "twoActualRWReplicas": true,
+        "originalDataAndTemplatePreserved": true
+      },
+      {
+        "name": "minecraft-website",
+        "volume": "pvc-418b136b-9358-4795-acf3-552d1839a21e",
+        "volumeUID": "e6b69b96-f4fb-4f30-a9d5-1ce07b203c03",
+        "claimUID": "418b136b-9358-4795-acf3-552d1839a21e",
+        "podUID": "aac46178-1abc-415c-b911-b115cdb6368e",
+        "imageID": "docker.io/library/nginx@sha256:dede8895648b461178c3bc604f7eed4423efe5220b2c4d839f5eb3d34ac3f8f7",
+        "instanceManager": "instance-manager-a61288f639b7c54044d1fe323f7bfe50",
+        "instanceManagerImage": "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3",
+        "contents": {
+          "manifestSHA256": "79a97a499422375e74809f6574647033f566f0d8e8a1fa086ba235ea2579696f",
+          "manifestLines": 61,
+          "manifestBytes": 5509
+        },
+        "twoActualRWReplicas": true,
+        "originalDataAndTemplatePreserved": true
+      },
+      {
+        "name": "santos-web",
+        "volume": "pvc-da43b501-44d0-4f09-8e58-a1e0d643ec2a",
+        "volumeUID": "b02a99fa-fcc4-4c5e-92a6-23fdb491acb7",
+        "claimUID": "da43b501-44d0-4f09-8e58-a1e0d643ec2a",
+        "podUID": "6e7faf45-66bc-4095-9be5-364afe1a84e7",
+        "imageID": "docker.io/library/nginx@sha256:dede8895648b461178c3bc604f7eed4423efe5220b2c4d839f5eb3d34ac3f8f7",
+        "instanceManager": "instance-manager-a61288f639b7c54044d1fe323f7bfe50",
+        "instanceManagerImage": "docker.io/longhornio/longhorn-instance-manager:v1.13.0@sha256:fc9e1c15e81988b04c146866ce7010b6df3a70f88302809bf53e19b27d1658a3",
+        "contents": {
+          "manifestSHA256": "e11c2377147ee8ce4192fef5fac64b9d5d0af9f8343bf1ccb7e8204bd3075ab2",
+          "manifestLines": 49,
+          "manifestBytes": 4496
+        },
+        "twoActualRWReplicas": true,
+        "originalDataAndTemplatePreserved": true
+      }
+    ],
+    "sourceSHA": "70fcccc5c452222bb64f203dc5a225c94bdf0bc5",
+    "observedAt": "2026-10-28T06:55:36.549252+00:00",
+    "fullGoalComplete": false
+  },
+  "fleetAcceptance": {
+    "observedAt": "2026-10-28T06:56:12.074641+00:00",
+    "claimsBound": 58,
+    "NASBindingsPreserved": 14,
+    "threeReadyNodes": true,
+    "unavailableDesiredControllers": [],
+    "chartsValidatedAndFlux": "70fcccc5c452222bb64f203dc5a225c94bdf0bc5",
+    "oldInstanceManagers": [
+      {
+        "name": "instance-manager-0f44e66d715a28714766cec73f9ec067",
+        "activeEngines": 1
+      },
+      {
+        "name": "instance-manager-29805aeceef9c272b45a4b8ceb79af0e",
+        "activeEngines": 9
+      },
+      {
+        "name": "instance-manager-bca6a3d4fbbc05aa77ad5833d42791e1",
+        "activeEngines": 13
+      }
+    ],
+    "sourceSHA256": "859ad367f74e10430b6c735b7e0bfac94d4a6abfdc9eb10103d8ddefd61084b0"
+  },
+  "HTTPSRoutes": {
+    "observedAt": "2026-10-28T06:59:59.290421+00:00",
+    "routes": [
+      {
+        "site": "aplb",
+        "URL": "https://aplb.branconet.lan/",
+        "finalURL": "https://aplb.branconet.lan/",
+        "HTTPStatus": 200,
+        "bodyBytes": 17196,
+        "bodySHA256": "65c86a867415315eb9ff33377107cb08b627811ebf8a4a92ee01525fe9bdb2a7",
+        "defaultWindowsCertificateTrust": true
+      },
+      {
+        "site": "lucinda-art-gallery",
+        "URL": "https://lucinda.branconet.lan/",
+        "finalURL": "https://lucinda.branconet.lan/",
+        "HTTPStatus": 200,
+        "bodyBytes": 8408,
+        "bodySHA256": "070169fc5a67d9accb231dc627ce4d71ded093866c9162274faeb4c5b0575697",
+        "defaultWindowsCertificateTrust": true
+      },
+      {
+        "site": "minecraft-website",
+        "URL": "https://mc.branconet.lan/",
+        "finalURL": "https://mc.branconet.lan/",
+        "HTTPStatus": 200,
+        "bodyBytes": 1944,
+        "bodySHA256": "797ae9088203268cc7bc2f00b77268278a9b2219028695303650d35906e94245",
+        "defaultWindowsCertificateTrust": true
+      },
+      {
+        "site": "santos-web",
+        "URL": "https://santos.branconet.lan/",
+        "finalURL": "https://santos.branconet.lan/",
+        "HTTPStatus": 200,
+        "bodyBytes": 13269,
+        "bodySHA256": "55744cc8b1449303330b950557bfcf341bbdea3cca41dad58aaebdfc0d6688a5",
+        "defaultWindowsCertificateTrust": true
+      }
+    ],
+    "sourceSHA256": "3599bd40f6213c0f2d1725b26ed592578394c13e626f5abaab3e812454524dc5",
+    "runtimeAcceptanceSHA256": "d0a54ddf0e3c7be44892537bb0ae1db14a96d80ca56352517e957fc6e9fc18be",
+    "browserAcceptance": false,
+    "clusterMutationPerformed": false
+  },
+  "nativeDNSAlias": {
+    "status": "single_website_alias_present_all_original_records_preserved",
+    "observedAt": "2026-10-28T07:00:00.333440+00:00",
+    "sourceSHA256": "62817e42898abb880341bc76f46cd46c0a2291b02b4a52fb76b40ef27f4cc75c",
+    "identity": {
+      "deploymentUID": "a00fc6d2-55f3-4182-baf9-5ffc97544f0b",
+      "podUID": "9c46d1e9-2406-488c-974d-90fa488cbb74",
+      "containerID": "containerd://be24d2b0074b618669acae06840db3ea77a82e6e2a9462ece908cabef30db8ac",
+      "imageID": "docker.io/pihole/pihole@sha256:d34134716fc32038b052a8674c7c6879e0ff21f0e6d8af345166fffa2c27c113",
+      "restartCount": 0
+    },
+    "previousAliasesPreserved": 25,
+    "alias": "mc.branconet.lan,branconet.lan",
+    "clusterResourceMutations": false,
+    "nativeSecretChanges": false
+  },
+  "sourceCommits": {
+    "stop": "936e2aa590c29251bf5a7a6c8d8dec83728bb60c",
+    "restore": "70fcccc5c452222bb64f203dc5a225c94bdf0bc5"
+  },
+  "cleanup": {
+    "status": "completed",
+    "removedAllocatedLinuxBytes": 355721216,
+    "originalGitSourceAndToolsPreserved": true,
+    "protectedFilesUnchanged": 10,
+    "WindowsRecoveryClaimed": false,
+    "retained": [
+      "Each exact stage prepare/check/publish/lock and source/.validation/validation.json",
+      "All unselected/failed stages",
+      "Required active isolated source worktree for remaining runtime maintenance"
+    ]
+  },
+  "exactRemovedPathsAndBytesReceipt": {
+    "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-d1be6b9e1e35c57c/receipt.json",
+    "sha256": "03977fd5a6796838d16484df501dfe57531ad6a40d53c84f7a50fc95b8ac730f",
+    "removedPathCount": 1612
+  },
+  "retainedMetadata": {
+    "inventoryPath": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/checkpoint-inventory.json",
+    "files": 16,
+    "logicalBytes": 435939,
+    "requiredConsumer": "Current content/data/runtime/route/DNS acceptance and original unique failure review"
+  },
+  "retainedExceptions": "Unchanged previously recorded root-owned 12288-byte subtree failed Windows handle permission; incomplete stages and original rollback artifacts remain protected; active charts source and operational recovery tools still have remaining stateful runtime-cycle consumers",
+  "WindowsFreeBytesObservedSeparately": {
+    "C": 58135957504,
+    "F": 193663725568
+  },
+  "controllerAvailableLinuxBytes": 47462621184,
+  "receipts": [
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/ownership.json",
+      "sha256": "3d81172231d9caebc266c7af7287a618a91212de2d3f29d8457adf834e982dc2"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/plan.json",
+      "sha256": "42acad92bdadfd1c8c6f518eb4113b60a39a42e7e2dfe07b7e8dcf8aa0d7476e"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/stop-pushed.json",
+      "sha256": "a2cd233df05c27fc21990caa60186cfe1910756cd6e5cc61ba031e413ba9263a"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/detached.json",
+      "sha256": "43394fa5c3adfc20b7bcb0c9b72d6cab5cb02b3f454be0fea30024e0f42df8b4"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/resume-pushed.json",
+      "sha256": "7f5588ac3c8844ba84a65869bf52d6aecb70696538ff162754c8ea06d98bb847"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/acceptance.json",
+      "sha256": "d0a54ddf0e3c7be44892537bb0ae1db14a96d80ca56352517e957fc6e9fc18be"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/fleet-after.json",
+      "sha256": "0d6590b10914f4ebcb3447ceef7ee50077ffc6bcb9a8c0234ce90f60d5ecbc68"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/fleet-summary.json",
+      "sha256": "cbe6fabe7f5ec68b21da6e1f288c91c53e81cd8b17ce12d9d7e38bbe996796d3"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/website-dns-intent.json",
+      "sha256": "2d58ec766f96c91a7c3e2eec27ecdf4313dc2de2073bcd18d7f9c08a6cf79cf7"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/website-dns-apply.json",
+      "sha256": "e6819ca5cb356e7f4502075b6b401b1ef2d176dc44375c3a7e72a48cc8037416"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/website-dns-verify.json",
+      "sha256": "19d0a431af2a454a275e45ee376e9450f4cf3e55c118c6793343360893fb873f"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/checkpoint-inventory.json",
+      "sha256": "fa188e314274795500fbf24e126d92ba75e8e4797336df628bf2555b4d5ae1fc"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/route-first-source.py",
+      "sha256": "b2dc98d2e487435f8031368c0ecb809b855ae28cec88d5cbcf94d96178b04e5c"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/route-first-failure.json",
+      "sha256": "f3c705fb2389c9ca220697dd9c5f2512842fbc59d69a2e1381c0e08245c06b6b"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-static-runtime-20261028/https-routes-8b6b02f039a14382b294cf7f6efb60a6.json",
+      "sha256": "d772d57a9253dbd87c73a93e052242d6a3efd2dcaf2cd0f0fae661b94dc41c99"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-d1be6b9e1e35c57c/ownership.json",
+      "sha256": "7f358f2a5b3cc8939febdb83116bd83501c1bc9c044e04daa13e22a18383a46a"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-d1be6b9e1e35c57c/plan.json",
+      "sha256": "4cfbdd964f4d8571e3018d45ba615d3285c74813746aaafa295cbde6ded35910"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-d1be6b9e1e35c57c/windows-proof.json",
+      "sha256": "8b461e49e02df1a869730b938f414e89c729e7cc597b130a7dc2a67b5d0ee16e"
+    },
+    {
+      "path": "/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/longhorn-runtime-retirement-20261028/publisher-cleanup-d1be6b9e1e35c57c/receipt.json",
+      "sha256": "03977fd5a6796838d16484df501dfe57531ad6a40d53c84f7a50fc95b8ac730f"
+    }
+  ],
+  "fullGoalComplete": false,
+  "remaining": "23 live engines still hosted by old instance managers, final exact-image/security reconciliation, normal Seerr/YTPTube IAB acceptance and final cleanup; BORTUS app release held under separate owner"
+}
