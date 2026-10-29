@@ -25,7 +25,15 @@ test('D01 real Node resolver redirects only50 legacy callers and leaves two auth
 test('D02 only verified caller paths can request dispatch; source-text assertion is not an importer',()=>{
  assert.throws(()=>installPackagingHooks({root,callers:['tests/current-packaging-source-manifest.test.mjs']}),/Unknown dispatch caller/);assert.equal(packagingDispatch.length,50);assert.equal(dispatchForBatch(root,['tests/current-packaging-source-manifest.test.mjs']).flags.length,0);
 });
-test('D03 actual private plan retains old63 mappings and150file group with two newly discovered tests',()=>{
- const plan=unitTestPlan(root);assert.equal(plan.replacements.length,63);assert.equal(plan.discovered.length,460);assert.equal(plan.selected.length,397);assert.equal(executionFor(plan,['--group','current-packaging']).length,150);assert.equal(new Set(plan.selected).size,plan.selected.length);
+export function assertMaintainedPlan(plan){
+ const ordinary=['tests/scanner-database-update.test.ts','tests/system-report.test.ts'];
+ const discovered=ordinary.filter(path=>plan.discovered.includes(path));
+ assert.ok(discovered.length===0||discovered.length===2,'Complete known ordinary input pair required');
+ assert.deepEqual(plan.selected.filter(path=>ordinary.includes(path)).sort(),discovered,'Ordinary inputs remain selected exactly once');
+ const [discoveredCount,selectedCount]=discovered.length===2?[462,399]:[460,397];
+ assert.equal(plan.replacements.length,63);assert.equal(plan.discovered.length,discoveredCount);assert.equal(plan.selected.length,selectedCount);assert.equal(executionFor(plan,['--group','current-packaging']).length,150);assert.equal(new Set(plan.selected).size,plan.selected.length);
  for(const path of ['tests/current-maintained-packaging-provenance.test.mjs','tests/current-maintained-packaging-dispatch.test.mjs'])assert.ok(plan.selected.includes(path));
+}
+test('D03 actual private or complete public plan retains exact63 mappings and150file group',()=>{
+ assertMaintainedPlan(unitTestPlan(root));
 });
