@@ -1,6 +1,7 @@
+import { copyVerifiedScannerBundle } from "./verify-scanner-bundle.mjs";
 import { createHash } from "node:crypto";
 import { createWriteStream } from "node:fs";
-import { readFile, mkdir, mkdtemp, rm, copyFile, chmod, writeFile, stat } from "node:fs/promises";
+import { readFile, mkdir, mkdtemp, rm, copyFile, writeFile, stat } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
@@ -33,17 +34,14 @@ async function ghcrHeaders() {
   if (typeof data.token !== "string") throw Error("Public registry token unavailable");
   return { Authorization: `Bearer ${data.token}`, Accept: "application/vnd.oci.image.manifest.v1+json" };
 }
-export async function provisionScanner(destination, { databaseOnly = false } = {}) {
+export async function provisionScanner(destination, { databaseOnly = false, binarySource = process.env.BORTUS_SCANNER_BUNDLE } = {}) {
   if (!databaseOnly && (process.platform !== "linux" || process.arch !== "x64")) throw Error("The owned production build supports linux/amd64; database-only qualification is portable");
   const target = resolve(destination); await mkdir(target, { recursive: true });
   const staging = await mkdtemp(join(target, ".provision-"));
   try {
     if (!databaseOnly) {
-      const archive = join(staging, "trivy.tar.gz");
-      await download(pins.linuxAMD64Archive, archive, 150 * 1024 * 1024, "sha256:" + pins.archiveSHA256);
-      execFileSync("tar", ["-xzf", archive, "-C", staging, "trivy", "LICENSE"], { timeout: 30000, maxBuffer: 65536 });
-      await copyFile(join(staging, "trivy"), join(target, "trivy")); await chmod(join(target, "trivy"), 0o555);
-      await copyFile(join(staging, "LICENSE"), join(target, "LICENSE"));
+      await copyVerifiedScannerBundle(staging, pins, binarySource);
+      for (const file of ["trivy", "LICENSE"]) await copyFile(join(staging, file), join(target, file));
     }
     const headers = await ghcrHeaders();
     const response = await request(`https://ghcr.io/v2/${pins.databaseRepository}/manifests/${pins.databaseManifest}`, 65536, headers);
@@ -70,6 +68,16 @@ export async function provisionScanner(destination, { databaseOnly = false } = {
   }
 }
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const args = process.argv.slice(2), databaseOnly = args.includes("--database-only"), output = args.find(arg => arg !== "--database-only") ?? ".scanner";
-  console.log(JSON.stringify(await provisionScanner(output, { databaseOnly })));
+  const args = process.argv.slice(2);
+  let databaseOnly = false, binarySource, output;
+  for (let index = 0; index < args.length; index++) {
+    const argument = args[index];
+    if (argument === "--database-only") databaseOnly = true;
+    else if (argument === "--binary-source") {
+      binarySource = args[++index];
+      if (!binarySource || binarySource.startsWith("--")) throw Error("--binary-source requires an absolute bundle directory");
+    } else if (argument.startsWith("--") || output !== undefined) throw Error("Unknown scanner provisioning argument");
+    else output = argument;
+  }
+  console.log(JSON.stringify(await provisionScanner(output ?? ".scanner", { databaseOnly, binarySource })));
 }
