@@ -29,24 +29,25 @@ function artifactState(root){
  try {const stat=lstatSync(file);return {exists:true,regularFile:stat.isFile()&&!stat.isSymbolicLink(),sha256:stat.isFile()?digest(readFileSync(file)):undefined};}
  catch(error){if(error.code==='ENOENT')return {exists:false};throw error;}
 }
-function runBatch(root,batch,scheduling=[]){
+export async function runBatch(root,batch,scheduling=['--test-concurrency=2']){
  console.log('BORTUS_COMPAT_BATCH '+JSON.stringify(batch));
  const dispatch=dispatchForBatch(root,batch.files);
  const result=spawnSync(process.execPath,[...batch.flags,'--import','tsx',...dispatch.flags,'--test',...scheduling,...batch.files],{cwd:root,env:{...process.env,...dispatch.env},encoding:'utf8',maxBuffer:64*1024*1024});
- if(result.stdout)process.stdout.write(result.stdout);if(result.stderr)process.stderr.write(result.stderr);
+ if(result.stdout)await new Promise((resolve,reject)=>process.stdout.write(result.stdout,error=>error?reject(error):resolve()));
+ if(result.stderr)await new Promise((resolve,reject)=>process.stderr.write(result.stderr,error=>error?reject(error):resolve()));
  if(result.error)throw result.error;assert.equal(result.signal,null,'unit child terminated');
  const totals={};for(const key of ['tests','pass','fail','cancelled','skipped','todo']){
   const found=[...result.stdout.matchAll(new RegExp('^# '+key+' (\\d+)\\s*$','gm'))];assert.equal(found.length,1,'missing/ambiguous TAP total: '+key);totals[key]=Number(found[0][1]);
  }
  return {status:result.status??1,totals,files:batch.files,flags:batch.flags};
 }
-export function main(args=process.argv.slice(2)){
+export async function main(args=process.argv.slice(2)){
  const root=fileURLToPath(new URL('../',import.meta.url)),plan=unitTestPlan(root);
  assert.equal(process.versions.node,'22.23.3');
  if(args[0]==='--plan'){assert.equal(args.length,1);console.log(JSON.stringify({plan,stages:artifactStages(plan.selected)}));return;}
  if(args[0]==='--group'){
   const selected=executionFor(plan,args);let status=0;
-  for(const batch of executionBatches(selected)){const result=runBatch(root,batch,['--test-concurrency=1']);status ||= result.status;}
+  for(const batch of executionBatches(selected)){const result=await runBatch(root,batch,['--test-concurrency=1']);status ||= result.status;}
   process.exitCode=status;return;
  }
  assert.ok(args.length===0||(args.length===1&&['--portable','--remaining'].includes(args[0])),'unknown aggregate arguments');
@@ -56,7 +57,7 @@ export function main(args=process.argv.slice(2)){
  console.log('BORTUS_COMPAT_PLAN '+JSON.stringify({selected:plan.selected.length,stages,runId}));
  if(args[0]!=='--remaining'){
   assert.equal(existsSync(path),false,'preserve previous aggregate proof');assertArtifactState(stages[0],artifactState(root));
-  const portable=runBatch(root,stages[0]);assert.equal(portable.status,0,'portable fixture failed');
+  const portable=await runBatch(root,stages[0]);assert.equal(portable.status,0,'portable fixture failed');
   const proof={schema:1,phase:'portable-passed',...context,portable:portable.totals,startedUTC:new Date().toISOString()};
   validatePortableProof(proof,context);assertArtifactState(stages[0],artifactState(root));writeFileSync(path,JSON.stringify(proof,null,2)+'\n',{flag:'wx'});
   if(args[0]==='--portable')return;
@@ -68,11 +69,11 @@ export function main(args=process.argv.slice(2)){
  proof.phase='remaining-started';writeFileSync(path,JSON.stringify(proof,null,2)+'\n');
  const results=[];let status=0;
  for(const batch of stages.slice(2)){
-  assertArtifactState(batch,artifactState(root));const result=runBatch(root,batch);results.push(result);status ||= result.status;
+  assertArtifactState(batch,artifactState(root));const result=await runBatch(root,batch);results.push(result);status ||= result.status;
  }
  assert.equal(qualificationFingerprint(root,plan),context.sourceFingerprint,'source changed during aggregate execution');
  proof.phase=status?'failed':'complete';proof.remaining=results;proof.finishedUTC=new Date().toISOString();
  proof.totals=Object.fromEntries(Object.keys(proof.portable).map(key=>[key,proof.portable[key]+results.reduce((n,r)=>n+r.totals[key],0)]));
  writeFileSync(path,JSON.stringify(proof,null,2)+'\n');console.log('BORTUS_COMPAT_RESULT '+JSON.stringify({phase:proof.phase,selected:plan.selected.length,totals:proof.totals}));process.exitCode=status;
 }
-if(process.argv[1]&&pathToFileURL(resolve(process.argv[1])).href===import.meta.url)main();
+if(process.argv[1]&&pathToFileURL(resolve(process.argv[1])).href===import.meta.url)await main();

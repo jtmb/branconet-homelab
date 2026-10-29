@@ -35,7 +35,8 @@ export const loginPackagingAuthority=Object.freeze({
  "historicalCommit": "02a9e1fc6f4cb8ba50f6ee7f6d36ac15a3aecde6",
  "historicalInventorySHA256": "67567274ff3f5001e0bd30718549e52cf87d3cf289a3a2f18a5057fc218a1295",
  "historicalFiles": 779,
- "currentRunner": "58a9c7af28929f0019e37660532d1f922f4d8f6ba3857ddbc0db07bafe370db4",
+ "currentRunner": "1b36f7de4169f972e54c26621c5f9c5bb1175ba74a69bb9c54892d954b0cf83d",
+ "preOrchestrationRunner": "58a9c7af28929f0019e37660532d1f922f4d8f6ba3857ddbc0db07bafe370db4",
  "preDispatchRunner": "7b0bfc65544df736741df84785c347bbf678926ddc5ba3db4c0d329fd5960ad9",
  "historicalRunner": "bdd0fbb9def1b6a62f397b196d0564897a58d4dc508f3d55b6766193c654892a"
 });
@@ -59,9 +60,40 @@ export function projectLoginRegistrations(bytes){
  }return result;
 }
 export function assertCurrentRunnerInverse(bytes,historical){
- assert.ok(Buffer.isBuffer(bytes)&&Buffer.isBuffer(historical),'Raw Buffer required');assert.equal(digest(bytes),loginPackagingAuthority.currentRunner,'Current runner changed');assert.equal(digest(historical),loginPackagingAuthority.historicalRunner,'Historical runner changed');
+ assert.ok(Buffer.isBuffer(bytes)&&Buffer.isBuffer(historical),'Raw Buffer required');assert.equal(digest(historical),loginPackagingAuthority.historicalRunner,'Historical runner changed');assert.equal(digest(bytes),loginPackagingAuthority.currentRunner,'Current runner changed');
+ // Undo only the reviewed scheduling/await delta before the original raw inverses.
+ const deltas=[
+ [
+  "export async function runBatch(root,batch,scheduling=['--test-concurrency=2']){",
+  "function runBatch(root,batch,scheduling=[]){",
+  1
+ ],
+ [
+  " if(result.stdout)await new Promise((resolve,reject)=>process.stdout.write(result.stdout,error=>error?reject(error):resolve()));\n if(result.stderr)await new Promise((resolve,reject)=>process.stderr.write(result.stderr,error=>error?reject(error):resolve()));",
+  " if(result.stdout)process.stdout.write(result.stdout);if(result.stderr)process.stderr.write(result.stderr);",
+  1
+ ],
+ [
+  "export async function main(args=process.argv.slice(2)){",
+  "export function main(args=process.argv.slice(2)){",
+  1
+ ],
+ [
+  "=await runBatch(",
+  "=runBatch(",
+  3
+ ],
+ [
+  "href===import.meta.url)await main();",
+  "href===import.meta.url)main();",
+  1
+ ]
+];
+ let previous=bytes.toString();
+ for(const [current,original,count] of deltas){assert.equal(previous.split(current).length,count+1,'Reviewed orchestration delta changed');previous=previous.split(current).join(original);}
+ assert.equal(digest(Buffer.from(previous)),loginPackagingAuthority.preOrchestrationRunner,'Exact orchestration raw inverse');
  // Exact raw inverse of the reviewed dispatcher delta, then register import.
- let inverse=bytes.toString().replace('assertArtifactState,dispatchForBatch}','assertArtifactState}').replace("from './current-packaging-unit-plan.mjs'","from './auth-register-current-unit-plan.mjs'").replace('packagingDispatch:plan.packagingDispatch,publicAuthority:plan.publicAuthority,','').replace(' const dispatch=dispatchForBatch(root,batch.files);\r\n','').replace("'tsx',...dispatch.flags,'--test'","'tsx','--test'").replace('env:{...process.env,...dispatch.env},','');
+ let inverse=previous.replace('assertArtifactState,dispatchForBatch}','assertArtifactState}').replace("from './current-packaging-unit-plan.mjs'","from './auth-register-current-unit-plan.mjs'").replace('packagingDispatch:plan.packagingDispatch,publicAuthority:plan.publicAuthority,','').replace(' const dispatch=dispatchForBatch(root,batch.files);\r\n','').replace("'tsx',...dispatch.flags,'--test'","'tsx','--test'").replace('env:{...process.env,...dispatch.env},','');
  assert.equal(digest(Buffer.from(inverse)),loginPackagingAuthority.preDispatchRunner,'Exact dispatcher raw inverse');inverse=inverse.replace("from './auth-register-current-unit-plan.mjs'","from './auth-login-current-unit-plan.mjs'");assert.deepEqual(Buffer.from(inverse),historical,'Exact registration-chain raw inverse');
  // Original M14 explicitly used this derived LF projection. Raw pins above do not.
  const canonical=historical.toString().replace("from './auth-login-current-unit-plan.mjs'","from './aggregate-unit-plan.mjs'").replaceAll('\r\n','\n');assert.equal(digest(canonical),'07b33c7d19fa6d180b7322035481750ca35ece8d55b4a27200d54ce1a336e868','Original M14 historical inverse retained');
