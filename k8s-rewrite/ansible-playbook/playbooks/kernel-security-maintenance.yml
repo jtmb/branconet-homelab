@@ -1,0 +1,83 @@
+---
+# Explicit modes: preflight (default), refresh (APT indexes only), apply.
+- name: Refresh metadata only when separately selected
+  hosts: k8s_nodes
+  serial: 1
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  tasks:
+    - name: Require a known finite mode
+      ansible.builtin.assert:
+        that:
+          - kernel_maintenance_mode | default('preflight') in ['preflight', 'refresh', 'apply']
+          - ansible_play_hosts_all | sort == ['masternode', 'workernode1', 'workernode2']
+    - name: Refresh signed APT indexes without installing packages
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 0
+      when:
+        - kernel_maintenance_mode | default('preflight') == 'refresh'
+        - not ansible_check_mode
+    - name: Report mode without implying kernel activation
+      ansible.builtin.debug:
+        msg: "Kernel mode={{ kernel_maintenance_mode | default('preflight') }}. Refresh changes indexes only; no package install or reboot."
+
+- name: Qualify and optionally maintain each worker before the control plane
+  hosts: worker
+  serial: 1
+  order: inventory
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  vars:
+    security_maintenance_profile: current58-kernel202
+    security_maintenance_apply: "{{ kernel_maintenance_apply | default(false) }}"
+    security_maintenance_reboot: "{{ kernel_maintenance_reboot | default(false) }}"
+  tasks:
+    - name: Execute finite role only in explicit apply mode
+      ansible.builtin.include_role:
+        name: security_maintenance
+      when: kernel_maintenance_mode | default('preflight') == 'apply'
+    - name: Record this worker completed every role recovery gate
+      ansible.builtin.set_fact:
+        kernel202_worker_complete: true
+      when:
+        - kernel_maintenance_mode | default('preflight') == 'apply'
+        - not ansible_check_mode
+    - name: Read-only package qualification in default mode
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', playbook_dir + '/../roles/security_maintenance/files/kernel_packages.py') }}", preflight]
+      changed_when: false
+      check_mode: false
+      when: kernel_maintenance_mode | default('preflight') == 'preflight'
+
+- name: Maintain the single control plane only after workers recover
+  hosts: master
+  serial: 1
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  vars:
+    security_maintenance_profile: current58-kernel202
+    security_maintenance_apply: "{{ kernel_maintenance_apply | default(false) }}"
+    security_maintenance_reboot: "{{ kernel_maintenance_reboot | default(false) }}"
+  tasks:
+    - name: Require both workers completed this invocation before master changes
+      ansible.builtin.assert:
+        that:
+          - hostvars['workernode1'].kernel202_worker_complete | default(false) | bool
+          - hostvars['workernode2'].kernel202_worker_complete | default(false) | bool
+      when:
+        - kernel_maintenance_mode | default('preflight') == 'apply'
+        - not ansible_check_mode
+    - name: Execute finite role only in explicit apply mode
+      ansible.builtin.include_role:
+        name: security_maintenance
+      when: kernel_maintenance_mode | default('preflight') == 'apply'
+    - name: Read-only master package and existing390 qualification in default mode
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', playbook_dir + '/../roles/security_maintenance/files/kernel_packages.py') }}", preflight]
+      changed_when: false
+      check_mode: false
+      when: kernel_maintenance_mode | default('preflight') == 'preflight'

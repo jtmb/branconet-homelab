@@ -1,0 +1,25 @@
+---
+- name: Require finite explicit duplicate release cleanup
+  ansible.builtin.assert:
+    that:
+      - containerd_release_duplicate_phase in ['qualify', 'apply']
+      - inventory_hostname in ['masternode', 'workernode2']
+      - ansible_host == {'masternode':'192.168.0.4','workernode2':'192.168.0.5'}[inventory_hostname]
+  when: containerd_release_duplicate_enabled | default(false) | bool
+- name: Run finite controller with all preservation guards
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - -B
+      - "{{ role_path }}/files/controller.py"
+      - "{{ containerd_release_duplicate_phase }}"
+      - --node
+      - "{{ inventory_hostname }}"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  changed_when: containerd_release_duplicate_phase == 'apply'
+  when: containerd_release_duplicate_enabled | default(false) | bool and not ansible_check_mode
+  environment:
+    PYTHONDONTWRITEBYTECODE: '1'
+    BRANCONET_MIGRATION_SUDO_PASSWORD: "{{ lookup('env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"

@@ -1,0 +1,7 @@
+---
+- name: Preserve finite closed files on verified encrypted NAS before duplicate retirement
+  hosts: "{{ closed_file_offload_node | default('workernode2') }}"
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  roles: [closed_file_offload]

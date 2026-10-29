@@ -1,0 +1,15 @@
+---
+- name: Verify every current58 identity and backup with only the reviewed proxy image transition
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - -B
+      - "{{ role_path }}/files/checkpoint.py"
+      - --manifest
+      - "{{ kubernetes_security_patch_manifest }}"
+      - --sha256
+      - "{{ kubernetes_security_patch_manifest_sha256 }}"
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  check_mode: false

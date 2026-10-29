@@ -1,0 +1,44 @@
+---
+# Source-only preparation. Default execution is read-only qualification.
+- name: Qualify all hosts before any native Kubernetes binary change
+  hosts: k8s_nodes
+  serial: 1
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  tasks:
+    - name: Require the full original three-host inventory
+      ansible.builtin.assert:
+        that:
+          - ansible_play_hosts_all | sort == ['masternode', 'workernode1', 'workernode2']
+    - name: Qualify all native payloads backups drain policy and host preservation before any host changes
+      ansible.builtin.include_role:
+        name: kubernetes_security_patch
+        tasks_from: preflight
+
+- name: Patch the control plane before workers
+  hosts: master
+  serial: 1
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  roles: [kubernetes_security_patch]
+  post_tasks:
+    - name: Record completed control-plane recovery in this invocation
+      ansible.builtin.set_fact:
+        kubernetes1372_master_complete: true
+      when: kubernetes_security_patch_apply | default(false) | bool and not ansible_check_mode
+
+- name: Patch workers serially after control-plane recovery
+  hosts: worker
+  serial: 1
+  order: inventory
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  pre_tasks:
+    - name: Require control-plane completion before worker mutation
+      ansible.builtin.assert:
+        that: hostvars['masternode'].kubernetes1372_master_complete | default(false) | bool
+      when: kubernetes_security_patch_apply | default(false) | bool and not ansible_check_mode
+  roles: [kubernetes_security_patch]

@@ -1,0 +1,27 @@
+---
+- name: Create-only official Kubernetes 1.37.2 kubeadm tag aliases
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  vars:
+    kubernetes1372_alias_enabled: false
+    kubernetes1372_alias_mode: observe
+  tasks:
+    - name: Explain disabled default
+      ansible.builtin.debug:
+        msg: No action. All twelve exact native staging results are required before observation or creation.
+      when: not kubernetes1372_alias_enabled | bool or ansible_check_mode
+    - name: Validate finite mode
+      ansible.builtin.assert:
+        that:
+          - kubernetes1372_alias_mode in ['observe', 'create']
+      when: kubernetes1372_alias_enabled | bool and not ansible_check_mode
+    - name: Invoke protected-input alias controller
+      ansible.builtin.raw: >-
+        python3 -B {{ (playbook_dir + '/../roles/kubernetes1372_vendor_preload/files/aliases.py') | quote }}
+        {{ kubernetes1372_alias_mode | quote }}
+      no_log: true
+      changed_when: kubernetes1372_alias_mode == 'create'
+      when: kubernetes1372_alias_enabled | bool and not ansible_check_mode

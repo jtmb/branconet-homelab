@@ -1,5 +1,18 @@
 ---
 security_maintenance_apply: false
+security_maintenance_profile: legacy30
+security_maintenance_checkpoint_sha256: ""
+security_maintenance_kernel202_emptydir_additions:
+  - ingenium/Deployment/ingenium/runtime-secrets@/run/ingenium-secrets
+  - ingenium/Deployment/ingenium/runtime-secrets@/runtime-secrets-owned
+  - ingenium/Deployment/ingenium/shared-memory@/dev/shm
+  - ingenium/Deployment/ingenium/bootstrap-owned@/bootstrap-owned
+  - ingenium/Deployment/ingenium/bootstrap-owned@/run/ingenium-bootstrap/api-token
+  - ingenium/Deployment/ingenium/bootstrap-owned@/run/ingenium-bootstrap/learning-credential
+  - ingenium/Deployment/ingenium/bootstrap-owned@/run/ingenium-bootstrap/opencode-server-password
+  - ingenium/Deployment/ingenium/bootstrap-owned@/run/ingenium-bootstrap/email-encryption-key
+  - plex/Deployment/xteve/guide-gateway-temp@/proxy-tmp
+  - plex/Deployment/xteve/guide-gateway-temp@/tmp
 security_maintenance_backup_verified: false
 security_maintenance_backup_reference: ""
 # Dedicated launcher supplies a unique private controller directory per run.

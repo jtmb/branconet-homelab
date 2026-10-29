@@ -1,0 +1,26 @@
+---
+- name: Verify actual cluster headroom, preserved bindings and security boundaries
+  hosts: masternode
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Require an exact published revision and private receipt
+      ansible.builtin.assert:
+        that:
+          - cluster_hardening_revision is match('^[0-9a-f]{40}$')
+          - cluster_hardening_receipt is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/autonomous-hardening-20261028/[a-z0-9-]+[.]json$')
+    - name: Observe existing workloads and server-dry-run their admission
+      ansible.builtin.command:
+        argv:
+          - /home/brajam/.local/share/branconet-migration/venv/bin/python3.12
+          - -B
+          - "{{ playbook_dir }}/../../../scripts/migration/verify-cluster-hardening.py"
+          - --revision
+          - "{{ cluster_hardening_revision }}"
+          - --receipt
+          - "{{ cluster_hardening_receipt }}"
+      delegate_to: localhost
+      changed_when: false
+      when: not ansible_check_mode
+      environment:
+        PYTHONDONTWRITEBYTECODE: '1'

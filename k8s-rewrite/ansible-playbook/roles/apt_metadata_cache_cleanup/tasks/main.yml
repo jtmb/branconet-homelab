@@ -1,0 +1,29 @@
+---
+- name: Require one explicit host and finite generated-cache scope
+  ansible.builtin.assert:
+    that:
+      - apt_metadata_cache_host in ['masternode', 'workernode2']
+      - apt_metadata_cache_mode in ['inventory', 'apply']
+      - not apt_metadata_cache_include_installed_kernel202_archives | bool or apt_metadata_cache_host == 'masternode'
+      - (apt_metadata_cache_mode == 'apply') == (apt_metadata_cache_target | length > 0)
+      - (apt_metadata_cache_fresh_recovery_checkpoint | length > 0) == (apt_metadata_cache_fresh_recovery_checkpoint_sha256 | length > 0)
+      - apt_metadata_cache_fresh_recovery_checkpoint | length == 0 or (apt_metadata_cache_mode == 'apply' and apt_metadata_cache_reviewed_controller_transition | length > 0)
+      - apt_metadata_cache_fresh_recovery_checkpoint_sha256 | length == 0 or apt_metadata_cache_fresh_recovery_checkpoint_sha256 is match('^[0-9a-f]{64}$')
+      - (apt_metadata_cache_reviewed_controller_transition | length > 0) == (apt_metadata_cache_reviewed_controller_transition_sha256 | length > 0)
+      - apt_metadata_cache_reviewed_controller_transition | length == 0 or apt_metadata_cache_mode == 'apply'
+      - apt_metadata_cache_reviewed_controller_transition_sha256 | length == 0 or apt_metadata_cache_reviewed_controller_transition_sha256 is match('^[0-9a-f]{64}$')
+- name: Require existing protected RAM credential carrier
+  ansible.builtin.assert:
+    that:
+      - lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') | length > 0
+  no_log: true
+- name: Qualify or reconcile exactly one reviewed generated metadata target
+  ansible.builtin.command:
+    argv: "{{ ['/home/brajam/.local/share/branconet-migration/venv/bin/python', '-B', role_path + '/files/controller.py', apt_metadata_cache_mode, '--host', apt_metadata_cache_host] + (['--include-installed-kernel202-archives'] if apt_metadata_cache_include_installed_kernel202_archives | bool else []) + (['--allow-observed-idle-packagekit'] if apt_metadata_cache_allow_observed_idle_packagekit | bool else []) + (['--after-closed-admission-failure', apt_metadata_cache_after_closed_admission_failure, '--after-closed-admission-failure-sha256', apt_metadata_cache_after_closed_admission_failure_sha256] if apt_metadata_cache_after_closed_admission_failure | length > 0 else []) + (['--after-inventory-format-repair', apt_metadata_cache_after_inventory_format_repair, '--after-inventory-format-repair-sha256', apt_metadata_cache_after_inventory_format_repair_sha256] if apt_metadata_cache_after_inventory_format_repair | length > 0 else []) + (['--reviewed-controller-transition', apt_metadata_cache_reviewed_controller_transition, '--reviewed-controller-transition-sha256', apt_metadata_cache_reviewed_controller_transition_sha256] if apt_metadata_cache_reviewed_controller_transition | length > 0 else []) + (['--fresh-recovery-checkpoint', apt_metadata_cache_fresh_recovery_checkpoint, '--fresh-recovery-checkpoint-sha256', apt_metadata_cache_fresh_recovery_checkpoint_sha256] if apt_metadata_cache_fresh_recovery_checkpoint | length > 0 else []) + (['--target', apt_metadata_cache_target] if apt_metadata_cache_mode == 'apply' else []) }}"
+    stdin: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    stdin_add_newline: true
+  environment:
+    PYTHONDONTWRITEBYTECODE: "1"
+  no_log: true
+  changed_when: apt_metadata_cache_mode == 'apply'
+  when: not ansible_check_mode
