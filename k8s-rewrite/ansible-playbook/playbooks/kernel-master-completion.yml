@@ -1,0 +1,59 @@
+---
+# After a terminal pre-cordon master refusal, verify both completed workers
+# afresh before finishing the same finite update. No worker is drained again.
+- name: Requalify both already-completed workers without changing them
+  hosts: worker
+  serial: 1
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  tasks:
+    - name: Require both original workers in this recovery invocation
+      ansible.builtin.assert:
+        that:
+          - ansible_play_hosts_all | sort == ['workernode1', 'workernode2']
+          - kernel_maintenance_mode == 'apply'
+          - kernel_maintenance_apply | bool
+          - kernel_maintenance_reboot | bool
+    - name: Verify exact installed202 packages and retained198 fallback
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', playbook_dir + '/../roles/security_maintenance/files/kernel_packages.py') }}", verify]
+      changed_when: false
+    - name: Verify this completed worker is actually booted into202
+      ansible.builtin.command: uname -r
+      register: completed_worker_kernel
+      changed_when: false
+    - name: Require the exact running kernel before recording current proof
+      ansible.builtin.assert:
+        that: [completed_worker_kernel.stdout == '5.15.0-202-generic']
+    - name: Recheck the preserved runtime and legacy retirement
+      ansible.builtin.service_facts:
+    - name: Require healthy original worker service boundaries
+      ansible.builtin.assert:
+        that:
+          - ansible_facts.services['containerd-k8s.service'].state == 'running'
+          - ansible_facts.services['docker.service'].state in ['stopped', 'inactive']
+          - ansible_facts.services['glusterd.service'].state in ['stopped', 'inactive']
+    - name: Record only fresh successful worker verification
+      ansible.builtin.set_fact:
+        kernel202_worker_complete: true
+
+- name: Complete master using every original finite update and recovery guard
+  hosts: master
+  serial: 1
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  vars:
+    security_maintenance_profile: current58-kernel202
+    security_maintenance_apply: "{{ kernel_maintenance_apply }}"
+    security_maintenance_reboot: "{{ kernel_maintenance_reboot }}"
+  tasks:
+    - name: Require both workers freshly verified in this invocation
+      ansible.builtin.assert:
+        that:
+          - hostvars['workernode1'].kernel202_worker_complete | default(false) | bool
+          - hostvars['workernode2'].kernel202_worker_complete | default(false) | bool
+    - name: Execute the unchanged full guarded master maintenance path
+      ansible.builtin.include_role:
+        name: security_maintenance

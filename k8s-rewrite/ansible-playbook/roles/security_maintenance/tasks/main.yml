@@ -1,4 +1,13 @@
 ---
+- name: Require an explicitly supported maintenance profile
+  ansible.builtin.assert:
+    that:
+      - security_maintenance_profile in ['legacy30', 'current58-kernel202']
+
+- name: Qualify the opt-in current accepted kernel202 profile
+  ansible.builtin.include_tasks: kernel-profile.yml
+  when: security_maintenance_profile == 'current58-kernel202'
+
 - name: Require explicit maintenance and reviewed recovery evidence
   ansible.builtin.assert:
     that:
@@ -74,6 +83,7 @@
 - name: Read original checkpoint volume identities from the controller receipt
   ansible.builtin.set_fact:
     maintenance_checkpoint_volumes: "{{ (lookup('ansible.builtin.file', security_maintenance_backup_reference) | from_json).volumes }}"
+  when: security_maintenance_profile == 'legacy30'
 
 - name: Require the complete original thirty-volume checkpoint identity set
   ansible.builtin.assert:
@@ -82,6 +92,7 @@
       - maintenance_checkpoint_volumes | map(attribute='volume') | unique | list | length == 30
       - maintenance_checkpoint_volumes | map(attribute='volume_uid') | unique | list | length == 30
     fail_msg: The reviewed checkpoint must retain all thirty distinct original volume names and UIDs.
+  when: security_maintenance_profile == 'legacy30'
 
 - name: Require every original checkpoint volume still attached and healthy
   ansible.builtin.assert:
@@ -93,9 +104,10 @@
     fail_msg: An original checkpoint volume is missing, replaced, detached or unhealthy; recover it before any further node maintenance.
   vars:
     maintenance_checkpoint_live_matches: "{{ (maintenance_longhorn.results[0].stdout | from_json)['items'] | selectattr('metadata.name', 'equalto', item.volume) | list }}"
-  loop: "{{ maintenance_checkpoint_volumes }}"
+  loop: "{{ maintenance_checkpoint_volumes | default([]) }}"
   loop_control:
     label: "{{ item.volume }}"
+  when: security_maintenance_profile == 'legacy30'
 
 - name: Require attached volumes healthy before touching a node
   ansible.builtin.assert:
@@ -135,6 +147,12 @@
     that:
       - maintenance_runtime_before.stdout.split()[2] in ['v2.4.1', 'v2.4.2']
     fail_msg: Only the reviewed containerd 2.4.1 to 2.4.2 patch or an idempotent rerun is supported.
+
+- name: Keep the current kernel-only profile on the existing runtime
+  ansible.builtin.assert:
+    that:
+      - maintenance_runtime_before.stdout.split()[2] == 'v2.4.2'
+  when: security_maintenance_profile == 'current58-kernel202'
 
 - name: Refuse retirement if the stock runtime has any actual running tasks
   ansible.builtin.command:
@@ -240,6 +258,12 @@
         policy_rc_d: 101
       when: security_maintenance_extra_packages | length > 0
 
+    - name: Verify installed kernel202 packages and preserved198 fallback before reboot
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/kernel_packages.py') }}", verify]
+      changed_when: false
+      when: security_maintenance_profile == 'current58-kernel202'
+
     - name: Install the independent same-minor runtime patch
       ansible.builtin.include_tasks: runtime.yml
       when: maintenance_runtime_before.stdout.split()[2] != containerd_version
@@ -336,6 +360,22 @@
     - name: Report residual kernel exposure honestly
       ansible.builtin.debug:
         msg: "Running kernel {{ maintenance_running_kernel.stdout }}. CVE-2026-98260 remains unpatched in Jammy GA/HWE as of 2026-10-23; this task is not a clean security verdict. Reboot requested: {{ security_maintenance_reboot | bool }}."
+      when: security_maintenance_profile == 'legacy30'
+
+    - name: Report the current kernel patch and remaining upstream boundary
+      ansible.builtin.debug:
+        msg: "Running kernel {{ maintenance_running_kernel.stdout }} with the exact reviewed202 packages. The October28 Canonical JSON tracker still marks CVE-2026-98260 needed for Jammy GA. Keep residual kernel and vendor findings visible; this is not a clean security verdict."
+      when: security_maintenance_profile == 'current58-kernel202'
+
+    - name: Verify all active and offline original identities after this node recovers
+      ansible.builtin.include_tasks: kernel-checkpoint.yml
+      when: security_maintenance_profile == 'current58-kernel202'
+
+    - name: Verify kernel package and unchanged390 module continuity after recovery
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/kernel_packages.py') }}", verify]
+      changed_when: false
+      when: security_maintenance_profile == 'current58-kernel202'
   rescue:
     - name: Stop the rollout and preserve failure isolation
       ansible.builtin.fail:

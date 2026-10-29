@@ -1,0 +1,59 @@
+---
+- name: Bind fixed original node and output root
+  ansible.builtin.assert:
+    that:
+      - closed_file_offload_node in ['masternode', 'workernode2']
+      - inventory_hostname == closed_file_offload_node
+      - ansible_host == {'masternode':'192.168.0.4', 'workernode2':'192.168.0.5'}[closed_file_offload_node]
+      - ansible_user == 'james'
+      - ansible_port | int == 2002
+      - closed_file_offload_mode in ['inventory', 'retire']
+      - closed_file_offload_result_file is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/autonomous-hardening-20261028/closed-file-offload/' + closed_file_offload_node + '/[a-z0-9-]+[.]json$')
+      - closed_file_offload_mode != 'retire' or closed_file_offload_operator_holds_nas_lock | bool
+- name: Fix controller receipt directory
+  ansible.builtin.set_fact:
+    closed_file_offload_run: '{{ closed_file_offload_result_file | dirname }}'
+- name: Bind exact restoration inputs
+  ansible.builtin.assert:
+    that:
+      - closed_file_offload_mode != 'retire' or closed_file_offload_profile_file == closed_file_offload_run + '/profile.json'
+      - closed_file_offload_mode != 'retire' or closed_file_offload_proof_file is match('^' + closed_file_offload_run + '/nas-retirement-proof-[0-9a-f]{32}[.]json$')
+- name: Preserve existing outcome
+  ansible.builtin.stat:
+    path: '{{ closed_file_offload_result_file }}'
+  delegate_to: localhost
+  become: false
+  register: closed_file_prior
+- name: Refuse outcome replay
+  ansible.builtin.assert:
+    that: [not closed_file_prior.stat.exists]
+- name: Capture inventory or finite retirement outcome
+  block:
+    - name: Inspect exact built-in catalog
+      ansible.builtin.raw: >-
+        /usr/bin/python3 -B -c {{ lookup('file', role_path + '/files/offload.py', rstrip=false) | quote }}
+        --node {{ closed_file_offload_node | quote }}
+        --safety-source {{ lookup('file', role_path + '/../retired_master_build_tools/files/retire.py', rstrip=false) | b64encode | quote }}
+        --safety-sha256 {{ lookup('file', role_path + '/../retired_master_build_tools/files/retire.py', rstrip=false) | hash('sha256') | quote }}
+        --mode inventory
+      register: closed_file_inventory
+      changed_when: false
+      no_log: true
+      when: closed_file_offload_mode == 'inventory'
+    - name: Retire individually verified duplicates
+      ansible.builtin.include_tasks: retire-one.yml
+      loop: "{{ (range(0, (lookup('file', closed_file_offload_profile_file) | from_json).files | length) | list) if closed_file_offload_mode == 'retire' else [] }}"
+      loop_control:
+        loop_var: closed_file_index
+      when: closed_file_offload_mode == 'retire'
+  always:
+    - name: Save exclusive final outcome
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, -B, '{{ role_path }}/files/record.py', --path, '{{ receipt_path }}']
+        stdin: '{{ receipt_value | to_json }}'
+      delegate_to: localhost
+      become: false
+      no_log: true
+      vars:
+        receipt_path: '{{ closed_file_offload_result_file }}'
+        receipt_value: "{{ closed_file_inventory if closed_file_offload_mode == 'inventory' else {'scope':'closed-file-offload','node':closed_file_offload_node,'individualReceipts':true,'outcome':'consult immutable individual qualification, intent and result receipts; Ansible exit status is authoritative'} }}"

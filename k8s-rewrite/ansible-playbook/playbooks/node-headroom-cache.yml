@@ -1,0 +1,32 @@
+---
+- name: Reclaim only qualified inactive superseded application filesystem caches
+  hosts: masternode:workernode2
+  gather_facts: false
+  become: false
+  serial: 1
+  tasks:
+    - name: Require explicit bounded cache phase
+      ansible.builtin.assert:
+        that:
+          - node_headroom_cache_phase in ['inventory', 'qualify', 'retire']
+          - ansible_host == {'masternode':'192.168.0.4','workernode2':'192.168.0.5'}[inventory_hostname]
+          - node_headroom_cache_phase != 'retire' or node_headroom_cache_qualification is defined
+      when: node_headroom_cache_enabled | default(false) | bool
+    - name: Execute preserved native cache guards from the controller
+      ansible.builtin.command:
+        argv: >-
+          {{ ['/home/brajam/.local/share/branconet-migration/venv/bin/python3.12', '-B',
+          playbook_dir + '/../roles/node_headroom_cache/files/controller.py',
+          node_headroom_cache_phase, '--node', inventory_hostname]
+          + (['--superseded-kubernetes1371', '--kubernetes-success', node_headroom_cache_kubernetes_success, '--kubernetes-success-sha256', node_headroom_cache_kubernetes_success_sha256] if node_headroom_cache_superseded_kubernetes1371 | default(false) | bool else [])
+          + (['--qualification', node_headroom_cache_qualification] if node_headroom_cache_phase == 'retire' else []) }}
+      delegate_to: localhost
+      no_log: true
+      changed_when: node_headroom_cache_phase == 'retire'
+      when: node_headroom_cache_enabled | default(false) | bool and not ansible_check_mode
+      environment:
+        PYTHONDONTWRITEBYTECODE: '1'
+        TMPDIR: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+        TMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+        TEMP: /home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/operator-control/tmp
+        BRANCONET_MIGRATION_SUDO_PASSWORD: "{{ lookup('env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"

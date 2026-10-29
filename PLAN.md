@@ -1,3 +1,20 @@
+# Verified follow-up: headroom, available security fixes and BORTUS HTTPS
+
+The user authorized this additional work after migration closure. See the
+[follow-up acceptance and current evidence](docs/CLUSTER-HARDENING-20261028.md).
+Data and rollback preservation, upstream-only vendor images, Actions off and the
+existing local-validation/Flux route remain mandatory. Earlier closure and
+failure records below remain historical; they are not this follow-up acceptance.
+
+**October 29:** final runtime and disk verification passed at charts revision
+`1c6f142493685676f9d8fee339400e0fe8d22ee5`. Both small root filesystems meet the
+additional 2 GiB reserve and 15 GiB usable-space requirements. All 58 claim
+bindings, 14 SMB volumes and desired controllers remain intact. Kubernetes
+1.37.2, kernel 202, native Longhorn cleanup and normal Windows-trusted BORTUS
+HTTPS are verified. Disposable scratch is reconciled; original failed safety
+targets remain protected. Compatible upstream fixes are applied; the report
+keeps residual vendor CVEs and the separate BORTUS application hold explicit.
+
 # Cluster maintenance and application migration plan
 
 **Final delivery accepted — October 28:** the user explicitly chose

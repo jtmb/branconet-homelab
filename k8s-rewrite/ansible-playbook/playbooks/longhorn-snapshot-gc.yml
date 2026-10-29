@@ -1,0 +1,7 @@
+---
+- name: Finite already-removed system snapshot native garbage collection
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  roles: [longhorn_snapshot_gc]

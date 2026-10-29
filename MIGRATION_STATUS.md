@@ -1,3 +1,17 @@
+# Verified follow-up: headroom, available security fixes and BORTUS HTTPS
+
+The user authorized this additional work after migration closure. See the
+[follow-up acceptance and current evidence](docs/CLUSTER-HARDENING-20261028.md).
+Data and rollback preservation, upstream-only vendor images, Actions off and the
+existing local-validation/Flux route remain mandatory. Earlier closure and
+failure records below remain historical; they are not this follow-up acceptance.
+
+**October 29 follow-up verified:** Kubernetes 1.37.2/kernel 202 and BORTUS HTTPS
+are live. Final storage, workload and disk-reserve checks pass with 58 preserved
+claim bindings and 14 SMB volumes. Ansible includes the guarded cleanup and
+recovery procedures. Remaining vendor CVEs and the separate BORTUS application
+hold are listed in the linked report; this is not a zero-vulnerability claim.
+
 # Migration and maintenance status
 
 **Final delivery accepted — October 28:** the user explicitly approved finishing

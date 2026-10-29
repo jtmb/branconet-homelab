@@ -1,0 +1,314 @@
+---
+- name: Repeat full preservation and authority preflight immediately before this host
+  ansible.builtin.include_tasks: preflight.yml
+
+- name: Apply only after every independent gate passes
+  when: kubernetes_security_patch_apply | bool and not ansible_check_mode
+  block:
+    - name: Allocate durable controller recovery receipt directory
+      ansible.builtin.file:
+        path: "{{ kubernetes_security_patch_receipt_dir }}"
+        state: directory
+        mode: '0700'
+      delegate_to: localhost
+      become: false
+
+    - name: Allocate unique protected recovery receipt
+      ansible.builtin.tempfile:
+        state: file
+        path: "{{ kubernetes_security_patch_receipt_dir }}"
+        prefix: "{{ inventory_hostname }}-"
+        suffix: .json
+      delegate_to: localhost
+      become: false
+      register: patch_receipt
+
+    - name: Persist original host and cluster identity before cordoning
+      ansible.builtin.copy:
+        dest: "{{ patch_receipt.path }}"
+        content: "{{ {'authoritySHA256': kubernetes_security_patch_manifest_sha256, 'host': inventory_hostname, 'preservation': (patch_preservation_before.stdout | from_json), 'frozen': (patch_recovery_before.stdout | from_json).frozen, 'nativeBinaries': (patch_binaries_before.stdout | from_json)} | to_nice_json }}"
+        mode: '0600'
+      delegate_to: localhost
+      become: false
+      no_log: true
+
+    - name: Cordon exactly this node
+      ansible.builtin.command:
+        argv: [kubectl, cordon, "{{ inventory_hostname }}"]
+      delegate_to: "{{ groups.master[0] }}"
+      become: false
+      changed_when: true
+
+    - name: Recheck disposable mount identities after cordoning
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/../security_maintenance/files/pod_guard.py') }}", "{{ inventory_hostname }}", 'true', "{{ (patch_original_defaults.security_maintenance_emptydir_allowlist + patch_original_defaults.security_maintenance_kernel202_emptydir_additions) | unique | list | to_json }}"]
+      delegate_to: "{{ groups.master[0] }}"
+      become: false
+      changed_when: false
+
+    - name: Drain through normal eviction with PDB and last-replica protection
+      ansible.builtin.command:
+        argv: [kubectl, drain, "{{ inventory_hostname }}", --ignore-daemonsets, --delete-emptydir-data, "--timeout={{ kubernetes_security_patch_drain_timeout }}"]
+      delegate_to: "{{ groups.master[0] }}"
+      become: false
+      changed_when: true
+
+    - name: Atomically replace only native kubeadm first preserving installation ownership and version skew
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/native_binaries.py') }}", install-kubeadm]
+        stdin: "{{ patch_plan | to_json }}"
+      changed_when: true
+
+    - name: Inspect the standard native kubeadm temporary parent
+      ansible.builtin.stat:
+        path: /etc/kubernetes/tmp
+      register: patch_native_parent
+
+    - name: Create only a missing standard native kubeadm temporary parent
+      ansible.builtin.file:
+        path: /etc/kubernetes/tmp
+        state: directory
+        mode: '0700'
+      when: not patch_native_parent.stat.exists
+
+    - name: Allocate native kubeadm configuration directory outside watched manifests
+      ansible.builtin.tempfile:
+        state: directory
+        path: /etc/kubernetes/tmp
+        prefix: kubernetes1372-
+      register: patch_native_dir
+
+    - name: Observe the exact fresh root-owned native allocation before any file writes
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/native_artifacts.py') }}", allocation]
+        stdin: "{{ {'nativeDirectory': patch_native_dir.path} | to_json }}"
+      changed_when: false
+      register: patch_native_allocation
+
+    - name: Persist unique native allocation ownership on controller before creating files
+      ansible.builtin.copy:
+        dest: "{{ patch_receipt.path }}.allocation.json"
+        content: "{{ {'host': inventory_hostname, 'authoritySHA256': kubernetes_security_patch_manifest_sha256, 'recoveryReceipt': patch_receipt.path, 'allocation': (patch_native_allocation.stdout | from_json)} | to_nice_json }}"
+        mode: '0600'
+      delegate_to: localhost
+      become: false
+
+    - name: Create the dedicated native patch directory
+      ansible.builtin.file:
+        path: "{{ patch_native_dir.path }}/patches"
+        state: directory
+        mode: '0700'
+
+    - name: Build exact spec and metadata preservation patches for kubeadm
+      vars:
+        patch_native_content: "{{ [{'op': 'replace', 'path': '/spec', 'value': ((patch_preservation_before.stdout | from_json).staticPods[item].spec | combine({'containers': [((patch_preservation_before.stdout | from_json).staticPods[item].spec.containers[0] | combine({'image': patch_plan.images[item].reference}))]}))}, {'op': 'replace', 'path': '/metadata', 'value': (patch_preservation_before.stdout | from_json).staticPods[item].metadata}] | to_json }}"
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/native_artifacts.py') }}", write]
+        stdin: "{{ {'nativeDirectory': patch_native_dir.path, 'allocation': (patch_native_allocation.stdout | from_json), 'relativePath': 'patches/' + item + '+json.json', 'content': patch_native_content} | to_json }}"
+      changed_when: true
+      loop: "{{ (inventory_hostname == 'masternode') | ternary(['kube-apiserver', 'kube-controller-manager', 'kube-scheduler'], []) }}"
+      no_log: true
+
+    - name: Write explicit native upgrade policy with no image pulls etcd changes or certificate renewal
+      vars:
+        patch_native_upgrade_content: |
+          apiVersion: kubeadm.k8s.io/v1beta4
+          kind: UpgradeConfiguration
+          apply:
+            kubernetesVersion: v1.37.2
+            etcdUpgrade: false
+            certificateRenewal: false
+            imagePullPolicy: Never
+            ignorePreflightErrors: [CoreDNSUnsupportedPlugins, CoreDNSMigration]
+            patches:
+              directory: {{ patch_native_dir.path }}/patches
+            skipPhases: [addon, kubelet-config, upload-config/kubelet, kubeconfig, bootstrap-token]
+          node:
+            etcdUpgrade: false
+            certificateRenewal: false
+            imagePullPolicy: Never
+            skipPhases: [addon, kubelet-config, kubeconfig]
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/native_artifacts.py') }}", write]
+        stdin: "{{ {'nativeDirectory': patch_native_dir.path, 'allocation': (patch_native_allocation.stdout | from_json), 'relativePath': 'upgrade.yaml', 'content': patch_native_upgrade_content} | to_json }}"
+      changed_when: true
+
+    - name: Record exact owned native configuration before its consumer starts
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/native_artifacts.py') }}", record]
+        stdin: "{{ {'nativeDirectory': patch_native_dir.path, 'allocation': (patch_native_allocation.stdout | from_json)} | to_json }}"
+      changed_when: false
+      register: patch_native_inventory
+
+    - name: Retain native configuration hashes and regeneration authority on the controller
+      ansible.builtin.copy:
+        dest: "{{ patch_receipt.path }}.native.json"
+        content: "{{ patch_native_inventory.stdout }}"
+        mode: '0600'
+      delegate_to: localhost
+      become: false
+
+    - name: Upgrade the native control-plane manifests preserving etcd certificates and other addons
+      ansible.builtin.command:
+        argv: [/usr/local/bin/kubeadm, upgrade, apply, --config, "{{ patch_native_dir.path }}/upgrade.yaml", --yes]
+      when: inventory_hostname == 'masternode'
+      changed_when: true
+      no_log: true
+      failed_when: false
+      register: patch_kubeadm_apply
+
+    - name: Retain the protected native kubeadm result before checking success
+      ansible.builtin.copy:
+        dest: "{{ patch_receipt.path }}.kubeadm-result.json"
+        content: "{{ {'node': inventory_hostname, 'rc': patch_kubeadm_apply.rc, 'stdout': patch_kubeadm_apply.stdout, 'stderr': patch_kubeadm_apply.stderr} | to_nice_json }}"
+        mode: '0600'
+      delegate_to: localhost
+      become: false
+      when: inventory_hostname == 'masternode'
+      no_log: true
+
+    - name: Require native kubeadm success before any subsequent upgrade step
+      ansible.builtin.assert:
+        that: patch_kubeadm_apply.rc == 0
+        fail_msg: Protected native kubeadm diagnostic retained in the recovery directory; no next-step continuation.
+      when: inventory_hostname == 'masternode'
+
+    - name: Run supported native worker upgrade without rewriting kubelet configuration
+      ansible.builtin.command:
+        argv: [/usr/local/bin/kubeadm, upgrade, node, --config, "{{ patch_native_dir.path }}/upgrade.yaml"]
+      when: inventory_hostname != 'masternode'
+      changed_when: true
+      no_log: true
+
+    - name: Atomically replace native kubelet and kubectl after native control-plane or worker upgrade
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/native_binaries.py') }}", install-node]
+        stdin: "{{ patch_plan | to_json }}"
+      changed_when: true
+
+    - name: Restart kubelet only after native upgrade
+      ansible.builtin.systemd_service:
+        name: kubelet
+        daemon_reload: true
+        state: restarted
+
+    - name: Wait for API readiness after the single control-plane restart
+      ansible.builtin.command:
+        argv: [kubectl, get, --raw=/readyz]
+      delegate_to: "{{ groups.master[0] }}"
+      become: false
+      changed_when: false
+      register: patch_api_ready
+      until: patch_api_ready.rc == 0 and patch_api_ready.stdout == 'ok'
+      retries: 60
+      delay: 10
+
+    - name: Apply only the exact guarded kube-proxy image transition
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/proxy.py') }}"]
+        stdin: "{{ patch_plan | to_json }}"
+      delegate_to: "{{ groups.master[0] }}"
+      become: false
+      when: inventory_hostname == 'masternode'
+      changed_when: true
+
+    - name: Verify native binary hashes Go version running kubelet and unchanged holds
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/native_binaries.py') }}", verify]
+        stdin: "{{ patch_plan | to_json }}"
+      changed_when: false
+      register: patch_binaries_after
+
+    - name: Verify original hold selections remain unchanged without any APT transaction
+      ansible.builtin.assert:
+        that: (patch_binaries_after.stdout | from_json).holds == (patch_binaries_before.stdout | from_json).holds
+
+    - name: Verify protected bytes and static manifests changed only at approved image fields
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/preservation.py') }}", verify]
+        stdin: "{{ {'plan': patch_plan, 'before': (patch_preservation_before.stdout | from_json)} | to_json }}"
+      changed_when: false
+      no_log: true
+
+    - name: Wait for this exact node to run the new kubelet and be Ready
+      ansible.builtin.command:
+        argv: [kubectl, get, node, "{{ inventory_hostname }}", -o, json]
+      delegate_to: "{{ groups.master[0] }}"
+      become: false
+      changed_when: false
+      register: patch_node_after
+      until:
+        - patch_node_after.rc == 0
+        - (patch_node_after.stdout | from_json).metadata.uid == patch_plan.nodeUIDs[inventory_hostname]
+        - (patch_node_after.stdout | from_json).status.nodeInfo.kubeletVersion == 'v1.37.2'
+        - (patch_node_after.stdout | from_json).status.conditions | selectattr('type', 'equalto', 'Ready') | selectattr('status', 'equalto', 'True') | list | length == 1
+      retries: 60
+      delay: 10
+
+    - name: Uncordon after successful host preservation checks
+      ansible.builtin.command:
+        argv: [kubectl, uncordon, "{{ inventory_hostname }}"]
+      delegate_to: "{{ groups.master[0] }}"
+      become: false
+      changed_when: true
+
+    - name: Require all original active volumes and controllers recovered before the next host
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/../security_maintenance/files/recovery_guard.py') }}", check, "{{ (patch_recovery_before.stdout | from_json).frozen | to_json }}"]
+      delegate_to: "{{ groups.master[0] }}"
+      become: false
+      changed_when: false
+      register: patch_recovered
+      until: patch_recovered.rc == 0 and (patch_recovered.stdout | from_json).ready | bool
+      retries: 60
+      delay: 10
+
+    - name: Recheck all original current58 identities and fresh backup authority
+      ansible.builtin.include_tasks: checkpoint.yml
+
+    - name: Verify actual control-plane proxy image IDs and only the kubeadm version-record change
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/runtime.py') }}", verify]
+        stdin: "{{ {'plan': patch_plan, 'before': (hostvars[groups.master[0]].patch_cluster_config_before.stdout | from_json)} | to_json }}"
+      delegate_to: "{{ groups.master[0] }}"
+      become: false
+      changed_when: false
+      register: patch_native_runtime
+      until: patch_native_runtime.rc == 0
+      retries: 30
+      delay: 10
+      no_log: true
+
+    - name: Verify all independently managed CoreDNS declarations remain exactly unchanged
+      ansible.builtin.command:
+        argv: [/home/brajam/.local/share/branconet-migration/venv/bin/python, -B, "{{ role_path }}/files/coredns_preservation.py"]
+      delegate_to: localhost
+      become: false
+      changed_when: false
+
+    - name: Record exact native configuration retained for recovery review
+      ansible.builtin.copy:
+        dest: "{{ patch_receipt.path }}.completed.json"
+        content: "{{ {'completed': true, 'node': inventory_hostname, 'authoritySHA256': kubernetes_security_patch_manifest_sha256, 'nativeConfigurationDirectory': patch_native_dir.path, 'nativeLastConsumerCompleted': true} | to_nice_json }}"
+        mode: '0600'
+      delegate_to: localhost
+      become: false
+
+    - name: Reconcile exact owned staging after successful host verification without touching originals
+      ansible.builtin.command:
+        argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/native_artifacts.py') }}", cleanup]
+        stdin: "{{ {'nativeDirectory': patch_native_dir.path, 'nativeInventory': (patch_native_inventory.stdout | from_json), 'hostVerified': true, 'binaryStaging': [patch_plan.binaries.kubeadm.verifiedStaging[inventory_hostname], patch_plan.binaries.kubelet.verifiedStaging[inventory_hostname], patch_plan.binaries.kubectl.verifiedStaging[inventory_hostname]]} | to_json }}"
+      register: patch_cleanup
+      changed_when: (patch_cleanup.stdout | from_json).removed | length > 0
+
+    - name: Retain measured removal and exact safety-check exceptions
+      ansible.builtin.copy:
+        dest: "{{ patch_receipt.path }}.cleanup.json"
+        content: "{{ patch_cleanup.stdout }}"
+        mode: '0600'
+      delegate_to: localhost
+      become: false
+  rescue:
+    - name: Preserve failure isolation and original recovery evidence
+      ansible.builtin.fail:
+        msg: "Kubernetes patch failed on {{ inventory_hostname }}. Stop here; retain original receipt and native kubeadm backups. No automatic uncordon, force eviction, rollback, cleanup or next-node continuation."

@@ -1,0 +1,30 @@
+---
+- name: Exact official Bazarr native prestaging
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  vars:
+    bazarr_vendor_preload_enabled: false
+    bazarr_vendor_preload_mode: observe
+    bazarr_vendor_preload_node: all
+  tasks:
+    - name: Explain disabled default
+      ansible.builtin.debug:
+        msg: No action. Explicitly enable; observe is read-only and stage must be selected.
+      when: not bazarr_vendor_preload_enabled | bool or ansible_check_mode
+    - name: Validate finite approved scope
+      ansible.builtin.assert:
+        that:
+          - bazarr_vendor_preload_mode in ['observe', 'stage']
+          - bazarr_vendor_preload_node in ['master', 'worker2', 'worker1', 'all']
+      when: bazarr_vendor_preload_enabled | bool and not ansible_check_mode
+    - name: Invoke guarded controller with existing environment privilege input
+      ansible.builtin.raw: >-
+        python3 -B {{ (playbook_dir + '/../roles/bazarr_vendor_preload/files/controller.py') | quote }}
+        {{ bazarr_vendor_preload_mode | quote }} --service bazarr
+        --node {{ bazarr_vendor_preload_node | quote }}
+      no_log: true
+      changed_when: bazarr_vendor_preload_mode == 'stage'
+      when: bazarr_vendor_preload_enabled | bool and not ansible_check_mode

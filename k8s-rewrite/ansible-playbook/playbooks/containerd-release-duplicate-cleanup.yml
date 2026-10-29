@@ -1,0 +1,8 @@
+---
+- name: Retire only qualified duplicate vendor release files
+  hosts: masternode:workernode2
+  gather_facts: false
+  become: false
+  serial: 1
+  roles:
+    - containerd_release_duplicate_cleanup

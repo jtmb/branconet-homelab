@@ -1,5 +1,28 @@
 # Existing-cluster maintenance
 
+The [October 28 headroom/security/HTTPS follow-up](../../docs/CLUSTER-HARDENING-20261028.md)
+adds opt-in `playbooks/node-headroom-cache.yml` and
+`lan_tls_verify_bortus_https=true` for the existing `lan-tls.yml` playbook.
+Cache phases preserve original images/content and data; TLS reconciliation stays
+with the existing charts publisher/Flux. The read-only verification launcher
+keeps Ansible/RPC scratch on the declared F-backed filesystem.
+
+The follow-up also adds the [finite kernel202 procedure](../../docs/KERNEL202-MAINTENANCE.md),
+[qualified Bazarr rebuild](../../docs/BAZARR-VENDOR-REFRESH.md), and
+[four-image Kubernetes1.37.2 prestage](../../docs/KUBERNETES1372-VENDOR-PRELOAD.md).
+The read-only hardening verification checks actual claim identities, storage,
+Flux revision, admission, token boundaries and disk margins. Runtime rollout
+completion and residual vendor findings are recorded in the follow-up report.
+
+The completed follow-up also supplies finite opt-in procedures for signed APT
+metadata cleanup (`playbooks/apt-metadata-cache-cleanup.yml`), closed-file
+offload with encrypted NAS storage, independent restore and held read locks
+(`playbooks/closed-file-offload.yml`), and native Longhorn collection of
+already-removed system snapshots (`playbooks/longhorn-snapshot-gc.yml`). User
+snapshots, original NAS backups, data and replica policies stay protected.
+Each operation requires its recorded source, fresh recovery inputs and an
+unconsumed generation; completed or failed intents are never replayed.
+
 This directory contains **opt-in maintenance playbooks for the existing
 Branconet cluster**. It does not contain a cluster installer, reset playbook,
 legacy `site.yml`, application variable lookup plugin, or BORTUS application code.

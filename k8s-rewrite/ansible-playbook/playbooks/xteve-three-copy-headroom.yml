@@ -1,0 +1,38 @@
+---
+- name: Explicit xteve rebalance after completed native Kubernetes patch
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Require bound authority and terminal success receipt
+      ansible.builtin.assert:
+        that:
+          - xteve_headroom_phase | default('qualify') in ['qualify', 'add-third', 'observe-third', 'reduce', 'observe-two', 'restore']
+          - xteve_headroom_authority_sha256 is match('^[a-f0-9]{64}$')
+          - xteve_headroom_kubernetes_success_sha256 is match('^[a-f0-9]{64}$')
+    - name: Require the existing launcher RAM-only credential carrier
+      ansible.builtin.assert:
+        that:
+          - lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') | length > 0
+      no_log: true
+    - name: Run one finite guarded phase with protected standard input
+      ansible.builtin.command:
+        argv:
+          - /home/brajam/.local/share/branconet-migration/venv/bin/python
+          - -B
+          - "{{ playbook_dir }}/../../../scripts/migration/xteve-three-copy-headroom.py"
+          - "{{ xteve_headroom_phase | default('qualify') }}"
+          - --authority
+          - "{{ xteve_headroom_authority }}"
+          - --authority-sha256
+          - "{{ xteve_headroom_authority_sha256 }}"
+          - --kubernetes-success
+          - "{{ xteve_headroom_kubernetes_success }}"
+          - --kubernetes-success-sha256
+          - "{{ xteve_headroom_kubernetes_success_sha256 }}"
+        stdin: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+        stdin_add_newline: true
+      no_log: true
+      changed_when: xteve_headroom_phase | default('qualify') in ['add-third', 'reduce', 'restore']
+      when: not ansible_check_mode

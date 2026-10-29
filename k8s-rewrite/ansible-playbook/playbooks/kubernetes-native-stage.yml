@@ -1,0 +1,30 @@
+---
+# Explicit controller phases only. No inventory connection, package or service task.
+- name: Capture and stage qualified native Kubernetes binaries
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Require explicit phase and hash-bound original identity checkpoint
+      ansible.builtin.assert:
+        that:
+          - kubernetes_native_stage_phase in ['capture', 'backup', 'stage', 'observe']
+          - kubernetes_native_stage_checkpoint_sha256 is match('^[a-f0-9]{64}$')
+          - kubernetes_native_stage_phase != 'stage' or kubernetes_native_stage_password is defined
+    - name: Run bounded controller phase with privilege input only through stdin
+      ansible.builtin.command:
+        argv:
+          - /home/brajam/.local/share/branconet-migration/venv/bin/python
+          - -B
+          - "{{ playbook_dir }}/../roles/kubernetes_security_patch/files/staging.py"
+          - "{{ kubernetes_native_stage_phase }}"
+          - --checkpoint
+          - "{{ kubernetes_native_stage_checkpoint }}"
+          - --checkpoint-sha256
+          - "{{ kubernetes_native_stage_checkpoint_sha256 }}"
+        stdin: "{{ kubernetes_native_stage_password | default('') if kubernetes_native_stage_phase == 'stage' else '' }}"
+        stdin_add_newline: true
+      no_log: "{{ kubernetes_native_stage_phase == 'stage' }}"
+      changed_when: kubernetes_native_stage_phase != 'observe'
+      check_mode: false
