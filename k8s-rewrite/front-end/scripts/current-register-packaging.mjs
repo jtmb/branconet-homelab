@@ -8,6 +8,12 @@ export const registerMetadataDispatch=Object.freeze({
  "metadata": "tests/current-login-packaging.test.mjs",
  "sourceSHA256": "6df4158119fdd879d3646cb4a818578c72f01d483cf26e62a22ce46f63847543",
  "spans": [
+ {
+  "label": "M03",
+  "start": 2670,
+  "end": 2999,
+  "sha256": "4932cb352514e2aa46e9bba70e4162cdab43a99b4b19250e59b7a51750ef6d88"
+ },
   {
    "label": "M14",
    "start": 8736,

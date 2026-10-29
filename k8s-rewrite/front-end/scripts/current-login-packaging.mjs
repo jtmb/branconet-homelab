@@ -8,6 +8,12 @@ export const loginMetadataDispatch=Object.freeze({
  "metadata": "tests/current-login-packaging.test.mjs",
  "sourceSHA256": "929c448d836dbfe3e586ccc167e5cac2160a69e34a7272395b081e90fe6d1d6c",
  "spans": [
+ {
+  "label": "M03",
+  "start": 1611,
+  "end": 1928,
+  "sha256": "0c16b9e019b9f6991dc78947c4cec203b59b9396faa3996c05bd3509ce814c70"
+ },
   {
    "label": "M14",
    "start": 7720,

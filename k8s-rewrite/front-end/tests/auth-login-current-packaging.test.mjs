@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
-import {planFromInputs as loginPlan} from '../scripts/auth-login-current-unit-plan.mjs';
+import {planFromInputs as loginPlan,loginReplacement,assertCurrentLoginSources} from '../scripts/auth-login-current-unit-plan.mjs';
 import {planFromInputs as currentPlan} from '../scripts/current-packaging-unit-plan.mjs';
-import {planFromInputs as previousPlan} from '../scripts/auth-register-current-unit-plan.mjs';
+import {planFromInputs as previousPlan,registerCurrentReplacement,historicalRegisterFixture,assertCurrentRegisterSources} from '../scripts/auth-register-current-unit-plan.mjs';
 import {readPublicSnapshot,loginPackagingAuthority,assertCurrentRunnerInverse} from '../scripts/current-login-packaging.mjs';
 const gitDir=process.env.BORTUS_PACKAGING_PUBLIC_GIT_DIR;
 const current=readPublicSnapshot(gitDir),historical=readPublicSnapshot(gitDir,loginPackagingAuthority.historicalCommit);
@@ -35,4 +35,27 @@ test('R66 A02 historical354/291 and current460/397 PUBLIC coverage stay explicit
  const newNames=names(registerNow),read=n=>registerNow.read(n).toString(),full=currentPlan(newNames,read,gitDir),prior=previousPlan(newNames,read);assert.equal(full.discovered.length,460);assert.equal(full.selected.length,397);assert.deepEqual(full.replacements,prior.replacements);assert.deepEqual(full.selected,prior.selected);
  const omissions=['tests/scanner-database-update.test.ts','tests/system-report.test.ts'];for(const p of omissions){assert.ok(old.selected.includes(p));assert.ok(full.selected.includes(p));assert.deepEqual(registerNow.read(p),registerHistory.read(p));}
  const privatePlan=currentPlan(newNames.filter(n=>!omissions.includes('tests/'+n)),read,gitDir);assert.equal(privatePlan.discovered.length,458);assert.equal(privatePlan.selected.length,395);assert.deepEqual(full.selected.filter(n=>!privatePlan.selected.includes(n)).sort(),omissions);
+});
+
+// M03 derivatives preserve all three original mutations. The CR perturbation
+// includes a space so an LF source cannot turn it into accepted CRLF.
+test('L03 original login mutations refuse on both supported source line-ending views',()=>{
+ const original=readFileSync(root+loginReplacement.original,'utf8'),publicSource=current.read('src/app/api/auth/login/route.ts').toString();assert.equal(publicSource.includes('\r'),false);
+ for(const source of [publicSource,publicSource.replaceAll('\n','\r\n')]){
+  assertCurrentLoginSources(original,source);
+  for(const changed of [source+'\n// unknown',source.replace('maxAge: 60','maxAge: 61'),source.replace('try {','try {\r ')]){
+   assert.notEqual(changed,source,'Mutation must change source');assert.notEqual(changed.replaceAll('\r\n','\n'),source.replaceAll('\r\n','\n'),'Mutation survives accepted line-ending projection');
+   assert.throws(()=>assertCurrentLoginSources(original,changed),/Unqualified current login source/);
+  }
+ }
+});
+test('R70 L03 original registration mutations refuse on both supported source line-ending views',()=>{
+ const original=readFileSync(root+historicalRegisterFixture,'utf8'),previous=readFileSync(root+registerCurrentReplacement.original,'utf8'),publicSource=registerNow.read('src/app/api/auth/register/route.ts').toString();assert.equal(publicSource.includes('\r'),false);
+ for(const source of [publicSource,publicSource.replaceAll('\n','\r\n')]){
+  assertCurrentRegisterSources(original,source,previous);
+  for(const changed of [source+'\n// unknown',source.replace('maxAge: 60','maxAge: 61'),source.replace('try {','try {\r ')]){
+   assert.notEqual(changed,source,'Mutation must change source');assert.notEqual(changed.replaceAll('\r\n','\n'),source.replaceAll('\r\n','\n'),'Mutation survives accepted line-ending projection');
+   assert.throws(()=>assertCurrentRegisterSources(original,changed,previous),/Unqualified current registration source/);
+  }
+ }
 });
