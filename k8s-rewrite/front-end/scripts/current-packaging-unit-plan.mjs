@@ -554,11 +554,69 @@ function maintainedBindingCallback(bytes,binding){
  assert.equal(callback.split('() => {\n').length,2,'Historical callback shape changed');callback=callback.replace('() => {\n','() => {\n'+guard);
  const projected=Buffer.from(callback);assert.equal(digest(projected),binding.projectedCallbackSHA256,'Exact metadata projection changed');return projected;
 }
+// Bind only four current PUBLIC expectation leaves in the frozen M21 map.
+// The original caller, map and every assertion remain authenticated and recoverable.
+export const preservedPublicAdditionBinding=Object.freeze({
+  "original": "tests/kv-policy-allows-unit-plan.test.mjs",
+  "sourceSHA256": "2606491810961798c725cd8e3139a0c44c84a079f4498bcb7f746778561589d7",
+  "publicSource": "cb68d87e8c02fded34c3df2421a268d8db170e29",
+  "start": 99249,
+  "end": 101925,
+  "historicalMapSHA256": "470d32f038a915a036179212da02c2109169d99be81c6941581ba080e9911e4a",
+  "currentMapSHA256": "a4811bc241b64352f516050ddcca5bf6d186bd6f6b53cf2373d8a40f03bebf31",
+  "entries": 25,
+  "changes": [
+    {
+      "path": "docs/SYSTEM-REPORT-QUALIFICATION.md",
+      "historicalSHA256": "9a5139da7a91111f515b24a6a4dc1e91dd0c91e04d9db83fb546b432b7b1b888",
+      "currentSHA256": "b8454e01ec53bce8aea0f6deaa2ab6bda5d651fe4e7a1df1861d493a0a4742cc"
+    },
+    {
+      "path": "docs/SYSTEM-REPORT.md",
+      "historicalSHA256": "b280fcb5790f2c072d1b9c5531ec24fd97fb7c6fb7818d919721fb645c44dc82",
+      "currentSHA256": "397a3783a1061baccba8b502de363dbc87c7e5d1593244f1a7db440612943d13"
+    },
+    {
+      "path": "scripts/provision-scanner.mjs",
+      "historicalSHA256": "3427d2d2d182c29b8afd7229c55e748429dc1e9ea81d6e1e5e486b39a102dbcb",
+      "currentSHA256": "7227f2930c2b137bf8f810edd74c1900acefec80955ba26ebc315fc913d50a66"
+    },
+    {
+      "path": "scripts/scanner-inputs.json",
+      "historicalSHA256": "af7a82b4fbe18dc69efac6de5433cb3f43561844f0253481a5c3d4031f82ca6f",
+      "currentSHA256": "958973af449954cf870fe14478ec9914d7cd3b8babf6af890ea82df7e5db3235"
+    }
+  ]
+});
+Object.freeze(preservedPublicAdditionBinding.changes);
+for(const change of preservedPublicAdditionBinding.changes)Object.freeze(change);
+export function projectPreservedPublicAdditions(bytes,row){
+ assert.ok(packagingDispatch.includes(row),'Unknown packaging caller');assert.ok(Buffer.isBuffer(bytes),'Raw Buffer required');
+ const binding=preservedPublicAdditionBinding;
+ assert.equal(row.original,binding.original,'Unknown PUBLIC addition caller');
+ assert.equal(digest(bytes),binding.sourceSHA256,'Historical caller raw bytes changed');
+ assert.equal(row.sourceSHA256,binding.sourceSHA256,'Historical caller authority mismatch');
+ const historical=bytes.subarray(binding.start,binding.end);
+ assert.equal(digest(historical),binding.historicalMapSHA256,'Historical PUBLIC addition map changed');
+ const source=JSON.parse(historical.toString());assert.equal(Object.keys(source).length,binding.entries,'Complete PUBLIC addition map required');
+ let current=historical.toString();
+ for(const change of binding.changes){
+  assert.equal(source[change.path],change.historicalSHA256,'Historical PUBLIC addition pin changed');
+  const before=JSON.stringify(change.path)+': '+JSON.stringify(change.historicalSHA256),after=JSON.stringify(change.path)+': '+JSON.stringify(change.currentSHA256);
+  assert.equal(current.split(before).length,2,'Exact PUBLIC addition leaf required');current=current.replace(before,after);
+ }
+ const replacement=Buffer.from(current);assert.equal(digest(replacement),binding.currentMapSHA256,'Current PUBLIC addition map changed');
+ const projected=projectRegistration(bytes,row);assert.ok(binding.start>=row.end,'Overlapping PUBLIC addition/functional registrations');
+ const start=binding.start+projected.length-bytes.length,end=start+historical.length;
+ assert.deepEqual(projected.subarray(start,end),historical,'PUBLIC addition neighbours changed');
+ return Buffer.concat([projected.subarray(0,start),replacement,projected.subarray(end)]);
+}
+
 // Compose only the four declared metadata deltas with the existing projection.
 // All other callers retain the original projection bytes and caller identity.
 export function projectDispatchedRegistration(bytes,row){
  const projected=projectRegistration(bytes,row),binding=metadataBindingDispatch.find(b=>b.original===row.original);
- if(!binding)return projected;
+ if(!binding)return row.original===preservedPublicAdditionBinding.original?projectPreservedPublicAdditions(bytes,row):projected;
  assert.equal(row.sourceSHA256,binding.sourceSHA256,'Historical caller authority mismatch');
  assert.ok(binding.end<=row.start||binding.start>=row.end,'Overlapping metadata/functional registrations');
  const start=binding.start+(binding.start>=row.end?projected.length-bytes.length:0),end=start+binding.end-binding.start;

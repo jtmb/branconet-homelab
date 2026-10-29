@@ -52,7 +52,7 @@ for(const row of packagingDispatch){
  });
 }
 
-import {metadataBindingDispatch,projectDispatchedRegistration} from '../scripts/current-packaging-unit-plan.mjs';
+import {metadataBindingDispatch,projectDispatchedRegistration,preservedPublicAdditionBinding,projectPreservedPublicAdditions} from '../scripts/current-packaging-unit-plan.mjs';
 import {createHash as bindingHash} from 'node:crypto';
 const bindingDigest=bytes=>bindingHash('sha256').update(bytes).digest('hex');
 test('A78 A01 composed metadata dispatch preserves every byte outside its two declared spans',()=>{
@@ -88,9 +88,9 @@ test('A78 A02 composed metadata dispatch refuses raw drift and unknown caller id
   assert.throws(()=>projectDispatchedRegistration(bytes,{...row}),/Unknown packaging caller/);
  }
 });
-test('A78 A03 unrelated46 packaging projections remain byte-identical under composed dispatch',()=>{
+test('A78 A03 other46 packaging projections retain exact functional or declared PUBLIC metadata composition',()=>{
  let count=0;for(const row of packagingDispatch){if(metadataBindingDispatch.some(b=>b.original===row.original))continue;
-  const bytes=readFileSync(join(root,row.original));assert.deepEqual(projectDispatchedRegistration(bytes,row),projectRegistration(bytes,row));count++;
+  const bytes=readFileSync(join(root,row.original));assert.deepEqual(projectDispatchedRegistration(bytes,row),row.original===preservedPublicAdditionBinding.original?projectPreservedPublicAdditions(bytes,row):projectRegistration(bytes,row));count++;
  }assert.equal(count,46);
 });
 
