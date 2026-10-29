@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {readFileSync,writeFileSync,readdirSync,lstatSync,existsSync} from 'node:fs';
 import {join,resolve} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
-import {unitTestPlan,executionFor,executionBatches,artifactStages,assertArtifactState} from './auth-register-current-unit-plan.mjs';
+import {unitTestPlan,executionFor,executionBatches,artifactStages,assertArtifactState,dispatchForBatch} from './current-packaging-unit-plan.mjs';
 const digest=bytes=>createHash('sha256').update(bytes).digest('hex');
 export function qualificationFingerprint(root,plan){
  const files=[];
@@ -16,7 +16,7 @@ export function qualificationFingerprint(root,plan){
  }
  for(const dir of ['src','tests','scripts','prisma'])visit(dir);
  files.push('package.json','package-lock.json','tsconfig.json','next.config.ts','eslint.config.mjs','native/secret-flat-selector.c','runtime/direct-account-reader-worker.cjs');
- return digest(JSON.stringify({selected:plan.selected,replacements:plan.replacements,inputs:files.sort().map(file=>[file,digest(readFileSync(join(root,file)))])}));
+ return digest(JSON.stringify({selected:plan.selected,replacements:plan.replacements,packagingDispatch:plan.packagingDispatch,publicAuthority:plan.publicAuthority,inputs:files.sort().map(file=>[file,digest(readFileSync(join(root,file)))])}));
 }
 export function validatePortableProof(proof,context){
  assert.equal(proof.schema,1,'portable proof schema');assert.equal(proof.phase,'portable-passed','portable phase must pass exactly once');
@@ -31,7 +31,8 @@ function artifactState(root){
 }
 function runBatch(root,batch,scheduling=[]){
  console.log('BORTUS_COMPAT_BATCH '+JSON.stringify(batch));
- const result=spawnSync(process.execPath,[...batch.flags,'--import','tsx','--test',...scheduling,...batch.files],{cwd:root,encoding:'utf8',maxBuffer:64*1024*1024});
+ const dispatch=dispatchForBatch(root,batch.files);
+ const result=spawnSync(process.execPath,[...batch.flags,'--import','tsx',...dispatch.flags,'--test',...scheduling,...batch.files],{cwd:root,env:{...process.env,...dispatch.env},encoding:'utf8',maxBuffer:64*1024*1024});
  if(result.stdout)process.stdout.write(result.stdout);if(result.stderr)process.stderr.write(result.stderr);
  if(result.error)throw result.error;assert.equal(result.signal,null,'unit child terminated');
  const totals={};for(const key of ['tests','pass','fail','cancelled','skipped','todo']){
