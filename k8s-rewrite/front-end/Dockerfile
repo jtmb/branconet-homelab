@@ -15,7 +15,9 @@ COPY package.json package-lock.json ./
 COPY scripts/patch-zod-collections.mjs ./scripts/patch-zod-collections.mjs
 RUN npm ci
 COPY . .
-RUN node scripts/provision-scanner.mjs /scanner
+COPY --from=bortus_kubectl /scanner/trivy /qualified-scanner/trivy
+COPY --from=bortus_kubectl /scanner/LICENSE /qualified-scanner/LICENSE
+RUN node scripts/provision-scanner.mjs /scanner --binary-source /qualified-scanner
 ENV NEXT_TELEMETRY_DISABLED=1 DATABASE_URL=file:/data/bortus.db
 RUN npm run build && npm prune --omit=dev
 

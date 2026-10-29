@@ -50,7 +50,15 @@ From front-end with the supported Node 22 runtime:
 
 1. Run `node scripts/update-scanner-database.mjs` to print a candidate from the official public DB registry. This is a bounded metadata-only read with no cluster/image inventory. It does not write source or change runtime data.
 2. Run `node scripts/update-scanner-database.mjs --write` when ready to edit the repository lock, then review `git diff -- scripts/scanner-inputs.json`. Binary/version pins stay unchanged. No update runs automatically during application use or builds.
-3. Run `node scripts/provision-scanner.mjs <owned-validation-directory>` on Linux/amd64 to verify the pinned manifest/layer checksums, expanded DB schema/timestamps and archive limits. Review provenance and scan a pinned public fixture.
+3. Run `node scripts/provision-scanner.mjs <owned-validation-directory> --binary-source <absolute-qualified-scanner-directory>` on Linux/amd64 to verify the pinned manifest/layer checksums, expanded DB schema/timestamps and archive limits. Review provenance and scan a pinned public fixture.
 4. Commit the reviewed lock change and rebuild the owned BORTUS image using its existing build definition. Normal deployment approval and chart ownership still apply. This command never publishes images, enables Actions, patches workloads or deploys anything.
 
 Refreshing pins does not immediately change already-running instances. The screen retains their actual scan/database timestamps and stale warnings until a current snapshot is supplied and images are rescanned.
+
+## Qualified scanner build input
+
+The provisioner requires an explicit absolute provider directory containing `trivy` and its upstream `LICENSE`. `scripts/scanner-inputs.json` binds both exact byte counts and SHA256 values. The maintained scanner is `0.76.1-bortus.1`, built with Go 1.27.3 from upstream commit `e713f67f7d54decdcd9b3132c9751833dcced698` and six pinned module updates recorded in the same lock. The helper copies these two regular files through exclusive new outputs, verifies their identities and digests, and rejects missing, aliased, changed or mismatched inputs. It never falls back to downloading the upstream release binary. `BORTUS_SCANNER_BUNDLE` may supply the same absolute directory when the command-line option is omitted.
+
+`Dockerfile.release` takes the scanner and license from its existing required `BORTUS_RUNTIME_IMAGE` provider. The regular `Dockerfile` takes `/scanner/trivy` and `/scanner/LICENSE` from its existing `bortus_kubectl` build context; that context continues to supply `/kubectl` separately. Operators must supply bytes matching the reviewed lock. This source change introduces no image publishing or deployment command.
+
+The advisory database still follows the original immutable manifest/layer verification, schema and timestamp checks, size limits and staging cleanup. The reviewed database snapshot is dated 2026-10-25; its age remains visible and it requires a separately reviewed pin update for freshness. `--database-only` retains the portable database qualification path. Whole-image security qualification uses its independently current official advisory database and remains a separate acceptance gate.
