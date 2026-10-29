@@ -93,3 +93,65 @@ test('A78 A03 unrelated46 packaging projections remain byte-identical under comp
   const bytes=readFileSync(join(root,row.original));assert.deepEqual(projectDispatchedRegistration(bytes,row),projectRegistration(bytes,row));count++;
  }assert.equal(count,46);
 });
+
+import {privateFixtureDispatch,privatePackagingFixtureFromEnv,authenticatePrivatePackagingFixture,projectPrivateFixtureRegistration,dispatchForBatch as fixtureDispatchForBatch,installPackagingHooks as fixtureInstallHooks} from '../scripts/current-packaging-unit-plan.mjs';
+import {resolve as fixtureResolve} from 'node:path';
+const fixtureInputLine="const bytes = readFileSync(new URL('../Dockerfile', import.meta.url));";
+const fixtureReplacement=fixture=>`const bytes = readFileSync(${JSON.stringify(fixture.path)});
+  assert.equal(bytes.length, ${fixture.bytes}, 'Private fixture size changed');
+  assert.equal(digest(bytes), ${JSON.stringify(fixture.sha256)}, 'Private fixture hash changed');`;
+test('A80 A01 all50 private metadata projections retain exact original bytes and refusal assertions',()=>{
+ const fixture=privatePackagingFixtureFromEnv();assert.equal(privateFixtureDispatch.length,50);assert.ok(Object.isFrozen(privateFixtureDispatch));
+ assert.deepEqual(privateFixtureDispatch.map(r=>r.path).sort(),packagingDispatch.map(r=>r.metadata).sort());
+ for(const row of privateFixtureDispatch){
+  assert.ok(Object.isFrozen(row));const bytes=readFileSync(join(root,row.path)),copy=Buffer.from(bytes),output=projectPrivateFixtureRegistration(bytes,row,fixture),old=bytes.subarray(row.start,row.end),replacement=fixtureReplacement(fixture);
+  const expected=Buffer.from(old.toString().replace(fixtureInputLine,replacement));assert.equal(bindingDigest(bytes),row.sourceSHA256);assert.deepEqual(bytes,copy);
+  assert.deepEqual(output.subarray(0,row.start),bytes.subarray(0,row.start));assert.deepEqual(output.subarray(row.start,row.start+expected.length),expected);assert.deepEqual(output.subarray(row.start+expected.length),bytes.subarray(row.end));
+  assert.equal(expected.toString().split(replacement).length,2);assert.deepEqual(Buffer.from(expected.toString().replace(replacement,fixtureInputLine)),old);
+  assert.deepEqual(Buffer.concat([output.subarray(0,row.start),old,output.subarray(row.start+expected.length)]),bytes);
+  const before=parse(bytes),after=parse(output);assert.equal(after.statements.length,before.statements.length);
+  for(const [index,node]of before.statements.entries()){
+   if(Buffer.byteLength(bytes.toString().slice(0,node.getStart(before)))===row.start){
+    const a=node.expression.arguments[1].body.statements,b=after.statements[index].expression.arguments[1].body.statements;assert.equal(a.length,3);assert.equal(b.length,5);
+    assert.equal(a[1].getText(before),b[3].getText(after));assert.equal(a[2].getText(before),b[4].getText(after));
+    assert.ok(b[3].getText(after).startsWith('assert.notEqual('));assert.ok(b[4].getText(after).startsWith('refuse(mutate('));
+   }else assert.equal(after.statements[index].getText(after),node.getText(before));
+  }
+ }
+});
+test('A80 A02 private metadata refuses source drift strings and unknown row identities',()=>{
+ const fixture=privatePackagingFixtureFromEnv();for(const row of privateFixtureDispatch){const bytes=readFileSync(join(root,row.path)),changed=Buffer.from(bytes);changed[row.start]^=1;
+  assert.throws(()=>projectPrivateFixtureRegistration(changed,row,fixture),/raw bytes changed/);
+  assert.throws(()=>projectPrivateFixtureRegistration(Buffer.concat([bytes,Buffer.from('drift')]),row,fixture),/raw bytes changed/);
+  assert.throws(()=>projectPrivateFixtureRegistration(bytes.toString(),row,fixture),/Raw Buffer/);
+  assert.throws(()=>projectPrivateFixtureRegistration(bytes,{...row},fixture),/Unknown private fixture metadata/);
+ }
+});
+test('A80 A03 fixture descriptors reject missing ambiguous relative oversized and accessor inputs',()=>{
+ const fixture=privatePackagingFixtureFromEnv(),row=privateFixtureDispatch[0],bytes=readFileSync(join(root,row.path));
+ assert.throws(()=>privatePackagingFixtureFromEnv({}),/Explicit private fixture/);
+ const env={BORTUS_PACKAGING_PRIVATE_DOCKERFILE:fixture.path,BORTUS_PACKAGING_PRIVATE_DOCKERFILE_SHA256:fixture.sha256,BORTUS_PACKAGING_PRIVATE_DOCKERFILE_BYTES:String(fixture.bytes)};
+ for(const length of ['0','01','1.5','1048577','Infinity'])assert.throws(()=>privatePackagingFixtureFromEnv({...env,BORTUS_PACKAGING_PRIVATE_DOCKERFILE_BYTES:length}),/private fixture/i);
+ for(const bad of [{...fixture,path:'../Dockerfile'},{...fixture,sha256:'G'.repeat(64)},{...fixture,bytes:0},{...fixture,bytes:1.5},{...fixture,extra:true},Object.create(fixture)])assert.throws(()=>projectPrivateFixtureRegistration(bytes,row,bad),/Private fixture|private fixture/);
+ let reads=0;const getter={sha256:fixture.sha256,bytes:fixture.bytes};Object.defineProperty(getter,'path',{enumerable:true,get(){reads++;return fixture.path;}});
+ assert.throws(()=>projectPrivateFixtureRegistration(bytes,row,getter),/Private fixture/);assert.equal(reads,0);
+});
+test('A80 A04 live original private fixture authenticates and public aliases or changed pins refuse',()=>{
+ const fixture=privatePackagingFixtureFromEnv(),absolute=fixtureResolve(root),verified=authenticatePrivatePackagingFixture(fixture,absolute);assert.ok(Object.isFrozen(verified));assert.deepEqual(verified,fixture);
+ assert.throws(()=>authenticatePrivatePackagingFixture({...fixture,sha256:'0'.repeat(64)},absolute),/Private fixture hash changed/);
+ assert.throws(()=>authenticatePrivatePackagingFixture({...fixture,bytes:fixture.bytes+1},absolute),/Private fixture size changed/);
+ const publicBytes=readFileSync(join(root,'Dockerfile'));
+ assert.throws(()=>authenticatePrivatePackagingFixture({path:join(absolute,'Dockerfile'),sha256:bindingDigest(publicBytes),bytes:publicBytes.length},absolute),/Private fixture must differ/);
+});
+test('A80 A05 metadata-only dispatch requires fixture context and preserves legacy isolation',()=>{
+ const fixture=privatePackagingFixtureFromEnv(),absolute=fixtureResolve(root),names=privateFixtureDispatch.slice(0,2).map(r=>r.path),dispatch=fixtureDispatchForBatch(root,[...names,packagingDispatch[0].original]),context=JSON.parse(dispatch.env.BORTUS_PACKAGING_DISPATCH);
+ assert.deepEqual(context.privateMetadata,names);assert.deepEqual(context.privateFixture,fixture);assert.deepEqual(context.callers,[packagingDispatch[0].original]);assert.equal(dispatch.flags[0],'--import');
+ const metadataOnly=JSON.parse(fixtureDispatchForBatch(root,names).env.BORTUS_PACKAGING_DISPATCH);assert.deepEqual(metadataOnly.callers,[]);assert.deepEqual(metadataOnly.privateMetadata,names);
+ assert.deepEqual(fixtureDispatchForBatch(root,['tests/unrelated.test.mjs'],{}),{flags:[],env:{BORTUS_PACKAGING_DISPATCH:''}});
+ assert.throws(()=>fixtureDispatchForBatch(root,names,{}),/Explicit private fixture/);
+ assert.throws(()=>fixtureInstallHooks({root:absolute,callers:[],privateMetadata:['tests/unknown-private.test.mjs']}),/Unknown private fixture metadata/);
+ assert.throws(()=>fixtureInstallHooks({root:absolute,callers:[],privateMetadata:[names[0],names[0]]}),/Duplicate private metadata/);
+ assert.throws(()=>fixtureInstallHooks({root:absolute,callers:[],privateMetadata:names}),/Private fixture descriptor/);
+ assert.throws(()=>fixtureInstallHooks({root:absolute,callers:[],privateMetadata:[],privateFixture:fixture}),/Unexpected private fixture/);
+ assert.throws(()=>fixtureInstallHooks({root:absolute,callers:[],privateMetadata:null}),/Invalid private metadata/);
+});

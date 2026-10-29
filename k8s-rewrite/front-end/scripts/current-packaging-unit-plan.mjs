@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
-import {readFileSync,readdirSync} from 'node:fs';
+import {readFileSync,readdirSync,lstatSync} from 'node:fs';
 import {registerHooks} from 'node:module';
 import {join,resolve} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
@@ -566,6 +566,449 @@ export function projectDispatchedRegistration(bytes,row){
  return Buffer.concat([projected.subarray(0,start),maintainedBindingCallback(bytes,binding),projected.subarray(end)]);
 }
 
+// Metadata fixture inputs are explicit and separate from PUBLIC application bytes.
+export const privateFixtureDispatch=Object.freeze([
+ {
+  "path": "tests/current-packaging-access-provenance.test.mjs",
+  "sourceSHA256": "fecb482ad0cc9c4a167889dffb8ad501a48a051a09f61f7b5c7cb80546927f20",
+  "start": 12278,
+  "end": 12584,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-aggregate-compatibility-provenance.test.mjs",
+  "sourceSHA256": "1a88a6e2ed9038317504241bac637b6eb4bd70202b1ed631101d98ad8888077b",
+  "start": 16362,
+  "end": 16668,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-audit-route-provenance.test.mjs",
+  "sourceSHA256": "052de23824b037c1b919ab5e150d533b8637fd8b12282f1cd3aab1af4f1e3d36",
+  "start": 13820,
+  "end": 14126,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-automation-route-provenance.test.mjs",
+  "sourceSHA256": "4ff5fb88c9391b504c3d8ff67e18358fbb80bf1c03077a06adfe2ed89d8b5ab5",
+  "start": 13880,
+  "end": 14186,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-caller-provenance.test.mjs",
+  "sourceSHA256": "37f4548cde3e227dbf63a0f727de04b062a71404dca74ce116a96700f01876d4",
+  "start": 11764,
+  "end": 12070,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-deploy-history-delete-provenance.test.mjs",
+  "sourceSHA256": "aefe589af1f94efaec3bed39623f55415c4acd0973487af772da5f24b544f3f1",
+  "start": 14879,
+  "end": 15185,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-deploy-history-get-provenance.test.mjs",
+  "sourceSHA256": "04c78c01fbba1f202825d9aa13834b9c6e7ca08b51ad1a47ad24e486ddf76930",
+  "start": 14722,
+  "end": 15028,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-deploy-start-get-provenance.test.mjs",
+  "sourceSHA256": "366395e65e8828dc65c6c2b72fcecba1405bce6dbc1f6cd47397fcd5ecb2861d",
+  "start": 14698,
+  "end": 15004,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-deploy-start-post-provenance.test.mjs",
+  "sourceSHA256": "c4397e168bd26ef9c43bcbff30d5ab7d2a2c2ff706d230e213f1206dee474547",
+  "start": 14710,
+  "end": 15016,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-deploy-stop-provenance.test.mjs",
+  "sourceSHA256": "4287ba4187a9a8f09c7708135a535882858428776ce8a3ed99d4a2ce01410159",
+  "start": 14623,
+  "end": 14929,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-deploy-stream-provenance.test.mjs",
+  "sourceSHA256": "382855d00babac822b3b820854ea06c115b877c3c555c2491a7b931117de381f",
+  "start": 14661,
+  "end": 14967,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-deployment-pods-provenance.test.mjs",
+  "sourceSHA256": "34edd8f2990b6e96816c2e15a4a8fea36f20750e45d2a5ef9b44aa4028140c1a",
+  "start": 14689,
+  "end": 14995,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-engine-provenance.test.mjs",
+  "sourceSHA256": "42bea717c3c7b99e406b54012a6b39350b6eb8c8737cf03a97461f1b71a3bda4",
+  "start": 11772,
+  "end": 12078,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-ensure-jwt-secret-provenance.test.mjs",
+  "sourceSHA256": "94bef765ae88cf855c1a74cf7379e6ad41143aa27c2d85ef8ec863d02e5c55b6",
+  "start": 14710,
+  "end": 15016,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-error-provenance.test.mjs",
+  "sourceSHA256": "31ee33165d8867bf74f70a65921719b67d6d8e4c34991b37ce2fa718e47c2516",
+  "start": 11806,
+  "end": 12112,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-field-provenance.test.mjs",
+  "sourceSHA256": "cb478983d869884532147902a202f50352c8ec8c7f83a19922512b564ee8928c",
+  "start": 11803,
+  "end": 12109,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-get-current-role-provenance.test.mjs",
+  "sourceSHA256": "7df7e02eb8597430b82e6159e621f574a352f68731c0380c8fba7a14e5807d07",
+  "start": 14694,
+  "end": 15000,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-get-session-account-from-headers-provenance.test.mjs",
+  "sourceSHA256": "3856a109714a5c20988c5202f0669eac4eda69d4d75542ec228c67279df8b3f4",
+  "start": 14894,
+  "end": 15200,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-get-session-account-provenance.test.mjs",
+  "sourceSHA256": "98506097fc70817621325812cfe78ba3ac7f7bdab41e3bd20790ce1d1e7914a2",
+  "start": 14734,
+  "end": 15040,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-get-session-from-headers-provenance.test.mjs",
+  "sourceSHA256": "6ee52add0b09cec70fc0aee9fe466f3794db2ab38ea96e3c970fd2cffd4ca124",
+  "start": 14762,
+  "end": 15068,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-get-session-provenance.test.mjs",
+  "sourceSHA256": "b08b1e3a6a3f487517c3d1310b7c1206fbae2933d4bba0884a10d9f75489cd79",
+  "start": 14598,
+  "end": 14904,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-guarded-provenance.test.mjs",
+  "sourceSHA256": "3f922aad223ca610c82497f7d176ab5d9f7c23ef0478d905b1da8882de8226ca",
+  "start": 11815,
+  "end": 12121,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-history-gc-provenance.test.mjs",
+  "sourceSHA256": "4b292670d76f3b3a7dee5f84b0a2985d8314d999a3e1fd8248bc3f7b084c506d",
+  "start": 11834,
+  "end": 12140,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-history-preview-provenance.test.mjs",
+  "sourceSHA256": "cc06983dfa2e4542577a682c05a546e66b93c59d50de644e34799090e8402166",
+  "start": 11909,
+  "end": 12215,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-job-id-valid-provenance.test.mjs",
+  "sourceSHA256": "af6e35fd38c0f5eb9b2917d9f59199684d4f6d3880563a841f92bc585930323d",
+  "start": 13815,
+  "end": 14121,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-job-slice-provenance.test.mjs",
+  "sourceSHA256": "48d9ea34180c0aa1556bc7d532beee0497cc791a0b2b1601921dc40ca934d6f8",
+  "start": 11802,
+  "end": 12108,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-job-tail-provenance.test.mjs",
+  "sourceSHA256": "3fd84350a38ba73e1b3e9e1d2e1a16dd25426cef7ca51571c2b4ef6bd777d638",
+  "start": 11790,
+  "end": 12096,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-metadata-query-provenance.test.mjs",
+  "sourceSHA256": "9401f1c96e2ab6fb2d758bed3ca830e8c117ecf916a4211935524c89d5497431",
+  "start": 13850,
+  "end": 14156,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-observe-provenance.test.mjs",
+  "sourceSHA256": "29739523ecfc44ea14b3d15cb1d7c3ffeebb88ff60e7b77641a59dec89c66e43",
+  "start": 11826,
+  "end": 12132,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-operator-provenance.test.mjs",
+  "sourceSHA256": "e29f78c014f76e0ccef330bb855f0e51b4d490b23b6347d669ea45534c0378cf",
+  "start": 12311,
+  "end": 12617,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-parse-actions-provenance.test.mjs",
+  "sourceSHA256": "c5f1fd27b1a27ca4ed2566fd0a4ca040945803f597ae7096459909f1fd3c64fc",
+  "start": 13838,
+  "end": 14144,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-policy-allows-provenance.test.mjs",
+  "sourceSHA256": "7d22e4109c93f7229e0576479699d88d5aa979dc6e2160f698179682b31424bf",
+  "start": 13834,
+  "end": 14140,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-policy-preview-provenance.test.mjs",
+  "sourceSHA256": "0f5f33e356bd631bb9f5f7fae5a0c30f96abcfb29a7fdd0b91fa2fad28ff400d",
+  "start": 11886,
+  "end": 12192,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-registry-provenance.test.mjs",
+  "sourceSHA256": "b034f7eb1e021d30293747e3e1148f3e37293842a86e23f353bc24da8bb63d22",
+  "start": 11789,
+  "end": 12095,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-resource-base-provenance.test.mjs",
+  "sourceSHA256": "f8180a79725b16bf9559926e32340edf489f989545ff620ae87a32beb2a7b263",
+  "start": 13451,
+  "end": 13757,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-resource-cache-provenance.test.mjs",
+  "sourceSHA256": "71437570ae2a029d65582b4cce1cfd9b72cfb0bede06b1aed6e729452b2c2ff9",
+  "start": 13815,
+  "end": 14121,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-resource-capabilities-provenance.test.mjs",
+  "sourceSHA256": "cbf0ad181d1497a1dc3bc826bfc8799fec78a2e81299bc526e11fe5e8bb08b25",
+  "start": 13913,
+  "end": 14219,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-resource-private-state-provenance.test.mjs",
+  "sourceSHA256": "5b922bc7942f889cd017f3473044b9c8a4271a1fde58971af6310eef5cb20c87",
+  "start": 13928,
+  "end": 14234,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-resource-snapshot-provenance.test.mjs",
+  "sourceSHA256": "5c1fe7f8c980e8d46ffcb0228d97898ca0b1376a7bbc4a370b3ba7d848998265",
+  "start": 13856,
+  "end": 14162,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-resource-state-provenance.test.mjs",
+  "sourceSHA256": "5f89b93a4a9e3968b656f5444bfbfbbf5a7e0697fc0d3f13277b48220e123c55",
+  "start": 13824,
+  "end": 14130,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-runtime-capabilities-provenance.test.mjs",
+  "sourceSHA256": "264e210c6e7c5f21758716cb273c83d8711a69d8163eefabcfeeed231f2b8642",
+  "start": 13910,
+  "end": 14216,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-secret-flat-summary-provenance.test.mjs",
+  "sourceSHA256": "cbdf950757c7f62a5a410684dc6349883c51e9cd4d9329355395bf0d91b595e5",
+  "start": 13892,
+  "end": 14198,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-settings-mutation-provenance.test.mjs",
+  "sourceSHA256": "cd822760e3c9bb1db1613eadcbd670135ca08d1ea26923eaa8bbf20d0d646596",
+  "start": 13871,
+  "end": 14177,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-shared-metadata-query-provenance.test.mjs",
+  "sourceSHA256": "7a05fa2aa00518d219d6b5d5901b605ba787189d7430a27d7591862e33cbd6e1",
+  "start": 13913,
+  "end": 14219,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-sign-jwt-provenance.test.mjs",
+  "sourceSHA256": "9bd42e8b763cd82fbce7b46576d0f256e86c27e0faa702721e3f2f785eabc475",
+  "start": 13738,
+  "end": 14044,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-verify-jwt-provenance.test.mjs",
+  "sourceSHA256": "8f44b1cf2b78c0e1dd2b2ce89a3204f19fe26242bcc085cc653cdf58d1f94f8d",
+  "start": 13769,
+  "end": 14075,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-welcome-navigation-provenance.test.mjs",
+  "sourceSHA256": "deb2c006e39337f6e8e9af5886ca2d4f23bfa1d874792c7d278a28fcfd65a444",
+  "start": 13885,
+  "end": 14191,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-worker-reader-provenance.test.mjs",
+  "sourceSHA256": "49e1d5a8dc87a2ad94b03d3c183607a182571f54cf59e1eb4f4c3a5290c0abd8",
+  "start": 13811,
+  "end": 14117,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-write-provenance.test.mjs",
+  "sourceSHA256": "0cd8de36150391a08a97f139e87ce4c226b6cee6df7ef5daef742fe9a07541ff",
+  "start": 12261,
+  "end": 12567,
+  "callbackSHA256": "7487781fef546865f9c4ce2435a5167b24b82076d0467e96ad4ee34f8e3c93b1",
+  "label": "Q17 real private Dockerfile substituted into otherwise public inventory refuses"
+ },
+ {
+  "path": "tests/current-packaging-yaml-save-provenance.test.mjs",
+  "sourceSHA256": "63b2981330c59972687e02741b20355f020917b7cb2373b84e27a5489ac27582",
+  "start": 13757,
+  "end": 14063,
+  "callbackSHA256": "55d97795797e1081650845fb7c2a6cf8796c0849d7513fb9e7b8495d973da924",
+  "label": "R17 real private Dockerfile substituted into otherwise public inventory refuses"
+ }
+].map(row=>Object.freeze(row)));
+function privateFixtureRecord(value){
+ assert.ok(value&&typeof value==='object'&&!Array.isArray(value),'Private fixture descriptor required');
+ assert.ok([Object.prototype,null].includes(Object.getPrototypeOf(value)),'Private fixture descriptor prototype changed');
+ const descriptors=Object.getOwnPropertyDescriptors(value),keys=Reflect.ownKeys(descriptors);
+ assert.deepEqual([...keys].sort(),['bytes','path','sha256'],'Private fixture descriptor fields changed');
+ for(const name of keys)assert.ok(Object.hasOwn(descriptors[name],'value')&&descriptors[name].enumerable,'Private fixture descriptor must contain data fields');
+ const path=descriptors.path.value,sha256=descriptors.sha256.value,bytes=descriptors.bytes.value;
+ assert.ok(typeof path==='string'&&path.length>0&&path.length<=4096&&!path.includes(String.fromCharCode(0))&&resolve(path)===path,'Explicit absolute private fixture path required');
+ assert.ok(typeof sha256==='string'&&/^[a-f0-9]{64}$/.test(sha256),'Explicit private fixture raw SHA256 required');
+ assert.ok(Number.isSafeInteger(bytes)&&bytes>0&&bytes<=1048576,'Explicit bounded private fixture bytes required');
+ return Object.freeze({path,sha256,bytes});
+}
+export function privatePackagingFixtureFromEnv(env=process.env){
+ const length=env.BORTUS_PACKAGING_PRIVATE_DOCKERFILE_BYTES;
+ assert.ok(typeof length==='string'&&/^[1-9][0-9]{0,6}$/.test(length),'Explicit private fixture byte length required');
+ return privateFixtureRecord({path:env.BORTUS_PACKAGING_PRIVATE_DOCKERFILE,sha256:env.BORTUS_PACKAGING_PRIVATE_DOCKERFILE_SHA256,bytes:Number(length)});
+}
+export function authenticatePrivatePackagingFixture(input,root){
+ const fixture=privateFixtureRecord(input);assert.ok(typeof root==='string'&&resolve(root)===root,'Explicit PUBLIC source root required');
+ const before=lstatSync(fixture.path,{bigint:true});assert.ok(before.isFile()&&!before.isSymbolicLink(),'Private fixture must be a regular nonsymlink file');
+ assert.equal(before.size,BigInt(fixture.bytes),'Private fixture size changed');
+ const bytes=readFileSync(fixture.path),after=lstatSync(fixture.path,{bigint:true});
+ assert.deepEqual([after.dev,after.ino,after.size,after.mtimeNs],[before.dev,before.ino,before.size,before.mtimeNs],'Private fixture identity changed during read');
+ assert.equal(bytes.length,fixture.bytes,'Private fixture size changed');assert.equal(digest(bytes),fixture.sha256,'Private fixture hash changed');
+ assert.notEqual(digest(bytes),digest(readFileSync(join(root,'Dockerfile'))),'Private fixture must differ from PUBLIC application Dockerfile');
+ return fixture;
+}
+export function projectPrivateFixtureRegistration(bytes,row,input){
+ assert.ok(privateFixtureDispatch.includes(row),'Unknown private fixture metadata');assert.ok(Buffer.isBuffer(bytes),'Raw Buffer required');
+ assert.equal(digest(bytes),row.sourceSHA256,'Historical metadata raw bytes changed');
+ const original=bytes.subarray(row.start,row.end);assert.equal(digest(original),row.callbackSHA256,'Historical private fixture registration changed');
+ const fixture=privateFixtureRecord(input),callback=original.toString();assert.deepEqual(Buffer.from(callback),original,'Raw metadata UTF-8 required');
+ const inputLine="const bytes = readFileSync(new URL('../Dockerfile', import.meta.url));";
+ assert.equal(callback.split(inputLine).length,2,'Historical fixture input changed');
+ const replacement=`const bytes = readFileSync(${JSON.stringify(fixture.path)});
+  assert.equal(bytes.length, ${fixture.bytes}, 'Private fixture size changed');
+  assert.equal(digest(bytes), ${JSON.stringify(fixture.sha256)}, 'Private fixture hash changed');`;
+ return Buffer.concat([bytes.subarray(0,row.start),Buffer.from(callback.replace(inputLine,replacement)),bytes.subarray(row.end)]);
+}
+
 export const publicCheckpoint='afc2adfa23bf32b026ae3cea9b3390a70096adcf';
 const inventorySHA256='f38ddef829ae2443e2064036e49a5b87fc897d3126b78a67c121bc61795ebe80';
 // This is Git object authority, not authentication of a live filesystem.
@@ -610,9 +1053,13 @@ export function projectRegistration(bytes,row){
  const replacement=Buffer.from('/* Packaging registration dispatched to '+row.current+'; neighbours retained. */');
  return Buffer.concat([bytes.subarray(0,row.start),replacement,bytes.subarray(row.end)]);
 }
-export function dispatchForBatch(root,files){
+export function dispatchForBatch(root,files,fixtureEnv=process.env){
  const callers=[...packagingDispatch,loginMetadataDispatch,registerMetadataDispatch].filter(r=>files.includes(r.original)).map(r=>r.original);
- return callers.length?{flags:['--import',pathToFileURL(join(root,'scripts/current-packaging-unit-plan.mjs')).href],env:{BORTUS_PACKAGING_DISPATCH:JSON.stringify({root:resolve(root),callers})}}:{flags:[],env:{BORTUS_PACKAGING_DISPATCH:''}};
+ const privateMetadata=privateFixtureDispatch.filter(r=>files.includes(r.path)).map(r=>r.path);
+ if(!callers.length&&!privateMetadata.length)return {flags:[],env:{BORTUS_PACKAGING_DISPATCH:''}};
+ const context={root:resolve(root),callers};
+ if(privateMetadata.length){context.privateMetadata=privateMetadata;context.privateFixture=authenticatePrivatePackagingFixture(privatePackagingFixtureFromEnv(fixtureEnv),context.root);}
+ return {flags:['--import',pathToFileURL(join(root,'scripts/current-packaging-unit-plan.mjs')).href],env:{BORTUS_PACKAGING_DISPATCH:JSON.stringify(context)}};
 }
 export function installPackagingHooks(context){
  assertPublicAuthority(process.env.BORTUS_PACKAGING_PUBLIC_GIT_DIR);
@@ -623,14 +1070,25 @@ export function installPackagingHooks(context){
   const row=[...packagingDispatch,loginMetadataDispatch,registerMetadataDispatch].find(r=>r.original===name);assert.ok(row,'Unknown dispatch caller');
   return [pathToFileURL(join(context.root,name)).href,row];
  }));
+ const privateNames=Object.hasOwn(context,'privateMetadata')?context.privateMetadata:[];
+ assert.ok(Array.isArray(privateNames),'Invalid private metadata context');assert.equal(new Set(privateNames).size,privateNames.length,'Duplicate private metadata caller');
+ const privateTargets=new Map(privateNames.map(name=>{
+  const row=privateFixtureDispatch.find(r=>r.path===name);assert.ok(row,'Unknown private fixture metadata');
+  const url=pathToFileURL(join(context.root,name)).href;assert.equal(targets.has(url),false,'Overlapping metadata/legacy caller');return [url,row];
+ }));
+ let privateFixture;
+ if(privateNames.length)privateFixture=authenticatePrivatePackagingFixture(context.privateFixture,contextRoot);
+ else assert.equal(context.privateFixture,undefined,'Unexpected private fixture without metadata callers');
  return registerHooks({resolve(specifier,context,nextResolve){
   // Only verified legacy caller URLs receive the maintained helper binding.
-  // Text literals and unrelated importers keep their original module identity.
+  // Metadata inputs and unrelated importers keep their original module identity.
   if(targets.has(context.parentURL)&&packagingDispatch.some(row=>targets.get(context.parentURL)===row)&&
     new URL(specifier,context.parentURL).href===pathToFileURL(join(contextRoot,'scripts/packaging-provenance.mjs')).href)
    return nextResolve(pathToFileURL(join(contextRoot,'scripts/current-maintained-packaging-provenance.mjs')).href,context);
   return nextResolve(specifier,context);
  },load(url,context,nextLoad){
+  const metadata=privateTargets.get(url);
+  if(metadata)return {format:'module',shortCircuit:true,source:projectPrivateFixtureRegistration(readFileSync(fileURLToPath(url)),metadata,privateFixture)};
   const row=targets.get(url);if(!row)return nextLoad(url,context);
   const bytes=readFileSync(fileURLToPath(url));return {format:'module',shortCircuit:true,source:row===registerMetadataDispatch?projectRegisterRegistrations(bytes):row===loginMetadataDispatch?projectLoginRegistrations(bytes):projectDispatchedRegistration(bytes,row)};
  }});

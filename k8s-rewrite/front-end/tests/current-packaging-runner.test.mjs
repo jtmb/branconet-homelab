@@ -5,7 +5,7 @@ import {createHash} from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {resolve,join} from 'node:path';
 import {registerHooks} from 'node:module';
-import {dispatchForBatch,packagingDispatch,installPackagingHooks,unitTestPlan,projectRegistration} from '../scripts/current-packaging-unit-plan.mjs';
+import {dispatchForBatch,packagingDispatch,installPackagingHooks,unitTestPlan,projectDispatchedRegistration} from '../scripts/current-packaging-unit-plan.mjs';
 import {main,qualificationFingerprint,validatePortableProof} from '../scripts/run-compatible-unit-tests.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 test('R01 batch dispatch carries exact caller subset and clears inherited context otherwise',()=>{
@@ -40,7 +40,7 @@ test('R07 actual preload hook routes50 exact URLs and delegates unrelated module
  const observer=registerHooks({load(url,context,nextLoad){
   const loaded=nextLoad(url,context),row=rows.get(url);if(!row)return loaded;
   assert.equal(loaded.format,'module');assert.equal(loaded.shortCircuit,true);
-  assert.deepEqual(Buffer.from(loaded.source),projectRegistration(readFileSync(fileURLToPath(url)),row));seen.push(row.original);
+  assert.deepEqual(Buffer.from(loaded.source),projectDispatchedRegistration(readFileSync(fileURLToPath(url)),row));seen.push(row.original);
   return {format:'module',shortCircuit:true,source:'export const observed = true;'};
  }});
  try{
