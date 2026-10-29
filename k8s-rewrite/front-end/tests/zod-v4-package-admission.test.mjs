@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
+import { readFileSync } from "node:fs";
 const require = createRequire(import.meta.url);
 const directory = process.env.BORTUS_ZOD_DIRECTORY ?? path.dirname(require.resolve("zod/package.json"));
 const source = process.env.BORTUS_ZOD_SOURCE === "1";
@@ -15,8 +16,26 @@ for (const format of source ? ["source"] : ["CJS", "ESM"]) {
   const load = async name => format === "CJS" ? require(prefix + name + "/index" + extension)
     : import(pathToFileURL(prefix + name + "/index" + extension).href);
   const core = await load("v4/core");
-  const { Doc } = format === "CJS" ? require(prefix + "v4/core/doc.cjs")
+  const { Doc } = format === "CJS" ? require(prefix + "v4/core/doc.js")
     : await import(pathToFileURL(prefix + "v4/core/doc" + extension).href);
+  if (format === "CJS") assert.ok(readFileSync(prefix + "v4/core/schemas.cjs", "utf8").includes('const doc_js_1 = require("./doc.js");'), "Actual maintained compiler module binding changed");
+  test("G79 " + format + " actual compiler distinguishes base, JIT, async and jitless paths", async () => {
+    for (const useJIT of [false, true]) for (const jitless of [false, true]) for (const async of [false, true]) {
+      let compiled = 0;
+      const child = new core.$ZodArray({ type: "array", element: new core.$ZodNumber({ type: "number", checks: [] }) });
+      const parent = new core[useJIT ? "$ZodObjectJIT" : "$ZodObject"]({ type: "object", shape: { value: child } });
+      const compile = Doc.prototype.compile;
+      Doc.prototype.compile = function (...args) { compiled++; return compile.apply(this, args); };
+      let result;
+      try { result = async ? await core.safeParseAsync(parent, { value: [1, 2] }, { jitless })
+        : core.safeParse(parent, { value: [1, 2] }, { jitless }); }
+      finally { Doc.prototype.compile = compile; }
+      assert.equal(result.success, true);
+      assert.deepEqual(result.data, { value: [1, 2] });
+      assert.equal(compiled, useJIT && !jitless && !async ? 1 : 0, "genuine compiler selection across all parent paths");
+    }
+  });
+
   for (const surface of surfaces) {
     const api = await load(surface);
     const raw = surface === "v4/core";
@@ -27,7 +46,10 @@ for (const format of source ? ["source"] : ["CJS", "ESM"]) {
     const map = el => raw ? new core.$ZodMap({ type: "map", keyType: el, valueType: el }) : api.map(el, el);
     const attach = (schema, ...checks) => schema.check ? schema.check(...checks)
       : core.clone(schema, { ...schema._zod.def, checks: [...(schema._zod.def.checks ?? []), ...checks] });
-    const object = child => raw ? new core.$ZodObject({ type: "object", shape: { value: child } }) : api.object({ value: child });
+    // Preserve base/interpreter coverage; explicitly request the maintained sync JIT constructor.
+    const object = (child, jitless, async) => !jitless && !async && (raw || surface === "v4-mini" || surface === "v4/mini")
+      ? new core.$ZodObjectJIT({ type: "object", shape: { value: child } })
+      : raw ? new core.$ZodObject({ type: "object", shape: { value: child } }) : api.object({ value: child });
     const label = format + " " + surface;
     for (const jitless of [false, true]) for (const async of [false, true]) for (const kind of cases) {
       test(label + " " + kind + " " + (jitless ? "interpreter" : "object-JIT") + " " + (async ? "async" : "sync") + " rejects before traversal", async () => {
@@ -51,7 +73,7 @@ for (const format of source ? ["source"] : ["CJS", "ESM"]) {
           if (!kind.endsWith("default")) schema = attach(schema, kind.endsWith("exact") ? core._size(maximum, { error: "size error" }) : core._maxSize(maximum, { error: "size error" }));
         }
         schema = attach(schema, { _zod: { def: { check: "custom" }, onattach: [], check() { later++; } } });
-        const parent = object(schema), compile = Doc.prototype.compile;
+        const parent = object(schema, jitless, async), compile = Doc.prototype.compile;
         Doc.prototype.compile = function (...args) { compiled++; return compile.apply(this, args); };
         let result;
         try { result = async ? await core.safeParseAsync(parent, { value: input }, { jitless })

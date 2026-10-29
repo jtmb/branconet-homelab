@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 import { pathToFileURL } from "node:url";
 import path from "node:path";
+import { readFileSync } from "node:fs";
 const require = createRequire(import.meta.url);
 const directory = process.env.BORTUS_ZOD_DIRECTORY ?? path.dirname(require.resolve("zod/package.json"));
 const source = process.env.BORTUS_ZOD_SOURCE === "1";
@@ -13,7 +14,8 @@ for (const format of source ? ["source"] : ["CJS", "ESM"]) {
   const prefix = directory + (source ? "/src/" : "/");
   const load = name => format === "CJS" ? require(prefix + name + ext) : import(pathToFileURL(prefix + name + ext).href);
   const core = await load("v4/core/index");
-  const { Doc } = await load("v4/core/doc");
+  const { Doc } = format === "CJS" ? require(prefix + "v4/core/doc.js") : await load("v4/core/doc");
+  if (format === "CJS") assert.ok(readFileSync(prefix + "v4/core/schemas.cjs", "utf8").includes('const doc_js_1 = require("./doc.js");'), "Actual maintained compiler module binding changed");
   for (const surface of ["root", "v3", "v4", "v4-mini", "v4/mini", "v4/core"]) {
     const v3 = surface === "root" || surface === "v3", raw = surface === "v4/core";
     const api = await load(surface === "root" ? "v3/index" : surface + "/index");
@@ -23,7 +25,10 @@ for (const format of source ? ["source"] : ["CJS", "ESM"]) {
     const array = inner => raw ? new core.$ZodArray({ type: "array", element: inner }) : api.array(inner);
     const set = inner => raw ? new core.$ZodSet({ type: "set", valueType: inner }) : api.set(inner);
     const map = (k, v) => raw ? new core.$ZodMap({ type: "map", keyType: k, valueType: v }) : api.map(k, v);
-    const object = inner => raw ? new core.$ZodObject({ type: "object", shape: { value: inner } }) : api.object({ value: inner });
+    // Mini/core base objects interpret; use their explicit JIT parent only in the sync JIT case.
+    const object = (inner, jitless, async) => !v3 && !jitless && !async && (raw || surface === "v4-mini" || surface === "v4/mini")
+      ? new core.$ZodObjectJIT({ type: "object", shape: { value: inner } })
+      : raw ? new core.$ZodObject({ type: "object", shape: { value: inner } }) : api.object({ value: inner });
     const union = options => raw ? new core.$ZodUnion({ type: "union", options }) : api.union(options);
     const attach = (schema, check) => schema.check ? schema.check(check) : core.clone(schema, { ...schema._zod.def, checks: [check] });
     const failLeaf = (async, visit) => v3 ? api.any().superRefine(async ? async (_, ctx) => { visit(); await Promise.resolve(); ctx.addIssue({ code: "custom", message: "leaf" }); }
@@ -46,7 +51,7 @@ for (const format of source ? ["source"] : ["CJS", "ESM"]) {
           if (kind === "collection-work") { child = array(array(number())); input = Array.from({ length: 200 }, () => Array(600).fill(1)); }
           if (kind === "union-cannot-recover") child = union([child, any()]);
           if (kind === "catch-cannot-recover") child = catchSchema(child);
-          const schema = object(child), compile = Doc.prototype.compile;
+          const schema = object(child, jitless, async), compile = Doc.prototype.compile;
           Doc.prototype.compile = function (...args) { compiled++; return compile.apply(this, args); };
           let result;
           try { result = await parse(schema, { value: input }, async, jitless); } finally { Doc.prototype.compile = compile; }
