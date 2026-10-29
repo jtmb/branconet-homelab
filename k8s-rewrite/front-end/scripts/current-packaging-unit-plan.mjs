@@ -7,6 +7,7 @@ import {join,resolve} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {planFromInputs as previousPlan,executionFor as previousExecution} from './auth-register-current-unit-plan.mjs';
 export {executionBatches,artifactStages,assertArtifactState,portableFixture,qualifiedNativeSHA256} from './auth-register-current-unit-plan.mjs';
+import {loginMetadataDispatch,projectLoginRegistrations} from './current-login-packaging.mjs';
 const digest=b=>createHash('sha256').update(b).digest('hex');
 export const packagingDispatch=Object.freeze([
  {
@@ -476,7 +477,7 @@ export function assertPublicAuthority(gitDir){
 }
 export function withPackagingDispatch(prior){
  assert.equal(new Set(prior.selected).size,prior.selected.length,'Duplicate selected input');
- for(const row of packagingDispatch)for(const path of [row.original,row.current,row.metadata])
+ for(const row of [...packagingDispatch,loginMetadataDispatch])for(const path of [row.original,row.current,row.metadata])
   assert.equal(prior.selected.filter(n=>n===path).length,1,'Required packaging input exactly once: '+path);
  return {...prior,packagingDispatch,scope:prior.scope+' Exact selected packaging registrations dispatched; all neighbouring controls retained. Not an aggregate pass.'};
 }
@@ -486,11 +487,12 @@ export function planFromInputs(names,read,gitDir=process.env.BORTUS_PACKAGING_PU
 }
 export function unitTestPlan(root){return planFromInputs(readdirSync(join(root,'tests')),name=>readFileSync(join(root,name),'utf8'));}
 export function executionFor(plan,args){
+ if(args.length===2&&args[0]==='--group'&&args[1]==='current-login-packaging')return [loginMetadataDispatch.original,loginMetadataDispatch.current,loginMetadataDispatch.metadata];
  if(args.length===2&&args[0]==='--group'&&args[1]==='current-packaging'){
   const wanted=new Set(packagingDispatch.flatMap(r=>[r.original,r.current,r.metadata]));return plan.selected.filter(n=>wanted.has(n));
  }
  const selected=previousExecution(plan,args),wanted=new Set(selected);
- for(const row of packagingDispatch)if(wanted.has(row.original)){wanted.add(row.current);wanted.add(row.metadata);}
+ for(const row of [...packagingDispatch,loginMetadataDispatch])if(wanted.has(row.original)){wanted.add(row.current);wanted.add(row.metadata);}
  return [...selected,...plan.selected.filter(n=>wanted.has(n)&&!selected.includes(n))];
 }
 // Remove only the exact frozen registration. Its qualified current projection
@@ -503,7 +505,7 @@ export function projectRegistration(bytes,row){
  return Buffer.concat([bytes.subarray(0,row.start),replacement,bytes.subarray(row.end)]);
 }
 export function dispatchForBatch(root,files){
- const callers=packagingDispatch.filter(r=>files.includes(r.original)).map(r=>r.original);
+ const callers=[...packagingDispatch,loginMetadataDispatch].filter(r=>files.includes(r.original)).map(r=>r.original);
  return callers.length?{flags:['--import',pathToFileURL(join(root,'scripts/current-packaging-unit-plan.mjs')).href],env:{BORTUS_PACKAGING_DISPATCH:JSON.stringify({root:resolve(root),callers})}}:{flags:[],env:{BORTUS_PACKAGING_DISPATCH:''}};
 }
 export function installPackagingHooks(context){
@@ -511,12 +513,12 @@ export function installPackagingHooks(context){
  assert.ok(context&&typeof context.root==='string'&&resolve(context.root)===context.root&&Array.isArray(context.callers),'Invalid dispatch context');
  assert.equal(new Set(context.callers).size,context.callers.length,'Duplicate dispatch caller');
  const targets=new Map(context.callers.map(name=>{
-  const row=packagingDispatch.find(r=>r.original===name);assert.ok(row,'Unknown dispatch caller');
+  const row=[...packagingDispatch,loginMetadataDispatch].find(r=>r.original===name);assert.ok(row,'Unknown dispatch caller');
   return [pathToFileURL(join(context.root,name)).href,row];
  }));
  return registerHooks({load(url,context,nextLoad){
   const row=targets.get(url);if(!row)return nextLoad(url,context);
-  const bytes=readFileSync(fileURLToPath(url));return {format:'module',shortCircuit:true,source:projectRegistration(bytes,row)};
+  const bytes=readFileSync(fileURLToPath(url));return {format:'module',shortCircuit:true,source:row===loginMetadataDispatch?projectLoginRegistrations(bytes):projectRegistration(bytes,row)};
  }});
 }
 if(process.env.BORTUS_PACKAGING_DISPATCH)installPackagingHooks(JSON.parse(process.env.BORTUS_PACKAGING_DISPATCH));
