@@ -219,3 +219,39 @@ test("source census refuses unguarded application arrays, sets, maps and alterna
   walk(path.resolve(import.meta.dirname, "../src"));
   assert.equal(arrays, 16);
 });
+
+
+test("combined bounds keep original issue priority at each rejected length", async () => {
+  for (const original of [z.array(z.string()).max(1, "maximum").length(2, "exact"),
+    z.array(z.string()).length(2, "exact").max(1, "maximum"),
+    z.array(z.string()).max(2, "maximum").length(2, "exact"),
+    z.array(z.string()).max(3, "maximum").length(2, "exact"),
+    z.array(z.string()).max(0, "empty").length(2),
+    z.array(z.string()).max(1).length(0, "none")]) {
+    const upper = Math.min(...[original._def.maxLength, original._def.exactLength]
+      .filter(bound => bound !== null).map(bound => bound.value));
+    for (let length = upper + 1; length <= 5; length++) {
+      const baseline = original.safeParse(Array(length).fill("ok"));
+      assert.equal(baseline.success, false);
+      const expected = baseline.error.issues.find(issue => issue.code === "too_big");
+      assert.ok(expected);
+      const fields = issue => ({ code: issue.code, maximum: issue.maximum, type: issue.type,
+        inclusive: issue.inclusive, exact: issue.exact, message: issue.message, path: issue.path });
+      for (const asyncParse of [false, true]) {
+        let reads = 0, visits = 0;
+        const element = z.string().superRefine(() => { visits++; });
+        const guarded = boundedArray(new z.ZodArray({ ...original._def, type: element }));
+        const input = Array(length).fill("ok");
+        Object.defineProperty(input, 0, { get() { reads++; return "ok"; } });
+        const schema = z.object({ values: guarded });
+        const result = asyncParse ? await schema.safeParseAsync({ values: input }) : schema.safeParse({ values: input });
+        assert.equal(result.success, false);
+        assert.equal(reads, 0, "rejected array element was read");
+        assert.equal(visits, 0, "rejected array element refinement ran");
+        assert.equal(result.error.issues.length, 1);
+        assert.equal(result.error.issues[0].fatal, true);
+        assert.deepEqual(fields(result.error.issues[0]), { ...fields(expected), path: ["values"] });
+      }
+    }
+  }
+});

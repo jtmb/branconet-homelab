@@ -12,9 +12,11 @@ export function boundedArray<T extends z.ZodTypeAny, C extends z.ArrayCardinalit
   const maximum = Math.min(...bounds.map(bound => bound.value));
   return z.preprocess((value, context) => {
     if (Array.isArray(value) && value.length > maximum) {
-      const exact = exactLength !== null && exactLength.value === maximum;
-      context.addIssue({ code: z.ZodIssueCode.too_big, maximum, type: "array", inclusive: true,
-        exact, message: (exact ? exactLength : maxLength)?.message, fatal: true });
+      // Zod reports an exceeded exact length before max, even when max is tighter.
+      const exact = exactLength !== null && value.length > exactLength.value;
+      const bound = exact ? exactLength! : maxLength!;
+      context.addIssue({ code: z.ZodIssueCode.too_big, maximum: bound.value, type: "array", inclusive: true,
+        exact, message: bound.message, fatal: true });
       return z.NEVER;
     }
     return value;
