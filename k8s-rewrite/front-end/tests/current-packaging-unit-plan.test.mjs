@@ -51,3 +51,45 @@ for(const row of packagingDispatch){
   assert.throws(()=>projectRegistration(Buffer.concat([bytes,Buffer.from('\n')]),row),/raw bytes changed/);
  });
 }
+
+import {metadataBindingDispatch,projectDispatchedRegistration} from '../scripts/current-packaging-unit-plan.mjs';
+import {createHash as bindingHash} from 'node:crypto';
+const bindingDigest=bytes=>bindingHash('sha256').update(bytes).digest('hex');
+test('A78 A01 composed metadata dispatch preserves every byte outside its two declared spans',()=>{
+ assert.equal(metadataBindingDispatch.length,4);assert.ok(Object.isFrozen(metadataBindingDispatch));
+ for(const binding of metadataBindingDispatch){
+  assert.ok(Object.isFrozen(binding));const row=packagingDispatch.find(r=>r.original===binding.original),bytes=readFileSync(join(root,row.original)),copy=Buffer.from(bytes),output=projectDispatchedRegistration(bytes,row),packaging=projectRegistration(bytes,row);
+  assert.deepEqual(bytes,copy);assert.equal(bindingDigest(bytes),binding.sourceSHA256);
+  const functionReplacement=Buffer.from('/* Packaging registration dispatched to '+row.current+'; neighbours retained. */');
+  const start=binding.start+(binding.start>=row.end?packaging.length-bytes.length:0),end=start+binding.end-binding.start;
+  assert.deepEqual(output.subarray(0,start),packaging.subarray(0,start));
+  const replacementLength=output.length-packaging.length+end-start,metadataReplacement=output.subarray(start,start+replacementLength);
+  assert.equal(bindingDigest(metadataReplacement),binding.projectedCallbackSHA256);
+  assert.deepEqual(output.subarray(start+replacementLength),packaging.subarray(end));
+  const restoredPackaging=Buffer.concat([output.subarray(0,start),bytes.subarray(binding.start,binding.end),output.subarray(start+replacementLength)]);assert.deepEqual(restoredPackaging,packaging);
+  assert.deepEqual(Buffer.concat([restoredPackaging.subarray(0,row.start),bytes.subarray(row.start,row.end),restoredPackaging.subarray(row.start+functionReplacement.length)]),bytes);
+  const before=parse(bytes),after=parse(output),originalStatements=before.statements.filter(n=>!(n.getStart(before)===row.start&&n.end<=row.end));
+  assert.equal(after.statements.length,originalStatements.length);
+  for(const [index,n] of originalStatements.entries()){
+   if(n.getStart(before)===binding.start){
+    const projected=after.statements[index];assert.equal(projected.expression.arguments[0].text,binding.label);
+    const text=projected.getText(after);for(const pin of [binding.currentRawSHA256,binding.historicalLF,binding.historicalCRLF,binding.currentLF,binding.currentCRLF,binding.selectedRawSHA256])assert.ok(text.includes(pin),pin);
+    assert.ok(text.includes('Maintained raw source changed'));assert.ok(text.includes('Historical whole-source inverse'));
+   }else assert.equal(after.statements[index].getText(after),n.getText(before));
+  }
+ }
+});
+test('A78 A02 composed metadata dispatch refuses raw drift and unknown caller identity',()=>{
+ for(const binding of metadataBindingDispatch){
+  const row=packagingDispatch.find(r=>r.original===binding.original),bytes=readFileSync(join(root,row.original)),changed=Buffer.from(bytes);changed[binding.start]^=1;
+  assert.throws(()=>projectDispatchedRegistration(changed,row),/raw bytes changed/);
+  assert.throws(()=>projectDispatchedRegistration(Buffer.concat([bytes,Buffer.from('\n')]),row),/raw bytes changed/);
+  assert.throws(()=>projectDispatchedRegistration(bytes.toString(),row),/Raw Buffer/);
+  assert.throws(()=>projectDispatchedRegistration(bytes,{...row}),/Unknown packaging caller/);
+ }
+});
+test('A78 A03 unrelated46 packaging projections remain byte-identical under composed dispatch',()=>{
+ let count=0;for(const row of packagingDispatch){if(metadataBindingDispatch.some(b=>b.original===row.original))continue;
+  const bytes=readFileSync(join(root,row.original));assert.deepEqual(projectDispatchedRegistration(bytes,row),projectRegistration(bytes,row));count++;
+ }assert.equal(count,46);
+});

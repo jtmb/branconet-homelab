@@ -462,6 +462,110 @@ export const packagingDispatch=Object.freeze([
   "sourceSHA256": "8ab70adcbea96507d77029aafdae52361201bf24a225f4429516f2f923e39812"
  }
 ].map(row=>Object.freeze(row)));
+// Exact maintained-import metadata deltas; frozen caller files remain unchanged.
+export const metadataBindingDispatch=Object.freeze([
+ {
+  "original": "tests/kv-audit-route-unit-plan.test.mjs",
+  "sourceSHA256": "85b32edd981a421092804318b2d7f81a08ad4d0286ac5a8b2236950d0bec2482",
+  "start": 49094,
+  "end": 50136,
+  "callbackSHA256": "ddf46d4ea7b3ee17f3c730e95e40b764da7de403db77f119d3c9adc9e0e209cf",
+  "label": "M17 exact14line source and only async three-parameter GET kvHuman callback",
+  "sourcePath": "src/app/api/kv/audit/route.ts",
+  "currentRawSHA256": "12068f39be4d73c37180e5e8282fdabefdfd3158bc3dab0b9352606f1e543a99",
+   "historicalRawSHA256": "c2c2b8312894fa4b4759246d6a7302439c700b9aaa35ed8b03b5b947c9c70b37",
+  "currentLF": "12068f39be4d73c37180e5e8282fdabefdfd3158bc3dab0b9352606f1e543a99",
+  "currentCRLF": "72f72b632f30727ff095b09949a128cdaadd9c4b241928b42b3966f55f632938",
+  "historicalLF": "c2c2b8312894fa4b4759246d6a7302439c700b9aaa35ed8b03b5b947c9c70b37",
+  "historicalCRLF": "cda6565ca06cfbf98f899b45c7e12bc232b6081894229b8b3b15c2c23f205bd8",
+  "selectedName": "GET",
+  "selectedRawSHA256": "e41f878e1742ba54266659b61ad56cc009e7599f8537c16f08526b964d8ed62f",
+  "projectedCallbackSHA256": "ec6aa6efb21e2726bea14bd3740fb0f310d841f090a6eb1a189cff28dbc38f0b"
+ },
+ {
+  "original": "tests/kv-engine-unit-plan.test.mjs",
+  "sourceSHA256": "cec7e76bf2ad792fba9cb2d5c9f2aca829c03de881d5157b14fadfdb0e1e7068",
+  "start": 81991,
+  "end": 82817,
+  "callbackSHA256": "18e07804e7685c259f37db463163a2cfb2c0c139ca24d054e2cd16bab48c4b48",
+  "label": "M17 exact71line source selects only exported synchronous kvEngine factory",
+  "sourcePath": "src/lib/kv-http.ts",
+  "currentRawSHA256": "f0dcd4915030b2fbd6d263e188efece91e7f03678aec0f88a014b1878da4382b",
+   "historicalRawSHA256": "a9fb1f2798fc5c32973fe1563de56efe796b7da715309c7d1547f712c95ebc1a",
+  "currentLF": "f0dcd4915030b2fbd6d263e188efece91e7f03678aec0f88a014b1878da4382b",
+  "currentCRLF": "3cac3518eaf766cf08f07dcc4eddde41ad54ff976204a44a22b123705e08c76f",
+  "historicalLF": "a9fb1f2798fc5c32973fe1563de56efe796b7da715309c7d1547f712c95ebc1a",
+  "historicalCRLF": "188a0e0a231eb5ac8e32b380798fde10f2848ed6422febf903f96eccd6103ab3",
+  "selectedName": "kvEngine",
+  "selectedRawSHA256": "27dfc334859f32ab37c40fbf97a6417f81ff3a7c37c76ecbeaa94a82c63d152e",
+  "projectedCallbackSHA256": "84d8518fa9c56c5d2af4f8eb46e64383dceed8866dcc30ad949e9afb8df0f2e2"
+ },
+ {
+  "original": "tests/kv-error-response-unit-plan.test.mjs",
+  "sourceSHA256": "d8b37b632f9b560a21177ca6f77853d2ca7a56a0f7e90e450a5e52adcb043145",
+  "start": 82382,
+  "end": 83201,
+  "callbackSHA256": "ec4cce4e0ed09c2cc6161e63f22c496e3fdb6adcf078a33a29a202dcaf36875c",
+  "label": "M17 exact71line source selects only exported synchronous kvErrorResponse",
+  "sourcePath": "src/lib/kv-http.ts",
+  "currentRawSHA256": "f0dcd4915030b2fbd6d263e188efece91e7f03678aec0f88a014b1878da4382b",
+   "historicalRawSHA256": "a9fb1f2798fc5c32973fe1563de56efe796b7da715309c7d1547f712c95ebc1a",
+  "currentLF": "f0dcd4915030b2fbd6d263e188efece91e7f03678aec0f88a014b1878da4382b",
+  "currentCRLF": "3cac3518eaf766cf08f07dcc4eddde41ad54ff976204a44a22b123705e08c76f",
+  "historicalLF": "a9fb1f2798fc5c32973fe1563de56efe796b7da715309c7d1547f712c95ebc1a",
+  "historicalCRLF": "188a0e0a231eb5ac8e32b380798fde10f2848ed6422febf903f96eccd6103ab3",
+  "selectedName": "kvErrorResponse",
+  "selectedRawSHA256": "7b37c98268defc39b4d667e7f50187bdd44082759695cb4856b3606b758a339c",
+  "projectedCallbackSHA256": "72a87ea07590ca57116677a5e244b66aca2cee676766140a6d38fee208561cb6"
+ },
+ {
+  "original": "tests/kv-registry-unit-plan.test.mjs",
+  "sourceSHA256": "106e88f8adfbdf235b01b3be5d9c0a82145c400fce90510711606332e99e41d8",
+  "start": 82711,
+  "end": 83426,
+  "callbackSHA256": "2bb33b78e79f7233e818d95631f31a24b2e43b16c598a2e52e81f81d4cd83473",
+  "label": "M17 complete71line source and only exact singleline declaration retain pins",
+  "sourcePath": "src/lib/kv-http.ts",
+  "currentRawSHA256": "f0dcd4915030b2fbd6d263e188efece91e7f03678aec0f88a014b1878da4382b",
+   "historicalRawSHA256": "a9fb1f2798fc5c32973fe1563de56efe796b7da715309c7d1547f712c95ebc1a",
+  "currentLF": "f0dcd4915030b2fbd6d263e188efece91e7f03678aec0f88a014b1878da4382b",
+  "currentCRLF": "3cac3518eaf766cf08f07dcc4eddde41ad54ff976204a44a22b123705e08c76f",
+  "historicalLF": "a9fb1f2798fc5c32973fe1563de56efe796b7da715309c7d1547f712c95ebc1a",
+  "historicalCRLF": "188a0e0a231eb5ac8e32b380798fde10f2848ed6422febf903f96eccd6103ab3",
+  "selectedName": "kvRegistry",
+  "selectedRawSHA256": "b8713be308a0f903b0f906fa3c250626f59ec74413739d665a43d3ddd91ee145",
+  "projectedCallbackSHA256": "1e50391fea512639afb081ec0d1fb8b9a3d4bd52e1d2a6b5962bfa8680d8bd09"
+ }
+].map(row=>Object.freeze(row)));
+
+function maintainedBindingCallback(bytes,binding){
+ const original=bytes.subarray(binding.start,binding.end);assert.equal(digest(original),binding.callbackSHA256,'Historical metadata registration changed');
+ let callback=original.toString();assert.deepEqual(Buffer.from(callback),original,'Raw metadata UTF-8 required');
+ for(const [historical,current] of [[binding.historicalLF,binding.currentLF],[binding.historicalCRLF,binding.currentCRLF]]){
+  assert.equal(callback.split(historical).length,2,'Historical source pin changed');callback=callback.replace(historical,current);
+ }
+ const guard=`  const rawBindingSource = readFileSync(new URL('../${binding.sourcePath}', import.meta.url));
+  assert.equal(digest(rawBindingSource), '${binding.currentRawSHA256}', 'Maintained raw source changed');
+  assert.equal(source.split('from "zod/v3"').length, 2, 'Exact maintained import required');
+  const historicalBindingSource = source.replace('from "zod/v3"', 'from "zod"');
+  assert.equal(digest(historicalBindingSource), '${binding.historicalLF}', 'Historical whole-source inverse');
+  assert.equal(digest(historicalBindingSource.replaceAll('\\n', '\\r\\n')), '${binding.historicalCRLF}', 'Historical CRLF projection retained');
+`;
+ assert.equal(callback.split('() => {\n').length,2,'Historical callback shape changed');callback=callback.replace('() => {\n','() => {\n'+guard);
+ const projected=Buffer.from(callback);assert.equal(digest(projected),binding.projectedCallbackSHA256,'Exact metadata projection changed');return projected;
+}
+// Compose only the four declared metadata deltas with the existing projection.
+// All other callers retain the original projection bytes and caller identity.
+export function projectDispatchedRegistration(bytes,row){
+ const projected=projectRegistration(bytes,row),binding=metadataBindingDispatch.find(b=>b.original===row.original);
+ if(!binding)return projected;
+ assert.equal(row.sourceSHA256,binding.sourceSHA256,'Historical caller authority mismatch');
+ assert.ok(binding.end<=row.start||binding.start>=row.end,'Overlapping metadata/functional registrations');
+ const start=binding.start+(binding.start>=row.end?projected.length-bytes.length:0),end=start+binding.end-binding.start;
+ assert.deepEqual(projected.subarray(start,end),bytes.subarray(binding.start,binding.end),'Metadata neighbours changed');
+ return Buffer.concat([projected.subarray(0,start),maintainedBindingCallback(bytes,binding),projected.subarray(end)]);
+}
+
 export const publicCheckpoint='afc2adfa23bf32b026ae3cea9b3390a70096adcf';
 const inventorySHA256='f38ddef829ae2443e2064036e49a5b87fc897d3126b78a67c121bc61795ebe80';
 // This is Git object authority, not authentication of a live filesystem.
@@ -528,7 +632,7 @@ export function installPackagingHooks(context){
   return nextResolve(specifier,context);
  },load(url,context,nextLoad){
   const row=targets.get(url);if(!row)return nextLoad(url,context);
-  const bytes=readFileSync(fileURLToPath(url));return {format:'module',shortCircuit:true,source:row===registerMetadataDispatch?projectRegisterRegistrations(bytes):row===loginMetadataDispatch?projectLoginRegistrations(bytes):projectRegistration(bytes,row)};
+  const bytes=readFileSync(fileURLToPath(url));return {format:'module',shortCircuit:true,source:row===registerMetadataDispatch?projectRegisterRegistrations(bytes):row===loginMetadataDispatch?projectLoginRegistrations(bytes):projectDispatchedRegistration(bytes,row)};
  }});
 }
 if(process.env.BORTUS_PACKAGING_DISPATCH)installPackagingHooks(JSON.parse(process.env.BORTUS_PACKAGING_DISPATCH));
