@@ -1,4 +1,4 @@
-// Current maintained PUBLIC derivative; exact two-pin rebase and raw-reader strengthening. Original helper stays unchanged.
+// Maintained exact current PUBLIC pins with raw-reader checks; original helper and all five function bodies preserved.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
@@ -13,8 +13,8 @@ const localPins = Object.freeze({
 });
 const publicPins = Object.freeze({
   ".dockerignore": "91bcd3d5dd7ae0043d81c43fdd4f8a5fde08f424712752288ed32f626940a9ba",
-  "Dockerfile": "2deb0552529cf69876a70e90c5b67f43b7c28eed498664ed954e1dbca27246ca",
-  "Dockerfile.release": "d2ce23628d68783ccd80de0adcc8ddbe7d26ea11f48b4c8c4d96c7cd9e6df69e",
+  "Dockerfile": "3533ac8664f7be99ab545760a4e764a405cdc80b267afb436f90359387c8643f",
+  "Dockerfile.release": "9b936390a62c06a72138a3a42046cd68c4611fa669fc771bf24ea052df27a29b",
   "src/app/(dashboard)/sidebar.tsx": "5afdb24bcc80b8bf468287b4aade8e082a2b8dbc1f21cea7603b771de56e072e"
 });
 const digest = bytes => { assert.ok(Buffer.isBuffer(bytes), 'Raw Buffer reader required'); return createHash('sha256').update(bytes).digest('hex'); };
@@ -234,4 +234,4 @@ export function assertRawPackagingInputs(importer, frozen, reader = readFileSync
   }
 }
 
-export const maintainedPackagingAuthority=Object.freeze({"originalHelperSHA256":"a09dccea1580a444fc0ab21fda02b9d049848421d8b0121b0e9cab16eb7fbf15","publicSource":"de695c5f65d9159a3b0d7c7671a9cc42136b275f","oldDockerfile":"b442ae369248ecbcbf34b45fa3e05030477bfe03c0efa278028b7819405a3a66","currentDockerfile":"2deb0552529cf69876a70e90c5b67f43b7c28eed498664ed954e1dbca27246ca","oldApprovedPackage":"d6fb80bcae002c25a6ced7e9553ea633db17ea2654b09518ff06f63e5b1553e2","currentApprovedPackage":"9af95ba24f041cab39ad5686b1ab010316038cadf4a3ab658334ca261d08d342","scope":"Exact raw PUBLIC current binding; historical maps/guards unchanged; no live-filesystem authentication or aggregate pass"});
+export const maintainedPackagingAuthority=Object.freeze({"originalHelperSHA256":"a09dccea1580a444fc0ab21fda02b9d049848421d8b0121b0e9cab16eb7fbf15","publicSource":"cb68d87e8c02fded34c3df2421a268d8db170e29","oldDockerfile":"b442ae369248ecbcbf34b45fa3e05030477bfe03c0efa278028b7819405a3a66","currentDockerfile":"3533ac8664f7be99ab545760a4e764a405cdc80b267afb436f90359387c8643f","oldApprovedPackage":"d6fb80bcae002c25a6ced7e9553ea633db17ea2654b09518ff06f63e5b1553e2","currentApprovedPackage":"9af95ba24f041cab39ad5686b1ab010316038cadf4a3ab658334ca261d08d342","scope":"Exact raw current PUBLIC bindings; original helper and historical map/guard/function bodies preserved; no aggregate pass","oldDockerfileRelease":"d2ce23628d68783ccd80de0adcc8ddbe7d26ea11f48b4c8c4d96c7cd9e6df69e","currentDockerfileRelease":"9b936390a62c06a72138a3a42046cd68c4611fa669fc771bf24ea052df27a29b"});

@@ -9,7 +9,7 @@ const digest=b=>createHash('sha256').update(b).digest('hex'),gitDir=process.env.
 assert.ok(gitDir,'Explicit readonly PUBLIC Git authority required');
 const git=(args,input)=>{const r=spawnSync('git',['-c','safe.directory='+gitDir,'--git-dir='+gitDir,...args],{input,maxBuffer:128*1024*1024,timeout:20000});assert.equal(r.status,0,'Raw PUBLIC Git unavailable');return r.stdout;};
 const prefix='k8s-rewrite/front-end/',inventory=git(['ls-tree','-r','-z',authority.publicSource,'--',prefix]).toString().split('\0').filter(Boolean).map(line=>{const [meta,path]=line.split('\t'),[mode,kind,oid]=meta.split(' ');assert.equal(kind,'blob');return [path.slice(prefix.length),mode,oid];});
-assert.equal(inventory.length,993);assert.equal(digest(JSON.stringify(inventory)),"32a857d1a31f468781a26a2cc3bd7ef05d251a4062f11637ab9052345413f677");
+assert.equal(inventory.length,998);assert.equal(digest(JSON.stringify(inventory)),"53085187b08bf47d955850d353f27c064573a42f4a88a5b49f95288b38bcaf37");
 const batch=git(['cat-file','--batch'],inventory.map(r=>r[2]).join('\n')+'\n');let offset=0;const publicInputs=new Map();
 for(const [name,mode,oid] of inventory){const end=batch.indexOf(10,offset),[id,kind,size]=batch.subarray(offset,end).toString().split(' ');assert.equal(id,oid);assert.equal(kind,'blob');offset=end+1;const bytes=Buffer.from(batch.subarray(offset,offset+Number(size)));offset+=Number(size);assert.equal(batch[offset++],10);assert.equal(createHash('sha1').update(Buffer.from('blob '+size+'\0')).update(bytes).digest('hex'),oid);publicInputs.set(name,{mode,bytes});}assert.equal(offset,batch.length);
 const importer=new URL('file:///qualification/tests/caller.mjs');
@@ -23,13 +23,13 @@ const frozen=()=>({...oldTables.localPins,...Object.fromEntries(Object.entries(o
 const tamper=name=>url=>{const b=reader(url);return decodeURIComponent(url.pathname).endsWith('/'+name)?Buffer.concat([b,Buffer.from('\n')]):b;};
 test('H01 whole raw inverse retains original helper including final newline',()=>{
  assert.equal(digest(original),authority.originalHelperSHA256);let inverse=derived.toString().split('\n').slice(1).join('\n').split('\nexport const maintainedPackagingAuthority=',1)[0];
- inverse=inverse.replace("const digest = bytes => { assert.ok(Buffer.isBuffer(bytes), 'Raw Buffer reader required'); return createHash('sha256').update(bytes).digest('hex'); };","const digest = bytes => createHash('sha256').update(bytes).digest('hex');").replace(authority.currentDockerfile,authority.oldDockerfile).replace(authority.currentApprovedPackage,authority.oldApprovedPackage);
+ inverse=inverse.replace("const digest = bytes => { assert.ok(Buffer.isBuffer(bytes), 'Raw Buffer reader required'); return createHash('sha256').update(bytes).digest('hex'); };","const digest = bytes => createHash('sha256').update(bytes).digest('hex');").replace(authority.currentDockerfile,authority.oldDockerfile).replace(authority.currentDockerfileRelease,authority.oldDockerfileRelease).replace(authority.currentApprovedPackage,authority.oldApprovedPackage);
  assert.deepEqual(Buffer.from(inverse),original);
 });
 test('H02 all five exported function bodies and unchanged guard tables retain exact AST text',()=>{
  const a=parse(original),b=parse(derived),functions=x=>x.statements.filter(ts.isFunctionDeclaration).map(n=>[n.name.text,n.getText(x)]);assert.deepEqual(functions(b),functions(a));assert.equal(functions(a).length,5);
  for(const name of ['localPins','metadataPins','sensitivityPins'])assert.deepEqual(currentTables[name],oldTables[name]);
- const expected=structuredClone(oldTables);expected.publicPins.Dockerfile=authority.currentDockerfile;expected.implementationPins['package.json'].approved=authority.currentApprovedPackage;assert.deepEqual(currentTables,expected);assert.deepEqual(Object.values(currentTables).map(x=>Object.keys(x).length),[4,4,3,32,3]);
+ const expected=structuredClone(oldTables);expected.publicPins.Dockerfile=authority.currentDockerfile;expected.publicPins['Dockerfile.release']=authority.currentDockerfileRelease;expected.implementationPins['package.json'].approved=authority.currentApprovedPackage;assert.deepEqual(currentTables,expected);assert.deepEqual(Object.values(currentTables).map(x=>Object.keys(x).length),[4,4,3,32,3]);
 });
 test('H03 exact actual PUBLIC source is classified by the maintained raw tuple',()=>{
  assert.equal(packagingLineage(importer,reader),'public');assert.equal(compatibilityRevision(importer,reader),'approved');
@@ -60,4 +60,15 @@ test('H09 string and typed-array readers cannot masquerade as raw Buffer inputs'
 });
 test('H10 original source remains unchanged and flat authority is immutable',()=>{
  assert.equal(Object.isFrozen(authority),true);assert.ok(Object.values(authority).every(v=>typeof v==='string'));assert.throws(()=>{authority.currentDockerfile='0'.repeat(64);},TypeError);assert.equal(digest(readFileSync(new URL('../scripts/packaging-provenance.mjs',import.meta.url))),authority.originalHelperSHA256);
+});
+
+test('H11 prior reviewed Dockerfile bytes cannot mix into current raw source tuple',()=>{
+ const prior="de695c5f65d9159a3b0d7c7671a9cc42136b275f";
+ const files=['Dockerfile','Dockerfile.release'];
+ const old=new Map(files.map(name=>[name,git(['show',prior+':'+prefix+name])]));
+ for(const use of [[files[0]],[files[1]],files]){
+  const mixed=url=>{const name=decodeURIComponent(url.pathname.slice('/qualification/'.length));return use.includes(name)?Buffer.from(old.get(name)):reader(url);};
+  assert.throws(()=>packagingLineage(importer,mixed),/Unknown or mixed packaging/);
+  assert.throws(()=>assertRawPackagingInputs(importer,frozen(),mixed),/Unknown or mixed packaging/);
+ }
 });
