@@ -24,3 +24,15 @@ test('L02 original352/290 and current460/397 complete PUBLIC coverage remain dis
  const privatePlan=currentPlan(currentNames.filter(n=>!omitted.includes('tests/'+n)),read,gitDir);assert.equal(privatePlan.discovered.length,458);assert.equal(privatePlan.selected.length,395);assert.deepEqual(full.selected.filter(n=>!privatePlan.selected.includes(n)).sort(),omitted);
  for(const r of full.terminalReplacements)assert.ok(full.selected.includes(r.current));assert.equal(new Set(full.selected).size,397);
 });
+
+import {readRegisterSnapshot,registerPackagingAuthority,assertCurrentRegisterRunnerInverse} from '../scripts/current-register-packaging.mjs';
+const registerNow=readRegisterSnapshot(gitDir),registerHistory=readRegisterSnapshot(gitDir,registerPackagingAuthority.historicalCommit);
+test('R66 A01 current runner raw inverse retains original registration M14',()=>{
+ assertCurrentRegisterRunnerInverse(readFileSync(root+runner),registerHistory.read(runner));assert.deepEqual(readFileSync(root+runner),registerNow.read(runner));
+});
+test('R66 A02 historical354/291 and current460/397 PUBLIC coverage stay explicit',()=>{
+ const old=previousPlan(names(registerHistory),n=>registerHistory.read(n).toString());assert.equal(old.discovered.length,354);assert.equal(old.selected.length,291);assert.equal(old.replacements.length,63);
+ const newNames=names(registerNow),read=n=>registerNow.read(n).toString(),full=currentPlan(newNames,read,gitDir),prior=previousPlan(newNames,read);assert.equal(full.discovered.length,460);assert.equal(full.selected.length,397);assert.deepEqual(full.replacements,prior.replacements);assert.deepEqual(full.selected,prior.selected);
+ const omissions=['tests/scanner-database-update.test.ts','tests/system-report.test.ts'];for(const p of omissions){assert.ok(old.selected.includes(p));assert.ok(full.selected.includes(p));assert.deepEqual(registerNow.read(p),registerHistory.read(p));}
+ const privatePlan=currentPlan(newNames.filter(n=>!omissions.includes('tests/'+n)),read,gitDir);assert.equal(privatePlan.discovered.length,458);assert.equal(privatePlan.selected.length,395);assert.deepEqual(full.selected.filter(n=>!privatePlan.selected.includes(n)).sort(),omissions);
+});

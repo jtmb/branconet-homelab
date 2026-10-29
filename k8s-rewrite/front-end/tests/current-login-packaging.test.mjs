@@ -38,3 +38,30 @@ test('P07 real hook observes two replacements before inert module evaluation',as
  const observer=registerHooks({load(url,ctx,next){const r=next(url,ctx);if(url!==target)return r;assert.deepEqual(Buffer.from(r.source),projectLoginRegistrations(source));observed++;return {format:'module',shortCircuit:true,source:'export const observed = 2;'};}});
  try{assert.equal((await import(target)).observed,2);assert.equal(observed,1);}finally{observer.deregister();hook.deregister();}
 });
+
+import {registerMetadataDispatch,readRegisterSnapshot,projectRegisterRegistrations,assertCurrentRegisterRunnerInverse,registerPackagingAuthority} from '../scripts/current-register-packaging.mjs';
+const registerSource=readFileSync(join(root,registerMetadataDispatch.original));
+test('R66 P01 exact two-registration inverse keeps frozen source',()=>{
+ let inverse=projectRegisterRegistrations(registerSource);
+ for(const span of registerMetadataDispatch.spans){const marker=Buffer.from('/* '+span.label+' dispatched to '+registerMetadataDispatch.current+' */\n'),start=inverse.indexOf(marker);assert.ok(start>=0);assert.equal(inverse.indexOf(marker,start+1),-1);inverse=Buffer.concat([inverse.subarray(0,start),registerSource.subarray(span.start,span.end),inverse.subarray(start+marker.length)]);}
+ assert.deepEqual(inverse,registerSource);
+});
+test('R66 P02 other16 metadata registrations and declarations retain AST parity',()=>{
+ const ts=createRequire(import.meta.url)(process.env.BORTUS_SOURCE_TYPESCRIPT),parse=b=>{const a=ts.createSourceFile('register.mjs',b.toString(),ts.ScriptTarget.ES2022,true,ts.ScriptKind.JS);assert.equal(a.parseDiagnostics.length,0);return a;};const before=parse(registerSource),after=parse(projectRegisterRegistrations(registerSource));const retained=before.statements.filter(n=>!registerMetadataDispatch.spans.some(s=>n.getStart(before)===s.start&&n.end<=s.end));assert.equal(before.statements.length-retained.length,2);assert.deepEqual(after.statements.map(n=>n.getText(after)),retained.map(n=>n.getText(before)));assert.equal(after.statements.filter(n=>ts.isExpressionStatement(n)&&ts.isCallExpression(n.expression)&&n.expression.expression.getText(after)==='test').length,16);
+});
+test('R66 P03 raw metadata mutation and coercion refuse',()=>{
+ assert.throws(()=>projectRegisterRegistrations(registerSource.toString()),/Raw Buffer/);for(const index of [0,...registerMetadataDispatch.spans.map(s=>s.start),registerSource.length-1]){const b=Buffer.from(registerSource);b[index]^=1;assert.throws(()=>projectRegisterRegistrations(b),/metadata changed/);}
+});
+test('R66 P04 explicit PUBLIC Git authority and fixed checkpoints required',()=>{
+ assert.throws(()=>readRegisterSnapshot(undefined),/Explicit readonly/);assert.throws(()=>readRegisterSnapshot(gitDir,'unknown'),/Unknown public/);assert.throws(()=>readRegisterSnapshot('/missing-git'),/PUBLIC Git/);
+});
+test('R66 P05 current/historical runner mutations refuse',()=>{
+ const now=readRegisterSnapshot(gitDir),old=readRegisterSnapshot(gitDir,registerPackagingAuthority.historicalCommit),path='scripts/run-compatible-unit-tests.mjs';assert.throws(()=>assertCurrentRegisterRunnerInverse(Buffer.concat([now.read(path),Buffer.from('\n')]),old.read(path)),/Current runner changed/);assert.throws(()=>assertCurrentRegisterRunnerInverse(now.read(path),Buffer.alloc(0)),/Historical runner changed/);
+});
+test('R66 P06 old50 rows stay exact and new registration dispatch targets only declared caller',()=>{
+ assert.equal(packagingDispatch.length,50);const d=dispatchForBatch(root,[registerMetadataDispatch.original]);assert.deepEqual(JSON.parse(d.env.BORTUS_PACKAGING_DISPATCH).callers,[registerMetadataDispatch.original]);assert.equal(d.flags[0],'--import');
+});
+test('R66 P07 actual hook routes registration before inert module evaluation',async()=>{
+ const url=pathToFileURL(join(root,registerMetadataDispatch.original)).href,hook=installPackagingHooks({root,callers:[registerMetadataDispatch.original]});let observed=0;const observer=registerHooks({load(target,ctx,next){const r=next(target,ctx);if(target!==url)return r;assert.deepEqual(Buffer.from(r.source),projectRegisterRegistrations(registerSource));observed++;return {format:'module',shortCircuit:true,source:'export const observed = 2;'};}});
+ try{assert.equal((await import(url)).observed,2);assert.equal(observed,1);}finally{observer.deregister();hook.deregister();}
+});
