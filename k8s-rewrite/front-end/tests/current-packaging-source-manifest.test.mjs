@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { currentPackagingSource as fixed, historicalPackagingAuthorities as historical } from '../scripts/current-packaging-source-manifest.mjs';
+import { assertCurrentRunnerInverse, loginPackagingAuthority as runnerAuthority } from '../scripts/current-login-packaging.mjs';
 
 const fixedCommit = '206e0a5191e3d8edd6856619668e70326aa92fff';
 const prefix = 'k8s-rewrite/front-end/';
@@ -48,6 +49,14 @@ const project = (bytes, representation) => {
 const frozenMaps = caller => [...actual.get(caller).bytes.toString('utf8').matchAll(/const frozen\s*=\s*(\{[^;]*\});/gs)].map(match => ({
   literal: match[1], value: JSON.parse(match[1]),
 }));
+
+// Current runner bytes must invert exactly to the fixed pre-dispatch runner.
+// The frozen manifest is unchanged; no current byte normalization is allowed here.
+function assertFixedRunnerOwner(owner, fixedBytes, historicalRunner) {
+  assert.ok(Buffer.isBuffer(fixedBytes), 'Raw fixed Buffer required');
+  assert.equal(sha(fixedBytes), runnerAuthority.preDispatchRunner, 'Fixed pre-dispatch runner changed');
+  return assertCurrentRunnerInverse(owner, historicalRunner);
+}
 
 test('S01 actual pinned runtime and independent compiler are genuine', () => {
   assert.equal(process.versions.node, '22.23.3');
@@ -140,6 +149,32 @@ test('S12 actual owner helper, all50 callers and planners remain byte-bound with
   for (const path of new Set(paths)) {
     const owner = readFileSync(new URL('../' + path, import.meta.url));
     const publicBytes = actual.get(path).bytes;
+    if (path === 'scripts/run-compatible-unit-tests.mjs') {
+      assertFixedRunnerOwner(owner, publicBytes, git(['show', runnerAuthority.historicalCommit + ':' + prefix + path]));
+      continue;
+    }
     assert.equal(sha(owner.toString().replaceAll('\r\n', '\n')), sha(publicBytes.toString().replaceAll('\r\n', '\n')), path);
+  }
+});
+
+test('S13 fixed-manifest runner comparison refuses altered raw authorities', () => {
+  const path = 'scripts/run-compatible-unit-tests.mjs';
+  const owner = readFileSync(new URL('../' + path, import.meta.url));
+  const fixedBytes = actual.get(path).bytes;
+  const old = git(['show', runnerAuthority.historicalCommit + ':' + prefix + path]);
+  const mutate = bytes => { const copy = Buffer.from(bytes); copy[0] ^= 1; return copy; };
+  assert.throws(() => assertFixedRunnerOwner(owner, mutate(fixedBytes), old), /Fixed pre-dispatch runner changed/);
+  assert.throws(() => assertFixedRunnerOwner(owner, fixedBytes.toString(), old), /Raw fixed Buffer required/);
+  assert.throws(() => assertFixedRunnerOwner(owner, owner, old), /Fixed pre-dispatch runner changed/);
+  assert.throws(() => assertFixedRunnerOwner(owner, fixedBytes, mutate(old)), /Historical runner changed/);
+  assert.throws(() => assertFixedRunnerOwner(owner, fixedBytes, fixedBytes), /Historical runner changed/);
+  assert.throws(() => assertFixedRunnerOwner(owner, fixedBytes, old.toString()), /Raw Buffer required/);
+  for (const altered of [mutate(owner), Buffer.concat([owner, Buffer.from('\n')]),
+    Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), owner]),
+    Buffer.from(owner.toString().replaceAll('\r\n', '\n')),
+    Buffer.from(owner.toString().replace('=await runBatch(', '=runBatch(')),
+    Buffer.from(owner.toString().replace("['--test-concurrency=2']", "['--test-concurrency=1']"))]) {
+    assert.notDeepEqual(altered, owner, 'Tamper witness must change raw bytes');
+    assert.throws(() => assertFixedRunnerOwner(altered, fixedBytes, old), /Current runner changed/);
   }
 });
