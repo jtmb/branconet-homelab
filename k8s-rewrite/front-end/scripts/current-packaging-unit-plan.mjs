@@ -514,11 +514,19 @@ export function installPackagingHooks(context){
  assertPublicAuthority(process.env.BORTUS_PACKAGING_PUBLIC_GIT_DIR);
  assert.ok(context&&typeof context.root==='string'&&resolve(context.root)===context.root&&Array.isArray(context.callers),'Invalid dispatch context');
  assert.equal(new Set(context.callers).size,context.callers.length,'Duplicate dispatch caller');
+ const contextRoot=context.root;
  const targets=new Map(context.callers.map(name=>{
   const row=[...packagingDispatch,loginMetadataDispatch,registerMetadataDispatch].find(r=>r.original===name);assert.ok(row,'Unknown dispatch caller');
   return [pathToFileURL(join(context.root,name)).href,row];
  }));
- return registerHooks({load(url,context,nextLoad){
+ return registerHooks({resolve(specifier,context,nextResolve){
+  // Only verified legacy caller URLs receive the maintained helper binding.
+  // Text literals and unrelated importers keep their original module identity.
+  if(targets.has(context.parentURL)&&packagingDispatch.some(row=>targets.get(context.parentURL)===row)&&
+    new URL(specifier,context.parentURL).href===pathToFileURL(join(contextRoot,'scripts/packaging-provenance.mjs')).href)
+   return nextResolve(pathToFileURL(join(contextRoot,'scripts/current-maintained-packaging-provenance.mjs')).href,context);
+  return nextResolve(specifier,context);
+ },load(url,context,nextLoad){
   const row=targets.get(url);if(!row)return nextLoad(url,context);
   const bytes=readFileSync(fileURLToPath(url));return {format:'module',shortCircuit:true,source:row===registerMetadataDispatch?projectRegisterRegistrations(bytes):row===loginMetadataDispatch?projectLoginRegistrations(bytes):projectRegistration(bytes,row)};
  }});
