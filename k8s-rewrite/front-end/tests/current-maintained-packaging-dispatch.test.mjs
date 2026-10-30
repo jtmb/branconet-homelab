@@ -32,7 +32,7 @@ export function assertMaintainedPlan(plan){
  assert.deepEqual(plan.selected.filter(path=>ordinary.includes(path)).sort(),discovered,'Ordinary inputs remain selected exactly once');
  assert.ok(plan.discovered.includes('tests/scanner-bundle.test.ts'),'Current scanner bundle input discovered');
  assert.equal(plan.selected.filter(path=>path==='tests/scanner-bundle.test.ts').length,1,'Current scanner bundle input selected exactly once');
- const [discoveredCount,selectedCount]=discovered.length===2?[463,400]:[461,398];
+ const [discoveredCount,selectedCount]=discovered.length===2?[464,401]:[462,399];
  assert.equal(plan.replacements.length,63);assert.equal(plan.discovered.length,discoveredCount);assert.equal(plan.selected.length,selectedCount);assert.equal(executionFor(plan,['--group','current-packaging']).length,150);assert.equal(new Set(plan.selected).size,plan.selected.length);
  for(const path of ['tests/current-maintained-packaging-provenance.test.mjs','tests/current-maintained-packaging-dispatch.test.mjs'])assert.ok(plan.selected.includes(path));
 }
