@@ -8,13 +8,13 @@ export function createWorkerPortSourceReader(reader){
  return function(file){
   assert.ok(file instanceof URL,'Raw source URL required');const name=rows.find(row=>file.pathname.endsWith('/'+row.path));
   if(!name)return reader(file);
-  const base=new URL(file.href.slice(0,-name.path.length)),key=base.href;let revision=cohorts.get(key);
-  if(!revision){
-   const observed=rows.map(row=>{const bytes=reader(new URL(row.path,base));assert.ok(Buffer.isBuffer(bytes),'Raw Buffer source required');return digest(bytes);});
-   const matching=['historical','maintained'].filter(label=>rows.every((row,index)=>observed[index]===row[label+'SHA256']));assert.equal(matching.length,1,'Unknown or mixed worker-port source revision');revision=matching[0];cohorts.set(key,revision);
+  const base=new URL(file.href.slice(0,-name.path.length)),key=base.href;let cohort=cohorts.get(key);
+  if(!cohort){
+   const observed=rows.map(row=>{const bytes=reader(new URL(row.path,base));assert.ok(Buffer.isBuffer(bytes),'Raw Buffer source required');return Buffer.from(bytes);});
+   const matching=['historical','maintained'].filter(label=>rows.every((row,index)=>digest(observed[index])===row[label+'SHA256']));assert.equal(matching.length,1,'Unknown or mixed worker-port source revision');cohort={revision:matching[0],raw:new Map(rows.map((row,index)=>[row.path,observed[index]]))};cohorts.set(key,cohort);
   }
-  const bytes=reader(file);assert.ok(Buffer.isBuffer(bytes),'Raw Buffer source required');assert.equal(digest(bytes),name[revision+'SHA256'],'Worker-port raw input changed: '+name.path);
-  if(revision==='historical')return Buffer.from(bytes);
+  const bytes=reader(file);assert.ok(Buffer.isBuffer(bytes),'Raw Buffer source required');assert.ok(bytes.equals(cohort.raw.get(name.path)),'Worker-port raw input changed: '+name.path);
+  if(cohort.revision==='historical')return Buffer.from(bytes);
   const inverseKey=key+'\0'+name.path;if(inverses.has(inverseKey))return Buffer.from(inverses.get(inverseKey));
   let inverse=Buffer.from(bytes);
   for(const edit of [...name.edits].reverse()){
