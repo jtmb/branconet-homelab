@@ -13,7 +13,7 @@ for (const [file, hash] of [
   ],
   [
     "src/lib/worker-account-reader.ts",
-    "35b3d831266639efd86577c88970bebfad2f8a8c58673d2f5ebfc8361e2ac5ea"
+    "bd916ef961d1a8824f3ee0fb81d34e163ed1de78b5f9f0c0ee496df1c8195cef"
   ],
   [
     "src/lib/direct-account-core.ts",
@@ -21,7 +21,7 @@ for (const [file, hash] of [
   ],
   [
     "runtime/direct-account-reader-worker.cjs",
-    "239f818c54d3742aac427ad3120d2ef38249d00ca58bfca83eb7f96a38e2ba69"
+    "e89e8488b743f6e1594f037896767b901dfeb9659189728c9e44811b78167c95"
   ],
   [
     "tests/worker-account-probe.cjs",

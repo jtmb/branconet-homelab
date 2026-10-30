@@ -2,7 +2,7 @@ import path from "node:path";
 import { constants, lstatSync, readFileSync } from "node:fs";
 import { accessSync } from "node:fs";
 import { createHash } from "node:crypto";
-import { Worker, SHARE_ENV } from "node:worker_threads";
+import { Worker, SHARE_ENV, MessageChannel, MessagePort, receiveMessageOnPort } from "node:worker_threads";
 import { accountDatabaseLocation, type SessionRow, type AccountRow } from "./direct-account-core";
 
 type Row = SessionRow | AccountRow | null;
@@ -33,6 +33,8 @@ function identity(file: string) {
 /** Evaluation transport. No rows, sessions or authority are retained between calls. */
 export class WorkerAccountReader {
   private worker?: Worker;
+  private responsePort?: MessagePort;
+  private transferredPort?: MessagePort;
   private active?: Operation;
   private queued: Operation[] = [];
   private nextId = 0;
@@ -45,7 +47,8 @@ export class WorkerAccountReader {
   constructor(private readonly currentConfig = () => process.env.DATABASE_URL,
     private readonly schemaDirectory = path.join(process.cwd(), "prisma"),
     private readonly workerFile = path.join(process.cwd(), "runtime", "direct-account-reader-worker.cjs"),
-    private readonly createWorker = (file: string) => new Worker(file, { env: SHARE_ENV })) {}
+    private readonly createWorker = (file: string, settlementPort?: MessagePort) => new Worker(file, { env: SHARE_ENV,
+      ...(settlementPort ? { workerData: { settlementPort }, transferList: [settlementPort] } : {}) })) {}
 
   readSession(subject: string, signal?: AbortSignal): Promise<SessionRow | null> {
     return this.read(subject, "session", signal) as Promise<SessionRow | null>;
@@ -55,6 +58,7 @@ export class WorkerAccountReader {
   }
   activity() { return { active: this.active ? 1 : 0, queued: this.queued.length, closing: this.closing, closeFailed: this.closeFailed }; }
   private read(subject: string, projection: Projection, signal?: AbortSignal): Promise<Row> {
+    this.drainPendingSettlement();
     let config: string, file: string;
     try {
       config = this.currentConfig()!; file = accountDatabaseLocation(config, this.schemaDirectory);
@@ -84,6 +88,14 @@ export class WorkerAccountReader {
     if (this.closing || this.closeFailed || operation.cancelled || now() >= operation.deadline ||
       operation.config !== this.currentConfig()) throw unavailable();
   }
+  private drainPendingSettlement() {
+    if (!this.responsePort || !this.worker || this.closing || this.closeFailed) return;
+    const worker = this.worker;
+    try {
+      const pending = receiveMessageOnPort(this.responsePort);
+      if (pending) this.receive(worker, pending.message);
+    } catch { this.poison(worker); }
+  }
   private attach(): Worker {
     if (this.worker) return this.worker;
     const root = path.dirname(this.workerFile), receiptFile = path.join(root, "direct-account-build.json"),
@@ -94,7 +106,14 @@ export class WorkerAccountReader {
     const receipt = JSON.parse(readFileSync(receiptFile, "utf8"));
     const hash = (file: string) => createHash("sha256").update(readFileSync(file)).digest("hex");
     if (receipt.workerSHA256 !== hash(this.workerFile) || receipt.coreSHA256 !== hash(coreFile)) throw unavailable();
-    const worker = this.createWorker(this.workerFile); this.worker = worker;
+    const { port1, port2 } = new MessageChannel();
+    let worker: Worker;
+    try { worker = this.createWorker(this.workerFile, port2); }
+    catch (error) { port1.close(); port2.close(); throw error; }
+    this.worker = worker; this.responsePort = port1; this.transferredPort = port2;
+    port1.on("message", message => this.receive(worker, message));
+    port1.on("messageerror", () => this.poison(worker));
+    port1.unref();
     this.validatedCloseAck = false; this.expectedTermination = false;
     worker.on("message", message => this.receive(worker, message));
     worker.on("messageerror", () => this.poison(worker));
@@ -102,6 +121,8 @@ export class WorkerAccountReader {
     worker.on("exit", code => {
       if (worker !== this.worker) return;
       this.worker = undefined;
+      this.responsePort?.close(); this.transferredPort?.close();
+      this.responsePort = undefined; this.transferredPort = undefined;
       if (this.active) { this.finish(this.active); this.active = undefined; }
       for (const operation of this.queued.splice(0)) this.finish(operation);
       if (!this.shutdownRequested || !this.validatedCloseAck || !this.expectedTermination ||

@@ -1,6 +1,8 @@
 'use strict';
 // Trusted source-linked core; diagnostics must never print operation arguments or rows.
-const { parentPort } = require('node:worker_threads');
+const { parentPort, workerData, MessagePort } = require('node:worker_threads');
+const resultPort = workerData?.settlementPort ?? parentPort;
+if (!(resultPort instanceof MessagePort)) throw Error('ACCOUNT_READ_UNAVAILABLE');
 const fs = require('node:fs'), path = require('node:path'), crypto = require('node:crypto');
 const coreFile = path.join(__dirname, 'direct-account-core.cjs'), receiptFile = path.join(__dirname, 'direct-account-build.json');
 for (const file of [coreFile, receiptFile]) {
@@ -17,12 +19,12 @@ parentPort.on('message', async message => {
     let closeFailed = false;
     try { await core?.close(); } catch { closeFailed = true; }
     active = false;
-    parentPort.postMessage({ kind: 'discarded', id: message.id, closeFailed }); return;
+    resultPort.postMessage({ kind: 'discarded', id: message.id, closeFailed }); return;
   }
   if (message?.kind === 'close' && !active) {
     let closeFailed = false;
     try { await core?.close(); } catch { closeFailed = true; }
-    parentPort.postMessage({ kind: 'closed', closeFailed }); return;
+    resultPort.postMessage({ kind: 'closed', closeFailed }); return;
   }
   if (active || message?.kind !== 'read' || !Number.isSafeInteger(message.id) || typeof message.subject !== 'string' ||
       !['session', 'account'].includes(message.projection) || typeof message.config !== 'string' ||
@@ -49,5 +51,5 @@ parentPort.on('message', async message => {
   const identity = core?.settlementIdentity();
   const closeFailed = core?.activity().closeFailed ?? false;
   active = false;
-  parentPort.postMessage({ kind: 'settled', id: message.id, refused, row, identity, closeFailed });
+  resultPort.postMessage({ kind: 'settled', id: message.id, refused, row, identity, closeFailed });
 });
