@@ -1,7 +1,9 @@
 // Maintained exact current PUBLIC pins with raw-reader checks; original helper and all five function bodies preserved.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { readFileSync as rawReadFileSync } from 'node:fs';
+import { createWorkerPortSourceReader } from './current-worker-port-source.mjs';
+const readFileSync = createWorkerPortSourceReader(rawReadFileSync);
 
 // Two complete reviewed source lineages; mixed or unknown packaging refuses.
 // Historical functional inputs keep their literal hashes in each caller.

@@ -23,6 +23,7 @@ const frozen=()=>({...oldTables.localPins,...Object.fromEntries(Object.entries(o
 const tamper=name=>url=>{const b=reader(url);return decodeURIComponent(url.pathname).endsWith('/'+name)?Buffer.concat([b,Buffer.from('\n')]):b;};
 test('H01 whole raw inverse retains original helper including final newline',()=>{
  assert.equal(digest(original),authority.originalHelperSHA256);let inverse=derived.toString().split('\n').slice(1).join('\n').split('\nexport const maintainedPackagingAuthority=',1)[0];
+ inverse=inverse.replace("import { readFileSync as rawReadFileSync } from 'node:fs';\nimport { createWorkerPortSourceReader } from './current-worker-port-source.mjs';\nconst readFileSync = createWorkerPortSourceReader(rawReadFileSync);","import { readFileSync } from 'node:fs';");
  inverse=inverse.replace("const digest = bytes => { assert.ok(Buffer.isBuffer(bytes), 'Raw Buffer reader required'); return createHash('sha256').update(bytes).digest('hex'); };","const digest = bytes => createHash('sha256').update(bytes).digest('hex');").replace(authority.currentDockerfile,authority.oldDockerfile).replace(authority.currentDockerfileRelease,authority.oldDockerfileRelease).replace(authority.currentApprovedPackage,authority.oldApprovedPackage);
  assert.deepEqual(Buffer.from(inverse),original);
 });
