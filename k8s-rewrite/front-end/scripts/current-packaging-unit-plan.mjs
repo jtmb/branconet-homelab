@@ -9,6 +9,7 @@ import {planFromInputs as previousPlan,executionFor as previousExecution} from '
 export {executionBatches,artifactStages,assertArtifactState,portableFixture,qualifiedNativeSHA256} from './auth-register-current-unit-plan.mjs';
 import {loginMetadataDispatch,projectLoginRegistrations} from './current-login-packaging.mjs';
 import {registerMetadataDispatch,projectRegisterRegistrations} from './current-register-packaging.mjs';
+import {bindCurrentWorkerQualification} from './current-worker-port-source.mjs';
 const digest=b=>createHash('sha256').update(b).digest('hex');
 export const packagingDispatch=Object.freeze([
  {
@@ -615,7 +616,7 @@ export function projectPreservedPublicAdditions(bytes,row){
 // Compose only the four declared metadata deltas with the existing projection.
 // All other callers retain the original projection bytes and caller identity.
 export function projectDispatchedRegistration(bytes,row){
- const projected=projectRegistration(bytes,row),binding=metadataBindingDispatch.find(b=>b.original===row.original);
+ const projected=bindCurrentWorkerQualification(projectRegistration(bytes,row),row),binding=metadataBindingDispatch.find(b=>b.original===row.original);
  if(!binding)return row.original===preservedPublicAdditionBinding.original?projectPreservedPublicAdditions(bytes,row):projected;
  assert.equal(row.sourceSHA256,binding.sourceSHA256,'Historical caller authority mismatch');
  assert.ok(binding.end<=row.start||binding.start>=row.end,'Overlapping metadata/functional registrations');
