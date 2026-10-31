@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: summary retains exact metadata/key identity across every byte/chunk split, without value DTOs
+ok 1 - summary retains exact metadata/key identity across every byte/chunk split, without value DTOs
+  ---
+  duration_ms: 35.3477
+  type: 'test'
+  ...
+# Subtest: accepted values and unknown-field values are never decoded or JSON-materialized
+ok 2 - accepted values and unknown-field values are never decoded or JSON-materialized
+  ---
+  duration_ms: 4.9106
+  type: 'test'
+  ...
+# Subtest: complete validation rejects malformed skipped values and invalid UTF8 even after valid metadata
+ok 3 - complete validation rejects malformed skipped values and invalid UTF8 even after valid metadata
+  ---
+  duration_ms: 2.0066
+  type: 'test'
+  ...
+# Subtest: all256 raw byte classes and word/chunk boundaries retain strict string grammar
+ok 4 - all256 raw byte classes and word/chunk boundaries retain strict string grammar
+  ---
+  duration_ms: 35.3233
+  type: 'test'
+  ...
+# Subtest: escaped schema member names work; ambiguous/schema/cursor/item/byte/chunk limits fail closed
+ok 5 - escaped schema member names work; ambiguous/schema/cursor/item/byte/chunk limits fail closed
+  ---
+  duration_ms: 3.6618
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 682.8256

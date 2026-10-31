@@ -1,0 +1,723 @@
+{
+  "sourceCommit": "dbc3c2a990bf26beb0098434463ebaf0528aee40",
+  "scope": "Read-only resource capability/action mapping plus Flux caller residuals; not universal A05 runtime acceptance",
+  "resourceActionRows": [
+    {
+      "action": "View/Download YAML",
+      "resource": "pod",
+      "method": "GET",
+      "route": "/api/cluster/pods/[namespace]/[name]/yaml",
+      "handler": "src/app/api/cluster/pods/[namespace]/[name]/yaml/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "get",
+        "pod",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>",
+        "-o",
+        "yaml"
+      ],
+      "priorLocalScope": "Shared validator/typed error controls; production writer YAML success for namespace/node/ingress/service/PVC; readonly namespace403 and namespace malformed-target refusal. Prior production source9aaba, not this new candidate.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "View/Download YAML",
+      "resource": "deployment",
+      "method": "GET",
+      "route": "/api/cluster/deployments/[namespace]/[name]/yaml",
+      "handler": "src/app/api/cluster/deployments/[namespace]/[name]/yaml/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "get",
+        "deployment",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>",
+        "-o",
+        "yaml"
+      ],
+      "priorLocalScope": "Shared validator/typed error controls; production writer YAML success for namespace/node/ingress/service/PVC; readonly namespace403 and namespace malformed-target refusal. Prior production source9aaba, not this new candidate.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "View/Download YAML",
+      "resource": "namespace",
+      "method": "GET",
+      "route": "/api/cluster/namespaces/[name]/yaml",
+      "handler": "src/app/api/cluster/namespaces/[name]/yaml/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "get",
+        "namespace",
+        "<validated-name>",
+        "-o",
+        "yaml"
+      ],
+      "priorLocalScope": "Shared validator/typed error controls; production writer YAML success for namespace/node/ingress/service/PVC; readonly namespace403 and namespace malformed-target refusal. Prior production source9aaba, not this new candidate.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "View/Download YAML",
+      "resource": "node",
+      "method": "GET",
+      "route": "/api/cluster/nodes/[hostname]/yaml",
+      "handler": "src/app/api/cluster/nodes/[hostname]/yaml/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "get",
+        "node",
+        "<validated-name>",
+        "-o",
+        "yaml"
+      ],
+      "priorLocalScope": "Shared validator/typed error controls; production writer YAML success for namespace/node/ingress/service/PVC; readonly namespace403 and namespace malformed-target refusal. Prior production source9aaba, not this new candidate.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "View/Download YAML",
+      "resource": "ingress",
+      "method": "GET",
+      "route": "/api/cluster/ingresses/[namespace]/[name]/yaml",
+      "handler": "src/app/api/cluster/ingresses/[namespace]/[name]/yaml/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "get",
+        "ingress",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>",
+        "-o",
+        "yaml"
+      ],
+      "priorLocalScope": "Shared validator/typed error controls; production writer YAML success for namespace/node/ingress/service/PVC; readonly namespace403 and namespace malformed-target refusal. Prior production source9aaba, not this new candidate.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "View/Download YAML",
+      "resource": "service",
+      "method": "GET",
+      "route": "/api/cluster/services/[namespace]/[name]/yaml",
+      "handler": "src/app/api/cluster/services/[namespace]/[name]/yaml/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "get",
+        "service",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>",
+        "-o",
+        "yaml"
+      ],
+      "priorLocalScope": "Shared validator/typed error controls; production writer YAML success for namespace/node/ingress/service/PVC; readonly namespace403 and namespace malformed-target refusal. Prior production source9aaba, not this new candidate.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "View/Download YAML",
+      "resource": "pvc",
+      "method": "GET",
+      "route": "/api/cluster/volumes/[namespace]/[name]/yaml",
+      "handler": "src/app/api/cluster/volumes/[namespace]/[name]/yaml/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "get",
+        "persistentvolumeclaim",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>",
+        "-o",
+        "yaml"
+      ],
+      "priorLocalScope": "Shared validator/typed error controls; production writer YAML success for namespace/node/ingress/service/PVC; readonly namespace403 and namespace malformed-target refusal. Prior production source9aaba, not this new candidate.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Save YAML",
+      "resource": "pod",
+      "method": "PUT",
+      "route": "/api/cluster/pods/[namespace]/[name]/yaml",
+      "handler": "src/app/api/cluster/pods/[namespace]/[name]/yaml/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "replace",
+        "-f",
+        "<private-0600-single-object-temporary>"
+      ],
+      "priorLocalScope": "Shared exact kind/version/name/namespace/resourceVersion validation; production namespace missing-RV428 and CLI failure502. New local candidate fences held YAML save across withdrawal/unmount.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Delete",
+      "resource": "pod",
+      "method": "DELETE",
+      "route": "/api/cluster/pods/[namespace]/[name]/delete",
+      "handler": "src/app/api/cluster/pods/[namespace]/[name]/delete/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "delete",
+        "pod",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>",
+        "--wait=false"
+      ],
+      "priorLocalScope": "Production forced CLI failure502/readonly subset. Menu exact-name confirmation; new local candidate held confirmation fence.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Save YAML",
+      "resource": "deployment",
+      "method": "PUT",
+      "route": "/api/cluster/deployments/[namespace]/[name]/yaml",
+      "handler": "src/app/api/cluster/deployments/[namespace]/[name]/yaml/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "replace",
+        "-f",
+        "<private-0600-single-object-temporary>"
+      ],
+      "priorLocalScope": "Shared exact kind/version/name/namespace/resourceVersion validation; production namespace missing-RV428 and CLI failure502. New local candidate fences held YAML save across withdrawal/unmount.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Delete",
+      "resource": "deployment",
+      "method": "DELETE",
+      "route": "/api/cluster/deployments/[namespace]/[name]/delete",
+      "handler": "src/app/api/cluster/deployments/[namespace]/[name]/delete/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "delete",
+        "deployment",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>",
+        "--wait=false"
+      ],
+      "priorLocalScope": "Production forced CLI failure502/readonly subset. Menu exact-name confirmation; new local candidate held confirmation fence.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Save YAML",
+      "resource": "namespace",
+      "method": "PUT",
+      "route": "/api/cluster/namespaces/[name]/yaml",
+      "handler": "src/app/api/cluster/namespaces/[name]/yaml/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "replace",
+        "-f",
+        "<private-0600-single-object-temporary>"
+      ],
+      "priorLocalScope": "Shared exact kind/version/name/namespace/resourceVersion validation; production namespace missing-RV428 and CLI failure502. New local candidate fences held YAML save across withdrawal/unmount.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Delete",
+      "resource": "namespace",
+      "method": "DELETE",
+      "route": "/api/cluster/namespaces/[name]/delete",
+      "handler": "src/app/api/cluster/namespaces/[name]/delete/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "delete",
+        "namespace",
+        "<validated-name>",
+        "--wait=false"
+      ],
+      "priorLocalScope": "Production forced CLI failure502/readonly subset. Menu exact-name confirmation; new local candidate held confirmation fence.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Save YAML",
+      "resource": "ingress",
+      "method": "PUT",
+      "route": "/api/cluster/ingresses/[namespace]/[name]/yaml",
+      "handler": "src/app/api/cluster/ingresses/[namespace]/[name]/yaml/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "replace",
+        "-f",
+        "<private-0600-single-object-temporary>"
+      ],
+      "priorLocalScope": "Shared exact kind/version/name/namespace/resourceVersion validation; production namespace missing-RV428 and CLI failure502. New local candidate fences held YAML save across withdrawal/unmount.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Delete",
+      "resource": "ingress",
+      "method": "DELETE",
+      "route": "/api/cluster/ingresses/[namespace]/[name]/delete",
+      "handler": "src/app/api/cluster/ingresses/[namespace]/[name]/delete/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "delete",
+        "ingress",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>",
+        "--wait=false"
+      ],
+      "priorLocalScope": "Production forced CLI failure502/readonly subset. Menu exact-name confirmation; new local candidate held confirmation fence.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Restart",
+      "resource": "deployment",
+      "method": "POST",
+      "route": "/api/cluster/deployments/[namespace]/[name]/action",
+      "handler": "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "rollout",
+        "restart",
+        "deployment",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>"
+      ],
+      "priorLocalScope": "Current42f actual-route VM maps all4 literal strings and rejects coercible/prototype inputs; typed failures/fresh403. Prior production Restart CLI failure502; no fresh current42f production pass.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Rollback",
+      "resource": "deployment",
+      "method": "POST",
+      "route": "/api/cluster/deployments/[namespace]/[name]/action",
+      "handler": "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "rollout",
+        "undo",
+        "deployment",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>"
+      ],
+      "priorLocalScope": "Current42f actual-route VM maps all4 literal strings and rejects coercible/prototype inputs; typed failures/fresh403. Prior production Restart CLI failure502; no fresh current42f production pass.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Pause",
+      "resource": "deployment",
+      "method": "POST",
+      "route": "/api/cluster/deployments/[namespace]/[name]/action",
+      "handler": "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "rollout",
+        "pause",
+        "deployment",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>"
+      ],
+      "priorLocalScope": "Current42f actual-route VM maps all4 literal strings and rejects coercible/prototype inputs; typed failures/fresh403. Prior production Restart CLI failure502; no fresh current42f production pass.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Resume",
+      "resource": "deployment",
+      "method": "POST",
+      "route": "/api/cluster/deployments/[namespace]/[name]/action",
+      "handler": "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "rollout",
+        "resume",
+        "deployment",
+        "<validated-name>",
+        "-n",
+        "<validated-namespace>"
+      ],
+      "priorLocalScope": "Current42f actual-route VM maps all4 literal strings and rejects coercible/prototype inputs; typed failures/fresh403. Prior production Restart CLI failure502; no fresh current42f production pass.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Scale",
+      "resource": "deployment",
+      "method": "POST",
+      "route": "/api/cluster/deployments/[namespace]/[name]/scale",
+      "handler": "src/app/api/cluster/deployments/[namespace]/[name]/scale/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "scale",
+        "deployment/<validated-name>",
+        "-n",
+        "<validated-namespace>",
+        "--replicas=<integer0..10000>"
+      ],
+      "priorLocalScope": "Production invalid replicas400/CLI502; current local held replica controls success/error/withdrawal/unmount.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "cordon",
+      "resource": "node",
+      "method": "POST",
+      "route": "/api/cluster/nodes/[hostname]/action",
+      "handler": "src/app/api/cluster/nodes/[hostname]/action/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "cordon",
+        "<validated-name>"
+      ],
+      "priorLocalScope": "Production readonly cordon403, missing exact drain confirmation400 and confirmed drain failure502. Finally invalidation intentionally covers partial changes; no force or delete-emptydir.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "uncordon",
+      "resource": "node",
+      "method": "POST",
+      "route": "/api/cluster/nodes/[hostname]/action",
+      "handler": "src/app/api/cluster/nodes/[hostname]/action/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "uncordon",
+        "<validated-name>"
+      ],
+      "priorLocalScope": "Production readonly cordon403, missing exact drain confirmation400 and confirmed drain failure502. Finally invalidation intentionally covers partial changes; no force or delete-emptydir.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "drain",
+      "resource": "node",
+      "method": "POST",
+      "route": "/api/cluster/nodes/[hostname]/action",
+      "handler": "src/app/api/cluster/nodes/[hostname]/action/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "drain",
+        "<validated-name>",
+        "--ignore-daemonsets",
+        "--timeout=20s"
+      ],
+      "priorLocalScope": "Production readonly cordon403, missing exact drain confirmation400 and confirmed drain failure502. Finally invalidation intentionally covers partial changes; no force or delete-emptydir.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Logs",
+      "resource": "pod",
+      "method": "GET",
+      "route": "/api/cluster/pods/[namespace]/[name]/logs",
+      "handler": "src/app/api/cluster/pods/[namespace]/[name]/logs/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "logs",
+        "<name>",
+        "-n",
+        "<namespace>",
+        "--tail=<1..1000>",
+        "--limit-bytes=262144",
+        "--timestamps",
+        "-c",
+        "<explicit-validated-choice>"
+      ],
+      "priorLocalScope": "Immutable2949 browser8+3 complementary checks; exact regular/init/ephemeral/single choice, fresh403, failure/retry and private settlement fences. Production argv/previous/tail checks passed on9aaba.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Execute Shell",
+      "resource": "pod",
+      "method": "POST",
+      "route": "/api/cluster/pods/[namespace]/[name]/exec",
+      "handler": "src/app/api/cluster/pods/[namespace]/[name]/exec/route.ts",
+      "freshServerGate": "requireOperator: middleware account/sessionVersion plus independent fresh handler effective-administrator check",
+      "argvTemplate": [
+        "exec",
+        "<name>",
+        "-n",
+        "<namespace>",
+        "[-c <container>]",
+        "--",
+        "sh",
+        "-lc",
+        "<one-command-argument>"
+      ],
+      "priorLocalScope": "Production readonly403/typed failure502 and exact one command argument; fresh operator plus podExec runtime gate. Full terminal acceptance receipt is separate.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "Host shell",
+      "method": "POST",
+      "route": "/api/cluster/kubectl",
+      "handler": "src/app/api/cluster/kubectl/route.ts",
+      "freshServerGate": "requireOperator plus operatorShell runtime gate",
+      "argvTemplate": [
+        "bash",
+        "-c",
+        "<explicit-admin-command>"
+      ],
+      "priorLocalScope": "Immutable2b83 process-group/4HTTP/13 enabled controls plus four-stream/error/output/30s bounds; deliberately administrator shell, not resource argv nor an OS sandbox.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved."
+    },
+    {
+      "action": "PV reclaim",
+      "method": "PATCH",
+      "route": "/api/cluster/volumes/reclaim",
+      "handler": "src/app/api/cluster/volumes/reclaim/route.ts",
+      "freshServerGate": "requireOperator; validate all1..100 targets/policies before loop",
+      "argvTemplate": [
+        "patch",
+        "pv",
+        "<validated-name>",
+        "-p",
+        "<fixed-policy-JSON>"
+      ],
+      "priorLocalScope": "Production207/success:false/fixed errors. Settings explicitly tests result.success before success notification; no false207 acceptance found in source.",
+      "remaining": "Universal same-route true success, exit1 stdout/stderr/both/neither, timeout, missing executable, RBAC denial, missing target and actual UI error/retention; actual matching disposable kubectl and final coherent image remain unproved. Settings retained task ownership on fresh permission loss needs a separate actual reproducer; unmount already disposes MutationTask."
+    }
+  ],
+  "sourceBindings": [
+    {
+      "path": "src/app/(dashboard)/settings/page.tsx",
+      "gitMode": "100644",
+      "gitBlob": "64e3551184104d0c672cb6581a33a90d9628a489",
+      "rawGitSha256": "6b1c3896966ca2490e7c260d7bd9fc36687d5a0500ad1e18d169d778a9b6149e"
+    },
+    {
+      "path": "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "e31478fcd3c13a07e32a8fc13067160fa6b2f085",
+      "rawGitSha256": "b12762c4437c8e2d829c821f4dca327709014134c81a27840818f3ad066a3157"
+    },
+    {
+      "path": "src/app/api/cluster/deployments/[namespace]/[name]/delete/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "65b8fe2eca7d4cbba2ff42c9911804abed7d9ef6",
+      "rawGitSha256": "149112bd8347b0ef53f9b1fd3bc08e88adcb88390e40ee0b2f076c1ac50185b1"
+    },
+    {
+      "path": "src/app/api/cluster/deployments/[namespace]/[name]/scale/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "c85c2b543f561a99b20c40157a5557c0e0464e1a",
+      "rawGitSha256": "95d4831c4579eb6c55f283253d6c4b97438867bb8d9704ef37406354dcd73a59"
+    },
+    {
+      "path": "src/app/api/cluster/deployments/[namespace]/[name]/yaml/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "a7cb76d8e78669cf66d97be475720baa04bd0216",
+      "rawGitSha256": "ac870cdfa41aa27da52d80020ff88ed5cfdc46e8b95f9688216944edfafdb1a2"
+    },
+    {
+      "path": "src/app/api/cluster/ingresses/[namespace]/[name]/delete/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "e160bd550753ef384b3c5af9942adf9aeea27843",
+      "rawGitSha256": "ba364ff651214fec9de3256437b9f5b94bb323c12c244c3b4b0eb2f907281afd"
+    },
+    {
+      "path": "src/app/api/cluster/ingresses/[namespace]/[name]/yaml/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "7fbe36fd33c13e24f1cc640d9eff32212355e291",
+      "rawGitSha256": "93bd47b8518e998968ab82c7a0a1e055cee32ccc7bb3b761338f385635ffded5"
+    },
+    {
+      "path": "src/app/api/cluster/kubectl/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "953b802fe24b757b4c5d674314f99d615b4d37f2",
+      "rawGitSha256": "689589f6e3dd51aeeefa6baf0359cebb2c6c155d1feba105b750d2c7c8f2077a"
+    },
+    {
+      "path": "src/app/api/cluster/namespaces/[name]/delete/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "05bfeeb685da42798483e8511b09145111ccc086",
+      "rawGitSha256": "d868cd043b11d5dabff7fe05e91e7246dff3e742277330d20a32a6832e065ebf"
+    },
+    {
+      "path": "src/app/api/cluster/namespaces/[name]/yaml/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "75eda39d820021cd63ea578a751af6ef8cef9849",
+      "rawGitSha256": "16ce4260d90328f05d883348e75c0bcc4e6ec454f8e753d59e1b5e7f2971eb97"
+    },
+    {
+      "path": "src/app/api/cluster/nodes/[hostname]/action/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "47f4ea3d1549d25967e4aae1d67d89def1b165a7",
+      "rawGitSha256": "fdaaa8bae06ac3c1783257c5510488388a7b17fff50cc9045f40258a239191fe"
+    },
+    {
+      "path": "src/app/api/cluster/nodes/[hostname]/yaml/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "fa795f96163585a6b200a0e07292a70f760b5b0c",
+      "rawGitSha256": "1a82bab0ecb6dab7d6103dd05650c3b4281ec2976abc662c0dc6f53b5ba33187"
+    },
+    {
+      "path": "src/app/api/cluster/pods/[namespace]/[name]/delete/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "977bcf657a55f03ddcd8124784cd1d7536f063e4",
+      "rawGitSha256": "eb438f955a77b7c62cd8a85bcfe4265ed80fed2927c57324946fe1a4d6a7fbc2"
+    },
+    {
+      "path": "src/app/api/cluster/pods/[namespace]/[name]/exec/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "7e6a6946aeb3c2ce881614a16ab91456510a3209",
+      "rawGitSha256": "7a0ccce622750a48af0aa8cda946463d431fc1eff25c4b21a02511827fcad534"
+    },
+    {
+      "path": "src/app/api/cluster/pods/[namespace]/[name]/logs/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "eb1942b612a83c13c50e3e2de7e794b2034a3f75",
+      "rawGitSha256": "b3ffbf0d634b4e5d22651ba30eb18fab7428d0faa617b8c2a5241f3646f305bd"
+    },
+    {
+      "path": "src/app/api/cluster/pods/[namespace]/[name]/yaml/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "05218838d716172ced69165268b5a3486b053d4f",
+      "rawGitSha256": "64ae389bc4d29aef9321eb94ade8245c4ee9ff3f8895fd01bfbd45da742083b2"
+    },
+    {
+      "path": "src/app/api/cluster/services/[namespace]/[name]/yaml/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "2ad99a9f3642f3520f292441caad0602a442b518",
+      "rawGitSha256": "4ea00e5cf248a62c2d7f70424f1a3bf0c238b3ca7cfdb0f54f4e83b338faf186"
+    },
+    {
+      "path": "src/app/api/cluster/volumes/[namespace]/[name]/yaml/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "f773516373ed12294cc5c6b73171694e28146151",
+      "rawGitSha256": "6dab38c4a92232b79cf1adebaf70471ca9e6f29b91d6b4c22c9035bc66b5b889"
+    },
+    {
+      "path": "src/app/api/cluster/volumes/reclaim/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "3d4bda2eae8d695c2b01e6090a4af06040e50842",
+      "rawGitSha256": "ad9dce6beeabb3fb91aa5d95ed54e3fe7c40e624125f07d8a2ec7e82cc3a3be4"
+    },
+    {
+      "path": "src/app/api/flux/hierarchy/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "e1d5269fd81cae77506832de3ab7927739182bbf",
+      "rawGitSha256": "d26678b12705282ea7681b4219640c70d58c763fcc40b8c5b4387987e81f50d4"
+    },
+    {
+      "path": "src/app/api/flux/kustomizations/[name]/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "d2f2b6c34775d8bcec157b6ceb5ef2a00b644bc6",
+      "rawGitSha256": "d6b709cea2237afa35be79576de5702c781d8c5c62e736803382852a6cf7175d"
+    },
+    {
+      "path": "src/app/api/flux/repos/[id]/delete-progress/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "1a2cc69f454594072fde110476429b6cb96b420d",
+      "rawGitSha256": "2c684af0343585258fca004dcb36170def680235161c2e865b0a1b2d5af496f8"
+    },
+    {
+      "path": "src/app/api/flux/repos/[id]/detail/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "af9f86e327c653424734295879aa75e582892f6f",
+      "rawGitSha256": "11c9a0eed8309169179ca8d6b64f378f60a351774ee6b73d14d7921482008724"
+    },
+    {
+      "path": "src/app/api/flux/repos/[id]/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "01ac64736c92adbcf95ebfc0a1f789914fe91ff6",
+      "rawGitSha256": "9bae5dba8949a9a026729b6773075c1cbffff60dcb454b424630ca9f6efe5a9f"
+    },
+    {
+      "path": "src/app/api/flux/repos/[id]/sync/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "1a4c30c0a0a4a06df5598c5046ecc4f25a231199",
+      "rawGitSha256": "d1032c657cebd297a425dfee54f8dcb5e4d2f84a574d5f9248fd8555cc600945"
+    },
+    {
+      "path": "src/app/api/flux/repos/route.ts",
+      "gitMode": "100644",
+      "gitBlob": "21bf61db91a06742f6dfb2e94652022ffc4289e4",
+      "rawGitSha256": "02b94e71671fbdc3d4f7d37d17fcabfb7fbf198f7e383845f88524469e1cf426"
+    },
+    {
+      "path": "src/lib/auth.ts",
+      "gitMode": "100644",
+      "gitBlob": "2c345230401c6288b3905fa07c26aca0d83f0775",
+      "rawGitSha256": "0fd90638b395bdda6a4a540821a8721fd618fc79f5d90c311a38a4e35a7b3818"
+    },
+    {
+      "path": "src/lib/cluster-http.ts",
+      "gitMode": "100644",
+      "gitBlob": "a782be5ace8abb32ac816b8c11def0566a3cd32d",
+      "rawGitSha256": "03f5121ccea9d4486b37c1f1fa2443cdd186ef5c4880c460c7ecde641adbd993"
+    },
+    {
+      "path": "src/lib/flux.ts",
+      "gitMode": "100644",
+      "gitBlob": "3b7a0f7a2e5c11186df0acf43c94b918c812fb00",
+      "rawGitSha256": "cd884c0afb291051ec9fc77152ad3e94ab4a03383d55640eb45d095307f20d76"
+    },
+    {
+      "path": "src/lib/k8s.ts",
+      "gitMode": "100644",
+      "gitBlob": "ad7cf65967e60f5ba1b19153448709778f0f2d24",
+      "rawGitSha256": "ecc3cc0527c52e081007d65a8ea5ddd46c7de2a7363d15af762cd3729a590e04"
+    },
+    {
+      "path": "src/lib/kubectl-client.ts",
+      "gitMode": "100644",
+      "gitBlob": "d4f9e60e636d5deeb4d5a27712f16a2b7f6f5a80",
+      "rawGitSha256": "7e68bdf6284a83359a94b82a04e85950938c1c3e7ef88e6e2c7a3b3bd03244ab"
+    },
+    {
+      "path": "src/lib/mutation-task.ts",
+      "gitMode": "100644",
+      "gitBlob": "caf2d748160ee109a7a1f5ab8327a13d924e090c",
+      "rawGitSha256": "a344c7e8838cdbbb944067a38bdd9b4546ae115c5c4c495bba40a8ec1ed7a5b4"
+    },
+    {
+      "path": "src/lib/permissions.ts",
+      "gitMode": "100644",
+      "gitBlob": "7fc4f859ec41425efe4b912e3963a017d5261331",
+      "rawGitSha256": "c894d04fa4cbcfaa09e97f1248100b671b29927b13950a4e964b0135a994b704"
+    },
+    {
+      "path": "src/lib/resource-capabilities.ts",
+      "gitMode": "100644",
+      "gitBlob": "ad53bc387d92bc3c1485b9bf29891542ce56903e",
+      "rawGitSha256": "48bcb1e2cfa2619facdd494d9123df6368099e6d602ec5b85016dc82c88feda7"
+    },
+    {
+      "path": "src/lib/resource-yaml.ts",
+      "gitMode": "100644",
+      "gitBlob": "ebf428e193d17733bbd6a77aa8c4f3e5f4762c1d",
+      "rawGitSha256": "556b2e5b9c72d95276019f60b9a09efdc87c61d331580265529984ad933d8cf3"
+    },
+    {
+      "path": "src/lib/use-mutation.ts",
+      "gitMode": "100644",
+      "gitBlob": "5c6ce536d79242597433c84b2caf4d3c14872505",
+      "rawGitSha256": "6b5eeb4683f9c62f940e9e73474fb2b9e3ed13c73d18068c4cbda12cf541eb05"
+    },
+    {
+      "path": "tests/http.integration.ts",
+      "gitMode": "100644",
+      "gitBlob": "bccdbd573c6ac35ce35b3a710ba3a5b91167c130",
+      "rawGitSha256": "6b58c0c735a94d884a2963ee112d85c4c5a828c4af22054b00104df80cfd77d5"
+    },
+    {
+      "path": "tests/resource-capabilities.test.ts",
+      "gitMode": "100644",
+      "gitBlob": "2855e59440bcb938ae2a64485ec727d1c3601b4e",
+      "rawGitSha256": "7c2b2ef737b10b10902dd99a7a8f52b907293097b321b2b87e611b1a9a3a4de9"
+    }
+  ],
+  "additionalCallerResiduals": [
+    {
+      "caller": "Flux add/delete/sync",
+      "routes": [
+        "POST /api/flux/repos",
+        "DELETE /api/flux/repos/[id]",
+        "POST /api/flux/repos/[id]/sync"
+      ],
+      "gate": "Fresh requireOperator",
+      "result": "Typed command failures except explicit typed404 ignoringMissing; delete success means deleteId accepted, terminal progress must be inspected. Existing Flux browser/HTTP receipts are bounded subsets.",
+      "remaining": "Each cascade stage false-success/partial failure/storage recovery and original four-stream/timeout/RBAC true-success matrix remain open; no live destructive probe."
+    },
+    {
+      "caller": "Provisioning, nodes/account/config/nativeKV",
+      "remaining": "Their independent runtime/native/SQL acceptance ledgers remain separate. This27-row resource inventory does not qualify all application mutations or native engine consumers."
+    }
+  ],
+  "priorNegative": {
+    "menuWorkingSha256": "bb491795277d91644670f08c1372be50e0ea2df8ba87214ce958bdf2cecf0a79",
+    "reproduced": "Menu Restart and replica-form late success each invoked refetch after withdrawal; menu also onAction",
+    "runtime": "Actual-component hook VM/local deferred request, no browser/API/cluster; actual exit1"
+  },
+  "performance": "A07/A21 failed/open; no frozen benchmark/source gate changes"
+}

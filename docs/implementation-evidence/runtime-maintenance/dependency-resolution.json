@@ -1,0 +1,35 @@
+{
+  "version": "1.0.0",
+  "name": "botrus-k8s-manager",
+  "dependencies": {
+    "@prisma/client": {
+      "version": "6.19.3",
+      "resolved": "https://registry.npmjs.org/@prisma/client/-/client-6.19.3.tgz",
+      "overridden": false,
+      "dependencies": {
+        "prisma": {
+          "version": "6.19.3"
+        }
+      }
+    },
+    "prisma": {
+      "version": "6.19.3",
+      "resolved": "https://registry.npmjs.org/prisma/-/prisma-6.19.3.tgz",
+      "overridden": false,
+      "dependencies": {
+        "@prisma/config": {
+          "version": "6.19.3",
+          "resolved": "https://registry.npmjs.org/@prisma/config/-/config-6.19.3.tgz",
+          "overridden": true,
+          "dependencies": {
+            "deepmerge-ts": {
+              "version": "8.0.0",
+              "resolved": "https://registry.npmjs.org/deepmerge-ts/-/deepmerge-ts-8.0.0.tgz",
+              "overridden": true
+            }
+          }
+        }
+      }
+    }
+  }
+}

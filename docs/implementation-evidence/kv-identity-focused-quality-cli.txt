@@ -1,0 +1,197 @@
+TAP version 13
+# Subtest: admin action names and captured bodies match the real strict routes
+ok 1 - admin action names and captured bodies match the real strict routes
+  ---
+  duration_ms: 4.4053
+  type: 'test'
+  ...
+# Subtest: destroy captures remain frozen and incompatible native metadata cannot build a body
+ok 2 - destroy captures remain frozen and incompatible native metadata cannot build a body
+  ---
+  duration_ms: 0.3802
+  type: 'test'
+  ...
+# Subtest: admin capability does not bypass a data deny, stale capability or guarded-mode disable
+ok 3 - admin capability does not bypass a data deny, stale capability or guarded-mode disable
+  ---
+  duration_ms: 0.4189
+  type: 'test'
+  ...
+# Subtest: legacy acknowledgment requires every exact alias page and separate config acknowledgment
+ok 4 - legacy acknowledgment requires every exact alias page and separate config acknowledgment
+  ---
+  duration_ms: 0.57
+  type: 'test'
+  ...
+# Subtest: GC retains exact displayed UID/RV, source revision and age boundaries
+ok 5 - GC retains exact displayed UID/RV, source revision and age boundaries
+  ---
+  duration_ms: 0.5224
+  type: 'test'
+  ...
+# Subtest: readonly, scoped human and token sessions cannot enter the administration mutation callback
+ok 6 - readonly, scoped human and token sessions cannot enter the administration mutation callback
+  ---
+  duration_ms: 32.9694
+  type: 'test'
+  ...
+# Subtest: browser fetch retains its global receiver instead of the request-client instance
+ok 7 - browser fetch retains its global receiver instead of the request-client instance
+  ---
+  duration_ms: 0.614
+  type: 'test'
+  ...
+# Subtest: a one-time token cannot be released after logout, role loss or account switch
+ok 8 - a one-time token cannot be released after logout, role loss or account switch
+  ---
+  duration_ms: 2.6872
+  type: 'test'
+  ...
+# Subtest: navigation/close fences an ignored-abort late one-time reveal
+ok 9 - navigation/close fences an ignored-abort late one-time reveal
+  ---
+  duration_ms: 8.9053
+  type: 'test'
+  ...
+# Subtest: a deadline reports an unknown outcome instead of silently cancelling or repeating the mutation
+ok 10 - a deadline reports an unknown outcome instead of silently cancelling or repeating the mutation
+  ---
+  duration_ms: 5.589
+  type: 'test'
+  ...
+# Subtest: stale/revoked mutations are sent once, fixed errors omit private bodies and preserve recovery metadata
+ok 11 - stale/revoked mutations are sent once, fixed errors omit private bodies and preserve recovery metadata
+  ---
+  duration_ms: 0.6455
+  type: 'test'
+  ...
+# Subtest: native grouped KV CAS, history isolation, drift, ambiguity and metadata audit recovery
+    # Subtest: guard and initial administrator approval fail before native mutation
+    ok 1 - guard and initial administrator approval fail before native mutation
+      ---
+      duration_ms: 36.4005
+      type: 'test'
+      ...
+    # Subtest: adoption snapshot preserves exact binary/special keys, 603 aliases and unrelated native metadata
+    ok 2 - adoption snapshot preserves exact binary/special keys, 603 aliases and unrelated native metadata
+      ---
+      duration_ms: 353.1731
+      type: 'test'
+      ...
+    # Subtest: static rotation links intent before generation, preserves grouped values and requires explicit current-head acknowledgement
+    ok 3 - static rotation links intent before generation, preserves grouped values and requires explicit current-head acknowledgement
+      ---
+      duration_ms: 429.1014
+      type: 'test'
+      ...
+    # Subtest: flat/legacy bridges cannot bypass adopted policies, exact alias grants or history isolation
+    ok 4 - flat/legacy bridges cannot bypass adopted policies, exact alias grants or history isolation
+      ---
+      duration_ms: 7848.5357
+      type: 'test'
+      ...
+    # Subtest: missing/stale prerequisites and concurrent writers cannot overwrite a new head
+    ok 5 - missing/stale prerequisites and concurrent writers cannot overwrite a new head
+      ---
+      duration_ms: 62.3622
+      type: 'test'
+      ...
+    # Subtest: automation has a distinct scoped audience, native CAS and fresh revocation without initialization authority
+    ok 6 - automation has a distinct scoped audience, native CAS and fresh revocation without initialization authority
+      ---
+      duration_ms: 143.2579
+      type: 'test'
+      ...
+    # Subtest: protected transfers round-trip binary/empty fields with explicit overwrite, partial outcomes and bounded metadata-only preview
+    ok 7 - protected transfers round-trip binary/empty fields with explicit overwrite, partial outcomes and bounded metadata-only preview
+      ---
+      duration_ms: 318.9522
+      type: 'test'
+      ...
+    # Subtest: confirmed destruction CAS-removes references, retains canonical data and keeps monotonic versions
+    ok 8 - confirmed destruction CAS-removes references, retains canonical data and keeps monotonic versions
+      ---
+      duration_ms: 264.3732
+      type: 'test'
+      ...
+    # Subtest: destroy requires exact displayed canonical and selected history identities before any side effect
+    ok 9 - destroy requires exact displayed canonical and selected history identities before any side effect
+      ---
+      duration_ms: 140.5238
+      type: 'test'
+      ...
+    # Subtest: destruction audit failures and source replacement retain recoverable history with explicit partial outcomes
+    ok 10 - destruction audit failures and source replacement retain recoverable history with explicit partial outcomes
+      ---
+      duration_ms: 287.3425
+      type: 'test'
+      ...
+    # Subtest: maximum-size owned histories remain operable through metadata-only GC preview and UID/RV-fenced cleanup
+    ok 11 - maximum-size owned histories remain operable through metadata-only GC preview and UID/RV-fenced cleanup
+      ---
+      duration_ms: 1073.0578
+      type: 'test'
+      ...
+    # Subtest: explicit administrator GC checks age/references/identity, fences stale CAS and records timeout read-back
+    ok 12 - explicit administrator GC checks age/references/identity, fences stale CAS and records timeout read-back
+      ---
+      duration_ms: 361.8275
+      type: 'test'
+      ...
+    # Subtest: external selected-key drift requires reconcile; rollback creates a new immutable version
+    ok 13 - external selected-key drift requires reconcile; rollback creates a new immutable version
+      ---
+      duration_ms: 81.7787
+      type: 'test'
+      ...
+    # Subtest: positive read-back resolves create/replace timeouts; negative or unavailable read-back stays ambiguous
+    ok 14 - positive read-back resolves create/replace timeouts; negative or unavailable read-back stays ambiguous
+      ---
+      duration_ms: 91.458
+      type: 'test'
+      ...
+    # Subtest: audit failure blocks native writes; post-commit failure retains a resolvable native marker
+    ok 15 - audit failure blocks native writes; post-commit failure retains a resolvable native marker
+      ---
+      duration_ms: 86.1881
+      type: 'test'
+      ...
+    # Subtest: concurrent retention metadata changes refuse canonical CAS and retain candidate history for recovery
+    ok 16 - concurrent retention metadata changes refuse canonical CAS and retain candidate history for recovery
+      ---
+      duration_ms: 88.901
+      type: 'test'
+      ...
+    # Subtest: tombstone retains object/unrelated values; retention is bounded without deleting last copies
+    ok 17 - tombstone retains object/unrelated values; retention is bounded without deleting last copies
+      ---
+      duration_ms: 81.1102
+      type: 'test'
+      ...
+    # Subtest: new creation establishes an owned source UID, keeps empty documents and refuses imported collisions
+    ok 18 - new creation establishes an owned source UID, keeps empty documents and refuses imported collisions
+      ---
+      duration_ms: 59.6316
+      type: 'test'
+      ...
+    # Subtest: binary encoding, typed/immutable constraints and forged metadata fail without value leakage
+    ok 19 - binary encoding, typed/immutable constraints and forged metadata fail without value leakage
+      ---
+      duration_ms: 129.7777
+      type: 'test'
+      ...
+    1..19
+ok 12 - native grouped KV CAS, history isolation, drift, ambiguity and metadata audit recovery
+  ---
+  duration_ms: 14380.5073
+  type: 'test'
+  ...
+1..12
+# tests 31
+# suites 0
+# pass 31
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14961.3604

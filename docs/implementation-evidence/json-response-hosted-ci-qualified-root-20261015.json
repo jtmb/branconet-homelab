@@ -1,0 +1,445 @@
+{
+  "scope": "Fresh exact frontend hosted CI qualification; no merge/image/performance/live acceptance",
+  "sourceProduct": "f4cef8a1473c41768b36affe867208b0230f38fb",
+  "frontendTree": "47f852795803906703ce937df356eff8368a26b3",
+  "workflowBlob": "f8b7ec07d69dcd1806ca44f6c566685108639cb3",
+  "ciCommit": "97b4138fd90ee23d4690acfd313eb85f3684ce3b",
+  "ciParent": "76e4bfba75b3434df0b2b5efe62e356d6ffc546a",
+  "ciBranch": "codex/bortus-ci-json-response",
+  "run": {
+    "id": 38829551936,
+    "url": "https://github.com/jtmb/branconet-homelab/actions/runs/38829551936",
+    "status": "completed",
+    "conclusion": "success",
+    "job": 116744906896,
+    "successfulSteps": 12
+  },
+  "rawPublishedBlobs": 394,
+  "sourceScan": {
+    "actualExit": 0,
+    "findings": 0,
+    "files": 394
+  },
+  "hostedEvidenceScan": {
+    "actualExit": 0,
+    "findings": 0,
+    "files": 17,
+    "scannerBirthNoLive": true
+  },
+  "unitTests": 352,
+  "HTTPTests": 8,
+  "sensitivityPairs": 8,
+  "sensitivityResults": [
+    {
+      "schema": 1,
+      "completed": true,
+      "cases": [
+        "A04-name-admission",
+        "A05-failed-stdout",
+        "A06-outage-empty",
+        "deployment-action-coercion",
+        "private-kv-cache-admission"
+      ],
+      "records": [
+        {
+          "id": "A04-name-admission",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "5ec019b85486c982d52134845a062631d9163647c21da49296021af2c1e27a75",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 328,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A04-name-admission",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "ff86323437d30550d0fe1a396500c1bc6204df1830f6a6918f61be80713b3526",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 971,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A05-failed-stdout",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "9a1f325c7ac5d19154a59a3ed197de383c3f22be170460b8e0013b3260105174",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 342,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A05-failed-stdout",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "e64000974dfbc0258cf44c2aaafaed763c68650babb89b1b1d7f251f5665fcb2",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 975,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A06-outage-empty",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "c25b8fdf39baa008ff0eb6d2b133e140e56dbd6b681a977ed106b4001a098204",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 360,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A06-outage-empty",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "116738771a96e936e9d295fba66eb44910f53f058dbb05878709d6b71575c41a",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 981,
+          "stderrBytes": 0
+        },
+        {
+          "id": "deployment-action-coercion",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "63a787886d32559f1f71addca61ece824b21b693a9a264794c5a64d396bb609c",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 354,
+          "stderrBytes": 0
+        },
+        {
+          "id": "deployment-action-coercion",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "1262854309f142438137ecd4967769963f0a5d418cfeac9e6be6e527b8cbc512",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 986,
+          "stderrBytes": 0
+        },
+        {
+          "id": "private-kv-cache-admission",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "fe933a05e52279959c175fa88714bfb4f424042974b186d085b5abbc8c4b3470",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 362,
+          "stderrBytes": 0
+        },
+        {
+          "id": "private-kv-cache-admission",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "99e5d89f9d051530e0b5f9030e316504ebbf41f95aef446cc68a2c792c8ae6a6",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 1106,
+          "stderrBytes": 0
+        }
+      ],
+      "restorationFailures": [],
+      "elapsedMs": 3506,
+      "originalSelectedInputsUnchanged": true,
+      "originalUnitAndIntegrationExecution": "separate unchanged workflow steps",
+      "wholeA19Accepted": false
+    },
+    {
+      "schema": 1,
+      "completed": true,
+      "cases": [
+        "A02-deleted-account",
+        "A03-bootstrap-writer"
+      ],
+      "records": [
+        {
+          "id": "A02-deleted-account",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "ba7dff4a732bb2cc71ed62da159a7c800a3ce2fc54d7ed71ee01bda5ac9429bf",
+          "stderrSHA256": "aadc494d457a69ee51d972bea78b7cb07dde37c9d3180ca2fafac911fe29d579",
+          "stdoutBytes": 1265,
+          "stderrBytes": 166
+        },
+        {
+          "id": "A02-deleted-account",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "fa1b723a20605dec3149154f0c78fcb3265e3b489a641532e69c539b23af3d35",
+          "stderrSHA256": "cfc460e4994fb01169fbb581d78c359102ca881d67c89532b9049ea1be5295eb",
+          "stdoutBytes": 2542,
+          "stderrBytes": 166
+        },
+        {
+          "id": "A03-bootstrap-writer",
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "120defea5b483a69f99c96d5c44d231e42ef5f83714e49275edc398e3342813f",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 2175,
+          "stderrBytes": 0
+        },
+        {
+          "id": "A03-bootstrap-writer",
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "89bc62ce0989a00f9f6cc8c91189bfa7f3553dd5dbdd02043cfa10b66ce9fa53",
+          "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stdoutBytes": 7754,
+          "stderrBytes": 0
+        }
+      ],
+      "restorationFailures": [],
+      "elapsedMs": 6401,
+      "originalSelectedInputsUnchanged": true,
+      "flatFiveRunnerUnchanged": true,
+      "wholeA19Accepted": false,
+      "A01CrossProcessSensitivityQualified": false
+    },
+    {
+      "schema": 1,
+      "completed": true,
+      "id": "A01-SQL-writer-lock",
+      "records": [
+        {
+          "phase": "pristine",
+          "actualExit": 0,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "6e8bc6277793834af7936a7347b1e8ce9b1caf6748aaefd0f3f4dc4248910ae2",
+          "stderrSHA256": "ec12314dbf490c6b5a509ab6da183c3d0aba9bb2803ef02998b61712e9ef4afe",
+          "stdoutBytes": 736,
+          "stderrBytes": 166,
+          "lockProof": {
+            "schema": 1,
+            "acquired": false,
+            "busyCode": 5,
+            "firstCount": 2,
+            "secondCount": null,
+            "countCalls": [
+              1,
+              0
+            ],
+            "outcomes": [
+              {
+                "success": true,
+                "status": null
+              },
+              {
+                "success": false,
+                "status": 403
+              }
+            ],
+            "writers": 1,
+            "administrators": 1,
+            "distinctParticipantProcesses": true,
+            "participantExits": [
+              0,
+              0
+            ]
+          },
+          "cleanupProof": {
+            "failures": [],
+            "twoParticipants": true,
+            "bothReportedExit": true
+          }
+        },
+        {
+          "phase": "mutant",
+          "actualExit": 1,
+          "signal": null,
+          "spawnErrorCode": null,
+          "stdoutSHA256": "65b75909c9e19540f07f0a67ebb7e09937e8906dc51b5333cb3a9b068b4085a4",
+          "stderrSHA256": "1c060e7f76ff52a064bf5af5fdd6bc1cafb124aca1de475f28ccd1231cfabfe0",
+          "stdoutBytes": 1390,
+          "stderrBytes": 167,
+          "lockProof": {
+            "schema": 1,
+            "acquired": true,
+            "busyCode": null,
+            "firstCount": 2,
+            "secondCount": 2,
+            "countCalls": [
+              1,
+              1
+            ],
+            "outcomes": [
+              {
+                "success": true,
+                "status": null
+              },
+              {
+                "success": true,
+                "status": null
+              }
+            ],
+            "writers": 0,
+            "administrators": 0,
+            "distinctParticipantProcesses": true,
+            "participantExits": [
+              0,
+              0
+            ]
+          },
+          "cleanupProof": {
+            "failures": [],
+            "twoParticipants": true,
+            "bothReportedExit": true
+          }
+        }
+      ],
+      "restorationFailures": [],
+      "elapsedMs": 2977,
+      "originalSelectedInputsUnchanged": true,
+      "existingSixRacesAndSevenSensitivityControlsUnchanged": true,
+      "wholeA19Accepted": false,
+      "crossProcessSensitivityScope": "One deterministic cross-demotion SQL-lock control only"
+    }
+  ],
+  "browserSmoke": {
+    "browserSmoke": "passed",
+    "realPodGETStatus": 200,
+    "wireRows": 208,
+    "initialPageRows": 100,
+    "filteredRows": 3,
+    "nonAgeColumnsVerified": 8,
+    "exactLinks": 3,
+    "noMutationsAttempted": true,
+    "ATQualified": false,
+    "performanceQualified": false
+  },
+  "browserCleanup": {
+    "browserCICleanupFailed": false,
+    "confirmedCIDCount": 2,
+    "exactNameQueryCount": 3,
+    "exactNamesAbsent": true,
+    "uncertainCreate": false
+  },
+  "unchangedMain": "8eba7def1aff7efc29329a3d6ffa4d750e155369",
+  "mainOutsideFrontendAndWorkflowExact": true,
+  "sourceCIQualified": true,
+  "merged": false,
+  "deployed": false,
+  "performanceQualified": false,
+  "imageSecurityQualified": false,
+  "tools": {
+    "rawScan": "88306a/0",
+    "readonlyVerify": "3bf5f6/0",
+    "peerReview": "0382f8/0",
+    "create": "7e6ed1/0",
+    "push": "41962d/0",
+    "firstRun": "42fb6d/0",
+    "success": "f48984/0",
+    "download": "a40a68/0",
+    "logScan": "973eed/0"
+  },
+  "savedEvidence": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\jobs.json",
+      "bytes": 3263,
+      "sha256": "317a6d1eef559dd6799c8d70cff61d3167656fbf888dac4d66a49e6711c6183e"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\0_quality.txt",
+      "bytes": 263865,
+      "sha256": "192317d852ed423fe9ad2e81df65f1cb8fee27c894e7a3463af8e1395191811b"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\10_Finite compiled Pods browser smoke.txt",
+      "bytes": 1921,
+      "sha256": "505e9c998c48d9b708cca7e89592cedfe033bfc774d4b993502eaa71974079c9"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\1_Set up job.txt",
+      "bytes": 1932,
+      "sha256": "ccc11e99a7f1da9202d3f621e16c17dbb021684d4ae57e069594b27e0bcea8f1"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\20_Post Run actions_checkout@11d5960a326750d5838078e36cf38b85af677262.txt",
+      "bytes": 1729,
+      "sha256": "596a5e3fc6e8ec1ac00361234e3791afb9e62c24f113b7ed858f174b654bcc6d"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\21_Complete job.txt",
+      "bytes": 386,
+      "sha256": "7cfadca5278a5a27e5f4ceec2489db61507a05e406e3d278d2bce0f27c582cca"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\2_Run actions_checkout@11d5960a326750d5838078e36cf38b85af677262.txt",
+      "bytes": 6595,
+      "sha256": "cc89adfd28ca6d2790c5ffbdb50337e2860bad15731b1790356a14ff1727a3d2"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\3_Locked install and native_standalone build in pinned compiler image.txt",
+      "bytes": 25087,
+      "sha256": "251d87d7a66d7132500a007a2519bf9c6353b8a374f1c335cebeb9c3bb569992"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\4_Original lint, type and unit checks with isolated runtime network.txt",
+      "bytes": 159674,
+      "sha256": "5deaf010d9f187b19f0cfae351312cea991fcc0e5f49a6b44eb0a3b2afe85f3b"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\5_Five source regression sensitivity checks (A04_A05_A06_action_cache).txt",
+      "bytes": 19950,
+      "sha256": "ac6113668152f26baaa5958209ed0c0c87e61076b4361b1d12b61707d130776c"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\6_Deleted-account and bootstrap DB regression sensitivity checks.txt",
+      "bytes": 29183,
+      "sha256": "2faa47b96018c78919a8968817a064637fdc2213f4be6c82b130d0f569a49908"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\7_Separate-process SQL writer-lock regression sensitivity.txt",
+      "bytes": 7629,
+      "sha256": "924046687cbe8f972c92807dd25b28c87771ba8b72a260992305929d4aa43c89"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\8_Original strict integration and process controls.txt",
+      "bytes": 8159,
+      "sha256": "e47d1f384415322e1d9c3d377c05298ddd8be1a4d7ba38c673ee023e947c0f8a"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\9_Acquire locked browser CI tools (no app dependency change).txt",
+      "bytes": 1653,
+      "sha256": "fe47470691931b6d6e042bc5eb8165f19e2346b99478a99bc829f2285511c9b1"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\logs\\quality\\system.txt",
+      "bytes": 610,
+      "sha256": "29f8c3d73e13bc67cf66dac2d94a1d6e8846916ff02cce04a0d3399594c23272"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\main.json",
+      "bytes": 342,
+      "sha256": "705bd70cb725068f83d06f9e1c56d0404c8d8537397d38724732b2d3c0b9d09d"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-json-response-hosted-ci-actual-20261015-v1\\run.json",
+      "bytes": 12477,
+      "sha256": "712ecedf359878f335f608b2dab551a4854dfd7e707bcc95487e7c05281a0fb9"
+    }
+  ]
+}

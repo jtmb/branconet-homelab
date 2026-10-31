@@ -1,0 +1,114 @@
+{
+  "scope": "A05 enabled production host-shell four exit1 streams, success, timeout, 2MiB bound, unavailable and auth/runtime controls",
+  "node": "v22.23.3",
+  "startedUtc": "2026-10-11T14:50:59.239Z",
+  "pid": 1,
+  "checks": [
+    "fresh-effective-admin-enabled-shell",
+    "exit1-stdout",
+    "exit1-stderr",
+    "exit1-both",
+    "exit1-neither",
+    "success-stdout",
+    "output-bound-2MiB",
+    "timeout-30s",
+    "fresh-engine-admin-withdrawal",
+    "missing-bash",
+    "runtime-disabled"
+  ],
+  "performanceAcceptance": false,
+  "childExits": [
+    [
+      0,
+      null
+    ],
+    [
+      0,
+      null
+    ]
+  ],
+  "ownedServerPid": 52,
+  "outcomes": [
+    {
+      "id": "exit1-stdout",
+      "status": 502,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "exit1-stderr",
+      "status": 502,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "exit1-both",
+      "status": 502,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "exit1-neither",
+      "status": 502,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "success-stdout",
+      "status": 200,
+      "hasOutput": true,
+      "hasError": false,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "output-bound-2MiB",
+      "status": 502,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "timeout-30s",
+      "status": 504,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "fresh-engine-admin-withdrawal",
+      "status": 403,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "missing-bash",
+      "status": 503,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    },
+    {
+      "id": "runtime-disabled",
+      "status": 501,
+      "hasOutput": false,
+      "hasError": true,
+      "syntheticMarkerExposed": false
+    }
+  ],
+  "ownedServerPids": [
+    75,
+    91
+  ],
+  "childExit": [
+    0,
+    null
+  ],
+  "fixtureRemoved": true,
+  "completedUtc": "2026-10-11T14:51:34.912Z",
+  "harnessSHA256": "7a8a56949aa90304e7bcade18150caca09d674c7d711bb3cab3bd67dc4c9d7f4"
+}

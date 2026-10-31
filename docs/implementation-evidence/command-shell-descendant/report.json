@@ -1,0 +1,41 @@
+{
+  "scope": "A05 disposable owned descendant lifetime/stdio observation under original30s host-shell timeout",
+  "node": "v22.23.3",
+  "startedUtc": "2026-10-11T15:00:13.357Z",
+  "pid": 1,
+  "checks": [
+    "fresh-effective-admin-enabled-shell",
+    "owned-PID-start-and-31s-observation-complete"
+  ],
+  "performanceAcceptance": false,
+  "ownedServerPid": 52,
+  "descendant": {
+    "pid": 69,
+    "startTicks": "22994343"
+  },
+  "observationAt31s": {
+    "sameOwnedDescendantAlive": true,
+    "responsePending": false,
+    "stdoutPipe": false,
+    "stderrPipe": false,
+    "elapsedMs": 31001.588761
+  },
+  "outcome": {
+    "status": 504,
+    "hasOutput": false,
+    "fixedTimeout": true,
+    "wallMs": 30038.632179
+  },
+  "failure": {
+    "phase": "owned-descendant-timeout",
+    "classification": "AssertionError",
+    "completedChecks": 2
+  },
+  "childExit": [
+    0,
+    null
+  ],
+  "fixtureRemoved": true,
+  "completedUtc": "2026-10-11T15:00:47.298Z",
+  "harnessSHA256": "aabaac331e4c149830f27c839c7d5ff6be801ca61aed34775b26cb8adef45a44"
+}

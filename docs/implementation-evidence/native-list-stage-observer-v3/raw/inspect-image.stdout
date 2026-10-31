@@ -1,0 +1,62 @@
+[
+    {
+        "Id": "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+        "RepoTags": [
+            "bortus-qa-base:backend-ea849ee1f5b1"
+        ],
+        "RepoDigests": [
+            "bortus-qa-base@sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-10-10T15:54:19.869961728-04:00",
+        "Config": {
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NODE_VERSION=22.23.3",
+                "YARN_VERSION=1.22.22"
+            ],
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Cmd": [
+                "node"
+            ],
+            "WorkingDir": "/app",
+            "Labels": {
+                "org.opencontainers.image.revision": "ea849ee1f5b13031c4a6af79c4756ceddb68fc8a"
+            }
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 104225211,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:e58989146fcec76699871403b9897b5c014af1ccd85f5a9300a215e7975525d7",
+                "sha256:4990a62cab1587a2ed690c9d4f41675b9216d68120e99033d664b558662e90c8",
+                "sha256:3714bbaf32038e259cddcddea09e13fc9aaa1a86a644274a6c6e263b00972240",
+                "sha256:f6becc1249c39a0f6d687460220dcfcf9f2a46d01770a70fc0a8ed4c98a6fd49",
+                "sha256:cae24708e29a74f04cc1ec51fc52e2d283c35f243ab21912e036095a2b50dbde",
+                "sha256:1731653a85476ab6014913fcca4f3bfb6c71e45636ddd3612aaeb0f9677fee93",
+                "sha256:fee4860300884c999184d296309074ad09ca8a516b18939a5cb564ce1a33ea76",
+                "sha256:916dc142421c4005a63e1911f820e87295dc4dbc40f183fa24d0cd59f44395ff"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-10-10T22:13:17.797216592Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.oci.image.index.v1+json",
+            "digest": "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+            "size": 856
+        },
+        "Identity": {
+            "Build": [
+                {
+                    "Ref": "w69w8d39kr4eq5g6p18k7vf57",
+                    "CreatedAt": "2026-10-10T18:13:17.821039502-04:00"
+                }
+            ]
+        }
+    }
+]

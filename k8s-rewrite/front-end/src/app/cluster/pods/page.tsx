@@ -4,6 +4,7 @@ import { Container, Loader2, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ViewportWrapper from "@/app/(dashboard)/viewport-wrapper";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
+import { sortLegacyClusterRows } from "@/lib/legacy-cluster-sort";
 import { useState, useEffect, useCallback, useMemo } from "react";
 
 interface PodData {
@@ -60,11 +61,7 @@ export default function PodsPage() {
         (p) => p.name.toLowerCase().includes(q) || p.namespace.toLowerCase().includes(q)
       );
     }
-    return [...result].sort((a, b) => {
-      const va = String((a as any)[sortKey] ?? "").toLowerCase();
-      const vb = String((b as any)[sortKey] ?? "").toLowerCase();
-      return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
-    });
+    return sortLegacyClusterRows(result, "pods", sortKey, sortDir);
   }, [pods, search, sortKey, sortDir]);
 
   useEffect(() => { fetchPods(); }, [fetchPods]);

@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "C:\Users\james\.codex\worktrees\8cdf\branconet-charts\scripts\export_bortus_source.py", line 151, in <module>
+    if __name__ == '__main__': main()
+                               ^^^^^^
+  File "C:\Users\james\.codex\worktrees\8cdf\branconet-charts\scripts\export_bortus_source.py", line 149, in main
+    print(json.dumps(export(args.repository, args.commit, args.output, args.include_tests)))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\james\.codex\worktrees\8cdf\branconet-charts\scripts\export_bortus_source.py", line 118, in export
+    scan = subprocess.run([str(scanner), 'stdin', '--redact=100', '--no-banner', '--exit-code=1'],
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\james\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\james\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "C:\Users\james\AppData\Local\Programs\Python\Python312\Lib\subprocess.py", line 1538, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+OSError: [WinError 193] %1 is not a valid Win32 application

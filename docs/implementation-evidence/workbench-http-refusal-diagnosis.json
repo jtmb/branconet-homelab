@@ -1,0 +1,101 @@
+{
+  "scope": "Failed lifecycle HTTP production metadata source compared with passed57960042 working-byte manifest",
+  "files": [
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/kv/legacy/grants/[id]/route.ts",
+      "sha256": "66e7bd2dc97ceb5d872556b5f999b30f162b7ed9e7bd7d6dbeb1d179fc047061",
+      "unchanged": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/kv/legacy/grants/route.ts",
+      "sha256": "f5a70c98409c73d1307d81bf67ee4cc3519bf6cdaefaa7f144b1620e3e5fa3a7",
+      "unchanged": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/kv/legacy/route.ts",
+      "sha256": "47306510876e1b7c88e0f9823a0bb82f83d5f34dc255c063cbbe7a211356b22e",
+      "unchanged": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/kv/policies/[id]/route.ts",
+      "sha256": "426a918b53a9a693c3d2113d220040ab1fbb8ef9b837b6cc23dba442b0e7da70",
+      "unchanged": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/kv/policies/route.ts",
+      "sha256": "5e63d4736b99df8fd7c8df5cdee4ea39d3b2aa4633815d1fa4bddf4eb7c039bc",
+      "unchanged": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/kv-contract.ts",
+      "sha256": "639f670f70d56842e5aa00b0b311a2040a6a11631de931e9812d53703416f1f4",
+      "unchanged": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/kv-http.ts",
+      "sha256": "0404d3db7254cd095eed98e340434adb71f4af0810747c7ffae88f803169a743",
+      "unchanged": true
+    }
+  ],
+  "failure": "Scoped maximum-body refusal line291 returned500; case route and response body were not retained by original assertion",
+  "cleanup": "Launcher2680 terminal1; exact PID absent and scoped process scan found no owned fixture/server rows; all integration fixtures have finally stop/native-close/disconnect/tempcleanup",
+  "followup": "No production API correction inferred; added metadata-only mismatch diagnostic, fresh scoped role/write-engineAdminfalse assertions; expected403 unchanged",
+  "qualification": "All original failures retained; unchanged403/413/max-body checks require fresh patched production build and HTTP pass before browser",
+  "diagnosticTerminal": {
+    "pid": 38968,
+    "terminal": true,
+    "exitCode": 1,
+    "completedAt": "2026-10-11T04:25:29.4656703Z",
+    "unexpectedRoute": "/api/kv/policies/00000000-0000-4000-8000-000000000000",
+    "expected": 403,
+    "actual": 500,
+    "jsonError": false,
+    "noStore": true,
+    "fixedApiError": null,
+    "serverStreamError": false,
+    "serverDatabaseError": false,
+    "method": "Not retained by first diagnostic version",
+    "principal": "readonly request at test299",
+    "causality": "Unproven; frame/method/framing classification prepared for next coordinated runtime"
+  },
+  "traceTerminal": {
+    "pid": 13236,
+    "exitCode": 1,
+    "terminal": true,
+    "completedAt": "2026-10-11T04:33:04.6132085Z",
+    "method": "DELETE",
+    "expected": 413,
+    "actual": 500,
+    "bodyBytes": 2140,
+    "contentType": "html",
+    "serverFrames": [
+      {
+        "module": "3897.js",
+        "function": "l.fromNodeNextRequest",
+        "line": 22,
+        "column": 66087
+      },
+      {
+        "module": "route.js",
+        "function": "y",
+        "line": 1,
+        "column": 7446
+      }
+    ]
+  },
+  "classificationTerminal": {
+    "pid": 43188,
+    "exitCode": 1,
+    "terminal": true,
+    "completedAt": "2026-10-11T04:34:14.3269329Z",
+    "method": "POST",
+    "expected": 403,
+    "actual": 500,
+    "bodyBytes": 2140,
+    "contentType": "html",
+    "serverBodyDisturbed": true,
+    "roleCase": "readonly first oversized refusal",
+    "ownedLauncherAbsent": true
+  },
+  "cause": "Installed Next15.5.27 Node middleware calls async cloneable-body finalize without await before route request construction; matches official upstreamPR85418. Local fixed-error classifier and adapter stack confirm disturbed body before handler. Backport qualification pending."
+}

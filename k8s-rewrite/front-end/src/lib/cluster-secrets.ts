@@ -1,4 +1,4 @@
-import type { V1Secret } from "@kubernetes/client-node";
+import type { V1ObjectMeta, V1Secret } from "@kubernetes/client-node";
 
 export class SecretError extends Error {
   constructor(
@@ -13,12 +13,60 @@ export interface SecretTarget {
   name: string;
   key: string;
 }
+export const SECRET_LIST_MAX_ITEMS = 10000;
+export const SECRET_LIST_MAX_BYTES = 32 * 1024 * 1024;
+export const SECRET_LIST_MAX_CONCURRENCY = 8;
+export class SecretListBudget {
+  items = 0;
+  bytes = 0;
+  private failure?: SecretError;
+  private cancellation = new AbortController();
+  private cleanups = new Set<() => void>();
+  readonly signal = this.cancellation.signal;
+  constructor(readonly deadline = Date.now() + 15000) {}
+  onFinish(cleanup: () => void) { this.check(); this.cleanups.add(cleanup); }
+  finish() {
+    const cleanups = [...this.cleanups]; this.cleanups.clear();
+    for (const cleanup of cleanups) cleanup();
+  }
+  fail(error: unknown) {
+    this.failure ??= secretFailure(error);
+    this.cancellation.abort(this.failure);
+    this.finish();
+  }
+  check() {
+    if (!this.failure && Date.now() >= this.deadline) this.fail(new SecretError(503, "Kubernetes Secret list timed out"));
+    if (this.failure) throw this.failure;
+  }
+  remainingBytes() { this.check(); return SECRET_LIST_MAX_BYTES - this.bytes; }
+  consumeBytes(bytes: number) {
+    if (!Number.isSafeInteger(bytes) || bytes < 0) this.fail(new SecretError(503, "Kubernetes Secret list exceeds the aggregate byte limit"));
+    else this.bytes += bytes; // Include delivered late chunks after cancellation; never buffer them.
+    if (this.bytes > SECRET_LIST_MAX_BYTES) this.fail(new SecretError(503, "Kubernetes Secret list exceeds the aggregate byte limit"));
+    this.check();
+  }
+  consumeItems(count: number) {
+    this.check();
+    if (!Number.isSafeInteger(count) || count < 0) this.fail(new SecretError(503, "Kubernetes Secret list exceeds the aggregate item limit"));
+    else this.items += count;
+    if (this.items > SECRET_LIST_MAX_ITEMS) this.fail(new SecretError(503, "Kubernetes Secret list exceeds the aggregate item limit"));
+    this.check();
+  }
+}
+export type SecretListOptions = { budget?: SecretListBudget; visit?: (secret: V1Secret) => void };
+export interface NativeSecretSummary { metadata: V1ObjectMeta; type: string; immutable: boolean; keys: string[] }
+export interface FlatNativeSecretSummary { namespace: string | undefined; name: string | undefined; resourceVersion: string | undefined; type: string; immutable: boolean; keys: string[] }
+export type SecretSummaryListOptions = { budget?: SecretListBudget; visit?: (summary: NativeSecretSummary) => void };
+export type FlatSecretSummaryListOptions = { budget?: SecretListBudget; visit?: (summary: FlatNativeSecretSummary) => void };
 export interface SecretTransport {
   read(namespace: string, name: string): Promise<V1Secret>;
-  list(namespace: string): Promise<V1Secret[]>;
+  list(namespace: string, options?: SecretListOptions): Promise<V1Secret[]>;
+  listSummaries?(namespace: string, options?: SecretSummaryListOptions): Promise<NativeSecretSummary[]>;
+  listFlatSummaries?(namespace: string, options?: FlatSecretSummaryListOptions): Promise<FlatNativeSecretSummary[]>;
   create(namespace: string, body: V1Secret): Promise<V1Secret>;
   replace(namespace: string, name: string, body: V1Secret): Promise<V1Secret>;
 }
+export type FlatSecretGuard = (action: "read" | "create" | "update" | "delete", target: SecretTarget, secret?: V1Secret) => Promise<void>;
 const dnsLabel = /^[a-z0-9](?:[-a-z0-9]*[a-z0-9])?$/;
 const dnsName = /^[a-z0-9](?:[-a-z0-9.]*[a-z0-9])?$/;
 export function validateTarget(target: SecretTarget): SecretTarget {
@@ -84,6 +132,8 @@ export class SecretStore {
   constructor(
     private transport: SecretTransport,
     private namespaces: string[],
+    private guard?: FlatSecretGuard,
+    private listConcurrency = 1,
   ) {}
   private check(target: SecretTarget) {
     validateTarget(target);
@@ -98,11 +148,41 @@ export class SecretStore {
     for (const scope of scopes)
       this.check({ namespace: scope, name: "scope", key: "scope" });
     try {
-      return (
-        await Promise.all(scopes.map((scope) => this.transport.list(scope)))
-      )
-        .flat()
-        .map(secretSummary);
+      if (!Number.isSafeInteger(this.listConcurrency) || this.listConcurrency < 1 || this.listConcurrency > SECRET_LIST_MAX_CONCURRENCY)
+        throw new SecretError(503, "Invalid Kubernetes Secret list concurrency");
+      const budget = new SecretListBudget(), summaries: ReturnType<typeof secretSummary>[][] = scopes.map(() => []);
+      let next = 0;
+      const worker = async () => {
+        try {
+          while (next < scopes.length) {
+            budget.check(); const index = next++, scope = scopes[index];
+            if (this.transport.listFlatSummaries) {
+              const project = (summary: FlatNativeSecretSummary) => { budget.check(); summaries[index].push(summary); };
+              const metadata = await this.transport.listFlatSummaries(scope, { budget, visit: project });
+              for (const summary of metadata) { budget.consumeBytes(Buffer.byteLength(JSON.stringify(summary))); budget.consumeItems(1); project(summary); }
+              continue;
+            }
+            if (this.transport.listSummaries) {
+              const project = (summary: NativeSecretSummary) => { budget.check(); summaries[index].push({ namespace: summary.metadata.namespace, name: summary.metadata.name,
+                resourceVersion: summary.metadata.resourceVersion, type: summary.type, immutable: summary.immutable, keys: summary.keys }); };
+              const metadata = await this.transport.listSummaries(scope, { budget, visit: project });
+              for (const summary of metadata) { budget.consumeBytes(Buffer.byteLength(JSON.stringify(summary))); budget.consumeItems(1); project(summary); }
+              continue;
+            }
+            const full = await this.transport.list(scope, { budget, visit: secret => { budget.check(); summaries[index].push(secretSummary(secret)); } });
+            // Compatibility transports may return full records instead of visiting pages.
+            for (const secret of full) {
+              budget.consumeBytes(Buffer.byteLength(JSON.stringify(secret))); budget.consumeItems(1);
+              summaries[index].push(secretSummary(secret));
+            }
+          }
+        } catch (error) { budget.fail(error); }
+      };
+      // Workers settle before returning an error, so no owned request/queue entry is left behind.
+      try {
+        await Promise.all(Array.from({ length: Math.min(this.listConcurrency, scopes.length) }, worker));
+        budget.check(); return summaries.flat();
+      } finally { budget.finish(); }
     } catch (error) {
       throw secretFailure(error);
     }
@@ -111,6 +191,7 @@ export class SecretStore {
     this.check(target);
     try {
       const secret = await this.transport.read(target.namespace, target.name);
+      await this.guard?.("read", target, secret);
       if (!Object.hasOwn(secret.data || {}, target.key))
         throw new SecretError(404, "Kubernetes Secret key not found");
       const bytes = Buffer.from(secret.data![target.key], "base64");
@@ -152,6 +233,7 @@ export class SecretStore {
       } catch (error) {
         if (secretFailure(error).status !== 404 || mode !== "create")
           throw error;
+        await this.guard?.("create", target);
         return secretSummary(
           await this.transport.create(target.namespace, {
             apiVersion: "v1",
@@ -162,6 +244,7 @@ export class SecretStore {
           }),
         );
       }
+      await this.guard?.(mode, target, secret);
       if (secret.immutable) throw new SecretError(409, "Secret is immutable");
       const exists = Object.hasOwn(secret.data || {}, target.key);
       if (mode === "create" && exists)
@@ -200,6 +283,7 @@ export class SecretStore {
       throw new SecretError(428, "resourceVersion is required for deletion");
     try {
       const secret = await this.transport.read(target.namespace, target.name);
+      await this.guard?.("delete", target, secret);
       if (secret.immutable) throw new SecretError(409, "Secret is immutable");
       if (secret.metadata?.resourceVersion !== resourceVersion)
         throw new SecretError(409, "Secret changed; refresh before retrying");

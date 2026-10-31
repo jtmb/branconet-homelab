@@ -1,0 +1,366 @@
+{
+  "candidate": "4ae9f5c28dcf64ebda019bc40f7b27b3524e61db",
+  "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "actualRunnerExit": 0,
+  "actualSummaryExit": 0,
+  "measurementComplete": true,
+  "sixUniqueAlternatingObservations": true,
+  "allOriginalInventoryAndCorrectnessAssertionsPassed": true,
+  "sourceBlobsAndModes": 424,
+  "originalArtifacts": 40,
+  "rawSha256": "c1258bbaf4236b4a53ecb0b79aa5e116bcdccde48a99252410d0313bd1b6c29c",
+  "summarySha256": "99b5a485d942e3b2cdfc42dee07b0837215a4fef7d666f443aa53b41f00bd5a2",
+  "terminalSha256": "890692447c1503398ce2a602ffeeddbd920a87742d755db24355226348760952",
+  "protectedOriginals": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\paired-4ae9f5c-20261011-185110-9e3d-complete",
+  "ownedProcessesAndContainersAbsent": true,
+  "performanceGatePassed": false,
+  "profiles": [
+    {
+      "name": "audit-small",
+      "nativeMetadata": {
+        "baselineMedianMs": 103.78935100000035,
+        "candidateMedianMs": 105.16586800000005,
+        "baselineCalls": 18,
+        "candidateCalls": 18
+      },
+      "podWarmPhases": [
+        {
+          "name": "warm-pods-12",
+          "baselineP50Ms": {
+            "median": 5.90781700000025,
+            "min": 5.81054899999981,
+            "max": 7.019806999999673
+          },
+          "candidateP50Ms": {
+            "median": 5.860313999999562,
+            "min": 5.623061000000234,
+            "max": 6.429607000000033
+          },
+          "baselineP95Ms": {
+            "median": 13.239027000000078,
+            "min": 13.082935000000361,
+            "max": 18.89219200000025
+          },
+          "candidateP95Ms": {
+            "median": 16.910495000000083,
+            "min": 12.684619000000566,
+            "max": 20.409389000000374
+          }
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "baselineP50Ms": {
+            "median": 30.385009999999966,
+            "min": 29.06884200000013,
+            "max": 44.66479299999992
+          },
+          "candidateP50Ms": {
+            "median": 30.406879000000117,
+            "min": 27.41387400000076,
+            "max": 31.303413999999975
+          },
+          "baselineP95Ms": {
+            "median": 52.63661400000001,
+            "min": 49.832780000000184,
+            "max": 63.50428499999998
+          },
+          "candidateP95Ms": {
+            "median": 54.005450999999994,
+            "min": 50.13459900000089,
+            "max": 56.09554500000013
+          }
+        }
+      ]
+    },
+    {
+      "name": "metadata-200",
+      "nativeMetadata": {
+        "baselineMedianMs": 68.0250560000004,
+        "candidateMedianMs": 97.58868500000062,
+        "baselineCalls": 18,
+        "candidateCalls": 18
+      },
+      "podWarmPhases": [
+        {
+          "name": "warm-pods-12",
+          "baselineP50Ms": {
+            "median": 4.889241999999285,
+            "min": 4.369675999998435,
+            "max": 5.233951000000161
+          },
+          "candidateP50Ms": {
+            "median": 4.872808999998597,
+            "min": 4.39390000000094,
+            "max": 5.401879999999437
+          },
+          "baselineP95Ms": {
+            "median": 7.02045999999973,
+            "min": 6.798215999999229,
+            "max": 8.860682000000452
+          },
+          "candidateP95Ms": {
+            "median": 8.490842999999586,
+            "min": 7.924052999998821,
+            "max": 8.58670600000005
+          }
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "baselineP50Ms": {
+            "median": 33.06175500000063,
+            "min": 31.770716000000903,
+            "max": 44.642149999999674
+          },
+          "candidateP50Ms": {
+            "median": 29.84349000000111,
+            "min": 29.436992000000828,
+            "max": 32.72364899999957
+          },
+          "baselineP95Ms": {
+            "median": 57.404945000000225,
+            "min": 55.09245899999951,
+            "max": 73.0312640000011
+          },
+          "candidateP95Ms": {
+            "median": 52.901434999999765,
+            "min": 52.76007599999866,
+            "max": 55.61123899999984
+          }
+        }
+      ]
+    },
+    {
+      "name": "metadata-1000",
+      "nativeMetadata": {
+        "baselineMedianMs": 77.47307399999772,
+        "candidateMedianMs": 113.15504299999884,
+        "baselineCalls": 18,
+        "candidateCalls": 18
+      },
+      "podWarmPhases": [
+        {
+          "name": "warm-pods-12",
+          "baselineP50Ms": {
+            "median": 7.225811000000249,
+            "min": 5.873803000000407,
+            "max": 7.596556000000419
+          },
+          "candidateP50Ms": {
+            "median": 6.490730999999869,
+            "min": 5.6386380000003555,
+            "max": 6.678228000000672
+          },
+          "baselineP95Ms": {
+            "median": 10.853140999999596,
+            "min": 9.352922000001854,
+            "max": 12.259774000000107
+          },
+          "candidateP95Ms": {
+            "median": 8.255504000000656,
+            "min": 7.722383000000264,
+            "max": 15.04979000000094
+          }
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "baselineP50Ms": {
+            "median": 46.363790999999765,
+            "min": 42.076795999999376,
+            "max": 105.05961000000025
+          },
+          "candidateP50Ms": {
+            "median": 37.40372500000012,
+            "min": 35.42193899999984,
+            "max": 41.31564399999843
+          },
+          "baselineP95Ms": {
+            "median": 87.6981999999989,
+            "min": 72.92353400000138,
+            "max": 120.25788000000102
+          },
+          "candidateP95Ms": {
+            "median": 80.54912799999875,
+            "min": 79.98735800000031,
+            "max": 80.9558999999972
+          }
+        }
+      ]
+    },
+    {
+      "name": "metadata-10000",
+      "nativeMetadata": {
+        "baselineMedianMs": 266.62741599999936,
+        "candidateMedianMs": 281.98216200000024,
+        "baselineCalls": 54,
+        "candidateCalls": 54
+      },
+      "podWarmPhases": []
+    },
+    {
+      "name": "kv-sized-native-25",
+      "nativeMetadata": {
+        "baselineMedianMs": 202.387281000003,
+        "candidateMedianMs": 244.5840590000007,
+        "baselineCalls": 18,
+        "candidateCalls": 21
+      },
+      "podWarmPhases": [
+        {
+          "name": "warm-pods-12",
+          "baselineP50Ms": {
+            "median": 5.029291999999259,
+            "min": 4.441440999999031,
+            "max": 5.275008999997226
+          },
+          "candidateP50Ms": {
+            "median": 4.219390999998723,
+            "min": 3.906551000000036,
+            "max": 4.89736400000038
+          },
+          "baselineP95Ms": {
+            "median": 7.618845000000874,
+            "min": 7.076106000000436,
+            "max": 8.463912999999593
+          },
+          "candidateP95Ms": {
+            "median": 6.753586000002542,
+            "min": 6.283548000003066,
+            "max": 6.838535999999294
+          }
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "baselineP50Ms": {
+            "median": 40.446358999997756,
+            "min": 29.936830999999074,
+            "max": 42.84018300000025
+          },
+          "candidateP50Ms": {
+            "median": 30.651710999998613,
+            "min": 28.146798999998282,
+            "max": 31.48935899999924
+          },
+          "baselineP95Ms": {
+            "median": 53.64426200000162,
+            "min": 53.13047999999981,
+            "max": 71.98271600000226
+          },
+          "candidateP95Ms": {
+            "median": 53.09616499999902,
+            "min": 51.90769899999941,
+            "max": 54.416989999997895
+          }
+        }
+      ]
+    },
+    {
+      "name": "maximum-flat-native-3",
+      "nativeMetadata": {
+        "baselineMedianMs": 122.81706900000063,
+        "candidateMedianMs": 164.19920300000013,
+        "baselineCalls": 18,
+        "candidateCalls": 20
+      },
+      "podWarmPhases": [
+        {
+          "name": "warm-pods-12",
+          "baselineP50Ms": {
+            "median": 4.081756999999925,
+            "min": 3.8331120000002556,
+            "max": 4.149176999999327
+          },
+          "candidateP50Ms": {
+            "median": 4.84262000000308,
+            "min": 4.1629419999990205,
+            "max": 5.379559999997582
+          },
+          "baselineP95Ms": {
+            "median": 6.73238499999934,
+            "min": 6.65389900000082,
+            "max": 7.674462000002677
+          },
+          "candidateP95Ms": {
+            "median": 7.365655000001425,
+            "min": 6.944095999999263,
+            "max": 7.491656000001967
+          }
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "baselineP50Ms": {
+            "median": 29.448945000000094,
+            "min": 29.234739999999874,
+            "max": 31.681518000001233
+          },
+          "candidateP50Ms": {
+            "median": 32.459790000000794,
+            "min": 31.037908000002062,
+            "max": 49.24544500000047
+          },
+          "baselineP95Ms": {
+            "median": 54.41988200000196,
+            "min": 52.431995000002644,
+            "max": 55.86081600000034
+          },
+          "candidateP95Ms": {
+            "median": 60.83618000000206,
+            "min": 55.008669999999256,
+            "max": 88.7327809999988
+          }
+        }
+      ]
+    }
+  ],
+  "wholeFixtureObservations": {
+    "baseline": {
+      "cgroup_peak_mib": {
+        "median": 378.765625,
+        "min": 363.65625,
+        "max": 383.48046875
+      },
+      "cgroup_cpu_seconds": {
+        "median": 36.760903,
+        "min": 35.74565,
+        "max": 39.255487
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    },
+    "candidate": {
+      "cgroup_peak_mib": {
+        "median": 415.40234375,
+        "min": 414.91015625,
+        "max": 431.8515625
+      },
+      "cgroup_cpu_seconds": {
+        "median": 31.982666,
+        "min": 30.236876,
+        "max": 32.471454
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    }
+  },
+  "semanticLimits": [
+    "Baseline10kPod inventory is incomplete/false-empty and noncomparative; no speedup follows",
+    "Services-after-Pods baseline deferred/shared-cache envelope differs from fresh candidate resource envelope; noncomparative despite unchanged summary flag",
+    "Warm/concurrent phases repeat Pods only, not configuration/native Secret metadata",
+    "Cgroup totals include driver/API/Next/Prisma/fake CLI; not isolated server CPU causality",
+    "All original workloads/limits/driver/runner/summary/assertions unchanged; successful measurement is not no-regression acceptance"
+  ],
+  "retainedPostRunFailure": {
+    "phase": "Windows preservation helper parse before transfer",
+    "actualExit": 1,
+    "classification": "SyntaxError",
+    "cause": "Quoted extended-path prefix; corrected copy-only helper passed, no measurement or summary rerun",
+    "protectedRecord": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\paired-4ae9-preservation-v1-failure.json"
+  }
+}

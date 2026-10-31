@@ -1,0 +1,1060 @@
+{
+  "nonAcceptance": true,
+  "sourceCommit": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "instrumentationOverhead": true,
+  "chronologicalFixtureOrderBound": true,
+  "limitations": [
+    "Single diagnostic observation, not before/after performance acceptance.",
+    "SDK/TLS/body timings overlap across bounded workers and sums cannot be added as wall attribution.",
+    "Data/end synchronous handlers include parser plus listener/cleanup/observer work; combined intervals labelled.",
+    "Pre-request and post-native intervals are combined auth/queue/projection/serialization paths, not isolated SQL or projection.",
+    "Fixture timer/body-generation includes unchanged12ms delay and scheduling; JSON stringify is separately measured numeric duration only.",
+    "No argument, body/key/URL/header/options or dynamic error-local data retained."
+  ],
+  "rows": [
+    {
+      "fixture": "audit-small",
+      "nativeWindowMs": 101.126,
+      "sdkCalls": 0,
+      "sdkAsyncSumMs": 0,
+      "nativeRequestCount": 18,
+      "tlsConnectionCount": 18,
+      "socketAssignedToTLSCombinedSumMs": 636.6750000000001,
+      "preFirstNativeRequestCombinedMs": 11.36,
+      "firstNativeStartToLastNativeEndCombinedMs": 88.487,
+      "postLastNativeEndToResponseEndCombinedMs": 1.165,
+      "responseEndCallUs": 58,
+      "jsonTiming": {
+        "stringifyCalls": 3,
+        "stringifyUs": 158,
+        "parseCalls": 21,
+        "parseUs": 655
+      },
+      "dataHandlerSynchronousSumMs": 0.343,
+      "endEventHandlerSynchronousSumMs": 1.592,
+      "responsesWithoutEndEvent": 0,
+      "noEndEventDataHandlerSynchronousSumMs": 0.0,
+      "fixtureRequestsInNativeWindow": 18,
+      "fixtureStringifySumMs": 0.337,
+      "fixtureRequestToResponseEndCombinedMedianMs": 12.8265,
+      "fixtureRequestToResponseEndCombinedMaxMs": 13.428,
+      "bodyHeaderToEndEventBeforeHandlerCombinedSumMs": 3.897,
+      "topWeightedCPUFrames": [
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?idle?",
+          "line": 0,
+          "selfUs": 51237,
+          "inclusiveUs": 51237,
+          "samples": 227
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "start",
+          "line": 0,
+          "selfUs": 6123,
+          "inclusiveUs": 6123,
+          "samples": 8
+        },
+        {
+          "kind": "native",
+          "module": "node:buffer",
+          "function": "allocate",
+          "line": 436,
+          "selfUs": 5657,
+          "inclusiveUs": 5865,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "init",
+          "line": 0,
+          "selfUs": 2582,
+          "inclusiveUs": 2582,
+          "samples": 12
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/node_modules/@kubernetes/client-node/dist/gen/models/ObjectSerializer.js",
+          "function": "deserialize",
+          "line": 2320,
+          "selfUs": 2101,
+          "inclusiveUs": 9348,
+          "samples": 8
+        },
+        {
+          "kind": "native",
+          "module": "[other-module]",
+          "function": "https.request",
+          "line": 20,
+          "selfUs": 2030,
+          "inclusiveUs": 13864,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/async_hooks",
+          "function": "trackPromise",
+          "line": 314,
+          "selfUs": 1597,
+          "inclusiveUs": 1597,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?garbage collector?",
+          "line": 0,
+          "selfUs": 1122,
+          "inclusiveUs": 1122,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "node:net",
+          "function": "normalizeArgs",
+          "line": 282,
+          "selfUs": 948,
+          "inclusiveUs": 948,
+          "samples": 2
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/.next/server/chunks/5390.js",
+          "function": "",
+          "line": 1,
+          "selfUs": 907,
+          "inclusiveUs": 23000,
+          "samples": 5
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?program?",
+          "line": 0,
+          "selfUs": 839,
+          "inclusiveUs": 839,
+          "samples": 5
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "addCACert",
+          "line": 0,
+          "selfUs": 750,
+          "inclusiveUs": 750,
+          "samples": 4
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/tls/secure-context",
+          "function": "configSecureContext",
+          "line": 129,
+          "selfUs": 686,
+          "inclusiveUs": 2387,
+          "samples": 2
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "setCiphers",
+          "line": 0,
+          "selfUs": 585,
+          "inclusiveUs": 585,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "shutdown",
+          "line": 0,
+          "selfUs": 571,
+          "inclusiveUs": 571,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "node:_http_client",
+          "function": "ClientRequest",
+          "line": 191,
+          "selfUs": 560,
+          "inclusiveUs": 11473,
+          "samples": 3
+        }
+      ]
+    },
+    {
+      "fixture": "metadata-200",
+      "nativeWindowMs": 79.661,
+      "sdkCalls": 0,
+      "sdkAsyncSumMs": 0,
+      "nativeRequestCount": 18,
+      "tlsConnectionCount": 18,
+      "socketAssignedToTLSCombinedSumMs": 218.392,
+      "preFirstNativeRequestCombinedMs": 12.542,
+      "firstNativeStartToLastNativeEndCombinedMs": 66.016,
+      "postLastNativeEndToResponseEndCombinedMs": 0.987,
+      "responseEndCallUs": 57,
+      "jsonTiming": {
+        "stringifyCalls": 3,
+        "stringifyUs": 73,
+        "parseCalls": 21,
+        "parseUs": 519
+      },
+      "dataHandlerSynchronousSumMs": 0.305,
+      "endEventHandlerSynchronousSumMs": 1.945,
+      "responsesWithoutEndEvent": 0,
+      "noEndEventDataHandlerSynchronousSumMs": 0.0,
+      "fixtureRequestsInNativeWindow": 18,
+      "fixtureStringifySumMs": 0.284,
+      "fixtureRequestToResponseEndCombinedMedianMs": 12.289,
+      "fixtureRequestToResponseEndCombinedMaxMs": 14.081,
+      "bodyHeaderToEndEventBeforeHandlerCombinedSumMs": 4.511,
+      "topWeightedCPUFrames": [
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?idle?",
+          "line": 0,
+          "selfUs": 24097,
+          "inclusiveUs": 24097,
+          "samples": 101
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "getPeerCertificate",
+          "line": 0,
+          "selfUs": 5537,
+          "inclusiveUs": 5537,
+          "samples": 6
+        },
+        {
+          "kind": "native",
+          "module": "node:net",
+          "function": "Socket.connect",
+          "line": 1223,
+          "selfUs": 3862,
+          "inclusiveUs": 3862,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/url",
+          "function": "isURL",
+          "line": 770,
+          "selfUs": 2212,
+          "inclusiveUs": 2212,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/.next/server/chunks/5390.js",
+          "function": "text",
+          "line": 1,
+          "selfUs": 1845,
+          "inclusiveUs": 2029,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "init",
+          "line": 0,
+          "selfUs": 1709,
+          "inclusiveUs": 1709,
+          "samples": 9
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/streams/writable",
+          "function": "finishMaybe",
+          "line": 928,
+          "selfUs": 1656,
+          "inclusiveUs": 2809,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/node_modules/next/dist/lib/metadata/is-metadata-route.js",
+          "function": "isMetadataRouteFile",
+          "line": 103,
+          "selfUs": 1380,
+          "inclusiveUs": 1380,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "connect",
+          "line": 0,
+          "selfUs": 1273,
+          "inclusiveUs": 1273,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "shutdown",
+          "line": 0,
+          "selfUs": 1153,
+          "inclusiveUs": 1153,
+          "samples": 6
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "setCiphers",
+          "line": 0,
+          "selfUs": 967,
+          "inclusiveUs": 967,
+          "samples": 4
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?garbage collector?",
+          "line": 0,
+          "selfUs": 965,
+          "inclusiveUs": 965,
+          "samples": 2
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/errors",
+          "function": "wrappedFn",
+          "line": 535,
+          "selfUs": 936,
+          "inclusiveUs": 1123,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/async_hooks",
+          "function": "callbackTrampoline",
+          "line": 118,
+          "selfUs": 883,
+          "inclusiveUs": 13303,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/node_modules/@kubernetes/client-node/dist/gen/models/ObjectSerializer.js",
+          "function": "deserialize",
+          "line": 2320,
+          "selfUs": 874,
+          "inclusiveUs": 4032,
+          "samples": 5
+        },
+        {
+          "kind": "native",
+          "module": "node:events",
+          "function": "_addListener",
+          "line": 547,
+          "selfUs": 760,
+          "inclusiveUs": 943,
+          "samples": 4
+        }
+      ]
+    },
+    {
+      "fixture": "metadata-1000",
+      "nativeWindowMs": 77.042,
+      "sdkCalls": 0,
+      "sdkAsyncSumMs": 0,
+      "nativeRequestCount": 18,
+      "tlsConnectionCount": 18,
+      "socketAssignedToTLSCombinedSumMs": 223.342,
+      "preFirstNativeRequestCombinedMs": 13.504,
+      "firstNativeStartToLastNativeEndCombinedMs": 59.518,
+      "postLastNativeEndToResponseEndCombinedMs": 3.915,
+      "responseEndCallUs": 36,
+      "jsonTiming": {
+        "stringifyCalls": 3,
+        "stringifyUs": 823,
+        "parseCalls": 21,
+        "parseUs": 1632
+      },
+      "dataHandlerSynchronousSumMs": 0.538,
+      "endEventHandlerSynchronousSumMs": 1.537,
+      "responsesWithoutEndEvent": 0,
+      "noEndEventDataHandlerSynchronousSumMs": 0.0,
+      "fixtureRequestsInNativeWindow": 18,
+      "fixtureStringifySumMs": 0.808,
+      "fixtureRequestToResponseEndCombinedMedianMs": 12.038499999999999,
+      "fixtureRequestToResponseEndCombinedMaxMs": 13.051,
+      "bodyHeaderToEndEventBeforeHandlerCombinedSumMs": 6.727,
+      "topWeightedCPUFrames": [
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?idle?",
+          "line": 0,
+          "selfUs": 24850,
+          "inclusiveUs": 24850,
+          "samples": 51
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/node_modules/@kubernetes/client-node/dist/gen/models/ObjectSerializer.js",
+          "function": "deserialize",
+          "line": 2320,
+          "selfUs": 6439,
+          "inclusiveUs": 23485,
+          "samples": 17
+        },
+        {
+          "kind": "native",
+          "module": "[other-module]",
+          "function": "timedJSON",
+          "line": 6,
+          "selfUs": 2888,
+          "inclusiveUs": 2888,
+          "samples": 8
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?garbage collector?",
+          "line": 0,
+          "selfUs": 2838,
+          "inclusiveUs": 2838,
+          "samples": 11
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/node_modules/@kubernetes/client-node/dist/gen/apis/CoreV1Api.js",
+          "function": "listNamespacedSecretWithHttpInfo",
+          "line": 15541,
+          "selfUs": 2698,
+          "inclusiveUs": 11337,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "init",
+          "line": 0,
+          "selfUs": 2212,
+          "inclusiveUs": 2212,
+          "samples": 12
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "start",
+          "line": 0,
+          "selfUs": 1953,
+          "inclusiveUs": 1953,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "addCACert",
+          "line": 0,
+          "selfUs": 1159,
+          "inclusiveUs": 1159,
+          "samples": 6
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "connect",
+          "line": 0,
+          "selfUs": 1024,
+          "inclusiveUs": 1024,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/timers",
+          "function": "listOnTimeout",
+          "line": 526,
+          "selfUs": 1013,
+          "inclusiveUs": 1013,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "setCiphers",
+          "line": 0,
+          "selfUs": 934,
+          "inclusiveUs": 934,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "node:https",
+          "function": "request",
+          "line": 660,
+          "selfUs": 621,
+          "inclusiveUs": 12175,
+          "samples": 4
+        },
+        {
+          "kind": "native",
+          "module": "node:_http_client",
+          "function": "ClientRequest",
+          "line": 191,
+          "selfUs": 588,
+          "inclusiveUs": 11453,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "read",
+          "line": 0,
+          "selfUs": 582,
+          "inclusiveUs": 582,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "node:_http_agent",
+          "function": "createSocket",
+          "line": 426,
+          "selfUs": 575,
+          "inclusiveUs": 10101,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/.next/server/chunks/8517.js",
+          "function": "j",
+          "line": 22,
+          "selfUs": 565,
+          "inclusiveUs": 3031,
+          "samples": 3
+        }
+      ]
+    },
+    {
+      "fixture": "metadata-10000",
+      "nativeWindowMs": 296.176,
+      "sdkCalls": 0,
+      "sdkAsyncSumMs": 0,
+      "nativeRequestCount": 54,
+      "tlsConnectionCount": 54,
+      "socketAssignedToTLSCombinedSumMs": 1361.335,
+      "preFirstNativeRequestCombinedMs": 16.088,
+      "firstNativeStartToLastNativeEndCombinedMs": 258.8,
+      "postLastNativeEndToResponseEndCombinedMs": 21.139,
+      "responseEndCallUs": 59,
+      "jsonTiming": {
+        "stringifyCalls": 3,
+        "stringifyUs": 6978,
+        "parseCalls": 57,
+        "parseUs": 16925
+      },
+      "dataHandlerSynchronousSumMs": 4.211,
+      "endEventHandlerSynchronousSumMs": 4.667,
+      "responsesWithoutEndEvent": 0,
+      "noEndEventDataHandlerSynchronousSumMs": 0.0,
+      "fixtureRequestsInNativeWindow": 54,
+      "fixtureStringifySumMs": 9.82,
+      "fixtureRequestToResponseEndCombinedMedianMs": 13.165,
+      "fixtureRequestToResponseEndCombinedMaxMs": 17.731,
+      "bodyHeaderToEndEventBeforeHandlerCombinedSumMs": 38.548,
+      "topWeightedCPUFrames": [
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?idle?",
+          "line": 0,
+          "selfUs": 79898,
+          "inclusiveUs": 79898,
+          "samples": 202
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?garbage collector?",
+          "line": 0,
+          "selfUs": 37255,
+          "inclusiveUs": 37255,
+          "samples": 88
+        },
+        {
+          "kind": "native",
+          "module": "[other-module]",
+          "function": "timedJSON",
+          "line": 6,
+          "selfUs": 23883,
+          "inclusiveUs": 24055,
+          "samples": 106
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/node_modules/@kubernetes/client-node/dist/gen/models/ObjectSerializer.js",
+          "function": "deserialize",
+          "line": 2320,
+          "selfUs": 13405,
+          "inclusiveUs": 66625,
+          "samples": 73
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/process/task_queues",
+          "function": "nextTick",
+          "line": 111,
+          "selfUs": 10987,
+          "inclusiveUs": 11539,
+          "samples": 9
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "init",
+          "line": 0,
+          "selfUs": 7451,
+          "inclusiveUs": 7451,
+          "samples": 36
+        },
+        {
+          "kind": "native",
+          "module": "node:events",
+          "function": "removeListener",
+          "line": 681,
+          "selfUs": 6485,
+          "inclusiveUs": 6693,
+          "samples": 7
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/.next/server/chunks/5390.js",
+          "function": "",
+          "line": 1,
+          "selfUs": 5142,
+          "inclusiveUs": 43419,
+          "samples": 11
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/node_modules/@kubernetes/client-node/dist/gen/models/ObjectSerializer.js",
+          "function": "findCorrectType",
+          "line": 2214,
+          "selfUs": 4599,
+          "inclusiveUs": 4599,
+          "samples": 15
+        },
+        {
+          "kind": "native",
+          "module": "node:events",
+          "function": "addListener",
+          "line": 610,
+          "selfUs": 4596,
+          "inclusiveUs": 5633,
+          "samples": 2
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/.next/server/chunks/6057.js",
+          "function": "i",
+          "line": 7,
+          "selfUs": 4365,
+          "inclusiveUs": 4365,
+          "samples": 23
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/.next/server/chunks/5390.js",
+          "function": "Y",
+          "line": 1,
+          "selfUs": 4349,
+          "inclusiveUs": 38301,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "connect",
+          "line": 0,
+          "selfUs": 3867,
+          "inclusiveUs": 3867,
+          "samples": 15
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "execute",
+          "line": 0,
+          "selfUs": 2848,
+          "inclusiveUs": 12715,
+          "samples": 16
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/async_hooks",
+          "function": "callbackTrampoline",
+          "line": 118,
+          "selfUs": 2682,
+          "inclusiveUs": 35846,
+          "samples": 6
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "addCACert",
+          "line": 0,
+          "selfUs": 2589,
+          "inclusiveUs": 2589,
+          "samples": 14
+        }
+      ]
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "nativeWindowMs": 245.919,
+      "sdkCalls": 0,
+      "sdkAsyncSumMs": 0,
+      "nativeRequestCount": 18,
+      "tlsConnectionCount": 18,
+      "socketAssignedToTLSCombinedSumMs": 299.605,
+      "preFirstNativeRequestCombinedMs": 29.141,
+      "firstNativeStartToLastNativeEndCombinedMs": 191.409,
+      "postLastNativeEndToResponseEndCombinedMs": 25.24,
+      "responseEndCallUs": 57,
+      "jsonTiming": {
+        "stringifyCalls": 3,
+        "stringifyUs": 30,
+        "parseCalls": 21,
+        "parseUs": 10003
+      },
+      "dataHandlerSynchronousSumMs": 6.079,
+      "endEventHandlerSynchronousSumMs": 2.178,
+      "responsesWithoutEndEvent": 0,
+      "noEndEventDataHandlerSynchronousSumMs": 0.0,
+      "fixtureRequestsInNativeWindow": 18,
+      "fixtureStringifySumMs": 42.863,
+      "fixtureRequestToResponseEndCombinedMedianMs": 51.547,
+      "fixtureRequestToResponseEndCombinedMaxMs": 56.071,
+      "bodyHeaderToEndEventBeforeHandlerCombinedSumMs": 55.149,
+      "topWeightedCPUFrames": [
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?idle?",
+          "line": 0,
+          "selfUs": 101544,
+          "inclusiveUs": 101544,
+          "samples": 434
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?garbage collector?",
+          "line": 0,
+          "selfUs": 12740,
+          "inclusiveUs": 12740,
+          "samples": 27
+        },
+        {
+          "kind": "native",
+          "module": "node:events",
+          "function": "_addListener",
+          "line": 547,
+          "selfUs": 9103,
+          "inclusiveUs": 9103,
+          "samples": 3
+        },
+        {
+          "kind": "native",
+          "module": "[other-module]",
+          "function": "timedJSON",
+          "line": 6,
+          "selfUs": 8628,
+          "inclusiveUs": 8628,
+          "samples": 46
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "execute",
+          "line": 0,
+          "selfUs": 8225,
+          "inclusiveUs": 16750,
+          "samples": 36
+        },
+        {
+          "kind": "native",
+          "module": "node:buffer",
+          "function": "toString",
+          "line": 839,
+          "selfUs": 6710,
+          "inclusiveUs": 6710,
+          "samples": 35
+        },
+        {
+          "kind": "native",
+          "module": "node:_http_agent",
+          "function": "setRequestSocket",
+          "line": 673,
+          "selfUs": 6484,
+          "inclusiveUs": 6484,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "node:buffer",
+          "function": "_copyActual",
+          "line": 243,
+          "selfUs": 6240,
+          "inclusiveUs": 6240,
+          "samples": 33
+        },
+        {
+          "kind": "native",
+          "module": "node:_http_client",
+          "function": "socketOnData",
+          "line": 608,
+          "selfUs": 4027,
+          "inclusiveUs": 22227,
+          "samples": 22
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/fixed_queue",
+          "function": "push",
+          "line": 100,
+          "selfUs": 3583,
+          "inclusiveUs": 3583,
+          "samples": 2
+        },
+        {
+          "kind": "native",
+          "module": "node:net",
+          "function": "Socket",
+          "line": 363,
+          "selfUs": 3582,
+          "inclusiveUs": 4423,
+          "samples": 2
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/.next/server/chunks/5390.js",
+          "function": "",
+          "line": 1,
+          "selfUs": 3510,
+          "inclusiveUs": 51435,
+          "samples": 13
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "init",
+          "line": 0,
+          "selfUs": 2757,
+          "inclusiveUs": 2757,
+          "samples": 12
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/async_hooks",
+          "function": "callbackTrampoline",
+          "line": 118,
+          "selfUs": 2299,
+          "inclusiveUs": 36192,
+          "samples": 8
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?program?",
+          "line": 0,
+          "selfUs": 2126,
+          "inclusiveUs": 2126,
+          "samples": 11
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/process/task_queues",
+          "function": "nextTick",
+          "line": 111,
+          "selfUs": 2017,
+          "inclusiveUs": 7035,
+          "samples": 12
+        }
+      ]
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "nativeWindowMs": 133.865,
+      "sdkCalls": 0,
+      "sdkAsyncSumMs": 0,
+      "nativeRequestCount": 18,
+      "tlsConnectionCount": 18,
+      "socketAssignedToTLSCombinedSumMs": 180.40800000000002,
+      "preFirstNativeRequestCombinedMs": 12.846,
+      "firstNativeStartToLastNativeEndCombinedMs": 108.137,
+      "postLastNativeEndToResponseEndCombinedMs": 12.749,
+      "responseEndCallUs": 60,
+      "jsonTiming": {
+        "stringifyCalls": 3,
+        "stringifyUs": 19,
+        "parseCalls": 21,
+        "parseUs": 5748
+      },
+      "dataHandlerSynchronousSumMs": 2.678,
+      "endEventHandlerSynchronousSumMs": 1.683,
+      "responsesWithoutEndEvent": 0,
+      "noEndEventDataHandlerSynchronousSumMs": 0.0,
+      "fixtureRequestsInNativeWindow": 18,
+      "fixtureStringifySumMs": 14.619,
+      "fixtureRequestToResponseEndCombinedMedianMs": 27.4685,
+      "fixtureRequestToResponseEndCombinedMaxMs": 35.358,
+      "bodyHeaderToEndEventBeforeHandlerCombinedSumMs": 24.18900000000002,
+      "topWeightedCPUFrames": [
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?idle?",
+          "line": 0,
+          "selfUs": 59452,
+          "inclusiveUs": 59452,
+          "samples": 234
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/tls/wrap",
+          "function": "onConnectSecure",
+          "line": 1773,
+          "selfUs": 4922,
+          "inclusiveUs": 5745,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "node:net",
+          "function": "closeSocketHandle",
+          "line": 343,
+          "selfUs": 4896,
+          "inclusiveUs": 4896,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "execute",
+          "line": 0,
+          "selfUs": 3618,
+          "inclusiveUs": 8636,
+          "samples": 18
+        },
+        {
+          "kind": "native",
+          "module": "node:buffer",
+          "function": "toString",
+          "line": 839,
+          "selfUs": 2998,
+          "inclusiveUs": 2998,
+          "samples": 16
+        },
+        {
+          "kind": "native",
+          "module": "node:buffer",
+          "function": "_copyActual",
+          "line": 243,
+          "selfUs": 2925,
+          "inclusiveUs": 2925,
+          "samples": 16
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "connect",
+          "line": 0,
+          "selfUs": 2608,
+          "inclusiveUs": 2608,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "?garbage collector?",
+          "line": 0,
+          "selfUs": 2607,
+          "inclusiveUs": 2607,
+          "samples": 7
+        },
+        {
+          "kind": "native",
+          "module": "[other-module]",
+          "function": "timedJSON",
+          "line": 6,
+          "selfUs": 2246,
+          "inclusiveUs": 2246,
+          "samples": 12
+        },
+        {
+          "kind": "native",
+          "module": "node:net",
+          "function": "Socket.read",
+          "line": 781,
+          "selfUs": 2230,
+          "inclusiveUs": 2230,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/url",
+          "function": "isURL",
+          "line": 770,
+          "selfUs": 2118,
+          "inclusiveUs": 2118,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "[runtime]",
+          "function": "init",
+          "line": 0,
+          "selfUs": 2105,
+          "inclusiveUs": 2105,
+          "samples": 11
+        },
+        {
+          "kind": "native",
+          "module": "node:internal/process/task_queues",
+          "function": "nextTick",
+          "line": 111,
+          "selfUs": 2050,
+          "inclusiveUs": 2986,
+          "samples": 11
+        },
+        {
+          "kind": "native",
+          "module": "node:_http_client",
+          "function": "socketOnData",
+          "line": 608,
+          "selfUs": 1508,
+          "inclusiveUs": 10144,
+          "samples": 7
+        },
+        {
+          "kind": "native",
+          "module": "/app/.next/standalone/node_modules/next/dist/server/app-render/action-utils.js",
+          "function": "createServerModuleMap",
+          "line": 64,
+          "selfUs": 1440,
+          "inclusiveUs": 1440,
+          "samples": 1
+        },
+        {
+          "kind": "native",
+          "module": "node:events",
+          "function": "emit",
+          "line": 466,
+          "selfUs": 1141,
+          "inclusiveUs": 29989,
+          "samples": 3
+        }
+      ]
+    }
+  ]
+}

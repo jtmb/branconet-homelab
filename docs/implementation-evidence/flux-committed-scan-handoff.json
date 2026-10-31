@@ -1,0 +1,54 @@
+{
+  "capturedAt": "2026-10-11T03:34:44.705705+00:00",
+  "commit": "a7407235873492f6a962e5a0f66e42d041f889f3",
+  "scope": "Exact committed repository raw Git blobs/modes; post-qualification scan, no new runtime test or performance pass",
+  "stableHandoffDirectory": "C:\\Users\\james\\AppData\\Local\\Packages\\OpenAI.Codex_2p2nqsd0c76g0\\LocalCache\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\qualified-flux-stage",
+  "qualifiedWorkingBytesManifest": "flux-stage-qualification.json",
+  "correctRawArchive": {
+    "file": "raw-blobs-v3-a7407235873492f6a962e5a0f66e42d041f889f3.zip",
+    "sha256": "51cd177b85a9bfdeeb48cd2fab41d6f3b843a3a878daae81857ba9398efd27c8",
+    "entries": 645
+  },
+  "scanner": {
+    "version": "8.30.1",
+    "sha256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "officialArchiveSha256": "d29144deff3a68aa93ced33dddf84b7fdc26070add4aa0f4513094c8332afc4e",
+    "officialArchiveUrl": "https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_windows_x64.zip",
+    "exitCode": 1,
+    "defaultRules": true,
+    "redaction": 100,
+    "suppression": false,
+    "findings": 109,
+    "individuallyReviewed": 107,
+    "untriaged": 2
+  },
+  "residuals": [
+    {
+      "file": "kv-metadata-ui.json",
+      "line": 12,
+      "sourcePath": "k8s-rewrite/front-end/src/app/(dashboard)/secrets/secrets-editor.tsx",
+      "sha256": "b4a1452a24b4a136a83645fd574d803dfab20683aab2e10e5c8915469b1978e7"
+    },
+    {
+      "file": "warm-pods.json",
+      "line": 15,
+      "sourcePath": "k8s-rewrite/front-end/src/lib/auth.ts",
+      "sha256": "ce1c37c453824aadb70327b5fdb9738638a6cb5b2b493608f25c18ac7f2ea9b4"
+    }
+  ],
+  "limitations": [
+    "The two residuals are historical tested-working-byte fields; exact originals have not been recovered. Raw Git and full CRLF encodings across reachable history do not match. Do not infer original mixed endings or claim zero untriaged.",
+    "Original Git archive exported converted Windows line endings; corrected explicit git show exporter verified645 blobs/modes. Both failed preparation records retained; scanner was not launched for either.",
+    "Default embedded archive traversal depth0: no deep embedded-binary-content scan claim.",
+    "170unit/build/lint/types/4HTTP and9actualbrowser/3realzoom checks bind qualification working bytes separately from raw Git export. Full image/live/performance/wider KV and assistive technology acceptance remain open."
+  ],
+  "artifactsSha256": {
+    "flux-committed-source-manifest.json": "3dd545e53b52eae56ca745a118a1546e589ac388f660d7a525890f173ee850d9",
+    "flux-committed-source-scan.json": "d44092379216d1d7cafb94aade59c8345d2c8583ea6fd431e356c5145ce89d87",
+    "flux-committed-source-scan-review.json": "9bce4d9d2a024c15382663b192eace4d7e49ff476012a2b82eeddb02cec5f0f9",
+    "flux-committed-source-scan-terminal.json": "700691d292a6a11f3fed52a4f8bdd77d49f1505675fd734d43f4c0e14333ed5b",
+    "flux-committed-source-scan-cli.txt": "afdf4cfc1c847e4f2fb1eedf06f08750e810809dd43b6a24a61d3a9eac6b1e6e",
+    "flux-archive-preparation-attempt1.json": "27f9d2063f18d7cba529ecd93dc8e4848bfc5bd4a16daa8594624627b3a0dd40",
+    "flux-archive-preparation-attempt2.json": "d94ffa2b63dff148ad25413d57e02dad609d0bc8b7e4c5bdb7f34adb1965f23c"
+  }
+}

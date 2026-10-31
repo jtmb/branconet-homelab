@@ -1,0 +1,25 @@
+{
+  "source": "21f1671 plus canonical/history destroy identity draft",
+  "startedAt": "2026-10-11T03:38:27.1501254Z",
+  "pid": 39408,
+  "checks": [
+    {
+      "command": "node node_modules/tsx/dist/cli.mjs --test tests/kv-native.test.ts tests/kv-administration.test.ts",
+      "exitCode": 0,
+      "completedAt": "2026-10-11T03:38:42.3450602Z"
+    },
+    {
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "exitCode": 0,
+      "completedAt": "2026-10-11T03:38:51.2860441Z"
+    },
+    {
+      "command": "node node_modules/eslint/bin/eslint.js . --max-warnings=0",
+      "exitCode": 0,
+      "completedAt": "2026-10-11T03:39:22.3165445Z"
+    }
+  ],
+  "terminal": true,
+  "exitCode": 0,
+  "completedAt": "2026-10-11T03:39:22.3229052Z"
+}

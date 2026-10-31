@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: deployment actions reject coerced/inherited/unknown action shapes before execution
+ok 1 - deployment actions reject coerced/inherited/unknown action shapes before execution
+  ---
+  duration_ms: 100.3303
+  type: 'test'
+  ...
+# Subtest: all four deployment actions preserve exact argv, timeout and successful empty stdout
+ok 2 - all four deployment actions preserve exact argv, timeout and successful empty stdout
+  ---
+  duration_ms: 17.9513
+  type: 'test'
+  ...
+# Subtest: deployment target validation rejects flags and separators without CLI work
+ok 3 - deployment target validation rejects flags and separators without CLI work
+  ---
+  duration_ms: 11.7916
+  type: 'test'
+  ...
+# Subtest: fresh deployment authorization denies before resolving params or reading request body
+ok 4 - fresh deployment authorization denies before resolving params or reading request body
+  ---
+  duration_ms: 15.2136
+  type: 'test'
+  ...
+# Subtest: deployment command refusal preserves typed status and does not invalidate as success
+ok 5 - deployment command refusal preserves typed status and does not invalidate as success
+  ---
+  duration_ms: 65.0382
+  type: 'test'
+  ...
+# Subtest: malformed deployment JSON remains a fixed400 without CLI work
+ok 6 - malformed deployment JSON remains a fixed400 without CLI work
+  ---
+  duration_ms: 20.4081
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1371.5858

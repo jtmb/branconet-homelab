@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "scope": "Original A18 timer/bounded-output source-clause composition; no replay",
+  "originalValidation": "Fake-timer tests for completed-at-open, completion during first read, early abort, cancel, missing job and DB failure. Assert zero active timers after termination. Measure large-output DB reads and bounded per-client work before changing storage.",
+  "originalSourceClauseQualified": true,
+  "sourceComposition": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a18-original-source-composite-held-20261015-v1.json",
+    "bytes": 5601,
+    "sha256": "2ba9b3da206eb4b58b934cfcf7451d70f67dc12aabea757d49aaeaa0931f8ff3"
+  },
+  "currentFiveSourceBindings": [
+    {
+      "path": "k8s-rewrite/front-end/src/lib/job-stream.ts",
+      "sha256": "c57778b4c9cae363e351cefe1c3bbeeffc4714968470a3ec2aaea2b8d8a4b639",
+      "bytes": 3662,
+      "currentRawGitEqualsQualifiedAb7": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/job-output.ts",
+      "sha256": "2fe0772633d783efb30440a994f4c6172ee04567048ad62189661208fcfc8272",
+      "bytes": 1362,
+      "currentRawGitEqualsQualifiedAb7": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/log-tail.ts",
+      "sha256": "9619370d7398e8712d1c173cdb1ba995fa0e806412f440283b664591d0e3b56c",
+      "bytes": 440,
+      "currentRawGitEqualsQualifiedAb7": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/job-stream.test.ts",
+      "sha256": "159895bb6de7fd4acb6f668adb4b8e5c6ec09745a62aab4c5caadbb3e017ce46",
+      "bytes": 7505,
+      "currentRawGitEqualsQualifiedAb7": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/job-output.test.ts",
+      "sha256": "bd03f3984eb60addd6eaad6810a824a3dec66bfeffbe8818017454edf6e0d6ec",
+      "bytes": 3084,
+      "currentRawGitEqualsQualifiedAb7": true
+    }
+  ],
+  "actualSevenTests": [
+    {
+      "ordinal": 32,
+      "name": "SQLite returns bounded Unicode slices/tails from a two-MiB captured job without loading the full field",
+      "actual": "ok"
+    },
+    {
+      "ordinal": 33,
+      "name": "already-aborted requests do no reads; completion during the first pending read starts no poll timer",
+      "actual": "ok"
+    },
+    {
+      "ordinal": 34,
+      "name": "completed startup drains bounded Unicode output with backpressure and no polling leak",
+      "actual": "ok"
+    },
+    {
+      "ordinal": 35,
+      "name": "slow reads never overlap; poll follows completion and fresh authorization revokes before the next DB read",
+      "actual": "ok"
+    },
+    {
+      "ordinal": 36,
+      "name": "reader cancel and request abort clean timers, unsubscribe and discard late DB results",
+      "actual": "ok"
+    },
+    {
+      "ordinal": 37,
+      "name": "resume/reset, missing/error/deadline close with fixed errors and clear every timer",
+      "actual": "ok"
+    },
+    {
+      "ordinal": 38,
+      "name": "log rendering retains a bounded valid-Unicode text tail and strips ANSI without per-event DOM growth",
+      "actual": "ok"
+    }
+  ],
+  "checksStdout": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\flux-argv-full-20261015-v1\\output\\checks.stdout",
+    "bytes": 91454,
+    "sha256": "177e149eab8e756af8ab6e79a0e72032449222ef7fe1dc1efe606fb8a7b78ec7"
+  },
+  "boundedSQLiteNumericDiagnostic": {
+    "capturedAt": "2026-10-15T18:17:49.193Z",
+    "node": "v22.23.3",
+    "platform": "linux",
+    "sourceBytes": 2100000,
+    "sourceCodePoints": 1050000,
+    "returnedFirstBytes": 8194,
+    "returnedLastBytes": 8191,
+    "firstMs": 4.287575000000061,
+    "nearEndMs": 4.459773000000041,
+    "limitations": [
+      "Disposable SQLite/synthetic Unicode log, no real runner/image",
+      "Single uncontrolled observations, not latency/CPU/RSS acceptance",
+      "No content/values recorded"
+    ]
+  },
+  "coverage": [
+    {
+      "requirement": "completed-at-open/first-read/abort/cancel/missing/DB failure zero timers",
+      "proof": "Current actual ok33\u201337 unchanged tests; fake runtime pending.size==0 at every termination"
+    },
+    {
+      "requirement": "large-output DB reads and bounded per-client work",
+      "proof": "Current actual ok32:2.1MB/1.05M codepoints; SQLite substr4096/length/LIMIT1 returns8194/8191bytes. ok34 max32768byte frames/four reads/backpressure; ok35 no overlap; ok38 bounded65536 tail/ANSI stripping. Retained browser1textnode/unmount0streams."
+    }
+  ],
+  "qualificationLimits": [
+    "Synthetic SQLite and bounded output work measured; single timings are not controlled latency/CPU/RSS acceptance",
+    "Enabled real host provisioning is not an originalA18 clause; runtime producer/delivery/A12 integration distinct",
+    "No realrunner/fullimage/live/performance/adoption claim; historicalfalse fields unchanged"
+  ],
+  "historicalFalseFlagsUnchanged": true,
+  "deliveredImageAccepted": false,
+  "liveAccepted": false,
+  "performanceAccepted": false,
+  "productionAdopted": false,
+  "actualATQualified": false
+}

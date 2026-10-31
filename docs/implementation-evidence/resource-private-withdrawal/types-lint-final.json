@@ -1,0 +1,52 @@
+{
+  "owner": "resource-private-types-lint-20261011-155907",
+  "supervisorPid": 35152,
+  "startedUtc": "2026-10-11T15:59:07.411338+00:00",
+  "source": [
+    {
+      "path": "src/app/(dashboard)/resource-actions-menu.tsx",
+      "sha256": "198f0cbe68b75cb4ef97b25e13cf026834bb7270b53448e4d955aebd315e6fe3"
+    },
+    {
+      "path": "tests/resource-private-state.test.ts",
+      "sha256": "b41bd127b828b55cf886e8730f4b98d351e2bf68d535267bf9ccdfc3069751b4"
+    }
+  ],
+  "stages": [
+    {
+      "stage": "fresh-types",
+      "pid": 37312,
+      "startedUtc": "2026-10-11T15:59:07.419360+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "--max-old-space-size=4096",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "actualExit": 0,
+      "childReaped": true,
+      "completedUtc": "2026-10-11T15:59:18.357902+00:00"
+    },
+    {
+      "stage": "selected-lint",
+      "pid": 35608,
+      "startedUtc": "2026-10-11T15:59:18.367592+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/eslint/bin/eslint.js",
+        "src/app/(dashboard)/resource-actions-menu.tsx",
+        "tests/resource-private-state.test.ts",
+        "--max-warnings=0"
+      ],
+      "actualExit": 0,
+      "childReaped": true,
+      "completedUtc": "2026-10-11T15:59:20.608836+00:00"
+    }
+  ],
+  "terminal": true,
+  "actualExit": 0,
+  "completedUtc": "2026-10-11T15:59:20.608836+00:00",
+  "sourceUnchanged": true
+}

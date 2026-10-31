@@ -1,0 +1,808 @@
+{
+  "nonAcceptance": true,
+  "pid": 66,
+  "segment": 3,
+  "samplingIntervalUs": 100,
+  "sdkPrototypePatched": false,
+  "windows": [
+    {
+      "id": 3,
+      "kind": "pods",
+      "startUs": 202157295452,
+      "endUs": 202157303034,
+      "durationMs": 7.582
+    }
+  ],
+  "sdkAuth": [],
+  "https": [],
+  "cpu": {
+    "requestWindowSampledUs": 7114,
+    "frames": [
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/@prisma/client/runtime/library.js",
+        "function": "",
+        "line": 31,
+        "selfUs": 1265,
+        "inclusiveUs": 1265,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "[runtime]",
+        "function": "?idle?",
+        "line": 0,
+        "selfUs": 472,
+        "inclusiveUs": 472,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "[runtime]",
+        "function": "?program?",
+        "line": 0,
+        "selfUs": 371,
+        "inclusiveUs": 371,
+        "samples": 2
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/base-server.js",
+        "function": "handleRequestImpl",
+        "line": 517,
+        "selfUs": 360,
+        "inclusiveUs": 976,
+        "samples": 2
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/async_hooks",
+        "function": "promiseInitHook",
+        "line": 328,
+        "selfUs": 215,
+        "inclusiveUs": 215,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "node:diagnostics_channel",
+        "function": "get hasSubscribers",
+        "line": 294,
+        "selfUs": 208,
+        "inclusiveUs": 208,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/middleware.js",
+        "function": "g",
+        "line": 15,
+        "selfUs": 194,
+        "inclusiveUs": 194,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/url",
+        "function": "URL",
+        "line": 802,
+        "selfUs": 193,
+        "inclusiveUs": 193,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/@prisma/client/runtime/library.js",
+        "function": "dispatchBatches",
+        "line": 121,
+        "selfUs": 191,
+        "inclusiveUs": 191,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
+        "function": "",
+        "line": 1,
+        "selfUs": 191,
+        "inclusiveUs": 191,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/@opentelemetry/api/index.js",
+        "function": "extract",
+        "line": 1,
+        "selfUs": 190,
+        "inclusiveUs": 190,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/next-server.js",
+        "function": "getIncrementalCache",
+        "line": 663,
+        "selfUs": 189,
+        "inclusiveUs": 372,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/deps/undici/undici",
+        "function": "_Response",
+        "line": 9457,
+        "selfUs": 189,
+        "inclusiveUs": 189,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/webstreams/readablestream",
+        "function": "readableStreamPipeTo",
+        "line": 1364,
+        "selfUs": 189,
+        "inclusiveUs": 189,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "[other-module]",
+        "function": "http.Server.emit",
+        "line": 13,
+        "selfUs": 188,
+        "inclusiveUs": 362,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
+        "function": "loadManifests",
+        "line": 1,
+        "selfUs": 187,
+        "inclusiveUs": 187,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/lib/incremental-cache/index.js",
+        "function": "IncrementalCache",
+        "line": 90,
+        "selfUs": 183,
+        "inclusiveUs": 183,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/web/utils.js",
+        "function": "toNodeOutgoingHttpHeaders",
+        "line": 107,
+        "selfUs": 180,
+        "inclusiveUs": 180,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/base-server.js",
+        "function": "",
+        "line": 471,
+        "selfUs": 180,
+        "inclusiveUs": 180,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
+        "function": "get",
+        "line": 1,
+        "selfUs": 180,
+        "inclusiveUs": 371,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/async_hooks",
+        "function": "promiseAfterHook",
+        "line": 353,
+        "selfUs": 179,
+        "inclusiveUs": 179,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/deps/undici/undici",
+        "function": "_Request",
+        "line": 9909,
+        "selfUs": 179,
+        "inclusiveUs": 179,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/app/api/cluster/pods/route.js",
+        "function": "",
+        "line": 1,
+        "selfUs": 179,
+        "inclusiveUs": 354,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
+        "function": "get mutableCookies",
+        "line": 5,
+        "selfUs": 179,
+        "inclusiveUs": 179,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/modules/cjs/loader",
+        "function": "wrapModuleLoad",
+        "line": 237,
+        "selfUs": 178,
+        "inclusiveUs": 386,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/middleware.js",
+        "function": "D",
+        "line": 15,
+        "selfUs": 178,
+        "inclusiveUs": 372,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "[runtime]",
+        "function": "?garbage collector?",
+        "line": 0,
+        "selfUs": 178,
+        "inclusiveUs": 178,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/chunks/3757.js",
+        "function": "snapshot",
+        "line": 14,
+        "selfUs": 175,
+        "inclusiveUs": 175,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/lib/router-server.js",
+        "function": "requestHandlerImpl",
+        "line": 157,
+        "selfUs": 174,
+        "inclusiveUs": 174,
+        "samples": 1
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/lib/start-server.js",
+        "function": "requestListener",
+        "line": 220,
+        "selfUs": 0,
+        "inclusiveUs": 174,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "node:events",
+        "function": "emit",
+        "line": 466,
+        "selfUs": 0,
+        "inclusiveUs": 174,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "node:_http_server",
+        "function": "parserOnIncoming",
+        "line": 1073,
+        "selfUs": 0,
+        "inclusiveUs": 362,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "node:_http_common",
+        "function": "parserOnHeadersComplete",
+        "line": 77,
+        "selfUs": 0,
+        "inclusiveUs": 362,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "[runtime]",
+        "function": "?root?",
+        "line": 0,
+        "selfUs": 0,
+        "inclusiveUs": 7114,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/lib/trace/tracer.js",
+        "function": "withPropagatedContext",
+        "line": 112,
+        "selfUs": 0,
+        "inclusiveUs": 370,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/base-server.js",
+        "function": "handleRequest",
+        "line": 467,
+        "selfUs": 0,
+        "inclusiveUs": 370,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "[runtime]",
+        "function": "runMicrotasks",
+        "line": 0,
+        "selfUs": 0,
+        "inclusiveUs": 1331,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/process/task_queues",
+        "function": "processTicksAndRejections",
+        "line": 71,
+        "selfUs": 0,
+        "inclusiveUs": 1522,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/modules/cjs/loader",
+        "function": "",
+        "line": 1519,
+        "selfUs": 0,
+        "inclusiveUs": 386,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/require-hook.js",
+        "function": "mod.require",
+        "line": 64,
+        "selfUs": 0,
+        "inclusiveUs": 386,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/modules/helpers",
+        "function": "require",
+        "line": 146,
+        "selfUs": 0,
+        "inclusiveUs": 386,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/api-utils/get-cookie-parser.js",
+        "function": "parseCookie",
+        "line": 12,
+        "selfUs": 0,
+        "inclusiveUs": 208,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/base-http/index.js",
+        "function": "get cookies",
+        "line": 32,
+        "selfUs": 0,
+        "inclusiveUs": 208,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/base-http/node.js",
+        "function": "get originalRequest",
+        "line": 33,
+        "selfUs": 0,
+        "inclusiveUs": 208,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/shared/lib/router/utils/parse-relative-url.js",
+        "function": "parseRelativeUrl",
+        "line": 13,
+        "selfUs": 0,
+        "inclusiveUs": 193,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/shared/lib/router/utils/parse-url.js",
+        "function": "parseUrl",
+        "line": 13,
+        "selfUs": 0,
+        "inclusiveUs": 193,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/middleware.js",
+        "function": "analyze",
+        "line": 15,
+        "selfUs": 0,
+        "inclusiveUs": 194,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/middleware.js",
+        "function": "k",
+        "line": 15,
+        "selfUs": 0,
+        "inclusiveUs": 194,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/middleware.js",
+        "function": "ad",
+        "line": 15,
+        "selfUs": 0,
+        "inclusiveUs": 1265,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/middleware.js",
+        "function": "ae",
+        "line": 15,
+        "selfUs": 0,
+        "inclusiveUs": 1265,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/@prisma/client/runtime/library.js",
+        "function": "",
+        "line": 121,
+        "selfUs": 0,
+        "inclusiveUs": 191,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/middleware.js",
+        "function": "l",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 189,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/middleware.js",
+        "function": "next",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 189,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/middleware.js",
+        "function": "ai",
+        "line": 15,
+        "selfUs": 0,
+        "inclusiveUs": 189,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/lib/router-utils/resolve-routes.js",
+        "function": "handleRoute",
+        "line": 207,
+        "selfUs": 0,
+        "inclusiveUs": 180,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/@opentelemetry/api/index.js",
+        "function": "with",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 1060,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/base-server.js",
+        "function": "",
+        "line": 855,
+        "selfUs": 0,
+        "inclusiveUs": 215,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/next-server.js",
+        "function": "getMiddlewareManifest",
+        "line": 1044,
+        "selfUs": 0,
+        "inclusiveUs": 178,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/next-server.js",
+        "function": "getEdgeFunctionsPages",
+        "line": 1077,
+        "selfUs": 0,
+        "inclusiveUs": 178,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/next-server.js",
+        "function": "NextNodeServer.handleCatchallRenderRequest",
+        "line": 307,
+        "selfUs": 0,
+        "inclusiveUs": 178,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
+        "function": "prepare",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 367,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
+        "function": "s",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 180,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/chunks/3897.js",
+        "function": "i",
+        "line": 22,
+        "selfUs": 0,
+        "inclusiveUs": 179,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/chunks/3897.js",
+        "function": "fromNodeNextRequest",
+        "line": 22,
+        "selfUs": 0,
+        "inclusiveUs": 179,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/app/api/cluster/pods/route.js",
+        "function": "M",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 358,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/chunks/3897.js",
+        "function": "with",
+        "line": 22,
+        "selfUs": 0,
+        "inclusiveUs": 358,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/chunks/3897.js",
+        "function": "withPropagatedContext",
+        "line": 15,
+        "selfUs": 0,
+        "inclusiveUs": 179,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
+        "function": "t3",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 191,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
+        "function": "handle",
+        "line": 5,
+        "selfUs": 0,
+        "inclusiveUs": 366,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/app/api/cluster/pods/route.js",
+        "function": "d",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 191,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/app/api/cluster/pods/route.js",
+        "function": "k",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 380,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
+        "function": "handleResponse",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 191,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/chunks/3757.js",
+        "function": "readOne",
+        "line": 14,
+        "selfUs": 0,
+        "inclusiveUs": 175,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/chunks/3757.js",
+        "function": "",
+        "line": 14,
+        "selfUs": 0,
+        "inclusiveUs": 175,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/chunks/3757.js",
+        "function": "read",
+        "line": 14,
+        "selfUs": 0,
+        "inclusiveUs": 175,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/chunks/3757.js",
+        "function": "o",
+        "line": 14,
+        "selfUs": 0,
+        "inclusiveUs": 175,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/app/api/cluster/deployments/[namespace]/[name]/action/route.js",
+        "function": "f",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 175,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/app/api/cluster/pods/route.js",
+        "function": "G",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 175,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/async_local_storage/async_hooks",
+        "function": "run",
+        "line": 77,
+        "selfUs": 0,
+        "inclusiveUs": 700,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
+        "function": "do",
+        "line": 5,
+        "selfUs": 0,
+        "inclusiveUs": 354,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js",
+        "function": "",
+        "line": 5,
+        "selfUs": 0,
+        "inclusiveUs": 700,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/lib/trace/tracer.js",
+        "function": "",
+        "line": 153,
+        "selfUs": 0,
+        "inclusiveUs": 350,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/compiled/@opentelemetry/api/index.js",
+        "function": "startActiveSpan",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 350,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/node_modules/next/dist/server/lib/trace/tracer.js",
+        "function": "trace",
+        "line": 121,
+        "selfUs": 0,
+        "inclusiveUs": 175,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "node:internal/webstreams/readablestream",
+        "function": "pipeTo",
+        "line": 406,
+        "selfUs": 0,
+        "inclusiveUs": 189,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/chunks/3897.js",
+        "function": "j",
+        "line": 22,
+        "selfUs": 0,
+        "inclusiveUs": 189,
+        "samples": 0
+      },
+      {
+        "kind": "pods",
+        "module": "/app/.next/standalone/.next/server/chunks/1692.js",
+        "function": "g",
+        "line": 1,
+        "selfUs": 0,
+        "inclusiveUs": 189,
+        "samples": 0
+      }
+    ],
+    "profileStartUs": 202157220064,
+    "profileEndUs": 202157303849
+  }
+}

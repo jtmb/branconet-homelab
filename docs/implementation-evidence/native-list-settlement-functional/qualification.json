@@ -1,0 +1,103 @@
+{
+  "scope": "Native response settlement functional qualification only; no performance acceptance",
+  "source_parent": "f9a83fb1c4fb25b50ac199d4fe5de3ca2f0374b2",
+  "source_working_sha256": {
+    "k8s-rewrite/front-end/src/lib/secret-client.ts": "57a3457e104b86039957229d7398b4a0d7fbd879169efc5932d1155d3aacc3a4",
+    "k8s-rewrite/front-end/tests/native-list-window.test.ts": "bb3186ba972402c1885c6f7a8a319eed01dff72d2182a01e3c86c519c0752966"
+  },
+  "node_version": "v22.23.3",
+  "actual_launcher_exit_code": 0,
+  "finished_utc": "2026-10-11T04:00:07.531536+00:00",
+  "checks": [
+    {
+      "name": "focused-settlement",
+      "exit_code": 0,
+      "wall_seconds": 21.360357400000794
+    },
+    {
+      "name": "native-window",
+      "exit_code": 0,
+      "wall_seconds": 7.685369300015736
+    },
+    {
+      "name": "full-unit",
+      "exit_code": 0,
+      "wall_seconds": 30.979716700006975
+    },
+    {
+      "name": "lint",
+      "exit_code": 0,
+      "wall_seconds": 32.37921159999678
+    },
+    {
+      "name": "final-types",
+      "exit_code": 0,
+      "wall_seconds": 8.464774399995804
+    }
+  ],
+  "unit_counts": {
+    "focused_six_mode_regression": 1,
+    "native_window": 13,
+    "full_unit": 147
+  },
+  "owned_cleanup": {
+    "launcher_and_all_stage_pids_absent": [
+      24092,
+      33996,
+      44596,
+      48368,
+      44212,
+      20156
+    ],
+    "check_exit_code": 0,
+    "no_build_Docker_HTTP_performance_invoked": true
+  },
+  "prior_attempt_preserved": {
+    "initial_typecheck_exit": 1,
+    "error": "TS2352 test-only overloaded request mock cast required explicit unknown bridge",
+    "corrected_types_exit": 0,
+    "record": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\native-settlement-qualification-in-progress.json"
+  },
+  "source_scan": {
+    "tool": "Pinned Gitleaks 8.30.1 default rules, redacted",
+    "findings": 0,
+    "report": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\native-settlement-source-scan.json"
+  },
+  "limits_unchanged": [
+    "4 active/64 queued",
+    "4 MiB response/900 KiB write",
+    "8 s auth/queue/request",
+    "shared 15 s/10000 accepted items/32 MiB delivered bytes",
+    "4 namespace workers; page 200->10->5->2->1; same cursor and size-only retries",
+    "fresh SDK auth and TLS equality; no proxy/mTLS credential agent reuse",
+    "rejected and late bytes charged before suppression; no partial success or value cache"
+  ],
+  "performance_gate": "Open/failed in prior unchanged paired comparison; no performance run for this source yet",
+  "retained_files_sha256": {
+    ".gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
+    "final-types.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "final-types.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "focused-settlement.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "focused-settlement.stdout": "d1da0d36653d2ba843a90bcb14aaaa18182fa0c46a2e02fe0a83dd652f77bce3",
+    "full-unit.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full-unit.stdout": "fa00ac6cd57720f4a2bf8a54de748b66cf08aa3d3d6cde611aede40921db6e4d",
+    "handle.json": "b60a7d9af0b7732e598c6196fc6504502de25d6d6841a87a4b42e966b501b718",
+    "launcher.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "launcher.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lint.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "lint.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-window.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-window.stdout": "deebedc4a23d77594bc23ee647a9135ff9e3e31de8875117df62f337b292dee2",
+    "qualify.py": "3501f23351aa55d15fc1dfe96c536993ee6bb91e4c5a91e887e65747459b3750",
+    "terminal.json": "25b0029e1cb2441de6ef7e6b4950dbd5ba91463e02065f922df3df1683a4d157"
+  },
+  "final_packaging_scan": {
+    "tool": "Pinned Gitleaks8.30.1 default rules, redacted",
+    "findings": 7,
+    "individually_verified_public_SHA256_references": 7,
+    "untriaged": 0,
+    "suppression_config": false,
+    "review_path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\native-settlement-final-scan-review.json",
+    "review_sha256": "92f6c3215af4276e1d27cc337b0aa37c8681e8ccdd35c67c7d7a257b0ee4bf1e"
+  }
+}

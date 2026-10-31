@@ -1,0 +1,176 @@
+{
+  "sourceBase": "d9c6f5df2712f46cf0d9838e9dfdb1d3715cff41",
+  "scope": "Three GET handlers only; focused actual Next/SQLite tests + types/lint; no full units/build/production HTTP/benchmark/image/live claim",
+  "productionChanges": [
+    "src/app/api/vars/route.ts",
+    "src/app/api/secret-references/route.ts",
+    "src/app/api/auth/session/route.ts"
+  ],
+  "contracts": "Fresh cookie/JWT/account/sessionVersion per handler; one five-field query; independent middleware remains; supported vars/alias roles unchanged, current session username/role/admin; no cross-request authorization sharing; mutations/native/KV/Pods unchanged",
+  "availability": "Account database failure fails closed through fixed private vars/alias503 and session500; no authenticated availability fallback",
+  "focusedTests": 13,
+  "skipped": 0,
+  "terminal": {
+    "actualExit": 0,
+    "completedUtc": "2026-10-11T12:45:32.2559588Z",
+    "stages": [
+      {
+        "reaped": true,
+        "pid": 11912,
+        "pidAbsent": true,
+        "completedUtc": "2026-10-11T12:45:01.2277218Z",
+        "stage": "focused",
+        "startedUtc": "2026-10-11T12:44:18.2500982Z",
+        "actualExit": 0
+      },
+      {
+        "reaped": true,
+        "pid": 31496,
+        "pidAbsent": true,
+        "completedUtc": "2026-10-11T12:45:11.7430327Z",
+        "stage": "types",
+        "startedUtc": "2026-10-11T12:45:01.2414523Z",
+        "actualExit": 0
+      },
+      {
+        "reaped": true,
+        "pid": 22688,
+        "pidAbsent": true,
+        "completedUtc": "2026-10-11T12:45:32.2532265Z",
+        "stage": "lint",
+        "startedUtc": "2026-10-11T12:45:11.7472517Z",
+        "actualExit": 0
+      }
+    ]
+  },
+  "copies": [
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\launch-focused.ps1",
+      "copy": "launch-focused.ps1",
+      "SHA256": "5c0cfcd3f3f33fab51f89d6d2df6f24bd5beb6b7b9c51d01b863066da2a41ce4",
+      "bytes": 1989
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\focused.stdout",
+      "copy": "focused.stdout",
+      "SHA256": "d8cf61dfde45160779d03733682de6d7f78e9331a7ed5a07dced178ef6b7e110",
+      "bytes": 3173
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\focused.stderr",
+      "copy": "focused.stderr",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\focused-terminal.json",
+      "copy": "focused-terminal.json",
+      "SHA256": "964b1fdc06617c1ef75687a3f6d59309dbae15cc3c87daacd2e94ea5553d4ae3",
+      "bytes": 206
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\types.stdout",
+      "copy": "types.stdout",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\types.stderr",
+      "copy": "types.stderr",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\types-terminal.json",
+      "copy": "types-terminal.json",
+      "SHA256": "ddf5db30f36661ac5a4ee7ed14451628ed02700b83fa920ec04a18af99ae1924",
+      "bytes": 204
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\lint.stdout",
+      "copy": "lint.stdout",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\lint.stderr",
+      "copy": "lint.stderr",
+      "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\lint-terminal.json",
+      "copy": "lint-terminal.json",
+      "SHA256": "f528c6ea285516e9b35a1a5c3468c72b05c009133203730d773d431c3e3a252a",
+      "bytes": 203
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\launcher-terminal.json",
+      "copy": "launcher-terminal.json",
+      "SHA256": "4e10e856de365184ad2c15b92925195842c6dcb332622873edf58b782cd22aa5",
+      "bytes": 820
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\frozen-inputs.json",
+      "copy": "frozen-inputs.json",
+      "SHA256": "18d8cc624e4e230438fb27bac3dbbfdad6aaf37db06e37ebbf7f9dda1714b97a",
+      "bytes": 1202
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\audit-byte-proof.json",
+      "copy": "audit-byte-proof.json",
+      "SHA256": "69921e3b79c447bf71720bd841cefa85b41773280bb60a3f5013bb623b85f61e",
+      "bytes": 402
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\summary-parser-byte-proof.json",
+      "copy": "summary-parser-byte-proof.json",
+      "SHA256": "8c9efad69a0ab530fd304abe41d8cf146c6044553f3c01f18bf6a0584f624eb9",
+      "bytes": 912
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\acceptance-ledger-corrected-scan-review.json",
+      "copy": "acceptance-ledger-corrected-scan-review.json",
+      "SHA256": "126b9f9b71756e8fd9bb4948c9e0f80ddaf62e3314c92ad4e3eb1fbcbce03042",
+      "bytes": 1780
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\handler-snapshot-20261011-124344-83215e\\docs-review.json",
+      "copy": "docs-review.json",
+      "SHA256": "ba51607d49f976d43fddf2c7ea8d97228c9645f90e656f8e0e5bc7a84d133aa0",
+      "bytes": 3508
+    }
+  ],
+  "scan": {
+    "scope": "27 exact selected changed source/test/docs/evidence files; no whole repo/image claim",
+    "scannerSHA256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "defaultRules": true,
+    "redacted": true,
+    "actualExit": 1,
+    "findings": 1,
+    "individuallyVerified": 1,
+    "untriagedSelected": 0,
+    "suppressions": 0,
+    "legacyFullSourcePending": 2,
+    "reportSHA256": "9a57e2225fee9ea04aa2c76ef00f82ea858fcbdef3134d3cb5c707f411d86c49",
+    "terminalSHA256": "e61d1bba5237c35088ae3ff0e1161eb43df03eb7de68364135359fe1d60250db",
+    "reviews": [
+      {
+        "rule": "generic-api-key",
+        "file": "docs/BORTUS-IMPLEMENTATION.md",
+        "line": 41,
+        "startColumn": 669,
+        "endColumn": 702,
+        "columnUnit": "UTF8bytes1-based inclusive",
+        "spanSHA256": "6d55e097f1c50b3fef8a222bfd51b9ab2a6ff357a5c0687abe0732669acaab84",
+        "whitespaceWords": 3,
+        "classification": "Exact unchanged public historical prose; not a credential",
+        "proofCommit": "55fdb44e5cc1f93db8f4bc821ad97f8c3a233ec8",
+        "proofPath": "docs/BORTUS-IMPLEMENTATION.md",
+        "proofLine": 39
+      }
+    ]
+  },
+  "remaining": "Fresh production build/affected HTTP, full coherent source/image/live qualification and A07/A21 remain open",
+  "NextGuide": "https://nextjs.org/docs/15/app/api-reference/functions/cookies"
+}

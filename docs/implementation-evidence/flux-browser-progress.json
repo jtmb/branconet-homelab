@@ -1,0 +1,833 @@
+{
+  "startedAt": "2026-10-11T03:12:10.673Z",
+  "fixture": "Actual disposable production routes, SQLite, bounded metadata-only fake CLI; no production cluster",
+  "checks": [
+    {
+      "name": "Hierarchy pages reach all 201 repositories; mixed valid/equal/null/invalid date sorting keeps unknowns last in both directions",
+      "recordedAt": 1791688335829,
+      "pageRows": [
+        100,
+        100,
+        1
+      ]
+    },
+    {
+      "name": "Long branch/path/URL rows fit 320/390/768 CSS widths",
+      "recordedAt": 1791688335860,
+      "bounds": [
+        {
+          "width": 320,
+          "client": 320,
+          "scroll": 320
+        },
+        {
+          "width": 390,
+          "client": 390,
+          "scroll": 390
+        },
+        {
+          "width": 768,
+          "client": 768,
+          "scroll": 768
+        }
+      ]
+    },
+    {
+      "name": "Keyboard repository/bundle navigation and complete bounded inventory; counts2/10 sort numerically",
+      "recordedAt": 1791688336636,
+      "inventoryPageRows": [
+        100,
+        100,
+        1
+      ]
+    },
+    {
+      "name": "Failed hierarchy read retains labelled prior metadata; Retry recovers without false empty",
+      "recordedAt": 1791688337055
+    },
+    {
+      "name": "Genuine hidden clears private form and stops hierarchy polls11s; fresh administrator withdrawal clears credentials without POST",
+      "recordedAt": 1791688368397,
+      "pollsWhileHidden": 0,
+      "visibility": [
+        "hidden",
+        "visible"
+      ]
+    },
+    {
+      "name": "Fresh permission loss fences a held accepted Sync reply without automatic retry",
+      "recordedAt": 1791688388454
+    },
+    {
+      "name": "Exact-name delete; real hidden mid-cascade preserves public monitor, pauses progress, resumes without duplicate DELETE and retains completed result",
+      "recordedAt": 1791688399681
+    },
+    {
+      "name": "Dismissal stops progress subscription and fences both held progress and accepted removal replies without claiming server cancellation",
+      "recordedAt": 1791688401912
+    },
+    {
+      "name": "Readonly navigation has no mutation controls; no overlapping Flux read ownership",
+      "recordedAt": 1791688402808,
+      "maxActiveReads": {
+        "GET /api/flux/hierarchy": 1,
+        "GET /api/flux/repos/sort-repo-0/detail": 1,
+        "GET /api/flux/kustomizations/fixture-bundle-0000": 1,
+        "GET /api/flux/repos/gr-sort-repo-4/delete-progress": 1,
+        "GET /api/flux/repos/gr-sort-repo-3/delete-progress": 1
+      }
+    }
+  ],
+  "failures": [],
+  "terminal": false,
+  "scanner": {
+    "name": "axe-core",
+    "version": "4.14.0",
+    "sha256": "20c09fe157a8a34a30e241aaa1fcdade657734f08ab379ecfbeb7d45cc46e878",
+    "source": "https://registry.npmjs.org/axe-core/4.14.0",
+    "registryIntegrityVerified": true,
+    "registrySignaturesVerified": false,
+    "packageScriptsExecuted": false
+  },
+  "ownedProcesses": {
+    "fixturePid": 44156,
+    "chromePid": 21956
+  },
+  "accessibilityScan": {
+    "version": "4.14.0",
+    "violations": [],
+    "passes": [
+      "aria-allowed-attr",
+      "aria-conditional-attr",
+      "aria-deprecated-role",
+      "aria-hidden-body",
+      "aria-prohibited-attr",
+      "aria-required-attr",
+      "aria-roles",
+      "aria-valid-attr-value",
+      "aria-valid-attr",
+      "button-name",
+      "bypass",
+      "color-contrast",
+      "document-title",
+      "form-field-multiple-labels",
+      "html-has-lang",
+      "html-lang-valid",
+      "label",
+      "link-name",
+      "meta-viewport",
+      "nested-interactive"
+    ],
+    "incomplete": [],
+    "incompleteContrastRenderMetadata": []
+  },
+  "fluxReadTimeline": {
+    "events": [
+      {
+        "id": 1,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688335421,
+        "active": 1
+      },
+      {
+        "id": 1,
+        "key": "GET /api/flux/hierarchy",
+        "event": "finish",
+        "at": 1791688335602,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 1,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688335602,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 2,
+        "key": "GET /api/flux/repos/sort-repo-0/detail",
+        "event": "start",
+        "at": 1791688335910,
+        "active": 1
+      },
+      {
+        "id": 2,
+        "key": "GET /api/flux/repos/sort-repo-0/detail",
+        "event": "finish",
+        "at": 1791688336193,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 2,
+        "key": "GET /api/flux/repos/sort-repo-0/detail",
+        "event": "close",
+        "at": 1791688336193,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 3,
+        "key": "GET /api/flux/kustomizations/fixture-bundle-0000",
+        "event": "start",
+        "at": 1791688336345,
+        "active": 1
+      },
+      {
+        "id": 3,
+        "key": "GET /api/flux/kustomizations/fixture-bundle-0000",
+        "event": "finish",
+        "at": 1791688336537,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 3,
+        "key": "GET /api/flux/kustomizations/fixture-bundle-0000",
+        "event": "close",
+        "at": 1791688336537,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 4,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688336680,
+        "active": 1
+      },
+      {
+        "id": 4,
+        "key": "GET /api/flux/hierarchy",
+        "event": "finish",
+        "at": 1791688336797,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 4,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688336797,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 5,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688336881,
+        "active": 1
+      },
+      {
+        "id": 5,
+        "key": "GET /api/flux/hierarchy",
+        "event": "finish",
+        "at": 1791688336881,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 5,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688336881,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 6,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688336932,
+        "active": 1
+      },
+      {
+        "id": 6,
+        "key": "GET /api/flux/hierarchy",
+        "event": "finish",
+        "at": 1791688337033,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 6,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688337033,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 7,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688348252,
+        "active": 1
+      },
+      {
+        "id": 7,
+        "key": "GET /api/flux/hierarchy",
+        "event": "finish",
+        "at": 1791688348369,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 7,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688348369,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 8,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688358381,
+        "active": 1
+      },
+      {
+        "id": 8,
+        "key": "GET /api/flux/hierarchy",
+        "event": "finish",
+        "at": 1791688358490,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 8,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688358490,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 9,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688368493,
+        "active": 1
+      },
+      {
+        "id": 9,
+        "key": "GET /api/flux/hierarchy",
+        "event": "finish",
+        "at": 1791688368608,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 9,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688368608,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 10,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688378622,
+        "active": 1
+      },
+      {
+        "id": 10,
+        "key": "GET /api/flux/hierarchy",
+        "event": "finish",
+        "at": 1791688378736,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 10,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688378736,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 11,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "start",
+        "at": 1791688388519,
+        "active": 1
+      },
+      {
+        "id": 11,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "finish",
+        "at": 1791688388531,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 11,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "close",
+        "at": 1791688388531,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 12,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688388748,
+        "active": 1
+      },
+      {
+        "id": 13,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "start",
+        "at": 1791688391538,
+        "active": 1
+      },
+      {
+        "id": 13,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "finish",
+        "at": 1791688391543,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 13,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "close",
+        "at": 1791688391543,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 12,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688391941,
+        "active": 0,
+        "writableFinished": false
+      },
+      {
+        "id": 14,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "start",
+        "at": 1791688395198,
+        "active": 1
+      },
+      {
+        "id": 15,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688395199,
+        "active": 1
+      },
+      {
+        "id": 14,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "finish",
+        "at": 1791688395205,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 14,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "close",
+        "at": 1791688395205,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 15,
+        "key": "GET /api/flux/hierarchy",
+        "event": "finish",
+        "at": 1791688395369,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 15,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688395370,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 16,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "start",
+        "at": 1791688396753,
+        "active": 1
+      },
+      {
+        "id": 16,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "finish",
+        "at": 1791688396759,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 16,
+        "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+        "event": "close",
+        "at": 1791688396759,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 17,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688396761,
+        "active": 1
+      },
+      {
+        "id": 17,
+        "key": "GET /api/flux/hierarchy",
+        "event": "finish",
+        "at": 1791688396858,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 17,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688396858,
+        "active": 0,
+        "writableFinished": true
+      },
+      {
+        "id": 18,
+        "key": "GET /api/flux/repos/gr-sort-repo-3/delete-progress",
+        "event": "start",
+        "at": 1791688399759,
+        "active": 1
+      },
+      {
+        "id": 18,
+        "key": "GET /api/flux/repos/gr-sort-repo-3/delete-progress",
+        "event": "close",
+        "at": 1791688399895,
+        "active": 0,
+        "writableFinished": false
+      },
+      {
+        "id": 19,
+        "key": "GET /api/flux/hierarchy",
+        "event": "start",
+        "at": 1791688401998,
+        "active": 1
+      },
+      {
+        "id": 19,
+        "key": "GET /api/flux/hierarchy",
+        "event": "finish",
+        "at": 1791688402110,
+        "active": 1,
+        "writableFinished": true
+      },
+      {
+        "id": 19,
+        "key": "GET /api/flux/hierarchy",
+        "event": "close",
+        "at": 1791688402110,
+        "active": 0,
+        "writableFinished": true
+      }
+    ],
+    "dropped": 0
+  },
+  "browserReadOwnership": [
+    {
+      "id": 1,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688335420,
+      "documentStartedAt": 1791688334482.7
+    },
+    {
+      "id": 1,
+      "key": "GET /api/flux/hierarchy",
+      "event": "headers",
+      "at": 1791688335602,
+      "documentStartedAt": 1791688334482.7
+    },
+    {
+      "id": 2,
+      "key": "GET /api/flux/repos/sort-repo-0/detail",
+      "event": "start",
+      "at": 1791688335910,
+      "documentStartedAt": 1791688334482.7
+    },
+    {
+      "id": 2,
+      "key": "GET /api/flux/repos/sort-repo-0/detail",
+      "event": "headers",
+      "at": 1791688336194,
+      "documentStartedAt": 1791688334482.7
+    },
+    {
+      "id": 3,
+      "key": "GET /api/flux/kustomizations/fixture-bundle-0000",
+      "event": "start",
+      "at": 1791688336345,
+      "documentStartedAt": 1791688334482.7
+    },
+    {
+      "id": 3,
+      "key": "GET /api/flux/kustomizations/fixture-bundle-0000",
+      "event": "headers",
+      "at": 1791688336538,
+      "documentStartedAt": 1791688334482.7
+    },
+    {
+      "id": 1,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688336680,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 1,
+      "key": "GET /api/flux/hierarchy",
+      "event": "headers",
+      "at": 1791688336798,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 2,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688336880,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 2,
+      "key": "GET /api/flux/hierarchy",
+      "event": "headers",
+      "at": 1791688336891,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 3,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688336932,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 3,
+      "key": "GET /api/flux/hierarchy",
+      "event": "headers",
+      "at": 1791688337034,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 4,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688348252,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 4,
+      "key": "GET /api/flux/hierarchy",
+      "event": "headers",
+      "at": 1791688348369,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 5,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688358380,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 5,
+      "key": "GET /api/flux/hierarchy",
+      "event": "headers",
+      "at": 1791688358490,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 6,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688368492,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 6,
+      "key": "GET /api/flux/hierarchy",
+      "event": "headers",
+      "at": 1791688368609,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 7,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688378622,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 7,
+      "key": "GET /api/flux/hierarchy",
+      "event": "headers",
+      "at": 1791688378737,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 8,
+      "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+      "event": "start",
+      "at": 1791688388519,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 8,
+      "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+      "event": "headers",
+      "at": 1791688388532,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 9,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688388748,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 10,
+      "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+      "event": "start",
+      "at": 1791688391536,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 10,
+      "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+      "event": "headers",
+      "at": 1791688391543,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 9,
+      "key": "GET /api/flux/hierarchy",
+      "event": "signal-abort",
+      "at": 1791688391938,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 9,
+      "key": "GET /api/flux/hierarchy",
+      "event": "fetch-rejected",
+      "at": 1791688391940,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 11,
+      "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+      "event": "start",
+      "at": 1791688395196,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 12,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688395197,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 11,
+      "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+      "event": "headers",
+      "at": 1791688395242,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 12,
+      "key": "GET /api/flux/hierarchy",
+      "event": "headers",
+      "at": 1791688395370,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 13,
+      "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+      "event": "start",
+      "at": 1791688396753,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 13,
+      "key": "GET /api/flux/repos/gr-sort-repo-4/delete-progress",
+      "event": "headers",
+      "at": 1791688396759,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 14,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688396760,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 14,
+      "key": "GET /api/flux/hierarchy",
+      "event": "headers",
+      "at": 1791688396858,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 15,
+      "key": "GET /api/flux/repos/gr-sort-repo-3/delete-progress",
+      "event": "start",
+      "at": 1791688399758,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 15,
+      "key": "GET /api/flux/repos/gr-sort-repo-3/delete-progress",
+      "event": "signal-abort",
+      "at": 1791688399892,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 15,
+      "key": "GET /api/flux/repos/gr-sort-repo-3/delete-progress",
+      "event": "fetch-rejected",
+      "at": 1791688399892,
+      "documentStartedAt": 1791688336641.4
+    },
+    {
+      "id": 1,
+      "key": "GET /api/flux/hierarchy",
+      "event": "start",
+      "at": 1791688401997,
+      "documentStartedAt": 1791688401919.3
+    },
+    {
+      "id": 1,
+      "key": "GET /api/flux/hierarchy",
+      "event": "headers",
+      "at": 1791688402110,
+      "documentStartedAt": 1791688401919.3
+    }
+  ],
+  "checkpointAt": "2026-10-11T03:13:22.808Z"
+}

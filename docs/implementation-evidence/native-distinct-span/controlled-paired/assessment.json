@@ -1,0 +1,86 @@
+{
+  "candidate": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f",
+  "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "actualRunnerExit": 0,
+  "actualSummaryExit": 0,
+  "sixUniqueAlternatingObservations": true,
+  "allInventoryAssertionsPassed": true,
+  "sourceBlobsAndModes": 422,
+  "originalArtifacts": 40,
+  "rawSha256": "be8645e9bd24eeac74101faebcfbd664e90cb1ca7e8f90ac9fd9cf07814e4279",
+  "summarySha256": "9507e8cb8a08928611e68b7d7d275115893daaa2bcfba2f925f596249b834d67",
+  "terminalSha256": "1b8a4950fc704ea7e4a86b9920f73eb3f4d59da4f22615035f6741e7c46630bd",
+  "ownedProcessesAndContainersAbsent": true,
+  "performanceGatePassed": false,
+  "nativeMedians": [
+    {
+      "profile": "audit-small",
+      "baselineMs": 113.27990099999988,
+      "candidateMs": 123.91453999999976
+    },
+    {
+      "profile": "metadata-200",
+      "baselineMs": 80.81294600000001,
+      "candidateMs": 116.69990599999801
+    },
+    {
+      "profile": "metadata-1000",
+      "baselineMs": 91.16756200000236,
+      "candidateMs": 125.46867500000008
+    },
+    {
+      "profile": "metadata-10000",
+      "baselineMs": 350.2139449999995,
+      "candidateMs": 313.9118730000009
+    },
+    {
+      "profile": "kv-sized-native-25",
+      "baselineMs": 233.99431099999856,
+      "candidateMs": 281.34776500000225
+    },
+    {
+      "profile": "maximum-flat-native-3",
+      "baselineMs": 147.37941599999613,
+      "candidateMs": 192.17230199999904
+    }
+  ],
+  "wholeFixtureObservations": {
+    "baseline": {
+      "cgroup_peak_mib": {
+        "median": 358.1484375,
+        "min": 351.6953125,
+        "max": 372.41796875
+      },
+      "cgroup_cpu_seconds": {
+        "median": 45.25525,
+        "min": 44.805782,
+        "max": 46.910936
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    },
+    "candidate": {
+      "cgroup_peak_mib": {
+        "median": 416.1640625,
+        "min": 412.9296875,
+        "max": 418.51171875
+      },
+      "cgroup_cpu_seconds": {
+        "median": 39.774252,
+        "min": 37.634545,
+        "max": 43.044439
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    }
+  },
+  "semanticLimits": "Baseline 10k Pod incomplete inventory is noncomparative; Services-after-Pods different deferred/shared-cache envelope remains noncomparative despite frozen summary flag. Native 10k inventories are complete and comparative. No fixture/gate/threshold edit or server-only CPU/RSS claim."
+}

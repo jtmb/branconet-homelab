@@ -1,0 +1,144 @@
+{
+  "scope": "SOURCE ONLY legacy React-element model alignment; no DOM/Radix/portal claim",
+  "sourceParent": "bc10aa971a61bdc49cb2d5190cb565025bb34324",
+  "productionSourceChanged": false,
+  "testsFile": "k8s-rewrite/front-end/tests/legacy-node-permissions.test.ts",
+  "originalTestNamesCount": 11,
+  "oldGitSHA256": "4d729dc161b5e4d5f7db48cf88ba009c8eaec855503b82777283e7efeb935a90",
+  "newWorkingSHA256": "39a77ff43551de3fd9c9c724159ed64a9204d31681eeba71470f2bbd72cff904",
+  "cause": "modal/modalElements select old h3/fixed-div tree; shared Modal is now an unevaluated component boundary in this scoped React model",
+  "fix": "Stable ModalBoundary module sentinel; select exact type/open/title; walk actual props.children",
+  "allOriginalBodyOraclesRetained": true,
+  "twoWithinBoundaryDraftAssertionsAdded": true,
+  "failedFull": {
+    "source": "bc10aa971a61bdc49cb2d5190cb565025bb34324",
+    "actualSupervisorExit": 1,
+    "terminalSHA256": "762bf632c0aa672183f3531c9a9e035b0fcbd82ada4601acd46ceca6c5eaab04",
+    "phaseActualExits": [
+      0,
+      0,
+      1
+    ],
+    "checksTests": 352,
+    "checksPassed": 350,
+    "checksFailed": 2,
+    "httpNotDispatched": true,
+    "sourceInputsUnchanged": true
+  },
+  "focused11Executed": false,
+  "freshFullQualified": false,
+  "browserQualified": false,
+  "actualATQualified": false,
+  "docsReviewed": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "SHA256": "6041d0990fcf78b263d2cc53f9aa8afa3cc3baed8939382a6a9ec7e5bfdb2c1d",
+      "checked": true
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "SHA256": "125071f741007fb662de81f13f769bd093c965b52c28db97c0e6d3decf680aa3",
+      "checked": true
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "SHA256": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670",
+      "checked": true
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "SHA256": "c8a06070027ebe9ed9e66466409ac5c07070cac5975ba06813b645be5e364898",
+      "checked": true
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "SHA256": "28f1c1e62800ff3be6b461df25018f9f692010784d348cd410cd12f83097484f",
+      "checked": true
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "SHA256": "f0da12bbfc0b78e8cf441cd880e998bfdc2d263c73aac8dc757588a134c9004d",
+      "checked": true
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "SHA256": "e5d93fbfc74facd50c9b07454a87c6bfdf4cf07214c54c802811e5ab9ac0088f",
+      "checked": true
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "SHA256": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b",
+      "checked": true
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "SHA256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412",
+      "checked": true
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "SHA256": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8",
+      "checked": true
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "SHA256": "5b05c7921a401b3be8325905f02d25538934ccb0c586b495ee0d50019cecb911",
+      "checked": true
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "SHA256": "2f6eb0566129a747364ececa352fddd3c3582fc5c59cddfff1a73225b1255d82",
+      "checked": true
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "SHA256": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038",
+      "checked": true
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "SHA256": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb",
+      "checked": true
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "SHA256": "1d8e32ee9ce3bf0a6b6e96fc8860404a91c126d4e0bd3dd1496e00c07d96368e",
+      "checked": true
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "SHA256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "checked": true
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "SHA256": "e4bcf64197c87c3f9dacbd258448fa0cb57f06c287694494bc7d223f2852998d",
+      "checked": true
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "SHA256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0",
+      "checked": true
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "SHA256": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92",
+      "checked": true
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "SHA256": "7c0b14c6c2729dec65b8a0999fc22cc6907e8a4663f21c02cb151997e61b2932",
+      "checked": true
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "SHA256": "2d688eeed59aa53b5efb4ceeb878091e5675a69ceb7d8b1310679468069adaa0",
+      "checked": true
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "SHA256": "dbadbb9dc692313cca7e060a84c329a2443cd854dbc32cbd0c0cd11e3549bcbc",
+      "checked": true
+    }
+  ]
+}

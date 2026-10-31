@@ -1,0 +1,207 @@
+
+added 501 packages, and audited 502 packages in 45s
+
+160 packages are looking for funding
+  run `npm fund` for details
+
+9 vulnerabilities (2 moderate, 7 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+> botrus-k8s-manager@1.0.0 prebuild
+> node scripts/patch-next-body-finalize.mjs
+
+Verified Next 15.5.27 middleware body finalization backport in CJS and ESM
+
+> botrus-k8s-manager@1.0.0 build
+> prisma generate && next build
+
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 187ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints
+
+   ▲ Next.js 15.5.27
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 13.0s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/60) ...
+   Generating static pages (15/60) 
+   Generating static pages (30/60) 
+   Generating static pages (45/60) 
+ ✓ Generating static pages (60/60)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                Size  First Load JS
+┌ ○ /                                                    7.2 kB         127 kB
+├ ○ /_not-found                                           996 B         104 kB
+├ ƒ /api/auth/login                                       363 B         104 kB
+├ ƒ /api/auth/logout                                      363 B         104 kB
+├ ƒ /api/auth/register                                    363 B         104 kB
+├ ƒ /api/auth/session                                     363 B         104 kB
+├ ƒ /api/cluster/deployments                              363 B         104 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]           363 B         104 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/action    363 B         104 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/delete    363 B         104 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/scale     363 B         104 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/yaml      363 B         104 kB
+├ ƒ /api/cluster/diagnostics                              363 B         104 kB
+├ ƒ /api/cluster/info                                     363 B         104 kB
+├ ƒ /api/cluster/ingresses                                363 B         104 kB
+├ ƒ /api/cluster/ingresses/[namespace]/[name]             363 B         104 kB
+├ ƒ /api/cluster/ingresses/[namespace]/[name]/delete      363 B         104 kB
+├ ƒ /api/cluster/ingresses/[namespace]/[name]/yaml        363 B         104 kB
+├ ƒ /api/cluster/kubectl                                  363 B         104 kB
+├ ƒ /api/cluster/namespaces                               363 B         104 kB
+├ ƒ /api/cluster/namespaces/[name]                        363 B         104 kB
+├ ƒ /api/cluster/namespaces/[name]/delete                 363 B         104 kB
+├ ƒ /api/cluster/namespaces/[name]/yaml                   363 B         104 kB
+├ ƒ /api/cluster/nodes                                    363 B         104 kB
+├ ƒ /api/cluster/nodes/[hostname]                         363 B         104 kB
+├ ƒ /api/cluster/nodes/[hostname]/action                  363 B         104 kB
+├ ƒ /api/cluster/nodes/[hostname]/yaml                    363 B         104 kB
+├ ƒ /api/cluster/pods                                     363 B         104 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]                  363 B         104 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]/delete           363 B         104 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]/exec             363 B         104 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]/logs             363 B         104 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]/yaml             363 B         104 kB
+├ ƒ /api/cluster/refresh                                  363 B         104 kB
+├ ƒ /api/cluster/remove                                   363 B         104 kB
+├ ƒ /api/cluster/services                                 363 B         104 kB
+├ ƒ /api/cluster/services/[namespace]/[name]              363 B         104 kB
+├ ƒ /api/cluster/services/[namespace]/[name]/yaml         363 B         104 kB
+├ ƒ /api/cluster/volumes                                  363 B         104 kB
+├ ƒ /api/cluster/volumes/[namespace]/[name]               363 B         104 kB
+├ ƒ /api/cluster/volumes/[namespace]/[name]/yaml          363 B         104 kB
+├ ƒ /api/cluster/volumes/reclaim                          363 B         104 kB
+├ ƒ /api/deploy/history                                   363 B         104 kB
+├ ƒ /api/deploy/start                                     363 B         104 kB
+├ ƒ /api/deploy/stop                                      363 B         104 kB
+├ ƒ /api/deploy/stream                                    363 B         104 kB
+├ ƒ /api/flux/hierarchy                                   363 B         104 kB
+├ ƒ /api/flux/kustomizations/[name]                       363 B         104 kB
+├ ƒ /api/flux/repos                                       363 B         104 kB
+├ ƒ /api/flux/repos/[id]                                  363 B         104 kB
+├ ƒ /api/flux/repos/[id]/delete-progress                  363 B         104 kB
+├ ƒ /api/flux/repos/[id]/detail                           363 B         104 kB
+├ ƒ /api/flux/repos/[id]/sync                             363 B         104 kB
+├ ƒ /api/health/live                                      363 B         104 kB
+├ ƒ /api/health/ready                                     363 B         104 kB
+├ ƒ /api/kv/audit                                         363 B         104 kB
+├ ƒ /api/kv/automation                                    363 B         104 kB
+├ ƒ /api/kv/export                                        363 B         104 kB
+├ ƒ /api/kv/history/gc                                    363 B         104 kB
+├ ƒ /api/kv/history/gc/preview                            363 B         104 kB
+├ ƒ /api/kv/identities                                    363 B         104 kB
+├ ƒ /api/kv/identities/[id]                               363 B         104 kB
+├ ƒ /api/kv/import                                        363 B         104 kB
+├ ƒ /api/kv/import/preview                                363 B         104 kB
+├ ƒ /api/kv/legacy                                        363 B         104 kB
+├ ƒ /api/kv/legacy/grants                                 363 B         104 kB
+├ ƒ /api/kv/legacy/grants/[id]                            363 B         104 kB
+├ ƒ /api/kv/legacy/preview                                363 B         104 kB
+├ ƒ /api/kv/mounts                                        363 B         104 kB
+├ ƒ /api/kv/mounts/[id]                                   363 B         104 kB
+├ ƒ /api/kv/operations/[id]                               363 B         104 kB
+├ ƒ /api/kv/paths                                         363 B         104 kB
+├ ƒ /api/kv/paths/[id]                                    363 B         104 kB
+├ ƒ /api/kv/paths/[id]/adopt                              363 B         104 kB
+├ ƒ /api/kv/paths/[id]/capabilities                       363 B         104 kB
+├ ƒ /api/kv/paths/[id]/data                               363 B         104 kB
+├ ƒ /api/kv/paths/[id]/destroy                            363 B         104 kB
+├ ƒ /api/kv/paths/[id]/reconcile                          363 B         104 kB
+├ ƒ /api/kv/paths/[id]/rollback                           363 B         104 kB
+├ ƒ /api/kv/paths/[id]/status                             363 B         104 kB
+├ ƒ /api/kv/paths/[id]/versions                           363 B         104 kB
+├ ƒ /api/kv/paths/[id]/versions/[version]                 363 B         104 kB
+├ ƒ /api/kv/paths/[id]/versions/[version]/data            363 B         104 kB
+├ ƒ /api/kv/policies                                      363 B         104 kB
+├ ƒ /api/kv/policies/[id]                                 363 B         104 kB
+├ ƒ /api/kv/policies/preview                              363 B         104 kB
+├ ƒ /api/kv/rotations                                     363 B         104 kB
+├ ƒ /api/kv/rotations/[id]/consumer                       363 B         104 kB
+├ ƒ /api/nodes                                            363 B         104 kB
+├ ƒ /api/nodes/[id]                                       363 B         104 kB
+├ ƒ /api/secret-references                                363 B         104 kB
+├ ƒ /api/secrets                                          363 B         104 kB
+├ ƒ /api/settings                                         363 B         104 kB
+├ ƒ /api/users                                            363 B         104 kB
+├ ƒ /api/users/[id]                                       363 B         104 kB
+├ ƒ /api/vars                                             363 B         104 kB
+├ ƒ /api/vars/[id]                                        363 B         104 kB
+├ ƒ /api/vars/lookup                                      363 B         104 kB
+├ ƒ /api/vars/sync                                        363 B         104 kB
+├ ○ /auth/login                                         1.58 kB         109 kB
+├ ○ /auth/register                                      2.09 kB         109 kB
+├ ○ /cluster/deployments                                3.49 kB         107 kB
+├ ○ /cluster/ingresses                                  3.19 kB         107 kB
+├ ○ /cluster/name-spaces                                3.16 kB         107 kB
+├ ○ /cluster/nodes                                      4.58 kB         112 kB
+├ ○ /cluster/pods                                       3.58 kB         107 kB
+├ ○ /cluster/services                                   3.17 kB         107 kB
+├ ○ /cluster/storage                                     3.7 kB         107 kB
+├ ○ /configuration                                      2.43 kB         118 kB
+├ ƒ /deploy                                             3.56 kB         120 kB
+├ ○ /deployments                                          188 B         116 kB
+├ ƒ /deployments/[namespace]/[name]                     5.29 kB         116 kB
+├ ○ /flux                                               12.6 kB         132 kB
+├ ƒ /flux/[repoName]                                     1.4 kB         114 kB
+├ ƒ /flux/[repoName]/[bundleName]                        1.4 kB         114 kB
+├ ○ /ingresses                                            188 B         116 kB
+├ ƒ /ingresses/[namespace]/[name]                       3.29 kB         114 kB
+├ ○ /name-spaces                                          188 B         116 kB
+├ ƒ /name-spaces/[name]                                  3.3 kB         114 kB
+├ ○ /nodes                                               2.1 kB         118 kB
+├ ƒ /nodes/[hostname]                                   5.02 kB         116 kB
+├ ○ /pods                                                 188 B         116 kB
+├ ƒ /pods/[namespace]/[name]                            4.18 kB         115 kB
+├ ƒ /secrets                                            4.65 kB         121 kB
+├ ƒ /secrets/kv                                           11 kB         118 kB
+├ ○ /services                                             188 B         116 kB
+├ ƒ /services/[namespace]/[name]                        3.28 kB         114 kB
+├ ○ /settings                                           2.83 kB         119 kB
+├ ○ /storage                                              188 B         116 kB
+├ ƒ /storage/[namespace]/[name]                         2.87 kB         114 kB
+├ ○ /users                                              3.02 kB         119 kB
+├ ○ /welcome                                            11.8 kB         115 kB
+└ ○ /workloads                                          2.26 kB         106 kB
++ First Load JS shared by all                            103 kB
+  ├ chunks/1255-5cd2fe06309409a0.js                     46.5 kB
+  ├ chunks/4bd1b696-f785427dddbba9fb.js                 54.2 kB
+  └ other shared chunks (total)                         2.67 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+npm warn deprecated xterm@5.3.0: This package is now deprecated. Move to @xterm/xterm instead.
+npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+npm notice
+npm notice New major version of npm available! 10.9.9 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.3 -> 8.0.0-rc.22                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘

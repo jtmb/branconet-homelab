@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: visibility restoration and focus share the active fresh read; explicit invalidation still fences it
+ok 1 - visibility restoration and focus share the active fresh read; explicit invalidation still fences it
+  ---
+  duration_ms: 2.73
+  type: 'test'
+  ...
+# Subtest: shared subscriptions never overlap polling; hidden/unmounted requests abort and late results cannot replace new state
+ok 2 - shared subscriptions never overlap polling; hidden/unmounted requests abort and late results cannot replace new state
+  ---
+  duration_ms: 0.4688
+  type: 'test'
+  ...
+# Subtest: outage keeps labelled prior data, exponential retries recover, invalidation and sign-out clear pending state
+ok 3 - outage keeps labelled prior data, exponential retries recover, invalidation and sign-out clear pending state
+  ---
+  duration_ms: 0.867
+  type: 'test'
+  ...
+# Subtest: 401 discards prior data and metadata query inactivity is bounded
+ok 4 - 401 discards prior data and metadata query inactivity is bounded
+  ---
+  duration_ms: 1.8444
+  type: 'test'
+  ...
+# Subtest: numeric, Kubernetes quantities, count pairs and chronological sorts preserve unknown values last
+ok 5 - numeric, Kubernetes quantities, count pairs and chronological sorts preserve unknown values last
+  ---
+  duration_ms: 0.9436
+  type: 'test'
+  ...
+# Subtest: default timers retain the browser global receiver
+ok 6 - default timers retain the browser global receiver
+  ---
+  duration_ms: 0.3265
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 369.6486

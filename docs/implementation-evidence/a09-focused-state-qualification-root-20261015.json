@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "status": "Three focused A09 deployment-state tests qualified; zero-to-one browser wire assertion pending",
+  "sourceParent": "97b26b4c55c64d88fa999e77c73c95c7dad56aa3",
+  "testPath": "k8s-rewrite/front-end/tests/deployment-state-rolling.test.ts",
+  "testSHA256": "d3d8e6663a3312595ac5f547c26d0cfdd6114f361becf0d1a551f5f94b6329d0",
+  "actorTool": "df6c0a",
+  "actorExit": 0,
+  "currentTool": "eb1381",
+  "currentExit": 0,
+  "testsPassed": 3,
+  "testsFailed": 0,
+  "skipped": 0,
+  "sourceFilesCurrent": 4,
+  "CLIJobsReaped": 9,
+  "exactContainerIDAndNameAbsent": true,
+  "actorAbsent": true,
+  "profile": {
+    "nodeImage": "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
+    "uid": 1000,
+    "network": "none",
+    "cpus": 2,
+    "memoryBytes": 1073741824,
+    "swapBytes": 0,
+    "pidLimit": 256,
+    "readOnly": true,
+    "capDrop": "ALL",
+    "noNewPrivileges": true
+  },
+  "cases": [
+    "Simultaneous arbitrary old/new ReplicaSet UIDs; three owned pods/restart total12, foreign/orphan/noncontroller/cross-namespace rejected",
+    "Complete missing-status/default observed and desired fields",
+    "Desired zero before observation, draining and completed scale-down"
+  ],
+  "inputFiles": [
+    {
+      "path": "tests/deployment-state-rolling.test.ts",
+      "sha256": "d3d8e6663a3312595ac5f547c26d0cfdd6114f361becf0d1a551f5f94b6329d0"
+    },
+    {
+      "path": "src/lib/deployment-state.ts",
+      "sha256": "4cc5bd9d3a53f0777839292504d7be172bac1324ef8c2f1ca16544536407a8a6"
+    },
+    {
+      "path": "package.json",
+      "sha256": "8416d078b2263fa62c7799f722ae663a4a6c5309508f66578e28f72b31698866"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "1a9aeca0dd2e384e0d3341044fab297e730f40ea985c45d3101ec5316e142570"
+    }
+  ],
+  "stdoutSHA256": "69e2573c4bd28bbbfee7ccdcb36a2245e343a9e5f35c5b4100fc3ffd042ab8a4",
+  "resultSHA256": "bde5626a8293a0d86ec10105cba6f28012fcd80157aa2965679c43ed6dc21091",
+  "sourceScan": {
+    "tool": "6a0233",
+    "actualExit": 0,
+    "findings": 0,
+    "files": 8
+  },
+  "original342TestsNotReplayed": true,
+  "noProductSourceChange": true,
+  "noBuild": true,
+  "wholeA09Accepted": false,
+  "retainedZeroToOneEvidence": "Dated README browser observation; not a newly retained executable/wire oracle. A narrow current browser assertion is planned alongside A05/A08.",
+  "realControllerRequirementAdded": false,
+  "performanceAccepted": false,
+  "productionAdopted": false,
+  "individualContainerChildBirthsClaimed": false
+}

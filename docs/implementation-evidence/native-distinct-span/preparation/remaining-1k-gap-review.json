@@ -1,0 +1,93 @@
+{
+  "source": "7e30b9b428a66cd3f5e618cec5e694d5f03302ac",
+  "nonAcceptance": true,
+  "inputs": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\phase-scheduling-7e30.json",
+      "sha256": "e4072228bc5a229443331477457f08f1956e2c56d62a5acb9196b720e3bff4bd"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\characterize-phase-7e30b9b-complete\\analysis-v2.json",
+      "sha256": "f1da9292be33ad253f89b0bc8efd9888bc7e6842fccc81850c9a09dfe042b8f7"
+    }
+  ],
+  "scope": "Light read-only derivation from retained neutral single instrumented observation; no new runtime/endpoint measurement",
+  "requestCount": 18,
+  "tlsConnections": 4,
+  "sdkAsyncSumMs": 3.898,
+  "firstFour": [
+    {
+      "startOffsetMs": 0.0,
+      "responseHeaderOffsetMs": 39.965,
+      "endCallbackOrWireEndOffsetMs": 40.997,
+      "tlsMs": 10.564,
+      "endHandlerMs": 0.919,
+      "dataHandlerMs": 0.017
+    },
+    {
+      "startOffsetMs": 5.252,
+      "responseHeaderOffsetMs": 25.884999999999998,
+      "endCallbackOrWireEndOffsetMs": 32.431,
+      "tlsMs": 5.892,
+      "endHandlerMs": 5.745,
+      "dataHandlerMs": 0.288
+    },
+    {
+      "startOffsetMs": 6.063,
+      "responseHeaderOffsetMs": 34.333,
+      "endCallbackOrWireEndOffsetMs": 38.249,
+      "tlsMs": 5.8,
+      "endHandlerMs": 3.712,
+      "dataHandlerMs": 0.04
+    },
+    {
+      "startOffsetMs": 6.803,
+      "responseHeaderOffsetMs": 41.779999999999994,
+      "endCallbackOrWireEndOffsetMs": 42.748,
+      "tlsMs": 5.886,
+      "endHandlerMs": 0.872,
+      "dataHandlerMs": 0.014
+    }
+  ],
+  "laterHeaderMedianMs": 13.543000000000003,
+  "sortedEndToNextRequestStartGapsMs": [
+    1.291,
+    0.828,
+    0.444,
+    0.33,
+    0.612,
+    0.418,
+    0.362,
+    0.311,
+    0.773,
+    0.543,
+    0.321,
+    0.358,
+    0.453,
+    0.299
+  ],
+  "gapMedianMs": 0.431,
+  "gapMaxMs": 1.291,
+  "endCallbackSynchronousSumMs": 23.58,
+  "bodyHeaderToEndBeforeHandlerSumMs": 3.024,
+  "postLastNativeEndToResponseEndCombinedMs": 2.194,
+  "codePointers": {
+    "slot": "src/lib/secret-client.ts slot/release: active<=4 and bounded FIFO<=64; one operation starts four namespace workers",
+    "settlement": "src/lib/secret-client.ts request response end resolves after complete parser/deadline checks; finally releases immediately without awaiting socket close",
+    "agent": "src/lib/secret-client.ts listAgent: operation-owned equal-options direct pool, four sockets; first request wave must authenticate and establish TLS, remaining wave reuses it",
+    "workers": "src/lib/cluster-secrets.ts SecretStore.list worker awaits complete namespace projection before claiming next scope",
+    "metadata": "src/lib/secret-summary-json.ts captured metadata calls skip grammar then fatal decode and JSON.parse; each selected object is both grammar-scanned and materialized"
+  },
+  "findings": [
+    "The observation has no end-wait for TLS/socket closure in request source. Four TLS handshakes serve18 requests; no additional handshakes on later requests in this profile.",
+    "Sorted completions versus replenishments expose small scheduler/auth gaps, not a measured35ms queue stall. This is aggregate matching, not correlated transport slot identity.",
+    "Later header delays are near the frozen12ms wait. Initial TLS/request headers and synchronous end callbacks are the concrete remaining targets.",
+    "Captured metadata grammar+fatal decode+JSON.parse is a plausible per-namespace processing target: capture inclusive13.254ms/skip inclusive10.185ms in sampled profile, overlapping not additive. No proposed bypass of complete validation or metadata identity.",
+    "Long native-value scanner improvement addresses large-page CPU; it cannot by itself close the small1k endpoint gap."
+  ],
+  "missingEvidence": [
+    "No per-request slot-admission or release timestamp, socket-free/close timestamp, peer-request arrival correlation or isolated selected-metadata timing in retained observer.",
+    "Single instrumented observation includes Inspector/JSON wrapper overhead and startup/JIT effects."
+  ],
+  "recommendation": "Finish current exact source qualification. If endpoint regression persists, isolate existing first-wave transport scheduling and selected metadata capture under same bounds, rather than increase request concurrency or skip scopes."
+}

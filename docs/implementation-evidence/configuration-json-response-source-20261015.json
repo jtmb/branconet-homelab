@@ -1,0 +1,430 @@
+{
+  "status": "SOURCE AND TEST PREPARATION ONLY; UNRUN; NO COMMIT",
+  "base": "b9e9a6afb410af25b2616f153d69535daed642ee",
+  "reviewedSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+  "reviewedFrontendTree": "4658deeff3bc5d952307c11503832b96b44dfe27",
+  "worktree": "C:\\Users\\james\\.codex\\worktrees\\bortus-json-response-contract\\kubernetes migration",
+  "sourcePins": [
+    {
+      "path": "k8s-rewrite/front-end/src/lib/use-query.ts",
+      "bytes": 4473,
+      "rawSHA256": "3cf6a05a4166f62677d9261594ca1a30031750c4b6465809ad4c014a1824f3f0",
+      "gitBlob": "f097ba8cb7c6e87634520e05f1b21ef5b74eed82",
+      "baselineBlob": "bcd33b6a4be1fa8fdcc28c205d0c8d96b202cb1d"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/(dashboard)/configuration/page.tsx",
+      "bytes": 6066,
+      "rawSHA256": "c68a447bb7fa8f9e097650d256dbd548e68a2f69e04e474a07f3fcae1fe5d54c",
+      "gitBlob": "caef4eac2504fea4fdb46f9187962c77dc840a2e",
+      "baselineBlob": "14d4b32369692de8122f81060a5c4efbc9c36d0d"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/configuration-response.ts",
+      "bytes": 1721,
+      "rawSHA256": "6790dab7ca8531052750c875278eab793f5464ee511de6af2ba4e3fe6c7518d0",
+      "gitBlob": "332c67fd90c521fcd062c408a50fddccfe11ece9",
+      "baselineBlob": null
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/request-json-response.test.ts",
+      "bytes": 9788,
+      "rawSHA256": "20e4d736eea3d3ea37b42fe533752a77f0a451c0c7d695ae876910fc5ab02dc8",
+      "gitBlob": "33954cae07694c49143a9c7d5b2b7decc63a1e85",
+      "baselineBlob": null
+    }
+  ],
+  "diff": {
+    "path": "docs/implementation-evidence/configuration-json-response-source-20261015.patch",
+    "rawSHA256": "cfdd45522a283a3f78126eb2fd6ad28237955560f42833cb52716c7dcb3bc8a7",
+    "includesNewSourceAndTestFiles": true,
+    "excludesThisReceipt": true
+  },
+  "nextGuide": {
+    "installedDistDocsPresent": false,
+    "officialVersionedGuide": "https://nextjs.org/docs/15/app/getting-started/server-and-client-components",
+    "readBeforeSourceEdit": true,
+    "servedVersion": "15.5.28 version15 docs; installed project package remains15.5.27"
+  },
+  "callsiteAudit": {
+    "directConsumers": [
+      "deployment-controls scale",
+      "kubectl-shell output",
+      "deploy history/start/stop/delete",
+      "legacy cluster/nodes list",
+      "dashboard nodes mutation",
+      "overview inventory DELETE",
+      "resource YAML/logs/detail/mutations",
+      "topnav refresh/logout",
+      "shared metadata QueryStore",
+      "useMutation"
+    ],
+    "currentSource204RouteMatches": 0,
+    "generic204": "undefined acknowledgment compatibility retained; configuration decoders refuse",
+    "genericValidJSON": "null, booleans, numbers, strings, arrays and objects remain accepted by requestJson",
+    "configurationGET": "Array of structural id/key/value/category string rows; nonempty id; extra fields and legacy key spelling allowed",
+    "configurationPOST": "success:true and returned variable with submitted key/value/category, plus captured id for edits; UI always sends explicit strings",
+    "normalization": "vars/route.ts44-45 uses body key/category with existing/default fallback. No trimming; empty nonsecret value and category whitespace retained.",
+    "configurationDELETE": "success:true acknowledgment required; extra metadata accepted",
+    "errors": "Malformed success/wrong configuration contract emits fixed502 without body/values; uncertain write/removal wording requests refresh before explicit retry",
+    "authentication": "401 clear/session-ended and403 session invalidation retained for malformed/null/primitive error bodies"
+  },
+  "preparedTests": {
+    "file": "k8s-rewrite/front-end/tests/request-json-response.test.ts",
+    "suites": 5,
+    "transport": "Actual loopback node:http server and fetch; no production routes, credentials or native cluster",
+    "behavior": [
+      "Malformed/empty200 rejection, generic valid JSON and204 compatibility",
+      "Malformed/null/primitive401/403 retains clear/event/invalidation effects",
+      "Wrong configuration list shape retains prior QueryStore metadata; true empty list recovers",
+      "ActualMutationTask duplicate submission/no success callback on malformed/wrong-target/value/category/204/drop; explicit valid201 retry",
+      "ActualMutationTask DELETE keeps confirmation on malformed/wrong acknowledgment/204; explicit success:true retry"
+    ],
+    "notBrowserEvidence": true,
+    "executed": false
+  },
+  "proposedCommands": [
+    "node node_modules/tsx/dist/cli.mjs --test tests/request-json-response.test.ts",
+    "npm run lint",
+    "npm run typecheck",
+    "npm test",
+    "npm run build",
+    "npm run test:integration"
+  ],
+  "negativeControlProposal": {
+    "executed": false,
+    "protocol": "Disposable exact candidate copy only: restore historical response.json().catch(()=>({})) parse acceptance; run unchanged first named real-HTTP test and require its missing-rejection assertion. Separately replace configurationSaved/configurationRemoved validation with no-op in copies; unchanged named write/delete tests must fail saved/removed:false witnesses. Restore exact source hashes in finally. No original test/assertion/threshold change."
+  },
+  "sourceContinuity": {
+    "bindings": [
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/lib/use-query.ts",
+        "gitBlobEqualToReviewed": false
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/lib/permissions.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/lib/auth.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/lib/runtime-capabilities.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/app/api/auth/session/route.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/app/(dashboard)/deploy/deploy-client.tsx",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/app/api/deploy/stop/route.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/app/api/deploy/history/route.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/app/api/deploy/stream/route.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/lib/job-stream.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/app/(dashboard)/users/page.tsx",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/app/api/users/[id]/route.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A12",
+        "path": "k8s-rewrite/front-end/src/app/(dashboard)/topnav.tsx",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/lib/table-sort.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/components/cluster/resource-list.tsx",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/components/ui/sortable-header.tsx",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/lib/pod-query.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/lib/deployment-state.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/app/api/cluster/pods/route.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/app/api/cluster/volumes/route.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/app/(dashboard)/settings/page.tsx",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/app/(dashboard)/nodes/page.tsx",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/lib/cluster-cache.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/app/api/cluster/nodes/route.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/app/api/cluster/deployments/route.ts",
+        "gitBlobEqualToReviewed": true
+      },
+      {
+        "clause": "A13",
+        "path": "k8s-rewrite/front-end/src/app/api/cluster/volumes/reclaim/route.ts",
+        "gitBlobEqualToReviewed": true
+      }
+    ],
+    "useQueryFunctionsAfterLetSubscribersEqualAfterExplicitLFConversion": true,
+    "A12": "Only use-query.ts whole-file raw/Git equality changes. useSession/useQuery/subscription/visibility/refetch functions remain exact after explicit EOL comparison; QueryStore, auth, permissions, runtime capabilities and server routes untouched. New401/403 tests remain unrun.",
+    "A13": "All13 composite source paths unchanged; typed sorting, row identity and API normalization source intact. Whole frontend manifests are historical; no need to replay all sort combinations.",
+    "A22": "No modal/menu/terminal source or actor packet changed"
+  },
+  "documentationReview": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "updated": false,
+      "rawSHA256": "6041d0990fcf78b263d2cc53f9aa8afa3cc3baed8939382a6a9ec7e5bfdb2c1d",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "updated": true,
+      "rawSHA256": "0d8d26a3195e7c6ff99645b6eb3b9410493379e836b07785b13be908e89d1c24",
+      "review": "Updated focused response contracts and source-only qualification boundaries."
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "updated": true,
+      "rawSHA256": "ec7b66c11262d6786f1b3c984106d751df64b372e61ea2ad94b7e5356c26f850",
+      "review": "Updated focused response contracts and source-only qualification boundaries."
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "updated": false,
+      "rawSHA256": "bff85e44e938678c86768fbc65f00ea65403e0b7c0819481b2dcae2ccaa35226",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "updated": false,
+      "rawSHA256": "c880f84e434a1e1301b1f19d27745aef73da77592c22fb2d9a2327bd95bb9c6e",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "updated": true,
+      "rawSHA256": "e2f61174e6af301df6d18af7153295813e14fe1b44f7aba4d96b095b1b77d842",
+      "review": "Updated focused response contracts and source-only qualification boundaries."
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "updated": false,
+      "rawSHA256": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "updated": false,
+      "rawSHA256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "updated": false,
+      "rawSHA256": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "updated": false,
+      "rawSHA256": "624c1b712dd0565a539d5dcf5621a420c6b89064bf76534aa376fac997141e08",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "updated": true,
+      "rawSHA256": "8c3c73a11f8573c8f8ebbd8a1473cb54808052053d0d63fa0a84c937ad159dd0",
+      "review": "Updated focused response contracts and source-only qualification boundaries."
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "updated": false,
+      "rawSHA256": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "updated": false,
+      "rawSHA256": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "updated": false,
+      "rawSHA256": "1d8e32ee9ce3bf0a6b6e96fc8860404a91c126d4e0bd3dd1496e00c07d96368e",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "updated": false,
+      "rawSHA256": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "updated": false,
+      "rawSHA256": "a32a0343cdfd073325b30a9c3eca0f1652d49210f75ef02b57ef600c3924de21",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "updated": false,
+      "rawSHA256": "eb8ca97a21d800a740c44af88d741f3c78dc5895167a090ec1130b0f553d994d",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "updated": false,
+      "rawSHA256": "c7e346b5665c6a36318c8c19d70f00f3421d36e8522e4c55bc1c4ad1ee294b22",
+      "review": "Checked configuration/shared-query/JSON/mutation claims; no dependency, API server contract, authorization, Secret engine, provisioning, deployment, network, native list or benchmark behavior changed."
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "updated": false,
+      "rawSHA256": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670",
+      "review": "Historical c2e22ca baseline reproduction instructions; no new behavior claimed, unchanged."
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "updated": true,
+      "rawSHA256": "9827999b6616bd857c5a6c5895a7a5014945a7b0d37f7b26a6e0a2ce5b4dd46a",
+      "review": "Added current unadopted source-only candidate note; historical B9/fccc qualification paragraphs unchanged."
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "updated": false,
+      "rawSHA256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0",
+      "review": "Historical isolated483ba4f dependency/runtime-image qualification explicitly excludes subsequent UI/integrated release; unchanged."
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "updated": false,
+      "rawSHA256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "review": "Historical native-stage15786222 diagnostic preparation, no authorization/runtime or current candidate claim; unchanged."
+    }
+  ],
+  "originalValidationChecks": [
+    {
+      "path": "docs/implementation-evidence/acceptance-ledger-audit.json",
+      "clauses": 22,
+      "unchanged": true
+    },
+    {
+      "path": "docs/implementation-evidence/remaining-acceptance-matrix.json",
+      "clauses": 22,
+      "unchanged": true
+    }
+  ],
+  "constraints": {
+    "noRuntime": true,
+    "noScanner": true,
+    "noBuild": true,
+    "noInstall": true,
+    "noBenchmark": true,
+    "noStage": true,
+    "noProductionAccess": true,
+    "noCommit": true,
+    "nativeConcurrency": 8,
+    "metadataPageMiB": 16,
+    "genericPageMiB": 4,
+    "aggregateMiB": 32,
+    "maxItems": 10000,
+    "accountActive": 1,
+    "accountQueued": 64,
+    "accountDeadlineMs": 5000,
+    "accountRealYields": 2,
+    "originalAPIWarmGate": "FAILED2/10 preserved; benchmark unchanged"
+  },
+  "remaining": "ROOT peer review, eventual exact-source full checks/build, finite compiled configuration list/save/delete browser observations and original A21 current size/render/bytes/probe/peak measurements; no broad corpus replay proposed.",
+  "preparationCorrection": "Peer source review caught a list-error literal mismatch; corrected expected fixed error to match implementation before any execution.",
+  "recursiveDocumentationReview": {
+    "command": "rg --files docs -g '*.md'",
+    "count": 22,
+    "excluded": 0,
+    "nestedAdded": 4,
+    "currentCandidateUnadopted": true,
+    "historicalQualificationsRetained": true
+  },
+  "focusedQualificationPreparation": "configuration-json-focused-preparation/handoff.json; SOURCE ONLY, four modes/allfive suites, no runtime, requires ROOT exact actor authorization.",
+  "focusedHandoffPin": {
+    "path": "docs/implementation-evidence/configuration-json-focused-preparation/handoff.json",
+    "sha256": "3be7c22724ee7191a1dcb672e43df9b476c943eaf64b2b8c89ccbcd0aad1a8e5",
+    "controller": "docs/implementation-evidence/configuration-json-focused-preparation/controller.py",
+    "controllerSHA256": "168abe1766c144b8bc3c727d8572388ad91ec5b29e9ef0a5e2d2c15b00c43547",
+    "manifest": "docs/implementation-evidence/configuration-json-focused-preparation/manifest.json",
+    "manifestSHA256": "51a48b2321a352040c444f694d2ebe321d0bee12bfa2cb0375256e73eddeba5b",
+    "sharedWhole240Closure20Child30": true,
+    "executed": false,
+    "staged": false
+  },
+  "resultPublisherRecipe": {
+    "path": "configuration-json-focused-preparation/result-publisher-recipe.json",
+    "sha256": "358d4f9feb2afb68fb7c16c0b0ad9942abb2cdfae3a3dc934b1033ff3b95ccf2",
+    "executed": false,
+    "docsRuntimeUpdatePendingActual": true
+  }
+}

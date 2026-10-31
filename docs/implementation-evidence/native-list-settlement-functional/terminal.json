@@ -1,0 +1,117 @@
+{
+  "scope": "Native response settlement source qualification, no performance acceptance",
+  "owner": "native-settlement-qualification-final",
+  "launcher_pid": 24092,
+  "started_utc": "2026-10-11T03:58:26.625488+00:00",
+  "source_parent": "f9a83fb1c4fb25b50ac199d4fe5de3ca2f0374b2",
+  "source_working_sha256": {
+    "k8s-rewrite/front-end/src/lib/secret-client.ts": "57a3457e104b86039957229d7398b4a0d7fbd879169efc5932d1155d3aacc3a4",
+    "k8s-rewrite/front-end/tests/native-list-window.test.ts": "bb3186ba972402c1885c6f7a8a319eed01dff72d2182a01e3c86c519c0752966",
+    "docs/API-USAGE.md": "53c4169a63338c229658d24546b28694ba20435185dfc4b6484c49ddc00ec175",
+    "docs/BORTUS-DEPLOYMENT.md": "1a80ec04c5db65f9a8f1ddfce651fbd405244ffc77e58ae75a0d2a1a5956462a",
+    "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md": "470bc67ea84abe3937f7231462788246f89e9b0ea7e8ff142c4d52da8258348b",
+    "docs/SECRETS-ENGINE.md": "439cbe9bb53832a1160b00ffe52323a6bc73c250af039b48ac3c687a42242616"
+  },
+  "node_version": "v22.23.3",
+  "checks": [
+    {
+      "name": "focused-settlement",
+      "started_utc": "2026-10-11T03:58:26.654030+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "--test-name-pattern=settled responses discard late",
+        "tests/native-list-window.test.ts"
+      ],
+      "pid": 33996,
+      "exit_code": 0,
+      "wall_seconds": 21.360357400000794,
+      "finished_utc": "2026-10-11T03:58:48.013961+00:00"
+    },
+    {
+      "name": "native-window",
+      "started_utc": "2026-10-11T03:58:48.015463+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/native-list-window.test.ts"
+      ],
+      "pid": 44596,
+      "exit_code": 0,
+      "wall_seconds": 7.685369300015736,
+      "finished_utc": "2026-10-11T03:58:55.701490+00:00"
+    },
+    {
+      "name": "full-unit",
+      "started_utc": "2026-10-11T03:58:55.702992+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/accounts.test.ts",
+        "tests/ansible-progress.test.ts",
+        "tests/flux-credentials.test.ts",
+        "tests/job-output.test.ts",
+        "tests/job-stream.test.ts",
+        "tests/kubectl.test.ts",
+        "tests/kv-foundation.test.ts",
+        "tests/kv-legacy-access.test.ts",
+        "tests/kv-metadata-query.test.ts",
+        "tests/kv-native-request.test.ts",
+        "tests/kv-native.test.ts",
+        "tests/kv-rotation-consumer.test.ts",
+        "tests/kv-workbench.test.ts",
+        "tests/metadata-bounds.test.ts",
+        "tests/metadata-query.test.ts",
+        "tests/mutation-task.test.ts",
+        "tests/native-list-concurrency.test.ts",
+        "tests/native-list-window.test.ts",
+        "tests/native-secrets.test.ts",
+        "tests/query-store.test.ts",
+        "tests/resource-cache.test.ts",
+        "tests/resource-capabilities.test.ts",
+        "tests/resource-state.test.ts",
+        "tests/secret-capacity.test.ts",
+        "tests/transport.test.ts"
+      ],
+      "pid": 48368,
+      "exit_code": 0,
+      "wall_seconds": 30.979716700006975,
+      "finished_utc": "2026-10-11T03:59:26.682451+00:00"
+    },
+    {
+      "name": "lint",
+      "started_utc": "2026-10-11T03:59:26.684454+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/eslint/bin/eslint.js",
+        ".",
+        "--max-warnings=0"
+      ],
+      "pid": 44212,
+      "exit_code": 0,
+      "wall_seconds": 32.37921159999678,
+      "finished_utc": "2026-10-11T03:59:59.063854+00:00"
+    },
+    {
+      "name": "final-types",
+      "started_utc": "2026-10-11T03:59:59.065857+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "pid": 20156,
+      "exit_code": 0,
+      "wall_seconds": 8.464774399995804,
+      "finished_utc": "2026-10-11T04:00:07.530529+00:00"
+    }
+  ],
+  "terminal": true,
+  "actual_launcher_exit_code": 0,
+  "finished_utc": "2026-10-11T04:00:07.531536+00:00"
+}

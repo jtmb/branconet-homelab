@@ -1,0 +1,654 @@
+{
+  "scope": "Seven exact hosted source-regression sensitivities (five flat plus two DB) and unchanged normal342-unit/8-HTTP gates; complete A19 remains open",
+  "owningSourceCommit": "e386e5bfdcaf07e01054f98f1e537452334db171",
+  "frontendTree": "2dd777cadd669b214631401a98f85bf4a4eeda78",
+  "workflowGitBlob": "a8198320c23d28628750ae86e573e038208ea032",
+  "workflowSHA256": "a1f099051765beb635eb3ca161ae328ce458fb99ee53f010eb63b0272613853a",
+  "hostedRun": 38770022640,
+  "url": "https://github.com/jtmb/branconet-homelab/actions/runs/38770022640",
+  "validationCommit": "3420513ec034439c38e0cd2adc17aa2c96b9136e",
+  "validationRootTree": "ccb117ee40ac97a49be4476c5736f8539da1d878",
+  "validationParent": "aa13eb7326997960a11c9298ac909488a5c9f4c0",
+  "rootVerifiedEntireFrontendEqualsOwningCommit": true,
+  "status": "completed",
+  "conclusion": "success",
+  "actualMetadataExit": 0,
+  "actualLogExit": 0,
+  "steps": [
+    {
+      "conclusion": "success",
+      "name": "Set up job",
+      "number": 1,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "number": 2,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Locked install and native/standalone build in pinned compiler image",
+      "number": 3,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Original lint, type and unit checks with isolated runtime network",
+      "number": 4,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+      "number": 5,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+      "number": 6,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Original strict integration and process controls",
+      "number": 7,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "number": 14,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Complete job",
+      "number": 15,
+      "status": "completed"
+    }
+  ],
+  "tap": {
+    "tests": [
+      342,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      5,
+      5,
+      11,
+      11,
+      8
+    ],
+    "pass": [
+      342,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      5,
+      3,
+      11,
+      4,
+      8
+    ],
+    "fail": [
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      2,
+      0,
+      7,
+      0
+    ],
+    "cancelled": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "skipped": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "todo": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "flatSensitivity": {
+    "schema": 1,
+    "completed": true,
+    "cases": [
+      "A04-name-admission",
+      "A05-failed-stdout",
+      "A06-outage-empty",
+      "deployment-action-coercion",
+      "private-kv-cache-admission"
+    ],
+    "records": [
+      {
+        "id": "A04-name-admission",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "a987cf8e9b4a77ef9515e362f487ebf9e7dca36a4edc6d05cb512310ebcb44e5",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 328,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A04-name-admission",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "c47612769f669e88ad99359bca485a95f49277e8ad0cff7499c626e29864a8e6",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 971,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A05-failed-stdout",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "a9d9469b1b6d0bfc411f23d804aca640c6fe41ad5cf6b5838c8e0d0ffe3af56d",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 341,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A05-failed-stdout",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "425194c17afc9466147feaeef7c6f10e64d44f0d1576e9234bdf774c5f6eee5c",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 976,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A06-outage-empty",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "02fe86c3791bbd3bdb351e9143890ea2c6d8a8cfeeafd5b7c102b8c8a49be343",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 360,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A06-outage-empty",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "a3d2d21ae12e577e75d6b2748c17ab47b70705883e45f7122ed6fa301c557be7",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 981,
+        "stderrBytes": 0
+      },
+      {
+        "id": "deployment-action-coercion",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "ea989c1ef309c09415962918aff68bd189c352828570f87e147e2f07268ef94b",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 355,
+        "stderrBytes": 0
+      },
+      {
+        "id": "deployment-action-coercion",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "8daf11a0258a6caad8a9bba22088dc628306c99f11265c9eea8aa383834daa17",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 986,
+        "stderrBytes": 0
+      },
+      {
+        "id": "private-kv-cache-admission",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "6afcc2fdcedb984ba2e766c86442fa041319e23815392d82461fc01f502cdd99",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 362,
+        "stderrBytes": 0
+      },
+      {
+        "id": "private-kv-cache-admission",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "d46207f206e2f9d87e40f94a129a5655f846cfa23515a22287b1538f0630319f",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 1107,
+        "stderrBytes": 0
+      }
+    ],
+    "restorationFailures": [],
+    "elapsedMs": 3493,
+    "originalSelectedInputsUnchanged": true,
+    "originalUnitAndIntegrationExecution": "separate unchanged workflow steps",
+    "wholeA19Accepted": false
+  },
+  "databaseSensitivity": {
+    "schema": 1,
+    "completed": true,
+    "cases": [
+      "A02-deleted-account",
+      "A03-bootstrap-writer"
+    ],
+    "records": [
+      {
+        "id": "A02-deleted-account",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "743aeea4b11997ae66f79cd04e44fd507235c5a30519c5876963c706632aaeeb",
+        "stderrSHA256": "aadc494d457a69ee51d972bea78b7cb07dde37c9d3180ca2fafac911fe29d579",
+        "stdoutBytes": 1264,
+        "stderrBytes": 166
+      },
+      {
+        "id": "A02-deleted-account",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "5a2ec392cb2dcf73a3aad1d3b1da770537a082cc0cf22d3510b5cadc1fedb0a1",
+        "stderrSHA256": "9c7e80b340999d46e17a6f0259cf5b2b80fe42ffc28499f3de78fd7b1478084c",
+        "stdoutBytes": 2543,
+        "stderrBytes": 166
+      },
+      {
+        "id": "A03-bootstrap-writer",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "d044283327c7bbfabdad976c165511bc066b8fd2f623feba960d5ba2871d80ab",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 2177,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A03-bootstrap-writer",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "251d414f09602613ce975f1fd173f2e0c9aac2049666565386c3b3e1123ac4fb",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 7753,
+        "stderrBytes": 0
+      }
+    ],
+    "restorationFailures": [],
+    "elapsedMs": 6362,
+    "originalSelectedInputsUnchanged": true,
+    "flatFiveRunnerUnchanged": true,
+    "wholeA19Accepted": false,
+    "A01CrossProcessSensitivityQualified": false
+  },
+  "flatCaseAssertions": [
+    {
+      "id": "A04-name-admission",
+      "testFile": "tests/kubectl.test.ts",
+      "testName": "resource boundaries reject option and path injection before execution",
+      "assertionLine": 28,
+      "operator": "throws",
+      "witness": "Missing expected exception",
+      "mutantSHA256": "6cbadfbdca93976ff80273d548226da4aeadeed12cac72634c2de2da1d0ba055"
+    },
+    {
+      "id": "A05-failed-stdout",
+      "testFile": "tests/kubectl.test.ts",
+      "testName": "failed subprocess output never becomes a successful mutation or public error",
+      "assertionLine": 51,
+      "operator": "==",
+      "witness": "actual instanceof KubernetesCommandError",
+      "mutantSHA256": "d815f12e6c1f639472e75202f8cee01c8f33b2be17d2149d5055dcf447c79d58"
+    },
+    {
+      "id": "A06-outage-empty",
+      "testFile": "tests/resource-cache.test.ts",
+      "testName": "failure backoff preserves labelled bounded stale data and never invents empty success",
+      "assertionLine": 28,
+      "operator": "strictEqual",
+      "witness": "actual: 'empty'",
+      "mutantSHA256": "65f5db583e08837873a5c2797bf6be560e7450be766bc1ee7f497726ff52134e"
+    },
+    {
+      "id": "deployment-action-coercion",
+      "testFile": "tests/deployment-action.test.ts",
+      "testName": "deployment actions reject coerced/inherited/unknown action shapes before execution",
+      "assertionLine": 49,
+      "operator": "strictEqual",
+      "witness": "actual: 200",
+      "mutantSHA256": "2b91ee9c6598e7f0f31023d2e95de739e92fa16f49c6b93512227c303b4e6e8a"
+    },
+    {
+      "id": "private-kv-cache-admission",
+      "testFile": "tests/metadata-query.test.ts",
+      "testName": "shared cache denies private requests even through normalized resource-prefix spellings",
+      "assertionLine": 14,
+      "operator": "strictEqual",
+      "witness": "actual: true",
+      "mutantSHA256": "c0bcbb26be2993fac5589ec523c025033f96a398fcce4abf92db36d344c4bd14"
+    }
+  ],
+  "databaseCaseAssertions": [
+    {
+      "id": "A02-deleted-account",
+      "source": "src/lib/auth.ts",
+      "testFile": "tests/accounts.test.ts",
+      "parent": "SQLite account invariants and session revocation across independent clients",
+      "children": [
+        "exactly one bootstrap claim when registration is closed",
+        "open registration still has exactly one initial writer; uniqueness is 409",
+        "cross-demotion, cross-deletion and mixed changes preserve a writer",
+        "session existence, reset revocation, role recheck and self protection"
+      ],
+      "failures": [
+        {
+          "name": "session existence, reset revocation, role recheck and self protection",
+          "line": 83,
+          "witnesses": [
+            "expected: ~",
+            "username: 'session_writer'"
+          ]
+        }
+      ],
+      "mutantSHA256": "5e4a70ec8231b8f0ae8c68bac7387c0b8a4e2c418b6f1517c1c4b6e830387d78"
+    },
+    {
+      "id": "A03-bootstrap-writer",
+      "source": "src/lib/account-store.ts",
+      "testFile": "tests/account-registration.test.ts",
+      "parent": "concurrent distinct and duplicate bootstrap honors all environment/AppSetting permutations",
+      "children": [
+        "environment false; setting null; distinct",
+        "environment false; setting null; duplicate",
+        "environment false; setting false; distinct",
+        "environment false; setting false; duplicate",
+        "environment false; setting true; distinct",
+        "environment false; setting true; duplicate",
+        "environment true; setting null; distinct",
+        "environment true; setting null; duplicate",
+        "environment true; setting false; distinct",
+        "environment true; setting false; duplicate"
+      ],
+      "failures": [
+        {
+          "name": "environment false; setting true; distinct",
+          "line": 27,
+          "witnesses": [
+            "expected: 1",
+            "actual: 6"
+          ]
+        },
+        {
+          "name": "environment false; setting true; duplicate",
+          "line": 38,
+          "witnesses": [
+            "expected: 'readonly'",
+            "actual: 'write'"
+          ]
+        },
+        {
+          "name": "environment true; setting null; distinct",
+          "line": 27,
+          "witnesses": [
+            "expected: 1",
+            "actual: 6"
+          ]
+        },
+        {
+          "name": "environment true; setting null; duplicate",
+          "line": 38,
+          "witnesses": [
+            "expected: 'readonly'",
+            "actual: 'write'"
+          ]
+        },
+        {
+          "name": "environment true; setting false; distinct",
+          "line": 27,
+          "witnesses": [
+            "expected: 1",
+            "actual: 6"
+          ]
+        },
+        {
+          "name": "environment true; setting false; duplicate",
+          "line": 38,
+          "witnesses": [
+            "expected: 'readonly'",
+            "actual: 'write'"
+          ]
+        }
+      ],
+      "mutantSHA256": "c69b462b79764effa8df0a25464a46f131177651f133f19fe49ca442e54fa525"
+    }
+  ],
+  "databaseAssertionOperator": "strictEqual for each declared failing child; enclosing ERR_TEST_FAILURE/subtestsFailed only",
+  "databaseCaseTAP": {
+    "A02-deleted-account": {
+      "pristine": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0
+      },
+      "mutant": {
+        "tests": 5,
+        "pass": 3,
+        "fail": 2
+      }
+    },
+    "A03-bootstrap-writer": {
+      "pristine": {
+        "tests": 11,
+        "pass": 11,
+        "fail": 0
+      },
+      "mutant": {
+        "tests": 11,
+        "pass": 4,
+        "fail": 7
+      }
+    }
+  },
+  "databaseStderr": {
+    "A02PristineAndMutantBytesEach": 166,
+    "scope": "One exact Node SQLite ExperimentalWarning block bound to direct child PID, retained verbatim; no warning suppression",
+    "A03BytesEach": 0
+  },
+  "rawTAPAndLiteralStatusesPublishedInHostedLog": true,
+  "privateRetainedLog": {
+    "bytes": 492920,
+    "sha256": "f3f9974bee9b9610143826f437a65ebf2280cc7b8287eafcf9d3c7a30b0b87cb",
+    "rawLogCopiedIntoRepository": false
+  },
+  "rootResult": {
+    "file": "root-hosted-ci-38770022640-result.json",
+    "sha256": "65bbe0095c43d05a1cefeb7c4278a6374ea34ec0b0e79fbc1d95ce36e5a6b125",
+    "actualVerificationTool": "264900"
+  },
+  "parseHistory": {
+    "firstMetadataParserTool": "140a8b",
+    "firstOutcome": "Refused GitHub timestamp BOM in retained log",
+    "correctedMetadataParserTool": "264900",
+    "sameRetainedLogRead": true,
+    "logRefetch": false,
+    "CIRerun": false
+  },
+  "defaultHostedLogAndResultScan": {
+    "actualRootTool": "135142",
+    "actualExit": 0,
+    "findings": 0,
+    "files": 2,
+    "sameScannerBirthNoLive": true,
+    "currentBytesUnchanged": true,
+    "receiptFile": "root-a19-db-hosted-log-scan-20261015-v1-latest.json",
+    "receiptSHA256": "94ecf0837c47d5e7762cce348d87a4fa65c11f7575032dcbf65c1573fd851e7d",
+    "suppression": false,
+    "replay": false
+  },
+  "defaultRawSourceScan": {
+    "actualRootTool": "1dbbd8",
+    "actualExit": 0,
+    "findings": 0,
+    "files": 394,
+    "sameScannerBirthNoLive": true,
+    "currentBytesUnchanged": true,
+    "receiptFile": "root-a19-db-raw-source-scan-20261015-v1-latest.json",
+    "receiptSHA256": "c0deff2e3dc125e4184c80002d9161040be5c10e201df3de63d680f91262883a",
+    "scope": "Fresh raw Git batch snapshot, binary bytes preserved",
+    "priorNormalizedSnapshotScan": {
+      "actualRootTool": "5aa92f",
+      "actualExit": 0,
+      "scope": "Normalized snapshot only; one binary WebP had CRLF bytes removed; not authority for raw committed source"
+    },
+    "rawSnapshotReadTool": "61c927",
+    "leanSourceVerificationTool": "3a422c",
+    "sourceCommitAndSelected19Unchanged": true,
+    "suppression": false,
+    "replay": false
+  },
+  "historicalReceiptsUnchanged": [
+    {
+      "path": "docs/implementation-evidence/a19-regression-sensitivity-source.json",
+      "sha256": "005d23aec5ac7794823f3c06aa1594190c94a9da56e517a2eb4a5e646f512d3e"
+    },
+    {
+      "path": "docs/implementation-evidence/a19-three-regression-sensitivity-qualification.json",
+      "sha256": "8501c5999383cebd41ca2d9686e8f61e2244f82648a1e92436a9b50449a01bb3"
+    },
+    {
+      "path": "docs/implementation-evidence/a19-five-regression-sensitivity-source.json",
+      "sha256": "54b81b7271a55b403dc8f272a837b951465c16d5e0e07ae4eaa05bf61b6f01b5"
+    },
+    {
+      "path": "docs/implementation-evidence/a19-five-regression-sensitivity-qualification.json",
+      "sha256": "63c34410fa97df8134628c8d76a4af9b10d741f2ba725f756095432c1a95ffde"
+    },
+    {
+      "path": "docs/implementation-evidence/a19-db-regression-sensitivity-source.json",
+      "sha256": "467bb4097581020bb41b7f1be9ae054c24d1336952a1f5efb8dc185b289dd390"
+    }
+  ],
+  "bounds": {
+    "perRunnerSeconds": 240,
+    "perRunnerReserveSeconds": 20,
+    "childSecondsMax": 30,
+    "streamBytesEachMax": 1048576,
+    "perStepMinutes": 5,
+    "cpu": 2,
+    "memoryMiB": 1024,
+    "extraSwap": false,
+    "pids": 256,
+    "network": "none",
+    "repositoryMount": "readonly",
+    "flatChildren": 10,
+    "databaseChildren": 4,
+    "filteredStepIsolation": "none; normal342+8 flags unchanged",
+    "originalAccountsParentSeconds": 90,
+    "originalRegistrationParentSeconds": 30,
+    "childReturnIsUniversalDescendantAbsenceProof": false
+  },
+  "boundaries": [
+    "A02 mutant restores a JWT-derived session only after an absent current row; reset/version checks remain intact. Its unchanged final post-deletion null assertion must fail; this sensitivity does not establish every protected route or replace separate issued/deleted-cookie HTTP qualification",
+    "A03 mutant grants write to all registrations. Six exact open-registration child assertions plus their parent aggregate fail; four closed-registration children remain passing. This is not A01 cross-process invariant sensitivity",
+    "Deployment action case uses actual route source in its existing VM unit fixture with controlled auth/CLI/cache dependencies; not a real compiled mutation or real cluster check",
+    "Private KV cache case uses actual admission modules on a public synthetic named path; no private payload is read",
+    "A05 failed-stdout assertion does not independently establish every redaction-fault sensitivity",
+    "A01 cross-process sensitivity, browser CI tooling/smoke, remaining original manual/actual AT, performance/image/recovery/live/adoption gates remain open"
+  ],
+  "wholeA19Accepted": false,
+  "A01CrossProcessSensitivityQualified": false,
+  "browserCISmokeQualified": false,
+  "mainMerged": false,
+  "deployed": false,
+  "performanceAccepted": false,
+  "imageAccepted": false,
+  "productionAdoption": false,
+  "all44OriginalValidationClausesUnchanged": true
+}

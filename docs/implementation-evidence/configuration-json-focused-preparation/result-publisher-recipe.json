@@ -1,0 +1,93 @@
+{
+  "status": "SOURCE-ONLY RESULT PUBLISHER RECIPE; NOT EXECUTED",
+  "purpose": "Publish the finite focused outcome only after ROOT supplies actual four-mode records; no inference from this preparation.",
+  "owner": "/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1",
+  "inputs": [
+    "manifest.json",
+    "mutations.json",
+    "expectations.json",
+    "{mode}/{mode}.stdout",
+    "{mode}/{mode}.stderr",
+    "{mode}/{mode}-status.json",
+    "{mode}/{mode}-complete.json",
+    "{mode}/outer-terminal.json",
+    "{mode}/created-inspect.json",
+    "{mode}/completed-inspect.json",
+    "{mode}/create.stdout",
+    "{mode}/create.stderr",
+    "{mode}/remove.stdout",
+    "{mode}/remove.stderr",
+    "{mode}/container.cid"
+  ],
+  "modes": [
+    "pristine",
+    "old-parse",
+    "save-noop",
+    "remove-noop"
+  ],
+  "checks": [
+    "Hash every retained record; bind actual source/test and unchanged manifest/mutations/oracles/controller/runner to reviewed preparation pins.",
+    "Require outer actualExit0, runnerError:null, sourceUnchanged:true, no restoration failures, no spawn/timeout/signal/output overflow and expected child exit for every mode.",
+    "Read actual TAP independently against expectations.json: exactly5 tests; no skipped/cancelled/todo; pristine5pass0fail, oldparse4pass1fail, savenoop3pass2fail, removenoop4pass1fail.",
+    "For every mutant failure require exact expected test name, testCodeFailure, AssertionError, ERR_ASSERTION, operator and assertion line. Never accept arbitraryexit1.",
+    "Use inherited exact CID/name/create/completed/remove/absence observations only; checked boot is not host PID/start tracking or independent all-birth evidence.",
+    "Retain every refusal/failure literally, with actual exits and file hashes; do not relabel a failed mode as qualified or silently rerun it."
+  ],
+  "expectedAssertions": {
+    "old-parse": [
+      {
+        "test": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
+        "line": 39,
+        "operator": "rejects"
+      }
+    ],
+    "save-noop": [
+      {
+        "test": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
+        "line": 48,
+        "operator": "throws"
+      },
+      {
+        "test": "real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds",
+        "line": 143,
+        "operator": "strictEqual"
+      }
+    ],
+    "remove-noop": [
+      {
+        "test": "real HTTP configuration DELETE needs a true acknowledgment before closing confirmation",
+        "line": 91,
+        "operator": "strictEqual"
+      }
+    ]
+  },
+  "publish": {
+    "result": "docs/implementation-evidence/configuration-json-response-focused-20261015.json",
+    "fields": [
+      "actual owner/source/build boundary",
+      "actual four mode child/outer exits",
+      "actual5-test pass/fail counts and named assertion witnesses",
+      "actual output/record hashes and source restoration",
+      "exact container CID/name checks actually retained",
+      "unchanged original validation clauses and historical failed results",
+      "functional scope and remaining acceptance"
+    ],
+    "allowedConclusion": "Finite realHTTP requestJson/configuration decoder/QueryStore/MutationTask qualification and three named sensitivity controls only, when actual checks pass.",
+    "notEstablished": [
+      "actual compiled browser draft/notice/confirmation behavior",
+      "fresh full unit/integration/build qualification",
+      "current source before/after performance",
+      "A07 warm no-regression or wholeA21 completion",
+      "application peak RSS, image/live/AT/adoption",
+      "host PID/start or all-birth absence"
+    ]
+  },
+  "docsAfterActualOnly": [
+    "Amend current candidate notes in API-USAGE.md, BORTUS-AUDIT.md, BORTUS-IMPLEMENTATION.md, BOTRUS-WORKFLOW.md and implementation-evidence/README.md with actual finite outcome and result link; keep historical source receipts unchanged.",
+    "Recheck all22 Markdown documents; preserve all44 originalValidation strings.",
+    "Rebind final source/manifest after ROOT commit and actual full functional results; candidate352 remains arithmetic until actual full count is recorded."
+  ],
+  "executed": false,
+  "recordsRead": false,
+  "docsUpdatedForRuntime": false
+}
