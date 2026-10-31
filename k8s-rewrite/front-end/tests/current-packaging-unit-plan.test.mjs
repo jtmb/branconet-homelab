@@ -90,7 +90,16 @@ test('A78 A02 composed metadata dispatch refuses raw drift and unknown caller id
 });
 test('A78 A03 other46 packaging projections retain exact functional or declared PUBLIC metadata composition',()=>{
  let count=0;for(const row of packagingDispatch){if(metadataBindingDispatch.some(b=>b.original===row.original))continue;
-  const bytes=readFileSync(join(root,row.original));assert.deepEqual(projectDispatchedRegistration(bytes,row),row.original===preservedPublicAdditionBinding.original?projectPreservedPublicAdditions(bytes,row):projectRegistration(bytes,row));count++;
+  const bytes=readFileSync(join(root,row.original)),functional=projectRegistration(bytes,row);
+  let expected=row.original===preservedPublicAdditionBinding.original?projectPreservedPublicAdditions(bytes,row):functional;
+  if(row.original==='tests/worker-reader-unit-plan.test.mjs'){
+   assert.equal(bindingDigest(bytes),'bd973a1da534f96cf45b45a6a3ef71cf8e6c56620b093386ce65fd3b82bbe97b','Frozen worker caller remains original');
+   const fixture=readFileSync(join(root,'tests/worker-reader-node22.test.mjs')),marker=Buffer.from('// BEGIN EXACT ORIGINAL TYPE-ERASED PROJECTION'+String.fromCharCode(10)),start=fixture.indexOf(marker);
+   assert.ok(start>0);assert.equal(fixture.lastIndexOf(marker),start,'One exact infrastructure prefix boundary required');
+   const leaves=[['35b3d831266639efd86577c88970bebfad2f8a8c58673d2f5ebfc8361e2ac5ea',bindingDigest(readFileSync(join(root,'src/lib/worker-account-reader.ts')))],['239f818c54d3742aac427ad3120d2ef38249d00ca58bfca83eb7f96a38e2ba69',bindingDigest(readFileSync(join(root,'runtime/direct-account-reader-worker.cjs')))],['48a062d20bd4adb8472c429bac3cd5170b06b7122f57ea6e7436f2fa4c0f342f',bindingDigest(fixture.subarray(0,start))]];
+   let text=functional.toString();for(const[before,after]of leaves){assert.equal(text.split(before).length,2,'Exact independent derived qualification leaf required');text=text.replace(before,after);}expected=Buffer.from(text);
+  }
+  assert.deepEqual(projectDispatchedRegistration(bytes,row),expected);count++;
  }assert.equal(count,46);
 });
 
