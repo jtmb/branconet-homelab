@@ -13,7 +13,7 @@ for (const [file, hash] of [
   ],
   [
     "src/lib/worker-account-reader.ts",
-    "bd916ef961d1a8824f3ee0fb81d34e163ed1de78b5f9f0c0ee496df1c8195cef"
+    "449790db913561d6269699cfda864cf1659ffb30cf5cd3a31d2bc57e1f675f13"
   ],
   [
     "src/lib/direct-account-core.ts",

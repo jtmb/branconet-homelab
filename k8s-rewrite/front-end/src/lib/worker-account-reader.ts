@@ -15,19 +15,35 @@ const unavailable = () => new Error("Account authorization unavailable");
 // Same process monotonic clock in parent and worker; no per-receive deadline reset.
 const now = () => Number(process.hrtime.bigint()) / 1_000_000;
 
+// One bounded spelling plan; no filesystem observation, identity or authority is cached.
+let identityPathPlan: { file: string; parts: readonly string[] } | undefined;
 function identity(file: string) {
-  let current = path.parse(file).root;
-  const parts = [current];
-  for (const component of file.slice(current.length).split(path.sep).filter(Boolean)) {
-    current = path.join(current, component); parts.push(current);
+  if (identityPathPlan?.file !== file) {
+    let current = path.parse(file).root;
+    const parts = [current];
+    for (const component of file.slice(current.length).split(path.sep).filter(Boolean)) {
+      current = path.join(current, component); parts.push(current);
+    }
+    identityPathPlan = { file, parts };
   }
-  const checks = parts.map(part => { try { return lstatSync(part, { bigint: part === file }); } catch { return undefined; } });
-  let readable = false; try { accessSync(file, constants.R_OK); readable = true; } catch { /* Fixed refusal below. */ }
-  if (!readable || checks.some((stat, index) => !stat || stat.isSymbolicLink() ||
-    (index === checks.length - 1 ? !stat.isFile() : !stat.isDirectory()))) throw unavailable();
-  const leaf = checks[checks.length - 1]!;
-  if (typeof leaf.dev !== "bigint" || typeof leaf.ino !== "bigint") throw unavailable();
-  return { dev: leaf.dev, ino: leaf.ino };
+  let valid = true, dev: bigint | undefined, ino: bigint | undefined;
+  const parts = identityPathPlan.parts;
+  // Check every component on every settlement, including after an earlier fault.
+  // Consume immutable stat results immediately instead of retaining a temporary array.
+  for (let index = 0; index < parts.length; index++) {
+    const leaf = index === parts.length - 1;
+    try {
+      const stat = lstatSync(parts[index], { bigint: leaf });
+      if (stat.isSymbolicLink() || (leaf ? !stat.isFile() : !stat.isDirectory())) valid = false;
+      if (leaf) {
+        if (typeof stat.dev !== "bigint" || typeof stat.ino !== "bigint") valid = false;
+        else { dev = stat.dev; ino = stat.ino; }
+      }
+    } catch { valid = false; }
+  }
+  try { accessSync(file, constants.R_OK); } catch { valid = false; }
+  if (!valid || dev === undefined || ino === undefined) throw unavailable();
+  return { dev, ino };
 }
 
 /** Evaluation transport. No rows, sessions or authority are retained between calls. */
