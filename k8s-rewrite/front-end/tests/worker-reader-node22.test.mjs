@@ -17,7 +17,7 @@ for (const [file, hash] of [
   ],
   [
     "src/lib/direct-account-core.ts",
-    "c27e859c8e70006e11ed25457bbafc4adec2d9c0d992909aa5313a5e71bf91a5"
+    "df488fc6deab9a2f8e0e731fc0989fa4f2f2065250d0614c27ef0bca83867f99"
   ],
   [
     "runtime/direct-account-reader-worker.cjs",

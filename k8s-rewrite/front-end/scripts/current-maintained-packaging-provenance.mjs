@@ -39,6 +39,10 @@ const implementationPins = Object.freeze({
     "historical": "10a69f3a48724d57bec54686448a632d7f6ced28067440a7a76ec5b3468c248c",
     "approved": "c8297374edac54a13dc4a03f45b4a718665781c14bf3ebc0d87633ba534804b9"
   },
+  "src/lib/direct-account-core.ts": {
+    "historical": "c27e859c8e70006e11ed25457bbafc4adec2d9c0d992909aa5313a5e71bf91a5",
+    "approved": "df488fc6deab9a2f8e0e731fc0989fa4f2f2065250d0614c27ef0bca83867f99"
+  },
   "package.json": {
     "historical": "81cfc27c470a40b9b15120704b3efc0db2e640e793ad7d0f03ddc43cbf33c55e",
     "approved": "a62a815adc3eabb4a014b3646df592571c74df01cf93d352577428b3c69574f6"
@@ -236,4 +240,4 @@ export function assertRawPackagingInputs(importer, frozen, reader = readFileSync
   }
 }
 
-export const maintainedPackagingAuthority=Object.freeze({"originalHelperSHA256":"a09dccea1580a444fc0ab21fda02b9d049848421d8b0121b0e9cab16eb7fbf15","publicSource":"24d9ee1fd3f2e6c10a13a13a5c7c544828056ea8","oldDockerfile":"b442ae369248ecbcbf34b45fa3e05030477bfe03c0efa278028b7819405a3a66","currentDockerfile":"417ae12feacb1409f1730f40d660ff6470b880c30331837891c9eb1cd63967ff","oldApprovedPackage":"d6fb80bcae002c25a6ced7e9553ea633db17ea2654b09518ff06f63e5b1553e2","currentApprovedPackage":"a62a815adc3eabb4a014b3646df592571c74df01cf93d352577428b3c69574f6","scope":"Exact raw current PUBLIC bindings; original helper and historical map/guard/function bodies preserved; no aggregate pass","oldDockerfileRelease":"d2ce23628d68783ccd80de0adcc8ddbe7d26ea11f48b4c8c4d96c7cd9e6df69e","currentDockerfileRelease":"2b2ac979db78700a4acf5cd174bf45407262d7105f3e37788cd09d143a5fef31"});
+export const maintainedPackagingAuthority=Object.freeze({"originalHelperSHA256":"a09dccea1580a444fc0ab21fda02b9d049848421d8b0121b0e9cab16eb7fbf15","publicSource":"0b60b0dcf7d461e78008ecab9f6b5ce9b2c1174b","oldDockerfile":"b442ae369248ecbcbf34b45fa3e05030477bfe03c0efa278028b7819405a3a66","currentDockerfile":"417ae12feacb1409f1730f40d660ff6470b880c30331837891c9eb1cd63967ff","oldApprovedPackage":"d6fb80bcae002c25a6ced7e9553ea633db17ea2654b09518ff06f63e5b1553e2","currentApprovedPackage":"a62a815adc3eabb4a014b3646df592571c74df01cf93d352577428b3c69574f6","oldAccountCore":"c27e859c8e70006e11ed25457bbafc4adec2d9c0d992909aa5313a5e71bf91a5","currentAccountCore":"df488fc6deab9a2f8e0e731fc0989fa4f2f2065250d0614c27ef0bca83867f99","scope":"Exact raw current PUBLIC bindings; original helper and historical map/guard/function bodies preserved; no aggregate pass","oldDockerfileRelease":"d2ce23628d68783ccd80de0adcc8ddbe7d26ea11f48b4c8c4d96c7cd9e6df69e","currentDockerfileRelease":"2b2ac979db78700a4acf5cd174bf45407262d7105f3e37788cd09d143a5fef31"});
