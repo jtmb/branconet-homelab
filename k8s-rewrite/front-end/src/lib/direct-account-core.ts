@@ -1,5 +1,5 @@
 import path from "node:path";
-import { constants, lstatSync, accessSync, type BigIntStats, type Stats } from "node:fs";
+import { constants, lstatSync, accessSync } from "node:fs";
 import type { DatabaseSync, StatementSync } from "node:sqlite";
 
 export type SessionRow = { id: string; username: string; sessionVersion: number };
@@ -28,6 +28,7 @@ export function accountDatabaseLocation(config: string | undefined, schemaDirect
 /** No row/authority cache. SQLite calls are synchronous, with no deliberate lock wait. */
 export class DirectAccountReader {
   private connection?: Connection;
+  private pathPlan?: { file: string; parts: readonly string[] };
   private active?: Operation;
   private queued: Operation[] = [];
   private closing = false;
@@ -101,31 +102,36 @@ export class DirectAccountReader {
     })();
   }
   private async identity(file: string): Promise<Identity> {
-    let current = path.parse(file).root;
-    const parts = [current];
-    for (const component of file.slice(current.length).split(path.sep).filter(Boolean)) {
-      current = path.join(current, component); parts.push(current);
+    // Retain only path spelling, never filesystem observations or authority.
+    if (this.pathPlan?.file !== file) {
+      let current = path.parse(file).root;
+      const parts = [current];
+      for (const component of file.slice(current.length).split(path.sep).filter(Boolean)) {
+        current = path.join(current, component); parts.push(current);
+      }
+      this.pathPlan = { file, parts };
     }
-    // Complete every fresh check, including after earlier faults.
-    const checks: Array<PromiseSettledResult<Stats | BigIntStats | undefined>> = [];
-    for (const part of parts) {
-      try { checks.push({ status: "fulfilled", value: lstatSync(part, { bigint: part === file }) }); }
-      catch { checks.push({ status: "rejected", reason: undefined }); }
+    let valid = true, dev: bigint | undefined, ino: bigint | undefined;
+    // Still perform every fresh check after earlier faults. Validate each immutable
+    // stat immediately instead of retaining arrays of stats and settlement wrappers.
+    const parts = this.pathPlan.parts;
+    for (let index = 0; index < parts.length; index++) {
+      const leaf = index === parts.length - 1;
+      try {
+        const stat = lstatSync(parts[index], { bigint: leaf });
+        if (stat.isSymbolicLink() || (leaf ? !stat.isFile() : !stat.isDirectory())) valid = false;
+        if (leaf) {
+          if (typeof stat.dev !== "bigint" || typeof stat.ino !== "bigint") valid = false;
+          else { dev = stat.dev; ino = stat.ino; }
+        }
+      } catch { valid = false; }
     }
-    try { accessSync(file, constants.R_OK); checks.push({ status: "fulfilled", value: undefined }); }
-    catch { checks.push({ status: "rejected", reason: undefined }); }
+    try { accessSync(file, constants.R_OK); } catch { valid = false; }
     // Permit queued cancel/close/expiry callbacks before SQL or authority settlement.
     // Active ownership remains held through the actual check sequence and this yield.
     await new Promise<void>(resolve => setImmediate(resolve));
-    if (checks.some(check => check.status === "rejected")) throw unavailable();
-    const stats = checks.slice(0, -1).map(check => {
-      if (check.status !== "fulfilled" || !check.value) throw unavailable();
-      return check.value;
-    });
-    if (stats.some((stat, index) => stat.isSymbolicLink() || (index === stats.length - 1 ? !stat.isFile() : !stat.isDirectory()))) throw unavailable();
-    const leaf = stats[stats.length - 1];
-    if (typeof leaf.dev !== "bigint" || typeof leaf.ino !== "bigint") throw unavailable();
-    return { dev: leaf.dev, ino: leaf.ino };
+    if (!valid || dev === undefined || ino === undefined) throw unavailable();
+    return { dev, ino };
   }
   private discard() {
     const connection = this.connection;
