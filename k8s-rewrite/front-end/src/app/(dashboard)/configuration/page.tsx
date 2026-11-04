@@ -30,7 +30,7 @@ export default function ConfigurationPage() {
   return <ViewportWrapper><main className="min-w-0 space-y-4 px-3 py-6 sm:px-4 lg:px-6">
     <h1 className="text-2xl font-semibold">Nonsecret configuration</h1>
     <p className="text-sm text-zinc-400">Versions, network and inventory settings. Manage credentials under Secrets.</p>
-    {message && <p role="status" className="text-emerald-300">{message}</p>}
+    <p role="status" aria-live="polite" aria-atomic="true" className="text-emerald-300">{message}</p>
     <div className="flex flex-wrap items-end gap-3">
       <label className="text-sm">Search configuration<input value={search} onChange={e => setSearch(e.target.value)} className="mt-1 block w-full rounded border border-zinc-700 bg-zinc-900 p-2" /></label>
       {session.canWrite && <button onClick={() => open()} disabled={mutation.busy} className="rounded bg-indigo-600 px-3 py-2">Add configuration</button>}
