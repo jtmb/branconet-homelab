@@ -18,7 +18,7 @@ test('D01 real Node resolver redirects only50 legacy callers and leaves two auth
  }});
  try{
   const direct=await import(originalHelper);assert.equal(direct.untouchedOriginal,true);
-  for(const [url,row] of urls){const {helper}=await import(url);if(packagingDispatch.includes(row)){assert.equal(helper.maintainedPackagingAuthority.publicSource,'24d9ee1fd3f2e6c10a13a13a5c7c544828056ea8');assert.equal(helper.untouchedOriginal,undefined);}else{assert.equal(helper.untouchedOriginal,true);assert.equal(helper.maintainedPackagingAuthority,undefined);}}
+  for(const [url,row] of urls){const {helper}=await import(url);if(packagingDispatch.includes(row)){assert.equal(helper.maintainedPackagingAuthority.publicSource,'0b60b0dcf7d461e78008ecab9f6b5ce9b2c1174b');assert.equal(helper.untouchedOriginal,undefined);}else{assert.equal(helper.untouchedOriginal,true);assert.equal(helper.maintainedPackagingAuthority,undefined);}}
   assert.equal(originals,1);assert.equal(neighboursExecuted,0);assert.equal((await import('data:text/javascript,export const delegated=true;')).delegated,true);
  }finally{observer.deregister();hook.deregister();}
 });
