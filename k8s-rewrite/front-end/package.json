@@ -20,7 +20,7 @@
     "test:regression-sensitivity-db": "node scripts/regression-sensitivity-db.mjs",
     "typecheck": "tsc --noEmit",
     "db:deploy": "prisma migrate deploy",
-    "postinstall": "node scripts/patch-zod-collections.mjs"
+    "postinstall": "node scripts/patch-zod-collections.mjs && node scripts/patch-minimatch-compat.mjs"
   },
   "dependencies": {
     "@kubernetes/client-node": "^1.4.0",
@@ -67,6 +67,8 @@
     },
     "@prisma/config@6.19.3": {
       "deepmerge-ts": "8.0.0"
-    }
+    },
+    "minimatch": "11.0.1",
+    "postcss-selector-parser": "6.1.5"
   }
 }
