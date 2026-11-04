@@ -9,7 +9,7 @@ const digest=b=>createHash('sha256').update(b).digest('hex'),gitDir=process.env.
 assert.ok(gitDir,'Explicit readonly PUBLIC Git authority required');
 const git=(args,input)=>{const r=spawnSync('git',['-c','safe.directory='+gitDir,'--git-dir='+gitDir,...args],{input,maxBuffer:128*1024*1024,timeout:20000});assert.equal(r.status,0,'Raw PUBLIC Git unavailable');return r.stdout;};
 const prefix='k8s-rewrite/front-end/',inventory=git(['ls-tree','-r','-z',authority.publicSource,'--',prefix]).toString().split('\0').filter(Boolean).map(line=>{const [meta,path]=line.split('\t'),[mode,kind,oid]=meta.split(' ');assert.equal(kind,'blob');return [path.slice(prefix.length),mode,oid];});
-assert.equal(inventory.length,998);assert.equal(digest(JSON.stringify(inventory)),"53085187b08bf47d955850d353f27c064573a42f4a88a5b49f95288b38bcaf37");
+assert.equal(inventory.length,1002);assert.equal(digest(JSON.stringify(inventory)),"e71ba40dff83fc39f05945e7a2cb825a2f93013f2d5d2b116efa95d33a79e9c6");
 const batch=git(['cat-file','--batch'],inventory.map(r=>r[2]).join('\n')+'\n');let offset=0;const publicInputs=new Map();
 for(const [name,mode,oid] of inventory){const end=batch.indexOf(10,offset),[id,kind,size]=batch.subarray(offset,end).toString().split(' ');assert.equal(id,oid);assert.equal(kind,'blob');offset=end+1;const bytes=Buffer.from(batch.subarray(offset,offset+Number(size)));offset+=Number(size);assert.equal(batch[offset++],10);assert.equal(createHash('sha1').update(Buffer.from('blob '+size+'\0')).update(bytes).digest('hex'),oid);publicInputs.set(name,{mode,bytes});}assert.equal(offset,batch.length);
 const importer=new URL('file:///qualification/tests/caller.mjs');

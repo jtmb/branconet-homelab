@@ -560,22 +560,22 @@ function maintainedBindingCallback(bytes,binding){
 export const preservedPublicAdditionBinding=Object.freeze({
   "original": "tests/kv-policy-allows-unit-plan.test.mjs",
   "sourceSHA256": "2606491810961798c725cd8e3139a0c44c84a079f4498bcb7f746778561589d7",
-  "publicSource": "cb68d87e8c02fded34c3df2421a268d8db170e29",
+  "publicSource": "64cacfe7e5be1c9382f41781449e8f1fd8f54802",
   "start": 99249,
   "end": 101925,
   "historicalMapSHA256": "470d32f038a915a036179212da02c2109169d99be81c6941581ba080e9911e4a",
-  "currentMapSHA256": "a4811bc241b64352f516050ddcca5bf6d186bd6f6b53cf2373d8a40f03bebf31",
+  "currentMapSHA256": "1ae25b0a583393ad10b612829f5e0bb87f4fc950f4ea1452907313732146ad97",
   "entries": 25,
   "changes": [
     {
       "path": "docs/SYSTEM-REPORT-QUALIFICATION.md",
       "historicalSHA256": "9a5139da7a91111f515b24a6a4dc1e91dd0c91e04d9db83fb546b432b7b1b888",
-      "currentSHA256": "b8454e01ec53bce8aea0f6deaa2ab6bda5d651fe4e7a1df1861d493a0a4742cc"
+      "currentSHA256": "72cbee3638482f06cf92ee83234ce90d9fbaedf4f48eb5803fb9390445d60577"
     },
     {
       "path": "docs/SYSTEM-REPORT.md",
       "historicalSHA256": "b280fcb5790f2c072d1b9c5531ec24fd97fb7c6fb7818d919721fb645c44dc82",
-      "currentSHA256": "397a3783a1061baccba8b502de363dbc87c7e5d1593244f1a7db440612943d13"
+      "currentSHA256": "7bab44180e191ae9bdab6019904a3277ffb925abc614544505db55401bbaaadc"
     },
     {
       "path": "scripts/provision-scanner.mjs",
@@ -585,7 +585,7 @@ export const preservedPublicAdditionBinding=Object.freeze({
     {
       "path": "scripts/scanner-inputs.json",
       "historicalSHA256": "af7a82b4fbe18dc69efac6de5433cb3f43561844f0253481a5c3d4031f82ca6f",
-      "currentSHA256": "958973af449954cf870fe14478ec9914d7cd3b8babf6af890ea82df7e5db3235"
+      "currentSHA256": "41632e4e3e8630235ed47f6f19173a57f21eaa83ce25986cf98688db64f2f448"
     }
   ]
 });

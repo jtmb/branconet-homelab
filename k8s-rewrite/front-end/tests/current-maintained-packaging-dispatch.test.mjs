@@ -18,7 +18,7 @@ test('D01 real Node resolver redirects only50 legacy callers and leaves two auth
  }});
  try{
   const direct=await import(originalHelper);assert.equal(direct.untouchedOriginal,true);
-  for(const [url,row] of urls){const {helper}=await import(url);if(packagingDispatch.includes(row)){assert.equal(helper.maintainedPackagingAuthority.publicSource,'cb68d87e8c02fded34c3df2421a268d8db170e29');assert.equal(helper.untouchedOriginal,undefined);}else{assert.equal(helper.untouchedOriginal,true);assert.equal(helper.maintainedPackagingAuthority,undefined);}}
+  for(const [url,row] of urls){const {helper}=await import(url);if(packagingDispatch.includes(row)){assert.equal(helper.maintainedPackagingAuthority.publicSource,'24d9ee1fd3f2e6c10a13a13a5c7c544828056ea8');assert.equal(helper.untouchedOriginal,undefined);}else{assert.equal(helper.untouchedOriginal,true);assert.equal(helper.maintainedPackagingAuthority,undefined);}}
   assert.equal(originals,1);assert.equal(neighboursExecuted,0);assert.equal((await import('data:text/javascript,export const delegated=true;')).delegated,true);
  }finally{observer.deregister();hook.deregister();}
 });
@@ -32,7 +32,9 @@ export function assertMaintainedPlan(plan){
  assert.deepEqual(plan.selected.filter(path=>ordinary.includes(path)).sort(),discovered,'Ordinary inputs remain selected exactly once');
  assert.ok(plan.discovered.includes('tests/scanner-bundle.test.ts'),'Current scanner bundle input discovered');
  assert.equal(plan.selected.filter(path=>path==='tests/scanner-bundle.test.ts').length,1,'Current scanner bundle input selected exactly once');
- const [discoveredCount,selectedCount]=discovered.length===2?[464,401]:[462,399];
+ const maintenance=['tests/minimatch-compat.test.mjs'].filter(path=>plan.discovered.includes(path));
+ assert.deepEqual(plan.selected.filter(path=>maintenance.includes(path)),maintenance,'Known dependency regression input remains selected exactly once');
+ const [discoveredCount,selectedCount]=(discovered.length===2?[464,401]:[462,399]).map(count=>count+maintenance.length);
  assert.equal(plan.replacements.length,63);assert.equal(plan.discovered.length,discoveredCount);assert.equal(plan.selected.length,selectedCount);assert.equal(executionFor(plan,['--group','current-packaging']).length,150);assert.equal(new Set(plan.selected).size,plan.selected.length);
  for(const path of ['tests/current-maintained-packaging-provenance.test.mjs','tests/current-maintained-packaging-dispatch.test.mjs'])assert.ok(plan.selected.includes(path));
 }
@@ -50,7 +52,7 @@ test('D04 four PUBLIC expectation leaves preserve the complete frozen caller, al
  const binding=preservedPublicAdditionBinding,row=packagingDispatch.find(r=>r.original===binding.original),bytes=readFileSync(join(root,row.original)),copy=Buffer.from(bytes);
  assert.ok(Object.isFrozen(binding));assert.ok(Object.isFrozen(binding.changes));assert.equal(binding.changes.length,4);
  assert.deepEqual(binding.changes.map(r=>r.path),['docs/SYSTEM-REPORT-QUALIFICATION.md','docs/SYSTEM-REPORT.md','scripts/provision-scanner.mjs','scripts/scanner-inputs.json']);
- assert.equal(binding.publicSource,'cb68d87e8c02fded34c3df2421a268d8db170e29');
+ assert.equal(binding.publicSource,'64cacfe7e5be1c9382f41781449e8f1fd8f54802');
  const functional=projectRegistration(bytes,row),output=projectDispatchedRegistration(bytes,row),offset=binding.start+functional.length-bytes.length,old=bytes.subarray(binding.start,binding.end),current=output.subarray(offset,offset+old.length);
  assert.deepEqual(bytes,copy);assert.equal(additionHash(bytes),binding.sourceSHA256);assert.equal(additionHash(old),binding.historicalMapSHA256);assert.equal(additionHash(current),binding.currentMapSHA256);
  assert.deepEqual(output.subarray(0,offset),functional.subarray(0,offset));assert.deepEqual(output.subarray(offset+old.length),functional.subarray(offset+old.length));
