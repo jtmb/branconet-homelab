@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { getSessionFromHeaders } from "@/lib/auth";
+import { GET as getPodMetadata } from "@/app/api/cluster/pods/route";
 
 // Routes that don't require authentication
 const PUBLIC_PATHS = [
@@ -31,6 +32,9 @@ export async function middleware(request: NextRequest) {
   catch { return NextResponse.json({ error: "Authentication service unavailable" }, { status: 503, headers: AUTH_FAILURE_HEADERS }); }
 
   if (session) {
+    // Keep this response in the already authenticated middleware path.
+    // GET owns success/error encoding headers; automatic HEAD remains in the route.
+    if (request.method === "GET" && pathname === "/api/cluster/pods") return getPodMetadata(request);
     return NextResponse.next();
   }
 

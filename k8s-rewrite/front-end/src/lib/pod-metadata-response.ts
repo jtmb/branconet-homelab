@@ -8,33 +8,40 @@ const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 // Copy private bytes only when consumed, without an entity-sized allocation.
 const BODY_CHUNK_BYTES = 64 * 1024;
-function ownedBody(bytes: Uint8Array, suffix: Uint8Array): ReadableStream<Uint8Array> {
-  let prefix: Uint8Array | undefined = bytes;
-  let footer: Uint8Array | undefined = suffix;
-  const prefixLength = bytes.byteLength;
-  const length = prefixLength + suffix.byteLength;
-  let offset = 0;
-  return new ReadableStream<Uint8Array>({
-    pull(controller) {
-      const end = Math.min(offset + BODY_CHUNK_BYTES, length);
-      let chunk: Uint8Array;
-      if (prefix && end <= prefixLength) {
-        chunk = prefix.slice(offset, end);
-      } else {
-        chunk = new Uint8Array(end - offset);
-        if (prefix && offset < prefixLength) chunk.set(offset === 0 ? prefix : prefix.subarray(offset));
-        if (footer && end > prefixLength) {
-          const start = Math.max(0, offset - prefixLength), stop = end - prefixLength;
-          chunk.set(start === 0 && stop === footer.byteLength ? footer : footer.subarray(start, stop), Math.max(0, prefixLength - offset));
-        }
+// Each response owns its cursors and copies; shared methods avoid per-response closures.
+class OwnedPodBody {
+  private prefix: Uint8Array | undefined;
+  private footer: Uint8Array | undefined;
+  private readonly prefixLength: number;
+  private readonly length: number;
+  private offset = 0;
+  constructor(bytes: Uint8Array, suffix: Uint8Array) {
+    this.prefix = bytes; this.footer = suffix;
+    this.prefixLength = bytes.byteLength; this.length = bytes.byteLength + suffix.byteLength;
+  }
+  pull(controller: ReadableStreamDefaultController<Uint8Array>) {
+    const end = Math.min(this.offset + BODY_CHUNK_BYTES, this.length);
+    let chunk: Uint8Array;
+    if (this.prefix && end <= this.prefixLength) {
+      chunk = this.prefix.slice(this.offset, end);
+    } else {
+      chunk = new Uint8Array(end - this.offset);
+      if (this.prefix && this.offset < this.prefixLength) chunk.set(this.offset === 0 ? this.prefix : this.prefix.subarray(this.offset));
+      if (this.footer && end > this.prefixLength) {
+        const start = Math.max(0, this.offset - this.prefixLength), stop = end - this.prefixLength;
+        chunk.set(start === 0 && stop === this.footer.byteLength ? this.footer : this.footer.subarray(start, stop), Math.max(0, this.prefixLength - this.offset));
       }
-      offset = end;
-      if (offset >= prefixLength) prefix = undefined;
-      controller.enqueue(chunk);
-      if (offset === length) { footer = undefined; controller.close(); }
-    },
-    cancel() { prefix = undefined; footer = undefined; },
-  }, { highWaterMark: 0 });
+    }
+    this.offset = end;
+    if (this.offset >= this.prefixLength) this.prefix = undefined;
+    controller.enqueue(chunk);
+    if (this.offset === this.length) { this.footer = undefined; controller.close(); }
+  }
+  cancel() { this.prefix = undefined; this.footer = undefined; }
+}
+const bodyStrategy = { highWaterMark: 0 };
+function ownedBody(bytes: Uint8Array, suffix: Uint8Array): ReadableStream<Uint8Array> {
+  return new ReadableStream<Uint8Array>(new OwnedPodBody(bytes, suffix), bodyStrategy);
 }
 function encodePrefix(text: string): Prefix {
   const bytes = encoder.encode(text);
