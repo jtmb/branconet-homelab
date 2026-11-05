@@ -54,8 +54,13 @@ export function podMetadataResponse(data: Pick<CachedData, "pods" | "availabilit
   if (failure) return failure;
   let projection = projections.get(data.pods);
   if (!projection) {
-    const rows = publicClusterMetadata(data.pods.map(podSummary)) as unknown[];
-    projection = encodePrefix(`{"pods":${JSON.stringify(rows)}`);
+    // Redact and serialize one row at a time; retain no second full object graph.
+    const pods = data.pods, length = pods.length, rows = new Array<string>(length);
+    for (let index = 0; index < length; index++) {
+      rows[index] = index in pods
+        ? JSON.stringify(publicClusterMetadata(podSummary(pods[index]))) : "null";
+    }
+    projection = encodePrefix(`{"pods":[${rows.join(",")}]`);
     projections.set(data.pods, projection);
   }
   // Keep only immutable encoded metadata between requests. Filtering recovers
