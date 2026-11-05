@@ -52,3 +52,31 @@ test('worker port invalid pending reply poisons without yielding authority',asyn
  try{assert.notEqual(Atomics.wait(view,0,0,2000),'timed-out');const next=reader.readSession('public');await assert.rejects(first,unavailable);await assert.rejects(next,unavailable);await assert.rejects(reader.close(),unavailable);assert.equal(reader.activity().closeFailed,true);assert.equal(reader.responsePort,undefined);assert.equal(reader.transferredPort,undefined);}
  finally{await reader.close().catch(()=>{});if(original===undefined)delete process.env.DATABASE_URL;else process.env.DATABASE_URL=original;}
 });
+
+
+test('normal Pod routing exact raw source cohort rejects mixed, tampered and representation drift',async()=>{
+ const {podRoutingSourceAuthority:authority}=await import('../scripts/current-worker-port-source.mjs');
+ const entries=authority.entries,old=new Map(),current=new Map();assert.equal(entries.length,2);
+ for(const entry of entries){const r=spawnSync('git',['-c','safe.directory='+process.env.BORTUS_PACKAGING_PUBLIC_GIT_DIR,'--git-dir='+process.env.BORTUS_PACKAGING_PUBLIC_GIT_DIR,'show',authority.historicalPublicSource+':k8s-rewrite/front-end/'+entry.path],{maxBuffer:1024*1024,timeout:20000});assert.equal(r.status,0);old.set(entry.path,Buffer.from(r.stdout));current.set(entry.path,fs.readFileSync(path.join(root,entry.path)));}
+ const importer=new URL('file:///pod-routing-fixture/'),reader=map=>url=>{const name=decodeURIComponent(url.pathname.slice(importer.pathname.length));assert.ok(map.has(name));return Buffer.from(map.get(name));};
+ for(const map of [old,current]){const wrapped=createWorkerPortSourceReader(reader(map));for(const entry of entries)assert.deepEqual(wrapped(new URL(entry.path,importer)),old.get(entry.path));}
+ for(let mask=1;mask<3;mask++){const mixed=new Map(entries.map((entry,index)=>[entry.path,(mask&(1<<index)?current:old).get(entry.path)]));assert.throws(()=>createWorkerPortSourceReader(reader(mixed))(new URL(entries[0].path,importer)),/Unknown or mixed/);}
+ for(const entry of entries){const drift=new Map(current);drift.set(entry.path,Buffer.concat([drift.get(entry.path),Buffer.from('\n')]));assert.throws(()=>createWorkerPortSourceReader(reader(drift))(new URL(entry.path,importer)),/Unknown or mixed/);}
+ const drift=new Map(current);drift.set(entries[0].path,Buffer.from(drift.get(entries[0].path).toString().replaceAll('\r\n','\n')));assert.throws(()=>createWorkerPortSourceReader(reader(drift))(new URL(entries[0].path,importer)),/Unknown or mixed/);
+});
+
+
+test('Pod route keeps GET error encoding and automatic HEAD cache contracts',async()=>{
+ const compile=(name,dependencies)=>{
+  const file=path.join(root,name),out=ts.transpileModule(fs.readFileSync(file,'utf8'),{reportDiagnostics:true,compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.CommonJS,esModuleInterop:true}});assert.equal(out.diagnostics.length,0);
+  const mod=new Module(file);mod.filename=file;mod.paths=Module._nodeModulePaths(path.dirname(file));mod.require=name=>{assert.ok(Object.hasOwn(dependencies,name),'Unexpected route dependency: '+name);return dependencies[name];};mod._compile(out.outputText,file);return mod.exports;
+ };
+ const {clusterRoute}=compile('src/lib/cluster-http.ts',{'next/server':{NextResponse:{json:(body,options)=>Response.json(body,options)}},'./kubectl-client':{KubernetesCommandError:class extends Error{}}});
+ let failure='none';
+ const {GET}=compile('src/app/api/cluster/pods/route.ts',{'@/lib/cluster-http':{clusterRoute},'@/lib/cluster-cache':{getCachedClusterResource:async()=>{if(failure==='upstream')throw new Error('private upstream marker');return{value:{items:[]},availability:{state:'empty'}};}},'@/lib/pod-query':{podFilter:()=>{if(failure==='query')throw new SyntaxError('private query marker');return()=>true;}},'@/lib/pod-metadata-response':{podMetadataResponse:()=>new Response('{}',{headers:{'Content-Type':'application/json','Cache-Control':'no-store',Vary:'Accept-Encoding'}})}});
+ for(const method of ['GET','HEAD'])for(const encoding of ['gzip','gzip;q=1'])for(failure of ['none','query','upstream']){
+  const response=await GET(new Request('http://fixture.invalid/api/cluster/pods',{method,headers:{'Accept-Encoding':encoding}}));assert.equal(response.status,failure==='query'?400:failure==='upstream'?503:200);
+  assert.equal(response.headers.get('Cache-Control'),method==='GET'?(encoding.includes(';')?'no-store':'no-store, no-transform'):failure==='none'?'no-store':null);
+  assert(!await response.text().then(text=>text.includes('private')),'dynamic query/upstream details remain withheld');
+ }
+});
