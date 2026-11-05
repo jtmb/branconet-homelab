@@ -1,63 +1,25 @@
 "use client";
+import { useState } from "react";
+import { Modal } from "@/components/ui/modal";
 
-import { X } from "lucide-react";
-
-interface ConfirmDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  title: string;
-  message: string;
-  confirmLabel?: string;
-  danger?: boolean;
-  loading?: boolean;
+interface Props {
+  open: boolean; onClose: () => void; onConfirm: () => void; title: string; message: string;
+  confirmLabel?: string; danger?: boolean; loading?: boolean; confirmName?: string; returnFocus?: () => void; error?: string;
+  children?: React.ReactNode; disabled?: boolean;
 }
-
-export default function ConfirmDialog({
-  open,
-  onClose,
-  onConfirm,
-  title,
-  message,
-  confirmLabel = "Confirm",
-  danger = false,
-  loading = false,
-}: ConfirmDialogProps) {
+export default function ConfirmDialog({ open, onClose, onConfirm, title, message, confirmLabel = "Confirm", danger = false, loading = false, confirmName, returnFocus, error, children, disabled = false }: Props) {
+  const [confirmation, setConfirmation] = useState("");
   if (!open) return null;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="glass-card relative w-full max-w-md mx-4 p-6">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-1 rounded-md hover:bg-zinc-700 text-zinc-400"
-        >
-          <X className="w-5 h-5" />
-        </button>
-        <h2 className="text-lg font-semibold text-zinc-100 mb-2">{title}</h2>
-        <p className="text-sm text-zinc-400 mb-6">{message}</p>
-        <div className="flex justify-end gap-3">
-          <button
-            onClick={onClose}
-            disabled={loading}
-            className="px-4 py-2 text-sm rounded-md bg-zinc-700 hover:bg-zinc-600 text-zinc-200 disabled:opacity-50"
-          >
-            Cancel
-          </button>
-          <button
-            onClick={onConfirm}
-            disabled={loading}
-            className={`px-4 py-2 text-sm rounded-md text-white disabled:opacity-50 ${
-              danger
-                ? "bg-red-600 hover:bg-red-500"
-                : "bg-blue-600 hover:bg-blue-500"
-            }`}
-          >
-            {loading ? "Please wait..." : confirmLabel}
-          </button>
-        </div>
-      </div>
+  return <Modal open={open} onClose={() => { if (!loading) onClose(); }} title={title} description={message} returnFocus={returnFocus}>
+    {error && <p role="alert" className="mb-3 text-red-300">{error}</p>}
+    {children}
+    {confirmName && <label className="block mb-4 text-sm">Type {confirmName} to confirm
+      <input autoComplete="off" value={confirmation} onChange={event => setConfirmation(event.target.value)} className="mt-2 block w-full rounded border border-zinc-700 bg-zinc-950 p-2" />
+    </label>}
+    <div className="flex justify-end gap-3">
+      <button onClick={onClose} disabled={loading} className="rounded bg-zinc-700 px-4 py-2">Cancel</button>
+      <button onClick={onConfirm} disabled={disabled || loading || (!!confirmName && confirmation !== confirmName)}
+        className={`rounded px-4 py-2 disabled:opacity-50 ${danger ? "bg-red-700" : "bg-indigo-600"}`}>{loading ? "Please wait…" : confirmLabel}</button>
     </div>
-  );
+  </Modal>;
 }

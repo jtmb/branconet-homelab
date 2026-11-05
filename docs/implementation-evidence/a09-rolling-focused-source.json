@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "status": "SOURCE ONLY three additional A09 functional oracles; unrun",
+  "sourceParent": "97b26b4c55c64d88fa999e77c73c95c7dad56aa3",
+  "test": {
+    "path": "k8s-rewrite/front-end/tests/deployment-state-rolling.test.ts",
+    "bytes": 4349,
+    "sha256": "d3d8e6663a3312595ac5f547c26d0cfdd6114f361becf0d1a551f5f94b6329d0",
+    "cases": 3
+  },
+  "productionModule": {
+    "path": "k8s-rewrite/front-end/src/lib/deployment-state.ts",
+    "bytes": 2562,
+    "sha256": "4cc5bd9d3a53f0777839292504d7be172bac1324ef8c2f1ca16544536407a8a6",
+    "rawGitUnchanged": true
+  },
+  "oracles": [
+    "old and new arbitrary ReplicaSets of the same controller Deployment are both included; foreign/orphan/noncontroller/cross-namespace excluded; regular+init restarts total12",
+    "missing status retains observed/ready/updated/available0 and distinct generation/default-desired semantics",
+    "desired0 distinguishes missing-generation observation, residual pods and completed scale-down"
+  ],
+  "originalResourceStateTestsUnchanged": true,
+  "allExisting342TestBodiesUnchanged": true,
+  "defaultUnitGlobFutureCountAdds": 3,
+  "focusedTestsRun": false,
+  "A09OriginalClauseQualified": false,
+  "realControllerGateRequired": false,
+  "productionChanged": false,
+  "all22DocsChecked": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "sha256": "6041d0990fcf78b263d2cc53f9aa8afa3cc3baed8939382a6a9ec7e5bfdb2c1d"
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "sha256": "2577932d3ce351e015b2884128b8136db44d2823924d792d4856c63fd6ffbab9"
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "sha256": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670"
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "sha256": "17db06c899e8fb8bafb60f9e86747d9a3a0fb6bce22a42f6a418be2ee23b10af"
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "sha256": "b00ad930cd2b8bee3d9d2b742b2dc848318dd9aedf8fca212c8dfe0b3ba831c8"
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "sha256": "1c9da75ae7dd995232bb946ae88e3d91577646e3ed1f35812d69344879b0c501"
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "sha256": "cfb3fa0757e9680eb220cc350533ae5c0423c3bc1703afa4c91adb24e35176d3"
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "sha256": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b"
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "sha256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412"
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "sha256": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8"
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "sha256": "16ac44662f4e5aa03815757a1a1142ae7a514ec55aedd515b428f7f68ed262b6"
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "sha256": "de2e5420cf0047356e8eb088800adb6b424e0a47777d5fc10bba08b5302a6d44"
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "sha256": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038"
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "sha256": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb"
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "sha256": "f45433e91399bdf3e878322d92fe9bbf2036790157fda9b9906b3731acc04b86"
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "sha256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b"
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "sha256": "a4fc6e02b135258bcf1bc17718bd24c299eca9ed28e171245348cd095e05cf57"
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "sha256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0"
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "sha256": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92"
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "sha256": "a1ba0de02b8406e45e619b45415f92125e6d4dfcae9111baa3a5faff0454fd92"
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "sha256": "d735c6bcf9b29577583142680c64ba552e53c3a6fee3116efdbc9e5a5be486fb"
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "sha256": "737c367f934a6e164f3e38aab52e5b68f4d35314eba87c34961e7cfbf95f6bc6"
+    }
+  ],
+  "original44ValidationClausesUnchanged": true,
+  "newBuildOrOldCorpusReplayRequired": false,
+  "compiledAppQualificationClaim": false
+}

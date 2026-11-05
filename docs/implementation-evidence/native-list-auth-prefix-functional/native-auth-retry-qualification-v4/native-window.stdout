@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: prefix hints retry the same cursor with fresh complete inventory and never resize non-size failures
+ok 1 - prefix hints retry the same cursor with fresh complete inventory and never resize non-size failures
+  ---
+  duration_ms: 136.8708
+  type: 'test'
+  ...
+# Subtest: settled responses discard late end/data/errors without decoding and still charge every delivered byte
+ok 2 - settled responses discard late end/data/errors without decoding and still charge every delivered byte
+  ---
+  duration_ms: 195.1955
+  type: 'test'
+  ...
+# Subtest: full-list keepalive shares at most four TLS connections only within one complete operation
+ok 3 - full-list keepalive shares at most four TLS connections only within one complete operation
+  ---
+  duration_ms: 445.7328
+  type: 'test'
+  ...
+# Subtest: pooled requests refresh SDK authorization and fail closed when its next credential is withdrawn
+ok 4 - pooled requests refresh SDK authorization and fail closed when its next credential is withdrawn
+  ---
+  duration_ms: 185.6566
+  type: 'test'
+  ...
+# Subtest: cancelled SDK authentication destroys late agents without a request or interference with unrelated reads
+ok 5 - cancelled SDK authentication destroys late agents without a request or interference with unrelated reads
+  ---
+  duration_ms: 250.3111
+  type: 'test'
+  ...
+# Subtest: fresh security-option changes never reuse the earlier trusted connection
+ok 6 - fresh security-option changes never reuse the earlier trusted connection
+  ---
+  duration_ms: 143.0623
+  type: 'test'
+  ...
+# Subtest: client-certificate and real HTTP proxy agents retain fresh request boundaries
+ok 7 - client-certificate and real HTTP proxy agents retain fresh request boundaries
+  ---
+  duration_ms: 159.0469
+  type: 'test'
+  ...
+# Subtest: externally owned list budgets explicitly finish or expire their connection pools
+ok 8 - externally owned list budgets explicitly finish or expire their connection pools
+  ---
+  duration_ms: 272.2366
+  type: 'test'
+  ...
+# Subtest: production 200-object windows return exact 1000/10000-object TLS inventories with bounded calls
+ok 9 - production 200-object windows return exact 1000/10000-object TLS inventories with bounded calls
+  ---
+  duration_ms: 489.3807
+  type: 'test'
+  ...
+# Subtest: 200-to-10 reductions retain zero/nonzero cursors and charge mixed-size rejected prefixes
+ok 10 - 200-to-10 reductions retain zero/nonzero cursors and charge mixed-size rejected prefixes
+  ---
+  duration_ms: 716.5033
+  type: 'test'
+  ...
+# Subtest: 200 windows use completed-prefix 3-large sizing and preserve fallback/refusal limits
+ok 11 - 200 windows use completed-prefix 3-large sizing and preserve fallback/refusal limits
+  ---
+  duration_ms: 699.6744
+  type: 'test'
+  ...
+# Subtest: one rejected prefix plus 80 quarter-MiB records stays within the unchanged aggregate ceiling
+ok 12 - one rejected prefix plus 80 quarter-MiB records stays within the unchanged aggregate ceiling
+  ---
+  duration_ms: 1269.7661
+  type: 'test'
+  ...
+# Subtest: batched production inventory rejects object10001 and invalid window configuration without partial results
+ok 13 - batched production inventory rejects object10001 and invalid window configuration without partial results
+  ---
+  duration_ms: 324.788
+  type: 'test'
+  ...
+# Subtest: batched cancellation aborts owned active/queued TLS requests while an unrelated read completes
+ok 14 - batched cancellation aborts owned active/queued TLS requests while an unrelated read completes
+  ---
+  duration_ms: 555.5583
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7406.2837

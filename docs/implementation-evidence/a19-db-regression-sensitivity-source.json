@@ -1,0 +1,338 @@
+{
+  "scope": "SOURCE ONLY separate A02 deleted-account/A03 bootstrap DB sensitivity candidate; no tests/build/push",
+  "sourceParent": "a9996bb5ac4e586ced25e15d34971ec43eb55713",
+  "cases": [
+    {
+      "id": "A02-deleted-account",
+      "source": "src/lib/auth.ts",
+      "testFile": "tests/accounts.test.ts",
+      "parent": "SQLite account invariants and session revocation across independent clients",
+      "children": [
+        "exactly one bootstrap claim when registration is closed",
+        "open registration still has exactly one initial writer; uniqueness is 409",
+        "cross-demotion, cross-deletion and mixed changes preserve a writer",
+        "session existence, reset revocation, role recheck and self protection"
+      ],
+      "before": "const user = await directAccountReader.readSession(payload.sub);",
+      "after": "const user = await directAccountReader.readSession(payload.sub) ?? { id: payload.sub, username: payload.username, sessionVersion: payload.sessionVersion };",
+      "failures": [
+        {
+          "name": "session existence, reset revocation, role recheck and self protection",
+          "line": 83,
+          "witnesses": [
+            "expected: ~",
+            "username: 'session_writer'"
+          ]
+        }
+      ],
+      "mutantSHA256": "5e4a70ec8231b8f0ae8c68bac7387c0b8a4e2c418b6f1517c1c4b6e830387d78"
+    },
+    {
+      "id": "A03-bootstrap-writer",
+      "source": "src/lib/account-store.ts",
+      "testFile": "tests/account-registration.test.ts",
+      "parent": "concurrent distinct and duplicate bootstrap honors all environment/AppSetting permutations",
+      "children": [
+        "environment false; setting null; distinct",
+        "environment false; setting null; duplicate",
+        "environment false; setting false; distinct",
+        "environment false; setting false; duplicate",
+        "environment false; setting true; distinct",
+        "environment false; setting true; duplicate",
+        "environment true; setting null; distinct",
+        "environment true; setting null; duplicate",
+        "environment true; setting false; distinct",
+        "environment true; setting false; duplicate"
+      ],
+      "before": "const role = await tx.user.count() === 0 ? \"write\" : \"readonly\";",
+      "after": "const role = await tx.user.count() >= 0 ? \"write\" : \"readonly\";",
+      "failures": [
+        {
+          "name": "environment false; setting true; distinct",
+          "line": 27,
+          "witnesses": [
+            "expected: 1",
+            "actual: 6"
+          ]
+        },
+        {
+          "name": "environment false; setting true; duplicate",
+          "line": 38,
+          "witnesses": [
+            "expected: 'readonly'",
+            "actual: 'write'"
+          ]
+        },
+        {
+          "name": "environment true; setting null; distinct",
+          "line": 27,
+          "witnesses": [
+            "expected: 1",
+            "actual: 6"
+          ]
+        },
+        {
+          "name": "environment true; setting null; duplicate",
+          "line": 38,
+          "witnesses": [
+            "expected: 'readonly'",
+            "actual: 'write'"
+          ]
+        },
+        {
+          "name": "environment true; setting false; distinct",
+          "line": 27,
+          "witnesses": [
+            "expected: 1",
+            "actual: 6"
+          ]
+        },
+        {
+          "name": "environment true; setting false; duplicate",
+          "line": 38,
+          "witnesses": [
+            "expected: 'readonly'",
+            "actual: 'write'"
+          ]
+        }
+      ],
+      "mutantSHA256": "c69b462b79764effa8df0a25464a46f131177651f133f19fe49ca442e54fa525"
+    }
+  ],
+  "fileCount": 29,
+  "copyClosure": [
+    "src/lib/account-store.ts",
+    "src/lib/account-change-queue.ts",
+    "src/lib/auth.ts",
+    "src/lib/jwt-verify.ts",
+    "src/lib/jwt-key.ts",
+    "src/lib/direct-account-reader.ts",
+    "src/lib/direct-account-core.ts",
+    "src/lib/worker-account-reader.ts",
+    "src/lib/db.ts",
+    "tests/accounts.test.ts",
+    "tests/account-registration.test.ts",
+    "prisma/migrations/20260614204135_init/migration.sql",
+    "prisma/migrations/20260615042521_add_gitrepos/migration.sql",
+    "prisma/migrations/20260615170328_add_namespace_to_gitrepos/migration.sql",
+    "prisma/migrations/20260616050858_add_user_model/migration.sql",
+    "prisma/migrations/20260616130024_add_app_settings/migration.sql",
+    "prisma/migrations/20260616132006_add_user_role/migration.sql",
+    "prisma/migrations/20261009150000_native_secret_references/migration.sql",
+    "prisma/migrations/20261010160000_account_invariants/migration.sql",
+    "prisma/migrations/20261010210000_kv_metadata/migration.sql",
+    "prisma/migrations/20261010220000_rotation_consumer_identity/migration.sql",
+    "prisma/migrations/20261010230000_legacy_access_audit/migration.sql",
+    "prisma/migrations/migration_lock.toml",
+    "prisma/schema.prisma",
+    "runtime/direct-account-reader-worker.cjs",
+    "runtime/direct-account-core.cjs",
+    "runtime/direct-account-build.json",
+    "package.json",
+    "tsconfig.json"
+  ],
+  "generatedRuntimeAuthority": "Retained source-linked runtime from qualified overview-inventory-full-20261015-v1/source; content hashes only, not old process-birth proof",
+  "runtimeBuildReceipt": {
+    "scope": "Source-linked worker core; semantic types remain a separate required gate.",
+    "typescript": "5.9.3",
+    "sourceSHA256": "f63a3fae2779f7c179505591c8a9b2e605ee85b9d3de855a7ad0e0d6e5c9b548",
+    "coreSHA256": "5be4bf90f5a2d5150481a45e16d062ce98e9da70e942952fef12d02085dc3ddc",
+    "workerSHA256": "a51fc121dba99039f415652823e06c25b8b7dd685afbf4a82d2a689a3046a2b7"
+  },
+  "flatFiveRunnerSHA256Unchanged": "bdce5398b9b8a2a89cc75a03b4640b2d0244189012d92aac7dffa12dbc03dbc5",
+  "flatFiveCasesUnchanged": true,
+  "flatFivePackageOnlyPinRebind": {
+    "before": "692674575ba632fcd3a02fcff9b7ede08e2ef0c8ececff4998d4be97b327dd76",
+    "after": "8416d078b2263fa62c7799f722ae663a4a6c5309508f66578e28f72b31698866",
+    "reason": "Added named DB npm command; current package source must stay exactly pinned"
+  },
+  "nestedExpectedCounts": {
+    "A02": {
+      "pristineTests": 5,
+      "pristinePass": 5,
+      "mutantPass": 3,
+      "mutantFail": 2
+    },
+    "A03": {
+      "pristineTests": 11,
+      "pristinePass": 11,
+      "mutantPass": 4,
+      "mutantFail": 7
+    }
+  },
+  "stderrPolicy": {
+    "otherwiseEmpty": true,
+    "A02OnlyOptionalOneBlock": "(node:<exact direct child PID>) ExperimentalWarning: SQLite is an experimental feature and might change at any time\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+    "warningSuppressed": false,
+    "literalSource": "Retained pinned Node22 CLI/test reporter source and existing hosted38764208687 public warning text"
+  },
+  "bounds": {
+    "children": 4,
+    "childSeconds": 30,
+    "runnerSeconds": 240,
+    "reserveSeconds": 20,
+    "streamBytesEach": 1048576,
+    "stepMinutes": 5,
+    "cpu": 2,
+    "memoryMiB": 1024,
+    "pids": 256,
+    "network": "none"
+  },
+  "docsChecked": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "beforeNormalizedLFSHA256": "18d2ea69d199f4c96163ba4903d3c176a2c7fb412d435c773f459eea64107711",
+      "updated": false
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "beforeNormalizedLFSHA256": "a65e52953820f9c237c7b4e7bcb16894397f3a8127b590cacfbb2ed267dff2c3",
+      "updated": true
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "beforeNormalizedLFSHA256": "57c0dd95ea583b6e5dd85ffbdf45ad7a37e1aab22726ed9ea6a7f856a321c288",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "beforeNormalizedLFSHA256": "f25a384b72468336189260d04900cad61b8f926588aedb4cd90e2502a83db8c5",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "beforeNormalizedLFSHA256": "0b1ccad5dbc37de16fd6b3a3e43eb2b3f12b8934111834624766017073323a0a",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "beforeNormalizedLFSHA256": "c5c67a9155dc4cbf242232da4e72f72cf0466e775720410bbe8602a380bd92ac",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "beforeNormalizedLFSHA256": "7b6115363304fd44a9760aee233b5ca40461a09e8d22b9c3c47cff2f83651ad8",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "beforeNormalizedLFSHA256": "ddd95b62149f245ef0433c8215ea4d34af45dd84b5d2cce4ed0489205ad31bb0",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "beforeNormalizedLFSHA256": "adeba48ae9e29aab600e83c4e7f375c11a5e9e6ffc37d4b7ebcc31be22bd03cf",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "beforeNormalizedLFSHA256": "d274f8adffc8f008196c37aa3b98124543406ef58fe1420ca3e6964c4164e22a",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "beforeNormalizedLFSHA256": "a093dc5a8cf7e50c8ef2e8c1a6b7b378b1f6db3c8cff9a26dbe8ef99b47ba587",
+      "updated": true
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "beforeNormalizedLFSHA256": "7283e69716370c0ed60620f09c953e9416a1417efad56a8a0552bd2ba65b39d2",
+      "updated": true
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "beforeNormalizedLFSHA256": "21b6dd5061e2038f3dc0a0e56317050d73dfa498fb78db4cbec40bc0d7e547d7",
+      "updated": false
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "beforeNormalizedLFSHA256": "f695f2e645b3feca2129775f21746db4855ebcef5503df9a01f195add98739ce",
+      "updated": false
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "beforeNormalizedLFSHA256": "7c046c955d1c1f47d2b7642609efdc03c86255904e814ebab59e3f828afc4539",
+      "updated": false
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "beforeNormalizedLFSHA256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "updated": false
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "beforeNormalizedLFSHA256": "750c67751ce88a81a7a5f582a794ebf5a06b4e84517a29e5a6dff595fc14dcb9",
+      "updated": true
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "beforeNormalizedLFSHA256": "b63baf242c3ef72a8b6757583be3e156a234f00567eaf06b648bd7f80120e630",
+      "updated": false
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "beforeNormalizedLFSHA256": "20b8fea367f6ac5e221f79047538fae2193bdc832f60905aedbf39ec7ea6bd72",
+      "updated": false
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "beforeNormalizedLFSHA256": "be7a49b0a39797a077260dd9044a27c87e578975755278e63e9f67527f5b85d8",
+      "updated": true
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "beforeNormalizedLFSHA256": "d8f66a31371495d518d7e4e8ba9e2d4a372cd54eafb757962fe5f48e17ec064f",
+      "updated": true
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "beforeNormalizedLFSHA256": "e1d5367c620cce288c3e6ab8348034347386c1868ab7d9764aa898785a4f48b5",
+      "updated": true
+    }
+  ],
+  "historicalQualificationAndPreparationUnchanged": [
+    {
+      "path": "docs/implementation-evidence/a19-regression-sensitivity-source.json",
+      "sha256": "005d23aec5ac7794823f3c06aa1594190c94a9da56e517a2eb4a5e646f512d3e"
+    },
+    {
+      "path": "docs/implementation-evidence/a19-three-regression-sensitivity-qualification.json",
+      "sha256": "8501c5999383cebd41ca2d9686e8f61e2244f82648a1e92436a9b50449a01bb3"
+    },
+    {
+      "path": "docs/implementation-evidence/a19-five-regression-sensitivity-source.json",
+      "sha256": "54b81b7271a55b403dc8f272a837b951465c16d5e0e07ae4eaa05bf61b6f01b5"
+    },
+    {
+      "path": "docs/implementation-evidence/a19-five-regression-sensitivity-qualification.json",
+      "sha256": "63c34410fa97df8134628c8d76a4af9b10d741f2ba725f756095432c1a95ffde"
+    }
+  ],
+  "all44OriginalValidationClausesUnchanged": true,
+  "A01CrossProcessSensitivityQualified": false,
+  "browserAcquisitionOrExecution": false,
+  "newDBRunnerExecuted": false,
+  "wholeA19Accepted": false,
+  "currentPins": [
+    {
+      "path": "k8s-rewrite/front-end/scripts/regression-sensitivity-db.mjs",
+      "sha256": "83f5c3df1dddfa47fcfbfe57c71cc1dc263f5f0a08d044204881d6dd8af6b888"
+    },
+    {
+      "path": "k8s-rewrite/front-end/scripts/regression-sensitivity-db.json",
+      "sha256": "4e9c8b4118d081d036213d80877d3d8c51b3bf448c4fbabde1ac3c21210d6361"
+    },
+    {
+      "path": "k8s-rewrite/front-end/scripts/regression-sensitivity.json",
+      "sha256": "e9331ac66c8840a35f304d04f9d1135daaeaa53549df4b6e87478a7c5c9bd32b"
+    },
+    {
+      "path": "k8s-rewrite/front-end/package.json",
+      "sha256": "8416d078b2263fa62c7799f722ae663a4a6c5309508f66578e28f72b31698866"
+    },
+    {
+      "path": ".github/workflows/bortus-quality.yml",
+      "sha256": "a1f099051765beb635eb3ca161ae328ce458fb99ee53f010eb63b0272613853a"
+    }
+  ]
+}

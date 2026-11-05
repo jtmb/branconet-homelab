@@ -1,0 +1,117 @@
+{
+  "startedAt": "2026-10-11T02:50:54.088Z",
+  "fixture": "Actual disposable production routes, SQLite, bounded metadata-only fake CLI; no production cluster",
+  "checks": [
+    {
+      "name": "Hierarchy pages reach all 201 repositories; mixed valid/equal/null/invalid date sorting keeps unknowns last in both directions",
+      "pageRows": [
+        100,
+        100,
+        1
+      ]
+    },
+    {
+      "name": "Long branch/path/URL rows fit 320/390/768 CSS widths",
+      "bounds": [
+        {
+          "width": 320,
+          "client": 320,
+          "scroll": 320
+        },
+        {
+          "width": 390,
+          "client": 390,
+          "scroll": 390
+        },
+        {
+          "width": 768,
+          "client": 768,
+          "scroll": 768
+        }
+      ]
+    },
+    {
+      "name": "Keyboard repository/bundle navigation and complete bounded inventory; counts2/10 sort numerically",
+      "inventoryPageRows": [
+        100,
+        100,
+        1
+      ]
+    },
+    {
+      "name": "Failed hierarchy read retains labelled prior metadata; Retry recovers without false empty"
+    }
+  ],
+  "failures": [
+    "locator.selectOption: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('dialog').getByLabel('Authentication', { exact: true })\u001b[22m\n"
+  ],
+  "terminal": true,
+  "scanner": {
+    "name": "axe-core",
+    "version": "4.14.0",
+    "sha256": "20c09fe157a8a34a30e241aaa1fcdade657734f08ab379ecfbeb7d45cc46e878",
+    "source": "https://registry.npmjs.org/axe-core/4.14.0",
+    "registryIntegrityVerified": true,
+    "registrySignaturesVerified": false,
+    "packageScriptsExecuted": false
+  },
+  "ownedProcesses": {
+    "fixturePid": 36336,
+    "chromePid": 24744
+  },
+  "failureState": {
+    "hierarchyAlertCount": 0,
+    "allAlertCount": 0,
+    "repositoryRows": 100,
+    "fixture": {
+      "requests": {
+        "GET /flux": 2,
+        "GET /_next/static/css/3ecf9c9f2b2727bc.css": 2,
+        "GET /_next/static/chunks/webpack-96e2bad2da475849.js": 2,
+        "GET /_next/static/chunks/4bd1b696-f785427dddbba9fb.js": 2,
+        "GET /_next/static/chunks/1255-5cd2fe06309409a0.js": 2,
+        "GET /_next/static/chunks/main-app-33cdf12d12e2e84a.js": 2,
+        "GET /_next/static/chunks/297-7295b248ad97a1e5.js": 2,
+        "GET /_next/static/chunks/4053-30e55f0d19c53bef.js": 2,
+        "GET /_next/static/chunks/1329-b5408eb27fea13c5.js": 2,
+        "GET /_next/static/chunks/7079-a18d7d4efb3fa77d.js": 2,
+        "GET /_next/static/chunks/app/(dashboard)/layout-d14753374a94e9cd.js": 2,
+        "GET /_next/static/chunks/836-4783404ed6df7205.js": 2,
+        "GET /_next/static/chunks/app/(dashboard)/flux/page-67a8ed99e3f96c17.js": 2,
+        "GET /api/auth/session": 5,
+        "GET /api/flux/hierarchy": 8,
+        "GET /favicon.ico": 1,
+        "GET /flux/sort-repo-0": 1,
+        "GET /_next/static/chunks/9323-0b276495520e6b73.js": 1,
+        "GET /_next/static/chunks/app/(dashboard)/flux/%5BrepoName%5D/page-64e699cee8052149.js": 1,
+        "GET /api/flux/repos/sort-repo-0/detail": 1,
+        "GET /flux/sort-repo-0/fixture-bundle-0000": 1,
+        "GET /_next/static/chunks/app/(dashboard)/flux/%5BrepoName%5D/%5BbundleName%5D/page-922dc28e6e88029a.js": 1,
+        "GET /api/flux/kustomizations/fixture-bundle-0000": 1
+      },
+      "activeStreams": 0,
+      "valueRequests": 0,
+      "nativeObjects": 0,
+      "pendingKvStatus": false,
+      "pendingKvCapabilities": false,
+      "heldFluxReplies": [],
+      "activeFluxReads": {
+        "GET /api/flux/hierarchy": 0,
+        "GET /api/flux/repos/sort-repo-0/detail": 0,
+        "GET /api/flux/kustomizations/fixture-bundle-0000": 0
+      },
+      "maxActiveFluxReads": {
+        "GET /api/flux/hierarchy": 2,
+        "GET /api/flux/repos/sort-repo-0/detail": 1,
+        "GET /api/flux/kustomizations/fixture-bundle-0000": 1
+      }
+    }
+  },
+  "cleanup": {
+    "chromeExitCode": 0,
+    "chromeSignal": null,
+    "fixtureExitCode": 0,
+    "fixtureSignal": null
+  },
+  "completedAt": "2026-10-11T02:51:31.061Z"
+}

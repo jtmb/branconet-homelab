@@ -1,0 +1,445 @@
+{
+  "status": "FOCUSED QUALIFICATION PASSED",
+  "sourceAndPacketPins": [
+    {
+      "kind": "source",
+      "path": "package.json",
+      "bytes": 2381,
+      "sha256": "63acc50361a9e67e1aac84d7d7fa0ef352c966bf2c589eb4707c97601a8bd442"
+    },
+    {
+      "kind": "source",
+      "path": "package-lock.json",
+      "bytes": 315466,
+      "sha256": "984756b9a6ee2caf522a7174fba3575631b3e794da73faa969df042baa9a6356"
+    },
+    {
+      "kind": "source",
+      "path": "tsconfig.json",
+      "bytes": 672,
+      "sha256": "f38625630fef3e188f3a86b2f27233e6b01574999388ebb03bd5f7f30726abc3"
+    },
+    {
+      "kind": "source",
+      "path": "tests/request-json-response.test.ts",
+      "bytes": 9788,
+      "sha256": "20e4d736eea3d3ea37b42fe533752a77f0a451c0c7d695ae876910fc5ab02dc8"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/use-query.ts",
+      "bytes": 4473,
+      "sha256": "3cf6a05a4166f62677d9261594ca1a30031750c4b6465809ad4c014a1824f3f0"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/configuration-response.ts",
+      "bytes": 1721,
+      "sha256": "6790dab7ca8531052750c875278eab793f5464ee511de6af2ba4e3fe6c7518d0"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/query-store.ts",
+      "bytes": 7775,
+      "sha256": "e3b7200f474b8cfc1d1539ea950d709c534c067e010e7e02ed1a3878d09f9ec6"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/mutation-task.ts",
+      "bytes": 2314,
+      "sha256": "d0eac5c8adf86ac686ad5c00d6582ff3b14f7f0f0f33f3cb223e03988c9f1ef7"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/metadata-query.ts",
+      "bytes": 945,
+      "sha256": "4efb064666eccb9d6ac1ffbba02b2cdf7f52e4d751f18a6d2272d8761e0dc308"
+    },
+    {
+      "kind": "source",
+      "path": "src/lib/kv-metadata-query.ts",
+      "bytes": 1004,
+      "sha256": "fbd0fab3637c26a93bad4259b3f76d8621c801a45d9339ba7a1dec13f810f608"
+    },
+    {
+      "kind": "source",
+      "path": "src/app/(dashboard)/configuration/page.tsx",
+      "bytes": 6066,
+      "sha256": "c68a447bb7fa8f9e097650d256dbd548e68a2f69e04e474a07f3fcae1fe5d54c"
+    },
+    {
+      "kind": "packet",
+      "path": "controller.py",
+      "bytes": 4775,
+      "sha256": "168abe1766c144b8bc3c727d8572388ad91ec5b29e9ef0a5e2d2c15b00c43547"
+    },
+    {
+      "kind": "packet",
+      "path": "run.cjs",
+      "bytes": 5050,
+      "sha256": "e71df75e2bedaf591c38d5e1b191e6e655d6f29d489927f2ba2834662151a3ae"
+    },
+    {
+      "kind": "packet",
+      "path": "manifest.json",
+      "bytes": 1485,
+      "sha256": "51a48b2321a352040c444f694d2ebe321d0bee12bfa2cb0375256e73eddeba5b"
+    },
+    {
+      "kind": "packet",
+      "path": "mutations.json",
+      "bytes": 2361,
+      "sha256": "de042bede7ba9ba5780f25852742a50c4c0503d8df0f172bc097411f5bee7c0c"
+    },
+    {
+      "kind": "packet",
+      "path": "expectations.json",
+      "bytes": 1019,
+      "sha256": "4a51aadcf00921296edc31660785d415ec2cb2336583ebd1fc7339018e418937"
+    }
+  ],
+  "sourceFiles": 11,
+  "packetFiles": 5,
+  "sourceAndStagedBytesCurrent": true,
+  "results": [
+    {
+      "mode": "pristine",
+      "actualOuterExit": 0,
+      "actualChildExit": 0,
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "failureWitnesses": [],
+      "completeSourceRestoration": true,
+      "cid": "198a2d0a00bcb439de3eb98d0eadec83ebe0c28c56e010fec2700dafde65f18d",
+      "name": "bortus-configuration-json-focused-20261015-v1-pristine",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    },
+    {
+      "mode": "old-parse",
+      "actualOuterExit": 0,
+      "actualChildExit": 1,
+      "tests": 5,
+      "passed": 4,
+      "failed": 1,
+      "failureWitnesses": [
+        {
+          "name": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
+          "operator": "rejects",
+          "line": 39
+        }
+      ],
+      "completeSourceRestoration": true,
+      "cid": "249766ab72cb21174a966df7ddec7032bb92fd48b367f7975b304cb06607d827",
+      "name": "bortus-configuration-json-focused-20261015-v1-old-parse",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    },
+    {
+      "mode": "save-noop",
+      "actualOuterExit": 0,
+      "actualChildExit": 1,
+      "tests": 5,
+      "passed": 3,
+      "failed": 2,
+      "failureWitnesses": [
+        {
+          "name": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
+          "operator": "throws",
+          "line": 48
+        },
+        {
+          "name": "real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds",
+          "operator": "strictEqual",
+          "line": 143
+        }
+      ],
+      "completeSourceRestoration": true,
+      "cid": "d352564dc6f869c7c2b84db8521c0715f1643e3af45fcd7ae3ffb4b03f944ef8",
+      "name": "bortus-configuration-json-focused-20261015-v1-save-noop",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    },
+    {
+      "mode": "remove-noop",
+      "actualOuterExit": 0,
+      "actualChildExit": 1,
+      "tests": 5,
+      "passed": 4,
+      "failed": 1,
+      "failureWitnesses": [
+        {
+          "name": "real HTTP configuration DELETE needs a true acknowledgment before closing confirmation",
+          "operator": "strictEqual",
+          "line": 91
+        }
+      ],
+      "completeSourceRestoration": true,
+      "cid": "c0a2459bb0907a606a5f1f1b0465c215dcb53c3647b49622e73b073791f54bbe",
+      "name": "bortus-configuration-json-focused-20261015-v1-remove-noop",
+      "freshExactCIDAbsent": true,
+      "freshExactNameAbsent": true
+    }
+  ],
+  "dispatchSeconds": 11.046000000002095,
+  "retainedRecords": [
+    {
+      "path": "dispatch-terminal.json",
+      "bytes": 406,
+      "sha256": "0150a0a1f67626fed938895f322f00d139c0731a2ff4e1723d5fff9c86d07bdb"
+    },
+    {
+      "path": "staged.json",
+      "bytes": 88,
+      "sha256": "c253193b898564c8c13694cf47a19121308d097c8ebf3de573546cdae0f4b2ce"
+    },
+    {
+      "path": "started.json",
+      "bytes": 105,
+      "sha256": "ea8304b321d37281de4fd8af8cd96c630398c21fdd0d4cfcbdefee7352aee981"
+    },
+    {
+      "path": "pristine/outer-terminal.json",
+      "bytes": 336,
+      "sha256": "d7fbef5ccb133bfa8a8196bf4b23e09041e83423a6d9dbc552df96bc3ef9f619"
+    },
+    {
+      "path": "pristine/pristine-complete.json",
+      "bytes": 594,
+      "sha256": "1a5de4f5768995102533f0f612543ae27b7e451080b0093a5dd1f95f0817afb0"
+    },
+    {
+      "path": "pristine/pristine-status.json",
+      "bytes": 404,
+      "sha256": "0433edf5788b204a8e1ad8a8f3130201a29929ea0a8fe780dfbf04fece852b7c"
+    },
+    {
+      "path": "pristine/pristine.stdout",
+      "bytes": 1419,
+      "sha256": "d5a5e3e0810abb992c27d19a648640103f54d744c69690eaeadf1168c22e03e6"
+    },
+    {
+      "path": "pristine/pristine.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pristine/created-inspect.json",
+      "bytes": 9148,
+      "sha256": "f66a79aa7cb7179762d7bc3076ee6e9f35d59921df9fbd4a1ab52b017a3414ef"
+    },
+    {
+      "path": "pristine/completed-inspect.json",
+      "bytes": 9695,
+      "sha256": "6fdeb685a0aca4a93a8cfa76a4c9a27933003dab573a3995168748159db30973"
+    },
+    {
+      "path": "pristine/container.cid",
+      "bytes": 64,
+      "sha256": "c9e599f28bb313f4ccfe5939d2e58853a4c00d0c5e9ca33b6da4a317efd63190"
+    },
+    {
+      "path": "pristine/create.stdout",
+      "bytes": 65,
+      "sha256": "73613a83c0e826e48c47f3bbc4cdb40a9aaa6b76edcab2400068472458d883e8"
+    },
+    {
+      "path": "pristine/create.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "pristine/remove.stdout",
+      "bytes": 65,
+      "sha256": "73613a83c0e826e48c47f3bbc4cdb40a9aaa6b76edcab2400068472458d883e8"
+    },
+    {
+      "path": "pristine/remove.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "old-parse/outer-terminal.json",
+      "bytes": 337,
+      "sha256": "c87475b60edebfd9d550439886d3c3fde1bb831c67f1cc974eb760bdc344b4e9"
+    },
+    {
+      "path": "old-parse/old-parse-complete.json",
+      "bytes": 726,
+      "sha256": "94cc844f2e664fb40c46f81f9f79aa9bc723026bc7500d07103019b12315c5b0"
+    },
+    {
+      "path": "old-parse/old-parse-status.json",
+      "bytes": 529,
+      "sha256": "e23f3e5499bda17b6dae7cc8cdf9b245d7c12b7c0568b6fe76a90fd97efbc387"
+    },
+    {
+      "path": "old-parse/old-parse.stdout",
+      "bytes": 2223,
+      "sha256": "c3365b20940470eb0be0a93e6cde59edae4df341a5ee1c831b75f7ff05931f7f"
+    },
+    {
+      "path": "old-parse/old-parse.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "old-parse/created-inspect.json",
+      "bytes": 9154,
+      "sha256": "bd8d7603fbb31cfe7b9f5c895d643fb11c053294a9f0a517cdb99459d3e06e38"
+    },
+    {
+      "path": "old-parse/completed-inspect.json",
+      "bytes": 9701,
+      "sha256": "2c7568efcceaff5a8b93d774f7f480ea1bbfe11f1447e3e145c3e31ae76de5cc"
+    },
+    {
+      "path": "old-parse/container.cid",
+      "bytes": 64,
+      "sha256": "793eaeecb9f505b11c26375984b73fab3ec152725c1e299f171c6b00bb7e0226"
+    },
+    {
+      "path": "old-parse/create.stdout",
+      "bytes": 65,
+      "sha256": "a9318b53df362a71377e0d6cb03f314450f6a9a2b3b44abc096bc1ef003bcf3c"
+    },
+    {
+      "path": "old-parse/create.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "old-parse/remove.stdout",
+      "bytes": 65,
+      "sha256": "a9318b53df362a71377e0d6cb03f314450f6a9a2b3b44abc096bc1ef003bcf3c"
+    },
+    {
+      "path": "old-parse/remove.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "save-noop/outer-terminal.json",
+      "bytes": 337,
+      "sha256": "f124fa455a500fbae1286e3c5cbcd53a77d8cc944bbea06ecd0ddbc063b261f9"
+    },
+    {
+      "path": "save-noop/save-noop-complete.json",
+      "bytes": 739,
+      "sha256": "626e96f8477890ebf2ba6d064473f5e78d11bd3b541974510b02b7d1be2be802"
+    },
+    {
+      "path": "save-noop/save-noop-status.json",
+      "bytes": 542,
+      "sha256": "6cb91d6846c587910c4e2942ff893bf9dab20166cf70deb854bd9d4ea8efa319"
+    },
+    {
+      "path": "save-noop/save-noop.stdout",
+      "bytes": 3054,
+      "sha256": "0e7440241192db22fe676cf2c0ede537fa7acff2dd5848d424255e70a561354b"
+    },
+    {
+      "path": "save-noop/save-noop.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "save-noop/created-inspect.json",
+      "bytes": 9154,
+      "sha256": "9511b70207898a5b71f1045973e597194441a39995619a7ddb205053665f4dd2"
+    },
+    {
+      "path": "save-noop/completed-inspect.json",
+      "bytes": 9701,
+      "sha256": "0aa32f1e753d7d5fc523d6cb3cd28188fc7827d091caa8bf547d883e764e92cf"
+    },
+    {
+      "path": "save-noop/container.cid",
+      "bytes": 64,
+      "sha256": "ad08e8e007677ce3cd1ecac153507793c55149743af7ed1c2d2fe9b27b5d6069"
+    },
+    {
+      "path": "save-noop/create.stdout",
+      "bytes": 65,
+      "sha256": "cef5af4b3f635d9e1ad6e6af82f669f29cdba75836c06502ac9b138ef22c55c5"
+    },
+    {
+      "path": "save-noop/create.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "save-noop/remove.stdout",
+      "bytes": 65,
+      "sha256": "cef5af4b3f635d9e1ad6e6af82f669f29cdba75836c06502ac9b138ef22c55c5"
+    },
+    {
+      "path": "save-noop/remove.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "remove-noop/outer-terminal.json",
+      "bytes": 339,
+      "sha256": "05e6824258ae73ae39666ac055f2ff2d22c77bb035ed8e3ea890d2610f591891"
+    },
+    {
+      "path": "remove-noop/remove-noop-complete.json",
+      "bytes": 743,
+      "sha256": "e29d4a0160d5fb6926fc90b336b1d26e5b6e79ba9b503b7de4d82b7a7bd8cbdf"
+    },
+    {
+      "path": "remove-noop/remove-noop-status.json",
+      "bytes": 544,
+      "sha256": "98e2b78bfe05b2936ac85bd096acd3e9e5a12c5168f2166a4d0337daf76f45df"
+    },
+    {
+      "path": "remove-noop/remove-noop.stdout",
+      "bytes": 2255,
+      "sha256": "8b589934e52a5d025d257116d8b78e7db2b7a7340dc4d8884aa0d2f12519ed00"
+    },
+    {
+      "path": "remove-noop/remove-noop.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "remove-noop/created-inspect.json",
+      "bytes": 9166,
+      "sha256": "507be6e3f7ed7589fefa04d2a15bffef852b619235211b88bf11628ce06774ff"
+    },
+    {
+      "path": "remove-noop/completed-inspect.json",
+      "bytes": 9713,
+      "sha256": "73b48a10c1f69735f5b343293e6d60ab94058b524c4f2fdd48f0d5dce5c33e9a"
+    },
+    {
+      "path": "remove-noop/container.cid",
+      "bytes": 64,
+      "sha256": "d52f7a9c8ae03edf75a0908a91381808b2bf925270d355273c4c903d2e026a3c"
+    },
+    {
+      "path": "remove-noop/create.stdout",
+      "bytes": 65,
+      "sha256": "0d1df96ef28874f51fadfce87348f65d225e7b824260c4fa02ccd80c96906d6a"
+    },
+    {
+      "path": "remove-noop/create.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "remove-noop/remove.stdout",
+      "bytes": 65,
+      "sha256": "0d1df96ef28874f51fadfce87348f65d225e7b824260c4fa02ccd80c96906d6a"
+    },
+    {
+      "path": "remove-noop/remove.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "hostPIDStartOrAllBirthProofClaimed": false,
+  "qualificationScope": "Five realHTTP helper/decoder/QueryStore/MutationTask tests and three exact sensitivity controls; no new functional test execution by qualifier."
+}

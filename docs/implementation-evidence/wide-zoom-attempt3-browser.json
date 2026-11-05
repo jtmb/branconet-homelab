@@ -1,0 +1,283 @@
+{
+  "startedAt": "2026-10-11T06:19:54.534Z",
+  "scope": "Actual disposable local application routes, real chrome.tabs zoom, owned existing bundled Chromium/profile; no viewport/DPR/CSS zoom emulation",
+  "checks": [
+    {
+      "name": "Actual2x zoom, unchanged browser window and public four-corner full-surface screenshot preflight",
+      "capture": "legacyClip"
+    },
+    {
+      "name": "Real2x provisioning confirmation fits and keyboard/close focus return without mutation",
+      "box": {
+        "left": 8,
+        "right": 484,
+        "top": 48.75,
+        "bottom": 325.75,
+        "viewportLeft": 0,
+        "viewportTop": 0,
+        "width": 492,
+        "height": 374.5,
+        "innerWidth": 492,
+        "innerHeight": 374,
+        "focusInside": true
+      },
+      "image": {
+        "width": 984,
+        "height": 749,
+        "capture": "legacyClip"
+      }
+    },
+    {
+      "name": "Real2x selected KV metadata workbench fits and keyboard/close focus return; no reveal",
+      "box": {
+        "left": 8,
+        "right": 484,
+        "top": 18.7265625,
+        "bottom": 355.7734375,
+        "viewportLeft": 0,
+        "viewportTop": 0,
+        "width": 492,
+        "height": 374.5,
+        "innerWidth": 492,
+        "innerHeight": 374,
+        "focusInside": true
+      },
+      "image": {
+        "width": 984,
+        "height": 749,
+        "capture": "legacyClip"
+      }
+    },
+    {
+      "name": "Real2x held deferred terminal JS shows fitted loading status, then focused named input/Tab escape/Clear/close return",
+      "loadingFit": {
+        "left": 56,
+        "right": 487,
+        "top": 330.5,
+        "bottom": 374.5,
+        "viewportLeft": 0,
+        "viewportTop": 0,
+        "width": 487,
+        "height": 374.5,
+        "innerWidth": 492,
+        "innerHeight": 374,
+        "focusInside": false
+      },
+      "terminalFit": {
+        "left": 56,
+        "right": 487,
+        "top": 217.2109375,
+        "bottom": 374.5,
+        "viewportLeft": 0,
+        "viewportTop": 0,
+        "width": 487,
+        "height": 374.5,
+        "innerWidth": 492,
+        "innerHeight": 374,
+        "focusInside": true
+      },
+      "image": {
+        "width": 974,
+        "height": 749,
+        "capture": "legacyClip"
+      }
+    }
+  ],
+  "failures": [],
+  "terminal": true,
+  "ownedProcesses": {
+    "fixturePid": 46964,
+    "chromePid": 37208
+  },
+  "extension": {
+    "hostScope": "http://127.0.0.1/*",
+    "noContentScriptsOrStorage": true,
+    "manifestSha256": "e0ae37941aa2f778a9aede9c082ec574125050bb6e08957da016cea46da8f379",
+    "workerSha256": "c10954d02ec31b7c20ee5225c1b8e7feceedde9e5d91fc40e171b3415c753770"
+  },
+  "browserVersion": "149.0.7827.55",
+  "preflight": {
+    "before": {
+      "cssWidth": 984,
+      "cssHeight": 749,
+      "clientWidth": 984,
+      "scrollWidth": 984,
+      "dpr": 1,
+      "outerWidth": 1000,
+      "outerHeight": 900
+    },
+    "after": {
+      "cssWidth": 492,
+      "cssHeight": 374,
+      "clientWidth": 487,
+      "scrollWidth": 487,
+      "dpr": 2,
+      "outerWidth": 1000,
+      "outerHeight": 900
+    },
+    "actual": {
+      "before": {
+        "factor": 1,
+        "window": {
+          "left": 10,
+          "top": 10,
+          "width": 1000,
+          "height": 900,
+          "state": "normal"
+        }
+      },
+      "after": {
+        "factor": 2,
+        "window": {
+          "left": 10,
+          "top": 10,
+          "width": 1000,
+          "height": 900,
+          "state": "normal"
+        }
+      }
+    },
+    "layout": {
+      "layoutViewport": {
+        "pageX": 0,
+        "pageY": 0,
+        "clientWidth": 984,
+        "clientHeight": 749
+      },
+      "cssLayoutViewport": {
+        "pageX": 0,
+        "pageY": 0,
+        "clientWidth": 492,
+        "clientHeight": 374
+      }
+    },
+    "attempts": [
+      {
+        "method": "legacyClip",
+        "width": 984,
+        "height": 749,
+        "corners": [
+          [
+            255,
+            0,
+            0
+          ],
+          [
+            0,
+            255,
+            0
+          ],
+          [
+            0,
+            0,
+            255
+          ],
+          [
+            255,
+            255,
+            0
+          ]
+        ],
+        "whole": true
+      }
+    ]
+  },
+  "loadingDiagnostic": {
+    "loadingFit": {
+      "left": 56,
+      "right": 487,
+      "top": 330.5,
+      "bottom": 374.5,
+      "viewportLeft": 0,
+      "viewportTop": 0,
+      "width": 487,
+      "height": 374.5,
+      "innerWidth": 492,
+      "innerHeight": 374,
+      "focusInside": false
+    },
+    "precise": {
+      "visual": {
+        "width": 487,
+        "height": 374.5,
+        "offsetLeft": 0,
+        "offsetTop": 0
+      },
+      "innerWidth": 492,
+      "innerHeight": 374,
+      "clientWidth": 487,
+      "clientHeight": 374
+    }
+  },
+  "loadingImage": {
+    "width": 974,
+    "height": 749,
+    "capture": "legacyClip"
+  },
+  "publicWelcome": {
+    "complete": true,
+    "identityComplete": true,
+    "keyboardHeightPercent": 80,
+    "expandedFit": {
+      "left": 56,
+      "right": 487,
+      "top": 74.90625,
+      "bottom": 374.5,
+      "viewportLeft": 0,
+      "viewportTop": 0,
+      "width": 487,
+      "height": 374.5,
+      "innerWidth": 492,
+      "innerHeight": 374,
+      "focusInside": true
+    }
+  },
+  "requests": {
+    "GET /pods": 2,
+    "GET /_next/static/css/3ea52503aed240f8.css": 1,
+    "GET /_next/static/chunks/webpack-191f906a55920a9a.js": 1,
+    "GET /_next/static/chunks/4bd1b696-f785427dddbba9fb.js": 1,
+    "GET /_next/static/chunks/1255-5cd2fe06309409a0.js": 1,
+    "GET /_next/static/chunks/main-app-33cdf12d12e2e84a.js": 1,
+    "GET /_next/static/chunks/297-7295b248ad97a1e5.js": 1,
+    "GET /_next/static/chunks/4053-30e55f0d19c53bef.js": 1,
+    "GET /_next/static/chunks/1329-b5408eb27fea13c5.js": 1,
+    "GET /_next/static/chunks/4190-2387fff73257b8a6.js": 1,
+    "GET /_next/static/chunks/app/(dashboard)/layout-45a302d174df32c5.js": 1,
+    "GET /_next/static/chunks/9593-d4758274730e208a.js": 1,
+    "GET /_next/static/chunks/4922-f53e10189ab5f5e9.js": 1,
+    "GET /_next/static/chunks/app/(dashboard)/pods/page-55146211f297c5e1.js": 1,
+    "GET /api/auth/session": 7,
+    "GET /api/cluster/pods": 3,
+    "GET /favicon.ico": 1,
+    "GET /deploy": 1,
+    "GET /_next/static/chunks/app/(dashboard)/deploy/page-042b91d6e16a8f2f.js": 1,
+    "GET /api/deploy/history": 2,
+    "GET /api/deploy/stream": 1,
+    "GET /_next/static/chunks/4803.476da54261017c96.js": 1,
+    "GET /secrets/kv": 1,
+    "GET /_next/static/chunks/app/(dashboard)/secrets/kv/page-f98001619cddb088.js": 1,
+    "GET /api/kv/mounts": 2,
+    "GET /api/kv/paths": 2,
+    "GET /api/kv/paths/20000000-0000-4000-8000-000000000000": 1,
+    "GET /api/kv/paths/20000000-0000-4000-8000-000000000000/capabilities": 1,
+    "GET /api/kv/paths/20000000-0000-4000-8000-000000000000/status": 1,
+    "GET /api/kv/paths/20000000-0000-4000-8000-000000000000/versions": 1,
+    "GET /_next/static/chunks/6950.e44e7abb25fa30ea.js": 1,
+    "GET /_next/static/chunks/5848.9575637eb4b1556b.js": 1,
+    "GET /_next/static/chunks/8574.6bf7fc0d673fa729.js": 1,
+    "GET /_next/static/css/0809f7ab485287d0.css": 1,
+    "GET /_next/static/chunks/30d07d85.7e77c4101699672b.js": 1
+  },
+  "limitations": [
+    "Real tabs zoom and full-surface capture are local synthetic evidence, not field/AT/realrunner proof",
+    "No private fields/tokens/output/DOM attributes collected; terminal remained an unsubmitted command runner"
+  ],
+  "cleanup": {
+    "chromeExitCode": 0,
+    "chromeSignal": null,
+    "fixtureExitCode": 0,
+    "fixtureSignal": null
+  },
+  "completedAt": "2026-10-11T06:20:05.380Z"
+}

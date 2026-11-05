@@ -4,6 +4,7 @@ import { FolderTree, Loader2, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ViewportWrapper from "@/app/(dashboard)/viewport-wrapper";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
+import { sortLegacyClusterRows } from "@/lib/legacy-cluster-sort";
 import { useState, useEffect, useCallback, useMemo } from "react";
 
 interface NamespaceData {
@@ -39,11 +40,7 @@ export default function NamespacesPage() {
       const q = search.toLowerCase();
       result = namespaces.filter((ns) => ns.name.toLowerCase().includes(q));
     }
-    return [...result].sort((a, b) => {
-      const va = String((a as any)[sortKey] ?? "").toLowerCase();
-      const vb = String((b as any)[sortKey] ?? "").toLowerCase();
-      return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
-    });
+    return sortLegacyClusterRows(result, "namespaces", sortKey, sortDir);
   }, [namespaces, search, sortKey, sortDir]);
 
   useEffect(() => {

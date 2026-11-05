@@ -1,0 +1,310 @@
+{
+  "scope": "One bounded diagnostic observation per existing measured lane; original benchmark unchanged and still failed",
+  "actor": {
+    "initialTool": "e6d106",
+    "finalTool": "664f24",
+    "actualExit": 0,
+    "wholeSeconds": 300,
+    "closureReserveSeconds": 60,
+    "sharedStageSeconds": 180,
+    "sharedChildSeconds": 150,
+    "CPU": 2,
+    "memoryBytes": 1073741824,
+    "memorySwapBytes": 0,
+    "PIDs": 256,
+    "network": "none",
+    "readOnly": true,
+    "businessHTTPPerLane": 14,
+    "candidateWorkerReads": 14,
+    "candidateRealYields": 28,
+    "allCLIReportedAbsent": true,
+    "namedContainersRemaining": []
+  },
+  "sourceReview": {
+    "defaultSourceScanLiteralExit": 1,
+    "findings": 2,
+    "classifiedMeasuredOTelAPISHA256": 2,
+    "unresolved": 0,
+    "suppressionOrReplay": false,
+    "classificationTool": "c1d9d9",
+    "filesCopiedIncludingManifest": 31,
+    "nativePreflight": "d1c11a",
+    "prepareTool": "116f2e",
+    "old13FilesRawExact": true,
+    "sixQualifiedControlArtifactsRawExact": true
+  },
+  "measuredGraphs": {
+    "graphs": 8,
+    "files": 78949,
+    "bytes": 2149448901,
+    "authoritySHA256": "e357185c6a43c6d8a0280081147e3f88ee9385606da5f3bb4a18ede52a8d55e6",
+    "currentPhysicalFingerprintsNotNewContentRehash": true
+  },
+  "independent": {
+    "sourceReview": "91ca6e",
+    "defaultSourceScanExit": 0,
+    "findings": 0,
+    "nativePreflight": "c9c49a",
+    "exactTool": "a69c34",
+    "exactExit": 0,
+    "freshTool": "7b1f8b",
+    "freshExit": 0,
+    "pins": 133,
+    "hostBirthsFreshAbsent": 26,
+    "exactContainerIDAndNameAbsent": true,
+    "everyNumericProjectionFieldEqualsActor": true,
+    "laterAndFinalOwnPending": false,
+    "laterSourceReview": "d413f7",
+    "laterDefaultScanExit": 0,
+    "laterSourceFindings": 0,
+    "laterNativePreflight": "afd059",
+    "laterTool": "da758e",
+    "laterExit": 0,
+    "laterPins": 153,
+    "ownTool": "fb73fd",
+    "ownExit": 0,
+    "finalHostBirthsFreshAbsent": 30,
+    "ownRecordSHA256": "a1b64ebb4035eae617ab557b827529b5c8bafcb11b9e1d43827738b8df62cff2"
+  },
+  "sampling": {
+    "baseline": {
+      "profiles": 1,
+      "profileBytes": 820445,
+      "warmSamples": 58,
+      "httpSamples": 44,
+      "gapSamples": 14,
+      "unpartitionedSamples": 44,
+      "completeStageWindows": 0,
+      "orderedStageWindows": 0
+    },
+    "candidateMain": {
+      "warmSamples": 65,
+      "httpSamples": 52,
+      "gapSamples": 13,
+      "unpartitionedSamples": 0,
+      "completeStageWindows": 14,
+      "orderedStageWindows": 14
+    },
+    "candidateWorker": {
+      "warmSamples": 72,
+      "httpSamples": 51,
+      "gapSamples": 21,
+      "unpartitionedSamples": 0,
+      "completeStageWindows": 14,
+      "orderedStageWindows": 14
+    },
+    "candidateProfileBytes": 913854,
+    "sampleCountsAreCPUTime": false,
+    "dominantLeafEstablished": false,
+    "largestNonPseudoHTTPLeafSamples": 2,
+    "baselineMissingMiddlewareAssociation": true,
+    "equivalentMiddlewareComparisonAvailable": false,
+    "profilerOverheadPresent": true,
+    "rawNamesURLsAndProfilesPublished": false
+  },
+  "numericThreadBoundaryObservation": {
+    "diagnosticOnly": true,
+    "warmRequestIDs": [
+      3,
+      14
+    ],
+    "instrumentationIncluded": true,
+    "nestedIntervalsNotAdditive": true,
+    "sampleCountsNotCPUTime": true,
+    "lanes": {
+      "baseline": {
+        "threads": [
+          {
+            "threadId": 0,
+            "groups": [
+              {
+                "kind": 1,
+                "count": 12,
+                "threadCPUUsTotal": 35843,
+                "threadCPUUsMedian": 2214.5,
+                "wallUsTotalMidpoint": 52849.0,
+                "wallUsMedianMidpoint": 3984.0
+              },
+              {
+                "kind": 22,
+                "count": 12,
+                "threadCPUUsTotal": 2612,
+                "threadCPUUsMedian": 0.0,
+                "wallUsTotalMidpoint": 3429.5,
+                "wallUsMedianMidpoint": 266.0
+              }
+            ]
+          }
+        ],
+        "httpWarmWallUs": [
+          5406,
+          6331,
+          4499,
+          3820,
+          7049,
+          8523,
+          4152,
+          3093,
+          2705,
+          2474,
+          2213,
+          2605
+        ]
+      },
+      "candidate": {
+        "threads": [
+          {
+            "threadId": 0,
+            "groups": [
+              {
+                "kind": 1,
+                "count": 12,
+                "threadCPUUsTotal": 45460,
+                "threadCPUUsMedian": 3147.5,
+                "wallUsTotalMidpoint": 69986.5,
+                "wallUsMedianMidpoint": 5047.25
+              },
+              {
+                "kind": 10,
+                "count": 12,
+                "threadCPUUsTotal": 3751,
+                "threadCPUUsMedian": 0.0,
+                "wallUsTotalMidpoint": 2251.0,
+                "wallUsMedianMidpoint": 34.25
+              },
+              {
+                "kind": 11,
+                "count": 12,
+                "threadCPUUsTotal": 477,
+                "threadCPUUsMedian": 0.0,
+                "wallUsTotalMidpoint": 1814.0,
+                "wallUsMedianMidpoint": 137.5
+              },
+              {
+                "kind": 20,
+                "count": 12,
+                "threadCPUUsTotal": 18202,
+                "threadCPUUsMedian": 1251.5,
+                "wallUsTotalMidpoint": 18169.0,
+                "wallUsMedianMidpoint": 1316.0
+              },
+              {
+                "kind": 22,
+                "count": 12,
+                "threadCPUUsTotal": 0,
+                "threadCPUUsMedian": 0.0,
+                "wallUsTotalMidpoint": 3665.5,
+                "wallUsMedianMidpoint": 280.0
+              }
+            ]
+          },
+          {
+            "threadId": 1,
+            "groups": [
+              {
+                "kind": 30,
+                "count": 12,
+                "threadCPUUsTotal": 2036,
+                "threadCPUUsMedian": 0.0,
+                "wallUsTotalMidpoint": 6178.0,
+                "wallUsMedianMidpoint": 431.75
+              },
+              {
+                "kind": 31,
+                "count": 12,
+                "threadCPUUsTotal": 1544,
+                "threadCPUUsMedian": 0.0,
+                "wallUsTotalMidpoint": 5730.5,
+                "wallUsMedianMidpoint": 25.5
+              },
+              {
+                "kind": 32,
+                "count": 96,
+                "threadCPUUsTotal": 0,
+                "threadCPUUsMedian": 0.0,
+                "wallUsTotalMidpoint": 808.5,
+                "wallUsMedianMidpoint": 6.0
+              },
+              {
+                "kind": 33,
+                "count": 24,
+                "threadCPUUsTotal": 0,
+                "threadCPUUsMedian": 0.0,
+                "wallUsTotalMidpoint": 120.0,
+                "wallUsMedianMidpoint": 5.0
+              },
+              {
+                "kind": 34,
+                "count": 24,
+                "threadCPUUsTotal": 449,
+                "threadCPUUsMedian": 0.0,
+                "wallUsTotalMidpoint": 853.5,
+                "wallUsMedianMidpoint": 19.75
+              }
+            ]
+          }
+        ],
+        "entryBoundary": {
+          "validatedAtMessageRegistration": true,
+          "originalRegistrationForwarded": true,
+          "registrations": 1,
+          "forwarded": 1,
+          "propertyRestored": true,
+          "codeExecutionPreventionClaim": false,
+          "adapterRestoreRequired": true,
+          "adapterListenerRestorationVerified": true,
+          "restorationForwards": 1
+        },
+        "httpWarmWallUs": [
+          8894,
+          12887,
+          4923,
+          5161,
+          6061,
+          8811,
+          5664,
+          4318,
+          3711,
+          3499,
+          3181,
+          2882
+        ]
+      }
+    }
+  },
+  "originalBenchmarkAccepted": false,
+  "performanceAccepted": false,
+  "applicationChanged": false,
+  "productionChanged": false,
+  "sourceSemanticsReview": {
+    "rootTool": "b14cdf",
+    "measuredBaselineAuthSHA256": "34c796d6fb3d1fe9e795dc7316c652b4825dec9da01b8b10bf5aff8bfd0b9aa3",
+    "measuredCandidateAuthSHA256": "932034e70f9d0447eb23c38ce91cb799413d289eb0a3bd25f3808c25865f2aff",
+    "baselineHeadersSession": "JWT verification then claims return; no fresh account lookup",
+    "candidateHeadersSession": "HS256 profile plus fresh directAccountReader.readSession and sessionVersion check",
+    "baselineAndCandidateAuthorizationSemanticsEqual": false,
+    "latencyFailureWaived": false,
+    "weakerBaselineAdmissionRestored": false,
+    "sourceOptimizationEstablished": false
+  },
+  "retainedNumericEventArithmetic": {
+    "agentTool": "a592f8",
+    "rootReviewTool": "a4e8e6",
+    "actualExit": 0,
+    "sourceReportSHA256": "dae2f6fcd97402fac7271977c5024879e21c4264070683f376f0832be9cfb46f",
+    "actualJoinedOperations": 14,
+    "warmOperations": 12,
+    "relationsPerJoin": 7,
+    "everyRelationAndWarmSummaryRecomputed": true,
+    "rawProfilesRead": false,
+    "newWorkloadOrSampling": false,
+    "newHostQuery": false,
+    "newPhysicalFingerprintOrBirthClaim": false,
+    "allNegativeAndOverlappingRangesRetained": true,
+    "instrumentedIntervalsAreAdditiveCPUOrWaitShares": false,
+    "publicSessionHasMiddlewareEarlyReturnSpan": true,
+    "publicSessionReadBelongsToHandler": true,
+    "causalOptimizationEstablished": false,
+    "performanceAccepted": false
+  }
+}

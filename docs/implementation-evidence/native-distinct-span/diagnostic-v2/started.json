@@ -1,0 +1,23 @@
+{
+  "scope": "Pure parser CPU differential diagnostic; no transport/server/acceptance/source behavior change",
+  "productionCommit": "7e30b9b428a66cd3f5e618cec5e694d5f03302ac",
+  "sourceWorkingHashes": {
+    "summary": "46ed18b44d58fd2cb8e60f0fac1144b9e304d15dd69badbc5b78d87c3f6ecd37",
+    "prefix": "a75b91784bc2b5ebd90880bfee8facd825fb3a58a33238550c0206b343f99db5",
+    "driver": "7ffe01dfd5903126e3071004678a472188d4dcb88fa0be6ce4da50a3c9f79e8e"
+  },
+  "diagnosticSha256": "c3c0eb79daba9ebae538d6a1aac77b7909bcf388b65465dc395a4df28786f750",
+  "node": "v22.23.3",
+  "pid": 22384,
+  "startedUtc": "2026-10-11T09:44:30.421Z",
+  "nativeWindow": 4096,
+  "longSpanThreshold": 256,
+  "fixtureLimitations": [
+    "Public frozen payload pattern reproduced; random private annotation is replaced by fixed public annotation.",
+    "Chunk cuts are diagnostic constructions, not recorded wire segmentation.",
+    "No changes to production concurrency/queue/deadline/byte/item/completeness bounds or frozen drivers/gates.",
+    "Reader class is isolated exactly; outside schema/transport functions are not exercised."
+  ],
+  "cases": 0,
+  "timings": []
+}

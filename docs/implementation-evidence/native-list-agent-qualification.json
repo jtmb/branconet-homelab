@@ -1,0 +1,95 @@
+{
+  "captured_at": "2026-10-11T02:07:09.598105+00:00",
+  "scope": "native operation-owned direct HTTPS keepalive functional source qualification; final combined build/HTTP/performance pending",
+  "parent_commit": "e0eaea89795b05ede2febecca2d3cde89c11f874",
+  "runtime": {
+    "node": "22.23.3",
+    "platform": "win32"
+  },
+  "source_git_blob_sha256": {
+    "k8s-rewrite/front-end/src/lib/cluster-secrets.ts": "3d195c907f2d3071d1984e32bc6d0ff27768bdd62ea333c1f2d1a1a89ac4611b",
+    "k8s-rewrite/front-end/src/lib/secret-client.ts": "9de81ef4163c9dcbffc7364a8165251e721ab4064ea9557f6b5e05d4f8057209",
+    "k8s-rewrite/front-end/tests/native-list-window.test.ts": "9d4169c1ef2b247314e3d9d3b9e5a40a09effe96139cd9d0b272daeb58bfd5dd"
+  },
+  "checks": {
+    "typecheck": {
+      "command": "node node_modules/typescript/bin/tsc --noEmit",
+      "exit_code": 0
+    },
+    "units": {
+      "command": "node node_modules/tsx/dist/cli.mjs --test tests/*.test.ts",
+      "tests": 146,
+      "passed": 146,
+      "failed": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 26471.9571,
+      "exit_code": 0
+    },
+    "lint": {
+      "command": "npm run lint -- --max-warnings=0",
+      "exit_code": 0,
+      "warnings": 0
+    }
+  },
+  "coverage": [
+    "six new independent agent regressions plus all unchanged worker/window assertions",
+    "actual mutual TLS and HTTP CONNECT proxy retain fresh per-request agents",
+    "fresh withdrawn SDK authorization denied even on reused connection",
+    "changed CA fails TLS; changed SNI uses a fresh agent",
+    "operation separation, at most four pooled sockets, explicit and deadline teardown",
+    "blocked SDK auth cancelled without request; late successful and rejected SDK completion destroy fresh agents; unrelated read succeeds",
+    "insecure post-auth option and failed pool registration destroy agent before any request"
+  ],
+  "preserved_limits": {
+    "global_active": 4,
+    "global_queue": 64,
+    "list_deadline_ms": 15000,
+    "accepted_items": 10000,
+    "delivered_body_bytes": 33554432,
+    "response_bytes": 4194304,
+    "write_bytes": 921600,
+    "request_including_queue_auth_ms": 8000
+  },
+  "initial_attempts": [
+    "fresh checkout initially lacked generated Prisma types; standard prisma generate corrected it without database mutation",
+    "vendor readonly and runtime Agent typing corrected before passing checks",
+    "145-unit/lint pass preceded review lifecycle correction; corrected 146-unit pass repeated after late rejection/registration regression strengthening"
+  ],
+  "docs_checked": [
+    "docs/ANSIBLE-2-API-INTERACTION.md",
+    "docs/API-USAGE.md",
+    "docs/BORTUS-AUDIT.md",
+    "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+    "docs/BORTUS-DEPLOYMENT.md",
+    "docs/BORTUS-IMPLEMENTATION.md",
+    "docs/BORTUS-KV-DESIGN.md",
+    "docs/BORTUS-KV-WORKBENCH.md",
+    "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+    "docs/BOTRUS-WORKFLOW.md",
+    "docs/CHARTS-SEPARATION.md",
+    "docs/CONNECTING-TO-A-CLUSTER.md",
+    "docs/FLUX-GITOPS.md",
+    "docs/SECRETS-ENGINE.md",
+    "docs/TECH-STACK.md",
+    "docs/USER-PERMS.md",
+    "docs/audit-evidence/README.md",
+    "docs/implementation-evidence/README.md",
+    "docs/kubectl-cheatsheet.md"
+  ],
+  "diagnostic": {
+    "raw_sha256": "8deb437a114ffc2aa7434c4b2cd1e158c1b1e332d7fe55aa3afee0599815d317",
+    "script_sha256": "6ebb4094bea5ddc9d09fc005090b74b588b46baaf37c1747866c2d5b1efb447a",
+    "measured_candidate": "16975f5de34b0d80595c90b6539cf541a2e4c436",
+    "observations": 9,
+    "not_frozen_acceptance": true,
+    "launcher_exit_status_captured": false,
+    "terminal_state": "complete raw JSON, empty stderr, no owned launcher/container/Node process; observed after interrupted tool response; not restarted"
+  },
+  "limitations": [
+    "No combined production build, HTTP, browser, Linux image or frozen performance result for this source intervention",
+    "Prior completed native no-regression gate remains unmet",
+    "Diagnostic excludes Next/Prisma, proxy/mTLS, large pages and changed native concurrency; diagnostic speed is not final acceptance",
+    "No production state or operator credentials used"
+  ]
+}

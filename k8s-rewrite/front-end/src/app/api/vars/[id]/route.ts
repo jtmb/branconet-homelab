@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/db";
-import { requireWrite } from "@/lib/permissions";
+import { requireOperator } from "@/lib/permissions";
 import { isSensitiveVariable } from "@/lib/variable-policy";
 import { SecretError } from "@/lib/cluster-secrets";
 import { secretResponse, secretErrorResponse } from "@/lib/secret-http";
@@ -8,7 +8,7 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const auth = await requireWrite();
+  const auth = await requireOperator();
   if (auth instanceof NextResponse) return auth;
   try {
     const { id } = await params;

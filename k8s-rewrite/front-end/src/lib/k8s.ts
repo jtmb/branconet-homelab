@@ -2,6 +2,9 @@ import { execFile } from "child_process";
 import { promisify } from "util";
 import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { homedir } from "os";
+import { createKubectlClient } from "./kubectl-client";
+import { executeOperatorCommand } from "./operator-command";
+export { KubernetesCommandError, validateNamespace, validateResourceName } from "./kubectl-client";
 
 const execFileAsync = promisify(execFile);
 
@@ -21,33 +24,17 @@ const SSH_OPTS = [
 ];
 
 /**
- * Execute a kubectl command with -o json and return parsed JSON.
- * Requires a local kubeconfig at ~/.kube/config. Returns null if
- * kubeconfig is missing or kubectl fails.
+ * Execute structured kubectl arguments with verified process outcome and JSON parsing.
  */
 export async function kubectlJSON(
-  cmd: string,
+  args: readonly string[],
   timeoutMs = 15000
-): Promise<any | null> {
-  if (!hasLocalKubectl()) return null;
-
-  try {
-    const { stdout } = await execFileAsync(
-      "kubectl",
-      [...kubectlConfigArgs(), ...cmd.split(" "), "-o", "json"],
-      { timeout: timeoutMs, maxBuffer: 2 * 1024 * 1024 }
-    );
-    if (!stdout.trim()) return null;
-    return JSON.parse(stdout);
-  } catch {
-    return null;
-  }
-}
+): Promise<any> { return kubectl.json(args, timeoutMs); }
 
 /**
  * Execute a raw SSH command and return stdout as string (or null on failure).
  *
- * BOOTSTRAP-ONLY — used exclusively by ensureKubeconfig() to fetch the initial
+ * BOOTSTRAP-ONLY â€” used exclusively by ensureKubeconfig() to fetch the initial
  * kubeconfig from the master node. Never called from kubectl hot paths.
  */
 export async function sshExec(
@@ -69,31 +56,19 @@ export async function sshExec(
 }
 
 /**
- * Execute a raw kubectl command (no -o json). Returns stdout string or null.
- * Requires a local kubeconfig at ~/.kube/config.
+ * Shared bounded process pool for structured kubectl commands.
  */
-export async function kubectlExec(
-  cmd: string,
-  timeoutMs = 10000
-): Promise<string | null> {
-  if (!hasLocalKubectl()) return null;
+const globals = globalThis as typeof globalThis & { __bortusKubectl?: ReturnType<typeof createKubectlClient> };
+const kubectl = globals.__bortusKubectl ??= createKubectlClient(
+  (args, options) => execFileAsync("kubectl", args, options),
+  hasLocalKubectl,
+  kubectlConfigArgs,
+);
+export const kubectlExec = kubectl.exec;
+export const kubectlPodList = kubectl.listPods;
+export const kubectlDiagnostics = kubectl.diagnostics;
 
-  try {
-    const { stdout } = await execFileAsync(
-      "kubectl",
-      [...kubectlConfigArgs(), ...cmd.split(" ")],
-      { timeout: timeoutMs, maxBuffer: 2 * 1024 * 1024 }
-    );
-    return stdout;
-  } catch (err: any) {
-    // kubectl may exit non-zero even on success (e.g. delete prints to stdout then exits 1).
-    // Prefer stdout; fall back to stderr (includes "error: unknown command" etc).
-    const out = err?.stdout?.trim() || err?.stderr?.trim() || null;
-    return out;
-  }
-}
-
-// ── Restricted shell sandbox ──
+// â”€â”€ Operator shell working-directory helper â”€â”€
 const SHELL_HOME = "/home/shell";
 const RESTRICTED_BASHRC = `${SHELL_HOME}/.restricted_bashrc`;
 
@@ -105,7 +80,7 @@ function ensureRestrictedShell() {
   if (!existsSync(RESTRICTED_BASHRC)) {
     writeFileSync(
       RESTRICTED_BASHRC,
-      `# Botrus K8s restricted shell — do not edit\n` +
+      `# Botrus K8s restricted shell â€” do not edit\n` +
       `# Override cd to prevent escaping /home/shell\n` +
       `cd() {\n` +
       `  local target="\${1:-\$HOME}"\n` +
@@ -123,39 +98,25 @@ function ensureRestrictedShell() {
 }
 
 /**
- * Execute a shell command via bash -c, sandboxed to /home/shell.
- * KUBECONFIG is set so kubectl works naturally. The restricted bashrc
- * (sourced via BASH_ENV) overrides cd so the user cannot navigate
- * outside /home/shell.
+ * Execute a trusted operator command via bash -c with application-host privileges.
+ * The BASH_ENV working-directory helper is not an operating-system sandbox.
+ * Only successful stdout is returned; failed output is discarded.
  */
 export async function shellExec(
   cmd: string,
   timeoutMs = 30000
-): Promise<string | null> {
+): Promise<string> {
   ensureRestrictedShell();
-  try {
-    const { stdout } = await execFileAsync(
-      "bash",
-      ["-c", cmd],
-      {
-        cwd: SHELL_HOME,
-        timeout: timeoutMs,
-        maxBuffer: 2 * 1024 * 1024,
-        env: {
-          ...process.env,
-          KUBECONFIG: KUBECONFIG_PATH,
-          BASH_ENV: RESTRICTED_BASHRC,
-          HOME: SHELL_HOME,
-        },
-      }
-    );
-    return stdout;
-  } catch (err: any) {
-    // bash -c exits with the command's exit code, so non-zero is expected.
-    // Return stdout + stderr so the user sees error messages.
-    const out = [err?.stdout?.trim(), err?.stderr?.trim()]
-      .filter(Boolean)
-      .join("\n");
-    return out || null;
-  }
+  return executeOperatorCommand(cmd, {
+    cwd: SHELL_HOME,
+    timeout: timeoutMs,
+    maxBuffer: 2 * 1024 * 1024,
+    env: {
+      ...process.env,
+      KUBECONFIG: KUBECONFIG_PATH,
+      BASH_ENV: RESTRICTED_BASHRC,
+      HOME: SHELL_HOME,
+    },
+    encoding: "utf8",
+  });
 }

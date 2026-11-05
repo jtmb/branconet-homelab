@@ -1,0 +1,41 @@
+{
+  "pristine": {
+    "exit": 0,
+    "failures": []
+  },
+  "old-parse": {
+    "exit": 1,
+    "failures": [
+      {
+        "name": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
+        "operator": "rejects",
+        "line": 39
+      }
+    ]
+  },
+  "save-noop": {
+    "exit": 1,
+    "failures": [
+      {
+        "name": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
+        "operator": "throws",
+        "line": 48
+      },
+      {
+        "name": "real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds",
+        "operator": "strictEqual",
+        "line": 143
+      }
+    ]
+  },
+  "remove-noop": {
+    "exit": 1,
+    "failures": [
+      {
+        "name": "real HTTP configuration DELETE needs a true acknowledgment before closing confirmation",
+        "operator": "strictEqual",
+        "line": 91
+      }
+    ]
+  }
+}

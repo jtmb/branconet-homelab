@@ -1,0 +1,1088 @@
+diff --git a/docs/API-USAGE.md b/docs/API-USAGE.md
+index 0d63e9a..69930da 100644
+--- a/docs/API-USAGE.md
++++ b/docs/API-USAGE.md
+@@ -184,6 +184,8 @@ Flat adopted value reads require effective administration and current path read
+ 
+ Administration screens check response status before presenting success or refetching metadata. User/settings/configuration reads share bounded lifecycle queries; failed reads show unavailable/Retry and may label a retained prior snapshot. User/configuration saves validate changed input, allow one request at a time, time out after 20 seconds and abort on unmount. No mutation retries automatically after an ambiguous result. Configuration editing sends the existing ID and key; blank nonsecret values are valid. Settings' registration switch shows the persisted app setting separately from effective registration status. PV policy changes use the existing reclaim endpoint one volume at a time with exact-name confirmation, and treat a 207 partial failure as failure. The unused default-PV fake Save is removed.
+ 
++The prepared JSON-response correction rejects malformed successful JSON with a fixed error, while retaining generic empty204 acknowledgments and valid JSON primitives for callers with those contracts. Configuration adds its own structural collection/row decoder and requires `success:true` plus the matching returned variable before clearing a draft or announcing a save. The returned key, value and category must match the submitted strings, including an empty value and category whitespace; editing also requires the captured ID. DELETE requires its actual `{success:true}` acknowledgment before closing confirmation or announcing removal. Extra row/acknowledgment metadata is allowed. An unverified write reports that it may already have been saved or removed and asks for a refresh before another explicit attempt. Malformed error bodies still trigger the existing401/403 session handling. No response body or configuration value is included in the new errors. This is source/test preparation only; runtime qualification is pending in [the preparation receipt](implementation-evidence/configuration-json-response-source-20261015.json).
++
+ Nonsecret keys must be valid Ansible identifiers. Legacy sensitive aliases may contain hyphens or path separators; their spelling does not derive a native destination. No DB-to-cluster push remains.
+ 
+ ```bash
+diff --git a/docs/BORTUS-AUDIT.md b/docs/BORTUS-AUDIT.md
+index fdd2d8a..89a2e0a 100644
+--- a/docs/BORTUS-AUDIT.md
++++ b/docs/BORTUS-AUDIT.md
+@@ -1,5 +1,7 @@
+ # BORTUS K8s performance, correctness and UI audit
+ 
++A21 JSON-response handling has a focused source/test correction prepared: malformed successful JSON is refused, and configuration collection/save/delete shapes are checked before rendering or reporting success. Unverified writes retain the draft or confirmation with a fixed outcome-uncertain error. Generic valid JSON and empty204 acknowledgment compatibility remain;401/403 handling remains authoritative even for malformed error bodies. No new tests, browser, build, scanner or benchmark have run for this candidate. Historical evidence and all original validation clauses remain unchanged; A07's two warm regressions and A21 measurements remain open. [Preparation receipt](implementation-evidence/configuration-json-response-source-20261015.json).
++
+ Original A13 source validation is now composite-qualified: the actual canonical Pods browser compares0/2/7/12 in both directions, with a distinct raw omitted restart count normalized0 by the real API. Genuine missing Node CPU/RAM and PV capacity stay last in both directions; every observed name/href/immutable-cell tuple remains attached to its original row. Eight count, two raw-date, five further-column and three Settings/PVC cases total18 finite cases/36 directions. Thirteen relevant source blobs remain exact through reviewed `fccc7c06`. [A13 original source composition](implementation-evidence/a13-source-composite-root-20261015.json). This does not assert every table/date-kind cross-product or physical DOM-object reuse; historical false fields and failures remain unchanged, with AT/performance/image/live acceptance separate.
+ 
+ A22 remains open for a finite current-build measurement, without an invented source-before/after gate. The retained12 modal and6 terminal fixed-mobile cold/warm observations include actual wire/cache bytes, initial/deferred JS, LCP and first-interaction/focus results. Exact-chunk gzip/Brotli sizes are offline estimates: no actual Brotli response is retained. Modal phases include overlapping compile/evaluation traces; terminal samples have renderer Script/TaskDuration but no separate compile/parse trace. Reviewed menu/YAML bytes changed after those measurements, so old asset bytes/timings are not relabelled current. [Modal measurements](implementation-evidence/optional-code-qualification.json) and [terminal measurements](implementation-evidence/terminal-final-qualification.json). A07 regression, A21 RSS, real-image/live and actual AT gates remain separate.
+diff --git a/docs/BORTUS-IMPLEMENTATION.md b/docs/BORTUS-IMPLEMENTATION.md
+index 5a8625a..84c70b6 100644
+--- a/docs/BORTUS-IMPLEMENTATION.md
++++ b/docs/BORTUS-IMPLEMENTATION.md
+@@ -1,5 +1,7 @@
+ # BORTUS audit remediation and native Secrets engine delivery
+ 
++The focused A21 JSON-response candidate now refuses malformed successful JSON and validates configuration collection/save/delete shapes before rendering or success feedback. It preserves generic valid JSON/empty204 compatibility and existing401/403 session effects; unverified writes retain the draft or confirmation and report an uncertain outcome without automatic retry. Source and focused real-HTTP test preparation are complete; execution, compiled-browser draft/save observations and current-build measurement remain pending. A12's `use-query.ts` raw-source equality changes; its unchanged authorization/session functions require scoped continuity review. All thirteen A13 composite source files remain unchanged, while prior whole-frontend manifests remain historical. [Preparation receipt](implementation-evidence/configuration-json-response-source-20261015.json).
++
+ Original A13 source validation is now composite-qualified: the actual canonical Pods browser compares0/2/7/12 in both directions, with a distinct raw omitted restart count normalized0 by the real API. Genuine missing Node CPU/RAM and PV capacity stay last in both directions; every observed name/href/immutable-cell tuple remains attached to its original row. Eight count, two raw-date, five further-column and three Settings/PVC cases total18 finite cases/36 directions. Thirteen relevant source blobs remain exact through reviewed `fccc7c06`. [A13 original source composition](implementation-evidence/a13-source-composite-root-20261015.json). This does not assert every table/date-kind cross-product or physical DOM-object reuse; historical false fields and failures remain unchanged, with AT/performance/image/live acceptance separate.
+ 
+ A22 remains open for a finite current-build measurement, without an invented source-before/after gate. The retained12 modal and6 terminal fixed-mobile cold/warm observations include actual wire/cache bytes, initial/deferred JS, LCP and first-interaction/focus results. Exact-chunk gzip/Brotli sizes are offline estimates: no actual Brotli response is retained. Modal phases include overlapping compile/evaluation traces; terminal samples have renderer Script/TaskDuration but no separate compile/parse trace. Reviewed menu/YAML bytes changed after those measurements, so old asset bytes/timings are not relabelled current. [Modal measurements](implementation-evidence/optional-code-qualification.json) and [terminal measurements](implementation-evidence/terminal-final-qualification.json). A07 regression, A21 RSS, real-image/live and actual AT gates remain separate.
+diff --git a/docs/BOTRUS-WORKFLOW.md b/docs/BOTRUS-WORKFLOW.md
+index 44c7d4a..895a0c1 100644
+--- a/docs/BOTRUS-WORKFLOW.md
++++ b/docs/BOTRUS-WORKFLOW.md
+@@ -72,6 +72,8 @@ Use **Configuration** (`/configuration`) for nonsecret SQLite settings. Use **Se
+ 
+ User, configuration and settings screens share metadata/session queries with explicit failed-read states and Retry. User/configuration tables render at most 100 rows per page with typed date/text sorting and keyboard actions. Editors are labelled focus-trapped dialogs; deletion requires an exact username or configuration key. Fresh engine administration, valid/changed input and one pending request gate saves. Mutation requests have a 20-second deadline, abort on unmount and never automatically retry an ambiguous outcome. Passwords retain intentional whitespace and leave the UI when an editor closes or write access ends. Configuration edits preserve the existing key/ID.
+ 
++The prepared configuration-response correction checks list rows and save/delete acknowledgments before showing success. An unverified response keeps the editor or delete confirmation open and asks you to refresh because the server may already have applied the change. A manual retry remains explicit. Empty nonsecret values, submitted category whitespace and extra metadata remain supported; no row-key migration is introduced. Source/test preparation is recorded in [the A21 receipt](implementation-evidence/configuration-json-response-source-20261015.json); compiled-browser qualification is pending.
++
+ Settings distinguishes effective registration status from the persisted application switch: ALLOW_REGISTRATION=true can keep it open when the switch is off. PV policy editing applies one explicit Retain/Delete choice after exact-volume confirmation; failures remain visible. The former default-policy Save was a delay without persistence or a consuming creation flow and has been removed. New PV defaults come from StorageClass configuration; no successful save is simulated. Viewport width is a browser preference available to both roles.
+ 
+ Flux cascade deletion now stops on command/discovery errors and retains its DB inventory record until cleanup succeeds. A namespace that remains after 60 seconds requires manual finalizer investigation; the dashboard does not automatically strip finalizers. See [Flux integration](FLUX-GITOPS.md).
+diff --git a/docs/implementation-evidence/README.md b/docs/implementation-evidence/README.md
+index c25a639..0763ed3 100644
+--- a/docs/implementation-evidence/README.md
++++ b/docs/implementation-evidence/README.md
+@@ -1,5 +1,7 @@
+ # BORTUS implementation evidence
+ 
++The isolated A21 configuration JSON-response candidate is source/test preparation only. It rejects malformed successful JSON, validates configuration collection/save/delete contracts and retains ambiguous-write drafts or confirmations with fixed refresh guidance. Generic valid JSON/empty204 compatibility and401/403 handling remain. Existing `fccc7c06`/B9 qualifications below retain their historical source bindings; this candidate is unadopted and has no new test, build, browser or performance pass. [Frozen source preparation](configuration-json-response-source-20261015.json) records source pins, unchanged original validation clauses and the focused qualification proposal.
++
+ Original A13 source validation is now composite-qualified: the actual canonical Pods browser compares0/2/7/12 in both directions, with a distinct raw omitted restart count normalized0 by the real API. Genuine missing Node CPU/RAM and PV capacity stay last in both directions; every observed name/href/immutable-cell tuple remains attached to its original row. Eight count, two raw-date, five further-column and three Settings/PVC cases total18 finite cases/36 directions. Thirteen relevant source blobs remain exact through reviewed `fccc7c06`. [A13 original source composition](a13-source-composite-root-20261015.json). This does not assert every table/date-kind cross-product or physical DOM-object reuse; historical false fields and failures remain unchanged, with AT/performance/image/live acceptance separate.
+ 
+ A22 remains open for a finite current-build measurement, without an invented source-before/after gate. The retained12 modal and6 terminal fixed-mobile cold/warm observations include actual wire/cache bytes, initial/deferred JS, LCP and first-interaction/focus results. Exact-chunk gzip/Brotli sizes are offline estimates: no actual Brotli response is retained. Modal phases include overlapping compile/evaluation traces; terminal samples have renderer Script/TaskDuration but no separate compile/parse trace. Reviewed menu/YAML bytes changed after those measurements, so old asset bytes/timings are not relabelled current. [Modal measurements](optional-code-qualification.json) and [terminal measurements](terminal-final-qualification.json). A07 regression, A21 RSS, real-image/live and actual AT gates remain separate.
+diff --git a/k8s-rewrite/front-end/src/app/(dashboard)/configuration/page.tsx b/k8s-rewrite/front-end/src/app/(dashboard)/configuration/page.tsx
+index 14d4b32..caef4ea 100644
+--- a/k8s-rewrite/front-end/src/app/(dashboard)/configuration/page.tsx
++++ b/k8s-rewrite/front-end/src/app/(dashboard)/configuration/page.tsx
+@@ -3,12 +3,12 @@ import { useEffect, useState } from "react";
+ import dynamic from "next/dynamic";
+ import { useQuery, useSession } from "@/lib/use-query";
+ import { useMutation } from "@/lib/use-mutation";
++import { configurationRemoved, configurationSaved, type ConfigurationVariable as Variable } from "@/lib/configuration-response";
+ import { QueryStatus } from "@/components/ui/query-status";
+ import { ResourceTable } from "@/components/cluster/resource-list";
+ import ViewportWrapper from "../viewport-wrapper";
+ const Modal = dynamic(() => import("@/components/ui/modal").then(module => module.Modal), { ssr: false });
+ const ConfirmDialog = dynamic(() => import("../confirm-dialog"), { ssr: false });
+-type Variable = Record<string, unknown> & { id: string; key: string; value: string; category: string };
+ const blank = { key: "", value: "", category: "general" };
+ export default function ConfigurationPage() {
+   const query = useQuery<Variable[]>("/api/vars");
+@@ -24,7 +24,7 @@ export default function ConfigurationPage() {
+     && (!editing || form.value !== editing.value || form.category !== editing.category);
+   useEffect(() => { if (!session.canWrite) { setEditor(undefined); setDeleting(undefined); setForm(blank); } }, [session.canWrite]);
+   function open(row?: Variable) {
+-    mutation.clear(); setEditor(row ?? "new"); setForm(row ? { key: row.key, value: row.value, category: row.category } : blank);
++    mutation.clear(); setMessage(""); setEditor(row ?? "new"); setForm(row ? { key: row.key, value: row.value, category: row.category } : blank);
+   }
+   function close() { if (!mutation.busy) { setEditor(undefined); setForm(blank); mutation.clear(); } }
+   return <ViewportWrapper><main className="min-w-0 space-y-4 px-3 py-6 sm:px-4 lg:px-6">
+@@ -41,14 +41,14 @@ export default function ConfigurationPage() {
+       columns={[{ key: "key", label: "Key" }, { key: "category", label: "Category" }, { key: "value", label: "Value" }]}
+       renderActions={session.canWrite ? row => <div className="flex gap-3">
+         <button aria-label={"Edit configuration " + row.key} disabled={mutation.busy} onClick={() => open(row as Variable)} className="text-indigo-300 underline">Edit</button>
+-        <button aria-label={"Delete configuration " + row.key} disabled={mutation.busy} onClick={() => { mutation.clear(); setDeleting(row as Variable); }} className="text-red-300 underline">Delete</button>
++        <button aria-label={"Delete configuration " + row.key} disabled={mutation.busy} onClick={() => { mutation.clear(); setMessage(""); setDeleting(row as Variable); }} className="text-red-300 underline">Delete</button>
+       </div> : undefined} />}
+     {editor && session.canWrite && <Modal open onClose={close} title={editing ? "Edit configuration " + editing.key : "Add nonsecret configuration"}
+       description="Use valid Ansible identifiers for keys. Empty nonsecret values are allowed. Credentials belong in native Secrets.">
+       <form className="space-y-4" onSubmit={e => {
+         e.preventDefault(); if (!session.canWrite || !valid) return;
+         void mutation.mutate("/api/vars", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...form, ...(editing ? { id: editing.id } : {}), encrypted: false }) },
+-          () => { setEditor(undefined); setForm(blank); setMessage("Configuration saved."); query.refetch(); });
++          result => { configurationSaved(result, { ...form, ...(editing ? { id: editing.id } : {}) }); setEditor(undefined); setForm(blank); setMessage("Configuration saved."); query.refetch(); });
+       }}>
+         {(["key", "category", "value"] as const).map(field => <label className="block text-sm" key={field}>{field === "key" ? "Key" : field === "category" ? "Category" : "Nonsecret value"}
+           <input required={field !== "value"} disabled={mutation.busy || field === "key" && !!editing} value={form[field]} onChange={e => setForm({ ...form, [field]: e.target.value })}
+@@ -62,7 +62,7 @@ export default function ConfigurationPage() {
+       confirmName={deleting.key} danger loading={mutation.busy} error={mutation.error} confirmLabel="Delete configuration"
+       onClose={() => { if (!mutation.busy) setDeleting(undefined); }} onConfirm={() => {
+         if (!session.canWrite) return;
+-        void mutation.mutate("/api/vars/" + encodeURIComponent(deleting.id), { method: "DELETE" }, () => { setDeleting(undefined); setMessage("Configuration removed."); query.refetch(); });
++        void mutation.mutate("/api/vars/" + encodeURIComponent(deleting.id), { method: "DELETE" }, result => { configurationRemoved(result); setDeleting(undefined); setMessage("Configuration removed."); query.refetch(); });
+       }} />}
+   </main></ViewportWrapper>;
+ }
+diff --git a/k8s-rewrite/front-end/src/lib/use-query.ts b/k8s-rewrite/front-end/src/lib/use-query.ts
+index bcd33b6..f097ba8 100644
+--- a/k8s-rewrite/front-end/src/lib/use-query.ts
++++ b/k8s-rewrite/front-end/src/lib/use-query.ts
+@@ -4,17 +4,25 @@ import { useCallback, useSyncExternalStore } from "react";
+ import { EMPTY_QUERY, QueryFailure, QuerySnapshot, QueryStore } from "./query-store";
+ import { isKvMetadataQuery } from "./kv-metadata-query";
+ import { isSharedMetadataQuery } from "./metadata-query";
++import { configurationList } from "./configuration-response";
+ 
+ export async function requestJson<T = Record<string, unknown>>(url: string, init?: RequestInit): Promise<T> {
+   const response = await fetch(url, { ...init, cache: "no-store" });
+-  const data = await response.json().catch(() => ({}));
++  let data: unknown;
++  if (response.status !== 204) {
++    try { data = await response.json(); }
++    catch {
++      if (response.ok) throw new QueryFailure("Server response could not be verified. Any change may already have been saved. Refresh before trying again.", 502);
++    }
++  }
+   if (!response.ok) {
+     if (response.status === 401) {
+       browserQueries.clear();
+       window.dispatchEvent(new Event("bortus-session-ended"));
+     }
+     if (response.status === 403) browserQueries.invalidate(key => key === "/api/auth/session");
+-    throw new QueryFailure(typeof data.error === "string" ? data.error : `Request failed (${response.status})`, response.status, data);
++    const error = data && typeof data === "object" && "error" in data ? data.error : undefined;
++    throw new QueryFailure(typeof error === "string" ? error : `Request failed (${response.status})`, response.status, data);
+   }
+   return data as T;
+ }
+@@ -27,6 +35,7 @@ const browserQueries = new QueryStore({
+     if (signal.aborted) controller.abort();
+     try {
+       const data = await requestJson<{ authenticated?: boolean }>(url, { signal: controller.signal });
++      if (url === "/api/vars") return configurationList(data);
+       if (url === "/api/auth/session" && data.authenticated === false) {
+         browserQueries.clear(key => key !== url);
+         window.dispatchEvent(new Event("bortus-session-ended"));
+diff --git a/k8s-rewrite/front-end/src/lib/configuration-response.ts b/k8s-rewrite/front-end/src/lib/configuration-response.ts
+new file mode 100644
+index 0000000..332c67f
+--- /dev/null
++++ b/k8s-rewrite/front-end/src/lib/configuration-response.ts
+@@ -0,0 +1,27 @@
++import { QueryFailure } from "./query-store";
++
++export type ConfigurationVariable = Record<string, unknown> & { id: string; key: string; value: string; category: string };
++const invalid = () => new QueryFailure("Invalid configuration response. Refresh before trying again.", 502);
++const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === "object" && !Array.isArray(value);
++function variable(value: unknown): value is ConfigurationVariable {
++  return record(value) && typeof value.id === "string" && value.id.length > 0
++    && typeof value.key === "string" && typeof value.value === "string" && typeof value.category === "string";
++}
++
++export function configurationList(value: unknown): ConfigurationVariable[] {
++  if (!Array.isArray(value) || !value.every(variable)) throw invalid();
++  return value;
++}
++
++export function configurationSaved(value: unknown, expected: { id?: string; key: string; value: string; category: string }): void {
++  const unverified = () => new QueryFailure("Configuration result could not be verified. The change may already have been saved. Refresh before trying again.", 502);
++  if (!record(value) || value.success !== true || !variable(value.variable)) throw unverified();
++  const saved = value.variable;
++  if (saved.key !== expected.key || saved.value !== expected.value || saved.category !== expected.category
++    || expected.id !== undefined && saved.id !== expected.id) throw unverified();
++}
++
++export function configurationRemoved(value: unknown): void {
++  if (!record(value) || value.success !== true)
++    throw new QueryFailure("Configuration removal could not be verified. The entry may already have been removed. Refresh before trying again.", 502);
++}
+diff --git a/k8s-rewrite/front-end/tests/request-json-response.test.ts b/k8s-rewrite/front-end/tests/request-json-response.test.ts
+new file mode 100644
+index 0000000..33954ca
+--- /dev/null
++++ b/k8s-rewrite/front-end/tests/request-json-response.test.ts
+@@ -0,0 +1,155 @@
++import assert from "node:assert/strict";
++import test from "node:test";
++import { createServer } from "node:http";
++import { requestJson } from "../src/lib/use-query";
++import { configurationList, configurationRemoved, configurationSaved } from "../src/lib/configuration-response";
++import { MutationState, MutationTask } from "../src/lib/mutation-task";
++import { QueryFailure, QueryStore } from "../src/lib/query-store";
++
++const marker = "synthetic-response-body-not-for-errors";
++const row = { id: "configuration-fixture", key: "fixture_key", value: "", category: " fixture category " };
++type Reply = { status?: number; body: string; drop?: boolean };
++
++async function fixture(run: (base: string, calls: string[], replies: Map<string, Reply>) => Promise<void>) {
++  const calls: string[] = [], replies = new Map<string, Reply>();
++  const server = createServer((request, response) => {
++    const url = request.url!; calls.push(url);
++    const reply = replies.get(url);
++    if (!reply) { response.writeHead(404); response.end(); return; }
++    request.resume();
++    if (reply.drop) { request.socket.destroy(); return; }
++    response.writeHead(reply.status ?? 200, { "Content-Type": "application/json", "Connection": "close" });
++    response.end(reply.body);
++  });
++  await new Promise<void>((resolve, reject) => { server.once("error", reject); server.listen(0, "127.0.0.1", resolve); });
++  const address = server.address(); assert(address && typeof address !== "string");
++  try { await run(`http://127.0.0.1:${address.port}`, calls, replies); }
++  finally { await new Promise<void>((resolve, reject) => { server.close(error => error ? reject(error) : resolve()); server.closeAllConnections(); }); }
++}
++async function until(condition: () => boolean) {
++  const end = Date.now() + 3000;
++  while (!condition()) { assert(Date.now() < end, "Synthetic HTTP observation deadline exceeded"); await new Promise(resolve => setTimeout(resolve, 5)); }
++}
++const invalid = (error: unknown) => error instanceof QueryFailure && error.status === 502 && !error.message.includes(marker) && error.data === undefined;
++
++test("real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible", { timeout: 10000 }, async () => {
++  await fixture(async (base, _calls, replies) => {
++    for (const [name, body] of [["malformed", '{"private":"' + marker], ["empty", ""]]) {
++      replies.set("/" + name, { body });
++      await assert.rejects(requestJson(base + "/" + name), invalid);
++    }
++    for (const value of [null, true, 17, "synthetic", [], {}]) {
++      replies.set("/valid", { body: JSON.stringify(value) });
++      assert.deepEqual(await requestJson(base + "/valid"), value);
++    }
++    replies.set("/empty204", { status: 204, body: "" });
++    assert.equal(await requestJson(base + "/empty204"), undefined);
++    assert.throws(() => configurationList(undefined), invalid);
++    assert.throws(() => configurationSaved(undefined, row), invalid);
++  });
++});
++
++test("real HTTP malformed/null/primitive errors preserve401 clearing and403 session invalidation", { timeout: 10000 }, async () => {
++  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "window"), target = new EventTarget();
++  const originalClear = QueryStore.prototype.clear, originalInvalidate = QueryStore.prototype.invalidate;
++  let cleared = 0, invalidated = 0, ended = 0;
++  target.addEventListener("bortus-session-ended", () => ended++);
++  Object.defineProperty(globalThis, "window", { configurable: true, value: target });
++  QueryStore.prototype.clear = function (match) { cleared++; return originalClear.call(this, match); };
++  QueryStore.prototype.invalidate = function (match) {
++    assert(match);
++    assert(match("/api/auth/session")); assert(!match("/api/vars")); invalidated++;
++    return originalInvalidate.call(this, match);
++  };
++  try {
++    await fixture(async (base, _calls, replies) => {
++      for (const status of [401, 403]) for (const body of ['{"private":"' + marker, "null", '"' + marker + '"']) {
++        replies.set("/error", { status, body });
++        await assert.rejects(requestJson(base + "/error"), (error: unknown) => error instanceof QueryFailure
++          && error.status === status && error.message === `Request failed (${status})`);
++      }
++      assert.equal(cleared, 3); assert.equal(ended, 3); assert.equal(invalidated, 3);
++    });
++  } finally {
++    QueryStore.prototype.clear = originalClear; QueryStore.prototype.invalidate = originalInvalidate;
++    if (descriptor) Object.defineProperty(globalThis, "window", descriptor); else Reflect.deleteProperty(globalThis, "window");
++  }
++});
++
++test("real HTTP configuration DELETE needs a true acknowledgment before closing confirmation", { timeout: 10000 }, async () => {
++  await fixture(async (base, calls, replies) => {
++    for (const [index, reply] of [
++      { body: '{"private":"' + marker }, { body: "{}" }, { body: "null" },
++      { body: "true" }, { body: JSON.stringify({ success: false }) }, { status: 204, body: "" },
++    ].entries()) {
++      const url = "/delete-" + index; replies.set(url, reply);
++      let confirmationOpen = true, removed = false, state: MutationState = { busy: false, error: "" };
++      const task = new MutationTask({ request: requestJson, changed: value => { state = value; } });
++      const complete = (value: unknown) => { configurationRemoved(value); confirmationOpen = false; removed = true; };
++      await task.run(base + url, { method: "DELETE" }, complete);
++      assert.equal(calls.filter(call => call === url).length, 1);
++      assert.equal(confirmationOpen, true); assert.equal(removed, false); assert(state.error); assert(!state.error.includes(marker));
++      assert.match(state.error, /may already have been (saved|removed).*Refresh before trying again/);
++      replies.set(url, { body: JSON.stringify({ success: true, extraMetadata: "allowed" }) });
++      await task.run(base + url, { method: "DELETE" }, complete);
++      assert.equal(confirmationOpen, false); assert.equal(removed, true);
++      assert.equal(calls.filter(call => call === url).length, 2); task.dispose();
++    }
++  });
++});
++
++test("real HTTP wrong-shape configuration reads retain prior metadata and expose a fixed error", { timeout: 10000 }, async () => {
++  await fixture(async (base, _calls, replies) => {
++    const store = new QueryStore({ load: async url => configurationList(await requestJson(base + url)) });
++    replies.set("/list", { body: JSON.stringify([row]) });
++    const stop = store.subscribe("/list", () => {});
++    try {
++      await until(() => !!store.snapshot("/list").data);
++      const retained = store.snapshot("/list").data;
++      for (const value of [{}, null, { variables: [row] }, [null], [{ ...row, value: 1 }], [{ ...row, id: "" }]]) {
++        replies.set("/list", { body: JSON.stringify(value) }); store.invalidate();
++        await until(() => !store.snapshot("/list").refreshing);
++        const snapshot = store.snapshot("/list");
++        assert.equal(snapshot.data, retained); assert.equal(snapshot.status, 502);
++        assert.equal(snapshot.error, "Invalid configuration response. Refresh before trying again.");
++      }
++      replies.set("/list", { body: "[]" }); store.invalidate();
++      await until(() => !store.snapshot("/list").refreshing);
++      assert.deepEqual(store.snapshot("/list").data, []); assert.equal(store.snapshot("/list").error, undefined);
++    } finally { stop(); }
++  });
++});
++
++test("real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds", { timeout: 10000 }, async () => {
++  await fixture(async (base, calls, replies) => {
++    const refused: Reply[] = [
++      { body: '{"private":"' + marker }, { body: "{}" }, { body: "null" },
++      { body: JSON.stringify({ success: false, variable: row }) }, { body: JSON.stringify({ success: true }) },
++      { body: JSON.stringify({ success: true, variable: { ...row, id: "different-id" } }) },
++      { body: JSON.stringify({ success: true, variable: { ...row, key: "different_key" } }) },
++      { body: JSON.stringify({ success: true, variable: { ...row, value: marker } }) },
++      { body: JSON.stringify({ success: true, variable: { ...row, category: row.category.trim() } }) },
++      { status: 204, body: "" }, { body: "", drop: true },
++    ];
++    for (const [index, reply] of refused.entries()) {
++      const url = "/save-" + index; replies.set(url, reply);
++      let draft = { ...row }, saved = false, state: MutationState = { busy: false, error: "" };
++      const task = new MutationTask({ request: requestJson, changed: value => { state = value; } });
++      const complete = (value: unknown) => { configurationSaved(value, row); draft = { ...row, value: "cleared" }; saved = true; };
++      const pending = task.run(base + url, { method: "POST" }, complete);
++      await task.run(base + url, { method: "POST" }, complete);
++      await pending;
++      assert.equal(calls.filter(call => call === url).length, 1);
++      assert.equal(saved, false); assert.deepEqual(draft, row); assert.equal(state.busy, false);
++      assert(state.error); assert(!state.error.includes(marker));
++      if (!reply.drop) assert.match(state.error, /may already have been saved.*Refresh before trying again/);
++      replies.set(url, { status: 201, body: JSON.stringify({ success: true, variable: row }) });
++      await task.run(base + url, { method: "POST" }, complete);
++      assert.equal(saved, true); assert.equal(calls.filter(call => call === url).length, 2);
++      assert.deepEqual(state, { busy: false, error: "" }); task.dispose();
++    }
++    replies.set("/create", { status: 201, body: JSON.stringify({ success: true, variable: row }) });
++    const { key, value, category } = row;
++    configurationSaved(await requestJson(base + "/create", { method: "POST" }), { key, value, category });
++  });
++});
+diff --git a/docs/implementation-evidence/configuration-json-focused-preparation/controller.py b/docs/implementation-evidence/configuration-json-focused-preparation/controller.py
+new file mode 100644
+index 0000000..ea13806
+--- /dev/null
++++ b/docs/implementation-evidence/configuration-json-focused-preparation/controller.py
+@@ -0,0 +1,28 @@
++import pathlib,subprocess,json,os,time,re,hashlib,sys
++os.umask(0o077);mode=sys.argv[1];assert mode in ['pristine','old-parse','save-noop','remove-noop'];root=pathlib.Path('/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1');assert pathlib.Path('/proc/sys/kernel/random/boot_id').read_text().strip()=='19d54e89-533f-46e2-b89d-25657251c8d7'and os.getuid()==1000
++start=root/'started.json'
++if not start.exists():
++ with start.open('x')as f:json.dump(dict(boot='19d54e89-533f-46e2-b89d-25657251c8d7',started=time.monotonic(),absolute=time.monotonic()+240),f)
++started=json.loads(start.read_bytes());assert started['boot']=='19d54e89-533f-46e2-b89d-25657251c8d7';absolute=started['absolute'];assert time.monotonic()<absolute-20
++out=root/mode;out.mkdir(mode=0o700);name='bortus-configuration-json-focused-20261015-v1-'+mode;docker='/usr/bin/docker';assert hashlib.sha256(pathlib.Path(docker).read_bytes()).hexdigest()=='018f1a3d2dacf73614077ded6d05d2b9954630627a3722f1f19e46f5c973cec6'
++def command(args,seconds=10):
++ result=subprocess.run([docker,*args],capture_output=True,timeout=max(.1,min(seconds,absolute-time.monotonic())));return result
++prior=command(['container','ls','-aq','--filter','name=^/'+name+'$']);assert prior.returncode==0 and not prior.stdout.strip()
++rows=json.loads((root/'manifest.json').read_bytes())
++for row in rows:assert hashlib.sha256((root/'source'/row['path']).read_bytes()).hexdigest()==row['sha256']
++args=['create','--pull','never','--name',name,'--cidfile',str(out/'container.cid'),'--label','bortus.configuration-json-focused=20261015-v1','--network','none','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--cpus','2','--memory','1g','--memory-swap','1g','--pids-limit','256','--user','1000:1000','--tmpfs','/tmp:rw,exec,nosuid,nodev,size=134217728,mode=1777','--mount','type=bind,source='+str(root/'source')+',target=/source,readonly','--mount','type=bind,source=/home/brajam/.cache/bortus-controlled-perf/flux-argv-full-20261015-v1/source/node_modules,target=/deps/node_modules,readonly','--mount','type=bind,source='+str(root)+',target=/producer,readonly','--mount','type=bind,source='+str(out)+',target=/output','--env','HOME=/tmp','--env','DATABASE_URL=file:/tmp/unused-fixture.db','--env','NEXT_TELEMETRY_DISABLED=1','--env','NODE_ENV=test','--entrypoint','node','node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d','/producer/run.cjs',mode]
++(root/(mode+'-intent.json')).write_text(json.dumps(dict(args=args,seconds=240,child=30,closure=20))+'\n');cid=None;primary=None;cleanup=None
++try:
++ create=command(args);(out/'create.stdout').write_bytes(create.stdout);(out/'create.stderr').write_bytes(create.stderr);assert create.returncode==0
++ cid=(out/'container.cid').read_text().strip();assert re.fullmatch('[a-f0-9]{64}',cid)and create.stdout.strip().decode()==cid
++ inspect=command(['inspect',cid]);assert inspect.returncode==0;d=json.loads(inspect.stdout)[0];(out/'created-inspect.json').write_bytes(inspect.stdout);assert d['Id']==cid and d['Name']=='/'+name and d['Config']['Labels']['bortus.configuration-json-focused']=='20261015-v1'and d['HostConfig']['NetworkMode']=='none'and d['HostConfig']['ReadonlyRootfs']and d['HostConfig']['NanoCpus']==2000000000 and d['HostConfig']['Memory']==d['HostConfig']['MemorySwap']==1073741824
++ attach=command(['start','--attach',cid],40);(out/'attach.stdout').write_bytes(attach.stdout);(out/'attach.stderr').write_bytes(attach.stderr);assert attach.returncode==0
++ inspect=command(['inspect',cid]);d=json.loads(inspect.stdout)[0];(out/'completed-inspect.json').write_bytes(inspect.stdout);assert not d['State']['Running']and d['State']['ExitCode']==0
++except BaseException as e:primary=dict(type=type(e).__name__)
++finally:
++ if cid:
++  remove=command(['rm','-f',cid]);cleanup=dict(actualExit=remove.returncode);(out/'remove.stdout').write_bytes(remove.stdout);(out/'remove.stderr').write_bytes(remove.stderr)
++  check=command(['inspect','--format','{{.Id}}',cid]);checkname=command(['container','ls','-aq','--filter','name=^/'+name+'$']);cleanup.update(exactCIDAbsent=check.returncode!=0 and not check.stdout.strip(),exactNameAbsent=checkname.returncode==0 and not checkname.stdout.strip())
++ for row in rows:assert hashlib.sha256((root/'source'/row['path']).read_bytes()).hexdigest()==row['sha256']
++ result=dict(mode=mode,actualExit=0 if primary is None and cleanup and cleanup['actualExit']==0 and cleanup['exactCIDAbsent']and cleanup['exactNameAbsent']else 1,primary=primary,cleanup=cleanup,confirmedOwnedCID=cid,createUncertain=cid is None,sourceUnchanged=True,oldCorpusReplayed=False)
++ (out/'outer-terminal.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result));raise SystemExit(result['actualExit'])
+diff --git a/docs/implementation-evidence/configuration-json-focused-preparation/expectations.json b/docs/implementation-evidence/configuration-json-focused-preparation/expectations.json
+new file mode 100644
+index 0000000..562dfc0
+--- /dev/null
++++ b/docs/implementation-evidence/configuration-json-focused-preparation/expectations.json
+@@ -0,0 +1,41 @@
++{
++  "pristine": {
++    "exit": 0,
++    "failures": []
++  },
++  "old-parse": {
++    "exit": 1,
++    "failures": [
++      {
++        "name": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
++        "operator": "rejects",
++        "line": 39
++      }
++    ]
++  },
++  "save-noop": {
++    "exit": 1,
++    "failures": [
++      {
++        "name": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
++        "operator": "throws",
++        "line": 48
++      },
++      {
++        "name": "real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds",
++        "operator": "strictEqual",
++        "line": 143
++      }
++    ]
++  },
++  "remove-noop": {
++    "exit": 1,
++    "failures": [
++      {
++        "name": "real HTTP configuration DELETE needs a true acknowledgment before closing confirmation",
++        "operator": "strictEqual",
++        "line": 91
++      }
++    ]
++  }
++}
+diff --git a/docs/implementation-evidence/configuration-json-focused-preparation/handoff.json b/docs/implementation-evidence/configuration-json-focused-preparation/handoff.json
+new file mode 100644
+index 0000000..373cbea
+--- /dev/null
++++ b/docs/implementation-evidence/configuration-json-focused-preparation/handoff.json
+@@ -0,0 +1,147 @@
++{
++  "status": "SOURCE PREPARATION ONLY; NOT STAGED OR EXECUTED",
++  "requires": "ROOT peer0 review and explicit exact actor authorization; all preparation remains unexecuted",
++  "sourceReceipt": "../configuration-json-response-source-20261015.json",
++  "sourceAndTestsFrozen": true,
++  "sourcePinNote": "Use sourceReceipt.sourcePins exact working-byte hashes; no changes since peer-reviewed20e4d736 test freeze.",
++  "historicalBasis": {
++    "receipt": "../provisioning-output-cursor-focused-20261015.json",
++    "retainedProducer": "/home/brajam/.local/share/branconet-migration/provisioning-output-focused-20261015-v1-1/run.cjs",
++    "producerSHA256": "3d683c2917f7232cfaca5ad44c4e3cf12c388cec7edbe70c8c8735b87c8d3e0b",
++    "retainedIntent": "/home/brajam/.local/share/branconet-migration/provisioning-output-focused-20261015-v1-1/pristine-intent.json",
++    "intentSHA256": "6280e092a4366b685340878a7b9df9a6f4bf433ed4c55f6c7fccc89607ac83b4",
++    "derivation": "Same bounded copy/symlink/spawnSync/persistent stdout+stderr+status/restore/complete pattern; exact TAP rejection uses existing scripts/regression-sensitivity.mjs checks. No new controller/framework/install."
++  },
++  "runtime": {
++    "image": "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
++    "node": "22.23.3",
++    "deps": "/home/brajam/.cache/bortus-controlled-perf/flux-argv-full-20261015-v1/source/node_modules",
++    "qualifiedInstalledObjectCount": 40635,
++    "depsMount": "/deps/node_modules,readonly",
++    "nodeModulesAncestorRequired": true,
++    "newInstall": false,
++    "imagePull": "never",
++    "cpus": 2,
++    "memoryBytes": 1073741824,
++    "swapExtraBytes": 0,
++    "pids": 256,
++    "network": "none; tests use own loopback only",
++    "user": "1000:1000",
++    "readOnlyRoot": true,
++    "caps": "ALL dropped",
++    "security": "no-new-privileges",
++    "tmpfs": "/tmp:rw,exec,nosuid,nodev,size=134217728,mode=1777",
++    "sharedWholeSeconds": 240,
++    "sharedClosureReserveSeconds": 20,
++    "childSeconds": 30,
++    "outputBytesPerStream": 1048576,
++    "deadline": "One shared monotonic240s across all four sequential modes,20s reserved for closure. Clamp each existing controller phase duration to remaining budget; do not reset240s per mode."
++  },
++  "proposedLinuxOwner": "/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1",
++  "staging": "After authorization, create one fresh owner directory/source only. Copy11manifest source files and five executable/input files (controller.py,run.cjs,manifest.json,mutations.json,expectations.json). Existing controller creates each mode output directory and writes its actual intent. Do not stage handoff/templates as executable input, do not precreate mode directories or started.json. Verify source/packet/deps pins, boot/UID/docker/image and exact owned-name absence before first mode. No staging occurred.",
++  "execution": {
++    "order": [
++      "pristine",
++      "old-parse",
++      "save-noop",
++      "remove-noop"
++    ],
++    "children": 4,
++    "testsPerChild": 5,
++    "testArguments": [
++      "--import",
++      "tsx",
++      "--test",
++      "--experimental-test-isolation=none",
++      "--test-reporter=tap",
++      "tests/request-json-response.test.ts"
++    ],
++    "noNameFilter": true,
++    "originalTestBytesUnchanged": true,
++    "expected": [
++      "pristine child0,5pass/0fail",
++      "old-parse child1,4pass/1fail; exact39/rejects",
++      "save-noop child1,3pass/2fail; exact48/throws and143/strictEqual",
++      "remove-noop child1,4pass/1fail; exact91/strictEqual"
++    ],
++    "oracles": "Exact failed names, counts5/no skips/cancellations/todo, ERR_ASSERTION/testCodeFailure/AssertionError/operator/line; not arbitraryexit1. All complete TAP/status records retained.",
++    "negativeSource": "Only copied use-query oldparse block or one copied configuration decoder function becomes no-op; each unique replacement and exact mutantSHA pinned. Restore every copied source byte and verify read-only original in finally.",
++    "closure": "Inherited controller checks the fixed boot identity, synchronously runs Docker, and retains exact container CID/name, create/completed state, remove and CID/name absence checks. It does not record host PID/start identities or promise an independent all-birth recheck. No new lifecycle layer is proposed."
++  },
++  "functionalScope": "Five realHTTP transport/helper/QueryStore/MutationTask suites only. No actual browser, production Next route, whole suite, build, native API, TLS image or performance qualification.",
++  "countBoundary": "Current historical full347 plus five new suites implies candidate352 only as arithmetic. No352runtime count or pass claimed; full count recorded only after actual full execution.",
++  "timingBoundary": "Nodefullbuild2CPU/8GiB currently in progress per ROOT. Only eventual nonperformance functional work after exact authorization; all timing benchmarks held.",
++  "inputs": [
++    {
++      "path": "controller.py",
++      "bytes": 4775,
++      "sha256": "168abe1766c144b8bc3c727d8572388ad91ec5b29e9ef0a5e2d2c15b00c43547",
++      "stagedExecutableInput": true
++    },
++    {
++      "path": "expectations.json",
++      "bytes": 1019,
++      "sha256": "4a51aadcf00921296edc31660785d415ec2cb2336583ebd1fc7339018e418937",
++      "stagedExecutableInput": true
++    },
++    {
++      "path": "manifest.json",
++      "bytes": 1485,
++      "sha256": "51a48b2321a352040c444f694d2ebe321d0bee12bfa2cb0375256e73eddeba5b",
++      "stagedExecutableInput": true
++    },
++    {
++      "path": "mutations.json",
++      "bytes": 2361,
++      "sha256": "de042bede7ba9ba5780f25852742a50c4c0503d8df0f172bc097411f5bee7c0c",
++      "stagedExecutableInput": true
++    },
++    {
++      "path": "old-parse-intent.json",
++      "bytes": 2000,
++      "sha256": "2abbce816e5975711b5b719dd3e6b2b1bec66f82f3d6f62233e06a951a660660",
++      "stagedExecutableInput": false
++    },
++    {
++      "path": "pristine-intent.json",
++      "bytes": 1996,
++      "sha256": "d68abb7a14f3d5ba6d032a29e650de16ef38e86039d049fdb18ece89bf03a7ff",
++      "stagedExecutableInput": false
++    },
++    {
++      "path": "remove-noop-intent.json",
++      "bytes": 2008,
++      "sha256": "96de77c3c832eb88cbe72b99a1e49067bb0f453ec5f1be85c17b49bbd14bc9ea",
++      "stagedExecutableInput": false
++    },
++    {
++      "path": "run.cjs",
++      "bytes": 5050,
++      "sha256": "e71df75e2bedaf591c38d5e1b191e6e655d6f29d489927f2ba2834662151a3ae",
++      "stagedExecutableInput": true
++    },
++    {
++      "path": "save-noop-intent.json",
++      "bytes": 2000,
++      "sha256": "8f3d975cd45a323d6a303cda4d0cdd6bb08f9f874265bb3c85178ee7972d9bc2",
++      "stagedExecutableInput": false
++    }
++  ],
++  "actorController": {
++    "path": "docs/implementation-evidence/configuration-json-focused-preparation/controller.py",
++    "sha256": "168abe1766c144b8bc3c727d8572388ad91ec5b29e9ef0a5e2d2c15b00c43547",
++    "priorPath": "C:/Users/james/AppData/Local/BORTUS/handoffs/app-provisioning-output-focused-run-20261015-v1-1.py",
++    "priorSHA256": "1c432d8844d164b395b12d4dd8a9f458e1f052ab615cf7daec912a9a939f1998",
++    "derivation": "Only allowed mode literals, owner root/container prefix and label changed. Existing shared started.json absolute240s/20s reserve, Docker binary hash/boot/UID/image/deps/caps/timeout/owned cleanup unchanged.",
++    "startup": "Shared started.json is created only by first authorized mode; never reset between modes.",
++    "proposedCommands": [
++      "python3 /home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/controller.py pristine",
++      "python3 /home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/controller.py old-parse",
++      "python3 /home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/controller.py save-noop",
++      "python3 /home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/controller.py remove-noop"
++    ]
++  },
++  "executed": false,
++  "staged": false,
++  "committed": false
++}
+diff --git a/docs/implementation-evidence/configuration-json-focused-preparation/manifest.json b/docs/implementation-evidence/configuration-json-focused-preparation/manifest.json
+new file mode 100644
+index 0000000..27adab9
+--- /dev/null
++++ b/docs/implementation-evidence/configuration-json-focused-preparation/manifest.json
+@@ -0,0 +1,46 @@
++[
++  {
++    "path": "package.json",
++    "sha256": "63acc50361a9e67e1aac84d7d7fa0ef352c966bf2c589eb4707c97601a8bd442"
++  },
++  {
++    "path": "package-lock.json",
++    "sha256": "984756b9a6ee2caf522a7174fba3575631b3e794da73faa969df042baa9a6356"
++  },
++  {
++    "path": "tsconfig.json",
++    "sha256": "f38625630fef3e188f3a86b2f27233e6b01574999388ebb03bd5f7f30726abc3"
++  },
++  {
++    "path": "tests/request-json-response.test.ts",
++    "sha256": "20e4d736eea3d3ea37b42fe533752a77f0a451c0c7d695ae876910fc5ab02dc8"
++  },
++  {
++    "path": "src/lib/use-query.ts",
++    "sha256": "3cf6a05a4166f62677d9261594ca1a30031750c4b6465809ad4c014a1824f3f0"
++  },
++  {
++    "path": "src/lib/configuration-response.ts",
++    "sha256": "6790dab7ca8531052750c875278eab793f5464ee511de6af2ba4e3fe6c7518d0"
++  },
++  {
++    "path": "src/lib/query-store.ts",
++    "sha256": "e3b7200f474b8cfc1d1539ea950d709c534c067e010e7e02ed1a3878d09f9ec6"
++  },
++  {
++    "path": "src/lib/mutation-task.ts",
++    "sha256": "d0eac5c8adf86ac686ad5c00d6582ff3b14f7f0f0f33f3cb223e03988c9f1ef7"
++  },
++  {
++    "path": "src/lib/metadata-query.ts",
++    "sha256": "4efb064666eccb9d6ac1ffbba02b2cdf7f52e4d751f18a6d2272d8761e0dc308"
++  },
++  {
++    "path": "src/lib/kv-metadata-query.ts",
++    "sha256": "fbd0fab3637c26a93bad4259b3f76d8621c801a45d9339ba7a1dec13f810f608"
++  },
++  {
++    "path": "src/app/(dashboard)/configuration/page.tsx",
++    "sha256": "c68a447bb7fa8f9e097650d256dbd548e68a2f69e04e474a07f3fcae1fe5d54c"
++  }
++]
+diff --git a/docs/implementation-evidence/configuration-json-focused-preparation/mutations.json b/docs/implementation-evidence/configuration-json-focused-preparation/mutations.json
+new file mode 100644
+index 0000000..980676c
+--- /dev/null
++++ b/docs/implementation-evidence/configuration-json-focused-preparation/mutations.json
+@@ -0,0 +1,23 @@
++{
++  "old-parse": {
++    "path": "src/lib/use-query.ts",
++    "originalSHA256": "3cf6a05a4166f62677d9261594ca1a30031750c4b6465809ad4c014a1824f3f0",
++    "before": "  let data: unknown;\r\n  if (response.status !== 204) {\r\n    try { data = await response.json(); }\r\n    catch {\r\n      if (response.ok) throw new QueryFailure(\"Server response could not be verified. Any change may already have been saved. Refresh before trying again.\", 502);\r\n    }\r\n  }\r\n",
++    "after": "  const data = await response.json().catch(() => ({}));\n",
++    "mutantSHA256": "afc2047668c93d29d785222832acb460838e65c6d18375001e8201de25599588"
++  },
++  "save-noop": {
++    "path": "src/lib/configuration-response.ts",
++    "originalSHA256": "6790dab7ca8531052750c875278eab793f5464ee511de6af2ba4e3fe6c7518d0",
++    "before": "export function configurationSaved(value: unknown, expected: { id?: string; key: string; value: string; category: string }): void {\n  const unverified = () => new QueryFailure(\"Configuration result could not be verified. The change may already have been saved. Refresh before trying again.\", 502);\n  if (!record(value) || value.success !== true || !variable(value.variable)) throw unverified();\n  const saved = value.variable;\n  if (saved.key !== expected.key || saved.value !== expected.value || saved.category !== expected.category\n    || expected.id !== undefined && saved.id !== expected.id) throw unverified();\n}\n\n",
++    "after": "export function configurationSaved(value: unknown, expected: { id?: string; key: string; value: string; category: string }): void { void value; void expected; }\n\n",
++    "mutantSHA256": "a5d0c2592ba460f6d14eefd6ff6330256201cd8e8764cfb6f5063808391b1859"
++  },
++  "remove-noop": {
++    "path": "src/lib/configuration-response.ts",
++    "originalSHA256": "6790dab7ca8531052750c875278eab793f5464ee511de6af2ba4e3fe6c7518d0",
++    "before": "export function configurationRemoved(value: unknown): void {\n  if (!record(value) || value.success !== true)\n    throw new QueryFailure(\"Configuration removal could not be verified. The entry may already have been removed. Refresh before trying again.\", 502);\n}\n",
++    "after": "export function configurationRemoved(value: unknown): void { void value; }\n",
++    "mutantSHA256": "d25ac18cdc250ab1ae9a7ef0b072f341b7bf4e745a10d70c1551b90fe21a9e55"
++  }
++}
+diff --git a/docs/implementation-evidence/configuration-json-focused-preparation/old-parse-intent.json b/docs/implementation-evidence/configuration-json-focused-preparation/old-parse-intent.json
+new file mode 100644
+index 0000000..d829937
+--- /dev/null
++++ b/docs/implementation-evidence/configuration-json-focused-preparation/old-parse-intent.json
+@@ -0,0 +1,58 @@
++{
++  "args": [
++    "create",
++    "--pull",
++    "never",
++    "--name",
++    "bortus-configuration-json-focused-20261015-v1-old-parse",
++    "--cidfile",
++    "/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/old-parse/container.cid",
++    "--label",
++    "bortus.configuration-json-focused=20261015-v1",
++    "--network",
++    "none",
++    "--read-only",
++    "--cap-drop",
++    "ALL",
++    "--security-opt",
++    "no-new-privileges",
++    "--cpus",
++    "2",
++    "--memory",
++    "1g",
++    "--memory-swap",
++    "1g",
++    "--pids-limit",
++    "256",
++    "--user",
++    "1000:1000",
++    "--tmpfs",
++    "/tmp:rw,exec,nosuid,nodev,size=134217728,mode=1777",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/source,target=/source,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/flux-argv-full-20261015-v1/source/node_modules,target=/deps/node_modules,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1,target=/producer,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/old-parse,target=/output",
++    "--env",
++    "HOME=/tmp",
++    "--env",
++    "DATABASE_URL=file:/tmp/unused-fixture.db",
++    "--env",
++    "NEXT_TELEMETRY_DISABLED=1",
++    "--env",
++    "NODE_ENV=test",
++    "--entrypoint",
++    "node",
++    "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
++    "/producer/run.cjs",
++    "old-parse"
++  ],
++  "seconds": 240,
++  "child": 30,
++  "closure": 20,
++  "sourceOnly": true,
++  "sharedDeadline": "Shared240s whole qualification/20s closure reserve across four sequential modes. ROOT clamps each existing phasecontroller seconds to remaining shared budget; each child remains30s. No clock reset or per-mode240s extension."
++}
+diff --git a/docs/implementation-evidence/configuration-json-focused-preparation/pristine-intent.json b/docs/implementation-evidence/configuration-json-focused-preparation/pristine-intent.json
+new file mode 100644
+index 0000000..54ca300
+--- /dev/null
++++ b/docs/implementation-evidence/configuration-json-focused-preparation/pristine-intent.json
+@@ -0,0 +1,58 @@
++{
++  "args": [
++    "create",
++    "--pull",
++    "never",
++    "--name",
++    "bortus-configuration-json-focused-20261015-v1-pristine",
++    "--cidfile",
++    "/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/pristine/container.cid",
++    "--label",
++    "bortus.configuration-json-focused=20261015-v1",
++    "--network",
++    "none",
++    "--read-only",
++    "--cap-drop",
++    "ALL",
++    "--security-opt",
++    "no-new-privileges",
++    "--cpus",
++    "2",
++    "--memory",
++    "1g",
++    "--memory-swap",
++    "1g",
++    "--pids-limit",
++    "256",
++    "--user",
++    "1000:1000",
++    "--tmpfs",
++    "/tmp:rw,exec,nosuid,nodev,size=134217728,mode=1777",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/source,target=/source,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/flux-argv-full-20261015-v1/source/node_modules,target=/deps/node_modules,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1,target=/producer,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/pristine,target=/output",
++    "--env",
++    "HOME=/tmp",
++    "--env",
++    "DATABASE_URL=file:/tmp/unused-fixture.db",
++    "--env",
++    "NEXT_TELEMETRY_DISABLED=1",
++    "--env",
++    "NODE_ENV=test",
++    "--entrypoint",
++    "node",
++    "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
++    "/producer/run.cjs",
++    "pristine"
++  ],
++  "seconds": 240,
++  "child": 30,
++  "closure": 20,
++  "sourceOnly": true,
++  "sharedDeadline": "Shared240s whole qualification/20s closure reserve across four sequential modes. ROOT clamps each existing phasecontroller seconds to remaining shared budget; each child remains30s. No clock reset or per-mode240s extension."
++}
+diff --git a/docs/implementation-evidence/configuration-json-focused-preparation/remove-noop-intent.json b/docs/implementation-evidence/configuration-json-focused-preparation/remove-noop-intent.json
+new file mode 100644
+index 0000000..070c2e5
+--- /dev/null
++++ b/docs/implementation-evidence/configuration-json-focused-preparation/remove-noop-intent.json
+@@ -0,0 +1,58 @@
++{
++  "args": [
++    "create",
++    "--pull",
++    "never",
++    "--name",
++    "bortus-configuration-json-focused-20261015-v1-remove-noop",
++    "--cidfile",
++    "/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/remove-noop/container.cid",
++    "--label",
++    "bortus.configuration-json-focused=20261015-v1",
++    "--network",
++    "none",
++    "--read-only",
++    "--cap-drop",
++    "ALL",
++    "--security-opt",
++    "no-new-privileges",
++    "--cpus",
++    "2",
++    "--memory",
++    "1g",
++    "--memory-swap",
++    "1g",
++    "--pids-limit",
++    "256",
++    "--user",
++    "1000:1000",
++    "--tmpfs",
++    "/tmp:rw,exec,nosuid,nodev,size=134217728,mode=1777",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/source,target=/source,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/flux-argv-full-20261015-v1/source/node_modules,target=/deps/node_modules,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1,target=/producer,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/remove-noop,target=/output",
++    "--env",
++    "HOME=/tmp",
++    "--env",
++    "DATABASE_URL=file:/tmp/unused-fixture.db",
++    "--env",
++    "NEXT_TELEMETRY_DISABLED=1",
++    "--env",
++    "NODE_ENV=test",
++    "--entrypoint",
++    "node",
++    "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
++    "/producer/run.cjs",
++    "remove-noop"
++  ],
++  "seconds": 240,
++  "child": 30,
++  "closure": 20,
++  "sourceOnly": true,
++  "sharedDeadline": "Shared240s whole qualification/20s closure reserve across four sequential modes. ROOT clamps each existing phasecontroller seconds to remaining shared budget; each child remains30s. No clock reset or per-mode240s extension."
++}
+diff --git a/docs/implementation-evidence/configuration-json-focused-preparation/result-publisher-recipe.json b/docs/implementation-evidence/configuration-json-focused-preparation/result-publisher-recipe.json
+new file mode 100644
+index 0000000..7a46c1a
+--- /dev/null
++++ b/docs/implementation-evidence/configuration-json-focused-preparation/result-publisher-recipe.json
+@@ -0,0 +1,93 @@
++{
++  "status": "SOURCE-ONLY RESULT PUBLISHER RECIPE; NOT EXECUTED",
++  "purpose": "Publish the finite focused outcome only after ROOT supplies actual four-mode records; no inference from this preparation.",
++  "owner": "/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1",
++  "inputs": [
++    "manifest.json",
++    "mutations.json",
++    "expectations.json",
++    "{mode}/{mode}.stdout",
++    "{mode}/{mode}.stderr",
++    "{mode}/{mode}-status.json",
++    "{mode}/{mode}-complete.json",
++    "{mode}/outer-terminal.json",
++    "{mode}/created-inspect.json",
++    "{mode}/completed-inspect.json",
++    "{mode}/create.stdout",
++    "{mode}/create.stderr",
++    "{mode}/remove.stdout",
++    "{mode}/remove.stderr",
++    "{mode}/container.cid"
++  ],
++  "modes": [
++    "pristine",
++    "old-parse",
++    "save-noop",
++    "remove-noop"
++  ],
++  "checks": [
++    "Hash every retained record; bind actual source/test and unchanged manifest/mutations/oracles/controller/runner to reviewed preparation pins.",
++    "Require outer actualExit0, runnerError:null, sourceUnchanged:true, no restoration failures, no spawn/timeout/signal/output overflow and expected child exit for every mode.",
++    "Read actual TAP independently against expectations.json: exactly5 tests; no skipped/cancelled/todo; pristine5pass0fail, oldparse4pass1fail, savenoop3pass2fail, removenoop4pass1fail.",
++    "For every mutant failure require exact expected test name, testCodeFailure, AssertionError, ERR_ASSERTION, operator and assertion line. Never accept arbitraryexit1.",
++    "Use inherited exact CID/name/create/completed/remove/absence observations only; checked boot is not host PID/start tracking or independent all-birth evidence.",
++    "Retain every refusal/failure literally, with actual exits and file hashes; do not relabel a failed mode as qualified or silently rerun it."
++  ],
++  "expectedAssertions": {
++    "old-parse": [
++      {
++        "test": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
++        "line": 39,
++        "operator": "rejects"
++      }
++    ],
++    "save-noop": [
++      {
++        "test": "real HTTP malformed success is rejected; generic valid JSON and empty204 remain compatible",
++        "line": 48,
++        "operator": "throws"
++      },
++      {
++        "test": "real HTTP unverified configuration writes cannot complete the draft callback or replay; explicit valid retry succeeds",
++        "line": 143,
++        "operator": "strictEqual"
++      }
++    ],
++    "remove-noop": [
++      {
++        "test": "real HTTP configuration DELETE needs a true acknowledgment before closing confirmation",
++        "line": 91,
++        "operator": "strictEqual"
++      }
++    ]
++  },
++  "publish": {
++    "result": "docs/implementation-evidence/configuration-json-response-focused-20261015.json",
++    "fields": [
++      "actual owner/source/build boundary",
++      "actual four mode child/outer exits",
++      "actual5-test pass/fail counts and named assertion witnesses",
++      "actual output/record hashes and source restoration",
++      "exact container CID/name checks actually retained",
++      "unchanged original validation clauses and historical failed results",
++      "functional scope and remaining acceptance"
++    ],
++    "allowedConclusion": "Finite realHTTP requestJson/configuration decoder/QueryStore/MutationTask qualification and three named sensitivity controls only, when actual checks pass.",
++    "notEstablished": [
++      "actual compiled browser draft/notice/confirmation behavior",
++      "fresh full unit/integration/build qualification",
++      "current source before/after performance",
++      "A07 warm no-regression or wholeA21 completion",
++      "application peak RSS, image/live/AT/adoption",
++      "host PID/start or all-birth absence"
++    ]
++  },
++  "docsAfterActualOnly": [
++    "Amend current candidate notes in API-USAGE.md, BORTUS-AUDIT.md, BORTUS-IMPLEMENTATION.md, BOTRUS-WORKFLOW.md and implementation-evidence/README.md with actual finite outcome and result link; keep historical source receipts unchanged.",
++    "Recheck all22 Markdown documents; preserve all44 originalValidation strings.",
++    "Rebind final source/manifest after ROOT commit and actual full functional results; candidate352 remains arithmetic until actual full count is recorded."
++  ],
++  "executed": false,
++  "recordsRead": false,
++  "docsUpdatedForRuntime": false
++}
+diff --git a/docs/implementation-evidence/configuration-json-focused-preparation/run.cjs b/docs/implementation-evidence/configuration-json-focused-preparation/run.cjs
+new file mode 100644
+index 0000000..705ec56
+--- /dev/null
++++ b/docs/implementation-evidence/configuration-json-focused-preparation/run.cjs
+@@ -0,0 +1,63 @@
++// Source preparation only. Derived from the retained provisioning-output focused runner.
++const fs = require('node:fs'), path = require('node:path'), cp = require('node:child_process'), crypto = require('node:crypto'), assert = require('node:assert/strict');
++process.umask(0o077);
++const mode = process.argv[2], manifest = JSON.parse(fs.readFileSync('/producer/manifest.json', 'utf8'));
++const mutations = JSON.parse(fs.readFileSync('/producer/mutations.json', 'utf8'));
++const expected = JSON.parse(fs.readFileSync('/producer/expectations.json', 'utf8'))[mode];
++assert(expected, 'Unknown focused mode');
++const sha = value => crypto.createHash('sha256').update(value).digest('hex');
++const dir = fs.mkdtempSync('/tmp/configuration-json-'), originals = new Map(), failures = [];
++let record, primary = null;
++const write = (suffix, value) => fs.writeFileSync('/output/' + mode + suffix, value, { flag: 'wx', mode: 0o600 });
++try {
++  for (const row of manifest) {
++    assert(!path.isAbsolute(row.path) && !row.path.split('/').includes('..'));
++    const bytes = fs.readFileSync('/source/' + row.path); assert.equal(sha(bytes), row.sha256);
++    const target = path.join(dir, row.path); fs.mkdirSync(path.dirname(target), { recursive: true, mode: 0o700 });
++    fs.writeFileSync(target, bytes, { flag: 'wx', mode: 0o600 }); originals.set(row.path, bytes);
++  }
++  fs.symlinkSync('/deps/node_modules', path.join(dir, 'node_modules'), 'dir');
++  const mutation = mutations[mode];
++  if (mutation) {
++    const target = path.join(dir, mutation.path), before = fs.readFileSync(target, 'utf8');
++    assert.equal(sha(before), mutation.originalSHA256); assert.equal(before.split(mutation.before).length - 1, 1);
++    const after = before.replace(mutation.before, mutation.after); assert.equal(sha(after), mutation.mutantSHA256);
++    fs.writeFileSync(target, after);
++  }
++  const args = ['--import', 'tsx', '--test', '--experimental-test-isolation=none', '--test-reporter=tap', 'tests/request-json-response.test.ts'];
++  const child = cp.spawnSync(process.execPath, args, { cwd: dir, env: process.env, encoding: 'utf8', timeout: 30000, maxBuffer: 1048576, killSignal: 'SIGKILL' });
++  const out = child.stdout || '', err = child.stderr || '';
++  record = { mode, status: child.status, signal: child.signal, errorCode: child.error?.code || null,
++    stdoutBytes: Buffer.byteLength(out), stderrBytes: Buffer.byteLength(err), stdoutSHA256: sha(out), stderrSHA256: sha(err),
++    testSHA256: sha(fs.readFileSync(path.join(dir, 'tests/request-json-response.test.ts'))),
++    sourceMutation: mutation ? { path: mutation.path, mutantSHA256: mutation.mutantSHA256 } : null };
++  write('.stdout', out); write('.stderr', err); write('-status.json', JSON.stringify(record, null, 2) + '\n');
++  assert(!child.error && child.signal === null, 'Child timeout/spawn/output failure'); assert.equal(err, '', 'Unexpected test stderr');
++  const failed = [...out.matchAll(/^not ok \d+ - (.+)$/gm)].map(match => match[1]);
++  const passed = [...out.matchAll(/^ok \d+ - (.+)$/gm)].map(match => match[1]);
++  assert.equal(child.status, expected.exit); assert.deepEqual(failed, expected.failures.map(row => row.name));
++  assert.equal(passed.length, 5 - expected.failures.length);
++  for (const [label, count] of [['tests', 5], ['pass', passed.length], ['fail', failed.length], ['cancelled', 0], ['skipped', 0], ['todo', 0]])
++    assert.match(out, new RegExp('^# ' + label + ' ' + count + '$', 'm'));
++  for (const witness of expected.failures) {
++    const start = out.indexOf(' - ' + witness.name + '\n'); assert(start >= 0);
++    const rest = out.slice(start), boundary = rest.slice(1).search(/\n(?:ok|not ok) \d+ - /);
++    const block = boundary < 0 ? rest : rest.slice(0, boundary + 1);
++    assert(block.includes("failureType: 'testCodeFailure'")); assert(block.includes("code: 'ERR_ASSERTION'"));
++    assert(block.includes("name: 'AssertionError'")); assert(block.includes("operator: '" + witness.operator + "'"));
++    assert.match(block, new RegExp('request-json-response\\.test\\.ts:' + witness.line + ':\\d+'));
++  }
++} catch (error) { primary = { name: error.name, code: error.code || null }; }
++finally {
++  for (const [relative, bytes] of originals) {
++    try { fs.writeFileSync(path.join(dir, relative), bytes); assert(fs.readFileSync(path.join(dir, relative)).equals(bytes)); }
++    catch { failures.push('restore:' + relative); }
++    try { assert(fs.readFileSync('/source/' + relative).equals(bytes)); } catch { failures.push('source:' + relative); }
++  }
++  try { assert(path.dirname(dir) === '/tmp' && path.basename(dir).startsWith('configuration-json-')); fs.rmSync(dir, { recursive: true }); }
++  catch { failures.push('cleanup'); }
++  write('-complete.json', JSON.stringify({ mode, record, runnerError: primary, restorationFailures: failures,
++    sourceUnchanged: failures.length === 0, noOldCorpus: true, browserEvidence: false }, null, 2) + '\n');
++}
++console.log(JSON.stringify({ mode, record, runnerError: primary, restorationFailures: failures }));
++if (primary || failures.length) process.exitCode = 1;
+diff --git a/docs/implementation-evidence/configuration-json-focused-preparation/save-noop-intent.json b/docs/implementation-evidence/configuration-json-focused-preparation/save-noop-intent.json
+new file mode 100644
+index 0000000..5bda25d
+--- /dev/null
++++ b/docs/implementation-evidence/configuration-json-focused-preparation/save-noop-intent.json
+@@ -0,0 +1,58 @@
++{
++  "args": [
++    "create",
++    "--pull",
++    "never",
++    "--name",
++    "bortus-configuration-json-focused-20261015-v1-save-noop",
++    "--cidfile",
++    "/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/save-noop/container.cid",
++    "--label",
++    "bortus.configuration-json-focused=20261015-v1",
++    "--network",
++    "none",
++    "--read-only",
++    "--cap-drop",
++    "ALL",
++    "--security-opt",
++    "no-new-privileges",
++    "--cpus",
++    "2",
++    "--memory",
++    "1g",
++    "--memory-swap",
++    "1g",
++    "--pids-limit",
++    "256",
++    "--user",
++    "1000:1000",
++    "--tmpfs",
++    "/tmp:rw,exec,nosuid,nodev,size=134217728,mode=1777",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/source,target=/source,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/flux-argv-full-20261015-v1/source/node_modules,target=/deps/node_modules,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1,target=/producer,readonly",
++    "--mount",
++    "type=bind,source=/home/brajam/.local/share/branconet-migration/configuration-json-focused-20261015-v1/save-noop,target=/output",
++    "--env",
++    "HOME=/tmp",
++    "--env",
++    "DATABASE_URL=file:/tmp/unused-fixture.db",
++    "--env",
++    "NEXT_TELEMETRY_DISABLED=1",
++    "--env",
++    "NODE_ENV=test",
++    "--entrypoint",
++    "node",
++    "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
++    "/producer/run.cjs",
++    "save-noop"
++  ],
++  "seconds": 240,
++  "child": 30,
++  "closure": 20,
++  "sourceOnly": true,
++  "sharedDeadline": "Shared240s whole qualification/20s closure reserve across four sequential modes. ROOT clamps each existing phasecontroller seconds to remaining shared budget; each child remains30s. No clock reset or per-mode240s extension."
++}

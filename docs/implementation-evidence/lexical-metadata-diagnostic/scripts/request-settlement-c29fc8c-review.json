@@ -1,0 +1,82 @@
+{
+  "capturedAt": "2026-10-11T11:50:39.600784+00:00",
+  "scope": "Read-only current source review and recalculation of retained7e30 instrumented phase; no new runtime/source/driver/gate changes",
+  "currentFunctionalSource": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+  "retainedPhaseSource": "7e30b9b428a66cd3f5e618cec5e694d5f03302ac",
+  "retainedPhaseFile": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\phase-scheduling-7e30.json",
+  "retainedPhaseSHA256": "e4072228bc5a229443331477457f08f1956e2c56d62a5acb9196b720e3bff4bd",
+  "currentSourceBindings": [
+    {
+      "path": "k8s-rewrite/front-end/src/lib/secret-client.ts",
+      "mode": "100644",
+      "blob": "9d9da480faeb2eb79bb697a8afd5e164c47924db",
+      "rawSHA256": "4de72da11f1bebb5614cc41b2ac35a90b50c031a06075224a4e65a4b707bdd32"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/cluster-secrets.ts",
+      "mode": "100644",
+      "blob": "866b42b5f5fe9327335c49d7fb454428b6df4a02",
+      "rawSHA256": "a39eed8e5bba0c9813ec82e3b9f33ec9af0f9e7c282c1d3edcd4aa64a24865e1"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/permissions.ts",
+      "mode": "100644",
+      "blob": "7fc4f859ec41425efe4b912e3963a017d5261331",
+      "rawSHA256": "c894d04fa4cbcfaa09e97f1248100b671b29927b13950a4e964b0135a994b704"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/auth.ts",
+      "mode": "100644",
+      "blob": "2c345230401c6288b3905fa07c26aca0d83f0775",
+      "rawSHA256": "0fd90638b395bdda6a4a540821a8721fd618fc79f5d90c311a38a4e35a7b3818"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/secrets-api.ts",
+      "mode": "100644",
+      "blob": "1d81d0c70391b7bfd1c791cdd187eb5ea01d0bbf",
+      "rawSHA256": "ed9beeb21b2f6c727be6afa82339c7d5a7f027a28141847c5e465001a8a7ae35"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/secret-summary-json.ts",
+      "mode": "100644",
+      "blob": "5e1cd605a2ce0969c0f673853e9c23708c678fd4",
+      "rawSHA256": "2a552d7fd49608961e1569bec9cb3afd56fc630d1182872a5f4199997130ee61"
+    }
+  ],
+  "inferredGreedyWorkerContinuationGapsMs": [
+    1.291000000000004,
+    0.8279999999999959,
+    0.4440000000000026,
+    0.3300000000000054,
+    0.6120000000000019,
+    0.41799999999999926,
+    0.3620000000000019,
+    0.31099999999999994,
+    0.7730000000000103,
+    0.5430000000000064,
+    0.32099999999999795,
+    0.3580000000000041,
+    0.45300000000000296,
+    0.2990000000000066
+  ],
+  "continuationGapMedianMs": 0.43100000000000094,
+  "continuationGapMaxMs": 1.291000000000004,
+  "firstFourSynchronousEndHandlerSumMs": 11.248000000000001,
+  "lastFourSynchronousEndHandlerSumMs": 2.162,
+  "allSynchronousEndHandlerSumMs": 23.580000000000002,
+  "sourceFindings": [
+    "Each native request refreshes SDK auth after slot acquisition; optional equal-TLS-options pooling retains four physical sockets and destroys the owning pool at budget finish. The known18 requests/4TLS handshakes prove reuse; no missing keepalive.",
+    "The handler uses one fresh account snapshot; middleware also validates fresh account/sessionVersion. Retained auth/SQL observations are too small for the34ms delta.",
+    "The response end callback synchronously completes strict summary grammar/capture/decode before promise resolve. Slot release occurs in finally after that resolve; a namespace worker advances only after page parse/projection/pagination settles.",
+    "All14 later request starts follow one of the four previous settled intervals within the calculated narrow gap. This does not expose an unexplained long scheduler queue; callbacks plus mandatory waves dominate the retained native window."
+  ],
+  "limitations": [
+    "Greedy slot matching is inferred from ordered start/end observations, not an explicit worker/slot identifier; endHandler sum includes observer/listener work and cannot be added to overlapping capture/skip CPU.",
+    "The first-four vs last-four handler difference suggests cold callback cost but does not prove JIT or GC causality.",
+    "Current bitmask source has functional proof but no new phase profile; old7e30 timings cannot qualify its endpoint latency.",
+    "Moving parsing outside response settlement would require a new bounded fetch/validation pipeline, including raw-buffer ownership, cancellation, fail-closed validation and cursor decisions. Merely deferring to setImmediate still holds namespace worker until parse and may not remove the delay.",
+    "No supported metadata/value/credential cache, skipped namespaces, higher cap or authorization bypass is proposed."
+  ],
+  "nextTarget": "A bounded current-source request-settlement characterization, if root authorizes, must separately bind body end, strict parse start/end, transport slot release, next slot acquisition, SDK auth and worker continuation (durations/counters only), to test whether validation on the critical response path is materially removable under existing caps. No production candidate is yet established.",
+  "performanceAcceptance": false
+}

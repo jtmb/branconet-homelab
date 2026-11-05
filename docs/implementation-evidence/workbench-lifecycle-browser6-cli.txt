@@ -1,0 +1,12 @@
+BROWSER_CHECK Parent/workbench share status, versions and capabilities; opening requests no values
+BROWSER_CHECK Explicit adoption and grouped edit preserve exact binary, empty, unrelated, type and metadata
+BROWSER_CHECK One unchanged shared status poll preserves draft and frozen capture
+BROWSER_CHECK Native status outage pauses save without writes or draft loss; unchanged fresh recovery resumes capture
+BROWSER_CHECK External selected-field drift pauses frozen draft without writes; explicit reconcile creates new head
+BROWSER_CHECK History browsing has no value GET; rollback, soft deletion and restore create new heads preserving originals
+BROWSER_CHECK Explicit export stays ephemeral; import preview clears visible bundle and exact overwrite creates new version
+BROWSER_CHECK Write without read starts blank and replaces grouped fields with zero value GETs
+BROWSER_CHECK Genuine hidden state clears private draft, pauses shared status/history and fences held reply
+BROWSER_CHECK Fresh404 absence expires at original deadline under retry; unchanged fresh absence can recover without creation
+BROWSER_CHECK Metadata-only workbench fits320/390/768 and scoped scanner reviewed
+{"checks":11,"failures":[],"cleanup":{"chromeExitCode":0,"chromeSignal":null,"fixtureExitCode":0,"fixtureSignal":null}}

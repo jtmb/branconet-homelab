@@ -1,0 +1,770 @@
+{
+  "scope": "A02/A03/A05 supplemental disposable controls on unchanged retained ab8 production build; not full audit acceptance",
+  "node": "v22.23.3",
+  "startedUtc": "2026-10-11T13:30:06.869Z",
+  "pid": 1,
+  "checks": [
+    "expired-cookie:/api/nodes",
+    "expired-cookie:/api/vars",
+    "expired-cookie:/api/secret-references",
+    "expired-cookie:/api/secrets",
+    "expired-cookie:protected-page",
+    "expired-cookie:session",
+    "logout:cookie-attributes",
+    "logout:applied-cookie-removal",
+    "anonymous:120-protected-source-templates",
+    "public-middleware:/welcome",
+    "public-middleware:/auth/login",
+    "public-middleware:/auth/register",
+    "public-middleware:/api/health/live",
+    "exact-public-boundary:/api/vars/lookup/extra",
+    "exact-public-boundary:/api/health/live-extra",
+    "exact-public-boundary:/api/kv/automation/extra",
+    "exact-public-boundary:/welcome/extra"
+  ],
+  "registration": [],
+  "commandErrors": [],
+  "routeInventory": [
+    {
+      "template": "/configuration",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/deploy",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/deployments/[namespace]/[name]",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/deployments",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/flux/[repoName]/[bundleName]",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/flux/[repoName]",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/flux",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/ingresses/[namespace]/[name]",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/ingresses",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/name-spaces/[name]",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/name-spaces",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/nodes/[hostname]",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/nodes",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/pods/[namespace]/[name]",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/pods",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/secrets/kv",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/secrets",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/services/[namespace]/[name]",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/services",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/settings",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/storage/[namespace]/[name]",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/storage",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/users",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/workloads",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/api/cluster/deployments/[namespace]/[name]/action",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/deployments/[namespace]/[name]/delete",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/deployments/[namespace]/[name]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/deployments/[namespace]/[name]/scale",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/deployments/[namespace]/[name]/yaml",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/deployments",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/diagnostics",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/ingresses/[namespace]/[name]/delete",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/ingresses/[namespace]/[name]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/ingresses/[namespace]/[name]/yaml",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/ingresses",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/kubectl",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/namespaces/[name]/delete",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/namespaces/[name]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/namespaces/[name]/yaml",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/namespaces",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/nodes/[hostname]/action",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/nodes/[hostname]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/nodes/[hostname]/yaml",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/nodes",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/pods/[namespace]/[name]/delete",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/pods/[namespace]/[name]/exec",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/pods/[namespace]/[name]/logs",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/pods/[namespace]/[name]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/pods/[namespace]/[name]/yaml",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/pods",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/refresh",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/remove",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/services/[namespace]/[name]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/services/[namespace]/[name]/yaml",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/services",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/volumes/[namespace]/[name]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/volumes/[namespace]/[name]/yaml",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/volumes/reclaim",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/cluster/volumes",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/deploy/history",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/deploy/start",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/deploy/stop",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/deploy/stream",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/flux/hierarchy",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/flux/kustomizations/[name]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/flux/repos/[id]/delete-progress",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/flux/repos/[id]/detail",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/flux/repos/[id]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/flux/repos/[id]/sync",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/flux/repos",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/audit",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/export",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/history/gc/preview",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/history/gc",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/identities/[id]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/identities",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/import/preview",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/import",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/legacy/grants/[id]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/legacy/grants",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/legacy/preview",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/legacy",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/mounts/[id]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/mounts",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/operations/[id]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths/[id]/adopt",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths/[id]/capabilities",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths/[id]/data",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths/[id]/destroy",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths/[id]/reconcile",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths/[id]/rollback",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths/[id]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths/[id]/status",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths/[id]/versions/[version]/data",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths/[id]/versions/[version]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths/[id]/versions",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/paths",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/policies/[id]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/policies/preview",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/policies",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/rotations/[id]/consumer",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/kv/rotations",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/nodes/[id]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/nodes",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/secret-references",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/secrets",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/settings",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/users/[id]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/users",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/vars/[id]",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/vars",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/api/vars/sync",
+      "method": "GET",
+      "classification": "API",
+      "status": 401
+    },
+    {
+      "template": "/cluster/deployments",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/cluster/ingresses",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/cluster/name-spaces",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/cluster/nodes",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/cluster/pods",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/cluster/services",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    },
+    {
+      "template": "/cluster/storage",
+      "method": "GET",
+      "classification": "page",
+      "status": 307
+    }
+  ],
+  "limitations": [
+    "Protected route requests use anonymous GET and public dynamic substitutions; they establish middleware rejection only, not every authorized handler/action.",
+    "Logout qualifies response cookie clear and applied cookie-jar removal, not global token/session revocation.",
+    "AppSetting/bootstrap races use AccountStore directly with independent real SQLite clients; retained HTTP bootstrap coverage remains separate.",
+    "One namespace mutation exercises actual production error/redaction boundary; no real kubectl/cluster or universal mutation matrix.",
+    "No performance/no-regression, image/runtime or AT acceptance."
+  ],
+  "performanceAcceptance": false,
+  "ownedServerPid": 90,
+  "failure": {
+    "phase": "A05-production",
+    "classification": "Error",
+    "completedChecks": 17
+  },
+  "childExit": [
+    0,
+    null
+  ],
+  "fixtureRemoved": true,
+  "completedUtc": "2026-10-11T13:30:11.171Z",
+  "harnessSHA256": "27dab524fb7519570a245bbf4a3be9f7e4805431de81950a466a275d3da32d7f"
+}

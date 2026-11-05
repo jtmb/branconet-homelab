@@ -1,0 +1,35 @@
+{
+  "scope": "human native KV routes and adopted-target flat/legacy bridges",
+  "recordedDate": "2026-10-10",
+  "runtime": "Node 22.23.3 Windows x64",
+  "fullUnitTests": { "passed": 70, "failed": 0, "skipped": 0 },
+  "lint": "zero warnings",
+  "typecheck": "passed",
+  "productionBuild": "passed",
+  "productionHttp": { "existingSuiteSeconds": 31.96, "nativeSuiteSeconds": 17.96, "bothSuitesPassedIndividuallyAgainstCurrentBuild": true },
+  "fixture": "disposable SQLite/accounts, synthetic cookies/lookup token, CA-verified HTTPS mock native API; no real cluster",
+  "checks": [
+    "guarded-mode false refuses adoption before native writes; true explicitly permits tested synthetic adoption",
+    "metadata-only alias preview; initial adoption needs effective administration",
+    "new owned empty document returns 201, reads empty fields, refuses a second initial creation",
+    "current and immutable historical special-key/binary fields retain exact bytes; unrelated key/annotation/managed-field values excluded",
+    "fresh scoped grants allow current read/update; readonly and scoped flat reads denied",
+    "missing head returns 428, stale head returns 409; grouped mutation preserves unrelated keys",
+    "flat adopted edit returns 409; legacy exact-grant current lookup obeys fresh denies",
+    "rollback creates new head; external drift refuses value read; explicit reconcile captures drift; exact-path delete tombstones without deleting canonical object",
+    "operation resolution exposes metadata only; history namespace flat reveal/alias registration denied",
+    "missing ownership marker refuses adopted flat fallback/adoption; missing source with prior history refuses recreation before writes",
+    "current engineAdmin flag removal immediately denies administrator-only operations; synthetic private markers absent from captured app output",
+    "unit bridges preserve 603 synthetic aliases and cover revoke/disabled principal/new alias/missing metadata/no outage fallback"
+  ],
+  "harnessCorrections": [
+    "Initial missing-marker unit assertions were moved from the unrelated drift subtest to their own in-scope recovery assertions; full rerun passed",
+    "Added first-creation HTTP assertion initially expected 200; route returned its implemented 201. Corrected assertion and native suite rerun passed"
+  ],
+  "limitations": [
+    "Synthetic alias set, not production imported-603 validation",
+    "Automation, audit/capability views, destroy/GC, import/export, rotation and full KV UI acceptance remain pending",
+    "No Linux KV image, live native API, ServiceAccount/RBAC/admission or production mutation",
+    "No performance threshold claim; durations include harness overhead and an uncontrolled host"
+  ]
+}

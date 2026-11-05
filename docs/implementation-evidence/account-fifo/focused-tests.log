@@ -1,0 +1,77 @@
+TAP version 13
+# Subtest: independent processes retain SQL last-writer and effective-admin authority
+ok 1 - independent processes retain SQL last-writer and effective-admin authority
+  ---
+  duration_ms: 2104.611358
+  type: 'test'
+  ...
+# Subtest: account FIFO bounds admission at one active and64 waiters without invoking rejected work
+ok 2 - account FIFO bounds admission at one active and64 waiters without invoking rejected work
+  ---
+  duration_ms: 12.103044
+  type: 'test'
+  ...
+# Subtest: queued expiry removes only unstarted work and never releases a live active callback
+ok 3 - queued expiry removes only unstarted work and never releases a live active callback
+  ---
+  duration_ms: 30.7664
+  type: 'test'
+  ...
+# Subtest: failed or synchronously throwing account callbacks settle ownership before the next FIFO admission
+ok 4 - failed or synchronously throwing account callbacks settle ownership before the next FIFO admission
+  ---
+  duration_ms: 0.981948
+  type: 'test'
+  ...
+# Subtest: all AccountStore instances in this process share the same admission owner
+ok 5 - all AccountStore instances in this process share the same admission owner
+  ---
+  duration_ms: 0.247495
+  type: 'test'
+  ...
+# Subtest: queued account mutations recheck demotion, reset and deletion after admission
+ok 6 - queued account mutations recheck demotion, reset and deletion after admission
+  ---
+  duration_ms: 880.434319
+  type: 'test'
+  ...
+# Subtest: SQLite account invariants and session revocation across independent clients
+    # Subtest: exactly one bootstrap claim when registration is closed
+    ok 1 - exactly one bootstrap claim when registration is closed
+      ---
+      duration_ms: 40.668858
+      type: 'test'
+      ...
+    # Subtest: open registration still has exactly one initial writer; uniqueness is 409
+    ok 2 - open registration still has exactly one initial writer; uniqueness is 409
+      ---
+      duration_ms: 50.723154
+      type: 'test'
+      ...
+    # Subtest: cross-demotion, cross-deletion and mixed changes preserve a writer
+    ok 3 - cross-demotion, cross-deletion and mixed changes preserve a writer
+      ---
+      duration_ms: 87.782839
+      type: 'test'
+      ...
+    # Subtest: session existence, reset revocation, role recheck and self protection
+    ok 4 - session existence, reset revocation, role recheck and self protection
+      ---
+      duration_ms: 66.900958
+      type: 'test'
+      ...
+    1..4
+ok 7 - SQLite account invariants and session revocation across independent clients
+  ---
+  duration_ms: 1122.670999
+  type: 'test'
+  ...
+1..7
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5163.741948

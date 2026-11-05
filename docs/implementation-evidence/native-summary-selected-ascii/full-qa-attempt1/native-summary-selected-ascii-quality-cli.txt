@@ -1,0 +1,330 @@
+TAP version 13
+# Subtest: fresh native handler account snapshots retain independent middleware and revocation fences
+    # Subtest: actual Next dynamic work/request contexts expose request-owned cookies
+    ok 1 - actual Next dynamic work/request contexts expose request-owned cookies
+      ---
+      duration_ms: 5.6636
+      type: 'test'
+      ...
+    # Subtest: absent invalid expired cookies make no account/native calls
+    ok 2 - absent invalid expired cookies make no account/native calls
+      ---
+      duration_ms: 14.6472
+      type: 'test'
+      ...
+    # Subtest: one query supplies exactly the fresh handler account fields
+    ok 3 - one query supplies exactly the fresh handler account fields
+      ---
+      duration_ms: 20.5495
+      type: 'test'
+      ...
+    # Subtest: deletion and session reset revoke previously valid cookies
+    ok 4 - deletion and session reset revoke previously valid cookies
+      ---
+      duration_ms: 46.003
+      type: 'test'
+      ...
+    # Subtest: role and engine-admin withdrawal forbid values and body consumption but preserve metadata
+    ok 5 - role and engine-admin withdrawal forbid values and body consumption but preserve metadata
+      ---
+      duration_ms: 47.3065
+      type: 'test'
+      ...
+    # Subtest: middleware success cannot authorize a subsequently revoked or downgraded handler
+    ok 6 - middleware success cannot authorize a subsequently revoked or downgraded handler
+      ---
+      duration_ms: 76.0524
+      type: 'test'
+      ...
+    # Subtest: repeated/interleaved principals cannot reuse account authorization
+    ok 7 - repeated/interleaved principals cannot reuse account authorization
+      ---
+      duration_ms: 32.5782
+      type: 'test'
+      ...
+    # Subtest: legacy versionless JWT is accepted only at account version zero
+    ok 8 - legacy versionless JWT is accepted only at account version zero
+      ---
+      duration_ms: 22.6332
+      type: 'test'
+      ...
+    # Subtest: database outage fails closed with a fixed private 503 before native access
+    ok 9 - database outage fails closed with a fixed private 503 before native access
+      ---
+      duration_ms: 11.3303
+      type: 'test'
+      ...
+    1..9
+ok 1 - fresh native handler account snapshots retain independent middleware and revocation fences
+  ---
+  duration_ms: 2714.0681
+  type: 'test'
+  ...
+# Subtest: four workers share a budget, keep configured order and expose exact keys only
+ok 2 - four workers share a budget, keep configured order and expose exact keys only
+  ---
+  duration_ms: 12.7687
+  type: 'test'
+  ...
+# Subtest: concurrent item/byte quota crossings fail the whole result and start no later scope
+ok 3 - concurrent item/byte quota crossings fail the whole result and start no later scope
+  ---
+  duration_ms: 1.214
+  type: 'test'
+  ...
+# Subtest: a denied scope cancels its siblings, redacts native errors and returns no partial metadata
+ok 4 - a denied scope cancels its siblings, redacts native errors and returns no partial metadata
+  ---
+  duration_ms: 0.4747
+  type: 'test'
+  ...
+# Subtest: invalid concurrency and out-of-scope requests fail before transport work
+ok 5 - invalid concurrency and out-of-scope requests fail before transport work
+  ---
+  duration_ms: 0.5715
+  type: 'test'
+  ...
+# Subtest: production native factory opts into bounded TLS parallelism and excludes history
+ok 6 - production native factory opts into bounded TLS parallelism and excludes history
+  ---
+  duration_ms: 412.1292
+  type: 'test'
+  ...
+# Subtest: TLS queue stays capped at 64; cancelled listings drain without aborting other reads
+ok 7 - TLS queue stays capped at 64; cancelled listings drain without aborting other reads
+  ---
+  duration_ms: 384.0434
+  type: 'test'
+  ...
+# Subtest: parallel TLS retry prefixes share the byte ceiling and leave no native work after rejection
+ok 8 - parallel TLS retry prefixes share the byte ceiling and leave no native work after rejection
+  ---
+  duration_ms: 658.8798
+  type: 'test'
+  ...
+# Subtest: rejected-prefix hints count only completed top-level objects across every byte boundary
+ok 9 - rejected-prefix hints count only completed top-level objects across every byte boundary
+  ---
+  duration_ms: 13.2948
+  type: 'test'
+  ...
+# Subtest: ambiguous headers closed arrays incomplete first items and malformed prefixes have no hint
+ok 10 - ambiguous headers closed arrays incomplete first items and malformed prefixes have no hint
+  ---
+  duration_ms: 6.2218
+  type: 'test'
+  ...
+# Subtest: hint work is bounded and never concatenates decodes parses or retains native objects
+ok 11 - hint work is bounded and never concatenates decodes parses or retains native objects
+  ---
+  duration_ms: 15.7274
+  type: 'test'
+  ...
+# Subtest: ASCII word skipping preserves every byte class at word and chunk boundaries
+ok 12 - ASCII word skipping preserves every byte class at word and chunk boundaries
+  ---
+  duration_ms: 122.6383
+  type: 'test'
+  ...
+# Subtest: explicit summary TLS path preserves full list visitors and values, and fresh authorization
+ok 13 - explicit summary TLS path preserves full list visitors and values, and fresh authorization
+  ---
+  duration_ms: 411.7025
+  type: 'test'
+  ...
+# Subtest: summary TLS pagination retains bounded oversized retry, exact key inventory and received byte charge
+ok 14 - summary TLS pagination retains bounded oversized retry, exact key inventory and received byte charge
+  ---
+  duration_ms: 494.4752
+  type: 'test'
+  ...
+# Subtest: summary parsing cannot publish after its request/list deadline or silently retry
+not ok 15 - summary parsing cannot publish after its request/list deadline or silently retry
+  ---
+  duration_ms: 231.4587
+  type: 'test'
+  location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-app-recovered\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\native-list-window.test.ts:80:1'
+  failureType: 'testCodeFailure'
+  error: 'Missing expected rejection.'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  stack: |-
+    async <anonymous> (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\native-list-window.test.ts:95:7)
+    async fixture (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\native-list-window.test.ts:105:94)
+    async TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\native-list-window.test.ts:81:3)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: prefix hints retry the same cursor with fresh complete inventory and never resize non-size failures
+ok 16 - prefix hints retry the same cursor with fresh complete inventory and never resize non-size failures
+  ---
+  duration_ms: 157.3348
+  type: 'test'
+  ...
+# Subtest: settled responses discard late end/data/errors without decoding and still charge every delivered byte
+ok 17 - settled responses discard late end/data/errors without decoding and still charge every delivered byte
+  ---
+  duration_ms: 185.3822
+  type: 'test'
+  ...
+# Subtest: full-list keepalive shares at most four TLS connections only within one complete operation
+ok 18 - full-list keepalive shares at most four TLS connections only within one complete operation
+  ---
+  duration_ms: 368.5437
+  type: 'test'
+  ...
+# Subtest: pooled requests refresh SDK authorization and fail closed when its next credential is withdrawn
+ok 19 - pooled requests refresh SDK authorization and fail closed when its next credential is withdrawn
+  ---
+  duration_ms: 329.2011
+  type: 'test'
+  ...
+# Subtest: cancelled SDK authentication destroys late agents without a request or interference with unrelated reads
+ok 20 - cancelled SDK authentication destroys late agents without a request or interference with unrelated reads
+  ---
+  duration_ms: 376.3195
+  type: 'test'
+  ...
+# Subtest: fresh security-option changes never reuse the earlier trusted connection
+ok 21 - fresh security-option changes never reuse the earlier trusted connection
+  ---
+  duration_ms: 131.6655
+  type: 'test'
+  ...
+# Subtest: client-certificate and real HTTP proxy agents retain fresh request boundaries
+ok 22 - client-certificate and real HTTP proxy agents retain fresh request boundaries
+  ---
+  duration_ms: 310.3937
+  type: 'test'
+  ...
+# Subtest: externally owned list budgets explicitly finish or expire their connection pools
+ok 23 - externally owned list budgets explicitly finish or expire their connection pools
+  ---
+  duration_ms: 298.2886
+  type: 'test'
+  ...
+# Subtest: production 200-object windows return exact 1000/10000-object TLS inventories with bounded calls
+ok 24 - production 200-object windows return exact 1000/10000-object TLS inventories with bounded calls
+  ---
+  duration_ms: 489.0071
+  type: 'test'
+  ...
+# Subtest: 200-to-10 reductions retain zero/nonzero cursors and charge mixed-size rejected prefixes
+ok 25 - 200-to-10 reductions retain zero/nonzero cursors and charge mixed-size rejected prefixes
+  ---
+  duration_ms: 464.1209
+  type: 'test'
+  ...
+# Subtest: 200 windows use completed-prefix 3-large sizing and preserve fallback/refusal limits
+ok 26 - 200 windows use completed-prefix 3-large sizing and preserve fallback/refusal limits
+  ---
+  duration_ms: 527.9388
+  type: 'test'
+  ...
+# Subtest: one rejected prefix plus 80 quarter-MiB records stays within the unchanged aggregate ceiling
+ok 27 - one rejected prefix plus 80 quarter-MiB records stays within the unchanged aggregate ceiling
+  ---
+  duration_ms: 963.8144
+  type: 'test'
+  ...
+# Subtest: batched production inventory rejects object10001 and invalid window configuration without partial results
+ok 28 - batched production inventory rejects object10001 and invalid window configuration without partial results
+  ---
+  duration_ms: 392.6335
+  type: 'test'
+  ...
+# Subtest: batched cancellation aborts owned active/queued TLS requests while an unrelated read completes
+ok 29 - batched cancellation aborts owned active/queued TLS requests while an unrelated read completes
+  ---
+  duration_ms: 430.6942
+  type: 'test'
+  ...
+# Subtest: fatal selected-field decoder is document-owned and no decode failure contaminates the next document
+ok 30 - fatal selected-field decoder is document-owned and no decode failure contaminates the next document
+  ---
+  duration_ms: 4.7847
+  type: 'test'
+  ...
+# Subtest: summary retains exact metadata/key identity across every byte/chunk split, without value DTOs
+ok 31 - summary retains exact metadata/key identity across every byte/chunk split, without value DTOs
+  ---
+  duration_ms: 36.7085
+  type: 'test'
+  ...
+# Subtest: accepted values and unknown-field values are never decoded or JSON-materialized
+ok 32 - accepted values and unknown-field values are never decoded or JSON-materialized
+  ---
+  duration_ms: 16.2634
+  type: 'test'
+  ...
+# Subtest: selected same-chunk ASCII bypasses decoding; escaped, Unicode and split strings keep exact fallback semantics
+ok 33 - selected same-chunk ASCII bypasses decoding; escaped, Unicode and split strings keep exact fallback semantics
+  ---
+  duration_ms: 45.3512
+  type: 'test'
+  ...
+# Subtest: all256 selected-key bytes preserve grammar and identity across word and chunk boundaries
+ok 34 - all256 selected-key bytes preserve grammar and identity across word and chunk boundaries
+  ---
+  duration_ms: 69.8855
+  type: 'test'
+  ...
+# Subtest: complete validation rejects malformed skipped values and invalid UTF8 even after valid metadata
+ok 35 - complete validation rejects malformed skipped values and invalid UTF8 even after valid metadata
+  ---
+  duration_ms: 1.5407
+  type: 'test'
+  ...
+# Subtest: all256 raw byte classes and word/chunk boundaries retain strict string grammar
+ok 36 - all256 raw byte classes and word/chunk boundaries retain strict string grammar
+  ---
+  duration_ms: 30.7468
+  type: 'test'
+  ...
+# Subtest: escaped schema member names work; ambiguous/schema/cursor/item/byte/chunk limits fail closed
+ok 37 - escaped schema member names work; ambiguous/schema/cursor/item/byte/chunk limits fail closed
+  ---
+  duration_ms: 3.9473
+  type: 'test'
+  ...
+# Subtest: complete 100-namespace scope shares item/deadline limits and serial projection, with no value/annotation results
+ok 38 - complete 100-namespace scope shares item/deadline limits and serial projection, with no value/annotation results
+  ---
+  duration_ms: 29.0711
+  type: 'test'
+  ...
+# Subtest: aggregate bytes cannot reset between namespaces; expired/invalid budgets fail closed
+ok 39 - aggregate bytes cannot reset between namespaces; expired/invalid budgets fail closed
+  ---
+  duration_ms: 63.0174
+  type: 'test'
+  ...
+# Subtest: verified TLS lists keep maximum-size history enumeration metadata-only and large flat objects operable
+ok 40 - verified TLS lists keep maximum-size history enumeration metadata-only and large flat objects operable
+  ---
+  duration_ms: 993.2529
+  type: 'test'
+  ...
+# Subtest: adaptive GET retries keep the cursor, charge rejected bytes and support the flat maximum record
+ok 41 - adaptive GET retries keep the cursor, charge rejected bytes and support the flat maximum record
+  ---
+  duration_ms: 983.3543
+  type: 'test'
+  ...
+# {"fixture":"Three one-MiB decoded flat records; verified loopback TLS","requests":3,"receivedWireBytes":8390125,"elapsedMs":57.277700000000095}
+# Subtest: 334-object/18-namespace fixture restores batching and preserves the shared deadline
+ok 42 - 334-object/18-namespace fixture restores batching and preserves the shared deadline
+  ---
+  duration_ms: 557.8265
+  type: 'test'
+  ...
+# {"fixture":"334 small synthetic Secrets across 18 namespaces, verified loopback TLS, fixed 12ms producer delay","objects":334,"namespaces":18,"requests":18,"wireBytes":79342,"elapsedMs":283.7543999999998,"previousOneObjectRequests":334,"previousOneObjectFocusedElapsedMs":9132.1211,"limitations":["Earlier run used the same synthetic producer delay and shape; host timing is uncontrolled","Separate controlled Linux RSS qualification is required","Higher-latency APIs can exceed the unchanged shared 15-second deadline"]}
+1..42
+# tests 51
+# suites 0
+# pass 50
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 8451.6292

@@ -1,0 +1,85 @@
+{
+  "scope": "ONE first failed closed/missing-setting/distinct six-request scenario only; causal diagnostic, not acceptance",
+  "node": "v22.23.3",
+  "startedUtc": "2026-10-11T13:59:43.211Z",
+  "checks": [
+    "fulfilled-count-exact1",
+    "user-count-equals-fulfilled",
+    "writer-count-exact1",
+    "effective-admin-count-exact1",
+    "readonly-admin-count0",
+    "policy-count-equals-users",
+    "unique-policy-principals-equals-users",
+    "user-policy-present-0",
+    "refusal-account-error-0",
+    "refusal-exact403-0",
+    "refusal-fixed-message-0",
+    "refusal-account-error-1",
+    "refusal-exact403-1",
+    "refusal-fixed-message-1",
+    "refusal-account-error-2",
+    "refusal-exact403-2",
+    "refusal-fixed-message-2",
+    "refusal-account-error-3",
+    "refusal-exact403-3",
+    "refusal-fixed-message-3",
+    "refusal-account-error-4",
+    "refusal-exact403-4",
+    "refusal-fixed-message-4"
+  ],
+  "performanceAcceptance": false,
+  "outcomes": {
+    "concurrentRequests": 6,
+    "fulfilled": 1,
+    "refused": 5,
+    "userCount": 1,
+    "writerCount": 1,
+    "effectiveAdminCount": 1,
+    "readonlyAdminCount": 0,
+    "policyCount": 1,
+    "uniquePolicyPrincipalCount": 1,
+    "everyUserHasPolicy": true,
+    "refusals": [
+      {
+        "accountError": true,
+        "status": 403,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": true
+      },
+      {
+        "accountError": true,
+        "status": 403,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": true
+      },
+      {
+        "accountError": true,
+        "status": 403,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": true
+      },
+      {
+        "accountError": true,
+        "status": 403,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": true
+      },
+      {
+        "accountError": true,
+        "status": 403,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": true
+      }
+    ]
+  },
+  "currentAssertion": "refusal-fixed-message-4",
+  "firstScenarioPassed": true,
+  "fixtureRemoved": true,
+  "completedUtc": "2026-10-11T13:59:45.329Z",
+  "harnessSHA256": "e6cdfa1a4f2464d8df90fddb1c75bceea106a612cca9db46cd04c724af36ca5c"
+}

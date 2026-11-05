@@ -1,0 +1,118 @@
+{
+  "base": "c2e22caeea096836a8b3992f86c63b11c9eb8dbe",
+  "node": "v24.18.0",
+  "platform": "win32",
+  "cliDelayMs": 50,
+  "firstRegistration": {
+    "statuses": [
+      201,
+      201
+    ],
+    "writeUsers": 2
+  },
+  "deletedSession": {
+    "nodesStatus": 200,
+    "session": {
+      "authenticated": true,
+      "username": "audit_deleted",
+      "role": "readonly",
+      "hasUsers": true,
+      "registrationOpen": false
+    },
+    "nativeSecretsStatus": 401
+  },
+  "cacheRoutes": [
+    {
+      "route": "/api/cluster/pods",
+      "status": 200,
+      "ms": 191.47,
+      "cliCalls": 10
+    },
+    {
+      "route": "/api/cluster/services",
+      "status": 200,
+      "ms": 8.76,
+      "cliCalls": 0
+    },
+    {
+      "route": "/api/cluster/deployments",
+      "status": 200,
+      "ms": 5.93,
+      "cliCalls": 0
+    }
+  ],
+  "warmConcurrent": {
+    "requests": 20,
+    "cliCalls": 0,
+    "minMs": 12.51,
+    "maxMs": 50.25
+  },
+  "warmLatency": {
+    "n": 12,
+    "p50Ms": 15.48,
+    "p95Ms": 16.09
+  },
+  "deploymentRestartMapping": [
+    {
+      "name": "api",
+      "restarts": 7
+    },
+    {
+      "name": "api-worker",
+      "restarts": 0
+    }
+  ],
+  "podTypeFilter": {
+    "sameResponse": true,
+    "appCount": 3,
+    "systemCount": 3
+  },
+  "missingRoutes": [
+    {
+      "route": "/api/cluster/pods/apps/api-worker-rs-0/logs",
+      "status": 404
+    },
+    {
+      "route": "/api/cluster/nodes/audit-node/yaml",
+      "status": 404
+    },
+    {
+      "route": "/api/cluster/ingresses/apps/audit/yaml",
+      "status": 404
+    }
+  ],
+  "failedScale": {
+    "status": 200,
+    "response": {
+      "success": true
+    }
+  },
+  "flagInjection": {
+    "status": 200,
+    "acceptedRawOption": true
+  },
+  "lastWriteRace": {
+    "statuses": [
+      200,
+      200
+    ],
+    "remainingWriters": 0
+  },
+  "outage": {
+    "status": 200,
+    "response": {
+      "pods": []
+    },
+    "secondStatus": 200,
+    "cliCalls": 20
+  },
+  "coldConcurrent": {
+    "requests": 20,
+    "cliCalls": 10,
+    "statuses": [
+      200
+    ],
+    "minMs": 166.11,
+    "maxMs": 167.91
+  }
+}

@@ -1,0 +1,94 @@
+TAP version 13
+# Subtest: held mutations cannot notify/refetch after withdrawal or unmount, including confirmations and YAML saves
+ok 1 - held mutations cannot notify/refetch after withdrawal or unmount, including confirmations and YAML saves
+  ---
+  duration_ms: 685.9415
+  type: 'test'
+  ...
+# Subtest: rendered role/target changes fence settlement before passive cleanup runs
+ok 2 - rendered role/target changes fence settlement before passive cleanup runs
+  ---
+  duration_ms: 125.9778
+  type: 'test'
+  ...
+# Subtest: deployment form fences held success/error across withdrawal and unmount
+ok 3 - deployment form fences held success/error across withdrawal and unmount
+  ---
+  duration_ms: 34.3986
+  type: 'test'
+  ...
+# Subtest: owned action success refreshes; refusal retains confirmation and stale callbacks cannot submit
+ok 4 - owned action success refreshes; refusal retains confirmation and stale callbacks cannot submit
+  ---
+  duration_ms: 30.001
+  type: 'test'
+  ...
+# Subtest: YAML dialog save settlement cannot close or alter a replacement/unmounted dialog
+ok 5 - YAML dialog save settlement cannot close or alter a replacement/unmounted dialog
+  ---
+  duration_ms: 10.3681
+  type: 'test'
+  ...
+# Subtest: fresh permission withdrawal erases held logs; public action trigger stays available and restore requires another read
+ok 6 - fresh permission withdrawal erases held logs; public action trigger stays available and restore requires another read
+  ---
+  duration_ms: 32.6074
+  type: 'test'
+  ...
+# Subtest: multiple containers require a choice; switching clears previous content and fences the first reply
+ok 7 - multiple containers require a choice; switching clears previous content and fences the first reply
+  ---
+  duration_ms: 22.8882
+  type: 'test'
+  ...
+# Subtest: list action resolves public Pod names once; absent metadata never triggers an unselected log read
+ok 8 - list action resolves public Pod names once; absent metadata never triggers an unselected log read
+  ---
+  duration_ms: 68.9834
+  type: 'test'
+  ...
+# Subtest: held private read is aborted on withdrawal and cannot repopulate after session restoration
+ok 9 - held private read is aborted on withdrawal and cannot repopulate after session restoration
+  ---
+  duration_ms: 15.9354
+  type: 'test'
+  ...
+# Subtest: held YAML viewer/editor and confirmations are erased; stale YAML completion is fenced
+ok 10 - held YAML viewer/editor and confirmations are erased; stale YAML completion is fenced
+  ---
+  duration_ms: 27.9171
+  type: 'test'
+  ...
+# Subtest: log dialog permits explicit same-container refresh and provides a named container choice
+ok 11 - log dialog permits explicit same-container refresh and provides a named container choice
+  ---
+  duration_ms: 5.8789
+  type: 'test'
+  ...
+# Subtest: YAML save cannot settle onto a changed rendered identity before passive cleanup
+ok 12 - YAML save cannot settle onto a changed rendered identity before passive cleanup
+  ---
+  duration_ms: 249.1032
+  type: 'test'
+  ...
+# Subtest: close/reopen or title ABA before passive cleanup does not revive an old save
+ok 13 - close/reopen or title ABA before passive cleanup does not revive an old save
+  ---
+  duration_ms: 74.4545
+  type: 'test'
+  ...
+# Subtest: ordinary callback rerender retains a held save when rendered identity is unchanged
+ok 14 - ordinary callback rerender retains a held save when rendered identity is unchanged
+  ---
+  duration_ms: 31.4067
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 2662.3758

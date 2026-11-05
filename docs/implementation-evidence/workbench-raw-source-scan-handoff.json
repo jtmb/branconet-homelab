@@ -1,0 +1,73 @@
+{
+  "sourceCommit": "6fb0104329bec4ad6a5f25fcadf40713b38c4b51",
+  "scope": "All937 raw committed Git blobs, default Gitleaks8.30.1/redact, no configuration or path/rule exclusions",
+  "scannerActualExit": 1,
+  "findings": 316,
+  "individuallyVerified": 314,
+  "untriaged": 2,
+  "appReviewed": 149,
+  "nativeIndependentReviewed": 165,
+  "pending": [
+    {
+      "findingIndex": 87,
+      "fingerprint": "C:/Users/james/AppData/Local/BORTUS/handoffs/app-freshness-20261010-205744-da6552cf/workbench-6fb01043/raw-git/docs/implementation-evidence/kv-metadata-ui.json:generic-api-key:12",
+      "file": "docs/implementation-evidence/kv-metadata-ui.json",
+      "line": 12,
+      "startColumn": 59,
+      "endColumn": 145,
+      "rule": "generic-api-key",
+      "sourceFileSha256": "25027df81dfce453ec4bd960aa63ce757c4ffd440db720d1c90c255cd9e4e31f",
+      "classification": "untriaged exact byte provenance; no suppression",
+      "publicSha256": "b4a1452a24b4a136a83645fd574d803dfab20683aab2e10e5c8915469b1978e7"
+    },
+    {
+      "findingIndex": 145,
+      "fingerprint": "C:/Users/james/AppData/Local/BORTUS/handoffs/app-freshness-20261010-205744-da6552cf/workbench-6fb01043/raw-git/docs/implementation-evidence/warm-pods.json:generic-api-key:15",
+      "file": "docs/implementation-evidence/warm-pods.json",
+      "line": 15,
+      "startColumn": 39,
+      "endColumn": 114,
+      "rule": "generic-api-key",
+      "sourceFileSha256": "82d0357d1b64f4c13ceb722ce9fb8b13579c57ee951d50fcbe4165eb579081f3",
+      "classification": "untriaged exact byte provenance; no suppression",
+      "publicSha256": "ce1c37c453824aadb70327b5fdb9738638a6cb5b2b493608f25c18ac7f2ea9b4"
+    }
+  ],
+  "rawArchive": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\workbench-6fb01043\\raw-git.zip",
+    "sha256": "7e8cea6bf27b4c2b02161f24a18e71f2f6a1106904d02c45bed49647d528c376"
+  },
+  "manifest": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\workbench-6fb01043\\manifest.json",
+    "sha256": "36d7ae09764acaa97aa021838570e47cbbf083ac28a7121d30a91c98d181e74b"
+  },
+  "binarySha256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+  "artifacts": [
+    {
+      "path": "workbench-raw-source-scan.json",
+      "sha256": "2cb7e2a434495b93774b9f7c871019810a09d3d3c6eb34fb5128a03e9ac0d2a3"
+    },
+    {
+      "path": "workbench-raw-source-scan-terminal.json",
+      "sha256": "24b6c74a40cafe51633637e7822996bf008b784a3ed402bdf0d2871872fc62dc"
+    },
+    {
+      "path": "workbench-raw-source-scan-cli.txt",
+      "sha256": "715d974bd3590e8f9dc05eba4ca553174cae7f379c4f5cb7549271caa9021d96"
+    },
+    {
+      "path": "workbench-raw-source-scan-app-review.json",
+      "sha256": "73fa2ca0e22a6eeac914fd35c3cec4b8867aa6b5173354f85d1e29b1e2bd0911"
+    },
+    {
+      "path": "workbench-raw-source-scan-native-review.json",
+      "sha256": "665c1450dec5016b1c14f34fd61161550e65fff1b9da0b45609ec76e06fa9c0b"
+    }
+  ],
+  "limitations": [
+    "Two historical source-hash fields lack preserved original tested working bytes; not classified as verified and not suppressed",
+    "Source/current raw Git and tested Windows working bytes have separate manifests; no EOL reconstruction inference",
+    "Default archive depth0 does not inspect embedded binary archive contents",
+    "Source scan is not final image/package/runtime/live qualification"
+  ]
+}

@@ -1,0 +1,19 @@
+BROWSER_CHECK Parent/workbench share status, versions and capabilities; opening requests no values
+node:internal/process/promises:394
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+Error:Target page, context or browser has been closed
+Error
+    at LongStandingScope._race (C:\Users\james\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright-core\lib\coreBundle.js:3219:25)
+    at LongStandingScope.race (C:\Users\james\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright-core\lib\coreBundle.js:3212:21)
+    at _Response.finished (C:\Users\james\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright-core\lib\coreBundle.js:59638:58)
+    at _Page.<anonymous> (file:///C:/Users/james/.codex/worktrees/bortus-app-recovered/kubernetes%20migration/k8s-rewrite/front-end/tests/workbench-lifecycle.browser.mjs:52:91)
+    at _Page._callHandler (C:\Users\james\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright-core\lib\coreBundle.js:10746:33)
+    at _Page.emit (C:\Users\james\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright-core\lib\coreBundle.js:10736:16)
+    at _BrowserContext._onResponse (C:\Users\james\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright-core\lib\coreBundle.js:61930:16)
+    at Proxy.<anonymous> (C:\Users\james\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright-core\lib\coreBundle.js:61881:78)
+    at Proxy._callHandler (C:\Users\james\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright-core\lib\coreBundle.js:10746:33)
+    at Proxy.emit (C:\Users\james\.cache\codex-runtimes\codex-primary-runtime\dependencies\node\node_modules\playwright-core\lib\coreBundle.js:10736:16)
+
+Node.js v22.23.3

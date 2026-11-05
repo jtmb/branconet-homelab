@@ -1,0 +1,346 @@
+{
+  "capturedAt": "2026-10-10T23:05:39Z",
+  "source": {
+    "parentCommit": "74500af4a9553d98fdf6dd25f71aaba1cddb445a",
+    "description": "KV metadata UI/query/shared native request stage; tested working tree before commit",
+    "hashConvention": "SHA256 of tested working-tree bytes; Git may normalize line endings",
+    "sourceHashes": {
+      "k8s-rewrite/front-end/src/app/(dashboard)/secrets/kv/page.tsx": "7af6643707b00c26e336ab31b563ef9c84e2b1259e1cbc09bd4f297e0b97ef9c",
+      "k8s-rewrite/front-end/src/app/(dashboard)/secrets/kv/kv-browser.tsx": "32482c96c3d46b23e10a63b3b4223abe3937230df94c8917eb85898f668c0c29",
+      "k8s-rewrite/front-end/src/app/(dashboard)/secrets/kv/kv-forms.tsx": "dfa488ac2f925c700f2d085cd3f1c232c841497657ae3f550d3dd2d62ad79e6e",
+      "k8s-rewrite/front-end/src/app/(dashboard)/secrets/kv/kv-ui.tsx": "1b319e5c81098d32f340f66630212f28244cf684310367d121003a726b05c464",
+      "k8s-rewrite/front-end/src/app/(dashboard)/secrets/secrets-editor.tsx": "b4a1452a24b4a136a83645fd574d803dfab20683aab2e10e5c8915469b1978e7",
+      "k8s-rewrite/front-end/src/lib/kv-metadata-query.ts": "d3084896aa57579bdcea08f5bc6c8cc8d044b486b693b82919510a3ece945eb0",
+      "k8s-rewrite/front-end/src/lib/use-query.ts": "03d0dc13b2e3dc13c6a950be84ffc01bf8a341c0220d5999e9245b557a542568",
+      "k8s-rewrite/front-end/src/lib/kv-registry.ts": "93645d9d35b9a2e402d31bf7492aff909062ca49d5f41824c7d096e2fb26030a",
+      "k8s-rewrite/front-end/src/lib/kv-schemas.ts": "c96eb556f5e03e4b2cb41bd43e192e8dc4d5ff9ca50901efd862d715689e1c21",
+      "k8s-rewrite/front-end/tests/kv-metadata-query.test.ts": "87b6ae3f1a68260006c270c7f9d5c78735867f4dc57cfc8547f1bafdbc6a7b17",
+      "k8s-rewrite/front-end/tests/kv-native-request.test.ts": "ff9ab117260018282445c5d025ef52fd8a753927102c150d2162884fbb8df877",
+      "k8s-rewrite/front-end/tests/kv-foundation.test.ts": "4c3e40e204424fe17d58884a4f5d5923ab0f9127e41a50365381a42358f26a49",
+      "k8s-rewrite/front-end/tests/kv-http.integration.ts": "cd8b011db9e44455107257a3ba563a26281307c175a01f81df11ce4ecd13c39a",
+      "k8s-rewrite/front-end/tests/ui-fixture.ts": "f5bde8387760d5e12290bbee0ce87990f971b74063190f403ccaca373c530fd7",
+      "k8s-rewrite/front-end/prisma/schema.prisma": "7c8983d352c3180e8c54db6592f088018884bd9db07274619d051f10b5cd717d",
+      "k8s-rewrite/front-end/package-lock.json": "e70fdda965ea12ddfba240222a9606649916d3b0edff240bdf85969d6dadd75f",
+      "k8s-rewrite/.gitignore": "1276f344a74bb586b7e235c27894058e7fe5ab8004e0b54004191b32f69a0ce5"
+    }
+  },
+  "runtime": {
+    "node": "22.23.3",
+    "platform": "win32",
+    "next": "15.5.27",
+    "browser": "Codex in-app browser"
+  },
+  "validation": {
+    "unit": {
+      "passed": 118,
+      "failed": 0,
+      "durationMs": 31418.9681
+    },
+    "lint": "zero-warning pass",
+    "build": "fresh standalone production pass",
+    "typecheck": "post-build pass",
+    "productionHttp": {
+      "passed": 3,
+      "failed": 0,
+      "provisioningMs": 31188.7443,
+      "existingMs": 43624.8503,
+      "nativeTlsMs": 65229.984,
+      "overallMs": 65892.5807
+    },
+    "log": "C:/Users/james/AppData/Local/Temp/bortus-kv-metadata-pathrevision-da28a65dce734270ac4c4403ac1f17f6.log",
+    "logSha256": "f644aab22c72825fc273c97244930dc19769e21a0b439e7e3bdadced89776d65"
+  },
+  "browserFixture": {
+    "boundary": "Owned mkdtemp SQLite, synthetic accounts and CA-verified loopback Kubernetes API; no operator credentials/resources",
+    "flags": [
+      "BORTUS_UI_NATIVE_FIXTURE=true",
+      "BORTUS_UI_KV_FIXTURE=true"
+    ],
+    "initialMounts": 205,
+    "initialPaths": 205,
+    "nativeObjects": 206,
+    "priorCorrectedBuildEnumeration": {
+      "mountRows": [
+        100,
+        100,
+        5
+      ],
+      "pathRows": [
+        100,
+        100,
+        5
+      ],
+      "uniqueMounts": 205,
+      "uniquePaths": 205,
+      "nextDisabledOnLast": true,
+      "previousReturnedToFirst": true
+    },
+    "finalBuildRows": {
+      "mounts": 100,
+      "paths": 100
+    },
+    "numericFieldSort": {
+      "ascending": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        2,
+        3,
+        7,
+        12
+      ],
+      "descending": [
+        12,
+        7,
+        3,
+        2,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    "localSearch": "Current API page only; named object search matched ten original records, unmatched mount search showed true empty with next-page control available",
+    "exactMappings": [
+      "__proto__",
+      "constructor",
+      "toString",
+      "original_under_scored_key"
+    ],
+    "pathMetadata": "Fresh native target/revision/retention, separate native status/history, true empty committed versions; guarded mode disabled",
+    "focus": {
+      "openPath": "Focuses selected path heading",
+      "closePath": "Returns to exact connected Open KV path services/api trigger",
+      "createMount": "Focuses Mount name, returns to Create mount on success",
+      "register": "Focuses Logical path, returns to exact Register path trigger"
+    },
+    "mountForm": {
+      "unchangedSaveDisabled": true,
+      "emptySaveDisabled": true,
+      "namespaceOutsideAllowlist": "Fixed refusal with draft retained",
+      "create": "qa-ui-mount/apps metadata created",
+      "staleRevision": "Captured revision 1 rejected after external revision 2; draft retained",
+      "freshRename": "services renamed services-ui at fresh revision",
+      "successfulBrowserDeletionClaimed": false
+    },
+    "registration": {
+      "emptySaveDisabled": true,
+      "duplicateFieldsBlocked": true,
+      "invalidLogicalPathBlocked": true,
+      "target": "apps/qa-ui-new",
+      "path": "services/new",
+      "fields": [
+        {
+          "field": "__proto__",
+          "key": "original_under_scored_key"
+        },
+        {
+          "field": "constructor",
+          "key": "constructor"
+        }
+      ],
+      "result": "Metadata registered, no native object created"
+    },
+    "retention": {
+      "unchangedSaveDisabled": true,
+      "draft": 7,
+      "externalRetention": 5,
+      "externalRevision": 2,
+      "refreshPreservedDraft": true,
+      "saveDisabledOnRevisionConflict": true,
+      "explicitReload": 5,
+      "deliberateSave": 8,
+      "resultRevision": 3
+    },
+    "permissions": {
+      "readonly": "Global list metadata, field mappings/status/history, no edit controls",
+      "scoped": "Only services/api, excludes services/apiculture and services/api/denied",
+      "updateWithdrawal": "Draft form removed after fresh capabilities update",
+      "adminWithdrawal": "Open mount form/draft removed after shared session polling; create/edit controls disappear",
+      "policyAndRoleAuthority": "Server fresh permissions remain authoritative"
+    },
+    "unavailable": {
+      "retained": "Explicit error/Retry with previously loaded metadata label",
+      "firstLoad": "Explicit unavailable/error, no false-empty list",
+      "retry": "Restored 100 mount rows"
+    },
+    "finalCounters": {
+      "valueRequests": 0,
+      "nativeWrites": 0,
+      "nativeObjects": 206,
+      "activeStreams": 0,
+      "editorObjectRetained": true,
+      "unrelatedPreserved": true,
+      "metadataPreserved": true
+    },
+    "ports": {
+      "allocation": "UI and all HTTP/TLS fixtures use loopback listen(0); Next child reserves an ephemeral port; no fixed range",
+      "writer": 62797,
+      "reader": 62798,
+      "scoped": 62799
+    },
+    "cleanup": {
+      "ownedTabsClosed": true,
+      "fixtureExitedZero": true,
+      "tempDirectory": "C:/Users/james/AppData/Local/Temp/bortus-ui-test-mLfdxo",
+      "tempDirectoryRemoved": true
+    }
+  },
+  "responsive": {
+    "observed": [
+      {
+        "width": 320,
+        "document": 310,
+        "client": 310,
+        "mountContainer": 194,
+        "mountScroll": 374,
+        "pathContainer": 194,
+        "pathScroll": 531
+      },
+      {
+        "width": 390,
+        "document": 380,
+        "client": 380,
+        "mountContainer": 264,
+        "mountScroll": 374,
+        "pathContainer": 264,
+        "pathScroll": 531
+      },
+      {
+        "width": 768,
+        "document": 758,
+        "client": 758
+      }
+    ],
+    "settledSidebar": {
+      "390": 56,
+      "768": 224
+    },
+    "screenshotPaths": [
+      "kv-metadata-390-settled.jpg",
+      "kv-metadata-768-settled.jpg"
+    ],
+    "transientCaptures": [
+      "kv-metadata-390.jpg",
+      "kv-metadata-768.jpg"
+    ],
+    "notes": "Initial captures occurred during the existing 300ms sidebar transition; settled captures supersede them. Early dimension loop measured a different tab at 1280 and was rejected as responsive evidence. CSS-width checks are not actual zoom or screen-reader qualification.",
+    "temporaryOverrideReset": true
+  },
+  "backend": {
+    "globalRootList": "Independent SQLite regression reproduced empty OR omission before fix; final global list, explicit mount/cursor and fresh deny assertions pass",
+    "pathRevision": "Six strict mutation DTO contracts accept optional positive safe integer; invalid/unknown fields rejected; native HTTP stale creation/adoption/update denied before writes; old head/RV compatibility retained",
+    "updateWithoutRead": "Engine update is explicit replacement independently authorized by update policy, not read. Metadata-only entry must acknowledge omitted mapped-field removal; preserve-existing-values editing requires read.",
+    "migrationChanged": false,
+    "nativeFormatChanged": false,
+    "packageChanged": false
+  },
+  "precedingFailures": [
+    {
+      "type": "TypeScript",
+      "result": "QueryState unknown JSX child rejected; boolean conversion corrected",
+      "qualification": "Focused type/lint/guard tests and subsequent full runs pass"
+    },
+    {
+      "type": "Global list regression",
+      "result": "Initial 115-test pass lacked a global-root list case; browser showed false empty; new independent regression failed 0!==2",
+      "log": "C:/Users/james/AppData/Local/Temp/bortus-kv-global-list-reproduction.log",
+      "qualification": "116-test corrected full run and actual 205-path enumeration pass"
+    },
+    {
+      "type": "Retention draft",
+      "result": "Metadata/capability revision mismatch unmounted form and replaced draft 7 with 5",
+      "qualification": "Render correction preserves draft with Save disabled; final browser explicit reload/save passed"
+    },
+    {
+      "type": "Native DTO",
+      "result": "Positive pathRevision rejected by strict request schema despite existing engine support",
+      "qualification": "Additive optional schema plus two unit tests and stale-native HTTP assertions pass"
+    },
+    {
+      "type": "Fixture command",
+      "result": "npm run test:ui-fixture does not exist; no fixture started",
+      "qualification": "Used local installed tsx tests/ui-fixture.ts"
+    },
+    {
+      "type": "Browser observation",
+      "result": "One withdrawal wait timed out before the next actual poll; fresh snapshot confirmed form/control removal",
+      "qualification": "No role gating weakened"
+    },
+    {
+      "type": "Browser action",
+      "result": "One initial path click left no panel, repeated after inspecting fresh DOM opened it",
+      "qualification": "Final mapped detail verified; initial missing panel not hidden"
+    }
+  ],
+  "externalBackend": {
+    "deliveryCommit": "a82a6cb9e244b0ec05489bc7251f3e29411c64dc",
+    "sourceCommit": "ea849ee1f5b13031c4a6af79c4756ceddb68fc8a",
+    "inspected": "Selected functional report fields; exact blob/mode/schema/lock provenance, Linux Node22/113 units/3 HTTP/real callback/eleven migrations/restart/zero-drift",
+    "localQaRepoDigest": "bortus-qa@sha256:408ebe2d772a3315432ad9aba03e7b0b77396e348ef25f29467a5d2faf96375a",
+    "scope": "Functional ea849ee source only, not later UI or approved recovery",
+    "securityFollowup": {
+      "reportSha256": "8a5d84c1d61bb57348dcd5a4613f20c8bc74fe3822177e72952aef4006448f74",
+      "status": "Local uncommitted report inspected; independent security packaging was reported stopped by automatic content review and is not retried here",
+      "scanCompleted": true,
+      "vulnerabilityGatePassed": false,
+      "productionAccess": false,
+      "appFixOrFinalRescanClaimed": false
+    }
+  },
+  "limitations": [
+    "Synthetic local Windows production/browser fixtures; not Linux final-image/real-cluster acceptance",
+    "Build route estimate 6.19 KiB/118 KiB first load is not controlled CPU/LCP/RSS improvement",
+    "No actual zoom, automated accessibility scan or manual assistive-technology acceptance",
+    "Successful browser mount deletion, server-missing-target path view and capacity full-server peak were not qualified in this stage",
+    "Full KV private values/adoption/recovery/administration/transfer/rotation UI and coherent compatible image/recovery/runtime/admission gates remain open",
+    "No production mutation, deployment, push or PR; goal remains active"
+  ],
+  "sourceIgnoreQualification": [
+    {
+      "path": "k8s-rewrite/front-end/src/components/secrets/kv-workbench.tsx",
+      "ignored": false
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/components/secrets/kv-workbench-model.ts",
+      "ignored": false
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/components/secrets/kv-administration.tsx",
+      "ignored": false
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/components/secrets/kv-administration-model.ts",
+      "ignored": false
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/components/secrets/credentials.json",
+      "ignored": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/components/secrets/.env",
+      "ignored": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/components/secrets/operator.key",
+      "ignored": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/components/secrets/arbitrary.ts",
+      "ignored": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/secrets/credential.json",
+      "ignored": true
+    },
+    {
+      "path": "k8s-rewrite/secrets/runtime.env",
+      "ignored": true
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "startedAt": "2026-10-11T05:12:36.628Z",
+  "source": "6fb01043 production build; new workflow harness only",
+  "scope": "Actual built /secrets/kv, owned disposable603-alias SQLite/CA-verified TLS fixture",
+  "checks": [
+    {
+      "name": "Actual keyboard forward/reverse cycle and attempted background focus stay modal; close returns focus",
+      "tabSteps": 32
+    }
+  ],
+  "failures": [
+    "locator.selectOption: Timeout 30000ms exceeded."
+  ],
+  "terminal": true,
+  "ownedProcesses": {
+    "fixturePid": 47108,
+    "chromePid": 47224
+  },
+  "phase": "Policies",
+  "cleanup": {
+    "chromeExitCode": 0,
+    "chromeSignal": null,
+    "fixtureExitCode": 0,
+    "fixtureSignal": null
+  },
+  "completedAt": "2026-10-11T05:13:14.951Z"
+}

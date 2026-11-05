@@ -1,0 +1,60 @@
+TAP version 13
+# Subtest: YAML save cannot settle onto a changed rendered identity before passive cleanup
+not ok 1 - YAML save cannot settle onto a changed rendered identity before passive cleanup
+  ---
+  duration_ms: 102.3291
+  type: 'test'
+  location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-app-recovered\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\yaml-save-lifecycle.test.ts:2:3927'
+  failureType: 'testCodeFailure'
+  error: |-
+    An old save must not close a newly rendered identity
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\yaml-save-lifecycle.test.ts:51:14)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: close/reopen or title ABA before passive cleanup does not revive an old save
+not ok 2 - close/reopen or title ABA before passive cleanup does not revive an old save
+  ---
+  duration_ms: 18.6566
+  type: 'test'
+  location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-app-recovered\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\yaml-save-lifecycle.test.ts:2:4534'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\yaml-save-lifecycle.test.ts:61:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: ordinary callback rerender retains a held save when rendered identity is unchanged
+ok 3 - ordinary callback rerender retains a held save when rendered identity is unchanged
+  ---
+  duration_ms: 50.3778
+  type: 'test'
+  ...
+1..3
+# tests 3
+# suites 0
+# pass 1
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1021.7653

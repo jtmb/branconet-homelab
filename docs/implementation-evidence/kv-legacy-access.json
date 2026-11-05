@@ -1,0 +1,71 @@
+{
+  "capturedAt": "2026-10-10T21:59:16Z",
+  "source": "legacy-access stage after 50db19cef80bba79200d64f136b738647ff8d8eb; tested working tree before commit",
+  "runtime": { "node": "22.23.3", "platform": "win32", "next": "15.5.27", "prisma": "6.19.3" },
+  "validation": {
+    "unit": { "passed": 113, "failed": 0, "durationMs": 14550.0925 },
+    "lint": "zero-warning pass",
+    "build": "fresh standalone production pass",
+    "typecheck": "post-build pass",
+    "productionHttp": { "passed": 3, "failed": 0, "provisioningMs": 19086.7495, "existingMs": 24662.1221, "nativeTlsMs": 26765.7082, "overallMs": 27001.7652 },
+    "commands": ["npm run test", "npm run lint", "npm run build", "npm run typecheck", "npm run test:integration"]
+  },
+  "fixture": {
+    "aliases": 603, "databaseAliases": 300, "freshFileAliases": 303, "aliasNamespaces": 12, "operatorNamespaces": 18,
+    "registeredPaths": 12, "mappedKeysPerPath": 2, "currentNativeObjects": 12, "ownedHistoryObjects": 12,
+    "previewPages": 7, "maximumRowsPerPage": 100,
+    "metadataBoundary": "Verified loopback TLS fixture counts confirm administration/previews perform no native requests; synthetic private values never enter preview or audit metadata"
+  },
+  "migration": {
+    "name": "20261010230000_legacy_access_audit",
+    "nullableColumns": ["KvAudit.principal", "KvAudit.alias", "KvAudit.key"],
+    "forwardPreserved": ["old audit row and outcome", "account password hash and sessionVersion", "original exact-key legacy grant"],
+    "schemaDiff": "empty",
+    "readiness": "Queries the three additive columns before reporting ready",
+    "nativeProtocol": "format-1 unchanged; no value ingestion or native mutation"
+  },
+  "assertions": [
+    "Fresh effective human engine administrator is required; reader/scoped users and automation actors cannot administer legacy access",
+    "Seven pages enumerate every one of the 603 exact aliases without underscore parsing or value-bearing projections",
+    "Missing acknowledgement returns 428; incomplete/stale fingerprint or alias set returns 409; duplicate aliases return 400",
+    "Fresh alias file, path, mount revision/scope, principal and policy metadata enter the snapshot",
+    "Normalized request field order produces the same fingerprint in preview and commit",
+    "Mount scope removal reports outside-scope and false beforeAllowed/afterAllowed without native reads",
+    "Moving a legacy deny to a human principal still requires the complete previous legacy impact acknowledgement",
+    "Policy deny/create/delete, exact grant revoke/restore and principal disable/enable change subsequent legacy lookup decisions",
+    "Principal disable also blocks nonsecret configuration lookup and requires explicit configuration-impact acknowledgement",
+    "Concurrent principal changes have one winner; stale principal/path revisions are refused",
+    "Restoration requires an explicit alias matching one registered key and a previously committed native path",
+    "Administrator withdrawal and unavailable/invalid alias metadata fail closed with fixed errors",
+    "Audit insertion failure rolls back both grant and principal revision in the same transaction",
+    "Audit records exact principal/alias/key metadata; external lookup credentials and native values are unchanged",
+    "Native adoption advances the principal revision when installing compatibility grants",
+    "Existing native CAS, binary/special-key, drift, cleanup, token-audience, rotation and revocation HTTP regressions pass"
+  ],
+  "correctionsRetained": [
+    "Initial type check corrected test-only ProcessEnv inference and explicit path fixture typing",
+    "Initial full run passed 111 unit tests, lint/build/type; native HTTP failed because a nonsecret fixture inherited Variable.encrypted=true and was correctly quarantined with 404. The fixture now sets encrypted=false; classification was not relaxed",
+    "A new mount-revision regression reproduced an unchanged preview fingerprint: focused run had 10 passes and two reported failures including its parent. Fresh mount revision and normalized scope were added; the subsequent focused run passed all 13 tests in 11890.9985 ms",
+    "The next full run passed 113 unit tests, lint/build/type and two HTTP fixtures; native HTTP reproduced a 409 for equivalent preview/commit JSON field order. Explicit request normalization fixed the hash; reordered principal/grant/revoke unit inputs and all three final production HTTP fixtures pass"
+  ],
+  "testedFileHashes": [
+    { "path": "src/lib/kv-legacy-access.ts", "sha256": "57162185717fee349f58be3dc7df50c50cf799c63f52d39adb665b39f02431b0" },
+    { "path": "src/lib/kv-registry.ts", "sha256": "a6006d6359bda185dc22d59b217d845bf16626ff468da9c65e512e265decbcd1" },
+    { "path": "src/lib/kv-native-engine.ts", "sha256": "094539f6aea2f6335cd377420e060107413e9bda2c6bbe8aae2476463e891284" },
+    { "path": "src/lib/kv-schemas.ts", "sha256": "abc900727b0737145f37143a9c5644632ed014c11216365d26060511a81f4993" },
+    { "path": "prisma/schema.prisma", "sha256": "7c8983d352c3180e8c54db6592f088018884bd9db07274619d051f10b5cd717d" },
+    { "path": "prisma/migrations/20261010230000_legacy_access_audit/migration.sql", "sha256": "770556733c0b165a97ceb42790abd703b5d4bdd4572e9a06234252fd0dc77ff1" },
+    { "path": "tests/kv-legacy-access.test.ts", "sha256": "a373785fcd3663cc9a33476e6dec85b023a63b7362e9af971f941224755ab8c4" },
+    { "path": "tests/kv-http.integration.ts", "sha256": "0b69ab23fbfeceee51a70d7895320e95b0f941d61568fe0a4fa4156786b9f774" }
+  ],
+  "hashBoundary": "SHA-256 of selected tested Windows working-tree file bytes; final Linux image/source qualification is separate",
+  "limits": { "aliasMetadata": 10000, "aliasFileDeadlineMs": 5000, "previewRows": 100, "acknowledgementBodyBytes": 524288 },
+  "limitations": [
+    "Authorization-metadata preview does not prove native ownership, current head, key presence, drift, alias/config collision or native availability; lookup checks those independently",
+    "External alias-file updates cannot participate in a SQLite transaction",
+    "Serialized bodies exceeding 512 KiB fail explicitly; no alias truncation or weaker acknowledgement is allowed",
+    "Synthetic Windows fixture results do not establish production imported-alias acceptance, Linux runtime CPU/RSS or full-server performance",
+    "Full KV/legacy administration UI, A21 Secret object/key DOM paging, A22 measurements and final compatible image/recovery/schema/RBAC/admission acceptance remain open",
+    "No production deployment, RoleBinding, native credential or existing operator database was changed"
+  ]
+}

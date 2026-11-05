@@ -1,0 +1,296 @@
+{
+  "scope": "Three exact hosted source-regression sensitivities only, plus unchanged original342-unit/8-HTTP gates; not complete A19",
+  "owningSourceCommit": "e9274f89630157daa4a922a45fada713b48b2ed5",
+  "frontendTree": "8cc04e769bed874ddf513590aaaa69c9a1723cb2",
+  "workflowGitBlob": "1f6ea96c11f125b0457c140cf6c66d23a90570fb",
+  "workflowSHA256": "69f0bedd4f99452895416b6a081c55660dc6307caeffa7911de9cfb7741943b7",
+  "hostedRun": 38760696046,
+  "url": "https://github.com/jtmb/branconet-homelab/actions/runs/38760696046",
+  "validationCommit": "8f0c0e30cf5cd204d87622eb8b32a60c14988af0",
+  "validationRootTree": "c9542b20a54c89df79aeaa0a3854c93364fae24a",
+  "validationParent": "2f4d84f2e9c0c6cc86810f8119b707909145f01a",
+  "rootVerifiedEntireFrontendEqualsOwningCommit": true,
+  "status": "completed",
+  "conclusion": "success",
+  "actualMetadataExit": 0,
+  "actualLogExit": 0,
+  "steps": [
+    {
+      "conclusion": "success",
+      "name": "Set up job",
+      "number": 1,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "number": 2,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Locked install and native/standalone build in pinned compiler image",
+      "number": 3,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Original lint, type and unit checks with isolated runtime network",
+      "number": 4,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Three source regression sensitivity checks (A04/A05/A06)",
+      "number": 5,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Original strict integration and process controls",
+      "number": 6,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "number": 12,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Complete job",
+      "number": 13,
+      "status": "completed"
+    }
+  ],
+  "tap": {
+    "tests": [
+      342,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      8
+    ],
+    "pass": [
+      342,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      8
+    ],
+    "fail": [
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    "cancelled": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "skipped": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "todo": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "sensitivity": {
+    "schema": 1,
+    "completed": true,
+    "cases": [
+      "A04-name-admission",
+      "A05-failed-stdout",
+      "A06-outage-empty"
+    ],
+    "records": [
+      {
+        "id": "A04-name-admission",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "ff090a25ba0682e60c484bcd18269db7ea19d1dcac15073736efc6020a217c0d",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 328,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A04-name-admission",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "e4dcc2a115f7a683d44d336a4204d36fcf99c91f41aca93f3e20c8e1e9ba7819",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 971,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A05-failed-stdout",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "18635301374152a86097153985bad2e8215b11a84dc4da31d44ad7ca25cce899",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 342,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A05-failed-stdout",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "9171185ecee3c8a85d8ea45410a486ae12be9a2b9c63e0d0f20c65dd0ed8f15f",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 976,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A06-outage-empty",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "7d87a02e74b2eea482f60ad7ce609793c7c6f4fe68e39193f270bba392482531",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 360,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A06-outage-empty",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "2bc492692df7f3aa00788184063f427584fe79fb09038003dc9dd5f8ca4f6239",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 981,
+        "stderrBytes": 0
+      }
+    ],
+    "restorationFailures": [],
+    "elapsedMs": 1775,
+    "originalSelectedInputsUnchanged": true,
+    "originalUnitAndIntegrationExecution": "separate unchanged workflow steps",
+    "wholeA19Accepted": false
+  },
+  "fixedCaseAssertions": [
+    {
+      "id": "A04-name-admission",
+      "testFile": "tests/kubectl.test.ts",
+      "testName": "resource boundaries reject option and path injection before execution",
+      "assertionLine": 28,
+      "operator": "throws",
+      "witness": "Missing expected exception",
+      "mutantSHA256": "6cbadfbdca93976ff80273d548226da4aeadeed12cac72634c2de2da1d0ba055"
+    },
+    {
+      "id": "A05-failed-stdout",
+      "testFile": "tests/kubectl.test.ts",
+      "testName": "failed subprocess output never becomes a successful mutation or public error",
+      "assertionLine": 51,
+      "operator": "==",
+      "witness": "actual instanceof KubernetesCommandError",
+      "mutantSHA256": "d815f12e6c1f639472e75202f8cee01c8f33b2be17d2149d5055dcf447c79d58"
+    },
+    {
+      "id": "A06-outage-empty",
+      "testFile": "tests/resource-cache.test.ts",
+      "testName": "failure backoff preserves labelled bounded stale data and never invents empty success",
+      "assertionLine": 28,
+      "operator": "strictEqual",
+      "witness": "actual: 'empty'",
+      "mutantSHA256": "65f5db583e08837873a5c2797bf6be560e7450be766bc1ee7f497726ff52134e"
+    }
+  ],
+  "rawTAPAndLiteralStatusesPublishedInHostedLog": true,
+  "privateRetainedLog": {
+    "bytes": 416155,
+    "sha256": "8ed302fc655c5d4302aaa35eb5d628f5a69a520ba1384957215b01a4fba83c5d",
+    "rawLogCopiedIntoRepository": false
+  },
+  "rootResult": {
+    "file": "root-hosted-ci-38760696046-result.json",
+    "sha256": "d05107191378f179703da79b8eb9bd58f97db0cc51e2a0ee894203b000d476e5"
+  },
+  "defaultHostedLogAndResultScan": {
+    "actualRootTool": "5e013d",
+    "actualExit": 0,
+    "findings": 0,
+    "files": 2,
+    "sameScannerBirthNoLive": true,
+    "currentBytesUnchanged": true,
+    "receiptFile": "root-a19-hosted-log-source-scan-20261015-v1-latest.json",
+    "receiptSHA256": "01e8843dafeaff6c0885d6f5ac87de63eeba1315cb7a4d54b1a9ddfb242b8851",
+    "suppression": false,
+    "replay": false
+  },
+  "historicalSourceOnlyPreparation": {
+    "file": "a19-regression-sensitivity-source.json",
+    "sha256": "005d23aec5ac7794823f3c06aa1594190c94a9da56e517a2eb4a5e646f512d3e",
+    "unchanged": true
+  },
+  "bounds": {
+    "children": 6,
+    "childSecondsMax": 30,
+    "streamBytesEachMax": 1048576,
+    "runnerSeconds": 240,
+    "reservedSeconds": 20,
+    "ciStepMinutes": 5,
+    "cpu": 2,
+    "memoryMiB": 1024,
+    "pids": 256,
+    "swapExtra": false,
+    "network": "none",
+    "repoMount": "readonly",
+    "filteredStepIsolation": "none; original342+8 flags unchanged"
+  },
+  "limits": [
+    "Only three specific deliberate source faults; no universal A04/A05/A06 acceptance",
+    "A05 caught failed-stdout-as-success at the typed-error assertion; independent coverage of every redaction fault is not claimed",
+    "Other deliberately reintroduced source regressions remain unmapped/unqualified",
+    "Manual/actual AT and other acceptance gates are separate",
+    "No performance, final-image, recovery/live or production-adoption acceptance"
+  ],
+  "wholeA19Accepted": false,
+  "mainMerged": false,
+  "deployed": false,
+  "performanceAccepted": false,
+  "imageAccepted": false,
+  "productionAdoption": false,
+  "all44OriginalValidationClausesUnchanged": true
+}

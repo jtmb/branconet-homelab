@@ -1,0 +1,36 @@
+{
+  "version": "15.5.27",
+  "upstream": "https://github.com/vercel/next.js/pull/85418",
+  "buildTerminal": "workbench-next-combined-quality.json build exit0",
+  "files": [
+    {
+      "path": "k8s-rewrite/front-end/node_modules/next/dist/server/next-server.js",
+      "exists": true,
+      "sha256": "2fbb30d01fdbc56632292cc48b27c8c8bdc0b3c310d4e21d3ffd3c96798fbc18",
+      "exactPatchedDistribution": true,
+      "awaitSites": 1,
+      "unawaitedSites": 0
+    },
+    {
+      "path": "k8s-rewrite/front-end/node_modules/next/dist/esm/server/next-server.js",
+      "exists": true,
+      "sha256": "a2b130c47db4e1922f44e171e1a7378b95b2142be939326da9252d96442ca61c",
+      "exactPatchedDistribution": true,
+      "awaitSites": 1,
+      "unawaitedSites": 0
+    },
+    {
+      "path": "k8s-rewrite/front-end/.next/standalone/node_modules/next/dist/server/next-server.js",
+      "exists": true,
+      "sha256": "2fbb30d01fdbc56632292cc48b27c8c8bdc0b3c310d4e21d3ffd3c96798fbc18",
+      "exactPatchedDistribution": true,
+      "awaitSites": 1,
+      "unawaitedSites": 0
+    },
+    {
+      "path": "k8s-rewrite/front-end/.next/standalone/node_modules/next/dist/esm/server/next-server.js",
+      "exists": false,
+      "mapping": "ESM not traced by this CJS standalone; Docker also copies complete patched installed node_modules"
+    }
+  ]
+}

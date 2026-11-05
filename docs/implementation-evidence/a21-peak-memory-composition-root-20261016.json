@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "scope": "Original A21 source-validation clause: retained19 behavior observations plus3 scoped peak-memory windows",
+  "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+  "frontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60",
+  "originalA21SourceValidationQualified": true,
+  "originalAcceptedBehaviorObservations": 19,
+  "memorySizeWindows": 3,
+  "reobservedListChecks": 6,
+  "newTotalCaseCountNotClaimed": true,
+  "nonListReplayed": 0,
+  "actorLiteralExit": 0,
+  "phaseActualExits": [
+    0,
+    0,
+    0
+  ],
+  "memoryWindows": [
+    {
+      "phase": "list200",
+      "size": 200,
+      "job": {
+        "informationClass": 9,
+        "peakJobMemoryUsedBytes": 632057856,
+        "peakProcessMemoryUsedBytes": 206028800,
+        "queriedBeforeOwnedHandleClose": true,
+        "childHadExitedBeforeQuery": true,
+        "observedAtUtc": "2026-10-16T06:07:22.829059+00:00",
+        "scope": "Fresh owned Job lifetime through this query: Windows Node browser controller and Chromium descendants. Job memory accounting, never renderer-only RSS/JS heap or Linux application memory."
+      },
+      "appFinalCheckpoint": {
+        "pid": 81,
+        "startTicks": "7914991",
+        "pidScope": "container app Node process only",
+        "rssBytes": 215207936,
+        "lifetimeHWMBytes": 223207424,
+        "sampledAtMs": 10828.413127,
+        "lifetimeStartedMs": 1532.953938,
+        "scope": "Cumulative current fresh server lifetime through this checkpoint; includes all earlier app activity, never per-view isolated peak"
+      },
+      "rendererHeapWindows": [
+        {
+          "observer": "CDP Performance.JSHeapUsedSize",
+          "cadenceMs": 50,
+          "sampleCount": 6,
+          "sampledWindowMaximumBytes": 6312164,
+          "windowStartMs": 1480.7458,
+          "windowEndMs": 1998.6765,
+          "overflow": false,
+          "scope": "Sampled renderer JS heap; neither browser RSS nor app RSS"
+        },
+        {
+          "observer": "CDP Performance.JSHeapUsedSize",
+          "cadenceMs": 50,
+          "sampleCount": 7,
+          "sampledWindowMaximumBytes": 10611012,
+          "windowStartMs": 2032.544,
+          "windowEndMs": 2437.1884,
+          "overflow": false,
+          "scope": "Sampled renderer JS heap; neither browser RSS nor app RSS"
+        }
+      ]
+    },
+    {
+      "phase": "list1000",
+      "size": 1000,
+      "job": {
+        "informationClass": 9,
+        "peakJobMemoryUsedBytes": 681431040,
+        "peakProcessMemoryUsedBytes": 204959744,
+        "queriedBeforeOwnedHandleClose": true,
+        "childHadExitedBeforeQuery": true,
+        "observedAtUtc": "2026-10-16T06:08:23.866970+00:00",
+        "scope": "Fresh owned Job lifetime through this query: Windows Node browser controller and Chromium descendants. Job memory accounting, never renderer-only RSS/JS heap or Linux application memory."
+      },
+      "appFinalCheckpoint": {
+        "pid": 81,
+        "startTicks": "7917332",
+        "pidScope": "container app Node process only",
+        "rssBytes": 225959936,
+        "lifetimeHWMBytes": 225959936,
+        "sampledAtMs": 47902.497432,
+        "lifetimeStartedMs": 1258.027533,
+        "scope": "Cumulative current fresh server lifetime through this checkpoint; includes all earlier app activity, never per-view isolated peak"
+      },
+      "rendererHeapWindows": [
+        {
+          "observer": "CDP Performance.JSHeapUsedSize",
+          "cadenceMs": 50,
+          "sampleCount": 13,
+          "sampledWindowMaximumBytes": 10575588,
+          "windowStartMs": 1442.9919,
+          "windowEndMs": 2282.3118,
+          "overflow": false,
+          "scope": "Sampled renderer JS heap; neither browser RSS nor app RSS"
+        },
+        {
+          "observer": "CDP Performance.JSHeapUsedSize",
+          "cadenceMs": 50,
+          "sampleCount": 13,
+          "sampledWindowMaximumBytes": 15356836,
+          "windowStartMs": 2306.1356,
+          "windowEndMs": 3015.9605,
+          "overflow": false,
+          "scope": "Sampled renderer JS heap; neither browser RSS nor app RSS"
+        }
+      ]
+    },
+    {
+      "phase": "list10000",
+      "size": 10000,
+      "job": {
+        "informationClass": 9,
+        "peakJobMemoryUsedBytes": 896004096,
+        "peakProcessMemoryUsedBytes": 322244608,
+        "queriedBeforeOwnedHandleClose": true,
+        "childHadExitedBeforeQuery": true,
+        "observedAtUtc": "2026-10-16T06:09:22.042236+00:00",
+        "scope": "Fresh owned Job lifetime through this query: Windows Node browser controller and Chromium descendants. Job memory accounting, never renderer-only RSS/JS heap or Linux application memory."
+      },
+      "appFinalCheckpoint": {
+        "pid": 81,
+        "startTicks": "7923491",
+        "pidScope": "container app Node process only",
+        "rssBytes": 238497792,
+        "lifetimeHWMBytes": 242110464,
+        "sampledAtMs": 44663.420261,
+        "lifetimeStartedMs": 1453.521897,
+        "scope": "Cumulative current fresh server lifetime through this checkpoint; includes all earlier app activity, never per-view isolated peak"
+      },
+      "rendererHeapWindows": [
+        {
+          "observer": "CDP Performance.JSHeapUsedSize",
+          "cadenceMs": 50,
+          "sampleCount": 79,
+          "sampledWindowMaximumBytes": 20997196,
+          "windowStartMs": 1497.1529,
+          "windowEndMs": 5971.4054,
+          "overflow": false,
+          "scope": "Sampled renderer JS heap; neither browser RSS nor app RSS"
+        },
+        {
+          "observer": "CDP Performance.JSHeapUsedSize",
+          "cadenceMs": 50,
+          "sampleCount": 94,
+          "sampledWindowMaximumBytes": 38884184,
+          "windowStartMs": 6009.8369,
+          "windowEndMs": 11315.0224,
+          "overflow": false,
+          "scope": "Sampled renderer JS heap; neither browser RSS nor app RSS"
+        }
+      ]
+    }
+  ],
+  "memoryAccounting": {
+    "browserJob": "Windows Job memory peak through completed-browser query, including Node controller and Chromium descendants; not Linux app RSS",
+    "app": "Linux spawned Node process cumulative fresh-lifetime VmHWM, not isolated per-view peak",
+    "renderer": "Sampled CDP JS heap-window maximum only",
+    "noCrossScopeSum": true,
+    "noUniversalWholeFixtureGate": true,
+    "noNewMemoryCeiling": true
+  },
+  "retainedBehaviorProof": {
+    "path": "evidence/bortus-a21-nineteen-finite-root-20261016.json",
+    "sha256": "158b11ef95def12e434e5a0b1782fa1fab7e5230b767c589282f3109907b3538",
+    "historicalFalseFlagsUnchanged": true
+  },
+  "currentD901SourceContinuity": "Latest d901 full receipt proves only Nodes page CSS differs; all A21 libraries/routes/views/shared code remain exact",
+  "currentD901FullProof": "evidence/bortus-a15-node-text-contrast-full-functional-root-20261016.json",
+  "closure": {
+    "currentPublicRecords": 525,
+    "actorRecords": 461,
+    "sourceFiles": 392,
+    "inputFiles": 23,
+    "compiledObjects": 5388,
+    "installedObjects": 40635,
+    "originalAndPostBirthsAbsent": 148,
+    "exactCIDNameQueriesRetained": 6,
+    "noNewDockerQueries": true,
+    "graphsRewalkedHere": false
+  },
+  "windowsRecordedBirthsNotLive": 42,
+  "threeOriginalJobsClosureVerified": true,
+  "preWorkFailure": {
+    "tool": "58f2cd/1",
+    "reason": "Missing prior-seventeen proof in first closed source packet; stopped before work creation or business execution",
+    "retained": true,
+    "correctedFreshPacket": "app-a21-peak-memory-preparation-20261016-v1-1"
+  },
+  "defaultSourceScan": {
+    "literalExit": 1,
+    "findings": 2,
+    "classifiedPublicGitIdentifiers": 2,
+    "noSuppression": true,
+    "noRescan": true
+  },
+  "finalProof": {
+    "path": "/home/brajam/.local/share/branconet-migration/root-a21-peak-memory-final-current-20261016-v1.json",
+    "bytes": 213703,
+    "sha256": "600e8ef98e2f539a5f563a3d26a9d242bc0af0113bb5c332934e6107ba782b6e"
+  },
+  "tools": {
+    "actor": "c079ca to 93e454/0",
+    "browser200": "43e335 to b7abf8/0",
+    "browser1000": "735ce4 to d85a2f/0",
+    "browser10000": "3c575e to b85dcb/0",
+    "matchedExactFreshWindows": "5e6ce2 to 28e1b5/0",
+    "oneFiniteFinal": "d09320/0"
+  },
+  "originalPerformanceGateChanged": false,
+  "performanceAccepted": false,
+  "actualATQualified": false,
+  "releaseImageQualified": false,
+  "productionAdoption": false
+}

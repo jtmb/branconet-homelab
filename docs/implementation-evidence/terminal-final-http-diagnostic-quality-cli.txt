@@ -1,0 +1,28 @@
+﻿
+> botrus-k8s-manager@1.0.0 lint
+> eslint . --max-warnings=0
+
+
+> botrus-k8s-manager@1.0.0 typecheck
+> tsc --noEmit
+
+TAP version 13
+# HTTP_FIXTURE_PROCESS {"pid":29328}
+# HTTP_FIXTURE_CLEANUP {"pid":29328,"exitCode":null,"signal":"SIGTERM"}
+# Subtest: production HTTP auth, metadata migration, quarantined DB rows and unavailable native lookup
+ok 1 - production HTTP auth, metadata migration, quarantined DB rows and unavailable native lookup
+  ---
+  duration_ms: 16159.9003
+  type: 'test'
+  ...
+# Cache fixture evidence: {"capturedAt":"2026-10-11T06:15:47.898Z","node":"v22.23.3","platform":"win32","fixture":"disposable production HTTP + 50ms metadata-only fake CLI; no real cluster/image acceptance","source":"current working tree","coldPods":{"ms":109.72819999999956,"cliCalls":1},"warmPods":{"samples":12,"ms":{"p50":3.8365999999987253,"p95":5.654300000000148},"cliCalls":0},"concurrentWarmPods":{"requests":20,"cliCalls":0},"concurrentColdPods":{"requests":20,"cliCalls":1,"ms":{"p50":138.73370000000068,"p95":141.1136000000006}},"outageServices":{"requests":12,"status":503,"ms":{"p50":3.468799999998737,"p95":4.90309999999954},"additionalCliCalls":0},"pool":{"active":0,"queued":0,"maxConcurrent":4,"maxQueued":64},"limitations":["Synthetic metadata/fake CLI on win32/v22.23.3; no deployed Node22/Linux image","no real API/RBAC or cold-container memory/peak-process measurement","timings observational with no controlled host CPU isolation"]}
+# Complete Pod capacity evidence: {"inputBytes":7931129,"objects":10000,"coldCliCalls":1,"warmFilterCliCalls":0,"projectedIdentityCount":10000,"privateFieldsOmitted":true,"partialReply":"labelled stale complete inventory retained"}
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 16492.9475

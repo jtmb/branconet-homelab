@@ -47,6 +47,8 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
       { stdio: "ignore" },
     );
     let object: any = null;
+    let listMode = "normal", listReads = 0, metadataMode = "normal", metadataReads = 0;
+    let deleteBody: any;
     const seenUrls: string[] = [];
     let authPassed = true;
     server = https.createServer(
@@ -64,6 +66,17 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
             code = 404;
             result = { kind: "Status", code: 404, message: "Not found" };
           } else result = object;
+        } else if (request.method === "GET" && request.headers.accept?.includes("PartialObjectMetadataList")) {
+          metadataReads++;
+          result = { apiVersion: "meta.k8s.io/v1", kind: "PartialObjectMetadataList", metadata: {continue:metadataMode==="repeat" || metadataMode==="pages" && !request.url?.includes("continue=") ? "next-page" : ""},
+            items: Array.from({length:metadataMode==="oversize"?101:metadataMode==="pages"||metadataMode==="repeat"?100:object?1:0},(_,index)=>({apiVersion:"meta.k8s.io/v1",kind:"PartialObjectMetadata",
+              metadata:{name:"item-"+metadataReads+"-"+index,namespace:"apps",uid:"metadata-uid",resourceVersion:"1"},...(metadataMode==="values"?{data:{private:"must not fall back"}}:{})})) };
+        } else if (request.method === "GET" && listMode !== "normal") {
+          listReads++;
+          const query = new URL(request.url || "/", "https://localhost").searchParams;
+          const offset = Number(query.get("continue") || 0), limit = Number(query.get("limit"));
+          result = { apiVersion: "v1", kind: "SecretList", metadata: { continue: listMode === "repeat" ? "next-page" : offset + limit < 40 ? String(offset + limit) : "" },
+            items: Array.from({ length: listMode === "oversize" ? limit + 1 : limit }, (_, index) => ({ ...object, metadata: { ...object.metadata, name: "item-" + listReads + "-" + index } })) };
         } else if (request.method === "GET")
           result = {
             apiVersion: "v1",
@@ -95,6 +108,10 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
             );
             result = object;
           }
+        } else if (request.method === "DELETE") {
+          deleteBody = JSON.parse(body);
+          code = deleteBody.preconditions?.uid === "fixture-history-uid" && deleteBody.preconditions?.resourceVersion === "7" ? 200 : 409;
+          result = { apiVersion: "v1", kind: "Status", code };
         }
         response.writeHead(code, { "Content-Type": "application/json" });
         response.end(JSON.stringify(result));
@@ -140,6 +157,27 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
     const current = (await store.list())[0];
     await store.deleteKey(target, current.resourceVersion!);
     assert.ok((await store.list())[0].keys.includes("other"));
+    for (const key of ["__proto__", "constructor", "toString"]) {
+      await store.write({ ...target, key }, "synthetic special-key bytes", "create");
+      assert.equal((await store.read({ ...target, key })).value, "synthetic special-key bytes");
+      assert(Object.hasOwn(object.data, key), "The actual TLS JSON body retains valid native key spelling");
+    }
+    const transport = createSecretTransport();
+    await transport.probe("apps");
+    metadataMode="pages";metadataReads=0;const metadata=await transport.listMetadata("apps");assert.equal(metadata.length,200);assert.equal(metadataReads,2);assert(!JSON.stringify(metadata).includes("fake TLS value"));
+    metadataMode="repeat";metadataReads=0;await assert.rejects(transport.listMetadata("apps"),/Invalid Kubernetes Secret pagination/);assert.equal(metadataReads,2);
+    metadataMode="oversize";await assert.rejects(transport.listMetadata("apps"),/exceeds the validated limits/);
+    metadataMode="values";await assert.rejects(transport.listMetadata("apps"),/Invalid metadata-only Secret response/);metadataMode="normal";
+    listMode = "pages"; listReads = 0;
+    assert.equal((await transport.list("apps")).length, 40); assert.equal(listReads, 2);
+    listMode = "repeat"; listReads = 0;
+    await assert.rejects(transport.list("apps"), /Invalid Kubernetes Secret pagination/); assert.equal(listReads, 2);
+    listMode = "oversize"; listReads = 0;
+    await assert.rejects(transport.list("apps"), /exceeds the validated limits/); assert.equal(listReads, 1);
+    await assert.rejects(transport.delete("history", "candidate", "", "7"), (error: any) => error.status === 428);
+    await assert.rejects(transport.delete("history", "candidate", "wrong-uid", "7"), (error: any) => error.status === 409);
+    await transport.delete("history", "candidate", "fixture-history-uid", "7");
+    assert.deepEqual(deleteBody.preconditions, { uid: "fixture-history-uid", resourceVersion: "7" });
     assert.ok(authPassed);
     assert.ok(
       seenUrls.every(

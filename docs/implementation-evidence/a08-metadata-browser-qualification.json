@@ -1,0 +1,204 @@
+{
+  "scope": "Two finite A08 list-row metadata-error browser cases only; unchanged current4df production source. No universal advertised-action/role/method matrix acceptance.",
+  "source": "4df4d3251715dae689420a9f6242263aeb9bdbee",
+  "actualNewCases": 2,
+  "checks": [
+    "Disappeared list-row target: actual metadata404 visible, no selector/log request/false snapshot",
+    "Absent target in actual stale snapshot: metadata503 visible, no selector/log request/false snapshot"
+  ],
+  "observations": [
+    {
+      "status": 404,
+      "error": "Pod not found",
+      "availability": "healthy",
+      "selectorOpened": false,
+      "logsRequested": 0,
+      "oldSnapshotDisplayed": false,
+      "triggerEnabled": true
+    },
+    {
+      "status": 503,
+      "error": "Resource absent from stale snapshot; refresh required",
+      "availability": "stale",
+      "selectorOpened": false,
+      "logsRequested": 0,
+      "oldSnapshotDisplayed": false,
+      "triggerEnabled": true
+    }
+  ],
+  "requestEvents": [
+    {
+      "route": "/api/cluster/pods/apps/large-pod-0",
+      "method": "GET",
+      "status": 404
+    },
+    {
+      "route": "/api/cluster/pods/apps/large-pod-0",
+      "method": "GET",
+      "status": 503
+    }
+  ],
+  "explicitRefreshes": [
+    {
+      "method": "POST",
+      "status": 200,
+      "explicit": true
+    },
+    {
+      "method": "POST",
+      "status": 200,
+      "explicit": true
+    }
+  ],
+  "readyMenuPreconditions": [
+    {
+      "action": "a08-hide-target",
+      "sessionStatus": 200,
+      "sessionFlags": {
+        "authenticated": true,
+        "writer": true,
+        "engineAdmin": true
+      },
+      "sessionFlagsAreServerReadNotClientCache": true,
+      "domFlags": {
+        "menuCount": 1,
+        "viewLogsCount": 1,
+        "triggerCount": 1,
+        "menuItemConnected": true,
+        "visibility": "visible"
+      },
+      "labels": [
+        "View Logs",
+        "View YAML",
+        "Download YAML",
+        "Edit YAML",
+        "Execute Shell",
+        "Delete"
+      ],
+      "actualLabelCount": 6,
+      "labelsTruncated": false,
+      "establishedBeforeFixtureMutation": true,
+      "sameMenuItemConnectedAfterFixtureMutation": true
+    },
+    {
+      "action": "a08-fail-pods",
+      "sessionStatus": 200,
+      "sessionFlags": {
+        "authenticated": true,
+        "writer": true,
+        "engineAdmin": true
+      },
+      "sessionFlagsAreServerReadNotClientCache": true,
+      "domFlags": {
+        "menuCount": 1,
+        "viewLogsCount": 1,
+        "triggerCount": 1,
+        "menuItemConnected": true,
+        "visibility": "visible"
+      },
+      "labels": [
+        "View Logs",
+        "View YAML",
+        "Download YAML",
+        "Edit YAML",
+        "Execute Shell",
+        "Delete"
+      ],
+      "actualLabelCount": 6,
+      "labelsTruncated": false,
+      "establishedBeforeFixtureMutation": true,
+      "sameMenuItemConnectedAfterFixtureMutation": true
+    }
+  ],
+  "logsCLIInvocations": 0,
+  "sourceFiles": 371,
+  "generatedExtras": 4,
+  "inputFiles": 42,
+  "compiledObjects": 5382,
+  "dependencyObjects": 40635,
+  "independentClosure": {
+    "linuxBirthsAbsent": 33,
+    "exactCIDAndNameAbsent": true,
+    "windowsNoLiveBirths": 10,
+    "retainedSignaledObjects": 0,
+    "laterRootReceipt": "root-a08-v5-later-20261014.json",
+    "laterTool": "f694c7=0"
+  },
+  "rootTools": [
+    "server5888f7/session46708->57b313=0",
+    "browser24d887/session76820->747839=0",
+    "exact55c075/session54863->30394a=0",
+    "Linux086903=0",
+    "WindowsStrictEcabbe=0"
+  ],
+  "priorFailedActors": [
+    {
+      "version": 1,
+      "actualOuterExit": 1,
+      "acceptedCases": 0,
+      "firstCaughtCause": "unrecorded; pending-response rejection masked original"
+    },
+    {
+      "version": 2,
+      "actualOuterExit": 1,
+      "acceptedCases": 0,
+      "firstCaughtCause": "View Logs click TimeoutError after one refresh; no metadata request"
+    },
+    {
+      "version": 3,
+      "actualOuterExit": 1,
+      "acceptedCases": 0,
+      "firstCaughtCause": "DOM-flag equality AssertionError; actual failed flag not saved"
+    },
+    {
+      "version": 4,
+      "actualOuterExit": 1,
+      "acceptedCases": 0,
+      "firstCaughtCause": "Saved open-menu accessible triggerCount0 while real menu/item/session guards passed"
+    }
+  ],
+  "observerFix": "V5 counts exact trigger DOM with includeHidden only while Radix modal menu is open; default visible trigger click/postclose enabled, same actual item handle and original error oracles unchanged.",
+  "failedPostReadersRetained": true,
+  "firstV5WindowsFresh": {
+    "tool": "2d945c",
+    "actualExit": 1,
+    "error": "WinError5 under combined query/synchronize; no row journal or successful result",
+    "historicalDeniedPIDUnknown": true
+  },
+  "subsequentReadOnlyAccessObservation": {
+    "tool": "bfffff",
+    "queries": 20,
+    "allCurrentOpenProcessError": 87,
+    "noHistoricalStateInferred": true
+  },
+  "historicalEightChecks": {
+    "completedChecks": 8,
+    "actualOuterExit": 1,
+    "scope": "partial/unjoined; not upgraded by newtwo-case result"
+  },
+  "coldWhollyUnavailable503Accepted": false,
+  "actualAT": false,
+  "performanceAcceptance": false,
+  "deliveredImageAcceptance": false,
+  "liveAdoption": false,
+  "immutableOriginals": {
+    "count": 1363,
+    "archiveSHA256": "558614e10ffbbc8a3675e065dba4b83f146d7ebbf67f402331b07fc4c0fc22d5",
+    "manifestSHA256": "ddd97234d6670fced54ca827dba59840a16546efda7128f9fa75c6f325e82992",
+    "handoffSHA256": "3c1509ee1ed2e18c164412fac3b8896bf4f65a7a81cc89831f2aee1adc2b4f09"
+  },
+  "receiptSHA256": [
+    {
+      "scope": "exact",
+      "sha256": "a9f5caa2d1371e8e70175b7f7f75aa58a97bce63ca3ab7482ffda7c511b386ba"
+    },
+    {
+      "scope": "linuxFresh",
+      "sha256": "69ff15c9cc931101bc5ea4d2435c8c2534401967a3da2670397f0e6d8b6abeca"
+    },
+    {
+      "scope": "windowsFresh",
+      "sha256": "e54bfd13f12d3c2cf57d692dbacac5f7085502e345d2865b234fa4c18d797bf5"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: account FIFO bounds admission at one active and64 waiters without invoking rejected work
+ok 1 - account FIFO bounds admission at one active and64 waiters without invoking rejected work
+  ---
+  duration_ms: 13.99939
+  type: 'test'
+  ...
+# Subtest: queued expiry removes only unstarted work and never releases a live active callback
+ok 2 - queued expiry removes only unstarted work and never releases a live active callback
+  ---
+  duration_ms: 31.710152
+  type: 'test'
+  ...
+# Subtest: failed or synchronously throwing account callbacks settle ownership before the next FIFO admission
+ok 3 - failed or synchronously throwing account callbacks settle ownership before the next FIFO admission
+  ---
+  duration_ms: 1.318248
+  type: 'test'
+  ...
+# Subtest: all AccountStore instances in this process share the same admission owner
+ok 4 - all AccountStore instances in this process share the same admission owner
+  ---
+  duration_ms: 0.196389
+  type: 'test'
+  ...
+# Subtest: a genuine second module copy shares queue ownership and fixed busy translation
+ok 5 - a genuine second module copy shares queue ownership and fixed busy translation
+  ---
+  duration_ms: 11.689294
+  type: 'test'
+  ...
+# Subtest: queued account mutations recheck demotion, reset and deletion after admission
+ok 6 - queued account mutations recheck demotion, reset and deletion after admission
+  ---
+  duration_ms: 1260.497845
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1634.953683

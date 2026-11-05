@@ -1,0 +1,49 @@
+{
+  "scope": "Provenance framing clarification only; no diagnostic/source/runtime replay.",
+  "referenceCommit": "4e70ac9aafce379d9e9d4f1271dfa798ce8562ea",
+  "offsetConvention": "Zero-based byte start, exclusive byte end.",
+  "driver": {
+    "artifact": "whole-server.mjs",
+    "sha256": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b"
+  },
+  "sourceSlices": [
+    {
+      "label": "timestamp declaration with its original LF",
+      "startByte": 1223,
+      "endByteExclusive": 1263,
+      "startLine": 23,
+      "bytes": 40,
+      "sha256": "3e018a9178f71dc51e40a6c2db98be9113012761526a4c3577e70e889c3bbd20"
+    },
+    {
+      "label": "complete original Pod function declaration",
+      "startByte": 9451,
+      "endByteExclusive": 10128,
+      "startLine": 134,
+      "endLineInclusive": 137,
+      "bytes": 677,
+      "sha256": "434aba5ffd7aedd4da84ee994f6333aae87093d8f170635c3f1c2493e186f613"
+    }
+  ],
+  "composedArtifact": {
+    "artifact": "output/literal-pod-generator.txt",
+    "bytes": 717,
+    "sha256": "527b3d89981edd8f3e190a46f80ebe607777b400bbf8a6fa1d853c43c4931048",
+    "relationship": "driver[start1:end1] + driver[start2:end2]",
+    "oneContiguousDriverSubstringClaimed": false
+  },
+  "resultHashField": {
+    "field": "sourceHashes.literalPodGenerator",
+    "relationship": "SHA256 of the second source slice only",
+    "sha256": "434aba5ffd7aedd4da84ee994f6333aae87093d8f170635c3f1c2493e186f613"
+  },
+  "vmExposureSuffix": {
+    "utf8": "\nmodule.exports=pod;",
+    "scope": "Diagnostic VM adds this separate suffix only to expose the unchanged fixture function; not part of original driver or composedArtifact."
+  },
+  "originalArchiveSHA256": "fe90388eea5a8bb2da9ee63a737838c6aaf4347ad7a93e8547c8638e7fcb3f7e",
+  "originalReceiptSHA256": "86b6fd0682ac4a390a65cb5b84aa0c608cd0fa0feb22581e435161d65a6aa95a",
+  "all15OriginalArtifactsVerifiedUnchanged": true,
+  "original35ControlsAndTimingPreserved": true,
+  "productionUnchanged": true
+}

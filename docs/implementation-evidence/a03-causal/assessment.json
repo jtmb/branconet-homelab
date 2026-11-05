@@ -1,0 +1,82 @@
+{
+  "sourceCommit": "ab8d450790ed8970c25ccfec78fa924c8f08ff6a",
+  "docsCheckpoint": "7cd70fc8219b410a0f8e0ebc04d2d9f2ed04bb26",
+  "scope": "ONE first failed closed/missing-setting/distinct concurrent bootstrap scenario only; no remaining9 permutations/A02/A05 replay",
+  "actualExit": 1,
+  "failedAssertion": "refusal-exact403-1",
+  "outcomes": {
+    "concurrentRequests": 6,
+    "fulfilled": 1,
+    "refused": 5,
+    "userCount": 1,
+    "writerCount": 1,
+    "effectiveAdminCount": 1,
+    "readonlyAdminCount": 0,
+    "policyCount": 1,
+    "uniquePolicyPrincipalCount": 1,
+    "everyUserHasPolicy": true,
+    "refusals": [
+      {
+        "accountError": true,
+        "status": 403,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": true
+      },
+      {
+        "accountError": true,
+        "status": 503,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": false
+      },
+      {
+        "accountError": true,
+        "status": 503,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": false
+      },
+      {
+        "accountError": true,
+        "status": 503,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": false
+      },
+      {
+        "accountError": true,
+        "status": 403,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": true
+      }
+    ]
+  },
+  "sourceCause": "AccountStore.serialized maps exhausted P2034/P2028/P1008 retries to fixed AccountError503. Exact inner Prisma subtype is not retained, so lock/timeout subtype remains unproven.",
+  "limitations": [
+    "One writer/effective-admin/policy invariant holds; required refusal403 fails.",
+    "No production child ran in this causal fixture; failure still reproduced on exact AccountStore/Prisma/migrations.",
+    "No production edit, accepted busy503 workaround, rebuild, remaining9 scenarios or performance acceptance."
+  ],
+  "performanceAcceptance": false,
+  "originalsArchiveSHA256": "c1c52bdddd3f0b29237c29a9ee658507954219daa8c0525d1f61a190b3da9250",
+  "originalArtifacts": {
+    "handle.json": "115017010a284393a43ba3f77bc5e27fab2c51648662b5856e52a678249ad42c",
+    "independent-closure.json": "220a28a524b54766e96b279d73a8ad1fa113b64adab5d213444dc71708e8f938",
+    "output/report.json": "13734db357961a8bf883d121946f61bb43d63511a8d9933ac5de53ff928f1b44",
+    "qa/bin/kubectl": "3d049f87bdd2cdbef1fe0d44ed6177b03eb2cdb3443424a03e3c57b57e5bc601",
+    "qa/inventory.json": "24c131020726e906a20442f8de0f437b4939b20f4d13e09367d6a044d2c2c8d9",
+    "qa/kubectl": "3d049f87bdd2cdbef1fe0d44ed6177b03eb2cdb3443424a03e3c57b57e5bc601",
+    "qa/manifest.json": "15cd4f67ea7ec526ce873d284d82c4252391a63044c5c65cc318b3cd7ce1a4af",
+    "qa/prepared.json": "ee436229145fb2fe741d35e94b4e016047fe24b146dbcedaa617787d5bf03caa",
+    "qa/supplement.cjs": "e66ee5a394d2a10d6677f3e1d4e19b055a2db655ed877414cfeefe555ff72d91",
+    "record.json": "29f989146eeaadfe9d3ab09bbe45be6c02078b03e4df29ca51cdb1029b83697e",
+    "stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout": "7d19849c82542a37a55042a1af80ab4d8f6afd6d3066d5d4ec86aeda076537c6",
+    "supervisor.py": "2da51d6011ad14441e005caf193cf012aa554d4bc0e598a50b638fca8389116a",
+    "supervisor.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervisor.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "terminal.json": "29f989146eeaadfe9d3ab09bbe45be6c02078b03e4df29ca51cdb1029b83697e"
+  }
+}

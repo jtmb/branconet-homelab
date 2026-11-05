@@ -1,0 +1,51 @@
+{
+  "capturedAt": "2026-10-10T17:36:22.652Z",
+  "node": "v22.23.3",
+  "platform": "win32",
+  "fixture": "disposable production HTTP + 50ms metadata-only fake CLI; no real cluster/image acceptance",
+  "source": "current working tree",
+  "coldPods": {
+    "ms": 99.67889999999898,
+    "cliCalls": 1
+  },
+  "warmPods": {
+    "samples": 12,
+    "ms": {
+      "p50": 2.749099999999089,
+      "p95": 4.7291000000004715
+    },
+    "cliCalls": 0
+  },
+  "concurrentWarmPods": {
+    "requests": 20,
+    "cliCalls": 0
+  },
+  "concurrentColdPods": {
+    "requests": 20,
+    "cliCalls": 1,
+    "ms": {
+      "p50": 104.06790000000001,
+      "p95": 106.8736000000008
+    }
+  },
+  "outageServices": {
+    "requests": 12,
+    "status": 503,
+    "ms": {
+      "p50": 3.22400000000016,
+      "p95": 4.721499999999651
+    },
+    "additionalCliCalls": 0
+  },
+  "pool": {
+    "active": 0,
+    "queued": 0,
+    "maxConcurrent": 4,
+    "maxQueued": 64
+  },
+  "limitations": [
+    "Synthetic metadata/fake CLI on win32/v22.23.3; no deployed Node22/Linux image",
+    "no real API/RBAC or cold-container memory/peak-process measurement",
+    "timings observational with no controlled host CPU isolation"
+  ]
+}

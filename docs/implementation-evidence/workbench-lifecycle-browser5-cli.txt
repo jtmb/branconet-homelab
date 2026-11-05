@@ -1,0 +1,8 @@
+BROWSER_CHECK Parent/workbench share status, versions and capabilities; opening requests no values
+BROWSER_CHECK Explicit adoption and grouped edit preserve exact binary, empty, unrelated, type and metadata
+BROWSER_CHECK One unchanged shared status poll preserves draft and frozen capture
+BROWSER_CHECK Native status outage pauses save without writes or draft loss; unchanged fresh recovery resumes capture
+BROWSER_CHECK External selected-field drift pauses frozen draft without writes; explicit reconcile creates new head
+BROWSER_CHECK History browsing has no value GET; rollback, soft deletion and restore create new heads preserving originals
+BROWSER_FAILURE {"phase":"history metadata and rollback","failures":["page.waitForEvent: Timeout 30000ms exceeded while waiting for event \"download\""]}
+{"checks":6,"failures":["page.waitForEvent: Timeout 30000ms exceeded while waiting for event \"download\""],"cleanup":{"chromeExitCode":0,"chromeSignal":null,"fixtureExitCode":0,"fixtureSignal":null}}

@@ -1,0 +1,226 @@
+{
+  "schema": "bortus.registration-open.source.v1",
+  "date": "2026-10-23",
+  "featureComplete": true,
+  "status": "source-and-types-pass-fresh-focused-lint-pass",
+  "productionChanged": false,
+  "supportedProductionDefectEstablished": false,
+  "source": "k8s-rewrite/front-end/src/lib/account-store.ts",
+  "selectedMethod": "AccountStore.registrationOpen",
+  "sourceModuleRawWindowsSHA256": "559905f49174280c782299945ef35026df3818206ca48775077e1baed28d9bfe",
+  "methodCanonicalLFSHA256": "00580d2fb6fc1b67f263d8609b3e3d3adc8e1f111d7e80a4643c7b646ea75e7b",
+  "test": "k8s-rewrite/front-end/tests/registration-open-source.test.ts",
+  "testSHA256": "ae3937e6c8f7572e8a019b8b8fad22a7781c2c1e54c1ae6b3a06a3b1f25162ef",
+  "sourceOrderRecordedBeforeControls": true,
+  "order": [
+    "Resolve default client from this.db only if argument is undefined; explicit null is retained.",
+    "Evaluate client.user.count with user receiver, no arguments, call once then await; failure rejects without env/settings access.",
+    "Compare awaited count strictly to numeric zero; zero returns true without reading process.",
+    "For nonzero count evaluate process.env.ALLOW_REGISTRATION and compare strictly with string true; exact match returns true.",
+    "Otherwise evaluate client.appSetting.findUnique with appSetting receiver and fresh literal where/key allow_registration argument, call once then await.",
+    "Nullish setting short-circuits optional value access; otherwise read value once and compare strictly with string true; return primitive Boolean.",
+    "No catch, retry, cache, constructor, original import/initializer/neighbour execution. Malformed inert metadata qualifies JavaScript only."
+  ],
+  "controls": {
+    "newFiniteFrozen": 43,
+    "firstExecutionOnly": true,
+    "pass": 43,
+    "fail": 0,
+    "skip": 0,
+    "cancel": 0,
+    "todo": 0,
+    "noCallbackFilter": true
+  },
+  "focusedTypes": {
+    "roots": 2,
+    "diagnostics": 0,
+    "freshDeclarations": 7588,
+    "parts": 76,
+    "snapshotReads": 192,
+    "fallbackReads": 0,
+    "compilerInputsDirectLinuxAndUNC": 192,
+    "bindingsStdinNotArgv": true
+  },
+  "lint": {
+    "passed": true,
+    "rulesUnchanged": true,
+    "literalDependencyAliasRetained": true,
+    "publicPreserveSymlinksOnlyLint": true,
+    "attempts": [
+      {
+        "name": "V1",
+        "observations": {
+          "mainHandleSignalled": false,
+          "wallSeconds": 60.061999999918044,
+          "userCPUSeconds": 0.96875,
+          "kernelCPUSeconds": 1.09375,
+          "peakJobMemoryBytes": 85266432,
+          "totalProcesses": 2,
+          "activeBeforeDrain": 2,
+          "activeAfterDrain": 0,
+          "limits": {
+            "wallSeconds": 60,
+            "userCPUSeconds": 30,
+            "jobCommitBytes": 1073741824,
+            "CPUCount": 2,
+            "affinity": 3,
+            "activeProcesses": 1,
+            "killOnClose": true
+          }
+        },
+        "preTerminationProcessState": 259,
+        "reportProduced": false
+      },
+      {
+        "name": "V2 physical Windows cwd/filePath only",
+        "observations": {
+          "mainHandleSignalled": false,
+          "wallSeconds": 60.01500000001397,
+          "userCPUSeconds": 1.65625,
+          "kernelCPUSeconds": 1.125,
+          "peakJobMemoryBytes": 175349760,
+          "totalProcesses": 2,
+          "activeBeforeDrain": 2,
+          "activeAfterDrain": 0,
+          "limits": {
+            "wallSeconds": 60,
+            "userCPUSeconds": 30,
+            "jobCommitBytes": 1073741824,
+            "CPUCount": 2,
+            "affinity": 3,
+            "activeProcesses": 1,
+            "killOnClose": true
+          }
+        },
+        "preTerminationProcessState": 259,
+        "reportProduced": false
+      }
+    ],
+    "cause": "UNESTABLISHED",
+    "sourceAndTypesNeverReplayed": true,
+    "historicalCause": "The original two60s UNC attempts retain cause UNESTABLISHED; fresh Windows copy is not a diagnosis of those historical timeouts.",
+    "freshWindowsQualification": {
+      "humanAuthorized": true,
+      "sameLintRulesAndSourceBytes": true,
+      "privateWindowsPublicDependencyCopy": 37428,
+      "originalSymlinkTargetBytesMaterialized": 37,
+      "parserMatched": "typescript-eslint/parser",
+      "matchedRuleCountEach": [
+        52,
+        52
+      ],
+      "requiredExhaustiveDepsSeverity": 2,
+      "files": 2,
+      "errors": 0,
+      "warnings": 0,
+      "wallSeconds": 1.4059999999990396,
+      "userCPUSeconds": 1.046875,
+      "kernelCPUSeconds": 0.53125,
+      "peakJobMemoryBytes": 261160960,
+      "mainHandleSignalled": true,
+      "activeBeforeDrain": 0,
+      "activeAfterDrain": 0,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 2,
+        "killOnClose": true
+      },
+      "all37428FilesBeforeAndAfterExact": true,
+      "newWindowsAttemptIgnoredFilesFailureRetained": {
+        "filesParsed": 0,
+        "warnings": 2,
+        "exitCode": 1,
+        "message": "File ignored because no matching configuration was supplied."
+      },
+      "intermediateJunctionPreparationFailureRetained": {
+        "lintExecuted": false,
+        "launcherRefusedMissingFreeze": true
+      },
+      "passingCandidateChange": "FlatCompat uses source baseDirectory, retaining dependency plugin root, complete rules and public preserve-symlinks flag. Effective TS parser and error severity are asserted before lintText.",
+      "sourceAndTypeCallbacksReplayed": false,
+      "wholeProjectLinuxOrRuntimeAccepted": false
+    }
+  },
+  "dependencies": {
+    "files": 37428,
+    "inTreeNondanglingSymlinks": 37,
+    "beforeBothAttemptsAndAfterEqual": true,
+    "literalAliasDirectoryIdentitiesEqual": true,
+    "noNewSeparateEveryAliasFileClaim": true
+  },
+  "successfulObservations": {
+    "source": {
+      "mainHandleSignalled": true,
+      "wallSeconds": 1.875,
+      "userCPUSeconds": 0.46875,
+      "kernelCPUSeconds": 0.0625,
+      "peakJobMemoryBytes": 79282176,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 1,
+      "activeAfterDrain": 0,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    },
+    "types": {
+      "mainHandleSignalled": true,
+      "wallSeconds": 10.015999999945052,
+      "userCPUSeconds": 2.4375,
+      "kernelCPUSeconds": 1.015625,
+      "peakJobMemoryBytes": 341889024,
+      "totalProcesses": 2,
+      "activeBeforeDrain": 1,
+      "activeAfterDrain": 0,
+      "limits": {
+        "wallSeconds": 60,
+        "userCPUSeconds": 30,
+        "jobCommitBytes": 1073741824,
+        "CPUCount": 2,
+        "affinity": 3,
+        "activeProcesses": 1,
+        "killOnClose": true
+      }
+    }
+  },
+  "scope": "Only selected method in strict inert receiver. Original constructor/class/module/imports/initializers/neighbours and actual accounts/auth/settings/Prisma/SQL/DB/HTTP/native/backend/build/server/recovery/performance/production are inert. Malformed metadata characterizes JavaScript only.",
+  "limitations": [
+    "The undefined entries in the synthetic count and nullish-setting groups are replaced by fixture defaults (count 1 and setting null). Undefined count and undefined setting results are not separately qualified by these controls. Supported Prisma results remain number and setting-or-null.",
+    "Lint remains failed/unqualified; no gate waiver or completed-feature handoff.",
+    "259 is the observed pre-termination STILL_ACTIVE state, not a completed lint exit. Both Jobs explicitly drained to zero.",
+    "TotalProcesses two is observed; cause UNESTABLISHED. No OS network-isolation, universal-descendant, performance or independent-person claim.",
+    "All old completed/failed/prepared helpers, configs, controls and workloads stay frozen; no replay.",
+    "All 44 clauses, 21 gates, original failures, findings and rejected-action boundaries remain.",
+    "Actions disabled; app public/charts private; no merge, publisher, promotion, deployment or visibility change.",
+    "PRD deployment AND verification remain FINAL after all original preceding security/performance/actualAT/compatible-independent-recovery/fresh-backup-after-quiescence/schema/effectiveRBAC/admission/data gates."
+  ],
+  "fixtureReviewLimitations": [
+    {
+      "testFile": "k8s-rewrite/front-end/tests/registration-open-source.test.ts",
+      "helperLines": [
+        25,
+        28
+      ],
+      "groupLines": [
+        112,
+        152
+      ],
+      "finding": "The undefined entries in the synthetic count and nullish-setting groups are replaced by fixture defaults (count 1 and setting null). Undefined count and undefined setting results are not separately qualified by these controls. Supported Prisma results remain number and setting-or-null.",
+      "sourceOnlyReview": true,
+      "noSupportedProductionDefect": true,
+      "frozenCallbacksUnchangedAndNeverReplayed": true
+    }
+  ],
+  "featureScope": "Finite PUBLIC SOURCE qualification only; no production correction or whole-goal acceptance",
+  "checkpointPublication": "Local feature qualification complete; remote publication pending review of separately enabled private charts Actions. No Actions run, deployment, merge or gate waiver.",
+  "fullGoalComplete": false
+}

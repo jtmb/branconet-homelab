@@ -1,0 +1,432 @@
+{
+  "sourceCommit": "ab8d450790ed8970c25ccfec78fa924c8f08ff6a",
+  "scope": "ONE fresh Linux production build + original4strictHTTP and protected affected GET fixture; no fullunits or paired performance repetition",
+  "result": {
+    "sourceCommit": "ab8d450790ed8970c25ccfec78fa924c8f08ff6a",
+    "actualTerminal": "2026-10-11T12:58:00.840054+00:00",
+    "owner": {
+      "owner": "functional-ab8d450-20261011-125210-2d8f04",
+      "supervisorPid": 1985551,
+      "supervisorStartTicks": "22240325",
+      "work": "/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04",
+      "sourceCommit": "ab8d450790ed8970c25ccfec78fa924c8f08ff6a",
+      "testSourceFiles": 67,
+      "startedAtUTC": "2026-10-11T12:54:36.129096+00:00"
+    },
+    "stages": [
+      {
+        "phase": "fresh-build",
+        "actualExit": 0,
+        "seconds": 115.51177525520325,
+        "command": [
+          "docker",
+          "run",
+          "--rm",
+          "--pull",
+          "never",
+          "--cpus",
+          "4",
+          "--cpuset-cpus",
+          "0,1,2,3",
+          "--memory",
+          "4g",
+          "--memory-swap",
+          "4g",
+          "--pids-limit",
+          "256",
+          "--user",
+          "1000:1000",
+          "--mount",
+          "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04/source,target=/source",
+          "--workdir",
+          "/source",
+          "--env",
+          "DATABASE_URL=file:/tmp/bortus-functional-build.db",
+          "--env",
+          "NEXT_TELEMETRY_DISABLED=1",
+          "--env",
+          "CIRCLE_NODE_TOTAL=4",
+          "--entrypoint",
+          "bash",
+          "--name",
+          "bortus-functional-build-functional-ab8d450-20261011-125210-2d8f04",
+          "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+          "-lc",
+          "npm ci && npm run build"
+        ]
+      },
+      {
+        "phase": "http",
+        "actualExit": 0,
+        "seconds": 81.34800815582275,
+        "command": [
+          "docker",
+          "run",
+          "--rm",
+          "--pull",
+          "never",
+          "--cpus",
+          "2",
+          "--cpuset-cpus",
+          "0,1",
+          "--memory",
+          "1g",
+          "--memory-swap",
+          "1g",
+          "--pids-limit",
+          "256",
+          "--user",
+          "1000:1000",
+          "--mount",
+          "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04/source,target=/source,readonly",
+          "--workdir",
+          "/source",
+          "--env",
+          "DATABASE_URL=file:/tmp/bortus-functional-build.db",
+          "--env",
+          "NEXT_TELEMETRY_DISABLED=1",
+          "--env",
+          "CIRCLE_NODE_TOTAL=4",
+          "--entrypoint",
+          "bash",
+          "--network",
+          "none",
+          "--env",
+          "NODE_ENV=test",
+          "--name",
+          "bortus-functional-http-functional-ab8d450-20261011-125210-2d8f04",
+          "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+          "-lc",
+          "node node_modules/tsx/dist/cli.mjs --test --test-concurrency=2 tests/*.integration.ts"
+        ]
+      },
+      {
+        "phase": "affected-http",
+        "actualExit": 0,
+        "seconds": 5.835792303085327,
+        "command": [
+          "docker",
+          "run",
+          "--rm",
+          "--pull",
+          "never",
+          "--cpus",
+          "2",
+          "--cpuset-cpus",
+          "0,1",
+          "--memory",
+          "1g",
+          "--memory-swap",
+          "1g",
+          "--pids-limit",
+          "256",
+          "--user",
+          "1000:1000",
+          "--mount",
+          "type=bind,source=/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04/source,target=/source,readonly",
+          "--workdir",
+          "/source",
+          "--env",
+          "DATABASE_URL=file:/tmp/bortus-functional-build.db",
+          "--env",
+          "NEXT_TELEMETRY_DISABLED=1",
+          "--env",
+          "CIRCLE_NODE_TOTAL=4",
+          "--entrypoint",
+          "bash",
+          "--network",
+          "none",
+          "--env",
+          "NODE_ENV=test",
+          "--name",
+          "bortus-functional-affected-http-functional-ab8d450-20261011-125210-2d8f04",
+          "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+          "-lc",
+          "node qa/handler-http.cjs"
+        ]
+      }
+    ],
+    "sourceFilesUnchanged": 333,
+    "compiledFilesUnchanged": 4262,
+    "originalHTTPPassed": 4,
+    "supplementalHTTPChecks": 13,
+    "ownedSupervisorAbsent": true,
+    "ownedContainersAbsent": true,
+    "retainedSource": "/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04/source",
+    "retainedCompiled": "/home/brajam/.cache/bortus-controlled-perf/functional-ab8d450-20261011-125210-2d8f04/source/.next",
+    "copies": [
+      {
+        "path": "fresh-build.log",
+        "bytes": 13998,
+        "SHA256": "1bbf62354534b92a855440d328fb05b19a481abb0a8375f15e99b43684f8d252"
+      },
+      {
+        "path": "http.log",
+        "bytes": 2963,
+        "SHA256": "2cc0ba8326d94ab7a64c2cf3e8e88bc5c4116f577d95c2ca02248b8d76cc3011"
+      },
+      {
+        "path": "affected-http.log",
+        "bytes": 181,
+        "SHA256": "fe744b80c936c9f2a171fdd40dfebbbc624574a40e61c06f75a35b49be7e6093"
+      },
+      {
+        "path": "handle.json",
+        "bytes": 364,
+        "SHA256": "c3925e4b92ed6130a7158d5edd4b076f046360ab318ed0671580bedce5c93e53"
+      },
+      {
+        "path": "input.json",
+        "bytes": 93877,
+        "SHA256": "b4555613267d0c667f8736a79cf6d7224c43f43dececf448ccd00c0eb1d4043e"
+      },
+      {
+        "path": "record.json",
+        "bytes": 745171,
+        "SHA256": "0daf22ee50942e1346478073bd31fc187320a42e34f7cfe3cc935ea6e9eef78f"
+      },
+      {
+        "path": "source.tar.gz",
+        "bytes": 412803,
+        "SHA256": "ecedcf5e5cda0da846d8ea74bca984bffbb8f2280ba451fbc32c989ac50e1156"
+      },
+      {
+        "path": "supervisor.py",
+        "bytes": 4164,
+        "SHA256": "aa6d2000210bd1e9671200c93525fbf239dd2f8af8b64bd924ca4e2747328a80"
+      },
+      {
+        "path": "supervisor.stdout",
+        "bytes": 0,
+        "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "supervisor.stderr",
+        "bytes": 0,
+        "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "terminal.json",
+        "bytes": 745171,
+        "SHA256": "0daf22ee50942e1346478073bd31fc187320a42e34f7cfe3cc935ea6e9eef78f"
+      }
+    ]
+  },
+  "originalArtifactsArchive": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\complete-originals.zip",
+    "SHA256": "be2428d19bbec8bc6b2bbaf5002942f537794a2fec0440ef24b22818fcfd3c89",
+    "entries": [
+      {
+        "path": "fresh-build.log",
+        "bytes": 13998,
+        "SHA256": "1bbf62354534b92a855440d328fb05b19a481abb0a8375f15e99b43684f8d252"
+      },
+      {
+        "path": "http.log",
+        "bytes": 2963,
+        "SHA256": "2cc0ba8326d94ab7a64c2cf3e8e88bc5c4116f577d95c2ca02248b8d76cc3011"
+      },
+      {
+        "path": "affected-http.log",
+        "bytes": 181,
+        "SHA256": "fe744b80c936c9f2a171fdd40dfebbbc624574a40e61c06f75a35b49be7e6093"
+      },
+      {
+        "path": "handle.json",
+        "bytes": 364,
+        "SHA256": "c3925e4b92ed6130a7158d5edd4b076f046360ab318ed0671580bedce5c93e53"
+      },
+      {
+        "path": "input.json",
+        "bytes": 93877,
+        "SHA256": "b4555613267d0c667f8736a79cf6d7224c43f43dececf448ccd00c0eb1d4043e"
+      },
+      {
+        "path": "record.json",
+        "bytes": 745171,
+        "SHA256": "0daf22ee50942e1346478073bd31fc187320a42e34f7cfe3cc935ea6e9eef78f"
+      },
+      {
+        "path": "source.tar.gz",
+        "bytes": 412803,
+        "SHA256": "ecedcf5e5cda0da846d8ea74bca984bffbb8f2280ba451fbc32c989ac50e1156"
+      },
+      {
+        "path": "supervisor.py",
+        "bytes": 4164,
+        "SHA256": "aa6d2000210bd1e9671200c93525fbf239dd2f8af8b64bd924ca4e2747328a80"
+      },
+      {
+        "path": "supervisor.stdout",
+        "bytes": 0,
+        "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "supervisor.stderr",
+        "bytes": 0,
+        "SHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "terminal.json",
+        "bytes": 745171,
+        "SHA256": "0daf22ee50942e1346478073bd31fc187320a42e34f7cfe3cc935ea6e9eef78f"
+      }
+    ]
+  },
+  "publishedOriginalCopies": [
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\handler-http.cjs",
+      "copy": "handler-http.cjs",
+      "SHA256": "0998a4a1ec414d1fb4f868d3cb33c2b1f4e9afe310ddbecfe9ab596f6cbca34e",
+      "bytes": 5688
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\linux-dispatch.py",
+      "copy": "linux-dispatch.py",
+      "SHA256": "3998929575eabec13fada9bbc0104f70fbd3f815411f4500b162e6920bdbf1b4",
+      "bytes": 6314
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\prepare-dispatch.py",
+      "copy": "prepare-dispatch.py",
+      "SHA256": "f5bcd1b8b721a01bf4dc288ba57251669c442067628ec09e3ee90c04062891de",
+      "bytes": 5160
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\prepare-dispatch-attempt1.py",
+      "copy": "prepare-dispatch-attempt1.py",
+      "SHA256": "58fc620bbfcef9492f26c51b913a364e34180ecf69a856082e8e86c6bf1fc39f",
+      "bytes": 5043
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\prepare-dispatch-attempt2.py",
+      "copy": "prepare-dispatch-attempt2.py",
+      "SHA256": "094c5cb943c47e4a99abcff3a05d4d159e24ef9b3ede58a3e32a758d50c64870",
+      "bytes": 5052
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\package-complete.py",
+      "copy": "package-complete.py",
+      "SHA256": "45c67b69030083b8b37f2fe5277d19b38c1c4ff463eed9cff5098fca35595adf",
+      "bytes": 3685
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\source-export-attempt1.stderr",
+      "copy": "source-export-attempt1.stderr",
+      "SHA256": "fa735969f707cac8c8e8febc440b8cbb81126c295c02ce7b46646b90eb169513",
+      "bytes": 1515
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\dispatch-terminal.json",
+      "copy": "dispatch-terminal.json",
+      "SHA256": "db711b191119750c8d437c02ee1ddbb3095c1033d2b6c27cd9cf62fb52a2b0a5",
+      "bytes": 254
+    },
+    {
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\raw-production-complete-scan-terminal.json",
+      "copy": "raw-production-complete-scan-terminal.json",
+      "SHA256": "13dbbb7d531ab20de3b5b0a428932194024136a39ed659c656e10e635336ea49",
+      "bytes": 142
+    },
+    {
+      "originalArchive": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\complete-originals.zip",
+      "member": "fresh-build.log",
+      "copy": "fresh-build.log",
+      "SHA256": "1bbf62354534b92a855440d328fb05b19a481abb0a8375f15e99b43684f8d252",
+      "bytes": 13998
+    },
+    {
+      "originalArchive": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\complete-originals.zip",
+      "member": "http.log",
+      "copy": "http.log",
+      "SHA256": "2cc0ba8326d94ab7a64c2cf3e8e88bc5c4116f577d95c2ca02248b8d76cc3011",
+      "bytes": 2963
+    },
+    {
+      "originalArchive": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\complete-originals.zip",
+      "member": "affected-http.log",
+      "copy": "affected-http.log",
+      "SHA256": "fe744b80c936c9f2a171fdd40dfebbbc624574a40e61c06f75a35b49be7e6093",
+      "bytes": 181
+    },
+    {
+      "originalArchive": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\complete-originals.zip",
+      "member": "handle.json",
+      "copy": "handle.json",
+      "SHA256": "c3925e4b92ed6130a7158d5edd4b076f046360ab318ed0671580bedce5c93e53",
+      "bytes": 364
+    },
+    {
+      "originalArchive": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\complete-originals.zip",
+      "member": "supervisor.py",
+      "copy": "supervisor.py",
+      "SHA256": "aa6d2000210bd1e9671200c93525fbf239dd2f8af8b64bd924ca4e2747328a80",
+      "bytes": 4164
+    },
+    {
+      "originalArchive": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\complete-originals.zip",
+      "member": "complete-proof.json",
+      "copy": "complete-proof.json",
+      "SHA256": "c16eba72db7c7b2d2ccf7397bbd2484893c35ae2aaba5d27f6f7f05141ff2355",
+      "bytes": 6081
+    }
+  ],
+  "frozenRawSourceManifest": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\input.json",
+    "SHA256": "49d0d5574fd27169886ed230d54191cec6e905689f36372d93d4f5b1d5a0dc33",
+    "rawFrontendBlobModes": 333,
+    "originalTestsRawUnchanged": 67,
+    "supplementalFixture": "One protected public test-only qa/handler-http.cjs; fullactualproduction server, noKubernetes/native call"
+  },
+  "productionDefaultScan": {
+    "scannerVersion": "8.30.1",
+    "scannerSHA256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "actualExit": 0,
+    "findings": 0,
+    "rawGitFiles": 265,
+    "manifestPath": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\raw-production-complete-scan-manifest.json",
+    "manifestSHA256": "6d04d58ac6410c076b280d5dd11447046ea6b44e91662cd2b7baea34b80d9bff",
+    "reportPath": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\raw-production-complete-scan.json",
+    "reportSHA256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "scope": "Exactproductionexportonly; no dependency/image/fullrepository claim",
+    "firstPartialInputUnqualified": true
+  },
+  "setupFailuresRetained": [
+    "Expected exporter SHA literal was mistyped before any export/dispatch; first harness source retained",
+    "Windows invocation of unchanged exporter failed WinError193 on Linux scanner before archive; exact stderr retained; corrected wsl --exec uses same exporter/source/scanner",
+    "First private scan extraction refused Windows canonical longpath prefix mismatch; partialinput scan is unqualified; complete265canonical-contained input separately scanned"
+  ],
+  "remaining": "A07/A21 unchanged failed/open; previous214units+c29Linux and current13focused are separate scope, no217fullunit claim; finalcoherent image/runtime/live/AT/integratedgates open",
+  "publicationScan": {
+    "scope": "22 exact changed docs/evidence files; nofullrepository/image/dependency scanclaim",
+    "scannerVersion": "8.30.1",
+    "scannerSHA256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "defaultRules": true,
+    "actualExit": 1,
+    "findings": 1,
+    "individuallyVerified": 1,
+    "untriagedSelected": 0,
+    "suppressions": 0,
+    "legacyFullSourcePending": 2,
+    "reportSHA256": "154f881d97603f26fb7b846739f3cb49902f0deac116b31a128e6c8833ed8f53",
+    "terminalSHA256": "5554dadad76cbccbf705c3cc0e95286568ed16887ce085caa92477463794b619",
+    "reviews": [
+      {
+        "rule": "generic-api-key",
+        "file": "docs/BORTUS-IMPLEMENTATION.md",
+        "line": 41,
+        "columns": [
+          669,
+          702
+        ],
+        "columnUnit": "1-based UTF8bytes inclusive",
+        "whitespaceWords": 3,
+        "spanSHA256": "6d55e097f1c50b3fef8a222bfd51b9ab2a6ff357a5c0687abe0732669acaab84",
+        "classification": "Exact public historical prose, not a credential",
+        "proofCommit": "55fdb44e5cc1f93db8f4bc821ad97f8c3a233ec8",
+        "proofPath": "docs/BORTUS-IMPLEMENTATION.md",
+        "proofLine": 39
+      }
+    ]
+  }
+}

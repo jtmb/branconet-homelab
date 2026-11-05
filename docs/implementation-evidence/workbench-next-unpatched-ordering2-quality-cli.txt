@@ -1,0 +1,42 @@
+
+> botrus-k8s-manager@1.0.0 lint
+> eslint . --max-warnings=0
+
+
+> botrus-k8s-manager@1.0.0 typecheck
+> tsc --noEmit
+
+TAP version 13
+# NEXT_FINALIZE_PROBE {"begun":1,"completed":0,"routeBeforeFinalize":true}
+# Subtest: production native KV routes use verified TLS, exact binary history, fresh policy and legacy isolation
+not ok 1 - production native KV routes use verified TLS, exact binary history, fresh policy and legacy isolation
+  ---
+  duration_ms: 4622.8912
+  type: 'test'
+  location: 'C:\\Users\\james\\.codex\\worktrees\\bortus-app-recovered\\kubernetes migration\\k8s-rewrite\\front-end\\tests\\kv-http.integration.ts:14:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    503 !== 201
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 201
+  actual: 503
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration\k8s-rewrite\front-end\tests\kv-http.integration.ts:61:12)
+    process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4949.9663

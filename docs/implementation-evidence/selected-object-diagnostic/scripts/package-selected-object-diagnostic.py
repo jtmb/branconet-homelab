@@ -1,0 +1,22 @@
+from pathlib import Path
+import hashlib,json,subprocess
+b=Path(__file__).parent;repo=Path(r'C:\Users\james\.codex\worktrees\bortus-app-recovered\kubernetes migration');dest=repo/'docs/implementation-evidence/selected-object-diagnostic';dest.mkdir(exist_ok=False)
+sha=lambda raw:hashlib.sha256(raw).hexdigest()
+r=json.loads((b/'selected-object-diagnostic-v2/report.json').read_bytes());t=json.loads((b/'selected-object-diagnostic-v2/terminal.json').read_bytes());assert t['actual_exit']==t['child_exit']==0 and t['reaped'] and t['owned_pid_absent'] and r['equivalencePassed'] and r['exactProductionSourceUnchanged'] and r['cases']==22224
+copies=[]
+for folder,label in [(b/'selected-object-diagnostic-v1','attempt1'),(b/'selected-object-diagnostic-v2','attempt2')]:
+ for p in sorted(folder.rglob('*')):
+  if not p.is_file():continue
+  raw=p.read_bytes();rel=Path(label)/p.relative_to(folder);d=dest/rel;d.parent.mkdir(parents=True,exist_ok=True);d.write_bytes(raw);copies.append({'original':str(p),'copy':rel.as_posix(),'bytes':len(raw),'sha256':sha(raw)})
+for p in [Path(__file__),b/'prepare-selected-object-diagnostic.py',b/'prepare-selected-object-diagnostic-v2.py']:
+ raw=p.read_bytes();d=dest/'scripts'/p.name;d.parent.mkdir(parents=True,exist_ok=True);d.write_bytes(raw);copies.append({'original':str(p),'copy':d.relative_to(dest).as_posix(),'bytes':len(raw),'sha256':sha(raw)})
+record={'source':'3d4d9677c816e9e3959035e5c94fb5df8050c417','productionCandidate':'4668ceb40c3120c7e4053d94edff31f57b7e1f7f','copies':copies,'qualification':t,'equivalenceCases':22224,'malformedRefusals':17701,'structural':r['structural'],'selectedCapturePrivacyCounters':r['causal'],'timingRows':15,'observationsPerRow':15,'timingTrimmed':False,'proposalAcceptedForProduction':False,'performanceAcceptance':False,'decision':'Reject as a fix for measured1k gap: typical56-object median improvement was not demonstrated despite fewer grammar calls; long annotations improved but small/escaped tails include regressions.','limitations':r['limitations']+['The public representative metadata and value patterns are identical between variants; this is not the unchanged frozen whole-server workload or wire segmentation.','First normal process completion had null ExitCode after Refresh, so actual exit is unknown for attempt1. Attempt2 binds cached OS handle/exit to child normal-exit marker.','No Docker/API/image/source behavior edit; A07/A21 still open.']}
+(dest/'.gitattributes').write_text('* -text\n');(dest/'qualification.json').write_text(json.dumps(record,indent=2)+'\n');(b/'selected-object-diagnostic-v2/qualified-receipt.json').write_text(json.dumps(record,indent=2)+'\n')
+note='A selected-object boundary/depth scanner was tested outside production against the current parser on identical public representative inputs. The corrected one-CPU Node22.23.3 diagnostic exited0 in7.146 seconds with22,224 equivalence comparisons, including17,701 refusals, unchanged string/capture/text source, pre-parse depth32/33 and overwritten duplicate-key checks, fixed malformed UTF-8/JSON refusal and no native/unknown value capture. It reduced200-object skip calls2,802→800 and string calls6,453→5,052 while retaining401 fatal decodes/JSON parses and3,407 captures. Typical56-object medians did not improve (0.713→0.716ms at16KiB chunks); long public annotations improved (7.893→3.078ms), with untrimmed small/escaped p95 regressions retained. The proposal was rejected as a production fix for the measured1k gap. [Both diagnostic attempts and exact inputs](implementation-evidence/selected-object-diagnostic/qualification.json) are retained, including the first null-exit ownership limitation and corrected OS/child exit binding. No production parser edit or A07/A21 pass is claimed.'
+review=[]
+for p in sorted((repo/'docs').rglob('*.md')):
+ raw=p.read_bytes();raw.decode('utf-8-sig');updated=p.parent==repo/'docs' and p.name in ['BORTUS-NATIVE-LIST-PERFORMANCE.md','BORTUS-CONTROLLED-PERFORMANCE.md','BORTUS-IMPLEMENTATION.md'];review.append({'path':p.relative_to(repo).as_posix(),'sha256Before':sha(raw),'updated':updated})
+ if updated:
+  eol='\r\n' if b'\r\n' in raw else '\n';p.write_bytes(raw+(eol+eol+note+eol).encode())
+(dest/'doc-review.json').write_text(json.dumps(review,indent=2)+'\n')
+print(json.dumps({'copies':len(copies),'qualifiedReceipt':str(b/'selected-object-diagnostic-v2/qualified-receipt.json'),'sha256':sha((b/'selected-object-diagnostic-v2/qualified-receipt.json').read_bytes())}))

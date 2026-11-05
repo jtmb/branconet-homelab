@@ -1,0 +1,59 @@
+{
+  "scope": "Pure selected-object parser equivalence/CPU diagnostic; no production behavior edit or endpoint acceptance",
+  "inputs": {
+    "commit": "3d4d9677c816e9e3959035e5c94fb5df8050c417",
+    "productionCandidate": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f",
+    "sources": [
+      {
+        "path": "src/lib/secret-summary-json.ts",
+        "sha256": "791e5dad01ec4c5ccd5f0948b234a21bea99989105d98a04eea9110ab2153aad",
+        "bytes": 11738
+      },
+      {
+        "path": "src/lib/secret-ascii-span.ts",
+        "sha256": "a75b9e49bbae6fdd1533101ec7182d7ba3cec509eaef051bd4ecfe13976c6eaa",
+        "bytes": 783
+      },
+      {
+        "path": "src/lib/cluster-secrets.ts",
+        "sha256": "61ea585afa95f1747ce4d55df81fffb36a5150077a7f74f53aa0198028f8c70c",
+        "bytes": 12385
+      }
+    ]
+  },
+  "node": "v22.23.3",
+  "pid": 34836,
+  "startedUtc": "2026-10-11T10:17:22.924Z",
+  "structural": [
+    {
+      "name": "string",
+      "beforeSha256": "067e12160604549fc94fde2c3579a9a26c3f2697d4ab3d05907e5a9bc2adb4a6",
+      "afterSha256": "067e12160604549fc94fde2c3579a9a26c3f2697d4ab3d05907e5a9bc2adb4a6",
+      "equal": true
+    },
+    {
+      "name": "capture",
+      "beforeSha256": "a6a7d267390c27d7d9b83d059d9e4bb943e5a8251bb951aa21498329b2cf30ef",
+      "afterSha256": "a6a7d267390c27d7d9b83d059d9e4bb943e5a8251bb951aa21498329b2cf30ef",
+      "equal": true
+    },
+    {
+      "name": "text",
+      "beforeSha256": "d530de9eafeb4fb762296e4800687eec81e5911fc2aa0af3dbc49ddbc176a3d0",
+      "afterSha256": "d530de9eafeb4fb762296e4800687eec81e5911fc2aa0af3dbc49ddbc176a3d0",
+      "equal": true
+    }
+  ],
+  "originalMetadataCaptureScopesOnly": true,
+  "cases": 0,
+  "malformedCases": 0,
+  "timings": [],
+  "causal": [],
+  "limitations": [
+    "Pure isolated parser, not TLS/endpoint timing; same public bytes for both variants.",
+    "Native values, unknown fields and immutable boolean keep current parser paths.",
+    "Object boundary/depth scanner still performs original key grammar and unchanged fatal decode+JSON.parse, with pre-parse depth checks.",
+    "Microtiming cannot establish A07/A21 or no-regression acceptance."
+  ],
+  "performanceAcceptance": false
+}

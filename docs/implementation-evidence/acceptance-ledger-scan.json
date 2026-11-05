@@ -1,0 +1,31 @@
+{
+  "scope": "Default Gitleaks8.30.1 six changed documentation files only; no source/dependency/image/history scan",
+  "scannerSHA256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+  "actualExit": 1,
+  "completedAt": "2026-10-11T12:13:05.5673469Z",
+  "findings": 1,
+  "individualReview": [
+    {
+      "rule": "generic-api-key",
+      "file": "docs/BORTUS-IMPLEMENTATION.md",
+      "line": 39,
+      "startColumn": 669,
+      "endColumn": 702,
+      "classification": "Individually verified public implementation prose, not a credential; default generic-api-key rule matched unchanged words in the historical warm Pods narrative",
+      "spanSHA256": "6d55e097f1c50b3fef8a222bfd51b9ab2a6ff357a5c0687abe0732669acaab84",
+      "proofCommit": "5392ac3b1af63a72aa17009739f9629f0aa9ac84",
+      "proofPath": "docs/BORTUS-IMPLEMENTATION.md",
+      "proofBlob": "4852591ec052afbf5051aac9a1e0b23a4a2625d0",
+      "proofLine": 37,
+      "exactUnchangedPublicSpan": true,
+      "wordCount": 5
+    }
+  ],
+  "untriagedChangedDocs": 0,
+  "legacyFullSourcePending": 2,
+  "suppressions": 0,
+  "protectedOwner": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\acceptance-ledger-20261011-121255-be4e2d",
+  "originalReportSHA256": "d7c49324d13a0b453b0252811f86229fa965b153094ca38d48b47f9f4527d438",
+  "inputManifestSHA256": "c18b8711b160daa8d87ec72bc1146da59f978db3eba5c286802cb003d1460480",
+  "followup": "Audit README binding corrected after this first scan; final seven-file publication is separately rescanned into protected final-scan records without rewriting original scan."
+}

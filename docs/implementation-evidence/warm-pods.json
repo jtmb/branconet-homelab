@@ -1,0 +1,374 @@
+{
+  "capturedAt": "2026-10-10T23:50:50.3402490Z",
+  "source": {
+    "parentCommit": "5216a8e19f181572ba99c733ab0258374d987718",
+    "description": "Metadata-only warm Pod projection/serialized array; runtime-maintenance and controlled-harness commits integrated",
+    "sourceHashes": {
+      "k8s-rewrite/front-end/src/app/api/cluster/pods/route.ts": "60a7c2768696e886ef7b162434805a61d182d13a3655bb376e9525a5009eba23",
+      "k8s-rewrite/front-end/src/lib/pod-metadata-response.ts": "a6c68adc5565e02b7945e2d710bd15356123739007d92f04115200bc444e3891",
+      "k8s-rewrite/front-end/tests/pod-metadata-response.test.ts": "1c6ed44e63d130437dc543c4dbed8b88e051aa12499c9419ae1b26c746949eb3",
+      "k8s-rewrite/front-end/src/lib/pod-query.ts": "fe5a030155f1be0a0d2f9cce914545233ab8d44fa8e707831697946fa7e7f3c5",
+      "k8s-rewrite/front-end/src/lib/cluster-metadata.ts": "4ad9462cc00380744b9680c6aa1e7315bd50553cd9988faf491ae65711fee24a",
+      "k8s-rewrite/front-end/src/lib/cluster-cache.ts": "763aa460c295b13cbc89e67de38ad010d74997f659c8bed6322b5f88ecb447b4",
+      "k8s-rewrite/front-end/src/lib/resource-cache.ts": "c95b5bcbd705c45d8c68c4eea2b078313d048b0cccdcae639b8ccc09b96e3f20",
+      "k8s-rewrite/front-end/src/middleware.ts": "04ecd950f0ccdc8b5dbee814d6b2f7155a8510c60ff858ea748131dc018c2e22",
+      "k8s-rewrite/front-end/src/lib/auth.ts": "ce1c37c453824aadb70327b5fdb9738638a6cb5b2b493608f25c18ac7f2ea9b4",
+      "k8s-rewrite/front-end/package-lock.json": "984756b9a6ee2caf522a7174fba3575631b3e794da73faa969df042baa9a6356",
+      "k8s-rewrite/front-end/package.json": "b957334394253aa674444a86af101d83bc4434d9967a71f3fb501b4d5a2fa835",
+      "k8s-rewrite/front-end/Dockerfile": "dce0fe33af229531b01862ba1173d655e6e18a7e77028c867b657a522492fcf3",
+      "k8s-rewrite/front-end/prisma/schema.prisma": "7c8983d352c3180e8c54db6592f088018884bd9db07274619d051f10b5cd717d"
+    },
+    "hashConvention": "SHA256 tested working-tree bytes; Git may normalize EOL"
+  },
+  "profiling": {
+    "topSamples": [
+      {
+        "function": "(idle)",
+        "url": "",
+        "line": -1,
+        "sample_usec": 1861089
+      },
+      {
+        "function": "(garbage collector)",
+        "url": "",
+        "line": -1,
+        "sample_usec": 514549
+      },
+      {
+        "function": "wrapSafe",
+        "url": "node:internal/modules/cjs/loader",
+        "line": 1670,
+        "sample_usec": 379834
+      },
+      {
+        "function": "a",
+        "url": "file:///app/.next/standalone/.next/server/app/api/cluster/deployments/[namespace]/[name]/route.js",
+        "line": 0,
+        "sample_usec": 316466
+      },
+      {
+        "function": "serializeJavascriptValueToJSONString",
+        "url": "node:internal/deps/undici/undici",
+        "line": 4615,
+        "sample_usec": 302905
+      },
+      {
+        "function": "compileSourceTextModule",
+        "url": "node:internal/modules/esm/utils",
+        "line": 343,
+        "sample_usec": 241899
+      },
+      {
+        "function": "c",
+        "url": "file:///app/.next/standalone/.next/server/webpack-runtime.js",
+        "line": 0,
+        "sample_usec": 173287
+      },
+      {
+        "function": "createContext",
+        "url": "node:vm",
+        "line": 224,
+        "sample_usec": 105437
+      },
+      {
+        "function": "D",
+        "url": "file:///app/.next/standalone/.next/server/app/api/cluster/pods/route.js",
+        "line": 0,
+        "sample_usec": 103900
+      },
+      {
+        "function": "internalModuleStat",
+        "url": "",
+        "line": -1,
+        "sample_usec": 97423
+      },
+      {
+        "function": "(program)",
+        "url": "",
+        "line": -1,
+        "sample_usec": 85281
+      },
+      {
+        "function": "getPackageScopeConfig",
+        "url": "",
+        "line": -1,
+        "sample_usec": 53130
+      },
+      {
+        "function": "Script",
+        "url": "node:vm",
+        "line": 84,
+        "sample_usec": 46530
+      },
+      {
+        "function": "",
+        "url": "file:///app/.next/standalone/.next/server/app/api/cluster/pods/route.js",
+        "line": 0,
+        "sample_usec": 46317
+      },
+      {
+        "function": "readFileUtf8",
+        "url": "",
+        "line": -1,
+        "sample_usec": 39749
+      },
+      {
+        "function": "",
+        "url": "file:///app/.next/standalone/node_modules/next/dist/server/next-server.js",
+        "line": 602,
+        "sample_usec": 31421
+      },
+      {
+        "function": "readFileSync",
+        "url": "node:fs",
+        "line": 432,
+        "sample_usec": 29837
+      },
+      {
+        "function": "parse",
+        "url": "",
+        "line": -1,
+        "sample_usec": 28260
+      },
+      {
+        "function": "",
+        "url": "evalmachine.<anonymous>",
+        "line": 0,
+        "sample_usec": 27536
+      },
+      {
+        "function": "",
+        "url": "node:internal/crypto/util",
+        "line": 460,
+        "sample_usec": 25241
+      },
+      {
+        "function": "compileForInternalLoader",
+        "url": "node:internal/bootstrap/realm",
+        "line": 384,
+        "sample_usec": 23785
+      },
+      {
+        "function": "__webpack_require__",
+        "url": "file:///app/node_modules/next/dist/compiled/webpack/bundle5.js",
+        "line": 28,
+        "sample_usec": 23143
+      },
+      {
+        "function": "deepFreeze",
+        "url": "file:///app/.next/standalone/node_modules/next/dist/shared/lib/deep-freeze.js",
+        "line": 10,
+        "sample_usec": 22163
+      },
+      {
+        "function": "decode",
+        "url": "node:internal/encoding",
+        "line": 441,
+        "sample_usec": 21998
+      },
+      {
+        "function": "b",
+        "url": "file:///app/.next/standalone/.next/server/webpack-runtime.js",
+        "line": 0,
+        "sample_usec": 20908
+      },
+      {
+        "function": "read",
+        "url": "",
+        "line": -1,
+        "sample_usec": 20784
+      },
+      {
+        "function": "TLSSocket._start",
+        "url": "node:internal/tls/wrap",
+        "line": 1178,
+        "sample_usec": 19016
+      },
+      {
+        "function": "handleRequestImpl",
+        "url": "file:///app/.next/standalone/node_modules/next/dist/server/base-server.js",
+        "line": 516,
+        "sample_usec": 18981
+      },
+      {
+        "function": "realpathSync",
+        "url": "node:fs",
+        "line": 2714,
+        "sample_usec": 18485
+      },
+      {
+        "function": "promiseInitHook",
+        "url": "node:internal/async_hooks",
+        "line": 327,
+        "sample_usec": 18224
+      },
+      {
+        "function": "defaultLoadSync",
+        "url": "node:internal/modules/esm/load",
+        "line": 139,
+        "sample_usec": 17711
+      },
+      {
+        "function": "writeUtf8String",
+        "url": "",
+        "line": -1,
+        "sample_usec": 17053
+      },
+      {
+        "function": "getPackageScopeConfig",
+        "url": "node:internal/modules/package_json_reader",
+        "line": 206,
+        "sample_usec": 16556
+      },
+      {
+        "function": "",
+        "url": "node:internal/modules/cjs/loader",
+        "line": 1192,
+        "sample_usec": 16364
+      },
+      {
+        "function": "lstat",
+        "url": "",
+        "line": -1,
+        "sample_usec": 15794
+      },
+      {
+        "function": "open",
+        "url": "",
+        "line": -1,
+        "sample_usec": 15297
+      },
+      {
+        "function": "setReferenceManifestsSingleton",
+        "url": "file:///app/.next/standalone/node_modules/next/dist/server/app-render/encryption-utils.js",
+        "line": 90,
+        "sample_usec": 14305
+      },
+      {
+        "function": "splitRoot",
+        "url": "node:fs",
+        "line": 2670,
+        "sample_usec": 14237
+      },
+      {
+        "function": "c.a",
+        "url": "file:///app/.next/standalone/.next/server/webpack-runtime.js",
+        "line": 0,
+        "sample_usec": 14145
+      },
+      {
+        "function": "runMicrotasks",
+        "url": "",
+        "line": -1,
+        "sample_usec": 13541
+      }
+    ],
+    "cpu": 2,
+    "protectedResult": "/home/brajam/.cache/bortus-warm-profile/run-b6eb948bac15",
+    "profilePods": 1000,
+    "identifiedHotFunctions": {
+      "D": "podSummary (inspected minified function body)",
+      "a": "publicClusterMetadata (inspected minified function body)"
+    },
+    "limit": "Includes startup and other phases; instrumented one-profile/200-request workload is diagnostic only, not the frozen acceptance set",
+    "acceptance": false,
+    "runtime": "Linux Node22.23.3",
+    "image": "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+    "profileCount": 2,
+    "diagnosticSummarySha256": "a827b601cd71f7dc68e69a19b15b34907ad280b690e70788d25a3a38d41d5710",
+    "driverSha256": "e3197ca95652d712c982d6ee84100dfbc6f8663dcaea1d305c22fb9b0f65324d",
+    "sourceCommit": "1e0030a51c7d6cf0b8e161d349813de745c0aa11",
+    "memoryBytes": 1073741824,
+    "scope": "diagnostic CPU sample attribution, not acceptance or statistical comparison",
+    "warmRequests": 200
+  },
+  "validation": {
+    "prismaGenerate": "6.19.3 pass",
+    "fullUnit": {
+      "failed": 0,
+      "passed": 130,
+      "durationMs": 34855.3359
+    },
+    "build": "fresh standalone production pass",
+    "runtime": "win32 Node22.23.3",
+    "cleanNpmCi": "pass",
+    "typecheck": "post-build pass",
+    "http": {
+      "existingMs": 34256.4237,
+      "provisioningMs": 27135.5783,
+      "nativeMs": 36060.7744,
+      "passed": 3,
+      "failed": 0,
+      "overallMs": 36323.2643
+    },
+    "qaLogSha256": "0d24a9683f174be78471c152562f884f8ec995b14ae67af8bd7f6f179335c331",
+    "lint": "zero-warning pass",
+    "focused": {
+      "failed": 0,
+      "passed": 8,
+      "durationMs": 5507.2922
+    },
+    "productionNpmAuditEntries": 0,
+    "benchmarkIntegrity": {
+      "failed": 0,
+      "passed": 7,
+      "runtime": "Linux Python3.14.4",
+      "driverSyntax": "Node22 --check pass"
+    }
+  },
+  "semantics": {
+    "namespaceTypeLabelFiltersPreserved": true,
+    "currentStaleUnavailableEmptyAvailability": true,
+    "rawCacheTtlAndBoundsChanged": false,
+    "projectionRetention": "weak raw-array key, redacted rows and serialized JSON only; lifetime follows replaced resource snapshot",
+    "completeThousandPodContractEqualsPriorProjection": true,
+    "replacementSnapshotDiscardsPreviousProjection": true,
+    "accountSessionVerificationEachRequest": true,
+    "authSourceChanged": false,
+    "jsonEscapingPreserved": true,
+    "nativeTransportFilesChanged": false,
+    "privateMarkersOmitted": true,
+    "queryResultsRetained": false
+  },
+  "observationalWindows": {
+    "coldPodMs": 104.59710000000268,
+    "concurrentColdCliCalls": 1,
+    "warmPodP95Ms": 4.814099999999598,
+    "acceptance": false,
+    "unavailableServiceStatus": 503,
+    "warmCliCalls": 0,
+    "warmPodP50Ms": 4.065499999996973,
+    "additionalOutageCliCalls": 0
+  },
+  "importedStages": {
+    "controlledHarness": [
+      "8f72e99",
+      "1fcd02f"
+    ],
+    "workbench": "6651685bf17ae1cf1b98e3a51cc75d81dfba30e3",
+    "rawImageVulnerabilityRows": 346,
+    "runtimeVulnerabilityGateClean": false,
+    "runtimeImageId": "sha256:497d099b6412e16954e9dd88da9c97656c8cfcc5c9a83db62d3c71765aaec866",
+    "runtimeImageQualifiedOnlyForOriginal483ba4f": true,
+    "runtimeEvidence": "5216a8e19f181572ba99c733ab0258374d987718",
+    "runtimeSource": [
+      "76ccc62",
+      "9e4fa06"
+    ]
+  },
+  "attempts": [
+    {
+      "stage": "patch preparation",
+      "correction": "checked headings and applied corrected batch",
+      "qualificationAssertionsChanged": false,
+      "result": "exact USER-PERMS heading mismatch rejected entire patch without source edits"
+    }
+  ],
+  "limitations": [
+    "Controlled no-warm-regression requirement remains failed at checkpoint1e0030a; unchanged candidate rerun pending",
+    "This is not final native scheduling/administration source or coherent release/recovery image",
+    "10k Pods exceed the unchanged 2-MiB CLI ceiling and fail complete inventory; no capacity improvement claimed",
+    "No real cluster, production mutation, deployment, push or PR",
+    "Actual browser lifecycle/accessibility/CPU/LCP and live RBAC/admission remain separate"
+  ]
+}

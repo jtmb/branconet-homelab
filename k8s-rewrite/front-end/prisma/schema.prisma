@@ -37,9 +37,161 @@ model User {
   username     String   @unique
   passwordHash String
   role         String   @default("readonly") // "readonly" | "write"
+  sessionVersion Int    @default(0)
+  engineAdmin  Boolean  @default(false)
   createdAt    DateTime @default(now())
 
   @@map("users")
+}
+
+// A seeded row acquires SQLite's write lock before account invariant reads.
+model AccountLock {
+  id     Int @id
+  locked Int @default(0)
+
+  @@map("account_lock")
+}
+
+// KV tables contain metadata only. Current/history values stay in native Secrets.
+model KvMount {
+  id         String   @id @default(uuid())
+  name       String   @unique
+  namespaces String   // JSON array, validated against the operator allowlist
+  revision   Int      @default(1)
+  createdAt  DateTime @default(now())
+  paths      KvPath[]
+  @@map("kv_mounts")
+}
+
+model KvPath {
+  id         String   @id @default(uuid())
+  mountId    String
+  mount      KvMount  @relation(fields: [mountId], references: [id], onDelete: Restrict)
+  path       String
+  namespace  String
+  name       String
+  retention  Int      @default(20)
+  revision   Int      @default(1)
+  createdAt  DateTime @default(now())
+  fields     KvField[]
+  @@unique([mountId, path])
+  @@index([namespace, name])
+  @@map("kv_paths")
+}
+
+model KvField {
+  id        String @id @default(uuid())
+  pathId    String
+  path      KvPath @relation(fields: [pathId], references: [id], onDelete: Restrict)
+  field     String
+  namespace String
+  name      String
+  key       String
+  @@unique([pathId, field])
+  @@unique([namespace, name, key])
+  @@map("kv_fields")
+}
+
+model KvPolicy {
+  id        String   @id @default(uuid())
+  principal String   // user:<id>, identity:<id> or legacy-lookup
+  mountId   String?  // null means all mounts
+  prefix    String   @default("")
+  effect    String   // allow or deny
+  actions   String   // validated JSON action array
+  revision  Int      @default(1)
+  createdAt DateTime @default(now())
+  @@index([principal])
+  @@map("kv_policies")
+}
+
+model KvIdentity {
+  id                  String   @id @default(uuid())
+  ownerId             String
+  ownerSessionVersion Int
+  name                String
+  credentialHash      String   @unique
+  expiresAt           DateTime
+  revokedAt           DateTime?
+  createdAt           DateTime @default(now())
+  @@index([ownerId])
+  @@map("kv_identities")
+}
+
+model KvServicePrincipal {
+  id       String  @id
+  enabled  Boolean @default(true)
+  revision Int     @default(1)
+  @@map("kv_service_principals")
+}
+
+model KvLegacyGrant {
+  id        String @id @default(uuid())
+  pathId    String
+  alias     String
+  namespace String
+  name      String
+  key       String
+  @@unique([pathId, alias])
+  @@map("kv_legacy_grants")
+}
+
+model KvOperation {
+  id              String   @id @default(uuid())
+  actorId         String
+  pathId          String
+  mountId         String
+  path            String
+  namespace       String
+  name            String
+  action          String
+  previousVersion Int?
+  newVersion      Int?
+  outcome         String   @default("pending")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  @@index([pathId, createdAt])
+  @@map("kv_operations")
+}
+
+model KvAudit {
+  id              String   @id @default(uuid())
+  actorId         String
+  operationId     String?
+  action          String
+  mountId         String?
+  pathId          String?
+  path            String?
+  namespace       String?
+  name            String?
+  principal       String?
+  alias           String?
+  key             String?
+  previousVersion Int?
+  newVersion      Int?
+  outcome         String
+  createdAt       DateTime @default(now())
+  @@index([pathId, createdAt])
+  @@map("kv_audit")
+}
+
+model KvRotation {
+  id           String   @id @default(uuid())
+  pathId       String
+  actorId      String
+  field        String
+  consumerKind String
+  consumerNamespace String
+  consumerName String
+  consumerUid  String?
+  consumerResourceVersion String?
+  state        String   @default("prepare")
+  operationId  String?
+  revision     Int      @default(1)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  @@index([pathId])
+  @@map("kv_rotations")
 }
 
 model Node {

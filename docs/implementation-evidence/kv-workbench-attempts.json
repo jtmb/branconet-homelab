@@ -1,0 +1,12 @@
+{
+  "scope": "Isolated standalone workbench, synthetic fixtures, no production changes",
+  "attempts": [
+    { "check": "Initial typecheck after npm ci", "outcome": "failed", "reason": "Prisma install scripts had not generated the local client; unrelated generated-model types were missing", "correction": "Ran npm run db:generate locally, then production build/typecheck passed" },
+    { "check": "Initial focused lint", "outcome": "failed", "reason": "Effect cleanup referenced fence.current instead of a captured ref", "correction": "Capture the fence in the effect; zero-warning lint passed" },
+    { "check": "First standalone browser launch", "outcome": "failed", "reason": "Bundled Playwright browser executable was unavailable", "correction": "Use the installed Chrome executable; no browser download or manifest change" },
+    { "check": "First launched browser workflow", "port": 54575, "outcome": "failed", "passedChecks": 2, "reason": "Exact Value for text label lookup timed out", "correction": "Added explicit accessible names to field value and encoding controls" },
+    { "check": "Attempt to copy the first browser evidence before rerun", "outcome": "failed", "reason": "Used a repo-root relative path from front-end; the source path did not exist", "correction": "Retained the observed failure summary in this attempt ledger" },
+    { "check": "Corrected workflow", "port": 63864, "outcome": "passed", "passedChecks": 14, "reason": "Real standalone React component with synthetic intercepted APIs" },
+    { "check": "Initial screenshot visual inspection", "outcome": "fixture issue found", "reason": "Standalone fixture body omitted the app's text-zinc-100 class, leaving portal title text dark", "correction": "Match the actual root layout body classes and rerun screenshots" }
+  ]
+}

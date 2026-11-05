@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-10-11 00:33:41 UTC",
+  "status": "execution handoff after current safe atomic QA step; goal incomplete; source intentionally uncommitted",
+  "routing": "Coordinator 01a12045-bf7e-73b3-8557-752d17c72ffd relayed the human request to move execution under migration-chat sub-agents and archive old execution chats. This executor started no new browser/profile/build/benchmark stage after that message.",
+  "executorThreadId": "01a12114-28d9-7623-8aed-9947e08d7065",
+  "checkout": "C:/Users/james/.codex/worktrees/bortus-main/kubernetes migration",
+  "originalCheckout": "C:/Users/james/.codex/worktrees/4ef5/kubernetes migration (untouched)",
+  "appDirectory": "k8s-rewrite/front-end",
+  "branch": "codex/bortus-performance-ui-audit",
+  "head": "b82980e783daf09e1aabe00f3a5db99fef3e13fa",
+  "newCommitCreated": false,
+  "ownership": "Current dirty files belong only to this executor's shared metadata freshness/workbench capability stage and its docs/evidence. Do not reset or switch this checkout before transferring them.",
+  "runtime": {
+    "node": "v22.23.3",
+    "platform": "win32",
+    "nodeDirectory": "C:/Users/james/AppData/Local/Temp/bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66/node-v22.23.3-win-x64",
+    "setup": "Prepend the nodeDirectory to PATH and remove Env:RUST_LOG. Existing dependencies/Next15.5.27/Prisma6.19.3 retained."
+  },
+  "sourceSha256": {
+    "k8s-rewrite/front-end/src/lib/query-store.ts": "d37618ca535c6ee8797e6671df409c6a1149fd55aba0c9e351aa4ca5c51192fe",
+    "k8s-rewrite/front-end/src/lib/use-query.ts": "4eb440e7dce6bd648a53ab1d70ddec40b31c197c645d3747482f8899b1b28ca0",
+    "k8s-rewrite/front-end/src/app/(dashboard)/secrets/kv/kv-ui.tsx": "315daaca38073e438a5e2a03858bac8afe9569be5c46a1df87a5be501f85deeb",
+    "k8s-rewrite/front-end/src/components/secrets/kv-workbench.tsx": "3316f9ce850497cca40ee13a04b129569faeba71f1da12804b911cac06bad1b8",
+    "k8s-rewrite/front-end/tests/query-freshness.test.ts": "b724dfabd4f086238e146549aebd222fea8963f18dfe580a7b0f3c69f18b3866",
+    "k8s-rewrite/front-end/tests/ui-fixture.ts": "72721d5f7bfec8e0a24cdf5ab48af474228f9be4d99131ced8acae3012461284"
+  },
+  "dirtyDocs": [
+    "docs/API-USAGE.md",
+    "docs/BORTUS-IMPLEMENTATION.md",
+    "docs/BORTUS-KV-DESIGN.md",
+    "docs/BORTUS-KV-WORKBENCH.md",
+    "docs/SECRETS-ENGINE.md",
+    "docs/TECH-STACK.md",
+    "docs/USER-PERMS.md",
+    "docs/implementation-evidence/README.md"
+  ],
+  "newEvidence": [
+    "docs/implementation-evidence/shared-freshness-handoff.json",
+    "docs/implementation-evidence/shared-freshness-cli.txt",
+    "docs/implementation-evidence/shared-freshness-first-attempt-cli.txt"
+  ],
+  "implementation": [
+    "QuerySnapshot gains stale. One existing per-query timer alternates expiry and polling; expiry happens at original success timestamp plus15000ms even during a slow in-flight load or failure backoff. Success alone renews updatedAt; invalidation/retained data does not. Stop/hidden/unsubscribe aborts and generation-fences replies. Existing query-store tests remain unchanged.",
+    "useSession and KV fresh helper include !stale. Workbench uses shared capability endpoint, removing its independent ten-second poll and one-second clock. Direct derived capabilities preserve permission-equivalent refreshes; forbidden/session-ended actions block the current timestamp until a newer successful capability response.",
+    "Workbench hide/pagehide clears/fences private state. Native status and nativeEpoch generation logic, strict request captures and private value transport remain unchanged. Values/credentials/import bundles never enter shared queries.",
+    "Fixture metadata controls delay-kv-capabilities/release-kv-capabilities hold one completed selected-path capability response. /__fixture/status adds only pendingKvCapabilities boolean. No fixture browser was launched for this stage."
+  ],
+  "checks": {
+    "focused": {
+      "command": "node node_modules/tsx/dist/cli.mjs --test tests/query-store.test.ts tests/query-freshness.test.ts tests/kv-workbench.test.ts",
+      "passed": 16,
+      "durationMs": 454.206,
+      "scope": "Before stable-refetch lint correction; full corrected suite below includes these tests"
+    },
+    "firstAttempt": {
+      "sessionId": 54638,
+      "closed": true,
+      "exitCode": 1,
+      "unitsPassed": 144,
+      "unitDurationMs": 50542.0706,
+      "lint": "React Hook useCallback missing capabilityQuery/session dependencies",
+      "build": "not run",
+      "http": "not run",
+      "sourceLimit": "Earlier working-tree source; no immutable failed-attempt source manifest",
+      "log": "shared-freshness-first-attempt-cli.txt",
+      "sha256": "2bdfeeba49c968d1c255a60de5e1002ce7f2a22b4cdb6fd98f2a09efe6db3c1a",
+      "bytes": 38457
+    },
+    "correctedAttempt": {
+      "sessionId": 46078,
+      "closed": true,
+      "exitCode": 0,
+      "unitsPassed": 144,
+      "unitDurationMs": 17396.0327,
+      "lint": "passed zero warnings",
+      "build": "fresh production build passed",
+      "typecheck": "passed",
+      "http": {
+        "passed": 4,
+        "overallDurationMs": 42113.0079,
+        "provisioningDurationMs": 31452.2784,
+        "existingDurationMs": 38619.5866,
+        "administrationDurationMs": 30424.027,
+        "nativeDurationMs": 41691.5574
+      },
+      "commands": [
+        "npm test",
+        "npm run lint",
+        "npm run build",
+        "npm run typecheck",
+        "npm run test:integration"
+      ],
+      "log": "shared-freshness-cli.txt",
+      "sha256": "e4fbac9db481e7313a0579ccf9e7427497922eafb4e021ebef8a8d54637a244b",
+      "bytes": 52846,
+      "fullNativeOutputCaptured": true,
+      "finalToolResult": "ALL_QA_STEPS_PASSED"
+    },
+    "trackedDiffCheck": "passed; raw CLI captures deliberately preserve original bytes and are untracked",
+    "browserFreshness": "pending; do not infer actual unchanged-draft preservation or hidden-page UI proof from deterministic store tests",
+    "performance": "Uncontrolled HTTP timings are observations only. They do not replace failed frozen A07/10k capacity gates.",
+    "productionMutation": false,
+    "deployment": false
+  },
+  "runningHandles": {
+    "ownedQaProcesses": [],
+    "ownedBrowserFixtures": [],
+    "ownedBrowserTabs": [],
+    "note": "54638 and46078 completed; do not poll them. All earlier owned UI fixtures/tabs were closed. No new live fixture, profile or benchmark was started. Coordinator's independent native comparison may still run; obtain its final handoff/handle from that executor."
+  },
+  "committedStages": {
+    "administration": {
+      "head": "b82980e783daf09e1aabe00f3a5db99fef3e13fa",
+      "importedSource": "100c3ef8bfa10442745d467c634f66a0662a7b3a",
+      "importCommit": "d7d4279de81bf61c3c9f24451502bdb998074ec6",
+      "evidence": "docs/implementation-evidence/kv-administration-integrated.json",
+      "screenshot": "docs/implementation-evidence/kv-administration-integrated-mobile.jpg",
+      "checks": "140units/lint/build/type/fourHTTP plus actual-route subset; no browser values/native writes"
+    },
+    "workbench": {
+      "source": "6651685bf17ae1cf1b98e3a51cc75d81dfba30e3",
+      "schemaPrerequisite": "7a56ff4415772160d9698d3c8a52f5b48193dfb6",
+      "componentImport": "1e0030a51c7d6cf0b8e161d349813de745c0aa11",
+      "evidence": "docs/implementation-evidence/kv-workbench-integrated.json",
+      "screenshot": "docs/implementation-evidence/kv-workbench-integrated-mobile.jpg",
+      "checks": "127units/lint/build/type/threeHTTP plus native TLS UI subset; unknown-status, stale-save, held nativeEpoch reply and404 absent initialization corrected"
+    },
+    "warmPods": {
+      "candidate": "61e25884d125696b9b215cd3e507555129393f67",
+      "evidenceCommit": "c8ccebe4821c034662560cd84091bd5fc57d0eb6",
+      "raw": "docs/implementation-evidence/warm-pods-controlled.json",
+      "rawSha256": "5225482854bce92f0098e3201021d1cf94d19b162b6ce3a2a032d56a22380dbb",
+      "summary": "docs/implementation-evidence/warm-pods-controlled-summary.json",
+      "protectedDirectory": "/home/brajam/.cache/bortus-controlled-perf/run-63a281156724",
+      "result": "All six measured records complete; A07 fails sequential1k warm p95 13.0339→20.6527ms despite p50 7.0057→5.7513ms and concurrent p95 83.1946→78.6366ms.10kPods complete inventory fails both2MiB limits. Never replace failures with unchanged repetitions.",
+      "driverOriginalGitBlobSha256": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b",
+      "driverMeasuredCrLfSha256": "7ffe01dfd5903126e3071004678a472188d4dcb88fa0be6ce4da50a3c9f79e8e",
+      "driverNote": "CRLF-only equality verified; future exact-byte driver runs should use original Git blobs"
+    },
+    "runtime": {
+      "importCommits": [
+        "76ccc62e3b5519392e6245c6ca8a76da816038df",
+        "9e4fa06e5a334be22d538e67cf0615cac999e4e3",
+        "5216a8e19f181572ba99c733ab0258374d987718"
+      ],
+      "guide": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "qualifiedOriginalSource": "483ba4f only; not final combined source",
+      "imageIndex": "sha256:497d099b6412e16954e9dd88da9c97656c8cfcc5c9a83db62d3c71765aaec866",
+      "platformImage": "sha256:e148b6fdf9d7021f5d469e424c0364a69df6c9b6d9b7849142ed12852a8dc2d1",
+      "archiveSha256": "d1bfdbe0a132cc9183f9476f795741dacf3b8b02927f53c8b9a7772d1b1b7612",
+      "residual": "Production npm0; full tooling9 findings. RawTrivy346rows160IDs includes1critical/67high; vulnerability gate remains false. No exploit replay."
+    }
+  },
+  "independentNativeWork": {
+    "status": "Coordinator-reported final source candidate; not integrated here and final measured handoff still required",
+    "branch": "codex/bortus-native-metadata-performance",
+    "finalSource": "16975f5de34b0d80595c90b6539cf541a2e4c436",
+    "base": "6651685bf17ae1cf1b98e3a51cc75d81dfba30e3",
+    "workerSource": "0940f86887ad7282940a7179ea8e4ebbfdccfdcd",
+    "intermediateEvidence": "21a2edc",
+    "ownedFiles": "cluster-secrets.ts, secret-client.ts, exclusive concurrency/window tests and native scheduling evidence/docs",
+    "finalConfiguration": "Production4workers/page200, size-only200→10→5→2→1 fallback; compatibilityconstructor20, all queue/byte/item/deadline/write/TLS/auth bounds retained.",
+    "measurementReport": "native-list-window-controlled.json (coordinator reports six-record comparison running; no exact runtime handle available here)",
+    "priorFailure": "Worker-only0940f86 completed all six records but1k364ms vs79ms and10k3.46s vs609ms remain failed. Preserve that intermediate evidence.",
+    "instruction": "Do not integrate worker-only0940f86 as final fix or duplicate native transport/list edits. Wait for exact final source/evidence handoff, review doc conflicts and qualify combined source."
+  },
+  "continuation": [
+    "Verify authoritative checkout/HEAD and every dirty-source raw hash; retain this diff, docs and both logs. Do not copy source from untouched4ef5 or reset the worktree. Existing .next is the successful corrected build of these recorded source bytes.",
+    "First finish actual production /secrets/kv browser qualification using tests/ui-fixture.ts with BORTUS_UI_NATIVE_FIXTURE=true, BORTUS_UI_KV_FIXTURE=true and guarded fixture opt-in only for synthetic native API. Prove parent/workbench capability one request/poll, unchanged refresh preserves draft/capture, held refresh expires at original15s and clears private state, fresh withdrawal/hiding/late replies. Counters/booleans only; never print values/tokens. Stop own fixture via stdin stop and close owned tabs before any rebuild.",
+    "Only after required browser subset passes, update affected docs/evidence and commit reviewed files as a reversible freshness stage. Do not call goal complete; full selected scope remains unfinished.",
+    "Obtain independent native16975f5 final measured handoff. Preserve worker-only21a2edc/intermediate failures. Integrate its owned source/docs intentionally, retaining current warm/UI code and all original assertions.",
+    "Follow read-only review with request-correlated current-candidate diagnostic separating JWT verification, fresh account lookup, cache read, projection hit/miss, envelope construction and full response delivery plus GC/eventloop observations. Old1e0030a CPU profile includes startup and predates cache; do not guess GC/DB causality. Keep diagnostic separate from frozen acceptance.",
+    "A concrete unused full-Pod runningPods scan remains in cluster-cache.ts around96 on every warm list request. Consider resource-only snapshot accessor preserving TTL/invalidation/availability/stale/error contracts after diagnostic; actual p95 contribution is unmeasured. Fresh current-account/sessionVersion lookup in auth.ts around40 is mandatory and must remain.",
+    "10k fixture raw output5914546bytes exceeds kubectl-client2MiB bound. Design bounded complete Pod-list strategy sufficient for unchanged fixture with explicit bytes/items/memory/deadline and contract tests; no success-empty/threshold/fixture weakening. Fresh changed committed source needs complete alternating fixed acceptance with original exact-byte driver.",
+    "Finish native-status/Flux shared query lifecycle, remaining typed Flux/child sorting, responsive/query-preserving routing, actual zoom/automated a11y/manual AT, wider workbench transfer/reconcile and administration rotation/cleanup/recovery browser acceptance.",
+    "Prepare final coherent Linux immutable image/source/schema/lock/11-migration/RBAC/admission/recovery ledger. Isolated maintenance image predates combined stages. Fresh encrypted DB/PVC/native current-history restore and staged CI/Flux guard/revocation proof must precede coordinator adoption. No production rollout or mutations are authorized by this handoff."
+  ],
+  "contracts": [
+    "Every source edit requires checking all docs and updating affected docs alongside code. Read relevant domain docs first.20existing Markdown docs reviewed for current freshness stage; affected eight docs updated, API/runtime/schema unchanged.",
+    "Read docs/BORTUS-KV-DESIGN.md, BORTUS-KV-WORKBENCH.md, BORTUS-KV-ADMINISTRATION-UI.md, SECRETS-ENGINE.md, BORTUS-DEPLOYMENT.md and BORTUS-IMPLEMENTATION.md before KV changes. Use code as ground truth.",
+    "Next15.5.27 package lacks dist/docs; use official versioned Next docs when changing framework APIs. Promised routeparams must be awaited.",
+    "Native Secrets authoritative; exact alias/namespace/name/key mappings, no underscore inference; no values in SQLite/argv/generatedGit/logs/errors/shared query cache. ResourceVersion/head/pathRevision captures remain frozen; no native automatic retries/fallback pushes.",
+    "Readonly metadata only; private values/mutations require fresh DB account/role/deny-aware policy. TLS verification, native original/unrelated keys/type/metadata and explicit empty objects preserved. Bootstrap external.",
+    "Only four exact tracked component/model paths are excepted from otherwise ignored components/secrets; do not broaden ignore or force-add whole directories.",
+    "Remaining API gaps: destroy canonical/history UIDs are server-verified but absent from public confirmation DTO; identityDELETE has no CAS; maximum10k-alias body can exceed512KiB. Do not fabricate client fields or claim these gates passed.",
+    "Historical audit/benchmark/raw vulnerability evidence remains immutable. Rejected exploit work remains rejected; normal maintenance only."
+  ],
+  "workerChatInventory": {
+    "refreshed": true,
+    "limit": 50,
+    "visibleProjectChats": [
+      {
+        "id": "01a12045-bf7e-73b3-8557-752d17c72ffd",
+        "title": "swarm migration"
+      },
+      {
+        "id": "01a12114-28d9-7623-8aed-9947e08d7065",
+        "title": "BORTUS Kubernetes Secrets development"
+      }
+    ],
+    "runtimeAdminActualIds": "unavailable in latest app inventory; do not invent IDs or recreate worker chats",
+    "coordinatorReportedCompletedChats": [
+      {
+        "id": "01a12856-9fa0-7353-ba2f-0c8057335301",
+        "purpose": "read-only warm performance reviewer; completed/idle; no edits/builds/benchmarks"
+      },
+      {
+        "id": "01a12845-f870-7390-8055-ba0c6568f14e",
+        "purpose": "read-only production preflight; completed/idle; no mutations"
+      }
+    ],
+    "outgoingThreadMessagesSent": false
+  }
+}

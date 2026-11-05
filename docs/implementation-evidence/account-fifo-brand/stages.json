@@ -1,0 +1,51 @@
+{
+  "startedUtc": "2026-10-11T14:09:36.097Z",
+  "pid": 1,
+  "node": "v22.23.3",
+  "stages": [
+    {
+      "name": "queue-accounts-process",
+      "pid": 13,
+      "args": [
+        "/qa/source/node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/account-queue.test.ts"
+      ],
+      "startedUtc": "2026-10-11T14:09:36.100Z",
+      "actualExit": 0,
+      "signal": null,
+      "completedUtc": "2026-10-11T14:09:37.856Z"
+    },
+    {
+      "name": "types",
+      "pid": 97,
+      "args": [
+        "/qa/source/node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "startedUtc": "2026-10-11T14:09:37.857Z",
+      "actualExit": 0,
+      "signal": null,
+      "completedUtc": "2026-10-11T14:09:50.294Z"
+    },
+    {
+      "name": "lint",
+      "pid": 104,
+      "args": [
+        "/qa/source/node_modules/eslint/bin/eslint.js",
+        ".",
+        "--max-warnings=0"
+      ],
+      "startedUtc": "2026-10-11T14:09:50.296Z",
+      "actualExit": 0,
+      "signal": null,
+      "completedUtc": "2026-10-11T14:09:58.975Z"
+    }
+  ],
+  "performanceAcceptance": false,
+  "terminal": true,
+  "actualExit": 0,
+  "completedUtc": "2026-10-11T14:09:58.976Z"
+}

@@ -1,10 +1,13 @@
+import { clusterRoute } from "@/lib/cluster-http";
+import { clusterResponse, clusterUnavailable } from "@/lib/cluster-response";
 import { NextResponse } from "next/server";
 import { getCachedClusterData } from "@/lib/cluster-cache";
-
 export async function GET() {
-  const data = await getCachedClusterData();
-  if (!data) {
-    return NextResponse.json({ namespaces: [] });
-  }
-  return NextResponse.json({ namespaces: data.namespaces });
+    return clusterRoute(async () => {
+        const data = await getCachedClusterData(["namespaces"]);
+        const unavailable = clusterUnavailable(data, "namespaces");
+        if (unavailable)
+            return unavailable;
+        return clusterResponse(data, { namespaces: data.namespaces }, ["namespaces"]);
+    });
 }

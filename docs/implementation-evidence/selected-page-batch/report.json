@@ -1,0 +1,1152 @@
+{
+  "scope": "Public parser page-level selected metadata batching only; no endpoint/TLS/auth attribution or performance acceptance",
+  "sourceCommit": "be8e891358551964c1f60adc1f1e6148d39ee76a",
+  "node": "v22.23.3",
+  "pid": 1,
+  "startedUtc": "2026-10-11T13:15:56.247Z",
+  "cases": 49015,
+  "malformedCases": 37822,
+  "structural": [
+    {
+      "name": "Reader-original-body",
+      "SHA256": "97c5f543b8265b8bd015073b9d0462379d70214115c25c9bbde9b86f4caafeca",
+      "exact": true
+    }
+  ],
+  "timings": [
+    {
+      "label": "typical200-18pages",
+      "bytes": 98554,
+      "pages": 18,
+      "chunkSize": 16384,
+      "iterations": 5,
+      "observations": 15,
+      "before": [
+        {
+          "wallMs": 7.797817600000053,
+          "selfCpuMs": 13.787799999999999,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 7.57051279999996,
+          "selfCpuMs": 13.618799999999998,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 7.859131399999933,
+          "selfCpuMs": 14.919999999999998,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 8.582505200000014,
+          "selfCpuMs": 16.494999999999997,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 6.8838576000001925,
+          "selfCpuMs": 11.241800000000001,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 8.992660799999793,
+          "selfCpuMs": 15.459,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 9.174238600000171,
+          "selfCpuMs": 16.9486,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 9.172008799999821,
+          "selfCpuMs": 17.936,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 8.378206599999976,
+          "selfCpuMs": 16.193,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 8.751100600000063,
+          "selfCpuMs": 15.6022,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 8.316606799999864,
+          "selfCpuMs": 15.0584,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 7.924319400000241,
+          "selfCpuMs": 15.038,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 3.62329639999989,
+          "selfCpuMs": 6.6066,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 6.642396000000008,
+          "selfCpuMs": 12.866399999999999,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 4.81742579999991,
+          "selfCpuMs": 9.2722,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        }
+      ],
+      "after": [
+        {
+          "wallMs": 5.6760479999999,
+          "selfCpuMs": 10.7562,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 3.5615884000000735,
+          "selfCpuMs": 5.4906,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 8.374592200000006,
+          "selfCpuMs": 15.0114,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 7.884117200000037,
+          "selfCpuMs": 14.4162,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 7.6741198000003354,
+          "selfCpuMs": 14.9004,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 4.437561799999822,
+          "selfCpuMs": 7.8626000000000005,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 8.428944200000114,
+          "selfCpuMs": 16.0238,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 8.738713400000051,
+          "selfCpuMs": 16.7862,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 9.454843799999798,
+          "selfCpuMs": 17.604599999999998,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 8.208636599999954,
+          "selfCpuMs": 15.252799999999999,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 7.81883940000007,
+          "selfCpuMs": 15.887,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 3.5781126000001677,
+          "selfCpuMs": 6.8598,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 8.461981999999988,
+          "selfCpuMs": 15.313399999999998,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 4.0831861999999095,
+          "selfCpuMs": 6.3671999999999995,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 3.242951200000243,
+          "selfCpuMs": 4.8822,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        }
+      ],
+      "beforeMedianMs": 7.924319400000241,
+      "afterMedianMs": 7.81883940000007,
+      "beforeP95Ms": 9.174238600000171,
+      "afterP95Ms": 9.454843799999798,
+      "medianRatio": 0.9866890776764794,
+      "p95Ratio": 1.0305862112633108
+    },
+    {
+      "label": "typical1000-18pages",
+      "bytes": 488954,
+      "pages": 18,
+      "chunkSize": 16384,
+      "iterations": 5,
+      "observations": 15,
+      "before": [
+        {
+          "wallMs": 20.7108698,
+          "selfCpuMs": 30.5152,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 22.915312399999674,
+          "selfCpuMs": 34.6954,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 21.11684200000018,
+          "selfCpuMs": 31.1976,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 21.550396199999888,
+          "selfCpuMs": 31.1992,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 20.831769800000256,
+          "selfCpuMs": 29.805,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 21.827811400000066,
+          "selfCpuMs": 30.4976,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 20.029715600000053,
+          "selfCpuMs": 28.864600000000003,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 24.316027600000233,
+          "selfCpuMs": 36.992000000000004,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 22.93143540000019,
+          "selfCpuMs": 31.5086,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 20.853875600000173,
+          "selfCpuMs": 32.071,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 19.616451400000006,
+          "selfCpuMs": 28.8296,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 22.643791000000057,
+          "selfCpuMs": 32.5554,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 22.199062799999957,
+          "selfCpuMs": 33.712599999999995,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 21.498883399999976,
+          "selfCpuMs": 31.9344,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 21.010626200000114,
+          "selfCpuMs": 32.9818,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        }
+      ],
+      "after": [
+        {
+          "wallMs": 22.235158800000136,
+          "selfCpuMs": 33.4112,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 20.54861779999992,
+          "selfCpuMs": 31.8722,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 19.712271399999736,
+          "selfCpuMs": 29.048399999999997,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 21.747783999999957,
+          "selfCpuMs": 33.6416,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 19.927298599999993,
+          "selfCpuMs": 30.001799999999996,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 21.353200799999833,
+          "selfCpuMs": 31.787799999999997,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 21.179964399999882,
+          "selfCpuMs": 33.4474,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 21.442078400000174,
+          "selfCpuMs": 33.7964,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 19.410248399999908,
+          "selfCpuMs": 31.787,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 20.56094660000017,
+          "selfCpuMs": 29.853199999999998,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 19.557675399999788,
+          "selfCpuMs": 27.476999999999997,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 20.16706180000001,
+          "selfCpuMs": 31.117,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 20.814224200000172,
+          "selfCpuMs": 32.6532,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 20.224640200000067,
+          "selfCpuMs": 31.181,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        },
+        {
+          "wallMs": 19.9578168,
+          "selfCpuMs": 30.4012,
+          "rssBytes": 125550592,
+          "maxRSSKiB": 126628
+        }
+      ],
+      "beforeMedianMs": 21.498883399999976,
+      "afterMedianMs": 20.54861779999992,
+      "beforeP95Ms": 24.316027600000233,
+      "afterP95Ms": 22.235158800000136,
+      "medianRatio": 0.9557993044420132,
+      "p95Ratio": 0.9144239826409772
+    },
+    {
+      "label": "selected-long200-18pages",
+      "bytes": 3355954,
+      "pages": 18,
+      "chunkSize": 16384,
+      "iterations": 1,
+      "observations": 15,
+      "before": [
+        {
+          "wallMs": 27.888872999999876,
+          "selfCpuMs": 48.438,
+          "rssBytes": 125591552,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 29.0015999999996,
+          "selfCpuMs": 52.385,
+          "rssBytes": 125595648,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 21.016320000000633,
+          "selfCpuMs": 25.36,
+          "rssBytes": 125595648,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 36.99840099999892,
+          "selfCpuMs": 63.033,
+          "rssBytes": 125595648,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 20.876954999999725,
+          "selfCpuMs": 29.801,
+          "rssBytes": 125595648,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 37.39166000000114,
+          "selfCpuMs": 67.369,
+          "rssBytes": 125800448,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 33.39389999999912,
+          "selfCpuMs": 59.516,
+          "rssBytes": 125423616,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 31.519368000001123,
+          "selfCpuMs": 54.967,
+          "rssBytes": 125825024,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 26.978487000000314,
+          "selfCpuMs": 45.418,
+          "rssBytes": 125825024,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 35.00690600000053,
+          "selfCpuMs": 65.121,
+          "rssBytes": 126013440,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 19.06962999999996,
+          "selfCpuMs": 24.37,
+          "rssBytes": 125218816,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 36.594702999998844,
+          "selfCpuMs": 62.447,
+          "rssBytes": 125247488,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 18.25420099999974,
+          "selfCpuMs": 29.389,
+          "rssBytes": 125247488,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 34.80694600000061,
+          "selfCpuMs": 65.403,
+          "rssBytes": 125460480,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 19.393393999998807,
+          "selfCpuMs": 25.025,
+          "rssBytes": 124706816,
+          "maxRSSKiB": 126640
+        }
+      ],
+      "after": [
+        {
+          "wallMs": 39.2365860000009,
+          "selfCpuMs": 67.238,
+          "rssBytes": 127164416,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 28.404430999999022,
+          "selfCpuMs": 45.792,
+          "rssBytes": 125796352,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 40.00926299999992,
+          "selfCpuMs": 69.481,
+          "rssBytes": 125792256,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 23.52937099999872,
+          "selfCpuMs": 34.571,
+          "rssBytes": 125792256,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 40.64996400000018,
+          "selfCpuMs": 67.542,
+          "rssBytes": 125997056,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 38.65658799999983,
+          "selfCpuMs": 70.517,
+          "rssBytes": 126791680,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 43.70474699999977,
+          "selfCpuMs": 79.084,
+          "rssBytes": 127766528,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 27.102333000000726,
+          "selfCpuMs": 43.242,
+          "rssBytes": 125825024,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 31.852036999998745,
+          "selfCpuMs": 57.824,
+          "rssBytes": 126218240,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 22.86811100000159,
+          "selfCpuMs": 38.64,
+          "rssBytes": 126013440,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 29.51510899999994,
+          "selfCpuMs": 49.974,
+          "rssBytes": 125829120,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 36.66877399999976,
+          "selfCpuMs": 61.897,
+          "rssBytes": 126230528,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 44.06947600000058,
+          "selfCpuMs": 77.979,
+          "rssBytes": 126451712,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 23.351307000000816,
+          "selfCpuMs": 40.192,
+          "rssBytes": 125460480,
+          "maxRSSKiB": 126640
+        },
+        {
+          "wallMs": 41.75718799999959,
+          "selfCpuMs": 73.192,
+          "rssBytes": 125607936,
+          "maxRSSKiB": 126640
+        }
+      ],
+      "beforeMedianMs": 29.0015999999996,
+      "afterMedianMs": 36.66877399999976,
+      "beforeP95Ms": 37.39166000000114,
+      "afterP95Ms": 44.06947600000058,
+      "medianRatio": 1.264370724373837,
+      "p95Ratio": 1.178591054796691
+    },
+    {
+      "label": "selected-long1000-18pages",
+      "bytes": 16775954,
+      "pages": 18,
+      "chunkSize": 16384,
+      "iterations": 1,
+      "observations": 15,
+      "before": [
+        {
+          "wallMs": 96.98904399999992,
+          "selfCpuMs": 146.367,
+          "rssBytes": 133464064,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 102.96203299999979,
+          "selfCpuMs": 135.989,
+          "rssBytes": 137990144,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 103.37715199999911,
+          "selfCpuMs": 155.691,
+          "rssBytes": 133386240,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 101.94014900000002,
+          "selfCpuMs": 141.651,
+          "rssBytes": 139235328,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 107.3177140000007,
+          "selfCpuMs": 152.375,
+          "rssBytes": 133804032,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 100.01407400000062,
+          "selfCpuMs": 144.713,
+          "rssBytes": 139489280,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 115.01813599999878,
+          "selfCpuMs": 162.738,
+          "rssBytes": 133935104,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 105.50574799999958,
+          "selfCpuMs": 150.879,
+          "rssBytes": 139362304,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 104.20120599999791,
+          "selfCpuMs": 156.955,
+          "rssBytes": 133808128,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 95.6689129999977,
+          "selfCpuMs": 141.384,
+          "rssBytes": 138448896,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 97.65942799999902,
+          "selfCpuMs": 141.077,
+          "rssBytes": 133828608,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 101.81550100000095,
+          "selfCpuMs": 147.329,
+          "rssBytes": 139399168,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 102.73117400000046,
+          "selfCpuMs": 147.316,
+          "rssBytes": 133906432,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 109.08904899999834,
+          "selfCpuMs": 143.49,
+          "rssBytes": 138440704,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 97.96577700000125,
+          "selfCpuMs": 148.724,
+          "rssBytes": 133951488,
+          "maxRSSKiB": 143520
+        }
+      ],
+      "after": [
+        {
+          "wallMs": 119.70919700000013,
+          "selfCpuMs": 176.036,
+          "rssBytes": 139005952,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 127.31308200000058,
+          "selfCpuMs": 176.041,
+          "rssBytes": 137990144,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 115.0614919999989,
+          "selfCpuMs": 170.128,
+          "rssBytes": 140693504,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 112.28414299999895,
+          "selfCpuMs": 166.575,
+          "rssBytes": 139235328,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 117.4963200000002,
+          "selfCpuMs": 161.974,
+          "rssBytes": 140423168,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 113.9443339999998,
+          "selfCpuMs": 161.587,
+          "rssBytes": 140275712,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 115.25878599999851,
+          "selfCpuMs": 166.111,
+          "rssBytes": 139214848,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 116.93679100000008,
+          "selfCpuMs": 163.54,
+          "rssBytes": 139362304,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 111.38362399999824,
+          "selfCpuMs": 154.592,
+          "rssBytes": 139235328,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 116.68551300000036,
+          "selfCpuMs": 164.424,
+          "rssBytes": 138448896,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 107.87853199999881,
+          "selfCpuMs": 158.941,
+          "rssBytes": 139399168,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 111.68538400000034,
+          "selfCpuMs": 167.323,
+          "rssBytes": 140185600,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 110.5751760000021,
+          "selfCpuMs": 154.223,
+          "rssBytes": 138440704,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 116.35508200000186,
+          "selfCpuMs": 163.871,
+          "rssBytes": 139227136,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 108.77223400000003,
+          "selfCpuMs": 158.753,
+          "rssBytes": 139501568,
+          "maxRSSKiB": 143520
+        }
+      ],
+      "beforeMedianMs": 102.73117400000046,
+      "afterMedianMs": 115.0614919999989,
+      "beforeP95Ms": 115.01813599999878,
+      "afterP95Ms": 127.31308200000058,
+      "medianRatio": 1.120025086056141,
+      "p95Ratio": 1.1068957159938841
+    },
+    {
+      "label": "per-page200",
+      "bytes": 97753,
+      "pages": 1,
+      "chunkSize": 16384,
+      "iterations": 5,
+      "observations": 15,
+      "before": [
+        {
+          "wallMs": 8.899249599999894,
+          "selfCpuMs": 16.656200000000002,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 7.998522999999841,
+          "selfCpuMs": 14.862200000000001,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 3.697604400000273,
+          "selfCpuMs": 5.9298,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 9.035063200000149,
+          "selfCpuMs": 16.9748,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 9.259766200000012,
+          "selfCpuMs": 17.8196,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 8.775175399999716,
+          "selfCpuMs": 15.8958,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 7.710231600000407,
+          "selfCpuMs": 14.2256,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 8.524908200000208,
+          "selfCpuMs": 15.374600000000001,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 7.165174999999726,
+          "selfCpuMs": 13.174600000000002,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 7.72179959999994,
+          "selfCpuMs": 14.3268,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 8.934055200000149,
+          "selfCpuMs": 14.9562,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 9.585781800000404,
+          "selfCpuMs": 17.8694,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 8.472602999999799,
+          "selfCpuMs": 15.376,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 8.376106000000437,
+          "selfCpuMs": 15.006,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 3.3657587999994574,
+          "selfCpuMs": 5.0485999999999995,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        }
+      ],
+      "after": [
+        {
+          "wallMs": 3.5800321999995504,
+          "selfCpuMs": 6.692,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 3.3846408000004886,
+          "selfCpuMs": 5.363,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 8.019554999999674,
+          "selfCpuMs": 15.1758,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 3.303190800000448,
+          "selfCpuMs": 6.285,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 9.119092799999635,
+          "selfCpuMs": 15.8276,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 8.4632451999998,
+          "selfCpuMs": 16.0316,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 8.489839800000482,
+          "selfCpuMs": 15.3626,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 3.291884999999456,
+          "selfCpuMs": 5.5834,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 8.239322399999946,
+          "selfCpuMs": 15.941399999999998,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 9.535491799999727,
+          "selfCpuMs": 17.5974,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 7.709528599999612,
+          "selfCpuMs": 13.384,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 3.1546213999994506,
+          "selfCpuMs": 5.6659999999999995,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 9.68817379999964,
+          "selfCpuMs": 17.4834,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 8.927195400000347,
+          "selfCpuMs": 17.1724,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        },
+        {
+          "wallMs": 8.790933599999699,
+          "selfCpuMs": 16.0444,
+          "rssBytes": 133963776,
+          "maxRSSKiB": 143520
+        }
+      ],
+      "beforeMedianMs": 8.472602999999799,
+      "afterMedianMs": 8.239322399999946,
+      "beforeP95Ms": 9.585781800000404,
+      "afterP95Ms": 9.68817379999964,
+      "medianRatio": 0.9724664781295832,
+      "p95Ratio": 1.0106816535297343
+    }
+  ],
+  "causal": [
+    {
+      "label": "baseline-page200",
+      "decode": 404,
+      "jsonParse": 404,
+      "span": 0,
+      "concat": 5,
+      "concatBytes": 511,
+      "metadataEnvelopeBytes": 0,
+      "decodeMs": 0.2729300000046351,
+      "jsonParseMs": 0.4531990000014048,
+      "spanMs": 0,
+      "concatMs": 0.0391299999992043,
+      "totalInclusiveMs": 10.238069999999425,
+      "items": 200
+    },
+    {
+      "label": "candidate-page200",
+      "decode": 204,
+      "jsonParse": 204,
+      "span": 201,
+      "concat": 4,
+      "concatBytes": 48522,
+      "metadataEnvelopeBytes": 48494,
+      "decodeMs": 0.17028999998728978,
+      "jsonParseMs": 0.24744899999677727,
+      "spanMs": 3.1124439999948663,
+      "concatMs": 0.07588999999916268,
+      "totalInclusiveMs": 10.730506999999307,
+      "items": 200
+    },
+    {
+      "label": "baseline-long-page56",
+      "decode": 113,
+      "jsonParse": 113,
+      "span": 0,
+      "concat": 56,
+      "concatBytes": 925558,
+      "metadataEnvelopeBytes": 0,
+      "decodeMs": 1.2771689999972295,
+      "jsonParseMs": 0.6043079999963084,
+      "spanMs": 0,
+      "concatMs": 0.3094589999991513,
+      "totalInclusiveMs": 9.244832000000315,
+      "items": 56
+    },
+    {
+      "label": "candidate-long-page56",
+      "decode": 57,
+      "jsonParse": 57,
+      "span": 57,
+      "concat": 1,
+      "concatBytes": 925618,
+      "metadataEnvelopeBytes": 925618,
+      "decodeMs": 0.9612279999964812,
+      "jsonParseMs": 0.970312999995258,
+      "spanMs": 5.6274649999977555,
+      "concatMs": 0.1601199999995515,
+      "totalInclusiveMs": 12.670593999999255,
+      "items": 56
+    }
+  ],
+  "controls": [
+    {
+      "kind": "limit-refusal",
+      "limit": 0,
+      "passed": true
+    },
+    {
+      "kind": "limit-refusal",
+      "limit": 201,
+      "passed": true
+    },
+    {
+      "kind": "limit-refusal",
+      "limit": "NaN",
+      "passed": true
+    },
+    {
+      "kind": "limit-refusal",
+      "limit": 1.5,
+      "passed": true
+    },
+    {
+      "label": "aggregate-exact",
+      "outcomes": [
+        {
+          "ok": true,
+          "charged": 33554432,
+          "count": 8,
+          "maxHeld": 4
+        },
+        {
+          "ok": true,
+          "charged": 33554432,
+          "count": 8,
+          "maxHeld": 4
+        }
+      ]
+    },
+    {
+      "label": "aggregate-exceeded",
+      "outcomes": [
+        {
+          "ok": false,
+          "classification": "Controlled aggregate bound"
+        },
+        {
+          "ok": false,
+          "classification": "Controlled aggregate bound"
+        }
+      ]
+    },
+    {
+      "label": "cancelled",
+      "passed": true,
+      "scope": "Synthetic before-parser control, not native cancellation qualification"
+    },
+    {
+      "label": "expired",
+      "passed": true,
+      "scope": "Synthetic before-parser control, not native cancellation qualification"
+    }
+  ],
+  "limitations": [
+    "Original grammar skip/string/capture paths unchanged; added deferred selected-object spans only.",
+    "All selected metadata including unknown fields and duplicate last values retained. Native data/stringData/unknown values never decoded.",
+    "Native read deadlines/cancellation and full-operation accounting are not exercised by this pure parser diagnostic; synthetic held-slot controls are separate.",
+    "Timing includes grammar, deferred/envelope copy, decoding and parsing. Inclusive instrumented intervals overlap and cannot be summed as wall cause.",
+    "RSS/maxRSS are process-wide/shared VM high-water observations; no isolated per-variant peak claim.",
+    "This public fixture does not measure network namespace scheduling or fresh authorization."
+  ],
+  "performanceAcceptance": false,
+  "completedUtc": "2026-10-11T13:16:15.229Z",
+  "elapsedMs": 19440.188649000003,
+  "totalCpu": {
+    "user": 25627706,
+    "system": 853316
+  },
+  "maxRSSKiB": 143520,
+  "equivalencePassed": true,
+  "harnessSHA256": "74e4f087e60fb84d3c01bd14312dc725a3f56f6152d86896867fac24f1038b02",
+  "inputsUnchanged": true,
+  "decision": "Reject adoption unless separately justified; typical/tail improvement requirement not demonstrated across representative fixtures"
+}

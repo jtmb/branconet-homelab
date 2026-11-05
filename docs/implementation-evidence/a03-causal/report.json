@@ -1,0 +1,77 @@
+{
+  "scope": "ONE first failed closed/missing-setting/distinct six-request scenario only; causal diagnostic, not acceptance",
+  "node": "v22.23.3",
+  "startedUtc": "2026-10-11T13:44:25.031Z",
+  "checks": [
+    "fulfilled-count-exact1",
+    "user-count-equals-fulfilled",
+    "writer-count-exact1",
+    "effective-admin-count-exact1",
+    "readonly-admin-count0",
+    "policy-count-equals-users",
+    "unique-policy-principals-equals-users",
+    "user-policy-present-0",
+    "refusal-account-error-0",
+    "refusal-exact403-0",
+    "refusal-fixed-message-0",
+    "refusal-account-error-1"
+  ],
+  "performanceAcceptance": false,
+  "outcomes": {
+    "concurrentRequests": 6,
+    "fulfilled": 1,
+    "refused": 5,
+    "userCount": 1,
+    "writerCount": 1,
+    "effectiveAdminCount": 1,
+    "readonlyAdminCount": 0,
+    "policyCount": 1,
+    "uniquePolicyPrincipalCount": 1,
+    "everyUserHasPolicy": true,
+    "refusals": [
+      {
+        "accountError": true,
+        "status": 403,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": true
+      },
+      {
+        "accountError": true,
+        "status": 503,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": false
+      },
+      {
+        "accountError": true,
+        "status": 503,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": false
+      },
+      {
+        "accountError": true,
+        "status": 503,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": false
+      },
+      {
+        "accountError": true,
+        "status": 403,
+        "code": null,
+        "classification": "AccountError",
+        "fixedLockedMessage": true
+      }
+    ]
+  },
+  "currentAssertion": "refusal-exact403-1",
+  "failure": {
+    "assertionId": "refusal-exact403-1",
+    "classification": "AssertionError"
+  },
+  "fixtureRemoved": true,
+  "completedUtc": "2026-10-11T13:45:12.534Z",
+  "harnessSHA256": "e66ee5a394d2a10d6677f3e1d4e19b055a2db655ed877414cfeefe555ff72d91"
+}

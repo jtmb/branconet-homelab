@@ -1,0 +1,280 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 2.48kB 0.0s done
+#1 DONE 0.2s
+
+#2 [internal] load metadata for docker.io/library/node:22.23.3-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392
+#2 DONE 0.1s
+
+#3 [internal] load .dockerignore
+#3 transferring context:
+#3 transferring context: 179B done
+#3 DONE 0.2s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [base 1/4] FROM docker.io/library/node:22.23.3-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392
+#5 resolve docker.io/library/node:22.23.3-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392 0.1s done
+#5 DONE 0.1s
+
+#4 [internal] load build context
+#4 transferring context: 1.28MB 0.1s done
+#4 DONE 0.3s
+
+#6 [base 2/4] RUN apt-get update && apt-get upgrade -y  && apt-get install -y --no-install-recommends ca-certificates openssl curl bash  && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' perl-base)" ge '5.36.0-7+deb12u4'  && rm -rf /var/lib/apt/lists/*
+#6 CACHED
+
+#7 [base 3/4] RUN curl -fsSLo /usr/local/bin/kubectl "https://dl.k8s.io/release/v1.37.1/bin/linux/amd64/kubectl"  && curl -fsSLo /tmp/kubectl.sha256 "https://dl.k8s.io/release/v1.37.1/bin/linux/amd64/kubectl.sha256"  && echo "$(cat /tmp/kubectl.sha256)  /usr/local/bin/kubectl" | sha256sum --check  && chmod 755 /usr/local/bin/kubectl && rm /tmp/kubectl.sha256
+#7 CACHED
+
+#8 [base 4/4] WORKDIR /app
+#8 CACHED
+
+#9 [builder 1/4] COPY package.json package-lock.json ./
+#9 DONE 0.2s
+
+#10 [builder 2/4] RUN npm ci
+#10 10.91 npm warn deprecated xterm@5.3.0: This package is now deprecated. Move to @xterm/xterm instead.
+#10 16.53 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#10 41.10
+#10 41.10 added 501 packages, and audited 502 packages in 40s
+#10 41.10
+#10 41.10 160 packages are looking for funding
+#10 41.10   run `npm fund` for details
+#10 41.18
+#10 41.18 9 vulnerabilities (2 moderate, 7 high)
+#10 41.18
+#10 41.18 To address issues that do not require attention, run:
+#10 41.18   npm audit fix
+#10 41.18
+#10 41.18 To address all issues (including breaking changes), run:
+#10 41.18   npm audit fix --force
+#10 41.18
+#10 41.18 Run `npm audit` for details.
+#10 41.19 npm notice
+#10 41.19 npm notice New major version of npm available! 10.9.9 -> 12.2.0
+#10 41.19 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+#10 41.19 npm notice To update run: npm install -g npm@12.2.0
+#10 41.19 npm notice
+#10 DONE 43.7s
+
+#11 [builder 3/4] COPY . .
+#11 DONE 1.1s
+
+#12 [builder 4/4] RUN npm run build && npm prune --omit=dev
+#12 1.675
+#12 1.675 > botrus-k8s-manager@1.0.0 build
+#12 1.675 > prisma generate && next build
+#12 1.675
+#12 2.540 Prisma schema loaded from prisma/schema.prisma
+#12 3.074
+#12 3.074 ✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 170ms
+#12 3.074
+#12 3.074 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+#12 3.074
+#12 3.074 Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+#12 3.074
+#12 3.979    ▲ Next.js 15.5.27
+#12 3.979
+#12 4.027    Creating an optimized production build ...
+#12 25.00  ✓ Compiled successfully in 17.6s
+#12 25.01    Linting and checking validity of types ...
+#12 33.63    Collecting page data ...
+#12 38.58    Generating static pages (0/60) ...
+#12 39.56    Generating static pages (15/60)
+#12 39.77    Generating static pages (30/60)
+#12 40.05    Generating static pages (45/60)
+#12 40.50  ✓ Generating static pages (60/60)
+#12 43.21    Finalizing page optimization ...
+#12 43.21    Collecting build traces ...
+#12 73.06
+#12 73.06 Route (app)                                                Size  First Load JS
+#12 73.06 ┌ ○ /                                                   6.94 kB         126 kB
+#12 73.06 ├ ○ /_not-found                                           996 B         104 kB
+#12 73.06 ├ ƒ /api/auth/login                                       362 B         104 kB
+#12 73.06 ├ ƒ /api/auth/logout                                      362 B         104 kB
+#12 73.06 ├ ƒ /api/auth/register                                    362 B         104 kB
+#12 73.06 ├ ƒ /api/auth/session                                     362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/deployments                              362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/deployments/[namespace]/[name]           362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/deployments/[namespace]/[name]/action    362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/deployments/[namespace]/[name]/delete    362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/deployments/[namespace]/[name]/scale     362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/deployments/[namespace]/[name]/yaml      362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/diagnostics                              362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/info                                     362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/ingresses                                362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/ingresses/[namespace]/[name]             362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/ingresses/[namespace]/[name]/delete      362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/ingresses/[namespace]/[name]/yaml        362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/kubectl                                  362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/namespaces                               362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/namespaces/[name]                        362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/namespaces/[name]/delete                 362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/namespaces/[name]/yaml                   362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/nodes                                    362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/nodes/[hostname]                         362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/nodes/[hostname]/action                  362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/nodes/[hostname]/yaml                    362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/pods                                     362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/pods/[namespace]/[name]                  362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/pods/[namespace]/[name]/delete           362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/pods/[namespace]/[name]/exec             362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/pods/[namespace]/[name]/logs             362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/pods/[namespace]/[name]/yaml             362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/refresh                                  362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/remove                                   362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/services                                 362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/services/[namespace]/[name]              362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/services/[namespace]/[name]/yaml         362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/volumes                                  362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/volumes/[namespace]/[name]               362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/volumes/[namespace]/[name]/yaml          362 B         104 kB
+#12 73.06 ├ ƒ /api/cluster/volumes/reclaim                          362 B         104 kB
+#12 73.06 ├ ƒ /api/deploy/history                                   362 B         104 kB
+#12 73.06 ├ ƒ /api/deploy/start                                     362 B         104 kB
+#12 73.06 ├ ƒ /api/deploy/stop                                      362 B         104 kB
+#12 73.06 ├ ƒ /api/deploy/stream                                    362 B         104 kB
+#12 73.06 ├ ƒ /api/flux/hierarchy                                   362 B         104 kB
+#12 73.06 ├ ƒ /api/flux/kustomizations/[name]                       362 B         104 kB
+#12 73.06 ├ ƒ /api/flux/repos                                       362 B         104 kB
+#12 73.06 ├ ƒ /api/flux/repos/[id]                                  362 B         104 kB
+#12 73.06 ├ ƒ /api/flux/repos/[id]/delete-progress                  362 B         104 kB
+#12 73.06 ├ ƒ /api/flux/repos/[id]/detail                           362 B         104 kB
+#12 73.06 ├ ƒ /api/flux/repos/[id]/sync                             362 B         104 kB
+#12 73.06 ├ ƒ /api/health/live                                      362 B         104 kB
+#12 73.06 ├ ƒ /api/health/ready                                     362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/audit                                         362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/automation                                    362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/export                                        362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/history/gc                                    362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/history/gc/preview                            362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/identities                                    362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/identities/[id]                               362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/import                                        362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/import/preview                                362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/legacy                                        362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/legacy/grants                                 362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/legacy/grants/[id]                            362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/legacy/preview                                362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/mounts                                        362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/mounts/[id]                                   362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/operations/[id]                               362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths                                         362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths/[id]                                    362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths/[id]/adopt                              362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths/[id]/capabilities                       362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths/[id]/data                               362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths/[id]/destroy                            362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths/[id]/reconcile                          362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths/[id]/rollback                           362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths/[id]/status                             362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths/[id]/versions                           362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths/[id]/versions/[version]                 362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/paths/[id]/versions/[version]/data            362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/policies                                      362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/policies/[id]                                 362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/policies/preview                              362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/rotations                                     362 B         104 kB
+#12 73.06 ├ ƒ /api/kv/rotations/[id]/consumer                       362 B         104 kB
+#12 73.06 ├ ƒ /api/nodes                                            362 B         104 kB
+#12 73.06 ├ ƒ /api/nodes/[id]                                       362 B         104 kB
+#12 73.06 ├ ƒ /api/secret-references                                362 B         104 kB
+#12 73.06 ├ ƒ /api/secrets                                          362 B         104 kB
+#12 73.06 ├ ƒ /api/settings                                         362 B         104 kB
+#12 73.06 ├ ƒ /api/users                                            362 B         104 kB
+#12 73.06 ├ ƒ /api/users/[id]                                       362 B         104 kB
+#12 73.06 ├ ƒ /api/vars                                             362 B         104 kB
+#12 73.06 ├ ƒ /api/vars/[id]                                        362 B         104 kB
+#12 73.06 ├ ƒ /api/vars/lookup                                      362 B         104 kB
+#12 73.06 ├ ƒ /api/vars/sync                                        362 B         104 kB
+#12 73.06 ├ ○ /auth/login                                         1.58 kB         109 kB
+#12 73.06 ├ ○ /auth/register                                      2.09 kB         109 kB
+#12 73.06 ├ ○ /cluster/deployments                                3.51 kB         107 kB
+#12 73.06 ├ ○ /cluster/ingresses                                  3.22 kB         107 kB
+#12 73.06 ├ ○ /cluster/name-spaces                                 3.2 kB         107 kB
+#12 73.06 ├ ○ /cluster/nodes                                      4.61 kB         112 kB
+#12 73.06 ├ ○ /cluster/pods                                        3.6 kB         107 kB
+#12 73.06 ├ ○ /cluster/services                                   3.21 kB         107 kB
+#12 73.06 ├ ○ /cluster/storage                                    3.74 kB         107 kB
+#12 73.06 ├ ○ /configuration                                      2.43 kB         117 kB
+#12 73.06 ├ ƒ /deploy                                             3.56 kB         119 kB
+#12 73.06 ├ ○ /deployments                                          181 B         115 kB
+#12 73.06 ├ ƒ /deployments/[namespace]/[name]                     7.84 kB         115 kB
+#12 73.06 ├ ○ /flux                                               8.48 kB         116 kB
+#12 73.06 ├ ƒ /flux/[repoName]                                    3.63 kB         111 kB
+#12 73.06 ├ ƒ /flux/[repoName]/[bundleName]                        3.7 kB         111 kB
+#12 73.06 ├ ○ /ingresses                                            181 B         115 kB
+#12 73.06 ├ ƒ /ingresses/[namespace]/[name]                       5.96 kB         113 kB
+#12 73.06 ├ ○ /name-spaces                                          181 B         115 kB
+#12 73.06 ├ ƒ /name-spaces/[name]                                 5.97 kB         113 kB
+#12 73.06 ├ ○ /nodes                                               2.1 kB         117 kB
+#12 73.06 ├ ƒ /nodes/[hostname]                                    7.7 kB         115 kB
+#12 73.06 ├ ○ /pods                                                 181 B         115 kB
+#12 73.06 ├ ƒ /pods/[namespace]/[name]                            6.87 kB         114 kB
+#12 73.06 ├ ƒ /secrets                                            4.59 kB         120 kB
+#12 73.06 ├ ○ /services                                             181 B         115 kB
+#12 73.06 ├ ƒ /services/[namespace]/[name]                        5.94 kB         113 kB
+#12 73.06 ├ ○ /settings                                           2.83 kB         118 kB
+#12 73.06 ├ ○ /storage                                              181 B         115 kB
+#12 73.06 ├ ƒ /storage/[namespace]/[name]                         5.55 kB         113 kB
+#12 73.06 ├ ○ /users                                              3.01 kB         118 kB
+#12 73.06 ├ ○ /welcome                                            11.8 kB         115 kB
+#12 73.06 └ ○ /workloads                                          2.26 kB         106 kB
+#12 73.06 + First Load JS shared by all                            103 kB
+#12 73.06   ├ chunks/1255-5cd2fe06309409a0.js                     46.5 kB
+#12 73.06   ├ chunks/4bd1b696-f785427dddbba9fb.js                 54.2 kB
+#12 73.06   └ other shared chunks (total)                         2.64 kB
+#12 73.06
+#12 73.06
+#12 73.06 ○  (Static)   prerendered as static content
+#12 73.06 ƒ  (Dynamic)  server-rendered on demand
+#12 73.06
+#12 76.10
+#12 76.10 up to date, audited 190 packages in 3s
+#12 76.10
+#12 76.10 25 packages are looking for funding
+#12 76.10   run `npm fund` for details
+#12 76.10
+#12 76.10 found 0 vulnerabilities
+#12 DONE 76.8s
+
+#13 [runtime 1/8] RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack /opt/yarn-v1.22.22  && rm -f /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack /usr/local/bin/yarn /usr/local/bin/yarnpkg
+#13 CACHED
+
+#14 [runtime 2/8] COPY --from=builder --chown=node:node /app/.next/standalone ./
+#14 DONE 2.2s
+
+#15 [runtime 3/8] COPY --from=builder --chown=node:node /app/.next/static ./.next/static
+#15 DONE 0.6s
+
+#16 [runtime 4/8] COPY --from=builder --chown=node:node /app/public ./public
+#16 DONE 0.6s
+
+#17 [runtime 5/8] COPY --from=builder --chown=node:node /app/node_modules ./node_modules
+#17 DONE 16.2s
+
+#18 [runtime 6/8] COPY --from=builder --chown=node:node /app/prisma ./prisma
+#18 DONE 0.8s
+
+#19 [runtime 7/8] COPY --chown=node:node docker-entrypoint.sh ./
+#19 DONE 0.5s
+
+#20 [runtime 8/8] RUN mkdir -p /data /home/shell && chown node:node /data /home/shell && sed -i 's/\r$//' docker-entrypoint.sh && chmod 755 docker-entrypoint.sh
+#20 DONE 1.0s
+
+#21 exporting to image
+#21 exporting layers
+#21 exporting layers 28.6s done
+#21 exporting manifest sha256:e148b6fdf9d7021f5d469e424c0364a69df6c9b6d9b7849142ed12852a8dc2d1 0.1s done
+#21 exporting config sha256:4bd8a989f6a9ffefc3b40812d8fb96c665974af3a86820963897a2a6ee46a20f 0.1s done
+#21 exporting attestation manifest sha256:3681900bd9ebafc04698668a8fccf338e64548890d5bd409d5467fac5dc479f5 0.1s done
+#21 exporting manifest list sha256:497d099b6412e16954e9dd88da9c97656c8cfcc5c9a83db62d3c71765aaec866
+#21 exporting manifest list sha256:497d099b6412e16954e9dd88da9c97656c8cfcc5c9a83db62d3c71765aaec866 0.1s done
+#21 naming to docker.io/library/bortus-qa:maintenance-483ba4f-raw 0.0s done
+#21 unpacking to docker.io/library/bortus-qa:maintenance-483ba4f-raw
+#21 unpacking to docker.io/library/bortus-qa:maintenance-483ba4f-raw 11.1s done
+#21 DONE 40.2s

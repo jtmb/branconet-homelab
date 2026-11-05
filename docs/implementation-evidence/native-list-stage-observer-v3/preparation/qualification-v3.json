@@ -1,0 +1,68 @@
+{
+  "scope": "Light preparation only; no v3 heavy run authorized",
+  "checks": [
+    {
+      "check": "baseline-v3-types",
+      "exit_code": 0
+    },
+    {
+      "check": "python-v3-compile",
+      "exit_code": 0
+    },
+    {
+      "check": "syntax-observer",
+      "exit_code": 0
+    },
+    {
+      "check": "syntax-preload",
+      "exit_code": 0
+    },
+    {
+      "check": "syntax-test-observer",
+      "exit_code": 0
+    },
+    {
+      "check": "syntax-test-edge-pass-through",
+      "exit_code": 0
+    },
+    {
+      "check": "syntax-native-stage-driver",
+      "exit_code": 0
+    },
+    {
+      "check": "observer-unit",
+      "exit_code": 0
+    },
+    {
+      "check": "edge-pass-through-unit",
+      "exit_code": 0
+    },
+    {
+      "check": "coverage-unit",
+      "exit_code": 0
+    }
+  ],
+  "baseline_v3_types_exit": 0,
+  "candidate_source_unchanged_prior_types_exit": 0,
+  "edge_hooks_tested": 4,
+  "edge_identity_presence_checks": 5,
+  "observer_checks": 6,
+  "coverage_tests": 4,
+  "coverage_refusal_subcases": 19,
+  "unobserved_baseline_edge_stages": [
+    "auth.middleware",
+    "auth.headerSession",
+    "auth.jwt in Edge middleware"
+  ],
+  "preserved_failed_runs": [
+    "native-stage-15786222-observer-44e1f8d2",
+    "native-stage-15786222-observer-44e1f8d2-v2"
+  ],
+  "original_terminal_exits": [
+    1,
+    1
+  ],
+  "private_runtime_bridge": false,
+  "source_behavior_change": false,
+  "frozen_acceptance_claim": false
+}

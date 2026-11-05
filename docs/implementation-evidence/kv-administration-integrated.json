@@ -1,0 +1,154 @@
+{
+  "capturedAt": "2026-10-11 00:14:53 UTC",
+  "source": "d7d4279 plus root administration entry, captured destroy pathRevision and consumer preview identity/marker separation; working-tree raw-byte hashes below",
+  "importedSource": "100c3ef8bfa10442745d467c634f66a0662a7b3a",
+  "importedCommit": "d7d4279de81bf61c3c9f24451502bdb998074ec6",
+  "runtime": {
+    "node": "v22.23.3",
+    "platform": "win32",
+    "fixture": "Actual production Next /secrets/kv and APIs; disposable SQLite; CA-verified loopback native API; fake named consumer CLI"
+  },
+  "sourceSha256": {
+    "src/app/(dashboard)/secrets/kv/kv-browser.tsx": "ab08f94ac7b852cfa2a2d48f4766388d53b2b73b311e0922c3e9b3493f416a09",
+    "src/components/secrets/kv-administration.tsx": "b9c874b2acf02a1bb2831c26028b1b856e3433e0811c8407d8bae7b8858de954",
+    "src/components/secrets/kv-administration-model.ts": "859ee494813f30a3eff74e7c0ebce52fbcb463fd77c18737772539d2874a39ce",
+    "src/lib/kv-rotation.ts": "3ce2d130810bcd73b4c8ec94d9a5d058af8fd1503f8b62f5516dba1e359874ff",
+    "tests/kv-http.integration.ts": "ca49f4559e9ef875fed81b28a4c8e23c34fc26f878d6bd72cb8d7db8d259f57a",
+    "tests/kv-administration.test.ts": "706e35c07716b9b1fb882bc3ad69fca794ddb7d6644f271717bc956811f635ab",
+    "tests/helpers/kv-administration-fixture.ts": "4d5b8a91b44d998f9fa54fe9f1409e49640d08d06bea182bef8a52154073c7d6",
+    "tests/kv-administration-ui-fixture.ts": "a9b405fdc734257ddc93efa7e8f819e8964009417ead4605e8d80a593cc78a9c"
+  },
+  "checks": {
+    "units": {
+      "passed": true,
+      "tests": 140,
+      "failures": 0,
+      "duration_ms": 72176.1755
+    },
+    "lint": {
+      "passed": true,
+      "warnings": 0
+    },
+    "freshProductionBuild": {
+      "passed": true
+    },
+    "postBuildTypecheck": {
+      "passed": true
+    },
+    "http": {
+      "passed": true,
+      "fixtures": 4,
+      "duration_ms": 37645.669,
+      "provisioning_ms": 29190.9629,
+      "existing_ms": 36305.5036,
+      "administration_ms": 28169.6731,
+      "native_ms": 37267.6344
+    },
+    "staticFixtureFollowUpLintTypecheck": {
+      "passed": true
+    }
+  },
+  "regressions": [
+    "Captured stale destroy pathRevision after retention change returns 409 and zero native writes; fresh revision DELETE succeeds",
+    "Valid previous consumer marker returns as rotationIdMarker while rotationId remains requested intent; UID/RV retained; unrelated private workload metadata excluded",
+    "Existing native binary/special-key preservation, TLS, denies, legacy, token, consumer reload and recovery assertions retained"
+  ],
+  "browser": {
+    "singleActionEntry": true,
+    "entryFocus": "Engine administration",
+    "closeFocus": "Administration and audit",
+    "defaultClosedAdministrationFetches": 0,
+    "policiesRows": 100,
+    "readonlyAuditRows": 100,
+    "scopedIdentityPosts": 1,
+    "identityRevocations": 1,
+    "credentialSaved": false,
+    "tokenSurvivedMetadataCallback": true,
+    "externalRefreshErasedTokenAndForm": true,
+    "exactSelectedPathContext": true,
+    "historyOnlyMetadata": true,
+    "roleWithdrawalViews": [
+      "Audit"
+    ],
+    "historyCaptureControlRemoved": true,
+    "readonlyManagementControlsAbsent": true,
+    "actualValueRequests": 0,
+    "nativeWrites": 0,
+    "nativeMetadataReads": 16,
+    "finalIdentityRows": 106,
+    "finalRotations": 0,
+    "responsive": [
+      {
+        "viewport": 320,
+        "clientWidth": 310,
+        "scrollWidth": 310,
+        "panelWidth": 230
+      },
+      {
+        "viewport": 390,
+        "clientWidth": 380,
+        "scrollWidth": 380,
+        "panelWidth": 300,
+        "auditTableRows": 100,
+        "tableClientWidth": 264,
+        "tableScrollWidth": 318
+      },
+      {
+        "viewport": 768,
+        "clientWidth": 758,
+        "scrollWidth": 758,
+        "panelWidth": 653.34375,
+        "note": "Observation during navigation width transition; no settled-width claim"
+      }
+    ],
+    "screenshot": "kv-administration-integrated-mobile.jpg",
+    "credentialBytesInEvidence": false
+  },
+  "attempts": [
+    "First integrated fixture omitted Next standalone static assets: current page asset 404, no hydration/API requests. Corrected fixture copies current .next/static before child startup. Failed owned fixture stopped/temp removed; application source unchanged.",
+    "Fresh role polling removed Capture fresh path metadata before a post-withdrawal click: zero matches and no request. Subsequent DOM confirms audit only.",
+    "At 390px navigation already collapsed automatically; Collapse navigation absent and click sent no action. Current DOM/bounds then inspected.",
+    "Performance documentation patch context ordering failed verification; no files changed. Corrected ordered patch applied.",
+    "Initial evidence writer resolved ../../../docs from front-end, one parent too high; resolution failed and no JSON was created. Corrected with exact absolute target.",
+    "Staged whitespace check rejected trailing progress-line spaces and extra EOF blank lines in the CLI observation excerpt. Trimmed excerpt whitespace only; application/test source and numeric observations unchanged."
+  ],
+  "cleanup": {
+    "ownedFixturesStopped": true,
+    "ownedTemporaryDirectoriesRemoved": true,
+    "ownedTabsClosed": true,
+    "viewportReset": true,
+    "unrelatedFixturesUntouched": true
+  },
+  "docsChecked": [
+    "API-USAGE.md",
+    "USER-PERMS.md",
+    "TECH-STACK.md",
+    "SECRETS-ENGINE.md",
+    "BORTUS-KV-DESIGN.md",
+    "BORTUS-KV-ADMINISTRATION-UI.md",
+    "BORTUS-KV-WORKBENCH.md",
+    "BORTUS-DEPLOYMENT.md",
+    "BORTUS-IMPLEMENTATION.md",
+    "BORTUS-CONTROLLED-PERFORMANCE.md",
+    "BOTRUS-WORKFLOW.md",
+    "FLUX-GITOPS.md",
+    "CONNECTING-TO-A-CLUSTER.md",
+    "kubectl-cheatsheet.md",
+    "ANSIBLE-2-API-INTERACTION.md",
+    "CHARTS-SEPARATION.md",
+    "BORTUS-AUDIT.md",
+    "implementation-evidence/README.md",
+    "audit-evidence/README.md",
+    "implementation-evidence/runtime-maintenance/README.md"
+  ],
+  "limits": [
+    "Original standalone evidence stays historical; only the recorded integration subset is newly qualified",
+    "Destroy canonical/history UIDs remain server-verified but absent from public display; identity DELETE has no revision CAS; maximum 10000-alias acknowledgment may exceed request envelope",
+    "No hidden-page/held-token/zoom/screen-reader acceptance claimed; full KV/Flux lifecycle and transfer/reconcile remain open",
+    "Dynamic entry and observed chunk request do not establish measured browser byte/LCP/CPU improvement",
+    "Windows source QA is not final coherent Linux image/migration/recovery/live proof",
+    "Latest controlled A07 warm p95 still fails; 10000-Pod capacity and native scheduling performance remain open",
+    "No production resources, DB, RBAC/admission, publication or deployment changed"
+  ],
+  "cliObservations": "kv-administration-integrated-cli.txt; retained tool-output excerpts, not a complete raw transcript"
+}

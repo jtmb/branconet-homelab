@@ -1,0 +1,184 @@
+
+added 297 packages, and audited 298 packages in 26s
+
+63 packages are looking for funding
+  run `npm fund` for details
+
+16 vulnerabilities (4 moderate, 12 high)
+
+To address issues that do not require attention, run:
+  npm audit fix
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+> botrus-k8s-manager@1.0.0 build
+> prisma generate && next build
+
+Prisma schema loaded from prisma/schema.prisma
+
+✔ Generated Prisma Client (v6.19.3) to ./node_modules/@prisma/client in 109ms
+
+Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+
+Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+
+   ▲ Next.js 15.5.27
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 16.5s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/51) ...
+   Generating static pages (12/51) 
+   Generating static pages (25/51) 
+   Generating static pages (38/51) 
+ ✓ Generating static pages (51/51)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                Size  First Load JS
+┌ ○ /                                                   4.57 kB         108 kB
+├ ○ /_not-found                                           996 B         104 kB
+├ ƒ /api/auth/login                                       264 B         103 kB
+├ ƒ /api/auth/logout                                      264 B         103 kB
+├ ƒ /api/auth/register                                    264 B         103 kB
+├ ƒ /api/auth/session                                     264 B         103 kB
+├ ƒ /api/cluster/deployments                              264 B         103 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]           264 B         103 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/action    264 B         103 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/delete    264 B         103 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/scale     264 B         103 kB
+├ ƒ /api/cluster/deployments/[namespace]/[name]/yaml      264 B         103 kB
+├ ƒ /api/cluster/info                                     264 B         103 kB
+├ ƒ /api/cluster/ingresses                                264 B         103 kB
+├ ƒ /api/cluster/ingresses/[namespace]/[name]             264 B         103 kB
+├ ƒ /api/cluster/kubectl                                  264 B         103 kB
+├ ƒ /api/cluster/namespaces                               264 B         103 kB
+├ ƒ /api/cluster/namespaces/[name]                        264 B         103 kB
+├ ƒ /api/cluster/namespaces/[name]/delete                 264 B         103 kB
+├ ƒ /api/cluster/namespaces/[name]/yaml                   264 B         103 kB
+├ ƒ /api/cluster/nodes                                    264 B         103 kB
+├ ƒ /api/cluster/nodes/[hostname]                         264 B         103 kB
+├ ƒ /api/cluster/pods                                     264 B         103 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]                  264 B         103 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]/delete           264 B         103 kB
+├ ƒ /api/cluster/pods/[namespace]/[name]/yaml             264 B         103 kB
+├ ƒ /api/cluster/refresh                                  264 B         103 kB
+├ ƒ /api/cluster/remove                                   264 B         103 kB
+├ ƒ /api/cluster/services                                 264 B         103 kB
+├ ƒ /api/cluster/services/[namespace]/[name]              264 B         103 kB
+├ ƒ /api/cluster/volumes                                  264 B         103 kB
+├ ƒ /api/cluster/volumes/[namespace]/[name]               264 B         103 kB
+├ ƒ /api/cluster/volumes/reclaim                          264 B         103 kB
+├ ƒ /api/deploy/history                                   264 B         103 kB
+├ ƒ /api/deploy/start                                     264 B         103 kB
+├ ƒ /api/deploy/stop                                      264 B         103 kB
+├ ƒ /api/deploy/stream                                    264 B         103 kB
+├ ƒ /api/flux/hierarchy                                   264 B         103 kB
+├ ƒ /api/flux/kustomizations/[name]                       264 B         103 kB
+├ ƒ /api/flux/repos                                       264 B         103 kB
+├ ƒ /api/flux/repos/[id]                                  264 B         103 kB
+├ ƒ /api/flux/repos/[id]/delete-progress                  264 B         103 kB
+├ ƒ /api/flux/repos/[id]/detail                           264 B         103 kB
+├ ƒ /api/flux/repos/[id]/sync                             264 B         103 kB
+├ ƒ /api/health/live                                      264 B         103 kB
+├ ƒ /api/health/ready                                     264 B         103 kB
+├ ƒ /api/nodes                                            264 B         103 kB
+├ ƒ /api/nodes/[id]                                       264 B         103 kB
+├ ƒ /api/secret-references                                264 B         103 kB
+├ ƒ /api/secrets                                          264 B         103 kB
+├ ƒ /api/settings                                         264 B         103 kB
+├ ƒ /api/users                                            264 B         103 kB
+├ ƒ /api/users/[id]                                       264 B         103 kB
+├ ƒ /api/vars                                             264 B         103 kB
+├ ƒ /api/vars/[id]                                        264 B         103 kB
+├ ƒ /api/vars/lookup                                      264 B         103 kB
+├ ƒ /api/vars/sync                                        264 B         103 kB
+├ ○ /auth/login                                         1.54 kB         109 kB
+├ ○ /auth/register                                      2.06 kB         109 kB
+├ ○ /cluster/deployments                                3.46 kB         107 kB
+├ ○ /cluster/ingresses                                  3.17 kB         106 kB
+├ ○ /cluster/name-spaces                                3.15 kB         106 kB
+├ ○ /cluster/nodes                                      4.54 kB         112 kB
+├ ○ /cluster/pods                                       3.56 kB         107 kB
+├ ○ /cluster/services                                   3.16 kB         106 kB
+├ ○ /cluster/storage                                    3.69 kB         107 kB
+├ ○ /configuration                                      1.19 kB         104 kB
+├ ƒ /deploy                                             6.94 kB         110 kB
+├ ○ /deployments                                        3.49 kB         107 kB
+├ ƒ /deployments/[namespace]/[name]                     3.16 kB         134 kB
+├ ○ /flux                                               6.52 kB         114 kB
+├ ƒ /flux/[repoName]                                    3.49 kB         111 kB
+├ ƒ /flux/[repoName]/[bundleName]                       3.66 kB         111 kB
+├ ○ /ingresses                                          3.21 kB         106 kB
+├ ƒ /ingresses/[namespace]/[name]                       2.18 kB         133 kB
+├ ○ /name-spaces                                        3.17 kB         106 kB
+├ ƒ /name-spaces/[name]                                 2.18 kB         133 kB
+├ ○ /nodes                                              4.62 kB         112 kB
+├ ƒ /nodes/[hostname]                                   3.74 kB         135 kB
+├ ○ /pods                                               3.57 kB         107 kB
+├ ƒ /pods/[namespace]/[name]                             3.1 kB         134 kB
+├ ƒ /secrets                                            2.24 kB         105 kB
+├ ○ /services                                           3.19 kB         106 kB
+├ ƒ /services/[namespace]/[name]                        2.17 kB         133 kB
+├ ○ /settings                                           5.27 kB         112 kB
+├ ○ /storage                                             3.7 kB         107 kB
+├ ƒ /storage/[namespace]/[name]                         1.75 kB         133 kB
+├ ○ /users                                              5.62 kB         109 kB
+├ ○ /welcome                                            11.8 kB         115 kB
+└ ○ /workloads                                          2.25 kB         105 kB
++ First Load JS shared by all                            103 kB
+  ├ chunks/1255-5cd2fe06309409a0.js                     46.5 kB
+  ├ chunks/4bd1b696-f785427dddbba9fb.js                 54.2 kB
+  └ other shared chunks (total)                         2.48 kB
+
+
+ƒ Middleware                                            43.8 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
+npm warn deprecated xterm@5.3.0: This package is now deprecated. Move to @xterm/xterm instead.
+npm notice
+npm notice New major version of npm available! 10.9.9 -> 12.2.0
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0
+npm notice To update run: npm install -g npm@12.2.0
+npm notice
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.3 -> 8.0.0-rc.22                 │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+ ⚠ Compiled with warnings in 1031ms
+
+./node_modules/jose/dist/webapi/lib/deflate.js
+A Node.js API is used (CompressionStream at line: 31) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/jose/dist/webapi/lib/deflate.js
+./node_modules/jose/dist/webapi/lib/jwe_decrypt.js
+./node_modules/jose/dist/webapi/jwt/decrypt.js
+./node_modules/jose/dist/webapi/index.js
+./src/lib/auth.ts
+
+./node_modules/jose/dist/webapi/lib/deflate.js
+A Node.js API is used (DecompressionStream at line: 34) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/jose/dist/webapi/lib/deflate.js
+./node_modules/jose/dist/webapi/lib/jwe_decrypt.js
+./node_modules/jose/dist/webapi/jwt/decrypt.js
+./node_modules/jose/dist/webapi/index.js
+./src/lib/auth.ts
+

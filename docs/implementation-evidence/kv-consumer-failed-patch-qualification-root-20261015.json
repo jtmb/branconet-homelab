@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "scope": "Actual isolated HTTP failed consumer patch, synthetic verified-TLS native API and controlled CLI; no production effects",
+  "source": "ab7c6867f20af434aed704d1644e8b08267eda0a",
+  "actor": {
+    "initial": "a9b616",
+    "final": "678e3c",
+    "actualExit": 0,
+    "checks": 1
+  },
+  "statuses": [
+    201,
+    201,
+    201,
+    201,
+    201,
+    200,
+    200,
+    503,
+    200
+  ],
+  "actualPatchCalls": 1,
+  "actualConsumerReads": 3,
+  "recoveryState": "reload-pending",
+  "exactUIDRVTests": true,
+  "revisionAdvancedExactlyOnce": true,
+  "nativeAndWorkloadUnchanged": true,
+  "fixed503Matched": true,
+  "noAutomaticPatchRetry": true,
+  "outputMarkersRedacted": true,
+  "independent": {
+    "exact": {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-a05-kv-consumer-success-postcheck-20261015-v2\\kv-review-result.json",
+      "bytes": 2571,
+      "sha256": "bacce2bad67d57bd2ca5b01383e4ba11c8764dc401fec4979a84bb598451250d"
+    },
+    "fresh": {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-a05-kv-consumer-success-postcheck-20261015-v2\\fresh-result.json",
+      "bytes": 3118,
+      "sha256": "a37196add81f5525c349920c899507b405f61931f7f70166d1225b835a546908"
+    },
+    "finalOwn": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-kv-success-touch-failure-own-20261015-v1.json",
+      "bytes": 753,
+      "sha256": "7fded8aefaf30ee3f2b1737482cd7fe6d73cce380d6058bea16e7030b108cbf8"
+    },
+    "hostBirthsFresh": 19,
+    "combinedPins": 315,
+    "combinedBirths": 70
+  },
+  "firstAttemptLiteral1Preserved": true,
+  "originalWholeAttemptFalseFlagsPreserved": true,
+  "deliveredImageAccepted": false,
+  "liveAccepted": false,
+  "performanceAccepted": false,
+  "productionAdopted": false,
+  "actualATQualified": false
+}

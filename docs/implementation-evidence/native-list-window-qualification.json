@@ -1,0 +1,95 @@
+{
+  "base_commit": "6651685bf17ae1cf1b98e3a51cc75d81dfba30e3",
+  "worker_only_source_commit": "0940f86887ad7282940a7179ea8e4ebbfdccfdcd",
+  "worker_only_measurement_commit": "21a2edc",
+  "source_label": "Isolated native-list200 working tree before source commit; canonical source bytes hashed below",
+  "runtime": {
+    "node": "v22.23.3",
+    "platform": "win32"
+  },
+  "checks": {
+    "original_plus_new_units": {
+      "passed": true,
+      "tests": 140,
+      "failed": 0,
+      "skipped": 0,
+      "new_concurrency_regressions": 7,
+      "new_window_regressions": 6,
+      "elapsed_ms": 25533.8798
+    },
+    "final_independent_inventory_oracles": {
+      "passed": true,
+      "window_tests": 6,
+      "elapsed_ms": 6406.5429,
+      "note": "Expected names/scope/RV/type/immutable/key sets derive from fixture parameters, not production projection; final focused rerun after strengthening test assertions."
+    },
+    "lint": {
+      "passed": true,
+      "warnings": 0
+    },
+    "typecheck_before_build": {
+      "passed": true
+    },
+    "fresh_production_build": {
+      "passed": true
+    },
+    "typecheck_after_build_and_final_tests": {
+      "passed": true
+    },
+    "production_http_fixtures": {
+      "passed": true,
+      "fixtures": 3,
+      "elapsed_ms": {
+        "provisioning": 34062.1732,
+        "existing": 42632.986,
+        "native": 44099.465,
+        "overall": 44629.9794
+      }
+    }
+  },
+  "initial_attempts": [
+    {
+      "check": "typecheck",
+      "passed": false,
+      "diagnostic": "New test expected array needed an explicit type; corrected and subsequent pre/post-build typechecks passed."
+    }
+  ],
+  "transport": {
+    "production_initial_page_items": 200,
+    "compatibility_initial_page_items": 20,
+    "size_only_get_reduction_limits": [
+      10,
+      5,
+      2,
+      1
+    ],
+    "maximum_reductions_per_namespace": 4,
+    "namespace_workers": 4,
+    "global_active_requests": 4,
+    "global_queued_requests": 64,
+    "per_response_bytes": 4194304,
+    "aggregate_delivered_bytes": 33554432,
+    "aggregate_accepted_items": 10000,
+    "aggregate_deadline_ms": 15000,
+    "request_including_auth_queue_deadline_ms": 8000,
+    "write_bytes": 921600,
+    "mutation_retries": false,
+    "metadata_only_fallback": false
+  },
+  "source_sha256_canonical_lf": {
+    "k8s-rewrite/front-end/src/lib/cluster-secrets.ts": "94819f4e0fc618482b56d7648f50bc6df5323f58f7130b5caf1d82e37e93a0fc",
+    "k8s-rewrite/front-end/src/lib/secret-client.ts": "4900afbb14f35fca81d43a63180d5e3cb9dcd29b3df859b2193a5b29cb912038",
+    "k8s-rewrite/front-end/tests/native-list-concurrency.test.ts": "9e1f85f8ba48006a8d200a1aa78229a3ea5e934c4c0ea9fd8581252908211d0a",
+    "k8s-rewrite/front-end/tests/native-list-window.test.ts": "0fce771948b19d5e44c8113e5494c6571844fbaf066340231fc3e9158194dfcf"
+  },
+  "frozen_benchmark_driver_sha256": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b",
+  "original_tests_modified": [],
+  "production_changes": false,
+  "image_builds_pulls_preloads": false,
+  "native_values_or_value_digests_recorded": false,
+  "limitations": [
+    "Windows functional qualification; exact committed Linux builds and whole-server measurements follow in separate evidence.",
+    "Larger speculative page can increase producer serialization/attempted-body bytes; received-byte ceilings and retry counts do not increase.",
+    "No final combined source/image/recovery/live qualification; app owner integrates independently."
+  ]
+}

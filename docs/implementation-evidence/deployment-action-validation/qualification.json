@@ -1,0 +1,407 @@
+{
+  "baseCommit": "2949d12b0113b9b20dad8d7216af6ad75b88204b",
+  "scope": "Local actual-transpiled-route with real NextRequest/NextResponse; authorization/CLI/cache adapters controlled. Not production HTTP/real CLI.",
+  "negative": {
+    "status": 200,
+    "kubectlCalls": 1,
+    "argv": [
+      [
+        "rollout",
+        "restart",
+        "deployment",
+        "demo",
+        "-n",
+        "apps"
+      ]
+    ],
+    "invalidations": 1
+  },
+  "negativeTerminal": {
+    "actualExit": 1,
+    "reaped": true,
+    "endedUTC": "2026-10-11T16:56:06.561728+00:00",
+    "unchangedRoute": true
+  },
+  "firstFocused": {
+    "actualExit": 1,
+    "passed": 11,
+    "failed": 1,
+    "cause": "Throwing params property getter runs during function-signature destructuring; corrected test observes params Promise resolution, no production correction for this oracle."
+  },
+  "finalFocused": {
+    "actualExit": 0,
+    "passed": 6,
+    "failed": 0
+  },
+  "finalTerminal": {
+    "stages": [
+      {
+        "stage": "focused",
+        "exit": 0,
+        "pid": 46600,
+        "reaped": true,
+        "elapsedSeconds": 1.4539999999979045
+      },
+      {
+        "stage": "lint",
+        "exit": 0,
+        "pid": 44480,
+        "reaped": true,
+        "elapsedSeconds": 4.342999999993481
+      },
+      {
+        "stage": "types",
+        "exit": 0,
+        "pid": 45308,
+        "reaped": true,
+        "elapsedSeconds": 18.110000000015134
+      }
+    ],
+    "sourceUnchanged": true,
+    "actualExit": 0
+  },
+  "sourceBindings": [
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "workingSHA256": "0fd1e43d8f889340854a82852bd80980f45d3574d4b5cdf0f075c895b20bd1a0",
+      "bytes": 1956
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/deployment-action.test.ts",
+      "workingSHA256": "092286657848a3a48145b13153d022f03cc33908d8105ff30d800dcac6160377",
+      "bytes": 5769
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/kubectl-client.ts",
+      "workingSHA256": "40169d500560e0b81b23a8d58970a2c73ef03761c5a38acce35f0f6425bfd417",
+      "bytes": 7151
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/cluster-http.ts",
+      "workingSHA256": "c3117f1375af8a09178f6dbac6397f68385894563d5434ffd47abe3fb5e14d2e",
+      "bytes": 596
+    },
+    {
+      "path": "k8s-rewrite/front-end/package-lock.json",
+      "workingSHA256": "32b54a6453b70a6438e5a1ed2f0e7a49cc1c971418bdd6eebb29cef4e9c0654c",
+      "bytes": 306633
+    },
+    {
+      "path": "k8s-rewrite/front-end/node_modules/next/dist/server/web/spec-extension/request.js",
+      "workingSHA256": "2490a352d271fb39e1fccce06ee6887999dffa7909ccfd5ca0cc8bab8008065b",
+      "bytes": 3168
+    },
+    {
+      "path": "k8s-rewrite/front-end/node_modules/next/dist/server/web/spec-extension/response.js",
+      "workingSHA256": "68a5a07540d57a4beb3275fddd0502fd5ef9a42986b414c0bcee99a3f9033366",
+      "bytes": 4977
+    },
+    {
+      "path": "k8s-rewrite/front-end/node_modules/typescript/lib/typescript.js",
+      "workingSHA256": "3ae902c92cc44dace175c0e69e13a4b0899f6983c6121d76b9ab8dd5795e7675",
+      "bytes": 9112572
+    }
+  ],
+  "originals": [
+    {
+      "copy": "negative/handle.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-negative-20261011-165605\\handle.json",
+      "sha256": "923bc3c15f80f7cbc9ebdeb23d575af43d389c894a2126bcf3cea45d00826cf3",
+      "bytes": 200
+    },
+    {
+      "copy": "negative/original-route.ts",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-negative-20261011-165605\\original-route.ts",
+      "sha256": "fe84a976d6296be2d65cb2520d6b819c58522e323b51dc0e9b57b8ebc8d806ca",
+      "bytes": 1873
+    },
+    {
+      "copy": "negative/probe.cjs",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-negative-20261011-165605\\probe.cjs",
+      "sha256": "ae4d7ed9726f5012f17a08351c0c9e3fa62f6b1f36c6135e1b9e1668ba2a1f0f",
+      "bytes": 2026
+    },
+    {
+      "copy": "negative/stderr.log",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-negative-20261011-165605\\stderr.log",
+      "sha256": "129a059e65879aef37c66a6a6986533599ec89e9cb8a19e5516305b876286d33",
+      "bytes": 30
+    },
+    {
+      "copy": "negative/stdout.log",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-negative-20261011-165605\\stdout.log",
+      "sha256": "0c0a8f22dbbd7fe4509abbad57f5f02828faa928a6db123405d1c20b42cd27aa",
+      "bytes": 113
+    },
+    {
+      "copy": "negative/terminal.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-negative-20261011-165605\\terminal.json",
+      "sha256": "911a8c86e32707b9b804412a2e947733980bdd93a968eb5fbfae49f4d7583fb3",
+      "bytes": 105
+    },
+    {
+      "copy": "focused-v1/focused.handle.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-20261011-165804\\focused.handle.json",
+      "sha256": "c2f3b6519b5f88e5c62ef6427f91eec7fe654f41fa21a1a1e548ee87204827d7",
+      "bytes": 468
+    },
+    {
+      "copy": "focused-v1/focused.stderr.log",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-20261011-165804\\focused.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "copy": "focused-v1/focused.stdout.log",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-20261011-165804\\focused.stdout.log",
+      "sha256": "e8b48f99d2c26c97256c22f78cc0b6315b7d0536a31c26027f043560c4630eed",
+      "bytes": 3710
+    },
+    {
+      "copy": "focused-v1/focused.terminal.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-20261011-165804\\focused.terminal.json",
+      "sha256": "7aee1d1a0784d42ccb6c04169f8c834eecf17781048e869cbbd6c6bc10c542b5",
+      "bytes": 99
+    },
+    {
+      "copy": "focused-v1/source/src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-20261011-165804\\source\\src\\app\\api\\cluster\\deployments\\[namespace]\\[name]\\action\\route.ts",
+      "sha256": "0fd1e43d8f889340854a82852bd80980f45d3574d4b5cdf0f075c895b20bd1a0",
+      "bytes": 1956
+    },
+    {
+      "copy": "focused-v1/source/tests/deployment-action.test.ts",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-20261011-165804\\source\\tests\\deployment-action.test.ts",
+      "sha256": "a17f3500ad3ef09d06d7f7fb45b979f4d8bff97f026b77df463de07c2bdb0b88",
+      "bytes": 5665
+    },
+    {
+      "copy": "focused-v1/source/tests/kubectl.test.ts",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-20261011-165804\\source\\tests\\kubectl.test.ts",
+      "sha256": "1799c414f04db47b1db9102ed723792143b1d089c0a5787f2b5e03ae50f038b3",
+      "bytes": 5852
+    },
+    {
+      "copy": "focused-v1/terminal.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-20261011-165804\\terminal.json",
+      "sha256": "c0ae166cb60f5691a8f1f61fd3b853f986bc5b2e6be246fa3f7dc5a3884d9684",
+      "bytes": 155
+    },
+    {
+      "copy": "focused-v2/focused.handle.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\focused.handle.json",
+      "sha256": "40280aea8a589881f4a52375e826186395a1f3a6f5c63924eef918ab4262a79e",
+      "bytes": 375
+    },
+    {
+      "copy": "focused-v2/focused.stderr.log",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\focused.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "copy": "focused-v2/focused.stdout.log",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\focused.stdout.log",
+      "sha256": "563890d9576f0ec253e051c01183dbdebda996635fac2c015f75239711c02325",
+      "bytes": 1479
+    },
+    {
+      "copy": "focused-v2/focused.terminal.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\focused.terminal.json",
+      "sha256": "00610cb4615d501a4efd431e5a38ecbd8c9677b600541420366b962f7ee77578",
+      "bytes": 99
+    },
+    {
+      "copy": "focused-v2/lint.handle.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\lint.handle.json",
+      "sha256": "b93adb184e31905368d234f428efa0a182080fa2803f9c9424f142b77befa52f",
+      "bytes": 375
+    },
+    {
+      "copy": "focused-v2/lint.stderr.log",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\lint.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "copy": "focused-v2/lint.stdout.log",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\lint.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "copy": "focused-v2/lint.terminal.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\lint.terminal.json",
+      "sha256": "05bed2464b2ae04417990c9ea0928c8afeb5b7f45e536c4918c624d07260ff57",
+      "bytes": 95
+    },
+    {
+      "copy": "focused-v2/source/src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\source\\src\\app\\api\\cluster\\deployments\\[namespace]\\[name]\\action\\route.ts",
+      "sha256": "0fd1e43d8f889340854a82852bd80980f45d3574d4b5cdf0f075c895b20bd1a0",
+      "bytes": 1956
+    },
+    {
+      "copy": "focused-v2/source/tests/deployment-action.test.ts",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\source\\tests\\deployment-action.test.ts",
+      "sha256": "092286657848a3a48145b13153d022f03cc33908d8105ff30d800dcac6160377",
+      "bytes": 5769
+    },
+    {
+      "copy": "focused-v2/terminal.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\terminal.json",
+      "sha256": "12e5aeac09188dbd4e4efe2b8d621c000b2cd4979ce9e6465f43c5db7a14a7f7",
+      "bytes": 351
+    },
+    {
+      "copy": "focused-v2/types.handle.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\types.handle.json",
+      "sha256": "d2bdfa268186c10a5b05fe990be140b51128c983dc786cb94da4c0384d823ff9",
+      "bytes": 375
+    },
+    {
+      "copy": "focused-v2/types.stderr.log",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\types.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "copy": "focused-v2/types.stdout.log",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\types.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "copy": "focused-v2/types.terminal.json",
+      "original": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\deployment-action-focused-v2-20261011-165904\\types.terminal.json",
+      "sha256": "a7969bf9547429469155fc3fc2a0f37c77a1ac493c5971346b969762e233bf82",
+      "bytes": 97
+    }
+  ],
+  "docReview": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "sha256": "00a52c258f628c649b6be8ceb27b22433eee83000ed5952880ad0ba01a570cc4",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "sha256": "5afd011e39013ad007df953089b48d562dc95ec4a371c59794d39da9bd189cf9",
+      "decision": "Updated exact action input/refusal/local-proof contract"
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "sha256": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "sha256": "70f72f8cff246e9600c92fcf127684f9bc7c94b285017c5e12cfb55603fa4572",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "sha256": "59795b1d60fd71636fe32811e8ed3843db6dada3623d6db93fa1b8a476548dfc",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "sha256": "f4f82694e753ccf713d619b550b0d24ddcc21d633876d074e37494416f3925d4",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "sha256": "1313d3f78c6db2efe35cf5a87d62c49c7500ea4864f39a01ba41de9d827615fe",
+      "decision": "Updated exact action input/refusal/local-proof contract"
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "sha256": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "sha256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "sha256": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "sha256": "235f9e187850e9f0c2b21a1cdc69c4331a889f243eb93038108eefe75ee006c0",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "sha256": "a2a6d5bf0312084ad5428181302259bf5eb2dc5818607e27d52ea5110ae0e7e7",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "sha256": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "sha256": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "sha256": "cb35a994799df82886f9577555e1f53c8057d512d831e54acb3144927fe7a58a",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "sha256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "sha256": "e6da3855f8ad0f4635c2b92968676c86a7d00199951126d123c3fc29445da7cf",
+      "decision": "Added local evidence index"
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "sha256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "sha256": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "sha256": "5de3d74a922081bd07eab1b672b6ed6be45c3c1743f8928979cb3168f6cc3ad9",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "sha256": "1095d1f0cc70fedab2e6ad6cb2199f78c730bbd510f2d328c94c2c0731c9cbea",
+      "decision": "No contract change: historical audit/performance, native/KV/Flux/provisioning/runtime/chart/deployment/connection domains unaffected"
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "sha256": "969c34fedd595b27def82edb026afa3b490676adfa2f2996ea7690d422c4c74e",
+      "decision": "Updated exact action input/refusal/local-proof contract"
+    }
+  ],
+  "nextGuidance": "https://nextjs.org/docs/15/app/api-reference/file-conventions/route",
+  "nextBundledDocsAbsent": true,
+  "originalAuditUnchanged": true,
+  "limitsUnchanged": {
+    "timeoutMs": 15000,
+    "genericCLIBytes": 2097152,
+    "globalConcurrent": 4,
+    "globalQueue": 64
+  },
+  "remaining": [
+    "Fresh affected production build/HTTP not run for this narrow source.",
+    "Matching pinned kubectl/disposable-cluster A04 and universal action/UI A05 matrix remain open.",
+    "A07/A21 unchanged failed/open; no performance comparison."
+  ]
+}

@@ -1,0 +1,318 @@
+{
+  "schemaVersion": 1,
+  "status": "Original A19 CI clause qualified for reviewed source; deployment and other audit clauses remain separate",
+  "sourceCommit": "ce259b00602ee622f0e1030be6da429fc5f44344",
+  "frontendTree": "0f2bd8ffb8dd1e1900f9608226c347efc19d9246",
+  "workflowBlob": "f8b7ec07d69dcd1806ca44f6c566685108639cb3",
+  "validationCommit": "ed074a2460ac0ed91a250750b05ad728e0d3c286",
+  "validationTree": "b3c2860d180463bcaac2c0a3850a1809296b3c17",
+  "runID": 38789392711,
+  "url": "https://github.com/jtmb/branconet-homelab/actions/runs/38789392711",
+  "hostedConclusion": "success",
+  "strictParserTool": "a9a6b6",
+  "strictParserExit": 0,
+  "rawLogBytes": 511581,
+  "rawLogSHA256": "1a04bed7647901773626ef049721522d33af570014c53fb745a68276db1e9faa",
+  "defaultLogAndResultScan": {
+    "tool": "a53496",
+    "actualExit": 0,
+    "findings": 0,
+    "currentBytesUnchanged": true,
+    "sameScannerBirthNoLive": true
+  },
+  "originalA19CIClauseQualified": true,
+  "cleanCheckout": true,
+  "operatorEnvironmentDatabaseAndKubeconfigUsed": false,
+  "promptsRequired": false,
+  "lockedInstallAndBuild": true,
+  "lintAndSemanticTypesPassed": true,
+  "originalUnits": 342,
+  "originalHTTPIntegrations": 8,
+  "deliberateRegressionControls": 8,
+  "allPristinePassAndIntendedMutantFailures": true,
+  "mutantFailuresAreRequiredAssertionsNotArbitraryNonzero": true,
+  "allOriginalAndRestorationChecksPassed": true,
+  "sensitivityCases": [
+    "A04-name-admission",
+    "A05-failed-stdout",
+    "A06-outage-empty",
+    "deployment-action-coercion",
+    "private-kv-cache-admission",
+    "A02-deleted-account",
+    "A03-bootstrap-writer",
+    "A01-SQL-writer-lock"
+  ],
+  "processControl": {
+    "schema": 1,
+    "completed": true,
+    "id": "A01-SQL-writer-lock",
+    "records": [
+      {
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "2e2354f00ca8af7e31a7af7fe8b5f6838cec6f7550afa288e1bb9cb5b29a0890",
+        "stderrSHA256": "ec12314dbf490c6b5a509ab6da183c3d0aba9bb2803ef02998b61712e9ef4afe",
+        "stdoutBytes": 735,
+        "stderrBytes": 166,
+        "lockProof": {
+          "schema": 1,
+          "acquired": false,
+          "busyCode": 5,
+          "firstCount": 2,
+          "secondCount": null,
+          "countCalls": [
+            1,
+            0
+          ],
+          "outcomes": [
+            {
+              "success": true,
+              "status": null
+            },
+            {
+              "success": false,
+              "status": 403
+            }
+          ],
+          "writers": 1,
+          "administrators": 1,
+          "distinctParticipantProcesses": true,
+          "participantExits": [
+            0,
+            0
+          ]
+        },
+        "cleanupProof": {
+          "failures": [],
+          "twoParticipants": true,
+          "bothReportedExit": true
+        }
+      },
+      {
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "57483302c02d84b1fe960d9ddddd3ae03aec40b7c23cd9bec95f992819b85e01",
+        "stderrSHA256": "c2d5ecdf8acb9d51abb1775716da636c6e045b5901756c7838601f43f6440a78",
+        "stdoutBytes": 1389,
+        "stderrBytes": 167,
+        "lockProof": {
+          "schema": 1,
+          "acquired": true,
+          "busyCode": null,
+          "firstCount": 2,
+          "secondCount": 2,
+          "countCalls": [
+            1,
+            1
+          ],
+          "outcomes": [
+            {
+              "success": true,
+              "status": null
+            },
+            {
+              "success": true,
+              "status": null
+            }
+          ],
+          "writers": 0,
+          "administrators": 0,
+          "distinctParticipantProcesses": true,
+          "participantExits": [
+            0,
+            0
+          ]
+        },
+        "cleanupProof": {
+          "failures": [],
+          "twoParticipants": true,
+          "bothReportedExit": true
+        }
+      }
+    ],
+    "restorationFailures": [],
+    "elapsedMs": 2283,
+    "originalSelectedInputsUnchanged": true,
+    "existingSixRacesAndSevenSensitivityControlsUnchanged": true,
+    "wholeA19Accepted": false,
+    "crossProcessSensitivityScope": "One deterministic cross-demotion SQL-lock control only"
+  },
+  "tap": {
+    "tests": [
+      342,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      5,
+      5,
+      11,
+      11,
+      1,
+      1,
+      8
+    ],
+    "pass": [
+      342,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      5,
+      3,
+      11,
+      4,
+      1,
+      0,
+      8
+    ],
+    "fail": [
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      2,
+      0,
+      7,
+      0,
+      1,
+      0
+    ],
+    "cancelled": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "skipped": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "todo": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "safeBrowserRecords": [
+    {
+      "browserSmoke": "passed",
+      "realPodGETStatus": 200,
+      "wireRows": 208,
+      "initialPageRows": 100,
+      "filteredRows": 3,
+      "nonAgeColumnsVerified": 8,
+      "exactLinks": 3,
+      "noMutationsAttempted": true,
+      "ATQualified": false,
+      "performanceQualified": false
+    },
+    {
+      "fixtureExecutionDiagnostic": {
+        "tmpMountRecords": 1,
+        "tmpNoexec": false,
+        "fakeFileRegular": true,
+        "fakeFileExecutable": true,
+        "spawnObserved": true,
+        "actualExit": 0,
+        "spawnErrorClass": 0,
+        "errno": null,
+        "signalNumber": 0,
+        "stdoutBytes": 85803,
+        "stderrBytes": 0,
+        "diagnosticFailed": false
+      }
+    },
+    {
+      "browserFixtureClosed": true,
+      "orderlyStopRequested": true,
+      "fixtureStdoutBytes": 165,
+      "fixtureStderrBytes": 0
+    },
+    {
+      "browserCICleanupFailed": false,
+      "confirmedCIDCount": 2,
+      "exactNameQueryCount": 3,
+      "exactNamesAbsent": true,
+      "uncertainCreate": false
+    }
+  ],
+  "publishedRedactedResults": "GitHub hosted step logs; complete retained raw log and strict result pass default unsuppressed scan",
+  "original44ValidationClausesUnchanged": true,
+  "earlierFailureAndProducerFalseFieldsUnmodified": true,
+  "wholeDeliveredAcceptance": false,
+  "performanceAccepted": false,
+  "actualHumanATQualified": false,
+  "productionDeployed": false,
+  "mainMerged": false,
+  "originalDataAndBackupsPreserved": true
+}

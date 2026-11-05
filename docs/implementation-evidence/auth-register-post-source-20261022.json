@@ -1,0 +1,109 @@
+{
+  "schema": "bortus.auth-register-post.source-qualification.v1",
+  "source": "src/app/api/auth/register/route.ts",
+  "rawWindowsSourceSHA256": "78249c3be01fdce79b7ed65dac24107f19e10ef8b4967b3a32c6a7e82bcd47d0",
+  "canonicalLFSourceSHA256": "f0a7cf3f7d7fa5e6d42c60dcb65fd99ea95e7eb4d4c236d3ee8a4894d9c85d68",
+  "test": "tests/auth-register-post-source.test.ts",
+  "executedPublishedTestSHA256": "c9d6fc744d812617bfe1aa47bec83f1e0abfd9fbbb37d902a273571639ee2d7d",
+  "sourceOrderRecordedBeforeControls": true,
+  "sourceControls": {
+    "pass": 78,
+    "fail": 0,
+    "skip": 0,
+    "cancel": 0,
+    "todo": 0,
+    "executedOnce": true
+  },
+  "scope": "Exact exported POST with inert immediate bindings and synthetic PUBLIC registration/response metadata; imports/schema initialization/callee implementations excluded. No actual credentials/auth/JWT/cookies/password hashing/accounts/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/production. No original A03 transaction requalification.",
+  "behavior": [
+    "await signing support; await registration gate before body; locked403",
+    "await body; synchronous schema parse; invalid400 nullish fallback",
+    "hash(password,12)/await; accounts.register/await; sign payload/await",
+    "created201; cookie options/receiver; strict production equality; ignored setter result",
+    "try faults/await rejections delegate exact error identity to accountFailure",
+    "returned response/accountFailure assimilation and accountFailure throws propagate without retry"
+  ],
+  "types": {
+    "roots": 2,
+    "diagnostics": 0,
+    "freshDeclarationContents": 7588,
+    "snapshotParts": 76,
+    "compilerInputs": 191,
+    "snapshotReads": 191,
+    "fallbackReads": 0,
+    "directLinuxAndUNCExact": true
+  },
+  "lint": {
+    "files": 2,
+    "errors": 0,
+    "warnings": 0,
+    "reactAutodetectionSetupNoticeRetained": true
+  },
+  "dependencyStability": {
+    "files": 37428,
+    "inTreeNonDanglingSymlinkFiles": 37,
+    "directLinuxBeforeAfterExact": true
+  },
+  "runtime": "Windows Node24.18.0",
+  "results": [
+    {
+      "mode": "source",
+      "exitCode": 0,
+      "wallSeconds": 1.2339999999385327,
+      "userCPUSeconds": 0.40625,
+      "peakJobMemoryBytes": 79769600,
+      "mainHandleSignalled": true,
+      "activeBeforeDrain": 1,
+      "activeAfterDrain": 0,
+      "totalProcesses": 2
+    },
+    {
+      "mode": "types",
+      "exitCode": 0,
+      "wallSeconds": 5.593999999924563,
+      "userCPUSeconds": 2.390625,
+      "peakJobMemoryBytes": 355938304,
+      "mainHandleSignalled": true,
+      "activeBeforeDrain": 1,
+      "activeAfterDrain": 0,
+      "totalProcesses": 2
+    },
+    {
+      "mode": "lint",
+      "exitCode": 0,
+      "wallSeconds": 40.95299999997951,
+      "userCPUSeconds": 3.390625,
+      "peakJobMemoryBytes": 278970368,
+      "mainHandleSignalled": true,
+      "activeBeforeDrain": 1,
+      "activeAfterDrain": 0,
+      "totalProcesses": 2
+    }
+  ],
+  "totalProcessesCause": "UNESTABLISHED",
+  "resourceLimits": {
+    "wallSeconds": 60,
+    "userCPUSeconds": 30,
+    "jobCommitBytes": 1073741824,
+    "CPUCount": 2,
+    "activeProcesses": 1,
+    "killOnClose": true
+  },
+  "preparationHistory": {
+    "firstPreparerExitCode": 1,
+    "reason": "compressed declaration snapshot exceeded unchanged 2000000-byte file ceiling before any control/type/lint execution",
+    "distinctV2": "Fresh snapshot split into76 bounded files; all declaration contents retained; original failed preparer/dependency capture preserved",
+    "noWorkloadReplay": true
+  },
+  "productionCorrection": false,
+  "qualification": "Windows source declaration only; no Linux checkout/whole-module/project/runtime/security/performance/actualAT/recovery/production acceptance",
+  "allHelpersWorkloadsFrozenNeverReplay": true,
+  "all44Clauses21GatesFailuresRejectedActionsPreserved": true,
+  "ActionsPROHIBITED": true,
+  "historicalCIOnly": true,
+  "overallCIQualified": false,
+  "rootLocalNoPush": true,
+  "findings4Plus32Plus1Unresolved": true,
+  "fullGoalActiveNoBudget": true,
+  "FINALPRDDeploymentAndVerificationAfterAllOriginalPrecedingGates": true
+}

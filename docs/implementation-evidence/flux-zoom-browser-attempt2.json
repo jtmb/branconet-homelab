@@ -1,0 +1,72 @@
+{
+  "startedAt": "2026-10-11T03:15:15.815Z",
+  "scope": "Actual disposable local Flux routes, real chrome.tabs zoom, owned existing bundled Chromium/profile; no viewport/DPR/CSS zoom emulation",
+  "checks": [
+    {
+      "name": "Real tabs.setZoom/getZoom factor2 with unchanged window geometry and reduced CSS viewport; hierarchy reflow fits",
+      "actual": {
+        "before": {
+          "factor": 1,
+          "window": {
+            "left": 10,
+            "top": 10,
+            "width": 1000,
+            "height": 900,
+            "state": "normal"
+          }
+        },
+        "after": {
+          "factor": 2,
+          "window": {
+            "left": 10,
+            "top": 10,
+            "width": 1000,
+            "height": 900,
+            "state": "normal"
+          }
+        }
+      },
+      "before": {
+        "cssWidth": 984,
+        "cssHeight": 749,
+        "clientWidth": 974,
+        "scrollWidth": 974,
+        "devicePixelRatio": 1,
+        "outerWidth": 1000,
+        "outerHeight": 900
+      },
+      "after": {
+        "cssWidth": 492,
+        "cssHeight": 374,
+        "clientWidth": 487,
+        "scrollWidth": 487,
+        "devicePixelRatio": 2,
+        "outerWidth": 1000,
+        "outerHeight": 900
+      }
+    }
+  ],
+  "failures": [
+    "locator.focus: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('link', { name: 'sort-repo-0', exact: true })\u001b[22m\n"
+  ],
+  "terminal": true,
+  "ownedProcesses": {
+    "fixturePid": 41296,
+    "chromePid": 23888
+  },
+  "extension": {
+    "hostScope": "http://127.0.0.1/*",
+    "noContentScriptsOrStorage": true,
+    "manifestSha256": "e0ae37941aa2f778a9aede9c082ec574125050bb6e08957da016cea46da8f379",
+    "workerSha256": "8ca8bfcaf198d2f584668993247e0fd20450bebdedc81e555bd1f48b722abb49",
+    "workerUrl": "chrome-extension://ejjdkjglcjoccohacfldkdialjbhgphd/background.js"
+  },
+  "browserVersion": "149.0.7827.55",
+  "cleanup": {
+    "chromeExitCode": 0,
+    "chromeSignal": null,
+    "fixtureExitCode": 0,
+    "fixtureSignal": null
+  },
+  "completedAt": "2026-10-11T03:15:52.357Z"
+}

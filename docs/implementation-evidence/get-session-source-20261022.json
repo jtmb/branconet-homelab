@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "feature": "getSession selected declaration source qualification",
+  "sourceControls": {
+    "tests": 74,
+    "pass": 74,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "uniqueNames": 74,
+    "executedOnce": true
+  },
+  "source": {
+    "module": "src/lib/auth.ts",
+    "canonicalLFSHA256": "932034e70f9d0447eb23c38ce91cb799413d289eb0a3bd25f3808c25865f2aff",
+    "declarationSHA256": "6cd70c711513cd394769ee0aa9b5fec47bdb3ead195c091dec8fc466d27ce8f9",
+    "test": "tests/get-session-source.test.ts",
+    "testLFSHA256": "4d2cb1295ccee7691ffd796cb2fae60c212907165a77e34e701c383573f2fb13",
+    "productionChange": false
+  },
+  "commands": {
+    "source": "node --experimental-vm-modules --experimental-strip-types --test --test-isolation=none --test-reporter=tap tests/get-session-source.test.ts",
+    "types": "node focused-get-session-types-first.cjs",
+    "lint": "node focused-get-session-lint-first.cjs"
+  },
+  "qualification": {
+    "onlyExactDeclarationLifted": true,
+    "inertCookieStoreVerifierAccountMetadata": true,
+    "dynamicImportInterceptedWithSyntheticNamespace": true,
+    "syntheticInitializerOnlyExportsInjectedBinding": true,
+    "noActualNextImportOrOriginalModuleInitializer": true,
+    "caughtFaultsReturnNull": true,
+    "freshAndConcurrentDecisions": true,
+    "forbiddenCallsCheckedOutsideDeclarationCatch": true
+  },
+  "types": {
+    "roots": 2,
+    "diagnostics": 0,
+    "freshDeclarationContents": 7588,
+    "parts": 76,
+    "compilerInputs": 460,
+    "snapshotReads": 460,
+    "fallbackReads": 0,
+    "directLinuxAndUNCEqual": true
+  },
+  "lint": {
+    "files": 2,
+    "errors": 0,
+    "warnings": 0,
+    "reactDetectionAndPagesPathNoticesRetained": true
+  },
+  "dependencies": {
+    "records": 37428,
+    "inTreeNondanglingFileSymlinks": 37,
+    "beforeAfterExact": true
+  },
+  "runtime": "Windows Node24.18.0",
+  "limits": {
+    "wallSeconds": 60,
+    "userCPUSeconds": 30,
+    "jobCommitBytes": 1073741824,
+    "CPUCount": 2,
+    "activeProcesses": 1,
+    "killOnClose": true
+  },
+  "observations": [
+    {
+      "mode": "source",
+      "wallSeconds": 1.0310000000754371,
+      "userCPUSeconds": 0.453125,
+      "peakJobMemoryBytes": 94502912,
+      "mainHandleSignalled": true,
+      "activeBeforeDrain": 0,
+      "activeAfterDrain": 0,
+      "totalProcesses": 2
+    },
+    {
+      "mode": "types",
+      "wallSeconds": 5.375,
+      "userCPUSeconds": 2.703125,
+      "peakJobMemoryBytes": 379944960,
+      "mainHandleSignalled": true,
+      "activeBeforeDrain": 0,
+      "activeAfterDrain": 0,
+      "totalProcesses": 2
+    },
+    {
+      "mode": "lint",
+      "wallSeconds": 35.75,
+      "userCPUSeconds": 3.359375,
+      "peakJobMemoryBytes": 280842240,
+      "mainHandleSignalled": true,
+      "activeBeforeDrain": 1,
+      "activeAfterDrain": 0,
+      "totalProcesses": 2
+    }
+  ],
+  "totalProcessesCause": "UNESTABLISHED",
+  "experimentalVMNoticeRetained": true,
+  "allHelpersWorkloadsFrozenNoReplay": true,
+  "qualificationLimits": "No actual cookies/headers/tokens/signing material/credentials/keygen/crypto/sign/verify/accounts/auth/JWT/passwords/DB/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/production or original transactions. No whole-module/project/Linux-runtime/security/actualAT/recovery/performance acceptance. No OS network isolation or universal descendant/independent-person claim.",
+  "all44OriginalClauses21GatesFailuresRejectedActionsPreserved": true,
+  "ActionsProhibited": true,
+  "historicalCIOnly": true,
+  "overallCIQualified": false,
+  "fullGoalActiveNoBudget": true,
+  "finalPRDDeploymentAndVerificationAfterAllOriginalPrecedingGates": true
+}

@@ -1,0 +1,62 @@
+{
+  "startedUtc": "2026-10-11T13:59:42.950Z",
+  "pid": 1,
+  "node": "v22.23.3",
+  "stages": [
+    {
+      "name": "original-first",
+      "pid": 13,
+      "args": [
+        "/qa/first.cjs"
+      ],
+      "startedUtc": "2026-10-11T13:59:42.959Z",
+      "actualExit": 0,
+      "signal": null,
+      "completedUtc": "2026-10-11T13:59:45.346Z"
+    },
+    {
+      "name": "queue-accounts-process",
+      "pid": 95,
+      "args": [
+        "/qa/source/node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/account-queue.test.ts",
+        "tests/accounts.test.ts",
+        "tests/account-process.test.ts"
+      ],
+      "startedUtc": "2026-10-11T13:59:45.347Z",
+      "actualExit": 0,
+      "signal": null,
+      "completedUtc": "2026-10-11T13:59:50.624Z"
+    },
+    {
+      "name": "ten-permutations",
+      "pid": 437,
+      "args": [
+        "/qa/ten.cjs"
+      ],
+      "startedUtc": "2026-10-11T13:59:50.625Z",
+      "actualExit": 0,
+      "signal": null,
+      "completedUtc": "2026-10-11T13:59:51.855Z"
+    },
+    {
+      "name": "types",
+      "pid": 483,
+      "args": [
+        "/qa/source/node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "startedUtc": "2026-10-11T13:59:51.856Z",
+      "actualExit": null,
+      "signal": "SIGABRT",
+      "completedUtc": "2026-10-11T14:00:09.255Z"
+    }
+  ],
+  "performanceAcceptance": false,
+  "terminal": true,
+  "actualExit": 1,
+  "completedUtc": "2026-10-11T14:00:09.255Z"
+}

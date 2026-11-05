@@ -1,0 +1,254 @@
+{
+  "capturedAt": "2026-10-11T02:09:03.760477+00:00",
+  "originalBase": "b82980e783daf09e1aabe00f3a5db99fef3e13fa",
+  "archiveSnapshot": "da84f0f00aeb0daca299358e93fc7074acd2055e",
+  "source": [
+    {
+      "path": "k8s-rewrite/front-end/src/lib/query-store.ts",
+      "workingSha256": "d37618ca535c6ee8797e6671df409c6a1149fd55aba0c9e351aa4ca5c51192fe",
+      "gitBlobSha256": "d37618ca535c6ee8797e6671df409c6a1149fd55aba0c9e351aa4ca5c51192fe",
+      "bytes": 6613
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/use-query.ts",
+      "workingSha256": "4eb440e7dce6bd648a53ab1d70ddec40b31c197c645d3747482f8899b1b28ca0",
+      "gitBlobSha256": "4eb440e7dce6bd648a53ab1d70ddec40b31c197c645d3747482f8899b1b28ca0",
+      "bytes": 3947
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/(dashboard)/secrets/kv/kv-ui.tsx",
+      "workingSha256": "315daaca38073e438a5e2a03858bac8afe9569be5c46a1df87a5be501f85deeb",
+      "gitBlobSha256": "315daaca38073e438a5e2a03858bac8afe9569be5c46a1df87a5be501f85deeb",
+      "bytes": 4130
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/components/secrets/kv-workbench.tsx",
+      "workingSha256": "3316f9ce850497cca40ee13a04b129569faeba71f1da12804b911cac06bad1b8",
+      "gitBlobSha256": "54335141f568ee6182a1ec328e4cabd7a331a7b03d4444d047695cc1357e2049",
+      "bytes": 36688
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/query-freshness.test.ts",
+      "workingSha256": "b724dfabd4f086238e146549aebd222fea8963f18dfe580a7b0f3c69f18b3866",
+      "gitBlobSha256": "b724dfabd4f086238e146549aebd222fea8963f18dfe580a7b0f3c69f18b3866",
+      "bytes": 4550
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/ui-fixture.ts",
+      "workingSha256": "72721d5f7bfec8e0a24cdf5ab48af474228f9be4d99131ced8acae3012461284",
+      "gitBlobSha256": "72721d5f7bfec8e0a24cdf5ab48af474228f9be4d99131ced8acae3012461284",
+      "bytes": 21547
+    }
+  ],
+  "newApplicationBehaviorChangesDuringRecovery": false,
+  "quality": {
+    "source": "da84f0f recovered exact six source hashes",
+    "startedAt": "2026-10-11T02:06:09.3581503Z",
+    "pid": 30340,
+    "checks": [
+      {
+        "command": "npm test",
+        "exitCode": 0,
+        "completedAt": "2026-10-11T02:06:49.6022456Z"
+      },
+      {
+        "command": "npm run lint",
+        "exitCode": 0,
+        "completedAt": "2026-10-11T02:07:16.6394511Z"
+      },
+      {
+        "command": "npm run typecheck",
+        "exitCode": 0,
+        "completedAt": "2026-10-11T02:07:40.0355490Z"
+      },
+      {
+        "command": "npm run test:integration",
+        "exitCode": 0,
+        "completedAt": "2026-10-11T02:08:14.0060282Z"
+      }
+    ],
+    "terminal": true,
+    "exitCode": 0,
+    "completedAt": "2026-10-11T02:08:14.0095287Z"
+  },
+  "productionBuild": {
+    "exitCode": 0,
+    "runtime": "Node22.23.3/Next15.5.27/Windows",
+    "log": "shared-freshness-recovered-build-cli.txt"
+  },
+  "browser": {
+    "passedChecks": 6,
+    "evidence": "shared-freshness-browser.json",
+    "attemptLedger": "shared-freshness-browser-attempts.json",
+    "realWindowVisibility": "public CDP noDefaults with real minimize/restore, no synthetic visibility event",
+    "scope": "actual built route, disposable SQLite, CA-verified TLS native fixture"
+  },
+  "documentationReview": {
+    "inventory": [
+      "docs/ANSIBLE-2-API-INTERACTION.md",
+      "docs/API-USAGE.md",
+      "docs/audit-evidence/README.md",
+      "docs/BORTUS-AUDIT.md",
+      "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "docs/BORTUS-DEPLOYMENT.md",
+      "docs/BORTUS-IMPLEMENTATION.md",
+      "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "docs/BORTUS-KV-DESIGN.md",
+      "docs/BORTUS-KV-WORKBENCH.md",
+      "docs/BOTRUS-WORKFLOW.md",
+      "docs/CHARTS-SEPARATION.md",
+      "docs/CONNECTING-TO-A-CLUSTER.md",
+      "docs/FLUX-GITOPS.md",
+      "docs/implementation-evidence/README.md",
+      "docs/implementation-evidence/runtime-maintenance/README.md",
+      "docs/kubectl-cheatsheet.md",
+      "docs/SECRETS-ENGINE.md",
+      "docs/TECH-STACK.md",
+      "docs/USER-PERMS.md"
+    ],
+    "affected": [
+      "API-USAGE",
+      "IMPLEMENTATION",
+      "KV-DESIGN",
+      "KV-WORKBENCH",
+      "SECRETS-ENGINE",
+      "TECH-STACK",
+      "USER-PERMS",
+      "evidence README"
+    ],
+    "noBackendContractChange": true
+  },
+  "evidence": [
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-attempts.json",
+      "sha256": "581961a9ed1493f207f140391f492863df2cedbcb31e8ab2524ed8f9f172aa5d",
+      "bytes": 4667
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-cli.txt",
+      "sha256": "d00d7cf5f80c3e6acdf7eb5082208d623f86673c358f68b7b57d4858c25c98e7",
+      "bytes": 567
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-first-attempt-cli.txt",
+      "sha256": "08fb9c70a6728e908cf3997a7adc7855031d6fd9e682c8eac7823d01b4e01318",
+      "bytes": 308
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-first-attempt.json",
+      "sha256": "3477408267a8fcd6635ace19ca207aa227ad0803e53228edd42dc4fe4c33c3b0",
+      "bytes": 1047
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-first-attempt.mjs",
+      "sha256": "b0a1062c0c05040464285e48beb9707b5fb7201f43a49cd8f4634de85fa64254",
+      "bytes": 12017
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-interrupted-attempt-cli.txt",
+      "sha256": "9f43ea03e85c3e58b29079c29518bf7a87187ef078af0762c79f60a1bb685cdd",
+      "bytes": 84
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-interrupted-attempt.json",
+      "sha256": "196a946ce500ef17639a1d2ee5353314197bb7619d05df583486addb49cf243b",
+      "bytes": 157
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-interrupted-attempt.mjs",
+      "sha256": "1d6c801c0af58f56efb6c11c56fcc001ad4667054464ebc722e7438c43b4d6e7",
+      "bytes": 14554
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-mobile.png",
+      "sha256": "1801081c765c56e609eed7090e66c44de18c55d6285e7fd7837666a294d53e3c",
+      "bytes": 36476
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-progress.json",
+      "sha256": "0f8b450376507327eab636c7f9b050d5472870a5f1bd9131f729d7383a1a500d",
+      "bytes": 3334
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-second-attempt-cli.txt",
+      "sha256": "08fb9c70a6728e908cf3997a7adc7855031d6fd9e682c8eac7823d01b4e01318",
+      "bytes": 308
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-second-attempt.json",
+      "sha256": "71ca98b7ab07f7e2049c3a42a8ce404128bfd1e507ed4eff428aba7543b97fde",
+      "bytes": 1047
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-second-attempt.mjs",
+      "sha256": "86e6a90dca1bb9ace73f88ae0887eed0731158141a0572fc4f7f0fed6db1ea81",
+      "bytes": 12446
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-third-attempt-cli.txt",
+      "sha256": "c048cd8c2cd8e8b47792ffdf5802fbc54bbfbbad1929865a59a3a3eb4abc0340",
+      "bytes": 114
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-third-attempt.json",
+      "sha256": "afada08e0cc1ec58fbb6b9a783521a94e1a0ccabe7144f6fc93d5fea6bb81608",
+      "bytes": 842
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser-third-attempt.mjs",
+      "sha256": "381f15aaebb0f994182d85fbbcf5bbaeb43a0fcf2e341dc7b5cc3cf1e039bd1c",
+      "bytes": 13931
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-browser.json",
+      "sha256": "f06b5233048dfea5cacc4f6543418b61aeed48c7137a8159c22332a804a34443",
+      "bytes": 3347
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-cli.txt",
+      "sha256": "e4fbac9db481e7313a0579ccf9e7427497922eafb4e021ebef8a8d54637a244b",
+      "bytes": 52846
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-first-attempt-cli.txt",
+      "sha256": "2bdfeeba49c968d1c255a60de5e1002ce7f2a22b4cdb6fd98f2a09efe6db3c1a",
+      "bytes": 38457
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-handoff.json",
+      "sha256": "5db92bacf37346a51e3e1b9aced4ec162bcb6245679f114b893ceca68650924a",
+      "bytes": 16587
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-recovered-build-cli.txt",
+      "sha256": "478714223b6dc24fe3e0cdef6b8a98a41fa84882e6fb236894583d4e8ada78e5",
+      "bytes": 12356
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-recovered-quality-cli.txt",
+      "sha256": "1712d0fb16169ab8ef63362b03aec6b7b5866c3c4e7263b3166e486241100ef7",
+      "bytes": 40522
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-recovered-quality.json",
+      "sha256": "37225978bff3f9dfb8d40220a2540c62c5f61cad8946a39be77455702a1e7bb1",
+      "bytes": 746
+    },
+    {
+      "path": "docs/implementation-evidence/shared-freshness-recovery.json",
+      "sha256": "4716976795a6da5fd047509c8ed8360a9b733262c8505a9210d327096d7f05b6",
+      "bytes": 8649
+    }
+  ],
+  "remainingAcceptance": "remaining-acceptance-matrix.json",
+  "limitations": [
+    "No controlled benchmark rerun or new performance acceptance",
+    "No final image/runtime/live/RBAC/admission/adoption proof",
+    "Full audit and remaining Flux/native status/transfer/administration UI scope stays active"
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "schema": 1,
+  "sourceParent": "26ae036fb5aef2dcde438829448831be45f56d5a",
+  "files": [
+    {
+      "path": "src/lib/kubectl-client.ts",
+      "sha256": "60bc16a6c345cc20c6fc14ffef12ddeb59a84496482f7c84fd48aa6a68d0e584"
+    },
+    {
+      "path": "src/lib/resource-cache.ts",
+      "sha256": "d8ffefde0b8b2449b9c038e9547a330ffe7dc060dcb9a410c97696e08382bbb9"
+    },
+    {
+      "path": "src/lib/cluster-http.ts",
+      "sha256": "03f5121ccea9d4486b37c1f1fa2443cdd186ef5c4880c460c7ecde641adbd993"
+    },
+    {
+      "path": "src/lib/cluster-response.ts",
+      "sha256": "e64a9e7ea57e98b4af22e6eda30925c5e81d6d9a9cfbd5e12140c1c0405983bd"
+    },
+    {
+      "path": "src/lib/cluster-metadata.ts",
+      "sha256": "4ad9462cc00380744b9680c6aa1e7315bd50553cd9988faf491ae65711fee24a"
+    },
+    {
+      "path": "tests/kubectl.test.ts",
+      "sha256": "42780a9e8aaaeed6083de4a8afceed39f4680cd709f9ed2a91ffd87a6b650d05"
+    },
+    {
+      "path": "tests/resource-cache.test.ts",
+      "sha256": "f902727351220a707f482e66750ce864f3316d95d89b347b1995c6c6be2b4de8"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "1a9aeca0dd2e384e0d3341044fab297e730f40ea985c45d3101ec5316e142570"
+    },
+    {
+      "path": "package.json",
+      "sha256": "d6fb80bcae002c25a6ced7e9553ea633db17ea2654b09518ff06f63e5b1553e2"
+    },
+    {
+      "path": "tests/deployment-action.test.ts",
+      "sha256": "092286657848a3a48145b13153d022f03cc33908d8105ff30d800dcac6160377"
+    },
+    {
+      "path": "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "sha256": "b12762c4437c8e2d829c821f4dca327709014134c81a27840818f3ad066a3157"
+    },
+    {
+      "path": "tests/metadata-query.test.ts",
+      "sha256": "644c4e7c2cd0255c6bee4675c0f36ef09b0442af1c7bba11c9c406e58d40eb08"
+    },
+    {
+      "path": "src/lib/metadata-query.ts",
+      "sha256": "de56370763d8a325633db2876235f5419657a4ebb9c4e1c22f82714597961d1d"
+    },
+    {
+      "path": "src/lib/kv-metadata-query.ts",
+      "sha256": "f5fffd9be7fcd97164fe02b26ee5c43bac1c96cbf5250fa6e18f30d1190640b6"
+    }
+  ],
+  "cases": [
+    {
+      "id": "A04-name-admission",
+      "source": "src/lib/kubectl-client.ts",
+      "testFile": "tests/kubectl.test.ts",
+      "testName": "resource boundaries reject option and path injection before execution",
+      "before": "/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)*$/",
+      "after": "/^\\S+$/",
+      "assertionLine": 28,
+      "operator": "throws",
+      "witness": "Missing expected exception",
+      "mutantSHA256": "758b990b8091a035478b97f09ad8217d2db6c4457e33594a6a0935ba739104c4"
+    },
+    {
+      "id": "A05-failed-stdout",
+      "source": "src/lib/kubectl-client.ts",
+      "testFile": "tests/kubectl.test.ts",
+      "testName": "failed subprocess output never becomes a successful mutation or public error",
+      "before": "} catch (error) { throw error instanceof KubernetesCommandError ? error : failure(error); }",
+      "after": "} catch (error) {\n      const failed = error as { stdout?: unknown } | null;\n      if (typeof failed?.stdout === \"string\") return failed.stdout;\n      throw error instanceof KubernetesCommandError ? error : failure(error);\n    }",
+      "assertionLine": 51,
+      "operator": "==",
+      "witness": "actual instanceof KubernetesCommandError",
+      "mutantSHA256": "83b43105b6fc073745b7013f81598e692d261c03b5c8fe92a72ddb8324cf29f4"
+    },
+    {
+      "id": "A06-outage-empty",
+      "source": "src/lib/resource-cache.ts",
+      "testFile": "tests/resource-cache.test.ts",
+      "testName": "failure backoff preserves labelled bounded stale data and never invents empty success",
+      "before": "const value = await this.loader(resource);",
+      "after": "const value = await this.loader(resource).catch(() => ({ items: [] }));",
+      "assertionLine": 28,
+      "operator": "strictEqual",
+      "witness": "actual: 'empty'",
+      "mutantSHA256": "8e1a0410cbd498f7938a49f089586136ee7c70efb2e17fe04ca916e2c7ca0405"
+    },
+    {
+      "id": "deployment-action-coercion",
+      "source": "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "testFile": "tests/deployment-action.test.ts",
+      "testName": "deployment actions reject coerced/inherited/unknown action shapes before execution",
+      "before": "if (typeof action !== \"string\" || !Object.hasOwn(ACTIONS, action)) {",
+      "after": "if (!Object.hasOwn(ACTIONS, action)) {",
+      "assertionLine": 49,
+      "operator": "strictEqual",
+      "witness": "actual: 200",
+      "mutantSHA256": "2b91ee9c6598e7f0f31023d2e95de739e92fa16f49c6b93512227c303b4e6e8a"
+    },
+    {
+      "id": "private-kv-cache-admission",
+      "source": "src/lib/metadata-query.ts",
+      "testFile": "tests/metadata-query.test.ts",
+      "testName": "shared cache denies private requests even through normalized resource-prefix spellings",
+      "before": "if (path.startsWith(\"/api/kv/\")) return isKvMetadataQuery(url);",
+      "after": "if (path.startsWith(\"/api/kv/\")) return true;",
+      "assertionLine": 14,
+      "operator": "strictEqual",
+      "witness": "actual: true",
+      "mutantSHA256": "c0bcbb26be2993fac5589ec523c025033f96a398fcce4abf92db36d344c4bd14"
+    }
+  ]
+}

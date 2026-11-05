@@ -1,0 +1,213 @@
+{
+  "scope": "SOURCE ONLY minimal two-flat extension; no execution; prior three-case hosted qualification stays immutable",
+  "sourceParent": "26ae036fb5aef2dcde438829448831be45f56d5a",
+  "priorQualifiedOwningCommit": "e9274f89630157daa4a922a45fada713b48b2ed5",
+  "priorQualifiedHostedRun": 38760696046,
+  "priorQualifiedFrontendTree": "8cc04e769bed874ddf513590aaaa69c9a1723cb2",
+  "newCases": [
+    {
+      "id": "deployment-action-coercion",
+      "source": "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "testFile": "tests/deployment-action.test.ts",
+      "testName": "deployment actions reject coerced/inherited/unknown action shapes before execution",
+      "before": "if (typeof action !== \"string\" || !Object.hasOwn(ACTIONS, action)) {",
+      "after": "if (!Object.hasOwn(ACTIONS, action)) {",
+      "assertionLine": 49,
+      "operator": "strictEqual",
+      "witness": "actual: 200",
+      "mutantSHA256": "2b91ee9c6598e7f0f31023d2e95de739e92fa16f49c6b93512227c303b4e6e8a"
+    },
+    {
+      "id": "private-kv-cache-admission",
+      "source": "src/lib/metadata-query.ts",
+      "testFile": "tests/metadata-query.test.ts",
+      "testName": "shared cache denies private requests even through normalized resource-prefix spellings",
+      "before": "if (path.startsWith(\"/api/kv/\")) return isKvMetadataQuery(url);",
+      "after": "if (path.startsWith(\"/api/kv/\")) return true;",
+      "assertionLine": 14,
+      "operator": "strictEqual",
+      "witness": "actual: true",
+      "mutantSHA256": "c0bcbb26be2993fac5589ec523c025033f96a398fcce4abf92db36d344c4bd14"
+    }
+  ],
+  "totalCases": 5,
+  "pinnedInputs": 14,
+  "children": 10,
+  "bounds": {
+    "runnerSeconds": 240,
+    "reserveSeconds": 20,
+    "childSecondsMax": 30,
+    "streamBytesEachMax": 1048576,
+    "stepMinutes": 5,
+    "cpu": 2,
+    "memoryMiB": 1024,
+    "extraSwap": false,
+    "pids": 256,
+    "network": "none"
+  },
+  "originalFirstThreeCasesAndNinePinsExact": true,
+  "sharedFunctionsRawExact": [
+    "checkOriginals",
+    "run",
+    "inner restoration block"
+  ],
+  "original342And8TestBodiesAndFlagsUnchanged": true,
+  "newActualRuntimeImportClosure": {
+    "addedInputs": [
+      "tests/deployment-action.test.ts",
+      "src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "tests/metadata-query.test.ts",
+      "src/lib/metadata-query.ts",
+      "src/lib/kv-metadata-query.ts"
+    ],
+    "installedPackages": [
+      "tsx",
+      "typescript",
+      "next"
+    ],
+    "resolution": "Same readonly installed node_modules symlink; exact public source copies only",
+    "deploymentRoute": "Read from copied actual source and transpiled by the unchanged existing test. All five import specifiers are admitted by that existing dependency map; controlled auth/CLI/cache are not real imports/cluster calls.",
+    "metadataQuery": "Actual metadata-query.ts imports actual kv-metadata-query.ts; no additional imports."
+  },
+  "runtimeSourceTestsAndLockChanged": false,
+  "sourceOnlyPreparationAndPriorQualificationUnchanged": [
+    {
+      "path": "docs/implementation-evidence/a19-regression-sensitivity-source.json",
+      "sha256": "005d23aec5ac7794823f3c06aa1594190c94a9da56e517a2eb4a5e646f512d3e"
+    },
+    {
+      "path": "docs/implementation-evidence/a19-three-regression-sensitivity-qualification.json",
+      "sha256": "8501c5999383cebd41ca2d9686e8f61e2244f82648a1e92436a9b50449a01bb3"
+    }
+  ],
+  "docsChecked": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "beforeNormalizedLFSHA256": "18d2ea69d199f4c96163ba4903d3c176a2c7fb412d435c773f459eea64107711",
+      "updated": false
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "beforeNormalizedLFSHA256": "be6e75e77bdc3abb481a66b819820f419afe2f7a7dd0fc072494d47adba7ce81",
+      "updated": true
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "beforeNormalizedLFSHA256": "57c0dd95ea583b6e5dd85ffbdf45ad7a37e1aab22726ed9ea6a7f856a321c288",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "beforeNormalizedLFSHA256": "520a3e91bb6db0733c4853d04022b1ab495a0dfc64840531c2496f525d1bb987",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "beforeNormalizedLFSHA256": "c44ca1f77518e424c3299b7cc2bf37a092370c9c99c6de3dec7e98e2da200cb3",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "beforeNormalizedLFSHA256": "cd06f751ecb84e8e8525a611ae1df55e49025bc38a1443365ba956cb38428527",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "beforeNormalizedLFSHA256": "8f961a4906a418f6270333aa8ed37eb70c8a9514da8bb1cd07aacb8e1bfcff3b",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "beforeNormalizedLFSHA256": "ddd95b62149f245ef0433c8215ea4d34af45dd84b5d2cce4ed0489205ad31bb0",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "beforeNormalizedLFSHA256": "adeba48ae9e29aab600e83c4e7f375c11a5e9e6ffc37d4b7ebcc31be22bd03cf",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "beforeNormalizedLFSHA256": "d274f8adffc8f008196c37aa3b98124543406ef58fe1420ca3e6964c4164e22a",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "beforeNormalizedLFSHA256": "da9dc32f60707591e7c2122c4bff14a48514b226fe256116286da00f2c251321",
+      "updated": true
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "beforeNormalizedLFSHA256": "6585b734dd3e7f74bf3c0593b9457f5cb8bcd1bc6182fff91d5f7fbe59d05033",
+      "updated": true
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "beforeNormalizedLFSHA256": "21b6dd5061e2038f3dc0a0e56317050d73dfa498fb78db4cbec40bc0d7e547d7",
+      "updated": false
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "beforeNormalizedLFSHA256": "f695f2e645b3feca2129775f21746db4855ebcef5503df9a01f195add98739ce",
+      "updated": false
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "beforeNormalizedLFSHA256": "7c046c955d1c1f47d2b7642609efdc03c86255904e814ebab59e3f828afc4539",
+      "updated": false
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "beforeNormalizedLFSHA256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "updated": false
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "beforeNormalizedLFSHA256": "8d085cd47d887311be797ddb102e84db8e1946a798d19b89193da3eb8369d3a1",
+      "updated": true
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "beforeNormalizedLFSHA256": "b63baf242c3ef72a8b6757583be3e156a234f00567eaf06b648bd7f80120e630",
+      "updated": false
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "beforeNormalizedLFSHA256": "20b8fea367f6ac5e221f79047538fae2193bdc832f60905aedbf39ec7ea6bd72",
+      "updated": false
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "beforeNormalizedLFSHA256": "3ec22182d2968b1af60f007a3ad65bfca9bfd57ada3e4a556a9ee497359f34eb",
+      "updated": true
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "beforeNormalizedLFSHA256": "d86739b1a43220687203bf59c0ef7a2d109554c19e03120e5b0bc9a081df4163",
+      "updated": true
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "beforeNormalizedLFSHA256": "e1d5367c620cce288c3e6ab8348034347386c1868ab7d9764aa898785a4f48b5",
+      "updated": false
+    }
+  ],
+  "all44OriginalValidationClausesUnchanged": true,
+  "localTestsRun": false,
+  "hostedNewRunnerRun": false,
+  "wholeA19Accepted": false,
+  "newSourcePins": [
+    {
+      "path": "k8s-rewrite/front-end/scripts/regression-sensitivity.mjs",
+      "sha256": "bdce5398b9b8a2a89cc75a03b4640b2d0244189012d92aac7dffa12dbc03dbc5"
+    },
+    {
+      "path": "k8s-rewrite/front-end/scripts/regression-sensitivity.json",
+      "sha256": "535897d73ea51bf12686e1dd336cb1b69b42757b0a5710be00544dcfc27c9a92"
+    },
+    {
+      "path": ".github/workflows/bortus-quality.yml",
+      "sha256": "27da97df1242303e5945229df864760863afbfdefe43ebe403204ecbadd4be1f"
+    }
+  ]
+}

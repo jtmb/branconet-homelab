@@ -1,0 +1,123 @@
+{
+  "schema": "bortus.public-source-qualification.v2",
+  "date": "2026-10-22",
+  "sourceRevision": "0e11d6a6b6c38d9f204888f9ea24d9825d06e3ee",
+  "path": "src/app/api/auth/login/route.ts",
+  "rawWindowsSourceSHA256": "996358f27aecc8c33ea336d57c6b512fcef57f4676d361b468366b625241f095",
+  "canonicalLFSourceSHA256": "06d7b4d0684150eac758b00d1219771fb4a86145ac11f055739826a837aa1fb6",
+  "selectedDeclaration": "POST",
+  "sourceOrderDerivedBeforeControls": true,
+  "sourceControls": {
+    "tests": 76,
+    "pass": 76,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "sourceControlsRunOnceFrozen": true,
+  "executedOriginalTestSHA256": "b289783f3ef0f39dbb334d27c645cb49bc1893732d4d5b79429c23718f875bbf",
+  "publishedOwnerTestSHA256": "892f245cdea69d2349970f3219a941fe4223ba12fbede9330fb7859a01ad5062",
+  "loaderPortabilityCorrection": {
+    "onlyOneHashAssertionChanged": true,
+    "all76ControlCallbacksHarnessAndOtherLoaderBytesUnchanged": true,
+    "acceptsExactSourceWithLFOrCRLFOnly": true,
+    "originalMetadataFixture": {
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "cause": "Negative inserted CR before LF, which is permitted CRLF; source canonicalization correctly accepted it."
+    },
+    "distinctCorrectedMetadataFixture": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0
+    },
+    "no76ControlCompilerOrLintReplay": true,
+    "metadataControlIsNot77thSourceControl": true
+  },
+  "focusedTypes": {
+    "roots": 2,
+    "diagnostics": 0,
+    "freshCompilerInputs": 191,
+    "snapshotReads": 191,
+    "fallbackReads": 0,
+    "scope": "Original executed test and exact selected declaration synthetic root; final test differs only by metadata-qualified loader hash assertion. No fresh final-test type check claimed."
+  },
+  "lint": {
+    "files": 2,
+    "errors": 0,
+    "warnings": 0,
+    "scope": "Original executed test and synthetic declaration root; no final-test lint replay.",
+    "retainedSetupNotice": "React autodetection did not find a local React package and assumed latest React."
+  },
+  "dependencies": 37428,
+  "inTreeNondanglingSymlinkFiles": 37,
+  "beforeAfterHashesEqual": true,
+  "runtime": "Windows Node v24.18.0",
+  "commands": {
+    "source": [
+      "node",
+      "--experimental-strip-types",
+      "--test",
+      "--test-isolation=none",
+      "--test-reporter=tap",
+      "tests/auth-login-post-source.test.ts"
+    ],
+    "types": [
+      "node",
+      "focused-login-types-first.cjs"
+    ],
+    "lint": [
+      "node",
+      "focused-login-lint-first.cjs"
+    ],
+    "metadata": [
+      "node",
+      "--test",
+      "--test-isolation=none",
+      "--test-reporter=tap",
+      "login-loader-portability-metadata-v2-first.test.mjs"
+    ]
+  },
+  "limits": {
+    "wallSeconds": 60,
+    "userCPUSeconds": 30,
+    "jobCommitBytes": 1073741824,
+    "CPUCount": 2,
+    "activeProcesses": 1,
+    "killOnClose": true
+  },
+  "wallSeconds": [
+    1.031,
+    4.797,
+    40.797
+  ],
+  "allMainHandlesSignalled": true,
+  "activeBeforeDrain": [
+    0,
+    1,
+    0
+  ],
+  "activeAfterDrain": [
+    0,
+    0,
+    0
+  ],
+  "totalProcesses": [
+    2,
+    2,
+    2
+  ],
+  "totalProcessesCause": "UNESTABLISHED",
+  "metadataBothHandlesSignalledAndDrained": true,
+  "noSupportedProductionDefectOrCorrection": true,
+  "scope": "Exact unchanged Windows raw exported declaration with inert immediate bindings only. Imports/schema initialization/callee implementations and real credentials/auth/JWT/cookies/password hashing/Prisma/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/production remain outside qualification. No Linux checkout/whole-module/project/runtime/security/actual AT/recovery acceptance.",
+  "noOSNetworkIsolationUniversalDescendantIndependentPersonOrPerformanceClaim": true,
+  "all44Clauses21GatesFrozenFailuresAndRejectedActionsRemain": true,
+  "ActionsProhibited": true,
+  "historicalCIOnly": true,
+  "overallCIQualified": false,
+  "fullGoalActiveNoBudget": true,
+  "finalPRDDeploymentAndVerificationAfterAllOriginalPrecedingGates": true
+}

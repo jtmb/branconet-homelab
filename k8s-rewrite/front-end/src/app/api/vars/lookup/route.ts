@@ -4,10 +4,13 @@ import { nativeSecrets } from "@/lib/secret-client";
 import { SecretError } from "@/lib/cluster-secrets";
 import { isSensitiveVariable } from "@/lib/variable-policy";
 import { lookupHandler } from "@/lib/lookup-api";
+import { kvRegistry } from "@/lib/kv-http";
+import { requireLegacyPrincipal } from "@/lib/secret-access";
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
 export const GET = lookupHandler(
   async (key) => {
+    await requireLegacyPrincipal(kvRegistry());
     const target = await resolveAlias(key);
     const variable = await prisma.variable.findUnique({
       where: { key },
@@ -19,7 +22,7 @@ export const GET = lookupHandler(
           409,
           "Alias collides with nonsecret configuration",
         );
-      return (await nativeSecrets().read(target)).value;
+      return (await nativeSecrets(key).read(target)).value;
     }
     if (!variable || isSensitiveVariable(variable))
       throw new SecretError(

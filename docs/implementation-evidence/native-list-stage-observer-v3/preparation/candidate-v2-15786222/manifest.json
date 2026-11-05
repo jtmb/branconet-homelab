@@ -1,0 +1,63 @@
+{
+  "scope": "Protected source-derived native diagnostic, no tracked application or frozen harness edits",
+  "commit": "15786222e4b01b0692ad9aebab99b8734b505c7b",
+  "mode": "candidate",
+  "diagnostic_only": true,
+  "original_source_sha256": {
+    "src/lib/secret-client.ts": "9de81ef4163c9dcbffc7364a8165251e721ab4064ea9557f6b5e05d4f8057209",
+    "src/lib/cluster-secrets.ts": "3d195c907f2d3071d1984e32bc6d0ff27768bdd62ea333c1f2d1a1a89ac4611b",
+    "src/lib/auth.ts": "dd4db9c4988e09664d437f37535a5582d26a0348cea1b855be0cae8199505bd5",
+    "src/middleware.ts": "9e3155260d2e0cf9edceabfc85d878cd9ee915bfe2c9f693aebcddd6145e4d89",
+    "src/lib/permissions.ts": "01aa0f906a40bc45682c61eb9451d5fe5e13d23224fe69f188737db34c4a525a",
+    "src/lib/secrets-api.ts": "ed9beeb21b2f6c727be6afa82339c7d5a7f027a28141847c5e465001a8a7ae35",
+    "src/lib/secret-http.ts": "7c8d4d4fc911b607bbdf2f3d3ba3cd2d652f89df24307add14238d368ac292b6",
+    "frozen/whole-server.mjs": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b",
+    "frozen/run.py": "cd79ae39c61d68c8d3fb2b2a93d6c9ba5ef1c6b0a190ba714210808acc3691a8",
+    "frozen/summarize.py": "94983e4f9d5d5a167ff6435098daa4bfbe9f618995af7dec8b0a742c92f238a6"
+  },
+  "instrumented_source_sha256": {
+    "src/lib/secret-client.ts": "6a7be1e2d25a06f6770dc843f3e3b0ec7d06c30b97c7cb1be460788cc4c080fe",
+    "src/lib/cluster-secrets.ts": "7d7c07aa74484c33c6ae6599bbff096f3a959a97a7ba7892c21635d8e1721c48",
+    "src/lib/auth.ts": "3a24309b9f85b83b0d3a9dc74fb7e4170e5e0c603f58ebf2668c4b43d7060122",
+    "src/middleware.ts": "ee52b4fa6253bf874e570689e924bbadafad8a21d8872918182b91dd57f854e3",
+    "src/lib/permissions.ts": "6ab1980a79749688e1a6f9df30bd07885c4aca757c47607574cd00d6e456d9b6",
+    "src/lib/secrets-api.ts": "983afd554f24981ced28a713e939067cde24e9f13367d064224c84f34e255f0c",
+    "src/lib/secret-http.ts": "7191a3119dafa55cd7ab209d140fd6080b8e962fb6e2b9aea0dfddfe7eb57079"
+  },
+  "hooks": {
+    "src/lib/secret-client.ts": {
+      "native.queue": 1,
+      "native.factory": 1,
+      "config.decorate": 1,
+      "native.objectValidation": 4,
+      "native.attempt": 1,
+      "native.storeFactory": 1
+    },
+    "src/lib/cluster-secrets.ts": {
+      "native.summary": 1,
+      "native.list": 1
+    },
+    "src/lib/auth.ts": {
+      "auth.jwt": 1,
+      "auth.currentSession": 1,
+      "auth.accountSQL": 1,
+      "auth.session": 1,
+      "auth.headerSession": 1
+    },
+    "src/middleware.ts": {
+      "auth.middleware": 1
+    },
+    "src/lib/permissions.ts": {
+      "auth.accountSQL": 4,
+      "auth.role": 1
+    },
+    "src/lib/secrets-api.ts": {
+      "auth.authorize": 1,
+      "route.secrets": 1
+    },
+    "src/lib/secret-http.ts": {
+      "response.envelope": 1
+    }
+  },
+  "frozen_source_commit": "15786222e4b01b0692ad9aebab99b8734b505c7b"
+}

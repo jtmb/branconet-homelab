@@ -1,0 +1,191 @@
+{
+  "scope": "Evaluation only; one original six-profile observation, not an acceptance pair or source adoption",
+  "referenceSource": "e50ecd10151565d0fdbe9c4e5e3c2f57e5cf5675",
+  "prototypeFlatPageBytes": 16777216,
+  "prototypeGenericPageBytes": 4194304,
+  "prototypeAggregateBytes": 33554432,
+  "prototypeItems": 10000,
+  "prototypeConcurrency": 8,
+  "twoCoupledDeltas": [
+    "compiled existing flatSummary-only response ceiling4-to16MiB",
+    "native MAX_BYTES4-to16MiB only"
+  ],
+  "driverSHA256": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b",
+  "actualObserverExit": 0,
+  "actualTerminalSHA256": "32f76cf61d2cfdf8d58da60a77a7f2a38cb96e70ca5dcad194004426f63957ea",
+  "rawReportSHA256": "e9dd6f88e9bca4cf4f402376a6835a47a0d80faad21b54a1ed8373e0f5868e11",
+  "profiles": [
+    {
+      "name": "audit-small",
+      "nativeWallMs": 82.90089399999988,
+      "nativeCalls": 18,
+      "expectedCount": 334,
+      "equivalentInventory": true,
+      "responseBodyBytes": 51373,
+      "nativeProducedBodyBytes": 151310,
+      "nativeObjectsIncludingRetries": 334,
+      "warmPodRequests": 12,
+      "allPhaseNames": [
+        "cold-pods",
+        "warm-pods-12",
+        "warm-pods-concurrent-20",
+        "services-after-pods",
+        "configuration-metadata",
+        "native-secret-metadata",
+        "all-alias-metadata",
+        "readiness-five-sequential",
+        "cold-pods-concurrent-20",
+        "slow-optional-longhorn-cold-pods",
+        "outage-two-sequential",
+        "readiness-inaccessible-scope"
+      ]
+    },
+    {
+      "name": "metadata-200",
+      "nativeWallMs": 81.26196600000003,
+      "nativeCalls": 18,
+      "expectedCount": 200,
+      "equivalentInventory": true,
+      "responseBodyBytes": 30765,
+      "nativeProducedBodyBytes": 91172,
+      "nativeObjectsIncludingRetries": 200,
+      "warmPodRequests": 12,
+      "allPhaseNames": [
+        "cold-pods",
+        "warm-pods-12",
+        "warm-pods-concurrent-20",
+        "services-after-pods",
+        "configuration-metadata",
+        "native-secret-metadata",
+        "all-alias-metadata",
+        "readiness-five-sequential",
+        "cold-pods-concurrent-20"
+      ]
+    },
+    {
+      "name": "metadata-1000",
+      "nativeWallMs": 80.33715499999926,
+      "nativeCalls": 18,
+      "expectedCount": 1000,
+      "equivalentInventory": true,
+      "responseBodyBytes": 153789,
+      "nativeProducedBodyBytes": 450196,
+      "nativeObjectsIncludingRetries": 1000,
+      "warmPodRequests": 12,
+      "allPhaseNames": [
+        "cold-pods",
+        "warm-pods-12",
+        "warm-pods-concurrent-20",
+        "services-after-pods",
+        "configuration-metadata",
+        "native-secret-metadata",
+        "all-alias-metadata",
+        "readiness-five-sequential",
+        "cold-pods-concurrent-20"
+      ]
+    },
+    {
+      "name": "metadata-10000",
+      "nativeWallMs": 196.47817100000248,
+      "nativeCalls": 54,
+      "expectedCount": 10000,
+      "equivalentInventory": true,
+      "responseBodyBytes": 1537789,
+      "nativeProducedBodyBytes": 4501868,
+      "nativeObjectsIncludingRetries": 10000,
+      "warmPodRequests": 0,
+      "allPhaseNames": [
+        "cold-pods",
+        "services-after-pods",
+        "configuration-metadata",
+        "native-secret-metadata",
+        "all-alias-metadata",
+        "readiness-five-sequential",
+        "cold-pods-concurrent-20"
+      ]
+    },
+    {
+      "name": "kv-sized-native-25",
+      "nativeWallMs": 149.36847999999736,
+      "nativeCalls": 18,
+      "expectedCount": 25,
+      "equivalentInventory": true,
+      "responseBodyBytes": 3763,
+      "nativeProducedBodyBytes": 8748637,
+      "nativeObjectsIncludingRetries": 25,
+      "warmPodRequests": 12,
+      "allPhaseNames": [
+        "cold-pods",
+        "warm-pods-12",
+        "warm-pods-concurrent-20",
+        "services-after-pods",
+        "configuration-metadata",
+        "native-secret-metadata",
+        "all-alias-metadata",
+        "readiness-five-sequential",
+        "cold-pods-concurrent-20"
+      ]
+    },
+    {
+      "name": "maximum-flat-native-3",
+      "nativeWallMs": 123.47030599999925,
+      "nativeCalls": 18,
+      "expectedCount": 3,
+      "equivalentInventory": true,
+      "responseBodyBytes": 463,
+      "nativeProducedBodyBytes": 4196924,
+      "nativeObjectsIncludingRetries": 3,
+      "warmPodRequests": 12,
+      "allPhaseNames": [
+        "cold-pods",
+        "warm-pods-12",
+        "warm-pods-concurrent-20",
+        "services-after-pods",
+        "configuration-metadata",
+        "native-secret-metadata",
+        "all-alias-metadata",
+        "readiness-five-sequential",
+        "cold-pods-concurrent-20"
+      ]
+    }
+  ],
+  "controlsComposition": {
+    "v1ActualExit": 1,
+    "v1SevenSectionsCompletedBeforeFinalDeadlineOracleFailure": true,
+    "v2ActualExit": 0,
+    "v2Deadline": {
+      "status": 503,
+      "fixedUnavailable": true,
+      "elapsedMs": 8003
+    },
+    "differentialCorpusCases": 3674,
+    "unchangedGenericTests": {
+      "tests": 8,
+      "pass": 8,
+      "fail": 0,
+      "skipped": 0
+    },
+    "noFirstSevenOrCompilerReplay": true,
+    "notOneUninterruptedControlPass": true,
+    "fixtureCorrection": "Active HTTP DOM TimeoutError translates through existing secretFailure to fixed503 unavailable/no database fallback; queue expiry wording was wrong for this new active-control oracle"
+  },
+  "nativeELFSHA256": "8dde4ce66cf7045bfa7d5c0c0fb8ad3ff3d98809fbe24b76487b520ea664f6c2",
+  "nativeCSourceSHA256": "3bd79cee2b15dab8be4f8aa3a8ae4afda84191652714daf5fd17b7507798b34a",
+  "allSixActualNativeLoaded": true,
+  "timingGetterAbsent": true,
+  "all353CanonicalSourceInputsAnd4263CompiledBytesUnchanged": true,
+  "allOwnedProcessesContainersAbsent": true,
+  "peakMiB": 477.33203125,
+  "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0",
+  "originalArchiveSHA256": "3080a7c85de8dcfaee1289e1f3d7bfb6b74b68cf0f9213d5563e2cc1a02a9b52",
+  "performanceA07A21": "failed/open; no paired proof",
+  "remainingSourceIntegrationConsideration": "Portable flat-parser fallback currently has4MiB input ceiling. Any later production16MiB adoption must preserve generic4MiB and give the distinct flat fallback equivalent16MiB output/refusals; mandatory native-loaded prototype did not exercise module-absence16MiB fallback.",
+  "privateQualificationSHA256": "0e8eb5d8ba7bc035fe252fb37da2f75ab6d47b44292465161c1b420e96057b91",
+  "originalArtifactCount": 74,
+  "privateOriginals": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\metadata16-evaluation-qualified-20261012-v1\\originals.zip",
+  "candidateSourceConcurrency": 8,
+  "candidateSourcePageBytes": 4194304,
+  "candidateSourceUnchanged": true,
+  "liveDeploymentNotChangedOrMeasured": true,
+  "privateQualifierTerminologyCorrection": "Original productionConcurrency/productionPageBytes fields describe the candidate source factory only; neither is a freshly measured live runtime bound."
+}

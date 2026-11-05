@@ -1,0 +1,35 @@
+{
+  "scope": "KV metadata, policies, identities and operator isolation; native version protocol not implemented yet",
+  "runtime": "Node 22.23.3 Windows x64",
+  "unit": { "passed": 59, "failed": 0, "skipped": 0 },
+  "lint": "zero warnings",
+  "productionBuild": "passed",
+  "typecheck": "passed",
+  "productionHttp": { "passed": true, "seconds": 12.31, "fixture": "disposable SQLite, synthetic credentials, metadata-only fake CLI, unavailable loopback native API" },
+  "browser": {
+    "administratorEditor": "engineAdmin field present, unchanged Save disabled; Cancel restores trigger focus",
+    "scopedWriter": "no Add user or peer actions; own password editor only, no role/flag controls; no provisioning output or Flux mutation controls",
+    "mobile": { "requestedWidth": 390, "reportedClientWidth": 380, "documentScrollWidth": 380, "renderedUserRows": 100 },
+    "screenshot": "kv-scoped-users-390.png",
+    "credentialsEnteredOrAccessChanged": false
+  },
+  "externalPreKvQa": {
+    "sourceCommit": "6a97105020f67fe36686c2dbf50e9e4afa552c8c",
+    "chartsEvidenceCommit": "363a63aa7b2d5a425dc1da789c86af28c0117978",
+    "evidencePath": "evidence/bortus-foundation-linux-qa.json",
+    "scope": "pre-KV foundation only",
+    "checks": "Linux Node22.23.3 clean install/lint/build/type/49 tests/production HTTP/runtime image/entrypoint migration and health; failed first worker-limited build retained before bounded-CPU retry passed",
+    "runtimeHealth": "liveness 200; readiness without native credentials 503",
+    "npmAudit": { "all": 12, "production": 3, "productionUnderlyingAdvisories": 1 },
+    "osScanner": "unavailable; no OS advisory result",
+    "finalKvArtifactRequiresNewValidation": true,
+    "compatibleRollbackAfterAdoptionEstablished": false
+  },
+  "limitations": [
+    "No production database, credentials, values, deployment or cluster mutation used",
+    "No native KV adoption/history/import/export/rotation acceptance",
+    "No external admission/RBAC verification or post-adoption recovery image",
+    "No controlled CPU/LCP/memory, actual zoom or screen-reader acceptance",
+    "Role-loss reveal callback uses epoch/unmount protection; unavailable native API fixture cannot prove a successful value reveal"
+  ]
+}

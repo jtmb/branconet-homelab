@@ -1,0 +1,425 @@
+{
+  "capturedAt": "2026-10-10T23:07:50.218290+00:00",
+  "scope": "isolated synthetic dependency/runtime qualification; no live cluster acceptance",
+  "sourceCommit": "483ba4f0c82cbaca76646f221c4c497f8c298d70",
+  "implementationCommits": [
+    "058d38ada73269c111c849fb1f6e810e25920b72",
+    "483ba4f0c82cbaca76646f221c4c497f8c298d70"
+  ],
+  "baseCommit": "74500af4a9553d98fdf6dd25f71aaba1cddb445a",
+  "sourceProvenance": "source-provenance.json",
+  "sourceArchiveSha256": "86f3de99657ea0f0b2ad30d1fb30cf6030461c3a962eeeb94c94c7147870886c",
+  "gitBlobHashes": {
+    "package.json": "6ebd596e48b9990277ba298e3d64e974038476fda00dd18a918a2a252fef5bc7",
+    "package-lock.json": "32b54a6453b70a6438e5a1ed2f0e7a49cc1c971418bdd6eebb29cef4e9c0654c",
+    "Dockerfile": "5be26d8ac43ce45dacad4c392a4369aad2ca7eb4adcc0f17ea9442578f692b2a",
+    "prisma/schema.prisma": "06abf29e554e101a7b048c7334c9a3eae12c6e78c7f399f709ee2e7b14ecc409"
+  },
+  "baseImage": "node:22.23.3-bookworm-slim@sha256:c3de60bf2f9dd0ac6370e6117950ff62d6e339527e7472301c9c78a017978392",
+  "runtimeImage": {
+    "Id": "sha256:497d099b6412e16954e9dd88da9c97656c8cfcc5c9a83db62d3c71765aaec866",
+    "RepoDigests": [
+      "bortus-qa@sha256:497d099b6412e16954e9dd88da9c97656c8cfcc5c9a83db62d3c71765aaec866"
+    ],
+    "Os": "linux",
+    "Architecture": "amd64"
+  },
+  "runtimeImageConfiguration": {
+    "User": "node",
+    "Entrypoint": [
+      "./docker-entrypoint.sh"
+    ],
+    "ExposedPorts": {
+      "4000/tcp": {}
+    },
+    "Healthcheck": {
+      "Test": [
+        "CMD-SHELL",
+        "node -e \"fetch('http://127.0.0.1:4000/api/health/live').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""
+      ],
+      "Interval": 30000000000,
+      "Timeout": 10000000000,
+      "StartPeriod": 60000000000
+    },
+    "Labels": {
+      "org.branconet.qa.scope": "isolated-runtime-maintenance",
+      "org.opencontainers.image.revision": "483ba4f0c82cbaca76646f221c4c497f8c298d70"
+    }
+  },
+  "localImageTag": "bortus-qa:maintenance-483ba4f-raw",
+  "runtimeImageArchiveSha256": "d1bfdbe0a132cc9183f9476f795741dacf3b8b02927f53c8b9a7772d1b1b7612",
+  "runtimeImageArchiveBytes": 331491840,
+  "runtimeContract": {
+    "node": "22.23.3",
+    "uid": 1000,
+    "gid": 1000,
+    "runtimePackageManagersAbsent": true,
+    "writablePaths": [
+      "/data",
+      "/home/shell",
+      "/app/.next/cache"
+    ],
+    "deepmergeCopies": [
+      {
+        "path": "/app/node_modules/deepmerge-ts",
+        "version": "8.0.0"
+      }
+    ],
+    "prisma": "6.19.3",
+    "prismaClient": "6.19.3",
+    "perlBase": "5.36.0-7+deb12u4",
+    "kubectl": {
+      "major": "1",
+      "minor": "37",
+      "gitVersion": "v1.37.1",
+      "gitCommit": "f78e722310e50bcaca9276be22276d9e91d91308",
+      "gitTreeState": "clean",
+      "buildDate": "2026-09-23T17:10:04Z",
+      "goVersion": "go1.26.8",
+      "compiler": "gc",
+      "platform": "linux/amd64"
+    },
+    "passed": true
+  },
+  "quality": {
+    "node": "22.23.3",
+    "os": "Linux amd64",
+    "npm": "10.9.9",
+    "cleanInstall": true,
+    "prismaGenerate": true,
+    "zeroWarningLint": true,
+    "productionBuild": true,
+    "types": true,
+    "unit": {
+      "passed": 114,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 85.520294593
+    },
+    "productionHttp": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 23.306627869,
+      "fixtureSeconds": {
+        "provisioning": 15.395315762,
+        "authMetadata": 20.191535608,
+        "nativeKvTls": 22.956529198
+      }
+    },
+    "prismaConfigRegression": "real validate/config loading/deploy twice/zero drift passed"
+  },
+  "runtimeMigrationFresh": {
+    "migration_mode": "fresh",
+    "node": "22.23.3",
+    "platform": "linux",
+    "arch": "x64",
+    "uid": 1000,
+    "gid": 1000,
+    "database_created": true,
+    "first_boot": {
+      "live_status": 200,
+      "ready_without_native_credentials": 503,
+      "migration_success_observed": true
+    },
+    "second_boot": {
+      "live_status": 200,
+      "ready_without_native_credentials": 503,
+      "migration_success_observed": true
+    },
+    "applied_migration_count": 11,
+    "expected_migration_count": 11,
+    "kv_metadata_tables": {
+      "kvMount": 0,
+      "kvPath": 0,
+      "kvField": 0,
+      "kvPolicy": 0,
+      "kvIdentity": 0,
+      "kvServicePrincipal": 1,
+      "kvLegacyGrant": 0,
+      "kvOperation": 0,
+      "kvAudit": 0,
+      "kvRotation": 0
+    },
+    "migration_lock_and_legacy_principal_present": true,
+    "synthetic_legacy_accounts_aliases_and_quarantined_value_preserved": null,
+    "existing_writer_admin_reader_nonadmin": null,
+    "existing_user_policy_bridge_present": null,
+    "ownership_history_audit_not_ingested_from_legacy_sqlite": true,
+    "synthetic_existing_metadata_and_nullable_additive_columns_preserved": null,
+    "zero_schema_drift": true,
+    "restart_preservation_verified": true,
+    "native_credentials_or_production_database_mounted": false,
+    "fixture_signing_material_values_or_hashes_recorded": false,
+    "passed": true
+  },
+  "runtimeMigrationLegacyForward": {
+    "migration_mode": "legacy-forward",
+    "node": "22.23.3",
+    "platform": "linux",
+    "arch": "x64",
+    "uid": 1000,
+    "gid": 1000,
+    "database_created": true,
+    "first_boot": {
+      "live_status": 200,
+      "ready_without_native_credentials": 503,
+      "migration_success_observed": true
+    },
+    "second_boot": {
+      "live_status": 200,
+      "ready_without_native_credentials": 503,
+      "migration_success_observed": true
+    },
+    "applied_migration_count": 11,
+    "expected_migration_count": 11,
+    "kv_metadata_tables": {
+      "kvMount": 1,
+      "kvPath": 1,
+      "kvField": 1,
+      "kvPolicy": 2,
+      "kvIdentity": 0,
+      "kvServicePrincipal": 1,
+      "kvLegacyGrant": 1,
+      "kvOperation": 1,
+      "kvAudit": 1,
+      "kvRotation": 1
+    },
+    "migration_lock_and_legacy_principal_present": true,
+    "synthetic_legacy_accounts_aliases_and_quarantined_value_preserved": true,
+    "existing_writer_admin_reader_nonadmin": true,
+    "existing_user_policy_bridge_present": true,
+    "ownership_history_audit_not_ingested_from_legacy_sqlite": true,
+    "synthetic_existing_metadata_and_nullable_additive_columns_preserved": true,
+    "zero_schema_drift": true,
+    "restart_preservation_verified": true,
+    "native_credentials_or_production_database_mounted": false,
+    "fixture_signing_material_values_or_hashes_recorded": false,
+    "passed": true
+  },
+  "frozenRuntimeSmokeSha256": "b99ee2e4595500ec991fe9109b2c1765e38a184e18c68476c08f989376870070",
+  "dependencyReporting": {
+    "all": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 7,
+      "critical": 0,
+      "total": 9
+    },
+    "production": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "allCommandExit": 1,
+    "productionCommandExit": 0,
+    "remainingEntries": [
+      {
+        "name": "@next/eslint-plugin-next",
+        "severity": "high"
+      },
+      {
+        "name": "braces",
+        "severity": "high"
+      },
+      {
+        "name": "chokidar",
+        "severity": "high"
+      },
+      {
+        "name": "eslint-config-next",
+        "severity": "high"
+      },
+      {
+        "name": "fast-glob",
+        "severity": "high"
+      },
+      {
+        "name": "micromatch",
+        "severity": "high"
+      },
+      {
+        "name": "postcss-nested",
+        "severity": "moderate"
+      },
+      {
+        "name": "postcss-selector-parser",
+        "severity": "moderate"
+      },
+      {
+        "name": "tailwindcss",
+        "severity": "high"
+      }
+    ]
+  },
+  "imagePackageScan": {
+    "commandExit": 0,
+    "vulnerabilityGatePassed": false,
+    "scanner": "aquasec/trivy@sha256:af6acf9a6b85dfe389a1941505c0ce9efef52a4719635e1a962f022a3d855daa",
+    "scannerVersion": {
+      "Version": "0.75.0",
+      "VulnerabilityDB": {
+        "Version": 2,
+        "NextUpdate": "2026-10-11T18:59:50.889010572Z",
+        "UpdatedAt": "2026-10-10T18:59:50.889010923Z",
+        "DownloadedAt": "2026-10-10T22:31:43.939383155Z"
+      }
+    },
+    "databaseSha256": "03cacb40452ceb74afdfca072cb82f79ee884dfac006ef24a4dfdad133b0f917",
+    "databaseBytes": 1465356288,
+    "network": "none; offline archive scan; no Docker socket",
+    "scanners": [
+      "vuln"
+    ],
+    "rows": 346,
+    "uniqueIds": 160,
+    "severity": {
+      "LOW": 125,
+      "HIGH": 67,
+      "MEDIUM": 142,
+      "UNKNOWN": 11,
+      "CRITICAL": 1
+    },
+    "targets": [
+      {
+        "target": "/scan/image-raw.tar (debian 12.15)",
+        "type": "debian",
+        "rows": 327,
+        "severity": {
+          "LOW": 124,
+          "HIGH": 63,
+          "MEDIUM": 135,
+          "UNKNOWN": 4,
+          "CRITICAL": 1
+        },
+        "status": {
+          "affected": 242,
+          "will_not_fix": 17,
+          "fix_deferred": 68
+        }
+      },
+      {
+        "target": "Node.js",
+        "type": "node-pkg",
+        "rows": 0,
+        "severity": {},
+        "status": {}
+      },
+      {
+        "target": "usr/local/bin/kubectl",
+        "type": "gobinary",
+        "rows": 19,
+        "severity": {
+          "HIGH": 4,
+          "MEDIUM": 7,
+          "UNKNOWN": 7,
+          "LOW": 1
+        },
+        "status": {
+          "fixed": 19
+        }
+      }
+    ],
+    "rawReport": "trivy-image-vulnerabilities.json",
+    "rawReportSha256": "ed78041e0e5e39240504a064d85d82f3ea13858ccb4d03cd8a5cccda8a64127c",
+    "criticalZlibRowRetained": true,
+    "finalArtifactScanCount": 1,
+    "earlierCrlfArtifactScanCount": 1
+  },
+  "attempts": [
+    {
+      "source": "058d38ada73269c111c849fb1f6e810e25920b72",
+      "cleanInstallGenerateLintBuild": true,
+      "typecheck": false,
+      "error": "new regression fixture env inferred too narrowly: TS2339 RUST_LOG",
+      "sourceFix": "explicit NodeJS.ProcessEnv annotation and separate database string",
+      "testAssertionsWeakened": false,
+      "testsReached": false
+    },
+    {
+      "source": "483ba4f0c82cbaca76646f221c4c497f8c298d70",
+      "freshArchiveAndCleanInstall": true,
+      "allQualityCommandsPassed": true,
+      "qualificationLimit": "Git archive had CRLF conversion; retained as earlier candidate only, superseded by raw-blob qualification"
+    },
+    {
+      "source": "483ba4f0c82cbaca76646f221c4c497f8c298d70",
+      "export": "core.autocrlf=false; all 280 files match raw Git blobs exactly",
+      "freshArchiveAndCleanInstall": true,
+      "allQualityCommandsPassed": true,
+      "imageBuildPassed": true,
+      "runtimeMigrationsAndRestartPassed": true,
+      "imagePackageScanReported": true,
+      "vulnerabilityGateClean": false
+    }
+  ],
+  "preparationFailures": [
+    "Initial Linux Git archive failed on the Windows absolute .git worktree pointer; initial native Windows export converted CRLF. Final core.autocrlf=false export and all 280 file comparisons prove exact committed blob bytes; full checks/image qualification repeated.",
+    "Bundled npm 10 lock regeneration removed libc metadata; discarded, regenerated using disposable npm 11.16.0 under Node 22.23.3; only DeepmergeTS package resolution changed.",
+    "Final raw-image fresh runtime WSL connection attempt failed before Linux command started: Wsl/Service/0x8007274c. Unchanged retry passed; legacy run and contract check also passed."
+  ],
+  "resourceBounds": {
+    "quality": {
+      "cpus": 4,
+      "cpuAffinity": "0-3",
+      "memory": "4g",
+      "pids": 256,
+      "uidGid": "1000:1000"
+    },
+    "runtimeSmoke": {
+      "cpus": 4,
+      "cpuAffinity": "0-3",
+      "memory": "1g",
+      "pids": 128,
+      "network": "none"
+    },
+    "imageScanner": {
+      "cpus": 4,
+      "cpuAffinity": "0-3",
+      "memory": "4g",
+      "pids": 256,
+      "uidGid": "1000:1000",
+      "network": "none"
+    },
+    "dockerBuild": "unmodified BuildKit resource defaults, 900-second wall timeout"
+  },
+  "protectedLocalArtifacts": "/home/brajam/.local/share/branconet-migration/bortus-delivery/runtime-maintenance-058d38a",
+  "productionAccessOrMutation": false,
+  "deployPublishOrPreload": false,
+  "productionCredentialsOrDbMounted": false,
+  "ownerCheckoutModified": false,
+  "limitations": [
+    "Final integrated owner source/UI must be requalified and built; this image is a local QA artifact.",
+    "Verified TLS fixtures are mock APIs; live RBAC/admission/guard/recovery acceptance remains external.",
+    "346 raw image rows remain; vendor applicability note applies only to CVE-2023-45853 on Debian bookworm zlib1g; all other rows remain explicit and unqualified.",
+    "The 19 kubectl rows have upstream library fixes but the current supported v1.37.1 distribution still contains the reported versions; no custom binary or prerelease substituted.",
+    "APT security resolution varies over time; use the exact resulting artifact/inventory for release review.",
+    "No runtime exploit, penetration, payload or crash experiments; no controlled performance claim."
+  ],
+  "runtimeBinarySha256": {
+    "/usr/local/bin/kubectl": "65691ff77eb6fa44c908b77a1082c9f092c3b9733b5cefabec0d1104890e21a8",
+    "/usr/local/bin/node": "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48"
+  },
+  "finalSourceBytesVerified": {
+    "exactMatches": 280,
+    "lineEndingOnly": 0,
+    "mismatches": 0
+  },
+  "priorCrlfCandidate": {
+    "imageId": "sha256:fc32ae8182d4661b3f644cff5cfa89bb2b355669d5bfec2b02e10de36efe6f61",
+    "sourceProvenance": "source-provenance-attempt-2.json",
+    "quality": "quality-attempt-2.log",
+    "fullScanRetainedAt": "/home/brajam/.local/share/branconet-migration/bortus-delivery/runtime-maintenance-058d38a/trivy-image-vulnerabilities.json",
+    "summaryRetainedAt": "/home/brajam/.local/share/branconet-migration/bortus-delivery/runtime-maintenance-058d38a/qualification-attempt-2.json"
+  },
+  "lockedDeepmergeCopies": [
+    {
+      "path": "node_modules/deepmerge-ts",
+      "version": "8.0.0"
+    }
+  ]
+}

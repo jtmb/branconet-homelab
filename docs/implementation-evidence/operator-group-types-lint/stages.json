@@ -1,0 +1,38 @@
+{
+  "startedUtc": "2026-10-11T15:22:24.701Z",
+  "pid": 1,
+  "node": "v22.23.3",
+  "stages": [
+    {
+      "name": "types",
+      "pid": 13,
+      "args": [
+        "/qa/source/node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "startedUtc": "2026-10-11T15:22:24.710Z",
+      "actualExit": 0,
+      "signal": null,
+      "completedUtc": "2026-10-11T15:22:37.390Z"
+    },
+    {
+      "name": "lint",
+      "pid": 20,
+      "args": [
+        "/qa/source/node_modules/eslint/bin/eslint.js",
+        ".",
+        "--max-warnings=0"
+      ],
+      "startedUtc": "2026-10-11T15:22:37.392Z",
+      "actualExit": 0,
+      "signal": null,
+      "completedUtc": "2026-10-11T15:22:44.400Z"
+    }
+  ],
+  "performanceAcceptance": false,
+  "terminal": true,
+  "actualExit": 0,
+  "completedUtc": "2026-10-11T15:22:44.401Z"
+}

@@ -1,0 +1,62 @@
+{
+  "owner": "log-container-types-lint-20261011-162403",
+  "supervisorPid": 44384,
+  "startedUtc": "2026-10-11T16:24:03.831029+00:00",
+  "source": [
+    {
+      "path": "src/app/(dashboard)/resource-actions-menu.tsx",
+      "sha256": "bb491795277d91644670f08c1372be50e0ea2df8ba87214ce958bdf2cecf0a79"
+    },
+    {
+      "path": "src/app/(dashboard)/log-modal.tsx",
+      "sha256": "cac09cffa039a6d2c534d2f1db1ac8ef5efbf38ac53db2fe9a98aa080c365159"
+    },
+    {
+      "path": "src/app/cluster/resource-actions-menu.tsx",
+      "sha256": "c8f85b8ad11b204bfd07b3aa82bc5b6f9a647a832b0fbaa49b8602fd7dc77abb"
+    },
+    {
+      "path": "tests/resource-private-state.test.ts",
+      "sha256": "190e9df69741841d421d26adef05a448498bea978b425bc6bd27f693aed64465"
+    }
+  ],
+  "stages": [
+    {
+      "stage": "fresh-types",
+      "pid": 44788,
+      "startedUtc": "2026-10-11T16:24:03.840049+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "--max-old-space-size=4096",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "actualExit": 0,
+      "childReaped": true,
+      "completedUtc": "2026-10-11T16:24:15.491921+00:00"
+    },
+    {
+      "stage": "selected-lint",
+      "pid": 39836,
+      "startedUtc": "2026-10-11T16:24:15.503463+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/eslint/bin/eslint.js",
+        "src/app/(dashboard)/resource-actions-menu.tsx",
+        "src/app/(dashboard)/log-modal.tsx",
+        "src/app/cluster/resource-actions-menu.tsx",
+        "tests/resource-private-state.test.ts",
+        "--max-warnings=0"
+      ],
+      "actualExit": 0,
+      "childReaped": true,
+      "completedUtc": "2026-10-11T16:24:18.552033+00:00"
+    }
+  ],
+  "terminal": true,
+  "actualExit": 0,
+  "completedUtc": "2026-10-11T16:24:18.552033+00:00",
+  "sourceUnchanged": true
+}

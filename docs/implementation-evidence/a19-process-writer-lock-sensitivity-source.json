@@ -1,0 +1,315 @@
+{
+  "scope": "SOURCE ONLY one deterministic A01 SQL writer-lock sensitivity, original six races unchanged",
+  "sourceParent": "939648f500fb404a0907e1923d1ff05eded8b3b1",
+  "case": "A01-SQL-writer-lock",
+  "files": [
+    {
+      "path": "package.json",
+      "bytes": 2315,
+      "sha256": "8416d078b2263fa62c7799f722ae663a4a6c5309508f66578e28f72b31698866"
+    },
+    {
+      "path": "prisma/migrations/20260614204135_init/migration.sql",
+      "bytes": 3322,
+      "sha256": "a3038f518902e6dcd2a6fa6a3dfadf536bed536487015517b380241efba9f90d"
+    },
+    {
+      "path": "prisma/migrations/20260615042521_add_gitrepos/migration.sql",
+      "bytes": 618,
+      "sha256": "39ca2d40aa429d7668c559d8c05056a909a261cb1c4909b905f464b8c519a457"
+    },
+    {
+      "path": "prisma/migrations/20260615170328_add_namespace_to_gitrepos/migration.sql",
+      "bytes": 1858,
+      "sha256": "e5f57ec33813ea47d8e82c63a0fc39526298e58188254a8e5ebad08e2f4927d0"
+    },
+    {
+      "path": "prisma/migrations/20260616050858_add_user_model/migration.sql",
+      "bytes": 282,
+      "sha256": "6457847e80514a46d025f2cf77ad177163a5fa5b459446d7690eecde229d4671"
+    },
+    {
+      "path": "prisma/migrations/20260616130024_add_app_settings/migration.sql",
+      "bytes": 220,
+      "sha256": "45b166e19315914fe099a077ea9a4e9d92ccdc2b7ca42c73410b3523de89e990"
+    },
+    {
+      "path": "prisma/migrations/20260616132006_add_user_role/migration.sql",
+      "bytes": 630,
+      "sha256": "1c674838ea7ea71867e0e9ceb94320da482616f71e2e0bc5ad9854296015e353"
+    },
+    {
+      "path": "prisma/migrations/20261009150000_native_secret_references/migration.sql",
+      "bytes": 229,
+      "sha256": "274aa4b2dd3c90c7222971d138a9c83632ef56e4c2b285890c34f5472a129157"
+    },
+    {
+      "path": "prisma/migrations/20261010160000_account_invariants/migration.sql",
+      "bytes": 243,
+      "sha256": "ff958b6affffc291ea8a79c81d02fa3d254e2cb60eb48e5085568b691468809a"
+    },
+    {
+      "path": "prisma/migrations/20261010210000_kv_metadata/migration.sql",
+      "bytes": 5420,
+      "sha256": "355511fb7ad0a1cc27da19cf6cbc97d64cf15d09c815f78dbc1ad694ac5a2bd3"
+    },
+    {
+      "path": "prisma/migrations/20261010220000_rotation_consumer_identity/migration.sql",
+      "bytes": 288,
+      "sha256": "a3c698ee1a5e00c365a592910d37d763c6d7a72f8863512251b0c377ef83a099"
+    },
+    {
+      "path": "prisma/migrations/20261010230000_legacy_access_audit/migration.sql",
+      "bytes": 224,
+      "sha256": "770556733c0b165a97ceb42790abd703b5d4bdd4572e9a06234252fd0dc77ff1"
+    },
+    {
+      "path": "prisma/migrations/migration_lock.toml",
+      "bytes": 124,
+      "sha256": "3389dbaf2a3cf4b413275867ac6f550b27f79efe85ee9c12082cdd8c5b8239c4"
+    },
+    {
+      "path": "prisma/schema.prisma",
+      "bytes": 8448,
+      "sha256": "06abf29e554e101a7b048c7334c9a3eae12c6e78c7f399f709ee2e7b14ecc409"
+    },
+    {
+      "path": "src/lib/account-change-queue.ts",
+      "bytes": 2665,
+      "sha256": "70be98dda1eb4a89e90964d4798d3d2981c6f9ab7be0021fb2a17d854353cef3"
+    },
+    {
+      "path": "src/lib/account-store.ts",
+      "bytes": 6534,
+      "sha256": "0d5d1504f018891d76e9fcfa4801e5ffbd3f31a657eec6f23319ef40b639786f"
+    },
+    {
+      "path": "tests/fixtures/account-lock-participant.cjs",
+      "bytes": 2221,
+      "sha256": "fa1b0ed2aac52ee61407be2f5cfdbd547bf9a0724beb7c920873ca7e158e55a8"
+    },
+    {
+      "path": "tests/fixtures/account-lock.sensitivity.ts",
+      "bytes": 9000,
+      "sha256": "84da386e66745ecafd8eeb8d4e74f9c6f9e4ce31d3edd1b8541448c0dff8dfc5"
+    },
+    {
+      "path": "tsconfig.json",
+      "bytes": 645,
+      "sha256": "1a9aeca0dd2e384e0d3341044fab297e730f40ea985c45d3101ec5316e142570"
+    }
+  ],
+  "unchangedOriginalRaceAndSevenControlPins": [
+    {
+      "path": "scripts/regression-sensitivity.mjs",
+      "sha256": "bdce5398b9b8a2a89cc75a03b4640b2d0244189012d92aac7dffa12dbc03dbc5"
+    },
+    {
+      "path": "scripts/regression-sensitivity.json",
+      "sha256": "e9331ac66c8840a35f304d04f9d1135daaeaa53549df4b6e87478a7c5c9bd32b"
+    },
+    {
+      "path": "scripts/regression-sensitivity-db.mjs",
+      "sha256": "83f5c3df1dddfa47fcfbfe57c71cc1dc263f5f0a08d044204881d6dd8af6b888"
+    },
+    {
+      "path": "scripts/regression-sensitivity-db.json",
+      "sha256": "4e9c8b4118d081d036213d80877d3d8c51b3bf448c4fbabde1ac3c21210d6361"
+    },
+    {
+      "path": "tests/account-process.test.ts",
+      "sha256": "71d1d0c3cb2f8139ad733b72f302bf131cf52f924dc74fa49377d1982a943d04"
+    },
+    {
+      "path": "tests/fixtures/account-process.cjs",
+      "sha256": "6360b1d14fb0f708f889d471b8aec9a756f935adf4e69c91f3cb29ee34b22dc2"
+    }
+  ],
+  "mutant": {
+    "source": "src/lib/account-store.ts",
+    "before": "accountChangeQueue().run(() => this.databaseTransaction(operation))",
+    "after": "accountChangeQueue().run(() => operation(this.db))",
+    "mutantSHA256": "3aae1af8a94c739e19fd3bef63325984629838cb72956b7478c6343ac2a74fbe",
+    "assertionLine": 93,
+    "operator": "strictEqual",
+    "expected": 1,
+    "actual": 2
+  },
+  "protocol": {
+    "realProcesses": 2,
+    "actualConnectBeforeReady": true,
+    "forwardsProvidedQueryArgsExactlyOnce": true,
+    "interceptsOnlyRoleOnlyFinalCount": true,
+    "effectiveAdminCountUnchanged": true,
+    "coordinatorSQL": "BEGIN IMMEDIATE",
+    "coordinatorTimeout": 0,
+    "branchOnlyActualBusy5OrSuccess": true,
+    "busyBranch": "Release first, await its actual outcome, then start second under fresh original guard reads",
+    "acquiredBranch": "Require both actual final counts2, rollback reserved lock, release/complete first, then release/complete second",
+    "queryResultsFabricated": false,
+    "productionGuardsChanged": false
+  },
+  "runtimeClosure": "Only AccountStore+account-change-queue and real Prisma/tsx via read-only node_modules link; schema/migrations copied, no worker/native required",
+  "resources": {
+    "cpus": 2,
+    "memoryBytes": 1073741824,
+    "swapBytes": 0,
+    "pids": 256,
+    "network": "none",
+    "sourceMount": "readonly",
+    "stepMinutes": 5
+  },
+  "bounds": {
+    "runnerWholeSeconds": 240,
+    "reserveSeconds": 20,
+    "testChildSeconds": 30,
+    "testParentSeconds": 25,
+    "innerWorkSeconds": 23,
+    "innerClosureReserveSeconds": 2,
+    "readySeconds": 5,
+    "countSeconds": 2,
+    "outcomeSeconds": 4,
+    "closureSeconds": 2,
+    "capturePerStreamBytes": 1048576
+  },
+  "stderr": "Exactly the retained Node22 experimental SQLite warning with actual direct-child PID; participant stdout/stderr must be empty; all raw bounded TAP/warning retained",
+  "cleanup": "Independent owned-child settlement/DB close/copy restore and byte checks; unexpected cleanup refuses even if invariant assertion matches; outer container boundary retained, no universal descendant proof from one child return",
+  "existing342AndEightBodiesFlagsUnchanged": true,
+  "oldSixProcessRacesUntouched": true,
+  "sevenExistingControlsUnchanged": true,
+  "packageAndLockUnchanged": true,
+  "PrismaForwardingSourceReview": {
+    "retainedVersion": "6.19.3",
+    "retainedRuntimeSHA256": "abdeb84cf9f11bbfba2ac6a009c94fea8657aa3c35a7975a1c63e71a41b96b05",
+    "actualNewControlPrerequisite": "UNRUN; source review cannot substitute for real positive/mutant results"
+  },
+  "metadataPreparerV1Refusal": {
+    "tool": "78fcb6",
+    "exit": 1,
+    "reason": "Raw Git LF versus unchanged Windows checkout CRLF mismatch",
+    "onlyThreeDraftFilesWritten": true,
+    "noManifestWorkflowOrTargetWritten": true
+  },
+  "runtimeInputAuthority": "Tracked inputs pinned to raw Git LF; three preexisting new draft files verified exact QA LF bytes; no tracked input rewrite",
+  "all22DocsChecked": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "beforeCheckoutSHA256": "6041d0990fcf78b263d2cc53f9aa8afa3cc3baed8939382a6a9ec7e5bfdb2c1d",
+      "charactersRead": 6335
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "beforeCheckoutSHA256": "18acd93e1b3e383857c9718410950866332dd1f3584f103b2070b8345b13dde1",
+      "charactersRead": 156156
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "beforeCheckoutSHA256": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670",
+      "charactersRead": 4458
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "beforeCheckoutSHA256": "05d2b237cc9a2dfd42f1eccf21647a87d1b12121dfd027bc5e3a77b5e7df3346",
+      "charactersRead": 59057
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "beforeCheckoutSHA256": "6f08c0dfe90d697d49c4dcc15d98af51bb27e8225337de2b49f2d4a593954946",
+      "charactersRead": 114195
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "beforeCheckoutSHA256": "b3e548f8191eac8becc08583e5ab81eebca0e5a13d5a08ee46b4166e9513eeee",
+      "charactersRead": 115143
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "beforeCheckoutSHA256": "11bcb52cce6bd9359d440baa605200b22225cde89333026c61262bf4ee7f57e5",
+      "charactersRead": 249178
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "beforeCheckoutSHA256": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b",
+      "charactersRead": 21744
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "beforeCheckoutSHA256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412",
+      "charactersRead": 42183
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "beforeCheckoutSHA256": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8",
+      "charactersRead": 22129
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "beforeCheckoutSHA256": "f7ac422e19f8e4c0af87e2ca74ba27fef8ddd915d2bbc73f2ff561bf062d0709",
+      "charactersRead": 99204
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "beforeCheckoutSHA256": "1201cdcdada11144f4290b3200e870539d7a8dc170f0bd2507e4eac3c5de12ff",
+      "charactersRead": 55178
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "beforeCheckoutSHA256": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038",
+      "charactersRead": 3604
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "beforeCheckoutSHA256": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb",
+      "charactersRead": 2582
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "beforeCheckoutSHA256": "4cd08b2183d0538c298bb6670241d323be0bded55855c9e63eacd92b40b49992",
+      "charactersRead": 18145
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "beforeCheckoutSHA256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "charactersRead": 5310
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "beforeCheckoutSHA256": "fb4f655053cb1b5cade7a0c88323a769179ee6f1e7ee05f8366050c4f42405e7",
+      "charactersRead": 87852
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "beforeCheckoutSHA256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0",
+      "charactersRead": 11460
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "beforeCheckoutSHA256": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92",
+      "charactersRead": 1780
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "beforeCheckoutSHA256": "2fda3e80fa30d15f2aceacbcbc55f9b799889828e9168c1580f49be5457d0fe9",
+      "charactersRead": 92393
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "beforeCheckoutSHA256": "c3e478f5ae35a4abfc305841d62eff2084324097763d678e7181de5849eee128",
+      "charactersRead": 129006
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "beforeCheckoutSHA256": "3ed8d56e4f253b0823a428d625a0ecb0f7b981d121cf9f014a13e559b0c32a93",
+      "charactersRead": 90640
+    }
+  ],
+  "all44ClausesUnchanged": true,
+  "testsRun": false,
+  "built": false,
+  "newDependenciesInstalled": false,
+  "committed": false,
+  "A01CrossProcessSensitivityQualified": false,
+  "wholeA19Accepted": false,
+  "performanceAccepted": false,
+  "productionAdoption": false
+}

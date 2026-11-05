@@ -1,0 +1,94 @@
+{
+  "startedAt": "2026-10-11T05:16:11.118Z",
+  "source": "6fb01043 production build; new workflow harness only",
+  "scope": "Actual built /secrets/kv, owned disposable603-alias SQLite/CA-verified TLS fixture",
+  "checks": [
+    {
+      "name": "Actual keyboard forward/reverse cycle and attempted background focus stay modal; close returns focus",
+      "tabSteps": 32
+    },
+    {
+      "name": "Policy commit requires seven pages and all603 exact alias acknowledgments without native writes",
+      "aliases": 603,
+      "pages": 7
+    }
+  ],
+  "failures": [
+    "Policy page unavailable"
+  ],
+  "terminal": true,
+  "ownedProcesses": {
+    "fixturePid": 22444,
+    "chromePid": 43840
+  },
+  "phase": "Policies",
+  "effectLabelCounts": {
+    "exact": 0,
+    "prefix": 1
+  },
+  "mutations": [
+    {
+      "method": "POST",
+      "route": "/api/kv/policies/preview",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "route": "/api/kv/policies/preview",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "route": "/api/kv/policies/preview",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "route": "/api/kv/policies/preview",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "route": "/api/kv/policies/preview",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "route": "/api/kv/policies/preview",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "route": "/api/kv/policies/preview",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "route": "/api/kv/policies",
+      "status": 201
+    }
+  ],
+  "impactPreviews": [
+    {
+      "commit": "Commit policy create",
+      "pages": 7,
+      "aliases": 603,
+      "complete": true
+    }
+  ],
+  "acknowledgments": [
+    {
+      "method": "POST",
+      "route": "/api/kv/policies",
+      "aliases": 603,
+      "exactComplete": true
+    }
+  ],
+  "cleanup": {
+    "chromeExitCode": 0,
+    "chromeSignal": null,
+    "fixtureExitCode": 0,
+    "fixtureSignal": null
+  },
+  "completedAt": "2026-10-11T05:16:47.890Z"
+}

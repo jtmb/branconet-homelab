@@ -1,0 +1,393 @@
+{
+  "scope": "Five exact hosted source-regression sensitivities and unchanged normal342-unit/8-HTTP gates; complete A19 remains open",
+  "owningSourceCommit": "cfabf77658bff5e8742b350447af12954e9e62cc",
+  "frontendTree": "b78f417d7e4a1e9e41cb98dacf32a7b5ec1dcf7f",
+  "workflowGitBlob": "cd8d2979fd498ecfe5c73decd04460ce4d6b77c7",
+  "workflowSHA256": "27da97df1242303e5945229df864760863afbfdefe43ebe403204ecbadd4be1f",
+  "hostedRun": 38764208687,
+  "url": "https://github.com/jtmb/branconet-homelab/actions/runs/38764208687",
+  "validationCommit": "aa13eb7326997960a11c9298ac909488a5c9f4c0",
+  "validationRootTree": "04fa0a328034a611525152c503f225b5244b1d00",
+  "validationParent": "8f0c0e30cf5cd204d87622eb8b32a60c14988af0",
+  "rootVerifiedEntireFrontendEqualsOwningCommit": true,
+  "status": "completed",
+  "conclusion": "success",
+  "actualMetadataExit": 0,
+  "actualLogExit": 0,
+  "steps": [
+    {
+      "conclusion": "success",
+      "name": "Set up job",
+      "number": 1,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "number": 2,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Locked install and native/standalone build in pinned compiler image",
+      "number": 3,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Original lint, type and unit checks with isolated runtime network",
+      "number": 4,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+      "number": 5,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Original strict integration and process controls",
+      "number": 6,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "number": 12,
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "name": "Complete job",
+      "number": 13,
+      "status": "completed"
+    }
+  ],
+  "tap": {
+    "tests": [
+      342,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      8
+    ],
+    "pass": [
+      342,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      8
+    ],
+    "fail": [
+      0,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0,
+      1,
+      0
+    ],
+    "cancelled": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "skipped": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "todo": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  },
+  "sensitivity": {
+    "schema": 1,
+    "completed": true,
+    "cases": [
+      "A04-name-admission",
+      "A05-failed-stdout",
+      "A06-outage-empty",
+      "deployment-action-coercion",
+      "private-kv-cache-admission"
+    ],
+    "records": [
+      {
+        "id": "A04-name-admission",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "46dd01b1dc7c6176dcfc5ecd07d8620586e2991bbab051467f6d052c0792bbec",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 328,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A04-name-admission",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "0a1e1112dc187557ead406b1ce8cee9c32856efddebae498ee05aa933ef5290b",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 971,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A05-failed-stdout",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "8aeecc24ca4651ce8de07bf78b3b66b077ea1127989835b1f8b3e3d5e1c8e596",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 342,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A05-failed-stdout",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "2b229afccbdf42dd8bc2f3efb97ee8b10bd403962180013c7a8e5b3adc81eb78",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 975,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A06-outage-empty",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "f6c8f52b0be9aae367a0eb83efd51566fa9795274eac67bea57d0a7413994be4",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 360,
+        "stderrBytes": 0
+      },
+      {
+        "id": "A06-outage-empty",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "24c3823a92f6a611cef10b4340089022657901599ab386472f1cf292ed07db15",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 980,
+        "stderrBytes": 0
+      },
+      {
+        "id": "deployment-action-coercion",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "bf35f1c8249d82a72264206994d9189a676df201722c65fcb7afceaf5054a765",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 355,
+        "stderrBytes": 0
+      },
+      {
+        "id": "deployment-action-coercion",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "4a3937f21ef6085bb70e7fdcc2205c7f784e720b84688087ccd9762c59560fe8",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 986,
+        "stderrBytes": 0
+      },
+      {
+        "id": "private-kv-cache-admission",
+        "phase": "pristine",
+        "actualExit": 0,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "a00ad8fb3e60d6b482a422d68ed5b4707578ebfe8f8c4035e513e68ca62ed12a",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 361,
+        "stderrBytes": 0
+      },
+      {
+        "id": "private-kv-cache-admission",
+        "phase": "mutant",
+        "actualExit": 1,
+        "signal": null,
+        "spawnErrorCode": null,
+        "stdoutSHA256": "c2983ecb400cefe3a44cdaf85593bd36c99fd9685c56e42136360ae44494a39e",
+        "stderrSHA256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdoutBytes": 1107,
+        "stderrBytes": 0
+      }
+    ],
+    "restorationFailures": [],
+    "elapsedMs": 3534,
+    "originalSelectedInputsUnchanged": true,
+    "originalUnitAndIntegrationExecution": "separate unchanged workflow steps",
+    "wholeA19Accepted": false
+  },
+  "fixedCaseAssertions": [
+    {
+      "id": "A04-name-admission",
+      "testFile": "tests/kubectl.test.ts",
+      "testName": "resource boundaries reject option and path injection before execution",
+      "assertionLine": 28,
+      "operator": "throws",
+      "witness": "Missing expected exception",
+      "mutantSHA256": "6cbadfbdca93976ff80273d548226da4aeadeed12cac72634c2de2da1d0ba055"
+    },
+    {
+      "id": "A05-failed-stdout",
+      "testFile": "tests/kubectl.test.ts",
+      "testName": "failed subprocess output never becomes a successful mutation or public error",
+      "assertionLine": 51,
+      "operator": "==",
+      "witness": "actual instanceof KubernetesCommandError",
+      "mutantSHA256": "d815f12e6c1f639472e75202f8cee01c8f33b2be17d2149d5055dcf447c79d58"
+    },
+    {
+      "id": "A06-outage-empty",
+      "testFile": "tests/resource-cache.test.ts",
+      "testName": "failure backoff preserves labelled bounded stale data and never invents empty success",
+      "assertionLine": 28,
+      "operator": "strictEqual",
+      "witness": "actual: 'empty'",
+      "mutantSHA256": "65f5db583e08837873a5c2797bf6be560e7450be766bc1ee7f497726ff52134e"
+    },
+    {
+      "id": "deployment-action-coercion",
+      "testFile": "tests/deployment-action.test.ts",
+      "testName": "deployment actions reject coerced/inherited/unknown action shapes before execution",
+      "assertionLine": 49,
+      "operator": "strictEqual",
+      "witness": "actual: 200",
+      "mutantSHA256": "2b91ee9c6598e7f0f31023d2e95de739e92fa16f49c6b93512227c303b4e6e8a"
+    },
+    {
+      "id": "private-kv-cache-admission",
+      "testFile": "tests/metadata-query.test.ts",
+      "testName": "shared cache denies private requests even through normalized resource-prefix spellings",
+      "assertionLine": 14,
+      "operator": "strictEqual",
+      "witness": "actual: true",
+      "mutantSHA256": "c0bcbb26be2993fac5589ec523c025033f96a398fcce4abf92db36d344c4bd14"
+    }
+  ],
+  "firstThreeCasesEqualPriorQualifiedManifest": true,
+  "rawTAPAndLiteralStatusesPublishedInHostedLog": true,
+  "privateRetainedLog": {
+    "bytes": 434050,
+    "sha256": "e5ca1a508917e19117dbfaa17146f246330477221ad7ce23b6fd4732dce7be27",
+    "rawLogCopiedIntoRepository": false
+  },
+  "rootResult": {
+    "file": "root-hosted-ci-38764208687-result.json",
+    "sha256": "93373eb450df368f27aaabca2c15c7811750fa870d5e8235d3564d99b169e6e4"
+  },
+  "defaultHostedLogAndResultScan": {
+    "actualRootTool": "6a7c3a",
+    "actualExit": 0,
+    "findings": 0,
+    "files": 2,
+    "sameScannerBirthNoLive": true,
+    "currentBytesUnchanged": true,
+    "receiptFile": "root-a19-five-hosted-log-scan-20261015-v1-latest.json",
+    "receiptSHA256": "02362c1fccb1571f06d34e5c46d40917f7fb07428b295263c7895d88f1724323",
+    "suppression": false,
+    "replay": false
+  },
+  "historicalSourceAndThreeQualificationUnchanged": [
+    {
+      "path": "docs/implementation-evidence/a19-regression-sensitivity-source.json",
+      "sha256": "005d23aec5ac7794823f3c06aa1594190c94a9da56e517a2eb4a5e646f512d3e"
+    },
+    {
+      "path": "docs/implementation-evidence/a19-three-regression-sensitivity-qualification.json",
+      "sha256": "8501c5999383cebd41ca2d9686e8f61e2244f82648a1e92436a9b50449a01bb3"
+    },
+    {
+      "path": "docs/implementation-evidence/a19-five-regression-sensitivity-source.json",
+      "sha256": "54b81b7271a55b403dc8f272a837b951465c16d5e0e07ae4eaa05bf61b6f01b5"
+    }
+  ],
+  "bounds": {
+    "children": 10,
+    "childSecondsMax": 30,
+    "streamBytesEachMax": 1048576,
+    "runnerSeconds": 240,
+    "reserveSeconds": 20,
+    "stepMinutes": 5,
+    "cpu": 2,
+    "memoryMiB": 1024,
+    "extraSwap": false,
+    "pids": 256,
+    "network": "none",
+    "repositoryMount": "readonly",
+    "isolation": "none only in filtered step; original342+8 flags unchanged"
+  },
+  "boundaries": [
+    "Deployment mutation test uses actual route source transpiled through its existing VM fixture, real Next responses/validators, controlled auth/CLI/cache bindings; not a compiled deployment mutation or real-cluster check",
+    "Private KV cache mutation tests actual admission modules on a public synthetic named path; no private payload/cache value is read",
+    "First three sensitivities retain their original narrow scopes; failed-stdout assertion does not independently prove every redaction-fault sensitivity",
+    "Remaining deliberate source-regression, manual/actual AT, performance/image/recovery/live/adoption gates are separate"
+  ],
+  "wholeA19Accepted": false,
+  "mainMerged": false,
+  "deployed": false,
+  "performanceAccepted": false,
+  "imageAccepted": false,
+  "productionAdoption": false,
+  "all44OriginalValidationClausesUnchanged": true
+}

@@ -1,0 +1,53 @@
+{
+  "base_commit": "6651685bf17ae1cf1b98e3a51cc75d81dfba30e3",
+  "source_label": "Isolated native-list working tree before source commit; canonical source bytes hashed below",
+  "runtime": {
+    "node": "v22.23.3",
+    "platform": "win32"
+  },
+  "checks": {
+    "original_plus_new_units": {
+      "passed": true,
+      "tests": 134,
+      "failed": 0,
+      "new_concurrency_regressions": 7
+    },
+    "lint": {
+      "passed": true,
+      "warnings": 0
+    },
+    "typecheck_before_build": {
+      "passed": true
+    },
+    "fresh_production_build": {
+      "passed": true
+    },
+    "typecheck_after_build": {
+      "passed": true
+    },
+    "production_http_fixtures": {
+      "passed": true,
+      "fixtures": 3,
+      "elapsed_ms": {
+        "provisioning": 25589.5083,
+        "existing": 32421.9493,
+        "native": 33437.9909
+      }
+    }
+  },
+  "source_sha256_canonical_lf": {
+    "k8s-rewrite/front-end/src/lib/cluster-secrets.ts": "94819f4e0fc618482b56d7648f50bc6df5323f58f7130b5caf1d82e37e93a0fc",
+    "k8s-rewrite/front-end/src/lib/secret-client.ts": "a218b33bfcab0f921d2f6c216affc0c10f72d241123c5e530d5b8bdd60343f9f",
+    "k8s-rewrite/front-end/tests/native-list-concurrency.test.ts": "34d6573c52be6ced23ce23db27e83e6f89cccd61ec3138cd5e2a16b7544b7677"
+  },
+  "frozen_benchmark_driver_sha256": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b",
+  "original_tests_modified": [],
+  "production_changes": false,
+  "image_builds_pulls_preloads": false,
+  "native_values_or_value_digests_recorded": false,
+  "limitations": [
+    "Working-tree Windows functional tests; exact committed candidate Linux benchmark follows in separate evidence.",
+    "Production concurrency opts in to4; compatibility stores remain serial, original tests unchanged.",
+    "No final integrated source/image/recovery/live qualification."
+  ]
+}

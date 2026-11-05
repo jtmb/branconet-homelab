@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-15",
+  "sourceParent": "d4832281a1dfa6f030be3789fe9a890cce744f4a",
+  "scope": "Focused actual-route/producer/stream/real-SQLite provisioning persistence regressions; no full build or browser retry",
+  "routeSHA256": "f52fd8b6959c3e7fcf0eaaea9cf4b00877822cd0e1f9799337bf71b3b5e70418",
+  "testSHA256": "653dab3c7f60b416d3a7bf03e9b2397bd36ba999d0500848db8a9a6ca4670501",
+  "qualifiedNodeImage": "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
+  "nodeVersion": "22.23.3",
+  "bootID": "19d54e89-533f-46e2-b89d-25657251c8d7",
+  "bounds": {
+    "wholeSeconds": 240,
+    "closureSeconds": 20,
+    "childSeconds": 30,
+    "outputBytesPerStream": 1048576,
+    "cpus": 2,
+    "memoryBytes": 1073741824,
+    "pids": 256,
+    "network": "none",
+    "rootFilesystemReadOnly": true,
+    "uid": 1000
+  },
+  "cases": [
+    {
+      "mode": "pristine",
+      "actualChildExit": 0,
+      "tests": 2,
+      "passCount": 2,
+      "failCount": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "expectedFailureNames": [],
+      "routeSHA256": "f52fd8b6959c3e7fcf0eaaea9cf4b00877822cd0e1f9799337bf71b3b5e70418",
+      "testSHA256": "653dab3c7f60b416d3a7bf03e9b2397bd36ba999d0500848db8a9a6ca4670501",
+      "originalSourceAndRestorationVerified": true,
+      "exactOwnedCIDAndNameAbsent": true,
+      "confirmedOwnedCID": "6059738d2ae768267a3ec8e66fb6930d68fd1346061be470068e67af10642679"
+    },
+    {
+      "mode": "old-table",
+      "actualChildExit": 1,
+      "tests": 2,
+      "passCount": 1,
+      "failCount": 1,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "expectedFailureNames": [
+        "provisioning cursor preserves preparation and real producer output across SQLite flush and terminal success"
+      ],
+      "routeSHA256": "3b41312d0ace708fcfd830ff34fe61bea05da3c09f4ee1126b96f50bea3c992e",
+      "testSHA256": "653dab3c7f60b416d3a7bf03e9b2397bd36ba999d0500848db8a9a6ca4670501",
+      "originalSourceAndRestorationVerified": true,
+      "exactOwnedCIDAndNameAbsent": true,
+      "confirmedOwnedCID": "eeab3af1af1b098e4dfc0bfba5ab409802f57bb49b392990434ef640b5cc0679"
+    },
+    {
+      "mode": "old-prefix",
+      "actualChildExit": 1,
+      "tests": 2,
+      "passCount": 0,
+      "failCount": 2,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "expectedFailureNames": [
+        "provisioning cursor preserves preparation and real producer output across SQLite flush and terminal success",
+        "provisioning cursor preserves preparation when the runner cannot start"
+      ],
+      "routeSHA256": "94223923c8a38db42cc9a84f51802e8f33950c6b1c90fb1aa71f628784afcc94",
+      "testSHA256": "653dab3c7f60b416d3a7bf03e9b2397bd36ba999d0500848db8a9a6ca4670501",
+      "originalSourceAndRestorationVerified": true,
+      "exactOwnedCIDAndNameAbsent": true,
+      "confirmedOwnedCID": "de28a32c4d606762ce21c50d635db25b485cd8eb934ad8a5efe07e256aaccfc1"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "package.json",
+      "sha256": "8416d078b2263fa62c7799f722ae663a4a6c5309508f66578e28f72b31698866"
+    },
+    {
+      "path": "tsconfig.json",
+      "sha256": "1a9aeca0dd2e384e0d3341044fab297e730f40ea985c45d3101ec5316e142570"
+    },
+    {
+      "path": "tests/provisioning-output-cursor.test.ts",
+      "sha256": "653dab3c7f60b416d3a7bf03e9b2397bd36ba999d0500848db8a9a6ca4670501"
+    },
+    {
+      "path": "src/app/api/deploy/start/route.ts",
+      "sha256": "f52fd8b6959c3e7fcf0eaaea9cf4b00877822cd0e1f9799337bf71b3b5e70418"
+    },
+    {
+      "path": "src/lib/ansible-selection.ts",
+      "sha256": "a5c7d23d4ab751ae5ea56146b2afbd5b2aec43a5fbee73e56db131fe01a76ead"
+    },
+    {
+      "path": "src/lib/ansible-progress.ts",
+      "sha256": "a0c859e4e83fa27aaf794efa8383c94228b2537be51b2220398c1b1c71d25ab8"
+    },
+    {
+      "path": "src/lib/job-output.ts",
+      "sha256": "2fe0772633d783efb30440a994f4c6172ee04567048ad62189661208fcfc8272"
+    },
+    {
+      "path": "src/lib/job-stream.ts",
+      "sha256": "c57778b4c9cae363e351cefe1c3bbeeffc4714968470a3ec2aaea2b8d8a4b639"
+    },
+    {
+      "path": "src/lib/db.ts",
+      "sha256": "4eb1e876c2f46a09f6aabf1b4891fe9308139a3bbaf4304624363958ac524a6b"
+    }
+  ],
+  "retainedRecords": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\pristine\\pristine-status.json",
+      "bytes": 292,
+      "sha256": "9f391205f724854f3c09b9908a23ce24181538eb9f135f4b350eeb66a9ea0f79"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\pristine\\pristine-complete.json",
+      "bytes": 450,
+      "sha256": "24c9ad839dbc28c14ceaa344e4dfd4f125768fc1d58cf4896c36fb08f2d6be90"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\pristine\\pristine.stdout",
+      "bytes": 618,
+      "sha256": "6f617144b245008e0915a9557197a28bd62c1607d926beca3377ee31a174bb24"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\pristine\\pristine.stderr",
+      "bytes": 166,
+      "sha256": "af6b83bce33599ca032518d160d9ce5c4d7c6190c4f5cee4c5e22c7bb2bb5e43"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\pristine\\outer-terminal.json",
+      "bytes": 336,
+      "sha256": "376945998b6974f82e40840f5e238c7e6727d92a7f7801376785994ca06fb77b"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\pristine\\created-inspect.json",
+      "bytes": 9173,
+      "sha256": "a739abc35310f1b261949e45cdbb113bc1e1ad83dd1370576b06cf26b42e6f5f"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\pristine\\completed-inspect.json",
+      "bytes": 9720,
+      "sha256": "e07e6feefd531cfffbbc0d6be5119a37db95bdc32143d8b0ce807f6fff4fd088"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-table\\old-table-status.json",
+      "bytes": 294,
+      "sha256": "85866c94cd22ca1b3e476f831f64b8ab8b0c19c7d0858598c25f84781358a3fe"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-table\\old-table-complete.json",
+      "bytes": 453,
+      "sha256": "b652e01c19ff5af386f66a101c58adad90c988727bcc5c36519e3d8ef0189c02"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-table\\old-table.stdout",
+      "bytes": 1199,
+      "sha256": "39c9c8ab81868c7a9c6c8e4c646d4a3aa6ba97418d3a2f61bf2a2e78a67d1d32"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-table\\old-table.stderr",
+      "bytes": 166,
+      "sha256": "af6b83bce33599ca032518d160d9ce5c4d7c6190c4f5cee4c5e22c7bb2bb5e43"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-table\\outer-terminal.json",
+      "bytes": 337,
+      "sha256": "db4900c5b6d72f9fe0e5d4112ccbadeea6bbc3351453ca359090ad161e950ea7"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-table\\created-inspect.json",
+      "bytes": 9179,
+      "sha256": "3985a9aca6dc624bc94aecdfdfe0bc08dbf805541b03850f3d2cb4ecf6112769"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-table\\completed-inspect.json",
+      "bytes": 9726,
+      "sha256": "d9fe0a095808e2a16479c1447538f812fc731e7e16ac2eadb1e02ba1168295a7"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-prefix\\old-prefix-status.json",
+      "bytes": 295,
+      "sha256": "9ccafb0e3406b72ec48f196a42e59502d410cfc54b35bddaded559323752e984"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-prefix\\old-prefix-complete.json",
+      "bytes": 455,
+      "sha256": "5a662ae5581b0ae77e84d2251e29360cfdb133c11a36973436397651e9f9119f"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-prefix\\old-prefix.stdout",
+      "bytes": 2109,
+      "sha256": "0c82fcfeaad03c8a01915cc1c8f74546bd121a2ad17b029734c4cf644307bae6"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-prefix\\old-prefix.stderr",
+      "bytes": 166,
+      "sha256": "af6b83bce33599ca032518d160d9ce5c4d7c6190c4f5cee4c5e22c7bb2bb5e43"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-prefix\\outer-terminal.json",
+      "bytes": 338,
+      "sha256": "3edcbf80f9bef0c1184eb6c9c278eda7b32fa93de594592b7e1df4cfe67af1b6"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-prefix\\created-inspect.json",
+      "bytes": 9185,
+      "sha256": "02234462d31cb617c2e011455809a97e6faba1dc5dcb23a99ad7eb80e1e21e77"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\provisioning-output-focused-20261015-v1-1\\old-prefix\\completed-inspect.json",
+      "bytes": 9732,
+      "sha256": "c642d7efabc42ee1aa026b04d4970db80b77ac6ffa923d8e338752d45a1035c6"
+    }
+  ],
+  "sqliteExperimentalWarningOnly": true,
+  "originalCorpusReplayed": false,
+  "fullBuildRun": false,
+  "browserRetryRun": false,
+  "currentA12Qualified": false,
+  "priorPreparation": {
+    "actualChildExit": 7,
+    "outerExit": 1,
+    "tests": 0,
+    "reason": "Dependency mount lacked node_modules ancestor for tsx/esbuild resolution; separate outer absence predicate also rejected missing-inspect [] output",
+    "containerAbsenceSeparatelyObserved": true,
+    "correction": "Retained qualified deps mounted at /deps/node_modules; same Node/tsx and all nine source bytes; formatted exact-ID absence query",
+    "functionalTestFailureClaimed": false
+  },
+  "executionTools": {
+    "pristine": "f979e1/0",
+    "mutants": "78bd80/0",
+    "retainedResultRead": "dfea5b/0"
+  }
+}

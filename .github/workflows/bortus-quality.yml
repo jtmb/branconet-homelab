@@ -1,0 +1,166 @@
+name: BORTUS application quality
+on:
+  pull_request:
+    paths: ['k8s-rewrite/front-end/**', '.github/workflows/bortus-quality.yml']
+  push:
+    paths: ['k8s-rewrite/front-end/**', '.github/workflows/bortus-quality.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: bortus-quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: k8s-rewrite/front-end
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      DATABASE_URL: file:/tmp/bortus-quality.db
+      BOTRUS_JWT_SECRET: synthetic-ci-signing-material-only
+      BOTRUS_SECRETS_KEY: synthetic-ci-lookup-material-only
+      BORTUS_DISABLE_PROVISIONING: 'true'
+      BORTUS_CI_IMAGE: node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Locked install in pinned compiler image
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(id -u)" -ne 0
+          name="bortus-quality-build-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+          docker run --rm --name "$name" --platform linux/amd64 \
+            --cpus 4 --memory 4g --memory-swap 4g --pids-limit 256 \
+            --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app" \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
+            -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
+            -e CIRCLE_NODE_TOTAL=4 --entrypoint bash "$BORTUS_CI_IMAGE" \
+            -lc 'mkdir -p "$HOME" && npm ci'
+      - name: Complete portable fixture before native generation
+        timeout-minutes: 1
+        shell: bash
+        run: |
+          set -euo pipefail
+          proof="$RUNNER_TEMP/bortus-unit-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          mkdir -p "$proof"
+          name="bortus-quality-portable-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+          docker run --rm --pull never --name "$name" --network none \
+            --cpus 2 --memory 1g --memory-swap 1g --pids-limit 256 \
+            --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app,readonly" \
+            --mount "type=bind,source=$proof,target=/unit-proof" \
+            --workdir /app -e BORTUS_UNIT_RECEIPT=/unit-proof/portable.json \
+            -e BORTUS_UNIT_RUN_ID="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
+            --entrypoint node "$BORTUS_CI_IMAGE" scripts/run-compatible-unit-tests.mjs --portable
+      - name: Native and standalone build in pinned compiler image
+        shell: bash
+        run: |
+          set -euo pipefail
+          name="bortus-quality-compile-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+          docker run --rm --pull never --name "$name" --platform linux/amd64 \
+            --cpus 4 --memory 4g --memory-swap 4g --pids-limit 256 \
+            --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app" \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
+            -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
+            -e CIRCLE_NODE_TOTAL=4 --entrypoint bash "$BORTUS_CI_IMAGE" \
+            -lc 'mkdir -p "$HOME" && npm run build'
+      - name: Original lint and type checks with isolated runtime network
+        shell: bash
+        run: |
+          set -euo pipefail
+          name="bortus-quality-checks-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+          docker run --rm --pull never --name "$name" --network none \
+            --cpus 4 --memory 4g --memory-swap 4g --pids-limit 256 \
+            --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app,readonly" \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
+            -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
+            --entrypoint bash "$BORTUS_CI_IMAGE" \
+            -lc 'mkdir -p "$HOME" && npm run lint && npm run typecheck -- --incremental false'
+      - name: Complete remaining synthetic unit suite bound to portable proof
+        timeout-minutes: 10
+        shell: bash
+        run: |
+          set -euo pipefail
+          proof="$RUNNER_TEMP/bortus-unit-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          name="bortus-quality-units-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+          timeout --signal=TERM --kill-after=15s 540s docker run --rm --pull never --name "$name" --network none \
+            --cpus 2 --memory 1g --memory-swap 1g --pids-limit 256 \
+            --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app,readonly" \
+            --mount "type=bind,source=$proof,target=/unit-proof" \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
+            -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
+            -e BORTUS_UNIT_RECEIPT=/unit-proof/portable.json \
+            -e BORTUS_UNIT_RUN_ID="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}" \
+            --entrypoint bash "$BORTUS_CI_IMAGE" \
+            -lc 'mkdir -p "$HOME" && node scripts/run-compatible-unit-tests.mjs --remaining'
+      - name: Five source regression sensitivity checks (A04/A05/A06/action/cache)
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          name="bortus-quality-sensitivity-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+          docker run --rm --pull never --name "$name" --network none \
+            --cpus 2 --memory 1g --memory-swap 1g --pids-limit 256 \
+            --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app,readonly" \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED \
+            -e DATABASE_URL -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
+            --entrypoint bash "$BORTUS_CI_IMAGE" \
+            -lc 'mkdir -p "$HOME" && npm run test:regression-sensitivity'
+      - name: Deleted-account and bootstrap DB regression sensitivity checks
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          name="bortus-quality-db-sensitivity-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+          docker run --rm --pull never --name "$name" --network none \
+            --cpus 2 --memory 1g --memory-swap 1g --pids-limit 256 \
+            --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app,readonly" \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED \
+            -e DATABASE_URL -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
+            --entrypoint bash "$BORTUS_CI_IMAGE" \
+            -lc 'mkdir -p "$HOME" && npm run test:regression-sensitivity-db'
+      - name: Separate-process SQL writer-lock regression sensitivity
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          set -euo pipefail
+          name="bortus-quality-process-sensitivity-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+          docker run --rm --pull never --name "$name" --network none \
+            --cpus 2 --memory 1g --memory-swap 1g --pids-limit 256 \
+            --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app,readonly" \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED \
+            -e DATABASE_URL -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
+            --entrypoint bash "$BORTUS_CI_IMAGE" \
+            -lc 'mkdir -p "$HOME" && node scripts/regression-sensitivity-process.mjs'
+      - name: Original strict integration and process controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          name="bortus-quality-http-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          trap 'docker rm -f "$name" >/dev/null 2>&1 || true' EXIT
+          docker run --rm --pull never --name "$name" --network none \
+            --cpus 2 --memory 1g --memory-swap 1g --pids-limit 256 \
+            --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/app,readonly" \
+            --workdir /app -e HOME=/tmp/bortus-quality-home -e NEXT_TELEMETRY_DISABLED -e DATABASE_URL \
+            -e BOTRUS_JWT_SECRET -e BOTRUS_SECRETS_KEY -e BORTUS_DISABLE_PROVISIONING \
+            --entrypoint bash "$BORTUS_CI_IMAGE" -lc 'mkdir -p "$HOME" && npm run test:integration'
+      - name: Acquire locked browser CI tools (no app dependency change)
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          timeout --signal=TERM --kill-after=15s 240s bash scripts/browser-ci-smoke.sh acquire
+      - name: Finite compiled Pods browser smoke
+        timeout-minutes: 6
+        shell: bash
+        run: |
+          timeout --signal=TERM --kill-after=60s 300s bash scripts/browser-ci-smoke.sh run

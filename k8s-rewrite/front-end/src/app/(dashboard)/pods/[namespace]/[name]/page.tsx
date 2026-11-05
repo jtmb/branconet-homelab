@@ -3,9 +3,10 @@
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { Container, Loader2, Server, Network, Gauge, Layers, ChevronRight } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useQuery } from "@/lib/use-query";
+import { QueryStatus } from "@/components/ui/query-status";
 import ViewportWrapper from "../../../viewport-wrapper";
-import ResourceActionsMenu from "../../../resource-actions-menu";
+import ResourceActionsMenu from "../../../resource-actions-trigger";
 
 function formatAge(ms: number): string {
   const s = Math.floor(ms / 1000);
@@ -21,24 +22,11 @@ function formatAge(ms: number): string {
 
 export default function PodDetailPage() {
   const { namespace, name } = useParams<{ namespace: string; name: string }>();
-  const [pod, setPod] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-
-  const fetchPod = useCallback(async () => {
-    try {
-      const res = await fetch(`/api/cluster/pods/${namespace}/${name}`);
-      if (res.status === 404) { setNotFound(true); setLoading(false); return; }
-      const data = await res.json();
-      setPod(data.pod);
-    } catch {
-      setNotFound(true);
-    } finally {
-      setLoading(false);
-    }
-  }, [namespace, name]);
-
-  useEffect(() => { fetchPod(); }, [fetchPod]);
+  const query = useQuery<any>(`/api/cluster/pods/${encodeURIComponent(namespace)}/${encodeURIComponent(name)}`);
+  const pod = query.data?.pod;
+  const loading = query.loading;
+  const notFound = query.status === 404;
+  const fetchPod = query.refetch;
 
   if (loading) {
     return (
@@ -52,8 +40,8 @@ export default function PodDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <Container className="w-12 h-12 text-zinc-600" />
-        <h2 className="text-lg font-semibold text-zinc-300">Pod Not Found</h2>
-        <p className="text-sm text-zinc-500">{namespace}/{name}</p>
+        <h2 className="text-lg font-semibold text-zinc-300">{notFound ? "Pod Not Found" : "Pod Unavailable"}</h2>
+        <QueryStatus query={query} /><p className="text-sm text-zinc-500">{namespace}/{name}</p>
         <Link href="/pods" className="text-indigo-400 hover:underline text-sm">← Back to Pods</Link>
       </div>
     );
@@ -105,7 +93,7 @@ export default function PodDetailPage() {
     <div className="flex flex-col min-h-0">
 
       <ViewportWrapper>
-      <main className="px-3 sm:px-4 lg:px-6 py-6">
+      <main className="px-3 sm:px-4 lg:px-6 py-6"><QueryStatus query={query} />
         {/* Breadcrumb */}
         <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
           <Link href="/pods" className="hover:text-zinc-300 transition-colors">Pods</Link>

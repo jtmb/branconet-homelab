@@ -1,0 +1,416 @@
+{
+  "scope": "A15 finite current source inventory and isolated narrow fix; all runtime acceptance remains pending",
+  "sourceParent": "4a4c22a3c7b3f24b85a0ddf94354324960ebc5f0",
+  "branch": "codex/bortus-a15-keyboard-modal",
+  "originalValidation": "Keyboard-only navigation through collapsed sidebar, tables and every modal; inspect accessible names/dialog roles, focus return and screen-reader announcements. Run an automated accessibility scan, then manually review findings rather than treating a score as acceptance.",
+  "preChangeFindings": [
+    {
+      "path": "k8s-rewrite/front-end/src/app/cluster/nodes/page.tsx",
+      "finding": "Edit Node custom fixed overlay has no dialog role/focus primitive/Escape/return, and Add/Edit labels are not programmatically associated; Search relies on placeholder",
+      "observedBy": "source only, not a runtime reproduction"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/globals.css",
+      "finding": "Earlier universal outline:0!important wins over final non-important focus-visible outline, including collapsed links and custom controls",
+      "observedBy": "source CSS cascade, not measured browser rendering"
+    }
+  ],
+  "sourceChanges": [
+    "Use existing shared Radix Modal for legacy Edit Node; retain busy close refusal, all session/draft/mutation callbacks and error/status content",
+    "Associate the four Add and four Edit labels through unique fixed IDs; give legacy inventory Search an explicit name",
+    "Make existing final keyboard-focus outline important to override legacy important and inline resets; preserve pointer styling and geometry"
+  ],
+  "inventory": {
+    "modalMountSites": [
+      {
+        "id": "legacy-node-edit",
+        "source": "k8s-rewrite/front-end/src/app/cluster/nodes/page.tsx",
+        "currentWorkingSHA256": "9868384172e0b88230ef1409768acf16f00eeac0881317a9247d8d2e9719e421",
+        "titleOrModeVariants": [
+          "Edit Node"
+        ],
+        "retainedEvidenceScope": "new shared Modal conversion; keyboard/axe runtime pending"
+      },
+      {
+        "id": "user-editor",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/users/page.tsx",
+        "currentWorkingSHA256": "d88fec480cb7b156ad549b7b35a0d83d4d13758b62f988e32e07059618345bc4",
+        "titleOrModeVariants": [
+          "Add user",
+          "Edit user"
+        ],
+        "retainedEvidenceScope": "retained administration-ui: Shift+Tab stays in Add dialog and Escape returns to Add; not all modes separately observed"
+      },
+      {
+        "id": "configuration-editor",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/configuration/page.tsx",
+        "currentWorkingSHA256": "c68a447bb7fa8f9e097650d256dbd548e68a2f69e04e474a07f3fcae1fe5d54c",
+        "titleOrModeVariants": [
+          "Add nonsecret configuration",
+          "Edit configuration"
+        ],
+        "retainedEvidenceScope": "retained administration-ui: edit Escape returns to trigger; new JSON response controls are HTTP, not keyboard proof"
+      },
+      {
+        "id": "flux-add",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/flux/page.tsx",
+        "currentWorkingSHA256": "22e628eb94485ee6bc300682721e3de0600f37ab80037ba777ca40ee23041645",
+        "titleOrModeVariants": [
+          "Add Git Repository"
+        ],
+        "retainedEvidenceScope": "functional Flux browser retained; complete modal keyboard sequence not established"
+      },
+      {
+        "id": "flux-removal-progress",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/flux/page.tsx",
+        "currentWorkingSHA256": "22e628eb94485ee6bc300682721e3de0600f37ab80037ba777ca40ee23041645",
+        "titleOrModeVariants": [
+          "Repository removal"
+        ],
+        "retainedEvidenceScope": "functional dismissal/progress retained; complete modal keyboard sequence not established"
+      },
+      {
+        "id": "kv-workbench",
+        "source": "k8s-rewrite/front-end/src/components/secrets/kv-workbench.tsx",
+        "currentWorkingSHA256": "200e624f49b102fc2af647fa37b24777fd459487d5c9748369ed3fb6d55129b5",
+        "titleOrModeVariants": [
+          "KV path workbench"
+        ],
+        "retainedEvidenceScope": "kv-workflows-browser: actual 32 forward/reverse Tab steps, background focus blocked, close focus return"
+      },
+      {
+        "id": "pod-logs",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/log-modal.tsx",
+        "currentWorkingSHA256": "cac09cffa039a6d2c534d2f1db1ac8ef5efbf38ac53db2fe9a98aa080c365159",
+        "titleOrModeVariants": [
+          "Logs for selected Pod/container"
+        ],
+        "retainedEvidenceScope": "actual multiple-container/error UI retained; complete keyboard trap/return sequence not established"
+      },
+      {
+        "id": "resource-yaml",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/yaml-modal.tsx",
+        "currentWorkingSHA256": "5e15604192576f0d25de4c077cca8bbdde117c70eb8c7607235abb32a33b78b1",
+        "titleOrModeVariants": [
+          "View YAML",
+          "Edit YAML"
+        ],
+        "retainedEvidenceScope": "actual lifecycle/close and touch focus-inside/return retained; keyboard-only sequence not established for both modes"
+      },
+      {
+        "id": "provisioning-confirm",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/deploy/deploy-client.tsx",
+        "currentWorkingSHA256": "ab1c93bc898a22b867f332438012b6f624a4f08feeecceacd56a2e64f5ca4e03",
+        "titleOrModeVariants": [
+          "Run provisioning",
+          "Request job cancellation",
+          "Delete job history"
+        ],
+        "retainedEvidenceScope": "wide-zoom-final-browser: Run confirmation keyboard/close return; other two variants not independently keyboard-observed"
+      },
+      {
+        "id": "flux-remove-confirm",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/flux/page.tsx",
+        "currentWorkingSHA256": "22e628eb94485ee6bc300682721e3de0600f37ab80037ba777ca40ee23041645",
+        "titleOrModeVariants": [
+          "Remove repository"
+        ],
+        "retainedEvidenceScope": "functional exact-name removal retained; complete keyboard sequence not established"
+      },
+      {
+        "id": "configuration-delete",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/configuration/page.tsx",
+        "currentWorkingSHA256": "c68a447bb7fa8f9e097650d256dbd548e68a2f69e04e474a07f3fcae1fe5d54c",
+        "titleOrModeVariants": [
+          "Delete configuration"
+        ],
+        "retainedEvidenceScope": "functional exact-key confirmation retained; complete keyboard sequence not established"
+      },
+      {
+        "id": "resource-confirm",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/resource-actions-menu.tsx",
+        "currentWorkingSHA256": "18b28bbe7fbbdc6826e2d704b4a4c63aa23b9dc4e57f8f3f15effae0f4e39d23",
+        "titleOrModeVariants": [
+          "Roll back deployment",
+          "Drain node",
+          "Delete Pod",
+          "Delete Deployment",
+          "Delete Namespace",
+          "Delete Ingress"
+        ],
+        "retainedEvidenceScope": "current capability map has these confirmations; no invented Service/PVC/Node delete or role/action crossproduct"
+      },
+      {
+        "id": "volume-policy",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/settings/page.tsx",
+        "currentWorkingSHA256": "4dd549c3722fca38d855618c9163738445a52d46f687d5155d7f393a69a924e0",
+        "titleOrModeVariants": [
+          "Change volume reclaim policy"
+        ],
+        "retainedEvidenceScope": "actual policy failure/retry and sorting retained; complete keyboard sequence not established"
+      },
+      {
+        "id": "user-delete",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/users/page.tsx",
+        "currentWorkingSHA256": "d88fec480cb7b156ad549b7b35a0d83d4d13758b62f988e32e07059618345bc4",
+        "titleOrModeVariants": [
+          "Delete user"
+        ],
+        "retainedEvidenceScope": "functional actual account deletion retained; complete confirmation keyboard sequence not established"
+      },
+      {
+        "id": "inventory-delete",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/nodes/page.tsx",
+        "currentWorkingSHA256": "f25d30059b27b74bce35e36954379db09aadeeafb7ac45ae47ab8af0b5125be4",
+        "titleOrModeVariants": [
+          "Delete inventory record"
+        ],
+        "retainedEvidenceScope": "functional actual inventory deletion retained; complete confirmation keyboard sequence not established"
+      },
+      {
+        "id": "secret-delete",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/secrets/secrets-editor.tsx",
+        "currentWorkingSHA256": "98cd646e8b211e1f3a29b7e7114cd4700301e49df10906649b4019e72a998ea2",
+        "titleOrModeVariants": [
+          "Delete selected Secret key",
+          "Remove DB alias"
+        ],
+        "retainedEvidenceScope": "functional exact-target native/alias controls retained; complete keyboard sequence not established"
+      },
+      {
+        "id": "overview-clear",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/page.tsx",
+        "currentWorkingSHA256": "b8c4e3af53d6345acfd81cc6ced5b891aaaca387f17cd2c0a14c45a293382c3f",
+        "titleOrModeVariants": [
+          "Clear dashboard inventory"
+        ],
+        "retainedEvidenceScope": "actual failed DELETE500 retains dialog/input/error then explicit retry200; no independent keyboard-only sequence established"
+      },
+      {
+        "id": "kv-mount-delete",
+        "source": "k8s-rewrite/front-end/src/app/(dashboard)/secrets/kv/kv-forms.tsx",
+        "currentWorkingSHA256": "ed92cf3a23778199f430a4e8baa1693424b1de769cbc1623a582d28ccae1a7a3",
+        "titleOrModeVariants": [
+          "Delete mount"
+        ],
+        "retainedEvidenceScope": "shared ConfirmDialog source; complete keyboard sequence not established"
+      }
+    ],
+    "mountSiteCount": 18,
+    "navigation": "13 named real Links with aria-current; named collapse/expand button",
+    "tables": "Real detail Links, named SortHeader buttons with current direction, aria-sort in shared tables, named pagination",
+    "menus": [
+      "Radix Account menu",
+      "Radix resource Actions menu with lazy trigger replacement"
+    ],
+    "nonmodal": "Terminal is a named region with named input/restore/switch/height/Close controls; not a modal and no invented focus trap"
+  },
+  "retainedEvidence": [
+    {
+      "path": "docs/implementation-evidence/administration-ui.json",
+      "SHA256": "ab1bb82f3d8f8a188c6a7bb5fba77bc0c3a841155f4021173bab6ad7d68796bf",
+      "scope": "historical observed assertions only; no transfer of changed assets or unrecorded keyboard/AT observations"
+    },
+    {
+      "path": "docs/implementation-evidence/flux-browser.json",
+      "SHA256": "b0160f487f139dc999ef78b6b712287e5bfee9d42533b6e38ea3a8f7bb73dbbc",
+      "scope": "historical observed assertions only; no transfer of changed assets or unrecorded keyboard/AT observations"
+    },
+    {
+      "path": "docs/implementation-evidence/kv-workflows-browser.json",
+      "SHA256": "7e91bf5bf375f9803ff434efaf7bcb9bda4163787d6b007d1388937714dbcb39",
+      "scope": "historical observed assertions only; no transfer of changed assets or unrecorded keyboard/AT observations"
+    },
+    {
+      "path": "docs/implementation-evidence/terminal-final-browser.json",
+      "SHA256": "99e18ea4acfe2e1969563e6950a6f56a7c00be8946ae8678e67285c9697bac77",
+      "scope": "historical observed assertions only; no transfer of changed assets or unrecorded keyboard/AT observations"
+    },
+    {
+      "path": "docs/implementation-evidence/wide-zoom-final-browser.json",
+      "SHA256": "5ff947a795cb8727306e84f9aa8830efedacc17d840bcaf87072c27e305e8953",
+      "scope": "historical observed assertions only; no transfer of changed assets or unrecorded keyboard/AT observations"
+    },
+    {
+      "path": "docs/implementation-evidence/optional-code-browser.json",
+      "SHA256": "2e119a4d962dea842ae99f1ecaded3ade42daa17f2fea9debe824be291e9fb17",
+      "scope": "historical observed assertions only; no transfer of changed assets or unrecorded keyboard/AT observations"
+    },
+    {
+      "path": "docs/implementation-evidence/a16-current-browser-qualification.json",
+      "SHA256": "890bc75dd4356c91c143ae251c097efa677e48f449d29eff5369e0c19a30e7c8",
+      "scope": "historical observed assertions only; no transfer of changed assets or unrecorded keyboard/AT observations"
+    },
+    {
+      "path": "docs/implementation-evidence/a14-source-composite-qualification-root-20261015.json",
+      "SHA256": "08598cae81dab8994000b05a2737ab52b67c47317190ad93949f86141c87465d",
+      "scope": "historical observed assertions only; no transfer of changed assets or unrecorded keyboard/AT observations"
+    }
+  ],
+  "remainingOriginalCases": [
+    "After reviewed source build, keyboard-only collapsed sidebar/table and computed visible focus checks on current compiled source",
+    "Keyboard-only opening/trap forward+reverse/Escape or named Close/focus return for the finite unqualified current modal sites/modes above; reuse qualified rows where unchanged source and actual assertion suffice",
+    "Inspect current accessible names/roles and status/error live regions; run scoped automated accessibility scan and manually review findings including retained terminal contrast incomplete",
+    "Actual screen-reader announcements through an available assistive technology remain separate from AX, role, live-region or axe checks"
+  ],
+  "existingHarnessReuse": {
+    "touch": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a14-touch-browser-preparation-20261015-v1-4",
+    "resourceUI": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a05-a08-resource-browser-preparation-20261015-v3",
+    "legacyInventory": "Existing qualified legacy-node UI fixture seeds editable inventory and session/permission controls; no HTTP interception needed to open/cancel Edit",
+    "commandsAfterRootReview": [
+      "Use original full functional four-phase build against this isolated reviewed source (one combined build, not per markup change)",
+      "Reuse existing browser controller/prepare/separate READY/Windows launcher with one finite keyboard module; Root remains sole runtime executor"
+    ],
+    "bounds": "Existing browser host480/closure60, attach420, browser300/outer330,2CPU1GiB/noSwap/PID256/netnone/RO/nonroot/nnp/cap-drop; no new acquisition, overrides or business mutation replay"
+  },
+  "docsReviewedBeforeChange": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "beforeSHA256": "6041d0990fcf78b263d2cc53f9aa8afa3cc3baed8939382a6a9ec7e5bfdb2c1d",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "beforeSHA256": "125071f741007fb662de81f13f769bd093c965b52c28db97c0e6d3decf680aa3",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "beforeSHA256": "2dcd44675e70d9e15272b177a9918e635278b9ba631839c8a5e2f0cfeb660670",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "beforeSHA256": "d6895235d902e4579b55763c3ec39d8ab8cb3cdf496ade9f8dc6e0f3c4b2d195",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "beforeSHA256": "533f3f968675a3f287304d3d5534e3635bd8b6fd1c85361e5216d345a557fd73",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "beforeSHA256": "f0da12bbfc0b78e8cf441cd880e998bfdc2d263c73aac8dc757588a134c9004d",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "beforeSHA256": "7b89eb8134d178d86b187098664207355a4671421eb4e9391f4285b1885d695d",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "beforeSHA256": "e1870c90343922ad58f4931446c4793acf96e50284314a9b3476269fbd1a499b",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "beforeSHA256": "9edabd0cc012a81d4e7a8240caf0b4e2347bbeeacc308afbf48fb1a722978412",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "beforeSHA256": "f03f97a95300c02d55149c18d1f180eff3ab21cb48cedbb8975d690579895bb8",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "beforeSHA256": "40e02914c53ee52af9ede9ec6411eb18a92e0aef08e2e149865b278a3ca56fdc",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "beforeSHA256": "2f6eb0566129a747364ececa352fddd3c3582fc5c59cddfff1a73225b1255d82",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "beforeSHA256": "f118a0539ca1b2cb275f1c5ac825951a650cbf53e423dc8de9bc88521b905038",
+      "checked": true,
+      "relevantToKeyboardModalChange": false
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "beforeSHA256": "af6bb33dfbdd7880731df918def214a57f930167ccc2378671c7dbdf9bcb44bb",
+      "checked": true,
+      "relevantToKeyboardModalChange": false
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "beforeSHA256": "1d8e32ee9ce3bf0a6b6e96fc8860404a91c126d4e0bd3dd1496e00c07d96368e",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "beforeSHA256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "checked": true,
+      "relevantToKeyboardModalChange": false
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "beforeSHA256": "250efd18d9d35e95b14f68ffa4a22eae7702c88c840465251a0677dcbb73e791",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "beforeSHA256": "c43a1aa2fc94b20c52c19ff5c07415189718db59f7e414c284db18fb02a64ec0",
+      "checked": true,
+      "relevantToKeyboardModalChange": false
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "beforeSHA256": "46feb1a1a28ebea9b7c8f0a9cdb97a02c931cebc910426c81f694e2b2a8a2f92",
+      "checked": true,
+      "relevantToKeyboardModalChange": false
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "beforeSHA256": "7c0b14c6c2729dec65b8a0999fc22cc6907e8a4663f21c02cb151997e61b2932",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "beforeSHA256": "55cd043b1309ccae5c64b498daa76b803d29344a5571e5e59babd9a4764fadcf",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "beforeSHA256": "0b8e0a8461f208e1781e003939c996bb32d32bb8c5cbc091ab7c106692588c53",
+      "checked": true,
+      "relevantToKeyboardModalChange": true
+    }
+  ],
+  "guide": {
+    "installedNextDistDocsPresent": false,
+    "officialVersionedGuideRead": "https://nextjs.org/docs/15/architecture/accessibility"
+  },
+  "actualTestsRun": false,
+  "actualBrowserRun": false,
+  "actualAssistiveTechnologyRun": false,
+  "fullFunctionalQualified": false,
+  "wholeA15Qualified": false,
+  "productionAdopted": false,
+  "runtimeGeometry": {
+    "oldEditNodeMaxWidth": "max-w-sm",
+    "sharedModalMaxWidth": "max-w-4xl",
+    "runtimeGeometryVerified": false,
+    "scope": "Existing shared component layout; geometry remains unverified until current-build browser checks"
+  }
+}

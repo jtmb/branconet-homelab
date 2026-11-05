@@ -1,0 +1,31 @@
+{
+  "scope": "internal native KV protocol and transport; public value routes not connected",
+  "runtime": "Node22.23.3 Windows x64",
+  "focusedNativeProtocolTests": 10,
+  "fullTests": { "passed": 69, "failed": 0, "skipped": 0 },
+  "lint": "zero warnings",
+  "typecheck": "passed",
+  "productionBuild": "passed",
+  "productionHttp": { "passed": true, "seconds": 31.34 },
+  "nativeFixture": "disposable SQLite and in-memory API with synthetic binary/text values; no real cluster",
+  "cases": [
+    "guard disabled and scoped initial adoption denied before native writes",
+    "immutable grouped history; selected __proto__/constructor/toString and empty/binary values preserved",
+    "603 synthetic exact aliases retained through explicit adoption preview/grants",
+    "unrelated canonical keys/type/labels/annotations/owners/managed fields preserved; absent from history/public metadata/audit",
+    "missing/stale head/resourceVersion; concurrent CAS has one winner",
+    "external selected-key drift requires reconcile; rollback creates a new version",
+    "positive create/replace timeout read-back; before-write/negative/unavailable read-back stays ambiguous",
+    "audit failure blocks writes; post-commit audit failure resolves from native marker after restart",
+    "tombstones retain canonical object; references bounded by retention with no blind history deletion",
+    "new owned empty source, imported collision, typed/immutable/binary/size/forged-ownership refusal"
+  ],
+  "tlsTransport": "real verified HTTPS mock; special native key spelling, body-only transport, two-page listing, repeated/oversize page refusal, metadata-only probe and UID/RV delete preconditions",
+  "fluxCascade": "production HTTP, synthetic Flux-kind successes, every Secret delete forbidden; completion/progress/DB cleanup passes without inferred credential deletion",
+  "limitations": [
+    "No native public-route, automation, flat/legacy policy-bypass, GC/destroy/import/export/rotation/UI acceptance yet",
+    "603-reference set is synthetic, not production alias/import validation",
+    "No Linux KV image, real ServiceAccount/admission, deployment or production mutation",
+    "No controlled performance claim; HTTP duration includes test harness overhead"
+  ]
+}

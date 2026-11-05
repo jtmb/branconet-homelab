@@ -1,0 +1,87 @@
+{
+  "scope": "Known-field Set/includes allocation differential diagnostic; no production behavior edit or endpoint acceptance",
+  "inputs": {
+    "commit": "cd25c6bf46577acf4b3e08e725f2e8a35aa19609",
+    "productionCandidate": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f",
+    "sources": [
+      {
+        "path": "src/lib/secret-summary-json.ts",
+        "sha256": "791e5dad01ec4c5ccd5f0948b234a21bea99989105d98a04eea9110ab2153aad",
+        "bytes": 11738
+      },
+      {
+        "path": "src/lib/secret-ascii-span.ts",
+        "sha256": "a75b9e49bbae6fdd1533101ec7182d7ba3cec509eaef051bd4ecfe13976c6eaa",
+        "bytes": 783
+      },
+      {
+        "path": "src/lib/cluster-secrets.ts",
+        "sha256": "61ea585afa95f1747ce4d55df81fffb36a5150077a7f74f53aa0198028f8c70c",
+        "bytes": 12385
+      }
+    ]
+  },
+  "node": "v22.23.3",
+  "pid": 41596,
+  "startedUtc": "2026-10-11T11:17:49.813Z",
+  "structural": [
+    {
+      "name": "string",
+      "beforeSha256": "067e12160604549fc94fde2c3579a9a26c3f2697d4ab3d05907e5a9bc2adb4a6",
+      "afterSha256": "067e12160604549fc94fde2c3579a9a26c3f2697d4ab3d05907e5a9bc2adb4a6",
+      "equal": true
+    },
+    {
+      "name": "skip",
+      "beforeSha256": "599d554099f68b1bb3d4f1a87a4a6cf3512ad92a3a08ccc00cac18d77e95a0c6",
+      "afterSha256": "599d554099f68b1bb3d4f1a87a4a6cf3512ad92a3a08ccc00cac18d77e95a0c6",
+      "equal": true
+    },
+    {
+      "name": "capture",
+      "beforeSha256": "a6a7d267390c27d7d9b83d059d9e4bb943e5a8251bb951aa21498329b2cf30ef",
+      "afterSha256": "a6a7d267390c27d7d9b83d059d9e4bb943e5a8251bb951aa21498329b2cf30ef",
+      "equal": true
+    },
+    {
+      "name": "text",
+      "beforeSha256": "d530de9eafeb4fb762296e4800687eec81e5911fc2aa0af3dbc49ddbc176a3d0",
+      "afterSha256": "d530de9eafeb4fb762296e4800687eec81e5911fc2aa0af3dbc49ddbc176a3d0",
+      "equal": true
+    }
+  ],
+  "sourceChanges": [
+    {
+      "fromSha256": "4d56b8b1ac684e3ab8fca0ec2a5e216b7c173e79332a72875fd3b20112678a68",
+      "toSha256": "aedc345d4fcf5646e1174cb9ebf648b812c6bcc8f80b132e42c8ffebf233dc6b"
+    },
+    {
+      "fromSha256": "63f7a807a3e42192423bd785b01cafe1949773661ead9bfc25669b9c9cfa3140",
+      "toSha256": "9860379288e238ddb79138ee7f28d2d7a80dcef612f0560d6ebb16c674ae4d9d"
+    },
+    {
+      "fromSha256": "459dc80edf4e5bb1a078fd1623f10e6795a679e59d285b481ae7079bca532461",
+      "toSha256": "53c729778d28e984825bc78c1b6bd85f4422bc725b8e0e3eb866bd02ef99d4dc"
+    },
+    {
+      "fromSha256": "b8ad55a9351c578343f58694e48817500525bb66e74f4e1d84f67258543f8981",
+      "toSha256": "b7d0a4fe6f8b9bbeeff9768b01cb8f8d88b81e013e6a281e0059a20df9306fee"
+    },
+    {
+      "fromSha256": "dfc6cc47759107a435103b657fb5fb2946836890f7fdb21f6d5fc51b997ced6e",
+      "toSha256": "90b425819eb3a1960b89508f03cf16c7176f437e56f1cfb09fddd227782d14fd"
+    }
+  ],
+  "originalMetadataCaptureScopesOnly": true,
+  "cases": 0,
+  "malformedCases": 0,
+  "timings": [],
+  "causal": [],
+  "limitations": [
+    "Pure isolated parser, not TLS/endpoint timing; same public bytes for both variants.",
+    "Native values, unknown fields and immutable boolean keep current parser paths.",
+    "Only fixed-known-field duplicate detection changes to scalar bits; complete Reader grammar/capture/fatal decoding/JSON.parse, unknown fields and selected metadata remain unchanged.",
+    "Microtiming cannot establish A07/A21 or no-regression acceptance."
+  ],
+  "performanceAcceptance": false
+}

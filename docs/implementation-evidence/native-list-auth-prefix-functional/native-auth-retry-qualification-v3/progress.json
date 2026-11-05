@@ -1,0 +1,122 @@
+{
+  "owner": "native-auth-retry-qualification-v3",
+  "scope": "Fresh-account consolidation and bounded rejected-prefix hint functional qualification; no performance acceptance",
+  "launcher_pid": 17196,
+  "started_utc": "2026-10-11T04:26:38.557171+00:00",
+  "source_parent": "6ebcd116601253c3bff1e021253fbc10b6540ca8",
+  "source_working_sha256": {
+    "k8s-rewrite/front-end/src/lib/auth.ts": "0fd90638b395bdda6a4a540821a8721fd618fc79f5d90c311a38a4e35a7b3818",
+    "k8s-rewrite/front-end/src/lib/permissions.ts": "c894d04fa4cbcfaa09e97f1248100b671b29927b13950a4e964b0135a994b704",
+    "k8s-rewrite/front-end/src/lib/secret-client.ts": "e16f7f7f2906206276afe3d75710cefdf9441e86a85c340e1ef9901bc22bd0e2",
+    "k8s-rewrite/front-end/tests/native-auth-snapshot.test.ts": "7e7275c0ccd737e8c14114dcba681a8d720524e7343a0c6914453e8264132606",
+    "k8s-rewrite/front-end/tests/native-list-prefix.test.ts": "de87e5cf46d2758e5f5e06d6e76e26fbf3d5acf2a829c794fc955b29bfd964b5",
+    "k8s-rewrite/front-end/tests/native-list-window.test.ts": "892052d4ad66fecd453a97214551d1673445ff20ae090a69448470174600a889",
+    "docs/API-USAGE.md": "981fc0cfe649fe2972f74c7e013f5f735594cf7c157c12953b7f6503d847fa2c",
+    "docs/BORTUS-DEPLOYMENT.md": "83322d05c08cfdacb7a4d6ae9251433ca0f0059ac34b6ffe4860f984bcd7466b",
+    "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md": "bf1af179faeddbd087e054f907e9499cc4cf63d3db3f1f6fd417ba08eb4a1f40",
+    "docs/SECRETS-ENGINE.md": "115d9d5db0bd4428e03c7728f4ea9315cf8edbf247062b81b59c873439f8f4af",
+    "docs/TECH-STACK.md": "ada6a20f249d456d01b14d291b3ddfa3bb3ef7db1728d4f0d60979f55e245b64",
+    "docs/USER-PERMS.md": "61a1a7994c2e5f4830840870296bc0263fa1bee7017423b19b73ed37ed448ad7"
+  },
+  "node_version": "v22.23.3",
+  "checks": [
+    {
+      "name": "pre-types",
+      "started_utc": "2026-10-11T04:26:38.582191+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit",
+        "--incremental",
+        "false"
+      ],
+      "pid": 7996,
+      "exit_code": 0,
+      "wall_seconds": 8.159270899981493,
+      "finished_utc": "2026-10-11T04:26:46.740792+00:00"
+    },
+    {
+      "name": "focused-auth",
+      "started_utc": "2026-10-11T04:26:46.743792+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/native-auth-snapshot.test.ts"
+      ],
+      "pid": 42312,
+      "exit_code": 0,
+      "wall_seconds": 3.1560513000003994,
+      "finished_utc": "2026-10-11T04:26:49.900216+00:00"
+    },
+    {
+      "name": "focused-prefix",
+      "started_utc": "2026-10-11T04:26:49.903216+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/native-list-prefix.test.ts"
+      ],
+      "pid": 44696,
+      "exit_code": 0,
+      "wall_seconds": 22.242712000006577,
+      "finished_utc": "2026-10-11T04:27:12.144907+00:00"
+    },
+    {
+      "name": "native-window",
+      "started_utc": "2026-10-11T04:27:12.148421+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/native-list-window.test.ts"
+      ],
+      "pid": 26404,
+      "exit_code": 0,
+      "wall_seconds": 7.930424000020139,
+      "finished_utc": "2026-10-11T04:27:20.078665+00:00"
+    },
+    {
+      "name": "full-unit",
+      "started_utc": "2026-10-11T04:27:20.082665+00:00",
+      "command": [
+        "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-node22-3f6ebe6f1fca4cb092a488a5d635fb66\\node-v22.23.3-win-x64\\node.exe",
+        "node_modules/tsx/dist/cli.mjs",
+        "--test",
+        "tests/accounts.test.ts",
+        "tests/ansible-progress.test.ts",
+        "tests/flux-credentials.test.ts",
+        "tests/job-output.test.ts",
+        "tests/job-stream.test.ts",
+        "tests/kubectl.test.ts",
+        "tests/kv-foundation.test.ts",
+        "tests/kv-legacy-access.test.ts",
+        "tests/kv-metadata-query.test.ts",
+        "tests/kv-native-request.test.ts",
+        "tests/kv-native.test.ts",
+        "tests/kv-rotation-consumer.test.ts",
+        "tests/kv-workbench.test.ts",
+        "tests/metadata-bounds.test.ts",
+        "tests/metadata-query.test.ts",
+        "tests/mutation-task.test.ts",
+        "tests/native-auth-snapshot.test.ts",
+        "tests/native-list-concurrency.test.ts",
+        "tests/native-list-prefix.test.ts",
+        "tests/native-list-window.test.ts",
+        "tests/native-secrets.test.ts",
+        "tests/query-store.test.ts",
+        "tests/resource-cache.test.ts",
+        "tests/resource-capabilities.test.ts",
+        "tests/resource-state.test.ts",
+        "tests/secret-capacity.test.ts",
+        "tests/transport.test.ts"
+      ],
+      "pid": 41996,
+      "exit_code": 1,
+      "wall_seconds": 20.01262520000455,
+      "finished_utc": "2026-10-11T04:27:40.095334+00:00"
+    }
+  ],
+  "terminal": false
+}

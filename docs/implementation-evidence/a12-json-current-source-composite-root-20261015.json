@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "status": "Original A12 source clause qualified compositionally for current source",
+  "source": "f4cef8a1473c41768b36affe867208b0230f38fb",
+  "frontendTree": "47f852795803906703ce937df356eff8368a26b3",
+  "originalValidation": "Browser flows for readonly/write/deleted/demoted users and provisioning enabled/disabled. Direct unauthorized calls must still fail. Role changes should update visible controls without granting cached authority. [Screenshot](audit-evidence/readonly-actions.jpg).",
+  "historicalBrowserComposite": {
+    "path": "evidence/bortus-a12-source-composite-root-20261015.json",
+    "sha256": "64daf21fb636cddb2a6a74ef7ce72257b3a77af980db179ac20d81aa5debd457",
+    "source": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+    "originalResultsUnmodified": true
+  },
+  "sourceContinuity": [
+    {
+      "path": "k8s-rewrite/front-end/src/lib/use-query.ts",
+      "historicalSHA256": "92bd1bdf32e8b64f7622da449a0bafafd696f7d84493d3e28aadd4585eed4938",
+      "currentSHA256": "f3bc277dee7f1df225255e0173bb56a6ca206ccfe1c586001f47323e1eed1c13",
+      "currentBytes": 4386,
+      "rawGitEqual": false
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/permissions.ts",
+      "historicalSHA256": "c894d04fa4cbcfaa09e97f1248100b671b29927b13950a4e964b0135a994b704",
+      "currentSHA256": "c894d04fa4cbcfaa09e97f1248100b671b29927b13950a4e964b0135a994b704",
+      "currentBytes": 2648,
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/auth.ts",
+      "historicalSHA256": "932034e70f9d0447eb23c38ce91cb799413d289eb0a3bd25f3808c25865f2aff",
+      "currentSHA256": "932034e70f9d0447eb23c38ce91cb799413d289eb0a3bd25f3808c25865f2aff",
+      "currentBytes": 4039,
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/runtime-capabilities.ts",
+      "historicalSHA256": "a53ca135150bfff5bf9da32818814f1c7c8b13f1db9edd5c56db69185d0540d2",
+      "currentSHA256": "a53ca135150bfff5bf9da32818814f1c7c8b13f1db9edd5c56db69185d0540d2",
+      "currentBytes": 403,
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/auth/session/route.ts",
+      "historicalSHA256": "0fa65aaa70406f438168c8560f921dc524b13d1fc33b767c354babaff29db945",
+      "currentSHA256": "0fa65aaa70406f438168c8560f921dc524b13d1fc33b767c354babaff29db945",
+      "currentBytes": 1344,
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/(dashboard)/deploy/deploy-client.tsx",
+      "historicalSHA256": "56af33ba631a5f3f38359ad2490a80be4a981ac9f01c014ff7af5b0727ccd3b6",
+      "currentSHA256": "56af33ba631a5f3f38359ad2490a80be4a981ac9f01c014ff7af5b0727ccd3b6",
+      "currentBytes": 12504,
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/deploy/stop/route.ts",
+      "historicalSHA256": "d809b978c2575c2036ba80b81ac3e80a5f50776ff8640a0e297cfc13edbbcde1",
+      "currentSHA256": "d809b978c2575c2036ba80b81ac3e80a5f50776ff8640a0e297cfc13edbbcde1",
+      "currentBytes": 1315,
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/deploy/history/route.ts",
+      "historicalSHA256": "f0e082a86d2fa535ca8a7913899592f6f0227bbbaacc9facc6c9c77184996c09",
+      "currentSHA256": "f0e082a86d2fa535ca8a7913899592f6f0227bbbaacc9facc6c9c77184996c09",
+      "currentBytes": 2224,
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/deploy/stream/route.ts",
+      "historicalSHA256": "3158c5613d75e2f95ab4b15651a7effe7c8eb8cdd2f6aaa9a28fbc5faecfc099",
+      "currentSHA256": "3158c5613d75e2f95ab4b15651a7effe7c8eb8cdd2f6aaa9a28fbc5faecfc099",
+      "currentBytes": 1631,
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/job-stream.ts",
+      "historicalSHA256": "c57778b4c9cae363e351cefe1c3bbeeffc4714968470a3ec2aaea2b8d8a4b639",
+      "currentSHA256": "c57778b4c9cae363e351cefe1c3bbeeffc4714968470a3ec2aaea2b8d8a4b639",
+      "currentBytes": 3662,
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/(dashboard)/users/page.tsx",
+      "historicalSHA256": "ae8ed113744921319ccc837cd6100ba3c0e4305db7ea672b7a405c4d8f9be0f1",
+      "currentSHA256": "ae8ed113744921319ccc837cd6100ba3c0e4305db7ea672b7a405c4d8f9be0f1",
+      "currentBytes": 8330,
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/users/[id]/route.ts",
+      "historicalSHA256": "168be3c64fbd9ef1dbfcde32ab04bc57be1a3e2b4f6db6e5e9d19118a98e9f15",
+      "currentSHA256": "168be3c64fbd9ef1dbfcde32ab04bc57be1a3e2b4f6db6e5e9d19118a98e9f15",
+      "currentBytes": 1744,
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/(dashboard)/topnav.tsx",
+      "historicalSHA256": "757482ba0e7ba928a69c77970f589d302dfa0a27b6015abe8fef37394ebc754f",
+      "currentSHA256": "757482ba0e7ba928a69c77970f589d302dfa0a27b6015abe8fef37394ebc754f",
+      "currentBytes": 3847,
+      "rawGitEqual": true
+    }
+  ],
+  "semanticDelta": "Successful malformed JSON now refuses502; configuration lists validate shape. Session subscription/useSession tail and401/403 withdrawal effects remain exact.",
+  "newFocusedQualification": {
+    "path": "evidence/bortus-configuration-json-focused-root-20261015.json",
+    "sha256": "4dcdca1080615870cc7ec63b8f6cf4c9eb81efbf178d9ab5e3c65ab3cdf08a68",
+    "fiveRealHTTPTestsPassed": true
+  },
+  "freshFullQualification": {
+    "path": "evidence/bortus-configuration-json-full-functional-root-20261015.json",
+    "sha256": "5dd63a120fd7641416dbb4477d3ea9907250e0cbdde06ca20d5f9a5f013e888c"
+  },
+  "browserCorpusReplayed": false,
+  "currentSourceClauseQualified": true,
+  "humanATQualified": false,
+  "A21Qualified": false,
+  "A22Qualified": false,
+  "performanceAccepted": false,
+  "deliveredOrLiveAccepted": false
+}

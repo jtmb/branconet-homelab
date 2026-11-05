@@ -1,0 +1,543 @@
+{
+  "owner": "functional-4668ceb-20261011-103043-7716",
+  "sourceCommit": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f",
+  "exported": {
+    "source_commit": "4668ceb40c3120c7e4053d94edff31f57b7e1f7f",
+    "source_prefix": "k8s-rewrite/front-end",
+    "source_files": 265,
+    "excluded_files": [
+      ".env.example",
+      "tests/accounts.test.ts",
+      "tests/ansible-progress.test.ts",
+      "tests/ansible.integration.ts",
+      "tests/flux-credentials.test.ts",
+      "tests/flux-list-completeness.test.ts",
+      "tests/flux-zoom.browser.mjs",
+      "tests/flux.browser.mjs",
+      "tests/helpers/fake-ansible.ts",
+      "tests/helpers/fake-kubectl.ts",
+      "tests/helpers/kv-administration-cleanup-fault.ts",
+      "tests/helpers/kv-administration-fixture.ts",
+      "tests/helpers/native-tls.ts",
+      "tests/helpers/next-finalize-probe.ts",
+      "tests/http.integration.ts",
+      "tests/job-output.test.ts",
+      "tests/job-stream.test.ts",
+      "tests/kubectl.test.ts",
+      "tests/kv-administration-cleanup-fault.ts",
+      "tests/kv-administration-ui-fixture.ts",
+      "tests/kv-administration.integration.ts",
+      "tests/kv-administration.test.ts",
+      "tests/kv-foundation.test.ts",
+      "tests/kv-http.integration.ts",
+      "tests/kv-identity.browser.mjs",
+      "tests/kv-legacy-access.test.ts",
+      "tests/kv-metadata-body.test.ts",
+      "tests/kv-metadata-query.test.ts",
+      "tests/kv-native-request.test.ts",
+      "tests/kv-native.test.ts",
+      "tests/kv-rotation-consumer.test.ts",
+      "tests/kv-workbench-browser-entry.tsx",
+      "tests/kv-workbench.browser.mjs",
+      "tests/kv-workbench.test.ts",
+      "tests/kv-workflows.browser.mjs",
+      "tests/measure-bundles.ts",
+      "tests/metadata-bounds.test.ts",
+      "tests/metadata-query.test.ts",
+      "tests/mutation-task.test.ts",
+      "tests/native-ascii-span.test.ts",
+      "tests/native-auth-snapshot.test.ts",
+      "tests/native-list-concurrency.test.ts",
+      "tests/native-list-prefix.test.ts",
+      "tests/native-list-window.test.ts",
+      "tests/native-secrets.test.ts",
+      "tests/native-summary-json.test.ts",
+      "tests/next-body-finalize.test.ts",
+      "tests/optional-code.browser.mjs",
+      "tests/pod-list-capacity.test.ts",
+      "tests/pod-metadata-response.test.ts",
+      "tests/prisma-config.test.ts",
+      "tests/qualify-ansible-callback.py",
+      "tests/qualify-secret-capacity.ts",
+      "tests/query-freshness.test.ts",
+      "tests/query-store.test.ts",
+      "tests/resource-cache.test.ts",
+      "tests/resource-capabilities.test.ts",
+      "tests/resource-snapshot.test.ts",
+      "tests/resource-state.test.ts",
+      "tests/secret-capacity.test.ts",
+      "tests/shared-freshness.browser.mjs",
+      "tests/terminal.browser.mjs",
+      "tests/transport.test.ts",
+      "tests/ui-fixture.ts",
+      "tests/wide-zoom.browser.mjs",
+      "tests/workbench-lifecycle.browser.mjs"
+    ],
+    "includes_committed_tests": false,
+    "package_name": "botrus-k8s-manager",
+    "mutable_worktree_read": false,
+    "git_blob_bytes_verified": true,
+    "working_tree_filters_or_export_substitution_applied": false,
+    "credential_guard_passed": true,
+    "output": "/home/brajam/.cache/bortus-controlled-perf/functional-4668ceb-20261011-103043-7716-raw-source.tar.gz",
+    "build_started": false
+  },
+  "archiveSha256": "beedfeed277ae00811293e50d3a35e7d1a79d3e0bb1b3634aaa59dcfa94a7118",
+  "tests": [
+    {
+      "path": "tests/accounts.test.ts",
+      "mode": "100644",
+      "blob": "6d9bdb72d154d24f8fcb505414ae4fb71353cf5f",
+      "sha256": "31e14ae21ece84431076a83f24c2fbe9567ab382dd5b4c702e760890cbd8f01e",
+      "bytes": 6748
+    },
+    {
+      "path": "tests/ansible-progress.test.ts",
+      "mode": "100644",
+      "blob": "c865600b69e56b355649169d6cae7fe886cbec76",
+      "sha256": "a3a46fdc51f30fef04f7f3809d3ce5e003e9414f87f4f819b4f4fd27e250bb67",
+      "bytes": 6002
+    },
+    {
+      "path": "tests/ansible.integration.ts",
+      "mode": "100644",
+      "blob": "880031ec48c70d415132f6a23be09cfc65a54bdf",
+      "sha256": "b093a43fdfd6fb3242b40d99cd47e6a066640780a79e9ef617542ae446c1313f",
+      "bytes": 8626
+    },
+    {
+      "path": "tests/flux-credentials.test.ts",
+      "mode": "100644",
+      "blob": "47e0436a29db65df1544616b07727a5ade707674",
+      "sha256": "3a6309d34e2dd8b5cb5b839f63359f1061accdcacf22b7c7135f16bbf8e00d85",
+      "bytes": 11063
+    },
+    {
+      "path": "tests/flux-list-completeness.test.ts",
+      "mode": "100644",
+      "blob": "fa913c5fd473cf52edca9349d1f3b6f9fba1045e",
+      "sha256": "96f681d2614b4ab1eeee1abe0e56f49a2c8bef4ac95762478bd2e13fc16181f6",
+      "bytes": 1498
+    },
+    {
+      "path": "tests/flux-zoom.browser.mjs",
+      "mode": "100644",
+      "blob": "aae9cb78c1114a398eeaee543075a2c753a363cd",
+      "sha256": "c983ef3b86b6b82f251024bb262bad9926f969efe604222c24f5480c6bb98f43",
+      "bytes": 10890
+    },
+    {
+      "path": "tests/flux.browser.mjs",
+      "mode": "100644",
+      "blob": "0033439d73e2e9ecb7d1755efb9b2235c2bc8785",
+      "sha256": "c7ef1ecbfc940914a302782d603aa7fcb5f9008dabfc44ca6a17dfd6d5d7673d",
+      "bytes": 23936
+    },
+    {
+      "path": "tests/helpers/fake-ansible.ts",
+      "mode": "100644",
+      "blob": "898f39e601dc2c7317e673d625539b66c15ae4d3",
+      "sha256": "526356c948fbb3553f74e836610b13b4f18d314f90ea7e39f21d3019fd26c6f1",
+      "bytes": 3973
+    },
+    {
+      "path": "tests/helpers/fake-kubectl.ts",
+      "mode": "100644",
+      "blob": "e6bbf71f5246b969bf1562cc5a44978df539ef26",
+      "sha256": "1bc214f11df16d955598e1dc8e390528eaec2b9c34d81f33edd982580599bee4",
+      "bytes": 6777
+    },
+    {
+      "path": "tests/helpers/kv-administration-cleanup-fault.ts",
+      "mode": "100644",
+      "blob": "678f111252acc7860fb8d928528f7ca20c7eef40",
+      "sha256": "5157a8c34b061b9b6ff99dc214a6a022cfa25cae42aadb04ca1b9e0e84b3095b",
+      "bytes": 2483
+    },
+    {
+      "path": "tests/helpers/kv-administration-fixture.ts",
+      "mode": "100644",
+      "blob": "dacb30652dec8211e424567e0e9d90ecb8d5c26e",
+      "sha256": "d7ec8ce5e70fb1d0eb5dcb2e33a3c659110a00787144f1ab060a9fa4a283ce55",
+      "bytes": 18087
+    },
+    {
+      "path": "tests/helpers/native-tls.ts",
+      "mode": "100644",
+      "blob": "0c641e1df4db59c80428d3a637c5cd84f1d88e15",
+      "sha256": "d00a12a8f25aa4a4d4d29ae220bd2f8264f6a4945f9bc939bd1c3cbfe69104f7",
+      "bytes": 5490
+    },
+    {
+      "path": "tests/helpers/next-finalize-probe.ts",
+      "mode": "100644",
+      "blob": "4645759b4de70629542af9e148d144093d32e087",
+      "sha256": "d138ac3478053799d97325da419319d73289ea9466a8205822b070fa70a7284c",
+      "bytes": 3150
+    },
+    {
+      "path": "tests/http.integration.ts",
+      "mode": "100644",
+      "blob": "bccdbd573c6ac35ce35b3a710ba3a5b91167c130",
+      "sha256": "6b58c0c735a94d884a2963ee112d85c4c5a828c4af22054b00104df80cfd77d5",
+      "bytes": 47933
+    },
+    {
+      "path": "tests/job-output.test.ts",
+      "mode": "100644",
+      "blob": "751190d9fd4d1dd116eac31673237ad6e0035484",
+      "sha256": "bd03f3984eb60addd6eaad6810a824a3dec66bfeffbe8818017454edf6e0d6ec",
+      "bytes": 3084
+    },
+    {
+      "path": "tests/job-stream.test.ts",
+      "mode": "100644",
+      "blob": "9dad3c2481e0f02c0295851b4c562f260ad3adf6",
+      "sha256": "159895bb6de7fd4acb6f668adb4b8e5c6ec09745a62aab4c5caadbb3e017ce46",
+      "bytes": 7505
+    },
+    {
+      "path": "tests/kubectl.test.ts",
+      "mode": "100644",
+      "blob": "8cea9432e637e785f6ac669fde373350ceae06a1",
+      "sha256": "42780a9e8aaaeed6083de4a8afceed39f4680cd709f9ed2a91ffd87a6b650d05",
+      "bytes": 5751
+    },
+    {
+      "path": "tests/kv-administration-cleanup-fault.ts",
+      "mode": "100644",
+      "blob": "f95e18bd321a610f72bf704414e63828f6a7f3c8",
+      "sha256": "6dfbda5a80b9db99d21f4b7365f90967254a1e4c97c03adc977357f1aaae85f0",
+      "bytes": 816
+    },
+    {
+      "path": "tests/kv-administration-ui-fixture.ts",
+      "mode": "100644",
+      "blob": "a5a315b4bb9a78c962c64d6602e28b1650eb9166",
+      "sha256": "e6e784e22f5df7aef8c9861e07e717dfca092053ad74c9cbb0d607087a7d9b20",
+      "bytes": 1009
+    },
+    {
+      "path": "tests/kv-administration.integration.ts",
+      "mode": "100644",
+      "blob": "6defe7120ad2818d82b717b211088cbe7cbbb705",
+      "sha256": "dc7006bc4dbad9642ff3b840d832ba0590e0891aa99edcbeea53973be51b28e7",
+      "bytes": 8502
+    },
+    {
+      "path": "tests/kv-administration.test.ts",
+      "mode": "100644",
+      "blob": "0d196bc754267fd2afca99b896a0411124f6723a",
+      "sha256": "4f0356a397504ff5bf8139cd385a08b08dac440982049c2a891238f61beb5b83",
+      "bytes": 12951
+    },
+    {
+      "path": "tests/kv-foundation.test.ts",
+      "mode": "100644",
+      "blob": "1ae59fcfb98ea5b25d8d98b79d1b1120c353c9f3",
+      "sha256": "4c3e40e204424fe17d58884a4f5d5923ab0f9127e41a50365381a42358f26a49",
+      "bytes": 22297
+    },
+    {
+      "path": "tests/kv-http.integration.ts",
+      "mode": "100644",
+      "blob": "e9328f693d54021d5c0c8e4a4289e4ba0e0c9d23",
+      "sha256": "5b2b0ab2e1008e23e750dadf0daa770264586e71f26b3d2ec7ca98dd2502802b",
+      "bytes": 49334
+    },
+    {
+      "path": "tests/kv-identity.browser.mjs",
+      "mode": "100644",
+      "blob": "bac067c42be9499cb2d15c289b1a00d4ff8ea6f8",
+      "sha256": "b203434167cda1b634d2a04b0e5914f1c13f08ccb74ffb12aaa51eb6ce7c9441",
+      "bytes": 15361
+    },
+    {
+      "path": "tests/kv-legacy-access.test.ts",
+      "mode": "100644",
+      "blob": "ab27bd9381b09add65375adf4f9c7c103f0da8a2",
+      "sha256": "a373785fcd3663cc9a33476e6dec85b023a63b7362e9af971f941224755ab8c4",
+      "bytes": 21129
+    },
+    {
+      "path": "tests/kv-metadata-body.test.ts",
+      "mode": "100644",
+      "blob": "4b8ce76a44d8f697afbd28e2a772f374b2e8bebc",
+      "sha256": "b12fa87d59993ff815383156489c8f1f7b5d957e2119582b2451541f3097b26d",
+      "bytes": 3626
+    },
+    {
+      "path": "tests/kv-metadata-query.test.ts",
+      "mode": "100644",
+      "blob": "4405c4ec77c219fa3187357601387df428d2f1ee",
+      "sha256": "87b6ae3f1a68260006c270c7f9d5c78735867f4dc57cfc8547f1bafdbc6a7b17",
+      "bytes": 1395
+    },
+    {
+      "path": "tests/kv-native-request.test.ts",
+      "mode": "100644",
+      "blob": "4299ad996ccb0564da57f81632fae3fd3e8cdfdd",
+      "sha256": "ff9ab117260018282445c5d025ef52fd8a753927102c150d2162884fbb8df877",
+      "bytes": 1283
+    },
+    {
+      "path": "tests/kv-native.test.ts",
+      "mode": "100644",
+      "blob": "d398410d3921b028178a3ecf1f13c7d809bb19a5",
+      "sha256": "07303244f88ecebdbc9e230d4c3fae0753ecb0785890016de651546a034cfbed",
+      "bytes": 61482
+    },
+    {
+      "path": "tests/kv-rotation-consumer.test.ts",
+      "mode": "100644",
+      "blob": "e949a7f32650bb6b93471df12c5aa1236c8d1046",
+      "sha256": "26a081079951c63c61681a856f5820e509798fc5ca395dc9cac4dc35c8d09ead",
+      "bytes": 3310
+    },
+    {
+      "path": "tests/kv-workbench-browser-entry.tsx",
+      "mode": "100644",
+      "blob": "aa7d3224cc139e1d94fb9d83dc734c77e5d908ae",
+      "sha256": "685157c6300578bbdc05a2e3c7ebbe3aac87a58cbab89498bc29556aad0c8c47",
+      "bytes": 1697
+    },
+    {
+      "path": "tests/kv-workbench.browser.mjs",
+      "mode": "100644",
+      "blob": "95371ba37b7acdcc4683f789334d3577fd424878",
+      "sha256": "015dfae87926115f16a661346bcd9ab28c2febf83bfb8efeb407741472332b0d",
+      "bytes": 24574
+    },
+    {
+      "path": "tests/kv-workbench.test.ts",
+      "mode": "100644",
+      "blob": "3f8d111da28abb2f912aa02dad3ffc8b0856053f",
+      "sha256": "09bf1d6538958c83250bf8aea4af02ceee40d64920246e837f63163e4ffefb92",
+      "bytes": 7074
+    },
+    {
+      "path": "tests/kv-workflows.browser.mjs",
+      "mode": "100644",
+      "blob": "d45b8ab76cabb55897354e71a52b11650b60b7a5",
+      "sha256": "3cc36f81d1ceb4114a95f4c24ca347d644029236dd6b65ac41931d68e23f36f2",
+      "bytes": 17724
+    },
+    {
+      "path": "tests/measure-bundles.ts",
+      "mode": "100644",
+      "blob": "712a674c3597fa78688e37e19e7988517ae907f6",
+      "sha256": "fd17fe9da8498ff24c20df1280e6a392ab6a462162ed4e838210ebe7b1fa36c9",
+      "bytes": 1680
+    },
+    {
+      "path": "tests/metadata-bounds.test.ts",
+      "mode": "100644",
+      "blob": "cc6f601a5cb1e27400cd9cad8847d69271d22dd7",
+      "sha256": "67715389152f47c6acc2ae26c51031ad1739e2ddfdee7f2f4c9a6b67ee65cf5d",
+      "bytes": 6016
+    },
+    {
+      "path": "tests/metadata-query.test.ts",
+      "mode": "100644",
+      "blob": "c403ec43412275c32527ce8e17352784fd306ad8",
+      "sha256": "644c4e7c2cd0255c6bee4675c0f36ef09b0442af1c7bba11c9c406e58d40eb08",
+      "bytes": 1286
+    },
+    {
+      "path": "tests/mutation-task.test.ts",
+      "mode": "100644",
+      "blob": "746ad6fd86da7358595b4f8a6a2121eb482f7547",
+      "sha256": "6a02430fce00e78476a2e93875cef2c99a0626b3e7b81dab9093e8d12bf093a2",
+      "bytes": 3190
+    },
+    {
+      "path": "tests/native-ascii-span.test.ts",
+      "mode": "100644",
+      "blob": "59c5eef163906179d7c120494851c623941e057b",
+      "sha256": "d9f17831fa7788618e831fd023c301dd6d66b672379e55a6e15a4c3374a58f34",
+      "bytes": 4628
+    },
+    {
+      "path": "tests/native-auth-snapshot.test.ts",
+      "mode": "100644",
+      "blob": "a555c52e2d303d69361d5ddfb9ad583c82557ed4",
+      "sha256": "7e7275c0ccd737e8c14114dcba681a8d720524e7343a0c6914453e8264132606",
+      "bytes": 11488
+    },
+    {
+      "path": "tests/native-list-concurrency.test.ts",
+      "mode": "100644",
+      "blob": "d6d8c5332cbe64032233ccd8d7af0eba0656566d",
+      "sha256": "8289dd3540625ed43df70a3bc899ef516c2cc779de5b1295e35a1c149e92d76c",
+      "bytes": 11869
+    },
+    {
+      "path": "tests/native-list-prefix.test.ts",
+      "mode": "100644",
+      "blob": "d2ef31024a9a89d5ec0f6dc42ec92cc5296c0c0d",
+      "sha256": "d163150666926cd60fad3bf461fd030d98a0a47c02031a2f809b51d3ecbe54b9",
+      "bytes": 5131
+    },
+    {
+      "path": "tests/native-list-window.test.ts",
+      "mode": "100644",
+      "blob": "fed0ede2116c002e6d082a0765f88838cf0c6781",
+      "sha256": "abf3d264c6b2ba232200ec96ad78ab642bf07c2e1403a112e9f2dbb1ae0ca50d",
+      "bytes": 37531
+    },
+    {
+      "path": "tests/native-secrets.test.ts",
+      "mode": "100644",
+      "blob": "fc92b2e73c503f5e8e6648c18c0389b8d71e4bce",
+      "sha256": "7f48e3988c230a939495097d2e62f4cd4eb98a3590353d5cbf82a0834acfe065",
+      "bytes": 13591
+    },
+    {
+      "path": "tests/native-summary-json.test.ts",
+      "mode": "100644",
+      "blob": "f482cd68fe12acf7aff433078c86e1e678b48d0b",
+      "sha256": "dca132b31f8628a1e4df8bf68dc0853f3ec14a1cd7f0ca8a4e0fe11f28f49927",
+      "bytes": 11125
+    },
+    {
+      "path": "tests/next-body-finalize.test.ts",
+      "mode": "100644",
+      "blob": "bf89df46870c6b2d72b713537a6d860d59f596c3",
+      "sha256": "580ac241fc7d17b9debf9ef58599693ace6c904d1f17e3f093a07d121af67b10",
+      "bytes": 3382
+    },
+    {
+      "path": "tests/optional-code.browser.mjs",
+      "mode": "100644",
+      "blob": "eee699cec5e6cf3f9b7733a58a548db099c8bb82",
+      "sha256": "5be30eb4406ad9b350d8764db9de9a5fdcdb02d70066e48612d933da9ed79c16",
+      "bytes": 15405
+    },
+    {
+      "path": "tests/pod-list-capacity.test.ts",
+      "mode": "100644",
+      "blob": "b67ab6f68d53ce11d285d10e031d179279729059",
+      "sha256": "7dfbd9be65859ebdd37b1bde6771b67ff92472d820f619229898b0ce99bc6b12",
+      "bytes": 4556
+    },
+    {
+      "path": "tests/pod-metadata-response.test.ts",
+      "mode": "100644",
+      "blob": "e3531d50a7041a9acc984079e645da59956f2564",
+      "sha256": "1c6ed44e63d130437dc543c4dbed8b88e051aa12499c9419ae1b26c746949eb3",
+      "bytes": 3444
+    },
+    {
+      "path": "tests/prisma-config.test.ts",
+      "mode": "100644",
+      "blob": "a5cebcdf18f3287bd475c3937f160b19338b2d3d",
+      "sha256": "c2cc39cc566ecf639caf983cfb34002d1c01f2c009d10a5f1f36448dd7fb59f7",
+      "bytes": 2284
+    },
+    {
+      "path": "tests/qualify-ansible-callback.py",
+      "mode": "100644",
+      "blob": "86e71746be206252b3d4bc29bc687bc5479e4214",
+      "sha256": "682f3c4906b804b9f4410410e58ff35e895f0fbf16633199b3a7759a51837ca5",
+      "bytes": 3946
+    },
+    {
+      "path": "tests/qualify-secret-capacity.ts",
+      "mode": "100644",
+      "blob": "8e603c11c2232a0e270371060726696f69911b4b",
+      "sha256": "72ea1efd96027d567610b008536920566b5fe387e45b1d1d9e2d68ff129e9aea",
+      "bytes": 9149
+    },
+    {
+      "path": "tests/query-freshness.test.ts",
+      "mode": "100644",
+      "blob": "6d1c6973270b4e13baa5d026c1e540dc01bc3509",
+      "sha256": "b724dfabd4f086238e146549aebd222fea8963f18dfe580a7b0f3c69f18b3866",
+      "bytes": 4550
+    },
+    {
+      "path": "tests/query-store.test.ts",
+      "mode": "100644",
+      "blob": "78849f169f82773afcbff869650553b5675f0e94",
+      "sha256": "ca257224ce61d5d979081aab02309338534ae1d315da445f530d8c773fe0b5cf",
+      "bytes": 9438
+    },
+    {
+      "path": "tests/resource-cache.test.ts",
+      "mode": "100644",
+      "blob": "495a4ee9c57f610ca3a4d92ed49ae13b9ea3a234",
+      "sha256": "f902727351220a707f482e66750ce864f3316d95d89b347b1995c6c6be2b4de8",
+      "bytes": 4866
+    },
+    {
+      "path": "tests/resource-capabilities.test.ts",
+      "mode": "100644",
+      "blob": "2855e59440bcb938ae2a64485ec727d1c3601b4e",
+      "sha256": "7c2b2ef737b10b10902dd99a7a8f52b907293097b321b2b87e611b1a9a3a4de9",
+      "bytes": 2937
+    },
+    {
+      "path": "tests/resource-snapshot.test.ts",
+      "mode": "100644",
+      "blob": "dff44abc4bcd1b5301a86390d284e94dbeff6e41",
+      "sha256": "9df7b088164b3c9fba4075c486ed59b17f4e28c16141086db7a4ffa1a952c824",
+      "bytes": 1487
+    },
+    {
+      "path": "tests/resource-state.test.ts",
+      "mode": "100644",
+      "blob": "2409cb0c2b1a4dcffbb5b0bd6fa3046c5b0c0bb2",
+      "sha256": "d726354abef5c08210aa8dd311691e24a4b29f1efa9aa895d8997b505050b68c",
+      "bytes": 3893
+    },
+    {
+      "path": "tests/secret-capacity.test.ts",
+      "mode": "100644",
+      "blob": "09149191ef952e6b0d399b11acda9121ffdff2ab",
+      "sha256": "e9b64b210969cea115d9ff3440aaa6364c601e069be9d3b6522ba21ad6f50a85",
+      "bytes": 13620
+    },
+    {
+      "path": "tests/shared-freshness.browser.mjs",
+      "mode": "100644",
+      "blob": "c3bff23d5857cba5f3c1448360bcbd81a47fc80e",
+      "sha256": "ef6b4fbad5e922cf477afdeffde9c0fede278d05c1e04c8aa1a12a7d8a9fbdc4",
+      "bytes": 14641
+    },
+    {
+      "path": "tests/terminal.browser.mjs",
+      "mode": "100644",
+      "blob": "4115abe9a2b137eac7786da6e463ce6273f8fc18",
+      "sha256": "b7fcfa82840c4457df875089b3342ee21cb58ca32d4a3e103b11954e9177ef60",
+      "bytes": 23155
+    },
+    {
+      "path": "tests/transport.test.ts",
+      "mode": "100644",
+      "blob": "acf303f0cd980989d1213cb24ffa3db8d946250a",
+      "sha256": "c747ca2cff7ea1992fb498da88e36501221c63278b6c4a03a60a5d6fc9af7c12",
+      "bytes": 9180
+    },
+    {
+      "path": "tests/ui-fixture.ts",
+      "mode": "100644",
+      "blob": "17db165b77429eee9fadde59932f122480bf046e",
+      "sha256": "cfe0385d8ec14e09162dbecb95ee8a654fc2cd1595a6aa85c3d35a0ccd2fc022",
+      "bytes": 28777
+    },
+    {
+      "path": "tests/wide-zoom.browser.mjs",
+      "mode": "100644",
+      "blob": "549e63c2274d378235aa97dece5ad86a682fbde7",
+      "sha256": "a64d6cea6cd60c193983087b69139a5c5f78ffb2c64ede1e0e11bd5321f7c514",
+      "bytes": 17579
+    },
+    {
+      "path": "tests/workbench-lifecycle.browser.mjs",
+      "mode": "100644",
+      "blob": "c362c84cf7052e2208dba11cb764d1487734328e",
+      "sha256": "504cdfaaa3daf716b10fb30678c64590c5168dddbc13029cd0e81e0bea9dcbb5",
+      "bytes": 23376
+    }
+  ]
+}

@@ -1,0 +1,155 @@
+{
+  "startedAt": "2026-10-11T03:16:53.285Z",
+  "scope": "Actual disposable local Flux routes, real chrome.tabs zoom, owned existing bundled Chromium/profile; no viewport/DPR/CSS zoom emulation",
+  "checks": [
+    {
+      "name": "Real tabs.setZoom/getZoom factor2 with unchanged window geometry and reduced CSS viewport; hierarchy reflow fits",
+      "actual": {
+        "before": {
+          "factor": 1,
+          "window": {
+            "left": 10,
+            "top": 10,
+            "width": 1000,
+            "height": 900,
+            "state": "normal"
+          }
+        },
+        "after": {
+          "factor": 2,
+          "window": {
+            "left": 10,
+            "top": 10,
+            "width": 1000,
+            "height": 900,
+            "state": "normal"
+          }
+        }
+      },
+      "before": {
+        "cssWidth": 984,
+        "cssHeight": 749,
+        "clientWidth": 974,
+        "scrollWidth": 974,
+        "devicePixelRatio": 1,
+        "outerWidth": 1000,
+        "outerHeight": 900
+      },
+      "after": {
+        "cssWidth": 492,
+        "cssHeight": 374,
+        "clientWidth": 487,
+        "scrollWidth": 487,
+        "devicePixelRatio": 2,
+        "outerWidth": 1000,
+        "outerHeight": 900
+      }
+    },
+    {
+      "name": "Real2x dialog fits, keyboard stays contained and reaches visible bottom action, Cancel returns focus",
+      "dialogFit": {
+        "left": 8,
+        "right": 484,
+        "top": 18.7265625,
+        "bottom": 355.7734375,
+        "width": 476,
+        "viewport": 492,
+        "height": 374,
+        "focusInside": true
+      },
+      "keyboardReachedCancel": true,
+      "actionFit": {
+        "top": 298.7265625,
+        "bottom": 338.7265625,
+        "height": 374
+      }
+    },
+    {
+      "name": "Real2x dialog focus/keyboard/fit and close return; keyboard child link and100-row local table fit",
+      "dialogFit": {
+        "left": 8,
+        "right": 484,
+        "top": 18.7265625,
+        "bottom": 355.7734375,
+        "width": 476,
+        "viewport": 492,
+        "height": 374,
+        "focusInside": true
+      },
+      "detail": {
+        "cssWidth": 492,
+        "cssHeight": 374,
+        "clientWidth": 487,
+        "scrollWidth": 487,
+        "devicePixelRatio": 2,
+        "outerWidth": 1000,
+        "outerHeight": 900
+      }
+    }
+  ],
+  "failures": [],
+  "terminal": true,
+  "ownedProcesses": {
+    "fixturePid": 44384,
+    "chromePid": 43208
+  },
+  "extension": {
+    "hostScope": "http://127.0.0.1/*",
+    "noContentScriptsOrStorage": true,
+    "manifestSha256": "e0ae37941aa2f778a9aede9c082ec574125050bb6e08957da016cea46da8f379",
+    "workerSha256": "8ca8bfcaf198d2f584668993247e0fd20450bebdedc81e555bd1f48b722abb49",
+    "workerUrl": "chrome-extension://ipbhdlcbjojmellfcichoabkbpigdecj/background.js"
+  },
+  "browserVersion": "149.0.7827.55",
+  "requests": {
+    "GET /flux": 1,
+    "GET /_next/static/css/3ecf9c9f2b2727bc.css": 1,
+    "GET /_next/static/chunks/1255-5cd2fe06309409a0.js": 1,
+    "GET /_next/static/chunks/webpack-274a6b74aa390700.js": 1,
+    "GET /_next/static/chunks/4bd1b696-f785427dddbba9fb.js": 1,
+    "GET /_next/static/chunks/main-app-33cdf12d12e2e84a.js": 1,
+    "GET /_next/static/chunks/4053-30e55f0d19c53bef.js": 1,
+    "GET /_next/static/chunks/297-7295b248ad97a1e5.js": 1,
+    "GET /_next/static/chunks/1329-b5408eb27fea13c5.js": 1,
+    "GET /_next/static/chunks/7079-a18d7d4efb3fa77d.js": 1,
+    "GET /_next/static/chunks/app/(dashboard)/layout-3df21b19b5167b1b.js": 1,
+    "GET /_next/static/chunks/836-4783404ed6df7205.js": 1,
+    "GET /_next/static/chunks/9473-9bc3856cc5dbd732.js": 1,
+    "GET /_next/static/chunks/app/(dashboard)/flux/page-a952fd06f78c8458.js": 1,
+    "GET /api/auth/session": 2,
+    "GET /api/flux/hierarchy": 2,
+    "GET /favicon.ico": 1,
+    "GET /flux/sort-repo-0": 1,
+    "GET /_next/static/chunks/app/(dashboard)/flux/%5BrepoName%5D/page-c52c648b5aee6fd0.js": 1,
+    "GET /api/flux/repos/sort-repo-0/detail": 1
+  },
+  "restored": {
+    "before": {
+      "factor": 2,
+      "window": {
+        "left": 10,
+        "top": 10,
+        "width": 1000,
+        "height": 900,
+        "state": "normal"
+      }
+    },
+    "after": {
+      "factor": 1,
+      "window": {
+        "left": 10,
+        "top": 10,
+        "width": 1000,
+        "height": 900,
+        "state": "normal"
+      }
+    }
+  },
+  "cleanup": {
+    "chromeExitCode": 0,
+    "chromeSignal": null,
+    "fixtureExitCode": 0,
+    "fixtureSignal": null
+  },
+  "completedAt": "2026-10-11T03:17:00.268Z"
+}

@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: one pending mutation prevents duplicate submission; failure stays actionable and explicit retry succeeds
+ok 1 - one pending mutation prevents duplicate submission; failure stays actionable and explicit retry succeeds
+  ---
+  duration_ms: 2.1637
+  type: 'test'
+  ...
+# Subtest: unmount aborts and drops stale completion even after reactivation; a timed out result is never reported saved
+ok 2 - unmount aborts and drops stale completion even after reactivation; a timed out result is never reported saved
+  ---
+  duration_ms: 0.5412
+  type: 'test'
+  ...
+# Subtest: partial failure reported by a successful HTTP response does not produce a saved state
+ok 3 - partial failure reported by a successful HTTP response does not produce a saved state
+  ---
+  duration_ms: 0.2554
+  type: 'test'
+  ...
+# Subtest: held Settings mutations cannot notify/refetch after fresh write withdrawal
+ok 4 - held Settings mutations cannot notify/refetch after fresh write withdrawal
+  ---
+  duration_ms: 331.6472
+  type: 'test'
+  ...
+# Subtest: Settings permission ABA before passive cleanup cannot revive a held owner
+ok 5 - Settings permission ABA before passive cleanup cannot revive a held owner
+  ---
+  duration_ms: 101.4615
+  type: 'test'
+  ...
+# Subtest: owned Settings true success still refreshes; current refusal remains actionable
+ok 6 - owned Settings true success still refreshes; current refusal remains actionable
+  ---
+  duration_ms: 61.647
+  type: 'test'
+  ...
+# Subtest: owned reclaim partial failure retains its confirmation without a success notice
+ok 7 - owned reclaim partial failure retains its confirmation without a success notice
+  ---
+  duration_ms: 25.6537
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1644.1068

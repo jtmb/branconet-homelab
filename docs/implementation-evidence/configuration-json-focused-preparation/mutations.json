@@ -1,0 +1,23 @@
+{
+  "old-parse": {
+    "path": "src/lib/use-query.ts",
+    "originalSHA256": "3cf6a05a4166f62677d9261594ca1a30031750c4b6465809ad4c014a1824f3f0",
+    "before": "  let data: unknown;\r\n  if (response.status !== 204) {\r\n    try { data = await response.json(); }\r\n    catch {\r\n      if (response.ok) throw new QueryFailure(\"Server response could not be verified. Any change may already have been saved. Refresh before trying again.\", 502);\r\n    }\r\n  }\r\n",
+    "after": "  const data = await response.json().catch(() => ({}));\n",
+    "mutantSHA256": "afc2047668c93d29d785222832acb460838e65c6d18375001e8201de25599588"
+  },
+  "save-noop": {
+    "path": "src/lib/configuration-response.ts",
+    "originalSHA256": "6790dab7ca8531052750c875278eab793f5464ee511de6af2ba4e3fe6c7518d0",
+    "before": "export function configurationSaved(value: unknown, expected: { id?: string; key: string; value: string; category: string }): void {\n  const unverified = () => new QueryFailure(\"Configuration result could not be verified. The change may already have been saved. Refresh before trying again.\", 502);\n  if (!record(value) || value.success !== true || !variable(value.variable)) throw unverified();\n  const saved = value.variable;\n  if (saved.key !== expected.key || saved.value !== expected.value || saved.category !== expected.category\n    || expected.id !== undefined && saved.id !== expected.id) throw unverified();\n}\n\n",
+    "after": "export function configurationSaved(value: unknown, expected: { id?: string; key: string; value: string; category: string }): void { void value; void expected; }\n\n",
+    "mutantSHA256": "a5d0c2592ba460f6d14eefd6ff6330256201cd8e8764cfb6f5063808391b1859"
+  },
+  "remove-noop": {
+    "path": "src/lib/configuration-response.ts",
+    "originalSHA256": "6790dab7ca8531052750c875278eab793f5464ee511de6af2ba4e3fe6c7518d0",
+    "before": "export function configurationRemoved(value: unknown): void {\n  if (!record(value) || value.success !== true)\n    throw new QueryFailure(\"Configuration removal could not be verified. The entry may already have been removed. Refresh before trying again.\", 502);\n}\n",
+    "after": "export function configurationRemoved(value: unknown): void { void value; }\n",
+    "mutantSHA256": "d25ac18cdc250ab1ae9a7ef0b072f341b7bf4e745a10d70c1551b90fe21a9e55"
+  }
+}

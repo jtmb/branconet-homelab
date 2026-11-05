@@ -1,0 +1,40 @@
+{
+  "capturedAt": "2026-10-10T20:41:08Z",
+  "source": "Flux confidentiality stage after 6f6808e3486ee0e5d93630903ab39774467e839d; pre-commit working tree",
+  "runtime": { "node": "22.23.3", "platform": "win32", "next": "15.5.27" },
+  "validation": {
+    "focused": { "passed": 3, "failed": 0, "durationMs": 5459.2047 },
+    "unit": { "passed": 89, "failed": 0, "durationMs": 16674.1963 },
+    "lint": "zero-warning pass",
+    "build": "fresh standalone production pass",
+    "typecheck": "pass",
+    "productionHttp": { "passed": 2, "failed": 0, "existingMs": 31669.8057, "nativeTlsMs": 34280.1537, "overallMs": 34530.8857 }
+  },
+  "assertions": [
+    "Credential-free HTTPS, SSH and SCP locations remain accepted; invalid schemes, whitespace/control characters, HTTPS userinfo, SSH passwords, query strings and fragments fail before DB/native/CLI effects with a fixed error",
+    "Synthetic multiline SSH keys and HTTPS tokens are written through CA-verified native API bodies; SQL authData stays empty, argv contains no values, and CLI failure output stays fixed",
+    "Imported native authentication Secret collisions refuse replacement; no update/delete occurs and UID/RV/keys are retained",
+    "Unsafe legacy URLs and authData markers are withheld from list/detail projections without rewriting their stored DB/native references",
+    "Public Flux JSON removes annotations, managed fields and value bodies; condition type/status is allowlisted and capped at 32, while raw reason/message content is withheld",
+    "Events expose only fixed type/reason/message and canonical valid timestamps; malformed timestamp input is withheld",
+    "Structured Ready/Not Ready/Unknown status remains available"
+  ],
+  "alreadyImplemented": {
+    "nativeCredentialWriter": "bc8a8c0c: native create bodies and empty SQL authData",
+    "cascadeCredentialRetention": "e1044f4: no inferred authentication Secret deletion; existing HTTP regression remains passing"
+  },
+  "corrections": [
+    "First focused fixture migration failed because inherited host RUST_LOG conflicted with Prisma; fixture subprocess now drops it, matching existing HTTP fixtures",
+    "Type checking caught a dynamically inferred DB row annotation and then a removed local timestamp variable; both were repaired without weakening acceptance",
+    "An intermediate 89-test/lint pass failed production type checking on the timestamp variable; retained failed-run log precedes the final fresh pass",
+    "Added valid timestamp canonicalization beside malformed-timestamp withholding after the intermediate failure"
+  ],
+  "limitations": [
+    "No production DB, credentials, cluster, cleanup, publication or deployment was used",
+    "URL validation handles supported credential containers; repository names, branches and paths must remain nonsecret operator metadata",
+    "Existing stored unsafe URLs/authData are not rewritten; historical remediation requires independent operator review",
+    "Repository detail copy/links were source/build checked; no fresh Flux browser acceptance is claimed in this stage",
+    "Optional provisioning raw output remains an open boundary at this stage",
+    "Full KV UI, final immutable Linux/recovery image, live admission/RBAC and controlled performance gates remain pending"
+  ]
+}

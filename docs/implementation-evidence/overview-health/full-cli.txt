@@ -1,0 +1,138 @@
+﻿TAP version 13
+# Subtest: overview counts only explicit Longhorn healthy robustness and preserves labelled failed snapshots
+ok 1 - overview counts only explicit Longhorn healthy robustness and preserves labelled failed snapshots
+  ---
+  duration_ms: 33.5738
+  type: 'test'
+  ...
+# Subtest: known schema duplicates reject literal and escaped names at every chunk boundary
+ok 2 - known schema duplicates reject literal and escaped names at every chunk boundary
+  ---
+  duration_ms: 382.4203
+  type: 'test'
+  ...
+# Subtest: unknown duplicate and prototype-like names remain fully validated and discarded
+ok 3 - unknown duplicate and prototype-like names remain fully validated and discarded
+  ---
+  duration_ms: 55.5378
+  type: 'test'
+  ...
+# Subtest: fatal selected-field decoder is document-owned and no decode failure contaminates the next document
+ok 4 - fatal selected-field decoder is document-owned and no decode failure contaminates the next document
+  ---
+  duration_ms: 6.8712
+  type: 'test'
+  ...
+# Subtest: summary retains exact metadata/key identity across every byte/chunk split, without value DTOs
+ok 5 - summary retains exact metadata/key identity across every byte/chunk split, without value DTOs
+  ---
+  duration_ms: 50.021
+  type: 'test'
+  ...
+# Subtest: accepted values and unknown-field values are never decoded or JSON-materialized
+ok 6 - accepted values and unknown-field values are never decoded or JSON-materialized
+  ---
+  duration_ms: 12.0646
+  type: 'test'
+  ...
+# Subtest: selected same-chunk ASCII bypasses decoding; escaped, Unicode and split strings keep exact fallback semantics
+ok 7 - selected same-chunk ASCII bypasses decoding; escaped, Unicode and split strings keep exact fallback semantics
+  ---
+  duration_ms: 55.6411
+  type: 'test'
+  ...
+# Subtest: all256 selected-key bytes preserve grammar and identity across word and chunk boundaries
+ok 8 - all256 selected-key bytes preserve grammar and identity across word and chunk boundaries
+  ---
+  duration_ms: 89.0274
+  type: 'test'
+  ...
+# Subtest: complete validation rejects malformed skipped values and invalid UTF8 even after valid metadata
+ok 9 - complete validation rejects malformed skipped values and invalid UTF8 even after valid metadata
+  ---
+  duration_ms: 2.5214
+  type: 'test'
+  ...
+# Subtest: all256 raw byte classes and word/chunk boundaries retain strict string grammar
+ok 10 - all256 raw byte classes and word/chunk boundaries retain strict string grammar
+  ---
+  duration_ms: 45.6144
+  type: 'test'
+  ...
+# Subtest: escaped schema member names work; ambiguous/schema/cursor/item/byte/chunk limits fail closed
+ok 11 - escaped schema member names work; ambiguous/schema/cursor/item/byte/chunk limits fail closed
+  ---
+  duration_ms: 4.8017
+  type: 'test'
+  ...
+# Subtest: concurrent requested resources coalesce without unrelated cold fanout
+ok 12 - concurrent requested resources coalesce without unrelated cold fanout
+  ---
+  duration_ms: 5.4994
+  type: 'test'
+  ...
+# Subtest: failure backoff preserves labelled bounded stale data and never invents empty success
+ok 13 - failure backoff preserves labelled bounded stale data and never invents empty success
+  ---
+  duration_ms: 7.1205
+  type: 'test'
+  ...
+# Subtest: optional missing API, partial fields and true empty resources remain distinct
+ok 14 - optional missing API, partial fields and true empty resources remain distinct
+  ---
+  duration_ms: 1.3875
+  type: 'test'
+  ...
+# Subtest: mutation invalidation prevents an older in-flight snapshot from repopulating cache
+ok 15 - mutation invalidation prevents an older in-flight snapshot from repopulating cache
+  ---
+  duration_ms: 0.6653
+  type: 'test'
+  ...
+# Subtest: invalid and oversized lists fail without truncation
+ok 16 - invalid and oversized lists fail without truncation
+  ---
+  duration_ms: 0.6951
+  type: 'test'
+  ...
+# Subtest: resource-only warm read skips overview derivation and preserves TTL, stale expiry and invalidation
+ok 17 - resource-only warm read skips overview derivation and preserves TTL, stale expiry and invalidation
+  ---
+  duration_ms: 116.6598
+  type: 'test'
+  ...
+# Subtest: deployment ownership follows controller UIDs across ambiguous names and labels
+ok 18 - deployment ownership follows controller UIDs across ambiguous names and labels
+  ---
+  duration_ms: 2.3966
+  type: 'test'
+  ...
+# Subtest: desired replicas, observed generation, zero and paused/failure states are distinct
+ok 19 - desired replicas, observed generation, zero and paused/failure states are distinct
+  ---
+  duration_ms: 0.5237
+  type: 'test'
+  ...
+# Subtest: pod type overrides, namespaces and label expressions are actually enforced
+ok 20 - pod type overrides, namespaces and label expressions are actually enforced
+  ---
+  duration_ms: 2.4215
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 659.3094
+
+> botrus-k8s-manager@1.0.0 lint
+> eslint . --max-warnings=0
+
+
+> botrus-k8s-manager@1.0.0 typecheck
+> tsc --noEmit
+

@@ -1,0 +1,71 @@
+TAP version 13
+# Subtest: fresh native handler account snapshots retain independent middleware and revocation fences
+    # Subtest: actual Next dynamic work/request contexts expose request-owned cookies
+    ok 1 - actual Next dynamic work/request contexts expose request-owned cookies
+      ---
+      duration_ms: 5.733
+      type: 'test'
+      ...
+    # Subtest: absent invalid expired cookies make no account/native calls
+    ok 2 - absent invalid expired cookies make no account/native calls
+      ---
+      duration_ms: 14.5553
+      type: 'test'
+      ...
+    # Subtest: one query supplies exactly the fresh handler account fields
+    ok 3 - one query supplies exactly the fresh handler account fields
+      ---
+      duration_ms: 21.2628
+      type: 'test'
+      ...
+    # Subtest: deletion and session reset revoke previously valid cookies
+    ok 4 - deletion and session reset revoke previously valid cookies
+      ---
+      duration_ms: 46.6193
+      type: 'test'
+      ...
+    # Subtest: role and engine-admin withdrawal forbid values and body consumption but preserve metadata
+    ok 5 - role and engine-admin withdrawal forbid values and body consumption but preserve metadata
+      ---
+      duration_ms: 54.7831
+      type: 'test'
+      ...
+    # Subtest: middleware success cannot authorize a subsequently revoked or downgraded handler
+    ok 6 - middleware success cannot authorize a subsequently revoked or downgraded handler
+      ---
+      duration_ms: 70.4934
+      type: 'test'
+      ...
+    # Subtest: repeated/interleaved principals cannot reuse account authorization
+    ok 7 - repeated/interleaved principals cannot reuse account authorization
+      ---
+      duration_ms: 30.5126
+      type: 'test'
+      ...
+    # Subtest: legacy versionless JWT is accepted only at account version zero
+    ok 8 - legacy versionless JWT is accepted only at account version zero
+      ---
+      duration_ms: 20.9371
+      type: 'test'
+      ...
+    # Subtest: database outage fails closed with a fixed private 503 before native access
+    ok 9 - database outage fails closed with a fixed private 503 before native access
+      ---
+      duration_ms: 10.2571
+      type: 'test'
+      ...
+    1..9
+ok 1 - fresh native handler account snapshots retain independent middleware and revocation fences
+  ---
+  duration_ms: 2653.8644
+  type: 'test'
+  ...
+1..1
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3005.4502

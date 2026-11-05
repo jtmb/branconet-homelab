@@ -1,0 +1,211 @@
+{
+  "scope": "Finite two missing A16 cases; existing UI/source unchanged",
+  "sourceCommit": "4df4d3251715dae689420a9f6242263aeb9bdbee",
+  "actual": {
+    "scope": "Two missing A16 production-compiled browser cases only; corrected Windows process-state observer",
+    "sourceCommit": "4df4d3251715dae689420a9f6242263aeb9bdbee",
+    "actualServerExit": 0,
+    "actualBrowserExit": 0,
+    "exactPostExit": 0,
+    "linuxFreshExit": 0,
+    "windowsFreshExit": 0,
+    "laterExit": 0,
+    "cases": [
+      "Actual CLI save refusal retains draft; discard/reopen viewer and new edit show freshly fetched version without old draft/error or viewer Save",
+      "Changed actual fake-CLI resourceVersion is freshly fetched on View/Edit; no old failed draft or editable viewer survives"
+    ],
+    "requestEvents": [
+      {
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "method": "PUT",
+        "status": 502
+      },
+      {
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "status": 200
+      },
+      {
+        "method": "GET",
+        "status": 200
+      }
+    ],
+    "sourceFiles": 371,
+    "generatedFiles": 4,
+    "compiledObjects": 5382,
+    "dependencyObjects": 40635,
+    "browserDependencyFiles": 481,
+    "currentInputs": 24,
+    "linuxBirthsAbsent": 39,
+    "exactContainerNameAndIdAbsent": true,
+    "windowsNoLiveBirths": 12,
+    "originalRetainedSignaledObjects": 1,
+    "originalRetainedObjectsAllWait0Exit0": true,
+    "processQueryabilityNotAbsence": true,
+    "jobEmptyReapedOwnHandlesClosed": true,
+    "laterLinuxBirthsAbsent": 3,
+    "laterWindowsReaderNoLive": true,
+    "priorFailedWorkflowsPreserved": 4,
+    "originalBoundsSeconds": {
+      "server": 480,
+      "closureReserve": 60,
+      "attach": 420,
+      "browserInternal": 300,
+      "browserOuter": 330
+    },
+    "performanceAccepted": false,
+    "mobileAccepted": false,
+    "actualScreenReaderAccepted": false,
+    "deliveredImageAccepted": false,
+    "productionAdopted": false,
+    "sourceGuardsUnchanged": true,
+    "allRootDocsChecked": 70,
+    "privateRecords": [
+      {
+        "label": "preparationHandoff",
+        "bytes": 6171,
+        "sha256": "d6f04ce2e75825ed56170d7072f3cb1bfdc389c2a5e0393cf0bb5498a459b64a"
+      },
+      {
+        "label": "postHandoff",
+        "bytes": 2254,
+        "sha256": "90ebe51db2b1083deb0492ce32971c0fc98115382f7591a89a353bbb274a9dbc"
+      },
+      {
+        "label": "serverTerminal",
+        "bytes": 35961,
+        "sha256": "b2266ad37c5b08666efa4fda001610705684c88809ee205140cd3427d9daac1f"
+      },
+      {
+        "label": "browserTerminal",
+        "bytes": 546,
+        "sha256": "9e127e32c2b55d9e2c835fcdb5cb26f7482dcc18392013c5fb83293c9e943fb9"
+      },
+      {
+        "label": "jobClosure",
+        "bytes": 7130,
+        "sha256": "dfe892a5670bb14602fd63e09a44e959cc7454c2805e489a5dcdda9ac0568850"
+      },
+      {
+        "label": "browserReport",
+        "bytes": 1225,
+        "sha256": "43c78cdaeab0f2851b53201578728d71b6a74a06a736f9105932bff4bd860e8a"
+      },
+      {
+        "label": "exact",
+        "bytes": 9442,
+        "sha256": "5241cb652631f13a9e9dca32b32101eae699abbb9642bdf1e4805b3e51d206c1"
+      },
+      {
+        "label": "linuxFresh",
+        "bytes": 6396,
+        "sha256": "96ef768ed98ab522803f29546cd11c94c49b6f5288c59b7f415f3bf03489931f"
+      },
+      {
+        "label": "windowsFresh",
+        "bytes": 4306,
+        "sha256": "c21e32833863a1aa2aaf8355e42d639f67516f8668aba00d14c3a538e7106fd8"
+      },
+      {
+        "label": "later",
+        "bytes": 473,
+        "sha256": "ba14d243e6f93ef8ee3ba6f1326de1554624cabce4aa8980e4279384cf6efce2"
+      }
+    ]
+  },
+  "casesAccepted": 2,
+  "priorFailures": [
+    {
+      "owner": "v1",
+      "browserOuterExit": 1,
+      "serverOuterExit": 1,
+      "partialChecks": 2,
+      "partialEvents": 6,
+      "classification": "Mandatory image-path metadata query refused access; report lacked terminal completion"
+    },
+    {
+      "owner": "v2",
+      "browserOuterExit": 1,
+      "serverOuterExit": 1,
+      "partialChecks": 2,
+      "partialEvents": 6,
+      "classification": "Original outer deadline expired while one-shot stdin remained open; child exit unrecorded"
+    },
+    {
+      "owner": "v3",
+      "browserOuterExit": 1,
+      "serverOuterExit": 1,
+      "partialChecks": 2,
+      "partialEvents": 6,
+      "childExit": 0,
+      "classification": "Immediate process-object queryability check refused closure; no historical live-state inference"
+    },
+    {
+      "owner": "v4",
+      "browserOuterExit": 1,
+      "serverOuterExit": 1,
+      "partialChecks": 2,
+      "partialEvents": 6,
+      "childExit": 0,
+      "classification": "Original five-second process-object absence check refused closure; no historical live-state inference"
+    }
+  ],
+  "windowsStateContract": {
+    "noLiveRecordedBirths": true,
+    "mandatory": [
+      "same-birth identity",
+      "signaled state for any retained process object",
+      "empty owned Job",
+      "reaped child",
+      "closed owned process and Job handles"
+    ],
+    "originalRetainedSignaledObject": {
+      "pid": 8296,
+      "creationFileTime": 134364613745860294,
+      "waitResult": 0,
+      "exitCode": 0,
+      "absent": false
+    },
+    "laterFreshAll12NoLongerQueryable": true
+  },
+  "rootReceipt": {
+    "commit": "c905f41",
+    "sha256": "4e9719fdd24181bb5d2ace6614985480156b2392fc75a79aafed4a9353d1d1f7",
+    "toolRefs": [
+      "498bfa",
+      "327c34",
+      "4dff03",
+      "b9baa8",
+      "abccc4",
+      "187d32",
+      "dc29e1",
+      "c72d32",
+      "57a227"
+    ]
+  },
+  "immutableOriginals": {
+    "handoffSHA256": "cb602ed6a860e69196bc86db2e86d68cb40b6408870f3dd161db2f9bd292fcae",
+    "archiveSHA256": "3aac4a34842a05675e00141044cae39706b4b7723fe25f0e6428334c4508cd28",
+    "manifestSHA256": "4edb66a0cec99f61da7c40f8f31dc56016d35d69d93dbd788b1721414631d220",
+    "members": 1756,
+    "bytes": 26762180,
+    "rootIndependentCurrentCRC": "b22842=0"
+  },
+  "docsReviewed": 22,
+  "appSourceChanged": false,
+  "performanceAccepted": false,
+  "mobileAccepted": false,
+  "actualAssistiveTechnologyAccepted": false,
+  "deliveredImageAccepted": false,
+  "productionAdopted": false
+}

@@ -1,0 +1,223 @@
+{
+  "scope": "Source-only three-mutant A19 sensitivity candidate; no new execution or complete A19 acceptance",
+  "sourceParent": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
+  "productSourceFilesChanged": false,
+  "runtimeSourceChanged": false,
+  "sourceManifest": "k8s-rewrite/front-end/scripts/regression-sensitivity.json",
+  "cases": [
+    {
+      "id": "A04-name-admission",
+      "source": "src/lib/kubectl-client.ts",
+      "testFile": "tests/kubectl.test.ts",
+      "testName": "resource boundaries reject option and path injection before execution",
+      "assertionLine": 28,
+      "operator": "throws",
+      "witness": "Missing expected exception",
+      "mutantSHA256": "6cbadfbdca93976ff80273d548226da4aeadeed12cac72634c2de2da1d0ba055"
+    },
+    {
+      "id": "A05-failed-stdout",
+      "source": "src/lib/kubectl-client.ts",
+      "testFile": "tests/kubectl.test.ts",
+      "testName": "failed subprocess output never becomes a successful mutation or public error",
+      "assertionLine": 51,
+      "operator": "==",
+      "witness": "actual instanceof KubernetesCommandError",
+      "mutantSHA256": "d815f12e6c1f639472e75202f8cee01c8f33b2be17d2149d5055dcf447c79d58"
+    },
+    {
+      "id": "A06-outage-empty",
+      "source": "src/lib/resource-cache.ts",
+      "testFile": "tests/resource-cache.test.ts",
+      "testName": "failure backoff preserves labelled bounded stale data and never invents empty success",
+      "assertionLine": 28,
+      "operator": "strictEqual",
+      "witness": "actual: 'empty'",
+      "mutantSHA256": "65f5db583e08837873a5c2797bf6be560e7450be766bc1ee7f497726ff52134e"
+    }
+  ],
+  "bounds": {
+    "runnerSeconds": 240,
+    "reservedSeconds": 20,
+    "childSeconds": 30,
+    "children": 6,
+    "streamBytesEach": 1048576,
+    "ciStepMinutes": 5,
+    "cpu": 2,
+    "memoryMiB": 1024,
+    "pids": 256,
+    "network": "none"
+  },
+  "execution": {
+    "sourceOnly": true,
+    "localTestsRun": false,
+    "hostedNewStepRun": false,
+    "buildRun": false,
+    "pushRun": false
+  },
+  "priorQualifiedReceipts": [
+    {
+      "path": "evidence/bortus-overview-inventory-fresh-root-20261015.json",
+      "sha256": "cb7271ba64e00af6cf9c1185eec17b27a31829c7b77571490efd6fcb2ece246d"
+    },
+    {
+      "path": "evidence/bortus-hosted-ci-exact-app-root-20261015.json",
+      "sha256": "f8e750eaec5bc01a9ad263161d5aa40e9bced774e2b29e608d2879b3434b3ab4"
+    },
+    {
+      "path": "evidence/bortus-overview-terminal-four-browser-root-20261015.json",
+      "sha256": "16930eb3ac33b7438493413b4dab5c1bde8b358034f290938ebfbc7587141289"
+    },
+    {
+      "path": "evidence/bortus-npm-audit-build-residual-root-20261015.json",
+      "sha256": "3e809225fd55879f73ebbf3e9532b71c6d8a4b91bfae9543379d33423c6b6936"
+    },
+    {
+      "path": "evidence/bortus-terminal-failure-retry-root-20261015.json",
+      "sha256": "7336c4c20eba994338be5b91702c9c827e4544dc585d98863730c1326b105670"
+    }
+  ],
+  "priorRootCheckpoint": "40e351859c0e295315a2143b346f4b79f4706321",
+  "docsChecked": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "beforeNormalizedLFSHA256": "18d2ea69d199f4c96163ba4903d3c176a2c7fb412d435c773f459eea64107711",
+      "updated": false
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "beforeNormalizedLFSHA256": "84aa5db8878ac501c3af6d27b6dfc3dc2a8b698bcc839cd98d8a66a06bd22048",
+      "updated": true
+    },
+    {
+      "path": "docs/audit-evidence/README.md",
+      "beforeNormalizedLFSHA256": "57c0dd95ea583b6e5dd85ffbdf45ad7a37e1aab22726ed9ea6a7f856a321c288",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-AUDIT.md",
+      "beforeNormalizedLFSHA256": "8e1f9d7f477b2495af2010d04e57eedeb1adfc13a66958137c6e18c5a311c4a7",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+      "beforeNormalizedLFSHA256": "a38a40a5544b0fd46a8e67cff6187e23a5d99396eb92c4ed6bb3cb4683741aee",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "beforeNormalizedLFSHA256": "e581fd99237e588bf4a5b05422ce3f308a4bda806f639b6cf042c9c36c1dd566",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-IMPLEMENTATION.md",
+      "beforeNormalizedLFSHA256": "e576b20511402dfc50fd2fe8c3294799426f4d5b31ad5e6d2953944c53987734",
+      "updated": true
+    },
+    {
+      "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+      "beforeNormalizedLFSHA256": "ddd95b62149f245ef0433c8215ea4d34af45dd84b5d2cce4ed0489205ad31bb0",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-KV-DESIGN.md",
+      "beforeNormalizedLFSHA256": "adeba48ae9e29aab600e83c4e7f375c11a5e9e6ffc37d4b7ebcc31be22bd03cf",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-KV-WORKBENCH.md",
+      "beforeNormalizedLFSHA256": "d274f8adffc8f008196c37aa3b98124543406ef58fe1420ca3e6964c4164e22a",
+      "updated": false
+    },
+    {
+      "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+      "beforeNormalizedLFSHA256": "19483c83d8f9cdfea284857e96d6f3afc5a62b122f4a1061d24a72aa601ca4dd",
+      "updated": true
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "beforeNormalizedLFSHA256": "aa8a88d1bf86e3eb258697f786525a83723446df009765dbf97f8c9c07ad2f98",
+      "updated": true
+    },
+    {
+      "path": "docs/CHARTS-SEPARATION.md",
+      "beforeNormalizedLFSHA256": "21b6dd5061e2038f3dc0a0e56317050d73dfa498fb78db4cbec40bc0d7e547d7",
+      "updated": false
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "beforeNormalizedLFSHA256": "f695f2e645b3feca2129775f21746db4855ebcef5503df9a01f195add98739ce",
+      "updated": false
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "beforeNormalizedLFSHA256": "7c046c955d1c1f47d2b7642609efdc03c86255904e814ebab59e3f828afc4539",
+      "updated": false
+    },
+    {
+      "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+      "beforeNormalizedLFSHA256": "1961e42d2de54f80f970368be290c84c99509177b546f4664c6b0f6b00c0c45b",
+      "updated": false
+    },
+    {
+      "path": "docs/implementation-evidence/README.md",
+      "beforeNormalizedLFSHA256": "71382d91c8f273cc3ec5eff577139ec7095c02587bba2c964a527769c51bdb05",
+      "updated": true
+    },
+    {
+      "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+      "beforeNormalizedLFSHA256": "b63baf242c3ef72a8b6757583be3e156a234f00567eaf06b648bd7f80120e630",
+      "updated": false
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "beforeNormalizedLFSHA256": "20b8fea367f6ac5e221f79047538fae2193bdc832f60905aedbf39ec7ea6bd72",
+      "updated": false
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "beforeNormalizedLFSHA256": "1c9a1945a8cbb1468ea3dfb12ccb65135b4cc668d7d59af38ccc2f7e547bd7ca",
+      "updated": true
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "beforeNormalizedLFSHA256": "091a097e17edc160e29dad45c0ba3d01ca17b68b395213a6a97125e3058a2639",
+      "updated": true
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "beforeNormalizedLFSHA256": "e1d5367c620cce288c3e6ab8348034347386c1868ab7d9764aa898785a4f48b5",
+      "updated": false
+    }
+  ],
+  "all44OriginalValidationClausesUnchanged": true,
+  "wholeA19Accepted": false,
+  "limits": [
+    "Three exact automated regression sensitivities only",
+    "A05 first mutant does not independently prove every redaction failure",
+    "Manual/AT and remaining regression breadth remain separate",
+    "Performance/image/live/adoption remain open"
+  ],
+  "nodeIsolationSource": "https://github.com/nodejs/node/blob/v22.23.3/doc/api/cli.md#--experimental-test-isolationmode",
+  "newStepTestIsolation": "none; only new three filtered controls; original342+8 flags unchanged",
+  "childSettlement": "spawnSync with SIGKILL timeout, literal status/signal/error persisted before assertions; outer owned CI container trap/cgroup cleanup; no universal descendant proof inferred",
+  "sourceBindings": [
+    {
+      "path": "k8s-rewrite/front-end/scripts/regression-sensitivity.mjs",
+      "sha256": "f0242904307553f2ee38576efba688679c49336afe952714520e34ab76c26acb"
+    },
+    {
+      "path": "k8s-rewrite/front-end/scripts/regression-sensitivity.json",
+      "sha256": "016243d7d0d886fcb03ee6c72eeb520825c3546f10d97708e8630a416f954d3d"
+    },
+    {
+      "path": "k8s-rewrite/front-end/package.json",
+      "sha256": "692674575ba632fcd3a02fcff9b7ede08e2ef0c8ececff4998d4be97b327dd76"
+    },
+    {
+      "path": ".github/workflows/bortus-quality.yml",
+      "sha256": "69f0bedd4f99452895416b6a081c55660dc6307caeffa7911de9cfb7741943b7"
+    }
+  ],
+  "preExecutionSourceWitnessCorrection": "Retained Node22 short-string assertion formatter and TAP jsToYaml verify actual empty field; original V1 packet remains unrun, no business assertion changed."
+}

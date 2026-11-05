@@ -1,0 +1,209 @@
+{
+  "capturedAt": "2026-10-10T16:44:20.738Z",
+  "source": "quality/dependency working tree after 39b0335",
+  "before": {
+    "full": {
+      "info": 0,
+      "low": 0,
+      "moderate": 4,
+      "high": 12,
+      "critical": 0,
+      "total": 16
+    },
+    "production": {
+      "total": 7,
+      "high": 6,
+      "moderate": 1,
+      "source": "immutable audit baseline"
+    }
+  },
+  "after": {
+    "full": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 10,
+      "critical": 0,
+      "total": 12
+    },
+    "production": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 3,
+      "critical": 0,
+      "total": 3
+    }
+  },
+  "remaining": [
+    {
+      "name": "@next/eslint-plugin-next",
+      "severity": "high",
+      "via": [
+        "fast-glob"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "14.2.35",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "name": "@prisma/config",
+      "severity": "high",
+      "via": [
+        "deepmerge-ts"
+      ],
+      "fixAvailable": true
+    },
+    {
+      "name": "braces",
+      "severity": "high",
+      "via": [
+        {
+          "title": "braces vulnerable to stack-exhaustion denial of service through deeply nested patterns",
+          "url": "https://github.com/advisories/GHSA-vfj7-8cjw-p6xm",
+          "range": "<=3.0.3"
+        }
+      ],
+      "fixAvailable": {
+        "name": "tailwindcss",
+        "version": "4.3.3",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "name": "chokidar",
+      "severity": "high",
+      "via": [
+        "braces"
+      ],
+      "fixAvailable": {
+        "name": "tailwindcss",
+        "version": "4.3.3",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "name": "deepmerge-ts",
+      "severity": "high",
+      "via": [
+        {
+          "title": "DeepmergeTS has stack exhaustion when merging recursive object graphs",
+          "url": "https://github.com/advisories/GHSA-ggr8-5vv4-36mx",
+          "range": "<8.0.0"
+        }
+      ],
+      "fixAvailable": true
+    },
+    {
+      "name": "eslint-config-next",
+      "severity": "high",
+      "via": [
+        "@next/eslint-plugin-next"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "14.2.35",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "name": "fast-glob",
+      "severity": "high",
+      "via": [
+        "micromatch"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "14.2.35",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "name": "micromatch",
+      "severity": "high",
+      "via": [
+        "braces"
+      ],
+      "fixAvailable": {
+        "name": "tailwindcss",
+        "version": "4.3.3",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "name": "postcss-nested",
+      "severity": "moderate",
+      "via": [
+        "postcss-selector-parser"
+      ],
+      "fixAvailable": true
+    },
+    {
+      "name": "postcss-selector-parser",
+      "severity": "moderate",
+      "via": [
+        {
+          "title": "PostCSS: Quadratic complexity in flat selector parsing allows CPU exhaustion",
+          "url": "https://github.com/advisories/GHSA-rj75-hqrm-r3gf",
+          "range": "<7.1.6"
+        }
+      ],
+      "fixAvailable": {
+        "name": "tailwindcss",
+        "version": "4.3.3",
+        "isSemVerMajor": true
+      }
+    },
+    {
+      "name": "prisma",
+      "severity": "high",
+      "via": [
+        "@prisma/config"
+      ],
+      "fixAvailable": true
+    },
+    {
+      "name": "tailwindcss",
+      "severity": "high",
+      "via": [
+        "chokidar",
+        "fast-glob",
+        "micromatch",
+        "postcss-nested",
+        "postcss-selector-parser"
+      ],
+      "fixAvailable": {
+        "name": "tailwindcss",
+        "version": "4.3.3",
+        "isSemVerMajor": true
+      }
+    }
+  ],
+  "changes": {
+    "removed": [
+      "react-syntax-highlighter",
+      "@types/react-syntax-highlighter"
+    ],
+    "resolved": {
+      "next": "15.5.27",
+      "prisma": "6.19.3",
+      "tailwindcss": "3.4.19",
+      "postcss": "8.5.29",
+      "nanoid": "3.3.20",
+      "source-map-js": "1.2.2",
+      "browserslist": "4.29.3",
+      "baseline-browser-mapping": "2.11.28",
+      "eslint": "9.39.5"
+    },
+    "override": "Next PostCSS -> $postcss (compatible PostCSS 8)"
+  },
+  "limitations": [
+    "Package audit, not image/OS scan or proof of zero vulnerabilities",
+    "Remaining production entries share one Prisma config advisory, request-path reachability review documented",
+    "Remaining CSS/glob advisories affect trusted build/lint inputs; future untrusted-source processing requires reassessment",
+    "No force upgrade, downgrade or major transitive override",
+    "ESLint 9 upstream retirement and Next15 peer ceiling remain maintenance constraints"
+  ]
+}

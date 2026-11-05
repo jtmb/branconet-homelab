@@ -1,0 +1,19 @@
+import datetime,hashlib,json,os,pathlib,subprocess,time
+p=pathlib.Path(__file__).parent;image='sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678';source=pathlib.Path('/home/brajam/.cache/bortus-controlled-perf/run-05381825cdec/baseline');harness=pathlib.Path('/home/brajam/.cache/bortus-controlled-perf/preparation-paired-7e30b9b-20261011-083519-09a9/benchmarks/bortus-controlled-perf');output=p/'output';output.mkdir(mode=0o700);name='bortus-characterize-'+p.name
+record={'nonAcceptance':True,'sourceCommit':'51e8cd66379c1f40a95ea02f4da7c8aed848f2a4','owner':name,'pid':os.getpid(),'startTicks':pathlib.Path('/proc/self/stat').read_text().split()[21],'ownedLiveContainers':[],'startedAtUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),'diagnosticHashes':{f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in p.glob('*.cjs')}}
+(p/'handle.json').write_text(json.dumps(record,indent=2))
+r=json.loads((source.parent/'record.json').read_bytes());assert r['baseline_commit']==record['sourceCommit'];assert hashlib.sha256((harness/'whole-server.mjs').read_bytes()).hexdigest()=='ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b'
+for file,digest in r['sources']['baseline']['source_manifest'].items():assert hashlib.sha256((source/file).read_bytes()).hexdigest()==digest
+build_manifest=json.loads((p/'compiled-build-manifest.json').read_bytes())
+for row in build_manifest['files']:assert hashlib.sha256((source/row['path']).read_bytes()).hexdigest()==row['sha256']
+record['compiledBuildManifestSHA256']=hashlib.sha256((p/'compiled-build-manifest.json').read_bytes()).hexdigest()
+record['compiledBuildFiles']=len(build_manifest['files'])
+command=['docker','run','--rm','--pull','never','--network','none','--name',name,'--cpus','2','--cpuset-cpus','0,1','--memory','1g','--memory-swap','1g','--pids-limit','256','--user',str(os.getuid())+':'+str(os.getgid()),'--mount','type=bind,src='+str(source)+',dst=/app,readonly','--mount','type=bind,src='+str(harness)+',dst=/harness,readonly','--mount','type=bind,src='+str(p)+',dst=/diagnostic,readonly','--mount','type=bind,src='+str(output)+',dst=/diagnostic-output','--mount','type=bind,src='+str(output)+',dst=/results','--workdir','/app','-e','BORTUS_PERF_LABEL=baseline','-e','BORTUS_PERF_RUN=1','--entrypoint','node',image,'--require','/diagnostic/child-shim.cjs','/harness/whole-server.mjs'];record['command']=command
+with (p/'stdout.log').open('wb') as out,(p/'stderr.log').open('wb') as err:
+ child=subprocess.Popen(command,stdout=out,stderr=err);record['childPID']=child.pid;record['childStartTicks']=pathlib.Path('/proc/'+str(child.pid)+'/stat').read_text().split()[21];(p/'record.json').write_text(json.dumps(record,indent=2));
+ try:record['actualExit']=child.wait(timeout=600)
+ except subprocess.TimeoutExpired:
+  subprocess.run(['docker','stop','--time','5',name],capture_output=True,timeout=15);record['actualExit']=child.wait(timeout=20);record['timeout']=True
+record['compiledBuildUnchanged']=all(hashlib.sha256((source/row['path']).read_bytes()).hexdigest()==row['sha256'] for row in build_manifest['files'])
+record['terminalAtUTC']=datetime.datetime.now(datetime.timezone.utc).isoformat();record['ownedLiveContainers']=subprocess.check_output(['docker','ps','--filter','name=^/'+name+'$','--format','{{.Names}}']).decode().splitlines();assert record['ownedLiveContainers']==[]
+record['sourceUnchanged']=all(hashlib.sha256((source/file).read_bytes()).hexdigest()==digest for file,digest in r['sources']['baseline']['source_manifest'].items());record['frozenDriverUnchanged']=hashlib.sha256((harness/'whole-server.mjs').read_bytes()).hexdigest()=='ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b';record['terminal']=True;(p/'terminal.json').write_text(json.dumps(record,indent=2)+'\n')

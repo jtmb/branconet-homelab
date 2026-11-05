@@ -8,7 +8,7 @@ const STORAGE_KEY = "k8s-view-mode";
 const DEFAULT: ViewMode = "comfortable";
 
 const MAX_W: Record<ViewMode, string> = {
-  comfortable: "max-w-[90%]",
+  comfortable: "max-w-full lg:max-w-[90%]",
   full: "max-w-full",
 };
 

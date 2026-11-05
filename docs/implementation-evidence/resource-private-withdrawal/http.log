@@ -1,0 +1,53 @@
+TAP version 13
+# Subtest: production local jobs persist/stream fixed progress, reject selection before effects and preserve operator gates
+ok 1 - production local jobs persist/stream fixed progress, reject selection before effects and preserve operator gates
+  ---
+  duration_ms: 13362.290481
+  type: 'test'
+  ...
+# HTTP_FIXTURE_PROCESS {"pid":183}
+# HTTP_FIXTURE_CLEANUP {"pid":183,"exitCode":0,"signal":null}
+# Subtest: production HTTP auth, metadata migration, quarantined DB rows and unavailable native lookup
+ok 2 - production HTTP auth, metadata migration, quarantined DB rows and unavailable native lookup
+  ---
+  duration_ms: 19516.54773
+  type: 'test'
+  ...
+# Cache fixture evidence: {"capturedAt":"2026-10-11T16:04:11.006Z","node":"v22.23.3","platform":"linux","fixture":"disposable production HTTP + 50ms metadata-only fake CLI; no real cluster/image acceptance","source":"current working tree","coldPods":{"ms":102.92640399999982,"cliCalls":1},"warmPods":{"samples":12,"ms":{"p50":4.728594999998677,"p95":11.352827000000616},"cliCalls":0},"concurrentWarmPods":{"requests":20,"cliCalls":0},"concurrentColdPods":{"requests":20,"cliCalls":1,"ms":{"p50":182.40253699999994,"p95":185.9421600000005}},"outageServices":{"requests":12,"status":503,"ms":{"p50":4.905690000001414,"p95":6.905314999999973},"additionalCliCalls":0},"pool":{"active":0,"queued":0,"maxConcurrent":4,"maxQueued":64},"limitations":["Synthetic metadata/fake CLI on linux/v22.23.3; no deployed Node22/Linux image","no real API/RBAC or cold-container memory/peak-process measurement","timings observational with no controlled host CPU isolation"]}
+# Complete Pod capacity evidence: {"inputBytes":7931129,"objects":10000,"coldCliCalls":1,"warmFilterCliCalls":0,"projectedIdentityCount":10000,"privateFieldsOmitted":true,"partialReply":"labelled stale complete inventory retained"}
+# Subtest: administration UI client uses actual HTTP CAS, full alias acknowledgments, one-time identity issue and fresh revocation
+ok 3 - administration UI client uses actual HTTP CAS, full alias acknowledgments, one-time identity issue and fresh revocation
+  ---
+  duration_ms: 8821.736821
+  type: 'test'
+  ...
+# MAXIMUM_ALIAS_BODY_HTTP {"aliases":10000,"aliasLength":253,"bodyBytes":2560286,"policyCreateUpdateDelete":true,"principalCommit":true,"metadataRefusals":6,"nativeWrites":0}
+# NEXT_FINALIZE_ORDERING {"delayedFinalizations":154,"ownedRequests":154,"delayMs":100,"routeBeforeFinalize":false}
+# NEXT_FINALIZE_PROBE {"negativeControl":false,"begun":154,"completed":154,"ownedRequests":154,"routeBeforeFinalize":false}
+# Subtest: production native KV routes use verified TLS, exact binary history, fresh policy and legacy isolation
+ok 4 - production native KV routes use verified TLS, exact binary history, fresh policy and legacy isolation
+  ---
+  duration_ms: 41710.927807
+  type: 'test'
+  ...
+# Subtest: owned POSIX timeout and overflow close descendants including TERM-ignoring groups
+ok 5 - owned POSIX timeout and overflow close descendants including TERM-ignoring groups
+  ---
+  duration_ms: 3991.810989
+  type: 'test'
+  ...
+# Subtest: operator spawn preserves UTF8 stdout and independent exact byte ceilings
+ok 6 - operator spawn preserves UTF8 stdout and independent exact byte ceilings
+  ---
+  duration_ms: 570.714186
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 62303.766316

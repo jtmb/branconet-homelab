@@ -1,0 +1,1692 @@
+{
+  "scope": "Native stage diagnostic only; never acceptance",
+  "node": "v22.23.3",
+  "request_records": [
+    {
+      "id": "native-diag-184",
+      "start_ms": 1621.59632,
+      "stages": {
+        "auth.jwt": {
+          "calls": 2,
+          "total_ms": 0.7083480000001146,
+          "max_ms": 0.36918900000000576,
+          "failed": 0
+        },
+        "auth.accountSQL": {
+          "calls": 3,
+          "total_ms": 1.387456999999813,
+          "max_ms": 0.5357289999999466,
+          "failed": 0
+        },
+        "auth.currentSession": {
+          "calls": 2,
+          "total_ms": 0.9508280000002287,
+          "max_ms": 0.5496790000001965,
+          "failed": 0
+        },
+        "auth.headerSession": {
+          "calls": 1,
+          "total_ms": 0.959538000000066,
+          "max_ms": 0.959538000000066,
+          "failed": 0
+        },
+        "auth.middleware": {
+          "calls": 1,
+          "total_ms": 1.0482669999998961,
+          "max_ms": 1.0482669999998961,
+          "failed": 0
+        },
+        "auth.session": {
+          "calls": 1,
+          "total_ms": 0.9192480000001524,
+          "max_ms": 0.9192480000001524,
+          "failed": 0
+        },
+        "auth.role": {
+          "calls": 1,
+          "total_ms": 1.4253570000000764,
+          "max_ms": 1.4253570000000764,
+          "failed": 0
+        },
+        "auth.authorize": {
+          "calls": 1,
+          "total_ms": 1.4746269999998276,
+          "max_ms": 1.4746269999998276,
+          "failed": 0
+        },
+        "config.construct": {
+          "calls": 1,
+          "total_ms": 0.21145900000010442,
+          "max_ms": 0.21145900000010442,
+          "failed": 0
+        },
+        "config.loadFromFile": {
+          "calls": 1,
+          "total_ms": 1.7378859999998895,
+          "max_ms": 1.7378859999998895,
+          "failed": 0
+        },
+        "config.loadFromDefault": {
+          "calls": 1,
+          "total_ms": 1.865385999999944,
+          "max_ms": 1.865385999999944,
+          "failed": 0
+        },
+        "native.factory": {
+          "calls": 1,
+          "total_ms": 2.471903999999995,
+          "max_ms": 2.471903999999995,
+          "failed": 0
+        },
+        "native.storeFactory": {
+          "calls": 1,
+          "total_ms": 3.2782720000000154,
+          "max_ms": 3.2782720000000154,
+          "failed": 0
+        },
+        "native.queue": {
+          "calls": 18,
+          "total_ms": 0.41467800000009447,
+          "max_ms": 0.15214999999989232,
+          "failed": 0
+        },
+        "sdk.applyOptions": {
+          "calls": 18,
+          "total_ms": 2.275014000000283,
+          "max_ms": 0.5716480000000956,
+          "failed": 0
+        },
+        "sdk.applyToHTTPSOptions": {
+          "calls": 18,
+          "total_ms": 3.4753920000002836,
+          "max_ms": 0.8213080000000446,
+          "failed": 0
+        },
+        "native.bufferToString": {
+          "calls": 62,
+          "total_ms": 0.17861999999922773,
+          "max_ms": 0.016000000000076398,
+          "failed": 0
+        },
+        "native.bufferConcat": {
+          "calls": 26,
+          "total_ms": 0.3153590000006261,
+          "max_ms": 0.03607999999985623,
+          "failed": 0
+        },
+        "native.utf8Decode": {
+          "calls": 18,
+          "total_ms": 0.12707000000000335,
+          "max_ms": 0.013460000000122818,
+          "failed": 0
+        },
+        "native.jsonParse": {
+          "calls": 18,
+          "total_ms": 1.6170259999998962,
+          "max_ms": 0.12851000000000568,
+          "failed": 0
+        },
+        "native.objectValidation": {
+          "calls": 1000,
+          "total_ms": 0.6889370000014878,
+          "max_ms": 0.041429999999991196,
+          "failed": 0
+        },
+        "native.summary": {
+          "calls": 1000,
+          "total_ms": 0.8285679999974036,
+          "max_ms": 0.03899999999998727,
+          "failed": 0
+        },
+        "native.list": {
+          "calls": 1,
+          "total_ms": 83.09296999999992,
+          "max_ms": 83.09296999999992,
+          "failed": 0
+        },
+        "response.envelope": {
+          "calls": 1,
+          "total_ms": 0.7496780000001309,
+          "max_ms": 0.7496780000001309,
+          "failed": 0
+        },
+        "route.secrets": {
+          "calls": 1,
+          "total_ms": 88.78084599999988,
+          "max_ms": 88.78084599999988,
+          "failed": 0
+        }
+      },
+      "attempts": [
+        {
+          "id": 1,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1631.044757,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.15214999999989232,
+              "max_ms": 0.15214999999989232,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.5716480000000956,
+              "max_ms": 0.5716480000000956,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.8213080000000446,
+              "max_ms": 0.8213080000000446,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 5,
+              "total_ms": 0.024620000000140863,
+              "max_ms": 0.016000000000076398,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 3,
+              "total_ms": 0.018180000000029395,
+              "max_ms": 0.008810000000039508,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.007139999999935753,
+              "max_ms": 0.007139999999935753,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.0812700000001314,
+              "max_ms": 0.0812700000001314,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 24998,
+          "finished": true,
+          "https_start_ms": 1636.271459,
+          "socket_assigned_ms": 1639.128593,
+          "reused_socket": false,
+          "socket_id": 1,
+          "tls_complete_ms": 1641.605897,
+          "tls_session_resumed": false,
+          "concat_output_bytes": 27434,
+          "headers_ms": 1660.142781,
+          "status": 200,
+          "decoded_body_utf8_bytes": 24998,
+          "body_end_ms": 1660.374401,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1660.471781
+        },
+        {
+          "id": 2,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1631.397626,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.062480000000050495,
+              "max_ms": 0.062480000000050495,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.2976889999999912,
+              "max_ms": 0.2976889999999912,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.45216900000013993,
+              "max_ms": 0.45216900000013993,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 5,
+              "total_ms": 0.01639000000022861,
+              "max_ms": 0.004290000000082728,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 3,
+              "total_ms": 0.03957000000013977,
+              "max_ms": 0.016030000000000655,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.009699999999838838,
+              "max_ms": 0.009699999999838838,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.12851000000000568,
+              "max_ms": 0.12851000000000568,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 25222,
+          "finished": true,
+          "https_start_ms": 1637.377727,
+          "socket_assigned_ms": 1639.364872,
+          "reused_socket": false,
+          "socket_id": 2,
+          "tls_complete_ms": 1642.129406,
+          "tls_session_resumed": false,
+          "concat_output_bytes": 27659,
+          "headers_ms": 1656.242751,
+          "status": 200,
+          "decoded_body_utf8_bytes": 25222,
+          "body_end_ms": 1657.122438,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1657.750927
+        },
+        {
+          "id": 3,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1631.419756,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.04510000000004766,
+              "max_ms": 0.04510000000004766,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.21354900000005728,
+              "max_ms": 0.21354900000005728,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.3633589999999458,
+              "max_ms": 0.3633589999999458,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 5,
+              "total_ms": 0.01439000000004853,
+              "max_ms": 0.004419999999981883,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 3,
+              "total_ms": 0.05929999999989377,
+              "max_ms": 0.03607999999985623,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.006820000000061555,
+              "max_ms": 0.006820000000061555,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.0858699999998862,
+              "max_ms": 0.0858699999998862,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 25222,
+          "finished": true,
+          "https_start_ms": 1637.978115,
+          "socket_assigned_ms": 1639.458152,
+          "reused_socket": false,
+          "socket_id": 3,
+          "tls_complete_ms": 1642.828044,
+          "tls_session_resumed": false,
+          "concat_output_bytes": 27658,
+          "headers_ms": 1658.942154,
+          "status": 200,
+          "decoded_body_utf8_bytes": 25222,
+          "body_end_ms": 1659.168034,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1659.292053
+        },
+        {
+          "id": 4,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1631.439186,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.028729999999995925,
+              "max_ms": 0.028729999999995925,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.1496790000001056,
+              "max_ms": 0.1496790000001056,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.30072900000004665,
+              "max_ms": 0.30072900000004665,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 5,
+              "total_ms": 0.010849999999891224,
+              "max_ms": 0.003960000000006403,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 3,
+              "total_ms": 0.01630999999974847,
+              "max_ms": 0.008149999999886859,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.007209999999986394,
+              "max_ms": 0.007209999999986394,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.08027900000001864,
+              "max_ms": 0.08027900000001864,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 25222,
+          "finished": true,
+          "https_start_ms": 1638.575564,
+          "socket_assigned_ms": 1639.572642,
+          "reused_socket": false,
+          "socket_id": 4,
+          "tls_complete_ms": 1643.513332,
+          "tls_session_resumed": false,
+          "concat_output_bytes": 27659,
+          "headers_ms": 1661.166799,
+          "status": 200,
+          "decoded_body_utf8_bytes": 25222,
+          "body_end_ms": 1661.377928,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1661.467128
+        },
+        {
+          "id": 5,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1658.197676,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.009070000000065193,
+              "max_ms": 0.009070000000065193,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.09410000000002583,
+              "max_ms": 0.09410000000002583,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.1632689999999002,
+              "max_ms": 0.1632689999999002,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.008790000000090004,
+              "max_ms": 0.004059999999981301,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.01970900000014808,
+              "max_ms": 0.01970900000014808,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.007280000000037035,
+              "max_ms": 0.007280000000037035,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.09798000000000684,
+              "max_ms": 0.09798000000000684,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 25222,
+          "finished": true,
+          "https_start_ms": 1658.736325,
+          "socket_assigned_ms": 1658.777945,
+          "reused_socket": true,
+          "socket_id": 2,
+          "headers_ms": 1670.77757,
+          "status": 200,
+          "concat_output_bytes": 25222,
+          "decoded_body_utf8_bytes": 25222,
+          "body_end_ms": 1671.153269,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1671.262309
+        },
+        {
+          "id": 6,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1659.470493,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.006969999999910215,
+              "max_ms": 0.006969999999910215,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.09479999999985012,
+              "max_ms": 0.09479999999985012,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.15525000000002365,
+              "max_ms": 0.15525000000002365,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.007709999999860884,
+              "max_ms": 0.0040999999998803105,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.018779999999878783,
+              "max_ms": 0.018779999999878783,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.006170000000111031,
+              "max_ms": 0.006170000000111031,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.07827000000020234,
+              "max_ms": 0.07827000000020234,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 25222,
+          "finished": true,
+          "https_start_ms": 1659.947482,
+          "socket_assigned_ms": 1659.977032,
+          "reused_socket": true,
+          "socket_id": 3,
+          "headers_ms": 1672.672756,
+          "status": 200,
+          "concat_output_bytes": 25222,
+          "decoded_body_utf8_bytes": 25222,
+          "body_end_ms": 1672.903035,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1672.983815
+        },
+        {
+          "id": 7,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1660.71369,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.007470000000012078,
+              "max_ms": 0.007470000000012078,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.06601000000000568,
+              "max_ms": 0.06601000000000568,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.09636000000000422,
+              "max_ms": 0.09636000000000422,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.007290000000011787,
+              "max_ms": 0.0031400000000303407,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.00853000000006432,
+              "max_ms": 0.00853000000006432,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.013460000000122818,
+              "max_ms": 0.013460000000122818,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.08948999999984153,
+              "max_ms": 0.08948999999984153,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 25222,
+          "finished": true,
+          "https_start_ms": 1661.012609,
+          "socket_assigned_ms": 1661.040579,
+          "reused_socket": true,
+          "socket_id": 1,
+          "headers_ms": 1674.074564,
+          "status": 200,
+          "concat_output_bytes": 25222,
+          "decoded_body_utf8_bytes": 25222,
+          "body_end_ms": 1674.302273,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1674.445513
+        },
+        {
+          "id": 8,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1661.671738,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.008199999999987995,
+              "max_ms": 0.008199999999987995,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.06403999999997723,
+              "max_ms": 0.06403999999997723,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.09730899999999565,
+              "max_ms": 0.09730899999999565,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.0070200000000113505,
+              "max_ms": 0.0031799999999293505,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.008820000000014261,
+              "max_ms": 0.008820000000014261,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.005620000000135406,
+              "max_ms": 0.005620000000135406,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.07824000000005071,
+              "max_ms": 0.07824000000005071,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 25222,
+          "finished": true,
+          "https_start_ms": 1662.056357,
+          "socket_assigned_ms": 1662.089437,
+          "reused_socket": true,
+          "socket_id": 4,
+          "headers_ms": 1676.783677,
+          "status": 200,
+          "concat_output_bytes": 25222,
+          "decoded_body_utf8_bytes": 25222,
+          "body_end_ms": 1676.990487,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1677.100726
+        },
+        {
+          "id": 9,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1671.465308,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.01163999999994303,
+              "max_ms": 0.01163999999994303,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.11910000000011678,
+              "max_ms": 0.11910000000011678,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.1887899999999263,
+              "max_ms": 0.1887899999999263,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.008999999999787178,
+              "max_ms": 0.004200000000082582,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.008309999999937645,
+              "max_ms": 0.008309999999937645,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.0056899999999586726,
+              "max_ms": 0.0056899999999586726,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.07880900000009206,
+              "max_ms": 0.07880900000009206,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 25222,
+          "finished": true,
+          "https_start_ms": 1672.229507,
+          "socket_assigned_ms": 1672.265237,
+          "reused_socket": true,
+          "socket_id": 2,
+          "headers_ms": 1685.071276,
+          "status": 200,
+          "concat_output_bytes": 25222,
+          "decoded_body_utf8_bytes": 25222,
+          "body_end_ms": 1685.419825,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1685.639535
+        },
+        {
+          "id": 10,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1673.153774,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.0070500000001629815,
+              "max_ms": 0.0070500000001629815,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.0704800000000887,
+              "max_ms": 0.0704800000000887,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.10635999999999513,
+              "max_ms": 0.10635999999999513,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.00836999999978616,
+              "max_ms": 0.004089999999905558,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.008860000000140644,
+              "max_ms": 0.008860000000140644,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.005879999999933716,
+              "max_ms": 0.005879999999933716,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.0785200000000259,
+              "max_ms": 0.0785200000000259,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 25222,
+          "finished": true,
+          "https_start_ms": 1673.532084,
+          "socket_assigned_ms": 1673.673763,
+          "reused_socket": true,
+          "socket_id": 3,
+          "headers_ms": 1686.266823,
+          "status": 200,
+          "concat_output_bytes": 25222,
+          "decoded_body_utf8_bytes": 25222,
+          "body_end_ms": 1686.520023,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1686.639132
+        },
+        {
+          "id": 11,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1674.612732,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.008510000000114815,
+              "max_ms": 0.008510000000114815,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.07140000000003965,
+              "max_ms": 0.07140000000003965,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.09634000000005472,
+              "max_ms": 0.09634000000005472,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.009149999999863212,
+              "max_ms": 0.004479999999830397,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.00959000000011656,
+              "max_ms": 0.00959000000011656,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.006660000000010768,
+              "max_ms": 0.006660000000010768,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.09775999999988016,
+              "max_ms": 0.09775999999988016,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 24775,
+          "finished": true,
+          "https_start_ms": 1674.899772,
+          "socket_assigned_ms": 1674.923892,
+          "reused_socket": true,
+          "socket_id": 1,
+          "headers_ms": 1687.67443,
+          "status": 200,
+          "concat_output_bytes": 24775,
+          "decoded_body_utf8_bytes": 24775,
+          "body_end_ms": 1687.912119,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1688.003679
+        },
+        {
+          "id": 12,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1677.263626,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.007710000000088257,
+              "max_ms": 0.007710000000088257,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.0665599999999813,
+              "max_ms": 0.0665599999999813,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.09075000000007094,
+              "max_ms": 0.09075000000007094,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.007319999999936044,
+              "max_ms": 0.003169999999954598,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.008720000000039363,
+              "max_ms": 0.008720000000039363,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.006879999999910069,
+              "max_ms": 0.006879999999910069,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.09855999999990672,
+              "max_ms": 0.09855999999990672,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 24775,
+          "finished": true,
+          "https_start_ms": 1677.528635,
+          "socket_assigned_ms": 1677.551665,
+          "reused_socket": true,
+          "socket_id": 4,
+          "headers_ms": 1690.082954,
+          "status": 200,
+          "concat_output_bytes": 24775,
+          "decoded_body_utf8_bytes": 24775,
+          "body_end_ms": 1690.302124,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1690.383814
+        },
+        {
+          "id": 13,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1685.811164,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.006930000000011205,
+              "max_ms": 0.006930000000011205,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.06403999999997723,
+              "max_ms": 0.06403999999997723,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.08709999999996398,
+              "max_ms": 0.08709999999996398,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.007159999999885258,
+              "max_ms": 0.0037199999999302236,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.008649999999988722,
+              "max_ms": 0.008649999999988722,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.00645000000008622,
+              "max_ms": 0.00645000000008622,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.09457999999995081,
+              "max_ms": 0.09457999999995081,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 24775,
+          "finished": true,
+          "https_start_ms": 1686.125404,
+          "socket_assigned_ms": 1686.149184,
+          "reused_socket": true,
+          "socket_id": 2,
+          "headers_ms": 1698.648832,
+          "status": 200,
+          "concat_output_bytes": 24775,
+          "decoded_body_utf8_bytes": 24775,
+          "body_end_ms": 1698.868642,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1698.946522
+        },
+        {
+          "id": 14,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1686.913732,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.008489000000054148,
+              "max_ms": 0.008489000000054148,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.05942000000004555,
+              "max_ms": 0.05942000000004555,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.08287000000018452,
+              "max_ms": 0.08287000000018452,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.006839999999783686,
+              "max_ms": 0.0037599999998292333,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.01650000000017826,
+              "max_ms": 0.01650000000017826,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.005779999999958818,
+              "max_ms": 0.005779999999958818,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.07779899999991358,
+              "max_ms": 0.07779899999991358,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 24775,
+          "finished": true,
+          "https_start_ms": 1687.249451,
+          "socket_assigned_ms": 1687.272701,
+          "reused_socket": true,
+          "socket_id": 3,
+          "headers_ms": 1699.78018,
+          "status": 200,
+          "concat_output_bytes": 24775,
+          "decoded_body_utf8_bytes": 24775,
+          "body_end_ms": 1699.979089,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1700.043009
+        },
+        {
+          "id": 15,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1688.307158,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.008869999999888023,
+              "max_ms": 0.008869999999888023,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.05992999999989479,
+              "max_ms": 0.05992999999989479,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.08411999999998443,
+              "max_ms": 0.08411999999998443,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.00740999999993619,
+              "max_ms": 0.0037999999999556167,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.007859999999936917,
+              "max_ms": 0.007859999999936917,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.005700000000160799,
+              "max_ms": 0.005700000000160799,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.08208999999988009,
+              "max_ms": 0.08208999999988009,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 24775,
+          "finished": true,
+          "https_start_ms": 1688.584228,
+          "socket_assigned_ms": 1688.608468,
+          "reused_socket": true,
+          "socket_id": 1,
+          "headers_ms": 1701.024028,
+          "status": 200,
+          "concat_output_bytes": 24775,
+          "decoded_body_utf8_bytes": 24775,
+          "body_end_ms": 1701.212498,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1701.281358
+        },
+        {
+          "id": 16,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1690.748423,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.01586999999994987,
+              "max_ms": 0.01586999999994987,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.07297899999980473,
+              "max_ms": 0.07297899999980473,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.10338900000010653,
+              "max_ms": 0.10338900000010653,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.012300000000095679,
+              "max_ms": 0.004180000000133077,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.02035000000000764,
+              "max_ms": 0.02035000000000764,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.008079999999836218,
+              "max_ms": 0.008079999999836218,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.11480900000015026,
+              "max_ms": 0.11480900000015026,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 24775,
+          "finished": true,
+          "https_start_ms": 1691.077392,
+          "socket_assigned_ms": 1691.104972,
+          "reused_socket": true,
+          "socket_id": 4,
+          "headers_ms": 1704.325009,
+          "status": 200,
+          "concat_output_bytes": 24775,
+          "decoded_body_utf8_bytes": 24775,
+          "body_end_ms": 1704.600568,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1704.733508
+        },
+        {
+          "id": 17,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1699.107301,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.009140000000115833,
+              "max_ms": 0.009140000000115833,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.08166000000005624,
+              "max_ms": 0.08166000000005624,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.10533000000009451,
+              "max_ms": 0.10533000000009451,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.007629999999835491,
+              "max_ms": 0.0037700000000313594,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.02045000000020991,
+              "max_ms": 0.02045000000020991,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.0067099999998845306,
+              "max_ms": 0.0067099999998845306,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.09781999999995605,
+              "max_ms": 0.09781999999995605,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 24775,
+          "finished": true,
+          "https_start_ms": 1699.403471,
+          "socket_assigned_ms": 1699.426401,
+          "reused_socket": true,
+          "socket_id": 2,
+          "headers_ms": 1711.592313,
+          "status": 200,
+          "concat_output_bytes": 24775,
+          "decoded_body_utf8_bytes": 24775,
+          "body_end_ms": 1711.848103,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1711.928392
+        },
+        {
+          "id": 18,
+          "limit": 200,
+          "continued": false,
+          "start_ms": 1700.321179,
+          "stages": {
+            "native.queue": {
+              "calls": 1,
+              "total_ms": 0.010298999999804437,
+              "max_ms": 0.010298999999804437,
+              "failed": 0
+            },
+            "sdk.applyOptions": {
+              "calls": 1,
+              "total_ms": 0.05793000000016946,
+              "max_ms": 0.05793000000016946,
+              "failed": 0
+            },
+            "sdk.applyToHTTPSOptions": {
+              "calls": 1,
+              "total_ms": 0.08058999999980188,
+              "max_ms": 0.08058999999980188,
+              "failed": 0
+            },
+            "native.bufferToString": {
+              "calls": 3,
+              "total_ms": 0.006380000000035579,
+              "max_ms": 0.0032799999999042484,
+              "failed": 0
+            },
+            "native.bufferConcat": {
+              "calls": 1,
+              "total_ms": 0.016870000000153595,
+              "max_ms": 0.016870000000153595,
+              "failed": 0
+            },
+            "native.utf8Decode": {
+              "calls": 1,
+              "total_ms": 0.005840000000034706,
+              "max_ms": 0.005840000000034706,
+              "failed": 0
+            },
+            "native.jsonParse": {
+              "calls": 1,
+              "total_ms": 0.07636999999999716,
+              "max_ms": 0.07636999999999716,
+              "failed": 0
+            }
+          },
+          "delivered_body_bytes": 24775,
+          "finished": true,
+          "https_start_ms": 1700.572908,
+          "socket_assigned_ms": 1700.594758,
+          "reused_socket": true,
+          "socket_id": 3,
+          "headers_ms": 1712.82186,
+          "status": 200,
+          "concat_output_bytes": 24775,
+          "decoded_body_utf8_bytes": 24775,
+          "body_end_ms": 1713.02106,
+          "body_complete": true,
+          "response_closed": true,
+          "failed": false,
+          "finish_ms": 1713.079679
+        }
+      ],
+      "finished": true,
+      "memory_before": {
+        "rss": 215457792,
+        "heapTotal": 117633024,
+        "heapUsed": 105975536,
+        "external": 4238748,
+        "arrayBuffers": 352795
+      },
+      "finish_ms": 1715.081009,
+      "status": 200,
+      "process_cpu_delta_us": {
+        "user": 47837,
+        "system": 0
+      },
+      "event_loop_utilization_delta": {
+        "idle": 48.83351499999998,
+        "active": 44.53312398825642,
+        "utilization": 0.47697040903290705
+      },
+      "memory_after": {
+        "rss": 216834048,
+        "heapTotal": 118317056,
+        "heapUsed": 110093512,
+        "external": 5524540,
+        "arrayBuffers": 1609422
+      }
+    }
+  ],
+  "gc": [
+    {
+      "start_ms": 26.749325,
+      "duration_ms": 0.6583880186080933,
+      "kind": 1
+    },
+    {
+      "start_ms": 35.725324,
+      "duration_ms": 0.5942379832267761,
+      "kind": 1
+    },
+    {
+      "start_ms": 46.136738,
+      "duration_ms": 0.5240190029144287,
+      "kind": 1
+    },
+    {
+      "start_ms": 71.312498,
+      "duration_ms": 0.5455690026283264,
+      "kind": 1
+    },
+    {
+      "start_ms": 83.685197,
+      "duration_ms": 1.0309770107269287,
+      "kind": 1
+    },
+    {
+      "start_ms": 98.731541,
+      "duration_ms": 1.219037026166916,
+      "kind": 1
+    },
+    {
+      "start_ms": 134.948624,
+      "duration_ms": 1.0389280021190643,
+      "kind": 1
+    },
+    {
+      "start_ms": 201.974811,
+      "duration_ms": 1.4003260135650635,
+      "kind": 1
+    },
+    {
+      "start_ms": 203.378977,
+      "duration_ms": 0.25929999351501465,
+      "kind": 8
+    },
+    {
+      "start_ms": 215.428809,
+      "duration_ms": 1.5836859941482544,
+      "kind": 4
+    },
+    {
+      "start_ms": 261.342388,
+      "duration_ms": 0.6669179797172546,
+      "kind": 1
+    },
+    {
+      "start_ms": 293.696339,
+      "duration_ms": 1.534056007862091,
+      "kind": 1
+    },
+    {
+      "start_ms": 364.480398,
+      "duration_ms": 1.770355999469757,
+      "kind": 1
+    },
+    {
+      "start_ms": 402.749356,
+      "duration_ms": 0.26291897892951965,
+      "kind": 8
+    },
+    {
+      "start_ms": 421.301235,
+      "duration_ms": 4.068706005811691,
+      "kind": 4
+    },
+    {
+      "start_ms": 475.9473,
+      "duration_ms": 0.7156380116939545,
+      "kind": 1
+    },
+    {
+      "start_ms": 507.158543,
+      "duration_ms": 1.5989260077476501,
+      "kind": 1
+    },
+    {
+      "start_ms": 550.793938,
+      "duration_ms": 1.4958760142326355,
+      "kind": 1
+    },
+    {
+      "start_ms": 579.625697,
+      "duration_ms": 1.320708006620407,
+      "kind": 1
+    },
+    {
+      "start_ms": 597.357616,
+      "duration_ms": 1.072018027305603,
+      "kind": 1
+    },
+    {
+      "start_ms": 614.579163,
+      "duration_ms": 1.3980480134487152,
+      "kind": 1
+    },
+    {
+      "start_ms": 631.297372,
+      "duration_ms": 1.45625701546669,
+      "kind": 1
+    },
+    {
+      "start_ms": 660.747513,
+      "duration_ms": 3.756778985261917,
+      "kind": 8
+    },
+    {
+      "start_ms": 666.235808,
+      "duration_ms": 1.3014970123767853,
+      "kind": 1
+    },
+    {
+      "start_ms": 692.608016,
+      "duration_ms": 2.621163010597229,
+      "kind": 4
+    },
+    {
+      "start_ms": 765.600818,
+      "duration_ms": 1.7030560076236725,
+      "kind": 1
+    },
+    {
+      "start_ms": 796.524863,
+      "duration_ms": 1.636955976486206,
+      "kind": 1
+    },
+    {
+      "start_ms": 821.344043,
+      "duration_ms": 1.272606998682022,
+      "kind": 1
+    },
+    {
+      "start_ms": 834.509292,
+      "duration_ms": 1.6459609866142273,
+      "kind": 1
+    },
+    {
+      "start_ms": 846.688804,
+      "duration_ms": 0.6897269785404205,
+      "kind": 1
+    },
+    {
+      "start_ms": 855.095181,
+      "duration_ms": 2.310364991426468,
+      "kind": 1
+    },
+    {
+      "start_ms": 867.840362,
+      "duration_ms": 3.0239019989967346,
+      "kind": 1
+    },
+    {
+      "start_ms": 905.89714,
+      "duration_ms": 0.40536898374557495,
+      "kind": 8
+    },
+    {
+      "start_ms": 907.537496,
+      "duration_ms": 1.077118992805481,
+      "kind": 1
+    },
+    {
+      "start_ms": 936.867185,
+      "duration_ms": 2.7473939955234528,
+      "kind": 4
+    },
+    {
+      "start_ms": 976.655378,
+      "duration_ms": 0.8335379958152771,
+      "kind": 1
+    },
+    {
+      "start_ms": 1001.594988,
+      "duration_ms": 2.108054995536804,
+      "kind": 1
+    },
+    {
+      "start_ms": 1034.16259,
+      "duration_ms": 1.177845984697342,
+      "kind": 1
+    },
+    {
+      "start_ms": 1051.406488,
+      "duration_ms": 1.094197005033493,
+      "kind": 1
+    },
+    {
+      "start_ms": 1073.629783,
+      "duration_ms": 0.9070789813995361,
+      "kind": 1
+    },
+    {
+      "start_ms": 1087.645052,
+      "duration_ms": 0.9947859942913055,
+      "kind": 1
+    },
+    {
+      "start_ms": 1099.67765,
+      "duration_ms": 0.9033679962158203,
+      "kind": 1
+    },
+    {
+      "start_ms": 1112.970439,
+      "duration_ms": 0.5818080008029938,
+      "kind": 1
+    },
+    {
+      "start_ms": 1125.913477,
+      "duration_ms": 0.5842289924621582,
+      "kind": 1
+    },
+    {
+      "start_ms": 1137.855983,
+      "duration_ms": 0.7496750056743622,
+      "kind": 1
+    },
+    {
+      "start_ms": 1150.520429,
+      "duration_ms": 0.5984080135822296,
+      "kind": 1
+    },
+    {
+      "start_ms": 1257.613269,
+      "duration_ms": 1.311506986618042,
+      "kind": 1
+    },
+    {
+      "start_ms": 1270.174449,
+      "duration_ms": 1.2908569872379303,
+      "kind": 1
+    },
+    {
+      "start_ms": 1273.295111,
+      "duration_ms": 2.007997006177902,
+      "kind": 1
+    },
+    {
+      "start_ms": 1316.370206,
+      "duration_ms": 1.3691169917583466,
+      "kind": 1
+    },
+    {
+      "start_ms": 1317.976862,
+      "duration_ms": 0.36333900690078735,
+      "kind": 8
+    },
+    {
+      "start_ms": 1362.017158,
+      "duration_ms": 3.7449910044670105,
+      "kind": 4
+    },
+    {
+      "start_ms": 1413.515018,
+      "duration_ms": 3.6424860060214996,
+      "kind": 1
+    },
+    {
+      "start_ms": 1448.174494,
+      "duration_ms": 3.1281229853630066,
+      "kind": 1
+    },
+    {
+      "start_ms": 1470.805289,
+      "duration_ms": 2.5193089842796326,
+      "kind": 1
+    },
+    {
+      "start_ms": 1490.804422,
+      "duration_ms": 8.749953001737595,
+      "kind": 1
+    },
+    {
+      "start_ms": 1617.470761,
+      "duration_ms": 3.2670719921588898,
+      "kind": 1
+    },
+    {
+      "start_ms": 1675.012271,
+      "duration_ms": 1.5511670112609863,
+      "kind": 1
+    },
+    {
+      "start_ms": 1723.970432,
+      "duration_ms": 0.8685230016708374,
+      "kind": 1
+    },
+    {
+      "start_ms": 1747.518484,
+      "duration_ms": 0.6635580062866211,
+      "kind": 1
+    },
+    {
+      "start_ms": 1791.443284,
+      "duration_ms": 1.1585779786109924,
+      "kind": 1
+    },
+    {
+      "start_ms": 1872.450033,
+      "duration_ms": 1.723326027393341,
+      "kind": 1
+    }
+  ],
+  "capped": false,
+  "tls": {
+    "connections": 4,
+    "open": 0,
+    "max_open": 4
+  },
+  "limitations": [
+    "Inclusive nested stages and observer overhead",
+    "SDK processor includes body/parse/deserialization; residual is not causal attribution",
+    "Process CPU/ELU/memory deltas and GC overlap do not establish stage causality",
+    "No arguments, URLs, cursors, cookies, auth identifiers, values, bodies or errors recorded"
+  ]
+}

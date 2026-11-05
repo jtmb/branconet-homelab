@@ -1,0 +1,30 @@
+{
+  "scanner": "Gitleaks 8.30.1 official checksum-verified release",
+  "default_rules": true,
+  "redacted": true,
+  "broad_suppressions": false,
+  "scanner_exit_code": 1,
+  "findings": 2,
+  "verified_public_source_hash_false_positives": 2,
+  "untriaged_findings": 0,
+  "source_blob_verifications": 3,
+  "scope": "two native sources, exclusive window tests, four affected scheduling/performance docs, exact diagnostic raw/script and functional record",
+  "review": [
+    {
+      "file": "docs/implementation-evidence/native-list-agent-qualification.json",
+      "line": 10,
+      "rule": "generic-api-key",
+      "classification": "public raw-Git staged application source SHA256; independently verified",
+      "source_path": "k8s-rewrite/front-end/src/lib/cluster-secrets.ts",
+      "source_sha256": "3d195c907f2d3071d1984e32bc6d0ff27768bdd62ea333c1f2d1a1a89ac4611b"
+    },
+    {
+      "file": "docs/implementation-evidence/native-list-agent-qualification.json",
+      "line": 11,
+      "rule": "generic-api-key",
+      "classification": "public raw-Git staged application source SHA256; independently verified",
+      "source_path": "k8s-rewrite/front-end/src/lib/secret-client.ts",
+      "source_sha256": "9de81ef4163c9dcbffc7364a8165251e721ab4064ea9557f6b5e05d4f8057209"
+    }
+  ]
+}

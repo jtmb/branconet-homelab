@@ -1,0 +1,37 @@
+{
+  "sourceCommit": "9aaba2c25b7ae3fcbf2f0c9b968839f1cc3026c5",
+  "scope": "Actual production explicit multi-container logs; controlled synthetic localhost only",
+  "startedUtc": "2026-10-11T16:34:42.544Z",
+  "clientNode": "v24.19.0",
+  "checks": [
+    "Named regular/init/ephemeral chooser; no implicit multi-container read; selected name reaches actual structured server argv",
+    "Regular, init and ephemeral changes plus same-container explicit refresh use exact names and replace old snapshot",
+    "Actual failed command yields visible actionable error without raw stderr/false output; same-container retry succeeds",
+    "Actual authorized success held across selection change cannot replace current snapshot",
+    "Actual failed response held across selection change cannot set stale error or erase newer snapshot",
+    "Closing aborts and fences held snapshot without reopening dialog",
+    "Fresh administration withdrawal erases selection/snapshot; direct request403; restore requires explicit new entry",
+    "Single observed container is queried explicitly, with no default kubectl container"
+  ],
+  "performanceAcceptance": false,
+  "chromePid": 41712,
+  "chromeStartedUtc": "2026-10-11T16:34:42.555Z",
+  "browserVersion": "149.0.7827.55",
+  "contextCount": 1,
+  "initialPageCount": 1,
+  "failure": {
+    "phase": "detail-and-missing",
+    "classification": "AssertionError",
+    "sourceLocations": [
+      {
+        "line": 63,
+        "column": 251
+      }
+    ]
+  },
+  "chromeExit": 0,
+  "chromeSignal": null,
+  "completedUtc": "2026-10-11T16:35:04.965Z",
+  "terminal": true,
+  "actualExit": 1
+}

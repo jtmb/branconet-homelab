@@ -1,0 +1,46 @@
+TAP version 13
+# Subtest: fresh permission withdrawal erases held logs; public action trigger stays available and restore requires another read
+ok 1 - fresh permission withdrawal erases held logs; public action trigger stays available and restore requires another read
+  ---
+  duration_ms: 166.03
+  type: 'test'
+  ...
+# Subtest: multiple containers require a choice; switching clears previous content and fences the first reply
+ok 2 - multiple containers require a choice; switching clears previous content and fences the first reply
+  ---
+  duration_ms: 45.502
+  type: 'test'
+  ...
+# Subtest: list action resolves public Pod names once; absent metadata never triggers an unselected log read
+ok 3 - list action resolves public Pod names once; absent metadata never triggers an unselected log read
+  ---
+  duration_ms: 84.9567
+  type: 'test'
+  ...
+# Subtest: held private read is aborted on withdrawal and cannot repopulate after session restoration
+ok 4 - held private read is aborted on withdrawal and cannot repopulate after session restoration
+  ---
+  duration_ms: 23.2223
+  type: 'test'
+  ...
+# Subtest: held YAML viewer/editor and confirmations are erased; stale YAML completion is fenced
+ok 5 - held YAML viewer/editor and confirmations are erased; stale YAML completion is fenced
+  ---
+  duration_ms: 46.7137
+  type: 'test'
+  ...
+# Subtest: log dialog permits explicit same-container refresh and provides a named container choice
+ok 6 - log dialog permits explicit same-container refresh and provides a named container choice
+  ---
+  duration_ms: 11.6189
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1310.8456

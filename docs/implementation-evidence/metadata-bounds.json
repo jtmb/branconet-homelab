@@ -1,0 +1,84 @@
+{
+  "capturedAt": "2026-10-10T19:44:43Z",
+  "source": "metadata bounds stage after a88832c; local working tree before commit",
+  "runtime": {
+    "node": "22.23.3",
+    "platform": "win32",
+    "next": "15.5.27",
+    "prisma": "6.19.3"
+  },
+  "validation": {
+    "unit": {
+      "passed": 83,
+      "failed": 0,
+      "durationMs": 14732.7891
+    },
+    "focusedMetadataTests": 6,
+    "lint": "zero-warning pass",
+    "build": "fresh standalone production pass",
+    "typecheck": "post-build pass",
+    "productionHttp": {
+      "passed": 2,
+      "failed": 0,
+      "existingMs": 26630.6018,
+      "nativeTlsMs": 28354.1733,
+      "overallMs": 28590.6715
+    }
+  },
+  "aliasAssertions": [
+    "40 concurrent 603-alias reads coalesce into one metadata load; exact spellings, special keys, caller isolation, TTL/path/API invalidation",
+    "Streamed one-MiB fatal UTF-8 file and 10,000 combined unique mappings; whitelist-only metadata cache",
+    "Expired failure never serves stale catalog; timed-out worker retains slot until settled",
+    "100-reference public pages preserve 603 synthetic mappings with no duplicates and exclude history",
+    "Concurrent quota-edge registrations return 201 and 413 without exceeding combined file/DB quota",
+    "Four-KiB strict body; fresh serialized administrator check"
+  ],
+  "readinessAssertions": [
+    "20 concurrent requests coalesce into exactly two metadata-only current/history probes; warm request adds zero probes",
+    "Every healthy configured scope is checked with four maximum workers sharing an eight-second native deadline",
+    "After failure, no new scopes start and started workers remain attached until settled",
+    "Nine-second dependency deadline, ten-second success TTL, two-second error backoff",
+    "Missing schema/config/aliases, TLS/permission failure and unsupported metadata negotiation return fixed 503; no full Secret list/write probe"
+  ],
+  "browser": {
+    "fixture": "Owned disposable migrated SQLite, unavailable native endpoint, 603 synthetic aliases and readonly gateway; no operator credentials",
+    "pages": [
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      3
+    ],
+    "uniqueAliases": 603,
+    "nextOnLastPage": "disabled",
+    "previousFromLastPage": "page 6, 100 rows",
+    "sixForwardTransitions": {
+      "aliasRequestsAdded": 6,
+      "nativeListRequestsAdded": 0
+    },
+    "unavailableNative": "explicit error while all aliases remain browsable",
+    "readonlyValueEditors": 0,
+    "mobile": {
+      "cssWidth": 390,
+      "documentScrollWidth": 380,
+      "aliasRowsAtPage6": 100
+    },
+    "screenshot": "metadata-alias-mobile.png",
+    "cleanup": "tab closed; viewport reset; fixture stopped and owned temporary data removed"
+  },
+  "correctionsRetained": [
+    "Generated/validated fixture history name needed non-null type assertion in first build",
+    "Lost HTTP completion treated as unknown; suites rerun and observed passing",
+    "UI lint hook dependencies fixed using stable refetch functions",
+    "Early Promise.all failure could detach sibling probes; stopped scheduling and awaited all started workers with regression"
+  ],
+  "limitations": [
+    "Windows synthetic tests/browser, not final Linux image or real-cluster/admission/RBAC acceptance",
+    "603 synthetic aliases do not independently prove the production inventory",
+    "No controlled CPU/RSS/peak memory/render-time/throttling/zoom/screen-reader evidence",
+    "Native object/child-detail table bounds, flat editor intent and full KV UI remain pending",
+    "Readiness is dependency read connectivity only; guarded flag remains operator assertion"
+  ]
+}

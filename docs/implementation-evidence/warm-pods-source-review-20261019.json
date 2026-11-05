@@ -1,0 +1,371 @@
+{
+  "observedDateToronto": "2026-10-19",
+  "scope": "Bounded account-delivery and warm Pods response source review against retained original performance evidence",
+  "decision": "No demonstrated semantics-preserving redundant operation justifies a source patch in the inspected path",
+  "applicationCheckpoint": "354afeaaa625bc41a6e8f2b42610f83077a58d35",
+  "frontendTree": "21eb2b17035822532129240b6180fdf971bc6d9d",
+  "reviewedFiles": [
+    {
+      "path": "k8s-rewrite/front-end/runtime/direct-account-reader-worker.cjs",
+      "rawGitBytes": 3165,
+      "rawGitSHA256": "239f818c54d3742aac427ad3120d2ef38249d00ca58bfca83eb7f96a38e2ba69"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/direct-account-core.ts",
+      "rawGitBytes": 12537,
+      "rawGitSHA256": "c27e859c8e70006e11ed25457bbafc4adec2d9c0d992909aa5313a5e71bf91a5"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/direct-account-reader.ts",
+      "rawGitBytes": 525,
+      "rawGitSHA256": "5b71472f3e0b0229ab8160086db0dc5dd70b24c5841ea6ced8902a5d3ea69018"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/worker-account-reader.ts",
+      "rawGitBytes": 11643,
+      "rawGitSHA256": "35b3d831266639efd86577c88970bebfad2f8a8c58673d2f5ebfc8361e2ac5ea"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/auth.ts",
+      "rawGitBytes": 4039,
+      "rawGitSHA256": "932034e70f9d0447eb23c38ce91cb799413d289eb0a3bd25f3808c25865f2aff"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/middleware.ts",
+      "rawGitBytes": 1760,
+      "rawGitSHA256": "9e3155260d2e0cf9edceabfc85d878cd9ee915bfe2c9f693aebcddd6145e4d89"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/pods/route.ts",
+      "rawGitBytes": 839,
+      "rawGitSHA256": "6a49d6aa82653080e94f0887155416e9c7241054be588d5d1db17f4137fcdb1a"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/cluster-cache.ts",
+      "rawGitBytes": 10079,
+      "rawGitSHA256": "cf9e971d8fdce9f04fd750f807eb159d4e418db0a2489aedad85de1ae113b97a"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/resource-cache.ts",
+      "rawGitBytes": 4759,
+      "rawGitSHA256": "c95b5bcbd705c45d8c68c4eea2b078313d048b0cccdcae639b8ccc09b96e3f20"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/pod-metadata-response.ts",
+      "rawGitBytes": 1727,
+      "rawGitSHA256": "a6c68adc5565e02b7945e2d710bd15356123739007d92f04115200bc444e3891"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/pod-query.ts",
+      "rawGitBytes": 3953,
+      "rawGitSHA256": "fe5a030155f1be0a0d2f9cce914545233ab8d44fa8e707831697946fa7e7f3c5"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/cluster-response.ts",
+      "rawGitBytes": 2848,
+      "rawGitSHA256": "e64a9e7ea57e98b4af22e6eda30925c5e81d6d9a9cfbd5e12140c1c0405983bd"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/cluster-http.ts",
+      "rawGitBytes": 583,
+      "rawGitSHA256": "03f5121ccea9d4486b37c1f1fa2443cdd186ef5c4880c460c7ecde641adbd993"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/cluster-metadata.ts",
+      "rawGitBytes": 1451,
+      "rawGitSHA256": "4ad9462cc00380744b9680c6aa1e7315bd50553cd9988faf491ae65711fee24a"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/direct-account-reader.test.ts",
+      "rawGitBytes": 18486,
+      "rawGitSHA256": "fe8f3ccc5d69ef1e47c9f85529730c5c3bb78f409571ddcbb5541725a8558944"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/worker-account-reader.test.ts",
+      "rawGitBytes": 21735,
+      "rawGitSHA256": "2ebf5aa1fdad91cad92ffc63596121b7c281a84c997c1138397dcfcd192bd168"
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/pod-metadata-response.test.ts",
+      "rawGitBytes": 3444,
+      "rawGitSHA256": "1c6ed44e63d130437dc543c4dbed8b88e051aa12499c9419ae1b26c746949eb3"
+    }
+  ],
+  "retainedEvidence": {
+    "raw-report.json": {
+      "bytes": 861040,
+      "sha256": "c6b4b2974233d095678b2ca03458693f1deb738abd3d7e598cf0033d3509ecdd"
+    },
+    "summary.json": {
+      "bytes": 222488,
+      "sha256": "f7caa10ad82d234f08e66d9fc11591a0990cb28f86843adc1288049c8b797479"
+    },
+    "existingSourceProof": {
+      "baselineFiles": 157,
+      "candidateFiles": 296,
+      "rawGitArchiveBytesAndModesMatched": true,
+      "claimScope": "Retained prior root source proof, read during this review; no new archive reconstruction"
+    },
+    "originalPerformanceRecord": "account-settlement-paired-evaluation-20261019.json",
+    "rawAndFullSummaryReadAndDigestsRechecked": true,
+    "newDistributionRecomputation": false,
+    "warmRegressions": 5,
+    "warmComparableCases": 10,
+    "A07Passed": false
+  },
+  "findings": [
+    {
+      "source": "k8s-rewrite/front-end/src/middleware.ts",
+      "lines": [
+        24,
+        30
+      ],
+      "related": [
+        {
+          "source": "k8s-rewrite/front-end/src/lib/auth.ts",
+          "lines": [
+            38,
+            41
+          ]
+        },
+        {
+          "source": "k8s-rewrite/front-end/src/lib/auth.ts",
+          "lines": [
+            87,
+            98
+          ]
+        },
+        {
+          "source": "k8s-rewrite/front-end/src/app/api/cluster/pods/route.ts",
+          "lines": [
+            6,
+            15
+          ]
+        }
+      ],
+      "decision": "A warm Pods request has one middleware fresh session projection; the handler introduces no duplicate handler account lookup. Other endpoints retain their independent account/role boundary."
+    },
+    {
+      "source": "k8s-rewrite/front-end/src/lib/direct-account-core.ts",
+      "lines": [
+        90,
+        128
+      ],
+      "related": [
+        {
+          "source": "k8s-rewrite/front-end/src/lib/direct-account-core.ts",
+          "lines": [
+            153,
+            174
+          ]
+        },
+        {
+          "source": "k8s-rewrite/front-end/runtime/direct-account-reader-worker.cjs",
+          "lines": [
+            43,
+            52
+          ]
+        }
+      ],
+      "decision": "Successful core ownership is cleared before promise resolution and the success-only idle wait is already omitted. Pre/post-SQL identity sequences each execute the actual setImmediate yield; refusal can reject before ownership drains and must retain whenIdle."
+    },
+    {
+      "source": "k8s-rewrite/front-end/src/lib/worker-account-reader.ts",
+      "lines": [
+        168,
+        181
+      ],
+      "related": [
+        {
+          "source": "k8s-rewrite/front-end/src/lib/worker-account-reader.ts",
+          "lines": [
+            18,
+            30
+          ]
+        },
+        {
+          "source": "k8s-rewrite/front-end/src/lib/worker-account-reader.ts",
+          "lines": [
+            78,
+            85
+          ]
+        },
+        {
+          "source": "k8s-rewrite/front-end/src/lib/worker-account-reader.ts",
+          "lines": [
+            133,
+            138
+          ]
+        }
+      ],
+      "decision": "Parent projection validation, fresh path identity, current configuration/deadline checks and discard acknowledgement protect later IPC delivery. Worker-side checks cannot replace this delivery fence."
+    },
+    {
+      "source": "k8s-rewrite/front-end/src/lib/cluster-cache.ts",
+      "lines": [
+        268,
+        271
+      ],
+      "related": [
+        {
+          "source": "k8s-rewrite/front-end/src/lib/resource-cache.ts",
+          "lines": [
+            40,
+            93
+          ]
+        },
+        {
+          "source": "k8s-rewrite/front-end/src/lib/pod-metadata-response.ts",
+          "lines": [
+            9,
+            26
+          ]
+        }
+      ],
+      "decision": "Pods uses a resource-only snapshot; its WeakMap already reuses redacted rows and JSON for the raw snapshot lifetime. Availability remains current for every request, filters remain request-specific and response instances/consumption remain independent."
+    },
+    {
+      "source": "k8s-rewrite/front-end/tests/worker-account-reader.test.ts",
+      "lines": [
+        165,
+        203
+      ],
+      "related": [
+        {
+          "source": "k8s-rewrite/front-end/tests/worker-account-reader.test.ts",
+          "lines": [
+            231,
+            293
+          ]
+        },
+        {
+          "source": "k8s-rewrite/front-end/tests/pod-metadata-response.test.ts",
+          "lines": [
+            14,
+            41
+          ]
+        }
+      ],
+      "decision": "Existing controls distinguish both success yields from held-refusal draining, one active/64 queued, original deadline, malformed delivery and actual exit. Existing Pod controls cover privacy/parity, fresh availability, filters and replacement snapshots. Tests were read, not replayed."
+    }
+  ],
+  "preserved": [
+    "both actual setImmediate identity yields",
+    "fresh account/role/session/SQL/schema/configuration/path/deadline checks",
+    "parent delivery fence",
+    "successful and refused ownership and acknowledgements",
+    "one active plus 64 queued and original 5000ms deadline",
+    "native envelopes/privacy/authorization/bounds",
+    "all 44 original acceptance clauses and frozen failure evidence"
+  ],
+  "execution": {
+    "sourceChanged": false,
+    "testsChanged": false,
+    "workflowOrOraclesChanged": false,
+    "newRuntimeOrDiagnostics": false,
+    "benchmarkReplayed": false,
+    "testBuildOrCIDispatched": false,
+    "newImageOrDeployment": false,
+    "sourceAdopted": false
+  },
+  "limits": [
+    "This is a bounded source decision, not proof that no optimization is possible.",
+    "Mixed whole-fixture HTTP/CPU/memory observations do not establish an A07 cause or predict a benefit from removing a check.",
+    "No new performance, functional, browser, image, security, recovery or live acceptance is claimed.",
+    "The unchanged failed candidate remains isolated and unadopted; no threshold, warmup, trimming, tolerance or safety-bound change is justified."
+  ],
+  "docsDomainReview": {
+    "files": [
+      {
+        "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+        "title": "Ansible to BORTUS API interaction"
+      },
+      {
+        "path": "docs/API-USAGE.md",
+        "title": "BORTUS API usage"
+      },
+      {
+        "path": "docs/audit-evidence/README.md",
+        "title": "BORTUS audit evidence"
+      },
+      {
+        "path": "docs/BORTUS-AUDIT.md",
+        "title": "BORTUS K8s performance, correctness and UI audit"
+      },
+      {
+        "path": "docs/BORTUS-CONTROLLED-PERFORMANCE.md",
+        "title": "Controlled whole-server performance qualification"
+      },
+      {
+        "path": "docs/BORTUS-DEPLOYMENT.md",
+        "title": "BORTUS application deployment"
+      },
+      {
+        "path": "docs/BORTUS-IMPLEMENTATION.md",
+        "title": "BORTUS audit remediation and native Secrets engine delivery"
+      },
+      {
+        "path": "docs/BORTUS-KV-ADMINISTRATION-UI.md",
+        "title": "BORTUS KV administration component"
+      },
+      {
+        "path": "docs/BORTUS-KV-DESIGN.md",
+        "title": "Native BORTUS KV engine implementation contract"
+      },
+      {
+        "path": "docs/BORTUS-KV-WORKBENCH.md",
+        "title": "BORTUS native KV workbench integration"
+      },
+      {
+        "path": "docs/BORTUS-NATIVE-LIST-PERFORMANCE.md",
+        "title": "Bounded native metadata listing optimization"
+      },
+      {
+        "path": "docs/BOTRUS-WORKFLOW.md",
+        "title": "BORTUS workflow guide"
+      },
+      {
+        "path": "docs/CHARTS-SEPARATION.md",
+        "title": "Separate charts repository and Flux delivery"
+      },
+      {
+        "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+        "title": "Connecting BORTUS to a cluster"
+      },
+      {
+        "path": "docs/FLUX-GITOPS.md",
+        "title": "BORTUS and the homelab Flux pipeline"
+      },
+      {
+        "path": "docs/implementation-evidence/native-list-stage-observer-v3/preparation/README.md",
+        "title": "README.md"
+      },
+      {
+        "path": "docs/implementation-evidence/README.md",
+        "title": "BORTUS implementation evidence"
+      },
+      {
+        "path": "docs/implementation-evidence/runtime-maintenance/README.md",
+        "title": "BORTUS dependency and runtime qualification, 2026-10-10"
+      },
+      {
+        "path": "docs/kubectl-cheatsheet.md",
+        "title": "kubectl checks for BORTUS"
+      },
+      {
+        "path": "docs/SECRETS-ENGINE.md",
+        "title": "BORTUS Secrets Engine"
+      },
+      {
+        "path": "docs/TECH-STACK.md",
+        "title": "BORTUS technology stack"
+      },
+      {
+        "path": "docs/USER-PERMS.md",
+        "title": "BORTUS user permissions"
+      }
+    ],
+    "result": "No source or contract changes. Only the four current decision summaries/indexes need this new evidence link; all other documented contracts and historical evidence remain valid in their original scopes."
+  },
+  "fullGoalComplete": false
+}

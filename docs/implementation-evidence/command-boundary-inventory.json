@@ -1,0 +1,467 @@
+{
+  "sourceCommit": "54f970df23e3d6044edeb1fbf009c20fce146bf3",
+  "scope": "Read-only source caller inventory; exact working SHA and line bindings; not runtime or complete real-cluster proof",
+  "files": [
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/deployments/[namespace]/[name]/action/route.ts",
+      "sourceSHA256": "fe84a976d6296be2d65cb2520d6b819c58522e323b51dc0e9b57b8ebc8d806ca",
+      "callSites": [
+        {
+          "line": 31,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/deployments/[namespace]/[name]/delete/route.ts",
+      "sourceSHA256": "b555861353361e510c5c5d3bcd2c677b7b503393e989bb4b0735c0fad5c27eb6",
+      "callSites": [
+        {
+          "line": 19,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/deployments/[namespace]/[name]/scale/route.ts",
+      "sourceSHA256": "453fbcf0d7a1af005a4e9db571ec3defe558f7f85c721cc231d2b6d2e398abf8",
+      "callSites": [
+        {
+          "line": 24,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/deployments/[namespace]/[name]/yaml/route.ts",
+      "sourceSHA256": "2c82314c4f143e1fa139b53616b8017919dbcc40f50a3df82924a82af15c9762",
+      "callSites": [
+        {
+          "line": 3,
+          "callee": "resourceYamlGet"
+        },
+        {
+          "line": 4,
+          "callee": "resourceYamlPut"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/ingresses/[namespace]/[name]/delete/route.ts",
+      "sourceSHA256": "4e8d210b4bd49631fceb7b0de703de134b4b81292a6e2f1b8dc7954fc5ff9973",
+      "callSites": [
+        {
+          "line": 12,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/ingresses/[namespace]/[name]/yaml/route.ts",
+      "sourceSHA256": "d45e1838efd82061460b7103673898f7065b165f9c6679711fa3791a0ef95a06",
+      "callSites": [
+        {
+          "line": 3,
+          "callee": "resourceYamlGet"
+        },
+        {
+          "line": 4,
+          "callee": "resourceYamlPut"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/kubectl/route.ts",
+      "sourceSHA256": "3b23f2e7c67f82e1aaec8623449e7afd8f39d58ce6c49d189a74b186c881b18d",
+      "callSites": [
+        {
+          "line": 26,
+          "callee": "shellExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/namespaces/[name]/delete/route.ts",
+      "sourceSHA256": "ba7af3106a686d0a300ff38f0f6267fdcb8a702ec7ab7793a00063f651ff1f39",
+      "callSites": [
+        {
+          "line": 18,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/namespaces/[name]/yaml/route.ts",
+      "sourceSHA256": "f3e070dcb9c181021bb526155fa9fa9aaf625cf006c1811b7cb4355b9da8617d",
+      "callSites": [
+        {
+          "line": 3,
+          "callee": "resourceYamlGet"
+        },
+        {
+          "line": 4,
+          "callee": "resourceYamlPut"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/nodes/[hostname]/action/route.ts",
+      "sourceSHA256": "9fc3e82a58e6a932cb8307bcfea217736bd1759a164e534a152f65002dd7b202",
+      "callSites": [
+        {
+          "line": 15,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/nodes/[hostname]/yaml/route.ts",
+      "sourceSHA256": "38ca13b6c455ed344e55d7e53953bb90ab1f1ab36d1b1df5ef45c47ee1f3b391",
+      "callSites": [
+        {
+          "line": 3,
+          "callee": "resourceYamlGet"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/pods/[namespace]/[name]/delete/route.ts",
+      "sourceSHA256": "f63c8815bd28ea71851072e3d6571f08eefe406d02878835804d2d97d188459f",
+      "callSites": [
+        {
+          "line": 19,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/pods/[namespace]/[name]/exec/route.ts",
+      "sourceSHA256": "1b044eb7d74bd8ed87b35c05fed6ae933cc3e41f31a2ebae339566d2b5aa3062",
+      "callSites": [
+        {
+          "line": 16,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/pods/[namespace]/[name]/logs/route.ts",
+      "sourceSHA256": "b1920915bd72b2170c4f70c79a0c1953c0e8c14c8f3afeeef385b5c31fe226b3",
+      "callSites": [
+        {
+          "line": 20,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/pods/[namespace]/[name]/yaml/route.ts",
+      "sourceSHA256": "1779d88e9178a78851b183e4090eb140d46787a050cfb71290fd5fcccbe366d1",
+      "callSites": [
+        {
+          "line": 3,
+          "callee": "resourceYamlGet"
+        },
+        {
+          "line": 4,
+          "callee": "resourceYamlPut"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/services/[namespace]/[name]/yaml/route.ts",
+      "sourceSHA256": "53d7680bb7022aca4b9ba8f6b44acfdba5b400eb839ce43cb1b433046419cf2a",
+      "callSites": [
+        {
+          "line": 3,
+          "callee": "resourceYamlGet"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/volumes/[namespace]/[name]/yaml/route.ts",
+      "sourceSHA256": "b232703fd4bd9e9db955e93115d7de657421f707ea3fff4f49f1946228c3ae0c",
+      "callSites": [
+        {
+          "line": 3,
+          "callee": "resourceYamlGet"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/volumes/reclaim/route.ts",
+      "sourceSHA256": "58070a57e978c97140cb2d759432a9fd0842ff573e1d1b5dbb85ceaa8ba9296f",
+      "callSites": [
+        {
+          "line": 8,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 35,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/kv/rotations/[id]/consumer/route.ts",
+      "sourceSHA256": "9cc8e8e6d9d7ea89735454576646d8a773f26c40c1e73eb593f786a76e80245f",
+      "callSites": [
+        {
+          "line": 10,
+          "callee": "KubectlRotationConsumer"
+        },
+        {
+          "line": 14,
+          "callee": "KubectlRotationConsumer"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/kv/rotations/route.ts",
+      "sourceSHA256": "b5fddab2f56eab5dda0daf88c3308332929c7bb269e8fcba5713461f0aff13e9",
+      "callSites": [
+        {
+          "line": 18,
+          "callee": "KubectlRotationConsumer"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/cluster-cache.ts",
+      "sourceSHA256": "2907f5f700d69eea4181dbed2cab6e8e4842b80c7bfec78909a3fcb8e29a1939",
+      "callSites": [
+        {
+          "line": 57,
+          "callee": "kubectlPodList"
+        },
+        {
+          "line": 57,
+          "callee": "kubectlJSON"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/flux.ts",
+      "sourceSHA256": "09da0aa190f030d1229269b753cde0b741984212b3356d83e705280b07772dbe",
+      "callSites": [
+        {
+          "line": 13,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 39,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 206,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 207,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 255,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 288,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 289,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 290,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 692,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 706,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 730,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 741,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 767,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 775,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 783,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 814,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 823,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 839,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 879,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 924,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 942,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 1025,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 1076,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 1124,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/k8s.ts",
+      "sourceSHA256": "0d4e6dafe98ecbed42cf28faf3c2ade542ea56ce76de49d1b86b7024913fd8b0",
+      "callSites": [
+        {
+          "line": 28,
+          "callee": "kubectlJSON"
+        },
+        {
+          "line": 104,
+          "callee": "shellExec"
+        }
+      ],
+      "classification": "host-shell admin exception"
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/resource-yaml.ts",
+      "sourceSHA256": "f846006251e9baf5ca2fdc2f35db12001bab77c2b720cd24360972333d85ab92",
+      "callSites": [
+        {
+          "line": 35,
+          "callee": "resourceYamlGet"
+        },
+        {
+          "line": 40,
+          "callee": "kubectlExec"
+        },
+        {
+          "line": 47,
+          "callee": "resourceYamlPut"
+        },
+        {
+          "line": 58,
+          "callee": "kubectlExec"
+        }
+      ],
+      "classification": "static source inventory, runtime argv proof required"
+    }
+  ],
+  "families": [
+    {
+      "family": "cluster metadata/detail reads",
+      "owner": "src/lib/cluster-cache.ts",
+      "argv": "Fixed resource table; Pods get/list -A with Pod-only8MiB/10k completeness; JSON added by shared wrapper",
+      "targetBoundary": "detail params validateNamespace/validateResourceName before cache; fixed resource kind",
+      "remaining": "actual matching CLI in real disposable cluster; complete read argv inventory"
+    },
+    {
+      "family": "delete pod/deployment/ingress/namespace",
+      "owner": "src/app/api/cluster/**/delete/route.ts",
+      "argv": "delete fixed kind + validated name/namespace + --wait=false",
+      "remaining": "every route success/failure/UI matrix"
+    },
+    {
+      "family": "deployment scale/rollout and node action",
+      "owner": "src/app/api/cluster/**/{scale,action}/route.ts",
+      "argv": "enumerated action; validated target; integer replicas0..10000; drain exact confirmation/no force/no emptyDir deletion",
+      "remaining": "matching CLI command execution and partial drain UI matrix"
+    },
+    {
+      "family": "logs/pod exec",
+      "owner": "src/app/api/cluster/pods/[namespace]/[name]",
+      "argv": "fixed logs bounds; exec name -n namespace [-c validated container] -- sh -lc one script argument",
+      "remaining": "actual stream/outcome controls + UI scope retention; fresh admin/runtime required"
+    },
+    {
+      "family": "resource YAML",
+      "owner": "src/lib/resource-yaml.ts",
+      "argv": "fixed capability kind and target get -o yaml; strict exact kind/apiVersion/ns/name/RV -> private temporary file -> replace -f",
+      "remaining": "each delegated read/write handler actual argv and UI matrix"
+    },
+    {
+      "family": "PV reclaim",
+      "owner": "src/app/api/cluster/volumes/reclaim/route.ts",
+      "argv": "fixed custom-columns read; validated names/policy JSON patch; 1..100 batch",
+      "remaining": "preserve207 partial failure and every item/UI outcome"
+    },
+    {
+      "family": "Flux",
+      "owner": "src/lib/flux.ts",
+      "argv": "validated namespace/name; fixed get/patch/apply/delete families; private temporary manifest, cascade/retention paths",
+      "remaining": "complete all read/write actualargv inventory; selected prior fakeHTTP/browser does not prove every command"
+    },
+    {
+      "family": "rotation consumer",
+      "owner": "src/lib/kv-rotation-consumer.ts",
+      "argv": "exact allowed workload kind/ns/name; UID/RV-fenced patch via KubectlRotationConsumer",
+      "remaining": "real consumer reload/completion, no production mutation here"
+    },
+    {
+      "family": "host shell",
+      "owner": "src/lib/k8s.ts + src/app/api/cluster/kubectl/route.ts",
+      "argv": "trusted fresh engine-admin + runtime enabled; bash -c one script; arbitrary application-host privileges",
+      "remaining": "typed fix affected HTTP/UI qualification; not a readonly resource endpoint"
+    }
+  ],
+  "fourActive64QueuedAndDeadlinesUnchanged": true,
+  "nativeSecretTLSClientDistinct": true,
+  "realDisposableClusterRequirementOpen": true,
+  "performanceAcceptance": false
+}

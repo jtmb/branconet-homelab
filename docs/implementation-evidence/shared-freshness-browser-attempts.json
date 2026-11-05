@@ -1,0 +1,114 @@
+{
+  "source": "da84f0f recovered exact handoff source; behavior unchanged during browser setup",
+  "runtime": "Node22.23.3 / installed Chrome / bundled Playwright public APIs",
+  "attempts": [
+    {
+      "attempt": "first-attempt",
+      "outcome": "failed: headless visibility stayed visible",
+      "files": [
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-first-attempt.json",
+          "sha256": "3477408267a8fcd6635ace19ca207aa227ad0803e53228edd42dc4fe4c33c3b0",
+          "bytes": 1047
+        },
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-first-attempt-cli.txt",
+          "sha256": "08fb9c70a6728e908cf3997a7adc7855031d6fd9e682c8eac7823d01b4e01318",
+          "bytes": 308
+        },
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-first-attempt.mjs",
+          "sha256": "b0a1062c0c05040464285e48beb9707b5fb7201f43a49cd8f4634de85fa64254",
+          "bytes": 12017
+        }
+      ]
+    },
+    {
+      "attempt": "second-attempt",
+      "outcome": "failed: headed Playwright focus emulation kept visibility visible",
+      "files": [
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-second-attempt.json",
+          "sha256": "71ca98b7ab07f7e2049c3a42a8ce404128bfd1e507ed4eff428aba7543b97fde",
+          "bytes": 1047
+        },
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-second-attempt-cli.txt",
+          "sha256": "08fb9c70a6728e908cf3997a7adc7855031d6fd9e682c8eac7823d01b4e01318",
+          "bytes": 308
+        },
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-second-attempt.mjs",
+          "sha256": "86e6a90dca1bb9ace73f88ae0887eed0731158141a0572fc4f7f0fed6db1ea81",
+          "bytes": 12446
+        }
+      ]
+    },
+    {
+      "attempt": "third-attempt",
+      "outcome": "failed: default desktop occlusion cleared editor before unchanged refresh assertion",
+      "files": [
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-third-attempt.json",
+          "sha256": "afada08e0cc1ec58fbb6b9a783521a94e1a0ccabe7144f6fc93d5fea6bb81608",
+          "bytes": 842
+        },
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-third-attempt-cli.txt",
+          "sha256": "c048cd8c2cd8e8b47792ffdf5802fbc54bbfbbad1929865a59a3a3eb4abc0340",
+          "bytes": 114
+        },
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-third-attempt.mjs",
+          "sha256": "381f15aaebb0f994182d85fbbcf5bbaeb43a0fcf2e341dc7b5cc3cf1e039bd1c",
+          "bytes": 13931
+        }
+      ]
+    },
+    {
+      "attempt": "interrupted-attempt",
+      "outcome": "unknown: tool session vanished; partial CLI and no new terminal report",
+      "files": [
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-interrupted-attempt.json",
+          "sha256": "196a946ce500ef17639a1d2ee5353314197bb7619d05df583486addb49cf243b",
+          "bytes": 157
+        },
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-interrupted-attempt-cli.txt",
+          "sha256": "9f43ea03e85c3e58b29079c29518bf7a87187ef078af0762c79f60a1bb685cdd",
+          "bytes": 84
+        },
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-interrupted-attempt.mjs",
+          "sha256": "1d6c801c0af58f56efb6c11c56fcc001ad4667054464ebc722e7438c43b4d6e7",
+          "bytes": 14554
+        }
+      ]
+    },
+    {
+      "attempt": "qualified-detached-run",
+      "outcome": "passed: six actual production-route checks with normal Chrome/fixture exit0",
+      "files": [
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser.json",
+          "sha256": "f06b5233048dfea5cacc4f6543418b61aeed48c7137a8159c22332a804a34443",
+          "bytes": 3347
+        },
+        {
+          "path": "docs/implementation-evidence/shared-freshness-browser-cli.txt",
+          "sha256": "d00d7cf5f80c3e6acdf7eb5082208d623f86673c358f68b7b57d4858c25c98e7",
+          "bytes": 567
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Actual localhost production-route fixture only; no image/live or controlled performance acceptance",
+    "Complete historical CLI captures remain unchanged"
+  ],
+  "currentHarness": {
+    "path": "k8s-rewrite/front-end/tests/shared-freshness.browser.mjs",
+    "sha256": "7f532abb7a2b5e35ed4a73dca5d208864aba90475c5f54a2d51743bec54c5877"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "scope": "Still-unrun A05/A03 controls only, conditional on proving original fixture noexec; no A02 replay or full acceptance",
+  "node": "v22.23.3",
+  "startedUtc": "2026-10-11T13:37:24.557Z",
+  "pid": 1,
+  "checks": [
+    "original-fixture:noexec-EACCES-no-call-log",
+    "same-fake:readonly-bind-executed",
+    "command-production:stdout",
+    "command-production:stderr",
+    "command-production:none",
+    "command-client:stdout",
+    "command-client:stderr",
+    "command-client:none"
+  ],
+  "registration": [],
+  "commandErrors": [
+    {
+      "scope": "production namespace-delete",
+      "mode": "stdout",
+      "status": 502,
+      "calls": 1,
+      "markerAbsent": true
+    },
+    {
+      "scope": "production namespace-delete",
+      "mode": "stderr",
+      "status": 502,
+      "calls": 2,
+      "markerAbsent": true
+    },
+    {
+      "scope": "production namespace-delete",
+      "mode": "none",
+      "status": 502,
+      "calls": 3,
+      "markerAbsent": true
+    },
+    {
+      "scope": "shared typed client/response",
+      "mode": "stdout",
+      "status": 502,
+      "ownedChildrenSettled": true
+    },
+    {
+      "scope": "shared typed client/response",
+      "mode": "stderr",
+      "status": 502,
+      "ownedChildrenSettled": true
+    },
+    {
+      "scope": "shared typed client/response",
+      "mode": "none",
+      "status": 502,
+      "ownedChildrenSettled": true
+    }
+  ],
+  "routeInventory": [],
+  "limitations": [
+    "Protected route requests use anonymous GET and public dynamic substitutions; they establish middleware rejection only, not every authorized handler/action.",
+    "Logout qualifies response cookie clear and applied cookie-jar removal, not global token/session revocation.",
+    "AppSetting/bootstrap races use AccountStore directly with independent real SQLite clients; retained HTTP bootstrap coverage remains separate.",
+    "One namespace mutation exercises actual production error/redaction boundary; no real kubectl/cluster or universal mutation matrix.",
+    "No performance/no-regression, image/runtime or AT acceptance."
+  ],
+  "performanceAcceptance": false,
+  "fixtureCausalProof": {
+    "mountPoint": "/tmp",
+    "mountFlags": [
+      "rw",
+      "nosuid",
+      "nodev",
+      "noexec",
+      "relatime"
+    ],
+    "errno": "EACCES",
+    "commandLogAbsent": true,
+    "originalFakeSHA256": "3d049f87bdd2cdbef1fe0d44ed6177b03eb2cdb3443424a03e3c57b57e5bc601",
+    "readonlyBindFakeSHA256": "3d049f87bdd2cdbef1fe0d44ed6177b03eb2cdb3443424a03e3c57b57e5bc601",
+    "readonlyBindActualExit": 17
+  },
+  "ownedServerPid": 97,
+  "failure": {
+    "phase": "A03-independent-SQLite",
+    "classification": "AssertionError",
+    "completedChecks": 8
+  },
+  "childExit": [
+    0,
+    null
+  ],
+  "fixtureRemoved": true,
+  "completedUtc": "2026-10-11T13:38:13.834Z",
+  "harnessSHA256": "6c8417e5e332c05e305209661fbbd2cfbcebdda872b368c39b319654e27bb63f"
+}
