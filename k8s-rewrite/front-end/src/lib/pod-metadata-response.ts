@@ -47,6 +47,7 @@ function encodePrefix(text: string): Prefix {
   const bytes = encoder.encode(text);
   return { body: bytes, byteLength: bytes.byteLength };
 }
+const POD_PUBLIC_FIELDS = new Set(["id", "name", "namespace", "status", "ready", "restarts", "image", "ip", "node", "created", "labels"]);
 const projections = new WeakMap<CachedData["pods"], Prefix>();
 
 export function podMetadataResponse(data: Pick<CachedData, "pods" | "availability">, predicate: (pod: any) => boolean, filtered: boolean): Response {
@@ -57,8 +58,16 @@ export function podMetadataResponse(data: Pick<CachedData, "pods" | "availabilit
     // Redact and serialize one row at a time; retain no second full object graph.
     const pods = data.pods, length = pods.length, rows = new Array<string>(length);
     for (let index = 0; index < length; index++) {
-      rows[index] = index in pods
-        ? JSON.stringify(publicClusterMetadata(podSummary(pods[index]))) : "null";
+      if (!(index in pods)) { rows[index] = "null"; continue; }
+      const summary: Record<string, unknown> = podSummary(pods[index]);
+      const keys = Object.keys(summary);
+      // The fixed public root needs no second object or entry-pair arrays.
+      // Unexpected future fields retain the complete shared redaction path.
+      if (keys.every(key => POD_PUBLIC_FIELDS.has(key))) {
+        Object.setPrototypeOf(summary, null);
+        for (const key of keys) summary[key] = publicClusterMetadata(summary[key]);
+        rows[index] = JSON.stringify(summary);
+      } else rows[index] = JSON.stringify(publicClusterMetadata(summary));
     }
     projection = encodePrefix(`{"pods":[${rows.join(",")}]`);
     projections.set(data.pods, projection);
