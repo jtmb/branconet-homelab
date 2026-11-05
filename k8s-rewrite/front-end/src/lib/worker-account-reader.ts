@@ -54,6 +54,7 @@ export class WorkerAccountReader {
   private active?: Operation;
   private queued: Operation[] = [];
   private nextId = 0;
+  private locationPlan?: { config: string; schemaDirectory: string; cwd: string; file: string };
   private closing = false;
   private closeFailed = false;
   private shutdownRequested = false;
@@ -77,7 +78,14 @@ export class WorkerAccountReader {
     this.drainPendingSettlement();
     let config: string, file: string;
     try {
-      config = this.currentConfig()!; file = accountDatabaseLocation(config, this.schemaDirectory);
+      config = this.currentConfig()!;
+      const cwd = process.cwd(), plan = this.locationPlan;
+      // Cache only one datasource spelling; configuration and every authority check stay fresh.
+      if (plan && plan.config === config && plan.schemaDirectory === this.schemaDirectory && plan.cwd === cwd) file = plan.file;
+      else {
+        file = accountDatabaseLocation(config, this.schemaDirectory);
+        this.locationPlan = { config, schemaDirectory: this.schemaDirectory, cwd, file };
+      }
       if (typeof subject !== "string" || signal?.aborted || this.closing || this.closeFailed || this.queued.length >= 64) throw unavailable();
     } catch { return Promise.reject(unavailable()); }
     return new Promise((resolve, reject) => {
@@ -178,8 +186,14 @@ export class WorkerAccountReader {
     if (value === null) return null;
     if (!value || typeof value !== "object") throw unavailable();
     const row = value as AccountRow;
-    const keys = operation.projection === "session" ? "id,sessionVersion,username" : "engineAdmin,id,role,sessionVersion,username";
-    if (Object.keys(row).sort().join(",") !== keys || row.id !== operation.subject || typeof row.username !== "string" ||
+    const keys = Object.keys(row);
+    const account = operation.projection === "account";
+    if (keys.length !== (account ? 5 : 3)) throw unavailable();
+    for (const key of keys) {
+      if (key !== "id" && key !== "username" && key !== "sessionVersion" &&
+        (!account || key !== "role" && key !== "engineAdmin")) throw unavailable();
+    }
+    if (row.id !== operation.subject || typeof row.username !== "string" ||
       !Number.isInteger(row.sessionVersion) || row.sessionVersion < -2147483648 || row.sessionVersion > 2147483647 ||
       operation.projection === "account" && (typeof row.role !== "string" || typeof row.engineAdmin !== "boolean")) throw unavailable();
     return row;
