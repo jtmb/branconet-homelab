@@ -8,6 +8,29 @@
       - antivirus_scan_only_volume == '' or antivirus_scan_only_volume is match('^pvc-[a-f0-9-]{36}$')
     fail_msg: Supply antivirus_scan_launch=true and a new finite antivirus_scan_id.
 
+- name: Check the requested generation before changing packages or runner source
+  ansible.builtin.stat:
+    path: '{{ antivirus_scan_root }}/{{ antivirus_scan_id }}'
+  register: antivirus_generation
+
+- name: Refuse replay of an existing result or interrupted scan
+  ansible.builtin.assert:
+    that:
+      - not antivirus_generation.stat.exists
+    fail_msg: Inspect the existing scan generation; never overwrite its evidence.
+
+- name: Check for a currently active node scanner before admitting another
+  ansible.builtin.command:
+    argv: [systemctl, list-units, '--type=service', '--state=active,activating', --no-legend, --no-pager, 'branconet-antivirus-*']
+  register: antivirus_active_units
+  changed_when: false
+
+- name: Keep one antivirus scan within the per-node CPU and memory budget
+  ansible.builtin.assert:
+    that:
+      - antivirus_active_units.stdout | trim == ''
+    fail_msg: An existing node scan is active; inspect it rather than starting a duplicate.
+
 - name: Measure available root capacity before installing scanner and signatures
   ansible.builtin.command:
     argv:
@@ -28,7 +51,7 @@
     name:
       - clamav
       - clamav-freshclam
-    state: present
+    state: latest
     update_cache: true
     cache_valid_time: 3600
     install_recommends: false
@@ -69,17 +92,6 @@
     owner: root
     group: root
     mode: '0755'
-
-- name: Check that this scan generation has not already been launched
-  ansible.builtin.stat:
-    path: '{{ antivirus_scan_root }}/{{ antivirus_scan_id }}'
-  register: antivirus_generation
-
-- name: Refuse replay of an existing result or interrupted scan
-  ansible.builtin.assert:
-    that:
-      - not antivirus_generation.stat.exists
-    fail_msg: Inspect the existing scan generation; never overwrite its evidence.
 
 - name: Start bounded one-shot signature update and local-filesystem scan
   ansible.builtin.command:
