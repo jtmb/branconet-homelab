@@ -222,7 +222,7 @@ try:
     status['detections'] = [line for line in found if not line.rpartition(': ')[2].startswith('Heuristics.Limits.Exceeded')]
     status['limitAlerts'] = [line for line in found if line.rpartition(': ')[2].startswith('Heuristics.Limits.Exceeded')]
     status['errors'] = [line for line in log.splitlines()
-                        if re.search(r"\b(error|warning)\b|: Can't (?:open|access|stat|read)", line, re.I)]
+                        if re.search(r"^(?:LibClamAV (?:Error|Warning):|ERROR:|WARNING:)| ERROR$|: Can't (?:open|access|stat|read)", line, re.I)]
     status['summary'] = log.rsplit('SCAN SUMMARY', 1)[-1].strip()
     status['logSha256'] = hashlib.sha256((work / 'clamscan.log').read_bytes()).hexdigest()
     status['status'] = 'completed' if status['exitCode'] in (0, 1) else 'scan-error'
