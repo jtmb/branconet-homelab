@@ -72,6 +72,12 @@ corrective runs use the improved logging. Directory recursion starts at one
 for each supplied root in ClamAV 1.5.4; the correction's relative three-level
 overlap therefore applies to long CSI staging paths as well as `/`.
 
+After a finite pass has finished, `--tags antivirus_runner_config` updates only
+the installed runner and its directory. It first refuses any active node scan
+and does not launch a generation or replace prior results. This configuration-
+only route aligned worker2's installed runner after its older completed pass;
+all three installed runner hashes then matched the published source.
+
 ## Plex
 
 The separately owned private charts repository contains the Plex hardening
