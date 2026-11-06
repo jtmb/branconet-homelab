@@ -6,6 +6,8 @@
       - antivirus_scan_id is match('^[a-z0-9][a-z0-9-]{7,60}$')
       - antivirus_scan_root == '/var/lib/branconet-antivirus'
       - antivirus_scan_only_volume == '' or antivirus_scan_only_volume is match('^pvc-[a-f0-9-]{36}$')
+      - antivirus_scan_supplement_from == '' or antivirus_scan_supplement_from is match('^[a-z0-9][a-z0-9-]{7,60}$')
+      - antivirus_scan_supplement_from == '' or antivirus_scan_only_volume == ''
     fail_msg: Supply antivirus_scan_launch=true and a new finite antivirus_scan_id.
 
 - name: Check the requested generation before changing packages or runner source
@@ -114,6 +116,7 @@
       - /usr/local/libexec/branconet-antivirus-scan.py
       - '{{ antivirus_scan_id }}'
       - '--only-volume={{ antivirus_scan_only_volume }}'
+      - '--supplement-from={{ antivirus_scan_supplement_from }}'
   register: antivirus_launch
   changed_when: antivirus_launch.rc == 0
 

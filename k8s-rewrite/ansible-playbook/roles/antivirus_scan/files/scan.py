@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Finite, report-only ClamAV scan of host files and mounted local application data."""
 import datetime
+import argparse
 import hashlib
 import json
 import os
@@ -8,16 +9,24 @@ import pathlib
 import re
 import shutil
 import socket
+import stat
 import subprocess
 import sys
 
 ROOT = pathlib.Path('/var/lib/branconet-antivirus')
-generation = sys.argv[1]
-only_volume = sys.argv[2].split('=', 1)[1] if len(sys.argv) == 3 and sys.argv[2].startswith('--only-volume=') else ''
+parser = argparse.ArgumentParser()
+parser.add_argument('generation')
+parser.add_argument('--only-volume', default='')
+parser.add_argument('--supplement-from', default='')
+options = parser.parse_args()
+generation, only_volume = options.generation, options.only_volume
 if not re.fullmatch(r'[a-z0-9][a-z0-9-]{7,60}', generation) or os.getuid() != 0:
     raise SystemExit('Invalid finite scan identity or caller')
 if only_volume and not re.fullmatch(r'pvc-[a-f0-9-]{36}', only_volume):
     raise SystemExit('Invalid supplemental volume identity')
+if options.supplement_from and (only_volume or options.supplement_from == generation or
+        not re.fullmatch(r'[a-z0-9][a-z0-9-]{7,60}', options.supplement_from)):
+    raise SystemExit('Invalid supplemental generation')
 work = ROOT / generation
 work.mkdir(mode=0o700)  # Exclusive creation: no overwritten or replayed attempts.
 status = {'hostname': socket.gethostname(), 'scanId': generation,
@@ -86,6 +95,58 @@ try:
             raise RuntimeError('Expected one whole mounted plaintext supplemental volume')
     if not only_volume and '/' not in roots:
         raise RuntimeError('Root filesystem missing from scan scope')
+    file_deadline = 600000
+    full_roots = list(roots)
+    if options.supplement_from:
+        prior = json.loads((ROOT / options.supplement_from / 'status.json').read_text())
+        if prior.get('status') not in {'completed', 'scan-error'}:
+            raise RuntimeError('Original node pass must be terminal before supplementing it')
+        prior_roots = set(prior['scanRoots'])
+        original_depth = int(prior.get('engineLimits', {}).get('maxDirectoryRecursion', 15))
+        overlap_depth = max(0, original_depth - 3)
+        targets = set()
+        for entry in roots:
+            base = pathlib.Path(entry)
+            if entry not in prior_roots:
+                targets.add(entry)
+                continue
+            device = base.stat().st_dev
+            for directory, children, _ in os.walk(base, followlinks=False):
+                path = pathlib.Path(directory)
+                if (path == ROOT or pathlib.Path('/var/lib/clamav') == path or
+                        re.match(r'^/var/lib/kubelet/pods/[^/]+/(volume-subpaths|volumes/kubernetes.io~csi)(/|$)', directory)):
+                    children[:] = []
+                    continue
+                valid = []
+                for name in children:
+                    candidate = path / name
+                    try:
+                        info = candidate.lstat()
+                        if stat.S_ISDIR(info.st_mode) and info.st_dev == device:
+                            valid.append(name)
+                    except FileNotFoundError:
+                        pass  # Live ephemeral files may disappear; no writes are made.
+                children[:] = valid
+                # Overlap three levels with the old default depth to avoid a boundary gap.
+                if len(path.relative_to(base).parts) >= overlap_depth:
+                    targets.add(str(path))
+                    children[:] = []
+        for line in prior.get('limitAlerts', []):
+            path, separator, signature = line.rpartition(': ')
+            if separator and signature.startswith('Heuristics.Limits.Exceeded.MaxScanTime'):
+                candidate = pathlib.Path(path)
+                if not candidate.is_absolute() or candidate.resolve() != candidate or not candidate.is_file():
+                    raise RuntimeError('Timed-out original archive is no longer a regular canonical file')
+                targets.add(path)
+        # File-list protocol is line based: use a safe ancestor for exceptional newline names.
+        safe = set()
+        for path in targets:
+            candidate = pathlib.Path(path)
+            while '\n' in str(candidate) or '\r' in str(candidate):
+                candidate = candidate.parent
+            safe.add(str(candidate))
+        roots = sorted(safe)
+        file_deadline = 0  # Job still has the unchanged 24-hour systemd safety deadline.
     status.update({'status': 'scanning', 'scanRoots': roots, 'networkMountsExcluded': network,
                    'scope': 'All host local files, unpacked container images and mounted plaintext local application filesystems',
                    'exclusions': ['virtual proc/sys/dev filesystems except /dev/shm',
@@ -95,11 +156,21 @@ try:
                                   'scanner signatures/results and its bounded temporary mount'],
                    'engineLimits': {'maxFileMiB': 2048, 'maxExpandedScanMiB': 4096,
                                     'maxArchiveFiles': 100000, 'maxRecursion': 32,
-                                    'maxFileScanMs': 600000}})
+                                    'maxFileScanMs': file_deadline,
+                                    'maxDirectoryRecursion': 256}})
     if only_volume:
         status.update({'scope': 'Supplemental relocated mounted plaintext volume',
                        'supplementalVolume': only_volume})
+    if options.supplement_from:
+        status.update({'scope': 'Deep directories, newly mounted data and original time-limited archives',
+                       'supplementFrom': options.supplement_from, 'currentFilesystemRoots': full_roots,
+                       'originalBoundaryOverlapDepth': overlap_depth,
+                       'originalDirectoryDepth': original_depth})
     record()
+    if not roots:
+        status.update({'status': 'completed', 'exitCode': 0, 'detections': [], 'limitAlerts': [],
+                       'errors': [], 'summary': 'No supplemental paths required'})
+        raise SystemExit(0)
     scratch = work / 'tmp'
     scratch.mkdir(mode=0o700)
     # Reserve all scratch space before scanning; never format an existing file or device.
@@ -124,21 +195,27 @@ try:
     subprocess.run(['mount', '-o', 'loop,nosuid,nodev,noexec', str(image), str(scratch)], check=True)
     args = ['clamscan', '--recursive=yes', '--cross-fs=no', '--follow-dir-symlinks=0',
             '--follow-file-symlinks=0', '--infected', '--official-db-only=yes',
+            '--max-dir-recursion=256',
             '--fail-if-cvd-older-than=2', '--alert-exceeds-max=yes', '--max-filesize=2048M',
             '--max-scansize=4096M', '--max-recursion=32', '--max-files=100000',
-            '--max-scantime=600000', '--tempdir=' + str(scratch),
+            '--max-scantime=' + str(file_deadline), '--tempdir=' + str(scratch),
             '--exclude-dir=^/var/lib/(clamav|branconet-antivirus)(/|$)',
             '--exclude-dir=^/var/lib/kubelet/pods/[^/]+/(volume-subpaths|volumes/kubernetes.io~csi)(/|$)',
-            '--exclude=^/var/lib/longhorn/replicas/[^/]+/volume-(head|snap)-.*[.]img$',
-            *roots]
+            '--exclude=^/var/lib/longhorn/replicas/[^/]+/volume-(head|snap)-.*[.]img$']
+    if options.supplement_from:
+        target_list = work / 'targets.txt'
+        target_list.write_text('\n'.join(roots) + '\n')
+        args.append('--file-list=' + str(target_list))
+    else:
+        args.extend(roots)
     status['arguments'] = args
     record()
     status['exitCode'] = command(args, 'clamscan.log')
     log = (work / 'clamscan.log').read_text(errors='replace')
     found = [line for line in log.splitlines() if line.endswith(' FOUND')]
-    status['detections'] = [line for line in found if 'Heuristics.Limits.Exceeded' not in line]
-    status['limitAlerts'] = [line for line in found if 'Heuristics.Limits.Exceeded' in line]
-    status['errors'] = [line for line in log.splitlines() if 'ERROR' in line or 'WARNING' in line]
+    status['detections'] = [line for line in found if not line.rpartition(': ')[2].startswith('Heuristics.Limits.Exceeded')]
+    status['limitAlerts'] = [line for line in found if line.rpartition(': ')[2].startswith('Heuristics.Limits.Exceeded')]
+    status['errors'] = [line for line in log.splitlines() if re.search(r'\b(error|warning)\b', line, re.I)]
     status['summary'] = log.rsplit('SCAN SUMMARY', 1)[-1].strip()
     status['logSha256'] = hashlib.sha256((work / 'clamscan.log').read_bytes()).hexdigest()
     status['status'] = 'completed' if status['exitCode'] in (0, 1) else 'scan-error'

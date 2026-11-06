@@ -40,6 +40,18 @@ ClamAV's explicit per-file/archive/time/recursion limits and every error or limi
 alert must be reported; an oversized file is not proof of infection or a clean
 scan of that file.
 
+Full scans explicitly set directory recursion to 256; ClamAV 1.5.4's implicit
+default is only 15. For the initial r2 pass, set
+`antivirus_scan_supplement_from=full-20261106-r2` with a new finite generation
+after the original node pass is terminal. The runner then covers directories
+beyond the original depth boundary (with three overlapping levels), newly
+mounted local filesystems, and archives that previously hit the time limit.
+The corrective pass keeps the same 1.5-core/3-GiB/4-GiB resource envelope and
+24-hour job deadline; only these selected inputs have no per-file timer.
+Original limits/results remain intact and later results must be linked before
+calling the full coverage requirement accepted. The same procedure derives
+its boundary from recorded depth for future scans.
+
 Results are root-only under `/var/lib/branconet-antivirus/<scan-id>/`: updater
 log, scanner log and structured status with scope, engine/signatures, limits,
 detections and completion state. Collect sanitized results to the existing
