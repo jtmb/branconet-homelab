@@ -13,13 +13,17 @@ import sys
 
 ROOT = pathlib.Path('/var/lib/branconet-antivirus')
 generation = sys.argv[1]
+only_volume = sys.argv[2].split('=', 1)[1] if len(sys.argv) == 3 and sys.argv[2].startswith('--only-volume=') else ''
 if not re.fullmatch(r'[a-z0-9][a-z0-9-]{7,60}', generation) or os.getuid() != 0:
     raise SystemExit('Invalid finite scan identity or caller')
+if only_volume and not re.fullmatch(r'pvc-[a-f0-9-]{36}', only_volume):
+    raise SystemExit('Invalid supplemental volume identity')
 work = ROOT / generation
 work.mkdir(mode=0o700)  # Exclusive creation: no overwritten or replayed attempts.
 status = {'hostname': socket.gethostname(), 'scanId': generation,
           'startedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
           'status': 'updating-signatures', 'destructiveActions': False}
+scratch_identity = None
 
 def record():
     temporary = work / 'status.new'
@@ -75,7 +79,12 @@ try:
         if previous is None or score < previous[0]:
             selected[key] = (score, m)
     roots = sorted({m['target'] for _, m in selected.values()})
-    if '/' not in roots:
+    if only_volume:
+        roots = sorted({m['target'] for _, m in selected.values()
+                        if m['fstype'] == 'ext4' and m['source'] == '/dev/mapper/' + only_volume})
+        if len(roots) != 1:
+            raise RuntimeError('Expected one whole mounted plaintext supplemental volume')
+    if not only_volume and '/' not in roots:
         raise RuntimeError('Root filesystem missing from scan scope')
     status.update({'status': 'scanning', 'scanRoots': roots, 'networkMountsExcluded': network,
                    'scope': 'All host local files, unpacked container images and mounted plaintext local application filesystems',
@@ -86,18 +95,38 @@ try:
                                   'scanner signatures/results and its bounded temporary mount'],
                    'engineLimits': {'maxFileMiB': 2048, 'maxExpandedScanMiB': 4096,
                                     'maxArchiveFiles': 100000, 'maxRecursion': 32,
-                                    'maxFileScanMs': 120000}})
+                                    'maxFileScanMs': 600000}})
+    if only_volume:
+        status.update({'scope': 'Supplemental relocated mounted plaintext volume',
+                       'supplementalVolume': only_volume})
     record()
     scratch = work / 'tmp'
     scratch.mkdir(mode=0o700)
-    # A finite 512 MiB tmpfs prevents extraction from exhausting the node SSD.
-    subprocess.run(['mount', '-t', 'tmpfs', '-o', 'size=512m,mode=0700,nosuid,nodev,noexec',
-                    'branconet-antivirus-scratch', str(scratch)], check=True)
+    # Reserve all scratch space before scanning; never format an existing file or device.
+    free = os.statvfs(work)
+    if free.f_bavail * free.f_frsize < 15 * 1024**3 + 4 * 1024**3 + 512 * 1024**2:
+        raise RuntimeError('Insufficient capacity for reserved scratch plus 15 GiB floor')
+    image = work / 'scratch.ext4'
+    fd = os.open(image, os.O_RDWR | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+    try:
+        os.posix_fallocate(fd, 0, 4 * 1024**3)
+        info = os.fstat(fd)
+        scratch_identity = (info.st_dev, info.st_ino)
+    finally:
+        os.close(fd)
+    status['scratchAllocatedBytes'] = image.stat().st_blocks * 512
+    record()
+    subprocess.run(['mkfs.ext4', '-q', '-F', '-m', '0', '-E',
+                    'nodiscard,lazy_itable_init=0,lazy_journal_init=0',
+                    '-L', 'branconet-av', str(image)], check=True)
+    if image.stat().st_blocks * 512 < 4 * 1024**3:
+        raise RuntimeError('Scratch reservation was not retained after formatting')
+    subprocess.run(['mount', '-o', 'loop,nosuid,nodev,noexec', str(image), str(scratch)], check=True)
     args = ['clamscan', '--recursive=yes', '--cross-fs=no', '--follow-dir-symlinks=0',
             '--follow-file-symlinks=0', '--infected', '--official-db-only=yes',
             '--fail-if-cvd-older-than=2', '--alert-exceeds-max=yes', '--max-filesize=2048M',
             '--max-scansize=4096M', '--max-recursion=32', '--max-files=100000',
-            '--max-scantime=120000', '--tempdir=' + str(scratch),
+            '--max-scantime=600000', '--tempdir=' + str(scratch),
             '--exclude-dir=^/var/lib/(clamav|branconet-antivirus)(/|$)',
             '--exclude-dir=^/var/lib/kubelet/pods/[^/]+/(volume-subpaths|volumes/kubernetes.io~csi)(/|$)',
             '--exclude=^/var/lib/longhorn/replicas/[^/]+/volume-(head|snap)-.*[.]img$',
@@ -127,6 +156,16 @@ finally:
             status['scratchRemoved'] = True
         except OSError:
             status['scratchRetained'] = 'Nonempty temporary directory; no recursive cleanup attempted'
+    image = work / 'scratch.ext4'
+    if image.exists() and scratch_identity:
+        info = image.lstat()
+        loops = subprocess.run(['losetup', '-j', str(image)], capture_output=True, text=True)
+        if (not image.is_symlink() and (info.st_dev, info.st_ino) == scratch_identity
+                and not scratch.is_mount() and loops.returncode == 0 and not loops.stdout.strip()):
+            status['scratchImageAllocatedBytesRemoved'] = info.st_blocks * 512
+            image.unlink()
+        else:
+            status['scratchImageRetained'] = 'Identity, mount or live loop-device safety check failed'
     status['completedAt'] = datetime.datetime.now(datetime.timezone.utc).isoformat()
     record()
 sys.exit(0 if status['status'] == 'completed' else 2)

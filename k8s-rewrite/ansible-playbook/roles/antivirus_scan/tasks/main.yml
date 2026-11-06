@@ -5,6 +5,7 @@
       - antivirus_scan_launch | bool
       - antivirus_scan_id is match('^[a-z0-9][a-z0-9-]{7,60}$')
       - antivirus_scan_root == '/var/lib/branconet-antivirus'
+      - antivirus_scan_only_volume == '' or antivirus_scan_only_volume is match('^pvc-[a-f0-9-]{36}$')
     fail_msg: Supply antivirus_scan_launch=true and a new finite antivirus_scan_id.
 
 - name: Measure available root capacity before installing scanner and signatures
@@ -17,10 +18,10 @@
   register: antivirus_free
   changed_when: false
 
-- name: Preserve 15 GiB floor plus 2 GiB installation and bounded scan scratch allowance
+- name: Preserve 15 GiB floor plus 4 GiB reserved scratch and 1 GiB package/margin allowance
   ansible.builtin.assert:
     that:
-      - antivirus_free.stdout | int >= (antivirus_scan_minimum_free_bytes | int + 2147483648)
+      - antivirus_free.stdout | int >= (antivirus_scan_minimum_free_bytes | int + 5368709120)
 
 - name: Install supported Ubuntu scanner without starting an unconfigured updater
   ansible.builtin.apt:
@@ -100,6 +101,7 @@
       - -B
       - /usr/local/libexec/branconet-antivirus-scan.py
       - '{{ antivirus_scan_id }}'
+      - '--only-volume={{ antivirus_scan_only_volume }}'
   register: antivirus_launch
   changed_when: antivirus_launch.rc == 0
 

@@ -10,7 +10,7 @@ Use the existing inventory and in-memory sudo environment with
 `k8s-rewrite/ansible-playbook/playbooks/antivirus-scan.yml`. Supply
 `antivirus_scan_launch=true` and a new lowercase `antivirus_scan_id` (8–61
 characters, letters/digits/hyphens). The procedure installs the supported Ubuntu
-ClamAV/freshclam packages, verifies 15 GiB remains plus a 2 GiB installation/scratch
+ClamAV/freshclam packages, verifies 15 GiB remains plus a 5 GiB installation/scratch
 allowance and launches a finite systemd unit on each of the three nodes.
 
 The unit updates official signed signatures before scanning. An update failure
@@ -18,8 +18,11 @@ fails the run instead of accepting stale/missing signatures. Freshclam's normal
 update service stays enabled; there is no recurring scan or parallel clamd daemon.
 Notifications to absent clamd are disabled. A generation cannot overwrite an
 existing result. Units have 150% CPU (at most 1.5 cores), 3 GiB memory, idle I/O priority and a 24-hour
-safety deadline. Archive extraction uses a finite 512 MiB tmpfs removed after the
-scanner exits, preserving node disk space.
+safety deadline. Archive extraction uses an exclusively created, fully reserved
+4 GiB ext4 scratch image with loop/nosuid/nodev/noexec, rather than unbounded
+node SSD writes. A fresh capacity check preserves 15 GiB plus a 512 MiB margin
+after reservation. The runner unmounts and removes only its exact generated
+scratch image after the scanner exits and loop-device/identity checks pass.
 
 The full scan covers node-local host files, unpacked container image files,
 mounted plaintext local data volumes, boot/snap filesystems and memory-backed
@@ -28,6 +31,11 @@ memory), repeat CSI aliases, scan NAS network shares as though node-local, or
 interpret encrypted Longhorn raw replica images as application files. Mounted
 plaintext Longhorn files are scanned. Detached encrypted volumes remain outside
 the scan; do not attach/reformat/decrypt them merely to claim complete coverage.
+If a workload moves a volume while a node scan runs, reconcile the original and
+current scope. After that node's full scan is terminal, use a new generation and
+`antivirus_scan_only_volume=pvc-<uuid>` on the current volume-owning node to scan
+the relocated plaintext data. This is a labelled supplemental scan, never a
+substitute for the original full node scan or a replay of its result.
 ClamAV's explicit per-file/archive/time/recursion limits and every error or limit
 alert must be reported; an oversized file is not proof of infection or a clean
 scan of that file.
