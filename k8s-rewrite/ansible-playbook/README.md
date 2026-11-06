@@ -1,5 +1,10 @@
 # Existing-cluster maintenance
 
+The [November 5 antivirus/Plex procedure](../../docs/ANTIVIRUS-PLEX-HARDENING-20261105.md)
+adds finite `playbooks/antivirus-scan.yml` and read-only
+`playbooks/plex-hardening-verify.yml`. Scans install supported ClamAV and current
+official signatures, preserve files on detection and report exclusions/limits.
+
 The [October 28 headroom/security/HTTPS follow-up](../../docs/CLUSTER-HARDENING-20261028.md)
 adds opt-in `playbooks/node-headroom-cache.yml` and
 `lan_tls_verify_bortus_https=true` for the existing `lan-tls.yml` playbook.

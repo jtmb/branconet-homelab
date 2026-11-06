@@ -1,0 +1,5 @@
+---
+- name: Restart antivirus signature updater
+  ansible.builtin.command:
+    argv: [systemctl, try-restart, clamav-freshclam]
+  changed_when: true

@@ -1,0 +1,54 @@
+---
+- name: Verify Flux-owned Plex hardening without changing application data
+  hosts: master
+  become: false
+  gather_facts: false
+  tasks:
+    - name: Wait for the existing Plex deployment
+      ansible.builtin.command:
+        argv: [kubectl, rollout, status, deployment/plex, -n, plex, --timeout=180s]
+      changed_when: false
+    - name: Read the existing Plex deployment
+      ansible.builtin.command:
+        argv: [kubectl, get, deployment, plex, -n, plex, -o, json]
+      register: plex_deployment
+      changed_when: false
+      no_log: true
+    - name: Select the live pod template
+      ansible.builtin.set_fact:
+        plex_pod_spec: '{{ (plex_deployment.stdout | from_json).spec.template.spec }}'
+      no_log: true
+    - name: Check principal, token, seccomp, media and initialization controls
+      ansible.builtin.assert:
+        that:
+          - plex_pod_spec.serviceAccountName == 'plex'
+          - not plex_pod_spec.automountServiceAccountToken
+          - plex_pod_spec.securityContext.seccompProfile.type == 'RuntimeDefault'
+          - not plex_pod_spec.containers[0].securityContext.allowPrivilegeEscalation
+          - "'NET_RAW' in plex_pod_spec.containers[0].securityContext.capabilities.drop"
+          - plex_pod_spec.containers[0].volumeMounts | selectattr('mountPath', 'in', ['/movies', '/tv', '/pvr']) | rejectattr('readOnly', 'equalto', true) | list | length == 0
+          - plex_pod_spec.initContainers[0].name == 'plex-auth-hardening'
+          - plex_pod_spec.initContainers[0].securityContext.runAsUser == 1000
+    - name: Check that Plex cannot read native secrets
+      ansible.builtin.command:
+        argv:
+          - kubectl
+          - auth
+          - can-i
+          - get
+          - secrets
+          - -n
+          - plex
+          - --as=system:serviceaccount:plex:plex
+          - --as-group=system:serviceaccounts
+          - --as-group=system:serviceaccounts:plex
+          - --as-group=system:authenticated
+      register: plex_secret_permission
+      changed_when: false
+      failed_when: plex_secret_permission.stdout | trim != 'no'
+    - name: Confirm an enforcing Plex network policy exists
+      ansible.builtin.command:
+        argv: [kubectl, get, networkpolicy, plex, -n, plex, -o, json]
+      register: plex_network_policy
+      changed_when: false
+      failed_when: (plex_network_policy.stdout | from_json).spec.policyTypes | sort != ['Egress', 'Ingress']
