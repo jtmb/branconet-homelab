@@ -63,6 +63,15 @@ retained operational runtime inputs; temporary extraction and controller scratch
 must be reconciled after their consumers exit. No antivirus command contains
 `--remove`, `--move` or another automatic destructive option.
 
+The runner suppresses ordinary clean-file lines with `--suppress-ok-results`,
+retaining access and directory errors. ClamAV's `--infected` output mode also
+hides some access-error paths; the original r2 runs and worker2's completed r3
+used that older mode, so their raw summary/error totals remain authoritative
+and cannot be described as an exhaustive per-path error list. Later queued
+corrective runs use the improved logging. Directory recursion starts at one
+for each supplied root in ClamAV 1.5.4; the correction's relative three-level
+overlap therefore applies to long CSI staging paths as well as `/`.
+
 ## Plex
 
 The separately owned private charts repository contains the Plex hardening

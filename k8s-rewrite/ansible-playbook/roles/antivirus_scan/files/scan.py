@@ -108,7 +108,7 @@ try:
         retry_roots = []
         for entry in roots:
             base = pathlib.Path(entry)
-            failed_before = any(line.startswith(('WARNING: ' + entry + ':', 'ERROR: ' + entry + ':'))
+            failed_before = any(line.startswith(('WARNING: ' + entry + ':', 'ERROR: ' + entry + ':', entry + ": Can't "))
                                 for line in prior.get('errors', []))
             if entry not in prior_roots or failed_before:
                 targets.add(entry)
@@ -200,7 +200,7 @@ try:
         raise RuntimeError('Scratch reservation was not retained after formatting')
     subprocess.run(['mount', '-o', 'loop,nosuid,nodev,noexec', str(image), str(scratch)], check=True)
     args = ['clamscan', '--recursive=yes', '--cross-fs=no', '--follow-dir-symlinks=0',
-            '--follow-file-symlinks=0', '--infected', '--official-db-only=yes',
+            '--follow-file-symlinks=0', '--suppress-ok-results', '--official-db-only=yes',
             '--max-dir-recursion=256',
             '--fail-if-cvd-older-than=2', '--alert-exceeds-max=yes', '--max-filesize=2048M',
             '--max-scansize=4096M', '--max-recursion=32', '--max-files=100000',
@@ -221,7 +221,8 @@ try:
     found = [line for line in log.splitlines() if line.endswith(' FOUND')]
     status['detections'] = [line for line in found if not line.rpartition(': ')[2].startswith('Heuristics.Limits.Exceeded')]
     status['limitAlerts'] = [line for line in found if line.rpartition(': ')[2].startswith('Heuristics.Limits.Exceeded')]
-    status['errors'] = [line for line in log.splitlines() if re.search(r'\b(error|warning)\b', line, re.I)]
+    status['errors'] = [line for line in log.splitlines()
+                        if re.search(r"\b(error|warning)\b|: Can't (?:open|access|stat|read)", line, re.I)]
     status['summary'] = log.rsplit('SCAN SUMMARY', 1)[-1].strip()
     status['logSha256'] = hashlib.sha256((work / 'clamscan.log').read_bytes()).hexdigest()
     status['status'] = 'completed' if status['exitCode'] in (0, 1) else 'scan-error'
