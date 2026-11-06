@@ -46,6 +46,9 @@ default is only 15. For the initial r2 pass, set
 after the original node pass is terminal. The runner then covers directories
 beyond the original depth boundary (with three overlapping levels), newly
 mounted local filesystems, and archives that previously hit the time limit.
+An original scan root that reported an access warning is retried in full if it
+still exists in the current local mount inventory. Disappeared ephemeral mounts
+remain explicit original coverage exceptions; no directory or mount is recreated.
 The corrective pass keeps the same 1.5-core/3-GiB/4-GiB resource envelope and
 24-hour job deadline; only these selected inputs have no per-file timer.
 Original limits/results remain intact and later results must be linked before

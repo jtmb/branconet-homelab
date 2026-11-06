@@ -105,10 +105,15 @@ try:
         original_depth = int(prior.get('engineLimits', {}).get('maxDirectoryRecursion', 15))
         overlap_depth = max(0, original_depth - 3)
         targets = set()
+        retry_roots = []
         for entry in roots:
             base = pathlib.Path(entry)
-            if entry not in prior_roots:
+            failed_before = any(line.startswith(('WARNING: ' + entry + ':', 'ERROR: ' + entry + ':'))
+                                for line in prior.get('errors', []))
+            if entry not in prior_roots or failed_before:
                 targets.add(entry)
+                if failed_before:
+                    retry_roots.append(entry)
                 continue
             device = base.stat().st_dev
             for directory, children, _ in os.walk(base, followlinks=False):
@@ -164,6 +169,7 @@ try:
     if options.supplement_from:
         status.update({'scope': 'Deep directories, newly mounted data and original time-limited archives',
                        'supplementFrom': options.supplement_from, 'currentFilesystemRoots': full_roots,
+                       'originalFailedRootsRetried': retry_roots,
                        'originalBoundaryOverlapDepth': overlap_depth,
                        'originalDirectoryDepth': original_depth})
     record()
